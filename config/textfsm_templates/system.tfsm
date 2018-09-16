@@ -1,0 +1,13 @@
+Value vendor (\S+)
+Value model  (\S+)
+Value os (\S+ \S+)
+Value version (\d+\.\d+\.\d+)
+Value uptime (.*)
+
+Start
+  ^${vendor} ${model}$$
+  ^${os} ${version}$$
+  ^Build:.*$$
+  ^Uptime: ${uptime}$$ -> Record
+  ^$$EOF
+  

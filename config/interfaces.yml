@@ -1,0 +1,46 @@
+service: interfaces
+apply:
+  cumulus:
+    version: all
+    command: net show interface all json
+    normalize: '*:ifname/[
+    "mode: mode",
+    "iface_obj/mtu: mtu",
+    "iface_obj/description: description",
+    "iface_obj/dhcp_enabled: dhcpEnabled",
+    "ifaceobj/mac: mac",
+    "iface_obj/native_vlan: pvid?|0",
+    "iface_obj/vlan_list: vlans",
+    "speed: speed",
+    "linkstate: state",
+    "connector_type: connector",
+    "iface_obj/lacp/bypass: lacpBypass",
+    "iface_obj/lacp/partner_mac: lacpPartnerMac",
+    "iface_obj/lacp/sys_priority: lacpSysPriority",
+    "iface_obj/members: lacpMembers"
+    "iface_obj/ip_address/allentries: IPAddresses",
+    ]'
+
+  eos:
+    version: all
+    command: show interfaces
+    normalize: 'interfaces/*/[
+    "name: ifname",
+    "forwardingModel: mode",
+    "mtu: mtu",
+    "description: description",
+    "interfaceAddress/[0]/dhcp: dhcpEnabled",
+    "burnedInAddress: mac",
+    "vlan: pvid?|0",
+    "vlan_list: vlan_list",
+    "bandwidth: speed",
+    "lineProtocolStatus: state",
+    "hardware: connector",
+    "fallbackEnabled: lacpBypass",
+    "partner_mac: lacpPartnetMac",
+    "sys_priority: lacpSysPriority",
+    "memberInterfaces/*: lacpMembers",
+    "interfaceAddress: IPAddresses",
+    "interfaceAddressIP6: IP6Addresses",
+    ]'
+    

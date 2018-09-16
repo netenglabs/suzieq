@@ -1,0 +1,20 @@
+Value vendor (\S+)
+Value model  (\S+)
+Value version (\S+\.\S+\.\S+)
+Value uptime (.*)
+
+Start
+ ^${vendor}\s+${model}$$
+ ^Hardware version.*$$
+ ^Serial number:.*$$
+ ^System MAC.*$$
+ ^\s*$$
+ ^Software image version:\s+${version}$$
+ ^Architecture.*$$
+ ^Internal build version.*$$
+ ^Internal build ID.*$$
+ ^\s*$$
+ ^Uptime:\s*${uptime}$$ -> Record
+ ^Total.*$$
+ ^Free.*$$
+ ^$$EOF

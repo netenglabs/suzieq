@@ -1,0 +1,63 @@
+service: bgp
+ignore-keys:
+  - lastDownTime
+  - estdTime
+apply:
+  eos:
+    version: all
+    command: show ip bgp neighbors
+    normalize: 'vrfs/*/peerList/*/[
+        "asn: peerAsn", 
+        "localAsn: asn", 
+        "updateSource: source",
+        "peerAddress: peer", 
+        "vrf: vrf", 
+        "maintenance: maintenance", 
+        "establishFailHint: reason",
+        "lastErrorTimeInfo/time: lastDownTime?|never",
+        "ifName: ifname",
+        "prefixesReceived: v4PfxRx",
+        "prefixesSent: v4PfxTx",
+        "v6PrefixesReceived: v6PfxRx",
+        "v6PrefixesSent: v6PfxTx",
+        "evpnPfxTx: evpnPfxTx",
+        "evpnPfxRx: evpnPfxRx",
+        "receivedUpdates: updatesRx",
+        "sentUpdates: updatesTx",
+        "routerId: peerRouterId",
+        "localRouterId: routerId",
+        "establishedTime: estdTime",
+        "establishedTransitions: transitions",
+        "hostname: peerHostname",
+        "v4Enabled: v4Enabled?|true",
+        "v6Enabled: v6Enabled?|unknown",
+        "evpnEnabled: evpnEnabled?|unknown",
+        "state: state?Established|NotEstd"]'
+  cumulus:
+      version: all
+      command: net show bgp vrf all neighbor json
+      normalize: '*:vrf/*:peer/[
+        "remoteAs: peerAsn",
+        "localAs: asn",
+        "hostLocal: source",
+        "maintenance: maintenance",
+        "lastResetDueTo: reason",
+        "lastResetTimerMsecs: lastDownTime?|never",
+        "ifname: ifname",
+        "addressFamilyInfo/IPv4 Unicast/acceptedPrefixCounter: v4PfxRx",
+        "v4PfxTx: v4PfxTx",
+        "addressFamilyInfo/IPv6 Unicast/acceptedPrefixCounter: v6PfxRx",
+        "v6PfxTx: v6PfxTx",
+        "addressFamilyInfo/L2VPN EVPN/acceptedPrefixCounter: evpnPfxRx",
+        "evpnPfxTx: evpnPfxTx",
+        "messageStats/updatesSent: updatesTx",
+        "messageStats/updatesRecv: updatesRx",
+        "remoteRouterId: peerRouterId",
+        "routerId: routerId",
+        "bgpState: state?Established|NotEstd",
+        "bgpTimerUpMsec: estdTime",
+        "connectionsEstablished: transitions",
+        "hostname: peerHostname",
+        "neighborCapabilities/multiprotocolExtensions/IPv4 Unicast/advertisedAndReceived: v4Enabled",
+        "neighborCapabilities/multiprotocolExtensions/L2VPN EVPN/advertisedAndReceived: evpnEnabled?true|false",
+        "neighborCapabilities/multiprotocolExtensions/IPv6 UnicastadvertisedAndReceived: v6Enabled?true|false"]'

@@ -1,0 +1,39 @@
+service: mlag
+apply:
+  cumulus:
+    version: all
+    command: 'if [ -f "/etc/default/clagd" ]; then net show clagd json; else echo {}; fi'
+    normalize: '[
+    "status/peerAlive: state?|disabled",
+    "status/sysMac: systemId",
+    "status/peerIp: peerAddress",
+    "status/ourRole: role",
+    "status/peerRole: peerRole",
+    "status/peerId: peerMacAddress",
+    "status/peerIf": peerLink",
+    "peerLinkStatus: peerLinkStatus?|NA",
+    "status/backupActive: backupActive",
+    "status/backupIp: backupIP",
+    "status/domainId: domainId?|NA",
+    "status/vxlanAnycast: vtepIP",
+    "clagIntfs: mlagInterfaces",
+    ]'
+  eos:
+    version: all
+    command: show mlag detail
+    normalize: '[
+    "state: state?|disabled",
+    "systemId: systemId",
+    "peerAddress: peerAddress",
+    "status/ourRole: role",
+    "status/peerRole: peerRole",
+    "detail/peerMacAddress: peerMacAddress",
+    "peerLink: peerLink",
+    "peerLinkStatus: peerLinkStatus",
+    "backupActive: backupActive?|NA",
+    "backupIP: backupIP?|NA",
+    "domainId: domainId",
+    "vxlanAnycast: vtepIP?|NA",
+    "portsErrDisabled: portsErrDisabled",
+    "detail/mlagState: role",
+    "configSanity: configSanity"]'

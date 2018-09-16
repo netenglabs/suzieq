@@ -1,0 +1,17 @@
+service: system
+apply:
+  cumulus:
+    version: all
+    command: net show system
+    textfsm: /home/ddutt/work/suzieq/config/textfsm_templates/cl_showsys.tfsm
+
+  eos:
+    version: all
+    command: show version
+    normalize: '[
+    "modelName: model",
+    "version: version",
+    "vendor: vendor?|Arista",
+    "os: os?|EOS",
+    "bootupTimestamp: uptime"]'
+
