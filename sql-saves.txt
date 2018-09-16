@@ -1,0 +1,192 @@
+
+MTU mismatch on latest-only DF
+==============================
+spark.sql("select lldp.host, lldp.ifname, l1.mtu, peer, peer_ifname, l2.mtu from lldp inner join link as l1 inner join link as l2 on (l1.mtu != l2.mtu and (l1.host == lldp.host and l1.ifname == lldp.ifname) and (l2.host ==
+ peer and l2.ifname == peer_ifname)) order by lldp.host, lldp.ifname").show()
++-------+------+----+-------+-----------+----+
+|   host|ifname| mtu|   peer|peer_ifname| mtu|
++-------+------+----+-------+-----------+----+
+| leaf01| swp51|9210|spine01|       swp1|9216|
+| leaf02| swp51|9210|spine01|       swp2|9216|
+|spine01|  swp1|9216| leaf01|      swp51|9210|
+|spine01|  swp2|9216| leaf02|      swp51|9210|
++-------+------+----+-------+-----------+----+
+
+MTU mismatch using raw DF
+=========================
+rawlldp \
+.filter("active=='1'") \
+.groupBy(rawlldp.host.alias('lldphost'), rawlldp.ifname.alias('lldpif'), 'peer', 'peer_ifname') \
+.agg(max('timestamp').alias("ts")) \
+.orderBy('lldphost', 'lldpif') \
+.join(rawlink.alias('l1'), [rawlink.active == '1'], how='cross') \
+.join(rawlink.alias('l2'), [col('lldphost') == col('l1.host'), col('lldpif') == col('l1.ifname'), col('peer') == col("l2.host"), col('peer_ifname') == col("l2.ifname"), col("l1.mtu") != col("l2.mtu")]) \
+.dropDuplicates(['lldphost', 'lldpif']) \
+.select('lldphost', 'lldpif', 'peer', col('l1.mtu'), 'peer_ifname', col('l2.mtu')) \
+.show()
+
+MTU mismatch using raw DF and only SQL:
+=======================================
+key is that first/last/max all work off of group by and so that controls what characteristics we're looking for. We're looking for the latest values of MTU and timestamp. If we're doing something based on an older time window, we can do that too, just add the window to the where clause.
+
+spark.sql("select rawlldp.host, rawlldp.ifname, last(l1.mtu), rawlldp.peer, rawlldp.peer_ifname, last(l2.mtu), from_unixtime(last(rawlldp.timestamp), 'YY-MM-dd:hh:mm:ss') as ts from rawlldp, rawlink as l1, rawlink as l2 where l1.host == rawlldp.host and l1.ifname == rawlldp.ifname and l2.host == rawlldp.peer and l2.ifname == rawlldp.peer_ifname and l1.mtu != l2.mtu group by rawlldp.host, rawlldp.ifname, rawlldp.peer, rawlldp.peer_ifname order by rawlldp.host, rawlldp.ifname").show(truncate=False)
++-------+------+----------------+-------+-----------+----------------+-----------------+
+|host   |ifname|last(mtu, false)|peer   |peer_ifname|last(mtu, false)|ts               |
++-------+------+----------------+-------+-----------+----------------+-----------------+
+|leaf01 |swp51 |9210            |spine01|swp1       |9216            |18-06-26:11:22:56|
+|leaf02 |swp51 |9210            |spine01|swp2       |9216            |18-06-26:11:22:56|
+|spine01|swp1  |9216            |leaf01 |swp51      |9210            |18-06-26:11:22:56|
+|spine01|swp2  |9216            |leaf02 |swp51      |9210            |18-06-26:11:22:56|
++-------+------+----------------+-------+-----------+----------------+-----------------+
+
+
+Creating an DF with the latest entry for a given {host, ifname}
+==============================
+=================================
+    * rawlldp = spark.read.parquet("parquet-out/lldp/")
+      rawlldp.createOrReplaceTempView("rawlldp")
+      intlldp = spark.sql("select host, ifname, peer, peer_ifname, max(timestamp) as ts from rawlldp group by host, ifname, peer, peer_ifname order by host, ifname").dropDuplicates(['host', 'ifname'])
+      cond = [rawlldp.host == intlldp.host, rawlldp.ifname == intlldp.ifname, rawlldp.timestamp == intlldp.ts]
+      lldp = rawlldp.join(intlldp, cond, 'left_semi')
+
+BGP Display link state for links with non-established neighbors
+================================================================
+bgp.filter("state != 'Established'").join(link, [link.host == bgp.host, link.ifname == bgp.neighbor]).select(bgp.host, bgp.neighbor, bgp.vrf, bgp.state, bgp.last_reset_time, bgp.reason, bgp.timestamp, link.oper_state).show()
+
+
+Create a table with the latest timestamp only
+=============================================
+spark.read.parquet('/home/ddutt/work/suzieq/parquet-out/route').filter(col('active') == '1').groupBy('host', 'prefix', 'protocol', 'vrf', 'nexthops').agg(max('timestamp')).createTempView('rttbl')
+
+List interfaces whose oper_state != 'up'
+========================================
+
+spark.sql('select host, ifname, last(oper_state) as oper_state, last(timestamp) from link group by host, ifname order by host, ifname').where(col('oper_state') != 'up').show()
+
+You cannot use 'select ... where oper_state != "up"...' because that first applies the filter and then does the select. Which means if there's an interface which had a link down at some point in the past, that is listed too, even though that interface is currently up.
+
+List bond members
+=================
+>>> spark.sql('select link.host as host, link.ifname as ifname, last(link.oper_state) as oper_state, collect_set(slave.ifname) as members, cast(last(link.timestamp) as timestamp) as timestamp from link, link as slave where link.type=="bond" and link.host==slave.host and link.ifname==slave.master group by link.host, link.ifname order by link.host, link.ifname').show(truncate=False)
++------+--------+----------+--------------+-------------------------+
+|host  |ifname  |oper_state|members       |timestamp                |
++------+--------+----------+--------------+-------------------------+                       
+|leaf01|bond01  |up        |[swp1]        |2018-07-17 13:59:15.18464|
+|leaf01|bond02  |down      |[swp2]        |2018-07-17 13:59:15.18464|
+|leaf01|peerlink|up        |[swp49, swp50]|2018-07-17 13:59:15.18464|
+|leaf02|bond01  |up        |[swp1]        |2018-07-17 13:59:15.18464|
+|leaf02|bond02  |down      |[swp2]        |2018-07-17 13:59:15.18464|
+|leaf02|peerlink|up        |[swp49, swp50]|2018-07-17 13:59:15.18464|
+|leaf03|bond03  |down      |[swp1]        |2018-07-17 13:59:15.18464|
+|leaf03|bond04  |up        |[swp2]        |2018-07-17 13:59:15.18464|
+|leaf03|peerlink|up        |[swp49, swp50]|2018-07-17 13:59:15.18464|
+|leaf04|bond03  |down      |[swp1]        |2018-07-17 13:59:15.18464|
+|leaf04|bond04  |up        |[swp2]        |2018-07-17 13:59:15.18464|
+|leaf04|peerlink|up        |[swp49, swp50]|2018-07-17 13:59:15.18464| 
++------+--------+----------+--------------+-------------------------+
+
+List VRF members (exclude '-v0' interfaces)
+===========================================
+
+>>> spark.sql('select link.host as host, link.ifname as ifname, last(link.oper_state) as oper_state, collect_set(slave.ifname) as members, cast(last(link.timestamp) as timestamp) as timestamp from link, link as slave where link.type=="vrf" and link.host==slave.host and link.ifname==slave.master and link.ifname !=slave.ifname and slave.ifname not like "%-v0" group by link.host, link.ifname order by link.host, link.ifname').show(truncate=False)
++-------+--------+----------+--------------------------+-------------------------+                                
+|host   |ifname  |oper_state|members                   |timestamp                |                                
++-------+--------+----------+--------------------------+-------------------------+                                
+|leaf01 |evpn-vrf|up        |[vlan4001, vlan24, vlan13]|2018-07-17 13:59:15.18464|                                
+|leaf01 |mgmt    |up        |[eth0]                    |2018-07-17 13:59:15.18464|                                
+|leaf02 |evpn-vrf|up        |[vlan4001, vlan24, vlan13]|2018-07-17 13:59:15.18464|                                
+|leaf02 |mgmt    |up        |[eth0]                    |2018-07-17 13:59:15.18464|                                
+|leaf03 |evpn-vrf|up        |[vlan4001, vlan24, vlan13]|2018-07-17 13:59:15.18464|                                
+|leaf03 |mgmt    |up        |[eth0]                    |2018-07-17 13:59:15.18464|                                
+|leaf04 |evpn-vrf|up        |[vlan4001, vlan24, vlan13]|2018-07-17 13:59:15.18464|
+|leaf04 |mgmt    |up        |[eth0]                    |2018-07-17 13:59:15.18464|
+|spine01|mgmt    |up        |[eth0]                    |2018-07-17 13:59:15.18464|                                                                                                         
+|spine02|mgmt    |up        |[eth0]                    |2018-07-17 13:59:15.18464|                      
++-------+--------+----------+--------------------------+-------------------------+
+
+List hosts which have a VNI but adv_all_vni is not enabled
+===========================================================
+>>> spark.sql('select link.vni, link.host, last(link.timestamp) as ts from link, evpn where link.vni != "0" and evpn.host == link.host and evpn.vni == link.vni and evpn.adv_all_vni != "1" group by link.vni, link.host order by link.vni').show(truncate=False)
+
+List all hosts which have a VNI but no EVPN info
+================================================
+spark.sql('select link.vni, link.host, last(link.timestamp) as ts from link where link.vni != "0" and not exists (select evpn.host from evpn where evpn.host == link.host) group by link.vni, link.host order by link.vni').show()
+
+Use union to merge the above two dataframes to get all the dataframes with some possible EVPN error
+
+List of HER per VNI across all nodes in network
+===============================================
+>>> spark.sql("select mac.host, vlan, collect_set(address.host) as dst_vteps from mac, address where macaddr == '00:00:00:00:00:00' and dst != '' and mac.dst == address.ipaddr group by mac.host, vlan order by vlan, mac.host ").show(n=50)
++------+----+----------------+
+|  host|vlan|       dst_vteps|
++------+----+----------------+
+|leaf01|  13|[leaf03, leaf04]|
+|leaf02|  13|[leaf03, leaf04]|
+|leaf03|  13|[leaf02, leaf01]|
+|leaf04|  13|[leaf02, leaf01]|
+|leaf01|  24|[leaf03, leaf04]|
+|leaf02|  24|[leaf03, leaf04]|
+|leaf03|  24|[leaf02, leaf01]|
+|leaf04|  24|[leaf02, leaf01]|
++------+----+----------------+
+
+List all VNI/Host pairs which are not in a HER list on all VTEPs
+================================================================
+
+spark.sql("select link.host, link.vni, last(link.timestamp) from link where link.vni != '0' and not exists (select vniher.host from vniher where link.vni == vniher.vlan and (link.host != vniher.host or not array_contains(vniher.dst_vteps, link.host))) group by link.host, link.vni order by link.vni, link.host").show()
+
++------+------+----------------------+
+|  host|   vni|last(timestamp, false)|
++------+------+----------------------+
+|leaf01|104001|          1.53186112E9|
+|leaf02|104001|          1.53186112E9|
+|leaf03|104001|          1.53186112E9|
+|leaf04|104001|          1.53186112E9|
+|leaf01|  4001|          1.53186112E9|
+|leaf02|  4001|          1.53186112E9|
+|leaf03|  4001|          1.53186112E9|
+|leaf04|  4001|          1.53186112E9|
+|leaf01|  4094|          1.53186112E9|
+|leaf02|  4094|          1.53186112E9|
+|leaf03|  4094|          1.53186112E9|
+|leaf04|  4094|          1.53186112E9|
++------+------+----------------------+
+
+
+This lists all the host/VNI pairs that are missing in any host's HER list
+
+>>> spark.sql("select link.host, link.vni, collect_set(vniher.host) as missingIn, last(link.timestamp) from link, vniher where link.vni != '0' and (link.vni == vniher.vlan and link.host != vniher.host and not array_contains(vniher.dst_vteps, link.host)) group by link.host, link.vni order by link.vni, link.host").show()
++------+---+---------+----------------------+
+|  host|vni|missingIn|last(timestamp, false)|
++------+---+---------+----------------------+
+|leaf01| 13| [leaf02]|          1.53186112E9|
+|leaf02| 13| [leaf01]|          1.53186112E9|
+|leaf03| 13| [leaf04]|          1.53186112E9|
+|leaf04| 13| [leaf03]|          1.53186112E9|
+|leaf01| 24| [leaf02]|          1.53186112E9|
+|leaf02| 24| [leaf01]|          1.53186112E9|
+|leaf03| 24| [leaf04]|          1.53186112E9|
+|leaf04| 24| [leaf03]|          1.53186112E9|
++------+---+---------+----------------------+
+
+This is correct from the query output perspective, but misleading because leaf01/leaf02 are clag pairs
+
+Add clag peer host name to display
+==================================
+>>> spark.sql("select rawclag.host as host, last(rawclag.sysmac) as sysmac, last(clagpeer.host) as peer, last(rawclag.role) as role, last(rawclag.peer_role) as peer_role, last(rawclag.peer_if) as peer_if, last(rawclag.vxlan_anycast) as vxlan_anycast, last(rawclag.backup_ip) as backup_ip, last(rawclag.dual_bonds) as dual_bonds, last(rawclag.single_bonds) as single_bonds, last(rawclag.conflicted_bonds) as conflicted_bonds, last(rawclag.proto_down_bonds) as protodown_bonds, last(rawclag.timestamp) as ts from rawclag, rawclag as clagpeer where (rawclag.sysmac == clagpeer.sysmac and rawclag.host != clagpeer.host) group by rawclag.host order by rawclag.host").show()
++------+-----------------+------+---------+---------+-------------+-------------+---------+--------------------+------------+----------------+---------------+------------+
+|  host|           sysmac|  peer|     role|peer_role|      peer_if|vxlan_anycast|backup_ip|          dual_bonds|single_bonds|conflicted_bonds|protodown_bonds|          ts|
++------+-----------------+------+---------+---------+-------------+-------------+---------+--------------------+------------+----------------+---------------+------------+
+|leaf01|44:39:39:ff:40:94|leaf02|  primary|secondary|peerlink.4094|   10.0.0.112|10.0.0.12|{"bond01":"bond01...|  ["bond02"]|              []|             []|1.53186112E9|
+|leaf02|44:39:39:ff:40:94|leaf01|secondary|  primary|peerlink.4094|   10.0.0.112|10.0.0.11|{"bond01":"bond01...|  ["bond02"]|              []|             []|1.53186112E9|
+|leaf03|44:39:39:ff:40:95|leaf04|  primary|secondary|peerlink.4094|   10.0.0.134|10.0.0.14|{"bond04":"bond04...|  ["bond03"]|              []|             []|1.53186112E9|
+|leaf04|44:39:39:ff:40:95|leaf03|secondary|  primary|peerlink.4094|   10.0.0.134|10.0.0.13|{"bond04":"bond04...|  ["bond03"]|              []|             []|1.53186112E9|
++------+-----------------+------+---------+---------+-------------+-------------+---------+--------------------+------------+----------------+---------------+------------+
+
+Alternately:
+
+spark.sql("select rawclag.host as host, {} from rawclag, rawclag as clagpeer where (rawclag.sysmac == clagpeer.sysmac and rawclag.host != clagpeer.host) group by rawclag.host order by rawclag.host".format(','.join(['last(rawclag.' + x + ') as ' + x for x in rawclag.columns if x != 'host'])))
+
+Create view directly from parquet
+=================================
+spark.sql('create view bgp as select host, neighbor, vrf, last(timestamp) from parquet.`/home/ddutt/work/suzieq/parquet-out/bgpsession/*` group by host, neighbor, vrf')
