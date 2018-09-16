@@ -1,0 +1,24 @@
+service: ifCounters
+apply:
+  cumulus:
+    version: all
+    command: cat /proc/net/dev
+    textfsm: /home/ddutt/work/suzieq/config/textfsm_templates/ifCounters.tfsm
+
+  eos:
+    version: all
+    command: show interfaces
+    normalize: 'interfaces/*/[
+    "name: ifname",
+    "interfaceCounters/inOctets: rxBytes",
+    "interfaceCounters/inTotalPkts: rxPackets",
+    "interfaceCounters/inDiscards: rxDrops",
+    "interfaceCounters/totalInErrors: rxErrs",
+    "interfaceCounters/outOctets: txBytes",
+    "interfaceCounters/outUcastPkts: txPackets",
+    "interfaceCounters/outMulticastPkts: +txPackets",
+    "interfaceCounters/outBroadcastPkts: +txPackets",
+    "interfaceCounters/totalOutErrors: txErrs",
+    "interfaceCounters/outDiscards: txDrops"
+    ]'
+    

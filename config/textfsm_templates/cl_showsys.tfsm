@@ -1,0 +1,12 @@
+Value vendor (\S+)
+Value model (\S+)
+Value os (\S+ \S+)
+Value version (\d+\.\d+\.\d+)
+Value sysUptime (.*)
+
+Start
+  ^${vendor} ${model}$$
+  ^${os} ${version}$$
+  ^Build:.*$$
+  ^Uptime: ${sysUptime}$$ -> Record
+  ^$$EOF 

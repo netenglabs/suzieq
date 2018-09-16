@@ -1,0 +1,17 @@
+name: timesync
+apply:
+  cumulus:
+    version: all
+    command: timedatectl
+    normalize: /home/ddutt/work/suzieq/config/textfsm_templates/timedatectl.tfsm
+
+  linux:
+    version: all
+    command: timedatectl
+    normalize: /home/ddutt/work/suzieq/config/textfsm_templates/timedatectl.tfsm
+
+  eos:
+    version: all
+    command: show clock
+    normalize: /home/ddutt/work/suzieq/config/textfsm_templates/eos_showclock.tfsm
+    
