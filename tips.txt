@@ -1,0 +1,5 @@
+* Derby is single instance only. So multiple instances cannot run on derby
+* Using saveAsTable with overwrite probably deletes/recreates the file and so have to set spark.sql.warehouse.dir for every instance
+* spark.sql.warehouse.dir cannot be modified after the session has been created
+* Views are quicker to build but slower to execute
+* confluent-kafka has difficulty reading a lot of data suddently (as in from redis2confluent). pykafka does fine.
