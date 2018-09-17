@@ -2,11 +2,18 @@ Value vendor (\S+)
 Value model (\S+)
 Value os (\S+ \S+)
 Value version (\d+\.\d+\.\d+)
-Value sysUptime (.*)
+Value sysUptime (\d+.\d+)
 
 Start
+  ^Uptime:.*$$
+  ^${sysUptime}.*$$
   ^${vendor} ${model}$$
   ^${os} ${version}$$
   ^Build:.*$$
-  ^Uptime: ${sysUptime}$$ -> Record
-  ^$$EOF 
+
+
+#52977.07 51703.08
+#Cumulus VX
+#Cumulus Linux 3.6.2
+#Build: Cumulus Linux 3.6.2
+#Uptime: 14:42:57.170000
