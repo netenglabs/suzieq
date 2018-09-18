@@ -19,6 +19,8 @@ def exdict(path, data, start, collect=False):
 
     def set_kv(okeys, indata, oresult):
         '''Set the value in the outgoing dict'''
+        if okeys:
+            okeys = [okeys[0].strip(), okeys[1].strip()]
         if '?' in okeys[1]:
             fkey, fvals = okeys[1].split('?')
             fvals = fvals.split('|')
@@ -31,7 +33,33 @@ def exdict(path, data, start, collect=False):
             else:
                 oresult[fkey.strip()] = indata.get(okeys[0], '')
         else:
-            oresult[okeys[1].strip()] = indata.get(okeys[0], '')
+            fkeys = re.split(r'([,+*/])', okeys[1])
+            if len(fkeys) > 1:
+                rval = None
+                fkeys = [fkeys[0].strip(), fkeys[1], fkeys[2].strip()]
+                if fkeys[2] not in oresult:
+                    if not fkeys[2].isdigit():
+                        # This is an unsuppported operation, assuming int field
+                        oresult[fkeys[0]] = 0
+                        return
+                    else:
+                        rval = int(fkeys[2])
+                else:
+                    rval = int(oresult[fkeys[2]])
+                if fkeys[1] == '+':
+                    oresult[fkeys[0]] = indata.get(okeys[0], '') + rval
+                elif fkeys[1] == '-':
+                    oresult[fkeys[0]] = indata.get(okeys[0], '') - rval
+                elif fkeys[1] == '*':
+                    oresult[fkeys[0]] = indata.get(okeys[0], '') * rval
+                elif fkeys[1] == '/':
+                    if rval:
+                        oresult[fkeys[0]] = indata.get(okeys[0], '') / rval
+                    else:
+                        oresult[fkeys[0]] = 0
+            else:
+                oresult[okeys[1].strip()] = indata.get(okeys[0], '')
+        return
 
     result = []
     iresult = {}
@@ -110,15 +138,7 @@ def exdict(path, data, start, collect=False):
                         if '/' in fld:
                             sresult, _ = exdict(fld, data, 0, collect=True)
                             for res in sresult:
-                                if '+' in fld:
-                                    wkey = fld.split(':')[-1].strip()[1:]
-                                    if wkey in iresult:
-                                        for k, v in res.items():
-                                            iresult[wkey] += v
-                                    else:
-                                        iresult.update(res)
-                                else:
-                                    iresult.update(res)
+                                iresult.update(res)
                         else:
                             okeys = fld.split(':')
                             set_kv(okeys, data, iresult)
