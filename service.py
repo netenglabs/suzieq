@@ -148,22 +148,6 @@ def exdict(path, data, start, collect=False):
     return result, i+start
 
 
-def equal_dicts(a, b, ignore_keys):
-    '''Compare list of dictionaries ignoreing certain keys
-    '''
-    ka = []
-    kb = []
-    for i in a:
-        vals = [v for k, v in i.items() if k not in ignore_keys]
-        ka.append(tuple(str(vals)))
-
-    for i in b:
-        vals = [v for k, v in i.items() if k not in ignore_keys]
-        kb.append(tuple(str(vals)))
-
-    return Counter(ka) == Counter(kb)
-
-
 def munge_interfaces_result(result, devtype):
     '''Homogenize the IP addresses across different implementations'''
     if devtype == 'eos':
@@ -220,26 +204,70 @@ class Service(object):
     output_dir = None
     nodes = {}
     new_nodes = {}
-    ignore_keys = []
+    ignore_fields = []
+    keys = []
 
-    def __init__(self, name, defn, ignore_keys, output_dir):
+    def __init__(self, name, defn, keys, ignore_fields, output_dir):
         self.name = name
         self.defn = defn
-        self.ignore_keys = ignore_keys
+        self.ignore_fields = ignore_fields
         self.output_dir = output_dir
 
+        self.keys = keys
+
     def set_nodes(self, nodes):
+        '''New node list for this service'''
         if self.nodes:
             self.new_nodes = copy.deepcopy(nodes)
             update_nodes = True
         else:
             self.nodes = copy.deepcopy(nodes)
 
+    def get_diff(self, old, new):
+        '''Compare list of dictionaries ignoring certain fields
+        Return list of adds and deletes
+        '''
+        adds = []
+        dels = []
+        kold = []
+        knew = []
+        oldlist = {}
+        newlist = {}
+        oldkeylist = []
+        newkeylist = []
+
+        for i, elem in enumerate(old):
+            vals = [v for k, v in elem.items() if k not in self.ignore_fields]
+            kfields = [v for k, v in elem.items() if k in self.keys]
+            kold.append(tuple(str(vals)))
+            oldlist.update({tuple(str(vals)): i})
+            oldkeylist.append(kfields)
+
+        for i, elem in enumerate(new):
+            vals = [v for k, v in elem.items() if k not in self.ignore_fields]
+            kfields = [v for k, v in elem.items() if k in self.keys]
+            knew.append(tuple(str(vals)))
+            newlist.update({tuple(str(vals)): i})
+            newkeylist.append(kfields)
+
+        cold = Counter(kold)
+        cnew = Counter(knew)
+
+        addlist = [e for e in cnew.keys() if e not in cold.keys()]
+        dellist = [e for e in cold.keys() if e not in cnew.keys()]
+
+        adds = [new[newlist[v]] for v in addlist]
+        dels = [old[oldlist[v]] for v in dellist
+                if oldkeylist[oldlist[v]] not in newkeylist]
+
+        return adds, dels
+
     async def gather_data(self):
+        # Not needed at this point.
         raise NotImplementedError
 
     def process_data(self, data):
-
+        '''Derive the data to be stored from the raw input'''
         result = []
         if data['status'] == 200 or data['status'] == 0:
             nfn = self.defn.get(data.get('hostname'), None)
@@ -271,12 +299,19 @@ class Service(object):
         records = []
         if result:
             prev_res = self.nodes.get(hostname, '').prev_result
-            if not equal_dicts(prev_res, result, self.ignore_keys):
+            adds, dels = self.get_diff(prev_res, result)
+            if adds or dels:
                 self.nodes.get(hostname, '') \
                           .prev_result = copy.deepcopy(result)
-                for entry in result:
+                for entry in adds:
                     entry.update({'hostname': hostname})
                     entry.update({'timestamp': timestamp})
+                    entry.update({'active': True})
+                    records.append(entry)
+                for entry in dels:
+                    entry.update({'hostname': hostname})
+                    entry.update({'timestamp': timestamp})
+                    entry.update({'active': False})
                     records.append(entry)
 
             if records:

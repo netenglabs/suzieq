@@ -1,7 +1,10 @@
 service: bgp
-ignore-keys:
+ignore-fields:
   - lastDownTime
   - estdTime
+keys:
+  - peer
+  - vrf
 apply:
   eos:
     version: all
@@ -15,7 +18,6 @@ apply:
         "maintenance: maintenance", 
         "establishFailHint: reason",
         "lastErrorTimeInfo/time: lastDownTime?|never",
-        "ifName: ifname",
         "prefixesReceived: v4PfxRx",
         "prefixesSent: v4PfxTx",
         "v6PrefixesReceived: v6PfxRx",
@@ -38,12 +40,11 @@ apply:
       command: net show bgp vrf all neighbor json
       normalize: '*:vrf/*:peer/[
         "remoteAs: peerAsn",
-        "localAs: asn",
+        "localAs: localAs",
         "hostLocal: source",
         "maintenance: maintenance",
         "lastResetDueTo: reason",
         "lastResetTimerMsecs: lastDownTime?|never",
-        "ifname: ifname",
         "addressFamilyInfo/IPv4 Unicast/acceptedPrefixCounter: v4PfxRx",
         "v4PfxTx: v4PfxTx",
         "addressFamilyInfo/IPv6 Unicast/acceptedPrefixCounter: v6PfxRx",

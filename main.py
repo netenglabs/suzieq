@@ -175,8 +175,8 @@ async def process_services(svc_dir, output_dir):
 
                 # Valid service definition, add it to list
                 service = Service(svc_def['service'], svc_def['apply'],
-                                  svc_def.get('ignore-keys', []),
-                                  output_dir)
+                                  svc_def.get('keys', []),
+                                  svc_def.get('ignore-fields', []), output_dir)
                 svcs_list.append(service)
 
     return svcs_list
