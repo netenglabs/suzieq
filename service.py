@@ -148,33 +148,6 @@ def exdict(path, data, start, collect=False):
     return result, i+start
 
 
-def munge_interfaces_result(result, devtype):
-    '''Homogenize the IP addresses across different implementations'''
-    if devtype == 'eos':
-        new_list = []
-        if result:
-            munge_entry = result.get('IPAddresses', [[]])[0]
-            if munge_entry:
-                primary_ip = (
-                    munge_entry['primaryIp']['address'] + '/' +
-                    str(munge_entry['primaryIp']['maskLen'])
-                )
-                new_list.append(primary_ip)
-                for entry in munge_entry['secondaryIpsOrderedList']:
-                    ip = entry['adddress'] + '/' + entry['maskLen']
-                    new_list.append(ip)
-
-            munge_entry = result.get('IP6Addresses', [[]])
-            if munge_entry:
-                for entry in munge_entry[0].get('globalUnicastIp6s', []):
-                    new_list.append(entry['subnet'])
-
-            result['IPAddresses'] = new_list
-            del result['IP6Addresses']
-
-    return
-
-
 def textfsm_data(raw_input, fsm_template):
     '''Convert unstructured output to structured output'''
 
@@ -285,14 +258,12 @@ class Service(object):
                     tfsm_template = nfn.get('textfsm', '')
                     result = textfsm_data(data['data'], tfsm_template)
 
-                if self.name == 'interfaces':
-                    for entry in result:
-                        # Sadly ip addresses are given in so many diff ways
-                        munge_interfaces_result(entry,
-                                                data.get('devtype', None))
-                        # Check that there has been a real change
+                self.clean_data(result, data)
 
         return result
+
+    def clean_data(self, processed_data, raw_data):
+        return processed_data
 
     async def commit_data(self, result, datacenter, hostname, timestamp):
         '''Write the result data out'''
@@ -353,3 +324,37 @@ class Service(object):
             await asyncio.sleep(self.period)
 
 
+class InterfaceService(Service):
+    '''Service class for interfaces. Cleanup of data is specific'''
+
+    def clean_data(self, processed_data, raw_data):
+        '''Homogenize the IP addresses across different implementations
+        Input:
+            - list of processed output entries
+            - raw unprocessed data
+        Output:
+            - processed output entries cleaned up
+        '''
+        if raw_data.get('devtype', None) == 'eos':
+            new_list = []
+            for entry in processed_data:
+                munge_entry = entry.get('IPAddresses', [[]])[0]
+                if munge_entry:
+                    primary_ip = (
+                        munge_entry['primaryIp']['address'] + '/' +
+                        str(munge_entry['primaryIp']['maskLen'])
+                    )
+                    new_list.append(primary_ip)
+                    for elem in munge_entry['secondaryIpsOrderedList']:
+                        ip = elem['adddress'] + '/' + elem['maskLen']
+                        new_list.append(ip)
+
+                munge_entry = entry.get('IP6Addresses', [[]])
+                if munge_entry:
+                    for elem in munge_entry[0].get('globalUnicastIp6s', []):
+                        new_list.append(elem['subnet'])
+
+                entry['IPAddresses'] = new_list
+                del entry['IP6Addresses']
+
+        return
