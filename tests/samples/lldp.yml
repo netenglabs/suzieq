@@ -1,0 +1,167 @@
+input:
+  eos:
+    '{
+    "tablesLastChangeTime": 1537418045.960221,
+    "tablesAgeOuts": 0,
+    "tablesInserts": 5,
+    "lldpNeighbors": [
+        {
+            "ttl": 120,
+            "neighborDevice": "leaf03",
+            "neighborPort": "Ethernet3",
+            "port": "Ethernet3"
+        },
+        {
+            "ttl": 120,
+            "neighborDevice": "leaf03",
+            "neighborPort": "Ethernet4",
+            "port": "Ethernet4"
+        },
+        {
+            "ttl": 120,
+            "neighborDevice": "spine01",
+            "neighborPort": "swp4",
+            "port": "Ethernet5"
+        },
+        {
+            "ttl": 120,
+            "neighborDevice": "spine02",
+            "neighborPort": "swp4",
+            "port": "Ethernet6"
+        }
+    ],
+    "tablesDeletes": 1,
+    "tablesDrops": 0
+    }'
+
+  cumulus:
+    '{
+  "lldp": [
+    {
+      "interface": [
+        {
+          "name": "swp3",
+          "via": "LLDP",
+          "rid": "2",
+          "age": "0 day, 01:31:34",
+          "chassis": [
+            {
+              "id": [
+                {
+                  "type": "mac",
+                  "value": "44:38:39:3d:d7:91"
+                }
+              ],
+              "name": [
+                {
+                  "value": "leaf03"
+                }
+              ],
+              "descr": [
+                {
+                  "value": "Arista Networks EOS version 4.20.1F running on an Arista Networks vEOS"
+                }
+              ],
+              "mgmt-ip": [
+                {
+                  "value": "192.168.121.236"
+                }
+              ],
+              "capability": [
+                {
+                  "type": "Bridge",
+                  "enabled": true
+                },
+                {
+                  "type": "Router",
+                  "enabled": false
+                }
+              ]
+            }
+          ],
+          "port": [
+            {
+              "id": [
+                {
+                  "type": "ifname",
+                  "value": "Ethernet5"
+                }
+              ],
+              "ttl": [
+                {
+                  "value": "120"
+                }
+              ],
+              "mfs": [
+                {
+                  "value": "9236"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "swp4",
+          "via": "LLDP",
+          "rid": "1",
+          "age": "0 day, 01:31:45",
+          "chassis": [
+            {
+              "id": [
+                {
+                  "type": "mac",
+                  "value": "44:38:39:c7:6b:83"
+                }
+              ],
+              "name": [
+                {
+                  "value": "leaf04"
+                }
+              ],
+              "descr": [
+                {
+                  "value": "Arista Networks EOS version 4.20.1F running on an Arista Networks vEOS"
+                }
+              ],
+              "mgmt-ip": [
+                {
+                  "value": "192.168.121.99"
+                }
+              ],
+              "capability": [
+                {
+                  "type": "Bridge",
+                  "enabled": true
+                },
+                {
+                  "type": "Router",
+                  "enabled": false
+                }
+              ]
+            }
+          ],
+          "port": [
+            {
+              "id": [
+                {
+                  "type": "ifname",
+                  "value": "Ethernet5"
+                }
+              ],
+              "ttl": [
+                {
+                  "value": "120"
+                }
+              ],
+              "mfs": [
+                {
+                  "value": "9236"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}'
