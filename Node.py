@@ -62,25 +62,34 @@ class Node(object):
                                     username=self.username,
                                     password=self.password) as conn:
             for cmd in cmd_list:
-                output = await conn.run(cmd)
-                result.append({'status': output.exit_status,
-                               'timestamp': time.time(),
-                               'cmd': cmd,
-                               'devtype': self.devtype,
-                               'datacenter': self.dcname,
-                               'hostname': self.hostname,
-                               'data': output.stdout})
+                try:
+                    output = await asyncio.wait_for(conn.run(cmd), timeout=5)
+                    result.append({'status': output.exit_status,
+                                   'timestamp': time.time(),
+                                   'cmd': cmd,
+                                   'devtype': self.devtype,
+                                   'datacenter': self.dcname,
+                                   'hostname': self.hostname,
+                                   'data': output.stdout})
+                except asyncio.TimeoutError as e:
+                    result.append({'status': 408,
+                                   'timestamp': time.time(),
+                                   'cmd': cmd,
+                                   'devtype': self.devtype,
+                                   'datacenter': self.dcname,
+                                   'hostname': self.hostname,
+                                   'data': {'error': str(e)}})
 
         return result
 
-    async def rest_gather(self, svc_dict):
+    async def rest_gather(self, svc_dict, oformat='json'):
         raise NotImplementedError
 
-    async def exec_cmd(self, cmd_list):
+    async def exec_cmd(self, cmd_list, oformat='json'):
         if self.transport == 'ssh':
             result = await self.ssh_gather(cmd_list)
         elif self.transport == 'https':
-            result = await self.rest_gather(cmd_list)
+            result = await self.rest_gather(cmd_list, oformat)
         else:
             logging.error('Unsupported transport {} for node {}'.format(
                 self.transport, self.hostname))
@@ -96,10 +105,13 @@ class Node(object):
         cmd = svc_defn.get(self.devtype, {}) \
                       .get('command', None)
 
+        oformat = svc_defn.get(self.devtype, {}) \
+                          .get('format', 'json')
+
         if not cmd:
             return result
 
-        return await self.exec_cmd([cmd])
+        return await self.exec_cmd([cmd], oformat=oformat)
 
 
 class EosNode(Node):
@@ -107,7 +119,7 @@ class EosNode(Node):
         super(EosNode).__init__(kwargs)
         self.devtype = 'eos'
 
-    async def rest_gather(self, cmd_list=None):
+    async def rest_gather(self, cmd_list=None, oformat='json'):
 
         result = []
         if not cmd_list:
@@ -116,7 +128,7 @@ class EosNode(Node):
         now = time.time()
         auth = aiohttp.BasicAuth(self.username, password=self.password)
         data = {"jsonrpc": "2.0", "method": "runCmds", "id": int(now),
-                "params": {"version": 1,
+                "params": {"version": 1, 'format': oformat,
                            "cmds": cmd_list}}
         headers = {'Content-Type': 'application/json'}
         if self.port:
@@ -127,9 +139,9 @@ class EosNode(Node):
         output = []
         status = 200            # status OK
 
-        async with aiohttp.ClientSession() as session:
+        try:
             async with aiohttp.ClientSession(
-                    auth=auth,
+                    auth=auth, conn_timeout=10, read_timeout=5,
                     connector=aiohttp.TCPConnector(ssl=False)) as session:
                 async with session.post(url,
                                         json=data,
@@ -138,18 +150,26 @@ class EosNode(Node):
                     if 'result' in json_out:
                         output.append(json_out['result'][0])
                     else:
-                        output.append(json_out['error'][0])
+                        output.append(json_out['error'])
 
-        for i, cmd in enumerate(cmd_list):
-            result.append({
-                'status': status,
-                'timestamp': now,
-                'cmd': cmd,
-                'devtype': self.devtype,
-                'datacenter': self.dcname,
-                'hostname': self.hostname,
-                'data': output[i] if type(output) is list else output
-            })
+            for i, cmd in enumerate(cmd_list):
+                result.append({
+                    'status': status,
+                    'timestamp': now,
+                    'cmd': cmd,
+                    'devtype': self.devtype,
+                    'datacenter': self.dcname,
+                    'hostname': self.hostname,
+                    'data': output[i] if type(output) is list else output
+                })
+        except asyncio.TimeoutError as e:
+            result.append({'status': 408,
+                           'timestamp': time.time(),
+                           'cmd': cmd,
+                           'devtype': self.devtype,
+                           'datacenter': self.dcname,
+                           'hostname': self.hostname,
+                           'data': {'error': str(e)}})
 
         return result
 
@@ -173,21 +193,31 @@ class CumulusNode(Node):
         auth = aiohttp.BasicAuth(self.username, password=self.password)
         url = 'https://{0}:{1}/nclu/v1/rpc'.format(self.address, self.port)
         headers = {'Content-Type': 'application/json'}
+        timeout = aiohttp.ClientTimeout(total=5)
 
-        async with aiohttp.ClientSession(
-                auth=auth,
-                connector=aiohttp.TCPConnector(ssl=False)) as session:
-            for cmd in cmd_list:
-                data = {'cmd': cmd}
-                async with session.post(url, json=data,
-                                        headers=headers) as response:
-                    result.append({'status': response.status,
-                                   'timestamp': time.time(),
-                                   'cmd': cmd,
-                                   'devtype': self.devtype,
-                                   'datacenter': self.dcname,
-                                   'hostname': self.hostname,
-                                   'data': await response.text()})
+        try:
+            async with aiohttp.ClientSession(
+                    auth=auth, conn_timeout=5, read_timeout=10,
+                    connector=aiohttp.TCPConnector(ssl=False)) as session:
+                for cmd in cmd_list:
+                    data = {'cmd': cmd}
+                    async with session.post(url, json=data,
+                                            headers=headers) as response:
+                        result.append({'status': response.status,
+                                       'timestamp': time.time(),
+                                       'cmd': cmd,
+                                       'devtype': self.devtype,
+                                       'datacenter': self.dcname,
+                                       'hostname': self.hostname,
+                                       'data': await response.text()})
+        except asyncio.TimeoutError as e:
+            result.append({'status': 408,
+                           'timestamp': time.time(),
+                           'cmd': cmd,
+                           'devtype': self.devtype,
+                           'datacenter': self.dcname,
+                           'hostname': self.hostname,
+                           'data': {'error': str(e)}})
 
         return result
 
