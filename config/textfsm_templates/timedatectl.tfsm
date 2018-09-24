@@ -1,18 +1,17 @@
-Value localTime (.*)
 Value timezone (\S+)
 Value ntpEnabled (yes|no)
 Value ntpSync (yes|no)
 
 Start
-  ^\s*Local time: ${localTime}$$
-  ^\s*Universal time:.*$$ -> Continue
-  ^\s*RTC time:.*$$ -> Continue
+  ^\s*Local time:.*$$
+  ^\s*Universal time:.*$$
+  ^\s*RTC time:.*$$
   ^\s*Time zone: ${timezone}.*$$
   ^\s*NTP enabled: ${ntpEnabled}.*$$
   ^\s*NTP synchronized: ${ntpSync}.*$$ -> Record
 
  
-#      Local time: Sat 2018-09-15 13:09:13 UTC
+#      Local time: Sat 2018-09-15 11:09:13 EST
 #  Universal time: Sat 2018-09-15 13:09:13 UTC
 #        RTC time: Sat 2018-09-15 13:09:11
 #       Time zone: UTC (UTC, +0000)
