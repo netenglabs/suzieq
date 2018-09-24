@@ -10,7 +10,7 @@ import yaml
 from urllib.parse import urlparse
 
 from Node import Node, CumulusNode, EosNode, LinuxNode
-from service import Service
+from service import Service, InterfaceService, SystemService
 
 async def get_device_type_hostname(nodeobj):
     '''Determine the type of device we are talking to'''
@@ -141,6 +141,7 @@ async def process_hosts(hosts_file, output_dir):
                 newnode.devtype = devtype
                 newnode.hostname = hostname
 
+                print('Added node {}'.format(hostname))
                 if newnode:
                     nodes.update({hostname: newnode})
 
@@ -174,9 +175,25 @@ async def process_services(svc_dir, output_dir):
                         continue
 
                 # Valid service definition, add it to list
-                service = Service(svc_def['service'], svc_def['apply'],
-                                  svc_def.get('keys', []),
-                                  svc_def.get('ignore-fields', []), output_dir)
+                if svc_def['service'] == 'interfaces':
+                    service = InterfaceService(svc_def['service'],
+                                               svc_def['apply'],
+                                               svc_def.get('keys', []),
+                                               svc_def.get('ignore-fields',
+                                                           []), output_dir)
+                elif svc_def['service'] == 'system':
+                    service = SystemService(svc_def['service'],
+                                            svc_def['apply'],
+                                            svc_def.get('keys', []),
+                                            svc_def.get('ignore-fields',
+                                                        []), output_dir)
+                else:
+                    service = Service(svc_def['service'], svc_def['apply'],
+                                      svc_def.get('keys', []),
+                                      svc_def.get('ignore-fields', []),
+                                      output_dir)
+
+                print('Service {} added'.format(service.name))
                 svcs_list.append(service)
 
     return svcs_list
@@ -185,20 +202,22 @@ if __name__ == '__main__':
 
     homedir = str(Path.home())
     parser = argparse.ArgumentParser()
-    parser.add_argument('--hosts-file', type=str,
+    parser.add_argument('-H', '--hosts-file', type=str,
                         default='{}/{}'.format(homedir, 'suzieq-hosts.yml'),
                         help='FIle containing URL of hosts to observe')
-    parser.add_argument('--password-file', type=str,
+    parser.add_argument('-p', '--password-file', type=str,
                         default='{}/{}'.format(homedir, 'suzieq-pwd.yml'),
                         help='FIle containing passwords')
-    parser.add_argument('--service-dir', type=str, default='.',
+    parser.add_argument('-s', '--service-dir', type=str, default='.',
                         help='Directory containing services definition')
-    parser.add_argument('--output-dir', type=str,
+    parser.add_argument('-o', '--output-dir', type=str,
                         default='/tmp/parquet-out',
                         help='FIle containing passwords')
-    parser.add_argument('--log', type=str, default='WARNING',
+    parser.add_argument('-l', '--log', type=str, default='WARNING',
                         choices=['ERROR', 'WARNING', 'INFO', 'DEBUG'],
                         help='Logging message level, default is WARNING')
+    parser.add_argument('-S', '--service-only', type=str,
+                        help='Only run this comma separated list of services')
 
     userargs = parser.parse_args()
 
@@ -224,8 +243,15 @@ if __name__ == '__main__':
 
     logging.info('Suzieq Started')
 
+    if userargs.service_only:
+        svclist = userargs.service_only.split(',')
+    else:
+        svclist = [svc.name for svc in svcs]
+
+    working_svcs = [svc for svc in svcs if svc.name in svclist]
+
     try:
-        tasks = [svc.run() for svc in svcs]
+        tasks = [svc.run() for svc in working_svcs]
         loop.run_until_complete(asyncio.gather(*tasks))
         # loop.run_until_complete(svcs[2].run())
     except KeyboardInterrupt:
