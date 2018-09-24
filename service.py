@@ -1,5 +1,5 @@
 
-from collections import defaultdict, Counter
+from collections import defaultdict
 import asyncio
 import random
 import time
@@ -7,6 +7,7 @@ import re
 import ast
 import json
 import copy
+import logging
 
 import pandas as pd
 import pyarrow as pa
@@ -202,36 +203,28 @@ class Service(object):
         '''
         adds = []
         dels = []
-        kold = []
-        knew = []
-        oldlist = {}
-        newlist = {}
-        oldkeylist = []
-        newkeylist = []
+        koldvals = {}
+        knewvals = {}
+        koldkeys = []
+        knewkeys = []
 
         for i, elem in enumerate(old):
             vals = [v for k, v in elem.items() if k not in self.ignore_fields]
-            kfields = [v for k, v in elem.items() if k in self.keys]
-            kold.append(tuple(str(vals)))
-            oldlist.update({tuple(str(vals)): i})
-            oldkeylist.append(kfields)
+            kvals = [v for k, v in elem.items() if k in self.keys]
+            koldvals.update({tuple(str(vals)): i})
+            koldkeys.append(kvals)
 
         for i, elem in enumerate(new):
             vals = [v for k, v in elem.items() if k not in self.ignore_fields]
-            kfields = [v for k, v in elem.items() if k in self.keys]
-            knew.append(tuple(str(vals)))
-            newlist.update({tuple(str(vals)): i})
-            newkeylist.append(kfields)
+            kvals = [v for k, v in elem.items() if k in self.keys]
+            knewvals.update({tuple(str(vals)): i})
+            knewkeys.append(kvals)
 
-        cold = Counter(kold)
-        cnew = Counter(knew)
+        addlist = [v for k, v in knewvals.items() if k not in koldvals.keys()]
+        dellist = [v for k, v in koldvals.items() if k not in knewvals.keys()]
 
-        addlist = [e for e in cnew.keys() if e not in cold.keys()]
-        dellist = [e for e in cold.keys() if e not in cnew.keys()]
-
-        adds = [new[newlist[v]] for v in addlist]
-        dels = [old[oldlist[v]] for v in dellist
-                if oldkeylist[oldlist[v]] not in newkeylist]
+        adds = [new[v] for v in addlist]
+        dels = [old[v] for v in dellist if koldkeys[v] not in knewkeys]
 
         return adds, dels
 
@@ -256,7 +249,11 @@ class Service(object):
                     result, _ = exdict(nfn.get('normalize', ''), input, 0)
                 else:
                     tfsm_template = nfn.get('textfsm', '')
-                    result = textfsm_data(data['data'], tfsm_template)
+                    if 'output' in data['data']:
+                        input = data['data']['output']
+                    else:
+                        input = data['data']
+                    result = textfsm_data(input, tfsm_template)
 
                 self.clean_data(result, data)
 
@@ -306,6 +303,9 @@ class Service(object):
 
             outputs = await asyncio.gather(*tasks)
             for output in outputs:
+                if not output:
+                    # output from nodes not running service
+                    continue
                 result = self.process_data(output[0])
                 await self.commit_data(result, output[0]['datacenter'],
                                        output[0]['hostname'],
@@ -338,7 +338,10 @@ class InterfaceService(Service):
         if raw_data.get('devtype', None) == 'eos':
             new_list = []
             for entry in processed_data:
-                munge_entry = entry.get('IPAddresses', [[]])[0]
+                tmpent = entry.get('IPAddresses', [[]])
+                if not tmpent:
+                    continue
+                munge_entry = tmpent[0]
                 if munge_entry:
                     primary_ip = (
                         munge_entry['primaryIp']['address'] + '/' +
@@ -358,3 +361,59 @@ class InterfaceService(Service):
                 del entry['IP6Addresses']
 
         return
+
+
+class SystemService(Service):
+    '''Checks the uptime and OS/version of the node.
+    This is specially called out to normalize the timestamp and handle
+    timestamp diff
+    '''
+
+    def clean_data(self, processed_data, raw_data):
+        '''Cleanup the bootup timestamp for Linux nodes'''
+
+        devtype = raw_data.get('devtype', None)
+        timestamp = raw_data.get('timestamp', time.time())
+        for entry in processed_data:
+            # We're assuming that if the entry doesn't provide the
+            # bootupTimestamp field but provides the sysUptime field,
+            # we fix the data so that it is always bootupTimestamp
+            # TODO: Fix the clock drift
+            if (not entry.get('bootupTimestamp', None) and
+                    entry.get('sysUptime', None)):
+                entry['bootupTimestamp'] = (
+                    raw_data['timestamp'] - float(entry.get('sysUptime')))
+                del entry['sysUptime']
+
+        return
+
+    def get_diff(self, old, new):
+
+        adds = []
+        dels = []
+        koldvals = {}
+        knewvals = {}
+        koldkeys = []
+        knewkeys = []
+
+        for i, elem in enumerate(old):
+            vals = [v for k, v in elem.items() if k != 'bootupTimestamp']
+            koldvals.update({tuple(str(vals)): i})
+
+        for i, elem in enumerate(new):
+            vals = [v for k, v in elem.items() if k != 'bootupTimestamp']
+            knewvals.update({tuple(str(vals)): i})
+
+        addlist = [v for k, v in knewvals.items() if k not in koldvals.keys()]
+        dellist = [v for k, v in koldvals.items() if k not in knewvals.keys()]
+
+        adds = [new[v] for v in addlist]
+        dels = [old[v] for v in dellist if koldkeys[v] not in knewkeys]
+
+        if not (adds or dels):
+            # Verify the bootupTimestamp hasn't changed. Compare only int part
+            # Assuming no device boots up in millisecs
+            if abs(int(new[0]['bootupTimestamp']) != int(old[0]['bootupTimestamp'])) > 2:
+                adds.append(new[0])
+
+        return adds, dels
