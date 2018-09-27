@@ -188,6 +188,7 @@ class Service(object):
         self.output_dir = output_dir
 
         self.keys = keys
+        self.logger = logging.getLogger('suzieq')
 
     def set_nodes(self, nodes):
         '''New node list for this service'''
@@ -235,6 +236,7 @@ class Service(object):
     def process_data(self, data):
         '''Derive the data to be stored from the raw input'''
         result = []
+
         if data['status'] == 200 or data['status'] == 0:
             nfn = self.defn.get(data.get('hostname'), None)
             if not nfn:
@@ -256,6 +258,13 @@ class Service(object):
                     result = textfsm_data(input, tfsm_template)
 
                 self.clean_data(result, data)
+            else:
+                self.logger.error(
+                    '{}: No normalization/textfsm function for device {}'
+                    .format(self.name, data['hostname']))
+        else:
+            self.logger.error('{}: failed for node {} with {}/{}'.format(
+                self.name, data['hostname'], data['status'], data['data']))
 
         return result
 

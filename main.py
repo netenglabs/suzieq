@@ -222,14 +222,18 @@ if __name__ == '__main__':
     userargs = parser.parse_args()
 
     logging.basicConfig(filename='/tmp/suzieq.log',
-                        level=getattr(logging, userargs.log.upper()))
+                        level=getattr(logging, userargs.log.upper()),
+                        format='%(asctime)s - %(name)s - %(levelname)s'
+                        '- %(message)s')
+
+    logger = logging.getLogger('suzieq')
 
     if not os.path.exists(userargs.output_dir):
         os.makedirs(userargs.output_dir)
 
     elif not os.path.isdir(userargs.output_dir):
-        logging.error('Output directory {} is not a directory'
-                      .format(userargs.output_dir))
+        logger.error('Output directory {} is not a directory'.format(
+            userargs.output_dir))
         sys.exit(1)
 
     loop = asyncio.get_event_loop()
@@ -241,7 +245,7 @@ if __name__ == '__main__':
     for svc in svcs:
         svc.set_nodes(nodes)
 
-    logging.info('Suzieq Started')
+    logger.info('Suzieq Started')
 
     if userargs.service_only:
         svclist = userargs.service_only.split(',')
@@ -255,7 +259,7 @@ if __name__ == '__main__':
         loop.run_until_complete(asyncio.gather(*tasks))
         # loop.run_until_complete(svcs[2].run())
     except KeyboardInterrupt:
-        logging.info('Received keyboard interrupt. Terminating')
+        logger.info('Received keyboard interrupt. Terminating')
         loop.close()
         sys.exit(0)
 
