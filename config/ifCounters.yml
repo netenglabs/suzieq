@@ -1,4 +1,5 @@
 service: ifCounters
+type: counters
 keys:
   - ifname
 apply:
@@ -12,15 +13,15 @@ apply:
     command: show interfaces
     normalize: 'interfaces/*/[
     "name: ifname",
-    "interfaceCounters/inOctets: rxBytes",
-    "interfaceCounters/inTotalPkts: rxPackets",
-    "interfaceCounters/inDiscards: rxDrops",
-    "interfaceCounters/totalInErrors: rxErrs",
-    "interfaceCounters/outOctets: txBytes",
-    "interfaceCounters/outUcastPkts: txPackets",
-    "interfaceCounters/outMulticastPkts: +txPackets",
-    "interfaceCounters/outBroadcastPkts: +txPackets",
-    "interfaceCounters/totalOutErrors: txErrs",
-    "interfaceCounters/outDiscards: txDrops"
+    "interfaceCounters/inOctets: rxBytes?|0",
+    "interfaceCounters/inTotalPkts: rxPackets?|0",
+    "interfaceCounters/inDiscards: rxDrops?|0",
+    "interfaceCounters/totalInErrors: rxErrs?|0",
+    "interfaceCounters/outOctets: txBytes?|0",
+    "interfaceCounters/outUcastPkts: txPackets?|0",
+    "interfaceCounters/outMulticastPkts: txPackets + txPackets",
+    "interfaceCounters/outBroadcastPkts: txPackets + txPackets",
+    "interfaceCounters/totalOutErrors: txErrs?|0",
+    "interfaceCounters/outDiscards: txDrops?|0"
     ]'
     

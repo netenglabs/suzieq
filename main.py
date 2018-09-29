@@ -9,7 +9,7 @@ import json
 import yaml
 from urllib.parse import urlparse
 
-from Node import Node, CumulusNode, EosNode, LinuxNode
+from node import Node, CumulusNode, EosNode, LinuxNode
 from service import Service, InterfaceService, SystemService
 
 async def get_device_type_hostname(nodeobj):
@@ -141,19 +141,23 @@ async def process_hosts(hosts_file, output_dir):
                 newnode.devtype = devtype
                 newnode.hostname = hostname
 
-                print('Added node {}'.format(hostname))
+                logging.info('Added node {}'.format(hostname))
                 if newnode:
                     nodes.update({hostname: newnode})
 
     return nodes
 
 
-async def process_services(svc_dir, output_dir):
+async def process_services(svc_dir, schema_dir, output_dir):
     '''Process service definitions by reading each file in svc dir'''
 
     svcs_list = []
     if not os.path.isdir(svc_dir):
         logging.error('services directory not a directory: {}', svc_dir)
+        return svcs_list
+
+    if not os.path.isdir(schema_dir):
+        logging.error('schema directory not a directory: {}', svc_dir)
         return svcs_list
 
     for root, dirnames, filenames in os.walk(svc_dir):
@@ -174,26 +178,39 @@ async def process_services(svc_dir, output_dir):
                                       '{}, {}'.format(filename, val))
                         continue
 
+                # Find matching schema file
+                fschema = '{}/{}.avsc'.format(schema_dir, svc_def['service'])
+                if not os.path.exists(fschema):
+                    logging.error('No schema file found for service {}. '
+                                  'Ignoring service'.format(
+                                      svc_def['service']))
+                    continue
+                else:
+                    with open(fschema, 'r') as f:
+                        schema = json.loads(f.read())
+
                 # Valid service definition, add it to list
                 if svc_def['service'] == 'interfaces':
                     service = InterfaceService(svc_def['service'],
                                                svc_def['apply'],
                                                svc_def.get('keys', []),
                                                svc_def.get('ignore-fields',
-                                                           []), output_dir)
+                                                           []),
+                                               schema, output_dir)
                 elif svc_def['service'] == 'system':
                     service = SystemService(svc_def['service'],
                                             svc_def['apply'],
                                             svc_def.get('keys', []),
                                             svc_def.get('ignore-fields',
-                                                        []), output_dir)
+                                                        []),
+                                            schema, output_dir)
                 else:
                     service = Service(svc_def['service'], svc_def['apply'],
                                       svc_def.get('keys', []),
                                       svc_def.get('ignore-fields', []),
-                                      output_dir)
+                                      schema, output_dir)
 
-                print('Service {} added'.format(service.name))
+                logging.info('Service {} added'.format(service.name))
                 svcs_list.append(service)
 
     return svcs_list
@@ -204,19 +221,21 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-H', '--hosts-file', type=str,
                         default='{}/{}'.format(homedir, 'suzieq-hosts.yml'),
-                        help='FIle containing URL of hosts to observe')
-    parser.add_argument('-p', '--password-file', type=str,
+                        help='FIle with URL of hosts to observe')
+    parser.add_argument('-P', '--password-file', type=str,
                         default='{}/{}'.format(homedir, 'suzieq-pwd.yml'),
-                        help='FIle containing passwords')
-    parser.add_argument('-s', '--service-dir', type=str, default='.',
-                        help='Directory containing services definition')
-    parser.add_argument('-o', '--output-dir', type=str,
+                        help='FIle with passwords')
+    parser.add_argument('-S', '--service-dir', type=str, required=True,
+                        help='Directory with services definitions')
+    parser.add_argument('-t', '--schema-dir', type=str, default='',
+                        help='Directory with schema definition for services')
+    parser.add_argument('-O', '--output-dir', type=str,
                         default='/tmp/parquet-out',
-                        help='FIle containing passwords')
+                        help='Directory to store parquet output in')
     parser.add_argument('-l', '--log', type=str, default='WARNING',
                         choices=['ERROR', 'WARNING', 'INFO', 'DEBUG'],
                         help='Logging message level, default is WARNING')
-    parser.add_argument('-S', '--service-only', type=str,
+    parser.add_argument('-s', '--service-only', type=str,
                         help='Only run this comma separated list of services')
 
     userargs = parser.parse_args()
@@ -231,14 +250,27 @@ if __name__ == '__main__':
     if not os.path.exists(userargs.output_dir):
         os.makedirs(userargs.output_dir)
 
+    if not os.path.exists(userargs.service_dir):
+        logger.error('Service directory {} is not a directory'.format(
+            userargs.output_dir))
+        print('Service directory {} is not a directory'.format(
+            userargs.output_dir))
+        sys.exit(1)
+        
     elif not os.path.isdir(userargs.output_dir):
         logger.error('Output directory {} is not a directory'.format(
             userargs.output_dir))
+        print('Output directory {} is not a directory'.format(
+            userargs.output_dir))
         sys.exit(1)
+
+    if not userargs.schema_dir:
+        userargs.schema_dir = '{}/{}'.format(userargs.service_dir, 'schema')
 
     loop = asyncio.get_event_loop()
     tasks = [process_hosts(userargs.hosts_file, userargs.output_dir),
-             process_services(userargs.service_dir, userargs.output_dir)]
+             process_services(userargs.service_dir, userargs.schema_dir,
+                              userargs.output_dir)]
 
     nodes, svcs = loop.run_until_complete(asyncio.gather(*tasks))
 

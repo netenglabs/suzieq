@@ -88,11 +88,26 @@ class Node(object):
 
         if cmd_list is None:
             return result
+        try:
+            conn = await asyncio.wait_for(
+                asyncssh.connect(self.address, port=self.port,
+                                 known_hosts=None, client_keys=self.pvtkey,
+                                 username=self.username,
+                                 password=self.password), timeout=5)
+        except asyncio.TimeoutError as e:
+            for cmd in cmd_list:
+                logging.error('Unable to connect to node {}'.format(
+                    self.hostname))
+                result.append({'status': 408,
+                               'timestamp': time.time(),
+                               'cmd': cmd,
+                               'devtype': self.devtype,
+                               'datacenter': self.dcname,
+                               'hostname': self.hostname,
+                               'data': {'error': str(e)}})
+            return result
 
-        async with asyncssh.connect(self.address, port=self.port,
-                                    known_hosts=None, client_keys=self.pvtkey,
-                                    username=self.username,
-                                    password=self.password) as conn:
+        if conn:
             for cmd in cmd_list:
                 try:
                     output = await asyncio.wait_for(conn.run(cmd), timeout=5)
@@ -112,6 +127,7 @@ class Node(object):
                                    'hostname': self.hostname,
                                    'data': {'error': str(e)}})
 
+        conn.wait_closed()
         return result
 
     async def rest_gather(self, svc_dict, oformat='json'):
@@ -197,13 +213,14 @@ class EosNode(Node):
                     'data': output[i] if type(output) is list else output
                 })
         except asyncio.TimeoutError as e:
-            result.append({'status': 408,
-                           'timestamp': time.time(),
-                           'cmd': cmd,
-                           'devtype': self.devtype,
-                           'datacenter': self.dcname,
-                           'hostname': self.hostname,
-                           'data': {'error': str(e)}})
+            for cmd in cmd_list:
+                result.append({'status': 408,
+                               'timestamp': time.time(),
+                               'cmd': cmd,
+                               'devtype': self.devtype,
+                               'datacenter': self.dcname,
+                               'hostname': self.hostname,
+                               'data': {'error': str(e)}})
 
         return result
 

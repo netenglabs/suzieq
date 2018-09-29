@@ -16,11 +16,11 @@ apply:
     "speed: speed",
     "linkstate: state",
     "connector_type: connector",
-    "iface_obj/lacp/bypass: lacpBypass",
+    "iface_obj/lacp/bypass: lacpBypass?|False",
     "iface_obj/lacp/partner_mac: lacpPartnerMac",
     "iface_obj/lacp/sys_priority: lacpSysPriority",
-    "iface_obj/members: lacpMembers"
-    "iface_obj/ip_address/allentries: IPAddresses",
+    "iface_obj/members: lacpMembers?|[]",
+    "iface_obj/ip_address/allentries: ipAddressList?|[]",
     ]'
 
   eos:
@@ -34,15 +34,15 @@ apply:
     "interfaceAddress/[0]/dhcp: dhcpEnabled",
     "burnedInAddress: mac",
     "vlan: pvid?|0",
-    "vlan_list: vlan_list",
+    "vlan_list: vlans",
     "bandwidth: speed",
     "lineProtocolStatus: state",
     "hardware: connector",
-    "fallbackEnabled: lacpBypass",
+    "fallbackEnabled: lacpBypass?|False",
     "partner_mac: lacpPartnetMac",
     "sys_priority: lacpSysPriority",
-    "memberInterfaces/*: lacpMembers",
-    "interfaceAddress: IPAddresses",
-    "interfaceAddressIP6: IP6Addresses",
+    "memberInterfaces/*: lacpMembers?|[]",
+    "interfaceAddress: ipAddressList?|[]",
+    "interfaceAddressIP6: ip6AddressList?|[]",
     ]'
     
