@@ -2,7 +2,7 @@ Value ifname (\S+)
 Value rxBytes (\d+)
 Value rxPackets (\d+)
 Value rxErrs (\d+)
-Value rxDrop (\d+)
+Value rxDrops (\d+)
 Value rxFifo (\d+)
 Value rxFrame (\d+)
 Value rxCompressed (\d+)
@@ -10,7 +10,7 @@ Value rxMcst (\d+)
 Value txBytes (\d+)
 Value txPackets (\d+)
 Value txErrs (\d+)
-Value txDrop (\d+)
+Value txDrops (\d+)
 Value txFifo (\d+)
 Value txCollisions (\d+)
 Value txCarrier (\d+)
@@ -19,5 +19,5 @@ Value txCompressed (\d+)
 Start
   ^Inter-|.*$$ -> Continue
   ^ face |.*$$ -> Continue
-  ^\s*${ifname}:\s+${rxBytes}\s+${rxPackets}\s+${rxErrs}\s+${rxDrop}\s+${rxFifo}\s+${rxFrame}\s+${rxCompressed}\s+${rxMcst}\s+${txBytes}\s+${txPackets}\s+${txErrs}\s+${txDrop}\s+${txFifo}\s+${txCollisions}\s+${txCarrier}\s+${txCompressed}.*$$ -> Record
+  ^\s*${ifname}:\s+${rxBytes}\s+${rxPackets}\s+${rxErrs}\s+${rxDrops}\s+${rxFifo}\s+${rxFrame}\s+${rxCompressed}\s+${rxMcst}\s+${txBytes}\s+${txPackets}\s+${txErrs}\s+${txDrops}\s+${txFifo}\s+${txCollisions}\s+${txCarrier}\s+${txCompressed}.*$$ -> Record
   ^$$EOF

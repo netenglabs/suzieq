@@ -12,6 +12,7 @@ import logging
 import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
+from fastavro.validation import validate_many
 import textfsm
 
 
@@ -27,9 +28,9 @@ def exdict(path, data, start, collect=False):
             fvals = fvals.split('|')
             cval = indata.get(okeys[0], '')
             if not cval or (fvals[0] and cval != fvals[0]):
-                if fvals[1].isdigit():
-                    oresult[fkey.strip()] = int(fvals[1])
-                else:
+                try:
+                    oresult[fkey.strip()] = ast.literal_eval(fvals[1])
+                except (ValueError, SyntaxError):
                     oresult[fkey.strip()] = fvals[1]
             else:
                 oresult[fkey.strip()] = indata.get(okeys[0], '')
@@ -40,7 +41,7 @@ def exdict(path, data, start, collect=False):
                 fkeys = [fkeys[0].strip(), fkeys[1], fkeys[2].strip()]
                 if fkeys[2] not in oresult:
                     if not fkeys[2].isdigit():
-                        # This is an unsuppported operation, assuming int field
+                        # This is an unsuppported operation, need int field
                         oresult[fkeys[0]] = 0
                         return
                     else:
@@ -48,18 +49,22 @@ def exdict(path, data, start, collect=False):
                 else:
                     rval = int(oresult[fkeys[2]])
                 if fkeys[1] == '+':
-                    oresult[fkeys[0]] = indata.get(okeys[0], '') + rval
+                    oresult[fkeys[0]] = indata.get(okeys[0], 0) + rval
                 elif fkeys[1] == '-':
-                    oresult[fkeys[0]] = indata.get(okeys[0], '') - rval
+                    oresult[fkeys[0]] = indata.get(okeys[0], 0) - rval
                 elif fkeys[1] == '*':
-                    oresult[fkeys[0]] = indata.get(okeys[0], '') * rval
+                    oresult[fkeys[0]] = indata.get(okeys[0], 0) * rval
                 elif fkeys[1] == '/':
                     if rval:
-                        oresult[fkeys[0]] = indata.get(okeys[0], '') / rval
+                        oresult[fkeys[0]] = indata.get(okeys[0], 0) / rval
                     else:
                         oresult[fkeys[0]] = 0
             else:
-                oresult[okeys[1].strip()] = indata.get(okeys[0], '')
+                rval = indata.get(okeys[0], '')
+                try:
+                    oresult[okeys[1].strip()] = ast.literal_eval(rval)
+                except (ValueError, SyntaxError):
+                    oresult[okeys[1].strip()] = rval
         return
 
     result = []
@@ -128,7 +133,8 @@ def exdict(path, data, start, collect=False):
                 except (ValueError, SyntaxError):
                     # Catch if the elem is a string key not present in the data
                     # Case of missing key, abort if necessary
-                    if not path.endswith(']') and ':' in plist[-1]:
+                    # if not path.endswith(']') and ':' in plist[-1]:
+                    if ':' in plist[-1]:
                         okeys = plist[-1].split(':')
                         set_kv(okeys, data, iresult)
                         result.append(iresult)
@@ -149,7 +155,7 @@ def exdict(path, data, start, collect=False):
     return result, i+start
 
 
-def textfsm_data(raw_input, fsm_template):
+def textfsm_data(raw_input, fsm_template, schema):
     '''Convert unstructured output to structured output'''
 
     records = []
@@ -163,8 +169,31 @@ def textfsm_data(raw_input, fsm_template):
     re_table = textfsm.TextFSM(template)
     res = re_table.ParseText(raw_input)
 
+    fields = {v['name']: i
+              for i, v in enumerate(schema['fields'])}
+
+    ptype_map = {'string': str,
+                 'int': int,
+                 'long': int,
+                 'double': float,
+                 'array': list,
+                 'map': dict,
+                 'boolean': bool
+                 }
+
+    # Ensure the type is set correctly.
     for entry in res:
         metent = dict(zip(re_table.header, entry))
+        for cent in metent:
+            if cent in fields:
+                schent_type = schema['fields'][fields[cent]]['type']
+                sch_type = schent_type if type(schent_type) == str \
+                           else schent_type['type'] \
+                           if type(schent_type) == dict \
+                           else schent_type['type'][0]
+                if type(metent[cent]) != ptype_map[sch_type]:
+                    metent[cent] = ptype_map[sch_type](metent[cent])
+
         records.append(metent)
 
     return records
@@ -181,14 +210,19 @@ class Service(object):
     ignore_fields = []
     keys = []
 
-    def __init__(self, name, defn, keys, ignore_fields, output_dir):
+    def __init__(self, name, defn, keys, ignore_fields, schema, output_dir):
         self.name = name
         self.defn = defn
         self.ignore_fields = ignore_fields
         self.output_dir = output_dir
-
         self.keys = keys
+        self.schema = schema
+
         self.logger = logging.getLogger('suzieq')
+
+        # Add the hidden fields to ignore_fields
+        self.ignore_fields.append('active')
+        self.ignore_fields.append('timestamp')
 
     def set_nodes(self, nodes):
         '''New node list for this service'''
@@ -230,8 +264,15 @@ class Service(object):
         return adds, dels
 
     async def gather_data(self):
-        # Not needed at this point.
-        raise NotImplementedError
+        '''Collect data invoking the appropriate get routine from nodes.'''
+
+        random.shuffle(self.nodelist)
+        tasks = [self.nodes[key].exec_service(self.defn)
+                 for key in self.nodelist if self.nodes[key].is_alive()]
+
+        outputs = await asyncio.gather(*tasks)
+
+        return outputs
 
     def process_data(self, data):
         '''Derive the data to be stored from the raw input'''
@@ -255,7 +296,7 @@ class Service(object):
                         input = data['data']['output']
                     else:
                         input = data['data']
-                    result = textfsm_data(input, tfsm_template)
+                    result = textfsm_data(input, tfsm_template, self.schema)
 
                 self.clean_data(result, data)
             else:
@@ -264,14 +305,36 @@ class Service(object):
                     .format(self.name, data['hostname']))
         else:
             self.logger.error('{}: failed for node {} with {}/{}'.format(
-                self.name, data['hostname'], data['status'], data['data']))
+                self.name, data['hostname'], data['status'],
+                data.get('error', '')))
 
         return result
 
     def clean_data(self, processed_data, raw_data):
-        return processed_data
 
-    async def commit_data(self, result, datacenter, hostname, timestamp):
+        # Build default data structure
+        schema_rec = {}
+        def_vals = {'string': '-', 'int': 0, 'long': 0, 'double': 0,
+                    'array': [], 'map': {}, 'boolean': False}
+        for field in self.schema['fields']:
+            default = def_vals.get(field['type'], '') \
+                      if type(field['type']) == str \
+                      else def_vals.get(field['type']['type'], '') \
+                      if type(field['type']) == dict \
+                      else def_vals.get(field['type'][0])
+
+            schema_rec.update({field['name']: default})
+
+        for entry in processed_data:
+            entry.update({'hostname': raw_data['hostname']})
+            entry.update({'timestamp': raw_data['timestamp']})
+            for fld in schema_rec:
+                if fld not in entry:
+                    entry.update({fld: schema_rec[fld]})
+
+        validate_many(processed_data, self.schema)
+
+    def commit_data(self, result, datacenter, hostname):
         '''Write the result data out'''
         records = []
         if result:
@@ -281,18 +344,13 @@ class Service(object):
                 self.nodes.get(hostname, '') \
                           .prev_result = copy.deepcopy(result)
                 for entry in adds:
-                    entry.update({'hostname': hostname})
-                    entry.update({'timestamp': timestamp})
                     entry.update({'active': True})
                     records.append(entry)
                 for entry in dels:
-                    entry.update({'hostname': hostname})
-                    entry.update({'timestamp': timestamp})
-                    entry.update({'active': False})
                     records.append(entry)
 
             if records:
-                df = pd.DataFrame.from_dict(records, dtype=str)
+                df = pd.DataFrame.from_dict(records)
                 table = pa.Table.from_pandas(df)
                 pq.write_to_dataset(
                     table,
@@ -303,22 +361,19 @@ class Service(object):
 
     async def run(self):
         '''Start the service'''
+
+        self.nodelist = list(self.nodes.keys())
+
         while True:
-            keys = list(self.nodes.keys())
-            random.shuffle(keys)
 
-            tasks = [self.nodes[key].exec_service(self.defn)
-                     for key in keys if self.nodes[key].is_alive()]
-
-            outputs = await asyncio.gather(*tasks)
+            outputs = await self.gather_data()
             for output in outputs:
                 if not output:
                     # output from nodes not running service
                     continue
                 result = self.process_data(output[0])
-                await self.commit_data(result, output[0]['datacenter'],
-                                       output[0]['hostname'],
-                                       output[0]['timestamp'])
+                self.commit_data(result, output[0]['datacenter'],
+                                 output[0]['hostname'])
 
             if self.update_nodes:
                 for node in self.new_nodes:
@@ -327,6 +382,7 @@ class Service(object):
                         new_nodes[node]['output'] = nodes[node]['output']
 
                 nodes = new_nodes
+                self.nodelist = list(self.nodes.keys())
                 new_nodes = []
                 update_nodes = False
 
@@ -347,7 +403,7 @@ class InterfaceService(Service):
         if raw_data.get('devtype', None) == 'eos':
             new_list = []
             for entry in processed_data:
-                tmpent = entry.get('IPAddresses', [[]])
+                tmpent = entry.get('ipAddressList', [[]])
                 if not tmpent:
                     continue
                 munge_entry = tmpent[0]
@@ -361,13 +417,16 @@ class InterfaceService(Service):
                         ip = elem['adddress'] + '/' + elem['maskLen']
                         new_list.append(ip)
 
-                munge_entry = entry.get('IP6Addresses', [[]])
+                munge_entry = entry.get('ip6AddressList', [{}])
                 if munge_entry:
                     for elem in munge_entry[0].get('globalUnicastIp6s', []):
                         new_list.append(elem['subnet'])
 
-                entry['IPAddresses'] = new_list
-                del entry['IP6Addresses']
+                entry['ipAddressList'] = new_list
+                if 'ip6AddressList' in entry:
+                    del entry['ip6AddressList']
+
+        super(InterfaceService, self).clean_data(processed_data, raw_data)
 
         return
 
@@ -377,6 +436,11 @@ class SystemService(Service):
     This is specially called out to normalize the timestamp and handle
     timestamp diff
     '''
+
+    def __init__(self, name, defn, keys, ignore_fields, schema, output_dir):
+        super(SystemService, self).__init__(name, defn, keys, ignore_fields,
+                                            schema, output_dir)
+        self.ignore_fields.append('bootupTimestamp')
 
     def clean_data(self, processed_data, raw_data):
         '''Cleanup the bootup timestamp for Linux nodes'''
@@ -394,6 +458,8 @@ class SystemService(Service):
                     raw_data['timestamp'] - float(entry.get('sysUptime')))
                 del entry['sysUptime']
 
+        super(SystemService, self).clean_data(processed_data, raw_data)
+
         return
 
     def get_diff(self, old, new):
@@ -406,11 +472,11 @@ class SystemService(Service):
         knewkeys = []
 
         for i, elem in enumerate(old):
-            vals = [v for k, v in elem.items() if k != 'bootupTimestamp']
+            vals = [v for k, v in elem.items() if k not in self.ignore_fields]
             koldvals.update({tuple(str(vals)): i})
 
         for i, elem in enumerate(new):
-            vals = [v for k, v in elem.items() if k != 'bootupTimestamp']
+            vals = [v for k, v in elem.items() if k not in self.ignore_fields]
             knewvals.update({tuple(str(vals)): i})
 
         addlist = [v for k, v in knewvals.items() if k not in koldvals.keys()]
