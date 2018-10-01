@@ -90,6 +90,17 @@ def exdict(path, data, start, collect=False):
                 if len(okeys) > 1:
                     use_key = True
 
+            if plist[-1] == elem and collect:
+                # We're a leaf now. So, suck up the list or dict if
+                # we're to collect
+                if is_list:
+                    cstr = data
+                else:
+                    cstr = [k for k in data]
+                set_kv(okeys, {'*': cstr}, iresult)
+                result.append(iresult)
+                return result, i + start
+
             for item in data:
                 if not is_list:
                     datum = data[item]
@@ -103,8 +114,8 @@ def exdict(path, data, start, collect=False):
                             # example: memberInterfaces/* : lacpMembers
                             cstr = ''
                             for key in data:
-                                cstr = ', ' + key + cstr if cstr else key
-                            iresult[okeys[1].strip()] = item
+                                cstr = cstr + ', ' + key if cstr else key
+                            iresult[okeys[1].strip()] = cstr
                             result.append(iresult)
                             return result, i + start
                         iresult[okeys[1].strip()] = item
@@ -188,9 +199,9 @@ def textfsm_data(raw_input, fsm_template, schema):
             if cent in fields:
                 schent_type = schema['fields'][fields[cent]]['type']
                 sch_type = schent_type if type(schent_type) == str \
-                           else schent_type['type'] \
-                           if type(schent_type) == dict \
-                           else schent_type['type'][0]
+                    else schent_type['type'] \
+                    if type(schent_type) == dict \
+                    else schent_type['type'][0]
                 if type(metent[cent]) != ptype_map[sch_type]:
                     metent[cent] = ptype_map[sch_type](metent[cent])
 
@@ -285,7 +296,15 @@ class Service(object):
             if nfn:
                 if nfn.get('normalize', None):
                     if type(data['data']) is str:
-                        input = json.loads(data['data'])
+                        try:
+                            input = json.loads(data['data'])
+                        except json.JSONDecodeError as e:
+                            logging.error('Received non-JSON output where '
+                                          'JSON was expected for {} on node '
+                                          '{}, {}'.format(data['cmd'],
+                                                          data['hostname'],
+                                                          data['data']))
+                            return result
                     else:
                         input = data['data']
 
@@ -403,6 +422,9 @@ class InterfaceService(Service):
         if raw_data.get('devtype', None) == 'eos':
             new_list = []
             for entry in processed_data:
+                # Fixup speed:
+                entry['speed'] = str(int(entry['speed']/1000000000)) + 'G'
+
                 tmpent = entry.get('ipAddressList', [[]])
                 if not tmpent:
                     continue
