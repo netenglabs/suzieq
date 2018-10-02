@@ -1,10 +1,5 @@
 service: system
 apply:
-  cumulus:
-    version: all
-    command: cat /proc/uptime; net show system
-    textfsm: /home/ddutt/work/suzieq/config/textfsm_templates/cl_showsys.tfsm
-
   eos:
     version: all
     command: show version
@@ -14,4 +9,14 @@ apply:
     "vendor: vendor?|Arista",
     "os: os?|EOS",
     "bootupTimestamp: bootupTimestamp"]'
+
+  cumulus:
+    version: all
+    command: cat /proc/uptime; net show system
+    textfsm: /home/ddutt/work/suzieq/config/textfsm_templates/cl_showsys.tfsm
+
+  linux:
+    version: all
+    command: cat /proc/uptime; cat /etc/os-release
+    textfsm: /home/ddutt/work/suzieq/config/textfsm_templates/linux_showsys.tfsm
 
