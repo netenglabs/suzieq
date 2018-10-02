@@ -21,31 +21,43 @@ async def get_device_type_hostname(nodeobj):
     # running them one after the other as this involves an additional ssh
     # setup time. show version works on most networking boxes and
     # hostnamectl on Linux systems. That's all we support today.
-    output = await nodeobj.ssh_gather(['show version', 'hostnamectl'])
+    if nodeobj.transport == 'local':
+        output = await nodeobj.local_gather(['show version', 'hostnamectl'])
+    else:
+        output = await nodeobj.ssh_gather(['show version', 'hostnamectl'])
 
     if output[0]['status'] == 0:
-        if 'Arista ' in output[0]['data']:
+        data = output[1]['data']
+        if 'Arista ' in data:
             devtype = 'eos'
-        elif 'JUNOS ' in output[0]['data']:
+        elif 'JUNOS ' in data:
             devtype = 'junos'
 
-        output = await nodeobj.ssh_gather(['show hostname'])
+        if nodeobj.transport == 'local':
+            output = await nodeobj.local_gather(['show hostname'])
+        else:
+            output = await nodeobj.ssh_gather(['show hostname'])
         if output[0]['status'] == 0:
-            hostname = output[0]['data']
+            hostname = output[1]['data'].strip()
 
     elif output[1]['status'] == 0:
-            if 'Cumulus Linux' in output[1]['data']:
-                devtype = 'cumulus'
-            elif 'Ubuntu' in output[1]['data']:
-                devtype = 'Ubuntu'
-            elif 'Red Hat' in output[1]['data']:
-                devtype = 'RedHat'
+        data = output[1]['data']
+        if 'Cumulus Linux' in data:
+            devtype = 'cumulus'
+        elif 'Ubuntu' in data:
+            devtype = 'Ubuntu'
+        elif 'Red Hat' in data:
+            devtype = 'RedHat'
+        elif 'Debian GNU/Linux' in data:
+            devtype = 'Debian'
+        else:
+            devtype = 'linux'
 
-            # Hostname is in the first line of hostnamectl
-            hostline = output[1]['data'].splitlines()[0].strip()
-            if hostline.startswith('Static hostname'):
-                _, hostname = hostline.split(':')
-                hostname = hostname.strip()
+        # Hostname is in the first line of hostnamectl
+        hostline = data.splitlines()[0].strip()
+        if hostline.startswith('Static hostname'):
+            _, hostname = hostline.split(':')
+            hostname = hostname.strip()
 
     return devtype, hostname
 
@@ -109,7 +121,7 @@ async def process_hosts(hosts_file, output_dir):
 
                 devtype = None
                 hostname = 'localhost'
-                if result.scheme == 'ssh':
+                if result.scheme == 'ssh' or result.scheme == 'local':
                     devtype, hostname = await get_device_type_hostname(newnode)
                 else:
                     if len(words) > 1:
@@ -128,17 +140,20 @@ async def process_hosts(hosts_file, output_dir):
 
                 if devtype == 'cumulus':
                     newnode.__class__ = CumulusNode
+                    newnode.devtype = devtype
                 elif devtype == 'eos':
                     newnode.__class__ = EosNode
+                    newnode.devtype = devtype
                     output = await newnode.rest_gather(['show hostname'])
 
                     if output and output[0]['status'] == 200:
                         hostname = output[0]['data']['hostname']
 
-                elif devtype == 'Ubuntu' or devtype == 'Red Hat':
+                elif any(n == devtype for n in ['Ubuntu', 'Debian',
+                                                'Red Hat', 'Linux']):
                     newnode.__class__ = LinuxNode
+                    newnode.devtype = 'linux'
 
-                newnode.devtype = devtype
                 newnode.hostname = hostname
 
                 logging.info('Added node {}'.format(hostname))

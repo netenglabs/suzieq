@@ -56,20 +56,21 @@ class Node(object):
 
         result = []
         for cmd in cmd_list:
-            proc = await asyncio.wait_for(
-                asyncio.create_subprocess_shell(cmd, stdout=PIPE, stderr=PIPE),
-                timeout=5)
+            proc = await asyncio.create_subprocess_shell(cmd, stdout=PIPE,
+                                                         stderr=PIPE)
 
             try:
-                stdout, stderr = await proc.communicate()
+                stdout, stderr = await asyncio.wait_for(proc.communicate(),
+                                                        timeout=5)
                 result.append({'status': proc.returncode,
                                'timestamp': time.time(),
                                'cmd': cmd,
                                'devtype': self.devtype,
                                'datacenter': self.dcname,
                                'hostname': self.hostname,
-                               'data': stdout if not proc.returncode
-                               else stderr})
+                               'data': stdout.decode('ascii', 'ignore')
+                               if not proc.returncode
+                               else stderr.decode('ascii', 'ignore')})
             except asyncio.TimeoutError as e:
                     result.append({'status': 408,
                                    'timestamp': time.time(),
@@ -152,8 +153,17 @@ class Node(object):
         if not svc_defn:
             return result
 
-        cmd = svc_defn.get(self.devtype, {}) \
-                      .get('command', None)
+        use = svc_defn.get(self.hostname, None)
+        if not use:
+            use = svc_defn.get(self.devtype, {})
+        if not use:
+            return result
+
+        if 'copy' in use:
+            use = svc_defn.get(use.get('copy'))
+
+        if use:
+            cmd = use.get('command', None)
 
         oformat = svc_defn.get(self.devtype, {}) \
                           .get('format', 'json')
@@ -275,6 +285,5 @@ class CumulusNode(Node):
 
 class LinuxNode(Node):
     def __init__(self, **kwargs):
-        super(EosNode).__init__(kwargs)
+        super(LinuxNode).__init__(kwargs)
         self.devtype = 'linux'
-        self.transport = 'ssh'
