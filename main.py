@@ -242,7 +242,7 @@ if __name__ == '__main__':
                         help='FIle with passwords')
     parser.add_argument('-S', '--service-dir', type=str, required=True,
                         help='Directory with services definitions')
-    parser.add_argument('-t', '--schema-dir', type=str, default='',
+    parser.add_argument('-T', '--schema-dir', type=str, default='',
                         help='Directory with schema definition for services')
     parser.add_argument('-O', '--output-dir', type=str,
                         default='/tmp/parquet-out',
