@@ -18,7 +18,7 @@ def exec_livycode(code, session_url, longer_exec=False,
     Returns: The raw requests response object
     '''
 
-    data = {'code': textwrap.dedent("""{0} """.format(code))}
+    data = {'code': textwrap.dedent('''{code}'''.format(code=code))}
     statements_url = session_url + '/statements'
 
     try:
