@@ -128,7 +128,9 @@ class Node(object):
                                    'hostname': self.hostname,
                                    'data': {'error': str(e)}})
 
-        conn.wait_closed()
+            conn.close()
+            conn.wait_closed()
+
         return result
 
     async def rest_gather(self, svc_dict, oformat='json'):
