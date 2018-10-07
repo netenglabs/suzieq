@@ -27,13 +27,20 @@ def exdict(path, data, start, collect=False):
             fkey, fvals = okeys[1].split('?')
             fvals = fvals.split('|')
             cval = indata.get(okeys[0], '')
-            if not cval or (fvals[0] and cval != fvals[0]):
+            if '=' in fvals[0]:
+                tval, rval = fvals[0].split('=')
+            else:
+                tval = fvals[0]
+                rval = fvals[0]
+            tval = tval.strip()
+            rval = rval.strip()
+            if not cval or (tval and str(cval) != tval):
                 try:
                     oresult[fkey.strip()] = ast.literal_eval(fvals[1])
                 except (ValueError, SyntaxError):
                     oresult[fkey.strip()] = fvals[1]
             else:
-                oresult[fkey.strip()] = indata.get(okeys[0], '')
+                oresult[fkey.strip()] = rval
         else:
             fkeys = re.split(r'([,+*/])', okeys[1])
             if len(fkeys) > 1:
@@ -74,6 +81,9 @@ def exdict(path, data, start, collect=False):
     for i, elem in enumerate(plist[start:]):
 
         if not data:
+            if '[' not in plist[-1] and ':' in plist[-1]:
+                set_kv(plist[-1].split(':'), data, iresult)
+                result.append(iresult)
             return result, i+start
 
         j = 0
@@ -290,6 +300,9 @@ class Service(object):
         result = []
 
         if data['status'] == 200 or data['status'] == 0:
+            if not data['data']:
+                return result
+
             nfn = self.defn.get(data.get('hostname'), None)
             if not nfn:
                 nfn = self.defn.get(data.get('devtype'), None)
@@ -376,7 +389,8 @@ class Service(object):
                     root_path='{}/{}/{}'.format(self.output_dir,
                                                 datacenter,
                                                 self.name),
-                    partition_cols=['timestamp'])
+                    partition_cols=['timestamp'],
+                    flavor='spark')
 
     async def run(self):
         '''Start the service'''
@@ -420,9 +434,9 @@ class InterfaceService(Service):
             - processed output entries cleaned up
         '''
         if raw_data.get('devtype', None) == 'eos':
-            new_list = []
             for entry in processed_data:
                 # Fixup speed:
+                new_list = []
                 entry['speed'] = str(int(entry['speed']/1000000000)) + 'G'
 
                 tmpent = entry.get('ipAddressList', [[]])
@@ -514,3 +528,42 @@ class SystemService(Service):
                 adds.append(new[0])
 
         return adds, dels
+
+
+class MlagService(Service):
+    '''MLAG service. Different class because output needs to be munged'''
+
+    def clean_data(self, processed_data, raw_data):
+
+        if raw_data.get('devtype', None) == 'cumulus':
+            mlagDualPortsCnt = 0
+            mlagSinglePortsCnt = 0
+            mlagErrorPortsCnt = 0
+            mlagPorts = []
+            mlagDualPorts = []
+            mlagSinglePorts = []
+            mlagErrorPorts = []
+
+            for entry in processed_data:
+                mlagIfs = entry['mlagInterfaces']
+                for mlagif in mlagIfs:
+                    if mlagIfs[mlagif]['status'] == 'dual':
+                        mlagDualPortsCnt += 1
+                        mlagDualPorts.append(mlagif)
+                    elif mlagifs[mlagif]['status'] == 'single':
+                        mlagSinglePortsCnt += 1
+                        mlagSinglePorts.append(mlagif)
+                    elif (mlagIfs[mlagif]['status'] == 'errDisabled' or
+                          mlagif['status'] == 'protoDown'):
+                        mlagErrorPortsCnt += 1
+                        mlagErrorPorts.append(mlagif)
+                entry['mlagDualPorts'] = mlagDualPorts
+                entry['mlagSinglePorts'] = mlagSinglePorts
+                entry['mlagErrorPorts'] = mlagErrorPorts
+                entry['mlagSinglePortsCnt'] = mlagSinglePortsCnt
+                entry['mlagDualPortsCnt'] = mlagDualPortsCnt
+                entry['mlagErrorPortsCnt'] = mlagErrorPortsCnt
+                del entry['mlagInterfaces']
+
+        super(MlagService, self).clean_data(processed_data, raw_data)
+
