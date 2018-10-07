@@ -34,11 +34,16 @@ def exdict(path, data, start, collect=False):
                 rval = fvals[0]
             tval = tval.strip()
             rval = rval.strip()
+            # String a: b?|False => if not a's value, use False, else use a
+            # String a: b?True=active|inactive => if a's value is true, use_key
+            # the string 'active' instead else use inactive
             if not cval or (tval and str(cval) != tval):
                 try:
                     oresult[fkey.strip()] = ast.literal_eval(fvals[1])
                 except (ValueError, SyntaxError):
                     oresult[fkey.strip()] = fvals[1]
+            elif cval and not tval:
+                oresult[fkey.strip()] = cval
             else:
                 oresult[fkey.strip()] = rval
         else:
