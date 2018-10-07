@@ -1,0 +1,119 @@
+{
+    "namespace": "suzieq",
+    "name": "mlag",
+    "type": "record",
+    "fields": [
+        {
+            "name": "state",
+            "type": "string"
+        },
+        {
+            "name": "backupIP",
+            "type": "string"
+        },
+        {
+            "name": "peerLinkStatus",
+            "type": "string"
+        },
+        {
+            "name": "portsErrDisabled",
+            "type": "string"
+        },
+        {
+            "name": "configSanity",
+            "type": "string"
+        },
+        {
+            "name": "role",
+            "type": "string"
+        },
+        {
+            "name": "domainId",
+            "type": "string"
+        },
+        {
+            "name": "peerLink",
+            "type": "string"
+        },
+        {
+            "name": "peerAddress",
+            "type": "string"
+        },
+        {
+            "name": "systemId",
+            "type": "string",
+            "key": true
+        },
+        {
+            "name": "vtepIP",
+            "type": "string"
+        },
+        {
+            "name": "backupActive",
+            "type": "string"
+        },
+        {
+            "name": "peerRole",
+            "type": "string"
+        },
+        {
+            "name": "peerMacAddress",
+            "type": "string"
+        },
+        {
+            "name": "hostname",
+            "type": "string",
+            "key": true
+        },
+        {
+            "name": "timestamp",
+            "type": "double"
+        },
+        {
+            "name": "active",
+            "type": "boolean"
+        },
+	{
+	    "name": "mlagDualPorts",
+            "type": {
+	        "type": "array",
+                "items": {
+                    "type": "string",
+                    "name": "mlagDualPortMember"
+                }
+            }
+	},
+	{
+	    "name": "mlagSinglePorts",
+            "type": {
+	        "type": "array",
+                "items": {
+                    "type": "string",
+                    "name": "mlagSinglePortMember"
+                }
+            }
+	},
+	{
+	    "name": "mlagErrorPorts",
+            "type": {
+	        "type": "array",
+                "items": {
+                    "type": "string",
+                    "name": "mlagErrorPortMember"
+                }
+            }
+	},
+	{
+	    "name": "mlagDualPortsCnt",
+	    "type": "long"
+	 },
+	{
+	    "name": "mlagSinglePortsCnt",
+	    "type": "long"
+	 },
+	{
+	    "name": "mlagErrorPortsCnt",
+	    "type": "long"
+	 }
+    ]
+}
