@@ -1,0 +1,107 @@
+{
+    "namespace": "suzieq",
+    "name": "interfaces",
+    "type": "record",
+    "fields": [
+        {
+            "name": "state",
+            "type": "string"
+        },
+        {
+            "name": "lacpBypass",
+            "type": "boolean"
+        },
+        {
+            "name": "speed",
+            "type": "string"
+        },
+        {
+            "name": "lacpPartnerMac",
+            "type": "string"
+        },
+        {
+            "name": "lacpMembers",
+            "type": {
+	        "type": "array",
+                "items": {
+                    "type": "string",
+                    "name": "lacpMember"
+                }
+            }
+        },
+        {
+            "name": "ip6AddressList",
+            "type": {
+                "type": "array",
+                "items": {
+                    "type": "string",
+                    "name": "ip6Address"
+                }
+            }
+        },
+        {
+            "name": "dhcpEnabled",
+            "type": "boolean"
+        },
+        {
+            "name": "vlans",
+            "type": "string"
+        },
+        {
+            "name": "mtu",
+            "type": "long"
+        },
+        {
+            "name": "mode",
+            "type": "string"
+        },
+        {
+            "name": "mac",
+            "type": "string"
+        },
+        {
+            "name": "pvid",
+            "type": "long"
+        },
+        {
+            "name": "lacpSysPriority",
+            "type": "string"
+        },
+        {
+            "name": "description",
+            "type": "string"
+        },
+        {
+            "name": "connector",
+            "type": "string"
+        },
+        {
+            "name": "ipAddressList",
+            "type": {
+                "type": "array",
+                "items": {
+                    "type": "string",
+                    "name": "ipAddress"
+                }
+            }
+        },
+        {
+            "name": "ifname",
+            "type": "string",
+            "key": true
+        },
+        {
+            "name": "hostname",
+            "type": "string",
+            "key": true
+        },
+        {
+            "name": "timestamp",
+            "type": "double"
+        },
+        {
+            "name": "active",
+            "type": "boolean"
+        }
+    ]
+}
