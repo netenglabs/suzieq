@@ -1,3 +1,4 @@
+
 import sys
 import os
 import argparse
@@ -10,7 +11,7 @@ import yaml
 from urllib.parse import urlparse
 
 from node import Node, CumulusNode, EosNode, LinuxNode
-from service import Service, InterfaceService, SystemService
+from service import Service, InterfaceService, SystemService, MlagService
 
 async def get_device_type_hostname(nodeobj):
     '''Determine the type of device we are talking to'''
@@ -216,9 +217,14 @@ async def process_services(svc_dir, schema_dir, output_dir):
                     service = SystemService(svc_def['service'],
                                             svc_def['apply'],
                                             svc_def.get('keys', []),
-                                            svc_def.get('ignore-fields',
-                                                        []),
+                                            svc_def.get('ignore-fields', []),
                                             schema, output_dir)
+                elif svc_def['service'] == 'mlag':
+                    service = MlagService(svc_def['service'],
+                                          svc_def['apply'],
+                                          svc_def.get('keys', []),
+                                          svc_def.get('ignore-fields', []),
+                                          schema, output_dir)
                 else:
                     service = Service(svc_def['service'], svc_def['apply'],
                                       svc_def.get('keys', []),
