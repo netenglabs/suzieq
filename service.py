@@ -185,15 +185,8 @@ def textfsm_data(raw_input, fsm_template, schema):
     '''Convert unstructured output to structured output'''
 
     records = []
-    try:
-        template = open(fsm_template)
-    except IOError as e:
-        logging.error('Unable to open textfsm template {}, error:{}'.format(
-            fsm_template, e))
-        return records
-
-    re_table = textfsm.TextFSM(template)
-    res = re_table.ParseText(raw_input)
+    fsm_template.Reset()
+    res = fsm_template.ParseText(raw_input)
 
     fields = {v['name']: i
               for i, v in enumerate(schema['fields'])}
@@ -209,7 +202,7 @@ def textfsm_data(raw_input, fsm_template, schema):
 
     # Ensure the type is set correctly.
     for entry in res:
-        metent = dict(zip(re_table.header, entry))
+        metent = dict(zip(fsm_template.header, entry))
         for cent in metent:
             if cent in fields:
                 schent_type = schema['fields'][fields[cent]]['type']
@@ -236,13 +229,15 @@ class Service(object):
     ignore_fields = []
     keys = []
 
-    def __init__(self, name, defn, keys, ignore_fields, schema, output_dir):
+    def __init__(self, name, defn, period, keys, ignore_fields, schema,
+                 output_dir):
         self.name = name
         self.defn = defn
         self.ignore_fields = ignore_fields
         self.output_dir = output_dir
         self.keys = keys
         self.schema = schema
+        self.period = period
 
         self.logger = logging.getLogger('suzieq')
 
@@ -328,7 +323,10 @@ class Service(object):
 
                     result, _ = exdict(nfn.get('normalize', ''), input, 0)
                 else:
-                    tfsm_template = nfn.get('textfsm', '')
+                    tfsm_template = nfn.get('textfsm', None)
+                    if not tfsm_template:
+                        return result
+
                     if 'output' in data['data']:
                         input = data['data']['output']
                     else:
@@ -352,7 +350,7 @@ class Service(object):
         # Build default data structure
         schema_rec = {}
         def_vals = {'string': '-', 'int': 0, 'long': 0, 'double': 0,
-                    'array': [], 'map': {}, 'boolean': False}
+                    'array': ['-'], 'map': {}, 'boolean': False}
         for field in self.schema['fields']:
             default = def_vals.get(field['type'], '') \
                       if type(field['type']) == str \
@@ -438,17 +436,22 @@ class InterfaceService(Service):
         Output:
             - processed output entries cleaned up
         '''
-        if raw_data.get('devtype', None) == 'eos':
+        devtype = raw_data.get('devtype', None)
+        if devtype == 'eos':
             for entry in processed_data:
                 # Fixup speed:
-                new_list = []
                 entry['speed'] = str(int(entry['speed']/1000000000)) + 'G'
+                words = entry['master'].split()
+                if words:
+                    entry['master'] = words[-1].strip()
 
                 tmpent = entry.get('ipAddressList', [[]])
                 if not tmpent:
                     continue
+
                 munge_entry = tmpent[0]
                 if munge_entry:
+                    new_list = []
                     primary_ip = (
                         munge_entry['primaryIp']['address'] + '/' +
                         str(munge_entry['primaryIp']['maskLen'])
@@ -457,15 +460,15 @@ class InterfaceService(Service):
                     for elem in munge_entry['secondaryIpsOrderedList']:
                         ip = elem['adddress'] + '/' + elem['maskLen']
                         new_list.append(ip)
+                    entry['ipAddressList'] = new_list
 
+                # ip6AddressList is formatted as a dict, not a list by EOS
                 munge_entry = entry.get('ip6AddressList', [{}])
                 if munge_entry:
-                    for elem in munge_entry[0].get('globalUnicastIp6s', []):
+                    new_list = []
+                    for elem in munge_entry.get('globalUnicastIp6s', []):
                         new_list.append(elem['subnet'])
-
-                entry['ipAddressList'] = new_list
-                if 'ip6AddressList' in entry:
-                    del entry['ip6AddressList']
+                    entry['ip6AddressList'] = new_list
 
         super(InterfaceService, self).clean_data(processed_data, raw_data)
 
@@ -478,9 +481,10 @@ class SystemService(Service):
     timestamp diff
     '''
 
-    def __init__(self, name, defn, keys, ignore_fields, schema, output_dir):
-        super(SystemService, self).__init__(name, defn, keys, ignore_fields,
-                                            schema, output_dir)
+    def __init__(self, name, defn, period, keys, ignore_fields,
+                 schema, output_dir):
+        super(SystemService, self).__init__(name, defn, period, keys,
+                                            ignore_fields, schema, output_dir)
         self.ignore_fields.append('bootupTimestamp')
 
     def clean_data(self, processed_data, raw_data):

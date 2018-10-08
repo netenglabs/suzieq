@@ -12,6 +12,7 @@ from urllib.parse import urlparse
 
 from node import Node, CumulusNode, EosNode, LinuxNode
 from service import Service, InterfaceService, SystemService, MlagService
+import textfsm
 
 async def get_device_type_hostname(nodeobj):
     '''Determine the type of device we are talking to'''
@@ -186,6 +187,8 @@ async def process_services(svc_dir, schema_dir, output_dir):
                     Need both "service" and "apply" keywords: {}'
                                   .format(filename))
                     continue
+
+                period = svc_def.get('period', 15)
                 for elem, val in svc_def['apply'].items():
                     if ('command' not in val or
                             ('normalize' not in val and 'textfsm' not in val)):
@@ -193,6 +196,18 @@ async def process_services(svc_dir, schema_dir, output_dir):
                         Need both "command" and "normalize/textfsm" keywords:'
                                       '{}, {}'.format(filename, val))
                         continue
+
+                    if 'textfsm' in val:
+                        tfsm_file = svc_dir + '/' + val['textfsm']
+                        if not os.path.isfile(tfsm_file):
+                            logging.error('Textfsm file {} not found. Ignoring'
+                                          ' service'.format(tfsm_file))
+                            continue
+                        with open(tfsm_file, 'r') as f:
+                            tfsm_template = textfsm.TextFSM(f)
+                            val['textfsm'] = tfsm_template
+                    else:
+                        tfsm_template = None
 
                 # Find matching schema file
                 fschema = '{}/{}.avsc'.format(schema_dir, svc_def['service'])
@@ -209,6 +224,7 @@ async def process_services(svc_dir, schema_dir, output_dir):
                 if svc_def['service'] == 'interfaces':
                     service = InterfaceService(svc_def['service'],
                                                svc_def['apply'],
+                                               period,
                                                svc_def.get('keys', []),
                                                svc_def.get('ignore-fields',
                                                            []),
@@ -216,18 +232,20 @@ async def process_services(svc_dir, schema_dir, output_dir):
                 elif svc_def['service'] == 'system':
                     service = SystemService(svc_def['service'],
                                             svc_def['apply'],
+                                            period,
                                             svc_def.get('keys', []),
                                             svc_def.get('ignore-fields', []),
                                             schema, output_dir)
                 elif svc_def['service'] == 'mlag':
                     service = MlagService(svc_def['service'],
                                           svc_def['apply'],
+                                          period,
                                           svc_def.get('keys', []),
                                           svc_def.get('ignore-fields', []),
                                           schema, output_dir)
                 else:
                     service = Service(svc_def['service'], svc_def['apply'],
-                                      svc_def.get('keys', []),
+                                      period, svc_def.get('keys', []),
                                       svc_def.get('ignore-fields', []),
                                       schema, output_dir)
 
@@ -277,7 +295,7 @@ if __name__ == '__main__':
         print('Service directory {} is not a directory'.format(
             userargs.output_dir))
         sys.exit(1)
-        
+
     elif not os.path.isdir(userargs.output_dir):
         logger.error('Output directory {} is not a directory'.format(
             userargs.output_dir))
