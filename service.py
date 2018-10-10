@@ -519,19 +519,19 @@ class Service(object):
                                                 datacenter,
                                                 self.name),
                     partition_cols=['timestamp'],
-                    version="2.0",
                     flavor='spark')
 
-            if result and self.stype == 'state':
-                # Always save the current data wholesome
-                df = pd.DataFrame.from_dict(result)
-                table = pa.Table.from_pandas(df, schema=self.schema)
-                cdir = '{}/{}/current/{}/'.format(self.output_dir,
-                                                  datacenter,
-                                                  self.name)
-                if not os.path.isdir(cdir):
-                    os.makedirs(cdir)
-                pq.write_table(table, '{}/{}.parquet'.format(cdir, hostname))
+                if self.stype == 'state':
+                    # Always save the current data wholesome
+                    df = pd.DataFrame.from_dict(result)
+                    table = pa.Table.from_pandas(df, schema=self.schema)
+                    cdir = '{}/{}/current/{}/'.format(self.output_dir,
+                                                      datacenter,
+                                                      self.name)
+                    if not os.path.isdir(cdir):
+                        os.makedirs(cdir)
+                    pq.write_table(table, '{}/{}.parquet'.format(cdir,
+                                                                 hostname))
 
     async def run(self):
         '''Start the service'''
