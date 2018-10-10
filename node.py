@@ -1,13 +1,171 @@
 
 from collections import defaultdict
+import os
 import time
 from ipaddress import ip_address
 import logging
+
+import json
+import yaml
+from urllib.parse import urlparse
 
 import asyncio
 import asyncssh
 import aiohttp
 from asyncio.subprocess import PIPE
+
+
+async def get_device_type_hostname(nodeobj):
+    '''Determine the type of device we are talking to'''
+
+    devtype = 'Unknown'
+    hostname = 'localhost'
+    # There isn't that much of a difference in running two commands versus
+    # running them one after the other as this involves an additional ssh
+    # setup time. show version works on most networking boxes and
+    # hostnamectl on Linux systems. That's all we support today.
+    if nodeobj.transport == 'local':
+        output = await nodeobj.local_gather(['show version', 'hostnamectl'])
+    else:
+        output = await asyncio.wait_for(
+            nodeobj.ssh_gather(['show version', 'hostnamectl']), timeout=5)
+
+    if output[0]['status'] == 0:
+        data = output[1]['data']
+        if 'Arista ' in data:
+            devtype = 'eos'
+        elif 'JUNOS ' in data:
+            devtype = 'junos'
+
+        if nodeobj.transport == 'local':
+            output = await nodeobj.local_gather(['show hostname'])
+        else:
+            output = await asyncio.wait_for(
+                nodeobj.ssh_gather(['show hostname']), timeout=5)
+        if output[0]['status'] == 0:
+            hostname = output[1]['data'].strip()
+
+    elif output[1]['status'] == 0:
+        data = output[1]['data']
+        if 'Cumulus Linux' in data:
+            devtype = 'cumulus'
+        elif 'Ubuntu' in data:
+            devtype = 'Ubuntu'
+        elif 'Red Hat' in data:
+            devtype = 'RedHat'
+        elif 'Debian GNU/Linux' in data:
+            devtype = 'Debian'
+        else:
+            devtype = 'linux'
+
+        # Hostname is in the first line of hostnamectl
+        hostline = data.splitlines()[0].strip()
+        if hostline.startswith('Static hostname'):
+            _, hostname = hostline.split(':')
+            hostname = hostname.strip()
+
+    return devtype, hostname
+
+
+async def init_hosts(hosts_file, output_dir):
+    '''Process list oof hosts
+    This involves creating a node for each host listed, firing up services
+    for which we need to pull data.'''
+
+    nodes = {}
+
+    if not os.path.isfile(hosts_file):
+        logging.error('hosts config must be a file: {}', hosts_file)
+        return nodes
+
+    if not os.access(hosts_file, os.R_OK):
+        logging.error('hosts config file is not readable: {}', hosts_file)
+        return nodes
+
+    with open(hosts_file, 'r') as f:
+        try:
+            hostsconf = yaml.load(f.read())
+        except Exception as e:
+            logging.error('Invalid hosts config file:{}', e)
+            print('Invalid hosts config file:{}', e)
+            sys.exit(1)
+
+    for datacenter in hostsconf:
+        if 'datacenter' not in datacenter:
+            logging.warning('No datacenter specified, assuming "default"')
+            dcname = "default"
+        else:
+            dcname = datacenter['datacenter']
+
+        dcdir = '{}/{}'.format(output_dir, dcname)
+        if not os.path.exists(dcdir):
+            os.makedirs(dcdir)
+        elif not os.path.isdir(dcdir):
+            logging.error('{} MUST be a directory'.format(dcdir))
+            sys.exit(1)
+
+        for host in datacenter.get('hosts', None):
+            entry = host.get('url', None)
+            if entry:
+                words = entry.split()
+                result = urlparse(words[0])
+
+                username = result.username
+                password = result.password
+                port = result.port
+                host = result.hostname
+
+                if password:
+                    newnode = Node(hostname=host, username=username,
+                                   password=password, transport=result.scheme,
+                                   port=port, datacenter=dcname)
+                else:
+                    newnode = Node(hostname=host, username=username,
+                                   transport=result.scheme, port=port,
+                                   datacenter=dcname)
+
+                devtype = None
+                hostname = 'localhost'
+                if result.scheme == 'ssh' or result.scheme == 'local':
+                    devtype, hostname = await get_device_type_hostname(newnode)
+                else:
+                    if len(words) > 1:
+                        try:
+                            devtype = words[1].split('=')[1]
+                        except IndexError:
+                            logging.error(
+                                "Unable to determine device type for {}"
+                                .format(host))
+                            continue
+
+                if devtype is None:
+                    logging.error('Unable to determine device type for {}'
+                                  .format(host))
+                    continue
+
+                if devtype == 'cumulus':
+                    newnode.__class__ = CumulusNode
+                    newnode.devtype = devtype
+                elif devtype == 'eos':
+                    newnode.__class__ = EosNode
+                    newnode.devtype = devtype
+                    output = await newnode.rest_gather(['show hostname'])
+
+                    if output and output[0]['status'] == 200:
+                        hostname = output[0]['data']['hostname']
+
+                elif any(n == devtype for n in ['Ubuntu', 'Debian',
+                                                'Red Hat', 'Linux']):
+                    newnode.__class__ = LinuxNode
+                    newnode.devtype = 'linux'
+
+                newnode.hostname = hostname
+
+                logging.info('Added node {}'.format(hostname))
+                if newnode:
+                    nodes.update({hostname: newnode})
+
+    return nodes
 
 
 class Node(object):

@@ -1,19 +1,154 @@
 
 from collections import defaultdict
+import os
 import asyncio
 import random
 import time
 import re
 import ast
 import json
+import yaml
 import copy
 import logging
 
 import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
-from fastavro.validation import validate_many
 import textfsm
+from pyarrow import DataType
+
+
+def avro_to_arrow_schema(avro_sch):
+    '''Given an AVRO schema, return the equivalent Arrow schema'''
+    arsc_fields = []
+
+    map_type = {'string': pa.string(),
+                'long': pa.int64(),
+                'int': pa.int32(),
+                'double': pa.float64(),
+                'boolean': pa.bool_(),
+                'array.string': pa.list_(pa.string()),
+                'array.long': pa.list_(pa.int64())
+                }
+
+    map_defaults = {
+        'string': '',
+        'long': 0,
+        'int': 0,
+        'double': 0.0,
+        'boolean': False,
+        'array.string': [],
+        'array.long': [],
+        }
+
+    for fld in avro_sch.get('fields', None):
+        if type(fld['type']) is dict:
+            if fld['type']['type'] == 'array':
+                avtype = 'array.{}'.format(fld['type']['items']['type'])
+            else:
+                # We don't support map yet
+                raise AttributeError
+        else:
+            avtype = fld['type']
+
+        arsc_fields.append(pa.field(fld['name'], map_type[avtype]))
+
+    return pa.schema(arsc_fields)
+
+
+async def init_services(svc_dir, schema_dir, output_dir):
+    '''Process service definitions by reading each file in svc dir'''
+
+    svcs_list = []
+    if not os.path.isdir(svc_dir):
+        logging.error('services directory not a directory: {}', svc_dir)
+        return svcs_list
+
+    if not os.path.isdir(schema_dir):
+        logging.error('schema directory not a directory: {}', svc_dir)
+        return svcs_list
+
+    for root, dirnames, filenames in os.walk(svc_dir):
+        for filename in filenames:
+            if filename.endswith('yml') or filename.endswith('yaml'):
+                with open(root + '/' + filename, 'r') as f:
+                    svc_def = yaml.load(f.read())
+                if 'service' not in svc_def or 'apply' not in svc_def:
+                    logging.error('Ignorning invalid service file definition. \
+                    Need both "service" and "apply" keywords: {}'
+                                  .format(filename))
+                    continue
+
+                period = svc_def.get('period', 15)
+                for elem, val in svc_def['apply'].items():
+                    if ('command' not in val or
+                            ('normalize' not in val and 'textfsm' not in val)):
+                        logging.error('Ignorning invalid service file definition. \
+                        Need both "command" and "normalize/textfsm" keywords:'
+                                      '{}, {}'.format(filename, val))
+                        continue
+
+                    if 'textfsm' in val:
+                        tfsm_file = svc_dir + '/' + val['textfsm']
+                        if not os.path.isfile(tfsm_file):
+                            logging.error('Textfsm file {} not found. Ignoring'
+                                          ' service'.format(tfsm_file))
+                            continue
+                        with open(tfsm_file, 'r') as f:
+                            tfsm_template = textfsm.TextFSM(f)
+                            val['textfsm'] = tfsm_template
+                    else:
+                        tfsm_template = None
+
+                # Find matching schema file
+                fschema = '{}/{}.avsc'.format(schema_dir, svc_def['service'])
+                if not os.path.exists(fschema):
+                    logging.error('No schema file found for service {}. '
+                                  'Ignoring service'.format(
+                                      svc_def['service']))
+                    continue
+                else:
+                    with open(fschema, 'r') as f:
+                        schema = json.loads(f.read())
+                    schema = avro_to_arrow_schema(schema)
+
+                # Valid service definition, add it to list
+                if svc_def['service'] == 'interfaces':
+                    service = InterfaceService(svc_def['service'],
+                                               svc_def['apply'],
+                                               period,
+                                               svc_def.get('type', 'state'),
+                                               svc_def.get('keys', []),
+                                               svc_def.get('ignore-fields',
+                                                           []),
+                                               schema, output_dir)
+                elif svc_def['service'] == 'system':
+                    service = SystemService(svc_def['service'],
+                                            svc_def['apply'],
+                                            period,
+                                            svc_def.get('type', 'state'),
+                                            svc_def.get('keys', []),
+                                            svc_def.get('ignore-fields', []),
+                                            schema, output_dir)
+                elif svc_def['service'] == 'mlag':
+                    service = MlagService(svc_def['service'],
+                                          svc_def['apply'],
+                                          period,
+                                          svc_def.get('type', 'state'),
+                                          svc_def.get('keys', []),
+                                          svc_def.get('ignore-fields', []),
+                                          schema, output_dir)
+                else:
+                    service = Service(svc_def['service'], svc_def['apply'],
+                                      period, svc_def.get('type', 'state'),
+                                      svc_def.get('keys', []),
+                                      svc_def.get('ignore-fields', []),
+                                      schema, output_dir)
+
+                logging.info('Service {} added'.format(service.name))
+                svcs_list.append(service)
+
+    return svcs_list
 
 
 def exdict(path, data, start, collect=False):
@@ -188,16 +323,15 @@ def textfsm_data(raw_input, fsm_template, schema):
     fsm_template.Reset()
     res = fsm_template.ParseText(raw_input)
 
-    fields = {v['name']: i
-              for i, v in enumerate(schema['fields'])}
+    fields = [fld.name for fld in schema]
 
-    ptype_map = {'string': str,
-                 'int': int,
-                 'long': int,
-                 'double': float,
-                 'array': list,
-                 'map': dict,
-                 'boolean': bool
+
+    ptype_map = {pa.string(): str,
+                 pa.int32(): int,
+                 pa.int64(): int,
+                 pa.float64(): float,
+                 pa.list_(pa.string()): list,
+                 pa.bool_(): bool
                  }
 
     # Ensure the type is set correctly.
@@ -205,13 +339,9 @@ def textfsm_data(raw_input, fsm_template, schema):
         metent = dict(zip(fsm_template.header, entry))
         for cent in metent:
             if cent in fields:
-                schent_type = schema['fields'][fields[cent]]['type']
-                sch_type = schent_type if type(schent_type) == str \
-                    else schent_type['type'] \
-                    if type(schent_type) == dict \
-                    else schent_type['type'][0]
-                if type(metent[cent]) != ptype_map[sch_type]:
-                    metent[cent] = ptype_map[sch_type](metent[cent])
+                schent_type = schema.field_by_name(cent).type
+                if type(metent[cent]) != ptype_map[schent_type]:
+                    metent[cent] = ptype_map[schent_type](metent[cent])
 
         records.append(metent)
 
@@ -228,8 +358,9 @@ class Service(object):
     new_nodes = {}
     ignore_fields = []
     keys = []
+    stype = 'state'
 
-    def __init__(self, name, defn, period, keys, ignore_fields, schema,
+    def __init__(self, name, defn, period, stype, keys, ignore_fields, schema,
                  output_dir):
         self.name = name
         self.defn = defn
@@ -238,6 +369,7 @@ class Service(object):
         self.keys = keys
         self.schema = schema
         self.period = period
+        self.stype = stype
 
         self.logger = logging.getLogger('suzieq')
 
@@ -349,16 +481,12 @@ class Service(object):
 
         # Build default data structure
         schema_rec = {}
-        def_vals = {'string': '-', 'int': 0, 'long': 0, 'double': 0,
-                    'array': ['-'], 'map': {}, 'boolean': False}
-        for field in self.schema['fields']:
-            default = def_vals.get(field['type'], '') \
-                      if type(field['type']) == str \
-                      else def_vals.get(field['type']['type'], '') \
-                      if type(field['type']) == dict \
-                      else def_vals.get(field['type'][0])
-
-            schema_rec.update({field['name']: default})
+        def_vals = {pa.string(): '-', pa.int32(): 0, pa.int64(): 0,
+                    pa.float64(): 0, pa.bool_(): False,
+                    pa.list_(pa.string()): ['-']}
+        for field in self.schema:
+            default = def_vals[field.type]
+            schema_rec.update({field.name: default})
 
         for entry in processed_data:
             entry.update({'hostname': raw_data['hostname']})
@@ -366,8 +494,6 @@ class Service(object):
             for fld in schema_rec:
                 if fld not in entry:
                     entry.update({fld: schema_rec[fld]})
-
-        validate_many(processed_data, self.schema)
 
     def commit_data(self, result, datacenter, hostname):
         '''Write the result data out'''
@@ -386,14 +512,26 @@ class Service(object):
 
             if records:
                 df = pd.DataFrame.from_dict(records)
-                table = pa.Table.from_pandas(df)
+                table = pa.Table.from_pandas(df, schema=self.schema)
                 pq.write_to_dataset(
                     table,
                     root_path='{}/{}/{}'.format(self.output_dir,
                                                 datacenter,
                                                 self.name),
                     partition_cols=['timestamp'],
+                    version="2.0",
                     flavor='spark')
+
+            if result and self.stype == 'state':
+                # Always save the current data wholesome
+                df = pd.DataFrame.from_dict(result)
+                table = pa.Table.from_pandas(df, schema=self.schema)
+                cdir = '{}/{}/current/{}/'.format(self.output_dir,
+                                                  datacenter,
+                                                  self.name)
+                if not os.path.isdir(cdir):
+                    os.makedirs(cdir)
+                pq.write_table(table, '{}/{}.parquet'.format(cdir, hostname))
 
     async def run(self):
         '''Start the service'''
@@ -481,9 +619,9 @@ class SystemService(Service):
     timestamp diff
     '''
 
-    def __init__(self, name, defn, period, keys, ignore_fields,
+    def __init__(self, name, defn, period, stype, keys, ignore_fields,
                  schema, output_dir):
-        super(SystemService, self).__init__(name, defn, period, keys,
+        super(SystemService, self).__init__(name, defn, period, stype, keys,
                                             ignore_fields, schema, output_dir)
         self.ignore_fields.append('bootupTimestamp')
 
