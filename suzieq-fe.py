@@ -19,8 +19,6 @@ import json
 import os
 import logging
 
-from pyspark.sql.types import StructType, StructField, StringType
-
 def refresh_tables(datadir, schema_dir, tmpdir):
     '''Build a view containing only the latest data associated with all tables'''
 
@@ -45,7 +43,8 @@ def get_schemas(schema_dir):
         for topic in files:
             with open(root + '/' + topic, 'r') as f:
                 data = json.loads(f.read())
-                schemas[data['name']] = data['fields']
+                if data.get('recordType', None) != 'counters':
+                   schemas[data['name']] = data['fields']
         break
 
     return schemas
@@ -61,6 +60,8 @@ refresh_tables('%s', '%s', '%s')
 refresh_table_code = """
 import sys
 import os
+
+from pyspark.sql.functions import col
 
 def refresh_single_table(topic, datadir, sch, tmpdir):
     '''Refresh the table for a single topic'''
@@ -162,7 +163,8 @@ def get_schemas(schema_dir):
         for topic in files:
             with open(root + '/' + topic, 'r') as f:
                 data = json.loads(f.read())
-                schemas[data['name']] = data['fields']
+                if data.get('recordtype', None) != 'counters':
+                    schemas[data['name']] = data['fields']
         break
 
     return schemas
