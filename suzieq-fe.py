@@ -6,7 +6,7 @@ import json
 import logging
 import argparse
 
-from multiprocessing import Process, Manager
+from multiprocessing import Process, Condition, Manager
 from threading import Thread
 from time import sleep
 
@@ -24,10 +24,10 @@ def refresh_tables(datadir, schema_dir, tmpdir):
 
     schemas = get_schemas(schema_dir)
 
-    for root, dirs, files in os.walk(datadir):
+    for root, dirs, files in os.walk(datadir + '/current/'):
         for topic in dirs:
             if topic in schemas:
-                refresh_single_table(topic, (datadir + '/' + topic),
+                refresh_single_table(topic, (datadir + '/current/' + topic),
                                      schemas[topic], tmpdir)
         break
 
@@ -69,44 +69,28 @@ def refresh_single_table(topic, datadir, sch, tmpdir):
     if not topic or not os.path.isdir(datadir):
         return
 
-    keys = [x['name'] for x in sch if x.get('key', False)]
-    fields = ['last(' + x['name'] + ') as ' + x['name']
-              for x in sch if (not x.get('key', False))]
-
     adf = spark \
           .read \
-          .option('mergeSchema', True) \
           .parquet(datadir) \
           .orderBy('timestamp')
 
-    adf.createOrReplaceTempView('a_' + topic)
-
-    selstr = 'select {fields}, {keys} from a_{topic} ' \
-             'group by {keys}'.format(topic=topic, keys=', '.join(keys),
-                                      fields=', '.join(fields))
-
-    tdf = spark.sql(selstr) \
-               .filter(col('active') == '1') \
-               .drop(col('active')) \
-               .write \
-               .saveAsTable(topic, format='parquet', mode='overwrite',
-                            path='{dir}/{topic}'.format(dir=tmpdir, topic=topic))
-
+    adf.createOrReplaceTempView(topic)
 
 """
 
 
-def inotify_process(state, datadir, notify_refresh):
+def inotify_process(state, datadir, schemas, notify_refresh):
 
     i = inotify.adapters.Inotify()
     watch_events = (
-        inotify.constants.IN_CREATE | inotify.constants.IN_DELETE |
-        inotify.constants.IN_MODIFY | inotify.constants.IN_DELETE_SELF
+        inotify.constants.IN_CLOSE_WRITE | inotify.constants.IN_DELETE |
+        inotify.constants.IN_DELETE_SELF
         )
 
-    for root, dirs, files in os.walk(datadir):
+    for root, dirs, files in os.walk(datadir + '/current'):
         for topic in dirs:
-            i.add_watch('{0}/{1}'.format(root, topic), watch_events)
+            if topic in schemas:
+                i.add_watch('{0}/{1}'.format(root, topic), watch_events)
         break
 
     while True:
@@ -117,8 +101,9 @@ def inotify_process(state, datadir, notify_refresh):
                 i.add_watch(path, watch_events)
                 continue
 
-            state[os.path.basename(path)] = True
-            if state['update'] is False:
+            topic = os.path.basename(path)
+            state[topic] = True
+            if not state['update']:
                 state['update'] = True
                 with notify_refresh:
                     notify_refresh.notify()
@@ -138,17 +123,18 @@ def background_refresh_tables(state, datadir, schemas, notify_refresh,
             print('Background update exiting on shutdown')
             return
 
-    for root, dirs, files in os.walk(datadir):
-        for topic in dirs:
-            if state.get(topic, False) and topic in schemas:
-                code_exp = call_func.format(topic, datadir,
-                                            schemas[topic],
-                                            tmpdir)
-                _ = exec_livycode(refresh_table_code + code_exp,
-                                  session_url, True)
-                state[topic] = False
+        for root, dirs, files in os.walk(datadir + '/current/'):
+            for topic in dirs:
+                if state.get(topic, False) and topic in schemas:
+                    print('refreshing {}'.format(topic))
+                    code_exp = call_func.format(topic, datadir + '/current/' + topic,
+                                                schemas[topic],
+                                                tmpdir)
+                    _ = exec_livycode(refresh_table_code + code_exp,
+                                      session_url, True)
+                    state[topic] = False
             state['update'] = False
-        break
+            break
 
 
 def get_schemas(schema_dir):
@@ -163,7 +149,7 @@ def get_schemas(schema_dir):
         for topic in files:
             with open(root + '/' + topic, 'r') as f:
                 data = json.loads(f.read())
-                if data.get('recordtype', None) != 'counters':
+                if data.get('recordType', None) != 'counters':
                     schemas[data['name']] = data['fields']
         break
 
@@ -172,21 +158,16 @@ def get_schemas(schema_dir):
 
 def _main(datadir, schema_dir, tmpdir):
 
-    schemas = get_schemas(schema_dir)
-    if not schemas:
-        print('No schemas found. Aborting')
-        sys.exit(1)
-
     manager = Manager()
+
     state = manager.dict({'update': False})
-    for root, dirs, files in os.walk(schema_dir):
-        for f in files:
-            topic = os.path.splitext(f)[0]
-            if topic in schemas:
-                manager.dict({topic: False})
+    for root, dirs, files in os.walk(datadir + '/current/'):
+        for topic in dirs:
+            manager.dict({topic: False})
         break
 
     notify_refresh = manager.Condition()
+    schemas = get_schemas(schema_dir)
 
     # Need this for jupyter notebook
     import warnings
@@ -194,7 +175,7 @@ def _main(datadir, schema_dir, tmpdir):
     warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
 
     notify_proc = Process(target=inotify_process,
-                          args=(state, datadir, notify_refresh))
+                          args=(state, datadir, schemas, notify_refresh))
     notify_proc.daemon = True
     notify_proc.start()
 
@@ -236,13 +217,6 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    logging.basicConfig(filename='/tmp/suzieq-fe.log',
-                        level=getattr(logging, args.log.upper()),
-                        format='%(asctime)s - %(name)s - %(levelname)s'
-                        '- %(message)s')
-
-    logger = logging.getLogger('suzieq-fe')
-
     session_url = _main(args.data_dir, os.path.abspath(args.schema_dir),
                         args.temp_dir)
 
@@ -253,4 +227,4 @@ if __name__ == '__main__':
         if output['status'] != 'ok':
             print(output)
         sleep(180)
-    
+
