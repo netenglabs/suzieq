@@ -13,7 +13,7 @@ from pathlib import Path
 from fastavro import parse_schema
 
 
-def get_field_set(svc_def):
+def get_field_set(svc_def, textfsm_dir):
     '''Return the dict of fields with types given a service definition file'''
 
     field_set = set()
@@ -39,7 +39,7 @@ def get_field_set(svc_def):
         else:
             nfn = defn_list[entry].get('textfsm', None)
             if nfn:
-                with open(nfn, 'r') as f:
+                with open(textfsm_dir + '/' + nfn, 'r') as f:
                     lines = f.readlines()
                 for line in lines:
                     if line.startswith('Value'):
@@ -126,26 +126,40 @@ def write_avro_schema(name, fldset, keys, type, output_dir):
 
 if __name__ == '__main__':
 
-    if len(sys.argv) != 3:
+    if len(sys.argv) < 2:
         print('Usage: gen_schema <service file|service dir> <directory '
-              'to write schema to')
+              'to write schema to> [<config directory>]')
         sys.exit(1)
 
     if not os.path.isdir(sys.argv[2]):
-        print('{} must be a directory. Aborting', sys.argv[2])
+        print('ERROR: {} must be a directory. Aborting', sys.argv[2])
         sys.exit(1)
+
+    textfsm_dir = None
 
     p = Path(sys.argv[1])
     if p.is_file():
         files = [p]
     elif p.is_dir():
         files = p.glob('*.yml')
+        textfsm_dir = p.name
     else:
         files = []
+
+    if len(sys.argv) > 2:
+        textfsm_dir = sys.argv[3]
+
+    if not textfsm_dir:
+        print('ERROR: Specify parent directory of textfsm template dir')
+        sys.exit(1)
+
+    if not Path(textfsm_dir).is_dir():
+        print('ERROR: Specify parent directory of textfsm template dir')
+        sys.exit(1)
 
     for file in files:
         with file.open() as f:
             data = yaml.load(f.read())
-            fldset = get_field_set(data)
+            fldset = get_field_set(data, textfsm_dir)
             write_avro_schema(data['service'], fldset, data.get('keys', []),
                               data.get('type', None), sys.argv[2])

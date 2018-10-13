@@ -26,6 +26,7 @@ def avro_to_arrow_schema(avro_sch):
                 'long': pa.int64(),
                 'int': pa.int32(),
                 'double': pa.float64(),
+                'timestamp': pa.date64(),
                 'boolean': pa.bool_(),
                 'array.string': pa.list_(pa.string()),
                 'array.long': pa.list_(pa.int64())
@@ -36,6 +37,7 @@ def avro_to_arrow_schema(avro_sch):
         'long': 0,
         'int': 0,
         'double': 0.0,
+        'timestamp': 0.0,
         'boolean': False,
         'array.string': [],
         'array.long': [],
@@ -325,14 +327,25 @@ def textfsm_data(raw_input, fsm_template, schema):
 
     fields = [fld.name for fld in schema]
 
-
     ptype_map = {pa.string(): str,
                  pa.int32(): int,
                  pa.int64(): int,
                  pa.float64(): float,
+                 pa.date64(): float,
                  pa.list_(pa.string()): list,
                  pa.bool_(): bool
                  }
+
+    map_defaults = {
+        pa.string(): '',
+        pa.int32(): 0,
+        pa.int64(): 0,
+        pa.float64(): 0.0,
+        pa.date64(): 0.0,
+        pa.bool_(): False,
+        pa.list_(pa.string()): [],
+        pa.list_(pa.int64()): [],
+        }
 
     # Ensure the type is set correctly.
     for entry in res:
@@ -341,7 +354,10 @@ def textfsm_data(raw_input, fsm_template, schema):
             if cent in fields:
                 schent_type = schema.field_by_name(cent).type
                 if type(metent[cent]) != ptype_map[schent_type]:
-                    metent[cent] = ptype_map[schent_type](metent[cent])
+                    if metent[cent]:
+                        metent[cent] = ptype_map[schent_type](metent[cent])
+                    else:
+                        metent[cent] = map_defaults[schent_type]
 
         records.append(metent)
 
@@ -483,7 +499,7 @@ class Service(object):
         schema_rec = {}
         def_vals = {pa.string(): '-', pa.int32(): 0, pa.int64(): 0,
                     pa.float64(): 0, pa.bool_(): False,
-                    pa.list_(pa.string()): ['-']}
+                    pa.date64(): 0.0, pa.list_(pa.string()): ['-']}
         for field in self.schema:
             default = def_vals[field.type]
             schema_rec.update({field.name: default})
@@ -511,15 +527,23 @@ class Service(object):
                     records.append(entry)
 
             if records:
+                cdir = '{}/{}/{}/'.format(self.output_dir,
+                                          datacenter,
+                                          self.name)
+                if not os.path.isdir(cdir):
+                    os.makedirs(cdir)
+
                 df = pd.DataFrame.from_dict(records)
+                # pq.write_metadata(
+                #     self.schema,'{}/_metadata'.format(cdir),
+                #     version='2.0',
+                #     coerce_timestamps='us')
+
                 table = pa.Table.from_pandas(df, schema=self.schema)
-                pq.write_to_dataset(
-                    table,
-                    root_path='{}/{}/{}'.format(self.output_dir,
-                                                datacenter,
-                                                self.name),
-                    partition_cols=['timestamp'],
-                    flavor='spark')
+                pq.write_to_dataset(table, root_path=cdir,
+                                    partition_cols=['timestamp'],
+                                    version="2.0",
+                                    flavor='spark')
 
                 if self.stype == 'state':
                     # Always save the current data wholesome
@@ -531,7 +555,8 @@ class Service(object):
                     if not os.path.isdir(cdir):
                         os.makedirs(cdir)
                     pq.write_table(table, '{}/{}.parquet'.format(cdir,
-                                                                 hostname))
+                                                                 hostname),
+                                   version='2.0')
 
     async def run(self):
         '''Start the service'''

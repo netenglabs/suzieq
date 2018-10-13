@@ -221,7 +221,7 @@ class Node(object):
                 stdout, stderr = await asyncio.wait_for(proc.communicate(),
                                                         timeout=5)
                 result.append({'status': proc.returncode,
-                               'timestamp': time.time(),
+                               'timestamp': int(time.time()*1000),
                                'cmd': cmd,
                                'devtype': self.devtype,
                                'datacenter': self.dcname,
@@ -231,7 +231,7 @@ class Node(object):
                                else stderr.decode('ascii', 'ignore')})
             except asyncio.TimeoutError as e:
                     result.append({'status': 408,
-                                   'timestamp': time.time(),
+                                   'timestamp': int(int(time.time()*1000)),
                                    'cmd': cmd,
                                    'devtype': self.devtype,
                                    'datacenter': self.dcname,
@@ -258,7 +258,7 @@ class Node(object):
                 logging.error('Unable to connect to node {}'.format(
                     self.hostname))
                 result.append({'status': 408,
-                               'timestamp': time.time(),
+                               'timestamp': int(time.time()*1000),
                                'cmd': cmd,
                                'devtype': self.devtype,
                                'datacenter': self.dcname,
@@ -271,7 +271,7 @@ class Node(object):
                 try:
                     output = await asyncio.wait_for(conn.run(cmd), timeout=5)
                     result.append({'status': output.exit_status,
-                                   'timestamp': time.time(),
+                                   'timestamp': int(time.time()*1000),
                                    'cmd': cmd,
                                    'devtype': self.devtype,
                                    'datacenter': self.dcname,
@@ -279,7 +279,7 @@ class Node(object):
                                    'data': output.stdout})
                 except asyncio.TimeoutError as e:
                     result.append({'status': 408,
-                                   'timestamp': time.time(),
+                                   'timestamp': int(time.time()*1000),
                                    'cmd': cmd,
                                    'devtype': self.devtype,
                                    'datacenter': self.dcname,
@@ -345,7 +345,7 @@ class EosNode(Node):
         if not cmd_list:
             return result
 
-        now = time.time()
+        now = int(time.time()*1000)
         auth = aiohttp.BasicAuth(self.username, password=self.password)
         data = {"jsonrpc": "2.0", "method": "runCmds", "id": int(now),
                 "params": {"version": 1, 'format': oformat,
@@ -385,7 +385,7 @@ class EosNode(Node):
         except asyncio.TimeoutError as e:
             for cmd in cmd_list:
                 result.append({'status': 408,
-                               'timestamp': time.time(),
+                               'timestamp': int(time.time()*1000),
                                'cmd': cmd,
                                'devtype': self.devtype,
                                'datacenter': self.dcname,
@@ -425,7 +425,7 @@ class CumulusNode(Node):
                     async with session.post(url, json=data,
                                             headers=headers) as response:
                         result.append({'status': response.status,
-                                       'timestamp': time.time(),
+                                       'timestamp': int(time.time()*1000),
                                        'cmd': cmd,
                                        'devtype': self.devtype,
                                        'datacenter': self.dcname,
@@ -433,7 +433,7 @@ class CumulusNode(Node):
                                        'data': await response.text()})
         except asyncio.TimeoutError as e:
             result.append({'status': 408,
-                           'timestamp': time.time(),
+                           'timestamp': int(time.time()*1000),
                            'cmd': cmd,
                            'devtype': self.devtype,
                            'datacenter': self.dcname,
