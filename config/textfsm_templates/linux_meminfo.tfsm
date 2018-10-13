@@ -1,0 +1,12 @@
+Value totalMem (\d+)
+Value freeMem (\d+)
+Value availMem (\d+)
+Value totalSwap (\d+)
+Value freeSwap (\d+)
+
+Start
+  ^MemTotal:\s+${totalMem}\s+kB.*$$
+  ^MemFree:\s+${freeMem}\s+kB.*$$
+  ^MemAvailable:\s+${availMem}\s+kB.*$$
+  ^SwapTotal:\s+${totalSwap}\s+kB.*$$
+  ^SwapFree:\s+${freeSwap}\s+kB.*$$

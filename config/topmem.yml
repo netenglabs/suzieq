@@ -1,0 +1,19 @@
+service: topmem
+type: counters
+apply:
+  cumulus:
+    version: all
+    command: ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%mem | head -11
+    textfsm: textfsm_templates/linux_topproc.tfsm
+
+  linux:
+    version: all
+    command: ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%mem | head -11
+    textfsm: textfsm_templates/linux_topproc.tfsm
+
+  eos:
+    version: all
+    command: bash ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%mem | head -11
+    format: text
+    textfsm: textfsm_templates/linux_topproc.tfsm
+    
