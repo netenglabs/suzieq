@@ -127,7 +127,8 @@ def background_refresh_tables(state, datadir, schemas, notify_refresh,
             for topic in dirs:
                 if state.get(topic, False) and topic in schemas:
                     print('refreshing {}'.format(topic))
-                    code_exp = call_func.format(topic, datadir + '/current/' + topic,
+                    code_exp = call_func.format(topic,
+                                                datadir + '/current/' + topic,
                                                 schemas[topic],
                                                 tmpdir)
                     _ = exec_livycode(refresh_table_code + code_exp,
