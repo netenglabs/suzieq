@@ -4,8 +4,8 @@ ignore-fields:
   - lastDownTime
   - estdTime
 keys:
-  - peer
   - vrf
+  - peer
 apply:
   eos:
     version: all
@@ -27,7 +27,7 @@ apply:
         "sentUpdates: updatesTx",
         "routerId: peerRouterId",
         "localRouterId: routerId",
-        "establishedTime: estdTime*1000",
+        "establishedTime: estdTime",
         "establishedTransitions: transitionCnt",
         "v4Enabled: v4Enabled?|True",
         "v6Enabled: v6Enabled?|False",
@@ -49,9 +49,9 @@ apply:
         "messageStats/updatesRecv: updatesRx",
         "remoteRouterId: peerRouterId",
         "bgpState: state?Established|NotEstd",
-        "bgpTimerUpMsec: estdTime?|0",
+        "bgpTimerUpMsec: div(estdTime,1000)",
         "connectionsEstablished: transitionCnt",
-        "connectionsDropped: transitionCnt+transitionCnt",
+        "connectionsDropped: add(transitionCnt,transitionCnt)",
         "hostname: peerHostname",
         "neighborCapabilities/multiprotocolExtensions/IPv4 Unicast/advertisedAndReceived: v4Enabled?|False",
         "neighborCapabilities/multiprotocolExtensions/L2VPN EVPN/advertisedAndReceived: evpnEnabled?|False",

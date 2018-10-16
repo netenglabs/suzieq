@@ -6,18 +6,18 @@ Value Filldown totalMem (\d+)
 Value Filldown freeMem (\d+)
 Value Filldown usedMem (\d+)
 Value Filldown cacheMem (\d+)
-Value List pid (\d+)
-Value List user (\S+)
-Value List priority (\d+)
-Value List nice (\d+)
-Value List virtualMem (\d+|\d+.\d+g)
-Value List residentMem (\d+|\d+.\d+g)
-Value List sharedMem (\d+|\d+.\d+g)
-Value List state (\S)
-Value List percentCPU (\d+.\d+)
-Value List percentMem (\d+.\d+)
-Value List runningTime (\d+:\d+.?\d*)
-Value List procName (.*)
+Value pid (\d+)
+Value user (\S+)
+Value priority (\d+)
+Value nice (\d+)
+Value virtualMem (\d+|\d+.\d+g)
+Value residentMem (\d+|\d+.\d+g)
+Value sharedMem (\d+|\d+.\d+g)
+Value state (\S)
+Value percentCPU (\d+.\d+)
+Value percentMem (\d+.\d+)
+Value runningTime (\d+:\d+.?\d*)
+Value procName (.*)
 
 Start
   ^top.* up ${uptime}.*load average: ${minLoadAvg}, ${fiveMinLoadAvg}, ${fifteenMinLoadAvg}.*$$
@@ -26,9 +26,9 @@ Start
   ^KiB Mem :\s+${totalMem} total,\s+${freeMem} free,\s+${usedMem} used,\s+${cacheMem} buff/cache\s*$$
   ^KiB Swap:.*$$
   ^\s*$$
-  ^\s+PID USER.*$$
-  ^\s*${pid}\s+${user}\s+${priority}\s+${nice}\s+${virtualMem}\s+${residentMem}\s+${sharedMem}\s+${state}\s+${percentCPU}\s+${percentMem}\s+${runningTime}\s+${procName}\s*$$
-  ^$$EOF -> Record
+  ^\s+PID USER.*$$ -> Record
+  ^\s*${pid}\s+${user}\s+${priority}\s+${nice}\s+${virtualMem}\s+${residentMem}\s+${sharedMem}\s+${state}\s+${percentCPU}\s+${percentMem}\s+${runningTime}\s+${procName}\s*$$ -> Record
+  ^$$EOF 
 
 
 #top - 18:36:11 up 17 days, 19:17, 10 users,  load average: 1.52, 1.48, 1.56

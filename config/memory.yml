@@ -13,7 +13,7 @@ apply:
 
   eos:
     version: all
-    command: bash cat /proc/meminfo
+    command: bash timeout 5 cat /proc/meminfo
     format: text
     textfsm: textfsm_templates/linux_meminfo.tfsm
     

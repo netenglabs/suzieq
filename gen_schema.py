@@ -93,7 +93,7 @@ def write_avro_schema(name, fldset, keys, type, output_dir):
     # Add the default fields we add to every record
     schema['fields'].append({'name': 'hostname', 'type': 'string',
                              'key': True})
-    schema['fields'].append({'name': 'timestamp', 'type': 'double'})
+    schema['fields'].append({'name': 'timestamp', 'type': 'timestamp'})
     schema['fields'].append({'name': 'active', 'type': 'boolean'})
 
     if parse_schema(schema):
