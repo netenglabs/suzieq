@@ -7,6 +7,7 @@ import time
 import re
 import ast
 import json
+
 import yaml
 import copy
 import logging
@@ -16,6 +17,7 @@ import pyarrow as pa
 import pyarrow.parquet as pq
 import textfsm
 from pyarrow import DataType
+from pyarrow.lib import Field
 
 
 def avro_to_arrow_schema(avro_sch):
@@ -32,26 +34,15 @@ def avro_to_arrow_schema(avro_sch):
                 'array.long': pa.list_(pa.int64())
                 }
 
-    map_defaults = {
-        'string': '',
-        'long': 0,
-        'int': 0,
-        'double': 0.0,
-        'timestamp': 0.0,
-        'boolean': False,
-        'array.string': [],
-        'array.long': [],
-        }
-
     for fld in avro_sch.get('fields', None):
         if type(fld['type']) is dict:
             if fld['type']['type'] == 'array':
-                avtype = 'array.{}'.format(fld['type']['items']['type'])
+                avtype: str = 'array.{}'.format(fld['type']['items']['type'])
             else:
                 # We don't support map yet
                 raise AttributeError
         else:
-            avtype = fld['type']
+            avtype: str = fld['type']
 
         arsc_fields.append(pa.field(fld['name'], map_type[avtype]))
 
@@ -184,30 +175,29 @@ def exdict(path, data, start, collect=False):
             else:
                 oresult[fkey.strip()] = rval
         else:
-            fkeys = re.split(r'([,+*/])', okeys[1])
-            if len(fkeys) > 1:
-                rval = None
-                fkeys = [fkeys[0].strip(), fkeys[1], fkeys[2].strip()]
-                if fkeys[2] not in oresult:
-                    if not fkeys[2].isdigit():
+            opmatch = re.match(r'^(add|sub|mul|div)\((\w+),(\w+)\)$', okeys[1])
+            if opmatch:
+                op, lval, rval = opmatch.groups()
+                if rval not in oresult:
+                    if not rval.isdigit():
                         # This is an unsuppported operation, need int field
-                        oresult[fkeys[0]] = 0
+                        oresult[lval] = 0
                         return
                     else:
-                        rval = int(fkeys[2])
+                        rval = int(rval)
                 else:
-                    rval = int(oresult[fkeys[2]])
-                if fkeys[1] == '+':
-                    oresult[fkeys[0]] = indata.get(okeys[0], 0) + rval
-                elif fkeys[1] == '-':
-                    oresult[fkeys[0]] = indata.get(okeys[0], 0) - rval
-                elif fkeys[1] == '*':
-                    oresult[fkeys[0]] = indata.get(okeys[0], 0) * rval
-                elif fkeys[1] == '/':
+                    rval = int(oresult[rval])
+                if op == 'add':
+                    oresult[lval] = indata.get(okeys[0], 0) + rval
+                elif op == 'sub':
+                    oresult[lval] = indata.get(okeys[0], 0) - rval
+                elif op == 'mul':
+                    oresult[lval] = indata.get(okeys[0], 0) * rval
+                elif op == 'div':
                     if rval:
-                        oresult[fkeys[0]] = indata.get(okeys[0], 0) / rval
+                        oresult[lval] = indata.get(okeys[0], 0) / rval
                     else:
-                        oresult[fkeys[0]] = 0
+                        oresult[lval] = 0
             else:
                 rval = indata.get(okeys[0], '')
                 try:
@@ -277,6 +267,8 @@ def exdict(path, data, start, collect=False):
                             iresult.update(subresult)
                             result.append(iresult)
                             iresult = {}
+                            if use_key:
+                                iresult[okeys[1].strip()] = item
                 else:
                     continue
             if j >= i:
@@ -392,6 +384,9 @@ class Service(object):
         # Add the hidden fields to ignore_fields
         self.ignore_fields.append('active')
         self.ignore_fields.append('timestamp')
+
+        if 'hostname' not in self.keys:
+            self.keys.insert(0, 'hostname')
 
     def set_nodes(self, nodes):
         '''New node list for this service'''
@@ -541,7 +536,7 @@ class Service(object):
 
                 table = pa.Table.from_pandas(df, schema=self.schema)
                 pq.write_to_dataset(table, root_path=cdir,
-                                    partition_cols=['timestamp'],
+                                    partition_cols=self.keys + ['timestamp'],
                                     version="2.0",
                                     flavor='spark')
 
