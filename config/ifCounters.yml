@@ -19,8 +19,8 @@ apply:
     "interfaceCounters/totalInErrors: rxErrs?|0",
     "interfaceCounters/outOctets: txBytes?|0",
     "interfaceCounters/outUcastPkts: txPackets?|0",
-    "interfaceCounters/outMulticastPkts: txPackets + txPackets",
-    "interfaceCounters/outBroadcastPkts: txPackets + txPackets",
+    "interfaceCounters/outMulticastPkts: add(txPackets,txPackets)",
+    "interfaceCounters/outBroadcastPkts: add(txPackets,txPackets)",
     "interfaceCounters/totalOutErrors: txErrs?|0",
     "interfaceCounters/outDiscards: txDrops?|0"
     ]'

@@ -13,7 +13,7 @@ apply:
 
   eos:
     version: all
-    command: bash ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%mem | head -11
+    command: bash timeout 3 ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%mem | head -11
     format: text
     textfsm: textfsm_templates/linux_topproc.tfsm
     
