@@ -1,6 +1,12 @@
 service: lldp
 keys:
   - ifname
+show-fields:
+  - ifname
+  - peerHostname
+  - peerIfname
+  - description
+  - mgmtIP
 apply:
   cumulus:
     version: all
@@ -14,11 +20,11 @@ apply:
 
   eos:
     version: all
-    command: show lldp neighbors
-    normalize: 'lldpNeighbors/*/[
-    "port: ifname",
-    "neighborDevice: peerHostname",
-    "description: description?|-",
-    "mgmtIP: mgmtIP?|-",
-    "neighborPort: peerIfname"]'
+    command: show lldp neighbors detail
+    normalize: 'lldpNeighbors/*:ifname/[
+    "lldpNeighborInfo/[0]/systemName: peerHostname",
+    "lldpNeighborInfo/[0]/neighborInterfaceInfo/interfaceId: peerIfname",
+    "lldpNeighborInfo/[0]/systemDescription: description?|-",
+    "lldpNeighborInfo/[0]/managementAddresses/[0]/address: mgmtIP?|-",
+    ]'
 

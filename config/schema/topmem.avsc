@@ -4,43 +4,11 @@
     "type": "record",
     "fields": [
         {
-            "name": "user",
-            "type": "string"
-        },
-        {
-            "name": "sharedMem",
-            "type": "long"
-        },
-        {
-            "name": "procName",
-            "type": "string"
-        },
-        {
-            "name": "usedMem",
-            "type": "long"
+            "name": "fiveMinLoadAvg",
+            "type": "float"
         },
         {
             "name": "percentCPU",
-            "type": "float"
-        },
-        {
-            "name": "state",
-            "type": "string"
-        },
-        {
-            "name": "freeMem",
-            "type": "long"
-        },
-        {
-            "name": "residentMem",
-            "type": "long"
-        },
-        {
-            "name": "percentMem",
-            "type": "float"
-        },
-        {
-            "name": "fifteenMinLoadAvg",
             "type": "float"
         },
         {
@@ -48,8 +16,20 @@
             "type": "long"
         },
         {
-            "name": "nice",
-            "type": "long"
+            "name": "state",
+            "type": "string"
+        },
+        {
+            "name": "user",
+            "type": "string"
+        },
+        {
+            "name": "minLoadAvg",
+            "type": "float"
+        },
+        {
+            "name": "percentMem",
+            "type": "float"
         },
         {
             "name": "cacheMem",
@@ -60,19 +40,11 @@
             "type": "long"
         },
         {
-            "name": "virtualMem",
+            "name": "residentMem",
             "type": "long"
         },
         {
-            "name": "minLoadAvg",
-            "type": "float"
-        },
-        {
-            "name": "fiveMinLoadAvg",
-            "type": "float"
-        },
-        {
-            "name": "totalMem",
+            "name": "sharedMem",
             "type": "long"
         },
         {
@@ -80,9 +52,38 @@
             "type": "string"
         },
         {
+            "name": "usedMem",
+            "type": "long"
+        },
+        {
+            "name": "procName",
+            "type": "string"
+        },
+        {
+            "name": "fifteenMinLoadAvg",
+            "type": "float"
+        },
+        {
+            "name": "nice",
+            "type": "long"
+        },
+        {
+            "name": "freeMem",
+            "type": "long"
+        },
+        {
+            "name": "totalMem",
+            "type": "long"
+        },
+        {
+            "name": "virtualMem",
+            "type": "long"
+        },
+        {
             "name": "hostname",
             "type": "string",
-            "key": true
+            "key": true,
+            "display": true
         },
         {
             "name": "timestamp",
@@ -92,5 +93,6 @@
             "name": "active",
             "type": "boolean"
         }
-    ]
+    ],
+    "recordType": "counters"
 }

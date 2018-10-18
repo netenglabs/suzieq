@@ -4,33 +4,83 @@
     "type": "record",
     "fields": [
         {
+            "name": "updatesRx",
+            "type": "long"
+        },
+        {
+            "name": "v6Enabled",
+            "type": "boolean"
+        },
+        {
+            "name": "state",
+            "type": "string",
+            "display": true
+        },
+        {
             "name": "peerHostname",
             "type": "string"
         },
         {
-            "name": "estdTime",
-            "type": "double"
-        },
-
-	{
-            "name": "peerAsn",
-            "type": "long"
-        },
-        {
-            "name": "evpnPfxRx",
-            "type": "long"
+            "name": "vrf",
+            "type": "string",
+            "key": true,
+            "display": true
         },
         {
             "name": "v6PfxRx",
             "type": "long"
         },
         {
-            "name": "state",
+            "name": "peerRouterId",
+            "type": "string",
+            "default": "0.0.0.0"
+        },
+        {
+            "name": "transitionCnt",
+            "type": "long",
+            "display": true
+        },
+        {
+            "name": "v4PfxRx",
+            "type": "long",
+            "display": true
+        },
+        {
+            "name": "v4PfxTx",
+            "type": "long"
+        },
+        {
+            "name": "source",
             "type": "string"
         },
         {
-            "name": "evpnPfxTx",
-            "type": "long"
+            "name": "asn",
+            "type": "long",
+            "display": true
+        },
+        {
+            "name": "estdTime",
+            "type": "timedelta64[s]",
+            "display": true
+        },
+        {
+            "name": "peer",
+            "type": "string",
+            "key": true,
+            "display": true
+        },
+        {
+            "name": "lastDownTime",
+            "type": "timedelta64[s]"
+        },
+        {
+            "name": "v4Enabled",
+            "type": "boolean"
+        },
+        {
+            "name": "peerAsn",
+            "type": "long",
+            "display": true
         },
         {
             "name": "maintenance",
@@ -41,76 +91,30 @@
             "type": "string"
         },
         {
-            "name": "v6PfxTx",
-            "type": "long"
-        },
-        {
-            "name": "vrf",
-            "type": "string",
-            "key": true
-        },
-        {
-            "name": "source",
-            "type": "string"
-        },
-        {
             "name": "routerId",
             "type": "string"
         },
         {
-            "name": "updatesRx",
+            "name": "evpnPfxRx",
             "type": "long"
-        },
-        {
-            "name": "v4PfxTx",
-            "type": "long"
-        },
-        {
-            "name": "peer",
-            "type": "string",
-            "key": true
-        },
-        {
-            "name": "evpnEnabled",
-            "type": "boolean"
-        },
-        {
-            "name": "v6Enabled",
-            "type": "boolean"
         },
         {
             "name": "updatesTx",
             "type": "long"
         },
         {
-            "name": "v4PfxRx",
-            "type": "long"
-        },
-        {
-            "name": "peerRouterId",
-            "type": "string",
-            "default": "0.0.0.0"
-        },
-        {
-            "name": "transitionCnt",
-            "type": "long"
-        },
-        {
-            "name": "asn",
-            "type": "long"
-        },
-        {
-            "name": "lastDownTime",
-            "type": "double"
-        },
-        {
-            "name": "v4Enabled",
+            "name": "evpnEnabled",
             "type": "boolean"
+        },
+        {
+            "name": "v6PfxTx",
+            "type": "long"
         },
         {
             "name": "hostname",
             "type": "string",
-            "key": true
+            "key": true,
+            "display": true
         },
         {
             "name": "timestamp",

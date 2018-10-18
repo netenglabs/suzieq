@@ -6,6 +6,15 @@ ignore-fields:
 keys:
   - vrf
   - peer
+show-fields:
+  - vrf
+  - peer
+  - state
+  - asn
+  - peerAsn
+  - v4PfxRx
+  - estdTime
+  - transitionCnt
 apply:
   eos:
     version: all
@@ -27,7 +36,7 @@ apply:
         "sentUpdates: updatesTx",
         "routerId: peerRouterId",
         "localRouterId: routerId",
-        "establishedTime: estdTime",
+        "establishedTime: estdTime?|0.0",
         "establishedTransitions: transitionCnt",
         "v4Enabled: v4Enabled?|True",
         "v6Enabled: v6Enabled?|False",
