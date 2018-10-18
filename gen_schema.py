@@ -11,6 +11,7 @@ import json
 import ast
 from pathlib import Path
 from fastavro import parse_schema
+from fastavro._schema import UnknownType
 
 
 def get_field_set(svc_def, textfsm_dir):
@@ -43,8 +44,12 @@ def get_field_set(svc_def, textfsm_dir):
                     lines = f.readlines()
                 for line in lines:
                     if line.startswith('Value'):
-                        field_set.add(re.match(r'^Value\s*(\S+)',
-                                               line).group(1))
+                        g = re.match(r'Value\s+(\w+)\s*(\w*)', line).groups()
+                        if g[-1]:
+                            fldname = g[-1]
+                        else:
+                            fldname = g[0]
+                        field_set.add(fldname)
 
     return field_set
 
@@ -76,7 +81,7 @@ def write_avro_schema(name, fldset, keys, type, output_dir):
                                        'name': fld.split('List')[0]}}
         elif (fld.endswith('Time') or fld.endswith('Timestamp') or
               fld.endswith('time')):
-            field['type'] = 'double'
+            field['type'] = 'timestamp'
         elif fld.endswith('name') or fld.endswith('Name'):
             field['type'] = 'string'
         elif type == 'counters':
@@ -96,7 +101,12 @@ def write_avro_schema(name, fldset, keys, type, output_dir):
     schema['fields'].append({'name': 'timestamp', 'type': 'timestamp'})
     schema['fields'].append({'name': 'active', 'type': 'boolean'})
 
-    if parse_schema(schema):
+    try:
+        rslt = parse_schema(schema)
+    except UnknownType as e:
+        rslt = True
+
+    if rslt:
         filename = output_dir + '/' + name + '.avsc'
         # We do require users to cleanup this auto-generated schema.
         # Don't make them do the work multiple times, save the original
@@ -146,7 +156,7 @@ if __name__ == '__main__':
     else:
         files = []
 
-    if len(sys.argv) > 2:
+    if len(sys.argv) > 3:
         textfsm_dir = sys.argv[3]
 
     if not textfsm_dir:
