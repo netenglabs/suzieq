@@ -1,4 +1,3 @@
-Value Filldown uptime (\d+ \S+, \d+:\d+)
 Value Filldown minLoadAvg (\S+)
 Value Filldown fiveMinLoadAvg (\S+)
 Value Filldown fifteenMinLoadAvg (\S+)
@@ -20,10 +19,10 @@ Value runningTime (\d+:\d+.?\d*)
 Value procName (.*)
 
 Start
-  ^top.* up ${uptime}.*load average: ${minLoadAvg}, ${fiveMinLoadAvg}, ${fifteenMinLoadAvg}.*$$
+  ^top.*\s+load average: ${minLoadAvg}, ${fiveMinLoadAvg}, ${fifteenMinLoadAvg}.*$$
   ^Tasks.*$$
   ^%Cpu.*$$
-  ^KiB Mem :\s+${totalMem} total,\s+${freeMem} free,\s+${usedMem} used,\s+${cacheMem} buff/cache\s*$$
+  ^KiB Mem\s*:\s+${totalMem} total,\s+${freeMem} free,\s+${usedMem} used,\s+${cacheMem} buff.*\s*$$
   ^KiB Swap:.*$$
   ^\s*$$
   ^\s+PID USER.*$$ -> Record
