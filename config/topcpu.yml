@@ -1,19 +1,20 @@
 service: topcpu
+period: 60
 type: counters
 apply:
   cumulus:
     version: all
-    command: ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%cpu | head -11
-    textfsm: textfsm_templates/linux_topproc.tfsm
+    command: top -bn 1 | head -17
+    textfsm: textfsm_templates/cl_top.tfsm
 
   linux:
     version: all
-    command: ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%cpu | head -11
-    textfsm: textfsm_templates/linux_topproc.tfsm
+    command: top -bn 1 | head -17
+    textfsm: textfsm_templates/linux_top.tfsm
 
   eos:
     version: all
-    command: bash timeout 3 ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%cpu | head -11
+    command: bash timeout 5 top -bn 1 | head -17
     format: text
-    textfsm: textfsm_templates/linux_topproc.tfsm
+    textfsm: textfsm_templates/cl_top.tfsm
     
