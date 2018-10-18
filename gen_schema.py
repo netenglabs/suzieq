@@ -28,7 +28,8 @@ def get_field_set(svc_def, textfsm_dir):
                 try:
                     nfn_fld_list = ast.literal_eval(elem)
                     nfn_flds = [
-                        re.match(r'\s*(\w+)', fld.split(':')[1]).group(1)
+                        re.match(r'\s*(?:add\(|div\(|mul\(|sub\()*(\w+)',
+                                 fld.split(':')[1]).group(1)
                         for fld in nfn_fld_list if type(fld) is str
                         ]
                     field_set.update(nfn_flds)
@@ -54,7 +55,7 @@ def get_field_set(svc_def, textfsm_dir):
     return field_set
 
 
-def write_avro_schema(name, fldset, keys, type, output_dir):
+def write_avro_schema(name, fldset, keys, show_fields, type, output_dir):
     '''Generate an AVRO schema file given a set of fields.
     We attempt to derive the type if we can. The logic followed for
     automatically deriving type is as follows:
@@ -70,6 +71,9 @@ def write_avro_schema(name, fldset, keys, type, output_dir):
         "fields": []
     }
 
+    if type == 'counters':
+        schema.update({'recordType': 'counters'})
+
     for fld in fldset:
         field = {'name': fld}
 
@@ -82,7 +86,7 @@ def write_avro_schema(name, fldset, keys, type, output_dir):
         elif (fld.endswith('Time') or fld.endswith('Timestamp') or
               fld.endswith('time')):
             field['type'] = 'timestamp'
-        elif fld.endswith('name') or fld.endswith('Name'):
+        elif fld.endswith('name') or fld.endswith('Name') or fld == 'user':
             field['type'] = 'string'
         elif type == 'counters':
             field['type'] = 'long'
@@ -92,12 +96,15 @@ def write_avro_schema(name, fldset, keys, type, output_dir):
         if fld in keys:
             field['key'] = True
 
+        if fld in show_fields:
+            field['display'] = True
+
         schema['fields'].append(field)
         field = {}
 
     # Add the default fields we add to every record
     schema['fields'].append({'name': 'hostname', 'type': 'string',
-                             'key': True})
+                             'key': True, 'display': True})
     schema['fields'].append({'name': 'timestamp', 'type': 'timestamp'})
     schema['fields'].append({'name': 'active', 'type': 'boolean'})
 
@@ -172,4 +179,5 @@ if __name__ == '__main__':
             data = yaml.load(f.read())
             fldset = get_field_set(data, textfsm_dir)
             write_avro_schema(data['service'], fldset, data.get('keys', []),
+                              data.get('show-fields', []),
                               data.get('type', None), sys.argv[2])

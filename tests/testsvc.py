@@ -57,7 +57,7 @@ svcstr = svcdef.get('apply', {}) \
 
 if not svcstr:
     print('No normalization service string found for {} in {}/{}'.format(
-        userargs.devtype, userargs.service_dir, userargs.name))
+        userargs.device_type, userargs.service_dir, userargs.name))
     sys.exit(1)
 
 raw_input = yml_inp.get('input', {}) \
@@ -65,7 +65,7 @@ raw_input = yml_inp.get('input', {}) \
 
 if not raw_input:
     print('No normalization service string found for {} in {}/{}'.format(
-        userargs.devtype, userargs.sample_dir, userargs.name))
+        userargs.device_type, userargs.sample_dir, userargs.name))
     sys.exit(1)
 
 records, _ = exdict(svcstr, json.loads(raw_input), 0)

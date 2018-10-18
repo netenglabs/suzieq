@@ -30,6 +30,7 @@ def avro_to_arrow_schema(avro_sch):
                 'double': pa.float64(),
                 'float': pa.float32(),
                 'timestamp': pa.date64(),
+                'timedelta64[s]': pa.float64(),
                 'boolean': pa.bool_(),
                 'array.string': pa.list_(pa.string()),
                 'array.long': pa.list_(pa.int64())
@@ -152,10 +153,11 @@ def exdict(path, data, start, collect=False):
         '''Set the value in the outgoing dict'''
         if okeys:
             okeys = [okeys[0].strip(), okeys[1].strip()]
+            cval = indata.get(okeys[0], '') if indata else ''
+
         if '?' in okeys[1]:
             fkey, fvals = okeys[1].split('?')
             fvals = fvals.split('|')
-            cval = indata.get(okeys[0], '')
             if '=' in fvals[0]:
                 tval, rval = fvals[0].split('=')
             else:
@@ -188,19 +190,21 @@ def exdict(path, data, start, collect=False):
                         rval = int(rval)
                 else:
                     rval = int(oresult[rval])
+                if not cval:
+                    cval = 0
                 if op == 'add':
-                    oresult[lval] = indata.get(okeys[0], 0) + rval
+                    oresult[lval] = cval + rval
                 elif op == 'sub':
-                    oresult[lval] = indata.get(okeys[0], 0) - rval
+                    oresult[lval] = cval - rval
                 elif op == 'mul':
-                    oresult[lval] = indata.get(okeys[0], 0) * rval
+                    oresult[lval] = cval * rval
                 elif op == 'div':
                     if rval:
-                        oresult[lval] = indata.get(okeys[0], 0) / rval
+                        oresult[lval] = cval / rval
                     else:
                         oresult[lval] = 0
             else:
-                rval = indata.get(okeys[0], '')
+                rval = cval
                 try:
                     oresult[okeys[1].strip()] = ast.literal_eval(rval)
                 except (ValueError, SyntaxError):
