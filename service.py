@@ -28,6 +28,7 @@ def avro_to_arrow_schema(avro_sch):
                 'long': pa.int64(),
                 'int': pa.int32(),
                 'double': pa.float64(),
+                'float': pa.float32(),
                 'timestamp': pa.date64(),
                 'boolean': pa.bool_(),
                 'array.string': pa.list_(pa.string()),
@@ -322,6 +323,7 @@ def textfsm_data(raw_input, fsm_template, schema):
     ptype_map = {pa.string(): str,
                  pa.int32(): int,
                  pa.int64(): int,
+                 pa.float32(): float,
                  pa.float64(): float,
                  pa.date64(): float,
                  pa.list_(pa.string()): list,
@@ -332,6 +334,7 @@ def textfsm_data(raw_input, fsm_template, schema):
         pa.string(): '',
         pa.int32(): 0,
         pa.int64(): 0,
+        pa.float32(): 0.0,
         pa.float64(): 0.0,
         pa.date64(): 0.0,
         pa.bool_(): False,
@@ -493,7 +496,7 @@ class Service(object):
         # Build default data structure
         schema_rec = {}
         def_vals = {pa.string(): '-', pa.int32(): 0, pa.int64(): 0,
-                    pa.float64(): 0, pa.bool_(): False,
+                    pa.float64(): 0, pa.float32(): 0.0, pa.bool_(): False,
                     pa.date64(): 0.0, pa.list_(pa.string()): ['-']}
         for field in self.schema:
             default = def_vals[field.type]
@@ -657,8 +660,8 @@ class SystemService(Service):
             # TODO: Fix the clock drift
             if (not entry.get('bootupTimestamp', None) and
                     entry.get('sysUptime', None)):
-                entry['bootupTimestamp'] = (
-                    raw_data['timestamp'] - float(entry.get('sysUptime')))
+                entry['bootupTimestamp'] = int(
+                    raw_data['timestamp'] - float(entry.get('sysUptime')))/1000
                 del entry['sysUptime']
 
         super(SystemService, self).clean_data(processed_data, raw_data)
