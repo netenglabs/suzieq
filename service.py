@@ -29,7 +29,7 @@ def avro_to_arrow_schema(avro_sch):
                 'int': pa.int32(),
                 'double': pa.float64(),
                 'float': pa.float32(),
-                'timestamp': pa.date64(),
+                'timestamp': pa.int64(),
                 'timedelta64[s]': pa.float64(),
                 'boolean': pa.bool_(),
                 'array.string': pa.list_(pa.string()),
@@ -51,16 +51,18 @@ def avro_to_arrow_schema(avro_sch):
     return pa.schema(arsc_fields)
 
 
-async def init_services(svc_dir, schema_dir, output_dir):
+async def init_services(svc_dir, schema_dir, queue):
     '''Process service definitions by reading each file in svc dir'''
 
     svcs_list = []
+    logger = logging.getLogger('suzieq')
+
     if not os.path.isdir(svc_dir):
-        logging.error('services directory not a directory: {}', svc_dir)
+        logger.error('services directory not a directory: {}', svc_dir)
         return svcs_list
 
     if not os.path.isdir(schema_dir):
-        logging.error('schema directory not a directory: {}', svc_dir)
+        logger.error('schema directory not a directory: {}', svc_dir)
         return svcs_list
 
     for root, dirnames, filenames in os.walk(svc_dir):
@@ -69,25 +71,26 @@ async def init_services(svc_dir, schema_dir, output_dir):
                 with open(root + '/' + filename, 'r') as f:
                     svc_def = yaml.load(f.read())
                 if 'service' not in svc_def or 'apply' not in svc_def:
-                    logging.error('Ignorning invalid service file definition. \
+                    logger.error('Ignorning invalid service file definition. \
                     Need both "service" and "apply" keywords: {}'
-                                  .format(filename))
+                                 .format(filename))
                     continue
 
                 period = svc_def.get('period', 15)
                 for elem, val in svc_def['apply'].items():
                     if ('command' not in val or
                             ('normalize' not in val and 'textfsm' not in val)):
-                        logging.error('Ignorning invalid service file definition. \
-                        Need both "command" and "normalize/textfsm" keywords:'
-                                      '{}, {}'.format(filename, val))
+                        logger.error('Ignorning invalid service file '
+                                     'definition. Need both "command" and '
+                                     '"normalize/textfsm" keywords: {}, {}'
+                                     .format(filename, val))
                         continue
 
                     if 'textfsm' in val:
                         tfsm_file = svc_dir + '/' + val['textfsm']
                         if not os.path.isfile(tfsm_file):
-                            logging.error('Textfsm file {} not found. Ignoring'
-                                          ' service'.format(tfsm_file))
+                            logger.error('Textfsm file {} not found. Ignoring'
+                                         ' service'.format(tfsm_file))
                             continue
                         with open(tfsm_file, 'r') as f:
                             tfsm_template = textfsm.TextFSM(f)
@@ -98,9 +101,9 @@ async def init_services(svc_dir, schema_dir, output_dir):
                 # Find matching schema file
                 fschema = '{}/{}.avsc'.format(schema_dir, svc_def['service'])
                 if not os.path.exists(fschema):
-                    logging.error('No schema file found for service {}. '
-                                  'Ignoring service'.format(
-                                      svc_def['service']))
+                    logger.error('No schema file found for service {}. '
+                                 'Ignoring service'.format(
+                                     svc_def['service']))
                     continue
                 else:
                     with open(fschema, 'r') as f:
@@ -116,7 +119,7 @@ async def init_services(svc_dir, schema_dir, output_dir):
                                                svc_def.get('keys', []),
                                                svc_def.get('ignore-fields',
                                                            []),
-                                               schema, output_dir)
+                                               schema, queue)
                 elif svc_def['service'] == 'system':
                     service = SystemService(svc_def['service'],
                                             svc_def['apply'],
@@ -124,7 +127,7 @@ async def init_services(svc_dir, schema_dir, output_dir):
                                             svc_def.get('type', 'state'),
                                             svc_def.get('keys', []),
                                             svc_def.get('ignore-fields', []),
-                                            schema, output_dir)
+                                            schema, queue)
                 elif svc_def['service'] == 'mlag':
                     service = MlagService(svc_def['service'],
                                           svc_def['apply'],
@@ -132,15 +135,15 @@ async def init_services(svc_dir, schema_dir, output_dir):
                                           svc_def.get('type', 'state'),
                                           svc_def.get('keys', []),
                                           svc_def.get('ignore-fields', []),
-                                          schema, output_dir)
+                                          schema, queue)
                 else:
                     service = Service(svc_def['service'], svc_def['apply'],
                                       period, svc_def.get('type', 'state'),
                                       svc_def.get('keys', []),
                                       svc_def.get('ignore-fields', []),
-                                      schema, output_dir)
+                                      schema, queue)
 
-                logging.info('Service {} added'.format(service.name))
+                logger.info('Service {} added'.format(service.name))
                 svcs_list.append(service)
 
     return svcs_list
@@ -368,19 +371,19 @@ class Service(object):
     defn = None
     period = 15                 # 15s is the default period
     update_nodes = False
-    output_dir = None
     nodes = {}
     new_nodes = {}
     ignore_fields = []
     keys = []
     stype = 'state'
+    queue = None
 
     def __init__(self, name, defn, period, stype, keys, ignore_fields, schema,
-                 output_dir):
+                 queue):
         self.name = name
         self.defn = defn
         self.ignore_fields = ignore_fields
-        self.output_dir = output_dir
+        self.queue = queue
         self.keys = keys
         self.schema = schema
         self.period = period
@@ -392,8 +395,11 @@ class Service(object):
         self.ignore_fields.append('active')
         self.ignore_fields.append('timestamp')
 
+        if 'datacenter' not in self.keys:
+            self.keys.insert(0, 'datacenter')
+
         if 'hostname' not in self.keys:
-            self.keys.insert(0, 'hostname')
+            self.keys.insert(1, 'hostname')
 
     def set_nodes(self, nodes):
         '''New node list for this service'''
@@ -462,11 +468,12 @@ class Service(object):
                         try:
                             input = json.loads(data['data'])
                         except json.JSONDecodeError as e:
-                            logging.error('Received non-JSON output where '
-                                          'JSON was expected for {} on node '
-                                          '{}, {}'.format(data['cmd'],
-                                                          data['hostname'],
-                                                          data['data']))
+                            self.logger.error('Received non-JSON output where '
+                                              'JSON was expected for {} on '
+                                              'node {}, {}'.format(
+                                                  data['cmd'],
+                                                  data['hostname'],
+                                                  data['data']))
                             return result
                     else:
                         input = data['data']
@@ -508,12 +515,13 @@ class Service(object):
 
         for entry in processed_data:
             entry.update({'hostname': raw_data['hostname']})
+            entry.update({'datacenter': raw_data['datacenter']})
             entry.update({'timestamp': raw_data['timestamp']})
             for fld in schema_rec:
                 if fld not in entry:
                     entry.update({fld: schema_rec[fld]})
 
-    def commit_data(self, result, datacenter, hostname):
+    async def commit_data(self, result, datacenter, hostname):
         '''Write the result data out'''
         records = []
         if result:
@@ -529,36 +537,15 @@ class Service(object):
                     records.append(entry)
 
             if records:
-                cdir = '{}/{}/{}/'.format(self.output_dir,
-                                          datacenter,
-                                          self.name)
-                if not os.path.isdir(cdir):
-                    os.makedirs(cdir)
+                if self.stype == 'counters':
+                    partition_cols = ['datacenter', 'hostname']
+                else:
+                    partition_cols = self.keys + ['timestamp']
 
-                df = pd.DataFrame.from_dict(records)
-                # pq.write_metadata(
-                #     self.schema,'{}/_metadata'.format(cdir),
-                #     version='2.0',
-                #     coerce_timestamps='us')
-
-                table = pa.Table.from_pandas(df, schema=self.schema)
-                pq.write_to_dataset(table, root_path=cdir,
-                                    partition_cols=self.keys + ['timestamp'],
-                                    version="2.0",
-                                    flavor='spark')
-
-                if self.stype == 'state':
-                    # Always save the current data wholesome
-                    df = pd.DataFrame.from_dict(result)
-                    table = pa.Table.from_pandas(df, schema=self.schema)
-                    cdir = '{}/{}/current/{}/'.format(self.output_dir,
-                                                      datacenter,
-                                                      self.name)
-                    if not os.path.isdir(cdir):
-                        os.makedirs(cdir)
-                    pq.write_table(table, '{}/{}.parquet'.format(cdir,
-                                                                 hostname),
-                                   version='2.0')
+                self.queue.put_nowait({'records': records,
+                                       'topic': self.name,
+                                       'schema': self.schema,
+                                       'partition_cols': partition_cols})
 
     async def run(self):
         '''Start the service'''
@@ -573,8 +560,8 @@ class Service(object):
                     # output from nodes not running service
                     continue
                 result = self.process_data(output[0])
-                self.commit_data(result, output[0]['datacenter'],
-                                 output[0]['hostname'])
+                await self.commit_data(result, output[0]['datacenter'],
+                                       output[0]['hostname'])
 
             if self.update_nodes:
                 for node in self.new_nodes:
@@ -647,9 +634,9 @@ class SystemService(Service):
     '''
 
     def __init__(self, name, defn, period, stype, keys, ignore_fields,
-                 schema, output_dir):
+                 schema, queue):
         super(SystemService, self).__init__(name, defn, period, stype, keys,
-                                            ignore_fields, schema, output_dir)
+                                            ignore_fields, schema, queue)
         self.ignore_fields.append('bootupTimestamp')
 
     def clean_data(self, processed_data, raw_data):

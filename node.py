@@ -67,7 +67,7 @@ async def get_device_type_hostname(nodeobj):
     return devtype, hostname
 
 
-async def init_hosts(hosts_file, output_dir):
+async def init_hosts(hosts_file):
     '''Process list oof hosts
     This involves creating a node for each host listed, firing up services
     for which we need to pull data.'''
@@ -96,13 +96,6 @@ async def init_hosts(hosts_file, output_dir):
             dcname = "default"
         else:
             dcname = datacenter['datacenter']
-
-        dcdir = '{}/{}'.format(output_dir, dcname)
-        if not os.path.exists(dcdir):
-            os.makedirs(dcdir)
-        elif not os.path.isdir(dcdir):
-            logging.error('{} MUST be a directory'.format(dcdir))
-            sys.exit(1)
 
         for host in datacenter.get('hosts', None):
             entry = host.get('url', None)
@@ -231,7 +224,7 @@ class Node(object):
                                else stderr.decode('ascii', 'ignore')})
             except asyncio.TimeoutError as e:
                     result.append({'status': 408,
-                                   'timestamp': int(int(time.time()*1000)),
+                                   'timestamp': int(time.time()*1000),
                                    'cmd': cmd,
                                    'devtype': self.devtype,
                                    'datacenter': self.dcname,
