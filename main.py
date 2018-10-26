@@ -6,14 +6,69 @@ import asyncio
 import logging
 from pathlib import Path
 
+from confluent_kafka import Producer
+
 from node import init_hosts
 from service import init_services
+from writer import init_output_workers, run_output_worker
+
+
+def validate_parquet_args(userargs, logger, output_args):
+    '''Validate user arguments for parquet output'''
+
+    if not userargs.output_dir:
+        output_dir = '/tmp/parquet-out/suzieq'
+        logger.warning('No output directory for parquet specified, using'
+                       '/tmp/suzieq/parquet-out')
+    else:
+        output_dir = userargs.output_dir
+
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
+    if not os.path.isdir(output_dir):
+        logger.error('Output directory {} is not a directory'.format(
+            output_dir))
+        print('Output directory {} is not a directory'.format(
+            output_dir))
+        sys.exit(1)
+
+    logger.info('Parquet outputs will be under {}'.format(output_dir))
+    output_args.update({'output_dir': output_dir})
+
+    return
+
+
+def validate_kafka_args(userargs, logger, output_args):
+    ''' Validate user arguments for kafka output'''
+
+    if not userargs.kafka_servers:
+        logger.warning('No kafka servers specified. Assuming localhost:9092')
+        servers = 'localhost:9092'
+    else:
+        servers = userargs.kafka_servers
+
+    try:
+        kclient = Producer({'bootstrap.servers': servers})
+    except Exception as e:
+        logger.error('ERROR: Unable to connect to Kafka servers:{}, e',
+                     servers, e)
+        print('ERROR: Unable to connect to Kafka servers:{}, e', servers, e)
+        sys.exit(1)
+
+    output_args.update({'bootstrap.servers': servers})
+
+    return
 
 
 if __name__ == '__main__':
 
     homedir = str(Path.home())
+    supported_outputs = ['parquet', 'kafka']
+
     parser = argparse.ArgumentParser()
+    parser.add_argument('-k', '--kafka-servers', default='', type=str,
+                        help='Comma separated list of kafka servers/port')
     parser.add_argument('-H', '--hosts-file', type=str,
                         default='{}/{}'.format(homedir, 'suzieq-hosts.yml'),
                         help='FIle with URL of hosts to observe')
@@ -24,8 +79,12 @@ if __name__ == '__main__':
                         help='Directory with services definitions')
     parser.add_argument('-T', '--schema-dir', type=str, default='',
                         help='Directory with schema definition for services')
+    parser.add_argument('-o', '--outputs', nargs='+', default=['parquet'],
+                        choices=supported_outputs,
+                        help='Output formats to write to: kafka, parquet. Use '
+                        'this option multiple times for more than one output')
     parser.add_argument('-O', '--output-dir', type=str,
-                        default='/tmp/parquet-out',
+                        default='',
                         help='Directory to store parquet output in')
     parser.add_argument('-l', '--log', type=str, default='WARNING',
                         choices=['ERROR', 'WARNING', 'INFO', 'DEBUG'],
@@ -42,9 +101,6 @@ if __name__ == '__main__':
 
     logger = logging.getLogger('suzieq')
 
-    if not os.path.exists(userargs.output_dir):
-        os.makedirs(userargs.output_dir)
-
     if not os.path.exists(userargs.service_dir):
         logger.error('Service directory {} is not a directory'.format(
             userargs.output_dir))
@@ -52,20 +108,24 @@ if __name__ == '__main__':
             userargs.output_dir))
         sys.exit(1)
 
-    elif not os.path.isdir(userargs.output_dir):
-        logger.error('Output directory {} is not a directory'.format(
-            userargs.output_dir))
-        print('Output directory {} is not a directory'.format(
-            userargs.output_dir))
-        sys.exit(1)
-
     if not userargs.schema_dir:
         userargs.schema_dir = '{}/{}'.format(userargs.service_dir, 'schema')
 
+    output_args = {}
+
+    if 'parquet' in userargs.outputs:
+        validate_parquet_args(userargs, logger, output_args)
+
+    if 'kafka' in userargs.outputs:
+        validate_kafka_args(userargs, logger, output_args)
+
+    outputs = init_output_workers(userargs.outputs, output_args)
+
     loop = asyncio.get_event_loop()
-    tasks = [init_hosts(userargs.hosts_file, userargs.output_dir),
-             init_services(userargs.service_dir, userargs.schema_dir,
-                           userargs.output_dir)]
+    queue = asyncio.Queue()
+
+    tasks = [init_hosts(userargs.hosts_file),
+             init_services(userargs.service_dir, userargs.schema_dir, queue)]
 
     nodes, svcs = loop.run_until_complete(asyncio.gather(*tasks))
 
@@ -83,6 +143,7 @@ if __name__ == '__main__':
 
     try:
         tasks = [svc.run() for svc in working_svcs]
+        tasks.append(run_output_worker(queue, outputs))
         loop.run_until_complete(asyncio.gather(*tasks))
         # loop.run_until_complete(svcs[2].run())
     except KeyboardInterrupt:
