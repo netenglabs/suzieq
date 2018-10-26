@@ -4,11 +4,7 @@
     "type": "record",
     "fields": [
         {
-            "name": "stpState",
-            "type": "string"
-        },
-        {
-            "name": "description",
+            "name": "macaddr",
             "type": "string"
         },
         {
@@ -16,33 +12,7 @@
             "type": "boolean"
         },
         {
-            "name": "ipAddressList",
-            "type": {
-                "type": "array",
-                "items": {
-                    "type": "string",
-                    "name": "ipAddress"
-                }
-            }
-        },
-        {
-            "name": "stpRoot",
-            "type": "string"
-        },
-        {
-            "name": "speed",
-            "type": "string"
-        },
-        {
-            "name": "state",
-            "type": "string"
-        },
-        {
-            "name": "mtu",
-            "type": "long"
-        },
-        {
-            "name": "rootGuard",
+            "name": "description",
             "type": "string"
         },
         {
@@ -56,28 +26,30 @@
             }
         },
         {
-            "name": "macaddr",
-            "type": "string"
-        },
-        {
-            "name": "operState",
+            "name": "speed",
             "type": "string"
         },
         {
             "name": "ifname",
             "type": "string",
-            "key": true
+            "key": 2,
+            "display": 2
         },
         {
-            "name": "rootPort",
+            "name": "rootGuard",
             "type": "string"
         },
         {
-            "name": "master",
-            "type": "string"
+            "name": "type",
+            "type": "string",
+            "display": 4
         },
         {
             "name": "vni",
+            "type": "string"
+        },
+        {
+            "name": "stpState",
             "type": "string"
         },
         {
@@ -85,13 +57,49 @@
             "type": "string"
         },
         {
-            "name": "type",
+            "name": "rootPort",
             "type": "string"
+        },
+        {
+            "name": "state",
+            "type": "string",
+            "display": 3
+        },
+        {
+            "name": "stpRoot",
+            "type": "string"
+        },
+        {
+            "name": "ipAddressList",
+            "type": {
+                "type": "array",
+                "items": {
+                    "type": "string",
+                    "name": "ipAddress"
+                }
+            }
+        },
+        {
+            "name": "mtu",
+            "type": "long",
+            "display": 5
+        },
+        {
+            "name": "master",
+            "type": "string",
+            "display": 6
         },
         {
             "name": "hostname",
             "type": "string",
-            "key": true
+            "key": 1,
+            "display": 1
+        },
+        {
+            "name": "datacenter",
+            "type": "string",
+            "key": 0,
+            "display": 0
         },
         {
             "name": "timestamp",
