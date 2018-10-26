@@ -25,10 +25,12 @@ async def get_device_type_hostname(nodeobj):
     # setup time. show version works on most networking boxes and
     # hostnamectl on Linux systems. That's all we support today.
     if nodeobj.transport == 'local':
-        output = await nodeobj.local_gather(['show version', 'hostnamectl'])
+        output = await nodeobj.local_gather(['show version', 'hostnamectl',
+                                             'goes show machine'])
     else:
         output = await asyncio.wait_for(
-            nodeobj.ssh_gather(['show version', 'hostnamectl']), timeout=5)
+            nodeobj.ssh_gather(['show version', 'hostnamectl',
+                                'goes show machine']), timeout=5)
 
     if output[0]['status'] == 0:
         data = output[1]['data']
@@ -57,6 +59,9 @@ async def get_device_type_hostname(nodeobj):
             devtype = 'Debian'
         else:
             devtype = 'linux'
+
+        if output[2]['status'] == 0:
+            devtype = 'platina'
 
         # Hostname is in the first line of hostnamectl
         hostline = data.splitlines()[0].strip()
@@ -151,6 +156,9 @@ async def init_hosts(hosts_file):
                                                 'Red Hat', 'Linux']):
                     newnode.__class__ = LinuxNode
                     newnode.devtype = 'linux'
+
+                else:
+                    newnode.devtype = devtype
 
                 newnode.hostname = hostname
 
