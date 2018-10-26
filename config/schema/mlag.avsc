@@ -4,11 +4,7 @@
     "type": "record",
     "fields": [
         {
-            "name": "state",
-            "type": "string"
-        },
-        {
-            "name": "backupIP",
+            "name": "domainId",
             "type": "string"
         },
         {
@@ -16,7 +12,12 @@
             "type": "string"
         },
         {
-            "name": "portsErrDisabled",
+            "name": "peerLink",
+            "type": "string",
+            "display": 6
+        },
+        {
+            "name": "vtepIP",
             "type": "string"
         },
         {
@@ -24,28 +25,11 @@
             "type": "string"
         },
         {
-            "name": "role",
+            "name": "peerRole",
             "type": "string"
         },
         {
-            "name": "domainId",
-            "type": "string"
-        },
-        {
-            "name": "peerLink",
-            "type": "string"
-        },
-        {
-            "name": "peerAddress",
-            "type": "string"
-        },
-        {
-            "name": "systemId",
-            "type": "string",
-            "key": true
-        },
-        {
-            "name": "vtepIP",
+            "name": "backupIP",
             "type": "string"
         },
         {
@@ -53,17 +37,50 @@
             "type": "string"
         },
         {
-            "name": "peerRole",
+            "name": "peerMacAddress",
             "type": "string"
         },
         {
-            "name": "peerMacAddress",
+            "name": "mlagInterfaces",
+            "type": "string",
+            "display": 7
+        },
+        {
+            "name": "systemId",
+            "type": "string",
+            "key": 2,
+            "display": 2
+        },
+        {
+            "name": "state",
+            "type": "string",
+            "display": 3
+        },
+        {
+            "name": "peerAddress",
+            "type": "string",
+            "display": 4
+        },
+        {
+            "name": "role",
+            "type": "string",
+            "display": 5
+        },
+        {
+            "name": "portsErrDisabled",
             "type": "string"
         },
         {
             "name": "hostname",
             "type": "string",
-            "key": true
+            "key": 1,
+            "display": 1
+        },
+        {
+            "name": "datacenter",
+            "type": "string",
+            "key": 0,
+            "display": 0
         },
         {
             "name": "timestamp",
@@ -72,48 +89,6 @@
         {
             "name": "active",
             "type": "boolean"
-        },
-	{
-	    "name": "mlagDualPorts",
-            "type": {
-	        "type": "array",
-                "items": {
-                    "type": "string",
-                    "name": "mlagDualPortMember"
-                }
-            }
-	},
-	{
-	    "name": "mlagSinglePorts",
-            "type": {
-	        "type": "array",
-                "items": {
-                    "type": "string",
-                    "name": "mlagSinglePortMember"
-                }
-            }
-	},
-	{
-	    "name": "mlagErrorPorts",
-            "type": {
-	        "type": "array",
-                "items": {
-                    "type": "string",
-                    "name": "mlagErrorPortMember"
-                }
-            }
-	},
-	{
-	    "name": "mlagDualPortsCnt",
-	    "type": "long"
-	 },
-	{
-	    "name": "mlagSinglePortsCnt",
-	    "type": "long"
-	 },
-	{
-	    "name": "mlagErrorPortsCnt",
-	    "type": "long"
-	 }
+        }
     ]
 }

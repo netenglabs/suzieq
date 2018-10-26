@@ -1,21 +1,8 @@
 {
     "namespace": "suzieq",
     "name": "ifCounters",
-    "recordType": "counters",
     "type": "record",
     "fields": [
-        {
-            "name": "rxPackets",
-            "type": "long"
-        },
-        {
-            "name": "rxMcst",
-            "type": "long"
-        },
-        {
-            "name": "rxCompressed",
-            "type": "long"
-        },
         {
             "name": "rxBytes",
             "type": "long"
@@ -29,7 +16,27 @@
             "type": "long"
         },
         {
+            "name": "rxMcst",
+            "type": "long"
+        },
+        {
+            "name": "rxPackets",
+            "type": "long"
+        },
+        {
+            "name": "rxCompressed",
+            "type": "long"
+        },
+        {
+            "name": "txDrops",
+            "type": "long"
+        },
+        {
             "name": "txBytes",
+            "type": "long"
+        },
+        {
+            "name": "rxDrops",
             "type": "long"
         },
         {
@@ -41,15 +48,20 @@
             "type": "long"
         },
         {
-            "name": "txCollisions",
+            "name": "rxFrame",
             "type": "long"
         },
         {
-            "name": "txErrs",
-            "type": "long"
+            "name": "ifname",
+            "type": "string",
+            "key": 2
         },
         {
             "name": "txCarrier",
+            "type": "long"
+        },
+        {
+            "name": "txCollisions",
             "type": "long"
         },
         {
@@ -57,26 +69,20 @@
             "type": "long"
         },
         {
-            "name": "rxFrame",
+            "name": "txErrs",
             "type": "long"
-        },
-        {
-            "name": "txDrops",
-            "type": "long"
-        },
-        {
-            "name": "rxDrops",
-            "type": "long"
-        },
-        {
-            "name": "ifname",
-            "type": "string",
-            "key": true
         },
         {
             "name": "hostname",
             "type": "string",
-            "key": true
+            "key": 1,
+            "display": 1
+        },
+        {
+            "name": "datacenter",
+            "type": "string",
+            "key": 0,
+            "display": 0
         },
         {
             "name": "timestamp",
@@ -86,5 +92,6 @@
             "name": "active",
             "type": "boolean"
         }
-    ]
+    ],
+    "recordType": "counters"
 }

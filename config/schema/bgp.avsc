@@ -4,102 +4,43 @@
     "type": "record",
     "fields": [
         {
-            "name": "updatesRx",
-            "type": "long"
-        },
-        {
-            "name": "v6Enabled",
-            "type": "boolean"
-        },
-        {
-            "name": "state",
-            "type": "string",
-            "display": true
-        },
-        {
-            "name": "peerHostname",
+            "name": "reason",
             "type": "string"
         },
         {
-            "name": "vrf",
-            "type": "string",
-            "key": true,
-            "display": true
+            "name": "peerAsn",
+            "type": "long",
+            "display": 6
+        },
+        {
+            "name": "estdTime",
+            "type": "timedelta64[s]",
+            "display": 8
         },
         {
             "name": "v6PfxRx",
             "type": "long"
         },
         {
-            "name": "peerRouterId",
-            "type": "string",
-            "default": "0.0.0.0"
-        },
-        {
-            "name": "transitionCnt",
-            "type": "long",
-            "display": true
-        },
-        {
-            "name": "v4PfxRx",
-            "type": "long",
-            "display": true
-        },
-        {
-            "name": "v4PfxTx",
-            "type": "long"
-        },
-        {
-            "name": "source",
+            "name": "peerHostname",
             "type": "string"
         },
         {
             "name": "asn",
             "type": "long",
-            "display": true
-        },
-        {
-            "name": "estdTime",
-            "type": "timedelta64[s]",
-            "display": true
-        },
-        {
-            "name": "peer",
-            "type": "string",
-            "key": true,
-            "display": true
-        },
-        {
-            "name": "lastDownTime",
-            "type": "timedelta64[s]"
+            "display": 5
         },
         {
             "name": "v4Enabled",
             "type": "boolean"
         },
         {
-            "name": "peerAsn",
-            "type": "long",
-            "display": true
-        },
-        {
-            "name": "maintenance",
-            "type": "boolean"
-        },
-        {
-            "name": "reason",
-            "type": "string"
-        },
-        {
-            "name": "routerId",
-            "type": "string"
+            "name": "state",
+            "type": "string",
+            "display": 4
         },
         {
             "name": "evpnPfxRx",
-            "type": "long"
-        },
-        {
-            "name": "updatesTx",
             "type": "long"
         },
         {
@@ -107,14 +48,79 @@
             "type": "boolean"
         },
         {
+            "name": "vrf",
+            "type": "string",
+            "key": 2,
+            "display": 2
+        },
+        {
+            "name": "v6Enabled",
+            "type": "boolean"
+        },
+        {
+            "name": "peerRouterId",
+            "type": "string",
+            "default": "0.0.0.0"
+        },
+        {
+            "name": "maintenance",
+            "type": "boolean"
+        },
+        {
+            "name": "transitionCnt",
+            "type": "long",
+            "display": 9
+        },
+        {
+            "name": "v4PfxTx",
+            "type": "long"
+        },
+        {
+            "name": "peer",
+            "type": "string",
+            "key": 3,
+            "display": 3
+        },
+        {
+            "name": "updatesTx",
+            "type": "long"
+        },
+        {
+            "name": "lastDownTime",
+            "type": "timedelta64[s]"
+        },
+        {
             "name": "v6PfxTx",
             "type": "long"
         },
         {
+            "name": "updatesRx",
+            "type": "long"
+        },
+        {
+            "name": "routerId",
+            "type": "string"
+        },
+        {
+            "name": "v4PfxRx",
+            "type": "long",
+            "display": 7
+        },
+        {
+            "name": "source",
+            "type": "string"
+        },
+        {
             "name": "hostname",
             "type": "string",
-            "key": true,
-            "display": true
+            "key": 1,
+            "display": 1
+        },
+        {
+            "name": "datacenter",
+            "type": "string",
+            "key": 0,
+            "display": 0
         },
         {
             "name": "timestamp",
