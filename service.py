@@ -78,15 +78,30 @@ async def init_services(svc_dir, schema_dir, queue):
 
                 period = svc_def.get('period', 15)
                 for elem, val in svc_def['apply'].items():
+                    if 'copy' in val:
+                        newval = svc_def['apply'].get(val['copy'], None)
+                        if not newval:
+                            logger.error('No device type {} to copy from for '
+                                         '{} for service {}'
+                                         .format(val['copy'], elem,
+                                                 svc_def['service']))
+                            continue
+                        val = newval
+
                     if ('command' not in val or
                             ('normalize' not in val and 'textfsm' not in val)):
-                        logger.error('Ignorning invalid service file '
+                        logger.error('Ignoring invalid service file '
                                      'definition. Need both "command" and '
                                      '"normalize/textfsm" keywords: {}, {}'
                                      .format(filename, val))
                         continue
 
                     if 'textfsm' in val:
+                        # We may have already visited this element and parsed the
+                        # textfsm file. Check for this
+                        if val['textfsm'] and isinstance(val['textfsm'],
+                                                         textfsm.TextFSM):
+                            continue
                         tfsm_file = svc_dir + '/' + val['textfsm']
                         if not os.path.isfile(tfsm_file):
                             logger.error('Textfsm file {} not found. Ignoring'
@@ -463,6 +478,9 @@ class Service(object):
             if not nfn:
                 nfn = self.defn.get(data.get('devtype'), None)
             if nfn:
+                copynfn = nfn.get('copy', None)
+                if copynfn:
+                    nfn = self.defn.get(copynfn, {})
                 if nfn.get('normalize', None):
                     if type(data['data']) is str:
                         try:

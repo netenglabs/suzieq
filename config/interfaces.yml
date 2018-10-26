@@ -11,9 +11,7 @@ show-fields:
 
 apply:
   cumulus:
-    version: all
-    command: ip -d address show
-    textfsm: textfsm_templates/linux_ipaddr.tfsm
+    copy: linux
 
   eos:
     version: all
@@ -37,3 +35,6 @@ apply:
     command: ip -d address show
     textfsm: textfsm_templates/linux_ipaddr.tfsm
 
+  platina:
+    copy: linux
+  

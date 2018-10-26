@@ -4,9 +4,7 @@ keys:
   - ifname
 apply:
   cumulus:
-    version: all
-    command: cat /proc/net/dev
-    textfsm: textfsm_templates/ifCounters.tfsm
+    copy: linux
 
   eos:
     version: all
@@ -24,4 +22,13 @@ apply:
     "interfaceCounters/totalOutErrors: txErrs?|0",
     "interfaceCounters/outDiscards: txDrops?|0"
     ]'
+
+
+  linux:
+    version: all
+    command: cat /proc/net/dev
+    textfsm: textfsm_templates/ifCounters.tfsm
+
+  platina:
+    copy: linux
     
