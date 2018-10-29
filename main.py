@@ -8,6 +8,9 @@ from pathlib import Path
 
 from confluent_kafka import Producer
 
+import daemon
+from daemon import pidfile
+
 from node import init_hosts
 from service import init_services
 from writer import init_output_workers, run_output_worker
@@ -61,38 +64,7 @@ def validate_kafka_args(userargs, logger, output_args):
     return
 
 
-if __name__ == '__main__':
-
-    homedir = str(Path.home())
-    supported_outputs = ['parquet', 'kafka']
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-k', '--kafka-servers', default='', type=str,
-                        help='Comma separated list of kafka servers/port')
-    parser.add_argument('-H', '--hosts-file', type=str,
-                        default='{}/{}'.format(homedir, 'suzieq-hosts.yml'),
-                        help='FIle with URL of hosts to observe')
-    parser.add_argument('-P', '--password-file', type=str,
-                        default='{}/{}'.format(homedir, 'suzieq-pwd.yml'),
-                        help='FIle with passwords')
-    parser.add_argument('-S', '--service-dir', type=str, required=True,
-                        help='Directory with services definitions')
-    parser.add_argument('-T', '--schema-dir', type=str, default='',
-                        help='Directory with schema definition for services')
-    parser.add_argument('-o', '--outputs', nargs='+', default=['parquet'],
-                        choices=supported_outputs,
-                        help='Output formats to write to: kafka, parquet. Use '
-                        'this option multiple times for more than one output')
-    parser.add_argument('-O', '--output-dir', type=str,
-                        default='',
-                        help='Directory to store parquet output in')
-    parser.add_argument('-l', '--log', type=str, default='WARNING',
-                        choices=['ERROR', 'WARNING', 'INFO', 'DEBUG'],
-                        help='Logging message level, default is WARNING')
-    parser.add_argument('-s', '--service-only', type=str,
-                        help='Only run this comma separated list of services')
-
-    userargs = parser.parse_args()
+def _main(userargs):
 
     logging.basicConfig(filename='/tmp/suzieq.log',
                         level=getattr(logging, userargs.log.upper()),
@@ -151,4 +123,46 @@ if __name__ == '__main__':
         loop.close()
         sys.exit(0)
 
+
+if __name__ == '__main__':
+
+    homedir = str(Path.home())
+    supported_outputs = ['parquet', 'kafka']
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-f', '--foreground', action='store_true',
+                        help='Run in foreground, not as daemon')
+    parser.add_argument('-k', '--kafka-servers', default='', type=str,
+                        help='Comma separated list of kafka servers/port')
+    parser.add_argument('-H', '--hosts-file', type=str,
+                        default='{}/{}'.format(homedir, 'suzieq-hosts.yml'),
+                        help='FIle with URL of hosts to observe')
+    parser.add_argument('-P', '--password-file', type=str,
+                        default='{}/{}'.format(homedir, 'suzieq-pwd.yml'),
+                        help='FIle with passwords')
+    parser.add_argument('-S', '--service-dir', type=str, required=True,
+                        help='Directory with services definitions')
+    parser.add_argument('-T', '--schema-dir', type=str, default='',
+                        help='Directory with schema definition for services')
+    parser.add_argument('-o', '--outputs', nargs='+', default=['parquet'],
+                        choices=supported_outputs,
+                        help='Output formats to write to: kafka, parquet. Use '
+                        'this option multiple times for more than one output')
+    parser.add_argument('-O', '--output-dir', type=str,
+                        default='',
+                        help='Directory to store parquet output in')
+    parser.add_argument('-l', '--log', type=str, default='WARNING',
+                        choices=['ERROR', 'WARNING', 'INFO', 'DEBUG'],
+                        help='Logging message level, default is WARNING')
+    parser.add_argument('-s', '--service-only', type=str,
+                        help='Only run this comma separated list of services')
+
+    userargs = parser.parse_args()
+
+    if userargs.foreground:
+        _main(userargs)
+    else:
+        with daemon.DaemonContext(
+                pidfile=pidfile.TimeoutPIDLockFile('/tmp/suzieq.pid')):
+            _main(userargs)
 
