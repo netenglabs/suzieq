@@ -10,8 +10,6 @@ import yaml
 import json
 import ast
 from pathlib import Path
-from fastavro import parse_schema
-from fastavro._schema import UnknownType
 
 
 def get_field_set(svc_def, textfsm_dir):
@@ -110,32 +108,26 @@ def write_avro_schema(name, fldset, keys, show_fields, type, output_dir):
     schema['fields'].append({'name': 'timestamp', 'type': 'timestamp'})
     schema['fields'].append({'name': 'active', 'type': 'boolean'})
 
-    try:
-        rslt = parse_schema(schema)
-    except UnknownType as e:
-        rslt = True
+    filename = output_dir + '/' + name + '.avsc'
+    # We do require users to cleanup this auto-generated schema.
+    # Don't make them do the work multiple times, save the original
+    # type if defined, or default if not defined in the new schema
+    if os.path.isfile(filename):
+        with open(filename, 'r') as f:
+            old_schema = json.loads(f.read())
 
-    if rslt:
-        filename = output_dir + '/' + name + '.avsc'
-        # We do require users to cleanup this auto-generated schema.
-        # Don't make them do the work multiple times, save the original
-        # type if defined, or default if not defined in the new schema
-        if os.path.isfile(filename):
-            with open(filename, 'r') as f:
-                old_schema = json.loads(f.read())
+        oldflds = {v['name']: i
+                   for i, v in enumerate(old_schema['fields'])}
+        newflds = {v['name']: i
+                   for i, v in enumerate(schema['fields'])}
 
-            oldflds = {v['name']: i
-                       for i, v in enumerate(old_schema['fields'])}
-            newflds = {v['name']: i
-                       for i, v in enumerate(schema['fields'])}
-
-            for fld in oldflds.keys():
-                if fld in newflds:
-                    schema['fields'][newflds[fld]]['type'] = old_schema['fields'][oldflds[fld]]['type']
-                    if (old_schema['fields'][oldflds[fld]].get('default', None)
-                        and not schema['fields'][newflds[fld]].get('default',
-                                                                   None)):
-                        schema['fields'][newflds[fld]]['default'] = old_schema['fields'][oldflds[fld]]['default']
+        for fld in oldflds.keys():
+            if fld in newflds:
+                schema['fields'][newflds[fld]]['type'] = old_schema['fields'][oldflds[fld]]['type']
+                if (old_schema['fields'][oldflds[fld]].get('default', None)
+                    and not schema['fields'][newflds[fld]].get('default',
+                                                               None)):
+                    schema['fields'][newflds[fld]]['default'] = old_schema['fields'][oldflds[fld]]['default']
 
         with open(filename, 'w') as f:
             f.write(json.dumps(schema, indent=4))
