@@ -67,4 +67,27 @@ apply:
         "neighborCapabilities/multiprotocolExtensions/IPv6 Unicast/advertisedAndReceived: v6Enabled?|False"]'
 
   platina:
-      copy: cumulus
+      version: all
+      command: sudo vtysh -c "show ip bgp vrf all neighbors json"
+      normalize: '*:vrf/*:peer/[
+        "remoteAs: peerAsn",
+        "localAs: asn",
+        "hostLocal: source",
+        "lastResetDueTo: reason",
+        "lastResetTimerMsecs: lastDownTime?|0",
+        "addressFamilyInfo/IPv4 Unicast/acceptedPrefixCounter: v4PfxRx",
+        "addressFamilyInfo/IPv6 Unicast/acceptedPrefixCounter: v6PfxRx?|0",
+        "addressFamilyInfo/L2VPN EVPN/acceptedPrefixCounter: evpnPfxRx?|0",
+        "messageStats/updatesSent: updatesTx",
+        "messageStats/updatesRecv: updatesRx",
+        "remoteRouterId: peerRouterId",
+        "bgpState: state?Established|NotEstd",
+        "bgpTimerUpMsec: div(estdTime,1000)",
+        "connectionsEstablished: transitionCnt",
+        "connectionsDropped: add(transitionCnt,transitionCnt)",
+        "hostname: peerHostname",
+        "neighborCapabilities/multiprotocolExtensions/IPv4 Unicast/advertisedAndReceived: v4Enabled?|False",
+        "neighborCapabilities/multiprotocolExtensions/L2VPN EVPN/advertisedAndReceived: evpnEnabled?|False",
+        "neighborCapabilities/multiprotocolExtensions/IPv6 Unicast/advertisedAndReceived: v6Enabled?|False"]'
+
+
