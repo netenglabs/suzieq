@@ -162,6 +162,19 @@ if __name__ == '__main__':
     if userargs.foreground:
         _main(userargs)
     else:
+        if os.path.exists('/tmp/suzieq.pid'):
+            with open('/tmp/suzieq.pid', 'r') as f:
+                pid = f.read().strip()
+                if not pid.isdigit():
+                    os.remove('/tmp/suzieq.pid')
+                else:
+                    try:
+                        os.kill(int(pid), 0)
+                    except OSError:
+                        os.remove('/tmp/suzieq.pid')
+                    else:
+                        print('Another process instance of Suzieq exists with '
+                              'pid {}'.format(pid))
         with daemon.DaemonContext(
                 pidfile=pidfile.TimeoutPIDLockFile('/tmp/suzieq.pid')):
             _main(userargs)
