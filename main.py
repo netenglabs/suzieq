@@ -15,14 +15,16 @@ from node import init_hosts
 from service import init_services
 from writer import init_output_workers, run_output_worker
 
+PID_FILE = '/tmp/suzieq.pid'
 
-def validate_parquet_args(userargs, logger, output_args):
+
+def validate_parquet_args(userargs, output_args):
     '''Validate user arguments for parquet output'''
 
     if not userargs.output_dir:
         output_dir = '/tmp/parquet-out/suzieq'
-        logger.warning('No output directory for parquet specified, using'
-                       '/tmp/suzieq/parquet-out')
+        logging.warning('No output directory for parquet specified, using'
+                        '/tmp/suzieq/parquet-out')
     else:
         output_dir = userargs.output_dir
 
@@ -30,23 +32,23 @@ def validate_parquet_args(userargs, logger, output_args):
         os.makedirs(output_dir)
 
     if not os.path.isdir(output_dir):
-        logger.error('Output directory {} is not a directory'.format(
+        logging.error('Output directory {} is not a directory'.format(
             output_dir))
         print('Output directory {} is not a directory'.format(
             output_dir))
         sys.exit(1)
 
-    logger.info('Parquet outputs will be under {}'.format(output_dir))
+    logging.info('Parquet outputs will be under {}'.format(output_dir))
     output_args.update({'output_dir': output_dir})
 
     return
 
 
-def validate_kafka_args(userargs, logger, output_args):
+def validate_kafka_args(userargs, output_args):
     ''' Validate user arguments for kafka output'''
 
     if not userargs.kafka_servers:
-        logger.warning('No kafka servers specified. Assuming localhost:9092')
+        logging.warning('No kafka servers specified. Assuming localhost:9092')
         servers = 'localhost:9092'
     else:
         servers = userargs.kafka_servers
@@ -54,8 +56,8 @@ def validate_kafka_args(userargs, logger, output_args):
     try:
         kclient = Producer({'bootstrap.servers': servers})
     except Exception as e:
-        logger.error('ERROR: Unable to connect to Kafka servers:{}, e',
-                     servers, e)
+        logging.error('ERROR: Unable to connect to Kafka servers:{}, e',
+                      servers, e)
         print('ERROR: Unable to connect to Kafka servers:{}, e', servers, e)
         sys.exit(1)
 
@@ -66,15 +68,8 @@ def validate_kafka_args(userargs, logger, output_args):
 
 def _main(userargs):
 
-    logging.basicConfig(filename='/tmp/suzieq.log',
-                        level=getattr(logging, userargs.log.upper()),
-                        format='%(asctime)s - %(name)s - %(levelname)s'
-                        '- %(message)s')
-
-    logger = logging.getLogger('suzieq')
-
     if not os.path.exists(userargs.service_dir):
-        logger.error('Service directory {} is not a directory'.format(
+        logging.error('Service directory {} is not a directory'.format(
             userargs.output_dir))
         print('Service directory {} is not a directory'.format(
             userargs.output_dir))
@@ -86,10 +81,10 @@ def _main(userargs):
     output_args = {}
 
     if 'parquet' in userargs.outputs:
-        validate_parquet_args(userargs, logger, output_args)
+        validate_parquet_args(userargs, output_args)
 
     if 'kafka' in userargs.outputs:
-        validate_kafka_args(userargs, logger, output_args)
+        validate_kafka_args(userargs, output_args)
 
     outputs = init_output_workers(userargs.outputs, output_args)
 
@@ -104,7 +99,7 @@ def _main(userargs):
     for svc in svcs:
         svc.set_nodes(nodes)
 
-    logger.info('Suzieq Started')
+    logging.info('Suzieq Started')
 
     if userargs.service_only:
         svclist = userargs.service_only.split(',')
@@ -119,7 +114,7 @@ def _main(userargs):
         loop.run_until_complete(asyncio.gather(*tasks))
         # loop.run_until_complete(svcs[2].run())
     except KeyboardInterrupt:
-        logger.info('Received keyboard interrupt. Terminating')
+        logging.info('Received keyboard interrupt. Terminating')
         loop.close()
         sys.exit(0)
 
@@ -159,23 +154,32 @@ if __name__ == '__main__':
 
     userargs = parser.parse_args()
 
+    logger = logging.getLogger()
+    logger.setLevel(userargs.log.upper())
+    fh = logging.FileHandler('/tmp/suzieq.log')
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s '
+                                  '- %(message)s')
+    logger.handlers = [fh]
+    fh.setFormatter(formatter)
+
     if userargs.foreground:
         _main(userargs)
     else:
-        if os.path.exists('/tmp/suzieq.pid'):
-            with open('/tmp/suzieq.pid', 'r') as f:
+        if os.path.exists(PID_FILE):
+            with open(PID_FILE, 'r') as f:
                 pid = f.read().strip()
                 if not pid.isdigit():
-                    os.remove('/tmp/suzieq.pid')
+                    os.remove(PID_FILE)
                 else:
                     try:
                         os.kill(int(pid), 0)
                     except OSError:
-                        os.remove('/tmp/suzieq.pid')
+                        os.remove(PID_FILE)
                     else:
                         print('Another process instance of Suzieq exists with '
                               'pid {}'.format(pid))
         with daemon.DaemonContext(
-                pidfile=pidfile.TimeoutPIDLockFile('/tmp/suzieq.pid')):
+                files_preserve=[fh.stream],
+                pidfile=pidfile.TimeoutPIDLockFile(PID_FILE)):
             _main(userargs)
 
