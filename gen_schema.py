@@ -129,8 +129,8 @@ def write_avro_schema(name, fldset, keys, show_fields, type, output_dir):
                                                                None)):
                     schema['fields'][newflds[fld]]['default'] = old_schema['fields'][oldflds[fld]]['default']
 
-        with open(filename, 'w') as f:
-            f.write(json.dumps(schema, indent=4))
+    with open(filename, 'w') as f:
+        f.write(json.dumps(schema, indent=4))
 
     return
 
