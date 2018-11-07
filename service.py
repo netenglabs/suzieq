@@ -19,6 +19,7 @@ import textfsm
 from pyarrow import DataType
 from pyarrow.lib import Field
 
+HOLD_TIME_IN_SECS = 60                  # How long b4 declaring node dead
 
 def avro_to_arrow_schema(avro_sch):
     '''Given an AVRO schema, return the equivalent Arrow schema'''
@@ -423,6 +424,24 @@ class Service(object):
         else:
             self.nodes = copy.deepcopy(nodes)
 
+    def get_empty_record(self):
+        map_defaults = {
+            pa.string(): '',
+            pa.int32(): 0,
+            pa.int64(): 0,
+            pa.float32(): 0.0,
+            pa.float64(): 0.0,
+            pa.date64(): 0.0,
+            pa.bool_(): False,
+            pa.list_(pa.string()): [],
+            pa.list_(pa.int64()): [],
+        }
+
+        defaults = [map_defaults[x] for x in self.schema.types]
+        rec = dict(zip(self.schema.names, defaults))
+
+        return rec
+
     def get_diff(self, old, new):
         '''Compare list of dictionaries ignoring certain fields
         Return list of adds and deletes
@@ -459,7 +478,7 @@ class Service(object):
 
         random.shuffle(self.nodelist)
         tasks = [self.nodes[key].exec_service(self.defn)
-                 for key in self.nodelist if self.nodes[key].is_alive()]
+                 for key in self.nodelist]
 
         outputs = await asyncio.gather(*tasks)
 
@@ -536,21 +555,24 @@ class Service(object):
             entry.update({'timestamp': raw_data['timestamp']})
             for fld in schema_rec:
                 if fld not in entry:
-                    entry.update({fld: schema_rec[fld]})
+                    if fld == 'active':
+                        entry.update({fld: True})
+                    else:
+                        entry.update({fld: schema_rec[fld]})
 
     async def commit_data(self, result, datacenter, hostname):
         '''Write the result data out'''
         records = []
-        if result:
-            prev_res = self.nodes.get(hostname, '').prev_result
+        prev_res = self.nodes.get(hostname, '').prev_result
+        if result or prev_res:
             adds, dels = self.get_diff(prev_res, result)
             if adds or dels:
                 self.nodes.get(hostname, '') \
                           .prev_result = copy.deepcopy(result)
                 for entry in adds:
-                    entry.update({'active': True})
                     records.append(entry)
                 for entry in dels:
+                    entry.update({'active': False})
                     records.append(entry)
 
             if records:
@@ -649,6 +671,7 @@ class SystemService(Service):
     This is specially called out to normalize the timestamp and handle
     timestamp diff
     '''
+    nodes_state = {}
 
     def __init__(self, name, defn, period, stype, keys, ignore_fields,
                  schema, queue):
@@ -660,7 +683,7 @@ class SystemService(Service):
         '''Cleanup the bootup timestamp for Linux nodes'''
 
         devtype = raw_data.get('devtype', None)
-        timestamp = raw_data.get('timestamp', time.time())
+        timestamp = raw_data.get('timestamp', int(time.time()*1000))
         for entry in processed_data:
             # We're assuming that if the entry doesn't provide the
             # bootupTimestamp field but provides the sysUptime field,
@@ -675,6 +698,34 @@ class SystemService(Service):
         super(SystemService, self).clean_data(processed_data, raw_data)
 
         return
+
+    async def commit_data(self, result, datacenter, hostname):
+        '''system svc needs to write out a record that indicates dead node'''
+        if not result:
+            if self.nodes.get(hostname).get_status() == 'init':
+                # If in init still, we need to mark the node as unreachable
+                rec = self.get_empty_record()
+                rec['datacenter'] = datacenter
+                rec['hostname'] = hostname
+                rec['timestamp'] = int(time.time() * 1000)
+
+                result.append(rec)
+            else:
+                # To avoid unnecessary flaps, we wait for HOLD_TIME to expire
+                # before we mark the node as dead
+                if hostname in self.nodes_state:
+                    now = time.time()
+                    if now - self.nodes_state[hostname] > HOLD_TIME_IN_SECS:
+                        prev_res = self.nodes.get(hostname, '').prev_result
+                        result = copy.deepcopy(prev_res)
+                        result[0]['active'] = False
+                        result[0]['timestamp'] = self.nodes_state[hostname]
+                    else:
+                        self.nodes_state[hostname] = time.time()
+                        return
+
+        await super(SystemService, self).commit_data(result, datacenter,
+                                                     hostname)
 
     def get_diff(self, old, new):
 

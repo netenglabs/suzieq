@@ -1,75 +1,21 @@
 
+
 from collections import defaultdict
 import os
 import time
 from ipaddress import ip_address
 import logging
+import random
 
 import json
 import yaml
 from urllib.parse import urlparse
 
 import asyncio
+import asyncio.futures as futures
 import asyncssh
 import aiohttp
 from asyncio.subprocess import PIPE
-
-
-async def get_device_type_hostname(nodeobj):
-    '''Determine the type of device we are talking to'''
-
-    devtype = 'Unknown'
-    hostname = 'localhost'
-    # There isn't that much of a difference in running two commands versus
-    # running them one after the other as this involves an additional ssh
-    # setup time. show version works on most networking boxes and
-    # hostnamectl on Linux systems. That's all we support today.
-    if nodeobj.transport == 'local':
-        output = await nodeobj.local_gather(['show version', 'hostnamectl',
-                                             'goes show machine'])
-    else:
-        output = await asyncio.wait_for(
-            nodeobj.ssh_gather(['show version', 'hostnamectl',
-                                'goes show machine']), timeout=5)
-
-    if output[0]['status'] == 0:
-        data = output[1]['data']
-        if 'Arista ' in data:
-            devtype = 'eos'
-        elif 'JUNOS ' in data:
-            devtype = 'junos'
-
-        if nodeobj.transport == 'local':
-            output = await nodeobj.local_gather(['show hostname'])
-        else:
-            output = await asyncio.wait_for(
-                nodeobj.ssh_gather(['show hostname']), timeout=5)
-        if output[0]['status'] == 0:
-            hostname = output[1]['data'].strip()
-
-    elif output[1]['status'] == 0:
-        data = output[1]['data']
-        if 'Cumulus Linux' in data:
-            devtype = 'cumulus'
-        elif 'Ubuntu' in data:
-            devtype = 'Ubuntu'
-        elif 'Red Hat' in data:
-            devtype = 'RedHat'
-        elif 'Debian GNU/Linux' in data:
-            devtype = 'Debian'
-        else:
-            devtype = 'linux'
-
-        if output[2]['status'] == 0:
-            devtype = 'platina'
-
-        # Hostname is in the first line of hostnamectl
-        hostline = data.splitlines()[0].strip()
-        if hostline.startswith('Static hostname'):
-            _, hostname = hostline.split(':')
-            hostname = hostname.strip()
-
-    return devtype, hostname
 
 
 async def init_hosts(hosts_file):
@@ -109,62 +55,27 @@ async def init_hosts(hosts_file):
                 result = urlparse(words[0])
 
                 username = result.username
-                password = result.password
+                password = result.password or 'vagrant'
                 port = result.port
                 host = result.hostname
-
-                if password:
-                    newnode = Node(hostname=host, username=username,
-                                   password=password, transport=result.scheme,
-                                   port=port, datacenter=dcname)
-                else:
-                    newnode = Node(hostname=host, username=username,
-                                   transport=result.scheme, port=port,
-                                   datacenter=dcname)
-
                 devtype = None
-                hostname = 'localhost'
-                if result.scheme == 'ssh' or result.scheme == 'local':
-                    devtype, hostname = await get_device_type_hostname(newnode)
-                else:
-                    if len(words) > 1:
-                        try:
-                            devtype = words[1].split('=')[1]
-                        except IndexError:
-                            logging.error(
-                                "Unable to determine device type for {}"
-                                .format(host))
-                            continue
 
-                if devtype is None:
+                if len(words) > 1 and '=' in words[1]:
+                    devtype = words[1].split('=')[1]
+
+                newnode = Node()
+                await newnode._init(address=host, username=username,
+                                    port=port, password=password,
+                                    transport=result.scheme,
+                                    devtype=devtype, datacenter=dcname)
+
+                if newnode.devtype is None:
                     logging.error('Unable to determine device type for {}'
                                   .format(host))
-                    continue
-
-                if devtype == 'cumulus':
-                    newnode.__class__ = CumulusNode
-                    newnode.devtype = devtype
-                elif devtype == 'eos':
-                    newnode.__class__ = EosNode
-                    newnode.devtype = devtype
-                    output = await newnode.rest_gather(['show hostname'])
-
-                    if output and output[0]['status'] == 200:
-                        hostname = output[0]['data']['hostname']
-
-                elif any(n == devtype for n in ['Ubuntu', 'Debian',
-                                                'Red Hat', 'Linux']):
-                    newnode.__class__ = LinuxNode
-                    newnode.devtype = 'linux'
-
                 else:
-                    newnode.devtype = devtype
+                    logging.info('Added node {}'.format(newnode.hostname))
 
-                newnode.hostname = hostname
-
-                logging.info('Added node {}'.format(hostname))
-                if newnode:
-                    nodes.update({hostname: newnode})
+                nodes.update({newnode.hostname: newnode})
 
     return nodes
 
@@ -182,16 +93,17 @@ class Node(object):
     status = 'good'
     svc_cmd_mapping = defaultdict(lambda: {})
     port = 0
+    backoff = 15                # secs to backoff
+    init_again_at = 0           # after this epoch secs, try init again
 
-    def __init__(self, **kwargs):
+    async def _init(self, **kwargs):
         if not kwargs:
             raise ValueError
 
-        self.hostname = kwargs['hostname']  # Mandatory parameter
+        self.address = kwargs['address']
         self.username = kwargs.get('username', 'vagrant')
         self.password = kwargs.get('password', 'vagrant')
         self.transport = kwargs.get('transport', 'ssh')
-        self.address = kwargs.get('address', self.hostname)
         self.dcname = kwargs.get('datacenter', "default")
         self.port = kwargs.get('port', 0)
         pvtkey_file = kwargs.get('pvtkey_file', None)
@@ -204,11 +116,121 @@ class Node(object):
             elif self.transport == 'https':
                 self.port = 443
 
+        await self.init_node()
+        if not self.hostname:
+            self.hostname = self.address
+
+        if self.status == 'init':
+            self.backoff = (min(600, self.backoff * 2) +
+                            (random.randint(0, 1000) / 1000))
+            self.init_again_at = time.time() + self.backoff
+
+        return self
+
+    async def init_node(self):
+        devtype = None
+        hostname = None
+
+        if self.transport == 'ssh' or self.transport == 'local':
+            try:
+                await self.get_device_type_hostname()
+                devtype = self.devtype
+            except (OSError, futures.TimeoutError) as e:
+                devtype = None
+
+            if devtype is None:
+                self.status = 'init'
+                return
+            else:
+                self.status = 'good'
+                self.set_devtype(devtype)
+                if hostname:
+                    self.hostname = hostname
+        else:
+            if not self.hostname:
+                self.set_hostname()
+
+    def set_devtype(self, devtype):
+        self.devtype = devtype
+
+        if self.devtype == 'cumulus':
+            self.__class__ = CumulusNode
+        elif self.devtype == 'eos':
+            self.__class__ = EosNode
+        elif any(n == self.devtype for n in ['Ubuntu', 'Debian',
+                                             'Red Hat', 'Linux']):
+            self.__class__ = LinuxNode
+            self.devtype = 'linux'
+
+    async def get_device_type_hostname(self):
+        '''Determine the type of device we are talking to'''
+
+        devtype = 'Unknown'
+        hostname = None
+        # There isn't that much of a difference in running two commands versus
+        # running them one after the other as this involves an additional ssh
+        # setup time. show version works on most networking boxes and
+        # hostnamectl on Linux systems. That's all we support today.
+        if self.transport == 'local':
+            output = await self.local_gather(['show version', 'hostnamectl',
+                                              'goes show machine'])
+        else:
+            output = await asyncio.wait_for(
+                self.ssh_gather(['show version', 'hostnamectl',
+                                 'goes show machine']), timeout=5)
+
+        if output[0]['status'] == 0:
+            data = output[1]['data']
+            if 'Arista ' in data:
+                devtype = 'eos'
+            elif 'JUNOS ' in data:
+                devtype = 'junos'
+
+            if self.transport == 'local':
+                output = await self.local_gather(['show hostname'])
+            else:
+                output = await asyncio.wait_for(
+                    self.ssh_gather(['show hostname']), timeout=5)
+            if output[0]['status'] == 0:
+                hostname = output[1]['data'].strip()
+
+        elif output[1]['status'] == 0:
+            data = output[1]['data']
+            if 'Cumulus Linux' in data:
+                devtype = 'cumulus'
+            elif 'Ubuntu' in data:
+                devtype = 'Ubuntu'
+            elif 'Red Hat' in data:
+                devtype = 'RedHat'
+            elif 'Debian GNU/Linux' in data:
+                devtype = 'Debian'
+            else:
+                devtype = 'linux'
+
+            if output[2]['status'] == 0:
+                devtype = 'platina'
+
+            # Hostname is in the first line of hostnamectl
+            hostline = data.splitlines()[0].strip()
+            if hostline.startswith('Static hostname'):
+                _, hostname = hostline.split(':')
+                hostname = hostname.strip()
+
+        self.devtype = devtype
+        if hostname:
+            self.hostname = hostname
+
     def get_status(self):
         return self.status
 
     def is_alive(self):
         return self.status == 'good'
+
+    async def set_hostname(self, hostname=None):
+        '''This routine needs to be implemented by child class'''
+        if hostname:
+            self.hostname = hostname
+            return
 
     async def local_gather(self, cmd_list=None):
         '''Given a dictionary of commands, run locally and return outputs'''
@@ -314,6 +336,19 @@ class Node(object):
         if not svc_defn:
             return result
 
+        if self.status == 'init':
+            if self.init_again_at < time.time():
+                await self.init_node()
+
+        if self.status == 'init':
+            result.append({'status': 404,
+                           'timestamp': int(time.time()*1000),
+                           'devtype': self.devtype,
+                           'datacenter': self.dcname,
+                           'hostname': self.hostname,
+                           'data': result})
+            return result
+
         use = svc_defn.get(self.hostname, None)
         if not use:
             use = svc_defn.get(self.devtype, {})
@@ -336,8 +371,8 @@ class Node(object):
 
 
 class EosNode(Node):
-    def __init__(self, **kwargs):
-        super(EosNode).__init__(kwargs)
+    def _init(self, **kwargs):
+        super(EosNode, self)._init(kwargs)
         self.devtype = 'eos'
 
     async def rest_gather(self, cmd_list=None, oformat='json'):
@@ -395,15 +430,25 @@ class EosNode(Node):
 
         return result
 
+        async def set_hostname(self, hostname=None):
+            if hostname:
+                self.hostname = hostname
+                return
+
+            output = await self.exec_cmd(['show hostname'])
+
+            if output and output[0]['status'] == 200:
+                self.hostname = output[0]['data']['hostname']
+
 
 class CumulusNode(Node):
-    def __init__(self, **kwargs):
+    def _init(self, **kwargs):
         if 'username' not in kwargs:
             kwargs['username'] = 'cumulus'
         if 'password' not in kwargs:
             kwargs['password'] = 'CumulusLinux!'
 
-        super(EosNode).__init__(kwargs)
+        super(CumulusNode, self)._init(kwargs)
         self.devtype = 'cumulus'
 
     async def rest_gather(self, cmd_list=None):
@@ -443,8 +488,29 @@ class CumulusNode(Node):
 
         return result
 
+        async def set_hostname(self, hostname=None):
+            if hostname:
+                self.hostname = hostname
+                return
+
+            output = await self.exec_cmd(['hostname'])
+
+            if output and output[0]['status'] == 200:
+                self.hostname = output[0]['data']['hostname']
+
 
 class LinuxNode(Node):
-    def __init__(self, **kwargs):
-        super(LinuxNode).__init__(kwargs)
+    def _init(self, **kwargs):
+        super(LinuxNode, self)._init(kwargs)
         self.devtype = 'linux'
+
+    async def set_hostname(self, hostname=None):
+        if hostname:
+            self.hostname = hostname
+            return
+
+        output = await self.exec_cmd(['hostname'])
+
+        if output and output[0]['status'] == 200:
+            self.hostname = output[0]['data']['hostname']
+
