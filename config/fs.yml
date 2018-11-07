@@ -1,0 +1,28 @@
+service: fs
+type: counters
+keys:
+  - device
+  - mountPoint
+ignore-fields:
+  - usedSize
+  - availSize
+show-fields:
+  - device
+  - totalSize
+  - usedSize
+  - usedPercent
+  - mountPoint
+apply:
+  cumulus:
+    copy: linux
+
+  linux:
+    version: all
+    command: df -hT
+    textfsm: textfsm_templates/fs.tfsm
+
+  eos:
+    version: all
+    command: bash df -h
+    textfsm: textfsm_templates/fs.tfsm
+    
