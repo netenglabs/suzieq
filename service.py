@@ -19,7 +19,7 @@ import textfsm
 from pyarrow import DataType
 from pyarrow.lib import Field
 
-HOLD_TIME_IN_SECS = 60                  # How long b4 declaring node dead
+HOLD_TIME_IN_MSECS = 60000    # How long b4 declaring node dead
 
 def avro_to_arrow_schema(avro_sch):
     '''Given an AVRO schema, return the equivalent Arrow schema'''
@@ -385,7 +385,8 @@ class Service(object):
     name = None
     defn = None
     period = 15                 # 15s is the default period
-    update_nodes = False
+    update_nodes = False        # we have a new node list
+    rebuild_nodelist = False    # used only when a node gets init
     nodes = {}
     new_nodes = {}
     ignore_fields = []
@@ -407,7 +408,6 @@ class Service(object):
         self.logger = logging.getLogger('suzieq')
 
         # Add the hidden fields to ignore_fields
-        self.ignore_fields.append('active')
         self.ignore_fields.append('timestamp')
 
         if 'datacenter' not in self.keys:
@@ -563,12 +563,29 @@ class Service(object):
     async def commit_data(self, result, datacenter, hostname):
         '''Write the result data out'''
         records = []
-        prev_res = self.nodes.get(hostname, '').prev_result
+        nodeobj = self.nodes.get(hostname, None)
+        if not nodeobj:
+            # This will be the case when a node switches from init state
+            # to good after nodes have been built. Find the corresponding
+            # node and fix the nodelist
+            nres = [self.nodes[x] for x in self.nodes
+                    if self.nodes[x].hostname == hostname]
+            if nres:
+                nodeobj = nres[0]
+                prev_res = nodeobj.prev_result
+                self.rebuild_nodelist = True
+            else:
+                logging.error('Ignoring results for {} which is not in '
+                              'nodelist for service {}'.format(hostname,
+                                                               self.name))
+                return
+        else:
+            prev_res = nodeobj.prev_result
+
         if result or prev_res:
             adds, dels = self.get_diff(prev_res, result)
             if adds or dels:
-                self.nodes.get(hostname, '') \
-                          .prev_result = copy.deepcopy(result)
+                nodeobj.prev_result = copy.deepcopy(result)
                 for entry in adds:
                     records.append(entry)
                 for entry in dels:
@@ -599,6 +616,9 @@ class Service(object):
                     # output from nodes not running service
                     continue
                 result = self.process_data(output[0])
+                # If a node from init state to good state, hostname will change
+                # So fix that in the node list
+
                 await self.commit_data(result, output[0]['datacenter'],
                                        output[0]['hostname'])
 
@@ -606,12 +626,33 @@ class Service(object):
                 for node in self.new_nodes:
                     # Copy the last saved outputs to avoid committing dup data
                     if node in self.nodes:
-                        new_nodes[node]['output'] = nodes[node]['output']
+                        new_nodes[node].prev_result = (
+                            copy.deepcopy(nodes[node].prev_result))
 
-                nodes = new_nodes
+                self.nodes = self.new_nodes
                 self.nodelist = list(self.nodes.keys())
-                new_nodes = []
-                update_nodes = False
+                self.new_nodes = {}
+                self.update_nodes = False
+                self.rebuild_nodelist = False
+
+            elif self.rebuild_nodelist:
+                adds = {}
+                dels = []
+                for host in self.nodes:
+                    if self.nodes[host].hostname != host:
+                        adds.update({self.nodes[host].hostname:
+                                     self.nodes[host]})
+                        dels.append(host)
+
+                if dels:
+                    for entry in dels:
+                        self.nodes.pop(entry, None)
+
+                if adds:
+                    self.nodes.update(adds)
+
+                self.nodelist = list(self.nodes.keys())
+                self.rebuild_nodelist = False
 
             await asyncio.sleep(self.period)
 
@@ -701,8 +742,23 @@ class SystemService(Service):
 
     async def commit_data(self, result, datacenter, hostname):
         '''system svc needs to write out a record that indicates dead node'''
+        nodeobj = self.nodes.get(hostname, None)
+        if not nodeobj:
+            # This will be the case when a node switches from init state
+            # to good after nodes have been built. Find the corresponding
+            # node and fix the nodelist
+            nres = [self.nodes[x] for x in self.nodes
+                    if self.nodes[x].hostname == hostname]
+            if nres:
+                nodeobj = nres[0]
+            else:
+                logging.error('Ignoring results for {} which is not in '
+                              'nodelist for service {}'.format(hostname,
+                                                               self.name))
+                return
+
         if not result:
-            if self.nodes.get(hostname).get_status() == 'init':
+            if nodeobj.get_status() == 'init':
                 # If in init still, we need to mark the node as unreachable
                 rec = self.get_empty_record()
                 rec['datacenter'] = datacenter
@@ -714,14 +770,21 @@ class SystemService(Service):
                 # To avoid unnecessary flaps, we wait for HOLD_TIME to expire
                 # before we mark the node as dead
                 if hostname in self.nodes_state:
-                    now = time.time()
-                    if now - self.nodes_state[hostname] > HOLD_TIME_IN_SECS:
-                        prev_res = self.nodes.get(hostname, '').prev_result
-                        result = copy.deepcopy(prev_res)
+                    now = int(time.time() * 1000)
+                    if now - self.nodes_state[hostname] > HOLD_TIME_IN_MSECS:
+                        prev_res = nodeobj.prev_result
+                        if prev_res:
+                            result = copy.deepcopy(prev_res)
+                        else:
+                            record = self.get_empty_record()
+                            record['datacenter'] = datacenter
+                            record['hostname'] = hostname
+                            result = [record]
+
                         result[0]['active'] = False
                         result[0]['timestamp'] = self.nodes_state[hostname]
                     else:
-                        self.nodes_state[hostname] = time.time()
+                        self.nodes_state[hostname] = now
                         return
 
         await super(SystemService, self).commit_data(result, datacenter,
@@ -748,12 +811,12 @@ class SystemService(Service):
         dellist = [v for k, v in koldvals.items() if k not in knewvals.keys()]
 
         adds = [new[v] for v in addlist]
-        dels = [old[v] for v in dellist if koldkeys[v] not in knewkeys]
+        dels = [old[v] for v in dellist]
 
         if not (adds or dels):
             # Verify the bootupTimestamp hasn't changed. Compare only int part
             # Assuming no device boots up in millisecs
-            if abs(int(new[0]['bootupTimestamp']) != int(old[0]['bootupTimestamp'])) > 2:
+            if abs(int(new[0]['bootupTimestamp']) - int(old[0]['bootupTimestamp'])) > 2000:
                 adds.append(new[0])
 
         return adds, dels
