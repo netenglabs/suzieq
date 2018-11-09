@@ -309,6 +309,14 @@ class Node(object):
                                    'datacenter': self.dcname,
                                    'hostname': self.hostname,
                                    'data': {'error': str(e)}})
+                except asyncssh.misc.ChannelOpenError as e:
+                    result.append({'status': 404,
+                                   'timestamp': int(time.time()*1000),
+                                   'cmd': cmd,
+                                   'devtype': self.devtype,
+                                   'datacenter': self.dcname,
+                                   'hostname': self.hostname,
+                                   'data': {'error': str(e)}})
 
             conn.close()
             conn.wait_closed()
