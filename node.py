@@ -106,6 +106,7 @@ class Node(object):
         self.transport = kwargs.get('transport', 'ssh')
         self.dcname = kwargs.get('datacenter', "default")
         self.port = kwargs.get('port', 0)
+        self.devtype = kwargs.get('devtype', None)
         pvtkey_file = kwargs.get('pvtkey_file', None)
         if pvtkey_file:
             self.pvtkey = asyncssh.public_key.read_private_key(pvtkey_file)
@@ -146,9 +147,10 @@ class Node(object):
                 self.set_devtype(devtype)
                 if hostname:
                     self.hostname = hostname
-        else:
+        elif self.devtype:
+            self.set_devtype(self.devtype)
             if not self.hostname:
-                self.set_hostname()
+                await self.set_hostname()
 
     def set_devtype(self, devtype):
         self.devtype = devtype
@@ -163,7 +165,7 @@ class Node(object):
             self.devtype = 'linux'
 
     async def get_device_type_hostname(self):
-        '''Determine the type of device we are talking to'''
+        '''Determine the type of device we are talking to if using ssh/local'''
 
         devtype = 'Unknown'
         hostname = None
@@ -230,7 +232,6 @@ class Node(object):
         '''This routine needs to be implemented by child class'''
         if hostname:
             self.hostname = hostname
-            return
 
     async def local_gather(self, cmd_list=None):
         '''Given a dictionary of commands, run locally and return outputs'''
@@ -372,7 +373,7 @@ class Node(object):
 
 class EosNode(Node):
     def _init(self, **kwargs):
-        super(EosNode, self)._init(kwargs)
+        super()._init(kwargs)
         self.devtype = 'eos'
 
     async def rest_gather(self, cmd_list=None, oformat='json'):
@@ -430,15 +431,15 @@ class EosNode(Node):
 
         return result
 
-        async def set_hostname(self, hostname=None):
-            if hostname:
-                self.hostname = hostname
-                return
+    async def set_hostname(self, hostname=None):
+        if hostname:
+            self.hostname = hostname
+            return
 
-            output = await self.exec_cmd(['show hostname'])
+        output = await self.exec_cmd(['show hostname'])
 
-            if output and output[0]['status'] == 200:
-                self.hostname = output[0]['data']['hostname']
+        if output and output[0]['status'] == 200:
+            self.hostname = output[0]['data']['hostname']
 
 
 class CumulusNode(Node):
@@ -448,7 +449,7 @@ class CumulusNode(Node):
         if 'password' not in kwargs:
             kwargs['password'] = 'CumulusLinux!'
 
-        super(CumulusNode, self)._init(kwargs)
+        super()._init(kwargs)
         self.devtype = 'cumulus'
 
     async def rest_gather(self, cmd_list=None):
@@ -501,7 +502,7 @@ class CumulusNode(Node):
 
 class LinuxNode(Node):
     def _init(self, **kwargs):
-        super(LinuxNode, self)._init(kwargs)
+        super()._init(kwargs)
         self.devtype = 'linux'
 
     async def set_hostname(self, hostname=None):
