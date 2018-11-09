@@ -733,7 +733,7 @@ class SystemService(Service):
             if (not entry.get('bootupTimestamp', None) and
                     entry.get('sysUptime', None)):
                 entry['bootupTimestamp'] = int(
-                    raw_data['timestamp'] - float(entry.get('sysUptime')))/1000
+                    raw_data['timestamp']/1000 - float(entry.get('sysUptime')))
                 del entry['sysUptime']
 
         super(SystemService, self).clean_data(processed_data, raw_data)
@@ -816,7 +816,7 @@ class SystemService(Service):
         if not (adds or dels):
             # Verify the bootupTimestamp hasn't changed. Compare only int part
             # Assuming no device boots up in millisecs
-            if abs(int(new[0]['bootupTimestamp']) - int(old[0]['bootupTimestamp'])) > 2000:
+            if abs(int(new[0]['bootupTimestamp']) - int(old[0]['bootupTimestamp'])) > 2:
                 adds.append(new[0])
 
         return adds, dels
