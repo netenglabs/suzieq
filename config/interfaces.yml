@@ -11,19 +11,27 @@ show-fields:
 
 apply:
   cumulus:
-    copy: linux
+    version: all
+    command: sudo vtysh -c "show int vrf all"; ip -d address show
+    textfsm: textfsm_templates/cl_interfaces.tfsm
 
   eos:
     version: all
     command: show interfaces
+    # bunch of fields need code fixups. see service file
     normalize: 'interfaces/*/[
     "name: ifname",
     "mtu: mtu",
     "description: description",
     "physicalAddress: macaddr",
-    "bandwidth: speed",
+    "bandwidth: speed?|0",
+    "srcIpAddr: srcVtepIp",
+    "vlanToVniMap/*:vlan",
+    "vlanToVniMap/*/vni: vni?|0",
     "lineProtocolStatus: state",
-    "hardware: type",
+    "hardware: type?ethernet=ether|",
+    "linkStatusChanges: transitionCnt?|0",
+    "lastStatusChangeTimeStamp: statusChangeTimestamp",
     "fallbackEnabled: lacpBypass?|False",
     "interfaceMembership: master",
     "interfaceAddress: ipAddressList?|[]",
@@ -36,5 +44,5 @@ apply:
     textfsm: textfsm_templates/linux_ipaddr.tfsm
 
   platina:
-    copy: linux
+    copy: cumulus
   
