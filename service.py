@@ -4,6 +4,7 @@ import os
 import asyncio
 import random
 import time
+from datetime import datetime
 import re
 import ast
 import json
@@ -186,11 +187,16 @@ def exdict(path, data, start, collect=False):
             # String a: b?|False => if not a's value, use False, else use a
             # String a: b?True=active|inactive => if a's value is true, use_key
             # the string 'active' instead else use inactive
+            # String a: b?True=active| => if a's value is True, switch to
+            # active else leave it as it is
             if not cval or (tval and str(cval) != tval):
-                try:
-                    oresult[fkey.strip()] = ast.literal_eval(fvals[1])
-                except (ValueError, SyntaxError):
-                    oresult[fkey.strip()] = fvals[1]
+                if fvals[1]:
+                    try:
+                        oresult[fkey.strip()] = ast.literal_eval(fvals[1])
+                    except (ValueError, SyntaxError):
+                        oresult[fkey.strip()] = fvals[1]
+                else:
+                    oresult[fkey.strip()] = cval
             elif cval and not tval:
                 oresult[fkey.strip()] = cval
             else:
@@ -300,7 +306,7 @@ def exdict(path, data, start, collect=False):
             # split the normalized key and data key
             okeys = elem.split(':')
             if okeys[0] in data:
-                if i+1 == len(plist):
+                if start+i+1 == len(plist):
                     set_kv(okeys, data, iresult)
                     result.append(iresult)
                 else:
@@ -526,7 +532,7 @@ class Service(object):
                         input = data['data']
                     result = textfsm_data(input, tfsm_template, self.schema)
 
-                self.clean_data(result, data)
+                result = self.clean_data(result, data)
             else:
                 self.logger.error(
                     '{}: No normalization/textfsm function for device {}'
@@ -560,6 +566,8 @@ class Service(object):
                     else:
                         entry.update({fld: schema_rec[fld]})
 
+        return processed_data
+
     async def commit_data(self, result, datacenter, hostname):
         '''Write the result data out'''
         records = []
@@ -589,8 +597,12 @@ class Service(object):
                 for entry in adds:
                     records.append(entry)
                 for entry in dels:
-                    entry.update({'active': False})
-                    records.append(entry)
+                    if entry.get('active', True):
+                        # If there's already an entry marked as deleted
+                        # No point in adding one more
+                        entry.update({'active': False})
+                        entry.update({'timestamp': int(time.time()*1000)})
+                        records.append(entry)
 
             if records:
                 if self.stype == 'counters':
@@ -654,11 +666,95 @@ class Service(object):
                 self.nodelist = list(self.nodes.keys())
                 self.rebuild_nodelist = False
 
-            await asyncio.sleep(self.period)
+            await asyncio.sleep(self.period + (random.randint(0, 1000)/1000))
 
 
 class InterfaceService(Service):
     '''Service class for interfaces. Cleanup of data is specific'''
+
+    def clean_eos_data(self, processed_data):
+        '''Clean up EOS interfaces output'''
+        for entry in processed_data:
+            entry['speed'] = int(entry['speed']/1000000)
+            ts = entry['statusChangeTimestamp']
+            if ts:
+                entry['statusChangeTimestamp'] = int(float(ts)*1000)
+            else:
+                entry['statusChangeTimestamp'] = 0
+            if entry['type'] == 'portChannel':
+                entry['type'] = 'bond'
+            words = entry['master'].split()
+            if words:
+                if words[-1].strip().startswith('Port-Channel'):
+                    entry['type'] = 'bond_slave'
+                entry['master'] = words[-1].strip()
+
+            # Vlan is gathered as a list for VXLAN interfaces. Fix that
+            if entry['type'] == 'vxlan':
+                entry['vlan'] = entry.get('vlan', [''])[0]
+
+            tmpent = entry.get('ipAddressList', [[]])
+            if not tmpent:
+                continue
+
+            munge_entry = tmpent[0]
+            if munge_entry:
+                new_list = []
+                primary_ip = (
+                    munge_entry['primaryIp']['address'] + '/' +
+                    str(munge_entry['primaryIp']['maskLen'])
+                )
+                new_list.append(primary_ip)
+                for elem in munge_entry['secondaryIpsOrderedList']:
+                    ip = elem['adddress'] + '/' + elem['maskLen']
+                    new_list.append(ip)
+                entry['ipAddressList'] = new_list
+
+            # ip6AddressList is formatted as a dict, not a list by EOS
+            munge_entry = entry.get('ip6AddressList', [{}])
+            if munge_entry:
+                new_list = []
+                for elem in munge_entry.get('globalUnicastIp6s', []):
+                    new_list.append(elem['subnet'])
+                entry['ip6AddressList'] = new_list
+
+    def clean_cumulus_data(self, processed_data):
+        '''We have to merge the appropriate outputs of two separate commands'''
+        new_data_dict = {}
+        for entry in processed_data:
+            ifname = entry['ifname']
+            if ifname not in new_data_dict:
+                entry['transitionCnt'] = int(entry['linkUpCnt'] +
+                                             entry['linkDownCnt'])
+                if entry['state'] == 'up':
+                    ts = entry['linkUpTimestamp']
+                else:
+                    ts = entry['linkDownTimestamp']
+                if 'never' in ts:
+                    ts = 0
+                else:
+                    ts = int(datetime.strptime(
+                        ts.strip(), '%Y/%m/%d %H:%M:%S.%f').timestamp() * 1000)
+                entry['statusChangeTimestamp'] = ts
+
+                del entry['linkUpCnt']
+                del entry['linkDownCnt']
+                del entry['linkUpTimestamp']
+                del entry['linkDownTimestamp']
+                del entry['vrf']
+                new_data_dict[ifname] = entry
+            else:
+                # Merge the two. The second entry is always from ip addr show
+                # And it has the more accurate type, master list
+                first_entry = new_data_dict[ifname]
+                first_entry.update({'type': entry['type']})
+                first_entry.update({'master': entry['master']})
+
+        processed_data = []
+        for k, v in new_data_dict.items():
+            processed_data.append(v)
+
+        return processed_data
 
     def clean_data(self, processed_data, raw_data):
         '''Homogenize the IP addresses across different implementations
@@ -670,42 +766,11 @@ class InterfaceService(Service):
         '''
         devtype = raw_data.get('devtype', None)
         if devtype == 'eos':
-            for entry in processed_data:
-                # Fixup speed:
-                entry['speed'] = str(int(entry['speed']/1000000000)) + 'G'
-                words = entry['master'].split()
-                if words:
-                    entry['master'] = words[-1].strip()
+            self.clean_eos_data(processed_data)
+        elif devtype == 'cumulus' or devtype == 'platina':
+            processed_data = self.clean_cumulus_data(processed_data)
 
-                tmpent = entry.get('ipAddressList', [[]])
-                if not tmpent:
-                    continue
-
-                munge_entry = tmpent[0]
-                if munge_entry:
-                    new_list = []
-                    primary_ip = (
-                        munge_entry['primaryIp']['address'] + '/' +
-                        str(munge_entry['primaryIp']['maskLen'])
-                    )
-                    new_list.append(primary_ip)
-                    for elem in munge_entry['secondaryIpsOrderedList']:
-                        ip = elem['adddress'] + '/' + elem['maskLen']
-                        new_list.append(ip)
-                    entry['ipAddressList'] = new_list
-
-                # ip6AddressList is formatted as a dict, not a list by EOS
-                munge_entry = entry.get('ip6AddressList', [{}])
-                if munge_entry:
-                    new_list = []
-                    for elem in munge_entry.get('globalUnicastIp6s', []):
-                        new_list.append(elem['subnet'])
-                    entry['ip6AddressList'] = new_list
-
-        super(InterfaceService, self).clean_data(processed_data, raw_data)
-
-        return
-
+        return super().clean_data(processed_data, raw_data)
 
 class SystemService(Service):
     '''Checks the uptime and OS/version of the node.
@@ -716,7 +781,7 @@ class SystemService(Service):
 
     def __init__(self, name, defn, period, stype, keys, ignore_fields,
                  schema, queue):
-        super(SystemService, self).__init__(name, defn, period, stype, keys,
+        super().__init__(name, defn, period, stype, keys,
                                             ignore_fields, schema, queue)
         self.ignore_fields.append('bootupTimestamp')
 
@@ -736,9 +801,7 @@ class SystemService(Service):
                     raw_data['timestamp']/1000 - float(entry.get('sysUptime')))
                 del entry['sysUptime']
 
-        super(SystemService, self).clean_data(processed_data, raw_data)
-
-        return
+        return super().clean_data(processed_data, raw_data)
 
     async def commit_data(self, result, datacenter, hostname):
         '''system svc needs to write out a record that indicates dead node'''
@@ -766,7 +829,7 @@ class SystemService(Service):
                 rec['timestamp'] = int(time.time() * 1000)
 
                 result.append(rec)
-            else:
+            elif nodeobj.get_status == 'good':
                 # To avoid unnecessary flaps, we wait for HOLD_TIME to expire
                 # before we mark the node as dead
                 if hostname in self.nodes_state:
@@ -783,11 +846,20 @@ class SystemService(Service):
 
                         result[0]['active'] = False
                         result[0]['timestamp'] = self.nodes_state[hostname]
+                        del self.nodes_state[hostname]
+                        nodeobj.set_unreach_status()
                     else:
-                        self.nodes_state[hostname] = now
                         return
+                else:
+                    self.nodes_state[hostname] = int(time.time() * 1000)
+                    return
+        else:
+            # Clean up old state if any since we now have a valid output
+            if self.nodes_state.get(hostname, None):
+                del self.nodes_state[hostname]
+            nodeobj.set_good_status()
 
-        await super(SystemService, self).commit_data(result, datacenter,
+        await super().commit_data(result, datacenter,
                                                      hostname)
 
     def get_diff(self, old, new):
@@ -857,5 +929,5 @@ class MlagService(Service):
                 entry['mlagErrorPortsCnt'] = mlagErrorPortsCnt
                 del entry['mlagInterfaces']
 
-        super(MlagService, self).clean_data(processed_data, raw_data)
+        return super().clean_data(processed_data, raw_data)
 
