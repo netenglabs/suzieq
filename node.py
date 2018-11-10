@@ -225,6 +225,12 @@ class Node(object):
     def get_status(self):
         return self.status
 
+    def set_unreach_status(self):
+        self.status = 'unreachable'
+
+    def set_good_status(self):
+        self.status = 'good'
+
     def is_alive(self):
         return self.status == 'good'
 
@@ -376,7 +382,10 @@ class Node(object):
         if not cmd:
             return result
 
-        return await self.exec_cmd([cmd], oformat=oformat)
+        if type(cmd) is not list:
+            cmd = [cmd]
+
+        return await self.exec_cmd(cmd, oformat=oformat)
 
 
 class EosNode(Node):
