@@ -4,16 +4,18 @@
     "type": "record",
     "fields": [
         {
-            "name": "macaddr",
-            "type": "string"
+            "name": "ipAddressList",
+            "type": {
+                "type": "array",
+                "items": {
+                    "type": "string",
+                    "name": "ipAddress"
+                }
+            }
         },
         {
-            "name": "lacpBypass",
-            "type": "boolean"
-        },
-        {
-            "name": "description",
-            "type": "string"
+            "name": "speed",
+            "type": "long"
         },
         {
             "name": "ip6AddressList",
@@ -26,8 +28,12 @@
             }
         },
         {
-            "name": "speed",
-            "type": "string"
+            "name": "transitionCnt",
+            "type": "long"
+        },
+        {
+            "name": "statusChangeTimestamp",
+            "type": "double"
         },
         {
             "name": "ifname",
@@ -36,8 +42,16 @@
             "display": 2
         },
         {
-            "name": "rootGuard",
+            "name": "macaddr",
             "type": "string"
+        },
+        {
+            "name": "vlan",
+            "type": "string"
+        },
+        {
+            "name": "lacpBypass",
+            "type": "boolean"
         },
         {
             "name": "type",
@@ -45,20 +59,8 @@
             "display": 4
         },
         {
-            "name": "vni",
-            "type": "int"
-        },
-        {
-            "name": "stpState",
-            "type": "string"
-        },
-        {
             "name": "ifindex",
             "type": "long"
-        },
-        {
-            "name": "rootPort",
-            "type": "string"
         },
         {
             "name": "state",
@@ -66,18 +68,17 @@
             "display": 3
         },
         {
-            "name": "stpRoot",
-            "type": "string"
+            "name": "master",
+            "type": "string",
+            "display": 6
         },
         {
-            "name": "ipAddressList",
-            "type": {
-                "type": "array",
-                "items": {
-                    "type": "string",
-                    "name": "ipAddress"
-                }
-            }
+            "name": "vni",
+            "type": "int"
+        },
+        {
+            "name": "srcVtepIp",
+            "type": "string"
         },
         {
             "name": "mtu",
@@ -85,9 +86,8 @@
             "display": 5
         },
         {
-            "name": "master",
-            "type": "string",
-            "display": 6
+            "name": "description",
+            "type": "string"
         },
         {
             "name": "hostname",
