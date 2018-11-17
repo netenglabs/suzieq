@@ -1,5 +1,4 @@
 
-from collections import defaultdict
 import os
 import asyncio
 import random
@@ -7,18 +6,14 @@ import time
 from datetime import datetime
 import re
 import ast
+import copy
+import logging
 import json
 
 import yaml
-import copy
-import logging
 
-import pandas as pd
-import pyarrow as pa
-import pyarrow.parquet as pq
 import textfsm
-from pyarrow import DataType
-from pyarrow.lib import Field
+import pyarrow as pa
 
 HOLD_TIME_IN_MSECS = 60000    # How long b4 declaring node dead
 
@@ -59,14 +54,14 @@ async def init_services(svc_dir, schema_dir, queue):
     svcs_list = []
 
     if not os.path.isdir(svc_dir):
-        logging.error('services directory not a directory: {}', svc_dir)
+        logging.error('services directory not a directory: {}'.format(svc_dir))
         return svcs_list
 
     if not os.path.isdir(schema_dir):
-        logging.error('schema directory not a directory: {}', svc_dir)
+        logging.error('schema directory not a directory: {}'.format(svc_dir))
         return svcs_list
 
-    for root, dirnames, filenames in os.walk(svc_dir):
+    for root, _, filenames in os.walk(svc_dir):
         for filename in filenames:
             if filename.endswith('yml') or filename.endswith('yaml'):
                 with open(root + '/' + filename, 'r') as f:
@@ -239,6 +234,7 @@ def exdict(path, data, start, collect=False):
     iresult = {}
 
     plist = re.split('''/(?=(?:[^'"]|'[^']*'|"[^"]*")*$)''', path)
+    i = 0
     for i, elem in enumerate(plist[start:]):
 
         if not data:
@@ -248,7 +244,7 @@ def exdict(path, data, start, collect=False):
             return result, i+start
 
         j = 0
-        num = re.match('\[([0-9]*)\]', elem)
+        num = re.match(r'\[([0-9]*)\]', elem)
         if num:
             data = data[int(num.group(1))]
 
@@ -426,7 +422,7 @@ class Service(object):
         '''New node list for this service'''
         if self.nodes:
             self.new_nodes = copy.deepcopy(nodes)
-            update_nodes = True
+            self.update_nodes = True
         else:
             self.nodes = copy.deepcopy(nodes)
 
@@ -508,8 +504,8 @@ class Service(object):
                 if nfn.get('normalize', None):
                     if type(data['data']) is str:
                         try:
-                            input = json.loads(data['data'])
-                        except json.JSONDecodeError as e:
+                            in_info = json.loads(data['data'])
+                        except json.JSONDecodeError:
                             self.logger.error('Received non-JSON output where '
                                               'JSON was expected for {} on '
                                               'node {}, {}'.format(
@@ -518,19 +514,19 @@ class Service(object):
                                                   data['data']))
                             return result
                     else:
-                        input = data['data']
+                        in_info = data['data']
 
-                    result, _ = exdict(nfn.get('normalize', ''), input, 0)
+                    result, _ = exdict(nfn.get('normalize', ''), in_info, 0)
                 else:
                     tfsm_template = nfn.get('textfsm', None)
                     if not tfsm_template:
                         return result
 
                     if 'output' in data['data']:
-                        input = data['data']['output']
+                        in_info = data['data']['output']
                     else:
-                        input = data['data']
-                    result = textfsm_data(input, tfsm_template, self.schema)
+                        in_info = data['data']
+                    result = textfsm_data(in_info, tfsm_template, self.schema)
 
                 result = self.clean_data(result, data)
             else:
@@ -638,8 +634,8 @@ class Service(object):
                 for node in self.new_nodes:
                     # Copy the last saved outputs to avoid committing dup data
                     if node in self.nodes:
-                        new_nodes[node].prev_result = (
-                            copy.deepcopy(nodes[node].prev_result))
+                        self.new_nodes[node].prev_result = (
+                            copy.deepcopy(self.nodes[node].prev_result))
 
                 self.nodes = self.new_nodes
                 self.nodelist = list(self.nodes.keys())
@@ -751,7 +747,7 @@ class InterfaceService(Service):
                 first_entry.update({'master': entry['master']})
 
         processed_data = []
-        for k, v in new_data_dict.items():
+        for _, v in new_data_dict.items():
             processed_data.append(v)
 
         return processed_data
@@ -782,14 +778,12 @@ class SystemService(Service):
     def __init__(self, name, defn, period, stype, keys, ignore_fields,
                  schema, queue):
         super().__init__(name, defn, period, stype, keys,
-                                            ignore_fields, schema, queue)
+                         ignore_fields, schema, queue)
         self.ignore_fields.append('bootupTimestamp')
 
     def clean_data(self, processed_data, raw_data):
         '''Cleanup the bootup timestamp for Linux nodes'''
 
-        devtype = raw_data.get('devtype', None)
-        timestamp = raw_data.get('timestamp', int(time.time()*1000))
         for entry in processed_data:
             # We're assuming that if the entry doesn't provide the
             # bootupTimestamp field but provides the sysUptime field,
@@ -859,8 +853,7 @@ class SystemService(Service):
                 del self.nodes_state[hostname]
             nodeobj.set_good_status()
 
-        await super().commit_data(result, datacenter,
-                                                     hostname)
+        await super().commit_data(result, datacenter, hostname)
 
     def get_diff(self, old, new):
 
@@ -868,8 +861,6 @@ class SystemService(Service):
         dels = []
         koldvals = {}
         knewvals = {}
-        koldkeys = []
-        knewkeys = []
 
         for i, elem in enumerate(old):
             vals = [v for k, v in elem.items() if k not in self.ignore_fields]
@@ -903,7 +894,6 @@ class MlagService(Service):
             mlagDualPortsCnt = 0
             mlagSinglePortsCnt = 0
             mlagErrorPortsCnt = 0
-            mlagPorts = []
             mlagDualPorts = []
             mlagSinglePorts = []
             mlagErrorPorts = []
@@ -914,7 +904,7 @@ class MlagService(Service):
                     if mlagIfs[mlagif]['status'] == 'dual':
                         mlagDualPortsCnt += 1
                         mlagDualPorts.append(mlagif)
-                    elif mlagifs[mlagif]['status'] == 'single':
+                    elif mlagIfs[mlagif]['status'] == 'single':
                         mlagSinglePortsCnt += 1
                         mlagSinglePorts.append(mlagif)
                     elif (mlagIfs[mlagif]['status'] == 'errDisabled' or
@@ -930,4 +920,3 @@ class MlagService(Service):
                 del entry['mlagInterfaces']
 
         return super().clean_data(processed_data, raw_data)
-
