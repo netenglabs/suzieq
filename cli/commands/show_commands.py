@@ -58,39 +58,10 @@ class ShowCommand:
         Show BGP
         """
 
-        # Get the default display field names
-        sch = self.schemas['bgp']
-        fields = []
-        wherestr = ''
-        for field in sch:
-            loc = field.get('display', None)
-            if loc is not None:
-                fields.insert(loc, field['name'])
-
-        if 'timestamp' not in fields:
-            fields.append('timestamp')
-
-        if hostname:
-            wherestr += "where hostname=='{}'".format(hostname)
-
-        if peer:
-            wherestr += " and peer=='{}'".format(peer)
-
-        if vrf:
-            wherestr += " and vrf=='{}'".format(vrf)
-
-        if view == 'latest':
-            order_by_str = 'order by hostname, vrf, peer'
-        else:
-            timestr = (" and timestamp(timestamp/1000) > timestamp('{}') and "
-                       "timestamp(timestamp/1000) < timestamp('{}') "
-                       .format(start_time, end_time))
-            wherestr += timestr
-            order_by_str = 'order by timestamp'
-
-        bgp_sqlstr = 'select {} from bgp {} {}'\
-                     .format(', '.join(fields), wherestr, order_by_str)
-
+        order_by = 'order by hostname, vrf, peer'
+        bgp_sqlstr = self.build_sql_str('bgp', start_time, end_time, view,
+                                        order_by,
+                                        hostname=hostname, peer=peer, vrf=vrf)
         cprint(bgp_sqlstr)
         df = get_output(bgp_sqlstr, self.cfg, self.schemas,
                         start_time, end_time, view)
@@ -112,23 +83,10 @@ class ShowCommand:
         Show interfaces
         """
         # Get the default display field names
-        sch = self.schemas['interfaces']
-        fields = []
-        wherestr = ''
-        for field in sch:
-            loc = field.get('display', None)
-            if loc is not None:
-                fields.insert(loc, field['name'])
-
-        if hostname:
-            wherestr += "where hostname=='{}'".format(hostname)
-
-        if ifname:
-            wherestr += " and ifname=='{}'".format(ifname)
-
-        if_sqlstr = 'select {} from interfaces {} order by hostname, ifname'\
-                     .format(', '.join(fields), wherestr)
-
+        order_by = 'order by hostname, ifname'
+        if_sqlstr = self.build_sql_str('interfaces', start_time, end_time, 
+                                       view, order_by,
+                                       hostname=hostname, ifname=ifname)
         cprint(if_sqlstr)
         df = get_output(if_sqlstr, self.cfg, self.schemas,
                         start_time, end_time, view)
@@ -149,6 +107,46 @@ class ShowCommand:
             df = pd.DataFrame.from_dict(tables)
             cprint(df)
 
+    def build_sql_str(self, table: str, start_time: str, 
+                    end_time: str, view: str, order_by: str, **kwargs):
+
+        sch = self.schemas.get(table)
+        if not sch:
+            print('Unknown table {}, no schema found for it', table)
+            return
+
+        fields = []
+        wherestr = ''
+        for field in sch:
+            loc = field.get('display', None)
+            if loc is not None:
+                fields.insert(loc, field['name'])
+
+        if 'timestamp' not in fields:
+            fields.append('timestamp')
+        
+        first = True
+        for kwd in kwargs:
+            if not kwargs[kwd]:
+                continue
+
+            if first:
+                prefix = 'where'
+                first = False
+            else:
+                prefix = 'and'   
+            wherestr += " {} {}=='{}'".format(prefix, kwd, kwargs[kwd])
+
+        if view != 'latest':
+            timestr = (" and timestamp(timestamp/1000) > timestamp('{}') and "
+                        "timestamp(timestamp/1000) < timestamp('{}') "
+                        .format(start_time, end_time))
+            wherestr += timestr
+            order_by = 'order by timestamp'
+
+        output = 'select {} from {} {} {}'.format(', '.join(fields), table, 
+                                                wherestr, order_by)
+        return output
 
 def get_output(query_string: str, cfg, schemas,
                start_time='', end_time='', view: str = 'latest'):
