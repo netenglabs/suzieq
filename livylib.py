@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 
-import json, textwrap, requests
-import os
 from time import sleep
+import json, textwrap, requests
 
 
 def exec_livycode(code, session_url, longer_exec=False,
                   server_url='http://localhost:8998',
-                  headers={'Content-Type': 'application/json'}):
+                  headers=None):
     ''' Execute the given string as python code and return result.
 
     This code blocks until result is available.
@@ -20,6 +19,8 @@ def exec_livycode(code, session_url, longer_exec=False,
     Returns: The raw requests response object
     '''
 
+    if not headers:
+        headers = {'Content-Type': 'application/json'}
     data = {
         'code': textwrap.dedent('''{code}'''.format(code=code)),
     }
@@ -89,7 +90,7 @@ def get_or_create_livysession(server_url='http://localhost:8998'):
         return session_url, None
 
     data = {'kind': 'pyspark', 'heartbeatTimeoutInSecond': 3600,
-            'pyFiles': ['/home/ddutt/work/suzieq/livylib.py'],
+            'pyFiles': ['/home/ddutt/work/suzieq/utils.py'],
             'conf': {'spark.app.name': 'suzieq'}, 'executorCores': 2}
     r = requests.post(server_url + '/sessions', data=json.dumps(data),
                       headers=headers)
@@ -109,4 +110,3 @@ def del_livysession(session_url):
 
     headers = {'Content-Type': 'application/json'}
     return requests.delete(session_url, headers=headers)
-
