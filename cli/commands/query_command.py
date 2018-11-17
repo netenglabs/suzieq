@@ -7,19 +7,12 @@
 # LICENSE file in the root directory of this source tree.
 #
 
-import asyncio
 import sys
-import os
 import re
-import socket
-from pathlib import Path
 import json
-from datetime import datetime
 from collections import OrderedDict
 
-
 import pandas as pd
-import typing
 from termcolor import cprint
 from nubia import command, argument, context
 
@@ -27,57 +20,6 @@ sys.path.append('/home/ddutt/work/')
 import suzieq.livylib
 import suzieq.utils
 from commands.utils import get_spark_code
-
-code_tmpl = '''
-import sys
-sys.path.append("/home/ddutt/work/suzieq/")
-from livylib import get_latest_files
-
-files = dict()
-for k in {1}:
-    v = get_latest_files("{0}" + "/" + k, start="{3}", end="{4}")
-    files[k] = v
-
-for k, v in files.items():
-    spark.read.option("basePath", "{0}").load(v).createOrReplaceTempView(k)
-
-x={2}
-for k in {1}:
-  spark.catalog.dropTempView(k)
-x
-'''
-
-counter_code_tmpl = '''
-import pyspark.sql.functions as F
-from pyspark.sql.window import Window
-
-for k in {1}:
-    spark.read.option("basePath", "{0}").load("{0}/" + k).createOrReplaceTempView(k)
-
-cntrdf={2}
-
-col_name = "{3}"
-cntrdf = cntrdf \
-             .withColumn('prevTime',
-                         F.lag(cntrdf.timestamp).over(Window.partitionBy()
-                                                      .orderBy('timestamp')))
-cntrdf = cntrdf \
-             .withColumn('prevBytes',
-                         F.lag(col_name).over(Window.partitionBy()
-                                              .orderBy('timestamp')))
-
-cntrdf = cntrdf \
-             .withColumn("rate",
-                         F.when(F.isnull(F.col(col_name) - cntrdf.prevBytes), 0)
-                         .otherwise((F.col(col_name) - cntrdf.prevBytes)*8 /
-                                    (cntrdf.timestamp.astype('double')-cntrdf.prevTime.astype('double')))) \
-             .drop('prevTime', 'prevBytes')
-
-for k in {1}:
-  spark.catalog.dropTempView(k)
-
-cntrdf.toJSON().collect()
-'''
 
 
 @command
@@ -150,7 +92,6 @@ async def describe_table(table):
     else:
         cfg = cfg.ctx
 
-    dfolder = cfg['data-directory']
     schemas = suzieq.utils.get_schemas(cfg['schema-directory'])
 
     if table not in schemas:
@@ -162,6 +103,3 @@ async def describe_table(table):
     df = pd.DataFrame.from_dict(entries)
 
     cprint(df)
-
-
-

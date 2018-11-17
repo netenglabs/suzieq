@@ -1,9 +1,11 @@
 import re
+from termcolor import cprint
 
 code_tmpl = '''
 import sys
-sys.path.append("/home/ddutt/work/suzieq/")
-from livylib import get_latest_files
+import datetime
+sys.path.append("/home/ddutt/work/")
+from suzieq.utils import get_latest_files
 
 files = dict()
 for k in {1}:
@@ -12,6 +14,19 @@ for k in {1}:
 
 for k, v in files.items():
     spark.read.option("basePath", "{0}").load(v).createOrReplaceTempView(k)
+
+x={2}
+for k in {1}:
+  spark.catalog.dropTempView(k)
+x
+'''
+
+code_viewall_tmpl = '''
+import sys
+sys.path.append("/home/ddutt/work/suzieq/")
+
+for k in {1}:
+    spark.read.option("basePath", "{0}").load("{0}/" + k).createOrReplaceTempView(k)
 
 x={2}
 for k in {1}:
@@ -52,7 +67,7 @@ cntrdf.toJSON().collect()
 '''
 
 
-def get_spark_code(qstr, cfg, schemas, start=None, end=None):
+def get_spark_code(qstr, cfg, schemas, start=None, end=None, view='latest'):
     '''Get the Table creation and destruction code for query string'''
 
     # SQL syntax has keywords separated by space, multiple values for a keyword
@@ -101,8 +116,10 @@ def get_spark_code(qstr, cfg, schemas, start=None, end=None):
                                         sstr, counter)
     else:
         sstr = 'spark.sql("{0}").toJSON().collect()'.format(qstr)
-        code = code_tmpl.format(cfg['data-directory'], tables, sstr,
-                                start, end)
-
+        if view == 'latest':
+            code = code_tmpl.format(cfg['data-directory'], tables, sstr,
+                                    start, end)
+        else:
+            code = code_viewall_tmpl.format(cfg['data-directory'], tables,
+                                            sstr)
     return code
-

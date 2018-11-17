@@ -7,21 +7,17 @@
 # LICENSE file in the root directory of this source tree.
 #
 
-import asyncio
-import sys
-import os
+
 import re
-import socket
+import sys
 from pathlib import Path
 import json
-from datetime import datetime
 from collections import OrderedDict
 
 
 import pandas as pd
-import typing
 from termcolor import cprint
-from nubia import command, argument, context
+from nubia import command, argument
 from commands.utils import get_spark_code
 
 sys.path.append('/home/ddutt/work/')
@@ -44,25 +40,79 @@ class ShowCommand:
     @property
     def schemas(self):
         return self._schemas
-    """This is the super command help"""
+    """show various pieces of information"""
 
     @command('bgp')
     @argument("hostname", description="Name of host to qualify show")
     @argument("peer", description="Name of peer to qualify show")
-    @argument("vrf", description="VRF to qualify show")        
+    @argument("vrf", description="VRF to qualify show")
     @argument("start_time",
               description="Start of time window in YYYY-MM-dd HH:mm:SS format")
     @argument("end_time",
               description="End of time window in YYYY-MM-dd HH:mm:SS format")
+    @argument("view", description="view all records or just the latest",
+              choices=['all', 'latest'])
     def show_bgp(self, hostname: str = None, peer: str = None, vrf: str = None,
-                 start_time: str=None, end_time: str=None):
+                 start_time: str = '', end_time: str = '', view: str = 'latest'):
         """
         Show BGP
         """
 
-        ctx = context.get_context()
         # Get the default display field names
         sch = self.schemas['bgp']
+        fields = []
+        wherestr = ''
+        for field in sch:
+            loc = field.get('display', None)
+            if loc is not None:
+                fields.insert(loc, field['name'])
+
+        if 'timestamp' not in fields:
+            fields.append('timestamp')
+
+        if hostname:
+            wherestr += "where hostname=='{}'".format(hostname)
+
+        if peer:
+            wherestr += " and peer=='{}'".format(peer)
+
+        if vrf:
+            wherestr += " and vrf=='{}'".format(vrf)
+
+        if view == 'latest':
+            order_by_str = 'order by hostname, vrf, peer'
+        else:
+            timestr = (" and timestamp(timestamp/1000) > timestamp('{}') and "
+                       "timestamp(timestamp/1000) < timestamp('{}') "
+                       .format(start_time, end_time))
+            wherestr += timestr
+            order_by_str = 'order by timestamp'
+
+        bgp_sqlstr = 'select {} from bgp {} {}'\
+                     .format(', '.join(fields), wherestr, order_by_str)
+
+        cprint(bgp_sqlstr)
+        df = get_output(bgp_sqlstr, self.cfg, self.schemas,
+                        start_time, end_time, view)
+        print(df)
+
+    @command('interfaces')
+    @argument("hostname", description="Name of host to qualify show")
+    @argument("ifname", description="interface name to qualify show")
+    @argument("start_time",
+              description="Start of time window in YYYY-MM-dd HH:mm:SS format")
+    @argument("end_time",
+              description="End of time window in YYYY-MM-dd HH:mm:SS format")
+    @argument("view", description="view all records or just the latest",
+              choices=['all', 'latest'])
+    def show_interfaces(self, hostname: str = None, ifname: str = None,
+                        start_time: str = '', end_time: str = '',
+                        view: str = 'latest'):
+        """
+        Show interfaces
+        """
+        # Get the default display field names
+        sch = self.schemas['interfaces']
         fields = []
         wherestr = ''
         for field in sch:
@@ -73,25 +123,16 @@ class ShowCommand:
         if hostname:
             wherestr += "where hostname=='{}'".format(hostname)
 
-        if peer:
-            wherestr += " and where peer=='{}'".format(peer)
+        if ifname:
+            wherestr += " and ifname=='{}'".format(ifname)
 
-        if vrf:
-            wherestr += " and where vrf=='{}'".format(vrf)
-
-        bgp_sqlstr = 'select {} from bgp {} order by hostname, vrf, peer'\
+        if_sqlstr = 'select {} from interfaces {} order by hostname, ifname'\
                      .format(', '.join(fields), wherestr)
 
-        cprint(bgp_sqlstr)
-        df = get_output(bgp_sqlstr, ctx, self.cfg, self.schemas)
+        cprint(if_sqlstr)
+        df = get_output(if_sqlstr, self.cfg, self.schemas,
+                        start_time, end_time, view)
         print(df)
-
-    @command('interfaces')
-    def show_interfaces(self):
-        """
-        Show interfaces
-        """
-        cprint("stuff={}".format('interfaces'))
 
     @command("tables")
     def show_tables(self):
@@ -109,8 +150,8 @@ class ShowCommand:
             cprint(df)
 
 
-def get_output(query_string: str, ctx, cfg, schemas,
-               start_time='', end_time=''):
+def get_output(query_string: str, cfg, schemas,
+               start_time='', end_time='', view: str = 'latest'):
 
     try:
         session_url = suzieq.livylib.get_livysession()
@@ -130,7 +171,8 @@ def get_output(query_string: str, ctx, cfg, schemas,
         words[-1] += "'"
         query_string = ' '.join(words)
 
-    code = get_spark_code(query_string, cfg, schemas, start_time, end_time)
+    code = get_spark_code(query_string, cfg, schemas, start_time, end_time,
+                          view)
     output = suzieq.livylib.exec_livycode(code, session_url)
     if output['status'] != 'ok':
         df = {'error': output['status'],
