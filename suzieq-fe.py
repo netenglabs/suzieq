@@ -4,21 +4,17 @@ import sys
 import os
 import logging
 import argparse
-import yaml
-from pathlib import Path
-from confluent_kafka import Consumer, KafkaException
-
 from time import sleep
-
 import daemon
 from daemon import pidfile
 
 from livylib import get_or_create_livysession, exec_livycode
+from utils import load_sq_config
 
 PID_FILE = '/tmp/suzieq-fe-init.pid'
 
 
-def _main(cfg):
+def _main(logger):
     '''The workhorse routine
 
     Parameters:
@@ -26,9 +22,9 @@ def _main(cfg):
     cfg: yaml object, YAML encoding of the config file
     '''
 
-    session_url, response = get_or_create_livysession()
+    session_url, _ = get_or_create_livysession()
     if not session_url:
-        logging.error('Unable to create a Livy session. Aborting')
+        logger.error('Unable to create a Livy session. Aborting')
         sys.exit(1)
 
     while True:
@@ -39,65 +35,18 @@ def _main(cfg):
             print(output)
         sleep(180)
 
-
-def validate_sqcfg(cfg, fh):
-    '''Validate Suzieq config file
-
-    Parameters:
-    -----------
-    cfg: yaml object, YAML encoding of the config file
-    fh:  file logger handle
-
-    Returns:
-    --------
-    status: None if all is good or error string
-    '''
-
-    ddir = cfg.get('data-directory', None)
-    if not ddir:
-        return('No data directory for output files specified')
-
-    sdir = cfg.get('service-directory', None)
-    if not sdir:
-        return('No service config directory specified')
-
-    p = Path(sdir)
-    if not p.is_dir():
-        return('Service directory {} is not a directory'.format(sdir))
-
-    scdir = cfg.get('service-directory', None)
-    if not scdir:
-        scdir = sdir + '/schema'
-
-    p = Path(scdir)
-    if not p.is_dir():
-        return('Invalid schema directory specified')
-
-    ksrv = cfg.get('kafka-servers', None)
-    if ksrv:
-        kc = Consumer({'bootstrap.servers': ksrv}, logger=fh)
-
-        try:
-            kc.list_topics(timeout=1)
-        except KafkaException as e:
-            return ('Kafka server error: {}'.format(str(e)))
-
-        kc.close()
-
-    return None
-
-
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser('suzieq-fe')
     parser.add_argument('-f', '--foreground', action='store_true',
                         help='Run app in foreground, do not daemonize')
-    parser.add_argument('-c', '--config-file', type=argparse.FileType('r'),
-                        default='./config/suzieq-cfg.yml')
 
     userargs = parser.parse_args()
 
-    cfg = yaml.load(userargs.config_file.read())
+    cfg = load_sq_config()
+    if not cfg:
+        print('Invalid or unknown config')
+        sys.exit(1)
 
     logger = logging.getLogger()
     logger.setLevel(cfg.get('logging-level', 'WARNING'))
@@ -107,13 +56,8 @@ if __name__ == '__main__':
     logger.handlers = [fh]
     fh.setFormatter(formatter)
 
-    status = validate_sqcfg(cfg, fh)
-    if status:
-        print('Invalid config, {}'.format(status))
-        sys.exit(1)
-
     if userargs.foreground:
-        _main(cfg)
+        _main(logger)
     else:
         if os.path.exists(PID_FILE):
             with open(PID_FILE, 'r') as f:
@@ -130,5 +74,4 @@ if __name__ == '__main__':
                               'pid {}'.format(pid))
         with daemon.DaemonContext(
                 pidfile=pidfile.TimeoutPIDLockFile(PID_FILE)):
-            _main(cfg)
-
+            _main(logger)
