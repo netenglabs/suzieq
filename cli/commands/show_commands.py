@@ -27,11 +27,25 @@ import suzieq.utils
 
 @command('show')
 class ShowCommand:
-    "This is the wrapper show command"
+    '''This is the show command class.
+    For each command, ensure the argument names match the field name in the
+    schema to enable build_sql_str to do its magic'''
 
-    def __init__(self) -> None:
+    @argument("hostname", description="Name of host to qualify selection")
+    @argument("start_time",
+              description="Start of time window in YYYY-MM-dd HH:mm:SS format")
+    @argument("end_time",
+              description="End of time window in YYYY-MM-dd HH:mm:SS format")
+    @argument("view", description="view all records or just the latest",
+              choices=['all', 'latest'])
+    def __init__(self, hostname: str = '', start_time: str = '',
+                 end_time: str = '', view: str = 'latest') -> None:
         self._cfg = suzieq.utils.load_sq_config(validate=False)
         self._schemas = suzieq.utils.get_schemas(self._cfg['schema-directory'])
+        self.hostname = hostname
+        self.start_time = start_time
+        self.end_time = end_time
+        self.view = view
 
     @property
     def cfg(self):
@@ -43,53 +57,57 @@ class ShowCommand:
     """show various pieces of information"""
 
     @command('bgp')
-    @argument("hostname", description="Name of host to qualify show")
     @argument("peer", description="Name of peer to qualify show")
     @argument("vrf", description="VRF to qualify show")
-    @argument("start_time",
-              description="Start of time window in YYYY-MM-dd HH:mm:SS format")
-    @argument("end_time",
-              description="End of time window in YYYY-MM-dd HH:mm:SS format")
-    @argument("view", description="view all records or just the latest",
-              choices=['all', 'latest'])
-    def show_bgp(self, hostname: str = None, peer: str = None, vrf: str = None,
-                 start_time: str = '', end_time: str = '', view: str = 'latest'):
+    def show_bgp(self, peer: str = None, vrf: str = None):
         """
         Show BGP
         """
-
         order_by = 'order by hostname, vrf, peer'
-        bgp_sqlstr = self.build_sql_str('bgp', start_time, end_time, view,
-                                        order_by,
-                                        hostname=hostname, peer=peer, vrf=vrf)
-        cprint(bgp_sqlstr)
-        df = get_output(bgp_sqlstr, self.cfg, self.schemas,
-                        start_time, end_time, view)
+        df = self.get_table_df('bgp', self.start_time, self.end_time,
+                               self.view, order_by,
+                               hostname=self.hostname, vrf=vrf, peer=peer)
         print(df)
 
     @command('interfaces')
-    @argument("hostname", description="Name of host to qualify show")
     @argument("ifname", description="interface name to qualify show")
-    @argument("start_time",
-              description="Start of time window in YYYY-MM-dd HH:mm:SS format")
-    @argument("end_time",
-              description="End of time window in YYYY-MM-dd HH:mm:SS format")
-    @argument("view", description="view all records or just the latest",
-              choices=['all', 'latest'])
-    def show_interfaces(self, hostname: str = None, ifname: str = None,
-                        start_time: str = '', end_time: str = '',
-                        view: str = 'latest'):
+    def show_interfaces(self, ifname: str = None):
         """
         Show interfaces
         """
         # Get the default display field names
         order_by = 'order by hostname, ifname'
-        if_sqlstr = self.build_sql_str('interfaces', start_time, end_time, 
-                                       view, order_by,
-                                       hostname=hostname, ifname=ifname)
-        cprint(if_sqlstr)
-        df = get_output(if_sqlstr, self.cfg, self.schemas,
-                        start_time, end_time, view)
+        df = self.get_table_df('interfaces', self.start_time, self.end_time,
+                               self.view, order_by,
+                               hostname=self.hostname, ifname=ifname)
+        print(df)
+
+    @command('lldp')
+    @argument("ifname", description="interface name to qualify show")
+    def show_lldp(self, ifname: str = None):
+        """
+        Show LLDP info
+        """
+        # Get the default display field names
+        order_by = 'order by hostname, ifname'
+        df = self.get_table_df('lldp', self.start_time, self.end_time,
+                               self.view, order_by,
+                               hostname=self.hostname, ifname=ifname)
+        print(df)
+
+    @command('filesystem')
+    @argument("mountPoint", description="Mountpoint to filter by")
+    @argument("usedPercent", description="show only if used percentage is >=")
+    def show_fs(self, mountPoint: str = None, usedPercent: str = None):
+        """
+        Show filesystem info
+        """
+        # Get the default display field names
+        order_by = 'order by hostname, mountPoint'
+        df = self.get_table_df('fs', self.start_time, self.end_time,
+                               self.view, order_by,
+                               hostname=self.hostname, mountPoint=mountPoint,
+                               usedPercent=usedPercent)
         print(df)
 
     @command("tables")
@@ -107,13 +125,25 @@ class ShowCommand:
             df = pd.DataFrame.from_dict(tables)
             cprint(df)
 
-    def build_sql_str(self, table: str, start_time: str, 
-                    end_time: str, view: str, order_by: str, **kwargs):
+    def get_table_df(self, table: str, start_time: str, end_time: str,
+                     view: str, order_by: str, **kwargs):
+        '''Build query string and get dataframe'''
+
+        qstr = self.build_sql_str(table, start_time, end_time, view,
+                                  order_by, **kwargs)
+        cprint(qstr)
+        df = get_output(qstr, self.cfg, self.schemas,
+                        start_time, end_time, view)
+        return df
+
+    def build_sql_str(self, table: str, start_time: str,
+                      end_time: str, view: str, order_by: str, **kwargs):
+        '''Workhorse routine to build the actual SQL query string'''
 
         sch = self.schemas.get(table)
         if not sch:
             print('Unknown table {}, no schema found for it', table)
-            return
+            return ''
 
         fields = []
         wherestr = ''
@@ -123,8 +153,8 @@ class ShowCommand:
                 fields.insert(loc, field['name'])
 
         if 'timestamp' not in fields:
-            fields.append('timestamp')
-        
+            fields.append('from_unixtime(timestamp/1000) as timestamp')
+
         first = True
         for kwd in kwargs:
             if not kwargs[kwd]:
@@ -134,22 +164,22 @@ class ShowCommand:
                 prefix = 'where'
                 first = False
             else:
-                prefix = 'and'   
+                prefix = 'and'
             wherestr += " {} {}=='{}'".format(prefix, kwd, kwargs[kwd])
 
         if view != 'latest':
             timestr = (" and timestamp(timestamp/1000) > timestamp('{}') and "
-                        "timestamp(timestamp/1000) < timestamp('{}') "
-                        .format(start_time, end_time))
+                       "timestamp(timestamp/1000) < timestamp('{}') "
+                       .format(start_time, end_time))
             wherestr += timestr
             order_by = 'order by timestamp'
 
-        output = 'select {} from {} {} {}'.format(', '.join(fields), table, 
-                                                wherestr, order_by)
+        output = 'select {} from {} {} {}'.format(', '.join(fields), table,
+                                                  wherestr, order_by)
         return output
 
 def get_output(query_string: str, cfg, schemas,
-               start_time='', end_time='', view: str = 'latest'):
+               start_time='', end_time='', view='latest'):
 
     try:
         session_url = suzieq.livylib.get_livysession()
@@ -185,7 +215,7 @@ def get_output(query_string: str, cfg, schemas,
                           .replace("u\'", '')
                           .replace("\'", ''), object_pairs_hook=OrderedDict)
         df = pd.DataFrame.from_dict(jout)
-        if 'timestamp' in df.columns:
-            df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms')
+        #if 'timestamp' in df.columns:
+        #    df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms')
 
     return df
