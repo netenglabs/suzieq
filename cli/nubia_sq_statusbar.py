@@ -14,7 +14,7 @@ from nubia import statusbar
 
 
 class NubiaSuzieqStatusBar(statusbar.StatusBar):
-    def __init__(self, context):
+    def __init__(self, ctx):
         self._last_status = None
 
     def get_rprompt_tokens(self, cli):
@@ -32,7 +32,7 @@ class NubiaSuzieqStatusBar(statusbar.StatusBar):
         else:
             is_verbose = (Token.Info, "OFF")
         return [
-            (Token.Toolbar, "Hello!"),
+            (Token.Toolbar, "Suzieq"),
             spacer,
             (Token.Toolbar, "Verbose "),
             spacer,
