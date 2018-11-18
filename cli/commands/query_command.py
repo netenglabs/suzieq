@@ -18,8 +18,7 @@ from nubia import command, argument, context
 
 sys.path.append('/home/ddutt/work/')
 import suzieq.livylib
-import suzieq.utils
-from commands.utils import get_spark_code
+from suzieq.utils import load_sq_config, get_schemas, get_query_output
 
 
 @command
@@ -28,28 +27,20 @@ from commands.utils import get_spark_code
           description="Start of time window in YYYY-MM-dd HH:mm:SS format")
 @argument("end_time",
           description="End of time window in YYYY-MM-dd HH:mm:SS format")
-def sql(query: str, start_time: str = '', end_time: str = ''):
+@argument("view", description="view all records or just the latest",
+              choices=['all', 'latest'])
+def sql(query: str, view: str = 'latest', start_time: str = '', end_time: str = ''):
     """
     This will lookup the hostnames and print the corresponding IP addresses
     """
     ctx = context.get_context()
     if not ctx.cfg:
-        cfg = suzieq.utils.load_sq_config()
+        cfg = load_sq_config()
         ctx.cfg = cfg
     else:
         cfg = cfg.ctx
 
-    schemas = suzieq.utils.get_schemas(cfg['schema-directory'])
-
-    try:
-        session_url = suzieq.livylib.get_livysession()
-    except Exception:
-        session_url = None
-
-    if not session_url:
-        print('Unable to find valid, active Livy session')
-        print('Queries will not execute')
-        return
+    schemas = get_schemas(cfg['schema-directory'])
 
     query = query.strip()
 
@@ -59,24 +50,7 @@ def sql(query: str, start_time: str = '', end_time: str = ''):
         words[-1] += "'"
         query = ' '.join(words)
 
-    code = get_spark_code(query, cfg, schemas, start_time, end_time)
-    output = suzieq.livylib.exec_livycode(code, session_url)
-    if output['status'] != 'ok':
-        df = {'error': output['status'],
-              'type': output['ename'],
-              'errorMsg': output['evalue'].replace('\\n', ' ')
-                                          .replace('u\"', '')}
-    else:
-        # We don't use read_json because that call doesn't preserve column
-        # order.
-        jout = json.loads(output['data']['text/plain']
-                          .replace("\', u\'", ', ')
-                          .replace("u\'", '')
-                          .replace("\'", ''), object_pairs_hook=OrderedDict)
-        df = pd.DataFrame.from_dict(jout)
-        if 'timestamp' in df.columns:
-            df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms')
-
+    df = get_query_output(query, cfg, schemas, start_time, end_time)
     print(df)
 
 
