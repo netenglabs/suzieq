@@ -18,11 +18,11 @@ from collections import OrderedDict
 import pandas as pd
 from termcolor import cprint
 from nubia import command, argument
-from commands.utils import get_spark_code
 
 sys.path.append('/home/ddutt/work/')
-import suzieq.livylib
-import suzieq.utils
+from suzieq.livylib import get_livysession, exec_livycode
+from suzieq.utils import load_sq_config, get_schemas
+from suzieq.utils import get_spark_code, get_query_output
 
 
 @command('show')
@@ -37,11 +37,11 @@ class ShowCommand:
     @argument("end_time",
               description="End of time window in YYYY-MM-dd HH:mm:SS format")
     @argument("view", description="view all records or just the latest",
-              choices=['all', 'latest'])
-    def __init__(self, hostname: str = '', start_time: str = '',
+              choices=["all", "latest"])
+    def __init__(self, hostname: str = None, start_time: str = '',
                  end_time: str = '', view: str = 'latest') -> None:
-        self._cfg = suzieq.utils.load_sq_config(validate=False)
-        self._schemas = suzieq.utils.get_schemas(self._cfg['schema-directory'])
+        self._cfg = load_sq_config(validate=False)
+        self._schemas = get_schemas(self._cfg['schema-directory'])
         self.hostname = hostname
         self.start_time = start_time
         self.end_time = end_time
@@ -59,14 +59,17 @@ class ShowCommand:
     @command('bgp')
     @argument("peer", description="Name of peer to qualify show")
     @argument("vrf", description="VRF to qualify show")
-    def show_bgp(self, peer: str = None, vrf: str = None):
+    @argument("state", description="BGP neighbor state to qualify",
+              choices=["Established", "NotEstd"])
+    def show_bgp(self, peer: str = None, vrf: str = None, state:str = ''):
         """
         Show BGP
         """
         order_by = 'order by hostname, vrf, peer'
         df = self.get_table_df('bgp', self.start_time, self.end_time,
                                self.view, order_by,
-                               hostname=self.hostname, vrf=vrf, peer=peer)
+                               hostname=self.hostname, vrf=vrf, peer=peer,
+                               state=state)
         print(df)
 
     @command('interfaces')
@@ -132,8 +135,8 @@ class ShowCommand:
         qstr = self.build_sql_str(table, start_time, end_time, view,
                                   order_by, **kwargs)
         cprint(qstr)
-        df = get_output(qstr, self.cfg, self.schemas,
-                        start_time, end_time, view)
+        df = get_query_output(qstr, self.cfg, self.schemas,
+                              start_time, end_time, view)
         return df
 
     def build_sql_str(self, table: str, start_time: str,
@@ -168,54 +171,18 @@ class ShowCommand:
             wherestr += " {} {}=='{}'".format(prefix, kwd, kwargs[kwd])
 
         if view != 'latest':
-            timestr = (" and timestamp(timestamp/1000) > timestamp('{}') and "
-                       "timestamp(timestamp/1000) < timestamp('{}') "
-                       .format(start_time, end_time))
-            wherestr += timestr
+            timestr = ''
+            if start_time:
+                timestr = (" and timestamp(timestamp/1000) > timestamp('{}')"
+                           .format(start_time))
+            if end_time:
+                timestr += (" and timestamp(timestamp/1000) < timestamp('{}') "
+                            .format(end_time))
+            if timestr:
+                wherestr += timestr
             order_by = 'order by timestamp'
 
         output = 'select {} from {} {} {}'.format(', '.join(fields), table,
                                                   wherestr, order_by)
         return output
 
-def get_output(query_string: str, cfg, schemas,
-               start_time='', end_time='', view='latest'):
-
-    try:
-        session_url = suzieq.livylib.get_livysession()
-    except Exception:
-        session_url = None
-
-    if not session_url:
-        print('Unable to find valid, active Livy session')
-        print('Queries will not execute')
-        return
-
-    query_string = query_string.strip()
-
-    # The following madness is because nubia seems to swallow the last quote
-    words = query_string.split()
-    if "'" in words[-1] and not re.search(r"'(?=')", words[-1]):
-        words[-1] += "'"
-        query_string = ' '.join(words)
-
-    code = get_spark_code(query_string, cfg, schemas, start_time, end_time,
-                          view)
-    output = suzieq.livylib.exec_livycode(code, session_url)
-    if output['status'] != 'ok':
-        df = {'error': output['status'],
-              'type': output['ename'],
-              'errorMsg': output['evalue'].replace('\\n', ' ')
-                                          .replace('u\"', '')}
-    else:
-        # We don't use read_json because that call doesn't preserve column
-        # order.
-        jout = json.loads(output['data']['text/plain']
-                          .replace("\', u\'", ', ')
-                          .replace("u\'", '')
-                          .replace("\'", ''), object_pairs_hook=OrderedDict)
-        df = pd.DataFrame.from_dict(jout)
-        #if 'timestamp' in df.columns:
-        #    df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms')
-
-    return df
