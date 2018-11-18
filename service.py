@@ -473,6 +473,11 @@ class Service(object):
         adds = [new[v] for v in addlist]
         dels = [old[v] for v in dellist if koldkeys[v] not in knewkeys]
 
+        if adds and self.stype == 'counters':
+            # If there's a change in any field of the counters, update them all
+            # simplifies querying
+            adds = new
+    
         return adds, dels
 
     async def gather_data(self):
@@ -602,7 +607,7 @@ class Service(object):
 
             if records:
                 if self.stype == 'counters':
-                    partition_cols = ['datacenter', 'hostname']
+                    partition_cols = ['datacenter', 'hostname', 'timestamp']
                 else:
                     partition_cols = self.keys + ['timestamp']
 
