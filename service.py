@@ -477,7 +477,7 @@ class Service(object):
             # If there's a change in any field of the counters, update them all
             # simplifies querying
             adds = new
-    
+
         return adds, dels
 
     async def gather_data(self):
