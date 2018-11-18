@@ -85,6 +85,66 @@ def load_sq_config(validate=True):
 def get_latest_files(folder, start='', end=''):
     lsd = []
 
+    def get_latest_ts_dirs(dirs, ssecs, esecs):
+        newdirs = None
+
+        if not ssecs and not esecs:
+            dirs.sort(key=lambda x: int(x.split('=')[1]))
+            newdirs = dirs
+        elif ssecs and not esecs:
+            newdirs = list(filter(lambda x: int(x.split('=')[1]) > ssecs,
+                                  dirs))
+            if not newdirs:
+                # FInd the entry most adjacent to this one
+                newdirs = list(
+                    filter(lambda x: int(x.split('=')[1]) < ssecs,
+                           dirs))
+        elif esecs and not ssecs:
+            newdirs = list(filter(lambda x: int(x.split('=')[1]) < esecs,
+                                  dirs))
+        else:
+            newdirs = list(filter(lambda x: int(x.split('=')[1]) < esecs
+                                  and int(x.split('=')[1]) > ssecs, dirs))
+            if not newdirs:
+                # FInd the entry most adjacent to this one
+                newdirs = list(
+                    filter(lambda x: int(x.split('=')[1]) < ssecs,
+                           dirs))
+
+        return newdirs
+
+    def get_latest_pq_files(files, root, ssecs, esecs):
+
+        newfiles = None
+
+        if not ssecs and not esecs:
+            files.sort(key=lambda x: os.path.getctime(
+                '%s/%s'%(root, x)))
+            newfiles = files
+        elif ssecs and not esecs:
+            newfiles = list(filter(
+                lambda x: os.path.getctime('%s/%s'%(root, x)) > ssecs,
+                files))
+            if not newfiles:
+                # FInd the entry most adjacent to this one
+                newfiles = list(filter(
+                    lambda x: os.path.getctime('%s/%s'%(root, x)) > ssecs,
+                    files))
+        elif esecs and not ssecs:
+            newfiles = list(filter(
+                lambda x: os.path.getctime('%s/%s'%(root, x)) < esecs,
+                files))
+        else:
+            newfiles = list(filter(
+                lambda x: os.path.getctime('%s/%s'%(root, x)) < esecs
+                and os.path.getctime('%s/%s'%(root, x)) > ssecs, files))
+            if not newfiles:
+                # Find the entry most adjacent to this one
+                newfiles = list(filter(
+                    lambda x: os.path.getctime('%s/%s'%(root, x)) > ssecs,
+                    files))
+        return newfiles
+
     if start:
         tmp = datetime.strptime(start, '%Y-%m-%d %H:%M:%S')
         ssecs = int(tmp.strftime('%s')*1000)
@@ -97,33 +157,15 @@ def get_latest_files(folder, start='', end=''):
     else:
         esecs = 0
 
-    for root, dirs, _ in os.walk(folder):
+    for root, dirs, files in os.walk(folder):
+        flst = None
         if dirs and dirs[0].startswith('timestamp'):
-            dirs.sort(key=lambda x: int(x.split('=')[1]))
-            if not ssecs and not esecs:
-                newdirs = dirs
-            elif ssecs and not esecs:
-                newdirs = list(filter(lambda x: int(x.split('=')[1]) > ssecs,
-                                      dirs))
-                if not newdirs:
-                    # FInd the entry most adjacent to this one
-                    newdirs = list(
-                        filter(lambda x: int(x.split('=')[1]) < ssecs,
-                               dirs))
-            elif esecs and not ssecs:
-                newdirs = list(filter(lambda x: int(x.split('=')[1]) < esecs,
-                                      dirs))
-            else:
-                newdirs = list(filter(lambda x: int(x.split('=')[1]) < esecs
-                                      and int(x.split('=')[1]) > ssecs, dirs))
-                if not newdirs:
-                    # FInd the entry most adjacent to this one
-                    newdirs = list(
-                        filter(lambda x: int(x.split('=')[1]) < ssecs,
-                               dirs))
+            flst = get_latest_ts_dirs(dirs, ssecs, esecs)
+        elif files:
+            flst = get_latest_pq_files(files, root, ssecs, esecs)
 
-            if newdirs:
-                lsd.append(os.path.join(root, newdirs[-1]))
+        if flst:
+            lsd.append(os.path.join(root, flst[-1]))
 
     return lsd
 
