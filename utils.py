@@ -260,6 +260,67 @@ def get_schemas(schema_dir):
     return schemas
 
 
+def get_table_df(table: str, start_time: str, end_time: str,
+                 view: str, order_by: str, cfg, schemas,
+                 **kwargs):
+    '''Build query string and get dataframe'''
+
+    qstr = build_sql_str(table, start_time, end_time, view,
+                         order_by, schemas, **kwargs)
+    print(qstr)
+    df = get_query_output(qstr, cfg, schemas,
+                          start_time, end_time, view)
+    return df
+
+
+def build_sql_str(table: str, start_time: str, end_time: str,
+                  view: str, order_by: str, schemas, **kwargs):
+    '''Workhorse routine to build the actual SQL query string'''
+
+    sch = schemas.get(table)
+    if not sch:
+        print('Unknown table {}, no schema found for it'.format(table))
+        return ''
+
+    fields = []
+    wherestr = ''
+    for field in sch:
+        loc = field.get('display', None)
+        if loc is not None:
+            fields.insert(loc, field['name'])
+
+    if 'timestamp' not in fields:
+        fields.append('from_unixtime(timestamp/1000) as timestamp')
+
+    first = True
+    for kwd in kwargs:
+        if not kwargs[kwd]:
+            continue
+
+        if first:
+            prefix = 'where'
+            first = False
+        else:
+            prefix = 'and'
+        wherestr += " {} {}=='{}'".format(prefix, kwd, kwargs[kwd])
+
+    if view != 'latest':
+        timestr = ''
+        if start_time:
+            timestr = (" and timestamp(timestamp/1000) > timestamp('{}')"
+                       .format(start_time))
+        if end_time:
+            timestr += (" and timestamp(timestamp/1000) < timestamp('{}') "
+                        .format(end_time))
+        if timestr:
+            wherestr += timestr
+        order_by = 'order by timestamp'
+
+    output = 'select {} from {} {} {}'.format(', '.join(fields), table,
+                                              wherestr, order_by)
+    return output
+
+
 def get_spark_code(qstr: str, cfg, schemas, start: str = '', end: str = '',
                    view: str ='latest') -> str:
     '''Get the Table creation and destruction code for query string'''
