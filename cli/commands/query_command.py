@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (c) Facebook, Inc. and its affiliates.
+# Copyright (c) Dinesh G Dutt
 # All rights reserved.
 #
 # This source code is licensed under the BSD-style license found in the
@@ -29,9 +29,10 @@ from suzieq.utils import load_sq_config, get_schemas, get_query_output
           description="End of time window in YYYY-MM-dd HH:mm:SS format")
 @argument("view", description="view all records or just the latest",
               choices=['all', 'latest'])
-def sql(query: str, view: str = 'latest', start_time: str = '', end_time: str = ''):
+def sql(query: str, view: str = 'latest', start_time: str = '',
+        end_time: str = ''):
     """
-    This will lookup the hostnames and print the corresponding IP addresses
+    Generic SQL query on the data
     """
     ctx = context.get_context()
     if not ctx.cfg:
@@ -50,14 +51,14 @@ def sql(query: str, view: str = 'latest', start_time: str = '', end_time: str = 
         words[-1] += "'"
         query = ' '.join(words)
 
-    df = get_query_output(query, cfg, schemas, start_time, end_time)
+    df = get_query_output(query, cfg, schemas, start_time, end_time, view)
     print(df)
 
 
 @command("describe-table")
 @argument("table", type=str)
 async def describe_table(table):
-    "Calculates the triple of the input value"
+    "Describes the fields for a given table"
 
     ctx = context.get_context()
     if not ctx.cfg:

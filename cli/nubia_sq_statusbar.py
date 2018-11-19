@@ -16,6 +16,7 @@ from nubia import statusbar
 class NubiaSuzieqStatusBar(statusbar.StatusBar):
     def __init__(self, ctx):
         self._last_status = None
+        self.ctx = ctx
 
     def get_rprompt_tokens(self, cli):
         if self._last_status:
@@ -37,4 +38,16 @@ class NubiaSuzieqStatusBar(statusbar.StatusBar):
             (Token.Toolbar, "Verbose "),
             spacer,
             is_verbose,
+            spacer,
+            (Token.Toolbar, "Hostname "),
+            spacer,
+            (Token.Info, ', '.join(self.ctx.hostname)),
+            spacer,            
+            (Token.Toolbar, "StartTime "),
+            spacer,
+            (Token.Info, self.ctx.start_time),
+            spacer,            
+            (Token.Toolbar, "EndTime "),
+            spacer,
+            (Token.Info, self.ctx.end_time),
         ]
