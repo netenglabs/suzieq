@@ -267,6 +267,8 @@ def get_table_df(table: str, start_time: str, end_time: str,
 
     qstr = build_sql_str(table, start_time, end_time, view,
                          order_by, schemas, **kwargs)
+    if not qstr:
+        return None
     print(qstr)
     df = get_query_output(qstr, cfg, schemas,
                           start_time, end_time, view)
@@ -284,25 +286,40 @@ def build_sql_str(table: str, start_time: str, end_time: str,
 
     fields = []
     wherestr = ''
-    for field in sch:
-        loc = field.get('display', None)
-        if loc is not None:
-            fields.insert(loc, field['name'])
+    if 'columns' in kwargs:
+        columns = kwargs['columns']
+        del kwargs['columns']
+    else:
+        columns = 'default'
 
-    if 'timestamp' not in fields:
-        fields.append('from_unixtime(timestamp/1000) as timestamp')
+    if columns == 'default':
+        for field in sch:
+            loc = field.get('display', None)
+            if loc is not None:
+                fields.insert(loc, field['name'])
 
-    first = True
-    for kwd in kwargs:
+        if 'timestamp' not in fields:
+            fields.append('from_unixtime(timestamp/1000) as timestamp')
+    else:
+        fields = ['*']
+
+    for i, kwd in enumerate(kwargs):
         if not kwargs[kwd]:
             continue
 
-        if first:
-            prefix = 'where'
-            first = False
+        prefix = 'and' if i else 'where'
+        value = kwargs[kwd]
+
+        if isinstance(value, list):
+            kwdstr = ''
+            for j, e in enumerate(value):
+                prefix1 = ' or' if j else '('
+                kwdstr += "{} {} == '{}'".format(prefix1, kwd, e)
+            kwdstr += ')'
         else:
-            prefix = 'and'
-        wherestr += " {} {}=='{}'".format(prefix, kwd, kwargs[kwd])
+            kwdstr = " {}=='{}'".format(kwd, value)
+
+        wherestr += " {} {}".format(prefix, kwdstr)
 
     if view != 'latest':
         timestr = ''
