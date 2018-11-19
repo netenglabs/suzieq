@@ -7,12 +7,28 @@
 # LICENSE file in the root directory of this source tree.
 #
 
+import sys
+
 from nubia import context
 from nubia import exceptions
 from nubia import eventbus
 
+sys.path.append('/home/ddutt/work/')
+from suzieq.utils import load_sq_config, get_schemas
+
 
 class NubiaSuzieqContext(context.Context):
+
+    def __init__(self):
+        self.cfg = load_sq_config(validate=False)
+
+        self.schemas = get_schemas(self.cfg['schema-directory'])
+
+        self.hostname = ''
+        self.start_time = ''
+        self.end_time = ''
+        super().__init__()
+
     def on_connected(self, *args, **kwargs):
         pass
 
@@ -20,7 +36,6 @@ class NubiaSuzieqContext(context.Context):
         # dispatch the on connected message
         self.verbose = args.verbose
         self.registry.dispatch_message(eventbus.Message.CONNECTED)
-        self.cfg = None
 
     def on_interactive(self, args):
         self.verbose = args.verbose
@@ -29,4 +44,4 @@ class NubiaSuzieqContext(context.Context):
             raise exceptions.CommandError("Failed starting interactive mode")
         # dispatch the on connected message
         self.registry.dispatch_message(eventbus.Message.CONNECTED)
-        self.cfg = None
+

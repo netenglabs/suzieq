@@ -8,7 +8,8 @@
 #
 
 import argparse
-from commands import query_command, show_commands
+from commands import query_command, show_commands, analyze_commands
+from commands import context_commands
 from nubia_sq_context import NubiaSuzieqContext
 from nubia_sq_statusbar import NubiaSuzieqStatusBar
 from nubia import PluginInterface, CompletionDataSource
@@ -45,7 +46,10 @@ class NubiaSuzieqPlugin(PluginInterface):
         return [
             AutoCommand(query_command.sql),
             AutoCommand(query_command.describe_table),
+            AutoCommand(context_commands.set_ctxt),
+            AutoCommand(context_commands.clear_ctxt),
             AutoCommand(show_commands.ShowCommand),
+            AutoCommand(analyze_commands.AnalyzeCommand),
         ]
 
     def get_opts_parser(self, add_help=True):
