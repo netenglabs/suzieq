@@ -529,6 +529,9 @@ class Service(object):
 
                     if 'output' in data['data']:
                         in_info = data['data']['output']
+                    elif 'messages' in data['data']:
+                        # This is Arista's bash output format
+                        in_info = data['data']['messages'][0]
                     else:
                         in_info = data['data']
                     result = textfsm_data(in_info, tfsm_template, self.schema)
@@ -607,7 +610,7 @@ class Service(object):
 
             if records:
                 if self.stype == 'counters':
-                    partition_cols = ['datacenter', 'hostname', 'timestamp']
+                    partition_cols = ['datacenter', 'hostname']
                 else:
                     partition_cols = self.keys + ['timestamp']
 
