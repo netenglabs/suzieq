@@ -75,7 +75,7 @@ async def init_hosts(hosts_file):
                 else:
                     logging.info('Added node {}'.format(newnode.hostname))
 
-                nodes.update({newnode.hostname: newnode})
+                nodes.update({'{}.{}'.format(dcname, newnode.hostname): newnode})
 
     return nodes
 
