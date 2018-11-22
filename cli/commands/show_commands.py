@@ -13,7 +13,7 @@ import sys
 from pathlib import Path
 import json
 from collections import OrderedDict
-
+import time
 
 import pandas as pd
 from termcolor import cprint
@@ -23,12 +23,13 @@ import typing
 sys.path.append('/home/ddutt/work/')
 from suzieq.livylib import get_livysession, exec_livycode
 from suzieq.utils import load_sq_config, get_schemas
-from suzieq.utils import get_table_df
+from suzieq.utils import get_table_df, get_ifbw_df
 
 
 @command('show', help="show various pieces of information")
 class ShowCommand:
 
+    @argument("datacenter", description="datacenter to qualify selection")
     @argument("hostname", description="Name of host to qualify selection")
     @argument("start_time",
               description="Start of time window in YYYY-MM-dd HH:mm:SS format")
@@ -36,12 +37,17 @@ class ShowCommand:
               description="End of time window in YYYY-MM-dd HH:mm:SS format")
     @argument("view", description="view all records or just the latest",
               choices=["all", "latest"])
-    def __init__(self, hostname: typing.List[str] = [], start_time: str = '',
+    def __init__(self, datacenter: typing.List[str] = [],
+                 hostname: typing.List[str] = [], start_time: str = '',
                  end_time: str = '', view: str = 'latest') -> None:
-        self._cfg = load_sq_config(validate=False)
-        self._schemas = get_schemas(self._cfg['schema-directory'])
         self.ctxt = context.get_context()
+        self._cfg = self.ctxt.cfg
+        self._schemas = self.ctxt.schemas
 
+        if not datacenter and self.ctxt.datacenter:
+            self.datacenter = self.ctxt.datacenter
+        else:
+            self.datacenter = datacenter
         if not hostname and self.ctxt.hostname:
             self.hostname = self.ctxt.hostname
         else:
@@ -68,6 +74,24 @@ class ShowCommand:
         return self._schemas
     """show various pieces of information"""
 
+    @command('system')
+    @argument("vendor", description="vendor to qualify the output")
+    @argument("os", description="OS to qualify the output")
+    def show_system(self, vendor: typing.List[str] = None,
+                    os: typing.List[str] = None) -> None:
+        """
+        Show BGP
+        """
+        order_by = 'order by datacenter, hostname, vendor'
+        df = get_table_df('system', self.start_time, self.end_time,
+                          self.view, order_by, self.cfg, self.schemas,
+                          hostname=self.hostname, vendor=vendor, os=os,
+                          datacenter=self.datacenter)
+        df['bootupTimestamp'] = (pd.to_datetime(df['timestamp']) -
+                                 pd.to_datetime(df['bootupTimestamp'],
+                                                unit='s'))
+        print(df)
+
     @command('bgp')
     @argument("peer", description="Name of peer to qualify show")
     @argument("vrf", description="VRF to qualify show")
@@ -78,11 +102,11 @@ class ShowCommand:
         """
         Show BGP
         """
-        order_by = 'order by hostname, vrf, peer'
+        order_by = 'order by datacenter, hostname, vrf, peer'
         df = get_table_df('bgp', self.start_time, self.end_time,
                           self.view, order_by, self.cfg, self.schemas,
                           hostname=self.hostname, vrf=vrf, peer=peer,
-                          state=state)
+                          state=state, datacenter=self.datacenter)
         print(df)
 
     @command('interfaces')
@@ -93,9 +117,10 @@ class ShowCommand:
         """
         # Get the default display field names
         order_by = 'order by hostname, ifname'
-        df = self.get_table_df('interfaces', self.start_time, self.end_time,
-                               self.view, order_by,
-                               hostname=self.hostname, ifname=ifname)
+        df = get_table_df('interfaces', self.start_time, self.end_time,
+                          self.view, order_by, self.cfg, self.schemas,
+                          hostname=self.hostname, ifname=ifname,
+                          datacenter=self.datacenter)
         print(df)
 
     @command('lldp')
@@ -106,9 +131,10 @@ class ShowCommand:
         """
         # Get the default display field names
         order_by = 'order by hostname, ifname'
-        df = self.get_table_df('lldp', self.start_time, self.end_time,
-                               self.view, order_by,
-                               hostname=self.hostname, ifname=ifname)
+        df = get_table_df('lldp', self.start_time, self.end_time,
+                          self.view, order_by, self.cfg, self.schemas,
+                          hostname=self.hostname, ifname=ifname,
+                          datacenter=self.datacenter)
         print(df)
 
     @command('filesystem')
@@ -120,11 +146,28 @@ class ShowCommand:
         """
         # Get the default display field names
         order_by = 'order by hostname, mountPoint'
-        df = self.get_table_df('fs', self.start_time, self.end_time,
-                               self.view, order_by,
-                               hostname=self.hostname, mountPoint=mountPoint,
-                               usedPercent=usedPercent)
+        df = get_table_df('fs', self.start_time, self.end_time,
+                          self.view, order_by, self.cfg, self.schemas,
+                          hostname=self.hostname, mountPoint=mountPoint,
+                          usedPercent=usedPercent,
+                          datacenter=self.datacenter)
         print(df)
+
+    @command('ifbw')
+    @argument("ifname", description="interface name to qualify show")
+    def show_ifbw(self, ifname: typing.List[str] = None):
+        """
+        Show interface bandwidth for given host/ifname
+        """
+        # Get the default display field names
+        columns = ['txBytes', 'txPackets', 'rxBytes', 'rxPackets']
+        start = time.time()
+        df = get_ifbw_df(self.datacenter, self.hostname, ifname, columns,
+                         self.start_time, self.end_time, self.cfg,
+                         self.schemas)
+
+        print(df)
+        print('Query executed in: {}s'.format(time.time() - start))
 
     @command("tables")
     def show_tables(self):
