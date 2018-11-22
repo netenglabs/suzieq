@@ -23,15 +23,19 @@ from suzieq.utils import load_sq_config, get_schemas, get_query_output
 
 
 @command("set")
+@argument("datacenter", description="datacenter to qualify selection")
 @argument("hostname", description="Name of host to qualify selection")
 @argument("start_time",
           description="Start of time window in YYYY-MM-dd HH:mm:SS format")
 @argument("end_time",
           description="End of time window in YYYY-MM-dd HH:mm:SS format")
 def set_ctxt(hostname: typing.List[str] = [], start_time: str = '',
-             end_time: str = ''):
+             end_time: str = '', datacenter: typing.List[str] = []):
     '''set certain contexts for subsequent commands. Cmd is additive'''
     plugin_ctx = context.get_context()
+
+    if datacenter:
+        plugin_ctx.datacenter = datacenter
 
     if hostname:
         plugin_ctx.hostname = hostname
@@ -45,10 +49,13 @@ def set_ctxt(hostname: typing.List[str] = [], start_time: str = '',
 
 @command("clear")
 @argument("ctxt", description="Name of context you want to clear",
-          choices=['all', 'hostname', 'start-time', 'end_time'])
+          choices=['all', 'datacenter', 'hostname', 'start-time', 'end_time'])
 def clear_ctxt(ctxt: str):
     '''clear certain contexts for subsequent commands. Cmd is additive'''
     plugin_ctx = context.get_context()
+
+    if ctxt == 'datacenter' or ctxt == 'all':
+        plugin_ctx.datacenter = []
 
     if ctxt == 'hostname' or ctxt == 'all':
         plugin_ctx.hostname = []
