@@ -422,6 +422,12 @@ def get_ifbw_df(datacenter: typing.List[str], hostname: typing.List[str],
                 start_time: str, end_time: str, cfg, schemas):
     '''Return a DF for interface bandwidth for specified hosts/ifnames'''
 
+    def compute_rate(subdf):
+        subdf['rate(%s)' % col_name] = (
+            (subdf[col_name].sub(subdf['prevBytes(%s)' % col_name])*8) /
+            (subdf['timestamp'].sub(subdf['prevTime'])))
+        return subdf
+
     if isinstance(ifname, str) and ifname:
         ifname = [ifname]
 
@@ -477,48 +483,18 @@ def get_ifbw_df(datacenter: typing.List[str], hostname: typing.List[str],
     for col_name in columns:
         df['prevBytes(%s)' % (col_name)] = df.groupby(
             ['datacenter', 'hostname', 'ifname'])[col_name].shift(1)
+    df['prevTime'] = df.groupby(
+        ['datacenter', 'hostname', 'ifname'])['timestamp'].shift(1)
 
     idflist = []
-    for dele in datacenter:
-        for hele in hostname:
-            for iele in ifname:
-                dflist = []
-                for col_name in columns:
-                    subdf = df.where((df['datacenter'] == dele) &
-                                     (df['hostname'] == hele) &
-                                     (df['ifname'] == iele))\
-                                     [['datacenter', 'hostname', 'ifname',
-                                       col_name, 'timestamp',
-                                       'prevBytes(%s)' % col_name]]
-                    subdf = subdf.dropna()
-                    subdf['prevTime'] = subdf.groupby(
-                        ['datacenter', 'hostname', 'ifname'])['timestamp'].shift(1)
-                    subdf['rate(%s)' % col_name] = (
-                        (subdf[col_name].sub(subdf['prevBytes(%s)' % (col_name)])
-                         * 8 / (subdf['timestamp'].sub(subdf['prevTime']))))
-                    subdf['timestamp'] = pd.to_datetime(subdf['timestamp'],
-                                                        unit='ms')
-                    dflist.append(subdf.drop(columns=[col_name,
-                                                      'prevBytes(%s)' % (col_name),
-                                                      'prevTime']))
+    for col_name in columns:
+        newdf = df.groupby(['datacenter', 'hostname','ifname']) \
+                  .apply(lambda sdf: compute_rate(sdf))
+        idflist.append(newdf)
 
-                if len(dflist) > 1:
-                    newdf = dflist[0]
-                    for i, subdf in enumerate(dflist[1:]):
-                        newdf = pd.merge(newdf,
-                                         subdf[['rate(%s)' % (columns[i+1]),
-                                                'timestamp']],
-                                         on='timestamp', how='left')
-                else:
-                    newdf = dflist[0]
+    drop_columns = ['prevTime']
+    drop_columns += ['prevBytes(%s)' % x for x in columns]
 
-                idflist.append(newdf)
+    return df.drop(columns=drop_columns)
 
-    if len(idflist) > 1:
-        newdf = idflist[0]
-        for i, subdf in enumerate(idflist[1:]):
-            newdf = pd.concat([newdf, subdf])
-    else:
-        newdf = idflist[0]
-
-    return newdf
+    
