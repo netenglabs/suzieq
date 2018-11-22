@@ -9,6 +9,7 @@ import json
 from collections import OrderedDict
 
 import yaml
+import typing
 import pandas as pd
 
 sys.path.append('/home/ddutt/work/')
@@ -45,38 +46,7 @@ x={2}
 for k in {1}:
   spark.catalog.dropTempView(k)
 x
-'''
 
-counter_code_tmpl = '''
-import pyspark.sql.functions as F
-from pyspark.sql.window import Window
-
-for k in {1}:
-    spark.read.option("basePath", "{0}").load("{0}/" + k).createOrReplaceTempView(k)
-
-cntrdf={2}
-
-col_name = "{3}"
-cntrdf = cntrdf \
-             .withColumn('prevTime',
-                         F.lag(cntrdf.timestamp).over(Window.partitionBy()
-                                                      .orderBy('timestamp')))
-cntrdf = cntrdf \
-             .withColumn('prevBytes',
-                         F.lag(col_name).over(Window.partitionBy()
-                                              .orderBy('timestamp')))
-
-cntrdf = cntrdf \
-             .withColumn("rate",
-                         F.when(F.isnull(F.col(col_name) - cntrdf.prevBytes), 0)
-                         .otherwise((F.col(col_name) - cntrdf.prevBytes)*8 /
-                                    (cntrdf.timestamp.astype('double')-cntrdf.prevTime.astype('double')))) \
-             .drop('prevTime', 'prevBytes')
-
-for k in {1}:
-  spark.catalog.dropTempView(k)
-
-cntrdf.toJSON().collect()
 '''
 
 
@@ -229,12 +199,16 @@ def get_latest_files(folder, start='', end=''):
     else:
         esecs = 0
 
+    ts_dirs = False
+    pq_files = False
     for root, dirs, files in os.walk(folder):
         flst = None
-        if dirs and dirs[0].startswith('timestamp'):
+        if dirs and dirs[0].startswith('timestamp') and not pq_files:
             flst = get_latest_ts_dirs(dirs, ssecs, esecs)
-        elif files:
+            ts_dirs = True
+        elif files and not ts_dirs:
             flst = get_latest_pq_files(files, root, ssecs, esecs)
+            pq_files = True
 
         if flst:
             lsd.append(os.path.join(root, flst[-1]))
@@ -269,7 +243,7 @@ def get_table_df(table: str, start_time: str, end_time: str,
                          order_by, schemas, **kwargs)
     if not qstr:
         return None
-    print(qstr)
+
     df = get_query_output(qstr, cfg, schemas,
                           start_time, end_time, view)
     return df
@@ -303,11 +277,16 @@ def build_sql_str(table: str, start_time: str, end_time: str,
     else:
         fields = ['*']
 
+    first = True
     for i, kwd in enumerate(kwargs):
         if not kwargs[kwd]:
             continue
 
-        prefix = 'and' if i else 'where'
+        if first:
+            prefix = 'where'
+            first = False
+        else:
+            prefix = 'and'
         value = kwargs[kwd]
 
         if isinstance(value, list):
@@ -346,60 +325,56 @@ def get_spark_code(qstr: str, cfg, schemas, start: str = '', end: str = '',
     # separated by comma.
     qparts = re.split(r'(?<!,)\s+', qstr)
     tables = []
-    counter = None
+    counter = []
 
-    # Check if any of the select columns have a rate field
-    if qparts[0] == 'select':
-        fields = re.split(r',\s*', qparts[1])
-        newfields = []
-        for field in fields:
-            if 'rate(' in field:
-                mstr = re.match(r'rate\s*\(\s*(\s*\w+\s*)\s*\)', field)
-                if mstr:
-                    counter = mstr[1]
-                    newfields.append(counter)
-            else:
-                newfields.append(field)
-
-        qparts[1] = ', '.join(newfields)
-
-    if counter:
+    if counter or view == 'all':
         # We need to apply time window to sql
         windex = [i for i, x in enumerate(qparts) if x.lower() == "where"]
-        timestr = ("timestamp(timestamp/1000) > timestamp('{}') and "
-                   "timestamp(timestamp/1000) < timestamp('{}') and ".format(start, end))
-        qparts.insert(windex[0]+1, timestr)
+        timestr = '('
+        if start:
+            ssecs = int(datetime.strptime(start, '%Y-%m-%d %H:%M:%S').strftime('%s'))*1000
+            timestr += "timestamp > {} ".format(ssecs)
+        if end:
+            esecs = int(datetime.strptime(end, '%Y-%m-%d %H:%M:%S').strftime('%s'))*1000
+            if timestr != '(':
+                timestr += (
+                    " and timestamp < {})".format(esecs))
+            else:
+                timestr += ("(timestamp < {})".format(esecs))
+        if timestr:
+            if windex:
+                timestr += ' and '
+                qparts.insert(windex[0]+1, timestr)
+            else:
+                timestr = ' where {}'.format(timestr)
 
     qstr = ' '.join(qparts)
 
     indices = [i for i, x in enumerate(qparts) if x.lower() == "from"]
     indices += [i for i, x in enumerate(qparts) if x.lower() == "join"]
 
+    print(qstr)
     for index in indices:
         words = re.split(r',\s*', qparts[index+1])
         for table in words:
             if table in schemas:
                 tables.append(table)
 
-    if counter:
-        sstr = 'spark.sql("{0}")'.format(qstr)
-        cprint(sstr)
-        code = counter_code_tmpl.format(cfg['data-directory'], tables,
-                                        sstr, counter)
+    sstr = 'spark.sql("{0}").toJSON().collect()'.format(qstr)
+    if view == 'latest':
+        code = code_tmpl.format(cfg['data-directory'], tables, sstr,
+                                start, end)
     else:
-        sstr = 'spark.sql("{0}").toJSON().collect()'.format(qstr)
-        if view == 'latest':
-            code = code_tmpl.format(cfg['data-directory'], tables, sstr,
-                                    start, end)
-        else:
-            code = code_viewall_tmpl.format(cfg['data-directory'], tables,
-                                            sstr)
+        code = code_viewall_tmpl.format(cfg['data-directory'], tables,
+                                        sstr)
     return code
 
 
 def get_query_output(query_string: str, cfg, schemas,
                      start_time: str = '', end_time: str ='',
                      view: str = 'latest') -> pd.DataFrame:
+
+    df = None
 
     try:
         session_url = get_livysession()
@@ -409,13 +384,13 @@ def get_query_output(query_string: str, cfg, schemas,
     if not session_url:
         print('Unable to find valid, active Livy session')
         print('Queries will not execute')
-        return
+        return df
 
     query_string = query_string.strip()
 
     # The following madness is because nubia seems to swallow the last quote
     words = query_string.split()
-    if "'" in words[-1] and not re.search(r"'(?=')", words[-1]):
+    if "'" in words[-1] and not re.search(r"'(?=')?", words[-1]):
         words[-1] += "'"
         query_string = ' '.join(words)
 
@@ -436,4 +411,114 @@ def get_query_output(query_string: str, cfg, schemas,
                           .replace("\'", ''), object_pairs_hook=OrderedDict)
         df = pd.DataFrame.from_dict(jout)
 
+    if df is not None and '__index_level_0__' in df.columns:
+        df = df.drop(columns=['__index_level_0__'])
+
     return df
+
+
+def get_ifbw_df(datacenter: typing.List[str], hostname: typing.List[str],
+                ifname: typing.List[str], columns: typing.List[str],
+                start_time: str, end_time: str, cfg, schemas):
+    '''Return a DF for interface bandwidth for specified hosts/ifnames'''
+
+    if isinstance(ifname, str) and ifname:
+        ifname = [ifname]
+
+    if isinstance(hostname, str) and hostname:
+        hostname = [hostname]
+
+    if isinstance(datacenter, str) and datacenter:
+        datacenter = [datacenter]
+
+    if ifname:
+        ifname_str = '('
+        for i, ele in enumerate(ifname):
+            prefix = ' or ' if i else ''
+            ifname_str += "{}ifname=='{}'".format(prefix, ele)
+
+        ifname_str += ')'
+    else:
+        ifname_str = ''
+
+    if hostname:
+        hostname_str = '('
+        for i, ele in enumerate(hostname):
+            prefix = ' or ' if i else ''
+            hostname_str += "{}hostname=='{}'".format(prefix, ele)
+        hostname_str += ')'
+    else:
+        hostname_str = ''
+
+    if datacenter:
+        dc_str = '('
+        for i, ele in enumerate(datacenter):
+            prefix = ' or ' if i else ''
+            dc_str += "{}datacenter=='{}'".format(prefix, ele)
+        dc_str += ')'
+    else:
+        dc_str = ''
+
+    wherestr = ''
+    for wstr in [dc_str, hostname_str, ifname_str]:
+        if wstr:
+            if wherestr:
+                wherestr += ' and '
+            else:
+                wherestr += 'where '
+
+            wherestr += wstr
+
+    qstr = ("select datacenter, hostname, ifname, {}, timestamp "
+            "from ifCounters {} order by datacenter, hostname, ifname, "
+            "timestamp".format(', '.join(columns), wherestr))
+
+    df = get_query_output(qstr, cfg, schemas, start_time, end_time, view='all')
+    for col_name in columns:
+        df['prevBytes(%s)' % (col_name)] = df.groupby(
+            ['datacenter', 'hostname', 'ifname'])[col_name].shift(1)
+
+    idflist = []
+    for dele in datacenter:
+        for hele in hostname:
+            for iele in ifname:
+                dflist = []
+                for col_name in columns:
+                    subdf = df.where((df['datacenter'] == dele) &
+                                     (df['hostname'] == hele) &
+                                     (df['ifname'] == iele))\
+                                     [['datacenter', 'hostname', 'ifname',
+                                       col_name, 'timestamp',
+                                       'prevBytes(%s)' % col_name]]
+                    subdf = subdf.dropna()
+                    subdf['prevTime'] = subdf.groupby(
+                        ['datacenter', 'hostname', 'ifname'])['timestamp'].shift(1)
+                    subdf['rate(%s)' % col_name] = (
+                        (subdf[col_name].sub(subdf['prevBytes(%s)' % (col_name)])
+                         * 8 / (subdf['timestamp'].sub(subdf['prevTime']))))
+                    subdf['timestamp'] = pd.to_datetime(subdf['timestamp'],
+                                                        unit='ms')
+                    dflist.append(subdf.drop(columns=[col_name,
+                                                      'prevBytes(%s)' % (col_name),
+                                                      'prevTime']))
+
+                if len(dflist) > 1:
+                    newdf = dflist[0]
+                    for i, subdf in enumerate(dflist[1:]):
+                        newdf = pd.merge(newdf,
+                                         subdf[['rate(%s)' % (columns[i+1]),
+                                                'timestamp']],
+                                         on='timestamp', how='left')
+                else:
+                    newdf = dflist[0]
+
+                idflist.append(newdf)
+
+    if len(idflist) > 1:
+        newdf = idflist[0]
+        for i, subdf in enumerate(idflist[1:]):
+            newdf = pd.concat([newdf, subdf])
+    else:
+        newdf = idflist[0]
+
+    return newdf
