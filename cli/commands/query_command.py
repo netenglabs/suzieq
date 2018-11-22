@@ -34,15 +34,7 @@ def sql(query: str, view: str = 'latest', start_time: str = '',
     """
     Generic SQL query on the data
     """
-    ctx = context.get_context()
-    if not ctx.cfg:
-        cfg = load_sq_config()
-        ctx.cfg = cfg
-    else:
-        cfg = cfg.ctx
-
-    schemas = get_schemas(cfg['schema-directory'])
-
+    ctxt = context.get_context()
     query = query.strip()
 
     # The following madness is because nubia seems to swallow the last quote
@@ -51,30 +43,23 @@ def sql(query: str, view: str = 'latest', start_time: str = '',
         words[-1] += "'"
         query = ' '.join(words)
 
-    df = get_query_output(query, cfg, schemas, start_time, end_time, view)
+    df = get_query_output(query, ctxt.cfg, ctxt.schemas, start_time, end_time,
+                          view)
     print(df)
 
 
 @command("describe-table")
-@argument("table", type=str)
+@argument("table", type=str, positional=True)
 async def describe_table(table):
     "Describes the fields for a given table"
 
-    ctx = context.get_context()
-    if not ctx.cfg:
-        cfg = suzieq.utils.load_sq_config()
-        ctx.cfg = cfg
-    else:
-        cfg = cfg.ctx
-
-    schemas = suzieq.utils.get_schemas(cfg['schema-directory'])
-
-    if table not in schemas:
+    ctxt = context.get_context()
+    if table not in ctxt.schemas:
         print('ERROR: Unknown table {}'.format(table))
         return
 
     entries = [{'name': x['name'], 'type': x['type']}
-               for x in schemas[table]]
+               for x in ctxt.schemas[table]]
     df = pd.DataFrame.from_dict(entries)
 
     cprint(df)
