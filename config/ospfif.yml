@@ -1,0 +1,29 @@
+
+service: ospfIf
+ignore-fields:
+keys:
+  - vrf
+  - ifname
+show-fields:
+  - vrf
+  - ifname
+  - state
+  - myIfIP
+  - peerIP
+  - nbrCount
+apply:
+  eos:
+    version: all
+    command: show ip ospf interface
+    format: text
+    textfsm: textfsm_templates/eos_ospfif.tfsm
+
+  cumulus:
+    version: all
+    command: sudo vtysh -c 'show ip ospf interface'
+    textfsm: textfsm_templates/frr_ospfif.tfsm
+
+  platina:
+    copy: cumulus
+
+

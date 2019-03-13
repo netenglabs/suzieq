@@ -1,0 +1,50 @@
+Value peerRouterId ([0-9./]*)
+Value peerIP ([0-9./]*)
+Value vrf (\S+)
+Value area ([0-9.]*)
+Value ifname (\S+)
+Value nbrPrio (\d+)
+Value state (\w+)
+Value numChanges (\d+)
+Value lastChangeTime (\w+)
+Value lsaRetxCnt (\d+)
+
+Start
+  ^Neighbor .*, interface address.*$$ -> Continue.Record
+  ^Neighbor ${peerRouterId}, interface address ${peerIP}.*$$
+  ^\s+In the area ${area} via interface ${ifname}.*$$
+  ^\s+Neighbor priority is ${nbrPrio},\s+State is ${state}, ${numChanges} state changes.*$$
+  ^\s+Progressive change ${lastChangeTime} ago.*$$
+
+#Neighbor 10.254.0.1, interface address 10.127.0.3
+#    In the area 0.0.0.0 via interface swp2
+#    Neighbor priority is 1, State is Full, 6 state changes
+#    Most recent state change statistics:
+#      Progressive change 19h16m23s ago
+#    DR is 10.127.0.3, BDR is 10.127.0.2
+#    Options 2 *|-|-|-|-|-|E|-
+#    Dead timer due in 33.423s
+#    Database Summary List 0
+#    Link State Request List 0
+#    Link State Retransmission List 0
+#    Thread Inactivity Timer on
+#    Thread Database Description Retransmision off
+#    Thread Link State Request Retransmission on
+#    Thread Link State Update Retransmission on
+#
+#Neighbor 10.254.0.1, interface address 10.127.0.3
+#    In the area 0.0.0.0 via interface swp2
+#    Neighbor priority is 1, State is Full, 6 state changes
+#    Most recent state change statistics:
+#      Progressive change 19h16m23s ago
+#    DR is 10.127.0.3, BDR is 10.127.0.2
+#    Options 2 *|-|-|-|-|-|E|-
+#    Dead timer due in 33.423s
+#    Database Summary List 0
+#    Link State Request List 0
+#    Link State Retransmission List 0
+#    Thread Inactivity Timer on
+#    Thread Database Description Retransmision off
+#    Thread Link State Request Retransmission on
+#    Thread Link State Update Retransmission on
+#

@@ -3,3 +3,19 @@
 * spark.sql.warehouse.dir cannot be modified after the session has been created
 * Views are quicker to build but slower to execute
 * confluent-kafka has difficulty reading a lot of data suddently (as in from redis2confluent). pykafka does fine.
+* df.repartition("entity", "year", "month", "day", "status").write.partitionBy("entity", "year", "month", "day", "status").mode(SaveMode.Append).parquet(s"$location")
+* repartition and mode are not supported for streaming
+
+* ON Linux, its not possible to get all the useful parameters with a single command.
+  - Link up/down time
+  - speed
+  - iftype for bond interfaces
+
+  FRR gives the first two but not the last, iproute2 gives the last but not the first two, monitoring netlink isn't going to give you speed. Submitted a patch to FRR to fix this iftype issue for bonds and bond_slaves
+
+* sdf.select('hostname', 'peer', 'vrf', 'state', F.from_unixtime(sdf.timestamp/1000, format='YYYY-MM-dd HH:mm:ss.sss').alias('timestamp')).where(sdf['hostname'] == "spine02").show(truncate=False)
+
+*   table = pq.ParquetDataset(folder,\n",
+                              filters=[('timestamp', '>', timeset[0]),\n",
+                                       ('timestamp', '<', timeset[-1])]) \\\n",
+              .read()\n
