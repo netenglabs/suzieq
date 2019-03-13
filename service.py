@@ -1,4 +1,5 @@
 
+
 import os
 import asyncio
 import random
@@ -147,6 +148,22 @@ async def init_services(svc_dir, schema_dir, queue):
                                           svc_def.get('keys', []),
                                           svc_def.get('ignore-fields', []),
                                           schema, queue)
+                elif svc_def['service'] == 'ospfIf':
+                    service = OspfIfService(svc_def['service'],
+                                            svc_def['apply'],
+                                            period,
+                                            svc_def.get('type', 'state'),
+                                            svc_def.get('keys', []),
+                                            svc_def.get('ignore_fields', []),
+                                            schema, queue)
+                elif svc_def['service'] == 'ospfNbr':
+                    service = OspfNbrService(svc_def['service'],
+                                             svc_def['apply'],
+                                             period,
+                                             svc_def.get('type', 'state'),
+                                             svc_def.get('keys', []),
+                                             svc_def.get('ignore_fields', []),
+                                             schema, queue)
                 else:
                     service = Service(svc_def['service'], svc_def['apply'],
                                       period, svc_def.get('type', 'state'),
@@ -158,229 +175,6 @@ async def init_services(svc_dir, schema_dir, queue):
                 svcs_list.append(service)
 
     return svcs_list
-
-
-def exdict(path, data, start, collect=False):
-    '''Extract all fields in specified path from data'''
-
-    def set_kv(okeys, indata, oresult):
-        '''Set the value in the outgoing dict'''
-        if okeys:
-            okeys = [okeys[0].strip(), okeys[1].strip()]
-            cval = indata.get(okeys[0], '') if indata else ''
-
-        if '?' in okeys[1]:
-            fkey, fvals = okeys[1].split('?')
-            fvals = fvals.split('|')
-            if '=' in fvals[0]:
-                tval, rval = fvals[0].split('=')
-            else:
-                tval = fvals[0]
-                rval = fvals[0]
-            tval = tval.strip()
-            rval = rval.strip()
-            # String a: b?|False => if not a's value, use False, else use a
-            # String a: b?True=active|inactive => if a's value is true, use_key
-            # the string 'active' instead else use inactive
-            # String a: b?True=active| => if a's value is True, switch to
-            # active else leave it as it is
-            if not cval or (tval and str(cval) != tval):
-                if fvals[1]:
-                    try:
-                        oresult[fkey.strip()] = ast.literal_eval(fvals[1])
-                    except (ValueError, SyntaxError):
-                        oresult[fkey.strip()] = fvals[1]
-                else:
-                    oresult[fkey.strip()] = cval
-            elif cval and not tval:
-                oresult[fkey.strip()] = cval
-            else:
-                oresult[fkey.strip()] = rval
-        else:
-            opmatch = re.match(r'^(add|sub|mul|div)\((\w+),(\w+)\)$', okeys[1])
-            if opmatch:
-                op, lval, rval = opmatch.groups()
-                if rval not in oresult:
-                    if not rval.isdigit():
-                        # This is an unsuppported operation, need int field
-                        oresult[lval] = 0
-                        return
-                    else:
-                        rval = int(rval)
-                else:
-                    rval = int(oresult[rval])
-                if not cval:
-                    cval = 0
-                if op == 'add':
-                    oresult[lval] = cval + rval
-                elif op == 'sub':
-                    oresult[lval] = cval - rval
-                elif op == 'mul':
-                    oresult[lval] = cval * rval
-                elif op == 'div':
-                    if rval:
-                        oresult[lval] = cval / rval
-                    else:
-                        oresult[lval] = 0
-            else:
-                rval = cval
-                try:
-                    oresult[okeys[1].strip()] = ast.literal_eval(rval)
-                except (ValueError, SyntaxError):
-                    oresult[okeys[1].strip()] = rval
-        return
-
-    result = []
-    iresult = {}
-
-    plist = re.split('''/(?=(?:[^'"]|'[^']*'|"[^"]*")*$)''', path)
-    i = 0
-    for i, elem in enumerate(plist[start:]):
-
-        if not data:
-            if '[' not in plist[-1] and ':' in plist[-1]:
-                set_kv(plist[-1].split(':'), data, iresult)
-                result.append(iresult)
-            return result, i+start
-
-        j = 0
-        num = re.match(r'\[([0-9]*)\]', elem)
-        if num:
-            data = data[int(num.group(1))]
-
-        elif elem.startswith('*'):
-            use_key = False
-            is_list = True
-            if type(data) is dict:
-                is_list = False
-                okeys = elem.split(':')
-                if len(okeys) > 1:
-                    use_key = True
-
-            if plist[-1] == elem and collect:
-                # We're a leaf now. So, suck up the list or dict if
-                # we're to collect
-                if is_list:
-                    cstr = data
-                else:
-                    cstr = [k for k in data]
-                set_kv(okeys, {'*': cstr}, iresult)
-                result.append(iresult)
-                return result, i + start
-
-            for item in data:
-                if not is_list:
-                    datum = data[item]
-                else:
-                    datum = item
-                if type(datum) is dict or type(datum) is list:
-                    if use_key:
-                        if collect:
-                            # We're at the leaf and just gathering the fields
-                            # as a comma separated string
-                            # example: memberInterfaces/* : lacpMembers
-                            cstr = ''
-                            for key in data:
-                                cstr = cstr + ', ' + key if cstr else key
-                            iresult[okeys[1].strip()] = cstr
-                            result.append(iresult)
-                            return result, i + start
-                        iresult[okeys[1].strip()] = item
-                    tmpres, j = exdict(path, datum, start+i+1)
-                    if tmpres:
-                        for subresult in tmpres:
-                            iresult.update(subresult)
-                            result.append(iresult)
-                            iresult = {}
-                            if use_key:
-                                iresult[okeys[1].strip()] = item
-                else:
-                    continue
-            if j >= i:
-                break
-        elif type(elem) is str:
-            # split the normalized key and data key
-            okeys = elem.split(':')
-            if okeys[0] in data:
-                if start+i+1 == len(plist):
-                    set_kv(okeys, data, iresult)
-                    result.append(iresult)
-                else:
-                    data = data[okeys[0]]
-            else:
-                try:
-                    fields = ast.literal_eval(elem)
-                except (ValueError, SyntaxError):
-                    # Catch if the elem is a string key not present in the data
-                    # Case of missing key, abort if necessary
-                    # if not path.endswith(']') and ':' in plist[-1]:
-                    if ':' in plist[-1]:
-                        okeys = plist[-1].split(':')
-                        set_kv(okeys, data, iresult)
-                        result.append(iresult)
-                        return result, i+start
-
-                if type(fields) is list:
-                    for fld in fields:
-                        if '/' in fld:
-                            sresult, _ = exdict(fld, data, 0, collect=True)
-                            for res in sresult:
-                                iresult.update(res)
-                        else:
-                            okeys = fld.split(':')
-                            set_kv(okeys, data, iresult)
-                    result.append(iresult)
-                    iresult = {}
-
-    return result, i+start
-
-
-def textfsm_data(raw_input, fsm_template, schema):
-    '''Convert unstructured output to structured output'''
-
-    records = []
-    fsm_template.Reset()
-    res = fsm_template.ParseText(raw_input)
-
-    fields = [fld.name for fld in schema]
-
-    ptype_map = {pa.string(): str,
-                 pa.int32(): int,
-                 pa.int64(): int,
-                 pa.float32(): float,
-                 pa.float64(): float,
-                 pa.date64(): float,
-                 pa.list_(pa.string()): list,
-                 pa.bool_(): bool
-                 }
-
-    map_defaults = {
-        pa.string(): '',
-        pa.int32(): 0,
-        pa.int64(): 0,
-        pa.float32(): 0.0,
-        pa.float64(): 0.0,
-        pa.date64(): 0.0,
-        pa.bool_(): False,
-        pa.list_(pa.string()): [],
-        pa.list_(pa.int64()): [],
-        }
-
-    # Ensure the type is set correctly.
-    for entry in res:
-        metent = dict(zip(fsm_template.header, entry))
-        for cent in metent:
-            if cent in fields:
-                schent_type = schema.field_by_name(cent).type
-                if type(metent[cent]) != ptype_map[schent_type]:
-                    if metent[cent]:
-                        metent[cent] = ptype_map[schent_type](metent[cent])
-                    else:
-                        metent[cent] = map_defaults[schent_type]
-
-        records.append(metent)
-
-    return records
 
 
 class Service(object):
@@ -480,6 +274,231 @@ class Service(object):
 
         return adds, dels
 
+    def exdict(self, path, data, start, collect=False):
+        '''Extract all fields in specified path from data'''
+
+        def set_kv(okeys, indata, oresult):
+            '''Set the value in the outgoing dict'''
+            if okeys:
+                okeys = [okeys[0].strip(), okeys[1].strip()]
+                cval = indata.get(okeys[0], '') if indata else ''
+
+            if '?' in okeys[1]:
+                fkey, fvals = okeys[1].split('?')
+                fvals = fvals.split('|')
+                if '=' in fvals[0]:
+                    tval, rval = fvals[0].split('=')
+                else:
+                    tval = fvals[0]
+                    rval = fvals[0]
+                tval = tval.strip()
+                rval = rval.strip()
+                # String a: b?|False => if not a's value, use False, else use a
+                # String a: b?True=active|inactive => if a's value is true, use_key
+                # the string 'active' instead else use inactive
+                # String a: b?True=active| => if a's value is True, switch to
+                # active else leave it as it is
+                if not cval or (tval and str(cval) != tval):
+                    if fvals[1]:
+                        try:
+                            oresult[fkey.strip()] = ast.literal_eval(fvals[1])
+                        except (ValueError, SyntaxError):
+                            oresult[fkey.strip()] = fvals[1]
+                    else:
+                        oresult[fkey.strip()] = cval
+                elif cval and not tval:
+                    oresult[fkey.strip()] = cval
+                else:
+                    oresult[fkey.strip()] = rval
+            else:
+                opmatch = re.match(r'^(add|sub|mul|div)\((\w+),(\w+)\)$', okeys[1])
+                if opmatch:
+                    op, lval, rval = opmatch.groups()
+                    if rval not in oresult:
+                        if not rval.isdigit():
+                            # This is an unsuppported operation, need int field
+                            oresult[lval] = 0
+                            return
+                        else:
+                            rval = int(rval)
+                    else:
+                        rval = int(oresult[rval])
+                    if not cval:
+                        cval = 0
+                    if op == 'add':
+                        oresult[lval] = cval + rval
+                    elif op == 'sub':
+                        oresult[lval] = cval - rval
+                    elif op == 'mul':
+                        oresult[lval] = cval * rval
+                    elif op == 'div':
+                        if rval:
+                            oresult[lval] = cval / rval
+                        else:
+                            oresult[lval] = 0
+                else:
+                    rval = cval
+                    try:
+                        oresult[okeys[1].strip()] = ast.literal_eval(rval)
+                    except (ValueError, SyntaxError):
+                        oresult[okeys[1].strip()] = rval
+            return
+
+        result = []
+        iresult = {}
+
+        plist = re.split('''/(?=(?:[^'"]|'[^']*'|"[^"]*")*$)''', path)
+        i = 0
+        for i, elem in enumerate(plist[start:]):
+
+            if not data:
+                if '[' not in plist[-1] and ':' in plist[-1]:
+                    set_kv(plist[-1].split(':'), data, iresult)
+                    result.append(iresult)
+                return result, i+start
+
+            j = 0
+            num = re.match(r'\[([0-9]*)\]', elem)
+            if num:
+                data = data[int(num.group(1))]
+
+            elif elem.startswith('*'):
+                use_key = False
+                is_list = True
+                if type(data) is dict:
+                    is_list = False
+                    okeys = elem.split(':')
+                    if len(okeys) > 1:
+                        use_key = True
+
+                if plist[-1] == elem and collect:
+                    # We're a leaf now. So, suck up the list or dict if
+                    # we're to collect
+                    if is_list:
+                        cstr = data
+                    else:
+                        cstr = [k for k in data]
+                    set_kv(okeys, {'*': cstr}, iresult)
+                    result.append(iresult)
+                    return result, i + start
+
+                for item in data:
+                    if not is_list:
+                        datum = data[item]
+                    else:
+                        datum = item
+                    if type(datum) is dict or type(datum) is list:
+                        if use_key:
+                            if collect:
+                                # We're at the leaf and just gathering the fields
+                                # as a comma separated string
+                                # example: memberInterfaces/* : lacpMembers
+                                cstr = ''
+                                for key in data:
+                                    cstr = cstr + ', ' + key if cstr else key
+                                iresult[okeys[1].strip()] = cstr
+                                result.append(iresult)
+                                return result, i + start
+                            iresult[okeys[1].strip()] = item
+                        tmpres, j = self.exdict(path, datum, start+i+1)
+                        if tmpres:
+                            for subresult in tmpres:
+                                iresult.update(subresult)
+                                result.append(iresult)
+                                iresult = {}
+                                if use_key:
+                                    iresult[okeys[1].strip()] = item
+                    else:
+                        continue
+                if j >= i:
+                    break
+            elif type(elem) is str:
+                # split the normalized key and data key
+                okeys = elem.split(':')
+                if okeys[0] in data:
+                    if start+i+1 == len(plist):
+                        set_kv(okeys, data, iresult)
+                        result.append(iresult)
+                    else:
+                        data = data[okeys[0]]
+                else:
+                    try:
+                        fields = ast.literal_eval(elem)
+                    except (ValueError, SyntaxError):
+                        # Catch if the elem is a string key not present in the data
+                        # Case of missing key, abort if necessary
+                        # if not path.endswith(']') and ':' in plist[-1]:
+                        if ':' in plist[-1]:
+                            okeys = plist[-1].split(':')
+                            set_kv(okeys, data, iresult)
+                            result.append(iresult)
+                            return result, i+start
+
+                    if type(fields) is list:
+                        for fld in fields:
+                            if '/' in fld:
+                                sresult, _ = self.exdict(fld, data, 0,
+                                                         collect=True)
+                                for res in sresult:
+                                    iresult.update(res)
+                            else:
+                                okeys = fld.split(':')
+                                set_kv(okeys, data, iresult)
+                        result.append(iresult)
+                        iresult = {}
+
+        return result, i+start
+
+    def textfsm_data(self, raw_input, fsm_template, schema, data):
+        '''Convert unstructured output to structured output'''
+
+        records = []
+        fsm_template.Reset()
+        res = fsm_template.ParseText(raw_input)
+
+        for entry in res:
+            metent = dict(zip(fsm_template.header, entry))
+            records.append(metent)
+
+        result = self.clean_data(records, data)
+
+        fields = [fld.name for fld in schema]
+
+        ptype_map = {pa.string(): str,
+                     pa.int32(): int,
+                     pa.int64(): int,
+                     pa.float32(): float,
+                     pa.float64(): float,
+                     pa.date64(): float,
+                     pa.list_(pa.string()): list,
+                     pa.bool_(): bool
+                     }
+
+        map_defaults = {
+            pa.string(): '',
+            pa.int32(): 0,
+            pa.int64(): 0,
+            pa.float32(): 0.0,
+            pa.float64(): 0.0,
+            pa.date64(): 0.0,
+            pa.bool_(): False,
+            pa.list_(pa.string()): [],
+            pa.list_(pa.int64()): [],
+            }
+
+        # Ensure the type is set correctly.
+        for entry in result:
+            for cent in entry:
+                if cent in fields:
+                    schent_type = schema.field_by_name(cent).type
+                    if type(entry[cent]) != ptype_map[schent_type]:
+                        if entry[cent]:
+                            entry[cent] = ptype_map[schent_type](entry[cent])
+                        else:
+                            entry[cent] = map_defaults[schent_type]
+
+        return result
+
     async def gather_data(self):
         '''Collect data invoking the appropriate get routine from nodes.'''
 
@@ -521,7 +540,10 @@ class Service(object):
                     else:
                         in_info = data['data']
 
-                    result, _ = exdict(nfn.get('normalize', ''), in_info, 0)
+                    result, _ = self.exdict(nfn.get('normalize', ''), in_info,
+                                            0)
+
+                    result = self.clean_data(result, data)
                 else:
                     tfsm_template = nfn.get('textfsm', None)
                     if not tfsm_template:
@@ -534,9 +556,11 @@ class Service(object):
                         in_info = data['data']['messages'][0]
                     else:
                         in_info = data['data']
-                    result = textfsm_data(in_info, tfsm_template, self.schema)
-
-                result = self.clean_data(result, data)
+                    # Clean data is invoked inside this due to the way we
+                    # munge the data and force the types to adhere to the
+                    # specified type
+                    result = self.textfsm_data(in_info, tfsm_template,
+                                               self.schema, data)
             else:
                 self.logger.error(
                     '{}: No normalization/textfsm function for device {}'
@@ -926,5 +950,52 @@ class MlagService(Service):
                 entry['mlagDualPortsCnt'] = mlagDualPortsCnt
                 entry['mlagErrorPortsCnt'] = mlagErrorPortsCnt
                 del entry['mlagInterfaces']
+
+        return super().clean_data(processed_data, raw_data)
+
+
+class OspfIfService(Service):
+    '''OSPF Interface service. Output needs to be munged'''
+
+    def clean_data(self, processed_data, raw_data):
+
+        if raw_data.get('devtype', None) == 'cumulus':
+            for entry in processed_data:
+                entry['vrf'] = 'default'
+                entry['networkType'] = entry['networkType'].lower()
+        elif raw_data.get('devtype', None) == 'eos':
+            for entry in processed_data:
+                entry['networkType'] = entry['networkType'].lower()
+
+        return super().clean_data(processed_data, raw_data)
+
+
+class OspfNbrService(Service):
+    '''OSPF Neighbor service. Output needs to be munged'''
+
+    def frr_convert_reltime_to_epoch(self, reltime):
+        '''Convert string of type 1d12h3m23s into absolute epoch'''
+        secs = 0
+        s = reltime
+        for t, mul in {'d': 3600*24, 'h': 3600, 'm': 60, 's': 1}.items():
+            v = s.split(t)
+            if len(v) == 2:
+                secs += int(v[0])*mul
+            s = v[-1]
+
+        return int((time.time() - secs)*1000)
+
+    def clean_data(self, processed_data, raw_data):
+
+        if raw_data.get('devtype', None) == 'cumulus':
+            for entry in processed_data:
+                entry['vrf'] = 'default'
+                entry['state'] = entry['state'].lower()
+                entry['lastChangeTime'] = self.frr_convert_reltime_to_epoch(
+                    entry['lastChangeTime'])
+        elif raw_data.get('devtype', None) == 'eos':
+            for entry in processed_data:
+                entry['state'] = entry['state'].lower()
+                entry['lastChangeTime'] = int(entry['lastChangeTime']*1000)
 
         return super().clean_data(processed_data, raw_data)

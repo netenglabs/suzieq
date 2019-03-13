@@ -1,0 +1,38 @@
+
+service: ospfNbr
+ignore-fields:
+keys:
+  - vrf
+  - ifname
+show-fields:
+  - vrf
+  - ifname
+  - state
+  - peerID
+  - peerIP
+  - lastChangeTime
+  - transitionCnt
+apply:
+  eos:
+    version: all
+    command: show ip ospf neighbor detail
+    normalize: 'vrfs/*:vrf/instList/*/ospfNeighborEntries/*/[
+      "routerId: peerRouterId",
+      "priority: nbrPrio",
+      "interfaceName: ifname",
+      "adjacencyState: state",
+      "interfaceAddress: peerIP",
+      "details/areaId: area",
+      "details/stateTime: lastChangeTime",
+      "details/numberOfStateChanges: numChanges",
+      "details/retransmissionCount: lsaRetxCnt"]'
+
+  cumulus:
+      version: all
+      command: sudo vtysh -c 'show ip ospf neighbor detail'
+      textfsm: textfsm_templates/frr_ospfnbr.tfsm
+
+  platina:
+    copy: cumulus
+
+
