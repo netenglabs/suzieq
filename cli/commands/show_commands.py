@@ -109,6 +109,33 @@ class ShowCommand:
                           state=state, datacenter=self.datacenter)
         print(df)
 
+    @command('ospf')
+    @argument("ifname", description="Name of interface to qualify show")
+    @argument("vrf", description="VRF to qualify show")
+    @argument("state", description="BGP neighbor state to qualify",
+              choices=["full"])
+    @argument("type", description="Type of OSPF information to show",
+              choices=["neighbor", "interface"])
+    def show_ospf(self, ifname: typing.List[str] = None,
+                  vrf: typing.List[str] = None, state: str = '',
+                  type: str = 'neighbor'):
+        """
+        Show BGP
+        """
+        order_by = 'order by datacenter, hostname, vrf, ifname'
+        if type == 'neighbor':
+            df = get_table_df('ospfNbr', self.start_time, self.end_time,
+                              self.view, order_by, self.cfg, self.schemas,
+                              hostname=self.hostname, vrf=vrf, ifname=ifname,
+                              state=state, datacenter=self.datacenter)
+        else:
+            df = get_table_df('ospfIf', self.start_time, self.end_time,
+                              self.view, order_by, self.cfg, self.schemas,
+                              hostname=self.hostname, vrf=vrf, ifname=ifname,
+                              state=state, datacenter=self.datacenter)
+
+        print(df)
+
     @command('interfaces')
     @argument("ifname", description="interface name to qualify show")
     def show_interfaces(self, ifname: typing.List[str] = None):
