@@ -10,8 +10,8 @@ Value lastChangeTime (\w+)
 Value lsaRetxCnt (\d+)
 
 Start
-  ^Neighbor .*, interface address.*$$ -> Continue.Record
-  ^Neighbor ${peerRouterId}, interface address ${peerIP}.*$$
+  ^\s?Neighbor .*, interface address.*$$ -> Continue.Record
+  ^\s?Neighbor ${peerRouterId}, interface address ${peerIP}.*$$
   ^\s+In the area ${area} via interface ${ifname}.*$$
   ^\s+Neighbor priority is ${nbrPrio},\s+State is ${state}, ${numChanges} state changes.*$$
   ^\s+Progressive change ${lastChangeTime} ago.*$$
