@@ -963,10 +963,11 @@ class OspfIfService(Service):
             for entry in processed_data:
                 entry['vrf'] = 'default'
                 entry['networkType'] = entry['networkType'].lower()
+                entry['passive'] = entry['passive'] == 'Passive'
         elif raw_data.get('devtype', None) == 'eos':
             for entry in processed_data:
                 entry['networkType'] = entry['networkType'].lower()
-
+                entry['passive'] = entry['passive'] == 'Passive'
         return super().clean_data(processed_data, raw_data)
 
 
