@@ -66,7 +66,7 @@ async def init_services(svc_dir, schema_dir, queue):
         for filename in filenames:
             if filename.endswith('yml') or filename.endswith('yaml'):
                 with open(root + '/' + filename, 'r') as f:
-                    svc_def = yaml.load(f.read())
+                    svc_def = yaml.safe_load(f.read())
                 if 'service' not in svc_def or 'apply' not in svc_def:
                     logging.error('Ignorning invalid service file definition. \
                     Need both "service" and "apply" keywords: {}'
