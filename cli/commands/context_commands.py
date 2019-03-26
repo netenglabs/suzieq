@@ -19,7 +19,7 @@ from nubia import command, argument, context
 
 sys.path.append('/home/ddutt/work/')
 import suzieq.livylib
-from suzieq.utils import load_sq_config, get_schemas, get_query_output
+from suzieq.utils import load_sq_config, get_schemas, get_query_df
 
 
 @command("set")

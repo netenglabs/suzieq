@@ -21,7 +21,7 @@ from nubia import command, argument
 import typing
 
 sys.path.append('/home/ddutt/work/')
-from suzieq.utils import get_query_output
+from suzieq.utils import get_query_df
 from suzieq.cli.commands.command import SQCommand
 
 
@@ -60,7 +60,7 @@ class AnalyzeCommand(SQCommand):
                 "where {} and {} order by hostname, ifname, timestamp"
                 .format(col_name, hostname_str, ifname_str))
 
-        df = get_query_output(qstr, self.cfg, self.schemas, self.start_time,
+        df = get_query_df(qstr, self.cfg, self.schemas, self.start_time,
                               self.end_time, view='all')
         if df is None or 'error' in df:
             print('ERROR: {}'.format(df['type']))
