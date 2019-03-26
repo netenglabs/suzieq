@@ -117,7 +117,7 @@ def load_sq_config(validate=True):
 
     if cfgfile:
         with open(cfgfile, 'r') as f:
-            cfg = yaml.load(f.read())
+            cfg = yaml.safe_load(f.read())
 
         if validate:
             validate_sq_config(cfg, sys.stderr)
@@ -260,34 +260,35 @@ def build_sql_str(table: str, start_time: str, end_time: str,
         return ''
 
     fields = []
-    wherestr = ''
+    wherestr = 'where active==True '
     if 'columns' in kwargs:
         columns = kwargs['columns']
         del kwargs['columns']
     else:
         columns = 'default'
 
+    disp_dict = {}
     if columns == 'default':
+        # Build the select string with the list in the order specified in
+        # service file. Build a dict from the schema and then the list in
+        # the right order.
         for field in sch:
             loc = field.get('display', None)
             if loc is not None:
-                fields.insert(loc, field['name'])
+                disp_dict[loc] = field['name']
+
+        fields = [disp_dict[key] for key in sorted(disp_dict.keys())]
 
         if 'timestamp' not in fields:
             fields.append('from_unixtime(timestamp/1000) as timestamp')
     else:
         fields = ['*']
 
-    first = True
     for i, kwd in enumerate(kwargs):
         if not kwargs[kwd]:
             continue
 
-        if first:
-            prefix = 'where'
-            first = False
-        else:
-            prefix = 'and'
+        prefix = 'and'
         value = kwargs[kwd]
 
         if isinstance(value, list):
@@ -358,7 +359,7 @@ def get_spark_code(qstr: str, cfg, schemas, start: str = '', end: str = '',
     for index in indices:
         words = re.split(r',\s*', qparts[index+1])
         for table in words:
-            if table in schemas:
+            if table in schemas and table not in tables:
                 tables.append(table)
 
     sstr = 'spark.sql("{0}").toJSON().collect()'.format(qstr)
