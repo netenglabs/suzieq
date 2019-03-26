@@ -269,15 +269,9 @@ def build_sql_str(table: str, start_time: str, end_time: str,
 
     disp_dict = {}
     if columns == 'default':
-        # Build the select string with the list in the order specified in
-        # service file. Build a dict from the schema and then the list in
-        # the right order.
-        for field in sch:
-            loc = field.get('display', None)
-            if loc is not None:
-                disp_dict[loc] = field['name']
-
-        fields = [disp_dict[key] for key in sorted(disp_dict.keys())]
+        fields = [f['name'] for f in sorted(sch, key=lambda x: x.get('display',
+                                                                     1000))
+                  if f.get('display', None)]
 
         if 'timestamp' not in fields:
             fields.append('from_unixtime(timestamp/1000) as timestamp')
@@ -413,7 +407,8 @@ def get_query_output(query_string: str, cfg, schemas,
                           .replace("\'", ''), object_pairs_hook=OrderedDict)
         df = pd.DataFrame.from_dict(jout)
 
-    if df is not None and '__index_level_0__' in df.columns:
+    if (df is not None and 'error' not in df and
+            '__index_level_0__' in df.columns):
         df = df.drop(columns=['__index_level_0__'])
 
     return df
