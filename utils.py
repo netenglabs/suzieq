@@ -269,8 +269,8 @@ def build_sql_str(table: str, start_time: str, end_time: str,
 
     disp_dict = {}
     if columns == 'default':
-        fields = [f['name'] for f in sorted(sch, key=lambda x: x.get('display',
-                                                                     1000))
+        fields = [f['name']
+                  for f in sorted(sch, key=lambda x: x.get('display', 1000))
                   if f.get('display', None)]
 
         if 'timestamp' not in fields:
