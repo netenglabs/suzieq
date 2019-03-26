@@ -245,7 +245,7 @@ def get_table_df(table: str, start_time: str, end_time: str,
     if not qstr:
         return None
 
-    df = get_query_output(qstr, cfg, schemas,
+    df = get_query_df(qstr, cfg, schemas,
                           start_time, end_time, view)
     return df
 
@@ -366,7 +366,7 @@ def get_spark_code(qstr: str, cfg, schemas, start: str = '', end: str = '',
     return code
 
 
-def get_query_output(query_string: str, cfg, schemas,
+def get_query_df(query_string: str, cfg, schemas,
                      start_time: str = '', end_time: str ='',
                      view: str = 'latest') -> pd.DataFrame:
 
@@ -471,7 +471,7 @@ def get_ifbw_df(datacenter: typing.List[str], hostname: typing.List[str],
             "from ifCounters {} order by datacenter, hostname, ifname, "
             "timestamp".format(', '.join(columns), wherestr))
 
-    df = get_query_output(qstr, cfg, schemas, start_time, end_time, view='all')
+    df = get_query_df(qstr, cfg, schemas, start_time, end_time, view='all')
     print('Fetch took {}s'.format(time.time() - start))
     for col_name in columns:
         df['prevBytes(%s)' % (col_name)] = df.groupby(

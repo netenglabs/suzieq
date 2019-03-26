@@ -17,7 +17,7 @@ from termcolor import cprint
 from nubia import command, argument, context
 
 sys.path.append('/home/ddutt/work/')
-from suzieq.utils import load_sq_config, get_schemas, get_query_output
+from suzieq.utils import load_sq_config, get_schemas, get_query_df
 
 
 @command
@@ -42,7 +42,7 @@ def sql(query: str, view: str = 'latest', start_time: str = '',
         words[-1] += "'"
         query = ' '.join(words)
 
-    df = get_query_output(query, ctxt.cfg, ctxt.schemas, start_time, end_time,
+    df = get_query_df(query, ctxt.cfg, ctxt.schemas, start_time, end_time,
                           view)
     print(df)
 

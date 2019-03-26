@@ -17,7 +17,7 @@ from IPython.display import display, HTML
 
 sys.path.append("/home/ddutt/work/suzieq/")
 
-from utils import load_sq_config, get_schemas, get_query_output
+from utils import load_sq_config, get_schemas, get_query_df
 from livylib import get_livysession, exec_livycode
 
 is_notebook = False
@@ -58,7 +58,7 @@ def query(qstr):
         else:
             df = pd.DataFrame.from_dict({'error': 'Invalid command'})
     else:
-        df = get_query_output(qstr, cfg, schemas)
+        df = get_query_df(qstr, cfg, schemas)
 
     if is_notebook:
         if qgrid_enable:
