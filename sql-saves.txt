@@ -190,3 +190,13 @@ spark.sql("select rawclag.host as host, {} from rawclag, rawclag as clagpeer whe
 Create view directly from parquet
 =================================
 spark.sql('create view bgp as select host, neighbor, vrf, last(timestamp) from parquet.`/home/ddutt/work/suzieq/parquet-out/bgpsession/*` group by host, neighbor, vrf')
+
+
+================================================
+With Suzieq & Nubia:
+
+* MTU mismatch:
+
+  select lldp.datacenter, lldp.hostname, lldp.ifname, l1.mtu as mtu, peerHostname, peerIfname, l2.mtu as peerMtu from lldp inner join interfaces as l1 inner join interfaces as l2 on (l1.mtu != l2.mtu and (l1.active==True and l2.active==True) and (l1.hostname == lldp.hostname and l1.ifname == lldp.ifname) and (l2.hostname == peerHostname and l2.ifname == peerIfname) and (l1.datacenter==l2.datacenter) and lldp.datacenter='ospf') order by lldp.hostname, lldp.ifname
+
+* 
