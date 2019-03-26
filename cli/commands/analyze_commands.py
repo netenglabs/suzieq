@@ -21,41 +21,13 @@ from nubia import command, argument
 import typing
 
 sys.path.append('/home/ddutt/work/')
-from suzieq.utils import load_sq_config, get_schemas
 from suzieq.utils import get_query_output
+from suzieq.cli.commands.command import SQCommand
 
 
 @command('analyze', help="Analyze this")
-class AnalyzeCommand:
-
-    @argument("datacenter", description="datacenter to qualify selection")
-    @argument("hostname", description="Name of host to qualify selection")
-    @argument("start_time",
-              description="Start of time window in YYYY-MM-dd HH:mm:SS format")
-    @argument("end_time",
-              description="End of time window in YYYY-MM-dd HH:mm:SS format")
-    @argument("view", description="view all records or just the latest",
-              choices=["all", "latest"])
-    def __init__(self, hostname: typing.List[str] = [], start_time: str = '',
-                 end_time: str = '', view: str = 'latest',
-                 datacenter: typing.List[str] = []) -> None:
-        self._cfg = load_sq_config(validate=False)
-        self._schemas = get_schemas(self._cfg['schema-directory'])
-        self.datacenter = datacenter
-        self.hostname = hostname
-        self.start_time = start_time
-        self.end_time = end_time
-        self.view = view
-
-    @property
-    def cfg(self):
-        return self._cfg
-
-    @property
-    def schemas(self):
-        return self._schemas
-    '''Go deeper into the data'''
-
+class AnalyzeCommand(SQCommand):
+    '''Analyze commands'''
     @command('uplink-ratio')
     @argument("ifname", description="interface name to qualify show")
     @argument("dir", description="Tx or Rx", choices=['rx', 'tx'])
@@ -90,6 +62,10 @@ class AnalyzeCommand:
 
         df = get_query_output(qstr, self.cfg, self.schemas, self.start_time,
                               self.end_time, view='all')
+        if df is None or 'error' in df:
+            print('ERROR: {}'.format(df['type']))
+            return
+
         df['prevBytes'] = df.groupby(['hostname', 'ifname'])[col_name].shift(1)
         df['prevTime'] = df.groupby(['hostname', 'ifname'])['timestamp'].shift(1)
 
