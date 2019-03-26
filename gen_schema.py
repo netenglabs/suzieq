@@ -170,7 +170,7 @@ if __name__ == '__main__':
 
     for file in files:
         with file.open() as f:
-            data = yaml.load(f.read())
+            data = yaml.safe_load(f.read())
             fldset = get_field_set(data, textfsm_dir)
             write_avro_schema(data['service'], fldset, data.get('keys', []),
                               data.get('show-fields', []),

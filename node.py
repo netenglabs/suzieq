@@ -35,7 +35,7 @@ async def init_hosts(hosts_file):
 
     with open(hosts_file, 'r') as f:
         try:
-            hostsconf = yaml.load(f.read())
+            hostsconf = yaml.safe_load(f.read())
         except Exception as e:
             logging.error('Invalid hosts config file:{}', e)
             print('Invalid hosts config file:{}', e)
