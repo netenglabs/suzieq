@@ -21,59 +21,13 @@ from nubia import command, argument, context
 import typing
 
 sys.path.append('/home/ddutt/work/')
-from suzieq.livylib import get_livysession, exec_livycode
-from suzieq.utils import load_sq_config, get_schemas
 from suzieq.utils import get_table_df, get_ifbw_df
+from suzieq.cli.commands.command import SQCommand
 
 
 @command('show', help="show various pieces of information")
-class ShowCommand:
-
-    @argument("datacenter", description="datacenter to qualify selection")
-    @argument("hostname", description="Name of host to qualify selection")
-    @argument("start_time",
-              description="Start of time window in YYYY-MM-dd HH:mm:SS format")
-    @argument("end_time",
-              description="End of time window in YYYY-MM-dd HH:mm:SS format")
-    @argument("view", description="view all records or just the latest",
-              choices=["all", "latest"])
-    def __init__(self, datacenter: typing.List[str] = [],
-                 hostname: typing.List[str] = [], start_time: str = '',
-                 end_time: str = '', view: str = 'latest') -> None:
-        self.ctxt = context.get_context()
-        self._cfg = self.ctxt.cfg
-        self._schemas = self.ctxt.schemas
-
-        if not datacenter and self.ctxt.datacenter:
-            self.datacenter = self.ctxt.datacenter
-        else:
-            self.datacenter = datacenter
-        if not hostname and self.ctxt.hostname:
-            self.hostname = self.ctxt.hostname
-        else:
-            self.hostname = hostname
-
-        if not start_time and self.ctxt.start_time:
-            self.start_time = self.ctxt.start_time
-        else:
-            self.start_time = start_time
-
-        if not end_time and self.ctxt.end_time:
-            self.end_time = self.ctxt.end_time
-        else:
-            self.end_time = end_time
-
-        self.view = view
-
-    @property
-    def cfg(self):
-        return self._cfg
-
-    @property
-    def schemas(self):
-        return self._schemas
-    """show various pieces of information"""
-
+class ShowCommand(SQCommand):
+    '''Show Commands'''
     @command('system')
     @argument("vendor", description="vendor to qualify the output")
     @argument("os", description="OS to qualify the output")
@@ -133,7 +87,6 @@ class ShowCommand:
                               self.view, order_by, self.cfg, self.schemas,
                               hostname=self.hostname, vrf=vrf, ifname=ifname,
                               state=state, datacenter=self.datacenter)
-
         print(df)
 
     @command('interfaces')
