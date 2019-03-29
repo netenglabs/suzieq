@@ -28,6 +28,8 @@ class NubiaSuzieqContext(context.Context):
         self.hostname = ''
         self.start_time = ''
         self.end_time = ''
+        self.exec_time = ''
+        self.engine = 'spark'
         super().__init__()
 
     def on_connected(self, *args, **kwargs):

@@ -11,6 +11,7 @@ import sys
 import re
 import json
 from collections import OrderedDict
+import time
 
 import pandas as pd
 from termcolor import cprint
@@ -33,6 +34,7 @@ def sql(query: str, view: str = 'latest', start_time: str = '',
     """
     Generic SQL query on the data
     """
+    now = time.time()
     ctxt = context.get_context()
     query = query.strip()
 
@@ -44,6 +46,7 @@ def sql(query: str, view: str = 'latest', start_time: str = '',
 
     df = get_query_df(query, ctxt.cfg, ctxt.schemas, start_time, end_time,
                           view)
+    ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
     print(df)
 
 

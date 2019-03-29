@@ -199,4 +199,7 @@ With Suzieq & Nubia:
 
   select lldp.datacenter, lldp.hostname, lldp.ifname, l1.mtu as mtu, peerHostname, peerIfname, l2.mtu as peerMtu from lldp inner join interfaces as l1 inner join interfaces as l2 on (l1.mtu != l2.mtu and (l1.active==True and l2.active==True) and (l1.hostname == lldp.hostname and l1.ifname == lldp.ifname) and (l2.hostname == peerHostname and l2.ifname == peerIfname) and (l1.datacenter==l2.datacenter) and lldp.datacenter='ospf') order by lldp.hostname, lldp.ifname
 
-* 
+* Unique RouterIds for OSPF
+
+  select routerId, list from (select routerId, count(distinct hostname) as count, collect_set(hostname) as list from ospfIf where datacenter=='ospf' group by routerId) where count>1
+  
