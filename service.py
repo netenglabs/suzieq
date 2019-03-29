@@ -978,7 +978,8 @@ class OspfNbrService(Service):
         '''Convert string of type 1d12h3m23s into absolute epoch'''
         secs = 0
         s = reltime
-        for t, mul in {'d': 3600*24, 'h': 3600, 'm': 60, 's': 1}.items():
+        for t, mul in {'w': 3600*24*7, 'd': 3600*24, 'h': 3600,
+                       'm': 60, 's': 1}.items():
             v = s.split(t)
             if len(v) == 2:
                 secs += int(v[0])*mul
