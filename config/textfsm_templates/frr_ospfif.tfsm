@@ -1,4 +1,5 @@
 Value ifname (\S+)
+Value routerId ([0-9./]+)
 Value state (\w+)
 Value ipAddress ([0-9./]+)
 Value vrf (\S+)
@@ -15,7 +16,7 @@ Start
   ^\w+ is.*$$ -> Continue.Record
   ^${ifname} is ${state}.*$$
   ^\s+Internet Address ${ipAddress}, Area ${area}.*$$
-  ^\s+Router ID.*, Network Type ${networkType}, Cost:\s+${cost}.*$$
+  ^\s+Router ID ${routerId}, Network Type ${networkType}, Cost:\s+${cost}.*$$
   ^\s+Timer intervals configured, Hello ${helloTime}.*, Dead ${deadTime}.*, Retransmit ${retxTime}.*$$
   ^\s+No Hellos \(${passive} interface\).*$$
   ^\s+Neighbor Count.*, Adjacent neighbor count is ${nbrCount}.*$$
