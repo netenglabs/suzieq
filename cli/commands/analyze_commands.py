@@ -7,7 +7,6 @@
 # LICENSE file in the root directory of this source tree.
 #
 
-
 import re
 import sys
 from pathlib import Path
@@ -61,13 +60,15 @@ class AnalyzeCommand(SQCommand):
                 .format(col_name, hostname_str, ifname_str))
 
         df = get_query_df(qstr, self.cfg, self.schemas, self.start_time,
-                              self.end_time, view='all')
+                          self.end_time, view='all')
         if df is None or 'error' in df:
             print('ERROR: {}'.format(df['type']))
             return
 
-        df['prevBytes'] = df.groupby(['hostname', 'ifname'])[col_name].shift(1)
-        df['prevTime'] = df.groupby(['hostname', 'ifname'])['timestamp'].shift(1)
+        df['prevBytes'] = df.groupby(['hostname', 'ifname'])[col_name] \
+                            .shift(1)
+        df['prevTime'] = df.groupby(['hostname', 'ifname'])['timestamp'] \
+                           .shift(1)
 
         for hele in self.hostname:
             dflist = []
@@ -86,12 +87,13 @@ class AnalyzeCommand(SQCommand):
                 newdf = pd.merge(dflist[0],
                                  dflist[1][['timestamp', ifname[i+1]]],
                                  on='timestamp', how='left')
-            
+
             for iele in ifname[1:]:
-                newdf['%s:%s'%(iele, ifname[0])] = newdf[iele]/newdf[ifname[0]]
+                newdf['%s:%s' % (iele, ifname[0])] = (newdf[iele] /
+                                                      newdf[ifname[0]])
 
             newdf = newdf.drop(columns=ifname)
 
             print(newdf.describe())
 
-            
+
