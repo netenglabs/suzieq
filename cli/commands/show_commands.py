@@ -23,11 +23,30 @@ import typing
 sys.path.append('/home/ddutt/work/')
 from suzieq.utils import get_table_df, get_ifbw_df
 from suzieq.cli.commands.command import SQCommand
+from suzieq.pdutils import pd_get_table_df
 
 
 @command('show', help="show various pieces of information")
 class ShowCommand(SQCommand):
     '''Show Commands'''
+
+    def _show_run(self, table, sort_fields, **kwargs):
+        '''Workshorse show command'''
+
+        now = time.time()
+        if self.ctxt.engine == 'spark':
+            df = get_table_df(table, self.start_time, self.end_time, self.view,
+                              sort_fields, self.cfg, self.schemas, **kwargs)
+        else:
+            df = pd_get_table_df(table, self.start_time, self.end_time,
+                                 self.view, sort_fields, self.cfg,
+                                 self.schemas, **kwargs)
+            df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms',
+                                             cache=True)
+
+        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
+        return(df)
+
     @command('system')
     @argument("vendor", description="vendor to qualify the output")
     @argument("os", description="OS to qualify the output")
@@ -36,11 +55,11 @@ class ShowCommand(SQCommand):
         """
         Show BGP
         """
-        order_by = 'order by datacenter, hostname, vendor'
-        df = get_table_df('system', self.start_time, self.end_time,
-                          self.view, order_by, self.cfg, self.schemas,
-                          hostname=self.hostname, vendor=vendor, os=os,
-                          datacenter=self.datacenter)
+        sort_fields = ['datacenter', 'hostname', 'vendor']
+        df = self._show_run('system', sort_fields,
+                            hostname=self.hostname, vendor=vendor, os=os,
+                            datacenter=self.datacenter)
+
         df['bootupTimestamp'] = (pd.to_datetime(df['timestamp']) -
                                  pd.to_datetime(df['bootupTimestamp'],
                                                 unit='s'))
@@ -56,11 +75,10 @@ class ShowCommand(SQCommand):
         """
         Show BGP
         """
-        order_by = 'order by datacenter, hostname, vrf, peer'
-        df = get_table_df('bgp', self.start_time, self.end_time,
-                          self.view, order_by, self.cfg, self.schemas,
-                          hostname=self.hostname, vrf=vrf, peer=peer,
-                          state=state, datacenter=self.datacenter)
+        sort_fields = ['datacenter', 'hostname', 'vrf', 'peer']
+        df = self._show_run('bgp', sort_fields,
+                            hostname=self.hostname, vrf=vrf, peer=peer,
+                            state=state, datacenter=self.datacenter)
         print(df)
 
     @command('ospf')
@@ -74,19 +92,19 @@ class ShowCommand(SQCommand):
                   vrf: typing.List[str] = None, state: str = '',
                   type: str = 'neighbor'):
         """
-        Show BGP
+        Show OSPF info
         """
-        order_by = 'order by datacenter, hostname, vrf, ifname'
+        now = time.time()
+        sort_fields = ['datacenter', 'hostname', 'vrf', 'ifname']
         if type == 'neighbor':
-            df = get_table_df('ospfNbr', self.start_time, self.end_time,
-                              self.view, order_by, self.cfg, self.schemas,
-                              hostname=self.hostname, vrf=vrf, ifname=ifname,
-                              state=state, datacenter=self.datacenter)
+            table = 'ospfNbr'
         else:
-            df = get_table_df('ospfIf', self.start_time, self.end_time,
-                              self.view, order_by, self.cfg, self.schemas,
-                              hostname=self.hostname, vrf=vrf, ifname=ifname,
-                              state=state, datacenter=self.datacenter)
+            table = 'ospfIf'
+
+        df = self._show_run(table, sort_fields,
+                            hostname=self.hostname, vrf=vrf,
+                            ifname=ifname, state=state,
+                            datacenter=self.datacenter)
         print(df)
 
     @command('interfaces')
@@ -96,11 +114,10 @@ class ShowCommand(SQCommand):
         Show interfaces
         """
         # Get the default display field names
-        order_by = 'order by hostname, ifname'
-        df = get_table_df('interfaces', self.start_time, self.end_time,
-                          self.view, order_by, self.cfg, self.schemas,
-                          hostname=self.hostname, ifname=ifname,
-                          datacenter=self.datacenter)
+        sort_fields = ['hostname', 'ifname']
+        df = self._show_run('interfaces', sort_fields,
+                            hostname=self.hostname, ifname=ifname,
+                            datacenter=self.datacenter)
         print(df)
 
     @command('lldp')
@@ -110,11 +127,10 @@ class ShowCommand(SQCommand):
         Show LLDP info
         """
         # Get the default display field names
-        order_by = 'order by hostname, ifname'
-        df = get_table_df('lldp', self.start_time, self.end_time,
-                          self.view, order_by, self.cfg, self.schemas,
-                          hostname=self.hostname, ifname=ifname,
-                          datacenter=self.datacenter)
+        sort_fields = ['hostname', 'ifname']
+        df = self._show_run('lldp', sort_fields,
+                            hostname=self.hostname, ifname=ifname,
+                            datacenter=self.datacenter)
         print(df)
 
     @command('filesystem')
@@ -125,12 +141,11 @@ class ShowCommand(SQCommand):
         Show filesystem info
         """
         # Get the default display field names
-        order_by = 'order by hostname, mountPoint'
-        df = get_table_df('fs', self.start_time, self.end_time,
-                          self.view, order_by, self.cfg, self.schemas,
-                          hostname=self.hostname, mountPoint=mountPoint,
-                          usedPercent=usedPercent,
-                          datacenter=self.datacenter)
+        sort_fields = ['hostname', 'mountPoint']
+        df = self._show_run('fs', sort_fields,
+                            hostname=self.hostname, mountPoint=mountPoint,
+                            usedPercent=usedPercent,
+                            datacenter=self.datacenter)
         print(df)
 
     @command('ifbw')
@@ -141,13 +156,13 @@ class ShowCommand(SQCommand):
         """
         # Get the default display field names
         columns = ['txBytes', 'txPackets', 'rxBytes', 'rxPackets']
-        start = time.time()
+        now = time.time()
         df = get_ifbw_df(self.datacenter, self.hostname, ifname, columns,
                          self.start_time, self.end_time, self.cfg,
                          self.schemas)
 
         print(df)
-        print('Query executed in: {}s'.format(time.time() - start))
+        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
 
     @command("tables")
     def show_tables(self):

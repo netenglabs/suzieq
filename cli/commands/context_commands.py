@@ -29,8 +29,11 @@ from suzieq.utils import load_sq_config, get_schemas, get_query_df
           description="Start of time window in YYYY-MM-dd HH:mm:SS format")
 @argument("end_time",
           description="End of time window in YYYY-MM-dd HH:mm:SS format")
+@argument("engine", choices=['spark', 'pandas'],
+          description="Use Spark or Pandas for non-SQL commands")
 def set_ctxt(hostname: typing.List[str] = [], start_time: str = '',
-             end_time: str = '', datacenter: typing.List[str] = []):
+             end_time: str = '', datacenter: typing.List[str] = [],
+             engine: str = ''):
     '''set certain contexts for subsequent commands. Cmd is additive'''
     plugin_ctx = context.get_context()
 
@@ -45,6 +48,9 @@ def set_ctxt(hostname: typing.List[str] = [], start_time: str = '',
 
     if end_time:
         plugin_ctx.end_time = end_time
+
+    if engine:
+        plugin_ctx.engine = engine
 
 
 @command("clear")

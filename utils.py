@@ -125,7 +125,7 @@ def load_sq_config(validate=True):
     return cfg
 
 
-def get_latest_files(folder, start='', end=''):
+def get_latest_files(folder, start='', end='', get_dirs=True):
     lsd = []
 
     def get_latest_ts_dirs(dirs, ssecs, esecs):
@@ -212,7 +212,10 @@ def get_latest_files(folder, start='', end=''):
             pq_files = True
 
         if flst:
-            lsd.append(os.path.join(root, flst[-1]))
+            if get_dirs:
+                lsd.append(os.path.join(root, flst[-1]))
+            else:
+                lsd += [x for x in Path(os.path.join(root, flst[-1])).rglob('*.parquet')]
 
     return lsd
 
@@ -236,22 +239,36 @@ def get_schemas(schema_dir):
 
 
 def get_table_df(table: str, start_time: str, end_time: str,
-                 view: str, order_by: str, cfg, schemas,
+                 view: str, sort_fields: list, cfg, schemas,
                  **kwargs):
     '''Build query string and get dataframe'''
 
     qstr = build_sql_str(table, start_time, end_time, view,
-                         order_by, schemas, **kwargs)
+                         sort_fields, schemas, **kwargs)
     if not qstr:
         return None
 
     df = get_query_df(qstr, cfg, schemas,
-                          start_time, end_time, view)
+                      start_time, end_time, view)
     return df
 
 
+def get_display_fields(table:str, columns:str, schema:dict) -> list:
+    '''Return the list of display fields for the given table'''
+
+    if columns == 'default':
+        fields = [f['name']
+                  for f in sorted(schema, key=lambda x: x.get('display', 1000))
+                  if f.get('display', None)]
+
+    else:
+        fields = ['*']
+
+    return fields
+
+
 def build_sql_str(table: str, start_time: str, end_time: str,
-                  view: str, order_by: str, schemas, **kwargs):
+                  view: str, sort_fields: list, schemas, **kwargs):
     '''Workhorse routine to build the actual SQL query string'''
 
     sch = schemas.get(table)
@@ -267,16 +284,10 @@ def build_sql_str(table: str, start_time: str, end_time: str,
     else:
         columns = 'default'
 
-    disp_dict = {}
-    if columns == 'default':
-        fields = [f['name']
-                  for f in sorted(sch, key=lambda x: x.get('display', 1000))
-                  if f.get('display', None)]
+    fields = get_display_fields(table, columns, sch)
 
-        if 'timestamp' not in fields:
-            fields.append('from_unixtime(timestamp/1000) as timestamp')
-    else:
-        fields = ['*']
+    if 'timestamp' not in fields:
+        fields.append('from_unixtime(timestamp/1000) as timestamp')
 
     for i, kwd in enumerate(kwargs):
         if not kwargs[kwd]:
@@ -307,6 +318,8 @@ def build_sql_str(table: str, start_time: str, end_time: str,
         if timestr:
             wherestr += timestr
         order_by = 'order by timestamp'
+    else:
+        order_by = 'order by {}'.format(', '.join(sort_fields))
 
     output = 'select {} from {} {} {}'.format(', '.join(fields), table,
                                               wherestr, order_by)
@@ -367,8 +380,8 @@ def get_spark_code(qstr: str, cfg, schemas, start: str = '', end: str = '',
 
 
 def get_query_df(query_string: str, cfg, schemas,
-                     start_time: str = '', end_time: str ='',
-                     view: str = 'latest') -> pd.DataFrame:
+                 start_time: str = '', end_time: str ='',
+                 view: str = 'latest') -> pd.DataFrame:
 
     df = None
 

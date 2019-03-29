@@ -54,4 +54,12 @@ class NubiaSuzieqStatusBar(statusbar.StatusBar):
             (Token.Toolbar, "EndTime "),
             spacer,
             (Token.Info, self.ctx.end_time),
+            spacer,
+            (Token.Toolbar, "Engine "),
+            spacer,
+            (Token.Info, self.ctx.engine),
+            spacer,
+            (Token.Toolbar, "Query Time "),
+            spacer,
+            (Token.Info, self.ctx.exec_time),
         ]
