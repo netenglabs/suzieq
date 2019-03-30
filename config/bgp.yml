@@ -14,7 +14,7 @@ show-fields:
   - peerAsn
   - v4PfxRx
   - estdTime
-  - transitionCnt
+  - numChanges
 apply:
   eos:
     version: all
@@ -37,7 +37,7 @@ apply:
         "routerId: peerRouterId",
         "localRouterId: routerId",
         "establishedTime: estdTime?|0",
-        "establishedTransitions: transitionCnt",
+        "establishedTransitions: numChanges",
         "v4Enabled: v4Enabled?|True",
         "v6Enabled: v6Enabled?|False",
         "evpnEnabled: evpnEnabled?|False",
@@ -59,8 +59,8 @@ apply:
         "remoteRouterId: peerRouterId",
         "bgpState: state?Established|NotEstd",
         "bgpTimerUpMsec: div(estdTime,1000)",
-        "connectionsEstablished: transitionCnt",
-        "connectionsDropped: add(transitionCnt,transitionCnt)",
+        "connectionsEstablished: numChanges",
+        "connectionsDropped: add(numChanges, numChanges)",
         "hostname: peerHostname",
         "neighborCapabilities/multiprotocolExtensions/IPv4 Unicast/advertisedAndReceived: v4Enabled?|False",
         "neighborCapabilities/multiprotocolExtensions/L2VPN EVPN/advertisedAndReceived: evpnEnabled?|False",
@@ -83,8 +83,8 @@ apply:
         "remoteRouterId: peerRouterId",
         "bgpState: state?Established|NotEstd",
         "bgpTimerUpMsec: div(estdTime,1000)",
-        "connectionsEstablished: transitionCnt",
-        "connectionsDropped: add(transitionCnt,transitionCnt)",
+        "connectionsEstablished: numChanges",
+        "connectionsDropped: add(numChanges, numChanges)",
         "hostname: peerHostname",
         "neighborCapabilities/multiprotocolExtensions/IPv4 Unicast/advertisedAndReceived: v4Enabled?|False",
         "neighborCapabilities/multiprotocolExtensions/L2VPN EVPN/advertisedAndReceived: evpnEnabled?|False",
