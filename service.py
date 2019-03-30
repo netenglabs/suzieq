@@ -154,7 +154,7 @@ async def init_services(svc_dir, schema_dir, queue):
                                             period,
                                             svc_def.get('type', 'state'),
                                             svc_def.get('keys', []),
-                                            svc_def.get('ignore_fields', []),
+                                            svc_def.get('ignore-fields', []),
                                             schema, queue)
                 elif svc_def['service'] == 'ospfNbr':
                     service = OspfNbrService(svc_def['service'],
@@ -162,7 +162,7 @@ async def init_services(svc_dir, schema_dir, queue):
                                              period,
                                              svc_def.get('type', 'state'),
                                              svc_def.get('keys', []),
-                                             svc_def.get('ignore_fields', []),
+                                             svc_def.get('ignore-fields', []),
                                              schema, queue)
                 else:
                     service = Service(svc_def['service'], svc_def['apply'],
@@ -194,7 +194,7 @@ class Service(object):
                  queue):
         self.name = name
         self.defn = defn
-        self.ignore_fields = ignore_fields
+        self.ignore_fields = ignore_fields or []
         self.queue = queue
         self.keys = keys
         self.schema = schema
