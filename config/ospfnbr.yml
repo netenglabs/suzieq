@@ -1,6 +1,7 @@
 
 service: ospfNbr
 ignore-fields:
+  - lastChangeTime
 keys:
   - vrf
   - ifname
@@ -8,10 +9,9 @@ show-fields:
   - vrf
   - ifname
   - state
-  - peerID
   - peerIP
   - lastChangeTime
-  - transitionCnt
+  - numChanges
 apply:
   eos:
     version: all
