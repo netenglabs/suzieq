@@ -112,7 +112,7 @@ class ShowCommand(SQCommand):
         Show interfaces
         """
         # Get the default display field names
-        sort_fields = ['hostname', 'ifname']
+        sort_fields = ['datacenter', 'hostname', 'ifname']
         df = self._show_run('interfaces', sort_fields,
                             hostname=self.hostname, ifname=ifname,
                             datacenter=self.datacenter)
@@ -125,7 +125,7 @@ class ShowCommand(SQCommand):
         Show LLDP info
         """
         # Get the default display field names
-        sort_fields = ['hostname', 'ifname']
+        sort_fields = ['datacenter', 'hostname', 'ifname']
         df = self._show_run('lldp', sort_fields,
                             hostname=self.hostname, ifname=ifname,
                             datacenter=self.datacenter)
@@ -139,7 +139,7 @@ class ShowCommand(SQCommand):
         Show filesystem info
         """
         # Get the default display field names
-        sort_fields = ['hostname', 'mountPoint']
+        sort_fields = ['datacenter', 'hostname', 'mountPoint']
         df = self._show_run('fs', sort_fields,
                             hostname=self.hostname, mountPoint=mountPoint,
                             usedPercent=usedPercent,
