@@ -23,7 +23,6 @@ import typing
 sys.path.append('/home/ddutt/work/')
 from suzieq.utils import get_table_df, get_ifbw_df
 from suzieq.cli.commands.command import SQCommand
-from suzieq.pdutils import pd_get_table_df
 
 
 @command('show', help="show various pieces of information")
@@ -34,13 +33,12 @@ class ShowCommand(SQCommand):
         '''Workshorse show command'''
 
         now = time.time()
-        if self.ctxt.engine == 'spark':
-            df = get_table_df(table, self.start_time, self.end_time, self.view,
-                              sort_fields, self.cfg, self.schemas, **kwargs)
-        else:
-            df = pd_get_table_df(table, self.start_time, self.end_time,
-                                 self.view, sort_fields, self.cfg,
-                                 self.schemas, **kwargs)
+        kwargs['columns'] = self.columns
+        if self.columns != ['default']:
+            sort_fields = None
+        df = get_table_df(table, self.start_time, self.end_time, self.view,
+                          sort_fields, self.cfg, self.schemas,
+                          self.engine, **kwargs)
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return(df)

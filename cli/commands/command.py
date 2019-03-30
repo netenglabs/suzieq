@@ -16,6 +16,8 @@ sys.path.append('/home/ddutt/work/')
 
 class SQCommand:
     '''Base Command Class for use with all verbs'''
+    @argument("engine", description="which analytical engine to use",
+              choices=['spark', 'pandas'])
     @argument("datacenter", description="datacenter to qualify selection")
     @argument("hostname", description="Name of host to qualify selection")
     @argument("start_time",
@@ -24,9 +26,11 @@ class SQCommand:
               description="End of time window in YYYY-MM-dd HH:mm:SS format")
     @argument("view", description="view all records or just the latest",
               choices=["all", "latest"])
-    def __init__(self, hostname: typing.List[str] = [], start_time: str = '',
-                 end_time: str = '', view: str = 'latest',
-                 datacenter: typing.List[str] = []) -> None:
+    @argument("columns", description="List of columns to display, [*] for all")
+    def __init__(self, engine: str = '', hostname: typing.List[str] = [],
+                 start_time: str = '', end_time: str = '',
+                 view: str = 'latest', datacenter: typing.List[str] = [],
+                 columns: typing.List[str] = ['default']) -> None:
         self.ctxt = context.get_context()
         self._cfg = self.ctxt.cfg
         self._schemas = self.ctxt.schemas
@@ -51,6 +55,11 @@ class SQCommand:
             self.end_time = end_time
 
         self.view = view
+        self.columns = columns
+        if engine:
+            self.engine = engine
+        else:
+            self.engine = self.ctxt.engine
 
     @property
     def cfg(self):

@@ -12,6 +12,7 @@ import time
 import yaml
 import typing
 import pandas as pd
+import pyarrow.parquet as pa
 
 sys.path.append('/home/ddutt/work/')
 from suzieq.livylib import get_livysession, exec_livycode
@@ -237,23 +238,29 @@ def get_schemas(schema_dir):
 
 def get_table_df(table: str, start_time: str, end_time: str,
                  view: str, sort_fields: list, cfg, schemas,
-                 **kwargs):
+                 engine: str = 'spark',  **kwargs):
     '''Build query string and get dataframe'''
 
-    qstr = build_sql_str(table, start_time, end_time, view,
-                         sort_fields, schemas, **kwargs)
-    if not qstr:
-        return None
+    if engine == 'spark':
+        qstr = build_sql_str(table, start_time, end_time, view,
+                             sort_fields, schemas, **kwargs)
+        if not qstr:
+            return None
 
-    df = get_query_df(qstr, cfg, schemas,
-                      start_time, end_time, view)
+        df = get_query_df(qstr, cfg, schemas,
+                          start_time, end_time, view)
+    elif engine == 'pandas':
+        df = pd_get_table_df(table, start_time, end_time,
+                             view, sort_fields, cfg,
+                             schemas, **kwargs)
+
     return df
 
 
 def get_display_fields(table:str, columns:str, schema:dict) -> list:
     '''Return the list of display fields for the given table'''
 
-    if columns == 'default':
+    if columns == ['default']:
         fields = [f['name']
                   for f in sorted(schema, key=lambda x: x.get('display', 1000))
                   if f.get('display', None)]
@@ -261,8 +268,12 @@ def get_display_fields(table:str, columns:str, schema:dict) -> list:
         if 'datacenter' not in fields:
             fields.insert(0, 'datacenter')
 
+    elif columns == ['*']:
+        fields = [f['name'] for f in schema]
     else:
-        fields = ['*']
+        sch_flds = [f['name'] for f in schema]
+
+        fields = [f for f in columns if f in sch_flds]
 
     return fields
 
@@ -278,6 +289,7 @@ def build_sql_str(table: str, start_time: str, end_time: str,
 
     fields = []
     wherestr = 'where active==True '
+    order_by = ''
     if 'columns' in kwargs:
         columns = kwargs['columns']
         del kwargs['columns']
@@ -319,7 +331,8 @@ def build_sql_str(table: str, start_time: str, end_time: str,
             wherestr += timestr
         order_by = 'order by timestamp'
     else:
-        order_by = 'order by {}'.format(', '.join(sort_fields))
+        if sort_fields:
+            order_by = 'order by {}'.format(', '.join(sort_fields))
 
     output = 'select {} from {} {} {}'.format(', '.join(fields), table,
                                               wherestr, order_by)
@@ -535,3 +548,120 @@ def get_ifbw_df(datacenter: typing.List[str], hostname: typing.List[str],
         newdf = idflist[0]
 
     return newdf
+
+def get_filecnt(path='.'):
+    total = 0
+    for entry in os.scandir(path):
+        if entry.is_file():
+            total += 1
+        elif entry.is_dir():
+            total += get_filecnt(entry.path)
+    return total
+
+
+def pd_get_table_df(table: str, start: str, end: str, view: str,
+                    sort_fields: list, cfg: dict, schemas: dict,
+                    **kwargs) -> pd.DataFrame:
+    '''Use Pandas instead of Spark to retrieve the data'''
+
+    MAX_FILECNT_TO_READ_FOLDER = 10000
+
+    sch = schemas.get(table)
+    if not sch:
+        print('Unknown table {}, no schema found for it'.format(table))
+        return ''
+
+    folder = '{}/{}'.format(cfg.get('data-directory'), table)
+
+    fcnt = get_filecnt(folder)
+
+    if fcnt > MAX_FILECNT_TO_READ_FOLDER and view == 'latest':
+        # Switch to more efficient method when there are lotsa files
+        key_fields = []
+        if 'datacenter' in kwargs:
+            v = kwargs['datacenter']
+            if v:
+                if not isinstance(v, list):
+                    folder += '/datacenter={}/'.format(v)
+                    del kwargs['datacenter']
+        files = get_latest_files(folder, start, end)
+    else:
+        key_fields = [f['name'] for f in sch if f.get('key', None)]
+
+    filters = []
+    for k, v in kwargs.items():
+        if v and k in key_fields:
+            if isinstance(v, list):
+                kwdor = []
+                for e in v:
+                    kwdor.append(tuple(('{}'.format(k), '==', '{}'.format(e))))
+                filters.append(kwdor)
+            else:
+                filters.append(tuple(('{}'.format(k), '==', '{}'.format(v))))
+
+    if 'columns' in kwargs:
+        columns = kwargs['columns']
+        del kwargs['columns']
+    else:
+        columns = 'default'
+
+    fields = get_display_fields(table, columns, sch)
+
+    if 'active' not in fields:
+        fields.append('active')
+
+    if 'timestamp' not in fields:
+        fields.append('timestamp')
+
+    # Create the filter to select only specified columns
+    query_str = "active == True "
+    for f, v in kwargs.items():
+        if not v or f in key_fields:
+            continue
+        if isinstance(v, str):
+            query_str += "and {}=='{}' ".format(f, v)
+        else:
+            query_str += "and {}=={} ".format(f, v)
+
+    if fcnt > MAX_FILECNT_TO_READ_FOLDER and view == 'latest':
+        pdf_list = []
+        for file in files:
+            # Sadly predicate pushdown doesn't work in this method
+            df = pa.ParquetDataset(file).read(columns=fields).to_pandas()
+            pth = Path(file).parts
+            for elem in pth:
+                if '=' in elem:
+                    k, v = elem.split('=')
+                    df[k] = v
+            pdf_list.append(df)
+
+        if pdf_list:
+            final_df = pd.concat(pdf_list).query(query_str)
+
+    else:
+        if view == 'latest':
+            final_df = pa.ParquetDataset(folder, filters=filters or None,
+                                         validate_schema=False) \
+                         .read(columns=fields) \
+                         .to_pandas() \
+                         .query(query_str) \
+                         .drop_duplicates(subset=key_fields, keep='last')
+        else:
+            final_df = pa.ParquetDataset(folder, filters=filters or None,
+                                         validate_schema=False) \
+                         .read(columns=fields) \
+                         .to_pandas() \
+                         .query(query_str)
+
+    final_df['timestamp'] = pd.to_datetime(pd.to_numeric(final_df['timestamp'],
+                                                         downcast='float'),
+                                           unit='ms') \
+                              .dt.tz_localize('utc') \
+                                 .dt.tz_convert('US/Pacific')
+
+    fields.remove('active')
+
+    if sort_fields:
+        return(final_df[fields].sort_values(by=sort_fields))
+    else:
+        return(final_df[fields])
