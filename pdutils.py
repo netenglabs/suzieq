@@ -97,14 +97,14 @@ def pd_get_table_df(table: str, start: str, end: str, view: str,
 
     else:
         if view == 'latest':
-            final_df = pa.ParquetDataset(folder, filters=filters, 
+            final_df = pa.ParquetDataset(folder, filters=filters or None,
                                          validate_schema=False) \
                          .read(columns=fields) \
                          .to_pandas() \
                          .query(query_str) \
                          .drop_duplicates(subset=key_fields, keep='last')
         else:
-            final_df = pa.ParquetDataset(folder, filters=filters,
+            final_df = pa.ParquetDataset(folder, filters=filters or None,
                                          validate_schema=False) \
                          .read(columns=fields) \
                          .to_pandas() \
