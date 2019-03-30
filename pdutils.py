@@ -63,14 +63,12 @@ def pd_get_table_df(table: str, start: str, end: str, view: str,
         columns = 'default'
 
     fields = get_display_fields(table, columns, sch)
-    if 'timestamp' not in fields:
-        fields.append('timestamp')
-
-    if 'datacenter' not in fields:
-        fields.insert(0, 'datacenter')
 
     if 'active' not in fields:
         fields.append('active')
+
+    if 'timestamp' not in fields:
+        fields.append('timestamp')
 
     # Create the filter to select only specified columns
     query_str = "active == True "
