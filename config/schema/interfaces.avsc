@@ -4,54 +4,16 @@
     "type": "record",
     "fields": [
         {
-            "name": "ipAddressList",
-            "type": {
-                "type": "array",
-                "items": {
-                    "type": "string",
-                    "name": "ipAddress"
-                }
-            }
+            "name": "vrf",
+            "type": "string"
         },
         {
-            "name": "speed",
+            "name": "ifindex",
             "type": "long"
-        },
-        {
-            "name": "ip6AddressList",
-            "type": {
-                "type": "array",
-                "items": {
-                    "type": "string",
-                    "name": "ip6Address"
-                }
-            }
-        },
-        {
-            "name": "transitionCnt",
-            "type": "long"
-        },
-        {
-            "name": "statusChangeTimestamp",
-            "type": "double"
-        },
-        {
-            "name": "ifname",
-            "type": "string",
-            "key": 2,
-            "display": 2
         },
         {
             "name": "macaddr",
             "type": "string"
-        },
-        {
-            "name": "vlan",
-            "type": "string"
-        },
-        {
-            "name": "lacpBypass",
-            "type": "boolean"
         },
         {
             "name": "type",
@@ -59,7 +21,46 @@
             "display": 4
         },
         {
-            "name": "ifindex",
+            "name": "description",
+            "type": "string"
+        },
+        {
+            "name": "linkUpTimestamp",
+            "type": "timestamp"
+        },
+        {
+            "name": "transitionCnt",
+            "type": "long"
+        },
+        {
+            "name": "linkDownTimestamp",
+            "type": "timestamp"
+        },
+        {
+            "name": "speed",
+            "type": "long"
+        },
+        {
+            "name": "vlan",
+            "type": "string"
+        },
+        {
+            "name": "ipAddressList",
+            "type": {
+                "type": "array",
+                "items": {
+                    "type": "string",
+                    "name": "ipAddress"
+                }
+            },
+            "display": 7
+        },
+        {
+            "name": "srcVtepIp",
+            "type": "string"
+        },
+        {
+            "name": "linkDownCnt",
             "type": "long"
         },
         {
@@ -73,12 +74,33 @@
             "display": 6
         },
         {
+            "name": "ifname",
+            "type": "string",
+            "key": 2,
+            "display": 2
+        },
+        {
+            "name": "statusChangeTimestamp",
+            "type": "double"
+        },
+        {
             "name": "vni",
             "type": "int"
         },
         {
-            "name": "srcVtepIp",
-            "type": "string"
+            "name": "ip6AddressList",
+            "type": {
+                "type": "array",
+                "items": {
+                    "type": "string",
+                    "name": "ip6Address"
+                }
+            },
+            "display": 8
+        },
+        {
+            "name": "lacpBypass",
+            "type": "boolean"
         },
         {
             "name": "mtu",
@@ -86,8 +108,8 @@
             "display": 5
         },
         {
-            "name": "description",
-            "type": "string"
+            "name": "linkUpCnt",
+            "type": "long"
         },
         {
             "name": "hostname",
