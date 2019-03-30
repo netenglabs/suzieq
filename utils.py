@@ -125,7 +125,7 @@ def load_sq_config(validate=True):
     return cfg
 
 
-def get_latest_files(folder, start='', end='', get_dirs=True):
+def get_latest_files(folder, start='', end=''):
     lsd = []
 
     def get_latest_ts_dirs(dirs, ssecs, esecs):
@@ -212,10 +212,7 @@ def get_latest_files(folder, start='', end='', get_dirs=True):
             pq_files = True
 
         if flst:
-            if get_dirs:
-                lsd.append(os.path.join(root, flst[-1]))
-            else:
-                lsd += [x for x in Path(os.path.join(root, flst[-1])).rglob('*.parquet')]
+            lsd.append(os.path.join(root, flst[-1]))
 
     return lsd
 
@@ -260,6 +257,9 @@ def get_display_fields(table:str, columns:str, schema:dict) -> list:
         fields = [f['name']
                   for f in sorted(schema, key=lambda x: x.get('display', 1000))
                   if f.get('display', None)]
+
+        if 'datacenter' not in fields:
+            fields.insert(0, 'datacenter')
 
     else:
         fields = ['*']
@@ -350,7 +350,7 @@ def get_spark_code(qstr: str, cfg, schemas, start: str = '', end: str = '',
                     " and timestamp < {})".format(esecs))
             else:
                 timestr += ("(timestamp < {})".format(esecs))
-        if timestr:
+        if timestr != '(':
             if windex:
                 timestr += ' and '
                 qparts.insert(windex[0]+1, timestr)
