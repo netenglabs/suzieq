@@ -41,8 +41,6 @@ class ShowCommand(SQCommand):
             df = pd_get_table_df(table, self.start_time, self.end_time,
                                  self.view, sort_fields, self.cfg,
                                  self.schemas, **kwargs)
-            df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms',
-                                             cache=True)
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return(df)
