@@ -9,7 +9,7 @@
 
 import argparse
 from commands import query_command, show_commands, analyze_commands
-from commands import context_commands
+from commands import assert_commands, context_commands
 from nubia_sq_context import NubiaSuzieqContext
 from nubia_sq_statusbar import NubiaSuzieqStatusBar
 from nubia import PluginInterface, CompletionDataSource
@@ -50,6 +50,7 @@ class NubiaSuzieqPlugin(PluginInterface):
             AutoCommand(context_commands.clear_ctxt),
             AutoCommand(show_commands.ShowCommand),
             AutoCommand(analyze_commands.AnalyzeCommand),
+            AutoCommand(assert_commands.AssertCommand),
         ]
 
     def get_opts_parser(self, add_help=True):
