@@ -41,6 +41,7 @@ class ShowCommand(SQCommand):
                           self.engine, **kwargs)
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
+        import pdb; pdb.set_trace()
         return(df)
 
     @command('system')
