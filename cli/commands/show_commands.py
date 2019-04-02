@@ -36,13 +36,36 @@ class ShowCommand(SQCommand):
         kwargs['columns'] = self.columns
         if self.columns != ['default']:
             sort_fields = None
-        df = get_table_df(table, self.start_time, self.end_time, self.view,
-                          sort_fields, self.cfg, self.schemas,
-                          self.engine, **kwargs)
+        table_df = get_table_df(table, self.start_time, self.end_time,
+                                self.view, sort_fields, self.cfg,
+                                self.schemas, self.engine, **kwargs)
+
+        if self.ctxt.system_df is None:
+            sys_cols = ['datacenter', 'hostname', 'timestamp']
+            sys_sort = ['datacenter', 'hostname']
+            del kwargs['columns']
+            system_df = get_table_df('system', self.start_time, self.end_time,
+                                     self.view, sys_sort, self.cfg,
+                                     self.schemas, self.engine,
+                                     columns=sys_cols)
+            self.ctxt.system_df = system_df
+
+        if table != 'system':
+            final_df = table_df.merge(self.ctxt.system_df,
+                                      on=['datacenter', 'hostname']) \
+                               .dropna(how='any') \
+                               .query('timestamp_x >= timestamp_y') \
+                               .drop(columns=['timestamp_y']) \
+                               .rename(index=str, columns={
+                                   'datacenter_x': 'datacenter',
+                                   'hostname_x': 'hostname',
+                                   'timestamp_x': 'timestamp'})
+        else:
+            final_df = table_df
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        import pdb; pdb.set_trace()
-        return(df)
+
+        return(final_df)
 
     @command('system')
     @argument("vendor", description="vendor to qualify the output")
@@ -175,5 +198,3 @@ class ShowCommand(SQCommand):
                       if dir.is_dir() and not dir.parts[-1].startswith('_')]
             df = pd.DataFrame.from_dict(tables)
             cprint(df)
-
-
