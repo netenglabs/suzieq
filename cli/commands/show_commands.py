@@ -51,6 +51,12 @@ class ShowCommand(SQCommand):
             self.ctxt.system_df = system_df
 
         if table != 'system':
+            # This merge is required to ensure that we don't serve out
+            # stale data that was obtained before the current run of
+            # the agent or from before the system came up
+            # We need the system DF cached to avoid slowdown in serving
+            # queries.
+            # TODO: Find a way to invalidate the system df cache.
             final_df = table_df.merge(self.ctxt.system_df,
                                       on=['datacenter', 'hostname']) \
                                .dropna(how='any') \
