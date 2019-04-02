@@ -283,8 +283,8 @@ class Node(object):
                                  known_hosts=None, client_keys=self.pvtkey,
                                  username=self.username,
                                  password=self.password), timeout=5)
-        except (asyncio.TimeoutError, ConnectionResetError,
-                asyncssh.misc.DisconnectError) as e:
+        except (asyncio.TimeoutError, ConnectionResetError, OSError,
+                ConnectionRefusedError, asyncssh.misc.DisconnectError) as e:
             for cmd in cmd_list:
                 logging.error('Unable to connect to node {}'.format(
                     self.hostname))
@@ -309,6 +309,7 @@ class Node(object):
                                    'hostname': self.hostname,
                                    'data': output.stdout})
                 except (asyncio.TimeoutError, ConnectionResetError,
+                        ConnectionRefusedError, OSError,
                         asyncssh.misc.DisconnectError) as e:
                     result.append({'status': 408,
                                    'timestamp': int(time.time()*1000),
@@ -438,7 +439,7 @@ class EosNode(Node):
                     'hostname': self.hostname,
                     'data': output[i] if type(output) is list else output
                 })
-        except asyncio.TimeoutError as e:
+        except (asyncio.TimeoutError, OSError) as e:
             for cmd in cmd_list:
                 result.append({'status': 408,
                                'timestamp': int(time.time()*1000),
