@@ -614,14 +614,17 @@ def pd_get_table_df(table: str, start: str, end: str, view: str,
         fields.append('timestamp')
 
     # Create the filter to select only specified columns
-    query_str = "active == True "
+    query_str = ""
+    prefix = ''
     for f, v in kwargs.items():
         if not v or f in key_fields:
             continue
         if isinstance(v, str):
-            query_str += "and {}=='{}' ".format(f, v)
+            query_str += "{} {}=='{}' ".format(prefix, f, v)
+            prefix = 'and'
         else:
-            query_str += "and {}=={} ".format(f, v)
+            query_str += "{} {}=={} ".format(prefix, f, v)
+            prefix = 'and'
 
     if fcnt > MAX_FILECNT_TO_READ_FOLDER and view == 'latest':
         pdf_list = []
@@ -643,9 +646,13 @@ def pd_get_table_df(table: str, start: str, end: str, view: str,
             final_df = pa.ParquetDataset(folder, filters=filters or None,
                                          validate_schema=False) \
                          .read(columns=fields) \
-                         .to_pandas() \
-                         .query(query_str) \
-                         .drop_duplicates(subset=key_fields, keep='last')
+                         .to_pandas()
+            if query_str:
+                final_df = final_df.query(query_str)
+
+            final_df = final_df.drop_duplicates(subset=key_fields,
+                                                keep='last') \
+                               .query('active == True')
         else:
             final_df = pa.ParquetDataset(folder, filters=filters or None,
                                          validate_schema=False) \
@@ -655,9 +662,7 @@ def pd_get_table_df(table: str, start: str, end: str, view: str,
 
     final_df['timestamp'] = pd.to_datetime(pd.to_numeric(final_df['timestamp'],
                                                          downcast='float'),
-                                           unit='ms') \
-                              .dt.tz_localize('utc') \
-                                 .dt.tz_convert('US/Pacific')
+                                           unit='ms')
 
     fields.remove('active')
 
