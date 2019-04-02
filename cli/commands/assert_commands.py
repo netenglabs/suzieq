@@ -14,6 +14,7 @@ from pathlib import Path
 import json
 from collections import OrderedDict
 import time
+from ipaddress import IPv4Network
 
 import pandas as pd
 from termcolor import cprint
@@ -42,16 +43,16 @@ class AssertCommand(SQCommand):
         """
         now = time.time()
         if what == 'value':
-            query_df = self._assert_mtu_value(ifname, value)
+            result_df = self._assert_mtu_value(ifname, value)
         else:
-            query_df = self._assert_mtu_match(ifname)
+            result_df = self._assert_mtu_match(ifname)
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
 
-        if query_df.empty:
+        if result_df.empty:
             print('Assert passed')
         else:
-            print(query_df)
+            print(result_df)
             print('Assert failed')
 
         return
@@ -59,12 +60,26 @@ class AssertCommand(SQCommand):
     @command('ospf')
     @argument("ifname", description="interface name to check OSPF for")
     @argument("vrf", description="VRF to assert OSPF state in")
+    @argument("what", description="What do you want to assert about OSPF",
+              choices=['all'])
     def assert_ospf(self, ifname: typing.List[str] = None,
-                    vrf: typing.List[str] = None) -> pd.DataFrame:
+                    vrf: typing.List[str] = None,
+                    what: str = 'all') -> pd.DataFrame:
         """
         Assert OSPF state is good
         """
-        pass
+        now = time.time()
+        result_df = self._assert_ospf(ifname, vrf, what)
+        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
+
+        if result_df.empty:
+            print('Assert passed')
+        else:
+            print(result_df)
+            print('Assert failed')
+
+        return
+        
 
     def _assert_mtu_value(self, ifname, value):
         '''Workhorse routine to assert that all interfaces have MTU <= value'''
@@ -111,7 +126,7 @@ class AssertCommand(SQCommand):
             sel_str = (
                 "select lldp.datacenter as datacenter, "
                 "lldp.hostname as hostname, lldp.ifname as ifname, "
-                "l1.mtu as mtu, peerHostname, peerIfname, l2.mtu as peerMtu "
+                "peerHostname, peerIfname, l1.mtu as mtu, l2.mtu as peerMtu "
                 "from lldp"
                 )
             wherestr = (
@@ -153,7 +168,7 @@ class AssertCommand(SQCommand):
                                    ifname=ifname)
             if lldp_df.empty:
                 print('No Valid LLDP info found, Asserting MTU not possible')
-                return
+                return pd.DataFrame(columns=lldp_cols)
 
             columns = ['datacenter', 'hostname', 'ifname', 'state', 'mtu',
                        'timestamp']
@@ -167,25 +182,26 @@ class AssertCommand(SQCommand):
                                  ifname=ifname)
             if if_df.empty:
                 print('No Valid LLDP info found, Asserting MTU not possible')
-                return
+                return pd.DataFrame(columns=columns)
 
             # Now create a single DF where you get the MTU for the lldp
             # combo of (datacenter, hostname, ifname) and the MTU for
             # the combo of (datacenter, peerHostname, peerIfname) and then
             # pare down the result to the rows where the two MTUs don't match
-            query_df = pd.merge(lldp_df, if_df, on=['datacenter', 'hostname',
-                                                    'ifname'],
+            query_df = pd.merge(lldp_df, if_df[['datacenter', 'hostname',
+                                                'ifname', 'mtu']],
+                                on=['datacenter', 'hostname', 'ifname'],
                                 how='outer') \
                          .dropna(how='any') \
-                         .merge(if_df,
+                         .merge(if_df[['datacenter', 'hostname', 'ifname',
+                                       'mtu']],
                                 left_on=['datacenter', 'peerHostname',
                                          'peerIfname'],
                                 right_on=['datacenter', 'hostname', 'ifname'],
                                 how='outer') \
                          .dropna(how='any') \
                          .query('mtu_x != mtu_y') \
-                         .drop(columns=['timestamp_x', 'timestamp_y', 'hostname_y',
-                                        'ifname_y', 'state_x', 'state_y']) \
+                         .drop(columns=['hostname_y', 'ifname_y']) \
                          .rename(index=str, columns={'hostname_x': 'hostname',
                                                      'ifname_x': 'ifname',
                                                      'mtu_x': 'mtu',
@@ -193,9 +209,93 @@ class AssertCommand(SQCommand):
 
         return query_df
 
-    def _assert_ospf(self, query_str, ospf_df, if_df):
+    def _assert_ospf(self, ifname: str, vrf: str, what: str):
         '''Workhorse routine to assert OSPF state'''
-        pass
+
+        columns = ['datacenter', 'hostname', 'vrf', 'ifname', 'routerId',
+                   'helloTime', 'deadTime', 'passive', 'ipAddress',
+                   'networkType', 'timestamp', 'area', 'nbrCount']
+        sort_fields = ['datacenter', 'hostname', 'vrf', 'ifname']
+
+        ospf_df = get_table_df('ospfIf', self.start_time, self.end_time,
+                               self.view, sort_fields, self.cfg, self.schemas,
+                               self.engine, hostname=self.hostname,
+                               columns=columns,
+                               datacenter=self.datacenter, ifname=ifname,
+                               vrf=vrf)
+        if ospf_df.empty:
+            return pd.DataFrame(columns=columns)
+
+        df = ospf_df.groupby(['routerId'], as_index=False)[['hostname']] \
+                    .agg(lambda x: x.unique().tolist())
+
+        dup_rtrid_df = df[df['hostname'].map(len) > 1]
+
+        bad_ospf_df = ospf_df.query('nbrCount < 1 and passive != "True"')
+
+        # OK, we do have nodes with zero nbr count. Lets see why
+        lldp_cols = ['datacenter', 'hostname', 'ifname', 'peerHostname',
+                     'peerIfname', 'timestamp']
+        sort_fields = ['datacenter', 'hostname', 'ifname']
+        lldp_df = get_table_df('lldp', self.start_time,
+                               self.end_time,
+                               self.view, sort_fields, self.cfg,
+                               self.schemas, self.engine,
+                               hostname=self.hostname,
+                               datacenter=self.datacenter,
+                               columns=lldp_cols,
+                               ifname=ifname)
+        if lldp_df.empty:
+            print('No LLDP info, unable to ascertain cause of OSPF failure')
+            return bad_ospf_df
+
+        # Create a single massive DF with fields populated appropriately
+        use_cols = ['datacenter', 'hostname', 'vrf', 'ifname',
+                    'helloTime', 'deadTime', 'passive', 'ipAddress',
+                    'networkType', 'area']
+        df1 = pd.merge(lldp_df, ospf_df[use_cols],
+                       on=['datacenter', 'hostname', 'ifname']) \
+                .dropna(how='any') \
+                .merge(ospf_df[use_cols], how='outer',
+                       left_on=['datacenter', 'peerHostname', 'peerIfname'],
+                       right_on=['datacenter', 'hostname', 'ifname']) \
+                .dropna(how='any')
+
+        if df1.empty:
+            return dup_rtrid_df
+
+        # Now start comparing the various parameters
+        df1['reason'] = tuple([tuple() for _ in range(len(df1))])
+        df1['reason'] += df1.apply(lambda x: tuple(['subnet mismatch'])
+                                   if IPv4Network(x['ipAddress_x'],
+                                                  strict=False)
+                                   != IPv4Network(x['ipAddress_y'],
+                                                  strict=False)
+                                   else tuple(), axis=1)
+        df1['reason'] += df1.apply(lambda x: tuple(['area mismatch'])
+                                   if x['area_x'] != x['area_y'] else tuple(),
+                                   axis=1)
+        df1['reason'] += df1.apply(lambda x: tuple(['Hello timers mismatch'])
+                                   if x['helloTime_x'] != x['helloTime_y']
+                                   else tuple(), axis=1)
+        df1['reason'] += df1.apply(lambda x: tuple(['Dead timer mismatch'])
+                                   if x['deadTime_x'] != x['deadTime_y']
+                                   else tuple(), axis=1)
+        df1['reason'] += df1.apply(lambda x: tuple(['network type mismatch'])
+                                   if x['networkType_x'] != x['networkType_y']
+                                   else tuple(), axis=1)
+        df1['reason'] += df1.apply(lambda x: tuple(['passive config mismatch'])
+                                   if x['passive_x'] != x['passive_y']
+                                   else tuple(), axis=1)
+        df1['reason'] += df1.apply(lambda x: tuple(['vrf mismatch']) if
+                                   x['vrf_x'] != x['vrf_y'] else tuple(),
+                                   axis=1)
+
+        return (df1.rename(index=str,
+                           columns={'hostname_x': 'hostname',
+                                    'ifname_x': 'ifname', 'vrf_x': 'vrf'})
+                [['datacenter', 'hostname', 'ifname', 'vrf', 'reason']]) \
+                .query('reason != tuple()')
 
 
 
