@@ -26,7 +26,7 @@ class SQCommand:
               description="End of time window in YYYY-MM-dd HH:mm:SS format")
     @argument("view", description="view all records or just the latest",
               choices=["all", "latest"])
-    @argument("columns", description="List of columns to display, [*] for all")
+    @argument("columns", description="columns to extract, [*] for all")
     def __init__(self, engine: str = '', hostname: typing.List[str] = [],
                  start_time: str = '', end_time: str = '',
                  view: str = 'latest', datacenter: typing.List[str] = [],
@@ -56,6 +56,7 @@ class SQCommand:
 
         self.view = view
         self.columns = columns
+
         if engine:
             self.engine = engine
         else:
