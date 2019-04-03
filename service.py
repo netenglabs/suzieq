@@ -629,7 +629,9 @@ class Service(object):
                         # If there's already an entry marked as deleted
                         # No point in adding one more
                         entry.update({'active': False})
-                        entry.update({'timestamp': int(time.time()*1000)})
+                        entry.update({
+                            'timestamp':
+                            int(datetime.utcnow().timestamp()*1000)})
                         records.append(entry)
 
             if records:
@@ -852,14 +854,14 @@ class SystemService(Service):
                 rec = self.get_empty_record()
                 rec['datacenter'] = datacenter
                 rec['hostname'] = hostname
-                rec['timestamp'] = int(time.time() * 1000)
+                rec['timestamp'] = int(datetime.utcnow().timestamp() * 1000)
 
                 result.append(rec)
             elif nodeobj.get_status == 'good':
                 # To avoid unnecessary flaps, we wait for HOLD_TIME to expire
                 # before we mark the node as dead
                 if hostname in self.nodes_state:
-                    now = int(time.time() * 1000)
+                    now = int(datetime.utcnow().timestamp() * 1000)
                     if now - self.nodes_state[hostname] > HOLD_TIME_IN_MSECS:
                         prev_res = nodeobj.prev_result
                         if prev_res:
@@ -877,7 +879,8 @@ class SystemService(Service):
                     else:
                         return
                 else:
-                    self.nodes_state[hostname] = int(time.time() * 1000)
+                    self.nodes_state[hostname] = int(
+                        datetime.utcnow().timestamp() * 1000)
                     return
         else:
             # Clean up old state if any since we now have a valid output
@@ -985,7 +988,7 @@ class OspfNbrService(Service):
                 secs += int(v[0])*mul
             s = v[-1]
 
-        return int((time.time() - secs)*1000)
+        return int((datetime.utcnow().timestamp() - secs)*1000)
 
     def clean_data(self, processed_data, raw_data):
 
