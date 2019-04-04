@@ -215,14 +215,14 @@ class AssertCommand(SQCommand):
         columns = ['datacenter', 'hostname', 'vrf', 'ifname', 'routerId',
                    'helloTime', 'deadTime', 'passive', 'ipAddress',
                    'networkType', 'timestamp', 'area', 'nbrCount']
-        sort_fields = ['datacenter', 'hostname', 'vrf', 'ifname']
+        sort_fields = ['datacenter', 'hostname', 'ifname', 'vrf']
 
-        ospf_df = get_table_df('ospfIf', self.start_time, self.end_time,
-                               self.view, sort_fields, self.cfg, self.schemas,
-                               self.engine, hostname=self.hostname,
-                               columns=columns,
-                               datacenter=self.datacenter, ifname=ifname,
-                               vrf=vrf)
+        ospf_df = self.get_valid_df('ospfIf', sort_fields,
+                                    hostname=self.hostname,
+                                    columns=columns,
+                                    datacenter=self.datacenter, ifname=ifname,
+                                    vrf=vrf)
+
         if ospf_df.empty:
             return pd.DataFrame(columns=columns)
 
@@ -237,20 +237,16 @@ class AssertCommand(SQCommand):
         lldp_cols = ['datacenter', 'hostname', 'ifname', 'peerHostname',
                      'peerIfname', 'timestamp']
         sort_fields = ['datacenter', 'hostname', 'ifname']
-        lldp_df = get_table_df('lldp', self.start_time,
-                               self.end_time,
-                               self.view, sort_fields, self.cfg,
-                               self.schemas, self.engine,
-                               hostname=self.hostname,
-                               datacenter=self.datacenter,
-                               columns=lldp_cols,
-                               ifname=ifname)
+        lldp_df = self.get_valid_df('lldp', sort_fields,
+                                    hostname=self.hostname,
+                                    datacenter=self.datacenter,
+                                    columns=lldp_cols, ifname=ifname)
         if lldp_df.empty:
             print('No LLDP info, unable to ascertain cause of OSPF failure')
             return bad_ospf_df
 
         # Create a single massive DF with fields populated appropriately
-        use_cols = ['datacenter', 'hostname', 'vrf', 'ifname',
+        use_cols = ['datacenter', 'routerId', 'hostname', 'vrf', 'ifname',
                     'helloTime', 'deadTime', 'passive', 'ipAddress',
                     'networkType', 'area']
         df1 = pd.merge(lldp_df, ospf_df[use_cols],
@@ -291,11 +287,25 @@ class AssertCommand(SQCommand):
                                    x['vrf_x'] != x['vrf_y'] else tuple(),
                                    axis=1)
 
+        # Add back the duplicate routerid stuff
+        def is_duprtrid(x):
+            for p in dup_rtrid_df['hostname'].tolist():
+                if x['hostname_x'] in p:
+                    x['reason'] = tuple(['duplicate routerId:{}'.format(p)])
+
+            return x
+
+        df2 = df1.apply(is_duprtrid, axis=1) \
+                 .drop_duplicates(subset=['datacenter', 'hostname_x'],
+                                  keep='last') \
+                 .query('reason != tuple()')[['datacenter', 'hostname_x',
+                                              'vrf_x', 'reason']]
+        df1 = pd.concat([df1, df2], sort=False)
         return (df1.rename(index=str,
                            columns={'hostname_x': 'hostname',
                                     'ifname_x': 'ifname', 'vrf_x': 'vrf'})
                 [['datacenter', 'hostname', 'ifname', 'vrf', 'reason']]) \
-                .query('reason != tuple()')
-
+                .query('reason != tuple()') \
+                .fillna('-')
 
 
