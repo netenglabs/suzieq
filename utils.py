@@ -594,7 +594,24 @@ def pd_get_table_df(table: str, start: str, end: str, view: str,
     else:
         key_fields = [f['name'] for f in sch if f.get('key', None) is not None]
 
-        filters = []
+        timeset = []
+        if start and not end:
+            timeset = pd.date_range(pd.to_datetime(
+                start, infer_datetime_format=True), periods=2,
+                                    freq='15min')
+            filters = [[('timestamp', '>=', timeset[0].timestamp()*1000)]]
+        elif end and not start:
+            timeset = pd.date_range(end=pd.to_datetime(
+                end, infer_datetime_format=True), periods=2,
+                                    freq='15min')
+            filters = [[('timestamp', '<=', timeset[-1].timestamp()*1000)]]
+        elif start and end:
+            timeset = [pd.to_datetime(start, infer_datetime_format=True),
+                       pd.to_datetime(end, infer_datetime_format=True)]
+            filters = [[('timestamp', '>=', timeset[0].timestamp()*1000),
+                        ('timestamp', '<=', timeset[-1].timestamp()*1000)]]
+        else:
+            filters = []
 
         # pyarrow's filters are in Disjunctive Normative Form and so filters
         # can get a bit long when lists are present in the kwargs
