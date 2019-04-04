@@ -8,6 +8,7 @@ import logging
 import json
 from collections import OrderedDict
 import time
+from copy import deepcopy
 
 import yaml
 import typing
@@ -253,6 +254,10 @@ def get_table_df(table: str, start_time: str, end_time: str,
         df = pd_get_table_df(table, start_time, end_time,
                              view, sort_fields, cfg,
                              schemas, **kwargs)
+    if not df.empty:
+        df['timestamp'] = pd.to_datetime(pd.to_numeric(df['timestamp'],
+                                                       downcast='float'),
+                                         unit='ms')
 
     return df
 
@@ -299,7 +304,8 @@ def build_sql_str(table: str, start_time: str, end_time: str,
     fields = get_display_fields(table, columns, sch)
 
     if 'timestamp' not in fields:
-        fields.append('from_unixtime(timestamp/1000) as timestamp')
+        # fields.append('from_unixtime(timestamp/1000) as timestamp')
+        fields.append('timestamp')
 
     for i, kwd in enumerate(kwargs):
         if not kwargs[kwd]:
@@ -586,18 +592,42 @@ def pd_get_table_df(table: str, start: str, end: str, view: str,
                     del kwargs['datacenter']
         files = get_latest_files(folder, start, end)
     else:
-        key_fields = [f['name'] for f in sch if f.get('key', None)]
+        key_fields = [f['name'] for f in sch if f.get('key', None) is not None]
 
-    filters = []
-    for k, v in kwargs.items():
-        if v and k in key_fields:
-            if isinstance(v, list):
-                kwdor = []
-                for e in v:
-                    kwdor.append(tuple(('{}'.format(k), '==', '{}'.format(e))))
-                filters.append(kwdor)
-            else:
-                filters.append(tuple(('{}'.format(k), '==', '{}'.format(v))))
+        filters = []
+
+        # pyarrow's filters are in Disjunctive Normative Form and so filters
+        # can get a bit long when lists are present in the kwargs
+
+        for k, v in kwargs.items():
+            if v and k in key_fields:
+                if isinstance(v, list):
+                    kwdor = []
+                    for e in v:
+                        if not filters:
+                            kwdor.append([tuple(('{}'.format(k), '==',
+                                                 '{}'.format(e)))])
+                        else:
+                            if len(filters) == 1:
+                                foo = deepcopy(filters)
+                                foo.append(tuple(('{}'.format(k), '==',
+                                                  '{}'.format(e))))
+                            else:
+                                for entry in filters:
+                                    foo = deepcopy(entry)
+                                    foo.append(tuple(('{}'.format(k), '==',
+                                                      '{}'.format(e))))
+                                    kwdor.append(foo)
+
+                    filters = kwdor
+                else:
+                    if not filters:
+                        filters.append(tuple(('{}'.format(k), '==',
+                                              '{}'.format(v))))
+                    else:
+                        for entry in filters:
+                            entry.append(tuple(('{}'.format(k), '==',
+                                                '{}'.format(v))))
 
     if 'columns' in kwargs:
         columns = kwargs['columns']
@@ -627,6 +657,9 @@ def pd_get_table_df(table: str, start: str, end: str, view: str,
             prefix = 'and'
 
     if fcnt > MAX_FILECNT_TO_READ_FOLDER and view == 'latest':
+        if not query_str:
+            query_str = 'active == True'
+
         pdf_list = []
         for file in files:
             # Sadly predicate pushdown doesn't work in this method
@@ -641,30 +674,32 @@ def pd_get_table_df(table: str, start: str, end: str, view: str,
         if pdf_list:
             final_df = pd.concat(pdf_list).query(query_str)
 
+    elif view == 'latest':
+        if not query_str:
+            # Make up a dummy query string to avoid if/then/else
+            query_str = 'timestamp != 0'
+
+        final_df = pa.ParquetDataset(folder, filters=filters or None,
+                                     validate_schema=False) \
+                     .read(columns=fields) \
+                     .to_pandas() \
+                     .query(query_str) \
+                     .drop_duplicates(subset=key_fields, keep='last') \
+                     .query('active == True')
     else:
-        if view == 'latest':
-            final_df = pa.ParquetDataset(folder, filters=filters or None,
-                                         validate_schema=False) \
-                         .read(columns=fields) \
-                         .to_pandas()
-            if query_str:
-                final_df = final_df.query(query_str)
+        if not query_str:
+            # Make up a dummy query string to avoid if/then/else
+            query_str = 'timestamp != "0"'
 
-            final_df = final_df.drop_duplicates(subset=key_fields,
-                                                keep='last') \
-                               .query('active == True')
-        else:
-            final_df = pa.ParquetDataset(folder, filters=filters or None,
-                                         validate_schema=False) \
-                         .read(columns=fields) \
-                         .to_pandas() \
-                         .query(query_str)
+        final_df = pa.ParquetDataset(folder, filters=filters or None,
+                                     validate_schema=False) \
+                     .read(columns=fields) \
+                     .to_pandas() \
+                     .query(query_str)
 
-    final_df['timestamp'] = pd.to_datetime(pd.to_numeric(final_df['timestamp'],
-                                                         downcast='float'),
-                                           unit='ms')
-
-    fields.remove('active')
+    if view == 'latest' and 'active' not in kwargs:
+        fields.remove('active')
+        final_df.drop(columns=['active'], axis=1)
 
     if sort_fields:
         return(final_df[fields].sort_values(by=sort_fields))
