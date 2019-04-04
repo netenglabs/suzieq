@@ -3,6 +3,7 @@
 from collections import defaultdict
 import os
 import time
+from datetime import datetime
 from ipaddress import ip_address
 import logging
 import random
@@ -251,7 +252,7 @@ class Node(object):
                 stdout, stderr = await asyncio.wait_for(proc.communicate(),
                                                         timeout=5)
                 result.append({'status': proc.returncode,
-                               'timestamp': int(time.time()*1000),
+                               'timestamp': int(datetime.utcnow().timestamp()*1000),
                                'cmd': cmd,
                                'devtype': self.devtype,
                                'datacenter': self.dcname,
@@ -261,7 +262,7 @@ class Node(object):
                                else stderr.decode('ascii', 'ignore')})
             except asyncio.TimeoutError as e:
                     result.append({'status': 408,
-                                   'timestamp': int(time.time()*1000),
+                                   'timestamp': int(datetime.utcnow().timestamp()*1000),
                                    'cmd': cmd,
                                    'devtype': self.devtype,
                                    'datacenter': self.dcname,
@@ -289,7 +290,7 @@ class Node(object):
                 logging.error('Unable to connect to node {}'.format(
                     self.hostname))
                 result.append({'status': 408,
-                               'timestamp': int(time.time()*1000),
+                               'timestamp': int(datetime.utcnow().timestamp()*1000),
                                'cmd': cmd,
                                'devtype': self.devtype,
                                'datacenter': self.dcname,
@@ -302,7 +303,7 @@ class Node(object):
                 try:
                     output = await asyncio.wait_for(conn.run(cmd), timeout=5)
                     result.append({'status': output.exit_status,
-                                   'timestamp': int(time.time()*1000),
+                                   'timestamp': int(datetime.utcnow().timestamp()*1000),
                                    'cmd': cmd,
                                    'devtype': self.devtype,
                                    'datacenter': self.dcname,
@@ -312,7 +313,7 @@ class Node(object):
                         ConnectionRefusedError, OSError,
                         asyncssh.misc.DisconnectError) as e:
                     result.append({'status': 408,
-                                   'timestamp': int(time.time()*1000),
+                                   'timestamp': int(datetime.utcnow().timestamp()*1000),
                                    'cmd': cmd,
                                    'devtype': self.devtype,
                                    'datacenter': self.dcname,
@@ -320,7 +321,7 @@ class Node(object):
                                    'data': {'error': str(e)}})
                 except asyncssh.misc.ChannelOpenError as e:
                     result.append({'status': 404,
-                                   'timestamp': int(time.time()*1000),
+                                   'timestamp': int(datetime.utcnow().timestamp()*1000),
                                    'cmd': cmd,
                                    'devtype': self.devtype,
                                    'datacenter': self.dcname,
@@ -360,7 +361,7 @@ class Node(object):
 
         if self.status == 'init':
             result.append({'status': 404,
-                           'timestamp': int(time.time()*1000),
+                           'timestamp': int(datetime.utcnow().timestamp()*1000),
                            'devtype': self.devtype,
                            'datacenter': self.dcname,
                            'hostname': self.hostname,
@@ -402,7 +403,7 @@ class EosNode(Node):
         if not cmd_list:
             return result
 
-        now = int(time.time()*1000)
+        now = int(datetime.utcnow().timestamp()*1000)
         auth = aiohttp.BasicAuth(self.username, password=self.password)
         data = {"jsonrpc": "2.0", "method": "runCmds", "id": int(now),
                 "params": {"version": 1, 'format': oformat,
@@ -442,7 +443,7 @@ class EosNode(Node):
         except (asyncio.TimeoutError, OSError) as e:
             for cmd in cmd_list:
                 result.append({'status': 408,
-                               'timestamp': int(time.time()*1000),
+                               'timestamp': int(datetime.utcnow().timestamp()*1000),
                                'cmd': cmd,
                                'devtype': self.devtype,
                                'datacenter': self.dcname,
@@ -492,7 +493,7 @@ class CumulusNode(Node):
                     async with session.post(url, json=data,
                                             headers=headers) as response:
                         result.append({'status': response.status,
-                                       'timestamp': int(time.time()*1000),
+                                       'timestamp': int(datetime.utcnow().timestamp()*1000),
                                        'cmd': cmd,
                                        'devtype': self.devtype,
                                        'datacenter': self.dcname,
@@ -500,7 +501,7 @@ class CumulusNode(Node):
                                        'data': await response.text()})
         except asyncio.TimeoutError as e:
             result.append({'status': 408,
-                           'timestamp': int(time.time()*1000),
+                           'timestamp': int(datetime.utcnow().timestamp()*1000),
                            'cmd': cmd,
                            'devtype': self.devtype,
                            'datacenter': self.dcname,
