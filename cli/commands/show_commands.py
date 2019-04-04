@@ -21,7 +21,7 @@ from nubia import command, argument, context
 import typing
 
 sys.path.append('/home/ddutt/work/')
-from suzieq.utils import get_table_df, get_ifbw_df
+from suzieq.utils import get_ifbw_df
 from suzieq.cli.commands.command import SQCommand
 
 
@@ -36,42 +36,11 @@ class ShowCommand(SQCommand):
         kwargs['columns'] = self.columns
         if self.columns != ['default']:
             sort_fields = None
-        table_df = get_table_df(table, self.start_time, self.end_time,
-                                self.view, sort_fields, self.cfg,
-                                self.schemas, self.engine, **kwargs)
-
-        if self.ctxt.system_df is None:
-            sys_cols = ['datacenter', 'hostname', 'timestamp']
-            sys_sort = ['datacenter', 'hostname']
-            del kwargs['columns']
-            system_df = get_table_df('system', self.start_time, self.end_time,
-                                     self.view, sys_sort, self.cfg,
-                                     self.schemas, self.engine,
-                                     columns=sys_cols)
-            self.ctxt.system_df = system_df
-
-        if table != 'system':
-            # This merge is required to ensure that we don't serve out
-            # stale data that was obtained before the current run of
-            # the agent or from before the system came up
-            # We need the system DF cached to avoid slowdown in serving
-            # queries.
-            # TODO: Find a way to invalidate the system df cache.
-            final_df = table_df.merge(self.ctxt.system_df,
-                                      on=['datacenter', 'hostname']) \
-                               .dropna(how='any') \
-                               .query('timestamp_x >= timestamp_y') \
-                               .drop(columns=['timestamp_y']) \
-                               .rename(index=str, columns={
-                                   'datacenter_x': 'datacenter',
-                                   'hostname_x': 'hostname',
-                                   'timestamp_x': 'timestamp'})
-        else:
-            final_df = table_df
+        table_df = self.get_valid_df(table, sort_fields, **kwargs)
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
 
-        return(final_df)
+        return(table_df)
 
     @command('system')
     @argument("vendor", description="vendor to qualify the output")
@@ -79,16 +48,16 @@ class ShowCommand(SQCommand):
     def show_system(self, vendor: typing.List[str] = None,
                     os: typing.List[str] = None) -> None:
         """
-        Show BGP
+        Show System Info such as model, OS
         """
         sort_fields = ['datacenter', 'hostname', 'vendor']
         df = self._show_run('system', sort_fields,
                             hostname=self.hostname, vendor=vendor, os=os,
                             datacenter=self.datacenter)
-
-        df['bootupTimestamp'] = (pd.to_datetime(df['timestamp']) -
-                                 pd.to_datetime(df['bootupTimestamp'],
-                                                unit='s'))
+        if not df.empty:
+            df['bootupTimestamp'] = (pd.to_datetime(df['timestamp']) -
+                                     pd.to_datetime(df['bootupTimestamp'],
+                                                    unit='s'))
         print(df)
 
     @command('bgp')
@@ -135,7 +104,7 @@ class ShowCommand(SQCommand):
 
     @command('interfaces')
     @argument("ifname", description="interface name to qualify show")
-    def show_interfaces(self, ifname: typing.List[str] = None):
+    def show_interfaces(self, ifname: typing.List[str] = []):
         """
         Show interfaces
         """
