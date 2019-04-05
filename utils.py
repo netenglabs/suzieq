@@ -173,7 +173,7 @@ def get_latest_files(folder, start='', end=''):
             if not newfiles:
                 # FInd the entry most adjacent to this one
                 newfiles = list(filter(
-                    lambda x: os.path.getctime('%s/%s' % (root, x)) > ssecs,
+                    lambda x: os.path.getctime('%s/%s' % (root, x)) < ssecs,
                     files))
         elif esecs and not ssecs:
             newfiles = list(filter(
@@ -186,19 +186,19 @@ def get_latest_files(folder, start='', end=''):
             if not newfiles:
                 # Find the entry most adjacent to this one
                 newfiles = list(filter(
-                    lambda x: os.path.getctime('%s/%s' % (root, x)) > ssecs,
+                    lambda x: os.path.getctime('%s/%s' % (root, x)) < ssecs,
                     files))
         return newfiles
 
     if start:
-        tmp = datetime.strptime(start, '%Y-%m-%d %H:%M:%S')
-        ssecs = int(tmp.strftime('%s')*1000)
+        ssecs = pd.to_datetime(
+            start, infer_datetime_format=True).timestamp()*1000
     else:
         ssecs = 0
 
     if end:
-        tmp = datetime.strptime(end, '%Y-%m-%d %H:%M:%S')
-        esecs = int(tmp.strftime('%s')*1000)
+        esecs = pd.to_datetime(
+            end, infer_datetime_format=True).timestamp()*1000
     else:
         esecs = 0
 
@@ -555,6 +555,7 @@ def get_ifbw_df(datacenter: typing.List[str], hostname: typing.List[str],
 
     return newdf
 
+
 def get_filecnt(path='.'):
     total = 0
     for entry in os.scandir(path):
@@ -563,6 +564,67 @@ def get_filecnt(path='.'):
         elif entry.is_dir():
             total += get_filecnt(entry.path)
     return total
+
+
+def build_pa_filters(start_tm: str, end_tm: str,
+                     key_fields: list, **kwargs):
+    '''Build filters for predicate pushdown of parquet read'''
+
+    # The time filters first
+    timeset = []
+    if start_tm and not end_tm:
+        timeset = pd.date_range(pd.to_datetime(
+            start_tm, infer_datetime_format=True), periods=2,
+                                freq='15min')
+        filters = [[('timestamp', '>=', timeset[0].timestamp()*1000)]]
+    elif end_tm and not start_tm:
+        timeset = pd.date_range(end_tm=pd.to_datetime(
+            end_tm, infer_datetime_format=True), periods=2,
+                                freq='15min')
+        filters = [[('timestamp', '<=', timeset[-1].timestamp()*1000)]]
+    elif start_tm and end_tm:
+        timeset = [pd.to_datetime(start_tm, infer_datetime_format=True),
+                   pd.to_datetime(end_tm, infer_datetime_format=True)]
+        filters = [[('timestamp', '>=', timeset[0].timestamp()*1000),
+                    ('timestamp', '<=', timeset[-1].timestamp()*1000)]]
+    else:
+        filters = []
+
+    # pyarrow's filters are in Disjunctive Normative Form and so filters
+    # can get a bit long when lists are present in the kwargs
+
+    for k, v in kwargs.items():
+        if v and k in key_fields:
+            if isinstance(v, list):
+                kwdor = []
+                for e in v:
+                    if not filters:
+                        kwdor.append([tuple(('{}'.format(k), '==',
+                                             '{}'.format(e)))])
+                    else:
+                        if len(filters) == 1:
+                            foo = deepcopy(filters)
+                            foo.append(tuple(('{}'.format(k), '==',
+                                              '{}'.format(e))))
+                            kwdor.append(foo)
+                        else:
+                            for entry in filters:
+                                foo = deepcopy(entry)
+                                foo.append(tuple(('{}'.format(k), '==',
+                                                  '{}'.format(e))))
+                                kwdor.append(foo)
+
+                filters = kwdor
+            else:
+                if not filters:
+                    filters.append(tuple(('{}'.format(k), '==',
+                                          '{}'.format(v))))
+                else:
+                    for entry in filters:
+                        entry.append(tuple(('{}'.format(k), '==',
+                                            '{}'.format(v))))
+
+    return filters
 
 
 def pd_get_table_df(table: str, start: str, end: str, view: str,
@@ -581,8 +643,12 @@ def pd_get_table_df(table: str, start: str, end: str, view: str,
 
     fcnt = get_filecnt(folder)
 
-    if fcnt > MAX_FILECNT_TO_READ_FOLDER and view == 'latest':
+    use_get_files = ((fcnt > MAX_FILECNT_TO_READ_FOLDER and
+                      view == 'latest') or start or end)
+
+    if use_get_files:
         # Switch to more efficient method when there are lotsa files
+        # Reduce I/O since that is the worst drag
         key_fields = []
         if 'datacenter' in kwargs:
             v = kwargs['datacenter']
@@ -594,57 +660,7 @@ def pd_get_table_df(table: str, start: str, end: str, view: str,
     else:
         key_fields = [f['name'] for f in sch if f.get('key', None) is not None]
 
-        timeset = []
-        if start and not end:
-            timeset = pd.date_range(pd.to_datetime(
-                start, infer_datetime_format=True), periods=2,
-                                    freq='15min')
-            filters = [[('timestamp', '>=', timeset[0].timestamp()*1000)]]
-        elif end and not start:
-            timeset = pd.date_range(end=pd.to_datetime(
-                end, infer_datetime_format=True), periods=2,
-                                    freq='15min')
-            filters = [[('timestamp', '<=', timeset[-1].timestamp()*1000)]]
-        elif start and end:
-            timeset = [pd.to_datetime(start, infer_datetime_format=True),
-                       pd.to_datetime(end, infer_datetime_format=True)]
-            filters = [[('timestamp', '>=', timeset[0].timestamp()*1000),
-                        ('timestamp', '<=', timeset[-1].timestamp()*1000)]]
-        else:
-            filters = []
-
-        # pyarrow's filters are in Disjunctive Normative Form and so filters
-        # can get a bit long when lists are present in the kwargs
-
-        for k, v in kwargs.items():
-            if v and k in key_fields:
-                if isinstance(v, list):
-                    kwdor = []
-                    for e in v:
-                        if not filters:
-                            kwdor.append([tuple(('{}'.format(k), '==',
-                                                 '{}'.format(e)))])
-                        else:
-                            if len(filters) == 1:
-                                foo = deepcopy(filters)
-                                foo.append(tuple(('{}'.format(k), '==',
-                                                  '{}'.format(e))))
-                            else:
-                                for entry in filters:
-                                    foo = deepcopy(entry)
-                                    foo.append(tuple(('{}'.format(k), '==',
-                                                      '{}'.format(e))))
-                                    kwdor.append(foo)
-
-                    filters = kwdor
-                else:
-                    if not filters:
-                        filters.append(tuple(('{}'.format(k), '==',
-                                              '{}'.format(v))))
-                    else:
-                        for entry in filters:
-                            entry.append(tuple(('{}'.format(k), '==',
-                                                '{}'.format(v))))
+        filters = build_pa_filters(start, end, key_fields, **kwargs)
 
     if 'columns' in kwargs:
         columns = kwargs['columns']
@@ -673,7 +689,7 @@ def pd_get_table_df(table: str, start: str, end: str, view: str,
             query_str += "{} {}=={} ".format(prefix, f, v)
             prefix = 'and'
 
-    if fcnt > MAX_FILECNT_TO_READ_FOLDER and view == 'latest':
+    if use_get_files:
         if not query_str:
             query_str = 'active == True'
 
