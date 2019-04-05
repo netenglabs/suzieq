@@ -104,15 +104,24 @@ class ShowCommand(SQCommand):
 
     @command('interfaces')
     @argument("ifname", description="interface name to qualify show")
-    def show_interfaces(self, ifname: typing.List[str] = []):
+    @argument("state", description="interface state to qualify show",
+              choices=['up', 'down'])
+    def show_interfaces(self, ifname: typing.List[str] = [],
+                        state: str = ''):
         """
         Show interfaces
         """
         # Get the default display field names
         sort_fields = ['datacenter', 'hostname', 'ifname']
-        df = self._show_run('interfaces', sort_fields,
-                            hostname=self.hostname, ifname=ifname,
-                            datacenter=self.datacenter)
+        if state:
+            df = self._show_run('interfaces', sort_fields,
+                                hostname=self.hostname, ifname=ifname,
+                                state=state, datacenter=self.datacenter)
+        else:
+            df = self._show_run('interfaces', sort_fields,
+                                hostname=self.hostname, ifname=ifname,
+                                datacenter=self.datacenter)
+
         print(df)
 
     @command('lldp')
