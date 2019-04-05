@@ -8,11 +8,8 @@
 #
 
 
-import re
 import sys
-from pathlib import Path
 import json
-from collections import OrderedDict
 import time
 from ipaddress import IPv4Network
 
@@ -22,7 +19,7 @@ from nubia import command, argument, context
 import typing
 
 sys.path.append('/home/ddutt/work/')
-from suzieq.utils import get_table_df, get_query_df
+from suzieq.utils import get_query_df
 from suzieq.cli.commands.command import SQCommand
 
 
@@ -110,9 +107,8 @@ class AssertCommand(SQCommand):
                                     self.end_time, view='latest')
         else:
             # Now for Pandas
-            query_df = get_table_df(
-                'interfaces', self.start_time, self.end_time, self.view,
-                sort_fields, self.cfg, self.schemas, self.engine,
+            query_df = self.get_valid_df(
+                'interfaces', sort_fields, 
                 hostname=self.hostname, datacenter=self.datacenter,
                 columns=columns, ifname=ifname) \
                 .query('(abs(mtu - {}) > 40) and (ifname != "lo")'
@@ -158,28 +154,22 @@ class AssertCommand(SQCommand):
             lldp_cols = ['datacenter', 'hostname', 'ifname', 'peerHostname',
                          'peerIfname', 'timestamp']
             sort_fields = ['datacenter', 'hostname', 'ifname']
-            lldp_df = get_table_df('lldp', self.start_time,
-                                   self.end_time,
-                                   self.view, sort_fields, self.cfg,
-                                   self.schemas, self.engine,
-                                   hostname=self.hostname,
-                                   datacenter=self.datacenter,
-                                   columns=lldp_cols,
-                                   ifname=ifname)
+            lldp_df = self.get_valid_df('lldp', sort_fields, 
+                                        hostname=self.hostname,
+                                        datacenter=self.datacenter,
+                                        columns=lldp_cols,
+                                        ifname=ifname)
             if lldp_df.empty:
                 print('No Valid LLDP info found, Asserting MTU not possible')
                 return pd.DataFrame(columns=lldp_cols)
 
             columns = ['datacenter', 'hostname', 'ifname', 'state', 'mtu',
                        'timestamp']
-            if_df = get_table_df('interfaces', self.start_time,
-                                 self.end_time,
-                                 self.view, sort_fields, self.cfg,
-                                 self.schemas, self.engine,
-                                 hostname=self.hostname,
-                                 datacenter=self.datacenter,
-                                 columns=columns,
-                                 ifname=ifname)
+            if_df = self.get_valid_df('interfaces', sort_fields,
+                                      hostname=self.hostname,
+                                      datacenter=self.datacenter,
+                                      columns=columns,
+                                      ifname=ifname)
             if if_df.empty:
                 print('No Valid LLDP info found, Asserting MTU not possible')
                 return pd.DataFrame(columns=columns)
