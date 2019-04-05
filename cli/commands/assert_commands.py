@@ -216,7 +216,8 @@ class AssertCommand(SQCommand):
         if ospf_df.empty:
             return pd.DataFrame(columns=columns)
 
-        df = ospf_df.groupby(['routerId'], as_index=False)[['hostname']] \
+        df = ospf_df.ix[ospf_df['routerId'] != ''] \
+                    .groupby(['routerId'], as_index=False)[['hostname']] \
                     .agg(lambda x: x.unique().tolist())
 
         dup_rtrid_df = df[df['hostname'].map(len) > 1]
