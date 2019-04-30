@@ -108,7 +108,18 @@ class SQCommand:
             if self.system_df.empty:
                 return self.system_df
 
-            final_df = table_df.merge(self.system_df,
+            if self.start_time or self.end_time:
+                sys_cols = ['datacenter', 'hostname', 'timestamp']
+                sys_sort = ['datacenter', 'hostname']
+                system_df = get_table_df('system', self.start_time, self.end_time,
+                                         self.view, sys_sort, self.cfg,
+                                         self.schemas, self.engine,
+                                         datacenter=self.datacenter,
+                                         columns=sys_cols)
+            else:
+                system_df = self.system_df
+
+            final_df = table_df.merge(system_df,
                                       on=['datacenter', 'hostname']) \
                                .dropna(how='any') \
                                .query('timestamp_x >= timestamp_y') \
