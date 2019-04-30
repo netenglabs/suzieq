@@ -7,6 +7,7 @@ keys:
 show-fields:
   - vrf
   - ifname
+  - area
   - state
   - passive
   - nbrCount
@@ -23,6 +24,9 @@ apply:
     textfsm: textfsm_templates/frr_ospfif.tfsm
 
   platina:
+    copy: cumulus
+
+  linux:
     copy: cumulus
 
 

@@ -4,6 +4,8 @@ Value state (\w+)
 Value ipAddress ([0-9./]+)
 Value vrf (\S+)
 Value area ([0-9.]+)
+Value areaStub ((\[Stub\])?)
+Value isUnnumbered (UNNUMBERED)
 Value networkType (\w+)
 Value cost (\d+)
 Value helloTime (\d+)
@@ -15,7 +17,8 @@ Value passive (\w+)
 Start
   ^\w+ is.*$$ -> Continue.Record
   ^${ifname} is ${state}.*$$
-  ^\s+Internet Address ${ipAddress}, Area ${area}.*$$
+  ^\s+Internet Address ${ipAddress},.*Area ${area}\s?${areaStub}.*$$
+  ^\s+This interface is ${isUnnumbered}, Area ${area}\s?${areaStub}.*$$
   ^\s+Router ID ${routerId}, Network Type ${networkType}, Cost:\s+${cost}.*$$
   ^\s+Timer intervals configured, Hello ${helloTime}.*, Dead ${deadTime}.*, Retransmit ${retxTime}.*$$
   ^\s+No Hellos \(${passive} interface\).*$$
@@ -54,6 +57,28 @@ Start
 #  Timer intervals configured, Hello 10s, Dead 40s, Wait 40s, Retransmit 5
 #    Hello due in 5.351s
 #  Neighbor Count is 1, Adjacent neighbor count is 1
+#swp3 is up
+#  ifindex 5, MTU 1500 bytes, BW 1000 Mbit <UP,BROADCAST,RUNNING,MULTICAST>
+#  This interface is UNNUMBERED, Area 0.0.0.1 [Stub]
+#  MTU mismatch detection: enabled
+#  Router ID 10.0.0.11, Network Type POINTOPOINT, Cost: 100
+#  Transmit Delay is 1 sec, State Point-To-Point, Priority 1
+#  No backup designated router on this network
+#  Multicast group memberships: OSPFAllRouters
+#  Timer intervals configured, Hello 10s, Dead 40s, Wait 40s, Retransmit 5
+#    Hello due in 0.536s
+#  Neighbor Count is 1, Adjacent neighbor count is 1
+#swp4 is up
+#  ifindex 6, MTU 1500 bytes, BW 1000 Mbit <UP,BROADCAST,RUNNING,MULTICAST>
+#  This interface is UNNUMBERED, Area 0.0.0.1 [Stub]
+#  MTU mismatch detection: enabled
+#  Router ID 10.0.0.11, Network Type POINTOPOINT, Cost: 100
+#  Transmit Delay is 1 sec, State Point-To-Point, Priority 1
+#  No backup designated router on this network
+#  Multicast group memberships: OSPFAllRouters
+#  Timer intervals configured, Hello 10s, Dead 40s, Wait 40s, Retransmit 5
+#    Hello due in 0.536s
+#  Neighbor Count is 1, Adjacent neighbor count is 1
 #vlan20 is up
 #  ifindex 12, MTU 1500 bytes, BW 0 Mbit <UP,BROADCAST,RUNNING,MULTICAST>
 #  Internet Address 10.20.0.1/24, Area 0.0.0.0
@@ -65,4 +90,14 @@ Start
 #  Timer intervals configured, Hello 10s, Dead 40s, Wait 40s, Retransmit 5
 #    No Hellos (Passive interface)
 #  Neighbor Count is 0, Adjacent neighbor count is 0
-#
+#docker0 is up
+#  ifindex 4, MTU 1500 bytes, BW 0 Mbit <UP,BROADCAST,RUNNING,MULTICAST>
+#  Internet Address 192.168.10.1/24, Broadcast 192.168.10.255, Area 0.0.0.1 [Stub]
+#  MTU mismatch detection: enabled
+#  Router ID 172.16.1.101, Network Type BROADCAST, Cost: 10
+#  Transmit Delay is 1 sec, State Waiting, Priority 1
+#  No backup designated router on this network
+#  Multicast group memberships: <None>
+#  Timer intervals configured, Hello 10s, Dead 40s, Wait 40s, Retransmit 5
+#    No Hellos (Passive interface)
+#  Neighbor Count is 0, Adjacent neighbor count is 0
