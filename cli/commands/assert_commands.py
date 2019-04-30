@@ -196,7 +196,7 @@ class AssertCommand(SQCommand):
                                                      'ifname_x': 'ifname',
                                                      'mtu_x': 'mtu',
                                                      'mtu_y': 'peerMtu'})
-
+        import pdb; pdb.set_trace()
         return query_df
 
     def _assert_ospf(self, ifname: str, vrf: str, what: str):
