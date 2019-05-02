@@ -80,11 +80,13 @@ class ifObj(basicobj.SQObject):
 
             if self.datacenter:
                 wherestr += " and datacenter == '{}'".format(
-                    self.datacenter)
+                    kwargs.get('datacenter', []))
             if self.hostname:
-                wherestr += " and hostname == '{}'".format(self.hostname)
+                wherestr += " and hostname == '{}'".format(
+                    kwargs.get('hostname', []))
             if ifname:
-                wherestr += " and ifname == '{}'".format(self.ifname)
+                wherestr += " and ifname == '{}'".format(
+                    kwargs.get('ifname', []))
 
             if sort_fields:
                 order_by = 'order by {}'.format(', '.join(sort_fields))
@@ -96,9 +98,11 @@ class ifObj(basicobj.SQObject):
                                     self.end_time, view='latest')
         else:
             query_df = self.get_valid_df(
-                'interfaces', self.sort_fields,
-                hostname=self.hostname, datacenter=self.datacenter,
-                columns=columns, ifname=kwargs.get('ifname', '')) \
+                'interfaces', sort_fields,
+                hostname=kwargs.get('hostname', []),
+                datacenter=kwargs.get('datacenter', []),
+                columns=columns,
+                ifname=kwargs.get('ifname', [])) \
                            .query('(abs(mtu - {}) > 40) and (ifname != "lo")'
                                   .format(kwargs['matchval']))
 
@@ -125,11 +129,13 @@ class ifObj(basicobj.SQObject):
 
             if self.datacenter:
                 wherestr += " and lldp.datacenter == '{}'".format(
-                    self.datacenter)
+                    kwargs.get('datacenter', []))
             if self.hostname:
-                wherestr += " and lldp.hostname == '{}'".format(self.hostname)
+                wherestr += " and lldp.hostname == '{}'".format(
+                    kwargs.get('hostname', []))
             if ifname:
-                wherestr += " and lldp.ifname == '{}'".format(self.ifname)
+                wherestr += " and lldp.ifname == '{}'".format(
+                    kwargs.get('ifname', []))
 
             wherestr += ')'
 
@@ -148,8 +154,8 @@ class ifObj(basicobj.SQObject):
             columns = ['datacenter', 'hostname', 'ifname', 'state', 'mtu',
                        'timestamp']
             if_df = self.get_valid_df('interfaces', self.sort_fields,
-                                      hostname=self.hostname,
-                                      datacenter=self.datacenter,
+                                      hostname=kwargs.get('hostname', []),
+                                      datacenter=kwargs.get('datacenter', []),
                                       columns=columns,
                                       ifname=kwargs.get('ifname', []))
             if if_df.empty:
