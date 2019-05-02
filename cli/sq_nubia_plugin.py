@@ -8,7 +8,7 @@
 #
 
 import argparse
-from commands import ospfCmd
+from commands import ospfCmd, lldpCmd
 from sq_nubia_context import NubiaSuzieqContext
 from sq_nubia_statusbar import NubiaSuzieqStatusBar
 from nubia import PluginInterface, CompletionDataSource
@@ -43,7 +43,8 @@ class NubiaSuzieqPlugin(PluginInterface):
 
     def get_commands(self):
         return [
-            AutoCommand(ospfCmd.OspfCmd)
+            AutoCommand(ospfCmd.ospfCmd),
+            AutoCommand(lldpCmd.lldpCmd)
         ]
 
     def get_opts_parser(self, add_help=True):
