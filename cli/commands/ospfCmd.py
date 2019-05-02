@@ -10,23 +10,23 @@
 import sys
 import time
 
+import pandas as pd
 from nubia import command, argument
 import typing
 
 sys.path.append('/home/ddutt/work/')
 from suzieq.cli.commands.command import SQCommand
-from suzieq.cli.ospf import OspfObj
+from suzieq.cli.ospf import ospfObj
 
 
 @command('ospf', help="Act on OSPF data")
-class OspfCmd(SQCommand):
-
+class ospfCmd(SQCommand):
 
     def __init__(self, engine: str = '', hostname: str = '',
                  start_time: str = '', end_time: str = '',
                  view: str = 'latest', datacenter: str = '',
                  columns: str = 'default') -> None:
-        self.ospfobj = OspfObj()
+        self.ospfobj = ospfObj()
         super().__init__(engine=engine, hostname=hostname,
                          start_time=start_time, end_time=end_time,
                          view=view, datacenter=datacenter, columns=columns)
@@ -90,3 +90,28 @@ class OspfCmd(SQCommand):
                                    type=type, groupby=groupby.split())
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
+
+    @command('assert')
+    @argument("ifname", description="interface name to check OSPF on")
+    @argument("vrf", description="VRF to assert OSPF state in")
+    @argument("what", description="What do you want to assert about OSPF",
+              choices=['all'])
+    def aver(self, ifname: str = '', vrf: str = '',
+             what: str = 'all') -> pd.DataFrame:
+        """
+        Test OSPF runtime state is good
+        """
+        now = time.time()
+        result_df = self.ospfobj.aver(hostname=self.hostname, vrf=vrf.split(),
+                                      ifname=ifname.split(),
+                                      datacenter=self.datacenter)
+        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
+
+        if result_df.empty:
+            print('Assert passed')
+        else:
+            print(result_df)
+            print('Assert failed')
+
+        return
+        
