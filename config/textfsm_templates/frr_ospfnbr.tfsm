@@ -2,6 +2,7 @@ Value peerRouterId ([0-9./]*)
 Value peerIP ([0-9./]*)
 Value vrf (\S+)
 Value area ([0-9.]*)
+Value areaStub ((\[Stub\])?)
 Value ifname (\S+)
 Value nbrPrio (\d+)
 Value state (\w+)
@@ -12,7 +13,7 @@ Value lsaRetxCnt (\d+)
 Start
   ^\s?Neighbor .*, interface address.*$$ -> Continue.Record
   ^\s?Neighbor ${peerRouterId}, interface address ${peerIP}.*$$
-  ^\s+In the area ${area} via interface ${ifname}.*$$
+  ^\s+In the area ${area}\s?${areaStub}\s?via interface ${ifname}.*$$
   ^\s+Neighbor priority is ${nbrPrio},\s+State is ${state}, ${numChanges} state changes.*$$
   ^\s+Progressive change ${lastChangeTime} ago.*$$
 
@@ -78,5 +79,38 @@ Start
 #    Thread Inactivity Timer on
 #    Thread Database Description Retransmision off
 #    Thread Link State Request Retransmission on
+#    Thread Link State Update Retransmission on
+#Neighbor 172.16.4.101, interface address 172.16.4.101
+#    In the area 0.0.0.1 [Stub] via interface swp3
+#    Neighbor priority is 1, State is Full, 17 state changes
+#    Most recent state change statistics:
+#      Progressive change 5d03h21m ago
+#      Regressive change 5d03h21m ago, due to SeqNumberMismatch
+#    DR is 0.0.0.0, BDR is 0.0.0.0
+#    Options 0 *|-|-|-|-|-|-|-
+#    Dead timer due in 33.582s
+#    Database Summary List 0
+#    Link State Request List 0
+#    Link State Retransmission List 0
+#    Thread Inactivity Timer on
+#    Thread Database Description Retransmision off
+#    Thread Link State Request Retransmission off
+#    Thread Link State Update Retransmission on
+#
+# Neighbor 172.16.4.102, interface address 172.16.4.102
+#    In the area 0.0.0.1 [Stub] via interface swp4
+#    Neighbor priority is 1, State is Full, 23 state changes
+#    Most recent state change statistics:
+#      Progressive change 4d03h03m ago
+#      Regressive change 4d03h03m ago, due to SeqNumberMismatch
+#    DR is 0.0.0.0, BDR is 0.0.0.0
+#    Options 0 *|-|-|-|-|-|-|-
+#    Dead timer due in 33.781s
+#    Database Summary List 0
+#    Link State Request List 0
+#    Link State Retransmission List 0
+#    Thread Inactivity Timer on
+#    Thread Database Description Retransmision off
+#    Thread Link State Request Retransmission off
 #    Thread Link State Update Retransmission on
 # 
