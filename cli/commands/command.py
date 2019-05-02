@@ -79,7 +79,7 @@ class SQCommand:
     def analyze(self, **kwargs):
         raise NotImplementedError
 
-    def test(self, **kwargs):
+    def aver(self, **kwargs):
         raise NotImplementedError
 
     def describe(self, **kwargs):
