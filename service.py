@@ -1004,6 +1004,7 @@ class OspfNbrService(Service):
                 entry['state'] = entry['state'].lower()
                 entry['lastChangeTime'] = self.frr_convert_reltime_to_epoch(
                     entry['lastChangeTime'])
+                entry['areaStub'] = entry['areaStub'] == '[Stub]'
         elif dev_type == 'eos':
             for entry in processed_data:
                 entry['state'] = entry['state'].lower()
