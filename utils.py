@@ -578,7 +578,7 @@ def build_pa_filters(start_tm: str, end_tm: str,
                                 freq='15min')
         filters = [[('timestamp', '>=', timeset[0].timestamp()*1000)]]
     elif end_tm and not start_tm:
-        timeset = pd.date_range(end_tm=pd.to_datetime(
+        timeset = pd.date_range(pd.to_datetime(
             end_tm, infer_datetime_format=True), periods=2,
                                 freq='15min')
         filters = [[('timestamp', '<=', timeset[-1].timestamp()*1000)]]
@@ -602,17 +602,11 @@ def build_pa_filters(start_tm: str, end_tm: str,
                         kwdor.append([tuple(('{}'.format(k), '==',
                                              '{}'.format(e)))])
                     else:
-                        if len(filters) == 1:
-                            foo = deepcopy(filters)
+                        for entry in filters:
+                            foo = deepcopy(entry)
                             foo.append(tuple(('{}'.format(k), '==',
                                               '{}'.format(e))))
                             kwdor.append(foo)
-                        else:
-                            for entry in filters:
-                                foo = deepcopy(entry)
-                                foo.append(tuple(('{}'.format(k), '==',
-                                                  '{}'.format(e))))
-                                kwdor.append(foo)
 
                 filters = kwdor
             else:
