@@ -666,7 +666,7 @@ def pd_get_table_df(table: str, start: str, end: str, view: str,
         columns = kwargs['columns']
         del kwargs['columns']
     else:
-        columns = 'default'
+        columns = ['default']
 
     fields = get_display_fields(table, columns, sch)
 
@@ -680,7 +680,7 @@ def pd_get_table_df(table: str, start: str, end: str, view: str,
     query_str = ""
     prefix = ''
     for f, v in kwargs.items():
-        if not v or f in key_fields:
+        if not v or f in key_fields or any(f, ['groupby']):
             continue
         if isinstance(v, str):
             query_str += "{} {}=='{}' ".format(prefix, f, v)
