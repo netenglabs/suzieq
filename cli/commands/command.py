@@ -73,16 +73,8 @@ class SQCommand:
         return self._schemas
     """show various pieces of information"""
 
-    def show(self, **kwargs):
-        now = time.time()
-        kwargs['columns'] = self.columns
-        if self.columns != ['default']:
-            sort_fields = None
-        table_df = self.get_valid_df(table, sort_fields, **kwargs)
-
-        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-
-        return(table_df)
+    def get(self, **kwargs):
+        raise NotImplementedError
 
     def analyze(self, **kwargs):
         raise NotImplementedError
@@ -93,7 +85,7 @@ class SQCommand:
     def describe(self, **kwargs):
         raise NotImplementedError
 
-    def summary(self, **kwargs):
+    def top(self, **kwargs):
         raise NotImplementedError
 
 
