@@ -29,8 +29,9 @@ class NubiaSuzieqContext(context.Context):
         self.start_time = ''
         self.end_time = ''
         self.exec_time = ''
-        self.engine = 'spark'
-        self.system_df = None
+        self.engine = 'pandas'
+        self.system_df = {}
+        self.sort_fields = []
         super().__init__()
 
     def on_connected(self, *args, **kwargs):
