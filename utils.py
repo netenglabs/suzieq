@@ -680,7 +680,7 @@ def pd_get_table_df(table: str, start: str, end: str, view: str,
     query_str = ""
     prefix = ''
     for f, v in kwargs.items():
-        if not v or f in key_fields or any(f, ['groupby']):
+        if not v or f in key_fields or f in ['groupby']:
             continue
         if isinstance(v, str):
             query_str += "{} {}=='{}' ".format(prefix, f, v)
