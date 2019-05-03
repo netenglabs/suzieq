@@ -7,16 +7,7 @@
 # LICENSE file in the root directory of this source tree.
 #
 
-import sys
-
 import basicobj
-try:
-    import fire
-except ImportError:
-    pass
-
-sys.path.append('/home/ddutt/work/')
-from suzieq.utils import get_query_df
 
 
 class lldpObj(basicobj.SQObject):
@@ -52,7 +43,11 @@ class lldpObj(basicobj.SQObject):
                        .describe(include='all')
                        .fillna('-'))
 
-if __name__ == '__main__':
-    fire.Fire(lldpObj)
 
+if __name__ == '__main__':
+    try:
+        import fire
+        fire.Fire(lldpObj)
+    except ImportError:
+        pass
 
