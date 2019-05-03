@@ -32,9 +32,10 @@ class ifCmd(SQCommand):
 
     @command('show')
     @argument("ifname", description="interface name to qualify")
+    @argument("type", description="interface type to qualify")
     @argument("state", description="interface state to qualify show",
               choices=['up', 'down'])
-    def show(self, ifname: str = '', state: str = ''):
+    def show(self, ifname: str = '', state: str = '', type: str = ''):
         """
         Show interface info
         """
@@ -47,7 +48,7 @@ class ifCmd(SQCommand):
 
         df = self.ifobj.get(hostname=self.hostname, ifname=ifname.split(),
                             columns=self.columns, datacenter=self.datacenter,
-                            state=state)
+                            state=state, type=type.split())
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
 
