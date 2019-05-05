@@ -133,7 +133,7 @@ class ifObj(basicobj.SQObject):
             if self.hostname:
                 wherestr += " and lldp.hostname == '{}'".format(
                     kwargs.get('hostname', []))
-            if ifname:
+            if kwargs.get('ifname', ''):
                 wherestr += " and lldp.ifname == '{}'".format(
                     kwargs.get('ifname', []))
 
@@ -186,6 +186,7 @@ class ifObj(basicobj.SQObject):
                                                      'mtu_y': 'peerMtu'})
 
         return query_df
+
 
 if __name__ == '__main__':
     fire.Fire(ifObj)
