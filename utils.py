@@ -1,4 +1,5 @@
 
+from concurrent.futures import ProcessPoolExecutor as Executor
 import os
 import sys
 import re
@@ -346,7 +347,7 @@ def build_sql_str(table: str, start_time: str, end_time: str,
 
 
 def get_spark_code(qstr: str, cfg, schemas, start: str = '', end: str = '',
-                   view: str ='latest') -> str:
+                   view: str = 'latest') -> str:
     '''Get the Table creation and destruction code for query string'''
 
     # SQL syntax has keywords separated by space, multiple values for a keyword
@@ -399,7 +400,7 @@ def get_spark_code(qstr: str, cfg, schemas, start: str = '', end: str = '',
 
 
 def get_query_df(query_string: str, cfg, schemas,
-                 start_time: str = '', end_time: str ='',
+                 start_time: str = '', end_time: str = '',
                  view: str = 'latest') -> pd.DataFrame:
 
     df = None
@@ -626,7 +627,7 @@ def pd_get_table_df(table: str, start: str, end: str, view: str,
                     **kwargs) -> pd.DataFrame:
     '''Use Pandas instead of Spark to retrieve the data'''
 
-    MAX_FILECNT_TO_READ_FOLDER = 10000
+    MAX_FILECNT_TO_READ_FOLDER = 10
 
     sch = schemas.get(table)
     if not sch:
@@ -688,15 +689,9 @@ def pd_get_table_df(table: str, start: str, end: str, view: str,
             query_str = 'active == True'
 
         pdf_list = []
-        for file in files:
-            # Sadly predicate pushdown doesn't work in this method
-            df = pa.ParquetDataset(file).read(columns=fields).to_pandas()
-            pth = Path(file).parts
-            for elem in pth:
-                if '=' in elem:
-                    k, v = elem.split('=')
-                    df[k] = v
-            pdf_list.append(df)
+        with Executor(max_workers=4) as exe:
+            jobs = [exe.submit(read_pq_file, f, fields) for f in files]
+            pdf_list = [job.result() for job in jobs]
 
         if pdf_list:
             final_df = pd.concat(pdf_list).query(query_str)
@@ -732,3 +727,17 @@ def pd_get_table_df(table: str, start: str, end: str, view: str,
         return(final_df[fields].sort_values(by=sort_fields))
     else:
         return(final_df[fields])
+
+
+def read_pq_file(file: str, fields: list) -> pd.DataFrame:
+    # Sadly predicate pushdown doesn't work in this method.
+    # We use query on the output to filter
+    df = pa.ParquetDataset(file).read(columns=fields).to_pandas()
+    pth = Path(file).parts
+    for elem in pth:
+        if '=' in elem:
+            k, v = elem.split('=')
+            df[k] = v
+    return df
+
+
