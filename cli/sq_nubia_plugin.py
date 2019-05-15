@@ -8,8 +8,7 @@
 #
 
 import argparse
-from commands import ospfCmd, lldpCmd, interfaceCmd, tablesCmd
-from commands import systemCmd, topmemCmd, topcpuCmd, bgpCmd
+from commands import *
 from sq_nubia_context import NubiaSuzieqContext
 from sq_nubia_statusbar import NubiaSuzieqStatusBar
 from nubia import PluginInterface, CompletionDataSource
