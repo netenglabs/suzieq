@@ -9,10 +9,6 @@
 
 import sys
 import json
-try:
-    from nubia import context
-except ImportError:
-    pass
 
 import typing
 import pandas as pd
@@ -43,18 +39,22 @@ class SQObject(object):
     def __init__(self, engine: str = '', hostname: typing.List[str] = [],
                  start_time: str = '', end_time: str = '',
                  view: str = 'latest', datacenter: typing.List[str] = [],
-                 columns: typing.List[str] = ['default']) -> None:
+                 columns: typing.List[str] = ['default'],
+                 context=None) -> None:
 
-        if 'nubia.internal.context' not in sys.modules:
+        if context is None:
             self.ctxt = SQContext()
         else:
-            self.ctxt = context.get_context()
+            self.ctxt = context
             if not self.ctxt:
                 self.ctxt = SQContext()
 
         self._ctxt = None
         self._cfg = self.ctxt.cfg
         self._schemas = self.ctxt.schemas
+        self._table = ''
+        self._sort_fields = []
+        self._cat_fields = []
 
         if not datacenter and self.ctxt.datacenter:
             self.datacenter = self.ctxt.datacenter
@@ -166,15 +166,46 @@ class SQObject(object):
         return(final_df)
 
     def get(self, **kwargs):
-        raise NotImplementedError
+        if not self._table:
+            raise NotImplementedError
+
+        if self.ctxt.sort_fields is None:
+            sort_fields = None
+        else:
+            sort_fields = self._sort_fields
+
+        df = self.get_valid_df(self._table, sort_fields, **kwargs)
+        return(df)
+
+    def describe(self, **kwargs):
+        if not self._table:
+            raise NotImplementedError
+
+        if self.ctxt.sort_fields is None:
+            sort_fields = None
+        else:
+            sort_fields = self._sort_fields
+
+        df = self.get_valid_df(self._table, sort_fields, **kwargs)
+
+        if not df.empty:
+            if kwargs.get('groupby'):
+                return(df
+                       .groupby(kwargs['groupby'])
+                       .agg(lambda x: x.unique().tolist()))
+            else:
+                for i in self._cat_fields:
+                    if (kwargs.get(i, []) or
+                        'default' in kwargs.get('columns', [])):
+                        df[i] = df[i].astype('category', copy=False)
+                return(df
+                       .describe(include='all')
+                       .fillna('-'))
 
     def analyze(self, **kwargs):
         raise NotImplementedError
 
     def aver(self, **kwargs):
-        raise NotImplementedError
-
-    def describe(self, **kwargs):
         raise NotImplementedError
 
     def summary(self, **kwargs):

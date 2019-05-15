@@ -9,13 +9,13 @@
 
 import sys
 import time
-
-from nubia import command, argument
 import typing
+from nubia import command, argument,  context
+import pandas as pd
 
 sys.path.append('/home/ddutt/work/')
 from suzieq.cli.commands.command import SQCommand
-from suzieq.cli.interface import ifObj
+from suzieq.sqobjects.interface import ifObj
 
 
 @command('interface', help="Act on Interface data")
@@ -25,10 +25,10 @@ class ifCmd(SQCommand):
                  start_time: str = '', end_time: str = '',
                  view: str = 'latest', datacenter: str = '',
                  columns: str = 'default') -> None:
-        self.ifobj = ifObj()
         super().__init__(engine=engine, hostname=hostname,
                          start_time=start_time, end_time=end_time,
                          view=view, datacenter=datacenter, columns=columns)
+        self.ifobj = ifObj(context=self.ctxt)
 
     @command('show')
     @argument("ifname", description="interface name to qualify")

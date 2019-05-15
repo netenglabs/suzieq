@@ -7,11 +7,13 @@
 # LICENSE file in the root directory of this source tree.
 #
 
+import sys
 import os
 from pathlib import Path
 import pandas as pd
 
-import basicobj
+sys.path.append('/home/ddutt/work')
+from suzieq.sqobjects import basicobj
 
 
 class tablesObj(basicobj.SQObject):

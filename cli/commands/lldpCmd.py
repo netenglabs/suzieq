@@ -9,13 +9,13 @@
 
 import sys
 import time
-
-from nubia import command, argument
 import typing
+from nubia import command, argument,  context
+import pandas as pd
 
 sys.path.append('/home/ddutt/work/')
 from suzieq.cli.commands.command import SQCommand
-from suzieq.cli.lldp import lldpObj
+from suzieq.sqobjects.lldp import lldpObj
 
 
 @command('lldp', help="Act on LLDP data")
@@ -25,10 +25,10 @@ class lldpCmd(SQCommand):
                  start_time: str = '', end_time: str = '',
                  view: str = 'latest', datacenter: str = '',
                  columns: str = 'default') -> None:
-        self.lldpobj = lldpObj()
         super().__init__(engine=engine, hostname=hostname,
                          start_time=start_time, end_time=end_time,
                          view=view, datacenter=datacenter, columns=columns)
+        self.lldpobj = lldpObj(context=self.ctxt)
 
     @command('show')
     @argument("ifname", description="interface name to qualify")

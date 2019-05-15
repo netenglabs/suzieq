@@ -9,7 +9,7 @@
 
 import argparse
 from commands import ospfCmd, lldpCmd, interfaceCmd, tablesCmd
-from commands import systemCmd
+from commands import systemCmd, topmemCmd, topcpuCmd, bgpCmd
 from sq_nubia_context import NubiaSuzieqContext
 from sq_nubia_statusbar import NubiaSuzieqStatusBar
 from nubia import PluginInterface, CompletionDataSource
@@ -49,6 +49,9 @@ class NubiaSuzieqPlugin(PluginInterface):
             AutoCommand(interfaceCmd.ifCmd),
             AutoCommand(tablesCmd.tablesCmd),
             AutoCommand(systemCmd.systemCmd),
+            AutoCommand(topmemCmd.topmemCmd),
+            AutoCommand(topcpuCmd.topcpuCmd),
+            AutoCommand(bgpCmd.bgpCmd),
         ]
 
     def get_opts_parser(self, add_help=True):

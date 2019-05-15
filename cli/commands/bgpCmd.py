@@ -11,15 +11,15 @@
 import sys
 import time
 import typing
-from nubia import command, argument,  context
+from nubia import command, argument, context
 
 sys.path.append('/home/ddutt/work/')
 from suzieq.cli.commands.command import SQCommand
-from suzieq.sqobjects.system import systemObj
+from suzieq.sqobjects.bgp import bgpObj
 
 
-@command('system', help="Act on LLDP data")
-class systemCmd(SQCommand):
+@command('bgp', help="Act on LLDP data")
+class bgpCmd(SQCommand):
 
     def __init__(self, engine: str = '', hostname: str = '',
                  start_time: str = '', end_time: str = '',
@@ -28,12 +28,12 @@ class systemCmd(SQCommand):
         super().__init__(engine=engine, hostname=hostname,
                          start_time=start_time, end_time=end_time,
                          view=view, datacenter=datacenter, columns=columns)
-        self.systemobj = systemObj(self.ctxt)
+        self.bgpobj = bgpObj(context=self.ctxt)
 
     @command('show')
     def show(self):
         """
-        Show system info
+        Show bgp info
         """
         # Get the default display field names
         now = time.time()
@@ -42,9 +42,8 @@ class systemCmd(SQCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.systemobj.get(hostname=self.hostname, 
-                                columns=self.columns,
-                                datacenter=self.datacenter)
+        df = self.bgpobj.get(hostname=self.hostname, 
+                              columns=self.columns, datacenter=self.datacenter)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
 
@@ -53,7 +52,7 @@ class systemCmd(SQCommand):
               description="Space separated list of fields to summarize on")
     def describe(self, groupby: str = ''):
         """
-        Describe system info
+        Describe bgp info
         """
         # Get the default display field names
         now = time.time()
@@ -62,10 +61,10 @@ class systemCmd(SQCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.systemobj.describe(hostname=self.hostname,
-                                     columns=self.columns,
-                                     groupby=groupby.split(),
-                                     datacenter=self.datacenter)
+        df = self.bgpobj.describe(hostname=self.hostname,
+                                   columns=self.columns,
+                                   groupby=groupby.split(),
+                                   datacenter=self.datacenter)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
     

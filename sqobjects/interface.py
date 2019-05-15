@@ -8,55 +8,28 @@
 #
 
 import sys
-import pandas as pd
 
-import basicobj
-try:
-    import fire
-except ImportError:
-    pass
+import pandas as pd
+import typing
 
 sys.path.append('/home/ddutt/work/')
 from suzieq.utils import get_query_df
-from suzieq.cli.lldp import lldpObj
+from suzieq.sqobjects import basicobj
+from suzieq.sqobjects.lldp import lldpObj
 
 
 class ifObj(basicobj.SQObject):
 
-    sort_fields = ['datacenter', 'hostname', 'ifname']
-
-    def get(self, **kwargs) -> pd.DataFrame:
-
-        if self.ctxt.sort_fields is None:
-            sort_fields = None
-        else:
-            sort_fields = self.sort_fields
-
-        df = self.get_valid_df('interfaces', sort_fields, **kwargs)
-        return(df)
-
-    def describe(self, **kwargs) -> pd.DataFrame:
-        '''Describe the data'''
-        if self.ctxt.sort_fields is None:
-            sort_fields = None
-        else:
-            sort_fields = self.sort_fields
-
-        df = self.get_valid_df('interfaces', sort_fields, **kwargs)
-        hasMtu = ('mtu' in kwargs.get('columns', []) or
-                  'default' in kwargs.get('columns', []))
-
-        if not df.empty:
-            if kwargs.get('groupby'):
-                return(df
-                       .groupby(kwargs['groupby'])
-                       .agg(lambda x: x.unique().tolist()))
-            else:
-                if hasMtu:
-                    df['mtu'] = df['mtu'].astype('category', copy=False)
-                return(df
-                       .describe(include='all')
-                       .fillna('-'))
+    def __init__(self, engine: str = '', hostname: typing.List[str] = [],
+                 start_time: str = '', end_time: str = '',
+                 view: str = 'latest', datacenter: typing.List[str] = [],
+                 columns: typing.List[str] = ['default'],
+                 context=None) -> None:
+        super().__init__(engine, hostname, start_time, end_time, view,
+                         datacenter, columns, context=context)
+        self._table = 'interfaces'
+        self._sort_fields = ['datacenter', 'hostname', 'ifname']
+        self._cat_fields = ['mtu']
 
     def aver(self, what='mtu-match', **kwargs) -> pd.DataFrame:
         '''Assert that interfaces are in good state'''
@@ -189,6 +162,12 @@ class ifObj(basicobj.SQObject):
 
 
 if __name__ == '__main__':
-    fire.Fire(ifObj)
+    try:
+        import fire
+        fire.Fire(ifObj)
+    except ImportError:
+        pass
+
+
 
 
