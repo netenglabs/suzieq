@@ -131,7 +131,37 @@ def load_sq_config(validate=True):
 def get_latest_files(folder, start='', end=''):
     lsd = []
 
-    def get_latest_ts_dirs(dirs, ssecs, esecs):
+    if start:
+        ssecs = pd.to_datetime(
+            start, infer_datetime_format=True).timestamp()*1000
+    else:
+        ssecs = 0
+
+    if end:
+        esecs = pd.to_datetime(
+            end, infer_datetime_format=True).timestamp()*1000
+    else:
+        esecs = 0
+
+    ts_dirs = False
+    pq_files = False
+
+    for root, dirs, files in os.walk(folder):
+        flst = None
+        if dirs and dirs[0].startswith('timestamp') and not pq_files:
+            flst = get_latest_ts_dirs(dirs, ssecs, esecs)
+            ts_dirs = True
+        elif files and not ts_dirs:
+            flst = get_latest_pq_files(files, root, ssecs, esecs)
+            pq_files = True
+
+        if flst:
+            lsd.append(os.path.join(root, flst[-1]))
+
+    return lsd
+
+
+def get_latest_ts_dirs(dirs, ssecs, esecs):
         newdirs = None
 
         if not ssecs and not esecs:
@@ -159,7 +189,8 @@ def get_latest_files(folder, start='', end=''):
 
         return newdirs
 
-    def get_latest_pq_files(files, root, ssecs, esecs):
+
+def get_latest_pq_files(files, root, ssecs, esecs):
 
         newfiles = None
 
@@ -190,34 +221,6 @@ def get_latest_files(folder, start='', end=''):
                     lambda x: os.path.getctime('%s/%s' % (root, x)) < ssecs,
                     files))
         return newfiles
-
-    if start:
-        ssecs = pd.to_datetime(
-            start, infer_datetime_format=True).timestamp()*1000
-    else:
-        ssecs = 0
-
-    if end:
-        esecs = pd.to_datetime(
-            end, infer_datetime_format=True).timestamp()*1000
-    else:
-        esecs = 0
-
-    ts_dirs = False
-    pq_files = False
-    for root, dirs, files in os.walk(folder):
-        flst = None
-        if dirs and dirs[0].startswith('timestamp') and not pq_files:
-            flst = get_latest_ts_dirs(dirs, ssecs, esecs)
-            ts_dirs = True
-        elif files and not ts_dirs:
-            flst = get_latest_pq_files(files, root, ssecs, esecs)
-            pq_files = True
-
-        if flst:
-            lsd.append(os.path.join(root, flst[-1]))
-
-    return lsd
 
 
 def get_schemas(schema_dir):
@@ -636,6 +639,13 @@ def pd_get_table_df(table: str, start: str, end: str, view: str,
 
     folder = '{}/{}'.format(cfg.get('data-directory'), table)
 
+    # Restrict to a single DC if thats whats asked
+    if 'datacenter' in kwargs:
+        v = kwargs['datacenter']
+        if v:
+            if not isinstance(v, list):
+                folder += '/datacenter={}/'.format(v)
+
     fcnt = get_filecnt(folder)
 
     use_get_files = ((fcnt > MAX_FILECNT_TO_READ_FOLDER and
@@ -645,16 +655,13 @@ def pd_get_table_df(table: str, start: str, end: str, view: str,
         # Switch to more efficient method when there are lotsa files
         # Reduce I/O since that is the worst drag
         key_fields = []
-        if 'datacenter' in kwargs:
-            v = kwargs['datacenter']
-            if v:
-                if not isinstance(v, list):
-                    folder += '/datacenter={}/'.format(v)
-                    del kwargs['datacenter']
+        if len(kwargs.get('datacenter', [])) > 1:
+            del kwargs['datacenter']
         files = get_latest_files(folder, start, end)
     else:
         key_fields = [f['name'] for f in sch if f.get('key', None) is not None]
-
+        # Repopulate the folder so that we can get datacenter in our result
+        folder = '{}/{}'.format(cfg.get('data-directory'), table)
         filters = build_pa_filters(start, end, key_fields, **kwargs)
 
     if 'columns' in kwargs:
@@ -689,12 +696,13 @@ def pd_get_table_df(table: str, start: str, end: str, view: str,
             query_str = 'active == True'
 
         pdf_list = []
-        with Executor(max_workers=4) as exe:
-            jobs = [exe.submit(read_pq_file, f, fields) for f in files]
+        with Executor(max_workers=8) as exe:
+            jobs = [exe.submit(read_pq_file, f, fields, query_str)
+                    for f in files]
             pdf_list = [job.result() for job in jobs]
 
         if pdf_list:
-            final_df = pd.concat(pdf_list).query(query_str)
+            final_df = pd.concat(pdf_list)
 
     elif view == 'latest':
         if not query_str:
@@ -729,7 +737,7 @@ def pd_get_table_df(table: str, start: str, end: str, view: str,
         return(final_df[fields])
 
 
-def read_pq_file(file: str, fields: list) -> pd.DataFrame:
+def read_pq_file(file: str, fields: list, query_str: str) -> pd.DataFrame:
     # Sadly predicate pushdown doesn't work in this method.
     # We use query on the output to filter
     df = pa.ParquetDataset(file).read(columns=fields).to_pandas()
@@ -738,6 +746,4 @@ def read_pq_file(file: str, fields: list) -> pd.DataFrame:
         if '=' in elem:
             k, v = elem.split('=')
             df[k] = v
-    return df
-
-
+    return df.query(query_str)
