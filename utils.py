@@ -243,7 +243,7 @@ def get_schemas(schema_dir):
 
 def get_table_df(table: str, start_time: str, end_time: str,
                  view: str, sort_fields: list, cfg, schemas,
-                 engine: str = 'spark',  **kwargs):
+                 engine: str = 'pandas',  **kwargs):
     '''Build query string and get dataframe'''
 
     if engine == 'spark':
