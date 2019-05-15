@@ -14,7 +14,7 @@ from nubia import command, argument
 
 sys.path.append('/home/ddutt/work/')
 from suzieq.cli.commands.command import SQCommand
-from suzieq.cli.tables import tablesObj
+from suzieq.sqobjects.tables import tablesObj
 
 
 @command('tables', help="Information about the various tables")
@@ -24,10 +24,10 @@ class tablesCmd(SQCommand):
                  start_time: str = '', end_time: str = '',
                  view: str = 'latest', datacenter: str = '',
                  columns: str = 'default') -> None:
-        self.tablesobj = tablesObj()
         super().__init__(engine=engine, hostname=hostname,
                          start_time=start_time, end_time=end_time,
                          view=view, datacenter=datacenter, columns=columns)
+        self.tablesobj = tablesObj(context=self.ctxt)
 
     @command('show')
     def show(self, **kwargs):

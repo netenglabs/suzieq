@@ -9,14 +9,13 @@
 
 import sys
 import time
-
-import pandas as pd
-from nubia import command, argument
 import typing
+from nubia import command, argument,  context
+import pandas as pd
 
 sys.path.append('/home/ddutt/work/')
 from suzieq.cli.commands.command import SQCommand
-from suzieq.cli.ospf import ospfObj
+from suzieq.sqobjects.ospf import ospfObj
 
 
 @command('ospf', help="Act on OSPF data")
@@ -26,10 +25,10 @@ class ospfCmd(SQCommand):
                  start_time: str = '', end_time: str = '',
                  view: str = 'latest', datacenter: str = '',
                  columns: str = 'default') -> None:
-        self.ospfobj = ospfObj()
         super().__init__(engine=engine, hostname=hostname,
                          start_time=start_time, end_time=end_time,
                          view=view, datacenter=datacenter, columns=columns)
+        self.ospfobj = ospfObj(context=self.ctxt)
 
     @command('show')
     @argument("ifname",

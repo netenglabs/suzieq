@@ -9,28 +9,33 @@
 
 import sys
 from ipaddress import IPv4Network
+import typing
 import pandas as pd
-try:
-    import fire
-except ImportError:
-    pass
 
-import basicobj
 sys.path.append('/home/ddutt/work/')
 from suzieq.utils import get_query_df
-from suzieq.cli.lldp import lldpObj
-
+from suzieq.sqobjects.lldp import lldpObj
+from suzieq.sqobjects import basicobj
 
 class ospfObj(basicobj.SQObject):
 
-    sort_fields = ['datacenter', 'hostname', 'vrf', 'ifname']
+    def __init__(self, engine: str = '', hostname: typing.List[str] = [],
+                 start_time: str = '', end_time: str = '',
+                 view: str = 'latest', datacenter: typing.List[str] = [],
+                 columns: typing.List[str] = ['default'],
+                 context=None) -> None:
+        super().__init__(engine, hostname, start_time, end_time, view,
+                         datacenter, columns, context=context)
+        self._table = 'ospfNbr'
+        self._sort_fields = ['datacenter', 'hostname', 'vrf', 'ifname']
+        self._cat_fields = []
 
     def get(self, **kwargs):
 
         if self.ctxt.sort_fields is None:
             sort_fields = None
         else:
-            sort_fields = self.sort_fields
+            sort_fields = self._sort_fields
 
         table = 'ospfNbr'
         if 'type' in kwargs:
@@ -46,7 +51,7 @@ class ospfObj(basicobj.SQObject):
         if self.ctxt.sort_fields is None:
             sort_fields = None
         else:
-            sort_fields = self.sort_fields
+            sort_fields = self._sort_fields
 
         table = 'ospfNbr'
         if 'type' in kwargs:
@@ -163,6 +168,11 @@ class ospfObj(basicobj.SQObject):
                 .fillna('-')
 
 if __name__ == '__main__':
-    fire.Fire(ospfObj)
+    try:
+        import fire
+        fire.Fire(ospfObj)
+    except ImportError:
+        pass
+
 
 
