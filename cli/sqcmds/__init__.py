@@ -12,8 +12,11 @@ import glob
 
 name = "sqcmds"
 
-modules = glob.glob(join(dirname(__file__), "*.py"))
-__all__ = [basename(f)[:-3] for f in modules
-           if isfile(f) and not f.endswith('__init__.py')]
+modules = filter(lambda f: f if isfile(f) and
+                 not (f.endswith('__init__.py') or f.endswith('command.py'))
+                 else None,
+                 glob.glob(join(dirname(__file__), "*.py")))
+__all__ = [basename(f)[:-3] for f in modules]
+sqcmds_all = __all__
 
 
