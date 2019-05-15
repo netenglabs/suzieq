@@ -28,7 +28,7 @@ class systemCmd(SQCommand):
         super().__init__(engine=engine, hostname=hostname,
                          start_time=start_time, end_time=end_time,
                          view=view, datacenter=datacenter, columns=columns)
-        self.systemobj = systemObj(self.ctxt)
+        self.systemobj = systemObj(context=self.ctxt)
 
     @command('show')
     def show(self):
