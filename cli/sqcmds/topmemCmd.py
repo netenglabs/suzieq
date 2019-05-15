@@ -12,14 +12,15 @@ import sys
 import time
 import typing
 from nubia import command, argument,  context
+import pandas as pd
 
 sys.path.append('/home/ddutt/work/')
-from suzieq.cli.commands.command import SQCommand
-from suzieq.sqobjects.topcpu import topcpuObj
+from suzieq.cli.sqcmds.command import SQCommand
+from suzieq.sqobjects.topmem import topmemObj
 
 
-@command('topcpu', help="Act on LLDP data")
-class topcpuCmd(SQCommand):
+@command('topmem', help="Act on LLDP data")
+class topmemCmd(SQCommand):
 
     def __init__(self, engine: str = '', hostname: str = '',
                  start_time: str = '', end_time: str = '',
@@ -28,12 +29,12 @@ class topcpuCmd(SQCommand):
         super().__init__(engine=engine, hostname=hostname,
                          start_time=start_time, end_time=end_time,
                          view=view, datacenter=datacenter, columns=columns)
-        self.topcpuobj = topcpuObj(context=self.ctxt)
+        self.topmemobj = topmemObj(context=self.ctxt)
 
     @command('show')
     def show(self):
         """
-        Show topcpu info
+        Show topmem info
         """
         # Get the default display field names
         now = time.time()
@@ -42,8 +43,9 @@ class topcpuCmd(SQCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.topcpuobj.get(hostname=self.hostname, 
-                              columns=self.columns, datacenter=self.datacenter)
+        df = self.topmemobj.get(hostname=self.hostname, 
+                                columns=self.columns,
+                                datacenter=self.datacenter)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
 
@@ -52,7 +54,7 @@ class topcpuCmd(SQCommand):
               description="Space separated list of fields to summarize on")
     def describe(self, groupby: str = ''):
         """
-        Describe topcpu info
+        Describe topmem info
         """
         # Get the default display field names
         now = time.time()
@@ -61,11 +63,10 @@ class topcpuCmd(SQCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.topcpuobj.describe(hostname=self.hostname,
-                                   columns=self.columns,
-                                   groupby=groupby.split(),
-                                   datacenter=self.datacenter)
+        df = self.topmemobj.describe(hostname=self.hostname,
+                                     columns=self.columns,
+                                     groupby=groupby.split(),
+                                     datacenter=self.datacenter)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
-    
 

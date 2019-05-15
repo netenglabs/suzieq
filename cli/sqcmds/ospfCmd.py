@@ -14,7 +14,7 @@ from nubia import command, argument,  context
 import pandas as pd
 
 sys.path.append('/home/ddutt/work/')
-from suzieq.cli.commands.command import SQCommand
+from suzieq.cli.sqcmds.command import SQCommand
 from suzieq.sqobjects.ospf import ospfObj
 
 

@@ -13,7 +13,7 @@ import time
 from nubia import command, argument
 
 sys.path.append('/home/ddutt/work/')
-from suzieq.cli.commands.command import SQCommand
+from suzieq.cli.sqcmds.command import SQCommand
 from suzieq.sqobjects.tables import tablesObj
 
 

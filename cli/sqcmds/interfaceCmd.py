@@ -14,12 +14,12 @@ from nubia import command, argument,  context
 import pandas as pd
 
 sys.path.append('/home/ddutt/work/')
-from suzieq.cli.commands.command import SQCommand
+from suzieq.cli.sqcmds.command import SQCommand
 from suzieq.sqobjects.interface import ifObj
 
 
 @command('interface', help="Act on Interface data")
-class ifCmd(SQCommand):
+class interfaceCmd(SQCommand):
 
     def __init__(self, engine: str = '', hostname: str = '',
                  start_time: str = '', end_time: str = '',

@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python3
 
 # Copyright (c) Dinesh G Dutt
@@ -12,14 +11,15 @@ import sys
 import time
 import typing
 from nubia import command, argument,  context
+import pandas as pd
 
 sys.path.append('/home/ddutt/work/')
-from suzieq.cli.commands.command import SQCommand
-from suzieq.sqobjects.system import systemObj
+from suzieq.cli.sqcmds.command import SQCommand
+from suzieq.sqobjects.lldp import lldpObj
 
 
-@command('system', help="Act on LLDP data")
-class systemCmd(SQCommand):
+@command('lldp', help="Act on LLDP data")
+class lldpCmd(SQCommand):
 
     def __init__(self, engine: str = '', hostname: str = '',
                  start_time: str = '', end_time: str = '',
@@ -28,12 +28,13 @@ class systemCmd(SQCommand):
         super().__init__(engine=engine, hostname=hostname,
                          start_time=start_time, end_time=end_time,
                          view=view, datacenter=datacenter, columns=columns)
-        self.systemobj = systemObj(context=self.ctxt)
+        self.lldpobj = lldpObj(context=self.ctxt)
 
     @command('show')
-    def show(self):
+    @argument("ifname", description="interface name to qualify")
+    def show(self, ifname: str = ''):
         """
-        Show system info
+        Show LLDP info
         """
         # Get the default display field names
         now = time.time()
@@ -42,18 +43,18 @@ class systemCmd(SQCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.systemobj.get(hostname=self.hostname, 
-                                columns=self.columns,
-                                datacenter=self.datacenter)
+        df = self.lldpobj.get(hostname=self.hostname, ifname=ifname.split(),
+                              columns=self.columns, datacenter=self.datacenter)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
 
     @command('describe')
+    @argument("ifname", description="interface name to qualify")
     @argument("groupby",
               description="Space separated list of fields to summarize on")
-    def describe(self, groupby: str = ''):
+    def describe(self, ifname: str = '', groupby: str = ''):
         """
-        Describe system info
+        Describe LLDP info
         """
         # Get the default display field names
         now = time.time()
@@ -62,10 +63,11 @@ class systemCmd(SQCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.systemobj.describe(hostname=self.hostname,
-                                     columns=self.columns,
-                                     groupby=groupby.split(),
-                                     datacenter=self.datacenter)
+        df = self.lldpobj.describe(hostname=self.hostname,
+                                   ifname=ifname.split(),
+                                   columns=self.columns,
+                                   groupby=groupby.split(),
+                                   datacenter=self.datacenter)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
     

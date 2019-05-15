@@ -1,3 +1,4 @@
+
 #!/usr/bin/env python3
 
 # Copyright (c) Dinesh G Dutt
@@ -11,15 +12,14 @@ import sys
 import time
 import typing
 from nubia import command, argument,  context
-import pandas as pd
 
 sys.path.append('/home/ddutt/work/')
-from suzieq.cli.commands.command import SQCommand
-from suzieq.sqobjects.lldp import lldpObj
+from suzieq.cli.sqcmds.command import SQCommand
+from suzieq.sqobjects.topcpu import topcpuObj
 
 
-@command('lldp', help="Act on LLDP data")
-class lldpCmd(SQCommand):
+@command('topcpu', help="Act on LLDP data")
+class topcpuCmd(SQCommand):
 
     def __init__(self, engine: str = '', hostname: str = '',
                  start_time: str = '', end_time: str = '',
@@ -28,13 +28,12 @@ class lldpCmd(SQCommand):
         super().__init__(engine=engine, hostname=hostname,
                          start_time=start_time, end_time=end_time,
                          view=view, datacenter=datacenter, columns=columns)
-        self.lldpobj = lldpObj(context=self.ctxt)
+        self.topcpuobj = topcpuObj(context=self.ctxt)
 
     @command('show')
-    @argument("ifname", description="interface name to qualify")
-    def show(self, ifname: str = ''):
+    def show(self):
         """
-        Show LLDP info
+        Show topcpu info
         """
         # Get the default display field names
         now = time.time()
@@ -43,18 +42,17 @@ class lldpCmd(SQCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.lldpobj.get(hostname=self.hostname, ifname=ifname.split(),
+        df = self.topcpuobj.get(hostname=self.hostname, 
                               columns=self.columns, datacenter=self.datacenter)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
 
     @command('describe')
-    @argument("ifname", description="interface name to qualify")
     @argument("groupby",
               description="Space separated list of fields to summarize on")
-    def describe(self, ifname: str = '', groupby: str = ''):
+    def describe(self, groupby: str = ''):
         """
-        Describe LLDP info
+        Describe topcpu info
         """
         # Get the default display field names
         now = time.time()
@@ -63,8 +61,7 @@ class lldpCmd(SQCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.lldpobj.describe(hostname=self.hostname,
-                                   ifname=ifname.split(),
+        df = self.topcpuobj.describe(hostname=self.hostname,
                                    columns=self.columns,
                                    groupby=groupby.split(),
                                    datacenter=self.datacenter)

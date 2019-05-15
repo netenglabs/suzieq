@@ -12,15 +12,14 @@ import sys
 import time
 import typing
 from nubia import command, argument,  context
-import pandas as pd
 
 sys.path.append('/home/ddutt/work/')
-from suzieq.cli.commands.command import SQCommand
-from suzieq.sqobjects.topmem import topmemObj
+from suzieq.cli.sqcmds.command import SQCommand
+from suzieq.sqobjects.system import systemObj
 
 
-@command('topmem', help="Act on LLDP data")
-class topmemCmd(SQCommand):
+@command('system', help="Act on LLDP data")
+class systemCmd(SQCommand):
 
     def __init__(self, engine: str = '', hostname: str = '',
                  start_time: str = '', end_time: str = '',
@@ -29,12 +28,12 @@ class topmemCmd(SQCommand):
         super().__init__(engine=engine, hostname=hostname,
                          start_time=start_time, end_time=end_time,
                          view=view, datacenter=datacenter, columns=columns)
-        self.topmemobj = topmemObj(context=self.ctxt)
+        self.systemobj = systemObj(context=self.ctxt)
 
     @command('show')
     def show(self):
         """
-        Show topmem info
+        Show system info
         """
         # Get the default display field names
         now = time.time()
@@ -43,7 +42,7 @@ class topmemCmd(SQCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.topmemobj.get(hostname=self.hostname, 
+        df = self.systemobj.get(hostname=self.hostname, 
                                 columns=self.columns,
                                 datacenter=self.datacenter)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
@@ -54,7 +53,7 @@ class topmemCmd(SQCommand):
               description="Space separated list of fields to summarize on")
     def describe(self, groupby: str = ''):
         """
-        Describe topmem info
+        Describe system info
         """
         # Get the default display field names
         now = time.time()
@@ -63,10 +62,11 @@ class topmemCmd(SQCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.topmemobj.describe(hostname=self.hostname,
+        df = self.systemobj.describe(hostname=self.hostname,
                                      columns=self.columns,
                                      groupby=groupby.split(),
                                      datacenter=self.datacenter)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
+    
 

@@ -8,7 +8,8 @@
 #
 
 import argparse
-from commands import *
+from sqcmds import *
+from sqcmds import sqcmds_all
 from sq_nubia_context import NubiaSuzieqContext
 from sq_nubia_statusbar import NubiaSuzieqStatusBar
 from nubia import PluginInterface, CompletionDataSource
@@ -42,16 +43,8 @@ class NubiaSuzieqPlugin(PluginInterface):
         pass
 
     def get_commands(self):
-        return [
-            AutoCommand(ospfCmd.ospfCmd),
-            AutoCommand(lldpCmd.lldpCmd),
-            AutoCommand(interfaceCmd.ifCmd),
-            AutoCommand(tablesCmd.tablesCmd),
-            AutoCommand(systemCmd.systemCmd),
-            AutoCommand(topmemCmd.topmemCmd),
-            AutoCommand(topcpuCmd.topcpuCmd),
-            AutoCommand(bgpCmd.bgpCmd),
-        ]
+        cmds = [AutoCommand(getattr(globals()[x], x)) for x in sqcmds_all]
+        return cmds
 
     def get_opts_parser(self, add_help=True):
         """
