@@ -13,7 +13,6 @@ import sys
 import pandas as pd
 import typing
 
-sys.path.append('/home/ddutt/work/')
 from suzieq.utils import get_query_df
 from suzieq.sqobjects import basicobj
 

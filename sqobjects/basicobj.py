@@ -13,7 +13,6 @@ import json
 import typing
 import pandas as pd
 
-sys.path.append('/home/ddutt/work/')
 from suzieq.utils import load_sq_config, get_schemas
 from suzieq.utils import get_table_df, get_query_df
 

@@ -11,7 +11,6 @@ import sys
 import typing
 import pandas as pd
 
-sys.path.append('/home/ddutt/work/')
 from suzieq.sqobjects.lldp import lldpObj
 from suzieq.sqobjects import basicobj
 

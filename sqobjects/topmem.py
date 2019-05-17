@@ -7,11 +7,9 @@
 # LICENSE file in the root directory of this source tree.
 #
 
-import sys
 import typing
 import pandas as pd
 
-sys.path.append('/home/ddutt/work/')
 from suzieq.sqobjects import basicobj
 
 
