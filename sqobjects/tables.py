@@ -12,7 +12,6 @@ import os
 from pathlib import Path
 import pandas as pd
 
-sys.path.append('/home/ddutt/work')
 from suzieq.sqobjects import basicobj
 
 
