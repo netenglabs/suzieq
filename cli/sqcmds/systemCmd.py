@@ -8,12 +8,10 @@
 # LICENSE file in the root directory of this source tree.
 #
 
-import sys
 import time
 import typing
 from nubia import command, argument,  context
 
-sys.path.append('/home/ddutt/work/')
 from suzieq.cli.sqcmds.command import SQCommand
 from suzieq.sqobjects.system import systemObj
 

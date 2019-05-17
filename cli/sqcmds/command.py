@@ -1,16 +1,13 @@
 
-import sys
 from pathlib import Path
 import json
 from collections import OrderedDict
-
 
 import pandas as pd
 from termcolor import cprint
 from nubia import command, argument, context
 import typing
 
-sys.path.append('/home/ddutt/work/')
 from suzieq.utils import get_table_df, get_query_df
 
 
