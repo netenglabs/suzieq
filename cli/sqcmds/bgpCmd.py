@@ -8,12 +8,10 @@
 # LICENSE file in the root directory of this source tree.
 #
 
-import sys
 import time
 import typing
 from nubia import command, argument, context
 
-sys.path.append('/home/ddutt/work/')
 from suzieq.cli.sqcmds.command import SQCommand
 from suzieq.sqobjects.bgp import bgpObj
 
@@ -42,8 +40,9 @@ class bgpCmd(SQCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.bgpobj.get(hostname=self.hostname, 
-                              columns=self.columns, datacenter=self.datacenter)
+            df = self.bgpobj.get(hostname=self.hostname,
+                                 columns=self.columns,
+                                 datacenter=self.datacenter)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
 
@@ -62,9 +61,9 @@ class bgpCmd(SQCommand):
             self.ctxt.sort_fields = []
 
         df = self.bgpobj.describe(hostname=self.hostname,
-                                   columns=self.columns,
-                                   groupby=groupby.split(),
-                                   datacenter=self.datacenter)
+                                  columns=self.columns,
+                                  groupby=groupby.split(),
+                                  datacenter=self.datacenter)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
     
