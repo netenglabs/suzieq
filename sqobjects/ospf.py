@@ -12,7 +12,6 @@ from ipaddress import IPv4Network
 import typing
 import pandas as pd
 
-sys.path.append('/home/ddutt/work/')
 from suzieq.utils import get_query_df
 from suzieq.sqobjects.lldp import lldpObj
 from suzieq.sqobjects import basicobj
