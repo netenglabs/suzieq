@@ -12,7 +12,7 @@ import sys
 import pandas as pd
 import typing
 
-from suzieq.utils import get_query_df
+from suzieq.utils import get_query_df, get_display_fields
 from suzieq.sqobjects import basicobj
 from suzieq.sqobjects.lldp import lldpObj
 
@@ -36,6 +36,12 @@ class ifObj(basicobj.SQObject):
             result_df = self._assert_mtu_match(**kwargs)
         elif what == 'mtu-value':
             result_df = self._assert_mtu_value(**kwargs)
+
+        return result_df
+
+    def top(self, what='transitions', n=5, **kwargs) -> pd.DataFrame:
+        '''Get the list of top link changes'''
+        result_df = self._top_link_transitions(n, **kwargs)
 
         return result_df
 
@@ -159,6 +165,31 @@ class ifObj(basicobj.SQObject):
 
         return query_df
 
+    def _top_link_transitions(self, n, **kwargs):
+        '''Workhorse routine to return top n link transition links'''
+
+        if 'columns' in kwargs:
+            columns = kwargs['columns']
+            del kwargs['columns']
+        else:
+            columns = ['default']
+
+        columns = get_display_fields(self._table, columns,
+                                     self.schemas[self._table])
+        if 'transitionCnt' not in columns:
+            columns.insert(-2, 'transitionCnt')
+
+        if 'type' not in kwargs:
+            # On Linux there are all kinds of link transitions on non-physical
+            # links. Lets filter them out to prevent polluting the information.
+            kwargs['type'] = 'ether'
+
+        df = self.get(columns=columns, **kwargs)
+        if df.empty:
+            return df
+
+        return df.nlargest(n, columns=['transitionCnt'], keep='all').head(n=n)
+
 
 if __name__ == '__main__':
     try:
@@ -166,7 +197,4 @@ if __name__ == '__main__':
         fire.Fire(ifObj)
     except ImportError:
         pass
-
-
-
 
