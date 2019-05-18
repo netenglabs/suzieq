@@ -57,7 +57,7 @@ class ospfCmd(SQCommand):
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
 
-    @command('describe')
+    @command('summarize')
     @argument("ifname",
               description="Space separated list of interface names to qualify")
     @argument("vrf",
@@ -68,11 +68,11 @@ class ospfCmd(SQCommand):
               choices=["neighbor", "interface"])
     @argument("groupby",
               description="Space separated list of fields to summarize on")
-    def describe(self, ifname: str = '',
-                 vrf: str = '', state: str = '',
-                 type: str = 'neighbor', groupby: str = ''):
+    def summarize(self, ifname: str = '',
+                  vrf: str = '', state: str = '',
+                  type: str = 'neighbor', groupby: str = ''):
         """
-        Describe OSPF data
+        Summarize OSPF data
         """
         now = time.time()
         if self.columns != ['default']:
@@ -80,11 +80,11 @@ class ospfCmd(SQCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.ospfobj.describe(hostname=self.hostname, vrf=vrf.split(),
-                                   ifname=ifname.split(), state=state,
-                                   columns=self.columns,
-                                   datacenter=self.datacenter,
-                                   type=type, groupby=groupby.split())
+        df = self.ospfobj.summarize(hostname=self.hostname, vrf=vrf.split(),
+                                    ifname=ifname.split(), state=state,
+                                    columns=self.columns,
+                                    datacenter=self.datacenter,
+                                    type=type, groupby=groupby.split())
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
 

@@ -7,14 +7,11 @@
 # LICENSE file in the root directory of this source tree.
 #
 
-import sys
-import json
-
 import typing
 import pandas as pd
 
 from suzieq.utils import load_sq_config, get_schemas
-from suzieq.utils import get_table_df, get_query_df
+from suzieq.utils import get_table_df
 
 
 class SQContext(object):
@@ -89,6 +86,35 @@ class SQObject(object):
     @property
     def cfg(self):
         return self._cfg
+
+    def _split_dataframe_rows(self, df, column_selectors):
+        '''Return a new DF where a col with lists is split into separate rows.
+        Modified code from:
+        https://gist.github.com/jlln/338b4b0b55bd6984f883'''
+        # we need to keep track of the ordering of the columns
+        def _split_list_to_rows(row, row_accumulator, column_selector):
+            split_rows = {}
+            max_split = 0
+            for column_selector in column_selectors:
+                split_row = row[column_selector]
+                split_rows[column_selector] = split_row
+                if len(split_row) > max_split:
+                    max_split = len(split_row)
+
+            for i in range(max_split):
+                new_row = row.to_dict()
+                for col_sel in column_selectors:
+                    try:
+                        new_row[col_sel] = split_rows[col_sel][i]
+                    except IndexError:
+                        new_row[col_sel] = ''
+                row_accumulator.append(new_row)
+
+        new_rows = []
+        df.apply(_split_list_to_rows, axis=1, args=(new_rows,
+                                                    column_selectors))
+        new_df = pd.DataFrame(new_rows, columns=df.columns)
+        return new_df
 
     def system_df(self, datacenter):
         '''Return cached version if present, else add to cache the system DF'''
@@ -176,7 +202,7 @@ class SQObject(object):
         df = self.get_valid_df(self._table, sort_fields, **kwargs)
         return(df)
 
-    def describe(self, **kwargs):
+    def summarize(self, **kwargs):
         if not self._table:
             raise NotImplementedError
 
@@ -195,7 +221,7 @@ class SQObject(object):
             else:
                 for i in self._cat_fields:
                     if (kwargs.get(i, []) or
-                        'default' in kwargs.get('columns', [])):
+                            'default' in kwargs.get('columns', [])):
                         df[i] = df[i].astype('category', copy=False)
                 return(df
                        .describe(include='all')
@@ -207,6 +233,6 @@ class SQObject(object):
     def aver(self, **kwargs):
         raise NotImplementedError
 
-    def summary(self, **kwargs):
+    def top(self, **kwargs):
         raise NotImplementedError
-    
+

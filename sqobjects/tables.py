@@ -35,7 +35,7 @@ class tablesObj(basicobj.SQObject):
 
         return(df)
 
-    def describe(self, **kwargs):
+    def summarize(self, **kwargs):
         "Describes the fields for a given table"
 
         df = None

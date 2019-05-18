@@ -46,13 +46,13 @@ class lldpCmd(SQCommand):
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
 
-    @command('describe')
+    @command('summarize')
     @argument("ifname", description="interface name to qualify")
     @argument("groupby",
               description="Space separated list of fields to summarize on")
-    def describe(self, ifname: str = '', groupby: str = ''):
+    def summarize(self, ifname: str = '', groupby: str = ''):
         """
-        Describe LLDP info
+        Summarize LLDP info
         """
         # Get the default display field names
         now = time.time()
@@ -61,11 +61,11 @@ class lldpCmd(SQCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.lldpobj.describe(hostname=self.hostname,
-                                   ifname=ifname.split(),
-                                   columns=self.columns,
-                                   groupby=groupby.split(),
-                                   datacenter=self.datacenter)
+        df = self.lldpobj.summarize(hostname=self.hostname,
+                                    ifname=ifname.split(),
+                                    columns=self.columns,
+                                    groupby=groupby.split(),
+                                    datacenter=self.datacenter)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
     
