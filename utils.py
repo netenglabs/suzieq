@@ -266,7 +266,7 @@ def get_table_df(table: str, start_time: str, end_time: str,
     return df
 
 
-def get_display_fields(table:str, columns:str, schema:dict) -> list:
+def get_display_fields(table:str, columns:list, schema:dict) -> list:
     '''Return the list of display fields for the given table'''
 
     if columns == ['default']:
