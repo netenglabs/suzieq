@@ -8,7 +8,7 @@
 #
 
 import typing
-from ipaddress import ip_interface, ip_network
+from ipaddress import ip_interface, ip_network, IPv4Interface, IPv6Interface
 import pandas as pd
 
 from suzieq.sqobjects import basicobj
@@ -27,16 +27,17 @@ class addrObj(basicobj.SQObject):
         self._sort_fields = ['datacenter', 'hostname', 'ifname']
         self._cat_fields = []
 
-    def _addr_cmp(*addrlist, addr='', match='subnet'):
-        ipa = ip_interface(addr)
+    def _addr_cmp(*addrlist: pd.array, addr='',
+                  match: str = 'subnet') -> bool:
         for ele in addrlist[1]:
-            if (match == 'subnet' and ipa in ip_network(ele, strict=False)):
+            if (match == 'subnet' and addr in ip_network(ele, strict=False)):
                 return True
-            elif (match == 'exact' and ipa.ip == ip_interface(ele).ip):
+            elif (match == 'exact' and addr.ip == ip_interface(ele).ip):
                 return True
         return False
 
-    def get(self, **kwargs):
+    def get(self, **kwargs) -> pd.DataFrame:
+        '''Retrieve the dataframe that matches a given IP address'''
         if not self._table:
             raise NotImplementedError
 
@@ -54,18 +55,39 @@ class addrObj(basicobj.SQObject):
         else:
             sort_fields = self._sort_fields
 
-        df = self.get_valid_df(self._table, sort_fields, **kwargs)
-        if ':' in addr:
-            return(df[df.ip6AddressList.apply(lambda x: addr in x)])
+        columns = kwargs.get('columns', [])
+        del kwargs['columns']
+        if columns != ['default']:
+            for col in ['macaddr', 'ip6AddressList', 'ipAddressList']:
+                if col not in columns:
+                    columns.insert(4, col)
         else:
-            return(df[df.ipAddressList.apply(self._addr_cmp, addr=addr,
-                                             match=match)])
+            columns = ['datacenter', 'hostname', 'ifname', 'ipAddressList',
+                       'ip6AddressList', 'macaddr']
+
+        df = self.get_valid_df(self._table, sort_fields, columns=columns,
+                               **kwargs)
+        try:
+            ipa = ip_interface(addr)
+            if type(ipa) == IPv6Interface:
+                return(df[df.ip6AddressList.apply(self._addr_cmp, addr=ipa,
+                                                  match=match)])
+            else:
+                return(df[df.ipAddressList.apply(self._addr_cmp, addr=ipa,
+                                                 match=match)])
+        except ValueError:
+            # Is this a MAC address?
+            return(df[df.macaddr == addr])
+
+    def describe(self, **kwargs):
+        '''Describe the IP Address data'''
+        pass
 
 
 if __name__ == '__main__':
     try:
         import fire
-        fire.Fire(addressObj)
+        fire.Fire(addrObj)
     except ImportError:
         pass
         pass
