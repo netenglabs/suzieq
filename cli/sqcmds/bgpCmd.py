@@ -46,12 +46,12 @@ class bgpCmd(SQCommand):
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
 
-    @command('describe')
+    @command('summarize')
     @argument("groupby",
               description="Space separated list of fields to summarize on")
-    def describe(self, groupby: str = ''):
+    def summarize(self, groupby: str = ''):
         """
-        Describe bgp info
+        Summarize bgp info
         """
         # Get the default display field names
         now = time.time()
@@ -60,11 +60,11 @@ class bgpCmd(SQCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.bgpobj.describe(hostname=self.hostname,
-                                  columns=self.columns,
-                                  groupby=groupby.split(),
-                                  datacenter=self.datacenter)
+        df = self.bgpobj.summarize(hostname=self.hostname,
+                                   columns=self.columns,
+                                   groupby=groupby.split(),
+                                   datacenter=self.datacenter)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
-    
+
 

@@ -45,7 +45,7 @@ class ospfObj(basicobj.SQObject):
         df = self.get_valid_df(table, sort_fields, **kwargs)
         return(df)
 
-    def describe(self, **kwargs):
+    def summarize(self, **kwargs):
         '''Describe the data'''
         if self.ctxt.sort_fields is None:
             sort_fields = None

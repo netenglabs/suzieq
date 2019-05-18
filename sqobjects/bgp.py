@@ -6,14 +6,10 @@
 #
 # This source code is licensed under the BSD-style license found in the
 # LICENSE file in the root directory of this source tree.
-#
-
-import sys
 
 import pandas as pd
 import typing
 
-from suzieq.utils import get_query_df
 from suzieq.sqobjects import basicobj
 
 
@@ -37,6 +33,4 @@ if __name__ == '__main__':
         fire.Fire(bgpObj)
     except ImportError:
         pass
-
-
 
