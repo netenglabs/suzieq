@@ -38,7 +38,7 @@ class tablesCmd(SQCommand):
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
 
-    @command('summarize')
+    @command('describe')
     @argument("table", description="interface name to qualify")
     def summarize(self, table: str = '', **kwargs):
         """
