@@ -111,4 +111,20 @@ class ospfCmd(SQCommand):
             print('Assert failed')
 
         return
-        
+
+    @command('top')
+    @argument('what', description='Field you want to see top for',
+              choices=['transitions'])
+    @argument('count', description='How many top entries')
+    def top(self, what: str = 'transitions', count: int = 5):
+        '''
+        Show top n entries based on specific field
+        '''
+        now = time.time()
+
+        df = self.ospfobj.top(hostname=self.hostname, what=what, n=count,
+                              columns=self.columns, datacenter=self.datacenter)
+
+        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
+        print(df)
+

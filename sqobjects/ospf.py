@@ -12,7 +12,7 @@ from ipaddress import IPv4Network
 import typing
 import pandas as pd
 
-from suzieq.utils import get_query_df
+from suzieq.utils import get_query_df, get_display_fields
 from suzieq.sqobjects.lldp import lldpObj
 from suzieq.sqobjects import basicobj
 
@@ -165,6 +165,27 @@ class ospfObj(basicobj.SQObject):
                 [['datacenter', 'hostname', 'ifname', 'vrf', 'reason']]) \
                 .query('reason != tuple()') \
                 .fillna('-')
+
+    def top(self, what='transitions', n=5, **kwargs) -> pd.DataFrame:
+        '''Get the list of top stuff about OSPF'''
+
+        if 'columns' in kwargs:
+            columns = kwargs['columns']
+            del kwargs['columns']
+        else:
+            columns = ['default']
+
+        columns = get_display_fields('ospfNbr', columns,
+                                     self.schemas[self._table])
+        if 'numChanges' not in columns:
+            columns.insert(-2, 'numChanges')
+
+        df = self.get(columns=columns, **kwargs)
+        if df.empty:
+            return df
+
+        return df.nlargest(n, columns=['numChanges'], keep='all').head(n=n)
+
 
 if __name__ == '__main__':
     try:
