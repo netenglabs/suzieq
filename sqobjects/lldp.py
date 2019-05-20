@@ -10,7 +10,6 @@
 import sys
 import typing
 
-from suzieq.utils import get_query_df
 from suzieq.sqobjects import basicobj
 
 

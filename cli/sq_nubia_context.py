@@ -13,13 +13,12 @@ from nubia import context
 from nubia import exceptions
 from nubia import eventbus
 
-sys.path.append('/home/ddutt/work/')
 from suzieq.utils import load_sq_config, get_schemas
-
+from suzieq.engines import get_sqengine
 
 class NubiaSuzieqContext(context.Context):
 
-    def __init__(self):
+    def __init__(self, engine="pandas"):
         self.cfg = load_sq_config(validate=False)
 
         self.schemas = get_schemas(self.cfg['schema-directory'])
@@ -29,9 +28,10 @@ class NubiaSuzieqContext(context.Context):
         self.start_time = ''
         self.end_time = ''
         self.exec_time = ''
-        self.engine = 'pandas'
+        self.engine_name = engine
         self.system_df = {}
         self.sort_fields = []
+        self.engine = get_sqengine(engine)
         super().__init__()
 
     def on_connected(self, *args, **kwargs):

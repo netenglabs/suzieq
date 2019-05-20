@@ -11,23 +11,28 @@ import typing
 import pandas as pd
 
 from suzieq.utils import load_sq_config, get_schemas
-from suzieq.utils import get_table_df
+from suzieq.engines import get_sqengine
 
 
 class SQContext(object):
 
-    cfg = load_sq_config(validate=False)
+    def __init__(engine):
+        cfg = load_sq_config(validate=False)
 
-    schemas = get_schemas(cfg['schema-directory'])
+        schemas = get_schemas(cfg['schema-directory'])
 
-    datacenter = ''
-    hostname = ''
-    start_time = ''
-    end_time = ''
-    exec_time = ''
-    engine = 'pandas'
-    system_df = {}
-    sort_fields = []
+        datacenter = ''
+        hostname = ''
+        start_time = ''
+        end_time = ''
+        exec_time = ''
+        engine = 'pandas'
+        system_df = {}
+        sort_fields = []
+        engine = get_sqengine(engine)
+        if not engine:
+            # We really should define our own error
+            raise ValueError
 
 
 class SQObject(object):
@@ -39,11 +44,11 @@ class SQObject(object):
                  context=None) -> None:
 
         if context is None:
-            self.ctxt = SQContext()
+            self.ctxt = SQContext(engine)
         else:
             self.ctxt = context
             if not self.ctxt:
-                self.ctxt = SQContext()
+                self.ctxt = SQContext(engine)
 
         self._ctxt = None
         self._cfg = self.ctxt.cfg
@@ -138,9 +143,14 @@ class SQObject(object):
                                        pd.DataFrame(columns=sys_cols))
 
     def get_valid_df(self, table, sort_fields, **kwargs):
-        table_df = get_table_df(table, self.start_time, self.end_time,
-                                self.view, sort_fields, self.cfg,
-                                self.schemas, self.engine, **kwargs)
+        if not self.ctxt.engine:
+            print('Specify an analysis engine using set engine command')
+            return(pd.DataFrame(columns=['datacenter', 'hostname']))
+
+        table_df = self.ctxt.engine.get_table_df(
+            self.cfg, self.schemas, table=table, start_time=self.start_time,
+            end_time=self.end_time, view=self.view, sort_fields=sort_fields,
+            **kwargs)
 
         datacenter = kwargs.get('datacenter', None)
         if not datacenter:
