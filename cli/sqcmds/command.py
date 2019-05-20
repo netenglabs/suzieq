@@ -8,6 +8,8 @@ from termcolor import cprint
 from nubia import command, argument, context
 import typing
 
+from suzieq.engines import get_sqengine
+
 
 class SQCommand:
     '''Base Command Class for use with all verbs'''
@@ -55,7 +57,7 @@ class SQCommand:
         self.view = view
         self.columns = columns.split()
         if engine:
-            self.engine = engine
+            self.engine = get_sqengine(engine)
         else:
             self.engine = self.ctxt.engine
 

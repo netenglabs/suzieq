@@ -21,6 +21,9 @@ class SQEngine(object):
     def get_table_df(self, cfg, schemas, **kwargs):
         raise NotImplementedError
 
+    def get_object(self, objname: str):
+        raise NotImplementedError
+
     def get_display_fields(self, table: str, columns: list,
                            schema: dict) -> list:
         '''Return the list of display fields for the given table'''
@@ -140,7 +143,7 @@ class SQEngine(object):
 def get_sqengine(name: str = 'pandas'):
     if name == 'pandas':
         try:
-            from .pandas_engine import SQPandasEngine
+            from .pandas.engine import SQPandasEngine
 
             return(SQPandasEngine())
         except ImportError:

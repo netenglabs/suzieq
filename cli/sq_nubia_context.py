@@ -50,3 +50,11 @@ class NubiaSuzieqContext(context.Context):
         # dispatch the on connected message
         self.registry.dispatch_message(eventbus.Message.CONNECTED)
 
+    def change_engine(self, engine: str):
+        #if engine == self.engine_name:
+        #    return
+
+        self.engine_name = engine
+        self.engine = get_sqengine(engine)
+
+

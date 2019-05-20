@@ -9,6 +9,6 @@
 
 name = 'sqengines'
 
-from .engine import get_sqengine
+from .base_engine import get_sqengine
 
 __all__ = [get_sqengine]
