@@ -8,8 +8,6 @@ from termcolor import cprint
 from nubia import command, argument, context
 import typing
 
-from suzieq.utils import get_table_df, get_query_df
-
 
 class SQCommand:
     '''Base Command Class for use with all verbs'''

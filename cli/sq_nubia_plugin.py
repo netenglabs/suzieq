@@ -9,6 +9,7 @@
 
 import argparse
 from sqcmds import *
+from sqcmds import context_commands
 from sqcmds import sqcmds_all
 from sq_nubia_context import NubiaSuzieqContext
 from sq_nubia_statusbar import NubiaSuzieqStatusBar
@@ -44,6 +45,8 @@ class NubiaSuzieqPlugin(PluginInterface):
 
     def get_commands(self):
         cmds = [AutoCommand(getattr(globals()[x], x)) for x in sqcmds_all]
+        cmds.append(AutoCommand(context_commands.set_ctxt))
+        cmds.append(AutoCommand(context_commands.clear_ctxt))
         return cmds
 
     def get_opts_parser(self, add_help=True):
@@ -74,11 +77,19 @@ class NubiaSuzieqPlugin(PluginInterface):
             "temporary file. This disables this feature "
             "by sending the logging output to stderr",
         )
+        opts_parser.add_argument(
+            "--use-engine",
+            "-e",
+            help="Which analysis engine to use",
+            default="pandas"
+        )
         return opts_parser
 
     def get_completion_datasource_for_global_argument(self, argument):
         if argument == "--config":
             return ConfigFileCompletionDataSource()
+        if argument == "--use-engine":
+            return ConfigEngineCompletionDataSource()
         return None
 
     def create_usage_logger(self, context):
@@ -103,3 +114,8 @@ class NubiaSuzieqPlugin(PluginInterface):
 class ConfigFileCompletionDataSource(CompletionDataSource):
     def get_all(self):
         return ["/tmp/c1", "/tmp/c2"]
+
+
+class ConfigEngineCompletionDataSource(CompletionDataSource):
+    def get_all(self):
+        return ["pandas", "spark"]

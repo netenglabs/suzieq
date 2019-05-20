@@ -12,9 +12,10 @@ from ipaddress import IPv4Network
 import typing
 import pandas as pd
 
-from suzieq.utils import get_query_df, get_display_fields
+from suzieq.utils import get_display_fields
 from suzieq.sqobjects.lldp import lldpObj
 from suzieq.sqobjects import basicobj
+
 
 class ospfObj(basicobj.SQObject):
 
@@ -193,6 +194,3 @@ if __name__ == '__main__':
         fire.Fire(ospfObj)
     except ImportError:
         pass
-
-
-
