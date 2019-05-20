@@ -41,11 +41,17 @@ def build_pa_filters(start_tm: str, end_tm: str,
                         kwdor.append([tuple(('{}'.format(k), '==',
                                              '{}'.format(e)))])
                     else:
-                        for entry in filters:
-                            foo = deepcopy(entry)
+                        if len(filters) == 1 and not isinstance(filters[0], list):
+                            foo = deepcopy(filters)
                             foo.append(tuple(('{}'.format(k), '==',
                                               '{}'.format(e))))
                             kwdor.append(foo)
+                        else:
+                            for entry in filters:
+                                foo = deepcopy(entry)
+                                foo.append(tuple(('{}'.format(k), '==',
+                                                  '{}'.format(e))))
+                                kwdor.append(foo)
 
                 filters = kwdor
             else:
