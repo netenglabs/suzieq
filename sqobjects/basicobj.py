@@ -124,16 +124,21 @@ class SQObject(object):
     def system_df(self, datacenter):
         '''Return cached version if present, else add to cache the system DF'''
 
+        if not self.ctxt.engine:
+            print('Specify an analysis engine using set engine command')
+            return(pd.DataFrame(columns=['datacenter', 'hostname']))
+
         sys_cols = ['datacenter', 'hostname', 'timestamp']
         if self.ctxt.system_df.get(datacenter, None) is None:
             sys_cols = ['datacenter', 'hostname', 'timestamp']
             sys_sort = ['datacenter', 'hostname']
 
-            system_df = get_table_df('system', self.start_time, self.end_time,
-                                     self.view, sys_sort, self.cfg,
-                                     self.schemas, self.engine,
-                                     datacenter=datacenter,
-                                     columns=sys_cols)
+            system_df = self.ctxt.engine.get_table_df(
+                self.cfg, self.schemas, table='system', view=self.view,
+                start_time=self.start_time, end_time=self.end_time,
+                datacenter=datacenter,
+                sort_fields=sys_sort, columns=sys_cols)
+
             if datacenter not in self.ctxt.system_df:
                 self.ctxt.system_df[datacenter] = None
 
