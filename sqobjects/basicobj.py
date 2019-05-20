@@ -180,11 +180,11 @@ class SQObject(object):
             if self.start_time or self.end_time:
                 sys_cols = ['datacenter', 'hostname', 'timestamp']
                 sys_sort = ['datacenter', 'hostname']
-                sys_df = get_table_df('system', self.start_time,
-                                      self.end_time, self.view, sys_sort,
-                                      self.cfg, self.schemas, self.engine,
-                                      datacenter=datacenter,
-                                      columns=sys_cols)
+                system_df = self.ctxt.engine.get_table_df(
+                    self.cfg, self.schemas, table='system', view=self.view,
+                    start_time=self.start_time, end_time=self.end_time,
+                    datacenter=datacenter,
+                    sort_fields=sys_sort, columns=sys_cols)
             else:
                 sys_df = self.system_df(datacenter[0])
 
