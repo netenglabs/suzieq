@@ -40,7 +40,7 @@ def set_ctxt(hostname: typing.List[str] = [], start_time: str = '',
         plugin_ctx.end_time = end_time
 
     if engine:
-        plugin_ctx.engine = engine
+        plugin_ctx.change_engine(engine)
 
 
 @command("clear")

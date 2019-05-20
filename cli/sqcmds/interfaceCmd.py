@@ -13,7 +13,7 @@ from nubia import command, argument,  context
 import pandas as pd
 
 from suzieq.cli.sqcmds.command import SQCommand
-from suzieq.sqobjects.interface import ifObj
+from suzieq.sqobjects.interfaces import ifObj
 
 
 @command('interface', help="Act on Interface data")

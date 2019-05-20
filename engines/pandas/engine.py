@@ -10,10 +10,11 @@
 import os
 from concurrent.futures import ProcessPoolExecutor as Executor
 from pathlib import Path
+from importlib import import_module
 
 import pandas as pd
 import pyarrow.parquet as pa
-from .engine import SQEngine
+from suzieq.engines.base_engine import SQEngine
 
 
 class SQPandasEngine(SQEngine):
@@ -144,6 +145,11 @@ class SQPandasEngine(SQEngine):
             return(final_df[fields].sort_values(by=sort_fields))
         else:
             return(final_df[fields])
+
+    def get_object(self, objname: str, iobj):
+        module = import_module('suzieq.engines.pandas.' + objname)
+        eobj = getattr(module, '{}Obj'.format(objname))
+        return eobj(iobj)
 
     def get_filecnt(self, path='.'):
         total = 0
