@@ -8,9 +8,7 @@
 #
 
 import os
-from concurrent.futures import ProcessPoolExecutor as Executor
-
-from suzieq.utils import load_sq_config, get_schemas
+import pandas as pd
 
 
 class SQEngine(object):
@@ -79,65 +77,65 @@ class SQEngine(object):
         return lsd
 
     def get_latest_ts_dirs(self, dirs, ssecs, esecs):
-            newdirs = None
+        newdirs = None
 
-            if not ssecs and not esecs:
-                dirs.sort(key=lambda x: int(x.split('=')[1]))
-                newdirs = dirs
-            elif ssecs and not esecs:
-                newdirs = list(filter(lambda x: int(x.split('=')[1]) > ssecs,
-                                      dirs))
-                if not newdirs:
-                    # FInd the entry most adjacent to this one
-                    newdirs = list(
-                        filter(lambda x: int(x.split('=')[1]) < ssecs,
-                               dirs))
-            elif esecs and not ssecs:
-                newdirs = list(filter(lambda x: int(x.split('=')[1]) < esecs,
-                                      dirs))
-            else:
-                newdirs = list(filter(lambda x: int(x.split('=')[1]) < esecs
-                                      and int(x.split('=')[1]) > ssecs, dirs))
-                if not newdirs:
-                    # FInd the entry most adjacent to this one
-                    newdirs = list(
-                        filter(lambda x: int(x.split('=')[1]) < ssecs,
-                               dirs))
+        if not ssecs and not esecs:
+            dirs.sort(key=lambda x: int(x.split('=')[1]))
+            newdirs = dirs
+        elif ssecs and not esecs:
+            newdirs = list(filter(lambda x: int(x.split('=')[1]) > ssecs,
+                                  dirs))
+            if not newdirs:
+                # FInd the entry most adjacent to this one
+                newdirs = list(
+                    filter(lambda x: int(x.split('=')[1]) < ssecs,
+                           dirs))
+        elif esecs and not ssecs:
+            newdirs = list(filter(lambda x: int(x.split('=')[1]) < esecs,
+                                  dirs))
+        else:
+            newdirs = list(filter(lambda x: int(x.split('=')[1]) < esecs
+                                  and int(x.split('=')[1]) > ssecs, dirs))
+            if not newdirs:
+                # FInd the entry most adjacent to this one
+                newdirs = list(
+                    filter(lambda x: int(x.split('=')[1]) < ssecs,
+                           dirs))
 
-            return newdirs
+        return newdirs
 
     def get_latest_pq_files(self, files, root, ssecs, esecs):
 
-            newfiles = None
+        newfiles = None
 
-            if not ssecs and not esecs:
-                files.sort(key=lambda x: os.path.getctime(
-                    '%s/%s' % (root, x)))
-                newfiles = files
-            elif ssecs and not esecs:
+        if not ssecs and not esecs:
+            files.sort(key=lambda x: os.path.getctime(
+                '%s/%s' % (root, x)))
+            newfiles = files
+        elif ssecs and not esecs:
+            newfiles = list(filter(
+                lambda x: os.path.getctime('%s/%s' % (root, x)) > ssecs,
+                files))
+            if not newfiles:
+                # FInd the entry most adjacent to this one
                 newfiles = list(filter(
-                    lambda x: os.path.getctime('%s/%s' % (root, x)) > ssecs,
+                    lambda x: os.path.getctime('{}/{}'.format(
+                        root, x)) < ssecs, files))
+        elif esecs and not ssecs:
+            newfiles = list(filter(
+                lambda x: os.path.getctime('%s/%s' % (root, x)) < esecs,
+                files))
+        else:
+            newfiles = list(filter(
+                lambda x: os.path.getctime('%s/%s' % (root, x)) < esecs
+                and os.path.getctime('%s/%s' % (root, x)) > ssecs, files))
+            if not newfiles:
+                # Find the entry most adjacent to this one
+                newfiles = list(filter(
+                    lambda x: os.path.getctime('%s/%s'
+                                               % (root, x)) < ssecs,
                     files))
-                if not newfiles:
-                    # FInd the entry most adjacent to this one
-                    newfiles = list(filter(
-                        lambda x: os.path.getctime('{}/{}'.format(
-                            root, x)) < ssecs, files))
-            elif esecs and not ssecs:
-                newfiles = list(filter(
-                    lambda x: os.path.getctime('%s/%s' % (root, x)) < esecs,
-                    files))
-            else:
-                newfiles = list(filter(
-                    lambda x: os.path.getctime('%s/%s' % (root, x)) < esecs
-                    and os.path.getctime('%s/%s' % (root, x)) > ssecs, files))
-                if not newfiles:
-                    # Find the entry most adjacent to this one
-                    newfiles = list(filter(
-                        lambda x: os.path.getctime('%s/%s'
-                                                   % (root, x)) < ssecs,
-                        files))
-            return newfiles
+        return newfiles
 
 
 def get_sqengine(name: str = 'pandas'):
