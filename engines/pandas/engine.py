@@ -14,7 +14,9 @@ from importlib import import_module
 
 import pandas as pd
 import pyarrow.parquet as pa
+
 from suzieq.engines.base_engine import SQEngine
+from suzieq.utils import get_display_fields, get_latest_files
 
 
 class SQPandasEngine(SQEngine):
@@ -62,7 +64,7 @@ class SQPandasEngine(SQEngine):
             key_fields = []
             if len(kwargs.get('datacenter', [])) > 1:
                 del kwargs['datacenter']
-            files = self.get_latest_files(folder, start, end)
+            files = get_latest_files(folder, start, end)
         else:
             key_fields = [f['name'] for f in sch
                           if f.get('key', None) is not None]
@@ -76,7 +78,7 @@ class SQPandasEngine(SQEngine):
         else:
             columns = ['default']
 
-        fields = self.get_display_fields(table, columns, sch)
+        fields = get_display_fields(table, columns, sch)
 
         if 'active' not in fields:
             fields.append('active')
