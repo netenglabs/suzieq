@@ -122,7 +122,7 @@ def get_display_fields(table: str, columns: list, schema: dict) -> list:
     return fields
 
 
-def get_latest_files(self, folder, start='', end='') -> list:
+def get_latest_files(folder, start='', end='') -> list:
     lsd = []
 
     if start:
@@ -143,10 +143,10 @@ def get_latest_files(self, folder, start='', end='') -> list:
     for root, dirs, files in os.walk(folder):
         flst = None
         if dirs and dirs[0].startswith('timestamp') and not pq_files:
-            flst = self.get_latest_ts_dirs(dirs, ssecs, esecs)
+            flst = get_latest_ts_dirs(dirs, ssecs, esecs)
             ts_dirs = True
         elif files and not ts_dirs:
-            flst = self.get_latest_pq_files(files, root, ssecs, esecs)
+            flst = get_latest_pq_files(files, root, ssecs, esecs)
             pq_files = True
 
         if flst:
@@ -155,7 +155,7 @@ def get_latest_files(self, folder, start='', end='') -> list:
     return lsd
 
 
-def get_latest_ts_dirs(self, dirs, ssecs, esecs):
+def get_latest_ts_dirs(dirs, ssecs, esecs):
     newdirs = None
 
     if not ssecs and not esecs:
@@ -184,7 +184,7 @@ def get_latest_ts_dirs(self, dirs, ssecs, esecs):
     return newdirs
 
 
-def get_latest_pq_files(self, files, root, ssecs, esecs):
+def get_latest_pq_files(files, root, ssecs, esecs):
 
     newfiles = None
 
