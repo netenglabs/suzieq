@@ -11,6 +11,7 @@ import os
 from concurrent.futures import ProcessPoolExecutor as Executor
 from pathlib import Path
 from importlib import import_module
+from copy import deepcopy
 
 import pandas as pd
 import pyarrow.parquet as pa
