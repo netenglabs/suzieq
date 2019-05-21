@@ -7,7 +7,6 @@
 # LICENSE file in the root directory of this source tree.
 #
 
-import sys
 import typing
 
 from suzieq.sqobjects import basicobj
@@ -21,8 +20,7 @@ class lldpObj(basicobj.SQObject):
                  columns: typing.List[str] = ['default'],
                  context=None) -> None:
         super().__init__(engine, hostname, start_time, end_time, view,
-                         datacenter, columns, context=context)
-        self._table = 'lldp'
+                         datacenter, columns, context=context, table='lldp')
         self._sort_fields = ['datacenter', 'hostname', 'ifname']
         self._cat_fields = []
 
@@ -33,4 +31,3 @@ if __name__ == '__main__':
         fire.Fire(lldpObj)
     except ImportError:
         pass
-

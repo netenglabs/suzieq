@@ -89,6 +89,8 @@ class interfaceCmd(SQCommand):
             print('Provide value to match MTU against')
             return
 
+        if what == 'mtu-match':
+            value = 0
         df = self.ifobj.aver(hostname=self.hostname, ifname=ifname.split(),
                              columns=self.columns, datacenter=self.datacenter,
                              what=what, matchval=value)

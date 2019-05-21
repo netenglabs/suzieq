@@ -96,55 +96,43 @@ class SQObject(object):
     def cfg(self):
         return self._cfg
 
-    def system_df(self, datacenter):
+    def system_df(self, datacenter) -> pd.DataFrame:
         '''Return cached version if present, else add to cache the system DF'''
 
         if not self.ctxt.engine:
-            print('Specify an analysis engine using set engine command')
+            print('No analysis engine specified')
             return(pd.DataFrame(columns=['datacenter', 'hostname']))
 
         return self.engine_obj.system_df(datacenter,
                                          pd.DataFrame(columns=sys_cols))
 
-    def get_valid_df(self, table, sort_fields, **kwargs):
+    def get_valid_df(self, table, sort_fields, **kwargs) -> pd.DataFrame:
         if not self.ctxt.engine:
-            print('Specify an analysis engine using set engine command')
+            print('No analysis engine specified')
             return(pd.DataFrame(columns=['datacenter', 'hostname']))
 
         return self.engine_obj.get_valid_df(self._table, sort_fields,
                                             **kwargs)
-        return(final_df)
 
-    def get(self, **kwargs):
+    def get(self, **kwargs) -> pd.DataFrame:
         if not self._table:
             raise NotImplementedError
 
         if not self.ctxt.engine:
-            print('Specify an analysis engine using set engine command')
+            print('No analysis engine specified')
             return(pd.DataFrame(columns=['datacenter', 'hostname']))
 
-        if self.ctxt.sort_fields is None:
-            sort_fields = None
-        else:
-            sort_fields = self._sort_fields
+        return self.engine_obj.get(**kwargs)
 
-        return self.engine_obj.get(self._table, sort_fields,
-                                   **kwargs)
-
-    def summarize(self, **kwargs):
+    def summarize(self, **kwargs) -> pd.DataFrame:
         if not self._table:
             raise NotImplementedError
 
         if not self.ctxt.engine:
-            print('Specify an analysis engine using set engine command')
+            print('No analysis engine specified')
             return(pd.DataFrame(columns=['datacenter', 'hostname']))
 
-        if self.ctxt.sort_fields is None:
-            sort_fields = None
-        else:
-            sort_fields = self._sort_fields
-
-        return self.engine_obj.summarize(self._table, sort_fields, **kwargs)
+        return self.engine_obj.summarize(**kwargs)
 
     def analyze(self, **kwargs):
         raise NotImplementedError
@@ -154,6 +142,5 @@ class SQObject(object):
 
     def top(self, **kwargs):
         raise NotImplementedError
-
 
 

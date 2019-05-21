@@ -9,8 +9,7 @@
 #
 
 import time
-import typing
-from nubia import command, argument, context
+from nubia import command, argument
 
 from suzieq.cli.sqcmds.command import SQCommand
 from suzieq.sqobjects.bgp import bgpObj
@@ -40,9 +39,9 @@ class bgpCmd(SQCommand):
         else:
             self.ctxt.sort_fields = []
 
-            df = self.bgpobj.get(hostname=self.hostname,
-                                 columns=self.columns,
-                                 datacenter=self.datacenter)
+        df = self.bgpobj.get(hostname=self.hostname,
+                             columns=self.columns,
+                             datacenter=self.datacenter)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
 

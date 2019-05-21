@@ -7,11 +7,7 @@
 # LICENSE file in the root directory of this source tree.
 #
 
-import sys
 import typing
-import pandas as pd
-
-from suzieq.sqobjects.lldp import lldpObj
 from suzieq.sqobjects import basicobj
 
 
@@ -26,12 +22,11 @@ class systemObj(basicobj.SQObject):
         self._sort_fields = ['datacenter', 'hostname']
         self._cat_fields = []
 
+
 if __name__ == '__main__':
     try:
         import fire
         fire.Fire(systemObj)
     except ImportError:
         pass
-
-
 
