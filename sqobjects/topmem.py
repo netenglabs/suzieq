@@ -8,7 +8,6 @@
 #
 
 import typing
-import pandas as pd
 
 from suzieq.sqobjects import basicobj
 
@@ -20,8 +19,7 @@ class topmemObj(basicobj.SQObject):
                  columns: typing.List[str] = ['default'],
                  context=None) -> None:
         super().__init__(engine, hostname, start_time, end_time, view,
-                         datacenter, columns, context=context)
-        self._table = 'topmem'
+                         datacenter, columns, context=context, table='topmem')
         self._sort_fields = ['datacenter', 'hostname']
         self._cat_fields = []
 

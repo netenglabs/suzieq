@@ -7,14 +7,10 @@
 # LICENSE file in the root directory of this source tree.
 #
 
-import sys
-
 import pandas as pd
 import typing
 
-from suzieq.utils import get_query_df, get_display_fields
 from suzieq.sqobjects import basicobj
-from suzieq.sqobjects.lldp import lldpObj
 
 
 class ifObj(basicobj.SQObject):

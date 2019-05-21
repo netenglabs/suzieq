@@ -8,9 +8,9 @@
 #
 
 import typing
-import pandas as pd
 
 from suzieq.sqobjects import basicobj
+
 
 class topcpuObj(basicobj.SQObject):
 
@@ -20,8 +20,7 @@ class topcpuObj(basicobj.SQObject):
                  columns: typing.List[str] = ['default'],
                  context=None) -> None:
         super().__init__(engine, hostname, start_time, end_time, view,
-                         datacenter, columns, context=context)
-        self._table = 'topcpu'
+                         datacenter, columns, context=context, table='topcpu')
         self._sort_fields = ['datacenter', 'hostname']
         self._cat_fields = []
 

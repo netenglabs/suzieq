@@ -7,7 +7,6 @@
 # This source code is licensed under the BSD-style license found in the
 # LICENSE file in the root directory of this source tree.
 
-import pandas as pd
 import typing
 
 from suzieq.sqobjects import basicobj
@@ -21,8 +20,7 @@ class bgpObj(basicobj.SQObject):
                  columns: typing.List[str] = ['default'],
                  context=None) -> None:
         super().__init__(engine, hostname, start_time, end_time, view,
-                         datacenter, columns, context=context)
-        self._table = 'bgp'
+                         datacenter, columns, context=context, table='bgp')
         self._sort_fields = ['datacenter', 'hostname', 'peer']
         self._cat_fields = ['asn', 'peerAsn']
 
