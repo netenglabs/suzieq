@@ -7,9 +7,6 @@
 # LICENSE file in the root directory of this source tree.
 #
 
-import os
-import pandas as pd
-
 
 class SQEngine(object):
 
@@ -29,6 +26,14 @@ def get_sqengine(name: str = 'pandas'):
             from .pandas.engine import SQPandasEngine
 
             return(SQPandasEngine())
+        except ImportError:
+            return None
+
+    elif name == 'spark':
+        try:
+            from .spark.engine import SQSparkEngine
+
+            return(SQSparkEngine())
         except ImportError:
             return None
 
