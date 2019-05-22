@@ -40,7 +40,6 @@ x
 
 code_viewall_tmpl = '''
 import sys
-sys.path.append("/home/ddutt/work/suzieq/")
 
 for k in {1}:
     spark.read.option("basePath", "{0}").load("{0}/" + k).createOrReplaceTempView(k)
