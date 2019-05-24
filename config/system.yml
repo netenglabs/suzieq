@@ -3,7 +3,8 @@ show-fields:
   - model
   - version
   - vendor
-  - os
+  - architecture
+  - status
   - bootupTimestamp
 apply:
   eos:
@@ -14,16 +15,22 @@ apply:
     "version: version",
     "vendor: vendor?|Arista",
     "os: os?|EOS",
+    "architecture: architecture",
     "bootupTimestamp: bootupTimestamp"]'
 
   cumulus:
     version: all
-    command: cat /proc/uptime; net show system
-    textfsm: textfsm_templates/cl_showsys.tfsm
+    command: net show system json
+    normalize: '[
+    "platform/model: model",
+    "platform/vendor: vendor",
+    "os-version: version",
+    "architecture: architecture?|x86-64",
+    "uptime: bootupTimestamp"]'
 
   linux:
     version: all
-    command: cat /proc/uptime; cat /etc/os-release
+    command: cat /proc/uptime; hostnamectl
     textfsm: textfsm_templates/linux_showsys.tfsm
 
   platina:
