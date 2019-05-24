@@ -8,6 +8,7 @@ import ast
 import copy
 import logging
 import json
+import dateparser
 
 import yaml
 
@@ -879,7 +880,20 @@ class SystemService(Service):
                     raw_data["timestamp"] / 1000 - float(entry.get("sysUptime"))
                 )
                 del entry["sysUptime"]
+            # This is the case for Linux servers, so also extract the vendor and
+            # version from the os string
+            if not entry.get("vendor", ''):
+                if 'os' in entry:
+                    osstr = entry.get("os", "").split()
+                    if len(osstr) > 1:
+                        # Assumed format is: Ubuntu 18.04.2 LTS, CentOS Linux 7 (Core)
+                        entry["vendor"] = osstr[0]
+                        entry["version"] = ' '.join(osstr[1:])
+                    del entry["os"]
 
+        if raw_data.get("devtype", None) == "cumulus":
+            entry["bootupTimestamp"] = dateparser.parse(entry["bootupTimestamp"]).timestamp()
+        entry['status'] = "alive"
         return super().clean_data(processed_data, raw_data)
 
     async def commit_data(self, result, datacenter, hostname):
@@ -925,7 +939,7 @@ class SystemService(Service):
                             record["hostname"] = hostname
                             result = [record]
 
-                        result[0]["active"] = False
+                        result[0]["status"] = "dead"
                         result[0]["timestamp"] = self.nodes_state[hostname]
                         del self.nodes_state[hostname]
                         nodeobj.set_unreach_status()

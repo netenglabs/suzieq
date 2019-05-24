@@ -1,26 +1,23 @@
 Value vendor (\S+)
 Value model (\S+)
-Value os (\S+)
-Value version (\d+\.\d+\.?\d*)
+Value os (.*)
 Value sysUptime (\d+.\d+)
+Value architecture (\S+)
 
 Start
   ^${sysUptime}.*$$
-  ^NAME="${vendor}"\s*$$
-  ^ID=${os}\s*$$
-  ^VERSION="${version}.*"$$
+  ^\s*Chassis:\s+${model}\s*$$
+  ^\s*Operating System:\s+${os}\s*$$
+  ^\s*Architecture:\s+${architecture}\s*$$
 
 
 #127223.01 196484.68
-#NAME="Ubuntu"
-#VERSION="18.04.1 LTS (Bionic Beaver)"
-#ID=ubuntu
-#ID_LIKE=debian
-#PRETTY_NAME="Ubuntu 18.04.1 LTS"
-#VERSION_ID="18.04"
-#HOME_URL="https://www.ubuntu.com/"
-#SUPPORT_URL="https://help.ubuntu.com/"
-#BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
-#PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
-#VERSION_CODENAME=bionic
-#UBUNTU_CODENAME=bionic
+#   Static hostname: dd-server
+#         Icon name: computer-desktop
+#           Chassis: desktop
+#        Machine ID: 7f7eb8da94f54e7eaf49a7d9f9338518
+#           Boot ID: 3f892e0eaa4f4b59a1a462645b253bed
+#  Operating System: Ubuntu 18.04.2 LTS
+#            Kernel: Linux 4.15.0-50-generic
+#      Architecture: x86-64
+#
