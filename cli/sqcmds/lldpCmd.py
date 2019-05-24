@@ -9,64 +9,78 @@
 
 import time
 import typing
-from nubia import command, argument,  context
+from nubia import command, argument, context
 import pandas as pd
 
 from suzieq.cli.sqcmds.command import SQCommand
 from suzieq.sqobjects.lldp import lldpObj
 
 
-@command('lldp', help="Act on LLDP data")
+@command("lldp", help="Act on LLDP data")
 class lldpCmd(SQCommand):
-
-    def __init__(self, engine: str = '', hostname: str = '',
-                 start_time: str = '', end_time: str = '',
-                 view: str = 'latest', datacenter: str = '',
-                 columns: str = 'default') -> None:
-        super().__init__(engine=engine, hostname=hostname,
-                         start_time=start_time, end_time=end_time,
-                         view=view, datacenter=datacenter, columns=columns)
+    def __init__(
+        self,
+        engine: str = "",
+        hostname: str = "",
+        start_time: str = "",
+        end_time: str = "",
+        view: str = "latest",
+        datacenter: str = "",
+        columns: str = "default",
+    ) -> None:
+        super().__init__(
+            engine=engine,
+            hostname=hostname,
+            start_time=start_time,
+            end_time=end_time,
+            view=view,
+            datacenter=datacenter,
+            columns=columns,
+        )
         self.lldpobj = lldpObj(context=self.ctxt)
 
-    @command('show')
+    @command("show")
     @argument("ifname", description="interface name to qualify")
-    def show(self, ifname: str = ''):
+    def show(self, ifname: str = ""):
         """
         Show LLDP info
         """
         # Get the default display field names
         now = time.time()
-        if self.columns != ['default']:
+        if self.columns != ["default"]:
             self.ctxt.sort_fields = None
         else:
             self.ctxt.sort_fields = []
 
-        df = self.lldpobj.get(hostname=self.hostname, ifname=ifname.split(),
-                              columns=self.columns, datacenter=self.datacenter)
+        df = self.lldpobj.get(
+            hostname=self.hostname,
+            ifname=ifname.split(),
+            columns=self.columns,
+            datacenter=self.datacenter,
+        )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
 
-    @command('summarize')
+    @command("summarize")
     @argument("ifname", description="interface name to qualify")
-    @argument("groupby",
-              description="Space separated list of fields to summarize on")
-    def summarize(self, ifname: str = '', groupby: str = ''):
+    @argument("groupby", description="Space separated list of fields to summarize on")
+    def summarize(self, ifname: str = "", groupby: str = ""):
         """
         Summarize LLDP info
         """
         # Get the default display field names
         now = time.time()
-        if self.columns != ['default']:
+        if self.columns != ["default"]:
             self.ctxt.sort_fields = None
         else:
             self.ctxt.sort_fields = []
 
-        df = self.lldpobj.summarize(hostname=self.hostname,
-                                    ifname=ifname.split(),
-                                    columns=self.columns,
-                                    groupby=groupby.split(),
-                                    datacenter=self.datacenter)
+        df = self.lldpobj.summarize(
+            hostname=self.hostname,
+            ifname=ifname.split(),
+            columns=self.columns,
+            groupby=groupby.split(),
+            datacenter=self.datacenter,
+        )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
-    
-

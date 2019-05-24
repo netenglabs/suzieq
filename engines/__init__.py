@@ -7,7 +7,7 @@
 # LICENSE file in the root directory of this source tree.
 #
 
-name = 'sqengines'
+name = "sqengines"
 
 from .base_engine import get_sqengine
 

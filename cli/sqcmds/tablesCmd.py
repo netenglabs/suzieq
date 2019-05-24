@@ -15,32 +15,42 @@ from suzieq.cli.sqcmds.command import SQCommand
 from suzieq.sqobjects.tables import tablesObj
 
 
-@command('tables', help="Information about the various tables")
+@command("tables", help="Information about the various tables")
 class tablesCmd(SQCommand):
-
-    def __init__(self, engine: str = '', hostname: str = '',
-                 start_time: str = '', end_time: str = '',
-                 view: str = 'latest', datacenter: str = '',
-                 columns: str = 'default') -> None:
-        super().__init__(engine=engine, hostname=hostname,
-                         start_time=start_time, end_time=end_time,
-                         view=view, datacenter=datacenter, columns=columns)
+    def __init__(
+        self,
+        engine: str = "",
+        hostname: str = "",
+        start_time: str = "",
+        end_time: str = "",
+        view: str = "latest",
+        datacenter: str = "",
+        columns: str = "default",
+    ) -> None:
+        super().__init__(
+            engine=engine,
+            hostname=hostname,
+            start_time=start_time,
+            end_time=end_time,
+            view=view,
+            datacenter=datacenter,
+            columns=columns,
+        )
         self.tablesobj = tablesObj(context=self.ctxt)
 
-    @command('show')
+    @command("show")
     def show(self, **kwargs):
         """
         Show Tables
         """
         now = time.time()
-        df = self.tablesobj.get(hostname=self.hostname,
-                                datacenter=self.datacenter)
+        df = self.tablesobj.get(hostname=self.hostname, datacenter=self.datacenter)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
 
-    @command('describe')
+    @command("describe")
     @argument("table", description="interface name to qualify")
-    def summarize(self, table: str = '', **kwargs):
+    def summarize(self, table: str = "", **kwargs):
         """
         Summarize fields in table
         """
@@ -48,4 +58,3 @@ class tablesCmd(SQCommand):
         df = self.tablesobj.summarize(table=table)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
-

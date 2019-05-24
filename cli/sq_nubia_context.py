@@ -16,18 +16,18 @@ from nubia import eventbus
 from suzieq.utils import load_sq_config, get_schemas
 from suzieq.engines import get_sqengine
 
-class NubiaSuzieqContext(context.Context):
 
+class NubiaSuzieqContext(context.Context):
     def __init__(self, engine="pandas"):
         self.cfg = load_sq_config(validate=False)
 
-        self.schemas = get_schemas(self.cfg['schema-directory'])
+        self.schemas = get_schemas(self.cfg["schema-directory"])
 
-        self.datacenter = ''
-        self.hostname = ''
-        self.start_time = ''
-        self.end_time = ''
-        self.exec_time = ''
+        self.datacenter = ""
+        self.hostname = ""
+        self.start_time = ""
+        self.end_time = ""
+        self.exec_time = ""
         self.engine_name = engine
         self.system_df = {}
         self.sort_fields = []
@@ -58,5 +58,3 @@ class NubiaSuzieqContext(context.Context):
         self.engine = get_sqengine(engine)
         # Clear the system DF because the DF is engine-specific
         self.system_df = {}
-        
-

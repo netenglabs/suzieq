@@ -12,4 +12,3 @@ from .engineobj import SQEngineObject
 
 class topmemObj(SQEngineObject):
     pass
-

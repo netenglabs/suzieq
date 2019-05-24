@@ -1,4 +1,3 @@
-
 from pathlib import Path
 import json
 from collections import OrderedDict
@@ -12,25 +11,39 @@ from suzieq.engines import get_sqengine
 
 
 class SQCommand:
-    '''Base Command Class for use with all verbs'''
-    @argument("engine", description="which analytical engine to use",
-              choices=['spark', 'pandas'])
-    @argument("datacenter",
-              description="Space separated list of datacenters to qualify")
-    @argument("hostname",
-              description="Space separated list of hostnames to qualify")
-    @argument("start_time",
-              description="Start of time window in YYYY-MM-dd HH:mm:SS format")
-    @argument("end_time",
-              description="End of time window in YYYY-MM-dd HH:mm:SS format")
-    @argument("view", description="view all records or just the latest",
-              choices=["all", "latest"])
-    @argument("columns",
-              description="Space separated list of columns, * for all")
-    def __init__(self, engine: str = '', hostname: str = '',
-                 start_time: str = '', end_time: str = '',
-                 view: str = 'latest', datacenter: str = '',
-                 columns: str = 'default') -> None:
+    """Base Command Class for use with all verbs"""
+
+    @argument(
+        "engine",
+        description="which analytical engine to use",
+        choices=["spark", "pandas"],
+    )
+    @argument(
+        "datacenter", description="Space separated list of datacenters to qualify"
+    )
+    @argument("hostname", description="Space separated list of hostnames to qualify")
+    @argument(
+        "start_time", description="Start of time window in YYYY-MM-dd HH:mm:SS format"
+    )
+    @argument(
+        "end_time", description="End of time window in YYYY-MM-dd HH:mm:SS format"
+    )
+    @argument(
+        "view",
+        description="view all records or just the latest",
+        choices=["all", "latest"],
+    )
+    @argument("columns", description="Space separated list of columns, * for all")
+    def __init__(
+        self,
+        engine: str = "",
+        hostname: str = "",
+        start_time: str = "",
+        end_time: str = "",
+        view: str = "latest",
+        datacenter: str = "",
+        columns: str = "default",
+    ) -> None:
         self.ctxt = context.get_context()
         self._cfg = self.ctxt.cfg
         self._schemas = self.ctxt.schemas
@@ -68,6 +81,7 @@ class SQCommand:
     @property
     def schemas(self):
         return self._schemas
+
     """show various pieces of information"""
 
     def get(self, **kwargs):
@@ -84,5 +98,3 @@ class SQCommand:
 
     def top(self, **kwargs):
         raise NotImplementedError
-
-
