@@ -28,8 +28,6 @@ class SQModinEngine(SQEngine):
     def get_table_df(self, cfg, schemas, **kwargs) -> pd.DataFrame:
         '''Use Pandas instead of Spark to retrieve the data'''
 
-        MAX_FILECNT_TO_READ_FOLDER = 10000
-
         table = kwargs['table']
         start = kwargs['start_time']
         end = kwargs['end_time']
@@ -47,31 +45,17 @@ class SQModinEngine(SQEngine):
 
         folder = '{}/{}'.format(cfg.get('data-directory'), table)
 
-        # Restrict to a single DC if thats whats asked
-        if 'datacenter' in kwargs:
-            v = kwargs['datacenter']
-            if v:
-                if not isinstance(v, list):
-                    folder += '/datacenter={}/'.format(v)
+        # # Restrict to a single DC if thats whats asked
+        # if 'datacenter' in kwargs:
+        #     v = kwargs['datacenter']
+        #     if v:
+        #         if len(v) == 1:
+        #             folder += '/datacenter={}/'.format(v[0])
 
-        fcnt = self.get_filecnt(folder)
-
-        use_get_files = ((fcnt > MAX_FILECNT_TO_READ_FOLDER and
-                          view == 'latest') or start or end)
-
-        if use_get_files:
-            # Switch to more efficient method when there are lotsa files
-            # Reduce I/O since that is the worst drag
-            key_fields = []
-            if len(kwargs.get('datacenter', [])) > 1:
-                del kwargs['datacenter']
-            files = get_latest_files(folder, start, end)
-        else:
-            key_fields = [f['name'] for f in sch
-                          if f.get('key', None) is not None]
-            # Repopulate the folder so that we can get datacenter in our result
-            folder = '{}/{}'.format(cfg.get('data-directory'), table)
-            filters = self.build_pa_filters(start, end, key_fields, **kwargs)
+        key_fields = [f['name'] for f in sch
+                      if f.get('key', None) is not None]
+        filters = self.build_pa_filters(start, end, key_fields, **kwargs)
+        print(folder)
 
         if 'columns' in kwargs:
             columns = kwargs['columns']
@@ -91,7 +75,7 @@ class SQModinEngine(SQEngine):
         query_str = ""
         prefix = ''
         for f, v in kwargs.items():
-            if not v or f in key_fields or f in ['groupby']:
+            if not v or f in ['groupby']:
                 continue
             if isinstance(v, str):
                 query_str += "{} {}=='{}' ".format(prefix, f, v)
@@ -100,30 +84,16 @@ class SQModinEngine(SQEngine):
                 query_str += "{} {}=={} ".format(prefix, f, v)
                 prefix = 'and'
 
-        if use_get_files:
-            if not query_str:
-                query_str = 'active == True'
-
-            pdf_list = []
-            with Executor(max_workers=8) as exe:
-                jobs = [exe.submit(self.read_pq_file, f, fields, query_str)
-                        for f in files]
-                pdf_list = [job.result() for job in jobs]
-
-            if pdf_list:
-                final_df = pd.concat(pdf_list)
-
-        elif view == 'latest':
+        if view == 'latest':
             if not query_str:
                 # Make up a dummy query string to avoid if/then/else
                 query_str = 'timestamp != 0'
 
-            final_df = pa.ParquetDataset(folder, filters=filters or None,
-                                         validate_schema=False) \
-                         .read(columns=fields) \
-                         .to_pandas() \
+            final_df = pd.read_parquet(folder, columns=fields,
+                                       filters=filters or None) \
                          .query(query_str) \
-                         .drop_duplicates(subset=key_fields, keep='last') \
+                         .drop_duplicates(subset=key_fields, keep='last',
+                                          inplace=False) \
                          .query('active == True')
         else:
             if not query_str:
