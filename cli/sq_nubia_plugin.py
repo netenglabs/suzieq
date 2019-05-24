@@ -78,10 +78,7 @@ class NubiaSuzieqPlugin(PluginInterface):
             "by sending the logging output to stderr",
         )
         opts_parser.add_argument(
-            "--use-engine",
-            "-e",
-            help="Which analysis engine to use",
-            default="pandas"
+            "--use-engine", "-e", help="Which analysis engine to use", default="pandas"
         )
         return opts_parser
 

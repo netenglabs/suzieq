@@ -9,7 +9,6 @@
 
 
 class SQEngine(object):
-
     def __init__(self):
         pass
 
@@ -20,16 +19,18 @@ class SQEngine(object):
         raise NotImplementedError
 
 
-def get_sqengine(name: str = 'modin'):
-    if name == 'spark':
+def get_sqengine(name: str = "modin"):
+    if name == "spark":
         from .spark.engine import SQSparkEngine
-        return(SQSparkEngine())
-    elif name == 'modin':
+
+        return SQSparkEngine()
+    elif name == "modin":
         from .modin.engine import SQModinEngine
-        return(SQModinEngine())
+
+        return SQModinEngine()
     else:
         from .pandas.engine import SQPandasEngine
-        return(SQPandasEngine())
+
+        return SQPandasEngine()
 
     return None
-

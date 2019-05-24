@@ -13,10 +13,9 @@ from .engineobj import SQEngineObject
 
 
 class interfacesObj(SQEngineObject):
-
-    def aver(self, what='mtu-match', **kwargs) -> pd.DataFrame:
+    def aver(self, what="mtu-match", **kwargs) -> pd.DataFrame:
         raise NotImplementedError
 
-    def top(self, what='transitions', n=5, **kwargs) -> pd.DataFrame:
-        '''Get the list of top link changes'''
+    def top(self, what="transitions", n=5, **kwargs) -> pd.DataFrame:
+        """Get the list of top link changes"""
         raise NotImplementedError

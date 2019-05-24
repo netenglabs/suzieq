@@ -13,7 +13,6 @@ from suzieq.engines.pandas.engineobj import SQEngineObject
 
 
 class ospfObj(SQEngineObject):
-
     def get(self, **kwargs):
 
         if self.ctxt.sort_fields is None:
@@ -21,51 +20,48 @@ class ospfObj(SQEngineObject):
         else:
             sort_fields = self.sort_fields
 
-        table = 'ospfNbr'
-        if 'type' in kwargs:
-            if kwargs.get('type', 'interface') == 'interface':
-                table = 'ospfIf'
-            del kwargs['type']
+        table = "ospfNbr"
+        if "type" in kwargs:
+            if kwargs.get("type", "interface") == "interface":
+                table = "ospfIf"
+            del kwargs["type"]
 
         df = self.get_valid_df(table, sort_fields, **kwargs)
-        return(df)
+        return df
 
     def summarize(self, **kwargs):
-        '''Describe the data'''
+        """Describe the data"""
         if self.ctxt.sort_fields is None:
             sort_fields = None
         else:
             sort_fields = self.sort_fields
 
-        table = 'ospfNbr'
-        if 'type' in kwargs:
-            if kwargs.get('type', 'interface') == 'interface':
-                table = 'ospfIf'
-            del kwargs['type']
+        table = "ospfNbr"
+        if "type" in kwargs:
+            if kwargs.get("type", "interface") == "interface":
+                table = "ospfIf"
+            del kwargs["type"]
 
         df = self.get_valid_df(table, sort_fields, **kwargs)
 
-        if kwargs.get('groupby'):
-            return(df
-                   .groupby(kwargs['groupby'])
-                   .agg(lambda x: x.unique().tolist()))
+        if kwargs.get("groupby"):
+            return df.groupby(kwargs["groupby"]).agg(lambda x: x.unique().tolist())
         else:
-            return(df
-                   .describe(include='all')
-                   .fillna('-'))
+            return df.describe(include="all").fillna("-")
 
     def aver(self, **kwargs):
-        '''Assert that the OSPF state is OK'''
+        """Assert that the OSPF state is OK"""
         raise NotImplementedError
 
-    def top(self, what='transitions', n=5, **kwargs) -> pd.DataFrame:
-        '''Get the list of top stuff about OSPF'''
+    def top(self, what="transitions", n=5, **kwargs) -> pd.DataFrame:
+        """Get the list of top stuff about OSPF"""
         raise NotImplementedError
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     try:
         import fire
+
         fire.Fire(ospfObj)
     except ImportError:
         pass
