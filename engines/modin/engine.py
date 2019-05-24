@@ -13,19 +13,14 @@ from pathlib import Path
 from importlib import import_module
 from copy import deepcopy
 
-try:
-    # We need this if we're switching the engine from Pandas to Modin
-    import ray
-except ImportError:
-    pass
-import pandas as pd
+import modin.pandas as pd
 import pyarrow.parquet as pa
 
 from suzieq.engines.base_engine import SQEngine
 from suzieq.utils import get_display_fields, get_latest_files
 
 
-class SQPandasEngine(SQEngine):
+class SQModinEngine(SQEngine):
 
     def __init__(self):
         pass
@@ -33,7 +28,7 @@ class SQPandasEngine(SQEngine):
     def get_table_df(self, cfg, schemas, **kwargs) -> pd.DataFrame:
         '''Use Pandas instead of Spark to retrieve the data'''
 
-        MAX_FILECNT_TO_READ_FOLDER = 1000
+        MAX_FILECNT_TO_READ_FOLDER = 10000
 
         table = kwargs['table']
         start = kwargs['start_time']
