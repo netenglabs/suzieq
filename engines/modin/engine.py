@@ -13,7 +13,7 @@ from pathlib import Path
 from importlib import import_module
 from copy import deepcopy
 
-import modin.pandas as pd
+import modin.experimental.pandas as pd
 import pyarrow.parquet as pa
 
 from suzieq.engines.base_engine import SQEngine
