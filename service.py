@@ -881,7 +881,7 @@ class SystemService(Service):
             # TODO: Fix the clock drift
             if not entry.get("bootupTimestamp", None) and entry.get("sysUptime", None):
                 entry["bootupTimestamp"] = int(
-                    raw_data["timestamp"] / 1000 - float(entry.get("sysUptime"))
+                    raw_data["timestamp"]/1000 - float(entry["sysUptime"])
                 )
                 del entry["sysUptime"]
             # This is the case for Linux servers, so also extract the vendor and
@@ -892,11 +892,10 @@ class SystemService(Service):
                     if len(osstr) > 1:
                         # Assumed format is: Ubuntu 18.04.2 LTS, CentOS Linux 7 (Core)
                         entry["vendor"] = osstr[0]
-                        entry["version"] = ' '.join(osstr[1:])
+                        if not entry.get("version", ""):
+                            entry["version"] = ' '.join(osstr[1:])
                     del entry["os"]
 
-        if raw_data.get("devtype", None) == "cumulus":
-            entry["bootupTimestamp"] = dateparser.parse(entry["bootupTimestamp"]).timestamp()
         entry['status'] = "alive"
         return super().clean_data(processed_data, raw_data)
 

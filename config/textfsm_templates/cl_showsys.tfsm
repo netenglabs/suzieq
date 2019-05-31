@@ -1,19 +1,26 @@
 Value vendor (\S+)
+Value version (\d+.\d+.\d+)
 Value model (\S+)
 Value os (\S+ \S+)
-Value version (\d+\.\d+\.\d+)
 Value sysUptime (\d+.\d+)
+Value architecture (\S+)
 
 Start
-  ^Uptime:.*$$
   ^${sysUptime}.*$$
-  ^${vendor} ${model}$$
-  ^${os} ${version}$$
-  ^Build:.*$$
+  ^\s*Chassis:\s+${model}\s*$$
+  ^\s*Operating System:\s+${os}\s*$$
+  ^\s*CPE OS Name:\s*cpe.*:${version}\s*$$
+  ^\s*Architecture:\s+${architecture}\s*$$
 
-
-#52977.07 51703.08
-#Cumulus VX
-#Cumulus Linux 3.6.2
-#Build: Cumulus Linux 3.6.2
-#Uptime: 14:42:57.170000
+#127223.01 196484.68
+#   Static hostname: spine01
+#         Icon name: computer-vm
+#           Chassis: vm
+#        Machine ID: 8c250d0fd2f141a1a438bbd6b9e93a50
+#           Boot ID: 5ac9d6b862e94b7aa3805a95f9cd6f76
+#    Virtualization: kvm
+#  Operating System: Cumulus Linux
+#       CPE OS Name: cpe:/o:cumulusnetworks:cumulus_linux:3.7.6
+#            Kernel: Linux 4.1.0-cl-7-amd64
+#      Architecture: x86-64
+#
