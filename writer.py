@@ -48,7 +48,8 @@ class ParquetOutputWorker(OutputWorker):
         #     version='2.0',
         #     coerce_timestamps='us')
 
-        table = pa.Table.from_pandas(df, schema=data["schema"], preserve_index=False)
+        table = pa.Table.from_pandas(df, schema=data["schema"],
+                                     preserve_index=False)
 
         pq.write_to_dataset(
             table,
