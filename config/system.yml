@@ -20,13 +20,8 @@ apply:
 
   cumulus:
     version: all
-    command: net show system json
-    normalize: '[
-    "platform/model: model",
-    "platform/vendor: vendor",
-    "os-version: version",
-    "architecture: architecture?|x86-64",
-    "uptime: bootupTimestamp"]'
+    command: cat /proc/uptime; hostnamectl
+    textfsm: textfsm_templates/cl_showsys.tfsm
 
   linux:
     version: all
