@@ -804,6 +804,7 @@ class InterfaceService(Service):
             ifname = entry["ifname"]
             if ifname not in new_data_dict:
                 entry["transitionCnt"] = int(entry["linkUpCnt"] + entry["linkDownCnt"])
+                entry['state'] = entry['state'].lower()
                 if entry["state"] == "up":
                     ts = entry["linkUpTimestamp"]
                 else:
@@ -851,6 +852,9 @@ class InterfaceService(Service):
             self.clean_eos_data(processed_data)
         elif devtype == "cumulus" or devtype == "platina":
             processed_data = self.clean_cumulus_data(processed_data)
+        else:
+            for entry in processed_data:
+                entry['state'] = entry['state'].lower()
 
         return super().clean_data(processed_data, raw_data)
 
