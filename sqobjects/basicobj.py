@@ -16,21 +16,21 @@ from suzieq.engines import get_sqengine
 
 class SQContext(object):
 
-    def __init__(engine):
-        cfg = load_sq_config(validate=False)
+    def __init__(self, engine):
+        self.cfg = load_sq_config(validate=False)
 
-        schemas = get_schemas(cfg['schema-directory'])
+        self.schemas = get_schemas(self.cfg['schema-directory'])
 
-        datacenter = ''
-        hostname = ''
-        start_time = ''
-        end_time = ''
-        exec_time = ''
-        engine = 'pandas'
-        system_df = {}
-        sort_fields = []
-        engine = get_sqengine(engine)
-        if not engine:
+        self.datacenter = ''
+        self.hostname = ''
+        self.start_time = ''
+        self.end_time = ''
+        self.exec_time = ''
+        self.engine = 'pandas'
+        self.system_df = {}
+        self.sort_fields = []
+        self.engine = get_sqengine(engine)
+        if not self.engine:
             # We really should define our own error
             raise ValueError
 
@@ -44,11 +44,11 @@ class SQObject(object):
                  context=None, table: str = '') -> None:
 
         if context is None:
-            self.ctxt = SQContext(engine)
+            self.ctxt = SQContext(engine_name)
         else:
             self.ctxt = context
             if not self.ctxt:
-                self.ctxt = SQContext(engine)
+                self.ctxt = SQContext(engine_name)
 
         self._cfg = self.ctxt.cfg
         self._schemas = self.ctxt.schemas
