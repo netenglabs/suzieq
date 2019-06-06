@@ -190,6 +190,17 @@ async def init_services(svc_dir, schema_dir, queue):
                         schema,
                         queue,
                     )
+                elif svc_def["service"] == "evpnVni":
+                    service = evpnVniService(
+                        svc_def["service"],
+                        svc_def["apply"],
+                        period,
+                        svc_def.get("type", "state"),
+                        svc_def.get("keys", []),
+                        svc_def.get("ignore-fields", []),
+                        schema,
+                        queue,
+                    )
                 else:
                     service = Service(
                         svc_def["service"],
@@ -803,7 +814,7 @@ class InterfaceService(Service):
         for entry in processed_data:
             ifname = entry["ifname"]
             if ifname not in new_data_dict:
-                entry["transitionCnt"] = int(entry["linkUpCnt"] + entry["linkDownCnt"])
+                entry["numChanges"] = int(entry["linkUpCnt"] + entry["linkDownCnt"])
                 entry['state'] = entry['state'].lower()
                 if entry["state"] == "up":
                     ts = entry["linkUpTimestamp"]
@@ -1090,3 +1101,18 @@ class OspfNbrService(Service):
                 entry["lastChangeTime"] = int(entry["lastChangeTime"] * 1000)
 
         return super().clean_data(processed_data, raw_data)
+
+
+class evpnVniService(Service):
+    """evpnVni service. Different class because output needs to be munged"""
+
+    def clean_data(self, processed_data, raw_data):
+
+        if raw_data.get("devtype", None) == "cumulus":
+            for entry in processed_data:
+                if entry["numRemoteVteps"] == "n/a":
+                    entry["numRemoteVteps"] = 0
+                if entry["remoteVteps"] == '':
+                    entry["remoteVteps"] == []
+        return super().clean_data(processed_data, raw_data)
+
