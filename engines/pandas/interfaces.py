@@ -112,8 +112,8 @@ class interfacesObj(SQEngineObject):
             columns = ["default"]
 
         columns = get_display_fields(self.table, columns, self.schemas[self.table])
-        if "transitionCnt" not in columns:
-            columns.insert(-2, "transitionCnt")
+        if "numChanges" not in columns:
+            columns.insert(-2, "numChanges")
 
         if "type" not in kwargs:
             # On Linux there are all kinds of link transitions on non-physical
@@ -124,4 +124,4 @@ class interfacesObj(SQEngineObject):
         if df.empty:
             return df
 
-        return df.nlargest(n, columns=["transitionCnt"], keep="all").head(n=n)
+        return df.nlargest(n, columns=["numChanges"], keep="all").head(n=n)
