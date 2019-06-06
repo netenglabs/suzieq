@@ -1,0 +1,67 @@
+{
+    "namespace": "suzieq",
+    "name": "evpnVni",
+    "type": "record",
+    "fields": [
+        {
+            "name": "vni",
+            "type": "long",
+            "key": 2,
+            "display": 2
+        },
+        {
+            "name": "numMacs",
+            "type": "long",
+            "display": 4
+        },
+        {
+            "name": "vrf",
+            "type": "string"
+        },
+        {
+            "name": "type",
+            "type": "string",
+            "display": 3
+        },
+        {
+            "name": "numRemoteVteps",
+            "type": "long",
+            "display": 6
+        },
+        {
+            "name": "numArpNd",
+            "type": "long",
+            "display": 5
+        },
+        {
+            "name": "remoteVteps",
+            "type": {
+                "type": "array",
+                "items": {
+                    "type": "string",
+                    "name": "ipAddress"
+                }
+            }
+        },
+        {
+            "name": "hostname",
+            "type": "string",
+            "key": 1,
+            "display": 1
+        },
+        {
+            "name": "datacenter",
+            "type": "string",
+            "key": 0,
+            "display": 0
+        },
+        {
+            "name": "timestamp",
+            "type": "timestamp"
+        },
+        {
+            "name": "active",
+            "type": "boolean"
+        }
+    ]
+}

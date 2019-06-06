@@ -1,0 +1,28 @@
+service: evpnVni
+keys:
+  - vni
+
+show-fields:
+  - vni
+  - type
+  - numMacs
+  - numArpNd
+  - numRemoteVteps
+
+apply:
+  cumulus:
+    version: all
+    command: sudo vtysh -c "show evpn vni json"
+    normalize: '*/[
+    "vni: vni",
+    "type: type",
+    "numMacs: numMacs?|0",
+    "numArpNd: numArpNd?|0",
+    "numRemoteVteps: numRemoteVteps?|0",
+    "remoteVteps: remoteVteps",
+    "vrf: vrf",
+    ]'
+
+  platina:
+    copy: cumulus
+  
