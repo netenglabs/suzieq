@@ -1,0 +1,87 @@
+{
+    "namespace": "suzieq",
+    "name": "routes",
+    "type": "record",
+    "fields": [
+        {
+            "name": "prefix",
+            "type": "string",
+            "key": 3,
+            "display": 3
+        },
+        {
+            "name": "protocol",
+            "type": "string",
+            "display": 7
+        },
+        {
+            "name": "metric",
+            "type": "long",
+            "display": 9
+        },
+        {
+            "name": "source",
+            "type": "string",
+            "display": 8
+        },
+        {
+            "name": "nexthopIps",
+            "type": {
+	        "type": "array",
+		"items": {
+		    "name": "nexthop",
+		     "type": "string"
+		}
+	    },
+	    "display": 4
+	},
+        {
+            "name": "oifs",
+            "type": {
+	        "type": "array",
+		"items": {
+		    "name": "oif",
+		     "type": "string"
+		}
+	    },
+	    "display": 5
+	},
+        {
+            "name": "weights",
+            "type": {
+	        "type": "array",
+		"items": {
+		    "name": "weight",
+		     "type": "long"
+		}
+	    },
+	    "display": 6
+	},
+        {
+            "name": "vrf",
+            "type": "string",
+            "key": 2,
+            "display": 2
+        },
+        {
+            "name": "hostname",
+            "type": "string",
+            "key": 1,
+            "display": 1
+        },
+        {
+            "name": "datacenter",
+            "type": "string",
+            "key": 0,
+            "display": 0
+        },
+        {
+            "name": "timestamp",
+            "type": "timestamp"
+        },
+        {
+            "name": "active",
+            "type": "boolean"
+        }
+    ]
+}

@@ -1,0 +1,25 @@
+service: routes
+keys:
+  - vrf
+  - prefix
+
+show-fields:
+  - vrf
+  - prefix
+  - nexthop
+  - protocol
+  - source
+  - metric
+
+apply:
+  cumulus:
+    version: all
+    command: ip route show table all
+    textfsm: textfsm_templates/linux_routes.tfsm
+
+  linux:
+    copy: cumulus
+
+  platina:
+    copy: cumulus
+  
