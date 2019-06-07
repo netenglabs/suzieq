@@ -1,14 +1,13 @@
 import os
 import asyncio
 import random
-import time
 from datetime import datetime
 import re
 import ast
 import copy
 import logging
 import json
-import dateparser
+from itertools import zip_longest
 
 import yaml
 
@@ -32,13 +31,19 @@ def avro_to_arrow_schema(avro_sch):
         "timedelta64[s]": pa.float64(),
         "boolean": pa.bool_(),
         "array.string": pa.list_(pa.string()),
+        "array.nexthopList": pa.list_(pa.struct([('nexthop', pa.string()),
+                                                 ('oif', pa.string()),
+                                                 ('weight', pa.int32())])),
         "array.long": pa.list_(pa.int64()),
     }
 
     for fld in avro_sch.get("fields", None):
         if type(fld["type"]) is dict:
             if fld["type"]["type"] == "array":
-                avtype: str = "array.{}".format(fld["type"]["items"]["type"])
+                if fld["type"]["items"]["type"] == "record":
+                    avtype: str = "array.{}".format(fld["name"])
+                else:
+                    avtype: str = "array.{}".format(fld["type"]["items"]["type"])
             else:
                 # We don't support map yet
                 raise AttributeError
@@ -192,6 +197,28 @@ async def init_services(svc_dir, schema_dir, queue):
                     )
                 elif svc_def["service"] == "evpnVni":
                     service = evpnVniService(
+                        svc_def["service"],
+                        svc_def["apply"],
+                        period,
+                        svc_def.get("type", "state"),
+                        svc_def.get("keys", []),
+                        svc_def.get("ignore-fields", []),
+                        schema,
+                        queue,
+                    )
+                elif svc_def["service"] == "routes":
+                    service = routesService(
+                        svc_def["service"],
+                        svc_def["apply"],
+                        period,
+                        svc_def.get("type", "state"),
+                        svc_def.get("keys", []),
+                        svc_def.get("ignore-fields", []),
+                        schema,
+                        queue,
+                    )
+                elif svc_def["service"] == "arpnd":
+                    service = arpndService(
                         svc_def["service"],
                         svc_def["apply"],
                         period,
@@ -512,7 +539,11 @@ class Service(object):
             pa.float64(): float,
             pa.date64(): float,
             pa.list_(pa.string()): list,
+            pa.list_(pa.int64()): list,
             pa.bool_(): bool,
+            pa.list_(pa.struct([('nexthop', pa.string()),
+                                ('oif', pa.string()),
+                                ('weight', pa.int32())])): list,
         }
 
         map_defaults = {
@@ -525,6 +556,9 @@ class Service(object):
             pa.bool_(): False,
             pa.list_(pa.string()): [],
             pa.list_(pa.int64()): [],
+            pa.list_(pa.struct([('nexthop', pa.string()),
+                                ('oif', pa.string()),
+                                ('weight', pa.int32())])): [("", "", 1)]
         }
 
         # Ensure the type is set correctly.
@@ -537,6 +571,11 @@ class Service(object):
                             entry[cent] = ptype_map[schent_type](entry[cent])
                         else:
                             entry[cent] = map_defaults[schent_type]
+                    elif isinstance(entry[cent], list):
+                        for i, ele in enumerate(entry[cent]):
+                            if type(ele) != ptype_map[schent_type.value_type]:
+                                entry[cent][i] = (
+                                    map_defaults[schent_type.value_type])
 
         return result
 
@@ -630,6 +669,10 @@ class Service(object):
             pa.bool_(): False,
             pa.date64(): 0.0,
             pa.list_(pa.string()): ["-"],
+            pa.list_(pa.int64()): [0],            
+            pa.list_(pa.struct([('nexthop', pa.string()),
+                                ('oif', pa.string()),
+                                ('weight', pa.int32())])): [("", "", 1)],
         }
         for field in self.schema:
             default = def_vals[field.type]
@@ -1116,3 +1159,33 @@ class evpnVniService(Service):
                     entry["remoteVteps"] == []
         return super().clean_data(processed_data, raw_data)
 
+
+class routesService(Service):
+    """routes service. Different class because vrf default needs to be added"""
+
+    def clean_data(self, processed_data, raw_data):
+
+        devtype = raw_data.get("devtype", None)
+        if any([devtype == x for x in ["cumulus", "linux", "platina"]]):
+            for entry in processed_data:
+                entry["vrf"] = entry["vrf"] or "default"
+                entry["metric"] = entry["metric"] or 20
+                for ele in ["nexthopIps", "oifs"]:
+                    entry[ele] = entry[ele] or [""]
+                entry["weights"] = entry["weights"] or [1]
+
+        return super().clean_data(processed_data, raw_data)
+
+
+class arpndService(Service):
+    """arpnd service. Different class because minor munging of output"""
+
+    def clean_data(self, processed_data, raw_data):
+
+        devtype = raw_data.get("devtype", None)
+        if any([devtype == x for x in ["cumulus", "linux", "platina"]]):
+            for entry in processed_data:
+                entry["offload"] = entry["offload"] == "offload"
+                entry["state"] = entry["state"].lower()
+    
+        return super().clean_data(processed_data, raw_data)

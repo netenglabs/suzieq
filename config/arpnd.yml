@@ -1,0 +1,24 @@
+service: arpnd
+keys:
+  - ipAddress
+  - oif
+
+show-fields:
+  - ipAddress
+  - oif
+  - macaddr
+  - state
+  - offload
+
+apply:
+  cumulus:
+    version: all
+    command: ip neigh show
+    textfsm: textfsm_templates/linux_ipneigh.tfsm
+
+  linux:
+    copy: cumulus
+
+  platina:
+    copy: cumulus
+  

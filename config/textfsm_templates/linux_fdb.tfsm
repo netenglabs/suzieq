@@ -1,0 +1,58 @@
+Value macaddr ([0-9a-f:]+)
+Value oif (\S+)
+Value vlan (\d+)
+Value flags (\S+)
+Value remoteVtepIp ([0-9.]+)
+
+Start
+  ^${macaddr} dev ${oif} vlan ${vlan} master bridge ${flags}.*$$ -> Next.Record
+  ^${macaddr} dev ${oif} dst ${remoteVtepIp} self ${flags}.*$$ -> Next.Record
+  ^${macaddr} dev ${oif} master bridge ${flags}.*$$ -> Next.Record
+  ^${macaddr} dev ${oif} master bridge.*$$ -> Next.Record
+  ^${macaddr} dev ${oif} self ${flags}.*$$ -> Next.Record  
+  
+
+#44:38:39:00:00:03 dev peerlink vlan 13 master bridge static
+#44:38:39:00:00:11 dev peerlink master bridge permanent
+#44:38:39:00:00:03 dev peerlink vlan 24 master bridge static
+#44:38:39:00:00:5c dev vni24 vlan 24 master bridge static
+#f6:2a:f9:86:c4:d5 dev vni24 master bridge permanent
+#44:38:39:00:00:23 dev vni24 vlan 24 master bridge static
+#02:03:00:44:44:02 dev vni24 vlan 24 offload master bridge 
+#00:03:00:44:44:02 dev vni24 vlan 24 offload master bridge 
+#00:00:00:00:00:00 dev vni24 dst 10.0.0.134 self permanent
+#44:38:39:00:00:5c dev vni24 dst 10.0.0.134 self static
+#44:38:39:00:00:23 dev vni24 dst 10.0.0.134 self static
+#00:03:00:44:44:02 dev vni24 dst 10.0.0.134 self offload 
+#02:03:00:44:44:02 dev vni24 dst 10.0.0.134 self offload 
+#44:38:39:00:00:23 dev vni13 vlan 13 master bridge static
+#02:03:00:33:33:02 dev vni13 vlan 13 offload master bridge 
+#00:03:00:33:33:02 dev vni13 vlan 13 offload master bridge 
+#44:38:39:00:00:5c dev vni13 vlan 13 master bridge static
+#e2:40:88:09:9b:e2 dev vni13 master bridge permanent
+#00:00:00:00:00:00 dev vni13 dst 10.0.0.134 self permanent
+#00:03:00:33:33:02 dev vni13 dst 10.0.0.134 self offload 
+#02:03:00:33:33:02 dev vni13 dst 10.0.0.134 self offload 
+#44:38:39:00:00:5c dev vni13 dst 10.0.0.134 self static
+#44:38:39:00:00:23 dev vni13 dst 10.0.0.134 self static
+#02:03:00:22:22:02 dev bond02 vlan 24 master bridge 
+#00:03:00:22:22:02 dev bond02 vlan 24 master bridge 
+#44:38:39:00:00:18 dev bond02 master bridge permanent
+#02:03:00:11:11:02 dev bond01 vlan 13 master bridge 
+#00:03:00:11:11:02 dev bond01 vlan 13 master bridge 
+#44:38:39:00:00:15 dev bond01 master bridge permanent
+#44:39:39:ff:40:95 dev vxlan4001 vlan 4001 offload master bridge 
+#c2:63:d0:d5:8d:80 dev vxlan4001 master bridge permanent
+#44:39:39:ff:40:95 dev vxlan4001 dst 10.0.0.134 self offload 
+#44:39:39:ff:00:13 dev bridge self permanent
+#44:39:39:ff:00:24 dev bridge self permanent
+#44:39:39:ff:40:94 dev bridge self permanent
+#44:38:39:00:00:15 dev bridge vlan 4001 master bridge permanent
+#44:38:39:00:00:15 dev bridge vlan 13 master bridge permanent
+#44:39:39:ff:00:24 dev bridge vlan 24 master bridge permanent
+#44:38:39:00:00:15 dev bridge vlan 24 master bridge permanent
+#44:39:39:ff:40:94 dev bridge vlan 4001 master bridge permanent
+#44:39:39:ff:00:13 dev bridge vlan 13 master bridge permanent
+#44:39:39:ff:00:13 dev vlan13 self permanent
+#44:39:39:ff:00:24 dev vlan24 self permanent
+#

@@ -1,0 +1,22 @@
+service: fdb
+keys:
+  - vlan
+  - macaddr
+
+show-fields:
+  - oif
+  - vlan
+  - flags
+
+apply:
+  cumulus:
+    version: all
+    command: /sbin/bridge fdb show
+    textfsm: textfsm_templates/linux_fdb.tfsm
+
+  linux:
+    copy: cumulus
+
+  platina:
+    copy: cumulus
+  

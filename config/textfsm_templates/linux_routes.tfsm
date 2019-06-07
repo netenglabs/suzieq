@@ -1,0 +1,98 @@
+Value protocol (\w+)
+Value prefix ([0-9./]*|default)
+Value vrf (\S+)
+Value source ([0-9./]*)
+Value List nexthopIps ([0-9./]*)
+Value List oifs (\S+)
+Value List weights (\d+)
+Value metric (\d+)
+
+Start
+  ^\S+ -> Continue.Record
+  ^\s+nexthop via\s+${nexthopIps}\s+dev ${oifs}\s+weight ${weights}.*$$
+  ^${prefix}\s+via\s+${nexthopIps}\s+dev ${oifs}\s+table ${vrf}\s+proto ${protocol}\s+metric ${metric}.*$$
+  ^${prefix}\s+dev ${oifs}\s+table ${vrf}\s+proto ${protocol}.*src ${source}.*$$
+  ^unreachable\s+${prefix}\s+table ${vrf}\s+metric ${metric}.*$$
+  ^${prefix}\s+via\s+${nexthopIps}\s+dev ${oifs}\s+table ${vrf}
+  ^${prefix}\s+proto ${protocol}\s+metric ${metric}.*$$
+  ^${prefix}\s+via ${nexthopIps}\s+dev ${oifs}\s+proto ${protocol}\s+metric ${metric}.*$$ 
+  ^${prefix}\s+dev ${oifs}\s+proto ${protocol}.*src ${source}.*$$  
+  ^${prefix}\s+via ${nexthopIps}\s+dev ${oifs}.*$$
+
+#default via 10.2.4.1 dev uplink
+#169.254.1.0/30 dev peerlink.4094  proto kernel  scope link  src 169.254.1.2
+#10.2.4.0/24 dev uplink  proto kernel  scope link  src 10.2.4.102
+#192.168.0.0/24 via 192.168.121.1 dev eth0
+#192.168.10.0/24 dev eth1  proto kernel  scope link  src 192.168.10.32
+#192.168.121.0/24 dev eth0  proto kernel  scope link  src 192.168.121.42
+#broadcast 10.2.4.0 dev uplink  table local  proto kernel  scope link  src 10.2.4.102
+#local 10.2.4.102 dev uplink  table local  proto kernel  scope host  src 10.2.4.102
+#broadcast 10.2.4.255 dev uplink  table local  proto kernel  scope link  src 10.2.4.102
+#broadcast 127.0.0.0 dev lo  table local  proto kernel  scope link  src 127.0.0.1
+#local 127.0.0.0/8 dev lo  table local  proto kernel  scope host  src 127.0.0.1
+#local 127.0.0.1 dev lo  table local  proto kernel  scope host  src 127.0.0.1
+##default via 192.168.121.1 dev eth0  table mgmt
+#unreachable default  table mgmt  metric 4278198272
+#broadcast 127.0.0.0 dev mgmt  table mgmt  proto kernel  scope link  src 127.0.0.1
+#127.0.0.0/8 dev mgmt  table mgmt  proto kernel  scope link  src 127.0.0.1
+#local 127.0.0.1 dev mgmt  table mgmt  proto kernel  scope host  src 127.0.0.1 
+#broadcast 127.255.255.255 dev mgmt  table mgmt  proto kernel  scope link  src 127.0.0.1 
+#broadcast 192.168.121.0 dev eth0  table mgmt  proto kernel  scope link  src 192.168.121.88 
+#192.168.121.0/24 dev eth0  table mgmt  proto kernel  scope link  src 192.168.121.88 
+#local 192.168.121.88 dev eth0  table mgmt  proto kernel  scope host  src 192.168.121.88 
+#broadcast 192.168.121.255 dev eth0  table mgmt  proto kernel  scope link  src 192.168.121.88 
+#unreachable default  table evpn-vrf  metric 4278198272 
+#broadcast 10.1.3.0 dev vlan13  table evpn-vrf  proto kernel  scope link  src 10.1.3.11 
+#broadcast 10.1.3.0 dev vlan13-v0  table evpn-vrf  proto kernel  scope link  src 10.1.3.1 
+#10.1.3.0/24 dev vlan13  table evpn-vrf  proto kernel  scope link  src 10.1.3.11 
+#10.1.3.0/24 dev vlan13-v0  table evpn-vrf  proto kernel  scope link  src 10.1.3.1  metric 1024 
+#local 10.1.3.1 dev vlan13-v0  table evpn-vrf  proto kernel  scope host  src 10.1.3.1 
+#local 10.1.3.11 dev vlan13  table evpn-vrf  proto kernel  scope host  src 10.1.3.11 
+#10.1.3.103 via 10.0.0.134 dev vlan4001  table evpn-vrf  proto bgp  metric 20 onlink 
+#broadcast 10.1.3.255 dev vlan13  table evpn-vrf  proto kernel  scope link  src 10.1.3.11 
+#broadcast 10.1.3.255 dev vlan13-v0  table evpn-vrf  proto kernel  scope link  src 10.1.3.1 
+#broadcast 10.2.4.0 dev vlan24  table evpn-vrf  proto kernel  scope link  src 10.2.4.11 
+#broadcast 10.2.4.0 dev vlan24-v0  table evpn-vrf  proto kernel  scope link  src 10.2.4.1 
+#10.2.4.0/24 dev vlan24  table evpn-vrf  proto kernel  scope link  src 10.2.4.11 
+#10.2.4.0/24 dev vlan24-v0  table evpn-vrf  proto kernel  scope link  src 10.2.4.1  metric 1024 
+#local 10.2.4.1 dev vlan24-v0  table evpn-vrf  proto kernel  scope host  src 10.2.4.1 
+#local 10.2.4.11 dev vlan24  table evpn-vrf  proto kernel  scope host  src 10.2.4.11 
+#10.2.4.104 via 10.0.0.134 dev vlan4001  table evpn-vrf  proto bgp  metric 20 onlink 
+#broadcast 10.2.4.255 dev vlan24  table evpn-vrf  proto kernel  scope link  src 10.2.4.11 
+#broadcast 10.2.4.255 dev vlan24-v0  table evpn-vrf  proto kernel  scope link  src 10.2.4.1 
+#10.0.0.12  proto bgp  metric 20 
+#        nexthop via 169.254.0.1  dev swp51 weight 1 onlink
+#        nexthop via 169.254.0.1  dev swp52 weight 1 onlink
+#10.0.0.13  proto bgp  metric 20 
+#        nexthop via 169.254.0.1  dev swp51 weight 1 onlink
+#        nexthop via 169.254.0.1  dev swp52 weight 1 onlink
+#10.0.0.14  proto bgp  metric 20 
+#        nexthop via 169.254.0.1  dev swp51 weight 1 onlink
+#        nexthop via 169.254.0.1  dev swp52 weight 1 onlink
+#10.0.0.21 via 169.254.0.1 dev swp51  proto bgp  metric 20 onlink 
+#10.0.0.22 via 169.254.0.1 dev swp52  proto bgp  metric 20 onlink 
+#10.0.0.41  proto bgp  metric 20 
+#        nexthop via 169.254.0.1  dev swp51 weight 1 onlink
+#        nexthop via 169.254.0.1  dev swp52 weight 1 onlink
+#10.0.0.42  proto bgp  metric 20 
+#        nexthop via 169.254.0.1  dev swp51 weight 1 onlink
+#        nexthop via 169.254.0.1  dev swp52 weight 1 onlink
+#10.0.0.134  proto bgp  metric 20 
+#        nexthop via 169.254.0.1  dev swp51 weight 1 onlink
+#        nexthop via 169.254.0.1  dev swp52 weight 1 onlink
+#fe80::/64 dev vlan13  table evpn-vrf  proto kernel  metric 256  pref medium
+#fe80::/64 dev vlan13-v0  table evpn-vrf  proto kernel  metric 256  pref medium
+#fe80::/64 dev vlan24  table evpn-vrf  proto kernel  metric 256  pref medium
+#anycast fe80:: dev lo  table local  proto kernel  metric 0  pref medium
+#anycast fe80:: dev lo  table local  proto kernel  metric 0  pref medium
+#anycast fe80:: dev lo  table local  proto kernel  metric 0  pref medium
+#anycast fe80:: dev lo  table local  proto kernel  metric 0  pref medium
+#local fe80::4638:39ff:fe00:3 dev lo  table local  proto kernel  metric 0  pref medium
+#local fe80::4638:39ff:fe00:10 dev lo  table local  proto kernel  metric 0  pref medium
+#local fe80::4638:39ff:fe00:24 dev lo  table local  proto kernel  metric 0  pref medium
+#local fe80::4638:39ff:fe00:53 dev lo  table local  proto kernel  metric 0  pref medium
+#ff00::/8 dev swp51  table local  metric 256  mtu 9216 pref medium
+#ff00::/8 dev swp52  table local  metric 256  mtu 9216 pref medium
+#ff00::/8 dev bridge  table local  metric 256  pref medium
+#ff00::/8 dev peerlink.4094  table local  metric 256  pref medium
+#
