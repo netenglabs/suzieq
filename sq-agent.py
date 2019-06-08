@@ -4,6 +4,7 @@ import argparse
 import asyncio
 import logging
 from pathlib import Path
+import uvloop
 
 from confluent_kafka import Producer
 
@@ -23,7 +24,8 @@ def validate_parquet_args(userargs, output_args):
     if not userargs.output_dir:
         output_dir = "/tmp/parquet-out/suzieq"
         logging.warning(
-            "No output directory for parquet specified, using" "/tmp/suzieq/parquet-out"
+            "No output directory for parquet specified, using"
+            "/tmp/suzieq/parquet-out"
         )
     else:
         output_dir = userargs.output_dir
@@ -32,8 +34,10 @@ def validate_parquet_args(userargs, output_args):
         os.makedirs(output_dir)
 
     if not os.path.isdir(output_dir):
-        logging.error("Output directory {} is not a directory".format(output_dir))
-        print("Output directory {} is not a directory".format(output_dir))
+        logging.error("Output directory {} is not a directory".format(
+            output_dir))
+        print("Output directory {} is not a directory".format(
+            output_dir))
         sys.exit(1)
 
     logging.info("Parquet outputs will be under {}".format(output_dir))
@@ -52,10 +56,12 @@ def validate_kafka_args(userargs, output_args):
         servers = userargs.kafka_servers
 
     try:
-        kclient = Producer({"bootstrap.servers": servers})
+        _ = Producer({"bootstrap.servers": servers})
     except Exception as e:
-        logging.error("ERROR: Unable to connect to Kafka servers:{}, e", servers, e)
-        print("ERROR: Unable to connect to Kafka servers:{}, e", servers, e)
+        logging.error("ERROR: Unable to connect to Kafka servers:{}, e",
+                      servers, e)
+        print("ERROR: Unable to connect to Kafka servers:{}, e",
+              servers, e)
         sys.exit(1)
 
     output_args.update({"bootstrap.servers": servers})
@@ -65,11 +71,15 @@ def validate_kafka_args(userargs, output_args):
 
 def _main(userargs):
 
+    uvloop.install()
+
     if not os.path.exists(userargs.service_dir):
         logging.error(
-            "Service directory {} is not a directory".format(userargs.output_dir)
+            "Service directory {} is not a directory".format(
+                userargs.output_dir)
         )
-        print("Service directory {} is not a directory".format(userargs.output_dir))
+        print("Service directory {} is not a directory".format(
+            userargs.output_dir))
         sys.exit(1)
 
     if not userargs.schema_dir:
@@ -226,6 +236,7 @@ if __name__ == "__main__":
                             "pid {}".format(pid)
                         )
         with daemon.DaemonContext(
-            files_preserve=[fh.stream], pidfile=pidfile.TimeoutPIDLockFile(PID_FILE)
+            files_preserve=[fh.stream], pidfile=pidfile.TimeoutPIDLockFile(
+                PID_FILE)
         ):
             _main(userargs)

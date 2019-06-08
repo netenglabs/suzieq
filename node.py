@@ -1,12 +1,11 @@
+import sys
 from collections import defaultdict
 import os
 import time
 from datetime import datetime
-from ipaddress import ip_address
 import logging
 import random
 
-import json
 import yaml
 from urllib.parse import urlparse
 
