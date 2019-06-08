@@ -42,9 +42,8 @@ class interfaceCmd(SQCommand):
     @command("show")
     @argument("ifname", description="interface name to qualify")
     @argument("type", description="interface type to qualify")
-    @argument(
-        "state", description="interface state to qualify show", choices=["up", "down"]
-    )
+    @argument("state", description="interface state to qualify show",
+              choices=["up", "down"])
     def show(self, ifname: str = "", state: str = "", type: str = ""):
         """
         Show interface info
@@ -69,7 +68,8 @@ class interfaceCmd(SQCommand):
 
     @command("summarize")
     @argument("ifname", description="interface name to qualify")
-    @argument("groupby", description="Space separated list of fields to summarize on")
+    @argument("groupby",
+              description="Space separated list of fields to summarize on")
     def summarize(self, ifname: str = "", groupby: str = ""):
         """
         Describe interface info
@@ -99,9 +99,8 @@ class interfaceCmd(SQCommand):
         choices=["mtu-match", "mtu-value"],
     )
     @argument("value", description="Value to match against")
-    def aver(
-        self, ifname: str = "", state: str = "", what: str = "mtu-match", value: int = 0
-    ):
+    def aver(self, ifname: str = "", state: str = "", what: str = "mtu-match",
+             value: int = 0):
         """
         Assert aspects about the interface
         """
@@ -132,9 +131,8 @@ class interfaceCmd(SQCommand):
         return
 
     @command("top")
-    @argument(
-        "what", description="Field you want to see top for", choices=["transitions"]
-    )
+    @argument("what", description="Field you want to see top for",
+              choices=["transitions"])
     @argument("count", description="How many top entries")
     def top(self, what: str = "transitions", count: int = 5):
         """

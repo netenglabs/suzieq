@@ -7,8 +7,6 @@ import ast
 import copy
 import logging
 import json
-from itertools import zip_longest
-
 import yaml
 
 import textfsm
