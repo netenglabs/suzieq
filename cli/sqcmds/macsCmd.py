@@ -38,9 +38,11 @@ class macsCmd(SQCommand):
         self.macsobj = macsObj(context=self.ctxt)
 
     @command("show")
-    @argument("vlan", description="VLAN ID to qualify")
-    @argument("macaddr", description="MAC address ID to qualify")    
-    def show(self, vlan: str = '', macaddr: str = ''):
+    @argument("vlan", description="only matching these VLAN(s)")
+    @argument("macaddr", description="only matching these MAC address(es)")
+    @argument("remoteVtepIp", description=
+              "only with this remoteVtepIp; use any for all")
+    def show(self, vlan: str = '', macaddr: str = '', remoteVtepIp: str = ''):
         """
         Show MAC table info
         """
@@ -55,6 +57,7 @@ class macsCmd(SQCommand):
             hostname=self.hostname,
             vlan=vlan.split(),
             macaddr=macaddr.split(),
+            remoteVtepIp=remoteVtepIp.split(),
             columns=self.columns,
             datacenter=self.datacenter,
         )
@@ -62,10 +65,13 @@ class macsCmd(SQCommand):
         print(df)
 
     @command("summarize")
-    @argument("vlan", description="VLAN ID to qualify")
-    @argument("macaddr", description="MAC address ID to qualify")    
-    @argument("groupby", description="Space separated list of fields to group by")
-    def summarize(self, vlan: str = "", macaddr: str = '', groupby: str = ""):
+    @argument("vlan", description="only matching these VLAN(s)")
+    @argument("macaddr", description="only matching these MAC address(es)")
+    @argument("remoteVtepIp",
+              description="only with this remoteVtepIp; use any for all")
+    @argument("groupby", description="list of fields to group by")
+    def summarize(self, vlan: str = "", macaddr: str = '',
+                  remoteVtepIp: str = "", groupby: str = ""):
         """
         Summarize MAC Table info
         """
@@ -81,6 +87,7 @@ class macsCmd(SQCommand):
             vlan=vlan.split(),
             macaddr=macaddr.split(),
             groupby=groupby.split(),
+            remoteVtepIp=remoteVtepIp.split(),
             datacenter=self.datacenter,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
