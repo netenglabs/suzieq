@@ -190,10 +190,12 @@ class SQEngineObject(object):
 
         if not df.empty:
             if kwargs.get("groupby"):
-                return df.groupby(kwargs["groupby"]).agg(lambda x: x.unique().tolist())
+                return df.groupby(kwargs["groupby"]) \
+                         .agg(lambda x: x.unique().tolist())
             else:
                 for i in self.iobj._cat_fields:
-                    if kwargs.get(i, []) or "default" in kwargs.get("columns", []):
+                    if (kwargs.get(i, []) or
+                            "default" in kwargs.get("columns", [])):
                         df[i] = df[i].astype("category", copy=False)
                 return df.describe(include="all").fillna("-")
 
