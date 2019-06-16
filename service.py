@@ -266,7 +266,6 @@ class Service(object):
         self.schema = schema
         self.period = period
         self.stype = stype
-
         self.logger = logging.getLogger("suzieq")
 
         # Add the hidden fields to ignore_fields
@@ -277,6 +276,11 @@ class Service(object):
 
         if "hostname" not in self.keys:
             self.keys.insert(1, "hostname")
+
+        if self.stype == "counters":
+            self.partition_cols = ["datacenter", "hostname"]
+        else:
+            self.partition_cols = self.keys + ["timestamp"]
 
     def set_nodes(self, nodes):
         """New node list for this service"""
@@ -730,17 +734,12 @@ class Service(object):
                         records.append(entry)
 
             if records:
-                if self.stype == "counters":
-                    partition_cols = ["datacenter", "hostname"]
-                else:
-                    partition_cols = self.keys + ["timestamp"]
-
                 self.queue.put_nowait(
                     {
                         "records": records,
                         "topic": self.name,
                         "schema": self.schema,
-                        "partition_cols": partition_cols,
+                        "partition_cols": self.partition_cols,
                     }
                 )
 
@@ -1160,6 +1159,13 @@ class evpnVniService(Service):
 
 class routesService(Service):
     """routes service. Different class because vrf default needs to be added"""
+
+    def __init__(self, name, defn, period, stype, keys, ignore_fields, schema,
+                 queue):
+        super().__init__(name, defn, period, stype, keys, ignore_fields,
+                         schema, queue)
+        self.partition_cols = list(filter(lambda x: x != "prefix",
+                                          self.partition_cols))
 
     def clean_data(self, processed_data, raw_data):
 
