@@ -1160,13 +1160,6 @@ class evpnVniService(Service):
 class routesService(Service):
     """routes service. Different class because vrf default needs to be added"""
 
-    def __init__(self, name, defn, period, stype, keys, ignore_fields, schema,
-                 queue):
-        super().__init__(name, defn, period, stype, keys, ignore_fields,
-                         schema, queue)
-        self.partition_cols = list(filter(lambda x: x != "prefix",
-                                          self.partition_cols))
-
     def clean_data(self, processed_data, raw_data):
 
         devtype = raw_data.get("devtype", None)
@@ -1191,5 +1184,5 @@ class arpndService(Service):
             for entry in processed_data:
                 entry["offload"] = entry["offload"] == "offload"
                 entry["state"] = entry["state"].lower()
-    
+
         return super().clean_data(processed_data, raw_data)

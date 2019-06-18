@@ -40,7 +40,8 @@ class SQPandasEngine(SQEngine):
         view = kwargs["view"]
         sort_fields = kwargs["sort_fields"]
 
-        for field in ["table", "start_time", "end_time", "view", "sort_fields"]:
+        for field in ["table", "start_time", "end_time", "view",
+                      "sort_fields"]:
             del kwargs[field]
 
         sch = schemas.get(table)
@@ -60,7 +61,8 @@ class SQPandasEngine(SQEngine):
         fcnt = self.get_filecnt(folder)
 
         use_get_files = (
-            (fcnt > MAX_FILECNT_TO_READ_FOLDER and view == "latest") or start or end
+            (fcnt > MAX_FILECNT_TO_READ_FOLDER and view == "latest") or
+            start or end
         )
 
         if use_get_files:
@@ -71,7 +73,8 @@ class SQPandasEngine(SQEngine):
                 del kwargs["datacenter"]
             files = get_latest_files(folder, start, end)
         else:
-            key_fields = [f["name"] for f in sch if f.get("key", None) is not None]
+            key_fields = [f["name"] for f in sch
+                          if f.get("key", None) is not None]
             # Repopulate the folder so that we can get datacenter in our result
             folder = "{}/{}".format(cfg.get("data-directory"), table)
             filters = self.build_pa_filters(start, end, key_fields, **kwargs)
@@ -110,7 +113,8 @@ class SQPandasEngine(SQEngine):
             pdf_list = []
             with Executor(max_workers=8) as exe:
                 jobs = [
-                    exe.submit(self.read_pq_file, f, fields, query_str) for f in files
+                    exe.submit(self.read_pq_file, f, fields, query_str)
+                    for f in files
                 ]
                 pdf_list = [job.result() for job in jobs]
 
@@ -121,6 +125,10 @@ class SQPandasEngine(SQEngine):
             if not query_str:
                 # Make up a dummy query string to avoid if/then/else
                 query_str = "timestamp != 0"
+
+            # Sadly we have to hardcode this for routes
+            if table == "routes":
+                key_fields.append("prefix")
 
             final_df = (
                 pa.ParquetDataset(
@@ -152,7 +160,8 @@ class SQPandasEngine(SQEngine):
 
         if not final_df.empty:
             final_df["timestamp"] = pd.to_datetime(
-                pd.to_numeric(final_df["timestamp"], downcast="float"), unit="ms"
+                pd.to_numeric(final_df["timestamp"], downcast="float"),
+                unit="ms"
             )
         if sort_fields:
             return final_df[fields].sort_values(by=sort_fields)
@@ -173,7 +182,8 @@ class SQPandasEngine(SQEngine):
                 total += self.get_filecnt(entry.path)
         return total
 
-    def build_pa_filters(self, start_tm: str, end_tm: str, key_fields: list, **kwargs):
+    def build_pa_filters(self, start_tm: str, end_tm: str, key_fields: list,
+                         **kwargs):
         """Build filters for predicate pushdown of parquet read"""
 
         # The time filters first
@@ -222,21 +232,25 @@ class SQPandasEngine(SQEngine):
                             for entry in filters:
                                 foo = deepcopy(entry)
                                 foo.append(
-                                    tuple(("{}".format(k), "==", "{}".format(e)))
+                                    tuple(("{}".format(k), "==", "{}".format(
+                                        e)))
                                 )
                                 kwdor.append(foo)
 
                     filters = kwdor
                 else:
                     if not filters:
-                        filters.append(tuple(("{}".format(k), "==", "{}".format(v))))
+                        filters.append(tuple(("{}".format(k), "==", "{}".
+                                              format(v))))
                     else:
                         for entry in filters:
-                            entry.append(tuple(("{}".format(k), "==", "{}".format(v))))
+                            entry.append(tuple(("{}".format(k), "==", "{}".
+                                                format(v))))
 
         return filters
 
-    def read_pq_file(self, file: str, fields: list, query_str: str) -> pd.DataFrame:
+    def read_pq_file(self, file: str, fields: list,
+                     query_str: str) -> pd.DataFrame:
         # Sadly predicate pushdown doesn't work in this method.
         # We use query on the output to filter
         df = pa.ParquetDataset(file).read(columns=fields).to_pandas()

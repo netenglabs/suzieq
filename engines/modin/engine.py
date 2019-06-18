@@ -86,6 +86,10 @@ class SQModinEngine(SQEngine):
                 # Make up a dummy query string to avoid if/then/else
                 query_str = "timestamp != 0"
 
+            # Sadly we have to hardcode this here. Need to find a better way
+            if table == "routes":
+                key_fields.append("prefix")
+
             final_df = (
                 pd.read_parquet(folder, columns=fields, filters=filters or None)
                 .query(query_str)
