@@ -112,7 +112,7 @@ class IPNetworkArray(NumPyBackedExtensionArrayMixin):
 
         Examples
         --------
-        >>> IPArray([]).na_value
+        >>> IPNetworkArray([]).na_value
         IPv4Network('0.0.0.0/32')
         """
         return self.dtype.na_value
@@ -193,10 +193,6 @@ class IPNetworkArray(NumPyBackedExtensionArrayMixin):
     # ------------------------------------------------------------------------
 
     def __eq__(self, other):
-        # TDOO: scalar ipaddress
-        import pdb; pdb.set_trace()
-        if not isinstance(other, (str, IPNetworkArray)):
-            return NotImplemented
         if isinstance(other, str):
             pyips = self.to_pyipnetwork()
             try:
@@ -204,8 +200,10 @@ class IPNetworkArray(NumPyBackedExtensionArrayMixin):
             except:
                 return NotImplemented
             return np.array([ip == match for ip in pyips])
-        else:
+        elif isinstance(other, IPNetworkArray):
             return self.data == other.data
+        else:
+            return NotImplemented
 
     def __lt__(self, other):
         # TDOO: scalar ipaddress
@@ -229,7 +227,6 @@ class IPNetworkArray(NumPyBackedExtensionArrayMixin):
         return (self.data >= other.data)
 
     def equals(self, other):
-        import pdb; pdb.set_trace()
         if not isinstance(other, IPNetworkArray):
             raise TypeError("Cannot compare 'IPNetworkArray' "
                             "to type '{}'".format(type(other)))
@@ -256,16 +253,16 @@ class IPNetworkArray(NumPyBackedExtensionArrayMixin):
 
         Parameters
         ----------
-        other : str or sequences
+        other : str or list of str or IPNetworkArray
             For ``str`` `other`, the argument is attempted to
             be converted to an :class:`ipaddress.IPv4Network` or
-            a :class:`ipaddress.IPv6Network` or an :class:`IPArray`.
-            If all those conversions fail, a TypeError is raised.
+            a :class:`ipaddress.IPv6Network`. If the conversion fails, 
+            a TypeError is raised.
 
             For a sequence of strings, the same conversion is attempted.
             You should not mix networks with addresses.
 
-            Finally, other may be an ``IPArray`` of addresses to compare to.
+            Finally, other may be an ``IPNetworkArray`` of networks to compare.
 
         Returns
         -------
@@ -276,30 +273,29 @@ class IPNetworkArray(NumPyBackedExtensionArrayMixin):
         --------
         Comparison to a single network
 
-        >>> s = IPArray(['192.168.1.1', '255.255.255.255'])
+        >>> s = IPNetworkArray(['192.168.1.0/32', '10.1.1.1/32'])
         >>> s.isin('192.168.1.0/24')
         array([ True, False])
 
         Comparison to many networks
         >>> s.isin(['192.168.1.0/24', '192.168.2.0/24'])
         array([ True, False])
-
-        Comparison to many IP Addresses
-
-        >>> s.isin(['192.168.1.1', '192.168.1.2', '255.255.255.1']])
-        array([ True, False])
         """
         from pandas.core.algorithms import isin
 
         if not is_list_like(other):
             other = [other]
-        to_match = [ip_network(x, strict=False) for x in other]
+        if isinstance(other, IPNetworkArray):
+            to_match = other
+        else:
+            to_match = [ip_network(x, strict=False) for x in other]
+
         mask = np.zeros(len(self), dtype='bool')
         mask |= isin(self, to_match)
         return mask
 
     def subnet_of(self, addr):
-        """Returns true if addr is in network's subnet; includes default route"""
+        """Returns true if addr is in subnet; includes default route"""
         if isinstance(addr, str):
             ips = self.data
             match = ip_network(addr, strict=False)
@@ -464,24 +460,14 @@ def to_ipnetwork(values):
 
     Returns
     -------
-    addresses : IPArray
+    addresses : IPNetworkArray
 
     Examples
     --------
     Parse strings
-    >>> to_ipaddress(['192.168.1.1',
-    ...               '2001:0db8:85a3:0000:0000:8a2e:0370:7334'])
-    <IPArray(['192.168.1.1', '0:8a2e:370:7334:2001:db8:85a3:0'])>
-
-    Or integers
-    >>> to_ipaddress([3232235777,
-                      42540766452641154071740215577757643572])
-    <IPArray(['192.168.1.1', '0:8a2e:370:7334:2001:db8:85a3:0'])>
-
-    Or packed binary representations
-    >>> to_ipaddress([b'\xc0\xa8\x01\x01',
-                      b' \x01\r\xb8\x85\xa3\x00\x00\x00\x00\x8a.\x03ps4'])
-    <IPArray(['192.168.1.1', '0:8a2e:370:7334:2001:db8:85a3:0'])>
+    >>> to_ipnetwork(['192.168.1.1/24',
+    ...               '2001:0db8:85a3:0000:0000:8a2e:0370:7334/128'])
+    <IPNetworkArray([IPv4Network('192.168.1.1'), IPv6Network('0:8a2e:370:7334:2001:db8:85a3:0')])>
     """
     from suzieq.ipnetwork_array import IPNetworkArray
 
