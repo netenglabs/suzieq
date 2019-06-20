@@ -233,6 +233,43 @@ class IPNetworkArray(NumPyBackedExtensionArrayMixin):
         # TODO: missing
         return (self.data == other.data).all()
 
+    def _reduce(self, name, **kwargs):
+        if name == 'max':
+            return self._max(**kwargs)
+        elif name == 'min':
+            return self._min(**kwargs)
+        return NotImplemented
+
+    def _max(self, **kwargs):
+        pyips = self.to_pyipnetwork()
+        skipna = kwargs.get('skipna', True)
+        result = None
+
+        for ip in pyips:
+            if (skipna and ip != self.na_value) or not skipna:
+                if not result:
+                    result = ip
+                    continue
+                if ip > result:
+                    result = ip
+
+        return result
+
+    def _min(self, **kwargs):
+        pyips = self.to_pyipnetwork()
+        skipna = kwargs.get('skipna', True)
+        result = None
+
+        for ip in pyips:
+            if (skipna and ip != self.na_value) or not skipna:
+                if not result:
+                    result = ip
+                    continue
+                if ip < result:
+                    result = ip
+
+        return result
+
     def isna(self):
         """Indicator for whether each element is missing.
 
@@ -384,6 +421,12 @@ class IPNetworkArray(NumPyBackedExtensionArrayMixin):
         # TODO: I wonder if that should be post-fixed by 0s.
         return self.data.tobytes()
 
+    @property
+    def prefixlen(self):
+        """Return the prefixlen of each prefix in the array"""
+        pyips = self.to_pyipnetwork()
+        return np.array([ip.prefixlen for ip in pyips])
+
 # -----------------------------------------------------------------------------
 # Accessor
 # -----------------------------------------------------------------------------
@@ -403,6 +446,7 @@ class IPNetAccessor:
     is_loopback = DelegatedProperty("is_loopback")
     is_link_local = DelegatedProperty("is_link_local")
     is_default = DelegatedProperty("is_default")
+    prefixlen = DelegatedProperty("prefixlen")
 
     isna = DelegatedMethod("isna")
 
