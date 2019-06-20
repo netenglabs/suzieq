@@ -64,7 +64,7 @@ class IPNetworkArray(NumPyBackedExtensionArrayMixin):
     """
     # We store everything as ipaddress' IPv4Network or IPv6Network.
     # An alternative is to replicate the implementation of IPxNetwork in
-    # ipaddress. The latter approach may provide some efficiency in being
+    # ipaddress. The latter approach *may* provide some efficiency in being
     # able to do array operations via numpy rather than as list comprehensions.
     __array_priority__ = 1000
     _dtype = IPNetworkType()
@@ -344,7 +344,14 @@ class IPNetworkArray(NumPyBackedExtensionArrayMixin):
         if isinstance(addr, str):
             ips = self.data
             match = ip_network(addr, strict=False)
-            return np.array([match.subnet_of(ip) for ip in ips])
+            if match._version == 4:
+                return np.array([match.subnet_of(ip)
+                                 if ip._version == 4 else False
+                                 for ip in ips])
+            else:
+                return np.array([match.subnet_of(ip)
+                                 if ip._version == 6 else False
+                                 for ip in ips])
 
         return NotImplemented
 
