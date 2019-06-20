@@ -233,6 +233,14 @@ class IPNetworkArray(NumPyBackedExtensionArrayMixin):
         # TODO: missing
         return (self.data == other.data).all()
 
+    def value_counts(self, sort=True, ascending=False, normalize=False,
+                     bins=None, dropna=True):
+
+        from pandas.core.algorithms import value_counts
+
+        pyips = self.to_pyipnetwork()
+        return value_counts(pyips, sort, ascending, normalize, bins, dropna)
+
     def _reduce(self, name, **kwargs):
         if name == 'max':
             return self._max(**kwargs)
