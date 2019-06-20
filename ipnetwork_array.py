@@ -1,6 +1,7 @@
 import abc
 import collections
-import ipaddress
+from ipaddress import IPv4Network, IPv6Network, ip_network
+from ipaddress import IPv4Address, IPv6Address
 
 import six
 import numpy as np
@@ -10,9 +11,7 @@ from pandas.api.types import is_list_like
 
 from cyberpandas._accessor import (DelegatedMethod, DelegatedProperty,
                                    delegated_method)
-from cyberpandas._utils import combine, pack, unpack
 from cyberpandas.base import NumPyBackedExtensionArrayMixin
-from cyberpandas.common import _U8_MAX, _IPv4_MAX
 
 # -----------------------------------------------------------------------------
 # Extension Type
@@ -25,8 +24,8 @@ class IPv4v6Network(object):
     pass
 
 
-IPv4v6Network.register(ipaddress.IPv4Network)
-IPv4v6Network.register(ipaddress.IPv6Network)
+IPv4v6Network.register(IPv4Network)
+IPv4v6Network.register(IPv6Network)
 
 
 @pd.api.extensions.register_extension_dtype
@@ -34,8 +33,7 @@ class IPNetworkType(ExtensionDtype):
     name = 'ipnetwork'
     type = IPv4v6Network
     kind = 'O'
-    _record_type = np.string_
-    na_value = ipaddress.ip_network("0.0.0.0", strict=False)
+    na_value = ip_network("0.0.0.0", strict=False)
 
     @classmethod
     def construct_from_string(cls, string):
@@ -58,17 +56,16 @@ class IPNetworkType(ExtensionDtype):
 class IPNetworkArray(NumPyBackedExtensionArrayMixin):
     """Holder for IP Networks.
 
-    IPArray is a container for IPv4 or IPv6 addresses. It satisfies pandas'
-    extension array interface, and so can be stored inside
+    IPNetworkArray is a container for IPv4 or IPv6 networks. It satisfies '
+    pandas' extension array interface, and so can be stored inside
     :class:`pandas.Series` and :class:`pandas.DataFrame`.
 
     See :ref:`usage` for more.
     """
-    # A note on the internal data layout. IPv6 addresses require 128 bits,
-    # which is more than a uint64 can store. So we use a NumPy structured array
-    # with two fields, 'hi', 'lo' to store the data. Each field is a uint64.
-    # The 'hi' field contains upper 64 bits. The think this is correct since
-    # all IP traffic is big-endian.
+    # We store everything as ipaddress' IPv4Network or IPv6Network.
+    # An alternative is to replicate the implementation of IPxNetwork in
+    # ipaddress. The latter approach may provide some efficiency in being
+    # able to do array operations via numpy rather than as list comprehensions.
     __array_priority__ = 1000
     _dtype = IPNetworkType()
     _itemsize = 56
@@ -85,18 +82,18 @@ class IPNetworkArray(NumPyBackedExtensionArrayMixin):
 
     @classmethod
     def _from_ndarray(cls, data, copy=False):
-        """Zero-copy construction of an IPArray from an ndarray.
+        """Zero-copy construction of an IPNetworkArray from an ndarray.
 
         Parameters
         ----------
         data : ndarray
-            This should have IPType._record_type dtype
+            This should have IPNetworkType dtype
         copy : bool, default False
             Whether to copy the data.
 
         Returns
         -------
-        ExtensionArray
+        IPNetworkArray
         """
         if copy:
             data = data.copy()
@@ -111,16 +108,17 @@ class IPNetworkArray(NumPyBackedExtensionArrayMixin):
     def na_value(self):
         """The missing value sentinal for IP Neworks.
 
-        The address ``'0.0.0.0'`` is used.
+        The address ``'0.0.0.0/32'`` is used.
 
         Examples
         --------
         >>> IPArray([]).na_value
-        IPv4Address('0.0.0.0')
+        IPv4Network('0.0.0.0/32')
         """
         return self.dtype.na_value
 
     def take(self, indices, allow_fill=False, fill_value=None):
+        '''This is a direct copy of the code from pandas documentation'''
         # If the ExtensionArray is backed by an ndarray, then
         # just pass that here instead of coercing to object.
         data = self.astype(object)
@@ -149,14 +147,15 @@ class IPNetworkArray(NumPyBackedExtensionArrayMixin):
 
     @staticmethod
     def _box_scalar(scalar):
-        return ipaddress.ip_network(combine(*scalar), strict=False)
+        return NotImplemented
 
     @property
     def _parser(self):
-        raise NotImplementedError
+        return to_ipnetwork
 
     def __setitem__(self, key, value):
-        raise NotImplementedError
+        value = to_ipnetwork(value).data
+        self.data[key] = value
 
     def __iter__(self):
         return iter(self.to_pyipnetwork())
@@ -170,19 +169,15 @@ class IPNetworkArray(NumPyBackedExtensionArrayMixin):
 
         Returns
         -------
-        addresses : List
-            Each element of the list will be an :class:`ipaddress.IPv4Address`
-            or :class:`ipaddress.IPv6Address`, depending on the size of that
+        networks : List
+            Each element of the list will be an :class:`ipaddress.IPv4Network`
+            or :class:`ipaddress.IPv6Network`, depending on the size of that
             element.
-
-        See Also
-        --------
-        IPArray.to_pyints
 
         Examples
         ---------
-        >>> IPArray(['192.168.1.1', '2001:db8::1000']).to_pyipaddress()
-        [IPv4Address('192.168.1.1'), IPv6Address('2001:db8::1000')]
+        >>> IPNetworkArray(['192.168.1.1/24', '2001:db8::1000/128']).to_pyipaddress()
+        [IPv4Network('192.168.1.0/24'), IPv6Network('2001:db8::1000/128')]
         """
         return [x for x in self.data]
 
@@ -199,49 +194,60 @@ class IPNetworkArray(NumPyBackedExtensionArrayMixin):
 
     def __eq__(self, other):
         # TDOO: scalar ipaddress
-        if not isinstance(other, IPNetworkArray):
+        import pdb; pdb.set_trace()
+        if not isinstance(other, (str, IPNetworkArray)):
             return NotImplemented
-        mask = self.isna() | other.isna()
-        result = self.data == other.data
-        result[mask] = False
-        return result
+        if isinstance(other, str):
+            pyips = self.to_pyipnetwork()
+            try:
+                match = ip_network(other, strict=False)
+            except:
+                return NotImplemented
+            return np.array([ip == match for ip in pyips])
+        else:
+            return self.data == other.data
 
     def __lt__(self, other):
         # TDOO: scalar ipaddress
-        return NotImplemented
+        if not isinstance(other, IPNetworkArray):
+            return NotImplemented
+        return (self.data < other.data)
 
     def __le__(self, other):
-        return NotImplemented
+        if not isinstance(other, IPNetworkArray):
+            return NotImplemented
+        return (self.data <= other.data)
 
     def __gt__(self, other):
-        return NotImplemented
+        if not isinstance(other, IPNetworkArray):
+            return NotImplemented
+        return (self.data > other.data)
 
     def __ge__(self, other):
-        return NotImplemented
+        if not isinstance(other, IPNetworkArray):
+            return NotImplemented
+        return (self.data >= other.data)
 
     def equals(self, other):
+        import pdb; pdb.set_trace()
         if not isinstance(other, IPNetworkArray):
             raise TypeError("Cannot compare 'IPNetworkArray' "
                             "to type '{}'".format(type(other)))
         # TODO: missing
         return (self.data == other.data).all()
 
-    def _values_for_factorize(self):
-        return self.astype(object), ipaddress.ip_network('0.0.0.0',
-                                                         strict=False)
-
     def isna(self):
         """Indicator for whether each element is missing.
 
-        The IPNetwork 0 is used to indecate missing values.
+        The IPNetwork '0.0.0.0/32' is used to indicate missing values.
 
         Examples
         --------
-        >>> IPArray(['0.0.0.0', '192.168.1.1']).isna()
+        >>> IPNetworkArray(['0.0.0.0/32', '192.168.1.1/24']).isna()
         array([ True, False])
         """
         ips = self.data
-        return (ips == ipaddress.ip_network('0.0.0.0', strict=False))
+        return (ips == ip_network('0.0.0.0', strict=False))
 
     def isin(self, other):
         """Check whether elements of `self` are in `other`.
@@ -283,53 +289,23 @@ class IPNetworkArray(NumPyBackedExtensionArrayMixin):
         >>> s.isin(['192.168.1.1', '192.168.1.2', '255.255.255.1']])
         array([ True, False])
         """
-        box = (isinstance(other, str) or
-               not isinstance(other, (IPNetworkArray, collections.Sequence)))
-        if box:
+        from pandas.core.algorithms import isin
+
+        if not is_list_like(other):
             other = [other]
-
-        networks = []
-        addresses = []
-
-        if not isinstance(other, IPNetworkArray):
-            for net in other:
-                net = _as_ip_object(net)
-                if isinstance(net, (ipaddress.IPv4Network,
-                                    ipaddress.IPv6Network)):
-                    networks.append(net)
-                if isinstance(net, (ipaddress.IPv4Address,
-                                    ipaddress.IPv6Address)):
-                    addresses.append(ipaddress.IPv6Network(net))
-        else:
-            addresses = other
-
-        # Flatten all the addresses
-        addresses = IPArray(addresses)  # TODO: think about copy=False
-
+        to_match = [ip_network(x, strict=False) for x in other]
         mask = np.zeros(len(self), dtype='bool')
-        for network in networks:
-            mask |= self._isin_network(network)
-
-        # no... we should flatten this.
-        mask |= self._isin_addresses(addresses)
+        mask |= isin(self, to_match)
         return mask
 
-    def _isin_network(self, other):
-        """Check whether an array of addresses is contained in a network."""
-        # A network is bounded below by 'network_address' and
-        # above by 'broadcast_address'.
-        # IPArray handles comparisons between arrays of addresses, and NumPy
-        # handles broadcasting.
-        net_lo = type(self)([other.network_address])
-        net_hi = type(self)([other.broadcast_address])
+    def subnet_of(self, addr):
+        """Returns true if addr is in network's subnet; includes default route"""
+        if isinstance(addr, str):
+            ips = self.data
+            match = ip_network(addr, strict=False)
+            return np.array([match.subnet_of(ip) for ip in ips])
 
-        return (net_lo <= self) & (self <= net_hi)
-
-    def _isin_addresses(self, other):
-        """Check whether elements of self are present in other."""
-        from pandas.core.algorithms import isin
-        # TODO(factorize): replace this
-        return isin(self, other)
+        return NotImplemented
 
     # ------------------------------------------------------------------------
     # IP Specific
@@ -339,14 +315,14 @@ class IPNetworkArray(NumPyBackedExtensionArrayMixin):
     def is_ipv4(self):
         """Indicator for whether each address fits in the IPv4 space."""
         # TODO: NA should be NA
-        ips = self.data
-        return (ips['hi'] == 0) & (ips['lo'] < _U8_MAX)
+        pyips = self.to_pyipnetwork()
+        return np.array([ip._version == 4 for ip in pyips])
 
     @property
     def is_ipv6(self):
         """Indicator for whether each address requires IPv6."""
-        ips = self.data
-        return (ips['hi'] > 0) | (ips['lo'] > _U8_MAX)
+        pyips = self.to_pyipnetwork()
+        return np.array([ip._version == 6 for ip in pyips])
 
     @property
     def version(self):
@@ -363,7 +339,7 @@ class IPNetworkArray(NumPyBackedExtensionArrayMixin):
     def is_default(self):
         """Indiciator for whether each prefix is the default route."""
         pyips = self.to_pyipnetwork()
-        dflt = ipaddress.ip_network('0.0.0.0/0')
+        dflt = ip_network('0.0.0.0/0')
         return np.array([ip == dflt for ip in pyips])
 
     @property
@@ -450,6 +426,9 @@ class IPNetAccessor:
         return delegated_method(self._data.isin, self._index,
                                 self._name, other)
 
+    def subnet_of(self, other):
+        return delegated_method(self._data.subnet_of, self._index,
+                                self._name, other)
 
 def is_ipnetwork_type(obj):
 
@@ -461,7 +440,7 @@ def is_ipnetwork_type(obj):
 
 
 def _to_ipnetwork_array(values):
-    from suzieq.ipn_dtype import IPNetworkType, IPNetworkArray
+    from suzieq.ipnetwork_array import IPNetworkType, IPNetworkArray
 
     if isinstance(values, IPNetworkArray):
         return values.data
@@ -471,7 +450,7 @@ def _to_ipnetwork_array(values):
             np.issubdtype(values.dtype, np.string_)):
         values = np.asarray(values, dtype=IPNetworkType)
     else:
-        values = [ipaddress.ip_network(x, strict=False) for x in values]
+        values = [ip_network(x, strict=False) for x in values]
 
     return np.atleast_1d(np.asarray(values, dtype=IPNetworkType))
 
@@ -504,7 +483,7 @@ def to_ipnetwork(values):
                       b' \x01\r\xb8\x85\xa3\x00\x00\x00\x00\x8a.\x03ps4'])
     <IPArray(['192.168.1.1', '0:8a2e:370:7334:2001:db8:85a3:0'])>
     """
-    from suzieq.ipn_dtype import IPNetworkArray
+    from suzieq.ipnetwork_array import IPNetworkArray
 
     if not is_list_like(values):
         values = [values]
