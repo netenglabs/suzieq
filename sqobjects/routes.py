@@ -23,3 +23,9 @@ class routesObj(basicobj.SQObject):
                          datacenter, columns, context=context, table='routes')
         self._sort_fields = ['hostname', 'vrf', 'prefix']
         self._cat_fields = ['protocol', 'metric']
+
+    def lpm(self, **kwargs):
+        '''Get the lpm for the given address'''
+        if 'address' not in kwargs:
+            raise AttributeError('ip address is mandatory parameter')
+        return self.engine_obj.lpm(**kwargs)

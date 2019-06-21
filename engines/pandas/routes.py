@@ -33,19 +33,46 @@ class routesObj(SQEngineObject):
             sort_fields = self.iobj._sort_fields
 
         df = self.get_valid_df(self.iobj._table, sort_fields, **kwargs) \
-                  .query('prefix != ""')
+                 .query('prefix != ""')
 
-        if not df.empty:
-            df['prefix'].replace('default', '0.0.0.0/0', inplace=True)
-            df['prefix'] = df.prefix.astype('ipnetwork')
-            
-            if kwargs.get("groupby"):
-                return df.groupby(kwargs["groupby"]) \
-                         .agg(lambda x: x.unique().tolist())
-            else:
-                for i in self.iobj._cat_fields:
-                    if (kwargs.get(i, []) or
-                            "default" in kwargs.get("columns", [])):
-                        df[i] = df[i].astype("category", copy=False)
-                return df.describe(include="all").fillna("-")
-        
+        if df.empty:
+            return df
+
+        df['prefix'].replace('default', '0.0.0.0/0', inplace=True)
+        df['prefix'] = df.prefix.astype('ipnetwork')
+
+        if kwargs.get("groupby"):
+            return df.groupby(kwargs["groupby"]) \
+                     .agg(lambda x: x.unique().tolist())
+        else:
+            for i in self.iobj._cat_fields:
+                if (kwargs.get(i, []) or
+                        "default" in kwargs.get("columns", [])):
+                    df[i] = df[i].astype("category", copy=False)
+            return df.describe(include="all").fillna("-")
+
+    def lpm(self, **kwargs):
+        if not self.iobj._table:
+            raise NotImplementedError
+
+        if self.ctxt.sort_fields is None:
+            sort_fields = None
+        else:
+            sort_fields = self.iobj._sort_fields
+
+        ipaddr = kwargs.get('address')
+        del kwargs['address']
+
+        df = self.get_valid_df(self.iobj._table, sort_fields, **kwargs) \
+                 .query('prefix != ""')
+
+        df['prefix'] = df.prefix.astype('ipnetwork')
+        if df.empty:
+            return df
+
+        df = df.query("prefix.ipnet.supernet_of('{}')".format(ipaddr)) \
+               .groupby(by=['datacenter', 'hostname', 'vrf']) \
+               .max() \
+               .dropna()
+
+        return df
