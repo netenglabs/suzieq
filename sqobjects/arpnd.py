@@ -22,5 +22,4 @@ class arpndObj(basicobj.SQObject):
         super().__init__(engine, hostname, start_time, end_time, view,
                          datacenter, columns, context=context, table='arpnd')
         self._sort_fields = ['datacenter', 'hostname', 'ipAddress']
-        self._cat_fields = []
-
+        self._cat_fields = ['state']
