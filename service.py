@@ -1170,6 +1170,8 @@ class routesService(Service):
                 for ele in ["nexthopIps", "oifs"]:
                     entry[ele] = entry[ele] or [""]
                 entry["weights"] = entry["weights"] or [1]
+                if entry['prefix'] == 'default':
+                    entry['prefix'] = '0.0.0.0/0'
 
         return super().clean_data(processed_data, raw_data)
 
