@@ -8,7 +8,44 @@
 #
 
 from .engineobj import SQEngineObject
+from cyberpandas import to_ipnetwork, IPNetworkArray, IPNetworkType
+from cyberpandas import IPNetAccessor
 
 
 class routesObj(SQEngineObject):
-    pass
+
+    def get(self, **kwargs):
+
+        df = super().get(**kwargs).query('prefix != ""')
+        if not df.empty:
+            df['prefix'].replace('default', '0.0.0.0/0', inplace=True)
+            df['prefix'] = df['prefix'].astype('ipnetwork')
+
+        return df
+
+    def summarize(self, **kwargs):
+        if not self.iobj._table:
+            raise NotImplementedError
+
+        if self.ctxt.sort_fields is None:
+            sort_fields = None
+        else:
+            sort_fields = self.iobj._sort_fields
+
+        df = self.get_valid_df(self.iobj._table, sort_fields, **kwargs) \
+                  .query('prefix != ""')
+
+        if not df.empty:
+            df['prefix'].replace('default', '0.0.0.0/0', inplace=True)
+            df['prefix'] = df.prefix.astype('ipnetwork')
+            
+            if kwargs.get("groupby"):
+                return df.groupby(kwargs["groupby"]) \
+                         .agg(lambda x: x.unique().tolist())
+            else:
+                for i in self.iobj._cat_fields:
+                    if (kwargs.get(i, []) or
+                            "default" in kwargs.get("columns", [])):
+                        df[i] = df[i].astype("category", copy=False)
+                return df.describe(include="all").fillna("-")
+        
