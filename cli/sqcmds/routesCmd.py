@@ -12,6 +12,7 @@ from nubia import command, argument
 
 from suzieq.cli.sqcmds.command import SQCommand
 from suzieq.sqobjects.routes import routesObj
+from cyberpandas import IPNetworkType, IPNetworkArray, IPAccessor, to_ipnetwork
 
 
 @command("routes", help="Act on Routes")
@@ -63,8 +64,9 @@ class routesCmd(SQCommand):
 
     @command("summarize")
     @argument("prefix", description="Specific prefix to qualify")
-    @argument("vrf", description="Specific VRF to qualify")    
-    @argument("groupby", description="Space separated list of fields to summarize on")
+    @argument("vrf", description="Specific VRF to qualify")
+    @argument("groupby",
+              description="space-separated list of fields to summarize")
     def summarize(self, prefix: str = "", vrf: str = '', groupby: str = ""):
         """
         Summarize Routing info
@@ -82,6 +84,32 @@ class routesCmd(SQCommand):
             vrf=vrf.split(),            
             columns=self.columns,
             groupby=groupby.split(),
+            datacenter=self.datacenter,
+        )
+        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
+        print(df)
+
+    @command('lpm')
+    @argument("address", description="IP address for lpm")
+    @argument("vrf", description="specific VRF to qualify")
+    def lpm(self, address: str = "", vrf: str = "default"):
+        """
+        Show the Longest Prefix Match on a given prefix, vrf
+        """
+        now = time.time()
+        if self.columns != ["default"]:
+            self.ctxt.sort_fields = None
+        else:
+            self.ctxt.sort_fields = []
+
+        if not address:
+            print('address is mandatory parameter')
+
+        df = self.routesobj.lpm(
+            hostname=self.hostname,
+            address=address,
+            vrf=vrf.split(),
+            columns=self.columns,
             datacenter=self.datacenter,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
