@@ -59,7 +59,7 @@ class SQEngineObject(object):
         new_df = pd.DataFrame(new_rows, columns=df.columns)
         return new_df
 
-    def system_df(self, datacenter):
+    def system_df(self, datacenter) -> pd.DataFrame:
         """Return cached version if present, else add to cache the system DF"""
 
         if not self.ctxt.engine:
@@ -90,7 +90,7 @@ class SQEngineObject(object):
 
         return self.ctxt.system_df.get(datacenter, pd.DataFrame(columns=sys_cols))
 
-    def get_valid_df(self, table, sort_fields, **kwargs):
+    def get_valid_df(self, table, sort_fields, **kwargs) -> pd.DataFrame:
         if not self.ctxt.engine:
             print("Specify an analysis engine using set engine command")
             return pd.DataFrame(columns=["datacenter", "hostname"])
