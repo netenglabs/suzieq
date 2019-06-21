@@ -22,4 +22,4 @@ class routesObj(basicobj.SQObject):
         super().__init__(engine, hostname, start_time, end_time, view,
                          datacenter, columns, context=context, table='routes')
         self._sort_fields = ['hostname', 'vrf', 'prefix']
-        self._cat_fields = []
+        self._cat_fields = ['protocol', 'metric']
