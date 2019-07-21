@@ -32,7 +32,7 @@ class SQPandasEngine(SQEngine):
     def get_table_df(self, cfg, schemas, **kwargs) -> pd.DataFrame:
         """Use Pandas instead of Spark to retrieve the data"""
 
-        MAX_FILECNT_TO_READ_FOLDER = 500
+        MAX_FILECNT_TO_READ_FOLDER = 10000
 
         table = kwargs["table"]
         start = kwargs["start_time"]
