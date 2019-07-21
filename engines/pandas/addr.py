@@ -8,31 +8,14 @@
 #
 
 import typing
-from ipaddress import ip_interface, ip_network, IPv6Interface
 import pandas as pd
+from cyberpandas import to_ipnetwork, IPNetworkArray, IPNetworkType
+from cyberpandas import IPNetAccessor
 
 from .engineobj import SQEngineObject
 
 
 class addrObj(SQEngineObject):
-    def _addr_cmp(*addrlist: pd.array, addr="", match: str = "subnet") -> bool:
-        for ele in addrlist[1]:
-            if match == "subnet" and addr in ip_network(ele, strict=False):
-                return True
-            elif match == "exact" and addr.ip == ip_interface(ele).ip:
-                return True
-        return False
-
-    def _addr_cnt(*addrlist: pd.array, count_dict=None):
-        for ele in addrlist[1]:
-            for item in ele:
-                if item.startswith("fe80::"):
-                    continue
-
-                if item not in count_dict:
-                    count_dict[item] = 0
-
-                count_dict[item] += 1
 
     def get(self, **kwargs) -> pd.DataFrame:
         """Retrieve the dataframe that matches a given IP address"""
@@ -41,20 +24,22 @@ class addrObj(SQEngineObject):
         if addr:
             del kwargs["address"]
 
-        match = kwargs.get("match", None)
-        if match:
-            del kwargs["match"]
-        else:
-            match = "subnet"
         if self.ctxt.sort_fields is None:
             sort_fields = None
         else:
             sort_fields = self.sort_fields
 
+        if addr and "::" in addr:
+            addrcol = "ip6AddressList"
+        elif addr and ':' in addr:
+            addrcol = "macaddr"
+        else:
+            addrcol = "ipAddressList"
+
         columns = kwargs.get("columns", [])
         del kwargs["columns"]
         if columns != ["default"]:
-            for col in ["macaddr", "ip6AddressList", "ipAddressList"]:
+            for col in addrcol:
                 if col not in columns:
                     columns.insert(4, col)
         else:
@@ -62,25 +47,20 @@ class addrObj(SQEngineObject):
                 "datacenter",
                 "hostname",
                 "ifname",
-                "ipAddressList",
-                "ip6AddressList",
-                "macaddr",
                 "state",
-                "timestamp",
             ]
+            columns.append(addrcol)
+            columns.append("timestamp")
 
-        df = self.get_valid_df("interfaces", sort_fields, columns=columns, **kwargs)
-        try:
-            ipa = ip_interface(addr)
-            if type(ipa) == IPv6Interface:
-                return df[
-                    df.ip6AddressList.apply(self._addr_cmp, addr=ipa, match=match)
-                ]
-            else:
-                return df[df.ipAddressList.apply(self._addr_cmp, addr=ipa, match=match)]
-        except ValueError:
-            # Is this a MAC address?
-            return df[df.macaddr == addr]
+        df = self.get_valid_df("interfaces", sort_fields, columns=columns,
+                               **kwargs)
+
+        # Works with pandas 0.25.0 onwards
+        if addr and not df.empty:
+            df = df.explode('ipAddressList').dropna(how='any')
+            return df[df.ipAddressList.str.startswith(addr+'/')]
+        else:
+            return df
 
     def summarize(self, **kwargs):
         """Describe the IP Address data"""
@@ -89,11 +69,6 @@ class addrObj(SQEngineObject):
         if addr:
             del kwargs["address"]
 
-        match = kwargs.get("match", None)
-        if match:
-            del kwargs["match"]
-        else:
-            match = "subnet"
         if self.ctxt.sort_fields is None:
             sort_fields = None
         else:
