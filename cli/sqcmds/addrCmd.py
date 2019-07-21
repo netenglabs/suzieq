@@ -40,12 +40,7 @@ class addrCmd(SQCommand):
 
     @command("show")
     @argument("address", description="Address about which you want info")
-    @argument(
-        "match",
-        description="type of match: exact or subnet",
-        choices=["exact", "subnet"],
-    )
-    def show(self, address: str = "", match="subnet"):
+    def show(self, address: str = ""):
         """
         Show address info
         """
@@ -61,7 +56,6 @@ class addrCmd(SQCommand):
             columns=self.columns,
             address=address,
             datacenter=self.datacenter,
-            match=match,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
