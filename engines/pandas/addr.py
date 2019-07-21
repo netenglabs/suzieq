@@ -57,10 +57,10 @@ class addrObj(SQEngineObject):
 
         # Works with pandas 0.25.0 onwards
         if addr and not df.empty:
-            df = df.explode('ipAddressList').dropna(how='any')
-            return df[df.ipAddressList.str.startswith(addr+'/')]
+            df = df.explode(addrcol).dropna(how='any')
+            return df[df[addrcol].str.startswith(addr+'/')]
         else:
-            return df
+            return df[df[addrcol].apply(lambda x: len(x) != 0)]
 
     def summarize(self, **kwargs):
         """Describe the IP Address data"""
