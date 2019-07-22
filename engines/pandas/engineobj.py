@@ -108,10 +108,10 @@ class SQEngineObject(object):
 
         datacenter = kwargs.get("datacenter", None)
         if not datacenter:
-            datacenter = self.datacenter
+            datacenter = self.ctxt.datacenter
 
         if not datacenter:
-            datacenter = "default"
+            datacenter = ["default"]
 
         if table_df.empty:
             return table_df
