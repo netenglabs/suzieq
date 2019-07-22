@@ -111,7 +111,7 @@ class SQEngineObject(object):
             datacenter = self.ctxt.datacenter
 
         if not datacenter:
-            datacenter = ["default"]
+            datacenter = []
 
         if table_df.empty:
             return table_df
