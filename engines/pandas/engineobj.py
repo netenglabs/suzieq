@@ -67,28 +67,47 @@ class SQEngineObject(object):
             return pd.DataFrame(columns=["datacenter", "hostname"])
 
         sys_cols = ["datacenter", "hostname", "timestamp"]
-        if self.ctxt.system_df.get(datacenter, None) is None:
-            sys_cols = ["datacenter", "hostname", "timestamp"]
-            sys_sort = ["datacenter", "hostname"]
+        sys_sort = ["datacenter", "hostname"]
 
+        # Handle the case we need to fetch the data
+        get_data_dc_list = []
+        for dc in datacenter:
+            if self.ctxt.system_df.get(dc, None) is None:
+                get_data_dc_list.append(dc)
+
+        if not datacenter or get_data_dc_list:
             system_df = self.ctxt.engine.get_table_df(
-                self.cfg,
-                self.schemas,
-                table="system",
-                view=self.iobj.view,
-                start_time=self.iobj.start_time,
-                end_time=self.iobj.end_time,
-                datacenter=datacenter,
-                sort_fields=sys_sort,
-                columns=sys_cols,
-            )
+                    self.cfg,
+                    self.schemas,
+                    table="system",
+                    view=self.iobj.view,
+                    start_time=self.iobj.start_time,
+                    end_time=self.iobj.end_time,
+                    datacenter=get_data_dc_list,
+                    sort_fields=sys_sort,
+                    columns=sys_cols,
+                )
+            if not get_data_dc_list and not system_df.empty:
+                get_data_dc_list = system_df['datacenter'].unique()
 
-            if datacenter not in self.ctxt.system_df:
-                self.ctxt.system_df[datacenter] = None
+            for dc in get_data_dc_list:
+                if dc not in self.ctxt.system_df:
+                    self.ctxt.system_df[dc] = None
 
-            self.ctxt.system_df[datacenter] = system_df
+                self.ctxt.system_df[dc] = system_df \
+                         .query('datacenter=="{}"'.format(dc))
 
-        return self.ctxt.system_df.get(datacenter, pd.DataFrame(columns=sys_cols))
+            return system_df
+
+        system_df_list = []
+        for dc in datacenter:
+            system_df_list.append(
+                self.ctxt.system_df.get(dc, pd.DataFrame(columns=sys_cols)))
+
+        if system_df_list:
+            return pd.concat(system_df_list)
+        else:
+            return pd.DataFrame(columns=sys_cols)
 
     def get_valid_df(self, table, sort_fields, **kwargs) -> pd.DataFrame:
         if not self.ctxt.engine:
@@ -141,7 +160,7 @@ class SQEngineObject(object):
                     columns=sys_cols,
                 )
             else:
-                sys_df = self.system_df(datacenter[0])
+                sys_df = self.system_df(datacenter)
 
             if sys_df.empty:
                 return sys_df
