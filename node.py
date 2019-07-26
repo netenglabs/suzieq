@@ -259,6 +259,7 @@ class Node(object):
                         "devtype": self.devtype,
                         "datacenter": self.dcname,
                         "hostname": self.hostname,
+                        "address": self.address,
                         "data": stdout.decode("ascii", "ignore")
                         if not proc.returncode
                         else stderr.decode("ascii", "ignore"),
@@ -273,6 +274,7 @@ class Node(object):
                         "devtype": self.devtype,
                         "datacenter": self.dcname,
                         "hostname": self.hostname,
+                        "address": self.address,
                         "data": {"error": str(e)},
                     }
                 )
@@ -315,6 +317,7 @@ class Node(object):
                         "devtype": self.devtype,
                         "datacenter": self.dcname,
                         "hostname": self.hostname,
+                        "address": self.address,
                         "data": {"error": str(e)},
                     }
                 )
@@ -332,6 +335,7 @@ class Node(object):
                             "devtype": self.devtype,
                             "datacenter": self.dcname,
                             "hostname": self.hostname,
+                            "address": self.address,
                             "data": output.stdout,
                         }
                     )
@@ -350,6 +354,7 @@ class Node(object):
                             "devtype": self.devtype,
                             "datacenter": self.dcname,
                             "hostname": self.hostname,
+                            "address": self.address,
                             "data": {"error": str(e)},
                         }
                     )
@@ -362,6 +367,7 @@ class Node(object):
                             "devtype": self.devtype,
                             "datacenter": self.dcname,
                             "hostname": self.hostname,
+                            "address": self.address,
                             "data": {"error": str(e)},
                         }
                     )
@@ -408,6 +414,7 @@ class Node(object):
                     "devtype": self.devtype,
                     "datacenter": self.dcname,
                     "hostname": self.hostname,
+                    "address": self.address,
                     "data": result,
                 }
             )
@@ -487,6 +494,7 @@ class EosNode(Node):
                         "devtype": self.devtype,
                         "datacenter": self.dcname,
                         "hostname": self.hostname,
+                        "address": self.address,
                         "data": output[i] if type(output) is list else output,
                     }
                 )
@@ -500,6 +508,7 @@ class EosNode(Node):
                         "devtype": self.devtype,
                         "datacenter": self.dcname,
                         "hostname": self.hostname,
+                        "address": self.address,
                         "data": {"error": str(e)},
                     }
                 )
@@ -558,6 +567,7 @@ class CumulusNode(Node):
                                 "devtype": self.devtype,
                                 "datacenter": self.dcname,
                                 "hostname": self.hostname,
+                                "address": self.address,
                                 "data": await response.text(),
                             }
                         )
@@ -570,6 +580,7 @@ class CumulusNode(Node):
                     "devtype": self.devtype,
                     "datacenter": self.dcname,
                     "hostname": self.hostname,
+                    "address": self.address,
                     "data": {"error": str(e)},
                 }
             )
