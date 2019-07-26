@@ -918,8 +918,10 @@ class SystemService(Service):
 
     nodes_state = {}
 
-    def __init__(self, name, defn, period, stype, keys, ignore_fields, schema, queue):
-        super().__init__(name, defn, period, stype, keys, ignore_fields, schema, queue)
+    def __init__(self, name, defn, period, stype, keys, ignore_fields,
+                 schema, queue):
+        super().__init__(name, defn, period, stype, keys, ignore_fields,
+                         schema, queue)
         self.ignore_fields.append("bootupTimestamp")
 
     def clean_data(self, processed_data, raw_data):
@@ -930,24 +932,27 @@ class SystemService(Service):
             # bootupTimestamp field but provides the sysUptime field,
             # we fix the data so that it is always bootupTimestamp
             # TODO: Fix the clock drift
-            if not entry.get("bootupTimestamp", None) and entry.get("sysUptime", None):
+            if not entry.get("bootupTimestamp", None) and entry.get(
+                    "sysUptime", None):
                 entry["bootupTimestamp"] = int(
                     raw_data["timestamp"]/1000 - float(entry["sysUptime"])
                 )
                 del entry["sysUptime"]
-            # This is the case for Linux servers, so also extract the vendor and
-            # version from the os string
+            # This is the case for Linux servers, so also extract the vendor
+            # and version from the os string
             if not entry.get("vendor", ''):
                 if 'os' in entry:
                     osstr = entry.get("os", "").split()
                     if len(osstr) > 1:
-                        # Assumed format is: Ubuntu 18.04.2 LTS, CentOS Linux 7 (Core)
+                        # Assumed format is: Ubuntu 18.04.2 LTS,
+                        # CentOS Linux 7 (Core)
                         entry["vendor"] = osstr[0]
                         if not entry.get("version", ""):
                             entry["version"] = ' '.join(osstr[1:])
                     del entry["os"]
 
-        entry['status'] = "alive"
+            entry['status'] = "alive"
+            entry["address"] = raw_data["address"]
         return super().clean_data(processed_data, raw_data)
 
     async def commit_data(self, result, datacenter, hostname):
@@ -958,7 +963,8 @@ class SystemService(Service):
             # to good after nodes have been built. Find the corresponding
             # node and fix the nodelist
             nres = [
-                self.nodes[x] for x in self.nodes if self.nodes[x].hostname == hostname
+                self.nodes[x] for x in self.nodes
+                if self.nodes[x].hostname == hostname
             ]
             if nres:
                 nodeobj = nres[0]
@@ -976,9 +982,11 @@ class SystemService(Service):
                 rec["datacenter"] = datacenter
                 rec["hostname"] = hostname
                 rec["timestamp"] = int(datetime.utcnow().timestamp() * 1000)
+                rec["status"] = "dead"
+                rec["active"] = True
 
                 result.append(rec)
-            elif nodeobj.get_status == "good":
+            elif nodeobj.get_status() == "good":
                 # To avoid unnecessary flaps, we wait for HOLD_TIME to expire
                 # before we mark the node as dead
                 if hostname in self.nodes_state:
@@ -1004,6 +1012,14 @@ class SystemService(Service):
                         datetime.utcnow().timestamp() * 1000
                     )
                     return
+            else:
+                # Ensure we don't delete the dead entry
+                prev_res = nodeobj.prev_result
+                if prev_res:
+                    result = copy.deepcopy(prev_res)
+                    result[0]["timestamp"] = int(
+                        datetime.utcnow().timestamp() * 1000
+                    )
         else:
             # Clean up old state if any since we now have a valid output
             if self.nodes_state.get(hostname, None):
@@ -1036,7 +1052,8 @@ class SystemService(Service):
         if not (adds or dels):
             # Verify the bootupTimestamp hasn't changed. Compare only int part
             # Assuming no device boots up in millisecs
-            if abs(int(new[0]["bootupTimestamp"]) - int(old[0]["bootupTimestamp"])) > 2:
+            if abs(int(new[0]["bootupTimestamp"]) -
+                   int(old[0]["bootupTimestamp"])) > 2:
                 adds.append(new[0])
 
         return adds, dels
