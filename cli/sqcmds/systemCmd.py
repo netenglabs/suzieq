@@ -15,8 +15,9 @@ from suzieq.cli.sqcmds.command import SQCommand
 from suzieq.sqobjects.system import systemObj
 
 
-@command("system", help="Act on LLDP data")
+@command("system", help="Act on system data")
 class systemCmd(SQCommand):
+    """system command"""
     def __init__(
         self,
         engine: str = "",
@@ -38,7 +39,7 @@ class systemCmd(SQCommand):
         )
         self.systemobj = systemObj(context=self.ctxt)
 
-    @command("show")
+    @command("show", help="Show system information")
     def show(self):
         """
         Show system info
@@ -56,7 +57,7 @@ class systemCmd(SQCommand):
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
 
-    @command("summarize")
+    @command("summarize", help="Summarize system information")
     @argument("groupby", description="Space separated list of fields to summarize on")
     def summarize(self, groupby: str = ""):
         """
