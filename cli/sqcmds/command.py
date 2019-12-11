@@ -44,6 +44,7 @@ class SQCommand:
         datacenter: str = "",
         columns: str = "default",
     ) -> None:
+        """Init command"""
         self.ctxt = context.get_context()
         self._cfg = self.ctxt.cfg
         self._schemas = self.ctxt.schemas
@@ -83,18 +84,27 @@ class SQCommand:
         return self._schemas
 
     """show various pieces of information"""
-
+    @command("show", help="Show object information")
     def get(self, **kwargs):
+        """Virtual function"""
         raise NotImplementedError
 
+    @command("analyze", help="Analyze object")
     def analyze(self, **kwargs):
+        """Virtual function"""
         raise NotImplementedError
 
+    @command("assert", help="Make assertions about object property")
     def aver(self, **kwargs):
+        """Virtual function"""
         raise NotImplementedError
 
+    @command("summarize", help="Summarize object information")
     def summarize(self, **kwargs):
+        """Virtual function"""
         raise NotImplementedError
 
+    @command("top", help="Top stuff about the object")
     def top(self, **kwargs):
+
         raise NotImplementedError
