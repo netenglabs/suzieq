@@ -854,13 +854,20 @@ class InterfaceService(Service):
         for entry in processed_data:
             ifname = entry["ifname"]
             if ifname not in new_data_dict:
-                entry["numChanges"] = int(entry["linkUpCnt"] + entry["linkDownCnt"])
+
+                if not entry['linkUpCnt']:
+                    entry['linkUpCnt'] = 0
+                if not entry['linkDownCnt']:
+                    entry['linkDownCnt'] = 0
+
+                entry["numChanges"] = int(entry["linkUpCnt"] +
+                                          entry["linkDownCnt"])
                 entry['state'] = entry['state'].lower()
                 if entry["state"] == "up":
                     ts = entry["linkUpTimestamp"]
                 else:
                     ts = entry["linkDownTimestamp"]
-                if "never" in ts:
+                if "never" in ts or not ts:
                     ts = 0
                 else:
                     ts = int(
