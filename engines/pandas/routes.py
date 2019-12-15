@@ -63,16 +63,26 @@ class routesObj(SQEngineObject):
         ipaddr = kwargs.get('address')
         del kwargs['address']
 
+        cols = kwargs.get("columns", ["datacenter", "hostname", "vrf",
+                                      "prefix", "nexthopIps", "oifs",
+                                      "protocol"])
+
         df = self.get_valid_df(self.iobj._table, sort_fields, **kwargs) \
                  .query('prefix != ""')
 
-        df['prefix'] = df.prefix.astype('ipnetwork')
         if df.empty:
             return df
 
-        df = df.query("prefix.ipnet.supernet_of('{}')".format(ipaddr)) \
-               .groupby(by=['datacenter', 'hostname', 'vrf']) \
-               .max() \
-               .dropna()
+        df['prefix'] = df.prefix.astype('ipnetwork')
 
-        return df
+        idx = df[['datacenter', 'hostname', 'vrf', 'prefix']] \
+            .query("prefix.ipnet.supernet_of('{}')".format(ipaddr)) \
+            .groupby(by=['datacenter', 'hostname', 'vrf']) \
+            .max() \
+            .dropna() \
+            .reset_index()
+
+        if idx.empty:
+            return(pd.DataFrame(columns=cols))
+
+        return idx.merge(df)
