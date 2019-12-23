@@ -373,7 +373,7 @@ class Node(object):
                     )
 
             conn.close()
-            conn.wait_closed()
+            await conn.wait_closed()
 
         return result
 
