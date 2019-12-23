@@ -567,7 +567,7 @@ class Service(object):
         for entry in result:
             for cent in entry:
                 if cent in fields:
-                    schent_type = schema.field_by_name(cent).type
+                    schent_type = schema.field(cent).type
                     if type(entry[cent]) != ptype_map[schent_type]:
                         if entry[cent]:
                             entry[cent] = ptype_map[schent_type](entry[cent])
@@ -576,8 +576,14 @@ class Service(object):
                     elif isinstance(entry[cent], list):
                         for i, ele in enumerate(entry[cent]):
                             if type(ele) != ptype_map[schent_type.value_type]:
-                                entry[cent][i] = (
-                                    map_defaults[schent_type.value_type])
+                                try:
+                                    if ptype_map[schent_type.value_type] == int:
+                                        entry[cent][i] = int(entry[cent][i])
+                                    else:
+                                        raise ValueError
+                                except ValueError:
+                                    entry[cent][i] = (
+                                        map_defaults[schent_type.value_type])
 
         return result
 
