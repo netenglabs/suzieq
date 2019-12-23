@@ -44,7 +44,8 @@ class NubiaSuzieqPlugin(PluginInterface):
         pass
 
     def get_commands(self):
-        cmds = [AutoCommand(getattr(globals()[x], x)) for x in sqcmds_all]
+        cmds = [AutoCommand(getattr(globals()[x], x))
+                for x in sqcmds_all if not x.startswith('_')]
         cmds.append(AutoCommand(context_commands.set_ctxt))
         cmds.append(AutoCommand(context_commands.clear_ctxt))
         return cmds
