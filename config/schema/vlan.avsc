@@ -1,0 +1,49 @@
+{
+    "namespace": "suzieq",
+    "name": "vlan",
+    "type": "record",
+    "fields": [
+        {
+            "name": "vlan",
+            "type": {
+	        "type": "array",
+		"items": {
+		    "name": "vid",
+		     "type": "long"
+		}
+	    },
+            "display": 3
+        },
+        {
+            "name": "pvid",
+            "type": "long",
+            "display": 4
+        },
+        {
+            "name": "ifname",
+            "type": "string",
+            "key": 2,
+            "display": 2
+        },
+        {
+            "name": "hostname",
+            "type": "string",
+            "key": 1,
+            "display": 1
+        },
+        {
+            "name": "datacenter",
+            "type": "string",
+            "key": 0,
+            "display": 0
+        },
+        {
+            "name": "timestamp",
+            "type": "timestamp"
+        },
+        {
+            "name": "active",
+            "type": "boolean"
+        }
+    ]
+}
