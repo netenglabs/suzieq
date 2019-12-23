@@ -1,0 +1,21 @@
+service: vlan
+keys:
+  - ifname
+
+show-fields:
+  - ifname
+  - vlan
+  - pvid
+
+apply:
+  cumulus:
+    version: all
+    command: /sbin/bridge vlan show
+    textfsm: textfsm_templates/linux_vlan.tfsm
+
+  linux:
+    copy: cumulus
+
+  platina:
+    copy: cumulus
+  
