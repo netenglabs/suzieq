@@ -21,4 +21,13 @@ apply:
 
   platina:
     copy: cumulus
+
+  eos:
+    version: all
+    command: show ip route vrf all
+    normalize: 'vrfs/*:vrf/routes/*:prefix/[
+        "routeType: protocol",
+        "metric: metric?|0",
+        "vias/*/nexthopAddr: list(nexthopIps)",
+        "vias/*/interface": list(oifs)"]'
   
