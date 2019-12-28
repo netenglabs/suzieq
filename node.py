@@ -473,10 +473,10 @@ class EosNode(Node):
 
         try:
             async with aiohttp.ClientSession(
-                auth=auth,
-                conn_timeout=10,
-                read_timeout=10,
-                connector=aiohttp.TCPConnector(ssl=False),
+                    auth=auth,
+                    conn_timeout=10,
+                    read_timeout=10,
+                    connector=aiohttp.TCPConnector(ssl=False),
             ) as session:
                 async with session.post(url, json=data, headers=headers) as response:
                     status, json_out = response.status, await response.json()
@@ -550,8 +550,7 @@ class CumulusNode(Node):
         try:
             async with aiohttp.ClientSession(
                 auth=auth,
-                conn_timeout=10,
-                read_timeout=10,
+                timeout=10,
                 connector=aiohttp.TCPConnector(ssl=False),
             ) as session:
                 for cmd in cmd_list:
