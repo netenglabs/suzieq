@@ -344,179 +344,205 @@ class Service(object):
 
         return adds, dels
 
-    def exdict(self, path, data, start, collect=False):
-        """Extract all fields in specified path from data"""
+    def stepdown_rest(entry, keylist=None):
+        '''move the elements one level down into the existing JSON hierarchy.
 
-        def set_kv(okeys, indata, oresult):
-            """Set the value in the outgoing dict"""
-            if okeys:
-                okeys = [okeys[0].strip(), okeys[1].strip()]
-                cval = indata.get(okeys[0], "") if indata else ""
+        if `entry` has the structure {'vrfs': {'routes'...} on invocation,
+        it'll be {'routes'...} on exit. It makes no sense to move down them
+        hierarchy when you have only a list.
+        '''
+        if not keylist:
+            if isinstance(entry["rest"], dict):
+                keylist = list(entry["rest"].keys())
+            elif isinstance(entry["rest"], list):
+                return
 
-            if "?" in okeys[1]:
-                fkey, fvals = okeys[1].split("?")
-                fvals = fvals.split("|")
-                if "=" in fvals[0]:
-                    tval, rval = fvals[0].split("=")
-                else:
-                    tval = fvals[0]
-                    rval = fvals[0]
-                tval = tval.strip()
-                rval = rval.strip()
-                # String a: b?|False => if not a's value, use False, else use a
-                # String a: b?True=active|inactive => if a's value is true, use_key
-                # the string 'active' instead else use inactive
-                # String a: b?True=active| => if a's value is True, switch to
-                # active else leave it as it is
-                if not cval or (tval and str(cval) != tval):
-                    if fvals[1]:
-                        try:
-                            oresult[fkey.strip()] = ast.literal_eval(fvals[1])
-                        except (ValueError, SyntaxError):
-                            oresult[fkey.strip()] = fvals[1]
-                    else:
-                        oresult[fkey.strip()] = cval
-                elif cval and not tval:
-                    oresult[fkey.strip()] = cval
-                else:
-                    oresult[fkey.strip()] = rval
-            else:
-                opmatch = re.match(r"^(add|sub|mul|div)\((\w+),(\w+)\)$", okeys[1])
-                if opmatch:
-                    op, lval, rval = opmatch.groups()
-                    if rval not in oresult:
-                        if not rval.isdigit():
-                            # This is an unsuppported operation, need int field
-                            oresult[lval] = 0
-                            return
-                        else:
-                            rval = int(rval)
-                    else:
-                        rval = int(oresult[rval])
-                    if not cval:
-                        cval = 0
-                    if op == "add":
-                        oresult[lval] = cval + rval
-                    elif op == "sub":
-                        oresult[lval] = cval - rval
-                    elif op == "mul":
-                        oresult[lval] = cval * rval
-                    elif op == "div":
-                        if rval:
-                            oresult[lval] = cval / rval
-                        else:
-                            oresult[lval] = 0
-                else:
-                    rval = cval
-                    try:
-                        oresult[okeys[1].strip()] = ast.literal_eval(rval)
-                    except (ValueError, SyntaxError):
-                        oresult[okeys[1].strip()] = rval
-            return
+        for key in keylist:
+            entry.update({"rest": entry["rest"][key]})
 
+    def cons_recs_from_json_template(data, tmplt_str):
+        ''' Return an array of records given the template and input data.
+
+        This uses an XPATH-like template string to create a list of records
+        matching the template. It also normalizes the key fields so that we
+        can create records with keys that are agnostic of the source.
+
+        I could not use a ready-made library like jsonpath because of the
+        difficulty in handling normalization and how jsonpath returns the
+        result. For example, if I have 3 route records, one with 2 nexthop IPs,
+        one with a single nexthop IP and one without a nexthop IP, jsonpath
+        returns the data as a single flat list of nexthop IPs without a hint of
+        figuring out which route the nexthops correspond to. We also support
+        some amount of additional processing on the extracted fields such as
+        the basic 4 arithmetic operations and specifying a default or
+        substitute.
+        '''
         result = []
-        iresult = {}
+        # Find prefix string
+        ppos = tmplt_str.index("[")
 
-        plist = re.split("""/(?=(?:[^'"]|'[^']*'|"[^"]*")*$)""", path)
-        i = 0
-        for i, elem in enumerate(plist[start:]):
+        # templates have a structure with a leading hierarchy traversal
+        # followed by the fields for each record within that hierarchy.
+        # One example is: vrfs/*:vrf/routes/*:prefix/[... where '[' marks
+        # the start of the template to extract the values from the route
+        # records (prefix) across all the VRFs(vrf). We break up this
+        # processing into two parts, one before we reach  the inner record
+        # (before '[') and the other after.
+        #
+        # Before we enter the inner records, we flatten the hierarchy by
+        # creating as many records as necessary with the container values
+        # filled into each record as a separate key. So with the above
+        # template, we transform the route records to carry the vrf and the
+        # prefix as fields of each record. Thus, when we have 2 VRFs and 10
+        # routes in the first VRF and 6 routes in the second VRF, before
+        # we're done with the processing of the prefix hierarchy, the result
+        # has 16 records (10+6 routes) with the VRF and prefix values contained
+        # in each record.
+        #
+        # We flatten because that is how pandas (and pyarrow) can process the
+        # data best and queries can be made simple. The only nested structure
+        # we allow is a list in the innermost fields. Thus, the list of nexthop
+        # IP addresses associated with a route or the list of IP addresses
+        # associated with an interface are allowed, but not a tuple consisting
+        # of the nexthopIP and oif as a single entry.
+        data = jdata
+        pos = tmplt_str.index("/")
+        nokeys = True
+        while ppos > 0:
+            xstr = tmplt_str[0:pos]
 
-            if not data:
-                if "[" not in plist[-1] and ":" in plist[-1]:
-                    set_kv(plist[-1].split(":"), data, iresult)
-                    result.append(iresult)
-                return result, i + start
-
-            j = 0
-            num = re.match(r"\[([0-9]*)\]", elem)
-            if num:
-                data = data[int(num.group(1))]
-
-            elif elem.startswith("*"):
-                use_key = False
-                is_list = True
-                if type(data) is dict:
-                    is_list = False
-                    okeys = elem.split(":")
-                    if len(okeys) > 1:
-                        use_key = True
-
-                if plist[-1] == elem and collect:
-                    # We're a leaf now. So, suck up the list or dict if
-                    # we're to collect
-                    if is_list:
-                        cstr = data
-                    else:
-                        cstr = [k for k in data]
-                    set_kv(okeys, {"*": cstr}, iresult)
-                    result.append(iresult)
-                    return result, i + start
-
-                for item in data:
-                    if not is_list:
-                        datum = data[item]
-                    else:
-                        datum = item
-                    if type(datum) is dict or type(datum) is list:
-                        if use_key:
-                            if collect:
-                                # We're at the leaf and just gathering the fields
-                                # as a comma separated string
-                                # example: memberInterfaces/* : lacpMembers
-                                cstr = ""
-                                for key in data:
-                                    cstr = cstr + ", " + key if cstr else key
-                                iresult[okeys[1].strip()] = cstr
-                                result.append(iresult)
-                                return result, i + start
-                            iresult[okeys[1].strip()] = item
-                        tmpres, j = self.exdict(path, datum, start + i + 1)
-                        if tmpres:
-                            for subresult in tmpres:
-                                iresult.update(subresult)
-                                result.append(iresult)
-                                iresult = {}
-                                if use_key:
-                                    iresult[okeys[1].strip()] = item
-                    else:
-                        continue
-                if j >= i:
-                    break
-            elif type(elem) is str:
-                # split the normalized key and data key
-                okeys = elem.split(":")
-                if okeys[0] in data:
-                    if start + i + 1 == len(plist):
-                        set_kv(okeys, data, iresult)
-                        result.append(iresult)
-                    else:
-                        data = data[okeys[0]]
+            if ":" not in xstr:
+                if not result:
+                    result = [{"rest": data[xstr]}]
                 else:
-                    try:
-                        fields = ast.literal_eval(elem)
-                    except (ValueError, SyntaxError):
-                        # Catch if the elem is a string key not present in the data
-                        # Case of missing key, abort if necessary
-                        # if not path.endswith(']') and ':' in plist[-1]:
-                        if ":" in plist[-1]:
-                            okeys = plist[-1].split(":")
-                            set_kv(okeys, data, iresult)
-                            result.append(iresult)
-                            return result, i + start
+                    if xstr != "*":
+                        list(map(stepdown_rest, result, repeat([xstr])))
+                    else:
+                        list(map(stepdown_rest, result))
 
-                    if type(fields) is list:
-                        for fld in fields:
-                            if "/" in fld:
-                                sresult, _ = self.exdict(fld, data, 0, collect=True)
-                                for res in sresult:
-                                    iresult.update(res)
-                            else:
-                                okeys = fld.split(":")
-                                set_kv(okeys, data, iresult)
-                        result.append(iresult)
-                        iresult = {}
+                tmplt_str = tmplt_str[pos+1:]
+                pos = tmplt_str.index("/")
+                ppos -= pos
+                continue
 
-        return result, i + start
+            lval, rval = xstr.split(":")
+            nokeys = False
+            ks = [lval]
+            tmpres = []
+            if result:
+                for ele in result:
+                    if lval == "*":
+                        ks = list(ele["rest"].keys())
+
+                    intres = [{rval: x, "rest": ele["rest"][x]}
+                              for x in ks]
+
+                    for oldkey in ele.keys():
+                        if oldkey == "rest":
+                            continue
+                        for newele in intres:
+                            newele.update({oldkey: ele[oldkey]})
+                    tmpres += intres
+                result = tmpres
+            else:
+                if lval == "*":
+                    ks = list(data.keys())
+
+                result = [{rval: x, "rest": data[x]} for x in ks]
+
+            tmplt_str = tmplt_str[pos+1:]
+            pos = tmplt_str.index("/")
+            ppos -= pos
+
+        # Now for the rest of the fields
+        # if we only have 'rest' as the key, break out into individual mbrs
+        if nokeys:
+            for x in result[0]["rest"]:
+                x["rest"] = x
+            result = result[0]["rest"]
+
+        # In some cases such as FRR's BGP, you need to eliminate elements which
+        # have no useful 'rest' field, for example the elements with vrfId and
+        # vrfName. If at this point, you have nn element in result with rest
+        # that is not a list or a dict, remove it
+
+        result = list(filter(lambda x: isinstance(x["rest"], list) or
+                             isinstance(x["rest"], dict),
+                             result))
+
+        tmplt_str = tmplt_str[1:][:-1]         # eliminate'[', ']'
+        for selem in tmplt_str[1:][:-1].split(","):
+            # every element here MUST have the form lval:rval
+            selem = selem.replace('"', '')
+            lval, rval = selem.split(":")
+
+            # Process default value processing of the form <key>?|<def_val> or
+            # <key>?<expected_val>|<def_val>
+            op = None
+            if "?" in rval:
+                rval, op = rval.split("?")
+                exp_val, def_val = op.split("|")
+
+                if def_val.isdigit():
+                    def_val = int(def_val)
+
+            # Process for every element in result so far
+            # Handles entries such as "vias/*/nexthopIps" and returns
+            # a list of all nexthopIps.
+            for x in result:
+                if "/" in lval:
+                    subflds = lval.split("/")
+                    tmpval = x["rest"]
+                    value = None
+                    if "*" in subflds:
+                        # Returning a list is the only supported option for now
+                        value = []
+
+                    while subflds:
+                        subfld = subflds.pop(0).strip()
+                        if subfld == "*":
+                            tmp = tmpval
+                            for subele in tmp:
+                                for ele in subflds:
+                                    subele = subele.get(ele, None)
+                                    if subele is None:
+                                        break
+                                if subele:
+                                    value.append(subele)
+                            subflds = []
+                        else:
+                            tmpval = tmpval.get(subfld, None)
+                        if tmpval is None:
+                            break
+
+                    if value is None:
+                        value = tmpval
+                else:
+                    value = x["rest"].get(lval.strip(), None)
+
+                if op:
+                    if exp_val and value != exp_val:
+                        value = def_val
+                    elif not exp_val and value is None:
+                        value = def_val
+
+                # Handle any operation on string
+                rval = rval.strip()
+                rval1 = re.split(r"([+/*-])", rval)
+                if len(rval1) > 1:
+                    iop = rval1[1]
+                    if rval1[0] in x:
+                        value = eval("{}{}{}".format(value, iop, x[rval1[0]]))
+                    elif value is not None:
+                        value = eval("{}{}{}".format(value, iop, rval1[2]))
+                    x.update({rval1[0]: value})
+                    continue
+
+                x.update({rval: value})
+
+        list(map(lambda x: x.pop("rest", None), result))
+
+        return result
 
     def textfsm_data(self, raw_input, fsm_template, schema, data):
         """Convert unstructured output to structured output"""
@@ -628,7 +654,8 @@ class Service(object):
                     else:
                         in_info = data["data"]
 
-                    result, _ = self.exdict(nfn.get("normalize", ""), in_info, 0)
+                    result, _ = self.cons_recs_from_json_template(
+                        nfn.get("normalize", ""), in_info, 0)
 
                     result = self.clean_data(result, data)
                 else:
