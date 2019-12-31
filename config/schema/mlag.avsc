@@ -4,12 +4,19 @@
     "type": "record",
     "fields": [
         {
-            "name": "domainId",
-            "type": "string"
+            "name": "role",
+            "type": "string",
+            "display": 5
         },
         {
-            "name": "peerLinkStatus",
-            "type": "string"
+            "name": "mlagInterfacesList",
+            "type": {
+                "type": "array",
+                "items": {
+                    "type": "string",
+                    "name": "mlagInterfaces"
+                }
+            }
         },
         {
             "name": "peerLink",
@@ -17,20 +24,8 @@
             "display": 6
         },
         {
-            "name": "vtepIP",
-            "type": "string"
-        },
-        {
-            "name": "configSanity",
-            "type": "string"
-        },
-        {
-            "name": "peerRole",
-            "type": "string"
-        },
-        {
-            "name": "backupIP",
-            "type": "string"
+            "name": "mlagErrorPortsCnt",
+            "type": "long"
         },
         {
             "name": "backupActive",
@@ -41,15 +36,14 @@
             "type": "string"
         },
         {
+            "name": "configSanity",
+            "type": "string"
+        },
+        {
             "name": "systemId",
             "type": "string",
             "key": 2,
             "display": 2
-        },
-        {
-            "name": "state",
-            "type": "string",
-            "display": 3
         },
         {
             "name": "peerAddress",
@@ -57,12 +51,40 @@
             "display": 4
         },
         {
-            "name": "role",
+            "name": "state",
             "type": "string",
-            "display": 5
+            "display": 3
+        },
+        {
+            "name": "mlagSinglePortsCnt",
+            "type": "long"
+        },
+        {
+            "name": "domainId",
+            "type": "string"
+        },
+        {
+            "name": "vtepIP",
+            "type": "string"
         },
         {
             "name": "portsErrDisabled",
+            "type": "string"
+        },
+        {
+            "name": "backupIP",
+            "type": "string"
+        },
+        {
+            "name": "mlagDualPortsCnt",
+            "type": "long"
+        },
+        {
+            "name": "peerRole",
+            "type": "string"
+        },
+        {
+            "name": "peerLinkStatus",
             "type": "string"
         },
         {
