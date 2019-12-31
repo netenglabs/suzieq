@@ -40,9 +40,9 @@ class arpndCmd(SQCommand):
         self.arpndobj = arpndObj(context=self.ctxt)
 
     @command("show")
-    @argument("ipAddress", description="ipAddress to qualify")
+    @argument("address", description="IP address to qualify")
     @argument("oif", description="outgoing interface to qualify")
-    def show(self, ipAddress: str = "", oif: str = ''):
+    def show(self, address: str = "", oif: str = ''):
         """
         Show ARP/ND info
         """
@@ -55,7 +55,7 @@ class arpndCmd(SQCommand):
 
         df = self.arpndobj.get(
             hostname=self.hostname,
-            ipAddress=ipAddress.split(),
+            ipAddress=address.split(),
             oif=oif.split(),
             columns=self.columns,
             datacenter=self.datacenter,
@@ -64,10 +64,10 @@ class arpndCmd(SQCommand):
         print(df)
 
     @command("summarize")
-    @argument("ipAddress", description="ipAddress to qualify")
+    @argument("address", description="IP address to qualify")
     @argument("oif", description="outgoing interface to qualify")
     @argument("groupby", description="Space separated list of fields to group by")
-    def summarize(self, ipAddress: str = "", oif: str = '', groupby: str = ""):
+    def summarize(self, address: str = "", oif: str = '', groupby: str = ""):
         """
         Summarize ARP/ND info
         """
@@ -81,7 +81,7 @@ class arpndCmd(SQCommand):
         df = self.arpndobj.summarize(
             hostname=self.hostname,
             oif=oif.split(),
-            ipAddress=ipAddress.split(),            
+            ipAddress=address.split(),
             columns=self.columns,
             groupby=groupby.split(),
             datacenter=self.datacenter,
