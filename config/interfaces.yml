@@ -23,15 +23,15 @@ apply:
     # bunch of fields need code fixups. see service file
     normalize: 'interfaces/*/[
     "name: ifname",
-    "mtu: mtu",
+    "mtu: mtu?|0",
     "description: description",
     "physicalAddress: macaddr",
     "bandwidth: speed?|0",
     "srcIpAddr: srcVtepIp",
-    "vlanToVniMap/*:vlan",
+    "vlanToVniMap/*:vlan?|0",
     "vlanToVniMap/*/vni: vni?|0",
     "lineProtocolStatus: state",
-    "hardware: type?ethernet=ether|",
+    "hardware: type",
     "linkStatusChanges: numChanges?|0",
     "lastStatusChangeTimeStamp: statusChangeTimestamp",
     "fallbackEnabled: lacpBypass?|False",
