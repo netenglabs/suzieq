@@ -165,9 +165,12 @@ class SQEngineObject(object):
             if sys_df.empty:
                 return sys_df
 
+            key_fields = [f["name"] for f in self.schemas.get(table)
+                          if f.get("key", None) is not None]
+
             final_df = (
                 table_df.merge(sys_df, on=["datacenter", "hostname"])
-                .dropna(how="any")
+                .dropna(how="any", subset=key_fields)
                 .query("timestamp_x >= timestamp_y")
                 .drop(columns=drop_cols)
                 .rename(
