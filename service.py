@@ -1194,6 +1194,10 @@ class MlagService(Service):
             mlagErrorPorts = []
 
             for entry in processed_data:
+                if entry['state']:
+                    entry['state'] = 'active'
+                else:
+                    entry['state'] = 'inactive'
                 mlagIfs = entry["mlagInterfacesList"]
                 for mlagif in mlagIfs:
                     if mlagIfs[mlagif]["status"] == "dual":
