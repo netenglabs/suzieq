@@ -5,13 +5,15 @@ show-fields:
   - peerAddress
   - role
   - peerLink
-  - mlagInterfaces
+  - mlagDualPortsCnt
+  - mlagSinglePortsCnt
+  - mlagErrorPortsCnt
 apply:
   cumulus:
     version: all
     command: 'if [ -f "/etc/default/clagd" ]; then net show clag json; else echo {}; fi'
     normalize: '[
-    "status/peerAlive: state?True=active|inactive",
+    "status/peerAlive: state",
     "status/sysMac: systemId",
     "status/peerIp: peerAddress",
     "status/ourRole: role",
