@@ -1,6 +1,4 @@
 service: mlag
-keys:
-  - systemId
 show-fields:
   - systemId
   - state
@@ -47,4 +45,4 @@ apply:
     "mlagPorts/Active-partial: mlagSinglePortsCnt?|0",
     "mlagPorts/Active-full: mlagDualPortsCnt?|0",
     "mlagPorts/Inactive: mlagErrorPortsCnt+mlagErrorPortsCnt",
-    "configSanity: configSanity"]'
+    "configSanity: configSanity?|"]'
