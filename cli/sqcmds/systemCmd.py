@@ -11,6 +11,8 @@ import time
 import typing
 from nubia import command, argument, context
 
+import pandas as pd
+
 from suzieq.cli.sqcmds.command import SQCommand
 from suzieq.sqobjects.system import systemObj
 
@@ -52,10 +54,18 @@ class systemCmd(SQCommand):
             self.ctxt.sort_fields = []
 
         df = self.systemobj.get(
-            hostname=self.hostname, columns=self.columns, datacenter=self.datacenter
+            hostname=self.hostname, columns=self.columns,
+            datacenter=self.datacenter
         )
+        # Convert the bootup timestamp into a time delta
+        if not df.empty:
+            uptime_cols = (df['timestamp'] -
+                           pd.to_datetime(df['bootupTimestamp']*1000,
+                                          unit='ms'))
+            uptime_cols = pd.to_timedelta(uptime_cols, unit='ms')
+            df.insert(len(df.columns)-1, 'uptime', uptime_cols)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        print(df)
+        print(df.drop(columns=['bootupTimestamp']))
 
     @command("summarize", help="Summarize system information")
     @argument("groupby", description="Space separated list of fields to summarize on")
