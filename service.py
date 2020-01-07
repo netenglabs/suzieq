@@ -839,7 +839,8 @@ class Service(object):
                         # No point in adding one more
                         entry.update({"active": False})
                         entry.update(
-                            {"timestamp": int(datetime.utcnow().timestamp() * 1000)}
+                            {"timestamp":
+                             int(datetime.utcnow().timestamp() * 1000)}
                         )
                         records.append(entry)
 
