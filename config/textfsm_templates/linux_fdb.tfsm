@@ -6,12 +6,13 @@ Value remoteVtepIp ([0-9.]+)
 
 Start
   ^${macaddr} dev ${oif} vlan ${vlan} master bridge ${flags}.*$$ -> Next.Record
+  ^${macaddr} dev ${oif} vlan ${vlan} master bridge.*$$ -> Next.Record  
   ^${macaddr} dev ${oif} dst ${remoteVtepIp} self ${flags}.*$$ -> Next.Record
   ^${macaddr} dev ${oif} master bridge ${flags}.*$$ -> Next.Record
   ^${macaddr} dev ${oif} master bridge.*$$ -> Next.Record
   ^${macaddr} dev ${oif} self ${flags}.*$$ -> Next.Record  
   
-
+#00:03:00:11:11:01 dev swp5 vlan 10 master bridge
 #44:38:39:00:00:03 dev peerlink vlan 13 master bridge static
 #44:38:39:00:00:11 dev peerlink master bridge permanent
 #44:38:39:00:00:03 dev peerlink vlan 24 master bridge static
