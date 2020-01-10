@@ -97,6 +97,8 @@ class Node(object):
     port = 0
     backoff = 15  # secs to backoff
     init_again_at = 0  # after this epoch secs, try init again
+    connect_timeout = 10        # connect timeout in seconds
+    cmd_timeout = 10            # command wait timeout in seconds
 
     async def _init(self, **kwargs):
         if not kwargs:
@@ -180,7 +182,7 @@ class Node(object):
         else:
             output = await asyncio.wait_for(
                 self.ssh_gather(["show version", "hostnamectl", "goes show machine"]),
-                timeout=10,
+                timeout=self.cmd_timeout,
             )
 
         if output[0]["status"] == 0:
@@ -194,7 +196,8 @@ class Node(object):
                 output = await self.local_gather(["show hostname"])
             else:
                 output = await asyncio.wait_for(
-                    self.ssh_gather(["show hostname"]), timeout=10
+                    self.ssh_gather(["show hostname"]),
+                    timeout=self.cmd_timeout
                 )
             if output[0]["status"] == 0:
                 hostname = output[1]["data"].strip()
@@ -247,10 +250,12 @@ class Node(object):
 
         result = []
         for cmd in cmd_list:
-            proc = await asyncio.create_subprocess_shell(cmd, stdout=PIPE, stderr=PIPE)
+            proc = await asyncio.create_subprocess_shell(cmd, stdout=PIPE,
+                                                         stderr=PIPE)
 
             try:
-                stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=10)
+                stdout, stderr = await asyncio.wait_for(
+                    proc.communicate(), timeout=self.cmd_timeout)
                 result.append(
                     {
                         "status": proc.returncode,
@@ -298,7 +303,7 @@ class Node(object):
                     username=self.username,
                     password=self.password,
                 ),
-                timeout=20,
+                timeout=self.cmd_timeout,
             )
         except (
             asyncio.TimeoutError,
@@ -326,7 +331,8 @@ class Node(object):
         if conn:
             for cmd in cmd_list:
                 try:
-                    output = await asyncio.wait_for(conn.run(cmd), timeout=20)
+                    output = await asyncio.wait_for(conn.run(cmd),
+                                                    timeout=self.cmd_timeout)
                     result.append(
                         {
                             "status": output.exit_status,
@@ -474,8 +480,8 @@ class EosNode(Node):
         try:
             async with aiohttp.ClientSession(
                     auth=auth,
-                    conn_timeout=10,
-                    read_timeout=10,
+                    conn_timeout=self.conn_timeout,
+                    read_timeout=self.cmd_timeout,
                     connector=aiohttp.TCPConnector(ssl=False),
             ) as session:
                 async with session.post(url, json=data, headers=headers) as response:
@@ -550,7 +556,7 @@ class CumulusNode(Node):
         try:
             async with aiohttp.ClientSession(
                 auth=auth,
-                timeout=10,
+                timeout=self.cmd_timeout,
                 connector=aiohttp.TCPConnector(ssl=False),
             ) as session:
                 for cmd in cmd_list:
