@@ -14,7 +14,7 @@ from suzieq.cli.sqcmds.command import SQCommand
 from suzieq.sqobjects.bgp import bgpObj
 
 
-@command("bgp", help="Act on LLDP data")
+@command("bgp", help="Act on BGP data")
 class bgpCmd(SQCommand):
     def __init__(
         self,
