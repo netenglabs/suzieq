@@ -7,8 +7,9 @@
 # LICENSE file in the root directory of this source tree.
 #
 
+from suzieq.engines.base_engine import get_sqengine
+
 name = "sqengines"
 
-from .base_engine import get_sqengine
 
 __all__ = [get_sqengine]
