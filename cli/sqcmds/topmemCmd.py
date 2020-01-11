@@ -16,7 +16,7 @@ from suzieq.cli.sqcmds.command import SQCommand
 from suzieq.sqobjects.topmem import topmemObj
 
 
-@command("topmem", help="Act on LLDP data")
+@command("topmem", help="Act on topmem data")
 class topmemCmd(SQCommand):
     def __init__(
         self,

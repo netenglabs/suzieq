@@ -15,7 +15,7 @@ from suzieq.cli.sqcmds.command import SQCommand
 from suzieq.sqobjects.topcpu import topcpuObj
 
 
-@command("topcpu", help="Act on LLDP data")
+@command("topcpu", help="Act on topcpu data")
 class topcpuCmd(SQCommand):
     def __init__(
         self,
