@@ -37,7 +37,10 @@ class addrObj(SQEngineObject):
             addrcol = "ipAddressList"
 
         columns = kwargs.get("columns", [])
-        del kwargs["columns"]
+        if columns:
+            del kwargs["columns"]
+        else:
+            columns = ['default']
         if columns != ["default"]:
             for col in addrcol:
                 if col not in columns:
@@ -79,7 +82,8 @@ class addrObj(SQEngineObject):
 
         if columns == ["default"]:
             # We leave out IPv6 because link-local addresses pollute the info
-            columns = ["datacenter", "hostname", "ifname", "ipAddressList", "timestamp"]
+            columns = ["datacenter", "hostname", "ifname", "ipAddressList",
+                       "timestamp"]
             split_cols = ["ipAddressList"]
         else:
             split_cols = []
@@ -87,7 +91,8 @@ class addrObj(SQEngineObject):
                 if col in columns:
                     split_cols.append(col)
 
-        df = self.get_valid_df("interfaces", sort_fields, columns=columns, **kwargs)
+        df = self.get_valid_df("interfaces", sort_fields, columns=columns,
+                               **kwargs)
         if df.empty:
             return df
 
