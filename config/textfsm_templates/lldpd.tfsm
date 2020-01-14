@@ -1,0 +1,106 @@
+Value Required ifname (\S+)
+Value Required peerHostname (\S+)
+Value description (.*)
+Value peerIfname (\S+)
+
+Start
+ ^Interface:.*$$ -> Continue.Record
+ ^Interface:\s+${ifname}, .*$$
+ ^\s+SysName:\s+ ${peerHostname}.*$$
+ ^\s+SysDescr:\s+ ${description}.*$$
+ ^\s+PortID:\s+ifname\s+${peerIfname}.*$$
+
+
+#-------------------------------------------------------------------------------
+#LLDP neighbors:
+#-------------------------------------------------------------------------------
+#Interface:    swp1, via: LLDP, RID: 1, Time: 0 day, 14:07:31
+#  Chassis:     
+#    ChassisID:    mac 52:54:00:2d:fa:de
+#    SysName:      spine01
+#    SysDescr:     Cumulus Linux version 3.7.9 running on QEMU Standard PC (i440FX + PIIX, 1996)
+#    MgmtIP:       10.0.0.21
+#    MgmtIP:       fe80::5054:ff:fe2d:fade
+#    Capability:   Bridge, off
+#    Capability:   Router, on
+#  Port:        
+#    PortID:       ifname swp1
+#    PortDescr:    swp1
+#    TTL:          120
+#    PMD autoneg:  supported: no, enabled: no
+#      MAU oper type: 1000BaseTFD - Four-pair Category 5 UTP, full duplex mode
+#  LLDP-MED:    
+#    Device Type:  Network Connectivity Device
+#    Capability:   Capabilities, yes
+#    Capability:   Policy, yes
+#    Capability:   Location, yes
+#    Capability:   MDI/PSE, yes
+#    Capability:   MDI/PD, yes
+#    Capability:   Inventory, yes
+#    Inventory:   
+#      Software Revision: 3.7.9
+#      Firmware Revision: 1.12.0-1
+#      Serial Number: Not Specified
+#      Manufacturer: QEMU
+#      Model:        Standard PC (i440FX + PIIX, 1996
+#-------------------------------------------------------------------------------
+#Interface:    swp2, via: LLDP, RID: 2, Time: 0 day, 14:07:31
+#  Chassis:     
+#    ChassisID:    mac 52:54:00:6f:f2:17
+#    SysName:      spine02
+#    SysDescr:     Cumulus Linux version 3.7.9 running on QEMU Standard PC (i440FX + PIIX, 1996)
+#    MgmtIP:       10.0.0.22
+#    MgmtIP:       fe80::5054:ff:fe6f:f217
+#    Capability:   Bridge, off
+#    Capability:   Router, on
+#  Port:        
+#    PortID:       ifname swp1
+#    PortDescr:    swp1
+#    TTL:          120
+#    PMD autoneg:  supported: no, enabled: no
+#      MAU oper type: 1000BaseTFD - Four-pair Category 5 UTP, full duplex mode
+#  LLDP-MED:    
+#    Device Type:  Network Connectivity Device
+#    Capability:   Capabilities, yes
+#    Capability:   Policy, yes
+#    Capability:   Location, yes
+#    Capability:   MDI/PSE, yes
+#    Capability:   MDI/PD, yes
+#    Capability:   Inventory, yes
+#    Inventory:   
+#      Software Revision: 3.7.9
+#      Firmware Revision: 1.12.0-1
+#      Serial Number: Not Specified
+#      Manufacturer: QEMU
+#      Model:        Standard PC (i440FX + PIIX, 1996
+#-------------------------------------------------------------------------------
+#Interface:    swp3, via: LLDP, RID: 3, Time: 0 day, 14:06:05
+#  Chassis:     
+#    ChassisID:    mac 52:54:00:18:56:dd
+#    SysName:      leaf02
+#    SysDescr:     Cumulus Linux version 3.7.9 running on QEMU Standard PC (i440FX + PIIX, 1996)
+#    MgmtIP:       10.0.0.12
+#    MgmtIP:       fe80::5054:ff:fe18:56dd
+#    Capability:   Bridge, on
+#    Capability:   Router, on
+#  Port:        
+#    PortID:       ifname swp3
+#    PortDescr:    swp3
+#    TTL:          120
+#    PMD autoneg:  supported: no, enabled: no
+#      MAU oper type: 1000BaseTFD - Four-pair Category 5 UTP, full duplex mode
+#  LLDP-MED:    
+#    Device Type:  Network Connectivity Device
+#    Capability:   Capabilities, yes
+#    Capability:   Policy, yes
+#    Capability:   Location, yes
+#    Capability:   MDI/PSE, yes
+#    Capability:   MDI/PD, yes
+#    Capability:   Inventory, yes
+#    Inventory:   
+#      Software Revision: 3.7.9
+#      Firmware Revision: 1.12.0-1
+#      Serial Number: Not Specified
+#      Manufacturer: QEMU
+#      Model:        Standard PC (i440FX + PIIX, 1996
+#
