@@ -29,7 +29,7 @@ class ospfObj(basicobj.SQObject):
     def get(self, **kwargs):
 
         if not self.ctxt.engine:
-            print('No analysis engine specified')
+            raise AttributeError('No analysis engine specified')
             return(pd.DataFrame(columns=['datacenter', 'hostname']))
 
         return self.engine_obj.get(**kwargs)
@@ -38,16 +38,16 @@ class ospfObj(basicobj.SQObject):
         '''Describe the data'''
 
         if not self.ctxt.engine:
-            print('No analysis engine specified')
+            raise AttributeError('No analysis engine specified')
             return(pd.DataFrame(columns=['datacenter', 'hostname']))
 
         return self.engine_obj.summarize(**kwargs)
-            
+
     def aver(self, **kwargs):
         '''Assert that the OSPF state is OK'''
 
         if not self.ctxt.engine:
-            print('No analysis engine specified')
+            raise AttributeError('No analysis engine specified')
             return(pd.DataFrame(columns=['datacenter', 'hostname']))
 
         return self.engine_obj.aver(**kwargs)
@@ -56,7 +56,7 @@ class ospfObj(basicobj.SQObject):
         '''Get the list of top stuff about OSPF'''
 
         if not self.ctxt.engine:
-            print('No analysis engine specified')
+            raise AttributeError('No analysis engine specified')
             return(pd.DataFrame(columns=['datacenter', 'hostname']))
 
         return self.engine_obj.top(what=what, n=n, **kwargs)
