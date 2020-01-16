@@ -8,6 +8,7 @@
 #
 
 import pandas as pd
+import pyarrow as pa
 
 
 class SQEngineObject(object):
@@ -196,7 +197,11 @@ class SQEngineObject(object):
         else:
             sort_fields = self.iobj._sort_fields
 
-        df = self.get_valid_df(self.iobj._table, sort_fields, **kwargs)
+        try:
+            df = self.get_valid_df(self.iobj._table, sort_fields, **kwargs)
+        except pa.lib.ArrowInvalid:
+            return(pd.DataFrame(columns=['datacenter', 'hostname']))
+
         return df
 
     def summarize(self, **kwargs):
