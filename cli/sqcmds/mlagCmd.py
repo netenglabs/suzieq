@@ -44,7 +44,10 @@ class mlagCmd(SQCommand):
                               columns=self.columns,
                               datacenter=self.datacenter)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        print(df)
+        if not df.empty:
+            print(df.query('state != "disabled"'))
+        else:
+            print(df)
 
     @command('summarize')
     @argument("groupby",
