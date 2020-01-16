@@ -41,7 +41,7 @@ class tablesObj(basicobj.SQObject):
         df = None
         table = kwargs.get('table', '')
         if table not in self.schemas:
-            print('ERROR: Unknown table {}'.format(table))
+            raise LookupError('ERROR: Unknown table {}'.format(table))
             return
 
         entries = [{'name': x['name'], 'type': x['type']}

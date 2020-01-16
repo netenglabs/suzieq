@@ -100,7 +100,7 @@ class SQObject(object):
         '''Return cached version if present, else add to cache the system DF'''
 
         if not self.ctxt.engine:
-            print('No analysis engine specified')
+            raise AttributeError('No analysis engine specified')
             return(pd.DataFrame(columns=['datacenter', 'hostname']))
 
         return self.engine_obj.system_df(datacenter,
@@ -108,7 +108,7 @@ class SQObject(object):
 
     def get_valid_df(self, table, sort_fields, **kwargs) -> pd.DataFrame:
         if not self.ctxt.engine:
-            print('No analysis engine specified')
+            raise AttributeError('No analysis engine specified')
             return(pd.DataFrame(columns=['datacenter', 'hostname']))
 
         return self.engine_obj.get_valid_df(self._table, sort_fields,
@@ -119,7 +119,7 @@ class SQObject(object):
             raise NotImplementedError
 
         if not self.ctxt.engine:
-            print('No analysis engine specified')
+            raise AttributeError('No analysis engine specified')
             return(pd.DataFrame(columns=['datacenter', 'hostname']))
 
         return self.engine_obj.get(**kwargs)
@@ -129,7 +129,7 @@ class SQObject(object):
             raise NotImplementedError
 
         if not self.ctxt.engine:
-            print('No analysis engine specified')
+            raise AttributeError('No analysis engine specified')
             return(pd.DataFrame(columns=['datacenter', 'hostname']))
 
         return self.engine_obj.summarize(**kwargs)

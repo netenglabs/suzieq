@@ -70,7 +70,8 @@ class tracepathObj(basicobj.SQObject):
         '''return a pandas dataframe with the paths between src and dest'''
 
         if not self.ctxt.engine:
-            print("Specify an analysis engine using set engine command")
+            raise AttributeError("Specify an analysis engine using set engine "
+                                 "command")
             return pd.DataFrame(columns=["datacenter", "hostname"])
 
         datacenter = kwargs.get('datacenter', self.ctxt.datacenter)
