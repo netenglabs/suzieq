@@ -15,9 +15,11 @@ Start
   ^unreachable\s+${prefix}\s+table ${vrf}\s+metric ${metric}.*$$
   ^${prefix}\s+via\s+${nexthopIps}\s+dev ${oifs}\s+table ${vrf}
   ^${prefix}\s+proto ${protocol}\s+metric ${metric}.*$$
+  ^${prefix}\s+proto ${protocol}\s+src ${source}\s+metric ${metric}.*$$  
   ^${prefix}\s+via ${nexthopIps}\s+dev ${oifs}\s+proto ${protocol}\s+metric ${metric}.*$$ 
   ^${prefix}\s+dev ${oifs}\s+proto ${protocol}.*src ${source}.*$$  
   ^${prefix}\s+via ${nexthopIps}\s+dev ${oifs}.*$$
+  ^${prefix}\s+table ${vrf}\s+proto ${protocol}\s+metric ${metric}
 
 #default via 10.2.4.1 dev uplink
 #169.254.1.0/30 dev peerlink.4094  proto kernel  scope link  src 169.254.1.2
@@ -80,6 +82,22 @@ Start
 #10.0.0.134  proto bgp  metric 20 
 #        nexthop via 169.254.0.1  dev swp51 weight 1 onlink
 #        nexthop via 169.254.0.1  dev swp52 weight 1 onlink
+#default  table evpn-vrf  proto bgp  metric 20                                                            
+#        nexthop via 10.0.0.101  dev vlan4001 weight 1 onlink                                             
+#        nexthop via 10.0.0.102  dev vlan4001 weight 1 onlink                  
+#unreachable default  table evpn-vrf  metric 4278198272                     
+#10.0.0.100  table evpn-vrf  proto bgp  metric 20                                                         
+#        nexthop via 10.0.0.101  dev vlan4001 weight 1 onlink                 
+#        nexthop via 10.0.0.102  dev vlan4001 weight 1 onlink
+#10.0.0.101  table evpn-vrf  proto bgp  metric 20                                                         
+#        nexthop via 10.0.0.101  dev vlan4001 weight 1 onlink
+#        nexthop via 10.0.0.102  dev vlan4001 weight 1 onlink   
+#10.0.0.102  table evpn-vrf  proto bgp  metric 20                                                         
+#        nexthop via 10.0.0.101  dev vlan4001 weight 1 onlink                         
+#        nexthop via 10.0.0.102  dev vlan4001 weight 1 onlink
+#10.0.0.253  table evpn-vrf  proto bgp  metric 20                                                         
+#        nexthop via 10.0.0.101  dev vlan4001 weight 1 onlink      
+#        nexthop via 10.0.0.102  dev vlan4001 weight 1 onlink
 #fe80::/64 dev vlan13  table evpn-vrf  proto kernel  metric 256  pref medium
 #fe80::/64 dev vlan13-v0  table evpn-vrf  proto kernel  metric 256  pref medium
 #fe80::/64 dev vlan24  table evpn-vrf  proto kernel  metric 256  pref medium
@@ -95,4 +113,6 @@ Start
 #ff00::/8 dev swp52  table local  metric 256  mtu 9216 pref medium
 #ff00::/8 dev bridge  table local  metric 256  pref medium
 #ff00::/8 dev peerlink.4094  table local  metric 256  pref medium
-#
+#172.16.1.0/24  proto 186  src 10.0.0.100  metric 20 
+#       nexthop via 169.254.253.5  dev eth2.3 weight 1
+#       nexthop via 169.254.254.5  dev eth1.3 weight 1
