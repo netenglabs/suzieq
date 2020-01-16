@@ -8,6 +8,7 @@ Value List ipAddressList ([0-9./]*)
 Value List ip6AddressList ([0-9a-z:/]*)
 Value description (.*)
 Value vni (\d+)
+Value vlan (\d+)
 Value type (loopback|ether|vlan|vxlan|vrf|bond|bridge|bridge_slave|bond_slave|macvlan)
 
 Start
@@ -21,7 +22,7 @@ Start
   ^\s*${type}\s* id ${vni}.*$$
   ^\s*${type}\s*table.*$$
   ^\s*${type}\s*mode.*$$
-  ^\s*${type}\s*protocol.*id.*$$
+  ^\s*${type}\s*protocol.*id ${vlan}.*$$
   ^\s*bridge_slave state.*$$
   ^\s*${type} state.* mii_status.*$$
   ^\s*${type} forward_delay.*$$
