@@ -30,7 +30,7 @@ Start
   ^\s+Interface Type\s+${type}.*$$
   ^\s+inet\s+${ipAddressList}.*$$
   ^\s+inet6\s+${ip6AddressList}.*$$
-  ^\s+Vlan Id\s+${vlan}.*$$
+  ^\s+VLAN\s+Id\s+${vlan}.*$$
   ^\s+VxLAN Id\s+${vni}\s+VTEP IP:\s+${srcVtepIp}\s+Access VLAN Id\s+${vlan}.*$$
   ^\s+Master\s+(${master})\s+ifindex.*$$
   ^\d+:.*$$ -> Continue.Record
@@ -43,7 +43,7 @@ Start
   ^\s*${type}\s* id ${vni}.*$$
   ^\s*${type}\s*table.*$$
   ^\s*${type}\s*mode.*$$
-  ^\s*${type}\s*protocol.*id.*$$
+  ^\s*${type}\s*protocol.*id\s+${vlan}.*$$
   ^\s*${type} state.* mii_status.*$$
   ^\s*${type} forward_delay.*$$
 
