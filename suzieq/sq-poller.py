@@ -4,7 +4,6 @@ import argparse
 import asyncio
 import logging
 from pathlib import Path
-import uvloop
 
 from confluent_kafka import Producer
 
@@ -12,32 +11,30 @@ import daemon
 from daemon import pidfile
 
 from node import init_hosts
-from service import init_services
-from writer import init_output_workers, run_output_worker
+from suzieq.service import init_services
+from suzieq.writer import init_output_workers, run_output_worker
+from suzieq.utils import load_sq_config
 
 PID_FILE = "/tmp/suzieq.pid"
 
 
-def validate_parquet_args(userargs, output_args):
+def validate_parquet_args(cfg, output_args):
     """Validate user arguments for parquet output"""
 
-    if not userargs.output_dir:
+    if not cfg.get("data-directory", None):
         output_dir = "/tmp/parquet-out/suzieq"
         logging.warning(
-            "No output directory for parquet specified, using"
-            "/tmp/suzieq/parquet-out"
+            "No output directory for parquet specified, using" "/tmp/suzieq/parquet-out"
         )
     else:
-        output_dir = userargs.output_dir
+        output_dir = cfg["data-directory"]
 
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
     if not os.path.isdir(output_dir):
-        logging.error("Output directory {} is not a directory".format(
-            output_dir))
-        print("Output directory {} is not a directory".format(
-            output_dir))
+        logging.error("Output directory {} is not a directory".format(output_dir))
+        print("Output directory {} is not a directory".format(output_dir))
         sys.exit(1)
 
     logging.info("Parquet outputs will be under {}".format(output_dir))
@@ -46,22 +43,25 @@ def validate_parquet_args(userargs, output_args):
     return
 
 
-def validate_kafka_args(userargs, output_args):
+def validate_kafka_args(cfg, output_args):
     """ Validate user arguments for kafka output"""
 
-    if not userargs.kafka_servers:
+    if not cfg.get("kafka-servers", None):
         logging.warning("No kafka servers specified. Assuming localhost:9092")
         servers = "localhost:9092"
     else:
-        servers = userargs.kafka_servers
+        servers = cfg["kafka-servers"]
 
     try:
         _ = Producer({"bootstrap.servers": servers})
     except Exception as e:
-        logging.error("ERROR: Unable to connect to Kafka servers:{}, e",
-                      servers, e)
-        print("ERROR: Unable to connect to Kafka servers:{}, e",
-              servers, e)
+        logging.error(
+            "ERROR: Unable to connect to Kafka servers:{}, "
+            "error:{}".format(servers, e)
+        )
+        print(
+            "ERROR: Unable to connect to Kafka servers:{}, error:{}".format(servers, e)
+        )
         sys.exit(1)
 
     output_args.update({"bootstrap.servers": servers})
@@ -69,29 +69,27 @@ def validate_kafka_args(userargs, output_args):
     return
 
 
-def _main(userargs):
+def _main(userargs, cfg):
 
-    uvloop.install()
-
-    if not os.path.exists(userargs.service_dir):
+    if not os.path.exists(cfg["service-directory"]):
         logging.error(
-            "Service directory {} is not a directory".format(
-                userargs.output_dir)
+            "Service directory {} is not a directory".format(userargs.output_dir)
         )
-        print("Service directory {} is not a directory".format(
-            userargs.output_dir))
+        print("Service directory {} is not a directory".format(userargs.output_dir))
         sys.exit(1)
 
-    if not userargs.schema_dir:
-        userargs.schema_dir = "{}/{}".format(userargs.service_dir, "schema")
+    if not cfg.get("schema-directory", None):
+        schema_dir = "{}/{}".format(userargs.service_dir, "schema")
+    else:
+        schema_dir = cfg["schema-directory"]
 
     output_args = {}
 
     if "parquet" in userargs.outputs:
-        validate_parquet_args(userargs, output_args)
+        validate_parquet_args(cfg, output_args)
 
     if "kafka" in userargs.outputs:
-        validate_kafka_args(userargs, output_args)
+        validate_kafka_args(cfg, output_args)
 
     outputs = init_output_workers(userargs.outputs, output_args)
 
@@ -100,7 +98,7 @@ def _main(userargs):
 
     tasks = [
         init_hosts(userargs.hosts_file),
-        init_services(userargs.service_dir, userargs.schema_dir, queue),
+        init_services(cfg["service-directory"], schema_dir, queue),
     ]
 
     nodes, svcs = loop.run_until_complete(asyncio.gather(*tasks))
@@ -141,39 +139,11 @@ if __name__ == "__main__":
         help="Run in foreground, not as daemon",
     )
     parser.add_argument(
-        "-k",
-        "--kafka-servers",
-        default="",
-        type=str,
-        help="Comma separated list of kafka servers/port",
-    )
-    parser.add_argument(
         "-H",
         "--hosts-file",
         type=str,
         default="{}/{}".format(homedir, "suzieq-hosts.yml"),
         help="FIle with URL of hosts to observe",
-    )
-    parser.add_argument(
-        "-P",
-        "--password-file",
-        type=str,
-        default="{}/{}".format(homedir, "suzieq-pwd.yml"),
-        help="FIle with passwords",
-    )
-    parser.add_argument(
-        "-S",
-        "--service-dir",
-        type=str,
-        required=True,
-        help="Directory with services definitions",
-    )
-    parser.add_argument(
-        "-T",
-        "--schema-dir",
-        type=str,
-        default="",
-        help="Directory with schema definition for services",
     )
     parser.add_argument(
         "-o",
@@ -185,21 +155,6 @@ if __name__ == "__main__":
         "this option multiple times for more than one output",
     )
     parser.add_argument(
-        "-O",
-        "--output-dir",
-        type=str,
-        default="",
-        help="Directory to store parquet output in",
-    )
-    parser.add_argument(
-        "-l",
-        "--log",
-        type=str,
-        default="WARNING",
-        choices=["ERROR", "WARNING", "INFO", "DEBUG"],
-        help="Logging message level, default is WARNING",
-    )
-    parser.add_argument(
         "-s",
         "--service-only",
         type=str,
@@ -207,10 +162,11 @@ if __name__ == "__main__":
     )
 
     userargs = parser.parse_args()
+    cfg = load_sq_config()
 
     logger = logging.getLogger()
-    logger.setLevel(userargs.log.upper())
-    fh = logging.FileHandler("/tmp/suzieq.log")
+    logger.setLevel(cfg.get("logging-level", "WARNING").upper())
+    fh = logging.FileHandler(cfg.get("log-file", "/tmp/suzieq.log"))
     formatter = logging.Formatter(
         "%(asctime)s - %(name)s - %(levelname)s " "- %(message)s"
     )
@@ -218,7 +174,7 @@ if __name__ == "__main__":
     fh.setFormatter(formatter)
 
     if userargs.foreground:
-        _main(userargs)
+        _main(userargs, cfg)
     else:
         if os.path.exists(PID_FILE):
             with open(PID_FILE, "r") as f:
@@ -236,7 +192,6 @@ if __name__ == "__main__":
                             "pid {}".format(pid)
                         )
         with daemon.DaemonContext(
-            files_preserve=[fh.stream], pidfile=pidfile.TimeoutPIDLockFile(
-                PID_FILE)
+            files_preserve=[fh.stream], pidfile=pidfile.TimeoutPIDLockFile(PID_FILE)
         ):
-            _main(userargs)
+            _main(userargs, cfg)
