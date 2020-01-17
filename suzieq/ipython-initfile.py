@@ -1,24 +1,19 @@
 import sys
-import os
 import qgrid
 import json
 import warnings
 import re
 from pathlib import Path
 from collections import defaultdict
-import tempfile
 
 import pandas as pd
-import pyarrow as pa
-import pyarrow.parquet as pq
-import yaml
 
-from IPython.display import display, HTML
+from IPython.display import display
 
 sys.path.append("/home/ddutt/work/suzieq/")
 
-from utils import load_sq_config, get_schemas, get_query_df
-from livylib import get_livysession, exec_livycode
+from suzieq.utils import load_sq_config, get_schemas, get_query_df
+from suzieq.livylib import get_livysession, exec_livycode
 
 is_notebook = False
 qgrid_enable = True

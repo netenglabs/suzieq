@@ -9,7 +9,7 @@ import daemon
 from daemon import pidfile
 
 from livylib import get_or_create_livysession, exec_livycode
-from utils import load_sq_config
+from suzieq.utils import load_sq_config
 
 PID_FILE = "/tmp/suzieq-fe-init.pid"
 
