@@ -195,7 +195,7 @@ async def init_services(svc_dir, schema_dir, queue):
                         queue,
                     )
                 elif svc_def["service"] == "evpnVni":
-                    service = evpnVniService(
+                    service = EvpnVniService(
                         svc_def["service"],
                         svc_def["apply"],
                         period,
@@ -206,7 +206,7 @@ async def init_services(svc_dir, schema_dir, queue):
                         queue,
                     )
                 elif svc_def["service"] == "routes":
-                    service = routesService(
+                    service = RoutesService(
                         svc_def["service"],
                         svc_def["apply"],
                         period,
@@ -217,7 +217,7 @@ async def init_services(svc_dir, schema_dir, queue):
                         queue,
                     )
                 elif svc_def["service"] == "arpnd":
-                    service = arpndService(
+                    service = ArpndService(
                         svc_def["service"],
                         svc_def["apply"],
                         period,
@@ -1286,7 +1286,7 @@ class OspfNbrService(Service):
         return super().clean_data(processed_data, raw_data)
 
 
-class evpnVniService(Service):
+class EvpnVniService(Service):
     """evpnVni service. Different class because output needs to be munged"""
 
     def clean_data(self, processed_data, raw_data):
@@ -1300,7 +1300,7 @@ class evpnVniService(Service):
         return super().clean_data(processed_data, raw_data)
 
 
-class routesService(Service):
+class RoutesService(Service):
     """routes service. Different class because vrf default needs to be added"""
 
     def clean_data(self, processed_data, raw_data):
@@ -1319,7 +1319,7 @@ class routesService(Service):
         return super().clean_data(processed_data, raw_data)
 
 
-class arpndService(Service):
+class ArpndService(Service):
     """arpnd service. Different class because minor munging of output"""
 
     def clean_data(self, processed_data, raw_data):
