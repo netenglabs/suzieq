@@ -8,11 +8,11 @@
 #
 
 import argparse
-from sqcmds import *
-from sqcmds import context_commands
-from sqcmds import sqcmds_all
-from sq_nubia_context import NubiaSuzieqContext
-from sq_nubia_statusbar import NubiaSuzieqStatusBar
+from suzieq.cli.sqcmds import *
+from suzieq.cli.sqcmds import context_commands
+from suzieq.cli.sqcmds import sqcmds_all
+from suzieq.cli.sq_nubia_context import NubiaSuzieqContext
+from suzieq.cli.sq_nubia_statusbar import NubiaSuzieqStatusBar
 from nubia import PluginInterface, CompletionDataSource
 from nubia.internal.blackcmd import CommandBlacklist
 from nubia.internal.cmdbase import AutoCommand
