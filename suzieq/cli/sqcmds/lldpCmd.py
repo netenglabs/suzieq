@@ -60,6 +60,7 @@ class lldpCmd(SQCommand):
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
+        return df
 
     @command("summarize")
     @argument("ifname", description="interface name to qualify")
@@ -84,3 +85,4 @@ class lldpCmd(SQCommand):
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
+        return df

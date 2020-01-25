@@ -65,6 +65,7 @@ class interfaceCmd(SQCommand):
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
+        return df
 
     @command("summarize")
     @argument("ifname", description="interface name to qualify")
@@ -90,6 +91,7 @@ class interfaceCmd(SQCommand):
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
+        return df
 
     @command("assert")
     @argument("ifname", description="interface name to qualify")
@@ -128,7 +130,7 @@ class interfaceCmd(SQCommand):
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
 
-        return
+        return df
 
     @command("top")
     @argument("what", description="Field you want to see top for",
@@ -150,3 +152,4 @@ class interfaceCmd(SQCommand):
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
+        return df

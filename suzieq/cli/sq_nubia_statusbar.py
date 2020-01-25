@@ -11,6 +11,7 @@ from pygments.token import Token
 
 from nubia import context
 from nubia import statusbar
+from pandas import DataFrame
 
 
 class NubiaSuzieqStatusBar(statusbar.StatusBar):
@@ -19,7 +20,7 @@ class NubiaSuzieqStatusBar(statusbar.StatusBar):
         self.ctx = ctx
 
     def get_rprompt_tokens(self):
-        if self._last_status:
+        if not isinstance(self._last_status, DataFrame) and self._last_status:
             return [(Token.RPrompt, "Error: {}".format(self._last_status))]
         return []
 
