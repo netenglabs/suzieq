@@ -63,7 +63,10 @@ class RoutesCmd(SqCommand):
             datacenter=self.datacenter,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
+        assert(df.size > 0)
         print(df)
+        return df
+
 
     @command("summarize")
     @argument("prefix", description="Specific prefix to qualify")
@@ -94,6 +97,7 @@ class RoutesCmd(SqCommand):
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
+        return df
 
     @command('lpm')
     @argument("address", description="IP address for lpm")
@@ -124,3 +128,4 @@ class RoutesCmd(SqCommand):
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
+        return df

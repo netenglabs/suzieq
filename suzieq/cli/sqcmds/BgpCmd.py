@@ -57,6 +57,7 @@ class BgpCmd(SqCommand):
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
+        return df
 
     @command("summarize")
     @argument("groupby", description="Space separated list of fields to summarize on")
@@ -82,3 +83,4 @@ class BgpCmd(SqCommand):
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
+        return df

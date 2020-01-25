@@ -68,10 +68,12 @@ class SystemCmd(SqCommand):
             uptime_cols = pd.to_timedelta(uptime_cols, unit='ms')
             df.insert(len(df.columns)-1, 'uptime', uptime_cols)
             self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-            print(df.drop(columns=['bootupTimestamp']))
+            df = df.drop(columns=['bootupTimestamp'])
         else:
             self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-            print(df)
+
+        print(df)
+        return df
 
     @command("summarize", help="Summarize system information")
     @argument("groupby", description="Space separated list of fields to summarize on")
@@ -97,3 +99,4 @@ class SystemCmd(SqCommand):
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
+        return df
