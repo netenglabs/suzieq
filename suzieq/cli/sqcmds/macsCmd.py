@@ -63,6 +63,7 @@ class macsCmd(SQCommand):
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
+        return df
 
     @command("summarize")
     @argument("vlan", description="only matching these VLAN(s)")
@@ -92,3 +93,4 @@ class macsCmd(SQCommand):
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
+        return df

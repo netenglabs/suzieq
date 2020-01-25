@@ -73,6 +73,7 @@ class ospfCmd(SQCommand):
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
+        return df
 
     @command("summarize")
     @argument(
@@ -115,6 +116,7 @@ class ospfCmd(SQCommand):
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
+        return df
 
     @command("assert")
     @argument("ifname", description="interface name to check OSPF on")
@@ -141,7 +143,7 @@ class ospfCmd(SQCommand):
             print(result_df)
             print("Assert failed")
 
-        return
+        return result_df
 
     @command("top")
     @argument(
@@ -164,3 +166,4 @@ class ospfCmd(SQCommand):
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
+        return df

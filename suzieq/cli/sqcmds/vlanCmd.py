@@ -45,6 +45,7 @@ class vlanCmd(SQCommand):
                               columns=self.columns, datacenter=self.datacenter)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
+        return df
 
     @command('summarize')
     @argument("groupby",
@@ -66,5 +67,6 @@ class vlanCmd(SQCommand):
                                     datacenter=self.datacenter)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
+        return df
 
 

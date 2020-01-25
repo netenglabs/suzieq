@@ -47,6 +47,7 @@ class tablesCmd(SQCommand):
         df = self.tablesobj.get(hostname=self.hostname, datacenter=self.datacenter)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
+        return df
 
     @command("describe")
     @argument("table", description="interface name to qualify")
@@ -58,3 +59,4 @@ class tablesCmd(SQCommand):
         df = self.tablesobj.summarize(table=table)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
+        return df

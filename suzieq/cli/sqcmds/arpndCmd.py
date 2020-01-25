@@ -62,6 +62,7 @@ class arpndCmd(SQCommand):
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
+        return df
 
     @command("summarize")
     @argument("address", description="IP address to qualify")
@@ -88,3 +89,4 @@ class arpndCmd(SQCommand):
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
+        return df
