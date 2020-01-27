@@ -7,10 +7,7 @@ from suzieq.cli.sq_nubia_context import NubiaSuzieqContext
 
 # TODO
 # checkin
-#  make a new branch
-#   make smaller dataset and see if things go faster
 #  figure out code review
-#  how do you make sure pipenv installs pytest?
 # add commands to services with more commands
 #  what do I do about commands that require parameters
 # test parameters filtering
@@ -19,6 +16,8 @@ from suzieq.cli.sq_nubia_context import NubiaSuzieqContext
 # how does coverage work?
 # is it possible to split the commands as different tests, rather than just the services?
 # refactor sqcmds to not needs so much code -- this is a different task
+# only works if there is a suzieq-cfg.yml file, which it then over-rides
+# how do I make sure I check all svces and all commands
 
 basic_cmds= ['show', 'summarize']
 
@@ -26,25 +25,30 @@ basic_cmds= ['show', 'summarize']
 # columns length, column names?
 #  specific data?
 @pytest.mark.parametrize("svc, commands, size", [
-    ('addrCmd', basic_cmds, [324,18]),
-    ('arpndCmd', basic_cmds, [592,48]),
-    ('bgpCmd', basic_cmds, [352,143]),
+    ('addrCmd', basic_cmds, [324, 18]),
+    ('arpndCmd', basic_cmds, [592, 48]),
+    ('bgpCmd', basic_cmds, [352, 143]),
     ('interfaceCmd', basic_cmds, [1518, 143]),
-    ('lldpCmd', basic_cmds, [352,48]),
+    ('lldpCmd', basic_cmds, [352, 48]),
     ('macsCmd', basic_cmds, [312, 48]),
-    ('mlagCmd', ['show', 'describe'], [44, 143]),
+    ('mlagCmd', basic_cmds + ['describe'], [44, NotImplementedError, 143]),
     ('routesCmd', basic_cmds, [2596, 66]),
     ('systemCmd', basic_cmds, [140, 130]),
-    ('tablesCmd', ['show'], [14]), #don't know how to pass parameters, can't do describe
+    ('tablesCmd', basic_cmds, [14, LookupError]),  #don't know how to pass parameters, can't do describe
     ('topcpuCmd', basic_cmds, [42, 18]),
     ('topmemCmd', basic_cmds, [27, 18]),
     ('vlanCmd', basic_cmds, [96, 78])
 ])
 def test_commands(setup_nubia, svc, commands, size):
     for cmd, sz in zip(commands, size):
-        s = execute_cmd(svc, cmd)
-        assert isinstance(s, DataFrame)
-        assert s.size == sz
+        if isinstance(sz, type) and isinstance(sz(), Exception):
+            with pytest.raises(sz):
+                execute_cmd(svc, cmd)
+        else:
+            print(type(sz))
+            s = execute_cmd(svc, cmd)
+            assert isinstance(s, DataFrame)
+            assert s.size == sz
 
 
 # TODO
@@ -73,11 +77,12 @@ def execute_cmd(svc, cmd):
     instance = getattr(module, svc)()
     return getattr(instance, cmd)()
 
+
 @pytest.fixture
 def setup_nubia():
     from suzieq.cli.sq_nubia_plugin import NubiaSuzieqPlugin
     from nubia import Nubia
-    # monkey patching -- there must be a better way
+    # monkey patching -- there might be a better way
     plugin = NubiaSuzieqPlugin()
     plugin.create_context = create_context
 
@@ -86,13 +91,13 @@ def setup_nubia():
 
 
 def create_context():
-    config = create_config()
+    config = create_context_config()
     context = NubiaSuzieqContext()
     context.cfg = config
     return context
 
 
-def create_config():
+def create_context_config():
     config = {'schema-directory': './suzeiq/config',
               'data-directory': './tests/data/basic_dual_bgp/parquet-out',
               'temp-directory': '/tmp/suzieq',
