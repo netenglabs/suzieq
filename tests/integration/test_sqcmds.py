@@ -7,9 +7,7 @@ from pyarrow.lib import ArrowInvalid
 from pandas.core.computation.ops import UndefinedVariableError
 # TODO
 # set and clear context
-# test parameters filtering
-
-# is it possible to split the commands as different tests, rather than just the services?
+#
 # only works if there is a suzieq-cfg.yml file, which it then over-rides
 # how do I make sure I check all svcs and all commands
 
@@ -22,6 +20,7 @@ basic_cmds = ['show', 'summarize']
 # TODO
 # columns length, column names?
 #  specific data?
+@pytest.mark.slow
 @pytest.mark.parametrize("svc, commands, args, size,", [
     ('addrCmd', basic_cmds, [None, None], [324, 18],),
     ('arpndCmd', basic_cmds, [None, None], [592, 48]),
@@ -70,73 +69,100 @@ def test_summary_exception(setup_nubia):
         s = execute_cmd('systemCmd', 'foop', None, )
     assert s is None
 
-
-@pytest.mark.slow
-@pytest.mark.filter
-def test_hostname_filter(setup_nubia):
-    s1 = _test_command('systemCmd', 'show', None, 140)
-    s1_len = len(s1['hostname'])
-    s = _test_command('systemCmd', 'show', None, 140/s1_len, filter={'hostname': 'leaf01'})
-    assert len(s['hostname']) == 1
-    assert s['hostname'][0] == 'leaf01'
-
-
-working_svcs = [
+svcs = [
     ('addrCmd'),
     ('arpndCmd'),
     ('bgpCmd'),
-    pytest.param(('evpnVniCmd'), marks=pytest.mark.xfail(reason='bug #16', raises=FileNotFoundError)),
+    ('evpnVniCmd'),
     ('interfaceCmd'),
     ('lldpCmd'),
     ('macsCmd'),
     ('mlagCmd'),
-    pytest.param(('ospfCmd'), marks=pytest.mark.xfail(reason='bug #16', raises=FileNotFoundError)),
+    ('ospfCmd'),
     ('routesCmd'),
     ('systemCmd'),
     ('topcpuCmd'),
     ('topmemCmd'),
     ('vlanCmd')]
-basic_filters = [{'hostname': 'leaf01'}]
-bad_filters = [{'hostname': 'leaf'}]
-# can only include commands that have data here because we aren't passing Exceptions
-@pytest.mark.slow
+
+# these fail for every command because they are missing data
+svcs[3] = pytest.param(svcs[3], marks=pytest.mark.xfail(reason='bug #16', raises=FileNotFoundError)) # evpnVniCmd
+svcs[8] = pytest.param(svcs[8], marks=pytest.mark.xfail(reason='bug #16', raises=FileNotFoundError)) # ospfCmd
+
+good_svcs = svcs[:]
+
+# TODO: these break things
+# [{'columns': 'hostname'}, {'start_time': ??}]
+basic_filters = [{'hostname': 'leaf01'}, {'engine': 'pandas'}, {'datacenter': 'dual-bgp'}]
+
+
 @pytest.mark.filter
-@pytest.mark.parametrize("svc", working_svcs)
+@pytest.mark.parametrize("svc", good_svcs)
 def test_show_filter(setup_nubia, svc):
     for filter in basic_filters:
         assert len(filter) == 1
         s1 = _test_command(svc, 'show', None, None)
-        s1_size = s1['hostname'].unique().size
         s = _test_command(svc, 'show', None, None, filter=filter)
         filter_key = next(iter(filter))
-        assert len(s[filter_key].unique()) == 1
-        assert s[filter_key][0] == filter[filter_key]
-        assert len(s1[filter_key].unique()) > len(s[filter_key].unique())
+        if filter_key in s.columns:  # sometimes the filter isn't a part of the data returned
+            assert len(s[filter_key].unique()) == 1
+            assert s[filter_key][0] == filter[filter_key]
+            assert len(s1[filter_key].unique()) >= len(s[filter_key].unique())
+        assert s1.size >= s.size
 
-working_svcs = [
-    pytest.param(('addrCmd'), marks=pytest.mark.xfail(reason='bug #15', raises=ArrowInvalid)),
-    ('arpndCmd'),
-    ('bgpCmd'),
-    pytest.param(('evpnVniCmd'), marks=pytest.mark.xfail(reason='bug #16', raises=FileNotFoundError)),
-    ('interfaceCmd'),
-    ('lldpCmd'),
-    pytest.param(('macsCmd'), marks=pytest.mark.xfail(reason='bug #15', raises=ArrowInvalid)),
-    ('mlagCmd'),
-    pytest.param(('ospfCmd'), marks=pytest.mark.xfail(reason='bug #16', raises=FileNotFoundError)),
-    pytest.param(('routesCmd'), marks=pytest.mark.xfail(reason='bug #14', raises=UndefinedVariableError)),
-    pytest.param(('systemCmd'), marks=pytest.mark.xfail(reason='bug #7', raises=KeyError)),
-    ('topcpuCmd'),
-    ('topmemCmd'),
-    pytest.param(('vlanCmd'), marks=pytest.mark.xfail(reason='bug #15' , raises=ArrowInvalid))
-]
-@pytest.mark.slow
+
+bad_hostname_svcs = svcs[:]
+bad_hostname_svcs[0] = pytest.param(svcs[0], marks=pytest.mark.xfail(reason='bug #15', raises=ArrowInvalid))  # addrCmd
+bad_hostname_svcs[6] = pytest.param(svcs[6], marks=pytest.mark.xfail(reason='bug #15', raises=ArrowInvalid))  # macsCmd
+bad_hostname_svcs[9] = pytest.param(svcs[9], marks=pytest.mark.xfail(reason='bug #14', raises=UndefinedVariableError)) # routesCmd
+bad_hostname_svcs[10] = pytest.param(svcs[10], marks=pytest.mark.xfail(reason='bug #7', raises=KeyError))  # systemCmd
+bad_hostname_svcs[13] = pytest.param(svcs[13], marks=pytest.mark.xfail(reason='bug #15', raises=ArrowInvalid))  # vlan
 @pytest.mark.filter
-@pytest.mark.parametrize("svc", working_svcs)
-def test_bad_show_filter(setup_nubia, svc):
-    for filter in bad_filters:
-        assert len(filter) == 1
-        s = _test_command(svc, 'show', None, None, filter=filter)
-        assert s.size == 0
+@pytest.mark.parametrize("svc", bad_hostname_svcs)
+def test_bad_show_hostname_filter(setup_nubia, svc):
+    filter = {'hostname': 'unknown'}
+    s = _test_bad_show_filter(svc, filter)
+
+
+bad_engine_svcs = svcs[:]
+# TODO
+# this doesn't do any filtering, so it fails the assert that length should be 0
+# when this is fixed then remove the xfail
+@pytest.mark.filter
+@pytest.mark.xfail(reason='bug #11') #
+@pytest.mark.parametrize("svc", bad_engine_svcs)
+def test_bad_show_engine_filter(setup_nubia, svc):
+    filter = {'engine': 'unknown'}
+    s = _test_bad_show_filter(svc, filter)
+
+
+bad_start_time_svcs = svcs[:]
+# TODO
+# this doesn't do any filtering, so it fails the assert that length should be 0
+# when this is fixed then remove the xfail
+@pytest.mark.filter
+@pytest.mark.xfail(reason='bug #12')
+@pytest.mark.parametrize("svc", bad_start_time_svcs)
+def test_bad_show_start_time_filter(setup_nubia, svc):
+    filter = {'start_time': 'unknown'}
+    s = _test_bad_show_filter(svc, filter)
+
+
+bad_datacenter_svcs = bad_hostname_svcs[:]
+# TODO
+# this is just like hostname filtering
+@pytest.mark.filter
+@pytest.mark.parametrize("svc", bad_datacenter_svcs)
+def test_bad_show_datacenter_filter(setup_nubia, svc):
+    filter = {'datacenter': 'unknown'}
+    s = _test_bad_show_filter(svc, filter)
+
+
+def _test_bad_show_filter(svc, filter):
+    assert len(filter) == 1
+    s = _test_command(svc, 'show', None, None, filter=filter)
+    assert len(s) == 0
+    return s
 
 
 def execute_cmd(svc, cmd, arg, filter=None):
