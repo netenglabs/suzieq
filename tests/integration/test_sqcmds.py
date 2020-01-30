@@ -150,6 +150,8 @@ def test_bad_show_start_time_filter(setup_nubia, svc):
 
 
 bad_datacenter_svcs = bad_hostname_svcs[:]
+
+
 # TODO
 # this is just like hostname filtering
 @pytest.mark.filter
@@ -165,20 +167,22 @@ def _test_bad_show_filter(svc, filter):
     assert len(s) == 0
     return s
 
+
 # TODO?
 #  these only check good cases, I'm assuming the bad cases work the same
 #  as the rest of the filtering, and that is too messy to duplicate right now
-
 @pytest.mark.filter
 @pytest.mark.parametrize('svc', good_svcs)
 def test_context_hostname_filtering(setup_nubia, svc):
     _test_context_filtering(svc, {'hostname': 'leaf01'})
+
 
 @pytest.mark.filter
 @pytest.mark.xfail(reason='bug #17')
 @pytest.mark.parametrize('svc', good_svcs)
 def test_context_engine_filtering(setup_nubia, svc):
     _test_context_filtering(svc, {'engine': 'pandas'})
+
 
 context_datacenter_svcs = svcs[:]
 # TODO
@@ -193,13 +197,14 @@ def test_context_datacenter_filtering(setup_nubia, svc):
 
 
 @pytest.mark.fast
-@pytest.mark.xfail(reason=20)
+@pytest.mark.xfail(reason='bug 20')
 @pytest.mark.parametrize('svc', good_svcs)
 def test_context_start_time_filtering(setup_nubia, svc):
     s1 = _test_command(svc, 'show', None, None)
     s2 = _test_context_filtering(svc, {'start_time': 1570006401})  # before the data was created
     s2 = s2.reset_index(drop=True)
     assert not all(s1.eq(s2)) # they should be different
+
 
 def _test_context_filtering(svc, filter):
     assert len(filter) == 1
@@ -217,6 +222,7 @@ def _test_context_filtering(svc, filter):
     assert len(s1) >= len(s2)
     setattr(ctx, k, "")  # reset ctx back to no filtering
     return s2
+
 
 def execute_cmd(svc, cmd, arg, filter=None):
     # expect the svc class are in the module svc and also named svc
