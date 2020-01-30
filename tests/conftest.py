@@ -2,7 +2,7 @@ import pytest
 from suzieq.cli.sq_nubia_context import NubiaSuzieqContext
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='function')
 def setup_nubia():
     _setup_nubia()
 
