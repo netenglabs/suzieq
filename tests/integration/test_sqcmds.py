@@ -2,11 +2,14 @@ import pytest
 
 from pandas import DataFrame
 
+from nubia import context
+
 from suzieq.cli.sqcmds import *
 from pyarrow.lib import ArrowInvalid
 from pandas.core.computation.ops import UndefinedVariableError
 # TODO
-# set and clear context
+# after time filtering if fixed, figure out more subtle time testing
+# test more than just show for filtering?
 #
 # only works if there is a suzieq-cfg.yml file, which it then over-rides
 # how do I make sure I check all svcs and all commands
@@ -44,7 +47,7 @@ def test_commands(setup_nubia, svc, commands, args, size):
     svc: a service
     commands: for each service, the list of commands
     args: arguments
-    size: for each command, expected size of returned data, or Exception of the command is invalid"""
+    size: for each command, expected size of returned data, or Exception if the command is invalid"""
     for cmd, arg, sz in zip(commands, args, size):
         _test_command(svc, cmd, arg, sz)
 
@@ -85,17 +88,15 @@ svcs = [
     ('topmemCmd'),
     ('vlanCmd')]
 
-# these fail for every command because they are missing data
+# these fail for every command because no data exists for these services
 svcs[3] = pytest.param(svcs[3], marks=pytest.mark.xfail(reason='bug #16', raises=FileNotFoundError)) # evpnVniCmd
 svcs[8] = pytest.param(svcs[8], marks=pytest.mark.xfail(reason='bug #16', raises=FileNotFoundError)) # ospfCmd
 
 good_svcs = svcs[:]
 
-# TODO: these break things
+# TODO: these break things, when they are fixed, put them into the list of basic_filters
 # [{'columns': 'hostname'}, {'start_time': ??}]
 basic_filters = [{'hostname': 'leaf01'}, {'engine': 'pandas'}, {'datacenter': 'dual-bgp'}]
-
-
 @pytest.mark.filter
 @pytest.mark.parametrize("svc", good_svcs)
 def test_show_filter(setup_nubia, svc):
@@ -129,7 +130,7 @@ bad_engine_svcs = svcs[:]
 # this doesn't do any filtering, so it fails the assert that length should be 0
 # when this is fixed then remove the xfail
 @pytest.mark.filter
-@pytest.mark.xfail(reason='bug #11') #
+@pytest.mark.xfail(reason='bug #11')
 @pytest.mark.parametrize("svc", bad_engine_svcs)
 def test_bad_show_engine_filter(setup_nubia, svc):
     filter = {'engine': 'unknown'}
@@ -164,6 +165,58 @@ def _test_bad_show_filter(svc, filter):
     assert len(s) == 0
     return s
 
+# TODO?
+#  these only check good cases, I'm assuming the bad cases work the same
+#  as the rest of the filtering, and that is too messy to duplicate right now
+
+@pytest.mark.filter
+@pytest.mark.parametrize('svc', good_svcs)
+def test_context_hostname_filtering(setup_nubia, svc):
+    _test_context_filtering(svc, {'hostname': 'leaf01'})
+
+@pytest.mark.filter
+@pytest.mark.xfail(reason='bug #17')
+@pytest.mark.parametrize('svc', good_svcs)
+def test_context_engine_filtering(setup_nubia, svc):
+    _test_context_filtering(svc, {'engine': 'pandas'})
+
+context_datacenter_svcs = svcs[:]
+# TODO
+# this is a terrible thing, but I can't think of another way
+# remove system because it works, so it can't be marked as xfail
+context_datacenter_svcs.pop(10)
+@pytest.mark.filter
+@pytest.mark.xfail(reason='bug #18')
+@pytest.mark.parametrize('svc', context_datacenter_svcs)
+def test_context_datacenter_filtering(setup_nubia, svc):
+    _test_context_filtering(svc, {'datacenter': 'dual-bgp'})
+
+
+@pytest.mark.fast
+@pytest.mark.xfail(reason=20)
+@pytest.mark.parametrize('svc', good_svcs)
+def test_context_start_time_filtering(setup_nubia, svc):
+    s1 = _test_command(svc, 'show', None, None)
+    s2 = _test_context_filtering(svc, {'start_time': 1570006401})  # before the data was created
+    s2 = s2.reset_index(drop=True)
+    assert not all(s1.eq(s2)) # they should be different
+
+def _test_context_filtering(svc, filter):
+    assert len(filter) == 1
+
+    s1 = _test_command(svc, 'show', None, None)
+    assert len(s1) > 0
+    ctx = context.get_context()
+
+    k = next(iter(filter))
+    v = filter[k]
+    print(k, v)
+    setattr(ctx, k, v)
+    s2 = _test_command(svc, 'show', None, None)
+    assert len(s2) > 0  # these should be good filters, so some data should be returned
+    assert len(s1) >= len(s2)
+    setattr(ctx, k, "")  # reset ctx back to no filtering
+    return s2
 
 def execute_cmd(svc, cmd, arg, filter=None):
     # expect the svc class are in the module svc and also named svc
