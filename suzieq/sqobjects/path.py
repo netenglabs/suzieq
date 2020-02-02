@@ -7,12 +7,12 @@
 # LICENSE file in the root directory of this source tree.
 #
 
-from collections import OrderedDict
 import sys
-
-import pandas as pd
-import numpy as np
 import typing
+from collections import OrderedDict
+
+import numpy as np
+import pandas as pd
 
 from suzieq.sqobjects import interfaces, lldp, routes, arpnd, macs, basicobj
 
@@ -103,13 +103,16 @@ class pathObj(basicobj.SQObject):
         return OrderedDict({})
 
     def trace(self, **kwargs) -> pd.DataFrame:
-        """return a pandas dataframe with the paths between src and dest"""
+        """return a pandas dataframe with the paths between src and dest
+        :param kwargs:
+        :return:
+        :rtype: pd.DataFrame
+        """
 
         if not self.ctxt.engine:
             raise AttributeError(
                 "Specify an analysis engine using set engine " "command"
             )
-            return pd.DataFrame(columns=["datacenter", "hostname"])
 
         datacenter = kwargs.get("datacenter", self.ctxt.datacenter)
         source = kwargs.get("source", None)
@@ -129,6 +132,7 @@ class pathObj(basicobj.SQObject):
         lldp_df = lldp.lldpObj().get(datacenter=[datacenter])
         rdf = routes.routesObj().lpm(datacenter=[datacenter], address=target)
 
+        # for a source node without lldp, get next downstream node with lldp
         if lldp_df[lldp_df["hostname"] == src_host].empty:
             hosts_iifs = self._get_fhr(datacenter, source, if_df)
         else:
@@ -142,8 +146,8 @@ class pathObj(basicobj.SQObject):
                 }
             )
 
+        # for a target node without lldp, get previous upstream node with lldp
         if lldp_df[lldp_df["hostname"] == tgt_host].empty:
-            # The target node has no LLDP data, so find prev node to end
             tgt_host_iifs = self._get_fhr(datacenter, target, if_df)
         else:
             tgt_host_iifs = OrderedDict(
@@ -306,38 +310,39 @@ class pathObj(basicobj.SQObject):
         # Add the final destination to all paths
         for path in paths:
             path.append(tgt_host_iifs)
-        return paths
+
+        # Construct the pandas dataframe.
+        # Constructing the dataframe in one shot here as that's more efficient
+        # for pandas
+        df_plist = []
+        for i, path in enumerate(paths):
+            for j, ele in enumerate(path):
+                item = list(ele)[0]
+                df_plist.append(
+                    {
+                        "pathid": i + 1,
+                        "stageid": j + 1,
+                        "datacenter": datacenter,
+                        "hostname": item,
+                        "iif": ele[item]["iif"],
+                        "vrf": ele[item]["vrf"],
+                        "overlay": ele[item]["overlay"],
+                        "mtu_match": ele[item].get("mtu_match", np.nan),
+                        "mtu": ele[item].get("mtu", 0),
+                    }
+                )
+        paths_df = pd.DataFrame(df_plist)
+        return paths_df
 
 
 if __name__ == "__main__":
-    import pprint
-
     datacenter = sys.argv[1]
     source = sys.argv[2]
     target = sys.argv[3]
     dvrf = sys.argv[4]
 
-    tpobj = pathObj()
-    paths = tpobj.trace(datacenter=datacenter, source=source, target=target,
+    pathobj = pathObj()
+    df = pathobj.trace(datacenter=datacenter, source=source, target=target,
                         vrf=dvrf)
 
-    # Construct Pandas DataFrame
-    df_plist = []
-    for i, path in enumerate(paths):
-        for j, ele in enumerate(path):
-            item = list(ele)[0]
-            df_plist.append(
-                {
-                    "pathid": i + 1,
-                    "stageid": j + 1,
-                    "datacenter": datacenter,
-                    "hostname": item,
-                    "iif": ele[item]["iif"],
-                    "vrf": ele[item]["vrf"],
-                    "overlay": ele[item]["overlay"],
-                    "mtu_match": ele[item].get("mtu_match", np.nan),
-                    "mtu": ele[item].get("mtu", 0),
-                }
-            )
-    df = pd.DataFrame(df_plist)
     print(df)
