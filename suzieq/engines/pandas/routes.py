@@ -7,12 +7,12 @@
 # LICENSE file in the root directory of this source tree.
 #
 
-from .engineobj import SQEngineObject
+from .engineobj import SqEngineObject
 from cyberpandas import to_ipnetwork, IPNetworkArray, IPNetworkType
 from cyberpandas import IPNetAccessor
 
 
-class routesObj(SQEngineObject):
+class RoutesObj(SqEngineObject):
 
     def get(self, **kwargs):
 

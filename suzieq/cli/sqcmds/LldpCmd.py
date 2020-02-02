@@ -12,12 +12,12 @@ import typing
 from nubia import command, argument, context
 import pandas as pd
 
-from suzieq.cli.sqcmds.command import SQCommand
-from suzieq.sqobjects.evpnVni import evpnVniObj
+from suzieq.cli.sqcmds.command import SqCommand
+from suzieq.sqobjects.lldp import lldpObj
 
 
-@command("evpnVni", help="Act on EVPN VNI data")
-class evpnVniCmd(SQCommand):
+@command("lldp", help="Act on LLDP data")
+class LldpCmd(SqCommand):
     def __init__(
         self,
         engine: str = "",
@@ -37,13 +37,13 @@ class evpnVniCmd(SQCommand):
             datacenter=datacenter,
             columns=columns,
         )
-        self.evpnVniobj = evpnVniObj(context=self.ctxt)
+        self.lldpobj = lldpObj(context=self.ctxt)
 
     @command("show")
-    @argument("vni", description="VNI ID to qualify")
-    def show(self, vni: str = ""):
+    @argument("ifname", description="interface name to qualify")
+    def show(self, ifname: str = ""):
         """
-        Show EVPN VNI info
+        Show LLDP info
         """
         # Get the default display field names
         now = time.time()
@@ -52,9 +52,9 @@ class evpnVniCmd(SQCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.evpnVniobj.get(
+        df = self.lldpobj.get(
             hostname=self.hostname,
-            vni=vni.split(),
+            ifname=ifname.split(),
             columns=self.columns,
             datacenter=self.datacenter,
         )
@@ -62,11 +62,11 @@ class evpnVniCmd(SQCommand):
         print(df)
 
     @command("summarize")
-    @argument("vni", description="VNI ID to qualify")
+    @argument("ifname", description="interface name to qualify")
     @argument("groupby", description="Space separated list of fields to summarize on")
-    def summarize(self, vni: str = "", groupby: str = ""):
+    def summarize(self, ifname: str = "", groupby: str = ""):
         """
-        Summarize EVPN VNI info
+        Summarize LLDP info
         """
         # Get the default display field names
         now = time.time()
@@ -75,9 +75,9 @@ class evpnVniCmd(SQCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.evpnVniobj.summarize(
+        df = self.lldpobj.summarize(
             hostname=self.hostname,
-            vni=vni.split(),
+            ifname=ifname.split(),
             columns=self.columns,
             groupby=groupby.split(),
             datacenter=self.datacenter,

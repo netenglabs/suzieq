@@ -15,7 +15,7 @@ import pandas as pd
 from suzieq.sqobjects import basicobj
 
 
-class tablesObj(basicobj.SQObject):
+class tablesObj(basicobj.SqObject):
 
     def get(self, **kwargs):
         '''Show the tables for which we have information'''

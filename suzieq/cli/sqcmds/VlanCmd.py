@@ -12,12 +12,12 @@ import time
 
 from nubia import command, argument
 
-from suzieq.cli.sqcmds.command import SQCommand
+from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.vlan import vlanObj
 
 
 @command('vlan', help="Act on vlan data")
-class vlanCmd(SQCommand):
+class VlanCmd(SqCommand):
 
     def __init__(self, engine: str = '', hostname: str = '',
                  start_time: str = '', end_time: str = '',

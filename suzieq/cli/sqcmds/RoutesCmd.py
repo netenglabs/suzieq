@@ -10,13 +10,13 @@
 import time
 from nubia import command, argument
 
-from suzieq.cli.sqcmds.command import SQCommand
-from suzieq.sqobjects.routes import routesObj
+from suzieq.cli.sqcmds.command import SqCommand
+from suzieq.sqobjects.routes import RoutesObj
 from cyberpandas import IPNetworkType, IPNetworkArray, IPAccessor, to_ipnetwork
 
 
 @command("routes", help="Act on Routes")
-class routesCmd(SQCommand):
+class RoutesCmd(SqCommand):
     def __init__(
         self,
         engine: str = "",
@@ -36,7 +36,7 @@ class routesCmd(SQCommand):
             datacenter=datacenter,
             columns=columns,
         )
-        self.routesobj = routesObj(context=self.ctxt)
+        self.routesobj = RoutesObj(context=self.ctxt)
 
     @command("show")
     @argument("prefix", description="Specific prefix to qualify")

@@ -16,11 +16,11 @@ from copy import deepcopy
 import modin.experimental.pandas as pd
 import pyarrow.parquet as pa
 
-from suzieq.engines.base_engine import SQEngine
+from suzieq.engines.base_engine import SqEngine
 from suzieq.utils import get_display_fields, get_latest_files
 
 
-class SQModinEngine(SQEngine):
+class SqModinEngine(SqEngine):
     def __init__(self):
         pass
 

@@ -20,7 +20,7 @@ from suzieq.sqobjects import interfaces, lldp, routes, arpnd, macs, basicobj
 # TODO: Handle EVPN
 # TODO: Handle MLAG
 # TODO: What timestamp to use (arpND, mac, interface, route..)
-class pathObj(basicobj.SQObject):
+class PathObj(basicobj.SqObject):
     def __init__(
         self,
         engine: str = "",
@@ -49,7 +49,7 @@ class pathObj(basicobj.SQObject):
     def _get_fhr(self, datacenter: str, ipaddr: str, if_df):
         """Identify the first hop router to a given IP address"""
 
-        arp_df = arpnd.arpndObj().get(datacenter=datacenter,
+        arp_df = arpnd.ArpndObj().get(datacenter=datacenter,
                                       ipAddress=ipaddr)
         if arp_df.empty:
             raise AttributeError(
@@ -131,7 +131,7 @@ class pathObj(basicobj.SQObject):
         dest_host = dest_df["hostname"].unique()[0]
         src_host = src_df["hostname"].unique()[0]
         lldp_df = lldp.lldpObj().get(datacenter=datacenter)
-        rdf = routes.routesObj().lpm(datacenter=datacenter, address=dest)
+        rdf = routes.RoutesObj().lpm(datacenter=datacenter, address=dest)
 
         # for a source node without lldp, get next downstream node with lldp
         if lldp_df[lldp_df["hostname"] == src_host].empty:
@@ -346,7 +346,7 @@ if __name__ == "__main__":
     dest = sys.argv[3]
     vrf = sys.argv[4]
 
-    pathobj = pathObj()
+    pathobj = PathObj()
     df = pathobj.get(datacenter=[datacenter], source=source, dest=dest,
                         vrf=vrf)
 

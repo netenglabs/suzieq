@@ -11,10 +11,10 @@ import pandas as pd
 
 from suzieq.utils import get_display_fields
 from suzieq.sqobjects.lldp import lldpObj
-from .engineobj import SQEngineObject
+from .engineobj import SqEngineObject
 
 
-class interfacesObj(SQEngineObject):
+class InterfacesObj(SqEngineObject):
     def aver(self, what="mtu-match", **kwargs) -> pd.DataFrame:
         """Assert that interfaces are in good state"""
         if what == "mtu-match":

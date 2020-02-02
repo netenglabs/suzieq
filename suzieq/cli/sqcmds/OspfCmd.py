@@ -12,12 +12,12 @@ import typing
 from nubia import command, argument, context
 import pandas as pd
 
-from suzieq.cli.sqcmds.command import SQCommand
+from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.ospf import ospfObj
 
 
 @command("ospf", help="Act on OSPF data")
-class ospfCmd(SQCommand):
+class OspfCmd(SqCommand):
     def __init__(
         self,
         engine: str = "",

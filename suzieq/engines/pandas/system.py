@@ -7,7 +7,7 @@
 # LICENSE file in the root directory of this source tree.
 #
 
-from suzieq.engines.pandas.engineobj import SQEngineObject
+from suzieq.engines.pandas.engineobj import SqEngineObject
 
-class systemObj(SQEngineObject):
+class SystemObj(SqEngineObject):
     pass

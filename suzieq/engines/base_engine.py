@@ -8,7 +8,7 @@
 #
 
 
-class SQEngine(object):
+class SqEngine(object):
     def __init__(self):
         pass
 
@@ -21,16 +21,16 @@ class SQEngine(object):
 
 def get_sqengine(name: str = "modin"):
     if name == "spark":
-        from .spark.engine import SQSparkEngine
+        from .spark.engine import SqSparkEngine
 
-        return SQSparkEngine()
+        return SqSparkEngine()
     elif name == "modin":
-        from .modin.engine import SQModinEngine
+        from .modin.engine import SqModinEngine
 
-        return SQModinEngine()
+        return SqModinEngine()
     else:
-        from .pandas.engine import SQPandasEngine
+        from .pandas.engine import SqPandasEngine
 
-        return SQPandasEngine()
+        return SqPandasEngine()
 
     return None

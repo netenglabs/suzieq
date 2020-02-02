@@ -8,18 +8,14 @@
 #
 
 import time
-import typing
-from nubia import command, argument, context
+from nubia import command, argument
 
-import pandas as pd
-
-from suzieq.cli.sqcmds.command import SQCommand
-from suzieq.sqobjects.system import systemObj
+from suzieq.cli.sqcmds.command import SqCommand
+from suzieq.sqobjects.bgp import bgpObj
 
 
-@command("system", help="Act on system data")
-class systemCmd(SQCommand):
-    """system command"""
+@command("bgp", help="Act on BGP data")
+class BgpCmd(SqCommand):
     def __init__(
         self,
         engine: str = "",
@@ -39,12 +35,12 @@ class systemCmd(SQCommand):
             datacenter=datacenter,
             columns=columns,
         )
-        self.systemobj = systemObj(context=self.ctxt)
+        self.bgpobj = bgpObj(context=self.ctxt)
 
-    @command("show", help="Show system information")
+    @command("show")
     def show(self):
         """
-        Show system info
+        Show bgp info
         """
         # Get the default display field names
         now = time.time()
@@ -53,25 +49,17 @@ class systemCmd(SQCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.systemobj.get(
-            hostname=self.hostname, columns=self.columns,
-            datacenter=self.datacenter
+        df = self.bgpobj.get(
+            hostname=self.hostname, columns=self.columns, datacenter=self.datacenter
         )
-        # Convert the bootup timestamp into a time delta
-        if not df.empty:
-            uptime_cols = (df['timestamp'] -
-                           pd.to_datetime(df['bootupTimestamp']*1000,
-                                          unit='ms'))
-            uptime_cols = pd.to_timedelta(uptime_cols, unit='ms')
-            df.insert(len(df.columns)-1, 'uptime', uptime_cols)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        print(df.drop(columns=['bootupTimestamp']))
+        print(df)
 
-    @command("summarize", help="Summarize system information")
+    @command("summarize")
     @argument("groupby", description="Space separated list of fields to summarize on")
     def summarize(self, groupby: str = ""):
         """
-        Summarize system info
+        Summarize bgp info
         """
         # Get the default display field names
         now = time.time()
@@ -80,7 +68,7 @@ class systemCmd(SQCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.systemobj.summarize(
+        df = self.bgpobj.summarize(
             hostname=self.hostname,
             columns=self.columns,
             groupby=groupby.split(),

@@ -10,14 +10,13 @@
 import time
 import typing
 from nubia import command, argument, context
-import pandas as pd
 
-from suzieq.cli.sqcmds.command import SQCommand
-from suzieq.sqobjects.arpnd import arpndObj
+from suzieq.cli.sqcmds.command import SqCommand
+from suzieq.sqobjects.topcpu import topcpuObj
 
 
-@command("arpnd", help="Act on ARP/ND data")
-class arpndCmd(SQCommand):
+@command("topcpu", help="Act on topcpu data")
+class TopcpuCmd(SqCommand):
     def __init__(
         self,
         engine: str = "",
@@ -37,14 +36,12 @@ class arpndCmd(SQCommand):
             datacenter=datacenter,
             columns=columns,
         )
-        self.arpndobj = arpndObj(context=self.ctxt)
+        self.topcpuobj = topcpuObj(context=self.ctxt)
 
     @command("show")
-    @argument("address", description="IP address to qualify")
-    @argument("oif", description="outgoing interface to qualify")
-    def show(self, address: str = "", oif: str = ''):
+    def show(self):
         """
-        Show ARP/ND info
+        Show topcpu info
         """
         # Get the default display field names
         now = time.time()
@@ -53,23 +50,17 @@ class arpndCmd(SQCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.arpndobj.get(
-            hostname=self.hostname,
-            ipAddress=address.split(),
-            oif=oif.split(),
-            columns=self.columns,
-            datacenter=self.datacenter,
+        df = self.topcpuobj.get(
+            hostname=self.hostname, columns=self.columns, datacenter=self.datacenter
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
 
     @command("summarize")
-    @argument("address", description="IP address to qualify")
-    @argument("oif", description="outgoing interface to qualify")
-    @argument("groupby", description="Space separated list of fields to group by")
-    def summarize(self, address: str = "", oif: str = '', groupby: str = ""):
+    @argument("groupby", description="Space separated list of fields to summarize on")
+    def summarize(self, groupby: str = ""):
         """
-        Summarize ARP/ND info
+        Summarize topcpu info
         """
         # Get the default display field names
         now = time.time()
@@ -78,10 +69,8 @@ class arpndCmd(SQCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.arpndobj.summarize(
+        df = self.topcpuobj.summarize(
             hostname=self.hostname,
-            oif=oif.split(),
-            ipAddress=address.split(),
             columns=self.columns,
             groupby=groupby.split(),
             datacenter=self.datacenter,

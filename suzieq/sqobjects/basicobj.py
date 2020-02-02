@@ -14,7 +14,7 @@ from suzieq.utils import load_sq_config, get_schemas
 from suzieq.engines import get_sqengine
 
 
-class SQContext(object):
+class SqContext(object):
 
     def __init__(self, engine):
         self.cfg = load_sq_config(validate=False)
@@ -35,7 +35,7 @@ class SQContext(object):
             raise ValueError
 
 
-class SQObject(object):
+class SqObject(object):
 
     def __init__(self, engine_name: str = '', hostname: typing.List[str] = [],
                  start_time: str = '', end_time: str = '',
@@ -44,11 +44,11 @@ class SQObject(object):
                  context=None, table: str = '') -> None:
 
         if context is None:
-            self.ctxt = SQContext(engine_name)
+            self.ctxt = SqContext(engine_name)
         else:
             self.ctxt = context
             if not self.ctxt:
-                self.ctxt = SQContext(engine_name)
+                self.ctxt = SqContext(engine_name)
 
         self._cfg = self.ctxt.cfg
         self._schemas = self.ctxt.schemas

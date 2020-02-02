@@ -8,14 +8,16 @@
 #
 
 import time
-from nubia import command, argument
+import typing
+from nubia import command, argument, context
+import pandas as pd
 
-from suzieq.cli.sqcmds.command import SQCommand
-from suzieq.sqobjects.macs import macsObj
+from suzieq.cli.sqcmds.command import SqCommand
+from suzieq.sqobjects.evpnVni import evpnVniObj
 
 
-@command("macs", help="Act on MAC Table data")
-class macsCmd(SQCommand):
+@command("evpnVni", help="Act on EVPN VNI data")
+class EvpnVniCmd(SqCommand):
     def __init__(
         self,
         engine: str = "",
@@ -35,16 +37,13 @@ class macsCmd(SQCommand):
             datacenter=datacenter,
             columns=columns,
         )
-        self.macsobj = macsObj(context=self.ctxt)
+        self.evpnVniobj = evpnVniObj(context=self.ctxt)
 
     @command("show")
-    @argument("vlan", description="only matching these VLAN(s)")
-    @argument("macaddr", description="only matching these MAC address(es)")
-    @argument("remoteVtepIp", description=
-              "only with this remoteVtepIp; use any for all")
-    def show(self, vlan: str = '', macaddr: str = '', remoteVtepIp: str = ''):
+    @argument("vni", description="VNI ID to qualify")
+    def show(self, vni: str = ""):
         """
-        Show MAC table info
+        Show EVPN VNI info
         """
         # Get the default display field names
         now = time.time()
@@ -53,11 +52,9 @@ class macsCmd(SQCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.macsobj.get(
+        df = self.evpnVniobj.get(
             hostname=self.hostname,
-            vlan=vlan.split(),
-            macaddr=macaddr.split(),
-            remoteVtepIp=remoteVtepIp.split(),
+            vni=vni.split(),
             columns=self.columns,
             datacenter=self.datacenter,
         )
@@ -65,15 +62,11 @@ class macsCmd(SQCommand):
         print(df)
 
     @command("summarize")
-    @argument("vlan", description="only matching these VLAN(s)")
-    @argument("macaddr", description="only matching these MAC address(es)")
-    @argument("remoteVtepIp",
-              description="only with this remoteVtepIp; use any for all")
-    @argument("groupby", description="list of fields to group by")
-    def summarize(self, vlan: str = "", macaddr: str = '',
-                  remoteVtepIp: str = "", groupby: str = ""):
+    @argument("vni", description="VNI ID to qualify")
+    @argument("groupby", description="Space separated list of fields to summarize on")
+    def summarize(self, vni: str = "", groupby: str = ""):
         """
-        Summarize MAC Table info
+        Summarize EVPN VNI info
         """
         # Get the default display field names
         now = time.time()
@@ -82,12 +75,11 @@ class macsCmd(SQCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.macsobj.summarize(
+        df = self.evpnVniobj.summarize(
             hostname=self.hostname,
-            vlan=vlan.split(),
-            macaddr=macaddr.split(),
+            vni=vni.split(),
+            columns=self.columns,
             groupby=groupby.split(),
-            remoteVtepIp=remoteVtepIp.split(),
             datacenter=self.datacenter,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)

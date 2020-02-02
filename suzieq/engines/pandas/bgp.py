@@ -7,8 +7,8 @@
 # LICENSE file in the root directory of this source tree.
 #
 
-from .engineobj import SQEngineObject
+from .engineobj import SqEngineObject
 
 
-class bgpObj(SQEngineObject):
+class BgpObj(SqEngineObject):
     pass
