@@ -10,12 +10,12 @@
 import time
 from nubia import command, argument
 
-from suzieq.cli.sqcmds.command import SQCommand
-from suzieq.sqobjects.path import pathObj
+from suzieq.cli.sqcmds.command import SqCommand
+from suzieq.sqobjects.path import PathObj
 
 
 @command("path", help="build and act on path data")
-class pathCmd(SQCommand):
+class PathCmd(SqCommand):
     def __init__(
         self,
         engine: str = "",
@@ -35,7 +35,7 @@ class pathCmd(SQCommand):
             datacenter=datacenter,
             columns=columns,
         )
-        self.pathobj = pathObj(context=self.ctxt)
+        self.pathobj = PathObj(context=self.ctxt)
 
     @command("show")
     @argument("src", description="show paths from")

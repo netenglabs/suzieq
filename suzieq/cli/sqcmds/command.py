@@ -10,7 +10,7 @@ import typing
 from suzieq.engines import get_sqengine
 
 
-class SQCommand:
+class SqCommand:
     """Base Command Class for use with all verbs"""
 
     @argument(

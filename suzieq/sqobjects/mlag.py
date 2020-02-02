@@ -13,7 +13,7 @@ import pandas as pd
 from suzieq.sqobjects import basicobj
 
 
-class mlagObj(basicobj.SQObject):
+class mlagObj(basicobj.SqObject):
 
     def __init__(self, engine: str = '', hostname: typing.List[str] = [],
                  start_time: str = '', end_time: str = '',

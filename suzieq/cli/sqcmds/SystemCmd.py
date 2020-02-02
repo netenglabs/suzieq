@@ -8,15 +8,18 @@
 #
 
 import time
+import typing
+from nubia import command, argument, context
 
-from nubia import command, argument
+import pandas as pd
 
-from suzieq.cli.sqcmds.command import SQCommand
-from suzieq.sqobjects.addr import addrObj
+from suzieq.cli.sqcmds.command import SqCommand
+from suzieq.sqobjects.system import SystemObj
 
 
-@command("address", help="Act on address data")
-class addrCmd(SQCommand):
+@command("system", help="Act on system data")
+class SystemCmd(SqCommand):
+    """system command"""
     def __init__(
         self,
         engine: str = "",
@@ -36,13 +39,12 @@ class addrCmd(SQCommand):
             datacenter=datacenter,
             columns=columns,
         )
-        self.addrobj = addrObj(context=self.ctxt)
+        self.systemobj = SystemObj(context=self.ctxt)
 
-    @command("show")
-    @argument("address", description="Address about which you want info")
-    def show(self, address: str = ""):
+    @command("show", help="Show system information")
+    def show(self):
         """
-        Show address info
+        Show system info
         """
         # Get the default display field names
         now = time.time()
@@ -51,20 +53,25 @@ class addrCmd(SQCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.addrobj.get(
-            hostname=self.hostname,
-            columns=self.columns,
-            address=address,
-            datacenter=self.datacenter,
+        df = self.systemobj.get(
+            hostname=self.hostname, columns=self.columns,
+            datacenter=self.datacenter
         )
+        # Convert the bootup timestamp into a time delta
+        if not df.empty:
+            uptime_cols = (df['timestamp'] -
+                           pd.to_datetime(df['bootupTimestamp']*1000,
+                                          unit='ms'))
+            uptime_cols = pd.to_timedelta(uptime_cols, unit='ms')
+            df.insert(len(df.columns)-1, 'uptime', uptime_cols)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        print(df)
+        print(df.drop(columns=['bootupTimestamp']))
 
-    @command("summarize")
+    @command("summarize", help="Summarize system information")
     @argument("groupby", description="Space separated list of fields to summarize on")
     def summarize(self, groupby: str = ""):
         """
-        Describe address info
+        Summarize system info
         """
         # Get the default display field names
         now = time.time()
@@ -73,7 +80,7 @@ class addrCmd(SQCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.addrobj.summarize(
+        df = self.systemobj.summarize(
             hostname=self.hostname,
             columns=self.columns,
             groupby=groupby.split(),

@@ -10,12 +10,12 @@
 import time
 from nubia import command, argument
 
-from suzieq.cli.sqcmds.command import SQCommand
-from suzieq.sqobjects.bgp import bgpObj
+from suzieq.cli.sqcmds.command import SqCommand
+from suzieq.sqobjects.macs import macsObj
 
 
-@command("bgp", help="Act on BGP data")
-class bgpCmd(SQCommand):
+@command("macs", help="Act on MAC Table data")
+class MacsCmd(SqCommand):
     def __init__(
         self,
         engine: str = "",
@@ -35,12 +35,16 @@ class bgpCmd(SQCommand):
             datacenter=datacenter,
             columns=columns,
         )
-        self.bgpobj = bgpObj(context=self.ctxt)
+        self.macsobj = macsObj(context=self.ctxt)
 
     @command("show")
-    def show(self):
+    @argument("vlan", description="only matching these VLAN(s)")
+    @argument("macaddr", description="only matching these MAC address(es)")
+    @argument("remoteVtepIp", description=
+              "only with this remoteVtepIp; use any for all")
+    def show(self, vlan: str = '', macaddr: str = '', remoteVtepIp: str = ''):
         """
-        Show bgp info
+        Show MAC table info
         """
         # Get the default display field names
         now = time.time()
@@ -49,17 +53,27 @@ class bgpCmd(SQCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.bgpobj.get(
-            hostname=self.hostname, columns=self.columns, datacenter=self.datacenter
+        df = self.macsobj.get(
+            hostname=self.hostname,
+            vlan=vlan.split(),
+            macaddr=macaddr.split(),
+            remoteVtepIp=remoteVtepIp.split(),
+            columns=self.columns,
+            datacenter=self.datacenter,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
 
     @command("summarize")
-    @argument("groupby", description="Space separated list of fields to summarize on")
-    def summarize(self, groupby: str = ""):
+    @argument("vlan", description="only matching these VLAN(s)")
+    @argument("macaddr", description="only matching these MAC address(es)")
+    @argument("remoteVtepIp",
+              description="only with this remoteVtepIp; use any for all")
+    @argument("groupby", description="list of fields to group by")
+    def summarize(self, vlan: str = "", macaddr: str = '',
+                  remoteVtepIp: str = "", groupby: str = ""):
         """
-        Summarize bgp info
+        Summarize MAC Table info
         """
         # Get the default display field names
         now = time.time()
@@ -68,10 +82,12 @@ class bgpCmd(SQCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.bgpobj.summarize(
+        df = self.macsobj.summarize(
             hostname=self.hostname,
-            columns=self.columns,
+            vlan=vlan.split(),
+            macaddr=macaddr.split(),
             groupby=groupby.split(),
+            remoteVtepIp=remoteVtepIp.split(),
             datacenter=self.datacenter,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)

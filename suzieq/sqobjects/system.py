@@ -11,7 +11,7 @@ import typing
 from suzieq.sqobjects import basicobj
 
 
-class systemObj(basicobj.SQObject):
+class SystemObj(basicobj.SqObject):
     def __init__(self, engine: str = '', hostname: typing.List[str] = [],
                  start_time: str = '', end_time: str = '',
                  view: str = 'latest', datacenter: typing.List[str] = [],
@@ -26,7 +26,7 @@ class systemObj(basicobj.SQObject):
 if __name__ == '__main__':
     try:
         import fire
-        fire.Fire(systemObj)
+        fire.Fire(SystemObj)
     except ImportError:
         pass
 

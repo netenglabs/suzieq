@@ -12,10 +12,10 @@ import pandas as pd
 from cyberpandas import to_ipnetwork, IPNetworkArray, IPNetworkType
 from cyberpandas import IPNetAccessor
 
-from .engineobj import SQEngineObject
+from .engineobj import SqEngineObject
 
 
-class addrObj(SQEngineObject):
+class AddrObj(SqEngineObject):
 
     def get(self, **kwargs) -> pd.DataFrame:
         """Retrieve the dataframe that matches a given IP address"""
@@ -46,14 +46,8 @@ class addrObj(SQEngineObject):
                 if col not in columns:
                     columns.insert(4, col)
         else:
-            columns = [
-                "datacenter",
-                "hostname",
-                "ifname",
-                "state",
-            ]
-            columns.append(addrcol)
-            columns.append("timestamp")
+            columns = ["datacenter", "hostname", "ifname", "state", addrcol,
+                       "timestamp"]
 
         df = self.get_valid_df("interfaces", sort_fields, columns=columns,
                                **kwargs)
@@ -107,7 +101,7 @@ if __name__ == "__main__":
     try:
         import fire
 
-        fire.Fire(addrObj)
+        fire.Fire(AddrObj)
     except ImportError:
         pass
         pass

@@ -21,11 +21,11 @@ except ImportError:
 import pandas as pd
 import pyarrow.parquet as pa
 
-from suzieq.engines.base_engine import SQEngine
+from suzieq.engines.base_engine import SqEngine
 from suzieq.utils import get_display_fields, get_latest_files
 
 
-class SQPandasEngine(SQEngine):
+class SqPandasEngine(SqEngine):
     def __init__(self):
         pass
 
@@ -170,7 +170,7 @@ class SQPandasEngine(SQEngine):
 
     def get_object(self, objname: str, iobj):
         module = import_module("suzieq.engines.pandas." + objname)
-        eobj = getattr(module, "{}Obj".format(objname))
+        eobj = getattr(module, "{}Obj".format(objname.title()))
         return eobj(iobj)
 
     def get_filecnt(self, path="."):

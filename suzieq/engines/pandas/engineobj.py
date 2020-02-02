@@ -11,7 +11,7 @@ import pandas as pd
 import pyarrow as pa
 
 
-class SQEngineObject(object):
+class SqEngineObject(object):
     def __init__(self, baseobj):
         self.ctxt = baseobj.ctxt
         self.iobj = baseobj

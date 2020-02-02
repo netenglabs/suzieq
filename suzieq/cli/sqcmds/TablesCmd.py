@@ -11,12 +11,12 @@ import time
 
 from nubia import command, argument
 
-from suzieq.cli.sqcmds.command import SQCommand
+from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.tables import tablesObj
 
 
 @command("tables", help="Information about the various tables")
-class tablesCmd(SQCommand):
+class TablesCmd(SqCommand):
     def __init__(
         self,
         engine: str = "",

@@ -8,16 +8,15 @@
 #
 
 import time
-import typing
-from nubia import command, argument, context
-import pandas as pd
 
-from suzieq.cli.sqcmds.command import SQCommand
-from suzieq.sqobjects.lldp import lldpObj
+from nubia import command, argument
+
+from suzieq.cli.sqcmds.command import SqCommand
+from suzieq.sqobjects.addr import addrObj
 
 
-@command("lldp", help="Act on LLDP data")
-class lldpCmd(SQCommand):
+@command("address", help="Act on address data")
+class AddrCmd(SqCommand):
     def __init__(
         self,
         engine: str = "",
@@ -37,13 +36,13 @@ class lldpCmd(SQCommand):
             datacenter=datacenter,
             columns=columns,
         )
-        self.lldpobj = lldpObj(context=self.ctxt)
+        self.addrobj = addrObj(context=self.ctxt)
 
     @command("show")
-    @argument("ifname", description="interface name to qualify")
-    def show(self, ifname: str = ""):
+    @argument("address", description="Address about which you want info")
+    def show(self, address: str = ""):
         """
-        Show LLDP info
+        Show address info
         """
         # Get the default display field names
         now = time.time()
@@ -52,21 +51,20 @@ class lldpCmd(SQCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.lldpobj.get(
+        df = self.addrobj.get(
             hostname=self.hostname,
-            ifname=ifname.split(),
             columns=self.columns,
+            address=address,
             datacenter=self.datacenter,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         print(df)
 
     @command("summarize")
-    @argument("ifname", description="interface name to qualify")
     @argument("groupby", description="Space separated list of fields to summarize on")
-    def summarize(self, ifname: str = "", groupby: str = ""):
+    def summarize(self, groupby: str = ""):
         """
-        Summarize LLDP info
+        Describe address info
         """
         # Get the default display field names
         now = time.time()
@@ -75,9 +73,8 @@ class lldpCmd(SQCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.lldpobj.summarize(
+        df = self.addrobj.summarize(
             hostname=self.hostname,
-            ifname=ifname.split(),
             columns=self.columns,
             groupby=groupby.split(),
             datacenter=self.datacenter,

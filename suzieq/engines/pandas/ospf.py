@@ -12,10 +12,10 @@ import pandas as pd
 
 from suzieq.utils import get_display_fields
 from suzieq.sqobjects.lldp import lldpObj
-from suzieq.engines.pandas.engineobj import SQEngineObject
+from suzieq.engines.pandas.engineobj import SqEngineObject
 
 
-class ospfObj(SQEngineObject):
+class OspfObj(SqEngineObject):
     def get(self, **kwargs):
 
         if self.ctxt.sort_fields is None:
@@ -234,6 +234,6 @@ if __name__ == "__main__":
     try:
         import fire
 
-        fire.Fire(ospfObj)
+        fire.Fire(OspfObj)
     except ImportError:
         pass

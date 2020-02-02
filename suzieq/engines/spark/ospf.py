@@ -9,10 +9,10 @@
 
 import pandas as pd
 
-from suzieq.engines.pandas.engineobj import SQEngineObject
+from suzieq.engines.pandas.engineobj import SqEngineObject
 
 
-class ospfObj(SQEngineObject):
+class ospfObj(SqEngineObject):
     def get(self, **kwargs):
 
         if self.ctxt.sort_fields is None:

@@ -12,12 +12,12 @@ import typing
 from nubia import command, argument, context
 import pandas as pd
 
-from suzieq.cli.sqcmds.command import SQCommand
+from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.topmem import topmemObj
 
 
 @command("topmem", help="Act on topmem data")
-class topmemCmd(SQCommand):
+class TopmemCmd(SqCommand):
     def __init__(
         self,
         engine: str = "",

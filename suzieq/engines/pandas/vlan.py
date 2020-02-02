@@ -9,10 +9,10 @@
 
 import pandas as pd
 
-from .engineobj import SQEngineObject
+from .engineobj import SqEngineObject
 
 
-class vlanObj(SQEngineObject):
+class VlanObj(SqEngineObject):
 
     def get(self, **kwargs) -> pd.DataFrame:
         """Retrieve the dataframe that matches a given VLANs"""

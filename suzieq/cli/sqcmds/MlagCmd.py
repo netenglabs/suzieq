@@ -12,12 +12,12 @@ import time
 
 from nubia import command, argument
 
-from suzieq.cli.sqcmds.command import SQCommand
+from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.mlag import mlagObj
 
 
 @command('mlag', help="Act on mlag data")
-class mlagCmd(SQCommand):
+class MlagCmd(SqCommand):
 
     def __init__(self, engine: str = '', hostname: str = '',
                  start_time: str = '', end_time: str = '',

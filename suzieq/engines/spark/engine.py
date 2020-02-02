@@ -15,7 +15,7 @@ from importlib import import_module
 
 import pandas as pd
 
-from suzieq.engines.base_engine import SQEngine
+from suzieq.engines.base_engine import SqEngine
 from suzieq.utils import get_display_fields
 from suzieq.livylib import get_livysession, exec_livycode
 
@@ -52,7 +52,7 @@ x
 """
 
 
-class SQSparkEngine(SQEngine):
+class SqSparkEngine(SqEngine):
     def __init__(self):
         # TBD: Check if livy session exists, if not start it
         pass
