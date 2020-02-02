@@ -19,7 +19,7 @@ from suzieq.sqobjects import interfaces, lldp, routes, arpnd, macs, basicobj
 
 # TODO: Handle EVPN
 # TODO: Handle MLAG
-class tracepathObj(basicobj.SQObject):
+class pathObj(basicobj.SQObject):
     def __init__(
         self,
         engine: str = "",
@@ -317,7 +317,7 @@ if __name__ == "__main__":
     target = sys.argv[3]
     dvrf = sys.argv[4]
 
-    tpobj = tracepathObj()
+    tpobj = pathObj()
     paths = tpobj.trace(datacenter=datacenter, source=source, target=target,
                         vrf=dvrf)
 
