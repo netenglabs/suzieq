@@ -19,6 +19,7 @@ from suzieq.sqobjects import interfaces, lldp, routes, arpnd, macs, basicobj
 
 # TODO: Handle EVPN
 # TODO: Handle MLAG
+# TODO: What timestamp to use (arpND, mac, interface, route..)
 class pathObj(basicobj.SQObject):
     def __init__(
         self,
@@ -48,7 +49,7 @@ class pathObj(basicobj.SQObject):
     def _get_fhr(self, datacenter: str, ipaddr: str, if_df):
         """Identify the first hop router to a given IP address"""
 
-        arp_df = arpnd.arpndObj().get(datacenter=[datacenter],
+        arp_df = arpnd.arpndObj().get(datacenter=datacenter,
                                       ipAddress=ipaddr)
         if arp_df.empty:
             raise AttributeError(
@@ -76,7 +77,7 @@ class pathObj(basicobj.SQObject):
         vlan = oif_df.iloc[0]["vlan"]
         if macaddr:
             mac_df = macs.macsObj().get(
-                datacenter=[datacenter], macaddr=macaddr, vlan=vlan
+                datacenter=datacenter, macaddr=macaddr, vlan=vlan
             )
             if not mac_df.empty:
                 mac_df = mac_df[mac_df["remoteVtepIp"] == ""]
@@ -102,7 +103,7 @@ class pathObj(basicobj.SQObject):
             )
         return OrderedDict({})
 
-    def trace(self, **kwargs) -> pd.DataFrame:
+    def get(self, **kwargs) -> pd.DataFrame:
         """return a pandas dataframe with the paths between src and dest
         :param kwargs:
         :return:
@@ -116,21 +117,21 @@ class pathObj(basicobj.SQObject):
 
         datacenter = kwargs.get("datacenter", self.ctxt.datacenter)
         source = kwargs.get("source", None)
-        target = kwargs.get("target", None)
-        vrf = kwargs.get("vrf", "default")
+        dest = kwargs.get("dest", None)
+        dvrf = kwargs.get("vrf", "default")
 
-        if not source or not target:
-            raise AttributeError("Must specify trace source and target")
+        if not source or not dest:
+            raise AttributeError("Must specify trace source and dest")
 
-        if_df = interfaces.ifObj().get(datacenter=[datacenter])
+        if_df = interfaces.ifObj().get(datacenter=datacenter)
         src_df = if_df[if_df.ipAddressList.astype(str)
                        .str.contains(source + "/")]
-        tgt_df = if_df[if_df.ipAddressList.astype(str)
-                       .str.contains(target + "/")]
-        tgt_host = tgt_df["hostname"].unique()[0]
+        dest_df = if_df[if_df.ipAddressList.astype(str)
+                       .str.contains(dest + "/")]
+        dest_host = dest_df["hostname"].unique()[0]
         src_host = src_df["hostname"].unique()[0]
-        lldp_df = lldp.lldpObj().get(datacenter=[datacenter])
-        rdf = routes.routesObj().lpm(datacenter=[datacenter], address=target)
+        lldp_df = lldp.lldpObj().get(datacenter=datacenter)
+        rdf = routes.routesObj().lpm(datacenter=datacenter, address=dest)
 
         # for a source node without lldp, get next downstream node with lldp
         if lldp_df[lldp_df["hostname"] == src_host].empty:
@@ -141,22 +142,24 @@ class pathObj(basicobj.SQObject):
                     src_host: {
                         "iif": src_df["ifname"].unique()[0],
                         "mtu": src_df["mtu"].unique()[0],
-                        "overlay": False
+                        "overlay": False,
+                        "timestamp": src_df["timestamp"].max(),
                     }
                 }
             )
 
-        # for a target node without lldp, get previous upstream node with lldp
-        if lldp_df[lldp_df["hostname"] == tgt_host].empty:
-            tgt_host_iifs = self._get_fhr(datacenter, target, if_df)
+        # for a dest node without lldp, get previous upstream node with lldp
+        if lldp_df[lldp_df["hostname"] == dest_host].empty:
+            dest_host_iifs = self._get_fhr(datacenter, dest, if_df)
         else:
-            tgt_host_iifs = OrderedDict(
+            dest_host_iifs = OrderedDict(
                 {
-                    tgt_host: {
-                        "iif": tgt_df["ifname"].unique()[0],
-                        "vrf": tgt_df["master"].unique()[0] or "default",
-                        "mtu": tgt_df["mtu"].unique()[0],
-                        "overlay": False
+                    dest_host: {
+                        "iif": dest_df["ifname"].unique()[0],
+                        "vrf": dest_df["master"].unique()[0] or "default",
+                        "mtu": dest_df["mtu"].unique()[0],
+                        "overlay": False,
+                        "timestamp": dest_df["timestamp"].max(),
                     }
                 }
             )
@@ -164,7 +167,7 @@ class pathObj(basicobj.SQObject):
         paths = [[hosts_iifs]]
         visited_hosts = set()
 
-        # The logic is to loop through the nexthops till you reach the target
+        # The logic is to loop through the nexthops till you reach the dest
         # host The topmost while is this looping. The next loop within handles
         # one nexthop at a time.The paths are constructed as a list of lists,
         # where each element of the outermost loop is one complete path and
@@ -202,7 +205,7 @@ class pathObj(basicobj.SQObject):
                                          .format(host))
                 hosts_this_round.add(skey)
 
-                if host in tgt_host_iifs:
+                if host in dest_host_iifs:
                     continue
                 rslt = rdf.query('hostname == "{}" and vrf == "{}"'
                                  .format(host, ivrf))
@@ -284,6 +287,7 @@ class pathObj(basicobj.SQObject):
                         .iloc[-1]
                         .mtu,
                         "mtu_match": mtu_match,
+                        "timestamp": rslt.timestamp.iloc[0]
                     }
 
                 if not newhosts_iifs:
@@ -309,7 +313,7 @@ class pathObj(basicobj.SQObject):
 
         # Add the final destination to all paths
         for path in paths:
-            path.append(tgt_host_iifs)
+            path.append(dest_host_iifs)
 
         # Construct the pandas dataframe.
         # Constructing the dataframe in one shot here as that's more efficient
@@ -322,13 +326,14 @@ class pathObj(basicobj.SQObject):
                     {
                         "pathid": i + 1,
                         "stageid": j + 1,
-                        "datacenter": datacenter,
+                        "datacenter": datacenter[0],
                         "hostname": item,
                         "iif": ele[item]["iif"],
                         "vrf": ele[item]["vrf"],
                         "overlay": ele[item]["overlay"],
                         "mtu_match": ele[item].get("mtu_match", np.nan),
                         "mtu": ele[item].get("mtu", 0),
+                        "timestamp": ele[item].get("timestamp", np.nan)
                     }
                 )
         paths_df = pd.DataFrame(df_plist)
@@ -338,11 +343,11 @@ class pathObj(basicobj.SQObject):
 if __name__ == "__main__":
     datacenter = sys.argv[1]
     source = sys.argv[2]
-    target = sys.argv[3]
-    dvrf = sys.argv[4]
+    dest = sys.argv[3]
+    vrf = sys.argv[4]
 
     pathobj = pathObj()
-    df = pathobj.trace(datacenter=datacenter, source=source, target=target,
-                        vrf=dvrf)
+    df = pathobj.get(datacenter=[datacenter], source=source, dest=dest,
+                        vrf=vrf)
 
     print(df)
