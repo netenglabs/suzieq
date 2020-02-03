@@ -46,8 +46,11 @@ class SystemCmd(SqCommand):
         """
         Show system info
         """
-        # Get the default display field names
+        if self.columns is None:
+            return
+
         now = time.time()
+        # Get the default display field names
         if self.columns != ["default"]:
             self.ctxt.sort_fields = None
         else:
@@ -77,6 +80,9 @@ class SystemCmd(SqCommand):
         Summarize system info
         """
         # Get the default display field names
+        if self.columns is None:
+            return
+
         now = time.time()
         if self.columns != ["default"]:
             self.ctxt.sort_fields = None

@@ -44,6 +44,9 @@ class TopmemCmd(SqCommand):
         """
         Show topmem info
         """
+        if self.columns is None:
+            return
+
         # Get the default display field names
         now = time.time()
         if self.columns != ["default"]:
@@ -63,6 +66,9 @@ class TopmemCmd(SqCommand):
         """
         Summarize topmem info
         """
+        if self.columns is None:
+            return
+
         # Get the default display field names
         now = time.time()
         if self.columns != ["default"]:

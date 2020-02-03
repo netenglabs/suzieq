@@ -56,6 +56,9 @@ class OspfCmd(SqCommand):
         """
         Show OSPF interface and neighbor info
         """
+        if self.columns is None:
+            return
+
         now = time.time()
         if self.columns != ["default"]:
             self.ctxt.sort_fields = None
@@ -97,6 +100,9 @@ class OspfCmd(SqCommand):
         """
         Summarize OSPF data
         """
+        if self.columns is None:
+            return
+
         now = time.time()
         if self.columns != ["default"]:
             self.ctxt.sort_fields = None
@@ -126,6 +132,9 @@ class OspfCmd(SqCommand):
         """
         Test OSPF runtime state is good
         """
+        if self.columns is None:
+            return
+
         now = time.time()
         result_df = self.ospfobj.aver(
             hostname=self.hostname,
@@ -152,6 +161,9 @@ class OspfCmd(SqCommand):
         """
         Show top n entries based on specific field
         """
+        if self.columns is None:
+            return
+
         now = time.time()
 
         df = self.ospfobj.top(

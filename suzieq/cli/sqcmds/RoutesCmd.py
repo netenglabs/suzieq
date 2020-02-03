@@ -45,6 +45,9 @@ class RoutesCmd(SqCommand):
         """
         Show Routes info
         """
+        if self.columns is None:
+            return
+
         # Get the default display field names
         now = time.time()
         if self.columns != ["default"]:
@@ -71,6 +74,9 @@ class RoutesCmd(SqCommand):
         """
         Summarize Routing info
         """
+        if self.columns is None:
+            return
+
         # Get the default display field names
         now = time.time()
         if self.columns != ["default"]:
@@ -96,6 +102,9 @@ class RoutesCmd(SqCommand):
         """
         Show the Longest Prefix Match on a given prefix, vrf
         """
+        if self.columns is None:
+            return
+
         now = time.time()
         if self.columns != ["default"]:
             self.ctxt.sort_fields = None
