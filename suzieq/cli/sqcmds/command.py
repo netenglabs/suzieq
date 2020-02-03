@@ -9,31 +9,29 @@ import typing
 
 from suzieq.engines import get_sqengine
 
-
-class SqCommand:
-    """Base Command Class for use with all verbs"""
-
-    @argument(
+@argument(
         "engine",
         description="which analytical engine to use",
         choices=["spark", "pandas"],
     )
-    @argument(
-        "datacenter", description="Space separated list of datacenters to qualify"
-    )
-    @argument("hostname", description="Space separated list of hostnames to qualify")
-    @argument(
-        "start_time", description="Start of time window in YYYY-MM-dd HH:mm:SS format"
-    )
-    @argument(
-        "end_time", description="End of time window in YYYY-MM-dd HH:mm:SS format"
-    )
-    @argument(
-        "view",
-        description="view all records or just the latest",
-        choices=["all", "latest"],
-    )
-    @argument("columns", description="Space separated list of columns, * for all")
+@argument(
+    "datacenter", description="Space separated list of datacenters to qualify"
+)
+@argument("hostname", description="Space separated list of hostnames to qualify")
+@argument(
+    "start_time", description="Start of time window in YYYY-MM-dd HH:mm:SS format"
+)
+@argument(
+    "end_time", description="End of time window in YYYY-MM-dd HH:mm:SS format"
+)
+@argument(
+    "view",
+    description="view all records or just the latest",
+    choices=["all", "latest"],
+)
+@argument("columns", description="Space separated list of columns, * for all")
+class SqCommand:
+    """Base Command Class for use with all verbs"""
     def __init__(
         self,
         engine: str = "",
@@ -82,9 +80,7 @@ class SqCommand:
     def schemas(self):
         return self._schemas
 
-    """show various pieces of information"""
-
-    def get(self, **kwargs):
+    def show(self, **kwargs):
         raise NotImplementedError
 
     def analyze(self, **kwargs):
