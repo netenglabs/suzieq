@@ -126,9 +126,17 @@ class SqPandasEngine(SqEngine):
                 # Make up a dummy query string to avoid if/then/else
                 query_str = "timestamp != 0"
 
-            # Sadly we have to hardcode this for routes
+            # Sadly we have to hard code this for routes
+            # to avoid splitting the parquet datafiles by prefix
             if table == "routes":
                 key_fields.append("prefix")
+
+            # Handle the case where key fields are missing from display fields
+            fldset = set(fields)
+            kfldset = set(key_fields)
+            add_flds = kfldset.difference(fldset)
+            if add_flds:
+                fields.extend(list(add_flds))
 
             final_df = (
                 pa.ParquetDataset(
@@ -154,9 +162,13 @@ class SqPandasEngine(SqEngine):
                 .query(query_str)
             )
 
-        if view == "latest" and "active" not in kwargs:
-            fields.remove("active")
-            final_df.drop(columns=["active"], axis=1)
+        if view == 'latest':
+            # Remove all the fields we added that we now have to take away
+            add_flds.add('active')
+            for fld in add_flds:
+                fields.remove(fld)
+
+            final_df.drop(columns=list(add_flds), axis=1)
 
         if not final_df.empty:
             final_df["timestamp"] = pd.to_datetime(
