@@ -45,6 +45,9 @@ class LldpCmd(SqCommand):
         """
         Show LLDP info
         """
+        if self.columns is None:
+            return
+
         # Get the default display field names
         now = time.time()
         if self.columns != ["default"]:
@@ -68,6 +71,9 @@ class LldpCmd(SqCommand):
         """
         Summarize LLDP info
         """
+        if self.columns is None:
+            return
+
         # Get the default display field names
         now = time.time()
         if self.columns != ["default"]:

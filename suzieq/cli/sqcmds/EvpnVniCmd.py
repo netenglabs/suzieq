@@ -45,6 +45,9 @@ class EvpnVniCmd(SqCommand):
         """
         Show EVPN VNI info
         """
+        if self.columns is None:
+            return
+
         # Get the default display field names
         now = time.time()
         if self.columns != ["default"]:
@@ -68,6 +71,9 @@ class EvpnVniCmd(SqCommand):
         """
         Summarize EVPN VNI info
         """
+        if self.columns is None:
+            return
+
         # Get the default display field names
         now = time.time()
         if self.columns != ["default"]:

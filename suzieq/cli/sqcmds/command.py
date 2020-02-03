@@ -32,6 +32,10 @@ from suzieq.engines import get_sqengine
 @argument("columns", description="Space separated list of columns, * for all")
 class SqCommand:
     """Base Command Class for use with all verbs"""
+    datacenter = None
+    hostname = None
+    columns = None
+
     def __init__(
         self,
         engine: str = "",
@@ -45,6 +49,16 @@ class SqCommand:
         self.ctxt = context.get_context()
         self._cfg = self.ctxt.cfg
         self._schemas = self.ctxt.schemas
+
+        if not isinstance(datacenter, str):
+            print('datacenter must be a space separated list of strings')
+            return
+        if not isinstance(hostname, str):
+            print('hostname must be a space separated list of strings')
+            return
+        if not isinstance(columns, str):
+            print('columns must be a space separated list of strings')
+            return
 
         if not datacenter and self.ctxt.datacenter:
             self.datacenter = self.ctxt.datacenter

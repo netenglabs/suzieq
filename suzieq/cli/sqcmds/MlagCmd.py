@@ -33,6 +33,9 @@ class MlagCmd(SqCommand):
         """
         Show mlag info
         """
+        if self.columns is None:
+            return
+
         # Get the default display field names
         now = time.time()
         if self.columns != ['default']:
@@ -56,6 +59,9 @@ class MlagCmd(SqCommand):
         """
         Summarize mlag info
         """
+        if self.columns is None:
+            return
+
         # Get the default display field names
         now = time.time()
         if self.columns != ['default']:

@@ -42,6 +42,9 @@ class BgpCmd(SqCommand):
         """
         Show bgp info
         """
+        if self.columns is None:
+            return
+
         # Get the default display field names
         now = time.time()
         if self.columns != ["default"]:
@@ -61,6 +64,9 @@ class BgpCmd(SqCommand):
         """
         Summarize bgp info
         """
+        if self.columns is None:
+            return
+
         # Get the default display field names
         now = time.time()
         if self.columns != ["default"]:

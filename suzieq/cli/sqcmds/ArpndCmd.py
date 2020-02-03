@@ -46,6 +46,9 @@ class ArpndCmd(SqCommand):
         """
         Show ARP/ND info
         """
+        if self.columns is None:
+            return
+
         # Get the default display field names
         now = time.time()
         if self.columns != ["default"]:
@@ -71,6 +74,9 @@ class ArpndCmd(SqCommand):
         """
         Summarize ARP/ND info
         """
+
+        if self.columns is None:
+            return
         # Get the default display field names
         now = time.time()
         if self.columns != ["default"]:

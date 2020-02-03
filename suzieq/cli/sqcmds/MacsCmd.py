@@ -46,6 +46,9 @@ class MacsCmd(SqCommand):
         """
         Show MAC table info
         """
+        if self.columns is None:
+            return
+
         # Get the default display field names
         now = time.time()
         if self.columns != ["default"]:
@@ -75,6 +78,9 @@ class MacsCmd(SqCommand):
         """
         Summarize MAC Table info
         """
+        if self.columns is None:
+            return
+
         # Get the default display field names
         now = time.time()
         if self.columns != ["default"]:

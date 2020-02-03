@@ -48,6 +48,9 @@ class InterfaceCmd(SqCommand):
         """
         Show interface info
         """
+        if self.columns is None:
+            return
+
         # Get the default display field names
         now = time.time()
         if self.columns != ["default"]:
@@ -74,6 +77,9 @@ class InterfaceCmd(SqCommand):
         """
         Describe interface info
         """
+        if self.columns is None:
+            return
+
         # Get the default display field names
         now = time.time()
         if self.columns != ["default"]:
@@ -104,6 +110,9 @@ class InterfaceCmd(SqCommand):
         """
         Assert aspects about the interface
         """
+        if self.columns is None:
+            return
+
         now = time.time()
 
         if what == "mtu-value" and value == 0:
@@ -138,6 +147,9 @@ class InterfaceCmd(SqCommand):
         """
         Show top n entries based on specific field
         """
+        if self.columns is None:
+            return
+
         now = time.time()
 
         df = self.ifobj.top(

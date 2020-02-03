@@ -44,6 +44,9 @@ class PathCmd(SqCommand):
     def show(self, src: str = "", dest: str = "", vrf: str = ''):
         """show paths between specified from source to target ip addresses"""
         # Get the default display field names
+        if self.columns is None:
+            return
+
         now = time.time()
         if self.columns != ["default"]:
             self.ctxt.sort_fields = None

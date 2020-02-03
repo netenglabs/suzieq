@@ -34,6 +34,9 @@ class VlanCmd(SqCommand):
         """
         Show vlan info
         """
+        if self.columns is None:
+            return
+
         # Get the default display field names
         now = time.time()
         if self.columns != ['default']:
@@ -53,6 +56,9 @@ class VlanCmd(SqCommand):
         """
         Describe vlan info
         """
+        if self.columns is None:
+            return
+
         # Get the default display field names
         now = time.time()
         if self.columns != ['default']:

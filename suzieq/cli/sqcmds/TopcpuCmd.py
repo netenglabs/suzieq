@@ -43,6 +43,9 @@ class TopcpuCmd(SqCommand):
         """
         Show topcpu info
         """
+        if self.columns is None:
+            return
+
         # Get the default display field names
         now = time.time()
         if self.columns != ["default"]:
@@ -62,6 +65,9 @@ class TopcpuCmd(SqCommand):
         """
         Summarize topcpu info
         """
+        if self.columns is None:
+            return
+
         # Get the default display field names
         now = time.time()
         if self.columns != ["default"]:
