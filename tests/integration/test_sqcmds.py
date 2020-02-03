@@ -26,22 +26,22 @@ basic_cmds = ['show', 'summarize']
 #  specific data?
 @pytest.mark.slow
 @pytest.mark.parametrize("svc, commands, args, size,", [
-    ('addrCmd', basic_cmds, [None, None], [324, 18],),
-    ('arpndCmd', basic_cmds, [None, None], [592, 48]),
-    ('bgpCmd', basic_cmds, [None, None], [352, 143]),
-    ('evpnVniCmd', basic_cmds, [None, None], [FileNotFoundError, FileNotFoundError]), # TODO: bug #16
-    ('interfaceCmd', basic_cmds + ['top', 'aver'], [None, None, None, None], [1518, 143, 60, 0]),
-    ('lldpCmd', basic_cmds, [None, None], [352, 48]),
-    ('macsCmd', basic_cmds, [None, None], [312, 48]),
-    ('mlagCmd', basic_cmds + ['describe'], [None, None, None], [44, NotImplementedError, 143]),
-    ('ospfCmd', basic_cmds + ['top', 'aver'], [None, None, None, None],
+    ('AddrCmd', basic_cmds, [None, None], [324, 18],),
+    ('ArpndCmd', basic_cmds, [None, None], [592, 48]),
+    ('BgpCmd', basic_cmds, [None, None], [352, 143]),
+    ('EvpnVniCmd', basic_cmds, [None, None], [FileNotFoundError, FileNotFoundError]), # TODO: bug #16
+    ('InterfaceCmd', basic_cmds + ['top', 'aver'], [None, None, None, None], [1518, 143, 60, 0]),
+    ('LldpCmd', basic_cmds, [None, None], [352, 48]),
+    ('MacsCmd', basic_cmds, [None, None], [312, 48]),
+    ('MlagCmd', basic_cmds + ['describe'], [None, None, None], [44, NotImplementedError, 143]),
+    ('OspfCmd', basic_cmds + ['top', 'aver'], [None, None, None, None],
      [FileNotFoundError, FileNotFoundError, FileNotFoundError, FileNotFoundError]),  # TODO: bug #16
-    ('routesCmd', basic_cmds + ['lpm'], [None, None, {'address': '10.0.0.1'}], [2596, 66, 143]),
-    ('systemCmd', basic_cmds, [None, None], [140, 130]),
-    ('tablesCmd', basic_cmds, [None, {'table': 'system'}], [14, 22]),
-    ('topcpuCmd', basic_cmds, [None, None], [42, 18]),
-    ('topmemCmd', basic_cmds, [None, None], [27, 18]),
-    ('vlanCmd', basic_cmds, [None, None], [96, 78])
+    ('RoutesCmd', basic_cmds + ['lpm'], [None, None, {'address': '10.0.0.1'}], [2596, 66, 143]),
+    ('SystemCmd', basic_cmds, [None, None], [140, 130]),
+    ('TablesCmd', basic_cmds, [None, {'table': 'system'}], [14, 22]),
+    ('TopcpuCmd', basic_cmds, [None, None], [42, 18]),
+    ('TopmemCmd', basic_cmds, [None, None], [27, 18]),
+    ('VlanCmd', basic_cmds, [None, None], [96, 78])
 ])
 def test_commands(setup_nubia, svc, commands, args, size):
     """ runs through all of the commands for each of the sqcmds
@@ -74,20 +74,20 @@ def test_summary_exception(setup_nubia):
     assert s is None
 
 svcs = [
-    ('addrCmd'),
-    ('arpndCmd'),
-    ('bgpCmd'),
-    ('evpnVniCmd'),
-    ('interfaceCmd'),
-    ('lldpCmd'),
-    ('macsCmd'),
-    ('mlagCmd'),
-    ('ospfCmd'),
-    ('routesCmd'),
-    ('systemCmd'),
-    ('topcpuCmd'),
-    ('topmemCmd'),
-    ('vlanCmd')]
+    ('AddrCmd'),
+    ('ArpndCmd'),
+    ('BgpCmd'),
+    ('EvpnVniCmd'),
+    ('InterfaceCmd'),
+    ('LldpCmd'),
+    ('MacsCmd'),
+    ('MlagCmd'),
+    ('OspfCmd'),
+    ('RoutesCmd'),
+    ('SystemCmd'),
+    ('TopcpuCmd'),
+    ('TopmemCmd'),
+    ('VlanCmd')]
 
 # these fail for every command because no data exists for these services
 svcs[3] = pytest.param(svcs[3], marks=pytest.mark.xfail(reason='bug #16', raises=FileNotFoundError)) # evpnVniCmd
