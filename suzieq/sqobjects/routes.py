@@ -26,6 +26,6 @@ class RoutesObj(basicobj.SqObject):
 
     def lpm(self, **kwargs):
         '''Get the lpm for the given address'''
-        if 'address' not in kwargs:
+        if not kwargs.get("address", None):
             raise AttributeError('ip address is mandatory parameter')
         return self.engine_obj.lpm(**kwargs)
