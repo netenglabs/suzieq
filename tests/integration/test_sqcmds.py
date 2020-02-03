@@ -70,7 +70,7 @@ def _test_command(svc, cmd, arg, sz, filter=None):
 def test_summary_exception(setup_nubia):
     s = None
     with pytest.raises(AttributeError):
-        s = execute_cmd('systemCmd', 'foop', None, )
+        s = execute_cmd('SystemCmd', 'foop', None, )
     assert s is None
 
 svcs = [
@@ -114,11 +114,11 @@ def test_show_filter(setup_nubia, svc):
 
 
 bad_hostname_svcs = svcs[:]
-bad_hostname_svcs[0] = pytest.param(svcs[0], marks=pytest.mark.xfail(reason='bug #15', raises=ArrowInvalid))  # addrCmd
-bad_hostname_svcs[6] = pytest.param(svcs[6], marks=pytest.mark.xfail(reason='bug #15', raises=ArrowInvalid))  # macsCmd
-bad_hostname_svcs[9] = pytest.param(svcs[9], marks=pytest.mark.xfail(reason='bug #14', raises=UndefinedVariableError)) # routesCmd
-bad_hostname_svcs[10] = pytest.param(svcs[10], marks=pytest.mark.xfail(reason='bug #7', raises=KeyError))  # systemCmd
-bad_hostname_svcs[13] = pytest.param(svcs[13], marks=pytest.mark.xfail(reason='bug #15', raises=ArrowInvalid))  # vlan
+#bad_hostname_svcs[0] = pytest.param(svcs[0], marks=pytest.mark.xfail(reason='bug #15', raises=ArrowInvalid))  # addrCmd
+#bad_hostname_svcs[6] = pytest.param(svcs[6], marks=pytest.mark.xfail(reason='bug #15', raises=ArrowInvalid))  # macsCmd
+#bad_hostname_svcs[9] = pytest.param(svcs[9], marks=pytest.mark.xfail(reason='bug #14', raises=UndefinedVariableError)) # routesCmd
+#bad_hostname_svcs[10] = pytest.param(svcs[10], marks=pytest.mark.xfail(reason='bug #7', raises=KeyError))  # systemCmd
+#bad_hostname_svcs[13] = pytest.param(svcs[13], marks=pytest.mark.xfail(reason='bug #15', raises=ArrowInvalid))  # vlan
 @pytest.mark.filter
 @pytest.mark.parametrize("svc", bad_hostname_svcs)
 def test_bad_show_hostname_filter(setup_nubia, svc):
@@ -169,13 +169,30 @@ def _test_bad_show_filter(svc, filter):
     return s
 
 
+good_filters = [{'hostname': 'leaf01'}]
+
 # TODO?
 #  these only check good cases, I'm assuming the bad cases work the same
 #  as the rest of the filtering, and that is too messy to duplicate right now
 @pytest.mark.filter
 @pytest.mark.parametrize('svc', good_svcs)
-def test_context_hostname_filtering(setup_nubia, svc):
-    _test_context_filtering(svc, {'hostname': 'leaf01'})
+def test_context_filtering(setup_nubia, svc):
+    for filter in good_filters:
+        _test_context_filtering(svc, filter)
+
+
+context_datacenter_svcs = svcs[:]
+# TODO
+# this is a terrible thing, but I can't think of another way
+# remove system because it works, so it can't be marked as xfail
+context_datacenter_svcs.pop(10)
+@pytest.mark.filter
+@pytest.mark.fast
+@pytest.mark.xfail(reason='bug #18')
+@pytest.mark.parametrize('svc', context_datacenter_svcs)
+def test_context_datacenter_filtering(setup_nubia, svc):
+    _test_context_filtering(svc, {'datacenter': 'dual-bgp'})
+
 
 
 @pytest.mark.filter
@@ -185,19 +202,6 @@ def test_context_engine_filtering(setup_nubia, svc):
     _test_context_filtering(svc, {'engine': 'pandas'})
 
 
-context_datacenter_svcs = svcs[:]
-# TODO
-# this is a terrible thing, but I can't think of another way
-# remove system because it works, so it can't be marked as xfail
-context_datacenter_svcs.pop(10)
-@pytest.mark.filter
-@pytest.mark.xfail(reason='bug #18')
-@pytest.mark.parametrize('svc', context_datacenter_svcs)
-def test_context_datacenter_filtering(setup_nubia, svc):
-    _test_context_filtering(svc, {'datacenter': 'dual-bgp'})
-
-
-@pytest.mark.fast
 @pytest.mark.xfail(reason='bug 20')
 @pytest.mark.parametrize('svc', good_svcs)
 def test_context_start_time_filtering(setup_nubia, svc):
