@@ -104,6 +104,7 @@ class RoutesCmd(SqCommand):
 
         if not address:
             print('address is mandatory parameter')
+            return
 
         df = self.routesobj.lpm(
             hostname=self.hostname,
