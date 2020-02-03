@@ -15,6 +15,7 @@ from pandas.core.computation.ops import UndefinedVariableError
 # how do I make sure I check all svcs and all commands
 
 # I don't know the right measure of completeness to cover all the different ways of filtering
+# missing detailed checking of whatever is being done directly in the sqcmds objects, such as filtering or formatting changes
 
 
 basic_cmds = ['show', 'summarize']
