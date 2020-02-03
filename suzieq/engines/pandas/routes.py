@@ -16,10 +16,11 @@ class RoutesObj(SqEngineObject):
 
     def get(self, **kwargs):
 
-        df = super().get(**kwargs).query('prefix != ""')
-        if not df.empty:
+        df = super().get(**kwargs)
+        if not df.empty and 'prefix' in df.columns:
             df['prefix'].replace('default', '0.0.0.0/0', inplace=True)
             df['prefix'] = df['prefix'].astype('ipnetwork')
+            return df.query('prefix != ""')
 
         return df
 
@@ -32,24 +33,31 @@ class RoutesObj(SqEngineObject):
         else:
             sort_fields = self.iobj._sort_fields
 
-        df = self.get_valid_df(self.iobj._table, sort_fields, **kwargs) \
-                 .query('prefix != ""')
+        df = self.get_valid_df(self.iobj._table, sort_fields, **kwargs)
 
         if df.empty:
             return df
 
-        df['prefix'].replace('default', '0.0.0.0/0', inplace=True)
-        df['prefix'] = df.prefix.astype('ipnetwork')
+        if 'prefix' in df.columns:
+            df['prefix'].replace('default', '0.0.0.0/0', inplace=True)
+            df['prefix'] = df.prefix.astype('ipnetwork')
 
         if kwargs.get("groupby"):
-            return df.groupby(kwargs["groupby"]) \
+            return df.query('prefix != ""') \
+                     .groupby(kwargs["groupby"]) \
                      .agg(lambda x: x.unique().tolist())
         else:
             for i in self.iobj._cat_fields:
                 if (kwargs.get(i, []) or
                         "default" in kwargs.get("columns", [])):
                     df[i] = df[i].astype("category", copy=False)
-            return df.describe(include="all").fillna("-")
+            if 'prefix' in df.columns:
+                return df.query('prefix != ""') \
+                         .describe(include="all") \
+                         .fillna("-")
+            else:
+                return df.describe(include="all") \
+                         .fillna("-")
 
     def lpm(self, **kwargs):
         if not self.iobj._table:
@@ -66,6 +74,9 @@ class RoutesObj(SqEngineObject):
         cols = kwargs.get("columns", ["datacenter", "hostname", "vrf",
                                       "prefix", "nexthopIps", "oifs",
                                       "protocol"])
+
+        if 'prefix' not in cols:
+            cols.insert(-1, 'prefix')
 
         df = self.get_valid_df(self.iobj._table, sort_fields, **kwargs) \
                  .query('prefix != ""')
