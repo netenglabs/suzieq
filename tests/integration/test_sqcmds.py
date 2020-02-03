@@ -43,6 +43,8 @@ basic_cmds = ['show', 'summarize']
     ('TopmemCmd', basic_cmds, [None, None], [27, 18]),
     ('VlanCmd', basic_cmds, [None, None], [96, 78])
 ])
+
+
 def test_commands(setup_nubia, svc, commands, args, size):
     """ runs through all of the commands for each of the sqcmds
     svc: a service
@@ -89,6 +91,7 @@ svcs = [
     ('TopmemCmd'),
     ('VlanCmd')]
 
+
 # these fail for every command because no data exists for these services
 svcs[3] = pytest.param(svcs[3], marks=pytest.mark.xfail(reason='bug #16', raises=FileNotFoundError)) # evpnVniCmd
 svcs[8] = pytest.param(svcs[8], marks=pytest.mark.xfail(reason='bug #16', raises=FileNotFoundError)) # ospfCmd
@@ -114,11 +117,6 @@ def test_show_filter(setup_nubia, svc):
 
 
 bad_hostname_svcs = svcs[:]
-#bad_hostname_svcs[0] = pytest.param(svcs[0], marks=pytest.mark.xfail(reason='bug #15', raises=ArrowInvalid))  # addrCmd
-#bad_hostname_svcs[6] = pytest.param(svcs[6], marks=pytest.mark.xfail(reason='bug #15', raises=ArrowInvalid))  # macsCmd
-#bad_hostname_svcs[9] = pytest.param(svcs[9], marks=pytest.mark.xfail(reason='bug #14', raises=UndefinedVariableError)) # routesCmd
-#bad_hostname_svcs[10] = pytest.param(svcs[10], marks=pytest.mark.xfail(reason='bug #7', raises=KeyError))  # systemCmd
-#bad_hostname_svcs[13] = pytest.param(svcs[13], marks=pytest.mark.xfail(reason='bug #15', raises=ArrowInvalid))  # vlan
 @pytest.mark.filter
 @pytest.mark.parametrize("svc", bad_hostname_svcs)
 def test_bad_show_hostname_filter(setup_nubia, svc):
@@ -187,12 +185,10 @@ context_datacenter_svcs = svcs[:]
 # remove system because it works, so it can't be marked as xfail
 context_datacenter_svcs.pop(10)
 @pytest.mark.filter
-@pytest.mark.fast
 @pytest.mark.xfail(reason='bug #18')
 @pytest.mark.parametrize('svc', context_datacenter_svcs)
 def test_context_datacenter_filtering(setup_nubia, svc):
     _test_context_filtering(svc, {'datacenter': 'dual-bgp'})
-
 
 
 @pytest.mark.filter
