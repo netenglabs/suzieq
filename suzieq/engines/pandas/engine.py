@@ -138,29 +138,35 @@ class SqPandasEngine(SqEngine):
             if add_flds:
                 fields.extend(list(add_flds))
 
-            final_df = (
-                pa.ParquetDataset(
-                    folder, filters=filters or None, validate_schema=False
+            try:
+                final_df = (
+                    pa.ParquetDataset(
+                        folder, filters=filters or None, validate_schema=False
+                    )
+                    .read(columns=fields)
+                    .to_pandas()
+                    .query(query_str)
+                    .drop_duplicates(subset=key_fields, keep="last")
+                    .query("active == True")
                 )
-                .read(columns=fields)
-                .to_pandas()
-                .query(query_str)
-                .drop_duplicates(subset=key_fields, keep="last")
-                .query("active == True")
-            )
+            except pa.lib.ArrowInvalid:
+                return pd.DataFrame(columns=fields)
         else:
             if not query_str:
                 # Make up a dummy query string to avoid if/then/else
                 query_str = 'timestamp != "0"'
 
-            final_df = (
-                pa.ParquetDataset(
-                    folder, filters=filters or None, validate_schema=False
+            try:
+                final_df = (
+                    pa.ParquetDataset(
+                        folder, filters=filters or None, validate_schema=False
+                    )
+                    .read(columns=fields)
+                    .to_pandas()
+                    .query(query_str)
                 )
-                .read(columns=fields)
-                .to_pandas()
-                .query(query_str)
-            )
+            except pa.lib.ArrowInvalid:
+                    return pd.DataFrame(columns=fields)
 
         if view == 'latest':
             # Remove all the fields we added that we now have to take away
