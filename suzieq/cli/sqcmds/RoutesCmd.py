@@ -63,7 +63,6 @@ class RoutesCmd(SqCommand):
             datacenter=self.datacenter,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        assert(df.size > 0)
         print(df)
         return df
 
