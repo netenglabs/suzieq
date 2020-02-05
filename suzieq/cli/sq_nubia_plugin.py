@@ -116,4 +116,4 @@ class ConfigFileCompletionDataSource(CompletionDataSource):
 
 class ConfigEngineCompletionDataSource(CompletionDataSource):
     def get_all(self):
-        return ["pandas", "spark"]
+        return ["pandas"]

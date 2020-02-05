@@ -21,8 +21,8 @@ from nubia import command, argument, context
 @argument("end_time", description="End of time window in YYYY-MM-dd HH:mm:SS format")
 @argument(
     "engine",
-    choices=["spark", "pandas", "modin"],
-    description="Use Spark or Pandas for non-SQL commands",
+    choices=["pandas"],
+    description="Use Pandas for non-SQL commands",
 )
 def set_ctxt(
     hostname: typing.List[str] = [],
