@@ -10,5 +10,5 @@
 from .engineobj import SqEngineObject
 
 
-class EvpnVniObj(SqEngineObject):
+class EvpnvniObj(SqEngineObject):
     pass
