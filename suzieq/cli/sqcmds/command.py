@@ -12,7 +12,7 @@ from suzieq.engines import get_sqengine
 @argument(
         "engine",
         description="which analytical engine to use",
-        choices=["spark", "pandas"],
+        choices=["pandas"],
     )
 @argument(
     "datacenter", description="Space separated list of datacenters to qualify"

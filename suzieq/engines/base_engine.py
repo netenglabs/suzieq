@@ -19,16 +19,8 @@ class SqEngine(object):
         raise NotImplementedError
 
 
-def get_sqengine(name: str = "modin"):
-    if name == "spark":
-        from .spark.engine import SqSparkEngine
-
-        return SqSparkEngine()
-    elif name == "modin":
-        from .modin.engine import SqModinEngine
-
-        return SqModinEngine()
-    else:
+def get_sqengine(name: str = "pandas"):
+    if name == 'pandas':
         from .pandas.engine import SqPandasEngine
 
         return SqPandasEngine()
