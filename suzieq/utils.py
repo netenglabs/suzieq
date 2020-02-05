@@ -42,19 +42,6 @@ def validate_sq_config(cfg, fh):
     if not p.is_dir():
         return "Invalid schema directory specified"
 
-    ksrv = cfg.get("kafka-servers", None)
-    if ksrv:
-        from confluent_kafka import Consumer, KafkaException
-
-        kc = Consumer({"bootstrap.servers": ksrv}, logger=fh)
-
-        try:
-            kc.list_topics(timeout=1)
-        except KafkaException as e:
-            return "Kafka server error: {}".format(str(e))
-
-        kc.close()
-
     return None
 
 

@@ -4,7 +4,6 @@ import asyncio
 import json
 import logging
 
-from confluent_kafka import Producer
 import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
@@ -60,38 +59,6 @@ class ParquetOutputWorker(OutputWorker):
         )
 
 
-class KafkaOutputWorker(OutputWorker):
-
-    server_addr = None
-
-    def __init__(self, **kwargs):
-        super(KafkaOutputWorker, self).__init__(type="kafka")
-
-        self.server_addr = kwargs.get("servers", None)
-        self.kclient = Producer({"bootstrap.servers": self.server_addr})
-        self.logger.info("Connecting to Kafka server: {}".format(self.server_addr))
-
-    @staticmethod
-    def delivery_report(err, msg):
-        """ Called once for each message produced to indicate delivery result.
-            Triggered by poll() or flush(). """
-        if err:
-            self.logger.error(
-                "Message not delivered to {} [{}]".format(msg.topic(), msg.partition())
-            )
-
-    def write_data(self, data):
-        self.kclient.poll(0)
-        for record in data["records"]:
-            self.kclient.produce(
-                data["topic"],
-                json.dumps(record),
-                data["topic"],
-                callback=self.delivery_report,
-                timestamp=record["timestamp"],
-            )
-
-
 async def run_output_worker(queue, output_workers):
 
     while True:
@@ -108,10 +75,6 @@ def init_output_workers(output_types, output_args):
     for otype in output_types:
         if otype == "parquet":
             worker = ParquetOutputWorker(output_dir=output_args["output_dir"])
-            if worker:
-                workers.append(worker)
-        elif otype == "kafka":
-            worker = KafkaOutputWorker(servers=output_args["bootstrap.servers"])
             if worker:
                 workers.append(worker)
         else:
