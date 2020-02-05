@@ -5,8 +5,6 @@ import asyncio
 import logging
 from pathlib import Path
 
-from confluent_kafka import Producer
-
 import daemon
 from daemon import pidfile
 
@@ -43,31 +41,6 @@ def validate_parquet_args(cfg, output_args):
     return
 
 
-def validate_kafka_args(cfg, output_args):
-    """ Validate user arguments for kafka output"""
-
-    if not cfg.get("kafka-servers", None):
-        logging.warning("No kafka servers specified. Assuming localhost:9092")
-        servers = "localhost:9092"
-    else:
-        servers = cfg["kafka-servers"]
-
-    try:
-        _ = Producer({"bootstrap.servers": servers})
-    except Exception as e:
-        logging.error(
-            "ERROR: Unable to connect to Kafka servers:{}, "
-            "error:{}".format(servers, e)
-        )
-        print(
-            "ERROR: Unable to connect to Kafka servers:{}, error:{}".format(servers, e)
-        )
-        sys.exit(1)
-
-    output_args.update({"bootstrap.servers": servers})
-
-    return
-
 
 def _main(userargs, cfg):
 
@@ -87,9 +60,6 @@ def _main(userargs, cfg):
 
     if "parquet" in userargs.outputs:
         validate_parquet_args(cfg, output_args)
-
-    if "kafka" in userargs.outputs:
-        validate_kafka_args(cfg, output_args)
 
     outputs = init_output_workers(userargs.outputs, output_args)
 
@@ -129,7 +99,7 @@ def _main(userargs, cfg):
 if __name__ == "__main__":
 
     homedir = str(Path.home())
-    supported_outputs = ["parquet", "kafka"]
+    supported_outputs = ["parquet"]
 
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -151,7 +121,7 @@ if __name__ == "__main__":
         nargs="+",
         default=["parquet"],
         choices=supported_outputs,
-        help="Output formats to write to: kafka, parquet. Use "
+        help="Output formats to write to: parquet. Use "
         "this option multiple times for more than one output",
     )
     parser.add_argument(
