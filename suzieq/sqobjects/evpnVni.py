@@ -12,7 +12,7 @@ import typing
 from suzieq.sqobjects import basicobj
 
 
-class evpnVniObj(basicobj.SqObject):
+class EvpnvniObj(basicobj.SqObject):
 
     def __init__(self, engine: str = '', hostname: typing.List[str] = [],
                  start_time: str = '', end_time: str = '',
@@ -28,6 +28,6 @@ class evpnVniObj(basicobj.SqObject):
 if __name__ == '__main__':
     try:
         import fire
-        fire.Fire(evpnVniObj)
+        fire.Fire(EvpnvniObj)
     except ImportError:
         pass

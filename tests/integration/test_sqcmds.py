@@ -29,8 +29,7 @@ basic_cmds = ['show', 'summarize']
     ('AddrCmd', basic_cmds, [None, None], [324, 18],),
     ('ArpndCmd', basic_cmds, [None, None], [592, 48]),
     ('BgpCmd', basic_cmds, [None, None], [352, 143]),
-    #('EvpnVniCmd', basic_cmds, [None, None], [FileNotFoundError, FileNotFoundError]), # TODO: bug #16, bug 24
-    ('EvpnVniCmd', basic_cmds, [None, None], [AttributeError, AttributeError]),  # TODO: bug #16, bug 24
+    ('EvpnVniCmd', basic_cmds, [None, None], [FileNotFoundError, FileNotFoundError]), # TODO: bug #16
     ('InterfaceCmd', basic_cmds + ['top', 'aver'], [None, None, None, None], [1518, 143, 60, 0]),
     ('LldpCmd', basic_cmds, [None, None], [352, 48]),
     ('MacsCmd', basic_cmds, [None, None], [312, 48]),
@@ -95,8 +94,7 @@ svcs = [
 
 
 # these fail for every command because no data exists for these services
-#svcs[3] = pytest.param(svcs[3], marks=pytest.mark.xfail(reason='bug #16', raises=FileNotFoundError))  # evpnVniCmd
-svcs[3] = pytest.param(svcs[3], marks=pytest.mark.xfail(reason='bug #24', raises=AttributeError))  # evpnVniCmd
+svcs[3] = pytest.param(svcs[3], marks=pytest.mark.xfail(reason='bug #16', raises=FileNotFoundError))  # evpnVniCmd
 svcs[8] = pytest.param(svcs[8], marks=pytest.mark.xfail(reason='bug #16', raises=FileNotFoundError))  # ospfCmd
 
 good_svcs = svcs[:]

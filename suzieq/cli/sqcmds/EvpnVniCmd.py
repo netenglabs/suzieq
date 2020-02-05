@@ -13,7 +13,7 @@ from nubia import command, argument, context
 import pandas as pd
 
 from suzieq.cli.sqcmds.command import SqCommand
-from suzieq.sqobjects.evpnVni import evpnVniObj
+from suzieq.sqobjects.evpnVni import EvpnvniObj
 
 
 @command("evpnVni", help="Act on EVPN VNI data")
@@ -37,7 +37,7 @@ class EvpnVniCmd(SqCommand):
             datacenter=datacenter,
             columns=columns,
         )
-        self.evpnVniobj = evpnVniObj(context=self.ctxt)
+        self.evpnVniobj = EvpnvniObj(context=self.ctxt)
 
     @command("show")
     @argument("vni", description="VNI ID to qualify")
