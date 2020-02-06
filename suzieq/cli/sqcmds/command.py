@@ -7,8 +7,6 @@ from termcolor import cprint
 from nubia import command, argument, context
 import typing
 
-from suzieq.engines import get_sqengine
-
 @argument(
         "engine",
         description="which analytical engine to use",
@@ -81,10 +79,10 @@ class SqCommand:
 
         self.view = view
         self.columns = columns.split()
-        if engine:
-            self.engine = get_sqengine(engine)
-        else:
-            self.engine = self.ctxt.engine
+        #if engine:
+        #    self.engine = get_sqengine(engine)
+        #else:
+        #    self.engine = self.ctxt.engine
 
     @property
     def cfg(self):
