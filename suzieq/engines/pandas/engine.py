@@ -168,19 +168,15 @@ class SqPandasEngine(SqEngine):
             except pa.lib.ArrowInvalid:
                     return pd.DataFrame(columns=fields)
 
-        if view == 'latest':
-            # Remove all the fields we added that we now have to take away
-            add_flds.add('active')
-            for fld in add_flds:
-                fields.remove(fld)
-
-            final_df.drop(columns=list(add_flds), axis=1)
-
         if not final_df.empty:
             final_df["timestamp"] = pd.to_datetime(
                 pd.to_numeric(final_df["timestamp"], downcast="float"),
                 unit="ms"
             )
+        if view == 'latest' and 'active' not in columns:
+            final_df.drop(columns=['active'], axis=1, inplace=True)
+            fields.remove('active')
+
         if sort_fields:
             return final_df[fields].sort_values(by=sort_fields)
         else:
