@@ -46,8 +46,7 @@ class SqPandasEngine(SqEngine):
 
         sch = schemas.get(table)
         if not sch:
-            print("Unknown table {}, no schema found for it".format(table))
-            return ""
+            raise ValueError(f"Unknown table {table}, no schema found for it")
 
         folder = "{}/{}".format(cfg.get("data-directory"), table)
 
