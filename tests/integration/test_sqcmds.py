@@ -1,12 +1,13 @@
 import pytest
 
 from pandas import DataFrame
-
 from nubia import context
 
 from suzieq.cli.sqcmds import *
 from pyarrow.lib import ArrowInvalid
 from pandas.core.computation.ops import UndefinedVariableError
+
+from tests.conftest import commands
 # TODO
 # after time filtering if fixed, figure out more subtle time testing
 # test more than just show for filtering?
@@ -72,23 +73,6 @@ def test_summary_exception(setup_nubia):
     with pytest.raises(AttributeError):
         s = execute_cmd('SystemCmd', 'foop', None, )
     assert s is None
-
-commands = [
-    ('AddrCmd'),
-    ('ArpndCmd'),
-    ('BgpCmd'),
-    ('EvpnVniCmd'),
-    ('InterfaceCmd'),
-    ('LldpCmd'),
-    ('MacsCmd'),
-    ('MlagCmd'),
-    ('OspfCmd'),
-    ('RoutesCmd'),
-    ('SystemCmd'),
-    ('TopcpuCmd'),
-    ('TopmemCmd'),
-    ('VlanCmd')]
-
 
 # these fail for every command because no data exists for these services
 commands[3] = pytest.param(commands[3], marks=pytest.mark.xfail(reason='bug #16', raises=FileNotFoundError))  # evpnVniCmd
