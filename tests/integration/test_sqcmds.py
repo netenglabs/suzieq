@@ -36,8 +36,7 @@ basic_verbs = ['show', 'summarize']
     ('MlagCmd', basic_verbs + ['describe'], [None, None, None], [44, NotImplementedError, 143]),
     ('OspfCmd', basic_verbs + ['top', 'aver'], [None, None, None, None],
      [FileNotFoundError, FileNotFoundError, FileNotFoundError, FileNotFoundError]),  # TODO: bug #16
-    #('RoutesCmd', basic_cmds + ['lpm'], [None, None, {'address': '10.0.0.1'}], [2596, 66, 143]), # TODO: bug #24
-    ('RoutesCmd', basic_verbs + ['lpm'], [None, None, {'address': '10.0.0.1'}], [2596, 66, KeyError]),
+    ('RoutesCmd', basic_verbs + ['lpm'], [None, None, {'address': '10.0.0.1'}], [2596, 66, 65]),  # TODO: bug #24
     ('SystemCmd', basic_verbs, [None, None], [140, 130]),
     ('TablesCmd', basic_verbs, [None, {'table': 'system'}], [14, 22]),
     ('TopcpuCmd', basic_verbs, [None, None], [42, 18]),
@@ -97,22 +96,63 @@ commands[8] = pytest.param(commands[8], marks=pytest.mark.xfail(reason='bug #16'
 
 good_commands = commands[:]
 
-# TODO: these break things, when they are fixed, put them into the list of basic_filters
-# [{'columns': 'hostname'}, {'start_time': ??}]
-basic_filters = [{'hostname': 'leaf01'}, {'engine': 'pandas'}, {'datacenter': 'dual-bgp'}]
 @pytest.mark.filter
 @pytest.mark.parametrize("cmd", good_commands)
-def test_show_filter(setup_nubia, cmd):
-    for filter in basic_filters:
-        assert len(filter) == 1
-        s1 = _test_command(cmd, 'show', None, None)
-        s2 = _test_command(cmd, 'show', None, None, filter=filter)
-        filter_key = next(iter(filter))
-        if filter_key in s2.columns:  # sometimes the filter isn't a part of the data returned
-            assert len(s2[filter_key].unique()) == 1
-            assert s2[filter_key][0] == filter[filter_key]
-            assert len(s1[filter_key].unique()) >= len(s2[filter_key].unique())
-        assert s1.size >= s2.size
+def test_hostname_show_filter(setup_nubia, cmd):
+    s1, s2 = _test_good_show_filter(cmd, {'hostname': 'leaf01'})
+    assert s1.size > s2.size
+
+@pytest.mark.filter
+@pytest.mark.parametrize("cmd", good_commands)
+def test_engine_show_filter(setup_nubia, cmd):
+    s1, s2 = _test_good_show_filter(cmd, {'engine': 'pandas'})
+    assert s1.size == s2.size
+
+@pytest.mark.filter
+@pytest.mark.parametrize("cmd", good_commands)
+def test_datacenter_show_filter(setup_nubia, cmd):
+    s1, s2 = _test_good_show_filter(cmd, {'datacenter': 'dual-bgp'})
+    assert s1.size == s2.size
+
+@pytest.mark.filter
+@pytest.mark.xfail(reason='bug #29')
+@pytest.mark.parametrize("cmd", good_commands)
+def test_view_show_filter(setup_nubia, cmd):
+    s1, s2 = _test_good_show_filter(cmd, {'view': 'all'})
+    assert s1.size < s2.size
+
+@pytest.mark.filter
+@pytest.mark.xfail(reason='bug #30')
+@pytest.mark.parametrize("cmd", good_commands)
+def test_start_time_show_filter(setup_nubia, cmd):
+    s1, s2 = _test_good_show_filter(cmd, {'start_time': '2020-01-01 21:43:30.048'})
+    assert s1 < s2  # should include more data because it includes a greater timeframe
+    assert all(s1.eq(s2))
+
+columns_commands = good_commands[:]
+columns_commands[0] = pytest.param(columns_commands[0], marks=pytest.mark.xfail(reason='bug #31', raises=KeyError))  # AddrCmd
+columns_commands[7] = pytest.param(columns_commands[7], marks=pytest.mark.xfail(reason='bug #32'))  # MlagCmd
+columns_commands[11] = pytest.param(columns_commands[11], marks=pytest.mark.xfail(reason="these commands aren't useful yet"))  # topCPU
+columns_commands[12] = pytest.param(columns_commands[12], marks=pytest.mark.xfail(reason="these commands aren't useful yet"))  # topMem
+
+@pytest.mark.filter
+@pytest.mark.fast
+@pytest.mark.parametrize("cmd", columns_commands)
+def test_columns_show_filter(setup_nubia, cmd):
+    s1, s2 = _test_good_show_filter(cmd, {'columns': 'hostname'})
+    assert s1.size > s2.size
+
+def _test_good_show_filter(cmd, filter):
+    assert len(filter) == 1
+    s1 = _test_command(cmd, 'show', None, None)
+    s2 = _test_command(cmd, 'show', None, None, filter=filter)
+    filter_key = next(iter(filter))
+    if filter_key in s2.columns:  # sometimes the filter isn't a part of the data returned
+        assert len(s2[filter_key].unique()) == 1
+        assert s2[filter_key][0] == filter[filter_key]
+        assert len(s1[filter_key].unique()) >= len(s2[filter_key].unique())
+    assert s1.size >= s2.size
+    return s1, s2
 
 
 bad_hostname_commands = commands[:]
