@@ -9,7 +9,7 @@
 
 import pandas as pd
 
-from suzieq.utils import get_display_fields
+from suzieq.utils import SchemaForTable
 from suzieq.sqobjects.lldp import lldpObj
 from .engineobj import SqEngineObject
 
@@ -111,7 +111,9 @@ class InterfacesObj(SqEngineObject):
         else:
             columns = ["default"]
 
-        columns = get_display_fields(self.table, columns, self.schemas[self.table])
+        table_schema = SchemaForTable(self.table, self.schemas)
+        columns = table_schema.get_display_fields(columns)
+
         if "numChanges" not in columns:
             columns.insert(-2, "numChanges")
 

@@ -111,7 +111,7 @@ def test_view_show_filter(setup_nubia, cmd):
 def test_start_time_show_filter(setup_nubia, cmd):
     s1, s2 = _test_good_show_filter(cmd, {'start_time': '2020-01-01 21:43:30.048'})
     assert s1 < s2  # should include more data because it includes a greater timeframe
-    assert all(s1.eq(s2))
+    assert s1.equals(s2)
 
 columns_commands = good_commands[:]
 columns_commands[0] = pytest.param(columns_commands[0], marks=pytest.mark.xfail(reason='bug #31', raises=KeyError))  # AddrCmd

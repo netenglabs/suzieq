@@ -88,27 +88,89 @@ def get_schemas(schema_dir):
     return schemas
 
 
-def get_display_fields(table: str, columns: list, schema: dict) -> list:
-    """Return the list of display fields for the given table"""
+class Schema(object):
+    def __init__(self, schema=None, schema_dir=None):
+        if schema:
+            self._schema = schema
+        else:
+            self._schema = get_schemas(schema_dir)
+        if not self._schema:
+            raise ValueError("Must supply either schema or schema directory")
 
-    if columns == ["default"]:
-        fields = [
-            f["name"]
-            for f in sorted(schema, key=lambda x: x.get("display", 1000))
-            if f.get("display", None)
-        ]
+    def tables(self):
+        return self._schema.keys()
 
-        if "datacenter" not in fields:
-            fields.insert(0, "datacenter")
+    def fields_for_table(self, table):
+        return [f['name'] for f in self._schema[table]]
 
-    elif columns == ["*"]:
-        fields = [f["name"] for f in schema]
-    else:
-        sch_flds = [f["name"] for f in schema]
+    def key_fields_for_table(self, table):
+        return [f['name'] for f in self._schema[table] if f.get('key', None) is not None]
 
-        fields = [f for f in columns if f in sch_flds]
+    def field_for_table(self, table, field):
+        for f in self._schema[table]:
+            if f['name'] == field:
+                return f
 
-    return fields
+    def sorted_display_fields_for_table(self, table):
+        fields = self.fields_for_table(table)
+        field_weights = {}
+        for f_name in fields:
+            field = self.field_for_table(table, f_name)
+            if field.get('display', None):
+                field_weights[f_name] = field.get('display', 1000)
+        return [k for k in sorted(field_weights.keys(), key=lambda x: field_weights[x])]
+
+    def array_fields_for_table(self, table):
+        fields = self.fields_for_table(table)
+        arrays = []
+        for f_name in fields:
+            field = self.field_for_table(table, f_name)
+            if isinstance(field['type'], dict) and field['type'].get('type', None) == 'array':
+                arrays.append(f_name)
+        return arrays
+
+class SchemaForTable(object):
+    def __init__(self, table, schema=None, schema_dir=None):
+        if schema:
+            self._all_schemas = Schema(schema=schema)
+        else:
+            self._all_schemas = Schema(schema_dir=schema_dir)
+        self._table = table
+        if table not in self._all_schemas.tables():
+            raise ValueError(f"Unknown table {table}, no schema found for it")
+
+    @property
+    def fields(self):
+        return self._all_schemas.fields_for_table(self._table)
+
+    def key_fields(self):
+        return self._all_schemas.key_fields_for_table(self._table)
+
+    def sorted_display_fields(self):
+        return self._all_schemas.sorted_display_fields_for_table(self._table)
+
+    @property
+    def array_fields(self):
+        return self._all_schemas.array_fields_for_table(self._table)
+
+    @property
+    def field(self, field):
+        return self._all_schemas.field_for_table(self._table, field)
+
+    def get_display_fields(self, columns: list) -> list:
+        """Return the list of display fields for the given table"""
+        if columns == ["default"]:
+            fields = self.sorted_display_fields()
+
+            if "datacenter" not in fields:
+                fields.insert(0, "datacenter")
+        elif columns == ["*"]:
+            fields = self.fields()
+        else:
+            fields = [f for f in columns if f in self.fields]
+
+
+        return fields
 
 
 def get_latest_files(folder, start="", end="") -> list:
