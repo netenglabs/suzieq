@@ -28,6 +28,7 @@ class SystemCmd(SqCommand):
         end_time: str = "",
         view: str = "latest",
         datacenter: str = "",
+        format: str = "",
         columns: str = "default",
     ) -> None:
         super().__init__(
@@ -38,6 +39,7 @@ class SystemCmd(SqCommand):
             view=view,
             datacenter=datacenter,
             columns=columns,
+            format=format,
         )
         self.systemobj = SystemObj(context=self.ctxt)
 
@@ -72,8 +74,7 @@ class SystemCmd(SqCommand):
         else:
             self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
 
-        print(df)
-        return df
+        return self._gen_output(df)
 
     @command("summarize", help="Summarize system information")
     @argument("groupby", description="Space separated list of fields to summarize on")
@@ -98,5 +99,4 @@ class SystemCmd(SqCommand):
             datacenter=self.datacenter,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        print(df)
-        return df
+        return self._gen_output(df)

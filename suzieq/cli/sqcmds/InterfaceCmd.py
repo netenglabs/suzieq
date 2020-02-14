@@ -26,6 +26,7 @@ class InterfaceCmd(SqCommand):
         end_time: str = "",
         view: str = "latest",
         datacenter: str = "",
+        format: str = "",
         columns: str = "default",
     ) -> None:
         super().__init__(
@@ -36,6 +37,7 @@ class InterfaceCmd(SqCommand):
             view=view,
             datacenter=datacenter,
             columns=columns,
+            format=format,
         )
         self.ifobj = ifObj(context=self.ctxt)
 
@@ -67,8 +69,7 @@ class InterfaceCmd(SqCommand):
             type=type.split(),
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        print(df)
-        return df
+        return self._gen_output(df)
 
     @command("summarize")
     @argument("ifname", description="interface name to qualify")
@@ -96,8 +97,7 @@ class InterfaceCmd(SqCommand):
             datacenter=self.datacenter,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        print(df)
-        return df
+        return self._gen_output(df)
 
     @command("assert")
     @argument("ifname", description="interface name to qualify")
@@ -131,13 +131,12 @@ class InterfaceCmd(SqCommand):
             what=what,
             matchval=value,
         )
+        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         if df.empty:
             print("Assert passed")
         else:
             print(df)
             print("Assert failed")
-
-        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
 
         return df
 
@@ -163,5 +162,4 @@ class InterfaceCmd(SqCommand):
         )
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        print(df)
-        return df
+        return self._gen_output(df)
