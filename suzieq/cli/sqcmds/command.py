@@ -7,20 +7,21 @@ from termcolor import cprint
 from nubia import command, argument, context
 import typing
 
+
 @argument(
-        "engine",
-        description="which analytical engine to use",
-        choices=["pandas"],
-    )
+    "engine",
+    description="which analytical engine to use",
+    choices=["pandas"],
+)
 @argument(
     "datacenter", description="Space separated list of datacenters to qualify"
 )
 @argument("hostname", description="Space separated list of hostnames to qualify")
 @argument(
-    "start_time", description="Start of time window in YYYY-MM-dd HH:mm:SS format"
+    "start_time", description="Start of time window in YYYY-MM-dd HH:mm:SS pformat"
 )
 @argument(
-    "end_time", description="End of time window in YYYY-MM-dd HH:mm:SS format"
+    "end_time", description="End of time window in YYYY-MM-dd HH:mm:SS pformat"
 )
 @argument(
     "view",
@@ -28,6 +29,11 @@ import typing
     choices=["all", "latest"],
 )
 @argument("columns", description="Space separated list of columns, * for all")
+@argument(
+    "format",
+    description="select the pformat of the output",
+    choices=["text", "json", "csv"],
+)
 class SqCommand:
     """Base Command Class for use with all verbs"""
     datacenter = None
@@ -35,14 +41,15 @@ class SqCommand:
     columns = None
 
     def __init__(
-        self,
-        engine: str = "",
-        hostname: str = "",
-        start_time: str = "",
-        end_time: str = "",
-        view: str = "latest",
-        datacenter: str = "",
-        columns: str = "default",
+            self,
+            engine: str = "",
+            hostname: str = "",
+            start_time: str = "",
+            end_time: str = "",
+            view: str = "latest",
+            datacenter: str = "",
+            format: str = "",
+            columns: str = "default",
     ) -> None:
         self.ctxt = context.get_context()
         self._cfg = self.ctxt.cfg
@@ -79,9 +86,10 @@ class SqCommand:
 
         self.view = view
         self.columns = columns.split()
-        #if engine:
+        self.format = format or "text"
+        # if engine:
         #    self.engine = get_sqengine(engine)
-        #else:
+        # else:
         #    self.engine = self.ctxt.engine
 
     @property
@@ -91,6 +99,15 @@ class SqCommand:
     @property
     def schemas(self):
         return self._schemas
+
+    def _gen_output(self, df: pd.DataFrame):
+        if self.format == 'json':
+            print(df.to_json(orient="records"))
+        elif self.format == 'csv':
+            print(df.to_csv())
+        else:
+            print(df)
+        return df  # This is to help the test routines for now
 
     def show(self, **kwargs):
         raise NotImplementedError

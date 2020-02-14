@@ -24,6 +24,7 @@ class PathCmd(SqCommand):
         end_time: str = "",
         view: str = "latest",
         datacenter: str = "",
+        format: str = "",
         columns: str = "default",
     ) -> None:
         super().__init__(
@@ -34,6 +35,7 @@ class PathCmd(SqCommand):
             view=view,
             datacenter=datacenter,
             columns=columns,
+            format=format,
         )
         self.pathobj = PathObj(context=self.ctxt)
 
@@ -59,6 +61,6 @@ class PathCmd(SqCommand):
             vrf=vrf
         )
 
+        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         if not df.empty:
-            self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-            print(df)
+            return self._gen_output(df)

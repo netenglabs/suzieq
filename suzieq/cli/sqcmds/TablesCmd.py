@@ -25,6 +25,7 @@ class TablesCmd(SqCommand):
         end_time: str = "",
         view: str = "latest",
         datacenter: str = "",
+        format: str = "",
         columns: str = "default",
     ) -> None:
         super().__init__(
@@ -35,6 +36,7 @@ class TablesCmd(SqCommand):
             view=view,
             datacenter=datacenter,
             columns=columns,
+            format=format,
         )
         self.tablesobj = tablesObj(context=self.ctxt)
 
@@ -46,8 +48,7 @@ class TablesCmd(SqCommand):
         now = time.time()
         df = self.tablesobj.get(hostname=self.hostname, datacenter=self.datacenter)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        print(df)
-        return df
+        return self._gen_output(df)
 
     @command("describe")
     @argument("table", description="interface name to qualify")
@@ -58,5 +59,4 @@ class TablesCmd(SqCommand):
         now = time.time()
         df = self.tablesobj.summarize(table=table)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        print(df)
-        return df
+        return self._gen_output(df)

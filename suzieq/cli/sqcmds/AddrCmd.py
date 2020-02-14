@@ -25,6 +25,7 @@ class AddrCmd(SqCommand):
         end_time: str = "",
         view: str = "latest",
         datacenter: str = "",
+        format: str = "",
         columns: str = "default",
     ) -> None:
         super().__init__(
@@ -34,6 +35,7 @@ class AddrCmd(SqCommand):
             end_time=end_time,
             view=view,
             datacenter=datacenter,
+            format=format,
             columns=columns,
         )
         self.addrobj = addrObj(context=self.ctxt)
@@ -58,8 +60,7 @@ class AddrCmd(SqCommand):
             datacenter=self.datacenter,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        print(df)
-        return df
+        return self._gen_output(df)
 
     @command("summarize")
     @argument("groupby", description="Space separated list of fields to summarize on")
@@ -81,5 +82,4 @@ class AddrCmd(SqCommand):
             datacenter=self.datacenter,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        print(df)
-        return df
+        return self._gen_output(df)

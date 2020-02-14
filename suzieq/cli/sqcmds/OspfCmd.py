@@ -26,6 +26,7 @@ class OspfCmd(SqCommand):
         end_time: str = "",
         view: str = "latest",
         datacenter: str = "",
+        format: str = "",
         columns: str = "default",
     ) -> None:
         super().__init__(
@@ -36,6 +37,7 @@ class OspfCmd(SqCommand):
             view=view,
             datacenter=datacenter,
             columns=columns,
+            format=format,
         )
         self.ospfobj = ospfObj(context=self.ctxt)
 
@@ -75,8 +77,7 @@ class OspfCmd(SqCommand):
             type=type,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        print(df)
-        return df
+        return self._gen_output(df)
 
     @command("summarize")
     @argument(
@@ -121,8 +122,7 @@ class OspfCmd(SqCommand):
             groupby=groupby.split(),
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        print(df)
-        return df
+        return self._gen_output(df)
 
     @command("assert")
     @argument("ifname", description="interface name to check OSPF on")
@@ -177,5 +177,4 @@ class OspfCmd(SqCommand):
         )
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        print(df)
-        return df
+        return self._gen_output(df)
