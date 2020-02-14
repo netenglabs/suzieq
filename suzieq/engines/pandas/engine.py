@@ -22,7 +22,7 @@ import pandas as pd
 import pyarrow.parquet as pa
 
 from suzieq.engines.base_engine import SqEngine
-from suzieq.utils import get_display_fields, get_latest_files
+from suzieq.utils import get_latest_files, SchemaForTable
 
 
 class SqPandasEngine(SqEngine):
@@ -34,6 +34,8 @@ class SqPandasEngine(SqEngine):
 
         MAX_FILECNT_TO_READ_FOLDER = 10000
 
+        self.cfg = cfg
+
         table = kwargs["table"]
         start = kwargs["start_time"]
         end = kwargs["end_time"]
@@ -44,11 +46,9 @@ class SqPandasEngine(SqEngine):
                       "sort_fields"]:
             del kwargs[field]
 
-        sch = schemas.get(table)
-        if not sch:
-            raise ValueError(f"Unknown table {table}, no schema found for it")
+        sch = SchemaForTable(table, schema=schemas)
 
-        folder = "{}/{}".format(cfg.get("data-directory"), table)
+        folder = self._get_table_directory(table)
 
         # Restrict to a single DC if thats whats asked
         if "datacenter" in kwargs:
@@ -72,10 +72,7 @@ class SqPandasEngine(SqEngine):
                 del kwargs["datacenter"]
             files = get_latest_files(folder, start, end)
         else:
-            key_fields = [f["name"] for f in sch
-                          if f.get("key", None) is not None]
-            # Repopulate the folder so that we can get datacenter in our result
-            folder = "{}/{}".format(cfg.get("data-directory"), table)
+            key_fields = sch.key_fields()
             filters = self.build_pa_filters(start, end, key_fields, **kwargs)
 
         if "columns" in kwargs:
@@ -84,13 +81,10 @@ class SqPandasEngine(SqEngine):
         else:
             columns = ["default"]
 
-        fields = get_display_fields(table, columns, sch)
-
-        if "active" not in fields:
-            fields.append("active")
-
-        if "timestamp" not in fields:
-            fields.append("timestamp")
+        fields = sch.get_display_fields(columns)
+        for f in ['active', 'timestamp']:
+            if f not in fields:
+                fields.append(f)
 
         # Create the filter to select only specified columns
         query_str = ""
@@ -165,13 +159,10 @@ class SqPandasEngine(SqEngine):
                     .query(query_str)
                 )
             except pa.lib.ArrowInvalid:
-                    return pd.DataFrame(columns=fields)
+                return pd.DataFrame(columns=fields)
 
-        if not final_df.empty:
-            final_df["timestamp"] = pd.to_datetime(
-                pd.to_numeric(final_df["timestamp"], downcast="float"),
-                unit="ms"
-            )
+        final_df = df_timestamp_to_datetime(final_df)
+
         if view == 'latest' and 'active' not in columns:
             final_df.drop(columns=['active'], axis=1, inplace=True)
             fields.remove('active')
@@ -180,6 +171,7 @@ class SqPandasEngine(SqEngine):
             return final_df[fields].sort_values(by=sort_fields)
         else:
             return final_df[fields]
+
 
     def get_object(self, objname: str, iobj):
         module = import_module("suzieq.engines.pandas." + objname)
@@ -273,3 +265,17 @@ class SqPandasEngine(SqEngine):
                 k, v = elem.split("=")
                 df[k] = v
         return df.query(query_str)
+
+    def _get_table_directory(self, table):
+        assert table
+        folder = "{}/{}".format(self.cfg.get("data-directory"), table)
+        return folder
+
+
+def df_timestamp_to_datetime(df):
+    if not df.empty:
+        df["timestamp"] = pd.to_datetime(
+            pd.to_numeric(df["timestamp"], downcast="float"),
+            unit="ms"
+        )
+    return df

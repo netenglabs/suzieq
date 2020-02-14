@@ -10,7 +10,7 @@
 from ipaddress import IPv4Network
 import pandas as pd
 
-from suzieq.utils import get_display_fields
+from suzieq.utils import SchemaForTable
 from suzieq.sqobjects.lldp import lldpObj
 from suzieq.engines.pandas.engineobj import SqEngineObject
 
@@ -219,7 +219,9 @@ class OspfObj(SqEngineObject):
         else:
             columns = ["default"]
 
-        columns = get_display_fields("ospfNbr", columns, self.schemas["ospfNbr"])
+        table_schema = SchemaForTable('ospfNbr', self.schemas)
+        columns = table_schema.get_display_fields(columns)
+
         if "numChanges" not in columns:
             columns.insert(-2, "numChanges")
 
