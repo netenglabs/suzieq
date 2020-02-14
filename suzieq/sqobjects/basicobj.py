@@ -83,7 +83,7 @@ class SqObject(object):
         else:
             self.engine = self.ctxt.engine
 
-        if table:
+        if self._table:
             self.engine_obj = self.engine.get_object(self._table, self)
         else:
             self.engine_obj = None
