@@ -163,7 +163,7 @@ class SqPandasEngine(SqEngine):
 
         final_df = df_timestamp_to_datetime(final_df)
 
-        if view == 'latest' and 'active' not in columns:
+        if 'active' not in columns:
             final_df.drop(columns=['active'], axis=1, inplace=True)
             fields.remove('active')
 

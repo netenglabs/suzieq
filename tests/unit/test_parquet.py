@@ -49,8 +49,8 @@ def test_get_data(create_context_config, get_schemas, tmp_path, table):
 
 @pytest.mark.engines
 @pytest.mark.parametrize('table', good_tables)
-@pytest.mark.xfail(reason='not yet')
-def test_start_time_data(create_context_config, get_schemas, tmp_path, table):
+# not ready for these tests yet
+def _test_start_time_data(create_context_config, get_schemas, tmp_path, table):
     out = _get_data_from_table(create_context_config, get_schemas, table, {'view': 'latest'})
     _test_and_compare(create_context_config, get_schemas, tmp_path, table, out)
 
@@ -70,7 +70,7 @@ def _test_and_compare(cfg, sch, path, table, data):
 
     # just reading in does not set all the types of the columns correctly
     # TODO: do this by schema types, rather than this way
-    for col in sample_df.columns:
+    for col in data.columns:
         sample_df[col] = sample_df[col].astype(data[col].dtype.name)
 
     schema = SchemaForTable(table, schema=sch)
