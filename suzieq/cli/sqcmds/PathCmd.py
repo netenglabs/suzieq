@@ -40,9 +40,9 @@ class PathCmd(SqCommand):
         self.pathobj = PathObj(context=self.ctxt)
 
     @command("show")
-    @argument("src", description="show paths from")
-    @argument("dest", description="show paths to")
-    @argument("vrf", description="VRF to qualify")
+    @argument("src", description="Source IP address, in quotes")
+    @argument("dest", description="Destination IP address, in quotes")
+    @argument("vrf", description="VRF to trace path in")
     def show(self, src: str = "", dest: str = "", vrf: str = ''):
         """show paths between specified from source to target ip addresses"""
         # Get the default display field names

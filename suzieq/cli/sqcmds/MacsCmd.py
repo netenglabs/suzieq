@@ -40,8 +40,9 @@ class MacsCmd(SqCommand):
         self.macsobj = macsObj(context=self.ctxt)
 
     @command("show")
-    @argument("vlan", description="only matching these VLAN(s)")
-    @argument("macaddr", description="only matching these MAC address(es)")
+    @argument("vlan", description="VLAN(s) to qualify output")
+    @argument("macaddr",
+              description="MAC address(es), in quotes, to qualify output")
     @argument("remoteVtepIp", description=
               "only with this remoteVtepIp; use any for all")
     def show(self, vlan: str = '', macaddr: str = '', remoteVtepIp: str = ''):
@@ -70,10 +71,11 @@ class MacsCmd(SqCommand):
         return self._gen_output(df)
 
     @command("summarize")
-    @argument("vlan", description="only matching these VLAN(s)")
-    @argument("macaddr", description="only matching these MAC address(es)")
+    @argument("vlan", description="VLAN(s) to qualify output")
+    @argument("macaddr",
+              description="MAC address(es), in quotes, to qualify output")
     @argument("remoteVtepIp",
-              description="only with this remoteVtepIp; use any for all")
+              description="RemoteVtepIps, in quotes, to qualify, use 'any' for all")
     @argument("groupby", description="list of fields to group by")
     def summarize(self, vlan: str = "", macaddr: str = '',
                   remoteVtepIp: str = "", groupby: str = ""):

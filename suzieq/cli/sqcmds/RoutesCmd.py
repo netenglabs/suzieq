@@ -41,7 +41,7 @@ class RoutesCmd(SqCommand):
         self.routesobj = RoutesObj(context=self.ctxt)
 
     @command("show")
-    @argument("prefix", description="Specific prefix to qualify")
+    @argument("prefix", description="Prefix, in quotes, to filter show on")
     @argument("vrf", description="VRF to qualify")    
     def show(self, prefix: str = "", vrf: str = ''):
         """
@@ -69,7 +69,7 @@ class RoutesCmd(SqCommand):
 
 
     @command("summarize")
-    @argument("prefix", description="Specific prefix to qualify")
+    @argument("prefix", description="Prefix, in quotes, to summarize on")
     @argument("vrf", description="Specific VRF to qualify")
     @argument("groupby",
               description="space-separated list of fields to summarize")
@@ -99,7 +99,7 @@ class RoutesCmd(SqCommand):
         return self._gen_output(df)
 
     @command('lpm')
-    @argument("address", description="IP address for lpm")
+    @argument("address", description="IP Address, in quotes, for lpm query")
     @argument("vrf", description="specific VRF to qualify")
     def lpm(self, address: str = "", vrf: str = "default"):
         """

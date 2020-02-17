@@ -41,7 +41,7 @@ class AddrCmd(SqCommand):
         self.addrobj = addrObj(context=self.ctxt)
 
     @command("show")
-    @argument("address", description="Address about which you want info")
+    @argument("address", description="Address, in quotes, to show info for")
     def show(self, address: str = ""):
         """
         Show address info
