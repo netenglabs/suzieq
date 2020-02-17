@@ -114,7 +114,6 @@ def test_start_time_show_filter(setup_nubia, cmd):
     assert s1.equals(s2)
 
 columns_commands = good_commands[:]
-columns_commands[0] = pytest.param(columns_commands[0], marks=pytest.mark.xfail(reason='bug #31', raises=KeyError))  # AddrCmd
 columns_commands[11] = pytest.param(columns_commands[11], marks=pytest.mark.xfail(reason="these commands aren't useful yet"))  # topCPU
 columns_commands[12] = pytest.param(columns_commands[12], marks=pytest.mark.xfail(reason="these commands aren't useful yet"))  # topMem
 
