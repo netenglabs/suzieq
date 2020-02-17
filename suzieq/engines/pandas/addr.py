@@ -42,9 +42,8 @@ class AddrObj(SqEngineObject):
         else:
             columns = ['default']
         if columns != ["default"]:
-            for col in addrcol:
-                if col not in columns:
-                    columns.insert(4, col)
+            if addrcol not in columns:
+                columns.insert(-1, addrcol)
         else:
             columns = ["datacenter", "hostname", "ifname", "state", addrcol,
                        "timestamp"]
