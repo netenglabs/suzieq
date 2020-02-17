@@ -48,7 +48,7 @@ class MlagCmd(SqCommand):
                               columns=self.columns,
                               datacenter=self.datacenter)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        if not df.empty:
+        if not df.empty and 'state' in df.columns:
             return self._gen_output(df.query('state != "disabled"'))
         else:
             return self._gen_output(df)
