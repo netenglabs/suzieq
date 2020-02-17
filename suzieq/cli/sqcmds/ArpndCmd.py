@@ -42,7 +42,7 @@ class ArpndCmd(SqCommand):
         self.arpndobj = ArpndObj(context=self.ctxt)
 
     @command("show")
-    @argument("address", description="IP address to qualify")
+    @argument("address", description="IP address, in quotes, to qualify output")
     @argument("oif", description="outgoing interface to qualify")
     def show(self, address: str = "", oif: str = ''):
         """
@@ -69,7 +69,7 @@ class ArpndCmd(SqCommand):
         return self._gen_output(df)
 
     @command("summarize")
-    @argument("address", description="IP address to qualify")
+    @argument("address", description="IP address, in quotes, to qualify output")
     @argument("oif", description="outgoing interface to qualify")
     @argument("groupby", description="Space separated list of fields to group by")
     def summarize(self, address: str = "", oif: str = '', groupby: str = ""):
