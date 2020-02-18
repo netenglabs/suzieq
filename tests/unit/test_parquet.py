@@ -71,7 +71,8 @@ def _test_and_compare(cfg, sch, path, table, data):
     # just reading in does not set all the types of the columns correctly
     # TODO: do this by schema types, rather than this way
     for col in data.columns:
-        sample_df[col] = sample_df[col].astype(data[col].dtype.name)
+        if col in sample_df:
+            sample_df[col] = sample_df[col].astype(data[col].dtype.name)
 
     schema = SchemaForTable(table, schema=sch)
 

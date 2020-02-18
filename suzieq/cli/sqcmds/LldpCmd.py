@@ -13,7 +13,7 @@ from nubia import command, argument, context
 import pandas as pd
 
 from suzieq.cli.sqcmds.command import SqCommand
-from suzieq.sqobjects.lldp import lldpObj
+from suzieq.sqobjects.lldp import LldpObj
 
 
 @command("lldp", help="Act on LLDP data")
@@ -38,8 +38,8 @@ class LldpCmd(SqCommand):
             datacenter=datacenter,
             columns=columns,
             format=format,
+            sqobj=LldpObj,
         )
-        self.lldpobj = lldpObj(context=self.ctxt)
 
     @command("show")
     @argument("ifname", description="interface name to qualify")
@@ -57,7 +57,7 @@ class LldpCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.lldpobj.get(
+        df = self.sqobj.get(
             hostname=self.hostname,
             ifname=ifname.split(),
             columns=self.columns,
@@ -83,7 +83,7 @@ class LldpCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.lldpobj.summarize(
+        df = self.sqobj.summarize(
             hostname=self.hostname,
             ifname=ifname.split(),
             columns=self.columns,

@@ -12,7 +12,7 @@ import typing
 from nubia import command, argument, context
 
 from suzieq.cli.sqcmds.command import SqCommand
-from suzieq.sqobjects.topcpu import topcpuObj
+from suzieq.sqobjects.topcpu import TopcpuObj
 
 
 @command("topcpu", help="Act on topcpu data")
@@ -37,8 +37,8 @@ class TopcpuCmd(SqCommand):
             datacenter=datacenter,
             columns=columns,
             format=format,
+            sqobj=TopcpuObj
         )
-        self.topcpuobj = topcpuObj(context=self.ctxt)
 
     @command("show")
     def show(self):
@@ -55,8 +55,9 @@ class TopcpuCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.topcpuobj.get(
-            hostname=self.hostname, columns=self.columns, datacenter=self.datacenter
+        df = self.sqobj.get(
+            hostname=self.hostname, columns=self.columns,
+            datacenter=self.datacenter
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
@@ -77,7 +78,7 @@ class TopcpuCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.topcpuobj.summarize(
+        df = self.sqobj.summarize(
             hostname=self.hostname,
             columns=self.columns,
             groupby=groupby.split(),

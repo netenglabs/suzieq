@@ -76,7 +76,7 @@ class PathObj(basicobj.SqObject):
 
         vlan = oif_df.iloc[0]["vlan"]
         if macaddr:
-            mac_df = macs.macsObj().get(
+            mac_df = macs.MacsObj().get(
                 datacenter=datacenter, macaddr=macaddr, vlan=vlan
             )
             if not mac_df.empty:
@@ -123,14 +123,14 @@ class PathObj(basicobj.SqObject):
         if not source or not dest:
             raise AttributeError("Must specify trace source and dest")
 
-        if_df = interfaces.ifObj().get(datacenter=datacenter)
+        if_df = interfaces.IfObj().get(datacenter=datacenter)
         src_df = if_df[if_df.ipAddressList.astype(str)
                        .str.contains(source + "/")]
         dest_df = if_df[if_df.ipAddressList.astype(str)
                        .str.contains(dest + "/")]
         dest_host = dest_df["hostname"].unique()[0]
         src_host = src_df["hostname"].unique()[0]
-        lldp_df = lldp.lldpObj().get(datacenter=datacenter)
+        lldp_df = lldp.LldpObj().get(datacenter=datacenter)
         rdf = routes.RoutesObj().lpm(datacenter=datacenter, address=dest)
 
         # for a source node without lldp, get next downstream node with lldp

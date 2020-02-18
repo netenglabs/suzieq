@@ -75,7 +75,10 @@ class SqObject(object):
         else:
             self.end_time = end_time
 
-        self.view = view
+        if not view and self.ctxt.view:
+            self.view = self.ctxt.view
+        else:
+            self.view = view
         self.columns = columns
 
         if engine_name:

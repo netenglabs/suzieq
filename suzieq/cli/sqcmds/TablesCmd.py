@@ -12,7 +12,7 @@ import time
 from nubia import command, argument
 
 from suzieq.cli.sqcmds.command import SqCommand
-from suzieq.sqobjects.tables import tablesObj
+from suzieq.sqobjects.tables import TablesObj
 
 
 @command("tables", help="Information about the various tables")
@@ -37,8 +37,8 @@ class TablesCmd(SqCommand):
             datacenter=datacenter,
             columns=columns,
             format=format,
+            sqobj=TablesObj,
         )
-        self.tablesobj = tablesObj(context=self.ctxt)
 
     @command("show")
     def show(self, **kwargs):
@@ -46,7 +46,7 @@ class TablesCmd(SqCommand):
         Show Tables
         """
         now = time.time()
-        df = self.tablesobj.get(hostname=self.hostname, datacenter=self.datacenter)
+        df = self.sqobj.get(hostname=self.hostname, datacenter=self.datacenter)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
 
@@ -57,6 +57,6 @@ class TablesCmd(SqCommand):
         Summarize fields in table
         """
         now = time.time()
-        df = self.tablesobj.summarize(table=table)
+        df = self.sqobj.summarize(table=table)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)

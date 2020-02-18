@@ -12,7 +12,7 @@ import time
 from nubia import command, argument
 
 from suzieq.cli.sqcmds.command import SqCommand
-from suzieq.sqobjects.addr import addrObj
+from suzieq.sqobjects.addr import AddrObj
 
 
 @command("address", help="Act on address data")
@@ -37,8 +37,8 @@ class AddrCmd(SqCommand):
             datacenter=datacenter,
             format=format,
             columns=columns,
+            sqobj=AddrObj,
         )
-        self.addrobj = addrObj(context=self.ctxt)
 
     @command("show")
     @argument("address", description="Address, in quotes, to show info for")
@@ -53,7 +53,7 @@ class AddrCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.addrobj.get(
+        df = self.sqobj.get(
             hostname=self.hostname,
             columns=self.columns,
             address=address,
@@ -75,7 +75,7 @@ class AddrCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.addrobj.summarize(
+        df = self.sqobj.summarize(
             hostname=self.hostname,
             columns=self.columns,
             groupby=groupby.split(),

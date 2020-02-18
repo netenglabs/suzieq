@@ -50,6 +50,7 @@ class SqCommand:
             datacenter: str = "",
             format: str = "",
             columns: str = "default",
+            sqobj=None,
     ) -> None:
         self.ctxt = context.get_context()
         self._cfg = self.ctxt.cfg
@@ -91,6 +92,16 @@ class SqCommand:
         #    self.engine = get_sqengine(engine)
         # else:
         #    self.engine = self.ctxt.engine
+        if not sqobj:
+            raise AttributeError('mandatory parameter sqobj missing')
+
+        self.sqobj = sqobj(context=self.ctxt,
+                           hostname=self.hostname,
+                           start_time=self.start_time,
+                           end_time=self.end_time,
+                           view=self.view,
+                           datacenter=self.datacenter,
+                           columns=self.columns)
 
     @property
     def cfg(self):
@@ -101,6 +112,8 @@ class SqCommand:
         return self._schemas
 
     def _gen_output(self, df: pd.DataFrame):
+        if self.columns != ['default']:
+            df = df[self.columns]
         if self.format == 'json':
             print(df.to_json(orient="records"))
         elif self.format == 'csv':

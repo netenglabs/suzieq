@@ -13,7 +13,7 @@ from nubia import command, argument, context
 import pandas as pd
 
 from suzieq.cli.sqcmds.command import SqCommand
-from suzieq.sqobjects.interfaces import ifObj
+from suzieq.sqobjects.interfaces import IfObj
 
 
 @command("interface", help="Act on Interface data")
@@ -38,8 +38,8 @@ class InterfaceCmd(SqCommand):
             datacenter=datacenter,
             columns=columns,
             format=format,
+            sqobj=IfObj
         )
-        self.ifobj = ifObj(context=self.ctxt)
 
     @command("show")
     @argument("ifname", description="interface name to qualify")
@@ -60,7 +60,7 @@ class InterfaceCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.ifobj.get(
+        df = self.sqobj.get(
             hostname=self.hostname,
             ifname=ifname.split(),
             columns=self.columns,
@@ -89,7 +89,7 @@ class InterfaceCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.ifobj.summarize(
+        df = self.sqobj.summarize(
             hostname=self.hostname,
             ifname=ifname.split(),
             columns=self.columns,
@@ -123,7 +123,7 @@ class InterfaceCmd(SqCommand):
 
         if what == "mtu-match":
             value = 0
-        df = self.ifobj.aver(
+        df = self.sqobj.aver(
             hostname=self.hostname,
             ifname=ifname.split(),
             columns=self.columns,
@@ -153,7 +153,7 @@ class InterfaceCmd(SqCommand):
 
         now = time.time()
 
-        df = self.ifobj.top(
+        df = self.sqobj.top(
             hostname=self.hostname,
             what=what,
             n=count,

@@ -161,11 +161,11 @@ class SqPandasEngine(SqEngine):
             except pa.lib.ArrowInvalid:
                 return pd.DataFrame(columns=fields)
 
-        final_df = df_timestamp_to_datetime(final_df)
-
         if 'active' not in columns:
             final_df.drop(columns=['active'], axis=1, inplace=True)
             fields.remove('active')
+
+        final_df = df_timestamp_to_datetime(final_df)
 
         if sort_fields:
             return final_df[fields].sort_values(by=sort_fields)

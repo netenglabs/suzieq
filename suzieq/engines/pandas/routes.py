@@ -75,7 +75,7 @@ class RoutesObj(SqEngineObject):
                                       "prefix", "nexthopIps", "oifs",
                                       "protocol"])
 
-        if 'prefix' not in cols:
+        if cols != ['default'] and 'prefix' not in cols:
             cols.insert(-1, 'prefix')
 
         df = self.get_valid_df(self.iobj._table, sort_fields, **kwargs) \

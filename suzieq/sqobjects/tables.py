@@ -15,7 +15,7 @@ import pandas as pd
 from suzieq.sqobjects import basicobj
 
 
-class tablesObj(basicobj.SqObject):
+class TablesObj(basicobj.SqObject):
 
     def get(self, **kwargs):
         '''Show the tables for which we have information'''
@@ -52,9 +52,5 @@ class tablesObj(basicobj.SqObject):
 
 
 if __name__ == '__main__':
-    try:
-        import fire
-        fire.Fire(tablesObj)
-    except ImportError:
-        pass
+    pass
 
