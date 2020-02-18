@@ -173,7 +173,7 @@ class SchemaForTable(object):
         return fields
 
 
-def get_latest_files(folder, start="", end="") -> list:
+def get_latest_files(folder, start="", end="", view="latest") -> list:
     lsd = []
 
     if start:
@@ -192,10 +192,10 @@ def get_latest_files(folder, start="", end="") -> list:
     for root, dirs, files in os.walk(folder):
         flst = None
         if dirs and dirs[0].startswith("timestamp") and not pq_files:
-            flst = get_latest_ts_dirs(dirs, ssecs, esecs)
+            flst = get_latest_ts_dirs(dirs, ssecs, esecs, view)
             ts_dirs = True
         elif files and not ts_dirs:
-            flst = get_latest_pq_files(files, root, ssecs, esecs)
+            flst = get_latest_pq_files(files, root, ssecs, esecs, view)
             pq_files = True
 
         if flst:
@@ -204,7 +204,7 @@ def get_latest_files(folder, start="", end="") -> list:
     return lsd
 
 
-def get_latest_ts_dirs(dirs, ssecs, esecs):
+def get_latest_ts_dirs(dirs, ssecs, esecs, view):
     newdirs = None
 
     if not ssecs and not esecs:
@@ -212,7 +212,7 @@ def get_latest_ts_dirs(dirs, ssecs, esecs):
         newdirs = dirs
     elif ssecs and not esecs:
         newdirs = list(filter(lambda x: int(x.split("=")[1]) > ssecs, dirs))
-        if not newdirs:
+        if not newdirs and view != "changes":
             # FInd the entry most adjacent to this one
             newdirs = list(filter(lambda x: int(x.split("=")[1]) < ssecs, dirs))
     elif esecs and not ssecs:
@@ -224,14 +224,14 @@ def get_latest_ts_dirs(dirs, ssecs, esecs):
                 dirs,
             )
         )
-        if not newdirs:
+        if not newdirs and view != "changes":
             # FInd the entry most adjacent to this one
             newdirs = list(filter(lambda x: int(x.split("=")[1]) < ssecs, dirs))
 
     return newdirs
 
 
-def get_latest_pq_files(files, root, ssecs, esecs):
+def get_latest_pq_files(files, root, ssecs, esecs, view):
 
     newfiles = None
 
@@ -242,7 +242,7 @@ def get_latest_pq_files(files, root, ssecs, esecs):
         newfiles = list(
             filter(lambda x: os.path.getctime("%s/%s" % (root, x)) > ssecs, files)
         )
-        if not newfiles:
+        if not newfiles and view != "changes":
             # FInd the entry most adjacent to this one
             newfiles = list(
                 filter(
@@ -261,7 +261,7 @@ def get_latest_pq_files(files, root, ssecs, esecs):
                 files,
             )
         )
-        if not newfiles:
+        if not newfiles and view != "changes":
             # Find the entry most adjacent to this one
             newfiles = list(
                 filter(lambda x: os.path.getctime("%s/%s" % (root, x)) < ssecs, files)

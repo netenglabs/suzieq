@@ -26,7 +26,7 @@ import typing
 @argument(
     "view",
     description="view all records or just the latest",
-    choices=["all", "latest"],
+    choices=["all", "changes", "latest"],
 )
 @argument("columns", description="Space separated list of columns, * for all")
 @argument(
