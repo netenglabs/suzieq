@@ -70,7 +70,7 @@ class SqPandasEngine(SqEngine):
             key_fields = []
             if len(kwargs.get("datacenter", [])) > 1:
                 del kwargs["datacenter"]
-            files = get_latest_files(folder, start, end)
+            files = get_latest_files(folder, start, end, view)
         else:
             key_fields = sch.key_fields()
             filters = self.build_pa_filters(start, end, key_fields, **kwargs)
@@ -113,6 +113,8 @@ class SqPandasEngine(SqEngine):
 
             if pdf_list:
                 final_df = pd.concat(pdf_list)
+            else:
+                final_df = pd.DataFrame(columns=fields)
 
         elif view == "latest":
             if not query_str:
