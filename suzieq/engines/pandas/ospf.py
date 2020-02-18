@@ -233,9 +233,4 @@ class OspfObj(SqEngineObject):
 
 
 if __name__ == "__main__":
-    try:
-        import fire
-
-        fire.Fire(OspfObj)
-    except ImportError:
-        pass
+    pass
