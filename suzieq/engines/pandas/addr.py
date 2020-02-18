@@ -89,18 +89,16 @@ class AddrObj(SqEngineObject):
         if df.empty:
             return df
 
-        for col in ["hostname", "ifname"]:
-            if not kwargs.get(col, None):
-                df.drop(columns=[col], inplace=True)
-        newdf = self._split_dataframe_rows(df, split_cols)
+        if "ip6AddressList" in df.columns:
+            newdf = df.explode("ipAddressList") \
+                      .explode("ip6AddressList") \
+                      .dropna(how='any')
+        else:
+            newdf = df.explode("ipAddressList") \
+                      .dropna(how='any')
+
         return newdf.describe(include="all").fillna("-")
 
 
 if __name__ == "__main__":
-    try:
-        import fire
-
-        fire.Fire(AddrObj)
-    except ImportError:
-        pass
-        pass
+    pass

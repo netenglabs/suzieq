@@ -27,7 +27,7 @@ basic_verbs = ['show', 'summarize']
 #  specific data?
 @pytest.mark.slow
 @pytest.mark.parametrize("command, verbs, args, size,", [
-    ('AddrCmd', basic_verbs, [None, None], [324, 18],),
+    ('AddrCmd', basic_verbs, [None, None], [324, 30],),
     ('ArpndCmd', basic_verbs, [None, None], [592, 48]),
     ('BgpCmd', basic_verbs, [None, None], [352, 143]),
     ('EvpnVniCmd', basic_verbs, [None, None], [FileNotFoundError, FileNotFoundError]), # TODO: bug #16
