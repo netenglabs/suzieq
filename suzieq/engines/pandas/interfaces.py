@@ -10,7 +10,7 @@
 import pandas as pd
 
 from suzieq.utils import SchemaForTable
-from suzieq.sqobjects.lldp import lldpObj
+from suzieq.sqobjects.lldp import LldpObj
 from .engineobj import SqEngineObject
 
 
@@ -48,7 +48,7 @@ class InterfacesObj(SqEngineObject):
 
     def _assert_mtu_match(self, **kwargs) -> pd.DataFrame:
         """Workhorse routine that validates MTU match for specified input"""
-        lldpobj = lldpObj(context=self.ctxt)
+        lldpobj = LldpObj(context=self.ctxt)
         lldp_df = lldpobj.get(**kwargs)
 
         if lldp_df.empty:

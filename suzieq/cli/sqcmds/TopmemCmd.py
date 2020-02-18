@@ -13,7 +13,7 @@ from nubia import command, argument, context
 import pandas as pd
 
 from suzieq.cli.sqcmds.command import SqCommand
-from suzieq.sqobjects.topmem import topmemObj
+from suzieq.sqobjects.topmem import TopmemObj
 
 
 @command("topmem", help="Act on topmem data")
@@ -38,8 +38,8 @@ class TopmemCmd(SqCommand):
             datacenter=datacenter,
             columns=columns,
             format=format,
+            sqobj=TopmemObj,
         )
-        self.topmemobj = topmemObj(context=self.ctxt)
 
     @command("show")
     def show(self):
@@ -56,8 +56,9 @@ class TopmemCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.topmemobj.get(
-            hostname=self.hostname, columns=self.columns, datacenter=self.datacenter
+        df = self.sqobj.get(
+            hostname=self.hostname, columns=self.columns,
+            datacenter=self.datacenter
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
@@ -78,7 +79,7 @@ class TopmemCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.topmemobj.summarize(
+        df = self.sqobj.summarize(
             hostname=self.hostname,
             columns=self.columns,
             groupby=groupby.split(),

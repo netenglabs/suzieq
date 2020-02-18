@@ -12,7 +12,7 @@ import typing
 from suzieq.sqobjects import basicobj
 
 
-class lldpObj(basicobj.SqObject):
+class LldpObj(basicobj.SqObject):
 
     def __init__(self, engine: str = '', hostname: typing.List[str] = [],
                  start_time: str = '', end_time: str = '',
@@ -26,8 +26,4 @@ class lldpObj(basicobj.SqObject):
 
 
 if __name__ == '__main__':
-    try:
-        import fire
-        fire.Fire(lldpObj)
-    except ImportError:
-        pass
+    pass

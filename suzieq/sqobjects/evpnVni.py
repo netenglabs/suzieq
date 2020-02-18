@@ -26,8 +26,4 @@ class EvpnvniObj(basicobj.SqObject):
 
 
 if __name__ == '__main__':
-    try:
-        import fire
-        fire.Fire(EvpnvniObj)
-    except ImportError:
-        pass
+    pass

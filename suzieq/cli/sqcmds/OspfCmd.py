@@ -13,7 +13,7 @@ from nubia import command, argument, context
 import pandas as pd
 
 from suzieq.cli.sqcmds.command import SqCommand
-from suzieq.sqobjects.ospf import ospfObj
+from suzieq.sqobjects.ospf import OspfObj
 
 
 @command("ospf", help="Act on OSPF data")
@@ -38,8 +38,8 @@ class OspfCmd(SqCommand):
             datacenter=datacenter,
             columns=columns,
             format=format,
+            sqobj=OspfObj,
         )
-        self.ospfobj = ospfObj(context=self.ctxt)
 
     @command("show")
     @argument(
@@ -67,7 +67,7 @@ class OspfCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.ospfobj.get(
+        df = self.sqobj.get(
             hostname=self.hostname,
             vrf=vrf.split(),
             ifname=ifname.split(),
@@ -111,7 +111,7 @@ class OspfCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.ospfobj.summarize(
+        df = self.sqobj.summarize(
             hostname=self.hostname,
             vrf=vrf.split(),
             ifname=ifname.split(),
@@ -138,7 +138,7 @@ class OspfCmd(SqCommand):
             return
 
         now = time.time()
-        result_df = self.ospfobj.aver(
+        result_df = self.sqobj.aver(
             hostname=self.hostname,
             vrf=vrf.split(),
             ifname=ifname.split(),
@@ -168,7 +168,7 @@ class OspfCmd(SqCommand):
 
         now = time.time()
 
-        df = self.ospfobj.top(
+        df = self.sqobj.top(
             hostname=self.hostname,
             what=what,
             n=count,

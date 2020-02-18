@@ -36,8 +36,8 @@ class PathCmd(SqCommand):
             datacenter=datacenter,
             columns=columns,
             format=format,
+            sqobj=PathObj
         )
-        self.pathobj = PathObj(context=self.ctxt)
 
     @command("show")
     @argument("src", description="Source IP address, in quotes")
@@ -55,7 +55,7 @@ class PathCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.pathobj.get(
+        df = self.sqobj.get(
             hostname=self.hostname, columns=self.columns,
             datacenter=self.datacenter, source=src, dest=dest,
             vrf=vrf

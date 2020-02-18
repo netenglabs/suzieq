@@ -38,8 +38,8 @@ class EvpnVniCmd(SqCommand):
             datacenter=datacenter,
             columns=columns,
             format=format,
+            sqobj=EvpnvniObj,
         )
-        self.evpnVniobj = EvpnvniObj(context=self.ctxt)
 
     @command("show")
     @argument("vni", description="VNI ID to qualify")
@@ -57,7 +57,7 @@ class EvpnVniCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.evpnVniobj.get(
+        df = self.sqobj.get(
             hostname=self.hostname,
             vni=vni.split(),
             columns=self.columns,
@@ -83,7 +83,7 @@ class EvpnVniCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.evpnVniobj.summarize(
+        df = self.sqobj.summarize(
             hostname=self.hostname,
             vni=vni.split(),
             columns=self.columns,

@@ -14,7 +14,7 @@ import pandas as pd
 from suzieq.sqobjects import basicobj
 
 
-class ospfObj(basicobj.SqObject):
+class OspfObj(basicobj.SqObject):
 
     def __init__(self, engine: str = '', hostname: typing.List[str] = [],
                  start_time: str = '', end_time: str = '',
@@ -59,8 +59,4 @@ class ospfObj(basicobj.SqObject):
 
 
 if __name__ == '__main__':
-    try:
-        import fire
-        fire.Fire(ospfObj)
-    except ImportError:
-        pass
+    pass

@@ -37,7 +37,7 @@ basic_verbs = ['show', 'summarize']
     ('MlagCmd', basic_verbs + ['describe'], [None, None, None], [44, NotImplementedError, 143]),
     ('OspfCmd', basic_verbs + ['top', 'aver'], [None, None, None, None],
      [FileNotFoundError, FileNotFoundError, FileNotFoundError, FileNotFoundError]),  # TODO: bug #16
-    ('RoutesCmd', basic_verbs + ['lpm'], [None, None, {'address': '10.0.0.1'}], [2596, 66, 65]),  # TODO: bug #24
+    ('RoutesCmd', basic_verbs + ['lpm'], [None, None, {'address': '10.0.0.1'}], [2596, 66, 143]),  # TODO: bug #24
     ('SystemCmd', basic_verbs, [None, None], [140, 130]),
     ('TablesCmd', basic_verbs, [None, {'table': 'system'}], [14, 22]),
     ('TopcpuCmd', basic_verbs, [None, None], [42, 18]),
@@ -114,8 +114,6 @@ def test_start_time_show_filter(setup_nubia, cmd):
     assert s1.equals(s2)
 
 columns_commands = good_commands[:]
-columns_commands[11] = pytest.param(columns_commands[11], marks=pytest.mark.xfail(reason="these commands aren't useful yet"))  # topCPU
-columns_commands[12] = pytest.param(columns_commands[12], marks=pytest.mark.xfail(reason="these commands aren't useful yet"))  # topMem
 
 @pytest.mark.filter
 @pytest.mark.fast

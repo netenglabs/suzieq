@@ -11,7 +11,7 @@ from ipaddress import IPv4Network
 import pandas as pd
 
 from suzieq.utils import SchemaForTable
-from suzieq.sqobjects.lldp import lldpObj
+from suzieq.sqobjects.lldp import LldpObj
 from suzieq.engines.pandas.engineobj import SqEngineObject
 
 
@@ -89,7 +89,7 @@ class OspfObj(SqEngineObject):
 
         bad_ospf_df = ospf_df.query('nbrCount < 1 and passive != "True"')
 
-        lldpobj = lldpObj(context=self.ctxt)
+        lldpobj = LldpObj(context=self.ctxt)
         lldp_df = lldpobj.get(
             datacenter=kwargs.get("datacenter", ""),
             hostname=kwargs.get("hostname", ""),

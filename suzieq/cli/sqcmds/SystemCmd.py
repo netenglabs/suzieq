@@ -21,15 +21,15 @@ from suzieq.sqobjects.system import SystemObj
 class SystemCmd(SqCommand):
     """system command"""
     def __init__(
-        self,
-        engine: str = "",
-        hostname: str = "",
-        start_time: str = "",
-        end_time: str = "",
-        view: str = "latest",
-        datacenter: str = "",
-        format: str = "",
-        columns: str = "default",
+            self,
+            engine: str = "",
+            hostname: str = "",
+            start_time: str = "",
+            end_time: str = "",
+            view: str = "latest",
+            datacenter: str = "",
+            format: str = "",
+            columns: str = "default",
     ) -> None:
         super().__init__(
             engine=engine,
@@ -40,8 +40,8 @@ class SystemCmd(SqCommand):
             datacenter=datacenter,
             columns=columns,
             format=format,
+            sqobj=SystemObj,
         )
-        self.systemobj = SystemObj(context=self.ctxt)
 
     @command("show", help="Show system information")
     def show(self):
@@ -58,9 +58,9 @@ class SystemCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.systemobj.get(
+        df = self.sqobj.get(
             hostname=self.hostname, columns=self.columns,
-            datacenter=self.datacenter
+            datacenter=self.datacenter,
         )
         # Convert the bootup timestamp into a time delta
         if not df.empty and 'bootupTimestamp' in df.columns:
@@ -92,7 +92,7 @@ class SystemCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.systemobj.summarize(
+        df = self.sqobj.summarize(
             hostname=self.hostname,
             columns=self.columns,
             groupby=groupby.split(),

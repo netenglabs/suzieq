@@ -12,7 +12,7 @@ import typing
 from suzieq.sqobjects import basicobj
 
 
-class topcpuObj(basicobj.SqObject):
+class TopcpuObj(basicobj.SqObject):
 
     def __init__(self, engine: str = '', hostname: typing.List[str] = [],
                  start_time: str = '', end_time: str = '',
@@ -26,12 +26,5 @@ class topcpuObj(basicobj.SqObject):
 
 
 if __name__ == '__main__':
-    try:
-        import fire
-        fire.Fire(topcpuObj)
-    except ImportError:
-        pass
+    pass
 
-
-
-    

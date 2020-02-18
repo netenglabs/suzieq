@@ -13,7 +13,7 @@ import time
 from nubia import command, argument
 
 from suzieq.cli.sqcmds.command import SqCommand
-from suzieq.sqobjects.mlag import mlagObj
+from suzieq.sqobjects.mlag import MlagObj
 
 
 @command('mlag', help="Act on mlag data")
@@ -26,8 +26,8 @@ class MlagCmd(SqCommand):
         super().__init__(engine=engine, hostname=hostname,
                          start_time=start_time, end_time=end_time,
                          view=view, datacenter=datacenter,
-                         format=format, columns=columns)
-        self.mlagobj = mlagObj(context=self.ctxt)
+                         format=format, columns=columns,
+                         sqobj=MlagObj)
 
     @command('show')
     def show(self):
@@ -44,9 +44,9 @@ class MlagCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.mlagobj.get(hostname=self.hostname,
-                              columns=self.columns,
-                              datacenter=self.datacenter)
+        df = self.sqobj.get(hostname=self.hostname,
+                            columns=self.columns,
+                            datacenter=self.datacenter)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         if not df.empty and 'state' in df.columns:
             return self._gen_output(df.query('state != "disabled"'))
@@ -70,11 +70,11 @@ class MlagCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.mlagobj.summarize(hostname=self.hostname,
-                                    columns=self.columns,
-                                    groupby=groupby.split(),
-                                    datacenter=self.datacenter)
+        df = self.sqobj.summarize(hostname=self.hostname,
+                                  columns=self.columns,
+                                  groupby=groupby.split(),
+                                  datacenter=self.datacenter)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
-                        
+
 

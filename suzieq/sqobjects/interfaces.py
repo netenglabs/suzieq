@@ -13,7 +13,7 @@ import typing
 from suzieq.sqobjects import basicobj
 
 
-class ifObj(basicobj.SqObject):
+class IfObj(basicobj.SqObject):
 
     def __init__(self, engine: str = '', hostname: typing.List[str] = [],
                  start_time: str = '', end_time: str = '',
@@ -36,9 +36,5 @@ class ifObj(basicobj.SqObject):
 
 
 if __name__ == '__main__':
-    try:
-        import fire
-        fire.Fire(ifObj)
-    except ImportError:
-        pass
+    pass
 

@@ -37,8 +37,8 @@ class RoutesCmd(SqCommand):
             datacenter=datacenter,
             columns=columns,
             format=format,
+            sqobj=RoutesObj,
         )
-        self.routesobj = RoutesObj(context=self.ctxt)
 
     @command("show")
     @argument("prefix", description="Prefix, in quotes, to filter show on")
@@ -57,7 +57,7 @@ class RoutesCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.routesobj.get(
+        df = self.sqobj.get(
             hostname=self.hostname,
             prefix=prefix.split(),
             vrf=vrf.split(),
@@ -87,7 +87,7 @@ class RoutesCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.routesobj.summarize(
+        df = self.sqobj.summarize(
             hostname=self.hostname,
             prefix=prefix.split(),
             vrf=vrf.split(),            
@@ -118,7 +118,7 @@ class RoutesCmd(SqCommand):
             print('address is mandatory parameter')
             return
 
-        df = self.routesobj.lpm(
+        df = self.sqobj.lpm(
             hostname=self.hostname,
             address=address,
             vrf=vrf.split(),

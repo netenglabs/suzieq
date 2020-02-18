@@ -11,7 +11,7 @@ import time
 from nubia import command, argument
 
 from suzieq.cli.sqcmds.command import SqCommand
-from suzieq.sqobjects.macs import macsObj
+from suzieq.sqobjects.macs import MacsObj
 
 
 @command("macs", help="Act on MAC Table data")
@@ -36,8 +36,8 @@ class MacsCmd(SqCommand):
             datacenter=datacenter,
             columns=columns,
             format=format,
+            sqobj=MacsObj,
         )
-        self.macsobj = macsObj(context=self.ctxt)
 
     @command("show")
     @argument("vlan", description="VLAN(s) to qualify output")
@@ -59,7 +59,7 @@ class MacsCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.macsobj.get(
+        df = self.sqobj.get(
             hostname=self.hostname,
             vlan=vlan.split(),
             macaddr=macaddr.split(),
@@ -92,7 +92,7 @@ class MacsCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.macsobj.summarize(
+        df = self.sqobj.summarize(
             hostname=self.hostname,
             vlan=vlan.split(),
             macaddr=macaddr.split(),

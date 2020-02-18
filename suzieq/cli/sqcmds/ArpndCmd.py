@@ -38,8 +38,8 @@ class ArpndCmd(SqCommand):
             datacenter=datacenter,
             columns=columns,
             format=format,
+            sqobj=ArpndObj,
         )
-        self.arpndobj = ArpndObj(context=self.ctxt)
 
     @command("show")
     @argument("address", description="IP address, in quotes, to qualify output")
@@ -58,7 +58,7 @@ class ArpndCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.arpndobj.get(
+        df = self.sqobj.get(
             hostname=self.hostname,
             ipAddress=address.split(),
             oif=oif.split(),
@@ -86,7 +86,7 @@ class ArpndCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.arpndobj.summarize(
+        df = self.sqobj.summarize(
             hostname=self.hostname,
             oif=oif.split(),
             ipAddress=address.split(),
