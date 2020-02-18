@@ -88,10 +88,7 @@ class SqCommand:
         self.view = view
         self.columns = columns.split()
         self.format = format or "text"
-        # if engine:
-        #    self.engine = get_sqengine(engine)
-        # else:
-        #    self.engine = self.ctxt.engine
+
         if not sqobj:
             raise AttributeError('mandatory parameter sqobj missing')
 
