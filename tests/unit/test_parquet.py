@@ -55,9 +55,9 @@ def test_get_data(create_context_config, get_schemas, tmp_path, table):
 @pytest.mark.engines
 @pytest.mark.parametrize('table', good_tables)
 # not ready for these tests yet
-def _test_latest_view_data(create_context_config, get_schemas, table):
+def test_latest_view_data(create_context_config, get_schemas, tmp_path, table):
     out = _get_data_from_table(create_context_config, get_schemas, table, {'view': 'latest'})
-    _compare_display_fields(create_context_config, get_schemas, table, out)
+    _compare_key_fields(create_context_config, get_schemas, table, out)
 
 
 def _compare_all_fields(cfg, sch, path, table, data):
@@ -79,7 +79,7 @@ def _compare_all_fields(cfg, sch, path, table, data):
     assert (cmp(sample_csv, csv))
 
 
-def _compare_display_fields(cfg, sch,  table, df_one):
+def _compare_key_fields(cfg, sch,  table, df_one):
     """ compare two dataframes using just the key columns
       the point is that if something else there are duplicates, then we don't compare those changes,
       those are temporal and that's ok
@@ -93,8 +93,8 @@ def _compare_display_fields(cfg, sch,  table, df_one):
 
     k_fields = schema.key_fields()
     fields = schema.sorted_display_fields()
-    df_one_new = df_one[fields].groupby(k_fields, sort=False).size().reset_index(name='size')
-    df_two_new = df_two[fields].groupby(k_fields, sort=False).size().reset_index(name='size')
+    df_one = df_one.drop_duplicates(subset=k_fields, keep='last')
+    df_two = df_two.drop_duplicates(subset=k_fields, keep='last')
 
     testing.assert_frame_equal(df_one, df_two, check_dtype=True, check_categorical=False)
 
