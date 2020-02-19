@@ -5,6 +5,7 @@ from nubia import context
 
 from suzieq.cli.sqcmds import *
 from pyarrow.lib import ArrowInvalid
+from pandas import testing
 from pandas.core.computation.ops import UndefinedVariableError
 import dateutil
 
@@ -213,17 +214,13 @@ def test_context_filtering(setup_nubia, cmd):
 
 
 context_datacenter_commands = commands[:]
-# TODO
-# this is a terrible thing, but I can't think of another way
-# remove system because it works, so it can't be marked as xfail
-context_datacenter_commands.pop(10)
 @pytest.mark.filter
-@pytest.mark.xfail(reason='bug #18')
 @pytest.mark.parametrize('cmd', context_datacenter_commands)
 def test_context_datacenter_filtering(setup_nubia, cmd):
     s1 = _test_command(cmd, 'show', None, None)
-    s2 = _test_context_filtering(cmd, {'datacenter': 'dual-bgp'})
-    assert len(s1) >= len(s2)
+    s2 = _test_context_filtering(cmd, {'datacenter': ['dual-bgp']})  # this has to be list or it will fail, different from any other filtering, datacenter is special because it's part of the directory structure
+    assert len(s1) == len(s2)
+    testing.assert_frame_equal(s1, s2, check_dtype=True, check_categorical=False)
 
 @pytest.mark.filter
 @pytest.mark.xfail(reason='bug #17')
@@ -231,7 +228,7 @@ def test_context_datacenter_filtering(setup_nubia, cmd):
 def test_context_engine_filtering(setup_nubia, cmd):
     s1 = _test_command(cmd, 'show', None, None)
     s2 = _test_context_filtering(cmd, {'engine': 'pandas'})
-    assert len(s1) >= len(s2)
+    assert len(s1) == len(s2)
 
 
 @pytest.mark.filter
