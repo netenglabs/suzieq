@@ -6,6 +6,7 @@ from nubia import context
 from suzieq.cli.sqcmds import *
 from pyarrow.lib import ArrowInvalid
 from pandas.core.computation.ops import UndefinedVariableError
+import dateutil
 
 from tests.conftest import commands
 # TODO
@@ -157,12 +158,23 @@ def test_bad_show_engine_filter(setup_nubia, cmd):
 
 bad_start_time_commands = commands[:]
 # TODO
-# this doesn't do any filtering, so it fails the assert that length should be 0
-# when this is fixed then remove the xfail
+
+# this is the placeholder of the nubia bug about parsing 'start-time'
 @pytest.mark.filter
-@pytest.mark.xfail(reason='bug #12')
+@pytest.mark.xfail(reason='bug #12', raises=TypeError)
 @pytest.mark.parametrize("cmd", bad_start_time_commands)
-def test_bad_show_start_time_filter(setup_nubia, cmd):
+def test_show_start_time_filter(setup_nubia, cmd):
+    filter = {'start-time': 'unknown'}
+    s = _test_bad_show_filter(cmd, filter)
+
+# this because I need to xfail these for this bug, I can't xfail individual ones for the filenotfound
+# so I must remove those from the stack
+bad_start_time_commands.pop(3)  # EvpnVniCmd
+bad_start_time_commands.pop(7)  # Ospfcmd
+@pytest.mark.filter
+@pytest.mark.xfail(reason='bug #33', raises=dateutil.parser._parser.ParserError)
+@pytest.mark.parametrize("cmd", bad_start_time_commands)
+def test_bad_start_time_filter(setup_nubia, cmd):
     filter = {'start_time': 'unknown'}
     s = _test_bad_show_filter(cmd, filter)
 
@@ -217,11 +229,13 @@ def test_context_engine_filtering(setup_nubia, cmd):
     _test_context_filtering(cmd, {'engine': 'pandas'})
 
 
-@pytest.mark.xfail(reason='bug 20')
+
+@pytest.mark.filter
+@pytest.mark.xfail(reason='bug #20')
 @pytest.mark.parametrize('cmd', good_commands)
 def test_context_start_time_filtering(setup_nubia, cmd):
     s1 = _test_command(cmd, 'show', None, None)
-    s2 = _test_context_filtering(cmd, {'start_time': 1570006401})  # before the data was created
+    s2 = _test_context_filtering(cmd, {'start_time': '2020-01-20 0:0:0'})  # before the data was created
     s2 = s2.reset_index(drop=True)
     assert not all(s1.eq(s2)) # they should be different
 
