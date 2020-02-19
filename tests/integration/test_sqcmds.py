@@ -82,6 +82,14 @@ commands[8] = pytest.param(commands[8], marks=pytest.mark.xfail(reason='bug #16'
 
 good_commands = commands[:]
 
+column_commands = good_commands[:]
+column_commands[0] = pytest.param(column_commands[0], marks=pytest.mark.xfail(reason='bug #36', raises=AssertionError)) #AddrCmd
+@pytest.mark.parametrize("cmd", column_commands)
+def test_all_columns(setup_nubia, cmd):
+    s1 = _test_command(cmd, 'show', None, None)
+    s2 = _test_command(cmd, 'show', None, None, filter={'columns': '*'})
+    assert s1.size <= s2.size
+
 @pytest.mark.filter
 @pytest.mark.parametrize("cmd", good_commands)
 def test_hostname_show_filter(setup_nubia, cmd):
@@ -122,7 +130,7 @@ columns_commands = good_commands[:]
 @pytest.mark.parametrize("cmd", columns_commands)
 def test_columns_show_filter(setup_nubia, cmd):
     s1, s2 = _test_good_show_filter(cmd, {'columns': 'hostname'})
-    assert s1.size > s2.size
+    assert s1.size >= s2.size
 
 def _test_good_show_filter(cmd, filter):
     assert len(filter) == 1
@@ -249,7 +257,7 @@ def _test_context_filtering(cmd, filter):
 
     k = next(iter(filter))
     v = filter[k]
-    print(k, v)
+
     setattr(ctx, k, v)
     s2 = _test_command(cmd, 'show', None, None)
     assert len(s2) > 0  # these should be good filters, so some data should be returned
@@ -268,9 +276,14 @@ def execute_cmd(cmd, verb, arg, filter=None):
         instance = instance()
 
     c = getattr(instance, verb)
+
     if arg is not None:
-        return c(**arg)
+        ret = c(**arg)
+        assert ret is not None
+        return ret
     else:
-        return c()
+        ret = c()
+        assert ret is not None
+        return ret
 
 
