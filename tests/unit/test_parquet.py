@@ -30,7 +30,7 @@ def test_required_fields(create_context_config, get_schemas, field):
     engine = SqPandasEngine()
     fields = {f: '' for f in required_fields if f != field}
     with pytest.raises(KeyError):
-        engine.get_table_df(create_context_config, get_schemas, table='sysmtem', **fields)
+        engine.get_table_df(create_context_config, get_schemas, table='system', **fields)
         
         
 good_tables = tables[:]
@@ -45,19 +45,24 @@ def test_get_data(create_context_config, get_schemas, tmp_path, table):
     """goes through each table and gets the default output and does file comparison with previous known good ouput"""
     out = _get_data_from_table(create_context_config, get_schemas, table)
     _compare_all_fields(create_context_config, get_schemas, tmp_path, table, out)
-
-
-# TODO
-# compare with default values
-# compare with columns=*
-# compare with bad values
+    _compare_key_fields(create_context_config, get_schemas, table, out)
 
 @pytest.mark.engines
 @pytest.mark.parametrize('table', good_tables)
-# not ready for these tests yet
+def test_get_all_data(create_context_config, get_schemas, tmp_path, table):
+    """goes through each table and gets the default output and does file comparison with previous known good ouput"""
+    out = _get_data_from_table(create_context_config, get_schemas, table, {'columns': ['*']})
+    #_compare_all_fields(create_context_config, get_schemas, tmp_path, table, out)
+    _compare_key_fields(create_context_config, get_schemas, table, out)
+
+
+
+@pytest.mark.engines
+@pytest.mark.parametrize('table', good_tables)
 def test_latest_view_data(create_context_config, get_schemas, tmp_path, table):
     out = _get_data_from_table(create_context_config, get_schemas, table, {'view': 'latest'})
     _compare_key_fields(create_context_config, get_schemas, table, out)
+
 
 
 def _compare_all_fields(cfg, sch, path, table, data):
@@ -89,12 +94,10 @@ def _compare_key_fields(cfg, sch,  table, df_one):
     df_two, sample_csv = _get_sample_df(cfg, table)
     df_one, df_two = _cleanup_dataframes_for_io(df_one, df_two, schema)
 
-    assert df_one.size <= df_two.size
-
     k_fields = schema.key_fields()
     fields = schema.sorted_display_fields()
-    df_one = df_one.drop_duplicates(subset=k_fields, keep='last')
-    df_two = df_two.drop_duplicates(subset=k_fields, keep='last')
+    df_one = df_one[k_fields].drop_duplicates(subset=k_fields, keep='last')
+    df_two = df_two[k_fields].drop_duplicates(subset=k_fields, keep='last')
 
     testing.assert_frame_equal(df_one, df_two, check_dtype=True, check_categorical=False)
 
