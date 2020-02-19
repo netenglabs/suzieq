@@ -207,7 +207,9 @@ good_filters = [{'hostname': 'leaf01'}]
 @pytest.mark.parametrize('cmd', good_commands)
 def test_context_filtering(setup_nubia, cmd):
     for filter in good_filters:
-        _test_context_filtering(cmd, filter)
+        s1 = _test_command(cmd, 'show', None, None)
+        s2 = _test_context_filtering(cmd, filter)
+        assert len(s1) >= len(s2)
 
 
 context_datacenter_commands = commands[:]
@@ -219,25 +221,26 @@ context_datacenter_commands.pop(10)
 @pytest.mark.xfail(reason='bug #18')
 @pytest.mark.parametrize('cmd', context_datacenter_commands)
 def test_context_datacenter_filtering(setup_nubia, cmd):
-    _test_context_filtering(cmd, {'datacenter': 'dual-bgp'})
-
+    s1 = _test_command(cmd, 'show', None, None)
+    s2 = _test_context_filtering(cmd, {'datacenter': 'dual-bgp'})
+    assert len(s1) >= len(s2)
 
 @pytest.mark.filter
 @pytest.mark.xfail(reason='bug #17')
 @pytest.mark.parametrize('cmd', good_commands)
 def test_context_engine_filtering(setup_nubia, cmd):
-    _test_context_filtering(cmd, {'engine': 'pandas'})
-
+    s1 = _test_command(cmd, 'show', None, None)
+    s2 = _test_context_filtering(cmd, {'engine': 'pandas'})
+    assert len(s1) >= len(s2)
 
 
 @pytest.mark.filter
-@pytest.mark.xfail(reason='bug #20')
 @pytest.mark.parametrize('cmd', good_commands)
 def test_context_start_time_filtering(setup_nubia, cmd):
     s1 = _test_command(cmd, 'show', None, None)
-    s2 = _test_context_filtering(cmd, {'start_time': '2020-01-20 0:0:0'})  # before the data was created
+    s2 = _test_context_filtering(cmd, {'start_time': '2020-01-20 0:0:0'})  # before the latest data, so might be more data than the default
     s2 = s2.reset_index(drop=True)
-    assert not all(s1.eq(s2)) # they should be different
+    assert len(s1) <= len(s2)  # if they are different, the new one should be bigger
 
 
 def _test_context_filtering(cmd, filter):
@@ -253,7 +256,7 @@ def _test_context_filtering(cmd, filter):
     setattr(ctx, k, v)
     s2 = _test_command(cmd, 'show', None, None)
     assert len(s2) > 0  # these should be good filters, so some data should be returned
-    assert len(s1) >= len(s2)
+
     setattr(ctx, k, "")  # reset ctx back to no filtering
     return s2
 
