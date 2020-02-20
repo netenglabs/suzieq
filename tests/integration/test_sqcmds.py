@@ -8,6 +8,8 @@ import dateutil
 
 import pytest
 from _pytest.mark.structures import Mark, MarkDecorator
+from suzieq.cli.sqcmds import *
+from pandas import testing
 
 from pandas import DataFrame
 from nubia import context
@@ -30,7 +32,7 @@ basic_verbs = ['show']
 # TODO
 # columns length, column names?
 #  specific data?
-@pytest.mark.fast
+@pytest.mark.slow
 @pytest.mark.parametrize("command, verbs, args, size,", [
     ('AddrCmd', basic_verbs, [None], [324],),
     ('EvpnVniCmd', basic_verbs, [None],
@@ -266,29 +268,24 @@ def test_context_engine_filtering(setup_nubia, cmd):
     assert len(s1) == len(s2)
 
 
-@pytest.mark.filter
+@pytest.mark.fast
 @pytest.mark.parametrize('cmd', good_commands)
 def test_context_start_time_filtering(setup_nubia, cmd):
     s1 = _test_command(cmd, 'show', None, None)
-    s2 = _test_context_filtering(cmd, {'start_time': 1570006401})  # < creation
-    s2 = s2.reset_index(drop=True)
-    assert not all(s1.eq(s2))  # they should be different
+    s2 = _test_context_filtering(cmd, {'start_time': '2020-01-20 0:0:0'})  # before the latest data, so might be more data than the default
+    assert len(s1) <= len(s2)  # if they are different, the new one should be bigger
 
 
 def _test_context_filtering(cmd, filter):
     assert len(filter) == 1
-
     s1 = _test_command(cmd, 'show', None, None)
     assert len(s1) > 0
     ctx = context.get_context()
-
     k = next(iter(filter))
     v = filter[k]
-
     setattr(ctx, k, v)
     s2 = _test_command(cmd, 'show', None, None)
     assert len(s2) > 0  # these should be good filters, so some data should be returned
-
     setattr(ctx, k, "")  # reset ctx back to no filtering
     return s2
 
@@ -303,15 +300,10 @@ def execute_cmd(cmd, verb, arg, filter=None):
         instance = instance()
 
     c = getattr(instance, verb)
-
     if arg is not None:
-        ret = c(**arg)
-        assert ret is not None
-        return ret
+        return c(**arg)
     else:
-        ret = c()
-        assert ret is not None
-        return ret
+        return c()
 
 
 def _load_up_the_tests():
