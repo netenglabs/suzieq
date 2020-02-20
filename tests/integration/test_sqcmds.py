@@ -4,15 +4,13 @@ import sys
 import yaml
 import json
 from subprocess import check_output, CalledProcessError
+import dateutil
 
 import pytest
 from _pytest.mark.structures import Mark, MarkDecorator
 
-
 from pandas import DataFrame
 from nubia import context
-
-from suzieq.cli.sqcmds import *
 
 from tests.conftest import commands, suzieq_cli_path
 # TODO
@@ -93,6 +91,19 @@ commands[8] = pytest.param(commands[8], marks=pytest.mark.xfail(
 
 good_commands = commands[:]
 
+column_commands = good_commands[:]
+column_commands[0] = pytest.param(
+    column_commands[0],
+    marks=pytest.mark.xfail(reason='bug #36',
+                            raises=AssertionError))  # AddrCmd
+
+
+@pytest.mark.parametrize("cmd", column_commands)
+def test_all_columns(setup_nubia, cmd):
+    s1 = _test_command(cmd, 'show', None, None)
+    s2 = _test_command(cmd, 'show', None, None, filter={'columns': '*'})
+    assert s1.size <= s2.size
+
 
 @pytest.mark.filter
 @pytest.mark.parametrize("cmd", good_commands)
@@ -141,7 +152,7 @@ columns_commands = good_commands[:]
 @pytest.mark.parametrize("cmd", columns_commands)
 def test_columns_show_filter(setup_nubia, cmd):
     s1, s2 = _test_good_show_filter(cmd, {'columns': 'hostname'})
-    assert s1.size > s2.size
+    assert s1.size >= s2.size
 
 def _test_good_show_filter(cmd, filter):
     assert len(filter) == 1
@@ -162,7 +173,7 @@ bad_hostname_commands = commands[:]
 @pytest.mark.parametrize("cmd", bad_hostname_commands)
 def test_bad_show_hostname_filter(setup_nubia, cmd):
     filter = {'hostname': 'unknown'}
-    s = _test_bad_show_filter(cmd, filter)
+    _ = _test_bad_show_filter(cmd, filter)
 
 
 bad_engine_commands = commands[:]
@@ -174,17 +185,28 @@ bad_engine_commands = commands[:]
 @pytest.mark.parametrize("cmd", bad_engine_commands)
 def test_bad_show_engine_filter(setup_nubia, cmd):
     filter = {'engine': 'unknown'}
-    s = _test_bad_show_filter(cmd, filter)
+    _ = _test_bad_show_filter(cmd, filter)
 
 
 bad_start_time_commands = commands[:]
 # TODO
-# this doesn't do any filtering, so it fails the assert that length should be 0
-# when this is fixed then remove the xfail
+
+# this is the placeholder of the nubia bug about parsing 'start-time'
 @pytest.mark.filter
-@pytest.mark.xfail(reason='bug #12')
+@pytest.mark.xfail(reason='bug #12', raises=TypeError)
 @pytest.mark.parametrize("cmd", bad_start_time_commands)
-def test_bad_show_start_time_filter(setup_nubia, cmd):
+def test_show_start_time_filter(setup_nubia, cmd):
+    filter = {'start-time': 'unknown'}
+    s = _test_bad_show_filter(cmd, filter)
+
+# this because I need to xfail these for this bug, I can't xfail individual ones for the filenotfound
+# so I must remove those from the stack
+bad_start_time_commands.pop(3)  # EvpnVniCmd
+bad_start_time_commands.pop(7)  # Ospfcmd
+@pytest.mark.filter
+@pytest.mark.xfail(reason='bug #33', raises=dateutil.parser._parser.ParserError)
+@pytest.mark.parametrize("cmd", bad_start_time_commands)
+def test_bad_start_time_filter(setup_nubia, cmd):
     filter = {'start_time': 'unknown'}
     _ = _test_bad_show_filter(cmd, filter)
 
@@ -217,35 +239,79 @@ good_filters = [{'hostname': 'leaf01'}]
 @pytest.mark.parametrize('cmd', good_commands)
 def test_context_filtering(setup_nubia, cmd):
     for filter in good_filters:
-        _test_context_filtering(cmd, filter)
+        s1 = _test_command(cmd, 'show', None, None)
+        s2 = _test_context_filtering(cmd, filter)
+        assert len(s1) >= len(s2)
 
 
 context_datacenter_commands = commands[:]
-# TODO
-# this is a terrible thing, but I can't think of another way
-# remove system because it works, so it can't be marked as xfail
-context_datacenter_commands.pop(10)
 @pytest.mark.filter
-@pytest.mark.xfail(reason='bug #18')
 @pytest.mark.parametrize('cmd', context_datacenter_commands)
 def test_context_datacenter_filtering(setup_nubia, cmd):
-    _test_context_filtering(cmd, {'datacenter': 'dual-bgp'})
+    s1 = _test_command(cmd, 'show', None, None)
+    s2 = _test_context_filtering(cmd, {'datacenter': ['dual-bgp']})
+    # this has to be list or it will fail, different from any other filtering,
+    # datacenter is special because it's part of the directory structure
+    assert len(s1) == len(s2)
+    testing.assert_frame_equal(s1, s2, check_dtype=True,
+                               check_categorical=False)
 
 
 @pytest.mark.filter
 @pytest.mark.xfail(reason='bug #17')
 @pytest.mark.parametrize('cmd', good_commands)
 def test_context_engine_filtering(setup_nubia, cmd):
-    _test_context_filtering(cmd, {'engine': 'pandas'})
+    s1 = _test_command(cmd, 'show', None, None)
+    s2 = _test_context_filtering(cmd, {'engine': 'pandas'})
+    assert len(s1) == len(s2)
 
 
-@pytest.mark.xfail(reason='bug 20')
+@pytest.mark.filter
 @pytest.mark.parametrize('cmd', good_commands)
 def test_context_start_time_filtering(setup_nubia, cmd):
     s1 = _test_command(cmd, 'show', None, None)
     s2 = _test_context_filtering(cmd, {'start_time': 1570006401})  # < creation
     s2 = s2.reset_index(drop=True)
     assert not all(s1.eq(s2))  # they should be different
+
+
+def _test_context_filtering(cmd, filter):
+    assert len(filter) == 1
+
+    s1 = _test_command(cmd, 'show', None, None)
+    assert len(s1) > 0
+    ctx = context.get_context()
+
+    k = next(iter(filter))
+    v = filter[k]
+
+    setattr(ctx, k, v)
+    s2 = _test_command(cmd, 'show', None, None)
+    assert len(s2) > 0  # these should be good filters, so some data should be returned
+
+    setattr(ctx, k, "")  # reset ctx back to no filtering
+    return s2
+
+
+def execute_cmd(cmd, verb, arg, filter=None):
+    # expect the cmd class are in the module cmd and also named cmd
+    module = globals()[cmd]
+    instance = getattr(module, cmd)
+    if filter is not None:
+        instance = instance(**filter)
+    else:
+        instance = instance()
+
+    c = getattr(instance, verb)
+
+    if arg is not None:
+        ret = c(**arg)
+        assert ret is not None
+        return ret
+    else:
+        ret = c()
+        assert ret is not None
+        return ret
 
 
 def _load_up_the_tests():
@@ -297,6 +363,7 @@ def _load_up_the_tests():
 
     return tests
 
+
 @pytest.mark.smoke
 @pytest.mark.sqcmds
 @pytest.mark.parametrize("testvar", _load_up_the_tests())
@@ -313,38 +380,4 @@ def test_sqcmds(testvar):
     jout = json.loads(output.decode('utf-8').strip())
 
     assert(jout == json.loads(testvar['output'].strip()))
-
-
-def _test_context_filtering(cmd, filter):
-    assert len(filter) == 1
-
-    s1 = _test_command(cmd, 'show', None, None)
-    assert len(s1) > 0
-    ctx = context.get_context()
-
-    k = next(iter(filter))
-    v = filter[k]
-    print(k, v)
-    setattr(ctx, k, v)
-    s2 = _test_command(cmd, 'show', None, None)
-    assert len(s2) > 0  # these should be good filters, so some data should be returned
-    assert len(s1) >= len(s2)
-    setattr(ctx, k, "")  # reset ctx back to no filtering
-    return s2
-
-
-def execute_cmd(cmd, verb, arg, filter=None):
-    # expect the cmd class are in the module cmd and also named cmd
-    module = globals()[cmd]
-    instance = getattr(module, cmd)
-    if filter is not None:
-        instance = instance(**filter)
-    else:
-        instance = instance()
-
-    c = getattr(instance, verb)
-    if arg is not None:
-        return c(**arg)
-    else:
-        return c()
 
