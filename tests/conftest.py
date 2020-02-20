@@ -1,5 +1,8 @@
 import pytest
+import os
 from suzieq.cli.sq_nubia_context import NubiaSuzieqContext
+
+suzieq_cli_path = './suzieq/cli/suzieq-cli'
 
 
 commands = [('AddrCmd'), ('ArpndCmd'), ('BgpCmd'), ('EvpnVniCmd'), ('InterfaceCmd'), ('LldpCmd'), ('MacsCmd'),
