@@ -1,0 +1,77 @@
+#!/usr/bin/env python3
+
+import os
+import sys
+import yaml
+import json
+from subprocess import check_output, CalledProcessError
+import pytest
+from _pytest.mark.structures import Mark, MarkDecorator
+
+from tests.conftest import suzieq_cli_path
+
+
+def load_up_the_tests():
+    "reads the files from the samples directory and parametrizes the test"
+    tests = []
+    for i in os.scandir(os.path.abspath(os.curdir) +
+                        '/tests/integration/sqcmds/samples'):
+        if not i.path.endswith('.yml'):
+            continue
+        with open(i, 'r') as f:
+            out = yaml.load(f.read(), Loader=yaml.BaseLoader)
+            # The format of the YAML file assumed is as follows:
+            # description: <string>
+            # tests:
+            #   - command: <sqcmd to execute in non-modal format
+            #     data-directory: <where the data is present>, not used yet
+            #     marks: <space separated string of marks to mark the test>
+            #     output: |
+            #       <json_output>
+            #
+            #   - command:
+            #     ....
+            if out and 'tests' in out:
+                for t in out['tests']:
+                    # We use tags to dynamically mark the parametrized test
+                    # the marks MUST be registered in pytest.ini
+                    markers = []
+                    if 'marks' in t:
+                        markers = [MarkDecorator(Mark(x, [], {}))
+                                   for x in t['marks'].split()]
+                    if 'xfail' in t:
+                        except_err = None
+                        if 'raises' in t['xfail']:
+                            except_err = globals()['__builtins__'].get(
+                                t['xfail']['raises'], None)
+
+                        if except_err:
+                            markers += [pytest.mark.xfail(
+                                reason=t['xfail']['reason'], raises=except_err)]
+                        else:
+                            markers += [pytest.mark.xfail(
+                                reason=t['xfail']['reason'])]
+                    if markers:
+                        tests += [pytest.param(t, marks=markers,
+                                               id=t['command'])]
+                    else:
+                        tests += [pytest.param(t, id=t['command'])]
+
+    return tests
+
+
+@pytest.mark.sqcmds
+@pytest.mark.parametrize("testvar", load_up_the_tests())
+def test_sqcmds(testvar):
+
+    sqcmd_path = [sys.executable, suzieq_cli_path]
+    exec_cmd = sqcmd_path + testvar['command'].split()
+
+    try:
+        output = check_output(exec_cmd)
+    except CalledProcessError as e:
+        output = e.output
+
+    jout = json.loads(output.decode('utf-8').strip())
+
+    assert(jout == json.loads(testvar['output'].strip()))
