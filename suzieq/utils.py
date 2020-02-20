@@ -103,21 +103,25 @@ class Schema(object):
     def fields_for_table(self, table):
         return [f['name'] for f in self._schema[table]]
 
-    def key_fields_for_table(self, table):
-        return [f['name'] for f in self._schema[table] if f.get('key', None) is not None]
-
     def field_for_table(self, table, field):
         for f in self._schema[table]:
             if f['name'] == field:
                 return f
 
+    def key_fields_for_table(self, table):
+        # return [f['name'] for f in self._schema[table] if f.get('key', None) is not None]
+        return self._sort_fields_for_table(table, 'key')
+
     def sorted_display_fields_for_table(self, table):
+        return self._sort_fields_for_table(table, 'display')
+
+    def _sort_fields_for_table(self, table, tag):
         fields = self.fields_for_table(table)
         field_weights = {}
         for f_name in fields:
             field = self.field_for_table(table, f_name)
-            if field.get('display', None):
-                field_weights[f_name] = field.get('display', 1000)
+            if field.get(tag, None) is not None:
+                field_weights[f_name] = field.get(tag, 1000)
         return [k for k in sorted(field_weights.keys(), key=lambda x: field_weights[x])]
 
     def array_fields_for_table(self, table):
@@ -128,6 +132,7 @@ class Schema(object):
             if isinstance(field['type'], dict) and field['type'].get('type', None) == 'array':
                 arrays.append(f_name)
         return arrays
+
 
 class SchemaForTable(object):
     def __init__(self, table, schema=None, schema_dir=None):
@@ -153,7 +158,6 @@ class SchemaForTable(object):
     def array_fields(self):
         return self._all_schemas.array_fields_for_table(self._table)
 
-    @property
     def field(self, field):
         return self._all_schemas.field_for_table(self._table, field)
 
@@ -165,10 +169,9 @@ class SchemaForTable(object):
             if "datacenter" not in fields:
                 fields.insert(0, "datacenter")
         elif columns == ["*"]:
-            fields = self.fields()
+            fields = self.fields
         else:
             fields = [f for f in columns if f in self.fields]
-
 
         return fields
 

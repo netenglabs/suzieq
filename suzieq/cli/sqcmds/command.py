@@ -109,8 +109,6 @@ class SqCommand:
         return self._schemas
 
     def _gen_output(self, df: pd.DataFrame):
-        if self.columns != ['default']:
-            df = df[self.columns]
         if self.format == 'json':
             print(df.to_json(orient="records"))
         elif self.format == 'csv':
