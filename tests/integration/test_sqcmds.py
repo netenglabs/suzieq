@@ -22,8 +22,9 @@ from tests.conftest import commands, suzieq_cli_path
 # only works if there is a suzieq-cfg.yml file, which it then over-rides
 # how do I make sure I check all commands and all verbs
 
-# I don't know the right measure of completeness to cover all the different ways of filtering
-# missing detailed checking of whatever is being done directly in the sqcmds objects, such as filtering or formatting changes
+# I don't know the right measure of completeness to cover all the different
+# ways of filtering. Missing detailed checking of whatever is being done
+# directly in the sqcmds objects, such as filtering or formatting changes
 
 
 basic_verbs = ['show']
@@ -156,6 +157,7 @@ def test_columns_show_filter(setup_nubia, cmd):
     s1, s2 = _test_good_show_filter(cmd, {'columns': 'hostname'})
     assert s1.size >= s2.size
 
+
 def _test_good_show_filter(cmd, filter):
     assert len(filter) == 1
     s1 = _test_command(cmd, 'show', None, None)
@@ -199,14 +201,17 @@ bad_start_time_commands = commands[:]
 @pytest.mark.parametrize("cmd", bad_start_time_commands)
 def test_show_start_time_filter(setup_nubia, cmd):
     filter = {'start-time': 'unknown'}
-    s = _test_bad_show_filter(cmd, filter)
+    _ = _test_bad_show_filter(cmd, filter)
 
-# this because I need to xfail these for this bug, I can't xfail individual ones for the filenotfound
+
+# this because I need to xfail these for this bug, I can't xfail individual
+# ones for the filenotfound
 # so I must remove those from the stack
 bad_start_time_commands.pop(3)  # EvpnVniCmd
 bad_start_time_commands.pop(7)  # Ospfcmd
 @pytest.mark.filter
-@pytest.mark.xfail(reason='bug #33', raises=dateutil.parser._parser.ParserError)
+@pytest.mark.xfail(reason='bug #33',
+                   raises=dateutil.parser._parser.ParserError)
 @pytest.mark.parametrize("cmd", bad_start_time_commands)
 def test_bad_start_time_filter(setup_nubia, cmd):
     filter = {'start_time': 'unknown'}
@@ -272,8 +277,9 @@ def test_context_engine_filtering(setup_nubia, cmd):
 @pytest.mark.parametrize('cmd', good_commands)
 def test_context_start_time_filtering(setup_nubia, cmd):
     s1 = _test_command(cmd, 'show', None, None)
-    s2 = _test_context_filtering(cmd, {'start_time': '2020-01-20 0:0:0'})  # before the latest data, so might be more data than the default
-    assert len(s1) <= len(s2)  # if they are different, the new one should be bigger
+    # before the latest data, so might be more data than the default
+    s2 = _test_context_filtering(cmd, {'start_time': '2020-01-20 0:0:0'})
+    assert len(s1) <= len(s2)  # the new one should be bigger, if not equal
 
 
 def _test_context_filtering(cmd, filter):
@@ -285,7 +291,7 @@ def _test_context_filtering(cmd, filter):
     v = filter[k]
     setattr(ctx, k, v)
     s2 = _test_command(cmd, 'show', None, None)
-    assert len(s2) > 0  # these should be good filters, so some data should be returned
+    assert len(s2) > 0  # these should be good filters, so expect data
     setattr(ctx, k, "")  # reset ctx back to no filtering
     return s2
 
@@ -372,4 +378,3 @@ def test_sqcmds(testvar):
     jout = json.loads(output.decode('utf-8').strip())
 
     assert(jout == json.loads(testvar['output'].strip()))
-
