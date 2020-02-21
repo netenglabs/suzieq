@@ -176,6 +176,35 @@ class SqEngineObject(object):
 
         return df
 
+    def get_table_info(self, table, **kwargs):
+        default_df = self._get_table_info(table, columns='default')
+        all_columns_df = self._get_table_info(table, columns=['*'])
+        all_time_df = self._get_table_info(table, view='all')
+        times = all_time_df['timestamp'].unique()
+        ret = {}
+        ret['first_time'] = all_time_df.timestamp.min().round('S')
+        ret['latest_time'] = all_time_df.timestamp.max().round('S')
+        ret['intervals'] = len(times)
+
+        ret['latest rows'] = len(default_df)
+        ret['all rows'] = len(all_time_df)
+        ret['datacenters'] = len(default_df['datacenter'].unique())
+        ret['devices'] = len(default_df['hostname'].unique())
+        return ret
+
+    def _get_table_info(self, table, view='latest', **kwargs):
+        df = self.ctxt.engine.get_table_df(
+            self.cfg,
+            self.schemas,
+            table=table,
+            view=view,
+            start_time='',
+            end_time='',
+            sort_fields=None,
+            ** kwargs
+        )
+        return df
+
     def summarize(self, **kwargs):
         if not self.iobj._table:
             raise NotImplementedError
