@@ -9,6 +9,7 @@
 
 import pandas as pd
 import pyarrow as pa
+from suzieq.utils import SchemaForTable
 
 
 class SqEngineObject(object):
@@ -177,9 +178,10 @@ class SqEngineObject(object):
         return df
 
     def get_table_info(self, table, **kwargs):
-        default_df = self._get_table_info(table, columns='default')
-        all_columns_df = self._get_table_info(table, columns=['*'])
+        sch = SchemaForTable(table, schema=self.schemas)
+        key_fields = sch.key_fields()
         all_time_df = self._get_table_info(table, view='all')
+        default_df = all_time_df.drop_duplicates(subset=key_fields, keep='last')
         times = all_time_df['timestamp'].unique()
         ret = {}
         ret['first_time'] = all_time_df.timestamp.min().round('S')
@@ -188,9 +190,15 @@ class SqEngineObject(object):
 
         ret['latest rows'] = len(default_df)
         ret['all rows'] = len(all_time_df)
-        ret['datacenters'] = len(default_df['datacenter'].unique())
-        ret['devices'] = len(default_df['hostname'].unique())
+        ret['datacenters'] = self._unique_or_zero(default_df, 'datacenter')
+        ret['devices'] = self._unique_or_zero(default_df, 'hostname')
         return ret
+
+    def _unique_or_zero(self, df, col):
+        if col in df.columns:
+            return len(df[col].unique())
+        else:
+            return 0
 
     def _get_table_info(self, table, view='latest', **kwargs):
         df = self.ctxt.engine.get_table_df(
