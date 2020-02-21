@@ -29,7 +29,7 @@ class SqContext(object):
         self.engine = 'pandas'
         self.system_df = {}
         self.sort_fields = []
-        self.engine = get_sqengine(engine)
+        self.engine = get_sqengine(self.engine)
         if not self.engine:
             # We really should define our own error
             raise ValueError
@@ -81,7 +81,7 @@ class SqObject(object):
             self.view = view
         self.columns = columns
 
-        if engine_name:
+        if engine_name and engine_name is not '':
             self.engine = get_sqengine(engine_name)
         else:
             self.engine = self.ctxt.engine

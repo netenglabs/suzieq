@@ -273,6 +273,24 @@ class SqPandasEngine(SqEngine):
         folder = "{}/{}".format(self.cfg.get("data-directory"), table)
         return folder
 
+    def get_tables(self, cfg, **kwargs):
+        """finds the tables that are available"""
+        if not getattr(self, 'cfg', None):
+            self.cfg = cfg
+        dfolder = self.cfg['data-directory']
+
+        tables = []
+        if dfolder:
+            p = Path(dfolder)
+            tables = [dir.parts[-1] for dir in p.iterdir()
+                      if dir.is_dir() and not dir.parts[-1].startswith('_')]
+            datacenters = kwargs.get('datacenter', [])
+            for dc in datacenters:
+                tables = filter(
+                    lambda x: os.path.exists('{}/{}/datacenter={}'.format(
+                        dfolder, x, dc)), tables)
+
+        return tables
 
 def df_timestamp_to_datetime(df):
     if not df.empty:
