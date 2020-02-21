@@ -1,0 +1,27 @@
+description: Testing verb commands
+tests:
+  - command: system unique --format=json
+    data-directory: basic_dual_bgp/parquet_out
+    output: |
+      []
+    marks: system unique
+
+  - command: system unique --column=hostname --format=json
+    data-directory: basic_dual_bgp/parquet_out
+    output: |
+      ["edge01","exit01","exit02","internet","leaf01","leaf02","leaf03","leaf04","server101","server102","server103","server104","spine01","spine02"]
+    marks: system unique
+
+  - command: system unique --column=badcolumn --format=json
+    data-directory: basic_dual_bgp/parquet_out
+    output: |
+      []
+    marks: system unique
+
+  - command: routes unique --column=prefix --format=json
+    data-directory: basic_dual_bgp/parquet_out
+    xfail:
+      raises: OverflowError
+      reason: 'bug #37'
+    marks: routes unique
+
