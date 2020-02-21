@@ -1,9 +1,4 @@
-from pathlib import Path
-import json
-from collections import OrderedDict
-
 import pandas as pd
-from termcolor import cprint
 from nubia import command, argument, context
 import typing
 
@@ -113,6 +108,8 @@ class SqCommand:
             print(df.to_json(orient="records"))
         elif self.format == 'csv':
             print(df.to_csv())
+        elif self.format == 'dataframe':
+            return df
         else:
             print(df)
         return df  # This is to help the test routines for now
@@ -131,3 +128,21 @@ class SqCommand:
 
     def top(self, **kwargs):
         raise NotImplementedError
+
+    @command("unique", help="find the list of unique items in a colum")
+    @argument("column", description="the column to investigate")
+    def unique(self, **kwargs):
+        column = None
+        if 'column' in kwargs:
+            column = kwargs['column']
+            del kwargs['column']
+            format = self.format
+            self.format = 'dataframe'
+            df = self.show(**kwargs)
+            self.format = format
+            if column in df.columns:
+                r = df[column].unique()
+                if isinstance(r, pd.Categorical):
+                    r = r.categories
+                return self._gen_output(pd.Series(r))
+        return self._gen_output(pd.DataFrame())
