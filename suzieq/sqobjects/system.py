@@ -23,10 +23,3 @@ class SystemObj(basicobj.SqObject):
         self._cat_fields = []
 
 
-if __name__ == '__main__':
-    try:
-        import fire
-        fire.Fire(SystemObj)
-    except ImportError:
-        pass
-
