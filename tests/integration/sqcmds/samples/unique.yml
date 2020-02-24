@@ -4,21 +4,27 @@ tests:
     data-directory: basic_dual_bgp/parquet_out
     output: |
       [{"error":"ERROR: Must specify columns with unique"}]
-    marks: system unique
+    marks: unique
 
-  - command: system unique --column=hostname --format=json
+  - command: system unique --columns='hostname uptime' --format=json
+    data-directory: basic_dual_bgp/parquet_out
+    output: |
+      [{"error":"ERROR: Specify a single column with unique"}]
+    marks: unique
+
+  - command: system unique --columns=hostname --format=json
     data-directory: basic_dual_bgp/parquet_out
     output: |
       [{"hostname":"edge01"},{"hostname":"exit01"},{"hostname":"exit02"},{"hostname":"internet"},{"hostname":"leaf01"},{"hostname":"leaf02"},{"hostname":"leaf03"},{"hostname":"leaf04"},{"hostname":"server101"},{"hostname":"server102"},{"hostname":"server103"},{"hostname":"server104"},{"hostname":"spine01"},{"hostname":"spine02"}]
     marks: system unique
 
-  - command: system unique --column=badcolumn --format=json
+  - command: system unique --columns=badcolumn --format=json
     data-directory: basic_dual_bgp/parquet_out
     output: |
       []
     marks: system unique
 
-  - command: routes unique --column=prefix --format=json
+  - command: routes unique --columns=prefix --format=json
     data-directory: basic_dual_bgp/parquet_out
     xfail:
       reason: 'bug #37'
