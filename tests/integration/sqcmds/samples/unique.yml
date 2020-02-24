@@ -1,4 +1,4 @@
-description: Testing verb commands
+description: Testing unique verb
 tests:
   - command: system unique --format=json
     data-directory: basic_dual_bgp/parquet_out
@@ -20,8 +20,6 @@ tests:
 
   - command: system unique --columns=badcolumn --format=json
     data-directory: basic_dual_bgp/parquet_out
-    output: |
-      []
     marks: system unique
 
   - command: routes unique --columns=prefix --format=json
