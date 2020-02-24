@@ -58,6 +58,9 @@ class SystemCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
+        if 'uptime' in self.columns:
+            self.columns = ['bootupTimestamp' if x == 'uptime' else x
+                            for x in self.columns]
         df = self.sqobj.get(
             hostname=self.hostname, columns=self.columns,
             datacenter=self.datacenter,
