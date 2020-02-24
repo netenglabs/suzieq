@@ -3,13 +3,13 @@ tests:
   - command: system unique --format=json
     data-directory: basic_dual_bgp/parquet_out
     output: |
-      []
+      [{"error":"ERROR: Must specify columns with unique"}]
     marks: system unique
 
   - command: system unique --column=hostname --format=json
     data-directory: basic_dual_bgp/parquet_out
     output: |
-      ["edge01","exit01","exit02","internet","leaf01","leaf02","leaf03","leaf04","server101","server102","server103","server104","spine01","spine02"]
+      [{"hostname":"edge01"},{"hostname":"exit01"},{"hostname":"exit02"},{"hostname":"internet"},{"hostname":"leaf01"},{"hostname":"leaf02"},{"hostname":"leaf03"},{"hostname":"leaf04"},{"hostname":"server101"},{"hostname":"server102"},{"hostname":"server103"},{"hostname":"server104"},{"hostname":"spine01"},{"hostname":"spine02"}]
     marks: system unique
 
   - command: system unique --column=badcolumn --format=json
@@ -21,7 +21,7 @@ tests:
   - command: routes unique --column=prefix --format=json
     data-directory: basic_dual_bgp/parquet_out
     xfail:
-      raises: OverflowError
       reason: 'bug #37'
+      error: "Error running command: Unsupported UTF-8 sequence length when encoding string\n------------------------------------------------------------\n------------------------------------------------------------\n"
     marks: routes unique
 

@@ -368,13 +368,28 @@ def _load_up_the_tests():
 def test_sqcmds(testvar):
 
     sqcmd_path = [sys.executable, suzieq_cli_path]
-    exec_cmd = sqcmd_path + testvar['command'].split()
+    exec_cmd = sqcmd_path + testvar['command'].split() + ['--stderr']
 
     try:
         output = check_output(exec_cmd)
     except CalledProcessError as e:
         output = e.output
 
-    jout = json.loads(output.decode('utf-8').strip())
+    if output:
+        try:
+            jout = json.loads(output.decode('utf-8').strip())
+        except json.JSONDecodeError:
+            jout = output
 
-    assert(jout == json.loads(testvar['output'].strip()))
+    if 'output' in testvar:
+        try:
+            expected_jout = json.loads(testvar['output'].strip())
+        except json.JSONDecodeError:
+            expected_jout = testvar['output']
+        assert(jout == expected_jout)
+
+    elif 'xfail' in testvar and 'error' in testvar['xfail']:
+        if jout.decode("utf-8") == testvar['xfail']['error']:
+            assert False
+        else:
+            assert True
