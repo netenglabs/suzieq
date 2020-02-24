@@ -6,6 +6,7 @@ import json
 from subprocess import check_output, CalledProcessError
 import shlex
 import dateutil
+from tempfile import mkstemp
 
 import pytest
 from _pytest.mark.structures import Mark, MarkDecorator
@@ -366,15 +367,31 @@ def _load_up_the_tests():
 @pytest.mark.smoke
 @pytest.mark.sqcmds
 @pytest.mark.parametrize("testvar", _load_up_the_tests())
-def test_sqcmds(testvar):
+def test_sqcmds(testvar, create_context_config):
 
     sqcmd_path = [sys.executable, suzieq_cli_path]
+    tmpfname = None
+
+    if 'data-directory' in testvar:
+        # We need to create a tempfile to hold the config
+        tmpconfig = create_context_config
+        tmpconfig['data-directory'] = testvar['data-directory']
+
+        fd, tmpfname = mkstemp(suffix='yml')
+        f = os.fdopen(fd, 'w')
+        f.write(yaml.dump(tmpconfig))
+        f.close()
+        sqcmd_path += ['--config={}'.format(tmpfname)]
+
     exec_cmd = sqcmd_path + shlex.split(testvar['command']) + ['--stderr']
 
     try:
         output = check_output(exec_cmd)
     except CalledProcessError as e:
         output = e.output
+
+    if tmpfname:
+        os.remove(tmpfname)
 
     jout = []
     if output:
