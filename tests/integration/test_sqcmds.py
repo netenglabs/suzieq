@@ -302,10 +302,11 @@ def execute_cmd(cmd, verb, arg, filter=None):
     # expect the cmd class are in the module cmd and also named cmd
     module = globals()[cmd]
     instance = getattr(module, cmd)
-    if filter is not None:
-        instance = instance(**filter)
+    if filter is None:
+        filter = {'format': 'dataframe'}
     else:
-        instance = instance()
+        filter['format'] = 'dataframe'
+    instance = instance(**filter)
 
     c = getattr(instance, verb)
     if arg is not None:

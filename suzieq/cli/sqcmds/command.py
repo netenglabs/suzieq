@@ -112,7 +112,9 @@ class SqCommand:
             return df
         else:
             print(df)
-        return df  # This is to help the test routines for now
+        if df.columns.to_list() == ['error']:
+            return 1
+        return 0
 
     def show(self, **kwargs):
         raise NotImplementedError
