@@ -130,19 +130,24 @@ class SqCommand:
         raise NotImplementedError
 
     @command("unique", help="find the list of unique items in a colum")
-    @argument("column", description="the column to investigate")
     def unique(self, **kwargs):
         column = None
-        if 'column' in kwargs:
-            column = kwargs['column']
-            del kwargs['column']
-            format = self.format
-            self.format = 'dataframe'
-            df = self.show(**kwargs)
-            self.format = format
-            if column in df.columns:
-                r = df[column].unique()
-                if isinstance(r, pd.Categorical):
-                    r = r.categories
-                return self._gen_output(pd.Series(r))
+        if self.columns == ['default']:
+            return self._gen_output(pd.DataFrame.from_dict(
+                {'error': ['ERROR: Must specify columns with unique']},
+                orient='columns'))
+        if len(self.columns) > 1:
+            return self._gen_output(pd.DataFrame.from_dict(
+                {'error': ['ERROR: Specify a single column with unique']},
+                orient='columns'))
+        column = self.columns[0]
+        format = self.format
+        self.format = 'dataframe'
+        df = self.show(**kwargs)
+        self.format = format
+        if column in df.columns:
+            r = df[column].unique()
+            if isinstance(r, pd.Categorical):
+                r = r.categories
+            return self._gen_output(pd.DataFrame({column: r}))
         return self._gen_output(pd.DataFrame())
