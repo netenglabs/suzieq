@@ -99,24 +99,6 @@ class SqObject(object):
     def cfg(self):
         return self._cfg
 
-    def system_df(self, datacenter) -> pd.DataFrame:
-        '''Return cached version if present, else add to cache the system DF'''
-
-        if not self.ctxt.engine:
-            raise AttributeError('No analysis engine specified')
-            return(pd.DataFrame(columns=['datacenter', 'hostname']))
-
-        return self.engine_obj.system_df(datacenter,
-                                         pd.DataFrame(columns=sys_cols))
-
-    def get_valid_df(self, table, sort_fields, **kwargs) -> pd.DataFrame:
-        if not self.ctxt.engine:
-            raise AttributeError('No analysis engine specified')
-            return(pd.DataFrame(columns=['datacenter', 'hostname']))
-
-        return self.engine_obj.get_valid_df(self._table, sort_fields,
-                                            **kwargs)
-
     def get(self, **kwargs) -> pd.DataFrame:
         if not self._table:
             raise NotImplementedError
