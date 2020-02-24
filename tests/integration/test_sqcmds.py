@@ -4,6 +4,7 @@ import sys
 import yaml
 import json
 from subprocess import check_output, CalledProcessError
+import shlex
 import dateutil
 
 import pytest
@@ -368,13 +369,14 @@ def _load_up_the_tests():
 def test_sqcmds(testvar):
 
     sqcmd_path = [sys.executable, suzieq_cli_path]
-    exec_cmd = sqcmd_path + testvar['command'].split() + ['--stderr']
+    exec_cmd = sqcmd_path + shlex.split(testvar['command']) + ['--stderr']
 
     try:
         output = check_output(exec_cmd)
     except CalledProcessError as e:
         output = e.output
 
+    jout = []
     if output:
         try:
             jout = json.loads(output.decode('utf-8').strip())
