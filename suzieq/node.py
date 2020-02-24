@@ -24,12 +24,14 @@ async def init_hosts(hosts_file):
     nodes = {}
 
     if not os.path.isfile(hosts_file):
-        logging.error("hosts config must be a file: {}", hosts_file)
-        return nodes
+        logging.error("hosts config must be a file")
+        print("hosts config must be a file")
+        sys.exit(1)
 
     if not os.access(hosts_file, os.R_OK):
         logging.error("hosts config file is not readable: {}", hosts_file)
-        return nodes
+        print("hosts config file is not readable: {}", hosts_file)
+        sys.exit(1)
 
     with open(hosts_file, "r") as f:
         try:
