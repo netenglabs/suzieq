@@ -2,6 +2,7 @@ import os
 import asyncio
 import random
 from datetime import datetime
+import time
 import re
 import ast
 import copy
@@ -495,6 +496,21 @@ class Service(object):
         else:
             self.partition_cols = self.keys + ["timestamp"]
 
+    def get_data(self):
+        """provide the data that is interesting for a service
+
+        does not include queue or schema"""
+
+        r = {}
+        for field in 'name defn ignore_fields keys period stype partition_cols'.split(' '):
+            r[field] = getattr(self, field)
+        #textFSM objects can't be jsoned, so changing it
+        for device in r['defn']:
+            if 'textfsm' in r['defn'][device]:
+                r['defn'][device]['textfsm'] = str(r['defn'][device]['textfsm'])
+        return r
+
+
     def set_nodes(self, nodes):
         """New node list for this service"""
         if self.nodes:
@@ -527,7 +543,7 @@ class Service(object):
             yml = {"service": self.name,
                    "type": self.run_once,
                    "output": outputs}
-            fd, name = mkstemp(suffix='-poller.yml')
+            fd, name = mkstemp(suffix=f"-{self.name}-poller.yml")
             f = os.fdopen(fd, "w")
             f.write(yaml.dump(yml))
             f.close()
@@ -641,13 +657,13 @@ class Service(object):
 
     async def gather_data(self):
         """Collect data invoking the appropriate get routine from nodes."""
-
+        now = time.time()
         random.shuffle(self.nodelist)
         tasks = [self.nodes[key].exec_service(self.defn)
                  for key in self.nodelist]
 
         outputs = await asyncio.gather(*tasks)
-
+        self.logger.info(f"gathered for {self.name} took {time.time() - now} seconds")
         return outputs
 
     def process_data(self, data):
@@ -714,10 +730,14 @@ class Service(object):
                     "{}: No normalization/textfsm function for device {}"
                     .format(self.name, data["hostname"]))
         else:
+            d = data.get("data", None)
+            err = ""
+            if d:
+                err = d.get("error", "")
             self.logger.error(
                 "{}: failed for node {} with {}/{}".format(
                     self.name, data["hostname"], data["status"],
-                    data.get("error", "")
+                    err
                 )
             )
 
@@ -812,7 +832,7 @@ class Service(object):
 
     async def run(self):
         """Start the service"""
-
+        self.logger.info(f"running service {self.name} ")
         self.nodelist = list(self.nodes.keys())
 
         while True:
