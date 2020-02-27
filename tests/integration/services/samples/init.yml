@@ -1,0 +1,371 @@
+description: output from running init_services
+tests:
+  arpnd:
+    output: '{"name": "arpnd", "defn": {"cumulus": {"version": "all", "command": "ip
+      neigh show", "textfsm": "Value ipAddress ([0-9.]*)\nValue macaddr ([0-9a-f:]*)\nValue
+      oif (\\S+)\nValue state (\\w+)\nValue offload (offload)\n\nStart\n  ^${ipAddress}\\s+dev
+      ${oif}\\s+lladdr ${macaddr}\\s+${offload}\\s+${state} -> Record\n  ^${ipAddress}\\s+dev
+      ${oif}\\s+lladdr ${macaddr}\\s+${state} -> Record\n"}, "linux": {"copy": "cumulus"},
+      "platina": {"copy": "cumulus"}}, "ignore_fields": ["timestamp"], "keys": ["datacenter",
+      "hostname", "ipAddress", "oif"], "period": 15, "stype": "state", "partition_cols":
+      ["datacenter", "hostname", "ipAddress", "oif", "timestamp"]}'
+    service: arpnd
+  bgp:
+    output: '{"name": "bgp", "defn": {"eos": {"version": "all", "command": "show ip
+      bgp neighbors vrf all", "normalize": "vrfs/*/peerList/*/[ \"asn: peerAsn\",
+      \"localAsn: asn\", \"updateSource: source\", \"peerAddress: peer\", \"vrf: vrf\",
+      \"maintenance: maintenance\", \"establishFailHint: reason\", \"lastErrorTimeInfo/time:
+      lastDownTime?|0\", \"prefixesReceived: v4PfxRx?|0\", \"prefixesSent: v4PfxTx?|0\",
+      \"v6PrefixesReceived: v6PfxRx?|0\", \"v6PrefixesSent: v6PfxTx?|0\", \"receivedUpdates:
+      updatesRx?|0\", \"sentUpdates: updatesTx?|0\", \"routerId: peerRouterId\", \"localRouterId:
+      routerId\", \"establishedTime: estdTime?|0\", \"establishedTransitions: numChanges?|0\",
+      \"v4Enabled: v4Enabled?|True\", \"v6Enabled: v6Enabled?|False\", \"evpnEnabled:
+      evpnEnabled?|False\", \"state: state?Established|NotEstd\"]"}, "cumulus": {"version":
+      "all", "command": "net show bgp vrf all neighbor json", "normalize": "*:vrf/*:peer/[
+      \"remoteAs: peerAsn\", \"localAs: asn\", \"hostLocal: source\", \"lastResetDueTo:
+      reason\", \"lastResetTimerMsecs: lastDownTime?|0\", \"addressFamilyInfo/IPv4
+      Unicast/acceptedPrefixCounter: v4PfxRx?|0\", \"addressFamilyInfo/IPv6 Unicast/acceptedPrefixCounter:
+      v6PfxRx?|0\", \"addressFamilyInfo/L2VPN EVPN/acceptedPrefixCounter: evpnPfxRx?|0\",
+      \"messageStats/updatesSent: updatesTx\", \"messageStats/updatesRecv: updatesRx\",
+      \"remoteRouterId: peerRouterId\", \"bgpState: state?Established|NotEstd\", \"bgpTimerUpMsec:
+      estdTime/1000\", \"connectionsEstablished: numChanges\", \"connectionsDropped:
+      numChanges+numChanges\", \"hostname: peerHostname\", \"neighborCapabilities/multiprotocolExtensions/IPv4
+      Unicast/advertisedAndReceived: v4Enabled?|False\", \"neighborCapabilities/multiprotocolExtensions/L2VPN
+      EVPN/advertisedAndReceived: evpnEnabled?|False\", \"neighborCapabilities/multiprotocolExtensions/IPv6
+      Unicast/advertisedAndReceived: v6Enabled?|False\"]"}, "platina": {"version":
+      "all", "command": "sudo vtysh -c \"show ip bgp vrf all neighbors json\"", "normalize":
+      "*:vrf/*:peer/[ \"remoteAs: peerAsn\", \"localAs: asn\", \"hostLocal: source\",
+      \"lastResetDueTo: reason\", \"lastResetTimerMsecs: lastDownTime?|0\", \"addressFamilyInfo/IPv4
+      Unicast/acceptedPrefixCounter: v4PfxRx?|0\", \"addressFamilyInfo/IPv6 Unicast/acceptedPrefixCounter:
+      v6PfxRx?|0\", \"addressFamilyInfo/L2VPN EVPN/acceptedPrefixCounter: evpnPfxRx?|0\",
+      \"messageStats/updatesSent: updatesTx\", \"messageStats/updatesRecv: updatesRx\",
+      \"remoteRouterId: peerRouterId\", \"bgpState: state?Established|NotEstd\", \"bgpTimerUpMsec:
+      estdTime/1000\", \"connectionsEstablished: numChanges\", \"connectionsDropped:
+      numChanges+numChanges\", \"hostname: peerHostname\", \"neighborCapabilities/multiprotocolExtensions/IPv4
+      Unicast/advertisedAndReceived: v4Enabled?|False\", \"neighborCapabilities/multiprotocolExtensions/L2VPN
+      EVPN/advertisedAndReceived: evpnEnabled?|False\", \"neighborCapabilities/multiprotocolExtensions/IPv6
+      Unicast/advertisedAndReceived: v6Enabled?|False\"]"}}, "ignore_fields": ["lastDownTime",
+      "estdTime", "timestamp"], "keys": ["datacenter", "hostname", "vrf", "peer"],
+      "period": 15, "stype": "state", "partition_cols": ["datacenter", "hostname",
+      "vrf", "peer", "timestamp"]}'
+    service: bgp
+  evpnVni:
+    output: '{"name": "evpnVni", "defn": {"cumulus": {"version": "all", "command":
+      "sudo vtysh -c \"show evpn vni json\"", "normalize": "*/[ \"vni: vni\", \"type:
+      type\", \"numMacs: numMacs?|0\", \"numArpNd: numArpNd?|0\", \"numRemoteVteps:
+      numRemoteVteps?|0\", \"remoteVteps: remoteVteps\", \"tenantVrf: vrf\", ]"},
+      "platina": {"copy": "cumulus"}}, "ignore_fields": ["timestamp"], "keys": ["datacenter",
+      "hostname", "vni"], "period": 15, "stype": "state", "partition_cols": ["datacenter",
+      "hostname", "vni", "timestamp"]}'
+    service: evpnVni
+  fs:
+    output: '{"name": "fs", "defn": {"cumulus": {"copy": "linux"}, "linux": {"version":
+      "all", "command": "df -hT", "textfsm": "Value device ([/.\\w]+)\nValue fstype
+      (\\w+)\nValue totalSize ([^ \\t]+)\nValue usedSize ([^ \\t]+)\nValue availSize
+      ([^ \\t]+)\nValue usedPercent (\\d+)\nValue mountPoint ([^ ]*)\n\nStart\n  ^Filesystem\\s+Type.*$$\n  ^${device}\\s+${fstype}\\s+${totalSize}\\s+${usedSize}\\s+${availSize}\\s+${usedPercent}%\\s+${mountPoint}$$
+      -> Record\n"}, "eos": {"version": "all", "command": "bash timeout 5 df -hT",
+      "textfsm": "Value device ([/.\\w]+)\nValue fstype (\\w+)\nValue totalSize ([^
+      \\t]+)\nValue usedSize ([^ \\t]+)\nValue availSize ([^ \\t]+)\nValue usedPercent
+      (\\d+)\nValue mountPoint ([^ ]*)\n\nStart\n  ^Filesystem\\s+Type.*$$\n  ^${device}\\s+${fstype}\\s+${totalSize}\\s+${usedSize}\\s+${availSize}\\s+${usedPercent}%\\s+${mountPoint}$$
+      -> Record\n"}}, "ignore_fields": ["usedSize", "availSize", "timestamp"], "keys":
+      ["datacenter", "hostname", "device", "mountPoint"], "period": 15, "stype": "counters",
+      "partition_cols": ["datacenter", "hostname"]}'
+    service: fs
+  ifCounters:
+    output: '{"name": "ifCounters", "defn": {"cumulus": {"copy": "linux"}, "eos":
+      {"version": "all", "command": "show interfaces", "normalize": "interfaces/*/[
+      \"name: ifname\", \"interfaceCounters/inOctets: rxBytes?|0\", \"interfaceCounters/inTotalPkts:
+      rxPackets?|0\", \"interfaceCounters/inDiscards: rxDrops?|0\", \"interfaceCounters/totalInErrors:
+      rxErrs?|0\", \"interfaceCounters/outOctets: txBytes?|0\", \"interfaceCounters/outUcastPkts:
+      txPackets?|0\", \"interfaceCounters/outMulticastPkts: txPackets+txPackets\",
+      \"interfaceCounters/outBroadcastPkts: txPackets+txPackets\", \"interfaceCounters/totalOutErrors:
+      txErrs?|0\", \"interfaceCounters/outDiscards: txDrops?|0\" ]"}, "linux": {"version":
+      "all", "command": "cat /proc/net/dev", "textfsm": "Value ifname (\\S+)\nValue
+      rxBytes (\\d+)\nValue rxPackets (\\d+)\nValue rxErrs (\\d+)\nValue rxDrops (\\d+)\nValue
+      rxFifo (\\d+)\nValue rxFrame (\\d+)\nValue rxCompressed (\\d+)\nValue rxMcst
+      (\\d+)\nValue txBytes (\\d+)\nValue txPackets (\\d+)\nValue txErrs (\\d+)\nValue
+      txDrops (\\d+)\nValue txFifo (\\d+)\nValue txCollisions (\\d+)\nValue txCarrier
+      (\\d+)\nValue txCompressed (\\d+)\n\nStart\n  ^Inter-|.*$$ -> Continue\n  ^
+      face |.*$$ -> Continue\n  ^\\s*${ifname}:\\s+${rxBytes}\\s+${rxPackets}\\s+${rxErrs}\\s+${rxDrops}\\s+${rxFifo}\\s+${rxFrame}\\s+${rxCompressed}\\s+${rxMcst}\\s+${txBytes}\\s+${txPackets}\\s+${txErrs}\\s+${txDrops}\\s+${txFifo}\\s+${txCollisions}\\s+${txCarrier}\\s+${txCompressed}.*$$
+      -> Record\n  ^$$EOF\n"}, "platina": {"copy": "linux"}}, "ignore_fields": ["timestamp"],
+      "keys": ["datacenter", "hostname", "ifname"], "period": 15, "stype": "counters",
+      "partition_cols": ["datacenter", "hostname"]}'
+    service: ifCounters
+  interfaces:
+    output: '{"name": "interfaces", "defn": {"cumulus": {"version": "all", "command":
+      "sudo vtysh -c \"show int vrf all\"; ip -d address show", "textfsm": "Value
+      Required ifname ([^:@ ]+)\nValue state (up|down)\nValue linkUpCnt (\\d+)\nValue
+      linkUpTimestamp (.*)\nValue linkDownCnt (\\d+)\nValue linkDownTimestamp (.*)\nValue
+      vrf (\\S+)\nValue ifindex (\\d+)\nValue mtu (\\d+)\nValue speed (\\d+)\nValue
+      macaddr ([0-9a-f:]+)\nValue List ipAddressList ([0-9./]*)\nValue List ip6AddressList
+      ([0-9a-z:/]*)\nValue vni (\\d+)\nValue vlan (\\d+)\nValue srcVtepIp ([0-9./]*)\nValue
+      master (\\S+)\nValue description (.*)\nValue type (loopback|ether|vlan|vxlan|vrf|bond|bridge|bridge_slave|bond_slave|macvlan)\n\nStart\n  ^Interface.*
+      is .*$$ -> Continue.Record\n  ^Interface\\s+${ifname}\\s+.*is\\s+${state}.*$$\n  ^\\s+
+      Link ups:\\s+${linkUpCnt}\\s+last:${linkUpTimestamp}$$\n  ^\\s+ Link downs:\\s+${linkDownCnt}\\s+last:${linkDownTimestamp}$$\n  ^\\s+vrf:\\s+${vrf}.*$$\n  ^\\s+Description:\\s+${description}.*$$\n  ^\\s+index\\s+${ifindex}.*mtu\\s+${mtu}\\s+speed\\s+${speed}.*$$\n  ^\\s+HWaddr:\\s+${macaddr}.*$$\n  ^\\s+Interface
+      Type\\s+${type}.*$$\n  ^\\s+inet\\s+${ipAddressList}.*$$\n  ^\\s+inet6\\s+${ip6AddressList}.*$$\n  ^\\s+VLAN\\s+Id\\s+${vlan}.*$$\n  ^\\s+VxLAN
+      Id\\s+${vni}\\s+VTEP IP:\\s+${srcVtepIp}\\s+Access VLAN Id\\s+${vlan}.*$$\n  ^\\s+Master\\s+(${master})\\s+ifindex.*$$\n  ^\\d+:.*$$
+      -> Continue.Record\n  ^${ifindex}:\\s+${ifname}.*: <.*> mtu\\s+${mtu}.* master
+      ${master} state.*$$\n  ^${ifindex}:\\s+${ifname}.*: <.*> mtu\\s+${mtu}.* state.*$$\n  ^\\s*link/${type}\\s+${macaddr}
+      brd .*$$\n  ^\\s*inet\\s*${ipAddressList}.*scope global.*$$\n  ^\\s*inet6\\s*${ip6AddressList}.*scope
+      global.*$$\n  ^\\s*alias\\s*${description}$$\n  ^\\s*${type}\\s* id ${vni}.*$$\n  ^\\s*${type}\\s*table.*$$\n  ^\\s*${type}\\s*mode.*$$\n  ^\\s*${type}\\s*protocol.*id\\s+${vlan}.*$$\n  ^\\s*${type}
+      state.* mii_status.*$$\n  ^\\s*${type} forward_delay.*$$\n"}, "eos": {"version":
+      "all", "command": "show interfaces", "normalize": "interfaces/*/[ \"name: ifname\",
+      \"mtu: mtu?|0\", \"description: description\", \"physicalAddress: macaddr\",
+      \"bandwidth: speed?|0\", \"srcIpAddr: srcVtepIp\", \"vlanToVniMap/*:vlan?|0\",
+      \"vlanToVniMap/*/vni: vni?|0\", \"lineProtocolStatus: state\", \"hardware: type\",
+      \"linkStatusChanges: numChanges?|0\", \"lastStatusChangeTimeStamp: statusChangeTimestamp\",
+      \"fallbackEnabled: lacpBypass?|False\", \"interfaceMembership: master\", \"interfaceAddress:
+      ipAddressList?|[]\", \"interfaceAddressIP6: ip6AddressList?|[]\", ]"}, "linux":
+      {"version": "all", "command": "ip -d address show", "textfsm": "Value ifindex
+      (\\d+)\nValue ifname ([^:@]+)\nValue mtu (\\d+)\nValue master (\\S+)\nValue
+      state (\\S+)\nValue macaddr ([0-9a-f:]+)\nValue List ipAddressList ([0-9./]*)\nValue
+      List ip6AddressList ([0-9a-z:/]*)\nValue description (.*)\nValue vni (\\d+)\nValue
+      vlan (\\d+)\nValue type (loopback|ether|vlan|vxlan|vrf|bond|bridge|bridge_slave|bond_slave|macvlan)\n\nStart\n  ^\\d+:
+      -> Continue.Record\n  ^${ifindex}: ${ifname}.*: <.*> mtu ${mtu}.* master ${master}
+      state ${state}.*$$\n  ^${ifindex}: ${ifname}.*: <.*> mtu ${mtu}.* state ${state}.*$$\n  ^\\s*link/${type}\\s+${macaddr}
+      brd .*$$\n  ^\\s*inet\\s*${ipAddressList}.*scope global.*$$\n  ^\\s*inet6\\s*${ip6AddressList}.*scope
+      global.*$$\n  ^\\s*alias\\s*${description}$$\n  ^\\s*${type}\\s* id ${vni}.*$$\n  ^\\s*${type}\\s*table.*$$\n  ^\\s*${type}\\s*mode.*$$\n  ^\\s*${type}\\s*protocol.*id
+      ${vlan}.*$$\n  ^\\s*bridge_slave state.*$$\n  ^\\s*${type} state.* mii_status.*$$\n  ^\\s*${type}
+      forward_delay.*$$\n  ^.*$$ -> Continue\n"}, "platina": {"copy": "cumulus"}},
+      "ignore_fields": ["timestamp"], "keys": ["datacenter", "hostname", "ifname"],
+      "period": 15, "stype": "state", "partition_cols": ["datacenter", "hostname",
+      "ifname", "timestamp"]}'
+    service: interfaces
+  lldp:
+    output: '{"name": "lldp", "defn": {"cumulus": {"version": "all", "command": "net
+      show lldp json", "normalize": "lldp/[0]/interface/*/[ \"name: ifname\", \"chassis/[0]/name/[0]/value:
+      peerHostname?|\", \"chassis/[0]/descr/[0]/value: description?|\", \"chassis/[0]/mgmt-ip/[0]/value:
+      mgmtIP?|\", \"port/[0]/id/[0]/value: peerIfname?|\"]"}, "eos": {"version": "all",
+      "command": "show lldp neighbors detail", "normalize": "lldpNeighbors/*:ifname/[
+      \"lldpNeighborInfo/[0]/systemName: peerHostname?|\", \"lldpNeighborInfo/[0]/neighborInterfaceInfo/interfaceId:
+      peerIfname?|\", \"lldpNeighborInfo/[0]/systemDescription: description?|\", \"lldpNeighborInfo/[0]/managementAddresses/[0]/address:
+      mgmtIP?|\", ]"}, "linux": {"version": "all", "command": "if systemctl status
+      lldpd > /dev/null 2>&1; then sudo lldpctl; fi", "textfsm": "Value Required ifname
+      (\\S+)\nValue Required peerHostname (\\S+)\nValue description (.*)\nValue peerIfname
+      (\\S+)\n\nStart\n  ^Interface:.*$$ -> Continue.Record\n  ^Interface:\\s+${ifname},
+      .*$$\n  ^\\s+SysName:\\s+ ${peerHostname}.*$$\n  ^\\s+SysDescr:\\s+ ${description}.*$$\n  ^\\s+PortID:\\s+ifname\\s+${peerIfname}.*$$\n"}},
+      "ignore_fields": ["timestamp"], "keys": ["datacenter", "hostname", "ifname"],
+      "period": 15, "stype": "state", "partition_cols": ["datacenter", "hostname",
+      "ifname", "timestamp"]}'
+    service: lldp
+  macs:
+    output: '{"name": "macs", "defn": {"cumulus": {"version": "all", "command": "/sbin/bridge
+      fdb show", "textfsm": "Value macaddr ([0-9a-f:]+)\nValue oif (\\S+)\nValue vlan
+      (\\d+)\nValue flags (\\S+)\nValue remoteVtepIp ([0-9.]+)\n\nStart\n  ^${macaddr}
+      dev ${oif} vlan ${vlan} master bridge ${flags}.*$$ -> Next.Record\n  ^${macaddr}
+      dev ${oif} vlan ${vlan} master bridge.*$$ -> Next.Record\n  ^${macaddr} dev
+      ${oif} dst ${remoteVtepIp} self ${flags}.*$$ -> Next.Record\n  ^${macaddr} dev
+      ${oif} master bridge ${flags}.*$$ -> Next.Record\n  ^${macaddr} dev ${oif} master
+      bridge.*$$ -> Next.Record\n  ^${macaddr} dev ${oif} self ${flags}.*$$ -> Next.Record\n"},
+      "linux": {"copy": "cumulus"}, "platina": {"copy": "cumulus"}}, "ignore_fields":
+      ["timestamp"], "keys": ["datacenter", "hostname", "vlan", "macaddr"], "period":
+      15, "stype": "state", "partition_cols": ["datacenter", "hostname", "vlan", "macaddr",
+      "timestamp"]}'
+    service: macs
+  mlag:
+    output: '{"name": "mlag", "defn": {"cumulus": {"version": "all", "command": "if
+      [ -f \"/etc/default/clagd\" ]; then net show clag json; else echo {}; fi", "normalize":
+      "[ \"status/peerAlive: state\", \"status/sysMac: systemId\", \"status/peerIp:
+      peerAddress\", \"status/ourRole: role\", \"status/peerRole: peerRole\", \"status/peerId:
+      peerMacAddress\", \"status/peerIf: peerLink\", \"peerLinkStatus: peerLinkStatus?|NA\",
+      \"status/backupActive: backupActive?True=true|false\", \"status/backupIp: backupIP\",
+      \"status/domainId: domainId?|NA\", \"status/vxlanAnycast: vtepIP\", \"clagIntfs:
+      mlagInterfacesList\", ]"}, "eos": {"version": "all", "command": "show mlag detail",
+      "normalize": "[ \"state: state?|disabled\", \"systemId: systemId\", \"peerAddress:
+      peerAddress\", \"status/peerRole: peerRole\", \"detail/peerMacAddress: peerMacAddress\",
+      \"peerLinkStatus: peerLinkStatus\", \"dualPrimaryDetectionState: backupActive?|NA\",
+      \"backupIP: backupIP?|NA\", \"domainId: domainId\", \"vxlanAnycast: vtepIP?|NA\",
+      \"portsErrDisabled: portsErrDisabled\", \"detail/mlagState: role\", \"mlagPorts/Disabled:
+      mlagErrorPortsCnt?|0\", \"mlagPorts/Active-partial: mlagSinglePortsCnt?|0\",
+      \"mlagPorts/Active-full: mlagDualPortsCnt?|0\", \"mlagPorts/Inactive: mlagErrorPortsCnt+mlagErrorPortsCnt\",
+      \"configSanity: configSanity?|\"]"}}, "ignore_fields": ["timestamp"], "keys":
+      ["datacenter", "hostname"], "period": 15, "stype": "state", "partition_cols":
+      ["datacenter", "hostname", "timestamp"]}'
+    service: mlag
+  ospfIf:
+    output: '{"name": "ospfIf", "defn": {"eos": {"version": "all", "command": "show
+      ip ospf interface", "format": "text", "textfsm": "Value ifname (\\S+)\nValue
+      state (\\w+)\nValue ipAddress ([0-9./]+)\nValue vrf (\\S+)\nValue area ([0-9.]+)\nValue
+      networkType (\\w+)\nValue cost (\\d+)\nValue helloTime (\\d+)\nValue deadTime
+      (\\d+)\nValue retxTime (\\d+)\nValue nbrCount (\\d+)\nValue passive (\\w+)\n\nStart\n  ^\\w+
+      is.*$$ -> Continue.Record\n  ^${ifname} is ${state}.*$$\n  ^\\s+Interface Address
+      ${ipAddress}, VRF ${vrf}, Area ${area}.*$$\n  ^\\s+Network Type ${networkType},
+      Cost:\\s+${cost}.*$$\n  ^\\s+Timer intervals configured, Hello ${helloTime},
+      Dead ${deadTime}, Retransmit ${retxTime}.*$$\n  ^\\s+Neighbor Count is ${nbrCount}
+      \\(${passive} Interface\\)\n  ^\\s+Neighbor Count is ${nbrCount}\n"}, "cumulus":
+      {"version": "all", "command": "sudo vtysh -c ''show ip ospf interface''", "textfsm":
+      "Value ifname (\\S+)\nValue routerId ([0-9./]+)\nValue state (\\w+)\nValue ipAddress
+      ([0-9./]+)\nValue vrf (\\S+)\nValue area ([0-9.]+)\nValue areaStub ((\\[Stub\\])?)\nValue
+      isUnnumbered (UNNUMBERED)\nValue networkType (\\w+)\nValue cost (\\d+)\nValue
+      helloTime (\\d+)\nValue deadTime (\\d+)\nValue retxTime (\\d+)\nValue nbrCount
+      (\\d+)\nValue passive (\\w+)\n\nStart\n  ^\\w+ is.*$$ -> Continue.Record\n  ^${ifname}
+      is ${state}.*$$\n  ^\\s+Internet Address ${ipAddress},.*Area ${area}\\s?${areaStub}.*$$\n  ^\\s+This
+      interface is ${isUnnumbered}, Area ${area}\\s?${areaStub}.*$$\n  ^\\s+Router
+      ID ${routerId}, Network Type ${networkType}, Cost:\\s+${cost}.*$$\n  ^\\s+Timer
+      intervals configured, Hello ${helloTime}.*, Dead ${deadTime}.*, Retransmit ${retxTime}.*$$\n  ^\\s+No
+      Hellos \\(${passive} interface\\).*$$\n  ^\\s+Neighbor Count.*, Adjacent neighbor
+      count is ${nbrCount}.*$$\n"}, "platina": {"copy": "cumulus"}, "linux": {"copy":
+      "cumulus"}}, "ignore_fields": ["timestamp"], "keys": ["datacenter", "hostname",
+      "vrf", "ifname"], "period": 15, "stype": "state", "partition_cols": ["datacenter",
+      "hostname", "vrf", "ifname", "timestamp"]}'
+    service: ospfIf
+  ospfNbr:
+    output: '{"name": "ospfNbr", "defn": {"eos": {"version": "all", "command": "show
+      ip ospf neighbor detail", "normalize": "vrfs/*:vrf/instList/*/ospfNeighborEntries/*/[
+      \"routerId: peerRouterId\", \"priority: nbrPrio\", \"interfaceName: ifname\",
+      \"adjacencyState: state\", \"interfaceAddress: peerIP\", \"details/areaId: area\",
+      \"details/stateTime: lastChangeTime\", \"details/numberOfStateChanges: numChanges\",
+      \"details/retransmissionCount: lsaRetxCnt\"]"}, "cumulus": {"version": "all",
+      "command": "sudo vtysh -c ''show ip ospf neighbor detail''", "textfsm": "Value
+      peerRouterId ([0-9./]*)\nValue peerIP ([0-9./]*)\nValue vrf (\\S+)\nValue area
+      ([0-9.]*)\nValue areaStub ((\\[Stub\\])?)\nValue ifname (\\S+)\nValue nbrPrio
+      (\\d+)\nValue state (\\w+)\nValue numChanges (\\d+)\nValue lastChangeTime (\\w+)\nValue
+      lsaRetxCnt (\\d+)\n\nStart\n  ^\\s?Neighbor .*, interface address.*$$ -> Continue.Record\n  ^\\s?Neighbor
+      ${peerRouterId}, interface address ${peerIP}.*$$\n  ^\\s+In the area ${area}\\s?${areaStub}\\s?via
+      interface ${ifname}.*$$\n  ^\\s+Neighbor priority is ${nbrPrio},\\s+State is
+      ${state}, ${numChanges} state changes.*$$\n  ^\\s+Progressive change ${lastChangeTime}
+      ago.*$$\n"}, "platina": {"copy": "cumulus"}, "linux": {"copy": "cumulus"}},
+      "ignore_fields": ["lastChangeTime", "timestamp"], "keys": ["datacenter", "hostname",
+      "vrf", "ifname"], "period": 15, "stype": "state", "partition_cols": ["datacenter",
+      "hostname", "vrf", "ifname", "timestamp"]}'
+    service: ospfNbr
+  routes:
+    output: '{"name": "routes", "defn": {"cumulus": {"version": "all", "command":
+      "ip route show table all", "textfsm": "Value protocol (\\w+)\nValue Required
+      prefix ([0-9./]*|default)\nValue vrf (\\S+)\nValue source ([0-9./]*)\nValue
+      List nexthopIps ([0-9./]*)\nValue List oifs (\\S+)\nValue List weights (\\d+)\nValue
+      metric (\\d+)\n\nStart\n  ^\\S+ -> Continue.Record\n  ^\\s+nexthop via\\s+${nexthopIps}\\s+dev
+      ${oifs}\\s+weight ${weights}.*$$\n  ^${prefix}\\s+via\\s+${nexthopIps}\\s+dev
+      ${oifs}\\s+table ${vrf}\\s+proto ${protocol}\\s+metric ${metric}.*$$\n  ^${prefix}\\s+dev
+      ${oifs}\\s+table ${vrf}\\s+proto ${protocol}.*src ${source}.*$$\n  ^unreachable\\s+${prefix}\\s+table
+      ${vrf}\\s+metric ${metric}.*$$\n  ^${prefix}\\s+via\\s+${nexthopIps}\\s+dev
+      ${oifs}\\s+table ${vrf}\n  ^${prefix}\\s+proto ${protocol}\\s+metric ${metric}.*$$\n  ^${prefix}\\s+proto
+      ${protocol}\\s+src ${source}\\s+metric ${metric}.*$$\n  ^${prefix}\\s+via ${nexthopIps}\\s+dev
+      ${oifs}\\s+proto ${protocol}\\s+metric ${metric}.*$$\n  ^${prefix}\\s+dev ${oifs}\\s+proto
+      ${protocol}.*src ${source}.*$$\n  ^${prefix}\\s+via ${nexthopIps}\\s+dev ${oifs}.*$$\n  ^${prefix}\\s+table
+      ${vrf}\\s+proto ${protocol}\\s+metric ${metric}\n"}, "linux": {"copy": "cumulus"},
+      "platina": {"copy": "cumulus"}, "eos": {"version": "all", "command": "show ip
+      route vrf all", "normalize": "vrfs/*:vrf/routes/*:prefix/[ \"routeType: protocol\",
+      \"metric: metric?|0\", \"vias/*/nexthopAddr: list(nexthopIps)\", \"vias/*/interface\":
+      list(oifs)\"]"}}, "ignore_fields": ["timestamp"], "keys": ["datacenter", "hostname",
+      "vrf"], "period": 15, "stype": "state", "partition_cols": ["datacenter", "hostname",
+      "vrf", "timestamp"]}'
+    service: routes
+  system:
+    output: '{"name": "system", "defn": {"eos": {"version": "all", "command": "show
+      version", "normalize": "[ \"modelName: model\", \"version: version\", \"vendor:
+      vendor?|Arista\", \"os: os?|EOS\", \"architecture: architecture\", \"bootupTimestamp:
+      bootupTimestamp\"]"}, "cumulus": {"version": "all", "command": "cat /proc/uptime;
+      hostnamectl", "textfsm": "Value vendor (\\S+)\nValue version (\\d+.\\d+.\\d+)\nValue
+      model (\\S+)\nValue os (\\S+ \\S+)\nValue sysUptime (\\d+.\\d+)\nValue architecture
+      (\\S+)\n\nStart\n  ^${sysUptime}.*$$\n  ^\\s*Chassis:\\s+${model}\\s*$$\n  ^\\s*Operating
+      System:\\s+${os}\\s*$$\n  ^\\s*CPE OS Name:\\s*cpe.*:${version}\\s*$$\n  ^\\s*Architecture:\\s+${architecture}\\s*$$\n"},
+      "linux": {"version": "all", "command": "cat /proc/uptime; hostnamectl", "textfsm":
+      "Value vendor (\\S+)\nValue model (\\S+)\nValue os (.*)\nValue sysUptime (\\d+.\\d+)\nValue
+      architecture (\\S+)\n\nStart\n  ^${sysUptime}.*$$\n  ^\\s*Chassis:\\s+${model}\\s*$$\n  ^\\s*Operating
+      System:\\s+${os}\\s*$$\n  ^\\s*Architecture:\\s+${architecture}\\s*$$\n"}, "platina":
+      {"copy": "linux"}}, "ignore_fields": ["timestamp", "bootupTimestamp"], "keys":
+      ["datacenter", "hostname"], "period": 15, "stype": "state", "partition_cols":
+      ["datacenter", "hostname", "timestamp"]}'
+    service: system
+  time:
+    output: '{"name": "time", "defn": {"cumulus": {"copy": "linux"}, "linux": {"version":
+      "all", "command": "timedatectl", "textfsm": "Value timezone (\\S+)\nValue ntpEnabled
+      (yes|no)\nValue ntpSync (yes|no)\n\nStart\n  ^\\s*Local time:.*$$\n  ^\\s*Universal
+      time:.*$$\n  ^\\s*RTC time:.*$$\n  ^\\s*Time zone: ${timezone}.*$$\n  ^\\s*NTP
+      enabled: ${ntpEnabled}.*$$\n  ^\\s*NTP synchronized: ${ntpSync}.*$$ -> Record\n"},
+      "eos": {"version": "all", "command": "show clock", "format": "text", "textfsm":
+      "Value timezone (\\S+)\nValue ntpEnabled (yes|no)\nValue ntpSync (yes|no)\n\nStart\n  ^\\s*Clock
+      source:.*$$\n  ^\\s*Timezone: ${timezone}$$\n"}}, "ignore_fields": ["timestamp"],
+      "keys": ["datacenter", "hostname"], "period": 15, "stype": "state", "partition_cols":
+      ["datacenter", "hostname", "timestamp"]}'
+    service: time
+  topcpu:
+    output: '{"name": "topcpu", "defn": {"cumulus": {"version": "all", "command":
+      "top -bn 1 | head -17", "textfsm": "Value Filldown minLoadAvg (\\S+)\nValue
+      Filldown fiveMinLoadAvg (\\S+)\nValue Filldown fifteenMinLoadAvg (\\S+)\nValue
+      Filldown totalMem (\\d+)\nValue Filldown freeMem (\\d+)\nValue Filldown usedMem
+      (\\d+)\nValue Filldown cacheMem (\\d+)\nValue pid (\\d+)\nValue user (\\S+)\nValue
+      priority (\\d+)\nValue nice (\\d+)\nValue virtualMem (\\d+|\\d+.\\d+g)\nValue
+      residentMem (\\d+|\\d+.\\d+g)\nValue sharedMem (\\d+|\\d+.\\d+g)\nValue state
+      (\\S)\nValue percentCPU (\\d+.\\d+)\nValue percentMem (\\d+.\\d+)\nValue runningTime
+      (\\d+:\\d+.?\\d*)\nValue procName (.*)\n\nStart\n  ^top.*\\s+load average: ${minLoadAvg},
+      ${fiveMinLoadAvg}, ${fifteenMinLoadAvg}.*$$\n  ^Tasks.*$$\n  ^%Cpu.*$$\n  ^KiB
+      Mem\\s*:\\s+${totalMem} total,\\s+${usedMem} used,\\s+${freeMem} free,\\s+${cacheMem}
+      buff.*\\s*$$\n  ^KiB Swap:.*$$\n  ^\\s*$$\n  ^\\s+PID USER.*$$ -> Record\n  ^\\s*${pid}\\s+${user}\\s+${priority}\\s+${nice}\\s+${virtualMem}\\s+${residentMem}\\s+${sharedMem}\\s+${state}\\s+${percentCPU}\\s+${percentMem}\\s+${runningTime}\\s+${procName}\\s*$$
+      -> Record\n  ^$$EOF\n"}, "linux": {"version": "all", "command": "top -bn 1 |
+      head -17", "textfsm": "Value Filldown minLoadAvg (\\S+)\nValue Filldown fiveMinLoadAvg
+      (\\S+)\nValue Filldown fifteenMinLoadAvg (\\S+)\nValue Filldown totalMem (\\d+)\nValue
+      Filldown freeMem (\\d+)\nValue Filldown usedMem (\\d+)\nValue Filldown cacheMem
+      (\\d+)\nValue pid (\\d+)\nValue user (\\S+)\nValue priority (\\d+)\nValue nice
+      (\\d+)\nValue virtualMem (\\d+|\\d+.\\d+g)\nValue residentMem (\\d+|\\d+.\\d+g)\nValue
+      sharedMem (\\d+|\\d+.\\d+g)\nValue state (\\S)\nValue percentCPU (\\d+.\\d+)\nValue
+      percentMem (\\d+.\\d+)\nValue runningTime (\\d+:\\d+.?\\d*)\nValue procName
+      (.*)\n\nStart\n  ^top.*\\s+load average: ${minLoadAvg}, ${fiveMinLoadAvg}, ${fifteenMinLoadAvg}.*$$\n  ^Tasks.*$$\n  ^%Cpu.*$$\n  ^KiB
+      Mem\\s*:\\s+${totalMem} total,\\s+${freeMem} free,\\s+${usedMem} used,\\s+${cacheMem}
+      buff.*\\s*$$\n  ^KiB Swap:.*$$\n  ^\\s*$$\n  ^\\s+PID USER.*$$ -> Record\n  ^\\s*${pid}\\s+${user}\\s+${priority}\\s+${nice}\\s+${virtualMem}\\s+${residentMem}\\s+${sharedMem}\\s+${state}\\s+${percentCPU}\\s+${percentMem}\\s+${runningTime}\\s+${procName}\\s*$$
+      -> Record\n  ^$$EOF\n"}, "eos": {"version": "all", "command": "bash timeout
+      5 top -bn 1 | head -17", "format": "text", "textfsm": "Value Filldown minLoadAvg
+      (\\S+)\nValue Filldown fiveMinLoadAvg (\\S+)\nValue Filldown fifteenMinLoadAvg
+      (\\S+)\nValue Filldown totalMem (\\d+)\nValue Filldown freeMem (\\d+)\nValue
+      Filldown usedMem (\\d+)\nValue Filldown cacheMem (\\d+)\nValue pid (\\d+)\nValue
+      user (\\S+)\nValue priority (\\d+)\nValue nice (\\d+)\nValue virtualMem (\\d+|\\d+.\\d+g)\nValue
+      residentMem (\\d+|\\d+.\\d+g)\nValue sharedMem (\\d+|\\d+.\\d+g)\nValue state
+      (\\S)\nValue percentCPU (\\d+.\\d+)\nValue percentMem (\\d+.\\d+)\nValue runningTime
+      (\\d+:\\d+.?\\d*)\nValue procName (.*)\n\nStart\n  ^top.*\\s+load average: ${minLoadAvg},
+      ${fiveMinLoadAvg}, ${fifteenMinLoadAvg}.*$$\n  ^Tasks.*$$\n  ^%Cpu.*$$\n  ^KiB
+      Mem\\s*:\\s+${totalMem} total,\\s+${usedMem} used,\\s+${freeMem} free,\\s+${cacheMem}
+      buff.*\\s*$$\n  ^KiB Swap:.*$$\n  ^\\s*$$\n  ^\\s+PID USER.*$$ -> Record\n  ^\\s*${pid}\\s+${user}\\s+${priority}\\s+${nice}\\s+${virtualMem}\\s+${residentMem}\\s+${sharedMem}\\s+${state}\\s+${percentCPU}\\s+${percentMem}\\s+${runningTime}\\s+${procName}\\s*$$
+      -> Record\n  ^$$EOF\n"}, "platina": {"copy": "cumulus"}}, "ignore_fields": ["timestamp"],
+      "keys": ["datacenter", "hostname"], "period": 60, "stype": "counters", "partition_cols":
+      ["datacenter", "hostname"]}'
+    service: topcpu
+  topmem:
+    output: '{"name": "topmem", "defn": {"cumulus": {"version": "all", "command":
+      "top -bn 1 -o ''%MEM'' | head -17", "textfsm": "Value Filldown minLoadAvg (\\S+)\nValue
+      Filldown fiveMinLoadAvg (\\S+)\nValue Filldown fifteenMinLoadAvg (\\S+)\nValue
+      Filldown totalMem (\\d+)\nValue Filldown freeMem (\\d+)\nValue Filldown usedMem
+      (\\d+)\nValue Filldown cacheMem (\\d+)\nValue pid (\\d+)\nValue user (\\S+)\nValue
+      priority (\\d+)\nValue nice (\\d+)\nValue virtualMem (\\d+|\\d+.\\d+g)\nValue
+      residentMem (\\d+|\\d+.\\d+g)\nValue sharedMem (\\d+|\\d+.\\d+g)\nValue state
+      (\\S)\nValue percentCPU (\\d+.\\d+)\nValue percentMem (\\d+.\\d+)\nValue runningTime
+      (\\d+:\\d+.?\\d*)\nValue procName (.*)\n\nStart\n  ^top.*\\s+load average: ${minLoadAvg},
+      ${fiveMinLoadAvg}, ${fifteenMinLoadAvg}.*$$\n  ^Tasks.*$$\n  ^%Cpu.*$$\n  ^KiB
+      Mem\\s*:\\s+${totalMem} total,\\s+${usedMem} used,\\s+${freeMem} free,\\s+${cacheMem}
+      buff.*\\s*$$\n  ^KiB Swap:.*$$\n  ^\\s*$$\n  ^\\s+PID USER.*$$ -> Record\n  ^\\s*${pid}\\s+${user}\\s+${priority}\\s+${nice}\\s+${virtualMem}\\s+${residentMem}\\s+${sharedMem}\\s+${state}\\s+${percentCPU}\\s+${percentMem}\\s+${runningTime}\\s+${procName}\\s*$$
+      -> Record\n  ^$$EOF\n"}, "linux": {"version": "all", "command": "top -bn 1 ''%MEM''
+      | head -17", "textfsm": "Value Filldown minLoadAvg (\\S+)\nValue Filldown fiveMinLoadAvg
+      (\\S+)\nValue Filldown fifteenMinLoadAvg (\\S+)\nValue Filldown totalMem (\\d+)\nValue
+      Filldown freeMem (\\d+)\nValue Filldown usedMem (\\d+)\nValue Filldown cacheMem
+      (\\d+)\nValue pid (\\d+)\nValue user (\\S+)\nValue priority (\\d+)\nValue nice
+      (\\d+)\nValue virtualMem (\\d+|\\d+.\\d+g)\nValue residentMem (\\d+|\\d+.\\d+g)\nValue
+      sharedMem (\\d+|\\d+.\\d+g)\nValue state (\\S)\nValue percentCPU (\\d+.\\d+)\nValue
+      percentMem (\\d+.\\d+)\nValue runningTime (\\d+:\\d+.?\\d*)\nValue procName
+      (.*)\n\nStart\n  ^top.*\\s+load average: ${minLoadAvg}, ${fiveMinLoadAvg}, ${fifteenMinLoadAvg}.*$$\n  ^Tasks.*$$\n  ^%Cpu.*$$\n  ^KiB
+      Mem\\s*:\\s+${totalMem} total,\\s+${freeMem} free,\\s+${usedMem} used,\\s+${cacheMem}
+      buff.*\\s*$$\n  ^KiB Swap:.*$$\n  ^\\s*$$\n  ^\\s+PID USER.*$$ -> Record\n  ^\\s*${pid}\\s+${user}\\s+${priority}\\s+${nice}\\s+${virtualMem}\\s+${residentMem}\\s+${sharedMem}\\s+${state}\\s+${percentCPU}\\s+${percentMem}\\s+${runningTime}\\s+${procName}\\s*$$
+      -> Record\n  ^$$EOF\n"}, "eos": {"version": "all", "command": "bash timeout
+      4 top -bn 1 -N | head -17", "format": "text", "textfsm": "Value Filldown minLoadAvg
+      (\\S+)\nValue Filldown fiveMinLoadAvg (\\S+)\nValue Filldown fifteenMinLoadAvg
+      (\\S+)\nValue Filldown totalMem (\\d+)\nValue Filldown freeMem (\\d+)\nValue
+      Filldown usedMem (\\d+)\nValue Filldown cacheMem (\\d+)\nValue pid (\\d+)\nValue
+      user (\\S+)\nValue priority (\\d+)\nValue nice (\\d+)\nValue virtualMem (\\d+|\\d+.\\d+g)\nValue
+      residentMem (\\d+|\\d+.\\d+g)\nValue sharedMem (\\d+|\\d+.\\d+g)\nValue state
+      (\\S)\nValue percentCPU (\\d+.\\d+)\nValue percentMem (\\d+.\\d+)\nValue runningTime
+      (\\d+:\\d+.?\\d*)\nValue procName (.*)\n\nStart\n  ^top.*\\s+load average: ${minLoadAvg},
+      ${fiveMinLoadAvg}, ${fifteenMinLoadAvg}.*$$\n  ^Tasks.*$$\n  ^%Cpu.*$$\n  ^KiB
+      Mem\\s*:\\s+${totalMem} total,\\s+${usedMem} used,\\s+${freeMem} free,\\s+${cacheMem}
+      buff.*\\s*$$\n  ^KiB Swap:.*$$\n  ^\\s*$$\n  ^\\s+PID USER.*$$ -> Record\n  ^\\s*${pid}\\s+${user}\\s+${priority}\\s+${nice}\\s+${virtualMem}\\s+${residentMem}\\s+${sharedMem}\\s+${state}\\s+${percentCPU}\\s+${percentMem}\\s+${runningTime}\\s+${procName}\\s*$$
+      -> Record\n  ^$$EOF\n"}, "platina": {"copy": "cumulus"}}, "ignore_fields": ["timestamp"],
+      "keys": ["datacenter", "hostname"], "period": 60, "stype": "counters", "partition_cols":
+      ["datacenter", "hostname"]}'
+    service: topmem
+  vlan:
+    output: '{"name": "vlan", "defn": {"cumulus": {"version": "all", "command": "/sbin/bridge
+      vlan show", "textfsm": "Value ifname (\\S+)\nValue List vlan (\\d+)\nValue pvid
+      (\\d+)\n\nStart\n  ^\\S+ -> Continue.Record\n  ^${ifname}\\s+${vlan}.*$$ ->
+      Continue\n  ^${ifname}\\s+${pvid}\\s+PVID.*$$\n  ^\\s+${vlan}.*$$\n"}, "linux":
+      {"copy": "cumulus"}, "platina": {"copy": "cumulus"}}, "ignore_fields": ["timestamp"],
+      "keys": ["datacenter", "hostname", "ifname"], "period": 15, "stype": "state",
+      "partition_cols": ["datacenter", "hostname", "ifname", "timestamp"]}'
+    service: vlan
