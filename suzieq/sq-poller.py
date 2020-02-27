@@ -68,7 +68,8 @@ def _main(userargs, cfg):
 
     tasks = [
         init_hosts(userargs.hosts_file),
-        init_services(cfg["service-directory"], schema_dir, queue),
+        init_services(cfg["service-directory"], schema_dir, queue,
+                      userargs.run_once),
     ]
 
     nodes, svcs = loop.run_until_complete(asyncio.gather(*tasks))
@@ -129,6 +130,13 @@ if __name__ == "__main__":
         "--service-only",
         type=str,
         help="Only run this comma separated list of services",
+    )
+
+    parser.add_argument(
+        "--run-once",
+        type=str,
+        choices=["gather", "process"],
+        help=argparse.SUPPRESS,
     )
 
     userargs = parser.parse_args()

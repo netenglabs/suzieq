@@ -8,7 +8,8 @@ import copy
 import logging
 import json
 import yaml
-from itertools import repeat
+import sys
+from tempfile import mkstemp
 
 import textfsm
 import pyarrow as pa
@@ -42,7 +43,8 @@ def avro_to_arrow_schema(avro_sch):
                 if fld["type"]["items"]["type"] == "record":
                     avtype: str = "array.{}".format(fld["name"])
                 else:
-                    avtype: str = "array.{}".format(fld["type"]["items"]["type"])
+                    avtype: str = "array.{}".format(
+                        fld["type"]["items"]["type"])
             else:
                 # We don't support map yet
                 raise AttributeError
@@ -54,10 +56,20 @@ def avro_to_arrow_schema(avro_sch):
     return pa.schema(arsc_fields)
 
 
-async def init_services(svc_dir, schema_dir, queue):
+async def init_services(svc_dir, schema_dir, queue, run_once):
     """Process service definitions by reading each file in svc dir"""
 
     svcs_list = []
+    svc_class_dict = {
+        "system": SystemService,
+        "interfaces": InterfaceService,
+        "mlag": MlagService,
+        "ospfIf": OspfIfService,
+        "ospfNbr": OspfNbrService,
+        "evpnVni": EvpnVniService,
+        "routes": RoutesService,
+        "arpnd": ArpndService,
+        }
 
     if not os.path.isdir(svc_dir):
         logging.error("services directory not a directory: {}".format(svc_dir))
@@ -101,7 +113,8 @@ async def init_services(svc_dir, schema_dir, queue):
                         logging.error(
                             "Ignoring invalid service file "
                             'definition. Need both "command" and '
-                            '"normalize/textfsm" keywords: {}, {}'.format(filename, val)
+                            '"normalize/textfsm" keywords: {}, {}'.format(
+                                filename, val)
                         )
                         continue
 
@@ -139,8 +152,8 @@ async def init_services(svc_dir, schema_dir, queue):
                     schema = avro_to_arrow_schema(schema)
 
                 # Valid service definition, add it to list
-                if svc_def["service"] == "interfaces":
-                    service = InterfaceService(
+                if svc_def["service"] in svc_class_dict:
+                    service = svc_class_dict[svc_def["service"]](
                         svc_def["service"],
                         svc_def["apply"],
                         period,
@@ -149,83 +162,7 @@ async def init_services(svc_dir, schema_dir, queue):
                         svc_def.get("ignore-fields", []),
                         schema,
                         queue,
-                    )
-                elif svc_def["service"] == "system":
-                    service = SystemService(
-                        svc_def["service"],
-                        svc_def["apply"],
-                        period,
-                        svc_def.get("type", "state"),
-                        svc_def.get("keys", []),
-                        svc_def.get("ignore-fields", []),
-                        schema,
-                        queue,
-                    )
-                elif svc_def["service"] == "mlag":
-                    service = MlagService(
-                        svc_def["service"],
-                        svc_def["apply"],
-                        period,
-                        svc_def.get("type", "state"),
-                        svc_def.get("keys", []),
-                        svc_def.get("ignore-fields", []),
-                        schema,
-                        queue,
-                    )
-                elif svc_def["service"] == "ospfIf":
-                    service = OspfIfService(
-                        svc_def["service"],
-                        svc_def["apply"],
-                        period,
-                        svc_def.get("type", "state"),
-                        svc_def.get("keys", []),
-                        svc_def.get("ignore-fields", []),
-                        schema,
-                        queue,
-                    )
-                elif svc_def["service"] == "ospfNbr":
-                    service = OspfNbrService(
-                        svc_def["service"],
-                        svc_def["apply"],
-                        period,
-                        svc_def.get("type", "state"),
-                        svc_def.get("keys", []),
-                        svc_def.get("ignore-fields", []),
-                        schema,
-                        queue,
-                    )
-                elif svc_def["service"] == "evpnVni":
-                    service = EvpnVniService(
-                        svc_def["service"],
-                        svc_def["apply"],
-                        period,
-                        svc_def.get("type", "state"),
-                        svc_def.get("keys", []),
-                        svc_def.get("ignore-fields", []),
-                        schema,
-                        queue,
-                    )
-                elif svc_def["service"] == "routes":
-                    service = RoutesService(
-                        svc_def["service"],
-                        svc_def["apply"],
-                        period,
-                        svc_def.get("type", "state"),
-                        svc_def.get("keys", []),
-                        svc_def.get("ignore-fields", []),
-                        schema,
-                        queue,
-                    )
-                elif svc_def["service"] == "arpnd":
-                    service = ArpndService(
-                        svc_def["service"],
-                        svc_def["apply"],
-                        period,
-                        svc_def.get("type", "state"),
-                        svc_def.get("keys", []),
-                        svc_def.get("ignore-fields", []),
-                        schema,
-                        queue,
+                        run_once
                     )
                 else:
                     service = Service(
@@ -237,6 +174,7 @@ async def init_services(svc_dir, schema_dir, queue):
                         svc_def.get("ignore-fields", []),
                         schema,
                         queue,
+                        run_once
                     )
 
                 logging.info("Service {} added".format(service.name))
@@ -528,8 +466,10 @@ class Service(object):
     keys = []
     stype = "state"
     queue = None
+    run_once = "forever"
 
-    def __init__(self, name, defn, period, stype, keys, ignore_fields, schema, queue):
+    def __init__(self, name, defn, period, stype, keys, ignore_fields, schema,
+                 queue, run_once="forever"):
         self.name = name
         self.defn = defn
         self.ignore_fields = ignore_fields or []
@@ -539,6 +479,7 @@ class Service(object):
         self.period = period
         self.stype = stype
         self.logger = logging.getLogger("suzieq")
+        self.run_once = run_once
 
         # Add the hidden fields to ignore_fields
         self.ignore_fields.append("timestamp")
@@ -579,6 +520,19 @@ class Service(object):
         rec = dict(zip(self.schema.names, defaults))
 
         return rec
+
+    def _dump_output(self, outputs) -> str:
+        """Dump the output to a YAML file"""
+        if outputs:
+            yml = {"service": self.name,
+                   "type": self.run_once,
+                   "output": outputs}
+            fd, name = mkstemp(suffix='-poller.yml')
+            f = os.fdopen(fd, "w")
+            f.write(yaml.dump(yml))
+            f.close()
+            return name
+        return ""
 
     def get_diff(self, old, new):
         """Compare list of dictionaries ignoring certain fields
@@ -689,7 +643,8 @@ class Service(object):
         """Collect data invoking the appropriate get routine from nodes."""
 
         random.shuffle(self.nodelist)
-        tasks = [self.nodes[key].exec_service(self.defn) for key in self.nodelist]
+        tasks = [self.nodes[key].exec_service(self.defn)
+                 for key in self.nodelist]
 
         outputs = await asyncio.gather(*tasks)
 
@@ -781,7 +736,7 @@ class Service(object):
             pa.bool_(): False,
             pa.date64(): 0.0,
             pa.list_(pa.string()): ["-"],
-            pa.list_(pa.int64()): [0],            
+            pa.list_(pa.int64()): [0],
             pa.list_(pa.struct([('nexthop', pa.string()),
                                 ('oif', pa.string()),
                                 ('weight', pa.int32())])): [("", "", 1)],
@@ -812,7 +767,8 @@ class Service(object):
             # to good after nodes have been built. Find the corresponding
             # node and fix the nodelist
             nres = [
-                self.nodes[x] for x in self.nodes if self.nodes[x].hostname == hostname
+                self.nodes[x] for x in self.nodes
+                if self.nodes[x].hostname == hostname
             ]
             if nres:
                 nodeobj = nres[0]
@@ -862,6 +818,11 @@ class Service(object):
         while True:
 
             outputs = await self.gather_data()
+            if self.run_once == "gather":
+                print(self._dump_output(outputs))
+                sys.exit(0)
+            elif self.run_once == "process":
+                poutputs = []
             for output in outputs:
                 if not output:
                     # output from nodes not running service
@@ -869,10 +830,18 @@ class Service(object):
                 result = self.process_data(output[0])
                 # If a node from init state to good state, hostname will change
                 # So fix that in the node list
+                if self.run_once == "process":
+                    poutputs += [{"datacenter": output[0]["datacenter"],
+                                  "hostname": output[0]["hostname"],
+                                  "output": result}]
+                else:
+                    await self.commit_data(
+                        result, output[0]["datacenter"], output[0]["hostname"]
+                    )
 
-                await self.commit_data(
-                    result, output[0]["datacenter"], output[0]["hostname"]
-                )
+            if self.run_once == "process":
+                print(self._dump_output(poutputs))
+                sys.exit(0)
 
             if self.update_nodes:
                 for node in self.new_nodes:
@@ -893,7 +862,8 @@ class Service(object):
                 dels = []
                 for host in self.nodes:
                     if self.nodes[host].hostname != host:
-                        adds.update({self.nodes[host].hostname: self.nodes[host]})
+                        adds.update({self.nodes[host].hostname:
+                                     self.nodes[host]})
                         dels.append(host)
 
                 if dels:
@@ -929,7 +899,7 @@ class InterfaceService(Service):
                 if words[-1].strip().startswith("Port-Channel"):
                     entry["type"] = "bond_slave"
                 entry["master"] = words[-1].strip()
-            entry["lacpBypass"] = entry["lacpBypass"] == True
+            entry["lacpBypass"] = (entry["lacpBypass"] == True)
 
             # Vlan is gathered as a list for VXLAN interfaces. Fix that
             if entry["type"] == "vxlan":
@@ -1041,9 +1011,9 @@ class SystemService(Service):
     nodes_state = {}
 
     def __init__(self, name, defn, period, stype, keys, ignore_fields,
-                 schema, queue):
+                 schema, queue, run_once):
         super().__init__(name, defn, period, stype, keys, ignore_fields,
-                         schema, queue)
+                         schema, queue, run_once)
         self.ignore_fields.append("bootupTimestamp")
 
     def clean_data(self, processed_data, raw_data):
