@@ -35,7 +35,10 @@ class NubiaSuzieqContext(context.Context):
         super().__init__()
 
     def on_connected(self, *args, **kwargs):
-        pass
+        if self._args.config:
+            self.cfg = load_sq_config(validate=False,
+                                      config_file=self._args.config)
+            self.schemas = get_schemas(self.cfg["schema-directory"])
 
     def on_cli(self, cmd, args):
         # dispatch the on connected message

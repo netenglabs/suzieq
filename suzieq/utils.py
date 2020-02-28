@@ -45,7 +45,7 @@ def validate_sq_config(cfg, fh):
     return None
 
 
-def load_sq_config(validate=True):
+def load_sq_config(validate=True, config_file=None):
     """Load (and validate) basic suzieq config"""
 
     # Order of looking up suzieq config:
@@ -55,7 +55,9 @@ def load_sq_config(validate=True):
     cfgfile = None
     cfg = None
 
-    if os.path.exists("./suzieq-cfg.yml"):
+    if config_file:
+        cfgfile = config_file
+    elif os.path.exists("./suzieq-cfg.yml"):
         cfgfile = "./suzieq-cfg.yml"
     elif os.path.exists(os.getenv("HOME") + "/.suzieq/suzieq-cfg.yml"):
         cfgfile = os.getenv("HOME") + "/.suzieq/suzieq-cfg.yml"
