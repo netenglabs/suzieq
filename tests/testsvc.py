@@ -4,8 +4,6 @@ import sys
 import yaml
 import json
 import argparse
-import re
-import ast
 import os
 
 from suzieq.service import cons_recs_from_json_template
@@ -21,7 +19,7 @@ if __name__ == '__main__':
                         help='Name of service to test')
     parser.add_argument('--service-dir', '-S', type=str, default='./config',
                         help='Directory where service file definition is stored')
-    parser.add_argument('--device-type', '-d', type=str, 
+    parser.add_argument('--device-type', '-d', type=str,
                         help='Device type to test', default='cumulus')
 
     userargs = parser.parse_args()

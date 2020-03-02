@@ -1,13 +1,12 @@
 from copy import deepcopy
 
 import six
-import pyarrow.parquet as pa
 import pandas as pd
 
 
 def build_pa_filters(start_tm: str, end_tm: str,
                      key_fields: list, **kwargs):
-    '''Build filters for predicate pushdown of parquet read'''
+    """Build filters for predicate pushdown of parquet read"""
 
     # The time filters first
     timeset = []
@@ -105,6 +104,7 @@ def check_filters(filters):
                     )
     return filters
 
+
 if __name__ == '__main__':
 
     key_fields = ['datacenter', 'hostname', 'ifname']
@@ -137,5 +137,3 @@ if __name__ == '__main__':
                                            hostname=host, ifname=ifn)
                 check_filters(filters)
                 print(filters)
-
-    
