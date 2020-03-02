@@ -1,6 +1,9 @@
 import pytest
 import os
 from suzieq.cli.sq_nubia_context import NubiaSuzieqContext
+from suzieq.service import init_services
+from unittest.mock import Mock
+
 
 suzieq_cli_path = './suzieq/cli/suzieq-cli'
 
@@ -48,9 +51,20 @@ def _create_context_config():
               }
     return config
 
+
 @pytest.fixture
 def get_schemas(create_context_config):
     from suzieq.utils import get_schemas
     schemas = get_schemas(create_context_config['schema-directory'])
     assert len(schemas) > 0
     return schemas
+
+@pytest.fixture
+@pytest.mark.asyncio
+def init_services_default(event_loop):
+    configs = os.path.abspath(os.curdir) + '/config/'
+    schema = configs + 'schema/'
+    mock_queue = Mock()
+    services = event_loop.run_until_complete(init_services(configs, schema, mock_queue, True))
+    return services
+

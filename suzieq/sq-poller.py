@@ -85,6 +85,9 @@ def _main(userargs, cfg):
         svclist = [svc.name for svc in svcs]
 
     working_svcs = [svc for svc in svcs if svc.name in svclist]
+    if len(working_svcs) < 1:
+        print(f"No correct services specified. Should have been one of {[svc.name for svc in svcs]}")
+        sys.exit(1)
 
     try:
         tasks = [svc.run() for svc in working_svcs]
