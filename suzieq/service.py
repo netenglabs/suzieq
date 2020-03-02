@@ -670,7 +670,7 @@ class Service(object):
         """Derive the data to be stored from the raw input"""
         result = []
 
-        if data["status"] == 200 or data["status"] == 0:
+        if int(data["status"]) == 200 or int(data["status"]) == 0:
             if not data["data"]:
                 return result
 
@@ -732,7 +732,7 @@ class Service(object):
         else:
             d = data.get("data", None)
             err = ""
-            if d:
+            if d and isinstance(d, dict):
                 err = d.get("error", "")
             self.logger.error(
                 "{}: failed for node {} with {}/{}".format(
@@ -1047,7 +1047,7 @@ class SystemService(Service):
             if not entry.get("bootupTimestamp", None) and entry.get(
                     "sysUptime", None):
                 entry["bootupTimestamp"] = int(
-                    raw_data["timestamp"]/1000 - float(entry["sysUptime"])
+                    int(raw_data["timestamp"])/1000 - float(entry["sysUptime"])
                 )
                 del entry["sysUptime"]
             # This is the case for Linux servers, so also extract the vendor
