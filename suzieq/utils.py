@@ -69,6 +69,10 @@ def load_sq_config(validate=True, config_file=None):
         if validate:
             validate_sq_config(cfg, sys.stderr)
 
+    if not cfg:
+        print(f"suzieq requires a configuration file either in ~/.suzieq-cfg.yml or ./suzieq/suzieq-cfg.yml")
+        exit(1)
+
     return cfg
 
 
