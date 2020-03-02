@@ -9,10 +9,12 @@ suzieq_cli_path = './suzieq/cli/suzieq-cli'
 
 
 commands = [('AddrCmd'), ('ArpndCmd'), ('BgpCmd'), ('EvpnVniCmd'), ('InterfaceCmd'), ('LldpCmd'), ('MacsCmd'),
-    ('MlagCmd'), ('OspfCmd'), ('RoutesCmd'), ('SystemCmd'), ('TopcpuCmd'), ('TopmemCmd'), ('VlanCmd')]
+            ('MlagCmd'), ('OspfCmd'), ('RoutesCmd'), ('SystemCmd'), ('TopcpuCmd'), ('TopmemCmd'), ('VlanCmd')]
+
 
 tables = [('arpnd'), ('bgp'), ('evpnVni'), ('fs'), ('ifCounters'), ('interfaces'), ('lldp'), ('macs'), ('mlag'),
           ('ospfIf'), ('ospfNbr'), ('routes'), ('system'), ('time'), ('topcpu'), ('topmem'), ('vlan')]
+
 
 @pytest.fixture(scope='function')
 def setup_nubia():
@@ -59,6 +61,7 @@ def get_schemas(create_context_config):
     assert len(schemas) > 0
     return schemas
 
+
 @pytest.fixture
 @pytest.mark.asyncio
 def init_services_default(event_loop):
@@ -67,4 +70,3 @@ def init_services_default(event_loop):
     mock_queue = Mock()
     services = event_loop.run_until_complete(init_services(configs, schema, mock_queue, True))
     return services
-
