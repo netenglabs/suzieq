@@ -41,7 +41,6 @@ def validate_parquet_args(cfg, output_args):
     return
 
 
-
 def _main(userargs, cfg):
 
     if not os.path.exists(cfg["service-directory"]):
