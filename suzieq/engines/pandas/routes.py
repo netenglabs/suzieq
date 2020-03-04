@@ -1,15 +1,6 @@
-#!/usr/bin/env python3
-
-# Copyright (c) Dinesh G Dutt
-# All rights reserved.
-#
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
-#
-
-from .engineobj import SqEngineObject
-from cyberpandas import to_ipnetwork, IPNetworkArray, IPNetworkType
-from cyberpandas import IPNetAccessor
+from suzieq.engines.pandas.engineobj import SqEngineObject
+from cyberpandas import IPNetworkType  # this is needed for calling .astype('ipnetwork')
+import pandas as pd
 
 
 class RoutesObj(SqEngineObject):
@@ -94,6 +85,6 @@ class RoutesObj(SqEngineObject):
             .reset_index()
 
         if idx.empty:
-            return(pd.DataFrame(columns=cols))
+            return pd.DataFrame(columns=cols)
 
         return idx.merge(df)

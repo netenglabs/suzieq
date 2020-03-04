@@ -1,13 +1,3 @@
-#!/usr/bin/env python3
-
-# Copyright (c) Dinesh G Dutt
-# All rights reserved.
-#
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
-#
-
-from ipaddress import IPv4Network
 import typing
 import pandas as pd
 
@@ -56,7 +46,3 @@ class OspfObj(basicobj.SqObject):
             raise AttributeError('No analysis engine specified')
 
         return self.engine_obj.top(what=what, n=n, **kwargs)
-
-
-if __name__ == '__main__':
-    pass

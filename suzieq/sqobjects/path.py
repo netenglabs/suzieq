@@ -1,13 +1,3 @@
-#!/usr/bin/env python3
-
-# Copyright (c) Dinesh G Dutt
-# All rights reserved.
-#
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
-#
-
-import sys
 import typing
 from collections import OrderedDict
 
@@ -22,15 +12,15 @@ from suzieq.sqobjects import interfaces, lldp, routes, arpnd, macs, basicobj
 # TODO: What timestamp to use (arpND, mac, interface, route..)
 class PathObj(basicobj.SqObject):
     def __init__(
-        self,
-        engine: str = "",
-        hostname: typing.List[str] = [],
-        start_time: str = "",
-        end_time: str = "",
-        view: str = "latest",
-        datacenter: typing.List[str] = [],
-        columns: typing.List[str] = ["default"],
-        context=None,
+            self,
+            engine: str = "",
+            hostname: typing.List[str] = [],
+            start_time: str = "",
+            end_time: str = "",
+            view: str = "latest",
+            datacenter: typing.List[str] = [],
+            columns: typing.List[str] = ["default"],
+            context=None,
     ) -> None:
         super().__init__(
             engine,
@@ -52,10 +42,7 @@ class PathObj(basicobj.SqObject):
         arp_df = arpnd.ArpndObj().get(datacenter=datacenter,
                                       ipAddress=ipaddr)
         if arp_df.empty:
-            raise AttributeError(
-                "Cannot obtain IP/LLDP neighbor info for " "address {}"
-                .format(ipaddr)
-            )
+            raise AttributeError(f"Cannot obtain IP/LLDP neighbor info for address {ipaddr}")
 
         macaddr = arp_df.iloc[0]["macaddr"]  # same macaddr across entries
         oif = arp_df.iloc[0]["oif"]
@@ -69,10 +56,7 @@ class PathObj(basicobj.SqObject):
                        (if_df["ifname"] == oif)]
 
         if oif_df.empty:
-            raise AttributeError(
-                "Cannot obtain IP/LLDP neighbor info for " "address {}"
-                .format(ipaddr)
-            )
+            raise AttributeError(f"Cannot obtain IP/LLDP neighbor info for address {ipaddr}")
 
         vlan = oif_df.iloc[0]["vlan"]
         if macaddr:
@@ -98,7 +82,7 @@ class PathObj(basicobj.SqObject):
                           'vrf': vrf}
                     for key, value in zip(
                         mac_df["hostname"].tolist(), mac_df["oif"].tolist()
-                    )
+                        )
                 }
             )
         return OrderedDict({})
@@ -127,7 +111,7 @@ class PathObj(basicobj.SqObject):
         src_df = if_df[if_df.ipAddressList.astype(str)
                        .str.contains(source + "/")]
         dest_df = if_df[if_df.ipAddressList.astype(str)
-                       .str.contains(dest + "/")]
+                        .str.contains(dest + "/")]
         dest_host = dest_df["hostname"].unique()[0]
         src_host = src_df["hostname"].unique()[0]
         lldp_df = lldp.LldpObj().get(datacenter=datacenter)
@@ -189,8 +173,8 @@ class PathObj(basicobj.SqObject):
                     ivrf = (
                         if_df[(if_df["hostname"] == host) &
                               (if_df["ifname"] == iif)]["master"]
-                        .to_string(index=False)
-                        .strip()
+                            .to_string(index=False)
+                            .strip()
                     )
                 # Cumulus hack to avoid markind bridged bond interfaces as vrf
                 if not ivrf or ivrf == "bridge":
@@ -227,7 +211,7 @@ class PathObj(basicobj.SqObject):
                     slaveoifs = if_df[
                         (if_df["hostname"] == host)
                         & (if_df["master"] == raw_iface[0])
-                    ].ifname.tolist()
+                        ].ifname.tolist()
 
                     if slaveoifs:
                         raw_iface = slaveoifs
@@ -238,7 +222,7 @@ class PathObj(basicobj.SqObject):
                     df = lldp_df[
                         (lldp_df["hostname"] == host)
                         & (lldp_df["ifname"] == raw_iface[0])
-                    ]
+                        ]
 
                     if df.empty:
                         continue
@@ -251,9 +235,9 @@ class PathObj(basicobj.SqObject):
                             if_df[
                                 (if_df["hostname"] == peer_host)
                                 & (if_df["ifname"] == peer_if)
-                            ]["master"]
-                            .to_string(index=False)
-                            .strip()
+                                ]["master"]
+                                .to_string(index=False)
+                                .strip()
                         )
                         if peer_if_master:
                             peer_if = peer_if_master
@@ -262,18 +246,18 @@ class PathObj(basicobj.SqObject):
                         peer_if += ".{}".format(vlan)
 
                     mtu_match = (
-                        if_df[
-                            (if_df["hostname"] == peer_host)
-                            & (if_df["ifname"] == peer_if)
-                        ]
-                        .iloc[-1]
-                        .mtu
-                        == if_df[
-                            (if_df["hostname"] == host)
-                            & (if_df["ifname"] == iface)
-                        ]
-                        .iloc[-1]
-                        .mtu
+                            if_df[
+                                (if_df["hostname"] == peer_host)
+                                & (if_df["ifname"] == peer_if)
+                                ]
+                            .iloc[-1]
+                            .mtu
+                            == if_df[
+                                (if_df["hostname"] == host)
+                                & (if_df["ifname"] == iface)
+                                ]
+                            .iloc[-1]
+                            .mtu
                     )
 
                     newhosts_iifs[peer_host] = {
@@ -283,9 +267,9 @@ class PathObj(basicobj.SqObject):
                         "mtu": if_df[
                             (if_df["hostname"] == peer_host)
                             & (if_df["ifname"] == peer_if)
-                        ]
-                        .iloc[-1]
-                        .mtu,
+                            ]
+                            .iloc[-1]
+                            .mtu,
                         "mtu_match": mtu_match,
                         "timestamp": rslt.timestamp.iloc[0]
                     }
@@ -338,16 +322,3 @@ class PathObj(basicobj.SqObject):
                 )
         paths_df = pd.DataFrame(df_plist)
         return paths_df
-
-
-if __name__ == "__main__":
-    datacenter = sys.argv[1]
-    source = sys.argv[2]
-    dest = sys.argv[3]
-    vrf = sys.argv[4]
-
-    pathobj = PathObj()
-    df = pathobj.get(datacenter=[datacenter], source=source, dest=dest,
-                        vrf=vrf)
-
-    print(df)
