@@ -9,7 +9,6 @@ from daemon import pidfile
 import daemon
 import logging
 import argparse
-from logging import ERROR, WARNING, INFO, DEBUG
 
 PID_FILE = '/tmp/suzieq-clean.pid'
 

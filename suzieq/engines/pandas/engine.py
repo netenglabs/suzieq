@@ -1,12 +1,3 @@
-#!/usr/bin/env python3
-
-# Copyright (c) Dinesh G Dutt
-# All rights reserved.
-#
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
-#
-
 import os
 from concurrent.futures import ProcessPoolExecutor as Executor
 from pathlib import Path
@@ -177,7 +168,6 @@ class SqPandasEngine(SqEngine):
         else:
             return final_df[fields]
 
-
     def get_object(self, objname: str, iobj):
         module = import_module("suzieq.engines.pandas." + objname)
         eobj = getattr(module, "{}Obj".format(objname.title()))
@@ -294,6 +284,7 @@ class SqPandasEngine(SqEngine):
                         dfolder, x, dc)), tables)
 
         return tables
+
 
 def df_timestamp_to_datetime(df):
     if not df.empty:

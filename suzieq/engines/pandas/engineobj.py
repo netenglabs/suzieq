@@ -1,12 +1,3 @@
-#!/usr/bin/env python3
-
-# Copyright (c) Dinesh G Dutt
-# All rights reserved.
-#
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
-#
-
 import pandas as pd
 import pyarrow as pa
 from suzieq.utils import SchemaForTable
@@ -183,15 +174,14 @@ class SqEngineObject(object):
         all_time_df = self._get_table_info(table, view='all')
         default_df = all_time_df.drop_duplicates(subset=key_fields, keep='last')
         times = all_time_df['timestamp'].unique()
-        ret = {}
-        ret['first_time'] = all_time_df.timestamp.min()
-        ret['latest_time'] = all_time_df.timestamp.max()
-        ret['intervals'] = len(times)
+        ret = {'first_time': all_time_df.timestamp.min(),
+               'latest_time': all_time_df.timestamp.max(),
+               'intervals': len(times),
+               'latest rows': len(default_df),
+               'all rows': len(all_time_df),
+               'datacenters': self._unique_or_zero(default_df, 'datacenter'),
+               'devices': self._unique_or_zero(default_df, 'hostname')}
 
-        ret['latest rows'] = len(default_df)
-        ret['all rows'] = len(all_time_df)
-        ret['datacenters'] = self._unique_or_zero(default_df, 'datacenter')
-        ret['devices'] = self._unique_or_zero(default_df, 'hostname')
         return ret
 
     def _unique_or_zero(self, df, col):

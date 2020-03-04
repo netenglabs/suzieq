@@ -1,18 +1,8 @@
-#!/usr/bin/env python3
-
-# Copyright (c) Dinesh G Dutt
-# All rights reserved.
-#
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
-#
-
 import time
 from nubia import command, argument
 
 from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.routes import RoutesObj
-from cyberpandas import IPNetworkType, IPNetworkArray, IPAccessor, to_ipnetwork
 
 
 @command("routes", help="Act on Routes")
@@ -42,7 +32,7 @@ class RoutesCmd(SqCommand):
 
     @command("show")
     @argument("prefix", description="Prefix, in quotes, to filter show on")
-    @argument("vrf", description="VRF to qualify")    
+    @argument("vrf", description="VRF to qualify")
     def show(self, prefix: str = "", vrf: str = ''):
         """
         Show Routes info
@@ -67,7 +57,6 @@ class RoutesCmd(SqCommand):
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
 
-
     @command("summarize")
     @argument("prefix", description="Prefix, in quotes, to summarize on")
     @argument("vrf", description="Specific VRF to qualify")
@@ -90,7 +79,7 @@ class RoutesCmd(SqCommand):
         df = self.sqobj.summarize(
             hostname=self.hostname,
             prefix=prefix.split(),
-            vrf=vrf.split(),            
+            vrf=vrf.split(),
             columns=self.columns,
             groupby=groupby.split(),
             datacenter=self.datacenter,

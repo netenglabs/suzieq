@@ -1,6 +1,5 @@
 import pandas as pd
 from nubia import command, argument, context
-import typing
 
 
 @argument(

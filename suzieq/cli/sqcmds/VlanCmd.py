@@ -1,13 +1,3 @@
-
-#!/usr/bin/env python3
-
-# Copyright (c) Dinesh G Dutt
-# All rights reserved.
-#
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
-#
-
 import time
 
 from nubia import command, argument
@@ -72,5 +62,3 @@ class VlanCmd(SqCommand):
                                   datacenter=self.datacenter)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
-
-

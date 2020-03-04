@@ -1,16 +1,4 @@
-#!/usr/bin/env python3
-
-# Copyright (c) Dinesh G Dutt
-# All rights reserved.
-#
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
-#
-
-import typing
 import pandas as pd
-from cyberpandas import to_ipnetwork, IPNetworkArray, IPNetworkType
-from cyberpandas import IPNetAccessor
 
 from .engineobj import SqEngineObject
 
@@ -98,7 +86,3 @@ class AddrObj(SqEngineObject):
                       .dropna(how='any')
 
         return newdf.describe(include="all").fillna("-")
-
-
-if __name__ == "__main__":
-    pass

@@ -1,12 +1,3 @@
-#!/usr/bin/env python3
-
-# Copyright (c) Dinesh G Dutt
-# All rights reserved.
-#
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
-#
-
 import pandas as pd
 
 from .engineobj import SqEngineObject
@@ -75,6 +66,3 @@ class VlanObj(SqEngineObject):
                 return df.describe(include="all").fillna("-")
 
         return df
-
-if __name__ == "__main__":
-    pass

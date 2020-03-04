@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-'''
+"""
 Generate AVRO schema files from the service definition and textfsm files
-'''
+"""
 
 import sys
 import os
@@ -13,7 +13,7 @@ from pathlib import Path
 
 
 def get_field_set(svc_def, textfsm_dir):
-    '''Return the dict of fields with types given a service definition file'''
+    """Return the dict of fields with types given a service definition file"""
 
     field_set = set()
     defn_list = svc_def.get('apply', [])
@@ -54,14 +54,14 @@ def get_field_set(svc_def, textfsm_dir):
 
 
 def write_avro_schema(name, fldset, keys, show_fields, type, output_dir):
-    '''Generate an AVRO schema file given a set of fields.
+    """Generate an AVRO schema file given a set of fields.
     We attempt to derive the type if we can. The logic followed for
     automatically deriving type is as follows:
     - if the field name ends in time/timestamp, type is float
     - if the field name ends in name, type is string
     - if the field name ends in list, type is array whose elements are string
     - if the field name ends in Cnt/Count, type is int
-    '''
+    """
     schema = {
         "namespace": "suzieq",
         "name": name,

@@ -1,15 +1,3 @@
-#!/usr/bin/env python3
-
-# Copyright (c) Dinesh G Dutt
-# All rights reserved.
-#
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
-#
-
-import sys
-import os
-from pathlib import Path
 import pandas as pd
 from importlib import import_module
 
@@ -19,7 +7,7 @@ from suzieq.sqobjects import basicobj
 class TablesObj(basicobj.SqObject):
 
     def get(self, **kwargs):
-        '''Show the tables for which we have information'''
+        """Show the tables for which we have information"""
         tables = self.engine.get_tables(self.ctxt.cfg, **kwargs)
         df = pd.DataFrame()
         if tables:
@@ -34,13 +22,14 @@ class TablesObj(basicobj.SqObject):
             df = pd.DataFrame.from_dict(tables)
             df = df.sort_values(by=['table']).reset_index(drop=True)
             cols = df.columns
-            total = pd.DataFrame([['TOTAL', None, None, df['latest rows'].sum(), df['all rows'].sum(), df['intervals'].max(),
-                                   df['datacenters'].max(), df['devices'].max()]], columns=cols)
+            total = pd.DataFrame([['TOTAL', None, None, df['latest rows'].sum(), df['all rows'].sum(),
+                                   df['intervals'].max(), df['datacenters'].max(), df['devices'].max()]],
+                                 columns=cols)
             df = df.append(total, ignore_index=True)
         return df
 
     def summarize(self, **kwargs):
-        "Describes the fields for a given table"
+        """Describes the fields for a given table"""
 
         df = None
         table = kwargs.get('table', '')
@@ -50,9 +39,4 @@ class TablesObj(basicobj.SqObject):
                    for x in self.schemas[table]]
         df = pd.DataFrame.from_dict(entries)
 
-        return(df)
-
-
-if __name__ == '__main__':
-    pass
-
+        return df

@@ -1,12 +1,3 @@
-#!/usr/bin/env python3
-
-# Copyright (c) Dinesh G Dutt
-# All rights reserved.
-#
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
-#
-
 import typing
 import pandas as pd
 
@@ -81,7 +72,7 @@ class SqObject(object):
             self.view = view
         self.columns = columns
 
-        if engine_name and engine_name is not '':
+        if engine_name and engine_name != '':
             self.engine = get_sqengine(engine_name)
         else:
             self.engine = self.ctxt.engine
@@ -105,7 +96,6 @@ class SqObject(object):
 
         if not self.ctxt.engine:
             raise AttributeError('No analysis engine specified')
-            return(pd.DataFrame(columns=['datacenter', 'hostname']))
 
         return self.engine_obj.get(**kwargs)
 
@@ -115,7 +105,6 @@ class SqObject(object):
 
         if not self.ctxt.engine:
             raise AttributeError('No analysis engine specified')
-            return(pd.DataFrame(columns=['datacenter', 'hostname']))
 
         return self.engine_obj.summarize(**kwargs)
 
@@ -127,5 +116,3 @@ class SqObject(object):
 
     def top(self, **kwargs):
         raise NotImplementedError
-
-

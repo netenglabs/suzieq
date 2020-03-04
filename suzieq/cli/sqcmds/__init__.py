@@ -1,15 +1,5 @@
-#!/usr/bin/env python3
-
-# Copyright (c) Dinesh G Dutt
-# All rights reserved.
-#
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
-#
-
 from os.path import dirname, basename, isfile, join
 import glob
-from .context_commands import set_ctxt, clear_ctxt
 
 name = "sqcmds"
 
