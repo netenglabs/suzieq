@@ -184,8 +184,8 @@ class SqEngineObject(object):
         default_df = all_time_df.drop_duplicates(subset=key_fields, keep='last')
         times = all_time_df['timestamp'].unique()
         ret = {}
-        ret['first_time'] = all_time_df.timestamp.min().round('S')
-        ret['latest_time'] = all_time_df.timestamp.max().round('S')
+        ret['first_time'] = all_time_df.timestamp.min()
+        ret['latest_time'] = all_time_df.timestamp.max()
         ret['intervals'] = len(times)
 
         ret['latest rows'] = len(default_df)
