@@ -59,10 +59,13 @@ class SqPandasEngine(SqEngine):
 
         fcnt = self.get_filecnt(folder)
 
-        use_get_files = (
-            (fcnt > MAX_FILECNT_TO_READ_FOLDER and view == "latest") or
-            start or end
-        )
+        # We are going to hard code use_get_files until we have some autoamted testing
+        use_get_files = False
+
+        # use_get_files = (
+        #    (fcnt > MAX_FILECNT_TO_READ_FOLDER and view == "latest") or
+        #    start or end
+        # )
 
         if use_get_files:
             # Switch to more efficient method when there are lotsa files
