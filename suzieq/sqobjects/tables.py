@@ -33,14 +33,10 @@ class TablesObj(basicobj.SqObject):
 
             df = pd.DataFrame.from_dict(tables)
             df = df.sort_values(by=['table']).reset_index(drop=True)
-            total = {'table': 'TOTAL'}
-            total['latest rows'] = df['latest rows'].sum()
-            total['all rows'] = df['all rows'].sum()
-            total['intervals'] = df['intervals'].max()
-            total['datacenters'] = df['datacenters'].max()
-            total['devices'] = df['devices'].max()
-            tables.append(total)
-            df = pd.DataFrame.from_dict(tables)
+            cols = df.columns
+            total = pd.DataFrame([['TOTAL', None, None, df['latest rows'].sum(), df['all rows'].sum(), df['intervals'].max(),
+                                   df['datacenters'].max(), df['devices'].max()]], columns=cols)
+            df = df.append(total, ignore_index=True)
         return df
 
     def summarize(self, **kwargs):
