@@ -22,9 +22,10 @@ class TablesObj(basicobj.SqObject):
             df = pd.DataFrame.from_dict(tables)
             df = df.sort_values(by=['table']).reset_index(drop=True)
             cols = df.columns
-            total = pd.DataFrame([['TOTAL', None, None, df['latest rows'].sum(), df['all rows'].sum(),
-                                   df['intervals'].max(), df['datacenters'].max(), df['devices'].max()]],
-                                 columns=cols)
+            total = pd.DataFrame([['TOTAL',  df['first_time'].min(), df['latest_time'].max(),
+                                   df['intervals'].max(), df['latest rows'].sum(),
+                                   df['all rows'].sum(), df['datacenters'].max(), df['devices'].max()]],
+                                   columns=cols)
             df = df.append(total, ignore_index=True)
         return df
 
