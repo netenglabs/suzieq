@@ -1,7 +1,7 @@
 import pytest
 import os
 from suzieq.cli.sq_nubia_context import NubiaSuzieqContext
-from suzieq.service import init_services
+from suzieq.poller.services import init_services
 from unittest.mock import Mock
 
 
@@ -68,5 +68,6 @@ def init_services_default(event_loop):
     configs = os.path.abspath(os.curdir) + '/config/'
     schema = configs + 'schema/'
     mock_queue = Mock()
-    services = event_loop.run_until_complete(init_services(configs, schema, mock_queue, True))
+    services = event_loop.run_until_complete(
+        init_services(configs, schema, mock_queue, True))
     return services
