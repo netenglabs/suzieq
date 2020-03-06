@@ -8,9 +8,10 @@ from pathlib import Path
 import daemon
 from daemon import pidfile
 
-from node import init_hosts
-from suzieq.service import init_services
-from suzieq.writer import init_output_workers, run_output_worker
+from nodes import init_hosts
+from services import init_services
+
+from writer import init_output_workers, run_output_worker
 from suzieq.utils import load_sq_config
 
 PID_FILE = "/tmp/suzieq.pid"
@@ -20,7 +21,7 @@ def validate_parquet_args(cfg, output_args):
     """Validate user arguments for parquet output"""
 
     if not cfg.get("data-directory", None):
-        output_dir = "/tmp/parquet-out/suzieq"
+        output_dir = "/tmp/suzieq/parquet-out/"
         logging.warning(
             "No output directory for parquet specified, using" "/tmp/suzieq/parquet-out"
         )
@@ -31,7 +32,8 @@ def validate_parquet_args(cfg, output_args):
         os.makedirs(output_dir)
 
     if not os.path.isdir(output_dir):
-        logging.error("Output directory {} is not a directory".format(output_dir))
+        logging.error(
+            "Output directory {} is not a directory".format(output_dir))
         print("Output directory {} is not a directory".format(output_dir))
         sys.exit(1)
 
@@ -45,7 +47,8 @@ def _main(userargs, cfg):
 
     if not os.path.exists(cfg["service-directory"]):
         logging.error(
-            "Service directory {} is not a directory".format(userargs.output_dir)
+            "Service directory {} is not a directory".format(
+                userargs.output_dir)
         )
         print("Service directory {} is not a directory".format(userargs.output_dir))
         sys.exit(1)
@@ -68,7 +71,7 @@ def _main(userargs, cfg):
     tasks = [
         init_hosts(userargs.hosts_file),
         init_services(cfg["service-directory"], schema_dir, queue,
-                      userargs.run_once),
+                      userargs.run_once or "forever"),
     ]
 
     nodes, svcs = loop.run_until_complete(asyncio.gather(*tasks))
@@ -85,7 +88,8 @@ def _main(userargs, cfg):
 
     working_svcs = [svc for svc in svcs if svc.name in svclist]
     if len(working_svcs) < 1:
-        print(f"No correct services specified. Should have been one of {[svc.name for svc in svcs]}")
+        print(
+            f"No correct services specified. Should have been one of {[svc.name for svc in svcs]}")
         sys.exit(1)
 
     try:
@@ -172,6 +176,7 @@ if __name__ == "__main__":
                             "pid {}".format(pid)
                         )
         with daemon.DaemonContext(
-            files_preserve=[fh.stream], pidfile=pidfile.TimeoutPIDLockFile(PID_FILE)
+            files_preserve=[
+                fh.stream], pidfile=pidfile.TimeoutPIDLockFile(PID_FILE)
         ):
             _main(userargs, cfg)

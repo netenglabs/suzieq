@@ -6,6 +6,7 @@ import json
 import yaml
 
 import pandas as pd
+import pyarrow as pa
 
 
 def validate_sq_config(cfg, fh):
@@ -186,12 +187,14 @@ def get_latest_files(folder, start="", end="", view="latest") -> list:
     lsd = []
 
     if start:
-        ssecs = pd.to_datetime(start, infer_datetime_format=True).timestamp() * 1000
+        ssecs = pd.to_datetime(
+            start, infer_datetime_format=True).timestamp() * 1000
     else:
         ssecs = 0
 
     if end:
-        esecs = pd.to_datetime(end, infer_datetime_format=True).timestamp() * 1000
+        esecs = pd.to_datetime(
+            end, infer_datetime_format=True).timestamp() * 1000
     else:
         esecs = 0
 
@@ -223,19 +226,22 @@ def get_latest_ts_dirs(dirs, ssecs, esecs, view):
         newdirs = list(filter(lambda x: int(x.split("=")[1]) > ssecs, dirs))
         if not newdirs and view != "changes":
             # FInd the entry most adjacent to this one
-            newdirs = list(filter(lambda x: int(x.split("=")[1]) < ssecs, dirs))
+            newdirs = list(filter(lambda x: int(
+                x.split("=")[1]) < ssecs, dirs))
     elif esecs and not ssecs:
         newdirs = list(filter(lambda x: int(x.split("=")[1]) < esecs, dirs))
     else:
         newdirs = list(
             filter(
-                lambda x: int(x.split("=")[1]) < esecs and int(x.split("=")[1]) > ssecs,
+                lambda x: int(x.split("=")[1]) < esecs and int(
+                    x.split("=")[1]) > ssecs,
                 dirs,
             )
         )
         if not newdirs and view != "changes":
             # FInd the entry most adjacent to this one
-            newdirs = list(filter(lambda x: int(x.split("=")[1]) < ssecs, dirs))
+            newdirs = list(filter(lambda x: int(
+                x.split("=")[1]) < ssecs, dirs))
 
     return newdirs
 
@@ -249,18 +255,21 @@ def get_latest_pq_files(files, root, ssecs, esecs, view):
         newfiles = files
     elif ssecs and not esecs:
         newfiles = list(
-            filter(lambda x: os.path.getctime("%s/%s" % (root, x)) > ssecs, files)
+            filter(lambda x: os.path.getctime(
+                "%s/%s" % (root, x)) > ssecs, files)
         )
         if not newfiles and view != "changes":
             # FInd the entry most adjacent to this one
             newfiles = list(
                 filter(
-                    lambda x: os.path.getctime("{}/{}".format(root, x)) < ssecs, files
+                    lambda x: os.path.getctime(
+                        "{}/{}".format(root, x)) < ssecs, files
                 )
             )
     elif esecs and not ssecs:
         newfiles = list(
-            filter(lambda x: os.path.getctime("%s/%s" % (root, x)) < esecs, files)
+            filter(lambda x: os.path.getctime(
+                "%s/%s" % (root, x)) < esecs, files)
         )
     else:
         newfiles = list(
@@ -273,6 +282,46 @@ def get_latest_pq_files(files, root, ssecs, esecs, view):
         if not newfiles and view != "changes":
             # Find the entry most adjacent to this one
             newfiles = list(
-                filter(lambda x: os.path.getctime("%s/%s" % (root, x)) < ssecs, files)
+                filter(lambda x: os.path.getctime(
+                    "%s/%s" % (root, x)) < ssecs, files)
             )
     return newfiles
+
+
+def avro_to_arrow_schema(avro_sch):
+    """Given an AVRO schema, return the equivalent Arrow schema"""
+    arsc_fields = []
+
+    map_type = {
+        "string": pa.string(),
+        "long": pa.int64(),
+        "int": pa.int32(),
+        "double": pa.float64(),
+        "float": pa.float32(),
+        "timestamp": pa.int64(),
+        "timedelta64[s]": pa.float64(),
+        "boolean": pa.bool_(),
+        "array.string": pa.list_(pa.string()),
+        "array.nexthopList": pa.list_(pa.struct([('nexthop', pa.string()),
+                                                 ('oif', pa.string()),
+                                                 ('weight', pa.int32())])),
+        "array.long": pa.list_(pa.int64()),
+    }
+
+    for fld in avro_sch.get("fields", None):
+        if isinstance(fld["type"], dict):
+            if fld["type"]["type"] == "array":
+                if fld["type"]["items"]["type"] == "record":
+                    avtype: str = "array.{}".format(fld["name"])
+                else:
+                    avtype: str = "array.{}".format(
+                        fld["type"]["items"]["type"])
+            else:
+                # We don't support map yet
+                raise AttributeError
+        else:
+            avtype: str = fld["type"]
+
+        arsc_fields.append(pa.field(fld["name"], map_type[avtype]))
+
+    return pa.schema(arsc_fields)
