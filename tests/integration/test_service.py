@@ -3,7 +3,7 @@ import pytest
 import yaml
 from unittest.mock import MagicMock
 
-from suzieq.node import Node
+from suzieq.poller.nodes import Node
 
 from functools import partial
 
@@ -54,7 +54,8 @@ def test_process_services_end_to_end(service, init_services_default, event_loop,
 
 
 def _get_processed_data(service):
-    file = os.path.abspath(os.curdir) + f"/tests/data/basic_dual_bgp/processed/{service.name}.yml"
+    file = os.path.abspath(
+        os.curdir) + f"/tests/data/basic_dual_bgp/processed/{service.name}.yml"
 
     with open(file, 'r') as f:
         out = yaml.load(f.read())
@@ -64,7 +65,8 @@ def _get_processed_data(service):
 
 def _create_node(service):
     nodes = {}
-    file = os.path.abspath(os.curdir) + f"/tests/data/basic_dual_bgp/gathered/2/{service.name}-poller.yml"
+    file = os.path.abspath(
+        os.curdir) + f"/tests/data/basic_dual_bgp/gathered/2/{service.name}-poller.yml"
 
     with open(file, 'r') as f:
         out = yaml.load(f.read(), Loader=yaml.BaseLoader)
@@ -73,8 +75,10 @@ def _create_node(service):
                 node = MagicMock(spec=Node)
                 node.datacenter = n[0]['datacenter']
                 node.hostname = n[0]['hostname']
-                node.exec_service = partial(_create_exec_serivce, n[0]['devtype'],  n[0]['cmd'], n)
-                nodes.update({"{}.{}".format(node.datacenter, node.hostname): node})
+                node.exec_service = partial(
+                    _create_exec_serivce, n[0]['devtype'],  n[0]['cmd'], n)
+                nodes.update(
+                    {"{}.{}".format(node.datacenter, node.hostname): node})
     return nodes
 
 
