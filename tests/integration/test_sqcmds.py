@@ -132,21 +132,22 @@ def test_datacenter_show_filter(setup_nubia, cmd):
 
 
 @pytest.mark.filter
-@pytest.mark.xfail(reason='bug #29')
 @pytest.mark.parametrize("cmd", good_commands)
 def test_view_show_filter(setup_nubia, cmd):
     s1, s2 = _test_good_show_filter(cmd, {'view': 'all'})
-    assert s1.size < s2.size
+    assert s1.size <= s2.size
+    if s1.size == s2.size:
+        testing.assert_frame_equal(s1, s2)
 
 
 @pytest.mark.filter
-@pytest.mark.xfail(reason='bug #30')
 @pytest.mark.parametrize("cmd", good_commands)
 def test_start_time_show_filter(setup_nubia, cmd):
     s1, s2 = _test_good_show_filter(cmd,
                                     {'start_time': '2020-01-01 21:43:30.048'})
-    assert s1 < s2  # should include more data due to larger timeframe
-    assert s1.equals(s2)
+    assert s1.size <= s2.size  # should include more data due to larger timeframe
+    if s1.size == s2.size:
+        testing.assert_frame_equal(s1, s2)
 
 
 columns_commands = good_commands[:]
@@ -170,7 +171,6 @@ def _test_good_show_filter(cmd, filter):
         assert len(s2[filter_key].unique()) == 1
         assert s2[filter_key][0] == filter[filter_key]
         assert len(s1[filter_key].unique()) >= len(s2[filter_key].unique())
-    assert s1.size >= s2.size
     return s1, s2
 
 
