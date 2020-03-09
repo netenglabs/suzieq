@@ -1,5 +1,5 @@
 from datetime import datetime
-from suzieq.poller.services.service import Service
+from suzieq.poller.services.service import Service, HOLD_TIME_IN_MSECS
 
 
 class SystemService(Service):
