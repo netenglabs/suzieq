@@ -108,6 +108,7 @@ class SqCommand:
         elif self.format == 'csv':
             print(df.to_csv())
         elif self.format == 'dataframe':
+            assert isinstance(df, pd.DataFrame)
             return df
         else:
             print(df)
@@ -147,8 +148,8 @@ class SqCommand:
         df = self.show(**kwargs)
         self.format = format
         if column in df.columns:
-            r = df[column].unique()
+            r = df[column].value_counts()
             if isinstance(r, pd.Categorical):
                 r = r.categories
-            return self._gen_output(pd.DataFrame({column: r}))
+            return self._gen_output(pd.DataFrame({column: r}).reset_index())
         return self._gen_output(pd.DataFrame())
