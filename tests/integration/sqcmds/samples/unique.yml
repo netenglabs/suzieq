@@ -2,30 +2,34 @@ description: Testing unique verb
 tests:
   - command: system unique --format=json
     data-directory: tests/data/basic_dual_bgp/parquet-out
-    output: |
-      [{"error":"ERROR: Must specify columns with unique"}]
+    error:
+      error: |
+        [{"error":"ERROR: Must specify columns with unique"}]
     marks: unique
 
   - command: system unique --columns='hostname uptime' --format=json
     data-directory: tests/data/basic_dual_bgp/parquet-out
-    output: |
-      [{"error":"ERROR: Specify a single column with unique"}]
+    error:
+      error: |
+        [{"error":"ERROR: Specify a single column with unique"}]
     marks: unique
 
   - command: system unique --columns=hostname --format=json
     data-directory: tests/data/basic_dual_bgp/parquet-out
     output: |
-      [{"hostname":"edge01"},{"hostname":"exit01"},{"hostname":"exit02"},{"hostname":"internet"},{"hostname":"leaf01"},{"hostname":"leaf02"},{"hostname":"leaf03"},{"hostname":"leaf04"},{"hostname":"server101"},{"hostname":"server102"},{"hostname":"server103"},{"hostname":"server104"},{"hostname":"spine01"},{"hostname":"spine02"}]
+      [{"index":"spine02","hostname":1},{"index":"spine01","hostname":1},{"index":"server104","hostname":1},{"index":"server103","hostname":1},{"index":"server102","hostname":1},{"index":"server101","hostname":1},{"index":"leaf04","hostname":1},{"index":"leaf03","hostname":1},{"index":"leaf02","hostname":1},{"index":"leaf01","hostname":1},{"index":"internet","hostname":1},{"index":"exit02","hostname":1},{"index":"exit01","hostname":1},{"index":"edge01","hostname":1}]
     marks: system unique
 
   - command: system unique --columns=badcolumn --format=json
     data-directory: tests/data/basic_dual_bgp/parquet-out
+    output: |
+      []
     marks: system unique
 
   - command: routes unique --columns=prefix --format=json
     data-directory: tests/data/basic_dual_bgp/parquet-out
     xfail:
       reason: 'bug #37'
-      error: "Error running command: Unsupported UTF-8 sequence length when encoding string\n------------------------------------------------------------\n------------------------------------------------------------\n"
+      error: "Error running command: Overlong 2 byte UTF-8 sequence detected when encoding string\n------------------------------------------------------------\n------------------------------------------------------------\n"
     marks: routes unique
 

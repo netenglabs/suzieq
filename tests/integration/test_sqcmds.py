@@ -386,10 +386,12 @@ def test_sqcmds(testvar, create_context_config):
 
     exec_cmd = sqcmd_path + shlex.split(testvar['command']) + ['--stderr']
 
+    output = None
+    error = None
     try:
         output = check_output(exec_cmd)
     except CalledProcessError as e:
-        output = e.output
+        error = e.output
 
     if tmpfname:
         os.remove(tmpfname)
@@ -408,8 +410,12 @@ def test_sqcmds(testvar, create_context_config):
             expected_jout = testvar['output']
         assert(jout == expected_jout)
 
-    elif 'xfail' in testvar and 'error' in testvar['xfail']:
+    elif error and 'xfail' in testvar and 'error' in testvar['xfail']:
         if jout.decode("utf-8") == testvar['xfail']['error']:
             assert False
         else:
             assert True
+    elif error and 'error' in testvar and 'error' in testvar['error']:
+        assert json.loads(error.decode("utf-8").strip()) == json.loads(testvar['error']['error'])
+    else:
+        raise Exception(f"either xfail or output requried {error}")
