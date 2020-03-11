@@ -5,8 +5,8 @@ from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.macs import MacsObj
 
 
-@command("macs", help="Act on MAC Table data")
-class MacsCmd(SqCommand):
+@command("mac", help="Act on MAC Table data")
+class MacCmd(SqCommand):
     def __init__(
         self,
         engine: str = "",
