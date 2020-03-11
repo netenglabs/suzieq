@@ -151,5 +151,8 @@ class SqCommand:
             r = df[column].value_counts()
             if isinstance(r, pd.Categorical):
                 r = r.categories
-            return self._gen_output(pd.DataFrame({column: r}).reset_index())
+            return self._gen_output(pd.DataFrame({column: r}).reset_index()
+                                    .sort_values('index')
+                                    .rename(columns={column: 'count', 'index': column})
+                                    .reset_index(drop=True))
         return self._gen_output(pd.DataFrame())
