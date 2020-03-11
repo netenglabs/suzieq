@@ -17,7 +17,7 @@ tests:
   - command: system unique --columns=hostname --format=json
     data-directory: tests/data/basic_dual_bgp/parquet-out
     output: |
-      [{"index":"spine02","hostname":1},{"index":"spine01","hostname":1},{"index":"server104","hostname":1},{"index":"server103","hostname":1},{"index":"server102","hostname":1},{"index":"server101","hostname":1},{"index":"leaf04","hostname":1},{"index":"leaf03","hostname":1},{"index":"leaf02","hostname":1},{"index":"leaf01","hostname":1},{"index":"internet","hostname":1},{"index":"exit02","hostname":1},{"index":"exit01","hostname":1},{"index":"edge01","hostname":1}]
+      [{"hostname":"edge01","count":1},{"hostname":"exit01","count":1},{"hostname":"exit02","count":1},{"hostname":"internet","count":1},{"hostname":"leaf01","count":1},{"hostname":"leaf02","count":1},{"hostname":"leaf03","count":1},{"hostname":"leaf04","count":1},{"hostname":"server101","count":1},{"hostname":"server102","count":1},{"hostname":"server103","count":1},{"hostname":"server104","count":1},{"hostname":"spine01","count":1},{"hostname":"spine02","count":1}]
     marks: system unique
 
   - command: system unique --columns=badcolumn --format=json
