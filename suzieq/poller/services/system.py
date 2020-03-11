@@ -4,6 +4,7 @@ from suzieq.poller.services.service import Service, HOLD_TIME_IN_MSECS
 import copy
 import logging
 
+
 class SystemService(Service):
     """Checks the uptime and OS/version of the node.
     This is specially called out to normalize the timestamp and handle
