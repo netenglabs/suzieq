@@ -8,8 +8,8 @@ from unittest.mock import Mock
 suzieq_cli_path = './suzieq/cli/suzieq-cli'
 
 
-commands = [('AddrCmd'), ('ArpndCmd'), ('BgpCmd'), ('EvpnVniCmd'), ('InterfaceCmd'), ('LldpCmd'), ('MacsCmd'),
-            ('MlagCmd'), ('OspfCmd'), ('RoutesCmd'), ('SystemCmd'), ('TopcpuCmd'), ('TopmemCmd'), ('VlanCmd')]
+commands = [('AddrCmd'), ('ArpndCmd'), ('BgpCmd'), ('EvpnVniCmd'), ('InterfaceCmd'), ('LldpCmd'), ('MacCmd'),
+            ('MlagCmd'), ('OspfCmd'), ('RouteCmd'), ('SystemCmd'), ('TopcpuCmd'), ('TopmemCmd'), ('VlanCmd')]
 
 
 tables = [('arpnd'), ('bgp'), ('evpnVni'), ('fs'), ('ifCounters'), ('interfaces'), ('lldp'), ('macs'), ('mlag'),

@@ -5,8 +5,8 @@ from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.routes import RoutesObj
 
 
-@command("routes", help="Act on Routes")
-class RoutesCmd(SqCommand):
+@command("route", help="Act on Routes")
+class RouteCmd(SqCommand):
     def __init__(
         self,
         engine: str = "",

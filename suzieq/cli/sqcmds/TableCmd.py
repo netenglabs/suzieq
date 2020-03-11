@@ -6,8 +6,8 @@ from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.tables import TablesObj
 
 
-@command("tables", help="Information about the various tables")
-class TablesCmd(SqCommand):
+@command("table", help="Information about the various tables")
+class TableCmd(SqCommand):
     def __init__(
         self,
         engine: str = "",

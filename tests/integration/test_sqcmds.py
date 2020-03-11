@@ -43,15 +43,15 @@ basic_verbs = ['show']
     ('InterfaceCmd', basic_verbs + ['top', 'aver'],
      [None, None, None], [1518, 60, 0]),
     ('LldpCmd', basic_verbs, [None, None], [352, 48]),
-    ('MacsCmd', basic_verbs, [None, None], [312, 48]),
+    ('MacCmd', basic_verbs, [None, None], [312, 48]),
     ('MlagCmd', basic_verbs + ['describe'], [None, None, None],
      [44, 143]),
     ('OspfCmd', basic_verbs + ['top', 'aver'], [None, None, None],
      [FileNotFoundError, FileNotFoundError,
       FileNotFoundError]),  # TODO: bug #16
-    ('RoutesCmd', basic_verbs + ['lpm'],
+    ('RouteCmd', basic_verbs + ['lpm'],
      [None, {'address': '10.0.0.1'}], [2596, 143]),  # TODO: bug #24
-    ('TablesCmd', basic_verbs, [None, {'table': 'system'}], [120, 44]),
+    ('TableCmd', basic_verbs, [None, {'table': 'system'}], [120, 44]),
     ('TopcpuCmd', basic_verbs, [None, None], [42, 18]),
     ('TopmemCmd', basic_verbs, [None, None], [27, 18]),
     ('VlanCmd', basic_verbs, [None], [96])
