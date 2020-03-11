@@ -75,11 +75,13 @@ async def init_hosts(hosts_file):
                 )
 
                 if newnode.devtype is None:
-                    logging.error("Unable to determine device type for {}".format(host))
+                    logging.error(
+                        "Unable to determine device type for {}".format(host))
                 else:
                     logging.info("Added node {}".format(newnode.hostname))
 
-                nodes.update({"{}.{}".format(dcname, newnode.hostname): newnode})
+                nodes.update(
+                    {"{}.{}".format(dcname, newnode.hostname): newnode})
 
     return nodes
 
@@ -113,7 +115,7 @@ class Node(object):
         self.dcname = kwargs.get("datacenter", "default")
         self.port = kwargs.get("port", 0)
         self.devtype = kwargs.get("devtype", None)
-        pvtkey_file = kwargs.get("pvtkey_file", None)
+        pvtkey_file = kwargs.get("private_key_file", None)
         if pvtkey_file:
             self.pvtkey = asyncssh.public_key.read_private_key(pvtkey_file)
 
@@ -128,7 +130,8 @@ class Node(object):
             self.hostname = self.address
 
         if self.status == "init":
-            self.backoff = min(600, self.backoff * 2) + (random.randint(0, 1000) / 1000)
+            self.backoff = min(600, self.backoff * 2) + \
+                (random.randint(0, 1000) / 1000)
             self.init_again_at = time.time() + self.backoff
 
         return self
@@ -141,7 +144,7 @@ class Node(object):
             try:
                 await self.get_device_type_hostname()
                 devtype = self.devtype
-            except (OSError, futures.TimeoutError) as e:
+            except (OSError, futures.TimeoutError):
                 devtype = None
 
             if devtype is None:
@@ -183,7 +186,8 @@ class Node(object):
             )
         else:
             output = await asyncio.wait_for(
-                self.ssh_gather(["show version", "hostnamectl", "goes show machine"]),
+                self.ssh_gather(
+                    ["show version", "hostnamectl", "goes show machine"]),
                 timeout=self.cmd_timeout,
             )
 
@@ -315,7 +319,8 @@ class Node(object):
             asyncssh.misc.DisconnectError,
         ) as e:
             for cmd in cmd_list:
-                logging.error("Unable to connect to node {}".format(self.hostname))
+                logging.error(
+                    "Unable to connect to node {}".format(self.hostname))
                 result.append(
                     {
                         "status": 408,
