@@ -3,7 +3,9 @@ Suzieq is an application focused on observability for IP networks: We want you t
 your network as a system. Suzieq gathers data and then allows analysis of the data in interesting ways.
 
 Suzieq does multiple things. It collects data from different devices and systems. 
-It normalizes the data and then stores it in a vendor indepdent way. Then it allows analysis of that data.
+It normalizes the data and then stores it in a vendor independent way. Then it allows analysis of that data.
+Suzieq has a pretty novel way of describing how to collect the data via various tools. We want to be
+as agnostic as possible so that we can easily get all the necessary data in one place.
 
 What does Suzieq do that is different from just logging into a device and getting the data?
 1. It collects data from all devices and puts it in a central place
@@ -94,7 +96,7 @@ We started out with least common denominator SSH and REST access to devices.
 
 Suzieq does have support for agents to push data and we've done some experiments with them, but don't
 have production versions of that code. 
-# Polling data and getting started
+# Getting Started
 Suzieq requires Python 3.7, so make sure that is installed first.
 
 ## Installation with Pipenv
