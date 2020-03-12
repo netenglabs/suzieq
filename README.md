@@ -2,11 +2,22 @@
 Suzieq is an application focused on observability for IP networks: We want you to understand 
 your network as a system. Suzieq gathers data and then allows analysis of the data in interesting ways.
 
+Suzieq does multiple things. It collects data from different devices and systems. 
+It normalizes the data and then stores it in a vendor indepdent way. Then it allows analysis of that data.
+
+What does Suzieq do that is different from just logging into a device and getting the data?
+1. It collects data from all devices and puts it in a central place
+2. It collects multiple data from each device
+3. It collects data from multiple vendors and normalizes to a standard set of data.
+4. It collects data over time.
+
+By using each of these dimensions, we can easily build interesting applications that help understand
+networks in way that is much easier. We've just gotten started; our applications are only a brief
+demonstration of what this approach can bring about. This is a very early release. We have many more ideas on what Suzieq can do, but we wanted to get this out
+so that people can start using it. And start solving problems in their networks.
+
 Suzieq data is focused on [Pandas DataFrames](https://pandas.pydata.org/pandas-docs/stable/getting_started/dsintro.html)
 Everything returned by the analysis engine is a dataframe.
-
-We are just getting started; this is a very early release. We have many more ideas on what Suzieq can do, but we wanted to get this out
-so that people can start using it. And start solving problems in their networks.
 
 For now, all the analysis are in a CLI.
 
