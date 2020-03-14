@@ -1,3 +1,4 @@
+
 import sys
 from collections import defaultdict
 import os
@@ -487,7 +488,7 @@ class EosNode(Node):
         try:
             async with aiohttp.ClientSession(
                     auth=auth,
-                    conn_timeout=self.conn_timeout,
+                    conn_timeout=self.connect_timeout,
                     read_timeout=self.cmd_timeout,
                     connector=aiohttp.TCPConnector(ssl=False),
             ) as session:
