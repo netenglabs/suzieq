@@ -122,33 +122,3 @@ class SystemService(Service):
             nodeobj.set_good_status()
 
         await super().commit_data(result, datacenter, hostname)
-
-    def get_diff(self, old, new):
-
-        adds = []
-        dels = []
-        koldvals = {}
-        knewvals = {}
-
-        for i, elem in enumerate(old):
-            vals = [v for k, v in elem.items() if k not in self.ignore_fields]
-            koldvals.update({tuple(str(vals)): i})
-
-        for i, elem in enumerate(new):
-            vals = [v for k, v in elem.items() if k not in self.ignore_fields]
-            knewvals.update({tuple(str(vals)): i})
-
-        addlist = [v for k, v in knewvals.items() if k not in koldvals.keys()]
-        dellist = [v for k, v in koldvals.items() if k not in knewvals.keys()]
-
-        adds = [new[v] for v in addlist]
-        dels = [old[v] for v in dellist]
-
-        if not (adds or dels):
-            # Verify the bootupTimestamp hasn't changed. Compare only int part
-            # Assuming no device boots up in millisecs
-            if abs(int(new[0]["bootupTimestamp"]) -
-                   int(old[0]["bootupTimestamp"])) > 2:
-                adds.append(new[0])
-
-        return adds, dels
