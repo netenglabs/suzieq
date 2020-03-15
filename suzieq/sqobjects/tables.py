@@ -16,7 +16,7 @@ class TablesObj(basicobj.SqObject):
                 eobj = getattr(module, "{}Obj".format(table.title()))
                 table_obj = eobj(self)
                 info = {'table': table}
-                info.update(table_obj.get_table_info(table))
+                info.update(table_obj.get_table_info(table, **kwargs))
                 tables[i] = info
 
             df = pd.DataFrame.from_dict(tables)
@@ -25,7 +25,7 @@ class TablesObj(basicobj.SqObject):
             total = pd.DataFrame([['TOTAL',  df['first_time'].min(), df['latest_time'].max(),
                                    df['intervals'].max(), df['latest rows'].sum(),
                                    df['all rows'].sum(), df['datacenters'].max(), df['devices'].max()]],
-                                   columns=cols)
+                                 columns=cols)
             df = df.append(total, ignore_index=True)
         return df
 
