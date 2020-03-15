@@ -93,6 +93,13 @@ class SqPandasEngine(SqEngine):
                 query_str += "{} {}=={} ".format(prefix, f, v)
                 prefix = "and"
 
+        # Handle the case where key fields are missing from display fields
+        fldset = set(fields)
+        kfldset = set(key_fields)
+        add_flds = kfldset.difference(fldset)
+        if add_flds:
+            fields.extend(list(add_flds))
+
         if use_get_files:
             if not query_str:
                 query_str = "active == True"
@@ -119,13 +126,6 @@ class SqPandasEngine(SqEngine):
             # to avoid splitting the parquet datafiles by prefix
             if table == "routes":
                 key_fields.append("prefix")
-
-            # Handle the case where key fields are missing from display fields
-            fldset = set(fields)
-            kfldset = set(key_fields)
-            add_flds = kfldset.difference(fldset)
-            if add_flds:
-                fields.extend(list(add_flds))
 
             try:
                 final_df = (
@@ -163,7 +163,7 @@ class SqPandasEngine(SqEngine):
 
         final_df = df_timestamp_to_datetime(final_df)
 
-        if sort_fields:
+        if sort_fields and all(x in sort_fields for x in fields):
             return final_df[fields].sort_values(by=sort_fields)
         else:
             return final_df[fields]
