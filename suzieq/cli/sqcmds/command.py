@@ -1,3 +1,5 @@
+import time
+
 import pandas as pd
 from nubia import command, argument, context
 
@@ -132,27 +134,17 @@ class SqCommand:
         raise NotImplementedError
 
     @command("unique", help="find the list of unique items in a colum")
-    def unique(self, **kwargs):
-        column = None
-        if self.columns == ['default']:
-            return self._gen_output(pd.DataFrame.from_dict(
-                {'error': ['ERROR: Must specify columns with unique']},
-                orient='columns'))
-        if len(self.columns) > 1:
-            return self._gen_output(pd.DataFrame.from_dict(
-                {'error': ['ERROR: Specify a single column with unique']},
-                orient='columns'))
-        column = self.columns[0]
-        format = self.format
-        self.format = 'dataframe'
-        df = self.show(**kwargs)
-        self.format = format
-        if column in df.columns:
-            r = df[column].value_counts()
-            if isinstance(r, pd.Categorical):
-                r = r.categories
-            return self._gen_output(pd.DataFrame({column: r}).reset_index()
-                                    .sort_values('index')
-                                    .rename(columns={column: 'count', 'index': column})
-                                    .reset_index(drop=True))
-        return self._gen_output(pd.DataFrame())
+    @argument("groupby", description="List of columns to group by")
+    @argument("type", description="Unique per host or table entry",
+              choices=['entry', 'host'])
+    def unique(self, groupby='', type='entry', **kwargs):
+        now = time.time()
+        try:
+            df = self.sqobj.unique(hostname=self.hostname,
+                                   datacenter=self.datacenter,
+                                   groupby=groupby, type=type,
+                                   columns=self.columns)
+        except Exception as e:
+            df = pd.DataFrame({'error': ['ERROR: {}'.format(str(e))]})
+        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
+        return self._gen_output(df)
