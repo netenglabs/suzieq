@@ -42,16 +42,16 @@ class SqEngineObject(object):
 
         if not datacenter or get_data_dc_list:
             system_df = self.ctxt.engine.get_table_df(
-                    self.cfg,
-                    self.schemas,
-                    table="system",
-                    view=self.iobj.view,
-                    start_time=self.iobj.start_time,
-                    end_time=self.iobj.end_time,
-                    datacenter=get_data_dc_list,
-                    sort_fields=sys_sort,
-                    columns=sys_cols,
-                )
+                self.cfg,
+                self.schemas,
+                table="system",
+                view=self.iobj.view,
+                start_time=self.iobj.start_time,
+                end_time=self.iobj.end_time,
+                datacenter=get_data_dc_list,
+                sort_fields=sys_sort,
+                columns=sys_cols,
+            )
             if not get_data_dc_list and not system_df.empty:
                 get_data_dc_list = system_df['datacenter'].unique()
 
@@ -172,7 +172,8 @@ class SqEngineObject(object):
         sch = SchemaForTable(table, schema=self.schemas)
         key_fields = sch.key_fields()
         all_time_df = self._get_table_info(table, view='all')
-        default_df = all_time_df.drop_duplicates(subset=key_fields, keep='last')
+        default_df = all_time_df.drop_duplicates(
+            subset=key_fields, keep='last')
         times = all_time_df['timestamp'].unique()
         ret = {'first_time': all_time_df.timestamp.min(),
                'latest_time': all_time_df.timestamp.max(),
@@ -224,6 +225,58 @@ class SqEngineObject(object):
                             "default" in kwargs.get("columns", [])):
                         df[i] = df[i].astype("category", copy=False)
                 return df.describe(include="all").fillna("-")
+
+    def unique(self, **kwargs) -> pd.DataFrame:
+        """Return the unique elements as per user specification"""
+        groupby = kwargs.pop("groupby", None)
+
+        columns = kwargs.pop("columns", None)
+        if columns is None or columns == ['default']:
+            raise ValueError('Must specify columns with unique')
+
+        if len(columns) > 1:
+            raise ValueError('Specify a single column with unique')
+
+        if groupby:
+            getcols = columns + groupby.split()
+        else:
+            getcols = columns
+
+        column = columns[0]
+
+        type = kwargs.pop('type', 'entry')
+
+        df = self.get_valid_df(self.iobj._table, self.iobj._sort_fields,
+                               columns=getcols, **kwargs)
+        if df.empty:
+            return df
+
+        if groupby:
+            if type == 'host' and 'hostname' not in groupby:
+                grp = df.groupby(by=groupby.split() + ['hostname', column])
+                grpkeys = list(grp.groups.keys())
+                gdict = {}
+                for i, g in enumerate(groupby.split() + ['hostname', column]):
+                    gdict[g] = [x[i] for x in grpkeys]
+                r = pd.DataFrame(gdict).groupby(by=groupby.split())[column] \
+                                       .value_counts()
+                return (pd.DataFrame({'count': r})
+                          .reset_index())
+
+            else:
+                r = df.groupby(by=groupby.split())[column].value_counts()
+                return pd.DataFrame({'count': r}).reset_index()
+        else:
+            if type == 'host' and column != 'hostname':
+                r = df.groupby('hostname').first()[column].value_counts()
+            else:
+                r = df[column].value_counts()
+
+            return (pd.DataFrame({column: r})
+                    .reset_index()
+                    .sort_values('index')
+                    .rename(columns={column: 'count',
+                                     'index': column}))
 
     def analyze(self, **kwargs):
         raise NotImplementedError
