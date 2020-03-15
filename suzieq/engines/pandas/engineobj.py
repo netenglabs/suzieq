@@ -171,7 +171,10 @@ class SqEngineObject(object):
     def get_table_info(self, table, **kwargs):
         sch = SchemaForTable(table, schema=self.schemas)
         key_fields = sch.key_fields()
-        all_time_df = self._get_table_info(table, view='all')
+        # You can't use view from user because we need to see all the data
+        # to compute data required.
+        kwargs.pop('view', None)
+        all_time_df = self._get_table_info(table, view='all', **kwargs)
         default_df = all_time_df.drop_duplicates(
             subset=key_fields, keep='last')
         times = all_time_df['timestamp'].unique()
@@ -200,7 +203,7 @@ class SqEngineObject(object):
             start_time='',
             end_time='',
             sort_fields=None,
-            ** kwargs
+            **kwargs
         )
         return df
 

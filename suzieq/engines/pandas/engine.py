@@ -279,9 +279,9 @@ class SqPandasEngine(SqEngine):
                       if dir.is_dir() and not dir.parts[-1].startswith('_')]
             datacenters = kwargs.get('datacenter', [])
             for dc in datacenters:
-                tables = filter(
+                tables = list(filter(
                     lambda x: os.path.exists('{}/{}/datacenter={}'.format(
-                        dfolder, x, dc)), tables)
+                        dfolder, x, dc)), tables))
 
         return tables
 
