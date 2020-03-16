@@ -10,14 +10,26 @@ class TablesObj(basicobj.SqObject):
         """Show the tables for which we have information"""
         tables = self.engine.get_tables(self.ctxt.cfg, **kwargs)
         df = pd.DataFrame()
+        unknown_tables = []
         if tables:
             for i, table in enumerate(tables):
-                module = import_module("suzieq.engines.pandas." + table)
-                eobj = getattr(module, "{}Obj".format(table.title()))
+                try:
+                    module = import_module("suzieq.engines.pandas." + table)
+                    eobj = getattr(module, "{}Obj".format(table.title()))
+                except ModuleNotFoundError:
+                    unknown_tables.append(table)
+                    continue
+
                 table_obj = eobj(self)
                 info = {'table': table}
                 info.update(table_obj.get_table_info(table, **kwargs))
                 tables[i] = info
+
+            if unknown_tables:
+                # These are tables for which we don't have processing modules
+                # Remove them from the list
+                # TODO: Log a warning about these ignored tables
+                tables = [x for x in tables if x not in unknown_tables]
 
             df = pd.DataFrame.from_dict(tables)
             df = df.sort_values(by=['table']).reset_index(drop=True)
