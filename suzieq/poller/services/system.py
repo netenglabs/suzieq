@@ -122,3 +122,23 @@ class SystemService(Service):
             nodeobj.set_good_status()
 
         await super().commit_data(result, datacenter, hostname)
+
+    def get_diff(self, old, new):
+        """Compare list of dictionaries ignoring certain fields
+        Return list of adds and deletes.
+        Need a special one for system because of bootupTimestamp
+        whose time varies by a few msecs each time the poller runs,
+        skewing the data and making us update service records each
+        time. So, we mark bootupTimestamp to be ignored, and we
+        do an additional check where we check the actual diff in
+        the value between old and new records.
+        """
+        adds, dels = super().get_diff(old, new)
+        if not (adds or dels):
+            # Verify the bootupTimestamp hasn't changed. Compare only int part
+            # Assuming no device boots up in millisecs
+            if abs(int(new[0]["bootupTimestamp"]) -
+                   int(old[0]["bootupTimestamp"])) > 2:
+                adds.append(new[0])
+
+        return adds, dels
