@@ -159,7 +159,7 @@ tests:
       bridge.*$$ -> Next.Record\n  ^${macaddr} dev ${oif} self ${flags}.*$$ -> Next.Record\n"},
       "linux": {"copy": "cumulus"}, "platina": {"copy": "cumulus"}}, "ignore_fields":
       ["timestamp"], "keys": ["datacenter", "hostname", "vlan", "macaddr"], "period":
-      15, "stype": "state", "partition_cols": ["datacenter", "hostname", "vlan", "macaddr",
+      15, "stype": "state", "partition_cols": ["datacenter", "hostname", "vlan",
       "timestamp"]}'
     service: macs
   mlag:
@@ -248,7 +248,7 @@ tests:
       route vrf all", "normalize": "vrfs/*:vrf/routes/*:prefix/[ \"routeType: protocol\",
       \"metric: metric?|0\", \"vias/*/nexthopAddr: list(nexthopIps)\", \"vias/*/interface\":
       list(oifs)\"]"}}, "ignore_fields": ["timestamp"], "keys": ["datacenter", "hostname",
-      "vrf"], "period": 15, "stype": "state", "partition_cols": ["datacenter", "hostname",
+      "vrf", "prefix"], "period": 15, "stype": "state", "partition_cols": ["datacenter", "hostname",
       "vrf", "timestamp"]}'
     service: routes
   system:
