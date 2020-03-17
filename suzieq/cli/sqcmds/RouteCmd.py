@@ -1,4 +1,5 @@
 import time
+import ipaddress
 from nubia import command, argument
 
 from suzieq.cli.sqcmds.command import SqCommand
@@ -29,6 +30,15 @@ class RouteCmd(SqCommand):
             format=format,
             sqobj=RoutesObj,
         )
+        self.json_print_handler = self._json_print_handler
+
+    def _json_print_handler(self, input):
+        """This handler calls the code to print the IPNetwork as a string"""
+        if isinstance(input, ipaddress.IPv4Network):
+            return ipaddress.IPv4Network.__str__(input)
+        elif isinstance(input, ipaddress.IPv6Network):
+            return ipaddress.IPv6Network.__str__(input)
+        return input
 
     @command("show")
     @argument("prefix", description="Prefix, in quotes, to filter show on")
