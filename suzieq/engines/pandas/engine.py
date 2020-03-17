@@ -79,6 +79,12 @@ class SqPandasEngine(SqEngine):
         for f in ['active', 'timestamp']:
             if f not in fields:
                 fields.append(f)
+        # Handle the case where key fields are missing from display fields
+        fldset = set(fields)
+        kfldset = set(key_fields)
+        add_flds = kfldset.difference(fldset)
+        if add_flds:
+            fields.extend(list(add_flds))
 
         # Create the filter to select only specified columns
         query_str = ""
@@ -92,13 +98,6 @@ class SqPandasEngine(SqEngine):
             else:
                 query_str += "{} {}=={} ".format(prefix, f, v)
                 prefix = "and"
-
-        # Handle the case where key fields are missing from display fields
-        fldset = set(fields)
-        kfldset = set(key_fields)
-        add_flds = kfldset.difference(fldset)
-        if add_flds:
-            fields.extend(list(add_flds))
 
         if use_get_files:
             if not query_str:
