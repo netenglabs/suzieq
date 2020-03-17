@@ -84,6 +84,7 @@ class SqCommand:
         self.view = view
         self.columns = columns.split()
         self.format = format or "text"
+        self.json_print_handler = None
 
         if not sqobj:
             raise AttributeError('mandatory parameter sqobj missing')
@@ -106,7 +107,12 @@ class SqCommand:
 
     def _gen_output(self, df: pd.DataFrame):
         if self.format == 'json':
-            print(df.to_json(orient="records"))
+            if self.json_print_handler:
+                print(df.to_json(
+                    default_handler=self.json_print_handler,
+                    orient="records"))
+            else:
+                print(df.to_json(orient="records"))
         elif self.format == 'csv':
             print(df.to_csv())
         elif self.format == 'dataframe':
