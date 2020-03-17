@@ -408,7 +408,9 @@ def test_sqcmds(testvar, create_context_config):
             expected_jout = json.loads(testvar['output'].strip())
         except json.JSONDecodeError:
             expected_jout = testvar['output']
-        assert(jout == expected_jout)
+        expected_setlist = set(tuple(sorted(d.items())) for d in jout)
+        got_setlist = set(tuple(sorted(d.items())) for d in expected_jout)
+        assert(expected_setlist == got_setlist)
 
     elif error and 'xfail' in testvar and 'error' in testvar['xfail']:
         if jout.decode("utf-8") == testvar['xfail']['error']:
@@ -416,6 +418,7 @@ def test_sqcmds(testvar, create_context_config):
         else:
             assert True
     elif error and 'error' in testvar and 'error' in testvar['error']:
-        assert json.loads(error.decode("utf-8").strip()) == json.loads(testvar['error']['error'])
+        assert json.loads(error.decode("utf-8").strip()
+                          ) == json.loads(testvar['error']['error'])
     else:
         raise Exception(f"either xfail or output requried {error}")
