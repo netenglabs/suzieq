@@ -30,9 +30,11 @@ class SystemService(Service):
             if not entry.get("bootupTimestamp", None) and entry.get(
                     "sysUptime", None):
                 entry["bootupTimestamp"] = int(
-                    int(raw_data["timestamp"])/1000 - float(entry["sysUptime"])
+                    int(raw_data["timestamp"])/1000 -
+                    float(entry.pop("sysUptime", 0))
                 )
-                del entry["sysUptime"]
+                if entry["bootupTimestamp"] < 0:
+                    entry["bootupTimestamp"] = 0
             # This is the case for Linux servers, so also extract the vendor
             # and version from the os string
             if not entry.get("vendor", ''):
