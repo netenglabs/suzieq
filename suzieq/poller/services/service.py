@@ -226,7 +226,8 @@ class Service(object):
         """Derive the data to be stored from the raw input"""
         result = []
 
-        if int(data["status"]) == 200 or int(data["status"]) == 0:
+        if (data["status"] is not None) and (int(data["status"]) == 200 or
+                                             int(data["status"]) == 0):
             if not data["data"]:
                 return result
 
