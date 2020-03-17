@@ -93,11 +93,6 @@ class SqPandasEngine(SqEngine):
                 query_str += "{} {}=={} ".format(prefix, f, v)
                 prefix = "and"
 
-        # Sadly we have to hard code this for routes
-        # to avoid splitting the parquet datafiles by prefix
-        if table == "routes":
-            key_fields.append("prefix")
-
         # Handle the case where key fields are missing from display fields
         fldset = set(fields)
         kfldset = set(key_fields)
