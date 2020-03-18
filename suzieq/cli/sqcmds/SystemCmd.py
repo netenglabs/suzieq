@@ -9,6 +9,7 @@ from suzieq.sqobjects.system import SystemObj
 @command("system", help="Act on system data")
 class SystemCmd(SqCommand):
     """system command"""
+
     def __init__(
             self,
             engine: str = "",
@@ -61,11 +62,9 @@ class SystemCmd(SqCommand):
                                           unit='ms'))
             uptime_cols = pd.to_timedelta(uptime_cols, unit='ms')
             df.insert(len(df.columns)-1, 'uptime', uptime_cols)
-            self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
             df = df.drop(columns=['bootupTimestamp'])
-        else:
-            self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
 
+        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
 
     @command("summarize", help="Summarize system information")
