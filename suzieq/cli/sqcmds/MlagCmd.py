@@ -46,7 +46,7 @@ class MlagCmd(SqCommand):
     @command('summarize')
     @argument("groupby",
               description="Space separated list of fields to summarize on")
-    def describe(self, groupby: str = ''):
+    def summarize(self, groupby: str = ''):
         """
         Summarize mlag info
         """
