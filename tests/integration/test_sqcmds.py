@@ -127,8 +127,8 @@ def test_engine_show_filter(setup_nubia, cmd):
 
 @pytest.mark.filter
 @pytest.mark.parametrize("cmd", good_commands)
-def test_datacenter_show_filter(setup_nubia, cmd):
-    s1, s2 = _test_good_show_filter(cmd, {'datacenter': 'dual-bgp'})
+def test_namespace_show_filter(setup_nubia, cmd):
+    s1, s2 = _test_good_show_filter(cmd, {'namespace': 'dual-bgp'})
     assert s1.size == s2.size
 
 
@@ -221,15 +221,15 @@ def test_bad_start_time_filter(setup_nubia, cmd):
     _ = _test_bad_show_filter(cmd, filter)
 
 
-bad_datacenter_commands = bad_hostname_commands[:]
+bad_namespace_commands = bad_hostname_commands[:]
 
 
 # TODO
 # this is just like hostname filtering
 @pytest.mark.filter
-@pytest.mark.parametrize("cmd", bad_datacenter_commands)
-def test_bad_show_datacenter_filter(setup_nubia, cmd):
-    filter = {'datacenter': 'unknown'}
+@pytest.mark.parametrize("cmd", bad_namespace_commands)
+def test_bad_show_namespace_filter(setup_nubia, cmd):
+    filter = {'namespace': 'unknown'}
     _ = _test_bad_show_filter(cmd, filter)
 
 
@@ -254,14 +254,14 @@ def test_context_filtering(setup_nubia, cmd):
         assert len(s1) >= len(s2)
 
 
-context_datacenter_commands = commands[:]
+context_namespace_commands = commands[:]
 @pytest.mark.filter
-@pytest.mark.parametrize('cmd', context_datacenter_commands)
-def test_context_datacenter_filtering(setup_nubia, cmd):
+@pytest.mark.parametrize('cmd', context_namespace_commands)
+def test_context_namespace_filtering(setup_nubia, cmd):
     s1 = _test_command(cmd, 'show', None, None)
-    s2 = _test_context_filtering(cmd, {'datacenter': ['dual-bgp']})
+    s2 = _test_context_filtering(cmd, {'namespace': ['dual-bgp']})
     # this has to be list or it will fail, different from any other filtering,
-    # datacenter is special because it's part of the directory structure
+    # namespace is special because it's part of the directory structure
     assert len(s1) == len(s2)
     testing.assert_frame_equal(s1, s2, check_dtype=True,
                                check_categorical=False)

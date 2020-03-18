@@ -15,7 +15,7 @@ class OspfCmd(SqCommand):
         start_time: str = "",
         end_time: str = "",
         view: str = "latest",
-        datacenter: str = "",
+        namespace: str = "",
         format: str = "",
         columns: str = "default",
     ) -> None:
@@ -25,7 +25,7 @@ class OspfCmd(SqCommand):
             start_time=start_time,
             end_time=end_time,
             view=view,
-            datacenter=datacenter,
+            namespace=namespace,
             columns=columns,
             format=format,
             sqobj=OspfObj,
@@ -63,7 +63,7 @@ class OspfCmd(SqCommand):
             ifname=ifname.split(),
             state=state,
             columns=self.columns,
-            datacenter=self.datacenter,
+            namespace=self.namespace,
             type=type,
         )
 
@@ -115,7 +115,7 @@ class OspfCmd(SqCommand):
             ifname=ifname.split(),
             state=state,
             columns=self.columns,
-            datacenter=self.datacenter,
+            namespace=self.namespace,
             type=type,
             groupby=groupby.split(),
         )
@@ -140,7 +140,7 @@ class OspfCmd(SqCommand):
             hostname=self.hostname,
             vrf=vrf.split(),
             ifname=ifname.split(),
-            datacenter=self.datacenter,
+            namespace=self.namespace,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
 
@@ -171,7 +171,7 @@ class OspfCmd(SqCommand):
             what=what,
             n=count,
             columns=self.columns,
-            datacenter=self.datacenter,
+            namespace=self.namespace,
         )
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)

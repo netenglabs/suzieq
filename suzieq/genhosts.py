@@ -31,7 +31,7 @@ for line in lines:
                 hostsdata.append('    - url: ssh://vagrant@{}:{}'.format(host, v))
                 break
 
-hostsdata.insert(0, '- datacenter: {}'.format(sys.argv[3]))
+hostsdata.insert(0, '- namespace: {}'.format(sys.argv[3]))
 hostsdata.insert(1, '  hosts:')
 out = '\n'.join(hostsdata)
 with open(sys.argv[2], 'w') as f:

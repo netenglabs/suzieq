@@ -38,7 +38,7 @@ def test_process_services_end_to_end(service, init_services_default, event_loop,
     for output in outputs:
         output = output[0]
         result = service.process_data(output)
-        name = f"{output['datacenter']}.{output['hostname']}"
+        name = f"{output['namespace']}.{output['hostname']}"
         results[name] = []
         for res in result:
             results[name].append(res)
@@ -73,12 +73,12 @@ def _create_node(service):
         for n in out['output']:
             if len(n) > 0:
                 node = MagicMock(spec=Node)
-                node.datacenter = n[0]['datacenter']
+                node.namespace = n[0]['namespace']
                 node.hostname = n[0]['hostname']
                 node.exec_service = partial(
                     _create_exec_serivce, n[0]['devtype'],  n[0]['cmd'], n)
                 nodes.update(
-                    {"{}.{}".format(node.datacenter, node.hostname): node})
+                    {"{}.{}".format(node.namespace, node.hostname): node})
     return nodes
 
 

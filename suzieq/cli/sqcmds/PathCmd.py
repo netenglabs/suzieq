@@ -14,7 +14,7 @@ class PathCmd(SqCommand):
         start_time: str = "",
         end_time: str = "",
         view: str = "latest",
-        datacenter: str = "",
+        namespace: str = "",
         format: str = "",
         columns: str = "default",
     ) -> None:
@@ -24,7 +24,7 @@ class PathCmd(SqCommand):
             start_time=start_time,
             end_time=end_time,
             view=view,
-            datacenter=datacenter,
+            namespace=namespace,
             columns=columns,
             format=format,
             sqobj=PathObj
@@ -48,7 +48,7 @@ class PathCmd(SqCommand):
 
         df = self.sqobj.get(
             hostname=self.hostname, columns=self.columns,
-            datacenter=self.datacenter, source=src, dest=dest,
+            namespace=self.namespace, source=src, dest=dest,
             vrf=vrf
         )
 

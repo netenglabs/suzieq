@@ -173,8 +173,8 @@ class SchemaForTable(object):
         if columns == ["default"]:
             fields = self.sorted_display_fields()
 
-            if "datacenter" not in fields:
-                fields.insert(0, "datacenter")
+            if "namespace" not in fields:
+                fields.insert(0, "namespace")
         elif columns == ["*"]:
             fields = self.fields
         else:

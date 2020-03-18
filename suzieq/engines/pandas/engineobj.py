@@ -24,23 +24,23 @@ class SqEngineObject(object):
     def sort_fields(self):
         return self.iobj._sort_fields
 
-    def system_df(self, datacenter) -> pd.DataFrame:
+    def system_df(self, namespace) -> pd.DataFrame:
         """Return cached version if present, else add to cache the system DF"""
 
         if not self.ctxt.engine:
             print("Specify an analysis engine using set engine command")
-            return pd.DataFrame(columns=["datacenter", "hostname"])
+            return pd.DataFrame(columns=["namespace", "hostname"])
 
-        sys_cols = ["datacenter", "hostname", "timestamp"]
-        sys_sort = ["datacenter", "hostname"]
+        sys_cols = ["namespace", "hostname", "timestamp"]
+        sys_sort = ["namespace", "hostname"]
 
         # Handle the case we need to fetch the data
         get_data_dc_list = []
-        for dc in datacenter:
+        for dc in namespace:
             if self.ctxt.system_df.get(dc, None) is None:
                 get_data_dc_list.append(dc)
 
-        if not datacenter or get_data_dc_list:
+        if not namespace or get_data_dc_list:
             system_df = self.ctxt.engine.get_table_df(
                 self.cfg,
                 self.schemas,
@@ -48,24 +48,24 @@ class SqEngineObject(object):
                 view=self.iobj.view,
                 start_time=self.iobj.start_time,
                 end_time=self.iobj.end_time,
-                datacenter=get_data_dc_list,
+                namespace=get_data_dc_list,
                 sort_fields=sys_sort,
                 columns=sys_cols,
             )
             if not get_data_dc_list and not system_df.empty:
-                get_data_dc_list = system_df['datacenter'].unique()
+                get_data_dc_list = system_df['namespace'].unique()
 
             for dc in get_data_dc_list:
                 if dc not in self.ctxt.system_df:
                     self.ctxt.system_df[dc] = None
 
                 self.ctxt.system_df[dc] = system_df \
-                         .query('datacenter=="{}"'.format(dc))
+                         .query('namespace=="{}"'.format(dc))
 
             return system_df
 
         system_df_list = []
-        for dc in datacenter:
+        for dc in namespace:
             system_df_list.append(
                 self.ctxt.system_df.get(dc, pd.DataFrame(columns=sys_cols)))
 
@@ -77,7 +77,7 @@ class SqEngineObject(object):
     def get_valid_df(self, table, sort_fields, **kwargs) -> pd.DataFrame:
         if not self.ctxt.engine:
             print("Specify an analysis engine using set engine command")
-            return pd.DataFrame(columns=["datacenter", "hostname"])
+            return pd.DataFrame(columns=["namespace", "hostname"])
 
         table_df = self.ctxt.engine.get_table_df(
             self.cfg,
@@ -90,12 +90,12 @@ class SqEngineObject(object):
             **kwargs
         )
 
-        datacenter = kwargs.get("datacenter", None)
-        if not datacenter:
-            datacenter = self.ctxt.datacenter
+        namespace = kwargs.get("namespace", None)
+        if not namespace:
+            namespace = self.ctxt.namespace
 
-        if not datacenter:
-            datacenter = []
+        if not namespace:
+            namespace = []
 
         if table_df.empty:
             return table_df
@@ -111,8 +111,8 @@ class SqEngineObject(object):
             drop_cols = ["timestamp_y"]
 
             if self.iobj.start_time or self.iobj.end_time:
-                sys_cols = ["datacenter", "hostname", "timestamp"]
-                sys_sort = ["datacenter", "hostname"]
+                sys_cols = ["namespace", "hostname", "timestamp"]
+                sys_sort = ["namespace", "hostname"]
                 sys_df = self.ctxt.engine.get_table_df(
                     self.cfg,
                     self.schemas,
@@ -120,12 +120,12 @@ class SqEngineObject(object):
                     view=self.iobj.view,
                     start_time=self.iobj.start_time,
                     end_time=self.iobj.end_time,
-                    datacenter=datacenter,
+                    namespace=namespace,
                     sort_fields=sys_sort,
                     columns=sys_cols,
                 )
             else:
-                sys_df = self.system_df(datacenter)
+                sys_df = self.system_df(namespace)
 
             if sys_df.empty:
                 return sys_df
@@ -134,14 +134,14 @@ class SqEngineObject(object):
                           if f.get("key", None) is not None]
 
             final_df = (
-                table_df.merge(sys_df, on=["datacenter", "hostname"])
+                table_df.merge(sys_df, on=["namespace", "hostname"])
                 .dropna(how="any", subset=key_fields)
                 .query("timestamp_x >= timestamp_y")
                 .drop(columns=drop_cols)
                 .rename(
                     index=str,
                     columns={
-                        "datacenter_x": "datacenter",
+                        "namespace_x": "namespace",
                         "hostname_x": "hostname",
                         "timestamp_x": "timestamp",
                     },
@@ -164,7 +164,7 @@ class SqEngineObject(object):
         try:
             df = self.get_valid_df(self.iobj._table, sort_fields, **kwargs)
         except pa.lib.ArrowInvalid:
-            return(pd.DataFrame(columns=['datacenter', 'hostname']))
+            return(pd.DataFrame(columns=['namespace', 'hostname']))
 
         return df
 
@@ -183,7 +183,7 @@ class SqEngineObject(object):
                'intervals': len(times),
                'latest rows': len(default_df),
                'all rows': len(all_time_df),
-               'datacenters': self._unique_or_zero(default_df, 'datacenter'),
+               'namespaces': self._unique_or_zero(default_df, 'namespace'),
                'devices': self._unique_or_zero(default_df, 'hostname')}
 
         return ret

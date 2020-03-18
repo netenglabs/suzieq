@@ -33,7 +33,7 @@ class AddrObj(SqEngineObject):
             if addrcol not in columns:
                 columns.insert(-1, addrcol)
         else:
-            columns = ["datacenter", "hostname", "ifname", "state", addrcol,
+            columns = ["namespace", "hostname", "ifname", "state", addrcol,
                        "timestamp"]
 
         df = self.get_valid_df("interfaces", sort_fields, columns=columns,
@@ -63,7 +63,7 @@ class AddrObj(SqEngineObject):
 
         if columns == ["default"]:
             # We leave out IPv6 because link-local addresses pollute the info
-            columns = ["datacenter", "hostname", "ifname", "ipAddressList",
+            columns = ["namespace", "hostname", "ifname", "ipAddressList",
                        "timestamp"]
             split_cols = ["ipAddressList"]
         else:

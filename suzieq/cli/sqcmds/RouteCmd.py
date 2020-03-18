@@ -15,7 +15,7 @@ class RouteCmd(SqCommand):
         start_time: str = "",
         end_time: str = "",
         view: str = "latest",
-        datacenter: str = "",
+        namespace: str = "",
         format: str = "",
         columns: str = "default",
     ) -> None:
@@ -25,7 +25,7 @@ class RouteCmd(SqCommand):
             start_time=start_time,
             end_time=end_time,
             view=view,
-            datacenter=datacenter,
+            namespace=namespace,
             columns=columns,
             format=format,
             sqobj=RoutesObj,
@@ -62,7 +62,7 @@ class RouteCmd(SqCommand):
             prefix=prefix.split(),
             vrf=vrf.split(),
             columns=self.columns,
-            datacenter=self.datacenter,
+            namespace=self.namespace,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
@@ -92,7 +92,7 @@ class RouteCmd(SqCommand):
             vrf=vrf.split(),
             columns=self.columns,
             groupby=groupby.split(),
-            datacenter=self.datacenter,
+            namespace=self.namespace,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
@@ -122,7 +122,7 @@ class RouteCmd(SqCommand):
             address=address,
             vrf=vrf.split(),
             columns=self.columns,
-            datacenter=self.datacenter,
+            namespace=self.namespace,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)

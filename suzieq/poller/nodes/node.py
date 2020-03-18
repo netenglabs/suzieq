@@ -42,14 +42,14 @@ async def init_hosts(hosts_file):
             print("Invalid hosts config file:{}", e)
             sys.exit(1)
 
-    for datacenter in hostsconf:
-        if "datacenter" not in datacenter:
-            logging.warning('No datacenter specified, assuming "default"')
+    for namespace in hostsconf:
+        if "namespace" not in namespace:
+            logging.warning('No namespace specified, assuming "default"')
             dcname = "default"
         else:
-            dcname = datacenter["datacenter"]
+            dcname = namespace["namespace"]
 
-        for host in datacenter.get("hosts", None):
+        for host in namespace.get("hosts", None):
             entry = host.get("url", None)
             if entry:
                 words = entry.split()
@@ -72,7 +72,7 @@ async def init_hosts(hosts_file):
                     password=password,
                     transport=result.scheme,
                     devtype=devtype,
-                    datacenter=dcname,
+                    namespace=dcname,
                 )
 
                 if newnode.devtype is None:
@@ -113,7 +113,7 @@ class Node(object):
         self.username = kwargs.get("username", "vagrant")
         self.password = kwargs.get("password", "vagrant")
         self.transport = kwargs.get("transport", "ssh")
-        self.dcname = kwargs.get("datacenter", "default")
+        self.dcname = kwargs.get("namespace", "default")
         self.port = kwargs.get("port", 0)
         self.devtype = kwargs.get("devtype", None)
         pvtkey_file = kwargs.get("private_key_file", None)
@@ -269,7 +269,7 @@ class Node(object):
                         "timestamp": int(datetime.utcnow().timestamp() * 1000),
                         "cmd": cmd,
                         "devtype": self.devtype,
-                        "datacenter": self.dcname,
+                        "namespace": self.dcname,
                         "hostname": self.hostname,
                         "address": self.address,
                         "data": stdout.decode("ascii", "ignore")
@@ -284,7 +284,7 @@ class Node(object):
                         "timestamp": int(datetime.utcnow().timestamp() * 1000),
                         "cmd": cmd,
                         "devtype": self.devtype,
-                        "datacenter": self.dcname,
+                        "namespace": self.dcname,
                         "hostname": self.hostname,
                         "address": self.address,
                         "data": {"error": str(e)},
@@ -328,7 +328,7 @@ class Node(object):
                         "timestamp": int(datetime.utcnow().timestamp() * 1000),
                         "cmd": cmd,
                         "devtype": self.devtype,
-                        "datacenter": self.dcname,
+                        "namespace": self.dcname,
                         "hostname": self.hostname,
                         "address": self.address,
                         "data": {"error": str(e)},
@@ -347,7 +347,7 @@ class Node(object):
                             "timestamp": int(datetime.utcnow().timestamp() * 1000),
                             "cmd": cmd,
                             "devtype": self.devtype,
-                            "datacenter": self.dcname,
+                            "namespace": self.dcname,
                             "hostname": self.hostname,
                             "address": self.address,
                             "data": output.stdout,
@@ -366,7 +366,7 @@ class Node(object):
                             "timestamp": int(datetime.utcnow().timestamp() * 1000),
                             "cmd": cmd,
                             "devtype": self.devtype,
-                            "datacenter": self.dcname,
+                            "namespace": self.dcname,
                             "hostname": self.hostname,
                             "address": self.address,
                             "data": {"error": str(e)},
@@ -379,7 +379,7 @@ class Node(object):
                             "timestamp": int(datetime.utcnow().timestamp() * 1000),
                             "cmd": cmd,
                             "devtype": self.devtype,
-                            "datacenter": self.dcname,
+                            "namespace": self.dcname,
                             "hostname": self.hostname,
                             "address": self.address,
                             "data": {"error": str(e)},
@@ -426,7 +426,7 @@ class Node(object):
                     "status": 404,
                     "timestamp": int(datetime.utcnow().timestamp() * 1000),
                     "devtype": self.devtype,
-                    "datacenter": self.dcname,
+                    "namespace": self.dcname,
                     "hostname": self.hostname,
                     "address": self.address,
                     "data": result,
@@ -506,7 +506,7 @@ class EosNode(Node):
                         "timestamp": now,
                         "cmd": cmd,
                         "devtype": self.devtype,
-                        "datacenter": self.dcname,
+                        "namespace": self.dcname,
                         "hostname": self.hostname,
                         "address": self.address,
                         "data": output[i] if type(output) is list else output,
@@ -520,7 +520,7 @@ class EosNode(Node):
                         "timestamp": int(datetime.utcnow().timestamp() * 1000),
                         "cmd": cmd,
                         "devtype": self.devtype,
-                        "datacenter": self.dcname,
+                        "namespace": self.dcname,
                         "hostname": self.hostname,
                         "address": self.address,
                         "data": {"error": str(e)},
@@ -578,7 +578,7 @@ class CumulusNode(Node):
                                 "timestamp": int(datetime.utcnow().timestamp() * 1000),
                                 "cmd": cmd,
                                 "devtype": self.devtype,
-                                "datacenter": self.dcname,
+                                "namespace": self.dcname,
                                 "hostname": self.hostname,
                                 "address": self.address,
                                 "data": await response.text(),
@@ -591,7 +591,7 @@ class CumulusNode(Node):
                     "timestamp": int(datetime.utcnow().timestamp() * 1000),
                     "cmd": cmd,
                     "devtype": self.devtype,
-                    "datacenter": self.dcname,
+                    "namespace": self.dcname,
                     "hostname": self.hostname,
                     "address": self.address,
                     "data": {"error": str(e)},

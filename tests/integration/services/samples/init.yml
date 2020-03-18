@@ -6,9 +6,9 @@ tests:
       oif (\\S+)\nValue state (\\w+)\nValue offload (offload)\n\nStart\n  ^${ipAddress}\\s+dev
       ${oif}\\s+lladdr ${macaddr}\\s+${offload}\\s+${state} -> Record\n  ^${ipAddress}\\s+dev
       ${oif}\\s+lladdr ${macaddr}\\s+${state} -> Record\n"}, "linux": {"copy": "cumulus"},
-      "platina": {"copy": "cumulus"}}, "ignore_fields": ["timestamp"], "keys": ["datacenter",
+      "platina": {"copy": "cumulus"}}, "ignore_fields": ["timestamp"], "keys": ["namespace",
       "hostname", "ipAddress", "oif"], "period": 15, "stype": "state", "partition_cols":
-      ["datacenter", "hostname", "ipAddress", "oif", "timestamp"]}'
+      ["namespace", "hostname", "ipAddress", "oif", "timestamp"]}'
     service: arpnd
   bgp:
     output: '{"name": "bgp", "defn": {"eos": {"version": "all", "command": "show ip
@@ -45,8 +45,8 @@ tests:
       Unicast/advertisedAndReceived: v4Enabled?|False\", \"neighborCapabilities/multiprotocolExtensions/L2VPN
       EVPN/advertisedAndReceived: evpnEnabled?|False\", \"neighborCapabilities/multiprotocolExtensions/IPv6
       Unicast/advertisedAndReceived: v6Enabled?|False\"]"}}, "ignore_fields": ["lastDownTime",
-      "estdTime", "timestamp"], "keys": ["datacenter", "hostname", "vrf", "peer"],
-      "period": 15, "stype": "state", "partition_cols": ["datacenter", "hostname",
+      "estdTime", "timestamp"], "keys": ["namespace", "hostname", "vrf", "peer"],
+      "period": 15, "stype": "state", "partition_cols": ["namespace", "hostname",
       "vrf", "peer", "timestamp"]}'
     service: bgp
   evpnVni:
@@ -54,8 +54,8 @@ tests:
       "sudo vtysh -c \"show evpn vni json\"", "normalize": "*/[ \"vni: vni\", \"type:
       type\", \"numMacs: numMacs?|0\", \"numArpNd: numArpNd?|0\", \"numRemoteVteps:
       numRemoteVteps?|0\", \"remoteVteps: remoteVteps\", \"tenantVrf: vrf\", ]"},
-      "platina": {"copy": "cumulus"}}, "ignore_fields": ["timestamp"], "keys": ["datacenter",
-      "hostname", "vni"], "period": 15, "stype": "state", "partition_cols": ["datacenter",
+      "platina": {"copy": "cumulus"}}, "ignore_fields": ["timestamp"], "keys": ["namespace",
+      "hostname", "vni"], "period": 15, "stype": "state", "partition_cols": ["namespace",
       "hostname", "vni", "timestamp"]}'
     service: evpnVni
   fs:
@@ -68,8 +68,8 @@ tests:
       \\t]+)\nValue usedSize ([^ \\t]+)\nValue availSize ([^ \\t]+)\nValue usedPercent
       (\\d+)\nValue mountPoint ([^ ]*)\n\nStart\n  ^Filesystem\\s+Type.*$$\n  ^${device}\\s+${fstype}\\s+${totalSize}\\s+${usedSize}\\s+${availSize}\\s+${usedPercent}%\\s+${mountPoint}$$
       -> Record\n"}}, "ignore_fields": ["usedSize", "availSize", "timestamp"], "keys":
-      ["datacenter", "hostname", "device", "mountPoint"], "period": 15, "stype": "counters",
-      "partition_cols": ["datacenter", "hostname"]}'
+      ["namespace", "hostname", "device", "mountPoint"], "period": 15, "stype": "counters",
+      "partition_cols": ["namespace", "hostname"]}'
     service: fs
   ifCounters:
     output: '{"name": "ifCounters", "defn": {"cumulus": {"copy": "linux"}, "eos":
@@ -88,8 +88,8 @@ tests:
       (\\d+)\nValue txCompressed (\\d+)\n\nStart\n  ^Inter-|.*$$ -> Continue\n  ^
       face |.*$$ -> Continue\n  ^\\s*${ifname}:\\s+${rxBytes}\\s+${rxPackets}\\s+${rxErrs}\\s+${rxDrops}\\s+${rxFifo}\\s+${rxFrame}\\s+${rxCompressed}\\s+${rxMcst}\\s+${txBytes}\\s+${txPackets}\\s+${txErrs}\\s+${txDrops}\\s+${txFifo}\\s+${txCollisions}\\s+${txCarrier}\\s+${txCompressed}.*$$
       -> Record\n  ^$$EOF\n"}, "platina": {"copy": "linux"}}, "ignore_fields": ["timestamp"],
-      "keys": ["datacenter", "hostname", "ifname"], "period": 15, "stype": "counters",
-      "partition_cols": ["datacenter", "hostname"]}'
+      "keys": ["namespace", "hostname", "ifname"], "period": 15, "stype": "counters",
+      "partition_cols": ["namespace", "hostname"]}'
     service: ifCounters
   interfaces:
     output: '{"name": "interfaces", "defn": {"cumulus": {"version": "all", "command":
@@ -127,8 +127,8 @@ tests:
       global.*$$\n  ^\\s*alias\\s*${description}$$\n  ^\\s*${type}\\s* id ${vni}.*$$\n  ^\\s*${type}\\s*table.*$$\n  ^\\s*${type}\\s*mode.*$$\n  ^\\s*${type}\\s*protocol.*id
       ${vlan}.*$$\n  ^\\s*bridge_slave state.*$$\n  ^\\s*${type} state.* mii_status.*$$\n  ^\\s*${type}
       forward_delay.*$$\n  ^.*$$ -> Continue\n"}, "platina": {"copy": "cumulus"}},
-      "ignore_fields": ["timestamp"], "keys": ["datacenter", "hostname", "ifname"],
-      "period": 15, "stype": "state", "partition_cols": ["datacenter", "hostname",
+      "ignore_fields": ["timestamp"], "keys": ["namespace", "hostname", "ifname"],
+      "period": 15, "stype": "state", "partition_cols": ["namespace", "hostname",
       "ifname", "timestamp"]}'
     service: interfaces
   lldp:
@@ -144,8 +144,8 @@ tests:
       (\\S+)\nValue Required peerHostname (\\S+)\nValue description (.*)\nValue peerIfname
       (\\S+)\n\nStart\n  ^Interface:.*$$ -> Continue.Record\n  ^Interface:\\s+${ifname},
       .*$$\n  ^\\s+SysName:\\s+ ${peerHostname}.*$$\n  ^\\s+SysDescr:\\s+ ${description}.*$$\n  ^\\s+PortID:\\s+ifname\\s+${peerIfname}.*$$\n"}},
-      "ignore_fields": ["timestamp"], "keys": ["datacenter", "hostname", "ifname"],
-      "period": 15, "stype": "state", "partition_cols": ["datacenter", "hostname",
+      "ignore_fields": ["timestamp"], "keys": ["namespace", "hostname", "ifname"],
+      "period": 15, "stype": "state", "partition_cols": ["namespace", "hostname",
       "ifname", "timestamp"]}'
     service: lldp
   macs:
@@ -158,8 +158,8 @@ tests:
       ${oif} master bridge ${flags}.*$$ -> Next.Record\n  ^${macaddr} dev ${oif} master
       bridge.*$$ -> Next.Record\n  ^${macaddr} dev ${oif} self ${flags}.*$$ -> Next.Record\n"},
       "linux": {"copy": "cumulus"}, "platina": {"copy": "cumulus"}}, "ignore_fields":
-      ["timestamp"], "keys": ["datacenter", "hostname", "vlan", "macaddr"], "period":
-      15, "stype": "state", "partition_cols": ["datacenter", "hostname", "vlan",
+      ["timestamp"], "keys": ["namespace", "hostname", "vlan", "macaddr"], "period":
+      15, "stype": "state", "partition_cols": ["namespace", "hostname", "vlan",
       "timestamp"]}'
     service: macs
   mlag:
@@ -179,8 +179,8 @@ tests:
       mlagErrorPortsCnt?|0\", \"mlagPorts/Active-partial: mlagSinglePortsCnt?|0\",
       \"mlagPorts/Active-full: mlagDualPortsCnt?|0\", \"mlagPorts/Inactive: mlagErrorPortsCnt+mlagErrorPortsCnt\",
       \"configSanity: configSanity?|\"]"}}, "ignore_fields": ["timestamp"], "keys":
-      ["datacenter", "hostname"], "period": 15, "stype": "state", "partition_cols":
-      ["datacenter", "hostname", "timestamp"]}'
+      ["namespace", "hostname"], "period": 15, "stype": "state", "partition_cols":
+      ["namespace", "hostname", "timestamp"]}'
     service: mlag
   ospfIf:
     output: '{"name": "ospfIf", "defn": {"eos": {"version": "all", "command": "show
@@ -205,8 +205,8 @@ tests:
       intervals configured, Hello ${helloTime}.*, Dead ${deadTime}.*, Retransmit ${retxTime}.*$$\n  ^\\s+No
       Hellos \\(${passive} interface\\).*$$\n  ^\\s+Neighbor Count.*, Adjacent neighbor
       count is ${nbrCount}.*$$\n"}, "platina": {"copy": "cumulus"}, "linux": {"copy":
-      "cumulus"}}, "ignore_fields": ["timestamp"], "keys": ["datacenter", "hostname",
-      "vrf", "ifname"], "period": 15, "stype": "state", "partition_cols": ["datacenter",
+      "cumulus"}}, "ignore_fields": ["timestamp"], "keys": ["namespace", "hostname",
+      "vrf", "ifname"], "period": 15, "stype": "state", "partition_cols": ["namespace",
       "hostname", "vrf", "ifname", "timestamp"]}'
     service: ospfIf
   ospfNbr:
@@ -225,8 +225,8 @@ tests:
       interface ${ifname}.*$$\n  ^\\s+Neighbor priority is ${nbrPrio},\\s+State is
       ${state}, ${numChanges} state changes.*$$\n  ^\\s+Progressive change ${lastChangeTime}
       ago.*$$\n"}, "platina": {"copy": "cumulus"}, "linux": {"copy": "cumulus"}},
-      "ignore_fields": ["lastChangeTime", "timestamp"], "keys": ["datacenter", "hostname",
-      "vrf", "ifname"], "period": 15, "stype": "state", "partition_cols": ["datacenter",
+      "ignore_fields": ["lastChangeTime", "timestamp"], "keys": ["namespace", "hostname",
+      "vrf", "ifname"], "period": 15, "stype": "state", "partition_cols": ["namespace",
       "hostname", "vrf", "ifname", "timestamp"]}'
     service: ospfNbr
   routes:
@@ -247,8 +247,8 @@ tests:
       "platina": {"copy": "cumulus"}, "eos": {"version": "all", "command": "show ip
       route vrf all", "normalize": "vrfs/*:vrf/routes/*:prefix/[ \"routeType: protocol\",
       \"metric: metric?|0\", \"vias/*/nexthopAddr: list(nexthopIps)\", \"vias/*/interface\":
-      list(oifs)\"]"}}, "ignore_fields": ["timestamp"], "keys": ["datacenter", "hostname",
-      "vrf", "prefix"], "period": 15, "stype": "state", "partition_cols": ["datacenter", "hostname",
+      list(oifs)\"]"}}, "ignore_fields": ["timestamp"], "keys": ["namespace", "hostname",
+      "vrf", "prefix"], "period": 15, "stype": "state", "partition_cols": ["namespace", "hostname",
       "vrf", "timestamp"]}'
     service: routes
   system:
@@ -265,8 +265,8 @@ tests:
       architecture (\\S+)\n\nStart\n  ^${sysUptime}.*$$\n  ^\\s*Chassis:\\s+${model}\\s*$$\n  ^\\s*Operating
       System:\\s+${os}\\s*$$\n  ^\\s*Architecture:\\s+${architecture}\\s*$$\n"}, "platina":
       {"copy": "linux"}}, "ignore_fields": ["timestamp", "bootupTimestamp"], "keys":
-      ["datacenter", "hostname"], "period": 15, "stype": "state", "partition_cols":
-      ["datacenter", "hostname", "timestamp"]}'
+      ["namespace", "hostname"], "period": 15, "stype": "state", "partition_cols":
+      ["namespace", "hostname", "timestamp"]}'
     service: system
   time:
     output: '{"name": "time", "defn": {"cumulus": {"copy": "linux"}, "linux": {"version":
@@ -277,8 +277,8 @@ tests:
       "eos": {"version": "all", "command": "show clock", "format": "text", "textfsm":
       "Value timezone (\\S+)\nValue ntpEnabled (yes|no)\nValue ntpSync (yes|no)\n\nStart\n  ^\\s*Clock
       source:.*$$\n  ^\\s*Timezone: ${timezone}$$\n"}}, "ignore_fields": ["timestamp"],
-      "keys": ["datacenter", "hostname"], "period": 15, "stype": "state", "partition_cols":
-      ["datacenter", "hostname", "timestamp"]}'
+      "keys": ["namespace", "hostname"], "period": 15, "stype": "state", "partition_cols":
+      ["namespace", "hostname", "timestamp"]}'
     service: time
   topcpu:
     output: '{"name": "topcpu", "defn": {"cumulus": {"version": "all", "command":
@@ -317,8 +317,8 @@ tests:
       Mem\\s*:\\s+${totalMem} total,\\s+${usedMem} used,\\s+${freeMem} free,\\s+${cacheMem}
       buff.*\\s*$$\n  ^KiB Swap:.*$$\n  ^\\s*$$\n  ^\\s+PID USER.*$$ -> Record\n  ^\\s*${pid}\\s+${user}\\s+${priority}\\s+${nice}\\s+${virtualMem}\\s+${residentMem}\\s+${sharedMem}\\s+${state}\\s+${percentCPU}\\s+${percentMem}\\s+${runningTime}\\s+${procName}\\s*$$
       -> Record\n  ^$$EOF\n"}, "platina": {"copy": "cumulus"}}, "ignore_fields": ["timestamp"],
-      "keys": ["datacenter", "hostname"], "period": 60, "stype": "counters", "partition_cols":
-      ["datacenter", "hostname"]}'
+      "keys": ["namespace", "hostname"], "period": 60, "stype": "counters", "partition_cols":
+      ["namespace", "hostname"]}'
     service: topcpu
   topmem:
     output: '{"name": "topmem", "defn": {"cumulus": {"version": "all", "command":
@@ -357,8 +357,8 @@ tests:
       Mem\\s*:\\s+${totalMem} total,\\s+${usedMem} used,\\s+${freeMem} free,\\s+${cacheMem}
       buff.*\\s*$$\n  ^KiB Swap:.*$$\n  ^\\s*$$\n  ^\\s+PID USER.*$$ -> Record\n  ^\\s*${pid}\\s+${user}\\s+${priority}\\s+${nice}\\s+${virtualMem}\\s+${residentMem}\\s+${sharedMem}\\s+${state}\\s+${percentCPU}\\s+${percentMem}\\s+${runningTime}\\s+${procName}\\s*$$
       -> Record\n  ^$$EOF\n"}, "platina": {"copy": "cumulus"}}, "ignore_fields": ["timestamp"],
-      "keys": ["datacenter", "hostname"], "period": 60, "stype": "counters", "partition_cols":
-      ["datacenter", "hostname"]}'
+      "keys": ["namespace", "hostname"], "period": 60, "stype": "counters", "partition_cols":
+      ["namespace", "hostname"]}'
     service: topmem
   vlan:
     output: '{"name": "vlan", "defn": {"cumulus": {"version": "all", "command": "/sbin/bridge
@@ -366,6 +366,6 @@ tests:
       (\\d+)\n\nStart\n  ^\\S+ -> Continue.Record\n  ^${ifname}\\s+${vlan}.*$$ ->
       Continue\n  ^${ifname}\\s+${pvid}\\s+PVID.*$$\n  ^\\s+${vlan}.*$$\n"}, "linux":
       {"copy": "cumulus"}, "platina": {"copy": "cumulus"}}, "ignore_fields": ["timestamp"],
-      "keys": ["datacenter", "hostname", "ifname"], "period": 15, "stype": "state",
-      "partition_cols": ["datacenter", "hostname", "ifname", "timestamp"]}'
+      "keys": ["namespace", "hostname", "ifname"], "period": 15, "stype": "state",
+      "partition_cols": ["namespace", "hostname", "ifname", "timestamp"]}'
     service: vlan

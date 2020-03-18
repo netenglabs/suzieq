@@ -33,7 +33,7 @@ class NubiaSuzieqStatusBar(statusbar.StatusBar):
             spacer,
             (Token.Toolbar, "Datacenter "),
             spacer,
-            (Token.Info, ", ".join(self.ctx.datacenter)),
+            (Token.Info, ", ".join(self.ctx.namespace)),
             spacer,
             (Token.Toolbar, "Hostname "),
             spacer,

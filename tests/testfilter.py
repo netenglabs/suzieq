@@ -107,7 +107,7 @@ def check_filters(filters):
 
 if __name__ == '__main__':
 
-    key_fields = ['datacenter', 'hostname', 'ifname']
+    key_fields = ['namespace', 'hostname', 'ifname']
     dcs = [['ospf'], ['ospf', 'evpn']]
     hosts = [['leaf01'], ['leaf01', 'leaf02']]
     ifnames = [['swp1'], ['swp1', 'swp2', 'swp3']]
@@ -115,25 +115,25 @@ if __name__ == '__main__':
     for dc in dcs:
         for host in hosts:
             for ifn in ifnames:
-                filters = build_pa_filters('', '', key_fields, datacenter=dc,
+                filters = build_pa_filters('', '', key_fields, namespace=dc,
                                            hostname=host, ifname=ifn)
                 check_filters(filters)
                 print(filters)
 
                 filters = build_pa_filters('2019-05-02 01:28:14', '',
-                                           key_fields, datacenter=dc,
+                                           key_fields, namespace=dc,
                                            hostname=host, ifname=ifn)
                 check_filters(filters)
                 print(filters)
 
                 filters = build_pa_filters('', '2019-05-02 01:28:14',
-                                           key_fields, datacenter=dc,
+                                           key_fields, namespace=dc,
                                            hostname=host, ifname=ifn)
                 check_filters(filters)
                 print(filters)
 
                 filters = build_pa_filters('2019-05-02 01:28:14', '05/02/19 02:10:10',
-                                           key_fields, datacenter=dc,
+                                           key_fields, namespace=dc,
                                            hostname=host, ifname=ifn)
                 check_filters(filters)
                 print(filters)

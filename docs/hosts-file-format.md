@@ -3,7 +3,7 @@
 The list of hosts for suzieq to pull information from is specified via the hosts file, supplied as an input parameter to starting suzieq. The list is in YAML with the following structure:
 
 ``` json
-- datacenter: <name of the datacenter this list of hosts correspinds to>
+- namespace: <name of the namespace this list of hosts correspinds to>
   hosts:
 	  - url: <url-of-host-1> [device=eos|nxos|linux|cumulus|jnpr]
 	  - url: <url-of-host-2> [device=eos|nxos|linux|cumulus|jnpr]
@@ -15,7 +15,7 @@ The url specification has to be in one of the following formats:
 
 A sample hosts file looks as follows:
 ``` json
-- datacenter: test
+- namespace: test
   hosts:
        - url: ssh://vagrant@192.168.122.20
 	   - url: https://vagrant@192.168.122.150 device=eos
