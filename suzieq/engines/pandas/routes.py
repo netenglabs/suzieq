@@ -70,15 +70,9 @@ class RoutesObj(SqEngineObject):
         if cols != ['default'] and 'prefix' not in cols:
             cols.insert(-1, 'prefix')
 
-        # We indulge in a little hackery here by not filtering by hostname
-        # at this point. For some inexplicable reason, the max() option
-        # fails when the hostname is specified. So, we add the hostname filter
-        # back later when returning the result
-        hostname = kwargs.pop("hostname", [])
         df = self.get_valid_df(self.iobj._table, sort_fields, **kwargs) \
                  .query('prefix != ""')
 
-        kwargs["hostname"] = hostname
         if df.empty:
             return df
 
@@ -86,7 +80,7 @@ class RoutesObj(SqEngineObject):
 
         idx = df[['datacenter', 'hostname', 'vrf', 'prefix']] \
             .query("prefix.ipnet.supernet_of('{}')".format(ipaddr)) \
-            .groupby(by=['datacenter', 'hostname', 'vrf']) \
+            .groupby(by=['datacenter', 'hostname', 'vrf'])['prefix'] \
             .max() \
             .dropna() \
             .reset_index()
@@ -94,7 +88,4 @@ class RoutesObj(SqEngineObject):
         if idx.empty:
             return pd.DataFrame(columns=cols)
 
-        if hostname:
-            return idx.merge(df).query("hostname in @hostname")
-        else:
-            return idx.merge(df)
+        return idx.merge(df)
