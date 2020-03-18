@@ -45,7 +45,7 @@ basic_verbs = ['show']
      [None, None, None], [1518, 60, 0]),
     ('LldpCmd', basic_verbs, [None, None], [352, 48]),
     ('MacCmd', basic_verbs, [None, None], [312, 48]),
-    ('MlagCmd', basic_verbs + ['describe'], [None, None, None],
+    ('MlagCmd', basic_verbs, [None, None, None],
      [44, 143]),
     ('OspfCmd', basic_verbs + ['top', 'aver'], [None, None, None],
      [FileNotFoundError, FileNotFoundError,
