@@ -66,6 +66,14 @@ class OspfCmd(SqCommand):
             datacenter=self.datacenter,
             type=type,
         )
+
+        # Transform the lastChangeTime into human terms
+        if not df.empty and "lastChangeTime" in df.columns:
+            lastchg_cols = (df['timestamp'] -
+                            pd.to_datetime(df['lastChangeTime'], unit='ms'))
+            lastchg_cols = pd.to_timedelta(lastchg_cols, unit='ms')
+            df['lastChangeTime'] = lastchg_cols
+
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
 
