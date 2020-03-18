@@ -7,6 +7,7 @@ from subprocess import check_output, CalledProcessError
 import shlex
 import dateutil
 from tempfile import mkstemp
+from collections import Iterable
 
 import pytest
 from _pytest.mark.structures import Mark, MarkDecorator
@@ -408,9 +409,19 @@ def test_sqcmds(testvar, create_context_config):
             expected_jout = json.loads(testvar['output'].strip())
         except json.JSONDecodeError:
             expected_jout = testvar['output']
-        expected_setlist = set(tuple(sorted(d.items())) for d in jout)
-        got_setlist = set(tuple(sorted(d.items())) for d in expected_jout)
-        assert(expected_setlist == got_setlist)
+
+        try:
+            expected_setlist = set(tuple(sorted(d.items())) for d in jout)
+            got_setlist = set(tuple(sorted(d.items())) for d in expected_jout)
+            assert(expected_setlist == got_setlist)
+        except TypeError:
+            # This is for commands that return lists in their outputs.
+            # This isn't robust, because it assumes that we get the output
+            # back in sorted order except that the keys within each entry
+            # are not sorted. If the outer sort is changed, this won't work
+            expected = [sorted(d.items()) for d in expected_jout]
+            got = [sorted(d.items()) for d in jout]
+            assert(expected == got)
 
     elif error and 'xfail' in testvar and 'error' in testvar['xfail']:
         if jout.decode("utf-8") == testvar['xfail']['error']:
