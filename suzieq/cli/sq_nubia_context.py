@@ -12,7 +12,7 @@ class NubiaSuzieqContext(context.Context):
 
         self.schemas = get_schemas(self.cfg["schema-directory"])
 
-        self.datacenter = ""
+        self.namespace = ""
         self.hostname = ""
         self.start_time = ""
         self.end_time = ""

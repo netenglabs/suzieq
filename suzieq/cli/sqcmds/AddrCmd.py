@@ -15,7 +15,7 @@ class AddrCmd(SqCommand):
         start_time: str = "",
         end_time: str = "",
         view: str = "latest",
-        datacenter: str = "",
+        namespace: str = "",
         format: str = "",
         columns: str = "default",
     ) -> None:
@@ -25,7 +25,7 @@ class AddrCmd(SqCommand):
             start_time=start_time,
             end_time=end_time,
             view=view,
-            datacenter=datacenter,
+            namespace=namespace,
             format=format,
             columns=columns,
             sqobj=AddrObj,
@@ -48,7 +48,7 @@ class AddrCmd(SqCommand):
             hostname=self.hostname,
             columns=self.columns,
             address=address,
-            datacenter=self.datacenter,
+            namespace=self.namespace,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
@@ -70,7 +70,7 @@ class AddrCmd(SqCommand):
             hostname=self.hostname,
             columns=self.columns,
             groupby=groupby.split(),
-            datacenter=self.datacenter,
+            namespace=self.namespace,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)

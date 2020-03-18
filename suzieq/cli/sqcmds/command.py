@@ -10,7 +10,7 @@ from nubia import command, argument, context
     choices=["pandas"],
 )
 @argument(
-    "datacenter", description="Space separated list of datacenters to qualify"
+    "namespace", description="Space separated list of namespaces to qualify"
 )
 @argument("hostname", description="Space separated list of hostnames to qualify")
 @argument(
@@ -32,7 +32,7 @@ from nubia import command, argument, context
 )
 class SqCommand:
     """Base Command Class for use with all verbs"""
-    datacenter = None
+    namespace = None
     hostname = None
     columns = None
 
@@ -43,7 +43,7 @@ class SqCommand:
             start_time: str = "",
             end_time: str = "",
             view: str = "latest",
-            datacenter: str = "",
+            namespace: str = "",
             format: str = "",
             columns: str = "default",
             sqobj=None,
@@ -52,8 +52,8 @@ class SqCommand:
         self._cfg = self.ctxt.cfg
         self._schemas = self.ctxt.schemas
 
-        if not isinstance(datacenter, str):
-            print('datacenter must be a space separated list of strings')
+        if not isinstance(namespace, str):
+            print('namespace must be a space separated list of strings')
             return
         if not isinstance(hostname, str):
             print('hostname must be a space separated list of strings')
@@ -62,10 +62,10 @@ class SqCommand:
             print('columns must be a space separated list of strings')
             return
 
-        if not datacenter and self.ctxt.datacenter:
-            self.datacenter = self.ctxt.datacenter
+        if not namespace and self.ctxt.namespace:
+            self.namespace = self.ctxt.namespace
         else:
-            self.datacenter = datacenter.split()
+            self.namespace = namespace.split()
         if not hostname and self.ctxt.hostname:
             self.hostname = self.ctxt.hostname
         else:
@@ -94,7 +94,7 @@ class SqCommand:
                            start_time=self.start_time,
                            end_time=self.end_time,
                            view=self.view,
-                           datacenter=self.datacenter,
+                           namespace=self.namespace,
                            columns=self.columns)
 
     @property
@@ -147,7 +147,7 @@ class SqCommand:
         now = time.time()
         try:
             df = self.sqobj.unique(hostname=self.hostname,
-                                   datacenter=self.datacenter,
+                                   namespace=self.namespace,
                                    groupby=groupby, type=type,
                                    columns=self.columns)
         except Exception as e:

@@ -15,7 +15,7 @@ class TableCmd(SqCommand):
         start_time: str = "",
         end_time: str = "",
         view: str = "latest",
-        datacenter: str = "",
+        namespace: str = "",
         format: str = "",
         columns: str = "default",
     ) -> None:
@@ -25,7 +25,7 @@ class TableCmd(SqCommand):
             start_time=start_time,
             end_time=end_time,
             view=view,
-            datacenter=datacenter,
+            namespace=namespace,
             columns=columns,
             format=format,
             sqobj=TablesObj,
@@ -37,6 +37,6 @@ class TableCmd(SqCommand):
         Show Tables
         """
         now = time.time()
-        df = self.sqobj.get(hostname=self.hostname, datacenter=self.datacenter)
+        df = self.sqobj.get(hostname=self.hostname, namespace=self.namespace)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)

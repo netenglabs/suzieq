@@ -23,14 +23,14 @@ class InterfacesObj(SqEngineObject):
 
     def _assert_mtu_value(self, **kwargs) -> pd.DataFrame:
         """Workhorse routine to match MTU value"""
-        columns = ["datacenter", "hostname", "ifname", "state", "mtu", "timestamp"]
-        sort_fields = ["datacenter", "hostname", "ifname"]
+        columns = ["namespace", "hostname", "ifname", "state", "mtu", "timestamp"]
+        sort_fields = ["namespace", "hostname", "ifname"]
 
         query_df = self.get_valid_df(
             "interfaces",
             sort_fields,
             hostname=kwargs.get("hostname", []),
-            datacenter=kwargs.get("datacenter", []),
+            namespace=kwargs.get("namespace", []),
             columns=columns,
             ifname=kwargs.get("ifname", []),
         ).query('(abs(mtu - {}) > 40) and (ifname != "lo")'.format(kwargs["matchval"]))
@@ -44,14 +44,14 @@ class InterfacesObj(SqEngineObject):
 
         if lldp_df.empty:
             print("No Valid LLDP info found, Asserting MTU not possible")
-            return pd.DataFrame(columns=["datacenter", "hostname"])
+            return pd.DataFrame(columns=["namespace", "hostname"])
 
-        columns = ["datacenter", "hostname", "ifname", "state", "mtu", "timestamp"]
+        columns = ["namespace", "hostname", "ifname", "state", "mtu", "timestamp"]
         if_df = self.get_valid_df(
             "interfaces",
             self.sort_fields,
             hostname=kwargs.get("hostname", []),
-            datacenter=kwargs.get("datacenter", []),
+            namespace=kwargs.get("namespace", []),
             columns=columns,
             ifname=kwargs.get("ifname", []),
         )
@@ -60,21 +60,21 @@ class InterfacesObj(SqEngineObject):
             return pd.DataFrame(columns=columns)
 
         # Now create a single DF where you get the MTU for the lldp
-        # combo of (datacenter, hostname, ifname) and the MTU for
-        # the combo of (datacenter, peerHostname, peerIfname) and then
+        # combo of (namespace, hostname, ifname) and the MTU for
+        # the combo of (namespace, peerHostname, peerIfname) and then
         # pare down the result to the rows where the two MTUs don't match
         query_df = (
             pd.merge(
                 lldp_df,
-                if_df[["datacenter", "hostname", "ifname", "mtu"]],
-                on=["datacenter", "hostname", "ifname"],
+                if_df[["namespace", "hostname", "ifname", "mtu"]],
+                on=["namespace", "hostname", "ifname"],
                 how="outer",
             )
             .dropna(how="any")
             .merge(
-                if_df[["datacenter", "hostname", "ifname", "mtu"]],
-                left_on=["datacenter", "peerHostname", "peerIfname"],
-                right_on=["datacenter", "hostname", "ifname"],
+                if_df[["namespace", "hostname", "ifname", "mtu"]],
+                left_on=["namespace", "peerHostname", "peerIfname"],
+                right_on=["namespace", "hostname", "ifname"],
                 how="outer",
             )
             .dropna(how="any")

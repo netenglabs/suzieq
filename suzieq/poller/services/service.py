@@ -40,14 +40,14 @@ class Service(object):
         # Add the hidden fields to ignore_fields
         self.ignore_fields.append("timestamp")
 
-        if "datacenter" not in self.keys:
-            self.keys.insert(0, "datacenter")
+        if "namespace" not in self.keys:
+            self.keys.insert(0, "namespace")
 
         if "hostname" not in self.keys:
             self.keys.insert(1, "hostname")
 
         if self.stype == "counters":
-            self.partition_cols = ["datacenter", "hostname"]
+            self.partition_cols = ["namespace", "hostname"]
         else:
             self.partition_cols = self.keys + ["timestamp"]
 
@@ -324,7 +324,7 @@ class Service(object):
 
         for entry in processed_data:
             entry.update({"hostname": raw_data["hostname"]})
-            entry.update({"datacenter": raw_data["datacenter"]})
+            entry.update({"namespace": raw_data["namespace"]})
             entry.update({"timestamp": raw_data["timestamp"]})
             for fld in schema_rec:
                 if fld not in entry:
@@ -335,7 +335,7 @@ class Service(object):
 
         return processed_data
 
-    async def commit_data(self, result, datacenter, hostname):
+    async def commit_data(self, result, namespace, hostname):
         """Write the result data out"""
         records = []
         nodeobj = self.nodes.get(hostname, None)
@@ -408,12 +408,12 @@ class Service(object):
                 # If a node from init state to good state, hostname will change
                 # So fix that in the node list
                 if self.run_once == "process":
-                    poutputs += [{"datacenter": output[0]["datacenter"],
+                    poutputs += [{"namespace": output[0]["namespace"],
                                   "hostname": output[0]["hostname"],
                                   "output": result}]
                 else:
                     await self.commit_data(
-                        result, output[0]["datacenter"], output[0]["hostname"]
+                        result, output[0]["namespace"], output[0]["hostname"]
                     )
 
             if self.run_once == "process":

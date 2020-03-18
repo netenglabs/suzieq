@@ -52,7 +52,7 @@ class SystemService(Service):
             entry["address"] = raw_data["address"]
         return super().clean_data(processed_data, raw_data)
 
-    async def commit_data(self, result, datacenter, hostname):
+    async def commit_data(self, result, namespace, hostname):
         """system svc needs to write out a record that indicates dead node"""
         nodeobj = self.nodes.get(hostname, None)
         if not nodeobj:
@@ -76,7 +76,7 @@ class SystemService(Service):
             if nodeobj.get_status() == "init":
                 # If in init still, we need to mark the node as unreachable
                 rec = self.get_empty_record()
-                rec["datacenter"] = datacenter
+                rec["namespace"] = namespace
                 rec["hostname"] = hostname
                 rec["timestamp"] = int(datetime.utcnow().timestamp() * 1000)
                 rec["status"] = "dead"
@@ -94,7 +94,7 @@ class SystemService(Service):
                             result = copy.deepcopy(prev_res)
                         else:
                             record = self.get_empty_record()
-                            record["datacenter"] = datacenter
+                            record["namespace"] = namespace
                             record["hostname"] = hostname
                             result = [record]
 
@@ -123,7 +123,7 @@ class SystemService(Service):
                 del self.nodes_state[hostname]
             nodeobj.set_good_status()
 
-        await super().commit_data(result, datacenter, hostname)
+        await super().commit_data(result, namespace, hostname)
 
     def get_diff(self, old, new):
         """Compare list of dictionaries ignoring certain fields

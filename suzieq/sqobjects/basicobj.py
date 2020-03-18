@@ -12,7 +12,7 @@ class SqContext(object):
 
         self.schemas = get_schemas(self.cfg['schema-directory'])
 
-        self.datacenter = ''
+        self.namespace = ''
         self.hostname = ''
         self.start_time = ''
         self.end_time = ''
@@ -30,7 +30,7 @@ class SqObject(object):
 
     def __init__(self, engine_name: str = '', hostname: typing.List[str] = [],
                  start_time: str = '', end_time: str = '',
-                 view: str = 'latest', datacenter: typing.List[str] = [],
+                 view: str = 'latest', namespace: typing.List[str] = [],
                  columns: typing.List[str] = ['default'],
                  context=None, table: str = '') -> None:
 
@@ -47,10 +47,10 @@ class SqObject(object):
         self._sort_fields = []
         self._cat_fields = []
 
-        if not datacenter and self.ctxt.datacenter:
-            self.datacenter = self.ctxt.datacenter
+        if not namespace and self.ctxt.namespace:
+            self.namespace = self.ctxt.namespace
         else:
-            self.datacenter = datacenter
+            self.namespace = namespace
         if not hostname and self.ctxt.hostname:
             self.hostname = self.ctxt.hostname
         else:

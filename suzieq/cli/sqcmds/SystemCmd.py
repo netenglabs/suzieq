@@ -17,7 +17,7 @@ class SystemCmd(SqCommand):
             start_time: str = "",
             end_time: str = "",
             view: str = "latest",
-            datacenter: str = "",
+            namespace: str = "",
             format: str = "",
             columns: str = "default",
     ) -> None:
@@ -27,7 +27,7 @@ class SystemCmd(SqCommand):
             start_time=start_time,
             end_time=end_time,
             view=view,
-            datacenter=datacenter,
+            namespace=namespace,
             columns=columns,
             format=format,
             sqobj=SystemObj,
@@ -53,7 +53,7 @@ class SystemCmd(SqCommand):
                             for x in self.columns]
         df = self.sqobj.get(
             hostname=self.hostname, columns=self.columns,
-            datacenter=self.datacenter,
+            namespace=self.namespace,
         )
         # Convert the bootup timestamp into a time delta
         if not df.empty and 'bootupTimestamp' in df.columns:
@@ -87,7 +87,7 @@ class SystemCmd(SqCommand):
             hostname=self.hostname,
             columns=self.columns,
             groupby=groupby.split(),
-            datacenter=self.datacenter,
+            namespace=self.namespace,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)

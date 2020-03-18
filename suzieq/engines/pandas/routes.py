@@ -63,7 +63,7 @@ class RoutesObj(SqEngineObject):
         ipaddr = kwargs.get('address')
         del kwargs['address']
 
-        cols = kwargs.get("columns", ["datacenter", "hostname", "vrf",
+        cols = kwargs.get("columns", ["namespace", "hostname", "vrf",
                                       "prefix", "nexthopIps", "oifs",
                                       "protocol"])
 
@@ -78,9 +78,9 @@ class RoutesObj(SqEngineObject):
 
         df['prefix'] = df.prefix.astype('ipnetwork')
 
-        idx = df[['datacenter', 'hostname', 'vrf', 'prefix']] \
+        idx = df[['namespace', 'hostname', 'vrf', 'prefix']] \
             .query("prefix.ipnet.supernet_of('{}')".format(ipaddr)) \
-            .groupby(by=['datacenter', 'hostname', 'vrf'])['prefix'] \
+            .groupby(by=['namespace', 'hostname', 'vrf'])['prefix'] \
             .max() \
             .dropna() \
             .reset_index()

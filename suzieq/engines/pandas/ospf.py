@@ -48,7 +48,7 @@ class OspfObj(SqEngineObject):
         """Assert that the OSPF state is OK"""
 
         columns = [
-            "datacenter",
+            "namespace",
             "hostname",
             "vrf",
             "ifname",
@@ -64,7 +64,7 @@ class OspfObj(SqEngineObject):
             "area",
             "nbrCount",
         ]
-        sort_fields = ["datacenter", "hostname", "ifname", "vrf"]
+        sort_fields = ["namespace", "hostname", "ifname", "vrf"]
 
         ospf_df = self.get_valid_df("ospfIf", sort_fields, columns=columns, **kwargs)
         if ospf_df.empty:
@@ -82,7 +82,7 @@ class OspfObj(SqEngineObject):
 
         lldpobj = LldpObj(context=self.ctxt)
         lldp_df = lldpobj.get(
-            datacenter=kwargs.get("datacenter", ""),
+            namespace=kwargs.get("namespace", ""),
             hostname=kwargs.get("hostname", ""),
             ifname=kwargs.get("ifname", ""),
         )
@@ -92,7 +92,7 @@ class OspfObj(SqEngineObject):
 
         # Create a single massive DF with fields populated appropriately
         use_cols = [
-            "datacenter",
+            "namespace",
             "routerId",
             "hostname",
             "vrf",
@@ -108,14 +108,14 @@ class OspfObj(SqEngineObject):
         ]
         df1 = (
             pd.merge(
-                lldp_df, ospf_df[use_cols], on=["datacenter", "hostname", "ifname"]
+                lldp_df, ospf_df[use_cols], on=["namespace", "hostname", "ifname"]
             )
             .dropna(how="any")
             .merge(
                 ospf_df[use_cols],
                 how="outer",
-                left_on=["datacenter", "peerHostname", "peerIfname"],
-                right_on=["datacenter", "hostname", "ifname"],
+                left_on=["namespace", "peerHostname", "peerIfname"],
+                right_on=["namespace", "hostname", "ifname"],
             )
             .dropna(how="any")
         )
@@ -182,8 +182,8 @@ class OspfObj(SqEngineObject):
 
         df2 = (
             df1.apply(is_duprtrid, axis=1)
-            .drop_duplicates(subset=["datacenter", "hostname_x"], keep="last")
-            .query("reason != tuple()")[["datacenter", "hostname_x", "vrf_x", "reason"]]
+            .drop_duplicates(subset=["namespace", "hostname_x"], keep="last")
+            .query("reason != tuple()")[["namespace", "hostname_x", "vrf_x", "reason"]]
         )
         df1 = pd.concat([df1, df2], sort=False)
         return (
@@ -195,7 +195,7 @@ class OspfObj(SqEngineObject):
                         "ifname_x": "ifname",
                         "vrf_x": "vrf",
                     },
-                )[["datacenter", "hostname", "ifname", "vrf", "reason"]]
+                )[["namespace", "hostname", "ifname", "vrf", "reason"]]
             )
             .query("reason != tuple()")
             .fillna("-")

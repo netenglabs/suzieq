@@ -42,11 +42,11 @@ class SqPandasEngine(SqEngine):
         folder = self._get_table_directory(table)
 
         # Restrict to a single DC if thats whats asked
-        if "datacenter" in kwargs:
-            v = kwargs["datacenter"]
+        if "namespace" in kwargs:
+            v = kwargs["namespace"]
             if v:
                 if not isinstance(v, list):
-                    folder += "/datacenter={}/".format(v)
+                    folder += "/namespace={}/".format(v)
 
         fcnt = self.get_filecnt(folder)
 
@@ -62,8 +62,8 @@ class SqPandasEngine(SqEngine):
             # Switch to more efficient method when there are lotsa files
             # Reduce I/O since that is the worst drag
             key_fields = []
-            if len(kwargs.get("datacenter", [])) > 1:
-                del kwargs["datacenter"]
+            if len(kwargs.get("namespace", [])) > 1:
+                del kwargs["namespace"]
             files = get_latest_files(folder, start, end, view)
         else:
             key_fields = sch.key_fields()
@@ -271,10 +271,10 @@ class SqPandasEngine(SqEngine):
             p = Path(dfolder)
             tables = [dir.parts[-1] for dir in p.iterdir()
                       if dir.is_dir() and not dir.parts[-1].startswith('_')]
-            datacenters = kwargs.get('datacenter', [])
-            for dc in datacenters:
+            namespaces = kwargs.get('namespace', [])
+            for dc in namespaces:
                 tables = list(filter(
-                    lambda x: os.path.exists('{}/{}/datacenter={}'.format(
+                    lambda x: os.path.exists('{}/{}/namespace={}'.format(
                         dfolder, x, dc)), tables))
 
         return tables

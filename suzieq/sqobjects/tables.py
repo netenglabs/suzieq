@@ -36,7 +36,7 @@ class TablesObj(basicobj.SqObject):
             cols = df.columns
             total = pd.DataFrame([['TOTAL',  df['first_time'].min(), df['latest_time'].max(),
                                    df['intervals'].max(), df['latest rows'].sum(),
-                                   df['all rows'].sum(), df['datacenters'].max(), df['devices'].max()]],
+                                   df['all rows'].sum(), df['namespaces'].max(), df['devices'].max()]],
                                  columns=cols)
             df = df.append(total, ignore_index=True)
         return df

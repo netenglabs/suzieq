@@ -14,7 +14,7 @@ class EvpnVniCmd(SqCommand):
         start_time: str = "",
         end_time: str = "",
         view: str = "latest",
-        datacenter: str = "",
+        namespace: str = "",
         format: str = "",
         columns: str = "default",
     ) -> None:
@@ -24,7 +24,7 @@ class EvpnVniCmd(SqCommand):
             start_time=start_time,
             end_time=end_time,
             view=view,
-            datacenter=datacenter,
+            namespace=namespace,
             columns=columns,
             format=format,
             sqobj=EvpnvniObj,
@@ -50,7 +50,7 @@ class EvpnVniCmd(SqCommand):
             hostname=self.hostname,
             vni=vni.split(),
             columns=self.columns,
-            datacenter=self.datacenter,
+            namespace=self.namespace,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
@@ -77,7 +77,7 @@ class EvpnVniCmd(SqCommand):
             vni=vni.split(),
             columns=self.columns,
             groupby=groupby.split(),
-            datacenter=self.datacenter,
+            namespace=self.namespace,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)

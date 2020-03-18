@@ -18,7 +18,7 @@ class PathObj(basicobj.SqObject):
             start_time: str = "",
             end_time: str = "",
             view: str = "latest",
-            datacenter: typing.List[str] = [],
+            namespace: typing.List[str] = [],
             columns: typing.List[str] = ["default"],
             context=None,
     ) -> None:
@@ -28,18 +28,18 @@ class PathObj(basicobj.SqObject):
             start_time,
             end_time,
             view,
-            datacenter,
+            namespace,
             columns,
             context=context,
             table=None,
         )
-        self._sort_fields = ["datacenter", "hostname", "pathid"]
+        self._sort_fields = ["namespace", "hostname", "pathid"]
         self._cat_fields = []
 
-    def _get_fhr(self, datacenter: str, ipaddr: str, if_df):
+    def _get_fhr(self, namespace: str, ipaddr: str, if_df):
         """Identify the first hop router to a given IP address"""
 
-        arp_df = arpnd.ArpndObj().get(datacenter=datacenter,
+        arp_df = arpnd.ArpndObj().get(namespace=namespace,
                                       ipAddress=ipaddr)
         if arp_df.empty:
             raise AttributeError(f"Cannot obtain IP/LLDP neighbor info for address {ipaddr}")
@@ -61,7 +61,7 @@ class PathObj(basicobj.SqObject):
         vlan = oif_df.iloc[0]["vlan"]
         if macaddr:
             mac_df = macs.MacsObj().get(
-                datacenter=datacenter, macaddr=macaddr, vlan=vlan
+                namespace=namespace, macaddr=macaddr, vlan=vlan
             )
             if not mac_df.empty:
                 mac_df = mac_df[mac_df["remoteVtepIp"] == ""]
@@ -99,7 +99,7 @@ class PathObj(basicobj.SqObject):
                 "Specify an analysis engine using set engine " "command"
             )
 
-        datacenter = kwargs.get("datacenter", self.ctxt.datacenter)
+        namespace = kwargs.get("namespace", self.ctxt.namespace)
         source = kwargs.get("source", None)
         dest = kwargs.get("dest", None)
         dvrf = kwargs.get("vrf", "default")
@@ -107,19 +107,19 @@ class PathObj(basicobj.SqObject):
         if not source or not dest:
             raise AttributeError("Must specify trace source and dest")
 
-        if_df = interfaces.IfObj().get(datacenter=datacenter)
+        if_df = interfaces.IfObj().get(namespace=namespace)
         src_df = if_df[if_df.ipAddressList.astype(str)
                        .str.contains(source + "/")]
         dest_df = if_df[if_df.ipAddressList.astype(str)
                         .str.contains(dest + "/")]
         dest_host = dest_df["hostname"].unique()[0]
         src_host = src_df["hostname"].unique()[0]
-        lldp_df = lldp.LldpObj().get(datacenter=datacenter)
-        rdf = routes.RoutesObj().lpm(datacenter=datacenter, address=dest)
+        lldp_df = lldp.LldpObj().get(namespace=namespace)
+        rdf = routes.RoutesObj().lpm(namespace=namespace, address=dest)
 
         # for a source node without lldp, get next downstream node with lldp
         if lldp_df[lldp_df["hostname"] == src_host].empty:
-            hosts_iifs = self._get_fhr(datacenter, source, if_df)
+            hosts_iifs = self._get_fhr(namespace, source, if_df)
         else:
             hosts_iifs = OrderedDict(
                 {
@@ -134,7 +134,7 @@ class PathObj(basicobj.SqObject):
 
         # for a dest node without lldp, get previous upstream node with lldp
         if lldp_df[lldp_df["hostname"] == dest_host].empty:
-            dest_host_iifs = self._get_fhr(datacenter, dest, if_df)
+            dest_host_iifs = self._get_fhr(namespace, dest, if_df)
         else:
             dest_host_iifs = OrderedDict(
                 {
@@ -310,7 +310,7 @@ class PathObj(basicobj.SqObject):
                     {
                         "pathid": i + 1,
                         "stageid": j + 1,
-                        "datacenter": datacenter[0],
+                        "namespace": namespace[0],
                         "hostname": item,
                         "iif": ele[item]["iif"],
                         "vrf": ele[item]["vrf"],

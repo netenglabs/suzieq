@@ -14,7 +14,7 @@ class MacCmd(SqCommand):
         start_time: str = "",
         end_time: str = "",
         view: str = "latest",
-        datacenter: str = "",
+        namespace: str = "",
         format: str = "",
         columns: str = "default",
     ) -> None:
@@ -24,7 +24,7 @@ class MacCmd(SqCommand):
             start_time=start_time,
             end_time=end_time,
             view=view,
-            datacenter=datacenter,
+            namespace=namespace,
             columns=columns,
             format=format,
             sqobj=MacsObj,
@@ -55,7 +55,7 @@ class MacCmd(SqCommand):
             macaddr=macaddr.split(),
             remoteVtepIp=remoteVtepIp.split(),
             columns=self.columns,
-            datacenter=self.datacenter,
+            namespace=self.namespace,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
@@ -88,7 +88,7 @@ class MacCmd(SqCommand):
             macaddr=macaddr.split(),
             groupby=groupby.split(),
             remoteVtepIp=remoteVtepIp.split(),
-            datacenter=self.datacenter,
+            namespace=self.namespace,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)

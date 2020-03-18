@@ -11,11 +11,11 @@ class VlanCmd(SqCommand):
 
     def __init__(self, engine: str = '', hostname: str = '',
                  start_time: str = '', end_time: str = '',
-                 view: str = 'latest', datacenter: str = '',
+                 view: str = 'latest', namespace: str = '',
                  format: str = "", columns: str = 'default') -> None:
         super().__init__(engine=engine, hostname=hostname,
                          start_time=start_time, end_time=end_time,
-                         view=view, datacenter=datacenter,
+                         view=view, namespace=namespace,
                          format=format, columns=columns, sqobj=VlanObj)
 
     @command('show')
@@ -35,7 +35,7 @@ class VlanCmd(SqCommand):
             self.ctxt.sort_fields = []
 
         df = self.sqobj.get(hostname=self.hostname, vlan=vlan,
-                            columns=self.columns, datacenter=self.datacenter)
+                            columns=self.columns, namespace=self.namespace)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
 
@@ -59,6 +59,6 @@ class VlanCmd(SqCommand):
         df = self.sqobj.summarize(hostname=self.hostname,
                                   columns=self.columns,
                                   groupby=groupby.split(),
-                                  datacenter=self.datacenter)
+                                  namespace=self.namespace)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
