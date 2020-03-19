@@ -22,6 +22,7 @@ def _test_produce_current_json(tmp_path, init_services_default):
     if you have on purpose changed configs and need to produce the output
 
     to use this, put a _ in front of each current test and remove the _ in front of this function
+    pytest -mservice -s -n0
     """
 
     data = {}

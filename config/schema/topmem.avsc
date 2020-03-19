@@ -1,38 +1,60 @@
+
 {
     "namespace": "suzieq",
     "name": "topmem",
     "type": "record",
     "fields": [
         {
-            "name": "residentMem",
+            "name": "percentCPU",
+            "type": "float",
+            "display": 4
+        },
+        {
+            "name": "user",
             "type": "string"
+        },
+        {
+            "name": "fiveMinLoadAvg",
+            "type": "float"
+        },
+        {
+            "name": "percentMem",
+            "type": "float",
+            "display": 6
+        },
+        {
+            "name": "sharedMem",
+            "type": "long"
+        },
+        {
+            "name": "pid",
+            "type": "long",
+            "key": 3,
+            "display": 3
+        },
+        {
+            "name": "residentMem",
+            "type": "long",
+            "display": 7
         },
         {
             "name": "fifteenMinLoadAvg",
             "type": "float"
         },
         {
-            "name": "cacheMem",
+            "name": "freeMem",
             "type": "long"
         },
         {
-            "name": "percentCPU",
-            "type": "float"
+            "name": "runningTime",
+            "type": "string"
         },
         {
             "name": "totalMem",
             "type": "long"
         },
         {
-            "name": "procName",
-            "type": "string"
-        },
-        {
-            "name": "pid",
-            "type": "long"
-        },
-        {
-            "name": "priority",
+            "name": "cacheMem",
             "type": "long"
         },
         {
@@ -41,43 +63,30 @@
         },
         {
             "name": "minLoadAvg",
-            "type": "float"
+            "type": "float",
+            "display": 5
         },
         {
-            "name": "user",
-            "type": "string"
+            "name": "virtualMem",
+            "type": "long"
         },
         {
-            "name": "percentMem",
-            "type": "float"
+            "name": "usedMem",
+            "type": "long"
         },
         {
             "name": "state",
             "type": "string"
         },
         {
-            "name": "runningTime",
-            "type": "string"
-        },
-        {
-            "name": "freeMem",
+            "name": "priority",
             "type": "long"
         },
         {
-            "name": "fiveMinLoadAvg",
-            "type": "float"
-        },
-        {
-            "name": "sharedMem",
-            "type": "string"
-        },
-        {
-            "name": "virtualMem",
-            "type": "string"
-        },
-        {
-            "name": "usedMem",
-            "type": "long"
+            "name": "procName",
+            "type": "string",
+            "key": 2,
+            "display": 2
         },
         {
             "name": "hostname",
