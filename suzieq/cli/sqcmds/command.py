@@ -119,7 +119,8 @@ class SqCommand:
             assert isinstance(df, pd.DataFrame)
             return df
         else:
-            print(df)
+            with pd.option_context('precision', 3):
+                print(df)
         if df.columns.to_list() == ['error']:
             return 1
         return 0
