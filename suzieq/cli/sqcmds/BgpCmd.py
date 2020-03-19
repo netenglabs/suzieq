@@ -76,4 +76,4 @@ class BgpCmd(SqCommand):
                 .map(lambda x: [str(timedelta(seconds=int(i))) for i in x])
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        return self._gen_output(df)
+        return self._gen_output(df, json_orient="columns")

@@ -105,14 +105,14 @@ class SqCommand:
     def schemas(self):
         return self._schemas
 
-    def _gen_output(self, df: pd.DataFrame):
+    def _gen_output(self, df: pd.DataFrame, json_orient: str = "records"):
         if self.format == 'json':
             if self.json_print_handler:
                 print(df.to_json(
                     default_handler=self.json_print_handler,
                     orient="records"))
             else:
-                print(df.to_json(orient="records"))
+                print(df.to_json(orient=json_orient))
         elif self.format == 'csv':
             print(df.to_csv())
         elif self.format == 'dataframe':
