@@ -175,16 +175,13 @@ class SqEngineObject(object):
         # to compute data required.
         kwargs.pop('view', None)
         all_time_df = self._get_table_info(table, view='all', **kwargs)
-        default_df = all_time_df.drop_duplicates(
-            subset=key_fields, keep='last')
         times = all_time_df['timestamp'].unique()
         ret = {'first_time': all_time_df.timestamp.min(),
                'latest_time': all_time_df.timestamp.max(),
                'intervals': len(times),
-               'latest rows': len(default_df),
                'all rows': len(all_time_df),
-               'namespaces': self._unique_or_zero(default_df, 'namespace'),
-               'devices': self._unique_or_zero(default_df, 'hostname')}
+               'namespaces': self._unique_or_zero(all_time_df, 'namespace'),
+               'devices': self._unique_or_zero(all_time_df, 'hostname')}
 
         return ret
 
