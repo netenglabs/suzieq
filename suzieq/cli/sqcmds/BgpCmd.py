@@ -1,6 +1,7 @@
 import time
 from datetime import timedelta
 from nubia import command
+import pandas as pd
 
 from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.bgp import BgpObj
@@ -61,13 +62,17 @@ class BgpCmd(SqCommand):
         # Get the default display field names
         now = time.time()
 
+        if self.columns != ["default"]:
+            return self._gen_output(pd.DataFrame(
+                {'error': ['ERROR: You cannot specify columns with summarize']}))
+
         df = self.sqobj.summarize(
             namespace=self.namespace,
         )
 
         # Convert columns into human friendly format
         if not df.empty:
-            df['upTimes'] = df['upTimes'] \
+            df.loc['upTimes'] = df.loc['upTimes'] \
                 .map(lambda x: [str(timedelta(seconds=int(i))) for i in x])
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)

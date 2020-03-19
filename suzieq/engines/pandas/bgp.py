@@ -102,5 +102,4 @@ class BgpObj(SqEngineObject):
         {ns[i].update({'downSessions': down_sessions_per_ns[i]})
          for i in down_sessions_per_ns.keys()}
 
-        return(pd.DataFrame(ns).T.reset_index()
-                 .rename(columns={"index": "namespace"}).convert_dtypes())
+        return(pd.DataFrame(ns).convert_dtypes())
