@@ -99,14 +99,14 @@ class SqObject(object):
 
         return self.engine_obj.get(**kwargs)
 
-    def summarize(self, **kwargs) -> pd.DataFrame:
+    def summarize(self, namespace='') -> pd.DataFrame:
         if not self._table:
             raise NotImplementedError
 
         if not self.ctxt.engine:
             raise AttributeError('No analysis engine specified')
 
-        return self.engine_obj.summarize(**kwargs)
+        return self.engine_obj.summarize(namespace=namespace)
 
     def unique(self, **kwargs) -> pd.DataFrame:
         if not self._table:

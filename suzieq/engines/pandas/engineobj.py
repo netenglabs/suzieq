@@ -204,27 +204,8 @@ class SqEngineObject(object):
         )
         return df
 
-    def summarize(self, **kwargs):
-        if not self.iobj._table:
-            raise NotImplementedError
-
-        if self.ctxt.sort_fields is None:
-            sort_fields = None
-        else:
-            sort_fields = self.iobj._sort_fields
-
-        df = self.get_valid_df(self.iobj._table, sort_fields, **kwargs)
-
-        if not df.empty:
-            if kwargs.get("groupby"):
-                return df.groupby(kwargs["groupby"]) \
-                         .agg(lambda x: x.unique().tolist())
-            else:
-                for i in self.iobj._cat_fields:
-                    if (kwargs.get(i, []) or
-                            "default" in kwargs.get("columns", [])):
-                        df[i] = df[i].astype("category", copy=False)
-                return df.describe(include="all").fillna("-")
+    def summarize(self, namespace=''):
+        raise NotImplementedError
 
     def unique(self, **kwargs) -> pd.DataFrame:
         """Return the unique elements as per user specification"""
