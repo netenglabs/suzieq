@@ -1,5 +1,6 @@
 import time
-from nubia import command, argument
+from datetime import timedelta
+from nubia import command
 
 from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.bgp import BgpObj
@@ -53,9 +54,7 @@ class BgpCmd(SqCommand):
         return self._gen_output(df)
 
     @command("summarize")
-    @argument("groupby",
-              description="Space separated list of fields to summarize on")
-    def summarize(self, groupby: str = ""):
+    def summarize(self):
         """
         Summarize bgp info
         """
@@ -64,16 +63,15 @@ class BgpCmd(SqCommand):
 
         # Get the default display field names
         now = time.time()
-        if self.columns != ["default"]:
-            self.ctxt.sort_fields = None
-        else:
-            self.ctxt.sort_fields = []
 
         df = self.sqobj.summarize(
-            hostname=self.hostname,
-            columns=self.columns,
-            groupby=groupby.split(),
             namespace=self.namespace,
         )
+
+        # Convert columns into human friendly format
+        if not df.empty:
+            df['upTimes'] = df['upTimes'] \
+                .map(lambda x: [str(timedelta(seconds=int(i))) for i in x])
+
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
