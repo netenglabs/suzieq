@@ -56,8 +56,12 @@ def _create_context_config():
 
 @pytest.fixture
 def get_schemas(create_context_config):
+    return _get_schemas(create_context_config)
+
+
+def _get_schemas(config):
     from suzieq.utils import get_schemas
-    schemas = get_schemas(create_context_config['schema-directory'])
+    schemas = get_schemas(config['schema-directory'])
     assert len(schemas) > 0
     return schemas
 
