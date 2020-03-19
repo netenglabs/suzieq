@@ -53,14 +53,11 @@ class BgpCmd(SqCommand):
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
 
-    @command("summarize")
+    @command("summarize", help="Provide summary info about BGP per namespace")
     def summarize(self):
         """
         Summarize bgp info
         """
-        if self.columns is None:
-            return
-
         # Get the default display field names
         now = time.time()
 
