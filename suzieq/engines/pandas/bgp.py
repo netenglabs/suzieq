@@ -1,6 +1,6 @@
 from .engineobj import SqEngineObject
 import pandas as pd
-from datetime import timedelta
+import numpy as np
 
 
 class BgpObj(SqEngineObject):
@@ -49,48 +49,52 @@ class BgpObj(SqEngineObject):
         {ns[i]['afi-safi'].append("evpn")
          for i in ns.keys() if i in evpn_enabled}
 
-        mean_up_time = df.query("state != 'NotEstd'") \
-            .groupby(by=["namespace"])["estdTime"].mean()
-        max_up_time = df.query("state != 'NotEstd'") \
+        # p90 = df.query("state == 'Established'") \
+        #         .groupby(by=["namespace"])["estdTime"] \
+        #         .apply(lambda x: np.percentile(x, 90))
+
+        med_up_time = df.query("state == 'Established'") \
+            .groupby(by=["namespace"])["estdTime"].median()
+        max_up_time = df.query("state == 'Established'") \
             .groupby(by=["namespace"])["estdTime"].max()
-        min_up_time = df.query("state != 'NotEstd'") \
+        min_up_time = df.query("state == 'Established'") \
             .groupby(by=["namespace"])["estdTime"].min()
 
         {ns[i].update({'upTimes': []}) for i in ns.keys()}
         {ns[i]['upTimes'].append(min_up_time[i]) for i in min_up_time.keys()}
         {ns[i]['upTimes'].append(max_up_time[i]) for i in max_up_time.keys()}
-        {ns[i]['upTimes'].append(mean_up_time[i]) for i in mean_up_time.keys()}
+        {ns[i]['upTimes'].append(med_up_time[i]) for i in med_up_time.keys()}
 
         vrfs = nsgrp["vrf"].nunique()
         {ns[i].update({"vrfs": vrfs[i]}) for i in vrfs.keys()}
 
-        mean_v4_updates = df.query("state == 'Established'") \
-                            .groupby(by=["namespace"])["v4PfxRx"] \
-                            .mean()
-        mean_v6_updates = df.query("state == 'Established'") \
-                            .groupby(by=["namespace"])["v6PfxRx"] \
-                            .mean()
-        mean_evpn_updates = df.query("state == 'Established'") \
-                              .groupby(by=["namespace"])["evpnPfxRx"] \
-                              .mean()
+        med_v4_updates = df.query("state == 'Established'") \
+            .groupby(by=["namespace"])["v4PfxRx"] \
+            .median()
+        med_v6_updates = df.query("state == 'Established'") \
+            .groupby(by=["namespace"])["v6PfxRx"] \
+            .median()
+        med_evpn_updates = df.query("state == 'Established'") \
+            .groupby(by=["namespace"])["evpnPfxRx"] \
+            .median()
 
-        {ns[i].update({'meanV4PfxRx': mean_v4_updates[i]})
-         for i in mean_v4_updates.keys()}
-        {ns[i].update({'meanV6PfxRx': mean_v6_updates[i]})
-         for i in mean_v6_updates.keys()}
-        {ns[i].update({'meanEvpnPfxRx': mean_evpn_updates[i]})
-         for i in mean_evpn_updates.keys()}
+        {ns[i].update({'medV4PfxRx': med_v4_updates[i]})
+         for i in med_v4_updates.keys()}
+        {ns[i].update({'medV6PfxRx': med_v6_updates[i]})
+         for i in med_v6_updates.keys()}
+        {ns[i].update({'medEvpnPfxRx': med_evpn_updates[i]})
+         for i in med_evpn_updates.keys()}
 
-        mean_rx_updates = df.query("state == 'Established'") \
-                            .groupby(by=["namespace"])["updatesRx"] \
-                            .mean()
-        mean_tx_updates = df.query("state == 'Established'") \
-                            .groupby(by=["namespace"])["updatesTx"] \
-                            .mean()
-        {ns[i].update({'meanUpdatesRx': mean_rx_updates[i]})
-         for i in mean_rx_updates.keys()}
-        {ns[i].update({'meanUpdatesTx': mean_tx_updates[i]})
-         for i in mean_tx_updates.keys()}
+        med_rx_updates = df.query("state == 'Established'") \
+            .groupby(by=["namespace"])["updatesRx"] \
+            .median()
+        med_tx_updates = df.query("state == 'Established'") \
+            .groupby(by=["namespace"])["updatesTx"] \
+            .median()
+        {ns[i].update({'medUpdatesRx': med_rx_updates[i]})
+         for i in med_rx_updates.keys()}
+        {ns[i].update({'medUpdatesTx': med_tx_updates[i]})
+         for i in med_tx_updates.keys()}
 
         down_sessions_per_ns = df.query("state == 'NotEstd'")['namespace'] \
                                  .value_counts()
