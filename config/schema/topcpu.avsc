@@ -4,7 +4,21 @@
     "type": "record",
     "fields": [
         {
-            "name": "residentMem",
+            "name": "priority",
+            "type": "long"
+        },
+        {
+            "name": "pid",
+            "type": "long",
+            "key": 3,
+            "display": 3
+        },
+        {
+            "name": "nice",
+            "type": "long"
+        },
+        {
+            "name": "user",
             "type": "string"
         },
         {
@@ -12,72 +26,66 @@
             "type": "float"
         },
         {
-            "name": "cacheMem",
-            "type": "long"
-        },
-        {
-            "name": "percentCPU",
-            "type": "float"
-        },
-        {
             "name": "totalMem",
             "type": "long"
         },
         {
-            "name": "procName",
-            "type": "string"
-        },
-        {
-            "name": "pid",
+            "name": "virtualMem",
             "type": "long"
         },
         {
-            "name": "priority",
-            "type": "long"
-        },
-        {
-            "name": "nice",
+            "name": "cacheMem",
             "type": "long"
         },
         {
             "name": "minLoadAvg",
-            "type": "float"
-        },
-        {
-            "name": "user",
-            "type": "string"
-        },
-        {
-            "name": "percentMem",
-            "type": "float"
+            "type": "float",
+            "display": 5
         },
         {
             "name": "state",
             "type": "string"
         },
         {
-            "name": "runningTime",
-            "type": "string"
+            "name": "fiveMinLoadAvg",
+            "type": "float"
         },
         {
             "name": "freeMem",
             "type": "long"
         },
         {
-            "name": "fiveMinLoadAvg",
-            "type": "float"
-        },
-        {
-            "name": "sharedMem",
-            "type": "string"
-        },
-        {
-            "name": "virtualMem",
-            "type": "string"
+            "name": "procName",
+            "type": "string",
+            "key": 2,
+            "display": 2
         },
         {
             "name": "usedMem",
             "type": "long"
+        },
+        {
+            "name": "percentCPU",
+            "type": "float",
+            "display": 4
+        },
+        {
+            "name": "runningTime",
+            "type": "string"
+        },
+        {
+            "name": "sharedMem",
+            "type": "long"
+        },
+        {
+            "name": "residentMem",
+            "type": "long",
+            "display": 7
+        },
+        {
+            "name": "percentMem",
+            "type": "float",
+            "display": 6
         },
         {
             "name": "hostname",

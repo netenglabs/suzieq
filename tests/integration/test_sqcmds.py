@@ -53,8 +53,8 @@ basic_verbs = ['show']
     ('RouteCmd', basic_verbs + ['lpm'],
      [None, {'address': '10.0.0.1'}], [2596, 143]),  # TODO: bug #24
     ('TableCmd', basic_verbs, [None, {'table': 'system'}], [105, 44]),
-    ('TopcpuCmd', basic_verbs, [None, None], [42, 18]),
-    ('TopmemCmd', basic_verbs, [None, None], [27, 18]),
+    ('TopcpuCmd', basic_verbs, [None, None], [1404, 18]),
+    ('TopmemCmd', basic_verbs, [None, None], [891, 18]),
     ('VlanCmd', basic_verbs, [None], [96])
 ])
 def test_commands(setup_nubia, command, verbs, args, size):

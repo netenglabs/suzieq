@@ -1,6 +1,16 @@
 service: topcpu
 period: 60
 type: counters
+keys:
+  - procName
+  - pid
+show-fields:
+  - procName
+  - pid
+  - percentCPU
+  - minLoadAvg
+  - percentMem
+  - residentMem
 apply:
   cumulus:
     version: all
