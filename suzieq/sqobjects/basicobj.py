@@ -82,6 +82,8 @@ class SqObject(object):
         else:
             self.engine_obj = None
 
+        self._addnl_filter = None
+
     @property
     def schemas(self):
         return self.ctxt.schemas
@@ -97,7 +99,10 @@ class SqObject(object):
         if not self.ctxt.engine:
             raise AttributeError('No analysis engine specified')
 
-        return self.engine_obj.get(**kwargs)
+        if self._addnl_filter:
+            return self.engine_obj.get(add_filter=self._addnl_filter, **kwargs)
+        else:
+            return self.engine_obj.get(**kwargs)
 
     def summarize(self, namespace='') -> pd.DataFrame:
         if not self._table:
