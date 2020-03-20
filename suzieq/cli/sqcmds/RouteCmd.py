@@ -81,7 +81,7 @@ class RouteCmd(SqCommand):
             namespace=self.namespace,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        return self._gen_output(df)
+        return self._gen_output(df, json_orient='columns')
 
     @command('lpm')
     @argument("address", description="IP Address, in quotes, for lpm query")

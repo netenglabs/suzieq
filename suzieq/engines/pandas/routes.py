@@ -81,13 +81,6 @@ class RoutesObj(SqEngineObject):
         {ns[i].update({'interfaceRoutes': ifr_per_ns[i]})
          for i in ifr_per_ns.keys()}
 
-        nsarr = df["namespace"].unique()
-        plen_per_ns = [df.query("namespace == '{}'".format(i))["prefix"]
-                       .ipnet.prefixlen.unique() for i in nsarr]
-        [i.sort() for i in plen_per_ns]
-        {ns[k].update({'prefixLengths': plen_per_ns[i]})
-         for i, k in enumerate(nsarr)}
-
         proto_per_ns = nsgrp["protocol"].unique()
         proto_per_ns.apply(lambda x: x.sort())
         {ns[i].update({'protocols': proto_per_ns[i]})
@@ -153,7 +146,7 @@ class RoutesObj(SqEngineObject):
 
         return idx.merge(df)
 
-    def assert(self, **kwargs) -> pd.DataFrame:
+    def aver(self, **kwargs) -> pd.DataFrame:
         """Verify that the routing table is consistent
         The only check for now is to ensure every host has a default route/vrf'
         """
