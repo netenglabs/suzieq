@@ -68,30 +68,16 @@ class RouteCmd(SqCommand):
         return self._gen_output(df)
 
     @command("summarize")
-    @argument("prefix", description="Prefix, in quotes, to summarize on")
     @argument("vrf", description="Specific VRF to qualify")
-    @argument("groupby",
-              description="space-separated list of fields to summarize")
-    def summarize(self, prefix: str = "", vrf: str = '', groupby: str = ""):
+    def summarize(self, prefix: str = "", vrf: str = ''):
         """
         Summarize Routing info
         """
-        if self.columns is None:
-            return
-
         # Get the default display field names
         now = time.time()
-        if self.columns != ["default"]:
-            self.ctxt.sort_fields = None
-        else:
-            self.ctxt.sort_fields = []
 
         df = self.sqobj.summarize(
-            hostname=self.hostname,
-            prefix=prefix.split(),
             vrf=vrf.split(),
-            columns=self.columns,
-            groupby=groupby.split(),
             namespace=self.namespace,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
