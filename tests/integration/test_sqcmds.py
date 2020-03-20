@@ -7,7 +7,7 @@ from subprocess import check_output, CalledProcessError
 import shlex
 import dateutil
 from tempfile import mkstemp
-from collections import Iterable
+from collections import Counter
 
 import pytest
 from _pytest.mark.structures import Mark, MarkDecorator
@@ -410,6 +410,10 @@ def test_sqcmds(testvar, create_context_config):
         except json.JSONDecodeError:
             expected_jout = testvar['output']
 
+        assert (type(expected_jout) == type(jout))
+        if isinstance(jout, dict):
+            assert(Counter(expected_jout) == Counter(jout))
+            return
         try:
             expected_setlist = set(tuple(sorted(d.items())) for d in jout)
             got_setlist = set(tuple(sorted(d.items())) for d in expected_jout)

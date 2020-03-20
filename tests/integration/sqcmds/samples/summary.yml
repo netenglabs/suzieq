@@ -1,0 +1,22 @@
+description: Testing summarize verb
+tests:
+  - command: bgp summarize --format=json --columns='namespace hostname'
+    data-directory: tests/data/multidc/parquet-out
+    error:
+      error: |
+        [{"error":"ERROR: You cannot specify columns with summarize"}]
+    marks: bgp summarize error
+
+  - command: bgp summarize --format=json
+    data-directory: tests/data/multidc/parquet-out
+    output: |
+      {"dual-evpn":{"hosts":9,"sessions":34,"asns":8,"afi-safi":["ipv4","evpn"],"upTimes":["0:00:07","21:20:10","21:16:06"],"vrfs":3,"medV4PfxRx":13,"medV6PfxRx":0,"medEvpnPfxRx":8,"medUpdatesRx":113.5,"medUpdatesTx":117,"downSessions":0},"ospf-ibgp":{"hosts":4,"sessions":16,"asns":2,"afi-safi":["ipv4","evpn"],"upTimes":["1 day, 9:05:52","1 day, 9:05:54","1 day, 9:05:53"],"vrfs":3,"medV4PfxRx":0,"medV6PfxRx":0,"medEvpnPfxRx":8,"medUpdatesRx":16.0,"medUpdatesTx":12,"downSessions":1}}
+    marks: bgp summarize
+
+  - command: bgp summarize --format=json --namespace='dual-evpn'
+    data-directory: tests/data/multidc/parquet-out
+    output: |
+      {"dual-evpn":{"afi-safi":["ipv4","evpn"],"asns":8,"downSessions":0,"hosts":9,"medEvpnPfxRx":8,"medUpdatesRx":113.5,"medUpdatesTx":117,"medV4PfxRx":13,"medV6PfxRx":0,"sessions":34,"upTimes":["0:00:07","21:20:10","21:16:06"],"vrfs":3}}
+    marks: bgp summarize filter
+
+
