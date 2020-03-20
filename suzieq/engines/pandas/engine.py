@@ -92,6 +92,7 @@ class SqPandasEngine(SqEngine):
         # Create the filter to select only specified columns
         query_str = ""
         prefix = ""
+        addnl_filter = kwargs.pop('add_filter', None)
         for f, v in kwargs.items():
             if not v or f in key_fields or f in ["groupby"]:
                 continue
@@ -101,6 +102,13 @@ class SqPandasEngine(SqEngine):
             else:
                 query_str += "{} {}=={} ".format(prefix, f, v)
                 prefix = "and"
+
+        if addnl_filter:
+            # This is for special cases that are specific to an object
+            if not query_str:
+                query_str = addnl_filter
+            else:
+                query_str += ' and {}'.format(addnl_filter)
 
         if use_get_files:
             if not query_str:
