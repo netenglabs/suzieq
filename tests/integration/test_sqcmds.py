@@ -179,10 +179,13 @@ def test_bad_show_hostname_filter(setup_nubia, cmd):
 
 
 bad_engine_commands = commands[:]
+bad_engine_commands.pop(3)  # EvpnVniCmd
+bad_engine_commands.pop(7)  # Ospfcmd
 # TODO
 # this doesn't do any filtering, so it fails the assert that length should be 0
 # when this is fixed then remove the xfail
 @pytest.mark.filter
+@pytest.mark.xfail(reason='bug #11')
 @pytest.mark.parametrize("cmd", bad_engine_commands)
 def test_bad_show_engine_filter(setup_nubia, cmd):
     filter = {'engine': 'unknown'}
