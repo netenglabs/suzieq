@@ -14,9 +14,15 @@ class RoutesObj(basicobj.SqObject):
                          namespace, columns, context=context, table='routes')
         self._sort_fields = ['hostname', 'vrf', 'prefix']
         self._cat_fields = ['protocol', 'metric']
+        self._addnl_filter = 'metric != 4278198272'
 
     def lpm(self, **kwargs):
         '''Get the lpm for the given address'''
         if not kwargs.get("address", None):
             raise AttributeError('ip address is mandatory parameter')
         return self.engine_obj.lpm(**kwargs)
+
+    def summarize(self, namespace=[], vrf=[]):
+        """Summarize routing info for one or more namespaces"""
+
+        return self.engine_obj.summarize(namespace=namespace, vrf=vrf)
