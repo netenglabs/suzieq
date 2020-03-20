@@ -50,6 +50,9 @@ class SqPandasEngine(SqEngine):
 
         fcnt = self.get_filecnt(folder)
 
+        if fcnt == 0:
+            return pd.DataFrame()
+
         # We are going to hard code use_get_files until we have some autoamted testing
         use_get_files = False
 
@@ -169,11 +172,12 @@ class SqPandasEngine(SqEngine):
 
     def get_filecnt(self, path="."):
         total = 0
-        for entry in os.scandir(path):
-            if entry.is_file():
-                total += 1
-            elif entry.is_dir():
-                total += self.get_filecnt(entry.path)
+        if os.path.isdir(path):
+            for entry in os.scandir(path):
+                if entry.is_file():
+                    total += 1
+                elif entry.is_dir():
+                    total += self.get_filecnt(entry.path)
         return total
 
     def build_pa_filters(self, start_tm: str, end_tm: str, key_fields: list,
