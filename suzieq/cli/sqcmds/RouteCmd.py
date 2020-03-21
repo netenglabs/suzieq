@@ -52,10 +52,16 @@ class RouteCmd(SqCommand):
 
         # Get the default display field names
         now = time.time()
-        if self.columns != ["default"]:
+        if self.columns == ['*']:
+            remove_metric = False
+        elif self.columns != ["default"]:
             self.ctxt.sort_fields = None
+            if 'metric' not in self.columns:
+                self.columns.append('metric')
+                remove_metric = True
         else:
             self.ctxt.sort_fields = []
+            remove_metric = False
 
         df = self.sqobj.get(
             hostname=self.hostname,
@@ -64,6 +70,9 @@ class RouteCmd(SqCommand):
             columns=self.columns,
             namespace=self.namespace,
         )
+        if not df.empty and remove_metric:
+            df.drop(columns=['metric'], inplace=True)
+
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
 
@@ -94,10 +103,16 @@ class RouteCmd(SqCommand):
             return
 
         now = time.time()
+        if self.columns == ['*']:
+            remove_metric = False
         if self.columns != ["default"]:
             self.ctxt.sort_fields = None
+            if 'metric' not in self.columns:
+                self.columns.append('metric')
+                remove_metric = True
         else:
             self.ctxt.sort_fields = []
+            remove_metric = False
 
         if not address:
             print('address is mandatory parameter')
@@ -110,5 +125,9 @@ class RouteCmd(SqCommand):
             columns=self.columns,
             namespace=self.namespace,
         )
+
+        if not df.empty and remove_metric:
+            df.drop(columns=['metric'], inplace=True)
+
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
