@@ -10,7 +10,8 @@ tests:
   - command: bgp summarize --format=json
     data-directory: tests/data/multidc/parquet-out
     output: |
-      {"dual-evpn":{"hosts":9,"sessions":34,"asns":8,"afi-safi":["ipv4","evpn"],"upTimes":["0:00:07","21:20:10","21:16:06"],"vrfs":3,"medV4PfxRx":13,"medV6PfxRx":0,"medEvpnPfxRx":8,"medUpdatesRx":113.5,"medUpdatesTx":117,"downSessions":0},"ospf-ibgp":{"hosts":4,"sessions":16,"asns":2,"afi-safi":["ipv4","evpn"],"upTimes":["1 day, 9:05:52","1 day, 9:05:54","1 day, 9:05:53"],"vrfs":3,"medV4PfxRx":0,"medV6PfxRx":0,"medEvpnPfxRx":8,"medUpdatesRx":16.0,"medUpdatesTx":12,"downSessions":1}}
+      {"dual-evpn":{"hosts":9,"sessions":34,"asns":8,"afi-safi":["ipv4","evpn"],"upTimes":["0:00:07","21:20:10","21:16:06"],"vrfs":3,"medV4PfxRx":13,"medV6PfxRx":0,"medEvpnPfxRx":8,"medUpdatesRx":113.5,"medUpdatesTx":117.0,"downSessions":0},"ospf-ibgp":{"hosts":9,"sessions":34,"asns":3,"afi-safi":["ipv4","evpn"],"upTimes":["6:10:36","1 day, 15:27:58","1 day, 15:27:03"],"vrfs":3,"medV4PfxRx":1,"medV6PfxRx":0,"medEvpnPfxRx":8,"medUpdatesRx":16.0,"medUpdatesTx":11.5,"downSessions":0}}
+
     marks: bgp summarize
 
   - command: bgp summarize --format=json --namespace='dual-evpn'
