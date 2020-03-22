@@ -48,7 +48,7 @@ basic_verbs = ['show']
     ('MlagCmd', basic_verbs, [None, None, None],
      [44, 143]),
     ('OspfCmd', basic_verbs + ['top', 'aver'], [None, None, None],
-     [0,0, 0]),
+     [0, 0, 0]),
     ('RouteCmd', basic_verbs + ['lpm'],
      [None, {'address': '10.0.0.1'}], [2596, 143]),  # TODO: bug #24
     ('TableCmd', basic_verbs, [None, {'table': 'system'}], [105, 44]),
@@ -86,6 +86,7 @@ def test_summary_exception(setup_nubia):
     with pytest.raises(AttributeError):
         s = execute_cmd('SystemCmd', 'foop', None, )
     assert s is None
+
 
 good_commands = commands[:]
 
@@ -394,7 +395,7 @@ def test_sqcmds(testvar, create_context_config):
         f.close()
         sqcmd_path += ['--config={}'.format(tmpfname)]
 
-    exec_cmd = sqcmd_path + shlex.split(testvar['command']) + ['--stderr']
+    exec_cmd = sqcmd_path + shlex.split(testvar['command'])
 
     output = None
     error = None

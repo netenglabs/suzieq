@@ -65,9 +65,9 @@ class NubiaSuzieqPlugin(PluginInterface):
             "--stderr",
             "-s",
             action="store_true",
-            help="By default the logging output goes to a "
-            "temporary file. This disables this feature "
-            "by sending the logging output to stderr",
+            default=True,
+            help="By default the logging output goes to stderr "
+            "Enable this feature to send it to a temporary logfile"
         )
         opts_parser.add_argument(
             "--use-engine", "-e", help="Which analysis engine to use", default="pandas"
@@ -97,6 +97,8 @@ class NubiaSuzieqPlugin(PluginInterface):
 
     def getBlacklistPlugin(self):
         blacklister = CommandBlacklist()
+        blacklister.add_blocked_command("topcpu")
+        blacklister.add_blocked_command("topmem")
         return blacklister
 
 
