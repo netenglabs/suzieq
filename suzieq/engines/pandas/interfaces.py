@@ -21,9 +21,81 @@ class InterfacesObj(SqEngineObject):
 
         return result_df
 
+    def summarize(self, **kwargs) -> pd.DataFrame:
+        """Summarize interface information"""
+        if not self.iobj._table:
+            raise NotImplementedError
+
+        if self.ctxt.sort_fields is None:
+            sort_fields = None
+        else:
+            sort_fields = self.iobj._sort_fields
+        kwargs.pop("columns", None)
+
+        df = self.get_valid_df(self.iobj._table, sort_fields,
+                               columns=['*'], **kwargs)
+
+        if df.empty:
+            return df
+
+        nsgrp = df.groupby(by=["namespace"])
+        ns = {i: {} for i in nsgrp.groups.keys()}
+
+        hosts_per_ns = nsgrp["hostname"].nunique()
+        {ns[i].update({'hosts': hosts_per_ns[i]}) for i in hosts_per_ns.keys()}
+
+        ifs_per_ns = nsgrp["ifname"].count()
+        {ns[i].update({'interfaces': ifs_per_ns[i]})
+         for i in ifs_per_ns.keys()}
+
+        median_ifs_per_hostns = df.groupby(by=["namespace", "hostname"])[
+            "ifname"].count().groupby("namespace").median()
+        {ns[i].update({'medIfPerHost': median_ifs_per_hostns[i]})
+         for i in median_ifs_per_hostns.keys()}
+
+        hosts_l2_per_ns = df.query("type == 'vlan' or "
+                                   "type == 'bridge'") \
+            .groupby(by=["namespace"])[
+            "hostname"].nunique()
+        {ns[i].update({'hostsWithL2': hosts_l2_per_ns[i]})
+         for i in hosts_l2_per_ns.keys()}
+
+        has_vxlan_perns = df.query("type == 'vxlan'") \
+                            .groupby(by=["namespace"])["hostname"].count()
+        {ns[i].update({'hasVxlan': (has_vxlan_perns[i] > 0)})
+         for i in has_vxlan_perns.keys()}
+
+        mtu_list_perns = nsgrp["mtu"].unique()
+        {ns[i].update({'mtuList': mtu_list_perns[i]})
+         for i in mtu_list_perns.keys()}
+
+        downif_per_ns = df.query('state != "up"') \
+                          .groupby(by=["namespace"])["ifname"].count()
+
+        {ns[i].update({'downPortCount': downif_per_ns[i]})
+         for i in downif_per_ns.keys()}
+
+        med_linkif_transitions = df[df.type.str.startswith('ether')] \
+            .groupby(by=["namespace"])["numChanges"].median()
+        {ns[i].update({'medianIfChanges': med_linkif_transitions[i]})
+         for i in med_linkif_transitions.keys()}
+
+        # Eliminate all the fields without the desired namespace if provided
+        # As described earlier this is only required for routes
+        namespaces = set(tuple(kwargs.get("namespace", [])))
+        if namespaces:
+            nskeys = set(tuple(ns.keys()))
+            deselect_keys = nskeys - namespaces
+            if deselect_keys:
+                for key in deselect_keys:
+                    del ns[key]
+
+        return(pd.DataFrame(ns).convert_dtypes())
+
     def _assert_mtu_value(self, **kwargs) -> pd.DataFrame:
         """Workhorse routine to match MTU value"""
-        columns = ["namespace", "hostname", "ifname", "state", "mtu", "timestamp"]
+        columns = ["namespace", "hostname",
+                   "ifname", "state", "mtu", "timestamp"]
         sort_fields = ["namespace", "hostname", "ifname"]
 
         query_df = self.get_valid_df(
@@ -46,7 +118,8 @@ class InterfacesObj(SqEngineObject):
             print("No Valid LLDP info found, Asserting MTU not possible")
             return pd.DataFrame(columns=["namespace", "hostname"])
 
-        columns = ["namespace", "hostname", "ifname", "state", "mtu", "timestamp"]
+        columns = ["namespace", "hostname",
+                   "ifname", "state", "mtu", "timestamp"]
         if_df = self.get_valid_df(
             "interfaces",
             self.sort_fields,
