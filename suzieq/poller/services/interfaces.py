@@ -23,6 +23,9 @@ class InterfaceService(Service):
                     entry["type"] = "bond_slave"
                 entry["master"] = words[-1].strip()
             entry["lacpBypass"] = (entry["lacpBypass"] == True)
+            if entry["forwardingModel"] == "bridged":
+                entry["master"] = "bridge"  # Convert it for Linux model
+                del entry["forwardingModel"]
 
             # Vlan is gathered as a list for VXLAN interfaces. Fix that
             if entry["type"] == "vxlan":
