@@ -31,7 +31,7 @@ class NubiaSuzieqStatusBar(statusbar.StatusBar):
             spacer,
             is_verbose,
             spacer,
-            (Token.Toolbar, "Datacenter "),
+            (Token.Toolbar, "Namespace "),
             spacer,
             (Token.Info, ", ".join(self.ctx.namespace)),
             spacer,
