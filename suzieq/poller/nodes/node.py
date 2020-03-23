@@ -134,7 +134,7 @@ class Node(object):
             self.backoff = min(600, self.backoff * 2) + \
                 (random.randint(0, 1000) / 1000)
             self.init_again_at = time.time() + self.backoff
-
+        logging.info("Node created")
         return self
 
     async def init_node(self):
@@ -321,38 +321,18 @@ class Node(object):
         ) as e:
             for cmd in cmd_list:
                 logging.error(
-                    "Unable to connect to node {}".format(self.hostname))
-                result.append(
-                    {
-                        "status": 408,
-                        "timestamp": int(datetime.utcnow().timestamp() * 1000),
-                        "cmd": cmd,
-                        "devtype": self.devtype,
-                        "namespace": self.dcname,
-                        "hostname": self.hostname,
-                        "address": self.address,
-                        "data": {"error": str(e)},
-                    }
-                )
+                    "Unable to connect to node {} cmd {}".format(self.hostname, cmd))
+                result.append(self._create_error(cmd, 408, e))
             return result
 
         if conn:
+            logging.info(f"cmds len {len(cmd_list)}")
             for cmd in cmd_list:
+
                 try:
                     output = await asyncio.wait_for(conn.run(cmd),
                                                     timeout=self.cmd_timeout)
-                    result.append(
-                        {
-                            "status": output.exit_status,
-                            "timestamp": int(datetime.utcnow().timestamp() * 1000),
-                            "cmd": cmd,
-                            "devtype": self.devtype,
-                            "namespace": self.dcname,
-                            "hostname": self.hostname,
-                            "address": self.address,
-                            "data": output.stdout,
-                        }
-                    )
+                    result.append(self._create_result(cmd, output.exit_status, output.stdout))
                 except (
                     asyncio.TimeoutError,
                     ConnectionResetError,
@@ -360,35 +340,29 @@ class Node(object):
                     OSError,
                     asyncssh.misc.DisconnectError,
                 ) as e:
-                    result.append(
-                        {
-                            "status": 408,
-                            "timestamp": int(datetime.utcnow().timestamp() * 1000),
-                            "cmd": cmd,
-                            "devtype": self.devtype,
-                            "namespace": self.dcname,
-                            "hostname": self.hostname,
-                            "address": self.address,
-                            "data": {"error": str(e)},
-                        }
-                    )
+                    result.append(self._create_error(cmd, 408, e))
                 except asyncssh.misc.ChannelOpenError as e:
-                    result.append(
-                        {
-                            "status": 404,
-                            "timestamp": int(datetime.utcnow().timestamp() * 1000),
-                            "cmd": cmd,
-                            "devtype": self.devtype,
-                            "namespace": self.dcname,
-                            "hostname": self.hostname,
-                            "address": self.address,
-                            "data": {"error": str(e)},
-                        }
-                    )
-
+                    result.append(self._create_error(cmd, 404, e))
             conn.close()
             await conn.wait_closed()
 
+        return result
+
+    def _create_error(self, cmd, status, error):
+        data = {'error': str(error)}
+        return self._create_result(cmd, status, data)
+
+    def _create_result(self, cmd, status, data):
+        result = {
+            "status": status,
+            "timestamp": int(datetime.utcnow().timestamp() * 1000),
+            "cmd": cmd,
+            "devtype": self.devtype,
+            "namespace": self.dcname,
+            "hostname": self.hostname,
+            "address": self.address,
+            "data": data,
+        }
         return result
 
     async def rest_gather(self, svc_dict, oformat="json"):
