@@ -40,3 +40,16 @@ class TableCmd(SqCommand):
         df = self.sqobj.get(hostname=self.hostname, namespace=self.namespace)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
+
+    @command("describe")
+    @argument("table", description="interface name to qualify")
+    def describe(self, table: str = "", **kwargs):
+        """
+        Summarize fields in table
+        """
+
+        now = time.time()
+        df = self.sqobj.summarize(table=table)
+        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
+
+        return self._gen_output(df)

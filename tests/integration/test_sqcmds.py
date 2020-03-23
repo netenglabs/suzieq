@@ -51,7 +51,7 @@ basic_verbs = ['show']
      [0, 0, 0]),
     ('RouteCmd', basic_verbs + ['lpm'],
      [None, {'address': '10.0.0.1'}], [2596, 143]),  # TODO: bug #24
-    ('TableCmd', basic_verbs, [None, {'table': 'system'}], [105, 44]),
+    ('TableCmd', basic_verbs + ['describe'], [None, {'table': 'system'}], [105, 44]),
     ('TopcpuCmd', basic_verbs, [None, None], [1404, 18]),
     ('TopmemCmd', basic_verbs, [None, None], [891, 18]),
     ('VlanCmd', basic_verbs, [None], [96])
@@ -272,11 +272,11 @@ def test_context_namespace_filtering(setup_nubia, cmd):
 
 
 @pytest.mark.filter
-@pytest.mark.xfail(reason='bug #17')
+#@pytest.mark.xfail(reason='bug #17')
 @pytest.mark.parametrize('cmd', good_commands)
 def test_context_engine_filtering(setup_nubia, cmd):
     s1 = _test_command(cmd, 'show', None, None)
-    s2 = _test_context_filtering(cmd, {'engine': 'pandas'})
+    s2 = _test_context_filtering(cmd, {'enginename': 'pandas'})
     if s1.size == 0:
         assert s1.size == s2.size
     else:
