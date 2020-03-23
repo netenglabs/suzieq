@@ -18,6 +18,10 @@ networks in way that is much easier. We've just gotten started; our applications
 demonstration of what this approach can bring about. This is a very early release. We have many more ideas on what Suzieq can do, but we wanted to get this out
 so that people can start using it. And start solving problems in their networks.
 
+With the applications that we build on top of the framework we want to demonstrate a different
+and more systematic approach to thinking about networks. We want to show how useful it is to think
+of your network holistically. 
+
 Suzieq data is focused on [Pandas DataFrames](https://pandas.pydata.org/pandas-docs/stable/getting_started/dsintro.html)
 Everything returned by the analysis engine is a dataframe.
 
