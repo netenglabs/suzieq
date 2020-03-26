@@ -1,4 +1,5 @@
 import time
+from datetime import timedelta
 from nubia import command, argument
 import pandas as pd
 
@@ -119,6 +120,12 @@ class OspfCmd(SqCommand):
             type=type,
             groupby=groupby.split(),
         )
+        # TODO: time in this field looks ugly
+        #  it shows too many fields, we want it to look like BGP estdTime does in bgp summarize
+        if not df.empty and 'lastChangeTime' in df.index:
+            df.loc['lastChangeTime'] = df.loc['lastChangeTime'] \
+                .map(lambda x: [str(pd.to_timedelta(i)) for i in x])
+
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
 

@@ -36,26 +36,28 @@ class OspfObj(SqEngineObject):
         if self.summary_df.empty:
             return self.summary_df
 
-        self._add_field_to_summary('hostname', 'count', 'sessions')
-        if table == 'ospfNbr':
-            for field in ['vrf', 'hostname', 'state', 'nbrPrio', 'peerRouterId']:
-                self._add_field_to_summary(field, 'nunique')
-            self._add_list_or_count_to_summary('area')
 
-            #TODO: time in this field looks ugly
-            #  it shows too many fields, we want it to look like BGP estdTime does in bgp summarize
+        if table == 'ospfNbr':
+            self._add_field_to_summary('hostname', 'count', 'sessions')
+            for field in ['hostname', 'state',  'peerRouterId']:
+                self._add_field_to_summary(field, 'nunique')
+            for field in ['vrf', 'area', 'nbrPrio']:
+                self._add_list_or_count_to_summary(field)
+
+
             up_time = self.summary_df.query("state == 'full'") \
                 .groupby(by=["namespace"])["lastChangeTime"]
-            med_up_time = pd.to_timedelta(up_time.median())
-            max_up_time = pd.to_timedelta(up_time.max())
-            min_up_time = pd.to_timedelta(up_time.min())
+            med_up_time = up_time.median()
+            max_up_time = up_time.max()
+            min_up_time = up_time.min()
             {self.ns[i].update({'lastChangeTime': []}) for i in self.ns.keys()}
             {self.ns[i]['lastChangeTime'].append(min_up_time[i]) for i in min_up_time.keys()}
             {self.ns[i]['lastChangeTime'].append(max_up_time[i]) for i in max_up_time.keys()}
             {self.ns[i]['lastChangeTime'].append(med_up_time[i]) for i in med_up_time.keys()}
         else:
-            pass
-
+            for field in ['helloTime', 'cost', 'deadTime', 'vrf', 'state', 'areaStub', 'area', 'passive', 'nbrCount']:
+                self._add_list_or_count_to_summary(field)
+            self._add_field_to_summary('hostname', 'count', 'interfaces')
 
         return pd.DataFrame(self.ns).convert_dtypes()
 

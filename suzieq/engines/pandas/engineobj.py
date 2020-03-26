@@ -205,7 +205,19 @@ class SqEngineObject(object):
         return df
 
     def summarize(self, namespace=''):
+        """There is a pattern of how to do these
+        use self._init_summarize(), which creates self.nsgrp of data grouped by namespace
+        and also self.summary_df which is the df to use to summarize everything
+
+        if you want to simply take a field and run a pandas funciton, then use
+          self._add_field_to_summary
+
+        at the end of te summarize
+        return pd.DataFrame(self.ns).convert_dtypes()
+        """
+
         raise NotImplementedError
+
 
     def unique(self, **kwargs) -> pd.DataFrame:
         """Return the unique elements as per user specification"""
@@ -268,7 +280,6 @@ class SqEngineObject(object):
     def top(self, **kwargs):
         raise NotImplementedError
 
-
     def _init_summarize(self, table, **kwargs):
         kwargs.pop('columns', None)
         columns = ['*']
@@ -296,11 +307,12 @@ class SqEngineObject(object):
         """if there are less than 3 unique things, add as a list, otherwise return the count"""
         if not field_name:
             field_name = field
+
         count_per_ns = self.nsgrp[field].nunique()
-        unique_per_ns = self.nsgrp[field].unique()
+        unique_per_ns = self.nsgrp[field].value_counts()
         for n in count_per_ns.keys():
             if count_per_ns[n] <= 3:
-                value = unique_per_ns[n]
+                value = unique_per_ns[n].to_dict()
             else:
                 value = count_per_ns[n]
             self.ns[n].update({field_name: value})
