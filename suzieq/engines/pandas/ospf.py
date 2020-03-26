@@ -6,6 +6,15 @@ from suzieq.sqobjects.lldp import LldpObj
 from suzieq.engines.pandas.engineobj import SqEngineObject
 
 
+def _choose_table(**kwargs):
+    table = "ospfNbr"
+    if "type" in kwargs:
+        if kwargs.get("type", "interface") == "interface":
+            table = "ospfIf"
+        del kwargs["type"]
+    return table, kwargs
+
+
 class OspfObj(SqEngineObject):
     def get(self, **kwargs):
 
@@ -14,35 +23,41 @@ class OspfObj(SqEngineObject):
         else:
             sort_fields = self.sort_fields
 
-        table = "ospfNbr"
-        if "type" in kwargs:
-            if kwargs.get("type", "interface") == "interface":
-                table = "ospfIf"
-            del kwargs["type"]
+        table, kwargs = _choose_table(**kwargs)
 
         df = self.get_valid_df(table, sort_fields, **kwargs)
         return df
 
     def summarize(self, **kwargs):
         """Describe the data"""
-        if self.ctxt.sort_fields is None:
-            sort_fields = None
+
+        table, kwargs = _choose_table(**kwargs)
+        self._init_summarize(table, **kwargs)
+        if self.summary_df.empty:
+            return self.summary_df
+
+        self._add_field_to_summary('hostname', 'count', 'sessions')
+        if table == 'ospfNbr':
+            for field in ['vrf', 'hostname', 'state', 'nbrPrio', 'peerRouterId']:
+                self._add_field_to_summary(field, 'nunique')
+            self._add_list_or_count_to_summary('area')
+
+            #TODO: time in this field looks ugly
+            #  it shows too many fields, we want it to look like BGP estdTime does in bgp summarize
+            up_time = self.summary_df.query("state == 'full'") \
+                .groupby(by=["namespace"])["lastChangeTime"]
+            med_up_time = pd.to_timedelta(up_time.median())
+            max_up_time = pd.to_timedelta(up_time.max())
+            min_up_time = pd.to_timedelta(up_time.min())
+            {self.ns[i].update({'lastChangeTime': []}) for i in self.ns.keys()}
+            {self.ns[i]['lastChangeTime'].append(min_up_time[i]) for i in min_up_time.keys()}
+            {self.ns[i]['lastChangeTime'].append(max_up_time[i]) for i in max_up_time.keys()}
+            {self.ns[i]['lastChangeTime'].append(med_up_time[i]) for i in med_up_time.keys()}
         else:
-            sort_fields = self.sort_fields
+            pass
 
-        table = "ospfNbr"
-        if "type" in kwargs:
-            if kwargs.get("type", "interface") == "interface":
-                table = "ospfIf"
-            del kwargs["type"]
 
-        df = self.get_valid_df(table, sort_fields, **kwargs)
-
-        if not df.empty:
-            if kwargs.get("groupby"):
-                return df.groupby(kwargs["groupby"]).agg(lambda x: x.unique().tolist())
-            else:
-                return df.describe(include="all").fillna("-")
+        return pd.DataFrame(self.ns).convert_dtypes()
 
     def aver(self, **kwargs):
         """Assert that the OSPF state is OK"""
@@ -71,7 +86,7 @@ class OspfObj(SqEngineObject):
             return pd.DataFrame(columns=columns)
 
         df = (
-            ospf_df.ix[ospf_df["routerId"] != ""]
+            ospf_df[ospf_df["routerId"] != ""]
             .groupby(["routerId"], as_index=False)[["hostname"]]
             .agg(lambda x: x.unique().tolist())
         )

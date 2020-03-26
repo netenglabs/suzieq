@@ -267,3 +267,41 @@ class SqEngineObject(object):
 
     def top(self, **kwargs):
         raise NotImplementedError
+
+
+    def _init_summarize(self, table, **kwargs):
+        kwargs.pop('columns', None)
+        columns = ['*']
+        if self.ctxt.sort_fields is None:
+            sort_fields = None
+        else:
+            sort_fields = self.sort_fields
+        df = self.get_valid_df(table, sort_fields, columns=columns,
+                               **kwargs)
+        if df.empty:
+            return df
+
+        self.summary_df = df
+        self.ns = {i: {} for i in df["namespace"].unique()}
+        self.nsgrp = df.groupby(by=["namespace"])
+
+    def _add_field_to_summary(self, field, method='nunique', field_name=None):
+        if not field_name:
+            field_name = field
+        field_per_ns = getattr(self.nsgrp[field], method)()
+        {self.ns[i].update({field_name: field_per_ns[i]})
+         for i in field_per_ns.keys()}
+
+    def _add_list_or_count_to_summary(self, field, field_name=None):
+        """if there are less than 3 unique things, add as a list, otherwise return the count"""
+        if not field_name:
+            field_name = field
+        count_per_ns = self.nsgrp[field].nunique()
+        unique_per_ns = self.nsgrp[field].unique()
+        for n in count_per_ns.keys():
+            if count_per_ns[n] <= 3:
+                value = unique_per_ns[n]
+            else:
+                value = count_per_ns[n]
+            self.ns[n].update({field_name: value})
+
