@@ -20,78 +20,64 @@ class RoutesObj(SqEngineObject):
         if not self.iobj._table:
             raise NotImplementedError
 
-        if self.ctxt.sort_fields is None:
-            sort_fields = None
-        else:
-            sort_fields = self.iobj._sort_fields
-
-        df = self.get_valid_df(self.iobj._table, sort_fields, **kwargs)
-
-        if df.empty:
-            return df
+        self._init_summarize(self.iobj._table, **kwargs)
+        if self.summary_df.empty:
+            return self.summary_df
 
         # Filter out local loopback IP
-        df = df[(df.prefix != '127.0.0.0/8')]
-        if df.empty:
-            return df
+        self.summary_df = self.summary_df[(self.summary_df.prefix != '127.0.0.0/8')].reindex()
+        if self.summary_df.empty:
+            return self.summary_df
 
-        if 'prefix' in df.columns:
-            df['prefix'].replace('default', '0.0.0.0/0', inplace=True)
-            df['prefix'] = df.prefix.astype('ipnetwork')
+        if 'prefix' in self.summary_df.columns:
+            self.summary_df['prefix'].replace('default', '0.0.0.0/0', inplace=True)
+            self.summary_df = self.summary_df.reindex()
+            self.summary_df['prefix'] = self.summary_df['prefix'].astype('ipnetwork')
 
         # Routes DF has an interesting side-effect that I've to investigate.
         # The DF returned still has the namespaces filtered out, but they
         # show up when we do groupby. I don't know why. So we create the
         # data structure assuming all namespaces, and since they contain no
         # content, we'll eliminate them in the end
-        nsgrp = df.groupby(by=["namespace"])
-        ns = {i: {} for i in nsgrp.groups.keys()}
 
-        hosts_per_ns = nsgrp["hostname"].nunique()
-        {ns[i].update({'hosts': hosts_per_ns[i]}) for i in hosts_per_ns.keys()}
+        # have to redo nsgrp because we did extra filtering above
+        self.nsgrp = self.summary_df.groupby(by=["namespace"])
+        self.ns = {i: {} for i in self.nsgrp.groups.keys()}
 
-        vrfs = nsgrp["vrf"].nunique()
-        {ns[i].update({'vrfs': vrfs[i]}) for i in vrfs.keys()}
+        for field in ['hostname', 'vrf']:
+            self._add_field_to_summary(field, 'nunique')
 
-        routes_per_ns = nsgrp["prefix"].count()
-        {ns[i].update({'routes': routes_per_ns[i]})
-         for i in routes_per_ns.keys()}
+        self._add_field_to_summary('prefix', 'count', 'routes')
+        self._add_field_to_summary('prefix', 'nunique', 'uniqueRoutes')
 
-        unique_routes_per_ns = nsgrp["prefix"].nunique()
-        {ns[i].update({'uniqueRoutes': unique_routes_per_ns[i]})
-         for i in unique_routes_per_ns.keys()}
 
-        rh_per_hns = df.groupby(by=["namespace", "hostname"])[
+        rh_per_hns = self.summary_df.groupby(by=["namespace", "hostname"])[
             "prefix"].count()
-        med_rh_per_ns = rh_per_hns.groupby("namespace").median()
-        {ns[i].update({'medianRoutesperHost': med_rh_per_ns[i]})
-         for i in med_rh_per_ns.keys()}
+        rh_per_ns = rh_per_hns.groupby("namespace")
+        self._add_stats_to_summary(rh_per_ns, 'routesperHost')
 
-        routes_per_vrfns = df.groupby(by=["namespace", "vrf"])[
-            "prefix"].count().groupby("namespace").median()
-        {ns[i].update({'medianRoutesperVrf': routes_per_vrfns[i]})
-         for i in routes_per_vrfns.keys()}
+        routes_per_vrfns = self.summary_df.groupby(by=["namespace", "vrf"])[
+            "prefix"].count().groupby("namespace")
+        self._add_stats_to_summary(routes_per_vrfns, 'routesperVrf')
 
-        hr_per_ns = df.query("prefix.ipnet.prefixlen == 32") \
+        hr_per_ns = self.summary_df.query("prefix.ipnet.prefixlen == 32") \
                       .groupby(by=['namespace'])['prefix'].count()
-        {ns[i].update({'hostRoutes': hr_per_ns[i]}) for i in hr_per_ns.keys()}
-        ifr_per_ns = df.query("prefix.ipnet.prefixlen == 30 or "
+        {self.ns[i].update({'hostRoutes': hr_per_ns[i]}) for i in hr_per_ns.keys()}
+        ifr_per_ns = self.summary_df.query("prefix.ipnet.prefixlen == 30 or "
                               "prefix.ipnet.prefixlen == 31") \
                        .groupby(by=['namespace'])['prefix'].count()
-        {ns[i].update({'interfaceRoutes': ifr_per_ns[i]})
+        {self.ns[i].update({'interfaceRoutes': ifr_per_ns[i]})
          for i in ifr_per_ns.keys()}
 
-        proto_per_ns = nsgrp["protocol"].unique()
-        proto_per_ns.apply(lambda x: x.sort())
-        {ns[i].update({'protocols': proto_per_ns[i]})
-         for i in proto_per_ns.keys()}
+        self._add_list_or_count_to_summary('protocol')
 
-        hosts_with_defrt_per_vrfns = df.query("prefix.ipnet.is_default") \
+        hosts_with_defrt_per_vrfns = self.summary_df.query("prefix.ipnet.is_default") \
                                        .groupby(by=["namespace", "vrf"])[
                                            "hostname"].nunique()
-        hosts_per_vrfns = df.groupby(by=["namespace", "vrf"])[
+        hosts_per_vrfns = self.summary_df.groupby(by=["namespace", "vrf"])[
             "hostname"].nunique()
-        {ns[i[0]].update({"hostsNoDefRoute":
+
+        {self.ns[i[0]].update({"hostsNoDefRoute":
                           hosts_with_defrt_per_vrfns[i] == hosts_per_vrfns[i]})
          for i in hosts_with_defrt_per_vrfns.keys()}
 
@@ -99,13 +85,14 @@ class RoutesObj(SqEngineObject):
         # As described earlier this is only required for routes
         namespaces = set(tuple(kwargs.get("namespace", [])))
         if namespaces:
-            nskeys = set(tuple(ns.keys()))
+            nskeys = set(tuple(self.ns.keys()))
             deselect_keys = nskeys - namespaces
             if deselect_keys:
                 for key in deselect_keys:
-                    del ns[key]
+                    del self.ns[key]
 
-        return(pd.DataFrame(ns).convert_dtypes())
+        self._post_summarize()
+        return self.ns_df.convert_dtypes()
 
     def lpm(self, **kwargs):
         if not self.iobj._table:

@@ -67,10 +67,9 @@ class OspfObj(SqEngineObject):
                                       'cost', 'helloTime', 'deadTime', 'retxTime']
 
         # TODO
-        # ned to do something about loopacks without address or something
+        # need to do something about loopacks without address or something
 
         self._post_summarize()
-
         return self.ns_df.convert_dtypes()
 
     def aver(self, **kwargs):
