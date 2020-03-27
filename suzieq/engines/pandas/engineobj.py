@@ -7,6 +7,7 @@ class SqEngineObject(object):
     def __init__(self, baseobj):
         self.ctxt = baseobj.ctxt
         self.iobj = baseobj
+        self.summary_row_order = []
 
     @property
     def schemas(self):
@@ -204,20 +205,29 @@ class SqEngineObject(object):
         )
         return df
 
-    def summarize(self, namespace=''):
+    def summarize(self, namespace='', **kwargs):
         """There is a pattern of how to do these
-        use self._init_summarize(), which creates self.nsgrp of data grouped by namespace
-        and also self.summary_df which is the df to use to summarize everything
+        use self._init_summarize(), 
+            creates self.summary_df, which is the initial pandas dataframe based on the table
+            creates self.nsgrp of data grouped by namespace
+            self.ns is the dict to add data to which will be turned into a dataframe and then returned
 
-        if you want to simply take a field and run a pandas funciton, then use
+        if you want to simply take a field and run a pandas functon, then use
           self._add_field_to_summary
 
         at the end of te summarize
         return pd.DataFrame(self.ns).convert_dtypes()
+
+        If you don't override this, then you get a default summary of all columns
         """
+        self._init_summarize(self.iobj._table, **kwargs)
+        if self.summary_df.empty:
+            return self.summary_df
 
-        raise NotImplementedError
+        for col in self.summary_df.columns:
+            self._add_list_or_count_to_summary(col)
 
+        return pd.DataFrame(self.ns).convert_dtypes()
 
     def unique(self, **kwargs) -> pd.DataFrame:
         """Return the unique elements as per user specification"""
@@ -287,8 +297,7 @@ class SqEngineObject(object):
             sort_fields = None
         else:
             sort_fields = self.sort_fields
-        df = self.get_valid_df(table, sort_fields, columns=columns,
-                               **kwargs)
+        df = self.get_valid_df(table, sort_fields, columns=columns, **kwargs)
         if df.empty:
             return df
 
@@ -316,4 +325,14 @@ class SqEngineObject(object):
             else:
                 value = count_per_ns[n]
             self.ns[n].update({field_name: value})
+            
+    def _add_stats_to_summary(self, groupby, fieldname):
+        """ takes the pandas groupby object and adds min, max, and median to self.ns"""
+        med_field = groupby.median()
+        max_field = groupby.max()
+        min_field = groupby.min()
+        {self.ns[i].update({fieldname: []}) for i in self.ns.keys()}
+        {self.ns[i][fieldname].append(min_field[i]) for i in min_field.keys()}
+        {self.ns[i][fieldname].append(max_field[i]) for i in max_field.keys()}
+        {self.ns[i][fieldname].append(med_field[i]) for i in med_field.keys()}
 
