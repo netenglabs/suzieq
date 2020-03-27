@@ -227,7 +227,8 @@ class SqEngineObject(object):
         for col in self.summary_df.columns:
             self._add_list_or_count_to_summary(col)
 
-        return pd.DataFrame(self.ns).convert_dtypes()
+        self._post_summarize()
+        return self.ns_df.convert_dtypes()
 
     def unique(self, **kwargs) -> pd.DataFrame:
         """Return the unique elements as per user specification"""
