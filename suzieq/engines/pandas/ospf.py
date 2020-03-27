@@ -36,30 +36,44 @@ class OspfObj(SqEngineObject):
         if self.summary_df.empty:
             return self.summary_df
 
-
         if table == 'ospfNbr':
             self._add_field_to_summary('hostname', 'count', 'sessions')
-            for field in ['hostname', 'state',  'peerRouterId']:
-                self._add_field_to_summary(field, 'nunique')
-            for field in ['vrf', 'area', 'nbrPrio']:
+            self._add_field_to_summary('hostname', 'nunique', 'hosts')
+            for field in ['vrf', 'area', 'nbrPrio', 'state', 'peerRouterId']:
                 self._add_list_or_count_to_summary(field)
-
 
             up_time = self.summary_df.query("state == 'full'") \
                 .groupby(by=["namespace"])["lastChangeTime"]
-            med_up_time = up_time.median()
-            max_up_time = up_time.max()
-            min_up_time = up_time.min()
-            {self.ns[i].update({'lastChangeTime': []}) for i in self.ns.keys()}
-            {self.ns[i]['lastChangeTime'].append(min_up_time[i]) for i in min_up_time.keys()}
-            {self.ns[i]['lastChangeTime'].append(max_up_time[i]) for i in max_up_time.keys()}
-            {self.ns[i]['lastChangeTime'].append(med_up_time[i]) for i in med_up_time.keys()}
+            self._add_stats_to_summary(up_time, 'lastChangeTime')
+
+            for field in ['numChanges', 'lsaRetxCnt']:
+                field_stat = self.nsgrp[field]
+                self._add_stats_to_summary(field_stat, field)
+
+            # order data.
+            self.summary_row_order = ['hosts', 'sessions', 'area', 'vrf', 'state',
+                                      'nbrPrio', 'peerRouterId', 'lastChangeTime',
+                                      'numChanges', 'lsaRetxCnt']
+
         else:
-            for field in ['helloTime', 'cost', 'deadTime', 'vrf', 'state', 'areaStub', 'area', 'passive', 'nbrCount']:
+            for field in ['helloTime', 'cost', 'deadTime', 'retxTime', 'vrf',
+                          'state', 'areaStub', 'area', 'passive',
+                          'nbrCount', 'networkType', 'isUnnumbered']:
                 self._add_list_or_count_to_summary(field)
             self._add_field_to_summary('hostname', 'count', 'interfaces')
 
-        return pd.DataFrame(self.ns).convert_dtypes()
+            self.summary_row_order = ['interfaces', 'state', 'nbrCount', 'isUnnumbered',
+                                      'area', 'vrf', 'networkType', 'passive', 'areaStub',
+                                      'cost', 'helloTime', 'deadTime', 'retxTime']
+
+        # TODO
+        # ned to do something about loopacks without address or something
+
+        ns_df = pd.DataFrame(self.ns)
+        if len(self.summary_row_order) > 0:
+            ns_df = ns_df.reindex(self.summary_row_order, axis=0)
+
+        return ns_df.convert_dtypes()
 
     def aver(self, **kwargs):
         """Assert that the OSPF state is OK"""

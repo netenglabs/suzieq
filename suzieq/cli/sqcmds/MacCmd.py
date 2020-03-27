@@ -61,12 +61,6 @@ class MacCmd(SqCommand):
         return self._gen_output(df)
 
     @command("summarize")
-    @argument("vlan", description="VLAN(s) to qualify output")
-    @argument("macaddr",
-              description="MAC address(es), in quotes, to qualify output")
-    @argument("remoteVtepIp",
-              description="RemoteVtepIps, in quotes, to qualify, use 'any' for all")
-    @argument("groupby", description="list of fields to group by")
     def summarize(self, vlan: str = "", macaddr: str = '',
                   remoteVtepIp: str = "", groupby: str = ""):
         """
@@ -83,11 +77,6 @@ class MacCmd(SqCommand):
             self.ctxt.sort_fields = []
 
         df = self.sqobj.summarize(
-            hostname=self.hostname,
-            vlan=vlan.split(),
-            macaddr=macaddr.split(),
-            groupby=groupby.split(),
-            remoteVtepIp=remoteVtepIp.split(),
             namespace=self.namespace,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
