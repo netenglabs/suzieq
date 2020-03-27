@@ -69,11 +69,9 @@ class OspfObj(SqEngineObject):
         # TODO
         # ned to do something about loopacks without address or something
 
-        ns_df = pd.DataFrame(self.ns)
-        if len(self.summary_row_order) > 0:
-            ns_df = ns_df.reindex(self.summary_row_order, axis=0)
+        self._post_summarize()
 
-        return ns_df.convert_dtypes()
+        return self.ns_df.convert_dtypes()
 
     def aver(self, **kwargs):
         """Assert that the OSPF state is OK"""

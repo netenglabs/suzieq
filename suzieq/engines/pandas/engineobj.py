@@ -305,6 +305,12 @@ class SqEngineObject(object):
         self.ns = {i: {} for i in df["namespace"].unique()}
         self.nsgrp = df.groupby(by=["namespace"])
 
+    def _post_summarize(self):
+        ns_df = pd.DataFrame(self.ns)
+        if len(self.summary_row_order) > 0:
+            ns_df = ns_df.reindex(self.summary_row_order, axis=0)
+        self.ns_df = ns_df
+
     def _add_field_to_summary(self, field, method='nunique', field_name=None):
         if not field_name:
             field_name = field
