@@ -19,4 +19,14 @@ tests:
       {"dual-evpn":{"hosts":9,"sessions":34,"asn":8,"vrf":3,"afi-safi":["ipv4","evpn"],"downSessions":0,"upTimes":["0:00:07","21:20:10","21:16:06"],"V4PfxRx":[2,16,13],"V6PfxRx":[0,0,0],"EvpnPfxRx":[0,39,8],"UpdatesRx":[28,253,113.5],"UpdatesTx":[28,236,117]}}
     marks: bgp summarize filter
 
+  - command: ospf summarize --format=json
+    data-directory: tests/data/multidc/parquet-out
+    output: |
+      [{"ospf-ibgp":7,"ospf-single":8},{"ospf-ibgp":18,"ospf-single":24},{"ospf-ibgp":{"0.0.0.0":18},"ospf-single":{"0.0.0.0":24}},{"ospf-ibgp":{"default":18},"ospf-single":{"default":24}},{"ospf-ibgp":{"full":18},"ospf-single":{"full":24}},{"ospf-ibgp":{"1":18},"ospf-single":{"1":24}},{"ospf-ibgp":8,"ospf-single":8},{"ospf-ibgp":["0 days 00:26:24.562662","0 days 00:26:24.562695","0 days 00:26:24.562695"],"ospf-single":["0 days 00:26:24.445972","0 days 00:26:24.445981","0 days 00:26:24.445975"]},{"ospf-ibgp":[5,5,5],"ospf-single":[4,5,5]},{"ospf-ibgp":[0,0,0],"ospf-single":[0,0,0]}][{"ospf-ibgp":7,"ospf-single":8},{"ospf-ibgp":18,"ospf-single":24},{"ospf-ibgp":{"0.0.0.0":18},"ospf-single":{"0.0.0.0":24}},{"ospf-ibgp":{"default":18},"ospf-single":{"default":24}},{"ospf-ibgp":{"full":18},"ospf-single":{"full":24}},{"ospf-ibgp":{"1":18},"ospf-single":{"1":24}},{"ospf-ibgp":8,"ospf-single":8},{"ospf-ibgp":["0 days 00:26:24.562662","0 days 00:26:24.562695","0 days 00:26:24.562695"],"ospf-single":["0 days 00:26:24.445972","0 days 00:26:24.445981","0 days 00:26:24.445975"]},{"ospf-ibgp":[5,5,5],"ospf-single":[4,5,5]},{"ospf-ibgp":[0,0,0],"ospf-single":[0,0,0]}]
+    marks: ospf summarize
 
+  - command: ospf summarize --format=json --type=interface
+    data-directory: tests/data/multidc/parquet-out
+    output: |
+      [{"ospf-ibgp":29,"ospf-single":36},{"ospf-ibgp":{"up":29},"ospf-single":{"up":36}},{"ospf-ibgp":{"1":22,"0":7},"ospf-single":{"1":24,"0":12}},{"ospf-ibgp":{"True":22,"False":7},"ospf-single":{"True":24,"False":12}},{"ospf-ibgp":{"0.0.0.0":29},"ospf-single":{"0.0.0.0":36}},{"ospf-ibgp":{"default":29},"ospf-single":{"default":36}},{"ospf-ibgp":{"pointopoint":22,"loopback":7},"ospf-single":{"pointopoint":24,"loopback":8,"broadcast":4}},{"ospf-ibgp":{"":22,"True":7},"ospf-single":{"":26,"True":10}},{"ospf-ibgp":{"False":29},"ospf-single":{"False":36}},{"ospf-ibgp":{"100":22,"10":7},"ospf-single":{"100":24,"10":12}},{"ospf-ibgp":{"10":29},"ospf-single":{"10":36}},{"ospf-ibgp":{"40":29},"ospf-single":{"40":36}},{"ospf-ibgp":{"5":29},"ospf-single":{"5":36}}]
+    marks: ospf summarize
