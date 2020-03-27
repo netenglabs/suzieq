@@ -30,3 +30,9 @@ tests:
     output: |
       [{"ospf-ibgp":29,"ospf-single":36},{"ospf-ibgp":{"up":29},"ospf-single":{"up":36}},{"ospf-ibgp":{"1":22,"0":7},"ospf-single":{"1":24,"0":12}},{"ospf-ibgp":{"True":22,"False":7},"ospf-single":{"True":24,"False":12}},{"ospf-ibgp":{"0.0.0.0":29},"ospf-single":{"0.0.0.0":36}},{"ospf-ibgp":{"default":29},"ospf-single":{"default":36}},{"ospf-ibgp":{"pointopoint":22,"loopback":7},"ospf-single":{"pointopoint":24,"loopback":8,"broadcast":4}},{"ospf-ibgp":{"":22,"True":7},"ospf-single":{"":26,"True":10}},{"ospf-ibgp":{"False":29},"ospf-single":{"False":36}},{"ospf-ibgp":{"100":22,"10":7},"ospf-single":{"100":24,"10":12}},{"ospf-ibgp":{"10":29},"ospf-single":{"10":36}},{"ospf-ibgp":{"40":29},"ospf-single":{"40":36}},{"ospf-ibgp":{"5":29},"ospf-single":{"5":36}}]
     marks: ospf summarize
+
+  - command: route summarize --format=json
+    data-directory: tests/data/multidc/parquet-out
+    output: |
+      [{"dual-evpn":12,"ospf-ibgp":13,"ospf-single":11},{"dual-evpn":4,"ospf-ibgp":4,"ospf-single":2},{"dual-evpn":221,"ospf-ibgp":195,"ospf-single":100},{"dual-evpn":31,"ospf-ibgp":31,"ospf-single":16},{"dual-evpn":[0,53,16.5],"ospf-ibgp":[0,42,16.0],"ospf-single":[0,13,5.0]},{"dual-evpn":[12,140,34.5],"ospf-ibgp":[14,131,25.0],"ospf-single":[0,88,6.0]},{"dual-evpn":143,"ospf-ibgp":122,"ospf-single":42},{"dual-evpn":16,"ospf-ibgp":16,"ospf-single":0},{"dual-evpn":4,"ospf-ibgp":5,"ospf-single":{"ospf":64,"":19,"kernel":17}},{"dual-evpn":true,"ospf-ibgp":true,"ospf-single":true}]
+    marks: routes summarize

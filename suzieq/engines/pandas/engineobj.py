@@ -298,10 +298,10 @@ class SqEngineObject(object):
         else:
             sort_fields = self.sort_fields
         df = self.get_valid_df(table, sort_fields, columns=columns, **kwargs)
+        self.summary_df = df
         if df.empty:
             return df
 
-        self.summary_df = df
         self.ns = {i: {} for i in df["namespace"].unique()}
         self.nsgrp = df.groupby(by=["namespace"])
 
