@@ -58,9 +58,6 @@ class ArpndCmd(SqCommand):
         return self._gen_output(df)
 
     @command("summarize")
-    @argument("address", description="IP address, in quotes, to qualify output")
-    @argument("oif", description="outgoing interface to qualify")
-    @argument("groupby", description="Space separated list of fields to group by")
     def summarize(self, address: str = "", oif: str = '', groupby: str = ""):
         """
         Summarize ARP/ND info
@@ -76,11 +73,6 @@ class ArpndCmd(SqCommand):
             self.ctxt.sort_fields = []
 
         df = self.sqobj.summarize(
-            hostname=self.hostname,
-            oif=oif.split(),
-            ipAddress=address.split(),
-            columns=self.columns,
-            groupby=groupby.split(),
             namespace=self.namespace,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
