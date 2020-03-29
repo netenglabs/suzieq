@@ -66,7 +66,7 @@ apply:
         "neighborCapabilities/multiprotocolExtensions/L2VPN EVPN/advertisedAndReceived: evpnEnabled?|False",
         "neighborCapabilities/multiprotocolExtensions/IPv6 Unicast/advertisedAndReceived: v6Enabled?|False"]'
 
-  platina:
+  linux:
       version: all
       command: sudo vtysh -c "show ip bgp vrf all neighbors json"
       normalize: '*:vrf/*:peer/[
@@ -90,4 +90,5 @@ apply:
         "neighborCapabilities/multiprotocolExtensions/L2VPN EVPN/advertisedAndReceived: evpnEnabled?|False",
         "neighborCapabilities/multiprotocolExtensions/IPv6 Unicast/advertisedAndReceived: v6Enabled?|False"]'
 
-
+  platina:
+    copy: linux
