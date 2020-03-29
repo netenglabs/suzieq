@@ -7,8 +7,9 @@ import textfsm
 from pkgutil import walk_packages
 from inspect import getmembers, isclass, getfile
 import importlib
+from collections import defaultdict
 
-from suzieq.utils import avro_to_arrow_schema
+from suzieq.utils import avro_to_arrow_schema, get_schemas
 from .service import Service
 
 
@@ -16,6 +17,7 @@ async def init_services(svc_dir, schema_dir, queue, run_once):
     """Process service definitions by reading each file in svc dir"""
 
     svcs_list = []
+    schemas = defaultdict(dict)
 
     # Load up all the service definitions we can find
     svc_classes = {}
@@ -34,6 +36,13 @@ async def init_services(svc_dir, schema_dir, queue, run_once):
     if not isdir(schema_dir):
         logging.error("schema directory not a directory: {}".format(svc_dir))
         return svcs_list
+    else:
+        schemas = get_schemas(schema_dir)
+
+    if schemas:
+        schema = schemas.get("sq-poller", None)
+        if schema:
+            poller_schema = avro_to_arrow_schema(schema)
 
     for root, _, filenames in walk(svc_dir):
         for filename in filenames:
@@ -94,18 +103,13 @@ async def init_services(svc_dir, schema_dir, queue, run_once):
                     else:
                         tfsm_template = None
 
-                # Find matching schema file
-                fschema = "{}/{}.avsc".format(schema_dir, svc_def["service"])
-                if not exists(fschema):
-                    logging.error(
-                        "No schema file found for service {}. "
-                        "Ignoring service".format(svc_def["service"])
-                    )
-                    continue
-                else:
-                    with open(fschema, "r") as f:
-                        schema = json.loads(f.read())
+                schema = schemas.get(svc_def["service"], None)
+                if schema:
                     schema = avro_to_arrow_schema(schema)
+                else:
+                    logging.error(
+                        f"No matching schema for {svc_def['service']}")
+                    continue
 
                 # Valid service definition, add it to list
                 if svc_def["service"] in svc_classes:
@@ -133,6 +137,7 @@ async def init_services(svc_dir, schema_dir, queue, run_once):
                         run_once
                     )
 
+                service.poller_schema = poller_schema
                 logging.info("Service {} added".format(service.name))
                 svcs_list.append(service)
 

@@ -4,6 +4,7 @@ import argparse
 import asyncio
 import logging
 from pathlib import Path
+from collections import defaultdict
 
 import daemon
 from daemon import pidfile
@@ -76,8 +77,14 @@ def _main(userargs, cfg):
 
     nodes, svcs = loop.run_until_complete(asyncio.gather(*tasks))
 
+    node_callq = defaultdict(lambda: defaultdict(dict))
+
+    node_callq.update({x: {'hostname': nodes[x].hostname,
+                           'postq': nodes[x].post_commands}
+                       for x in nodes})
+
     for svc in svcs:
-        svc.set_nodes(nodes)
+        svc.set_nodes(node_callq)
 
     logging.info("Suzieq Started")
 
@@ -94,6 +101,7 @@ def _main(userargs, cfg):
 
     try:
         tasks = [svc.run() for svc in working_svcs]
+        tasks += [nodes[node].run() for node in nodes]
         tasks.append(run_output_worker(queue, outputs))
         loop.run_until_complete(asyncio.gather(*tasks))
         # loop.run_until_complete(svcs[2].run())

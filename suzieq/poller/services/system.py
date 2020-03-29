@@ -1,8 +1,4 @@
-from datetime import datetime
-from suzieq.poller.services.service import Service, HOLD_TIME_IN_MSECS
-
-import copy
-import logging
+from suzieq.poller.services.service import Service
 
 
 class SystemService(Service):
@@ -51,79 +47,6 @@ class SystemService(Service):
             entry['status'] = "alive"
             entry["address"] = raw_data["address"]
         return super().clean_data(processed_data, raw_data)
-
-    async def commit_data(self, result, namespace, hostname):
-        """system svc needs to write out a record that indicates dead node"""
-        nodeobj = self.nodes.get(hostname, None)
-        if not nodeobj:
-            # This will be the case when a node switches from init state
-            # to good after nodes have been built. Find the corresponding
-            # node and fix the nodelist
-            nres = [
-                self.nodes[x] for x in self.nodes
-                if self.nodes[x].hostname == hostname
-            ]
-            if nres:
-                nodeobj = nres[0]
-            else:
-                logging.error(
-                    "Ignoring results for {} which is not in "
-                    "nodelist for service {}".format(hostname, self.name)
-                )
-                return
-
-        if not result:
-            if nodeobj.get_status() == "init":
-                # If in init still, we need to mark the node as unreachable
-                rec = self.get_empty_record()
-                rec["namespace"] = namespace
-                rec["hostname"] = hostname
-                rec["timestamp"] = int(datetime.utcnow().timestamp() * 1000)
-                rec["status"] = "dead"
-                rec["active"] = True
-
-                result.append(rec)
-            elif nodeobj.get_status() == "good":
-                # To avoid unnecessary flaps, we wait for HOLD_TIME to expire
-                # before we mark the node as dead
-                if hostname in self.nodes_state:
-                    now = int(datetime.utcnow().timestamp() * 1000)
-                    if now - self.nodes_state[hostname] > HOLD_TIME_IN_MSECS:
-                        prev_res = nodeobj.prev_result
-                        if prev_res:
-                            result = copy.deepcopy(prev_res)
-                        else:
-                            record = self.get_empty_record()
-                            record["namespace"] = namespace
-                            record["hostname"] = hostname
-                            result = [record]
-
-                        result[0]["status"] = "dead"
-                        result[0]["timestamp"] = self.nodes_state[hostname]
-                        del self.nodes_state[hostname]
-                        nodeobj.set_unreach_status()
-                    else:
-                        return
-                else:
-                    self.nodes_state[hostname] = int(
-                        datetime.utcnow().timestamp() * 1000
-                    )
-                    return
-            else:
-                # Ensure we don't delete the dead entry
-                prev_res = nodeobj.prev_result
-                if prev_res:
-                    result = copy.deepcopy(prev_res)
-                    result[0]["timestamp"] = int(
-                        datetime.utcnow().timestamp() * 1000
-                    )
-        else:
-            # Clean up old state if any since we now have a valid output
-            if self.nodes_state.get(hostname, None):
-                del self.nodes_state[hostname]
-            nodeobj.set_good_status()
-
-        await super().commit_data(result, namespace, hostname)
 
     def get_diff(self, old, new):
         """Compare list of dictionaries ignoring certain fields
