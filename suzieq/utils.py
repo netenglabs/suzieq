@@ -308,7 +308,7 @@ def avro_to_arrow_schema(avro_sch):
         "array.long": pa.list_(pa.int64()),
     }
 
-    for fld in avro_sch.get("fields", None):
+    for fld in avro_sch:
         if isinstance(fld["type"], dict):
             if fld["type"]["type"] == "array":
                 if fld["type"]["items"]["type"] == "record":

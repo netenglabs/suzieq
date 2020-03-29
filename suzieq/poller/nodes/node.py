@@ -1,4 +1,3 @@
-
 import sys
 from collections import defaultdict
 import os
@@ -6,6 +5,7 @@ import time
 from datetime import datetime
 import logging
 import random
+from http import HTTPStatus
 
 import yaml
 from urllib.parse import urlparse
@@ -15,6 +15,8 @@ import asyncio.futures as futures
 import asyncssh
 import aiohttp
 from asyncio.subprocess import PIPE
+
+from suzieq.poller.services.service import RsltToken
 
 
 async def init_hosts(hosts_file):
@@ -45,10 +47,11 @@ async def init_hosts(hosts_file):
     for namespace in hostsconf:
         if "namespace" not in namespace:
             logging.warning('No namespace specified, assuming "default"')
-            dcname = "default"
+            nsname = "default"
         else:
-            dcname = namespace["namespace"]
+            nsname = namespace["namespace"]
 
+        tasks = []
         for host in namespace.get("hosts", None):
             entry = host.get("url", None)
             if entry:
@@ -65,45 +68,58 @@ async def init_hosts(hosts_file):
                     devtype = words[1].split("=")[1]
 
                 newnode = Node()
-                await newnode._init(
+                tasks += [newnode._init(
                     address=host,
                     username=username,
                     port=port,
                     password=password,
                     transport=result.scheme,
                     devtype=devtype,
-                    namespace=dcname,
-                )
+                    namespace=nsname,
+                )]
 
-                if newnode.devtype is None:
-                    logging.error(
-                        "Unable to determine device type for {}".format(host))
-                else:
-                    logging.info("Added node {}".format(newnode.hostname))
+        for f in asyncio.as_completed(tasks):
+            newnode = await f
+            if newnode.devtype is None:
+                logging.error(
+                    "Unable to determine device type for {}".format(host))
+            else:
+                logging.info(f"Added node {newnode.hostname}")
 
-                nodes.update(
-                    {"{}.{}".format(dcname, newnode.hostname): newnode})
+            nodes.update(
+                {"{}.{}".format(nsname, newnode.hostname): newnode})
 
     return nodes
 
 
 class Node(object):
     address = None  # Device IP or hostname if DNS'able
-    hostname = ""  # Device hostname
+    hostname = "-"  # Device hostname
     devtype = None  # Device type
     username = ""
     password = ""
     pvtkey = ""  # Needed for Junos Vagrant
     transport = "ssh"
     prev_result = {}  # No updates if nothing changed
-    dcname = None
-    status = "good"
-    svc_cmd_mapping = defaultdict(lambda: {})
+    nsname = None
+    svc_cmd_mapping = defaultdict(lambda: {})  # Not used yet
+    logger = logging.getLogger("suzieq")
     port = 0
     backoff = 15  # secs to backoff
     init_again_at = 0  # after this epoch secs, try init again
-    connect_timeout = 10        # connect timeout in seconds
-    cmd_timeout = 10            # command wait timeout in seconds
+    connect_timeout = 10  # connect timeout in seconds
+    cmd_timeout = 10  # command wait timeout in seconds
+    batch_size = 4    # Number of commands to issue in parallel
+    bootupTimestamp = 0
+    _service_queue = None
+    _conn = None
+    _status = "init"
+    svcs_proc = set()
+    error_svcs_proc = set()
+
+    @property
+    def status(self):
+        return self._status
 
     async def _init(self, **kwargs):
         if not kwargs:
@@ -113,16 +129,19 @@ class Node(object):
         self.username = kwargs.get("username", "vagrant")
         self.password = kwargs.get("password", "vagrant")
         self.transport = kwargs.get("transport", "ssh")
-        self.dcname = kwargs.get("namespace", "default")
+        self.nsname = kwargs.get("namespace", "default")
         self.port = kwargs.get("port", 0)
         self.devtype = kwargs.get("devtype", None)
         pvtkey_file = kwargs.get("private_key_file", None)
         if pvtkey_file:
             self.pvtkey = asyncssh.public_key.read_private_key(pvtkey_file)
 
+        self._init_service_queue()
+
         if not self.port:
             if self.transport == "ssh":
                 self.port = 22
+                await self._init_ssh(init_boot_time=False)
             elif self.transport == "https":
                 self.port = 443
 
@@ -130,11 +149,10 @@ class Node(object):
         if not self.hostname:
             self.hostname = self.address
 
-        if self.status == "init":
+        if self._status == "init":
             self.backoff = min(600, self.backoff * 2) + \
                 (random.randint(0, 1000) / 1000)
             self.init_again_at = time.time() + self.backoff
-        logging.info("Node created")
         return self
 
     async def init_node(self):
@@ -149,17 +167,21 @@ class Node(object):
                 devtype = None
 
             if devtype is None:
-                self.status = "init"
+                self._status = "init"
                 return
             else:
-                self.status = "good"
+                self._status = "good"
                 self.set_devtype(devtype)
+
                 if hostname:
-                    self.hostname = hostname
+                    self.set_hostname(hostname)
+
         elif self.devtype:
             self.set_devtype(self.devtype)
             if not self.hostname:
-                await self.set_hostname()
+                self.set_hostname()
+
+        await self.init_boot_time()
 
     def set_devtype(self, devtype):
         self.devtype = devtype
@@ -174,23 +196,17 @@ class Node(object):
 
     async def get_device_type_hostname(self):
         """Determine the type of device we are talking to if using ssh/local"""
-
-        devtype = "Unknown"
-        hostname = None
         # There isn't that much of a difference in running two commands versus
         # running them one after the other as this involves an additional ssh
         # setup time. show version works on most networking boxes and
         # hostnamectl on Linux systems. That's all we support today.
-        if self.transport == "local":
-            output = await self.local_gather(
-                ["show version", "hostnamectl", "goes show machine"]
-            )
-        else:
-            output = await asyncio.wait_for(
-                self.ssh_gather(
-                    ["show version", "hostnamectl", "goes show machine"]),
-                timeout=self.cmd_timeout,
-            )
+        await self.exec_cmd(self._parse_device_type_hostname,
+                            ["show version", "hostnamectl", "goes show machine",
+                             'show hostname'], None)
+
+    async def _parse_device_type_hostname(self, output, cb_token) -> None:
+        devtype = "Unknown"
+        hostname = None
 
         if output[0]["status"] == 0:
             data = output[1]["data"]
@@ -198,16 +214,11 @@ class Node(object):
                 devtype = "eos"
             elif "JUNOS " in data:
                 devtype = "junos"
+            elif "NX-OS" in data:
+                devtype = "nxos"
 
-            if self.transport == "local":
-                output = await self.local_gather(["show hostname"])
-            else:
-                output = await asyncio.wait_for(
-                    self.ssh_gather(["show hostname"]),
-                    timeout=self.cmd_timeout
-                )
-            if output[0]["status"] == 0:
-                hostname = output[1]["data"].strip()
+            if output[4]["status"] == 0:
+                hostname = output[4]["data"].strip()
 
         elif output[1]["status"] == 0:
             data = output[1]["data"]
@@ -232,27 +243,30 @@ class Node(object):
                 hostname = hostname.strip()
 
         self.devtype = devtype
-        if hostname:
-            self.hostname = hostname
+        self.set_hostname(hostname)
 
-    def get_status(self):
-        return self.status
+    async def _parse_uptime(self, output, cb_token) -> None:
+        """Parse the uptime command output"""
+
+        if output[0]["status"] == 0:
+            upsecs = output[0]["data"].split()[0]
+            self.bootupTimestamp = int(int(time.time()*1000)
+                                       - float(upsecs))
 
     def set_unreach_status(self):
-        self.status = "unreachable"
+        self._status = "unreachable"
 
     def set_good_status(self):
-        self.status = "good"
+        self._status = "good"
 
     def is_alive(self):
-        return self.status == "good"
+        return self._status == "good"
 
-    async def set_hostname(self, hostname=None):
-        """This routine needs to be implemented by child class"""
+    def set_hostname(self, hostname=None):
         if hostname:
             self.hostname = hostname
 
-    async def local_gather(self, cmd_list=None):
+    async def local_gather(self, service_callback, cmd_list=None) -> None:
         """Given a dictionary of commands, run locally and return outputs"""
 
         result = []
@@ -263,102 +277,136 @@ class Node(object):
             try:
                 stdout, stderr = await asyncio.wait_for(
                     proc.communicate(), timeout=self.cmd_timeout)
-                result.append(
-                    {
-                        "status": proc.returncode,
-                        "timestamp": int(datetime.utcnow().timestamp() * 1000),
-                        "cmd": cmd,
-                        "devtype": self.devtype,
-                        "namespace": self.dcname,
-                        "hostname": self.hostname,
-                        "address": self.address,
-                        "data": stdout.decode("ascii", "ignore")
-                        if not proc.returncode
-                        else stderr.decode("ascii", "ignore"),
-                    }
-                )
+
+                if not proc.returncode:
+                    d = stdout.decode('ascii', 'ignore')
+                    result.append(self._create_result(cmd, proc.returncode, d))
+                else:
+                    d = stderr('ascii', 'ignore')
+                    result.append(self._create_error(cmd, proc.returncode, d))
+
             except asyncio.TimeoutError as e:
-                result.append(
-                    {
-                        "status": 408,
-                        "timestamp": int(datetime.utcnow().timestamp() * 1000),
-                        "cmd": cmd,
-                        "devtype": self.devtype,
-                        "namespace": self.dcname,
-                        "hostname": self.hostname,
-                        "address": self.address,
-                        "data": {"error": str(e)},
-                    }
-                )
+                result.append(self._create_error(cmd,
+                                                 HTTPStatus.REQUEST_TIMEOUT,
+                                                 e))
 
-        return result
+        await service_callback(result)
 
-    async def ssh_gather(self, cmd_list=None):
-        """Given a dictionary of commands, run ssh and return outputs"""
+    async def init_boot_time(self):
+        """Fill in the boot time of the node by running the appropriate command"""
+        await self.exec_cmd(self._parse_uptime, ["cat /proc/uptime"], None)
+
+    def post_commands(self, service_callback, svc_defn, cb_token):
+        self._service_queue.put_nowait([service_callback, svc_defn, cb_token])
+
+    async def run(self):
+        data = []
+        count = 0
+        while True:
+            data.append(await self._service_queue.get())
+            count += 1
+            if (count > self.batch_size) or self._service_queue.empty():
+                # data[x][0] is the queue, data[x][1] is the svc definition
+                tasks = [self.exec_service(data[x][0], data[x][1], data[x][2])
+                         for x in range(count)]
+                await asyncio.wait(tasks)
+                data = []
+                count = 0
+
+    async def ssh_gather(self, service_callback, cmd_list, cb_token):
+        """Given a dictionary of commands, run ssh and place output on service callback"""
 
         result = []
 
+        if isinstance(cb_token, RsltToken):
+            cb_token.node_token = self.bootupTimestamp
+
         if cmd_list is None:
-            return result
-        try:
-            conn = await asyncio.wait_for(
-                asyncssh.connect(
-                    self.address,
-                    port=self.port,
-                    known_hosts=None,
-                    client_keys=self.pvtkey,
-                    username=self.username,
-                    password=self.password,
-                ),
-                timeout=self.cmd_timeout,
-            )
-        except (
-            asyncio.TimeoutError,
-            ConnectionResetError,
-            OSError,
-            ConnectionRefusedError,
-            asyncssh.misc.DisconnectError,
-        ) as e:
-            for cmd in cmd_list:
-                logging.error(
-                    "Unable to connect to node {} cmd {}".format(self.hostname, cmd))
-                result.append(self._create_error(cmd, 408, e))
-            return result
+            await service_callback({}, cb_token)
 
-        if conn:
-            logging.info(f"cmds len {len(cmd_list)}")
-            for cmd in cmd_list:
+        if not self._conn:
+            await self._init_ssh()
+            if not self._conn:
+                for cmd in cmd_list:
+                    logging.error(
+                        "Unable to connect to node {} cmd {}".format(
+                            self.hostname, cmd))
+                    result.append(self._create_error(
+                        cmd, HTTPStatus.REQUEST_TIMEOUT, "Unable to connect"))
+                await service_callback(result, cb_token)
+                return
 
-                try:
-                    output = await asyncio.wait_for(conn.run(cmd),
-                                                    timeout=self.cmd_timeout)
-                    result.append(self._create_result(cmd, output.exit_status, output.stdout))
-                except (
+        for cmd in cmd_list:
+            try:
+                output = await asyncio.wait_for(self._conn.run(cmd),
+                                                timeout=self.cmd_timeout)
+                result.append(self._create_result(
+                    cmd, output.exit_status, output.stdout))
+            except (
                     asyncio.TimeoutError,
                     ConnectionResetError,
                     ConnectionRefusedError,
                     OSError,
                     asyncssh.misc.DisconnectError,
-                ) as e:
-                    result.append(self._create_error(cmd, 408, e))
-                except asyncssh.misc.ChannelOpenError as e:
-                    result.append(self._create_error(cmd, 404, e))
-            conn.close()
-            await conn.wait_closed()
+            ) as e:
+                result.append(self._create_error(cmd,
+                                                 HTTPStatus.REQUEST_TIMEOUT,
+                                                 e))
+            except asyncssh.misc.ChannelOpenError as e:
+                result.append(self._create_error(
+                    cmd, HTTPStatus.INTERNAL_SERVER_ERROR, e))
 
-        return result
+        await service_callback(result, cb_token)
 
-    def _create_error(self, cmd, status, error):
+    async def _close_connection(self):
+        self._conn.close()
+        await self._conn.wait_closed()
+        self._conn = None
+
+    def _init_service_queue(self):
+        if not self._service_queue:
+            self._service_queue = asyncio.Queue()
+
+    async def _init_ssh(self, init_boot_time=True) -> None:
+        if not self._conn:
+            try:
+                self._conn = await asyncio.wait_for(
+                    asyncssh.connect(
+                        self.address,
+                        port=self.port,
+                        known_hosts=None,
+                        client_keys=self.pvtkey,
+                        username=self.username,
+                        password=self.password,
+                    ),
+                    timeout=self.cmd_timeout,
+                )
+                self.logger.info(
+                    f"Connected to {self.address} at {time.time()}")
+                if init_boot_time:
+                    await self.init_boot_time()
+            except (
+                    asyncio.TimeoutError,
+                    ConnectionResetError,
+                    OSError,
+                    ConnectionRefusedError,
+                    asyncssh.misc.DisconnectError,
+            ) as e:
+                self.logger.error(f"ERROR: Unable to connect, {str(e)}")
+
+        return
+
+    def _create_error(self, cmd, status: int, error: str) -> dict:
         data = {'error': str(error)}
         return self._create_result(cmd, status, data)
 
-    def _create_result(self, cmd, status, data):
+    def _create_result(self, cmd, status, data) -> dict:
         result = {
             "status": status,
             "timestamp": int(datetime.utcnow().timestamp() * 1000),
             "cmd": cmd,
             "devtype": self.devtype,
-            "namespace": self.dcname,
+            "namespace": self.nsname,
             "hostname": self.hostname,
             "address": self.address,
             "data": data,
@@ -368,13 +416,13 @@ class Node(object):
     async def rest_gather(self, svc_dict, oformat="json"):
         raise NotImplementedError
 
-    async def exec_cmd(self, cmd_list, oformat="json"):
+    async def exec_cmd(self, service_callback, cmd_list, cb_token, oformat='json'):
         if self.transport == "ssh":
-            result = await self.ssh_gather(cmd_list)
+            await self.ssh_gather(service_callback, cmd_list, cb_token)
         elif self.transport == "https":
-            result = await self.rest_gather(cmd_list, oformat)
+            result = await self.rest_gather(service_callback, cmd_list, cb_token, oformat)
         elif self.transport == "local":
-            result = await self.local_gather(cmd_list)
+            result = await self.local_gather(service_callback, cmd_list, cb_token)
         else:
             logging.error(
                 "Unsupported transport {} for node {}".format(
@@ -382,38 +430,37 @@ class Node(object):
                 )
             )
 
-        return result
+        return
 
-    async def exec_service(self, svc_defn):
+    async def exec_service(self, service_callback, svc_defn, cb_token):
 
         result = []  # same type as gather function
+        cmd = None
         if not svc_defn:
             return result
 
-        if self.status == "init":
+        if self._status == "init":
             if self.init_again_at < time.time():
                 await self.init_node()
 
-        if self.status == "init":
-            result.append(
-                {
-                    "status": 404,
-                    "timestamp": int(datetime.utcnow().timestamp() * 1000),
-                    "devtype": self.devtype,
-                    "namespace": self.dcname,
-                    "hostname": self.hostname,
-                    "address": self.address,
-                    "data": result,
-                }
-            )
-            return result
+        if self._status == "init":
+            result.append(self._create_result(svc_defn,
+                                              HTTPStatus.SERVICE_UNAVAILABLE,
+                                              result))
+            return await service_callback(result, cb_token)
 
+        self.svcs_proc.add(svc_defn.get("service"))
         use = svc_defn.get(self.hostname, None)
         if not use:
             use = svc_defn.get(self.devtype, {})
         if not use:
-            return result
+            if svc_defn.get("service") not in self.error_svcs_proc:
+                result.append(self._create_result(
+                    svc_defn, HTTPStatus.NOT_FOUND, "No service definition"))
+                self.error_svcs_proc.add(svc_defn.get("service"))
+            return await service_callback(result, cb_token)
 
+        # TODO This kind of logic should be encoded in config and node shouldn't have to know about it
         if "copy" in use:
             use = svc_defn.get(use.get("copy"))
 
@@ -428,7 +475,8 @@ class Node(object):
         if type(cmd) is not list:
             cmd = [cmd]
 
-        return await self.exec_cmd(cmd, oformat=oformat)
+        return await self.exec_cmd(service_callback, cmd, cb_token,
+                                   oformat=oformat)
 
 
 class EosNode(Node):
@@ -480,7 +528,7 @@ class EosNode(Node):
                         "timestamp": now,
                         "cmd": cmd,
                         "devtype": self.devtype,
-                        "namespace": self.dcname,
+                        "namespace": self.nsname,
                         "hostname": self.hostname,
                         "address": self.address,
                         "data": output[i] if type(output) is list else output,
@@ -490,11 +538,11 @@ class EosNode(Node):
             for cmd in cmd_list:
                 result.append(
                     {
-                        "status": 408,
+                        "status": HTTPStatus.REQUEST_TIMEOUT,
                         "timestamp": int(datetime.utcnow().timestamp() * 1000),
                         "cmd": cmd,
                         "devtype": self.devtype,
-                        "namespace": self.dcname,
+                        "namespace": self.nsname,
                         "hostname": self.hostname,
                         "address": self.address,
                         "data": {"error": str(e)},
@@ -503,15 +551,26 @@ class EosNode(Node):
 
         return result
 
+    async def _parse_hostname(self, output, cb_token) -> None:
+        """Parse the hostname command output"""
+        if not output:
+            self.hostname = "-"
+            return
+
+        if output[0]["status"] == 0:
+            data = output[1]["data"]
+            try:
+                jout = json.loads(data)
+                self.hostname = jout["hostname"]
+            except:
+                self.hostname = "-"
+
     async def set_hostname(self, hostname=None):
         if hostname:
             self.hostname = hostname
             return
 
-        output = await self.exec_cmd(["show hostname"])
-
-        if output and output[0]["status"] == 200:
-            self.hostname = output[0]["data"]["hostname"]
+        await self.exec_cmd(self._parse_hostname, ["show hostname|json"], None)
 
 
 class CumulusNode(Node):
@@ -537,14 +596,14 @@ class CumulusNode(Node):
 
         try:
             async with aiohttp.ClientSession(
-                auth=auth,
-                timeout=self.cmd_timeout,
-                connector=aiohttp.TCPConnector(ssl=False),
+                    auth=auth,
+                    timeout=self.cmd_timeout,
+                    connector=aiohttp.TCPConnector(ssl=False),
             ) as session:
                 for cmd in cmd_list:
                     data = {"cmd": cmd}
                     async with session.post(
-                        url, json=data, headers=headers
+                            url, json=data, headers=headers
                     ) as response:
                         result.append(
                             {
@@ -552,7 +611,7 @@ class CumulusNode(Node):
                                 "timestamp": int(datetime.utcnow().timestamp() * 1000),
                                 "cmd": cmd,
                                 "devtype": self.devtype,
-                                "namespace": self.dcname,
+                                "namespace": self.nsname,
                                 "hostname": self.hostname,
                                 "address": self.address,
                                 "data": await response.text(),
@@ -561,11 +620,11 @@ class CumulusNode(Node):
         except asyncio.TimeoutError as e:
             result.append(
                 {
-                    "status": 408,
+                    "status": HTTPStatus.REQUEST_TIMEOUT,
                     "timestamp": int(datetime.utcnow().timestamp() * 1000),
                     "cmd": cmd,
                     "devtype": self.devtype,
-                    "namespace": self.dcname,
+                    "namespace": self.nsname,
                     "hostname": self.hostname,
                     "address": self.address,
                     "data": {"error": str(e)},

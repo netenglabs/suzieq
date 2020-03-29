@@ -1,14 +1,16 @@
 import os
+import sys
 import asyncio
-import random
 from datetime import datetime
 import time
 import copy
 import logging
 import json
 import yaml
-import sys
 from tempfile import mkstemp
+from dataclasses import dataclass
+from http import HTTPStatus
+from collections import defaultdict
 
 import pyarrow as pa
 
@@ -17,25 +19,58 @@ from suzieq.poller.services.svcparser import cons_recs_from_json_template
 HOLD_TIME_IN_MSECS = 60000  # How long b4 declaring node dead
 
 
+@dataclass
+class RsltToken:
+    start_time: int             # When this cmd was first posted to node
+    nodename: str               # Name of node, used to get poller cb again
+    node_token: int             # Changes every time the node reboots
+    service: str                # Name of this service, if node needs it
+
+
+@dataclass
+class ServiceStats:
+    min_svc_time: int
+    max_svc_time: int
+    avg_svc_time: int
+    empty_count: int
+    qsize: int
+
+
 class Service(object):
+
+    def get_poller_schema(self):
+        return self._poller_schema
+
+    def set_poller_schema(self, value: dict):
+        self._poller_schema = value
 
     def __init__(self, name, defn, period, stype, keys, ignore_fields, schema,
                  queue, run_once="forever"):
         self.name = name
         self.defn = defn
         self.ignore_fields = ignore_fields or []
-        self.queue = queue
+        self.writer_queue = queue
         self.keys = keys
         self.schema = schema
         self.period = period
         self.stype = stype
         self.logger = logging.getLogger("suzieq")
         self.run_once = run_once
+        self.post_timeout = 5
 
         self.update_nodes = False  # we have a new node list
         self.rebuild_nodelist = False  # used only when a node gets init
-        self.nodes = {}
-        self.new_nodes = {}
+        # self.nodes = {}
+        # self.new_nodes = {}
+        self.node_postcall_list = {}
+        self.new_node_postcall_list = {}
+        self.previous_results = {}
+        self._poller_schema = {}
+        self.poller_schema = property(
+            self.get_poller_schema, self.set_poller_schema)
+
+        # The queue to which all nodes will post the result of the command
+        self.result_queue = asyncio.Queue()
 
         # Add the hidden fields to ignore_fields
         self.ignore_fields.append("timestamp")
@@ -50,6 +85,11 @@ class Service(object):
             self.partition_cols = ["namespace", "hostname"]
         else:
             self.partition_cols = self.keys + ["timestamp"]
+
+    def is_status_ok(self, status: int) -> bool:
+        if status == 0 or status == HTTPStatus.OK:
+            return True
+        return False
 
     def get_data(self):
         """provide the data that is interesting for a service
@@ -66,13 +106,13 @@ class Service(object):
                     r['defn'][device]['textfsm'])
         return r
 
-    def set_nodes(self, nodes):
+    def set_nodes(self, node_call_list):
         """New node list for this service"""
-        if self.nodes:
-            self.new_nodes = copy.deepcopy(nodes)
+        if self.node_postcall_list:
+            self.new_node_postcall_list = node_call_list
             self.update_nodes = True
         else:
-            self.nodes = copy.deepcopy(nodes)
+            self.node_postcall_list = node_call_list
 
     def get_empty_record(self):
         map_defaults = {
@@ -210,17 +250,36 @@ class Service(object):
 
         return result
 
-    async def gather_data(self):
-        """Collect data invoking the appropriate get routine from nodes."""
-        now = time.time()
-        random.shuffle(self.nodelist)
-        tasks = [self.nodes[key].exec_service(self.defn)
-                 for key in self.nodelist]
+    async def post_results(self, result, token) -> None:
+        """The callback that nodes use to post the results back to the service"""
+        if self.result_queue:
+            self.result_queue.put_nowait((token, result))
+        else:
+            self.logger.error(f"No queue for service {self.name}")
 
-        outputs = await asyncio.gather(*tasks)
-        self.logger.info(
-            f"gathered for {self.name} took {time.time() - now} seconds")
-        return outputs
+    def call_node_postcmd(self, postcall, nodename) -> None:
+        """Start data gathering by calling the post command list"""
+        if postcall and postcall['postq']:
+            token = RsltToken(int(time.time()*1000), nodename, 0,
+                              self.name)
+            postcall['postq'](self.post_results, self.defn, token)
+
+    async def start_data_gather(self) -> None:
+        """Start data gathering by calling the post command list
+        This is only used to fire up the calls the first time. After this,
+        each node gets into a self-adapting curve of calling at least after
+        the duration specified for the service period. If nodes are slower,
+        they'll be scheduled to run after the specified service period after
+        their return. We could use this to track slow nodes.
+        """
+
+        for node in self.node_postcall_list:
+            try:
+                self.call_node_postcmd(self.node_postcall_list[node],
+                                       node),
+            except TimeoutError:
+                self.logger.warning(f"Node post failed for {node}")
+                continue
 
     def process_data(self, data):
         """Derive the data to be stored from the raw input"""
@@ -286,17 +345,6 @@ class Service(object):
                 self.logger.error(
                     "{}: No normalization/textfsm function for device {}"
                     .format(self.name, data["hostname"]))
-        else:
-            d = data.get("data", None)
-            err = ""
-            if d and isinstance(d, dict):
-                err = d.get("error", "")
-            self.logger.error(
-                "{}: failed for node {} with {}/{}".format(
-                    self.name, data["hostname"], data["status"],
-                    err
-                )
-            )
 
         return result
 
@@ -338,32 +386,12 @@ class Service(object):
     async def commit_data(self, result, namespace, hostname):
         """Write the result data out"""
         records = []
-        nodeobj = self.nodes.get(hostname, None)
-        if not nodeobj:
-            # This will be the case when a node switches from init state
-            # to good after nodes have been built. Find the corresponding
-            # node and fix the nodelist
-            nres = [
-                self.nodes[x] for x in self.nodes
-                if self.nodes[x].hostname == hostname
-            ]
-            if nres:
-                nodeobj = nres[0]
-                prev_res = nodeobj.prev_result
-                self.rebuild_nodelist = True
-            else:
-                logging.error(
-                    "Ignoring results for {} which is not in "
-                    "nodelist for service {}".format(hostname, self.name)
-                )
-                return
-        else:
-            prev_res = nodeobj.prev_result
+        prev_res = self.previous_results.get(hostname, [])
 
         if result or prev_res:
             adds, dels = self.get_diff(prev_res, result)
             if adds or dels:
-                nodeobj.prev_result = copy.deepcopy(result)
+                self.previous_results[hostname] = copy.deepcopy(result)
                 for entry in adds:
                     records.append(entry)
                 for entry in dels:
@@ -378,7 +406,7 @@ class Service(object):
                         records.append(entry)
 
             if records:
-                self.queue.put_nowait(
+                self.writer_queue.put_nowait(
                     {
                         "records": records,
                         "topic": self.name,
@@ -387,70 +415,100 @@ class Service(object):
                     }
                 )
 
+    def update_stats(self, stats: ServiceStats, gather_time: int,
+                     total_time: int, qsize: int) -> None:
+        """Update per-node stats"""
+        if total_time < stats.min_svc_time:
+            stats.min_svc_time = total_time
+        if total_time > stats.max_svc_time:
+            stats.max_svc_time = total_time
+        if stats.avg_svc_time:
+            stats.avg_svc_time = float(stats.avg_svc_time+total_time)/2
+        else:
+            stats.avg_svc_time = total_time
+
     async def run(self):
         """Start the service"""
         self.logger.info(f"running service {self.name} ")
-        self.nodelist = list(self.nodes.keys())
+
+        # Fire up the initial posts
+        await self.start_data_gather()
+        loop = asyncio.get_running_loop()
+        pernode_stats = defaultdict(
+            lambda: ServiceStats(sys.maxsize, 0, 0, 0, 0))
 
         while True:
+            token, output = await self.result_queue.get()
+            qsize = self.result_queue.qsize()
 
-            outputs = await self.gather_data()
-            if self.run_once == "gather":
-                print(self._dump_output(outputs))
-                sys.exit(0)
-            elif self.run_once == "process":
-                poutputs = []
-            for output in outputs:
-                if not output:
-                    # output from nodes not running service
-                    continue
+            if isinstance(token, list):
+                token = token[0]
+            gather_time = int(time.time()*1000) - token.start_time
+
+            status = HTTPStatus.NO_CONTENT        # Empty content
+            write_poller_stat = False
+
+            if output:
+                ostatus = output[0].get("status", None)
+                if ostatus is not None:
+                    try:
+                        status = int(ostatus)
+                    except ValueError:
+                        status = HTTPStatus.METHOD_NOT_ALLOWED
+
+                write_poller_stat = not self.is_status_ok(status)
                 result = self.process_data(output[0])
                 # If a node from init state to good state, hostname will change
                 # So fix that in the node list
-                if self.run_once == "process":
-                    poutputs += [{"namespace": output[0]["namespace"],
-                                  "hostname": output[0]["hostname"],
-                                  "output": result}]
-                else:
-                    await self.commit_data(
-                        result, output[0]["namespace"], output[0]["hostname"]
-                    )
+                await self.commit_data(
+                    result, output[0]["namespace"], output[0]["hostname"]
+                )
+                empty_count = False
+            else:
+                empty_count = True
 
-            if self.run_once == "process":
-                print(self._dump_output(poutputs))
-                sys.exit(0)
+            total_time = int(time.time()*1000) - token.start_time
 
-            if self.update_nodes:
-                for node in self.new_nodes:
-                    # Copy the last saved outputs to avoid committing dup data
-                    if node in self.nodes:
-                        self.new_nodes[node].prev_result = copy.deepcopy(
-                            self.nodes[node].prev_result
-                        )
+            if not empty_count:
+                statskey = output[0]["namespace"] + '/' + output[0]["hostname"]
+                self.update_stats(pernode_stats[statskey], total_time,
+                                  gather_time, qsize)
 
-                self.nodes = self.new_nodes
-                self.nodelist = list(self.nodes.keys())
-                self.new_nodes = {}
-                self.update_nodes = False
-                self.rebuild_nodelist = False
+                poller_stat = [{"hostname": output[0]["hostname"],
+                                "namespace": output[0]["namespace"],
+                                "timestamp": int(
+                                    datetime.utcnow().timestamp() * 1000),
+                                "active": True,
+                                "service": self.name,
+                                "status": status,
+                                "qsize": qsize,
+                                "period": self.period,
+                                "gatherTime": gather_time,
+                                "totalTime": total_time,
+                                "emptyCount": empty_count}]
+            # else:
+            #     poller_stat = [{"hostname": token.nodename,
+            #                     "namespace": '-',
+            #                     "timestamp": int(
+            #                         datetime.utcnow().timestamp() * 1000),
+            #                     "active": True,
+            #                     "service": self.name,
+            #                     "status": status,
+            #                     "qsize": qsize,
+            #                     "gatherTime": gather_time,
+            #                     "totalTime": total_time,
+            #                     "emptyCount": empty_count}]
 
-            elif self.rebuild_nodelist:
-                adds = {}
-                dels = []
-                for host in self.nodes:
-                    if self.nodes[host].hostname != host:
-                        adds.update({self.nodes[host].hostname:
-                                     self.nodes[host]})
-                        dels.append(host)
+            if write_poller_stat:
+                self.writer_queue.put_nowait(
+                    {
+                        "records": poller_stat,
+                        "topic": "sq-poller",
+                        "schema": self.poller_schema,
+                        "partition_cols": ["namespace", "hostname", "service"]
+                    })
 
-                if dels:
-                    for entry in dels:
-                        self.nodes.pop(entry, None)
-
-                if adds:
-                    self.nodes.update(adds)
-
-                self.nodelist = list(self.nodes.keys())
-                self.rebuild_nodelist = False
-
-            await asyncio.sleep(self.period + (random.randint(0, 1000) / 1000))
+            # Post a command to fire up the next poll after the specified period
+            loop.call_later(self.period, self.call_node_postcmd,
+                            self.node_postcall_list.get(token.nodename),
+                            token.nodename)
