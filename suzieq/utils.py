@@ -325,3 +325,10 @@ def avro_to_arrow_schema(avro_sch):
         arsc_fields.append(pa.field(fld["name"], map_type[avtype]))
 
     return pa.schema(arsc_fields)
+
+
+def calc_avg(oldval, newval):
+    if not oldval:
+        return newval
+
+    return float((oldval+newval)/2)

@@ -296,7 +296,10 @@ class Node(object):
         """Fill in the boot time of the node by running the appropriate command"""
         await self.exec_cmd(self._parse_uptime, ["cat /proc/uptime"], None)
 
-    def post_commands(self, service_callback, svc_defn, cb_token):
+    def post_commands(self, service_callback, svc_defn: dict,
+                      cb_token: RsltToken):
+        if cb_token:
+            cb_token.nodeQsize = self._service_queue.qsize()
         self._service_queue.put_nowait([service_callback, svc_defn, cb_token])
 
     async def run(self):
@@ -432,7 +435,8 @@ class Node(object):
 
         return
 
-    async def exec_service(self, service_callback, svc_defn, cb_token):
+    async def exec_service(self, service_callback, svc_defn: dict,
+                           cb_token: RsltToken):
 
         result = []  # same type as gather function
         cmd = None
@@ -448,6 +452,10 @@ class Node(object):
                                               HTTPStatus.SERVICE_UNAVAILABLE,
                                               result))
             return await service_callback(result, cb_token)
+
+        # Update our boot time value into the callback token
+        if cb_token:
+            cb_token.bootupTimestamp = self.bootupTimestamp
 
         self.svcs_proc.add(svc_defn.get("service"))
         use = svc_defn.get(self.hostname, None)
