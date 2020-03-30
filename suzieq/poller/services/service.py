@@ -527,7 +527,7 @@ class Service(object):
                 self.writer_queue.put_nowait(
                     {
                         "records": poller_stat,
-                        "topic": "sq-poller",
+                        "topic": "sqPoller",
                         "schema": self.poller_schema,
                         "partition_cols": ["namespace", "hostname", "service"]
                     })
