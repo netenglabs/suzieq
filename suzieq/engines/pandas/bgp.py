@@ -15,7 +15,8 @@ class BgpObj(SqEngineObject):
         self._add_field_to_summary('hostname', 'nunique', 'hosts')
         self._add_field_to_summary('hostname', 'count', 'sessions')
         for field in ['asn', 'vrf', 'peerAsn']:
-            self._add_field_to_summary(field, 'nunique')
+            self._add_list_or_count_to_summary(field)
+
 
         ipv4_enabled = self.summary_df.query("v4Enabled")["namespace"].unique()
         ipv6_enabled = self.summary_df.query("v6Enabled")["namespace"].unique()
@@ -35,11 +36,11 @@ class BgpObj(SqEngineObject):
             .value_counts()
 
         self._add_stats_to_summary(uptime, 'upTimes')
-        self._add_stats_to_summary(v4_updates, 'V4PfxRx')
-        self._add_stats_to_summary(v6_updates, 'V6PfxRx')
-        self._add_stats_to_summary(evpn_updates, 'EvpnPfxRx')
-        self._add_stats_to_summary(rx_updates, 'UpdatesRx')
-        self._add_stats_to_summary(tx_updates, 'UpdatesTx')
+        self._add_stats_to_summary(v4_updates, 'v4PfxRx')
+        self._add_stats_to_summary(v6_updates, 'v6PfxRx')
+        self._add_stats_to_summary(evpn_updates, 'evpnPfxRx')
+        self._add_stats_to_summary(rx_updates, 'updatesRx')
+        self._add_stats_to_summary(tx_updates, 'updatesTx')
 
         for i in self.ns.keys():
             self.ns[i].update({'afi-safi': []})
@@ -51,9 +52,9 @@ class BgpObj(SqEngineObject):
                 self.ns[i]['afi-safi'].append('evpn')
             self.ns[i].update({'downSessions': down_sessions_per_ns.get(i, 0)})
 
-        self.summary_row_order = ['hosts', 'sessions', 'asn', 'vrf', 'afi-safi',
-                                  'downSessions', 'upTimes', 'V4PfxRx',
-                                  'V6PfxRx', 'EvpnPfxRx', 'UpdatesRx',
-                                  'UpdatesTx']
+        self.summary_row_order = ['hosts', 'sessions', 'asn', 'peerAsn', 'vrf',
+                                  'afi-safi', 'upTimes', 'e4PfxRx',
+                                  'v6PfxRx', 'evpnPfxRx', 'updatesRx',
+                                  'updatesTx', 'downSessions']
         self._post_summarize()
         return self.ns_df.convert_dtypes()

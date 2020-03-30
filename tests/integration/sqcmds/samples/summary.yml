@@ -10,13 +10,13 @@ tests:
   - command: bgp summarize --format=json
     data-directory: tests/data/multidc/parquet-out
     output: |
-      {"dual-evpn":{"hosts":9,"sessions":34,"asn":8,"vrf":3,"afi-safi":["ipv4","evpn"],"downSessions":0,"upTimes":["0:00:07","21:20:10","21:16:06"],"V4PfxRx":[2,16,13],"V6PfxRx":[0,0,0],"EvpnPfxRx":[0,39,8],"UpdatesRx":[28,253,113.5],"UpdatesTx":[28,236,117.0]},"ospf-ibgp":{"hosts":9,"sessions":34,"asn":3,"vrf":3,"afi-safi":["ipv4","evpn"],"downSessions":0,"upTimes":["6:10:36","1 day, 15:27:58","1 day, 15:27:03"],"V4PfxRx":[0,13,1],"V6PfxRx":[0,0,0],"EvpnPfxRx":[0,38,8],"UpdatesRx":[7,126,16.0],"UpdatesTx":[5,126,11.5]}}
+      {"dual-evpn":{"hosts":9,"sessions":34,"asn":8,"peerAsn":9,"vrf":{"default":28,"internet-vrf":4,"evpn-vrf":2},"afi-safi":["ipv4","evpn"],"upTimes":["0:00:07","21:20:10","21:16:06"],"e4PfxRx":null,"v6PfxRx":[0,0,0],"evpnPfxRx":[0,39,8],"updatesRx":[28,253,113.5],"updatesTx":[28,236,117.0],"downSessions":0},"ospf-ibgp":{"hosts":9,"sessions":34,"asn":{"65000":28,"65001":4,"25253":2},"peerAsn":4,"vrf":{"default":28,"internet-vrf":4,"evpn-vrf":2},"afi-safi":["ipv4","evpn"],"upTimes":["6:10:36","1 day, 15:27:58","1 day, 15:27:03"],"e4PfxRx":null,"v6PfxRx":[0,0,0],"evpnPfxRx":[0,38,8],"updatesRx":[7,126,16.0],"updatesTx":[5,126,11.5],"downSessions":0}}
     marks: bgp summarize
 
   - command: bgp summarize --format=json --namespace='dual-evpn'
     data-directory: tests/data/multidc/parquet-out
     output: |
-      {"dual-evpn":{"hosts":9,"sessions":34,"asn":8,"vrf":3,"afi-safi":["ipv4","evpn"],"downSessions":0,"upTimes":["0:00:07","21:20:10","21:16:06"],"V4PfxRx":[2,16,13],"V6PfxRx":[0,0,0],"EvpnPfxRx":[0,39,8],"UpdatesRx":[28,253,113.5],"UpdatesTx":[28,236,117]}}
+      {"dual-evpn":{"hosts":9,"sessions":34,"asn":8,"peerAsn":9,"vrf":{"default":28,"internet-vrf":4,"evpn-vrf":2},"afi-safi":["ipv4","evpn"],"upTimes":["0:00:07","21:20:10","21:16:06"],"e4PfxRx":null,"v6PfxRx":[0,0,0],"evpnPfxRx":[0,39,8],"updatesRx":[28,253,113.5],"updatesTx":[28,236,117],"downSessions":0}}
     marks: bgp summarize filter
 
   - command: ospf summarize --format=json
