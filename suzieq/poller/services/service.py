@@ -15,25 +15,40 @@ from collections import defaultdict
 import pyarrow as pa
 
 from suzieq.poller.services.svcparser import cons_recs_from_json_template
+from suzieq.utils import calc_avg
 
 HOLD_TIME_IN_MSECS = 60000  # How long b4 declaring node dead
 
 
 @dataclass
 class RsltToken:
-    start_time: int             # When this cmd was first posted to node
-    nodename: str               # Name of node, used to get poller cb again
-    node_token: int             # Changes every time the node reboots
-    service: str                # Name of this service, if node needs it
+    start_time: int    # When this cmd was first posted to node
+    nodename: str      # Name of node, used to get poller cb again
+    bootupTimestamp: int
+    nodeQsize: int        # Size of the node q at queuing time
+    service: str          # Name of this service, if node needs it
 
 
 @dataclass
 class ServiceStats:
-    min_svc_time: int
-    max_svc_time: int
-    avg_svc_time: int
-    empty_count: int
-    qsize: int
+    min_svc_time: int = 0
+    max_svc_time: int = 0
+    avg_svc_time: float = 0.0
+    max_gather_time: int = 0
+    min_gather_time: int = 0
+    avg_gather_time: float = 0.0
+    empty_count: int = 0
+    min_qsize: int = 0
+    max_qsize: int = 0
+    avg_qsize: float = 0.0      # service queue size
+    min_wrQsize: int = 0
+    max_wrQsize: int = 0
+    avg_wrQsize: float = 0.0    # write queue size
+    min_nodeQsize: int = 0
+    max_nodeQsize: int = 0
+    avg_nodeQsize: float = 0.0
+    time_excd_count: int = 0    # Number of times total_time > poll period
+    next_update_time: int = 0   # When results will be logged
 
 
 class Service(object):
@@ -60,12 +75,12 @@ class Service(object):
 
         self.update_nodes = False  # we have a new node list
         self.rebuild_nodelist = False  # used only when a node gets init
-        # self.nodes = {}
-        # self.new_nodes = {}
         self.node_postcall_list = {}
         self.new_node_postcall_list = {}
         self.previous_results = {}
         self._poller_schema = {}
+        self.node_boot_times = defaultdict(int)
+
         self.poller_schema = property(
             self.get_poller_schema, self.set_poller_schema)
 
@@ -260,8 +275,7 @@ class Service(object):
     def call_node_postcmd(self, postcall, nodename) -> None:
         """Start data gathering by calling the post command list"""
         if postcall and postcall['postq']:
-            token = RsltToken(int(time.time()*1000), nodename, 0,
-                              self.name)
+            token = RsltToken(int(time.time()*1000), nodename, 0, 0, self.name)
             postcall['postq'](self.post_results, self.defn, token)
 
     async def start_data_gather(self) -> None:
@@ -416,16 +430,30 @@ class Service(object):
                 )
 
     def update_stats(self, stats: ServiceStats, gather_time: int,
-                     total_time: int, qsize: int) -> None:
+                     total_time: int, qsize: int, wrQsize: int,
+                     nodeQsize: int) -> bool:
         """Update per-node stats"""
+        write_stat = False
+        now = int(time.time()*1000)
         if total_time < stats.min_svc_time:
             stats.min_svc_time = total_time
         if total_time > stats.max_svc_time:
             stats.max_svc_time = total_time
-        if stats.avg_svc_time:
-            stats.avg_svc_time = float(stats.avg_svc_time+total_time)/2
-        else:
-            stats.avg_svc_time = total_time
+        stats.avg_svc_time = calc_avg(stats.avg_svc_time, total_time)
+        stats.avg_gather_time = calc_avg(stats.avg_gather_time, gather_time)
+        stats.avg_qsize = calc_avg(stats.avg_qsize, qsize)
+        stats.avg_wrQsize = calc_avg(stats.avg_wrQsize, wrQsize)
+        stats.avg_nodeQsize = calc_avg(stats.avg_nodeQsize, nodeQsize)
+
+        if total_time > self.period*1000:
+            stats.time_excd_count += 1
+            write_stat = True
+
+        if now > stats.next_update_time:
+            stats.next_update_time = now + 5*60*1000  # 5 mins
+            write_stat = True
+
+        return write_stat
 
     async def run(self):
         """Start the service"""
@@ -434,8 +462,7 @@ class Service(object):
         # Fire up the initial posts
         await self.start_data_gather()
         loop = asyncio.get_running_loop()
-        pernode_stats = defaultdict(
-            lambda: ServiceStats(sys.maxsize, 0, 0, 0, 0))
+        pernode_stats = defaultdict(lambda: ServiceStats())
 
         while True:
             token, output = await self.result_queue.get()
@@ -460,9 +487,12 @@ class Service(object):
                 result = self.process_data(output[0])
                 # If a node from init state to good state, hostname will change
                 # So fix that in the node list
-                await self.commit_data(
-                    result, output[0]["namespace"], output[0]["hostname"]
-                )
+                hostname = output[0]["hostname"]
+                if token.bootupTimestamp != self.node_boot_times[hostname]:
+                    self.node_boot_times[hostname] = token.bootupTimestamp
+                    # Flush the prev results data for this node
+                    self.previous_results[hostname] = []
+                await self.commit_data(result, output[0]["namespace"], hostname)
                 empty_count = False
             else:
                 empty_count = True
@@ -471,33 +501,27 @@ class Service(object):
 
             if not empty_count:
                 statskey = output[0]["namespace"] + '/' + output[0]["hostname"]
-                self.update_stats(pernode_stats[statskey], total_time,
-                                  gather_time, qsize)
-
-                poller_stat = [{"hostname": output[0]["hostname"],
-                                "namespace": output[0]["namespace"],
-                                "timestamp": int(
-                                    datetime.utcnow().timestamp() * 1000),
-                                "active": True,
-                                "service": self.name,
-                                "status": status,
-                                "qsize": qsize,
-                                "period": self.period,
-                                "gatherTime": gather_time,
-                                "totalTime": total_time,
-                                "emptyCount": empty_count}]
-            # else:
-            #     poller_stat = [{"hostname": token.nodename,
-            #                     "namespace": '-',
-            #                     "timestamp": int(
-            #                         datetime.utcnow().timestamp() * 1000),
-            #                     "active": True,
-            #                     "service": self.name,
-            #                     "status": status,
-            #                     "qsize": qsize,
-            #                     "gatherTime": gather_time,
-            #                     "totalTime": total_time,
-            #                     "emptyCount": empty_count}]
+                write_poller_stat = (write_poller_stat or
+                                     self.update_stats(
+                                         pernode_stats[statskey], total_time,
+                                         gather_time, qsize,
+                                         self.writer_queue.qsize(),
+                                         token.nodeQsize))
+                stats = pernode_stats[statskey]
+                poller_stat = [
+                    {"hostname": output[0]["hostname"],
+                     "namespace": output[0]["namespace"],
+                     "active": True,
+                     "service": self.name,
+                     "status": status,
+                     "svcQsize": stats.avg_qsize,
+                     "wrQsize": stats.avg_wrQsize,
+                     "nodeQsize": stats.avg_nodeQsize,
+                     "pollExcdPeriodCount": stats.time_excd_count,
+                     "gatherTime": stats.avg_gather_time,
+                     "totalTime": stats.avg_svc_time,
+                     "emptyCount": empty_count,
+                     "timestamp": int(datetime.utcnow().timestamp() * 1000)}]
 
             if write_poller_stat:
                 self.writer_queue.put_nowait(
