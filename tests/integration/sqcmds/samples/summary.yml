@@ -42,3 +42,9 @@ tests:
     output: |
       {"dual-evpn":{"hosts":13,"interfaces":173,"ifPerHost":[0,23,9.5],"hostsWithL2":7,"hasVxlan":true,"mtu":4,"downPortCount":8,"ifChanges":[0,0,0]},"ospf-ibgp":{"hosts":13,"interfaces":155,"ifPerHost":[0,23,9.0],"hostsWithL2":6,"hasVxlan":true,"mtu":4,"downPortCount":9,"ifChanges":[0,0,0]},"ospf-single":{"hosts":14,"interfaces":96,"ifPerHost":[3,10,9.0],"hostsWithL2":4,"hasVxlan":false,"mtu":{"1500":74,"65536":22},"downPortCount":17,"ifChanges":[0,0,0]}}
     marks: interface summarize
+
+  - command: lldp summarize --format=json
+    data-directory: tests/data/multidc/parquet-out
+    output: |
+      [{"dual-evpn":10,"ospf-ibgp":9,"ospf-single":5},{"dual-evpn":40,"ospf-ibgp":36,"ospf-single":16},{"dual-evpn":2,"ospf-ibgp":2,"ospf-single":1},{"dual-evpn":10,"ospf-ibgp":10,"ospf-single":8},{"dual-evpn":11,"ospf-ibgp":11,"ospf-single":8},{"dual-evpn":2,"ospf-ibgp":2,"ospf-single":0}]
+    marks: lldp summarize

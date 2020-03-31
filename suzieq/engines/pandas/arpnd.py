@@ -5,7 +5,7 @@ class ArpndObj(SqEngineObject):
     pass
 
     def summarize(self, **kwargs):
-        self.summary_row_order = ['hostname', 'namespace', 'macaddr',
+        self.summary_row_order = ['hostname', 'rows', 'macaddr',
                                   'ipAddress', 'oif', 'state', 'offload']
 
         return super().summarize(**kwargs)
