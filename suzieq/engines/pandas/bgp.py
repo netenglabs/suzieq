@@ -53,7 +53,7 @@ class BgpObj(SqEngineObject):
             self.ns[i].update({'downSessions': down_sessions_per_ns.get(i, 0)})
 
         self.summary_row_order = ['hosts', 'sessions', 'asn', 'peerAsn', 'vrf',
-                                  'afi-safi', 'upTimes', 'e4PfxRx',
+                                  'afi-safi', 'upTimes', 'v4PfxRx',
                                   'v6PfxRx', 'evpnPfxRx', 'updatesRx',
                                   'updatesTx', 'downSessions']
         self._post_summarize()
