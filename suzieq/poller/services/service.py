@@ -468,6 +468,7 @@ class Service(object):
             token, output = await self.result_queue.get()
             qsize = self.result_queue.qsize()
 
+            self.logger.debug(f"Extracted response for {self.name} service")
             if isinstance(token, list):
                 token = token[0]
             gather_time = int(time.time()*1000) - token.start_time
@@ -533,6 +534,8 @@ class Service(object):
                     })
 
             # Post a command to fire up the next poll after the specified period
+            self.logger.debug(
+                f"Rescheduling service for {self.name} service")
             loop.call_later(self.period, self.call_node_postcmd,
                             self.node_postcall_list.get(token.nodename),
                             token.nodename)
