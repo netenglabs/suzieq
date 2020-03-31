@@ -116,6 +116,7 @@ class Node(object):
     _status = "init"
     svcs_proc = set()
     error_svcs_proc = set()
+    ssh_ready = asyncio.Event()
 
     @property
     def status(self):
@@ -138,6 +139,7 @@ class Node(object):
 
         self._init_service_queue()
 
+        self.ssh_ready.set()
         if not self.port:
             if self.transport == "ssh":
                 self.port = 22
@@ -303,26 +305,27 @@ class Node(object):
         self._service_queue.put_nowait([service_callback, svc_defn, cb_token])
 
     async def run(self):
-        data = []
-        count = 0
+        tasks = []
         while True:
-            data.append(await self._service_queue.get())
-            count += 1
-            if (count > self.batch_size) or self._service_queue.empty():
-                # data[x][0] is the queue, data[x][1] is the svc definition
-                tasks = [self.exec_service(data[x][0], data[x][1], data[x][2])
-                         for x in range(count)]
-                await asyncio.wait(tasks)
-                data = []
-                count = 0
+            while (len(tasks) < self.batch_size):
+                request = await self._service_queue.get()
+                if request:
+                    tasks.append(self.exec_service(
+                        request[0], request[1], request[2]))
+                    self.logger.debug(
+                        f"Scheduling {request[2].service} for execution")
+                if self._service_queue.empty():
+                    break
+            if tasks:
+                done, pending = await asyncio.wait(
+                    tasks, return_when=asyncio.FIRST_COMPLETED)
+
+                tasks = list(pending)
 
     async def ssh_gather(self, service_callback, cmd_list, cb_token):
         """Given a dictionary of commands, run ssh and place output on service callback"""
 
         result = []
-
-        if isinstance(cb_token, RsltToken):
-            cb_token.node_token = self.bootupTimestamp
 
         if cmd_list is None:
             await service_callback({}, cb_token)
@@ -331,13 +334,16 @@ class Node(object):
             await self._init_ssh()
             if not self._conn:
                 for cmd in cmd_list:
-                    logging.error(
+                    self.logger.error(
                         "Unable to connect to node {} cmd {}".format(
                             self.hostname, cmd))
                     result.append(self._create_error(
                         cmd, HTTPStatus.REQUEST_TIMEOUT, "Unable to connect"))
                 await service_callback(result, cb_token)
                 return
+
+        if isinstance(cb_token, RsltToken):
+            cb_token.node_token = self.bootupTimestamp
 
         for cmd in cmd_list:
             try:
@@ -355,9 +361,19 @@ class Node(object):
                 result.append(self._create_error(cmd,
                                                  HTTPStatus.REQUEST_TIMEOUT,
                                                  e))
+                self.logger.error(
+                    "Unable to connect to node {} cmd {}".format(
+                        self.hostname, cmd))
+                self._conn = None
+                break
             except asyncssh.misc.ChannelOpenError as e:
+                self.logger.error(
+                    "Unable to connect to node {} cmd {}".format(
+                        self.hostname, cmd))
                 result.append(self._create_error(
-                    cmd, HTTPStatus.INTERNAL_SERVER_ERROR, e))
+                    cmd, HTTPStatus.REQUEST_TIMEOUT, e))
+                self._conn = None
+                break
 
         await service_callback(result, cb_token)
 
@@ -371,7 +387,9 @@ class Node(object):
             self._service_queue = asyncio.Queue()
 
     async def _init_ssh(self, init_boot_time=True) -> None:
+        await self.ssh_ready.wait()
         if not self._conn:
+            self.ssh_ready.clear()
             try:
                 self._conn = await asyncio.wait_for(
                     asyncssh.connect(
@@ -384,8 +402,9 @@ class Node(object):
                     ),
                     timeout=self.cmd_timeout,
                 )
-                self.logger.info(
+                self.logger.warning(
                     f"Connected to {self.address} at {time.time()}")
+                self.ssh_ready.set()
                 if init_boot_time:
                     await self.init_boot_time()
             except (
@@ -396,7 +415,8 @@ class Node(object):
                     asyncssh.misc.DisconnectError,
             ) as e:
                 self.logger.error(f"ERROR: Unable to connect, {str(e)}")
-
+                self._conn = None
+                self.ssh_ready.set()
         return
 
     def _create_error(self, cmd, status: int, error: str) -> dict:
@@ -427,7 +447,7 @@ class Node(object):
         elif self.transport == "local":
             result = await self.local_gather(service_callback, cmd_list, cb_token)
         else:
-            logging.error(
+            self.logger.error(
                 "Unsupported transport {} for node {}".format(
                     self.transport, self.hostname
                 )
