@@ -36,3 +36,9 @@ tests:
     output: |
       [{"dual-evpn":12,"ospf-ibgp":13,"ospf-single":11},{"dual-evpn":4,"ospf-ibgp":4,"ospf-single":2},{"dual-evpn":221,"ospf-ibgp":195,"ospf-single":100},{"dual-evpn":31,"ospf-ibgp":31,"ospf-single":16},{"dual-evpn":[0,53,16.5],"ospf-ibgp":[0,42,16.0],"ospf-single":[0,13,5.0]},{"dual-evpn":[12,140,34.5],"ospf-ibgp":[14,131,25.0],"ospf-single":[0,88,6.0]},{"dual-evpn":143,"ospf-ibgp":122,"ospf-single":42},{"dual-evpn":16,"ospf-ibgp":16,"ospf-single":0},{"dual-evpn":4,"ospf-ibgp":5,"ospf-single":{"ospf":64,"":19,"kernel":17}},{"dual-evpn":true,"ospf-ibgp":true,"ospf-single":true}]
     marks: routes summarize
+
+  - command: interface summarize --format=json
+    data-directory: tests/data/multidc/parquet-out
+    output: |
+      {"dual-evpn":{"hosts":13,"interfaces":173,"ifPerHost":[0,23,9.5],"hostsWithL2":7,"hasVxlan":true,"mtu":4,"downPortCount":8,"ifChanges":[0,0,0]},"ospf-ibgp":{"hosts":13,"interfaces":155,"ifPerHost":[0,23,9.0],"hostsWithL2":6,"hasVxlan":true,"mtu":4,"downPortCount":9,"ifChanges":[0,0,0]},"ospf-single":{"hosts":14,"interfaces":96,"ifPerHost":[3,10,9.0],"hostsWithL2":4,"hasVxlan":false,"mtu":{"1500":74,"65536":22},"downPortCount":17,"ifChanges":[0,0,0]}}
+    marks: interface summarize
