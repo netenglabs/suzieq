@@ -40,9 +40,11 @@ async def init_services(svc_dir, schema_dir, queue, run_once):
         schemas = get_schemas(schema_dir)
 
     if schemas:
-        schema = schemas.get("sq-poller", None)
+        schema = schemas.get("sqPoller", None)
         if schema:
             poller_schema = avro_to_arrow_schema(schema)
+        else:
+            raise Exception(f"can't find sqPoller.avsc")
 
     for root, _, filenames in walk(svc_dir):
         for filename in filenames:
