@@ -225,7 +225,9 @@ class SqEngineObject(object):
             return self.summary_df
 
         for col in self.summary_df.columns:
-            self._add_list_or_count_to_summary(col)
+            if col != 'namespace':
+                self._add_list_or_count_to_summary(col)
+        self._add_field_to_summary('hostname', 'count', 'rows')
 
         self._post_summarize()
         return self.ns_df.convert_dtypes()
