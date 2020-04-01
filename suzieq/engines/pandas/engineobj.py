@@ -225,7 +225,7 @@ class SqEngineObject(object):
             return self.summary_df
 
         for col in self.summary_df.columns:
-            if col != 'namespace':
+            if col != 'namespace' and col != 'timestamp':
                 self._add_list_or_count_to_summary(col)
         self._add_field_to_summary('hostname', 'count', 'rows')
 
