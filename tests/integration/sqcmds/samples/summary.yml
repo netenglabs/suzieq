@@ -48,3 +48,9 @@ tests:
     output: |
       [{"dual-evpn":10,"ospf-ibgp":9,"ospf-single":5},{"dual-evpn":40,"ospf-ibgp":36,"ospf-single":16},{"dual-evpn":2,"ospf-ibgp":2,"ospf-single":1},{"dual-evpn":10,"ospf-ibgp":10,"ospf-single":8},{"dual-evpn":11,"ospf-ibgp":11,"ospf-single":8},{"dual-evpn":2,"ospf-ibgp":2,"ospf-single":0}]
     marks: lldp summarize
+
+  - command: evpnVni summarize --format=json
+    data-directory: tests/data/multidc/parquet-out
+    output: |
+      [{"dual-evpn":14,"ospf-ibgp":14},{"dual-evpn":{"104001":6,"24":4,"13":4},"ospf-ibgp":{"104001":6,"24":4,"13":4}},{"dual-evpn":{"L2":8,"L3":6},"ospf-ibgp":{"L2":8,"L3":6}},{"dual-evpn":{"evpn-vrf":14},"ospf-ibgp":{"evpn-vrf":14}},{"dual-evpn":[1,4,4],"ospf-ibgp":[1,4,4]},{"dual-evpn":[2,6,6],"ospf-ibgp":[2,6,6]},{"dual-evpn":{"10.0.0.112":4,"10.0.0.134":4},"ospf-ibgp":{"10.0.0.112":4,"10.0.0.134":4}}]
+    marks: evpnVni summarize
