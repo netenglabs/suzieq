@@ -6,8 +6,7 @@ import logging
 from pathlib import Path
 from collections import defaultdict
 
-import daemon
-from daemon import pidfile
+import uvloop
 
 from nodes import init_hosts
 from services import init_services
@@ -18,12 +17,12 @@ from suzieq.utils import load_sq_config
 PID_FILE = "/tmp/suzieq.pid"
 
 
-def validate_parquet_args(cfg, output_args):
+def validate_parquet_args(cfg, output_args, logger):
     """Validate user arguments for parquet output"""
 
     if not cfg.get("data-directory", None):
         output_dir = "/tmp/suzieq/parquet-out/"
-        logging.warning(
+        logger.warning(
             "No output directory for parquet specified, using" "/tmp/suzieq/parquet-out"
         )
     else:
@@ -33,21 +32,31 @@ def validate_parquet_args(cfg, output_args):
         os.makedirs(output_dir)
 
     if not os.path.isdir(output_dir):
-        logging.error(
+        logger.error(
             "Output directory {} is not a directory".format(output_dir))
         print("Output directory {} is not a directory".format(output_dir))
         sys.exit(1)
 
-    logging.info("Parquet outputs will be under {}".format(output_dir))
+    logger.info("Parquet outputs will be under {}".format(output_dir))
     output_args.update({"output_dir": output_dir})
 
     return
 
 
-def _main(userargs, cfg):
+async def start_poller(userargs, cfg):
+
+    logger = logging.getLogger('sq-poller')
+    logger.setLevel(cfg.get("logging-level", "INFO").upper())
+    fh = logging.FileHandler(cfg.get("log-file", "/tmp/suzieq.log"))
+    formatter = logging.Formatter(
+        "%(asctime)s - %(name)s - %(levelname)s " "- %(message)s"
+    )
+    fh.setFormatter(formatter)
+    fh.setLevel(logging.INFO)
+    logger.addHandler(fh)
 
     if not os.path.exists(cfg["service-directory"]):
-        logging.error(
+        logger.error(
             "Service directory {} is not a directory".format(
                 userargs.output_dir)
         )
@@ -62,20 +71,19 @@ def _main(userargs, cfg):
     output_args = {}
 
     if "parquet" in userargs.outputs:
-        validate_parquet_args(cfg, output_args)
+        validate_parquet_args(cfg, output_args, logger)
 
     outputs = init_output_workers(userargs.outputs, output_args)
 
-    loop = asyncio.get_event_loop()
     queue = asyncio.Queue()
 
+    logger.info("Initializing hosts and services")
     tasks = [
         init_hosts(userargs.hosts_file),
         init_services(cfg["service-directory"], schema_dir, queue,
                       userargs.run_once or "forever"),
     ]
-
-    nodes, svcs = loop.run_until_complete(asyncio.gather(*tasks))
+    nodes, svcs = await asyncio.gather(*tasks)
 
     node_callq = defaultdict(lambda: defaultdict(dict))
 
@@ -86,7 +94,7 @@ def _main(userargs, cfg):
     for svc in svcs:
         svc.set_nodes(node_callq)
 
-    logging.info("Suzieq Started")
+    logger.info("Suzieq Started")
 
     if userargs.service_only:
         svclist = userargs.service_only.split(",")
@@ -103,11 +111,9 @@ def _main(userargs, cfg):
         tasks = [svc.run() for svc in working_svcs]
         tasks += [nodes[node].run() for node in nodes]
         tasks.append(run_output_worker(queue, outputs))
-        loop.run_until_complete(asyncio.gather(*tasks))
-        # loop.run_until_complete(svcs[2].run())
+        await asyncio.gather(*tasks)
     except KeyboardInterrupt:
-        logging.info("Received keyboard interrupt. Terminating")
-        loop.close()
+        logger.info("Received keyboard interrupt. Terminating")
         sys.exit(0)
 
 
@@ -117,12 +123,6 @@ if __name__ == "__main__":
     supported_outputs = ["parquet"]
 
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "-f",
-        "--foreground",
-        action="store_true",
-        help="Run in foreground, not as daemon",
-    )
     parser.add_argument(
         "-H",
         "--hosts-file",
@@ -156,35 +156,6 @@ if __name__ == "__main__":
     userargs = parser.parse_args()
     cfg = load_sq_config()
 
-    logger = logging.getLogger()
-    logger.setLevel(cfg.get("logging-level", "WARNING").upper())
-    fh = logging.FileHandler(cfg.get("log-file", "/tmp/suzieq.log"))
-    formatter = logging.Formatter(
-        "%(asctime)s - %(name)s - %(levelname)s " "- %(message)s"
-    )
-    logger.handlers = [fh]
-    fh.setFormatter(formatter)
+    uvloop.install()
 
-    if userargs.foreground:
-        _main(userargs, cfg)
-    else:
-        if os.path.exists(PID_FILE):
-            with open(PID_FILE, "r") as f:
-                pid = f.read().strip()
-                if not pid.isdigit():
-                    os.remove(PID_FILE)
-                else:
-                    try:
-                        os.kill(int(pid), 0)
-                    except OSError:
-                        os.remove(PID_FILE)
-                    else:
-                        print(
-                            "Another process instance of Suzieq exists with "
-                            "pid {}".format(pid)
-                        )
-        with daemon.DaemonContext(
-            files_preserve=[
-                fh.stream], pidfile=pidfile.TimeoutPIDLockFile(PID_FILE)
-        ):
-            _main(userargs, cfg)
+    asyncio.run(start_poller(userargs, cfg))
