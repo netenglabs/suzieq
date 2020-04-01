@@ -26,30 +26,15 @@ class RoutesObj(SqEngineObject):
 
         # Filter out local loopback IP
         self.summary_df = self.summary_df[(self.summary_df.prefix != '127.0.0.0/8')].reindex()
-        if self.summary_df.empty:
-            return self.summary_df
 
         if 'prefix' in self.summary_df.columns:
             self.summary_df['prefix'].replace('default', '0.0.0.0/0', inplace=True)
             self.summary_df = self.summary_df.reindex()
             self.summary_df['prefix'] = self.summary_df['prefix'].astype('ipnetwork')
 
-        # Routes DF has an interesting side-effect that I've to investigate.
-        # The DF returned still has the namespaces filtered out, but they
-        # show up when we do groupby. I don't know why. So we create the
-        # data structure assuming all namespaces, and since they contain no
-        # content, we'll eliminate them in the end
-
         # have to redo nsgrp because we did extra filtering above
         self.nsgrp = self.summary_df.groupby(by=["namespace"])
         self.ns = {i: {} for i in self.nsgrp.groups.keys()}
-
-        for field in ['hostname', 'vrf']:
-            self._add_field_to_summary(field, 'nunique')
-
-        self._add_field_to_summary('prefix', 'count', 'rows')
-        self._add_field_to_summary('prefix', 'nunique', 'uniqueRoutes')
-
 
         rh_per_hns = self.summary_df.groupby(by=["namespace", "hostname"])[
             "prefix"].count()
@@ -62,14 +47,10 @@ class RoutesObj(SqEngineObject):
 
         hr_per_ns = self.summary_df.query("prefix.ipnet.prefixlen == 32") \
                       .groupby(by=['namespace'])['prefix'].count()
-        {self.ns[i].update({'hostRoutes': hr_per_ns[i]}) for i in hr_per_ns.keys()}
+
         ifr_per_ns = self.summary_df.query("prefix.ipnet.prefixlen == 30 or "
                               "prefix.ipnet.prefixlen == 31") \
                        .groupby(by=['namespace'])['prefix'].count()
-        {self.ns[i].update({'interfaceRoutes': ifr_per_ns[i]})
-         for i in ifr_per_ns.keys()}
-
-        self._add_list_or_count_to_summary('protocol')
 
         hosts_with_defrt_per_vrfns = self.summary_df.query("prefix.ipnet.is_default") \
                                        .groupby(by=["namespace", "vrf"])[
@@ -81,15 +62,20 @@ class RoutesObj(SqEngineObject):
                           hosts_with_defrt_per_vrfns[i] == hosts_per_vrfns[i]})
          for i in hosts_with_defrt_per_vrfns.keys()}
 
-        # Eliminate all the fields without the desired namespace if provided
-        # As described earlier this is only required for routes
-        namespaces = set(tuple(kwargs.get("namespace", [])))
-        if namespaces:
-            nskeys = set(tuple(self.ns.keys()))
-            deselect_keys = nskeys - namespaces
-            if deselect_keys:
-                for key in deselect_keys:
-                    del self.ns[key]
+        for field in ['hostname', 'vrf']:
+            self._add_field_to_summary(field, 'nunique')
+
+        self._add_field_to_summary('prefix', 'count', 'rows')
+        self._add_field_to_summary('prefix', 'nunique', 'uniqueRoutes')
+
+        self._add_list_or_count_to_summary('protocol')
+        for ns in self.ns:
+            self.ns[ns].update({'interfaceRoutes': ifr_per_ns[ns]})
+            self.ns[ns].update({'hostRoutes': hr_per_ns[ns]})
+
+        self.summary_row_order = ['hostname', 'vrf', 'rows', 'uniqueRoutes',
+                                  'routesperHost', 'routesperVrf', 'hostRoutes',
+                                  'interfaceRoutes', 'protocol', 'hostsNoDefRoute']
 
         self._post_summarize()
         return self.ns_df.convert_dtypes()
