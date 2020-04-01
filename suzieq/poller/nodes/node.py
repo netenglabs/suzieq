@@ -6,12 +6,12 @@ from datetime import datetime
 import logging
 import random
 from http import HTTPStatus
+import json
 
 import yaml
 from urllib.parse import urlparse
 
 import asyncio
-import asyncio.futures as futures
 import asyncssh
 import aiohttp
 from asyncio.subprocess import PIPE
@@ -109,7 +109,7 @@ class Node(object):
     backoff = 15  # secs to backoff
     init_again_at = 0  # after this epoch secs, try init again
     connect_timeout = 10  # connect timeout in seconds
-    cmd_timeout = 10  # command wait timeout in seconds
+    cmd_timeout = 10  # default command timeout in seconds
     batch_size = 4    # Number of commands to issue in parallel
     bootupTimestamp = 0
     _service_queue = None
@@ -335,7 +335,7 @@ class Node(object):
 
                 tasks = list(pending)
 
-    async def ssh_gather(self, service_callback, cmd_list, cb_token):
+    async def ssh_gather(self, service_callback, cmd_list, cb_token, timeout):
         """Given a dictionary of commands, run ssh and place output on service callback"""
 
         result = []
@@ -357,10 +357,11 @@ class Node(object):
         if isinstance(cb_token, RsltToken):
             cb_token.node_token = self.bootupTimestamp
 
+        timeout = timeout or self.cmd_timeout
         for cmd in cmd_list:
             try:
                 output = await asyncio.wait_for(self._conn.run(cmd),
-                                                timeout=self.cmd_timeout)
+                                                timeout=timeout)
                 result.append(self._create_result(
                     cmd, output.exit_status, output.stdout))
             except Exception as e:
@@ -439,13 +440,16 @@ class Node(object):
     async def rest_gather(self, svc_dict, oformat="json"):
         raise NotImplementedError
 
-    async def exec_cmd(self, service_callback, cmd_list, cb_token, oformat='json'):
+    async def exec_cmd(self, service_callback, cmd_list, cb_token,
+                       oformat='json', timeout=None):
         if self.transport == "ssh":
-            await self.ssh_gather(service_callback, cmd_list, cb_token)
+            await self.ssh_gather(service_callback, cmd_list, cb_token, timeout)
         elif self.transport == "https":
-            result = await self.rest_gather(service_callback, cmd_list, cb_token, oformat)
+            result = await self.rest_gather(service_callback, cmd_list,
+                                            cb_token, oformat, timeout)
         elif self.transport == "local":
-            result = await self.local_gather(service_callback, cmd_list, cb_token)
+            result = await self.local_gather(service_callback, cmd_list,
+                                             cb_token, timeout)
         else:
             self.logger.error(
                 "Unsupported transport {} for node {}".format(
@@ -502,7 +506,7 @@ class Node(object):
             cmd = [cmd]
 
         return await self.exec_cmd(service_callback, cmd, cb_token,
-                                   oformat=oformat)
+                                   oformat=oformat, timeout=cb_token.timeout)
 
 
 class EosNode(Node):
@@ -510,11 +514,14 @@ class EosNode(Node):
         super()._init(kwargs)
         self.devtype = "eos"
 
-    async def rest_gather(self, cmd_list=None, oformat="json"):
+    async def rest_gather(self, cmd_list, cb_token, oformat="json",
+                          timeout=None):
 
         result = []
         if not cmd_list:
             return result
+
+        timeout = timeout or self.cmd_timeout
 
         now = int(datetime.utcnow().timestamp() * 1000)
         auth = aiohttp.BasicAuth(self.username, password=self.password)
@@ -537,7 +544,7 @@ class EosNode(Node):
             async with aiohttp.ClientSession(
                     auth=auth,
                     conn_timeout=self.connect_timeout,
-                    read_timeout=self.cmd_timeout,
+                    read_timeout=timeout,
                     connector=aiohttp.TCPConnector(ssl=False),
             ) as session:
                 async with session.post(url, json=data, headers=headers) as response:
@@ -599,7 +606,8 @@ class CumulusNode(Node):
         super()._init(kwargs)
         self.devtype = "cumulus"
 
-    async def rest_gather(self, cmd_list=None):
+    async def rest_gather(self, cmd_list, cb_token, oformat='json',
+                          timeout=None):
 
         result = []
         if not cmd_list:
@@ -608,12 +616,11 @@ class CumulusNode(Node):
         auth = aiohttp.BasicAuth(self.username, password=self.password)
         url = "https://{0}:{1}/nclu/v1/rpc".format(self.address, self.port)
         headers = {"Content-Type": "application/json"}
-        timeout = aiohttp.ClientTimeout(total=5)
 
         try:
             async with aiohttp.ClientSession(
                     auth=auth,
-                    timeout=self.cmd_timeout,
+                    timeout=timeout or self.cmd_timeout,
                     connector=aiohttp.TCPConnector(ssl=False),
             ) as session:
                 for cmd in cmd_list:

@@ -27,6 +27,7 @@ class RsltToken:
     bootupTimestamp: int
     nodeQsize: int        # Size of the node q at queuing time
     service: str          # Name of this service, if node needs it
+    timeout: int          # timeout value for cmd to complete
 
 
 @dataclass
@@ -275,7 +276,8 @@ class Service(object):
     def call_node_postcmd(self, postcall, nodename) -> None:
         """Start data gathering by calling the post command list"""
         if postcall and postcall['postq']:
-            token = RsltToken(int(time.time()*1000), nodename, 0, 0, self.name)
+            token = RsltToken(int(time.time()*1000), nodename, 0, 0, self.name,
+                              self.period-5)
             postcall['postq'](self.post_results, self.defn, token)
 
     async def start_data_gather(self) -> None:
