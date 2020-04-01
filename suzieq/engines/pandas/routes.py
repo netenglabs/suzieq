@@ -47,7 +47,7 @@ class RoutesObj(SqEngineObject):
         for field in ['hostname', 'vrf']:
             self._add_field_to_summary(field, 'nunique')
 
-        self._add_field_to_summary('prefix', 'count', 'routes')
+        self._add_field_to_summary('prefix', 'count', 'rows')
         self._add_field_to_summary('prefix', 'nunique', 'uniqueRoutes')
 
 

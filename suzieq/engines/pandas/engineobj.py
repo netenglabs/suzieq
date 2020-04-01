@@ -305,10 +305,19 @@ class SqEngineObject(object):
         if df.empty:
             return df
 
-        self.ns = {i: {} for i in df["namespace"].unique()}
+        self.ns = {i: {} for i in df['namespace'].unique()}
         self.nsgrp = df.groupby(by=["namespace"])
 
     def _post_summarize(self):
+        # this is needed in the case that there is a namespace that has no
+        # data for this command
+        delete_keys = []
+        for ns in self.ns:
+            if self.ns[ns]['rows'] == 0:
+                delete_keys.append(ns)
+        for ns in delete_keys:
+            del(self.ns[ns])
+
         ns_df = pd.DataFrame(self.ns)
         if len(self.summary_row_order) > 0:
             ns_df = ns_df.reindex(self.summary_row_order, axis=0)
@@ -319,7 +328,7 @@ class SqEngineObject(object):
             field_name = field
         field_per_ns = getattr(self.nsgrp[field], method)()
         {self.ns[i].update({field_name: field_per_ns[i]})
-         for i in field_per_ns.keys()}
+         for i in self.ns.keys()}
 
     def _add_list_or_count_to_summary(self, field, field_name=None):
         """if there are less than 3 unique things, add as a list, otherwise return the count"""
@@ -327,12 +336,16 @@ class SqEngineObject(object):
             field_name = field
 
         count_per_ns = self.nsgrp[field].nunique()
-        unique_per_ns = self.nsgrp[field].value_counts()
-        for n in count_per_ns.keys():
-            if count_per_ns[n] <= 3:
-                value = unique_per_ns[n].to_dict()
+
+        for n in self.ns.keys():
+            if 3 >= count_per_ns[n] > 0:
+                # can't do a value_counts on all groups, incase one of the groups other groups doesn't have data
+                unique_for_ns = self.nsgrp.get_group(n)[field].value_counts()
+                value = unique_for_ns.to_dict()
+
             else:
                 value = count_per_ns[n]
+
             self.ns[n].update({field_name: value})
 
     def _add_stats_to_summary(self, groupby, fieldname):
@@ -341,6 +354,6 @@ class SqEngineObject(object):
         max_field = groupby.max()
         min_field = groupby.min()
         {self.ns[i].update({fieldname: []}) for i in self.ns.keys()}
-        {self.ns[i][fieldname].append(min_field[i]) for i in min_field.keys()}
-        {self.ns[i][fieldname].append(max_field[i]) for i in max_field.keys()}
-        {self.ns[i][fieldname].append(med_field[i]) for i in med_field.keys()}
+        {self.ns[i][fieldname].append(min_field[i]) for i in self.ns.keys()}
+        {self.ns[i][fieldname].append(max_field[i]) for i in self.ns.keys()}
+        {self.ns[i][fieldname].append(med_field[i]) for i in self.ns.keys()}
