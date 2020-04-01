@@ -91,67 +91,67 @@ class SqEngineObject(object):
             **kwargs
         )
 
-        namespace = kwargs.get("namespace", None)
-        if not namespace:
-            namespace = self.ctxt.namespace
+        # namespace = kwargs.get("namespace", None)
+        # if not namespace:
+        #     namespace = self.ctxt.namespace
 
-        if not namespace:
-            namespace = []
+        # if not namespace:
+        #     namespace = []
 
-        if table_df.empty:
-            return table_df
+        # if table_df.empty:
+        #     return table_df
 
-        if table != "system":
-            # This merge is required to ensure that we don't serve out
-            # stale data that was obtained before the current run of
-            # the agent or from before the system came up
-            # We need the system DF cached to avoid slowdown in serving
-            # data.
-            # TODO: Find a way to invalidate the system df cache.
+        # if table != "system":
+        #     # This merge is required to ensure that we don't serve out
+        #     # stale data that was obtained before the current run of
+        #     # the agent or from before the system came up
+        #     # We need the system DF cached to avoid slowdown in serving
+        #     # data.
+        #     # TODO: Find a way to invalidate the system df cache.
 
-            drop_cols = ["timestamp_y"]
+        #     drop_cols = ["timestamp_y"]
 
-            if self.iobj.start_time or self.iobj.end_time:
-                sys_cols = ["namespace", "hostname", "timestamp"]
-                sys_sort = ["namespace", "hostname"]
-                sys_df = self.ctxt.engine.get_table_df(
-                    self.cfg,
-                    self.schemas,
-                    table="system",
-                    view=self.iobj.view,
-                    start_time=self.iobj.start_time,
-                    end_time=self.iobj.end_time,
-                    namespace=namespace,
-                    sort_fields=sys_sort,
-                    columns=sys_cols,
-                )
-            else:
-                sys_df = self.system_df(namespace)
+        #     if self.iobj.start_time or self.iobj.end_time:
+        #         sys_cols = ["namespace", "hostname", "timestamp"]
+        #         sys_sort = ["namespace", "hostname"]
+        #         sys_df = self.ctxt.engine.get_table_df(
+        #             self.cfg,
+        #             self.schemas,
+        #             table="system",
+        #             view=self.iobj.view,
+        #             start_time=self.iobj.start_time,
+        #             end_time=self.iobj.end_time,
+        #             namespace=namespace,
+        #             sort_fields=sys_sort,
+        #             columns=sys_cols,
+        #         )
+        #     else:
+        #         sys_df = self.system_df(namespace)
 
-            if sys_df.empty:
-                return sys_df
+        #     if sys_df.empty:
+        #         return sys_df
 
-            key_fields = [f["name"] for f in self.schemas.get(table)
-                          if f.get("key", None) is not None]
+        #     key_fields = [f["name"] for f in self.schemas.get(table)
+        #                   if f.get("key", None) is not None]
 
-            final_df = (
-                table_df.merge(sys_df, on=["namespace", "hostname"])
-                .dropna(how="any", subset=key_fields)
-                .query("timestamp_x >= timestamp_y")
-                .drop(columns=drop_cols)
-                .rename(
-                    index=str,
-                    columns={
-                        "namespace_x": "namespace",
-                        "hostname_x": "hostname",
-                        "timestamp_x": "timestamp",
-                    },
-                )
-            )
-        else:
-            final_df = table_df
+        #     final_df = (
+        #         table_df.merge(sys_df, on=["namespace", "hostname"])
+        #         .dropna(how="any", subset=key_fields)
+        #         .query("timestamp_x >= timestamp_y")
+        #         .drop(columns=drop_cols)
+        #         .rename(
+        #             index=str,
+        #             columns={
+        #                 "namespace_x": "namespace",
+        #                 "hostname_x": "hostname",
+        #                 "timestamp_x": "timestamp",
+        #             },
+        #         )
+        #     )
+        # else:
+        #     final_df = table_df
 
-        return final_df
+        return table_df
 
     def get(self, **kwargs):
         if not self.iobj._table:
@@ -334,7 +334,7 @@ class SqEngineObject(object):
             else:
                 value = count_per_ns[n]
             self.ns[n].update({field_name: value})
-            
+
     def _add_stats_to_summary(self, groupby, fieldname):
         """ takes the pandas groupby object and adds min, max, and median to self.ns"""
         med_field = groupby.median()
@@ -344,4 +344,3 @@ class SqEngineObject(object):
         {self.ns[i][fieldname].append(min_field[i]) for i in min_field.keys()}
         {self.ns[i][fieldname].append(max_field[i]) for i in max_field.keys()}
         {self.ns[i][fieldname].append(med_field[i]) for i in med_field.keys()}
-
