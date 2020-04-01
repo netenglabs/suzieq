@@ -15,6 +15,7 @@ import asyncio.futures as futures
 import asyncssh
 import aiohttp
 from asyncio.subprocess import PIPE
+from concurrent.futures._base import TimeoutError
 
 from suzieq.poller.services.service import RsltToken
 
@@ -117,16 +118,28 @@ class Node(object):
     svcs_proc = set()
     error_svcs_proc = set()
     ssh_ready = asyncio.Event()
+    _last_exception = None
+    _last_exception_timestamp = None
 
     @property
     def status(self):
         return self._status
+
+    @property
+    def last_exception(self) -> Exception:
+        return self._last_exception
+
+    @last_exception.setter
+    def last_exception(self, val: Exception):
+        self._last_exception = val
+        self._last_exception_timestamp = int(time.time()*1000)
 
     async def _init(self, **kwargs):
         if not kwargs:
             raise ValueError
 
         self.address = kwargs["address"]
+        self.hostname = kwargs["address"]  # default till we get hostname
         self.username = kwargs.get("username", "vagrant")
         self.password = kwargs.get("password", "vagrant")
         self.transport = kwargs.get("transport", "ssh")
@@ -165,10 +178,11 @@ class Node(object):
             try:
                 await self.get_device_type_hostname()
                 devtype = self.devtype
-            except (OSError, futures.TimeoutError):
+            except Exception as e:
+                self.last_exception = e
                 devtype = None
 
-            if devtype is None:
+            if not devtype:
                 self._status = "init"
                 return
             else:
@@ -207,7 +221,7 @@ class Node(object):
                              'show hostname'], None)
 
     async def _parse_device_type_hostname(self, output, cb_token) -> None:
-        devtype = "Unknown"
+        devtype = ""
         hostname = None
 
         if output[0]["status"] == 0:
@@ -268,7 +282,7 @@ class Node(object):
         if hostname:
             self.hostname = hostname
 
-    async def local_gather(self, service_callback, cmd_list=None) -> None:
+    async def local_gather(self, service_callback, cmd_list, cb_token) -> None:
         """Given a dictionary of commands, run locally and return outputs"""
 
         result = []
@@ -282,17 +296,16 @@ class Node(object):
 
                 if not proc.returncode:
                     d = stdout.decode('ascii', 'ignore')
-                    result.append(self._create_result(cmd, proc.returncode, d))
+                    result.append(self._create_result(cmd))
                 else:
                     d = stderr('ascii', 'ignore')
-                    result.append(self._create_error(cmd, proc.returncode, d))
+                    result.append(self._create_error(cmd))
 
             except asyncio.TimeoutError as e:
-                result.append(self._create_error(cmd,
-                                                 HTTPStatus.REQUEST_TIMEOUT,
-                                                 e))
+                self.last_exception = e
+                result.append(self._create_error(cmd))
 
-        await service_callback(result)
+        await service_callback(result, cb_token)
 
     async def init_boot_time(self):
         """Fill in the boot time of the node by running the appropriate command"""
@@ -337,8 +350,7 @@ class Node(object):
                     self.logger.error(
                         "Unable to connect to node {} cmd {}".format(
                             self.hostname, cmd))
-                    result.append(self._create_error(
-                        cmd, HTTPStatus.REQUEST_TIMEOUT, "Unable to connect"))
+                    result.append(self._create_error(cmd))
                 await service_callback(result, cb_token)
                 return
 
@@ -351,27 +363,12 @@ class Node(object):
                                                 timeout=self.cmd_timeout)
                 result.append(self._create_result(
                     cmd, output.exit_status, output.stdout))
-            except (
-                    asyncio.TimeoutError,
-                    ConnectionResetError,
-                    ConnectionRefusedError,
-                    OSError,
-                    asyncssh.misc.DisconnectError,
-            ) as e:
-                result.append(self._create_error(cmd,
-                                                 HTTPStatus.REQUEST_TIMEOUT,
-                                                 e))
+            except Exception as e:
+                self.last_exception = e
+                result.append(self._create_error(cmd))
                 self.logger.error(
                     "Unable to connect to node {} cmd {}".format(
                         self.hostname, cmd))
-                self._conn = None
-                break
-            except asyncssh.misc.ChannelOpenError as e:
-                self.logger.error(
-                    "Unable to connect to node {} cmd {}".format(
-                        self.hostname, cmd))
-                result.append(self._create_error(
-                    cmd, HTTPStatus.REQUEST_TIMEOUT, e))
                 self._conn = None
                 break
 
@@ -402,25 +399,28 @@ class Node(object):
                     ),
                     timeout=self.cmd_timeout,
                 )
-                self.logger.warning(
+                self.logger.info(
                     f"Connected to {self.address} at {time.time()}")
                 self.ssh_ready.set()
                 if init_boot_time:
                     await self.init_boot_time()
-            except (
-                    asyncio.TimeoutError,
-                    ConnectionResetError,
-                    OSError,
-                    ConnectionRefusedError,
-                    asyncssh.misc.DisconnectError,
-            ) as e:
+            except Exception as e:
                 self.logger.error(f"ERROR: Unable to connect, {str(e)}")
+                self.last_exception = e
                 self._conn = None
                 self.ssh_ready.set()
         return
 
-    def _create_error(self, cmd, status: int, error: str) -> dict:
-        data = {'error': str(error)}
+    def _create_error(self, cmd) -> dict:
+        data = {'error': str(self.last_exception)}
+        if isinstance(self.last_exception, TimeoutError):
+            status = HTTPStatus.REQUEST_TIMEOUT
+        elif isinstance(self.last_exception, asyncssh.misc.ProtocolError):
+            status = HTTPStatus.FORBIDDEN
+        elif hasattr(self.last_exception, 'code'):
+            status = self.last_exception.code
+        else:
+            status = -1
         return self._create_result(cmd, status, data)
 
     def _create_result(self, cmd, status, data) -> dict:
@@ -468,9 +468,7 @@ class Node(object):
                 await self.init_node()
 
         if self._status == "init":
-            result.append(self._create_result(svc_defn,
-                                              HTTPStatus.SERVICE_UNAVAILABLE,
-                                              result))
+            result.append(self._create_error(svc_defn.get("service", "-")))
             return await service_callback(result, cb_token)
 
         # Update our boot time value into the callback token
@@ -562,20 +560,10 @@ class EosNode(Node):
                         "data": output[i] if type(output) is list else output,
                     }
                 )
-        except (asyncio.TimeoutError, OSError) as e:
+        except Exception as e:
+            self.last_exception = e
             for cmd in cmd_list:
-                result.append(
-                    {
-                        "status": HTTPStatus.REQUEST_TIMEOUT,
-                        "timestamp": int(datetime.utcnow().timestamp() * 1000),
-                        "cmd": cmd,
-                        "devtype": self.devtype,
-                        "namespace": self.nsname,
-                        "hostname": self.hostname,
-                        "address": self.address,
-                        "data": {"error": str(e)},
-                    }
-                )
+                result.append(self._create_error(cmd))
 
         return result
 
@@ -645,19 +633,9 @@ class CumulusNode(Node):
                                 "data": await response.text(),
                             }
                         )
-        except asyncio.TimeoutError as e:
-            result.append(
-                {
-                    "status": HTTPStatus.REQUEST_TIMEOUT,
-                    "timestamp": int(datetime.utcnow().timestamp() * 1000),
-                    "cmd": cmd,
-                    "devtype": self.devtype,
-                    "namespace": self.nsname,
-                    "hostname": self.hostname,
-                    "address": self.address,
-                    "data": {"error": str(e)},
-                }
-            )
+        except Exception as e:
+            self.last_exception = e
+            result.append(self._create_error(cmd))
 
         return result
 
