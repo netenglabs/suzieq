@@ -44,7 +44,7 @@ class InterfacesObj(SqEngineObject):
             .groupby(by=["namespace"])["numChanges"]
 
         self._add_field_to_summary('hostname', 'nunique', 'hosts')
-        self._add_field_to_summary('ifname', 'count', 'interfaces')
+        self._add_field_to_summary('ifname', 'count', 'rows')
         for field in ['mtu']:
             self._add_list_or_count_to_summary(field)
 
@@ -56,21 +56,18 @@ class InterfacesObj(SqEngineObject):
             self.ns[i].update({'hasVxlan': (has_vxlan_perns[i] > 0)})
             self.ns[i].update({'downPortCount': downif_per_ns[i]})
 
-        # Eliminate all the fields without the desired namespace if provided
-        # As described earlier this is only required for routes
-        namespaces = set(tuple(kwargs.get("namespace", [])))
-        if namespaces:
-            nskeys = set(tuple(self.ns.keys()))
-            deselect_keys = nskeys - namespaces
-            if deselect_keys:
-                for key in deselect_keys:
-                    del self.ns[key]
-        self.summary_row_order = ['hosts', 'interfaces', 'ifPerHost',
+        # TODO:
+        #  interfaces with V4 and V6
+        #  interface types
+        #  loopbacks with and without IPs
+
+        self.summary_row_order = ['hosts', 'rows', 'ifPerHost',
                                   'hostsWithL2', 'hasVxlan', 'mtu',
                                   'downPortCount', 'ifChanges']
 
         self._post_summarize()
         return self.ns_df.convert_dtypes()
+
 
     def _assert_mtu_value(self, **kwargs) -> pd.DataFrame:
         """Workhorse routine to match MTU value"""

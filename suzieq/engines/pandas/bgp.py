@@ -13,7 +13,7 @@ class BgpObj(SqEngineObject):
             return self.summary_df
 
         self._add_field_to_summary('hostname', 'nunique', 'hosts')
-        self._add_field_to_summary('hostname', 'count', 'sessions')
+        self._add_field_to_summary('hostname', 'count', 'rows')
         for field in ['asn', 'vrf', 'peerAsn']:
             self._add_list_or_count_to_summary(field)
 
@@ -52,7 +52,7 @@ class BgpObj(SqEngineObject):
                 self.ns[i]['afi-safi'].append('evpn')
             self.ns[i].update({'downSessions': down_sessions_per_ns.get(i, 0)})
 
-        self.summary_row_order = ['hosts', 'sessions', 'asn', 'peerAsn', 'vrf',
+        self.summary_row_order = ['hosts', 'rows', 'asn', 'peerAsn', 'vrf',
                                   'afi-safi', 'upTimes', 'v4PfxRx',
                                   'v6PfxRx', 'evpnPfxRx', 'updatesRx',
                                   'updatesTx', 'downSessions']
