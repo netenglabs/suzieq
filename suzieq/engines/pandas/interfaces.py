@@ -43,9 +43,13 @@ class InterfacesObj(SqEngineObject):
         linkif_transitions = self.summary_df[self.summary_df.type.str.startswith('ether')] \
             .groupby(by=["namespace"])["numChanges"]
 
+        # num  of interfaces that have more than one IP
+        mt1_ip_per_interface = self.summary_df[self.summary_df.apply(
+            lambda x: len(x['ipAddressList']) > 1,
+            axis=1)].groupby(by=['namespace'])['ifname'].count()
         self._add_field_to_summary('hostname', 'nunique', 'hosts')
         self._add_field_to_summary('ifname', 'count', 'rows')
-        for field in ['mtu']:
+        for field in ['mtu', 'state', 'type']:
             self._add_list_or_count_to_summary(field)
 
         self._add_stats_to_summary(ifs_per_hostns, 'ifPerHost')
@@ -55,6 +59,17 @@ class InterfacesObj(SqEngineObject):
             self.ns[i].update({'hostsWithL2': hosts_l2_per_ns[i]})
             self.ns[i].update({'hasVxlan': (has_vxlan_perns[i] > 0)})
             self.ns[i].update({'downPortCount': downif_per_ns[i]})
+            self.ns[i].update({'mtOneIpPerInterface': mt1_ip_per_interface[i]})
+
+        original_summary_df = self.summary_df
+        self.summary_df = original_summary_df.explode('ipAddressList').dropna(how='any')
+        self.nsgrp = self.summary_df.groupby(by=["namespace"])
+        self._add_field_to_summary('ipAddressList', 'nunique', 'ipV4Addresses')
+
+        self.summary_df = original_summary_df.explode('ip6AddressList').dropna(how='any')
+        self.nsgrp = self.summary_df.groupby(by=["namespace"])
+        self._add_field_to_summary('ip6AddressList', 'nunique', 'ipV6Addresses')
+
 
         # TODO:
         #  interfaces with V4 and V6
@@ -62,12 +77,12 @@ class InterfacesObj(SqEngineObject):
         #  loopbacks with and without IPs
 
         self.summary_row_order = ['hosts', 'rows', 'ifPerHost',
-                                  'hostsWithL2', 'hasVxlan', 'mtu',
-                                  'downPortCount', 'ifChanges']
+                                  'hostsWithL2', 'hasVxlan', 'mtu', 'type',
+                                  'ipV4Addresses', 'ipV6Addresses', 'mtOneIpPerInterface',
+                                  'downPortCount', 'state', 'ifChanges']
 
         self._post_summarize()
         return self.ns_df.convert_dtypes()
-
 
     def _assert_mtu_value(self, **kwargs) -> pd.DataFrame:
         """Workhorse routine to match MTU value"""

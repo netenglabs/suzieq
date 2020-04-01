@@ -40,7 +40,7 @@ tests:
   - command: interface summarize --format=json
     data-directory: tests/data/multidc/parquet-out
     output: |
-      {"dual-evpn":{"hosts":14,"rows":178,"ifPerHost":[4,23,9.5],"hostsWithL2":7,"hasVxlan":true,"mtu":4,"downPortCount":9,"ifChanges":[0,0,0]},"ospf-ibgp":{"hosts":13,"rows":155,"ifPerHost":[0,23,9.0],"hostsWithL2":6,"hasVxlan":true,"mtu":4,"downPortCount":9,"ifChanges":[0,0,0]},"ospf-single":{"hosts":14,"rows":96,"ifPerHost":[3,10,9.0],"hostsWithL2":4,"hasVxlan":false,"mtu":{"1500":74,"65536":22},"downPortCount":17,"ifChanges":[0,0,0]}}
+      {"dual-evpn":{"hosts":14,"rows":178,"ifPerHost":[4,23,9.5],"hostsWithL2":7,"hasVxlan":true,"mtu":4,"type":9,"ipV4Addresses":59,"ipV6Addresses":80,"mtOneIpPerInterface":5,"downPortCount":9,"state":{"up":169,"unknown":5,"down":4},"ifChanges":[0,0,0]},"ospf-ibgp":{"hosts":13,"rows":155,"ifPerHost":[0,23,9.0],"hostsWithL2":6,"hasVxlan":true,"mtu":4,"type":9,"ipV4Addresses":55,"ipV6Addresses":73,"mtOneIpPerInterface":4,"downPortCount":9,"state":{"up":146,"unknown":5,"down":4},"ifChanges":[0,0,0]},"ospf-single":{"hosts":14,"rows":96,"ifPerHost":[3,10,9.0],"hostsWithL2":4,"hasVxlan":false,"mtu":{"1500":74,"65536":22},"type":5,"ipV4Addresses":30,"ipV6Addresses":45,"mtOneIpPerInterface":0,"downPortCount":17,"state":{"up":79,"down":12,"unknown":5},"ifChanges":[0,0,0]}}
     marks: interface summarize
 
   - command: lldp summarize --format=json
