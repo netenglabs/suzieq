@@ -59,21 +59,11 @@ class BgpCmd(SqCommand):
         """
         Summarize bgp info
         """
-        # Get the default display field names
-        now = time.time()
-
-        if self.columns != ["default"]:
-            return self._gen_output(pd.DataFrame(
-                {'error': ['ERROR: You cannot specify columns with summarize']}))
-
-        df = self.sqobj.summarize(
-            namespace=self.namespace,
-        )
+        self._init_summarize()
 
         # Convert columns into human friendly format
-        if not df.empty:
-            df.loc['upTimes'] = df.loc['upTimes'] \
+        if (not self.summarize_df.empty) and ('upTimes' in self.summarize_df.T.columns):
+            self.summarize_df.loc['upTimes'] = self.summarize_df.loc['upTimes'] \
                 .map(lambda x: [str(timedelta(seconds=int(i))) for i in x])
 
-        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        return self._gen_output(df, json_orient="columns")
+        return self._post_summarize()

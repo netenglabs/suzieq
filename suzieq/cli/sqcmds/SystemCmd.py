@@ -67,14 +67,3 @@ class SystemCmd(SqCommand):
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
 
-    @command("summarize", help="Summarize system information")
-    def summarize(self, groupby: str = ""):
-        """
-        Summarize system info
-        """
-        now = time.time()
-        df = self.sqobj.summarize(
-            namespace=self.namespace,
-        )
-        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        return self._gen_output(df)

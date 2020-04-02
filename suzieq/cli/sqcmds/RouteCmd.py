@@ -76,22 +76,6 @@ class RouteCmd(SqCommand):
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
 
-    @command("summarize")
-    @argument("vrf", description="Specific VRF to qualify")
-    def summarize(self, prefix: str = "", vrf: str = ''):
-        """
-        Summarize Routing info
-        """
-        # Get the default display field names
-        now = time.time()
-
-        df = self.sqobj.summarize(
-            vrf=vrf.split(),
-            namespace=self.namespace,
-        )
-        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        return self._gen_output(df, json_orient='columns')
-
     @command('lpm')
     @argument("address", description="IP Address, in quotes, for lpm query")
     @argument("vrf", description="specific VRF to qualify")

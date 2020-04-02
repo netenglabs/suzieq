@@ -134,8 +134,10 @@ class SqCommand:
     def aver(self, **kwargs):
         raise NotImplementedError
 
+    @command("summarize", help='produce a summarize of the data')
     def summarize(self, **kwargs):
-        raise NotImplementedError
+        self._init_summarize()
+        return self._post_summarize()
 
     def top(self, **kwargs):
         raise NotImplementedError
@@ -155,3 +157,18 @@ class SqCommand:
             df = pd.DataFrame({'error': ['ERROR: {}'.format(str(e))]})
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
+
+    def _init_summarize(self):
+        self.now = time.time()
+        if self.columns != ["default"]:
+            self.summarize_df = pd.DataFrame(
+                {'error': ['ERROR: You cannot specify columns with summarize']})
+            return self.summarize_df
+
+        self.summarize_df = self.sqobj.summarize(
+            namespace=self.namespace,
+        )
+
+    def _post_summarize(self):
+        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - self.now)
+        return self._gen_output(self.summarize_df)

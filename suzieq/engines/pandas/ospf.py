@@ -37,7 +37,7 @@ class OspfObj(SqEngineObject):
             return self.summary_df
 
         if table == 'ospfNbr':
-            self._add_field_to_summary('hostname', 'count', 'sessions')
+            self._add_field_to_summary('hostname', 'count', 'rows')
             self._add_field_to_summary('hostname', 'nunique', 'hosts')
             for field in ['vrf', 'area', 'nbrPrio', 'state', 'peerRouterId']:
                 self._add_list_or_count_to_summary(field)
@@ -51,7 +51,7 @@ class OspfObj(SqEngineObject):
                 self._add_stats_to_summary(field_stat, field)
 
             # order data.
-            self.summary_row_order = ['hosts', 'sessions', 'area', 'vrf', 'state',
+            self.summary_row_order = ['hosts', 'rows', 'area', 'vrf', 'state',
                                       'nbrPrio', 'peerRouterId', 'lastChangeTime',
                                       'numChanges', 'lsaRetxCnt']
 
@@ -60,14 +60,14 @@ class OspfObj(SqEngineObject):
                           'state', 'areaStub', 'area', 'passive',
                           'nbrCount', 'networkType', 'isUnnumbered']:
                 self._add_list_or_count_to_summary(field)
-            self._add_field_to_summary('hostname', 'count', 'interfaces')
+            self._add_field_to_summary('hostname', 'count', 'rows')
 
-            self.summary_row_order = ['interfaces', 'state', 'nbrCount', 'isUnnumbered',
+            self.summary_row_order = ['rows', 'state', 'nbrCount', 'isUnnumbered',
                                       'area', 'vrf', 'networkType', 'passive', 'areaStub',
                                       'cost', 'helloTime', 'deadTime', 'retxTime']
 
         # TODO
-        # need to do something about loopacks without address or something
+        # need to do something about loopbacks without address or something
 
         self._post_summarize()
         return self.ns_df.convert_dtypes()

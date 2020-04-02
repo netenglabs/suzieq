@@ -60,20 +60,6 @@ class InterfaceCmd(SqCommand):
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
 
-    @command("summarize")
-    def summarize(self):
-        """
-        Summarize interface info
-        """
-        # Get the default display field names
-        now = time.time()
-
-        df = self.sqobj.summarize(
-            namespace=self.namespace,
-        )
-        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        return self._gen_output(df, json_orient='columns')
-
     @command("assert")
     @argument("ifname", description="interface name to qualify")
     @argument(
