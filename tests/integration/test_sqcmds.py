@@ -211,8 +211,6 @@ def test_show_start_time_filter(setup_nubia, cmd):
 bad_start_time_commands.pop(3)  # EvpnVniCmd
 bad_start_time_commands.pop(7)  # Ospfcmd
 @pytest.mark.filter
-@pytest.mark.xfail(reason='bug #34',
-                   raises=dateutil.parser._parser.ParserError)
 @pytest.mark.parametrize("cmd", bad_start_time_commands)
 def test_bad_start_time_filter(setup_nubia, cmd):
     filter = {'start_time': 'unknown'}

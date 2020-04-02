@@ -1,6 +1,7 @@
 import pandas as pd
 import pyarrow as pa
 from suzieq.utils import SchemaForTable
+from dateutil.parser import parse, ParserError
 
 
 class SqEngineObject(object):
@@ -79,6 +80,14 @@ class SqEngineObject(object):
         if not self.ctxt.engine:
             print("Specify an analysis engine using set engine command")
             return pd.DataFrame(columns=["namespace", "hostname"])
+
+        for dt in [self.iobj.start_time, self.iobj.end_time]:
+            if dt:
+                try:
+                    parse(dt)
+                except (ValueError, ParserError) as e:
+                    print(f"invalid time {dt}: {e}")
+                    return pd.DataFrame()
 
         table_df = self.ctxt.engine.get_table_df(
             self.cfg,
