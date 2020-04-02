@@ -22,8 +22,9 @@ class MlagObj(SqEngineObject):
         self.summary_df = self.summary_df.explode('mlagInterfacesList').dropna(how='any')
         self.nsgrp = self.summary_df.groupby(by=["namespace"])
 
-        for field in ['mlagInterfacesList']:
-            self._add_list_or_count_to_summary(field)
+        if not self.summary_df.empty:
+            for field in ['mlagInterfacesList']:
+                self._add_list_or_count_to_summary(field)
 
         self._post_summarize()
         return self.ns_df.convert_dtypes()

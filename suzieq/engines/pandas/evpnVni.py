@@ -27,8 +27,9 @@ class EvpnvniObj(SqEngineObject):
         self.summary_df = self.summary_df.explode('remoteVteps').dropna(how='any')
         self.nsgrp = self.summary_df.groupby(by=["namespace"])
 
-        for field in ['remoteVteps']:
-            self._add_list_or_count_to_summary(field)
+        if not self.summary_df.empty:
+            for field in ['remoteVteps']:
+                self._add_list_or_count_to_summary(field)
 
 
         self._post_summarize()
