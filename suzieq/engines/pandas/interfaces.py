@@ -63,18 +63,16 @@ class InterfacesObj(SqEngineObject):
 
         original_summary_df = self.summary_df
         self.summary_df = original_summary_df.explode('ipAddressList').dropna(how='any')
-        self.nsgrp = self.summary_df.groupby(by=["namespace"])
-        self._add_field_to_summary('ipAddressList', 'nunique', 'ipV4Addresses')
+
+        if not self.summary_df.empty:
+            self.nsgrp = self.summary_df.groupby(by=["namespace"])
+            self._add_field_to_summary('ipAddressList', 'nunique', 'ipV4Addresses')
 
         self.summary_df = original_summary_df.explode('ip6AddressList').dropna(how='any')
-        self.nsgrp = self.summary_df.groupby(by=["namespace"])
-        self._add_field_to_summary('ip6AddressList', 'nunique', 'ipV6Addresses')
 
-
-        # TODO:
-        #  interfaces with V4 and V6
-        #  interface types
-        #  loopbacks with and without IPs
+        if not self.summary_df.empty:
+            self.nsgrp = self.summary_df.groupby(by=["namespace"])
+            self._add_field_to_summary('ip6AddressList', 'nunique', 'ipV6Addresses')
 
         self.summary_row_order = ['hosts', 'rows', 'ifPerHost',
                                   'hostsWithL2', 'hasVxlan', 'mtu', 'type',
