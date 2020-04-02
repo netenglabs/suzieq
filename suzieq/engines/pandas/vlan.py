@@ -37,32 +37,27 @@ class VlanObj(SqEngineObject):
     def summarize(self, **kwargs):
         """Describe the IP Address data"""
 
-        if not self.iobj._table:
-            raise NotImplementedError
+        self._init_summarize(self.iobj._table, **kwargs)
+        if self.summary_df.empty:
+            return self.summary_df
 
-        if self.ctxt.sort_fields is None:
-            sort_fields = None
-        else:
-            sort_fields = self.sort_fields
+        self._add_field_to_summary('hostname', 'count', 'rows')
+        for field in ['pvid']:
+            self._add_list_or_count_to_summary(field)
 
-        df = self.get_valid_df(self.iobj._table, sort_fields,
-                               **kwargs)
-        if not df.empty:
-            # To summarize accurately, we need to explode the vlan
-            # column from a list to an individual entry for each
-            # vlan in that list. The resulting set can be huge if them
-            # number of vlans times the ports is huge.
-            #
-            # the 'explode' only works post pandas 0.25
-            df = df.explode('vlan').dropna(how='any')
-            if kwargs.get("groupby"):
-                return df.groupby(kwargs["groupby"]) \
-                         .agg(lambda x: x.unique().tolist())
-            else:
-                for i in self.iobj._cat_fields:
-                    if (kwargs.get(i, []) or
-                            "default" in kwargs.get("columns", [])):
-                        df[i] = df[i].astype("category", copy=False)
-                return df.describe(include="all").fillna("-")
+        # To summarize accurately, we need to explode the vlan
+        # column from a list to an individual entry for each
+        # vlan in that list. The resulting set can be huge if them
+        # number of vlans times the ports is huge.
+        #
+        # the 'explode' only works post pandas 0.25
 
-        return df
+        self.summary_df = self.summary_df.explode('vlan').dropna(how='any')
+        self.nsgrp = self.summary_df.groupby(by=["namespace"])
+
+        for field in ['vlan']:
+            self._add_list_or_count_to_summary(field)
+
+
+        self._post_summarize()
+        return self.ns_df.convert_dtypes()

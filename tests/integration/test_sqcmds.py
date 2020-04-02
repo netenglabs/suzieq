@@ -166,7 +166,7 @@ def _test_good_show_filter(cmd, filter):
     if filter_key in s2.columns:
         # sometimes the filter isn't a part of the data returned
         assert len(s2[filter_key].unique()) == 1
-        assert s2[filter_key][0] == filter[filter_key]
+        assert s2[filter_key].iloc[0] == filter[filter_key]
         assert len(s1[filter_key].unique()) >= len(s2[filter_key].unique())
     return s1, s2
 

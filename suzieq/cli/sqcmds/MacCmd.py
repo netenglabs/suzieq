@@ -59,25 +59,3 @@ class MacCmd(SqCommand):
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
-
-    @command("summarize")
-    def summarize(self, vlan: str = "", macaddr: str = '',
-                  remoteVtepIp: str = "", groupby: str = ""):
-        """
-        Summarize MAC Table info
-        """
-        if self.columns is None:
-            return
-
-        # Get the default display field names
-        now = time.time()
-        if self.columns != ["default"]:
-            self.ctxt.sort_fields = None
-        else:
-            self.ctxt.sort_fields = []
-
-        df = self.sqobj.summarize(
-            namespace=self.namespace,
-        )
-        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        return self._gen_output(df)

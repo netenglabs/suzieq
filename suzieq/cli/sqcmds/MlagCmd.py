@@ -43,19 +43,3 @@ class MlagCmd(SqCommand):
         else:
             return self._gen_output(df)
 
-    @command('summarize')
-    @argument("groupby",
-              description="Space separated list of fields to summarize on")
-    def summarize(self, groupby: str = ''):
-        """
-        Summarize mlag info
-        """
-        if self.columns is None:
-            return
-
-        # Get the default display field names
-        now = time.time()
-
-        df = self.sqobj.summarize(namespace=self.namespace)
-        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        return self._gen_output(df)

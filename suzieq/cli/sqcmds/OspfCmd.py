@@ -101,33 +101,14 @@ class OspfCmd(SqCommand):
         """
         Summarize OSPF data
         """
-        if self.columns is None:
-            return
-
-        now = time.time()
-        if self.columns != ["default"]:
-            self.ctxt.sort_fields = None
-        else:
-            self.ctxt.sort_fields = []
-
-        df = self.sqobj.summarize(
-            hostname=self.hostname,
-            vrf=vrf.split(),
-            ifname=ifname.split(),
-            state=state,
-            columns=self.columns,
-            namespace=self.namespace,
-            type=type,
-            groupby=groupby.split(),
-        )
+        self._init_summarize()
         # TODO: time in this field looks ugly
         #  it shows too many fields, we want it to look like BGP estdTime does in bgp summarize
-        if not df.empty and 'lastChangeTime' in df.index:
-            df.loc['lastChangeTime'] = df.loc['lastChangeTime'] \
+        if not self.summarize_df.empty and 'lastChangeTime' in self.summarize_df.index:
+            self.summarize_df.loc['lastChangeTime'] = self.summarize_df.loc['lastChangeTime'] \
                 .map(lambda x: [str(pd.to_timedelta(i)) for i in x])
 
-        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        return self._gen_output(df)
+        return self._post_summarize()
 
     @command("assert")
     @argument("ifname", description="interface name to check OSPF on")
