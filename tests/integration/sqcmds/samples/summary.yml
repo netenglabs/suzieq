@@ -10,13 +10,13 @@ tests:
   - command: bgp summarize --format=json
     data-directory: tests/data/multidc/parquet-out
     output: |
-      {"dual-evpn":{"hosts":9,"rows":34,"asn":8,"peerAsn":9,"vrf":{"default":28,"internet-vrf":4,"evpn-vrf":2},"afi-safi":["ipv4","evpn"],"upTimes":["0:00:07","21:20:10","21:16:06"],"v4PfxRx":[2,16,13],"v6PfxRx":[0,0,0],"evpnPfxRx":[0,39,8],"updatesRx":[28,253,113.5],"updatesTx":[28,236,117.0],"downSessions":0},"ospf-ibgp":{"hosts":9,"rows":34,"asn":{"65000":28,"65001":4,"25253":2},"peerAsn":4,"vrf":{"default":28,"internet-vrf":4,"evpn-vrf":2},"afi-safi":["ipv4","evpn"],"upTimes":["6:10:36","1 day, 15:27:58","1 day, 15:27:03"],"v4PfxRx":[0,13,1],"v6PfxRx":[0,0,0],"evpnPfxRx":[0,38,8],"updatesRx":[7,126,16.0],"updatesTx":[5,126,11.5],"downSessions":0}}
+      [{"dual-evpn":9,"ospf-ibgp":9},{"dual-evpn":34,"ospf-ibgp":34},{"dual-evpn":8,"ospf-ibgp":{"65000":28,"65001":4,"25253":2}},{"dual-evpn":9,"ospf-ibgp":4},{"dual-evpn":{"default":28,"internet-vrf":4,"evpn-vrf":2},"ospf-ibgp":{"default":28,"internet-vrf":4,"evpn-vrf":2}},{"dual-evpn":["ipv4","evpn"],"ospf-ibgp":["ipv4","evpn"]},{"dual-evpn":["0:00:07","21:20:10","21:16:06"],"ospf-ibgp":["6:10:36","1 day, 15:27:58","1 day, 15:27:03"]},{"dual-evpn":[2,16,13],"ospf-ibgp":[0,13,1]},{"dual-evpn":[0,0,0],"ospf-ibgp":[0,0,0]},{"dual-evpn":[0,39,8],"ospf-ibgp":[0,38,8]},{"dual-evpn":[28,253,113.5],"ospf-ibgp":[7,126,16.0]},{"dual-evpn":[28,236,117.0],"ospf-ibgp":[5,126,11.5]},{"dual-evpn":0,"ospf-ibgp":0}]
     marks: bgp summarize
 
   - command: bgp summarize --format=json --namespace='dual-evpn'
     data-directory: tests/data/multidc/parquet-out
     output: |
-      {"dual-evpn":{"hosts":9,"rows":34,"asn":8,"peerAsn":9,"vrf":{"default":28,"internet-vrf":4,"evpn-vrf":2},"afi-safi":["ipv4","evpn"],"upTimes":["0:00:07","21:20:10","21:16:06"],"v4PfxRx":[2.0,16.0,13.0],"v6PfxRx":[0.0,0.0,0.0],"evpnPfxRx":[0.0,39.0,8.0],"updatesRx":[28.0,253.0,113.5],"updatesTx":[28.0,236.0,117.0],"downSessions":0}}
+      [{"dual-evpn":9},{"dual-evpn":34},{"dual-evpn":8},{"dual-evpn":9},{"dual-evpn":{"default":28,"internet-vrf":4,"evpn-vrf":2}},{"dual-evpn":["ipv4","evpn"]},{"dual-evpn":["0:00:07","21:20:10","21:16:06"]},{"dual-evpn":[2.0,16.0,13.0]},{"dual-evpn":[0.0,0.0,0.0]},{"dual-evpn":[0.0,39.0,8.0]},{"dual-evpn":[28.0,253.0,113.5]},{"dual-evpn":[28.0,236.0,117.0]},{"dual-evpn":0}]
     marks: bgp summarize filter
 
   - command: ospf summarize --format=json
@@ -28,7 +28,7 @@ tests:
   - command: ospf summarize --format=json --type=interface
     data-directory: tests/data/multidc/parquet-out
     output: |
-      [{"ospf-ibgp":29,"ospf-single":36},{"ospf-ibgp":{"up":29},"ospf-single":{"up":36}},{"ospf-ibgp":{"1":22,"0":7},"ospf-single":{"1":24,"0":12}},{"ospf-ibgp":{"True":22,"False":7},"ospf-single":{"True":24,"False":12}},{"ospf-ibgp":{"0.0.0.0":29},"ospf-single":{"0.0.0.0":36}},{"ospf-ibgp":{"default":29},"ospf-single":{"default":36}},{"ospf-ibgp":{"pointopoint":22,"loopback":7},"ospf-single":{"pointopoint":24,"loopback":8,"broadcast":4}},{"ospf-ibgp":{"":22,"True":7},"ospf-single":{"":26,"True":10}},{"ospf-ibgp":{"False":29},"ospf-single":{"False":36}},{"ospf-ibgp":{"100":22,"10":7},"ospf-single":{"100":24,"10":12}},{"ospf-ibgp":{"10":29},"ospf-single":{"10":36}},{"ospf-ibgp":{"40":29},"ospf-single":{"40":36}},{"ospf-ibgp":{"5":29},"ospf-single":{"5":36}}]
+      [{"ospf-ibgp":7,"ospf-single":8},{"ospf-ibgp":18,"ospf-single":24},{"ospf-ibgp":{"0.0.0.0":18},"ospf-single":{"0.0.0.0":24}},{"ospf-ibgp":{"default":18},"ospf-single":{"default":24}},{"ospf-ibgp":{"full":18},"ospf-single":{"full":24}},{"ospf-ibgp":{"1":18},"ospf-single":{"1":24}},{"ospf-ibgp":8,"ospf-single":8},{"ospf-ibgp":["0 days 00:26:24.562662","0 days 00:26:24.562695","0 days 00:26:24.562695"],"ospf-single":["0 days 00:26:24.445972","0 days 00:26:24.445981","0 days 00:26:24.445975"]},{"ospf-ibgp":[5,5,5],"ospf-single":[4,5,5]},{"ospf-ibgp":[0,0,0],"ospf-single":[0,0,0]}]
     marks: ospf summarize
 
   - command: route summarize --format=json
@@ -40,7 +40,7 @@ tests:
   - command: interface summarize --format=json
     data-directory: tests/data/multidc/parquet-out
     output: |
-      {"dual-evpn":{"hosts":14,"rows":178,"ifPerHost":[4,23,9.5],"hostsWithL2":7,"hasVxlan":true,"mtu":4,"type":9,"ipV4Addresses":59,"ipV6Addresses":80,"mtOneIpPerInterface":5,"downPortCount":9,"state":{"up":169,"unknown":5,"down":4},"ifChanges":[0,0,0]},"ospf-ibgp":{"hosts":13,"rows":155,"ifPerHost":[0,23,9.0],"hostsWithL2":6,"hasVxlan":true,"mtu":4,"type":9,"ipV4Addresses":55,"ipV6Addresses":73,"mtOneIpPerInterface":4,"downPortCount":9,"state":{"up":146,"unknown":5,"down":4},"ifChanges":[0,0,0]},"ospf-single":{"hosts":14,"rows":96,"ifPerHost":[3,10,9.0],"hostsWithL2":4,"hasVxlan":false,"mtu":{"1500":74,"65536":22},"type":5,"ipV4Addresses":30,"ipV6Addresses":45,"mtOneIpPerInterface":0,"downPortCount":17,"state":{"up":79,"down":12,"unknown":5},"ifChanges":[0,0,0]}}
+      [{"dual-evpn":14,"ospf-ibgp":13,"ospf-single":14},{"dual-evpn":178,"ospf-ibgp":155,"ospf-single":96},{"dual-evpn":[4,23,9.5],"ospf-ibgp":[0,23,9.0],"ospf-single":[3,10,9.0]},{"dual-evpn":7,"ospf-ibgp":6,"ospf-single":4},{"dual-evpn":true,"ospf-ibgp":true,"ospf-single":false},{"dual-evpn":4,"ospf-ibgp":4,"ospf-single":{"1500":74,"65536":22}},{"dual-evpn":9,"ospf-ibgp":9,"ospf-single":5},{"dual-evpn":59,"ospf-ibgp":55,"ospf-single":30},{"dual-evpn":80,"ospf-ibgp":73,"ospf-single":45},{"dual-evpn":5,"ospf-ibgp":4,"ospf-single":0},{"dual-evpn":9,"ospf-ibgp":9,"ospf-single":17},{"dual-evpn":{"up":169,"unknown":5,"down":4},"ospf-ibgp":{"up":146,"unknown":5,"down":4},"ospf-single":{"up":79,"down":12,"unknown":5}},{"dual-evpn":[0,0,0],"ospf-ibgp":[0,0,0],"ospf-single":[0,0,0]}]
     marks: interface summarize
 
   - command: lldp summarize --format=json

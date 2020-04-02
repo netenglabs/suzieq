@@ -54,17 +54,3 @@ class SqPollerCmd(SqCommand):
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
 
-    @command("summarize")
-    def summarize(self, ifname: str = "", groupby: str = ""):
-        """
-        Summarize sqPoller info
-        """
-
-        # Get the default display field names
-        now = time.time()
-
-        df = self.sqobj.summarize(
-            namespace=self.namespace,
-        )
-        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        return self._gen_output(df)
