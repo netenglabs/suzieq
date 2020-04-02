@@ -205,7 +205,7 @@ class SqEngineObject(object):
         )
         return df
 
-    def summarize(self, namespace='', **kwargs):
+    def summarize(self, **kwargs):
         """There is a pattern of how to do these
         use self._init_summarize(), 
             creates self.summary_df, which is the initial pandas dataframe based on the table
