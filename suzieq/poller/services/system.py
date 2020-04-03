@@ -7,8 +7,6 @@ class SystemService(Service):
     timestamp diff
     """
 
-    nodes_state = {}
-
     def __init__(self, name, defn, period, stype, keys, ignore_fields,
                  schema, queue, run_once):
         super().__init__(name, defn, period, stype, keys, ignore_fields,
