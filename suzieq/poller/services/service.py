@@ -15,7 +15,7 @@ from collections import defaultdict
 import pyarrow as pa
 
 from suzieq.poller.services.svcparser import cons_recs_from_json_template
-from suzieq.utils import calc_avg
+from typing import List
 
 HOLD_TIME_IN_MSECS = 60000  # How long b4 declaring node dead
 
@@ -32,22 +32,12 @@ class RsltToken:
 
 @dataclass
 class ServiceStats:
-    min_svc_time: int = 0
-    max_svc_time: int = 0
-    avg_svc_time: float = 0.0
-    max_gather_time: int = 0
-    min_gather_time: int = 0
-    avg_gather_time: float = 0.0
+    total_time = list()
+    gather_time = list()
+    svcQsize = list()
+    nodeQsize = list()
+    wrQsize = list()
     empty_count: int = 0
-    min_qsize: int = 0
-    max_qsize: int = 0
-    avg_qsize: float = 0.0      # service queue size
-    min_wrQsize: int = 0
-    max_wrQsize: int = 0
-    avg_wrQsize: float = 0.0    # write queue size
-    min_nodeQsize: int = 0
-    max_nodeQsize: int = 0
-    avg_nodeQsize: float = 0.0
     time_excd_count: int = 0    # Number of times total_time > poll period
     next_update_time: int = 0   # When results will be logged
 
@@ -431,21 +421,37 @@ class Service(object):
                     }
                 )
 
+    def compute_basic_stats(self, statsList, newval: int) -> None:
+        """Compute min/max/avg for given stats with the new value
+
+        :param statsList: list consisting of 3 values in order: min, max, avg
+        :type statsList: list_
+
+        :param newval: The newval to update the list with
+        :type newval: int
+        """
+        if not statsList:
+            statsList = [newval, newval, newval]
+            return
+
+        if newval < statsList[0]:
+            statsList[0] = newval
+        if newval > statsList[1]:
+            statsList[1] = newval
+        statsList[2] = (statsList[2]+newval)/2
+
     def update_stats(self, stats: ServiceStats, gather_time: int,
                      total_time: int, qsize: int, wrQsize: int,
                      nodeQsize: int) -> bool:
         """Update per-node stats"""
         write_stat = False
         now = int(time.time()*1000)
-        if total_time < stats.min_svc_time:
-            stats.min_svc_time = total_time
-        if total_time > stats.max_svc_time:
-            stats.max_svc_time = total_time
-        stats.avg_svc_time = calc_avg(stats.avg_svc_time, total_time)
-        stats.avg_gather_time = calc_avg(stats.avg_gather_time, gather_time)
-        stats.avg_qsize = calc_avg(stats.avg_qsize, qsize)
-        stats.avg_wrQsize = calc_avg(stats.avg_wrQsize, wrQsize)
-        stats.avg_nodeQsize = calc_avg(stats.avg_nodeQsize, nodeQsize)
+
+        self.compute_basic_stats(stats.total_time, total_time)
+        self.compute_basic_stats(stats.gather_time, gather_time)
+        self.compute_basic_stats(stats.svcQsize, qsize)
+        self.compute_basic_stats(stats.wrQsize, wrQsize)
+        self.compute_basic_stats(stats.nodeQsize, nodeQsize)
 
         if total_time > self.period*1000:
             stats.time_excd_count += 1
@@ -517,13 +523,12 @@ class Service(object):
                      "active": True,
                      "service": self.name,
                      "status": status,
-                     "svcQsize": stats.avg_qsize,
-                     "wrQsize": stats.avg_wrQsize,
-                     "nodeQsize": stats.avg_nodeQsize,
+                     "svcQsize": stats.svcQsize,
+                     "wrQsize": stats.wrQsize,
+                     "nodeQsize": stats.nodeQsize,
                      "pollExcdPeriodCount": stats.time_excd_count,
-                     "gatherTime": stats.avg_gather_time,
-                     "totalTime": stats.avg_svc_time,
-                     "emptyCount": empty_count,
+                     "gatherTime": stats.gather_time,
+                     "totalTime": stats.total_time,
                      "timestamp": int(datetime.utcnow().timestamp() * 1000)}]
 
             if write_poller_stat:

@@ -306,6 +306,7 @@ def avro_to_arrow_schema(avro_sch):
                                                  ('oif', pa.string()),
                                                  ('weight', pa.int32())])),
         "array.long": pa.list_(pa.int64()),
+        "array.float": pa.list_(pa.float32()),
     }
 
     for fld in avro_sch:
