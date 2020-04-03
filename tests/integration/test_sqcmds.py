@@ -50,7 +50,7 @@ basic_verbs = ['show']
     ('OspfCmd', basic_verbs + ['top', 'aver'], [None, None, None],
      [0, 0, 0]),
     ('RouteCmd', basic_verbs + ['lpm'],
-     [None, {'address': '10.0.0.1'}], [2596, 143]),  # TODO: bug #24
+     [None, {'address': '10.0.0.1'}], [2596, 143]),
     ('TableCmd', basic_verbs + ['describe'], [None, {'table': 'system'}], [105, 44]),
     ('TopcpuCmd', basic_verbs, [None, None], [1404, 18]),
     ('TopmemCmd', basic_verbs, [None, None], [891, 18]),
@@ -211,8 +211,6 @@ def test_show_start_time_filter(setup_nubia, cmd):
 bad_start_time_commands.pop(3)  # EvpnVniCmd
 bad_start_time_commands.pop(7)  # Ospfcmd
 @pytest.mark.filter
-@pytest.mark.xfail(reason='bug #33',
-                   raises=dateutil.parser._parser.ParserError)
 @pytest.mark.parametrize("cmd", bad_start_time_commands)
 def test_bad_start_time_filter(setup_nubia, cmd):
     filter = {'start_time': 'unknown'}
@@ -272,7 +270,6 @@ def test_context_namespace_filtering(setup_nubia, cmd):
 
 
 @pytest.mark.filter
-#@pytest.mark.xfail(reason='bug #17')
 @pytest.mark.parametrize('cmd', good_commands)
 def test_context_engine_filtering(setup_nubia, cmd):
     s1 = _test_command(cmd, 'show', None, None)

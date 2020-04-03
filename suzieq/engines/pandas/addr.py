@@ -39,8 +39,11 @@ class AddrObj(SqEngineObject):
         df = self.get_valid_df("interfaces", sort_fields, columns=columns,
                                **kwargs)
 
+        if df.empty:
+            return df
+
         # Works with pandas 0.25.0 onwards
-        if addr and not df.empty:
+        if addr:
             df = df.explode(addrcol).dropna(how='any')
             return df[df[addrcol].str.startswith(addr+'/')]
         else:

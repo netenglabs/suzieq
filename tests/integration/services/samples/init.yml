@@ -1,4 +1,3 @@
-
 description: output from running init_services
 tests:
   arpnd:
@@ -33,8 +32,8 @@ tests:
       numChanges+numChanges\", \"hostname: peerHostname\", \"neighborCapabilities/multiprotocolExtensions/IPv4
       Unicast/advertisedAndReceived: v4Enabled?|False\", \"neighborCapabilities/multiprotocolExtensions/L2VPN
       EVPN/advertisedAndReceived: evpnEnabled?|False\", \"neighborCapabilities/multiprotocolExtensions/IPv6
-      Unicast/advertisedAndReceived: v6Enabled?|False\"]"}, "platina": {"version":
-      "all", "command": "sudo vtysh -c \"show ip bgp vrf all neighbors json\"", "normalize":
+      Unicast/advertisedAndReceived: v6Enabled?|False\"]"}, "linux": {"version": "all",
+      "command": "sudo vtysh -c \"show ip bgp vrf all neighbors json\"", "normalize":
       "*:vrf/*:peer/[ \"remoteAs: peerAsn\", \"localAs: asn\", \"hostLocal: source\",
       \"lastResetDueTo: reason\", \"lastResetTimerMsecs: lastDownTime?|0\", \"addressFamilyInfo/IPv4
       Unicast/acceptedPrefixCounter: v4PfxRx?|0\", \"addressFamilyInfo/IPv6 Unicast/acceptedPrefixCounter:
@@ -45,17 +44,17 @@ tests:
       numChanges+numChanges\", \"hostname: peerHostname\", \"neighborCapabilities/multiprotocolExtensions/IPv4
       Unicast/advertisedAndReceived: v4Enabled?|False\", \"neighborCapabilities/multiprotocolExtensions/L2VPN
       EVPN/advertisedAndReceived: evpnEnabled?|False\", \"neighborCapabilities/multiprotocolExtensions/IPv6
-      Unicast/advertisedAndReceived: v6Enabled?|False\"]"}}, "ignore_fields": ["lastDownTime",
-      "estdTime", "timestamp"], "keys": ["namespace", "hostname", "vrf", "peer"],
-      "period": 15, "stype": "state", "partition_cols": ["namespace", "hostname",
-      "vrf", "peer", "timestamp"]}'
+      Unicast/advertisedAndReceived: v6Enabled?|False\"]"}, "platina": {"copy": "linux"}},
+      "ignore_fields": ["lastDownTime", "estdTime", "timestamp"], "keys": ["namespace",
+      "hostname", "vrf", "peer"], "period": 15, "stype": "state", "partition_cols":
+      ["namespace", "hostname", "vrf", "peer", "timestamp"]}'
     service: bgp
   evpnVni:
     output: '{"name": "evpnVni", "defn": {"cumulus": {"version": "all", "command":
       "sudo vtysh -c \"show evpn vni json\"", "normalize": "*/[ \"vni: vni\", \"type:
       type\", \"numMacs: numMacs?|0\", \"numArpNd: numArpNd?|0\", \"numRemoteVteps:
       numRemoteVteps?|0\", \"remoteVteps: remoteVteps\", \"tenantVrf: vrf\", ]"},
-      "platina": {"copy": "cumulus"}}, "ignore_fields": ["timestamp"], "keys": ["namespace",
+      "linux": {"copy": "cumulus"}}, "ignore_fields": ["timestamp"], "keys": ["namespace",
       "hostname", "vni"], "period": 15, "stype": "state", "partition_cols": ["namespace",
       "hostname", "vni", "timestamp"]}'
     service: evpnVni
@@ -113,15 +112,15 @@ tests:
       "all", "command": "show interfaces", "normalize": "interfaces/*/[ \"name: ifname\",
       \"mtu: mtu?|0\", \"description: description\", \"physicalAddress: macaddr\",
       \"bandwidth: speed?|0\", \"srcIpAddr: srcVtepIp\", \"vlanToVniMap/*:vlan?|0\",
-      \"vlanToVniMap/*/vni: vni?|0\", \"lineProtocolStatus: state\", \"hardware: type\", \"forwardingModel: forwardingModel\",
-      \"linkStatusChanges: numChanges?|0\", \"lastStatusChangeTimeStamp: statusChangeTimestamp\",
-      \"fallbackEnabled: lacpBypass?|False\", \"interfaceMembership: master\", \"interfaceAddress:
-      ipAddressList?|[]\", \"interfaceAddressIP6: ip6AddressList?|[]\", ]"}, "linux":
-      {"version": "all", "command": "ip -d address show", "textfsm": "Value ifindex
-      (\\d+)\nValue ifname ([^:@]+)\nValue mtu (\\d+)\nValue master (\\S+)\nValue
-      state (\\S+)\nValue macaddr ([0-9a-f:]+)\nValue List ipAddressList ([0-9./]*)\nValue
-      List ip6AddressList ([0-9a-z:/]*)\nValue description (.*)\nValue vni (\\d+)\nValue
-      vlan (\\d+)\nValue type (loopback|ether|vlan|vxlan|vrf|bond|bridge|bridge_slave|bond_slave|macvlan)\n\nStart\n  ^\\d+:
+      \"vlanToVniMap/*/vni: vni?|0\", \"lineProtocolStatus: state\", \"hardware: type\",
+      \"forwardingModel: forwardingModel\", \"linkStatusChanges: numChanges?|0\",
+      \"lastStatusChangeTimeStamp: statusChangeTimestamp\", \"fallbackEnabled: lacpBypass?|False\",
+      \"interfaceMembership: master\", \"interfaceAddress: ipAddressList?|[]\", \"interfaceAddressIP6:
+      ip6AddressList?|[]\", ]"}, "linux": {"version": "all", "command": "ip -d address
+      show", "textfsm": "Value ifindex (\\d+)\nValue ifname ([^:@]+)\nValue mtu (\\d+)\nValue
+      master (\\S+)\nValue state (\\S+)\nValue macaddr ([0-9a-f:]+)\nValue List ipAddressList
+      ([0-9./]*)\nValue List ip6AddressList ([0-9a-z:/]*)\nValue description (.*)\nValue
+      vni (\\d+)\nValue vlan (\\d+)\nValue type (loopback|ether|vlan|vxlan|vrf|bond|bridge|bridge_slave|bond_slave|macvlan)\n\nStart\n  ^\\d+:
       -> Continue.Record\n  ^${ifindex}: ${ifname}.*: <.*> mtu ${mtu}.* master ${master}
       state ${state}.*$$\n  ^${ifindex}: ${ifname}.*: <.*> mtu ${mtu}.* state ${state}.*$$\n  ^\\s*link/${type}\\s+${macaddr}
       brd .*$$\n  ^\\s*inet\\s*${ipAddressList}.*scope global.*$$\n  ^\\s*inet6\\s*${ip6AddressList}.*scope
@@ -369,4 +368,3 @@ tests:
       "keys": ["namespace", "hostname", "ifname"], "period": 15, "stype": "state",
       "partition_cols": ["namespace", "hostname", "ifname", "timestamp"]}'
     service: vlan
-
