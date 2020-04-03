@@ -1,8 +1,7 @@
-from os.path import isfile, isdir, exists, dirname
+from os.path import isfile, isdir, dirname
 from os import walk
 import logging
 import yaml
-import json
 import textfsm
 from pkgutil import walk_packages
 from inspect import getmembers, isclass, getfile
