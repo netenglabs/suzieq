@@ -43,9 +43,9 @@ apply:
         "evpnEnabled: evpnEnabled?|False",
         "state: state?Established|NotEstd"]'
   cumulus:
-      version: all
-      command: net show bgp vrf all neighbor json
-      normalize: '*:vrf/*:peer/[
+    version: all
+    command: net show bgp vrf all neighbor json
+    normalize: '*:vrf/*:peer/[
         "remoteAs: peerAsn",
         "localAs: asn",
         "hostLocal: source",
@@ -54,6 +54,9 @@ apply:
         "addressFamilyInfo/IPv4 Unicast/acceptedPrefixCounter: v4PfxRx?|0",
         "addressFamilyInfo/IPv6 Unicast/acceptedPrefixCounter: v6PfxRx?|0",
         "addressFamilyInfo/L2VPN EVPN/acceptedPrefixCounter: evpnPfxRx?|0",
+        "addressFamilyInfo/ipv4Unicast/acceptedPrefixCounter: newv4PfxRx?|0",
+        "addressFamilyInfo/ipv6Unicast/acceptedPrefixCounter: newv6PfxRx?|0",
+        "addressFamilyInfo/l2vpnEvpn/acceptedPrefixCounter: newevpnPfxRx?|0",
         "messageStats/updatesSent: updatesTx",
         "messageStats/updatesRecv: updatesRx",
         "remoteRouterId: peerRouterId",
@@ -62,6 +65,9 @@ apply:
         "connectionsEstablished: numChanges",
         "connectionsDropped: numChanges+numChanges",
         "hostname: peerHostname",
+        "neighborCapabilities/multiprotocolExtensions/ipv4Unicast/advertisedAndReceived: newv4Enabled?|False",
+        "neighborCapabilities/multiprotocolExtensions/l2vpnEvpn/advertisedAndReceived: newevpnEnabled?|False",
+        "neighborCapabilities/multiprotocolExtensions/ipv6Unicast/advertisedAndReceived: newv6Enabled?|False",
         "neighborCapabilities/multiprotocolExtensions/IPv4 Unicast/advertisedAndReceived: v4Enabled?|False",
         "neighborCapabilities/multiprotocolExtensions/L2VPN EVPN/advertisedAndReceived: evpnEnabled?|False",
         "neighborCapabilities/multiprotocolExtensions/IPv6 Unicast/advertisedAndReceived: v6Enabled?|False"]'
@@ -78,6 +84,9 @@ apply:
         "addressFamilyInfo/IPv4 Unicast/acceptedPrefixCounter: v4PfxRx?|0",
         "addressFamilyInfo/IPv6 Unicast/acceptedPrefixCounter: v6PfxRx?|0",
         "addressFamilyInfo/L2VPN EVPN/acceptedPrefixCounter: evpnPfxRx?|0",
+        "addressFamilyInfo/ipv4Unicast/acceptedPrefixCounter: newv4PfxRx?|0",
+        "addressFamilyInfo/ipv6Unicast/acceptedPrefixCounter: newv6PfxRx?|0",
+        "addressFamilyInfo/l2vpnEvpn/acceptedPrefixCounter: newevpnPfxRx?|0",
         "messageStats/updatesSent: updatesTx",
         "messageStats/updatesRecv: updatesRx",
         "remoteRouterId: peerRouterId",
@@ -86,6 +95,9 @@ apply:
         "connectionsEstablished: numChanges",
         "connectionsDropped: numChanges+numChanges",
         "hostname: peerHostname",
+        "neighborCapabilities/multiprotocolExtensions/ipv4Unicast/advertisedAndReceived: newv4Enabled?|False",
+        "neighborCapabilities/multiprotocolExtensions/l2vpnEvpn/advertisedAndReceived: newevpnEnabled?|False",
+        "neighborCapabilities/multiprotocolExtensions/ipv6Unicast/advertisedAndReceived: newv6Enabled?|False",
         "neighborCapabilities/multiprotocolExtensions/IPv4 Unicast/advertisedAndReceived: v4Enabled?|False",
         "neighborCapabilities/multiprotocolExtensions/L2VPN EVPN/advertisedAndReceived: evpnEnabled?|False",
         "neighborCapabilities/multiprotocolExtensions/IPv6 Unicast/advertisedAndReceived: v6Enabled?|False"]'
