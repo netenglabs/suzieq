@@ -112,6 +112,7 @@ class Node(object):
     cmd_timeout = 10  # default command timeout in seconds
     batch_size = 4    # Number of commands to issue in parallel
     bootupTimestamp = 0
+    version = 0                 # OS Version to pick the right defn
     _service_queue = None
     _conn = None
     _status = "init"
@@ -217,8 +218,8 @@ class Node(object):
         # setup time. show version works on most networking boxes and
         # hostnamectl on Linux systems. That's all we support today.
         await self.exec_cmd(self._parse_device_type_hostname,
-                            ["show version", "hostnamectl", "goes show machine",
-                             'show hostname'], None)
+                            ["show version", "hostnamectl",
+                             "cat /etc/os-release", "show hostname"], None)
 
     async def _parse_device_type_hostname(self, output, cb_token) -> None:
         devtype = ""
@@ -249,14 +250,19 @@ class Node(object):
             else:
                 devtype = "linux"
 
-            if output[2]["status"] == 0:
-                devtype = "platina"
-
             # Hostname is in the first line of hostnamectl
             hostline = data.splitlines()[0].strip()
             if hostline.startswith("Static hostname"):
                 _, hostname = hostline.split(":")
                 hostname = hostname.strip()
+
+            if output[2]["status"] == 0:
+                data = output[2]["data"]
+                for line in data.splitlines():
+                    if line.startswith("VERSION_ID"):
+                        self.version = line.split('=')[1] \
+                                           .strip().replace('"', '')
+                        break
 
         self.devtype = devtype
         self.set_hostname(hostname)
@@ -433,6 +439,7 @@ class Node(object):
             "namespace": self.nsname,
             "hostname": self.hostname,
             "address": self.address,
+            "version": self.version,
             "data": data,
         }
         return result
@@ -495,7 +502,15 @@ class Node(object):
             use = svc_defn.get(use.get("copy"))
 
         if use:
-            cmd = use.get("command", None)
+            if isinstance(use, list):
+                # There's more than one version here, we have to pick ours
+                for item in use:
+                    if (item["version"] == "all" or
+                            item["version"] == self.version):
+                        cmd = item.get("command", None)
+                        break
+            else:
+                cmd = use.get("command", None)
 
         oformat = svc_defn.get(self.devtype, {}).get("format", "json")
 
