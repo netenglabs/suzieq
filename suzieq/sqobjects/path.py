@@ -59,6 +59,7 @@ class PathObj(basicobj.SqObject):
             raise AttributeError(f"Cannot obtain IP/LLDP neighbor info for address {ipaddr}")
 
         vlan = oif_df.iloc[0]["vlan"]
+
         if macaddr:
             mac_df = macs.MacsObj().get(
                 namespace=namespace, macaddr=macaddr, vlan=vlan
@@ -103,15 +104,29 @@ class PathObj(basicobj.SqObject):
         source = kwargs.get("source", None)
         dest = kwargs.get("dest", None)
         dvrf = kwargs.get("vrf", "default")
+        if not dvrf:
+            dvrf = 'default'
 
         if not source or not dest:
             raise AttributeError("Must specify trace source and dest")
 
+        if not namespace:
+            raise AttributeError("Must specify namespace to run the trace in")
+
         if_df = interfaces.IfObj().get(namespace=namespace)
+        if if_df.empty:
+            if namespace not in if_df['namespace'].unique():
+                raise AttributeError("Invalid namespace")
+            return pd.DataFrame()
         src_df = if_df[if_df.ipAddressList.astype(str)
                        .str.contains(source + "/")]
+        if src_df.empty:
+            raise AttributeError(f"Invalid src {source}")
         dest_df = if_df[if_df.ipAddressList.astype(str)
                         .str.contains(dest + "/")]
+        if dest_df.empty:
+            raise AttributeError(f"Invalid dest {dest}")
+
         dest_host = dest_df["hostname"].unique()[0]
         src_host = src_df["hostname"].unique()[0]
         lldp_df = lldp.LldpObj().get(namespace=namespace)
@@ -298,7 +313,6 @@ class PathObj(basicobj.SqObject):
         # Add the final destination to all paths
         for path in paths:
             path.append(dest_host_iifs)
-
         # Construct the pandas dataframe.
         # Constructing the dataframe in one shot here as that's more efficient
         # for pandas
@@ -310,7 +324,7 @@ class PathObj(basicobj.SqObject):
                     {
                         "pathid": i + 1,
                         "stageid": j + 1,
-                        "namespace": namespace[0],
+                        "namespace": namespace[0] if len(namespace) > 0 else [],
                         "hostname": item,
                         "iif": ele[item]["iif"],
                         "vrf": ele[item]["vrf"],

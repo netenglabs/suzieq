@@ -246,8 +246,8 @@ class SqPandasEngine(SqEngine):
                     filters = kwdor
                 else:
                     if not filters:
-                        filters.append(tuple(("{}".format(k), "==", "{}".
-                                              format(v))))
+                        filters.append([tuple(("{}".format(k), "==", "{}".
+                                              format(v)))])
                     else:
                         for entry in filters:
                             entry.append(tuple(("{}".format(k), "==", "{}".
