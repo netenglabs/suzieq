@@ -47,7 +47,7 @@ async def start_poller(userargs, cfg):
 
     logger = logging.getLogger('sq-poller')
     logger.setLevel(cfg.get("logging-level", "INFO").upper())
-    fh = logging.FileHandler(cfg.get("log-file", "/tmp/suzieq.log"))
+    fh = logging.FileHandler(cfg.get("log-file", "/tmp/sq-poller.log"))
     formatter = logging.Formatter(
         "%(asctime)s - %(name)s - %(levelname)s " "- %(message)s"
     )

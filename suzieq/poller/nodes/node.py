@@ -104,7 +104,7 @@ class Node(object):
     prev_result = {}  # No updates if nothing changed
     nsname = None
     svc_cmd_mapping = defaultdict(lambda: {})  # Not used yet
-    logger = logging.getLogger("suzieq")
+    logger = logging.getLogger("sq-poller")
     port = 0
     backoff = 15  # secs to backoff
     init_again_at = 0  # after this epoch secs, try init again
