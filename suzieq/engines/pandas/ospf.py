@@ -1,6 +1,7 @@
 from ipaddress import IPv4Network
 import pandas as pd
 
+from suzieq.exceptions import NoLLdpError
 from suzieq.utils import SchemaForTable
 from suzieq.sqobjects.lldp import LldpObj
 from suzieq.engines.pandas.engineobj import SqEngineObject
@@ -94,29 +95,38 @@ class OspfObj(SqEngineObject):
         ]
         sort_fields = ["namespace", "hostname", "ifname", "vrf"]
 
-        ospf_df = self.get_valid_df("ospfIf", sort_fields, columns=columns, **kwargs)
+        ospf_df = self.get_valid_df(
+            "ospfIf", sort_fields, columns=columns, **kwargs)
         if ospf_df.empty:
             return pd.DataFrame(columns=columns)
 
+        ospf_df["assertReason"] = [[] for _ in range(len(ospf_df))]
         df = (
             ospf_df[ospf_df["routerId"] != ""]
             .groupby(["routerId"], as_index=False)[["hostname"]]
             .agg(lambda x: x.unique().tolist())
         )
 
-        dup_rtrid_df = df[df["hostname"].map(len) > 1]
+        # df is a dataframe with each row containing the routerId and the
+        # corresponding list of hostnames with that routerId. In a good
+        # configuration, the list must have exactly one entry
+        ospf_df['assertReason'] = (
+            ospf_df.merge(df, on=["routerId"], how="outer")
+            .apply(lambda x: ["duplicate routerId {}".format(
+                x["hostname_y"])]
+                if len(x['hostname_y']) != 1 else [], axis=1))
 
-        bad_ospf_df = ospf_df.query('nbrCount < 1 and passive != "True"')
-
+        # Now  peering match
         lldpobj = LldpObj(context=self.ctxt)
         lldp_df = lldpobj.get(
             namespace=kwargs.get("namespace", ""),
             hostname=kwargs.get("hostname", ""),
             ifname=kwargs.get("ifname", ""),
+            columns=["namespace", "hostname", "ifname", "peerHostname",
+                     "peerIfname"]
         )
         if lldp_df.empty:
-            print("No LLDP info, unable to ascertain cause of OSPF failure")
-            return bad_ospf_df
+            raise NoLLdpError("No LLDP info found")
 
         # Create a single massive DF with fields populated appropriately
         use_cols = [
@@ -134,27 +144,21 @@ class OspfObj(SqEngineObject):
             "networkType",
             "area",
         ]
-        df1 = (
-            pd.merge(
-                lldp_df, ospf_df[use_cols], on=["namespace", "hostname", "ifname"]
-            )
-            .dropna(how="any")
-            .merge(
-                ospf_df[use_cols],
-                how="outer",
-                left_on=["namespace", "peerHostname", "peerIfname"],
-                right_on=["namespace", "hostname", "ifname"],
-            )
-            .dropna(how="any")
-        )
 
-        if df1.empty:
-            return dup_rtrid_df
+        int_df = ospf_df[use_cols].merge(lldp_df,
+                                         on=["namespace", "hostname",
+                                             "ifname"]) \
+            .dropna(how="any")
+
+        ospf_df = ospf_df.merge(int_df,
+                                left_on=["namespace", "hostname", "ifname"],
+                                right_on=["namespace", "peerHostname",
+                                          "peerIfname"]) \
+            .dropna(how="any")
 
         # Now start comparing the various parameters
-        df1["reason"] = tuple([tuple() for _ in range(len(df1))])
-        df1["reason"] += df1.apply(
-            lambda x: tuple(["subnet mismatch"])
+        ospf_df["assertReason"] += ospf_df.apply(
+            lambda x: ["subnet mismatch"]
             if (
                 (x["isUnnumbered_x"] != x["isUnnumbered_y"])
                 and (
@@ -162,71 +166,60 @@ class OspfObj(SqEngineObject):
                     != IPv4Network(x["ipAddress_y"], strict=False)
                 )
             )
-            else tuple(),
+            else [],
             axis=1,
         )
-        df1["reason"] += df1.apply(
-            lambda x: tuple(["area mismatch"])
+        ospf_df["assertReason"] += ospf_df.apply(
+            lambda x: ["area mismatch"]
             if (x["area_x"] != x["area_y"] and x["areaStub_x"] != x["areaStub_y"])
-            else tuple(),
+            else [],
             axis=1,
         )
-        df1["reason"] += df1.apply(
-            lambda x: tuple(["Hello timers mismatch"])
+        ospf_df["assertReason"] += ospf_df.apply(
+            lambda x: ["Hello timers mismatch"]
             if x["helloTime_x"] != x["helloTime_y"]
-            else tuple(),
+            else [],
             axis=1,
         )
-        df1["reason"] += df1.apply(
-            lambda x: tuple(["Dead timer mismatch"])
+        ospf_df["assertReason"] += ospf_df.apply(
+            lambda x: ["Dead timer mismatch"]
             if x["deadTime_x"] != x["deadTime_y"]
-            else tuple(),
+            else [],
             axis=1,
         )
-        df1["reason"] += df1.apply(
-            lambda x: tuple(["network type mismatch"])
+        ospf_df["assertReason"] += ospf_df.apply(
+            lambda x: ["network type mismatch"]
             if x["networkType_x"] != x["networkType_y"]
-            else tuple(),
+            else [],
             axis=1,
         )
-        df1["reason"] += df1.apply(
-            lambda x: tuple(["passive config mismatch"])
+        ospf_df["assertReason"] += ospf_df.apply(
+            lambda x: ["passive config mismatch"]
             if x["passive_x"] != x["passive_y"]
-            else tuple(),
+            else [],
             axis=1,
         )
-        df1["reason"] += df1.apply(
-            lambda x: tuple(["vrf mismatch"]) if x["vrf_x"] != x["vrf_y"] else tuple(),
+        ospf_df["assertReason"] += ospf_df.apply(
+            lambda x: ["vrf mismatch"] if x["vrf_x"] != x["vrf_y"] else [],
             axis=1,
         )
 
-        # Add back the duplicate routerid stuff
-        def is_duprtrid(x):
-            for p in dup_rtrid_df["hostname"].tolist():
-                if x["hostname_x"] in p:
-                    x["reason"] = tuple(["duplicate routerId:{}".format(p)])
+        # Fill up a single assert column now indicating pass/fail
+        ospf_df['assert'] = ospf_df.apply(lambda x: 'pass'
+                                          if not len(x['assertReason'])
+                                          else 'fail', axis=1)
 
-            return x
-
-        df2 = (
-            df1.apply(is_duprtrid, axis=1)
-            .drop_duplicates(subset=["namespace", "hostname_x"], keep="last")
-            .query("reason != tuple()")[["namespace", "hostname_x", "vrf_x", "reason"]]
-        )
-        df1 = pd.concat([df1, df2], sort=False)
         return (
-            (
-                df1.rename(
-                    index=str,
-                    columns={
-                        "hostname_x": "hostname",
-                        "ifname_x": "ifname",
-                        "vrf_x": "vrf",
-                    },
-                )[["namespace", "hostname", "ifname", "vrf", "reason"]]
-            )
-            .query("reason != tuple()")
-            .fillna("-")
+            ospf_df.rename(
+                index=str,
+                columns={
+                    "hostname_x": "hostname",
+                    "ifname_x": "ifname",
+                    "vrf_x": "vrf",
+                },
+            )[["namespace", "hostname", "ifname", "vrf", "assert",
+               "assertReason"]].explode(column='assertReason')
+            .fillna({'assertReason': '-'})
         )
 
     def top(self, what="transitions", n=5, **kwargs) -> pd.DataFrame:

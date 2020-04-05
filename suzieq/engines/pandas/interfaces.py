@@ -1,5 +1,6 @@
 import pandas as pd
 
+from suzieq.exceptions import NoLLdpError
 from suzieq.utils import SchemaForTable
 from suzieq.sqobjects.lldp import LldpObj
 from .engineobj import SqEngineObject
@@ -31,14 +32,14 @@ class InterfacesObj(SqEngineObject):
             "ifname"].count().groupby("namespace")
 
         hosts_l2_per_ns = self.summary_df.query("type == 'vlan' or "
-                                   "type == 'bridge'") \
+                                                "type == 'bridge'") \
             .groupby(by=["namespace"])[
             "hostname"].nunique()
 
         has_vxlan_perns = self.summary_df.query("type == 'vxlan'") \
-                            .groupby(by=["namespace"])["hostname"].count()
+            .groupby(by=["namespace"])["hostname"].count()
         downif_per_ns = self.summary_df.query('state != "up"') \
-                          .groupby(by=["namespace"])["ifname"].count()
+            .groupby(by=["namespace"])["ifname"].count()
 
         linkif_transitions = self.summary_df[self.summary_df.type.str.startswith('ether')] \
             .groupby(by=["namespace"])["numChanges"]
@@ -62,17 +63,21 @@ class InterfacesObj(SqEngineObject):
             self.ns[i].update({'mtOneIpPerInterface': mt1_ip_per_interface[i]})
 
         original_summary_df = self.summary_df
-        self.summary_df = original_summary_df.explode('ipAddressList').dropna(how='any')
+        self.summary_df = original_summary_df.explode(
+            'ipAddressList').dropna(how='any')
 
         if not self.summary_df.empty:
             self.nsgrp = self.summary_df.groupby(by=["namespace"])
-            self._add_field_to_summary('ipAddressList', 'nunique', 'ipV4Addresses')
+            self._add_field_to_summary(
+                'ipAddressList', 'nunique', 'ipV4Addresses')
 
-        self.summary_df = original_summary_df.explode('ip6AddressList').dropna(how='any')
+        self.summary_df = original_summary_df.explode(
+            'ip6AddressList').dropna(how='any')
 
         if not self.summary_df.empty:
             self.nsgrp = self.summary_df.groupby(by=["namespace"])
-            self._add_field_to_summary('ip6AddressList', 'nunique', 'ipV6Addresses')
+            self._add_field_to_summary(
+                'ip6AddressList', 'nunique', 'ipV6Addresses')
 
         self.summary_row_order = ['hosts', 'rows', 'ifPerHost',
                                   'hostsWithL2', 'hasVxlan', 'mtu', 'type',
@@ -88,16 +93,20 @@ class InterfacesObj(SqEngineObject):
                    "ifname", "state", "mtu", "timestamp"]
         sort_fields = ["namespace", "hostname", "ifname"]
 
-        query_df = self.get_valid_df(
+        result_df = self.get_valid_df(
             "interfaces",
             sort_fields,
             hostname=kwargs.get("hostname", []),
             namespace=kwargs.get("namespace", []),
             columns=columns,
             ifname=kwargs.get("ifname", []),
-        ).query('(abs(mtu - {}) > 40) and (ifname != "lo")'.format(kwargs["matchval"]))
+        ).query('ifname != "lo"')
 
-        return query_df
+        if not result_df.empty:
+            result_df['assert'] = result_df.apply(
+                lambda x: x['mtu'] == kwargs['matchval'])
+
+        return result_df
 
     def _assert_mtu_match(self, **kwargs) -> pd.DataFrame:
         """Workhorse routine that validates MTU match for specified input"""
@@ -105,8 +114,7 @@ class InterfacesObj(SqEngineObject):
         lldp_df = lldpobj.get(**kwargs)
 
         if lldp_df.empty:
-            print("No Valid LLDP info found, Asserting MTU not possible")
-            return pd.DataFrame(columns=["namespace", "hostname"])
+            raise NoLLdpError("No Valid LLDP info found")
 
         columns = ["namespace", "hostname",
                    "ifname", "state", "mtu", "timestamp"]
@@ -119,14 +127,13 @@ class InterfacesObj(SqEngineObject):
             ifname=kwargs.get("ifname", []),
         )
         if if_df.empty:
-            print("No Valid LLDP info found, Asserting MTU not possible")
-            return pd.DataFrame(columns=columns)
+            return pd.DataFrame(columns=columns+["assert"])
 
         # Now create a single DF where you get the MTU for the lldp
         # combo of (namespace, hostname, ifname) and the MTU for
         # the combo of (namespace, peerHostname, peerIfname) and then
         # pare down the result to the rows where the two MTUs don't match
-        query_df = (
+        combined_df = (
             pd.merge(
                 lldp_df,
                 if_df[["namespace", "hostname", "ifname", "mtu"]],
@@ -141,8 +148,7 @@ class InterfacesObj(SqEngineObject):
                 how="outer",
             )
             .dropna(how="any")
-            .query("mtu_x != mtu_y")
-            .drop(columns=["hostname_y", "ifname_y"])
+            .drop(columns=["hostname_y", "ifname_y", "mgmtIP", "description"])
             .rename(
                 index=str,
                 columns={
@@ -154,7 +160,14 @@ class InterfacesObj(SqEngineObject):
             )
         )
 
-        return query_df
+        if combined_df.empty:
+            return combined_df
+
+        combined_df['assert'] = combined_df.apply(lambda x: 'pass'
+                                                  if x['mtu'] == x['peerMtu']
+                                                  else 'fail', axis=1)
+
+        return combined_df
 
     def _top_link_transitions(self, n, **kwargs):
         """Workhorse routine to return top n link transition links"""

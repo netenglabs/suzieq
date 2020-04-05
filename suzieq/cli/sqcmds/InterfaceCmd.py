@@ -1,5 +1,6 @@
 import time
 from nubia import command, argument
+import pandas as pd
 
 from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.interfaces import IfObj
@@ -84,22 +85,33 @@ class InterfaceCmd(SqCommand):
 
         if what == "mtu-match":
             value = 0
-        df = self.sqobj.aver(
-            hostname=self.hostname,
-            ifname=ifname.split(),
-            columns=self.columns,
-            namespace=self.namespace,
-            what=what,
-            matchval=value,
-        )
-        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        if df.empty:
-            print("Assert passed")
-        else:
-            print(df)
-            print("Assert failed")
 
-        return df
+        try:
+            df = self.sqobj.aver(
+                hostname=self.hostname,
+                ifname=ifname.split(),
+                columns=self.columns,
+                namespace=self.namespace,
+                what=what,
+                matchval=value,
+            )
+        except Exception as e:
+            df = pd.DataFrame({'error': ['ERROR: {}'.format(str(e))]})
+            return self._gen_output(df)
+
+        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
+
+        if self.format == 'text':
+            self._gen_output(df)
+            if df.loc[df['assert'] != "pass"].empty:
+                print("Assert passed")
+                result = 0
+            else:
+                print("Assert failed")
+                result = -1
+            return result
+
+        return self._gen_output(df)
 
     @command("top")
     @argument("what", description="Field you want to see top for",
