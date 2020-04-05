@@ -113,10 +113,7 @@ class OspfCmd(SqCommand):
     @command("assert")
     @argument("ifname", description="interface name to check OSPF on")
     @argument("vrf", description="VRF to assert OSPF state in")
-    @argument(
-        "what", description="What do you want to assert about OSPF", choices=["all"]
-    )
-    def aver(self, ifname: str = "", vrf: str = "", what: str = "all") -> pd.DataFrame:
+    def aver(self, ifname: str = "", vrf: str = "") -> pd.DataFrame:
         """
         Test OSPF runtime state is good
         """
@@ -124,7 +121,7 @@ class OspfCmd(SqCommand):
             return
 
         now = time.time()
-        result_df = self.sqobj.aver(
+        df = self.sqobj.aver(
             hostname=self.hostname,
             vrf=vrf.split(),
             ifname=ifname.split(),
@@ -132,13 +129,17 @@ class OspfCmd(SqCommand):
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
 
-        if result_df.empty:
-            print("Assert passed")
-        else:
-            print(result_df)
-            print("Assert failed")
+        if self.format == 'text':
+            self._gen_output(df)
+            if df.loc[df['assert'] != "pass"].empty:
+                print("Assert passed")
+                result = 0
+            else:
+                print("Assert failed")
+                result = -1
+            return result
 
-        return result_df
+        return self._gen_output(df)
 
     @command("top")
     @argument(
