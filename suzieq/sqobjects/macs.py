@@ -13,4 +13,4 @@ class MacsObj(basicobj.SqObject):
                          namespace, columns, context=context, table='macs')
         self._sort_fields = ['namespace', 'hostname', 'vlan', 'macaddr']
         self._cat_fields = []
-        self._ign_key_fields = ['macaddr']
+        self._ign_key_fields = ['macaddr']  # MACaddr is not a partition col

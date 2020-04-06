@@ -66,6 +66,7 @@ class SqPandasEngine(SqEngine):
                 del kwargs["namespace"]
             files = get_latest_files(folder, start, end, view)
         else:
+            # ign_key_fields contains key fields that are not partition cols
             key_fields = [i for i in sch.key_fields()
                           if i not in ign_key_fields]
             filters = self.build_pa_filters(start, end, key_fields, **kwargs)

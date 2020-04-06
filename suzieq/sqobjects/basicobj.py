@@ -46,7 +46,7 @@ class SqObject(object):
         self._table = table
         self._sort_fields = []
         self._cat_fields = []
-        self._ign_key_fields = []
+        self._ign_key_fields = []  # Used when keys != parquet partition cols
 
         if not namespace and self.ctxt.namespace:
             self.namespace = self.ctxt.namespace
