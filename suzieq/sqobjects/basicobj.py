@@ -46,6 +46,7 @@ class SqObject(object):
         self._table = table
         self._sort_fields = []
         self._cat_fields = []
+        self._ign_key_fields = []
 
         if not namespace and self.ctxt.namespace:
             self.namespace = self.ctxt.namespace
@@ -100,9 +101,12 @@ class SqObject(object):
             raise AttributeError('No analysis engine specified')
 
         if self._addnl_filter:
-            return self.engine_obj.get(add_filter=self._addnl_filter, **kwargs)
-        else:
-            return self.engine_obj.get(**kwargs)
+            kwargs['add_filter'] = self._addnl_filter
+
+        if self._ign_key_fields:
+            kwargs['ign_key'] = self._ign_key_fields
+
+        return self.engine_obj.get(**kwargs)
 
     def summarize(self, namespace='') -> pd.DataFrame:
         if not self._table:

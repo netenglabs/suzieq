@@ -27,15 +27,12 @@ class SqPandasEngine(SqEngine):
 
         self.cfg = cfg
 
-        table = kwargs["table"]
-        start = kwargs["start_time"]
-        end = kwargs["end_time"]
-        view = kwargs["view"]
-        sort_fields = kwargs["sort_fields"]
-
-        for field in ["table", "start_time", "end_time", "view",
-                      "sort_fields"]:
-            del kwargs[field]
+        table = kwargs.pop("table")
+        start = kwargs.pop("start_time")
+        end = kwargs.pop("end_time")
+        view = kwargs.pop("view")
+        sort_fields = kwargs.pop("sort_fields")
+        ign_key_fields = kwargs.pop("ign_key", [])
 
         sch = SchemaForTable(table, schema=schemas)
 
@@ -69,7 +66,8 @@ class SqPandasEngine(SqEngine):
                 del kwargs["namespace"]
             files = get_latest_files(folder, start, end, view)
         else:
-            key_fields = sch.key_fields()
+            key_fields = [i for i in sch.key_fields()
+                          if i not in ign_key_fields]
             filters = self.build_pa_filters(start, end, key_fields, **kwargs)
 
         if "columns" in kwargs:
@@ -84,7 +82,7 @@ class SqPandasEngine(SqEngine):
                 fields.append(f)
         # Handle the case where key fields are missing from display fields
         fldset = set(fields)
-        kfldset = set(key_fields)
+        kfldset = set(key_fields + ign_key_fields)
         add_flds = kfldset.difference(fldset)
         if add_flds:
             fields.extend(list(add_flds))
@@ -247,7 +245,7 @@ class SqPandasEngine(SqEngine):
                 else:
                     if not filters:
                         filters.append([tuple(("{}".format(k), "==", "{}".
-                                              format(v)))])
+                                               format(v)))])
                     else:
                         for entry in filters:
                             entry.append(tuple(("{}".format(k), "==", "{}".
