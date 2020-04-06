@@ -15,6 +15,7 @@ class RoutesObj(basicobj.SqObject):
         self._sort_fields = ['hostname', 'vrf', 'prefix']
         self._cat_fields = ['protocol', 'metric']
         self._addnl_filter = 'metric != 4278198272'
+        self._ign_key_fields = ["prefix"]
 
     def lpm(self, **kwargs):
         '''Get the lpm for the given address'''
