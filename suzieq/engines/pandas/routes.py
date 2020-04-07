@@ -12,7 +12,7 @@ class RoutesObj(SqEngineObject):
         if not df.empty and 'prefix' in df.columns:
             df['prefix'].replace('default', '0.0.0.0/0', inplace=True)
             df['prefix'] = df['prefix'].astype('ipnetwork')
-            return df.query('prefix != ""')
+            return df
 
         return df
 
@@ -25,12 +25,15 @@ class RoutesObj(SqEngineObject):
             return self.summary_df
 
         # Filter out local loopback IP
-        self.summary_df = self.summary_df[(self.summary_df.prefix != '127.0.0.0/8')].reindex()
+        self.summary_df = self.summary_df[(
+            self.summary_df.prefix != '127.0.0.0/8')].reindex()
 
         if 'prefix' in self.summary_df.columns:
-            self.summary_df['prefix'].replace('default', '0.0.0.0/0', inplace=True)
+            self.summary_df['prefix'].replace(
+                'default', '0.0.0.0/0', inplace=True)
             self.summary_df = self.summary_df.reindex()
-            self.summary_df['prefix'] = self.summary_df['prefix'].astype('ipnetwork')
+            self.summary_df['prefix'] = self.summary_df['prefix'] \
+                                            .astype('ipnetwork')
 
         # have to redo nsgrp because we did extra filtering above
         self.nsgrp = self.summary_df.groupby(by=["namespace"])
@@ -46,20 +49,21 @@ class RoutesObj(SqEngineObject):
         self._add_stats_to_summary(routes_per_vrfns, 'routesperVrf')
 
         hr_per_ns = self.summary_df.query("prefix.ipnet.prefixlen == 32") \
-                      .groupby(by=['namespace'])['prefix'].count()
+                                   .groupby(by=['namespace'])['prefix'].count()
 
         ifr_per_ns = self.summary_df.query("prefix.ipnet.prefixlen == 30 or "
-                              "prefix.ipnet.prefixlen == 31") \
-                       .groupby(by=['namespace'])['prefix'].count()
+                                           "prefix.ipnet.prefixlen == 31") \
+            .groupby(by=['namespace'])['prefix'].count()
 
-        hosts_with_defrt_per_vrfns = self.summary_df.query("prefix.ipnet.is_default") \
-                                       .groupby(by=["namespace", "vrf"])[
-                                           "hostname"].nunique()
+        hosts_with_defrt_per_vrfns = self.summary_df \
+                                         .query("prefix.ipnet.is_default") \
+                                         .groupby(by=["namespace", "vrf"])[
+                                             "hostname"].nunique()
         hosts_per_vrfns = self.summary_df.groupby(by=["namespace", "vrf"])[
             "hostname"].nunique()
 
         {self.ns[i[0]].update({"hostsNoDefRoute":
-                          hosts_with_defrt_per_vrfns[i] == hosts_per_vrfns[i]})
+                               hosts_with_defrt_per_vrfns[i] == hosts_per_vrfns[i]})
          for i in hosts_with_defrt_per_vrfns.keys()}
 
         for field in ['hostname', 'vrf']:
