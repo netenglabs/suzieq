@@ -32,9 +32,6 @@ from nubia import command, argument, context
 )
 class SqCommand:
     """Base Command Class for use with all verbs"""
-    namespace = None
-    hostname = None
-    columns = None
 
     def __init__(
             self,
