@@ -63,6 +63,8 @@ class RouteCmd(SqCommand):
             self.ctxt.sort_fields = []
             remove_metric = False
 
+        # /32 routes are not stored with the /32 prefix
+
         df = self.sqobj.get(
             hostname=self.hostname,
             prefix=prefix.split(),

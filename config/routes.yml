@@ -29,6 +29,8 @@ apply:
     normalize: 'vrfs/*:vrf/routes/*:prefix/[
         "routeType: protocol",
         "metric: metric?|0",
+        "routeAction": "action?|forward",
+        "hardwareProgrammed: inHardware?|False",
         "vias/*/nexthopAddr: list(nexthopIps)",
         "vias/*/interface": list(oifs)"]'
   
