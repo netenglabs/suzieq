@@ -275,13 +275,15 @@ class Node(object):
         self.devtype = devtype
         self.set_hostname(hostname)
 
-    async def _parse_uptime(self, output, cb_token) -> None:
+    async def _parse_boottime_hostname(self, output, cb_token) -> None:
         """Parse the uptime command output"""
 
         if output[0]["status"] == 0:
             upsecs = output[0]["data"].split()[0]
             self.bootupTimestamp = int(int(time.time()*1000)
                                        - float(upsecs))
+        if output[1]["status"] == 0:
+            self.hostname = output[1]["data"].strip()
 
     def set_unreach_status(self):
         self._status = "unreachable"
@@ -323,7 +325,8 @@ class Node(object):
 
     async def init_boot_time(self):
         """Fill in the boot time of the node by running the appropriate command"""
-        await self.exec_cmd(self._parse_uptime, ["cat /proc/uptime"], None)
+        await self.exec_cmd(self._parse_boottime_hostname, ["cat /proc/uptime",
+                                                            "hostname"], None)
 
     def post_commands(self, service_callback, svc_defn: dict,
                       cb_token: RsltToken):
@@ -566,8 +569,6 @@ class EosNode(Node):
             self.hostname = data["hostname"]
             self._status = "good"
 
-        breakpoint()
-
     async def rest_gather(self, service_callback, cmd_list, cb_token,
                           oformat="json", timeout=None):
 
@@ -625,6 +626,7 @@ class EosNode(Node):
             self.last_exception = e
             for cmd in cmd_list:
                 result.append(self._create_error(cmd))
+            self._status = "init"  # Recheck everything
 
         await service_callback(result, cb_token)
 
