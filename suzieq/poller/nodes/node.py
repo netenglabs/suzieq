@@ -64,9 +64,13 @@ async def init_hosts(hosts_file):
                 port = result.port
                 host = result.hostname
                 devtype = None
+                keyfile = None
 
-                if len(words) > 1 and "=" in words[1]:
-                    devtype = words[1].split("=")[1]
+                for i in range(1, len(words[1:])+1):
+                    if words[i].startswith('keyfile'):
+                        keyfile = words[i].split("=")[1]
+                    elif words[i].startswith('devtype'):
+                        devtype = words[i].split("=")[1]
 
                 newnode = Node()
                 tasks += [newnode._init(
@@ -76,6 +80,7 @@ async def init_hosts(hosts_file):
                     password=password,
                     transport=result.scheme,
                     devtype=devtype,
+                    ssh_keyfile=keyfile,
                     namespace=nsname,
                 )]
 
@@ -94,34 +99,6 @@ async def init_hosts(hosts_file):
 
 
 class Node(object):
-    address = None  # Device IP or hostname if DNS'able
-    hostname = "-"  # Device hostname
-    devtype = None  # Device type
-    username = ""
-    password = ""
-    pvtkey = ""  # Needed for Junos Vagrant
-    transport = "ssh"
-    prev_result = {}  # No updates if nothing changed
-    nsname = None
-    svc_cmd_mapping = defaultdict(lambda: {})  # Not used yet
-    logger = logging.getLogger("sq-poller")
-    port = 0
-    backoff = 15  # secs to backoff
-    init_again_at = 0  # after this epoch secs, try init again
-    connect_timeout = 10  # connect timeout in seconds
-    cmd_timeout = 10  # default command timeout in seconds
-    batch_size = 4    # Number of commands to issue in parallel
-    bootupTimestamp = 0
-    version = 0                 # OS Version to pick the right defn
-    _service_queue = None
-    _conn = None
-    _status = "init"
-    svcs_proc = set()
-    error_svcs_proc = set()
-    ssh_ready = asyncio.Event()
-    _last_exception = None
-    _last_exception_timestamp = None
-
     @property
     def status(self):
         return self._status
@@ -139,6 +116,30 @@ class Node(object):
         if not kwargs:
             raise ValueError
 
+        self.hostname = "-"  # Device hostname
+        self.devtype = None  # Device type
+        self.pvtkey_file = ""     # SSH private keyfile
+        self.prev_result = {}  # No updates if nothing changed
+        self.nsname = None
+        self.svc_cmd_mapping = defaultdict(lambda: {})  # Not used yet
+        self.logger = logging.getLogger("sq-poller")
+        self.port = 0
+        self.backoff = 15  # secs to backoff
+        self.init_again_at = 0  # after this epoch secs, try init again
+        self.connect_timeout = 10  # connect timeout in seconds
+        self.cmd_timeout = 10  # default command timeout in seconds
+        self.batch_size = 4    # Number of commands to issue in parallel
+        self.bootupTimestamp = 0
+        self.version = 0                 # OS Version to pick the right defn
+        self._service_queue = None
+        self._conn = None
+        self._status = "init"
+        self.svcs_proc = set()
+        self.error_svcs_proc = set()
+        self.ssh_ready = asyncio.Event()
+        self._last_exception = None
+        self._last_exception_timestamp = None
+
         self.address = kwargs["address"]
         self.hostname = kwargs["address"]  # default till we get hostname
         self.username = kwargs.get("username", "vagrant")
@@ -146,10 +147,12 @@ class Node(object):
         self.transport = kwargs.get("transport", "ssh")
         self.nsname = kwargs.get("namespace", "default")
         self.port = kwargs.get("port", 0)
-        self.devtype = kwargs.get("devtype", None)
-        pvtkey_file = kwargs.get("private_key_file", None)
+        self.devtype = None
+        pvtkey_file = kwargs.get("ssh_keyfile", None)
         if pvtkey_file:
             self.pvtkey = asyncssh.public_key.read_private_key(pvtkey_file)
+        else:
+            self.pvtkey = None
 
         self._init_service_queue()
 
@@ -160,6 +163,10 @@ class Node(object):
                 await self._init_ssh(init_boot_time=False)
             elif self.transport == "https":
                 self.port = 443
+
+        devtype = kwargs.get("devtype", None)
+        if devtype:
+            self.set_devtype(devtype)
 
         await self.init_node()
         if not self.hostname:
@@ -193,12 +200,13 @@ class Node(object):
                 if hostname:
                     self.set_hostname(hostname)
 
+            await self.init_boot_time()
+
         elif self.devtype:
             self.set_devtype(self.devtype)
             if not self.hostname:
                 self.set_hostname()
-
-        await self.init_boot_time()
+            self._status = "good"
 
     def set_devtype(self, devtype):
         self.devtype = devtype
@@ -400,9 +408,9 @@ class Node(object):
                         self.address,
                         port=self.port,
                         known_hosts=None,
-                        client_keys=self.pvtkey,
+                        client_keys=self.pvtkey if self.pvtkey else None,
                         username=self.username,
-                        password=self.password,
+                        password=self.password if not self.pvtkey else None,
                     ),
                     timeout=self.cmd_timeout,
                 )
@@ -464,7 +472,7 @@ class Node(object):
                 )
             )
 
-        return
+        return result
 
     async def exec_service(self, service_callback, svc_defn: dict,
                            cb_token: RsltToken):
@@ -529,8 +537,39 @@ class EosNode(Node):
         super()._init(kwargs)
         self.devtype = "eos"
 
-    async def rest_gather(self, cmd_list, cb_token, oformat="json",
-                          timeout=None):
+    async def init_node(self):
+        try:
+            await self.get_device_boottime_hostname()
+        except Exception as e:
+            self.last_exception = e
+
+    async def get_device_type_hostname(self):
+        raise NotImplementedError
+
+    async def get_device_boottime_hostname(self):
+        """Determine the type of device we are talking to"""
+
+        if self.transport == 'https':
+            cmdlist = ["show version", "show hostname"]
+        else:
+            cmdlist = ["show version|json", "show hostname|json"]
+        await self.exec_cmd(self._parse_boottime_hostname, cmdlist, None)
+
+    async def _parse_boottime_hostname(self, output, cb_token) -> None:
+
+        if output[0]["status"] == 0 or output[0]["status"] == 200:
+            data = output[0]["data"]
+            self.bootupTimestamp = data["bootupTimestamp"]
+
+        if output[1]["status"] == 0 or output[1]["status"] == 200:
+            data = output[1]["data"]
+            self.hostname = data["hostname"]
+            self._status = "good"
+
+        breakpoint()
+
+    async def rest_gather(self, service_callback, cmd_list, cb_token,
+                          oformat="json", timeout=None):
 
         result = []
         if not cmd_list:
@@ -565,9 +604,9 @@ class EosNode(Node):
                 async with session.post(url, json=data, headers=headers) as response:
                     status, json_out = response.status, await response.json()
                     if "result" in json_out:
-                        output.append(json_out["result"][0])
+                        output.extend(json_out["result"])
                     else:
-                        output.append(json_out["error"])
+                        output.extend(json_out["error"])
 
             for i, cmd in enumerate(cmd_list):
                 result.append(
@@ -587,7 +626,7 @@ class EosNode(Node):
             for cmd in cmd_list:
                 result.append(self._create_error(cmd))
 
-        return result
+        await service_callback(result, cb_token)
 
     async def _parse_hostname(self, output, cb_token) -> None:
         """Parse the hostname command output"""
@@ -621,8 +660,8 @@ class CumulusNode(Node):
         super()._init(kwargs)
         self.devtype = "cumulus"
 
-    async def rest_gather(self, cmd_list, cb_token, oformat='json',
-                          timeout=None):
+    async def rest_gather(self, service_callback, cmd_list, cb_token,
+                          oformat='json', timeout=None):
 
         result = []
         if not cmd_list:
@@ -659,7 +698,7 @@ class CumulusNode(Node):
             self.last_exception = e
             result.append(self._create_error(cmd))
 
-        return result
+        await service_callback(result, cb_token)
 
         async def set_hostname(self, hostname=None):
             if hostname:
