@@ -138,12 +138,19 @@ def test_start_time_show_filter(setup_nubia, cmd):
         testing.assert_frame_equal(s1, s2)
 
 
-columns_commands = good_commands[:]
-
+show_columns_commands = good_commands[:]
+show_columns_commands[6] = pytest.param(
+    column_commands[6],
+    marks=pytest.mark.xfail(reason='bug #64',
+                            raises=KeyError))  # MacCmd
+show_columns_commands[9] = pytest.param(
+    column_commands[9],
+    marks=pytest.mark.xfail(reason='bug #65',
+                            raises=KeyError))  # RouteCmd
 
 @pytest.mark.filter
 @pytest.mark.fast
-@pytest.mark.parametrize("cmd", columns_commands)
+@pytest.mark.parametrize("cmd", show_columns_commands)
 def test_columns_show_filter(setup_nubia, cmd):
     s1, s2 = _test_good_show_filter(cmd, {'columns': 'hostname'})
     assert s1.size >= s2.size
