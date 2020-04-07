@@ -37,47 +37,38 @@ basic_verbs = ['show']
 # columns length, column names?
 #  specific data?
 @pytest.mark.slow
-@pytest.mark.parametrize("command, verbs, args, size,", [
-    ('AddrCmd', basic_verbs, [None], [324],),
-    ('EvpnVniCmd', basic_verbs, [None],
-     [0]),
+@pytest.mark.parametrize("command, verbs, args", [
+    ('AddrCmd', basic_verbs, [None]),
+    ('EvpnVniCmd', basic_verbs, [None]),
     ('InterfaceCmd', basic_verbs + ['top', 'aver'],
-     [None, None, None], [1518, 60, 0]),
-    ('LldpCmd', basic_verbs, [None, None], [352, 48]),
-    ('MacCmd', basic_verbs, [None, None], [312, 48]),
-    ('MlagCmd', basic_verbs, [None, None, None],
-     [44, 143]),
-    ('OspfCmd', basic_verbs + ['top', 'aver'], [None, None, None],
-     [0, 0, 0]),
+     [None, None, None]),
+    ('LldpCmd', basic_verbs, [None, None]),
+    ('MacCmd', basic_verbs, [None, None]),
+    ('MlagCmd', basic_verbs, [None, None, None]),
+    ('OspfCmd', basic_verbs + ['top', 'aver'], [None, None, None]),
     ('RouteCmd', basic_verbs + ['lpm'],
-     [None, {'address': '10.0.0.1'}], [2596, 143]),
-    ('TableCmd', basic_verbs + ['describe'], [None, {'table': 'system'}], [105, 44]),
-    ('TopcpuCmd', basic_verbs, [None, None], [1404, 18]),
-    ('TopmemCmd', basic_verbs, [None, None], [891, 18]),
-    ('VlanCmd', basic_verbs, [None], [96])
+     [None, {'address': '10.0.0.1'}]),
+    ('TableCmd', basic_verbs + ['describe'], [None, {'table': 'system'}]),
+    ('TopcpuCmd', basic_verbs, [None, None]),
+    ('TopmemCmd', basic_verbs, [None, None]),
+    ('VlanCmd', basic_verbs, [None])
 ])
-def test_commands(setup_nubia, command, verbs, args, size):
+def test_commands(setup_nubia, command, verbs, args):
     """ runs through all of the commands for each of the sqcmds
     command: one of the sqcmds
     verbs: for each command, the list of verbs
     args: arguments
     size: for each command, expected size of returned data,
           or Exception if the command is invalid"""
-    for v, arg, sz in zip(verbs, args, size):
-        _test_command(command, v, arg, sz)
+    for v, arg in zip(verbs, args):
+        _test_command(command, v, arg)
 
 
-def _test_command(cmd, verb, arg, sz, filter=None):
+def _test_command(cmd, verb, arg,  filter=None):
     s = None
-    if isinstance(sz, type) and isinstance(sz(), Exception):
-        with pytest.raises(sz):
-            execute_cmd(cmd, verb, arg, filter)
 
-    else:
-        s = execute_cmd(cmd, verb, arg, filter)
-        assert isinstance(s, DataFrame)
-        if sz is not None:
-            assert s.size == sz
+    s = execute_cmd(cmd, verb, arg, filter)
+    assert isinstance(s, DataFrame)
     return s
 
 
@@ -99,8 +90,8 @@ column_commands[0] = pytest.param(
 
 @pytest.mark.parametrize("cmd", column_commands)
 def test_all_columns(setup_nubia, cmd):
-    s1 = _test_command(cmd, 'show', None, None)
-    s2 = _test_command(cmd, 'show', None, None, filter={'columns': '*'})
+    s1 = _test_command(cmd, 'show', None)
+    s2 = _test_command(cmd, 'show', None, filter={'columns': '*'})
     assert s1.size <= s2.size
 
 
@@ -160,8 +151,8 @@ def test_columns_show_filter(setup_nubia, cmd):
 
 def _test_good_show_filter(cmd, filter):
     assert len(filter) == 1
-    s1 = _test_command(cmd, 'show', None, None)
-    s2 = _test_command(cmd, 'show', None, None, filter=filter)
+    s1 = _test_command(cmd, 'show', None)
+    s2 = _test_command(cmd, 'show', None, filter=filter)
     filter_key = next(iter(filter))
     if filter_key in s2.columns:
         # sometimes the filter isn't a part of the data returned
@@ -231,7 +222,7 @@ def test_bad_show_namespace_filter(setup_nubia, cmd):
 
 def _test_bad_show_filter(cmd, filter):
     assert len(filter) == 1
-    s = _test_command(cmd, 'show', None, None, filter=filter)
+    s = _test_command(cmd, 'show', None, filter=filter)
     assert len(s) == 0
     return s
 
@@ -245,7 +236,7 @@ good_filters = [{'hostname': 'leaf01'}]
 @pytest.mark.parametrize('cmd', good_commands)
 def test_context_filtering(setup_nubia, cmd):
     for filter in good_filters:
-        s1 = _test_command(cmd, 'show', None, None)
+        s1 = _test_command(cmd, 'show', None)
         s2 = _test_context_filtering(cmd, filter)
         if s1.size == 0:
             assert s1.size == s2.size
@@ -257,7 +248,7 @@ context_namespace_commands = commands[:]
 @pytest.mark.filter
 @pytest.mark.parametrize('cmd', context_namespace_commands)
 def test_context_namespace_filtering(setup_nubia, cmd):
-    s1 = _test_command(cmd, 'show', None, None)
+    s1 = _test_command(cmd, 'show', None)
     s2 = _test_context_filtering(cmd, {'namespace': ['dual-bgp']})
     # this has to be list or it will fail, different from any other filtering,
     # namespace is special because it's part of the directory structure
@@ -272,7 +263,7 @@ def test_context_namespace_filtering(setup_nubia, cmd):
 @pytest.mark.filter
 @pytest.mark.parametrize('cmd', good_commands)
 def test_context_engine_filtering(setup_nubia, cmd):
-    s1 = _test_command(cmd, 'show', None, None)
+    s1 = _test_command(cmd, 'show', None)
     s2 = _test_context_filtering(cmd, {'enginename': 'pandas'})
     if s1.size == 0:
         assert s1.size == s2.size
@@ -283,7 +274,7 @@ def test_context_engine_filtering(setup_nubia, cmd):
 @pytest.mark.fast
 @pytest.mark.parametrize('cmd', good_commands)
 def test_context_start_time_filtering(setup_nubia, cmd):
-    s1 = _test_command(cmd, 'show', None, None)
+    s1 = _test_command(cmd, 'show', None)
     # before the latest data, so might be more data than the default
     s2 = _test_context_filtering(cmd, {'start_time': '2020-01-20 0:0:0'})
     if s1.size == 0:
@@ -294,12 +285,12 @@ def test_context_start_time_filtering(setup_nubia, cmd):
 
 def _test_context_filtering(cmd, filter):
     assert len(filter) == 1
-    s1 = _test_command(cmd, 'show', None, None)
+    s1 = _test_command(cmd, 'show', None)
     ctx = context.get_context()
     k = next(iter(filter))
     v = filter[k]
     setattr(ctx, k, v)
-    s2 = _test_command(cmd, 'show', None, None)
+    s2 = _test_command(cmd, 'show', None)
     if s1.size > 0:
         assert s1.size > 0  # these should be good filters, so expect data
     setattr(ctx, k, "")  # reset ctx back to no filtering
