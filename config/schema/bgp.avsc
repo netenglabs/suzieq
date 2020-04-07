@@ -4,47 +4,7 @@
     "type": "record",
     "fields": [
         {
-            "name": "reason",
-            "type": "string"
-        },
-        {
-            "name": "peerAsn",
-            "type": "long",
-            "display": 6
-        },
-        {
-            "name": "estdTime",
-            "type": "timedelta64[s]",
-            "display": 8
-        },
-        {
-            "name": "v6PfxRx",
-            "type": "long"
-        },
-        {
-            "name": "peerHostname",
-            "type": "string"
-        },
-        {
-            "name": "asn",
-            "type": "long",
-            "display": 5
-        },
-        {
             "name": "v4Enabled",
-            "type": "boolean"
-        },
-        {
-            "name": "state",
-            "type": "string",
-            "display": 4
-        },
-        {
-            "name": "evpnPfxRx",
-            "type": "long"
-        },
-        {
-            "name": "evpnEnabled",
             "type": "boolean"
         },
         {
@@ -54,8 +14,50 @@
             "display": 2
         },
         {
+            "name": "reason",
+            "type": "string"
+        },
+        {
+            "name": "v4PfxTx",
+            "type": "long"
+        },
+        {
+            "name": "source",
+            "type": "string"
+        },
+        {
+            "name": "lastDownTime",
+            "type": "timedelta64[s]"
+        },
+        {
+            "name": "evpnIngressRmap",
+            "type": "string"
+        },
+        {
+            "name": "v6IngressRmap",
+            "type": "string"
+        },
+        {
+            "name": "bfdStatus",
+            "type": "string"
+        },
+        {
+            "name": "asn",
+            "type": "long",
+            "display": 5
+        },
+        {
+            "name": "estdTime",
+            "type": "timedelta64[s]",
+            "display": 8
+        },
+        {
             "name": "v6Enabled",
             "type": "boolean"
+        },
+        {
+            "name": "evpnPfxTx",
+            "type": "long"
         },
         {
             "name": "peerRouterId",
@@ -63,31 +65,22 @@
             "default": "0.0.0.0"
         },
         {
-            "name": "maintenance",
-            "type": "boolean"
-        },
-        {
             "name": "numChanges",
             "type": "long",
             "display": 9
         },
         {
-            "name": "v4PfxTx",
-            "type": "long"
+            "name": "routerId",
+            "type": "string"
         },
         {
-            "name": "peer",
-            "type": "string",
-            "key": 3,
-            "display": 3
+            "name": "peerAsn",
+            "type": "long",
+            "display": 6
         },
         {
-            "name": "updatesTx",
-            "type": "long"
-        },
-        {
-            "name": "lastDownTime",
-            "type": "timedelta64[s]"
+            "name": "evpnEnabled",
+            "type": "boolean"
         },
         {
             "name": "v6PfxTx",
@@ -98,8 +91,16 @@
             "type": "long"
         },
         {
-            "name": "routerId",
-            "type": "string"
+            "name": "mrai",
+            "type": "long"
+        },
+        {
+            "name": "updatesTx",
+            "type": "long"
+        },
+        {
+            "name": "v6PfxRx",
+            "type": "long"
         },
         {
             "name": "v4PfxRx",
@@ -107,7 +108,46 @@
             "display": 7
         },
         {
-            "name": "source",
+            "name": "peer",
+            "type": "string",
+            "key": 3,
+            "display": 3
+        },
+        {
+            "name": "state",
+            "type": "string",
+            "display": 4
+        },
+        {
+            "name": "holdTime",
+            "type": "timestamp"
+        },
+        {
+            "name": "v4IngressRmap",
+            "type": "string"
+        },
+        {
+            "name": "evpnEgressRmap",
+            "type": "string"
+        },
+        {
+            "name": "v4EgressRmap",
+            "type": "string"
+        },
+        {
+            "name": "v6EgressRmap",
+            "type": "string"
+        },
+        {
+            "name": "evpnPfxRx",
+            "type": "long"
+        },
+        {
+            "name": "keepaliveTime",
+            "type": "timestamp"
+        },
+        {
+            "name": "peerHostname",
             "type": "string"
         },
         {
