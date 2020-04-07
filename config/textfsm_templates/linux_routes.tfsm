@@ -1,27 +1,30 @@
 Value protocol (\w+)
-Value Required prefix ([0-9./]*|default)
+Value Required prefix ([0-9./]*|[0-9a-f:/]*|default)
 Value vrf (\S+)
 Value source ([0-9./]*)
-Value List nexthopIps ([0-9./]*)
+Value List nexthopIps ([0-9./]*|[0-9a-f:/]*)
 Value List oifs (\S+)
 Value List weights (\d+)
 Value metric (\d+)
+Value action (blackhole)
 
 Start
   ^\S+ -> Continue.Record
+  ^${action}\s+(?:nhid \d+\s+)?${prefix}\s+proto ${protocol}\s+metric ${metric}.*$$
   ^\s+nexthop via\s+${nexthopIps}\s+dev ${oifs}\s+weight ${weights}.*$$
-  ^${prefix}\s+via\s+${nexthopIps}\s+dev ${oifs}\s+table ${vrf}\s+proto ${protocol}\s+metric ${metric}.*$$
-  ^${prefix}\s+dev ${oifs}\s+table ${vrf}\s+proto ${protocol}.*src ${source}.*$$
-  ^unreachable\s+${prefix}\s+table ${vrf}\s+metric ${metric}.*$$
-  ^${prefix}\s+via\s+${nexthopIps}\s+dev ${oifs}\s+table ${vrf}
-  ^${prefix}\s+proto ${protocol}\s+metric ${metric}.*$$
-  ^${prefix}\s+proto ${protocol}\s+src ${source}\s+metric ${metric}.*$$  
-  ^${prefix}\s+via ${nexthopIps}\s+dev ${oifs}\s+proto ${protocol}\s+metric ${metric}.*$$ 
-  ^${prefix}\s+dev ${oifs}\s+proto ${protocol}.*src ${source}.*$$  
-  ^${prefix}\s+via ${nexthopIps}\s+dev ${oifs}.*$$
-  ^${prefix}\s+table ${vrf}\s+proto ${protocol}\s+metric ${metric}
+  ^${prefix}\s+(?:nhid \d+\s+)?via\s+${nexthopIps}\s+dev ${oifs}\s+table ${vrf}\s+proto ${protocol}\s+metric ${metric}.*$$
+  ^${prefix}\s+(?:nhid \d+\s+)?dev ${oifs}\s+table ${vrf}\s+proto ${protocol}.*src ${source}.*$$
+  ^unreachable\s+(?:nhid \d+\s+)?${prefix}\s+table ${vrf}\s+metric ${metric}.*$$
+  ^${prefix}\s+(?:nhid \d+\s+)?via\s+${nexthopIps}\s+dev ${oifs}\s+table ${vrf}
+  ^${prefix}\s+(?:nhid \d+\s+)?proto ${protocol}\s+metric ${metric}.*$$
+  ^${prefix}\s+(?:nhid \d+\s+)?proto ${protocol}\s+src ${source}\s+metric ${metric}.*$$  
+  ^${prefix}\s+(?:nhid \d+\s+)?via ${nexthopIps}\s+dev ${oifs}\s+proto ${protocol}\s+metric ${metric}.*$$ 
+  ^${prefix}\s+(?:nhid \d+\s+)?dev ${oifs}\s+proto ${protocol}.*src ${source}.*$$  
+  ^${prefix}\s+(?:nhid \d+\s+)?via ${nexthopIps}\s+dev ${oifs}.*$$
+  ^${prefix}\s+(?:nhid \d+\s+)?table ${vrf}\s+proto ${protocol}\s+metric ${metric}
 
 #default via 10.2.4.1 dev uplink
+#blackhole 10.0.1.0/26 proto bgp metric 20
 #169.254.1.0/30 dev peerlink.4094  proto kernel  scope link  src 169.254.1.2
 #10.2.4.0/24 dev uplink  proto kernel  scope link  src 10.2.4.102
 #192.168.0.0/24 via 192.168.121.1 dev eth0
@@ -116,3 +119,41 @@ Start
 #172.16.1.0/24  proto 186  src 10.0.0.100  metric 20 
 #       nexthop via 169.254.253.5  dev eth2.3 weight 1
 #       nexthop via 169.254.254.5  dev eth1.3 weight 1
+#2c0f:fe98::/32 via fe80::cad7:19ff:fe0a:fdfd dev eth0  proto 186  metric 20 
+#2c0f:feb0::/32 via fe80::cad7:19ff:fe0a:fdfd dev eth0  proto 186  metric 20 
+#2c0f:feb1::/32 via fe80::cad7:19ff:fe0a:fdfd dev eth0  proto 186  metric 20 
+#2c0f:fec8:8::/48 via fe80::cad7:19ff:fe0a:fdfd dev eth0  proto 186  metric 20 
+#2c0f:fec8:48::/48 via fe80::cad7:19ff:fe0a:fdfd dev eth0  proto 186  metric 20 
+#2c0f:fec8:200::/48 via fe80::cad7:19ff:fe0a:fdfd dev eth0  proto 186  metric 20 
+#2c0f:fec8:1000::/48 via fe80::cad7:19ff:fe0a:fdfd dev eth0  proto 186  metric 20 
+#2c0f:fec8::/32 via fe80::cad7:19ff:fe0a:fdfd dev eth0  proto 186  metric 20 
+#2c0f:fed8::/32 via fe80::cad7:19ff:fe0a:fdfd dev eth0  proto 186  metric 20 
+#2c0f:fee0::/32 via fe80::cad7:19ff:fe0a:fdfd dev eth0  proto 186  metric 20 
+#2c0f:fef0::/32 via fe80::cad7:19ff:fe0a:fdfd dev eth0  proto 186  metric 20 
+#2c0f:fef8::/48 via fe80::cad7:19ff:fe0a:fdfd dev eth0  proto 186  metric 20 
+#2c0f:fef8:10::/48 via fe80::cad7:19ff:fe0a:fdfd dev eth0  proto 186  metric 20 
+#2c0f:fef8::/32 via fe80::cad7:19ff:fe0a:fdfd dev eth0  proto 186  metric 20 
+#2c0f:ff00::/48 via fe80::cad7:19ff:fe0a:fdfd dev eth0  proto 186  metric 20 
+#2c0f:ff00:1::/48 via fe80::cad7:19ff:fe0a:fdfd dev eth0  proto 186  metric 20 
+#2c0f:ff00:2::/48 via fe80::cad7:19ff:fe0a:fdfd dev eth0  proto 186  metric 20 
+#2c0f:ff00::/32 via fe80::cad7:19ff:fe0a:fdfd dev eth0  proto 186  metric 20 
+#2c0f:ff20::/32 via fe80::cad7:19ff:fe0a:fdfd dev eth0  proto 186  metric 20 
+#2c0f:ff28:3::/48 via fe80::cad7:19ff:fe0a:fdfd dev eth0  proto 186  metric 20 
+#2c0f:ff28:7::/48 via fe80::cad7:19ff:fe0a:fdfd dev eth0  proto 186  metric 20 
+#2c0f:ff28::/32 via fe80::cad7:19ff:fe0a:fdfd dev eth0  proto 186  metric 20 
+#2c0f:ff30::/32 via fe80::cad7:19ff:fe0a:fdfd dev eth0  proto 186  metric 20 
+#2c0f:ff40::/26 via fe80::cad7:19ff:fe0a:fdfd dev eth0  proto 186  metric 20 
+#2c0f:ff80::/32 via fe80::cad7:19ff:fe0a:fdfd dev eth0  proto 186  metric 20 
+#2c0f:ffa0::/32 via fe80::cad7:19ff:fe0a:fdfd dev eth0  proto 186  metric 20 
+#2c0f:ffc8::/32 via fe80::cad7:19ff:fe0a:fdfd dev eth0  proto 186  metric 20 
+#2c0f:ffd0::/32 via fe80::cad7:19ff:fe0a:fdfd dev eth0  proto 186  metric 20 
+#2c0f:ffd8::/32 via fe80::cad7:19ff:fe0a:fdfd dev eth0  proto 186  metric 20 
+#2c0f:fff0::/32 via fe80::cad7:19ff:fe0a:fdfd dev eth0  proto 186  metric 20 
+#fe80::/64 dev eth0  proto kernel  metric 256 
+#default via fe80::cad7:19ff:fe0a:fdfd dev eth0  proto 196  metric 20
+#4::5 nhid 972 proto 194 metric 20
+#	nexthop via fe80::1 dev enp0s10 weight 1
+#	nexthop via fe80::2 dev enp0s9 weight 1 pref medium
+#4::6 nhid 972 proto 194 metric 20
+#	nexthop via fe80::1 dev enp0s10 weight 1
+#	nexthop via fe80::2 dev enp0s9 weight 1 pref medium
