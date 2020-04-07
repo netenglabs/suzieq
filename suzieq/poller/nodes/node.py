@@ -281,7 +281,7 @@ class Node(object):
         if output[0]["status"] == 0:
             upsecs = output[0]["data"].split()[0]
             self.bootupTimestamp = int(int(time.time()*1000)
-                                       - float(upsecs))
+                                       - float(upsecs)*1000)
         if output[1]["status"] == 0:
             self.hostname = output[1]["data"].strip()
 
@@ -463,11 +463,11 @@ class Node(object):
         if self.transport == "ssh":
             await self.ssh_gather(service_callback, cmd_list, cb_token, timeout)
         elif self.transport == "https":
-            result = await self.rest_gather(service_callback, cmd_list,
-                                            cb_token, oformat, timeout)
+            await self.rest_gather(service_callback, cmd_list,
+                                   cb_token, oformat, timeout)
         elif self.transport == "local":
-            result = await self.local_gather(service_callback, cmd_list,
-                                             cb_token, timeout)
+            await self.local_gather(service_callback, cmd_list,
+                                    cb_token, timeout)
         else:
             self.logger.error(
                 "Unsupported transport {} for node {}".format(
@@ -475,7 +475,7 @@ class Node(object):
                 )
             )
 
-        return result
+        return
 
     async def exec_service(self, service_callback, svc_defn: dict,
                            cb_token: RsltToken):
@@ -531,8 +531,8 @@ class Node(object):
         if type(cmd) is not list:
             cmd = [cmd]
 
-        return await self.exec_cmd(service_callback, cmd, cb_token,
-                                   oformat=oformat, timeout=cb_token.timeout)
+        await self.exec_cmd(service_callback, cmd, cb_token,
+                            oformat=oformat, timeout=cb_token.timeout)
 
 
 class EosNode(Node):

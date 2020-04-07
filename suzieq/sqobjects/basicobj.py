@@ -18,7 +18,6 @@ class SqContext(object):
         self.end_time = ''
         self.exec_time = ''
         self.engine = 'pandas'
-        self.system_df = {}
         self.sort_fields = []
         self.engine = get_sqengine(self.engine)
         if not self.engine:

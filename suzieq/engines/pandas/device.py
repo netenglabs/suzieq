@@ -1,5 +1,5 @@
 from suzieq.engines.pandas.engineobj import SqEngineObject
 
 
-class SystemObj(SqEngineObject):
+class DeviceObj(SqEngineObject):
     pass

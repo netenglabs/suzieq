@@ -26,56 +26,6 @@ class SqEngineObject(object):
     def sort_fields(self):
         return self.iobj._sort_fields
 
-    def system_df(self, namespace) -> pd.DataFrame:
-        """Return cached version if present, else add to cache the system DF"""
-
-        if not self.ctxt.engine:
-            print("Specify an analysis engine using set engine command")
-            return pd.DataFrame(columns=["namespace", "hostname"])
-
-        sys_cols = ["namespace", "hostname", "timestamp"]
-        sys_sort = ["namespace", "hostname"]
-
-        # Handle the case we need to fetch the data
-        get_data_dc_list = []
-        for dc in namespace:
-            if self.ctxt.system_df.get(dc, None) is None:
-                get_data_dc_list.append(dc)
-
-        if not namespace or get_data_dc_list:
-            system_df = self.ctxt.engine.get_table_df(
-                self.cfg,
-                self.schemas,
-                table="system",
-                view=self.iobj.view,
-                start_time=self.iobj.start_time,
-                end_time=self.iobj.end_time,
-                namespace=get_data_dc_list,
-                sort_fields=sys_sort,
-                columns=sys_cols,
-            )
-            if not get_data_dc_list and not system_df.empty:
-                get_data_dc_list = system_df['namespace'].unique()
-
-            for dc in get_data_dc_list:
-                if dc not in self.ctxt.system_df:
-                    self.ctxt.system_df[dc] = None
-
-                self.ctxt.system_df[dc] = system_df \
-                         .query('namespace=="{}"'.format(dc))
-
-            return system_df
-
-        system_df_list = []
-        for dc in namespace:
-            system_df_list.append(
-                self.ctxt.system_df.get(dc, pd.DataFrame(columns=sys_cols)))
-
-        if system_df_list:
-            return pd.concat(system_df_list)
-        else:
-            return pd.DataFrame(columns=sys_cols)
-
     def get_valid_df(self, table, sort_fields, **kwargs) -> pd.DataFrame:
         if not self.ctxt.engine:
             print("Specify an analysis engine using set engine command")
@@ -99,66 +49,6 @@ class SqEngineObject(object):
             sort_fields=sort_fields,
             **kwargs
         )
-
-        # namespace = kwargs.get("namespace", None)
-        # if not namespace:
-        #     namespace = self.ctxt.namespace
-
-        # if not namespace:
-        #     namespace = []
-
-        # if table_df.empty:
-        #     return table_df
-
-        # if table != "system":
-        #     # This merge is required to ensure that we don't serve out
-        #     # stale data that was obtained before the current run of
-        #     # the agent or from before the system came up
-        #     # We need the system DF cached to avoid slowdown in serving
-        #     # data.
-        #     # TODO: Find a way to invalidate the system df cache.
-
-        #     drop_cols = ["timestamp_y"]
-
-        #     if self.iobj.start_time or self.iobj.end_time:
-        #         sys_cols = ["namespace", "hostname", "timestamp"]
-        #         sys_sort = ["namespace", "hostname"]
-        #         sys_df = self.ctxt.engine.get_table_df(
-        #             self.cfg,
-        #             self.schemas,
-        #             table="system",
-        #             view=self.iobj.view,
-        #             start_time=self.iobj.start_time,
-        #             end_time=self.iobj.end_time,
-        #             namespace=namespace,
-        #             sort_fields=sys_sort,
-        #             columns=sys_cols,
-        #         )
-        #     else:
-        #         sys_df = self.system_df(namespace)
-
-        #     if sys_df.empty:
-        #         return sys_df
-
-        #     key_fields = [f["name"] for f in self.schemas.get(table)
-        #                   if f.get("key", None) is not None]
-
-        #     final_df = (
-        #         table_df.merge(sys_df, on=["namespace", "hostname"])
-        #         .dropna(how="any", subset=key_fields)
-        #         .query("timestamp_x >= timestamp_y")
-        #         .drop(columns=drop_cols)
-        #         .rename(
-        #             index=str,
-        #             columns={
-        #                 "namespace_x": "namespace",
-        #                 "hostname_x": "hostname",
-        #                 "timestamp_x": "timestamp",
-        #             },
-        #         )
-        #     )
-        # else:
-        #     final_df = table_df
 
         return table_df
 
