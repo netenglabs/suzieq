@@ -3,12 +3,12 @@ from nubia import command, argument
 import pandas as pd
 
 from suzieq.cli.sqcmds.command import SqCommand
-from suzieq.sqobjects.system import SystemObj
+from suzieq.sqobjects.device import DeviceObj
 
 
-@command("system", help="Act on system data")
-class SystemCmd(SqCommand):
-    """system command"""
+@command("device", help="Act on device data")
+class DeviceCmd(SqCommand):
+    """device command"""
 
     def __init__(
             self,
@@ -30,13 +30,13 @@ class SystemCmd(SqCommand):
             namespace=namespace,
             columns=columns,
             format=format,
-            sqobj=SystemObj,
+            sqobj=DeviceObj,
         )
 
-    @command("show", help="Show system information")
+    @command("show", help="Show device information")
     def show(self):
         """
-        Show system info
+        Show device info
         """
         if self.columns is None:
             return

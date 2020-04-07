@@ -1,7 +1,7 @@
 from suzieq.poller.services.service import Service
 
 
-class SystemService(Service):
+class DeviceService(Service):
     """Checks the uptime and OS/version of the node.
     This is specially called out to normalize the timestamp and handle
     timestamp diff
@@ -49,7 +49,7 @@ class SystemService(Service):
     def get_diff(self, old, new):
         """Compare list of dictionaries ignoring certain fields
         Return list of adds and deletes.
-        Need a special one for system because of bootupTimestamp
+        Need a special one for device because of bootupTimestamp
         whose time varies by a few msecs each time the poller runs,
         skewing the data and making us update service records each
         time. So, we mark bootupTimestamp to be ignored, and we

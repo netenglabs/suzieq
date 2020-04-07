@@ -18,7 +18,6 @@ class NubiaSuzieqContext(context.Context):
         self.end_time = ""
         self.exec_time = ""
         self.engine_name = engine
-        self.system_df = {}
         self.sort_fields = []
         self.engine = get_sqengine(engine)
         super().__init__()
@@ -48,5 +47,3 @@ class NubiaSuzieqContext(context.Context):
 
         self.engine_name = engine
         self.engine = get_sqengine(engine)
-        # Clear the system DF because the DF is engine-specific
-        self.system_df = {}
