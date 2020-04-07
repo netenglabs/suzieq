@@ -1,35 +1,46 @@
 description: Testing unique verb
 tests:
-  - command: system unique --format=json
-    data-directory: tests/data/basic_dual_bgp/parquet-out
-    error:
-      error: |
-        [{"error":"ERROR: Must specify columns with unique"}]
-    marks: unique
-
-  - command: system unique --columns='hostname uptime' --format=json
-    data-directory: tests/data/basic_dual_bgp/parquet-out
-    error:
-      error: |
-        [{"error":"ERROR: Specify a single column with unique"}]
-    marks: unique
-
-  - command: system unique --columns=hostname --format=json
-    data-directory: tests/data/basic_dual_bgp/parquet-out
-    output: |
-      [{"hostname":"edge01","count":1},{"hostname":"exit01","count":1},{"hostname":"exit02","count":1},{"hostname":"internet","count":1},{"hostname":"leaf01","count":1},{"hostname":"leaf02","count":1},{"hostname":"leaf03","count":1},{"hostname":"leaf04","count":1},{"hostname":"server101","count":1},{"hostname":"server102","count":1},{"hostname":"server103","count":1},{"hostname":"server104","count":1},{"hostname":"spine01","count":1},{"hostname":"spine02","count":1}]
-    marks: system unique
-
-  - command: system unique --columns=badcolumn --format=json
-    data-directory: tests/data/basic_dual_bgp/parquet-out
-    output: |
-      []
-    marks: system unique
-
-  - command: routes unique --columns=prefix --format=json
-    data-directory: tests/data/basic_dual_bgp/parquet-out
-    xfail:
-      reason: 'bug #37'
-      error: "Error running command: Overlong 2 byte UTF-8 sequence detected when encoding string\n------------------------------------------------------------\n------------------------------------------------------------\n"
-    marks: routes unique
-
+- command: system unique --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  error:
+    error: '[{"error": "ERROR: Must specify columns with unique"}]'
+  marks: unique
+- command: system unique --columns='hostname uptime' --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  error:
+    error: '[{"error": "ERROR: Specify a single column with unique"}]'
+  marks: unique
+- command: system unique --columns=hostname --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: system unique
+  output: '[{"hostname": "edge01", "count": 1}, {"hostname": "exit01", "count": 1},
+    {"hostname": "exit02", "count": 1}, {"hostname": "internet", "count": 1}, {"hostname":
+    "leaf01", "count": 1}, {"hostname": "leaf02", "count": 1}, {"hostname": "leaf03",
+    "count": 1}, {"hostname": "leaf04", "count": 1}, {"hostname": "server101", "count":
+    1}, {"hostname": "server102", "count": 1}, {"hostname": "server103", "count":
+    1}, {"hostname": "server104", "count": 1}, {"hostname": "spine01", "count": 1},
+    {"hostname": "spine02", "count": 1}]'
+- command: system unique --columns=badcolumn --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  error:
+    error: '[{"error": "ERROR: ''badcolumn''"}]'
+  marks: system unique
+- command: route unique --columns=prefix --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: routes unique
+  xfail:
+    error: '[{"prefix": "0.0.0.0/0", "count": 23}, {"prefix": "10.0.0.0/8", "count":
+      4}, {"prefix": "10.0.0.100/32", "count": 11}, {"prefix": "10.0.0.101/32", "count":
+      10}, {"prefix": "10.0.0.102/32", "count": 10}, {"prefix": "10.0.0.11/32", "count":
+      11}, {"prefix": "10.0.0.12/32", "count": 11}, {"prefix": "10.0.0.13/32", "count":
+      11}, {"prefix": "10.0.0.14/32", "count": 11}, {"prefix": "10.0.0.21/32", "count":
+      10}, {"prefix": "10.0.0.22/32", "count": 10}, {"prefix": "10.0.0.253/32", "count":
+      10}, {"prefix": "127.0.0.0/8", "count": 8}, {"prefix": "169.254.1.0/30", "count":
+      4}, {"prefix": "169.254.127.0/31", "count": 2}, {"prefix": "169.254.127.2/31",
+      "count": 2}, {"prefix": "169.254.253.0/30", "count": 2}, {"prefix": "169.254.253.8/30",
+      "count": 2}, {"prefix": "169.254.254.0/30", "count": 2}, {"prefix": "169.254.254.8/30",
+      "count": 2}, {"prefix": "172.16.0.0/16", "count": 4}, {"prefix": "172.16.1.0/24",
+      "count": 13}, {"prefix": "172.16.2.0/24", "count": 13}, {"prefix": "172.16.253.1/32",
+      "count": 10}, {"prefix": "172.16.3.0/24", "count": 13}, {"prefix": "172.16.4.0/24",
+      "count": 13}, {"prefix": "192.168.121.0/24", "count": 14}]'
+    reason: 'bug #37'
