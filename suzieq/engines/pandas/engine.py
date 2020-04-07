@@ -83,7 +83,7 @@ class SqPandasEngine(SqEngine):
                 fields.append(f)
         # Handle the case where key fields are missing from display fields
         fldset = set(fields)
-        kfldset = set(key_fields + ign_key_fields)
+        kfldset = set(key_fields)
         add_flds = kfldset.difference(fldset)
         if add_flds:
             fields.extend(list(add_flds))
@@ -101,6 +101,10 @@ class SqPandasEngine(SqEngine):
             else:
                 query_str += "{} {}=={} ".format(prefix, f, v)
                 prefix = "and"
+
+        # Add the ignored fields back to key fields to ensure we
+        # do the drop_duplicates correctly below
+        key_fields.extend(ign_key_fields)
 
         if addnl_filter:
             # This is for special cases that are specific to an object
