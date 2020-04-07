@@ -191,6 +191,7 @@ class Node(object):
                 devtype = None
 
             if not devtype:
+                self.logger.debug(f"no devtype for {self.hostname} {self.last_exception}")
                 self._status = "init"
                 return
             else:
@@ -460,6 +461,7 @@ class Node(object):
 
     async def exec_cmd(self, service_callback, cmd_list, cb_token,
                        oformat='json', timeout=None):
+        result = None
         if self.transport == "ssh":
             await self.ssh_gather(service_callback, cmd_list, cb_token, timeout)
         elif self.transport == "https":
