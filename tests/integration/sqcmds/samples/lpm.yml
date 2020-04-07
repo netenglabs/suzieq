@@ -1,25 +1,66 @@
 description: Testing route lpm
 tests:
-  - command: route lpm --address="10.0.0.12" --namespace=ospf-single --format json
-    data-directory: tests/data/multidc/parquet-out/
-    output: |
-      [{"namespace":"ospf-single","hostname":"edge01","vrf":"default","prefix":"0.0.0.0\/0","nexthopIps":["192.168.121.1"],"oifs":["eth0"],"weights":[1],"protocol":"","source":"","metric":20,"timestamp":1584446439424},{"namespace":"ospf-single","hostname":"exit01","vrf":"default","prefix":"10.0.0.12\/32","nexthopIps":["10.0.0.21","10.0.0.22"],"oifs":["swp1","swp2"],"weights":[1,1],"protocol":"ospf","source":"","metric":20,"timestamp":1584446439424},{"namespace":"ospf-single","hostname":"exit02","vrf":"default","prefix":"10.0.0.12\/32","nexthopIps":["10.0.0.21","10.0.0.22"],"oifs":["swp1","swp2"],"weights":[1,1],"protocol":"ospf","source":"","metric":20,"timestamp":1584446439424},{"namespace":"ospf-single","hostname":"leaf03","vrf":"default","prefix":"10.0.0.12\/32","nexthopIps":["10.0.0.21","10.0.0.22"],"oifs":["swp1","swp2"],"weights":[1,1],"protocol":"ospf","source":"","metric":20,"timestamp":1584446439424},{"namespace":"ospf-single","hostname":"leaf04","vrf":"default","prefix":"10.0.0.12\/32","nexthopIps":["10.0.0.21","10.0.0.22"],"oifs":["swp1","swp2"],"weights":[1,1],"protocol":"ospf","source":"","metric":20,"timestamp":1584446439424},{"namespace":"ospf-single","hostname":"server101","vrf":"default","prefix":"10.0.0.0\/8","nexthopIps":["172.16.1.1"],"oifs":["eth1"],"weights":[1],"protocol":"","source":"","metric":20,"timestamp":1584446439424},{"namespace":"ospf-single","hostname":"server102","vrf":"default","prefix":"10.0.0.0\/8","nexthopIps":["172.16.2.1"],"oifs":["eth1"],"weights":[1],"protocol":"","source":"","metric":20,"timestamp":1584446439424},{"namespace":"ospf-single","hostname":"server103","vrf":"default","prefix":"10.0.0.0\/8","nexthopIps":["172.16.3.1"],"oifs":["eth1"],"weights":[1],"protocol":"","source":"","metric":20,"timestamp":1584446439424},{"namespace":"ospf-single","hostname":"server104","vrf":"default","prefix":"10.0.0.0\/8","nexthopIps":["172.16.4.1"],"oifs":["eth1"],"weights":[1],"protocol":"","source":"","metric":20,"timestamp":1584446439424},{"namespace":"ospf-single","hostname":"spine01","vrf":"default","prefix":"10.0.0.12\/32","nexthopIps":["10.0.0.12"],"oifs":["swp2"],"weights":[1],"protocol":"ospf","source":"","metric":20,"timestamp":1584446439424},{"namespace":"ospf-single","hostname":"spine02","vrf":"default","prefix":"10.0.0.12\/32","nexthopIps":["10.0.0.12"],"oifs":["swp2"],"weights":[1],"protocol":"ospf","source":"","metric":20,"timestamp":1584446439424}]
-    marks: route lpm
-
-  - command: route lpm --address='10.0.0.12' --namespace=ospf-single --hostname='server101 server103' --format json
-    data-directory: tests/data/multidc/parquet-out/
-    output: |
-      [{"namespace":"ospf-single","hostname":"server101","vrf":"default","prefix":"10.0.0.0\/8","nexthopIps":["172.16.1.1"],"oifs":["eth1"],"weights":[1],"protocol":"","source":"","metric":20,"timestamp":1584446439424},{"namespace":"ospf-single","hostname":"server103","vrf":"default","prefix":"10.0.0.0\/8","nexthopIps":["172.16.3.1"],"oifs":["eth1"],"weights":[1],"protocol":"","source":"","metric":20,"timestamp":1584446439424}]
-    marks: route lpm filter
-
-  - command: route lpm --address='10.0.0.12' --namespace=evpn-dual --vrf=evpn-vrf --format json
-    data-directory: tests/data/multidc/parquet-out/
-    output: |
-      []
-    marks: route lpm filter
-
-  - command: route lpm --address='10.0.0.11' --namespace=dual-evpn --vrf=evpn-vrf --format json
-    data-directory: tests/data/multidc/parquet-out/
-    output: |
-      [{"namespace":"dual-evpn","hostname":"exit01","vrf":"evpn-vrf","prefix":"10.0.0.11\/32","nexthopIps":["169.254.254.6"],"oifs":["swp5.3"],"weights":[1],"protocol":"bgp","source":"","metric":20,"timestamp":1584438050816},{"namespace":"dual-evpn","hostname":"exit02","vrf":"evpn-vrf","prefix":"10.0.0.11\/32","nexthopIps":["169.254.253.6"],"oifs":["swp5.3"],"weights":[1],"protocol":"bgp","source":"","metric":20,"timestamp":1584438050816},{"namespace":"dual-evpn","hostname":"leaf01","vrf":"evpn-vrf","prefix":"0.0.0.0\/0","nexthopIps":[""],"oifs":[""],"weights":[1],"protocol":"","source":"","metric":4278198272,"timestamp":1584438050816},{"namespace":"dual-evpn","hostname":"leaf02","vrf":"evpn-vrf","prefix":"0.0.0.0\/0","nexthopIps":[""],"oifs":[""],"weights":[1],"protocol":"","source":"","metric":4278198272,"timestamp":1584438050816},{"namespace":"dual-evpn","hostname":"leaf03","vrf":"evpn-vrf","prefix":"0.0.0.0\/0","nexthopIps":[""],"oifs":[""],"weights":[1],"protocol":"","source":"","metric":4278198272,"timestamp":1584438181888},{"namespace":"dual-evpn","hostname":"leaf04","vrf":"evpn-vrf","prefix":"0.0.0.0\/0","nexthopIps":[""],"oifs":[""],"weights":[1],"protocol":"","source":"","metric":4278198272,"timestamp":1584438050816}]
-    marks: route lpm filter
+- command: route lpm --address="10.0.0.12" --namespace=ospf-single --format json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: route lpm
+  output: '[{"namespace": "ospf-single", "hostname": "edge01", "vrf": "default", "prefix":
+    "0.0.0.0/0", "protocol": "", "source": "", "metric": 20, "ipvers": 4, "timestamp":
+    1586296913920}, {"namespace": "ospf-single", "hostname": "exit01", "vrf": "default",
+    "prefix": "10.0.0.12/32", "protocol": "ospf", "source": "", "metric": 20, "ipvers":
+    4, "timestamp": 1586296913920}, {"namespace": "ospf-single", "hostname": "exit02",
+    "vrf": "default", "prefix": "10.0.0.12/32", "protocol": "ospf", "source": "",
+    "metric": 20, "ipvers": 4, "timestamp": 1586296913920}, {"namespace": "ospf-single",
+    "hostname": "internet", "vrf": "default", "prefix": "0.0.0.0/0", "protocol": "",
+    "source": "", "metric": 20, "ipvers": 4, "timestamp": 1586296913920}, {"namespace":
+    "ospf-single", "hostname": "leaf01", "vrf": "default", "prefix": "10.0.0.12/32",
+    "protocol": "ospf", "source": "", "metric": 20, "ipvers": 4, "timestamp": 1586296913920},
+    {"namespace": "ospf-single", "hostname": "leaf03", "vrf": "default", "prefix":
+    "10.0.0.12/32", "protocol": "ospf", "source": "", "metric": 20, "ipvers": 4, "timestamp":
+    1586296913920}, {"namespace": "ospf-single", "hostname": "leaf04", "vrf": "default",
+    "prefix": "10.0.0.12/32", "protocol": "ospf", "source": "", "metric": 20, "ipvers":
+    4, "timestamp": 1586296913920}, {"namespace": "ospf-single", "hostname": "server101",
+    "vrf": "default", "prefix": "10.0.0.0/8", "protocol": "", "source": "", "metric":
+    20, "ipvers": 4, "timestamp": 1586296913920}, {"namespace": "ospf-single", "hostname":
+    "server102", "vrf": "default", "prefix": "10.0.0.0/8", "protocol": "", "source":
+    "", "metric": 20, "ipvers": 4, "timestamp": 1586296913920}, {"namespace": "ospf-single",
+    "hostname": "server103", "vrf": "default", "prefix": "10.0.0.0/8", "protocol":
+    "", "source": "", "metric": 20, "ipvers": 4, "timestamp": 1586296913920}, {"namespace":
+    "ospf-single", "hostname": "server104", "vrf": "default", "prefix": "10.0.0.0/8",
+    "protocol": "", "source": "", "metric": 20, "ipvers": 4, "timestamp": 1586296913920},
+    {"namespace": "ospf-single", "hostname": "spine01", "vrf": "default", "prefix":
+    "10.0.0.12/32", "protocol": "ospf", "source": "", "metric": 20, "ipvers": 4, "timestamp":
+    1586296913920}, {"namespace": "ospf-single", "hostname": "spine02", "vrf": "default",
+    "prefix": "10.0.0.12/32", "protocol": "ospf", "source": "", "metric": 20, "ipvers":
+    4, "timestamp": 1586296913920}]'
+- command: route lpm --address='10.0.0.12' --namespace=ospf-single --hostname='server101
+    server103' --format json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: route lpm filter
+  output: '[{"namespace": "ospf-single", "hostname": "server101", "vrf": "default",
+    "prefix": "10.0.0.0/8", "protocol": "", "source": "", "metric": 20, "ipvers":
+    4, "timestamp": 1586296913920}, {"namespace": "ospf-single", "hostname": "server103",
+    "vrf": "default", "prefix": "10.0.0.0/8", "protocol": "", "source": "", "metric":
+    20, "ipvers": 4, "timestamp": 1586296913920}]'
+- command: route lpm --address='10.0.0.12' --namespace=evpn-dual --vrf=evpn-vrf --format
+    json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: route lpm filter
+  output: '[]'
+- command: route lpm --address='10.0.0.11' --namespace=dual-evpn --vrf=evpn-vrf --format
+    json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: route lpm filter
+  output: '[{"namespace": "dual-evpn", "hostname": "exit01", "vrf": "evpn-vrf", "prefix":
+    "10.0.0.11/32", "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4, "timestamp":
+    1586296258560}, {"namespace": "dual-evpn", "hostname": "exit02", "vrf": "evpn-vrf",
+    "prefix": "10.0.0.11/32", "protocol": "bgp", "source": "", "metric": 20, "ipvers":
+    4, "timestamp": 1586296258560}, {"namespace": "dual-evpn", "hostname": "leaf01",
+    "vrf": "evpn-vrf", "prefix": "0.0.0.0/0", "protocol": "", "source": "", "metric":
+    4278198272, "ipvers": 4, "timestamp": 1586296258560}, {"namespace": "dual-evpn",
+    "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "0.0.0.0/0", "protocol": "",
+    "source": "", "metric": 4278198272, "ipvers": 4, "timestamp": 1586296258560},
+    {"namespace": "dual-evpn", "hostname": "leaf03", "vrf": "evpn-vrf", "prefix":
+    "0.0.0.0/0", "protocol": "", "source": "", "metric": 4278198272, "ipvers": 4,
+    "timestamp": 1586296258560}, {"namespace": "dual-evpn", "hostname": "leaf04",
+    "vrf": "evpn-vrf", "prefix": "0.0.0.0/0", "protocol": "", "source": "", "metric":
+    4278198272, "ipvers": 4, "timestamp": 1586296258560}]'

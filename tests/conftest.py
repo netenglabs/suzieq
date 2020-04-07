@@ -8,12 +8,21 @@ from unittest.mock import Mock
 suzieq_cli_path = './suzieq/cli/suzieq-cli'
 
 
-commands = [('AddrCmd'), ('ArpndCmd'), ('BgpCmd'), ('EvpnVniCmd'), ('InterfaceCmd'), ('LldpCmd'), ('MacCmd'),
-            ('MlagCmd'), ('OspfCmd'), ('RouteCmd'), ('SystemCmd'), ('TopcpuCmd'), ('TopmemCmd'), ('VlanCmd')]
+commands = [('AddrCmd'), ('ArpndCmd'), ('BgpCmd'), ('EvpnVniCmd'),
+            ('InterfaceCmd'), ('LldpCmd'), ('MacCmd'),
+            ('MlagCmd'), ('OspfCmd'), ('RouteCmd'), ('SystemCmd'),
+            ('TopcpuCmd'), ('TopmemCmd'), ('VlanCmd')]
+
+cli_commands = [('address'), ('bgp'), ('evpnVni'),
+            ('interface'), ('lldp'), ('mac'),
+            ('mlag'), ('ospf'), ('path'), ('route'), ('system'),
+            ('yopcpuCmd'), ('topmem'), ('vlan')]
 
 
-tables = [('arpnd'), ('bgp'), ('evpnVni'), ('fs'), ('ifCounters'), ('interfaces'), ('lldp'), ('macs'), ('mlag'),
-          ('ospfIf'), ('ospfNbr'), ('routes'), ('system'), ('time'), ('topcpu'), ('topmem'), ('vlan')]
+tables = [('arpnd'), ('bgp'), ('evpnVni'), ('fs'), ('ifCounters'),
+          ('interfaces'), ('lldp'), ('macs'), ('mlag'),
+          ('ospfIf'), ('ospfNbr'), ('routes'), ('system'), ('time'),
+          ('topcpu'), ('topmem'), ('vlan')]
 
 
 @pytest.fixture(scope='function')

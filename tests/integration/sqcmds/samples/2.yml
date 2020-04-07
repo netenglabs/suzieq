@@ -1,19 +1,316 @@
 description: Testing show commands with default parameters
 tests:
-  - command: system show --format=json
-    data-directory: tests/data/basic_dual_bgp/parquet-out
-    output: |
-      [{"namespace":"dual-bgp","hostname":"edge01","model":"vm","version":"16.04.6 LTS","vendor":"Ubuntu","architecture":"x86-64","status":"alive","address":"192.168.121.28","uptime":1354696,"timestamp":1579904925696 },{"namespace":"dual-bgp","hostname":"exit01","model":"vm","version":"3.7.11","vendor":"Cumulus","architecture":"x86-64","status":"alive","address":"192.168.121.145","uptime":1346696,"timestamp":1579904925696}, {"namespace":"dual-bgp","hostname":"exit02","model":"vm","version":"3.7.11","vendor":"Cumulus","architecture":"x86-64","status":"alive","address":"192.168.121.199","uptime":1344696,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"internet","model":"vm","version":"3.7.11","vendor":"Cumulus","architecture":"x86-64","status":"alive","address":"192.168.121.213","uptime":1349696,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf01","model":"vm","version":"3.7.11","vendor":"Cumulus","architecture":"x86-64","status":"alive","address":"192.168.121.247","uptime":1347696,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf02","model":"vm","version":"3.7.11","vendor":"Cumulus","architecture":"x86-64","status":"alive","address":"192.168.121.127","uptime":1347696,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf03","model":"vm","version":"3.7.11","vendor":"Cumulus","architecture":"x86-64","status":"alive","address":"192.168.121.7","uptime":1346696,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf04","model":"vm","version":"3.7.11","vendor":"Cumulus","architecture":"x86-64","status":"alive","address":"192.168.121.184","uptime":1349696,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"server101","model":"vm","version":"16.04.6 LTS","vendor":"Ubuntu","architecture":"x86-64","status":"alive","address":"192.168.121.225","uptime":1741696,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"server102","model":"vm","version":"16.04.6 LTS","vendor":"Ubuntu","architecture":"x86-64","status":"alive","address":"192.168.121.90","uptime":1750696,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"server103","model":"vm","version":"16.04.6 LTS","vendor":"Ubuntu","architecture":"x86-64","status":"alive","address":"192.168.121.240","uptime":1755696,"timestamp":1579904925696 },{"namespace":"dual-bgp","hostname":"server104","model":"vm","version":"16.04.6 LTS","vendor":"Ubuntu","architecture":"x86-64","status":"alive","address":"192.168.121.243","uptime":1763696,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"spine01","model":"vm","version":"3.7.11","vendor":"Cumulus","architecture":"x86-64","status":"alive","address":"192.168.121.47","uptime":1346696,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"spine02","model":"vm","version":"3.7.11","vendor":"Cumulus","architecture":"x86-64","status":"alive","address":"192.168.121.155","uptime":1342696,"timestamp":1579904925696}]
-    marks: system show
-  
-  - command: arpnd show --format=json
-    data-directory: tests/data/basic_dual_bgp/parquet-out
-    output: |
-      [{"namespace":"dual-bgp","hostname":"edge01","ipAddress":"169.254.253.1","oif":"eth2.2","macaddr":"52:54:00:91:98:73","state":"reachable","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"edge01","ipAddress":"169.254.253.9","oif":"eth2.4","macaddr":"52:54:00:91:98:73","state":"reachable","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"edge01","ipAddress":"169.254.254.1","oif":"eth1.2","macaddr":"52:54:00:2c:9f:93","state":"reachable","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"edge01","ipAddress":"169.254.254.9","oif":"eth1.4","macaddr":"52:54:00:2c:9f:93","state":"reachable","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"edge01","ipAddress":"192.168.121.1","oif":"eth0","macaddr":"52:54:00:4d:0e:96","state":"reachable","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"exit01","ipAddress":"192.168.121.1","oif":"eth0","macaddr":"52:54:00:4d:0e:96","state":"reachable","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"exit01","ipAddress":"169.254.0.1","oif":"swp1","macaddr":"52:54:00:a5:5e:f4","state":"permanent","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"exit01","ipAddress":"169.254.0.1","oif":"swp2","macaddr":"52:54:00:09:ed:76","state":"permanent","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"exit01","ipAddress":"169.254.0.1","oif":"swp6","macaddr":"52:54:00:b9:fd:c8","state":"permanent","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"exit01","ipAddress":"169.254.127.0","oif":"swp6","macaddr":"52:54:00:b9:fd:c8","state":"reachable","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"exit01","ipAddress":"169.254.254.10","oif":"swp5.4","macaddr":"52:54:00:8b:b9:ac","state":"reachable","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"exit01","ipAddress":"169.254.254.2","oif":"swp5.2","macaddr":"52:54:00:8b:b9:ac","state":"reachable","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"exit02","ipAddress":"192.168.121.1","oif":"eth0","macaddr":"52:54:00:4d:0e:96","state":"reachable","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"exit02","ipAddress":"169.254.0.1","oif":"swp1","macaddr":"52:54:00:75:ff:3a","state":"permanent","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"exit02","ipAddress":"169.254.0.1","oif":"swp2","macaddr":"52:54:00:ee:55:82","state":"permanent","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"exit02","ipAddress":"169.254.0.1","oif":"swp6","macaddr":"52:54:00:ba:8d:29","state":"permanent","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"exit02","ipAddress":"169.254.127.2","oif":"swp6","macaddr":"52:54:00:ba:8d:29","state":"reachable","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"exit02","ipAddress":"169.254.253.10","oif":"swp5.4","macaddr":"52:54:00:55:c2:87","state":"reachable","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"exit02","ipAddress":"169.254.253.2","oif":"swp5.2","macaddr":"52:54:00:55:c2:87","state":"reachable","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"internet","ipAddress":"192.168.121.1","oif":"eth0","macaddr":"52:54:00:4d:0e:96","state":"reachable","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"internet","ipAddress":"169.254.0.1","oif":"swp1","macaddr":"52:54:00:ca:40:e8","state":"permanent","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"internet","ipAddress":"169.254.0.1","oif":"swp2","macaddr":"52:54:00:cd:b1:73","state":"permanent","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"internet","ipAddress":"169.254.127.1","oif":"swp1","macaddr":"52:54:00:ca:40:e8","state":"reachable","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"internet","ipAddress":"169.254.127.3","oif":"swp2","macaddr":"52:54:00:cd:b1:73","state":"reachable","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf01","ipAddress":"192.168.121.1","oif":"eth0","macaddr":"52:54:00:4d:0e:96","state":"reachable","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf01","ipAddress":"169.254.0.1","oif":"swp1","macaddr":"52:54:00:b9:f6:3e","state":"permanent","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf01","ipAddress":"169.254.0.1","oif":"swp2","macaddr":"52:54:00:9b:0a:41","state":"permanent","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf01","ipAddress":"169.254.1.2","oif":"peerlink.4094","macaddr":"52:54:00:b7:4b:b6","state":"reachable","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf01","ipAddress":"172.16.1.1","oif":"vlan13","macaddr":"52:54:00:c5:40:6d","state":"permanent","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf01","ipAddress":"172.16.1.101","oif":"vlan13","macaddr":"52:54:00:8e:98:e4","state":"reachable","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf01","ipAddress":"172.16.2.1","oif":"vlan24","macaddr":"52:54:00:c5:40:6d","state":"permanent","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf01","ipAddress":"172.16.2.102","oif":"vlan24","macaddr":"52:54:00:03:fd:42","state":"reachable","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf02","ipAddress":"192.168.121.1","oif":"eth0","macaddr":"52:54:00:4d:0e:96","state":"reachable","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf02","ipAddress":"169.254.0.1","oif":"swp1","macaddr":"52:54:00:a8:21:c5","state":"permanent","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf02","ipAddress":"169.254.0.1","oif":"swp2","macaddr":"52:54:00:c0:6d:c4","state":"permanent","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf02","ipAddress":"172.16.1.101","oif":"vlan13","macaddr":"52:54:00:8e:98:e4","state":"reachable","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf02","ipAddress":"172.16.2.102","oif":"vlan24","macaddr":"52:54:00:03:fd:42","state":"reachable","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf02","ipAddress":"169.254.1.1","oif":"peerlink.4094","macaddr":"52:54:00:c6:e8:ad","state":"reachable","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf03","ipAddress":"192.168.121.1","oif":"eth0","macaddr":"52:54:00:4d:0e:96","state":"reachable","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf03","ipAddress":"169.254.0.1","oif":"swp1","macaddr":"52:54:00:cc:b6:62","state":"permanent","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf03","ipAddress":"169.254.0.1","oif":"swp2","macaddr":"52:54:00:e1:b5:f7","state":"permanent","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf03","ipAddress":"169.254.1.2","oif":"peerlink.4094","macaddr":"52:54:00:fc:c9:16","state":"reachable","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf03","ipAddress":"172.16.3.103","oif":"vlan13","macaddr":"52:54:00:d2:9a:b1","state":"reachable","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf03","ipAddress":"172.16.4.104","oif":"vlan24","macaddr":"52:54:00:e8:7e:8f","state":"reachable","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf04","ipAddress":"192.168.121.1","oif":"eth0","macaddr":"52:54:00:4d:0e:96","state":"reachable","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf04","ipAddress":"169.254.0.1","oif":"swp1","macaddr":"52:54:00:92:ae:45","state":"permanent","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf04","ipAddress":"169.254.0.1","oif":"swp2","macaddr":"52:54:00:ef:81:7b","state":"permanent","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf04","ipAddress":"169.254.1.1","oif":"peerlink.4094","macaddr":"52:54:00:03:a9:4b","state":"reachable","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf04","ipAddress":"172.16.3.103","oif":"vlan13","macaddr":"52:54:00:d2:9a:b1","state":"reachable","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf04","ipAddress":"172.16.4.104","oif":"vlan24","macaddr":"52:54:00:e8:7e:8f","state":"reachable","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf04","ipAddress":"172.16.3.1","oif":"vlan13","macaddr":"52:54:00:8b:12:39","state":"permanent","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf04","ipAddress":"172.16.4.1","oif":"vlan24","macaddr":"52:54:00:8b:12:39","state":"permanent","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"server101","ipAddress":"192.168.121.1","oif":"eth0","macaddr":"52:54:00:4d:0e:96","state":"reachable","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"server101","ipAddress":"172.16.1.1","oif":"bond0","macaddr":"52:54:00:c5:40:6d","state":"stale","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"server102","ipAddress":"192.168.121.1","oif":"eth0","macaddr":"52:54:00:4d:0e:96","state":"reachable","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"server102","ipAddress":"172.16.2.1","oif":"bond0","macaddr":"52:54:00:c5:40:6d","state":"stale","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"server103","ipAddress":"192.168.121.1","oif":"eth0","macaddr":"52:54:00:4d:0e:96","state":"reachable","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"server103","ipAddress":"172.16.3.1","oif":"bond0","macaddr":"52:54:00:42:68:fc","state":"stale","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"server104","ipAddress":"192.168.121.1","oif":"eth0","macaddr":"52:54:00:4d:0e:96","state":"reachable","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"server104","ipAddress":"172.16.4.1","oif":"bond0","macaddr":"52:54:00:42:68:fc","state":"stale","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"spine01","ipAddress":"192.168.121.1","oif":"eth0","macaddr":"52:54:00:4d:0e:96","state":"reachable","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"spine01","ipAddress":"169.254.0.1","oif":"swp1","macaddr":"52:54:00:6e:84:58","state":"permanent","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"spine01","ipAddress":"169.254.0.1","oif":"swp2","macaddr":"52:54:00:63:d3:74","state":"permanent","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"spine01","ipAddress":"169.254.0.1","oif":"swp3","macaddr":"52:54:00:45:b2:5f","state":"permanent","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"spine01","ipAddress":"169.254.0.1","oif":"swp4","macaddr":"52:54:00:60:b5:78","state":"permanent","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"spine01","ipAddress":"169.254.0.1","oif":"swp5","macaddr":"52:54:00:92:47:28","state":"permanent","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"spine01","ipAddress":"169.254.0.1","oif":"swp6","macaddr":"52:54:00:a0:80:d1","state":"permanent","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"spine02","ipAddress":"192.168.121.1","oif":"eth0","macaddr":"52:54:00:4d:0e:96","state":"reachable","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"spine02","ipAddress":"169.254.0.1","oif":"swp1","macaddr":"52:54:00:37:ee:66","state":"permanent","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"spine02","ipAddress":"169.254.0.1","oif":"swp2","macaddr":"52:54:00:52:ef:79","state":"permanent","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"spine02","ipAddress":"169.254.0.1","oif":"swp3","macaddr":"52:54:00:32:64:39","state":"permanent","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"spine02","ipAddress":"169.254.0.1","oif":"swp4","macaddr":"52:54:00:e3:6d:ad","state":"permanent","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"spine02","ipAddress":"169.254.0.1","oif":"swp5","macaddr":"52:54:00:80:30:e0","state":"permanent","offload":false,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"spine02","ipAddress":"169.254.0.1","oif":"swp6","macaddr":"52:54:00:89:24:d5","state":"permanent","offload":false,"timestamp":1579904925696}]
-    marks: arpnd show
-
-  - command: bgp show --format=json
-    data-directory: tests/data/basic_dual_bgp/parquet-out
-    output: |
-      [{"namespace":"dual-bgp","hostname":"exit01","vrf":"default","peer":"swp1","state":"Established","asn":65201,"peerAsn":65000,"v4PfxRx":10,"estdTime":897.0,"numChanges":5,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"exit01","vrf":"default","peer":"swp2","state":"Established","asn":65201,"peerAsn":65000,"v4PfxRx":10,"estdTime":1316.0,"numChanges":1,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"exit01","vrf":"default","peer":"swp5.2","state":"Established","asn":65201,"peerAsn":65530,"v4PfxRx":2,"estdTime":1312.0,"numChanges":1,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"exit01","vrf":"internet-vrf","peer":"swp5.4","state":"Established","asn":65201,"peerAsn":65530,"v4PfxRx":13,"estdTime":1312.0,"numChanges":1,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"exit01","vrf":"internet-vrf","peer":"swp6","state":"Established","asn":65201,"peerAsn":25253,"v4PfxRx":4,"estdTime":1316.0,"numChanges":1,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"exit02","vrf":"default","peer":"swp1","state":"Established","asn":65202,"peerAsn":65000,"v4PfxRx":11,"estdTime":891.0,"numChanges":7,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"exit02","vrf":"default","peer":"swp2","state":"Established","asn":65202,"peerAsn":65000,"v4PfxRx":11,"estdTime":1334.0,"numChanges":1,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"exit02","vrf":"default","peer":"swp5.2","state":"Established","asn":65202,"peerAsn":65530,"v4PfxRx":15,"estdTime":1329.0,"numChanges":1,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"exit02","vrf":"internet-vrf","peer":"swp5.4","state":"Established","asn":65202,"peerAsn":65530,"v4PfxRx":15,"estdTime":1329.0,"numChanges":1,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"exit02","vrf":"internet-vrf","peer":"swp6","state":"Established","asn":65202,"peerAsn":25253,"v4PfxRx":15,"estdTime":1335.0,"numChanges":1,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"internet","vrf":"default","peer":"swp1","state":"Established","asn":25253,"peerAsn":65201,"v4PfxRx":12,"estdTime":1315.0,"numChanges":1,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"internet","vrf":"default","peer":"swp2","state":"Established","asn":25253,"peerAsn":65202,"v4PfxRx":12,"estdTime":1316.0,"numChanges":1,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf01","vrf":"default","peer":"swp1","state":"Established","asn":65101,"peerAsn":65000,"v4PfxRx":14,"estdTime":915.0,"numChanges":5,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf01","vrf":"default","peer":"swp2","state":"Established","asn":65101,"peerAsn":65000,"v4PfxRx":12,"estdTime":1337.0,"numChanges":1,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf02","vrf":"default","peer":"swp1","state":"Established","asn":65102,"peerAsn":65000,"v4PfxRx":12,"estdTime":915.0,"numChanges":7,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf02","vrf":"default","peer":"swp2","state":"Established","asn":65102,"peerAsn":65000,"v4PfxRx":14,"estdTime":946.0,"numChanges":3,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf03","vrf":"default","peer":"swp1","state":"Established","asn":65103,"peerAsn":65000,"v4PfxRx":12,"estdTime":898.0,"numChanges":5,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf03","vrf":"default","peer":"swp2","state":"Established","asn":65103,"peerAsn":65000,"v4PfxRx":14,"estdTime":1318.0,"numChanges":1,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf04","vrf":"default","peer":"swp1","state":"Established","asn":65104,"peerAsn":65000,"v4PfxRx":14,"estdTime":915.0,"numChanges":5,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"leaf04","vrf":"default","peer":"swp2","state":"Established","asn":65104,"peerAsn":65000,"v4PfxRx":12,"estdTime":1336.0,"numChanges":1,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"spine01","vrf":"default","peer":"swp1","state":"Established","asn":65000,"peerAsn":65101,"v4PfxRx":3,"estdTime":915.0,"numChanges":5,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"spine01","vrf":"default","peer":"swp2","state":"Established","asn":65000,"peerAsn":65102,"v4PfxRx":3,"estdTime":915.0,"numChanges":7,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"spine01","vrf":"default","peer":"swp6","state":"Established","asn":65000,"peerAsn":65201,"v4PfxRx":2,"estdTime":914.0,"numChanges":5,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"spine01","vrf":"default","peer":"swp3","state":"Established","asn":65000,"peerAsn":65103,"v4PfxRx":3,"estdTime":915.0,"numChanges":5,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"spine01","vrf":"default","peer":"swp4","state":"Established","asn":65000,"peerAsn":65104,"v4PfxRx":3,"estdTime":915.0,"numChanges":5,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"spine01","vrf":"default","peer":"swp5","state":"Established","asn":65000,"peerAsn":65202,"v4PfxRx":5,"estdTime":891.0,"numChanges":7,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"spine02","vrf":"default","peer":"swp1","state":"Established","asn":65000,"peerAsn":65101,"v4PfxRx":3,"estdTime":1319.0,"numChanges":1,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"spine02","vrf":"default","peer":"swp2","state":"Established","asn":65000,"peerAsn":65102,"v4PfxRx":3,"estdTime":928.0,"numChanges":3,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"spine02","vrf":"default","peer":"swp6","state":"Established","asn":65000,"peerAsn":65201,"v4PfxRx":2,"estdTime":1315.0,"numChanges":1,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"spine02","vrf":"default","peer":"swp3","state":"Established","asn":65000,"peerAsn":65103,"v4PfxRx":3,"estdTime":1316.0,"numChanges":1,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"spine02","vrf":"default","peer":"swp4","state":"Established","asn":65000,"peerAsn":65104,"v4PfxRx":3,"estdTime":1317.0,"numChanges":1,"timestamp":1579904925696},{"namespace":"dual-bgp","hostname":"spine02","vrf":"default","peer":"swp5","state":"Established","asn":65000,"peerAsn":65202,"v4PfxRx":5,"estdTime":1315.0,"numChanges":1,"timestamp":1579904925696}]
-    marks: bgp show
+- command: system show --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: system show
+  output: '[{"namespace": "dual-bgp", "hostname": "edge01", "model": "vm", "version":
+    "16.04.6 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
+    "address": "192.168.121.153", "uptime": 212832, "timestamp": 1586293112832}, {"namespace":
+    "dual-bgp", "hostname": "exit01", "model": "vm", "version": "3.7.12", "vendor":
+    "Cumulus", "architecture": "x86-64", "status": "alive", "address": "192.168.121.106",
+    "uptime": 205832, "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname":
+    "exit02", "model": "vm", "version": "3.7.12", "vendor": "Cumulus", "architecture":
+    "x86-64", "status": "alive", "address": "192.168.121.24", "uptime": 207832, "timestamp":
+    1586293112832}, {"namespace": "dual-bgp", "hostname": "internet", "model": "vm",
+    "version": "3.7.12", "vendor": "Cumulus", "architecture": "x86-64", "status":
+    "alive", "address": "192.168.121.115", "uptime": 213832, "timestamp": 1586293112832},
+    {"namespace": "dual-bgp", "hostname": "leaf01", "model": "vm", "version": "3.7.12",
+    "vendor": "Cumulus", "architecture": "x86-64", "status": "alive", "address": "192.168.121.80",
+    "uptime": 212832, "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname":
+    "leaf02", "model": "vm", "version": "3.7.12", "vendor": "Cumulus", "architecture":
+    "x86-64", "status": "alive", "address": "192.168.121.173", "uptime": 209832, "timestamp":
+    1586293112832}, {"namespace": "dual-bgp", "hostname": "leaf03", "model": "vm",
+    "version": "3.7.12", "vendor": "Cumulus", "architecture": "x86-64", "status":
+    "alive", "address": "192.168.121.215", "uptime": 211832, "timestamp": 1586293112832},
+    {"namespace": "dual-bgp", "hostname": "leaf04", "model": "vm", "version": "3.7.12",
+    "vendor": "Cumulus", "architecture": "x86-64", "status": "alive", "address": "192.168.121.194",
+    "uptime": 211832, "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname":
+    "server101", "model": "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture":
+    "x86-64", "status": "alive", "address": "192.168.121.155", "uptime": 417832, "timestamp":
+    1586293112832}, {"namespace": "dual-bgp", "hostname": "server102", "model": "vm",
+    "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status":
+    "alive", "address": "192.168.121.11", "uptime": 438832, "timestamp": 1586293112832},
+    {"namespace": "dual-bgp", "hostname": "server103", "model": "vm", "version": "16.04.6
+    LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive", "address":
+    "192.168.121.118", "uptime": 410832, "timestamp": 1586293112832}, {"namespace":
+    "dual-bgp", "hostname": "server104", "model": "vm", "version": "16.04.6 LTS",
+    "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive", "address": "192.168.121.98",
+    "uptime": 455832, "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname":
+    "spine01", "model": "vm", "version": "3.7.12", "vendor": "Cumulus", "architecture":
+    "x86-64", "status": "alive", "address": "192.168.121.136", "uptime": 211832, "timestamp":
+    1586293112832}, {"namespace": "dual-bgp", "hostname": "spine02", "model": "vm",
+    "version": "3.7.12", "vendor": "Cumulus", "architecture": "x86-64", "status":
+    "alive", "address": "192.168.121.196", "uptime": 210832, "timestamp": 1586293112832}]'
+- command: arpnd show --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: arpnd show
+  output: '[{"namespace": "dual-bgp", "hostname": "edge01", "ipAddress": "169.254.253.1",
+    "oif": "eth2.2", "macaddr": "52:54:00:03:e8:e3", "state": "reachable", "offload":
+    false, "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname": "edge01",
+    "ipAddress": "169.254.253.9", "oif": "eth2.4", "macaddr": "52:54:00:03:e8:e3",
+    "state": "reachable", "offload": false, "timestamp": 1586293112832}, {"namespace":
+    "dual-bgp", "hostname": "edge01", "ipAddress": "169.254.254.1", "oif": "eth1.2",
+    "macaddr": "52:54:00:a0:70:a0", "state": "reachable", "offload": false, "timestamp":
+    1586293112832}, {"namespace": "dual-bgp", "hostname": "edge01", "ipAddress": "169.254.254.9",
+    "oif": "eth1.4", "macaddr": "52:54:00:a0:70:a0", "state": "reachable", "offload":
+    false, "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname": "edge01",
+    "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:f0:3f:36", "state":
+    "reachable", "offload": false, "timestamp": 1586293112832}, {"namespace": "dual-bgp",
+    "hostname": "exit01", "ipAddress": "169.254.0.1", "oif": "swp1", "macaddr": "52:54:00:22:d9:34",
+    "state": "permanent", "offload": false, "timestamp": 1586293112832}, {"namespace":
+    "dual-bgp", "hostname": "exit01", "ipAddress": "169.254.0.1", "oif": "swp2", "macaddr":
+    "52:54:00:52:e6:47", "state": "permanent", "offload": false, "timestamp": 1586293112832},
+    {"namespace": "dual-bgp", "hostname": "exit01", "ipAddress": "169.254.0.1", "oif":
+    "swp6", "macaddr": "52:54:00:8f:d8:7a", "state": "permanent", "offload": false,
+    "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname": "exit01", "ipAddress":
+    "169.254.127.0", "oif": "swp6", "macaddr": "52:54:00:8f:d8:7a", "state": "reachable",
+    "offload": false, "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname":
+    "exit01", "ipAddress": "169.254.254.10", "oif": "swp5.4", "macaddr": "52:54:00:99:f2:ad",
+    "state": "reachable", "offload": false, "timestamp": 1586293112832}, {"namespace":
+    "dual-bgp", "hostname": "exit01", "ipAddress": "169.254.254.2", "oif": "swp5.2",
+    "macaddr": "52:54:00:99:f2:ad", "state": "reachable", "offload": false, "timestamp":
+    1586293112832}, {"namespace": "dual-bgp", "hostname": "exit01", "ipAddress": "192.168.121.1",
+    "oif": "eth0", "macaddr": "52:54:00:f0:3f:36", "state": "reachable", "offload":
+    false, "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname": "exit02",
+    "ipAddress": "169.254.0.1", "oif": "swp1", "macaddr": "52:54:00:30:9f:59", "state":
+    "permanent", "offload": false, "timestamp": 1586293112832}, {"namespace": "dual-bgp",
+    "hostname": "exit02", "ipAddress": "169.254.0.1", "oif": "swp2", "macaddr": "52:54:00:4d:d7:26",
+    "state": "permanent", "offload": false, "timestamp": 1586293112832}, {"namespace":
+    "dual-bgp", "hostname": "exit02", "ipAddress": "169.254.0.1", "oif": "swp6", "macaddr":
+    "52:54:00:33:bc:20", "state": "permanent", "offload": false, "timestamp": 1586293112832},
+    {"namespace": "dual-bgp", "hostname": "exit02", "ipAddress": "169.254.127.2",
+    "oif": "swp6", "macaddr": "52:54:00:33:bc:20", "state": "reachable", "offload":
+    false, "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname": "exit02",
+    "ipAddress": "169.254.253.10", "oif": "swp5.4", "macaddr": "52:54:00:57:a5:f3",
+    "state": "reachable", "offload": false, "timestamp": 1586293112832}, {"namespace":
+    "dual-bgp", "hostname": "exit02", "ipAddress": "169.254.253.2", "oif": "swp5.2",
+    "macaddr": "52:54:00:57:a5:f3", "state": "reachable", "offload": false, "timestamp":
+    1586293112832}, {"namespace": "dual-bgp", "hostname": "exit02", "ipAddress": "192.168.121.1",
+    "oif": "eth0", "macaddr": "52:54:00:f0:3f:36", "state": "reachable", "offload":
+    false, "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname": "internet",
+    "ipAddress": "169.254.0.1", "oif": "swp1", "macaddr": "52:54:00:10:20:48", "state":
+    "permanent", "offload": false, "timestamp": 1586293112832}, {"namespace": "dual-bgp",
+    "hostname": "internet", "ipAddress": "169.254.0.1", "oif": "swp2", "macaddr":
+    "52:54:00:a2:af:42", "state": "permanent", "offload": false, "timestamp": 1586293112832},
+    {"namespace": "dual-bgp", "hostname": "internet", "ipAddress": "169.254.127.1",
+    "oif": "swp1", "macaddr": "52:54:00:10:20:48", "state": "reachable", "offload":
+    false, "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname": "internet",
+    "ipAddress": "169.254.127.3", "oif": "swp2", "macaddr": "52:54:00:a2:af:42", "state":
+    "reachable", "offload": false, "timestamp": 1586293112832}, {"namespace": "dual-bgp",
+    "hostname": "internet", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr":
+    "52:54:00:f0:3f:36", "state": "reachable", "offload": false, "timestamp": 1586293112832},
+    {"namespace": "dual-bgp", "hostname": "leaf01", "ipAddress": "169.254.0.1", "oif":
+    "swp1", "macaddr": "52:54:00:43:fa:d0", "state": "permanent", "offload": false,
+    "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname": "leaf01", "ipAddress":
+    "169.254.0.1", "oif": "swp2", "macaddr": "52:54:00:f1:9b:2b", "state": "permanent",
+    "offload": false, "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname":
+    "leaf01", "ipAddress": "169.254.1.2", "oif": "peerlink.4094", "macaddr": "52:54:00:12:61:29",
+    "state": "reachable", "offload": false, "timestamp": 1586293112832}, {"namespace":
+    "dual-bgp", "hostname": "leaf01", "ipAddress": "172.16.1.1", "oif": "vlan13",
+    "macaddr": "52:54:00:71:b0:24", "state": "permanent", "offload": false, "timestamp":
+    1586293112832}, {"namespace": "dual-bgp", "hostname": "leaf01", "ipAddress": "172.16.1.101",
+    "oif": "vlan13", "macaddr": "52:54:00:f9:7b:d3", "state": "reachable", "offload":
+    false, "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname": "leaf01",
+    "ipAddress": "172.16.2.1", "oif": "vlan24", "macaddr": "52:54:00:71:b0:24", "state":
+    "permanent", "offload": false, "timestamp": 1586293112832}, {"namespace": "dual-bgp",
+    "hostname": "leaf01", "ipAddress": "172.16.2.102", "oif": "vlan24", "macaddr":
+    "52:54:00:cf:ef:37", "state": "reachable", "offload": false, "timestamp": 1586293112832},
+    {"namespace": "dual-bgp", "hostname": "leaf01", "ipAddress": "192.168.121.1",
+    "oif": "eth0", "macaddr": "52:54:00:f0:3f:36", "state": "reachable", "offload":
+    false, "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname": "leaf02",
+    "ipAddress": "169.254.0.1", "oif": "swp1", "macaddr": "52:54:00:ef:e0:f0", "state":
+    "permanent", "offload": false, "timestamp": 1586293112832}, {"namespace": "dual-bgp",
+    "hostname": "leaf02", "ipAddress": "169.254.0.1", "oif": "swp2", "macaddr": "52:54:00:ef:d7:ba",
+    "state": "permanent", "offload": false, "timestamp": 1586293112832}, {"namespace":
+    "dual-bgp", "hostname": "leaf02", "ipAddress": "169.254.1.1", "oif": "peerlink.4094",
+    "macaddr": "52:54:00:13:90:3f", "state": "reachable", "offload": false, "timestamp":
+    1586293112832}, {"namespace": "dual-bgp", "hostname": "leaf02", "ipAddress": "172.16.1.101",
+    "oif": "vlan13", "macaddr": "52:54:00:f9:7b:d3", "state": "reachable", "offload":
+    false, "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname": "leaf02",
+    "ipAddress": "172.16.2.102", "oif": "vlan24", "macaddr": "52:54:00:cf:ef:37",
+    "state": "reachable", "offload": false, "timestamp": 1586293112832}, {"namespace":
+    "dual-bgp", "hostname": "leaf02", "ipAddress": "192.168.121.1", "oif": "eth0",
+    "macaddr": "52:54:00:f0:3f:36", "state": "reachable", "offload": false, "timestamp":
+    1586293112832}, {"namespace": "dual-bgp", "hostname": "leaf03", "ipAddress": "169.254.0.1",
+    "oif": "swp1", "macaddr": "52:54:00:5a:70:1f", "state": "permanent", "offload":
+    false, "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname": "leaf03",
+    "ipAddress": "169.254.0.1", "oif": "swp2", "macaddr": "52:54:00:51:00:42", "state":
+    "permanent", "offload": false, "timestamp": 1586293112832}, {"namespace": "dual-bgp",
+    "hostname": "leaf03", "ipAddress": "169.254.1.2", "oif": "peerlink.4094", "macaddr":
+    "52:54:00:9d:e0:be", "state": "reachable", "offload": false, "timestamp": 1586293112832},
+    {"namespace": "dual-bgp", "hostname": "leaf03", "ipAddress": "172.16.3.103", "oif":
+    "vlan13", "macaddr": "52:54:00:b2:7b:fa", "state": "reachable", "offload": false,
+    "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname": "leaf03", "ipAddress":
+    "172.16.4.104", "oif": "vlan24", "macaddr": "52:54:00:89:63:27", "state": "reachable",
+    "offload": false, "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname":
+    "leaf03", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:f0:3f:36",
+    "state": "reachable", "offload": false, "timestamp": 1586293112832}, {"namespace":
+    "dual-bgp", "hostname": "leaf04", "ipAddress": "169.254.0.1", "oif": "swp1", "macaddr":
+    "52:54:00:f0:60:28", "state": "permanent", "offload": false, "timestamp": 1586293112832},
+    {"namespace": "dual-bgp", "hostname": "leaf04", "ipAddress": "169.254.0.1", "oif":
+    "swp2", "macaddr": "52:54:00:41:1b:ba", "state": "permanent", "offload": false,
+    "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname": "leaf04", "ipAddress":
+    "169.254.1.1", "oif": "peerlink.4094", "macaddr": "52:54:00:20:93:d9", "state":
+    "reachable", "offload": false, "timestamp": 1586293112832}, {"namespace": "dual-bgp",
+    "hostname": "leaf04", "ipAddress": "172.16.3.1", "oif": "vlan13", "macaddr": "52:54:00:b9:e1:7b",
+    "state": "permanent", "offload": false, "timestamp": 1586293112832}, {"namespace":
+    "dual-bgp", "hostname": "leaf04", "ipAddress": "172.16.3.103", "oif": "vlan13",
+    "macaddr": "52:54:00:b2:7b:fa", "state": "reachable", "offload": false, "timestamp":
+    1586293112832}, {"namespace": "dual-bgp", "hostname": "leaf04", "ipAddress": "172.16.4.1",
+    "oif": "vlan24", "macaddr": "52:54:00:b9:e1:7b", "state": "permanent", "offload":
+    false, "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname": "leaf04",
+    "ipAddress": "172.16.4.104", "oif": "vlan24", "macaddr": "52:54:00:89:63:27",
+    "state": "reachable", "offload": false, "timestamp": 1586293112832}, {"namespace":
+    "dual-bgp", "hostname": "leaf04", "ipAddress": "192.168.121.1", "oif": "eth0",
+    "macaddr": "52:54:00:f0:3f:36", "state": "reachable", "offload": false, "timestamp":
+    1586293112832}, {"namespace": "dual-bgp", "hostname": "server101", "ipAddress":
+    "172.16.1.1", "oif": "bond0", "macaddr": "52:54:00:d5:e7:a3", "state": "stale",
+    "offload": false, "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname":
+    "server101", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:f0:3f:36",
+    "state": "reachable", "offload": false, "timestamp": 1586293112832}, {"namespace":
+    "dual-bgp", "hostname": "server102", "ipAddress": "172.16.2.1", "oif": "bond0",
+    "macaddr": "52:54:00:d5:e7:a3", "state": "stale", "offload": false, "timestamp":
+    1586293112832}, {"namespace": "dual-bgp", "hostname": "server102", "ipAddress":
+    "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:f0:3f:36", "state": "reachable",
+    "offload": false, "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname":
+    "server103", "ipAddress": "172.16.3.1", "oif": "bond0", "macaddr": "52:54:00:7f:0a:81",
+    "state": "stale", "offload": false, "timestamp": 1586293112832}, {"namespace":
+    "dual-bgp", "hostname": "server103", "ipAddress": "192.168.121.1", "oif": "eth0",
+    "macaddr": "52:54:00:f0:3f:36", "state": "reachable", "offload": false, "timestamp":
+    1586293112832}, {"namespace": "dual-bgp", "hostname": "server104", "ipAddress":
+    "172.16.4.1", "oif": "bond0", "macaddr": "52:54:00:7f:0a:81", "state": "stale",
+    "offload": false, "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname":
+    "server104", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:f0:3f:36",
+    "state": "reachable", "offload": false, "timestamp": 1586293112832}, {"namespace":
+    "dual-bgp", "hostname": "spine01", "ipAddress": "169.254.0.1", "oif": "swp1",
+    "macaddr": "52:54:00:e7:5a:15", "state": "permanent", "offload": false, "timestamp":
+    1586293112832}, {"namespace": "dual-bgp", "hostname": "spine01", "ipAddress":
+    "169.254.0.1", "oif": "swp2", "macaddr": "52:54:00:14:37:48", "state": "permanent",
+    "offload": false, "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname":
+    "spine01", "ipAddress": "169.254.0.1", "oif": "swp3", "macaddr": "52:54:00:ac:76:ff",
+    "state": "permanent", "offload": false, "timestamp": 1586293112832}, {"namespace":
+    "dual-bgp", "hostname": "spine01", "ipAddress": "169.254.0.1", "oif": "swp4",
+    "macaddr": "52:54:00:ea:42:2c", "state": "permanent", "offload": false, "timestamp":
+    1586293112832}, {"namespace": "dual-bgp", "hostname": "spine01", "ipAddress":
+    "169.254.0.1", "oif": "swp5", "macaddr": "52:54:00:83:a6:68", "state": "permanent",
+    "offload": false, "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname":
+    "spine01", "ipAddress": "169.254.0.1", "oif": "swp6", "macaddr": "52:54:00:0e:bd:1e",
+    "state": "permanent", "offload": false, "timestamp": 1586293112832}, {"namespace":
+    "dual-bgp", "hostname": "spine01", "ipAddress": "192.168.121.1", "oif": "eth0",
+    "macaddr": "52:54:00:f0:3f:36", "state": "reachable", "offload": false, "timestamp":
+    1586293112832}, {"namespace": "dual-bgp", "hostname": "spine02", "ipAddress":
+    "169.254.0.1", "oif": "swp1", "macaddr": "52:54:00:cd:a7:92", "state": "permanent",
+    "offload": false, "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname":
+    "spine02", "ipAddress": "169.254.0.1", "oif": "swp2", "macaddr": "52:54:00:d2:78:e1",
+    "state": "permanent", "offload": false, "timestamp": 1586293112832}, {"namespace":
+    "dual-bgp", "hostname": "spine02", "ipAddress": "169.254.0.1", "oif": "swp3",
+    "macaddr": "52:54:00:1e:11:bc", "state": "permanent", "offload": false, "timestamp":
+    1586293112832}, {"namespace": "dual-bgp", "hostname": "spine02", "ipAddress":
+    "169.254.0.1", "oif": "swp4", "macaddr": "52:54:00:81:69:ff", "state": "permanent",
+    "offload": false, "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname":
+    "spine02", "ipAddress": "169.254.0.1", "oif": "swp5", "macaddr": "52:54:00:b1:4f:c7",
+    "state": "permanent", "offload": false, "timestamp": 1586293112832}, {"namespace":
+    "dual-bgp", "hostname": "spine02", "ipAddress": "169.254.0.1", "oif": "swp6",
+    "macaddr": "52:54:00:ef:73:e6", "state": "permanent", "offload": false, "timestamp":
+    1586293112832}, {"namespace": "dual-bgp", "hostname": "spine02", "ipAddress":
+    "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:f0:3f:36", "state": "reachable",
+    "offload": false, "timestamp": 1586293112832}]'
+- command: bgp show --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: bgp show
+  output: '[{"namespace": "dual-bgp", "hostname": "edge01", "vrf": "default", "peer":
+    "eth1.2", "state": "Established", "asn": 65530, "peerAsn": 65201, "v4PfxRx": 0,
+    "estdTime": 220.0, "numChanges": 1, "timestamp": 1586293112832}, {"namespace":
+    "dual-bgp", "hostname": "edge01", "vrf": "default", "peer": "eth1.4", "state":
+    "Established", "asn": 65530, "peerAsn": 65201, "v4PfxRx": 0, "estdTime": 220.0,
+    "numChanges": 1, "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname":
+    "edge01", "vrf": "default", "peer": "eth2.2", "state": "Established", "asn": 65530,
+    "peerAsn": 65202, "v4PfxRx": 0, "estdTime": 219.0, "numChanges": 1, "timestamp":
+    1586293112832}, {"namespace": "dual-bgp", "hostname": "edge01", "vrf": "default",
+    "peer": "eth2.4", "state": "Established", "asn": 65530, "peerAsn": 65202, "v4PfxRx":
+    0, "estdTime": 219.0, "numChanges": 1, "timestamp": 1586293112832}, {"namespace":
+    "dual-bgp", "hostname": "exit01", "vrf": "default", "peer": "swp1", "state": "Established",
+    "asn": 65201, "peerAsn": 65000, "v4PfxRx": 10, "estdTime": 221.0, "numChanges":
+    1, "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname": "exit01",
+    "vrf": "default", "peer": "swp2", "state": "Established", "asn": 65201, "peerAsn":
+    65000, "v4PfxRx": 10, "estdTime": 220.0, "numChanges": 1, "timestamp": 1586293112832},
+    {"namespace": "dual-bgp", "hostname": "exit01", "vrf": "default", "peer": "swp5.2",
+    "state": "Established", "asn": 65201, "peerAsn": 65530, "v4PfxRx": 2, "estdTime":
+    221.0, "numChanges": 1, "timestamp": 1586293112832}, {"namespace": "dual-bgp",
+    "hostname": "exit01", "vrf": "internet-vrf", "peer": "swp5.4", "state": "Established",
+    "asn": 65201, "peerAsn": 65530, "v4PfxRx": 13, "estdTime": 221.0, "numChanges":
+    1, "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname": "exit01",
+    "vrf": "internet-vrf", "peer": "swp6", "state": "Established", "asn": 65201, "peerAsn":
+    25253, "v4PfxRx": 4, "estdTime": 221.0, "numChanges": 1, "timestamp": 1586293112832},
+    {"namespace": "dual-bgp", "hostname": "exit02", "vrf": "default", "peer": "swp1",
+    "state": "Established", "asn": 65202, "peerAsn": 65000, "v4PfxRx": 11, "estdTime":
+    224.0, "numChanges": 1, "timestamp": 1586293112832}, {"namespace": "dual-bgp",
+    "hostname": "exit02", "vrf": "default", "peer": "swp2", "state": "Established",
+    "asn": 65202, "peerAsn": 65000, "v4PfxRx": 11, "estdTime": 220.0, "numChanges":
+    1, "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname": "exit02",
+    "vrf": "default", "peer": "swp5.2", "state": "Established", "asn": 65202, "peerAsn":
+    65530, "v4PfxRx": 15, "estdTime": 221.0, "numChanges": 1, "timestamp": 1586293112832},
+    {"namespace": "dual-bgp", "hostname": "exit02", "vrf": "internet-vrf", "peer":
+    "swp5.4", "state": "Established", "asn": 65202, "peerAsn": 65530, "v4PfxRx": 15,
+    "estdTime": 221.0, "numChanges": 1, "timestamp": 1586293112832}, {"namespace":
+    "dual-bgp", "hostname": "exit02", "vrf": "internet-vrf", "peer": "swp6", "state":
+    "Established", "asn": 65202, "peerAsn": 25253, "v4PfxRx": 15, "estdTime": 227.0,
+    "numChanges": 1, "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname":
+    "internet", "vrf": "default", "peer": "swp1", "state": "Established", "asn": 25253,
+    "peerAsn": 65201, "v4PfxRx": 12, "estdTime": 221.0, "numChanges": 1, "timestamp":
+    1586293112832}, {"namespace": "dual-bgp", "hostname": "internet", "vrf": "default",
+    "peer": "swp2", "state": "Established", "asn": 25253, "peerAsn": 65202, "v4PfxRx":
+    13, "estdTime": 226.0, "numChanges": 1, "timestamp": 1586293112832}, {"namespace":
+    "dual-bgp", "hostname": "leaf01", "vrf": "default", "peer": "swp1", "state": "Established",
+    "asn": 65101, "peerAsn": 65000, "v4PfxRx": 14, "estdTime": 219.0, "numChanges":
+    1, "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname": "leaf01",
+    "vrf": "default", "peer": "swp2", "state": "Established", "asn": 65101, "peerAsn":
+    65000, "v4PfxRx": 12, "estdTime": 232.0, "numChanges": 1, "timestamp": 1586293112832},
+    {"namespace": "dual-bgp", "hostname": "leaf02", "vrf": "default", "peer": "swp1",
+    "state": "Established", "asn": 65102, "peerAsn": 65000, "v4PfxRx": 12, "estdTime":
+    223.0, "numChanges": 1, "timestamp": 1586293112832}, {"namespace": "dual-bgp",
+    "hostname": "leaf02", "vrf": "default", "peer": "swp2", "state": "Established",
+    "asn": 65102, "peerAsn": 65000, "v4PfxRx": 14, "estdTime": 219.0, "numChanges":
+    1, "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname": "leaf03",
+    "vrf": "default", "peer": "swp1", "state": "Established", "asn": 65103, "peerAsn":
+    65000, "v4PfxRx": 12, "estdTime": 223.0, "numChanges": 1, "timestamp": 1586293112832},
+    {"namespace": "dual-bgp", "hostname": "leaf03", "vrf": "default", "peer": "swp2",
+    "state": "Established", "asn": 65103, "peerAsn": 65000, "v4PfxRx": 14, "estdTime":
+    220.0, "numChanges": 1, "timestamp": 1586293112832}, {"namespace": "dual-bgp",
+    "hostname": "leaf04", "vrf": "default", "peer": "swp1", "state": "Established",
+    "asn": 65104, "peerAsn": 65000, "v4PfxRx": 14, "estdTime": 217.0, "numChanges":
+    1, "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname": "leaf04",
+    "vrf": "default", "peer": "swp2", "state": "Established", "asn": 65104, "peerAsn":
+    65000, "v4PfxRx": 12, "estdTime": 230.0, "numChanges": 1, "timestamp": 1586293112832},
+    {"namespace": "dual-bgp", "hostname": "spine01", "vrf": "default", "peer": "swp1",
+    "state": "Established", "asn": 65000, "peerAsn": 65101, "v4PfxRx": 3, "estdTime":
+    217.0, "numChanges": 1, "timestamp": 1586293112832}, {"namespace": "dual-bgp",
+    "hostname": "spine01", "vrf": "default", "peer": "swp2", "state": "Established",
+    "asn": 65000, "peerAsn": 65102, "v4PfxRx": 3, "estdTime": 222.0, "numChanges":
+    1, "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname": "spine01",
+    "vrf": "default", "peer": "swp3", "state": "Established", "asn": 65000, "peerAsn":
+    65103, "v4PfxRx": 3, "estdTime": 222.0, "numChanges": 1, "timestamp": 1586293112832},
+    {"namespace": "dual-bgp", "hostname": "spine01", "vrf": "default", "peer": "swp4",
+    "state": "Established", "asn": 65000, "peerAsn": 65104, "v4PfxRx": 3, "estdTime":
+    216.0, "numChanges": 1, "timestamp": 1586293112832}, {"namespace": "dual-bgp",
+    "hostname": "spine01", "vrf": "default", "peer": "swp5", "state": "Established",
+    "asn": 65000, "peerAsn": 65202, "v4PfxRx": 5, "estdTime": 222.0, "numChanges":
+    1, "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname": "spine01",
+    "vrf": "default", "peer": "swp6", "state": "Established", "asn": 65000, "peerAsn":
+    65201, "v4PfxRx": 2, "estdTime": 220.0, "numChanges": 1, "timestamp": 1586293112832},
+    {"namespace": "dual-bgp", "hostname": "spine02", "vrf": "default", "peer": "swp1",
+    "state": "Established", "asn": 65000, "peerAsn": 65101, "v4PfxRx": 3, "estdTime":
+    230.0, "numChanges": 1, "timestamp": 1586293112832}, {"namespace": "dual-bgp",
+    "hostname": "spine02", "vrf": "default", "peer": "swp2", "state": "Established",
+    "asn": 65000, "peerAsn": 65102, "v4PfxRx": 3, "estdTime": 219.0, "numChanges":
+    1, "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname": "spine02",
+    "vrf": "default", "peer": "swp3", "state": "Established", "asn": 65000, "peerAsn":
+    65103, "v4PfxRx": 3, "estdTime": 219.0, "numChanges": 1, "timestamp": 1586293112832},
+    {"namespace": "dual-bgp", "hostname": "spine02", "vrf": "default", "peer": "swp4",
+    "state": "Established", "asn": 65000, "peerAsn": 65104, "v4PfxRx": 3, "estdTime":
+    229.0, "numChanges": 1, "timestamp": 1586293112832}, {"namespace": "dual-bgp",
+    "hostname": "spine02", "vrf": "default", "peer": "swp5", "state": "Established",
+    "asn": 65000, "peerAsn": 65202, "v4PfxRx": 5, "estdTime": 219.0, "numChanges":
+    1, "timestamp": 1586293112832}, {"namespace": "dual-bgp", "hostname": "spine02",
+    "vrf": "default", "peer": "swp6", "state": "Established", "asn": 65000, "peerAsn":
+    65201, "v4PfxRx": 2, "estdTime": 219.0, "numChanges": 1, "timestamp": 1586293112832}]'
