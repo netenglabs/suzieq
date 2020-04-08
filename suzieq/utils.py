@@ -83,6 +83,7 @@ def get_schemas(schema_dir):
 
     if not os.path.exists(schema_dir):
         logging.error("Schema directory {} does not exist".format(schema_dir))
+        raise Exception(f"Schema directory {schema_dir} does not exist")
         return schemas
 
     for root, _, files in os.walk(schema_dir):
