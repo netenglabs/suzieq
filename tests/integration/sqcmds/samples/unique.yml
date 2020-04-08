@@ -1,18 +1,18 @@
 description: Testing unique verb
 tests:
-- command: system unique --format=json
+- command: device unique --format=json
   data-directory: tests/data/basic_dual_bgp/parquet-out
   error:
     error: '[{"error": "ERROR: Must specify columns with unique"}]'
   marks: unique
-- command: system unique --columns='hostname uptime' --format=json
+- command: device unique --columns='hostname uptime' --format=json
   data-directory: tests/data/basic_dual_bgp/parquet-out
   error:
     error: '[{"error": "ERROR: Specify a single column with unique"}]'
   marks: unique
-- command: system unique --columns=hostname --format=json
+- command: device unique --columns=hostname --format=json
   data-directory: tests/data/basic_dual_bgp/parquet-out
-  marks: system unique
+  marks: device unique
   output: '[{"hostname": "edge01", "count": 1}, {"hostname": "exit01", "count": 1},
     {"hostname": "exit02", "count": 1}, {"hostname": "internet", "count": 1}, {"hostname":
     "leaf01", "count": 1}, {"hostname": "leaf02", "count": 1}, {"hostname": "leaf03",
@@ -20,11 +20,11 @@ tests:
     1}, {"hostname": "server102", "count": 1}, {"hostname": "server103", "count":
     1}, {"hostname": "server104", "count": 1}, {"hostname": "spine01", "count": 1},
     {"hostname": "spine02", "count": 1}]'
-- command: system unique --columns=badcolumn --format=json
+- command: device unique --columns=badcolumn --format=json
   data-directory: tests/data/basic_dual_bgp/parquet-out
   error:
     error: '[{"error": "ERROR: ''badcolumn''"}]'
-  marks: system unique
+  marks: device unique
 - command: route unique --columns=prefix --format=json
   data-directory: tests/data/basic_dual_bgp/parquet-out
   marks: routes unique
