@@ -48,7 +48,7 @@ basic_verbs = ['show']
     ('OspfCmd', basic_verbs + ['top', 'aver'], [None, None, None]),
     ('RouteCmd', basic_verbs + ['lpm'],
      [None, {'address': '10.0.0.1'}]),
-    ('TableCmd', basic_verbs + ['describe'], [None, {'table': 'system'}]),
+    ('TableCmd', basic_verbs + ['describe'], [None, {'table': 'device'}]),
     ('TopcpuCmd', basic_verbs, [None, None]),
     ('TopmemCmd', basic_verbs, [None, None]),
     ('VlanCmd', basic_verbs, [None])
@@ -75,7 +75,7 @@ def _test_command(cmd, verb, arg,  filter=None):
 def test_summary_exception(setup_nubia):
     s = None
     with pytest.raises(AttributeError):
-        s = execute_cmd('SystemCmd', 'foop', None, )
+        s = execute_cmd('DeviceCmd', 'foop', None, )
     assert s is None
 
 
@@ -139,12 +139,12 @@ def test_start_time_show_filter(setup_nubia, cmd):
 
 
 show_columns_commands = good_commands[:]
-show_columns_commands[6] = pytest.param(
-    column_commands[6],
+show_columns_commands[7] = pytest.param(
+    column_commands[7],
     marks=pytest.mark.xfail(reason='bug #64',
                             raises=KeyError))  # MacCmd
-show_columns_commands[9] = pytest.param(
-    column_commands[9],
+show_columns_commands[10] = pytest.param(
+    column_commands[10],
     marks=pytest.mark.xfail(reason='bug #65',
                             raises=KeyError))  # RouteCmd
 
@@ -178,8 +178,8 @@ def test_bad_show_hostname_filter(setup_nubia, cmd):
 
 
 bad_engine_commands = commands[:]
-bad_engine_commands.pop(3)  # EvpnVniCmd
-bad_engine_commands.pop(7)  # Ospfcmd
+bad_engine_commands.pop(4)  # EvpnVniCmd
+bad_engine_commands.pop(8)  # Ospfcmd
 # TODO
 # this doesn't do any filtering, so it fails the assert that length should be 0
 # when this is fixed then remove the xfail

@@ -8,20 +8,20 @@ from unittest.mock import Mock
 suzieq_cli_path = './suzieq/cli/suzieq-cli'
 
 
-commands = [('AddrCmd'), ('ArpndCmd'), ('BgpCmd'), ('EvpnVniCmd'),
-            ('InterfaceCmd'), ('LldpCmd'), ('MacCmd'),
-            ('MlagCmd'), ('OspfCmd'), ('RouteCmd'), ('SystemCmd'),
+commands = [('AddrCmd'), ('ArpndCmd'), ('BgpCmd'), ('DeviceCmd'),
+            ('EvpnVniCmd'),('InterfaceCmd'), ('LldpCmd'), ('MacCmd'),
+            ('MlagCmd'), ('OspfCmd'), ('RouteCmd'),
             ('TopcpuCmd'), ('TopmemCmd'), ('VlanCmd')]
 
-cli_commands = [('address'), ('bgp'), ('evpnVni'),
+cli_commands = [('address'), ('bgp'), ('device'), ('evpnVni'),
             ('interface'), ('lldp'), ('mac'),
-            ('mlag'), ('ospf'), ('path'), ('route'), ('system'),
+            ('mlag'), ('ospf'), ('path'), ('route'),
             ('yopcpuCmd'), ('topmem'), ('vlan')]
 
 
-tables = [('arpnd'), ('bgp'), ('evpnVni'), ('fs'), ('ifCounters'),
+tables = [('arpnd'), ('bgp'), ('evpnVni'), ('device'), ('fs'), ('ifCounters'),
           ('interfaces'), ('lldp'), ('macs'), ('mlag'),
-          ('ospfIf'), ('ospfNbr'), ('routes'), ('system'), ('time'),
+          ('ospfIf'), ('ospfNbr'), ('routes'), ('time'),
           ('topcpu'), ('topmem'), ('vlan')]
 
 
