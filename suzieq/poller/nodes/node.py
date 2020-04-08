@@ -191,7 +191,8 @@ class Node(object):
                 devtype = None
 
             if not devtype:
-                self.logger.debug(f"no devtype for {self.hostname} {self.last_exception}")
+                self.logger.debug(
+                    f"no devtype for {self.hostname} {self.last_exception}")
                 self._status = "init"
                 return
             else:
@@ -202,12 +203,6 @@ class Node(object):
                     self.set_hostname(hostname)
 
             await self.init_boot_time()
-
-        elif self.devtype:
-            self.set_devtype(self.devtype)
-            if not self.hostname:
-                self.set_hostname()
-            self._status = "good"
 
     def set_devtype(self, devtype):
         self.devtype = devtype
@@ -461,7 +456,7 @@ class Node(object):
 
     async def exec_cmd(self, service_callback, cmd_list, cb_token,
                        oformat='json', timeout=None):
-        result = None
+
         if self.transport == "ssh":
             await self.ssh_gather(service_callback, cmd_list, cb_token, timeout)
         elif self.transport == "https":
@@ -646,13 +641,6 @@ class EosNode(Node):
             except:
                 self.hostname = "-"
 
-    async def set_hostname(self, hostname=None):
-        if hostname:
-            self.hostname = hostname
-            return
-
-        await self.exec_cmd(self._parse_hostname, ["show hostname|json"], None)
-
 
 class CumulusNode(Node):
     def _init(self, **kwargs):
@@ -704,28 +692,8 @@ class CumulusNode(Node):
 
         await service_callback(result, cb_token)
 
-        async def set_hostname(self, hostname=None):
-            if hostname:
-                self.hostname = hostname
-                return
-
-            output = await self.exec_cmd(["hostname"])
-
-            if output and output[0]["status"] == 200:
-                self.hostname = output[0]["data"]["hostname"]
-
 
 class LinuxNode(Node):
     def _init(self, **kwargs):
         super()._init(kwargs)
         self.devtype = "linux"
-
-    async def set_hostname(self, hostname=None):
-        if hostname:
-            self.hostname = hostname
-            return
-
-        output = await self.exec_cmd(["hostname"])
-
-        if output and output[0]["status"] == 200:
-            self.hostname = output[0]["data"]["hostname"]
