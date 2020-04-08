@@ -18,14 +18,11 @@ from asyncio.subprocess import PIPE
 from concurrent.futures._base import TimeoutError
 
 from suzieq.poller.services.service import RsltToken
+from suzieq.poller.genhosts import process_ansible_inventory
 
 
-async def init_hosts(hosts_file):
-    """Process list oof hosts
-    This involves creating a node for each host listed, firing up services
-    for which we need to pull data."""
-
-    nodes = {}
+def get_hostsdata_from_hostsfile(hosts_file) -> dict:
+    """Read the suzieq devices file and return the data from the file"""
 
     if not os.path.isfile(hosts_file):
         logging.error("hosts config must be a file")
@@ -44,6 +41,26 @@ async def init_hosts(hosts_file):
             logging.error("Invalid hosts config file:{}", e)
             print("Invalid hosts config file:{}", e)
             sys.exit(1)
+
+    return hostsconf
+
+
+async def init_hosts(hosts_file, ansible_file, namespace):
+    """Process list of devices to gather data from.
+    This involves creating a node for each device listed, and connecting to
+    those devices and initializing state about those devices"""
+
+    nodes = {}
+
+    if hosts_file:
+        hostsconf = get_hostsdata_from_hostsfile(hosts_file)
+    else:
+        hostlines = process_ansible_inventory(ansible_file, namespace)
+        hostsconf = yaml.safe_load('\n'.join(hostlines))
+
+    if not hostsconf:
+        print("ERROR: No hosts specified via hosts or ansible inventory file")
+        sys.exit(1)
 
     for namespace in hostsconf:
         if "namespace" not in namespace:
@@ -150,7 +167,16 @@ class Node(object):
         self.devtype = None
         pvtkey_file = kwargs.get("ssh_keyfile", None)
         if pvtkey_file:
-            self.pvtkey = asyncssh.public_key.read_private_key(pvtkey_file)
+            try:
+                self.pvtkey = asyncssh.public_key.read_private_key(pvtkey_file)
+            except Exception as e:
+                self.logger.error("ERROR: Unable to read private key file {} "
+                                  "for {} due to {}".format(pvtkey_file,
+                                                            self.address,
+                                                            str(e)))
+                self.logger.error("ERROR: Falling back to password for {}"
+                                  .format(self.address))
+                self.pvtkey = None
         else:
             self.pvtkey = None
 
