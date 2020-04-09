@@ -1,0 +1,288 @@
+description: 'Testing verbs for address: show summarize unique'
+tests:
+- command: address show --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show
+  output: '[{"namespace": "dual-bgp", "hostname": "edge01", "ifname": "eth0", "state":
+    "up", "ipAddressList": ["192.168.121.210/24"], "timestamp": 1586403475456}, {"namespace":
+    "dual-bgp", "hostname": "edge01", "ifname": "eth1.2", "state": "up", "ipAddressList":
+    ["169.254.254.2/30"], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname":
+    "edge01", "ifname": "eth1.4", "state": "up", "ipAddressList": ["169.254.254.10/30"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "edge01", "ifname":
+    "eth2.2", "state": "up", "ipAddressList": ["169.254.253.2/30"], "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "edge01", "ifname": "eth2.4", "state": "up",
+    "ipAddressList": ["169.254.253.10/30"], "timestamp": 1586403475456}, {"namespace":
+    "dual-bgp", "hostname": "edge01", "ifname": "lo", "state": "unknown", "ipAddressList":
+    ["10.0.0.100/32"], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname":
+    "exit01", "ifname": "eth0", "state": "up", "ipAddressList": ["192.168.121.242/24"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "exit01", "ifname":
+    "internet-vrf", "state": "up", "ipAddressList": ["10.0.0.101/32"], "timestamp":
+    1586403475456}, {"namespace": "dual-bgp", "hostname": "exit01", "ifname": "lo",
+    "state": "up", "ipAddressList": ["10.0.0.101/32"], "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "exit01", "ifname": "swp1", "state": "up",
+    "ipAddressList": ["10.127.0.9/31"], "timestamp": 1586403475456}, {"namespace":
+    "dual-bgp", "hostname": "exit01", "ifname": "swp2", "state": "up", "ipAddressList":
+    ["10.127.1.9/31"], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname":
+    "exit01", "ifname": "swp5.2", "state": "up", "ipAddressList": ["169.254.254.1/30"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "exit01", "ifname":
+    "swp5.4", "state": "up", "ipAddressList": ["169.254.254.9/30"], "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "exit01", "ifname": "swp6", "state": "up",
+    "ipAddressList": ["169.254.127.1/31"], "timestamp": 1586403475456}, {"namespace":
+    "dual-bgp", "hostname": "exit02", "ifname": "eth0", "state": "up", "ipAddressList":
+    ["192.168.121.116/24"], "timestamp": 1586403475456}, {"namespace": "dual-bgp",
+    "hostname": "exit02", "ifname": "internet-vrf", "state": "up", "ipAddressList":
+    ["10.0.0.102/32"], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname":
+    "exit02", "ifname": "lo", "state": "up", "ipAddressList": ["10.0.0.102/32"], "timestamp":
+    1586403475456}, {"namespace": "dual-bgp", "hostname": "exit02", "ifname": "swp1",
+    "state": "up", "ipAddressList": ["10.127.0.11/31"], "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "exit02", "ifname": "swp2", "state": "up",
+    "ipAddressList": ["10.127.1.11/31"], "timestamp": 1586403475456}, {"namespace":
+    "dual-bgp", "hostname": "exit02", "ifname": "swp5.2", "state": "up", "ipAddressList":
+    ["169.254.253.1/30"], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname":
+    "exit02", "ifname": "swp5.4", "state": "up", "ipAddressList": ["169.254.253.9/30"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "exit02", "ifname":
+    "swp6", "state": "up", "ipAddressList": ["169.254.127.3/31"], "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "internet", "ifname": "eth0", "state": "up",
+    "ipAddressList": ["192.168.121.207/24"], "timestamp": 1586403475456}, {"namespace":
+    "dual-bgp", "hostname": "internet", "ifname": "lo", "state": "up", "ipAddressList":
+    ["10.0.0.253/32", "172.16.253.1/32"], "timestamp": 1586403475456}, {"namespace":
+    "dual-bgp", "hostname": "internet", "ifname": "swp1", "state": "up", "ipAddressList":
+    ["169.254.127.0/31"], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname":
+    "internet", "ifname": "swp2", "state": "up", "ipAddressList": ["169.254.127.2/31"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf01", "ifname":
+    "eth0", "state": "up", "ipAddressList": ["192.168.121.130/24"], "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "leaf01", "ifname": "lo", "state": "up",
+    "ipAddressList": ["10.0.0.11/32"], "timestamp": 1586403475456}, {"namespace":
+    "dual-bgp", "hostname": "leaf01", "ifname": "peerlink.4094", "state": "up", "ipAddressList":
+    ["169.254.1.1/30"], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname":
+    "leaf01", "ifname": "swp1", "state": "up", "ipAddressList": ["10.127.0.1/31"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf01", "ifname":
+    "swp2", "state": "up", "ipAddressList": ["10.127.1.1/31"], "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "leaf01", "ifname": "vlan13", "state": "up",
+    "ipAddressList": ["172.16.1.1/24"], "timestamp": 1586403475456}, {"namespace":
+    "dual-bgp", "hostname": "leaf01", "ifname": "vlan24", "state": "up", "ipAddressList":
+    ["172.16.2.1/24"], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname":
+    "leaf02", "ifname": "eth0", "state": "up", "ipAddressList": ["192.168.121.224/24"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf02", "ifname":
+    "lo", "state": "up", "ipAddressList": ["10.0.0.12/32"], "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "leaf02", "ifname": "peerlink.4094", "state":
+    "up", "ipAddressList": ["169.254.1.2/30"], "timestamp": 1586403475456}, {"namespace":
+    "dual-bgp", "hostname": "leaf02", "ifname": "swp1", "state": "up", "ipAddressList":
+    ["10.127.0.3/31"], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname":
+    "leaf02", "ifname": "swp2", "state": "up", "ipAddressList": ["10.127.1.3/31"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf02", "ifname":
+    "vlan13", "state": "up", "ipAddressList": ["172.16.1.1/24"], "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "leaf02", "ifname": "vlan24", "state": "up",
+    "ipAddressList": ["172.16.2.1/24"], "timestamp": 1586403475456}, {"namespace":
+    "dual-bgp", "hostname": "leaf03", "ifname": "eth0", "state": "up", "ipAddressList":
+    ["192.168.121.175/24"], "timestamp": 1586403475456}, {"namespace": "dual-bgp",
+    "hostname": "leaf03", "ifname": "lo", "state": "up", "ipAddressList": ["10.0.0.13/32"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf03", "ifname":
+    "peerlink.4094", "state": "up", "ipAddressList": ["169.254.1.1/30"], "timestamp":
+    1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf03", "ifname": "swp1",
+    "state": "up", "ipAddressList": ["10.127.0.5/31"], "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "leaf03", "ifname": "swp2", "state": "up",
+    "ipAddressList": ["10.127.1.5/31"], "timestamp": 1586403475456}, {"namespace":
+    "dual-bgp", "hostname": "leaf03", "ifname": "vlan13", "state": "up", "ipAddressList":
+    ["172.16.3.1/24"], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname":
+    "leaf03", "ifname": "vlan24", "state": "up", "ipAddressList": ["172.16.4.1/24"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf04", "ifname":
+    "eth0", "state": "up", "ipAddressList": ["192.168.121.111/24"], "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "leaf04", "ifname": "lo", "state": "up",
+    "ipAddressList": ["10.0.0.14/32"], "timestamp": 1586403475456}, {"namespace":
+    "dual-bgp", "hostname": "leaf04", "ifname": "peerlink.4094", "state": "up", "ipAddressList":
+    ["169.254.1.2/30"], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname":
+    "leaf04", "ifname": "swp1", "state": "up", "ipAddressList": ["10.127.0.7/31"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf04", "ifname":
+    "swp2", "state": "up", "ipAddressList": ["10.127.1.7/31"], "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "leaf04", "ifname": "vlan13", "state": "up",
+    "ipAddressList": ["172.16.3.1/24"], "timestamp": 1586403475456}, {"namespace":
+    "dual-bgp", "hostname": "leaf04", "ifname": "vlan24", "state": "up", "ipAddressList":
+    ["172.16.4.1/24"], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname":
+    "server101", "ifname": "bond0", "state": "up", "ipAddressList": ["172.16.1.101/24"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "server101",
+    "ifname": "eth0", "state": "up", "ipAddressList": ["192.168.121.100/24"], "timestamp":
+    1586403475456}, {"namespace": "dual-bgp", "hostname": "server102", "ifname": "bond0",
+    "state": "up", "ipAddressList": ["172.16.2.102/24"], "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "server102", "ifname": "eth0", "state":
+    "up", "ipAddressList": ["192.168.121.149/24"], "timestamp": 1586403475456}, {"namespace":
+    "dual-bgp", "hostname": "server103", "ifname": "bond0", "state": "up", "ipAddressList":
+    ["172.16.3.103/24"], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname":
+    "server103", "ifname": "eth0", "state": "up", "ipAddressList": ["192.168.121.52/24"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "server104",
+    "ifname": "bond0", "state": "up", "ipAddressList": ["172.16.4.104/24"], "timestamp":
+    1586403475456}, {"namespace": "dual-bgp", "hostname": "server104", "ifname": "eth0",
+    "state": "up", "ipAddressList": ["192.168.121.99/24"], "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "spine01", "ifname": "eth0", "state": "up",
+    "ipAddressList": ["192.168.121.13/24"], "timestamp": 1586403475456}, {"namespace":
+    "dual-bgp", "hostname": "spine01", "ifname": "lo", "state": "up", "ipAddressList":
+    ["10.0.0.21/32"], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname":
+    "spine01", "ifname": "swp1", "state": "up", "ipAddressList": ["10.127.0.0/31"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "spine01",
+    "ifname": "swp2", "state": "up", "ipAddressList": ["10.127.0.2/31"], "timestamp":
+    1586403475456}, {"namespace": "dual-bgp", "hostname": "spine01", "ifname": "swp3",
+    "state": "up", "ipAddressList": ["10.127.0.4/31"], "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "spine01", "ifname": "swp4", "state": "up",
+    "ipAddressList": ["10.127.0.6/31"], "timestamp": 1586403475456}, {"namespace":
+    "dual-bgp", "hostname": "spine01", "ifname": "swp5", "state": "up", "ipAddressList":
+    ["10.127.0.10/31"], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname":
+    "spine01", "ifname": "swp6", "state": "up", "ipAddressList": ["10.127.0.8/31"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "spine02",
+    "ifname": "eth0", "state": "up", "ipAddressList": ["192.168.121.66/24"], "timestamp":
+    1586403475456}, {"namespace": "dual-bgp", "hostname": "spine02", "ifname": "lo",
+    "state": "up", "ipAddressList": ["10.0.0.22/32"], "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "spine02", "ifname": "swp1", "state": "up",
+    "ipAddressList": ["10.127.1.0/31"], "timestamp": 1586403475456}, {"namespace":
+    "dual-bgp", "hostname": "spine02", "ifname": "swp2", "state": "up", "ipAddressList":
+    ["10.127.1.2/31"], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname":
+    "spine02", "ifname": "swp3", "state": "up", "ipAddressList": ["10.127.1.4/31"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "spine02",
+    "ifname": "swp4", "state": "up", "ipAddressList": ["10.127.1.6/31"], "timestamp":
+    1586403475456}, {"namespace": "dual-bgp", "hostname": "spine02", "ifname": "swp5",
+    "state": "up", "ipAddressList": ["10.127.1.10/31"], "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "spine02", "ifname": "swp6", "state": "up",
+    "ipAddressList": ["10.127.1.8/31"], "timestamp": 1586403475456}]'
+- command: address show --columns=hostname --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show
+  output: '[{"ipAddressList": ["192.168.121.210/24"], "hostname": "edge01", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "eth0"}, {"ipAddressList": ["169.254.254.2/30"],
+    "hostname": "edge01", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname":
+    "eth1.2"}, {"ipAddressList": ["169.254.254.10/30"], "hostname": "edge01", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "eth1.4"}, {"ipAddressList":
+    ["169.254.253.2/30"], "hostname": "edge01", "timestamp": 1586403475456, "namespace":
+    "dual-bgp", "ifname": "eth2.2"}, {"ipAddressList": ["169.254.253.10/30"], "hostname":
+    "edge01", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "eth2.4"},
+    {"ipAddressList": ["10.0.0.100/32"], "hostname": "edge01", "timestamp": 1586403475456,
+    "namespace": "dual-bgp", "ifname": "lo"}, {"ipAddressList": ["192.168.121.242/24"],
+    "hostname": "exit01", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname":
+    "eth0"}, {"ipAddressList": ["10.0.0.101/32"], "hostname": "exit01", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "internet-vrf"}, {"ipAddressList":
+    ["10.0.0.101/32"], "hostname": "exit01", "timestamp": 1586403475456, "namespace":
+    "dual-bgp", "ifname": "lo"}, {"ipAddressList": ["10.127.0.9/31"], "hostname":
+    "exit01", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "swp1"},
+    {"ipAddressList": ["10.127.1.9/31"], "hostname": "exit01", "timestamp": 1586403475456,
+    "namespace": "dual-bgp", "ifname": "swp2"}, {"ipAddressList": ["169.254.254.1/30"],
+    "hostname": "exit01", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname":
+    "swp5.2"}, {"ipAddressList": ["169.254.254.9/30"], "hostname": "exit01", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "swp5.4"}, {"ipAddressList":
+    ["169.254.127.1/31"], "hostname": "exit01", "timestamp": 1586403475456, "namespace":
+    "dual-bgp", "ifname": "swp6"}, {"ipAddressList": ["192.168.121.116/24"], "hostname":
+    "exit02", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "eth0"},
+    {"ipAddressList": ["10.0.0.102/32"], "hostname": "exit02", "timestamp": 1586403475456,
+    "namespace": "dual-bgp", "ifname": "internet-vrf"}, {"ipAddressList": ["10.0.0.102/32"],
+    "hostname": "exit02", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname":
+    "lo"}, {"ipAddressList": ["10.127.0.11/31"], "hostname": "exit02", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "swp1"}, {"ipAddressList": ["10.127.1.11/31"],
+    "hostname": "exit02", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname":
+    "swp2"}, {"ipAddressList": ["169.254.253.1/30"], "hostname": "exit02", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "swp5.2"}, {"ipAddressList":
+    ["169.254.253.9/30"], "hostname": "exit02", "timestamp": 1586403475456, "namespace":
+    "dual-bgp", "ifname": "swp5.4"}, {"ipAddressList": ["169.254.127.3/31"], "hostname":
+    "exit02", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "swp6"},
+    {"ipAddressList": ["192.168.121.207/24"], "hostname": "internet", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "eth0"}, {"ipAddressList": ["10.0.0.253/32",
+    "172.16.253.1/32"], "hostname": "internet", "timestamp": 1586403475456, "namespace":
+    "dual-bgp", "ifname": "lo"}, {"ipAddressList": ["169.254.127.0/31"], "hostname":
+    "internet", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "swp1"},
+    {"ipAddressList": ["169.254.127.2/31"], "hostname": "internet", "timestamp": 1586403475456,
+    "namespace": "dual-bgp", "ifname": "swp2"}, {"ipAddressList": ["192.168.121.130/24"],
+    "hostname": "leaf01", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname":
+    "eth0"}, {"ipAddressList": ["10.0.0.11/32"], "hostname": "leaf01", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "lo"}, {"ipAddressList": ["169.254.1.1/30"],
+    "hostname": "leaf01", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname":
+    "peerlink.4094"}, {"ipAddressList": ["10.127.0.1/31"], "hostname": "leaf01", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "swp1"}, {"ipAddressList": ["10.127.1.1/31"],
+    "hostname": "leaf01", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname":
+    "swp2"}, {"ipAddressList": ["172.16.1.1/24"], "hostname": "leaf01", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "vlan13"}, {"ipAddressList":
+    ["172.16.2.1/24"], "hostname": "leaf01", "timestamp": 1586403475456, "namespace":
+    "dual-bgp", "ifname": "vlan24"}, {"ipAddressList": ["192.168.121.224/24"], "hostname":
+    "leaf02", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "eth0"},
+    {"ipAddressList": ["10.0.0.12/32"], "hostname": "leaf02", "timestamp": 1586403475456,
+    "namespace": "dual-bgp", "ifname": "lo"}, {"ipAddressList": ["169.254.1.2/30"],
+    "hostname": "leaf02", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname":
+    "peerlink.4094"}, {"ipAddressList": ["10.127.0.3/31"], "hostname": "leaf02", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "swp1"}, {"ipAddressList": ["10.127.1.3/31"],
+    "hostname": "leaf02", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname":
+    "swp2"}, {"ipAddressList": ["172.16.1.1/24"], "hostname": "leaf02", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "vlan13"}, {"ipAddressList":
+    ["172.16.2.1/24"], "hostname": "leaf02", "timestamp": 1586403475456, "namespace":
+    "dual-bgp", "ifname": "vlan24"}, {"ipAddressList": ["192.168.121.175/24"], "hostname":
+    "leaf03", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "eth0"},
+    {"ipAddressList": ["10.0.0.13/32"], "hostname": "leaf03", "timestamp": 1586403475456,
+    "namespace": "dual-bgp", "ifname": "lo"}, {"ipAddressList": ["169.254.1.1/30"],
+    "hostname": "leaf03", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname":
+    "peerlink.4094"}, {"ipAddressList": ["10.127.0.5/31"], "hostname": "leaf03", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "swp1"}, {"ipAddressList": ["10.127.1.5/31"],
+    "hostname": "leaf03", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname":
+    "swp2"}, {"ipAddressList": ["172.16.3.1/24"], "hostname": "leaf03", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "vlan13"}, {"ipAddressList":
+    ["172.16.4.1/24"], "hostname": "leaf03", "timestamp": 1586403475456, "namespace":
+    "dual-bgp", "ifname": "vlan24"}, {"ipAddressList": ["192.168.121.111/24"], "hostname":
+    "leaf04", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "eth0"},
+    {"ipAddressList": ["10.0.0.14/32"], "hostname": "leaf04", "timestamp": 1586403475456,
+    "namespace": "dual-bgp", "ifname": "lo"}, {"ipAddressList": ["169.254.1.2/30"],
+    "hostname": "leaf04", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname":
+    "peerlink.4094"}, {"ipAddressList": ["10.127.0.7/31"], "hostname": "leaf04", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "swp1"}, {"ipAddressList": ["10.127.1.7/31"],
+    "hostname": "leaf04", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname":
+    "swp2"}, {"ipAddressList": ["172.16.3.1/24"], "hostname": "leaf04", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "vlan13"}, {"ipAddressList":
+    ["172.16.4.1/24"], "hostname": "leaf04", "timestamp": 1586403475456, "namespace":
+    "dual-bgp", "ifname": "vlan24"}, {"ipAddressList": ["172.16.1.101/24"], "hostname":
+    "server101", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "bond0"},
+    {"ipAddressList": ["192.168.121.100/24"], "hostname": "server101", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "eth0"}, {"ipAddressList": ["172.16.2.102/24"],
+    "hostname": "server102", "timestamp": 1586403475456, "namespace": "dual-bgp",
+    "ifname": "bond0"}, {"ipAddressList": ["192.168.121.149/24"], "hostname": "server102",
+    "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "eth0"}, {"ipAddressList":
+    ["172.16.3.103/24"], "hostname": "server103", "timestamp": 1586403475456, "namespace":
+    "dual-bgp", "ifname": "bond0"}, {"ipAddressList": ["192.168.121.52/24"], "hostname":
+    "server103", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "eth0"},
+    {"ipAddressList": ["172.16.4.104/24"], "hostname": "server104", "timestamp": 1586403475456,
+    "namespace": "dual-bgp", "ifname": "bond0"}, {"ipAddressList": ["192.168.121.99/24"],
+    "hostname": "server104", "timestamp": 1586403475456, "namespace": "dual-bgp",
+    "ifname": "eth0"}, {"ipAddressList": ["192.168.121.13/24"], "hostname": "spine01",
+    "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "eth0"}, {"ipAddressList":
+    ["10.0.0.21/32"], "hostname": "spine01", "timestamp": 1586403475456, "namespace":
+    "dual-bgp", "ifname": "lo"}, {"ipAddressList": ["10.127.0.0/31"], "hostname":
+    "spine01", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "swp1"},
+    {"ipAddressList": ["10.127.0.2/31"], "hostname": "spine01", "timestamp": 1586403475456,
+    "namespace": "dual-bgp", "ifname": "swp2"}, {"ipAddressList": ["10.127.0.4/31"],
+    "hostname": "spine01", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname":
+    "swp3"}, {"ipAddressList": ["10.127.0.6/31"], "hostname": "spine01", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "swp4"}, {"ipAddressList": ["10.127.0.10/31"],
+    "hostname": "spine01", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname":
+    "swp5"}, {"ipAddressList": ["10.127.0.8/31"], "hostname": "spine01", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "swp6"}, {"ipAddressList": ["192.168.121.66/24"],
+    "hostname": "spine02", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname":
+    "eth0"}, {"ipAddressList": ["10.0.0.22/32"], "hostname": "spine02", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "lo"}, {"ipAddressList": ["10.127.1.0/31"],
+    "hostname": "spine02", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname":
+    "swp1"}, {"ipAddressList": ["10.127.1.2/31"], "hostname": "spine02", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "swp2"}, {"ipAddressList": ["10.127.1.4/31"],
+    "hostname": "spine02", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname":
+    "swp3"}, {"ipAddressList": ["10.127.1.6/31"], "hostname": "spine02", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "swp4"}, {"ipAddressList": ["10.127.1.10/31"],
+    "hostname": "spine02", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname":
+    "swp5"}, {"ipAddressList": ["10.127.1.8/31"], "hostname": "spine02", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "swp6"}]'
+- command: address summarize --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address summarize
+  xfail:
+    error: '"Error running command: ''columns''\n------------------------------------------------------------\n------------------------------------------------------------"'
+    reason: 'uncaught exception bug #59'
+- command: address summarize --namespace=dual-evpn --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address summarize
+  xfail:
+    error: '"Error running command: ''columns''\n------------------------------------------------------------\n------------------------------------------------------------"'
+    reason: uncaught exception
+- command: address unique --columns=hostname --format=json
+  # bug #60
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  error:
+    error: '[{"error": "ERROR: Unknown table addr, no schema found for it"}]'
+  marks: address unique

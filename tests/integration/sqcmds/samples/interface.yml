@@ -1,0 +1,697 @@
+description: 'Testing verbs for interface: show summarize unique assert top'
+tests:
+- command: interface show --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: interface show
+  output: '[{"namespace": "dual-bgp", "hostname": "edge01", "ifname": "eth0", "state":
+    "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    ["192.168.121.210/24"], "ip6AddressList": [], "timestamp": 1586403475456}, {"namespace":
+    "dual-bgp", "hostname": "edge01", "ifname": "eth1.2", "state": "up", "type": "vlan",
+    "mtu": 1500, "vlan": 2, "master": "", "ipAddressList": ["169.254.254.2/30"], "ip6AddressList":
+    [], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "edge01",
+    "ifname": "eth1.4", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 4, "master":
+    "", "ipAddressList": ["169.254.254.10/30"], "ip6AddressList": [], "timestamp":
+    1586403475456}, {"namespace": "dual-bgp", "hostname": "edge01", "ifname": "eth1",
+    "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1586403475456}, {"namespace": "dual-bgp",
+    "hostname": "edge01", "ifname": "eth2.2", "state": "up", "type": "vlan", "mtu":
+    1500, "vlan": 2, "master": "", "ipAddressList": ["169.254.253.2/30"], "ip6AddressList":
+    [], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "edge01",
+    "ifname": "eth2.4", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 4, "master":
+    "", "ipAddressList": ["169.254.253.10/30"], "ip6AddressList": [], "timestamp":
+    1586403475456}, {"namespace": "dual-bgp", "hostname": "edge01", "ifname": "eth2",
+    "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1586403475456}, {"namespace": "dual-bgp",
+    "hostname": "edge01", "ifname": "lo", "state": "unknown", "type": "loopback",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.100/32"], "ip6AddressList":
+    [], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "exit01",
+    "ifname": "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "mgmt", "ipAddressList": ["192.168.121.242/24"], "ip6AddressList": ["fe80::5054:ff:feb2:35f2/64"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "exit01", "ifname":
+    "internet-vrf", "state": "up", "type": "vrf", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": ["10.0.0.101/32"], "ip6AddressList": [], "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "exit01", "ifname": "lo", "state": "up",
+    "type": "loopback", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.101/32"],
+    "ip6AddressList": [], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname":
+    "exit01", "ifname": "mgmt", "state": "up", "type": "vrf", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "exit01", "ifname": "swp1", "state": "up",
+    "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.127.0.9/31"],
+    "ip6AddressList": ["fe80::5054:ff:fe94:edd5/64"], "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "exit01", "ifname": "swp2", "state": "up",
+    "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.127.1.9/31"],
+    "ip6AddressList": ["fe80::5054:ff:fe5b:f3c6/64"], "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "exit01", "ifname": "swp3", "state": "up",
+    "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    ["fe80::5054:ff:fe44:63/64"], "timestamp": 1586403475456}, {"namespace": "dual-bgp",
+    "hostname": "exit01", "ifname": "swp4", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe43:2c51/64"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "exit01", "ifname":
+    "swp5.2", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 2, "master": "",
+    "ipAddressList": ["169.254.254.1/30"], "ip6AddressList": ["fe80::5054:ff:fe91:700a/64"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "exit01", "ifname":
+    "swp5.4", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 4, "master": "internet-vrf",
+    "ipAddressList": ["169.254.254.9/30"], "ip6AddressList": ["fe80::5054:ff:fe91:700a/64"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "exit01", "ifname":
+    "swp5", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe91:700a/64"], "timestamp":
+    1586403475456}, {"namespace": "dual-bgp", "hostname": "exit01", "ifname": "swp6",
+    "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "internet-vrf",
+    "ipAddressList": ["169.254.127.1/31"], "ip6AddressList": ["fe80::5054:ff:feef:b4f8/64"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "exit02", "ifname":
+    "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "mgmt",
+    "ipAddressList": ["192.168.121.116/24"], "ip6AddressList": ["fe80::5054:ff:fe04:cf04/64"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "exit02", "ifname":
+    "internet-vrf", "state": "up", "type": "vrf", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": ["10.0.0.102/32"], "ip6AddressList": [], "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "exit02", "ifname": "lo", "state": "up",
+    "type": "loopback", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.102/32"],
+    "ip6AddressList": [], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname":
+    "exit02", "ifname": "mgmt", "state": "up", "type": "vrf", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "exit02", "ifname": "swp1", "state": "up",
+    "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.127.0.11/31"],
+    "ip6AddressList": ["fe80::5054:ff:fe04:2ae3/64"], "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "exit02", "ifname": "swp2", "state": "up",
+    "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.127.1.11/31"],
+    "ip6AddressList": ["fe80::5054:ff:fef7:d721/64"], "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "exit02", "ifname": "swp3", "state": "up",
+    "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    ["fe80::5054:ff:fe09:4d5b/64"], "timestamp": 1586403475456}, {"namespace": "dual-bgp",
+    "hostname": "exit02", "ifname": "swp4", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe16:f041/64"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "exit02", "ifname":
+    "swp5.2", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 2, "master": "",
+    "ipAddressList": ["169.254.253.1/30"], "ip6AddressList": ["fe80::5054:ff:fe8b:7e95/64"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "exit02", "ifname":
+    "swp5.4", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 4, "master": "internet-vrf",
+    "ipAddressList": ["169.254.253.9/30"], "ip6AddressList": ["fe80::5054:ff:fe8b:7e95/64"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "exit02", "ifname":
+    "swp5", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe8b:7e95/64"], "timestamp":
+    1586403475456}, {"namespace": "dual-bgp", "hostname": "exit02", "ifname": "swp6",
+    "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "internet-vrf",
+    "ipAddressList": ["169.254.127.3/31"], "ip6AddressList": ["fe80::5054:ff:fee0:860b/64"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "internet",
+    "ifname": "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["192.168.121.207/24"], "ip6AddressList": ["fe80::5054:ff:fe1b:fbba/64"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "internet",
+    "ifname": "lo", "state": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": ["10.0.0.253/32", "172.16.253.1/32"], "ip6AddressList": [],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "internet",
+    "ifname": "swp1", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["169.254.127.0/31"], "ip6AddressList": ["fe80::5054:ff:fe19:ae4d/64"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "internet",
+    "ifname": "swp2", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["169.254.127.2/31"], "ip6AddressList": ["fe80::5054:ff:febf:a1f2/64"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf01", "ifname":
+    "bond01", "state": "up", "type": "bond", "mtu": 1500, "vlan": 0, "master": "bridge",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1586403475456}, {"namespace":
+    "dual-bgp", "hostname": "leaf01", "ifname": "bond02", "state": "up", "type": "bond",
+    "mtu": 1500, "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf01",
+    "ifname": "bridge", "state": "up", "type": "bridge", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe49:96b4/64"], "timestamp":
+    1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf01", "ifname": "eth0",
+    "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "mgmt", "ipAddressList":
+    ["192.168.121.130/24"], "ip6AddressList": ["fe80::5054:ff:febe:c6ef/64"], "timestamp":
+    1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf01", "ifname": "lo",
+    "state": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    ["10.0.0.11/32"], "ip6AddressList": [], "timestamp": 1586403475456}, {"namespace":
+    "dual-bgp", "hostname": "leaf01", "ifname": "mgmt", "state": "up", "type": "vrf",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf01",
+    "ifname": "peerlink.4094", "state": "up", "type": "vlan", "mtu": 1500, "vlan":
+    4094, "master": "", "ipAddressList": ["169.254.1.1/30"], "ip6AddressList": ["fe80::5054:ff:fe9d:2d67/64"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf01", "ifname":
+    "peerlink", "state": "up", "type": "bond", "mtu": 1500, "vlan": 0, "master": "bridge",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1586403475456}, {"namespace":
+    "dual-bgp", "hostname": "leaf01", "ifname": "swp1", "state": "up", "type": "ether",
+    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.127.0.1/31"], "ip6AddressList":
+    ["fe80::5054:ff:fe6c:b4c2/64"], "timestamp": 1586403475456}, {"namespace": "dual-bgp",
+    "hostname": "leaf01", "ifname": "swp2", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": ["10.127.1.1/31"], "ip6AddressList":
+    ["fe80::5054:ff:fecb:a580/64"], "timestamp": 1586403475456}, {"namespace": "dual-bgp",
+    "hostname": "leaf01", "ifname": "swp3", "state": "up", "type": "bond_slave", "mtu":
+    1500, "vlan": 0, "master": "peerlink", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf01",
+    "ifname": "swp4", "state": "up", "type": "bond_slave", "mtu": 1500, "vlan": 0,
+    "master": "peerlink", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf01", "ifname": "swp5",
+    "state": "up", "type": "bond_slave", "mtu": 1500, "vlan": 0, "master": "bond01",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1586403475456}, {"namespace":
+    "dual-bgp", "hostname": "leaf01", "ifname": "swp6", "state": "up", "type": "bond_slave",
+    "mtu": 1500, "vlan": 0, "master": "bond02", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf01",
+    "ifname": "vlan13", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 13, "master":
+    "", "ipAddressList": ["172.16.1.1/24"], "ip6AddressList": ["fe80::5054:ff:fe49:96b4/64"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf01", "ifname":
+    "vlan24", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 24, "master": "",
+    "ipAddressList": ["172.16.2.1/24"], "ip6AddressList": ["fe80::5054:ff:fe49:96b4/64"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf02", "ifname":
+    "bond01", "state": "up", "type": "bond", "mtu": 1500, "vlan": 0, "master": "bridge",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1586403475456}, {"namespace":
+    "dual-bgp", "hostname": "leaf02", "ifname": "bond02", "state": "up", "type": "bond",
+    "mtu": 1500, "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf02",
+    "ifname": "bridge", "state": "up", "type": "bridge", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe1d:667f/64"], "timestamp":
+    1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf02", "ifname": "eth0",
+    "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "mgmt", "ipAddressList":
+    ["192.168.121.224/24"], "ip6AddressList": ["fe80::5054:ff:fe28:a706/64"], "timestamp":
+    1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf02", "ifname": "lo",
+    "state": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    ["10.0.0.12/32"], "ip6AddressList": [], "timestamp": 1586403475456}, {"namespace":
+    "dual-bgp", "hostname": "leaf02", "ifname": "mgmt", "state": "up", "type": "vrf",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf02",
+    "ifname": "peerlink.4094", "state": "up", "type": "vlan", "mtu": 1500, "vlan":
+    4094, "master": "", "ipAddressList": ["169.254.1.2/30"], "ip6AddressList": ["fe80::5054:ff:fe3a:2659/64"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf02", "ifname":
+    "peerlink", "state": "up", "type": "bond", "mtu": 1500, "vlan": 0, "master": "bridge",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1586403475456}, {"namespace":
+    "dual-bgp", "hostname": "leaf02", "ifname": "swp1", "state": "up", "type": "ether",
+    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.127.0.3/31"], "ip6AddressList":
+    ["fe80::5054:ff:fe0e:2c8d/64"], "timestamp": 1586403475456}, {"namespace": "dual-bgp",
+    "hostname": "leaf02", "ifname": "swp2", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": ["10.127.1.3/31"], "ip6AddressList":
+    ["fe80::5054:ff:fedb:bd2e/64"], "timestamp": 1586403475456}, {"namespace": "dual-bgp",
+    "hostname": "leaf02", "ifname": "swp3", "state": "up", "type": "bond_slave", "mtu":
+    1500, "vlan": 0, "master": "peerlink", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf02",
+    "ifname": "swp4", "state": "up", "type": "bond_slave", "mtu": 1500, "vlan": 0,
+    "master": "peerlink", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf02", "ifname": "swp5",
+    "state": "up", "type": "bond_slave", "mtu": 1500, "vlan": 0, "master": "bond01",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1586403475456}, {"namespace":
+    "dual-bgp", "hostname": "leaf02", "ifname": "swp6", "state": "up", "type": "bond_slave",
+    "mtu": 1500, "vlan": 0, "master": "bond02", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf02",
+    "ifname": "vlan13", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 13, "master":
+    "", "ipAddressList": ["172.16.1.1/24"], "ip6AddressList": ["fe80::5054:ff:fe1d:667f/64"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf02", "ifname":
+    "vlan24", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 24, "master": "",
+    "ipAddressList": ["172.16.2.1/24"], "ip6AddressList": ["fe80::5054:ff:fe1d:667f/64"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf03", "ifname":
+    "bond01", "state": "up", "type": "bond", "mtu": 1500, "vlan": 0, "master": "bridge",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1586403475456}, {"namespace":
+    "dual-bgp", "hostname": "leaf03", "ifname": "bond02", "state": "up", "type": "bond",
+    "mtu": 1500, "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf03",
+    "ifname": "bridge", "state": "up", "type": "bridge", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe42:4718/64"], "timestamp":
+    1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf03", "ifname": "eth0",
+    "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "mgmt", "ipAddressList":
+    ["192.168.121.175/24"], "ip6AddressList": ["fe80::5054:ff:fe8a:ad71/64"], "timestamp":
+    1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf03", "ifname": "lo",
+    "state": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    ["10.0.0.13/32"], "ip6AddressList": [], "timestamp": 1586403475456}, {"namespace":
+    "dual-bgp", "hostname": "leaf03", "ifname": "mgmt", "state": "up", "type": "vrf",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf03",
+    "ifname": "peerlink.4094", "state": "up", "type": "vlan", "mtu": 1500, "vlan":
+    4094, "master": "", "ipAddressList": ["169.254.1.1/30"], "ip6AddressList": ["fe80::5054:ff:fe58:4261/64"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf03", "ifname":
+    "peerlink", "state": "up", "type": "bond", "mtu": 1500, "vlan": 0, "master": "bridge",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1586403475456}, {"namespace":
+    "dual-bgp", "hostname": "leaf03", "ifname": "swp1", "state": "up", "type": "ether",
+    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.127.0.5/31"], "ip6AddressList":
+    ["fe80::5054:ff:fe29:cf14/64"], "timestamp": 1586403475456}, {"namespace": "dual-bgp",
+    "hostname": "leaf03", "ifname": "swp2", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": ["10.127.1.5/31"], "ip6AddressList":
+    ["fe80::5054:ff:fe5f:e06a/64"], "timestamp": 1586403475456}, {"namespace": "dual-bgp",
+    "hostname": "leaf03", "ifname": "swp3", "state": "up", "type": "bond_slave", "mtu":
+    1500, "vlan": 0, "master": "peerlink", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf03",
+    "ifname": "swp4", "state": "up", "type": "bond_slave", "mtu": 1500, "vlan": 0,
+    "master": "peerlink", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf03", "ifname": "swp5",
+    "state": "up", "type": "bond_slave", "mtu": 1500, "vlan": 0, "master": "bond01",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1586403475456}, {"namespace":
+    "dual-bgp", "hostname": "leaf03", "ifname": "swp6", "state": "up", "type": "bond_slave",
+    "mtu": 1500, "vlan": 0, "master": "bond02", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf03",
+    "ifname": "vlan13", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 13, "master":
+    "", "ipAddressList": ["172.16.3.1/24"], "ip6AddressList": ["fe80::5054:ff:fe42:4718/64"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf03", "ifname":
+    "vlan24", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 24, "master": "",
+    "ipAddressList": ["172.16.4.1/24"], "ip6AddressList": ["fe80::5054:ff:fe42:4718/64"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf04", "ifname":
+    "bond01", "state": "up", "type": "bond", "mtu": 1500, "vlan": 0, "master": "bridge",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1586403475456}, {"namespace":
+    "dual-bgp", "hostname": "leaf04", "ifname": "bond02", "state": "up", "type": "bond",
+    "mtu": 1500, "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf04",
+    "ifname": "bridge", "state": "up", "type": "bridge", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fec1:518d/64"], "timestamp":
+    1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf04", "ifname": "eth0",
+    "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "mgmt", "ipAddressList":
+    ["192.168.121.111/24"], "ip6AddressList": ["fe80::5054:ff:fe44:6f4/64"], "timestamp":
+    1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf04", "ifname": "lo",
+    "state": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    ["10.0.0.14/32"], "ip6AddressList": [], "timestamp": 1586403475456}, {"namespace":
+    "dual-bgp", "hostname": "leaf04", "ifname": "mgmt", "state": "up", "type": "vrf",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf04",
+    "ifname": "peerlink.4094", "state": "up", "type": "vlan", "mtu": 1500, "vlan":
+    4094, "master": "", "ipAddressList": ["169.254.1.2/30"], "ip6AddressList": ["fe80::5054:ff:fef7:9ab9/64"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf04", "ifname":
+    "peerlink", "state": "up", "type": "bond", "mtu": 1500, "vlan": 0, "master": "bridge",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1586403475456}, {"namespace":
+    "dual-bgp", "hostname": "leaf04", "ifname": "swp1", "state": "up", "type": "ether",
+    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.127.0.7/31"], "ip6AddressList":
+    ["fe80::5054:ff:fee1:619e/64"], "timestamp": 1586403475456}, {"namespace": "dual-bgp",
+    "hostname": "leaf04", "ifname": "swp2", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": ["10.127.1.7/31"], "ip6AddressList":
+    ["fe80::5054:ff:fed3:3bc8/64"], "timestamp": 1586403475456}, {"namespace": "dual-bgp",
+    "hostname": "leaf04", "ifname": "swp3", "state": "up", "type": "bond_slave", "mtu":
+    1500, "vlan": 0, "master": "peerlink", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf04",
+    "ifname": "swp4", "state": "up", "type": "bond_slave", "mtu": 1500, "vlan": 0,
+    "master": "peerlink", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf04", "ifname": "swp5",
+    "state": "up", "type": "bond_slave", "mtu": 1500, "vlan": 0, "master": "bond01",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1586403475456}, {"namespace":
+    "dual-bgp", "hostname": "leaf04", "ifname": "swp6", "state": "up", "type": "bond_slave",
+    "mtu": 1500, "vlan": 0, "master": "bond02", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf04",
+    "ifname": "vlan13", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 13, "master":
+    "", "ipAddressList": ["172.16.3.1/24"], "ip6AddressList": ["fe80::5054:ff:fec1:518d/64"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf04", "ifname":
+    "vlan24", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 24, "master": "",
+    "ipAddressList": ["172.16.4.1/24"], "ip6AddressList": ["fe80::5054:ff:fec1:518d/64"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "server101",
+    "ifname": "bond0", "state": "up", "type": "bond", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["172.16.1.101/24"], "ip6AddressList": [], "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "server101", "ifname": "eth0", "state":
+    "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    ["192.168.121.100/24"], "ip6AddressList": [], "timestamp": 1586403475456}, {"namespace":
+    "dual-bgp", "hostname": "server101", "ifname": "eth1", "state": "up", "type":
+    "bond_slave", "mtu": 1500, "vlan": 0, "master": "bond0", "ipAddressList": [],
+    "ip6AddressList": [], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname":
+    "server101", "ifname": "eth2", "state": "up", "type": "bond_slave", "mtu": 1500,
+    "vlan": 0, "master": "bond0", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1586403475456}, {"namespace": "dual-bgp", "hostname": "server101", "ifname": "lo",
+    "state": "unknown", "type": "loopback", "mtu": 65536, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1586403475456}, {"namespace":
+    "dual-bgp", "hostname": "server102", "ifname": "bond0", "state": "up", "type":
+    "bond", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["172.16.2.102/24"],
+    "ip6AddressList": [], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname":
+    "server102", "ifname": "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["192.168.121.149/24"], "ip6AddressList": [],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "server102",
+    "ifname": "eth1", "state": "up", "type": "bond_slave", "mtu": 1500, "vlan": 0,
+    "master": "bond0", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "server102", "ifname": "eth2", "state":
+    "up", "type": "bond_slave", "mtu": 1500, "vlan": 0, "master": "bond0", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1586403475456}, {"namespace": "dual-bgp",
+    "hostname": "server102", "ifname": "lo", "state": "unknown", "type": "loopback",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "server103",
+    "ifname": "bond0", "state": "up", "type": "bond", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["172.16.3.103/24"], "ip6AddressList": [], "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "server103", "ifname": "eth0", "state":
+    "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    ["192.168.121.52/24"], "ip6AddressList": [], "timestamp": 1586403475456}, {"namespace":
+    "dual-bgp", "hostname": "server103", "ifname": "eth1", "state": "up", "type":
+    "bond_slave", "mtu": 1500, "vlan": 0, "master": "bond0", "ipAddressList": [],
+    "ip6AddressList": [], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname":
+    "server103", "ifname": "eth2", "state": "up", "type": "bond_slave", "mtu": 1500,
+    "vlan": 0, "master": "bond0", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1586403475456}, {"namespace": "dual-bgp", "hostname": "server103", "ifname": "lo",
+    "state": "unknown", "type": "loopback", "mtu": 65536, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1586403475456}, {"namespace":
+    "dual-bgp", "hostname": "server104", "ifname": "bond0", "state": "up", "type":
+    "bond", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["172.16.4.104/24"],
+    "ip6AddressList": [], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname":
+    "server104", "ifname": "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["192.168.121.99/24"], "ip6AddressList": [],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "server104",
+    "ifname": "eth1", "state": "up", "type": "bond_slave", "mtu": 1500, "vlan": 0,
+    "master": "bond0", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "server104", "ifname": "eth2", "state":
+    "up", "type": "bond_slave", "mtu": 1500, "vlan": 0, "master": "bond0", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1586403475456}, {"namespace": "dual-bgp",
+    "hostname": "server104", "ifname": "lo", "state": "unknown", "type": "loopback",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "spine01",
+    "ifname": "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "mgmt", "ipAddressList": ["192.168.121.13/24"], "ip6AddressList": ["fe80::5054:ff:fea4:416d/64"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "spine01",
+    "ifname": "lo", "state": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": ["10.0.0.21/32"], "ip6AddressList": [], "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "spine01", "ifname": "mgmt", "state": "up",
+    "type": "vrf", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "spine01",
+    "ifname": "swp1", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["10.127.0.0/31"], "ip6AddressList": ["fe80::5054:ff:fe12:cb34/64"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "spine01",
+    "ifname": "swp2", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["10.127.0.2/31"], "ip6AddressList": ["fe80::5054:ff:fe8c:25b9/64"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "spine01",
+    "ifname": "swp3", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["10.127.0.4/31"], "ip6AddressList": ["fe80::5054:ff:fec0:e04a/64"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "spine01",
+    "ifname": "swp4", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["10.127.0.6/31"], "ip6AddressList": ["fe80::5054:ff:fe05:3590/64"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "spine01",
+    "ifname": "swp5", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["10.127.0.10/31"], "ip6AddressList": ["fe80::5054:ff:fe5e:3323/64"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "spine01",
+    "ifname": "swp6", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["10.127.0.8/31"], "ip6AddressList": ["fe80::5054:ff:fe0e:9b7c/64"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "spine02",
+    "ifname": "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "mgmt", "ipAddressList": ["192.168.121.66/24"], "ip6AddressList": ["fe80::5054:ff:fede:a41f/64"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "spine02",
+    "ifname": "lo", "state": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": ["10.0.0.22/32"], "ip6AddressList": [], "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "spine02", "ifname": "mgmt", "state": "up",
+    "type": "vrf", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "spine02",
+    "ifname": "swp1", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["10.127.1.0/31"], "ip6AddressList": ["fe80::5054:ff:fef4:57f0/64"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "spine02",
+    "ifname": "swp2", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["10.127.1.2/31"], "ip6AddressList": ["fe80::5054:ff:fe6a:bb28/64"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "spine02",
+    "ifname": "swp3", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["10.127.1.4/31"], "ip6AddressList": ["fe80::5054:ff:fe4b:5549/64"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "spine02",
+    "ifname": "swp4", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["10.127.1.6/31"], "ip6AddressList": ["fe80::5054:ff:fe54:460f/64"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "spine02",
+    "ifname": "swp5", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["10.127.1.10/31"], "ip6AddressList": ["fe80::5054:ff:feda:7f72/64"],
+    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "spine02",
+    "ifname": "swp6", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["10.127.1.8/31"], "ip6AddressList": ["fe80::5054:ff:fed1:c3b0/64"],
+    "timestamp": 1586403475456}]'
+- command: interface show --columns=hostname --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: interface show
+  output: '[{"hostname": "edge01", "timestamp": 1586403475456, "namespace": "dual-bgp",
+    "ifname": "eth0"}, {"hostname": "edge01", "timestamp": 1586403475456, "namespace":
+    "dual-bgp", "ifname": "eth1.2"}, {"hostname": "edge01", "timestamp": 1586403475456,
+    "namespace": "dual-bgp", "ifname": "eth1.4"}, {"hostname": "edge01", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "eth1"}, {"hostname": "edge01",
+    "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "eth2.2"}, {"hostname":
+    "edge01", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "eth2.4"},
+    {"hostname": "edge01", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname":
+    "eth2"}, {"hostname": "edge01", "timestamp": 1586403475456, "namespace": "dual-bgp",
+    "ifname": "lo"}, {"hostname": "exit01", "timestamp": 1586403475456, "namespace":
+    "dual-bgp", "ifname": "eth0"}, {"hostname": "exit01", "timestamp": 1586403475456,
+    "namespace": "dual-bgp", "ifname": "internet-vrf"}, {"hostname": "exit01", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "lo"}, {"hostname": "exit01",
+    "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "mgmt"}, {"hostname":
+    "exit01", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "swp1"},
+    {"hostname": "exit01", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname":
+    "swp2"}, {"hostname": "exit01", "timestamp": 1586403475456, "namespace": "dual-bgp",
+    "ifname": "swp3"}, {"hostname": "exit01", "timestamp": 1586403475456, "namespace":
+    "dual-bgp", "ifname": "swp4"}, {"hostname": "exit01", "timestamp": 1586403475456,
+    "namespace": "dual-bgp", "ifname": "swp5.2"}, {"hostname": "exit01", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "swp5.4"}, {"hostname": "exit01",
+    "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "swp5"}, {"hostname":
+    "exit01", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "swp6"},
+    {"hostname": "exit02", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname":
+    "eth0"}, {"hostname": "exit02", "timestamp": 1586403475456, "namespace": "dual-bgp",
+    "ifname": "internet-vrf"}, {"hostname": "exit02", "timestamp": 1586403475456,
+    "namespace": "dual-bgp", "ifname": "lo"}, {"hostname": "exit02", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "mgmt"}, {"hostname": "exit02",
+    "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "swp1"}, {"hostname":
+    "exit02", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "swp2"},
+    {"hostname": "exit02", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname":
+    "swp3"}, {"hostname": "exit02", "timestamp": 1586403475456, "namespace": "dual-bgp",
+    "ifname": "swp4"}, {"hostname": "exit02", "timestamp": 1586403475456, "namespace":
+    "dual-bgp", "ifname": "swp5.2"}, {"hostname": "exit02", "timestamp": 1586403475456,
+    "namespace": "dual-bgp", "ifname": "swp5.4"}, {"hostname": "exit02", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "swp5"}, {"hostname": "exit02",
+    "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "swp6"}, {"hostname":
+    "internet", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "eth0"},
+    {"hostname": "internet", "timestamp": 1586403475456, "namespace": "dual-bgp",
+    "ifname": "lo"}, {"hostname": "internet", "timestamp": 1586403475456, "namespace":
+    "dual-bgp", "ifname": "swp1"}, {"hostname": "internet", "timestamp": 1586403475456,
+    "namespace": "dual-bgp", "ifname": "swp2"}, {"hostname": "leaf01", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "bond01"}, {"hostname": "leaf01",
+    "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "bond02"}, {"hostname":
+    "leaf01", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "bridge"},
+    {"hostname": "leaf01", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname":
+    "eth0"}, {"hostname": "leaf01", "timestamp": 1586403475456, "namespace": "dual-bgp",
+    "ifname": "lo"}, {"hostname": "leaf01", "timestamp": 1586403475456, "namespace":
+    "dual-bgp", "ifname": "mgmt"}, {"hostname": "leaf01", "timestamp": 1586403475456,
+    "namespace": "dual-bgp", "ifname": "peerlink.4094"}, {"hostname": "leaf01", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "peerlink"}, {"hostname": "leaf01",
+    "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "swp1"}, {"hostname":
+    "leaf01", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "swp2"},
+    {"hostname": "leaf01", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname":
+    "swp3"}, {"hostname": "leaf01", "timestamp": 1586403475456, "namespace": "dual-bgp",
+    "ifname": "swp4"}, {"hostname": "leaf01", "timestamp": 1586403475456, "namespace":
+    "dual-bgp", "ifname": "swp5"}, {"hostname": "leaf01", "timestamp": 1586403475456,
+    "namespace": "dual-bgp", "ifname": "swp6"}, {"hostname": "leaf01", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "vlan13"}, {"hostname": "leaf01",
+    "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "vlan24"}, {"hostname":
+    "leaf02", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "bond01"},
+    {"hostname": "leaf02", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname":
+    "bond02"}, {"hostname": "leaf02", "timestamp": 1586403475456, "namespace": "dual-bgp",
+    "ifname": "bridge"}, {"hostname": "leaf02", "timestamp": 1586403475456, "namespace":
+    "dual-bgp", "ifname": "eth0"}, {"hostname": "leaf02", "timestamp": 1586403475456,
+    "namespace": "dual-bgp", "ifname": "lo"}, {"hostname": "leaf02", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "mgmt"}, {"hostname": "leaf02",
+    "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "peerlink.4094"},
+    {"hostname": "leaf02", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname":
+    "peerlink"}, {"hostname": "leaf02", "timestamp": 1586403475456, "namespace": "dual-bgp",
+    "ifname": "swp1"}, {"hostname": "leaf02", "timestamp": 1586403475456, "namespace":
+    "dual-bgp", "ifname": "swp2"}, {"hostname": "leaf02", "timestamp": 1586403475456,
+    "namespace": "dual-bgp", "ifname": "swp3"}, {"hostname": "leaf02", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "swp4"}, {"hostname": "leaf02",
+    "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "swp5"}, {"hostname":
+    "leaf02", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "swp6"},
+    {"hostname": "leaf02", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname":
+    "vlan13"}, {"hostname": "leaf02", "timestamp": 1586403475456, "namespace": "dual-bgp",
+    "ifname": "vlan24"}, {"hostname": "leaf03", "timestamp": 1586403475456, "namespace":
+    "dual-bgp", "ifname": "bond01"}, {"hostname": "leaf03", "timestamp": 1586403475456,
+    "namespace": "dual-bgp", "ifname": "bond02"}, {"hostname": "leaf03", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "bridge"}, {"hostname": "leaf03",
+    "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "eth0"}, {"hostname":
+    "leaf03", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "lo"},
+    {"hostname": "leaf03", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname":
+    "mgmt"}, {"hostname": "leaf03", "timestamp": 1586403475456, "namespace": "dual-bgp",
+    "ifname": "peerlink.4094"}, {"hostname": "leaf03", "timestamp": 1586403475456,
+    "namespace": "dual-bgp", "ifname": "peerlink"}, {"hostname": "leaf03", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "swp1"}, {"hostname": "leaf03",
+    "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "swp2"}, {"hostname":
+    "leaf03", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "swp3"},
+    {"hostname": "leaf03", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname":
+    "swp4"}, {"hostname": "leaf03", "timestamp": 1586403475456, "namespace": "dual-bgp",
+    "ifname": "swp5"}, {"hostname": "leaf03", "timestamp": 1586403475456, "namespace":
+    "dual-bgp", "ifname": "swp6"}, {"hostname": "leaf03", "timestamp": 1586403475456,
+    "namespace": "dual-bgp", "ifname": "vlan13"}, {"hostname": "leaf03", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "vlan24"}, {"hostname": "leaf04",
+    "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "bond01"}, {"hostname":
+    "leaf04", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "bond02"},
+    {"hostname": "leaf04", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname":
+    "bridge"}, {"hostname": "leaf04", "timestamp": 1586403475456, "namespace": "dual-bgp",
+    "ifname": "eth0"}, {"hostname": "leaf04", "timestamp": 1586403475456, "namespace":
+    "dual-bgp", "ifname": "lo"}, {"hostname": "leaf04", "timestamp": 1586403475456,
+    "namespace": "dual-bgp", "ifname": "mgmt"}, {"hostname": "leaf04", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "peerlink.4094"}, {"hostname":
+    "leaf04", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "peerlink"},
+    {"hostname": "leaf04", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname":
+    "swp1"}, {"hostname": "leaf04", "timestamp": 1586403475456, "namespace": "dual-bgp",
+    "ifname": "swp2"}, {"hostname": "leaf04", "timestamp": 1586403475456, "namespace":
+    "dual-bgp", "ifname": "swp3"}, {"hostname": "leaf04", "timestamp": 1586403475456,
+    "namespace": "dual-bgp", "ifname": "swp4"}, {"hostname": "leaf04", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "swp5"}, {"hostname": "leaf04",
+    "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "swp6"}, {"hostname":
+    "leaf04", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "vlan13"},
+    {"hostname": "leaf04", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname":
+    "vlan24"}, {"hostname": "server101", "timestamp": 1586403475456, "namespace":
+    "dual-bgp", "ifname": "bond0"}, {"hostname": "server101", "timestamp": 1586403475456,
+    "namespace": "dual-bgp", "ifname": "eth0"}, {"hostname": "server101", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "eth1"}, {"hostname": "server101",
+    "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "eth2"}, {"hostname":
+    "server101", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "lo"},
+    {"hostname": "server102", "timestamp": 1586403475456, "namespace": "dual-bgp",
+    "ifname": "bond0"}, {"hostname": "server102", "timestamp": 1586403475456, "namespace":
+    "dual-bgp", "ifname": "eth0"}, {"hostname": "server102", "timestamp": 1586403475456,
+    "namespace": "dual-bgp", "ifname": "eth1"}, {"hostname": "server102", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "eth2"}, {"hostname": "server102",
+    "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "lo"}, {"hostname":
+    "server103", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "bond0"},
+    {"hostname": "server103", "timestamp": 1586403475456, "namespace": "dual-bgp",
+    "ifname": "eth0"}, {"hostname": "server103", "timestamp": 1586403475456, "namespace":
+    "dual-bgp", "ifname": "eth1"}, {"hostname": "server103", "timestamp": 1586403475456,
+    "namespace": "dual-bgp", "ifname": "eth2"}, {"hostname": "server103", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "lo"}, {"hostname": "server104",
+    "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "bond0"}, {"hostname":
+    "server104", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "eth0"},
+    {"hostname": "server104", "timestamp": 1586403475456, "namespace": "dual-bgp",
+    "ifname": "eth1"}, {"hostname": "server104", "timestamp": 1586403475456, "namespace":
+    "dual-bgp", "ifname": "eth2"}, {"hostname": "server104", "timestamp": 1586403475456,
+    "namespace": "dual-bgp", "ifname": "lo"}, {"hostname": "spine01", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "eth0"}, {"hostname": "spine01",
+    "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "lo"}, {"hostname":
+    "spine01", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "mgmt"},
+    {"hostname": "spine01", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname":
+    "swp1"}, {"hostname": "spine01", "timestamp": 1586403475456, "namespace": "dual-bgp",
+    "ifname": "swp2"}, {"hostname": "spine01", "timestamp": 1586403475456, "namespace":
+    "dual-bgp", "ifname": "swp3"}, {"hostname": "spine01", "timestamp": 1586403475456,
+    "namespace": "dual-bgp", "ifname": "swp4"}, {"hostname": "spine01", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "swp5"}, {"hostname": "spine01",
+    "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "swp6"}, {"hostname":
+    "spine02", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "eth0"},
+    {"hostname": "spine02", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname":
+    "lo"}, {"hostname": "spine02", "timestamp": 1586403475456, "namespace": "dual-bgp",
+    "ifname": "mgmt"}, {"hostname": "spine02", "timestamp": 1586403475456, "namespace":
+    "dual-bgp", "ifname": "swp1"}, {"hostname": "spine02", "timestamp": 1586403475456,
+    "namespace": "dual-bgp", "ifname": "swp2"}, {"hostname": "spine02", "timestamp":
+    1586403475456, "namespace": "dual-bgp", "ifname": "swp3"}, {"hostname": "spine02",
+    "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "swp4"}, {"hostname":
+    "spine02", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname": "swp5"},
+    {"hostname": "spine02", "timestamp": 1586403475456, "namespace": "dual-bgp", "ifname":
+    "swp6"}]'
+- command: interface summarize --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: interface summarize
+  output: '[{"dual-bgp": 14}, {"dual-bgp": 138}, {"dual-bgp": [4, 16, 9]}, {"dual-bgp":
+    7}, {"dual-bgp": false}, {"dual-bgp": {"1500": 114, "65536": 24}}, {"dual-bgp":
+    7}, {"dual-bgp": 71}, {"dual-bgp": 51}, {"dual-bgp": 1}, {"dual-bgp": 5}, {"dual-bgp":
+    {"up": 133, "unknown": 5}}, {"dual-bgp": [0, 0, 0]}]'
+- command: interface summarize --namespace=dual-evpn --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: interface summarize
+  output: '[]'
+- command: interface unique --columns=hostname --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: interface unique
+  output: '[{"hostname": "edge01", "count": 8}, {"hostname": "exit01", "count": 12},
+    {"hostname": "exit02", "count": 12}, {"hostname": "internet", "count": 4}, {"hostname":
+    "leaf01", "count": 16}, {"hostname": "leaf02", "count": 16}, {"hostname": "leaf03",
+    "count": 16}, {"hostname": "leaf04", "count": 16}, {"hostname": "server101", "count":
+    5}, {"hostname": "server102", "count": 5}, {"hostname": "server103", "count":
+    5}, {"hostname": "server104", "count": 5}, {"hostname": "spine01", "count": 9},
+    {"hostname": "spine02", "count": 9}]'
+- command: interface assert --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: interface assert
+  output: '[{"namespace": "dual-bgp", "hostname": "edge01", "ifname": "eth1", "peerHostname":
+    "exit01", "peerIfname": "swp5", "timestamp": 1586403475456, "mtu": 1500.0, "peerMtu":
+    1500, "assert": "pass"}, {"namespace": "dual-bgp", "hostname": "edge01", "ifname":
+    "eth2", "peerHostname": "exit02", "peerIfname": "swp5", "timestamp": 1586403475456,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "dual-bgp", "hostname":
+    "exit01", "ifname": "swp1", "peerHostname": "spine01", "peerIfname": "swp6", "timestamp":
+    1586403475456, "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace":
+    "dual-bgp", "hostname": "exit01", "ifname": "swp2", "peerHostname": "spine02",
+    "peerIfname": "swp6", "timestamp": 1586403475456, "mtu": 1500.0, "peerMtu": 1500,
+    "assert": "pass"}, {"namespace": "dual-bgp", "hostname": "exit01", "ifname": "swp3",
+    "peerHostname": "exit01", "peerIfname": "swp4", "timestamp": 1586403475456, "mtu":
+    1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "dual-bgp", "hostname":
+    "exit01", "ifname": "swp4", "peerHostname": "exit01", "peerIfname": "swp3", "timestamp":
+    1586403475456, "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace":
+    "dual-bgp", "hostname": "exit01", "ifname": "swp5", "peerHostname": "edge01",
+    "peerIfname": "eth1", "timestamp": 1586403475456, "mtu": 1500.0, "peerMtu": 1500,
+    "assert": "pass"}, {"namespace": "dual-bgp", "hostname": "exit01", "ifname": "swp6",
+    "peerHostname": "internet", "peerIfname": "swp1", "timestamp": 1586403475456,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "dual-bgp", "hostname":
+    "exit02", "ifname": "swp1", "peerHostname": "spine01", "peerIfname": "swp5", "timestamp":
+    1586403475456, "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace":
+    "dual-bgp", "hostname": "exit02", "ifname": "swp2", "peerHostname": "spine02",
+    "peerIfname": "swp5", "timestamp": 1586403475456, "mtu": 1500.0, "peerMtu": 1500,
+    "assert": "pass"}, {"namespace": "dual-bgp", "hostname": "exit02", "ifname": "swp3",
+    "peerHostname": "exit02", "peerIfname": "swp4", "timestamp": 1586403475456, "mtu":
+    1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "dual-bgp", "hostname":
+    "exit02", "ifname": "swp4", "peerHostname": "exit02", "peerIfname": "swp3", "timestamp":
+    1586403475456, "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace":
+    "dual-bgp", "hostname": "exit02", "ifname": "swp5", "peerHostname": "edge01",
+    "peerIfname": "eth2", "timestamp": 1586403475456, "mtu": 1500.0, "peerMtu": 1500,
+    "assert": "pass"}, {"namespace": "dual-bgp", "hostname": "exit02", "ifname": "swp6",
+    "peerHostname": "internet", "peerIfname": "swp2", "timestamp": 1586403475456,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "dual-bgp", "hostname":
+    "internet", "ifname": "swp1", "peerHostname": "exit01", "peerIfname": "swp6",
+    "timestamp": 1586403475456, "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"},
+    {"namespace": "dual-bgp", "hostname": "internet", "ifname": "swp2", "peerHostname":
+    "exit02", "peerIfname": "swp6", "timestamp": 1586403475456, "mtu": 1500.0, "peerMtu":
+    1500, "assert": "pass"}, {"namespace": "dual-bgp", "hostname": "leaf01", "ifname":
+    "swp1", "peerHostname": "spine01", "peerIfname": "swp1", "timestamp": 1586403475456,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "dual-bgp", "hostname":
+    "leaf01", "ifname": "swp2", "peerHostname": "spine02", "peerIfname": "swp1", "timestamp":
+    1586403475456, "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace":
+    "dual-bgp", "hostname": "leaf01", "ifname": "swp3", "peerHostname": "leaf02",
+    "peerIfname": "swp3", "timestamp": 1586403475456, "mtu": 1500.0, "peerMtu": 1500,
+    "assert": "pass"}, {"namespace": "dual-bgp", "hostname": "leaf01", "ifname": "swp4",
+    "peerHostname": "leaf02", "peerIfname": "swp4", "timestamp": 1586403475456, "mtu":
+    1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "dual-bgp", "hostname":
+    "leaf02", "ifname": "swp1", "peerHostname": "spine01", "peerIfname": "swp2", "timestamp":
+    1586403475456, "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace":
+    "dual-bgp", "hostname": "leaf02", "ifname": "swp2", "peerHostname": "spine02",
+    "peerIfname": "swp2", "timestamp": 1586403475456, "mtu": 1500.0, "peerMtu": 1500,
+    "assert": "pass"}, {"namespace": "dual-bgp", "hostname": "leaf02", "ifname": "swp3",
+    "peerHostname": "leaf01", "peerIfname": "swp3", "timestamp": 1586403475456, "mtu":
+    1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "dual-bgp", "hostname":
+    "leaf02", "ifname": "swp4", "peerHostname": "leaf01", "peerIfname": "swp4", "timestamp":
+    1586403475456, "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace":
+    "dual-bgp", "hostname": "leaf03", "ifname": "swp1", "peerHostname": "spine01",
+    "peerIfname": "swp3", "timestamp": 1586403475456, "mtu": 1500.0, "peerMtu": 1500,
+    "assert": "pass"}, {"namespace": "dual-bgp", "hostname": "leaf03", "ifname": "swp2",
+    "peerHostname": "spine02", "peerIfname": "swp3", "timestamp": 1586403475456, "mtu":
+    1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "dual-bgp", "hostname":
+    "leaf03", "ifname": "swp3", "peerHostname": "leaf04", "peerIfname": "swp3", "timestamp":
+    1586403475456, "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace":
+    "dual-bgp", "hostname": "leaf03", "ifname": "swp4", "peerHostname": "leaf04",
+    "peerIfname": "swp4", "timestamp": 1586403475456, "mtu": 1500.0, "peerMtu": 1500,
+    "assert": "pass"}, {"namespace": "dual-bgp", "hostname": "leaf04", "ifname": "swp1",
+    "peerHostname": "spine01", "peerIfname": "swp4", "timestamp": 1586403475456, "mtu":
+    1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "dual-bgp", "hostname":
+    "leaf04", "ifname": "swp2", "peerHostname": "spine02", "peerIfname": "swp4", "timestamp":
+    1586403475456, "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace":
+    "dual-bgp", "hostname": "leaf04", "ifname": "swp3", "peerHostname": "leaf03",
+    "peerIfname": "swp3", "timestamp": 1586403475456, "mtu": 1500.0, "peerMtu": 1500,
+    "assert": "pass"}, {"namespace": "dual-bgp", "hostname": "leaf04", "ifname": "swp4",
+    "peerHostname": "leaf03", "peerIfname": "swp4", "timestamp": 1586403475456, "mtu":
+    1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "dual-bgp", "hostname":
+    "spine01", "ifname": "swp1", "peerHostname": "leaf01", "peerIfname": "swp1", "timestamp":
+    1586403475456, "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace":
+    "dual-bgp", "hostname": "spine01", "ifname": "swp2", "peerHostname": "leaf02",
+    "peerIfname": "swp1", "timestamp": 1586403475456, "mtu": 1500.0, "peerMtu": 1500,
+    "assert": "pass"}, {"namespace": "dual-bgp", "hostname": "spine01", "ifname":
+    "swp3", "peerHostname": "leaf03", "peerIfname": "swp1", "timestamp": 1586403475456,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "dual-bgp", "hostname":
+    "spine01", "ifname": "swp4", "peerHostname": "leaf04", "peerIfname": "swp1", "timestamp":
+    1586403475456, "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace":
+    "dual-bgp", "hostname": "spine01", "ifname": "swp5", "peerHostname": "exit02",
+    "peerIfname": "swp1", "timestamp": 1586403475456, "mtu": 1500.0, "peerMtu": 1500,
+    "assert": "pass"}, {"namespace": "dual-bgp", "hostname": "spine01", "ifname":
+    "swp6", "peerHostname": "exit01", "peerIfname": "swp1", "timestamp": 1586403475456,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "dual-bgp", "hostname":
+    "spine02", "ifname": "swp1", "peerHostname": "leaf01", "peerIfname": "swp2", "timestamp":
+    1586403475456, "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace":
+    "dual-bgp", "hostname": "spine02", "ifname": "swp2", "peerHostname": "leaf02",
+    "peerIfname": "swp2", "timestamp": 1586403475456, "mtu": 1500.0, "peerMtu": 1500,
+    "assert": "pass"}, {"namespace": "dual-bgp", "hostname": "spine02", "ifname":
+    "swp3", "peerHostname": "leaf03", "peerIfname": "swp2", "timestamp": 1586403475456,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "dual-bgp", "hostname":
+    "spine02", "ifname": "swp4", "peerHostname": "leaf04", "peerIfname": "swp2", "timestamp":
+    1586403475456, "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace":
+    "dual-bgp", "hostname": "spine02", "ifname": "swp5", "peerHostname": "exit02",
+    "peerIfname": "swp2", "timestamp": 1586403475456, "mtu": 1500.0, "peerMtu": 1500,
+    "assert": "pass"}, {"namespace": "dual-bgp", "hostname": "spine02", "ifname":
+    "swp6", "peerHostname": "exit01", "peerIfname": "swp2", "timestamp": 1586403475456,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}]'
+- command: interface top --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: interface top
+  output: '[{"namespace": "dual-bgp", "hostname": "edge01", "ifname": "eth0", "state":
+    "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "numChanges": 0,
+    "ipAddressList": ["192.168.121.210/24"], "ip6AddressList": [], "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "edge01", "ifname": "eth1", "state": "up",
+    "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "numChanges": 0, "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1586403475456}, {"namespace": "dual-bgp",
+    "hostname": "edge01", "ifname": "eth2", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "numChanges": 0, "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "exit01",
+    "ifname": "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "mgmt", "numChanges": 0, "ipAddressList": ["192.168.121.242/24"], "ip6AddressList":
+    ["fe80::5054:ff:feb2:35f2/64"], "timestamp": 1586403475456}, {"namespace": "dual-bgp",
+    "hostname": "exit01", "ifname": "swp1", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "numChanges": 0, "ipAddressList": ["10.127.0.9/31"],
+    "ip6AddressList": ["fe80::5054:ff:fe94:edd5/64"], "timestamp": 1586403475456}]'

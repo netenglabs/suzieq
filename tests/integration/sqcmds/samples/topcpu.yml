@@ -1,0 +1,22 @@
+description: 'Testing verbs for topcpu: show summarize unique'
+tests:
+- command: topcpu show --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: topcpu show
+  output: '[]'
+- command: topcpu show --columns=hostname --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: topcpu show
+  output: '[]'
+- command: topcpu summarize --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: topcpu summarize
+  output: '[]'
+- command: topcpu summarize --namespace=dual-evpn --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: topcpu summarize
+  output: '[]'
+- command: topcpu unique --columns=hostname --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: topcpu unique
+  output: '[]'

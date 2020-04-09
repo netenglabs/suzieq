@@ -1,4 +1,3 @@
-
 import os
 import sys
 import yaml
@@ -18,6 +17,7 @@ from pandas import DataFrame
 from nubia import context
 
 from tests.conftest import commands, suzieq_cli_path
+
 # TODO
 # after time filtering if fixed, figure out more subtle time testing
 # test more than just show for filtering?
@@ -64,7 +64,7 @@ def test_commands(setup_nubia, command, verbs, args):
         _test_command(command, v, arg)
 
 
-def _test_command(cmd, verb, arg,  filter=None):
+def _test_command(cmd, verb, arg, filter=None):
     s = None
 
     s = execute_cmd(cmd, verb, arg, filter)
@@ -148,6 +148,7 @@ show_columns_commands[10] = pytest.param(
     marks=pytest.mark.xfail(reason='bug #65',
                             raises=KeyError))  # RouteCmd
 
+
 @pytest.mark.filter
 @pytest.mark.fast
 @pytest.mark.parametrize("cmd", show_columns_commands)
@@ -170,6 +171,8 @@ def _test_good_show_filter(cmd, filter):
 
 
 bad_hostname_commands = commands[:]
+
+
 @pytest.mark.filter
 @pytest.mark.parametrize("cmd", bad_hostname_commands)
 def test_bad_show_hostname_filter(setup_nubia, cmd):
@@ -180,6 +183,8 @@ def test_bad_show_hostname_filter(setup_nubia, cmd):
 bad_engine_commands = commands[:]
 bad_engine_commands.pop(4)  # EvpnVniCmd
 bad_engine_commands.pop(8)  # Ospfcmd
+
+
 # TODO
 # this doesn't do any filtering, so it fails the assert that length should be 0
 # when this is fixed then remove the xfail
@@ -192,6 +197,8 @@ def test_bad_show_engine_filter(setup_nubia, cmd):
 
 
 bad_start_time_commands = commands[:]
+
+
 # TODO
 
 # this is the placeholder of the nubia bug about parsing 'start-time'
@@ -208,6 +215,8 @@ def test_show_start_time_filter(setup_nubia, cmd):
 # so I must remove those from the stack
 bad_start_time_commands.pop(3)  # EvpnVniCmd
 bad_start_time_commands.pop(7)  # Ospfcmd
+
+
 @pytest.mark.filter
 @pytest.mark.parametrize("cmd", bad_start_time_commands)
 def test_bad_start_time_filter(setup_nubia, cmd):
@@ -236,6 +245,7 @@ def _test_bad_show_filter(cmd, filter):
 
 good_filters = [{'hostname': 'leaf01'}]
 
+
 # TODO?
 #  these only check good cases, I'm assuming the bad cases work the same
 #  as the rest of the filtering, and that is too messy to duplicate right now
@@ -252,6 +262,8 @@ def test_context_filtering(setup_nubia, cmd):
 
 
 context_namespace_commands = commands[:]
+
+
 @pytest.mark.filter
 @pytest.mark.parametrize('cmd', context_namespace_commands)
 def test_context_namespace_filtering(setup_nubia, cmd):
@@ -360,8 +372,11 @@ def _load_up_the_tests():
                                 reason=t['xfail']['reason'],
                                 raises=except_err)]
                         else:
-                            markers += [pytest.mark.xfail(
-                                reason=t['xfail']['reason'])]
+                            if 'reason' in t['xfail']:
+                                markers += [pytest.mark.xfail(
+                                    reason=t['xfail']['reason'])]
+                            else:
+                                markers += [pytest.mark.xfail()]
                     if markers:
                         tests += [pytest.param(t, marks=markers,
                                                id=t['command'])]
@@ -375,7 +390,6 @@ def _load_up_the_tests():
 @pytest.mark.sqcmds
 @pytest.mark.parametrize("testvar", _load_up_the_tests())
 def test_sqcmds(testvar, create_context_config):
-
     sqcmd_path = [sys.executable, suzieq_cli_path]
     tmpfname = None
 
@@ -417,12 +431,12 @@ def test_sqcmds(testvar, create_context_config):
 
         assert (type(expected_jout) == type(jout))
         if isinstance(jout, dict):
-            assert(Counter(expected_jout) == Counter(jout))
+            assert (Counter(expected_jout) == Counter(jout))
             return
         try:
             expected_setlist = set(tuple(sorted(d.items())) for d in jout)
             got_setlist = set(tuple(sorted(d.items())) for d in expected_jout)
-            assert(expected_setlist == got_setlist)
+            assert (expected_setlist == got_setlist)
         except TypeError:
             # This is for commands that return lists in their outputs.
             # This isn't robust, because it assumes that we get the output
@@ -430,7 +444,7 @@ def test_sqcmds(testvar, create_context_config):
             # are not sorted. If the outer sort is changed, this won't work
             expected = [sorted(d.items()) for d in expected_jout]
             got = [sorted(d.items()) for d in jout]
-            assert(expected == got)
+            assert (expected == got)
 
     elif error and 'xfail' in testvar and 'error' in testvar['xfail']:
         if jout.decode("utf-8") == testvar['xfail']['error']:
@@ -438,7 +452,11 @@ def test_sqcmds(testvar, create_context_config):
         else:
             assert True
     elif error and 'error' in testvar and 'error' in testvar['error']:
-        assert json.loads(error.decode("utf-8").strip()
-                          ) == json.loads(testvar['error']['error'])
+        try:
+            jerror = json.loads(error.decode('utf-8').strip())
+        except json.JSONDecodeError:
+            jerror = error.decode('utf-8').strip()
+        jterror = json.loads(testvar['error']['error'])
+        assert jerror == jterror
     else:
         raise Exception(f"either xfail or output requried {error}")

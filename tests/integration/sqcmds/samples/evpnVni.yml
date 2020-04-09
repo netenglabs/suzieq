@@ -1,0 +1,22 @@
+description: 'Testing verbs for evpnVni: show summarize unique'
+tests:
+- command: evpnVni show --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: evpnVni show
+  output: '[]'
+- command: evpnVni show --columns=hostname --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: evpnVni show
+  output: '[]'
+- command: evpnVni summarize --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: evpnVni summarize
+  output: '[]'
+- command: evpnVni summarize --namespace=dual-evpn --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: evpnVni summarize
+  output: '[]'
+- command: evpnVni unique --columns=hostname --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: evpnVni unique
+  output: '[]'
