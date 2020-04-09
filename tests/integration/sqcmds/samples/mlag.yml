@@ -1,0 +1,45 @@
+description: 'Testing verbs for mlag: show summarize unique'
+tests:
+- command: mlag show --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: mlag show
+  output: '[{"namespace": "dual-bgp", "hostname": "leaf01", "systemId": "44:39:39:ff:40:94",
+    "state": "active", "peerAddress": "169.254.1.2", "role": "primary", "peerLink":
+    "peerlink.4094", "mlagDualPortsCnt": 2, "mlagSinglePortsCnt": 0, "mlagErrorPortsCnt":
+    0, "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf02",
+    "systemId": "44:39:39:ff:40:94", "state": "active", "peerAddress": "169.254.1.1",
+    "role": "secondary", "peerLink": "peerlink.4094", "mlagDualPortsCnt": 2, "mlagSinglePortsCnt":
+    0, "mlagErrorPortsCnt": 0, "timestamp": 1586403475456}, {"namespace": "dual-bgp",
+    "hostname": "leaf03", "systemId": "44:39:39:ff:40:95", "state": "active", "peerAddress":
+    "169.254.1.2", "role": "primary", "peerLink": "peerlink.4094", "mlagDualPortsCnt":
+    2, "mlagSinglePortsCnt": 0, "mlagErrorPortsCnt": 0, "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "leaf04", "systemId": "44:39:39:ff:40:95",
+    "state": "active", "peerAddress": "169.254.1.1", "role": "secondary", "peerLink":
+    "peerlink.4094", "mlagDualPortsCnt": 2, "mlagSinglePortsCnt": 0, "mlagErrorPortsCnt":
+    0, "timestamp": 1586403475456}]'
+- command: mlag show --columns=hostname --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: mlag show
+  output: '[{"hostname": "leaf01", "timestamp": 1586403475456, "namespace": "dual-bgp"},
+    {"hostname": "leaf02", "timestamp": 1586403475456, "namespace": "dual-bgp"}, {"hostname":
+    "leaf03", "timestamp": 1586403475456, "namespace": "dual-bgp"}, {"hostname": "leaf04",
+    "timestamp": 1586403475456, "namespace": "dual-bgp"}]'
+- command: mlag summarize --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: mlag summarize
+  output: '[{"dual-bgp": {"false": 4}}, {"dual-bgp": 4}, {"dual-bgp": {"-": 4}}, {"dual-bgp":
+    {"NA": 4}}, {"dual-bgp": {"2": 4}}, {"dual-bgp": {"0": 4}}, {"dual-bgp": {"0":
+    4}}, {"dual-bgp": {"169.254.1.2": 2, "169.254.1.1": 2}}, {"dual-bgp": {"peerlink.4094":
+    4}}, {"dual-bgp": {"NA": 4}}, {"dual-bgp": 4}, {"dual-bgp": {"secondary": 2, "primary":
+    2}}, {"dual-bgp": {"-": 4}}, {"dual-bgp": {"secondary": 2, "primary": 2}}, {"dual-bgp":
+    4}, {"dual-bgp": {"active": 4}}, {"dual-bgp": {"44:39:39:ff:40:95": 2, "44:39:39:ff:40:94":
+    2}}, {"dual-bgp": 0}]'
+- command: mlag summarize --namespace=dual-evpn --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: mlag summarize
+  output: '[]'
+- command: mlag unique --columns=hostname --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: mlag unique
+  output: '[{"hostname": "leaf01", "count": 1}, {"hostname": "leaf02", "count": 1},
+    {"hostname": "leaf03", "count": 1}, {"hostname": "leaf04", "count": 1}]'

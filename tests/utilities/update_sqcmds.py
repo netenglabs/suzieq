@@ -38,17 +38,21 @@ def run_cmd(cmd_path, testvar):
 
     jout = []
     jerror = []
+    xfail = False
     if output:
         try:
             jout = json.loads(output.decode('utf-8').strip())
         except json.JSONDecodeError:
-            jout = output
+            jout = output.decode('utf-8').strip()
     if error:
         try:
             jerror = json.loads(error.decode('utf-8').strip())
         except json.JSONDecodeError:
-            jerror = str(error)
-    return jout, jerror
+            # most likely this was an uncaught exception, so it's formatting is
+            #  not sufficient for json
+            jerror = error.decode('utf-8').strip()
+            xfail = True
+    return jout, jerror, xfail
 
 
 if __name__ == '__main__':
@@ -76,17 +80,25 @@ if __name__ == '__main__':
         if result not in test or test[result] is None or userargs.overwrite:
             changes += 1
 
-            output, error = run_cmd(sqcmd, test)
+        #TODO
+        # if it's an exception, I want it to be an xfail
+
+            reason = None
+            output, error, xfail = run_cmd(sqcmd, test)
             if not error and result != 'xfail':
                 test[result] = json.dumps(output)
             elif result == 'xfail':
                 test[result]['error'] = json.dumps(output)
             else:
-                if result == 'output':
-                    result = 'error'
+                result = 'error'
+                if xfail:
+                    result = 'xfail'
+                    reason = 'uncaught exception'
                 if result not in test:
                     test[result] = {}
                 test[result]['error'] = json.dumps(error)
+                if reason:
+                    test[result]['reason'] = reason
                 if 'output' in test:
                     del test['output']
     if changes:

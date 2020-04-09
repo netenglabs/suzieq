@@ -1,0 +1,65 @@
+description: 'Testing verbs for vlan: show summarize unique'
+tests:
+- command: vlan show --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: vlan show
+  output: '[{"namespace": "dual-bgp", "hostname": "leaf01", "ifname": "bond01", "vlan":
+    [13], "pvid": 13, "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname":
+    "leaf01", "ifname": "bond02", "vlan": [24], "pvid": 24, "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "leaf01", "ifname": "bridge", "vlan": [13,
+    24], "pvid": 0, "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname":
+    "leaf01", "ifname": "peerlink", "vlan": [1, 13, 24], "pvid": 1, "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "leaf02", "ifname": "bond01", "vlan": [13],
+    "pvid": 13, "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname":
+    "leaf02", "ifname": "bond02", "vlan": [24], "pvid": 24, "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "leaf02", "ifname": "bridge", "vlan": [13,
+    24], "pvid": 0, "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname":
+    "leaf02", "ifname": "peerlink", "vlan": [1, 13, 24], "pvid": 1, "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "leaf03", "ifname": "bond01", "vlan": [13],
+    "pvid": 13, "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname":
+    "leaf03", "ifname": "bond02", "vlan": [24], "pvid": 24, "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "leaf03", "ifname": "bridge", "vlan": [13,
+    24], "pvid": 0, "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname":
+    "leaf03", "ifname": "peerlink", "vlan": [1, 13, 24], "pvid": 1, "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "leaf04", "ifname": "bond01", "vlan": [13],
+    "pvid": 13, "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname":
+    "leaf04", "ifname": "bond02", "vlan": [24], "pvid": 24, "timestamp": 1586403475456},
+    {"namespace": "dual-bgp", "hostname": "leaf04", "ifname": "bridge", "vlan": [13,
+    24], "pvid": 0, "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname":
+    "leaf04", "ifname": "peerlink", "vlan": [1, 13, 24], "pvid": 1, "timestamp": 1586403475456}]'
+- command: vlan show --columns=hostname --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: vlan show
+  output: '[{"hostname": "leaf01", "timestamp": 1586403475456, "ifname": "bond01",
+    "namespace": "dual-bgp"}, {"hostname": "leaf01", "timestamp": 1586403475456, "ifname":
+    "bond02", "namespace": "dual-bgp"}, {"hostname": "leaf01", "timestamp": 1586403475456,
+    "ifname": "bridge", "namespace": "dual-bgp"}, {"hostname": "leaf01", "timestamp":
+    1586403475456, "ifname": "peerlink", "namespace": "dual-bgp"}, {"hostname": "leaf02",
+    "timestamp": 1586403475456, "ifname": "bond01", "namespace": "dual-bgp"}, {"hostname":
+    "leaf02", "timestamp": 1586403475456, "ifname": "bond02", "namespace": "dual-bgp"},
+    {"hostname": "leaf02", "timestamp": 1586403475456, "ifname": "bridge", "namespace":
+    "dual-bgp"}, {"hostname": "leaf02", "timestamp": 1586403475456, "ifname": "peerlink",
+    "namespace": "dual-bgp"}, {"hostname": "leaf03", "timestamp": 1586403475456, "ifname":
+    "bond01", "namespace": "dual-bgp"}, {"hostname": "leaf03", "timestamp": 1586403475456,
+    "ifname": "bond02", "namespace": "dual-bgp"}, {"hostname": "leaf03", "timestamp":
+    1586403475456, "ifname": "bridge", "namespace": "dual-bgp"}, {"hostname": "leaf03",
+    "timestamp": 1586403475456, "ifname": "peerlink", "namespace": "dual-bgp"}, {"hostname":
+    "leaf04", "timestamp": 1586403475456, "ifname": "bond01", "namespace": "dual-bgp"},
+    {"hostname": "leaf04", "timestamp": 1586403475456, "ifname": "bond02", "namespace":
+    "dual-bgp"}, {"hostname": "leaf04", "timestamp": 1586403475456, "ifname": "bridge",
+    "namespace": "dual-bgp"}, {"hostname": "leaf04", "timestamp": 1586403475456, "ifname":
+    "peerlink", "namespace": "dual-bgp"}]'
+- command: vlan summarize --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: vlan summarize
+  output: '[{"dual-bgp": 4}, {"dual-bgp": 16}, {"dual-bgp": {"13": 12, "24": 12, "1":
+    4}}]'
+- command: vlan summarize --namespace=dual-evpn --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: vlan summarize
+  output: '[]'
+- command: vlan unique --columns=hostname --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: vlan unique
+  output: '[{"hostname": "leaf01", "count": 4}, {"hostname": "leaf02", "count": 4},
+    {"hostname": "leaf03", "count": 4}, {"hostname": "leaf04", "count": 4}]'
