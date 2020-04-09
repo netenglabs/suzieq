@@ -40,5 +40,12 @@ class RoutesService(Service):
                     entry['ipvers'] = 4
 
                 entry['inHardware'] = True  # Till the offload flag is here
+        else:
+            # Fix IP version for all entries
+            for entry in processed_data:
+                if ':' in entry['prefix']:
+                    entry['ipvers'] = 6
+                else:
+                    entry['ipvers'] = 4
 
         return super().clean_data(processed_data, raw_data)
