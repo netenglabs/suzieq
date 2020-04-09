@@ -1,10 +1,13 @@
 import typing
+import time
 from collections import OrderedDict
+from itertools import repeat
 
 import numpy as np
 import pandas as pd
 
 from suzieq.sqobjects import interfaces, lldp, routes, arpnd, macs, basicobj
+from suzieq.exceptions import NoLLdpError, EmptyDataframeError, PathLoopError
 
 
 # TODO: Handle EVPN
@@ -36,57 +39,202 @@ class PathObj(basicobj.SqObject):
         self._sort_fields = ["namespace", "hostname", "pathid"]
         self._cat_fields = []
 
-    def _get_fhr(self, namespace: str, ipaddr: str, if_df):
-        """Identify the first hop router to a given IP address"""
+    def _init_dfs(self, namespace, source, dest):
+        """Initialize the dataframes used in this path hunt"""
 
-        arp_df = arpnd.ArpndObj().get(namespace=namespace,
-                                      ipAddress=ipaddr)
-        if arp_df.empty:
-            raise AttributeError(f"Cannot obtain IP/LLDP neighbor info for address {ipaddr}")
+        self._if_df = interfaces.IfObj().get(namespace=namespace)
+        if self._if_df.empty:
+            raise EmptyDataframeError(f"No interface found for {namespace}")
 
-        macaddr = arp_df.iloc[0]["macaddr"]  # same macaddr across entries
-        oif = arp_df.iloc[0]["oif"]
-        tmphost = arp_df.iloc[0]["hostname"]  # TODO: server MLAG bond
+        self._lldp_df = lldp.LldpObj().get(
+            namespace=namespace, columns=self.columns)
+        if self._lldp_df.empty:
+            raise NoLLdpError(f"No LLDP information found for {namespace}")
 
+        self._rdf = routes.RoutesObj().lpm(namespace=namespace, address=dest)
+        if self._rdf.empty:
+            raise EmptyDataframeError("No Routes information found for {}".
+                                      format(dest))
+
+        # We ignore the lack of ARPND for now
+        self._arpnd_df = arpnd.ArpndObj().get(namespace=namespace)
+
+        self._macsobj = macs.MacsObj(namespace=namespace)
+
+        self._src_df = self._if_df[self._if_df.ipAddressList.astype(str)
+                                   .str.contains(source + "/")]
+        if self._src_df.empty:
+            raise AttributeError(f"Invalid src {source}")
+
+        self._dest_df = self._if_df[self._if_df.ipAddressList.astype(str)
+                                    .str.contains(dest + "/")]
+        if self._dest_df.empty:
+            raise AttributeError(f"Invalid dest {dest}")
+
+        self.dest_host = self._dest_df["hostname"].unique()[0]
+        self.src_host = self._src_df["hostname"].unique()[0]
+
+        # Start with the source host and find its route to the destination
+        if self._rdf[self._rdf["hostname"] == self.src_host].empty:
+            raise EmptyDataframeError(f"No routes found for {self.src_host}")
+
+    def _get_vrf(self, hostname, ifname) -> str:
+        return (self._if_df[(self._if_df["hostname"] == hostname) &
+                            (self._if_df["ifname"] == ifname)]["master"]
+                .to_string(index=False)
+                .strip())
+
+    def _is_mtu_match(self, host, iface, peer, peerif) -> bool:
+        return (
+            self._if_df[(self._if_df["hostname"] == peer) &
+                        (self._if_df["ifname"] == peerif)].iloc[-1].mtu
+            ==
+            self._if_df[(self._if_df["hostname"] == host) &
+                        (self._if_df["ifname"] == iface)].iloc[-1].mtu
+        )
+
+    def _get_if_vlan(self, host: str, ifname: str) -> int:
+        oif_df = self._if_df[(self._if_df["hostname"] == host) &
+                             (self._if_df["ifname"] == ifname)]
+
+        if oif_df.empty:
+            return []
+
+        return oif_df.iloc[0]["vlan"]
+
+    def _get_l2_nexthop(self, host: str, dest: str) -> list:
+        """Get the bridged/tunnel nexthops"""
+
+        if self._arpnd_df.empty:
+            return []
+
+        rslt = self._arpnd_df[(self._arpnd_df['hostname'] == host) &
+                              (self._arpnd_df['ipAddress'] == dest)]
+        # the end of knowledge
+        if rslt.empty:
+            return []
+
+        macaddr = rslt.iloc[0]["macaddr"]
+        oif = self._arp_df.iloc[0]["oif"]
         # This is to handle the VRR interface on Cumulus Linux machines
         if oif.endswith("-v0"):
             oif = oif.split("-v0")[0]
 
-        oif_df = if_df[(if_df["hostname"] == tmphost) &
-                       (if_df["ifname"] == oif)]
-
-        if oif_df.empty:
-            raise AttributeError(f"Cannot obtain IP/LLDP neighbor info for address {ipaddr}")
-
-        vlan = oif_df.iloc[0]["vlan"]
+        vlan = self._get_if_vlan(host, oif)
 
         if macaddr:
-            mac_df = macs.MacsObj().get(
-                namespace=namespace, macaddr=macaddr, vlan=vlan
-            )
-            if not mac_df.empty:
-                mac_df = mac_df[mac_df["remoteVtepIp"] == ""]
+            mac_df = self._macsobj.get(
+                hostname=host, macaddr=macaddr, vlan=vlan)
 
             if mac_df.empty:
-                raise AttributeError(
-                    "Cannot obtain IP/LLDP neighbor info for "
-                    "address {}".format(ipaddr)
+                return []
+
+            overlay = mac_df.iloc[0].remoteVtepIp or False
+            return ([(mac_df.iloc[0].remoteVtepIp, mac_df.iloc[0].oif,
+                      overlay)])
+        return []
+
+    def _get_nexthops(self, host: str, vrf: str, dest: str) -> list:
+        """Get nexthops (oif + IP + overlay) or just oif for given host/vrf.
+
+        The overlay is a bit indicating we're getting into overlay or not.
+        """
+
+        rslt = self._rdf.query('hostname == "{}" and vrf == "{}"'
+                               .format(host, vrf))
+
+        if not rslt.empty:
+            return zip(rslt.nexthopIps.iloc[0].tolist(),
+                       rslt.oifs.iloc[0].tolist(),
+                       repeat(False))
+
+        # We've either reached the end of routing or the end of knowledge
+        # Look for L2 nexthop
+        return self._get_l2_nexthop(host, dest)
+
+    def _get_nh_with_peer(self, host: str, vrf: str, dest: str) -> list:
+        """Get the nexthops & peer node for each nexthop for a given host/vrf
+        This uses the cached route lpm DF to get the nexthops. It
+        also handles vlan subinterfaces, MLAG and plain bonds to get the
+        valid nexthop peers.
+
+        :param host: hostname to query in lpm DF for nexthop
+        :type host: str
+
+        :param vrf: VRF to qualify lpm DF for nexthop
+        :type vrf: str
+
+        :param dest: Destination IP we're searching forever, needed for arp/nd
+        :type dest: str
+
+        :rtype: list
+        :return:
+        list of tuples where each tuple is (oif, peerhost, peerif, overlay)
+        """
+
+        nexthops = []
+
+        # TODO: Can we have ECMP nexthops, one with NH IP and one without?
+        nexthop_list = self._get_nexthops(host, vrf, dest)
+
+        # Convert each OIF into its actual physical list
+        for nhip, iface, overlay in nexthop_list:
+            vlan = 0
+            # Remove VLAN subinterfaces
+            if "." in iface:
+                raw_iface, vlan = iface.split(".")
+            else:
+                raw_iface = iface
+
+            # Replace bonds with their individual ports
+            slaveoifs = self._if_df[
+                (self._if_df["hostname"] == host)
+                & (self._if_df["master"] == raw_iface[0])
+            ].ifname.tolist()
+
+            if not slaveoifs:
+                slaveoifs = [raw_iface]
+
+            peer_host = None
+            for slave in slaveoifs:
+                df = self._lldp_df[(self._lldp_df["hostname"] == host) &
+                                   (self._lldp_df["ifname"] == slave)]
+
+                if df.empty:
+                    continue
+
+                this_peerh = df["peerHostname"].to_string(index=False).strip()
+                this_peerif = df["peerIfname"].to_string(index=False).strip()
+
+                peer_if_master = (
+                    self._if_df[(self._if_df["hostname"] == this_peerh) &
+                                (self._if_df["ifname"] == this_peerif)]
+                    ["master"].to_string(index=False).strip()
                 )
-            vrf = oif_df['master'].iloc[-1].strip()
-            if not vrf or (vrf == "bridge"):
-                vrf = 'default'
-            return OrderedDict(
-                {
-                    key: {"iif": value,
-                          "mtu": oif_df['mtu'].iloc[-1],
-                          "overlay": False,
-                          'vrf': vrf}
-                    for key, value in zip(
-                        mac_df["hostname"].tolist(), mac_df["oif"].tolist()
-                        )
-                }
-            )
-        return OrderedDict({})
+                if peer_if_master:
+                    this_peerif = peer_if_master
+
+                if peer_host != this_peerh:
+                    # MLAG case, add peer for each of 2 slave interfaces
+                    if vlan:
+                        this_peerif += ".{}".format(vlan)
+                        slave = f"{slave}.{vlan}"
+                    nexthops.append((slave, this_peerh, this_peerif, overlay))
+                    peer_host = this_peerh
+
+            if not peer_host and (nhip and nhip != '169.254.0.1'):
+                # We found not a single nbr via LLDP. Try another approach
+                df = self._if_df.loc[self._if_df.ipAddressList.astype(str)
+                                     .str.contains(nhip + "/")]
+                if df.empty:
+                    continue
+
+                df.apply(lambda x: nexthops.append((iface, x['hostname'],
+                                                    x['ifname'],  overlay))
+                         if (x['namespace'] in self.namespace) else None,
+                         args=nexthops, axis=1)
+
+        return nexthops
 
     def get(self, **kwargs) -> pd.DataFrame:
         """return a pandas dataframe with the paths between src and dest
@@ -100,68 +248,45 @@ class PathObj(basicobj.SqObject):
                 "Specify an analysis engine using set engine " "command"
             )
 
-        namespace = kwargs.get("namespace", self.ctxt.namespace)
-        source = kwargs.get("source", None)
+        namespace = kwargs.get("namespace", self.ctxt.namespace)[0]
+        src = kwargs.get("source", None)
         dest = kwargs.get("dest", None)
         dvrf = kwargs.get("vrf", "default")
         if not dvrf:
             dvrf = 'default'
 
-        if not source or not dest:
+        if not src or not dest:
             raise AttributeError("Must specify trace source and dest")
 
         if not namespace:
             raise AttributeError("Must specify namespace to run the trace in")
 
-        if_df = interfaces.IfObj().get(namespace=namespace)
-        if if_df.empty:
-            if namespace not in if_df['namespace'].unique():
-                raise AttributeError("Invalid namespace")
-            return pd.DataFrame()
-        src_df = if_df[if_df.ipAddressList.astype(str)
-                       .str.contains(source + "/")]
-        if src_df.empty:
-            raise AttributeError(f"Invalid src {source}")
-        dest_df = if_df[if_df.ipAddressList.astype(str)
-                        .str.contains(dest + "/")]
-        if dest_df.empty:
-            raise AttributeError(f"Invalid dest {dest}")
+        # All exceptions in the initial data gathering will happen in this init
+        # After this, at least we know we have the data to work on
+        self._init_dfs(namespace, src, dest)
 
-        dest_host = dest_df["hostname"].unique()[0]
-        src_host = src_df["hostname"].unique()[0]
-        lldp_df = lldp.LldpObj().get(namespace=namespace)
-        rdf = routes.RoutesObj().lpm(namespace=namespace, address=dest)
-
-        # for a source node without lldp, get next downstream node with lldp
-        if lldp_df[lldp_df["hostname"] == src_host].empty:
-            hosts_iifs = self._get_fhr(namespace, source, if_df)
-        else:
-            hosts_iifs = OrderedDict(
-                {
-                    src_host: {
-                        "iif": src_df["ifname"].unique()[0],
-                        "mtu": src_df["mtu"].unique()[0],
-                        "overlay": False,
-                        "timestamp": src_df["timestamp"].max(),
-                    }
+        hosts_iifs = OrderedDict(
+            {
+                self.src_host: {
+                    "iif": self._src_df["ifname"].unique()[0],
+                    "mtu": self._src_df["mtu"].unique()[0],
+                    "overlay": False,
+                    "timestamp": self._src_df["timestamp"].max(),
                 }
-            )
+            }
+        )
 
-        # for a dest node without lldp, get previous upstream node with lldp
-        if lldp_df[lldp_df["hostname"] == dest_host].empty:
-            dest_host_iifs = self._get_fhr(namespace, dest, if_df)
-        else:
-            dest_host_iifs = OrderedDict(
-                {
-                    dest_host: {
-                        "iif": dest_df["ifname"].unique()[0],
-                        "vrf": dest_df["master"].unique()[0] or "default",
-                        "mtu": dest_df["mtu"].unique()[0],
-                        "overlay": False,
-                        "timestamp": dest_df["timestamp"].max(),
-                    }
+        dest_host_iifs = OrderedDict(
+            {
+                self.dest_host: {
+                    "iif": self._dest_df["ifname"].unique()[0],
+                    "vrf": self._dest_df["master"].unique()[0] or "default",
+                    "mtu": self._dest_df["mtu"].unique()[0],
+                    "overlay": False,
+                    "timestamp": self._dest_df["timestamp"].max(),
                 }
-            )
+            }
+        )
 
         paths = [[hosts_iifs]]
         visited_hosts = set()
@@ -174,7 +299,7 @@ class PathObj(basicobj.SqObject):
         # list of hostname and incoming interface. loops are detected by
         # ensuring that no host is visited twice in the same VRF. The VRF
         # qualification is required to ensure packets coming back from a
-        # firewall or load balancer are tagged as duplicates.
+        # firewall or load balancer are not tagged as duplicates.
 
         while hosts_iifs:
             nexthosts_iifs = OrderedDict()
@@ -185,13 +310,8 @@ class PathObj(basicobj.SqObject):
                 iif = hosts_iifs[host]["iif"]
                 ivrf = None
                 if iif:
-                    ivrf = (
-                        if_df[(if_df["hostname"] == host) &
-                              (if_df["ifname"] == iif)]["master"]
-                            .to_string(index=False)
-                            .strip()
-                    )
-                # Cumulus hack to avoid markind bridged bond interfaces as vrf
+                    ivrf = self._get_vrf(host, iif)
+
                 if not ivrf or ivrf == "bridge":
                     ivrf = dvrf
 
@@ -200,93 +320,33 @@ class PathObj(basicobj.SqObject):
 
                 if skey in visited_hosts:
                     # This is a loop
-                    raise AttributeError("Loop detected on node {}"
-                                         .format(host))
+                    raise PathLoopError(f"Loop detected on node {host}")
+
                 hosts_this_round.add(skey)
 
+                # We've reached the destination, so stop this loop
                 if host in dest_host_iifs:
                     continue
-                rslt = rdf.query('hostname == "{}" and vrf == "{}"'
-                                 .format(host, ivrf))
-                if rslt.empty:
-                    continue
-                oifs = rslt.oifs.iloc[0].tolist()
 
-                newhosts_iifs = {}
-                for iface in oifs:
-                    vlan = 0
-                    # Remove VLAN subinterfaces
-                    if "." in iface:
-                        raw_iface, vlan = iface.split(".")
-                    else:
-                        raw_iface = iface
-
-                    raw_iface = [raw_iface]
-                    # Replace bonds with their individual ports
-                    slaveoifs = if_df[
-                        (if_df["hostname"] == host)
-                        & (if_df["master"] == raw_iface[0])
-                        ].ifname.tolist()
-
-                    if slaveoifs:
-                        raw_iface = slaveoifs
-
-                    # We need only one of the interfaces (multiple entries
-                    # here are only in case of a bond
-                    # TODO: This will not be true with MLAG
-                    df = lldp_df[
-                        (lldp_df["hostname"] == host)
-                        & (lldp_df["ifname"] == raw_iface[0])
-                        ]
-
-                    if df.empty:
-                        continue
-
-                    peer_host = df["peerHostname"].to_string(index=False).strip()
-                    peer_if = df["peerIfname"].to_string(index=False).strip()
-
-                    if slaveoifs:
-                        peer_if_master = (
-                            if_df[
-                                (if_df["hostname"] == peer_host)
-                                & (if_df["ifname"] == peer_if)
-                                ]["master"]
-                                .to_string(index=False)
-                                .strip()
-                        )
-                        if peer_if_master:
-                            peer_if = peer_if_master
-
-                    if vlan:
-                        peer_if += ".{}".format(vlan)
-
-                    mtu_match = (
-                            if_df[
-                                (if_df["hostname"] == peer_host)
-                                & (if_df["ifname"] == peer_if)
-                                ]
-                            .iloc[-1]
-                            .mtu
-                            == if_df[
-                                (if_df["hostname"] == host)
-                                & (if_df["ifname"] == iface)
-                                ]
-                            .iloc[-1]
-                            .mtu
-                    )
+                newhosts_iifs = {}  # NHs from this NH to add to the next round
+                rslt = self._rdf.query('hostname == "{}" and vrf == "{}"'
+                                       .format(host, ivrf))
+                if not rslt.empty:
+                    timestamp = str(rslt["timestamp"].max())
+                for nexthop in self._get_nh_with_peer(host, ivrf, dest):
+                    iface, peer_host, peer_if, overlay = nexthop
+                    mtu_match = self._is_mtu_match(host, iface, peer_host,
+                                                   peer_if)
 
                     newhosts_iifs[peer_host] = {
                         "iif": peer_if,
                         "vrf": ivrf,
-                        "overlay": False,
-                        "mtu": if_df[
-                            (if_df["hostname"] == peer_host)
-                            & (if_df["ifname"] == peer_if)
-                            ]
-                            .iloc[-1]
-                            .mtu,
-                        "mtu_match": mtu_match,
-                        "timestamp": rslt.timestamp.iloc[0]
+                        "overlay": overlay,
+                        "mtu": self._if_df[
+                            (self._if_df["hostname"] == peer_host) &
+                            (self._if_df["ifname"] == peer_if)].iloc[-1].mtu,
+                        "mtuMatch": mtu_match,
+                        "timestamp": timestamp,
                     }
 
                 if not newhosts_iifs:
@@ -329,10 +389,42 @@ class PathObj(basicobj.SqObject):
                         "iif": ele[item]["iif"],
                         "vrf": ele[item]["vrf"],
                         "overlay": ele[item]["overlay"],
-                        "mtu_match": ele[item].get("mtu_match", np.nan),
+                        "mtuMatch": ele[item].get("mtu_match", np.nan),
                         "mtu": ele[item].get("mtu", 0),
                         "timestamp": ele[item].get("timestamp", np.nan)
                     }
                 )
         paths_df = pd.DataFrame(df_plist)
         return paths_df
+
+    def summarize(self, **kwargs):
+        """return a pandas dataframe summarizing the path info between src/dest
+        :param kwargs:
+        :return:
+        :rtype: pd.DataFrame
+        """
+
+        path_df = self.get(**kwargs)
+
+        if path_df.empty:
+            return pd.DataFrame()
+
+        namespace = self.namespace[0]  # Its stored as a list
+        ns = {}
+        ns[namespace] = {}
+
+        ns[namespace]['totalPaths'] = path_df['pathid'].max()
+        ns[namespace]['maxPathLength'] = path_df.groupby(by=['pathid'])[
+            'stageid'].max().max()
+        ns[namespace]['avgPathLength'] = path_df.groupby(by=['pathid'])[
+            'stageid'].max().mean()
+        ns[namespace]['uniqueHosts'] = path_df['hostname'].nunique()
+        ns[namespace]['mtuMismatch'] = not all(path_df['mtuMatch'])
+        ns[namespace]['usesOverlay'] = any(path_df['overlay'])
+        ns[namespace]['pathMtu'] = path_df.query('iif != "lo"')['mtu'].min()
+
+        summary_fields = ['totalPaths', 'maxPathLength', 'avgPathLength',
+                          'uniqueHosts', 'pathMtu', 'usesOverlay',
+                          'mtuMismatch']
+        return pd.DataFrame(ns).reindex(summary_fields, axis=0) \
+                               .convert_dtypes()
