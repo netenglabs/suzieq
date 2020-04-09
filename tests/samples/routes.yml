@@ -334,6 +334,53 @@ input:
           "routingDisabled": false,
           "allRoutesProgrammedHardware": true,
           "defaultRouteState": "reachable"
-        }
+        },
+        "internet-vrf": {                                                                                
+            "routes": {                                                                                  
+                "169.254.254.8/30": {                                                                    
+                    "kernelProgrammed": true,       
+                    "directlyConnected": true,
+                    "routeAction": "forward",
+                    "routeLeaked": false,
+                    "vias": [
+                        {
+                            "interface": "Ethernet5.4"
+                        }
+                    ],
+                    "hardwareProgrammed": true,
+                    "routeType": "connected"
+                },
+                "169.254.127.0/31": {
+                    "kernelProgrammed": true,
+                    "directlyConnected": true,
+                    "routeAction": "forward",
+                    "routeLeaked": false,
+                    "vias": [
+                        {
+                            "interface": "Ethernet6" 
+                        }
+                    ],
+                    "hardwareProgrammed": true,
+                    "routeType": "connected"
+                },
+                "10.0.0.101/32": {
+                    "kernelProgrammed": true,
+                    "directlyConnected": true,
+                    "routeAction": "forward",
+                    "routeLeaked": false,
+                    "vias": [
+                        {
+                            "interface": "Loopback1" 
+                        }
+                    ],
+                    "hardwareProgrammed": true,
+                    "routeType": "connected"
+                },
+          "allRoutesProgrammedKernel": true,
+          "routingDisabled": false,
+          "allRoutesProgrammedHardware": true,
+          "defaultRouteState": "reachable"
       }
+   }
+}
 }'
