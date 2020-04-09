@@ -55,3 +55,29 @@ class PathCmd(SqCommand):
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         if not df.empty:
             return self._gen_output(df)
+
+    @command("summarize")
+    @argument("src", description="Source IP address, in quotes")
+    @argument("dest", description="Destination IP address, in quotes")
+    @argument("vrf", description="VRF to trace path in")
+    def summarize(self, src: str = "", dest: str = "", vrf: str = ''):
+        """Summarize paths between specified from source to target ip addresses"""
+        # Get the default display field names
+        if self.columns is None:
+            return
+
+        now = time.time()
+        if self.columns != ["default"]:
+            self.ctxt.sort_fields = None
+        else:
+            self.ctxt.sort_fields = []
+
+        df = self.sqobj.summarize(
+            hostname=self.hostname, columns=self.columns,
+            namespace=self.namespace, source=src, dest=dest,
+            vrf=vrf
+        )
+
+        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
+        if not df.empty:
+            return self._gen_output(df)

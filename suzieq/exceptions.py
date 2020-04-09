@@ -3,3 +3,11 @@
 
 class NoLLdpError(Exception):
     pass
+
+
+class EmptyDataframeError(Exception):
+    pass
+
+
+class PathLoopError(Exception):
+    pass
