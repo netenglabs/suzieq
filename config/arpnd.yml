@@ -19,6 +19,13 @@ apply:
   linux:
     copy: cumulus
 
-  platina:
-    copy: cumulus
-  
+  eos:
+    version: all
+    command: show arp
+    normalize: 'ipV4Neighbors/[
+    "hwAddress: macaddr",
+    "address: ipAddress",
+    "interface: oif",
+    "state: state?|reachable",
+    "offload: offload?|False",
+    ]'
