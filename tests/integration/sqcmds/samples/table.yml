@@ -1,8 +1,39 @@
-description: Testing tables show
+description: 'Testing verbs for table: show describe'
 tests:
 - command: table show --format=json
   data-directory: tests/data/basic_dual_bgp/parquet-out
-  marks: tables show
+  marks: table show
+  output: '[{"table": "arpnd", "first_time": 1586403475456, "latest_time": 1586403475456,
+    "intervals": 1, "all rows": 74, "namespaces": 1, "devices": 14}, {"table": "bgp",
+    "first_time": 1586403475456, "latest_time": 1586403475456, "intervals": 1, "all
+    rows": 36, "namespaces": 1, "devices": 10}, {"table": "device", "first_time":
+    1586403475456, "latest_time": 1586403475456, "intervals": 1, "all rows": 14, "namespaces":
+    1, "devices": 14}, {"table": "fs", "first_time": 1586403475456, "latest_time":
+    1586403475456, "intervals": 1, "all rows": 229, "namespaces": 1, "devices": 14},
+    {"table": "ifCounters", "first_time": 1586403475456, "latest_time": 1586403475456,
+    "intervals": 1, "all rows": 552, "namespaces": 1, "devices": 14}, {"table": "interfaces",
+    "first_time": 1586403475456, "latest_time": 1586403475456, "intervals": 1, "all
+    rows": 138, "namespaces": 1, "devices": 14}, {"table": "lldp", "first_time": 1586403475456,
+    "latest_time": 1586403475456, "intervals": 1, "all rows": 44, "namespaces": 1,
+    "devices": 10}, {"table": "macs", "first_time": 1586403475456, "latest_time":
+    1586403475456, "intervals": 1, "all rows": 39, "namespaces": 1, "devices": 5},
+    {"table": "mlag", "first_time": 1586403475456, "latest_time": 1586403475456, "intervals":
+    1, "all rows": 4, "namespaces": 1, "devices": 4}, {"table": "routes", "first_time":
+    1586403475456, "latest_time": 1586403475456, "intervals": 1, "all rows": 273,
+    "namespaces": 1, "devices": 14}, {"table": "sqPoller", "first_time": 1586403475456,
+    "latest_time": 1586403475456, "intervals": 1, "all rows": 286, "namespaces": 1,
+    "devices": 14}, {"table": "time", "first_time": 1586403475456, "latest_time":
+    1586403475456, "intervals": 1, "all rows": 14, "namespaces": 1, "devices": 14},
+    {"table": "topcpu", "first_time": 1586403475456, "latest_time": 1586403475456,
+    "intervals": 1, "all rows": 138, "namespaces": 1, "devices": 14}, {"table": "topmem",
+    "first_time": 1586403475456, "latest_time": 1586403475456, "intervals": 1, "all
+    rows": 93, "namespaces": 1, "devices": 9}, {"table": "vlan", "first_time": 1586403475456,
+    "latest_time": 1586403475456, "intervals": 1, "all rows": 16, "namespaces": 1,
+    "devices": 4}, {"table": "TOTAL", "first_time": 1586403475456, "latest_time":
+    1586403475456, "intervals": 1, "all rows": 1950, "namespaces": 1, "devices": 14}]'
+- command: table show --columns=hostname --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: table show
   output: '[{"table": "arpnd", "first_time": 1586403475456, "latest_time": 1586403475456,
     "intervals": 1, "all rows": 74, "namespaces": 1, "devices": 14}, {"table": "bgp",
     "first_time": 1586403475456, "latest_time": 1586403475456, "intervals": 1, "all
@@ -33,11 +64,11 @@ tests:
     1586403475456, "intervals": 1, "all rows": 1950, "namespaces": 1, "devices": 14}]'
 - command: table show --namespace=dummy --format=json
   data-directory: tests/data/basic_dual_bgp/parquet-out
-  marks: tables show filter
+  marks: table show
   output: '[]'
 - command: table show --view=changes --format=json
   data-directory: tests/data/basic_dual_bgp/parquet-out
-  marks: tables show filter
+  marks: table show
   output: '[{"table": "arpnd", "first_time": 1586403475456, "latest_time": 1586403475456,
     "intervals": 1, "all rows": 74, "namespaces": 1, "devices": 14}, {"table": "bgp",
     "first_time": 1586403475456, "latest_time": 1586403475456, "intervals": 1, "all
@@ -68,7 +99,7 @@ tests:
     1586403475456, "intervals": 1, "all rows": 1950, "namespaces": 1, "devices": 14}]'
 - command: table show --view=latest --format=json
   data-directory: tests/data/basic_dual_bgp/parquet-out
-  marks: tables show filter
+  marks: table show
   output: '[{"table": "arpnd", "first_time": 1586403475456, "latest_time": 1586403475456,
     "intervals": 1, "all rows": 74, "namespaces": 1, "devices": 14}, {"table": "bgp",
     "first_time": 1586403475456, "latest_time": 1586403475456, "intervals": 1, "all
@@ -99,7 +130,7 @@ tests:
     1586403475456, "intervals": 1, "all rows": 1950, "namespaces": 1, "devices": 14}]'
 - command: table show --hostname=leaf01 --format=json
   data-directory: tests/data/basic_dual_bgp/parquet-out
-  marks: tables show filter
+  marks: table show
   output: '[{"table": "arpnd", "first_time": 1586403475456, "latest_time": 1586403475456,
     "intervals": 1, "all rows": 6, "namespaces": 1, "devices": 1}, {"table": "bgp",
     "first_time": 1586403475456, "latest_time": 1586403475456, "intervals": 1, "all
@@ -128,3 +159,15 @@ tests:
     1, "all rows": 4, "namespaces": 1, "devices": 1}, {"table": "TOTAL", "first_time":
     1586403475456, "latest_time": 1586403475456, "intervals": 1, "all rows": 188,
     "namespaces": 1, "devices": 1}]'
+- command: table describe --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: table describe
+  xfail:
+    error: '"Error running command: ERROR: Unknown table \n------------------------------------------------------------\n------------------------------------------------------------"'
+    reason: 'uncaught exception bug #66'
+- command: table describe --namespace=dual-evpn --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: table describe
+  xfail:
+    error: '"Error running command: ERROR: Unknown table \n------------------------------------------------------------\n------------------------------------------------------------"'
+    reason: 'uncaught exception bug #66'

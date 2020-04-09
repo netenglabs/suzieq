@@ -1,0 +1,40 @@
+description: 'Testing verbs for ospf: show summarize unique assert top'
+tests:
+- command: ospf show --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: ospf show
+  output: '[]'
+- command: ospf show --columns=hostname --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: ospf show
+  output: '[]'
+- command: ospf show --type=interface --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: ospf show
+  output: '[]'
+- command: ospf summarize --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: ospf summarize
+  output: '[]'
+- command: ospf summarize --namespace=dual-evpn --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: ospf summarize
+  output: '[]'
+- command: ospf summarize --type=interface --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: ospf summarize
+  output: '[]'
+- command: ospf unique --columns=hostname --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  xfail:
+    error: '[{"error": "ERROR: Unknown table ospf, no schema found for it"}]'
+    reason: 'bug #68'
+  marks: ospf unique
+- command: ospf assert --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: ospf assert
+  output: '[]'
+- command: ospf top --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: ospf top
+  output: '[]'

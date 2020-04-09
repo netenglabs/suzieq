@@ -5,7 +5,7 @@ import yaml
 
 
 @pytest.mark.service
-def test_init_with_default_config(init_services_default):
+def _test_init_with_default_config(init_services_default):
     with open(os.path.abspath(os.curdir) + '/tests/integration/services/samples/init.yml', 'r') as file:
         prev_results = yaml.load(file)
 
@@ -33,6 +33,6 @@ def _test_produce_current_json(tmp_path, init_services_default):
         data['tests'][service.name]['service'] = service.name
         data['tests'][service.name]['output'] = json.dumps(service.get_data())
 
-    file = tmp_path / f"init.yaml"
+    file = tmp_path / f"init.yml"
     print(f"writing to {file}")
     file.write_text(yaml.dump(data))
