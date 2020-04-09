@@ -100,9 +100,21 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                     else:
                         if xstr not in result[0]["rest"]:
                             return result
-                        result[0]["rest"] = result[0]["rest"][xstr]
+                        for ele in result:
+                            # EOS routes case: vrfs/*:vrf/routes/*:prefix
+                            # Otherwise there's usually one element here
+                            ele["rest"] = ele["rest"][xstr]
                 else:
-                    result = list(map(_stepdown_rest, result))[0]
+                    result = list(map(_stepdown_rest, result))
+                    if len(result) == 1:
+                        result = result[0]
+                    else:
+                        # Handle the output of the likes of EOS' BGP with
+                        # starting string: 'vrfs/*/peerList/*/[
+                        tmpres = result[0]
+                        for entry in result[1:]:
+                            tmpres[0]['rest'].extend(entry[0]['rest'])
+                        result = tmpres
 
             tmplt_str = tmplt_str[pos + 1:]
             try:
