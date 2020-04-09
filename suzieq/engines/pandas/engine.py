@@ -113,6 +113,8 @@ class SqPandasEngine(SqEngine):
             else:
                 query_str += ' and {}'.format(addnl_filter)
 
+        # Restore the folder to what it needs to be
+        folder = self._get_table_directory(table)
         if use_get_files:
             if not query_str:
                 query_str = "active == True"
