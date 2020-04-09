@@ -6,7 +6,7 @@ import json
 import argparse
 import os
 
-from suzieq.service import cons_recs_from_json_template
+from suzieq.poller.services.svcparser import cons_recs_from_json_template
 
 
 if __name__ == '__main__':
@@ -45,10 +45,10 @@ if __name__ == '__main__':
         sys.exit(1)
 
     with open('{}/{}.yml'.format(userargs.service_dir, userargs.service), 'r') as f:
-        svcdef = yaml.load(f.read())
+        svcdef = yaml.safe_load(f.read())
 
     with open('{}/{}.yml'.format(userargs.sample_dir, userargs.service), 'r') as f:
-        yml_inp = yaml.load(f.read())
+        yml_inp = yaml.safe_load(f.read())
 
     # Extract the appropriate svc definition
 
