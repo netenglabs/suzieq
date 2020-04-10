@@ -1,4 +1,8 @@
 FROM python:3.7.7-slim-buster AS compiler
+
+ENV PATH=/root/.local/bin:$PATH
+ENV PYTHONPATH=/root/.local/lib
+
 RUN apt-get update && \
     apt-get install --no-install-suggests --no-install-recommends --yes git && \
     pip3 install --upgrade pip
