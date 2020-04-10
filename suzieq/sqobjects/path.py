@@ -377,12 +377,20 @@ class PathObj(basicobj.SqObject):
         # for pandas
         df_plist = []
         for i, path in enumerate(paths):
+            prev_host = None
+            prev_hopid = 0
             for j, ele in enumerate(path):
                 item = list(ele)[0]
+                if item == prev_host:
+                    hopid = prev_hopid
+                else:
+                    hopid = j
+                    prev_host = item
+                    prev_hopid = hopid
                 df_plist.append(
                     {
                         "pathid": i + 1,
-                        "hopCount": j + 1,
+                        "hopCount": hopid,
                         "namespace": (namespace[0]
                                       if isinstance(namespace, list)
                                       else namespace),
