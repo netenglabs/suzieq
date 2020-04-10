@@ -77,33 +77,35 @@ def load_sq_config(validate=True, config_file=None):
     return cfg
 
 
-def get_schemas(schema_dir):
-
-    schemas = {}
-
-    if not os.path.exists(schema_dir):
-        logging.error("Schema directory {} does not exist".format(schema_dir))
-        raise Exception(f"Schema directory {schema_dir} does not exist")
-        return schemas
-
-    for root, _, files in os.walk(schema_dir):
-        for topic in files:
-            with open(root + "/" + topic, "r") as f:
-                data = json.loads(f.read())
-                schemas[data["name"]] = data["fields"]
-        break
-
-    return schemas
-
-
 class Schema(object):
-    def __init__(self, schema=None, schema_dir=None):
-        if schema:
-            self._schema = schema
-        else:
-            self._schema = get_schemas(schema_dir)
+    def __init__(self, schema_dir):
+        self._init_schemas(schema_dir)
         if not self._schema:
-            raise ValueError("Must supply either schema or schema directory")
+            raise ValueError("Unable to get schemas")
+
+    def _init_schemas(self, schema_dir: str):
+        """Returns the schema definition which is the fields of a table"""
+
+        schemas = {}
+        phy_tables = {}
+
+        if not (schema_dir and os.path.exists(schema_dir)):
+            logging.error(
+                "Schema directory {} does not exist".format(schema_dir))
+            raise Exception(f"Schema directory {schema_dir} does not exist")
+            return schemas
+
+        for root, _, files in os.walk(schema_dir):
+            for topic in files:
+                with open(root + "/" + topic, "r") as f:
+                    data = json.loads(f.read())
+                    table = data["name"]
+                    schemas[table] = data["fields"]
+                    phy_tables[data["name"]] = data.get("physicalTable", table)
+            break
+
+        self._schema = schemas
+        self._phy_tables = phy_tables
 
     def tables(self):
         return self._schema.keys()
@@ -141,11 +143,63 @@ class Schema(object):
                 arrays.append(f_name)
         return arrays
 
+    def get_phy_table_for_table(self, table):
+        """Return the name of the underlying physical table"""
+        if self._phy_tables:
+            return self._phy_tables.get(table, table)
+
+    def get_arrow_schema(self, table):
+        """Convert the internal AVRO schema into the equivalent PyArrow schema"""
+
+        avro_sch = self._schema.get(table, None)
+        if not avro_sch:
+            raise AttributeError(f"No schema found for {table}")
+
+        arsc_fields = []
+
+        map_type = {
+            "string": pa.string(),
+            "long": pa.int64(),
+            "int": pa.int32(),
+            "double": pa.float64(),
+            "float": pa.float32(),
+            "timestamp": pa.int64(),
+            "timedelta64[s]": pa.float64(),
+            "boolean": pa.bool_(),
+            "array.string": pa.list_(pa.string()),
+            "array.nexthopList": pa.list_(pa.struct([('nexthop', pa.string()),
+                                                     ('oif', pa.string()),
+                                                     ('weight', pa.int32())])),
+            "array.long": pa.list_(pa.int64()),
+            "array.float": pa.list_(pa.float32()),
+        }
+
+        for fld in avro_sch:
+            if isinstance(fld["type"], dict):
+                if fld["type"]["type"] == "array":
+                    if fld["type"]["items"]["type"] == "record":
+                        avtype: str = "array.{}".format(fld["name"])
+                    else:
+                        avtype: str = "array.{}".format(
+                            fld["type"]["items"]["type"])
+                else:
+                    # We don't support map yet
+                    raise AttributeError
+            else:
+                avtype: str = fld["type"]
+
+            arsc_fields.append(pa.field(fld["name"], map_type[avtype]))
+
+        return pa.schema(arsc_fields)
+
 
 class SchemaForTable(object):
-    def __init__(self, table, schema=None, schema_dir=None):
+    def __init__(self, table, schema: Schema = None, schema_dir=None):
         if schema:
-            self._all_schemas = Schema(schema=schema)
+            if isinstance(schema, Schema):
+                self._all_schemas = schema
+            else:
+                raise ValueError(f"Passing non-Schema type for schema")
         else:
             self._all_schemas = Schema(schema_dir=schema_dir)
         self._table = table
@@ -182,6 +236,10 @@ class SchemaForTable(object):
             fields = [f for f in columns if f in self.fields]
 
         return fields
+
+    def get_phy_table_for_table(self) -> str:
+        """Return the underlying physical table for this logical table"""
+        return self._all_schemas.get_phy_table_for_table(self._table)
 
 
 def get_latest_files(folder, start="", end="", view="latest") -> list:
@@ -287,46 +345,6 @@ def get_latest_pq_files(files, root, ssecs, esecs, view):
                     "%s/%s" % (root, x)) < ssecs, files)
             )
     return newfiles
-
-
-def avro_to_arrow_schema(avro_sch):
-    """Given an AVRO schema, return the equivalent Arrow schema"""
-    arsc_fields = []
-
-    map_type = {
-        "string": pa.string(),
-        "long": pa.int64(),
-        "int": pa.int32(),
-        "double": pa.float64(),
-        "float": pa.float32(),
-        "timestamp": pa.int64(),
-        "timedelta64[s]": pa.float64(),
-        "boolean": pa.bool_(),
-        "array.string": pa.list_(pa.string()),
-        "array.nexthopList": pa.list_(pa.struct([('nexthop', pa.string()),
-                                                 ('oif', pa.string()),
-                                                 ('weight', pa.int32())])),
-        "array.long": pa.list_(pa.int64()),
-        "array.float": pa.list_(pa.float32()),
-    }
-
-    for fld in avro_sch:
-        if isinstance(fld["type"], dict):
-            if fld["type"]["type"] == "array":
-                if fld["type"]["items"]["type"] == "record":
-                    avtype: str = "array.{}".format(fld["name"])
-                else:
-                    avtype: str = "array.{}".format(
-                        fld["type"]["items"]["type"])
-            else:
-                # We don't support map yet
-                raise AttributeError
-        else:
-            avtype: str = fld["type"]
-
-        arsc_fields.append(pa.field(fld["name"], map_type[avtype]))
-
-    return pa.schema(arsc_fields)
 
 
 def calc_avg(oldval, newval):

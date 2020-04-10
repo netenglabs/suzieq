@@ -2,7 +2,7 @@ from nubia import context
 from nubia import exceptions
 from nubia import eventbus
 
-from suzieq.utils import load_sq_config, get_schemas
+from suzieq.utils import load_sq_config, Schema
 from suzieq.engines import get_sqengine
 
 
@@ -10,7 +10,7 @@ class NubiaSuzieqContext(context.Context):
     def __init__(self, engine="pandas"):
         self.cfg = load_sq_config(validate=False)
 
-        self.schemas = get_schemas(self.cfg["schema-directory"])
+        self.schemas = Schema(self.cfg["schema-directory"])
 
         self.namespace = ""
         self.hostname = ""
@@ -26,7 +26,7 @@ class NubiaSuzieqContext(context.Context):
         if self._args.config:
             self.cfg = load_sq_config(validate=False,
                                       config_file=self._args.config)
-            self.schemas = get_schemas(self.cfg["schema-directory"])
+            self.schemas = Schema(self.cfg["schema-directory"])
 
     def on_cli(self, cmd, args):
         # dispatch the on connected message

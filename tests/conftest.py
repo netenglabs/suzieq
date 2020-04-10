@@ -9,14 +9,14 @@ suzieq_cli_path = './suzieq/cli/suzieq-cli'
 
 
 commands = [('AddrCmd'), ('ArpndCmd'), ('BgpCmd'), ('DeviceCmd'),
-            ('EvpnVniCmd'),('InterfaceCmd'), ('LldpCmd'), ('MacCmd'),
+            ('EvpnVniCmd'), ('InterfaceCmd'), ('LldpCmd'), ('MacCmd'),
             ('MlagCmd'), ('OspfCmd'), ('RouteCmd'),
             ('TopcpuCmd'), ('TopmemCmd'), ('VlanCmd')]
 
 cli_commands = [('address'), ('bgp'), ('device'), ('evpnVni'),
-            ('interface'), ('lldp'), ('mac'),
-            ('mlag'), ('ospf'), ('path'), ('route'),
-            ('yopcpuCmd'), ('topmem'), ('vlan')]
+                ('interface'), ('lldp'), ('mac'),
+                ('mlag'), ('ospf'), ('path'), ('route'),
+                ('yopcpuCmd'), ('topmem'), ('vlan')]
 
 
 tables = [('arpnd'), ('bgp'), ('evpnVni'), ('device'), ('fs'), ('ifCounters'),
@@ -61,18 +61,6 @@ def _create_context_config():
               'test_set': 'basic_dual_bgp'  # an extra field for testing
               }
     return config
-
-
-@pytest.fixture
-def get_schemas(create_context_config):
-    return _get_schemas(create_context_config)
-
-
-def _get_schemas(config):
-    from suzieq.utils import get_schemas
-    schemas = get_schemas(config['schema-directory'])
-    assert len(schemas) > 0
-    return schemas
 
 
 @pytest.fixture

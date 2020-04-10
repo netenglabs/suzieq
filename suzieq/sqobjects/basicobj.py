@@ -1,7 +1,7 @@
 import typing
 import pandas as pd
 
-from suzieq.utils import load_sq_config, get_schemas
+from suzieq.utils import load_sq_config, Schema
 from suzieq.engines import get_sqengine
 
 
@@ -10,7 +10,7 @@ class SqContext(object):
     def __init__(self, engine):
         self.cfg = load_sq_config(validate=False)
 
-        self.schemas = get_schemas(self.cfg['schema-directory'])
+        self.schemas = Schema(self.cfg['schema-directory'])
 
         self.namespace = ''
         self.hostname = ''
