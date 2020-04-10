@@ -116,7 +116,8 @@ class SqCommand:
             assert isinstance(df, pd.DataFrame)
             return df
         else:
-            with pd.option_context('precision', 3):
+            with pd.option_context('precision', 3,
+                                   'display.max_rows', max(df.shape[0]+1, 64)):
                 print(df)
         if df.columns.to_list() == ['error']:
             return 1
