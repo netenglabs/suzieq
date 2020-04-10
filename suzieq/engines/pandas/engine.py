@@ -35,8 +35,9 @@ class SqPandasEngine(SqEngine):
         ign_key_fields = kwargs.pop("ign_key", [])
 
         sch = SchemaForTable(table, schema=schemas)
+        phy_table = sch.get_phy_table_for_table()
 
-        folder = self._get_table_directory(table)
+        folder = self._get_table_directory(phy_table)
 
         # Restrict to a single DC if thats whats asked
         if "namespace" in kwargs:
@@ -115,7 +116,7 @@ class SqPandasEngine(SqEngine):
                 query_str += ' and {}'.format(addnl_filter)
 
         # Restore the folder to what it needs to be
-        folder = self._get_table_directory(table)
+        folder = self._get_table_directory(phy_table)
         if use_get_files:
             if not query_str:
                 query_str = "active == True"

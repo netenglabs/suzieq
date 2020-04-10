@@ -8,7 +8,7 @@ from inspect import getmembers, isclass, getfile
 import importlib
 from collections import defaultdict
 
-from suzieq.utils import avro_to_arrow_schema, get_schemas
+from suzieq.utils import Schema
 from .service import Service
 
 
@@ -36,14 +36,10 @@ async def init_services(svc_dir, schema_dir, queue, run_once):
         logging.error("schema directory not a directory: {}".format(svc_dir))
         return svcs_list
     else:
-        schemas = get_schemas(schema_dir)
+        schemas = Schema(schema_dir)
 
     if schemas:
-        schema = schemas.get("sqPoller", None)
-        if schema:
-            poller_schema = avro_to_arrow_schema(schema)
-        else:
-            raise Exception(f"can't find sqPoller.avsc")
+        poller_schema = schemas.get_arrow_schema("sqPoller")
 
     for root, _, filenames in walk(svc_dir):
         for filename in filenames:
@@ -104,10 +100,9 @@ async def init_services(svc_dir, schema_dir, queue, run_once):
                     else:
                         tfsm_template = None
 
-                schema = schemas.get(svc_def["service"], None)
-                if schema:
-                    schema = avro_to_arrow_schema(schema)
-                else:
+                try:
+                    schema = schemas.get_arrow_schema(svc_def['service'])
+                except Exception:
                     logging.error(
                         f"No matching schema for {svc_def['service']}")
                     continue
