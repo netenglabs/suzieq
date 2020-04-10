@@ -1,4 +1,5 @@
 import time
+import pandas as pd
 from nubia import command, argument
 
 from suzieq.cli.sqcmds.command import SqCommand
@@ -46,11 +47,14 @@ class PathCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.sqobj.get(
-            hostname=self.hostname, columns=self.columns,
-            namespace=self.namespace, source=src, dest=dest,
-            vrf=vrf
-        )
+        try:
+            df = self.sqobj.get(
+                hostname=self.hostname, columns=self.columns,
+                namespace=self.namespace, source=src, dest=dest,
+                vrf=vrf
+            )
+        except Exception as e:
+            df = pd.DataFrame({'error': ['ERROR: {}'.format(str(e))]})
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         if not df.empty:
@@ -72,11 +76,14 @@ class PathCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.sqobj.summarize(
-            hostname=self.hostname, columns=self.columns,
-            namespace=self.namespace, source=src, dest=dest,
-            vrf=vrf
-        )
+        try:
+            df = self.sqobj.summarize(
+                hostname=self.hostname, columns=self.columns,
+                namespace=self.namespace, source=src, dest=dest,
+                vrf=vrf
+            )
+        except Exception as e:
+            df = pd.DataFrame({'error': ['ERROR: {}'.format(str(e))]})
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         if not df.empty:

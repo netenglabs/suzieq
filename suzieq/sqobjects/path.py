@@ -187,10 +187,9 @@ class PathObj(basicobj.SqObject):
                 raw_iface = iface
 
             # Replace bonds with their individual ports
-            slaveoifs = self._if_df[
-                (self._if_df["hostname"] == host)
-                & (self._if_df["master"] == raw_iface[0])
-            ].ifname.tolist()
+            slaveoifs = self._if_df[(self._if_df["hostname"] == host) &
+                                    (self._if_df["master"] == raw_iface)] \
+                            .ifname.tolist()
 
             if not slaveoifs:
                 slaveoifs = [raw_iface]
@@ -384,7 +383,9 @@ class PathObj(basicobj.SqObject):
                     {
                         "pathid": i + 1,
                         "stageid": j + 1,
-                        "namespace": namespace[0] if len(namespace) > 0 else [],
+                        "namespace": (namespace[0]
+                                      if isinstance(namespace, list)
+                                      else namespace),
                         "hostname": item,
                         "iif": ele[item]["iif"],
                         "vrf": ele[item]["vrf"],
@@ -413,7 +414,9 @@ class PathObj(basicobj.SqObject):
         ns = {}
         ns[namespace] = {}
 
+        perhopEcmp = path_df.groupby(by=['stageid'])['hostname']
         ns[namespace]['totalPaths'] = path_df['pathid'].max()
+        ns[namespace]['perHopEcmp'] = perhopEcmp.nunique().tolist()
         ns[namespace]['maxPathLength'] = path_df.groupby(by=['pathid'])[
             'stageid'].max().max()
         ns[namespace]['avgPathLength'] = path_df.groupby(by=['pathid'])[
@@ -423,8 +426,8 @@ class PathObj(basicobj.SqObject):
         ns[namespace]['usesOverlay'] = any(path_df['overlay'])
         ns[namespace]['pathMtu'] = path_df.query('iif != "lo"')['mtu'].min()
 
-        summary_fields = ['totalPaths', 'maxPathLength', 'avgPathLength',
-                          'uniqueHosts', 'pathMtu', 'usesOverlay',
-                          'mtuMismatch']
+        summary_fields = ['totalPaths', 'perHopEcmp', 'maxPathLength',
+                          'avgPathLength', 'uniqueHosts', 'pathMtu',
+                          'usesOverlay', 'mtuMismatch']
         return pd.DataFrame(ns).reindex(summary_fields, axis=0) \
                                .convert_dtypes()
