@@ -33,7 +33,9 @@ class AddrCmd(SqCommand):
 
     @command("show")
     @argument("address", description="Address, in quotes, to show info for")
-    def show(self, address: str = ""):
+    @argument("ipvers", description="type of address, v4, v6 or l2",
+              choices=["v4", "v6", "l2"])
+    def show(self, address: str = "", ipvers: str = "v4"):
         """
         Show address info
         """
@@ -48,6 +50,7 @@ class AddrCmd(SqCommand):
             hostname=self.hostname,
             columns=self.columns,
             address=address,
+            ipvers=ipvers,
             namespace=self.namespace,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
