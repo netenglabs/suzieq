@@ -274,7 +274,12 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                     x.update({rval1[0]: value})
                 continue
 
-            x.update({rval: value})
+            if (isinstance(value, str) and value.startswith('"') and
+                    value.endswith('"')):
+                # Strip leading and trailing quotes from string
+                x.update({rval: value[1:-1]})
+            else:
+                x.update({rval: value})
 
     list(map(lambda x: x.pop("rest", None), result))
 
