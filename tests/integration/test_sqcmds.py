@@ -82,10 +82,6 @@ def test_summary_exception(setup_nubia):
 good_commands = commands[:]
 
 column_commands = good_commands[:]
-column_commands[0] = pytest.param(
-    column_commands[0],
-    marks=pytest.mark.xfail(reason='bug #36',
-                            raises=AssertionError))  # AddrCmd
 
 
 @pytest.mark.parametrize("cmd", column_commands)
