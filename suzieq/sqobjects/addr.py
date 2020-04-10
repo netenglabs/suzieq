@@ -14,3 +14,8 @@ class AddrObj(basicobj.SqObject):
                          namespace, columns, context=context, table='addr')
         self._sort_fields = ['namespace', 'hostname', 'ifname']
         self._cat_fields = []
+        self._allcols = ["namespace", "hostname", "ifname", "state",
+                         'ipAddressList', 'ip6AddressList', 'macaddr',
+                         "timestamp"]
+        self._basiccols = ["namespace", "hostname", "ifname", "state",
+                           "timestamp"]
