@@ -103,25 +103,34 @@ class SqCommand:
         return self._schemas
 
     def _gen_output(self, df: pd.DataFrame, json_orient: str = "records"):
+        if df.columns.to_list() == ['error']:
+            retcode = 1
+            cols = df.columns
+        else:
+            retcode = 0
+            if self.columns != ['default'] and self.columns != ['*']:
+                cols = self.columns
+            else:
+                cols = df.columns
+
         if self.format == 'json':
             if self.json_print_handler:
-                print(df.to_json(
+                print(df[cols].to_json(
                     default_handler=self.json_print_handler,
                     orient="records"))
             else:
-                print(df.to_json(orient=json_orient))
+                print(df[cols].to_json(orient=json_orient))
         elif self.format == 'csv':
-            print(df.to_csv())
+            print(df[cols].to_csv())
         elif self.format == 'dataframe':
             assert isinstance(df, pd.DataFrame)
-            return df
+            return df[cols]
         else:
             with pd.option_context('precision', 3,
                                    'display.max_rows', max(df.shape[0]+1, 64)):
-                print(df)
-        if df.columns.to_list() == ['error']:
-            return 1
-        return 0
+                print(df[cols])
+
+        return retcode
 
     def show(self, **kwargs):
         raise NotImplementedError
