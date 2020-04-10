@@ -1,0 +1,66 @@
+{
+    "namespace": "suzieq",
+    "name": "address",
+    "physicalTable": "interfaces",
+    "type": "record",
+    "fields": [
+        {
+            "name": "macaddr",
+            "type": "string",
+            "display": 4	    
+        },
+        {
+            "name": "ipAddressList",
+            "type": {
+                "type": "array",
+                "items": {
+                    "type": "string",
+                    "name": "ipAddress"
+                }
+            },
+            "display": 3
+        },
+        {
+            "name": "state",
+            "type": "string",
+            "display": 6
+        },
+        {
+            "name": "ifname",
+            "type": "string",
+            "key": 2,
+            "display": 2
+        },
+        {
+            "name": "ip6AddressList",
+            "type": {
+                "type": "array",
+                "items": {
+                    "type": "string",
+                    "name": "ip6Address"
+                }
+            },
+            "display": 5
+        },
+        {
+            "name": "hostname",
+            "type": "string",
+            "key": 1,
+            "display": 1
+        },
+        {
+            "name": "namespace",
+            "type": "string",
+            "key": 0,
+            "display": 0
+        },
+        {
+            "name": "timestamp",
+            "type": "timestamp"
+        },
+        {
+            "name": "active",
+            "type": "boolean"
+        }
+    ]
+}
