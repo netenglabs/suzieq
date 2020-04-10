@@ -5,6 +5,11 @@ from .engineobj import SqEngineObject
 
 class AddrObj(SqEngineObject):
 
+    def _get_cols(self, columns):
+        """Get columns to fetch based on columns specified.
+        Address is not a real table and so we need to craft what we expose
+        """
+
     def get(self, **kwargs) -> pd.DataFrame:
         """Retrieve the dataframe that matches a given IPv4/v6/MAC address"""
 
@@ -22,23 +27,18 @@ class AddrObj(SqEngineObject):
         else:
             addrcol = "ipAddressList"
 
-        allcols = ["namespace", "hostname", "ifname", "state", addrcol,
-                   "timestamp"]
-
-        allcol_alladdr = ["namespace", "hostname", "ifname", "state",
-                          'ipAddressList', 'ip6AddressList', 'macaddr',
-                          "timestamp"]
-
+        # We have an extra var called getcols to avoid polluting the original
         columns = kwargs.pop("columns", ['default'])
         if columns == ['*']:
-            columns = allcol_alladdr
+            getcols = self.iobj._allcols
         elif columns != ["default"]:
             if addrcol not in columns:
-                columns.insert(-1, addrcol)
+                getcols = columns + [addrcol]
         else:
-            columns = allcols
+            getcols = self.iobj._basiccols
+            getcols.insert(-1, addrcol)
 
-        df = self.get_valid_df("interfaces", sort_fields, columns=columns,
+        df = self.get_valid_df("interfaces", sort_fields, columns=getcols,
                                **kwargs)
 
         if df.empty:
@@ -64,21 +64,7 @@ class AddrObj(SqEngineObject):
         else:
             sort_fields = self.sort_fields
 
-        columns = kwargs.pop("columns", ['default'])
-
-        if columns == ["default"]:
-            # We leave out IPv6 because link-local addresses pollute the info
-            columns = ["namespace", "hostname", "ifname", "ipAddressList",
-                       "timestamp"]
-            split_cols = ["ipAddressList"]
-        else:
-            split_cols = []
-            for col in ["ipAddressList", "ip6AddressList"]:
-                if col in columns:
-                    split_cols.append(col)
-
-        df = self.get_valid_df("interfaces", sort_fields, columns=columns,
-                               **kwargs)
+        df = self.get_valid_df("interfaces", sort_fields, **kwargs)
         if df.empty:
             return df
 
