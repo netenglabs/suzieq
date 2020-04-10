@@ -124,11 +124,16 @@ class SqCommand:
             print(df[cols].to_csv())
         elif self.format == 'dataframe':
             assert isinstance(df, pd.DataFrame)
+            if df.empty:
+                return df
             return df[cols]
         else:
             with pd.option_context('precision', 3,
                                    'display.max_rows', max(df.shape[0]+1, 64)):
-                print(df[cols])
+                if df.empty:
+                    print(df)
+                else:
+                    print(df[cols])
 
         return retcode
 

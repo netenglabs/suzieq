@@ -135,10 +135,6 @@ def test_start_time_show_filter(setup_nubia, cmd):
 
 
 show_columns_commands = good_commands[:]
-show_columns_commands[7] = pytest.param(
-    column_commands[7],
-    marks=pytest.mark.xfail(reason='bug #64',
-                            raises=KeyError))  # MacCmd
 show_columns_commands[10] = pytest.param(
     column_commands[10],
     marks=pytest.mark.xfail(reason='bug #65',
