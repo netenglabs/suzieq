@@ -74,6 +74,7 @@ class RouteCmd(SqCommand):
         )
         if not df.empty and remove_metric:
             df.drop(columns=['metric'], inplace=True)
+            self.columns.remove('metric')
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)

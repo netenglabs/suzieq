@@ -102,7 +102,8 @@ class SqCommand:
     def schemas(self):
         return self._schemas
 
-    def _gen_output(self, df: pd.DataFrame, json_orient: str = "records"):
+    def _gen_output(self, df: pd.DataFrame, json_orient: str = "records",
+                    dont_strip_cols: bool = False):
         if df.columns.to_list() == ['error']:
             retcode = 1
             cols = df.columns
@@ -112,6 +113,9 @@ class SqCommand:
                 cols = self.columns
             else:
                 cols = df.columns
+
+        if dont_strip_cols:
+            cols = df.columns
 
         if self.format == 'json':
             if self.json_print_handler:
@@ -168,7 +172,7 @@ class SqCommand:
         except Exception as e:
             df = pd.DataFrame({'error': ['ERROR: {}'.format(str(e))]})
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        return self._gen_output(df)
+        return self._gen_output(df, dont_strip_cols=True)
 
     def _init_summarize(self):
         self.now = time.time()
