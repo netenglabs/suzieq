@@ -6,11 +6,9 @@ from .engineobj import SqEngineObject
 class AddrObj(SqEngineObject):
 
     def get(self, **kwargs) -> pd.DataFrame:
-        """Retrieve the dataframe that matches a given IP address"""
+        """Retrieve the dataframe that matches a given IPv4/v6/MAC address"""
 
-        addr = kwargs.get("address", None)
-        if addr:
-            del kwargs["address"]
+        addr = kwargs.pop("address", None)
 
         if self.ctxt.sort_fields is None:
             sort_fields = None
@@ -24,17 +22,21 @@ class AddrObj(SqEngineObject):
         else:
             addrcol = "ipAddressList"
 
-        columns = kwargs.get("columns", [])
-        if columns:
-            del kwargs["columns"]
-        else:
-            columns = ['default']
-        if columns != ["default"]:
+        allcols = ["namespace", "hostname", "ifname", "state", addrcol,
+                   "timestamp"]
+
+        allcol_alladdr = ["namespace", "hostname", "ifname", "state",
+                          'ipAddressList', 'ip6AddressList', 'macaddr',
+                          "timestamp"]
+
+        columns = kwargs.pop("columns", ['default'])
+        if columns == ['*']:
+            columns = allcol_alladdr
+        elif columns != ["default"]:
             if addrcol not in columns:
                 columns.insert(-1, addrcol)
         else:
-            columns = ["namespace", "hostname", "ifname", "state", addrcol,
-                       "timestamp"]
+            columns = allcols
 
         df = self.get_valid_df("interfaces", sort_fields, columns=columns,
                                **kwargs)
@@ -45,24 +47,24 @@ class AddrObj(SqEngineObject):
         # Works with pandas 0.25.0 onwards
         if addr:
             df = df.explode(addrcol).dropna(how='any')
-            return df[df[addrcol].str.startswith(addr+'/')]
+            if '/' in addr:
+                return df[df[addrcol].str.startswith(addr)]
+            else:
+                return df[df[addrcol].str.startswith(addr+'/')]
         else:
             return df[df[addrcol].apply(lambda x: len(x) != 0)]
 
     def summarize(self, **kwargs):
         """Describe the IP Address data"""
 
-        addr = kwargs.get("address", None)
-        if addr:
-            del kwargs["address"]
+        addr = kwargs.pop("address", None)
 
         if self.ctxt.sort_fields is None:
             sort_fields = None
         else:
             sort_fields = self.sort_fields
 
-        columns = kwargs.get("columns", [])
-        del kwargs["columns"]
+        columns = kwargs.pop("columns", ['default'])
 
         if columns == ["default"]:
             # We leave out IPv6 because link-local addresses pollute the info
