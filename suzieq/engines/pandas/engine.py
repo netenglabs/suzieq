@@ -81,12 +81,6 @@ class SqPandasEngine(SqEngine):
         for f in ['active', 'timestamp']:
             if f not in fields:
                 fields.append(f)
-        # Handle the case where key fields are missing from display fields
-        fldset = set(fields)
-        kfldset = set(key_fields)
-        add_flds = kfldset.difference(fldset)
-        if add_flds:
-            fields.extend(list(add_flds))
 
         # Create the filter to select only specified columns
         query_str = ""
@@ -103,8 +97,15 @@ class SqPandasEngine(SqEngine):
                 prefix = "and"
 
         # Add the ignored fields back to key fields to ensure we
-        # do the drop_duplicates correctly below
+        # do the drop_duplicates correctly below incl reading reqd cols
         key_fields.extend(ign_key_fields)
+
+        # Handle the case where key fields are missing from display fields
+        fldset = set(fields)
+        kfldset = set(key_fields)
+        add_flds = kfldset.difference(fldset)
+        if add_flds:
+            fields.extend(list(add_flds))
 
         if addnl_filter:
             # This is for special cases that are specific to an object
