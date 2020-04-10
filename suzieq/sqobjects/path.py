@@ -87,10 +87,10 @@ class PathObj(basicobj.SqObject):
     def _is_mtu_match(self, host, iface, peer, peerif) -> bool:
         return (
             self._if_df[(self._if_df["hostname"] == peer) &
-                        (self._if_df["ifname"] == peerif)].iloc[-1].mtu
+                        (self._if_df["ifname"] == peerif)].iloc[0].mtu
             ==
             self._if_df[(self._if_df["hostname"] == host) &
-                        (self._if_df["ifname"] == iface)].iloc[-1].mtu
+                        (self._if_df["ifname"] == iface)].iloc[0].mtu
         )
 
     def _get_if_vlan(self, host: str, ifname: str) -> int:
@@ -382,7 +382,7 @@ class PathObj(basicobj.SqObject):
                 df_plist.append(
                     {
                         "pathid": i + 1,
-                        "stageid": j + 1,
+                        "hopCount": j + 1,
                         "namespace": (namespace[0]
                                       if isinstance(namespace, list)
                                       else namespace),
@@ -390,7 +390,7 @@ class PathObj(basicobj.SqObject):
                         "iif": ele[item]["iif"],
                         "vrf": ele[item]["vrf"],
                         "overlay": ele[item]["overlay"],
-                        "mtuMatch": ele[item].get("mtu_match", np.nan),
+                        "mtuMatch": ele[item].get("mtuMatch", np.nan),
                         "mtu": ele[item].get("mtu", 0),
                         "timestamp": ele[item].get("timestamp", np.nan)
                     }
@@ -414,13 +414,13 @@ class PathObj(basicobj.SqObject):
         ns = {}
         ns[namespace] = {}
 
-        perhopEcmp = path_df.groupby(by=['stageid'])['hostname']
+        perhopEcmp = path_df.groupby(by=['hopCount'])['hostname']
         ns[namespace]['totalPaths'] = path_df['pathid'].max()
         ns[namespace]['perHopEcmp'] = perhopEcmp.nunique().tolist()
         ns[namespace]['maxPathLength'] = path_df.groupby(by=['pathid'])[
-            'stageid'].max().max()
+            'hopCount'].max().max()
         ns[namespace]['avgPathLength'] = path_df.groupby(by=['pathid'])[
-            'stageid'].max().mean()
+            'hopCount'].max().mean()
         ns[namespace]['uniqueHosts'] = path_df['hostname'].nunique()
         ns[namespace]['mtuMismatch'] = not all(path_df['mtuMatch'])
         ns[namespace]['usesOverlay'] = any(path_df['overlay'])
