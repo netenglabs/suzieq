@@ -47,11 +47,7 @@ class TablesObj(basicobj.SqObject):
 
         df = None
         table = kwargs.get('table', '')
-        try:
-            sch = SchemaForTable(table, self.schemas)
-        except Exception as e:
-            df = pd.DataFrame({'error': ['ERROR: {}'.format(str(e))]})
-            return df
+        sch = SchemaForTable(table, self.schemas)
 
         entries = [{'name': x['name'], 'type': x['type'], 'key': x.get('key', ''), 'display': x.get('display', '')}
                    for x in sch.get_raw_schema()]
