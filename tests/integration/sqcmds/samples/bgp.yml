@@ -1,179 +1,289 @@
 description: 'Testing verbs for bgp: show summarize unique'
 tests:
 - command: bgp show --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out
+  data-directory: tests/data/multidc/parquet-out/
   marks: bgp show
-  output: '[{"namespace": "dual-bgp", "hostname": "edge01", "vrf": "default", "peer":
-    "eth1.2", "state": "Established", "asn": 65530, "peerAsn": 65201, "v4PfxRx": 0,
-    "estdTime": 65.0, "numChanges": 1, "timestamp": 1586403475456}, {"namespace":
-    "dual-bgp", "hostname": "edge01", "vrf": "default", "peer": "eth1.4", "state":
-    "Established", "asn": 65530, "peerAsn": 65201, "v4PfxRx": 0, "estdTime": 65.0,
-    "numChanges": 1, "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname":
-    "edge01", "vrf": "default", "peer": "eth2.2", "state": "Established", "asn": 65530,
-    "peerAsn": 65202, "v4PfxRx": 0, "estdTime": 64.0, "numChanges": 1, "timestamp":
-    1586403475456}, {"namespace": "dual-bgp", "hostname": "edge01", "vrf": "default",
-    "peer": "eth2.4", "state": "Established", "asn": 65530, "peerAsn": 65202, "v4PfxRx":
-    0, "estdTime": 64.0, "numChanges": 1, "timestamp": 1586403475456}, {"namespace":
-    "dual-bgp", "hostname": "exit01", "vrf": "default", "peer": "10.127.0.8", "state":
-    "Established", "asn": 65201, "peerAsn": 65000, "v4PfxRx": 10, "estdTime": 69.0,
-    "numChanges": 1, "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname":
-    "exit01", "vrf": "default", "peer": "10.127.1.8", "state": "Established", "asn":
-    65201, "peerAsn": 65000, "v4PfxRx": 10, "estdTime": 67.0, "numChanges": 1, "timestamp":
-    1586403475456}, {"namespace": "dual-bgp", "hostname": "exit01", "vrf": "default",
-    "peer": "169.254.254.2", "state": "Established", "asn": 65201, "peerAsn": 65530,
-    "v4PfxRx": 6, "estdTime": 64.0, "numChanges": 1, "timestamp": 1586403475456},
-    {"namespace": "dual-bgp", "hostname": "exit01", "vrf": "internet-vrf", "peer":
-    "169.254.127.0", "state": "Established", "asn": 65201, "peerAsn": 25253, "v4PfxRx":
-    3, "estdTime": 69.0, "numChanges": 1, "timestamp": 1586403475456}, {"namespace":
-    "dual-bgp", "hostname": "exit01", "vrf": "internet-vrf", "peer": "169.254.254.10",
-    "state": "Established", "asn": 65201, "peerAsn": 65530, "v4PfxRx": 12, "estdTime":
-    64.0, "numChanges": 1, "timestamp": 1586403475456}, {"namespace": "dual-bgp",
-    "hostname": "exit02", "vrf": "default", "peer": "10.127.0.10", "state": "Established",
-    "asn": 65202, "peerAsn": 65000, "v4PfxRx": 14, "estdTime": 74.0, "numChanges":
-    1, "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "exit02",
-    "vrf": "default", "peer": "10.127.1.10", "state": "Established", "asn": 65202,
-    "peerAsn": 65000, "v4PfxRx": 14, "estdTime": 67.0, "numChanges": 1, "timestamp":
-    1586403475456}, {"namespace": "dual-bgp", "hostname": "exit02", "vrf": "default",
-    "peer": "169.254.253.2", "state": "Established", "asn": 65202, "peerAsn": 65530,
-    "v4PfxRx": 16, "estdTime": 65.0, "numChanges": 1, "timestamp": 1586403475456},
-    {"namespace": "dual-bgp", "hostname": "exit02", "vrf": "internet-vrf", "peer":
-    "169.254.253.10", "state": "Established", "asn": 65202, "peerAsn": 65530, "v4PfxRx":
-    15, "estdTime": 65.0, "numChanges": 1, "timestamp": 1586403475456}, {"namespace":
-    "dual-bgp", "hostname": "exit02", "vrf": "internet-vrf", "peer": "169.54.127.1",
-    "state": "NotEstd", "asn": 65202, "peerAsn": 25253, "v4PfxRx": 0, "estdTime":
-    null, "numChanges": 0, "timestamp": 1586403475456}, {"namespace": "dual-bgp",
-    "hostname": "internet", "vrf": "default", "peer": "swp1", "state": "Established",
-    "asn": 25253, "peerAsn": 65201, "v4PfxRx": 13, "estdTime": 69.0, "numChanges":
-    1, "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "internet",
-    "vrf": "default", "peer": "swp2", "state": "NotEstd", "asn": 25253, "peerAsn":
-    0, "v4PfxRx": 0, "estdTime": null, "numChanges": 0, "timestamp": 1586403475456},
-    {"namespace": "dual-bgp", "hostname": "leaf01", "vrf": "default", "peer": "10.127.0.0",
-    "state": "Established", "asn": 65101, "peerAsn": 65000, "v4PfxRx": 14, "estdTime":
-    70.0, "numChanges": 1, "timestamp": 1586403475456}, {"namespace": "dual-bgp",
-    "hostname": "leaf01", "vrf": "default", "peer": "10.127.1.0", "state": "Established",
-    "asn": 65101, "peerAsn": 65000, "v4PfxRx": 14, "estdTime": 67.0, "numChanges":
-    1, "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf02",
-    "vrf": "default", "peer": "10.127.0.2", "state": "Established", "asn": 65102,
-    "peerAsn": 65000, "v4PfxRx": 12, "estdTime": 72.0, "numChanges": 1, "timestamp":
-    1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf02", "vrf": "default",
-    "peer": "10.127.1.2", "state": "Established", "asn": 65102, "peerAsn": 65000,
-    "v4PfxRx": 12, "estdTime": 67.0, "numChanges": 1, "timestamp": 1586403475456},
-    {"namespace": "dual-bgp", "hostname": "leaf03", "vrf": "default", "peer": "10.127.0.4",
-    "state": "Established", "asn": 65103, "peerAsn": 65000, "v4PfxRx": 14, "estdTime":
-    71.0, "numChanges": 1, "timestamp": 1586403475456}, {"namespace": "dual-bgp",
-    "hostname": "leaf03", "vrf": "default", "peer": "10.127.1.4", "state": "Established",
-    "asn": 65103, "peerAsn": 65000, "v4PfxRx": 14, "estdTime": 67.0, "numChanges":
-    1, "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf04",
-    "vrf": "default", "peer": "10.127.0.6", "state": "Established", "asn": 65104,
-    "peerAsn": 65000, "v4PfxRx": 12, "estdTime": 72.0, "numChanges": 1, "timestamp":
-    1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf04", "vrf": "default",
-    "peer": "10.127.1.6", "state": "Established", "asn": 65104, "peerAsn": 65000,
-    "v4PfxRx": 12, "estdTime": 67.0, "numChanges": 1, "timestamp": 1586403475456},
-    {"namespace": "dual-bgp", "hostname": "spine01", "vrf": "default", "peer": "10.127.0.1",
-    "state": "Established", "asn": 65000, "peerAsn": 65101, "v4PfxRx": 3, "estdTime":
-    70.0, "numChanges": 1, "timestamp": 1586403475456}, {"namespace": "dual-bgp",
-    "hostname": "spine01", "vrf": "default", "peer": "10.127.0.11", "state": "Established",
-    "asn": 65000, "peerAsn": 65202, "v4PfxRx": 5, "estdTime": 73.0, "numChanges":
-    1, "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "spine01",
-    "vrf": "default", "peer": "10.127.0.3", "state": "Established", "asn": 65000,
-    "peerAsn": 65102, "v4PfxRx": 3, "estdTime": 72.0, "numChanges": 1, "timestamp":
-    1586403475456}, {"namespace": "dual-bgp", "hostname": "spine01", "vrf": "default",
-    "peer": "10.127.0.5", "state": "Established", "asn": 65000, "peerAsn": 65103,
-    "v4PfxRx": 3, "estdTime": 70.0, "numChanges": 1, "timestamp": 1586403475456},
-    {"namespace": "dual-bgp", "hostname": "spine01", "vrf": "default", "peer": "10.127.0.7",
-    "state": "Established", "asn": 65000, "peerAsn": 65104, "v4PfxRx": 3, "estdTime":
-    72.0, "numChanges": 1, "timestamp": 1586403475456}, {"namespace": "dual-bgp",
-    "hostname": "spine01", "vrf": "default", "peer": "10.127.0.9", "state": "Established",
-    "asn": 65000, "peerAsn": 65201, "v4PfxRx": 5, "estdTime": 69.0, "numChanges":
-    1, "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "spine02",
-    "vrf": "default", "peer": "10.127.1.1", "state": "Established", "asn": 65000,
-    "peerAsn": 65101, "v4PfxRx": 3, "estdTime": 67.0, "numChanges": 1, "timestamp":
-    1586403475456}, {"namespace": "dual-bgp", "hostname": "spine02", "vrf": "default",
-    "peer": "10.127.1.11", "state": "Established", "asn": 65000, "peerAsn": 65202,
-    "v4PfxRx": 5, "estdTime": 67.0, "numChanges": 1, "timestamp": 1586403475456},
-    {"namespace": "dual-bgp", "hostname": "spine02", "vrf": "default", "peer": "10.127.1.3",
-    "state": "Established", "asn": 65000, "peerAsn": 65102, "v4PfxRx": 3, "estdTime":
-    67.0, "numChanges": 1, "timestamp": 1586403475456}, {"namespace": "dual-bgp",
-    "hostname": "spine02", "vrf": "default", "peer": "10.127.1.5", "state": "Established",
-    "asn": 65000, "peerAsn": 65103, "v4PfxRx": 3, "estdTime": 67.0, "numChanges":
-    1, "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "spine02",
-    "vrf": "default", "peer": "10.127.1.7", "state": "Established", "asn": 65000,
-    "peerAsn": 65104, "v4PfxRx": 3, "estdTime": 67.0, "numChanges": 1, "timestamp":
-    1586403475456}, {"namespace": "dual-bgp", "hostname": "spine02", "vrf": "default",
-    "peer": "10.127.1.9", "state": "Established", "asn": 65000, "peerAsn": 65201,
-    "v4PfxRx": 5, "estdTime": 67.0, "numChanges": 1, "timestamp": 1586403475456}]'
+  output: '[{"namespace": "dual-evpn", "hostname": "edge01", "vrf": "default", "peer":
+    "eth1.2", "peerHostname": null, "state": "Established", "asn": 65530, "peerAsn":
+    65201, "v4PfxRx": 0, "estdTime": 60.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "dual-evpn", "hostname": "edge01", "vrf": "default", "peer": "eth1.3",
+    "peerHostname": null, "state": "Established", "asn": 65530, "peerAsn": 65201,
+    "v4PfxRx": 0, "estdTime": 60.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "dual-evpn", "hostname": "edge01", "vrf": "default", "peer": "eth1.4",
+    "peerHostname": null, "state": "Established", "asn": 65530, "peerAsn": 65201,
+    "v4PfxRx": 0, "estdTime": 60.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "dual-evpn", "hostname": "edge01", "vrf": "default", "peer": "eth2.2",
+    "peerHostname": null, "state": "Established", "asn": 65530, "peerAsn": 65202,
+    "v4PfxRx": 0, "estdTime": 59.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "dual-evpn", "hostname": "edge01", "vrf": "default", "peer": "eth2.3",
+    "peerHostname": null, "state": "Established", "asn": 65530, "peerAsn": 65202,
+    "v4PfxRx": 0, "estdTime": 60.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "dual-evpn", "hostname": "edge01", "vrf": "default", "peer": "eth2.4",
+    "peerHostname": null, "state": "Established", "asn": 65530, "peerAsn": 65202,
+    "v4PfxRx": 0, "estdTime": 59.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "dual-evpn", "hostname": "exit01", "vrf": "default", "peer": "swp1",
+    "peerHostname": null, "state": "Established", "asn": 65201, "peerAsn": 65000,
+    "v4PfxRx": 8, "estdTime": 63.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "dual-evpn", "hostname": "exit01", "vrf": "default", "peer": "swp2",
+    "peerHostname": null, "state": "Established", "asn": 65201, "peerAsn": 65000,
+    "v4PfxRx": 8, "estdTime": 65.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "dual-evpn", "hostname": "exit01", "vrf": "default", "peer": "swp5.2",
+    "peerHostname": null, "state": "Established", "asn": 65201, "peerAsn": 65530,
+    "v4PfxRx": 8, "estdTime": 61.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "dual-evpn", "hostname": "exit01", "vrf": "evpn-vrf", "peer": "swp5.3",
+    "peerHostname": null, "state": "Established", "asn": 65201, "peerAsn": 65530,
+    "v4PfxRx": 13, "estdTime": 61.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "dual-evpn", "hostname": "exit01", "vrf": "internet-vrf", "peer":
+    "swp5.4", "peerHostname": null, "state": "Established", "asn": 65201, "peerAsn":
+    65530, "v4PfxRx": 13, "estdTime": 61.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "dual-evpn", "hostname": "exit01", "vrf": "internet-vrf", "peer":
+    "swp6", "peerHostname": null, "state": "Established", "asn": 65201, "peerAsn":
+    25253, "v4PfxRx": 4, "estdTime": 67.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "dual-evpn", "hostname": "exit02", "vrf": "default", "peer": "swp1",
+    "peerHostname": null, "state": "Established", "asn": 65202, "peerAsn": 65000,
+    "v4PfxRx": 14, "estdTime": 63.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "dual-evpn", "hostname": "exit02", "vrf": "default", "peer": "swp2",
+    "peerHostname": null, "state": "Established", "asn": 65202, "peerAsn": 65000,
+    "v4PfxRx": 14, "estdTime": 64.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "dual-evpn", "hostname": "exit02", "vrf": "default", "peer": "swp5.2",
+    "peerHostname": null, "state": "Established", "asn": 65202, "peerAsn": 65530,
+    "v4PfxRx": 15, "estdTime": 60.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "dual-evpn", "hostname": "exit02", "vrf": "evpn-vrf", "peer": "swp5.3",
+    "peerHostname": null, "state": "Established", "asn": 65202, "peerAsn": 65530,
+    "v4PfxRx": 16, "estdTime": 60.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "dual-evpn", "hostname": "exit02", "vrf": "internet-vrf", "peer":
+    "swp5.4", "peerHostname": null, "state": "Established", "asn": 65202, "peerAsn":
+    65530, "v4PfxRx": 16, "estdTime": 60.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "dual-evpn", "hostname": "exit02", "vrf": "internet-vrf", "peer":
+    "swp6", "peerHostname": null, "state": "Established", "asn": 65202, "peerAsn":
+    25253, "v4PfxRx": 15, "estdTime": 65.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "dual-evpn", "hostname": "internet", "vrf": "default", "peer": "swp1",
+    "peerHostname": null, "state": "Established", "asn": 25253, "peerAsn": 65201,
+    "v4PfxRx": 12, "estdTime": 66.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "dual-evpn", "hostname": "internet", "vrf": "default", "peer": "swp2",
+    "peerHostname": null, "state": "Established", "asn": 25253, "peerAsn": 65202,
+    "v4PfxRx": 13, "estdTime": 64.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "dual-evpn", "hostname": "leaf01", "vrf": "default", "peer": "swp1",
+    "peerHostname": null, "state": "Established", "asn": 65101, "peerAsn": 65000,
+    "v4PfxRx": 14, "estdTime": 62.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "dual-evpn", "hostname": "leaf01", "vrf": "default", "peer": "swp2",
+    "peerHostname": null, "state": "Established", "asn": 65101, "peerAsn": 65000,
+    "v4PfxRx": 14, "estdTime": 63.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "dual-evpn", "hostname": "leaf02", "vrf": "default", "peer": "swp1",
+    "peerHostname": null, "state": "Established", "asn": 65102, "peerAsn": 65000,
+    "v4PfxRx": 13, "estdTime": 64.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "dual-evpn", "hostname": "leaf02", "vrf": "default", "peer": "swp2",
+    "peerHostname": null, "state": "Established", "asn": 65102, "peerAsn": 65000,
+    "v4PfxRx": 13, "estdTime": 66.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "dual-evpn", "hostname": "leaf03", "vrf": "default", "peer": "swp1",
+    "peerHostname": null, "state": "Established", "asn": 65103, "peerAsn": 65000,
+    "v4PfxRx": 14, "estdTime": 63.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "dual-evpn", "hostname": "leaf03", "vrf": "default", "peer": "swp2",
+    "peerHostname": null, "state": "Established", "asn": 65103, "peerAsn": 65000,
+    "v4PfxRx": 14, "estdTime": 63.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "dual-evpn", "hostname": "leaf04", "vrf": "default", "peer": "swp1",
+    "peerHostname": null, "state": "Established", "asn": 65104, "peerAsn": 65000,
+    "v4PfxRx": 13, "estdTime": 64.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "dual-evpn", "hostname": "leaf04", "vrf": "default", "peer": "swp2",
+    "peerHostname": null, "state": "Established", "asn": 65104, "peerAsn": 65000,
+    "v4PfxRx": 13, "estdTime": 65.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "dual-evpn", "hostname": "spine01", "vrf": "default", "peer": "swp1",
+    "peerHostname": null, "state": "Established", "asn": 65000, "peerAsn": 65101,
+    "v4PfxRx": 2, "estdTime": 62.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "dual-evpn", "hostname": "spine01", "vrf": "default", "peer": "swp2",
+    "peerHostname": null, "state": "Established", "asn": 65000, "peerAsn": 65102,
+    "v4PfxRx": 2, "estdTime": 63.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "dual-evpn", "hostname": "spine01", "vrf": "default", "peer": "swp3",
+    "peerHostname": null, "state": "Established", "asn": 65000, "peerAsn": 65103,
+    "v4PfxRx": 2, "estdTime": 63.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "dual-evpn", "hostname": "spine01", "vrf": "default", "peer": "swp4",
+    "peerHostname": null, "state": "Established", "asn": 65000, "peerAsn": 65104,
+    "v4PfxRx": 2, "estdTime": 63.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "dual-evpn", "hostname": "spine01", "vrf": "default", "peer": "swp5",
+    "peerHostname": null, "state": "Established", "asn": 65000, "peerAsn": 65202,
+    "v4PfxRx": 8, "estdTime": 63.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "dual-evpn", "hostname": "spine01", "vrf": "default", "peer": "swp6",
+    "peerHostname": null, "state": "Established", "asn": 65000, "peerAsn": 65201,
+    "v4PfxRx": 7, "estdTime": 63.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "dual-evpn", "hostname": "spine02", "vrf": "default", "peer": "swp1",
+    "peerHostname": null, "state": "Established", "asn": 65000, "peerAsn": 65101,
+    "v4PfxRx": 2, "estdTime": 62.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "dual-evpn", "hostname": "spine02", "vrf": "default", "peer": "swp2",
+    "peerHostname": null, "state": "Established", "asn": 65000, "peerAsn": 65102,
+    "v4PfxRx": 2, "estdTime": 65.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "dual-evpn", "hostname": "spine02", "vrf": "default", "peer": "swp3",
+    "peerHostname": null, "state": "Established", "asn": 65000, "peerAsn": 65103,
+    "v4PfxRx": 2, "estdTime": 62.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "dual-evpn", "hostname": "spine02", "vrf": "default", "peer": "swp4",
+    "peerHostname": null, "state": "Established", "asn": 65000, "peerAsn": 65104,
+    "v4PfxRx": 2, "estdTime": 64.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "dual-evpn", "hostname": "spine02", "vrf": "default", "peer": "swp5",
+    "peerHostname": null, "state": "Established", "asn": 65000, "peerAsn": 65202,
+    "v4PfxRx": 8, "estdTime": 63.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "dual-evpn", "hostname": "spine02", "vrf": "default", "peer": "swp6",
+    "peerHostname": null, "state": "Established", "asn": 65000, "peerAsn": 65201,
+    "v4PfxRx": 7, "estdTime": 65.0, "numChanges": 1, "timestamp": 1586630754304},
+    {"namespace": "ospf-ibgp", "hostname": "edge01", "vrf": "default", "peer": "eth1.2",
+    "peerHostname": null, "state": "Established", "asn": 65530, "peerAsn": 65000,
+    "v4PfxRx": 0, "estdTime": 58.0, "numChanges": 1, "timestamp": 1586630361088},
+    {"namespace": "ospf-ibgp", "hostname": "edge01", "vrf": "default", "peer": "eth1.3",
+    "peerHostname": null, "state": "Established", "asn": 65530, "peerAsn": 65000,
+    "v4PfxRx": 0, "estdTime": 58.0, "numChanges": 1, "timestamp": 1586630361088},
+    {"namespace": "ospf-ibgp", "hostname": "edge01", "vrf": "default", "peer": "eth1.4",
+    "peerHostname": null, "state": "Established", "asn": 65530, "peerAsn": 65001,
+    "v4PfxRx": 0, "estdTime": 59.0, "numChanges": 1, "timestamp": 1586630361088},
+    {"namespace": "ospf-ibgp", "hostname": "edge01", "vrf": "default", "peer": "eth2.2",
+    "peerHostname": null, "state": "Established", "asn": 65530, "peerAsn": 65000,
+    "v4PfxRx": 0, "estdTime": 59.0, "numChanges": 1, "timestamp": 1586630361088},
+    {"namespace": "ospf-ibgp", "hostname": "edge01", "vrf": "default", "peer": "eth2.3",
+    "peerHostname": null, "state": "Established", "asn": 65530, "peerAsn": 65000,
+    "v4PfxRx": 0, "estdTime": 59.0, "numChanges": 1, "timestamp": 1586630361088},
+    {"namespace": "ospf-ibgp", "hostname": "edge01", "vrf": "default", "peer": "eth2.4",
+    "peerHostname": null, "state": "Established", "asn": 65530, "peerAsn": 65001,
+    "v4PfxRx": 0, "estdTime": 59.0, "numChanges": 1, "timestamp": 1586630361088},
+    {"namespace": "ospf-ibgp", "hostname": "exit01", "vrf": "default", "peer": "swp1",
+    "peerHostname": null, "state": "Established", "asn": 65000, "peerAsn": 65000,
+    "v4PfxRx": 1, "estdTime": 62.0, "numChanges": 1, "timestamp": 1586630361088},
+    {"namespace": "ospf-ibgp", "hostname": "exit01", "vrf": "default", "peer": "swp2",
+    "peerHostname": null, "state": "Established", "asn": 65000, "peerAsn": 65000,
+    "v4PfxRx": 0, "estdTime": 62.0, "numChanges": 1, "timestamp": 1586630361088},
+    {"namespace": "ospf-ibgp", "hostname": "exit01", "vrf": "default", "peer": "swp5.2",
+    "peerHostname": null, "state": "Established", "asn": 65000, "peerAsn": 65530,
+    "v4PfxRx": 4, "estdTime": 59.0, "numChanges": 1, "timestamp": 1586630361088},
+    {"namespace": "ospf-ibgp", "hostname": "exit01", "vrf": "evpn-vrf", "peer": "swp5.3",
+    "peerHostname": null, "state": "Established", "asn": 65000, "peerAsn": 65530,
+    "v4PfxRx": 4, "estdTime": 59.0, "numChanges": 1, "timestamp": 1586630361088},
+    {"namespace": "ospf-ibgp", "hostname": "exit01", "vrf": "internet-vrf", "peer":
+    "swp5.4", "peerHostname": null, "state": "Established", "asn": 65001, "peerAsn":
+    65530, "v4PfxRx": 13, "estdTime": 59.0, "numChanges": 1, "timestamp": 1586630361088},
+    {"namespace": "ospf-ibgp", "hostname": "exit01", "vrf": "internet-vrf", "peer":
+    "swp6", "peerHostname": null, "state": "Established", "asn": 65001, "peerAsn":
+    25253, "v4PfxRx": 3, "estdTime": 62.0, "numChanges": 3, "timestamp": 1586630361088},
+    {"namespace": "ospf-ibgp", "hostname": "exit02", "vrf": "default", "peer": "swp1",
+    "peerHostname": null, "state": "Established", "asn": 65000, "peerAsn": 65000,
+    "v4PfxRx": 13, "estdTime": 63.0, "numChanges": 1, "timestamp": 1586630361088},
+    {"namespace": "ospf-ibgp", "hostname": "exit02", "vrf": "default", "peer": "swp2",
+    "peerHostname": null, "state": "NotEstd", "asn": 65000, "peerAsn": 0, "v4PfxRx":
+    0, "estdTime": null, "numChanges": 0, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "exit02", "vrf": "default", "peer": "swp5.2", "peerHostname":
+    null, "state": "Established", "asn": 65000, "peerAsn": 65530, "v4PfxRx": 4, "estdTime":
+    60.0, "numChanges": 1, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp",
+    "hostname": "exit02", "vrf": "evpn-vrf", "peer": "swp5.3", "peerHostname": null,
+    "state": "Established", "asn": 65000, "peerAsn": 65530, "v4PfxRx": 4, "estdTime":
+    60.0, "numChanges": 1, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp",
+    "hostname": "exit02", "vrf": "internet-vrf", "peer": "swp5.4", "peerHostname":
+    null, "state": "Established", "asn": 65001, "peerAsn": 65530, "v4PfxRx": 13, "estdTime":
+    60.0, "numChanges": 1, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp",
+    "hostname": "exit02", "vrf": "internet-vrf", "peer": "swp6", "peerHostname": null,
+    "state": "Established", "asn": 65001, "peerAsn": 25253, "v4PfxRx": 3, "estdTime":
+    63.0, "numChanges": 1, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp",
+    "hostname": "internet", "vrf": "default", "peer": "swp1", "peerHostname": null,
+    "state": "Established", "asn": 25253, "peerAsn": 65001, "v4PfxRx": 13, "estdTime":
+    62.0, "numChanges": 3, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp",
+    "hostname": "internet", "vrf": "default", "peer": "swp2", "peerHostname": null,
+    "state": "Established", "asn": 25253, "peerAsn": 65001, "v4PfxRx": 13, "estdTime":
+    62.0, "numChanges": 1, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf01", "vrf": "default", "peer": "swp1", "peerHostname": null,
+    "state": "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 0, "estdTime":
+    64.0, "numChanges": 1, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf01", "vrf": "default", "peer": "swp2", "peerHostname": null,
+    "state": "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 0, "estdTime":
+    63.0, "numChanges": 1, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf02", "vrf": "default", "peer": "swp1", "peerHostname": null,
+    "state": "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 0, "estdTime":
+    63.0, "numChanges": 1, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf02", "vrf": "default", "peer": "swp2", "peerHostname": null,
+    "state": "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 0, "estdTime":
+    62.0, "numChanges": 1, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf03", "vrf": "default", "peer": "swp1", "peerHostname": null,
+    "state": "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 0, "estdTime":
+    61.0, "numChanges": 1, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf03", "vrf": "default", "peer": "swp2", "peerHostname": null,
+    "state": "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 0, "estdTime":
+    62.0, "numChanges": 1, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf04", "vrf": "default", "peer": "swp1", "peerHostname": null,
+    "state": "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 0, "estdTime":
+    63.0, "numChanges": 1, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf04", "vrf": "default", "peer": "swp2", "peerHostname": null,
+    "state": "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 0, "estdTime":
+    62.0, "numChanges": 1, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp",
+    "hostname": "spine01", "vrf": "default", "peer": "swp1", "peerHostname": null,
+    "state": "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 0, "estdTime":
+    65.0, "numChanges": 1, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp",
+    "hostname": "spine01", "vrf": "default", "peer": "swp2", "peerHostname": null,
+    "state": "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 0, "estdTime":
+    63.0, "numChanges": 1, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp",
+    "hostname": "spine01", "vrf": "default", "peer": "swp3", "peerHostname": null,
+    "state": "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 0, "estdTime":
+    62.0, "numChanges": 1, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp",
+    "hostname": "spine01", "vrf": "default", "peer": "swp4", "peerHostname": null,
+    "state": "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 0, "estdTime":
+    64.0, "numChanges": 1, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp",
+    "hostname": "spine01", "vrf": "default", "peer": "swp5", "peerHostname": null,
+    "state": "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 13, "estdTime":
+    63.0, "numChanges": 3, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp",
+    "hostname": "spine01", "vrf": "default", "peer": "swp6", "peerHostname": null,
+    "state": "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 13, "estdTime":
+    63.0, "numChanges": 1, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp",
+    "hostname": "spine02", "vrf": "default", "peer": "swp1", "peerHostname": null,
+    "state": "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 0, "estdTime":
+    63.0, "numChanges": 1, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp",
+    "hostname": "spine02", "vrf": "default", "peer": "swp2", "peerHostname": null,
+    "state": "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 0, "estdTime":
+    60.0, "numChanges": 1, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp",
+    "hostname": "spine02", "vrf": "default", "peer": "swp3", "peerHostname": null,
+    "state": "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 0, "estdTime":
+    62.0, "numChanges": 1, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp",
+    "hostname": "spine02", "vrf": "default", "peer": "swp4", "peerHostname": null,
+    "state": "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 0, "estdTime":
+    61.0, "numChanges": 1, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp",
+    "hostname": "spine02", "vrf": "default", "peer": "swp6", "peerHostname": null,
+    "state": "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 13, "estdTime":
+    62.0, "numChanges": 1, "timestamp": 1586630361088}]'
 - command: bgp show --columns=hostname --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out
+  data-directory: tests/data/multidc/parquet-out/
   marks: bgp show
-  output: '[{"hostname": "edge01", "timestamp": 1586403475456, "namespace": "dual-bgp",
-    "vrf": "default", "peer": "eth1.2"}, {"hostname": "edge01", "timestamp": 1586403475456,
-    "namespace": "dual-bgp", "vrf": "default", "peer": "eth1.4"}, {"hostname": "edge01",
-    "timestamp": 1586403475456, "namespace": "dual-bgp", "vrf": "default", "peer":
-    "eth2.2"}, {"hostname": "edge01", "timestamp": 1586403475456, "namespace": "dual-bgp",
-    "vrf": "default", "peer": "eth2.4"}, {"hostname": "exit01", "timestamp": 1586403475456,
-    "namespace": "dual-bgp", "vrf": "default", "peer": "10.127.0.8"}, {"hostname":
-    "exit01", "timestamp": 1586403475456, "namespace": "dual-bgp", "vrf": "default",
-    "peer": "10.127.1.8"}, {"hostname": "exit01", "timestamp": 1586403475456, "namespace":
-    "dual-bgp", "vrf": "default", "peer": "169.254.254.2"}, {"hostname": "exit01",
-    "timestamp": 1586403475456, "namespace": "dual-bgp", "vrf": "internet-vrf", "peer":
-    "169.254.127.0"}, {"hostname": "exit01", "timestamp": 1586403475456, "namespace":
-    "dual-bgp", "vrf": "internet-vrf", "peer": "169.254.254.10"}, {"hostname": "exit02",
-    "timestamp": 1586403475456, "namespace": "dual-bgp", "vrf": "default", "peer":
-    "10.127.0.10"}, {"hostname": "exit02", "timestamp": 1586403475456, "namespace":
-    "dual-bgp", "vrf": "default", "peer": "10.127.1.10"}, {"hostname": "exit02", "timestamp":
-    1586403475456, "namespace": "dual-bgp", "vrf": "default", "peer": "169.254.253.2"},
-    {"hostname": "exit02", "timestamp": 1586403475456, "namespace": "dual-bgp", "vrf":
-    "internet-vrf", "peer": "169.254.253.10"}, {"hostname": "exit02", "timestamp":
-    1586403475456, "namespace": "dual-bgp", "vrf": "internet-vrf", "peer": "169.54.127.1"},
-    {"hostname": "internet", "timestamp": 1586403475456, "namespace": "dual-bgp",
-    "vrf": "default", "peer": "swp1"}, {"hostname": "internet", "timestamp": 1586403475456,
-    "namespace": "dual-bgp", "vrf": "default", "peer": "swp2"}, {"hostname": "leaf01",
-    "timestamp": 1586403475456, "namespace": "dual-bgp", "vrf": "default", "peer":
-    "10.127.0.0"}, {"hostname": "leaf01", "timestamp": 1586403475456, "namespace":
-    "dual-bgp", "vrf": "default", "peer": "10.127.1.0"}, {"hostname": "leaf02", "timestamp":
-    1586403475456, "namespace": "dual-bgp", "vrf": "default", "peer": "10.127.0.2"},
-    {"hostname": "leaf02", "timestamp": 1586403475456, "namespace": "dual-bgp", "vrf":
-    "default", "peer": "10.127.1.2"}, {"hostname": "leaf03", "timestamp": 1586403475456,
-    "namespace": "dual-bgp", "vrf": "default", "peer": "10.127.0.4"}, {"hostname":
-    "leaf03", "timestamp": 1586403475456, "namespace": "dual-bgp", "vrf": "default",
-    "peer": "10.127.1.4"}, {"hostname": "leaf04", "timestamp": 1586403475456, "namespace":
-    "dual-bgp", "vrf": "default", "peer": "10.127.0.6"}, {"hostname": "leaf04", "timestamp":
-    1586403475456, "namespace": "dual-bgp", "vrf": "default", "peer": "10.127.1.6"},
-    {"hostname": "spine01", "timestamp": 1586403475456, "namespace": "dual-bgp", "vrf":
-    "default", "peer": "10.127.0.1"}, {"hostname": "spine01", "timestamp": 1586403475456,
-    "namespace": "dual-bgp", "vrf": "default", "peer": "10.127.0.11"}, {"hostname":
-    "spine01", "timestamp": 1586403475456, "namespace": "dual-bgp", "vrf": "default",
-    "peer": "10.127.0.3"}, {"hostname": "spine01", "timestamp": 1586403475456, "namespace":
-    "dual-bgp", "vrf": "default", "peer": "10.127.0.5"}, {"hostname": "spine01", "timestamp":
-    1586403475456, "namespace": "dual-bgp", "vrf": "default", "peer": "10.127.0.7"},
-    {"hostname": "spine01", "timestamp": 1586403475456, "namespace": "dual-bgp", "vrf":
-    "default", "peer": "10.127.0.9"}, {"hostname": "spine02", "timestamp": 1586403475456,
-    "namespace": "dual-bgp", "vrf": "default", "peer": "10.127.1.1"}, {"hostname":
-    "spine02", "timestamp": 1586403475456, "namespace": "dual-bgp", "vrf": "default",
-    "peer": "10.127.1.11"}, {"hostname": "spine02", "timestamp": 1586403475456, "namespace":
-    "dual-bgp", "vrf": "default", "peer": "10.127.1.3"}, {"hostname": "spine02", "timestamp":
-    1586403475456, "namespace": "dual-bgp", "vrf": "default", "peer": "10.127.1.5"},
-    {"hostname": "spine02", "timestamp": 1586403475456, "namespace": "dual-bgp", "vrf":
-    "default", "peer": "10.127.1.7"}, {"hostname": "spine02", "timestamp": 1586403475456,
-    "namespace": "dual-bgp", "vrf": "default", "peer": "10.127.1.9"}]'
+  output: '[{"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
+    {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "internet"}, {"hostname": "internet"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "edge01"}, {"hostname":
+    "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
+    {"hostname": "edge01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "internet"},
+    {"hostname": "internet"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}]'
 - command: bgp summarize --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out
+  data-directory: tests/data/multidc/parquet-out/
   marks: bgp summarize
-  output: '[{"dual-bgp": 10}, {"dual-bgp": 36}, {"dual-bgp": 9}, {"dual-bgp": 10},
-    {"dual-bgp": {"default": 32, "internet-vrf": 4}}, {"dual-bgp": ["ipv4"]}, {"dual-bgp":
-    ["0:01:04", "0:01:14", "0:01:07"]}, {"dual-bgp": [0, 16, 5.5]}, {"dual-bgp": [0,
-    0, 0]}, {"dual-bgp": [0, 0, 0]}, {"dual-bgp": [12, 25, 18]}, {"dual-bgp": [12,
-    25, 18]}, {"dual-bgp": 2}]'
+  xfail:
+    error: '"Error running command: \"[''evpnReceived'', ''v4Advertised'', ''v6Received'',
+      ''v4Received'', ''evpnRecived'', ''evpnAdvertised'', ''v6Advertised''] not in
+      index\"\n------------------------------------------------------------\n------------------------------------------------------------"'
+    reason: uncaught exception
 - command: bgp unique --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out
+  data-directory: tests/data/multidc/parquet-out/
   error:
     error: '[{"error": "ERROR: Must specify columns with unique"}]'
   marks: bgp unique
 - command: bgp unique --columns=hostname --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out
+  data-directory: tests/data/multidc/parquet-out/
   marks: bgp unique
-  output: '[{"hostname": "edge01", "count": 4}, {"hostname": "exit01", "count": 5},
-    {"hostname": "exit02", "count": 5}, {"hostname": "internet", "count": 2}, {"hostname":
-    "leaf01", "count": 2}, {"hostname": "leaf02", "count": 2}, {"hostname": "leaf03",
-    "count": 2}, {"hostname": "leaf04", "count": 2}, {"hostname": "spine01", "count":
-    6}, {"hostname": "spine02", "count": 6}]'
+  output: '[{"hostname": "leaf04", "count": 4}, {"hostname": "leaf03", "count": 4},
+    {"hostname": "leaf02", "count": 4}, {"hostname": "leaf01", "count": 4}, {"hostname":
+    "internet", "count": 4}, {"hostname": "spine02", "count": 11}, {"hostname": "spine01",
+    "count": 12}, {"hostname": "exit02", "count": 12}, {"hostname": "exit01", "count":
+    12}, {"hostname": "edge01", "count": 12}]'

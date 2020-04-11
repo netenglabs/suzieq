@@ -1,22 +1,22 @@
 description: 'Testing verbs for topmem: show summarize unique'
 tests:
 - command: topmem show --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out
+  data-directory: tests/data/multidc/parquet-out/
   marks: topmem show
   output: '[]'
 - command: topmem show --columns=hostname --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out
+  data-directory: tests/data/multidc/parquet-out/
   marks: topmem show
   output: '[]'
 - command: topmem summarize --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out
+  data-directory: tests/data/multidc/parquet-out/
   marks: topmem summarize
   output: '[]'
 - command: topmem summarize --namespace=dual-evpn --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out
+  data-directory: tests/data/multidc/parquet-out/
   marks: topmem summarize
   output: '[]'
 - command: topmem unique --columns=hostname --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out
+  data-directory: tests/data/multidc/parquet-out/
   marks: topmem unique
   output: '[]'

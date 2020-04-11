@@ -82,6 +82,11 @@ def test_summary_exception(setup_nubia):
 good_commands = commands[:]
 
 column_commands = good_commands[:]
+column_commands[2] = pytest.param(
+    column_commands[2],
+    marks=pytest.mark.xfail(reason='bug #72',
+                            raises=KeyError)
+)
 
 
 @pytest.mark.parametrize("cmd", column_commands)
@@ -135,10 +140,6 @@ def test_start_time_show_filter(setup_nubia, cmd):
 
 
 show_columns_commands = good_commands[:]
-show_columns_commands[10] = pytest.param(
-    column_commands[10],
-    marks=pytest.mark.xfail(reason='bug #65',
-                            raises=KeyError))  # RouteCmd
 
 
 @pytest.mark.filter

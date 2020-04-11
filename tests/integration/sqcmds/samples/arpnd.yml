@@ -1,294 +1,912 @@
 description: 'Testing verbs for arpnd: show summarize unique'
 tests:
 - command: arpnd show --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out
+  data-directory: tests/data/multidc/parquet-out/
   marks: arpnd show
-  output: '[{"namespace": "dual-bgp", "hostname": "edge01", "ipAddress": "169.254.253.1",
-    "oif": "eth2.2", "macaddr": "52:54:00:8b:7e:95", "state": "reachable", "offload":
-    false, "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "edge01",
-    "ipAddress": "169.254.253.9", "oif": "eth2.4", "macaddr": "52:54:00:8b:7e:95",
-    "state": "reachable", "offload": false, "timestamp": 1586403475456}, {"namespace":
-    "dual-bgp", "hostname": "edge01", "ipAddress": "169.254.254.1", "oif": "eth1.2",
-    "macaddr": "52:54:00:91:70:0a", "state": "reachable", "offload": false, "timestamp":
-    1586403475456}, {"namespace": "dual-bgp", "hostname": "edge01", "ipAddress": "169.254.254.9",
-    "oif": "eth1.4", "macaddr": "52:54:00:91:70:0a", "state": "reachable", "offload":
-    false, "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "edge01",
-    "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:f0:3f:36", "state":
-    "reachable", "offload": false, "timestamp": 1586403475456}, {"namespace": "dual-bgp",
-    "hostname": "exit01", "ipAddress": "10.127.0.8", "oif": "swp1", "macaddr": "52:54:00:0e:9b:7c",
-    "state": "reachable", "offload": false, "timestamp": 1586403475456}, {"namespace":
-    "dual-bgp", "hostname": "exit01", "ipAddress": "10.127.1.8", "oif": "swp2", "macaddr":
-    "52:54:00:d1:c3:b0", "state": "reachable", "offload": false, "timestamp": 1586403475456},
-    {"namespace": "dual-bgp", "hostname": "exit01", "ipAddress": "169.254.127.0",
-    "oif": "swp6", "macaddr": "52:54:00:19:ae:4d", "state": "reachable", "offload":
-    false, "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "exit01",
-    "ipAddress": "169.254.254.10", "oif": "swp5.4", "macaddr": "52:54:00:f2:c9:30",
-    "state": "reachable", "offload": false, "timestamp": 1586403475456}, {"namespace":
-    "dual-bgp", "hostname": "exit01", "ipAddress": "169.254.254.2", "oif": "swp5.2",
-    "macaddr": "52:54:00:f2:c9:30", "state": "reachable", "offload": false, "timestamp":
-    1586403475456}, {"namespace": "dual-bgp", "hostname": "exit01", "ipAddress": "192.168.121.1",
-    "oif": "eth0", "macaddr": "52:54:00:f0:3f:36", "state": "reachable", "offload":
-    false, "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "exit02",
-    "ipAddress": "10.127.0.10", "oif": "swp1", "macaddr": "52:54:00:5e:33:23", "state":
-    "reachable", "offload": false, "timestamp": 1586403475456}, {"namespace": "dual-bgp",
-    "hostname": "exit02", "ipAddress": "10.127.1.10", "oif": "swp2", "macaddr": "52:54:00:da:7f:72",
-    "state": "reachable", "offload": false, "timestamp": 1586403475456}, {"namespace":
-    "dual-bgp", "hostname": "exit02", "ipAddress": "169.254.127.2", "oif": "swp6",
-    "macaddr": "52:54:00:bf:a1:f2", "state": "reachable", "offload": false, "timestamp":
-    1586403475456}, {"namespace": "dual-bgp", "hostname": "exit02", "ipAddress": "169.254.253.10",
-    "oif": "swp5.4", "macaddr": "52:54:00:a4:f3:13", "state": "reachable", "offload":
-    false, "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "exit02",
-    "ipAddress": "169.254.253.2", "oif": "swp5.2", "macaddr": "52:54:00:a4:f3:13",
-    "state": "reachable", "offload": false, "timestamp": 1586403475456}, {"namespace":
-    "dual-bgp", "hostname": "exit02", "ipAddress": "192.168.121.1", "oif": "eth0",
-    "macaddr": "52:54:00:f0:3f:36", "state": "reachable", "offload": false, "timestamp":
-    1586403475456}, {"namespace": "dual-bgp", "hostname": "internet", "ipAddress":
-    "169.254.127.1", "oif": "swp1", "macaddr": "52:54:00:ef:b4:f8", "state": "reachable",
-    "offload": false, "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname":
-    "internet", "ipAddress": "169.254.127.3", "oif": "swp2", "macaddr": "52:54:00:e0:86:0b",
-    "state": "reachable", "offload": false, "timestamp": 1586403475456}, {"namespace":
-    "dual-bgp", "hostname": "internet", "ipAddress": "192.168.121.1", "oif": "eth0",
-    "macaddr": "52:54:00:f0:3f:36", "state": "reachable", "offload": false, "timestamp":
-    1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf01", "ipAddress": "10.127.0.0",
-    "oif": "swp1", "macaddr": "52:54:00:12:cb:34", "state": "reachable", "offload":
-    false, "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf01",
-    "ipAddress": "10.127.1.0", "oif": "swp2", "macaddr": "52:54:00:f4:57:f0", "state":
-    "reachable", "offload": false, "timestamp": 1586403475456}, {"namespace": "dual-bgp",
+  output: '[{"namespace": "dual-evpn", "hostname": "edge01", "ipAddress": "169.254.253.1",
+    "oif": "eth2.2", "macaddr": "52:54:00:27:20:85", "state": "reachable", "offload":
+    false, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname": "edge01",
+    "ipAddress": "169.254.253.5", "oif": "eth2.3", "macaddr": "52:54:00:27:20:85",
+    "state": "reachable", "offload": false, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "edge01", "ipAddress": "169.254.253.9", "oif": "eth2.4",
+    "macaddr": "52:54:00:27:20:85", "state": "reachable", "offload": false, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "edge01", "ipAddress":
+    "169.254.254.1", "oif": "eth1.2", "macaddr": "52:54:00:4b:6b:f0", "state": "reachable",
+    "offload": false, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "edge01", "ipAddress": "169.254.254.5", "oif": "eth1.3", "macaddr": "52:54:00:4b:6b:f0",
+    "state": "reachable", "offload": false, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "edge01", "ipAddress": "169.254.254.9", "oif": "eth1.4",
+    "macaddr": "52:54:00:4b:6b:f0", "state": "reachable", "offload": false, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "edge01", "ipAddress":
+    "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:82:d3:ec", "state": "reachable",
+    "offload": false, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "exit01", "ipAddress": "169.254.0.1", "oif": "swp1", "macaddr": "52:54:00:46:b2:f4",
+    "state": "permanent", "offload": false, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "exit01", "ipAddress": "169.254.0.1", "oif": "swp2",
+    "macaddr": "52:54:00:32:d7:ae", "state": "permanent", "offload": false, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "exit01", "ipAddress":
+    "169.254.0.1", "oif": "swp6", "macaddr": "52:54:00:3c:d0:ee", "state": "permanent",
+    "offload": false, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "exit01", "ipAddress": "169.254.127.0", "oif": "swp6", "macaddr": "52:54:00:3c:d0:ee",
+    "state": "reachable", "offload": false, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "exit01", "ipAddress": "169.254.254.10", "oif": "swp5.4",
+    "macaddr": "52:54:00:95:c5:19", "state": "reachable", "offload": false, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "exit01", "ipAddress":
+    "169.254.254.2", "oif": "swp5.2", "macaddr": "52:54:00:95:c5:19", "state": "reachable",
+    "offload": false, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "exit01", "ipAddress": "169.254.254.6", "oif": "swp5.3", "macaddr": "52:54:00:95:c5:19",
+    "state": "reachable", "offload": false, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "exit01", "ipAddress": "172.16.1.101", "oif": "vlan13-v0",
+    "macaddr": "52:54:00:8a:b9:2c", "state": "reachable", "offload": false, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "exit01", "ipAddress":
+    "172.16.1.101", "oif": "vlan13", "macaddr": "52:54:00:8a:b9:2c", "state": "noarp",
+    "offload": true, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "exit01", "ipAddress": "172.16.1.103", "oif": "vlan13-v0", "macaddr": "52:54:00:49:32:ce",
+    "state": "reachable", "offload": false, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "exit01", "ipAddress": "172.16.1.103", "oif": "vlan13",
+    "macaddr": "52:54:00:49:32:ce", "state": "noarp", "offload": true, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "exit01", "ipAddress":
+    "172.16.1.12", "oif": "vlan13", "macaddr": "a2:1b:bc:95:bf:cf", "state": "noarp",
+    "offload": true, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "exit01", "ipAddress": "172.16.2.102", "oif": "vlan24", "macaddr": "52:54:00:2f:a6:b8",
+    "state": "noarp", "offload": true, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "exit01", "ipAddress": "172.16.2.104", "oif": "vlan24",
+    "macaddr": "52:54:00:96:31:3c", "state": "noarp", "offload": true, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "exit01", "ipAddress":
+    "172.16.2.12", "oif": "vlan24", "macaddr": "a2:1b:bc:95:bf:cf", "state": "noarp",
+    "offload": true, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "exit01", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:82:d3:ec",
+    "state": "reachable", "offload": false, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "exit02", "ipAddress": "169.254.0.1", "oif": "swp1",
+    "macaddr": "52:54:00:6c:5e:93", "state": "permanent", "offload": false, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "exit02", "ipAddress":
+    "169.254.0.1", "oif": "swp2", "macaddr": "52:54:00:b9:6d:87", "state": "permanent",
+    "offload": false, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "exit02", "ipAddress": "169.254.0.1", "oif": "swp6", "macaddr": "52:54:00:42:f7:ff",
+    "state": "permanent", "offload": false, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "exit02", "ipAddress": "169.254.127.2", "oif": "swp6",
+    "macaddr": "52:54:00:42:f7:ff", "state": "reachable", "offload": false, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "exit02", "ipAddress":
+    "169.254.253.10", "oif": "swp5.4", "macaddr": "52:54:00:04:36:24", "state": "reachable",
+    "offload": false, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "exit02", "ipAddress": "169.254.253.2", "oif": "swp5.2", "macaddr": "52:54:00:04:36:24",
+    "state": "reachable", "offload": false, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "exit02", "ipAddress": "169.254.253.6", "oif": "swp5.3",
+    "macaddr": "52:54:00:04:36:24", "state": "reachable", "offload": false, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "exit02", "ipAddress":
+    "172.16.1.101", "oif": "vlan13-v0", "macaddr": "52:54:00:8a:b9:2c", "state": "reachable",
+    "offload": false, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "exit02", "ipAddress": "172.16.1.101", "oif": "vlan13", "macaddr": "52:54:00:8a:b9:2c",
+    "state": "noarp", "offload": true, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "exit02", "ipAddress": "172.16.1.103", "oif": "vlan13-v0",
+    "macaddr": "52:54:00:49:32:ce", "state": "reachable", "offload": false, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "exit02", "ipAddress":
+    "172.16.1.103", "oif": "vlan13", "macaddr": "52:54:00:49:32:ce", "state": "noarp",
+    "offload": true, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "exit02", "ipAddress": "172.16.1.11", "oif": "vlan13", "macaddr": "22:aa:54:46:52:9a",
+    "state": "noarp", "offload": true, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "exit02", "ipAddress": "172.16.2.102", "oif": "vlan24",
+    "macaddr": "52:54:00:2f:a6:b8", "state": "noarp", "offload": true, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "exit02", "ipAddress":
+    "172.16.2.104", "oif": "vlan24", "macaddr": "52:54:00:96:31:3c", "state": "noarp",
+    "offload": true, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "exit02", "ipAddress": "172.16.2.11", "oif": "vlan24", "macaddr": "22:aa:54:46:52:9a",
+    "state": "noarp", "offload": true, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "exit02", "ipAddress": "192.168.121.1", "oif": "eth0",
+    "macaddr": "52:54:00:82:d3:ec", "state": "reachable", "offload": false, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "internet", "ipAddress":
+    "169.254.0.1", "oif": "swp1", "macaddr": "52:54:00:61:d6:2e", "state": "permanent",
+    "offload": false, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "internet", "ipAddress": "169.254.0.1", "oif": "swp2", "macaddr": "52:54:00:ea:a6:3e",
+    "state": "permanent", "offload": false, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "internet", "ipAddress": "169.254.127.1", "oif": "swp1",
+    "macaddr": "52:54:00:61:d6:2e", "state": "reachable", "offload": false, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "internet", "ipAddress":
+    "169.254.127.3", "oif": "swp2", "macaddr": "52:54:00:ea:a6:3e", "state": "reachable",
+    "offload": false, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "internet", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:82:d3:ec",
+    "state": "reachable", "offload": false, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "leaf01", "ipAddress": "169.254.0.1", "oif": "swp1",
+    "macaddr": "52:54:00:57:b2:46", "state": "permanent", "offload": false, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "leaf01", "ipAddress":
+    "169.254.0.1", "oif": "swp2", "macaddr": "52:54:00:c0:0e:7b", "state": "permanent",
+    "offload": false, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "leaf01", "ipAddress": "169.254.1.2", "oif": "peerlink.4094", "macaddr": "52:54:00:7b:5e:cd",
+    "state": "reachable", "offload": false, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "leaf01", "ipAddress": "172.16.1.1", "oif": "vlan13",
+    "macaddr": "44:39:39:ff:00:13", "state": "noarp", "offload": true, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "leaf01", "ipAddress":
+    "172.16.1.101", "oif": "vlan13", "macaddr": "52:54:00:8a:b9:2c", "state": "reachable",
+    "offload": false, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "leaf01", "ipAddress": "172.16.1.103", "oif": "vlan13", "macaddr": "52:54:00:49:32:ce",
+    "state": "noarp", "offload": true, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "leaf01", "ipAddress": "172.16.1.11", "oif": "vlan13",
+    "macaddr": "22:aa:54:46:52:9a", "state": "noarp", "offload": true, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "leaf01", "ipAddress":
+    "172.16.1.12", "oif": "vlan13", "macaddr": "a2:1b:bc:95:bf:cf", "state": "noarp",
+    "offload": true, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "leaf01", "ipAddress": "172.16.2.1", "oif": "vlan24", "macaddr": "44:39:39:ff:00:24",
+    "state": "noarp", "offload": true, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "leaf01", "ipAddress": "172.16.2.102", "oif": "vlan24",
+    "macaddr": "52:54:00:2f:a6:b8", "state": "reachable", "offload": false, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "leaf01", "ipAddress":
+    "172.16.2.104", "oif": "vlan24", "macaddr": "52:54:00:96:31:3c", "state": "noarp",
+    "offload": true, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "leaf01", "ipAddress": "172.16.2.11", "oif": "vlan24", "macaddr": "22:aa:54:46:52:9a",
+    "state": "noarp", "offload": true, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "leaf01", "ipAddress": "172.16.2.12", "oif": "vlan24",
+    "macaddr": "a2:1b:bc:95:bf:cf", "state": "noarp", "offload": true, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "leaf01", "ipAddress":
+    "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:82:d3:ec", "state": "reachable",
+    "offload": false, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "leaf02", "ipAddress": "169.254.0.1", "oif": "swp1", "macaddr": "52:54:00:17:15:be",
+    "state": "permanent", "offload": false, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "leaf02", "ipAddress": "169.254.0.1", "oif": "swp2",
+    "macaddr": "52:54:00:a4:bc:88", "state": "permanent", "offload": false, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "leaf02", "ipAddress":
+    "169.254.1.1", "oif": "peerlink.4094", "macaddr": "52:54:00:cd:91:a1", "state":
+    "reachable", "offload": false, "timestamp": 1586630754304}, {"namespace": "dual-evpn",
+    "hostname": "leaf02", "ipAddress": "172.16.1.1", "oif": "vlan13", "macaddr": "44:39:39:ff:00:13",
+    "state": "noarp", "offload": true, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "leaf02", "ipAddress": "172.16.1.101", "oif": "vlan13",
+    "macaddr": "52:54:00:8a:b9:2c", "state": "reachable", "offload": false, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "leaf02", "ipAddress":
+    "172.16.1.103", "oif": "vlan13", "macaddr": "52:54:00:49:32:ce", "state": "noarp",
+    "offload": true, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "leaf02", "ipAddress": "172.16.1.11", "oif": "vlan13", "macaddr": "22:aa:54:46:52:9a",
+    "state": "noarp", "offload": true, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "leaf02", "ipAddress": "172.16.1.12", "oif": "vlan13",
+    "macaddr": "a2:1b:bc:95:bf:cf", "state": "noarp", "offload": true, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "leaf02", "ipAddress":
+    "172.16.2.1", "oif": "vlan24", "macaddr": "44:39:39:ff:00:24", "state": "noarp",
+    "offload": true, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "leaf02", "ipAddress": "172.16.2.102", "oif": "vlan24", "macaddr": "52:54:00:2f:a6:b8",
+    "state": "reachable", "offload": false, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "leaf02", "ipAddress": "172.16.2.104", "oif": "vlan24",
+    "macaddr": "52:54:00:96:31:3c", "state": "noarp", "offload": true, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "leaf02", "ipAddress":
+    "172.16.2.11", "oif": "vlan24", "macaddr": "22:aa:54:46:52:9a", "state": "noarp",
+    "offload": true, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "leaf02", "ipAddress": "172.16.2.12", "oif": "vlan24", "macaddr": "a2:1b:bc:95:bf:cf",
+    "state": "noarp", "offload": true, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "leaf02", "ipAddress": "192.168.121.1", "oif": "eth0",
+    "macaddr": "52:54:00:82:d3:ec", "state": "reachable", "offload": false, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "leaf03", "ipAddress":
+    "169.254.0.1", "oif": "swp1", "macaddr": "52:54:00:bf:f5:c7", "state": "permanent",
+    "offload": false, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "leaf03", "ipAddress": "169.254.0.1", "oif": "swp2", "macaddr": "52:54:00:f2:5b:85",
+    "state": "permanent", "offload": false, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "leaf03", "ipAddress": "169.254.1.2", "oif": "peerlink.4094",
+    "macaddr": "52:54:00:86:5b:ea", "state": "reachable", "offload": false, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "leaf03", "ipAddress":
+    "172.16.1.1", "oif": "vlan13", "macaddr": "44:39:39:ff:00:13", "state": "noarp",
+    "offload": true, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "leaf03", "ipAddress": "172.16.1.101", "oif": "vlan13", "macaddr": "52:54:00:8a:b9:2c",
+    "state": "noarp", "offload": true, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "leaf03", "ipAddress": "172.16.1.103", "oif": "vlan13",
+    "macaddr": "52:54:00:49:32:ce", "state": "reachable", "offload": false, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "leaf03", "ipAddress":
+    "172.16.1.11", "oif": "vlan13", "macaddr": "22:aa:54:46:52:9a", "state": "noarp",
+    "offload": true, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "leaf03", "ipAddress": "172.16.1.12", "oif": "vlan13", "macaddr": "a2:1b:bc:95:bf:cf",
+    "state": "noarp", "offload": true, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "leaf03", "ipAddress": "172.16.2.1", "oif": "vlan24",
+    "macaddr": "44:39:39:ff:00:24", "state": "noarp", "offload": true, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "leaf03", "ipAddress":
+    "172.16.2.102", "oif": "vlan24", "macaddr": "52:54:00:2f:a6:b8", "state": "noarp",
+    "offload": true, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "leaf03", "ipAddress": "172.16.2.104", "oif": "vlan24", "macaddr": "52:54:00:96:31:3c",
+    "state": "reachable", "offload": false, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "leaf03", "ipAddress": "172.16.2.11", "oif": "vlan24",
+    "macaddr": "22:aa:54:46:52:9a", "state": "noarp", "offload": true, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "leaf03", "ipAddress":
+    "172.16.2.12", "oif": "vlan24", "macaddr": "a2:1b:bc:95:bf:cf", "state": "noarp",
+    "offload": true, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "leaf03", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:82:d3:ec",
+    "state": "reachable", "offload": false, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "leaf04", "ipAddress": "169.254.0.1", "oif": "swp1",
+    "macaddr": "52:54:00:11:d1:cd", "state": "permanent", "offload": false, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "leaf04", "ipAddress":
+    "169.254.0.1", "oif": "swp2", "macaddr": "52:54:00:0c:e8:16", "state": "permanent",
+    "offload": false, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "leaf04", "ipAddress": "169.254.1.1", "oif": "peerlink.4094", "macaddr": "52:54:00:e3:a2:77",
+    "state": "reachable", "offload": false, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "leaf04", "ipAddress": "172.16.1.1", "oif": "vlan13",
+    "macaddr": "44:39:39:ff:00:13", "state": "noarp", "offload": true, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "leaf04", "ipAddress":
+    "172.16.1.101", "oif": "vlan13", "macaddr": "52:54:00:8a:b9:2c", "state": "noarp",
+    "offload": true, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "leaf04", "ipAddress": "172.16.1.103", "oif": "vlan13", "macaddr": "52:54:00:49:32:ce",
+    "state": "reachable", "offload": false, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "leaf04", "ipAddress": "172.16.1.11", "oif": "vlan13",
+    "macaddr": "22:aa:54:46:52:9a", "state": "noarp", "offload": true, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "leaf04", "ipAddress":
+    "172.16.1.12", "oif": "vlan13", "macaddr": "a2:1b:bc:95:bf:cf", "state": "noarp",
+    "offload": true, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "leaf04", "ipAddress": "172.16.2.1", "oif": "vlan24", "macaddr": "44:39:39:ff:00:24",
+    "state": "noarp", "offload": true, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "leaf04", "ipAddress": "172.16.2.102", "oif": "vlan24",
+    "macaddr": "52:54:00:2f:a6:b8", "state": "noarp", "offload": true, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "leaf04", "ipAddress":
+    "172.16.2.104", "oif": "vlan24", "macaddr": "52:54:00:96:31:3c", "state": "reachable",
+    "offload": false, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "leaf04", "ipAddress": "172.16.2.11", "oif": "vlan24", "macaddr": "22:aa:54:46:52:9a",
+    "state": "noarp", "offload": true, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "leaf04", "ipAddress": "172.16.2.12", "oif": "vlan24",
+    "macaddr": "a2:1b:bc:95:bf:cf", "state": "noarp", "offload": true, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "leaf04", "ipAddress":
+    "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:82:d3:ec", "state": "reachable",
+    "offload": false, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "server101", "ipAddress": "172.16.1.1", "oif": "bond0", "macaddr": "44:39:39:ff:00:13",
+    "state": "reachable", "offload": false, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "server101", "ipAddress": "172.16.1.103", "oif": "bond0",
+    "macaddr": "52:54:00:49:32:ce", "state": "reachable", "offload": false, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "server101", "ipAddress":
+    "172.16.1.11", "oif": "bond0", "macaddr": "22:aa:54:46:52:9a", "state": "reachable",
+    "offload": false, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "server101", "ipAddress": "172.16.1.12", "oif": "bond0", "macaddr": "a2:1b:bc:95:bf:cf",
+    "state": "reachable", "offload": false, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "server101", "ipAddress": "192.168.121.1", "oif": "eth0",
+    "macaddr": "52:54:00:82:d3:ec", "state": "reachable", "offload": false, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "server102", "ipAddress":
+    "172.16.2.1", "oif": "bond0", "macaddr": "44:39:39:ff:00:24", "state": "reachable",
+    "offload": false, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "server102", "ipAddress": "172.16.2.104", "oif": "bond0", "macaddr": "52:54:00:96:31:3c",
+    "state": "reachable", "offload": false, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "server102", "ipAddress": "172.16.2.11", "oif": "bond0",
+    "macaddr": "22:aa:54:46:52:9a", "state": "reachable", "offload": false, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "server102", "ipAddress":
+    "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:82:d3:ec", "state": "reachable",
+    "offload": false, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "server103", "ipAddress": "172.16.1.1", "oif": "bond0", "macaddr": "44:39:39:ff:00:13",
+    "state": "reachable", "offload": false, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "server103", "ipAddress": "172.16.1.101", "oif": "bond0",
+    "macaddr": "52:54:00:8a:b9:2c", "state": "reachable", "offload": false, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "server103", "ipAddress":
+    "172.16.1.11", "oif": "bond0", "macaddr": "22:aa:54:46:52:9a", "state": "reachable",
+    "offload": false, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "server103", "ipAddress": "172.16.1.12", "oif": "bond0", "macaddr": "a2:1b:bc:95:bf:cf",
+    "state": "reachable", "offload": false, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "server103", "ipAddress": "192.168.121.1", "oif": "eth0",
+    "macaddr": "52:54:00:82:d3:ec", "state": "reachable", "offload": false, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "server104", "ipAddress":
+    "172.16.2.1", "oif": "bond0", "macaddr": "44:39:39:ff:00:24", "state": "reachable",
+    "offload": false, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "server104", "ipAddress": "172.16.2.102", "oif": "bond0", "macaddr": "52:54:00:2f:a6:b8",
+    "state": "reachable", "offload": false, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "server104", "ipAddress": "172.16.2.11", "oif": "bond0",
+    "macaddr": "22:aa:54:46:52:9a", "state": "reachable", "offload": false, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "server104", "ipAddress":
+    "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:82:d3:ec", "state": "reachable",
+    "offload": false, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "spine01", "ipAddress": "169.254.0.1", "oif": "swp1", "macaddr": "52:54:00:d4:94:80",
+    "state": "permanent", "offload": false, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "spine01", "ipAddress": "169.254.0.1", "oif": "swp2",
+    "macaddr": "52:54:00:87:52:19", "state": "permanent", "offload": false, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "spine01", "ipAddress":
+    "169.254.0.1", "oif": "swp3", "macaddr": "52:54:00:1e:6f:7e", "state": "permanent",
+    "offload": false, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "spine01", "ipAddress": "169.254.0.1", "oif": "swp4", "macaddr": "52:54:00:20:04:de",
+    "state": "permanent", "offload": false, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "spine01", "ipAddress": "169.254.0.1", "oif": "swp5",
+    "macaddr": "52:54:00:8b:37:6c", "state": "permanent", "offload": false, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "spine01", "ipAddress":
+    "169.254.0.1", "oif": "swp6", "macaddr": "52:54:00:39:1a:7b", "state": "permanent",
+    "offload": false, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "spine01", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:82:d3:ec",
+    "state": "reachable", "offload": false, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "spine02", "ipAddress": "169.254.0.1", "oif": "swp1",
+    "macaddr": "52:54:00:6d:d4:8f", "state": "permanent", "offload": false, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "spine02", "ipAddress":
+    "169.254.0.1", "oif": "swp2", "macaddr": "52:54:00:6b:65:58", "state": "permanent",
+    "offload": false, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "spine02", "ipAddress": "169.254.0.1", "oif": "swp3", "macaddr": "52:54:00:9b:9e:29",
+    "state": "permanent", "offload": false, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "spine02", "ipAddress": "169.254.0.1", "oif": "swp4",
+    "macaddr": "52:54:00:08:f2:ac", "state": "permanent", "offload": false, "timestamp":
+    1586630754304}, {"namespace": "dual-evpn", "hostname": "spine02", "ipAddress":
+    "169.254.0.1", "oif": "swp5", "macaddr": "52:54:00:28:6d:7f", "state": "permanent",
+    "offload": false, "timestamp": 1586630754304}, {"namespace": "dual-evpn", "hostname":
+    "spine02", "ipAddress": "169.254.0.1", "oif": "swp6", "macaddr": "52:54:00:b2:19:eb",
+    "state": "permanent", "offload": false, "timestamp": 1586630754304}, {"namespace":
+    "dual-evpn", "hostname": "spine02", "ipAddress": "192.168.121.1", "oif": "eth0",
+    "macaddr": "52:54:00:82:d3:ec", "state": "reachable", "offload": false, "timestamp":
+    1586630754304}, {"namespace": "ospf-ibgp", "hostname": "edge01", "ipAddress":
+    "169.254.253.1", "oif": "eth2.2", "macaddr": "52:54:00:c2:b3:b5", "state": "reachable",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "edge01", "ipAddress": "169.254.253.5", "oif": "eth2.3", "macaddr": "52:54:00:c2:b3:b5",
+    "state": "reachable", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "edge01", "ipAddress": "169.254.253.9", "oif": "eth2.4",
+    "macaddr": "52:54:00:c2:b3:b5", "state": "reachable", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "edge01", "ipAddress":
+    "169.254.254.1", "oif": "eth1.2", "macaddr": "52:54:00:cc:f4:a4", "state": "reachable",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "edge01", "ipAddress": "169.254.254.5", "oif": "eth1.3", "macaddr": "52:54:00:cc:f4:a4",
+    "state": "reachable", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "edge01", "ipAddress": "169.254.254.9", "oif": "eth1.4",
+    "macaddr": "52:54:00:cc:f4:a4", "state": "reachable", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "edge01", "ipAddress":
+    "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:82:d3:ec", "state": "reachable",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "exit01", "ipAddress": "10.0.0.112", "oif": "vlan4001", "macaddr": "44:39:39:ff:40:94",
+    "state": "noarp", "offload": true, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "exit01", "ipAddress": "10.0.0.134", "oif": "vlan4001",
+    "macaddr": "44:39:39:ff:40:94", "state": "noarp", "offload": true, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "exit01", "ipAddress":
+    "10.0.0.21", "oif": "swp2", "macaddr": "52:54:00:28:9b:c0", "state": "reachable",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "exit01", "ipAddress": "10.0.0.22", "oif": "swp1", "macaddr": "52:54:00:f0:fe:98",
+    "state": "reachable", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "exit01", "ipAddress": "169.254.0.1", "oif": "swp1",
+    "macaddr": "52:54:00:f0:fe:98", "state": "permanent", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "exit01", "ipAddress":
+    "169.254.0.1", "oif": "swp2", "macaddr": "52:54:00:28:9b:c0", "state": "permanent",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "exit01", "ipAddress": "169.254.0.1", "oif": "swp6", "macaddr": "52:54:00:66:ee:b5",
+    "state": "permanent", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "exit01", "ipAddress": "169.254.127.0", "oif": "swp6",
+    "macaddr": "52:54:00:66:ee:b5", "state": "reachable", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "exit01", "ipAddress":
+    "169.254.254.10", "oif": "swp5.4", "macaddr": "52:54:00:3c:b1:b2", "state": "reachable",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "exit01", "ipAddress": "169.254.254.2", "oif": "swp5.2", "macaddr": "52:54:00:3c:b1:b2",
+    "state": "reachable", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "exit01", "ipAddress": "169.254.254.6", "oif": "swp5.3",
+    "macaddr": "52:54:00:3c:b1:b2", "state": "reachable", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "exit01", "ipAddress":
+    "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:82:d3:ec", "state": "reachable",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "exit02", "ipAddress": "10.0.0.112", "oif": "vlan4001", "macaddr": "44:39:39:ff:40:94",
+    "state": "noarp", "offload": true, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "exit02", "ipAddress": "10.0.0.134", "oif": "vlan4001",
+    "macaddr": "44:39:39:ff:40:94", "state": "noarp", "offload": true, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ipAddress":
+    "10.0.0.21", "oif": "swp2", "macaddr": "52:54:00:84:63:b2", "state": "reachable",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "exit02", "ipAddress": "10.0.0.22", "oif": "swp1", "macaddr": "52:54:00:31:1c:c2",
+    "state": "reachable", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "exit02", "ipAddress": "169.254.0.1", "oif": "swp1",
+    "macaddr": "52:54:00:31:1c:c2", "state": "permanent", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ipAddress":
+    "169.254.0.1", "oif": "swp6", "macaddr": "52:54:00:2a:0a:dd", "state": "permanent",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "exit02", "ipAddress": "169.254.127.2", "oif": "swp6", "macaddr": "52:54:00:2a:0a:dd",
+    "state": "reachable", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "exit02", "ipAddress": "169.254.253.10", "oif": "swp5.4",
+    "macaddr": "52:54:00:f6:70:e5", "state": "reachable", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ipAddress":
+    "169.254.253.2", "oif": "swp5.2", "macaddr": "52:54:00:f6:70:e5", "state": "reachable",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "exit02", "ipAddress": "169.254.253.6", "oif": "swp5.3", "macaddr": "52:54:00:f6:70:e5",
+    "state": "reachable", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "exit02", "ipAddress": "192.168.121.1", "oif": "eth0",
+    "macaddr": "52:54:00:82:d3:ec", "state": "reachable", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "internet", "ipAddress":
+    "169.254.0.1", "oif": "swp1", "macaddr": "52:54:00:5b:47:f2", "state": "permanent",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "internet", "ipAddress": "169.254.0.1", "oif": "swp2", "macaddr": "52:54:00:aa:19:af",
+    "state": "permanent", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "internet", "ipAddress": "169.254.127.1", "oif": "swp1",
+    "macaddr": "52:54:00:5b:47:f2", "state": "reachable", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "internet", "ipAddress":
+    "169.254.127.3", "oif": "swp2", "macaddr": "52:54:00:aa:19:af", "state": "reachable",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "internet", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:82:d3:ec",
+    "state": "reachable", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf01", "ipAddress": "10.0.0.101", "oif": "vlan4001",
+    "macaddr": "6e:5a:cd:bb:80:bf", "state": "noarp", "offload": true, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ipAddress":
+    "10.0.0.102", "oif": "vlan4001", "macaddr": "9a:c9:a5:45:0c:0a", "state": "noarp",
+    "offload": true, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf01", "ipAddress": "10.0.0.21", "oif": "swp2", "macaddr": "52:54:00:3b:c4:e0",
+    "state": "reachable", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf01", "ipAddress": "10.0.0.22", "oif": "swp1", "macaddr":
+    "52:54:00:36:7d:bf", "state": "reachable", "offload": false, "timestamp": 1586630361088},
+    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ipAddress": "169.254.0.1", "oif":
+    "swp1", "macaddr": "52:54:00:36:7d:bf", "state": "permanent", "offload": false,
+    "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
+    "ipAddress": "169.254.0.1", "oif": "swp2", "macaddr": "52:54:00:3b:c4:e0", "state":
+    "permanent", "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp",
     "hostname": "leaf01", "ipAddress": "169.254.1.2", "oif": "peerlink.4094", "macaddr":
-    "52:54:00:3a:26:59", "state": "reachable", "offload": false, "timestamp": 1586403475456},
-    {"namespace": "dual-bgp", "hostname": "leaf01", "ipAddress": "172.16.1.101", "oif":
-    "vlan13", "macaddr": "52:54:00:c8:44:92", "state": "reachable", "offload": false,
-    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf01", "ipAddress":
-    "172.16.2.102", "oif": "vlan24", "macaddr": "52:54:00:83:bd:be", "state": "reachable",
-    "offload": false, "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname":
-    "leaf01", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:f0:3f:36",
-    "state": "reachable", "offload": false, "timestamp": 1586403475456}, {"namespace":
-    "dual-bgp", "hostname": "leaf02", "ipAddress": "10.127.0.2", "oif": "swp1", "macaddr":
-    "52:54:00:8c:25:b9", "state": "reachable", "offload": false, "timestamp": 1586403475456},
-    {"namespace": "dual-bgp", "hostname": "leaf02", "ipAddress": "10.127.1.2", "oif":
-    "swp2", "macaddr": "52:54:00:6a:bb:28", "state": "reachable", "offload": false,
-    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf02", "ipAddress":
-    "169.254.1.1", "oif": "peerlink.4094", "macaddr": "52:54:00:9d:2d:67", "state":
-    "reachable", "offload": false, "timestamp": 1586403475456}, {"namespace": "dual-bgp",
-    "hostname": "leaf02", "ipAddress": "172.16.1.1", "oif": "vlan13", "macaddr": "52:54:00:49:96:b4",
-    "state": "permanent", "offload": false, "timestamp": 1586403475456}, {"namespace":
-    "dual-bgp", "hostname": "leaf02", "ipAddress": "172.16.1.101", "oif": "vlan13",
-    "macaddr": "52:54:00:c8:44:92", "state": "reachable", "offload": false, "timestamp":
-    1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf02", "ipAddress": "172.16.2.1",
-    "oif": "vlan24", "macaddr": "52:54:00:49:96:b4", "state": "permanent", "offload":
-    false, "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf02",
-    "ipAddress": "172.16.2.102", "oif": "vlan24", "macaddr": "52:54:00:83:bd:be",
-    "state": "reachable", "offload": false, "timestamp": 1586403475456}, {"namespace":
-    "dual-bgp", "hostname": "leaf02", "ipAddress": "192.168.121.1", "oif": "eth0",
-    "macaddr": "52:54:00:f0:3f:36", "state": "reachable", "offload": false, "timestamp":
-    1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf03", "ipAddress": "10.127.0.4",
-    "oif": "swp1", "macaddr": "52:54:00:c0:e0:4a", "state": "reachable", "offload":
-    false, "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf03",
-    "ipAddress": "10.127.1.4", "oif": "swp2", "macaddr": "52:54:00:4b:55:49", "state":
-    "reachable", "offload": false, "timestamp": 1586403475456}, {"namespace": "dual-bgp",
-    "hostname": "leaf03", "ipAddress": "169.254.1.2", "oif": "peerlink.4094", "macaddr":
-    "52:54:00:f7:9a:b9", "state": "reachable", "offload": false, "timestamp": 1586403475456},
-    {"namespace": "dual-bgp", "hostname": "leaf03", "ipAddress": "172.16.3.103", "oif":
-    "vlan13", "macaddr": "52:54:00:85:57:db", "state": "reachable", "offload": false,
-    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf03", "ipAddress":
-    "172.16.4.104", "oif": "vlan24", "macaddr": "52:54:00:ce:65:e8", "state": "reachable",
-    "offload": false, "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname":
-    "leaf03", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:f0:3f:36",
-    "state": "reachable", "offload": false, "timestamp": 1586403475456}, {"namespace":
-    "dual-bgp", "hostname": "leaf04", "ipAddress": "10.127.0.6", "oif": "swp1", "macaddr":
-    "52:54:00:05:35:90", "state": "reachable", "offload": false, "timestamp": 1586403475456},
-    {"namespace": "dual-bgp", "hostname": "leaf04", "ipAddress": "10.127.1.6", "oif":
-    "swp2", "macaddr": "52:54:00:54:46:0f", "state": "reachable", "offload": false,
-    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf04", "ipAddress":
-    "169.254.1.1", "oif": "peerlink.4094", "macaddr": "52:54:00:58:42:61", "state":
-    "reachable", "offload": false, "timestamp": 1586403475456}, {"namespace": "dual-bgp",
-    "hostname": "leaf04", "ipAddress": "172.16.3.1", "oif": "vlan13", "macaddr": "52:54:00:42:47:18",
-    "state": "permanent", "offload": false, "timestamp": 1586403475456}, {"namespace":
-    "dual-bgp", "hostname": "leaf04", "ipAddress": "172.16.3.103", "oif": "vlan13",
-    "macaddr": "52:54:00:85:57:db", "state": "reachable", "offload": false, "timestamp":
-    1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf04", "ipAddress": "172.16.4.1",
-    "oif": "vlan24", "macaddr": "52:54:00:42:47:18", "state": "permanent", "offload":
-    false, "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "leaf04",
-    "ipAddress": "172.16.4.104", "oif": "vlan24", "macaddr": "52:54:00:ce:65:e8",
-    "state": "reachable", "offload": false, "timestamp": 1586403475456}, {"namespace":
-    "dual-bgp", "hostname": "leaf04", "ipAddress": "192.168.121.1", "oif": "eth0",
-    "macaddr": "52:54:00:f0:3f:36", "state": "reachable", "offload": false, "timestamp":
-    1586403475456}, {"namespace": "dual-bgp", "hostname": "server101", "ipAddress":
-    "172.16.1.1", "oif": "bond0", "macaddr": "52:54:00:49:96:b4", "state": "stale",
-    "offload": false, "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname":
-    "server101", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:f0:3f:36",
-    "state": "reachable", "offload": false, "timestamp": 1586403475456}, {"namespace":
-    "dual-bgp", "hostname": "server102", "ipAddress": "172.16.2.1", "oif": "bond0",
-    "macaddr": "52:54:00:49:96:b4", "state": "stale", "offload": false, "timestamp":
-    1586403475456}, {"namespace": "dual-bgp", "hostname": "server102", "ipAddress":
-    "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:f0:3f:36", "state": "reachable",
-    "offload": false, "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname":
-    "server103", "ipAddress": "172.16.3.1", "oif": "bond0", "macaddr": "52:54:00:42:47:18",
-    "state": "stale", "offload": false, "timestamp": 1586403475456}, {"namespace":
-    "dual-bgp", "hostname": "server103", "ipAddress": "192.168.121.1", "oif": "eth0",
-    "macaddr": "52:54:00:f0:3f:36", "state": "reachable", "offload": false, "timestamp":
-    1586403475456}, {"namespace": "dual-bgp", "hostname": "server104", "ipAddress":
-    "172.16.4.1", "oif": "bond0", "macaddr": "52:54:00:42:47:18", "state": "stale",
-    "offload": false, "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname":
-    "server104", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:f0:3f:36",
-    "state": "reachable", "offload": false, "timestamp": 1586403475456}, {"namespace":
-    "dual-bgp", "hostname": "spine01", "ipAddress": "10.127.0.1", "oif": "swp1", "macaddr":
-    "52:54:00:6c:b4:c2", "state": "reachable", "offload": false, "timestamp": 1586403475456},
-    {"namespace": "dual-bgp", "hostname": "spine01", "ipAddress": "10.127.0.11", "oif":
-    "swp5", "macaddr": "52:54:00:04:2a:e3", "state": "reachable", "offload": false,
-    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "spine01",
-    "ipAddress": "10.127.0.3", "oif": "swp2", "macaddr": "52:54:00:0e:2c:8d", "state":
-    "reachable", "offload": false, "timestamp": 1586403475456}, {"namespace": "dual-bgp",
-    "hostname": "spine01", "ipAddress": "10.127.0.5", "oif": "swp3", "macaddr": "52:54:00:29:cf:14",
-    "state": "reachable", "offload": false, "timestamp": 1586403475456}, {"namespace":
-    "dual-bgp", "hostname": "spine01", "ipAddress": "10.127.0.7", "oif": "swp4", "macaddr":
-    "52:54:00:e1:61:9e", "state": "reachable", "offload": false, "timestamp": 1586403475456},
-    {"namespace": "dual-bgp", "hostname": "spine01", "ipAddress": "10.127.0.9", "oif":
-    "swp6", "macaddr": "52:54:00:94:ed:d5", "state": "reachable", "offload": false,
-    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "spine01",
-    "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:f0:3f:36", "state":
-    "reachable", "offload": false, "timestamp": 1586403475456}, {"namespace": "dual-bgp",
-    "hostname": "spine02", "ipAddress": "10.127.1.1", "oif": "swp1", "macaddr": "52:54:00:cb:a5:80",
-    "state": "reachable", "offload": false, "timestamp": 1586403475456}, {"namespace":
-    "dual-bgp", "hostname": "spine02", "ipAddress": "10.127.1.11", "oif": "swp5",
-    "macaddr": "52:54:00:f7:d7:21", "state": "reachable", "offload": false, "timestamp":
-    1586403475456}, {"namespace": "dual-bgp", "hostname": "spine02", "ipAddress":
-    "10.127.1.3", "oif": "swp2", "macaddr": "52:54:00:db:bd:2e", "state": "reachable",
-    "offload": false, "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname":
-    "spine02", "ipAddress": "10.127.1.5", "oif": "swp3", "macaddr": "52:54:00:5f:e0:6a",
-    "state": "reachable", "offload": false, "timestamp": 1586403475456}, {"namespace":
-    "dual-bgp", "hostname": "spine02", "ipAddress": "10.127.1.7", "oif": "swp4", "macaddr":
-    "52:54:00:d3:3b:c8", "state": "reachable", "offload": false, "timestamp": 1586403475456},
-    {"namespace": "dual-bgp", "hostname": "spine02", "ipAddress": "10.127.1.9", "oif":
-    "swp6", "macaddr": "52:54:00:5b:f3:c6", "state": "reachable", "offload": false,
-    "timestamp": 1586403475456}, {"namespace": "dual-bgp", "hostname": "spine02",
-    "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:f0:3f:36", "state":
-    "reachable", "offload": false, "timestamp": 1586403475456}]'
+    "52:54:00:34:f6:32", "state": "reachable", "offload": false, "timestamp": 1586630361088},
+    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ipAddress": "172.16.1.101",
+    "oif": "vlan13-v0", "macaddr": "52:54:00:9d:fc:57", "state": "reachable", "offload":
+    false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
+    "ipAddress": "172.16.1.101", "oif": "vlan13", "macaddr": "52:54:00:9d:fc:57",
+    "state": "reachable", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf01", "ipAddress": "172.16.1.103", "oif": "vlan13-v0",
+    "macaddr": "52:54:00:0e:b1:dc", "state": "reachable", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ipAddress":
+    "172.16.1.103", "oif": "vlan13", "macaddr": "52:54:00:0e:b1:dc", "state": "reachable",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf01", "ipAddress": "172.16.1.12", "oif": "vlan13", "macaddr": "52:54:00:8b:1a:21",
+    "state": "permanent", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf01", "ipAddress": "172.16.2.102", "oif": "vlan24-v0",
+    "macaddr": "52:54:00:38:d7:68", "state": "reachable", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ipAddress":
+    "172.16.2.102", "oif": "vlan24", "macaddr": "52:54:00:38:d7:68", "state": "reachable",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf01", "ipAddress": "172.16.2.104", "oif": "vlan24", "macaddr": "52:54:00:ea:55:ed",
+    "state": "reachable", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf01", "ipAddress": "172.16.2.12", "oif": "vlan24",
+    "macaddr": "52:54:00:8b:1a:21", "state": "permanent", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ipAddress":
+    "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:82:d3:ec", "state": "reachable",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf02", "ipAddress": "10.0.0.101", "oif": "vlan4001", "macaddr": "6e:5a:cd:bb:80:bf",
+    "state": "noarp", "offload": true, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf02", "ipAddress": "10.0.0.102", "oif": "vlan4001",
+    "macaddr": "9a:c9:a5:45:0c:0a", "state": "noarp", "offload": true, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ipAddress":
+    "10.0.0.21", "oif": "swp2", "macaddr": "52:54:00:39:d4:5d", "state": "reachable",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf02", "ipAddress": "10.0.0.22", "oif": "swp1", "macaddr": "52:54:00:e5:3a:66",
+    "state": "reachable", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf02", "ipAddress": "169.254.0.1", "oif": "swp1",
+    "macaddr": "52:54:00:e5:3a:66", "state": "permanent", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ipAddress":
+    "169.254.0.1", "oif": "swp2", "macaddr": "52:54:00:39:d4:5d", "state": "permanent",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf02", "ipAddress": "169.254.1.1", "oif": "peerlink.4094", "macaddr": "52:54:00:d5:e0:5d",
+    "state": "reachable", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf02", "ipAddress": "172.16.1.101", "oif": "vlan13-v0",
+    "macaddr": "52:54:00:9d:fc:57", "state": "reachable", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ipAddress":
+    "172.16.1.101", "oif": "vlan13", "macaddr": "52:54:00:9d:fc:57", "state": "reachable",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf02", "ipAddress": "172.16.1.103", "oif": "vlan13-v0", "macaddr": "52:54:00:0e:b1:dc",
+    "state": "reachable", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf02", "ipAddress": "172.16.1.103", "oif": "vlan13",
+    "macaddr": "52:54:00:0e:b1:dc", "state": "reachable", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ipAddress":
+    "172.16.1.11", "oif": "vlan13", "macaddr": "52:54:00:b1:a6:7f", "state": "permanent",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf02", "ipAddress": "172.16.2.102", "oif": "vlan24-v0", "macaddr": "52:54:00:38:d7:68",
+    "state": "reachable", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf02", "ipAddress": "172.16.2.102", "oif": "vlan24",
+    "macaddr": "52:54:00:38:d7:68", "state": "reachable", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ipAddress":
+    "172.16.2.104", "oif": "vlan24", "macaddr": "52:54:00:ea:55:ed", "state": "reachable",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf02", "ipAddress": "172.16.2.11", "oif": "vlan24", "macaddr": "52:54:00:b1:a6:7f",
+    "state": "permanent", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf02", "ipAddress": "192.168.121.1", "oif": "eth0",
+    "macaddr": "52:54:00:82:d3:ec", "state": "reachable", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ipAddress":
+    "10.0.0.101", "oif": "vlan4001", "macaddr": "6e:5a:cd:bb:80:bf", "state": "noarp",
+    "offload": true, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf03", "ipAddress": "10.0.0.102", "oif": "vlan4001", "macaddr": "9a:c9:a5:45:0c:0a",
+    "state": "noarp", "offload": true, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf03", "ipAddress": "10.0.0.21", "oif": "swp2", "macaddr":
+    "52:54:00:dd:c2:a3", "state": "reachable", "offload": false, "timestamp": 1586630361088},
+    {"namespace": "ospf-ibgp", "hostname": "leaf03", "ipAddress": "10.0.0.22", "oif":
+    "swp1", "macaddr": "52:54:00:61:60:c1", "state": "reachable", "offload": false,
+    "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname": "leaf03",
+    "ipAddress": "169.254.0.1", "oif": "swp1", "macaddr": "52:54:00:61:60:c1", "state":
+    "permanent", "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf03", "ipAddress": "169.254.0.1", "oif": "swp2", "macaddr": "52:54:00:dd:c2:a3",
+    "state": "permanent", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf03", "ipAddress": "169.254.1.2", "oif": "peerlink.4094",
+    "macaddr": "52:54:00:9d:f5:5c", "state": "reachable", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ipAddress":
+    "172.16.1.101", "oif": "vlan13-v0", "macaddr": "52:54:00:9d:fc:57", "state": "reachable",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf03", "ipAddress": "172.16.1.101", "oif": "vlan13", "macaddr": "52:54:00:9d:fc:57",
+    "state": "reachable", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf03", "ipAddress": "172.16.1.103", "oif": "vlan13-v0",
+    "macaddr": "52:54:00:0e:b1:dc", "state": "reachable", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ipAddress":
+    "172.16.1.103", "oif": "vlan13", "macaddr": "52:54:00:0e:b1:dc", "state": "reachable",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf03", "ipAddress": "172.16.1.14", "oif": "vlan13", "macaddr": "52:54:00:c1:fd:23",
+    "state": "permanent", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf03", "ipAddress": "172.16.2.102", "oif": "vlan24",
+    "macaddr": "52:54:00:38:d7:68", "state": "reachable", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ipAddress":
+    "172.16.2.104", "oif": "vlan24-v0", "macaddr": "52:54:00:ea:55:ed", "state": "reachable",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf03", "ipAddress": "172.16.2.104", "oif": "vlan24", "macaddr": "52:54:00:ea:55:ed",
+    "state": "reachable", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf03", "ipAddress": "172.16.2.14", "oif": "vlan24",
+    "macaddr": "52:54:00:c1:fd:23", "state": "permanent", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ipAddress":
+    "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:82:d3:ec", "state": "reachable",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf04", "ipAddress": "10.0.0.101", "oif": "vlan4001", "macaddr": "6e:5a:cd:bb:80:bf",
+    "state": "noarp", "offload": true, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf04", "ipAddress": "10.0.0.102", "oif": "vlan4001",
+    "macaddr": "9a:c9:a5:45:0c:0a", "state": "noarp", "offload": true, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ipAddress":
+    "10.0.0.21", "oif": "swp2", "macaddr": "52:54:00:1b:6e:42", "state": "reachable",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf04", "ipAddress": "10.0.0.22", "oif": "swp1", "macaddr": "52:54:00:28:05:f2",
+    "state": "reachable", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf04", "ipAddress": "169.254.0.1", "oif": "swp1",
+    "macaddr": "52:54:00:28:05:f2", "state": "permanent", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ipAddress":
+    "169.254.0.1", "oif": "swp2", "macaddr": "52:54:00:1b:6e:42", "state": "permanent",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf04", "ipAddress": "169.254.1.1", "oif": "peerlink.4094", "macaddr": "52:54:00:40:7c:b8",
+    "state": "reachable", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf04", "ipAddress": "172.16.1.101", "oif": "vlan13-v0",
+    "macaddr": "52:54:00:9d:fc:57", "state": "reachable", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ipAddress":
+    "172.16.1.101", "oif": "vlan13", "macaddr": "52:54:00:9d:fc:57", "state": "reachable",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf04", "ipAddress": "172.16.1.103", "oif": "vlan13-v0", "macaddr": "52:54:00:0e:b1:dc",
+    "state": "reachable", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf04", "ipAddress": "172.16.1.103", "oif": "vlan13",
+    "macaddr": "52:54:00:0e:b1:dc", "state": "reachable", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ipAddress":
+    "172.16.1.13", "oif": "vlan13", "macaddr": "52:54:00:b1:62:6e", "state": "permanent",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf04", "ipAddress": "172.16.2.102", "oif": "vlan24", "macaddr": "52:54:00:38:d7:68",
+    "state": "reachable", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf04", "ipAddress": "172.16.2.104", "oif": "vlan24-v0",
+    "macaddr": "52:54:00:ea:55:ed", "state": "reachable", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ipAddress":
+    "172.16.2.104", "oif": "vlan24", "macaddr": "52:54:00:ea:55:ed", "state": "reachable",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf04", "ipAddress": "172.16.2.13", "oif": "vlan24", "macaddr": "52:54:00:b1:62:6e",
+    "state": "permanent", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf04", "ipAddress": "192.168.121.1", "oif": "eth0",
+    "macaddr": "52:54:00:82:d3:ec", "state": "reachable", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "server101", "ipAddress":
+    "172.16.1.1", "oif": "bond0", "macaddr": "44:39:39:ff:00:13", "state": "reachable",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "server101", "ipAddress": "172.16.1.103", "oif": "bond0", "macaddr": "52:54:00:0e:b1:dc",
+    "state": "reachable", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "server101", "ipAddress": "172.16.1.11", "oif": "bond0",
+    "macaddr": "52:54:00:b1:a6:7f", "state": "reachable", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "server101", "ipAddress":
+    "172.16.1.12", "oif": "bond0", "macaddr": "52:54:00:8b:1a:21", "state": "reachable",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "server101", "ipAddress": "172.16.1.13", "oif": "bond0", "macaddr": "52:54:00:b1:62:6e",
+    "state": "reachable", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "server101", "ipAddress": "172.16.1.14", "oif": "bond0",
+    "macaddr": "52:54:00:c1:fd:23", "state": "reachable", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "server101", "ipAddress":
+    "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:82:d3:ec", "state": "reachable",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "server102", "ipAddress": "172.16.2.1", "oif": "bond0", "macaddr": "44:39:39:ff:00:24",
+    "state": "reachable", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "server102", "ipAddress": "172.16.2.104", "oif": "bond0",
+    "macaddr": "52:54:00:ea:55:ed", "state": "reachable", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "server102", "ipAddress":
+    "172.16.2.11", "oif": "bond0", "macaddr": "52:54:00:b1:a6:7f", "state": "reachable",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "server102", "ipAddress": "172.16.2.12", "oif": "bond0", "macaddr": "52:54:00:8b:1a:21",
+    "state": "reachable", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "server102", "ipAddress": "172.16.2.13", "oif": "bond0",
+    "macaddr": "52:54:00:b1:62:6e", "state": "reachable", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "server102", "ipAddress":
+    "172.16.2.14", "oif": "bond0", "macaddr": "52:54:00:c1:fd:23", "state": "reachable",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "server102", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:82:d3:ec",
+    "state": "reachable", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "server103", "ipAddress": "172.16.1.1", "oif": "bond0",
+    "macaddr": "44:39:39:ff:00:13", "state": "reachable", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "server103", "ipAddress":
+    "172.16.1.101", "oif": "bond0", "macaddr": "52:54:00:9d:fc:57", "state": "reachable",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "server103", "ipAddress": "172.16.1.11", "oif": "bond0", "macaddr": "52:54:00:b1:a6:7f",
+    "state": "reachable", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "server103", "ipAddress": "172.16.1.12", "oif": "bond0",
+    "macaddr": "52:54:00:8b:1a:21", "state": "reachable", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "server103", "ipAddress":
+    "172.16.1.13", "oif": "bond0", "macaddr": "52:54:00:b1:62:6e", "state": "reachable",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "server103", "ipAddress": "172.16.1.14", "oif": "bond0", "macaddr": "52:54:00:c1:fd:23",
+    "state": "reachable", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "server103", "ipAddress": "192.168.121.1", "oif": "eth0",
+    "macaddr": "52:54:00:82:d3:ec", "state": "reachable", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "server104", "ipAddress":
+    "172.16.2.1", "oif": "bond0", "macaddr": "44:39:39:ff:00:24", "state": "reachable",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "server104", "ipAddress": "172.16.2.102", "oif": "bond0", "macaddr": "52:54:00:38:d7:68",
+    "state": "reachable", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "server104", "ipAddress": "172.16.2.11", "oif": "bond0",
+    "macaddr": "52:54:00:b1:a6:7f", "state": "reachable", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "server104", "ipAddress":
+    "172.16.2.12", "oif": "bond0", "macaddr": "52:54:00:8b:1a:21", "state": "reachable",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "server104", "ipAddress": "172.16.2.13", "oif": "bond0", "macaddr": "52:54:00:b1:62:6e",
+    "state": "reachable", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "server104", "ipAddress": "172.16.2.14", "oif": "bond0",
+    "macaddr": "52:54:00:c1:fd:23", "state": "reachable", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "server104", "ipAddress":
+    "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:82:d3:ec", "state": "reachable",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "spine01", "ipAddress": "10.0.0.101", "oif": "swp6", "macaddr": "52:54:00:1d:c3:0e",
+    "state": "reachable", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "spine01", "ipAddress": "10.0.0.102", "oif": "swp5",
+    "macaddr": "52:54:00:28:be:1b", "state": "reachable", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ipAddress":
+    "10.0.0.11", "oif": "swp1", "macaddr": "52:54:00:27:6c:d6", "state": "reachable",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "spine01", "ipAddress": "10.0.0.12", "oif": "swp2", "macaddr": "52:54:00:01:e7:aa",
+    "state": "reachable", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "spine01", "ipAddress": "10.0.0.13", "oif": "swp3", "macaddr":
+    "52:54:00:1a:d4:4a", "state": "reachable", "offload": false, "timestamp": 1586630361088},
+    {"namespace": "ospf-ibgp", "hostname": "spine01", "ipAddress": "10.0.0.14", "oif":
+    "swp4", "macaddr": "52:54:00:58:97:62", "state": "reachable", "offload": false,
+    "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname": "spine01",
+    "ipAddress": "169.254.0.1", "oif": "swp1", "macaddr": "52:54:00:27:6c:d6", "state":
+    "permanent", "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp",
+    "hostname": "spine01", "ipAddress": "169.254.0.1", "oif": "swp2", "macaddr": "52:54:00:01:e7:aa",
+    "state": "permanent", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "spine01", "ipAddress": "169.254.0.1", "oif": "swp3",
+    "macaddr": "52:54:00:1a:d4:4a", "state": "permanent", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ipAddress":
+    "169.254.0.1", "oif": "swp4", "macaddr": "52:54:00:58:97:62", "state": "permanent",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "spine01", "ipAddress": "169.254.0.1", "oif": "swp5", "macaddr": "52:54:00:28:be:1b",
+    "state": "permanent", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "spine01", "ipAddress": "169.254.0.1", "oif": "swp6",
+    "macaddr": "52:54:00:1d:c3:0e", "state": "permanent", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ipAddress":
+    "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:82:d3:ec", "state": "reachable",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "spine02", "ipAddress": "10.0.0.101", "oif": "swp6", "macaddr": "52:54:00:d1:86:49",
+    "state": "reachable", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "spine02", "ipAddress": "10.0.0.102", "oif": "swp5",
+    "macaddr": "52:54:00:51:9b:1a", "state": "reachable", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ipAddress":
+    "10.0.0.11", "oif": "swp1", "macaddr": "52:54:00:75:a5:b6", "state": "reachable",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "spine02", "ipAddress": "10.0.0.12", "oif": "swp2", "macaddr": "52:54:00:c7:ea:d2",
+    "state": "reachable", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "spine02", "ipAddress": "10.0.0.13", "oif": "swp3", "macaddr":
+    "52:54:00:a8:33:55", "state": "reachable", "offload": false, "timestamp": 1586630361088},
+    {"namespace": "ospf-ibgp", "hostname": "spine02", "ipAddress": "10.0.0.14", "oif":
+    "swp4", "macaddr": "52:54:00:50:00:4f", "state": "reachable", "offload": false,
+    "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname": "spine02",
+    "ipAddress": "169.254.0.1", "oif": "swp1", "macaddr": "52:54:00:75:a5:b6", "state":
+    "permanent", "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp",
+    "hostname": "spine02", "ipAddress": "169.254.0.1", "oif": "swp2", "macaddr": "52:54:00:c7:ea:d2",
+    "state": "permanent", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "spine02", "ipAddress": "169.254.0.1", "oif": "swp3",
+    "macaddr": "52:54:00:a8:33:55", "state": "permanent", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ipAddress":
+    "169.254.0.1", "oif": "swp4", "macaddr": "52:54:00:50:00:4f", "state": "permanent",
+    "offload": false, "timestamp": 1586630361088}, {"namespace": "ospf-ibgp", "hostname":
+    "spine02", "ipAddress": "169.254.0.1", "oif": "swp6", "macaddr": "52:54:00:d1:86:49",
+    "state": "permanent", "offload": false, "timestamp": 1586630361088}, {"namespace":
+    "ospf-ibgp", "hostname": "spine02", "ipAddress": "192.168.121.1", "oif": "eth0",
+    "macaddr": "52:54:00:82:d3:ec", "state": "reachable", "offload": false, "timestamp":
+    1586630361088}, {"namespace": "ospf-single", "hostname": "edge01", "ipAddress":
+    "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:82:d3:ec", "state": "reachable",
+    "offload": false, "timestamp": 1586631147520}, {"namespace": "ospf-single", "hostname":
+    "exit01", "ipAddress": "10.127.0.8", "oif": "swp1", "macaddr": "44:38:39:00:00:0a",
+    "state": "reachable", "offload": false, "timestamp": 1586631147520}, {"namespace":
+    "ospf-single", "hostname": "exit01", "ipAddress": "10.127.1.8", "oif": "swp2",
+    "macaddr": "44:38:39:00:00:5b", "state": "reachable", "offload": false, "timestamp":
+    1586631147520}, {"namespace": "ospf-single", "hostname": "exit01", "ipAddress":
+    "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:82:d3:ec", "state": "reachable",
+    "offload": false, "timestamp": 1586631147520}, {"namespace": "ospf-single", "hostname":
+    "exit02", "ipAddress": "10.127.0.10", "oif": "swp1", "macaddr": "44:38:39:00:00:22",
+    "state": "reachable", "offload": false, "timestamp": 1586631147520}, {"namespace":
+    "ospf-single", "hostname": "exit02", "ipAddress": "10.127.1.10", "oif": "swp2",
+    "macaddr": "44:38:39:00:00:56", "state": "reachable", "offload": false, "timestamp":
+    1586631147520}, {"namespace": "ospf-single", "hostname": "exit02", "ipAddress":
+    "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:82:d3:ec", "state": "reachable",
+    "offload": false, "timestamp": 1586631147520}, {"namespace": "ospf-single", "hostname":
+    "internet", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:82:d3:ec",
+    "state": "reachable", "offload": false, "timestamp": 1586631147520}, {"namespace":
+    "ospf-single", "hostname": "leaf01", "ipAddress": "10.127.0.0", "oif": "swp1",
+    "macaddr": "44:38:39:00:00:54", "state": "reachable", "offload": false, "timestamp":
+    1586631147520}, {"namespace": "ospf-single", "hostname": "leaf01", "ipAddress":
+    "10.127.1.0", "oif": "swp2", "macaddr": "44:38:39:00:00:25", "state": "reachable",
+    "offload": false, "timestamp": 1586631147520}, {"namespace": "ospf-single", "hostname":
+    "leaf01", "ipAddress": "172.16.1.101", "oif": "vlan10", "macaddr": "00:03:00:11:11:01",
+    "state": "reachable", "offload": false, "timestamp": 1586631147520}, {"namespace":
+    "ospf-single", "hostname": "leaf01", "ipAddress": "192.168.121.1", "oif": "eth0",
+    "macaddr": "52:54:00:82:d3:ec", "state": "reachable", "offload": false, "timestamp":
+    1586631147520}, {"namespace": "ospf-single", "hostname": "leaf02", "ipAddress":
+    "10.127.0.2", "oif": "swp1", "macaddr": "44:38:39:00:00:29", "state": "reachable",
+    "offload": false, "timestamp": 1586631147520}, {"namespace": "ospf-single", "hostname":
+    "leaf02", "ipAddress": "10.127.1.2", "oif": "swp2", "macaddr": "44:38:39:00:00:5e",
+    "state": "reachable", "offload": false, "timestamp": 1586631147520}, {"namespace":
+    "ospf-single", "hostname": "leaf02", "ipAddress": "172.16.2.102", "oif": "vlan10",
+    "macaddr": "00:03:00:22:22:02", "state": "reachable", "offload": false, "timestamp":
+    1586631147520}, {"namespace": "ospf-single", "hostname": "leaf02", "ipAddress":
+    "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:82:d3:ec", "state": "reachable",
+    "offload": false, "timestamp": 1586631147520}, {"namespace": "ospf-single", "hostname":
+    "leaf03", "ipAddress": "10.127.0.4", "oif": "swp1", "macaddr": "44:38:39:00:00:50",
+    "state": "reachable", "offload": false, "timestamp": 1586631147520}, {"namespace":
+    "ospf-single", "hostname": "leaf03", "ipAddress": "10.127.1.4", "oif": "swp2",
+    "macaddr": "44:38:39:00:00:1c", "state": "reachable", "offload": false, "timestamp":
+    1586631147520}, {"namespace": "ospf-single", "hostname": "leaf03", "ipAddress":
+    "172.16.3.103", "oif": "vlan10", "macaddr": "00:03:00:33:33:01", "state": "reachable",
+    "offload": false, "timestamp": 1586631147520}, {"namespace": "ospf-single", "hostname":
+    "leaf03", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:82:d3:ec",
+    "state": "reachable", "offload": false, "timestamp": 1586631147520}, {"namespace":
+    "ospf-single", "hostname": "leaf04", "ipAddress": "10.127.0.6", "oif": "swp1",
+    "macaddr": "44:38:39:00:00:3c", "state": "reachable", "offload": false, "timestamp":
+    1586631147520}, {"namespace": "ospf-single", "hostname": "leaf04", "ipAddress":
+    "10.127.1.6", "oif": "swp2", "macaddr": "44:38:39:00:00:47", "state": "reachable",
+    "offload": false, "timestamp": 1586631147520}, {"namespace": "ospf-single", "hostname":
+    "leaf04", "ipAddress": "172.16.4.104", "oif": "vlan10", "macaddr": "00:03:00:44:44:02",
+    "state": "reachable", "offload": false, "timestamp": 1586631147520}, {"namespace":
+    "ospf-single", "hostname": "leaf04", "ipAddress": "192.168.121.1", "oif": "eth0",
+    "macaddr": "52:54:00:82:d3:ec", "state": "reachable", "offload": false, "timestamp":
+    1586631147520}, {"namespace": "ospf-single", "hostname": "server101", "ipAddress":
+    "172.16.1.1", "oif": "eth1", "macaddr": "44:38:39:00:00:03", "state": "reachable",
+    "offload": false, "timestamp": 1586631147520}, {"namespace": "ospf-single", "hostname":
+    "server101", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:82:d3:ec",
+    "state": "reachable", "offload": false, "timestamp": 1586631147520}, {"namespace":
+    "ospf-single", "hostname": "server102", "ipAddress": "172.16.2.1", "oif": "eth1",
+    "macaddr": "44:38:39:00:00:18", "state": "reachable", "offload": false, "timestamp":
+    1586631147520}, {"namespace": "ospf-single", "hostname": "server102", "ipAddress":
+    "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:82:d3:ec", "state": "reachable",
+    "offload": false, "timestamp": 1586631147520}, {"namespace": "ospf-single", "hostname":
+    "server103", "ipAddress": "172.16.3.1", "oif": "eth1", "macaddr": "44:38:39:00:00:1f",
+    "state": "reachable", "offload": false, "timestamp": 1586631147520}, {"namespace":
+    "ospf-single", "hostname": "server103", "ipAddress": "192.168.121.1", "oif": "eth0",
+    "macaddr": "52:54:00:82:d3:ec", "state": "reachable", "offload": false, "timestamp":
+    1586631147520}, {"namespace": "ospf-single", "hostname": "server104", "ipAddress":
+    "172.16.4.1", "oif": "eth1", "macaddr": "44:38:39:00:00:2c", "state": "reachable",
+    "offload": false, "timestamp": 1586631147520}, {"namespace": "ospf-single", "hostname":
+    "server104", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:82:d3:ec",
+    "state": "reachable", "offload": false, "timestamp": 1586631147520}, {"namespace":
+    "ospf-single", "hostname": "spine01", "ipAddress": "10.127.0.1", "oif": "swp1",
+    "macaddr": "44:38:39:00:00:53", "state": "reachable", "offload": false, "timestamp":
+    1586631147520}, {"namespace": "ospf-single", "hostname": "spine01", "ipAddress":
+    "10.127.0.11", "oif": "swp5", "macaddr": "44:38:39:00:00:21", "state": "reachable",
+    "offload": false, "timestamp": 1586631147520}, {"namespace": "ospf-single", "hostname":
+    "spine01", "ipAddress": "10.127.0.3", "oif": "swp2", "macaddr": "44:38:39:00:00:28",
+    "state": "reachable", "offload": false, "timestamp": 1586631147520}, {"namespace":
+    "ospf-single", "hostname": "spine01", "ipAddress": "10.127.0.5", "oif": "swp3",
+    "macaddr": "44:38:39:00:00:4f", "state": "reachable", "offload": false, "timestamp":
+    1586631147520}, {"namespace": "ospf-single", "hostname": "spine01", "ipAddress":
+    "10.127.0.7", "oif": "swp4", "macaddr": "44:38:39:00:00:3b", "state": "reachable",
+    "offload": false, "timestamp": 1586631147520}, {"namespace": "ospf-single", "hostname":
+    "spine01", "ipAddress": "10.127.0.9", "oif": "swp6", "macaddr": "44:38:39:00:00:09",
+    "state": "reachable", "offload": false, "timestamp": 1586631147520}, {"namespace":
+    "ospf-single", "hostname": "spine01", "ipAddress": "192.168.121.1", "oif": "eth0",
+    "macaddr": "52:54:00:82:d3:ec", "state": "reachable", "offload": false, "timestamp":
+    1586631147520}, {"namespace": "ospf-single", "hostname": "spine02", "ipAddress":
+    "10.127.1.1", "oif": "swp1", "macaddr": "44:38:39:00:00:24", "state": "reachable",
+    "offload": false, "timestamp": 1586631147520}, {"namespace": "ospf-single", "hostname":
+    "spine02", "ipAddress": "10.127.1.11", "oif": "swp5", "macaddr": "44:38:39:00:00:55",
+    "state": "reachable", "offload": false, "timestamp": 1586631147520}, {"namespace":
+    "ospf-single", "hostname": "spine02", "ipAddress": "10.127.1.3", "oif": "swp2",
+    "macaddr": "44:38:39:00:00:5d", "state": "reachable", "offload": false, "timestamp":
+    1586631147520}, {"namespace": "ospf-single", "hostname": "spine02", "ipAddress":
+    "10.127.1.5", "oif": "swp3", "macaddr": "44:38:39:00:00:1b", "state": "reachable",
+    "offload": false, "timestamp": 1586631147520}, {"namespace": "ospf-single", "hostname":
+    "spine02", "ipAddress": "10.127.1.7", "oif": "swp4", "macaddr": "44:38:39:00:00:46",
+    "state": "reachable", "offload": false, "timestamp": 1586631147520}, {"namespace":
+    "ospf-single", "hostname": "spine02", "ipAddress": "10.127.1.9", "oif": "swp6",
+    "macaddr": "44:38:39:00:00:5a", "state": "reachable", "offload": false, "timestamp":
+    1586631147520}, {"namespace": "ospf-single", "hostname": "spine02", "ipAddress":
+    "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:82:d3:ec", "state": "reachable",
+    "offload": false, "timestamp": 1586631147520}]'
 - command: arpnd show --columns=hostname --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out
+  data-directory: tests/data/multidc/parquet-out/
   marks: arpnd show
-  output: '[{"hostname": "edge01", "timestamp": 1586403475456, "oif": "eth2.2", "namespace":
-    "dual-bgp", "ipAddress": "169.254.253.1"}, {"hostname": "edge01", "timestamp":
-    1586403475456, "oif": "eth2.4", "namespace": "dual-bgp", "ipAddress": "169.254.253.9"},
-    {"hostname": "edge01", "timestamp": 1586403475456, "oif": "eth1.2", "namespace":
-    "dual-bgp", "ipAddress": "169.254.254.1"}, {"hostname": "edge01", "timestamp":
-    1586403475456, "oif": "eth1.4", "namespace": "dual-bgp", "ipAddress": "169.254.254.9"},
-    {"hostname": "edge01", "timestamp": 1586403475456, "oif": "eth0", "namespace":
-    "dual-bgp", "ipAddress": "192.168.121.1"}, {"hostname": "exit01", "timestamp":
-    1586403475456, "oif": "swp1", "namespace": "dual-bgp", "ipAddress": "10.127.0.8"},
-    {"hostname": "exit01", "timestamp": 1586403475456, "oif": "swp2", "namespace":
-    "dual-bgp", "ipAddress": "10.127.1.8"}, {"hostname": "exit01", "timestamp": 1586403475456,
-    "oif": "swp6", "namespace": "dual-bgp", "ipAddress": "169.254.127.0"}, {"hostname":
-    "exit01", "timestamp": 1586403475456, "oif": "swp5.4", "namespace": "dual-bgp",
-    "ipAddress": "169.254.254.10"}, {"hostname": "exit01", "timestamp": 1586403475456,
-    "oif": "swp5.2", "namespace": "dual-bgp", "ipAddress": "169.254.254.2"}, {"hostname":
-    "exit01", "timestamp": 1586403475456, "oif": "eth0", "namespace": "dual-bgp",
-    "ipAddress": "192.168.121.1"}, {"hostname": "exit02", "timestamp": 1586403475456,
-    "oif": "swp1", "namespace": "dual-bgp", "ipAddress": "10.127.0.10"}, {"hostname":
-    "exit02", "timestamp": 1586403475456, "oif": "swp2", "namespace": "dual-bgp",
-    "ipAddress": "10.127.1.10"}, {"hostname": "exit02", "timestamp": 1586403475456,
-    "oif": "swp6", "namespace": "dual-bgp", "ipAddress": "169.254.127.2"}, {"hostname":
-    "exit02", "timestamp": 1586403475456, "oif": "swp5.4", "namespace": "dual-bgp",
-    "ipAddress": "169.254.253.10"}, {"hostname": "exit02", "timestamp": 1586403475456,
-    "oif": "swp5.2", "namespace": "dual-bgp", "ipAddress": "169.254.253.2"}, {"hostname":
-    "exit02", "timestamp": 1586403475456, "oif": "eth0", "namespace": "dual-bgp",
-    "ipAddress": "192.168.121.1"}, {"hostname": "internet", "timestamp": 1586403475456,
-    "oif": "swp1", "namespace": "dual-bgp", "ipAddress": "169.254.127.1"}, {"hostname":
-    "internet", "timestamp": 1586403475456, "oif": "swp2", "namespace": "dual-bgp",
-    "ipAddress": "169.254.127.3"}, {"hostname": "internet", "timestamp": 1586403475456,
-    "oif": "eth0", "namespace": "dual-bgp", "ipAddress": "192.168.121.1"}, {"hostname":
-    "leaf01", "timestamp": 1586403475456, "oif": "swp1", "namespace": "dual-bgp",
-    "ipAddress": "10.127.0.0"}, {"hostname": "leaf01", "timestamp": 1586403475456,
-    "oif": "swp2", "namespace": "dual-bgp", "ipAddress": "10.127.1.0"}, {"hostname":
-    "leaf01", "timestamp": 1586403475456, "oif": "peerlink.4094", "namespace": "dual-bgp",
-    "ipAddress": "169.254.1.2"}, {"hostname": "leaf01", "timestamp": 1586403475456,
-    "oif": "vlan13", "namespace": "dual-bgp", "ipAddress": "172.16.1.101"}, {"hostname":
-    "leaf01", "timestamp": 1586403475456, "oif": "vlan24", "namespace": "dual-bgp",
-    "ipAddress": "172.16.2.102"}, {"hostname": "leaf01", "timestamp": 1586403475456,
-    "oif": "eth0", "namespace": "dual-bgp", "ipAddress": "192.168.121.1"}, {"hostname":
-    "leaf02", "timestamp": 1586403475456, "oif": "swp1", "namespace": "dual-bgp",
-    "ipAddress": "10.127.0.2"}, {"hostname": "leaf02", "timestamp": 1586403475456,
-    "oif": "swp2", "namespace": "dual-bgp", "ipAddress": "10.127.1.2"}, {"hostname":
-    "leaf02", "timestamp": 1586403475456, "oif": "peerlink.4094", "namespace": "dual-bgp",
-    "ipAddress": "169.254.1.1"}, {"hostname": "leaf02", "timestamp": 1586403475456,
-    "oif": "vlan13", "namespace": "dual-bgp", "ipAddress": "172.16.1.1"}, {"hostname":
-    "leaf02", "timestamp": 1586403475456, "oif": "vlan13", "namespace": "dual-bgp",
-    "ipAddress": "172.16.1.101"}, {"hostname": "leaf02", "timestamp": 1586403475456,
-    "oif": "vlan24", "namespace": "dual-bgp", "ipAddress": "172.16.2.1"}, {"hostname":
-    "leaf02", "timestamp": 1586403475456, "oif": "vlan24", "namespace": "dual-bgp",
-    "ipAddress": "172.16.2.102"}, {"hostname": "leaf02", "timestamp": 1586403475456,
-    "oif": "eth0", "namespace": "dual-bgp", "ipAddress": "192.168.121.1"}, {"hostname":
-    "leaf03", "timestamp": 1586403475456, "oif": "swp1", "namespace": "dual-bgp",
-    "ipAddress": "10.127.0.4"}, {"hostname": "leaf03", "timestamp": 1586403475456,
-    "oif": "swp2", "namespace": "dual-bgp", "ipAddress": "10.127.1.4"}, {"hostname":
-    "leaf03", "timestamp": 1586403475456, "oif": "peerlink.4094", "namespace": "dual-bgp",
-    "ipAddress": "169.254.1.2"}, {"hostname": "leaf03", "timestamp": 1586403475456,
-    "oif": "vlan13", "namespace": "dual-bgp", "ipAddress": "172.16.3.103"}, {"hostname":
-    "leaf03", "timestamp": 1586403475456, "oif": "vlan24", "namespace": "dual-bgp",
-    "ipAddress": "172.16.4.104"}, {"hostname": "leaf03", "timestamp": 1586403475456,
-    "oif": "eth0", "namespace": "dual-bgp", "ipAddress": "192.168.121.1"}, {"hostname":
-    "leaf04", "timestamp": 1586403475456, "oif": "swp1", "namespace": "dual-bgp",
-    "ipAddress": "10.127.0.6"}, {"hostname": "leaf04", "timestamp": 1586403475456,
-    "oif": "swp2", "namespace": "dual-bgp", "ipAddress": "10.127.1.6"}, {"hostname":
-    "leaf04", "timestamp": 1586403475456, "oif": "peerlink.4094", "namespace": "dual-bgp",
-    "ipAddress": "169.254.1.1"}, {"hostname": "leaf04", "timestamp": 1586403475456,
-    "oif": "vlan13", "namespace": "dual-bgp", "ipAddress": "172.16.3.1"}, {"hostname":
-    "leaf04", "timestamp": 1586403475456, "oif": "vlan13", "namespace": "dual-bgp",
-    "ipAddress": "172.16.3.103"}, {"hostname": "leaf04", "timestamp": 1586403475456,
-    "oif": "vlan24", "namespace": "dual-bgp", "ipAddress": "172.16.4.1"}, {"hostname":
-    "leaf04", "timestamp": 1586403475456, "oif": "vlan24", "namespace": "dual-bgp",
-    "ipAddress": "172.16.4.104"}, {"hostname": "leaf04", "timestamp": 1586403475456,
-    "oif": "eth0", "namespace": "dual-bgp", "ipAddress": "192.168.121.1"}, {"hostname":
-    "server101", "timestamp": 1586403475456, "oif": "bond0", "namespace": "dual-bgp",
-    "ipAddress": "172.16.1.1"}, {"hostname": "server101", "timestamp": 1586403475456,
-    "oif": "eth0", "namespace": "dual-bgp", "ipAddress": "192.168.121.1"}, {"hostname":
-    "server102", "timestamp": 1586403475456, "oif": "bond0", "namespace": "dual-bgp",
-    "ipAddress": "172.16.2.1"}, {"hostname": "server102", "timestamp": 1586403475456,
-    "oif": "eth0", "namespace": "dual-bgp", "ipAddress": "192.168.121.1"}, {"hostname":
-    "server103", "timestamp": 1586403475456, "oif": "bond0", "namespace": "dual-bgp",
-    "ipAddress": "172.16.3.1"}, {"hostname": "server103", "timestamp": 1586403475456,
-    "oif": "eth0", "namespace": "dual-bgp", "ipAddress": "192.168.121.1"}, {"hostname":
-    "server104", "timestamp": 1586403475456, "oif": "bond0", "namespace": "dual-bgp",
-    "ipAddress": "172.16.4.1"}, {"hostname": "server104", "timestamp": 1586403475456,
-    "oif": "eth0", "namespace": "dual-bgp", "ipAddress": "192.168.121.1"}, {"hostname":
-    "spine01", "timestamp": 1586403475456, "oif": "swp1", "namespace": "dual-bgp",
-    "ipAddress": "10.127.0.1"}, {"hostname": "spine01", "timestamp": 1586403475456,
-    "oif": "swp5", "namespace": "dual-bgp", "ipAddress": "10.127.0.11"}, {"hostname":
-    "spine01", "timestamp": 1586403475456, "oif": "swp2", "namespace": "dual-bgp",
-    "ipAddress": "10.127.0.3"}, {"hostname": "spine01", "timestamp": 1586403475456,
-    "oif": "swp3", "namespace": "dual-bgp", "ipAddress": "10.127.0.5"}, {"hostname":
-    "spine01", "timestamp": 1586403475456, "oif": "swp4", "namespace": "dual-bgp",
-    "ipAddress": "10.127.0.7"}, {"hostname": "spine01", "timestamp": 1586403475456,
-    "oif": "swp6", "namespace": "dual-bgp", "ipAddress": "10.127.0.9"}, {"hostname":
-    "spine01", "timestamp": 1586403475456, "oif": "eth0", "namespace": "dual-bgp",
-    "ipAddress": "192.168.121.1"}, {"hostname": "spine02", "timestamp": 1586403475456,
-    "oif": "swp1", "namespace": "dual-bgp", "ipAddress": "10.127.1.1"}, {"hostname":
-    "spine02", "timestamp": 1586403475456, "oif": "swp5", "namespace": "dual-bgp",
-    "ipAddress": "10.127.1.11"}, {"hostname": "spine02", "timestamp": 1586403475456,
-    "oif": "swp2", "namespace": "dual-bgp", "ipAddress": "10.127.1.3"}, {"hostname":
-    "spine02", "timestamp": 1586403475456, "oif": "swp3", "namespace": "dual-bgp",
-    "ipAddress": "10.127.1.5"}, {"hostname": "spine02", "timestamp": 1586403475456,
-    "oif": "swp4", "namespace": "dual-bgp", "ipAddress": "10.127.1.7"}, {"hostname":
-    "spine02", "timestamp": 1586403475456, "oif": "swp6", "namespace": "dual-bgp",
-    "ipAddress": "10.127.1.9"}, {"hostname": "spine02", "timestamp": 1586403475456,
-    "oif": "eth0", "namespace": "dual-bgp", "ipAddress": "192.168.121.1"}]'
+  output: '[{"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
+    {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname":
+    "edge01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "internet"}, {"hostname": "internet"}, {"hostname":
+    "internet"}, {"hostname": "internet"}, {"hostname": "internet"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "server101"}, {"hostname": "server101"}, {"hostname": "server101"}, {"hostname":
+    "server101"}, {"hostname": "server101"}, {"hostname": "server102"}, {"hostname":
+    "server102"}, {"hostname": "server102"}, {"hostname": "server102"}, {"hostname":
+    "server103"}, {"hostname": "server103"}, {"hostname": "server103"}, {"hostname":
+    "server103"}, {"hostname": "server103"}, {"hostname": "server104"}, {"hostname":
+    "server104"}, {"hostname": "server104"}, {"hostname": "server104"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
+    {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "internet"}, {"hostname": "internet"},
+    {"hostname": "internet"}, {"hostname": "internet"}, {"hostname": "internet"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server101"},
+    {"hostname": "server101"}, {"hostname": "server101"}, {"hostname": "server101"},
+    {"hostname": "server101"}, {"hostname": "server101"}, {"hostname": "server102"},
+    {"hostname": "server102"}, {"hostname": "server102"}, {"hostname": "server102"},
+    {"hostname": "server102"}, {"hostname": "server102"}, {"hostname": "server102"},
+    {"hostname": "server103"}, {"hostname": "server103"}, {"hostname": "server103"},
+    {"hostname": "server103"}, {"hostname": "server103"}, {"hostname": "server103"},
+    {"hostname": "server103"}, {"hostname": "server104"}, {"hostname": "server104"},
+    {"hostname": "server104"}, {"hostname": "server104"}, {"hostname": "server104"},
+    {"hostname": "server104"}, {"hostname": "server104"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "edge01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "internet"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "server101"},
+    {"hostname": "server101"}, {"hostname": "server102"}, {"hostname": "server102"},
+    {"hostname": "server103"}, {"hostname": "server103"}, {"hostname": "server104"},
+    {"hostname": "server104"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}]'
 - command: arpnd summarize --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out
+  data-directory: tests/data/multidc/parquet-out/
   marks: arpnd summarize
-  output: '[{"dual-bgp": 14}, {"dual-bgp": 70}, {"dual-bgp": 43}, {"dual-bgp": 47},
-    {"dual-bgp": 17}, {"dual-bgp": {"reachable": 62, "stale": 4, "permanent": 4}},
-    {"dual-bgp": {"False": 70}}]'
+  output: '[{"dual-evpn": 14, "ospf-ibgp": 14, "ospf-single": 14}, {"dual-evpn": 132,
+    "ospf-ibgp": 156, "ospf-single": 46}, {"dual-evpn": 45, "ospf-ibgp": 50, "ospf-single":
+    33}, {"dual-evpn": 30, "ospf-ibgp": 44, "ospf-single": 33}, {"dual-evpn": 21,
+    "ospf-ibgp": 23, "ospf-single": 9}, {"dual-evpn": {"reachable": 60, "noarp": 44,
+    "permanent": 28}, "ospf-ibgp": {"reachable": 110, "permanent": 34, "noarp": 12},
+    "ospf-single": {"reachable": 46}}, {"dual-evpn": {"False": 88, "True": 44}, "ospf-ibgp":
+    {"False": 144, "True": 12}, "ospf-single": {"False": 46}}]'
 - command: arpnd summarize --namespace=dual-evpn --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out
+  data-directory: tests/data/multidc/parquet-out/
   marks: arpnd summarize
-  output: '[]'
+  output: '[{"dual-evpn": 14}, {"dual-evpn": 132}, {"dual-evpn": 45}, {"dual-evpn":
+    30}, {"dual-evpn": 21}, {"dual-evpn": {"reachable": 60, "noarp": 44, "permanent":
+    28}}, {"dual-evpn": {"False": 88, "True": 44}}]'
 - command: arpnd unique --columns=hostname --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out
+  data-directory: tests/data/multidc/parquet-out/
   marks: arpnd unique
-  output: '[{"hostname": "edge01", "count": 5}, {"hostname": "exit01", "count": 6},
-    {"hostname": "exit02", "count": 6}, {"hostname": "internet", "count": 3}, {"hostname":
-    "leaf01", "count": 6}, {"hostname": "leaf02", "count": 8}, {"hostname": "leaf03",
-    "count": 6}, {"hostname": "leaf04", "count": 8}, {"hostname": "server101", "count":
-    2}, {"hostname": "server102", "count": 2}, {"hostname": "server103", "count":
-    2}, {"hostname": "server104", "count": 2}, {"hostname": "spine01", "count": 7},
-    {"hostname": "spine02", "count": 7}]'
+  output: '[{"hostname": "internet", "count": 11}, {"hostname": "server104", "count":
+    13}, {"hostname": "server102", "count": 13}, {"hostname": "server103", "count":
+    14}, {"hostname": "server101", "count": 14}, {"hostname": "edge01", "count": 15},
+    {"hostname": "spine02", "count": 26}, {"hostname": "spine01", "count": 27}, {"hostname":
+    "exit02", "count": 30}, {"hostname": "exit01", "count": 31}, {"hostname": "leaf04",
+    "count": 35}, {"hostname": "leaf03", "count": 35}, {"hostname": "leaf02", "count":
+    35}, {"hostname": "leaf01", "count": 35}]'

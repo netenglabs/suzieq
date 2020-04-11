@@ -1,173 +1,169 @@
 description: 'Testing verbs for table: show describe'
 tests:
 - command: table show --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out
+  data-directory: tests/data/multidc/parquet-out/
   marks: table show
-  output: '[{"table": "arpnd", "first_time": 1586403475456, "latest_time": 1586403475456,
-    "intervals": 1, "all rows": 74, "namespaces": 1, "devices": 14}, {"table": "bgp",
-    "first_time": 1586403475456, "latest_time": 1586403475456, "intervals": 1, "all
-    rows": 36, "namespaces": 1, "devices": 10}, {"table": "device", "first_time":
-    1586403475456, "latest_time": 1586403475456, "intervals": 1, "all rows": 14, "namespaces":
-    1, "devices": 14}, {"table": "fs", "first_time": 1586403475456, "latest_time":
-    1586403475456, "intervals": 1, "all rows": 229, "namespaces": 1, "devices": 14},
-    {"table": "ifCounters", "first_time": 1586403475456, "latest_time": 1586403475456,
-    "intervals": 1, "all rows": 552, "namespaces": 1, "devices": 14}, {"table": "interfaces",
-    "first_time": 1586403475456, "latest_time": 1586403475456, "intervals": 1, "all
-    rows": 138, "namespaces": 1, "devices": 14}, {"table": "lldp", "first_time": 1586403475456,
-    "latest_time": 1586403475456, "intervals": 1, "all rows": 44, "namespaces": 1,
-    "devices": 10}, {"table": "macs", "first_time": 1586403475456, "latest_time":
-    1586403475456, "intervals": 1, "all rows": 39, "namespaces": 1, "devices": 5},
-    {"table": "mlag", "first_time": 1586403475456, "latest_time": 1586403475456, "intervals":
-    1, "all rows": 4, "namespaces": 1, "devices": 4}, {"table": "routes", "first_time":
-    1586403475456, "latest_time": 1586403475456, "intervals": 1, "all rows": 273,
-    "namespaces": 1, "devices": 14}, {"table": "sqPoller", "first_time": 1586403475456,
-    "latest_time": 1586403475456, "intervals": 1, "all rows": 286, "namespaces": 1,
-    "devices": 14}, {"table": "time", "first_time": 1586403475456, "latest_time":
-    1586403475456, "intervals": 1, "all rows": 14, "namespaces": 1, "devices": 14},
-    {"table": "topcpu", "first_time": 1586403475456, "latest_time": 1586403475456,
-    "intervals": 1, "all rows": 138, "namespaces": 1, "devices": 14}, {"table": "topmem",
-    "first_time": 1586403475456, "latest_time": 1586403475456, "intervals": 1, "all
-    rows": 93, "namespaces": 1, "devices": 9}, {"table": "vlan", "first_time": 1586403475456,
-    "latest_time": 1586403475456, "intervals": 1, "all rows": 16, "namespaces": 1,
-    "devices": 4}, {"table": "TOTAL", "first_time": 1586403475456, "latest_time":
-    1586403475456, "intervals": 1, "all rows": 1950, "namespaces": 1, "devices": 14}]'
+  output: '[{"table": "arpnd", "first_time": 1586630361088, "latest_time": 1586631147520,
+    "intervals": 3, "all rows": 334, "namespaces": 3, "devices": 14}, {"table": "bgp",
+    "first_time": 1586630361088, "latest_time": 1586630754304, "intervals": 2, "all
+    rows": 79, "namespaces": 2, "devices": 10}, {"table": "device", "first_time":
+    1586630361088, "latest_time": 1586631147520, "intervals": 3, "all rows": 42, "namespaces":
+    3, "devices": 14}, {"table": "evpnVni", "first_time": 1586630361088, "latest_time":
+    1586630754304, "intervals": 2, "all rows": 32, "namespaces": 2, "devices": 6},
+    {"table": "fs", "first_time": 1586630361088, "latest_time": 1586631147520, "intervals":
+    3, "all rows": 687, "namespaces": 3, "devices": 14}, {"table": "ifCounters", "first_time":
+    1586630361088, "latest_time": 1586631278592, "intervals": 6, "all rows": 1760,
+    "namespaces": 3, "devices": 14}, {"table": "interfaces", "first_time": 1586630361088,
+    "latest_time": 1586631147520, "intervals": 3, "all rows": 444, "namespaces": 3,
+    "devices": 14}, {"table": "lldp", "first_time": 1586630361088, "latest_time":
+    1586631147520, "intervals": 3, "all rows": 109, "namespaces": 3, "devices": 10},
+    {"table": "macs", "first_time": 1586630361088, "latest_time": 1586631147520, "intervals":
+    3, "all rows": 372, "namespaces": 3, "devices": 7}, {"table": "mlag", "first_time":
+    1586630361088, "latest_time": 1586630754304, "intervals": 2, "all rows": 8, "namespaces":
+    2, "devices": 4}, {"table": "ospfIf", "first_time": 1586630361088, "latest_time":
+    1586631147520, "intervals": 2, "all rows": 68, "namespaces": 2, "devices": 8},
+    {"table": "ospfNbr", "first_time": 1586630361088, "latest_time": 1586631147520,
+    "intervals": 2, "all rows": 48, "namespaces": 2, "devices": 8}, {"table": "routes",
+    "first_time": 1586630361088, "latest_time": 1586631147520, "intervals": 3, "all
+    rows": 790, "namespaces": 3, "devices": 14}, {"table": "sqPoller", "first_time":
+    1586630361088, "latest_time": 1586631278592, "intervals": 6, "all rows": 888,
+    "namespaces": 3, "devices": 14}, {"table": "time", "first_time": 1586630361088,
+    "latest_time": 1586631147520, "intervals": 3, "all rows": 42, "namespaces": 3,
+    "devices": 14}, {"table": "topcpu", "first_time": 1586630361088, "latest_time":
+    1586631147520, "intervals": 3, "all rows": 443, "namespaces": 3, "devices": 14},
+    {"table": "topmem", "first_time": 1586630361088, "latest_time": 1586631147520,
+    "intervals": 3, "all rows": 268, "namespaces": 3, "devices": 9}, {"table": "vlan",
+    "first_time": 1586630361088, "latest_time": 1586631147520, "intervals": 3, "all
+    rows": 70, "namespaces": 3, "devices": 6}, {"table": "TOTAL", "first_time": 1586630361088,
+    "latest_time": 1586631278592, "intervals": 6, "all rows": 6484, "namespaces":
+    3, "devices": 14}]'
 - command: table show --columns=hostname --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out
+  data-directory: tests/data/multidc/parquet-out/
   marks: table show
-  output: '[{"table": "arpnd", "first_time": 1586403475456, "latest_time": 1586403475456,
-    "intervals": 1, "all rows": 74, "namespaces": 1, "devices": 14}, {"table": "bgp",
-    "first_time": 1586403475456, "latest_time": 1586403475456, "intervals": 1, "all
-    rows": 36, "namespaces": 1, "devices": 10}, {"table": "device", "first_time":
-    1586403475456, "latest_time": 1586403475456, "intervals": 1, "all rows": 14, "namespaces":
-    1, "devices": 14}, {"table": "fs", "first_time": 1586403475456, "latest_time":
-    1586403475456, "intervals": 1, "all rows": 229, "namespaces": 1, "devices": 14},
-    {"table": "ifCounters", "first_time": 1586403475456, "latest_time": 1586403475456,
-    "intervals": 1, "all rows": 552, "namespaces": 1, "devices": 14}, {"table": "interfaces",
-    "first_time": 1586403475456, "latest_time": 1586403475456, "intervals": 1, "all
-    rows": 138, "namespaces": 1, "devices": 14}, {"table": "lldp", "first_time": 1586403475456,
-    "latest_time": 1586403475456, "intervals": 1, "all rows": 44, "namespaces": 1,
-    "devices": 10}, {"table": "macs", "first_time": 1586403475456, "latest_time":
-    1586403475456, "intervals": 1, "all rows": 39, "namespaces": 1, "devices": 5},
-    {"table": "mlag", "first_time": 1586403475456, "latest_time": 1586403475456, "intervals":
-    1, "all rows": 4, "namespaces": 1, "devices": 4}, {"table": "routes", "first_time":
-    1586403475456, "latest_time": 1586403475456, "intervals": 1, "all rows": 273,
-    "namespaces": 1, "devices": 14}, {"table": "sqPoller", "first_time": 1586403475456,
-    "latest_time": 1586403475456, "intervals": 1, "all rows": 286, "namespaces": 1,
-    "devices": 14}, {"table": "time", "first_time": 1586403475456, "latest_time":
-    1586403475456, "intervals": 1, "all rows": 14, "namespaces": 1, "devices": 14},
-    {"table": "topcpu", "first_time": 1586403475456, "latest_time": 1586403475456,
-    "intervals": 1, "all rows": 138, "namespaces": 1, "devices": 14}, {"table": "topmem",
-    "first_time": 1586403475456, "latest_time": 1586403475456, "intervals": 1, "all
-    rows": 93, "namespaces": 1, "devices": 9}, {"table": "vlan", "first_time": 1586403475456,
-    "latest_time": 1586403475456, "intervals": 1, "all rows": 16, "namespaces": 1,
-    "devices": 4}, {"table": "TOTAL", "first_time": 1586403475456, "latest_time":
-    1586403475456, "intervals": 1, "all rows": 1950, "namespaces": 1, "devices": 14}]'
+  xfail:
+    error: '[]'
+    reason: uncaught exception
 - command: table show --namespace=dummy --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out
+  data-directory: tests/data/multidc/parquet-out/
   marks: table show
   output: '[]'
 - command: table show --view=changes --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out
+  data-directory: tests/data/multidc/parquet-out/
   marks: table show
-  output: '[{"table": "arpnd", "first_time": 1586403475456, "latest_time": 1586403475456,
-    "intervals": 1, "all rows": 74, "namespaces": 1, "devices": 14}, {"table": "bgp",
-    "first_time": 1586403475456, "latest_time": 1586403475456, "intervals": 1, "all
-    rows": 36, "namespaces": 1, "devices": 10}, {"table": "device", "first_time":
-    1586403475456, "latest_time": 1586403475456, "intervals": 1, "all rows": 14, "namespaces":
-    1, "devices": 14}, {"table": "fs", "first_time": 1586403475456, "latest_time":
-    1586403475456, "intervals": 1, "all rows": 229, "namespaces": 1, "devices": 14},
-    {"table": "ifCounters", "first_time": 1586403475456, "latest_time": 1586403475456,
-    "intervals": 1, "all rows": 552, "namespaces": 1, "devices": 14}, {"table": "interfaces",
-    "first_time": 1586403475456, "latest_time": 1586403475456, "intervals": 1, "all
-    rows": 138, "namespaces": 1, "devices": 14}, {"table": "lldp", "first_time": 1586403475456,
-    "latest_time": 1586403475456, "intervals": 1, "all rows": 44, "namespaces": 1,
-    "devices": 10}, {"table": "macs", "first_time": 1586403475456, "latest_time":
-    1586403475456, "intervals": 1, "all rows": 39, "namespaces": 1, "devices": 5},
-    {"table": "mlag", "first_time": 1586403475456, "latest_time": 1586403475456, "intervals":
-    1, "all rows": 4, "namespaces": 1, "devices": 4}, {"table": "routes", "first_time":
-    1586403475456, "latest_time": 1586403475456, "intervals": 1, "all rows": 273,
-    "namespaces": 1, "devices": 14}, {"table": "sqPoller", "first_time": 1586403475456,
-    "latest_time": 1586403475456, "intervals": 1, "all rows": 286, "namespaces": 1,
-    "devices": 14}, {"table": "time", "first_time": 1586403475456, "latest_time":
-    1586403475456, "intervals": 1, "all rows": 14, "namespaces": 1, "devices": 14},
-    {"table": "topcpu", "first_time": 1586403475456, "latest_time": 1586403475456,
-    "intervals": 1, "all rows": 138, "namespaces": 1, "devices": 14}, {"table": "topmem",
-    "first_time": 1586403475456, "latest_time": 1586403475456, "intervals": 1, "all
-    rows": 93, "namespaces": 1, "devices": 9}, {"table": "vlan", "first_time": 1586403475456,
-    "latest_time": 1586403475456, "intervals": 1, "all rows": 16, "namespaces": 1,
-    "devices": 4}, {"table": "TOTAL", "first_time": 1586403475456, "latest_time":
-    1586403475456, "intervals": 1, "all rows": 1950, "namespaces": 1, "devices": 14}]'
+  output: '[{"table": "arpnd", "first_time": 1586630361088, "latest_time": 1586631147520,
+    "intervals": 3, "all rows": 334, "namespaces": 3, "devices": 14}, {"table": "bgp",
+    "first_time": 1586630361088, "latest_time": 1586630754304, "intervals": 2, "all
+    rows": 79, "namespaces": 2, "devices": 10}, {"table": "device", "first_time":
+    1586630361088, "latest_time": 1586631147520, "intervals": 3, "all rows": 42, "namespaces":
+    3, "devices": 14}, {"table": "evpnVni", "first_time": 1586630361088, "latest_time":
+    1586630754304, "intervals": 2, "all rows": 32, "namespaces": 2, "devices": 6},
+    {"table": "fs", "first_time": 1586630361088, "latest_time": 1586631147520, "intervals":
+    3, "all rows": 687, "namespaces": 3, "devices": 14}, {"table": "ifCounters", "first_time":
+    1586630361088, "latest_time": 1586631278592, "intervals": 6, "all rows": 1760,
+    "namespaces": 3, "devices": 14}, {"table": "interfaces", "first_time": 1586630361088,
+    "latest_time": 1586631147520, "intervals": 3, "all rows": 444, "namespaces": 3,
+    "devices": 14}, {"table": "lldp", "first_time": 1586630361088, "latest_time":
+    1586631147520, "intervals": 3, "all rows": 109, "namespaces": 3, "devices": 10},
+    {"table": "macs", "first_time": 1586630361088, "latest_time": 1586631147520, "intervals":
+    3, "all rows": 372, "namespaces": 3, "devices": 7}, {"table": "mlag", "first_time":
+    1586630361088, "latest_time": 1586630754304, "intervals": 2, "all rows": 8, "namespaces":
+    2, "devices": 4}, {"table": "ospfIf", "first_time": 1586630361088, "latest_time":
+    1586631147520, "intervals": 2, "all rows": 68, "namespaces": 2, "devices": 8},
+    {"table": "ospfNbr", "first_time": 1586630361088, "latest_time": 1586631147520,
+    "intervals": 2, "all rows": 48, "namespaces": 2, "devices": 8}, {"table": "routes",
+    "first_time": 1586630361088, "latest_time": 1586631147520, "intervals": 3, "all
+    rows": 790, "namespaces": 3, "devices": 14}, {"table": "sqPoller", "first_time":
+    1586630361088, "latest_time": 1586631278592, "intervals": 6, "all rows": 888,
+    "namespaces": 3, "devices": 14}, {"table": "time", "first_time": 1586630361088,
+    "latest_time": 1586631147520, "intervals": 3, "all rows": 42, "namespaces": 3,
+    "devices": 14}, {"table": "topcpu", "first_time": 1586630361088, "latest_time":
+    1586631147520, "intervals": 3, "all rows": 443, "namespaces": 3, "devices": 14},
+    {"table": "topmem", "first_time": 1586630361088, "latest_time": 1586631147520,
+    "intervals": 3, "all rows": 268, "namespaces": 3, "devices": 9}, {"table": "vlan",
+    "first_time": 1586630361088, "latest_time": 1586631147520, "intervals": 3, "all
+    rows": 70, "namespaces": 3, "devices": 6}, {"table": "TOTAL", "first_time": 1586630361088,
+    "latest_time": 1586631278592, "intervals": 6, "all rows": 6484, "namespaces":
+    3, "devices": 14}]'
 - command: table show --view=latest --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out
+  data-directory: tests/data/multidc/parquet-out/
   marks: table show
-  output: '[{"table": "arpnd", "first_time": 1586403475456, "latest_time": 1586403475456,
-    "intervals": 1, "all rows": 74, "namespaces": 1, "devices": 14}, {"table": "bgp",
-    "first_time": 1586403475456, "latest_time": 1586403475456, "intervals": 1, "all
-    rows": 36, "namespaces": 1, "devices": 10}, {"table": "device", "first_time":
-    1586403475456, "latest_time": 1586403475456, "intervals": 1, "all rows": 14, "namespaces":
-    1, "devices": 14}, {"table": "fs", "first_time": 1586403475456, "latest_time":
-    1586403475456, "intervals": 1, "all rows": 229, "namespaces": 1, "devices": 14},
-    {"table": "ifCounters", "first_time": 1586403475456, "latest_time": 1586403475456,
-    "intervals": 1, "all rows": 552, "namespaces": 1, "devices": 14}, {"table": "interfaces",
-    "first_time": 1586403475456, "latest_time": 1586403475456, "intervals": 1, "all
-    rows": 138, "namespaces": 1, "devices": 14}, {"table": "lldp", "first_time": 1586403475456,
-    "latest_time": 1586403475456, "intervals": 1, "all rows": 44, "namespaces": 1,
-    "devices": 10}, {"table": "macs", "first_time": 1586403475456, "latest_time":
-    1586403475456, "intervals": 1, "all rows": 39, "namespaces": 1, "devices": 5},
-    {"table": "mlag", "first_time": 1586403475456, "latest_time": 1586403475456, "intervals":
-    1, "all rows": 4, "namespaces": 1, "devices": 4}, {"table": "routes", "first_time":
-    1586403475456, "latest_time": 1586403475456, "intervals": 1, "all rows": 273,
-    "namespaces": 1, "devices": 14}, {"table": "sqPoller", "first_time": 1586403475456,
-    "latest_time": 1586403475456, "intervals": 1, "all rows": 286, "namespaces": 1,
-    "devices": 14}, {"table": "time", "first_time": 1586403475456, "latest_time":
-    1586403475456, "intervals": 1, "all rows": 14, "namespaces": 1, "devices": 14},
-    {"table": "topcpu", "first_time": 1586403475456, "latest_time": 1586403475456,
-    "intervals": 1, "all rows": 138, "namespaces": 1, "devices": 14}, {"table": "topmem",
-    "first_time": 1586403475456, "latest_time": 1586403475456, "intervals": 1, "all
-    rows": 93, "namespaces": 1, "devices": 9}, {"table": "vlan", "first_time": 1586403475456,
-    "latest_time": 1586403475456, "intervals": 1, "all rows": 16, "namespaces": 1,
-    "devices": 4}, {"table": "TOTAL", "first_time": 1586403475456, "latest_time":
-    1586403475456, "intervals": 1, "all rows": 1950, "namespaces": 1, "devices": 14}]'
+  output: '[{"table": "arpnd", "first_time": 1586630361088, "latest_time": 1586631147520,
+    "intervals": 3, "all rows": 334, "namespaces": 3, "devices": 14}, {"table": "bgp",
+    "first_time": 1586630361088, "latest_time": 1586630754304, "intervals": 2, "all
+    rows": 79, "namespaces": 2, "devices": 10}, {"table": "device", "first_time":
+    1586630361088, "latest_time": 1586631147520, "intervals": 3, "all rows": 42, "namespaces":
+    3, "devices": 14}, {"table": "evpnVni", "first_time": 1586630361088, "latest_time":
+    1586630754304, "intervals": 2, "all rows": 32, "namespaces": 2, "devices": 6},
+    {"table": "fs", "first_time": 1586630361088, "latest_time": 1586631147520, "intervals":
+    3, "all rows": 687, "namespaces": 3, "devices": 14}, {"table": "ifCounters", "first_time":
+    1586630361088, "latest_time": 1586631278592, "intervals": 6, "all rows": 1760,
+    "namespaces": 3, "devices": 14}, {"table": "interfaces", "first_time": 1586630361088,
+    "latest_time": 1586631147520, "intervals": 3, "all rows": 444, "namespaces": 3,
+    "devices": 14}, {"table": "lldp", "first_time": 1586630361088, "latest_time":
+    1586631147520, "intervals": 3, "all rows": 109, "namespaces": 3, "devices": 10},
+    {"table": "macs", "first_time": 1586630361088, "latest_time": 1586631147520, "intervals":
+    3, "all rows": 372, "namespaces": 3, "devices": 7}, {"table": "mlag", "first_time":
+    1586630361088, "latest_time": 1586630754304, "intervals": 2, "all rows": 8, "namespaces":
+    2, "devices": 4}, {"table": "ospfIf", "first_time": 1586630361088, "latest_time":
+    1586631147520, "intervals": 2, "all rows": 68, "namespaces": 2, "devices": 8},
+    {"table": "ospfNbr", "first_time": 1586630361088, "latest_time": 1586631147520,
+    "intervals": 2, "all rows": 48, "namespaces": 2, "devices": 8}, {"table": "routes",
+    "first_time": 1586630361088, "latest_time": 1586631147520, "intervals": 3, "all
+    rows": 790, "namespaces": 3, "devices": 14}, {"table": "sqPoller", "first_time":
+    1586630361088, "latest_time": 1586631278592, "intervals": 6, "all rows": 888,
+    "namespaces": 3, "devices": 14}, {"table": "time", "first_time": 1586630361088,
+    "latest_time": 1586631147520, "intervals": 3, "all rows": 42, "namespaces": 3,
+    "devices": 14}, {"table": "topcpu", "first_time": 1586630361088, "latest_time":
+    1586631147520, "intervals": 3, "all rows": 443, "namespaces": 3, "devices": 14},
+    {"table": "topmem", "first_time": 1586630361088, "latest_time": 1586631147520,
+    "intervals": 3, "all rows": 268, "namespaces": 3, "devices": 9}, {"table": "vlan",
+    "first_time": 1586630361088, "latest_time": 1586631147520, "intervals": 3, "all
+    rows": 70, "namespaces": 3, "devices": 6}, {"table": "TOTAL", "first_time": 1586630361088,
+    "latest_time": 1586631278592, "intervals": 6, "all rows": 6484, "namespaces":
+    3, "devices": 14}]'
 - command: table show --hostname=leaf01 --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out
+  data-directory: tests/data/multidc/parquet-out/
   marks: table show
-  output: '[{"table": "arpnd", "first_time": 1586403475456, "latest_time": 1586403475456,
-    "intervals": 1, "all rows": 6, "namespaces": 1, "devices": 1}, {"table": "bgp",
-    "first_time": 1586403475456, "latest_time": 1586403475456, "intervals": 1, "all
-    rows": 2, "namespaces": 1, "devices": 1}, {"table": "device", "first_time": 1586403475456,
-    "latest_time": 1586403475456, "intervals": 1, "all rows": 1, "namespaces": 1,
-    "devices": 1}, {"table": "fs", "first_time": 1586403475456, "latest_time": 1586403475456,
-    "intervals": 1, "all rows": 21, "namespaces": 1, "devices": 1}, {"table": "ifCounters",
-    "first_time": 1586403475456, "latest_time": 1586403475456, "intervals": 1, "all
-    rows": 64, "namespaces": 1, "devices": 1}, {"table": "interfaces", "first_time":
-    1586403475456, "latest_time": 1586403475456, "intervals": 1, "all rows": 16, "namespaces":
-    1, "devices": 1}, {"table": "lldp", "first_time": 1586403475456, "latest_time":
-    1586403475456, "intervals": 1, "all rows": 4, "namespaces": 1, "devices": 1},
-    {"table": "macs", "first_time": 1586403475456, "latest_time": 1586403475456, "intervals":
-    1, "all rows": 9, "namespaces": 1, "devices": 1}, {"table": "mlag", "first_time":
-    1586403475456, "latest_time": 1586403475456, "intervals": 1, "all rows": 1, "namespaces":
-    1, "devices": 1}, {"table": "routes", "first_time": 1586403475456, "latest_time":
-    1586403475456, "intervals": 1, "all rows": 22, "namespaces": 1, "devices": 1},
-    {"table": "sqPoller", "first_time": 1586403475456, "latest_time": 1586403475456,
-    "intervals": 1, "all rows": 17, "namespaces": 1, "devices": 1}, {"table": "time",
-    "first_time": 1586403475456, "latest_time": 1586403475456, "intervals": 1, "all
-    rows": 1, "namespaces": 1, "devices": 1}, {"table": "topcpu", "first_time": 1586403475456,
-    "latest_time": 1586403475456, "intervals": 1, "all rows": 11, "namespaces": 1,
-    "devices": 1}, {"table": "topmem", "first_time": 1586403475456, "latest_time":
-    1586403475456, "intervals": 1, "all rows": 9, "namespaces": 1, "devices": 1},
-    {"table": "vlan", "first_time": 1586403475456, "latest_time": 1586403475456, "intervals":
-    1, "all rows": 4, "namespaces": 1, "devices": 1}, {"table": "TOTAL", "first_time":
-    1586403475456, "latest_time": 1586403475456, "intervals": 1, "all rows": 188,
-    "namespaces": 1, "devices": 1}]'
+  output: '[{"table": "arpnd", "first_time": 1586630361088, "latest_time": 1586631147520,
+    "intervals": 3, "all rows": 35, "namespaces": 3, "devices": 1}, {"table": "bgp",
+    "first_time": 1586630361088, "latest_time": 1586630754304, "intervals": 2, "all
+    rows": 4, "namespaces": 2, "devices": 1}, {"table": "device", "first_time": 1586630361088,
+    "latest_time": 1586631147520, "intervals": 3, "all rows": 3, "namespaces": 3,
+    "devices": 1}, {"table": "evpnVni", "first_time": 1586630361088, "latest_time":
+    1586630754304, "intervals": 2, "all rows": 6, "namespaces": 2, "devices": 1},
+    {"table": "fs", "first_time": 1586630361088, "latest_time": 1586631147520, "intervals":
+    3, "all rows": 63, "namespaces": 3, "devices": 1}, {"table": "ifCounters", "first_time":
+    1586630361088, "latest_time": 1586631278592, "intervals": 6, "all rows": 204,
+    "namespaces": 3, "devices": 1}, {"table": "interfaces", "first_time": 1586630361088,
+    "latest_time": 1586631147520, "intervals": 3, "all rows": 51, "namespaces": 3,
+    "devices": 1}, {"table": "lldp", "first_time": 1586630361088, "latest_time": 1586631147520,
+    "intervals": 3, "all rows": 10, "namespaces": 3, "devices": 1}, {"table": "macs",
+    "first_time": 1586630361088, "latest_time": 1586631147520, "intervals": 3, "all
+    rows": 67, "namespaces": 3, "devices": 1}, {"table": "mlag", "first_time": 1586630361088,
+    "latest_time": 1586630754304, "intervals": 2, "all rows": 2, "namespaces": 2,
+    "devices": 1}, {"table": "ospfIf", "first_time": 1586630361088, "latest_time":
+    1586631147520, "intervals": 2, "all rows": 7, "namespaces": 2, "devices": 1},
+    {"table": "ospfNbr", "first_time": 1586630361088, "latest_time": 1586631147520,
+    "intervals": 2, "all rows": 4, "namespaces": 2, "devices": 1}, {"table": "routes",
+    "first_time": 1586630361088, "latest_time": 1586631147520, "intervals": 3, "all
+    rows": 68, "namespaces": 3, "devices": 1}, {"table": "sqPoller", "first_time":
+    1586630361088, "latest_time": 1586631278592, "intervals": 4, "all rows": 54, "namespaces":
+    3, "devices": 1}, {"table": "time", "first_time": 1586630361088, "latest_time":
+    1586631147520, "intervals": 3, "all rows": 3, "namespaces": 3, "devices": 1},
+    {"table": "topcpu", "first_time": 1586630361088, "latest_time": 1586631147520,
+    "intervals": 3, "all rows": 31, "namespaces": 3, "devices": 1}, {"table": "topmem",
+    "first_time": 1586630361088, "latest_time": 1586631147520, "intervals": 3, "all
+    rows": 28, "namespaces": 3, "devices": 1}, {"table": "vlan", "first_time": 1586630361088,
+    "latest_time": 1586631147520, "intervals": 3, "all rows": 15, "namespaces": 3,
+    "devices": 1}, {"table": "TOTAL", "first_time": 1586630361088, "latest_time":
+    1586631278592, "intervals": 6, "all rows": 655, "namespaces": 3, "devices": 1}]'
 - command: table describe --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out
+  data-directory: tests/data/multidc/parquet-out/
+  error:
+    error: '[{"error": "ERROR: Must specify a table"}]'
   marks: table describe
-  xfail:
-    error: '"Error running command: ERROR: Unknown table \n------------------------------------------------------------\n------------------------------------------------------------"'
-    reason: 'uncaught exception bug #66'
 - command: table describe --namespace=dual-evpn --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out
+  data-directory: tests/data/multidc/parquet-out/
+  error:
+    error: '[{"error": "ERROR: Must specify a table"}]'
   marks: table describe
-  xfail:
-    error: '"Error running command: ERROR: Unknown table \n------------------------------------------------------------\n------------------------------------------------------------"'
-    reason: 'uncaught exception bug #66'
