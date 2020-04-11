@@ -4,7 +4,57 @@
     "type": "record",
     "fields": [
         {
-            "name": "v4Enabled",
+            "name": "evpnPfxRx",
+            "type": "long"
+        },
+        {
+            "name": "v4Received",
+            "type": "boolean"
+        },
+        {
+            "name": "bfdStatus",
+            "type": "string"
+        },
+        {
+            "name": "evpnPfxTx",
+            "type": "long"
+        },
+        {
+            "name": "v4IngressRmap",
+            "type": "string"
+        },
+        {
+            "name": "routerId",
+            "type": "string"
+        },
+        {
+            "name": "v6IngressRmap",
+            "type": "string"
+        },
+        {
+            "name": "peerAsn",
+            "type": "long",
+            "display": 7
+        },
+        {
+            "name": "v6Received",
+            "type": "boolean"
+        },
+        {
+            "name": "numChanges",
+            "type": "long",
+            "display": 10
+        },
+        {
+            "name": "evpnEnabled",
+            "type": "boolean"
+        },
+        {
+            "name": "v6Advertised",
+            "type": "boolean"
+        },
+        {
+            "name": "v4Advertised",
             "type": "boolean"
         },
         {
@@ -14,121 +64,30 @@
             "display": 2
         },
         {
-            "name": "reason",
-            "type": "string"
-        },
-        {
-            "name": "v4PfxTx",
-            "type": "long"
-        },
-        {
-            "name": "source",
-            "type": "string"
-        },
-        {
-            "name": "lastDownTime",
-            "type": "timedelta64[s]"
-        },
-        {
-            "name": "evpnIngressRmap",
-            "type": "string"
-        },
-        {
-            "name": "v6IngressRmap",
-            "type": "string"
-        },
-        {
-            "name": "bfdStatus",
-            "type": "string"
-        },
-        {
-            "name": "asn",
-            "type": "long",
-            "display": 5
-        },
-        {
-            "name": "estdTime",
-            "type": "timedelta64[s]",
-            "display": 8
-        },
-        {
-            "name": "v6Enabled",
-            "type": "boolean"
-        },
-        {
-            "name": "evpnPfxTx",
-            "type": "long"
-        },
-        {
             "name": "peerRouterId",
             "type": "string",
             "default": "0.0.0.0"
         },
         {
-            "name": "numChanges",
-            "type": "long",
-            "display": 9
-        },
-        {
-            "name": "routerId",
-            "type": "string"
-        },
-        {
-            "name": "peerAsn",
-            "type": "long",
-            "display": 6
-        },
-        {
-            "name": "evpnEnabled",
-            "type": "boolean"
+            "name": "keepaliveTime",
+            "type": "long"
         },
         {
             "name": "v6PfxTx",
             "type": "long"
         },
         {
-            "name": "updatesRx",
-            "type": "long"
+            "name": "v4Enabled",
+            "type": "boolean"
         },
         {
-            "name": "mrai",
-            "type": "long"
-        },
-        {
-            "name": "updatesTx",
-            "type": "long"
+            "name": "estdTime",
+            "type": "timedelta64[s]",
+            "display": 9
         },
         {
             "name": "v6PfxRx",
             "type": "long"
-        },
-        {
-            "name": "v4PfxRx",
-            "type": "long",
-            "display": 7
-        },
-        {
-            "name": "peer",
-            "type": "string",
-            "key": 3,
-            "display": 3
-        },
-        {
-            "name": "state",
-            "type": "string",
-            "display": 4
-        },
-        {
-            "name": "holdTime",
-            "type": "timestamp"
-        },
-        {
-            "name": "v4IngressRmap",
-            "type": "string"
-        },
-        {
-            "name": "evpnEgressRmap",
-            "type": "string"
         },
         {
             "name": "v4EgressRmap",
@@ -139,15 +98,85 @@
             "type": "string"
         },
         {
-            "name": "evpnPfxRx",
+            "name": "reason",
+            "type": "string"
+        },
+        {
+            "name": "mrai",
             "type": "long"
         },
         {
-            "name": "keepaliveTime",
-            "type": "timestamp"
+            "name": "updatesTx",
+            "type": "long"
+        },
+        {
+            "name": "v4PfxRx",
+            "type": "long",
+            "display": 8
+        },
+        {
+            "name": "evpnAdvertised",
+            "type": "boolean"
+        },
+        {
+            "name": "holdTime",
+            "type": "long"
+        },
+        {
+            "name": "evpnReceived",
+            "type": "boolean"
+        },
+        {
+            "name": "state",
+            "type": "string",
+            "display": 5
+        },
+        {
+            "name": "evpnEgressRmap",
+            "type": "string"
+        },
+        {
+            "name": "updatesRx",
+            "type": "long"
+        },
+        {
+            "name": "evpnRecived",
+            "type": "boolean"
+        },
+        {
+            "name": "source",
+            "type": "string"
         },
         {
             "name": "peerHostname",
+            "type": "string",
+            "display": 4
+        },
+        {
+            "name": "v4PfxTx",
+            "type": "long"
+        },
+        {
+            "name": "lastDownTime",
+            "type": "timedelta64[s]"
+        },
+        {
+            "name": "v6Enabled",
+            "type": "boolean"
+        },
+        {
+            "name": "peer",
+            "type": "string",
+            "key": 3,
+            "display": 3
+        },
+        {
+            "name": "asn",
+            "type": "long",
+            "display": 6
+        },
+        {
+            "name": "evpnIngressRmap",
             "type": "string"
         },
         {

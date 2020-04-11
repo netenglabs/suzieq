@@ -9,12 +9,14 @@ keys:
 show-fields:
   - vrf
   - peer
+  - peerHostname
   - state
   - asn
   - peerAsn
   - v4PfxRx
   - estdTime
   - numChanges
+
 apply:
   eos:
     version: all
@@ -23,6 +25,7 @@ apply:
         "asn: peerAsn", 
         "localAsn: asn", 
         "updateSource: source",
+        "peerHostname: peerHostname?|",
         "peerAddress: peer", 
         "vrf: vrf", 
         "maintenance: maintenance", 
@@ -49,11 +52,16 @@ apply:
         "v4Enabled: v4Enabled?|True",
         "v6Enabled: v6Enabled?|False",
         "evpnEnabled: evpnEnabled?|False",
+        "v4Advertised: v4Advertised?|False",
+        "v6Advertised: v6Advertised?|False",
+        "evpnAdvertised: evpnAdvertised?|False",
+        "v4Received: v4Received?|False",
+        "v6Received: v6Received?|False",
+        "evpnReceived: evpnReceived?|False",
         "bfdState: bfdStatus?|disabled",
         "v6BestEcmpPaths: v6EcmpEnabled?|0",
         "v4BestEcmpPaths: v4EcmpEnabled?|0",
         "state: state?Established|NotEstd"]'
-
   cumulus:
     version: all
     command: net show bgp vrf all neighbor json
@@ -66,9 +74,9 @@ apply:
         "addressFamilyInfo/IPv4 Unicast/acceptedPrefixCounter: v4PfxRx?|0",
         "addressFamilyInfo/IPv6 Unicast/acceptedPrefixCounter: v6PfxRx?|0",
         "addressFamilyInfo/L2VPN EVPN/acceptedPrefixCounter: evpnPfxRx?|0",
-        "addressFamilyInfo/ipv4Unicast/acceptedPrefixCounter: newv4PfxRx?|0",
-        "addressFamilyInfo/ipv6Unicast/acceptedPrefixCounter: newv6PfxRx?|0",
-        "addressFamilyInfo/l2vpnEvpn/acceptedPrefixCounter: newevpnPfxRx?|0",
+        "addressFamilyInfo/ipv4Unicast/acceptedPrefixCounter: v4PfxRx?|v4PfxRx",
+        "addressFamilyInfo/ipv6Unicast/acceptedPrefixCounter: v6PfxRx?|v6PfxRx",
+        "addressFamilyInfo/l2vpnEvpn/acceptedPrefixCounter: evpnPfxRx?|evpnPfxRx",
         "addressFamilyInfo/ipv4Unicast/sentPrefixCounter: v4PfxTx?|0",
         "addressFamilyInfo/ipv6Unicast/sentPrefixCounter: v6PfxTx?|0",
         "addressFamilyInfo/l2vpnEvpn/sentPrefixCounter: evpnPfxTx?|0",
@@ -89,14 +97,26 @@ apply:
         "bgpTimerHoldTimeMsecs: holdTime/1000",
         "bgpTimerKeepAliveIntervalMsecs: keepaliveTime/1000",
         "minBtwnAdvertisementRunsTimerMsecs: mrai/1000",
-        "hostName/rcvHostName: peerHostname",
         "peerBfdInfo/status: bfdStatus?|disabled",
-        "neighborCapabilities/multiprotocolExtensions/ipv4Unicast/advertisedAndReceived: newv4Enabled?|False",
-        "neighborCapabilities/multiprotocolExtensions/l2vpnEvpn/advertisedAndReceived: newevpnEnabled?|False",
-        "neighborCapabilities/multiprotocolExtensions/ipv6Unicast/advertisedAndReceived: newv6Enabled?|False",
-        "neighborCapabilities/multiprotocolExtensions/IPv4 Unicast/advertisedAndReceived: v4Enabled?|False",
-        "neighborCapabilities/multiprotocolExtensions/L2VPN EVPN/advertisedAndReceived: evpnEnabled?|False",
-        "neighborCapabilities/multiprotocolExtensions/IPv6 Unicast/advertisedAndReceived: v6Enabled?|False"]'
+        "neighborCapabilities/hostName/rcvHostName: peerHostname?|",
+        "neighborCapabilities/multiprotocolExtensions/ipv4Unicast/advertisedAndReceived: v4Enabled?|False",
+        "neighborCapabilities/multiprotocolExtensions/l2vpnEvpn/advertisedAndReceived: evpnEnabled?|False",
+        "neighborCapabilities/multiprotocolExtensions/ipv6Unicast/advertisedAndReceived: v6Enabled?|False",
+        "neighborCapabilities/multiprotocolExtensions/ipv4Unicast/advertised: v4Advertised?|False",
+        "neighborCapabilities/multiprotocolExtensions/l2vpnEvpn/advertised: evpnAdvertised?|False",
+        "neighborCapabilities/multiprotocolExtensions/ipv6Unicast/advertised: v6Advertised?|False",
+        "neighborCapabilities/multiprotocolExtensions/ipv4Unicast/received: v4Received?|False",
+        "neighborCapabilities/multiprotocolExtensions/l2vpnEvpn/received: evpnReceived?|False",
+        "neighborCapabilities/multiprotocolExtensions/ipv6Unicast/received: v6Received?|False",
+        "neighborCapabilities/multiprotocolExtensions/IPv4 Unicast/advertisedAndReceived: v4Enabled?|v4Enabled",
+        "neighborCapabilities/multiprotocolExtensions/L2VPN EVPN/advertisedAndReceived: evpnEnabled?|evpnEnabled",
+        "neighborCapabilities/multiprotocolExtensions/IPv6 Unicast/advertisedAndReceived: v6Enabled?|v6Enabled",
+        "neighborCapabilities/multiprotocolExtensions/IPv4 Unicast/advertised: v4Advertised?|v4Advertised",
+        "neighborCapabilities/multiprotocolExtensions/L2VPN EVPN/advertised: evpnAdvertised?|evpnAdvertised",
+        "neighborCapabilities/multiprotocolExtensions/IPv6 Unicast/advertised: v6Advertised?|v6Advertised",
+        "neighborCapabilities/multiprotocolExtensions/IPv4 Unicast/received: v4Received?|v4Received",
+        "neighborCapabilities/multiprotocolExtensions/L2VPN EVPN/received: evpnReceived?|evpnReceived",
+        "neighborCapabilities/multiprotocolExtensions/IPv6 Unicast/received: v6Received?|v6Received"]'
 
   linux:
       version: all
@@ -110,9 +130,9 @@ apply:
         "addressFamilyInfo/IPv4 Unicast/acceptedPrefixCounter: v4PfxRx?|0",
         "addressFamilyInfo/IPv6 Unicast/acceptedPrefixCounter: v6PfxRx?|0",
         "addressFamilyInfo/L2VPN EVPN/acceptedPrefixCounter: evpnPfxRx?|0",
-        "addressFamilyInfo/ipv4Unicast/acceptedPrefixCounter: newv4PfxRx?|0",
-        "addressFamilyInfo/ipv6Unicast/acceptedPrefixCounter: newv6PfxRx?|0",
-        "addressFamilyInfo/l2vpnEvpn/acceptedPrefixCounter: newevpnPfxRx?|0",
+        "addressFamilyInfo/ipv4Unicast/acceptedPrefixCounter: v4PfxRx?|v4PfxRx",
+        "addressFamilyInfo/ipv6Unicast/acceptedPrefixCounter: v6PfxRx?|v6PfxRx",
+        "addressFamilyInfo/l2vpnEvpn/acceptedPrefixCounter: evpnPfxRx?|evpnPfxRx",
         "addressFamilyInfo/ipv4Unicast/sentPrefixCounter: v4PfxTx?|0",
         "addressFamilyInfo/ipv6Unicast/sentPrefixCounter: v6PfxTx?|0",
         "addressFamilyInfo/l2vpnEvpn/sentPrefixCounter: evpnPfxTx?|0",
@@ -133,12 +153,24 @@ apply:
         "bgpTimerHoldTimeMsecs: holdTime/1000",
         "bgpTimerKeepAliveIntervalMsecs: keepaliveTime/1000",
         "minBtwnAdvertisementRunsTimerMsecs: mrai/1000",
-        "hostName/rcvHostName: peerHostname",
         "peerBfdInfo/status: bfdStatus?|disabled",
-        "neighborCapabilities/multiprotocolExtensions/ipv4Unicast/advertisedAndReceived: newv4Enabled?|False",
-        "neighborCapabilities/multiprotocolExtensions/l2vpnEvpn/advertisedAndReceived: newevpnEnabled?|False",
-        "neighborCapabilities/multiprotocolExtensions/ipv6Unicast/advertisedAndReceived: newv6Enabled?|False",
-        "neighborCapabilities/multiprotocolExtensions/IPv4 Unicast/advertisedAndReceived: v4Enabled?|False",
-        "neighborCapabilities/multiprotocolExtensions/L2VPN EVPN/advertisedAndReceived: evpnEnabled?|False",
-        "neighborCapabilities/multiprotocolExtensions/IPv6 Unicast/advertisedAndReceived: v6Enabled?|False"]'
+        "neighborCapabilities/hostName/rcvHostName: peerHostname?|",
+        "neighborCapabilities/multiprotocolExtensions/ipv4Unicast/advertisedAndReceived: v4Enabled?|False",
+        "neighborCapabilities/multiprotocolExtensions/l2vpnEvpn/advertisedAndReceived: evpnEnabled?|False",
+        "neighborCapabilities/multiprotocolExtensions/ipv6Unicast/advertisedAndReceived: v6Enabled?|False",
+        "neighborCapabilities/multiprotocolExtensions/ipv4Unicast/advertised: v4Advertised?|False",
+        "neighborCapabilities/multiprotocolExtensions/l2vpnEvpn/advertised: evpnAdvertised?|False",
+        "neighborCapabilities/multiprotocolExtensions/ipv6Unicast/advertised: v6Advertised?|False",
+        "neighborCapabilities/multiprotocolExtensions/ipv4Unicast/received: v4Received?|False",
+        "neighborCapabilities/multiprotocolExtensions/l2vpnEvpn/received: evpnReceived?|False",
+        "neighborCapabilities/multiprotocolExtensions/ipv6Unicast/received: v6Received?|False",
+        "neighborCapabilities/multiprotocolExtensions/IPv4 Unicast/advertisedAndReceived: v4Enabled?|v4Enabled",
+        "neighborCapabilities/multiprotocolExtensions/L2VPN EVPN/advertisedAndReceived: evpnEnabled?|evpnEnabled",
+        "neighborCapabilities/multiprotocolExtensions/IPv6 Unicast/advertisedAndReceived: v6Enabled?|v6Enabled",
+        "neighborCapabilities/multiprotocolExtensions/IPv4 Unicast/advertised: v4Advertised?|v4Advertised",
+        "neighborCapabilities/multiprotocolExtensions/L2VPN EVPN/advertised: evpnAdvertised?|evpnAdvertised",
+        "neighborCapabilities/multiprotocolExtensions/IPv6 Unicast/advertised: v6Advertised?|v6Advertised",
+        "neighborCapabilities/multiprotocolExtensions/IPv4 Unicast/received: v4Received?|v4Received",
+        "neighborCapabilities/multiprotocolExtensions/L2VPN EVPN/received: evpnReceived?|evpnReceived",
+        "neighborCapabilities/multiprotocolExtensions/IPv6 Unicast/received: v6Received?|v6Received"]'
 
