@@ -183,6 +183,8 @@ def cons_recs_from_json_template(tmplt_str, in_data):
     else:
         tmplt_str = tmplt_str[1:][:-1]         # eliminate'[', ']'
     for selem in tmplt_str.split(","):
+        per_entry_defval = False
+        def_val = None
         # every element here MUST have the form lval:rval
         selem = selem.replace('"', '').strip()
         if not selem:
@@ -202,17 +204,37 @@ def cons_recs_from_json_template(tmplt_str, in_data):
             if def_val.isdigit():
                 def_val = int(def_val)
             elif def_val:
-                # handle array indices
-                try:
-                    adef_val = ast.literal_eval(def_val)
-                    def_val = adef_val
-                except ValueError:
-                    pass
+                if result and def_val not in result[0]:
+                    # handle array indices, such as [] for default
+                    # If the field to be init is a prev val, then handle this
+                    # in the loop for x below as its different for each entry
+                    # an example of such an entry is:
+                    # "advertisedAndReceived: v4Enabled?|v4Enabled"
+                    # which means if advertisedAndReceived is not found in this
+                    # iteration, retain the previous value. This is useful when
+                    # handling minor changes in JSON output such as one version
+                    # with a key 'Advertised And Received' changing to
+                    # 'advertisedAndReceived' in the next version of output
+                    try:
+                        adef_val = ast.literal_eval(def_val)
+                        def_val = adef_val
+                    except ValueError:
+                        pass
+                else:
+                    per_entry_defval = True
 
         # Process for every element in result so far
         # Handles entries such as "vias/*/nexthopIps" and returns
         # a list of all nexthopIps.
         for x in result:
+
+            loopdef_val = def_val
+            if per_entry_defval and def_val is not None:
+                if def_val in x:
+                    loopdef_val = x[def_val]
+                else:
+                    loopdef_val = ''  # this shouldn't happen
+
             if "/" in lval:
                 subflds = lval.split("/")
                 tmpval = x["rest"]
@@ -254,9 +276,9 @@ def cons_recs_from_json_template(tmplt_str, in_data):
 
             if op:
                 if exp_val and value != exp_val:
-                    value = def_val
+                    value = loopdef_val
                 elif not exp_val and not value:
-                    value = def_val
+                    value = loopdef_val
 
             # Handle any operation on string
             rval = rval.strip()
