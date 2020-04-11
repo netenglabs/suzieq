@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import pyarrow as pa
 from suzieq.utils import SchemaForTable
 from dateutil.parser import parse, ParserError
@@ -156,6 +157,10 @@ class SqEngineObject(object):
         if df.empty:
             return df
 
+        # check if column we're looking at is a list, and if so explode it
+        if df.apply(lambda x: isinstance(x[column], np.ndarray), axis=1).all():
+            df = df.explode(column).dropna(how='any')
+
         if groupby:
             if type == 'host' and 'hostname' not in groupby:
                 grp = df.groupby(by=groupby.split() + ['hostname', column])
@@ -179,9 +184,9 @@ class SqEngineObject(object):
 
             return (pd.DataFrame({column: r})
                     .reset_index()
-                    .sort_values('index')
                     .rename(columns={column: 'count',
-                                     'index': column}))
+                                     'index': column})
+                    .sort_values('count'))
 
     def analyze(self, **kwargs):
         raise NotImplementedError
@@ -207,12 +212,12 @@ class SqEngineObject(object):
         self.ns = {i: {} for i in df['namespace'].unique()}
         self.nsgrp = df.groupby(by=["namespace"])
 
-    def _post_summarize(self):
+    def _post_summarize(self, check_empty_col='rows'):
         # this is needed in the case that there is a namespace that has no
         # data for this command
         delete_keys = []
         for ns in self.ns:
-            if self.ns[ns]['rows'] == 0:
+            if self.ns[ns][check_empty_col] == 0:
                 delete_keys.append(ns)
         for ns in delete_keys:
             del(self.ns[ns])
