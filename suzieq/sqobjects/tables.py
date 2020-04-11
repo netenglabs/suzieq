@@ -2,6 +2,7 @@ import pandas as pd
 from importlib import import_module
 
 from suzieq.sqobjects import basicobj
+from suzieq.utils import SchemaForTable
 
 
 class TablesObj(basicobj.SqObject):
@@ -46,10 +47,14 @@ class TablesObj(basicobj.SqObject):
 
         df = None
         table = kwargs.get('table', '')
-        if table not in self.schemas:
-            raise LookupError('ERROR: Unknown table {}'.format(table))
+        try:
+            sch = SchemaForTable(table, self.schemas)
+        except Exception as e:
+            df = pd.DataFrame({'error': ['ERROR: {}'.format(str(e))]})
+            return df
+
         entries = [{'name': x['name'], 'type': x['type'], 'key': x.get('key', ''), 'display': x.get('display', '')}
-                   for x in self.schemas[table]]
+                   for x in sch.get_raw_schema()]
         df = pd.DataFrame.from_dict(entries)
 
         return df
