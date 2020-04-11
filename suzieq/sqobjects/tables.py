@@ -51,6 +51,6 @@ class TablesObj(basicobj.SqObject):
 
         entries = [{'name': x['name'], 'type': x['type'], 'key': x.get('key', ''), 'display': x.get('display', '')}
                    for x in sch.get_raw_schema()]
-        df = pd.DataFrame.from_dict(entries)
+        df = pd.DataFrame.from_dict(entries).sort_values('name')
 
         return df
