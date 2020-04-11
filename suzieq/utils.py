@@ -113,6 +113,9 @@ class Schema(object):
     def fields_for_table(self, table):
         return [f['name'] for f in self._schema[table]]
 
+    def get_raw_schema(self, table):
+        return self._schema[table]
+
     def field_for_table(self, table, field):
         for f in self._schema[table]:
             if f['name'] == field:
@@ -240,6 +243,9 @@ class SchemaForTable(object):
     def get_phy_table_for_table(self) -> str:
         """Return the underlying physical table for this logical table"""
         return self._all_schemas.get_phy_table_for_table(self._table)
+
+    def get_raw_schema(self):
+        return self._all_schemas.get_raw_schema(self._table)
 
 
 def get_latest_files(folder, start="", end="", view="latest") -> list:
