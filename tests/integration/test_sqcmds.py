@@ -38,7 +38,7 @@ basic_verbs = ['show']
 #  specific data?
 @pytest.mark.slow
 @pytest.mark.parametrize("command, verbs, args", [
-    ('AddrCmd', basic_verbs, [None]),
+    ('AddressCmd', basic_verbs, [None]),
     ('EvpnVniCmd', basic_verbs, [None]),
     ('InterfaceCmd', basic_verbs + ['top', 'aver'],
      [None, None, None]),
@@ -82,11 +82,6 @@ def test_summary_exception(setup_nubia):
 good_commands = commands[:]
 
 column_commands = good_commands[:]
-column_commands[2] = pytest.param(
-    column_commands[2],
-    marks=pytest.mark.xfail(reason='bug #72',
-                            raises=KeyError)
-)
 
 
 @pytest.mark.parametrize("cmd", column_commands)
