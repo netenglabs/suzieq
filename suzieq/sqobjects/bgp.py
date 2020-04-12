@@ -13,3 +13,11 @@ class BgpObj(basicobj.SqObject):
                          namespace, columns, context=context, table='bgp')
         self._sort_fields = ['namespace', 'hostname', 'peer']
         self._cat_fields = ['asn', 'peerAsn']
+
+    def aver(self, **kwargs):
+        """Assert that the BGP state is OK"""
+
+        if not self.ctxt.engine:
+            raise AttributeError('No analysis engine specified')
+
+        return self.engine_obj.aver(**kwargs)
