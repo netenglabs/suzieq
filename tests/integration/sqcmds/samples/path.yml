@@ -6,18 +6,18 @@ tests:
   marks: path show
   output: '[{"pathid": 1, "hopCount": 0, "namespace": "dual-evpn", "hostname": "server101",
     "iif": "bond0", "vrf": "default", "overlay": false, "mtuMatch": null, "mtu": 9000,
-    "timestamp": 1586630754304}, {"pathid": 1, "hopCount": 1, "namespace": "dual-evpn",
+    "timestamp": 1586665226240}, {"pathid": 1, "hopCount": 1, "namespace": "dual-evpn",
     "hostname": "exit01", "iif": "vlan13-v0", "vrf": "evpn-vrf", "overlay": false,
-    "mtuMatch": true, "mtu": 9000, "timestamp": 1586630754304}, {"pathid": 1, "hopCount":
+    "mtuMatch": true, "mtu": 9000, "timestamp": 1586665226240}, {"pathid": 1, "hopCount":
     2, "namespace": "dual-evpn", "hostname": "server104", "iif": "bond0", "vrf": "default",
-    "overlay": false, "mtuMatch": null, "mtu": 9000, "timestamp": 1586630754304},
+    "overlay": false, "mtuMatch": null, "mtu": 9000, "timestamp": 1586665226240},
     {"pathid": 2, "hopCount": 0, "namespace": "dual-evpn", "hostname": "server101",
     "iif": "bond0", "vrf": "default", "overlay": false, "mtuMatch": null, "mtu": 9000,
-    "timestamp": 1586630754304}, {"pathid": 2, "hopCount": 1, "namespace": "dual-evpn",
+    "timestamp": 1586665226240}, {"pathid": 2, "hopCount": 1, "namespace": "dual-evpn",
     "hostname": "exit02", "iif": "vlan13-v0", "vrf": "default", "overlay": false,
-    "mtuMatch": true, "mtu": 9000, "timestamp": 1586630754304}, {"pathid": 2, "hopCount":
+    "mtuMatch": true, "mtu": 9000, "timestamp": 1586665226240}, {"pathid": 2, "hopCount":
     2, "namespace": "dual-evpn", "hostname": "server104", "iif": "bond0", "vrf": "default",
-    "overlay": false, "mtuMatch": null, "mtu": 9000, "timestamp": 1586630754304}]'
+    "overlay": false, "mtuMatch": null, "mtu": 9000, "timestamp": 1586665226240}]'
 - command: path show --dest=172.16.2.104 --src=172.16.1.104 --namespace=dual-evpn
     --format=json
   data-directory: tests/data/multidc/parquet-out/
@@ -29,83 +29,83 @@ tests:
   marks: path show
   output: '[{"pathid": 1, "hopCount": 0, "namespace": "ospf-single", "hostname": "leaf04",
     "iif": "lo", "vrf": "default", "overlay": false, "mtuMatch": null, "mtu": 65536,
-    "timestamp": 1586631147520}, {"pathid": 1, "hopCount": 1, "namespace": "ospf-single",
+    "timestamp": 1586665750528}, {"pathid": 1, "hopCount": 1, "namespace": "ospf-single",
     "hostname": "spine01", "iif": "swp4", "vrf": "default", "overlay": false, "mtuMatch":
-    true, "mtu": 1500, "timestamp": 1586631147520}, {"pathid": 1, "hopCount": 2, "namespace":
+    true, "mtu": 1500, "timestamp": 1586665750528}, {"pathid": 1, "hopCount": 2, "namespace":
     "ospf-single", "hostname": "leaf01", "iif": "swp1", "vrf": "default", "overlay":
-    false, "mtuMatch": true, "mtu": 1500, "timestamp": 1586631147520}, {"pathid":
+    false, "mtuMatch": true, "mtu": 1500, "timestamp": 1586665750528}, {"pathid":
     1, "hopCount": 2, "namespace": "ospf-single", "hostname": "leaf01", "iif": "lo",
     "vrf": "default", "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp":
-    1586631147520}, {"pathid": 2, "hopCount": 0, "namespace": "ospf-single", "hostname":
+    1586665750528}, {"pathid": 2, "hopCount": 0, "namespace": "ospf-single", "hostname":
     "leaf04", "iif": "lo", "vrf": "default", "overlay": false, "mtuMatch": null, "mtu":
-    65536, "timestamp": 1586631147520}, {"pathid": 2, "hopCount": 1, "namespace":
+    65536, "timestamp": 1586665750528}, {"pathid": 2, "hopCount": 1, "namespace":
     "ospf-single", "hostname": "spine02", "iif": "swp4", "vrf": "default", "overlay":
-    false, "mtuMatch": true, "mtu": 1500, "timestamp": 1586631147520}, {"pathid":
+    false, "mtuMatch": true, "mtu": 1500, "timestamp": 1586665750528}, {"pathid":
     2, "hopCount": 2, "namespace": "ospf-single", "hostname": "leaf01", "iif": "swp2",
     "vrf": "default", "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp":
-    1586631147520}, {"pathid": 2, "hopCount": 2, "namespace": "ospf-single", "hostname":
+    1586665750528}, {"pathid": 2, "hopCount": 2, "namespace": "ospf-single", "hostname":
     "leaf01", "iif": "lo", "vrf": "default", "overlay": false, "mtuMatch": null, "mtu":
-    65536, "timestamp": 1586631147520}]'
+    65536, "timestamp": 1586665750528}]'
 - command: path show --src=172.16.1.101 --dest=172.16.253.1 --namespace=dual-evpn
     --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: path show
   output: '[{"pathid": 1, "hopCount": 0, "namespace": "dual-evpn", "hostname": "server101",
     "iif": "bond0", "vrf": "default", "overlay": false, "mtuMatch": null, "mtu": 9000,
-    "timestamp": 1586630754304}, {"pathid": 1, "hopCount": 1, "namespace": "dual-evpn",
+    "timestamp": 1586665226240}, {"pathid": 1, "hopCount": 1, "namespace": "dual-evpn",
     "hostname": "exit01", "iif": "vlan13-v0", "vrf": "evpn-vrf", "overlay": false,
-    "mtuMatch": true, "mtu": 9000, "timestamp": 1586630754304}, {"pathid": 1, "hopCount":
+    "mtuMatch": true, "mtu": 9000, "timestamp": 1586665226240}, {"pathid": 1, "hopCount":
     2, "namespace": "dual-evpn", "hostname": "edge01", "iif": "eth1.3", "vrf": "default",
-    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1586630754304},
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1586665226240},
     {"pathid": 1, "hopCount": 3, "namespace": "dual-evpn", "hostname": "exit02", "iif":
     "swp5.4", "vrf": "internet-vrf", "overlay": false, "mtuMatch": true, "mtu": 1500,
-    "timestamp": 1586630754304}, {"pathid": 1, "hopCount": 4, "namespace": "dual-evpn",
+    "timestamp": 1586665226240}, {"pathid": 1, "hopCount": 4, "namespace": "dual-evpn",
     "hostname": "internet", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch":
-    true, "mtu": 1500, "timestamp": 1586630754304}, {"pathid": 1, "hopCount": 4, "namespace":
+    true, "mtu": 1500, "timestamp": 1586665226240}, {"pathid": 1, "hopCount": 4, "namespace":
     "dual-evpn", "hostname": "internet", "iif": "lo", "vrf": "default", "overlay":
-    false, "mtuMatch": null, "mtu": 65536, "timestamp": 1586630754304}, {"pathid":
+    false, "mtuMatch": null, "mtu": 65536, "timestamp": 1586665226240}, {"pathid":
     2, "hopCount": 0, "namespace": "dual-evpn", "hostname": "server101", "iif": "bond0",
     "vrf": "default", "overlay": false, "mtuMatch": null, "mtu": 9000, "timestamp":
-    1586630754304}, {"pathid": 2, "hopCount": 1, "namespace": "dual-evpn", "hostname":
+    1586665226240}, {"pathid": 2, "hopCount": 1, "namespace": "dual-evpn", "hostname":
     "exit02", "iif": "vlan13-v0", "vrf": "evpn-vrf", "overlay": false, "mtuMatch":
-    true, "mtu": 9000, "timestamp": 1586630754304}, {"pathid": 2, "hopCount": 2, "namespace":
+    true, "mtu": 9000, "timestamp": 1586665226240}, {"pathid": 2, "hopCount": 2, "namespace":
     "dual-evpn", "hostname": "edge01", "iif": "eth2.3", "vrf": "evpn-vrf", "overlay":
-    false, "mtuMatch": true, "mtu": 1500, "timestamp": 1586630754304}, {"pathid":
+    false, "mtuMatch": true, "mtu": 1500, "timestamp": 1586665226240}, {"pathid":
     2, "hopCount": 3, "namespace": "dual-evpn", "hostname": "exit02", "iif": "swp5.4",
     "vrf": "internet-vrf", "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp":
-    1586630754304}, {"pathid": 2, "hopCount": 4, "namespace": "dual-evpn", "hostname":
+    1586665226240}, {"pathid": 2, "hopCount": 4, "namespace": "dual-evpn", "hostname":
     "internet", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch": true,
-    "mtu": 1500, "timestamp": 1586630754304}, {"pathid": 2, "hopCount": 4, "namespace":
+    "mtu": 1500, "timestamp": 1586665226240}, {"pathid": 2, "hopCount": 4, "namespace":
     "dual-evpn", "hostname": "internet", "iif": "lo", "vrf": "default", "overlay":
-    false, "mtuMatch": null, "mtu": 65536, "timestamp": 1586630754304}, {"pathid":
+    false, "mtuMatch": null, "mtu": 65536, "timestamp": 1586665226240}, {"pathid":
     3, "hopCount": 0, "namespace": "dual-evpn", "hostname": "server101", "iif": "bond0",
     "vrf": "default", "overlay": false, "mtuMatch": null, "mtu": 9000, "timestamp":
-    1586630754304}, {"pathid": 3, "hopCount": 1, "namespace": "dual-evpn", "hostname":
+    1586665226240}, {"pathid": 3, "hopCount": 1, "namespace": "dual-evpn", "hostname":
     "exit01", "iif": "vlan13-v0", "vrf": "evpn-vrf", "overlay": false, "mtuMatch":
-    true, "mtu": 9000, "timestamp": 1586630754304}, {"pathid": 3, "hopCount": 2, "namespace":
+    true, "mtu": 9000, "timestamp": 1586665226240}, {"pathid": 3, "hopCount": 2, "namespace":
     "dual-evpn", "hostname": "edge01", "iif": "eth1.3", "vrf": "default", "overlay":
-    false, "mtuMatch": true, "mtu": 1500, "timestamp": 1586630754304}, {"pathid":
+    false, "mtuMatch": true, "mtu": 1500, "timestamp": 1586665226240}, {"pathid":
     3, "hopCount": 3, "namespace": "dual-evpn", "hostname": "exit01", "iif": "swp5.4",
     "vrf": "internet-vrf", "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp":
-    1586630754304}, {"pathid": 3, "hopCount": 4, "namespace": "dual-evpn", "hostname":
+    1586665226240}, {"pathid": 3, "hopCount": 4, "namespace": "dual-evpn", "hostname":
     "internet", "iif": "swp1", "vrf": "internet-vrf", "overlay": false, "mtuMatch":
-    true, "mtu": 1500, "timestamp": 1586630754304}, {"pathid": 3, "hopCount": 4, "namespace":
+    true, "mtu": 1500, "timestamp": 1586665226240}, {"pathid": 3, "hopCount": 4, "namespace":
     "dual-evpn", "hostname": "internet", "iif": "lo", "vrf": "default", "overlay":
-    false, "mtuMatch": null, "mtu": 65536, "timestamp": 1586630754304}, {"pathid":
+    false, "mtuMatch": null, "mtu": 65536, "timestamp": 1586665226240}, {"pathid":
     4, "hopCount": 0, "namespace": "dual-evpn", "hostname": "server101", "iif": "bond0",
     "vrf": "default", "overlay": false, "mtuMatch": null, "mtu": 9000, "timestamp":
-    1586630754304}, {"pathid": 4, "hopCount": 1, "namespace": "dual-evpn", "hostname":
+    1586665226240}, {"pathid": 4, "hopCount": 1, "namespace": "dual-evpn", "hostname":
     "exit02", "iif": "vlan13-v0", "vrf": "evpn-vrf", "overlay": false, "mtuMatch":
-    true, "mtu": 9000, "timestamp": 1586630754304}, {"pathid": 4, "hopCount": 2, "namespace":
+    true, "mtu": 9000, "timestamp": 1586665226240}, {"pathid": 4, "hopCount": 2, "namespace":
     "dual-evpn", "hostname": "edge01", "iif": "eth2.3", "vrf": "evpn-vrf", "overlay":
-    false, "mtuMatch": true, "mtu": 1500, "timestamp": 1586630754304}, {"pathid":
+    false, "mtuMatch": true, "mtu": 1500, "timestamp": 1586665226240}, {"pathid":
     4, "hopCount": 3, "namespace": "dual-evpn", "hostname": "exit01", "iif": "swp5.4",
     "vrf": "internet-vrf", "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp":
-    1586630754304}, {"pathid": 4, "hopCount": 4, "namespace": "dual-evpn", "hostname":
+    1586665226240}, {"pathid": 4, "hopCount": 4, "namespace": "dual-evpn", "hostname":
     "internet", "iif": "swp1", "vrf": "internet-vrf", "overlay": false, "mtuMatch":
-    true, "mtu": 1500, "timestamp": 1586630754304}, {"pathid": 4, "hopCount": 4, "namespace":
+    true, "mtu": 1500, "timestamp": 1586665226240}, {"pathid": 4, "hopCount": 4, "namespace":
     "dual-evpn", "hostname": "internet", "iif": "lo", "vrf": "default", "overlay":
-    false, "mtuMatch": null, "mtu": 65536, "timestamp": 1586630754304}]'
+    false, "mtuMatch": null, "mtu": 65536, "timestamp": 1586665226240}]'
 - command: path summarize --dest=172.16.2.104 --src=172.16.1.101 --namespace=dual-evpn
     --format=json
   data-directory: tests/data/multidc/parquet-out/

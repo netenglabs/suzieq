@@ -13,7 +13,7 @@ run_sqpoller () {
     sudo chown -R jpiet ${ansible_dir}
     echo "SUZIEQ"
     python3 ${suzieq_dir}/poller/sq-poller -i ${ansible_file} -n ${name}  >> ${verbose_log} 2>&1 &
-    sleep 60
+    sleep 120
     pkill -f sq-poller
     ps auxwww | grep poller
     echo "SUZIEQ poller done"
@@ -91,4 +91,4 @@ topology='dual-attach'
 cd ${topology}
 run_protos ${topology} bgp numbered dual-bgp
 mv ~/parquet-out ~/parquet-out-basic_dual_bgp
-date > ${log}
+date >> ${log}
