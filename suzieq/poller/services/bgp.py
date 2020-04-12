@@ -23,6 +23,6 @@ class BgpService(Service):
             elif entry["bfdStatus"] != "disabled":
                 entry["bfdStatus"] = "down"
             entry["asn"] = int(entry["asn"])
-            entry["peerAsn"] = int(entry["asn"])
+            entry["peerAsn"] = int(entry["peerAsn"])
 
         return processed_data
