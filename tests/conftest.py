@@ -8,7 +8,7 @@ from unittest.mock import Mock
 suzieq_cli_path = './suzieq/cli/suzieq-cli'
 
 
-commands = [('AddrCmd'), ('ArpndCmd'), ('BgpCmd'), ('DeviceCmd'),
+commands = [('AddressCmd'), ('ArpndCmd'), ('BgpCmd'), ('DeviceCmd'),
             ('EvpnVniCmd'), ('InterfaceCmd'), ('LldpCmd'), ('MacCmd'),
             ('MlagCmd'), ('OspfCmd'), ('RouteCmd'),
             ('TopcpuCmd'), ('TopmemCmd'), ('VlanCmd')]
