@@ -1,6 +1,6 @@
 import time
 from datetime import timedelta
-from nubia import command
+from nubia import command, argument
 import pandas as pd
 
 from suzieq.cli.sqcmds.command import SqCommand
@@ -67,3 +67,27 @@ class BgpCmd(SqCommand):
                 .map(lambda x: [str(timedelta(seconds=int(i))) for i in x])
 
         return self._post_summarize()
+
+    @command("assert")
+    @argument("vrf", description="Only assert BGP state in this VRF")
+    def aver(self, vrf: str = "") -> pd.DataFrame:
+        """Assert BGP is functioning properly"""
+        now = time.time()
+        df = self.sqobj.aver(
+            hostname=self.hostname,
+            vrf=vrf.split(),
+            namespace=self.namespace,
+        )
+        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
+
+        if self.format == 'text':
+            self._gen_output(df)
+            if df.loc[df['assert'] != "pass"].empty:
+                print("Assert passed")
+                result = 0
+            else:
+                print("Assert failed")
+                result = -1
+            return result
+
+        return self._gen_output(df)
