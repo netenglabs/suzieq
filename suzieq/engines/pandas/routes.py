@@ -103,12 +103,12 @@ class RoutesObj(SqEngineObject):
         if cols != ['default'] and 'prefix' not in cols:
             cols.insert(-1, 'prefix')
 
-        df = self.get_valid_df(self.iobj._table, sort_fields, **kwargs) \
-                 .query('prefix != ""')
+        df = self.get_valid_df(self.iobj._table, sort_fields, **kwargs)
 
         if df.empty:
             return df
 
+        df = df.query('prefix != ""')
         df['prefix'] = df.prefix.astype('ipnetwork')
 
         idx = df[['namespace', 'hostname', 'vrf', 'prefix']] \
