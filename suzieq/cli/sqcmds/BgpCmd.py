@@ -33,7 +33,9 @@ class BgpCmd(SqCommand):
         )
 
     @command("show")
-    def show(self):
+    @argument("status", description="status of the session to match",
+              choices=["all", "pass", "fail"])
+    def show(self, status: str = "all"):
         """
         Show bgp info
         """
@@ -47,10 +49,23 @@ class BgpCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.sqobj.get(
-            hostname=self.hostname, columns=self.columns,
-            namespace=self.namespace
-        )
+        if status == "pass":
+            state = "Established"
+        elif status == "fail":
+            state = "NotEstd"
+        else:
+            state = None
+
+        if state is not None:
+            df = self.sqobj.get(
+                hostname=self.hostname, columns=self.columns,
+                namespace=self.namespace, state=state,
+            )
+        else:
+            df = self.sqobj.get(
+                hostname=self.hostname, columns=self.columns,
+                namespace=self.namespace
+            )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
 
