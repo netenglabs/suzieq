@@ -22,14 +22,16 @@ apply:
     version: all
     command: show ip bgp neighbors vrf all
     normalize: 'vrfs/*/peerList/*/[
-        "asn: peerAsn", 
-        "localAsn: asn", 
+        "asn: peerAsn?|0", 
+        "localAsn: asn?|0", 
         "updateSource: source",
         "peerHostname: peerHostname?|",
-        "peerAddress: peer", 
-        "vrf: vrf", 
+        "peerAddress: peer",
+        "peerAddress: peerIP?|",
+        "vrf: vrf",
         "maintenance: maintenance", 
         "establishFailHint: reason",
+        "notificnReason: notificnReason?|",
         "lastErrorTimeInfo/time: lastDownTime?|0",
         "prefixesReceived: v4PfxRx?|0",
         "prefixesSent: v4PfxTx?|0",
@@ -49,6 +51,7 @@ apply:
         "keepaliveTime": "keepaliveTime?|0",
         "establishedTime: estdTime?|0",
         "establishedTransitions: numChanges?|0",
+        "updateSource: updateSource?|",
         "v4Enabled: v4Enabled?|True",
         "v6Enabled: v6Enabled?|False",
         "evpnEnabled: evpnEnabled?|False",
@@ -68,8 +71,8 @@ apply:
     normalize: '*:vrf/*:peer/[
         "remoteAs: peerAsn",
         "localAs: asn",
-        "hostLocal: source",
-        "lastResetDueTo: reason",
+        "lastResetDueTo: reason?|",
+        "lastNotificationReason: notifcnReason?|",
         "lastResetTimerMsecs: lastDownTime?|0",
         "addressFamilyInfo/IPv4 Unicast/acceptedPrefixCounter: v4PfxRx?|0",
         "addressFamilyInfo/IPv6 Unicast/acceptedPrefixCounter: v6PfxRx?|0",
@@ -116,16 +119,17 @@ apply:
         "neighborCapabilities/multiprotocolExtensions/IPv6 Unicast/advertised: v6Advertised?|v6Advertised",
         "neighborCapabilities/multiprotocolExtensions/IPv4 Unicast/received: v4Received?|v4Received",
         "neighborCapabilities/multiprotocolExtensions/L2VPN EVPN/received: evpnReceived?|evpnReceived",
-        "neighborCapabilities/multiprotocolExtensions/IPv6 Unicast/received: v6Received?|v6Received"]'
-
+        "neighborCapabilities/multiprotocolExtensions/IPv6 Unicast/received: v6Received?|v6Received",
+        "hostLocal: updateSource?|",
+        "hostForeign: peerIP?|"]'
   linux:
       version: all
       command: sudo vtysh -c "show ip bgp vrf all neighbors json"
       normalize: '*:vrf/*:peer/[
         "remoteAs: peerAsn",
         "localAs: asn",
-        "hostLocal: source",
-        "lastResetDueTo: reason",
+        "lastResetDueTo: reason?|",
+        "lastNotificationReason: notifcnReason?|",
         "lastResetTimerMsecs: lastDownTime?|0",
         "addressFamilyInfo/IPv4 Unicast/acceptedPrefixCounter: v4PfxRx?|0",
         "addressFamilyInfo/IPv6 Unicast/acceptedPrefixCounter: v6PfxRx?|0",
@@ -172,5 +176,8 @@ apply:
         "neighborCapabilities/multiprotocolExtensions/IPv6 Unicast/advertised: v6Advertised?|v6Advertised",
         "neighborCapabilities/multiprotocolExtensions/IPv4 Unicast/received: v4Received?|v4Received",
         "neighborCapabilities/multiprotocolExtensions/L2VPN EVPN/received: evpnReceived?|evpnReceived",
-        "neighborCapabilities/multiprotocolExtensions/IPv6 Unicast/received: v6Received?|v6Received"]'
+        "neighborCapabilities/multiprotocolExtensions/IPv6 Unicast/received: v6Received?|v6Received",
+        "hostLocal: updateSource?|",
+        "hostForeign: peerIP?|"]'
+
 
