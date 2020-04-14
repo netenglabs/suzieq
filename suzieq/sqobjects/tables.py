@@ -9,6 +9,11 @@ class TablesObj(basicobj.SqObject):
 
     def get(self, **kwargs):
         """Show the tables for which we have information"""
+        if self.columns != ["default"]:
+            df = pd.DataFrame(
+                {'error': ['ERROR: You cannot specify columns with table']})
+            return df
+
         tables = self.engine.get_tables(self.ctxt.cfg, **kwargs)
         df = pd.DataFrame()
         unknown_tables = []
