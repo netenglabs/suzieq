@@ -142,7 +142,9 @@ class SqCommand:
         return retcode
 
     def _assert_gen_output(self, df):
-        if df.loc[df['assert'] != "pass"].empty:
+        if df.empty:
+            result = 0
+        elif df.loc[df['assert'] != "pass"].empty:
             result = 0
         else:
             result = -1
