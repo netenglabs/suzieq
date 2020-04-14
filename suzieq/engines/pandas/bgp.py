@@ -1,56 +1,56 @@
-from .engineobj import SqEngineObject
-import pandas as pd
-import re
-
 from suzieq.sqobjects.routes import RoutesObj
 from suzieq.sqobjects.interfaces import IfObj
 from suzieq.sqobjects.lldp import LldpObj
 
+import re
+import pandas as pd
 
-def _get_connect_if(row):
-    """Given a BGP DF row, retrieve the connecting interface for the row"""
-    if re.match(r'^[0-9a-f.:]*$', row['peer']):
-        rslt = RoutesObj().lpm(namespace=row['namespace'],
-                               hostname=row['hostname'],
-                               address=row['peer'], vrf=row['vrf'])
-        if not rslt.empty:
-            val = rslt['oifs'][0][0]
-        else:
-            val = ''
-    else:
-        val = row['peer']
-    return val
-
-
-def _check_afi_safi(row) -> list:
-    """Checks that AFI/SAFI is compatible across the peers"""
-
-    reasons = ""
-    if not row['peer_y']:
-        return []
-
-    if row["v4Enabled_x"] != row["v4Enabled_y"]:
-        if row["v4Advertised_x"] and not row["v4Received_x"]:
-            reasons += " peer not advertising ipv4/unicast"
-        elif row["v4Received_x"] and not row["v4Advertised_x"]:
-            reasons += " not advertising ipv4/unicast"
-    if row["v6Enabled_x"] != row["v6Enabled_y"]:
-        if row["v6Advertised_x"] and not row["v6Received_x"]:
-            reasons += " peer not advertising ipv6/unicast"
-        elif row["v6Received_x"] and not row["v6Advertised_x"]:
-            reasons += " not advertising ipv6/unicast"
-    if row["evpnEnabled_x"] != row["evpnEnabled_y"]:
-        if row["evpnAdvertised_x"] and not row["evpnReceived_x"]:
-            reasons += " peer not advertising evpn"
-        elif row["evpnReceived_x"] and not row["evpnAdvertised_x"]:
-            reasons += " not advertising evpn"
-
-    if reasons:
-        return [reasons]
-    return []
+from .engineobj import SqEngineObject
 
 
 class BgpObj(SqEngineObject):
+
+    def _get_connect_if(self, row) -> str:
+        """Given a BGP DF row, retrieve the connecting interface for the row"""
+        if re.match(r'^[0-9a-f.:]*$', row['peer']):
+            rslt = RoutesObj(context=self.ctxt).lpm(namespace=row['namespace'],
+                                                    hostname=row['hostname'],
+                                                    address=row['peer'],
+                                                    vrf=row['vrf'])
+            if not rslt.empty:
+                val = rslt['oifs'][0][0]
+            else:
+                val = ''
+        else:
+            val = row['peer']
+        return val
+
+    def _check_afi_safi(self, row) -> list:
+        """Checks that AFI/SAFI is compatible across the peers"""
+
+        reasons = ""
+        if not row['peer_y']:
+            return []
+
+        if row["v4Enabled_x"] != row["v4Enabled_y"]:
+            if row["v4Advertised_x"] and not row["v4Received_x"]:
+                reasons += " peer not advertising ipv4/unicast"
+            elif row["v4Received_x"] and not row["v4Advertised_x"]:
+                reasons += " not advertising ipv4/unicast"
+        if row["v6Enabled_x"] != row["v6Enabled_y"]:
+            if row["v6Advertised_x"] and not row["v6Received_x"]:
+                reasons += " peer not advertising ipv6/unicast"
+            elif row["v6Received_x"] and not row["v6Advertised_x"]:
+                reasons += " not advertising ipv6/unicast"
+        if row["evpnEnabled_x"] != row["evpnEnabled_y"]:
+            if row["evpnAdvertised_x"] and not row["evpnReceived_x"]:
+                reasons += " peer not advertising evpn"
+            elif row["evpnReceived_x"] and not row["evpnAdvertised_x"]:
+                reasons += " not advertising evpn"
+
+        if reasons:
+            return [reasons]
+        return []
 
     def summarize(self, **kwargs) -> pd.DataFrame:
         """Summarize key information about BGP"""
@@ -121,17 +121,18 @@ class BgpObj(SqEngineObject):
         if df.empty:
             return pd.DataFrame()
 
-        if_df = IfObj().get(namespace=kwargs.get("namespace", ""),
-                            columns=['namespace', 'hostname', 'ifname',
-                                     'state']) \
+        if_df = IfObj(context=self.ctxt).get(namespace=kwargs.get("namespace", ""),
+                                             columns=['namespace', 'hostname',
+                                                      'ifname', 'state']) \
             .rename(columns={'state': 'ifState'})
 
-        lldp_df = LldpObj().get(namespace=kwargs.get("namespace", ""),
-                                columns=['namespace', 'hostname', 'ifname',
-                                         'peerHostname', 'peerIfname'])
+        lldp_df = LldpObj(context=self.ctxt).get(
+            namespace=kwargs.get("namespace", ""),
+            columns=['namespace', 'hostname', 'ifname', 'peerHostname',
+                     'peerIfname'])
 
         # Get the dataframes we need for processing
-        df['cif'] = df.apply(_get_connect_if, axis=1)
+        df['cif'] = df.apply(self._get_connect_if, axis=1)
         df['ifname'] = df['cif'].str.split('.').str[0]
 
         df = df.merge(if_df, left_on=['namespace', 'hostname', 'cif'],
@@ -174,7 +175,7 @@ class BgpObj(SqEngineObject):
             lambda x: ["no route to peer"] if not len(x['cif']) else [],
             axis=1)
 
-        df['assertReason'] += df.apply(_check_afi_safi, axis=1)
+        df['assertReason'] += df.apply(self._check_afi_safi, axis=1)
 
         df['assertReason'] += df.apply(lambda x: ["asn mismatch"] if x['peer_y']
                                        and ((x["asn_x"] != x["peerAsn_y"]) or
