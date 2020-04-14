@@ -1,0 +1,215 @@
+- description: ''
+  forwardingModel: routed
+  ifname: Management1
+  ip6AddressList: &id001 []
+  ipAddressList:
+  - broadcastAddress: 255.255.255.255
+    dhcp: true
+    primaryIp:
+      address: 192.168.122.12
+      maskLen: 24
+    secondaryIps: {}
+    secondaryIpsOrderedList: []
+    virtualIp:
+      address: 0.0.0.0
+      maskLen: 0
+    virtualSecondaryIps: {}
+    virtualSecondaryIpsOrderedList: []
+  lacpBypass: false
+  macaddr: 52:54:00:4e:35:99
+  master: ''
+  mtu: 1500
+  numChanges: 0
+  speed: 1000000000
+  srcVtepIp: null
+  state: up
+  statusChangeTimestamp: null
+  type: ethernet
+  vlan: 0
+  vni: 0
+- description: ''
+  forwardingModel: routed
+  ifname: Vlan10
+  ip6AddressList: *id001
+  ipAddressList:
+  - broadcastAddress: 255.255.255.255
+    dhcp: false
+    primaryIp:
+      address: 10.10.0.1
+      maskLen: 24
+    secondaryIps: {}
+    secondaryIpsOrderedList: []
+    virtualIp:
+      address: 0.0.0.0
+      maskLen: 0
+    virtualSecondaryIps: {}
+    virtualSecondaryIpsOrderedList: []
+  lacpBypass: false
+  macaddr: 52:54:00:27:d3:9b
+  master: ''
+  mtu: 1500
+  numChanges: 0
+  speed: 0
+  srcVtepIp: null
+  state: up
+  statusChangeTimestamp: null
+  type: vlan
+  vlan: 0
+  vni: 0
+- description: ''
+  forwardingModel: routed
+  ifname: Loopback0
+  ip6AddressList: *id001
+  ipAddressList:
+  - broadcastAddress: 255.255.255.255
+    dhcp: false
+    primaryIp:
+      address: 10.254.0.1
+      maskLen: 32
+    secondaryIps: {}
+    secondaryIpsOrderedList: []
+    virtualIp:
+      address: 0.0.0.0
+      maskLen: 0
+    virtualSecondaryIps: {}
+    virtualSecondaryIpsOrderedList: []
+  lacpBypass: false
+  macaddr: null
+  master: ''
+  mtu: 65535
+  numChanges: 0
+  speed: 0
+  srcVtepIp: null
+  state: up
+  statusChangeTimestamp: null
+  type: loopback
+  vlan: 0
+  vni: 0
+- description: ''
+  forwardingModel: bridged
+  ifname: Vxlan1
+  ip6AddressList: *id001
+  ipAddressList: &id002 []
+  lacpBypass: false
+  macaddr: null
+  master: ''
+  mtu: 0
+  numChanges: 0
+  speed: 0
+  srcVtepIp: 10.254.0.1
+  state: down
+  statusChangeTimestamp: null
+  type: vxlan
+  vlan:
+  - '100'
+  vni:
+  - 100
+- description: ''
+  forwardingModel: routed
+  ifname: Ethernet2
+  ip6AddressList: *id001
+  ipAddressList:
+  - broadcastAddress: 255.255.255.255
+    dhcp: false
+    primaryIp:
+      address: 10.127.0.3
+      maskLen: 31
+    secondaryIps: {}
+    secondaryIpsOrderedList: []
+    virtualIp:
+      address: 0.0.0.0
+      maskLen: 0
+    virtualSecondaryIps: {}
+    virtualSecondaryIpsOrderedList: []
+  lacpBypass: false
+  macaddr: 52:54:00:27:d3:9b
+  master: ''
+  mtu: 1500
+  numChanges: 0
+  speed: 0
+  srcVtepIp: null
+  state: up
+  statusChangeTimestamp: null
+  type: ethernet
+  vlan: 0
+  vni: 0
+- description: ''
+  forwardingModel: dataLink
+  ifname: Ethernet3
+  ip6AddressList: *id001
+  ipAddressList: *id002
+  lacpBypass: false
+  macaddr: 52:54:00:fd:59:86
+  master: Member of Port-Channel10
+  mtu: 9214
+  numChanges: 0
+  speed: 0
+  srcVtepIp: null
+  state: up
+  statusChangeTimestamp: null
+  type: ethernet
+  vlan: 0
+  vni: 0
+- description: ''
+  forwardingModel: routed
+  ifname: Ethernet1
+  ip6AddressList: *id001
+  ipAddressList:
+  - broadcastAddress: 255.255.255.255
+    dhcp: false
+    primaryIp:
+      address: 10.127.0.1
+      maskLen: 31
+    secondaryIps: {}
+    secondaryIpsOrderedList: []
+    virtualIp:
+      address: 0.0.0.0
+      maskLen: 0
+    virtualSecondaryIps: {}
+    virtualSecondaryIpsOrderedList: []
+  lacpBypass: false
+  macaddr: 52:54:00:27:d3:9b
+  master: ''
+  mtu: 1500
+  numChanges: 0
+  speed: 0
+  srcVtepIp: null
+  state: up
+  statusChangeTimestamp: null
+  type: ethernet
+  vlan: 0
+  vni: 0
+- description: ''
+  forwardingModel: bridged
+  ifname: Port-Channel10
+  ip6AddressList: *id001
+  ipAddressList: *id002
+  lacpBypass: false
+  macaddr: 52:54:00:36:99:a4
+  master: ''
+  mtu: 9214
+  numChanges: 0
+  speed: 0
+  srcVtepIp: null
+  state: up
+  statusChangeTimestamp: null
+  type: portChannel
+  vlan: 0
+  vni: 0
+- description: ''
+  forwardingModel: dataLink
+  ifname: Ethernet4
+  ip6AddressList: *id001
+  ipAddressList: *id002
+  lacpBypass: false
+  macaddr: 52:54:00:36:99:a4
+  master: Member of Port-Channel10
+  mtu: 9214
+  numChanges: 0
+  speed: 0
+  srcVtepIp: null
+  state: up
+  statusChangeTimestamp: null
+  type: ethernet
+  vlan: 0
+  vni: 0
