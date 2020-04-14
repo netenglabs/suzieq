@@ -331,9 +331,11 @@ tests:
     "ospf-single": [4, 5, 5]}, {"ospf-ibgp": [0, 0, 0], "ospf-single": [0, 0, 0]}]'
 - command: ospf unique --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
-  xfail:
-    error: '[{"error": "ERROR: Unknown table ospf, no schema found for it"}]'
   marks: ospf unique
+  output: '[{"hostname": "leaf04", "count": 4}, {"hostname": "leaf03", "count": 4},
+    {"hostname": "leaf02", "count": 4}, {"hostname": "leaf01", "count": 4}, {"hostname":
+    "exit02", "count": 4}, {"hostname": "exit01", "count": 4}, {"hostname": "spine02",
+    "count": 12}, {"hostname": "spine01", "count": 12}]'
 - command: ospf assert --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: ospf assert
