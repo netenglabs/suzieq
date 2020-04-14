@@ -35,6 +35,7 @@ def run_cmd(cmd_path, testvar):
         output = check_output(exec_cmd)
     except CalledProcessError as e:
         error = e.output
+        print(f"ERROR: {e.output} {e.returncode}")
 
     jout = []
     jerror = []
@@ -80,12 +81,12 @@ if __name__ == '__main__':
         if result not in test or test[result] is None or userargs.overwrite:
             changes += 1
 
-        #TODO
-        # if it's an exception, I want it to be an xfail
-
             reason = None
             output, error, xfail = run_cmd(sqcmd, test)
             if not error and result != 'xfail':
+                if result in test:
+                    del test[result]
+                result = 'output'
                 test[result] = json.dumps(output)
             elif result == 'xfail':
                 test[result]['error'] = json.dumps(output)
