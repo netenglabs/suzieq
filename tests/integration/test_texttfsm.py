@@ -2,10 +2,11 @@ import pytest
 import os
 import re
 import textfsm
-from _pytest.mark.structures import Mark, MarkDecorator
+import yaml
 
 template_dir = '/config/textfsm_templates/'
-sample_dir = '/tests/integration/texttfsm/input/'
+input_dir = '/tests/integration/texttfsm/input/'
+processed_dir = '/tests/integration/texttfsm/processed/'
 
 
 def _get_textfsm_templates():
@@ -34,7 +35,7 @@ def _get_template(t_name):
 
 
 def _get_sample_input(t_name):
-    with open(os.path.abspath(os.curdir) + sample_dir + t_name + '.txt', 'r') as f:
+    with open(os.path.abspath(os.curdir) + input_dir + t_name + '.txt', 'r') as f:
         raw_input = f.read()
 
     lines = raw_input.splitlines()
@@ -50,19 +51,28 @@ def _get_sample_input(t_name):
     return test_input
 
 
+def _get_processed_data(template_name):
+    d = os.path.abspath(os.curdir) + processed_dir
+    file_name = f"{d}/{template_name}.yml"
+    with open(file_name, 'r') as f:
+        out = yaml.load(f.read())
+    return out
+
+
 @pytest.mark.parametrize("template_name", _get_textfsm_templates())
-def test_texttfsm(template_name):
+def test_texttfsm(template_name, tmp_path):
     sample_input = _get_sample_input(template_name)
     assert sample_input
     re_table = _get_template(template_name)
     assert re_table
-    parsed_out = re_table.ParseText(sample_input)
-    assert parsed_out
+    created_records = re_table.ParseText(sample_input)
+    assert created_records
 
-    # records = []
-    #
-    # for entry in parsed_out:
-    #     rentry = dict(zip(re_table.header, entry))
-    #     records.append(rentry)
-    #
-    # print(json.dumps(records))
+    # this is the code necessary to write out the data
+    # file = tmp_path / f"{template_name}.yml"
+    # print(f"writing to {file}")
+    # file.write_text(yaml.dump(created_records))
+
+    processed_records = _get_processed_data(template_name)
+    assert processed_records == created_records
+
