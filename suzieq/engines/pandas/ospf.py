@@ -103,7 +103,7 @@ class OspfObj(SqEngineObject):
         ospf_df["assertReason"] = [[] for _ in range(len(ospf_df))]
         df = (
             ospf_df[ospf_df["routerId"] != ""]
-            .groupby(["routerId"], as_index=False)[["hostname"]]
+            .groupby(["routerId", "namespace"], as_index=False)[["hostname", "namespace"]]
             .agg(lambda x: x.unique().tolist())
         )
 
