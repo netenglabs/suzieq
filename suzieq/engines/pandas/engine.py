@@ -1,8 +1,10 @@
 import os
+import sys
 from concurrent.futures import ProcessPoolExecutor as Executor
 from pathlib import Path
 from importlib import import_module
 from copy import deepcopy
+
 
 try:
     # We need this if we're switching the engine from Pandas to Modin
@@ -277,6 +279,7 @@ class SqPandasEngine(SqEngine):
     def _get_table_directory(self, table):
         assert table
         folder = "{}/{}".format(self.cfg.get("data-directory"), table)
+        #print(f"FOLDER: {folder}", file=sys.stderr)
         return folder
 
     def get_tables(self, cfg, **kwargs):
