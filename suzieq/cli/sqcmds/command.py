@@ -141,6 +141,20 @@ class SqCommand:
 
         return retcode
 
+    def _assert_gen_output(self, df):
+        if df.loc[df['assert'] != "pass"].empty:
+            result = 0
+        else:
+            result = -1
+
+        self._gen_output(df)
+        if self.format == 'text':
+            if result == 0:
+                print("Assert passed")
+            else:
+                print("Assert failed")
+        return result
+
     def show(self, **kwargs):
         raise NotImplementedError
 

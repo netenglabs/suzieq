@@ -129,17 +129,8 @@ class OspfCmd(SqCommand):
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
 
-        if self.format == 'text':
-            self._gen_output(df)
-            if df.loc[df['assert'] != "pass"].empty:
-                print("Assert passed")
-                result = 0
-            else:
-                print("Assert failed")
-                result = -1
-            return result
+        return self._assert_gen_output(df)
 
-        return self._gen_output(df)
 
     @command("top")
     @argument(
