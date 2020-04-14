@@ -69,9 +69,10 @@ class NubiaSuzieqPlugin(PluginInterface):
             help="By default the logging output goes to stderr "
             "Enable this feature to send it to a temporary logfile"
         )
-        opts_parser.add_argument(
-            "--use-engine", "-e", help="Which analysis engine to use", default="pandas"
-        )
+        # we only support pandas now, so we don't want this option
+        # opts_parser.add_argument(
+        #    "--use-engine", "-e", help="Which analysis engine to use", default="pandas"
+        # )
         return opts_parser
 
     def get_completion_datasource_for_global_argument(self, argument):
