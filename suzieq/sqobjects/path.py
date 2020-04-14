@@ -42,24 +42,27 @@ class PathObj(basicobj.SqObject):
     def _init_dfs(self, namespace, source, dest):
         """Initialize the dataframes used in this path hunt"""
 
-        self._if_df = interfaces.IfObj().get(namespace=namespace)
+        self._if_df = interfaces.IfObj(context=self.ctxt) \
+                                .get(namespace=namespace)
         if self._if_df.empty:
             raise EmptyDataframeError(f"No interface found for {namespace}")
 
-        self._lldp_df = lldp.LldpObj().get(
+        self._lldp_df = lldp.LldpObj(context=self.ctxt).get(
             namespace=namespace, columns=self.columns)
         if self._lldp_df.empty:
             raise NoLLdpError(f"No LLDP information found for {namespace}")
 
-        self._rdf = routes.RoutesObj().lpm(namespace=namespace, address=dest)
+        self._rdf = routes.RoutesObj(context=self.ctxt) \
+                          .lpm(namespace=namespace, address=dest)
         if self._rdf.empty:
             raise EmptyDataframeError("No Routes information found for {}".
                                       format(dest))
 
         # We ignore the lack of ARPND for now
-        self._arpnd_df = arpnd.ArpndObj().get(namespace=namespace)
+        self._arpnd_df = arpnd.ArpndObj(
+            context=self.ctxt).get(namespace=namespace)
 
-        self._macsobj = macs.MacsObj(namespace=namespace)
+        self._macsobj = macs.MacsObj(context=self.ctxt, namespace=namespace)
 
         self._src_df = self._if_df[self._if_df.ipAddressList.astype(str)
                                    .str.contains(source + "/")]
