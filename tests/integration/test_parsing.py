@@ -6,17 +6,17 @@ import re
 
 from suzieq.poller.services.svcparser import cons_recs_from_json_template
 
-samples_dir = '/tests/integration/parsing/input'
+input_dir = '/tests/integration/parsing/input'
+processed_dir = '/tests/integration/parsing/processed'
+
 service_dir = 'config'
 
 # TODO
-#  how do I deal with xfail in the version that reads tests from directory
-#  change how it deals with data, so the test isn't so long
 #  collect output and compare
 
 
 def _get_service_data(svc, device_type):
-    with open(os.path.abspath(os.curdir) + samples_dir + '/' + svc + '.yml') as f:
+    with open(os.path.abspath(os.curdir) + intput_dir + '/' + svc + '.yml') as f:
         yml_inp = yaml.safe_load(f.read())
     raw_input = yml_inp.get('input', {}) \
         .get(device_type, '')
@@ -35,7 +35,7 @@ def _get_service_def(svc, device_type):
 
 def _get_test_data():
     tests = []
-    for file in os.scandir(os.path.abspath(os.curdir) + samples_dir):
+    for file in os.scandir(os.path.abspath(os.curdir) + intput_dir):
         if not file.path.endswith('.yml'):
             continue
         g = re.match('(.*)\.yml', file.name).groups()
@@ -54,13 +54,28 @@ def _get_test_data():
     return tests
 
 
+def _get_processed_data(service, device_type):
+    d = os.scandir(os.path.abspath(os.curdir) + processed_dir)
+    file_name = f"{d}/{service}-{device_type}.yml"
+    with open(file_name, 'r') as f:
+        out = yaml.load(f.read)
+    return out
+
 @pytest.mark.parametrize("service, device_type",
                          _get_test_data())
-def test_service(service, device_type):
+def _test_service(service, device_type, tmp_path):
     svcstr = _get_service_def(service, device_type)
     assert svcstr
     sample_input = _get_service_data(service, device_type)
     assert sample_input
-    records = cons_recs_from_json_template(svcstr, json.loads(sample_input))
-    assert records
-    assert len(records) > 0
+    created_records = cons_recs_from_json_template(svcstr, json.loads(sample_input))
+    assert created_records
+    assert len(created_records) > 0
+
+    # this is the code necessary to write out the data
+    file = tmp_path / f"{service}-{device_type}.yml"
+    print(f"writing to {file}")
+    file.write_text(yaml.dump(created_records))
+
+    #processed_records = _get_processed_data(service, device_type)
+    #assert processed_records == created_records
