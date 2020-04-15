@@ -47,7 +47,7 @@ class AddressObj(SqEngineObject):
             if '/' in addr:
                 return df[df[addrcol].str.startswith(addr)]
             else:
-                return df[df[addrcol].str.startswith(addr+'/')]
+                return df[df[addrcol].str.startswith(addr + '/')]
         elif addrcol in df.columns:
             return df[df[addrcol].str.len() != 0]
         else:
@@ -65,8 +65,8 @@ class AddressObj(SqEngineObject):
         self._add_field_to_summary('macaddr', 'nunique', 'uniqueInterfaceMacs')
 
         v6df = self.summary_df.explode('ip6AddressList') \
-                              .dropna(how='any') \
-                              .query('~ip6AddressList.str.startswith("fe80")')
+            .dropna(how='any') \
+            .query('~ip6AddressList.str.startswith("fe80")')
         if not v6df.empty:
             v6hosts = v6df.groupby(by=['namespace'])['hostname'].nunique()
             for i in self.ns.keys():
@@ -76,16 +76,27 @@ class AddressObj(SqEngineObject):
                 self.ns[i].update({'hostsWithv6Address': 0})
 
         v4df = self.summary_df.explode('ipAddressList') \
-                              .dropna(how='any') \
-                              .query('ipAddressList.str.len() != 0')
+            .dropna(how='any') \
+            .query('ipAddressList.str.len() != 0')
         if not v4df.empty:
             v4hosts = v4df.groupby(by=['namespace'])['hostname'].nunique()
             for i in self.ns.keys():
                 self.ns[i].update({'hostsWithv4Address': v4hosts[i]})
 
             v4df['prefixlen'] = v4df.ipAddressList.str.split('/').str[1]
-            v4pfx = v4df.groupby(by=['namespace'])['prefixlen'] \
-                        .value_counts().rename('count').reset_index()
+
+            # this doesn't work if we've filtered by namespace
+            #  pandas complains about an index problem
+            #  so instead we have the more complicated expression below
+            #  they are equivalent
+            # v4pfx = v4df.groupby(by=['namespace'])['prefixlen'] \
+            #             .value_counts().rename('count').reset_index()
+            v4pfx = v4df.groupby(by=['namespace', 'prefixlen'], as_index=False) \
+                ['ipAddressList'].count().dropna()
+            v4pfx = v4pfx.rename(columns={'ipAddressList': 'count'})
+            v4pfx['count'] = v4pfx['count'].astype(int)
+            v4pfx = v4pfx.sort_values(by=['count'], ascending=False)
+
             for i in self.ns.keys():
                 cnts = []
                 v4pfx[v4pfx['namespace'] == i].apply(

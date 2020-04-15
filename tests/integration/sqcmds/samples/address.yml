@@ -691,9 +691,9 @@ tests:
 - command: address summarize --namespace=dual-evpn --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: address summarize
-  xfail:
-    error: '[]'
-    reason: uncaught exception
+  output: '[{"dual-evpn": 14}, {"dual-evpn": 14}, {"dual-evpn": 0}, {"dual-evpn":
+    [{"24": 26}, {"32": 19}, {"30": 16}]}, {"dual-evpn": ["24", "32", "30", "31"]},
+    {"dual-evpn": 166}, {"dual-evpn": 94}]'
 - command: address unique --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: address unique
