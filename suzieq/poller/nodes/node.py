@@ -20,17 +20,18 @@ from concurrent.futures._base import TimeoutError
 from suzieq.poller.services.service import RsltToken
 from suzieq.poller.genhosts import process_ansible_inventory
 
+logger = logging.getLogger(__name__)
 
 def get_hostsdata_from_hostsfile(hosts_file) -> dict:
     """Read the suzieq devices file and return the data from the file"""
 
     if not os.path.isfile(hosts_file):
-        logging.error("hosts config must be a file")
+        logger.error("hosts config must be a file")
         print("hosts config must be a file")
         sys.exit(1)
 
     if not os.access(hosts_file, os.R_OK):
-        logging.error("hosts config file is not readable: {}", hosts_file)
+        logger.error("hosts config file is not readable: {}", hosts_file)
         print("hosts config file is not readable: {}", hosts_file)
         sys.exit(1)
 
@@ -38,7 +39,7 @@ def get_hostsdata_from_hostsfile(hosts_file) -> dict:
         try:
             hostsconf = yaml.safe_load(f.read())
         except Exception as e:
-            logging.error("Invalid hosts config file:{}", e)
+            logger.error("Invalid hosts config file:{}", e)
             print("Invalid hosts config file:{}", e)
             sys.exit(1)
 
@@ -64,7 +65,7 @@ async def init_hosts(hosts_file, ansible_file, namespace):
 
     for namespace in hostsconf:
         if "namespace" not in namespace:
-            logging.warning('No namespace specified, assuming "default"')
+            logger.warning('No namespace specified, assuming "default"')
             nsname = "default"
         else:
             nsname = namespace["namespace"]
@@ -104,10 +105,10 @@ async def init_hosts(hosts_file, ansible_file, namespace):
         for f in asyncio.as_completed(tasks):
             newnode = await f
             if newnode.devtype is None:
-                logging.error(
+                logger.error(
                     "Unable to determine device type for {}".format(host))
             else:
-                logging.info(f"Added node {newnode.hostname}")
+                logger.info(f"Added node {newnode.hostname}")
 
             nodes.update(
                 {"{}.{}".format(nsname, newnode.hostname): newnode})
@@ -139,7 +140,7 @@ class Node(object):
         self.prev_result = {}  # No updates if nothing changed
         self.nsname = None
         self.svc_cmd_mapping = defaultdict(lambda: {})  # Not used yet
-        self.logger = logging.getLogger("sq-poller")
+        self.logger = logging.getLogger(__name__)
         self.port = 0
         self.backoff = 15  # secs to backoff
         self.init_again_at = 0  # after this epoch secs, try init again

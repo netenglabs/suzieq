@@ -60,7 +60,7 @@ class Service(object):
         self.schema = schema
         self.period = period
         self.stype = stype
-        self.logger = logging.getLogger("sq-poller")
+        self.logger = logging.getLogger(__name__)
         self.run_once = run_once
         self.post_timeout = 5
 

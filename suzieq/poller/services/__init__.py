@@ -12,6 +12,9 @@ from suzieq.utils import Schema
 from .service import Service
 
 
+logger = logging.getLogger(__name__)
+
+
 async def init_services(svc_dir, schema_dir, queue, run_once):
     """Process service definitions by reading each file in svc dir"""
 
@@ -29,11 +32,11 @@ async def init_services(svc_dir, schema_dir, queue, run_once):
             svc_classes[mbr[0]] = mbr[1]
 
     if not isdir(svc_dir):
-        logging.error("services directory not a directory: {}".format(svc_dir))
+        logger.error("services directory not a directory: {}".format(svc_dir))
         return svcs_list
 
     if not isdir(schema_dir):
-        logging.error("schema directory not a directory: {}".format(svc_dir))
+        logger.error("schema directory not a directory: {}".format(svc_dir))
         return svcs_list
     else:
         schemas = Schema(schema_dir)
@@ -47,7 +50,7 @@ async def init_services(svc_dir, schema_dir, queue, run_once):
                 with open(root + "/" + filename, "r") as f:
                     svc_def = yaml.safe_load(f.read())
                 if "service" not in svc_def or "apply" not in svc_def:
-                    logging.error(
+                    logger.error(
                         'Ignoring invalid service file definition. \
                     Need both "service" and "apply" keywords: {}'.format(
                             filename
@@ -60,7 +63,7 @@ async def init_services(svc_dir, schema_dir, queue, run_once):
                     if "copy" in val:
                         newval = svc_def["apply"].get(val["copy"], None)
                         if not newval:
-                            logging.error(
+                            logger.error(
                                 "No device type {} to copy from for "
                                 "{} for service {}".format(
                                     val["copy"], elem, svc_def["service"]
@@ -72,7 +75,7 @@ async def init_services(svc_dir, schema_dir, queue, run_once):
                     if "command" not in val or (
                         "normalize" not in val and "textfsm" not in val
                     ):
-                        logging.error(
+                        logger.error(
                             "Ignoring invalid service file "
                             'definition. Need both "command" and '
                             '"normalize/textfsm" keywords: {}, {}'.format(
@@ -89,7 +92,7 @@ async def init_services(svc_dir, schema_dir, queue, run_once):
                             continue
                         tfsm_file = svc_dir + "/" + val["textfsm"]
                         if not isfile(tfsm_file):
-                            logging.error(
+                            logger.error(
                                 "Textfsm file {} not found. Ignoring"
                                 " service".format(tfsm_file)
                             )
@@ -103,7 +106,7 @@ async def init_services(svc_dir, schema_dir, queue, run_once):
                 try:
                     schema = schemas.get_arrow_schema(svc_def['service'])
                 except Exception:
-                    logging.error(
+                    logger.error(
                         f"No matching schema for {svc_def['service']}")
                     continue
 
@@ -134,7 +137,7 @@ async def init_services(svc_dir, schema_dir, queue, run_once):
                     )
 
                 service.poller_schema = poller_schema
-                logging.info("Service {} added".format(service.name))
+                logger.info("Service {} added".format(service.name))
                 svcs_list.append(service)
 
     return svcs_list

@@ -11,7 +11,7 @@ class OutputWorker(object):
 
     def __init__(self, **kwargs):
         self.type = kwargs.get("type", None)
-        self.logger = logging.getLogger("suzieq")
+        self.logger = logging.getLogger(__name__)
 
     def write_data(self, data):
         raise NotImplementedError
