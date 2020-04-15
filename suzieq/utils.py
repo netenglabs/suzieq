@@ -9,6 +9,9 @@ import pandas as pd
 import pyarrow as pa
 
 
+logger = logging.getLogger(__name__)
+
+
 def validate_sq_config(cfg, fh):
     """Validate Suzieq config file
 
@@ -90,10 +93,9 @@ class Schema(object):
         phy_tables = {}
 
         if not (schema_dir and os.path.exists(schema_dir)):
-            logging.error(
+            logger.error(
                 "Schema directory {} does not exist".format(schema_dir))
             raise Exception(f"Schema directory {schema_dir} does not exist")
-            return schemas
 
         for root, _, files in os.walk(schema_dir):
             for topic in files:

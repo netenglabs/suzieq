@@ -11,8 +11,8 @@ from collections import defaultdict
 
 import uvloop
 
-from nodes import init_hosts
-from services import init_services
+from suzieq.poller.nodes import init_hosts
+from suzieq.poller.services import init_services
 
 from writer import init_output_workers, run_output_worker
 from suzieq.utils import load_sq_config
@@ -47,15 +47,24 @@ def validate_parquet_args(cfg, output_args, logger):
 def init_logger():
     """Initialize the logger"""
 
-    logger = logging.getLogger('sq-poller')
-    logger.setLevel(cfg.get("logging-level", "INFO").upper())
+    # this needs to be suzieq.poller, so that it is the root of all the other pollers
+    logger = logging.getLogger('suzieq.poller')
+    logger.setLevel(cfg.get("logging-level", "WARNING").upper())
     fh = logging.FileHandler(cfg.get("log-file", "/tmp/sq-poller.log"))
     formatter = logging.Formatter(
         "%(asctime)s - %(name)s - %(levelname)s " "- %(message)s"
     )
     fh.setFormatter(formatter)
-    fh.setLevel(logging.INFO)
+
     logger.addHandler(fh)
+    logger.warning(f"log level {logging.getLevelName(logger.level)}")
+
+    # set root logger level, so that we set asyncssh log level
+    #  asynchssh sets it's level to the root level
+    root = logging.getLogger()
+    root.setLevel(cfg.get("logging-level", "WARNING").upper())
+    root.addHandler(fh)
+
 
     return logger
 
@@ -67,9 +76,9 @@ async def start_poller(userargs, cfg):
     if not os.path.exists(cfg["service-directory"]):
         logger.error(
             "Service directory {} is not a directory".format(
-                userargs.output_dir)
+                cfg['service-directory'])
         )
-        print("Service directory {} is not a directory".format(userargs.output_dir))
+        print("Service directory {} is not a directory".format(cfg['service-directory']))
         sys.exit(1)
 
     if not cfg.get("schema-directory", None):
