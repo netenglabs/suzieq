@@ -55,13 +55,17 @@ the future.
 Let's look at the some data, we'll start with the system data, to get an overview of the system/nodes
 that we have data for. This shows that we have data from 14 nodes and some information about each of
 system.
-![Suzieq System show](docs/images/suzieq-device-show.png)
+![Suzieq device show](docs/images/suzieq-device-show.png)
+
+Another example of the same command, but with Arista EOS devices:
+![Suzieq_device_show_eos](docs/images/suzieq-device-show-eos.png)
 
 Each command has completion to help you understand what you can do with the command. 
 For instance, interface command shows that it has five verbs that you can use with it.
 ![Suzieq interface show help](docs/images/suzieq-interface-show-help.png)
 
-##Demo BGP Analysis
+## Demo BGP Analysis
+
 Let's look quickly at BGP data. 
 ![Suzieq bgp](docs/images/suzieq-bgp-show.png)
 
@@ -87,9 +91,19 @@ way to help you understand the distribution that you have.
 
 
 A quick peak at routes, shows that there are 239 routes.
-![Suzieq routes show](docs/images/suzieq-routes-show.png)
+![Suzieq route show](docs/images/suzieq-routes-show.png)
 
-##Investigate Suzieq Tables
+## Demo Path
+One of the nice things that we can do with suzieq is show all the different paths
+between two endpoints.
+![Suzieq_path_show](docs/images/suzieq-path-show.png) This is a little tricky 
+to understand. In this example, there are eight differen paths, represented
+by their pathid. For each pathid, we then show each hop. As you can see,
+we also show the mtu and if it is an overlay.
+
+Path does not yet work in all cases. Some EVPN cases do not work yet.
+
+## Investigate Suzieq Tables
 
 If you want to look at the database more directly, use the table command. There is not always
 a single connection between tables in the database and commands that are available. Also, we are 
@@ -124,13 +138,12 @@ Currently Suzieq  supports polling [Cumulus Linux](https://cumulusnetworks.com/)
  [Arista](https://www.arista.com/en/) devices, as well as Linux. 
 Suzieq can easily support other device types, we just haven't had access to those and not time to 
 chase them down.
-Adding new device types starts by created a new [Service](docs/service-file-format.md)
-We can't really support this right now because we don't have enough good testing around all the different ways to configure services. 
-Services work for what we have available, but we have not tested around the edges of services. 
-They might just work for you, but if you run into trouble we can only help a little right now.
+Adding new device types starts by created a new [Service](docs/service-file-format.md).
+Services do work work for what we have tested, but we have not tested around the edges of how
+services are parsed. 
+They might just work for you, but if you run into trouble we can only help a little right now. 
 
-We started out with least common denominator SSH and REST access to devices. 
-
+Suzieq started out with least common denominator SSH and REST access to devices. 
 Suzieq does have support for agents to push data and we've done some experiments with them, but don't
 have production versions of that code. 
 # Getting Started
