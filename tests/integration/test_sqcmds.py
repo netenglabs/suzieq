@@ -4,31 +4,16 @@ import yaml
 import json
 from subprocess import check_output, CalledProcessError
 import shlex
-import dateutil
 from tempfile import mkstemp
 from collections import Counter
 
 import pytest
 from _pytest.mark.structures import Mark, MarkDecorator
 from suzieq.cli.sqcmds import *
-from pandas import testing
 
-from pandas import DataFrame
 from nubia import context
 
 from tests.conftest import commands, suzieq_cli_path
-
-# TODO
-# after time filtering if fixed, figure out more subtle time testing
-# test more than just show for filtering?
-#
-# only works if there is a suzieq-cfg.yml file, which it then over-rides
-# how do I make sure I check all commands and all verbs
-
-# I don't know the right measure of completeness to cover all the different
-# ways of filtering. Missing detailed checking of whatever is being done
-# directly in the sqcmds objects, such as filtering or formatting changes
-
 
 basic_verbs = ['show']
 
@@ -49,8 +34,8 @@ basic_verbs = ['show']
     ('RouteCmd', basic_verbs + ['lpm'],
      [None, {'address': '10.0.0.1'}]),
     ('TableCmd', basic_verbs + ['describe'], [None, {'table': 'device'}]),
-    ('TopcpuCmd', basic_verbs, [None, None]),
-    ('TopmemCmd', basic_verbs, [None, None]),
+#    ('TopcpuCmd', basic_verbs, [None, None]),
+#    ('TopmemCmd', basic_verbs, [None, None]),
     ('VlanCmd', basic_verbs, [None])
 ])
 def test_commands(setup_nubia, command, verbs, args):

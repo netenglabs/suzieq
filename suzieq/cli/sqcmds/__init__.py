@@ -10,6 +10,8 @@ modules = filter(
         f.endswith("__init__.py")
         or f.endswith("command.py")
         or f.endswith("context_commands.py")
+        or f.endswith("TopcpuCmd.py")
+        or f.endswith("TopmemCmd.py")
     )
     else None,
     glob.glob(join(dirname(__file__), "*.py")),
