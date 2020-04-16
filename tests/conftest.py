@@ -11,12 +11,12 @@ suzieq_cli_path = './suzieq/cli/suzieq-cli'
 commands = [('AddressCmd'), ('ArpndCmd'), ('BgpCmd'), ('DeviceCmd'),
             ('EvpnVniCmd'), ('InterfaceCmd'), ('LldpCmd'), ('MacCmd'),
             ('MlagCmd'), ('OspfCmd'), ('RouteCmd'),
-            ('TopcpuCmd'), ('TopmemCmd'), ('VlanCmd')]
+            ('VlanCmd')]
 
 cli_commands = [('address'), ('bgp'), ('device'), ('evpnVni'),
                 ('interface'), ('lldp'), ('mac'),
                 ('mlag'), ('ospf'), ('path'), ('route'),
-                ('yopcpuCmd'), ('topmem'), ('vlan')]
+                ('vlan')]
 
 
 tables = [('arpnd'), ('bgp'), ('evpnVni'), ('device'), ('fs'), ('ifCounters'),
