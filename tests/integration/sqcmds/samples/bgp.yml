@@ -581,7 +581,141 @@ tests:
     "peerAsn_y": 65000.0, "assert": "pass", "assertReason": "-"}]'
 - command: bgp assert --format=json
   data-directory: tests/data/basic_dual_bgp/parquet-out
+  error:
+    error: '[{"namespace": "dual-bgp", "hostname_x": "edge01", "vrf_x": "default",
+      "peer_x": "eth1.2", "asn_x": 65530, "peerAsn_x": 65201, "state_x": "Established",
+      "peerHostname_x": "exit01", "vrf_y": "default", "peer_y": "169.254.254.2", "asn_y":
+      65201.0, "peerAsn_y": 65530.0, "assert": "pass", "assertReason": "-"}, {"namespace":
+      "dual-bgp", "hostname_x": "edge01", "vrf_x": "default", "peer_x": "eth1.4",
+      "asn_x": 65530, "peerAsn_x": 65201, "state_x": "Established", "peerHostname_x":
+      "exit01", "vrf_y": "internet-vrf", "peer_y": "169.254.254.10", "asn_y": 65201.0,
+      "peerAsn_y": 65530.0, "assert": "pass", "assertReason": "-"}, {"namespace":
+      "dual-bgp", "hostname_x": "edge01", "vrf_x": "default", "peer_x": "eth2.2",
+      "asn_x": 65530, "peerAsn_x": 65202, "state_x": "Established", "peerHostname_x":
+      "exit02", "vrf_y": "default", "peer_y": "169.254.253.2", "asn_y": 65202.0, "peerAsn_y":
+      65530.0, "assert": "pass", "assertReason": "-"}, {"namespace": "dual-bgp", "hostname_x":
+      "edge01", "vrf_x": "default", "peer_x": "eth2.4", "asn_x": 65530, "peerAsn_x":
+      65202, "state_x": "Established", "peerHostname_x": "exit02", "vrf_y": "internet-vrf",
+      "peer_y": "169.254.253.10", "asn_y": 65202.0, "peerAsn_y": 65530.0, "assert":
+      "pass", "assertReason": "-"}, {"namespace": "dual-bgp", "hostname_x": "exit01",
+      "vrf_x": "default", "peer_x": "10.127.0.8", "asn_x": 65201, "peerAsn_x": 65000,
+      "state_x": "Established", "peerHostname_x": "spine01", "vrf_y": "default", "peer_y":
+      "10.127.0.9", "asn_y": 65000.0, "peerAsn_y": 65201.0, "assert": "pass", "assertReason":
+      "-"}, {"namespace": "dual-bgp", "hostname_x": "exit01", "vrf_x": "default",
+      "peer_x": "10.127.1.8", "asn_x": 65201, "peerAsn_x": 65000, "state_x": "Established",
+      "peerHostname_x": "spine02", "vrf_y": "default", "peer_y": "10.127.1.9", "asn_y":
+      65000.0, "peerAsn_y": 65201.0, "assert": "pass", "assertReason": "-"}, {"namespace":
+      "dual-bgp", "hostname_x": "exit01", "vrf_x": "default", "peer_x": "169.254.254.2",
+      "asn_x": 65201, "peerAsn_x": 65530, "state_x": "Established", "peerHostname_x":
+      "edge01", "vrf_y": "default", "peer_y": "eth1.2", "asn_y": 65530.0, "peerAsn_y":
+      65201.0, "assert": "pass", "assertReason": "-"}, {"namespace": "dual-bgp", "hostname_x":
+      "exit01", "vrf_x": "internet-vrf", "peer_x": "169.254.127.0", "asn_x": 65201,
+      "peerAsn_x": 25253, "state_x": "Established", "peerHostname_x": "internet",
+      "vrf_y": "default", "peer_y": "swp1", "asn_y": 25253.0, "peerAsn_y": 65201.0,
+      "assert": "pass", "assertReason": "-"}, {"namespace": "dual-bgp", "hostname_x":
+      "exit01", "vrf_x": "internet-vrf", "peer_x": "169.254.254.10", "asn_x": 65201,
+      "peerAsn_x": 65530, "state_x": "Established", "peerHostname_x": "edge01", "vrf_y":
+      "default", "peer_y": "eth1.4", "asn_y": 65530.0, "peerAsn_y": 65201.0, "assert":
+      "pass", "assertReason": "-"}, {"namespace": "dual-bgp", "hostname_x": "exit02",
+      "vrf_x": "default", "peer_x": "10.127.0.10", "asn_x": 65202, "peerAsn_x": 65000,
+      "state_x": "Established", "peerHostname_x": "spine01", "vrf_y": "default", "peer_y":
+      "10.127.0.11", "asn_y": 65000.0, "peerAsn_y": 65202.0, "assert": "pass", "assertReason":
+      "-"}, {"namespace": "dual-bgp", "hostname_x": "exit02", "vrf_x": "default",
+      "peer_x": "10.127.1.10", "asn_x": 65202, "peerAsn_x": 65000, "state_x": "Established",
+      "peerHostname_x": "spine02", "vrf_y": "default", "peer_y": "10.127.1.11", "asn_y":
+      65000.0, "peerAsn_y": 65202.0, "assert": "pass", "assertReason": "-"}, {"namespace":
+      "dual-bgp", "hostname_x": "exit02", "vrf_x": "default", "peer_x": "169.254.253.2",
+      "asn_x": 65202, "peerAsn_x": 65530, "state_x": "Established", "peerHostname_x":
+      "edge01", "vrf_y": "default", "peer_y": "eth2.2", "asn_y": 65530.0, "peerAsn_y":
+      65202.0, "assert": "pass", "assertReason": "-"}, {"namespace": "dual-bgp", "hostname_x":
+      "exit02", "vrf_x": "internet-vrf", "peer_x": "169.254.253.10", "asn_x": 65202,
+      "peerAsn_x": 65530, "state_x": "Established", "peerHostname_x": "edge01", "vrf_y":
+      "default", "peer_y": "eth2.4", "asn_y": 65530.0, "peerAsn_y": 65202.0, "assert":
+      "pass", "assertReason": "-"}, {"namespace": "dual-bgp", "hostname_x": "exit02",
+      "vrf_x": "internet-vrf", "peer_x": "169.54.127.1", "asn_x": 65202, "peerAsn_x":
+      25253, "state_x": "NotEstd", "peerHostname_x": null, "vrf_y": null, "peer_y":
+      "", "asn_y": null, "peerAsn_y": null, "assert": "fail", "assertReason": "no
+      route to peer"}, {"namespace": "dual-bgp", "hostname_x": "internet", "vrf_x":
+      "default", "peer_x": "swp1", "asn_x": 25253, "peerAsn_x": 65201, "state_x":
+      "Established", "peerHostname_x": "exit01", "vrf_y": "internet-vrf", "peer_y":
+      "169.254.127.0", "asn_y": 65201.0, "peerAsn_y": 25253.0, "assert": "pass", "assertReason":
+      "-"}, {"namespace": "dual-bgp", "hostname_x": "internet", "vrf_x": "default",
+      "peer_x": "swp2", "asn_x": 25253, "peerAsn_x": 0, "state_x": "NotEstd", "peerHostname_x":
+      "exit02", "vrf_y": null, "peer_y": "", "asn_y": null, "peerAsn_y": null, "assert":
+      "pass", "assertReason": "-"}, {"namespace": "dual-bgp", "hostname_x": "leaf01",
+      "vrf_x": "default", "peer_x": "10.127.0.0", "asn_x": 65101, "peerAsn_x": 65000,
+      "state_x": "Established", "peerHostname_x": "spine01", "vrf_y": "default", "peer_y":
+      "10.127.0.1", "asn_y": 65000.0, "peerAsn_y": 65101.0, "assert": "pass", "assertReason":
+      "-"}, {"namespace": "dual-bgp", "hostname_x": "leaf01", "vrf_x": "default",
+      "peer_x": "10.127.1.0", "asn_x": 65101, "peerAsn_x": 65000, "state_x": "Established",
+      "peerHostname_x": "spine02", "vrf_y": "default", "peer_y": "10.127.1.1", "asn_y":
+      65000.0, "peerAsn_y": 65101.0, "assert": "pass", "assertReason": "-"}, {"namespace":
+      "dual-bgp", "hostname_x": "leaf02", "vrf_x": "default", "peer_x": "10.127.0.2",
+      "asn_x": 65102, "peerAsn_x": 65000, "state_x": "Established", "peerHostname_x":
+      "spine01", "vrf_y": "default", "peer_y": "10.127.0.3", "asn_y": 65000.0, "peerAsn_y":
+      65102.0, "assert": "pass", "assertReason": "-"}, {"namespace": "dual-bgp", "hostname_x":
+      "leaf02", "vrf_x": "default", "peer_x": "10.127.1.2", "asn_x": 65102, "peerAsn_x":
+      65000, "state_x": "Established", "peerHostname_x": "spine02", "vrf_y": "default",
+      "peer_y": "10.127.1.3", "asn_y": 65000.0, "peerAsn_y": 65102.0, "assert": "pass",
+      "assertReason": "-"}, {"namespace": "dual-bgp", "hostname_x": "leaf03", "vrf_x":
+      "default", "peer_x": "10.127.0.4", "asn_x": 65103, "peerAsn_x": 65000, "state_x":
+      "Established", "peerHostname_x": "spine01", "vrf_y": "default", "peer_y": "10.127.0.5",
+      "asn_y": 65000.0, "peerAsn_y": 65103.0, "assert": "pass", "assertReason": "-"},
+      {"namespace": "dual-bgp", "hostname_x": "leaf03", "vrf_x": "default", "peer_x":
+      "10.127.1.4", "asn_x": 65103, "peerAsn_x": 65000, "state_x": "Established",
+      "peerHostname_x": "spine02", "vrf_y": "default", "peer_y": "10.127.1.5", "asn_y":
+      65000.0, "peerAsn_y": 65103.0, "assert": "pass", "assertReason": "-"}, {"namespace":
+      "dual-bgp", "hostname_x": "leaf04", "vrf_x": "default", "peer_x": "10.127.0.6",
+      "asn_x": 65104, "peerAsn_x": 65000, "state_x": "Established", "peerHostname_x":
+      "spine01", "vrf_y": "default", "peer_y": "10.127.0.7", "asn_y": 65000.0, "peerAsn_y":
+      65104.0, "assert": "pass", "assertReason": "-"}, {"namespace": "dual-bgp", "hostname_x":
+      "leaf04", "vrf_x": "default", "peer_x": "10.127.1.6", "asn_x": 65104, "peerAsn_x":
+      65000, "state_x": "Established", "peerHostname_x": "spine02", "vrf_y": "default",
+      "peer_y": "10.127.1.7", "asn_y": 65000.0, "peerAsn_y": 65104.0, "assert": "pass",
+      "assertReason": "-"}, {"namespace": "dual-bgp", "hostname_x": "spine01", "vrf_x":
+      "default", "peer_x": "10.127.0.1", "asn_x": 65000, "peerAsn_x": 65101, "state_x":
+      "Established", "peerHostname_x": "leaf01", "vrf_y": "default", "peer_y": "10.127.0.0",
+      "asn_y": 65101.0, "peerAsn_y": 65000.0, "assert": "pass", "assertReason": "-"},
+      {"namespace": "dual-bgp", "hostname_x": "spine01", "vrf_x": "default", "peer_x":
+      "10.127.0.11", "asn_x": 65000, "peerAsn_x": 65202, "state_x": "Established",
+      "peerHostname_x": "exit02", "vrf_y": "default", "peer_y": "10.127.0.10", "asn_y":
+      65202.0, "peerAsn_y": 65000.0, "assert": "pass", "assertReason": "-"}, {"namespace":
+      "dual-bgp", "hostname_x": "spine01", "vrf_x": "default", "peer_x": "10.127.0.3",
+      "asn_x": 65000, "peerAsn_x": 65102, "state_x": "Established", "peerHostname_x":
+      "leaf02", "vrf_y": "default", "peer_y": "10.127.0.2", "asn_y": 65102.0, "peerAsn_y":
+      65000.0, "assert": "pass", "assertReason": "-"}, {"namespace": "dual-bgp", "hostname_x":
+      "spine01", "vrf_x": "default", "peer_x": "10.127.0.5", "asn_x": 65000, "peerAsn_x":
+      65103, "state_x": "Established", "peerHostname_x": "leaf03", "vrf_y": "default",
+      "peer_y": "10.127.0.4", "asn_y": 65103.0, "peerAsn_y": 65000.0, "assert": "pass",
+      "assertReason": "-"}, {"namespace": "dual-bgp", "hostname_x": "spine01", "vrf_x":
+      "default", "peer_x": "10.127.0.7", "asn_x": 65000, "peerAsn_x": 65104, "state_x":
+      "Established", "peerHostname_x": "leaf04", "vrf_y": "default", "peer_y": "10.127.0.6",
+      "asn_y": 65104.0, "peerAsn_y": 65000.0, "assert": "pass", "assertReason": "-"},
+      {"namespace": "dual-bgp", "hostname_x": "spine01", "vrf_x": "default", "peer_x":
+      "10.127.0.9", "asn_x": 65000, "peerAsn_x": 65201, "state_x": "Established",
+      "peerHostname_x": "exit01", "vrf_y": "default", "peer_y": "10.127.0.8", "asn_y":
+      65201.0, "peerAsn_y": 65000.0, "assert": "pass", "assertReason": "-"}, {"namespace":
+      "dual-bgp", "hostname_x": "spine02", "vrf_x": "default", "peer_x": "10.127.1.1",
+      "asn_x": 65000, "peerAsn_x": 65101, "state_x": "Established", "peerHostname_x":
+      "leaf01", "vrf_y": "default", "peer_y": "10.127.1.0", "asn_y": 65101.0, "peerAsn_y":
+      65000.0, "assert": "pass", "assertReason": "-"}, {"namespace": "dual-bgp", "hostname_x":
+      "spine02", "vrf_x": "default", "peer_x": "10.127.1.11", "asn_x": 65000, "peerAsn_x":
+      65202, "state_x": "Established", "peerHostname_x": "exit02", "vrf_y": "default",
+      "peer_y": "10.127.1.10", "asn_y": 65202.0, "peerAsn_y": 65000.0, "assert": "pass",
+      "assertReason": "-"}, {"namespace": "dual-bgp", "hostname_x": "spine02", "vrf_x":
+      "default", "peer_x": "10.127.1.3", "asn_x": 65000, "peerAsn_x": 65102, "state_x":
+      "Established", "peerHostname_x": "leaf02", "vrf_y": "default", "peer_y": "10.127.1.2",
+      "asn_y": 65102.0, "peerAsn_y": 65000.0, "assert": "pass", "assertReason": "-"},
+      {"namespace": "dual-bgp", "hostname_x": "spine02", "vrf_x": "default", "peer_x":
+      "10.127.1.5", "asn_x": 65000, "peerAsn_x": 65103, "state_x": "Established",
+      "peerHostname_x": "leaf03", "vrf_y": "default", "peer_y": "10.127.1.4", "asn_y":
+      65103.0, "peerAsn_y": 65000.0, "assert": "pass", "assertReason": "-"}, {"namespace":
+      "dual-bgp", "hostname_x": "spine02", "vrf_x": "default", "peer_x": "10.127.1.7",
+      "asn_x": 65000, "peerAsn_x": 65104, "state_x": "Established", "peerHostname_x":
+      "leaf04", "vrf_y": "default", "peer_y": "10.127.1.6", "asn_y": 65104.0, "peerAsn_y":
+      65000.0, "assert": "pass", "assertReason": "-"}, {"namespace": "dual-bgp", "hostname_x":
+      "spine02", "vrf_x": "default", "peer_x": "10.127.1.9", "asn_x": 65000, "peerAsn_x":
+      65201, "state_x": "Established", "peerHostname_x": "exit01", "vrf_y": "default",
+      "peer_y": "10.127.1.8", "asn_y": 65201.0, "peerAsn_y": 65000.0, "assert": "pass",
+      "assertReason": "-"}]'
   marks: bgp assert
-  xfail:
-    error: '"Error running command: ''IPv4Network'' object has no attribute ''ndim''\n------------------------------------------------------------\n------------------------------------------------------------"'
-    reason: uncaught exception bug #80
