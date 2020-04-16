@@ -15,7 +15,8 @@ What does Suzieq do that is different from just logging into a device and gettin
 
 By using each of these dimensions, we can easily build interesting applications that help understand
 networks in way that is much easier. We've just gotten started; our applications are only a brief
-demonstration of what this approach can bring about. This is a very early release. We have many more ideas on what Suzieq can do, but we wanted to get this out
+demonstration of what this approach can bring about. This is a very early release. We have many more ideas 
+on what Suzieq can do, but we wanted to get this out
 so that people can start using it. And start solving problems in their networks.
 
 With the applications that we build on top of the framework we want to demonstrate a different
@@ -25,7 +26,11 @@ of your network holistically.
 Suzieq data is focused on [Pandas DataFrames](https://pandas.pydata.org/pandas-docs/stable/getting_started/dsintro.html)
 Everything returned by the analysis engine is a dataframe.
 
-For now, all the analysis are in a CLI.
+For now, all the analysis are in a CLI. 
+
+We are just getting started with Suzieq. We believe that this is a great platform for observing and understanding your
+network. And we've written applications to demonstrate what is possible. Let us know your ideas on how to make things 
+better.
 
 # Analysis
 Let's jump into what you can do with Suzieq
@@ -39,28 +44,52 @@ The words in the bottom show specific choices that you can make to filter data.
 To get started, it's often a good idea to look at the help. Just type a '?' to get started:
 ![Suzieq Help](docs/images/suzieq-help.png)
 You see the commands that you can use with Suzieq. For each command there are a small number of verbs 
-and some filters that you can add. Every command has at least the 'show','summary', and 'unique' verbs, some 
+and some filters that you can add. Most commands have at least the 'show','summary', and 'unique' verbs, some 
 commands have more.
+
+A important concept in Suzieq is the *namespace*. Since we are datacenter people, we were orignally thinking
+of namespace as datacenter, but it can be whatever grouping of devices that you want. At this point
+Suzieq cannot build a hierarchy of namespaces. We will add some way to group namespaces together in 
+the future.
 
 Let's look at the some data, we'll start with the system data, to get an overview of the system/nodes
 that we have data for. This shows that we have data from 14 nodes and some information about each of
 system.
-![Suzieq System show](docs/images/suzieq-system-show.png)
+![Suzieq System show](docs/images/suzieq-device-show.png)
 
-Each command has completetion to help you understand what you can do with the command. 
+Each command has completion to help you understand what you can do with the command. 
 For instance, interface command shows that it has five verbs that you can use with it.
 ![Suzieq interface show help](docs/images/suzieq-interface-show-help.png)
 
-
+##Demo BGP Analysis
 Let's look quickly at BGP data. 
 ![Suzieq bgp](docs/images/suzieq-bgp-show.png)
 
 There's a lot of data there. We just want to look at the ASNs. Let's look at what the ASNs are and
 how many there are of each.
-![Suzieq unique ASNs](docs/images/suzie-bgp-unique-asn.png)
+![Suzieq unique ASNs](docs/images/suzieq-bgp-unique-asn.png)
+
+To get an overview of BGP in your networks, we have bgp summarize.
+![Suzieq_BGP_summarize](docs/images/suzieq-bgp-summarize.png) 
+This can be a bit intimidating, as we are trying to represent a lot of information here.
+As you can we, we have a column per namespace, though in this example we only have one namespace. We list the number of
+ASNs, peerAsns, etc. We also show the number of rows, which are the number of rows in the 
+table if you had just done a 'bgp show'. For items that have a count of 3 or less,
+we show the entries, and how many there are of each. So in this example network,
+there are two VRFs, with default having 32 rows and internet-vrf having 4. If an item has has more than 3 that you'd 
+like to examine, you can use the unique verb as mentioned above. For instance, we see from summarize
+that there are 9 ASNs, using unique you can see each ASN and how many times it is being used.
+
+Another interesting
+concept is shown in v4PfxRx, V4PfxRx, etc, which is if you see three numbers
+in a list, then Suzieq is showing you min, max, and median. This is our best
+way to help you understand the distribution that you have.
+
 
 A quick peak at routes, shows that there are 239 routes.
 ![Suzieq routes show](docs/images/suzieq-routes-show.png)
+
+##Investigate Suzieq Tables
 
 If you want to look at the database more directly, use the table command. There is not always
 a single connection between tables in the database and commands that are available. Also, we are 
@@ -68,18 +97,22 @@ collecting data in some tables, such as ifCounters that we do not yet have comma
 We assume it's better to start getting data and then we can add useful analysis as we go along.
 
 'table show' shows each table in the database and some statistics about each one. 
-![Suzie Tables show](docs/images/suzieq-tables-show.png)
+![Suzie Tables show](docs/images/suzieq-table-show.png)
 Suzieq only saves data to the database if there have been changes to the data. So some 
-tables will iterate often, and some will not. 
+tables will iterate often, and some will not. Some of the tables show data that Suzieq is collecting,
+but we do not have analysis for. For instance, we are collecting ifCounters data, but 
+there is no way to access that data from the CLI. 
+
+A special table is called sqPoller, and we do have access to that through the CLI. 
+It records the work that suzieq poller is doing. At this point it's probably only 
+useful for developers.
 
 For each table, you can look at what is in the data and what are the columns that are displayed automatically.
 For instance, with BGP we collect a lot more data than we show by default. 
 
-![Suzieq tables describe bgp](docs/images/suzieq-tables-describe-bgp.png)
+![Suzieq tables describe bgp](docs/images/suzieq-table-describe-bgp.png)
 You can always display more columns by adding the columns filter at the end of a show command.
 You can use 'columns=*' to get all the columns available for a command, but for bgp that is a lot!
-
-
 
 
 # Getting Data
