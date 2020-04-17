@@ -11,6 +11,7 @@ from tests import conftest
 # TODO
 #  create tempfile for config
 
+
 def create_config(testvar):
     if 'data-directory' in testvar:
         # We need to create a tempfile to hold the config
@@ -61,7 +62,7 @@ if __name__ == '__main__':
     sqcmd_path = [sys.executable, conftest.suzieq_cli_path]
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--filename', '-f', type=str)
+    parser.add_argument('--filename', '-f', type=str, required=True)
     parser.add_argument('--overwrite', '-o', action='store_true')
     userargs = parser.parse_args()
 
