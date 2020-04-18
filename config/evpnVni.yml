@@ -7,20 +7,27 @@ show-fields:
   - type
   - numMacs
   - numArpNd
-  - numRemoteVteps
+  - remoteVtepList
 
 apply:
   cumulus:
     version: all
-    command: sudo vtysh -c "show evpn vni json"
+    command: sudo vtysh -c "show evpn vni detail json"
     normalize: '*/[
     "vni: vni",
     "type: type",
     "numMacs: numMacs?|0",
     "numArpNd: numArpNd?|0",
-    "numRemoteVteps: numRemoteVteps?|0",
-    "remoteVteps: remoteVteps",
-    "tenantVrf: vrf",
+    "numRemoteVteps: remoteVtepList?|[]",
+    "l2Vnis: l2VniList?|[]",
+    "advertiseGatewayMacIp: advGateway?|False",
+    "vtepIp: srcVtepIp?|",
+    "localVtepIp: srcVtepIp?|srcVtepIp",
+    "vniFilter: vniFilter?|",
+    "state: state?|up",
+    "vxlanInterface: ifname?|",
+    "routerMac: routerMac?|",
+    "vrf: vrf",
     ]'
 
   linux:

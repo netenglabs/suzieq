@@ -4,18 +4,19 @@
     "type": "record",
     "fields": [
         {
-            "name": "vni",
-            "type": "long",
-            "key": 2,
-            "display": 2
-        },
-        {
-            "name": "numMacs",
-            "type": "long",
-            "display": 4
+            "name": "routerMac",
+            "type": "string"
         },
         {
             "name": "vrf",
+            "type": "string"
+        },
+        {
+            "name": "advGateway",
+            "type": "boolean"
+        },
+        {
+            "name": "state",
             "type": "string"
         },
         {
@@ -24,24 +25,53 @@
             "display": 3
         },
         {
-            "name": "numRemoteVteps",
-            "type": "long",
-            "display": 6
-        },
-        {
             "name": "numArpNd",
             "type": "long",
             "display": 5
         },
         {
-            "name": "remoteVteps",
+            "name": "remoteVtepList",
             "type": {
                 "type": "array",
                 "items": {
                     "type": "string",
-                    "name": "ipAddress"
+                    "name": "remoteVtep"
+                }
+            },
+            "display": 6
+        },
+        {
+            "name": "vniFilter",
+            "type": "string"
+        },
+        {
+            "name": "ifname",
+            "type": "string"
+        },
+        {
+            "name": "vni",
+            "type": "long",
+            "key": 2,
+            "display": 2
+        },
+        {
+            "name": "l2VniList",
+            "type": {
+                "type": "array",
+                "items": {
+                    "type": "long",
+                    "name": "l2Vni"
                 }
             }
+        },
+        {
+            "name": "numMacs",
+            "type": "long",
+            "display": 4
+        },
+        {
+            "name": "srcVtepIp",
+            "type": "string"
         },
         {
             "name": "hostname",
