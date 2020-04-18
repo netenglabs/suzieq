@@ -1,6 +1,8 @@
 service: macs
 keys:
-  - vlan
+  # We deliberately don't have VLAN as a key field. We add an artificial
+  # key field in the schema and during data cleanup to handle EVPN HER
+  # entries among other cases where the VLAN doesn't disambiguate MAC addr.
   - macaddr
 
 show-fields:
