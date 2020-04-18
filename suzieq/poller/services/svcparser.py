@@ -87,9 +87,12 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                         return result
                     result = [{"rest": data[xstr]}]
                 else:
-                    result = [{"rest": []}]
-                    for key in data.keys():
-                        result[0]["rest"].append(data[key])
+                    if isinstance(data, dict):
+                        result = [{"rest": []}]
+                        for key in data.keys():
+                            result[0]["rest"].append(data[key])
+                    else:
+                        result = [{"rest": data}]
             else:
                 if xstr != "*":
                     # Handle xstr being a specific array index or dict key
