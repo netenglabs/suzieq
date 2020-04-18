@@ -57,5 +57,7 @@ class MacCmd(SqCommand):
             columns=self.columns,
             namespace=self.namespace,
         )
+        if not df.empty and "mackey" in df.columns:
+            df.drop(columns=['mackey'], inplace=True)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
