@@ -270,6 +270,12 @@ class Service(object):
                               self.period-5)
             postcall['postq'](self.post_results, self.defn, token)
 
+    def clean_json_input(self, data):
+        """Clean the JSON input data that is sometimes messed up
+        Each service can implement its own version of the cleanup
+        """
+        return None
+
     async def start_data_gather(self) -> None:
         """Start data gathering by calling the post command list
         This is only used to fire up the calls the first time. After this,
@@ -308,22 +314,38 @@ class Service(object):
                         try:
                             in_info = json.loads(data["data"])
                         except json.JSONDecodeError:
-                            self.logger.error(
-                                "Received non-JSON output where "
-                                "JSON was expected for {} on "
-                                "node {}, {}".format(
-                                    data["cmd"], data["hostname"], data["data"]
+                            in_info = self.clean_json_input(data)
+                            if not in_info:
+                                self.logger.error(
+                                    "Received non-JSON output where "
+                                    "JSON was expected for {} on "
+                                    "node {}, {}".format(
+                                        data["cmd"], data["hostname"],
+                                        data["data"]
+                                    )
                                 )
-                            )
-                            return result
+                                return result
+                            try:
+                                in_info = json.loads(in_info)
+                            except json.JSONDecodeError:
+                                self.logger.error(
+                                    "Received non-JSON output where "
+                                    "JSON was expected for {} on "
+                                    "node {}, {}".format(
+                                        data["cmd"], data["hostname"],
+                                        data["data"]
+                                    )
+                                )
+                                return result
                     else:
                         in_info = data["data"]
 
                     if in_info:
                         # EOS' HTTP returns errors like this.
-                        tmp = in_info.get('data', [])
-                        if tmp and tmp[0].get('errors', {}):
-                            return []
+                        if isinstance(in_info, dict):
+                            tmp = in_info.get('data', [])
+                            if tmp and tmp[0].get('errors', {}):
+                                return []
 
                         result = cons_recs_from_json_template(
                             nfn.get("normalize", ""), in_info)
