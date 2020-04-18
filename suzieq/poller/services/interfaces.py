@@ -47,6 +47,10 @@ class InterfaceService(Service):
                 for elem in munge_entry["secondaryIpsOrderedList"]:
                     ip = elem["adddress"] + "/" + elem["maskLen"]
                     new_list.append(ip)
+                for elem in munge_entry["virtualIp"]:
+                    if elem["address"] != "0.0.0.0":
+                        ip = elem["adddress"] + "/" + elem["maskLen"]
+                    new_list.append(ip)
                 entry["ipAddressList"] = new_list
 
             # ip6AddressList is formatted as a dict, not a list by EOS
