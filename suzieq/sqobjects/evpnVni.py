@@ -14,3 +14,11 @@ class EvpnvniObj(basicobj.SqObject):
                          namespace, columns, context=context, table='evpnVni')
         self._sort_fields = ['namespace', 'hostname', 'vni']
         self._cat_fields = []
+
+    def aver(self, **kwargs):
+        """Assert that the BGP state is OK"""
+
+        if not self.ctxt.engine:
+            raise AttributeError('No analysis engine specified')
+
+        return self.engine_obj.aver(**kwargs)
