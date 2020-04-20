@@ -103,6 +103,10 @@ we also show the mtu and if it is an overlay.
 
 Path does not yet work in all cases. Some EVPN cases do not work yet.
 
+## LPM
+Another nice attribute of suzieq is that you can do an LPM match on each device.
+![Suzieq_route_lpm](docs/images/suzieq-route-lpm.png)
+
 ## Investigate Suzieq Tables
 
 If you want to look at the database more directly, use the table command. There is not always
@@ -149,8 +153,61 @@ have production versions of that code.
 # Getting Started
 Suzieq requires Python 3.7, so make sure that is installed first.
 
+## Docker
+the easiest way to use suzieq is with a docker image.
+
+* Download docker image. This same image can be used for the the poller
+and the cli. When you attach to the container, it will give
+you a bash prompt. 
+
+
+### sq-poller
+1. run a docker container for the poller. You need a an external directory
+for the database and another directory for the config; that is what the -v
+options are doing. 
+
+1.  You will need to create a devices file. This contains the list of 
+devices that you want to poll. The easiest way to do this if you have 
+ansible is to use the suzieq genhosts utilitie to read an ansible
+inventory and produce the right format:
+    ```bash
+    python3 suzieq/genhosts.py  ~/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory  ~/devices/dual-bgp dual-bgp
+    ```
+   The file looks like
+    ```
+    - namespace: dual-bgp
+      hosts:
+        - url: ssh://vagrant@192.168.121.51
+        - url: ssh://vagrant@192.168.121.194
+        - url: ssh://vagrant@192.168.121.104
+        - url: ssh://vagrant@192.168.121.212
+        - url: ssh://vagrant@192.168.121.225
+        - url: ssh://vagrant@192.168.121.100
+        - url: ssh://vagrant@192.168.121.50
+        - url: ssh://vagrant@192.168.121.217
+        - url: ssh://vagrant@192.168.121.136
+        - url: ssh://vagrant@192.168.121.235
+        - url: ssh://vagrant@192.168.121.253
+        - url: ssh://vagrant@192.168.121.201
+        - url: ssh://vagrant@192.168.121.121
+        - url: ssh://vagrant@192.168.121.11
+    ```
+
+1.  run the poller container
+    ```bash
+    docker run -it -v /home/jpiet/parquet-out:/suzieq/parquet -v /home/jpiet/devices:/suzieq/devices --name sq-poller suzieq:0.1
+    ```
+     
+    at the shell prompt 'sq-poller -D /suzieq/devices/dual-bgp '
+
+### suzieq-cli
+1.  run a docker container for the cli:
+    ```bash
+    docker run -it -v /home/jpiet/parquet-out:/suzieq/parquet --name suzieq-cli suzieq:0.1
+    ```
+  1.   at the shell prompt 'suzieq-cli'
 ## Installation with Pipenv
-The first way to install Suzieq is to get the code from github
+The complicated non-docker way to install Suzieq is to get the code from github
 1. git clone: `git clone git@github.com:ddutt/suzieq.git`
 2. Suzieq assumes the use of python3.7 which may not be installed on your computer by default. 
 Ubuntu 18.04 ships with 3.6 as default, for example. Check your python version with python3 --version. 
@@ -165,19 +222,10 @@ But, until we can build the different engines separately, we’re stuck with thi
     ```
     sudo apt install python3-pip
     ``` 
-5. Install pipenv
-    ```
-    pip3 install --user pipenv
-    ```
-6. Install suzieq requirements and setup the virtual environment necessary for suzieq
-    ```
-    cd suzieq
-    pipenv install
-    ```
-7. Once pipenv finishes, you execute `pipenv shell` to login to the virtualenv that suzieq 
-will execute in. 
-8. Install cyberpandas -- TODO: 
-9. TODO What to do about nubia bug 
+1. From the suzieq directory, run pip3 on the requirements file
+   ```bash
+   pip3 pip3 install --user --disable-pip-version-check -r /requirements.txt
+   ```
 
 Suzieq requires that you have a suzieq config file either in '/.suzieq/suzieq-cfg.yml' or '/.suzieq-cfg.yml'.
 It looks like:
@@ -199,7 +247,7 @@ sudo python suzieq/genhosts.py ~/cloud-native-data-center-networking/topologies/
 
 After installing all the requirements, starting the poller is easy
 
-`python3 suzieq/poller/sq-poller.py -f -H ~/dual-bgp`
+`python3 suzieq/poller/sq-poller.py -D ~/dual-bgp`
 
 # Database and Persistence of data
 Because everything in Suzieq revolves around dataframes, it can support different persistence engines underneath. 
