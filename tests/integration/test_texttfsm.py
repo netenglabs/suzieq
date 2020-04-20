@@ -60,6 +60,7 @@ def _get_processed_data(template_name):
 
 
 @pytest.mark.parametrize("template_name", _get_textfsm_templates())
+@pytest.mark.textfsm
 def test_texttfsm(template_name, tmp_path):
     sample_input = _get_sample_input(template_name)
     assert sample_input
