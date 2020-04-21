@@ -3,8 +3,8 @@
 # so you need to be in a python environment that can run suzieq
 
 suzieq_dir=/tmp/pycharm_project_304/suzieq/suzieq
-parquet_dir=/home/jpiet/parquet-out
-archive_dir=/home/jpiet/parquet_files
+parquet_dir=/home/${USER}/parquet-out
+archive_dir=/home/${USER}/parquet_files
 
 run_sqpoller () {
     topology="$1"
@@ -12,7 +12,7 @@ run_sqpoller () {
     echo ${name}
     ansible_dir=~/cloud-native-data-center-networking/topologies/${topology}/.vagrant
     ansible_file=${ansible_dir}/provisioners/ansible/inventory/vagrant_ansible_inventory
-    sudo chown -R jpiet ${ansible_dir}
+    sudo chown -R ${USER} ${ansible_dir}
     echo "SUZIEQ"
     python3 ${suzieq_dir}/poller/sq-poller -i ${ansible_file} -n ${name} &
     RESULT_sq=$?
@@ -58,8 +58,9 @@ run_scenario () {
     proto="$2"
     scenario="$3"
     name="$4"
-    echo "SCENARIO ${topology} ${proto} ${scenario} ${name} `pwd`"
+    echo "SCENARIO ${topology} ${proto} ${scenario} ${name}"
     pwd
+    date 
     time sudo ansible-playbook -b -e "scenario=$scenario" deploy.yml
     echo "DEPLOY RESULTS $?"
     sleep 15 #on fast machines, not everything is all the way up without sleep
@@ -83,12 +84,13 @@ run_protos () {
         vagrant_up
         run_scenario ${topology} ${proto} ${scenario} ${name}
         tries=$(expr ${tries} - 1)
-        echo "SCENARIO RESULT: ${RESULT_sc}"
         echo "tries ${tries}"
     done
     if (( ${RESULT_sc} > 0 )) ; then
         echo "FAILED vagrant or ansible"
         vagrant_down
+        date
+        check_log
         cd ..
         exit 1
     fi
@@ -155,15 +157,15 @@ check_all_cndcn () {
               name=${topo}_${proto}_${scenario}
               run_protos ${topo} ${proto} ${scenario} ${name}
               tar czvf ${archive_dir}/parquet_out_${name}.tgz ${parquet_dir}
-              rm -rf ${parquet_dir}
+              del_parquet_dir
           done
        done
        for scenario in centralized distributed ospf-ibgp
        do
           name=${topo}_evpn_${scenario}
           run_protos $topo evpn ${scenario} $name
-          tar czvf ${archive_dir}/parquet_out_${name}.tgz ${parquet_dir}
-          rm -rf ${parquet_dir}
+          tar czf ${archive_dir}/parquet_out_${name}.tgz ${parquet_dir}
+          del_parquet_dir
        done
        cd ..
    done
@@ -171,12 +173,13 @@ check_all_cndcn () {
 
 check_log () {
    # grep through log to understand if things worked as expected
-   egrep "SCENARIO|UTC|DATA|RESULT|FAILED" ${log} | grep -v fatal
+   egrep "SCENARIO|UTC|DATA|RESULT|FAILED|tries|FINISHED" ${log} | grep -v fatal
 }
 log=`pwd`/log
 echo ${log}
 date > ${log}
-create_test_data >> ${log} 2>&1
-#check_all_cndcn >> ${log} 2>&1
+#create_test_data >> ${log} 2>&1
+check_all_cndcn >> ${log} 2>&1
+echo "FINISHED" >> ${log}
 date >> ${log}
 check_log
