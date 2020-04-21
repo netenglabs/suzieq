@@ -117,9 +117,6 @@ class OspfCmd(SqCommand):
         """
         Test OSPF runtime state is good
         """
-        if self.columns is None:
-            return
-
         now = time.time()
         df = self.sqobj.aver(
             hostname=self.hostname,
