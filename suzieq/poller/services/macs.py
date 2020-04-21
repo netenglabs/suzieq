@@ -24,7 +24,10 @@ class MacsService(Service):
         for entry in processed_data:
             if not entry["vlan"]:
                 # Without a VLAN, make the OIF the key
-                entry["mackey"] = entry["oif"]
+                if not entry["remoteVtepIp"]:
+                    entry["mackey"] = entry["oif"]
+                else:
+                    entry["mackey"] = f'{entry["oif"]}/{entry["remoteVtepIp"]}'
             else:
                 entry["mackey"] = entry["vlan"]
 
