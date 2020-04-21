@@ -17,7 +17,7 @@ apply:
   eos:
     version: all
     command: show ip ospf neighbor detail
-    normalize: 'vrfs/*:vrf/instList/*/ospfNeighborEntries/*/[
+    normalize: 'vrfs/*:vrf/instList/*:instance/ospfNeighborEntries/*/[
       "routerId: peerRouterId",
       "priority: nbrPrio",
       "interfaceName: ifname",
@@ -25,7 +25,9 @@ apply:
       "interfaceAddress: peerIP",
       "details/areaId: area",
       "details/stateTime: lastChangeTime",
+      "details/bfdState: bfdStatus?|",
       "details/numberOfStateChanges: numChanges",
+      "options/externalRoutingCapability: areaStub?|False",
       "details/retransmissionCount: lsaRetxCnt"]'
 
   cumulus:

@@ -15,8 +15,21 @@ apply:
   eos:
     version: all
     command: show ip ospf interface
-    format: text
-    textfsm: textfsm_templates/eos_ospfif.tfsm
+    normalize: 'vrfs/*:vrf/instList/*:instance/interfaces/*:ifname/[
+       "passive: passive?|False",
+       "helloInterval: helloTime?|0",
+       "area: area?|",
+       "retransmitInterval: retxTime?|0",
+       "interfaceType: networkType?|",
+       "deadInterval: deadTime?|0",
+       "neighborCount: nbrCount?|0",
+       "state: state?|",
+       "interfaceAddress: ipAddress?|",
+       "cost: cost?|0",
+       "routerId: routerId?|",
+       "isUnnumbered: False",
+       "interfaceMask: maskLen?|32",
+       ]'
 
   cumulus:
     version: all

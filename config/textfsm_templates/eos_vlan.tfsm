@@ -1,0 +1,14 @@
+Value ifname (\S+)
+Value List vlan ([0-9-,]*)
+Value pvid (None|\d+)
+
+Start
+  ^Port\s+Untagged\s+Tagged.* -> Next
+  ^${ifname}\s+ ${pvid}\s+ ${vlan}.*$$ -> Record
+
+#Port       Untagged Tagged
+#Et3        None     3-5,8
+#Et4        None     3-4
+#Et5        10       5
+#Et6        10       -
+#Et7        20       2-5

@@ -34,9 +34,13 @@ class OspfNbrService(Service):
                     entry["lastChangeTime"]
                 )
                 entry["areaStub"] = entry["areaStub"] == "[Stub]"
+                if not entry["bfdStatus"]:
+                    entry["bfdStatus"] = "disabled"
         elif dev_type == "eos":
             for entry in processed_data:
                 entry["state"] = entry["state"].lower()
                 entry["lastChangeTime"] = int(entry["lastChangeTime"] * 1000)
+                # What is provided is the opposite of stub and so we not it
+                entry["areaStub"] = not entry["areaStub"]
 
         return super().clean_data(processed_data, raw_data)

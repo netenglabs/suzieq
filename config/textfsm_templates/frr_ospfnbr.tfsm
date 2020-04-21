@@ -9,6 +9,7 @@ Value state (\w+)
 Value numChanges (\d+)
 Value lastChangeTime (\w+)
 Value lsaRetxCnt (\d+)
+Value bfdStatus (\S+)
 
 Start
   ^\s?Neighbor .*, interface address.*$$ -> Continue.Record
@@ -16,3 +17,5 @@ Start
   ^\s+In the area ${area}\s?${areaStub}\s?via interface ${ifname}.*$$
   ^\s+Neighbor priority is ${nbrPrio},\s+State is ${state}, ${numChanges} state changes.*$$
   ^\s+Progressive change ${lastChangeTime} ago.*$$
+  ^\s+BFD: .*$$
+  ^\s+Status: ${bfdStatus},.*$$
