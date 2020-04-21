@@ -208,7 +208,7 @@ def cons_recs_from_json_template(tmplt_str, in_data):
     # is to be extracted, and a series of keys which represent what has already
     # been extracted from the header string. If the format of result isn't
     # this, fix it
-    if len(result) == 1 and result[0].keys() != set(['rest']):
+    if len(result) == 1 and isinstance(result[0]['rest'], list):
         tmpres = []
         entry = result[0]
         elekeys = entry.keys() - set(['rest'])
