@@ -1,21 +1,26 @@
-Value peerRouterId ([0-9./]*)
-Value peerIP ([0-9./]*)
-Value vrf (\S+)
+Value Required peerRouterId ([0-9./]*)
+Value Required peerIP ([0-9./]*)
+Value Filldown vrf (\S+)
 Value area ([0-9.]*)
 Value areaStub ((\[Stub\])?)
 Value ifname (\S+)
 Value nbrPrio (\d+)
 Value state (\w+)
 Value numChanges (\d+)
-Value lastChangeTime (\w+)
+Value lastUpTime (\w+)
+Value lastDownTime (\w+)
 Value lsaRetxCnt (\d+)
 Value bfdStatus (\S+)
+Value reason (\S+)
 
 Start
-  ^\s?Neighbor .*, interface address.*$$ -> Continue.Record
+  ^VRF Name: ${vrf}.*$$
+  ^\s*$$ -> Record
   ^\s?Neighbor ${peerRouterId}, interface address ${peerIP}.*$$
   ^\s+In the area ${area}\s?${areaStub}\s?via interface ${ifname}.*$$
   ^\s+Neighbor priority is ${nbrPrio},\s+State is ${state}, ${numChanges} state changes.*$$
-  ^\s+Progressive change ${lastChangeTime} ago.*$$
+  ^\s+Progressive change ${lastUpTime} ago.*$$
+  ^\s+Regressive change ${lastDownTime} ago, due to ${reason}.*$$
+  ^\s+Link State Retransmission List ${lsaRetxCnt}.*$$
   ^\s+BFD: .*$$
   ^\s+Status: ${bfdStatus},.*$$
