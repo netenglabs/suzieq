@@ -110,7 +110,7 @@ class OspfObj(SqEngineObject):
             ospf_df[ospf_df["routerId"] != ""]
             .groupby(["routerId", "namespace"], as_index=False)[["hostname", "namespace"]]
             .agg(lambda x: x.unique().tolist())
-        )
+        ).dropna(how='any')
 
         # df is a dataframe with each row containing the routerId and the
         # corresponding list of hostnames with that routerId. In a good
