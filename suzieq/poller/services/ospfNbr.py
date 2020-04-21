@@ -9,6 +9,9 @@ class OspfNbrService(Service):
         """Convert string of type 1d12h3m23s into absolute epoch"""
         secs = 0
         s = reltime
+        if not reltime:
+            return 0
+
         for t, mul in {
             "w": 3600 * 24 * 7,
             "d": 3600 * 24,
@@ -30,9 +33,16 @@ class OspfNbrService(Service):
             for entry in processed_data:
                 entry["vrf"] = "default"
                 entry["state"] = entry["state"].lower()
-                entry["lastChangeTime"] = self.frr_convert_reltime_to_epoch(
-                    entry["lastChangeTime"]
+                entry["lastUpTime"] = self.frr_convert_reltime_to_epoch(
+                    entry["lastUpTime"]
                 )
+                entry["lastDownTime"] = self.frr_convert_reltime_to_epoch(
+                    entry["lastDownTime"]
+                )
+                if entry["lastUpTime"] > entry["lastDownTime"]:
+                    entry["lastChangeTime"] = entry["lastUpTime"]
+                else:
+                    entry["lastChangeTime"] = entry["lastDownTime"]
                 entry["areaStub"] = entry["areaStub"] == "[Stub]"
                 if not entry["bfdStatus"]:
                     entry["bfdStatus"] = "disabled"
