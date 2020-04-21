@@ -112,9 +112,28 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                     if len(result) == 1:
                         result = result[0]
                     else:
-                        # Handle the output of the likes of EOS' BGP with
-                        # starting string: 'vrfs/*/peerList/*/[
                         tmpres = result[0]
+                        if tmpres[0].keys() != set(['rest']):
+                            # Handle output like EOS OSPF output with the
+                            # starting string:
+                            # vrfs/*:vrf/instList/*:instance/ospfNeighborEntries/*/[
+                            # Move the keys into each element of the lists
+                            # we need to pop out these keys at the very end
+                            for entry in result:
+                                elekeys = entry[0].keys() - set(['rest'])
+                                for rstentry in entry[0]['rest']:
+                                    rstentry['sq-addnl-keys'] = []
+                                    for key in elekeys:
+                                        rstentry['sq-addnl-keys'].append({
+                                            key: entry[0][key]})
+                                for key in elekeys:
+                                    del entry[0][key]
+                                # We should only have 'rest' entries now
+                            nokeys = True  # We've moved all the external keys in
+
+                        # Handle the output of the likes of EOS' BGP with
+                        # starting string: 'vrfs/*/peerList/*/[ by
+                        # merging the rest lists
                         for entry in result[1:]:
                             tmpres[0]['rest'].extend(entry[0]['rest'])
                         result = tmpres
@@ -157,7 +176,11 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                        "rest": data[x]} for x in ks]
 
         tmplt_str = tmplt_str[pos + 1:]
-        pos = tmplt_str.index("/")
+        try:
+            # handle EOS' ospfIf output
+            pos = tmplt_str.index("/")
+        except ValueError:
+            pos = ppos
         ppos -= pos
 
     # Now for the rest of the fields
@@ -179,6 +202,22 @@ def cons_recs_from_json_template(tmplt_str, in_data):
     result = list(filter(lambda x: isinstance(x["rest"], list) or
                          isinstance(x["rest"], dict),
                          result))
+
+    # At this point, we're expecting result to contain a list where each
+    # entry contains the "rest' key with the fields from which further data
+    # is to be extracted, and a series of keys which represent what has already
+    # been extracted from the header string. If the format of result isn't
+    # this, fix it
+    if len(result) == 1 and result[0].keys() != set(['rest']):
+        tmpres = []
+        entry = result[0]
+        elekeys = entry.keys() - set(['rest'])
+        for elem in entry['rest']:
+            newentry = {}
+            [newentry.update({x: entry[x]}) for x in elekeys]
+            newentry['rest'] = elem
+            tmpres.append(newentry)
+        result = tmpres
 
     # The if handles cases of flat JSON data such as evpnVni
     if tmplt_str.startswith('/['):
@@ -306,6 +345,14 @@ def cons_recs_from_json_template(tmplt_str, in_data):
             else:
                 x.update({rval: value})
 
-    list(map(lambda x: x.pop("rest", None), result))
+    for entry in result:
+        # To handle entries like EOS' ospfNbr, we had saved the multiple keys
+        # extracted from the initial part of the JSON string and saved it in
+        # sq-addnl-keys. Now pop them out into the appropriate spot before
+        # eliminating the 'rest' field which contains the unused fields
+        rest = entry.pop('rest', {})
+        if 'sq-addnl-keys' in rest:
+            for elem in rest['sq-addnl-keys']:
+                entry.update(elem)
 
     return result

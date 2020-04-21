@@ -17,7 +17,5 @@ class OspfIfService(Service):
         elif raw_data.get("devtype", None) == "eos":
             for entry in processed_data:
                 entry["networkType"] = entry["networkType"].lower()
-                entry["passive"] = entry["passive"] == "Passive"
                 entry["isUnnumbered"] = False
-                entry["areaStub"] = False  # Fix this
         return super().clean_data(processed_data, raw_data)

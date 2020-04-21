@@ -10,7 +10,7 @@ show-fields:
 apply:
   cumulus:
     version: all
-    command: /sbin/bridge vlan show
+    command: /sbin/bridge -c vlan show
     textfsm: textfsm_templates/linux_vlan.tfsm
 
   linux:
@@ -19,3 +19,8 @@ apply:
   platina:
     copy: cumulus
   
+  eos:
+    version: all
+    command: show interfaces vlans
+    format: text
+    textfsm: textfsm_templates/eos_vlan.tfsm
