@@ -71,7 +71,12 @@ For instance, interface command shows that it has five verbs that you can use wi
 
 ## BGP Analysis Demo
 
-Let's look quickly at BGP data. You can see that Suzieq shows a row per device and it's peer.
+Let's look at BGP data. We'll use this to demonstrate some of the things you can do with Suzieq.
+
+We'll start with 'bgp show'. You can see that Suzieq shows a row per connection of a device and it's peer. 
+This command includes data such as the current state of the connection, asn, peer asn, and important statistics
+such as the number of prefixes received, how long the connection has been established, and the number of
+changes in the connection state. 
 ```
 bgp show
 ```
@@ -88,13 +93,14 @@ bgp unique columns=asn
 
 ![Suzieq unique ASNs](docs/images/suzieq-bgp-unique-asn.png)
 
-To get an overview of BGP in your networks, Suzieq has the command 
+To get an overview of what is going on in a service, Suzieq has the verb summarize.
+To get an overview of BGP in your networks, Suzieq has the command 'bgp summarize.'
 ```
 bgp summarize
 ```
 ![Suzieq_BGP_summarize](docs/images/suzieq-bgp-summarize.png) 
-This can be a bit intimidating, as we are summarizing a lot of information.
-As you can we, there is a column per namespace, though in this example we only have one namespace. 
+This can be a bit intimidating, as Suzieq is summarizing a lot of information.
+As you can see, there is a column per namespace, though in this example we only have one namespace. 
 We list the number of
 ASNs, peerAsns, etc. It shows the number of rows, which are the number of rows in the 
 table if you had just done a 'bgp show'. For items that have a count of 3 or less,
@@ -114,12 +120,11 @@ checks on the bgp data and shows which ones failed.
 ```
 bgp assert
 ```
-![Suzie_bgp_show](docs/images/suzieq-bgp-assert.png)
+![Suzie_bgp_assert](docs/images/suzieq-bgp-assert.png)
 You might notice that there is a row entry per device and peer. There is then a lot of information
 that is needed to run the checks in the assert. Finally, at the end there is an assert column with
 pass or fail for each row, and if there is a fail, there is a list of reasons that the row failed. At the
 very end is a message if the Assert passed or Assert failed. 
-
 
 
 ## Path Demo
@@ -141,7 +146,9 @@ must be put in quotes or they won't work.
 A quick peak at routes, shows that there are 239 routes throughout the network.
 ![Suzieq route show](docs/images/suzieq-routes-show.png)
 
-We'd like to see the number of routes per device
+We'd like to see the number of routes per device. That and other things can be understood
+from the summarize command. We can see that there are only 38 unique routes in the network.
+![Suzieq_route_summarize](docs/images/suzieq-route-summarize.png)
 
 ## LPM Demo
 Another nice attribute of Suzieq is that you can do an LPM match and see the results from each device.
@@ -172,20 +179,53 @@ For instance, with BGP we collect a lot more data than we show by default.
 ![Suzieq tables describe bgp](docs/images/suzieq-table-describe-bgp.png)
 You can always display more columns by adding the columns filter at the end of a show command.
 You can use 'columns=*' to get all the columns available for a command, but for bgp that is a lot!
+
 ## Using Suzieq on the command line
 You can directly call a Suzieq command such as
+```
+bgp summarize
+```
+![Suieq_bgp_summarize_command_line](docs/images/suzieq-bgp-summarize-command-line.png)
 
-
-Based on the command you run, Suzieq will exit with interesting results. For instance, if you
+You can also check the output of the command. Based on the command you run, 
+Suzieq will exit with interesting results. For instance, if you
 run an assert and it fails, you will get an exit code other than 0 (usually 255.)
-
 ![Suzie_bgp_assert_command_line](docs/images/suzieq-bgp-assert-command-line.png)
 
 
 ## Filtering
+As shown above, the Suzieq cli works by commands (also called services), verbs, and filters. 
+Some of the filters we've seen so far are columns and namespace. Different commands and verbs
+have different filters. 
+
+The standard filters that work on most command/verb paris are:
+* hostname
+* start-time
+* end-time
+* view
+* namespace
+* format
+* columns
+![Suzieq_device_show_completion](docs/images/suzieq-device-show-completion.png)
+
+Most of those are self-explanatory. The default for view is latest, 
+which means the most current change. view=all will provide
+the data across all time. view=changes analyzes just the data
+that has changed.
+
+format= allows you to produce data other than in a pandas dataframe.
+This is most useful at the command line to then read in the data 
+from suzieq.
 
 
 ## Context Filtering
+In the CLI you can set a specific context for filtering all the 
+commands that you use. For instance, if you want to set a filter 
+for the namespace that you will be investigating then you type
+```
+set namespace=dual-bgp
+```
+you can add or remove context filters as necessary.
 
 ## How time works in Suzieq
 By default when you use the CLI and you use a command, you will be using 'view=latest'. This is usually
@@ -213,7 +253,6 @@ Suzieq started out with least common denominator SSH and REST access to devices.
 Suzieq does have support for agents to push data and we've done some experiments with them, but don't
 have production versions of that code. 
 # Running Suzieq
-
 
 ## Docker
 the easiest way to use Suzieq is with a docker image.
@@ -318,3 +357,62 @@ that must be running before you query the data.
 
 # Faq
 TBD
+
+#Asserts
+# TODO
+As demonstrated above in the README, Suzieq has a powerful concept called Asserts. In an assert for a service
+some number of checks are made to ensure that the network is setup correctly. For each service that has an assert
+you get an output that shows all the data necessary for the checks, a pass/fail column and 
+a reason column for any failed checks.
+
+Also, as mentioned before, if you run an assert from your 
+shell and check the return code, a failure of the assert will
+be a non-zero value, usually 255.
+
+## BGP Assert
+As shown above in the README
+![Suzieq_bgp_assert](docs/images/suzieq-bgp-assert.png)
+
+The checks that are run in the BGP assert are:
+* outgoing link down
+* no route to peer
+* asn mismatch
+* not established --  it gets the error that the device reported 
+in the notifcnReason
+
+## EvpnVni Assert
+![Suzieq_evpnvni_assert](docs/images/suzieq-evpnVni-assert.png)
+
+The checks in EvpnVni Assert are:
+* interface is down
+* some remote VTEPs missing
+* a VTEP is not reachable
+* a VTEP is reachable via default
+* HER is missing VTEPs
+
+## Interface Assert
+![Suzieq_interface_assert](docs/images/suzieq-interface-assert.png)
+
+The checks in Interface Assert are:
+* mtu match on both sides of a connection
+
+## OSPF Assert
+![Suzieq_ospf_assert](docs/images/suzieq-ospf-assert.png)
+
+The cheks in OSPF Assert are:
+* duplicate routerId 
+* subnet mismatch
+* area mismatch
+* Hello timers mismatch
+* Dead timer mismatch
+* network type mismatch
+* passive config mismatch
+* vrf mismatch
+
+#Summarize
+## TODO
+
+
+
+
+
