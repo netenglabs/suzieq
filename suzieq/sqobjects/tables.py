@@ -50,8 +50,13 @@ class TablesObj(basicobj.SqObject):
     def describe(self, **kwargs):
         """Describes the fields for a given table"""
 
-        df = None
         table = kwargs.get('table', '')
+        tables = self.engine.get_tables(self.ctxt.cfg, **kwargs)
+        if table not in tables:
+            df = pd.DataFrame(
+                {'error': [f'ERROR: incorrect table name {table}']})
+            return df
+
         sch = SchemaForTable(table, self.schemas)
 
         entries = [{'name': x['name'], 'type': x['type'], 'key': x.get('key', ''), 'display': x.get('display', '')}

@@ -166,9 +166,8 @@ tests:
   error:
     error: '[{"error": "ERROR: Must specify a table"}]'
   marks: table describe
-- command: table describe --table=bgp --format=json
+- command: table describe --table=floop --format=json
   data-directory: tests/data/multidc/parquet-out/
+  error:
+    error: '[{"error": "ERROR: incorrect table name floop"}]'
   marks: table describe
-  xfail:
-    error: '"Error running command: \n------------------------------------------------------------\n------------------------------------------------------------"'
-    reason: uncaught exception bug #96
