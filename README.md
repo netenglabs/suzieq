@@ -358,8 +358,7 @@ that must be running before you query the data.
 # Faq
 TBD
 
-#Asserts
-# TODO
+# Asserts
 As demonstrated above in the README, Suzieq has a powerful concept called Asserts. In an assert for a service
 some number of checks are made to ensure that the network is setup correctly. For each service that has an assert
 you get an output that shows all the data necessary for the checks, a pass/fail column and 
@@ -409,7 +408,7 @@ The cheks in OSPF Assert are:
 * passive config mismatch
 * vrf mismatch
 
-#Summarize
+# Summarize
 ## TODO
 
 
