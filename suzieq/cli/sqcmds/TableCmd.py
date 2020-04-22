@@ -46,7 +46,7 @@ class TableCmd(SqCommand):
     @argument("table", description="interface name to qualify")
     def describe(self, table: str = "", **kwargs):
         """
-        Summarize fields in table
+        Describe fields in table
         """
 
         if not table:
@@ -62,4 +62,11 @@ class TableCmd(SqCommand):
         df = self.sqobj.summarize(table=table)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
 
+        return self._gen_output(df, dont_strip_cols=True)
+
+    @command("summarize", help="Summarize info about this resource")
+    def summarize(self, **kwargs):
+
+        msg = 'ERROR: Not supported for this object'
+        df = pd.DataFrame({'error': [msg]})
         return self._gen_output(df, dont_strip_cols=True)
