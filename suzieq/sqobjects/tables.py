@@ -47,7 +47,7 @@ class TablesObj(basicobj.SqObject):
             df = df.append(total, ignore_index=True)
         return df
 
-    def summarize(self, **kwargs):
+    def describe(self, **kwargs):
         """Describes the fields for a given table"""
 
         df = None
@@ -59,3 +59,6 @@ class TablesObj(basicobj.SqObject):
         df = pd.DataFrame.from_dict(entries).sort_values('name')
 
         return df
+
+    def summarize(self, **kwargs):
+        raise NotImplementedError
