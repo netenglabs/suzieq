@@ -413,6 +413,46 @@ tests:
     "default", "assert": "pass", "assertReason": "-"}, {"namespace": "ospf-single",
     "hostname": "spine02", "ifname": "swp6", "vrf": "default", "assert": "pass", "assertReason":
     "-"}]'
+- command: ospf assert --namespace=ospf-single --format=json
+  data-directory: tests/data/multidc/parquet-out
+  marks: ospf assert
+  output: '[{"namespace": "ospf-single", "hostname": "exit01", "ifname": "swp1", "vrf":
+    "default", "assert": "pass", "assertReason": "-"}, {"namespace": "ospf-single",
+    "hostname": "exit01", "ifname": "swp2", "vrf": "default", "assert": "pass", "assertReason":
+    "-"}, {"namespace": "ospf-single", "hostname": "exit02", "ifname": "swp1", "vrf":
+    "default", "assert": "pass", "assertReason": "-"}, {"namespace": "ospf-single",
+    "hostname": "exit02", "ifname": "swp2", "vrf": "default", "assert": "pass", "assertReason":
+    "-"}, {"namespace": "ospf-single", "hostname": "leaf01", "ifname": "swp1", "vrf":
+    "default", "assert": "pass", "assertReason": "-"}, {"namespace": "ospf-single",
+    "hostname": "leaf01", "ifname": "swp2", "vrf": "default", "assert": "pass", "assertReason":
+    "-"}, {"namespace": "ospf-single", "hostname": "leaf02", "ifname": "swp1", "vrf":
+    "default", "assert": "pass", "assertReason": "-"}, {"namespace": "ospf-single",
+    "hostname": "leaf02", "ifname": "swp2", "vrf": "default", "assert": "pass", "assertReason":
+    "-"}, {"namespace": "ospf-single", "hostname": "leaf03", "ifname": "swp1", "vrf":
+    "default", "assert": "pass", "assertReason": "-"}, {"namespace": "ospf-single",
+    "hostname": "leaf03", "ifname": "swp2", "vrf": "default", "assert": "pass", "assertReason":
+    "-"}, {"namespace": "ospf-single", "hostname": "leaf04", "ifname": "swp1", "vrf":
+    "default", "assert": "pass", "assertReason": "-"}, {"namespace": "ospf-single",
+    "hostname": "leaf04", "ifname": "swp2", "vrf": "default", "assert": "pass", "assertReason":
+    "-"}, {"namespace": "ospf-single", "hostname": "spine01", "ifname": "swp1", "vrf":
+    "default", "assert": "pass", "assertReason": "-"}, {"namespace": "ospf-single",
+    "hostname": "spine01", "ifname": "swp2", "vrf": "default", "assert": "pass", "assertReason":
+    "-"}, {"namespace": "ospf-single", "hostname": "spine01", "ifname": "swp3", "vrf":
+    "default", "assert": "pass", "assertReason": "-"}, {"namespace": "ospf-single",
+    "hostname": "spine01", "ifname": "swp4", "vrf": "default", "assert": "pass", "assertReason":
+    "-"}, {"namespace": "ospf-single", "hostname": "spine01", "ifname": "swp5", "vrf":
+    "default", "assert": "pass", "assertReason": "-"}, {"namespace": "ospf-single",
+    "hostname": "spine01", "ifname": "swp6", "vrf": "default", "assert": "pass", "assertReason":
+    "-"}, {"namespace": "ospf-single", "hostname": "spine02", "ifname": "swp1", "vrf":
+    "default", "assert": "pass", "assertReason": "-"}, {"namespace": "ospf-single",
+    "hostname": "spine02", "ifname": "swp2", "vrf": "default", "assert": "pass", "assertReason":
+    "-"}, {"namespace": "ospf-single", "hostname": "spine02", "ifname": "swp3", "vrf":
+    "default", "assert": "pass", "assertReason": "-"}, {"namespace": "ospf-single",
+    "hostname": "spine02", "ifname": "swp4", "vrf": "default", "assert": "pass", "assertReason":
+    "-"}, {"namespace": "ospf-single", "hostname": "spine02", "ifname": "swp5", "vrf":
+    "default", "assert": "pass", "assertReason": "-"}, {"namespace": "ospf-single",
+    "hostname": "spine02", "ifname": "swp6", "vrf": "default", "assert": "pass", "assertReason":
+    "-"}]'
 - command: ospf top --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: ospf top
