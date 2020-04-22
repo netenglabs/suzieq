@@ -59,7 +59,7 @@ class TableCmd(SqCommand):
             return self._gen_output(df)
 
         now = time.time()
-        df = self.sqobj.summarize(table=table)
+        df = self.sqobj.describe(table=table)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
 
         return self._gen_output(df, dont_strip_cols=True)
