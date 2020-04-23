@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 
 from .engineobj import SqEngineObject
 
@@ -60,9 +59,9 @@ class AddressObj(SqEngineObject):
         if self.summary_df.empty:
             return self.summary_df
 
-        self._add_field_to_summary('hostname', 'nunique', 'hosts')
-        self._add_field_to_summary('hostname', 'count', 'totalEntries')
-        self._add_field_to_summary('macaddr', 'nunique', 'uniqueInterfaceMacs')
+        self._add_field_to_summary('hostname', 'nunique', 'deviceCnt')
+        self._add_field_to_summary('hostname', 'count', 'addressCnt')
+        self._add_field_to_summary('macaddr', 'nunique', 'uniqueIfMacCnt')
 
         v6df = self.summary_df.explode('ip6AddressList') \
             .dropna(how='any') \
@@ -70,10 +69,10 @@ class AddressObj(SqEngineObject):
         if not v6df.empty:
             v6hosts = v6df.groupby(by=['namespace'])['hostname'].nunique()
             for i in self.ns.keys():
-                self.ns[i].update({'hostsWithv6Address': v6hosts[i]})
+                self.ns[i].update({'hostsWithv6AddressCnt': v6hosts[i]})
         else:
             for i in self.ns.keys():
-                self.ns[i].update({'hostsWithv6Address': 0})
+                self.ns[i].update({'hostsWithv6AddressCnt': 0})
 
         v4df = self.summary_df.explode('ipAddressList') \
             .dropna(how='any') \
@@ -81,7 +80,7 @@ class AddressObj(SqEngineObject):
         if not v4df.empty:
             v4hosts = v4df.groupby(by=['namespace'])['hostname'].nunique()
             for i in self.ns.keys():
-                self.ns[i].update({'hostsWithv4Address': v4hosts[i]})
+                self.ns[i].update({'hostsWithv4AddressCnt': v4hosts[i]})
 
             v4df['prefixlen'] = v4df.ipAddressList.str.split('/').str[1]
 
@@ -91,8 +90,8 @@ class AddressObj(SqEngineObject):
             #  they are equivalent
             # v4pfx = v4df.groupby(by=['namespace'])['prefixlen'] \
             #             .value_counts().rename('count').reset_index()
-            v4pfx = v4df.groupby(by=['namespace', 'prefixlen'], as_index=False) \
-                ['ipAddressList'].count().dropna()
+            v4pfx = v4df.groupby(by=['namespace', 'prefixlen'], as_index=False)[
+                'ipAddressList'].count().dropna()
             v4pfx = v4pfx.rename(columns={'ipAddressList': 'count'})
             v4pfx['count'] = v4pfx['count'].astype(int)
             v4pfx = v4pfx.sort_values(by=['count'], ascending=False)
@@ -107,6 +106,13 @@ class AddressObj(SqEngineObject):
                     lambda x: cnts.append({x['prefixlen']: x['count']}),
                     axis=1, args=cnts)
                 self.ns[i].update({'subnetTopCounts': cnts[:3]})
+        else:
+            for i in self.ns.keys():
+                self.ns[i].update({'hostsWithv4AddressCnt': 0})
 
-        self._post_summarize('totalEntries')
+        self.summary_row_order = ['deviceCnt', 'addressCnt', 'uniqueIfMacCnt',
+                                  'hostsWithv4AddressCnt',
+                                  'hostsWithv6AddressCnt', 'subnetsUsed',
+                                  'subnetTopCounts']
+        self._post_summarize(check_empty_col='addressCnt')
         return self.ns_df.convert_dtypes()

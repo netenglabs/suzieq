@@ -15,12 +15,20 @@ class EvpnvniObj(SqEngineObject):
         if self.summary_df.empty:
             return self.summary_df
 
-        self._add_field_to_summary('hostname', 'count', 'rows')
-        for field in ['vni', 'type', 'vrf']:
-            self._add_list_or_count_to_summary(field)
+        self._summarize_on_add_field = [
+            ('deviceCnt', 'hostname', 'nunique'),
+        ]
+        self._summarize_on_add_list_or_count = [
+            ('uniqueVniCnt', 'vni'), ('UniqueVniTypeCnt', 'type'),
+            ('uniqueVrfCnt', 'vrf')
+        ]
 
-        self._add_stats_to_summary(self.nsgrp['numMacs'], 'numMacs')
-        self._add_stats_to_summary(self.nsgrp['numArpNd'], 'numArpNd')
+        self._summarize_on_add_stat = [
+            ('macsInVniStat', '', 'numMacs'),
+            ('arpNdInVniStat', '', 'numArpNd')
+        ]
+
+        self._gen_summarize_data()
 
         # To summarize accurately, we need to explode the remoteVteps
         # column from a list to an individual entry for each
@@ -30,14 +38,17 @@ class EvpnvniObj(SqEngineObject):
         # the 'explode' only works post pandas 0.25
 
         self.summary_df = self.summary_df.explode(
-            'remoteVteps').dropna(how='any')
+            'remoteVtepList').dropna(how='any')
         self.nsgrp = self.summary_df.groupby(by=["namespace"])
 
         if not self.summary_df.empty:
-            for field in ['remoteVteps']:
-                self._add_list_or_count_to_summary(field)
+            herPerVtepCnt = self.summary_df.groupby(
+                by=['namespace', 'hostname'])['remoteVtepList'].count()
+            self._add_stats_to_summary(herPerVtepCnt, 'herPerVtepStat',
+                                       filter_by_ns=True)
+        self.summary_row_order.append('herPerVtepStat')
 
-        self._post_summarize()
+        self._post_summarize(check_empty_col='deviceCnt')
         return self.ns_df.convert_dtypes()
 
     def aver(self, **kwargs) -> pd.DataFrame:
