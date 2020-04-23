@@ -115,8 +115,8 @@ tests:
     false}]'
 - command: path show --src=172.16.1.101 --dest=172.16.253.1 --format=json
   data-directory: tests/data/multidc/parquet-out/
-  xfail:
-    error: '[{"error": "ERROR: list index out of range"}]'
+  error:
+    error: '[{"error": "ERROR: Must specify namespace to run the trace in"}]'
 - command: path show --dest=172.16.4.104 --src=172.16.1.101 --namespace=dual-bgp --format=json
   data-directory: tests/data/basic_dual_bgp/parquet-out/
   marks: path show
