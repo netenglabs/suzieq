@@ -198,8 +198,7 @@ class SqEngineObject(object):
 
         type = kwargs.pop('type', 'entry')
 
-        df = self.get_valid_df(self.iobj._table, self.iobj._sort_fields,
-                               columns=getcols, **kwargs)
+        df = self.get(columns=getcols, **kwargs)
         if df.empty:
             return df
 
