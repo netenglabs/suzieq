@@ -33,9 +33,9 @@ class MlagService(Service):
                     ):
                         mlagErrorPortsCnt += 1
                         mlagErrorPorts.append(mlagif)
-                entry["mlagDualPorts"] = mlagDualPorts
-                entry["mlagSinglePorts"] = mlagSinglePorts
-                entry["mlagErrorPorts"] = mlagErrorPorts
+                entry["mlagDualPortsList"] = mlagDualPorts
+                entry["mlagSinglePortsList"] = mlagSinglePorts
+                entry["mlagErrorPortsList"] = mlagErrorPorts
                 entry["mlagSinglePortsCnt"] = mlagSinglePortsCnt
                 entry["mlagDualPortsCnt"] = mlagDualPortsCnt
                 entry["mlagErrorPortsCnt"] = mlagErrorPortsCnt

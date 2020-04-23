@@ -8,12 +8,32 @@
             "type": "string"
         },
         {
-            "name": "mlagInterfacesList",
+            "name": "mlagDualPortsList",
             "type": {
                 "type": "array",
                 "items": {
                     "type": "string",
-                    "name": "mlagInterfaces"
+                    "name": "mlagDualPort"
+                }
+            }
+        },
+        {
+            "name": "mlagSinglePortsList",
+            "type": {
+                "type": "array",
+                "items": {
+                    "type": "string",
+                    "name": "mlagSinglePort"
+                }
+            }
+        },
+        {
+            "name": "mlagErrorPortsList",
+            "type": {
+                "type": "array",
+                "items": {
+                    "type": "string",
+                    "name": "mlagErrorPort"
                 }
             }
         },
@@ -27,7 +47,7 @@
         },
         {
             "name": "backupActive",
-            "type": "string"
+            "type": "boolean"
         },
         {
             "name": "mlagSinglePortsCnt",
@@ -38,6 +58,10 @@
             "name": "role",
             "type": "string",
             "display": 5
+        },
+        {
+            "name": "usesLinkLocal",
+            "type": "boolean"
         },
         {
             "name": "mlagDualPortsCnt",
@@ -65,6 +89,10 @@
         },
         {
             "name": "configSanity",
+            "type": "string"
+        },
+        {
+            "name": "backupReason",
             "type": "string"
         },
         {
