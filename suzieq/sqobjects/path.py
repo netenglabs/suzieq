@@ -250,18 +250,18 @@ class PathObj(basicobj.SqObject):
                 "Specify an analysis engine using set engine " "command"
             )
 
-        namespace = kwargs.get("namespace", self.ctxt.namespace)[0]
+        namespaces = kwargs.get("namespace", self.ctxt.namespace)
+        if not namespaces:
+            raise AttributeError("Must specify namespace to run the trace in")
+
+        namespace = namespaces[0]
         src = kwargs.get("source", None)
         dest = kwargs.get("dest", None)
         dvrf = kwargs.get("vrf", "default")
         if not dvrf:
             dvrf = 'default'
-
         if not src or not dest:
             raise AttributeError("Must specify trace source and dest")
-
-        if not namespace:
-            raise AttributeError("Must specify namespace to run the trace in")
 
         # All exceptions in the initial data gathering will happen in this init
         # After this, at least we know we have the data to work on
