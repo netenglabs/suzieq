@@ -1,6 +1,7 @@
 #!/bin/bash
 # it gathers data with the suzieq poller
 # so you need to be in a python environment that can run suzieq
+# this is run in the cloud-native-data-center-networking/topologies directory
 
 suzieq_dir=/tmp/pycharm_project_304/suzieq/suzieq
 parquet_dir=/home/${USER}/parquet-out
@@ -38,7 +39,7 @@ run_sqpoller () {
     fi
     data=$(echo ${table} | grep 14)
     echo "DATA " ${data}
-    if [ -z "$data" ] ; then
+    if [[ -z "$data" ]] ; then
        echo "Missing hosts " ${table}
        exit 1
     fi
@@ -63,7 +64,7 @@ run_scenario () {
     date 
     time sudo ansible-playbook -b -e "scenario=$scenario" deploy.yml
     echo "DEPLOY RESULTS $?"
-    sleep 15 #on fast machines, not everything is all the way up without sleep
+    sleep 30 #on fast machines, not everything is all the way up without sleep
     sudo ansible-playbook ping.yml
     RESULT_sc=$?
     echo "PING RESULTS $RESULT_sc"
@@ -80,26 +81,27 @@ run_protos () {
     cd ${proto}
     RESULT_sc=99
     while (( ${RESULT_sc} > 0 )) && (( ${tries} > 0 )); do
-        vagrant_down
         vagrant_up
         run_scenario ${topology} ${proto} ${scenario} ${name}
         tries=$(expr ${tries} - 1)
         echo "tries ${tries}"
+        if (( ${RESULT_sc} > 0 )) ; then
+            vagrant_down
+        fi
     done
     if (( ${RESULT_sc} > 0 )) ; then
-        echo "FAILED vagrant or ansible"
-        vagrant_down
+        echo "FAILED vagrant or ansible for ${topology} ${proto} ${scenario}"
         date
-        check_log
+        vagrant_down
         cd ..
-        exit 1
+        return 1
     fi
     run_sqpoller ${topology} ${name}
     if (( ${RESULT_sq} > 0 )) ; then
         echo "FAILED sqpoller"
         vagrant_down
         cd ..
-        exit 1
+        return 1
     fi
     vagrant_down
     cd ..
@@ -128,6 +130,7 @@ del_parquet_dir () {
 create_test_data () {
     del_parquet_dir
     topology='dual-attach'
+
     cd ${topology}
     run_protos ${topology} evpn ospf-ibgp ospf-ibgp
     run_protos ${topology} evpn centralized dual-evpn
@@ -139,6 +142,7 @@ create_test_data () {
     mv ${parquet_dir} ${parquet_dir}-multidc
 
     topology='dual-attach'
+
     cd ${topology}
     run_protos ${topology} bgp numbered dual-bgp
     mv ${parquet_dir} ${parquet_dir}-basic_dual_bgp
@@ -147,9 +151,17 @@ create_test_data () {
 check_all_cndcn () {
    del_parquet_dir
    mkdir ${archive_dir}
-   for topo in dual-attach single-attach
+   for topo in single-attach dual-attach
    do
        cd ${topo}
+       vagrant_down # just to be sure
+       for scenario in centralized distributed ospf-ibgp
+       do
+          name=${topo}_evpn_${scenario}
+          run_protos ${topo} evpn ${scenario} ${name}
+          tar czf ${archive_dir}/parquet_out_${name}.tgz ${parquet_dir}
+          del_parquet_dir
+       done
        for scenario in numbered unnumbered docker
        do
           for proto in bgp ospf
@@ -160,26 +172,25 @@ check_all_cndcn () {
               del_parquet_dir
           done
        done
-       for scenario in centralized distributed ospf-ibgp
-       do
-          name=${topo}_evpn_${scenario}
-          run_protos $topo evpn ${scenario} $name
-          tar czf ${archive_dir}/parquet_out_${name}.tgz ${parquet_dir}
-          del_parquet_dir
-       done
        cd ..
    done
 }
 
 check_log () {
    # grep through log to understand if things worked as expected
-   egrep "SCENARIO|UTC|DATA|RESULT|FAILED|tries|FINISHED" ${log} | grep -v fatal
+   egrep "SCENARIO|UTC|DATA|RESULT|FAILED|tries|FINISHED" ${log} | egrep -v "fatal|DESTROY"
 }
+
+clean_up () {
+    date >> ${log}
+    check_log
+    mv ${log} ${archive_dir}
+}
+
 log=`pwd`/log
 echo ${log}
 date > ${log}
-#create_test_data >> ${log} 2>&1
-check_all_cndcn >> ${log} 2>&1
+create_test_data >> ${log} 2>&1
+#check_all_cndcn >> ${log} 2>&1
 echo "FINISHED" >> ${log}
-date >> ${log}
-check_log
+clean_up
