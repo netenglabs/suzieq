@@ -61,9 +61,9 @@ async def _test_process_services_end_to_end(service, init_services_default, even
     processed = _get_processed_data(service)
 
     # this is the code necessary to write out the data
-    # file = tmp_path / f"{service.name}.yml"
-    # print(f"writing to {file}")
-    # file.write_text(yaml.dump(results))
+    file = tmp_path / f"{service.name}.yml"
+    print(f"writing to {file}")
+    file.write_text(yaml.dump(results))
 
     assert yaml.dump(results) == yaml.dump(processed)
 

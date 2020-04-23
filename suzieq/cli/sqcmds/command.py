@@ -169,7 +169,7 @@ class SqCommand:
     def top(self, **kwargs):
         raise NotImplementedError
 
-    @command("unique", help="find the list of unique items in a colum")
+    @command("unique", help="find the list of unique items in a column")
     @argument("groupby", description="List of columns to group by")
     @argument("type", description="Unique per host or table entry",
               choices=['entry', 'host'])
