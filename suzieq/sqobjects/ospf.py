@@ -15,6 +15,7 @@ class OspfObj(basicobj.SqObject):
                          namespace, columns, context=context, table='ospf')
         self._sort_fields = ['namespace', 'hostname', 'vrf', 'ifname']
         self._cat_fields = []
+        self._addnl_fields = ['passive', 'area', 'state']
 
     def get(self, **kwargs):
 

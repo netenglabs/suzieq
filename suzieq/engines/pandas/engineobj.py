@@ -246,11 +246,7 @@ class SqEngineObject(object):
     def _init_summarize(self, table, **kwargs):
         kwargs.pop('columns', None)
         columns = ['*']
-        if self.ctxt.sort_fields is None:
-            sort_fields = None
-        else:
-            sort_fields = self.sort_fields
-        df = self.get_valid_df(table, sort_fields, columns=columns, **kwargs)
+        df = self.get(columns=columns, **kwargs)
         self.summary_df = df
         if df.empty:
             return df

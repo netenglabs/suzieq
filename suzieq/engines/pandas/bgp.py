@@ -61,7 +61,7 @@ class BgpObj(SqEngineObject):
 
         self._summarize_on_add_field = [
             ('deviceCnt', 'hostname', 'nunique'),
-            ('sessionCnt', 'hostname', 'count'),
+            ('totalPeerCnt', 'hostname', 'count'),
         ]
 
         self._summarize_on_add_list_or_count = [
@@ -70,7 +70,7 @@ class BgpObj(SqEngineObject):
         ]
 
         self._summarize_on_add_with_query = [
-            ('failedSessionsCnt', 'state == "NotEstd"', 'peer')
+            ('failedPeerCnt', 'state == "NotEstd"', 'peer')
         ]
 
         self._gen_summarize_data()

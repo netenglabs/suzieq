@@ -35,6 +35,11 @@ class SqPandasEngine(SqEngine):
         view = kwargs.pop("view")
         sort_fields = kwargs.pop("sort_fields")
         ign_key_fields = kwargs.pop("ign_key", [])
+        addnl_fields = kwargs.pop("addnl_fields", [])
+
+        for f in ['active', 'timestamp']:
+            if f not in addnl_fields:
+                addnl_fields.append(f)
 
         sch = SchemaForTable(table, schema=schemas)
         phy_table = sch.get_phy_table_for_table()
@@ -81,7 +86,7 @@ class SqPandasEngine(SqEngine):
             columns = ["default"]
 
         fields = sch.get_display_fields(columns)
-        for f in ['active', 'timestamp']:
+        for f in addnl_fields:
             if f not in fields:
                 fields.append(f)
 

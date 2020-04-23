@@ -7,75 +7,105 @@ from suzieq.sqobjects.lldp import LldpObj
 from suzieq.engines.pandas.engineobj import SqEngineObject
 
 
-def _choose_table(**kwargs):
-    table = "ospfNbr"
-    if "type" in kwargs:
-        if kwargs.get("type", "interface") == "interface":
-            table = "ospfIf"
-        del kwargs["type"]
-    return table, kwargs
-
-
 class OspfObj(SqEngineObject):
-    def get(self, **kwargs):
+
+    def _get_combined_df(self, **kwargs):
+        """OSPF has info divided across multiple tables. Get a single one"""
 
         if self.ctxt.sort_fields is None:
             sort_fields = None
         else:
             sort_fields = self.sort_fields
 
-        table, kwargs = _choose_table(**kwargs)
+        columns = kwargs.get('columns', ['default'])
+        df = self.get_valid_df('ospfIf', sort_fields,
+                               addnl_fields=self.iobj._addnl_fields, **kwargs)
+        nbr_df = self.get_valid_df('ospfNbr', sort_fields,
+                                   addnl_fields=['state'], **kwargs)
+        if nbr_df.empty:
+            return nbr_df
 
-        df = self.get_valid_df(table, sort_fields, **kwargs)
+        # Merge the two tables
+        df = df.merge(nbr_df, on=['namespace', 'hostname', 'ifname'],
+                      how='left')
+
+        if columns == ['*']:
+            df = df.drop(columns=['area_y', 'instance_y', 'vrf_y',
+                                  'areaStub_y', 'timestamp_y']) \
+                .rename(columns={
+                    'instance_x': 'instance', 'areaStub_x': 'areaStub',
+                    'area_x': 'area', 'vrf_x': 'vrf',
+                    'state_x': 'ifState', 'state_y': 'adjState',
+                    'timestamp_x': 'timestamp'})
+        else:
+            df = df.rename(columns={'vrf_x': 'vrf', 'area_x': 'area',
+                                    'state_x': 'ifState', 'state_y': 'adjState',
+                                    'timestamp_y': 'timestamp'})
+            df = df.drop(list(df.filter(regex='_y$')), axis=1) \
+                   .drop(columns=['timestamp_x']) \
+                .fillna({'peerIP': '-', 'numChanges': 0})
+
+        # Fill the adjState column with passive if passive
+        if 'passive' in df.columns:
+            df.loc[df['adjState'].isnull(), 'adjState'] = df['passive']
+            df.loc[df['adjState'].eq(True), 'adjState'] = 'passive'
+            df.loc[df['adjState'].eq(False), 'adjState'] = 'fail'
+            df.drop(columns=['passive'], inplace=True)
+
+        if 'lastChangeTime' in df.columns:
+            uptime_cols = (df['timestamp'] - pd.to_datetime(df['lastChangeTime'],
+                                                            unit='ms'))
+            uptime_cols = pd.to_timedelta(uptime_cols/1000, unit='s')
+            df['lastChangeTime'] = uptime_cols
+
+        df.bfill(axis=0, inplace=True)
         return df
+
+    def get(self, **kwargs):
+        return self._get_combined_df(**kwargs)
 
     def summarize(self, **kwargs):
         """Describe the data"""
 
-        table, kwargs = _choose_table(**kwargs)
-        self._init_summarize(table, **kwargs)
+        # Discard these
+        kwargs.pop('columns', None)
+
+        self._init_summarize('ospfIf', **kwargs)
         if self.summary_df.empty:
             return self.summary_df
 
-        if table == 'ospfNbr':
-            self._add_field_to_summary('hostname', 'count', 'rows')
-            self._add_field_to_summary('hostname', 'nunique', 'hosts')
-            for field in ['vrf', 'area', 'nbrPrio', 'state', 'peerRouterId']:
-                self._add_list_or_count_to_summary(field)
+        self._summarize_on_add_field = [
+            ('deviceCnt', 'hostname', 'nunique'),
+            ('peerCnt', 'hostname', 'count'),
+        ]
 
-            up_time = self.summary_df.query("state == 'full'") \
-                .groupby(by=["namespace"])["lastChangeTime"]
-            self._add_stats_to_summary(up_time, 'lastChangeTime')
+        self._summarize_on_add_with_query = [
+            ('stubbyPeerCnt', 'areaStub', 'areaStub'),
+            ('passivePeerCnt', 'adjState == "passive"', 'ifname'),
+            ('unnumberedPeerCnt', 'isUnnumbered', 'isUnnumbered'),
+            ('failedPeerCnt', 'adjState == "passive" and nbrCount == 0',
+             'ifname'),
+        ]
 
-            for field in ['numChanges', 'lsaRetxCnt']:
-                field_stat = self.nsgrp[field]
-                self._add_stats_to_summary(field_stat, field)
+        self._summarize_on_add_list_or_count = [
+            ('area', 'area'),
+            ('vrf', 'vrf'),
+            ('helloTime', 'helloTime'),
+            ('deadTime', 'deadTime'),
+            ('retxTime', 'retxTime'),
+            ('networkType', 'networkType'),
+        ]
 
-            # order data.
-            self.summary_row_order = ['hosts', 'rows', 'area', 'vrf', 'state',
-                                      'nbrPrio', 'peerRouterId', 'lastChangeTime',
-                                      'numChanges', 'lsaRetxCnt']
+        self._summarize_on_add_stat = [
+            ('adjChangesStat', '', 'numChanges'),
+            ('upTimeStat', 'adjState == "full"', 'lastChangeTime'),
+        ]
 
-        else:
-            for field in ['helloTime', 'cost', 'deadTime', 'retxTime', 'vrf',
-                          'state', 'areaStub', 'area', 'passive',
-                          'nbrCount', 'networkType', 'isUnnumbered']:
-                self._add_list_or_count_to_summary(field)
-            self._add_field_to_summary('hostname', 'count', 'rows')
-
-            self.summary_row_order = ['rows', 'state', 'nbrCount', 'isUnnumbered',
-                                      'area', 'vrf', 'networkType', 'passive', 'areaStub',
-                                      'cost', 'helloTime', 'deadTime', 'retxTime']
-
-        # TODO
-        # need to do something about loopbacks without address or something
-
+        self._gen_summarize_data()
         self._post_summarize()
         return self.ns_df.convert_dtypes()
 
     def unique(self, **kwargs):
-        table, kwargs = _choose_table(**kwargs)
-        self.iobj._table = table
         return super().unique(**kwargs)
 
     def aver(self, **kwargs):
