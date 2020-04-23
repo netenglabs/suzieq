@@ -178,6 +178,7 @@ class OspfObj(SqEngineObject):
             "isUnnumbered",
             "networkType",
             "area",
+            "timestamp",
         ]
 
         int_df = ospf_df[use_cols].merge(lldp_df,
@@ -253,7 +254,7 @@ class OspfObj(SqEngineObject):
                     "vrf_x": "vrf",
                 },
             )[["namespace", "hostname", "ifname", "vrf", "assert",
-               "assertReason"]].explode(column='assertReason')
+               "assertReason", "timestamp"]].explode(column='assertReason')
             .fillna({'assertReason': '-'})
         )
 

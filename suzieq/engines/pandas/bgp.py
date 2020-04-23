@@ -203,7 +203,7 @@ class BgpObj(SqEngineObject):
         return (df[['namespace', 'hostname_x', 'vrf_x', 'peer_x', 'asn_x',
                     'peerAsn_x', 'state_x', 'peerHostname_x', 'vrf_y', 'peer_y',
                     'asn_y', 'peerAsn_y', 'assert',
-                    'assertReason']]
+                    'assertReason', 'timestamp']]
                 .rename(columns={'hostname_x': 'hostname', 'vrf_x':
                                  'vrf', 'peer_x': 'peer', 'asn_x': 'asn',
                                  'peerAsn_x': 'peerAsn', 'state_x': 'state',
