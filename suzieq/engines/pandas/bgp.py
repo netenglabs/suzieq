@@ -59,16 +59,23 @@ class BgpObj(SqEngineObject):
         if self.summary_df.empty:
             return self.summary_df
 
-        self._add_field_to_summary('hostname', 'nunique', 'hosts')
-        self._add_field_to_summary('hostname', 'count', 'rows')
-        for field in ['asn', 'vrf', 'peerAsn']:
-            self._add_list_or_count_to_summary(field)
+        self._summarize_on_add_field = [
+            ('deviceCnt', 'hostname', 'nunique'),
+            ('sessionCnt', 'hostname', 'count'),
+        ]
 
-        ipv4_enabled = self.summary_df.query("v4Enabled")["namespace"].unique()
-        ipv6_enabled = self.summary_df.query("v6Enabled")["namespace"].unique()
-        evpn_enabled = self.summary_df.query(
-            "evpnEnabled")["namespace"].unique()
+        self._summarize_on_add_list_or_count = [
+            ('uniqueAsnCnt', 'asn'),
+            ('uniqueVrfsCnt', 'vrf')
+        ]
 
+        self._summarize_on_add_with_query = [
+            ('failedSessionsCnt', 'state == "NotEstd"', 'peer')
+        ]
+
+        self._gen_summarize_data()
+
+        # Now come the BGP specific ones
         established = self.summary_df.query("state == 'Established'") \
             .groupby(by=['namespace'])
 
@@ -79,30 +86,32 @@ class BgpObj(SqEngineObject):
         rx_updates = established["updatesRx"]
         tx_updates = established["updatesTx"]
 
-        down_sessions_per_ns = self.summary_df.query("state == 'NotEstd'")['namespace'] \
-            .value_counts()
+        self._add_stats_to_summary(uptime, 'upTimesStat')
+        self._add_stats_to_summary(v4_updates, 'v4PfxRxStat')
+        self._add_stats_to_summary(v6_updates, 'v6PfxRxStat')
+        self._add_stats_to_summary(evpn_updates, 'evpnPfxRxStat')
+        self._add_stats_to_summary(rx_updates, 'updatesRxStat')
+        self._add_stats_to_summary(tx_updates, 'updatesTxStat')
 
-        self._add_stats_to_summary(uptime, 'upTimes')
-        self._add_stats_to_summary(v4_updates, 'v4PfxRx')
-        self._add_stats_to_summary(v6_updates, 'v6PfxRx')
-        self._add_stats_to_summary(evpn_updates, 'evpnPfxRx')
-        self._add_stats_to_summary(rx_updates, 'updatesRx')
-        self._add_stats_to_summary(tx_updates, 'updatesTx')
+        self.summary_row_order.extend(['upTimeStat', 'v4PfxRxStat',
+                                       'v6PfxRxStat', 'evpnPfxRxStat',
+                                       'updatesRxStat', 'updatesTxStat'])
+
+        ipv4_enabled = self.summary_df.query("v4Enabled")["namespace"].unique()
+        ipv6_enabled = self.summary_df.query("v6Enabled")["namespace"].unique()
+        evpn_enabled = self.summary_df.query(
+            "evpnEnabled")["namespace"].unique()
 
         for i in self.ns.keys():
-            self.ns[i].update({'afi-safi': []})
+            self.ns[i].update({'activeAfiSafiList': []})
             if i in ipv4_enabled:
-                self.ns[i]['afi-safi'].append("ipv4")
+                self.ns[i]['activeAfiSafiList'].append("ipv4")
             if i in ipv6_enabled:
-                self.ns[i]['afi-safi'].append("ipv6")
+                self.ns[i]['activeAfiSafiList'].append("ipv6")
             if i in evpn_enabled:
-                self.ns[i]['afi-safi'].append('evpn')
-            self.ns[i].update({'downSessions': down_sessions_per_ns.get(i, 0)})
+                self.ns[i]['activeAfiSafiList'].append('evpn')
 
-        self.summary_row_order = ['hosts', 'rows', 'asn', 'peerAsn', 'vrf',
-                                  'afi-safi', 'upTimes', 'v4PfxRx',
-                                  'v6PfxRx', 'evpnPfxRx', 'updatesRx',
-                                  'updatesTx', 'downSessions']
+        self.summary_row_order.append('activeAfiSafiList')
         self._post_summarize()
         return self.ns_df.convert_dtypes()
 

@@ -24,3 +24,20 @@ class MacsObj(SqEngineObject):
 
         return df
 
+    def summarize(self, **kwargs):
+        """Summarize the MAC table info"""
+
+        self._summarize_on_add_field = [
+            ('deviceCnt', 'hostname', 'nunique'),
+            ('totalMacsinNSCnt', 'hostname', 'count'),
+            ('uniqueMacCnt', 'macaddr', 'nunique'),
+        ]
+
+        self._summarize_on_perhost_stat = [
+            ('uniqueVlanperHostStat', 'vlan != 0 and vlan != ""', 'vlan',
+             'nunique'),
+            ('herPerVtepStat', 'macaddr == "00:00:00:00:00:00"', 'macaddr',
+             'count')
+        ]
+
+        return super().summarize(**kwargs)

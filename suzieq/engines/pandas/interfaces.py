@@ -28,40 +28,39 @@ class InterfacesObj(SqEngineObject):
         if self.summary_df.empty:
             return self.summary_df
 
-        ifs_per_hostns = self.summary_df.groupby(by=["namespace", "hostname"])[
-            "ifname"].count().groupby("namespace")
+        # Loopback interfaces on Linux have "unknown" as state
+        self.summary_df["state"] = self.summary_df['state'] \
+                                       .map({"unknown": "up",
+                                             "up": "up", "down": "down"})
 
-        hosts_l2_per_ns = self.summary_df.query("type == 'vlan' or "
-                                                "type == 'bridge'") \
-            .groupby(by=["namespace"])[
-            "hostname"].nunique()
+        self._summarize_on_add_field = [
+            ('deviceCnt', 'hostname', 'nunique'),
+            ('interfaceCnt', 'ifname', 'count'),
+        ]
 
-        has_vxlan_perns = self.summary_df.query("type == 'vxlan'") \
-            .groupby(by=["namespace"])["hostname"].count()
-        downif_per_ns = self.summary_df.query('state != "up"') \
-            .groupby(by=["namespace"])["ifname"].count()
+        self._summarize_on_add_with_query = [
+            ('hostsWithL2Cnt', 'master == "bridge"', 'hostname'),
+            ('hostsWithVxlanCnt', 'type == "vxlan"', 'hostname'),
+            ('ifDownCnt', 'state != "up"', 'ifname'),
+            ('ifWithMultipleIPCnt', 'ipAddressList.str.len() > 1', 'ifname'),
+        ]
 
-        linkif_transitions = self.summary_df[self.summary_df.type.str.startswith('ether')] \
-            .groupby(by=["namespace"])["numChanges"]
+        self._summarize_on_add_list_or_count = [
+            ('uniqueMTUCnt', 'mtu'),
+            ('uniqueIfTypesCnt', 'type'),
+        ]
 
-        # num  of interfaces that have more than one IP
-        mt1_ip_per_interface = self.summary_df[self.summary_df.apply(
-            lambda x: len(x['ipAddressList']) > 1,
-            axis=1)].groupby(by=['namespace'])['ifname'].count()
-        self._add_field_to_summary('hostname', 'nunique', 'hosts')
-        self._add_field_to_summary('ifname', 'count', 'rows')
-        for field in ['mtu', 'state', 'type']:
-            self._add_list_or_count_to_summary(field)
+        self._summarize_on_add_stat = [
+            ('ifChangesStat', 'type != "bond"', 'numChanges'),
+        ]
 
-        self._add_stats_to_summary(ifs_per_hostns, 'ifPerHost')
-        self._add_stats_to_summary(linkif_transitions, 'ifChanges')
+        self._summarize_on_perhost_stat = [
+            ('ifPerHostStat', '', 'ifname', 'count')
+        ]
 
-        for i in self.ns.keys():
-            self.ns[i].update({'hostsWithL2': hosts_l2_per_ns[i]})
-            self.ns[i].update({'hasVxlan': (has_vxlan_perns[i] > 0)})
-            self.ns[i].update({'downPortCount': downif_per_ns[i]})
-            self.ns[i].update({'mtOneIpPerInterface': mt1_ip_per_interface[i]})
+        self._gen_summarize_data()
 
+        # The rest of the summary generation is too specific to interfaces
         original_summary_df = self.summary_df
         self.summary_df = original_summary_df.explode(
             'ipAddressList').dropna(how='any')
@@ -69,22 +68,25 @@ class InterfacesObj(SqEngineObject):
         if not self.summary_df.empty:
             self.nsgrp = self.summary_df.groupby(by=["namespace"])
             self._add_field_to_summary(
-                'ipAddressList', 'nunique', 'ipV4Addresses')
+                'ipAddressList', 'nunique', 'uniqueIPv4AddrCnt')
+        else:
+            self._add_constant_to_summary('uniqueIPv4AddrCnt', 0)
+        self.summary_row_order.append('uniqueIPv4AddrCnt')
 
-        self.summary_df = original_summary_df.explode(
-            'ip6AddressList').dropna(how='any')
+        self.summary_df = original_summary_df \
+            .explode('ip6AddressList') \
+            .dropna(how='any') \
+            .query('~ip6AddressList.str.startswith("fe80:")')
 
         if not self.summary_df.empty:
             self.nsgrp = self.summary_df.groupby(by=["namespace"])
             self._add_field_to_summary(
-                'ip6AddressList', 'nunique', 'ipV6Addresses')
+                'ip6AddressList', 'nunique', 'uniqueIPv6AddrCnt')
+        else:
+            self._add_constant_to_summary('uniqueIPv6AddrCnt', 0)
+        self.summary_row_order.append('uniqueIPv6AddrCnt')
 
-        self.summary_row_order = ['hosts', 'rows', 'ifPerHost',
-                                  'hostsWithL2', 'hasVxlan', 'mtu', 'type',
-                                  'ipV4Addresses', 'ipV6Addresses', 'mtOneIpPerInterface',
-                                  'downPortCount', 'state', 'ifChanges']
-
-        self._post_summarize()
+        self._post_summarize(check_empty_col='interfaceCnt')
         return self.ns_df.convert_dtypes()
 
     def _assert_mtu_value(self, **kwargs) -> pd.DataFrame:

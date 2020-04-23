@@ -28,32 +28,45 @@ class RoutesObj(SqEngineObject):
         self.summary_df = self.summary_df[(
             self.summary_df.prefix != '127.0.0.0/8')].reindex()
 
-        if 'prefix' in self.summary_df.columns:
-            self.summary_df['prefix'].replace(
-                'default', '0.0.0.0/0', inplace=True)
-            self.summary_df = self.summary_df.reindex()
-            self.summary_df['prefix'] = self.summary_df['prefix'] \
-                                            .astype('ipnetwork')
+        self.summary_df['prefix'].replace(
+            'default', '0.0.0.0/0', inplace=True)
+        self.summary_df = self.summary_df.reindex()
+        self.summary_df['prefix'] = self.summary_df['prefix'] \
+                                        .astype('ipnetwork')
 
         # have to redo nsgrp because we did extra filtering above
+        self.ns = {i: {} for i in self.summary_df['namespace'].unique()}
         self.nsgrp = self.summary_df.groupby(by=["namespace"])
-        self.ns = {i: {} for i in self.nsgrp.groups.keys()}
 
-        rh_per_hns = self.summary_df.groupby(by=["namespace", "hostname"])[
-            "prefix"].count()
-        rh_per_ns = rh_per_hns.groupby("namespace")
-        self._add_stats_to_summary(rh_per_ns, 'routesperHost')
+        self._summarize_on_add_field = [
+            ('deviceCnt', 'hostname', 'nunique'),
+            ('totalRoutesinNS', 'prefix', 'count'),
+            ('uniquePrefixCnt', 'prefix', 'nunique'),
+            ('uniqueVrfsCnt', 'vrf', 'nunique'),
+        ]
 
+        self._summarize_on_perhost_stat = [
+            ('routesPerHostStat', '', 'prefix', 'count')
+        ]
+
+        self._summarize_on_add_with_query = [
+            ('ifRoutesCnt',
+             'prefix.ipnet.prefixlen == 30 or prefix.ipnet.prefixlen == 31',
+             'prefix'),
+            ('hostRoutesCnt', 'prefix.ipnet.prefixlen == 32', 'prefix'),
+        ]
+
+        self._summarize_on_add_list_or_count = [
+            ('routingProtocolCnt', 'protocol')
+        ]
+
+        self._gen_summarize_data()
+
+        # Now for the stuff that is specific to routes
         routes_per_vrfns = self.summary_df.groupby(by=["namespace", "vrf"])[
             "prefix"].count().groupby("namespace")
-        self._add_stats_to_summary(routes_per_vrfns, 'routesperVrf')
-
-        hr_per_ns = self.summary_df.query("prefix.ipnet.prefixlen == 32") \
-                                   .groupby(by=['namespace'])['prefix'].count()
-
-        ifr_per_ns = self.summary_df.query("prefix.ipnet.prefixlen == 30 or "
-                                           "prefix.ipnet.prefixlen == 31") \
-            .groupby(by=['namespace'])['prefix'].count()
+        self._add_stats_to_summary(routes_per_vrfns, 'routesperVrfStat')
+        self.summary_row_order.append('routesperVrf')
 
         hosts_with_defrt_per_vrfns = self.summary_df \
                                          .query("prefix.ipnet.is_default") \
@@ -62,24 +75,11 @@ class RoutesObj(SqEngineObject):
         hosts_per_vrfns = self.summary_df.groupby(by=["namespace", "vrf"])[
             "hostname"].nunique()
 
-        {self.ns[i[0]].update({"hostsNoDefRoute":
-                               hosts_with_defrt_per_vrfns[i] == hosts_per_vrfns[i]})
-         for i in hosts_with_defrt_per_vrfns.keys()}
-
-        for field in ['hostname', 'vrf']:
-            self._add_field_to_summary(field, 'nunique')
-
-        self._add_field_to_summary('prefix', 'count', 'rows')
-        self._add_field_to_summary('prefix', 'nunique', 'uniqueRoutes')
-
-        self._add_list_or_count_to_summary('protocol')
-        for ns in self.ns:
-            self.ns[ns].update({'interfaceRoutes': ifr_per_ns[ns]})
-            self.ns[ns].update({'hostRoutes': hr_per_ns[ns]})
-
-        self.summary_row_order = ['hostname', 'vrf', 'rows', 'uniqueRoutes',
-                                  'routesperHost', 'routesperVrf', 'hostRoutes',
-                                  'interfaceRoutes', 'protocol', 'hostsNoDefRoute']
+        {self.ns[i[0]].update({
+            "hostsWithNoDefRoute":
+            hosts_with_defrt_per_vrfns[i] == hosts_per_vrfns[i]})
+         for i in hosts_with_defrt_per_vrfns.keys() if i[0] in self.ns.keys()}
+        self.summary_row_order.append('hostsWithNoDefRoute')
 
         self._post_summarize()
         return self.ns_df.convert_dtypes()
