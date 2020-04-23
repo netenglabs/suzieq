@@ -15,7 +15,7 @@ from nubia import context
 
 from tests.conftest import commands, suzieq_cli_path
 
-basic_verbs = ['show']
+basic_verbs = ['show', 'summarize']
 
 
 # TODO
@@ -23,20 +23,20 @@ basic_verbs = ['show']
 #  specific data?
 @pytest.mark.slow
 @pytest.mark.parametrize("command, verbs, args", [
-    ('AddressCmd', basic_verbs, [None]),
-    ('EvpnVniCmd', basic_verbs, [None]),
+    ('AddressCmd', basic_verbs, [None, None]),
+    ('EvpnVniCmd', basic_verbs + ['aver'], [None, None, None]),
     ('InterfaceCmd', basic_verbs + ['top', 'aver'],
      [None, None, None]),
     ('LldpCmd', basic_verbs, [None, None]),
     ('MacCmd', basic_verbs, [None, None]),
     ('MlagCmd', basic_verbs, [None, None, None]),
-    ('OspfCmd', basic_verbs + ['top', 'aver'], [None, None, None]),
+    ('OspfCmd', basic_verbs + ['top', 'aver'], [None, None, None, None]),
     ('RouteCmd', basic_verbs + ['lpm'],
-     [None, {'address': '10.0.0.1'}]),
-    ('TableCmd', basic_verbs + ['describe'], [None, {'table': 'device'}]),
+     [None, None, {'address': '10.0.0.1'}]),
+    ('TableCmd', ['show', 'describe'], [None, {'table': 'device'}]),
 #    ('TopcpuCmd', basic_verbs, [None, None]),
 #    ('TopmemCmd', basic_verbs, [None, None]),
-    ('VlanCmd', basic_verbs, [None])
+    ('VlanCmd', basic_verbs, [None, None])
 ])
 def test_commands(setup_nubia, command, verbs, args):
     """ runs through all of the commands for each of the sqcmds

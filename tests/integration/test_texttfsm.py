@@ -70,9 +70,9 @@ def test_texttfsm(template_name, tmp_path):
     assert created_records
 
     # this is the code necessary to write out the data
-    # file = tmp_path / f"{template_name}.yml"
-    # print(f"writing to {file}")
-    # file.write_text(yaml.dump(created_records))
+    file = tmp_path / f"{template_name}.yml"
+    print(f"writing to {file}")
+    file.write_text(yaml.dump(created_records))
 
     processed_records = _get_processed_data(template_name)
     assert processed_records == created_records

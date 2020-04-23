@@ -45,12 +45,7 @@ def _get_test_data():
             out = yaml.load(f.read(), Loader=yaml.BaseLoader)
             if 'input' in out:
                 for dt in out['input']:
-                    if service == 'ospfnbr' and dt == 'eos':
-                        tests.append(pytest.param(service, dt,
-                                                  marks=pytest.mark.xfail(reason='bug #69',
-                                                                          raises=AttributeError)))
-                    else:
-                        tests.append([service, dt])
+                    tests.append([service, dt])
     return tests
 
 

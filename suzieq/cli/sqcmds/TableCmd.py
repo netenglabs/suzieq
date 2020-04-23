@@ -59,7 +59,7 @@ class TableCmd(SqCommand):
             return self._gen_output(df)
 
         now = time.time()
-        df = self.sqobj.summarize(table=table)
+        df = self.sqobj.describe(table=table)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
 
         return self._gen_output(df, dont_strip_cols=True)
@@ -67,6 +67,13 @@ class TableCmd(SqCommand):
     @command("summarize", help="Summarize info about this resource")
     def summarize(self, **kwargs):
 
-        msg = 'ERROR: Not supported for this object'
+        msg = 'ERROR: Summarize not supported for this object'
+        df = pd.DataFrame({'error': [msg]})
+        return self._gen_output(df, dont_strip_cols=True)
+
+    @command("unique", help="find the list of unique items in a column")
+    def unique(self, **kwargs):
+
+        msg = 'ERROR: Unique not supported for this object'
         df = pd.DataFrame({'error': [msg]})
         return self._gen_output(df, dont_strip_cols=True)
