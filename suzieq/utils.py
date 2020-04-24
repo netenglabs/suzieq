@@ -99,6 +99,8 @@ class Schema(object):
 
         for root, _, files in os.walk(schema_dir):
             for topic in files:
+                if not topic.endswith(".avsc"):
+                    continue
                 with open(root + "/" + topic, "r") as f:
                     data = json.loads(f.read())
                     table = data["name"]
