@@ -1,5 +1,6 @@
 import time
-
+import pytz
+import datetime
 import pandas as pd
 from nubia import command, argument, context
 
@@ -22,7 +23,7 @@ from nubia import command, argument, context
 @argument(
     "view",
     description="view all records or just the latest",
-    choices=["all", "changes", "latest"],
+    choices=["all", "latest"],
 )
 @argument("columns", description="Space separated list of columns, * for all")
 @argument(
@@ -78,7 +79,10 @@ class SqCommand:
         else:
             self.end_time = end_time
 
-        self.view = view
+        if self.start_time and self.end_time:
+            self.view = "all"
+        else:
+            self.view = view
         self.columns = columns.split()
         self.format = format or "text"
         self.json_print_handler = None
