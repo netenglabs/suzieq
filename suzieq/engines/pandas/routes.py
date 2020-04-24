@@ -17,22 +17,10 @@ class RoutesObj(SqEngineObject):
         return df
 
     def summarize(self, **kwargs):
-        if not self.iobj._table:
-            raise NotImplementedError
 
         self._init_summarize(self.iobj._table, **kwargs)
         if self.summary_df.empty:
             return self.summary_df
-
-        self.summary_df['prefix'].replace(
-            'default', '0.0.0.0/0', inplace=True)
-        self.summary_df = self.summary_df.reindex()
-        self.summary_df['prefix'] = self.summary_df['prefix'] \
-                                        .astype('ipnetwork')
-
-        # have to redo nsgrp because we did extra filtering above
-        self.ns = {i: {} for i in self.summary_df['namespace'].unique()}
-        self.nsgrp = self.summary_df.groupby(by=["namespace"])
 
         self._summarize_on_add_field = [
             ('deviceCnt', 'hostname', 'nunique'),
@@ -62,7 +50,7 @@ class RoutesObj(SqEngineObject):
         routes_per_vrfns = self.summary_df.groupby(by=["namespace", "vrf"])[
             "prefix"].count().groupby("namespace")
         self._add_stats_to_summary(routes_per_vrfns, 'routesperVrfStat')
-        self.summary_row_order.append('routesperVrf')
+        self.summary_row_order.append('routesperVrfStat')
 
         hosts_with_defrt_per_vrfns = self.summary_df \
                                          .query("prefix.ipnet.is_default") \
