@@ -1,10 +1,10 @@
 suzieq is an open source project.
 
-#Contributing
+# Contributing
 When making a change to suzieq, first start by adding an issue to discuss the work. 
 
 After discussion, make sure that changes pass all test. We also ask that you add tests to new code.
-#Filing Bugs
+# Filing Bugs
 Please include as much useful information as possible.
 
 # License
