@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/netenglabs/suzieq.svg?branch=master)](https://travis-ci.org/netenglabs/suzieq)
+
 <!-- vscode-markdown-toc -->
 * 1. [Analysis](#analysis)
     * 1.1. [BGP Analysis Demo](#bgp-analysis-demo)
