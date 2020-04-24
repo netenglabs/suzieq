@@ -51,7 +51,10 @@ class TablesObj(basicobj.SqObject):
         """Describes the fields for a given table"""
 
         table = kwargs.get('table', '')
-        sch = SchemaForTable(table, self.schemas)
+        try:
+            sch = SchemaForTable(table, self.schemas)
+        except ValueError:
+            sch = None
         if not sch:
             df = pd.DataFrame(
                 {'error': [f'ERROR: incorrect table name {table}']})
