@@ -24,10 +24,6 @@ class RoutesObj(SqEngineObject):
         if self.summary_df.empty:
             return self.summary_df
 
-        # Filter out local loopback IP
-        self.summary_df = self.summary_df[(
-            self.summary_df.prefix != '127.0.0.0/8')].reindex()
-
         self.summary_df['prefix'].replace(
             'default', '0.0.0.0/0', inplace=True)
         self.summary_df = self.summary_df.reindex()
