@@ -129,7 +129,10 @@ very end is a message if the Assert passed or Assert failed.
 
 ## Path Demo
 One of the nice things that we can do with Suzieq is show all the different paths
-between two endpoints. 
+between two endpoints.
+```
+path show src='172.16.1.101' dest='172.16.4.104' namespace=dual-bgp
+``` 
 ![Suzieq_path_show](docs/images/suzieq-path-show.png) This is a little tricky 
 to understand. In this example, there are eight different paths, represented
 by their pathid. For each pathid, we then show each hop. As you can see,
@@ -141,13 +144,20 @@ underlays + overlays are tricky.
 One quirk of the libraries that Suzieq uses is that IP addresses
 must be put in quotes or they won't work.
 
+You can also get a summary of the path between two IP addresses:
+
+```
+path summarize src='172.16.1.101' dest='172.16.4.104' namespace=dual-bgp
+```
+![Suzieq_path_summarize](docs/images/suzieq-path-summarize.png)
+
 ## Route Demo
 
 A quick peak at routes, shows that there are 239 routes throughout the network.
 ![Suzieq route show](docs/images/suzieq-routes-show.png)
 
 We'd like to see the number of routes per device. That and other things can be understood
-from the summarize command. We can see that there are only 38 unique routes in the network.
+from the summarize command. We can see that there are only 39 unique routes in the network.
 ![Suzieq_route_summarize](docs/images/suzieq-route-summarize.png)
 
 ## LPM Demo
