@@ -56,15 +56,13 @@ def init_logger():
     )
     fh.setFormatter(formatter)
 
-    logger.addHandler(fh)
-    logger.warning(f"log level {logging.getLevelName(logger.level)}")
-
     # set root logger level, so that we set asyncssh log level
     #  asynchssh sets it's level to the root level
     root = logging.getLogger()
     root.setLevel(cfg.get("logging-level", "WARNING").upper())
     root.addHandler(fh)
 
+    logger.warning(f"log level {logging.getLevelName(logger.level)}")
 
     return logger
 
