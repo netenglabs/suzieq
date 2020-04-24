@@ -210,18 +210,20 @@ class SqPandasEngine(SqEngine):
         timeset = []
         if start_tm and not end_tm:
             timeset = pd.date_range(
-                pd.to_datetime(start_tm, infer_datetime_format=True),
+                start=pd.to_datetime(start_tm, infer_datetime_format=True),
                 periods=2,
                 freq="15min",
             )
             filters = [[("timestamp", ">=", timeset[0].timestamp() * 1000)]]
         elif end_tm and not start_tm:
             timeset = pd.date_range(
-                pd.to_datetime(end_tm, infer_datetime_format=True),
+                end=pd.to_datetime(
+                    end_tm, infer_datetime_format=True),
                 periods=2,
                 freq="15min",
             )
-            filters = [[("timestamp", "<=", timeset[-1].timestamp() * 1000)]]
+            filters = [
+                [("timestamp", "<=", timeset[-1].timestamp() * 1000)]]
         elif start_tm and end_tm:
             timeset = [
                 pd.to_datetime(start_tm, infer_datetime_format=True),
