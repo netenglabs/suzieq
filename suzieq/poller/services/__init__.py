@@ -110,6 +110,10 @@ async def init_services(svc_dir, schema_dir, queue, run_once):
                         f"No matching schema for {svc_def['service']}")
                     continue
 
+                if schema == "derivedRecord":
+                    # These are not real services and so ignore them
+                    continue
+
                 # Valid service definition, add it to list
                 if svc_def["service"] in svc_classes:
                     service = svc_classes[svc_def["service"]](
