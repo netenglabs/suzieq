@@ -1,4 +1,37 @@
+<!-- vscode-markdown-toc -->
+* 1. [Analysis](#analysis)
+    * 1.1. [BGP Analysis Demo](#bgp-analysis-demo)
+    * 1.2. [Path Demo](#path-demo)
+    * 1.3. [Route Demo](#route-demo)
+    * 1.4. [LPM Demo](#lpm-demo)
+    * 1.5. [Investigate Suzieq Tables](#investigate-suzieq-tables)
+    * 1.6. [Using Suzieq on the command line](#using-suzieq-on-the-command-line)
+    * 1.7. [Filtering](#filtering)
+    * 1.8. [Context Filtering](#context-filtering)
+    * 1.9. [How time works in Suzieq](#how-time-works-in-suzieq)
+* 2. [Gathering Data](#gathering-data)
+    * 2.1. [Docker](#docker)
+        * 2.1.1. [sq-poller](#sq-poller)
+        * 2.1.2. [suzieq-cli](#suzieq-cli)
+    * 2.2. [Installation with Pipenv](#installation-with-pipenv)
+* 3. [Database and Data Persistence](#database-and-data-persistence)
+* 4. [How to develop with Suzieq](#how-to-develop-with-suzieq)
+* 5. [Faq](#faq)
+* 6. [Asserts](#asserts)
+    * 6.1. [BGP Assert](#bgp-assert)
+    * 6.2. [EvpnVni Assert](#evpnvni-assert)
+    * 6.3. [Interface Assert](#interface-assert)
+    * 6.4. [OSPF Assert](#ospf-assert)
+* 7. [Summarize](#summarize)
+    * 7.1. [TODO](#todo)
+
+<!-- vscode-markdown-toc-config
+	numbering=true
+	autoSave=true
+	/vscode-markdown-toc-config -->
+<!-- /vscode-markdown-toc -->
 # Suzieq
+
 Suzieq is an application focused on observability for IP networks: We want you to understand 
 your network as a system. Suzieq gathers data and then allows analysis of the data in interesting ways.
 
@@ -33,7 +66,9 @@ We are just getting started with Suzieq. We believe that this is a great platfor
 network. And we've written applications to demonstrate what is possible. Let us know your ideas on how to make things 
 better.
 
-# Analysis
+
+
+##  1. <a name='analysis'></a>Analysis
 Let's jump into what you can do with Suzieq now.
 ```
 python3 suzieq/cli/suzieq-cli
@@ -69,7 +104,7 @@ Each command has completion to help you understand what you can do with the comm
 For instance, interface command shows that it has five verbs that you can use with it.
 ![Suzieq interface show help](docs/images/suzieq-interface-show-help.png)
 
-## BGP Analysis Demo
+###  1.1. <a name='bgp-analysis-demo'></a>BGP Analysis Demo
 
 Let's look at BGP data. We'll use this to demonstrate some of the things you can do with Suzieq.
 
@@ -127,7 +162,7 @@ pass or fail for each row, and if there is a fail, there is a list of reasons th
 very end is a message if the Assert passed or Assert failed. 
 
 
-## Path Demo
+###  1.2. <a name='path-demo'></a>Path Demo
 One of the nice things that we can do with Suzieq is show all the different paths
 between two endpoints.
 ```
@@ -151,7 +186,7 @@ path summarize src='172.16.1.101' dest='172.16.4.104' namespace=dual-bgp
 ```
 ![Suzieq_path_summarize](docs/images/suzieq-path-summarize.png)
 
-## Route Demo
+###  1.3. <a name='route-demo'></a>Route Demo
 
 A quick peak at routes, shows that there are 239 routes throughout the network.
 ![Suzieq route show](docs/images/suzieq-routes-show.png)
@@ -160,11 +195,11 @@ We'd like to see the number of routes per device. That and other things can be u
 from the summarize command. We can see that there are only 39 unique routes in the network.
 ![Suzieq_route_summarize](docs/images/suzieq-route-summarize.png)
 
-## LPM Demo
+###  1.4. <a name='lpm-demo'></a>LPM Demo
 Another nice attribute of Suzieq is that you can do an LPM match and see the results from each device.
 ![Suzieq_route_lpm](docs/images/suzieq-route-lpm.png)
 
-## Investigate Suzieq Tables
+###  1.5. <a name='investigate-suzieq-tables'></a>Investigate Suzieq Tables
 
 If you want to look at the database more directly, use the table command. There is not always
 a single connection between tables in the database and commands that are available. Also, we are 
@@ -190,7 +225,7 @@ For instance, with BGP we collect a lot more data than we show by default.
 You can always display more columns by adding the columns filter at the end of a show command.
 You can use 'columns=*' to get all the columns available for a command, but for bgp that is a lot!
 
-## Using Suzieq on the command line
+###  1.6. <a name='using-suzieq-on-the-command-line'></a>Using Suzieq on the command line
 You can directly call a Suzieq command such as
 ```
 bgp summarize
@@ -203,7 +238,7 @@ run an assert and it fails, you will get an exit code other than 0 (usually 255.
 ![Suzie_bgp_assert_command_line](docs/images/suzieq-bgp-assert-command-line.png)
 
 
-## Filtering
+###  1.7. <a name='filtering'></a>Filtering
 As shown above, the Suzieq cli works by commands (also called services), verbs, and filters. 
 Some of the filters we've seen so far are columns and namespace. Different commands and verbs
 have different filters. 
@@ -228,7 +263,7 @@ This is most useful at the command line to then read in the data
 from suzieq.
 
 
-## Context Filtering
+###  1.8. <a name='context-filtering'></a>Context Filtering
 In the CLI you can set a specific context for filtering all the 
 commands that you use. For instance, if you want to set a filter 
 for the namespace that you will be investigating then you type
@@ -237,7 +272,7 @@ set namespace=dual-bgp
 ```
 you can add or remove context filters as necessary.
 
-## How time works in Suzieq
+###  1.9. <a name='how-time-works-in-suzieq'></a>How time works in Suzieq
 By default when you use the CLI and you use a command, you will be using 'view=latest'. This is usually
 the most useful and what you expect to see. If you want to see all your data, add 'view=all'. You can also select 
 specific start and end times that you are interested.
@@ -245,7 +280,7 @@ specific start and end times that you are interested.
 As Suzieq progresses, we expect to take more advantage of having data over time, including focusing on 
 things that changed during a time interval
 
-# Gathering Data
+##  2. <a name='gathering-data'></a>Gathering Data
 Two really important concepts in Suzieq are Nodes and Services. Nodes are devices of some kind;
 they are the object being monitored. Services are the data that is collected and consumed by Suzieq. 
 Service definitions describe how to get output from devices and then how to turn that into useful data.
@@ -264,7 +299,7 @@ Suzieq does have support for agents to push data and we've done some experiments
 have production versions of that code. 
 # Running Suzieq
 
-## Docker
+###  2.1. <a name='docker'></a>Docker
 the easiest way to use Suzieq is with a docker image.
 
 * Download docker image. This same image can be used for the the poller
@@ -272,7 +307,7 @@ and the cli. When you attach to the container, it will give
 you a bash prompt. 
 
 
-### sq-poller
+####  2.1.1. <a name='sq-poller'></a>sq-poller
 1. run a docker container for the poller. You need a an external directory
 for the database and another directory for the config; that is what the -v
 options are doing. 
@@ -312,13 +347,13 @@ inventory and produce the right format:
      
     at the shell prompt 'sq-poller -D /suzieq/devices/dual-bgp '
 
-### suzieq-cli
+####  2.1.2. <a name='suzieq-cli'></a>suzieq-cli
 1.  run a docker container for the cli:
     ```bash
     docker run -it -v /home/jpiet/parquet-out:/suzieq/parquet --name suzieq-cli suzieq:0.1
     ```
   1.   at the shell prompt 'suzieq-cli'
-## Installation with Pipenv
+###  2.2. <a name='installation-with-pipenv'></a>Installation with Pipenv
 The complicated non-docker way to install Suzieq is to get the code from github
 1. git clone: `git clone git@github.com:ddutt/suzieq.git`
 2. Suzieq assumes the use of python3.7 which may not be installed on your computer by default. 
@@ -351,7 +386,7 @@ logging-level: WARNING
 
 `python3 suzieq/poller/sq-poller.py -D ~/dual-bgp`
 
-# Database and Data Persistence
+##  3. <a name='database-and-data-persistence'></a>Database and Data Persistence
 Because everything in Suzieq revolves around dataframes, it can support different persistence engines underneath. 
 For right now, we only support our own, which is built on [Parquet](https://parquet.apache.org/) files. 
 This is setup should be fast enough
@@ -363,12 +398,12 @@ One of the advantages is that the data are just files that can easily be passed 
 that must be running before you query the data. 
 
 
-# How to develop with Suzieq
+##  4. <a name='how-to-develop-with-suzieq'></a>How to develop with Suzieq
 
-# Faq
+##  5. <a name='faq'></a>Faq
 TBD
 
-# Asserts
+##  6. <a name='asserts'></a>Asserts
 As demonstrated above in the README, Suzieq has a powerful concept called Asserts. In an assert for a service
 some number of checks are made to ensure that the network is setup correctly. For each service that has an assert
 you get an output that shows all the data necessary for the checks, a pass/fail column and 
@@ -378,7 +413,7 @@ Also, as mentioned before, if you run an assert from your
 shell and check the return code, a failure of the assert will
 be a non-zero value, usually 255.
 
-## BGP Assert
+###  6.1. <a name='bgp-assert'></a>BGP Assert
 As shown above in the README
 ![Suzieq_bgp_assert](docs/images/suzieq-bgp-assert.png)
 
@@ -389,7 +424,7 @@ The checks that are run in the BGP assert are:
 * not established --  it gets the error that the device reported 
 in the notifcnReason
 
-## EvpnVni Assert
+###  6.2. <a name='evpnvni-assert'></a>EvpnVni Assert
 ![Suzieq_evpnvni_assert](docs/images/suzieq-evpnVni-assert.png)
 
 The checks in EvpnVni Assert are:
@@ -399,13 +434,13 @@ The checks in EvpnVni Assert are:
 * a VTEP is reachable via default
 * HER is missing VTEPs
 
-## Interface Assert
+###  6.3. <a name='interface-assert'></a>Interface Assert
 ![Suzieq_interface_assert](docs/images/suzieq-interface-assert.png)
 
 The checks in Interface Assert are:
 * mtu match on both sides of a connection
 
-## OSPF Assert
+###  6.4. <a name='ospf-assert'></a>OSPF Assert
 ![Suzieq_ospf_assert](docs/images/suzieq-ospf-assert.png)
 
 The cheks in OSPF Assert are:
@@ -418,8 +453,8 @@ The cheks in OSPF Assert are:
 * passive config mismatch
 * vrf mismatch
 
-# Summarize
-## TODO
+##  7. <a name='summarize'></a>Summarize
+###  7.1. <a name='todo'></a>TODO
 
 
 
