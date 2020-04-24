@@ -22,6 +22,7 @@ from suzieq.poller.genhosts import process_ansible_inventory
 
 logger = logging.getLogger(__name__)
 
+
 def get_hostsdata_from_hostsfile(hosts_file) -> dict:
     """Read the suzieq devices file and return the data from the file"""
 
@@ -651,6 +652,8 @@ class EosNode(Node):
             for cmd in cmd_list:
                 result.append(self._create_error(cmd))
             self._status = "init"  # Recheck everything
+            self.logger.error("ERROR: (REST) Unable to communicate with node "
+                              "{} due to {}".format(self.address, str(e)))
 
         await service_callback(result, cb_token)
 
@@ -716,6 +719,8 @@ class CumulusNode(Node):
         except Exception as e:
             self.last_exception = e
             result.append(self._create_error(cmd))
+            self.logger.error("ERROR: (REST) Unable to communicate with node "
+                              "{} due to {}".format(self.address, str(e)))
 
         await service_callback(result, cb_token)
 
