@@ -137,6 +137,7 @@ class EvpnvniObj(SqEngineObject):
                      hostname=row['hostname'], address=vtep)
             if rdf.empty:
                 reason += [f"{vtep} not reachable"]
+                continue
             if rdf.prefix[0] == defrt:
                 reason += [f"{vtep} reachable via default"]
 
