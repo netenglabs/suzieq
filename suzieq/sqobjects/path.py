@@ -231,10 +231,12 @@ class PathObj(basicobj.SqObject):
                 if df.empty:
                     continue
 
-                df.apply(lambda x: nexthops.append((iface, x['hostname'],
-                                                    x['ifname'],  overlay))
+                breakpoint()
+                df.apply(lambda x, nexthops:
+                         nexthops.append((iface, x['hostname'],
+                                          x['ifname'],  overlay))
                          if (x['namespace'] in self.namespace) else None,
-                         args=nexthops, axis=1)
+                         args=(nexthops,), axis=1)
 
         return nexthops
 
