@@ -87,19 +87,20 @@ tests:
 - command: evpnVni summarize --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: evpnVni summarize
-  output: '[{"dual-evpn": 6, "ospf-ibgp": 6}, {"dual-evpn": {"24": 6, "13": 6, "104001":
-    6}, "ospf-ibgp": {"104001": 6, "24": 4, "13": 4}}, {"dual-evpn": {"L2": 12, "L3":
-    6}, "ospf-ibgp": {"L2": 8, "L3": 6}}, {"dual-evpn": {"default": 8, "evpn-vrf":
-    6, "n/a": 4}, "ospf-ibgp": {"evpn-vrf": 14}}, {"dual-evpn": [0, 9, 9], "ospf-ibgp":
-    [0, 4, 4]}, {"dual-evpn": [0, 9, 8], "ospf-ibgp": [0, 6, 6]}, {"dual-evpn": [6,
-    6, 6.0], "ospf-ibgp": [0, 2, 2.0]}]'
+  output: '{"dual-evpn": {"deviceCnt": 6, "uniqueVniCnt": {"24": 6, "13": 6, "104001":
+    6}, "UniqueVniTypeCnt": {"L2": 12, "L3": 6}, "uniqueVrfCnt": {"default": 8, "evpn-vrf":
+    6, "n/a": 4}, "macsInVniStat": [0, 9, 9], "arpNdInVniStat": [0, 9, 8], "herPerVtepStat":
+    [6, 6, 6.0]}, "ospf-ibgp": {"deviceCnt": 6, "uniqueVniCnt": {"104001": 6, "24":
+    4, "13": 4}, "UniqueVniTypeCnt": {"L2": 8, "L3": 6}, "uniqueVrfCnt": {"evpn-vrf":
+    14}, "macsInVniStat": [0, 4, 4], "arpNdInVniStat": [0, 6, 6], "herPerVtepStat":
+    [0, 2, 2.0]}}'
 - command: evpnVni summarize --namespace=dual-evpn --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: evpnVni summarize
-  output: '[{"dual-evpn": 6}, {"dual-evpn": {"24": 6, "13": 6, "104001": 6}}, {"dual-evpn":
-    {"L2": 12, "L3": 6}}, {"dual-evpn": {"default": 8, "evpn-vrf": 6, "n/a": 4}},
-    {"dual-evpn": [0.0, 9.0, 9.0]}, {"dual-evpn": [0.0, 9.0, 8.0]}, {"dual-evpn":
-    [6, 6, 6.0]}]'
+  output: '{"dual-evpn": {"deviceCnt": 6, "uniqueVniCnt": {"24": 6, "13": 6, "104001":
+    6}, "UniqueVniTypeCnt": {"L2": 12, "L3": 6}, "uniqueVrfCnt": {"default": 8, "evpn-vrf":
+    6, "n/a": 4}, "macsInVniStat": [0.0, 9.0, 9.0], "arpNdInVniStat": [0.0, 9.0, 8.0],
+    "herPerVtepStat": [6, 6, 6.0]}}'
 - command: evpnVni unique --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: evpnVni unique

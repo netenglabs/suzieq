@@ -39,16 +39,18 @@ tests:
 - command: mlag summarize --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: mlag summarize
-  output: '[{"dual-evpn": 4, "ospf-ibgp": 4}, {"dual-evpn": 1, "ospf-ibgp": 2}, {"dual-evpn":
-    0, "ospf-ibgp": 0}, {"dual-evpn": 4, "ospf-ibgp": 4}, {"dual-evpn": [4, 4, 4],
-    "ospf-ibgp": [5, 5, 5]}, {"dual-evpn": [0, 0, 0], "ospf-ibgp": [0, 0, 0]}, {"dual-evpn":
-    [0, 0, 0], "ospf-ibgp": [0, 0, 0]}]'
+  output: '{"dual-evpn": {"deviceCnt": 4, "uniqueSystemIdCnt": 1, "hostsWithfailedStateCnt":
+    0, "hostsWithBackupInactiveCnt": 4, "mlagNumDualPortsStat": [4, 4, 4], "mlagNumSinglePortStat":
+    [0, 0, 0], "mlagNumErrorPortStat": [0, 0, 0]}, "ospf-ibgp": {"deviceCnt": 4, "uniqueSystemIdCnt":
+    2, "hostsWithfailedStateCnt": 0, "hostsWithBackupInactiveCnt": 4, "mlagNumDualPortsStat":
+    [5, 5, 5], "mlagNumSinglePortStat": [0, 0, 0], "mlagNumErrorPortStat": [0, 0,
+    0]}}'
 - command: mlag summarize --namespace=dual-evpn --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: mlag summarize
-  output: '[{"dual-evpn": 4}, {"dual-evpn": 1}, {"dual-evpn": 0}, {"dual-evpn": 4},
-    {"dual-evpn": [4.0, 4.0, 4.0]}, {"dual-evpn": [0.0, 0.0, 0.0]}, {"dual-evpn":
-    [0.0, 0.0, 0.0]}]'
+  output: '{"dual-evpn": {"deviceCnt": 4, "uniqueSystemIdCnt": 1, "hostsWithfailedStateCnt":
+    0, "hostsWithBackupInactiveCnt": 4, "mlagNumDualPortsStat": [4.0, 4.0, 4.0], "mlagNumSinglePortStat":
+    [0.0, 0.0, 0.0], "mlagNumErrorPortStat": [0.0, 0.0, 0.0]}}'
 - command: mlag unique --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: mlag unique
