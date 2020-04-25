@@ -681,19 +681,20 @@ tests:
 - command: address summarize --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: address summarize
-  output: '[{"dual-evpn": 14, "ospf-ibgp": 14, "ospf-single": 14}, {"dual-evpn": 157,
-    "ospf-ibgp": 169, "ospf-single": 87}, {"dual-evpn": 93, "ospf-ibgp": 100, "ospf-single":
-    75}, {"dual-evpn": 14, "ospf-ibgp": 14, "ospf-single": 14}, {"dual-evpn": 0, "ospf-ibgp":
-    0, "ospf-single": 0}, {"dual-evpn": ["24", "30", "32", "31"], "ospf-ibgp": ["24",
-    "32", "30", "31"], "ospf-single": ["31", "24"]}, {"dual-evpn": [{"24": 26}, {"30":
-    16}, {"32": 5}], "ospf-ibgp": [{"24": 34}, {"32": 29}, {"30": 16}], "ospf-single":
-    [{"31": 24}, {"24": 22}]}]'
+  output: '{"dual-evpn": {"deviceCnt": 14, "addressCnt": 157, "uniqueIfMacCnt": 93,
+    "hostsWithv4AddressCnt": 14, "hostsWithv6AddressCnt": 0, "subnetsUsed": ["24",
+    "30", "32", "31"], "subnetTopCounts": [{"24": 26}, {"30": 16}, {"32": 5}]}, "ospf-ibgp":
+    {"deviceCnt": 14, "addressCnt": 169, "uniqueIfMacCnt": 100, "hostsWithv4AddressCnt":
+    14, "hostsWithv6AddressCnt": 0, "subnetsUsed": ["24", "32", "30", "31"], "subnetTopCounts":
+    [{"24": 34}, {"32": 29}, {"30": 16}]}, "ospf-single": {"deviceCnt": 14, "addressCnt":
+    87, "uniqueIfMacCnt": 75, "hostsWithv4AddressCnt": 14, "hostsWithv6AddressCnt":
+    0, "subnetsUsed": ["31", "24"], "subnetTopCounts": [{"31": 24}, {"24": 22}]}}'
 - command: address summarize --namespace=dual-evpn --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: address summarize
-  output: '[{"dual-evpn": 14}, {"dual-evpn": 157}, {"dual-evpn": 93}, {"dual-evpn":
-    14}, {"dual-evpn": 0}, {"dual-evpn": ["24", "30", "32", "31"]}, {"dual-evpn":
-    [{"24": 26}, {"30": 16}, {"32": 5}]}]'
+  output: '{"dual-evpn": {"deviceCnt": 14, "addressCnt": 157, "uniqueIfMacCnt": 93,
+    "hostsWithv4AddressCnt": 14, "hostsWithv6AddressCnt": 0, "subnetsUsed": ["24",
+    "30", "32", "31"], "subnetTopCounts": [{"24": 26}, {"30": 16}, {"32": 5}]}}'
 - command: address unique --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: address unique

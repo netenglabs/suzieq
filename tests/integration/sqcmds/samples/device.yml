@@ -137,23 +137,24 @@ tests:
 - command: device summarize --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: device summarize
-  output: '[{"dual-evpn": 14, "ospf-ibgp": 14, "ospf-single": 14}, {"dual-evpn": {"Cumulus":
-    9, "Ubuntu": 5}, "ospf-ibgp": {"Cumulus": 9, "Ubuntu": 5}, "ospf-single": {"Cumulus":
-    9, "Ubuntu": 5}}, {"dual-evpn": {"vm": 14}, "ospf-ibgp": {"vm": 14}, "ospf-single":
-    {"vm": 14}}, {"dual-evpn": {"x86-64": 14}, "ospf-ibgp": {"x86-64": 14}, "ospf-single":
-    {"x86-64": 14}}, {"dual-evpn": {"3.7.12": 9, "16.04.6 LTS": 5}, "ospf-ibgp": {"3.7.12":
-    9, "16.04.6 LTS": 5}, "ospf-single": {"3.7.12": 9, "16.04.6 LTS": 5}}, {"dual-evpn":
-    [143, 355, 145], "ospf-ibgp": [168, 404, 174], "ospf-single": [146, 3010, 148]}]'
+  output: '{"dual-evpn": {"deviceCnt": 14, "vendorCnt": {"Cumulus": 9, "Ubuntu": 5},
+    "modelCnt": {"vm": 14}, "archCnt": {"x86-64": 14}, "versionCnt": {"3.7.12": 9,
+    "16.04.6 LTS": 5}, "upTimeStat": [143, 355, 145]}, "ospf-ibgp": {"deviceCnt":
+    14, "vendorCnt": {"Cumulus": 9, "Ubuntu": 5}, "modelCnt": {"vm": 14}, "archCnt":
+    {"x86-64": 14}, "versionCnt": {"3.7.12": 9, "16.04.6 LTS": 5}, "upTimeStat": [168,
+    404, 174]}, "ospf-single": {"deviceCnt": 14, "vendorCnt": {"Cumulus": 9, "Ubuntu":
+    5}, "modelCnt": {"vm": 14}, "archCnt": {"x86-64": 14}, "versionCnt": {"3.7.12":
+    9, "16.04.6 LTS": 5}, "upTimeStat": [146, 3010, 148]}}'
 - command: device summarize --namespace=dual-evpn --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: device summarize
-  output: '[{"dual-evpn": 14}, {"dual-evpn": {"Cumulus": 9, "Ubuntu": 5}}, {"dual-evpn":
-    {"vm": 14}}, {"dual-evpn": {"x86-64": 14}}, {"dual-evpn": {"3.7.12": 9, "16.04.6
-    LTS": 5}}, {"dual-evpn": [143, 355, 145]}]'
+  output: '{"dual-evpn": {"deviceCnt": 14, "vendorCnt": {"Cumulus": 9, "Ubuntu": 5},
+    "modelCnt": {"vm": 14}, "archCnt": {"x86-64": 14}, "versionCnt": {"3.7.12": 9,
+    "16.04.6 LTS": 5}, "upTimeStat": [143, 355, 145]}}'
 - command: device summarize --columns="namespace hostname" --format=json
   data-directory: tests/data/multidc/parquet-out/
   error:
-    error: '[{"error": "ERROR: You cannot specify columns with summarize"}]'
+    error: '{"error": {"0": "ERROR: You cannot specify columns with summarize"}}'
   marks: device summarize
 - command: device unique --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/

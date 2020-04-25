@@ -2130,16 +2130,17 @@ tests:
 - command: sqpoller summarize --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: sqpoller summarize
-  output: '[{"dual-evpn": 14, "ospf-ibgp": 14, "ospf-single": 14}, {"dual-evpn": 238,
-    "ospf-ibgp": 238, "ospf-single": 238}, {"dual-evpn": 17, "ospf-ibgp": 17, "ospf-single":
-    17}, {"dual-evpn": {"0": 217, "1": 16, "404": 5}, "ospf-ibgp": {"0": 217, "1":
-    16, "404": 5}, "ospf-single": {"0": 207, "1": 26, "404": 5}}, {"dual-evpn": [0,
-    0, 0], "ospf-ibgp": [0, 0, 0], "ospf-single": [0, 0, 0]}]'
+  output: '{"dual-evpn": {"deviceCnt": 14, "entriesCnt": 238, "service": 17, "status":
+    {"0": 217, "1": 16, "404": 5}, "pollExcdPeriodStat": [0, 0, 0]}, "ospf-ibgp":
+    {"deviceCnt": 14, "entriesCnt": 238, "service": 17, "status": {"0": 217, "1":
+    16, "404": 5}, "pollExcdPeriodStat": [0, 0, 0]}, "ospf-single": {"deviceCnt":
+    14, "entriesCnt": 238, "service": 17, "status": {"0": 207, "1": 26, "404": 5},
+    "pollExcdPeriodStat": [0, 0, 0]}}'
 - command: sqpoller summarize --namespace=dual-evpn --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: sqpoller summarize
-  output: '[{"dual-evpn": 14}, {"dual-evpn": 238}, {"dual-evpn": 17}, {"dual-evpn":
-    {"0": 217, "1": 16, "404": 5}}, {"dual-evpn": [0.0, 0.0, 0.0]}]'
+  output: '{"dual-evpn": {"deviceCnt": 14, "entriesCnt": 238, "service": 17, "status":
+    {"0": 217, "1": 16, "404": 5}, "pollExcdPeriodStat": [0.0, 0.0, 0.0]}}'
 - command: sqpoller unique --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: sqpoller unique

@@ -887,20 +887,19 @@ tests:
 - command: arpnd summarize --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: arpnd summarize
-  output: '[{"dual-evpn": 14, "ospf-ibgp": 14, "ospf-single": 14}, {"dual-evpn": 132,
-    "ospf-ibgp": 156, "ospf-single": 46}, {"dual-evpn": 132, "ospf-ibgp": 156, "ospf-single":
-    46}, {"dual-evpn": 132, "ospf-ibgp": 156, "ospf-single": 46}, {"dual-evpn": 21,
-    "ospf-ibgp": 23, "ospf-single": 9}, {"dual-evpn": 0, "ospf-ibgp": 0, "ospf-single":
-    0}, {"dual-evpn": 0, "ospf-ibgp": 0, "ospf-single": 0}, {"dual-evpn": 0, "ospf-ibgp":
-    0, "ospf-single": 0}, {"dual-evpn": 28, "ospf-ibgp": 34, "ospf-single": 0}, {"dual-evpn":
-    28, "ospf-ibgp": 34, "ospf-single": 0}, {"dual-evpn": 28, "ospf-ibgp": 34, "ospf-single":
-    0}, {"dual-evpn": 0, "ospf-ibgp": 0, "ospf-single": 0}, {"dual-evpn": 0, "ospf-ibgp":
-    0, "ospf-single": 0}, {"dual-evpn": 0, "ospf-ibgp": 0, "ospf-single": 0}]'
+  output: '{"dual-evpn": {"deviceCnt": 14, "arpNdEntriesCnt": 132, "macaddrCnt": 132,
+    "oifCnt": 132, "uniqueOifCnt": 21, "extLearnEntriesCnt": 0, "staticEntriesCnt":
+    28, "failedEntryCnt": 0}, "ospf-ibgp": {"deviceCnt": 14, "arpNdEntriesCnt": 156,
+    "macaddrCnt": 156, "oifCnt": 156, "uniqueOifCnt": 23, "extLearnEntriesCnt": 0,
+    "staticEntriesCnt": 34, "failedEntryCnt": 0}, "ospf-single": {"deviceCnt": 14,
+    "arpNdEntriesCnt": 46, "macaddrCnt": 46, "oifCnt": 46, "uniqueOifCnt": 9, "extLearnEntriesCnt":
+    0, "staticEntriesCnt": 0, "failedEntryCnt": 0}}'
 - command: arpnd summarize --namespace=dual-evpn --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: arpnd summarize
-  output: '[{"dual-evpn": 14}, {"dual-evpn": 132}, {"dual-evpn": 132}, {"dual-evpn":
-    132}, {"dual-evpn": 21}, {"dual-evpn": 0}, {"dual-evpn": 28}, {"dual-evpn": 0}]'
+  output: '{"dual-evpn": {"deviceCnt": 14, "arpNdEntriesCnt": 132, "macaddrCnt": 132,
+    "oifCnt": 132, "uniqueOifCnt": 21, "extLearnEntriesCnt": 0, "staticEntriesCnt":
+    28, "failedEntryCnt": 0}}'
 - command: arpnd unique --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: arpnd unique

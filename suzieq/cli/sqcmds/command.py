@@ -125,7 +125,7 @@ class SqCommand:
             if self.json_print_handler:
                 print(df[cols].to_json(
                     default_handler=self.json_print_handler,
-                    orient="records"))
+                    orient=json_orient))
             else:
                 print(df[cols].to_json(orient=json_orient))
         elif self.format == 'csv':
@@ -202,4 +202,4 @@ class SqCommand:
 
     def _post_summarize(self):
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - self.now)
-        return self._gen_output(self.summarize_df)
+        return self._gen_output(self.summarize_df, json_orient='columns')
