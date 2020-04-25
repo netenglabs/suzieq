@@ -31,7 +31,10 @@ class SqPollerCmd(SqCommand):
         )
 
     @command("show")
-    def show(self, ifname: str = ""):
+    @argument("service", description="name of service to match")
+    @argument("status", description="status of service to match",
+              choices=["all", "pass", "fail"])
+    def show(self, service: str = "", status: str = ""):
         """
         Show SqPoller info
         """
@@ -45,12 +48,20 @@ class SqPollerCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
+        if status == "pass":
+            status = 0
+        elif status == "fail":
+            status = '!0'
+        else:
+            status = ""
+
         df = self.sqobj.get(
             hostname=self.hostname,
-            ifname=ifname.split(),
             columns=self.columns,
+            service=service,
+            status=status,
             namespace=self.namespace,
         )
+
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
-

@@ -36,9 +36,10 @@ class OspfCmd(SqCommand):
     @argument(
         "ifname", description="Space separated list of interface names to qualify"
     )
+    @argument("status", description="Select view based on status",
+              choices=["all", "pass", "fail"])
     @argument("vrf", description="Space separated list of VRFs to qualify")
-    @argument("state", description="BGP neighbor state to qualify", choices=["full"])
-    def show(self, ifname: str = "", vrf: str = "", state: str = ""):
+    def show(self, ifname: str = "", status: str = "", vrf: str = ""):
         """
         Show OSPF interface and neighbor info
         """
@@ -55,8 +56,8 @@ class OspfCmd(SqCommand):
             hostname=self.hostname,
             vrf=vrf.split(),
             ifname=ifname.split(),
-            state=state,
             columns=self.columns,
+            state=status,
             namespace=self.namespace,
         )
 

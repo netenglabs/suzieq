@@ -40,10 +40,23 @@ class RouteCmd(SqCommand):
             return ipaddress.IPv6Network.__str__(input)
         return input
 
+    def _get_ipvers(self, value: str) -> int:
+        """Return the IP version in use"""
+
+        if ':' in value:
+            ipvers = 6
+        elif '.' in value:
+            ipvers = 4
+        else:
+            ipvers = None
+
+        return ipvers
+
     @command("show")
     @argument("prefix", description="Prefix, in quotes, to filter show on")
     @argument("vrf", description="VRF to qualify")
-    def show(self, prefix: str = "", vrf: str = ''):
+    @argument("protocol", description="routing protocol to qualify")
+    def show(self, prefix: str = "", vrf: str = '', protocol: str = ""):
         """
         Show Routes info
         """
@@ -63,12 +76,22 @@ class RouteCmd(SqCommand):
             self.ctxt.sort_fields = []
             remove_metric = False
 
-        # /32 routes are not stored with the /32 prefix
+        # /32 routes are stored with the /32 prefix, so if user doesn't specify
+        # prefix as some folks do, assume /32
+        ipvers = self._get_ipvers(prefix)
+
+        if prefix and '/' not in prefix:
+            if ipvers == 4:
+                prefix += '/32'
+            else:
+                prefix += '/128'
 
         df = self.sqobj.get(
             hostname=self.hostname,
             prefix=prefix.split(),
             vrf=vrf.split(),
+            protocol=protocol.split(),
+            ipvers=ipvers,
             columns=self.columns,
             namespace=self.namespace,
         )
@@ -109,6 +132,7 @@ class RouteCmd(SqCommand):
             hostname=self.hostname,
             address=address,
             vrf=vrf.split(),
+            ipvers=self._get_ipvers(address),
             columns=self.columns,
             namespace=self.namespace,
         )

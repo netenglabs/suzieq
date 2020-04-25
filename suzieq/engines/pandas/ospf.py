@@ -18,6 +18,14 @@ class OspfObj(SqEngineObject):
             sort_fields = self.sort_fields
 
         columns = kwargs.get('columns', ['default'])
+        state = kwargs.pop('state', '')
+        if state == "pass":
+            query_str = 'adjState == "full" or adjState == "passive"'
+        elif state == "fail":
+            query_str = 'adjState != "full" and adjState != "passive"'
+        else:
+            query_str = ''
+
         df = self.get_valid_df('ospfIf', sort_fields,
                                addnl_fields=self.iobj._addnl_fields, **kwargs)
         nbr_df = self.get_valid_df('ospfNbr', sort_fields,
@@ -59,6 +67,8 @@ class OspfObj(SqEngineObject):
             df['lastChangeTime'] = uptime_cols
 
         df.bfill(axis=0, inplace=True)
+        if query_str:
+            return df.query(query_str)
         return df
 
     def get(self, **kwargs):
