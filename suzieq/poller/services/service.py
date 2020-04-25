@@ -71,6 +71,7 @@ class Service(object):
         self.previous_results = {}
         self._poller_schema = {}
         self.node_boot_times = defaultdict(int)
+        self._failed_node_set = set()
 
         self.poller_schema = property(
             self.get_poller_schema, self.set_poller_schema)
@@ -515,6 +516,16 @@ class Service(object):
                         status = HTTPStatus.METHOD_NOT_ALLOWED
 
                 write_poller_stat = not self.is_status_ok(status)
+                nodename = output[0]["hostname"]
+                # Don't write the error every time the failure happens
+                if write_poller_stat:
+                    if nodename in self._failed_node_set:
+                        write_poller_stat = False
+                    else:
+                        self._failed_node_set.add(nodename)
+                elif nodename in self._failed_node_set:
+                    # So there was no error in this command that had failed b4
+                    self._failed_node_set.remove(nodename)
                 result = self.process_data(output[0])
                 # If a node from init state to good state, hostname will change
                 # So fix that in the node list
