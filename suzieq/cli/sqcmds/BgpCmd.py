@@ -52,20 +52,14 @@ class BgpCmd(SqCommand):
         if status == "pass":
             state = "Established"
         elif status == "fail":
-            state = "NotEstd"
+            state = "!Established"
         else:
-            state = None
+            state = ''
 
-        if state is not None:
-            df = self.sqobj.get(
-                hostname=self.hostname, columns=self.columns,
-                namespace=self.namespace, state=state,
-            )
-        else:
-            df = self.sqobj.get(
-                hostname=self.hostname, columns=self.columns,
-                namespace=self.namespace
-            )
+        df = self.sqobj.get(
+            hostname=self.hostname, columns=self.columns,
+            namespace=self.namespace, state=state,
+        )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
 
@@ -77,8 +71,8 @@ class BgpCmd(SqCommand):
         self._init_summarize()
 
         # Convert columns into human friendly format
-        if (not self.summarize_df.empty) and ('upTimes' in self.summarize_df.T.columns):
-            self.summarize_df.loc['upTimes'] = self.summarize_df.loc['upTimes'] \
+        if (not self.summarize_df.empty) and ('upTimesStat' in self.summarize_df.T.columns):
+            self.summarize_df.loc['upTimesStat'] = self.summarize_df.loc['upTimesStat'] \
                 .map(lambda x: [str(timedelta(seconds=int(i))) for i in x])
 
         return self._post_summarize()

@@ -98,7 +98,12 @@ class SqPandasEngine(SqEngine):
             if not v or f in key_fields or f in ["groupby"]:
                 continue
             if isinstance(v, str):
-                query_str += "{} {}=='{}' ".format(prefix, f, v)
+                if v.startswith('!'):
+                    v = v[1:]
+                    op = '!='
+                else:
+                    op = '=='
+                query_str += "{} {}{}'{}' ".format(prefix, f, op, v)
                 prefix = "and"
             else:
                 query_str += "{} {}=={} ".format(prefix, f, v)
@@ -246,27 +251,39 @@ class SqPandasEngine(SqEngine):
                 if isinstance(v, list):
                     kwdor = []
                     for e in v:
+                        if e.startswith("!"):
+                            e = e[1:]
+                            op = "!="
+                        else:
+                            op = "=="
+
                         if not filters:
                             kwdor.append(
-                                [tuple(("{}".format(k), "==", "{}".format(e)))]
+                                [tuple(("{}".format(k), op, "{}".format(e)))]
                             )
                         else:
                             for entry in filters:
                                 foo = deepcopy(entry)
                                 foo.append(
-                                    tuple(("{}".format(k), "==", "{}".format(
+                                    tuple(("{}".format(k), op, "{}".format(
                                         e)))
                                 )
                                 kwdor.append(foo)
 
                     filters = kwdor
                 else:
+                    if v.startswith("!"):
+                        v = v[1:]
+                        op = "!="
+                    else:
+                        op = "=="
+
                     if not filters:
-                        filters.append([tuple(("{}".format(k), "==", "{}".
+                        filters.append([tuple(("{}".format(k), op, "{}".
                                                format(v)))])
                     else:
                         for entry in filters:
-                            entry.append(tuple(("{}".format(k), "==", "{}".
+                            entry.append(tuple(("{}".format(k), op, "{}".
                                                 format(v))))
 
         return filters
