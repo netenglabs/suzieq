@@ -271,14 +271,14 @@ tests:
   marks: bgp summarize
   output: '{"dual-evpn": {"deviceCnt": 10, "totalPeerCnt": 40, "failedPeerCnt": 0,
     "uniqueAsnCnt": 9, "uniqueVrfsCnt": {"default": 34, "internet-vrf": 4, "evpn-vrf":
-    2}, "upTimesStat": [86.0, 99.0, 95.0], "v4PfxRxStat": [2, 16, 9], "v6PfxRxStat":
-    [0, 0, 0], "evpnPfxRxStat": [0, 38, 8], "updatesRxStat": [13, 55, 51.5], "updatesTxStat":
-    [13, 55, 51.5], "activeAfiSafiList": ["ipv4", "evpn"]}, "ospf-ibgp": {"deviceCnt":
-    10, "totalPeerCnt": 39, "failedPeerCnt": 1, "uniqueAsnCnt": 4, "uniqueVrfsCnt":
-    {"default": 33, "internet-vrf": 4, "evpn-vrf": 2}, "upTimesStat": [85.0, 93.0,
-    87.5], "v4PfxRxStat": [0, 13, 2], "v6PfxRxStat": [0, 0, 0], "evpnPfxRxStat": [0,
-    38, 7], "updatesRxStat": [5, 45, 14.0], "updatesTxStat": [5, 45, 14.0], "activeAfiSafiList":
-    ["ipv4", "evpn"]}}'
+    2}, "upTimesStat": ["0:01:26", "0:01:39", "0:01:35"], "v4PfxRxStat": [2, 16, 9],
+    "v6PfxRxStat": [0, 0, 0], "evpnPfxRxStat": [0, 38, 8], "updatesRxStat": [13, 55,
+    51.5], "updatesTxStat": [13, 55, 51.5], "activeAfiSafiList": ["ipv4", "evpn"]},
+    "ospf-ibgp": {"deviceCnt": 10, "totalPeerCnt": 39, "failedPeerCnt": 1, "uniqueAsnCnt":
+    4, "uniqueVrfsCnt": {"default": 33, "internet-vrf": 4, "evpn-vrf": 2}, "upTimesStat":
+    ["0:01:25", "0:01:33", "0:01:27"], "v4PfxRxStat": [0, 13, 2], "v6PfxRxStat": [0,
+    0, 0], "evpnPfxRxStat": [0, 38, 7], "updatesRxStat": [5, 45, 14.0], "updatesTxStat":
+    [5, 45, 14.0], "activeAfiSafiList": ["ipv4", "evpn"]}}'
 - command: bgp unique --format=json
   data-directory: tests/data/multidc/parquet-out/
   error:

@@ -296,6 +296,9 @@ class SqEngineObject(object):
                 # can't do a value_counts on all groups, incase one of the groups other groups doesn't have data
                 unique_for_ns = self.nsgrp.get_group(n)[field].value_counts()
                 value = unique_for_ns.to_dict()
+                # Filter numm entries if category because of how pandas behaves here
+                if self.nsgrp[field].dtype[n].name == 'category':
+                    value = dict(filter(lambda x: x[1] != 0, value.items()))
 
             else:
                 value = count_per_ns[n]
