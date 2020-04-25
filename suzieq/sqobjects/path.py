@@ -231,7 +231,6 @@ class PathObj(basicobj.SqObject):
                 if df.empty:
                     continue
 
-                breakpoint()
                 df.apply(lambda x, nexthops:
                          nexthops.append((iface, x['hostname'],
                                           x['ifname'],  overlay))
