@@ -1,37 +1,5 @@
 [![Build Status](https://travis-ci.org/netenglabs/suzieq.svg?branch=master)](https://travis-ci.org/netenglabs/suzieq)
 
-<!-- vscode-markdown-toc -->
-- [Analysis](#analysis)
-    - [BGP Analysis Demo](#bgp-analysis-demo)
-    - [Path Demo](#path-demo)
-    - [Route Demo](#route-demo)
-    - [LPM Demo](#lpm-demo)
-    - [Investigate Suzieq Tables](#investigate-suzieq-tables)
-    - [Using Suzieq on the command line](#using-suzieq-on-the-command-line)
-    - [Filtering](#filtering)
-    - [Context Filtering](#context-filtering)
-    - [How time works in Suzieq](#how-time-works-in-suzieq)
-- [Gathering Data](#gathering-data)
-    - [Docker](#docker)
-        - [sq-poller](#sq-poller)
-        - [suzieq-cli](#suzieq-cli)
-    - [Installation with Pipenv](#installation-with-pipenv)
-- [Database and Data Persistence](#database-and-data-persistence)
-- [How to develop with Suzieq](#how-to-develop-with-suzieq)
-- [Faq](#faq)
-- [Asserts](#asserts)
-    - [BGP Assert](#bgp-assert)
-    - [EvpnVni Assert](#evpnvni-assert)
-    - [Interface Assert](#interface-assert)
-    - [OSPF Assert](#ospf-assert)
-- [Summarize](#summarize)
-    - [TODO](#todo)
-
-<!-- vscode-markdown-toc-config
-	numbering=true
-	autoSave=true
-	/vscode-markdown-toc-config -->
-<!-- /vscode-markdown-toc -->
 # Suzieq
 
 Suzieq is an application focused on observability for IP networks: We want you to understand 
@@ -68,7 +36,38 @@ We are just getting started with Suzieq. We believe that this is a great platfor
 network. And we've written applications to demonstrate what is possible. Let us know your ideas on how to make things 
 better.
 
+<!-- vscode-markdown-toc -->
+- [Analysis](#analysis)
+    - [BGP Analysis Demo](#bgp-analysis-demo)
+    - [Path Demo](#path-demo)
+    - [Route Demo](#route-demo)
+    - [LPM Demo](#lpm-demo)
+    - [Investigate Suzieq Tables](#investigate-suzieq-tables)
+    - [Using Suzieq on the command line](#using-suzieq-on-the-command-line)
+    - [Filtering](#filtering)
+    - [Context Filtering](#context-filtering)
+    - [How time works in Suzieq](#how-time-works-in-suzieq)
+- [Gathering Data](#gathering-data)
+    - [Docker](#docker)
+        - [sq-poller](#sq-poller)
+        - [suzieq-cli](#suzieq-cli)
+    - [Installation with Pipenv](#installation-with-pipenv)
+- [Database and Data Persistence](#database-and-data-persistence)
+- [How to develop with Suzieq](#how-to-develop-with-suzieq)
+- [Faq](#faq)
+- [Asserts](#asserts)
+    - [BGP Assert](#bgp-assert)
+    - [EvpnVni Assert](#evpnvni-assert)
+    - [Interface Assert](#interface-assert)
+    - [OSPF Assert](#ospf-assert)
+- [Summarize](#summarize)
+    - [TODO](#todo)
 
+<!-- vscode-markdown-toc-config
+	numbering=true
+	autoSave=true
+	/vscode-markdown-toc-config -->
+<!-- /vscode-markdown-toc -->
 
 ##  1. <a name='analysis'></a>Analysis
 Let's jump into what you can do with Suzieq now.
