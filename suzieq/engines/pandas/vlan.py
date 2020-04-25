@@ -41,9 +41,10 @@ class VlanObj(SqEngineObject):
         if self.summary_df.empty:
             return self.summary_df
 
-        self._add_field_to_summary('hostname', 'count', 'rows')
+        self._add_field_to_summary('hostname', 'count', 'deviceCnt')
         for field in ['pvid']:
-            self._add_list_or_count_to_summary(field)
+            self._add_list_or_count_to_summary(
+                field, field_name='uniquePvidCnt')
 
         # To summarize accurately, we need to explode the vlan
         # column from a list to an individual entry for each
@@ -57,8 +58,8 @@ class VlanObj(SqEngineObject):
 
         if not self.summary_df.empty:
             for field in ['vlan']:
-                self._add_list_or_count_to_summary(field)
-
+                self._add_list_or_count_to_summary(field,
+                                                   field_name='uniqueVlanCnt')
 
         self._post_summarize()
         return self.ns_df.convert_dtypes()
