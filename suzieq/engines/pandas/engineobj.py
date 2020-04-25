@@ -147,7 +147,7 @@ class SqEngineObject(object):
                                         .count()
             for i in self.ns.keys():
                 self.ns[i].update({field_name: fld_per_ns[i]})
-                self.summary_row_order.append(field_name)
+            self.summary_row_order.append(field_name)
 
         for field_name, field in self._summarize_on_add_list_or_count:
             self._add_list_or_count_to_summary(field, field_name)
