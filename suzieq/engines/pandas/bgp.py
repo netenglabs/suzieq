@@ -86,8 +86,8 @@ class BgpObj(SqEngineObject):
         rx_updates = established["updatesRx"]
         tx_updates = established["updatesTx"]
 
-        self._add_stats_to_summary(v4_updates, 'v4PfxRxStat')
         self._add_stats_to_summary(uptime, 'upTimesStat')
+        self._add_stats_to_summary(v4_updates, 'v4PfxRxStat')
         self._add_stats_to_summary(v6_updates, 'v6PfxRxStat')
         self._add_stats_to_summary(evpn_updates, 'evpnPfxRxStat')
         self._add_stats_to_summary(rx_updates, 'updatesRxStat')
