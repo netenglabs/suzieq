@@ -57,7 +57,10 @@ class RouteCmd(SqCommand):
     @argument("prefix", description="Prefix, in quotes, to filter show on")
     @argument("vrf", description="VRF to qualify")
     @argument("protocol", description="routing protocol to qualify")
-    def show(self, prefix: str = "", vrf: str = '', protocol: str = ""):
+    @argument("prefixlen", description="must be of the form "
+              "[==|<|<=|>=|>|!=] length")
+    def show(self, prefix: str = "", vrf: str = '', protocol: str = "",
+             prefixlen: str = ""):
         """
         Show Routes info
         """
@@ -98,6 +101,11 @@ class RouteCmd(SqCommand):
         else:
             addnl_fields = []
 
+        if prefixlen and not any(prefixlen.startswith(x)
+                                 for x in ['==', '<=', '>=', '<', '>', '!=']):
+            df = pd.DataFrame({'error': ['ERROR invalid prefixlen operation']})
+            return self._gen_output(df)
+
         df = self.sqobj.get(
             hostname=self.hostname,
             prefix=prefix.split(),
@@ -107,6 +115,7 @@ class RouteCmd(SqCommand):
             columns=self.columns,
             addnl_fields=addnl_fields,
             namespace=self.namespace,
+            prefixlen=prefixlen,
         )
         if not df.empty and remove_metric:
             df.drop(columns=['metric'], inplace=True)

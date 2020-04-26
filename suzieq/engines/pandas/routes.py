@@ -8,11 +8,15 @@ class RoutesObj(SqEngineObject):
 
     def get(self, **kwargs):
 
+        prefixlen = kwargs.pop('prefixlen', None)
         df = super().get(**kwargs)
         if not df.empty and 'prefix' in df.columns:
+            df = df.loc[df['prefix'] != "127.0.0.0/8"]
             df['prefix'].replace('default', '0.0.0.0/0', inplace=True)
             df['prefix'] = df['prefix'].astype('ipnetwork')
-            return df
+
+            if prefixlen:
+                return df.query(f'prefix.ipnet.prefixlen {prefixlen}')
 
         return df
 
@@ -22,6 +26,7 @@ class RoutesObj(SqEngineObject):
         if self.summary_df.empty:
             return self.summary_df
 
+        breakpoint()
         self._summarize_on_add_field = [
             ('deviceCnt', 'hostname', 'nunique'),
             ('totalRoutesinNS', 'prefix', 'count'),
