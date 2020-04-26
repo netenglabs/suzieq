@@ -1,6 +1,7 @@
 import time
 import ipaddress
 from nubia import command, argument
+import pandas as pd
 
 from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.routes import RoutesObj
@@ -86,6 +87,17 @@ class RouteCmd(SqCommand):
             else:
                 prefix += '/128'
 
+        if prefix.startswith('!'):
+            df = pd.DataFrame(
+                {'error': ['ERROR: Cannot use NOT operator with prefix']})
+            return self._gen_output(df)
+
+        if (self.columns != ['default'] and self.columns != ['*'] and
+                'ipvers' not in self.columns):
+            addnl_fields = ['ipvers']
+        else:
+            addnl_fields = []
+
         df = self.sqobj.get(
             hostname=self.hostname,
             prefix=prefix.split(),
@@ -93,6 +105,7 @@ class RouteCmd(SqCommand):
             protocol=protocol.split(),
             ipvers=ipvers,
             columns=self.columns,
+            addnl_fields=addnl_fields,
             namespace=self.namespace,
         )
         if not df.empty and remove_metric:
