@@ -26,7 +26,6 @@ class RoutesObj(SqEngineObject):
         if self.summary_df.empty:
             return self.summary_df
 
-        breakpoint()
         self._summarize_on_add_field = [
             ('deviceCnt', 'hostname', 'nunique'),
             ('totalRoutesinNS', 'prefix', 'count'),
