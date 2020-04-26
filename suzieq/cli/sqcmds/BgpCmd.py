@@ -56,10 +56,17 @@ class BgpCmd(SqCommand):
         else:
             state = ''
 
+        if (self.columns != ['default'] and self.columns != ['*'] and
+                'state' not in self.columns):
+            addnl_fields = ['state']
+        else:
+            addnl_fields = []
+
         df = self.sqobj.get(
             hostname=self.hostname, columns=self.columns,
-            namespace=self.namespace, state=state,
+            namespace=self.namespace, state=state, addnl_fields=addnl_fields
         )
+
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
 
