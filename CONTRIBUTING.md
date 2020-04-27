@@ -1,4 +1,4 @@
-suzieq is an open source project.
+Suzieq is an open source project focused on IP Network Observability.
 
 # Contributing
 We are just getting started with Suzieq and we appreciate any participation and collaboration.
