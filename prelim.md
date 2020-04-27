@@ -235,8 +235,8 @@ By default when you use the CLI and you use a command, you will be using 'view=l
 the most useful and what you expect to see. If you want to see all your data, add 'view=all'. You can also select 
 specific start and end times that you are interested.
 
-As Suzieq progresses, we expect to take more advantage of having data over time, including focusing on 
-things that changed during a time interval
+Suzieq also has the notion of seeing changes during a time window. If you specify a start-time and
+and end-time and don't specify view=all, then you will see only the changes during a time window.
 
 ## Running Suzieq
 
