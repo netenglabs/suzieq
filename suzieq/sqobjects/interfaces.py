@@ -25,7 +25,3 @@ class IfObj(basicobj.SqObject):
     def aver(self, what='mtu-match', **kwargs) -> pd.DataFrame:
         """Assert that interfaces are in good state"""
         return self.engine_obj.aver(what=what, **kwargs)
-
-    def top(self, what='transitions', n=5, **kwargs) -> pd.DataFrame:
-        """Get the list of top link changes"""
-        return self.engine_obj.top(what=what, n=n, **kwargs)

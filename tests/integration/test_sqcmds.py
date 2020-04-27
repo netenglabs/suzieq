@@ -30,12 +30,12 @@ basic_verbs = ['show', 'summarize']
     ('LldpCmd', basic_verbs, [None, None]),
     ('MacCmd', basic_verbs, [None, None]),
     ('MlagCmd', basic_verbs, [None, None, None]),
-    ('OspfCmd', basic_verbs + ['top', 'aver'], [None, None, None, None]),
+    ('OspfCmd', basic_verbs + ['aver'], [None, None, None, None]),
     ('RouteCmd', basic_verbs + ['lpm'],
      [None, None, {'address': '10.0.0.1'}]),
     ('TableCmd', ['show', 'describe'], [None, {'table': 'device'}]),
-#    ('TopcpuCmd', basic_verbs, [None, None]),
-#    ('TopmemCmd', basic_verbs, [None, None]),
+    #    ('TopcpuCmd', basic_verbs, [None, None]),
+    #    ('TopmemCmd', basic_verbs, [None, None]),
     ('VlanCmd', basic_verbs, [None, None])
 ])
 def test_commands(setup_nubia, command, verbs, args):
@@ -104,7 +104,8 @@ def test_view_show_filter(setup_nubia, cmd):
 @pytest.mark.filter
 @pytest.mark.parametrize("cmd", good_commands)
 def test_start_time_show_filter(setup_nubia, cmd):
-    s = _test_command(cmd, 'show', None, {'start_time': '2020-01-01 21:43:30.048'})
+    s = _test_command(cmd, 'show', None, {
+                      'start_time': '2020-01-01 21:43:30.048'})
     assert s == 0
 
 
@@ -248,7 +249,7 @@ def execute_cmd(cmd, verb, arg, filter=None):
     if filter is None:
         filter = {}
         #filter = {'format': 'dataframe'}
-    #else:
+    # else:
     #    filter['format'] = 'dataframe'
     instance = instance(**filter)
 

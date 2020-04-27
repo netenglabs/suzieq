@@ -1,7 +1,6 @@
 import pandas as pd
 
 from suzieq.exceptions import NoLLdpError
-from suzieq.utils import SchemaForTable
 from suzieq.sqobjects.lldp import LldpObj
 from .engineobj import SqEngineObject
 
@@ -13,12 +12,6 @@ class InterfacesObj(SqEngineObject):
             result_df = self._assert_mtu_match(**kwargs)
         elif what == "mtu-value":
             result_df = self._assert_mtu_value(**kwargs)
-
-        return result_df
-
-    def top(self, what="transitions", n=5, **kwargs) -> pd.DataFrame:
-        """Get the list of top link changes"""
-        result_df = self._top_link_transitions(n, **kwargs)
 
         return result_df
 
@@ -170,29 +163,3 @@ class InterfacesObj(SqEngineObject):
                                                   else 'fail', axis=1)
 
         return combined_df
-
-    def _top_link_transitions(self, n, **kwargs):
-        """Workhorse routine to return top n link transition links"""
-
-        if "columns" in kwargs:
-            columns = kwargs["columns"]
-            del kwargs["columns"]
-        else:
-            columns = ["default"]
-
-        table_schema = SchemaForTable(self.table, self.schemas)
-        columns = table_schema.get_display_fields(columns)
-
-        if "numChanges" not in columns:
-            columns.insert(-2, "numChanges")
-
-        if "type" not in kwargs:
-            # On Linux there are all kinds of link transitions on non-physical
-            # links. Lets filter them out to prevent polluting the information.
-            kwargs["type"] = "ether"
-
-        df = self.get(columns=columns, **kwargs)
-        if df.empty:
-            return df
-
-        return df.nlargest(n, columns=["numChanges"], keep="all").head(n=n)

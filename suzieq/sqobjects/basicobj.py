@@ -1,7 +1,7 @@
 import typing
 import pandas as pd
 
-from suzieq.utils import load_sq_config, Schema
+from suzieq.utils import load_sq_config, Schema, SchemaForTable
 from suzieq.engines import get_sqengine
 
 
@@ -83,6 +83,7 @@ class SqObject(object):
             self.engine_obj = None
 
         self._addnl_filter = None
+        self._addnl_fields = []
 
     @property
     def schemas(self):
@@ -131,5 +132,21 @@ class SqObject(object):
     def aver(self, **kwargs):
         raise NotImplementedError
 
-    def top(self, **kwargs):
-        raise NotImplementedError
+    def top(self, what='', n=5, reverse=False,
+            **kwargs) -> pd.DataFrame:
+        """Get the list of top/bottom entries of "what" field"""
+
+        if "columns" in kwargs:
+            columns = kwargs["columns"]
+            del kwargs["columns"]
+        else:
+            columns = ["default"]
+
+        table_schema = SchemaForTable(self._table, self.schemas)
+        columns = table_schema.get_display_fields(columns)
+
+        if what not in columns:
+            self._addnl_fields.append(what)
+
+        return self.engine_obj.top(what=what, n=n, reverse=reverse,
+                                   addnl_fields=self._addnl_fields, **kwargs)
