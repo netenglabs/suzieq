@@ -22,7 +22,8 @@ With the applications that we build on top of the framework we want to demonstra
 In this very early release of Suzieq, we've chosen some answers for the framework to get the ball rolling. 
 * We gather data using an agentless model using either SSH or REST API as the transport. 
 * We store all data in files using the popular big data format, Parquet. 
-* All the analysis are exposed either via a CLI or via Python objects. The output can be rendered in various formats from plain text to JSON and CSV. 
+* All the analysis are exposed either via a CLI or via Python objects. The output can be rendered in various formats from plain text to JSON and CSV.
+* The analysis engine used in this release is pandas.
 
 **We support gathering data from Cumulus routers, Arista routers, and Linux servers.**
 
@@ -34,10 +35,10 @@ We're also looking for collaborators to help us make Suzieq a truly useful multi
 
 We want to make it as easy as possible for you to get started with engaging with Suzieq. To that end, the quickest way to start is to download the docker image from github and also download the data we've already gathered for the 18 or so network scenarios from the [github](https://github.com/netenglabs/suzieq-data) repository associated with Dinesh's book, Cloud Native Data Center Networking. You can then use the introductory documentation to start exploring the data.
 
-- git clone https://github.com/netenglabs/suzieq-data.git
-- docker run -itd -v /home/ddutt/suzieq-data/cloud-native-data-center-networking/parquet-out:/suzieq/parquet --name suzieq ddutt/suzieq:0.1
-- docker attach
-- suzieq-cli
+- ```git clone https://github.com/netenglabs/suzieq-data.git```
+- ```docker run -itd -v /home/ddutt/suzieq-data/cloud-native-data-center-networking/parquet-out:/suzieq/parquet --name suzieq ddutt/suzieq:0.1```
+- ```docker attach suzieq```
+- ```suzieq-cli```
 
 Note that in the docker run command above, the directory name /home/ddutt/suzieq-data/... used assumed that the git clone of suzieq-data was done in the directory /home/ddutt. In other words, the host path name used in the -v option should be the **absolute path of the directory**, not the relative path.
 
