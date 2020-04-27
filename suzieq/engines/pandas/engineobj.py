@@ -256,7 +256,7 @@ class SqEngineObject(object):
         if not what:
             return pd.DataFrame()
 
-        df = self.get(**kwargs)
+        df = self.get(addnl_fields=self.iobj._addnl_fields, **kwargs)
         if df.empty:
             return pd.DataFrame()
 
