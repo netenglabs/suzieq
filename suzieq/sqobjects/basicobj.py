@@ -148,5 +148,4 @@ class SqObject(object):
         if what not in columns:
             self._addnl_fields.append(what)
 
-        return self.engine_obj.top(what=what, n=n, reverse=reverse,
-                                   addnl_fields=self._addnl_fields, **kwargs)
+        return self.engine_obj.top(what=what, n=n, reverse=reverse, **kwargs)

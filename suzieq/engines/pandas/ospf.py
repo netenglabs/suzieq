@@ -19,6 +19,9 @@ class OspfObj(SqEngineObject):
 
         columns = kwargs.get('columns', ['default'])
         state = kwargs.pop('state', '')
+        addnl_fields = kwargs.pop('addnl_fields', self.iobj._addnl_fields)
+        addnl_nbr_fields = self.iobj._addnl_nbr_fields
+
         if state == "pass":
             query_str = 'adjState == "full" or adjState == "passive"'
         elif state == "fail":
@@ -27,9 +30,9 @@ class OspfObj(SqEngineObject):
             query_str = ''
 
         df = self.get_valid_df('ospfIf', sort_fields,
-                               addnl_fields=self.iobj._addnl_fields, **kwargs)
+                               addnl_fields=addnl_fields, **kwargs)
         nbr_df = self.get_valid_df('ospfNbr', sort_fields,
-                                   addnl_fields=['state'], **kwargs)
+                                   addnl_fields=addnl_nbr_fields, **kwargs)
         if nbr_df.empty:
             return nbr_df
 
