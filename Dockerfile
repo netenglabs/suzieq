@@ -12,6 +12,7 @@ RUN pip3 install --user --disable-pip-version-check -r /requirements.txt
 
 FROM python:3.7.7-slim-buster AS builder
 COPY --from=compiler /root/.local /root/.local
+COPY --from=compiler /src /src
 RUN mkdir -p /suzieq/parquet
 
 COPY ./config /suzieq/config
@@ -23,7 +24,7 @@ COPY ./suzieq/poller/sq-poller /root/.local/bin
 WORKDIR /suzieq
 
 ENV PATH=/root/.local/bin:$PATH
-ENV PYTHONPATH=/root/.local/lib
+ENV PYTHONPATH=/root/.local/lib:/src/cyberpandas:/src/python-nubia
 ENTRYPOINT ["/bin/bash"]
 
 # USER 1001
