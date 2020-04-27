@@ -39,11 +39,3 @@ class OspfObj(basicobj.SqObject):
             raise AttributeError('No analysis engine specified')
 
         return self.engine_obj.aver(**kwargs)
-
-    def top(self, what='transitions', n=5, **kwargs) -> pd.DataFrame:
-        """Get the list of top stuff about OSPF"""
-
-        if not self.ctxt.engine:
-            raise AttributeError('No analysis engine specified')
-
-        return self.engine_obj.top(what=what, n=n, **kwargs)

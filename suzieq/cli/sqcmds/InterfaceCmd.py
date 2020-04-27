@@ -105,9 +105,11 @@ class InterfaceCmd(SqCommand):
 
     @command("top")
     @argument("what", description="Field you want to see top for",
-              choices=["transitions"])
+              choices=["flaps"])
     @argument("count", description="How many top entries")
-    def top(self, what: str = "transitions", count: int = 5):
+    @argument("reverse", description="True see Bottom n",
+              choices=["True", "False"])
+    def top(self, what: str = "flaps", count: int = 5, reverse: str = "False"):
         """
         Show top n entries based on specific field
         """
@@ -116,10 +118,15 @@ class InterfaceCmd(SqCommand):
 
         now = time.time()
 
+        if what == "flaps":
+            whatfld = "numChanges"
+
         df = self.sqobj.top(
             hostname=self.hostname,
-            what=what,
+            what=whatfld,
             n=count,
+            reverse=reverse == "True" or False,
+            type="ether",        # need this as we only do phy interfaces
             columns=self.columns,
             namespace=self.namespace,
         )

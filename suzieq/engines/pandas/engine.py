@@ -157,7 +157,7 @@ class SqPandasEngine(SqEngine):
                         folder, filters=filters or None, validate_schema=False
                     )
                     .read(columns=fields)
-                    .to_pandas()
+                    .to_pandas(split_blocks=True, self_destruct=True)
                     .query(query_str)
                     .drop_duplicates(subset=key_fields, keep="last")
                     .query("active == True")

@@ -114,28 +114,3 @@ class OspfCmd(SqCommand):
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
 
         return self._assert_gen_output(df)
-
-    @command("top")
-    @argument(
-        "what", description="Field you want to see top for", choices=["transitions"]
-    )
-    @argument("count", description="How many top entries")
-    def top(self, what: str = "transitions", count: int = 5):
-        """
-        Show top n entries based on specific field
-        """
-        if self.columns is None:
-            return
-
-        now = time.time()
-
-        df = self.sqobj.top(
-            hostname=self.hostname,
-            what=what,
-            n=count,
-            columns=self.columns,
-            namespace=self.namespace,
-        )
-
-        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        return self._gen_output(df)

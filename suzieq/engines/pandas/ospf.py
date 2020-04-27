@@ -267,24 +267,3 @@ class OspfObj(SqEngineObject):
                "assertReason", "timestamp"]].explode(column='assertReason')
             .fillna({'assertReason': '-'})
         )
-
-    def top(self, what="transitions", n=5, **kwargs) -> pd.DataFrame:
-        """Get the list of top stuff about OSPF"""
-
-        if "columns" in kwargs:
-            columns = kwargs["columns"]
-            del kwargs["columns"]
-        else:
-            columns = ["default"]
-
-        table_schema = SchemaForTable('ospfNbr', self.schemas)
-        columns = table_schema.get_display_fields(columns)
-
-        if "numChanges" not in columns:
-            columns.insert(-2, "numChanges")
-
-        df = self.get(columns=columns, **kwargs)
-        if df.empty:
-            return df
-
-        return df.nlargest(n, columns=["numChanges"], keep="all").head(n=n)

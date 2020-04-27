@@ -240,7 +240,32 @@ class SqEngineObject(object):
         raise NotImplementedError
 
     def top(self, **kwargs):
-        raise NotImplementedError
+        """Default implementation of top.
+        The basic fields this assumes are present include the "what" keyword
+        which contains the name of the field we're getting the transitions on,
+        the "n" field which tells the count of the top entries you're
+        looking for, and the reverse field which tells whether you're looking
+        for the largest (default, and so reverse is False) or the smallest(
+        reverse is True). This invokes the default object's get routine. It
+        is upto the caller to ensure that the desired column is in the output.
+        """
+        what = kwargs.pop("what", None)
+        reverse = kwargs.pop("reverse", False)
+        sqTopCount = kwargs.pop("n", 5)
+
+        if not what:
+            return pd.DataFrame()
+
+        df = self.get(**kwargs)
+        if df.empty:
+            return pd.DataFrame()
+
+        if reverse:
+            return df.nsmallest(sqTopCount, columns=what, keep="all") \
+                     .head(sqTopCount)
+        else:
+            return df.nlargest(sqTopCount, columns=what, keep="all") \
+                     .head(sqTopCount)
 
     def _init_summarize(self, table, **kwargs):
         kwargs.pop('columns', None)
