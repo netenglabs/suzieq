@@ -51,7 +51,7 @@ Suzieq started out with least common denominator SSH and REST access to devices.
 Suzieq does have support for agents, such as Kafka and SNMP, to push data and we've done some experiments with them, but don't
 have production versions of that code. 
 
-##<a name='database-and-data-persistence'></a>Database and Data Persistence
+## Database and Data Persistence
 
 Because everything in Suzieq revolves around [Pandas](https://pandas.pydata.org/) dataframes, it can support different persistence engines underneath. For right now, we only support our own, which is built on [Parquet](https://parquet.apache.org/) files. 
 This is setup should be fast enough to get things going and for most people. It is also self contained and fairly simple. 

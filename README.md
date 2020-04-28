@@ -47,7 +47,7 @@ When you're within the suzieq-cli, you can run ```device unique columns=namespac
 
 Note that in the docker run command above, the directory name /home/ddutt/suzieq-data/... used assumed that the git clone of suzieq-data was done in the directory /home/ddutt. In other words, the host path name used in the -v option should be the **absolute path of the directory**, not the relative path.
 
-From here on, you can follow the [preliminary documentation](./docs/analyzer.md) for further exploration. If you wish to run the poller to gather data from your network, you can do so via the instructions [here](./docs/poller.md). 
+From here on, you can follow the [preliminary documentation](./docs/analyzer.md) for further exploration. If you wish to **run the poller to gather data from your network**, you can do so via the instructions [here](./docs/poller.md). 
 
 We're working on putting up more extensive documentation for every aspect of Suzieq: as a user, and as a contributor. We hope to be done with that by the end of this week.
 
