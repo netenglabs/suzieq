@@ -31,3 +31,4 @@ ENTRYPOINT ["/bin/bash"]
 
 LABEL name=suzieq
 LABEL version=0.1
+LABEL description="Network Observability Tool"
