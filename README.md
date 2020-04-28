@@ -8,7 +8,7 @@ Do you login to every network node you have to figure out answers to a questions
 
 If you answered yes to one or more of these questions, then Suzieq is a tool that we think will be interesting to you. 
 
-**Suzieq** is both a framework and an application using that framework, focused on **improving the observability of your network**.  We define observaility as the ability of a system to answer either trivial or complex questions that you pose as you go about operating your network. How easily you can answer your questions is a measure of how good the system's observability is. A good observable system goes well beyond monitoring and alerting.
+**Suzieq** is a tool for network operators and designers. It is both a framework and an application using that framework, focused on **improving the observability of your network**.  We define observaility as the ability of a system to answer either trivial or complex questions that you pose as you go about operating your network. How easily you can answer your questions is a measure of how good the system's observability is. A good observable system goes well beyond monitoring and alerting.
 
 Suzieq does multiple things. It collects data from different devices and systems. It normalizes the data and then stores it in a vendor independent way. Then it allows analysis of that data. 
 
@@ -27,22 +27,26 @@ In this very early release of Suzieq, we've chosen some answers for the framewor
 
 **We support gathering data from Cumulus routers, Arista routers, and Linux servers.**
 
-We are just getting started with Suzieq. What you see in this early release are only a brief demonstration of what this approach can bring about. This is a very early release. We've many, many ideas to implement in our upcoming releases, but we wanted to get this out so that people can start using it. And start understanding their networks to solve problems, validate or to make changes.
+We are just getting started with Suzieq. As befitting an early release, what you see is only a brief demonstration of what this approach can bring about. We've many, many ideas to implement in our upcoming releases, but we wanted to get this out so that people can start using it. And start understanding their networks to solve problems, validate or to make changes.
 
-We're also looking for collaborators to help us make Suzieq a truly useful multi-vendor, open source platform for observing all aspects of networking. You can join the conversation via [googlegroups](https://groups.google.com/d/forum/netenglabs-suzieq).
+You can join the conversation via [googlegroups](https://groups.google.com/d/forum/netenglabs-suzieq).
+
+We're also looking for collaborators to help us make Suzieq a truly useful multi-vendor, open source platform for observing all aspects of networking. Please read the [collaboration document](./CONTRIBUTING.md) for ideas on how you can help. 
 
 ## Quick Start
 
-We want to make it as easy as possible for you to get started with engaging with Suzieq. To that end, the quickest way to start is to download the docker image from github and also download the data we've already gathered for the 18 or so network scenarios from the [github](https://github.com/netenglabs/suzieq-data) repository associated with Dinesh's book, Cloud Native Data Center Networking. You can then use the introductory documentation to start exploring the data.
+We want to make it as easy as possible for you to start engaging with Suzieq. To that end, the quickest way to start is to download the docker image from github and also download the data we've already gathered for the 18 or so network scenarios from the [github](https://github.com/netenglabs/suzieq-data) repository associated with Dinesh's book, Cloud Native Data Center Networking. You can then use the introductory documentation to start exploring the data.
 
 - ```git clone https://github.com/netenglabs/suzieq-data.git```
-- ```docker run -itd -v /home/ddutt/suzieq-data/cloud-native-data-center-networking/parquet-out:/suzieq/parquet --name suzieq ddutt/suzieq:0.1```
+- ```docker run -itd -v /home/ddutt/suzieq-data/cloud-native-data-center-networking/parquet-out:/suzieq/parquet --name suzieq ddutt/suzieq:latest```
 - ```docker attach suzieq```
 - ```suzieq-cli```
 
+When you're within the suzieq-cli, you can run ```device unique columns=namespace``` to see the list of different scenarios, we've gathered data for.
+
 Note that in the docker run command above, the directory name /home/ddutt/suzieq-data/... used assumed that the git clone of suzieq-data was done in the directory /home/ddutt. In other words, the host path name used in the -v option should be the **absolute path of the directory**, not the relative path.
 
-From here, you can follow the preliminary documentation [here](./prelim.md). If you wish to run the poller to gather data from your network, you can do so via the instructions [here](./poller.md). 
+From here on, you can follow the [preliminary documentation](./docs/analyzer.md) for further exploration. If you wish to run the poller to gather data from your network, you can do so via the instructions [here](./docs/poller.md). 
 
 We're working on putting up more extensive documentation for every aspect of Suzieq: as a user, and as a contributor. We hope to be done with that by the end of this week.
 
