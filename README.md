@@ -8,7 +8,7 @@ Do you login to every network node you have to figure out answers to a questions
 
 If you answered yes to one or more of these questions, then Suzieq is a tool that we think will be interesting to you. 
 
-**Suzieq** is a tool for network operators and designers. It is both a framework and an application using that framework, focused on **improving the observability of your network**.  We define observaility as the ability of a system to answer either trivial or complex questions that you pose as you go about operating your network. How easily you can answer your questions is a measure of how good the system's observability is. A good observable system goes well beyond monitoring and alerting.
+**Suzieq** is both a framework and an application using that framework, that is focused on **improving the observability of your network**.  We define observaility as the ability of a system to answer either trivial or complex questions that you pose as you go about operating your network. How easily you can answer your questions is a measure of how good the system's observability is. A good observable system goes well beyond monitoring and alerting. Suzieq is primarily meant for use by network engineers and designers.
 
 Suzieq does multiple things. It collects data from different devices and systems. It normalizes the data and then stores it in a vendor independent way. Then it allows analysis of that data. 
 
@@ -21,6 +21,7 @@ With the applications that we build on top of the framework we want to demonstra
 
 In this very early release of Suzieq, we've chosen some answers for the framework to get the ball rolling. 
 * We gather data using an agentless model using either SSH or REST API as the transport. 
+* We normalize the data into a vendor-agnostic format.
 * We store all data in files using the popular big data format, Parquet. 
 * All the analysis are exposed either via a CLI or via Python objects. The output can be rendered in various formats from plain text to JSON and CSV.
 * The analysis engine used in this release is pandas.
