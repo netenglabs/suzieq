@@ -42,7 +42,7 @@ Service definitions describe how to get output from devices and then how to turn
 
 Currently Suzieq supports polling [Cumulus Linux](https://cumulusnetworks.com/), [Arista](https://www.arista.com/en/) devices, as well as native Linux devices such as servers. Suzieq can easily support other device types, we just haven't had access to those and not time to chase them down.
 
-Adding new device types starts by created a new [Service](docs/service-format.md).
+Adding new device types starts by created a new [Service](service-format.md).
 Services do work work for what we have tested, but we have not tested around the edges of how
 services are parsed. 
 They might just work for you, but if you run into trouble we can only help a little right now. 
