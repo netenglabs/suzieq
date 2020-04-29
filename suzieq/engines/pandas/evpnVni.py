@@ -65,10 +65,11 @@ class EvpnvniObj(SqEngineObject):
 
         # Gather the unique set of VTEPs per VNI
         vteps_df = df.explode(column='remoteVtepList') \
+                     .dropna(how='any') \
                      .groupby(by=['vni', 'type'])['remoteVtepList'] \
                      .aggregate(lambda x: x.unique().tolist()) \
-                     .dropna(how='any') \
                      .reset_index() \
+                     .dropna(how='any') \
                      .rename(columns={'remoteVtepList': 'allVteps'})
 
         df = df.merge(vteps_df)
