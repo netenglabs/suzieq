@@ -76,8 +76,8 @@ class InterfaceService(Service):
                 if not entry['linkDownCnt']:
                     entry['linkDownCnt'] = 0
 
-                entry["numChanges"] = int(entry["linkUpCnt"] +
-                                          entry["linkDownCnt"])
+                entry["numChanges"] = (int(entry["linkUpCnt"]) +
+                                       int(entry["linkDownCnt"]))
                 entry['state'] = entry['state'].lower()
                 if entry["state"] == "up":
                     ts = entry["linkUpTimestamp"]
