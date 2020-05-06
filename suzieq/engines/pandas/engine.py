@@ -303,7 +303,7 @@ class SqPandasEngine(SqEngine):
     def _get_table_directory(self, table):
         assert table
         folder = "{}/{}".format(self.cfg.get("data-directory"), table)
-        #print(f"FOLDER: {folder}", file=sys.stderr)
+        # print(f"FOLDER: {folder}", file=sys.stderr)
         return folder
 
     def get_tables(self, cfg, **kwargs):
@@ -328,8 +328,5 @@ class SqPandasEngine(SqEngine):
 
 def df_timestamp_to_datetime(df):
     if not df.empty:
-        df["timestamp"] = pd.to_datetime(
-            pd.to_numeric(df["timestamp"], downcast="float"),
-            unit="ms"
-        )
+        df["timestamp"] = pd.to_datetime(df.timestamp.astype(str), unit="ms")
     return df
