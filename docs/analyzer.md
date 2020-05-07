@@ -24,7 +24,9 @@ This document provides a preliminary overview of the features offered by the Suz
 Let's jump into what you can do with Suzieq now.
 
 We focus on the use of the analyzer via the CLI, suzieq-cli. You launch the CLI inside the docker image. You startup the docker image as described before, via the command:
-`docker run -itd -v /home/ddutt/suzieq-data/cloud-native-data-center-networking/parquet-out:/suzieq/parquet --name suzieq ddutt/suzieq:latest`
+```
+docker run -itd -v /home/ddutt/suzieq-data/cloud-native-data-center-networking/parquet-out:/suzieq/parquet --name suzieq ddutt/suzieq:latest
+```
 
 You then attach to it via ```docker attach suzieq```.
 
