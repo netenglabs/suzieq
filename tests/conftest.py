@@ -55,6 +55,7 @@ def create_context_config():
 
 def _create_context_config():
     config = {'schema-directory': './config/schema',
+              'service-directory': './config',
               'data-directory': './tests/data/basic_dual_bgp/parquet-out',
               'temp-directory': '/tmp/suzieq',
               'logging-level': 'WARNING',
