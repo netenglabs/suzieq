@@ -6,6 +6,7 @@ from subprocess import check_output, CalledProcessError
 import shlex
 from tempfile import mkstemp
 from collections import Counter
+import pandas as pd
 
 import pytest
 from _pytest.mark.structures import Mark, MarkDecorator
@@ -344,17 +345,34 @@ def test_sqcmds(testvar, create_context_config):
         os.remove(tmpfname)
 
     jout = []
+#    out_df = pd.DataFrame()
     if output:
+
         try:
             jout = json.loads(output.decode('utf-8').strip())
+#            out_df = pd.read_json(output.decode('utf-8').strip())
         except json.JSONDecodeError:
             jout = output
 
     if 'output' in testvar:
+#        expected_df = pd.DataFrame()
         try:
             expected_jout = json.loads(testvar['output'].strip())
+#            expected_df = pd.read_json(testvar['output'].strip())
         except json.JSONDecodeError:
             expected_jout = testvar['output']
+
+        # # get rid of time columns to compare against
+        #
+        # if not out_df.empty and not expected_df.empty:
+        #     for col in ['timestamp', 'lastChangeTime', 'first_time']:
+        #         if col in out_df.columns:
+        #             out_df = out_df.drop(columns=[col])
+        #         if col in expected_df:
+        #             expected_df = expected_df.drop(columns=[col])
+        #     pd.testing.assert_frame_equal(out_df, expected_df)
+        #     jout = json.loads(out_df.to_json())
+        #     expected_jout = json.loads(expected_df.to_json())
 
         assert (type(expected_jout) == type(jout))
         if isinstance(jout, dict):
@@ -373,6 +391,9 @@ def test_sqcmds(testvar, create_context_config):
             got = [sorted(d.items()) for d in jout]
             assert (expected == got)
 
+    elif not error and 'xfail' in testvar:
+        # this was marked to fail, but it succeeded so we must return
+        return
     elif error and 'xfail' in testvar and 'error' in testvar['xfail']:
         if jout.decode("utf-8") == testvar['xfail']['error']:
             assert False
@@ -387,3 +408,4 @@ def test_sqcmds(testvar, create_context_config):
         assert jerror == jterror
     else:
         raise Exception(f"either xfail or output requried {error}")
+
