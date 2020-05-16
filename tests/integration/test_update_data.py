@@ -1,9 +1,10 @@
 import os
+import glob
 import shutil
 import signal
 import sys
 import yaml
-from subprocess import check_output, CalledProcessError, Popen, PIPE
+from subprocess import check_output, CalledProcessError, Popen, PIPE, STDOUT
 from tempfile import mkstemp
 from collections import Counter
 import time
@@ -16,6 +17,8 @@ from tests import conftest
 #  the data collected for other test_sqcmds tests
 
 ansible_file = '/.vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory'
+samples_dir = 'tests/integration/sqcmds/samples/'
+update_sqcmds = 'tests/utilities/update_sqcmds.py'
 
 
 def copytree(src, dst, symlinks=False, ignore=None):
@@ -50,7 +53,7 @@ def run_cmd(cmd):
     error = None
     returncode = None
     try:
-        output = check_output(cmd)
+        output = check_output(cmd, stderr=STDOUT)
     except CalledProcessError as e:
         error = e.output
         returncode = e.returncode
@@ -59,7 +62,7 @@ def run_cmd(cmd):
     if output:
         output = output.decode('utf-8')
 
-    return output, returncode
+    return output, returncode, error
 
 
 def get_cndcn(path):
@@ -82,7 +85,7 @@ def run_scenario(scenario):
     run_cmd(['sudo', 'ansible-playbook', '-b', '-e', f'scenario={scenario}',
               'deploy.yml'])
     time.sleep(15)
-    out, code = run_cmd(['sudo', 'ansible-playbook', 'ping.yml'])
+    out, code, err = run_cmd(['sudo', 'ansible-playbook', 'ping.yml'])
 
     return out, code
 
@@ -91,12 +94,12 @@ def check_suzieq_data(suzieq_dir, name):
     sqcmd_path = [sys.executable, f"{suzieq_dir}/{conftest.suzieq_cli_path}"]
     sqcmd = sqcmd_path + ['device', 'unique', '--columns=namespace',
                           f'--namespace={name}']
-    out, ret = run_cmd(sqcmd)
+    out, ret, err = run_cmd(sqcmd)
     assert '14' in out  # there should be 14 different hosts collected
     for cmd in ['bgp', 'interface', 'ospf', 'evpnVni']:
         sqcmd = sqcmd_path + [cmd, 'assert', f'--namespace={name}']
-        out, ret = run_cmd(sqcmd)
-        assert ret is None or ret is 1 or ret is 255
+        out, code, err = run_cmd(sqcmd)
+        assert code is None or code is 1 or code is 255
 
 
 def collect_data(topology, proto, scenario, name, suzieq_dir):
@@ -120,9 +123,9 @@ def collect_data(topology, proto, scenario, name, suzieq_dir):
 def vagrant_up():
     print(os.getcwd())
     run_cmd(['sudo', 'vagrant', 'up'])
-    out, ret = run_cmd(['sudo', 'vagrant', 'status'])
+    out, code, err = run_cmd(['sudo', 'vagrant', 'status'])
     run_cmd(['sudo', 'chown', '-R', os.environ['USER'], '..'])
-    return ret
+    return code
 
 
 def vagrant_down():
@@ -165,9 +168,15 @@ class TestUpdate:
         copytree('dual-attach/parquet-out', dst_dir)
         shutil.rmtree('dual-attach/parquet-out')
 
+        # update the samples data with updates from the newly collected data
+        os.chdir(orig_dir)
+        for file in glob.glob(f'{samples_dir}/*.yml'):
+            out, code, error = run_cmd(['python3', update_sqcmds, '-f', file, '-o'])
+            assert code is None or code == 0, f"{file} failed, {out} {code} {error}"
+
+
 # TODO
 # run update commands and see the differences
-# how to change test_sqcmds to be more resilient
 # have vagrant only go up/down when changing single/dual ?
 
 tests = [
@@ -183,7 +192,7 @@ tests = [
 ]
 
 
-def test_data(topology, proto, scenario):
+def _test_data(topology, proto, scenario):
     orig_dir = os.getcwd()
     path = get_cndcn(tmp_path)
     os.chdir(path + '/topologies')
@@ -205,7 +214,7 @@ class TestDualAttach:
                         reason='Not updating data')
     @pytest.mark.parametrize("proto, scenario", tests)
     def test_data(self, proto, scenario):
-        test_data('dual-attach', proto, scenario)
+        _test_data('dual-attach', proto, scenario)
 
 
 class TestSingleAttach:
@@ -214,4 +223,4 @@ class TestSingleAttach:
                         reason='Not updating data')
     @pytest.mark.parametrize("proto, scenario", tests)
     def test_data(self, proto, scenario):
-        test_data('dual-attach', proto, scenario)
+        _test_data('dual-attach', proto, scenario)

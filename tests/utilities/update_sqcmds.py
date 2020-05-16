@@ -84,12 +84,17 @@ if __name__ == '__main__':
             cfg_file = create_config(test)
             sqcmd = sqcmd_path + ['--config={}'.format(cfg_file)]
 
-
             reason = None
             output, error, xfail = run_cmd(sqcmd, test)
 
-            if result:
-                assert globals()[result]  # make sure that the result is the same class of result from before
+            # make sure that the result is the same class of result from before
+            # there would be no result if no output had been specified in the captured output
+            # sometimes we correctly produce no results, so avoid checking that
+            if result and (output or error or xfail):
+                assert globals()[result], \
+                    f"result {result}, output: {output}, error: {error}, xfail: {xfail}"
+
+            # TODO: what to do when captured output is correctly empty []
 
             if not error and result != 'xfail':
                 if result in test:
