@@ -23,7 +23,10 @@ def copytree(src, dst, symlinks=False, ignore=None):
         s = os.path.join(src, item)
         d = os.path.join(dst, item)
         if os.path.isdir(s):
-            shutil.copytree(s, d, symlinks, ignore)
+            if os.path.isdir(d):
+                copytree(s, d, symlinks, ignore)
+            else:
+                shutil.copytree(s, d, symlinks, ignore)
         else:
             shutil.copy2(s, d)
 
@@ -42,7 +45,7 @@ def create_config(t_dir, suzieq_dir):
     return fname
 
 
-def _run_cmd(cmd):
+def run_cmd(cmd):
     output = None
     error = None
     returncode = None
@@ -59,9 +62,9 @@ def _run_cmd(cmd):
     return output, returncode
 
 
-def _get_cndcn(path):
+def get_cndcn(path):
     os.chdir(path)
-    _run_cmd(['git', 'clone',
+    run_cmd(['git', 'clone',
               'https://github.com/ddutt/cloud-native-data-center-networking.git'])
     return os.getcwd() + '/cloud-native-data-center-networking'
 
@@ -76,10 +79,10 @@ def run_sqpoller(name, ansible_dir, suzieq_dir):
 
 
 def run_scenario(scenario):
-    _run_cmd(['sudo', 'ansible-playbook', '-b', '-e', f'scenario={scenario}',
+    run_cmd(['sudo', 'ansible-playbook', '-b', '-e', f'scenario={scenario}',
               'deploy.yml'])
     time.sleep(15)
-    out, code = _run_cmd(['sudo', 'ansible-playbook', 'ping.yml'])
+    out, code = run_cmd(['sudo', 'ansible-playbook', 'ping.yml'])
 
     return out, code
 
@@ -88,74 +91,79 @@ def check_suzieq_data(suzieq_dir, name):
     sqcmd_path = [sys.executable, f"{suzieq_dir}/{conftest.suzieq_cli_path}"]
     sqcmd = sqcmd_path + ['device', 'unique', '--columns=namespace',
                           f'--namespace={name}']
-    out, ret = _run_cmd(sqcmd)
+    out, ret = run_cmd(sqcmd)
     assert '14' in out  # there should be 14 different hosts collected
     for cmd in ['bgp', 'interface', 'ospf', 'evpnVni']:
         sqcmd = sqcmd_path + [cmd, 'assert', f'--namespace={name}']
-        out, ret = _run_cmd(sqcmd)
+        out, ret = run_cmd(sqcmd)
         assert ret is None or ret is 1 or ret is 255
 
 
 def collect_data(topology, proto, scenario, name, suzieq_dir):
     os.chdir(f"{topology}/{proto}")
-    _vagrant_up()
+    vagrant_up()
     out, code = run_scenario(scenario)
     if code is not None:
         print("retrying setting up scenario")
-        _vagrant_down()
+        vagrant_down()
         run_scenario(scenario)
     dir = os.getcwd() + '/..'
     cfg_file = create_config('../', suzieq_dir)
     print(f"config file {os.getcwd()}/{cfg_file}")
     run_sqpoller(name, dir, suzieq_dir)
     check_suzieq_data(suzieq_dir, name)
-    _vagrant_down()
+    vagrant_down()
     os.chdir('../..')
+    return cfg_file
 
 
-def _vagrant_up():
+def vagrant_up():
     print(os.getcwd())
-    _run_cmd(['sudo', 'vagrant', 'up'])
-    out, ret = _run_cmd(['sudo', 'vagrant', 'status'])
-    _run_cmd(['sudo', 'chown', '-R', os.environ['USER'], '..'])
+    run_cmd(['sudo', 'vagrant', 'up'])
+    out, ret = run_cmd(['sudo', 'vagrant', 'status'])
+    run_cmd(['sudo', 'chown', '-R', os.environ['USER'], '..'])
     return ret
 
 
-def _vagrant_down():
+def vagrant_down():
     print("VAGRANT DOWN")
-    _run_cmd(['sudo', 'vagrant', 'destroy', '-f'])
+    run_cmd(['sudo', 'vagrant', 'destroy', '-f'])
 
 
 @pytest.fixture
-def _vagrant_setup():
+def vagrant_setup():
     yield
-    _vagrant_down()
-
+    vagrant_down()
 
 class TestUpdate:
     @pytest.mark.update_data
-    @pytest.mark.skipif(not os.environ.get('UPDATE_SQCMDS', None),
+    @pytest.mark.skipif(not os.environ.get('SUZIEQ_POLLER', None),
                         reason='Not updating data')
-    def test_update_data(self, tmp_path, _vagrant_setup):
+    def test_update_data(self, tmp_path, vagrant_setup):
         orig_dir = os.getcwd()
-        path = _get_cndcn(tmp_path)
+        path = get_cndcn(tmp_path)
         os.chdir(path + '/topologies')
 
-        #collect_data('dual-attach', 'evpn', 'ospf-ibgp', 'ospf-ibgp', orig_dir)
+        collect_data('dual-attach', 'evpn', 'ospf-ibgp', 'ospf-ibgp', orig_dir)
         collect_data('dual-attach', 'evpn', 'centralized', 'dual-evpn', orig_dir)
-        #collect_data('single-attach', 'ospf', 'numbered', 'ospf-single', orig_dir)
+        collect_data('single-attach', 'ospf', 'numbered', 'ospf-single', orig_dir)
 
-        dst_dir = f'{orig_dir}/tests/data/multidc'
-        shutil.rmtree(dst_dir)
-        copytree('/dual-attach/parquet-out', dst_dir)
-        copytree('/single-attach/parquet-out', dst_dir)
-        shutil.rmtree('/dual-attach/parquet-out')
-        shutil.rmtree('/single-attach/parquet-out')
+        dst_dir = f'{orig_dir}/tests/data/multidc/parquet-out'
+        if os.path.isdir(dst_dir):
+            shutil.rmtree(dst_dir)
+        copytree('dual-attach/parquet-out', dst_dir)
+        copytree('single-attach/parquet-out', dst_dir)
+        shutil.rmtree('dual-attach/parquet-out')
+        shutil.rmtree('single-attach/parquet-out')
 
-        dst_dir = f'{orig_dir}/tests/data/basic_dual_bgp'
-        shutil.rmtree(dst_dir)
-        #collect_data('dual-attach', 'bgp', 'numbered', 'dual-bgp', orig_dir)
-        #copytree('/dual-attach/parquet-out', dst_dir)
+        collect_data('dual-attach', 'bgp', 'numbered', 'dual-bgp', orig_dir)
+
+        dst_dir = f'{orig_dir}/tests/data/basic_dual_bgp/parquet-out'
+        if os.path.isdir(dst_dir):
+            shutil.rmtree(dst_dir)
+
+        copytree('dual-attach/parquet-out', dst_dir)
+        shutil.rmtree('dual-attach/parquet-out')
 
 # TODO
 # run update commands and see the differences
@@ -165,22 +173,45 @@ class TestUpdate:
 tests = [
     ['bgp', 'numbered'],
     #['bgp', 'unnumbered'],
-    #['bgp', 'docker']
+    #['bgp', 'docker'],
+    #['ospf', 'numberd'],
+    #['ospf', 'unnumbered'],
+    #['ospf', 'docker'],
+    #['evpn', 'centralized'],
+    #['evpn', 'distributed'],
+    #['evpn', 'ospf-ibgp']
 ]
+
+
+def test_data(topology, proto, scenario):
+    orig_dir = os.getcwd()
+    path = get_cndcn(tmp_path)
+    os.chdir(path + '/topologies')
+    name = f'{topology}_{proto}_{scenario}'
+
+    collect_data('dual-attach', proto, scenario, name, orig_dir)
+    # TODO
+    #  run the tests
+
+    # copytree
+
+# these are grouped as classes so that we will only do one a time
+#  when using --dist=loadscope
+
+
 class TestDualAttach:
     @pytest.mark.dual_attach
     @pytest.mark.skipif(not os.environ.get('SUZIEQ_POLLER', None),
                         reason='Not updating data')
     @pytest.mark.parametrize("proto, scenario", tests)
     def test_data(self, proto, scenario):
-        orig_dir = os.getcwd()
-        path = _get_cndcn(tmp_path)
-        os.chdir(path + '/topologies')
-        name = f'dual-attach_{proto}_{scenario}'
-        collect_data('dual-attach', proto, scenario, name, orig_dir)
-        # TODO
-        #  run the tests
+        test_data('dual-attach', proto, scenario)
 
 
 class TestSingleAttach:
-    pass
+    @pytest.mark.single_attach
+    @pytest.mark.skipif(not os.environ.get('SUZIEQ_POLLER', None),
+                        reason='Not updating data')
+    @pytest.mark.parametrize("proto, scenario", tests)
+    def test_data(self, proto, scenario):
+        test_data('dual-attach', proto, scenario)
