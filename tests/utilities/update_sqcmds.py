@@ -71,19 +71,26 @@ if __name__ == '__main__':
 
     changes = 0
     for test in data['tests']:
-        result = 'output'
+        result = None
         if 'error' in test:
             result = 'error'
         elif 'xfail' in test:
             result = 'xfail'
+        elif 'output' in test:
+            result = 'output'
 
-        cfg_file = create_config(test)
-        sqcmd = sqcmd_path + ['--config={}'.format(cfg_file)]
         if result not in test or test[result] is None or userargs.overwrite:
             changes += 1
+            cfg_file = create_config(test)
+            sqcmd = sqcmd_path + ['--config={}'.format(cfg_file)]
+
 
             reason = None
             output, error, xfail = run_cmd(sqcmd, test)
+
+            if result:
+                assert globals()[result]  # make sure that the result is the same class of result from before
+
             if not error and result != 'xfail':
                 if result in test:
                     del test[result]
