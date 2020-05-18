@@ -4,7 +4,7 @@ import shutil
 import signal
 import sys
 import yaml
-from subprocess import check_output, CalledProcessError, Popen, PIPE, STDOUT
+from subprocess import check_output, check_call, CalledProcessError, Popen, PIPE, STDOUT
 from tempfile import mkstemp
 from collections import Counter
 import time
@@ -138,6 +138,14 @@ def vagrant_setup():
     yield
     vagrant_down()
 
+def git_del_dir(dir):
+    if os.path.isdir(dir):
+        try:
+            check_call(f"git rm {dir}")
+        except CalledProcessError as e:
+            shutil.rmtree(dir)
+
+
 class TestUpdate:
     @pytest.mark.update_data
     @pytest.mark.skipif(not os.environ.get('SUZIEQ_POLLER', None),
@@ -152,8 +160,7 @@ class TestUpdate:
         collect_data('single-attach', 'ospf', 'numbered', 'ospf-single', orig_dir)
 
         dst_dir = f'{orig_dir}/tests/data/multidc/parquet-out'
-        if os.path.isdir(dst_dir):
-            shutil.rmtree(dst_dir)
+        git_del_dir(dst_dir)
         copytree('dual-attach/parquet-out', dst_dir)
         copytree('single-attach/parquet-out', dst_dir)
         shutil.rmtree('dual-attach/parquet-out')
@@ -176,7 +183,6 @@ class TestUpdate:
 
 
 # TODO
-# run update commands and see the differences
 # have vagrant only go up/down when changing single/dual ?
 
 tests = [
