@@ -8,9 +8,6 @@ import argparse
 from subprocess import check_output, CalledProcessError
 from tests import conftest
 
-# TODO
-#  create tempfile for config
-
 
 def create_config(testvar):
     if 'data-directory' in testvar:
@@ -24,8 +21,10 @@ def create_config(testvar):
         return tmpfname
 
 
-def run_cmd(cmd_path, testvar):
+def run_cmd(cmd_path, testvar, namespace=None):
     exec_cmd = cmd_path + shlex.split(testvar['command'])
+    if namespace:
+        exec_cmd += ['--namespace', namespace]
     output = None
     error = None
     cmds = exec_cmd[:]
@@ -63,7 +62,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     parser.add_argument('--filename', '-f', type=str, required=True)
+    parser.add_argument('--data_dir', '-d', type=str)
     parser.add_argument('--overwrite', '-o', action='store_true')
+    parser.add_argument('--namespace', '-n', type=str)
     userargs = parser.parse_args()
 
     with open(userargs.filename, 'r') as f:
@@ -81,11 +82,14 @@ if __name__ == '__main__':
 
         if result not in test or test[result] is None or userargs.overwrite:
             changes += 1
+            if userargs.data_dir:
+                test['data-directory'] = userargs.data_dir
+
             cfg_file = create_config(test)
             sqcmd = sqcmd_path + ['--config={}'.format(cfg_file)]
 
             reason = None
-            output, error, xfail = run_cmd(sqcmd, test)
+            output, error, xfail = run_cmd(sqcmd, test, userargs.namespace)
 
             # make sure that the result is the same class of result from before
             # there would be no result if no output had been specified in the captured output

@@ -1,9 +1,11 @@
 import os
+import shlex
 import glob
 import shutil
 import signal
 import sys
 import yaml
+import json
 from subprocess import check_output, check_call, CalledProcessError, Popen, PIPE, STDOUT
 from tempfile import mkstemp
 from collections import Counter
@@ -18,7 +20,9 @@ from tests import conftest
 
 ansible_file = '/.vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory'
 samples_dir = 'tests/integration/sqcmds/samples/'
-update_sqcmds = 'tests/utilities/update_sqcmds.py'
+UPDATE_SQCMDS = 'tests/utilities/update_sqcmds.py'
+cndcn_samples_dir = 'tests/integration/all_cndcn/'
+parquet_dir = '/tmp/suzieq-tests-parquet'
 
 
 def copytree(src, dst, symlinks=False, ignore=None):
@@ -130,20 +134,33 @@ def vagrant_up():
 
 def vagrant_down():
     print("VAGRANT DOWN")
+    run_cmd(['sudo', 'chown', '-R', os.environ['USER'], '..'])
     run_cmd(['sudo', 'vagrant', 'destroy', '-f'])
 
 
+# this is an attempt to clean up vagrant if something goes wrong
 @pytest.fixture
 def vagrant_setup():
     yield
     vagrant_down()
 
+
 def git_del_dir(dir):
     if os.path.isdir(dir):
         try:
-            check_call(f"git rm {dir}")
+            check_call(['git', 'rm', dir])
         except CalledProcessError as e:
             shutil.rmtree(dir)
+
+
+def update_sqcmds(files, data_dir=None):
+    for file in files:
+        cmd = ['python3', UPDATE_SQCMDS, '-f', file, '-o']
+        if data_dir:
+            cmd += ['-d', data_dir]
+        print(cmd)
+        out, code, error = run_cmd(cmd)
+        assert code is None or code == 0, f"{file} failed, {out} {code} {error}"
 
 
 class TestUpdate:
@@ -177,10 +194,7 @@ class TestUpdate:
 
         # update the samples data with updates from the newly collected data
         os.chdir(orig_dir)
-        for file in glob.glob(f'{samples_dir}/*.yml'):
-            out, code, error = run_cmd(['python3', update_sqcmds, '-f', file, '-o'])
-            assert code is None or code == 0, f"{file} failed, {out} {code} {error}"
-
+        update_sqcmds(glob.glob(f'{samples_dir}/*.yml'))
 
 # TODO
 # have vagrant only go up/down when changing single/dual ?
@@ -198,35 +212,130 @@ tests = [
 ]
 
 
-def _test_data(topology, proto, scenario):
+
+
+def _test_sqcmds(testvar, context_config):
+    sqcmd_path = [sys.executable, conftest.suzieq_cli_path]
+    tmpfname = None
+    if 'data-directory' in testvar:
+        # We need to create a tempfile to hold the config
+        tmpconfig = context_config
+        tmpconfig['data-directory'] = testvar['data-directory']
+
+        fd, tmpfname = mkstemp(suffix='yml')
+        f = os.fdopen(fd, 'w')
+        f.write(yaml.dump(tmpconfig))
+        f.close()
+        sqcmd_path += ['--config={}'.format(tmpfname)]
+
+    exec_cmd = sqcmd_path + shlex.split(testvar['command'])
+
+    output = None
+    error = None
+    try:
+        output = check_output(exec_cmd)
+    except CalledProcessError as e:
+        error = e.output
+
+    if tmpfname:
+        os.remove(tmpfname)
+
+    jout = []
+    if output:
+
+        try:
+            jout = json.loads(output.decode('utf-8').strip())
+        except json.JSONDecodeError:
+            jout = output
+
+    if 'output' in testvar:
+        try:
+            expected_jout = json.loads(testvar['output'].strip())
+        except json.JSONDecodeError:
+            expected_jout = testvar['output']
+
+        assert (type(expected_jout) == type(jout))
+
+        if len(expected_jout) > 0:
+            assert len(jout) > 0
+
+    elif not error and 'xfail' in testvar:
+        # this was marked to fail, but it succeeded so we must return
+        return
+    elif error and 'xfail' in testvar and 'error' in testvar['xfail']:
+        if jout.decode("utf-8") == testvar['xfail']['error']:
+            assert False
+        else:
+            assert True
+    elif 'error' in testvar and 'error' in testvar['error']:
+        assert error
+    else:
+        raise Exception(f"either xfail or output requried {error}")
+
+
+def _create_data(topology, proto, scenario, path):
     orig_dir = os.getcwd()
-    path = get_cndcn(tmp_path)
+    path = get_cndcn(path)
     os.chdir(path + '/topologies')
     name = f'{topology}_{proto}_{scenario}'
 
-    collect_data('dual-attach', proto, scenario, name, orig_dir)
-    # TODO
-    #  run the tests
+    collect_data(topology, proto, scenario, name, orig_dir)
 
-    # copytree
+    if not os.path.isdir(parquet_dir):
+        os.mkdir(parquet_dir)
+    if not os.path.isdir(f'{parquet_dir}/{name}'):
+        os.mkdir(f'{parquet_dir}/{name}')
+
+    copytree(f"{path}/topologies/{topology}/parquet-out",
+             f"{parquet_dir}/{name}/parquet-out/")
+
+    os.chdir(orig_dir)
+    if os.environ.get('UPDATE_SQCMDS', None):
+        update_sqcmds(glob.glob(f'{cndcn_samples_dir}/{name}/*.yml'),
+                      f"{parquet_dir}/{name}/parquet-out")
+
+
+def _test_data(topology, proto, scenario, testvar):
+    name = f'{topology}_{proto}_{scenario}'
+    testvar['data-directory'] = f"{parquet_dir}/{name}/parquet-out"
+    _test_sqcmds(testvar, conftest._create_context_config())
+
+
 
 # these are grouped as classes so that we will only do one a time
 #  when using --dist=loadscope
 
-
 class TestDualAttach:
     @pytest.mark.dual_attach
-    @pytest.mark.skipif(not os.environ.get('SUZIEQ_POLLER', None),
+    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ,
                         reason='Not updating data')
     @pytest.mark.parametrize("proto, scenario", tests)
-    def test_data(self, proto, scenario):
-        _test_data('dual-attach', proto, scenario)
+    def test_create_dual_data(self, proto, scenario, tmp_path, vagrant_setup):
+        _create_data('dual-attach', proto, scenario, tmp_path)
 
-
-class TestSingleAttach:
-    @pytest.mark.single_attach
-    @pytest.mark.skipif(not os.environ.get('SUZIEQ_POLLER', None),
+    # this needs to be run after the tests are created and updated
+    #  there is no way to have pytest run the load_up_the_tests before the updater
+    #  so we prevent this running if you are updating the sqcmds
+    @pytest.mark.dual_attach
+    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
+                        'UPDATE_SQCMDS' in os.environ,
                         reason='Not updating data')
-    @pytest.mark.parametrize("proto, scenario", tests)
-    def test_data(self, proto, scenario):
-        _test_data('dual-attach', proto, scenario)
+    @pytest.mark.depends(on=['test_create_dual_data'])
+    @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
+        os.scandir(f"{cndcn_samples_dir}/dual-attach_bgp_numbered/")))
+    def test_dual_bgp_numbered_data(self, testvar, test_cleanup_dual_numbered_suzieq):
+        _test_data('dual-attach', 'bgp', 'numbered', testvar)
+
+    @pytest.fixture(scope='session', autouse=True)
+    def test_cleanup_dual_numbered_suzieq(self):
+        yield
+        name = 'dual-attach_bgp_numbered'
+        dir = f"{parquet_dir}/{name}/parquet-out"
+        if os.path.isdir(dir):
+            shutil.rmtree(dir)
+
+
+
+# TODO
+# update sqcmds
+#   change tests that need --namespace filters -- or do that for everything?
