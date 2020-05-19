@@ -7,7 +7,7 @@ data that the poller collects.
 to update the test data, go to the root suzieq directory
 
 ```bash
-export SUZIEQ_POLLER=true; pytest -m update_data -n0 > test_results; unset SUZIEQ_POLLER
+export SUZIEQ_POLLER=true; pytest -m update_data -n0; unset SUZIEQ_POLLER
 ```
 this will take a long time, on the order of 30 minutes. It has to spin
 up vagrant images and collect data and run a little bit of verification.
