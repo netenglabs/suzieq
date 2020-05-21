@@ -9,6 +9,9 @@ from unittest.mock import Mock
 import yaml
 import json
 import pandas as pd
+from tempfile import mkstemp
+import shlex
+from subprocess import check_output, CalledProcessError
 
 
 suzieq_cli_path = './suzieq/cli/suzieq-cli'
@@ -133,5 +136,31 @@ def load_up_the_tests(dir):
     return tests
 
 
+def setup_sqcmds(testvar, context_config):
+    sqcmd_path = [sys.executable, suzieq_cli_path]
+    tmpfname = None
+    if 'data-directory' in testvar:
+        # We need to create a tempfile to hold the config
+        tmpconfig = context_config
+        tmpconfig['data-directory'] = testvar['data-directory']
 
+        fd, tmpfname = mkstemp(suffix='yml')
+        f = os.fdopen(fd, 'w')
+        f.write(yaml.dump(tmpconfig))
+        f.close()
+        sqcmd_path += ['--config={}'.format(tmpfname)]
+
+    exec_cmd = sqcmd_path + shlex.split(testvar['command'])
+
+    output = None
+    error = None
+    try:
+        output = check_output(exec_cmd)
+    except CalledProcessError as e:
+        error = e.output
+
+    if tmpfname:
+        os.remove(tmpfname)
+
+    return output, error
 

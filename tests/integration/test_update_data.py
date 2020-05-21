@@ -7,7 +7,6 @@ import sys
 import yaml
 import json
 from subprocess import check_output, check_call, CalledProcessError, Popen, PIPE, STDOUT
-from tempfile import mkstemp
 from collections import Counter
 import time
 import pytest
@@ -153,11 +152,13 @@ def git_del_dir(dir):
             shutil.rmtree(dir)
 
 
-def update_sqcmds(files, data_dir=None):
+def update_sqcmds(files, data_dir=None, namespace=None):
     for file in files:
         cmd = ['python3', UPDATE_SQCMDS, '-f', file, '-o']
         if data_dir:
             cmd += ['-d', data_dir]
+        if namespace:
+            cmd += ['-n', namespace]
         print(cmd)
         out, code, error = run_cmd(cmd)
         assert code is None or code == 0, f"{file} failed, {out} {code} {error}"
@@ -201,44 +202,19 @@ class TestUpdate:
 
 tests = [
     ['bgp', 'numbered'],
-    #['bgp', 'unnumbered'],
-    #['bgp', 'docker'],
-    #['ospf', 'numberd'],
-    #['ospf', 'unnumbered'],
-    #['ospf', 'docker'],
-    #['evpn', 'centralized'],
-    #['evpn', 'distributed'],
-    #['evpn', 'ospf-ibgp']
+    ['bgp', 'unnumbered'],
+    ['bgp', 'docker'],
+    ['ospf', 'numbered'],
+    ['ospf', 'unnumbered'],
+    ['ospf', 'docker'],
+    ['evpn', 'centralized'],
+    ['evpn', 'distributed'],
+    ['evpn', 'ospf-ibgp']
 ]
 
 
-
-
 def _test_sqcmds(testvar, context_config):
-    sqcmd_path = [sys.executable, conftest.suzieq_cli_path]
-    tmpfname = None
-    if 'data-directory' in testvar:
-        # We need to create a tempfile to hold the config
-        tmpconfig = context_config
-        tmpconfig['data-directory'] = testvar['data-directory']
-
-        fd, tmpfname = mkstemp(suffix='yml')
-        f = os.fdopen(fd, 'w')
-        f.write(yaml.dump(tmpconfig))
-        f.close()
-        sqcmd_path += ['--config={}'.format(tmpfname)]
-
-    exec_cmd = sqcmd_path + shlex.split(testvar['command'])
-
-    output = None
-    error = None
-    try:
-        output = check_output(exec_cmd)
-    except CalledProcessError as e:
-        error = e.output
-
-    if tmpfname:
-        os.remove(tmpfname)
+    output, error = conftest.setup_sqcmds(testvar, context_config)
 
     jout = []
     if output:
@@ -292,7 +268,8 @@ def _create_data(topology, proto, scenario, path):
     os.chdir(orig_dir)
     if os.environ.get('UPDATE_SQCMDS', None):
         update_sqcmds(glob.glob(f'{cndcn_samples_dir}/{name}/*.yml'),
-                      f"{parquet_dir}/{name}/parquet-out")
+                      data_dir=f"{parquet_dir}/{name}/parquet-out",
+                      namespace=name)
 
 
 def _test_data(topology, proto, scenario, testvar):
@@ -301,9 +278,10 @@ def _test_data(topology, proto, scenario, testvar):
     _test_sqcmds(testvar, conftest._create_context_config())
 
 
-
 # these are grouped as classes so that we will only do one a time
 #  when using --dist=loadscope
+# because we have two vagrant files in CNDCN, that means we can run
+# two simultations at a time, one single-attach and one dual-attach
 
 class TestDualAttach:
     @pytest.mark.dual_attach
@@ -334,8 +312,318 @@ class TestDualAttach:
         if os.path.isdir(dir):
             shutil.rmtree(dir)
 
+    @pytest.mark.dual_attach
+    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
+                        'UPDATE_SQCMDS' in os.environ,
+                        reason='Not updating data')
+    @pytest.mark.depends(on=['test_create_dual_data'])
+    @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
+        os.scandir(f"{cndcn_samples_dir}/dual-attach_bgp_unnumbered/")))
+    def test_dual_bgp_numbered_data(self, testvar, test_cleanup_dual_numbered_suzieq):
+        _test_data('dual-attach', 'bgp', 'unnumbered', testvar)
 
+    @pytest.fixture(scope='session', autouse=True)
+    def test_cleanup_dual_unnumbered_suzieq(self):
+        yield
+        name = 'dual-attach_bgp_unnumbered'
+        dir = f"{parquet_dir}/{name}/parquet-out"
+        if os.path.isdir(dir):
+            shutil.rmtree(dir)
 
-# TODO
-# update sqcmds
-#   change tests that need --namespace filters -- or do that for everything?
+    @pytest.mark.dual_attach
+    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
+                        'UPDATE_SQCMDS' in os.environ,
+                        reason='Not updating data')
+    @pytest.mark.depends(on=['test_create_dual_data'])
+    @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
+        os.scandir(f"{cndcn_samples_dir}/dual-attach_bgp_docker/")))
+    def test_dual_bgp_numbered_data(self, testvar, test_cleanup_dual_numbered_suzieq):
+        _test_data('dual-attach', 'bgp', 'docker', testvar)
+
+    @pytest.fixture(scope='session', autouse=True)
+    def test_cleanup_dual_docker_suzieq(self):
+        yield
+        name = 'dual-attach_bgp_docker'
+        dir = f"{parquet_dir}/{name}/parquet-out"
+        if os.path.isdir(dir):
+            shutil.rmtree(dir)
+
+    @pytest.mark.dual_attach
+    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
+                        'UPDATE_SQCMDS' in os.environ,
+                        reason='Not updating data')
+    @pytest.mark.depends(on=['test_create_dual_data'])
+    @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
+        os.scandir(f"{cndcn_samples_dir}/dual-attach_ospf_numbered/")))
+    def test_dual_ospf_numbered_data(self, testvar, test_cleanup_dual_numbered_suzieq):
+        _test_data('dual-attach', 'ospf', 'numbered', testvar)
+
+    @pytest.fixture(scope='session', autouse=True)
+    def test_cleanup_dual_numbered_suzieq(self):
+        yield
+        name = 'dual-attach_ospf_numbered'
+        dir = f"{parquet_dir}/{name}/parquet-out"
+        if os.path.isdir(dir):
+            shutil.rmtree(dir)
+
+    @pytest.mark.dual_attach
+    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
+                        'UPDATE_SQCMDS' in os.environ,
+                        reason='Not updating data')
+    @pytest.mark.depends(on=['test_create_dual_data'])
+    @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
+        os.scandir(f"{cndcn_samples_dir}/dual-attach_ospf_unnumbered/")))
+    def test_dual_ospf_numbered_data(self, testvar, test_cleanup_dual_numbered_suzieq):
+        _test_data('dual-attach', 'ospf', 'unnumbered', testvar)
+
+    @pytest.fixture(scope='session', autouse=True)
+    def test_cleanup_dual_unnumbered_suzieq(self):
+        yield
+        name = 'dual-attach_ospf_unnumbered'
+        dir = f"{parquet_dir}/{name}/parquet-out"
+        if os.path.isdir(dir):
+            shutil.rmtree(dir)
+
+    @pytest.mark.dual_attach
+    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
+                        'UPDATE_SQCMDS' in os.environ,
+                        reason='Not updating data')
+    @pytest.mark.depends(on=['test_create_dual_data'])
+    @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
+        os.scandir(f"{cndcn_samples_dir}/dual-attach_ospf_docker/")))
+    def test_dual_ospf_numbered_data(self, testvar, test_cleanup_dual_numbered_suzieq):
+        _test_data('dual-attach', 'ospf', 'docker', testvar)
+
+    @pytest.fixture(scope='session', autouse=True)
+    def test_cleanup_dual_docker_suzieq(self):
+        yield
+        name = 'dual-attach_ospf_docker'
+        dir = f"{parquet_dir}/{name}/parquet-out"
+        if os.path.isdir(dir):
+            shutil.rmtree(dir)
+
+    @pytest.mark.dual_attach
+    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
+                        'UPDATE_SQCMDS' in os.environ,
+                        reason='Not updating data')
+    @pytest.mark.depends(on=['test_create_dual_data'])
+    @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
+        os.scandir(f"{cndcn_samples_dir}/dual-attach_evpn_centralized/")))
+    def test_dual_evpn_centralized_data(self, testvar, test_cleanup_evpn_centralized_suzieq):
+        _test_data('dual-attach', 'evpn', 'centralized', testvar)
+
+    @pytest.fixture(scope='session', autouse=True)
+    def test_cleanup_evpn_centralized_suzieq(self):
+        yield
+        name = 'dual-attach_evpn_centralized'
+        dir = f"{parquet_dir}/{name}/parquet-out"
+        if os.path.isdir(dir):
+            shutil.rmtree(dir)
+
+    @pytest.mark.dual_attach
+    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
+                        'UPDATE_SQCMDS' in os.environ,
+                        reason='Not updating data')
+    @pytest.mark.depends(on=['test_create_dual_data'])
+    @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
+        os.scandir(f"{cndcn_samples_dir}/dual-attach_evpn_distributed/")))
+    def test_dual_evpn_distributed_data(self, testvar, test_cleanup_evpn_distributed_suzieq):
+        _test_data('dual-attach', 'evpn', 'distributed', testvar)
+
+    @pytest.fixture(scope='session', autouse=True)
+    def test_cleanup_evpn_distributed_suzieq(self):
+        yield
+        name = 'dual-attach_evpn_distributed'
+        dir = f"{parquet_dir}/{name}/parquet-out"
+        if os.path.isdir(dir):
+            shutil.rmtree(dir)
+
+    @pytest.mark.dual_attach
+    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
+                        'UPDATE_SQCMDS' in os.environ,
+                        reason='Not updating data')
+    @pytest.mark.depends(on=['test_create_dual_data'])
+    @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
+        os.scandir(f"{cndcn_samples_dir}/dual-attach_evpn_ospf-ibgp/")))
+    def test_dual_evpn_ospf_ibgp_data(self, testvar, test_cleanup_evpn_ospf_ibgp_suzieq):
+        _test_data('dual-attach', 'evpn', 'ospf-ibgp', testvar)
+
+    @pytest.fixture(scope='session', autouse=True)
+    def test_cleanup_evpn_ospf_ibgp_suzieq(self):
+        yield
+        name = 'dual-attach_evpn_ospf-ibgp'
+        dir = f"{parquet_dir}/{name}/parquet-out"
+        if os.path.isdir(dir):
+            shutil.rmtree(dir)
+
+class TestSingleAttach:
+    @pytest.mark.single_attach
+    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ,
+                        reason='Not updating data')
+    @pytest.mark.parametrize("proto, scenario", tests)
+    def test_create_single_data(self, proto, scenario, tmp_path, vagrant_setup):
+        _create_data('single-attach', proto, scenario, tmp_path)
+
+    # this needs to be run after the tests are created and updated
+    #  there is no way to have pytest run the load_up_the_tests before the updater
+    #  so we prevent this running if you are updating the sqcmds
+    @pytest.mark.single_attach
+    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
+                        'UPDATE_SQCMDS' in os.environ,
+                        reason='Not updating data')
+    @pytest.mark.depends(on=['test_create_single_data'])
+    @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
+        os.scandir(f"{cndcn_samples_dir}/single-attach_bgp_numbered/")))
+    def test_single_bgp_numbered_data(self, testvar, test_cleanup_single_numbered_suzieq):
+        _test_data('single-attach', 'bgp', 'numbered', testvar)
+
+    @pytest.fixture(scope='session', autouse=True)
+    def test_cleanup_single_numbered_suzieq(self):
+        yield
+        name = 'single-attach_bgp_numbered'
+        dir = f"{parquet_dir}/{name}/parquet-out"
+        if os.path.isdir(dir):
+            shutil.rmtree(dir)
+
+    @pytest.mark.single_attach
+    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
+                        'UPDATE_SQCMDS' in os.environ,
+                        reason='Not updating data')
+    @pytest.mark.depends(on=['test_create_single_data'])
+    @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
+        os.scandir(f"{cndcn_samples_dir}/single-attach_bgp_unnumbered/")))
+    def test_single_bgp_numbered_data(self, testvar, test_cleanup_single_numbered_suzieq):
+        _test_data('single-attach', 'bgp', 'unnumbered', testvar)
+
+    @pytest.fixture(scope='session', autouse=True)
+    def test_cleanup_single_unnumbered_suzieq(self):
+        yield
+        name = 'single-attach_bgp_unnumbered'
+        dir = f"{parquet_dir}/{name}/parquet-out"
+        if os.path.isdir(dir):
+            shutil.rmtree(dir)
+
+    @pytest.mark.single_attach
+    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
+                        'UPDATE_SQCMDS' in os.environ,
+                        reason='Not updating data')
+    @pytest.mark.depends(on=['test_create_single_data'])
+    @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
+        os.scandir(f"{cndcn_samples_dir}/single-attach_bgp_docker/")))
+    def test_single_bgp_numbered_data(self, testvar, test_cleanup_single_numbered_suzieq):
+        _test_data('single-attach', 'bgp', 'docker', testvar)
+
+    @pytest.fixture(scope='session', autouse=True)
+    def test_cleanup_single_docker_suzieq(self):
+        yield
+        name = 'single-attach_bgp_docker'
+        dir = f"{parquet_dir}/{name}/parquet-out"
+        if os.path.isdir(dir):
+            shutil.rmtree(dir)
+
+    @pytest.mark.single_attach
+    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
+                        'UPDATE_SQCMDS' in os.environ,
+                        reason='Not updating data')
+    @pytest.mark.depends(on=['test_create_single_data'])
+    @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
+        os.scandir(f"{cndcn_samples_dir}/single-attach_ospf_numbered/")))
+    def test_single_ospf_numbered_data(self, testvar, test_cleanup_single_numbered_suzieq):
+        _test_data('single-attach', 'ospf', 'numbered', testvar)
+
+    @pytest.fixture(scope='session', autouse=True)
+    def test_cleanup_single_numbered_suzieq(self):
+        yield
+        name = 'single-attach_ospf_numbered'
+        dir = f"{parquet_dir}/{name}/parquet-out"
+        if os.path.isdir(dir):
+            shutil.rmtree(dir)
+
+    @pytest.mark.single_attach
+    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
+                        'UPDATE_SQCMDS' in os.environ,
+                        reason='Not updating data')
+    @pytest.mark.depends(on=['test_create_single_data'])
+    @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
+        os.scandir(f"{cndcn_samples_dir}/single-attach_ospf_unnumbered/")))
+    def test_single_ospf_numbered_data(self, testvar, test_cleanup_single_numbered_suzieq):
+        _test_data('single-attach', 'ospf', 'unnumbered', testvar)
+
+    @pytest.fixture(scope='session', autouse=True)
+    def test_cleanup_single_unnumbered_suzieq(self):
+        yield
+        name = 'single-attach_ospf_unnumbered'
+        dir = f"{parquet_dir}/{name}/parquet-out"
+        if os.path.isdir(dir):
+            shutil.rmtree(dir)
+
+    @pytest.mark.single_attach
+    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
+                        'UPDATE_SQCMDS' in os.environ,
+                        reason='Not updating data')
+    @pytest.mark.depends(on=['test_create_single_data'])
+    @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
+        os.scandir(f"{cndcn_samples_dir}/single-attach_ospf_docker/")))
+    def test_single_ospf_numbered_data(self, testvar, test_cleanup_single_numbered_suzieq):
+        _test_data('single-attach', 'ospf', 'docker', testvar)
+
+    @pytest.fixture(scope='session', autouse=True)
+    def test_cleanup_single_docker_suzieq(self):
+        yield
+        name = 'single-attach_ospf_docker'
+        dir = f"{parquet_dir}/{name}/parquet-out"
+        if os.path.isdir(dir):
+            shutil.rmtree(dir)
+    @pytest.mark.single_attach
+    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
+                        'UPDATE_SQCMDS' in os.environ,
+                        reason='Not updating data')
+    @pytest.mark.depends(on=['test_create_single_data'])
+    @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
+        os.scandir(f"{cndcn_samples_dir}/single-attach_evpn_centralized/")))
+    def test_single_evpn_centralized_data(self, testvar, test_cleanup_evpn_centralized_suzieq):
+        _test_data('single-attach', 'evpn', 'centralized', testvar)
+
+    @pytest.fixture(scope='session', autouse=True)
+    def test_cleanup_evpn_centralized_suzieq(self):
+        yield
+        name = 'single-attach_evpn_centralized'
+        dir = f"{parquet_dir}/{name}/parquet-out"
+        if os.path.isdir(dir):
+            shutil.rmtree(dir)
+
+    @pytest.mark.single_attach
+    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
+                        'UPDATE_SQCMDS' in os.environ,
+                        reason='Not updating data')
+    @pytest.mark.depends(on=['test_create_single_data'])
+    @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
+        os.scandir(f"{cndcn_samples_dir}/single-attach_evpn_distributed/")))
+    def test_single_evpn_distributed_data(self, testvar, test_cleanup_evpn_distributed_suzieq):
+        _test_data('single-attach', 'evpn', 'distributed', testvar)
+
+    @pytest.fixture(scope='session', autouse=True)
+    def test_cleanup_evpn_distributed_suzieq(self):
+        yield
+        name = 'single-attach_evpn_distributed'
+        dir = f"{parquet_dir}/{name}/parquet-out"
+        if os.path.isdir(dir):
+            shutil.rmtree(dir)
+
+    @pytest.mark.single_attach
+    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
+                        'UPDATE_SQCMDS' in os.environ,
+                        reason='Not updating data')
+    @pytest.mark.depends(on=['test_create_single_data'])
+    @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
+        os.scandir(f"{cndcn_samples_dir}/single-attach_evpn_ospf-ibgp/")))
+    def test_single_evpn_ospf_ibgp_data(self, testvar, test_cleanup_evpn_ospf_ibgp_suzieq):
+        _test_data('single-attach', 'evpn', 'ospf-ibgp', testvar)
+
+    @pytest.fixture(scope='session', autouse=True)
+    def test_cleanup_evpn_ospf_ibgp_suzieq(self):
+        yield
+        name = 'single-attach_evpn_ospf-ibgp'
+        dir = f"{parquet_dir}/{name}/parquet-out"
+        if os.path.isdir(dir):
+            shutil.rmtree(dir)

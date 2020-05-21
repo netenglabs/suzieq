@@ -7,7 +7,7 @@ data that the poller collects.
 to update the test data, go to the root suzieq directory
 
 ```bash
-export SUZIEQ_POLLER=true; pytest -m update_data -n0; unset SUZIEQ_POLLER
+SUZIEQ_POLLER=true pytest -m update_data -n0
 ```
 this will take a long time, on the order of 30 minutes. It has to spin
 up vagrant images and collect data and run a little bit of verification.
@@ -27,5 +27,16 @@ tests/integration/samples/sqcmds.
 
 
 # CNDCN tests
+
+update the data
+```bash
+UPDATE_SQCMDS=true SUZIEQ_POLLER=true pytest -m dual_attach -n0
+```
+
+
+run the tests
+```bash
+SUZIEQ_POLLER=true pytest -m dual_attach single_attach -n0
+```
 
 

@@ -21,10 +21,8 @@ def create_config(testvar):
         return tmpfname
 
 
-def run_cmd(cmd_path, testvar, namespace=None):
+def run_cmd(cmd_path, testvar):
     exec_cmd = cmd_path + shlex.split(testvar['command'])
-    if namespace:
-        exec_cmd += ['--namespace', namespace]
     output = None
     error = None
     cmds = exec_cmd[:]
@@ -56,6 +54,16 @@ def run_cmd(cmd_path, testvar, namespace=None):
     return jout, jerror, xfail
 
 
+def reset_test(test):
+    if 'error' in test:
+        del test['error']
+    if 'xfail' in test:
+        del test['xfail']
+    if 'output' in test:
+        del test['output']
+    return reset_test
+
+
 if __name__ == '__main__':
 
     sqcmd_path = [sys.executable, conftest.suzieq_cli_path]
@@ -65,6 +73,7 @@ if __name__ == '__main__':
     parser.add_argument('--data_dir', '-d', type=str)
     parser.add_argument('--overwrite', '-o', action='store_true')
     parser.add_argument('--namespace', '-n', type=str)
+    parser.add_argument('--reset', '-r', action='store_true')
     userargs = parser.parse_args()
 
     with open(userargs.filename, 'r') as f:
@@ -72,53 +81,62 @@ if __name__ == '__main__':
 
     changes = 0
     for test in data['tests']:
-        result = None
-        if 'error' in test:
-            result = 'error'
-        elif 'xfail' in test:
-            result = 'xfail'
-        elif 'output' in test:
-            result = 'output'
-
-        if result not in test or test[result] is None or userargs.overwrite:
+        if userargs.reset:
+            test = reset_test(test)
             changes += 1
-            if userargs.data_dir:
-                test['data-directory'] = userargs.data_dir
-
-            cfg_file = create_config(test)
-            sqcmd = sqcmd_path + ['--config={}'.format(cfg_file)]
-
-            reason = None
-            output, error, xfail = run_cmd(sqcmd, test, userargs.namespace)
-
-            # make sure that the result is the same class of result from before
-            # there would be no result if no output had been specified in the captured output
-            # sometimes we correctly produce no results, so avoid checking that
-            if result and (output or error or xfail):
-                assert globals()[result], \
-                    f"result {result}, output: {output}, error: {error}, xfail: {xfail}"
-
-            # TODO: what to do when captured output is correctly empty []
-
-            if not error and result != 'xfail':
-                if result in test:
-                    del test[result]
-                result = 'output'
-                test[result] = json.dumps(output)
-            elif result == 'xfail':
-                test[result]['error'] = json.dumps(output)
-            else:
+        else:
+            result = None
+            if 'error' in test:
                 result = 'error'
-                if xfail:
-                    result = 'xfail'
-                    reason = 'uncaught exception'
-                if result not in test:
-                    test[result] = {}
-                test[result]['error'] = json.dumps(error)
-                if reason:
-                    test[result]['reason'] = reason
-                if 'output' in test:
-                    del test['output']
+            elif 'xfail' in test:
+                result = 'xfail'
+            elif 'output' in test:
+                result = 'output'
+
+            if userargs.namespace:
+                if userargs.namespace not in test['command']:
+                    test['command'] = f"{test['command']} --namespace={userargs.namespace}"
+                    changes += 1
+
+            if result not in test or test[result] is None or userargs.overwrite:
+                changes += 1
+                if userargs.data_dir:
+                    test['data-directory'] = userargs.data_dir
+
+                cfg_file = create_config(test)
+                sqcmd = sqcmd_path + ['--config={}'.format(cfg_file)]
+
+                reason = None
+                output, error, xfail = run_cmd(sqcmd, test)
+
+                # make sure that the result is the same class of result from before
+                # there would be no result if no output had been specified in the captured output
+                # sometimes we correctly produce no results, so avoid checking that
+                if result and (output or error or xfail):
+                    assert globals()[result], \
+                        f"result {result}, output: {output}, error: {error}, xfail: {xfail}"
+
+                # TODO: what to do when captured output is correctly empty []
+
+                if not error and result != 'xfail':
+                    if result in test:
+                        del test[result]
+                    result = 'output'
+                    test[result] = json.dumps(output)
+                elif result == 'xfail':
+                    test[result]['error'] = json.dumps(output)
+                else:
+                    result = 'error'
+                    if xfail:
+                        result = 'xfail'
+                        reason = 'uncaught exception'
+                    if result not in test:
+                        test[result] = {}
+                    test[result]['error'] = json.dumps(error)
+                    if reason:
+                        test[result]['reason'] = reason
+                    if 'output' in test:
+                        del test['output']
     if changes:
         with open(userargs.filename, 'w') as f:
             yaml.dump(data, f)
