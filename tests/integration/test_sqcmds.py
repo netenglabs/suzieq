@@ -10,6 +10,7 @@ import yaml
 import json
 from subprocess import check_output, CalledProcessError
 from collections import Counter
+from tests.conftest import setup_sqcmds
 
 
 basic_verbs = ['show', 'summarize']
@@ -258,30 +259,8 @@ def execute_cmd(cmd, verb, arg, filter=None):
 
 
 def _test_sqcmds(testvar, context_config):
-    sqcmd_path = [sys.executable, suzieq_cli_path]
-    tmpfname = None
-    if 'data-directory' in testvar:
-        # We need to create a tempfile to hold the config
-        tmpconfig = context_config
-        tmpconfig['data-directory'] = testvar['data-directory']
+    output, error = setup_sqcmds(testvar, context_config)
 
-        fd, tmpfname = mkstemp(suffix='yml')
-        f = os.fdopen(fd, 'w')
-        f.write(yaml.dump(tmpconfig))
-        f.close()
-        sqcmd_path += ['--config={}'.format(tmpfname)]
-
-    exec_cmd = sqcmd_path + shlex.split(testvar['command'])
-
-    output = None
-    error = None
-    try:
-        output = check_output(exec_cmd)
-    except CalledProcessError as e:
-        error = e.output
-
-    if tmpfname:
-        os.remove(tmpfname)
 
     jout = []
 #    out_df = pd.DataFrame()
