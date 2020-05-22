@@ -307,7 +307,8 @@ class TestDualAttach:
     @pytest.mark.depends(on=['test_create_dual_data'])
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/dual-attach_bgp_numbered/")))
-    def test_dual_bgp_numbered_data(self, testvar, test_cleanup_dual_numbered_suzieq):
+    def test_dual_bgp_numbered_data(self, testvar,
+                                    test_cleanup_dual_numbered_suzieq):
         _test_data('dual-attach', 'bgp', 'numbered', testvar)
 
     @pytest.fixture(scope='session', autouse=True)
@@ -325,7 +326,8 @@ class TestDualAttach:
     @pytest.mark.depends(on=['test_create_dual_data'])
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/dual-attach_bgp_unnumbered/")))
-    def test_dual_bgp_numbered_data(self, testvar, test_cleanup_dual_numbered_suzieq):
+    def test_dual_bgp_numbered_data(self, testvar,
+                                    test_cleanup_dual_numbered_suzieq):
         _test_data('dual-attach', 'bgp', 'unnumbered', testvar)
 
     @pytest.fixture(scope='session', autouse=True)
@@ -461,6 +463,7 @@ class TestDualAttach:
         dir = f"{parquet_dir}/{name}/parquet-out"
         if os.path.isdir(dir):
             shutil.rmtree(dir)
+
 
 class TestSingleAttach:
     @pytest.mark.single_attach
