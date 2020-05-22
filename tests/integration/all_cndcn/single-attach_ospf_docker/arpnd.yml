@@ -1,0 +1,153 @@
+description: 'Testing verbs for arpnd: show summarize unique'
+tests:
+- command: arpnd show --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: arpnd show
+  output: '[{"namespace": "single-attach_ospf_docker", "hostname": "edge01", "ipAddress":
+    "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:fa:f5:9b", "state": "reachable",
+    "offload": false, "timestamp": 1590168190236}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "exit01", "ipAddress": "10.0.0.21", "oif": "swp1", "macaddr": "44:38:39:00:00:0a",
+    "state": "reachable", "offload": false, "timestamp": 1590168190386}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "exit01", "ipAddress": "10.0.0.22", "oif":
+    "swp2", "macaddr": "44:38:39:00:00:5b", "state": "reachable", "offload": false,
+    "timestamp": 1590168190386}, {"namespace": "single-attach_ospf_docker", "hostname":
+    "exit01", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:fa:f5:9b",
+    "state": "reachable", "offload": false, "timestamp": 1590168190386}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "exit02", "ipAddress": "10.0.0.21", "oif":
+    "swp1", "macaddr": "44:38:39:00:00:22", "state": "reachable", "offload": false,
+    "timestamp": 1590168190386}, {"namespace": "single-attach_ospf_docker", "hostname":
+    "exit02", "ipAddress": "10.0.0.22", "oif": "swp2", "macaddr": "44:38:39:00:00:56",
+    "state": "reachable", "offload": false, "timestamp": 1590168190386}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "exit02", "ipAddress": "192.168.121.1",
+    "oif": "eth0", "macaddr": "52:54:00:fa:f5:9b", "state": "reachable", "offload":
+    false, "timestamp": 1590168190386}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "internet", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr":
+    "52:54:00:fa:f5:9b", "state": "reachable", "offload": false, "timestamp": 1590168190364},
+    {"namespace": "single-attach_ospf_docker", "hostname": "leaf01", "ipAddress":
+    "10.0.0.21", "oif": "swp1", "macaddr": "44:38:39:00:00:54", "state": "reachable",
+    "offload": false, "timestamp": 1590168190386}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf01", "ipAddress": "10.0.0.22", "oif": "swp2", "macaddr": "44:38:39:00:00:25",
+    "state": "reachable", "offload": false, "timestamp": 1590168190386}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "leaf01", "ipAddress": "172.16.1.101",
+    "oif": "swp5", "macaddr": "00:03:00:11:11:01", "state": "reachable", "offload":
+    false, "timestamp": 1590168190386}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf01", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr":
+    "52:54:00:fa:f5:9b", "state": "reachable", "offload": false, "timestamp": 1590168190386},
+    {"namespace": "single-attach_ospf_docker", "hostname": "leaf02", "ipAddress":
+    "10.0.0.21", "oif": "swp1", "macaddr": "44:38:39:00:00:29", "state": "reachable",
+    "offload": false, "timestamp": 1590168190364}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf02", "ipAddress": "10.0.0.22", "oif": "swp2", "macaddr": "44:38:39:00:00:5e",
+    "state": "reachable", "offload": false, "timestamp": 1590168190364}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "leaf02", "ipAddress": "172.16.2.102",
+    "oif": "swp5", "macaddr": "00:03:00:22:22:02", "state": "reachable", "offload":
+    false, "timestamp": 1590168190364}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf02", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr":
+    "52:54:00:fa:f5:9b", "state": "reachable", "offload": false, "timestamp": 1590168190364},
+    {"namespace": "single-attach_ospf_docker", "hostname": "leaf03", "ipAddress":
+    "10.0.0.21", "oif": "swp1", "macaddr": "44:38:39:00:00:50", "state": "reachable",
+    "offload": false, "timestamp": 1590168190386}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf03", "ipAddress": "10.0.0.22", "oif": "swp2", "macaddr": "44:38:39:00:00:1c",
+    "state": "reachable", "offload": false, "timestamp": 1590168190386}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "leaf03", "ipAddress": "172.16.3.103",
+    "oif": "swp5", "macaddr": "00:03:00:33:33:01", "state": "reachable", "offload":
+    false, "timestamp": 1590168190386}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf03", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr":
+    "52:54:00:fa:f5:9b", "state": "reachable", "offload": false, "timestamp": 1590168190386},
+    {"namespace": "single-attach_ospf_docker", "hostname": "leaf04", "ipAddress":
+    "10.0.0.21", "oif": "swp1", "macaddr": "44:38:39:00:00:3c", "state": "reachable",
+    "offload": false, "timestamp": 1590168190364}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf04", "ipAddress": "10.0.0.22", "oif": "swp2", "macaddr": "44:38:39:00:00:47",
+    "state": "reachable", "offload": false, "timestamp": 1590168190364}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "leaf04", "ipAddress": "172.16.4.104",
+    "oif": "swp5", "macaddr": "00:03:00:44:44:02", "state": "reachable", "offload":
+    false, "timestamp": 1590168190364}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf04", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr":
+    "52:54:00:fa:f5:9b", "state": "reachable", "offload": false, "timestamp": 1590168190364},
+    {"namespace": "single-attach_ospf_docker", "hostname": "server101", "ipAddress":
+    "10.0.0.11", "oif": "eth1", "macaddr": "44:38:39:00:00:03", "state": "reachable",
+    "offload": false, "timestamp": 1590168190236}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "server101", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr":
+    "52:54:00:fa:f5:9b", "state": "reachable", "offload": false, "timestamp": 1590168190236},
+    {"namespace": "single-attach_ospf_docker", "hostname": "server102", "ipAddress":
+    "10.0.0.12", "oif": "eth1", "macaddr": "44:38:39:00:00:18", "state": "reachable",
+    "offload": false, "timestamp": 1590168189855}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "server102", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr":
+    "52:54:00:fa:f5:9b", "state": "reachable", "offload": false, "timestamp": 1590168189855},
+    {"namespace": "single-attach_ospf_docker", "hostname": "server103", "ipAddress":
+    "10.0.0.13", "oif": "eth1", "macaddr": "44:38:39:00:00:1f", "state": "reachable",
+    "offload": false, "timestamp": 1590168190236}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "server103", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr":
+    "52:54:00:fa:f5:9b", "state": "reachable", "offload": false, "timestamp": 1590168190236},
+    {"namespace": "single-attach_ospf_docker", "hostname": "server104", "ipAddress":
+    "10.0.0.14", "oif": "eth1", "macaddr": "44:38:39:00:00:2c", "state": "reachable",
+    "offload": false, "timestamp": 1590168189855}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "server104", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr":
+    "52:54:00:fa:f5:9b", "state": "reachable", "offload": false, "timestamp": 1590168189855},
+    {"namespace": "single-attach_ospf_docker", "hostname": "spine01", "ipAddress":
+    "10.0.0.101", "oif": "swp6", "macaddr": "44:38:39:00:00:09", "state": "reachable",
+    "offload": false, "timestamp": 1590168190386}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine01", "ipAddress": "10.0.0.102", "oif": "swp5", "macaddr": "44:38:39:00:00:21",
+    "state": "reachable", "offload": false, "timestamp": 1590168190386}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "spine01", "ipAddress": "10.0.0.11",
+    "oif": "swp1", "macaddr": "44:38:39:00:00:53", "state": "reachable", "offload":
+    false, "timestamp": 1590168190386}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine01", "ipAddress": "10.0.0.12", "oif": "swp2", "macaddr": "44:38:39:00:00:28",
+    "state": "reachable", "offload": false, "timestamp": 1590168190386}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "spine01", "ipAddress": "10.0.0.13",
+    "oif": "swp3", "macaddr": "44:38:39:00:00:4f", "state": "reachable", "offload":
+    false, "timestamp": 1590168190386}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine01", "ipAddress": "10.0.0.14", "oif": "swp4", "macaddr": "44:38:39:00:00:3b",
+    "state": "reachable", "offload": false, "timestamp": 1590168190386}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "spine01", "ipAddress": "192.168.121.1",
+    "oif": "eth0", "macaddr": "52:54:00:fa:f5:9b", "state": "reachable", "offload":
+    false, "timestamp": 1590168190386}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine02", "ipAddress": "10.0.0.101", "oif": "swp6", "macaddr": "44:38:39:00:00:5a",
+    "state": "reachable", "offload": false, "timestamp": 1590168190386}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "spine02", "ipAddress": "10.0.0.102",
+    "oif": "swp5", "macaddr": "44:38:39:00:00:55", "state": "reachable", "offload":
+    false, "timestamp": 1590168190386}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine02", "ipAddress": "10.0.0.11", "oif": "swp1", "macaddr": "44:38:39:00:00:24",
+    "state": "reachable", "offload": false, "timestamp": 1590168190386}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "spine02", "ipAddress": "10.0.0.12",
+    "oif": "swp2", "macaddr": "44:38:39:00:00:5d", "state": "reachable", "offload":
+    false, "timestamp": 1590168190386}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine02", "ipAddress": "10.0.0.13", "oif": "swp3", "macaddr": "44:38:39:00:00:1b",
+    "state": "reachable", "offload": false, "timestamp": 1590168190386}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "spine02", "ipAddress": "10.0.0.14",
+    "oif": "swp4", "macaddr": "44:38:39:00:00:46", "state": "reachable", "offload":
+    false, "timestamp": 1590168190386}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine02", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr":
+    "52:54:00:fa:f5:9b", "state": "reachable", "offload": false, "timestamp": 1590168190386}]'
+- command: arpnd show --columns=hostname --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: arpnd show
+  output: '[{"hostname": "edge01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "internet"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "server101"}, {"hostname": "server101"}, {"hostname": "server102"},
+    {"hostname": "server102"}, {"hostname": "server103"}, {"hostname": "server103"},
+    {"hostname": "server104"}, {"hostname": "server104"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}]'
+- command: arpnd summarize --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: arpnd summarize
+  output: '{"single-attach_ospf_docker": {"deviceCnt": 14, "arpNdEntriesCnt": 46,
+    "macaddrCnt": 46, "oifCnt": 46, "uniqueOifCnt": 8, "extLearnEntriesCnt": 0, "staticEntriesCnt":
+    0, "failedEntryCnt": 0}}'
+- command: arpnd unique --columns=hostname --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: arpnd unique
+  output: '[{"hostname": "internet", "count": 1}, {"hostname": "edge01", "count":
+    1}, {"hostname": "server104", "count": 2}, {"hostname": "server103", "count":
+    2}, {"hostname": "server102", "count": 2}, {"hostname": "server101", "count":
+    2}, {"hostname": "exit02", "count": 3}, {"hostname": "exit01", "count": 3}, {"hostname":
+    "leaf04", "count": 4}, {"hostname": "leaf03", "count": 4}, {"hostname": "leaf02",
+    "count": 4}, {"hostname": "leaf01", "count": 4}, {"hostname": "spine02", "count":
+    7}, {"hostname": "spine01", "count": 7}]'

@@ -1,0 +1,21 @@
+description: 'Testing verbs for evpnVni: show summarize unique'
+tests:
+- command: evpnVni show --format=json --namespace=dual-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_docker/parquet-out
+  marks: evpnVni show
+  output: '[]'
+- command: evpnVni show --columns=hostname --format=json --namespace=dual-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_docker/parquet-out
+  marks: evpnVni show
+  xfail:
+    error: '"Error running command: \"None of [Index([''hostname''], dtype=''object'')]
+      are in the [columns]\"\n------------------------------------------------------------\n------------------------------------------------------------"'
+    reason: uncaught exception
+- command: evpnVni summarize --format=json --namespace=dual-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_docker/parquet-out
+  marks: evpnVni summarize
+  output: '{}'
+- command: evpnVni unique --columns=hostname --format=json --namespace=dual-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_docker/parquet-out
+  marks: evpnVni unique
+  output: '[]'

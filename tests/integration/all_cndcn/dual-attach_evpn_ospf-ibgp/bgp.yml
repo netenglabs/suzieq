@@ -1,0 +1,321 @@
+description: 'Testing verbs for bgp: show summarize unique assert'
+tests:
+- command: bgp show --format=json --namespace=dual-attach_evpn_ospf-ibgp
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_ospf-ibgp/parquet-out
+  marks: bgp show
+  output: '[{"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "edge01", "vrf":
+    "default", "peer": "eth1.2", "peerHostname": "exit01", "state": "Established",
+    "asn": 65530, "peerAsn": 65000, "v4PfxRx": 10, "estdTime": 55.0, "numChanges":
+    1, "timestamp": 1590171722592}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname":
+    "edge01", "vrf": "default", "peer": "eth1.3", "peerHostname": "exit01", "state":
+    "Established", "asn": 65530, "peerAsn": 65000, "v4PfxRx": 2, "estdTime": 56.0,
+    "numChanges": 1, "timestamp": 1590171722592}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "edge01", "vrf": "default", "peer": "eth1.4", "peerHostname": "exit01",
+    "state": "Established", "asn": 65530, "peerAsn": 65001, "v4PfxRx": 3, "estdTime":
+    56.0, "numChanges": 1, "timestamp": 1590171722592}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "edge01", "vrf": "default", "peer": "eth2.2", "peerHostname": "exit02",
+    "state": "Established", "asn": 65530, "peerAsn": 65000, "v4PfxRx": 10, "estdTime":
+    58.0, "numChanges": 1, "timestamp": 1590171722592}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "edge01", "vrf": "default", "peer": "eth2.3", "peerHostname": "exit02",
+    "state": "Established", "asn": 65530, "peerAsn": 65000, "v4PfxRx": 2, "estdTime":
+    58.0, "numChanges": 1, "timestamp": 1590171722592}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "edge01", "vrf": "default", "peer": "eth2.4", "peerHostname": "exit02",
+    "state": "Established", "asn": 65530, "peerAsn": 65001, "v4PfxRx": 3, "estdTime":
+    58.0, "numChanges": 1, "timestamp": 1590171722592}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "exit01", "vrf": "default", "peer": "swp1", "peerHostname": "spine01",
+    "state": "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 1, "estdTime":
+    56.0, "numChanges": 1, "timestamp": 1590171722592}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "exit01", "vrf": "default", "peer": "swp2", "peerHostname": "spine02",
+    "state": "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 0, "estdTime":
+    55.0, "numChanges": 1, "timestamp": 1590171722592}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "exit01", "vrf": "default", "peer": "swp5.2", "peerHostname": "edge01",
+    "state": "Established", "asn": 65000, "peerAsn": 65530, "v4PfxRx": 4, "estdTime":
+    55.0, "numChanges": 1, "timestamp": 1590171722592}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "exit01", "vrf": "evpn-vrf", "peer": "swp5.3", "peerHostname": "edge01",
+    "state": "Established", "asn": 65000, "peerAsn": 65530, "v4PfxRx": 4, "estdTime":
+    56.0, "numChanges": 1, "timestamp": 1590171722592}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "exit01", "vrf": "internet-vrf", "peer": "swp5.4", "peerHostname":
+    "edge01", "state": "Established", "asn": 65001, "peerAsn": 65530, "v4PfxRx": 13,
+    "estdTime": 56.0, "numChanges": 1, "timestamp": 1590171722592}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "exit01", "vrf": "internet-vrf", "peer":
+    "swp6", "peerHostname": "internet", "state": "Established", "asn": 65001, "peerAsn":
+    25253, "v4PfxRx": 3, "estdTime": 54.0, "numChanges": 3, "timestamp": 1590171722592},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "exit02", "vrf": "default",
+    "peer": "swp1", "peerHostname": "spine01", "state": "Established", "asn": 65000,
+    "peerAsn": 65000, "v4PfxRx": 13, "estdTime": 57.0, "numChanges": 1, "timestamp":
+    1590171722586}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "exit02",
+    "vrf": "default", "peer": "swp2", "peerHostname": "", "state": "NotEstd", "asn":
+    65000, "peerAsn": 0, "v4PfxRx": 0, "estdTime": null, "numChanges": 0, "timestamp":
+    1590171722586}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "exit02",
+    "vrf": "default", "peer": "swp5.2", "peerHostname": "edge01", "state": "Established",
+    "asn": 65000, "peerAsn": 65530, "v4PfxRx": 4, "estdTime": 58.0, "numChanges":
+    1, "timestamp": 1590171722586}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname":
+    "exit02", "vrf": "evpn-vrf", "peer": "swp5.3", "peerHostname": "edge01", "state":
+    "Established", "asn": 65000, "peerAsn": 65530, "v4PfxRx": 4, "estdTime": 58.0,
+    "numChanges": 1, "timestamp": 1590171722586}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "exit02", "vrf": "internet-vrf", "peer": "swp5.4", "peerHostname":
+    "edge01", "state": "Established", "asn": 65001, "peerAsn": 65530, "v4PfxRx": 13,
+    "estdTime": 58.0, "numChanges": 1, "timestamp": 1590171722586}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "exit02", "vrf": "internet-vrf", "peer":
+    "swp6", "peerHostname": "internet", "state": "Established", "asn": 65001, "peerAsn":
+    25253, "v4PfxRx": 3, "estdTime": 58.0, "numChanges": 1, "timestamp": 1590171722586},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "internet", "vrf": "default",
+    "peer": "swp1", "peerHostname": "exit01", "state": "Established", "asn": 25253,
+    "peerAsn": 65001, "v4PfxRx": 13, "estdTime": 54.0, "numChanges": 3, "timestamp":
+    1590171721692}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "internet",
+    "vrf": "default", "peer": "swp2", "peerHostname": "exit02", "state": "Established",
+    "asn": 25253, "peerAsn": 65001, "v4PfxRx": 13, "estdTime": 57.0, "numChanges":
+    1, "timestamp": 1590171721692}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname":
+    "leaf01", "vrf": "default", "peer": "swp1", "peerHostname": "spine01", "state":
+    "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 0, "estdTime": 53.0,
+    "numChanges": 1, "timestamp": 1590171721717}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf01", "vrf": "default", "peer": "swp2", "peerHostname": "spine02",
+    "state": "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 0, "estdTime":
+    54.0, "numChanges": 1, "timestamp": 1590171721717}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf02", "vrf": "default", "peer": "swp1", "peerHostname": "spine01",
+    "state": "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 0, "estdTime":
+    57.0, "numChanges": 1, "timestamp": 1590171722592}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf02", "vrf": "default", "peer": "swp2", "peerHostname": "spine02",
+    "state": "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 0, "estdTime":
+    57.0, "numChanges": 1, "timestamp": 1590171722592}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf03", "vrf": "default", "peer": "swp1", "peerHostname": "spine01",
+    "state": "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 0, "estdTime":
+    55.0, "numChanges": 1, "timestamp": 1590171721717}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf03", "vrf": "default", "peer": "swp2", "peerHostname": "spine02",
+    "state": "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 0, "estdTime":
+    54.0, "numChanges": 1, "timestamp": 1590171721717}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf04", "vrf": "default", "peer": "swp1", "peerHostname": "spine01",
+    "state": "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 0, "estdTime":
+    54.0, "numChanges": 1, "timestamp": 1590171722586}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf04", "vrf": "default", "peer": "swp2", "peerHostname": "spine02",
+    "state": "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 0, "estdTime":
+    55.0, "numChanges": 1, "timestamp": 1590171722586}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "spine01", "vrf": "default", "peer": "swp1", "peerHostname": "leaf01",
+    "state": "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 0, "estdTime":
+    53.0, "numChanges": 1, "timestamp": 1590171721692}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "spine01", "vrf": "default", "peer": "swp2", "peerHostname": "leaf02",
+    "state": "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 0, "estdTime":
+    55.0, "numChanges": 1, "timestamp": 1590171721692}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "spine01", "vrf": "default", "peer": "swp3", "peerHostname": "leaf03",
+    "state": "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 0, "estdTime":
+    55.0, "numChanges": 1, "timestamp": 1590171721692}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "spine01", "vrf": "default", "peer": "swp4", "peerHostname": "leaf04",
+    "state": "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 0, "estdTime":
+    53.0, "numChanges": 1, "timestamp": 1590171721692}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "spine01", "vrf": "default", "peer": "swp5", "peerHostname": "exit02",
+    "state": "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 13, "estdTime":
+    55.0, "numChanges": 1, "timestamp": 1590171721692}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "spine01", "vrf": "default", "peer": "swp6", "peerHostname": "exit01",
+    "state": "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 13, "estdTime":
+    55.0, "numChanges": 1, "timestamp": 1590171721692}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "spine02", "vrf": "default", "peer": "swp1", "peerHostname": "leaf01",
+    "state": "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 0, "estdTime":
+    54.0, "numChanges": 1, "timestamp": 1590171721692}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "spine02", "vrf": "default", "peer": "swp2", "peerHostname": "leaf02",
+    "state": "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 0, "estdTime":
+    55.0, "numChanges": 1, "timestamp": 1590171721692}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "spine02", "vrf": "default", "peer": "swp3", "peerHostname": "leaf03",
+    "state": "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 0, "estdTime":
+    54.0, "numChanges": 1, "timestamp": 1590171721692}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "spine02", "vrf": "default", "peer": "swp4", "peerHostname": "leaf04",
+    "state": "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 0, "estdTime":
+    54.0, "numChanges": 1, "timestamp": 1590171721692}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "spine02", "vrf": "default", "peer": "swp6", "peerHostname": "exit01",
+    "state": "Established", "asn": 65000, "peerAsn": 65000, "v4PfxRx": 13, "estdTime":
+    54.0, "numChanges": 1, "timestamp": 1590171721692}]'
+- command: bgp show --columns=hostname --format=json --namespace=dual-attach_evpn_ospf-ibgp
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_ospf-ibgp/parquet-out
+  marks: bgp show
+  output: '[{"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
+    {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "internet"}, {"hostname": "internet"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}]'
+- command: bgp summarize --format=json --namespace=dual-attach_evpn_ospf-ibgp
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_ospf-ibgp/parquet-out
+  marks: bgp summarize
+  output: '{"dual-attach_evpn_ospf-ibgp": {"deviceCnt": 10, "totalPeerCnt": 39, "failedPeerCnt":
+    1, "uniqueAsnCnt": 4, "uniqueVrfsCnt": {"default": 33, "internet-vrf": 4, "evpn-vrf":
+    2}, "upTimesStat": ["0:00:53", "0:00:58", "0:00:55"], "v4PfxRxStat": [0, 13, 2],
+    "v6PfxRxStat": [0, 0, 0], "evpnPfxRxStat": [0, 38, 7], "updatesRxStat": [5, 47,
+    14], "updatesTxStat": [5, 47, 14], "activeAfiSafiList": ["ipv4", "evpn"]}}'
+- command: bgp unique --format=json --namespace=dual-attach_evpn_ospf-ibgp
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_ospf-ibgp/parquet-out
+  error:
+    error: '[{"error": "ERROR: Must specify columns with unique"}]'
+  marks: bgp unique
+- command: bgp unique --columns=hostname --format=json --namespace=dual-attach_evpn_ospf-ibgp
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_ospf-ibgp/parquet-out
+  marks: bgp unique
+  output: '[{"hostname": "leaf04", "count": 2}, {"hostname": "leaf03", "count": 2},
+    {"hostname": "leaf02", "count": 2}, {"hostname": "leaf01", "count": 2}, {"hostname":
+    "internet", "count": 2}, {"hostname": "spine02", "count": 5}, {"hostname": "spine01",
+    "count": 6}, {"hostname": "exit02", "count": 6}, {"hostname": "exit01", "count":
+    6}, {"hostname": "edge01", "count": 6}]'
+- command: bgp assert --format=json --namespace=dual-attach_evpn_ospf-ibgp
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_ospf-ibgp/parquet-out
+  marks: bgp assert
+  output: '[{"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "edge01", "vrf":
+    "default", "peer": "eth1.2", "asn": 65530, "peerAsn": 65000, "state": "Established",
+    "hostnamePeer": "exit01", "vrfPeer": "default", "peerPeer": "swp5.2", "asnPeer":
+    65000, "peerAsnPeer": 65530, "assert": "pass", "assertReason": "-", "timestamp":
+    1590171722592}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "edge01",
+    "vrf": "default", "peer": "eth1.3", "asn": 65530, "peerAsn": 65000, "state": "Established",
+    "hostnamePeer": "exit01", "vrfPeer": "evpn-vrf", "peerPeer": "swp5.3", "asnPeer":
+    65000, "peerAsnPeer": 65530, "assert": "pass", "assertReason": "-", "timestamp":
+    1590171722592}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "edge01",
+    "vrf": "default", "peer": "eth1.4", "asn": 65530, "peerAsn": 65001, "state": "Established",
+    "hostnamePeer": "exit01", "vrfPeer": "internet-vrf", "peerPeer": "swp5.4", "asnPeer":
+    65001, "peerAsnPeer": 65530, "assert": "pass", "assertReason": "-", "timestamp":
+    1590171722592}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "edge01",
+    "vrf": "default", "peer": "eth2.2", "asn": 65530, "peerAsn": 65000, "state": "Established",
+    "hostnamePeer": "exit02", "vrfPeer": "default", "peerPeer": "swp5.2", "asnPeer":
+    65000, "peerAsnPeer": 65530, "assert": "pass", "assertReason": "-", "timestamp":
+    1590171722592}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "edge01",
+    "vrf": "default", "peer": "eth2.3", "asn": 65530, "peerAsn": 65000, "state": "Established",
+    "hostnamePeer": "exit02", "vrfPeer": "evpn-vrf", "peerPeer": "swp5.3", "asnPeer":
+    65000, "peerAsnPeer": 65530, "assert": "pass", "assertReason": "-", "timestamp":
+    1590171722592}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "edge01",
+    "vrf": "default", "peer": "eth2.4", "asn": 65530, "peerAsn": 65001, "state": "Established",
+    "hostnamePeer": "exit02", "vrfPeer": "internet-vrf", "peerPeer": "swp5.4", "asnPeer":
+    65001, "peerAsnPeer": 65530, "assert": "pass", "assertReason": "-", "timestamp":
+    1590171722592}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "exit01",
+    "vrf": "default", "peer": "swp1", "asn": 65000, "peerAsn": 65000, "state": "Established",
+    "hostnamePeer": "spine01", "vrfPeer": "default", "peerPeer": "swp6", "asnPeer":
+    65000, "peerAsnPeer": 65000, "assert": "pass", "assertReason": "-", "timestamp":
+    1590171722592}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "exit01",
+    "vrf": "default", "peer": "swp2", "asn": 65000, "peerAsn": 65000, "state": "Established",
+    "hostnamePeer": "spine02", "vrfPeer": "default", "peerPeer": "swp6", "asnPeer":
+    65000, "peerAsnPeer": 65000, "assert": "pass", "assertReason": "-", "timestamp":
+    1590171722592}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "exit01",
+    "vrf": "default", "peer": "swp5.2", "asn": 65000, "peerAsn": 65530, "state": "Established",
+    "hostnamePeer": "edge01", "vrfPeer": "default", "peerPeer": "eth1.2", "asnPeer":
+    65530, "peerAsnPeer": 65000, "assert": "pass", "assertReason": "-", "timestamp":
+    1590171722592}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "exit01",
+    "vrf": "evpn-vrf", "peer": "swp5.3", "asn": 65000, "peerAsn": 65530, "state":
+    "Established", "hostnamePeer": "edge01", "vrfPeer": "default", "peerPeer": "eth1.3",
+    "asnPeer": 65530, "peerAsnPeer": 65000, "assert": "pass", "assertReason": "-",
+    "timestamp": 1590171722592}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname":
+    "exit01", "vrf": "internet-vrf", "peer": "swp5.4", "asn": 65001, "peerAsn": 65530,
+    "state": "Established", "hostnamePeer": "edge01", "vrfPeer": "default", "peerPeer":
+    "eth1.4", "asnPeer": 65530, "peerAsnPeer": 65001, "assert": "pass", "assertReason":
+    "-", "timestamp": 1590171722592}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "exit01", "vrf": "internet-vrf", "peer": "swp6", "asn": 65001, "peerAsn":
+    25253, "state": "Established", "hostnamePeer": "internet", "vrfPeer": "default",
+    "peerPeer": "swp1", "asnPeer": 25253, "peerAsnPeer": 65001, "assert": "pass",
+    "assertReason": "-", "timestamp": 1590171722592}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "exit02", "vrf": "default", "peer": "swp1", "asn": 65000, "peerAsn":
+    65000, "state": "Established", "hostnamePeer": "spine01", "vrfPeer": "default",
+    "peerPeer": "swp5", "asnPeer": 65000, "peerAsnPeer": 65000, "assert": "pass",
+    "assertReason": "-", "timestamp": 1590171722586}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "exit02", "vrf": "default", "peer": "swp2", "asn": 65000, "peerAsn":
+    0, "state": "NotEstd", "hostnamePeer": "spine02", "vrfPeer": null, "peerPeer":
+    "", "asnPeer": null, "peerAsnPeer": null, "assert": "pass", "assertReason": "-",
+    "timestamp": 1590171722586}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname":
+    "exit02", "vrf": "default", "peer": "swp5.2", "asn": 65000, "peerAsn": 65530,
+    "state": "Established", "hostnamePeer": "edge01", "vrfPeer": "default", "peerPeer":
+    "eth2.2", "asnPeer": 65530, "peerAsnPeer": 65000, "assert": "pass", "assertReason":
+    "-", "timestamp": 1590171722586}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "exit02", "vrf": "evpn-vrf", "peer": "swp5.3", "asn": 65000, "peerAsn":
+    65530, "state": "Established", "hostnamePeer": "edge01", "vrfPeer": "default",
+    "peerPeer": "eth2.3", "asnPeer": 65530, "peerAsnPeer": 65000, "assert": "pass",
+    "assertReason": "-", "timestamp": 1590171722586}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "exit02", "vrf": "internet-vrf", "peer": "swp5.4", "asn": 65001, "peerAsn":
+    65530, "state": "Established", "hostnamePeer": "edge01", "vrfPeer": "default",
+    "peerPeer": "eth2.4", "asnPeer": 65530, "peerAsnPeer": 65001, "assert": "pass",
+    "assertReason": "-", "timestamp": 1590171722586}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "exit02", "vrf": "internet-vrf", "peer": "swp6", "asn": 65001, "peerAsn":
+    25253, "state": "Established", "hostnamePeer": "internet", "vrfPeer": "default",
+    "peerPeer": "swp2", "asnPeer": 25253, "peerAsnPeer": 65001, "assert": "pass",
+    "assertReason": "-", "timestamp": 1590171722586}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "internet", "vrf": "default", "peer": "swp1", "asn": 25253, "peerAsn":
+    65001, "state": "Established", "hostnamePeer": "exit01", "vrfPeer": "internet-vrf",
+    "peerPeer": "swp6", "asnPeer": 65001, "peerAsnPeer": 25253, "assert": "pass",
+    "assertReason": "-", "timestamp": 1590171721692}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "internet", "vrf": "default", "peer": "swp2", "asn": 25253, "peerAsn":
+    65001, "state": "Established", "hostnamePeer": "exit02", "vrfPeer": "internet-vrf",
+    "peerPeer": "swp6", "asnPeer": 65001, "peerAsnPeer": 25253, "assert": "pass",
+    "assertReason": "-", "timestamp": 1590171721692}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf01", "vrf": "default", "peer": "swp1", "asn": 65000, "peerAsn":
+    65000, "state": "Established", "hostnamePeer": "spine01", "vrfPeer": "default",
+    "peerPeer": "swp1", "asnPeer": 65000, "peerAsnPeer": 65000, "assert": "pass",
+    "assertReason": "-", "timestamp": 1590171721717}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf01", "vrf": "default", "peer": "swp2", "asn": 65000, "peerAsn":
+    65000, "state": "Established", "hostnamePeer": "spine02", "vrfPeer": "default",
+    "peerPeer": "swp1", "asnPeer": 65000, "peerAsnPeer": 65000, "assert": "pass",
+    "assertReason": "-", "timestamp": 1590171721717}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf02", "vrf": "default", "peer": "swp1", "asn": 65000, "peerAsn":
+    65000, "state": "Established", "hostnamePeer": "spine01", "vrfPeer": "default",
+    "peerPeer": "swp2", "asnPeer": 65000, "peerAsnPeer": 65000, "assert": "pass",
+    "assertReason": "-", "timestamp": 1590171722592}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf02", "vrf": "default", "peer": "swp2", "asn": 65000, "peerAsn":
+    65000, "state": "Established", "hostnamePeer": "spine02", "vrfPeer": "default",
+    "peerPeer": "swp2", "asnPeer": 65000, "peerAsnPeer": 65000, "assert": "pass",
+    "assertReason": "-", "timestamp": 1590171722592}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf03", "vrf": "default", "peer": "swp1", "asn": 65000, "peerAsn":
+    65000, "state": "Established", "hostnamePeer": "spine01", "vrfPeer": "default",
+    "peerPeer": "swp3", "asnPeer": 65000, "peerAsnPeer": 65000, "assert": "pass",
+    "assertReason": "-", "timestamp": 1590171721717}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf03", "vrf": "default", "peer": "swp2", "asn": 65000, "peerAsn":
+    65000, "state": "Established", "hostnamePeer": "spine02", "vrfPeer": "default",
+    "peerPeer": "swp3", "asnPeer": 65000, "peerAsnPeer": 65000, "assert": "pass",
+    "assertReason": "-", "timestamp": 1590171721717}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf04", "vrf": "default", "peer": "swp1", "asn": 65000, "peerAsn":
+    65000, "state": "Established", "hostnamePeer": "spine01", "vrfPeer": "default",
+    "peerPeer": "swp4", "asnPeer": 65000, "peerAsnPeer": 65000, "assert": "pass",
+    "assertReason": "-", "timestamp": 1590171722586}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf04", "vrf": "default", "peer": "swp2", "asn": 65000, "peerAsn":
+    65000, "state": "Established", "hostnamePeer": "spine02", "vrfPeer": "default",
+    "peerPeer": "swp4", "asnPeer": 65000, "peerAsnPeer": 65000, "assert": "pass",
+    "assertReason": "-", "timestamp": 1590171722586}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "spine01", "vrf": "default", "peer": "swp1", "asn": 65000, "peerAsn":
+    65000, "state": "Established", "hostnamePeer": "leaf01", "vrfPeer": "default",
+    "peerPeer": "swp1", "asnPeer": 65000, "peerAsnPeer": 65000, "assert": "pass",
+    "assertReason": "-", "timestamp": 1590171721692}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "spine01", "vrf": "default", "peer": "swp2", "asn": 65000, "peerAsn":
+    65000, "state": "Established", "hostnamePeer": "leaf02", "vrfPeer": "default",
+    "peerPeer": "swp1", "asnPeer": 65000, "peerAsnPeer": 65000, "assert": "pass",
+    "assertReason": "-", "timestamp": 1590171721692}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "spine01", "vrf": "default", "peer": "swp3", "asn": 65000, "peerAsn":
+    65000, "state": "Established", "hostnamePeer": "leaf03", "vrfPeer": "default",
+    "peerPeer": "swp1", "asnPeer": 65000, "peerAsnPeer": 65000, "assert": "pass",
+    "assertReason": "-", "timestamp": 1590171721692}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "spine01", "vrf": "default", "peer": "swp4", "asn": 65000, "peerAsn":
+    65000, "state": "Established", "hostnamePeer": "leaf04", "vrfPeer": "default",
+    "peerPeer": "swp1", "asnPeer": 65000, "peerAsnPeer": 65000, "assert": "pass",
+    "assertReason": "-", "timestamp": 1590171721692}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "spine01", "vrf": "default", "peer": "swp5", "asn": 65000, "peerAsn":
+    65000, "state": "Established", "hostnamePeer": "exit02", "vrfPeer": "default",
+    "peerPeer": "swp1", "asnPeer": 65000, "peerAsnPeer": 65000, "assert": "pass",
+    "assertReason": "-", "timestamp": 1590171721692}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "spine01", "vrf": "default", "peer": "swp6", "asn": 65000, "peerAsn":
+    65000, "state": "Established", "hostnamePeer": "exit01", "vrfPeer": "default",
+    "peerPeer": "swp1", "asnPeer": 65000, "peerAsnPeer": 65000, "assert": "pass",
+    "assertReason": "-", "timestamp": 1590171721692}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "spine02", "vrf": "default", "peer": "swp1", "asn": 65000, "peerAsn":
+    65000, "state": "Established", "hostnamePeer": "leaf01", "vrfPeer": "default",
+    "peerPeer": "swp2", "asnPeer": 65000, "peerAsnPeer": 65000, "assert": "pass",
+    "assertReason": "-", "timestamp": 1590171721692}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "spine02", "vrf": "default", "peer": "swp2", "asn": 65000, "peerAsn":
+    65000, "state": "Established", "hostnamePeer": "leaf02", "vrfPeer": "default",
+    "peerPeer": "swp2", "asnPeer": 65000, "peerAsnPeer": 65000, "assert": "pass",
+    "assertReason": "-", "timestamp": 1590171721692}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "spine02", "vrf": "default", "peer": "swp3", "asn": 65000, "peerAsn":
+    65000, "state": "Established", "hostnamePeer": "leaf03", "vrfPeer": "default",
+    "peerPeer": "swp2", "asnPeer": 65000, "peerAsnPeer": 65000, "assert": "pass",
+    "assertReason": "-", "timestamp": 1590171721692}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "spine02", "vrf": "default", "peer": "swp4", "asn": 65000, "peerAsn":
+    65000, "state": "Established", "hostnamePeer": "leaf04", "vrfPeer": "default",
+    "peerPeer": "swp2", "asnPeer": 65000, "peerAsnPeer": 65000, "assert": "pass",
+    "assertReason": "-", "timestamp": 1590171721692}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "spine02", "vrf": "default", "peer": "swp6", "asn": 65000, "peerAsn":
+    65000, "state": "Established", "hostnamePeer": "exit01", "vrfPeer": "default",
+    "peerPeer": "swp2", "asnPeer": 65000, "peerAsnPeer": 65000, "assert": "pass",
+    "assertReason": "-", "timestamp": 1590171721692}]'

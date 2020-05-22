@@ -1,0 +1,135 @@
+description: 'Testing verbs for table: show describe'
+tests:
+- command: table show --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: table show
+  output: '[{"table": "arpnd", "first_time": 1590168189855, "latest_time": 1590168190386,
+    "intervals": 4, "all rows": 46, "namespaces": 1, "devices": 14}, {"table": "device",
+    "first_time": 1590168192032, "latest_time": 1590168192857, "intervals": 6, "all
+    rows": 14, "namespaces": 1, "devices": 14}, {"table": "fs", "first_time": 1590168190364,
+    "latest_time": 1590168280986, "intervals": 5, "all rows": 237, "namespaces": 1,
+    "devices": 14}, {"table": "ifCounters", "first_time": 1590168188897, "latest_time":
+    1590168355583, "intervals": 141, "all rows": 1104, "namespaces": 1, "devices":
+    14}, {"table": "interfaces", "first_time": 1590168186797, "latest_time": 1590168203139,
+    "intervals": 5, "all rows": 96, "namespaces": 1, "devices": 14}, {"table": "lldp",
+    "first_time": 1590168192031, "latest_time": 1590168192109, "intervals": 4, "all
+    rows": 29, "namespaces": 1, "devices": 9}, {"table": "ospfIf", "first_time": 1590168186797,
+    "latest_time": 1590168187811, "intervals": 3, "all rows": 44, "namespaces": 1,
+    "devices": 12}, {"table": "ospfNbr", "first_time": 1590168188897, "latest_time":
+    1590168188928, "intervals": 2, "all rows": 32, "namespaces": 1, "devices": 12},
+    {"table": "routes", "first_time": 1590168186692, "latest_time": 1590168187231,
+    "intervals": 4, "all rows": 136, "namespaces": 1, "devices": 14}, {"table": "sqPoller",
+    "first_time": 1590168186691, "latest_time": 1590168208255, "intervals": 160, "all
+    rows": 249, "namespaces": 1, "devices": 14}, {"table": "time", "first_time": 1590168190364,
+    "latest_time": 1590168325872, "intervals": 8, "all rows": 20, "namespaces": 1,
+    "devices": 14}, {"table": "topcpu", "first_time": 1590168190364, "latest_time":
+    1590168311965, "intervals": 32, "all rows": 392, "namespaces": 1, "devices": 14},
+    {"table": "topmem", "first_time": 1590168193131, "latest_time": 1590168313699,
+    "intervals": 18, "all rows": 279, "namespaces": 1, "devices": 9}, {"table": "vlan",
+    "first_time": 1590168188897, "latest_time": 1590168188928, "intervals": 2, "all
+    rows": 4, "namespaces": 1, "devices": 4}, {"table": "TOTAL", "first_time": 1590168186691,
+    "latest_time": 1590168355583, "intervals": 160, "all rows": 2682, "namespaces":
+    1, "devices": 14}]'
+- command: table show --columns=hostname --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  error:
+    error: '[{"error": "ERROR: You cannot specify columns with table"}]'
+  marks: table show
+- command: table show --namespace=dummy --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: table show
+  output: '[{"table": "arpnd", "first_time": 1590168189855, "latest_time": 1590168190386,
+    "intervals": 4, "all rows": 46, "namespaces": 1, "devices": 14}, {"table": "device",
+    "first_time": 1590168192032, "latest_time": 1590168192857, "intervals": 6, "all
+    rows": 14, "namespaces": 1, "devices": 14}, {"table": "fs", "first_time": 1590168190364,
+    "latest_time": 1590168280986, "intervals": 5, "all rows": 237, "namespaces": 1,
+    "devices": 14}, {"table": "ifCounters", "first_time": 1590168188897, "latest_time":
+    1590168355583, "intervals": 141, "all rows": 1104, "namespaces": 1, "devices":
+    14}, {"table": "interfaces", "first_time": 1590168186797, "latest_time": 1590168203139,
+    "intervals": 5, "all rows": 96, "namespaces": 1, "devices": 14}, {"table": "lldp",
+    "first_time": 1590168192031, "latest_time": 1590168192109, "intervals": 4, "all
+    rows": 29, "namespaces": 1, "devices": 9}, {"table": "ospfIf", "first_time": 1590168186797,
+    "latest_time": 1590168187811, "intervals": 3, "all rows": 44, "namespaces": 1,
+    "devices": 12}, {"table": "ospfNbr", "first_time": 1590168188897, "latest_time":
+    1590168188928, "intervals": 2, "all rows": 32, "namespaces": 1, "devices": 12},
+    {"table": "routes", "first_time": 1590168186692, "latest_time": 1590168187231,
+    "intervals": 4, "all rows": 136, "namespaces": 1, "devices": 14}, {"table": "sqPoller",
+    "first_time": 1590168186691, "latest_time": 1590168208255, "intervals": 160, "all
+    rows": 249, "namespaces": 1, "devices": 14}, {"table": "time", "first_time": 1590168190364,
+    "latest_time": 1590168325872, "intervals": 8, "all rows": 20, "namespaces": 1,
+    "devices": 14}, {"table": "topcpu", "first_time": 1590168190364, "latest_time":
+    1590168311965, "intervals": 32, "all rows": 392, "namespaces": 1, "devices": 14},
+    {"table": "topmem", "first_time": 1590168193131, "latest_time": 1590168313699,
+    "intervals": 18, "all rows": 279, "namespaces": 1, "devices": 9}, {"table": "vlan",
+    "first_time": 1590168188897, "latest_time": 1590168188928, "intervals": 2, "all
+    rows": 4, "namespaces": 1, "devices": 4}, {"table": "TOTAL", "first_time": 1590168186691,
+    "latest_time": 1590168355583, "intervals": 160, "all rows": 2682, "namespaces":
+    1, "devices": 14}]'
+- command: table show --view=changes --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: table show
+  output: '[]'
+- command: table show --view=latest --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: table show
+  output: '[{"table": "arpnd", "first_time": 1590168189855, "latest_time": 1590168190386,
+    "intervals": 4, "all rows": 46, "namespaces": 1, "devices": 14}, {"table": "device",
+    "first_time": 1590168192032, "latest_time": 1590168192857, "intervals": 6, "all
+    rows": 14, "namespaces": 1, "devices": 14}, {"table": "fs", "first_time": 1590168190364,
+    "latest_time": 1590168280986, "intervals": 5, "all rows": 237, "namespaces": 1,
+    "devices": 14}, {"table": "ifCounters", "first_time": 1590168188897, "latest_time":
+    1590168355583, "intervals": 141, "all rows": 1104, "namespaces": 1, "devices":
+    14}, {"table": "interfaces", "first_time": 1590168186797, "latest_time": 1590168203139,
+    "intervals": 5, "all rows": 96, "namespaces": 1, "devices": 14}, {"table": "lldp",
+    "first_time": 1590168192031, "latest_time": 1590168192109, "intervals": 4, "all
+    rows": 29, "namespaces": 1, "devices": 9}, {"table": "ospfIf", "first_time": 1590168186797,
+    "latest_time": 1590168187811, "intervals": 3, "all rows": 44, "namespaces": 1,
+    "devices": 12}, {"table": "ospfNbr", "first_time": 1590168188897, "latest_time":
+    1590168188928, "intervals": 2, "all rows": 32, "namespaces": 1, "devices": 12},
+    {"table": "routes", "first_time": 1590168186692, "latest_time": 1590168187231,
+    "intervals": 4, "all rows": 136, "namespaces": 1, "devices": 14}, {"table": "sqPoller",
+    "first_time": 1590168186691, "latest_time": 1590168208255, "intervals": 160, "all
+    rows": 249, "namespaces": 1, "devices": 14}, {"table": "time", "first_time": 1590168190364,
+    "latest_time": 1590168325872, "intervals": 8, "all rows": 20, "namespaces": 1,
+    "devices": 14}, {"table": "topcpu", "first_time": 1590168190364, "latest_time":
+    1590168311965, "intervals": 32, "all rows": 392, "namespaces": 1, "devices": 14},
+    {"table": "topmem", "first_time": 1590168193131, "latest_time": 1590168313699,
+    "intervals": 18, "all rows": 279, "namespaces": 1, "devices": 9}, {"table": "vlan",
+    "first_time": 1590168188897, "latest_time": 1590168188928, "intervals": 2, "all
+    rows": 4, "namespaces": 1, "devices": 4}, {"table": "TOTAL", "first_time": 1590168186691,
+    "latest_time": 1590168355583, "intervals": 160, "all rows": 2682, "namespaces":
+    1, "devices": 14}]'
+- command: table show --hostname=leaf01 --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: table show
+  output: '[{"table": "arpnd", "first_time": 1590168190386, "latest_time": 1590168190386,
+    "intervals": 1, "all rows": 4, "namespaces": 1, "devices": 1}, {"table": "device",
+    "first_time": 1590168192857, "latest_time": 1590168192857, "intervals": 1, "all
+    rows": 1, "namespaces": 1, "devices": 1}, {"table": "fs", "first_time": 1590168191506,
+    "latest_time": 1590168191506, "intervals": 1, "all rows": 21, "namespaces": 1,
+    "devices": 1}, {"table": "ifCounters", "first_time": 1590168188928, "latest_time":
+    1590168354846, "intervals": 12, "all rows": 96, "namespaces": 1, "devices": 1},
+    {"table": "interfaces", "first_time": 1590168187811, "latest_time": 1590168187811,
+    "intervals": 1, "all rows": 8, "namespaces": 1, "devices": 1}, {"table": "lldp",
+    "first_time": 1590168192109, "latest_time": 1590168192109, "intervals": 1, "all
+    rows": 2, "namespaces": 1, "devices": 1}, {"table": "ospfIf", "first_time": 1590168187811,
+    "latest_time": 1590168187811, "intervals": 1, "all rows": 4, "namespaces": 1,
+    "devices": 1}, {"table": "ospfNbr", "first_time": 1590168188928, "latest_time":
+    1590168188928, "intervals": 1, "all rows": 3, "namespaces": 1, "devices": 1},
+    {"table": "routes", "first_time": 1590168187231, "latest_time": 1590168187231,
+    "intervals": 1, "all rows": 15, "namespaces": 1, "devices": 1}, {"table": "sqPoller",
+    "first_time": 1590168186797, "latest_time": 1590168207574, "intervals": 17, "all
+    rows": 18, "namespaces": 1, "devices": 1}, {"table": "time", "first_time": 1590168190386,
+    "latest_time": 1590168190386, "intervals": 1, "all rows": 1, "namespaces": 1,
+    "devices": 1}, {"table": "topcpu", "first_time": 1590168191506, "latest_time":
+    1590168311965, "intervals": 3, "all rows": 28, "namespaces": 1, "devices": 1},
+    {"table": "topmem", "first_time": 1590168193231, "latest_time": 1590168313695,
+    "intervals": 3, "all rows": 30, "namespaces": 1, "devices": 1}, {"table": "vlan",
+    "first_time": null, "latest_time": null, "intervals": 0, "all rows": 0, "namespaces":
+    0, "devices": 0}, {"table": "TOTAL", "first_time": 1590168186797, "latest_time":
+    1590168354846, "intervals": 17, "all rows": 231, "namespaces": 1, "devices": 1}]'
+- command: table describe --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  error:
+    error: '[{"error": "ERROR: Must specify a table"}]'
+  marks: table describe

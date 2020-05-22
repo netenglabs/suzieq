@@ -6,6 +6,7 @@ import json
 import shlex
 import argparse
 from subprocess import check_output, CalledProcessError
+import logging
 from tests import conftest
 
 
@@ -28,12 +29,12 @@ def run_cmd(cmd_path, testvar):
     cmds = exec_cmd[:]
     _ = cmds.pop(0)
     _ = cmds.pop(0)
-    print(f"running {cmds}")
+    logging.warning(f"running {cmds}")
     try:
         output = check_output(exec_cmd)
     except CalledProcessError as e:
         error = e.output
-        print(f"ERROR: {e.output} {e.returncode}")
+        logging.warning(f"ERROR: {e.output} {e.returncode}")
 
     jout = []
     jerror = []

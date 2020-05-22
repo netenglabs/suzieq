@@ -1,0 +1,36 @@
+description: 'Testing verbs for mlag: show summarize unique'
+tests:
+- command: mlag show --format=json --namespace=dual-attach_ospf_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_unnumbered/parquet-out
+  marks: mlag show
+  output: '[{"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf01", "systemId":
+    "44:39:39:ff:40:94", "state": "active", "peerAddress": "169.254.1.2", "role":
+    "primary", "peerLink": "peerlink.4094", "mlagDualPortsCnt": 2, "mlagSinglePortsCnt":
+    0, "mlagErrorPortsCnt": 0, "timestamp": 1590174171568}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "leaf02", "systemId": "44:39:39:ff:40:94", "state": "active", "peerAddress":
+    "169.254.1.1", "role": "secondary", "peerLink": "peerlink.4094", "mlagDualPortsCnt":
+    2, "mlagSinglePortsCnt": 0, "mlagErrorPortsCnt": 0, "timestamp": 1590174171568},
+    {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf03", "systemId":
+    "44:39:39:ff:40:95", "state": "active", "peerAddress": "169.254.1.2", "role":
+    "primary", "peerLink": "peerlink.4094", "mlagDualPortsCnt": 2, "mlagSinglePortsCnt":
+    0, "mlagErrorPortsCnt": 0, "timestamp": 1590174171568}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "leaf04", "systemId": "44:39:39:ff:40:95", "state": "active", "peerAddress":
+    "169.254.1.1", "role": "secondary", "peerLink": "peerlink.4094", "mlagDualPortsCnt":
+    2, "mlagSinglePortsCnt": 0, "mlagErrorPortsCnt": 0, "timestamp": 1590174171568}]'
+- command: mlag show --columns=hostname --format=json --namespace=dual-attach_ospf_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_unnumbered/parquet-out
+  marks: mlag show
+  output: '[{"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf03"},
+    {"hostname": "leaf04"}]'
+- command: mlag summarize --format=json --namespace=dual-attach_ospf_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_unnumbered/parquet-out
+  marks: mlag summarize
+  output: '{"dual-attach_ospf_unnumbered": {"deviceCnt": 4, "uniqueSystemIdCnt": 2,
+    "hostsWithfailedStateCnt": 0, "hostsWithBackupInactiveCnt": 4, "mlagNumDualPortsStat":
+    [2, 2, 2], "mlagNumSinglePortStat": [0, 0, 0], "mlagNumErrorPortStat": [0, 0,
+    0]}}'
+- command: mlag unique --columns=hostname --format=json --namespace=dual-attach_ospf_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_unnumbered/parquet-out
+  marks: mlag unique
+  output: '[{"hostname": "leaf04", "count": 1}, {"hostname": "leaf03", "count": 1},
+    {"hostname": "leaf02", "count": 1}, {"hostname": "leaf01", "count": 1}]'
