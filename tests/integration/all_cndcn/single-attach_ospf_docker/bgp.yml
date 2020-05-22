@@ -1,0 +1,29 @@
+description: 'Testing verbs for bgp: show summarize unique assert'
+tests:
+- command: bgp show --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: bgp show
+  output: '[]'
+- command: bgp show --columns=hostname --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: bgp show
+  xfail:
+    error: '[]'
+    reason: uncaught exception
+- command: bgp summarize --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: bgp summarize
+  output: '{}'
+- command: bgp unique --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  error:
+    error: '[{"error": "ERROR: Must specify columns with unique"}]'
+  marks: bgp unique
+- command: bgp unique --columns=hostname --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: bgp unique
+  output: '[]'
+- command: bgp assert --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: bgp assert
+  output: '[]'

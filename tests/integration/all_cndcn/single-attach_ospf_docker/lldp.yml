@@ -1,0 +1,126 @@
+description: 'Testing verbs for lldp: show summarize unique'
+tests:
+- command: lldp show --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: lldp show
+  output: '[{"namespace": "single-attach_ospf_docker", "hostname": "exit01", "ifname":
+    "swp1", "peerHostname": "spine01", "peerIfname": "swp6", "description": "Cumulus
+    Linux version 3.7.12 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP":
+    "10.0.0.21", "timestamp": 1590168192109}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "exit01", "ifname": "swp2", "peerHostname": "spine02", "peerIfname":
+    "swp6", "description": "Cumulus Linux version 3.7.12 running on QEMU Standard
+    PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.22", "timestamp": 1590168192109},
+    {"namespace": "single-attach_ospf_docker", "hostname": "exit01", "ifname": "swp3",
+    "peerHostname": "exit01", "peerIfname": "swp4", "description": "Cumulus Linux
+    version 3.7.12 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.101",
+    "timestamp": 1590168192109}, {"namespace": "single-attach_ospf_docker", "hostname":
+    "exit01", "ifname": "swp4", "peerHostname": "exit01", "peerIfname": "swp3", "description":
+    "Cumulus Linux version 3.7.12 running on QEMU Standard PC (i440FX + PIIX, 1996)",
+    "mgmtIP": "10.0.0.101", "timestamp": 1590168192109}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "exit02", "ifname": "swp1", "peerHostname": "spine01", "peerIfname":
+    "swp5", "description": "Cumulus Linux version 3.7.12 running on QEMU Standard
+    PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.21", "timestamp": 1590168192109},
+    {"namespace": "single-attach_ospf_docker", "hostname": "exit02", "ifname": "swp2",
+    "peerHostname": "spine02", "peerIfname": "swp5", "description": "Cumulus Linux
+    version 3.7.12 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.22",
+    "timestamp": 1590168192109}, {"namespace": "single-attach_ospf_docker", "hostname":
+    "exit02", "ifname": "swp3", "peerHostname": "exit02", "peerIfname": "swp4", "description":
+    "Cumulus Linux version 3.7.12 running on QEMU Standard PC (i440FX + PIIX, 1996)",
+    "mgmtIP": "10.0.0.102", "timestamp": 1590168192109}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "exit02", "ifname": "swp4", "peerHostname": "exit02", "peerIfname":
+    "swp3", "description": "Cumulus Linux version 3.7.12 running on QEMU Standard
+    PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.102", "timestamp": 1590168192109},
+    {"namespace": "single-attach_ospf_docker", "hostname": "internet", "ifname": "-",
+    "peerHostname": "-", "peerIfname": "-", "description": "-", "mgmtIP": "-", "timestamp":
+    1590168192031}, {"namespace": "single-attach_ospf_docker", "hostname": "leaf01",
+    "ifname": "swp1", "peerHostname": "spine01", "peerIfname": "swp1", "description":
+    "Cumulus Linux version 3.7.12 running on QEMU Standard PC (i440FX + PIIX, 1996)",
+    "mgmtIP": "10.0.0.21", "timestamp": 1590168192109}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf01", "ifname": "swp2", "peerHostname": "spine02", "peerIfname":
+    "swp1", "description": "Cumulus Linux version 3.7.12 running on QEMU Standard
+    PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.22", "timestamp": 1590168192109},
+    {"namespace": "single-attach_ospf_docker", "hostname": "leaf02", "ifname": "swp1",
+    "peerHostname": "spine01", "peerIfname": "swp2", "description": "Cumulus Linux
+    version 3.7.12 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.21",
+    "timestamp": 1590168192031}, {"namespace": "single-attach_ospf_docker", "hostname":
+    "leaf02", "ifname": "swp2", "peerHostname": "spine02", "peerIfname": "swp2", "description":
+    "Cumulus Linux version 3.7.12 running on QEMU Standard PC (i440FX + PIIX, 1996)",
+    "mgmtIP": "10.0.0.22", "timestamp": 1590168192031}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf03", "ifname": "swp1", "peerHostname": "spine01", "peerIfname":
+    "swp3", "description": "Cumulus Linux version 3.7.12 running on QEMU Standard
+    PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.21", "timestamp": 1590168192108},
+    {"namespace": "single-attach_ospf_docker", "hostname": "leaf03", "ifname": "swp2",
+    "peerHostname": "spine02", "peerIfname": "swp3", "description": "Cumulus Linux
+    version 3.7.12 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.22",
+    "timestamp": 1590168192108}, {"namespace": "single-attach_ospf_docker", "hostname":
+    "leaf04", "ifname": "swp1", "peerHostname": "spine01", "peerIfname": "swp4", "description":
+    "Cumulus Linux version 3.7.12 running on QEMU Standard PC (i440FX + PIIX, 1996)",
+    "mgmtIP": "10.0.0.21", "timestamp": 1590168192032}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf04", "ifname": "swp2", "peerHostname": "spine02", "peerIfname":
+    "swp4", "description": "Cumulus Linux version 3.7.12 running on QEMU Standard
+    PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.22", "timestamp": 1590168192032},
+    {"namespace": "single-attach_ospf_docker", "hostname": "spine01", "ifname": "swp1",
+    "peerHostname": "leaf01", "peerIfname": "swp1", "description": "Cumulus Linux
+    version 3.7.12 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.11",
+    "timestamp": 1590168192108}, {"namespace": "single-attach_ospf_docker", "hostname":
+    "spine01", "ifname": "swp2", "peerHostname": "leaf02", "peerIfname": "swp1", "description":
+    "Cumulus Linux version 3.7.12 running on QEMU Standard PC (i440FX + PIIX, 1996)",
+    "mgmtIP": "10.0.0.12", "timestamp": 1590168192108}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine01", "ifname": "swp3", "peerHostname": "leaf03", "peerIfname":
+    "swp1", "description": "Cumulus Linux version 3.7.12 running on QEMU Standard
+    PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.13", "timestamp": 1590168192108},
+    {"namespace": "single-attach_ospf_docker", "hostname": "spine01", "ifname": "swp4",
+    "peerHostname": "leaf04", "peerIfname": "swp1", "description": "Cumulus Linux
+    version 3.7.12 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.14",
+    "timestamp": 1590168192108}, {"namespace": "single-attach_ospf_docker", "hostname":
+    "spine01", "ifname": "swp5", "peerHostname": "exit02", "peerIfname": "swp1", "description":
+    "Cumulus Linux version 3.7.12 running on QEMU Standard PC (i440FX + PIIX, 1996)",
+    "mgmtIP": "10.0.0.102", "timestamp": 1590168192108}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine01", "ifname": "swp6", "peerHostname": "exit01", "peerIfname":
+    "swp1", "description": "Cumulus Linux version 3.7.12 running on QEMU Standard
+    PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.101", "timestamp": 1590168192108},
+    {"namespace": "single-attach_ospf_docker", "hostname": "spine02", "ifname": "swp1",
+    "peerHostname": "leaf01", "peerIfname": "swp2", "description": "Cumulus Linux
+    version 3.7.12 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.11",
+    "timestamp": 1590168192108}, {"namespace": "single-attach_ospf_docker", "hostname":
+    "spine02", "ifname": "swp2", "peerHostname": "leaf02", "peerIfname": "swp2", "description":
+    "Cumulus Linux version 3.7.12 running on QEMU Standard PC (i440FX + PIIX, 1996)",
+    "mgmtIP": "10.0.0.12", "timestamp": 1590168192108}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine02", "ifname": "swp3", "peerHostname": "leaf03", "peerIfname":
+    "swp2", "description": "Cumulus Linux version 3.7.12 running on QEMU Standard
+    PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.13", "timestamp": 1590168192108},
+    {"namespace": "single-attach_ospf_docker", "hostname": "spine02", "ifname": "swp4",
+    "peerHostname": "leaf04", "peerIfname": "swp2", "description": "Cumulus Linux
+    version 3.7.12 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.14",
+    "timestamp": 1590168192108}, {"namespace": "single-attach_ospf_docker", "hostname":
+    "spine02", "ifname": "swp5", "peerHostname": "exit02", "peerIfname": "swp2", "description":
+    "Cumulus Linux version 3.7.12 running on QEMU Standard PC (i440FX + PIIX, 1996)",
+    "mgmtIP": "10.0.0.102", "timestamp": 1590168192108}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine02", "ifname": "swp6", "peerHostname": "exit01", "peerIfname":
+    "swp2", "description": "Cumulus Linux version 3.7.12 running on QEMU Standard
+    PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.101", "timestamp": 1590168192108}]'
+- command: lldp show --columns=hostname --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: lldp show
+  output: '[{"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "internet"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}]'
+- command: lldp summarize --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: lldp summarize
+  output: '{"single-attach_ospf_docker": {"deviceCnt": 9, "nbrCnt": 29, "peerHostnameCnt":
+    29, "uniquePeerMgmtIPCnt": 9, "missingPeerInfoCnt": 1}}'
+- command: lldp unique --columns=hostname --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: lldp unique
+  output: '[{"hostname": "internet", "count": 1}, {"hostname": "leaf04", "count":
+    2}, {"hostname": "leaf03", "count": 2}, {"hostname": "leaf02", "count": 2}, {"hostname":
+    "leaf01", "count": 2}, {"hostname": "exit02", "count": 4}, {"hostname": "exit01",
+    "count": 4}, {"hostname": "spine02", "count": 6}, {"hostname": "spine01", "count":
+    6}]'

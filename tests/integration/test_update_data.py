@@ -13,6 +13,7 @@ import pytest
 from _pytest.mark.structures import Mark, MarkDecorator
 from suzieq.cli.sqcmds import *
 from tests import conftest
+import logging
 
 # This is not just a set of tests, it will also update
 #  the data collected for other test_sqcmds tests
@@ -55,12 +56,14 @@ def run_cmd(cmd):
     output = None
     error = None
     returncode = None
+    print(f"CMD: {cmd}")
+    logging.warning(f"CMD: {cmd}")
     try:
         output = check_output(cmd, stderr=STDOUT)
     except CalledProcessError as e:
         error = e.output
         returncode = e.returncode
-        print(f"ERROR: {e.output} {e.returncode}")
+        logging.warning(f"ERROR: {e.output} {e.returncode}")
 
     if output:
         output = output.decode('utf-8')
@@ -93,12 +96,12 @@ def run_scenario(scenario):
     return out, code
 
 
-def check_suzieq_data(suzieq_dir, name):
+def check_suzieq_data(suzieq_dir, name, threshold='14'):
     sqcmd_path = [sys.executable, f"{suzieq_dir}/{conftest.suzieq_cli_path}"]
     sqcmd = sqcmd_path + ['device', 'unique', '--columns=namespace',
                           f'--namespace={name}']
     out, ret, err = run_cmd(sqcmd)
-    assert '14' in out  # there should be 14 different hosts collected
+    assert threshold in out, f'failed {out}, {err}'  # there should be 14 different hosts collected
     for cmd in ['bgp', 'interface', 'ospf', 'evpnVni']:
         sqcmd = sqcmd_path + [cmd, 'assert', f'--namespace={name}']
         out, code, err = run_cmd(sqcmd)
@@ -110,12 +113,14 @@ def collect_data(topology, proto, scenario, name, suzieq_dir):
     vagrant_up()
     out, code = run_scenario(scenario)
     if code is not None:
-        print("retrying setting up scenario")
+        logging.warning("retrying setting up scenario")
         vagrant_down()
+        time.sleep(10)
+        vagrant_up()
         run_scenario(scenario)
     dir = os.getcwd() + '/..'
     cfg_file = create_config('../', suzieq_dir)
-    print(f"config file {os.getcwd()}/{cfg_file}")
+    logging.warning(f"config file {os.getcwd()}/{cfg_file}")
     run_sqpoller(name, dir, suzieq_dir)
     check_suzieq_data(suzieq_dir, name)
     vagrant_down()
@@ -124,15 +129,16 @@ def collect_data(topology, proto, scenario, name, suzieq_dir):
 
 
 def vagrant_up():
-    print(os.getcwd())
+    logging.warning(os.getcwd())
     run_cmd(['sudo', 'vagrant', 'up'])
     out, code, err = run_cmd(['sudo', 'vagrant', 'status'])
+    logging.warning(f"ANSIBLE UP {out}")
     run_cmd(['sudo', 'chown', '-R', os.environ['USER'], '..'])
     return code
 
 
 def vagrant_down():
-    print("VAGRANT DOWN")
+    logging.warning("VAGRANT DOWN")
     run_cmd(['sudo', 'chown', '-R', os.environ['USER'], '..'])
     run_cmd(['sudo', 'vagrant', 'destroy', '-f'])
 
@@ -159,7 +165,7 @@ def update_sqcmds(files, data_dir=None, namespace=None):
             cmd += ['-d', data_dir]
         if namespace:
             cmd += ['-n', namespace]
-        print(cmd)
+        logging.warning(cmd)
         out, code, error = run_cmd(cmd)
         assert code is None or code == 0, f"{file} failed, {out} {code} {error}"
 
@@ -627,3 +633,33 @@ class TestSingleAttach:
         dir = f"{parquet_dir}/{name}/parquet-out"
         if os.path.isdir(dir):
             shutil.rmtree(dir)
+
+
+# This isn't actually a test, it's just used to cleanup any stray vagrant state
+@pytest.mark.cleanup
+@pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ,
+                    reason='not sqpoller')
+def test_cleanup_vagrant():
+    devices = ['dual-attach_internet', 'dual-attach_spine01',
+               'dual-attach_spine02', 'dual-attach_leaf01',
+               'dual-attach_leaf02', 'dual-attach_leaf03',
+               'dual-attach_leaf04', 'dual-attach_exit01',
+               'dual-attach_exit02', 'dual-attach_server101',
+               'dual-attach_server102', 'dual-attach_server103',
+               'dual-attach_server104', 'dual-attach_edge01',
+               'single-attach_internet', 'single-attach_spine01',
+               'single-attach_spine02', 'single-attach_leaf01',
+               'single-attach_leaf02', 'single-attach_leaf03',
+               'single-attach_leaf04', 'single-attach_exit01',
+               'single-attach_exit02', 'single-attach_server101',
+               'single-attach_server102', 'single-attach_server103',
+               'single-attach_server104', 'single-attach_edge01']
+    for device in devices:
+        out, ret, err = run_cmd(['sudo', 'virsh', 'destroy', device])
+        print(f"virsh destroy {out} {err}")
+        out, ret, err = run_cmd(['sudo', 'virsh', 'undefine', device])
+        print(f"virsh undefine {out} {err}")
+        out, ret, err = run_cmd(['sudo', 'virsh', 'vol-delete', f"{device}.img"])
+        print(f"virsh vol-delete {out} {err}")
+    out, ret, err = run_cmd(['sudo', 'vagrant', 'global-status', '--prune'])
+    print(f"global status {out} {err}")

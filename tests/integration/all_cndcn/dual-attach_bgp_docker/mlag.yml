@@ -1,0 +1,21 @@
+description: 'Testing verbs for mlag: show summarize unique'
+tests:
+- command: mlag show --format=json --namespace=dual-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_docker/parquet-out
+  marks: mlag show
+  output: '[]'
+- command: mlag show --columns=hostname --format=json --namespace=dual-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_docker/parquet-out
+  marks: mlag show
+  xfail:
+    error: '"Error running command: \"None of [Index([''hostname''], dtype=''object'')]
+      are in the [columns]\"\n------------------------------------------------------------\n------------------------------------------------------------"'
+    reason: uncaught exception
+- command: mlag summarize --format=json --namespace=dual-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_docker/parquet-out
+  marks: mlag summarize
+  output: '{}'
+- command: mlag unique --columns=hostname --format=json --namespace=dual-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_docker/parquet-out
+  marks: mlag unique
+  output: '[]'

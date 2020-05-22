@@ -1,0 +1,21 @@
+description: 'Testing verbs for mac: show summarize unique'
+tests:
+- command: mac show --format=json --namespace=dual-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_docker/parquet-out
+  marks: mac show
+  output: '[]'
+- command: mac show --columns=hostname --format=json --namespace=dual-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_docker/parquet-out
+  marks: mac show
+  xfail:
+    error: '"Error running command: \"None of [Index([''hostname''], dtype=''object'')]
+      are in the [columns]\"\n------------------------------------------------------------\n------------------------------------------------------------"'
+    reason: uncaught exception
+- command: mac summarize --format=json --namespace=dual-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_docker/parquet-out
+  marks: mac summarize
+  output: '{}'
+- command: mac unique --columns=hostname --format=json --namespace=dual-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_docker/parquet-out
+  marks: mac unique
+  output: '[]'

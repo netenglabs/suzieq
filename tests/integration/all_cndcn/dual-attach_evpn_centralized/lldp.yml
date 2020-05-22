@@ -1,0 +1,173 @@
+description: 'Testing verbs for lldp: show summarize unique'
+tests:
+- command: lldp show --format=json --namespace=dual-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_centralized/parquet-out
+  marks: lldp show
+  output: '[{"namespace": "dual-attach_evpn_centralized", "hostname": "edge01", "ifname":
+    "eth1", "peerHostname": "exit01", "peerIfname": "swp5", "description": "Cumulus
+    Linux version 3.7.12 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP":
+    "-", "timestamp": 1590172818871}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "edge01", "ifname": "eth2", "peerHostname": "exit02", "peerIfname":
+    "swp5", "description": "Cumulus Linux version 3.7.12 running on QEMU Standard
+    PC (i440FX + PIIX, 1996)", "mgmtIP": "-", "timestamp": 1590172818871}, {"namespace":
+    "dual-attach_evpn_centralized", "hostname": "exit01", "ifname": "swp1", "peerHostname":
+    "spine01", "peerIfname": "swp6", "description": "Cumulus Linux version 3.7.12
+    running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.21", "timestamp":
+    1590172820022}, {"namespace": "dual-attach_evpn_centralized", "hostname": "exit01",
+    "ifname": "swp2", "peerHostname": "spine02", "peerIfname": "swp6", "description":
+    "Cumulus Linux version 3.7.12 running on QEMU Standard PC (i440FX + PIIX, 1996)",
+    "mgmtIP": "10.0.0.22", "timestamp": 1590172820022}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "exit01", "ifname": "swp5", "peerHostname": "edge01", "peerIfname":
+    "eth1", "description": "Ubuntu 16.04.6 LTS Linux 4.4.0-178-generic #208-Ubuntu
+    SMP Sun Apr 5 23:45:10 UTC 2020 x86_64", "mgmtIP": "10.0.0.100", "timestamp":
+    1590172820022}, {"namespace": "dual-attach_evpn_centralized", "hostname": "exit01",
+    "ifname": "swp6", "peerHostname": "internet", "peerIfname": "swp1", "description":
+    "Cumulus Linux version 3.7.12 running on QEMU Standard PC (i440FX + PIIX, 1996)",
+    "mgmtIP": "10.0.0.253", "timestamp": 1590172820022}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "exit02", "ifname": "swp1", "peerHostname": "spine01", "peerIfname":
+    "swp5", "description": "Cumulus Linux version 3.7.12 running on QEMU Standard
+    PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.21", "timestamp": 1590172820022},
+    {"namespace": "dual-attach_evpn_centralized", "hostname": "exit02", "ifname":
+    "swp2", "peerHostname": "spine02", "peerIfname": "swp5", "description": "Cumulus
+    Linux version 3.7.12 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP":
+    "10.0.0.22", "timestamp": 1590172820022}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "exit02", "ifname": "swp5", "peerHostname": "edge01", "peerIfname":
+    "eth2", "description": "Ubuntu 16.04.6 LTS Linux 4.4.0-178-generic #208-Ubuntu
+    SMP Sun Apr 5 23:45:10 UTC 2020 x86_64", "mgmtIP": "10.0.0.100", "timestamp":
+    1590172820022}, {"namespace": "dual-attach_evpn_centralized", "hostname": "exit02",
+    "ifname": "swp6", "peerHostname": "internet", "peerIfname": "swp2", "description":
+    "Cumulus Linux version 3.7.12 running on QEMU Standard PC (i440FX + PIIX, 1996)",
+    "mgmtIP": "10.0.0.253", "timestamp": 1590172820022}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "internet", "ifname": "swp1", "peerHostname": "exit01", "peerIfname":
+    "swp6", "description": "Cumulus Linux version 3.7.12 running on QEMU Standard
+    PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.101", "timestamp": 1590172819537},
+    {"namespace": "dual-attach_evpn_centralized", "hostname": "internet", "ifname":
+    "swp2", "peerHostname": "exit02", "peerIfname": "swp6", "description": "Cumulus
+    Linux version 3.7.12 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP":
+    "10.0.0.102", "timestamp": 1590172819537}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "leaf01", "ifname": "swp1", "peerHostname": "spine01", "peerIfname":
+    "swp1", "description": "Cumulus Linux version 3.7.12 running on QEMU Standard
+    PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.21", "timestamp": 1590172820417},
+    {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf01", "ifname":
+    "swp2", "peerHostname": "spine02", "peerIfname": "swp1", "description": "Cumulus
+    Linux version 3.7.12 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP":
+    "10.0.0.22", "timestamp": 1590172820417}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "leaf01", "ifname": "swp3", "peerHostname": "leaf02", "peerIfname":
+    "swp3", "description": "Cumulus Linux version 3.7.12 running on QEMU Standard
+    PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.12", "timestamp": 1590172820417},
+    {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf01", "ifname":
+    "swp4", "peerHostname": "leaf02", "peerIfname": "swp4", "description": "Cumulus
+    Linux version 3.7.12 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP":
+    "10.0.0.12", "timestamp": 1590172820417}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "leaf02", "ifname": "swp1", "peerHostname": "spine01", "peerIfname":
+    "swp2", "description": "Cumulus Linux version 3.7.12 running on QEMU Standard
+    PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.21", "timestamp": 1590172820022},
+    {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf02", "ifname":
+    "swp2", "peerHostname": "spine02", "peerIfname": "swp2", "description": "Cumulus
+    Linux version 3.7.12 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP":
+    "10.0.0.22", "timestamp": 1590172820022}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "leaf02", "ifname": "swp3", "peerHostname": "leaf01", "peerIfname":
+    "swp3", "description": "Cumulus Linux version 3.7.12 running on QEMU Standard
+    PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.11", "timestamp": 1590172820022},
+    {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf02", "ifname":
+    "swp4", "peerHostname": "leaf01", "peerIfname": "swp4", "description": "Cumulus
+    Linux version 3.7.12 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP":
+    "10.0.0.11", "timestamp": 1590172820022}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "leaf03", "ifname": "swp1", "peerHostname": "spine01", "peerIfname":
+    "swp3", "description": "Cumulus Linux version 3.7.12 running on QEMU Standard
+    PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.21", "timestamp": 1590172820022},
+    {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf03", "ifname":
+    "swp2", "peerHostname": "spine02", "peerIfname": "swp3", "description": "Cumulus
+    Linux version 3.7.12 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP":
+    "10.0.0.22", "timestamp": 1590172820022}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "leaf03", "ifname": "swp3", "peerHostname": "leaf04", "peerIfname":
+    "swp3", "description": "Cumulus Linux version 3.7.12 running on QEMU Standard
+    PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.14", "timestamp": 1590172820022},
+    {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf03", "ifname":
+    "swp4", "peerHostname": "leaf04", "peerIfname": "swp4", "description": "Cumulus
+    Linux version 3.7.12 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP":
+    "10.0.0.14", "timestamp": 1590172820022}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "leaf04", "ifname": "swp1", "peerHostname": "spine01", "peerIfname":
+    "swp4", "description": "Cumulus Linux version 3.7.12 running on QEMU Standard
+    PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.21", "timestamp": 1590172819574},
+    {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf04", "ifname":
+    "swp2", "peerHostname": "spine02", "peerIfname": "swp4", "description": "Cumulus
+    Linux version 3.7.12 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP":
+    "10.0.0.22", "timestamp": 1590172819574}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "leaf04", "ifname": "swp3", "peerHostname": "leaf03", "peerIfname":
+    "swp3", "description": "Cumulus Linux version 3.7.12 running on QEMU Standard
+    PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.13", "timestamp": 1590172819574},
+    {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf04", "ifname":
+    "swp4", "peerHostname": "leaf03", "peerIfname": "swp4", "description": "Cumulus
+    Linux version 3.7.12 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP":
+    "10.0.0.13", "timestamp": 1590172819574}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "spine01", "ifname": "swp1", "peerHostname": "leaf01", "peerIfname":
+    "swp1", "description": "Cumulus Linux version 3.7.12 running on QEMU Standard
+    PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.11", "timestamp": 1590172819537},
+    {"namespace": "dual-attach_evpn_centralized", "hostname": "spine01", "ifname":
+    "swp2", "peerHostname": "leaf02", "peerIfname": "swp1", "description": "Cumulus
+    Linux version 3.7.12 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP":
+    "10.0.0.12", "timestamp": 1590172819537}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "spine01", "ifname": "swp3", "peerHostname": "leaf03", "peerIfname":
+    "swp1", "description": "Cumulus Linux version 3.7.12 running on QEMU Standard
+    PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.13", "timestamp": 1590172819537},
+    {"namespace": "dual-attach_evpn_centralized", "hostname": "spine01", "ifname":
+    "swp4", "peerHostname": "leaf04", "peerIfname": "swp1", "description": "Cumulus
+    Linux version 3.7.12 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP":
+    "10.0.0.14", "timestamp": 1590172819537}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "spine01", "ifname": "swp5", "peerHostname": "exit02", "peerIfname":
+    "swp1", "description": "Cumulus Linux version 3.7.12 running on QEMU Standard
+    PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.102", "timestamp": 1590172819537},
+    {"namespace": "dual-attach_evpn_centralized", "hostname": "spine01", "ifname":
+    "swp6", "peerHostname": "exit01", "peerIfname": "swp1", "description": "Cumulus
+    Linux version 3.7.12 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP":
+    "10.0.0.101", "timestamp": 1590172819537}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "spine02", "ifname": "swp1", "peerHostname": "leaf01", "peerIfname":
+    "swp2", "description": "Cumulus Linux version 3.7.12 running on QEMU Standard
+    PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.11", "timestamp": 1590172819537},
+    {"namespace": "dual-attach_evpn_centralized", "hostname": "spine02", "ifname":
+    "swp2", "peerHostname": "leaf02", "peerIfname": "swp2", "description": "Cumulus
+    Linux version 3.7.12 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP":
+    "10.0.0.12", "timestamp": 1590172819537}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "spine02", "ifname": "swp3", "peerHostname": "leaf03", "peerIfname":
+    "swp2", "description": "Cumulus Linux version 3.7.12 running on QEMU Standard
+    PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.13", "timestamp": 1590172819537},
+    {"namespace": "dual-attach_evpn_centralized", "hostname": "spine02", "ifname":
+    "swp4", "peerHostname": "leaf04", "peerIfname": "swp2", "description": "Cumulus
+    Linux version 3.7.12 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP":
+    "10.0.0.14", "timestamp": 1590172819537}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "spine02", "ifname": "swp5", "peerHostname": "exit02", "peerIfname":
+    "swp2", "description": "Cumulus Linux version 3.7.12 running on QEMU Standard
+    PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.102", "timestamp": 1590172819537},
+    {"namespace": "dual-attach_evpn_centralized", "hostname": "spine02", "ifname":
+    "swp6", "peerHostname": "exit01", "peerIfname": "swp2", "description": "Cumulus
+    Linux version 3.7.12 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP":
+    "10.0.0.101", "timestamp": 1590172819537}]'
+- command: lldp show --columns=hostname --format=json --namespace=dual-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_centralized/parquet-out
+  marks: lldp show
+  output: '[{"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "internet"}, {"hostname": "internet"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}]'
+- command: lldp summarize --format=json --namespace=dual-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_centralized/parquet-out
+  marks: lldp summarize
+  output: '{"dual-attach_evpn_centralized": {"deviceCnt": 10, "nbrCnt": 40, "peerHostnameCnt":
+    40, "uniquePeerMgmtIPCnt": 11, "missingPeerInfoCnt": 2}}'
+- command: lldp unique --columns=hostname --format=json --namespace=dual-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_centralized/parquet-out
+  marks: lldp unique
+  output: '[{"hostname": "internet", "count": 2}, {"hostname": "edge01", "count":
+    2}, {"hostname": "leaf04", "count": 4}, {"hostname": "leaf03", "count": 4}, {"hostname":
+    "leaf02", "count": 4}, {"hostname": "leaf01", "count": 4}, {"hostname": "exit02",
+    "count": 4}, {"hostname": "exit01", "count": 4}, {"hostname": "spine02", "count":
+    6}, {"hostname": "spine01", "count": 6}]'

@@ -1,0 +1,699 @@
+description: 'Testing verbs for interface: show summarize unique assert top'
+tests:
+- command: interface show --format=json --namespace=dual-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_centralized/parquet-out
+  marks: interface show
+  output: '[{"namespace": "dual-attach_evpn_centralized", "hostname": "edge01", "ifname":
+    "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "",
+    "ipAddressList": ["192.168.121.59/24"], "ip6AddressList": [], "timestamp": 1590172814419},
+    {"namespace": "dual-attach_evpn_centralized", "hostname": "edge01", "ifname":
+    "eth1.2", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 2, "master": "",
+    "ipAddressList": ["169.254.254.2/30"], "ip6AddressList": [], "timestamp": 1590172814419},
+    {"namespace": "dual-attach_evpn_centralized", "hostname": "edge01", "ifname":
+    "eth1.3", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 3, "master": "",
+    "ipAddressList": ["169.254.254.6/30"], "ip6AddressList": [], "timestamp": 1590172814419},
+    {"namespace": "dual-attach_evpn_centralized", "hostname": "edge01", "ifname":
+    "eth1.4", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 4, "master": "",
+    "ipAddressList": ["169.254.254.10/30"], "ip6AddressList": [], "timestamp": 1590172814419},
+    {"namespace": "dual-attach_evpn_centralized", "hostname": "edge01", "ifname":
+    "eth1", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1590172814419}, {"namespace":
+    "dual-attach_evpn_centralized", "hostname": "edge01", "ifname": "eth2.2", "state":
+    "up", "type": "vlan", "mtu": 1500, "vlan": 2, "master": "", "ipAddressList": ["169.254.253.2/30"],
+    "ip6AddressList": [], "timestamp": 1590172814419}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "edge01", "ifname": "eth2.3", "state": "up", "type": "vlan", "mtu":
+    1500, "vlan": 3, "master": "", "ipAddressList": ["169.254.253.6/30"], "ip6AddressList":
+    [], "timestamp": 1590172814419}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "edge01", "ifname": "eth2.4", "state": "up", "type": "vlan", "mtu":
+    1500, "vlan": 4, "master": "", "ipAddressList": ["169.254.253.10/30"], "ip6AddressList":
+    [], "timestamp": 1590172814419}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "edge01", "ifname": "eth2", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1590172814419}, {"namespace": "dual-attach_evpn_centralized", "hostname": "edge01",
+    "ifname": "lo", "state": "unknown", "type": "loopback", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.100/32"], "ip6AddressList": [], "timestamp":
+    1590172814419}, {"namespace": "dual-attach_evpn_centralized", "hostname": "exit01",
+    "ifname": "bridge", "state": "up", "type": "bridge", "mtu": 9000, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::49b:8ff:fe50:341d/64"], "timestamp":
+    1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname": "exit01",
+    "ifname": "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "mgmt", "ipAddressList": ["192.168.121.157/24"], "ip6AddressList": ["fe80::5054:ff:fe56:4703/64"],
+    "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+    "exit01", "ifname": "evpn-vrf", "state": "up", "type": "vrf", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.101/32"], "ip6AddressList": [], "timestamp":
+    1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname": "exit01",
+    "ifname": "internet-vrf", "state": "up", "type": "vrf", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.101/32"], "ip6AddressList": [], "timestamp":
+    1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname": "exit01",
+    "ifname": "lo", "state": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": ["10.0.0.101/32"], "ip6AddressList": [], "timestamp": 1590172815620},
+    {"namespace": "dual-attach_evpn_centralized", "hostname": "exit01", "ifname":
+    "mgmt", "state": "up", "type": "vrf", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "exit01", "ifname": "swp1", "state": "up", "type": "ether", "mtu":
+    9216, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fea7:284c/64",
+    "fe80::5054:ff:fe0a:958d/128"], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "exit01", "ifname": "swp2", "state": "up", "type": "ether", "mtu":
+    9216, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe37:98dd/64",
+    "fe80::5054:ff:fe6c:4008/128"], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "exit01", "ifname": "swp3", "state": "down", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname": "exit01",
+    "ifname": "swp4", "state": "down", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1590172815620}, {"namespace":
+    "dual-attach_evpn_centralized", "hostname": "exit01", "ifname": "swp5.2", "state":
+    "up", "type": "vlan", "mtu": 1500, "vlan": 2, "master": "", "ipAddressList": ["169.254.254.1/30"],
+    "ip6AddressList": ["fe80::5054:ff:fe7b:d90b/64"], "timestamp": 1590172815620},
+    {"namespace": "dual-attach_evpn_centralized", "hostname": "exit01", "ifname":
+    "swp5.3", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 3, "master": "evpn-vrf",
+    "ipAddressList": ["169.254.254.5/30"], "ip6AddressList": ["fe80::5054:ff:fe7b:d90b/64"],
+    "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+    "exit01", "ifname": "swp5.4", "state": "up", "type": "vlan", "mtu": 1500, "vlan":
+    4, "master": "internet-vrf", "ipAddressList": ["169.254.254.9/30"], "ip6AddressList":
+    ["fe80::5054:ff:fe7b:d90b/64"], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "exit01", "ifname": "swp5", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe7b:d90b/64"],
+    "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+    "exit01", "ifname": "swp6", "state": "up", "type": "ether", "mtu": 1500, "vlan":
+    0, "master": "internet-vrf", "ipAddressList": ["169.254.127.1/31"], "ip6AddressList":
+    ["fe80::5054:ff:fe10:cb3f/64", "fe80::5054:ff:fe58:86a7/128"], "timestamp": 1590172815620},
+    {"namespace": "dual-attach_evpn_centralized", "hostname": "exit01", "ifname":
+    "vlan13-v0", "state": "up", "type": "macvlan", "mtu": 9000, "vlan": 0, "master":
+    "evpn-vrf", "ipAddressList": ["172.16.1.1/24"], "ip6AddressList": ["fe80::4639:39ff:feff:13/64"],
+    "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+    "exit01", "ifname": "vlan13", "state": "up", "type": "vlan", "mtu": 9000, "vlan":
+    13, "master": "evpn-vrf", "ipAddressList": ["172.16.1.11/24"], "ip6AddressList":
+    ["fe80::49b:8ff:fe50:341d/64"], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "exit01", "ifname": "vlan24-v0", "state": "up", "type": "macvlan",
+    "mtu": 9000, "vlan": 0, "master": "evpn-vrf", "ipAddressList": ["172.16.2.1/24"],
+    "ip6AddressList": ["fe80::4639:39ff:feff:24/64"], "timestamp": 1590172815620},
+    {"namespace": "dual-attach_evpn_centralized", "hostname": "exit01", "ifname":
+    "vlan24", "state": "up", "type": "vlan", "mtu": 9000, "vlan": 24, "master": "evpn-vrf",
+    "ipAddressList": ["172.16.2.11/24"], "ip6AddressList": ["fe80::49b:8ff:fe50:341d/64"],
+    "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+    "exit01", "ifname": "vni13", "state": "up", "type": "vxlan", "mtu": 9000, "vlan":
+    13, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname": "exit01",
+    "ifname": "vni24", "state": "up", "type": "vxlan", "mtu": 9000, "vlan": 24, "master":
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1590172815620},
+    {"namespace": "dual-attach_evpn_centralized", "hostname": "exit02", "ifname":
+    "bridge", "state": "up", "type": "bridge", "mtu": 9000, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": ["fe80::bcc4:23ff:fe7b:83f9/64"], "timestamp":
+    1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname": "exit02",
+    "ifname": "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "mgmt", "ipAddressList": ["192.168.121.115/24"], "ip6AddressList": ["fe80::5054:ff:fe6e:cb5f/64"],
+    "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+    "exit02", "ifname": "evpn-vrf", "state": "up", "type": "vrf", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.102/32"], "ip6AddressList": [], "timestamp":
+    1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname": "exit02",
+    "ifname": "internet-vrf", "state": "up", "type": "vrf", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.102/32"], "ip6AddressList": [], "timestamp":
+    1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname": "exit02",
+    "ifname": "lo", "state": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": ["10.0.0.102/32"], "ip6AddressList": [], "timestamp": 1590172815620},
+    {"namespace": "dual-attach_evpn_centralized", "hostname": "exit02", "ifname":
+    "mgmt", "state": "up", "type": "vrf", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "exit02", "ifname": "swp1", "state": "up", "type": "ether", "mtu":
+    9216, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fec7:1222/64",
+    "fe80::5054:ff:fe59:160a/128"], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "exit02", "ifname": "swp2", "state": "up", "type": "ether", "mtu":
+    9216, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:feef:6927/64",
+    "fe80::5054:ff:fe6c:58ce/128"], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "exit02", "ifname": "swp3", "state": "down", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname": "exit02",
+    "ifname": "swp4", "state": "down", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1590172815620}, {"namespace":
+    "dual-attach_evpn_centralized", "hostname": "exit02", "ifname": "swp5.2", "state":
+    "up", "type": "vlan", "mtu": 1500, "vlan": 2, "master": "", "ipAddressList": ["169.254.253.1/30"],
+    "ip6AddressList": ["fe80::5054:ff:fea5:ac4d/64"], "timestamp": 1590172815620},
+    {"namespace": "dual-attach_evpn_centralized", "hostname": "exit02", "ifname":
+    "swp5.3", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 3, "master": "evpn-vrf",
+    "ipAddressList": ["169.254.253.5/30"], "ip6AddressList": ["fe80::5054:ff:fea5:ac4d/64"],
+    "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+    "exit02", "ifname": "swp5.4", "state": "up", "type": "vlan", "mtu": 1500, "vlan":
+    4, "master": "internet-vrf", "ipAddressList": ["169.254.253.9/30"], "ip6AddressList":
+    ["fe80::5054:ff:fea5:ac4d/64"], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "exit02", "ifname": "swp5", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fea5:ac4d/64"],
+    "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+    "exit02", "ifname": "swp6", "state": "up", "type": "ether", "mtu": 1500, "vlan":
+    0, "master": "internet-vrf", "ipAddressList": ["169.254.127.3/31"], "ip6AddressList":
+    ["fe80::5054:ff:feae:c28a/64", "fe80::5054:ff:fe57:c2/128"], "timestamp": 1590172815620},
+    {"namespace": "dual-attach_evpn_centralized", "hostname": "exit02", "ifname":
+    "vlan13-v0", "state": "up", "type": "macvlan", "mtu": 9000, "vlan": 0, "master":
+    "evpn-vrf", "ipAddressList": ["172.16.1.1/24"], "ip6AddressList": ["fe80::4639:39ff:feff:13/64"],
+    "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+    "exit02", "ifname": "vlan13", "state": "up", "type": "vlan", "mtu": 9000, "vlan":
+    13, "master": "evpn-vrf", "ipAddressList": ["172.16.1.12/24"], "ip6AddressList":
+    ["fe80::bcc4:23ff:fe7b:83f9/64"], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "exit02", "ifname": "vlan24-v0", "state": "up", "type": "macvlan",
+    "mtu": 9000, "vlan": 0, "master": "evpn-vrf", "ipAddressList": ["172.16.2.1/24"],
+    "ip6AddressList": ["fe80::4639:39ff:feff:24/64"], "timestamp": 1590172815620},
+    {"namespace": "dual-attach_evpn_centralized", "hostname": "exit02", "ifname":
+    "vlan24", "state": "up", "type": "vlan", "mtu": 9000, "vlan": 24, "master": "evpn-vrf",
+    "ipAddressList": ["172.16.2.12/24"], "ip6AddressList": ["fe80::bcc4:23ff:fe7b:83f9/64"],
+    "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+    "exit02", "ifname": "vni13", "state": "up", "type": "vxlan", "mtu": 9000, "vlan":
+    13, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname": "exit02",
+    "ifname": "vni24", "state": "up", "type": "vxlan", "mtu": 9000, "vlan": 24, "master":
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1590172815620},
+    {"namespace": "dual-attach_evpn_centralized", "hostname": "internet", "ifname":
+    "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "",
+    "ipAddressList": ["192.168.121.147/24"], "ip6AddressList": ["fe80::5054:ff:fe10:e111/64"],
+    "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+    "internet", "ifname": "lo", "state": "up", "type": "loopback", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.253/32", "172.16.253.1/32"], "ip6AddressList":
+    [], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "internet", "ifname": "swp1", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": ["169.254.127.0/31"], "ip6AddressList":
+    ["fe80::5054:ff:fe58:86a7/64", "fe80::5054:ff:fe10:cb3f/128"], "timestamp": 1590172815620},
+    {"namespace": "dual-attach_evpn_centralized", "hostname": "internet", "ifname":
+    "swp2", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "",
+    "ipAddressList": ["169.254.127.2/31"], "ip6AddressList": ["fe80::5054:ff:fe57:c2/64",
+    "fe80::5054:ff:feae:c28a/128"], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "leaf01", "ifname": "bond01", "state": "up", "type": "bond", "mtu":
+    1500, "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1590172815262}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+    "leaf01", "ifname": "bond02", "state": "up", "type": "bond", "mtu": 1500, "vlan":
+    0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1590172815262}, {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf01",
+    "ifname": "bridge", "state": "up", "type": "bridge", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:feb8:acca/64"], "timestamp":
+    1590172815262}, {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf01",
+    "ifname": "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "mgmt", "ipAddressList": ["192.168.121.114/24"], "ip6AddressList": ["fe80::5054:ff:fea3:4229/64"],
+    "timestamp": 1590172815262}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+    "leaf01", "ifname": "lo", "state": "up", "type": "loopback", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.11/32", "10.0.0.112/32"], "ip6AddressList":
+    [], "timestamp": 1590172815262}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "leaf01", "ifname": "mgmt", "state": "up", "type": "vrf", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1590172815262}, {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf01",
+    "ifname": "peerlink.4094", "state": "up", "type": "vlan", "mtu": 1500, "vlan":
+    4094, "master": "", "ipAddressList": ["169.254.1.1/30"], "ip6AddressList": ["fe80::5054:ff:fedf:b5a1/64"],
+    "timestamp": 1590172815262}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+    "leaf01", "ifname": "peerlink", "state": "up", "type": "bond", "mtu": 1500, "vlan":
+    0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1590172815262}, {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf01",
+    "ifname": "swp1", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fee4:d33e/64", "fe80::5054:ff:fe0d:74a9/128"],
+    "timestamp": 1590172815262}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+    "leaf01", "ifname": "swp2", "state": "up", "type": "ether", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe11:4345/64",
+    "fe80::5054:ff:fee6:4d29/128"], "timestamp": 1590172815262}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "leaf01", "ifname": "swp3", "state": "up", "type": "bond_slave", "mtu":
+    1500, "vlan": 0, "master": "peerlink", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1590172815262}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "leaf01", "ifname": "swp4", "state": "up", "type": "bond_slave", "mtu":
+    1500, "vlan": 0, "master": "peerlink", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1590172815262}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "leaf01", "ifname": "swp5", "state": "up", "type": "bond_slave", "mtu":
+    1500, "vlan": 0, "master": "bond01", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1590172815262}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+    "leaf01", "ifname": "swp6", "state": "up", "type": "bond_slave", "mtu": 1500,
+    "vlan": 0, "master": "bond02", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1590172815262}, {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf01",
+    "ifname": "vlan13", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 13, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:feb8:acca/64"], "timestamp":
+    1590172815262}, {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf01",
+    "ifname": "vlan24", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 24, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:feb8:acca/64"], "timestamp":
+    1590172815262}, {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf01",
+    "ifname": "vni13", "state": "up", "type": "vxlan", "mtu": 9000, "vlan": 13, "master":
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1590172815262},
+    {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf01", "ifname":
+    "vni24", "state": "up", "type": "vxlan", "mtu": 9000, "vlan": 24, "master": "bridge",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1590172815262}, {"namespace":
+    "dual-attach_evpn_centralized", "hostname": "leaf02", "ifname": "bond01", "state":
+    "up", "type": "bond", "mtu": 1500, "vlan": 0, "master": "bridge", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "leaf02", "ifname": "bond02", "state": "up", "type": "bond", "mtu":
+    1500, "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+    "leaf02", "ifname": "bridge", "state": "up", "type": "bridge", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe50:d2a9/64"],
+    "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+    "leaf02", "ifname": "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan":
+    0, "master": "mgmt", "ipAddressList": ["192.168.121.104/24"], "ip6AddressList":
+    ["fe80::5054:ff:fea4:3102/64"], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "leaf02", "ifname": "lo", "state": "up", "type": "loopback", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.12/32", "10.0.0.112/32"],
+    "ip6AddressList": [], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "leaf02", "ifname": "mgmt", "state": "up", "type": "vrf", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf02",
+    "ifname": "peerlink.4094", "state": "up", "type": "vlan", "mtu": 1500, "vlan":
+    4094, "master": "", "ipAddressList": ["169.254.1.2/30"], "ip6AddressList": ["fe80::5054:ff:fe02:f41e/64"],
+    "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+    "leaf02", "ifname": "peerlink", "state": "up", "type": "bond", "mtu": 1500, "vlan":
+    0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf02",
+    "ifname": "swp1", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe94:d6ec/64", "fe80::5054:ff:fe1d:8b54/128"],
+    "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+    "leaf02", "ifname": "swp2", "state": "up", "type": "ether", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe67:cf9/64",
+    "fe80::5054:ff:fe28:780a/128"], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "leaf02", "ifname": "swp3", "state": "up", "type": "bond_slave", "mtu":
+    1500, "vlan": 0, "master": "peerlink", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "leaf02", "ifname": "swp4", "state": "up", "type": "bond_slave", "mtu":
+    1500, "vlan": 0, "master": "peerlink", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "leaf02", "ifname": "swp5", "state": "up", "type": "bond_slave", "mtu":
+    1500, "vlan": 0, "master": "bond01", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+    "leaf02", "ifname": "swp6", "state": "up", "type": "bond_slave", "mtu": 1500,
+    "vlan": 0, "master": "bond02", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf02",
+    "ifname": "vlan13", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 13, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe50:d2a9/64"], "timestamp":
+    1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf02",
+    "ifname": "vlan24", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 24, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe50:d2a9/64"], "timestamp":
+    1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf02",
+    "ifname": "vni13", "state": "up", "type": "vxlan", "mtu": 9000, "vlan": 13, "master":
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1590172815620},
+    {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf02", "ifname":
+    "vni24", "state": "up", "type": "vxlan", "mtu": 9000, "vlan": 24, "master": "bridge",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1590172815620}, {"namespace":
+    "dual-attach_evpn_centralized", "hostname": "leaf03", "ifname": "bond01", "state":
+    "up", "type": "bond", "mtu": 1500, "vlan": 0, "master": "bridge", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "leaf03", "ifname": "bond02", "state": "up", "type": "bond", "mtu":
+    1500, "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+    "leaf03", "ifname": "bridge", "state": "up", "type": "bridge", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe50:923e/64"],
+    "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+    "leaf03", "ifname": "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan":
+    0, "master": "mgmt", "ipAddressList": ["192.168.121.95/24"], "ip6AddressList":
+    ["fe80::5054:ff:fe46:d064/64"], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "leaf03", "ifname": "lo", "state": "up", "type": "loopback", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.13/32", "10.0.0.134/32"],
+    "ip6AddressList": [], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "leaf03", "ifname": "mgmt", "state": "up", "type": "vrf", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf03",
+    "ifname": "peerlink.4094", "state": "up", "type": "vlan", "mtu": 1500, "vlan":
+    4094, "master": "", "ipAddressList": ["169.254.1.1/30"], "ip6AddressList": ["fe80::5054:ff:fefa:195b/64"],
+    "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+    "leaf03", "ifname": "peerlink", "state": "up", "type": "bond", "mtu": 1500, "vlan":
+    0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf03",
+    "ifname": "swp1", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe4e:5f67/64", "fe80::5054:ff:fe37:e9a7/128"],
+    "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+    "leaf03", "ifname": "swp2", "state": "up", "type": "ether", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe5e:f2a8/64",
+    "fe80::5054:ff:fe31:d1a4/128"], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "leaf03", "ifname": "swp3", "state": "up", "type": "bond_slave", "mtu":
+    1500, "vlan": 0, "master": "peerlink", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "leaf03", "ifname": "swp4", "state": "up", "type": "bond_slave", "mtu":
+    1500, "vlan": 0, "master": "peerlink", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "leaf03", "ifname": "swp5", "state": "up", "type": "bond_slave", "mtu":
+    1500, "vlan": 0, "master": "bond01", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+    "leaf03", "ifname": "swp6", "state": "up", "type": "bond_slave", "mtu": 1500,
+    "vlan": 0, "master": "bond02", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf03",
+    "ifname": "vlan13", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 13, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe50:923e/64"], "timestamp":
+    1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf03",
+    "ifname": "vlan24", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 24, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe50:923e/64"], "timestamp":
+    1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf03",
+    "ifname": "vni13", "state": "up", "type": "vxlan", "mtu": 9000, "vlan": 13, "master":
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1590172815620},
+    {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf03", "ifname":
+    "vni24", "state": "up", "type": "vxlan", "mtu": 9000, "vlan": 24, "master": "bridge",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1590172815620}, {"namespace":
+    "dual-attach_evpn_centralized", "hostname": "leaf04", "ifname": "bond01", "state":
+    "up", "type": "bond", "mtu": 1500, "vlan": 0, "master": "bridge", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "leaf04", "ifname": "bond02", "state": "up", "type": "bond", "mtu":
+    1500, "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+    "leaf04", "ifname": "bridge", "state": "up", "type": "bridge", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe15:1d39/64"],
+    "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+    "leaf04", "ifname": "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan":
+    0, "master": "mgmt", "ipAddressList": ["192.168.121.253/24"], "ip6AddressList":
+    ["fe80::5054:ff:fed1:8f1/64"], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "leaf04", "ifname": "lo", "state": "up", "type": "loopback", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.14/32", "10.0.0.134/32"],
+    "ip6AddressList": [], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "leaf04", "ifname": "mgmt", "state": "up", "type": "vrf", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf04",
+    "ifname": "peerlink.4094", "state": "up", "type": "vlan", "mtu": 1500, "vlan":
+    4094, "master": "", "ipAddressList": ["169.254.1.2/30"], "ip6AddressList": ["fe80::5054:ff:fe2a:34c9/64"],
+    "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+    "leaf04", "ifname": "peerlink", "state": "up", "type": "bond", "mtu": 1500, "vlan":
+    0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf04",
+    "ifname": "swp1", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe16:f110/64", "fe80::5054:ff:fedb:1e6a/128"],
+    "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+    "leaf04", "ifname": "swp2", "state": "up", "type": "ether", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:feed:465c/64",
+    "fe80::5054:ff:fea8:b1d/128"], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "leaf04", "ifname": "swp3", "state": "up", "type": "bond_slave", "mtu":
+    1500, "vlan": 0, "master": "peerlink", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "leaf04", "ifname": "swp4", "state": "up", "type": "bond_slave", "mtu":
+    1500, "vlan": 0, "master": "peerlink", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "leaf04", "ifname": "swp5", "state": "up", "type": "bond_slave", "mtu":
+    1500, "vlan": 0, "master": "bond01", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+    "leaf04", "ifname": "swp6", "state": "up", "type": "bond_slave", "mtu": 1500,
+    "vlan": 0, "master": "bond02", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf04",
+    "ifname": "vlan13", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 13, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe15:1d39/64"], "timestamp":
+    1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf04",
+    "ifname": "vlan24", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 24, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe15:1d39/64"], "timestamp":
+    1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf04",
+    "ifname": "vni13", "state": "up", "type": "vxlan", "mtu": 9000, "vlan": 13, "master":
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1590172815620},
+    {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf04", "ifname":
+    "vni24", "state": "up", "type": "vxlan", "mtu": 9000, "vlan": 24, "master": "bridge",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1590172815620}, {"namespace":
+    "dual-attach_evpn_centralized", "hostname": "server101", "ifname": "bond0", "state":
+    "up", "type": "bond", "mtu": 9000, "vlan": 0, "master": "", "ipAddressList": ["172.16.1.101/24"],
+    "ip6AddressList": [], "timestamp": 1590172814550}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "server101", "ifname": "eth0", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": ["192.168.121.213/24"], "ip6AddressList":
+    [], "timestamp": 1590172814550}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "server101", "ifname": "eth1", "state": "up", "type": "bond_slave",
+    "mtu": 9000, "vlan": 0, "master": "bond0", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1590172814550}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "server101", "ifname": "eth2", "state": "up", "type": "bond_slave",
+    "mtu": 9000, "vlan": 0, "master": "bond0", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1590172814550}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "server101", "ifname": "lo", "state": "unknown", "type": "loopback",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1590172814550}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "server102", "ifname": "bond0", "state": "up", "type": "bond", "mtu":
+    9000, "vlan": 0, "master": "", "ipAddressList": ["172.16.2.102/24"], "ip6AddressList":
+    [], "timestamp": 1590172814419}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "server102", "ifname": "eth0", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": ["192.168.121.229/24"], "ip6AddressList":
+    [], "timestamp": 1590172814419}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "server102", "ifname": "eth1", "state": "up", "type": "bond_slave",
+    "mtu": 9000, "vlan": 0, "master": "bond0", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1590172814419}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "server102", "ifname": "eth2", "state": "up", "type": "bond_slave",
+    "mtu": 9000, "vlan": 0, "master": "bond0", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1590172814419}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "server102", "ifname": "lo", "state": "unknown", "type": "loopback",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1590172814419}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "server103", "ifname": "bond0", "state": "up", "type": "bond", "mtu":
+    9000, "vlan": 0, "master": "", "ipAddressList": ["172.16.1.103/24"], "ip6AddressList":
+    [], "timestamp": 1590172814419}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "server103", "ifname": "eth0", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": ["192.168.121.58/24"], "ip6AddressList":
+    [], "timestamp": 1590172814419}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "server103", "ifname": "eth1", "state": "up", "type": "bond_slave",
+    "mtu": 9000, "vlan": 0, "master": "bond0", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1590172814419}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "server103", "ifname": "eth2", "state": "up", "type": "bond_slave",
+    "mtu": 9000, "vlan": 0, "master": "bond0", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1590172814419}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "server103", "ifname": "lo", "state": "unknown", "type": "loopback",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1590172814419}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "server104", "ifname": "bond0", "state": "up", "type": "bond", "mtu":
+    9000, "vlan": 0, "master": "", "ipAddressList": ["172.16.2.104/24"], "ip6AddressList":
+    [], "timestamp": 1590172815262}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "server104", "ifname": "eth0", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": ["192.168.121.99/24"], "ip6AddressList":
+    [], "timestamp": 1590172815262}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "server104", "ifname": "eth1", "state": "up", "type": "bond_slave",
+    "mtu": 9000, "vlan": 0, "master": "bond0", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1590172815262}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "server104", "ifname": "eth2", "state": "up", "type": "bond_slave",
+    "mtu": 9000, "vlan": 0, "master": "bond0", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1590172815262}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "server104", "ifname": "lo", "state": "unknown", "type": "loopback",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1590172815262}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "spine01", "ifname": "eth0", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "mgmt", "ipAddressList": ["192.168.121.129/24"], "ip6AddressList":
+    ["fe80::5054:ff:fee2:1999/64"], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "spine01", "ifname": "lo", "state": "up", "type": "loopback", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.21/32"], "ip6AddressList":
+    [], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "spine01", "ifname": "mgmt", "state": "up", "type": "vrf", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname": "spine01",
+    "ifname": "swp1", "state": "up", "type": "ether", "mtu": 9216, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe0d:74a9/64", "fe80::5054:ff:fee4:d33e/128"],
+    "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+    "spine01", "ifname": "swp2", "state": "up", "type": "ether", "mtu": 9216, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe1d:8b54/64",
+    "fe80::5054:ff:fe94:d6ec/128"], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "spine01", "ifname": "swp3", "state": "up", "type": "ether", "mtu":
+    9216, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe37:e9a7/64",
+    "fe80::5054:ff:fe4e:5f67/128"], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "spine01", "ifname": "swp4", "state": "up", "type": "ether", "mtu":
+    9216, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fedb:1e6a/64",
+    "fe80::5054:ff:fe16:f110/128"], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "spine01", "ifname": "swp5", "state": "up", "type": "ether", "mtu":
+    9216, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe59:160a/64",
+    "fe80::5054:ff:fec7:1222/128"], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "spine01", "ifname": "swp6", "state": "up", "type": "ether", "mtu":
+    9216, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe0a:958d/64",
+    "fe80::5054:ff:fea7:284c/128"], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "spine02", "ifname": "eth0", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "mgmt", "ipAddressList": ["192.168.121.167/24"], "ip6AddressList":
+    ["fe80::5054:ff:feae:a8c2/64"], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "spine02", "ifname": "lo", "state": "up", "type": "loopback", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.22/32"], "ip6AddressList":
+    [], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "spine02", "ifname": "mgmt", "state": "up", "type": "vrf", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname": "spine02",
+    "ifname": "swp1", "state": "up", "type": "ether", "mtu": 9216, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fee6:4d29/64", "fe80::5054:ff:fe11:4345/128"],
+    "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+    "spine02", "ifname": "swp2", "state": "up", "type": "ether", "mtu": 9216, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe28:780a/64",
+    "fe80::5054:ff:fe67:cf9/128"], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "spine02", "ifname": "swp3", "state": "up", "type": "ether", "mtu":
+    9216, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe31:d1a4/64",
+    "fe80::5054:ff:fe5e:f2a8/128"], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "spine02", "ifname": "swp4", "state": "up", "type": "ether", "mtu":
+    9216, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fea8:b1d/64",
+    "fe80::5054:ff:feed:465c/128"], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "spine02", "ifname": "swp5", "state": "up", "type": "ether", "mtu":
+    9216, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe6c:58ce/64",
+    "fe80::5054:ff:feef:6927/128"], "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "spine02", "ifname": "swp6", "state": "up", "type": "ether", "mtu":
+    9216, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe6c:4008/64",
+    "fe80::5054:ff:fe37:98dd/128"], "timestamp": 1590172815620}]'
+- command: interface show --columns=hostname --format=json --namespace=dual-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_centralized/parquet-out
+  marks: interface show
+  output: '[{"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
+    {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname":
+    "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "internet"}, {"hostname": "internet"}, {"hostname": "internet"},
+    {"hostname": "internet"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "server101"}, {"hostname": "server101"}, {"hostname": "server101"}, {"hostname":
+    "server101"}, {"hostname": "server101"}, {"hostname": "server102"}, {"hostname":
+    "server102"}, {"hostname": "server102"}, {"hostname": "server102"}, {"hostname":
+    "server102"}, {"hostname": "server103"}, {"hostname": "server103"}, {"hostname":
+    "server103"}, {"hostname": "server103"}, {"hostname": "server103"}, {"hostname":
+    "server104"}, {"hostname": "server104"}, {"hostname": "server104"}, {"hostname":
+    "server104"}, {"hostname": "server104"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}]'
+- command: interface summarize --format=json --namespace=dual-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_centralized/parquet-out
+  marks: interface summarize
+  output: '{"dual-attach_evpn_centralized": {"deviceCnt": 14, "interfaceCnt": 166,
+    "hostsWithL2Cnt": 24, "hostsWithVxlanCnt": 12, "ifDownCnt": 4, "ifWithMultipleIPCnt":
+    5, "uniqueMTUCnt": 4, "uniqueIfTypesCnt": 9, "ifChangesStat": [0, 7, 0], "ifPerHostStat":
+    [4, 21, 9.5], "uniqueIPv4AddrCnt": 55, "uniqueIPv6AddrCnt": 0}}'
+- command: interface unique --columns=hostname --format=json --namespace=dual-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_centralized/parquet-out
+  marks: interface unique
+  output: '[{"hostname": "internet", "count": 4}, {"hostname": "server104", "count":
+    5}, {"hostname": "server103", "count": 5}, {"hostname": "server102", "count":
+    5}, {"hostname": "server101", "count": 5}, {"hostname": "spine02", "count": 9},
+    {"hostname": "spine01", "count": 9}, {"hostname": "edge01", "count": 10}, {"hostname":
+    "leaf04", "count": 18}, {"hostname": "leaf03", "count": 18}, {"hostname": "leaf02",
+    "count": 18}, {"hostname": "leaf01", "count": 18}, {"hostname": "exit02", "count":
+    21}, {"hostname": "exit01", "count": 21}]'
+- command: interface assert --format=json --namespace=dual-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_centralized/parquet-out
+  error:
+    error: '[{"namespace": "dual-attach_evpn_centralized", "hostname": "edge01", "ifname":
+      "eth1", "peerHostname": "exit01", "peerIfname": "swp5", "timestamp": 1590172818871,
+      "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "dual-attach_evpn_centralized",
+      "hostname": "edge01", "ifname": "eth2", "peerHostname": "exit02", "peerIfname":
+      "swp5", "timestamp": 1590172818871, "mtu": 1500.0, "peerMtu": 1500, "assert":
+      "pass"}, {"namespace": "dual-attach_evpn_centralized", "hostname": "exit01",
+      "ifname": "swp1", "peerHostname": "spine01", "peerIfname": "swp6", "timestamp":
+      1590172820022, "mtu": 9216.0, "peerMtu": 9216, "assert": "pass"}, {"namespace":
+      "dual-attach_evpn_centralized", "hostname": "exit01", "ifname": "swp2", "peerHostname":
+      "spine02", "peerIfname": "swp6", "timestamp": 1590172820022, "mtu": 9216.0,
+      "peerMtu": 9216, "assert": "pass"}, {"namespace": "dual-attach_evpn_centralized",
+      "hostname": "exit01", "ifname": "swp5", "peerHostname": "edge01", "peerIfname":
+      "eth1", "timestamp": 1590172820022, "mtu": 1500.0, "peerMtu": 1500, "assert":
+      "pass"}, {"namespace": "dual-attach_evpn_centralized", "hostname": "exit01",
+      "ifname": "swp6", "peerHostname": "internet", "peerIfname": "swp1", "timestamp":
+      1590172820022, "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace":
+      "dual-attach_evpn_centralized", "hostname": "exit02", "ifname": "swp1", "peerHostname":
+      "spine01", "peerIfname": "swp5", "timestamp": 1590172820022, "mtu": 9216.0,
+      "peerMtu": 9216, "assert": "pass"}, {"namespace": "dual-attach_evpn_centralized",
+      "hostname": "exit02", "ifname": "swp2", "peerHostname": "spine02", "peerIfname":
+      "swp5", "timestamp": 1590172820022, "mtu": 9216.0, "peerMtu": 9216, "assert":
+      "pass"}, {"namespace": "dual-attach_evpn_centralized", "hostname": "exit02",
+      "ifname": "swp5", "peerHostname": "edge01", "peerIfname": "eth2", "timestamp":
+      1590172820022, "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace":
+      "dual-attach_evpn_centralized", "hostname": "exit02", "ifname": "swp6", "peerHostname":
+      "internet", "peerIfname": "swp2", "timestamp": 1590172820022, "mtu": 1500.0,
+      "peerMtu": 1500, "assert": "pass"}, {"namespace": "dual-attach_evpn_centralized",
+      "hostname": "internet", "ifname": "swp1", "peerHostname": "exit01", "peerIfname":
+      "swp6", "timestamp": 1590172819537, "mtu": 1500.0, "peerMtu": 1500, "assert":
+      "pass"}, {"namespace": "dual-attach_evpn_centralized", "hostname": "internet",
+      "ifname": "swp2", "peerHostname": "exit02", "peerIfname": "swp6", "timestamp":
+      1590172819537, "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace":
+      "dual-attach_evpn_centralized", "hostname": "leaf01", "ifname": "swp1", "peerHostname":
+      "spine01", "peerIfname": "swp1", "timestamp": 1590172820417, "mtu": 1500.0,
+      "peerMtu": 9216, "assert": "fail"}, {"namespace": "dual-attach_evpn_centralized",
+      "hostname": "leaf01", "ifname": "swp2", "peerHostname": "spine02", "peerIfname":
+      "swp1", "timestamp": 1590172820417, "mtu": 1500.0, "peerMtu": 9216, "assert":
+      "fail"}, {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf01",
+      "ifname": "swp3", "peerHostname": "leaf02", "peerIfname": "swp3", "timestamp":
+      1590172820417, "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace":
+      "dual-attach_evpn_centralized", "hostname": "leaf01", "ifname": "swp4", "peerHostname":
+      "leaf02", "peerIfname": "swp4", "timestamp": 1590172820417, "mtu": 1500.0, "peerMtu":
+      1500, "assert": "pass"}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+      "leaf02", "ifname": "swp1", "peerHostname": "spine01", "peerIfname": "swp2",
+      "timestamp": 1590172820022, "mtu": 1500.0, "peerMtu": 9216, "assert": "fail"},
+      {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf02", "ifname":
+      "swp2", "peerHostname": "spine02", "peerIfname": "swp2", "timestamp": 1590172820022,
+      "mtu": 1500.0, "peerMtu": 9216, "assert": "fail"}, {"namespace": "dual-attach_evpn_centralized",
+      "hostname": "leaf02", "ifname": "swp3", "peerHostname": "leaf01", "peerIfname":
+      "swp3", "timestamp": 1590172820022, "mtu": 1500.0, "peerMtu": 1500, "assert":
+      "pass"}, {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf02",
+      "ifname": "swp4", "peerHostname": "leaf01", "peerIfname": "swp4", "timestamp":
+      1590172820022, "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace":
+      "dual-attach_evpn_centralized", "hostname": "leaf03", "ifname": "swp1", "peerHostname":
+      "spine01", "peerIfname": "swp3", "timestamp": 1590172820022, "mtu": 1500.0,
+      "peerMtu": 9216, "assert": "fail"}, {"namespace": "dual-attach_evpn_centralized",
+      "hostname": "leaf03", "ifname": "swp2", "peerHostname": "spine02", "peerIfname":
+      "swp3", "timestamp": 1590172820022, "mtu": 1500.0, "peerMtu": 9216, "assert":
+      "fail"}, {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf03",
+      "ifname": "swp3", "peerHostname": "leaf04", "peerIfname": "swp3", "timestamp":
+      1590172820022, "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace":
+      "dual-attach_evpn_centralized", "hostname": "leaf03", "ifname": "swp4", "peerHostname":
+      "leaf04", "peerIfname": "swp4", "timestamp": 1590172820022, "mtu": 1500.0, "peerMtu":
+      1500, "assert": "pass"}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+      "leaf04", "ifname": "swp1", "peerHostname": "spine01", "peerIfname": "swp4",
+      "timestamp": 1590172819574, "mtu": 1500.0, "peerMtu": 9216, "assert": "fail"},
+      {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf04", "ifname":
+      "swp2", "peerHostname": "spine02", "peerIfname": "swp4", "timestamp": 1590172819574,
+      "mtu": 1500.0, "peerMtu": 9216, "assert": "fail"}, {"namespace": "dual-attach_evpn_centralized",
+      "hostname": "leaf04", "ifname": "swp3", "peerHostname": "leaf03", "peerIfname":
+      "swp3", "timestamp": 1590172819574, "mtu": 1500.0, "peerMtu": 1500, "assert":
+      "pass"}, {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf04",
+      "ifname": "swp4", "peerHostname": "leaf03", "peerIfname": "swp4", "timestamp":
+      1590172819574, "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace":
+      "dual-attach_evpn_centralized", "hostname": "spine01", "ifname": "swp1", "peerHostname":
+      "leaf01", "peerIfname": "swp1", "timestamp": 1590172819537, "mtu": 9216.0, "peerMtu":
+      1500, "assert": "fail"}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+      "spine01", "ifname": "swp2", "peerHostname": "leaf02", "peerIfname": "swp1",
+      "timestamp": 1590172819537, "mtu": 9216.0, "peerMtu": 1500, "assert": "fail"},
+      {"namespace": "dual-attach_evpn_centralized", "hostname": "spine01", "ifname":
+      "swp3", "peerHostname": "leaf03", "peerIfname": "swp1", "timestamp": 1590172819537,
+      "mtu": 9216.0, "peerMtu": 1500, "assert": "fail"}, {"namespace": "dual-attach_evpn_centralized",
+      "hostname": "spine01", "ifname": "swp4", "peerHostname": "leaf04", "peerIfname":
+      "swp1", "timestamp": 1590172819537, "mtu": 9216.0, "peerMtu": 1500, "assert":
+      "fail"}, {"namespace": "dual-attach_evpn_centralized", "hostname": "spine01",
+      "ifname": "swp5", "peerHostname": "exit02", "peerIfname": "swp1", "timestamp":
+      1590172819537, "mtu": 9216.0, "peerMtu": 9216, "assert": "pass"}, {"namespace":
+      "dual-attach_evpn_centralized", "hostname": "spine01", "ifname": "swp6", "peerHostname":
+      "exit01", "peerIfname": "swp1", "timestamp": 1590172819537, "mtu": 9216.0, "peerMtu":
+      9216, "assert": "pass"}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+      "spine02", "ifname": "swp1", "peerHostname": "leaf01", "peerIfname": "swp2",
+      "timestamp": 1590172819537, "mtu": 9216.0, "peerMtu": 1500, "assert": "fail"},
+      {"namespace": "dual-attach_evpn_centralized", "hostname": "spine02", "ifname":
+      "swp2", "peerHostname": "leaf02", "peerIfname": "swp2", "timestamp": 1590172819537,
+      "mtu": 9216.0, "peerMtu": 1500, "assert": "fail"}, {"namespace": "dual-attach_evpn_centralized",
+      "hostname": "spine02", "ifname": "swp3", "peerHostname": "leaf03", "peerIfname":
+      "swp2", "timestamp": 1590172819537, "mtu": 9216.0, "peerMtu": 1500, "assert":
+      "fail"}, {"namespace": "dual-attach_evpn_centralized", "hostname": "spine02",
+      "ifname": "swp4", "peerHostname": "leaf04", "peerIfname": "swp2", "timestamp":
+      1590172819537, "mtu": 9216.0, "peerMtu": 1500, "assert": "fail"}, {"namespace":
+      "dual-attach_evpn_centralized", "hostname": "spine02", "ifname": "swp5", "peerHostname":
+      "exit02", "peerIfname": "swp2", "timestamp": 1590172819537, "mtu": 9216.0, "peerMtu":
+      9216, "assert": "pass"}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+      "spine02", "ifname": "swp6", "peerHostname": "exit01", "peerIfname": "swp2",
+      "timestamp": 1590172819537, "mtu": 9216.0, "peerMtu": 9216, "assert": "pass"}]'
+  marks: interface assert
+- command: interface top --format=json --namespace=dual-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_centralized/parquet-out
+  marks: interface top
+  output: '[{"namespace": "dual-attach_evpn_centralized", "hostname": "edge01", "ifname":
+    "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "",
+    "ipAddressList": ["192.168.121.59/24"], "ip6AddressList": [], "numChanges": 0,
+    "timestamp": 1590172814419}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+    "edge01", "ifname": "eth1", "state": "up", "type": "ether", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "numChanges": 0, "timestamp":
+    1590172814419}, {"namespace": "dual-attach_evpn_centralized", "hostname": "edge01",
+    "ifname": "eth2", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "numChanges": 0, "timestamp": 1590172814419},
+    {"namespace": "dual-attach_evpn_centralized", "hostname": "exit01", "ifname":
+    "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "mgmt",
+    "ipAddressList": ["192.168.121.157/24"], "ip6AddressList": ["fe80::5054:ff:fe56:4703/64"],
+    "numChanges": 0, "timestamp": 1590172815620}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "exit01", "ifname": "swp1", "state": "up", "type": "ether", "mtu":
+    9216, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fea7:284c/64",
+    "fe80::5054:ff:fe0a:958d/128"], "numChanges": 0, "timestamp": 1590172815620}]'

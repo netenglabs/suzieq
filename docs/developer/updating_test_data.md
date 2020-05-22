@@ -30,13 +30,17 @@ tests/integration/samples/sqcmds.
 
 update the data
 ```bash
-UPDATE_SQCMDS=true SUZIEQ_POLLER=true pytest -m dual_attach -n0
+UPDATE_SQCMDS=true SUZIEQ_POLLER=true pytest -m "single_attach or dual_attach" --dist=loadscope -n2
 ```
 
 
 run the tests
 ```bash
-SUZIEQ_POLLER=true pytest -m dual_attach single_attach -n0
+ SUZIEQ_POLLER=true pytest -m "single_attach or dual_attach" --dist=loadscope -n2
 ```
-
+# Cleanup
+if you run into trouble with vagrant state lying around
+```bash
+SUZIEQ_POLLER=true pytest -m cleanup -n0
+```
 

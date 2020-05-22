@@ -1,0 +1,20 @@
+description: 'Testing verbs for evpnVni: show summarize unique'
+tests:
+- command: evpnVni show --format=json --namespace=single-attach_ospf_numbered
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_numbered/parquet-out
+  marks: evpnVni show
+  output: '[]'
+- command: evpnVni show --columns=hostname --format=json --namespace=single-attach_ospf_numbered
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_numbered/parquet-out
+  marks: evpnVni show
+  xfail:
+    error: '[]'
+    reason: uncaught exception
+- command: evpnVni summarize --format=json --namespace=single-attach_ospf_numbered
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_numbered/parquet-out
+  marks: evpnVni summarize
+  output: '{}'
+- command: evpnVni unique --columns=hostname --format=json --namespace=single-attach_ospf_numbered
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_numbered/parquet-out
+  marks: evpnVni unique
+  output: '[]'
