@@ -33,9 +33,17 @@ Then you should check in the tests/data directories and the tests/integration/sq
 
 These take hours
 
+I can't get these to run successfully in parallel. It should be possible, I've done it with a bash
+script, but I can't get it to work correctly with pytest.
+
 run the tests
 ```bash
- SUZIEQ_POLLER=true pytest -m "single_attach or dual_attach" --dist=loadscope -n2
+ SUZIEQ_POLLER=true pytest -m "single_attach or dual_attach" -n0 
+```
+
+if you want to try parallel
+```bash
+ SUZIEQ_POLLER=true pytest -m "single_attach or dual_attach" -n2 --dist=loadscope
 ```
 
 if something big has changed and the captured sample *.yml needs to be updated, then 
@@ -43,13 +51,14 @@ run :
 
 update the data
 ```bash
-UPDATE_SQCMDS=true SUZIEQ_POLLER=true pytest -m "single_attach or dual_attach" --dist=loadscope -n2
+UPDATE_SQCMDS=true SUZIEQ_POLLER=true pytest -m "single_attach or dual_attach" -n0
 ```
+you'll need to check in the changes that are made to tests/integration/all_cndcn/*
 
 
 # Cleanup
 if you run into trouble with vagrant state lying around
 ```bash
-SUZIEQ_POLLER=true pytest -m cleanup -n0
+SUZIEQ_POLLER=true pytest -m cleanup -n0 -s
 ```
 
