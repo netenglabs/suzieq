@@ -83,15 +83,15 @@ def run_sqpoller(name, ansible_dir, suzieq_dir):
     sqcmd = sqcmd_path + ['-i', ansible_dir + ansible_file, '-n', name]
 
     pid = Popen(sqcmd).pid
-    time.sleep(180)
+    time.sleep(60)
     os.kill(pid, signal.SIGSTOP)
 
 
 def run_scenario(scenario):
-    run_cmd(['sudo', 'ansible-playbook', '-b', '-e', f'scenario={scenario}',
+    run_cmd(['ansible-playbook', '-b', '-e', f'scenario={scenario}',
               'deploy.yml'])
     time.sleep(15)
-    out, code, err = run_cmd(['sudo', 'ansible-playbook', 'ping.yml'])
+    out, code, err = run_cmd(['ansible-playbook', 'ping.yml'])
 
     return out, code
 
@@ -129,18 +129,17 @@ def collect_data(topology, proto, scenario, name, suzieq_dir):
 
 
 def vagrant_up():
-    logging.warning(os.getcwd())
-    run_cmd(['sudo', 'vagrant', 'up'])
-    out, code, err = run_cmd(['sudo', 'vagrant', 'status'])
-    logging.warning(f"ANSIBLE UP {out}")
-    run_cmd(['sudo', 'chown', '-R', os.environ['USER'], '..'])
+    logging.warning(f"VAGRANT dir {os.getcwd()}")
+    print(f"VAGRANT dir {os.getcwd()}")
+    run_cmd(['vagrant', 'up'])
+    out, code, err = run_cmd(['vagrant', 'status'])
+    logging.warning(f"VAGRANT UP {out}")
     return code
 
 
 def vagrant_down():
     logging.warning("VAGRANT DOWN")
-    run_cmd(['sudo', 'chown', '-R', os.environ['USER'], '..'])
-    run_cmd(['sudo', 'vagrant', 'destroy', '-f'])
+    run_cmd(['vagrant', 'destroy', '-f'])
 
 
 # this is an attempt to clean up vagrant if something goes wrong
@@ -287,7 +286,7 @@ def _test_data(topology, proto, scenario, testvar):
 # these are grouped as classes so that we will only do one a time
 #  when using --dist=loadscope
 # because we have two vagrant files in CNDCN, that means we can run
-# two simultations at a time, one single-attach and one dual-attach
+# two simulations at a time, one single-attach and one dual-attach
 
 class TestDualAttach:
     @pytest.mark.dual_attach
@@ -658,11 +657,11 @@ def test_cleanup_vagrant():
                'single-attach_server102', 'single-attach_server103',
                'single-attach_server104', 'single-attach_edge01']
     for device in devices:
-        out, ret, err = run_cmd(['sudo', 'virsh', 'destroy', device])
+        out, ret, err = run_cmd(['virsh', 'destroy', device])
         print(f"virsh destroy {out} {err}")
-        out, ret, err = run_cmd(['sudo', 'virsh', 'undefine', device])
+        out, ret, err = run_cmd(['virsh', 'undefine', device])
         print(f"virsh undefine {out} {err}")
-        out, ret, err = run_cmd(['sudo', 'virsh', 'vol-delete', f"{device}.img"])
+        out, ret, err = run_cmd(['virsh', 'vol-delete', f"{device}.img", '--pool', 'default'])
         print(f"virsh vol-delete {out} {err}")
-    out, ret, err = run_cmd(['sudo', 'vagrant', 'global-status', '--prune'])
+    out, ret, err = run_cmd(['vagrant', 'global-status', '--prune'])
     print(f"global status {out} {err}")
