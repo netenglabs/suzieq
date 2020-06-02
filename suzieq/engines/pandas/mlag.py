@@ -12,8 +12,8 @@ class MlagObj(SqEngineObject):
         ]
 
         self._summarize_on_add_with_query = [
-            ('hostsWithfailedStateCnt', 'state != "active"', 'state'),
-            ('hostsWithBackupInactiveCnt', 'state == "active"', 'backupActive')
+            ('devicesWithfailedStateCnt', 'state != "active"', 'state'),
+            ('devicesWithBackupInactiveCnt', 'state == "active"', 'backupActive')
         ]
 
         self._summarize_on_add_stat = [

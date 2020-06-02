@@ -33,7 +33,7 @@ class MacsObj(SqEngineObject):
             ('uniqueMacCnt', 'macaddr', 'nunique'),
         ]
 
-        self._summarize_on_perhost_stat = [
+        self._summarize_on_perdevice_stat = [
             ('uniqueVlanperHostStat', 'vlan != 0 and vlan != ""', 'vlan',
              'nunique'),
             ('herPerVtepStat', 'macaddr == "00:00:00:00:00:00"', 'macaddr',

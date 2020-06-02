@@ -1386,23 +1386,24 @@ tests:
 - command: interface summarize --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: interface summarize
-  output: '{"dual-evpn": {"deviceCnt": 14, "interfaceCnt": 166, "hostsWithL2Cnt":
-    24, "hostsWithVxlanCnt": 12, "ifDownCnt": 4, "ifWithMultipleIPCnt": 5, "uniqueMTUCnt":
-    4, "uniqueIfTypesCnt": 9, "ifChangesStat": [0, 22, 0], "ifPerHostStat": [4, 21,
-    9.5], "uniqueIPv4AddrCnt": 55, "uniqueIPv6AddrCnt": 0}, "ospf-ibgp": {"deviceCnt":
-    14, "interfaceCnt": 178, "hostsWithL2Cnt": 26, "hostsWithVxlanCnt": 14, "ifDownCnt":
+  output: '{"dual-evpn": {"deviceCnt": 14, "interfaceCnt": 166, "devicesWithL2Cnt":
+    24, "devicesWithVxlanCnt": 12, "ifDownCnt": 4, "ifWithMultipleIPCnt": 5, "uniqueMTUCnt":
+    4, "uniqueIfTypesCnt": 9, "ifChangesStat": [0, 22, 0], "ifPerDeviceStat": [4,
+    21, 9.5], "uniqueIPv4AddrCnt": 55, "uniqueIPv6AddrCnt": 0}, "ospf-ibgp": {"deviceCnt":
+    14, "interfaceCnt": 178, "devicesWithL2Cnt": 26, "devicesWithVxlanCnt": 14, "ifDownCnt":
     4, "ifWithMultipleIPCnt": 5, "uniqueMTUCnt": 4, "uniqueIfTypesCnt": 9, "ifChangesStat":
-    [0, 33, 0], "ifPerHostStat": [4, 23, 9.5], "uniqueIPv4AddrCnt": 59, "uniqueIPv6AddrCnt":
-    0}, "ospf-single": {"deviceCnt": 14, "interfaceCnt": 96, "hostsWithL2Cnt": 4,
-    "hostsWithVxlanCnt": 0, "ifDownCnt": 12, "ifWithMultipleIPCnt": 0, "uniqueMTUCnt":
+    [0, 33, 0], "ifPerDeviceStat": [4, 23, 9.5], "uniqueIPv4AddrCnt": 59, "uniqueIPv6AddrCnt":
+    0}, "ospf-single": {"deviceCnt": 14, "interfaceCnt": 96, "devicesWithL2Cnt": 4,
+    "devicesWithVxlanCnt": 0, "ifDownCnt": 12, "ifWithMultipleIPCnt": 0, "uniqueMTUCnt":
     {"1500": 74, "65536": 22}, "uniqueIfTypesCnt": 5, "ifChangesStat": [0, 11, 0],
-    "ifPerHostStat": [3, 10, 9.0], "uniqueIPv4AddrCnt": 54, "uniqueIPv6AddrCnt": 0}}'
+    "ifPerDeviceStat": [3, 10, 9.0], "uniqueIPv4AddrCnt": 54, "uniqueIPv6AddrCnt":
+    0}}'
 - command: interface summarize --namespace=dual-evpn --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: interface summarize
-  output: '{"dual-evpn": {"deviceCnt": 14, "interfaceCnt": 166, "hostsWithL2Cnt":
-    24, "hostsWithVxlanCnt": 12, "ifDownCnt": 4, "ifWithMultipleIPCnt": 5, "uniqueMTUCnt":
-    4, "uniqueIfTypesCnt": 9, "ifChangesStat": [0.0, 22.0, 0.0], "ifPerHostStat":
+  output: '{"dual-evpn": {"deviceCnt": 14, "interfaceCnt": 166, "devicesWithL2Cnt":
+    24, "devicesWithVxlanCnt": 12, "ifDownCnt": 4, "ifWithMultipleIPCnt": 5, "uniqueMTUCnt":
+    4, "uniqueIfTypesCnt": 9, "ifChangesStat": [0.0, 22.0, 0.0], "ifPerDeviceStat":
     [4, 21, 9.5], "uniqueIPv4AddrCnt": 55, "uniqueIPv6AddrCnt": 0}}'
 - command: interface unique --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/

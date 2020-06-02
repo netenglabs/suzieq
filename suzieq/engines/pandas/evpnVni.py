@@ -88,9 +88,9 @@ class EvpnvniObj(SqEngineObject):
             if x['type'] == "L2" and x['state'] != "up"
             else [], axis=1)
 
-        hosts = df["hostname"].unique().tolist()
+        devices = df["hostname"].unique().tolist()
         ifdf = IfObj(context=self.ctxt) \
-            .get(namespace=kwargs.get("namespace", ""), hostname=hosts)
+            .get(namespace=kwargs.get("namespace", ""), hostname=devices)
 
         df = df.merge(ifdf[['namespace', 'hostname', 'ifname', 'master',
                             'vlan']],
