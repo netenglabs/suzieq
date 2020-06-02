@@ -27,7 +27,7 @@ class AddressObj(SqEngineObject):
 
         addr = kwargs.pop("address", None)
         columns = kwargs.get("columns", [])
-        ipvers = kwargs.pop("ipvers", "4")
+        ipvers = kwargs.pop("ipvers", "v4")
 
         if self.ctxt.sort_fields is None:
             sort_fields = None
