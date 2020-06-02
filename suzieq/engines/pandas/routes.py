@@ -33,7 +33,7 @@ class RoutesObj(SqEngineObject):
             ('uniqueVrfsCnt', 'vrf', 'nunique'),
         ]
 
-        self._summarize_on_perhost_stat = [
+        self._summarize_on_perdevice_stat = [
             ('routesPerHostStat', '', 'prefix', 'count')
         ]
 
@@ -56,18 +56,18 @@ class RoutesObj(SqEngineObject):
         self._add_stats_to_summary(routes_per_vrfns, 'routesperVrfStat')
         self.summary_row_order.append('routesperVrfStat')
 
-        hosts_with_defrt_per_vrfns = self.summary_df \
+        device_with_defrt_per_vrfns = self.summary_df \
                                          .query("prefix.ipnet.is_default") \
                                          .groupby(by=["namespace", "vrf"])[
                                              "hostname"].nunique()
-        hosts_per_vrfns = self.summary_df.groupby(by=["namespace", "vrf"])[
+        devices_per_vrfns = self.summary_df.groupby(by=["namespace", "vrf"])[
             "hostname"].nunique()
 
         {self.ns[i[0]].update({
-            "hostsWithNoDefRoute":
-            hosts_with_defrt_per_vrfns[i] == hosts_per_vrfns[i]})
-         for i in hosts_with_defrt_per_vrfns.keys() if i[0] in self.ns.keys()}
-        self.summary_row_order.append('hostsWithNoDefRoute')
+            "deviceWithNoDefRoute":
+            device_with_defrt_per_vrfns[i] == devices_per_vrfns[i]})
+         for i in device_with_defrt_per_vrfns.keys() if i[0] in self.ns.keys()}
+        self.summary_row_order.append('deviceWithNoDefRoute')
 
         self._post_summarize()
         return self.ns_df.convert_dtypes()

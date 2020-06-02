@@ -2496,20 +2496,20 @@ tests:
   marks: route summarize
   output: '{"dual-evpn": {"deviceCnt": 14, "totalRoutesinNS": 257, "uniquePrefixCnt":
     27, "uniqueVrfsCnt": 4, "ifRoutesCnt": 20, "hostRoutesCnt": 161, "routingProtocolCnt":
-    4, "routesPerHostStat": [4, 51, 17.0], "routesperVrfStat": [16, 175, 33], "hostsWithNoDefRoute":
+    4, "routesPerHostStat": [4, 51, 17.0], "routesperVrfStat": [16, 175, 33], "deviceWithNoDefRoute":
     true}, "ospf-ibgp": {"deviceCnt": 14, "totalRoutesinNS": 237, "uniquePrefixCnt":
     31, "uniqueVrfsCnt": 4, "ifRoutesCnt": 20, "hostRoutesCnt": 153, "routingProtocolCnt":
-    5, "routesPerHostStat": [4, 42, 17.0], "routesperVrfStat": [16, 145, 38], "hostsWithNoDefRoute":
+    5, "routesPerHostStat": [4, 42, 17.0], "routesperVrfStat": [16, 145, 38], "deviceWithNoDefRoute":
     true}, "ospf-single": {"deviceCnt": 14, "totalRoutesinNS": 224, "uniquePrefixCnt":
     28, "uniqueVrfsCnt": 2, "ifRoutesCnt": 96, "hostRoutesCnt": 56, "routingProtocolCnt":
     {"ospf": 156, "kernel": 46, "": 22}, "routesPerHostStat": [2, 25, 25.0], "routesperVrfStat":
-    [0, 208, 8], "hostsWithNoDefRoute": true}}'
+    [0, 208, 8], "deviceWithNoDefRoute": true}}'
 - command: route summarize --namespace=dual-evpn --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: route summarize
   output: '{"dual-evpn": {"deviceCnt": 14, "totalRoutesinNS": 257, "uniquePrefixCnt":
     27, "uniqueVrfsCnt": 4, "ifRoutesCnt": 20, "hostRoutesCnt": 161, "routingProtocolCnt":
-    4, "routesPerHostStat": [4, 51, 17.0], "routesperVrfStat": [16, 175, 33], "hostsWithNoDefRoute":
+    4, "routesPerHostStat": [4, 51, 17.0], "routesperVrfStat": [16, 175, 33], "deviceWithNoDefRoute":
     true}}'
 - command: route unique --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/

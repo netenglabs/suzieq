@@ -14,7 +14,7 @@ class SqEngineObject(object):
         self._summarize_on_add_with_query = []
         self._summarize_on_add_list_or_count = []
         self._summarize_on_add_stat = []
-        self._summarize_on_perhost_stat = []
+        self._summarize_on_perdevice_stat = []
 
     @property
     def schemas(self):
@@ -70,7 +70,7 @@ class SqEngineObject(object):
         try:
             df = self.get_valid_df(self.iobj._table, sort_fields, **kwargs)
         except pa.lib.ArrowInvalid:
-            return(pd.DataFrame(columns=['namespace', 'hostname']))
+            return pd.DataFrame(columns=['namespace', 'hostname'])
 
         return df
 
@@ -164,7 +164,7 @@ class SqEngineObject(object):
             self.summary_row_order.append(field_name)
 
         for field_name, query_str, field, func in \
-                self._summarize_on_perhost_stat:
+                self._summarize_on_perdevice_stat:
             if query_str:
                 statfld = self.summary_df \
                               .query(query_str) \

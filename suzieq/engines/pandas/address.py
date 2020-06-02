@@ -67,20 +67,20 @@ class AddressObj(SqEngineObject):
             .dropna(how='any') \
             .query('~ip6AddressList.str.startswith("fe80")')
         if not v6df.empty:
-            v6hosts = v6df.groupby(by=['namespace'])['hostname'].nunique()
+            v6device = v6df.groupby(by=['namespace'])['hostname'].nunique()
             for i in self.ns.keys():
-                self.ns[i].update({'hostsWithv6AddressCnt': v6hosts[i]})
+                self.ns[i].update({'deviceWithv6AddressCnt': v6device[i]})
         else:
             for i in self.ns.keys():
-                self.ns[i].update({'hostsWithv6AddressCnt': 0})
+                self.ns[i].update({'deviceWithv6AddressCnt': 0})
 
         v4df = self.summary_df.explode('ipAddressList') \
             .dropna(how='any') \
             .query('ipAddressList.str.len() != 0')
         if not v4df.empty:
-            v4hosts = v4df.groupby(by=['namespace'])['hostname'].nunique()
+            v4device = v4df.groupby(by=['namespace'])['hostname'].nunique()
             for i in self.ns.keys():
-                self.ns[i].update({'hostsWithv4AddressCnt': v4hosts[i]})
+                self.ns[i].update({'deviceWithv4AddressCnt': v4device[i]})
 
             v4df['prefixlen'] = v4df.ipAddressList.str.split('/').str[1]
 
@@ -108,11 +108,11 @@ class AddressObj(SqEngineObject):
                 self.ns[i].update({'subnetTopCounts': cnts[:3]})
         else:
             for i in self.ns.keys():
-                self.ns[i].update({'hostsWithv4AddressCnt': 0})
+                self.ns[i].update({'deviceWithv4AddressCnt': 0})
 
         self.summary_row_order = ['deviceCnt', 'addressCnt', 'uniqueIfMacCnt',
-                                  'hostsWithv4AddressCnt',
-                                  'hostsWithv6AddressCnt', 'subnetsUsed',
+                                  'deviceWithv4AddressCnt',
+                                  'deviceWithv6AddressCnt', 'subnetsUsed',
                                   'subnetTopCounts']
         self._post_summarize(check_empty_col='addressCnt')
         return self.ns_df.convert_dtypes()

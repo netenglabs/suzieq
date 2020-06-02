@@ -32,8 +32,8 @@ class InterfacesObj(SqEngineObject):
         ]
 
         self._summarize_on_add_with_query = [
-            ('hostsWithL2Cnt', 'master == "bridge"', 'hostname'),
-            ('hostsWithVxlanCnt', 'type == "vxlan"', 'hostname'),
+            ('devicesWithL2Cnt', 'master == "bridge"', 'hostname'),
+            ('devicesWithVxlanCnt', 'type == "vxlan"', 'hostname'),
             ('ifDownCnt', 'state != "up"', 'ifname'),
             ('ifWithMultipleIPCnt', 'ipAddressList.str.len() > 1', 'ifname'),
         ]
@@ -47,8 +47,8 @@ class InterfacesObj(SqEngineObject):
             ('ifChangesStat', 'type != "bond"', 'numChanges'),
         ]
 
-        self._summarize_on_perhost_stat = [
-            ('ifPerHostStat', '', 'ifname', 'count')
+        self._summarize_on_perdevice_stat = [
+            ('ifPerDeviceStat', '', 'ifname', 'count')
         ]
 
         self._gen_summarize_data()
