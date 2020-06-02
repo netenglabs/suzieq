@@ -165,8 +165,10 @@ class RoutesObj(SqEngineObject):
             else:
                 r = df[column].value_counts()
 
-            return (pd.DataFrame({column: r})
+            df = (pd.DataFrame({column: r})
                     .reset_index()
                     .sort_values('index')
                     .rename(columns={column: 'count',
                                      'index': column}))
+            df = df[df['count'] != 0]
+            return df
