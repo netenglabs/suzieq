@@ -9,8 +9,8 @@ Value ifindex (\d+)
 Value mtu (\d+)
 Value speed (\d+)
 Value macaddr ([0-9a-f:]+)
-Value List ipAddressList ([0-9./]*)
-Value List ip6AddressList ([0-9a-z:/]*)
+Value List ipAddressList ([0-9./]+)
+Value List ip6AddressList ([0-9a-z:/]+)
 Value vni (\d+)
 Value vlan (\d+)
 Value srcVtepIp ([0-9./]*)
@@ -37,8 +37,8 @@ Start
   ^${ifindex}:\s+${ifname}.*: <.*> mtu\s+${mtu}.* master ${master} state.*$$
   ^${ifindex}:\s+${ifname}.*: <.*> mtu\s+${mtu}.* state.*$$
   ^\s*link/${type}\s+${macaddr} brd .*$$
-  ^\s*inet\s*${ipAddressList}.*scope global.*$$ 
-  ^\s*inet6\s*${ip6AddressList}.*scope global.*$$
+  ^\s*inet\s+${ipAddressList}.*scope global.*$$
+  ^\s*inet6\s+${ip6AddressList}.*scope global.*$$
   ^\s*alias\s*${description}$$
   ^\s*${type}\s* id ${vni}.*$$
   ^\s*${type}\s*table.*$$
