@@ -4,8 +4,8 @@ Value mtu (\d+)
 Value master (\S+)
 Value state (\S+)
 Value macaddr ([0-9a-f:]+)
-Value List ipAddressList ([0-9./]*)
-Value List ip6AddressList ([0-9a-z:/]*)
+Value List ipAddressList ([0-9./]+)
+Value List ip6AddressList ([0-9a-z:/]+)
 Value description (.*)
 Value vni (\d+)
 Value vlan (\d+)
@@ -16,8 +16,8 @@ Start
   ^${ifindex}: ${ifname}.*: <.*> mtu ${mtu}.* master ${master} state ${state}.*$$
   ^${ifindex}: ${ifname}.*: <.*> mtu ${mtu}.* state ${state}.*$$
   ^\s*link/${type}\s+${macaddr} brd .*$$
-  ^\s*inet\s*${ipAddressList}.*scope global.*$$ 
-  ^\s*inet6\s*${ip6AddressList}.*scope global.*$$
+  ^\s*inet\s+${ipAddressList}.*scope global.*$$
+  ^\s*inet6\s+${ip6AddressList}.*scope global.*$$
   ^\s*alias\s*${description}$$
   ^\s*${type}\s* id ${vni}.*$$
   ^\s*${type}\s*table.*$$
