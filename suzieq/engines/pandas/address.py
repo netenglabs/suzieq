@@ -10,16 +10,17 @@ class AddressObj(SqEngineObject):
         Address is not a real table and so we need to craft what we expose
         """
 
-        addrcol = 'ipAddressList'
+        addrcol = None
         if addr and "::" in addr:
             addrcol = "ip6AddressList"
         elif addr and ':' in addr:
             addrcol = "macaddr"
         elif addr:
             addrcol = "ipAddressList"
-        else:
-            addrcol = ("ipAddressList" if ipvers == "v4"
-                       else "ip6AddressList" if ipvers == "v6" else "macaddr")
+        elif ipvers == "v4":
+            addrcol = "ipAddressList"
+        elif ipvers == "v6":
+            addrcol = "ip6AddressList"
         return addrcol
 
     def get(self, **kwargs) -> pd.DataFrame:
@@ -27,7 +28,7 @@ class AddressObj(SqEngineObject):
 
         addr = kwargs.pop("address", None)
         columns = kwargs.get("columns", [])
-        ipvers = kwargs.pop("ipvers", "v4")
+        ipvers = kwargs.pop("ipvers", "")
 
         if self.ctxt.sort_fields is None:
             sort_fields = None
@@ -68,19 +69,24 @@ class AddressObj(SqEngineObject):
             .query('~ip6AddressList.str.startswith("fe80")')
         if not v6df.empty:
             v6device = v6df.groupby(by=['namespace'])['hostname'].nunique()
+            v6addr = v6df.groupby(by=['namespace'])['ip6AddressList'].nunique()
             for i in self.ns.keys():
                 self.ns[i].update({'deviceWithv6AddressCnt': v6device[i]})
+                self.ns[i].update({'uniqueV6AddressCnt': v6addr[i]})
         else:
             for i in self.ns.keys():
                 self.ns[i].update({'deviceWithv6AddressCnt': 0})
+                self.ns[i].update({'uniqueV6AddressCnt': 0})
 
         v4df = self.summary_df.explode('ipAddressList') \
             .dropna(how='any') \
             .query('ipAddressList.str.len() != 0')
         if not v4df.empty:
             v4device = v4df.groupby(by=['namespace'])['hostname'].nunique()
+            v4addr = v4df.groupby(by=['namespace'])['ipAddressList'].nunique()
             for i in self.ns.keys():
                 self.ns[i].update({'deviceWithv4AddressCnt': v4device[i]})
+                self.ns[i].update({'uniqueV4AddressCnt': v4addr[i]})
 
             v4df['prefixlen'] = v4df.ipAddressList.str.split('/').str[1]
 
@@ -109,8 +115,11 @@ class AddressObj(SqEngineObject):
         else:
             for i in self.ns.keys():
                 self.ns[i].update({'deviceWithv4AddressCnt': 0})
+                self.ns[i].update({'uniqueV6AddressCnt': 0})
 
-        self.summary_row_order = ['deviceCnt', 'addressCnt', 'uniqueIfMacCnt',
+        self.summary_row_order = ['deviceCnt', 'addressCnt',
+                                  'uniqueV4AddressCnt', 'uniqueV6AddressCnt',
+                                  'uniqueIfMacCnt',
                                   'deviceWithv4AddressCnt',
                                   'deviceWithv6AddressCnt', 'subnetsUsed',
                                   'subnetTopCounts']

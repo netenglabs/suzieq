@@ -679,21 +679,24 @@ tests:
 - command: address summarize --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: address summarize
-  output: '{"dual-evpn": {"deviceCnt": 14, "addressCnt": 60, "uniqueIfMacCnt": 40,
-    "deviceWithv4AddressCnt": 14, "deviceWithv6AddressCnt": 0, "subnetsUsed": ["24",
-    "32", "30", "31"], "subnetTopCounts": [{"24": 26}, {"32": 19}, {"30": 16}]}, "ospf-ibgp":
-    {"deviceCnt": 14, "addressCnt": 92, "uniqueIfMacCnt": 66, "deviceWithv4AddressCnt":
-    14, "deviceWithv6AddressCnt": 0, "subnetsUsed": ["32", "24", "30", "31"], "subnetTopCounts":
-    [{"32": 43}, {"24": 34}, {"30": 16}]}, "ospf-single": {"deviceCnt": 14, "addressCnt":
-    54, "uniqueIfMacCnt": 47, "deviceWithv4AddressCnt": 14, "deviceWithv6AddressCnt":
+  output: '{"dual-evpn": {"deviceCnt": 14, "addressCnt": 166, "uniqueV4AddressCnt":
+    55, "uniqueV6AddressCnt": 0, "uniqueIfMacCnt": 94, "deviceWithv4AddressCnt": 14,
+    "deviceWithv6AddressCnt": 0, "subnetsUsed": ["24", "32", "30", "31"], "subnetTopCounts":
+    [{"24": 26}, {"32": 19}, {"30": 16}]}, "ospf-ibgp": {"deviceCnt": 14, "addressCnt":
+    178, "uniqueV4AddressCnt": 59, "uniqueV6AddressCnt": 0, "uniqueIfMacCnt": 101,
+    "deviceWithv4AddressCnt": 14, "deviceWithv6AddressCnt": 0, "subnetsUsed": ["32",
+    "24", "30", "31"], "subnetTopCounts": [{"32": 43}, {"24": 34}, {"30": 16}]}, "ospf-single":
+    {"deviceCnt": 14, "addressCnt": 96, "uniqueV4AddressCnt": 54, "uniqueV6AddressCnt":
+    0, "uniqueIfMacCnt": 76, "deviceWithv4AddressCnt": 14, "deviceWithv6AddressCnt":
     0, "subnetsUsed": ["31", "24", "32"], "subnetTopCounts": [{"31": 24}, {"24": 22},
     {"32": 8}]}}'
 - command: address summarize --namespace=dual-evpn --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: address summarize
-  output: '{"dual-evpn": {"deviceCnt": 14, "addressCnt": 60, "uniqueIfMacCnt": 40,
-    "deviceWithv4AddressCnt": 14, "deviceWithv6AddressCnt": 0, "subnetsUsed": ["24",
-    "32", "30", "31"], "subnetTopCounts": [{"24": 26}, {"32": 19}, {"30": 16}]}}'
+  output: '{"dual-evpn": {"deviceCnt": 14, "addressCnt": 166, "uniqueV4AddressCnt":
+    55, "uniqueV6AddressCnt": 0, "uniqueIfMacCnt": 94, "deviceWithv4AddressCnt": 14,
+    "deviceWithv6AddressCnt": 0, "subnetsUsed": ["24", "32", "30", "31"], "subnetTopCounts":
+    [{"24": 26}, {"32": 19}, {"30": 16}]}}'
 - command: address unique --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: address unique
