@@ -28,7 +28,6 @@ class RoutesObj(SqEngineObject):
 
         self._summarize_on_add_field = [
             ('deviceCnt', 'hostname', 'nunique'),
-            ('totalRoutesinNS', 'prefix', 'count'),
             ('uniquePrefixCnt', 'prefix', 'nunique'),
             ('uniqueVrfsCnt', 'vrf', 'nunique'),
         ]
@@ -42,6 +41,8 @@ class RoutesObj(SqEngineObject):
              'prefix.ipnet.prefixlen == 30 or prefix.ipnet.prefixlen == 31',
              'prefix'),
             ('hostRoutesCnt', 'prefix.ipnet.prefixlen == 32', 'prefix'),
+            ('totalV4RoutesinNs', 'ipvers == 4', 'prefix'),
+            ('totalV6RoutesinNs', 'ipvers == 6', 'prefix'),
         ]
 
         self._summarize_on_add_list_or_count = [
