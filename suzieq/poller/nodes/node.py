@@ -7,6 +7,7 @@ import logging
 import random
 from http import HTTPStatus
 import json
+import re
 
 import yaml
 from urllib.parse import urlparse
@@ -188,9 +189,11 @@ class Node(object):
         if not self.port:
             if self.transport == "ssh":
                 self.port = 22
-                await self._init_ssh(init_boot_time=False)
             elif self.transport == "https":
                 self.port = 443
+
+        if self.transport == "ssh":
+            await self._init_ssh(init_boot_time=False)
 
         devtype = kwargs.get("devtype", None)
         if devtype:
@@ -242,6 +245,10 @@ class Node(object):
         elif any(n == self.devtype for n in ["Ubuntu", "Debian", "Red Hat", "Linux"]):
             self.__class__ = LinuxNode
             self.devtype = "linux"
+        elif self.devtype == "junos":
+            self.__class__ = JunosNode
+        elif self.devtype == "nxos":
+            self.__class__ = NxosNode
 
     async def get_device_type_hostname(self):
         """Determine the type of device we are talking to if using ssh/local"""
@@ -258,7 +265,7 @@ class Node(object):
         hostname = None
 
         if output[0]["status"] == 0:
-            data = output[1]["data"]
+            data = output[0]["data"]
             if "Arista " in data:
                 devtype = "eos"
             elif "JUNOS " in data:
@@ -266,8 +273,16 @@ class Node(object):
             elif "NX-OS" in data:
                 devtype = "nxos"
 
-            if output[4]["status"] == 0:
-                hostname = output[4]["data"].strip()
+            if devtype == "junos":
+                hmatch = re.search(r'\nHostname:\s+(\S+)\n', data)
+                if hmatch:
+                    hostname = hmatch.group(1)
+            elif devtype == "nxos":
+                hmatch = re.search(r'Device name: (\S+)\s*\n', data)
+                if hmatch:
+                    hostname = hmatch.group(1)
+            elif output[3]["status"] == 0:
+                hostname = output[3]["data"].strip()
 
         elif output[1]["status"] == 0:
             data = output[1]["data"]
@@ -296,7 +311,7 @@ class Node(object):
                                            .strip().replace('"', '')
                         break
 
-        self.devtype = devtype
+        self.set_devtype(devtype)
         self.set_hostname(hostname)
 
     async def _parse_boottime_hostname(self, output, cb_token) -> None:
@@ -554,9 +569,11 @@ class Node(object):
             return result
 
         if type(cmd) is not list:
-            cmd = [cmd]
+            cmdlist = [cmd]
+        else:
+            cmdlist = [x.get('command', '') for x in cmd]
 
-        await self.exec_cmd(service_callback, cmd, cb_token,
+        await self.exec_cmd(service_callback, cmdlist, cb_token,
                             oformat=oformat, timeout=cb_token.timeout)
 
 
@@ -729,3 +746,53 @@ class LinuxNode(Node):
     def _init(self, **kwargs):
         super()._init(kwargs)
         self.devtype = "linux"
+
+
+class JunosNode(Node):
+
+    async def init_boot_time(self):
+        """Fill in the boot time of the node by running requisite cmd"""
+        await self.exec_cmd(self._parse_boottime_hostname,
+                            ["show system uptime", "show version"], None)
+
+    async def _parse_boottime_hostname(self, output, cb_token) -> None:
+        """Parse the uptime command output"""
+
+        if output[0]["status"] == 0:
+            data = output[0]["data"]
+            bootts = re.search(r'\nSystem booted: ([^\(]*)', data)
+            if bootts:
+                self.bootupTimestamp = datetime.strptime(
+                    bootts.group(1).strip(), '%Y-%m-%d %H:%M:%S %Z') \
+                    .timestamp()
+
+        if output[1]["status"] == 0:
+            data = output[0]["data"]
+            hmatch = re.search(r'\nHostname:\s+(\S+)\n', data)
+            if hmatch:
+                self.set_hostname(hmatch.group(1))
+
+
+class NxosNode(Node):
+
+    async def init_boot_time(self):
+        """Fill in the boot time of the node by running requisite cmd"""
+        await self.exec_cmd(self._parse_boottime_hostname,
+                            ["show version|json"], None)
+
+    async def _parse_boottime_hostname(self, output, cb_token) -> None:
+        """Parse the uptime command output"""
+
+        if output[0]["status"] == 0:
+            data = json.loads(output[0]["data"])
+            upsecs = (24*3600*int(data.get('kern_uptm_days', 0)) +
+                      3600*int(data.get('kern_uptm_hrs', 0)) +
+                      60*int(data.get('kern_uptm_mins', 0)) +
+                      int(data.get('kern_uptm_secs', 0)))
+            if upsecs:
+                self.bootupTimestamp = int(int(time.time()*1000)
+                                           - float(upsecs)*1000)
+
+            hostname = data.get('host_name', None)
+            if hostname:
+                self.set_hostname(hostname)
