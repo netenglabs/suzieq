@@ -16,7 +16,10 @@ apply:
     "chassis/[0]/name/[0]/value: peerHostname?|",
     "chassis/[0]/descr/[0]/value: description?|",
     "chassis/[0]/mgmt-ip/[0]/value: mgmtIP?|",
-    "port/[0]/id/[0]/value: peerIfname?|"]'
+    "port/[0]/id/[0]/type: subtype",
+    "port/[0]/id/[0]/value: peerMacaddr?|",
+    "port/[0]/id/[0]/value: peerIfname?|",
+    ]'
 
   eos:
     version: all
@@ -32,6 +35,19 @@ apply:
     version: all
     command: if systemctl status lldpd > /dev/null 2>&1; then sudo lldpctl; fi
     textfsm: textfsm_templates/lldpd.tfsm
+
+  junos:
+    version: all
+    command: show lldp neighbors | display json
+    normalize: 'lldp-neighbors-information/[0]/lldp-neighbor-information/*/[
+    "lldp-local-port-id/[0]/data: ifname",
+    "lldp-local-port-id/[0]/data: origIfname",
+    "lldp-remote-system-name/[0]/data: peerHostname",
+    "lldp-remote-chassis-id-subtype/[0]/data: subtype",
+    "lldp-remote-chassis-id/[0]/data: peerIfname?|",
+    "lldp-remote-chassis-id/[0]/data: peerMacaddr?|",
+    "lldp-remote-port-description/[0]/data: description",
+    ]'
     
     
     

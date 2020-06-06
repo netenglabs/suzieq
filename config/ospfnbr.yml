@@ -37,8 +37,19 @@ apply:
       command: sudo vtysh -c 'show ip ospf neighbor detail'
       textfsm: textfsm_templates/frr_ospfnbr.tfsm
 
-  platina:
-    copy: cumulus
-
   linux:
     copy: cumulus
+
+  junos:
+    version: all
+    command: show ospf neighbor instance all detail | display json
+    normalize: 'ospf-neighbor-information-all/[0]/ospf-instance-neighbor/*:ospf-instance-name:vrf/ospf-neighbor/*/[
+    "neighbor-address/[0]/data: peerIP",
+    "interface-name/[0]/data: ifname",
+    "interface-name/[0]/data: origIfname",
+    "ospf-neighbor-state/[0]/data: state",
+    "neighbor-id/[0]/data: peerRouterId",
+    "neighbor-priority/[0]/data: nbrPrio",
+    "ospf-area/[0]/data: area",
+    "neighbor-up-time/[0]/data: lastChangeTime"
+    ]'

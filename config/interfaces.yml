@@ -34,7 +34,7 @@ apply:
     "hardware: type",
     "forwardingModel: forwardingModel",
     "linkStatusChanges: numChanges?|0",
-    "lastStatusChangeTimeStamp: statusChangeTimestamp",
+    "lastStatusChangeTimeStamp": statusChangeTimestamp",
     "fallbackEnabled: lacpBypass?|False",
     "interfaceMembership: master?|",
     "interfaceAddress: ipAddressList?|[]",
@@ -46,6 +46,41 @@ apply:
     command: ip -d address show
     textfsm: textfsm_templates/linux_ipaddr.tfsm
 
-  platina:
-    copy: cumulus
+  nxos:
+    version: all
+    command: show interface
+    normalize: 'TABLE_interface/ROW_interface/*[
+    "interface: ifname",
+    "state: state",
+    "eth_hw_addr: macaddr",
+    "eth_mtu: mtu?|0",
+    "eth_bw: speed/1000?|0",
+    "desc: description",
+    "eth_hw_desc: type",
+    "eth_link_flapped: statusChangeTimestamp",
+    "eth_reset_cntr: numChanges?|0",
+    "eth_ip_addr: ipAddressList?|[]",
+    "eth_ip_mask: eth_ip_mask?|0",
+    ]'
   
+  junos:
+    version: all
+    command: show interface | display json
+    normalize: 'interface-information/[0]/physical-interface/*/[
+    "oper-status/[0]/data: state",
+    "speed/[0]/data: speed?|0",
+    "name/[0]/data: ifname",
+    "name/[0]/data: origIfname",
+    "description/[0]/data: description",
+    "if-type/[0]/data: type",
+    "link-level-type/[0]/data: type?|type",
+    "mtu/[0]/data: mtu?|0",
+    "current-physical-address/[0]/data: macaddr",
+    "interface-flapped/[0]/data: statusChangeTimestamp",
+    "logical-interface/[0]/encapsulation/[0]/data: master?Ethernet-Bridge|",
+    "logical-interface/[*]/irb-domain/[0]/irb-bridge/[0]/data: vlanName",
+    "logical-interface/[*]/name/[0]/data: logicalIfname",
+    "logical-interface/[*]/if-config-flags: logicalIfflags",
+    "logical-interface/[*]/address-family: afi",
+    ]'
+    
