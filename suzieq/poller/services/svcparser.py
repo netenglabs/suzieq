@@ -139,6 +139,9 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                         result = tmpres
 
             tmplt_str = tmplt_str[pos + 1:]
+            if re.match(r'^\[\s+"', tmplt_str):
+                ppos = 0
+                continue
             try:
                 pos = tmplt_str.index("/")
             except ValueError:
@@ -148,18 +151,23 @@ def cons_recs_from_json_template(tmplt_str, in_data):
             ppos -= pos
             continue
 
-        lval, rval = xstr.split(":")
+        # handle one level of nesting to deal with Junos route JSON
+        *lval, rval = xstr.split(":")
         nokeys = False
-        ks = [lval]
+        ks = [lval[0]]
         tmpres = []
         if result:
             for ele in result:
-                if lval == "*":
-                    ks = list(ele["rest"].keys())
+                if lval[0] == "*":
+                    if isinstance(ele['rest'], dict):
+                        ks = list(ele["rest"].keys())
 
-                intres = [{rval: x,
-                           "rest": ele["rest"][x]}
-                          for x in ks]
+                        intres = [{rval: x,
+                                   "rest": ele["rest"][x]}
+                                  for x in ks]
+                    else:
+                        intres = [{rval: x[lval[1]], "rest": x}
+                                  for x in ele["rest"]]
 
                 for oldkey in ele.keys():
                     if oldkey == "rest":
@@ -169,7 +177,7 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                 tmpres += intres
             result = tmpres
         else:
-            if lval == "*":
+            if lval == ["*"]:
                 ks = list(data.keys())
 
             result = [{rval: x,
@@ -281,7 +289,7 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                 subflds = lval.split("/")
                 tmpval = x["rest"]
                 value = None
-                if "*" in subflds:
+                if "*" in subflds or '[*]' in subflds:
                     # Returning a list is the only supported option for now
                     value = []
 
@@ -302,9 +310,28 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                         subflds = []
                     elif subfld.startswith('['):
                         # handle specific array index or dict key
-                        # We don't handle a '*' in this position yet
-                        assert(subfld != '[*]')
-                        if tmpval:
+                        # This additional handling of * is because of JUNOS
+                        # interface address which is many levels deep and mixes
+                        # IPv4/v6 address in a way that we can't entirely fix
+                        # Post processing cleanup has to handle that part
+                        if subfld == '[*]':
+                            tmp = tmpval
+                            for subele in tmp:
+                                for subfld in subflds:
+                                    if not subele:
+                                        break
+                                    if subfld == '*' or subfld == '[*]':
+                                        # We stop the recursive madness here
+                                        value.append(subele)
+                                        break
+                                    if subfld.startswith('['):
+                                        subele = eval(
+                                            'subele{}'.format(subfld))
+                                    else:
+                                        subele = subele.get(subfld)
+                                value.append(subele)
+                            subflds = []
+                        elif tmpval:
                             tmpval = eval('tmpval{}'.format(subfld))
                     else:
                         tmpval = tmpval.get(subfld, None)
