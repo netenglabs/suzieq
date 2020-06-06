@@ -29,6 +29,33 @@ apply:
     command: cat /proc/uptime; hostnamectl
     textfsm: textfsm_templates/linux_showsys.tfsm
 
-  platina:
-    copy: linux
-  
+  nxos:
+    version: all
+    command: "show version | json"
+    normalize: '[
+    "nxos_ver_str: version",
+    "manufacturer: vendor?Cisco|Cisco",
+    "chassis_id: model",
+    "os: os?|nxos",
+    "kern_uptm_days: kern_uptm_days?|0",
+    "kern_uptm_hrs: kern_uptm_hrs?|0",
+    "kern_uptm_mins: kern_uptm_mins?|0",
+    "kern_uptm_secs: kern_uptm_secs?|0",
+    "cpu_name: architecture"
+    ]'
+
+  junos:
+    version: all
+    command:
+      - command: "show system information | display json"
+        normalize: 'system-information/*/[
+        "hardware-model/[0]/data: model",
+        "os-name/[0]/data: os",
+        "os-version/[0]/data: version",
+        "vendor: vendor?|Juniper"
+        ]'
+      - command: "show system uptime | display json"
+        normalize: 'multi-routing-engine-results/[0]/multi-routing-engine-item/[0]/system-uptime-information/*/[
+        "system-booted-time/[0]/date-time/[0]/data: bootupTimestamp"
+        ]'
+    

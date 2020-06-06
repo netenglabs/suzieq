@@ -193,4 +193,53 @@ apply:
         "hostLocal: updateSource?|",
         "hostForeign: peerIP?|"]'
 
+  nxos:
+    version: all
+    command: show bgp all neighbors vrf all
+    normalize: 'TABLE_neighbor/ROW_neighbor/*/[
+    "neighbor: peer",
+    "remoteas: peerAsn?|0",
+    "remote-id: peerRouterId",
+    "state: state?Established|NotEstd",
+    "holdtime: holdTime?|0",
+    "keepalivetime: keepalivetime?|0",
+    "connsstablished: numChanges?|0",
+    "connsdropped: numChanges+numChanges",
+    "resetreason: reason",
+    "peerresetreason: peerResetReason",
+    "updatessent: updatesTx?|0",
+    "updatesrecvd: updatesRx?|0",
+    "localaddr: updateSource?|",
+    "remoteaddr: peerIP?|",
+    ]'
+
+  junos:
+    version: all
+    command: "show bgp neighbor | display json"
+    normalize: 'bgp-information/[0]/bgp-peer/*/[
+    "bgp-rib/[*]/advertised-prefix-count/[0]/data: pfxTxList",
+    "peer-address/[0]/data: peerIP",
+    "peer-as/[0]/data: peerAsn?|0",
+    "local-address/[0]/data: updateSource",
+    "local-as/[0]/data: asn",
+    "peer-state/[0]/data: state?Established|NotEstd",
+    "last-error/[0]/data: reason",
+    "bgp-option-information/[0]/export-policy/[0]/data: v4EgressRmap",
+    "bgp-option-information/[0]/import-policy/[0]/data: v4IngressRmap",
+    "bgp-option-information/[0]/holdtime/[0]/data: holdTime?|0",
+    "bgp-option-information/[0]/address-families/[0]/data: afiSafiAdvList",
+    "nlri-type-session/[0]/data: afiSafiEnabledList",
+    "nlri-type-peer/[0]/data: afiSafiRcvList",
+    "bgp-error/[0]/name/[0]/data: notificnReason?|",
+    "flap-count/[0]/data: numChanges?|0",
+    "peer-id/[0]/data: peerRouterId",
+    "local-id/[0]/data: routerId",
+    "keepalive-interval/[0]/data: keepaliveTime?|0",
+    "bgp-bfd/[0]/bfd-operational-state/[0]/data: bfdStatus",
+    "local-interface-name/[0]/data: ifname",
+    "bgp-rib/[*]/received-prefix-count/[0]/data: pfxRxList",
+    "bgp-rib/[*]/name/[0]/data: pfxType",
+    "bgp-traffic/[0]/input-updates/[0]/data: updatesRx?|0",
+    "output-messages/[0]/output-updates/[0]/data: updatesTx?|0",
+    ]'
 
