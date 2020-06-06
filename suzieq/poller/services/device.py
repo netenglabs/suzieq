@@ -1,4 +1,5 @@
 from suzieq.poller.services.service import Service
+from datetime import datetime
 
 
 class DeviceService(Service):
@@ -13,8 +14,7 @@ class DeviceService(Service):
                          schema, queue, run_once)
         self.ignore_fields.append("bootupTimestamp")
 
-    def clean_data(self, processed_data, raw_data):
-        """Cleanup the bootup timestamp for Linux nodes"""
+    def linux_clean_data(self, processed_data, raw_data):
 
         for entry in processed_data:
             # We're assuming that if the entry doesn't provide the
@@ -42,8 +42,39 @@ class DeviceService(Service):
                             entry["version"] = ' '.join(osstr[1:])
                     del entry["os"]
 
+    def junos_clean_data(self, processed_data, raw_data):
+
+        for entry in processed_data:
+            if entry.get('bootupTimestamp', '-') != '-':
+                entry['bootupTimestamp'] = datetime.strptime(
+                    entry['bootupTimestamp'], '%Y-%m-%d %H:%M:%S %Z') \
+                    .timestamp()
+
+    def nxos_clean_data(self, processed_data, raw_data):
+        for entry in processed_data:
+            upsecs = (24*3600*int(entry.pop('kern_uptm_days', 0)) +
+                      3600*int(entry.pop('kern_uptm_hrs', 0)) +
+                      60*int(entry.pop('kern_uptm_mins', 0)) +
+                      int(entry.pop('kern_uptm_secs', 0)))
+            if upsecs:
+                entry['bootupTimestamp'] = int(
+                    datetime.utcnow().timestamp() - upsecs)
+
+    def clean_data(self, processed_data, raw_data):
+        """Cleanup the bootup timestamp for Linux nodes"""
+
+        devtype = raw_data.get("devtype", None)
+        if devtype == "cumulus" or devtype == "linux":
+            self.linux_clean_data(processed_data, raw_data)
+        elif devtype == "junos":
+            self.junos_clean_data(processed_data, raw_data)
+        elif devtype == "nxos":
+            self.nxos_clean_data(processed_data, raw_data)
+
+        for entry in processed_data:
             entry['status'] = "alive"
             entry["address"] = raw_data["address"]
+
         return super().clean_data(processed_data, raw_data)
 
     def get_diff(self, old, new):

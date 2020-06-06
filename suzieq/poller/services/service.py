@@ -11,6 +11,7 @@ from tempfile import mkstemp
 from dataclasses import dataclass
 from http import HTTPStatus
 from collections import defaultdict
+from itertools import zip_longest
 
 import pyarrow as pa
 
@@ -93,7 +94,8 @@ class Service(object):
         else:
             self.partition_cols = self.keys + ["timestamp"]
 
-    def is_status_ok(self, status: int) -> bool:
+    @staticmethod
+    def is_status_ok(status: int) -> bool:
         if status == 0 or status == HTTPStatus.OK:
             return True
         return False
@@ -121,18 +123,21 @@ class Service(object):
         else:
             self.node_postcall_list = node_call_list
 
-    def get_empty_record(self):
-        map_defaults = {
-            pa.string(): "",
+    def _get_default_vals(self) -> dict:
+        return({
+            pa.string(): "-",
             pa.int32(): 0,
             pa.int64(): 0,
             pa.float32(): 0.0,
             pa.float64(): 0.0,
             pa.date64(): 0.0,
             pa.bool_(): False,
-            pa.list_(pa.string()): [],
+            pa.list_(pa.string()): ['-'],
             pa.list_(pa.int64()): [],
-        }
+        })
+
+    def get_empty_record(self):
+        map_defaults = self._get_default_vals()
 
         defaults = [map_defaults[x] for x in self.schema.types]
         rec = dict(zip(self.schema.names, defaults))
@@ -218,20 +223,7 @@ class Service(object):
                                 ('weight', pa.int32())])): list,
         }
 
-        map_defaults = {
-            pa.string(): "",
-            pa.int32(): 0,
-            pa.int64(): 0,
-            pa.float32(): 0.0,
-            pa.float64(): 0.0,
-            pa.date64(): 0.0,
-            pa.bool_(): False,
-            pa.list_(pa.string()): [],
-            pa.list_(pa.int64()): [],
-            pa.list_(pa.struct([('nexthop', pa.string()),
-                                ('oif', pa.string()),
-                                ('weight', pa.int32())])): [("", "", 1)]
-        }
+        map_defaults = self._get_default_vals()
 
         # Ensure the type is set correctly.
         for entry in result:
@@ -294,23 +286,32 @@ class Service(object):
                 self.logger.warning(f"Node post failed for {node}")
                 continue
 
-    def process_data(self, data):
-        """Derive the data to be stored from the raw input"""
-        result = []
+    def _process_each_output(self, elem_num, data):
+        """Workhorse processing routine for each element in output"""
 
-        if (data["status"] is not None) and (int(data["status"]) == 200 or
-                                             int(data["status"]) == 0):
+        result = []
+        if (Service.is_status_ok(data.get('status', -1))):
             if not data["data"]:
                 return result
 
+            # Check host-specific normalization if any
             nfn = self.defn.get(data.get("hostname"), None)
             if not nfn:
                 nfn = self.defn.get(data.get("devtype"), None)
             if nfn:
+                # If we're riding on the coattails of another device
+                # get that device's normalization function
                 copynfn = nfn.get("copy", None)
                 if copynfn:
                     nfn = self.defn.get(copynfn, {})
-                if nfn.get("normalize", None):
+                norm_str = nfn.get("normalize", None)
+                if norm_str is None:
+                    # Can happen because we've a list of commands associated
+                    # Pick the normalization function associated with this
+                    # output
+                    norm_str = nfn.get('command', [])[elem_num].get(
+                        'normalize', None)
+                if norm_str:
                     if isinstance(data["data"], str):
                         try:
                             in_info = json.loads(data["data"])
@@ -349,11 +350,19 @@ class Service(object):
                                 return []
 
                         result = cons_recs_from_json_template(
-                            nfn.get("normalize", ""), in_info)
+                            norm_str, in_info)
 
                         result = self.clean_data(result, data)
                 else:
                     tfsm_template = nfn.get("textfsm", None)
+
+                    if tfsm_template is None and elem_num:
+                        # Can happen because we've a list of cmds associated
+                        # Pick the normalization function associated with this
+                        # output
+                        tfsm_template = nfn.get('command', [])[elem_num].get(
+                            'textfsm', None)
+
                     if not tfsm_template:
                         return result
 
@@ -377,24 +386,40 @@ class Service(object):
 
         return result
 
+    def process_data(self, data):
+        """Derive the data to be stored from the raw input"""
+        result = []
+        for i, item in enumerate(data):
+            tmpres = self._process_each_output(i, item)
+            if not result:
+                result = tmpres
+            else:
+                intres = list(zip_longest(result, tmpres))
+                for elem in intres:
+                    # We need to merge the results of the two lists
+                    # Each list is a set of keys, with the hostname and
+                    # some other keys being duplicates in both lists
+                    res1, res2 = elem
+                    keyset = set(res1.keys()).union(res2.keys())
+                    defvals = self._get_default_vals()
+                    for key in keyset:
+                        try:
+                            default_val = defvals[self.schema.field(key).type]
+                        except KeyError:
+                            default_val = '-'
+                        if res1[key] == default_val:
+                            result[0][key] = res2[key]
+                        else:
+                            result[0][key] = res1[key]
+
+        return result
+
     def clean_data(self, processed_data, raw_data):
 
         # Build default data structure
         schema_rec = {}
-        def_vals = {
-            pa.string(): "-",
-            pa.int32(): 0,
-            pa.int64(): 0,
-            pa.float64(): 0,
-            pa.float32(): 0.0,
-            pa.bool_(): False,
-            pa.date64(): 0.0,
-            pa.list_(pa.string()): ["-"],
-            pa.list_(pa.int64()): [0],
-            pa.list_(pa.struct([('nexthop', pa.string()),
-                                ('oif', pa.string()),
-                                ('weight', pa.int32())])): [("", "", 1)],
-        }
+        def_vals = self._get_default_vals()
+
         for field in self.schema:
             default = def_vals[field.type]
             schema_rec.update({field.name: default})
@@ -508,14 +533,12 @@ class Service(object):
             write_poller_stat = False
 
             if output:
-                ostatus = output[0].get("status", None)
-                if ostatus is not None:
-                    try:
-                        status = int(ostatus)
-                    except ValueError:
-                        status = HTTPStatus.METHOD_NOT_ALLOWED
+                ostatus = [x.get('status', -1) for x in output]
 
-                write_poller_stat = not self.is_status_ok(status)
+                write_poller_stat = all([Service.is_status_ok(x)
+                                         for x in ostatus])
+
+                # We don't expect the output from two different hostnames
                 nodename = output[0]["hostname"]
                 # Don't write the error every time the failure happens
                 if write_poller_stat:
@@ -526,7 +549,11 @@ class Service(object):
                 elif nodename in self._failed_node_set:
                     # So there was no error in this command that had failed b4
                     self._failed_node_set.remove(nodename)
-                result = self.process_data(output[0])
+
+                # Process data independent of status to return an empty list
+                # so that the output can be updated. For example, if a service is
+                # disabled, this can be the condition.
+                result = self.process_data(output)
                 # If a node from init state to good state, hostname will change
                 # So fix that in the node list
                 hostname = output[0]["hostname"]
