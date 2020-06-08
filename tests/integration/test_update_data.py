@@ -134,6 +134,9 @@ def vagrant_up():
     run_cmd(['vagrant', 'up'])
     out, code, err = run_cmd(['vagrant', 'status'])
     logging.warning(f"VAGRANT UP {out}")
+    run_cmd(['vagrant', 'up'])
+    out, code, err = run_cmd(['vagrant', 'status'])
+    logging.warning(f"VAGRANT UP {out}")
     return code
 
 
