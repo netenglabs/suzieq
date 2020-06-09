@@ -20,6 +20,8 @@ class RoutesService(Service):
             processed_data = self._clean_linux_data(processed_data, raw_data)
         elif devtype == "junos":
             processed_data = self._clean_junos_data(processed_data, raw_data)
+        elif devtype == "nxos":
+            processed_data = self._clean_nxos_data(processed_data, raw_data)
         else:
             # Fix IP version for all entries
             for entry in processed_data:
@@ -90,5 +92,15 @@ class RoutesService(Service):
             entry['metric'] = int(entry['metric'])
             entry.pop('localif')
             entry.pop('activeTag')
+
+        return processed_data
+
+    def _clean_nxos_data(self, processed_data, raw_data):
+
+        for entry in processed_data:
+            entry['protocol'] = entry['protocol'].split('-')[0]
+
+            entry['weights'] = [int(x) if x is not None else 0
+                                for x in entry['weights']]
 
         return processed_data

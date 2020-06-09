@@ -43,7 +43,7 @@ apply:
   junos:
     version: all
     command: show ospf neighbor instance all detail | display json
-    normalize: 'ospf-neighbor-information-all/[0]/ospf-instance-neighbor/*:ospf-instance-name:vrf/ospf-neighbor/*/[
+    normalize: 'ospf-neighbor-information-all/[0]/ospf-instance-neighbor/*:ospf-instance-name:vrf|ospf-neighbor/*/[
     "neighbor-address/[0]/data: peerIP",
     "interface-name/[0]/data: ifname",
     "interface-name/[0]/data: origIfname",
@@ -52,4 +52,18 @@ apply:
     "neighbor-priority/[0]/data: nbrPrio",
     "ospf-area/[0]/data: area",
     "neighbor-up-time/[0]/data: lastChangeTime"
+    ]'
+
+  nxos:
+    version: all
+    command: show ip ospf neighbor detail vrf all | json
+    normalize: 'TABLE_ctx/ROW_ctx/*:cname:vrf|TABLE_nbr/ROW_nbr/*/[
+    "rid: peerRouterId",
+    "addr: peerIP",
+    "area: area",
+    "intf: ifname",
+    "intf: origIfname",
+    "state: state",
+    "transition: numChanges?|0",
+    "lastnonhello: lastChangeTime"
     ]'

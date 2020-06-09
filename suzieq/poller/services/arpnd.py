@@ -13,7 +13,7 @@ class ArpndService(Service):
                 entry["state"] = entry["state"].lower()
                 if entry["state"] == "stale" or entry["state"] == "delay":
                     entry["state"] = "reachable"
-                entry['ifname'] = entry['ifname'].replace('/', '-')
+                entry['oif'] = entry['oif'].replace('/', '-')
         elif devtype == 'eos':
             for entry in processed_data:
                 entry['macaddr'] = ':'.join(
@@ -21,6 +21,6 @@ class ArpndService(Service):
                 entry['ifname'] = entry['ifname'].replace('/', '-')
         else:
             for entry in processed_data:
-                entry['ifname'] = entry['ifname'].replace('/', '-')
+                entry['oif'] = entry['oif'].replace('/', '-')
 
         return super().clean_data(processed_data, raw_data)

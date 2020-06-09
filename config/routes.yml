@@ -42,10 +42,24 @@ apply:
     "rt-entry/[0]/protocol-name/[0]/data: protocol",
     "rt-entry/[0]/preference/[0]/data: metric?|0",
     "rt-entry/[0]/active-tag/[0]/data: activeTag",
-    "rt-entry/[0]/as-path/[0]/data: asPath?|",
+    "rt-entry/[0]/as-path/[0]/data: asPathList?|",
     "rt-entry/[0]/validation-state/[0]/data: validState?|",
     "rt-entry/[0]/nh/[*]/to/[0]/data: nexthopIps",
     "rt-entry/[0]/nh/[*]/via/[0]/data: oifs",
     "rt-entry/[0]/nh/[0]/nh-local-interface/[0]/data: localif?|",
     "rt-entry/[0]/nh-type/[0]/data: action?|forward",
+    ]'
+
+  nxos: 
+    version: all
+    command: show ip route vrf all | json
+    normalize: 'TABLE_vrf/ROW_vrf/*:vrf-name-out:vrf|TABLE_addrf/ROW_addrf/TABLE_prefix/ROW_prefix/*/[
+    "ipprefix: prefix",
+    "TABLE_path/ROW_path/[0]?/clientname: protocol",
+    "TABLE_path/ROW_path/[*]?/metric: weights",
+    "TABLE_path/ROW_path/[*]?/ifname: oifs",
+    "TABLE_path/ROW_path/[*]?/ipnexthop: nexthopIps",
+    "hardwareProgrammed: hardwareProgrammed?|True",
+    "TABLE_path/ROW_path/[*]?/type: routeAction?|forward",
+    "TABLE_path/ROW_path/[*]?/tag: asPathList?|[]",
     ]'
