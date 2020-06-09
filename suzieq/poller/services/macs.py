@@ -1,4 +1,5 @@
 from suzieq.poller.services.service import Service
+import re
 
 
 class MacsService(Service):
@@ -20,6 +21,8 @@ class MacsService(Service):
             processed_data = self._clean_linux_data(processed_data, raw_data)
         elif devtype == "junos":
             processed_data = self._clean_junos_data(processed_data, raw_data)
+        elif devtype == "nxos":
+            processed_data = self._clean_nxos_data(processed_data, raw_data)
         return super().clean_data(processed_data, raw_data)
 
     def _clean_linux_data(self, processed_data, raw_data):
@@ -56,5 +59,18 @@ class MacsService(Service):
                 if 'rcvd_from_remote' in inflags:
                     flags += ' remote'
             entry['flags'] = flags.strip()
+
+        return processed_data
+
+    def _clean_nxos_data(self, processed_data, raw_data):
+
+        for entry in processed_data:
+            entry['macaddr'] = ':'.join(
+                [f'{x[:2]}:{x[2:]}' for x in entry['macaddr'].split('.')])
+            vtepIP = re.match(r'(\S+)\(([0-9.]+)\)', entry['oif'])
+            if vtepIP:
+                entry['remoteVtepIp'] = vtepIP.group(2)
+                entry['oif'] = vtepIP.group(1)
+                entry['flags'] = 'remote'
 
         return processed_data
