@@ -32,3 +32,14 @@ apply:
     "l2ng-l2-mac-entry-flags/[0]/data: flags"
     ]'
 
+
+  nxos:
+    version: all
+    command: show mac address-table | json
+    normalize: 'TABLE_mac_address/ROW_mac_address/*/[
+    "disp_mac_addr: macaddr",
+    "disp_port: oif",
+    "disp_vlan: vlan?|0",
+    "disp_is_secure: isSecure?|",
+    "disp_type: flags",
+    ]'
