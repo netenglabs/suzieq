@@ -14,6 +14,16 @@ class MacsService(Service):
         # We don't want millions of directories, one per prefix
         self.partition_cols.remove("macaddr")
 
+    def _add_mackey(self, entry):
+        if not entry["vlan"]:
+            # Without a VLAN, make the OIF the key
+            if not entry["remoteVtepIp"]:
+                entry["mackey"] = entry["oif"]
+            else:
+                entry["mackey"] = f'{entry["oif"]}/{entry["remoteVtepIp"]}'
+        else:
+            entry["mackey"] = entry["vlan"]
+
     def clean_data(self, processed_data, raw_data):
         """CLeanup needed for the messed up MAC table entries in Linux"""
         devtype = raw_data.get("devtype", None)
@@ -27,38 +37,22 @@ class MacsService(Service):
 
     def _clean_linux_data(self, processed_data, raw_data):
         for entry in processed_data:
-            if not entry["vlan"]:
-                # Without a VLAN, make the OIF the key
-                if not entry["remoteVtepIp"]:
-                    entry["mackey"] = entry["oif"]
-                else:
-                    entry["mackey"] = f'{entry["oif"]}/{entry["remoteVtepIp"]}'
-            else:
-                entry["mackey"] = entry["vlan"]
-
             if entry['flags'] == 'offload' or entry['flags'] == 'extern_learn':
                 if entry['remoteVtepIp']:
                     entry['flags'] = 'remote'
+            self._add_mackey(entry)
 
         return processed_data
 
     def _clean_junos_data(self, processed_data, raw_data):
         for entry in processed_data:
-            if not entry["vlan"]:
-                # Without a VLAN, make the OIF the key
-                if not entry["remoteVtepIp"]:
-                    entry["mackey"] = entry["oif"]
-                else:
-                    entry["mackey"] = f'{entry["oif"]}/{entry["remoteVtepIp"]}'
-            else:
-                entry["mackey"] = entry["vlan"]
-
             inflags = entry.pop('flags', '')
             flags = ''
             if inflags:
                 if 'rcvd_from_remote' in inflags:
                     flags += ' remote'
             entry['flags'] = flags.strip()
+            self._add_mackey(entry)
 
         return processed_data
 
@@ -72,5 +66,6 @@ class MacsService(Service):
                 entry['remoteVtepIp'] = vtepIP.group(2)
                 entry['oif'] = vtepIP.group(1)
                 entry['flags'] = 'remote'
+            self._add_mackey(entry)
 
         return processed_data
