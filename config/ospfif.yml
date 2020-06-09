@@ -59,3 +59,24 @@ apply:
     "ospf-stub-type/[0]/data: stub",
     ]'
 
+  nxos:
+    version: all
+    command: show ip ospf interface vrf all | json
+    normalize: 'TABLE_ctx/ROW_ctx/*:cname:vrf|TABLE_intf/ROW_intf/*/[
+    "ifname: ifname",
+    "ifname: origIfname",
+    "state: state",
+    "addr: ipAddress",
+    "masklen: maskLen?|32",
+    "area: area",
+    "type_str: networkType?|",
+    "nbr_adjs: nbrCount?|0",
+    "hello_interval: helloTime?|10",
+    "dead_interval: deadTime?|40",
+    "rxmt_interval: retxTime?|5",
+    "cost: cost?|1",
+    "passive: passive?|False",
+    "unnumbered: isUnnumbered?|False",
+    ]'
+
+    

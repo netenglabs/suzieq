@@ -362,3 +362,21 @@ def calc_avg(oldval, newval):
         return newval
 
     return float((oldval+newval)/2)
+
+
+def build_cisco_timestring(input):
+    timestr = 'P'
+    if not input.startswith('P'):
+        return ''
+
+    if 'D' in input:
+        timestr += '%jD'
+    timestr += 'T'
+    if 'H' in input:
+        timestr += '%HH'
+    if 'M' in input:
+        timestr += '%MM'
+    if 'S' in input:
+        timestr += '%SS'
+
+    return timestr

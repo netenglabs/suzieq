@@ -1,5 +1,6 @@
 import re
 import ast
+import logging
 
 
 def _stepdown_rest(entry) -> list:
@@ -84,7 +85,10 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                     if not data or not data.get(xstr, None):
                         # Some outputs contain just the main key with a null
                         # body such as ospfNbr from EOS: {'vrfs': {}}.
-                        return result
+                        logging.error(
+                            f"Unnatural return from svcparser. xstr is {xstr}. \
+                            Result is {result}")
+                        return cleanup_and_return(result)
                     result = [{"rest": data[xstr]}]
                 else:
                     if isinstance(data, dict):
@@ -101,12 +105,25 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                         result[0]["rest"] = eval("{}{}".format(
                             result[0]["rest"], xstr))
                     else:
-                        if xstr not in result[0]["rest"]:
-                            return result
+                        if isinstance(result[0]["rest"], list):
+                            if xstr not in result[0]["rest"][0]:
+                                return result
+                        elif xstr not in result[0]["rest"]:
+                            logging.error(
+                                f"Unnatural return from svcparser. \
+                                xstr is {xstr}. Result is {result}")
+                            return cleanup_and_return(result)
+                        tmpval = []
                         for ele in result:
                             # EOS routes case: vrfs/*:vrf/routes/*:prefix
                             # Otherwise there's usually one element here
-                            ele["rest"] = ele["rest"][xstr]
+                            if isinstance(ele["rest"], list):
+                                for subele in ele["rest"]:
+                                    tmpval.append({"rest": subele[xstr]})
+                            else:
+                                ele["rest"] = ele["rest"][xstr]
+                        if tmpval:
+                            result = tmpval
                 else:
                     result = list(map(_stepdown_rest, result))
                     if len(result) == 1:
@@ -151,23 +168,38 @@ def cons_recs_from_json_template(tmplt_str, in_data):
             ppos -= pos
             continue
 
-        # handle one level of nesting to deal with Junos route JSON
+        # handle one level of nesting to deal with Junos route JSON, NXOS route
+        # and many others that have an interesting field in parallel with
+        # the rest of the useful data
         *lval, rval = xstr.split(":")
+        if "|" in rval:
+            rval, nxtfld = rval.split('|')
+        else:
+            nxtfld = None
         nokeys = False
         ks = [lval[0]]
         tmpres = []
+        intres = []
         if result:
             for ele in result:
                 if lval[0] == "*":
                     if isinstance(ele['rest'], dict):
-                        ks = list(ele["rest"].keys())
+                        if nxtfld:
+                            intres = [{rval: ele['rest'][lval[1]],
+                                       "rest": ele['rest'][nxtfld]}]
+                        else:
+                            ks = list(ele["rest"].keys())
 
-                        intres = [{rval: x,
-                                   "rest": ele["rest"][x]}
-                                  for x in ks]
+                            intres = [{rval: x,
+                                       "rest": ele["rest"][x]}
+                                      for x in ks]
                     else:
-                        intres = [{rval: x[lval[1]], "rest": x}
-                                  for x in ele["rest"]]
+                        if nxtfld:
+                            intres = [{rval: x[lval[1]], "rest": x[nxtfld]}
+                                      for x in ele["rest"]]
+                        else:
+                            intres = [{rval: x[lval[1]], "rest": x}
+                                      for x in ele["rest"]]
 
                 for oldkey in ele.keys():
                     if oldkey == "rest":
@@ -289,7 +321,7 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                 subflds = lval.split("/")
                 tmpval = x["rest"]
                 value = None
-                if "*" in subflds or '[*]' in subflds:
+                if any(x in subflds for x in ["*", "*?", "[*]?", "[*]"]):
                     # Returning a list is the only supported option for now
                     value = []
 
@@ -314,6 +346,12 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                         # interface address which is many levels deep and mixes
                         # IPv4/v6 address in a way that we can't entirely fix
                         # Post processing cleanup has to handle that part
+                        if subfld.endswith('?'):
+                            # This was added thanks to NXOS which provides
+                            # nexthops as a list if ECMP, else a dictionary
+                            if type(tmpval) != list:
+                                continue
+                            subfld = subfld[:-1]  # lose the final "?" char
                         if subfld == '[*]':
                             tmp = tmpval
                             for subele in tmp:
@@ -372,6 +410,10 @@ def cons_recs_from_json_template(tmplt_str, in_data):
             else:
                 x.update({rval: value})
 
+    return cleanup_and_return(result)
+
+
+def cleanup_and_return(result):
     for entry in result:
         # To handle entries like EOS' ospfNbr, we had saved the multiple keys
         # extracted from the initial part of the JSON string and saved it in

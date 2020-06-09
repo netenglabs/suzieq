@@ -206,47 +206,6 @@ class Service(object):
 
         result = self.clean_data(records, data)
 
-        fields = [fld.name for fld in schema]
-
-        ptype_map = {
-            pa.string(): str,
-            pa.int32(): int,
-            pa.int64(): int,
-            pa.float32(): float,
-            pa.float64(): float,
-            pa.date64(): float,
-            pa.list_(pa.string()): list,
-            pa.list_(pa.int64()): list,
-            pa.bool_(): bool,
-            pa.list_(pa.struct([('nexthop', pa.string()),
-                                ('oif', pa.string()),
-                                ('weight', pa.int32())])): list,
-        }
-
-        map_defaults = self._get_default_vals()
-
-        # Ensure the type is set correctly.
-        for entry in result:
-            for cent in entry:
-                if cent in fields:
-                    schent_type = schema.field(cent).type
-                    if not isinstance(entry[cent], ptype_map[schent_type]):
-                        if entry[cent]:
-                            entry[cent] = ptype_map[schent_type](entry[cent])
-                        else:
-                            entry[cent] = map_defaults[schent_type]
-                    elif isinstance(entry[cent], list):
-                        for i, ele in enumerate(entry[cent]):
-                            if not isinstance(ele, ptype_map[schent_type.value_type]):
-                                try:
-                                    if ptype_map[schent_type.value_type] == int:
-                                        entry[cent][i] = int(entry[cent][i])
-                                    else:
-                                        raise ValueError
-                                except ValueError:
-                                    entry[cent][i] = (
-                                        map_defaults[schent_type.value_type])
-
         return result
 
     async def post_results(self, result, token) -> None:
@@ -305,7 +264,8 @@ class Service(object):
                 if copynfn:
                     nfn = self.defn.get(copynfn, {})
                 norm_str = nfn.get("normalize", None)
-                if norm_str is None:
+                if norm_str is None and isinstance(nfn.get('command', None),
+                                                   list):
                     # Can happen because we've a list of commands associated
                     # Pick the normalization function associated with this
                     # output
@@ -420,6 +380,18 @@ class Service(object):
         schema_rec = {}
         def_vals = self._get_default_vals()
 
+        ptype_map = {
+            pa.string(): str,
+            pa.int32(): int,
+            pa.int64(): int,
+            pa.float32(): float,
+            pa.float64(): float,
+            pa.date64(): float,
+            pa.list_(pa.string()): list,
+            pa.list_(pa.int64()): list,
+            pa.bool_(): bool,
+        }
+
         for field in self.schema:
             default = def_vals[field.type]
             schema_rec.update({field.name: default})
@@ -434,6 +406,26 @@ class Service(object):
                         entry.update({fld: True})
                     else:
                         entry.update({fld: schema_rec[fld]})
+                else:
+                    fld_type = self.schema.field(fld).type
+                    if not isinstance(entry[fld], ptype_map[fld_type]):
+                        try:
+                            entry[fld] = ptype_map[fld_type](entry[fld])
+                        except (ValueError, TypeError):
+                            entry[fld] = schema_rec[fld]
+                    elif isinstance(entry[fld], list):
+                        for i, ele in enumerate(entry[fld]):
+                            if not isinstance(ele,
+                                              ptype_map[fld_type.value_type]):
+                                try:
+                                    if ptype_map[fld_type.value_type] == int:
+                                        entry[fld][i] = int(entry[fld][i])
+                                    elif ptype_map[fld_type.value_type] == str:
+                                        entry[fld][i] = str(entry[fld][i])
+                                    else:
+                                        raise ValueError
+                                except (ValueError, TypeError):
+                                    entry[fld][i] = schema_rec[fld]
 
         return processed_data
 

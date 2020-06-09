@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from suzieq.poller.services.service import Service
+from suzieq.utils import build_cisco_timestring
 
 
 class OspfNbrService(Service):
@@ -35,6 +36,8 @@ class OspfNbrService(Service):
             processed_data = self._clean_eos_data(processed_data, raw_data)
         elif dev_type == "junos":
             processed_data = self._clean_junos_data(processed_data, raw_data)
+        elif dev_type == "nxos":
+            processed_data = self._clean_nxos_data(processed_data, raw_data)
 
         return super().clean_data(processed_data, raw_data)
 
@@ -81,5 +84,20 @@ class OspfNbrService(Service):
                 (datetime.utcnow().timestamp() -
                  timedelta(hours=int(hours), minutes=int(minutes),
                            seconds=int(seconds)).seconds))*1000
+
+        return processed_data
+
+    def _clean_nxos_data(self, processed_data, raw_data):
+        for entry in processed_data:
+            entry['state'] = entry['state'].lower()
+            entry['numChanges'] = int(entry['numChanges'])
+            entry['ifname'] = entry['ifname'].replace('/', '-')
+            # Cisco's format examples are PT7H28M21S, P1DT4H9M46S
+            change_time = entry['lastChangeTime']
+            period = datetime.strptime(change_time,
+                                       build_cisco_timestring(change_time)) \
+                .time()
+            secs = period.hour*3600 + period.minute*60 + period.second
+            entry['lastChangeTime'] = raw_data['timestamp'] - secs*1000
 
         return processed_data
