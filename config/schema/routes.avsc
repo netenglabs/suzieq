@@ -4,45 +4,24 @@
     "type": "record",
     "fields": [
         {
-            "name": "oifs",
+            "name": "weights",
             "type": {
                 "type": "array",
                 "items": {
-                    "name": "oif",
-                    "type": "string"
+                    "name": "weight",
+                    "type": "long"
                 }
-            },
-            "display": 5
+            }
         },
         {
-            "name": "ipvers",
-            "type": "long",
-	    "display": 9
+            "name": "routeAction",
+            "type": "string"
         },
         {
-            "name": "inHardware",
-            "type": "boolean"
-        },
-        {
-            "name": "asPathList",
-            "type": {
-                "type": "array",
-                "items": {
-                    "name": "asPath",
-                    "type": "string"
-                }
-	    }
-        },
-        {
-            "name": "metric",
-            "type": "long",
-	    "display": 8
-        },
-        {
-            "name": "vrf",
+            "name": "prefix",
             "type": "string",
-            "key": 2,
-            "display": 2
+            "key": 3,
+            "display": 3
         },
         {
             "name": "source",
@@ -52,17 +31,7 @@
         {
             "name": "action",
             "type": "string",
-	    "display": 10
-        },
-        {
-            "name": "weights",
-            "type": {
-                "type": "array",
-                "items": {
-                    "name": "weight",
-                    "type": "long"
-                }
-            }
+            "display": 10
         },
         {
             "name": "nexthopIps",
@@ -76,15 +45,49 @@
             "display": 4
         },
         {
-            "name": "prefix",
+            "name": "asPathList",
+            "type": {
+                "type": "array",
+                "items": {
+                    "name": "asPath",
+                    "type": "string"
+                }
+            }
+        },
+        {
+            "name": "oifs",
+            "type": {
+                "type": "array",
+                "items": {
+                    "name": "oif",
+                    "type": "string"
+                }
+            },
+            "display": 5
+        },
+        {
+            "name": "vrf",
             "type": "string",
-            "key": 3,
-            "display": 3
+            "key": 2,
+            "display": 2
+        },
+        {
+            "name": "validState",
+            "type": "string"
         },
         {
             "name": "protocol",
             "type": "string",
             "display": 6
+        },
+        {
+            "name": "hardwareProgrammed",
+            "type": "string"
+        },
+        {
+            "name": "metric",
+            "type": "long",
+            "display": 8
         },
         {
             "name": "hostname",
