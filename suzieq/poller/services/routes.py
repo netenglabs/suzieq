@@ -13,6 +13,12 @@ class RoutesService(Service):
         # We don't want millions of directories, one per prefix
         self.partition_cols.remove("prefix")
 
+    def _fix_ipvers(self, entry):
+        if ':' in entry['prefix']:
+            entry['ipvers'] = 6
+        else:
+            entry['ipvers'] = 4
+
     def clean_data(self, processed_data, raw_data):
 
         devtype = self._get_devtype_from_input(raw_data)
@@ -25,10 +31,7 @@ class RoutesService(Service):
         else:
             # Fix IP version for all entries
             for entry in processed_data:
-                if ':' in entry['prefix']:
-                    entry['ipvers'] = 6
-                else:
-                    entry['ipvers'] = 4
+                self._fix_ipvers(entry)
 
         return super().clean_data(processed_data, raw_data)
 
@@ -51,10 +54,7 @@ class RoutesService(Service):
                 entry["action"] = "forward"
             elif entry["action"] == "blackhole":
                 entry["oifs"] = ["blackhole"]
-            if ':' in entry['prefix']:
-                entry['ipvers'] = 6
-            else:
-                entry['ipvers'] = 4
+            self._fix_ipvers(entry)
 
             entry['inHardware'] = True  # Till the offload flag is here
 
@@ -102,5 +102,9 @@ class RoutesService(Service):
 
             entry['weights'] = [int(x) if x is not None else 0
                                 for x in entry['weights']]
+
+            self._fix_ipvers(entry)
+            if 'action' not in entry:
+                entry['action'] = 'forward'
 
         return processed_data

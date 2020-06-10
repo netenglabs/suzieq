@@ -58,9 +58,9 @@ class RoutesObj(SqEngineObject):
         self.summary_row_order.append('routesperVrfStat')
 
         device_with_defrt_per_vrfns = self.summary_df \
-                                         .query("prefix.ipnet.is_default") \
-                                         .groupby(by=["namespace", "vrf"])[
-                                             "hostname"].nunique()
+            .query("prefix.ipnet.is_default") \
+            .groupby(by=["namespace", "vrf"])[
+                "hostname"].nunique()
         devices_per_vrfns = self.summary_df.groupby(by=["namespace", "vrf"])[
             "hostname"].nunique()
 
@@ -87,12 +87,14 @@ class RoutesObj(SqEngineObject):
 
         cols = kwargs.get("columns", ["namespace", "hostname", "vrf",
                                       "prefix", "nexthopIps", "oifs",
-                                      "protocol"])
+                                      "protocol", "ipvers"])
 
-        if cols != ['default'] and 'prefix' not in cols:
-            cols.insert(-1, 'prefix')
+        if cols != ['default']:
+            if 'prefix' not in cols:
+                cols.insert(-1, 'prefix')
 
-        df = self.get_valid_df(self.iobj._table, sort_fields, **kwargs)
+        df = self.get_valid_df(self.iobj._table, sort_fields,
+                               addnl_fields=['ipvers'], **kwargs)
 
         if df.empty:
             return df
