@@ -5,8 +5,9 @@ from suzieq.poller.services.service import Service
 class InterfaceService(Service):
     """Service class for interfaces. Cleanup of data is specific"""
 
-    def clean_eos_data(self, processed_data):
+    def _clean_eos_data(self, processed_data):
         """Clean up EOS interfaces output"""
+
         for entry in processed_data:
             entry["speed"] = int(entry["speed"] / 1000000)
             ts = entry["statusChangeTimestamp"]
@@ -62,13 +63,13 @@ class InterfaceService(Service):
                     new_list.append(elem["subnet"])
                 entry["ip6AddressList"] = new_list
 
-    def clean_cumulus_data(self, processed_data):
+    def _clean_cumulus_data(self, processed_data):
         """We have to merge the appropriate outputs of two separate commands"""
         new_data_dict = {}
         for entry in processed_data:
             ifname = entry["ifname"]
             if entry.get('hardware', '') == 'ether':
-                entry['hardware'] = 'ethernet'
+                entry['type'] = 'ethernet'
             if ifname not in new_data_dict:
 
                 if not entry['linkUpCnt']:
@@ -113,7 +114,7 @@ class InterfaceService(Service):
 
         return processed_data
 
-    def clean_junos_data(self, processed_data):
+    def _clean_junos_data(self, processed_data):
         """Cleanup IP addresses and such"""
         new_entries = []        # Add new interface entries for logical ifs
         for entry in processed_data:
@@ -125,6 +126,8 @@ class InterfaceService(Service):
 
             if entry['type']:
                 entry['type'] = entry['type'].lower()
+                if entry['type'] == 'ethernet':
+                    entry['type'] = 'ether'
 
             if (entry['statusChangeTimestamp'] == 'Never' or
                     entry['statusChangeTimestamp'] is None):
@@ -224,6 +227,100 @@ class InterfaceService(Service):
             processed_data.extend(new_entries)
         return processed_data
 
+    def _clean_nxos_data(self, processed_data):
+        """Complex cleanup of NXOS interface data"""
+        new_entries = []
+        created_if_list = set()
+        unnum_intf = {}
+        add_bridge_intf = False
+        bridge_intf_state = "down"
+        bridge_mtu = 1500
+
+        unnum_intf_entry_idx = []  # backtrack to interface to fix
+
+        for entry_idx, entry in enumerate(processed_data):
+            entry['origIfname'] = entry['ifname']
+            if entry['type'] == 'eth':
+                entry['type'] = 'ether'
+
+            if ('vrf' in entry and entry['vrf'] != 'default' and
+                    entry['vrf'] not in created_if_list):
+                # Our normalized behavior is to treat VRF as an interface
+                # NXOS doesn't do that. So, create a dummy interface
+                new_entry = {'ifname': entry['vrf'],
+                             'mtu': 65536,
+                             'state': up,
+                             'type': 'vrf',
+                             'master': None,
+                             'vlan': 0}
+                new_entries.append(new_entry)
+                created_if_list.add(entry['vrf'])
+
+                entry['master'] = entry['vrf']
+
+            if entry['_portmode'] == 'access' or entry['_portmode'] == 'trunk':
+                entry['master'] = 'bridge'
+                add_bridge_intf = True
+                if entry['state'] == "up":
+                    bridge_intf_state = "up"
+                if entry.get('mtu', 1500) < bridge_mtu:
+                    bridge_mtu = entry.get('mtu', 0)
+
+            if 'ipAddressList' in entry:
+                pri_ipaddr = f"{entry['ipAddressList']}/{entry['_maskLen']}"
+                ipaddr = [pri_ipaddr]
+                for i, elem in enumerate(entry['_secIPs']):
+                    ipaddr.append(f"{elem}/{entry['_secmasklens'][i]}")
+                entry['ipAddressList'] = ipaddr
+
+            if 'ip6AddressList' in entry:
+                entry['ip6AddressList'].append(entry['_linklocal'])
+
+            if entry.get('_unnum_intf', ''):
+                if entry['ifname'] in unnum_intf:
+                    # IPv6 has link local, so unnumbered is a v4 construct
+                    entry['ipAddressList'] = [unnum_intf[entry['ifname']]]
+                else:
+                    unnum_intf_entry_idx.append(entry_idx)
+
+            for elem in entry.get('_child_intf', []):
+                unnum_intf[elem] = [pri_ipaddr]
+
+            speed = entry.get('speed', '')
+            if isinstance(speed, str) and speed.startswith("unknown enum"):
+                entry['speed'] = 0
+
+            entry['type'] = entry['type'].lower()
+            if entry['ifname'].startswith('Vlan'):
+                entry['type'] = 'vlan'
+            elif entry['ifname'].startswith('nve'):
+                entry['type'] = 'vxlan'
+            elif entry['ifname'].startswith('loopback'):
+                entry['type'] = 'loopback'
+
+            # have this at the end to avoid messing up processing
+            entry['ifname'] = entry['ifname'].replace('/', '-')
+
+        # Fix unnumbered interface references
+        for idx in unnum_intf_entry_idx:
+            entry = processed_data[idx]
+            entry['ipAddressList'] = unnum_intf.get(entry['origIfname'], [])
+
+        # Add bridge interface
+        if add_bridge_intf:
+            new_entry = {'ifname': 'bridge',
+                         'mtu': bridge_mtu,
+                         'state': bridge_intf_state,
+                         'type': 'bridge',
+                         'master': None,
+                         'vlan': 0}
+            new_entries.append(new_entry)
+
+        if new_entries:
+            processed_data.extend(new_entries)
+
+        return processed_data
+
     def clean_data(self, processed_data, raw_data):
         """Homogenize the IP addresses across different implementations
         Input:
@@ -232,13 +329,15 @@ class InterfaceService(Service):
         Output:
             - processed output entries cleaned up
         """
-        devtype = raw_data.get("devtype", None)
+        devtype = self._get_devtype_from_input(raw_data)
         if devtype == "eos":
-            self.clean_eos_data(processed_data)
+            self._clean_eos_data(processed_data)
         elif devtype == "cumulus":
-            processed_data = self.clean_cumulus_data(processed_data)
+            processed_data = self._clean_cumulus_data(processed_data)
         elif devtype == "junos":
-            processed_data = self.clean_junos_data(processed_data)
+            processed_data = self._clean_junos_data(processed_data)
+        elif devtype == "nxos":
+            processed_data = self._clean_nxos_data(processed_data)
         else:
             for entry in processed_data:
                 entry['state'] = entry['state'].lower()
