@@ -45,23 +45,6 @@ apply:
     version: all
     command: ip -d address show
     textfsm: textfsm_templates/linux_ipaddr.tfsm
-
-  nxos:
-    version: all
-    command: show interface
-    normalize: 'TABLE_interface/ROW_interface/*[
-    "interface: ifname",
-    "state: state",
-    "eth_hw_addr: macaddr",
-    "eth_mtu: mtu?|0",
-    "eth_bw: speed/1000?|0",
-    "desc: description",
-    "eth_hw_desc: type",
-    "eth_link_flapped: statusChangeTimestamp",
-    "eth_reset_cntr: numChanges?|0",
-    "eth_ip_addr: ipAddressList?|[]",
-    "eth_ip_mask: eth_ip_mask?|0",
-    ]'
   
   junos:
     version: all
@@ -84,3 +67,42 @@ apply:
     "logical-interface/[*]/address-family: afi",
     ]'
     
+
+  nxos:
+    version: all
+    command:
+      - command: show interface brief | json
+        normalize: 'TABLE_interface/ROW_interface/*/[
+        "interface: ifname",
+        "state: state",
+        "svi_admin_state: state?|state",
+        "speed: speed?|0",
+        "mtu: mtu?|0",
+        "portmode: _portmode?|routed",
+        "type: type?|",
+        "vlan: vlan",
+        "state_rsn_desc: reason",
+        "svi_reason_desc: reason?|reason",
+        ]'
+
+      - command: show ip interface | json
+        normalize: 'TABLE_intf/ROW_intf/*/[
+        "vrf-name-out: vrf",
+        "intf-name: ifname",
+        "proto-state: state",
+        "prefix: ipAddressList",
+        "masklen: _maskLen",
+        "mtu: mtu",
+        "unnum-intf: _unnum_intf?|",
+        "TABLE_unnuminf/ROW_unnuminf/unnum-child-inf: _child_intf?|[]",
+        "TABLE_secondary_address/ROW_secondary_address/[*]?/prefix1: _secIPs",
+        "TABLE_secondary_address/ROW_secondary_address/[*]?/masklen1: _secmasklens",
+        ]'
+
+      - command: show ipv6 interface | json
+        normalize: 'TABLE_intf/ROW_intf/*?/[
+        "vrf-name-out: vrf",
+        "intf-name: ifname",
+        "TABLE_addr/ROW_addr/[*]?/addr: ip6AddressList",
+        "linklocal-addr: _linklocal"
+        ]'
