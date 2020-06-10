@@ -6,7 +6,8 @@ class ArpndService(Service):
 
     def clean_data(self, processed_data, raw_data):
 
-        devtype = raw_data.get("devtype", None)
+        devtype = self._get_devtype_from_input(raw_data)
+
         if any([devtype == x for x in ["cumulus", "linux"]]):
             for entry in processed_data:
                 entry["offload"] = entry["offload"] == "offload"

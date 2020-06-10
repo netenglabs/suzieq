@@ -14,6 +14,23 @@ class DeviceService(Service):
                          schema, queue, run_once)
         self.ignore_fields.append("bootupTimestamp")
 
+    def clean_data(self, processed_data, raw_data):
+        """Cleanup the bootup timestamp for Linux nodes"""
+
+        devtype = self._get_devtype_from_input(raw_data)
+        if devtype == "cumulus" or devtype == "linux":
+            self.linux_clean_data(processed_data, raw_data)
+        elif devtype == "junos":
+            self.junos_clean_data(processed_data, raw_data)
+        elif devtype == "nxos":
+            self.nxos_clean_data(processed_data, raw_data)
+
+        for entry in processed_data:
+            entry['status'] = "alive"
+            entry["address"] = raw_data[0]["address"]
+
+        return super().clean_data(processed_data, raw_data)
+
     def linux_clean_data(self, processed_data, raw_data):
 
         for entry in processed_data:
@@ -24,7 +41,7 @@ class DeviceService(Service):
             if not entry.get("bootupTimestamp", None) and entry.get(
                     "sysUptime", None):
                 entry["bootupTimestamp"] = int(
-                    int(raw_data["timestamp"])/1000 -
+                    int(raw_data[0]["timestamp"])/1000 -
                     float(entry.pop("sysUptime", 0))
                 )
                 if entry["bootupTimestamp"] < 0:
@@ -59,23 +76,6 @@ class DeviceService(Service):
             if upsecs:
                 entry['bootupTimestamp'] = int(
                     datetime.utcnow().timestamp() - upsecs)
-
-    def clean_data(self, processed_data, raw_data):
-        """Cleanup the bootup timestamp for Linux nodes"""
-
-        devtype = raw_data.get("devtype", None)
-        if devtype == "cumulus" or devtype == "linux":
-            self.linux_clean_data(processed_data, raw_data)
-        elif devtype == "junos":
-            self.junos_clean_data(processed_data, raw_data)
-        elif devtype == "nxos":
-            self.nxos_clean_data(processed_data, raw_data)
-
-        for entry in processed_data:
-            entry['status'] = "alive"
-            entry["address"] = raw_data["address"]
-
-        return super().clean_data(processed_data, raw_data)
 
     def get_diff(self, old, new):
         """Compare list of dictionaries ignoring certain fields

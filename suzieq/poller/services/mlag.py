@@ -6,7 +6,8 @@ class MlagService(Service):
 
     def clean_data(self, processed_data, raw_data):
 
-        if raw_data.get("devtype", None) == "cumulus":
+        devtype = self._get_devtype_from_input(raw_data)
+        if devtype == "cumulus":
             mlagDualPortsCnt = 0
             mlagSinglePortsCnt = 0
             mlagErrorPortsCnt = 0

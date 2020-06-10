@@ -15,7 +15,7 @@ class RoutesService(Service):
 
     def clean_data(self, processed_data, raw_data):
 
-        devtype = raw_data.get("devtype", None)
+        devtype = self._get_devtype_from_input(raw_data)
         if any([devtype == x for x in ["cumulus", "linux"]]):
             processed_data = self._clean_linux_data(processed_data, raw_data)
         elif devtype == "junos":
