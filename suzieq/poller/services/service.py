@@ -204,9 +204,7 @@ class Service(object):
             metent = dict(zip(fsm_template.header, entry))
             records.append(metent)
 
-        result = self.clean_data(records, data)
-
-        return result
+        return records
 
     async def post_results(self, result, token) -> None:
         """The callback that nodes use to post the results back to the service"""
@@ -312,7 +310,6 @@ class Service(object):
                         result = cons_recs_from_json_template(
                             norm_str, in_info)
 
-                        result = self.clean_data(result, data)
                 else:
                     tfsm_template = nfn.get("textfsm", None)
 
@@ -348,31 +345,47 @@ class Service(object):
 
     def process_data(self, data):
         """Derive the data to be stored from the raw input"""
-        result = []
+        result_list = []
         for i, item in enumerate(data):
             tmpres = self._process_each_output(i, item)
-            if not result:
-                result = tmpres
-            else:
-                intres = list(zip_longest(result, tmpres))
-                for elem in intres:
-                    # We need to merge the results of the two lists
-                    # Each list is a set of keys, with the hostname and
-                    # some other keys being duplicates in both lists
-                    res1, res2 = elem
-                    keyset = set(res1.keys()).union(res2.keys())
-                    defvals = self._get_default_vals()
-                    for key in keyset:
-                        try:
-                            default_val = defvals[self.schema.field(key).type]
-                        except KeyError:
-                            default_val = '-'
-                        if res1[key] == default_val:
-                            result[0][key] = res2[key]
-                        else:
-                            result[0][key] = res1[key]
+            result_list.append(tmpres)
 
-        return result
+        result = self.merge_results(result_list, data)
+        return self.clean_data(result, data)
+
+    def merge_results(self, result_list, data):
+        int_res = {}
+        keyflds = list(filter(lambda x: x not in ['namespace', 'hostname'],
+                              self.keys))
+
+        for result in result_list:
+            for entry in result:
+                keyvals = []
+                for kfld in keyflds:
+                    if not entry.get(kfld, None):
+                        keyvals.append('_default')
+                    else:
+                        keyvals.append(entry.get(kfld, ''))
+
+                key = '-'.join(keyvals)
+
+                if key not in int_res:
+                    int_res[key] = entry
+                else:
+                    existing = int_res[key]
+                    for fld in entry:
+                        existing[fld] = entry[fld]
+                        # How do we resolve if a val already exists?
+
+        final_res = list(int_res.values())
+
+        return(final_res)
+
+    def _get_devtype_from_input(self, input):
+        if isinstance(input, list):
+            return input[0].get('devtype', None)
+        else:
+            return input.get('devtype', None)
 
     def clean_data(self, processed_data, raw_data):
 
@@ -396,10 +409,14 @@ class Service(object):
             default = def_vals[field.type]
             schema_rec.update({field.name: default})
 
+        if isinstance(raw_data, list):
+            read_from = raw_data[0]
+        else:
+            read_from = raw_data
         for entry in processed_data:
-            entry.update({"hostname": raw_data["hostname"]})
-            entry.update({"namespace": raw_data["namespace"]})
-            entry.update({"timestamp": raw_data["timestamp"]})
+            entry.update({"hostname": read_from["hostname"]})
+            entry.update({"namespace": read_from["namespace"]})
+            entry.update({"timestamp": read_from["timestamp"]})
             for fld in schema_rec:
                 if fld not in entry:
                     if fld == "active":
