@@ -81,7 +81,7 @@ def cons_recs_from_json_template(tmplt_str, in_data):
 
         if ":" not in xstr:
             if not result:
-                if xstr != '*':
+                if xstr != '*' and xstr != '*?':
                     if not data or not data.get(xstr, None):
                         # Some outputs contain just the main key with a null
                         # body such as ospfNbr from EOS: {'vrfs': {}}.
@@ -98,7 +98,7 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                     else:
                         result = [{"rest": data}]
             else:
-                if xstr != "*":
+                if xstr != "*" and xstr != '*?':
                     # Handle xstr being a specific array index or dict key
                     if xstr.startswith('['):
                         xstr = ast.literal_eval(xstr)
@@ -121,11 +121,19 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                                 for subele in ele["rest"]:
                                     tmpval.append({"rest": subele[xstr]})
                             else:
-                                ele["rest"] = ele["rest"][xstr]
+                                if xstr in ele['rest']:
+                                    ele["rest"] = ele["rest"][xstr]
                         if tmpval:
                             result = tmpval
                 else:
-                    result = list(map(_stepdown_rest, result))
+                    if (xstr == '*?' and len(result) == 1 and
+                            type(result[0]['rest']) != list):
+                        # Massaging the format to handle cases like NXOS that
+                        # provide dict when there's a single element and a list
+                        # if there's more than one element
+                        result = [[{'rest': [result[0]['rest']]}]]
+                    else:
+                        result = list(map(_stepdown_rest, result))
                     if len(result) == 1:
                         result = result[0]
                     else:
@@ -138,6 +146,11 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                             # we need to pop out these keys at the very end
                             for entry in result:
                                 elekeys = entry[0].keys() - set(['rest'])
+                                if not elekeys:
+                                    # this happens when NXOS routes returns
+                                    # half-baked data when there are no routes
+                                    # in a VRF.
+                                    continue
                                 for rstentry in entry[0]['rest']:
                                     rstentry['sq-addnl-keys'] = []
                                     for key in elekeys:
