@@ -7,7 +7,8 @@ class VlanService(Service):
     def clean_data(self, processed_data, raw_data):
         """CLeanup needed for the messed up MAC table entries in Linux"""
 
-        if raw_data.get("devtype", None) == "eos":
+        devtype = self._get_devtype_from_input(raw_data)
+        if devtype == "eos":
             for entry in processed_data:
                 if entry["pvid"] == 'None':
                     entry["pvid"] = 0

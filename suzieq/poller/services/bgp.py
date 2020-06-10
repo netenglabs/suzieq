@@ -8,13 +8,14 @@ class BgpService(Service):
 
     def clean_data(self, processed_data, raw_data):
 
+        devtype = self._get_devtype_from_input(raw_data)
         # The AFI/SAFI key string changed in version 7.x of FRR and so we have
         # to munge the output to get the data out of the right key_fields
-        if raw_data.get("devtype", None) == "eos":
+        if devtype == "eos":
             processed_data = self._clean_eos_data(processed_data, raw_data)
-        elif raw_data.get("devtype", None) == "junos":
+        elif devtype == "junos":
             processed_data = self._clean_junos_data(processed_data, raw_data)
-        elif raw_data.get("devtype", None) == "nxos":
+        elif devtype == "nxos":
             processed_data = self._clean_nxos_data(processed_data, raw_data)
 
         return super().clean_data(processed_data, raw_data)
@@ -170,6 +171,6 @@ class BgpService(Service):
             period = datetime.strptime(uptime,
                                        build_cisco_timestring(uptime)).time()
             secs = period.hour*3600 + period.minute*60 + period.second
-            entry['estdTime'] = raw_data['timestamp'] - secs*1000
+            entry['estdTime'] = raw_data[0]['timestamp'] - secs*1000
 
         return processed_data

@@ -29,7 +29,7 @@ class OspfNbrService(Service):
 
     def clean_data(self, processed_data, raw_data):
 
-        dev_type = raw_data.get("devtype", None)
+        dev_type = self._get_devtype_from_input(raw_data)
         if dev_type == "cumulus" or dev_type == "linux":
             processed_data = self._clean_linux_data(processed_data, raw_data)
         elif dev_type == "eos":
@@ -98,6 +98,6 @@ class OspfNbrService(Service):
                                        build_cisco_timestring(change_time)) \
                 .time()
             secs = period.hour*3600 + period.minute*60 + period.second
-            entry['lastChangeTime'] = raw_data['timestamp'] - secs*1000
+            entry['lastChangeTime'] = raw_data[0]['timestamp'] - secs*1000
 
         return processed_data

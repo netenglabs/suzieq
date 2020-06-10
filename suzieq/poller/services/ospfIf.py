@@ -7,7 +7,7 @@ class OspfIfService(Service):
 
     def clean_data(self, processed_data, raw_data):
 
-        dev_type = raw_data.get("devtype", None)
+        dev_type = self._get_devtype_from_input(raw_data)
         if dev_type == "cumulus" or dev_type == "linux":
             for entry in processed_data:
                 entry["vrf"] = "default"

@@ -15,7 +15,8 @@ class EvpnVniService(Service):
 
     def clean_data(self, processed_data, raw_data):
 
-        if raw_data.get("devtype", None) == "cumulus":
+        devtype = self._get_devtype_from_input(raw_data)
+        if devtype == 'cumulus':
             del_indices = []
             for i, entry in enumerate(processed_data):
                 if entry['vni'] is None:
