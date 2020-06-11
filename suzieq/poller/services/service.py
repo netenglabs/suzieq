@@ -377,8 +377,11 @@ class Service(object):
                 else:
                     existing = int_res[key]
                     for fld in entry:
-                        existing[fld] = entry[fld]
-                        # How do we resolve if a val already exists?
+                        if entry[fld] and not existing.get(fld, None):
+                            existing[fld] = entry[fld]
+                        elif entry[fld]:
+                            # cleanup routine specific to service can resolve
+                            existing[fld+"-_2nd"] = entry[fld]
 
         final_res = list(int_res.values())
 
