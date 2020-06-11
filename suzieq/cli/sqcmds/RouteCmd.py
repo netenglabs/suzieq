@@ -135,16 +135,17 @@ class RouteCmd(SqCommand):
             return
 
         now = time.time()
-        if self.columns == ['*']:
-            remove_metric = False
+        drop_cols = []
         if self.columns != ["default"]:
             self.ctxt.sort_fields = None
             if 'metric' not in self.columns:
                 self.columns.append('metric')
-                remove_metric = True
+                drop_cols.append('metric')
+            if 'ipvers' not in self.columns:
+                self.columns.append('ipvers')
+                drop_cols.append('ipvers')
         else:
             self.ctxt.sort_fields = []
-            remove_metric = False
 
         if not address:
             print('address is mandatory parameter')
@@ -159,8 +160,10 @@ class RouteCmd(SqCommand):
             namespace=self.namespace,
         )
 
-        if not df.empty and remove_metric:
-            df.drop(columns=['metric'], inplace=True)
+        if not df.empty and drop_cols:
+            df.drop(columns=drop_cols, inplace=True)
+            self.columns = list(filter(lambda x: x not in drop_cols,
+                                       self.columns))
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)

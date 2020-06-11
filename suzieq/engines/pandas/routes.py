@@ -92,9 +92,10 @@ class RoutesObj(SqEngineObject):
         if cols != ['default']:
             if 'prefix' not in cols:
                 cols.insert(-1, 'prefix')
+            if 'ipvers' not in cols:
+                cols.insert(-1, 'ipvers')
 
-        df = self.get_valid_df(self.iobj._table, sort_fields,
-                               addnl_fields=['ipvers'], **kwargs)
+        df = self.get_valid_df(self.iobj._table, sort_fields, **kwargs)
 
         if df.empty:
             return df
