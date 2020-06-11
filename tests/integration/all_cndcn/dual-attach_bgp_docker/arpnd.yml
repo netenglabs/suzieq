@@ -1,0 +1,220 @@
+description: 'Testing verbs for arpnd: show summarize unique'
+tests:
+- command: arpnd show --format=json --namespace=dual-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_docker/parquet-out
+  marks: arpnd show
+  output: '[{"namespace": "dual-attach_bgp_docker", "hostname": "edge01", "ipAddress":
+    "169.254.253.1", "oif": "eth2.2", "macaddr": "52:54:00:91:e1:61", "state": "reachable",
+    "offload": false, "timestamp": 1590175506313}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "edge01", "ipAddress": "169.254.253.9", "oif": "eth2.4", "macaddr":
+    "52:54:00:91:e1:61", "state": "reachable", "offload": false, "timestamp": 1590175506313},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "edge01", "ipAddress": "169.254.254.1",
+    "oif": "eth1.2", "macaddr": "52:54:00:80:bc:9c", "state": "reachable", "offload":
+    false, "timestamp": 1590175506313}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "edge01", "ipAddress": "169.254.254.9", "oif": "eth1.4", "macaddr": "52:54:00:80:bc:9c",
+    "state": "reachable", "offload": false, "timestamp": 1590175506313}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "edge01", "ipAddress": "192.168.121.1",
+    "oif": "eth0", "macaddr": "52:54:00:fa:f5:9b", "state": "reachable", "offload":
+    false, "timestamp": 1590175506313}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "exit01", "ipAddress": "169.254.0.1", "oif": "swp1", "macaddr": "52:54:00:6b:e2:da",
+    "state": "permanent", "offload": false, "timestamp": 1590175506764}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "exit01", "ipAddress": "169.254.0.1", "oif":
+    "swp2", "macaddr": "52:54:00:ab:fb:31", "state": "permanent", "offload": false,
+    "timestamp": 1590175506764}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "exit01", "ipAddress": "169.254.0.1", "oif": "swp6", "macaddr": "52:54:00:67:e5:e8",
+    "state": "permanent", "offload": false, "timestamp": 1590175506764}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "exit01", "ipAddress": "169.254.127.0",
+    "oif": "swp6", "macaddr": "52:54:00:67:e5:e8", "state": "reachable", "offload":
+    false, "timestamp": 1590175506764}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "exit01", "ipAddress": "169.254.254.10", "oif": "swp5.4", "macaddr": "52:54:00:ab:3e:c6",
+    "state": "reachable", "offload": false, "timestamp": 1590175506764}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "exit01", "ipAddress": "169.254.254.2",
+    "oif": "swp5.2", "macaddr": "52:54:00:ab:3e:c6", "state": "reachable", "offload":
+    false, "timestamp": 1590175506764}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "exit01", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:fa:f5:9b",
+    "state": "reachable", "offload": false, "timestamp": 1590175506764}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "exit02", "ipAddress": "169.254.0.1", "oif":
+    "swp1", "macaddr": "52:54:00:9d:86:8b", "state": "permanent", "offload": false,
+    "timestamp": 1590175506764}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "exit02", "ipAddress": "169.254.0.1", "oif": "swp2", "macaddr": "52:54:00:31:eb:33",
+    "state": "permanent", "offload": false, "timestamp": 1590175506764}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "exit02", "ipAddress": "169.254.0.1", "oif":
+    "swp6", "macaddr": "52:54:00:96:86:f2", "state": "permanent", "offload": false,
+    "timestamp": 1590175506764}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "exit02", "ipAddress": "169.254.127.2", "oif": "swp6", "macaddr": "52:54:00:96:86:f2",
+    "state": "reachable", "offload": false, "timestamp": 1590175506764}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "exit02", "ipAddress": "169.254.253.10",
+    "oif": "swp5.4", "macaddr": "52:54:00:12:9d:b3", "state": "reachable", "offload":
+    false, "timestamp": 1590175506764}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "exit02", "ipAddress": "169.254.253.2", "oif": "swp5.2", "macaddr": "52:54:00:12:9d:b3",
+    "state": "reachable", "offload": false, "timestamp": 1590175506764}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "exit02", "ipAddress": "192.168.121.1",
+    "oif": "eth0", "macaddr": "52:54:00:fa:f5:9b", "state": "reachable", "offload":
+    false, "timestamp": 1590175506764}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "internet", "ipAddress": "169.254.0.1", "oif": "swp1", "macaddr": "52:54:00:05:63:33",
+    "state": "permanent", "offload": false, "timestamp": 1590175506764}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "internet", "ipAddress": "169.254.0.1",
+    "oif": "swp2", "macaddr": "52:54:00:11:bc:c1", "state": "permanent", "offload":
+    false, "timestamp": 1590175506764}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "internet", "ipAddress": "169.254.127.1", "oif": "swp1", "macaddr": "52:54:00:05:63:33",
+    "state": "reachable", "offload": false, "timestamp": 1590175506764}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "internet", "ipAddress": "169.254.127.3",
+    "oif": "swp2", "macaddr": "52:54:00:11:bc:c1", "state": "reachable", "offload":
+    false, "timestamp": 1590175506764}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "internet", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:fa:f5:9b",
+    "state": "reachable", "offload": false, "timestamp": 1590175506764}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "leaf01", "ipAddress": "169.254.0.1", "oif":
+    "swp1", "macaddr": "52:54:00:0b:a9:79", "state": "permanent", "offload": false,
+    "timestamp": 1590175506764}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "leaf01", "ipAddress": "169.254.0.1", "oif": "swp2", "macaddr": "52:54:00:b6:2c:e8",
+    "state": "permanent", "offload": false, "timestamp": 1590175506764}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "leaf01", "ipAddress": "169.254.0.1", "oif":
+    "swp5", "macaddr": "52:54:00:48:c6:a2", "state": "permanent", "offload": false,
+    "timestamp": 1590175506764}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "leaf01", "ipAddress": "169.254.0.1", "oif": "swp6", "macaddr": "52:54:00:09:58:70",
+    "state": "permanent", "offload": false, "timestamp": 1590175506764}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "leaf01", "ipAddress": "192.168.121.1",
+    "oif": "eth0", "macaddr": "52:54:00:fa:f5:9b", "state": "reachable", "offload":
+    false, "timestamp": 1590175506764}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "leaf02", "ipAddress": "169.254.0.1", "oif": "swp1", "macaddr": "52:54:00:42:65:df",
+    "state": "permanent", "offload": false, "timestamp": 1590175506764}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "leaf02", "ipAddress": "169.254.0.1", "oif":
+    "swp2", "macaddr": "52:54:00:05:e7:70", "state": "permanent", "offload": false,
+    "timestamp": 1590175506764}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "leaf02", "ipAddress": "169.254.0.1", "oif": "swp5", "macaddr": "52:54:00:35:54:71",
+    "state": "permanent", "offload": false, "timestamp": 1590175506764}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "leaf02", "ipAddress": "169.254.0.1", "oif":
+    "swp6", "macaddr": "52:54:00:a2:a5:05", "state": "permanent", "offload": false,
+    "timestamp": 1590175506764}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "leaf02", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:fa:f5:9b",
+    "state": "reachable", "offload": false, "timestamp": 1590175506764}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "leaf03", "ipAddress": "169.254.0.1", "oif":
+    "swp1", "macaddr": "52:54:00:6e:33:42", "state": "permanent", "offload": false,
+    "timestamp": 1590175506764}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "leaf03", "ipAddress": "169.254.0.1", "oif": "swp2", "macaddr": "52:54:00:9b:9e:f5",
+    "state": "permanent", "offload": false, "timestamp": 1590175506764}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "leaf03", "ipAddress": "169.254.0.1", "oif":
+    "swp5", "macaddr": "52:54:00:a8:43:1c", "state": "permanent", "offload": false,
+    "timestamp": 1590175506764}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "leaf03", "ipAddress": "169.254.0.1", "oif": "swp6", "macaddr": "52:54:00:5a:96:a5",
+    "state": "permanent", "offload": false, "timestamp": 1590175506764}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "leaf03", "ipAddress": "192.168.121.1",
+    "oif": "eth0", "macaddr": "52:54:00:fa:f5:9b", "state": "reachable", "offload":
+    false, "timestamp": 1590175506764}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "leaf04", "ipAddress": "169.254.0.1", "oif": "swp1", "macaddr": "52:54:00:c3:ae:92",
+    "state": "permanent", "offload": false, "timestamp": 1590175506745}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "leaf04", "ipAddress": "169.254.0.1", "oif":
+    "swp2", "macaddr": "52:54:00:04:9b:d9", "state": "permanent", "offload": false,
+    "timestamp": 1590175506745}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "leaf04", "ipAddress": "169.254.0.1", "oif": "swp5", "macaddr": "52:54:00:4e:45:74",
+    "state": "permanent", "offload": false, "timestamp": 1590175506745}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "leaf04", "ipAddress": "169.254.0.1", "oif":
+    "swp6", "macaddr": "52:54:00:39:91:02", "state": "permanent", "offload": false,
+    "timestamp": 1590175506745}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "leaf04", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:fa:f5:9b",
+    "state": "reachable", "offload": false, "timestamp": 1590175506745}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "server101", "ipAddress": "169.254.0.1",
+    "oif": "eth1", "macaddr": "52:54:00:74:35:5a", "state": "permanent", "offload":
+    false, "timestamp": 1590175506667}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "server101", "ipAddress": "169.254.0.1", "oif": "eth2", "macaddr": "52:54:00:1f:1c:c8",
+    "state": "permanent", "offload": false, "timestamp": 1590175506667}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "server101", "ipAddress": "192.168.121.1",
+    "oif": "eth0", "macaddr": "52:54:00:fa:f5:9b", "state": "reachable", "offload":
+    false, "timestamp": 1590175506667}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "server102", "ipAddress": "169.254.0.1", "oif": "eth1", "macaddr": "52:54:00:32:29:11",
+    "state": "permanent", "offload": false, "timestamp": 1590175506169}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "server102", "ipAddress": "169.254.0.1",
+    "oif": "eth2", "macaddr": "52:54:00:ba:46:58", "state": "permanent", "offload":
+    false, "timestamp": 1590175506169}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "server102", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:fa:f5:9b",
+    "state": "reachable", "offload": false, "timestamp": 1590175506169}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "server103", "ipAddress": "169.254.0.1",
+    "oif": "eth1", "macaddr": "52:54:00:99:8d:73", "state": "permanent", "offload":
+    false, "timestamp": 1590175506313}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "server103", "ipAddress": "169.254.0.1", "oif": "eth2", "macaddr": "52:54:00:fc:df:97",
+    "state": "permanent", "offload": false, "timestamp": 1590175506313}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "server103", "ipAddress": "192.168.121.1",
+    "oif": "eth0", "macaddr": "52:54:00:fa:f5:9b", "state": "reachable", "offload":
+    false, "timestamp": 1590175506313}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "server104", "ipAddress": "169.254.0.1", "oif": "eth1", "macaddr": "52:54:00:1b:b8:92",
+    "state": "permanent", "offload": false, "timestamp": 1590175506667}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "server104", "ipAddress": "169.254.0.1",
+    "oif": "eth2", "macaddr": "52:54:00:03:53:2d", "state": "permanent", "offload":
+    false, "timestamp": 1590175506667}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "server104", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:fa:f5:9b",
+    "state": "reachable", "offload": false, "timestamp": 1590175506667}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "spine01", "ipAddress": "169.254.0.1", "oif":
+    "swp1", "macaddr": "52:54:00:4c:a2:9c", "state": "permanent", "offload": false,
+    "timestamp": 1590175506745}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "spine01", "ipAddress": "169.254.0.1", "oif": "swp2", "macaddr": "52:54:00:a0:fd:b5",
+    "state": "permanent", "offload": false, "timestamp": 1590175506745}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "spine01", "ipAddress": "169.254.0.1", "oif":
+    "swp3", "macaddr": "52:54:00:af:09:0c", "state": "permanent", "offload": false,
+    "timestamp": 1590175506745}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "spine01", "ipAddress": "169.254.0.1", "oif": "swp4", "macaddr": "52:54:00:b0:e8:31",
+    "state": "permanent", "offload": false, "timestamp": 1590175506745}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "spine01", "ipAddress": "169.254.0.1", "oif":
+    "swp5", "macaddr": "52:54:00:1c:86:fe", "state": "permanent", "offload": false,
+    "timestamp": 1590175506745}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "spine01", "ipAddress": "169.254.0.1", "oif": "swp6", "macaddr": "52:54:00:78:42:6c",
+    "state": "permanent", "offload": false, "timestamp": 1590175506745}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "spine01", "ipAddress": "192.168.121.1",
+    "oif": "eth0", "macaddr": "52:54:00:fa:f5:9b", "state": "reachable", "offload":
+    false, "timestamp": 1590175506745}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "spine02", "ipAddress": "169.254.0.1", "oif": "swp1", "macaddr": "52:54:00:40:67:2f",
+    "state": "permanent", "offload": false, "timestamp": 1590175506764}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "spine02", "ipAddress": "169.254.0.1", "oif":
+    "swp2", "macaddr": "52:54:00:0d:d1:3d", "state": "permanent", "offload": false,
+    "timestamp": 1590175506764}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "spine02", "ipAddress": "169.254.0.1", "oif": "swp3", "macaddr": "52:54:00:e1:d3:3f",
+    "state": "permanent", "offload": false, "timestamp": 1590175506764}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "spine02", "ipAddress": "169.254.0.1", "oif":
+    "swp4", "macaddr": "52:54:00:b4:58:09", "state": "permanent", "offload": false,
+    "timestamp": 1590175506764}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "spine02", "ipAddress": "169.254.0.1", "oif": "swp5", "macaddr": "52:54:00:81:53:56",
+    "state": "permanent", "offload": false, "timestamp": 1590175506764}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "spine02", "ipAddress": "169.254.0.1", "oif":
+    "swp6", "macaddr": "52:54:00:02:a4:58", "state": "permanent", "offload": false,
+    "timestamp": 1590175506764}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "spine02", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:fa:f5:9b",
+    "state": "reachable", "offload": false, "timestamp": 1590175506764}]'
+- command: arpnd show --columns=hostname --format=json --namespace=dual-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_docker/parquet-out
+  marks: arpnd show
+  output: '[{"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
+    {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "internet"}, {"hostname":
+    "internet"}, {"hostname": "internet"}, {"hostname": "internet"}, {"hostname":
+    "internet"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "server101"}, {"hostname": "server101"}, {"hostname": "server101"}, {"hostname":
+    "server102"}, {"hostname": "server102"}, {"hostname": "server102"}, {"hostname":
+    "server103"}, {"hostname": "server103"}, {"hostname": "server103"}, {"hostname":
+    "server104"}, {"hostname": "server104"}, {"hostname": "server104"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}]'
+- command: arpnd summarize --format=json --namespace=dual-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_docker/parquet-out
+  marks: arpnd summarize
+  output: '{"dual-attach_bgp_docker": {"deviceCnt": 14, "arpNdEntriesCnt": 70, "macaddrCnt":
+    70, "oifCnt": 70, "uniqueOifCnt": 15, "extLearnEntriesCnt": 0, "staticEntriesCnt":
+    44, "failedEntryCnt": 0}}'
+- command: arpnd unique --columns=hostname --format=json --namespace=dual-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_docker/parquet-out
+  marks: arpnd unique
+  output: '[{"hostname": "server104", "count": 3}, {"hostname": "server103", "count":
+    3}, {"hostname": "server102", "count": 3}, {"hostname": "server101", "count":
+    3}, {"hostname": "leaf04", "count": 5}, {"hostname": "leaf03", "count": 5}, {"hostname":
+    "leaf02", "count": 5}, {"hostname": "leaf01", "count": 5}, {"hostname": "internet",
+    "count": 5}, {"hostname": "edge01", "count": 5}, {"hostname": "spine02", "count":
+    7}, {"hostname": "spine01", "count": 7}, {"hostname": "exit02", "count": 7}, {"hostname":
+    "exit01", "count": 7}]'

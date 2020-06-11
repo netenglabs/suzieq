@@ -1,0 +1,495 @@
+description: 'Testing verbs for interface: show summarize unique assert top'
+tests:
+- command: interface show --format=json --namespace=single-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_docker/parquet-out
+  marks: interface show
+  output: '[{"namespace": "single-attach_bgp_docker", "hostname": "edge01", "ifname":
+    "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "",
+    "ipAddressList": ["192.168.121.93/24"], "ip6AddressList": [], "timestamp": 1590170094217},
+    {"namespace": "single-attach_bgp_docker", "hostname": "edge01", "ifname": "eth1.2",
+    "state": "up", "type": "vlan", "mtu": 1500, "vlan": 2, "master": "", "ipAddressList":
+    ["169.254.254.2/30"], "ip6AddressList": [], "timestamp": 1590170094217}, {"namespace":
+    "single-attach_bgp_docker", "hostname": "edge01", "ifname": "eth1.4", "state":
+    "up", "type": "vlan", "mtu": 1500, "vlan": 4, "master": "", "ipAddressList": ["169.254.254.10/30"],
+    "ip6AddressList": [], "timestamp": 1590170094217}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "edge01", "ifname": "eth1", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1590170094217}, {"namespace": "single-attach_bgp_docker", "hostname": "edge01",
+    "ifname": "eth2.2", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 2, "master":
+    "", "ipAddressList": ["169.254.253.2/30"], "ip6AddressList": [], "timestamp":
+    1590170094217}, {"namespace": "single-attach_bgp_docker", "hostname": "edge01",
+    "ifname": "eth2.4", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 4, "master":
+    "", "ipAddressList": ["169.254.253.10/30"], "ip6AddressList": [], "timestamp":
+    1590170094217}, {"namespace": "single-attach_bgp_docker", "hostname": "edge01",
+    "ifname": "eth2", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1590170094217}, {"namespace":
+    "single-attach_bgp_docker", "hostname": "edge01", "ifname": "lo", "state": "unknown",
+    "type": "loopback", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.100/32"],
+    "ip6AddressList": [], "timestamp": 1590170094217}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "exit01", "ifname": "eth0", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "mgmt", "ipAddressList": ["192.168.121.230/24"], "ip6AddressList":
+    ["fe80::5054:ff:fe8f:631f/64"], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "exit01", "ifname": "internet-vrf", "state": "up", "type": "vrf",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.101/32"], "ip6AddressList":
+    [], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker", "hostname":
+    "exit01", "ifname": "lo", "state": "up", "type": "loopback", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.101/32"], "ip6AddressList": [], "timestamp":
+    1590170095121}, {"namespace": "single-attach_bgp_docker", "hostname": "exit01",
+    "ifname": "mgmt", "state": "up", "type": "vrf", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1590170095121}, {"namespace":
+    "single-attach_bgp_docker", "hostname": "exit01", "ifname": "swp1", "state": "up",
+    "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    ["fe80::4638:39ff:fe00:9/64", "fe80::4638:39ff:fe00:a/128"], "timestamp": 1590170095121},
+    {"namespace": "single-attach_bgp_docker", "hostname": "exit01", "ifname": "swp2",
+    "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": ["fe80::4638:39ff:fe00:5a/64", "fe80::4638:39ff:fe00:5b/128"],
+    "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker", "hostname":
+    "exit01", "ifname": "swp3", "state": "up", "type": "ether", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:44/64"],
+    "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker", "hostname":
+    "exit01", "ifname": "swp4", "state": "up", "type": "ether", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:45/64"],
+    "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker", "hostname":
+    "exit01", "ifname": "swp5.2", "state": "up", "type": "vlan", "mtu": 1500, "vlan":
+    2, "master": "", "ipAddressList": ["169.254.254.1/30"], "ip6AddressList": ["fe80::4638:39ff:fe00:4b/64"],
+    "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker", "hostname":
+    "exit01", "ifname": "swp5.4", "state": "up", "type": "vlan", "mtu": 1500, "vlan":
+    4, "master": "internet-vrf", "ipAddressList": ["169.254.254.9/30"], "ip6AddressList":
+    ["fe80::4638:39ff:fe00:4b/64"], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "exit01", "ifname": "swp5", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:4b/64"],
+    "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker", "hostname":
+    "exit01", "ifname": "swp6", "state": "up", "type": "ether", "mtu": 1500, "vlan":
+    0, "master": "internet-vrf", "ipAddressList": ["169.254.127.1/31"], "ip6AddressList":
+    ["fe80::4638:39ff:fe00:8/64", "fe80::4638:39ff:fe00:7/128"], "timestamp": 1590170095121},
+    {"namespace": "single-attach_bgp_docker", "hostname": "exit02", "ifname": "eth0",
+    "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "mgmt", "ipAddressList":
+    ["192.168.121.110/24"], "ip6AddressList": ["fe80::5054:ff:fe8e:d081/64"], "timestamp":
+    1590170095121}, {"namespace": "single-attach_bgp_docker", "hostname": "exit02",
+    "ifname": "internet-vrf", "state": "up", "type": "vrf", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.102/32"], "ip6AddressList": [], "timestamp":
+    1590170095121}, {"namespace": "single-attach_bgp_docker", "hostname": "exit02",
+    "ifname": "lo", "state": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": ["10.0.0.102/32"], "ip6AddressList": [], "timestamp": 1590170095121},
+    {"namespace": "single-attach_bgp_docker", "hostname": "exit02", "ifname": "mgmt",
+    "state": "up", "type": "vrf", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "exit02", "ifname": "swp1", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:21/64",
+    "fe80::4638:39ff:fe00:22/128"], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "exit02", "ifname": "swp2", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:55/64",
+    "fe80::4638:39ff:fe00:56/128"], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "exit02", "ifname": "swp3", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:30/64"],
+    "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker", "hostname":
+    "exit02", "ifname": "swp4", "state": "up", "type": "ether", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:31/64"],
+    "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker", "hostname":
+    "exit02", "ifname": "swp5.2", "state": "up", "type": "vlan", "mtu": 1500, "vlan":
+    2, "master": "", "ipAddressList": ["169.254.253.1/30"], "ip6AddressList": ["fe80::4638:39ff:fe00:c/64"],
+    "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker", "hostname":
+    "exit02", "ifname": "swp5.4", "state": "up", "type": "vlan", "mtu": 1500, "vlan":
+    4, "master": "internet-vrf", "ipAddressList": ["169.254.253.9/30"], "ip6AddressList":
+    ["fe80::4638:39ff:fe00:c/64"], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "exit02", "ifname": "swp5", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:c/64"],
+    "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker", "hostname":
+    "exit02", "ifname": "swp6", "state": "up", "type": "ether", "mtu": 1500, "vlan":
+    0, "master": "internet-vrf", "ipAddressList": ["169.254.127.3/31"], "ip6AddressList":
+    ["fe80::4638:39ff:fe00:3f/64", "fe80::4638:39ff:fe00:3e/128"], "timestamp": 1590170095121},
+    {"namespace": "single-attach_bgp_docker", "hostname": "internet", "ifname": "eth0",
+    "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    ["192.168.121.127/24"], "ip6AddressList": ["fe80::5054:ff:fe71:c13c/64"], "timestamp":
+    1590170095121}, {"namespace": "single-attach_bgp_docker", "hostname": "internet",
+    "ifname": "lo", "state": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": ["10.0.0.253/32", "172.16.253.1/32"], "ip6AddressList": [],
+    "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker", "hostname":
+    "internet", "ifname": "swp1", "state": "up", "type": "ether", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["169.254.127.0/31"], "ip6AddressList": ["fe80::4638:39ff:fe00:7/64",
+    "fe80::4638:39ff:fe00:8/128"], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "internet", "ifname": "swp2", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": ["169.254.127.2/31"], "ip6AddressList":
+    ["fe80::4638:39ff:fe00:3e/64", "fe80::4638:39ff:fe00:3f/128"], "timestamp": 1590170095121},
+    {"namespace": "single-attach_bgp_docker", "hostname": "leaf01", "ifname": "bridge",
+    "state": "up", "type": "bridge", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": ["fe80::4638:39ff:fe00:3/64"], "timestamp": 1590170095121},
+    {"namespace": "single-attach_bgp_docker", "hostname": "leaf01", "ifname": "eth0",
+    "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "mgmt", "ipAddressList":
+    ["192.168.121.200/24"], "ip6AddressList": ["fe80::5054:ff:fead:c9c9/64"], "timestamp":
+    1590170095121}, {"namespace": "single-attach_bgp_docker", "hostname": "leaf01",
+    "ifname": "lo", "state": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": ["10.0.0.11/32"], "ip6AddressList": [], "timestamp": 1590170095121},
+    {"namespace": "single-attach_bgp_docker", "hostname": "leaf01", "ifname": "mgmt",
+    "state": "up", "type": "vrf", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "leaf01", "ifname": "swp1", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:53/64",
+    "fe80::4638:39ff:fe00:54/128"], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "leaf01", "ifname": "swp2", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:24/64",
+    "fe80::4638:39ff:fe00:25/128"], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "leaf01", "ifname": "swp3", "state": "down", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1590170095121}, {"namespace": "single-attach_bgp_docker", "hostname": "leaf01",
+    "ifname": "swp4", "state": "down", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1590170095121}, {"namespace":
+    "single-attach_bgp_docker", "hostname": "leaf01", "ifname": "swp5", "state": "up",
+    "type": "ether", "mtu": 1500, "vlan": 0, "master": "bridge", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "leaf01", "ifname": "vlan10", "state": "up", "type": "vlan", "mtu":
+    1500, "vlan": 10, "master": "", "ipAddressList": ["172.16.1.1/24"], "ip6AddressList":
+    ["fe80::4638:39ff:fe00:3/64"], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "leaf02", "ifname": "bridge", "state": "up", "type": "bridge", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:18/64"],
+    "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker", "hostname":
+    "leaf02", "ifname": "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan":
+    0, "master": "mgmt", "ipAddressList": ["192.168.121.138/24"], "ip6AddressList":
+    ["fe80::5054:ff:fe8d:7ae9/64"], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "leaf02", "ifname": "lo", "state": "up", "type": "loopback", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.12/32"], "ip6AddressList":
+    [], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker", "hostname":
+    "leaf02", "ifname": "mgmt", "state": "up", "type": "vrf", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1590170095121},
+    {"namespace": "single-attach_bgp_docker", "hostname": "leaf02", "ifname": "swp1",
+    "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": ["fe80::4638:39ff:fe00:28/64", "fe80::4638:39ff:fe00:29/128"],
+    "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker", "hostname":
+    "leaf02", "ifname": "swp2", "state": "up", "type": "ether", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:5d/64",
+    "fe80::4638:39ff:fe00:5e/128"], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "leaf02", "ifname": "swp3", "state": "down", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1590170095121}, {"namespace": "single-attach_bgp_docker", "hostname": "leaf02",
+    "ifname": "swp4", "state": "down", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1590170095121}, {"namespace":
+    "single-attach_bgp_docker", "hostname": "leaf02", "ifname": "swp5", "state": "up",
+    "type": "ether", "mtu": 1500, "vlan": 0, "master": "bridge", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "leaf02", "ifname": "vlan10", "state": "up", "type": "vlan", "mtu":
+    1500, "vlan": 10, "master": "", "ipAddressList": ["172.16.2.1/24"], "ip6AddressList":
+    ["fe80::4638:39ff:fe00:18/64"], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "leaf03", "ifname": "bridge", "state": "up", "type": "bridge", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:1f/64"],
+    "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker", "hostname":
+    "leaf03", "ifname": "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan":
+    0, "master": "mgmt", "ipAddressList": ["192.168.121.252/24"], "ip6AddressList":
+    ["fe80::5054:ff:fe66:d91c/64"], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "leaf03", "ifname": "lo", "state": "up", "type": "loopback", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.13/32"], "ip6AddressList":
+    [], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker", "hostname":
+    "leaf03", "ifname": "mgmt", "state": "up", "type": "vrf", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1590170095121},
+    {"namespace": "single-attach_bgp_docker", "hostname": "leaf03", "ifname": "swp1",
+    "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": ["fe80::4638:39ff:fe00:4f/64", "fe80::4638:39ff:fe00:50/128"],
+    "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker", "hostname":
+    "leaf03", "ifname": "swp2", "state": "up", "type": "ether", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:1b/64",
+    "fe80::4638:39ff:fe00:1c/128"], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "leaf03", "ifname": "swp3", "state": "down", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1590170095121}, {"namespace": "single-attach_bgp_docker", "hostname": "leaf03",
+    "ifname": "swp4", "state": "down", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1590170095121}, {"namespace":
+    "single-attach_bgp_docker", "hostname": "leaf03", "ifname": "swp5", "state": "up",
+    "type": "ether", "mtu": 1500, "vlan": 0, "master": "bridge", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "leaf03", "ifname": "vlan10", "state": "up", "type": "vlan", "mtu":
+    1500, "vlan": 10, "master": "", "ipAddressList": ["172.16.3.1/24"], "ip6AddressList":
+    ["fe80::4638:39ff:fe00:1f/64"], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "leaf04", "ifname": "bridge", "state": "up", "type": "bridge", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:2c/64"],
+    "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker", "hostname":
+    "leaf04", "ifname": "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan":
+    0, "master": "mgmt", "ipAddressList": ["192.168.121.182/24"], "ip6AddressList":
+    ["fe80::5054:ff:fe70:36b8/64"], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "leaf04", "ifname": "lo", "state": "up", "type": "loopback", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.14/32"], "ip6AddressList":
+    [], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker", "hostname":
+    "leaf04", "ifname": "mgmt", "state": "up", "type": "vrf", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1590170095121},
+    {"namespace": "single-attach_bgp_docker", "hostname": "leaf04", "ifname": "swp1",
+    "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": ["fe80::4638:39ff:fe00:3b/64", "fe80::4638:39ff:fe00:3c/128"],
+    "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker", "hostname":
+    "leaf04", "ifname": "swp2", "state": "up", "type": "ether", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:46/64",
+    "fe80::4638:39ff:fe00:47/128"], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "leaf04", "ifname": "swp3", "state": "down", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1590170095121}, {"namespace": "single-attach_bgp_docker", "hostname": "leaf04",
+    "ifname": "swp4", "state": "down", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1590170095121}, {"namespace":
+    "single-attach_bgp_docker", "hostname": "leaf04", "ifname": "swp5", "state": "up",
+    "type": "ether", "mtu": 1500, "vlan": 0, "master": "bridge", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "leaf04", "ifname": "vlan10", "state": "up", "type": "vlan", "mtu":
+    1500, "vlan": 10, "master": "", "ipAddressList": ["172.16.4.1/24"], "ip6AddressList":
+    ["fe80::4638:39ff:fe00:2c/64"], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "server101", "ifname": "docker0", "state": "down", "type": "bridge",
+    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["192.168.10.1/24"], "ip6AddressList":
+    [], "timestamp": 1590170094965}, {"namespace": "single-attach_bgp_docker", "hostname":
+    "server101", "ifname": "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["192.168.121.168/24"], "ip6AddressList": [],
+    "timestamp": 1590170094965}, {"namespace": "single-attach_bgp_docker", "hostname":
+    "server101", "ifname": "eth1", "state": "up", "type": "ether", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["172.16.1.101/24"], "ip6AddressList": [], "timestamp":
+    1590170094965}, {"namespace": "single-attach_bgp_docker", "hostname": "server101",
+    "ifname": "lo", "state": "unknown", "type": "loopback", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1590170094965},
+    {"namespace": "single-attach_bgp_docker", "hostname": "server102", "ifname": "docker0",
+    "state": "down", "type": "bridge", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    ["192.168.11.1/24"], "ip6AddressList": [], "timestamp": 1590170094217}, {"namespace":
+    "single-attach_bgp_docker", "hostname": "server102", "ifname": "eth0", "state":
+    "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    ["192.168.121.137/24"], "ip6AddressList": [], "timestamp": 1590170094217}, {"namespace":
+    "single-attach_bgp_docker", "hostname": "server102", "ifname": "eth1", "state":
+    "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    ["172.16.2.102/24"], "ip6AddressList": [], "timestamp": 1590170094217}, {"namespace":
+    "single-attach_bgp_docker", "hostname": "server102", "ifname": "lo", "state":
+    "unknown", "type": "loopback", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1590170094217}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "server103", "ifname": "docker0", "state": "down", "type": "bridge",
+    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["192.168.12.1/24"], "ip6AddressList":
+    [], "timestamp": 1590170094217}, {"namespace": "single-attach_bgp_docker", "hostname":
+    "server103", "ifname": "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["192.168.121.236/24"], "ip6AddressList": [],
+    "timestamp": 1590170094217}, {"namespace": "single-attach_bgp_docker", "hostname":
+    "server103", "ifname": "eth1", "state": "up", "type": "ether", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["172.16.3.103/24"], "ip6AddressList": [], "timestamp":
+    1590170094217}, {"namespace": "single-attach_bgp_docker", "hostname": "server103",
+    "ifname": "lo", "state": "unknown", "type": "loopback", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1590170094217},
+    {"namespace": "single-attach_bgp_docker", "hostname": "server104", "ifname": "docker0",
+    "state": "down", "type": "bridge", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    ["192.168.13.1/24"], "ip6AddressList": [], "timestamp": 1590170094217}, {"namespace":
+    "single-attach_bgp_docker", "hostname": "server104", "ifname": "eth0", "state":
+    "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    ["192.168.121.23/24"], "ip6AddressList": [], "timestamp": 1590170094217}, {"namespace":
+    "single-attach_bgp_docker", "hostname": "server104", "ifname": "eth1", "state":
+    "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    ["172.16.4.104/24"], "ip6AddressList": [], "timestamp": 1590170094217}, {"namespace":
+    "single-attach_bgp_docker", "hostname": "server104", "ifname": "lo", "state":
+    "unknown", "type": "loopback", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1590170094217}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "spine01", "ifname": "eth0", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "mgmt", "ipAddressList": ["192.168.121.156/24"], "ip6AddressList":
+    ["fe80::5054:ff:fe8e:5467/64"], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "spine01", "ifname": "lo", "state": "up", "type": "loopback", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.21/32"], "ip6AddressList":
+    [], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker", "hostname":
+    "spine01", "ifname": "mgmt", "state": "up", "type": "vrf", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1590170095121},
+    {"namespace": "single-attach_bgp_docker", "hostname": "spine01", "ifname": "swp1",
+    "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": ["fe80::4638:39ff:fe00:54/64", "fe80::4638:39ff:fe00:53/128"],
+    "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker", "hostname":
+    "spine01", "ifname": "swp2", "state": "up", "type": "ether", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:29/64",
+    "fe80::4638:39ff:fe00:28/128"], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "spine01", "ifname": "swp3", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:50/64",
+    "fe80::4638:39ff:fe00:4f/128"], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "spine01", "ifname": "swp4", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:3c/64",
+    "fe80::4638:39ff:fe00:3b/128"], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "spine01", "ifname": "swp5", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:22/64",
+    "fe80::4638:39ff:fe00:21/128"], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "spine01", "ifname": "swp6", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:a/64",
+    "fe80::4638:39ff:fe00:9/128"], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "spine02", "ifname": "eth0", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "mgmt", "ipAddressList": ["192.168.121.153/24"], "ip6AddressList":
+    ["fe80::5054:ff:fe5e:1218/64"], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "spine02", "ifname": "lo", "state": "up", "type": "loopback", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.22/32"], "ip6AddressList":
+    [], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker", "hostname":
+    "spine02", "ifname": "mgmt", "state": "up", "type": "vrf", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1590170095121},
+    {"namespace": "single-attach_bgp_docker", "hostname": "spine02", "ifname": "swp1",
+    "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": ["fe80::4638:39ff:fe00:25/64", "fe80::4638:39ff:fe00:24/128"],
+    "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker", "hostname":
+    "spine02", "ifname": "swp2", "state": "up", "type": "ether", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:5e/64",
+    "fe80::4638:39ff:fe00:5d/128"], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "spine02", "ifname": "swp3", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:1c/64",
+    "fe80::4638:39ff:fe00:1b/128"], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "spine02", "ifname": "swp4", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:47/64",
+    "fe80::4638:39ff:fe00:46/128"], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "spine02", "ifname": "swp5", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:56/64",
+    "fe80::4638:39ff:fe00:55/128"], "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "spine02", "ifname": "swp6", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:5b/64",
+    "fe80::4638:39ff:fe00:5a/128"], "timestamp": 1590170095121}]'
+- command: interface show --columns=hostname --format=json --namespace=single-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_docker/parquet-out
+  marks: interface show
+  output: '[{"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
+    {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname":
+    "edge01"}, {"hostname": "edge01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "internet"}, {"hostname": "internet"}, {"hostname":
+    "internet"}, {"hostname": "internet"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "server101"}, {"hostname": "server101"}, {"hostname": "server101"}, {"hostname":
+    "server101"}, {"hostname": "server102"}, {"hostname": "server102"}, {"hostname":
+    "server102"}, {"hostname": "server102"}, {"hostname": "server103"}, {"hostname":
+    "server103"}, {"hostname": "server103"}, {"hostname": "server103"}, {"hostname":
+    "server104"}, {"hostname": "server104"}, {"hostname": "server104"}, {"hostname":
+    "server104"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}]'
+- command: interface summarize --format=json --namespace=single-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_docker/parquet-out
+  marks: interface summarize
+  output: '{"single-attach_bgp_docker": {"deviceCnt": 14, "interfaceCnt": 110, "hostsWithL2Cnt":
+    4, "hostsWithVxlanCnt": 0, "ifDownCnt": 12, "ifWithMultipleIPCnt": 1, "uniqueMTUCnt":
+    {"1500": 86, "65536": 24}, "uniqueIfTypesCnt": 5, "ifChangesStat": [0, 2, 0],
+    "ifPerHostStat": [4, 12, 9.0], "uniqueIPv4AddrCnt": 49, "uniqueIPv6AddrCnt": 0}}'
+- command: interface unique --columns=hostname --format=json --namespace=single-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_docker/parquet-out
+  marks: interface unique
+  output: '[{"hostname": "server104", "count": 4}, {"hostname": "server103", "count":
+    4}, {"hostname": "server102", "count": 4}, {"hostname": "server101", "count":
+    4}, {"hostname": "internet", "count": 4}, {"hostname": "edge01", "count": 8},
+    {"hostname": "spine02", "count": 9}, {"hostname": "spine01", "count": 9}, {"hostname":
+    "leaf04", "count": 10}, {"hostname": "leaf03", "count": 10}, {"hostname": "leaf02",
+    "count": 10}, {"hostname": "leaf01", "count": 10}, {"hostname": "exit02", "count":
+    12}, {"hostname": "exit01", "count": 12}]'
+- command: interface assert --format=json --namespace=single-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_docker/parquet-out
+  marks: interface assert
+  output: '[{"namespace": "single-attach_bgp_docker", "hostname": "edge01", "ifname":
+    "eth1", "peerHostname": "exit01", "peerIfname": "swp5", "timestamp": 1590170098297,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "edge01", "ifname": "eth2", "peerHostname": "exit02", "peerIfname":
+    "swp5", "timestamp": 1590170098297, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}, {"namespace": "single-attach_bgp_docker", "hostname": "exit01", "ifname":
+    "swp1", "peerHostname": "spine01", "peerIfname": "swp6", "timestamp": 1590170098998,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "exit01", "ifname": "swp2", "peerHostname": "spine02", "peerIfname":
+    "swp6", "timestamp": 1590170098998, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}, {"namespace": "single-attach_bgp_docker", "hostname": "exit01", "ifname":
+    "swp3", "peerHostname": "exit01", "peerIfname": "swp4", "timestamp": 1590170098998,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "exit01", "ifname": "swp4", "peerHostname": "exit01", "peerIfname":
+    "swp3", "timestamp": 1590170098998, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}, {"namespace": "single-attach_bgp_docker", "hostname": "exit01", "ifname":
+    "swp5", "peerHostname": "edge01", "peerIfname": "eth1", "timestamp": 1590170098998,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "exit01", "ifname": "swp6", "peerHostname": "internet", "peerIfname":
+    "swp1", "timestamp": 1590170098998, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}, {"namespace": "single-attach_bgp_docker", "hostname": "exit02", "ifname":
+    "swp1", "peerHostname": "spine01", "peerIfname": "swp5", "timestamp": 1590170098998,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "exit02", "ifname": "swp2", "peerHostname": "spine02", "peerIfname":
+    "swp5", "timestamp": 1590170098998, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}, {"namespace": "single-attach_bgp_docker", "hostname": "exit02", "ifname":
+    "swp3", "peerHostname": "exit02", "peerIfname": "swp4", "timestamp": 1590170098998,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "exit02", "ifname": "swp4", "peerHostname": "exit02", "peerIfname":
+    "swp3", "timestamp": 1590170098998, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}, {"namespace": "single-attach_bgp_docker", "hostname": "exit02", "ifname":
+    "swp5", "peerHostname": "edge01", "peerIfname": "eth2", "timestamp": 1590170098998,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "exit02", "ifname": "swp6", "peerHostname": "internet", "peerIfname":
+    "swp2", "timestamp": 1590170098998, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}, {"namespace": "single-attach_bgp_docker", "hostname": "internet", "ifname":
+    "swp1", "peerHostname": "exit01", "peerIfname": "swp6", "timestamp": 1590170099116,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "internet", "ifname": "swp2", "peerHostname": "exit02", "peerIfname":
+    "swp6", "timestamp": 1590170099116, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}, {"namespace": "single-attach_bgp_docker", "hostname": "leaf01", "ifname":
+    "swp1", "peerHostname": "spine01", "peerIfname": "swp1", "timestamp": 1590170100041,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "leaf01", "ifname": "swp2", "peerHostname": "spine02", "peerIfname":
+    "swp1", "timestamp": 1590170100041, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}, {"namespace": "single-attach_bgp_docker", "hostname": "leaf02", "ifname":
+    "swp1", "peerHostname": "spine01", "peerIfname": "swp2", "timestamp": 1590170100041,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "leaf02", "ifname": "swp2", "peerHostname": "spine02", "peerIfname":
+    "swp2", "timestamp": 1590170100041, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}, {"namespace": "single-attach_bgp_docker", "hostname": "leaf03", "ifname":
+    "swp1", "peerHostname": "spine01", "peerIfname": "swp3", "timestamp": 1590170099116,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "leaf03", "ifname": "swp2", "peerHostname": "spine02", "peerIfname":
+    "swp3", "timestamp": 1590170099116, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}, {"namespace": "single-attach_bgp_docker", "hostname": "leaf04", "ifname":
+    "swp1", "peerHostname": "spine01", "peerIfname": "swp4", "timestamp": 1590170100037,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "leaf04", "ifname": "swp2", "peerHostname": "spine02", "peerIfname":
+    "swp4", "timestamp": 1590170100037, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}, {"namespace": "single-attach_bgp_docker", "hostname": "spine01", "ifname":
+    "swp1", "peerHostname": "leaf01", "peerIfname": "swp1", "timestamp": 1590170098998,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "spine01", "ifname": "swp2", "peerHostname": "leaf02", "peerIfname":
+    "swp1", "timestamp": 1590170098998, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}, {"namespace": "single-attach_bgp_docker", "hostname": "spine01", "ifname":
+    "swp3", "peerHostname": "leaf03", "peerIfname": "swp1", "timestamp": 1590170098998,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "spine01", "ifname": "swp4", "peerHostname": "leaf04", "peerIfname":
+    "swp1", "timestamp": 1590170098998, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}, {"namespace": "single-attach_bgp_docker", "hostname": "spine01", "ifname":
+    "swp5", "peerHostname": "exit02", "peerIfname": "swp1", "timestamp": 1590170098998,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "spine01", "ifname": "swp6", "peerHostname": "exit01", "peerIfname":
+    "swp1", "timestamp": 1590170098998, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}, {"namespace": "single-attach_bgp_docker", "hostname": "spine02", "ifname":
+    "swp1", "peerHostname": "leaf01", "peerIfname": "swp2", "timestamp": 1590170098998,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "spine02", "ifname": "swp2", "peerHostname": "leaf02", "peerIfname":
+    "swp2", "timestamp": 1590170098998, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}, {"namespace": "single-attach_bgp_docker", "hostname": "spine02", "ifname":
+    "swp3", "peerHostname": "leaf03", "peerIfname": "swp2", "timestamp": 1590170098998,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "spine02", "ifname": "swp4", "peerHostname": "leaf04", "peerIfname":
+    "swp2", "timestamp": 1590170098998, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}, {"namespace": "single-attach_bgp_docker", "hostname": "spine02", "ifname":
+    "swp5", "peerHostname": "exit02", "peerIfname": "swp2", "timestamp": 1590170098998,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "single-attach_bgp_docker",
+    "hostname": "spine02", "ifname": "swp6", "peerHostname": "exit01", "peerIfname":
+    "swp2", "timestamp": 1590170098998, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}]'
+- command: interface top --format=json --namespace=single-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_docker/parquet-out
+  marks: interface top
+  output: '[{"namespace": "single-attach_bgp_docker", "hostname": "edge01", "ifname":
+    "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "",
+    "ipAddressList": ["192.168.121.93/24"], "ip6AddressList": [], "numChanges": 0,
+    "timestamp": 1590170094217}, {"namespace": "single-attach_bgp_docker", "hostname":
+    "edge01", "ifname": "eth1", "state": "up", "type": "ether", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "numChanges": 0, "timestamp":
+    1590170094217}, {"namespace": "single-attach_bgp_docker", "hostname": "edge01",
+    "ifname": "eth2", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "numChanges": 0, "timestamp": 1590170094217},
+    {"namespace": "single-attach_bgp_docker", "hostname": "exit01", "ifname": "eth0",
+    "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "mgmt", "ipAddressList":
+    ["192.168.121.230/24"], "ip6AddressList": ["fe80::5054:ff:fe8f:631f/64"], "numChanges":
+    0, "timestamp": 1590170095121}, {"namespace": "single-attach_bgp_docker", "hostname":
+    "exit01", "ifname": "swp1", "state": "up", "type": "ether", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:9/64",
+    "fe80::4638:39ff:fe00:a/128"], "numChanges": 0, "timestamp": 1590170095121}]'

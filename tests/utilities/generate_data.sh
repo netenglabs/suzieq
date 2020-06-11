@@ -3,7 +3,7 @@
 # so you need to be in a python environment that can run suzieq
 # this is run in the cloud-native-data-center-networking/topologies directory
 
-suzieq_dir=/tmp/pycharm_project_304/suzieq/suzieq
+suzieq_dir=/home/jpiet/suzieq-dev/suzieq
 parquet_dir=/home/${USER}/parquet-out
 archive_dir=/home/${USER}/parquet_files
 
@@ -35,13 +35,13 @@ run_sqpoller () {
     echo ${table}
     RESULT_sq=$?
     if (( ${RESULT_sq} > 0 )) ; then
-        return RESULT_sq
+        return ${RESULT_sq}
     fi
     data=$(echo ${table} | grep 14)
     echo "DATA " ${data}
     if [[ -z "$data" ]] ; then
-       echo "Missing hosts " ${table}
-       exit 1
+       echo "FAILED: Missing hosts " ${table}
+       return ${data}
     fi
     python3 ${suzieq_dir}/cli/suzieq-cli interface assert --namespace=${name}
     echo "SUZIEQ interface assert RESULTS: $?"
@@ -91,10 +91,6 @@ run_protos () {
     done
     if (( ${RESULT_sc} > 0 )) ; then
         echo "FAILED vagrant or ansible for ${topology} ${proto} ${scenario}"
-        date
-        vagrant_down
-        cd ..
-        return 1
     fi
     run_sqpoller ${topology} ${name}
     if (( ${RESULT_sq} > 0 )) ; then
@@ -146,6 +142,7 @@ create_test_data () {
     cd ${topology}
     run_protos ${topology} bgp numbered dual-bgp
     mv ${parquet_dir} ${parquet_dir}-basic_dual_bgp
+    cd ..
 }
 
 check_all_cndcn () {
@@ -178,7 +175,7 @@ check_all_cndcn () {
 
 check_log () {
    # grep through log to understand if things worked as expected
-   egrep "SCENARIO|UTC|DATA|RESULT|FAILED|tries|FINISHED" ${log} | egrep -v "fatal|DESTROY"
+   egrep "SCENARIO|UTC|DATA|RESULT|FAILED|tries|FINISHED|tries|cd " ${log} | egrep -v "fatal|DESTROY"
 }
 
 clean_up () {
@@ -191,6 +188,7 @@ log=`pwd`/log
 echo ${log}
 date > ${log}
 create_test_data >> ${log} 2>&1
-#check_all_cndcn >> ${log} 2>&1
+echo "FINISHED test data" >> ${log}
+check_all_cndcn >> ${log} 2>&1
 echo "FINISHED" >> ${log}
 clean_up
