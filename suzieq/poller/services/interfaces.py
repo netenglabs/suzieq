@@ -95,6 +95,14 @@ class InterfaceService(Service):
                     )
                 entry["statusChangeTimestamp"] = ts
 
+                if '(' in entry['master']:
+                    entry['master'] = entry['master'].replace(
+                        '(', '').replace(')', '')
+
+                if entry['ip6AddressList'] and 'ip6AddressList-_2nd' in entry:
+                    # This is because textfsm adds peer LLA as well
+                    entry['ip6AddressList'] = entry['ip6AddressList-_2nd']
+
                 del entry["linkUpCnt"]
                 del entry["linkDownCnt"]
                 del entry["linkUpTimestamp"]
