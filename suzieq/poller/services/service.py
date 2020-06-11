@@ -365,7 +365,10 @@ class Service(object):
                     if not entry.get(kfld, None):
                         keyvals.append('_default')
                     else:
-                        keyvals.append(entry.get(kfld, ''))
+                        val = entry.get(kfld, '')
+                        if not isinstance(val, str):
+                            val = str(val)
+                        keyvals.append(val)
 
                 key = '-'.join(keyvals)
 
