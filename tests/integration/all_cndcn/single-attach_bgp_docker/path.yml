@@ -1,0 +1,135 @@
+description: 'Testing verbs for path: show summarize'
+tests:
+- command: path show --format=json --namespace=single-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_docker/parquet-out
+  error:
+    error: '[{"error": "ERROR: Must specify trace source and dest"}]'
+  marks: path show
+- command: path show --dest=172.16.2.104 --src=172.16.1.101 --format=json --namespace=single-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_docker/parquet-out
+  error:
+    error: '[{"error": "ERROR: Invalid dest 172.16.2.104"}]'
+  marks: path show
+- command: path show --dest=172.16.2.104 --src=172.16.1.104 --format=json --namespace=single-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_docker/parquet-out
+  error:
+    error: '[{"error": "ERROR: Invalid src 172.16.1.104"}]'
+  marks: path show
+- command: path show --dest=10.0.0.11 --src=10.0.0.14 --format=json --namespace=single-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_docker/parquet-out
+  marks: path show
+  output: '[{"pathid": 1, "hopCount": 0, "namespace": "single-attach_bgp_docker",
+    "hostname": "leaf04", "iif": "lo", "vrf": "default", "overlay": false, "mtuMatch":
+    null, "mtu": 65536, "timestamp": 1590170095121}, {"pathid": 1, "hopCount": 1,
+    "namespace": "single-attach_bgp_docker", "hostname": "spine01", "iif": "swp4",
+    "vrf": "default", "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp":
+    1590170094048}, {"pathid": 1, "hopCount": 2, "namespace": "single-attach_bgp_docker",
+    "hostname": "leaf01", "iif": "swp1", "vrf": "default", "overlay": false, "mtuMatch":
+    true, "mtu": 1500, "timestamp": 1590170094217}, {"pathid": 1, "hopCount": 2, "namespace":
+    "single-attach_bgp_docker", "hostname": "leaf01", "iif": "lo", "vrf": "default",
+    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1590170095121},
+    {"pathid": 2, "hopCount": 0, "namespace": "single-attach_bgp_docker", "hostname":
+    "leaf04", "iif": "lo", "vrf": "default", "overlay": false, "mtuMatch": null, "mtu":
+    65536, "timestamp": 1590170095121}, {"pathid": 2, "hopCount": 1, "namespace":
+    "single-attach_bgp_docker", "hostname": "spine02", "iif": "swp4", "vrf": "default",
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590170094048},
+    {"pathid": 2, "hopCount": 2, "namespace": "single-attach_bgp_docker", "hostname":
+    "leaf01", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch": true,
+    "mtu": 1500, "timestamp": 1590170094217}, {"pathid": 2, "hopCount": 2, "namespace":
+    "single-attach_bgp_docker", "hostname": "leaf01", "iif": "lo", "vrf": "default",
+    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1590170095121}]'
+- command: path show --src=172.16.1.101 --dest=172.16.253.1 --format=json --namespace=single-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_docker/parquet-out
+  marks: path show
+  output: '[{"pathid": 1, "hopCount": 0, "namespace": "single-attach_bgp_docker",
+    "hostname": "server101", "iif": "eth1", "vrf": "default", "overlay": false, "mtuMatch":
+    null, "mtu": 1500, "timestamp": 1590170094965}, {"pathid": 1, "hopCount": 1, "namespace":
+    "single-attach_bgp_docker", "hostname": "leaf01", "iif": "vlan10", "vrf": "default",
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590170094965},
+    {"pathid": 1, "hopCount": 2, "namespace": "single-attach_bgp_docker", "hostname":
+    "spine01", "iif": "swp1", "vrf": "default", "overlay": false, "mtuMatch": true,
+    "mtu": 1500, "timestamp": 1590170094048}, {"pathid": 1, "hopCount": 3, "namespace":
+    "single-attach_bgp_docker", "hostname": "exit02", "iif": "swp1", "vrf": "default",
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590170094217},
+    {"pathid": 1, "hopCount": 4, "namespace": "single-attach_bgp_docker", "hostname":
+    "edge01", "iif": "eth2.2", "vrf": "default", "overlay": false, "mtuMatch": true,
+    "mtu": 1500, "timestamp": 1590170094048}, {"pathid": 1, "hopCount": 5, "namespace":
+    "single-attach_bgp_docker", "hostname": "exit02", "iif": "swp5.4", "vrf": "internet-vrf",
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590170094217},
+    {"pathid": 1, "hopCount": 6, "namespace": "single-attach_bgp_docker", "hostname":
+    "internet", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch": true,
+    "mtu": 1500, "timestamp": 1590170094048}, {"pathid": 1, "hopCount": 6, "namespace":
+    "single-attach_bgp_docker", "hostname": "internet", "iif": "lo", "vrf": "default",
+    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1590170095121},
+    {"pathid": 2, "hopCount": 0, "namespace": "single-attach_bgp_docker", "hostname":
+    "server101", "iif": "eth1", "vrf": "default", "overlay": false, "mtuMatch": null,
+    "mtu": 1500, "timestamp": 1590170094965}, {"pathid": 2, "hopCount": 1, "namespace":
+    "single-attach_bgp_docker", "hostname": "leaf01", "iif": "vlan10", "vrf": "default",
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590170094965},
+    {"pathid": 2, "hopCount": 2, "namespace": "single-attach_bgp_docker", "hostname":
+    "spine02", "iif": "swp1", "vrf": "default", "overlay": false, "mtuMatch": true,
+    "mtu": 1500, "timestamp": 1590170094048}, {"pathid": 2, "hopCount": 3, "namespace":
+    "single-attach_bgp_docker", "hostname": "exit02", "iif": "swp2", "vrf": "default",
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590170094217},
+    {"pathid": 2, "hopCount": 4, "namespace": "single-attach_bgp_docker", "hostname":
+    "edge01", "iif": "eth2.2", "vrf": "default", "overlay": false, "mtuMatch": true,
+    "mtu": 1500, "timestamp": 1590170094048}, {"pathid": 2, "hopCount": 5, "namespace":
+    "single-attach_bgp_docker", "hostname": "exit02", "iif": "swp5.4", "vrf": "internet-vrf",
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590170094217},
+    {"pathid": 2, "hopCount": 6, "namespace": "single-attach_bgp_docker", "hostname":
+    "internet", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch": true,
+    "mtu": 1500, "timestamp": 1590170094048}, {"pathid": 2, "hopCount": 6, "namespace":
+    "single-attach_bgp_docker", "hostname": "internet", "iif": "lo", "vrf": "default",
+    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1590170095121},
+    {"pathid": 3, "hopCount": 0, "namespace": "single-attach_bgp_docker", "hostname":
+    "server101", "iif": "eth1", "vrf": "default", "overlay": false, "mtuMatch": null,
+    "mtu": 1500, "timestamp": 1590170094965}, {"pathid": 3, "hopCount": 1, "namespace":
+    "single-attach_bgp_docker", "hostname": "leaf01", "iif": "vlan10", "vrf": "default",
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590170094965},
+    {"pathid": 3, "hopCount": 2, "namespace": "single-attach_bgp_docker", "hostname":
+    "spine01", "iif": "swp1", "vrf": "default", "overlay": false, "mtuMatch": true,
+    "mtu": 1500, "timestamp": 1590170094048}, {"pathid": 3, "hopCount": 3, "namespace":
+    "single-attach_bgp_docker", "hostname": "exit02", "iif": "swp1", "vrf": "default",
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590170094217},
+    {"pathid": 3, "hopCount": 4, "namespace": "single-attach_bgp_docker", "hostname":
+    "edge01", "iif": "eth2.2", "vrf": "default", "overlay": false, "mtuMatch": true,
+    "mtu": 1500, "timestamp": 1590170094048}, {"pathid": 3, "hopCount": 5, "namespace":
+    "single-attach_bgp_docker", "hostname": "exit01", "iif": "swp5.4", "vrf": "internet-vrf",
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590170094217},
+    {"pathid": 3, "hopCount": 6, "namespace": "single-attach_bgp_docker", "hostname":
+    "internet", "iif": "swp1", "vrf": "internet-vrf", "overlay": false, "mtuMatch":
+    true, "mtu": 1500, "timestamp": 1590170094217}, {"pathid": 3, "hopCount": 6, "namespace":
+    "single-attach_bgp_docker", "hostname": "internet", "iif": "lo", "vrf": "default",
+    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1590170095121},
+    {"pathid": 4, "hopCount": 0, "namespace": "single-attach_bgp_docker", "hostname":
+    "server101", "iif": "eth1", "vrf": "default", "overlay": false, "mtuMatch": null,
+    "mtu": 1500, "timestamp": 1590170094965}, {"pathid": 4, "hopCount": 1, "namespace":
+    "single-attach_bgp_docker", "hostname": "leaf01", "iif": "vlan10", "vrf": "default",
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590170094965},
+    {"pathid": 4, "hopCount": 2, "namespace": "single-attach_bgp_docker", "hostname":
+    "spine02", "iif": "swp1", "vrf": "default", "overlay": false, "mtuMatch": true,
+    "mtu": 1500, "timestamp": 1590170094048}, {"pathid": 4, "hopCount": 3, "namespace":
+    "single-attach_bgp_docker", "hostname": "exit02", "iif": "swp2", "vrf": "default",
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590170094217},
+    {"pathid": 4, "hopCount": 4, "namespace": "single-attach_bgp_docker", "hostname":
+    "edge01", "iif": "eth2.2", "vrf": "default", "overlay": false, "mtuMatch": true,
+    "mtu": 1500, "timestamp": 1590170094048}, {"pathid": 4, "hopCount": 5, "namespace":
+    "single-attach_bgp_docker", "hostname": "exit01", "iif": "swp5.4", "vrf": "internet-vrf",
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590170094217},
+    {"pathid": 4, "hopCount": 6, "namespace": "single-attach_bgp_docker", "hostname":
+    "internet", "iif": "swp1", "vrf": "internet-vrf", "overlay": false, "mtuMatch":
+    true, "mtu": 1500, "timestamp": 1590170094217}, {"pathid": 4, "hopCount": 6, "namespace":
+    "single-attach_bgp_docker", "hostname": "internet", "iif": "lo", "vrf": "default",
+    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1590170095121}]'
+- command: path summarize --dest=172.16.2.104 --src=172.16.1.101 --format=json --namespace=single-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_docker/parquet-out
+  error:
+    error: '[{"error": "ERROR: Invalid dest 172.16.2.104"}]'
+  marks: path summarize
+- command: path summarize --dest=10.0.0.11 --src=10.0.0.14 --format=json --namespace=single-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_docker/parquet-out
+  marks: path summarize
+  output: '[{"single-attach_bgp_docker": 2}, {"single-attach_bgp_docker": [1, 2, 1]},
+    {"single-attach_bgp_docker": 2}, {"single-attach_bgp_docker": 2.0}, {"single-attach_bgp_docker":
+    4}, {"single-attach_bgp_docker": 1500}, {"single-attach_bgp_docker": false}, {"single-attach_bgp_docker":
+    false}]'

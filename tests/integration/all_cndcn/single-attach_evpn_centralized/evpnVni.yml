@@ -1,0 +1,52 @@
+description: 'Testing verbs for evpnVni: show summarize unique'
+tests:
+- command: evpnVni show --format=json --namespace=single-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_centralized/parquet-out
+  marks: evpnVni show
+  output: '[{"namespace": "single-attach_evpn_centralized", "hostname": "exit01",
+    "vni": 13, "type": "L2", "numMacs": 4, "numArpNd": 6, "remoteVtepList": ["10.0.0.11",
+    "10.0.0.13"], "timestamp": 1590167352658}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "exit01", "vni": 24, "type": "L2", "numMacs": 4, "numArpNd": 6, "remoteVtepList":
+    ["10.0.0.14", "10.0.0.12"], "timestamp": 1590167352658}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "exit02", "vni": 104001, "type": "L2", "numMacs": 1, "numArpNd": 1,
+    "remoteVtepList": [], "timestamp": 1590167352658}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "exit02", "vni": 13, "type": "L2", "numMacs": 0, "numArpNd": 0, "remoteVtepList":
+    [], "timestamp": 1590167352658}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "exit02", "vni": 24, "type": "L2", "numMacs": 0, "numArpNd": 0, "remoteVtepList":
+    [], "timestamp": 1590167352658}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "leaf01", "vni": 104001, "type": "L3", "numMacs": 0, "numArpNd": 0,
+    "remoteVtepList": [], "timestamp": 1590167352658}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "leaf01", "vni": 13, "type": "L2", "numMacs": 5, "numArpNd": 5, "remoteVtepList":
+    ["10.0.0.101", "10.0.0.13"], "timestamp": 1590167352658}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "leaf02", "vni": 104001, "type": "L3", "numMacs": 0, "numArpNd": 0,
+    "remoteVtepList": [], "timestamp": 1590167352658}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "leaf02", "vni": 24, "type": "L2", "numMacs": 5, "numArpNd": 7, "remoteVtepList":
+    ["10.0.0.101", "10.0.0.14"], "timestamp": 1590167352658}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "leaf03", "vni": 104001, "type": "L3", "numMacs": 0, "numArpNd": 0,
+    "remoteVtepList": [], "timestamp": 1590167352658}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "leaf03", "vni": 13, "type": "L2", "numMacs": 5, "numArpNd": 5, "remoteVtepList":
+    ["10.0.0.11", "10.0.0.101"], "timestamp": 1590167352658}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "leaf04", "vni": 104001, "type": "L3", "numMacs": 0, "numArpNd": 0,
+    "remoteVtepList": [], "timestamp": 1590167352658}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "leaf04", "vni": 24, "type": "L2", "numMacs": 5, "numArpNd": 7, "remoteVtepList":
+    ["10.0.0.101", "10.0.0.12"], "timestamp": 1590167352658}]'
+- command: evpnVni show --columns=hostname --format=json --namespace=single-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_centralized/parquet-out
+  marks: evpnVni show
+  output: '[{"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}]'
+- command: evpnVni summarize --format=json --namespace=single-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_centralized/parquet-out
+  marks: evpnVni summarize
+  output: '{"single-attach_evpn_centralized": {"deviceCnt": 6, "uniqueVniCnt": {"104001":
+    5, "24": 4, "13": 4}, "UniqueVniTypeCnt": {"L2": 9, "L3": 4}, "uniqueVrfCnt":
+    {"default": 6, "n/a": 4, "evpn-vrf": 3}, "macsInVniStat": [0, 5, 1], "arpNdInVniStat":
+    [0, 7, 1], "herPerVtepStat": [0, 4, 2.0]}}'
+- command: evpnVni unique --columns=hostname --format=json --namespace=single-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_centralized/parquet-out
+  marks: evpnVni unique
+  output: '[{"hostname": "leaf04", "count": 2}, {"hostname": "leaf03", "count": 2},
+    {"hostname": "leaf02", "count": 2}, {"hostname": "leaf01", "count": 2}, {"hostname":
+    "exit01", "count": 2}, {"hostname": "exit02", "count": 3}]'

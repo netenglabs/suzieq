@@ -1,0 +1,87 @@
+description: 'Testing verbs for device: show summarize unique'
+tests:
+- command: device show --format=json --namespace=single-attach_ospf_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_unnumbered/parquet-out
+  marks: device show
+  output: '[{"namespace": "single-attach_ospf_unnumbered", "hostname": "edge01", "model":
+    "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.109", "uptime": 214097, "timestamp":
+    1590168727097}, {"namespace": "single-attach_ospf_unnumbered", "hostname": "exit01",
+    "model": "vm", "version": "3.7.12", "vendor": "Cumulus", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.115", "uptime": 63144, "timestamp":
+    1590168727144}, {"namespace": "single-attach_ospf_unnumbered", "hostname": "exit02",
+    "model": "vm", "version": "3.7.12", "vendor": "Cumulus", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.172", "uptime": 63096, "timestamp":
+    1590168727096}, {"namespace": "single-attach_ospf_unnumbered", "hostname": "internet",
+    "model": "vm", "version": "3.7.12", "vendor": "Cumulus", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.157", "uptime": 224144, "timestamp":
+    1590168727144}, {"namespace": "single-attach_ospf_unnumbered", "hostname": "leaf01",
+    "model": "vm", "version": "3.7.12", "vendor": "Cumulus", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.136", "uptime": 64144, "timestamp":
+    1590168727144}, {"namespace": "single-attach_ospf_unnumbered", "hostname": "leaf02",
+    "model": "vm", "version": "3.7.12", "vendor": "Cumulus", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.71", "uptime": 64144, "timestamp":
+    1590168727144}, {"namespace": "single-attach_ospf_unnumbered", "hostname": "leaf03",
+    "model": "vm", "version": "3.7.12", "vendor": "Cumulus", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.6", "uptime": 63869, "timestamp": 1590168727869},
+    {"namespace": "single-attach_ospf_unnumbered", "hostname": "leaf04", "model":
+    "vm", "version": "3.7.12", "vendor": "Cumulus", "architecture": "x86-64", "status":
+    "alive", "address": "192.168.121.186", "uptime": 63869, "timestamp": 1590168727869},
+    {"namespace": "single-attach_ospf_unnumbered", "hostname": "server101", "model":
+    "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.178", "uptime": 226097, "timestamp":
+    1590168727097}, {"namespace": "single-attach_ospf_unnumbered", "hostname": "server102",
+    "model": "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.49", "uptime": 224097, "timestamp":
+    1590168727097}, {"namespace": "single-attach_ospf_unnumbered", "hostname": "server103",
+    "model": "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.148", "uptime": 218097, "timestamp":
+    1590168727097}, {"namespace": "single-attach_ospf_unnumbered", "hostname": "server104",
+    "model": "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.179", "uptime": 204097, "timestamp":
+    1590168727097}, {"namespace": "single-attach_ospf_unnumbered", "hostname": "spine01",
+    "model": "vm", "version": "3.7.12", "vendor": "Cumulus", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.77", "uptime": 63097, "timestamp":
+    1590168727097}, {"namespace": "single-attach_ospf_unnumbered", "hostname": "spine02",
+    "model": "vm", "version": "3.7.12", "vendor": "Cumulus", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.158", "uptime": 63144, "timestamp":
+    1590168727144}]'
+- command: device show --columns=hostname --format=json --namespace=single-attach_ospf_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_unnumbered/parquet-out
+  marks: device show
+  output: '[{"hostname": "edge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
+    {"hostname": "internet"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server102"},
+    {"hostname": "server103"}, {"hostname": "server104"}, {"hostname": "spine01"},
+    {"hostname": "spine02"}]'
+- command: device summarize --format=json --namespace=single-attach_ospf_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_unnumbered/parquet-out
+  marks: device summarize
+  output: '{"single-attach_ospf_unnumbered": {"deviceCnt": 14, "vendorCnt": {"Cumulus":
+    9, "Ubuntu": 5}, "modelCnt": {"vm": 14}, "archCnt": {"x86-64": 14}, "versionCnt":
+    {"3.7.12": 9, "16.04.6 LTS": 5}, "upTimeStat": [63, 226, 64]}}'
+- command: device summarize --columns="namespace hostname" --format=json --namespace=single-attach_ospf_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_unnumbered/parquet-out
+  error:
+    error: '{"error": {"0": "ERROR: You cannot specify columns with summarize"}}'
+  marks: device summarize
+- command: device unique --columns=hostname --format=json --namespace=single-attach_ospf_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_unnumbered/parquet-out
+  marks: device unique
+  output: '[{"hostname": "spine02", "count": 1}, {"hostname": "spine01", "count":
+    1}, {"hostname": "server104", "count": 1}, {"hostname": "server103", "count":
+    1}, {"hostname": "server102", "count": 1}, {"hostname": "server101", "count":
+    1}, {"hostname": "leaf04", "count": 1}, {"hostname": "leaf03", "count": 1}, {"hostname":
+    "leaf02", "count": 1}, {"hostname": "leaf01", "count": 1}, {"hostname": "internet",
+    "count": 1}, {"hostname": "exit02", "count": 1}, {"hostname": "exit01", "count":
+    1}, {"hostname": "edge01", "count": 1}]'
+- command: device unique --columns="hostname namespace" --format=json --namespace=single-attach_ospf_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_unnumbered/parquet-out
+  error:
+    error: '[{"error": "ERROR: Specify a single column with unique"}]'
+  marks: device unique
+- command: device unique --columns=badcolumn --format=json --namespace=single-attach_ospf_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_unnumbered/parquet-out
+  error:
+    error: '[{"error": "ERROR: ''badcolumn''"}]'
+  marks: device unique

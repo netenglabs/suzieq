@@ -1,0 +1,225 @@
+description: 'Testing verbs for address: show summarize unique'
+tests:
+- command: address show --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: address show
+  output: '[{"namespace": "single-attach_ospf_docker", "hostname": "edge01", "ifname":
+    "eth0", "ipAddressList": ["192.168.121.189/24"], "macaddr": "52:54:00:e1:34:53",
+    "ip6AddressList": [], "state": "up", "timestamp": 1590168187231}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "exit01", "ifname": "eth0", "ipAddressList":
+    ["192.168.121.70/24"], "macaddr": "52:54:00:d7:4d:5d", "ip6AddressList": ["fe80::5054:ff:fed7:4d5d/64"],
+    "state": "up", "timestamp": 1590168187715}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "exit01", "ifname": "lo", "ipAddressList": ["10.0.0.101/32"], "macaddr":
+    "", "ip6AddressList": [], "state": "up", "timestamp": 1590168187715}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "exit01", "ifname": "swp1", "ipAddressList":
+    ["10.0.0.101/32"], "macaddr": "44:38:39:00:00:09", "ip6AddressList": ["fe80::4638:39ff:fe00:9/64"],
+    "state": "up", "timestamp": 1590168187715}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "exit01", "ifname": "swp2", "ipAddressList": ["10.0.0.101/32"], "macaddr":
+    "44:38:39:00:00:5a", "ip6AddressList": ["fe80::4638:39ff:fe00:5a/64"], "state":
+    "up", "timestamp": 1590168187715}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "exit02", "ifname": "eth0", "ipAddressList": ["192.168.121.29/24"],
+    "macaddr": "52:54:00:03:49:9f", "ip6AddressList": ["fe80::5054:ff:fe03:499f/64"],
+    "state": "up", "timestamp": 1590168187715}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "exit02", "ifname": "lo", "ipAddressList": ["10.0.0.102/32"], "macaddr":
+    "", "ip6AddressList": [], "state": "up", "timestamp": 1590168187715}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "exit02", "ifname": "swp1", "ipAddressList":
+    ["10.0.0.102/32"], "macaddr": "44:38:39:00:00:21", "ip6AddressList": ["fe80::4638:39ff:fe00:21/64"],
+    "state": "up", "timestamp": 1590168187715}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "exit02", "ifname": "swp2", "ipAddressList": ["10.0.0.102/32"], "macaddr":
+    "44:38:39:00:00:55", "ip6AddressList": ["fe80::4638:39ff:fe00:55/64"], "state":
+    "up", "timestamp": 1590168187715}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "internet", "ifname": "eth0", "ipAddressList": ["192.168.121.133/24"],
+    "macaddr": "52:54:00:38:6a:fb", "ip6AddressList": ["fe80::5054:ff:fe38:6afb/64"],
+    "state": "up", "timestamp": 1590168203139}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf01", "ifname": "eth0", "ipAddressList": ["192.168.121.254/24"],
+    "macaddr": "52:54:00:34:35:e1", "ip6AddressList": ["fe80::5054:ff:fe34:35e1/64"],
+    "state": "up", "timestamp": 1590168187811}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf01", "ifname": "lo", "ipAddressList": ["10.0.0.11/32"], "macaddr":
+    "", "ip6AddressList": [], "state": "up", "timestamp": 1590168187811}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "leaf01", "ifname": "swp1", "ipAddressList":
+    ["10.0.0.11/32"], "macaddr": "44:38:39:00:00:53", "ip6AddressList": ["fe80::4638:39ff:fe00:53/64"],
+    "state": "up", "timestamp": 1590168187811}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf01", "ifname": "swp2", "ipAddressList": ["10.0.0.11/32"], "macaddr":
+    "44:38:39:00:00:24", "ip6AddressList": ["fe80::4638:39ff:fe00:24/64"], "state":
+    "up", "timestamp": 1590168187811}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf01", "ifname": "swp5", "ipAddressList": ["10.0.0.11/32"], "macaddr":
+    "44:38:39:00:00:03", "ip6AddressList": ["fe80::4638:39ff:fe00:3/64"], "state":
+    "up", "timestamp": 1590168187811}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf02", "ifname": "eth0", "ipAddressList": ["192.168.121.39/24"],
+    "macaddr": "52:54:00:2b:37:02", "ip6AddressList": ["fe80::5054:ff:fe2b:3702/64"],
+    "state": "up", "timestamp": 1590168187715}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf02", "ifname": "lo", "ipAddressList": ["10.0.0.12/32"], "macaddr":
+    "", "ip6AddressList": [], "state": "up", "timestamp": 1590168187715}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "leaf02", "ifname": "swp1", "ipAddressList":
+    ["10.0.0.12/32"], "macaddr": "44:38:39:00:00:28", "ip6AddressList": ["fe80::4638:39ff:fe00:28/64"],
+    "state": "up", "timestamp": 1590168187715}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf02", "ifname": "swp2", "ipAddressList": ["10.0.0.12/32"], "macaddr":
+    "44:38:39:00:00:5d", "ip6AddressList": ["fe80::4638:39ff:fe00:5d/64"], "state":
+    "up", "timestamp": 1590168187715}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf02", "ifname": "swp5", "ipAddressList": ["10.0.0.12/32"], "macaddr":
+    "44:38:39:00:00:18", "ip6AddressList": ["fe80::4638:39ff:fe00:18/64"], "state":
+    "up", "timestamp": 1590168187715}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf03", "ifname": "eth0", "ipAddressList": ["192.168.121.251/24"],
+    "macaddr": "52:54:00:8c:96:96", "ip6AddressList": ["fe80::5054:ff:fe8c:9696/64"],
+    "state": "up", "timestamp": 1590168187811}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf03", "ifname": "lo", "ipAddressList": ["10.0.0.13/32"], "macaddr":
+    "", "ip6AddressList": [], "state": "up", "timestamp": 1590168187811}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "leaf03", "ifname": "swp1", "ipAddressList":
+    ["10.0.0.13/32"], "macaddr": "44:38:39:00:00:4f", "ip6AddressList": ["fe80::4638:39ff:fe00:4f/64"],
+    "state": "up", "timestamp": 1590168187811}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf03", "ifname": "swp2", "ipAddressList": ["10.0.0.13/32"], "macaddr":
+    "44:38:39:00:00:1b", "ip6AddressList": ["fe80::4638:39ff:fe00:1b/64"], "state":
+    "up", "timestamp": 1590168187811}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf03", "ifname": "swp5", "ipAddressList": ["10.0.0.13/32"], "macaddr":
+    "44:38:39:00:00:1f", "ip6AddressList": ["fe80::4638:39ff:fe00:1f/64"], "state":
+    "up", "timestamp": 1590168187811}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf04", "ifname": "eth0", "ipAddressList": ["192.168.121.220/24"],
+    "macaddr": "52:54:00:81:7e:82", "ip6AddressList": ["fe80::5054:ff:fe81:7e82/64"],
+    "state": "up", "timestamp": 1590168187715}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf04", "ifname": "lo", "ipAddressList": ["10.0.0.14/32"], "macaddr":
+    "", "ip6AddressList": [], "state": "up", "timestamp": 1590168187715}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "leaf04", "ifname": "swp1", "ipAddressList":
+    ["10.0.0.14/32"], "macaddr": "44:38:39:00:00:3b", "ip6AddressList": ["fe80::4638:39ff:fe00:3b/64"],
+    "state": "up", "timestamp": 1590168187715}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf04", "ifname": "swp2", "ipAddressList": ["10.0.0.14/32"], "macaddr":
+    "44:38:39:00:00:46", "ip6AddressList": ["fe80::4638:39ff:fe00:46/64"], "state":
+    "up", "timestamp": 1590168187715}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf04", "ifname": "swp5", "ipAddressList": ["10.0.0.14/32"], "macaddr":
+    "44:38:39:00:00:2c", "ip6AddressList": ["fe80::4638:39ff:fe00:2c/64"], "state":
+    "up", "timestamp": 1590168187715}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "server101", "ifname": "docker0", "ipAddressList": ["192.168.10.1/24"],
+    "macaddr": "02:42:d3:c8:f7:fb", "ip6AddressList": [], "state": "down", "timestamp":
+    1590168187231}, {"namespace": "single-attach_ospf_docker", "hostname": "server101",
+    "ifname": "eth0", "ipAddressList": ["192.168.121.165/24"], "macaddr": "52:54:00:1c:b6:28",
+    "ip6AddressList": [], "state": "up", "timestamp": 1590168187231}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "server101", "ifname": "eth1", "ipAddressList":
+    ["172.16.1.101/32"], "macaddr": "00:03:00:11:11:01", "ip6AddressList": [], "state":
+    "up", "timestamp": 1590168187231}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "server101", "ifname": "lo", "ipAddressList": ["172.16.1.101/32"],
+    "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state": "unknown", "timestamp":
+    1590168187231}, {"namespace": "single-attach_ospf_docker", "hostname": "server102",
+    "ifname": "docker0", "ipAddressList": ["192.168.11.1/24"], "macaddr": "02:42:6d:a4:3e:d8",
+    "ip6AddressList": [], "state": "down", "timestamp": 1590168186797}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "server102", "ifname": "eth0", "ipAddressList":
+    ["192.168.121.54/24"], "macaddr": "52:54:00:03:9c:d4", "ip6AddressList": [], "state":
+    "up", "timestamp": 1590168186797}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "server102", "ifname": "eth1", "ipAddressList": ["172.16.2.102/32"],
+    "macaddr": "00:03:00:22:22:02", "ip6AddressList": [], "state": "up", "timestamp":
+    1590168186797}, {"namespace": "single-attach_ospf_docker", "hostname": "server102",
+    "ifname": "lo", "ipAddressList": ["172.16.2.102/32"], "macaddr": "00:00:00:00:00:00",
+    "ip6AddressList": [], "state": "unknown", "timestamp": 1590168186797}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "server103", "ifname": "docker0", "ipAddressList":
+    ["192.168.12.1/24"], "macaddr": "02:42:ee:45:73:b7", "ip6AddressList": [], "state":
+    "down", "timestamp": 1590168187231}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "server103", "ifname": "eth0", "ipAddressList": ["192.168.121.116/24"],
+    "macaddr": "52:54:00:24:d2:b1", "ip6AddressList": [], "state": "up", "timestamp":
+    1590168187231}, {"namespace": "single-attach_ospf_docker", "hostname": "server103",
+    "ifname": "eth1", "ipAddressList": ["172.16.3.103/32"], "macaddr": "00:03:00:33:33:01",
+    "ip6AddressList": [], "state": "up", "timestamp": 1590168187231}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "server103", "ifname": "lo", "ipAddressList":
+    ["172.16.3.103/32"], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state":
+    "unknown", "timestamp": 1590168187231}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "server104", "ifname": "docker0", "ipAddressList": ["192.168.13.1/24"],
+    "macaddr": "02:42:40:fc:9b:e4", "ip6AddressList": [], "state": "down", "timestamp":
+    1590168186797}, {"namespace": "single-attach_ospf_docker", "hostname": "server104",
+    "ifname": "eth0", "ipAddressList": ["192.168.121.253/24"], "macaddr": "52:54:00:32:f4:b8",
+    "ip6AddressList": [], "state": "up", "timestamp": 1590168186797}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "server104", "ifname": "eth1", "ipAddressList":
+    ["172.16.4.104/32"], "macaddr": "00:03:00:44:44:02", "ip6AddressList": [], "state":
+    "up", "timestamp": 1590168186797}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "server104", "ifname": "lo", "ipAddressList": ["172.16.4.104/32"],
+    "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state": "unknown", "timestamp":
+    1590168186797}, {"namespace": "single-attach_ospf_docker", "hostname": "spine01",
+    "ifname": "eth0", "ipAddressList": ["192.168.121.91/24"], "macaddr": "52:54:00:82:c7:23",
+    "ip6AddressList": ["fe80::5054:ff:fe82:c723/64"], "state": "up", "timestamp":
+    1590168187715}, {"namespace": "single-attach_ospf_docker", "hostname": "spine01",
+    "ifname": "lo", "ipAddressList": ["10.0.0.21/32"], "macaddr": "", "ip6AddressList":
+    [], "state": "up", "timestamp": 1590168187715}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine01", "ifname": "swp1", "ipAddressList": ["10.0.0.21/32"], "macaddr":
+    "44:38:39:00:00:54", "ip6AddressList": ["fe80::4638:39ff:fe00:54/64"], "state":
+    "up", "timestamp": 1590168187715}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine01", "ifname": "swp2", "ipAddressList": ["10.0.0.21/32"], "macaddr":
+    "44:38:39:00:00:29", "ip6AddressList": ["fe80::4638:39ff:fe00:29/64"], "state":
+    "up", "timestamp": 1590168187715}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine01", "ifname": "swp3", "ipAddressList": ["10.0.0.21/32"], "macaddr":
+    "44:38:39:00:00:50", "ip6AddressList": ["fe80::4638:39ff:fe00:50/64"], "state":
+    "up", "timestamp": 1590168187715}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine01", "ifname": "swp4", "ipAddressList": ["10.0.0.21/32"], "macaddr":
+    "44:38:39:00:00:3c", "ip6AddressList": ["fe80::4638:39ff:fe00:3c/64"], "state":
+    "up", "timestamp": 1590168187715}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine01", "ifname": "swp5", "ipAddressList": ["10.0.0.21/32"], "macaddr":
+    "44:38:39:00:00:22", "ip6AddressList": ["fe80::4638:39ff:fe00:22/64"], "state":
+    "up", "timestamp": 1590168187715}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine01", "ifname": "swp6", "ipAddressList": ["10.0.0.21/32"], "macaddr":
+    "44:38:39:00:00:0a", "ip6AddressList": ["fe80::4638:39ff:fe00:a/64"], "state":
+    "up", "timestamp": 1590168187715}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine02", "ifname": "eth0", "ipAddressList": ["192.168.121.192/24"],
+    "macaddr": "52:54:00:2c:fc:09", "ip6AddressList": ["fe80::5054:ff:fe2c:fc09/64"],
+    "state": "up", "timestamp": 1590168187715}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine02", "ifname": "lo", "ipAddressList": ["10.0.0.22/32"], "macaddr":
+    "", "ip6AddressList": [], "state": "up", "timestamp": 1590168187715}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "spine02", "ifname": "swp1", "ipAddressList":
+    ["10.0.0.22/32"], "macaddr": "44:38:39:00:00:25", "ip6AddressList": ["fe80::4638:39ff:fe00:25/64"],
+    "state": "up", "timestamp": 1590168187715}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine02", "ifname": "swp2", "ipAddressList": ["10.0.0.22/32"], "macaddr":
+    "44:38:39:00:00:5e", "ip6AddressList": ["fe80::4638:39ff:fe00:5e/64"], "state":
+    "up", "timestamp": 1590168187715}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine02", "ifname": "swp3", "ipAddressList": ["10.0.0.22/32"], "macaddr":
+    "44:38:39:00:00:1c", "ip6AddressList": ["fe80::4638:39ff:fe00:1c/64"], "state":
+    "up", "timestamp": 1590168187715}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine02", "ifname": "swp4", "ipAddressList": ["10.0.0.22/32"], "macaddr":
+    "44:38:39:00:00:47", "ip6AddressList": ["fe80::4638:39ff:fe00:47/64"], "state":
+    "up", "timestamp": 1590168187715}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine02", "ifname": "swp5", "ipAddressList": ["10.0.0.22/32"], "macaddr":
+    "44:38:39:00:00:56", "ip6AddressList": ["fe80::4638:39ff:fe00:56/64"], "state":
+    "up", "timestamp": 1590168187715}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine02", "ifname": "swp6", "ipAddressList": ["10.0.0.22/32"], "macaddr":
+    "44:38:39:00:00:5b", "ip6AddressList": ["fe80::4638:39ff:fe00:5b/64"], "state":
+    "up", "timestamp": 1590168187715}]'
+- command: address show --columns=hostname --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: address show
+  output: '[{"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
+    {"hostname": "edge01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "internet"}, {"hostname": "internet"},
+    {"hostname": "internet"}, {"hostname": "internet"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "server101"},
+    {"hostname": "server101"}, {"hostname": "server101"}, {"hostname": "server101"},
+    {"hostname": "server102"}, {"hostname": "server102"}, {"hostname": "server102"},
+    {"hostname": "server102"}, {"hostname": "server103"}, {"hostname": "server103"},
+    {"hostname": "server103"}, {"hostname": "server103"}, {"hostname": "server104"},
+    {"hostname": "server104"}, {"hostname": "server104"}, {"hostname": "server104"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}]'
+- command: address summarize --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: address summarize
+  output: '{"single-attach_ospf_docker": {"deviceCnt": 14, "addressCnt": 83, "uniqueIfMacCnt":
+    79, "hostsWithv4AddressCnt": 14, "hostsWithv6AddressCnt": 0, "subnetsUsed": ["32",
+    "24"], "subnetTopCounts": [{"32": 36}, {"24": 18}]}}'
+- command: address unique --columns=hostname --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: address unique
+  output: '[{"hostname": "server104", "count": 4}, {"hostname": "server103", "count":
+    4}, {"hostname": "server102", "count": 4}, {"hostname": "server101", "count":
+    4}, {"hostname": "internet", "count": 4}, {"hostname": "edge01", "count": 4},
+    {"hostname": "leaf04", "count": 8}, {"hostname": "leaf03", "count": 8}, {"hostname":
+    "leaf02", "count": 8}, {"hostname": "leaf01", "count": 8}, {"hostname": "spine02",
+    "count": 9}, {"hostname": "spine01", "count": 9}, {"hostname": "exit02", "count":
+    9}, {"hostname": "exit01", "count": 9}]'

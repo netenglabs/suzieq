@@ -1,19 +1,17 @@
+import pytest
+from suzieq.cli.sqcmds import *
+from nubia import context
 import os
+import shlex
 import sys
+from tests.conftest import commands, suzieq_cli_path, load_up_the_tests
+from tempfile import mkstemp
 import yaml
 import json
 from subprocess import check_output, CalledProcessError
-import shlex
-from tempfile import mkstemp
 from collections import Counter
+from tests.conftest import setup_sqcmds
 
-import pytest
-from _pytest.mark.structures import Mark, MarkDecorator
-from suzieq.cli.sqcmds import *
-
-from nubia import context
-
-from tests.conftest import commands, suzieq_cli_path
 
 basic_verbs = ['show', 'summarize']
 
@@ -260,101 +258,39 @@ def execute_cmd(cmd, verb, arg, filter=None):
         return c()
 
 
-def _load_up_the_tests():
-    "reads the files from the samples directory and parametrizes the test"
-    tests = []
-    for i in os.scandir(os.path.abspath(os.curdir) +
-                        '/tests/integration/sqcmds/samples'):
-        if not i.path.endswith('.yml'):
-            continue
-        with open(i, 'r') as f:
-            out = yaml.load(f.read(), Loader=yaml.BaseLoader)
-            # The format of the YAML file assumed is as follows:
-            # description: <string>
-            # tests:
-            #   - command: <sqcmd to execute in non-modal format
-            #     data-directory: <where the data is present>, not used yet
-            #     marks: <space separated string of marks to mark the test>
-            #     output: |
-            #       <json_output>
-            #
-            #   - command:
-            #     ....
-            if out and 'tests' in out:
-                for t in out['tests']:
-                    # We use tags to dynamically mark the parametrized test
-                    # the marks MUST be registered in pytest.ini
-                    markers = []
-                    if 'marks' in t:
-                        markers = [MarkDecorator(Mark(x, [], {}))
-                                   for x in t['marks'].split()]
-                    if 'xfail' in t:
-                        except_err = None
-                        if 'raises' in t['xfail']:
-                            except_err = globals()['__builtins__'].get(
-                                t['xfail']['raises'], None)
+def _test_sqcmds(testvar, context_config):
+    output, error = setup_sqcmds(testvar, context_config)
 
-                        if except_err:
-                            markers += [pytest.mark.xfail(
-                                reason=t['xfail']['reason'],
-                                raises=except_err)]
-                        else:
-                            if 'reason' in t['xfail']:
-                                markers += [pytest.mark.xfail(
-                                    reason=t['xfail']['reason'])]
-                            else:
-                                markers += [pytest.mark.xfail()]
-                    if markers:
-                        tests += [pytest.param(t, marks=markers,
-                                               id=t['command'])]
-                    else:
-                        tests += [pytest.param(t, id=t['command'])]
-
-    return tests
-
-
-@pytest.mark.smoke
-@pytest.mark.sqcmds
-@pytest.mark.parametrize("testvar", _load_up_the_tests())
-def test_sqcmds(testvar, create_context_config):
-    sqcmd_path = [sys.executable, suzieq_cli_path]
-    tmpfname = None
-
-    if 'data-directory' in testvar:
-        # We need to create a tempfile to hold the config
-        tmpconfig = create_context_config
-        tmpconfig['data-directory'] = testvar['data-directory']
-
-        fd, tmpfname = mkstemp(suffix='yml')
-        f = os.fdopen(fd, 'w')
-        f.write(yaml.dump(tmpconfig))
-        f.close()
-        sqcmd_path += ['--config={}'.format(tmpfname)]
-
-    exec_cmd = sqcmd_path + shlex.split(testvar['command'])
-
-    output = None
-    error = None
-    try:
-        output = check_output(exec_cmd)
-    except CalledProcessError as e:
-        error = e.output
-
-    if tmpfname:
-        os.remove(tmpfname)
 
     jout = []
+#    out_df = pd.DataFrame()
     if output:
+
         try:
             jout = json.loads(output.decode('utf-8').strip())
+#            out_df = pd.read_json(output.decode('utf-8').strip())
         except json.JSONDecodeError:
             jout = output
 
     if 'output' in testvar:
+#        expected_df = pd.DataFrame()
         try:
             expected_jout = json.loads(testvar['output'].strip())
+#            expected_df = pd.read_json(testvar['output'].strip())
         except json.JSONDecodeError:
             expected_jout = testvar['output']
+
+        # # get rid of time columns to compare against
+        #
+        # if not out_df.empty and not expected_df.empty:
+        #     for col in ['timestamp', 'lastChangeTime', 'first_time']:
+        #         if col in out_df.columns:
+        #             out_df = out_df.drop(columns=[col])
+        #         if col in expected_df:
+        #             expected_df = expected_df.drop(columns=[col])
+        #     pd.testing.assert_frame_equal(out_df, expected_df)
+        #     jout = json.loads(out_df.to_json())
+        #     expected_jout = json.loads(expected_df.to_json())
 
         assert (type(expected_jout) == type(jout))
         if isinstance(jout, dict):
@@ -373,6 +309,9 @@ def test_sqcmds(testvar, create_context_config):
             got = [sorted(d.items()) for d in jout]
             assert (expected == got)
 
+    elif not error and 'xfail' in testvar:
+        # this was marked to fail, but it succeeded so we must return
+        return
     elif error and 'xfail' in testvar and 'error' in testvar['xfail']:
         if jout.decode("utf-8") == testvar['xfail']['error']:
             assert False
@@ -387,3 +326,11 @@ def test_sqcmds(testvar, create_context_config):
         assert jerror == jterror
     else:
         raise Exception(f"either xfail or output requried {error}")
+
+
+@pytest.mark.smoke
+@pytest.mark.sqcmds
+@pytest.mark.parametrize("testvar", load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
+                        '/tests/integration/sqcmds/samples')))
+def test_sqcmds(testvar, create_context_config):
+    _test_sqcmds(testvar, create_context_config)

@@ -6,10 +6,8 @@ import json
 import shlex
 import argparse
 from subprocess import check_output, CalledProcessError
+import logging
 from tests import conftest
-
-# TODO
-#  create tempfile for config
 
 
 def create_config(testvar):
@@ -31,12 +29,12 @@ def run_cmd(cmd_path, testvar):
     cmds = exec_cmd[:]
     _ = cmds.pop(0)
     _ = cmds.pop(0)
-    print(f"running {cmds}")
+    logging.warning(f"running {cmds}")
     try:
         output = check_output(exec_cmd)
     except CalledProcessError as e:
         error = e.output
-        print(f"ERROR: {e.output} {e.returncode}")
+        logging.warning(f"ERROR: {e.output} {e.returncode}")
 
     jout = []
     jerror = []
@@ -57,13 +55,26 @@ def run_cmd(cmd_path, testvar):
     return jout, jerror, xfail
 
 
+def reset_test(test):
+    if 'error' in test:
+        del test['error']
+    if 'xfail' in test:
+        del test['xfail']
+    if 'output' in test:
+        del test['output']
+    return reset_test
+
+
 if __name__ == '__main__':
 
     sqcmd_path = [sys.executable, conftest.suzieq_cli_path]
     parser = argparse.ArgumentParser()
 
     parser.add_argument('--filename', '-f', type=str, required=True)
+    parser.add_argument('--data_dir', '-d', type=str)
     parser.add_argument('--overwrite', '-o', action='store_true')
+    parser.add_argument('--namespace', '-n', type=str)
+    parser.add_argument('--reset', '-r', action='store_true')
     userargs = parser.parse_args()
 
     with open(userargs.filename, 'r') as f:
@@ -71,38 +82,62 @@ if __name__ == '__main__':
 
     changes = 0
     for test in data['tests']:
-        result = 'output'
-        if 'error' in test:
-            result = 'error'
-        elif 'xfail' in test:
-            result = 'xfail'
-
-        cfg_file = create_config(test)
-        sqcmd = sqcmd_path + ['--config={}'.format(cfg_file)]
-        if result not in test or test[result] is None or userargs.overwrite:
+        if userargs.reset:
+            test = reset_test(test)
             changes += 1
-
-            reason = None
-            output, error, xfail = run_cmd(sqcmd, test)
-            if not error and result != 'xfail':
-                if result in test:
-                    del test[result]
-                result = 'output'
-                test[result] = json.dumps(output)
-            elif result == 'xfail':
-                test[result]['error'] = json.dumps(output)
-            else:
+        else:
+            result = None
+            if 'error' in test:
                 result = 'error'
-                if xfail:
-                    result = 'xfail'
-                    reason = 'uncaught exception'
-                if result not in test:
-                    test[result] = {}
-                test[result]['error'] = json.dumps(error)
-                if reason:
-                    test[result]['reason'] = reason
-                if 'output' in test:
-                    del test['output']
+            elif 'xfail' in test:
+                result = 'xfail'
+            elif 'output' in test:
+                result = 'output'
+
+            if userargs.namespace:
+                if userargs.namespace not in test['command']:
+                    test['command'] = f"{test['command']} --namespace={userargs.namespace}"
+                    changes += 1
+
+            if result not in test or test[result] is None or userargs.overwrite:
+                changes += 1
+                if userargs.data_dir:
+                    test['data-directory'] = userargs.data_dir
+
+                cfg_file = create_config(test)
+                sqcmd = sqcmd_path + ['--config={}'.format(cfg_file)]
+
+                reason = None
+                output, error, xfail = run_cmd(sqcmd, test)
+
+                # make sure that the result is the same class of result from before
+                # there would be no result if no output had been specified in the captured output
+                # sometimes we correctly produce no results, so avoid checking that
+                if result and (output or error or xfail):
+                    assert globals()[result], \
+                        f"result {result}, output: {output}, error: {error}, xfail: {xfail}"
+
+                # TODO: what to do when captured output is correctly empty []
+
+                if not error and result != 'xfail':
+                    if result in test:
+                        del test[result]
+                    result = 'output'
+                    test[result] = json.dumps(output)
+                elif result == 'xfail':
+                    test[result]['error'] = json.dumps(output)
+                else:
+                    result = 'error'
+                    if xfail:
+                        result = 'xfail'
+                        reason = 'uncaught exception'
+                    if result not in test:
+                        test[result] = {}
+                    test[result]['error'] = json.dumps(error)
+                    if reason:
+                        test[result]['reason'] = reason
+                    if 'output' in test:
+                        del test['output']
     if changes:
         with open(userargs.filename, 'w') as f:
             yaml.dump(data, f)

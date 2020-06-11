@@ -1,0 +1,186 @@
+description: 'Testing verbs for arpnd: show summarize unique'
+tests:
+- command: arpnd show --format=json --namespace=dual-attach_ospf_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_unnumbered/parquet-out
+  marks: arpnd show
+  output: '[{"namespace": "dual-attach_ospf_unnumbered", "hostname": "edge01", "ipAddress":
+    "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:fa:f5:9b", "state": "reachable",
+    "offload": false, "timestamp": 1590174171277}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "exit01", "ipAddress": "10.0.0.21", "oif": "swp1", "macaddr": "52:54:00:2c:2c:b6",
+    "state": "reachable", "offload": false, "timestamp": 1590174172060}, {"namespace":
+    "dual-attach_ospf_unnumbered", "hostname": "exit01", "ipAddress": "10.0.0.22",
+    "oif": "swp2", "macaddr": "52:54:00:83:22:89", "state": "reachable", "offload":
+    false, "timestamp": 1590174172060}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "exit01", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr":
+    "52:54:00:fa:f5:9b", "state": "reachable", "offload": false, "timestamp": 1590174172060},
+    {"namespace": "dual-attach_ospf_unnumbered", "hostname": "exit02", "ipAddress":
+    "10.0.0.21", "oif": "swp1", "macaddr": "52:54:00:ea:72:35", "state": "reachable",
+    "offload": false, "timestamp": 1590174172060}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "exit02", "ipAddress": "10.0.0.22", "oif": "swp2", "macaddr": "52:54:00:24:73:0d",
+    "state": "reachable", "offload": false, "timestamp": 1590174172060}, {"namespace":
+    "dual-attach_ospf_unnumbered", "hostname": "exit02", "ipAddress": "192.168.121.1",
+    "oif": "eth0", "macaddr": "52:54:00:fa:f5:9b", "state": "reachable", "offload":
+    false, "timestamp": 1590174172060}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "internet", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr":
+    "52:54:00:fa:f5:9b", "state": "reachable", "offload": false, "timestamp": 1590174172060},
+    {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf01", "ipAddress":
+    "10.0.0.21", "oif": "swp1", "macaddr": "52:54:00:b8:91:af", "state": "reachable",
+    "offload": false, "timestamp": 1590174172563}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "leaf01", "ipAddress": "10.0.0.22", "oif": "swp2", "macaddr": "52:54:00:71:a3:c6",
+    "state": "reachable", "offload": false, "timestamp": 1590174172563}, {"namespace":
+    "dual-attach_ospf_unnumbered", "hostname": "leaf01", "ipAddress": "169.254.1.2",
+    "oif": "peerlink.4094", "macaddr": "52:54:00:a1:a6:97", "state": "reachable",
+    "offload": false, "timestamp": 1590174172563}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "leaf01", "ipAddress": "172.16.1.101", "oif": "vlan13", "macaddr":
+    "52:54:00:63:79:38", "state": "reachable", "offload": false, "timestamp": 1590174172563},
+    {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf01", "ipAddress":
+    "172.16.2.102", "oif": "vlan24", "macaddr": "52:54:00:0e:a6:79", "state": "reachable",
+    "offload": false, "timestamp": 1590174172563}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "leaf01", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr":
+    "52:54:00:fa:f5:9b", "state": "reachable", "offload": false, "timestamp": 1590174172563},
+    {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf02", "ipAddress":
+    "10.0.0.21", "oif": "swp1", "macaddr": "52:54:00:d3:73:bf", "state": "reachable",
+    "offload": false, "timestamp": 1590174172563}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "leaf02", "ipAddress": "10.0.0.22", "oif": "swp2", "macaddr": "52:54:00:94:78:53",
+    "state": "reachable", "offload": false, "timestamp": 1590174172563}, {"namespace":
+    "dual-attach_ospf_unnumbered", "hostname": "leaf02", "ipAddress": "169.254.1.1",
+    "oif": "peerlink.4094", "macaddr": "52:54:00:60:4b:f2", "state": "reachable",
+    "offload": false, "timestamp": 1590174172563}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "leaf02", "ipAddress": "172.16.1.1", "oif": "vlan13", "macaddr": "52:54:00:c1:53:7e",
+    "state": "permanent", "offload": false, "timestamp": 1590174172563}, {"namespace":
+    "dual-attach_ospf_unnumbered", "hostname": "leaf02", "ipAddress": "172.16.1.101",
+    "oif": "vlan13", "macaddr": "52:54:00:63:79:38", "state": "reachable", "offload":
+    false, "timestamp": 1590174172563}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "leaf02", "ipAddress": "172.16.2.1", "oif": "vlan24", "macaddr": "52:54:00:c1:53:7e",
+    "state": "permanent", "offload": false, "timestamp": 1590174172563}, {"namespace":
+    "dual-attach_ospf_unnumbered", "hostname": "leaf02", "ipAddress": "172.16.2.102",
+    "oif": "vlan24", "macaddr": "52:54:00:0e:a6:79", "state": "reachable", "offload":
+    false, "timestamp": 1590174172563}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "leaf02", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr":
+    "52:54:00:fa:f5:9b", "state": "reachable", "offload": false, "timestamp": 1590174172563},
+    {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf03", "ipAddress":
+    "10.0.0.21", "oif": "swp1", "macaddr": "52:54:00:c5:f7:ec", "state": "reachable",
+    "offload": false, "timestamp": 1590174172077}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "leaf03", "ipAddress": "10.0.0.22", "oif": "swp2", "macaddr": "52:54:00:6d:57:48",
+    "state": "reachable", "offload": false, "timestamp": 1590174172077}, {"namespace":
+    "dual-attach_ospf_unnumbered", "hostname": "leaf03", "ipAddress": "169.254.1.2",
+    "oif": "peerlink.4094", "macaddr": "52:54:00:84:18:24", "state": "reachable",
+    "offload": false, "timestamp": 1590174172077}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "leaf03", "ipAddress": "172.16.3.103", "oif": "vlan13", "macaddr":
+    "52:54:00:f2:7a:c7", "state": "reachable", "offload": false, "timestamp": 1590174172077},
+    {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf03", "ipAddress":
+    "172.16.4.104", "oif": "vlan24", "macaddr": "52:54:00:6a:6f:25", "state": "reachable",
+    "offload": false, "timestamp": 1590174172077}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "leaf03", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr":
+    "52:54:00:fa:f5:9b", "state": "reachable", "offload": false, "timestamp": 1590174172077},
+    {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf04", "ipAddress":
+    "10.0.0.21", "oif": "swp1", "macaddr": "52:54:00:98:d3:1f", "state": "reachable",
+    "offload": false, "timestamp": 1590174172563}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "leaf04", "ipAddress": "10.0.0.22", "oif": "swp2", "macaddr": "52:54:00:31:c6:b8",
+    "state": "reachable", "offload": false, "timestamp": 1590174172563}, {"namespace":
+    "dual-attach_ospf_unnumbered", "hostname": "leaf04", "ipAddress": "169.254.1.1",
+    "oif": "peerlink.4094", "macaddr": "52:54:00:16:b9:7f", "state": "reachable",
+    "offload": false, "timestamp": 1590174172563}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "leaf04", "ipAddress": "172.16.3.1", "oif": "vlan13", "macaddr": "52:54:00:27:7e:c7",
+    "state": "permanent", "offload": false, "timestamp": 1590174172563}, {"namespace":
+    "dual-attach_ospf_unnumbered", "hostname": "leaf04", "ipAddress": "172.16.3.103",
+    "oif": "vlan13", "macaddr": "52:54:00:f2:7a:c7", "state": "reachable", "offload":
+    false, "timestamp": 1590174172563}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "leaf04", "ipAddress": "172.16.4.1", "oif": "vlan24", "macaddr": "52:54:00:27:7e:c7",
+    "state": "permanent", "offload": false, "timestamp": 1590174172563}, {"namespace":
+    "dual-attach_ospf_unnumbered", "hostname": "leaf04", "ipAddress": "172.16.4.104",
+    "oif": "vlan24", "macaddr": "52:54:00:6a:6f:25", "state": "reachable", "offload":
+    false, "timestamp": 1590174172563}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "leaf04", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr":
+    "52:54:00:fa:f5:9b", "state": "reachable", "offload": false, "timestamp": 1590174172563},
+    {"namespace": "dual-attach_ospf_unnumbered", "hostname": "server101", "ipAddress":
+    "172.16.1.1", "oif": "bond0", "macaddr": "52:54:00:c1:53:7e", "state": "reachable",
+    "offload": false, "timestamp": 1590174171100}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "server101", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr":
+    "52:54:00:fa:f5:9b", "state": "reachable", "offload": false, "timestamp": 1590174171100},
+    {"namespace": "dual-attach_ospf_unnumbered", "hostname": "server102", "ipAddress":
+    "172.16.2.1", "oif": "bond0", "macaddr": "52:54:00:c1:53:7e", "state": "reachable",
+    "offload": false, "timestamp": 1590174171100}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "server102", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr":
+    "52:54:00:fa:f5:9b", "state": "reachable", "offload": false, "timestamp": 1590174171100},
+    {"namespace": "dual-attach_ospf_unnumbered", "hostname": "server103", "ipAddress":
+    "172.16.3.1", "oif": "bond0", "macaddr": "52:54:00:f7:f3:de", "state": "reachable",
+    "offload": false, "timestamp": 1590174171277}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "server103", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr":
+    "52:54:00:fa:f5:9b", "state": "reachable", "offload": false, "timestamp": 1590174171277},
+    {"namespace": "dual-attach_ospf_unnumbered", "hostname": "server104", "ipAddress":
+    "172.16.4.1", "oif": "bond0", "macaddr": "52:54:00:f7:f3:de", "state": "reachable",
+    "offload": false, "timestamp": 1590174171100}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "server104", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr":
+    "52:54:00:fa:f5:9b", "state": "reachable", "offload": false, "timestamp": 1590174171100},
+    {"namespace": "dual-attach_ospf_unnumbered", "hostname": "spine01", "ipAddress":
+    "10.0.0.101", "oif": "swp6", "macaddr": "52:54:00:77:74:39", "state": "reachable",
+    "offload": false, "timestamp": 1590174172060}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "spine01", "ipAddress": "10.0.0.102", "oif": "swp5", "macaddr": "52:54:00:16:31:23",
+    "state": "reachable", "offload": false, "timestamp": 1590174172060}, {"namespace":
+    "dual-attach_ospf_unnumbered", "hostname": "spine01", "ipAddress": "10.0.0.11",
+    "oif": "swp1", "macaddr": "52:54:00:f1:ea:51", "state": "reachable", "offload":
+    false, "timestamp": 1590174172060}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "spine01", "ipAddress": "10.0.0.12", "oif": "swp2", "macaddr": "52:54:00:4a:49:f7",
+    "state": "reachable", "offload": false, "timestamp": 1590174172060}, {"namespace":
+    "dual-attach_ospf_unnumbered", "hostname": "spine01", "ipAddress": "10.0.0.13",
+    "oif": "swp3", "macaddr": "52:54:00:c5:50:90", "state": "reachable", "offload":
+    false, "timestamp": 1590174172060}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "spine01", "ipAddress": "10.0.0.14", "oif": "swp4", "macaddr": "52:54:00:d3:e8:cf",
+    "state": "reachable", "offload": false, "timestamp": 1590174172060}, {"namespace":
+    "dual-attach_ospf_unnumbered", "hostname": "spine01", "ipAddress": "192.168.121.1",
+    "oif": "eth0", "macaddr": "52:54:00:fa:f5:9b", "state": "reachable", "offload":
+    false, "timestamp": 1590174172060}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "spine02", "ipAddress": "10.0.0.101", "oif": "swp6", "macaddr": "52:54:00:4b:9e:2e",
+    "state": "reachable", "offload": false, "timestamp": 1590174172060}, {"namespace":
+    "dual-attach_ospf_unnumbered", "hostname": "spine02", "ipAddress": "10.0.0.102",
+    "oif": "swp5", "macaddr": "52:54:00:21:e4:db", "state": "reachable", "offload":
+    false, "timestamp": 1590174172060}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "spine02", "ipAddress": "10.0.0.11", "oif": "swp1", "macaddr": "52:54:00:7c:76:a5",
+    "state": "reachable", "offload": false, "timestamp": 1590174172060}, {"namespace":
+    "dual-attach_ospf_unnumbered", "hostname": "spine02", "ipAddress": "10.0.0.12",
+    "oif": "swp2", "macaddr": "52:54:00:13:05:b6", "state": "reachable", "offload":
+    false, "timestamp": 1590174172060}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "spine02", "ipAddress": "10.0.0.13", "oif": "swp3", "macaddr": "52:54:00:90:5d:3d",
+    "state": "reachable", "offload": false, "timestamp": 1590174172060}, {"namespace":
+    "dual-attach_ospf_unnumbered", "hostname": "spine02", "ipAddress": "10.0.0.14",
+    "oif": "swp4", "macaddr": "52:54:00:f3:ab:1e", "state": "reachable", "offload":
+    false, "timestamp": 1590174172060}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "spine02", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr":
+    "52:54:00:fa:f5:9b", "state": "reachable", "offload": false, "timestamp": 1590174172060}]'
+- command: arpnd show --columns=hostname --format=json --namespace=dual-attach_ospf_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_unnumbered/parquet-out
+  marks: arpnd show
+  output: '[{"hostname": "edge01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "internet"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server101"},
+    {"hostname": "server102"}, {"hostname": "server102"}, {"hostname": "server103"},
+    {"hostname": "server103"}, {"hostname": "server104"}, {"hostname": "server104"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}]'
+- command: arpnd summarize --format=json --namespace=dual-attach_ospf_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_unnumbered/parquet-out
+  marks: arpnd summarize
+  output: '{"dual-attach_ospf_unnumbered": {"deviceCnt": 14, "arpNdEntriesCnt": 58,
+    "macaddrCnt": 58, "oifCnt": 58, "uniqueOifCnt": 11, "extLearnEntriesCnt": 0, "staticEntriesCnt":
+    4, "failedEntryCnt": 0}}'
+- command: arpnd unique --columns=hostname --format=json --namespace=dual-attach_ospf_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_unnumbered/parquet-out
+  marks: arpnd unique
+  output: '[{"hostname": "internet", "count": 1}, {"hostname": "edge01", "count":
+    1}, {"hostname": "server104", "count": 2}, {"hostname": "server103", "count":
+    2}, {"hostname": "server102", "count": 2}, {"hostname": "server101", "count":
+    2}, {"hostname": "exit02", "count": 3}, {"hostname": "exit01", "count": 3}, {"hostname":
+    "leaf03", "count": 6}, {"hostname": "leaf01", "count": 6}, {"hostname": "spine02",
+    "count": 7}, {"hostname": "spine01", "count": 7}, {"hostname": "leaf04", "count":
+    8}, {"hostname": "leaf02", "count": 8}]'

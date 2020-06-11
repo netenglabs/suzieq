@@ -1,0 +1,87 @@
+description: 'Testing verbs for device: show summarize unique'
+tests:
+- command: device show --format=json --namespace=single-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_centralized/parquet-out
+  marks: device show
+  output: '[{"namespace": "single-attach_evpn_centralized", "hostname": "edge01",
+    "model": "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.216", "uptime": 79483, "timestamp":
+    1590167352483}, {"namespace": "single-attach_evpn_centralized", "hostname": "exit01",
+    "model": "vm", "version": "3.7.12", "vendor": "Cumulus", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.244", "uptime": 75510, "timestamp":
+    1590167352510}, {"namespace": "single-attach_evpn_centralized", "hostname": "exit02",
+    "model": "vm", "version": "3.7.12", "vendor": "Cumulus", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.194", "uptime": 75509, "timestamp":
+    1590167352509}, {"namespace": "single-attach_evpn_centralized", "hostname": "internet",
+    "model": "vm", "version": "3.7.12", "vendor": "Cumulus", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.132", "uptime": 76509, "timestamp":
+    1590167352509}, {"namespace": "single-attach_evpn_centralized", "hostname": "leaf01",
+    "model": "vm", "version": "3.7.12", "vendor": "Cumulus", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.141", "uptime": 75652, "timestamp":
+    1590167352652}, {"namespace": "single-attach_evpn_centralized", "hostname": "leaf02",
+    "model": "vm", "version": "3.7.12", "vendor": "Cumulus", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.102", "uptime": 75550, "timestamp":
+    1590167352550}, {"namespace": "single-attach_evpn_centralized", "hostname": "leaf03",
+    "model": "vm", "version": "3.7.12", "vendor": "Cumulus", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.89", "uptime": 75550, "timestamp":
+    1590167352550}, {"namespace": "single-attach_evpn_centralized", "hostname": "leaf04",
+    "model": "vm", "version": "3.7.12", "vendor": "Cumulus", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.195", "uptime": 75509, "timestamp":
+    1590167352509}, {"namespace": "single-attach_evpn_centralized", "hostname": "server101",
+    "model": "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.213", "uptime": 245909, "timestamp":
+    1590167351909}, {"namespace": "single-attach_evpn_centralized", "hostname": "server102",
+    "model": "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.229", "uptime": 250033, "timestamp":
+    1590167352033}, {"namespace": "single-attach_evpn_centralized", "hostname": "server103",
+    "model": "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.5", "uptime": 236909, "timestamp":
+    1590167351909}, {"namespace": "single-attach_evpn_centralized", "hostname": "server104",
+    "model": "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.162", "uptime": 255909, "timestamp":
+    1590167351909}, {"namespace": "single-attach_evpn_centralized", "hostname": "spine01",
+    "model": "vm", "version": "3.7.12", "vendor": "Cumulus", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.41", "uptime": 75340, "timestamp":
+    1590167352340}, {"namespace": "single-attach_evpn_centralized", "hostname": "spine02",
+    "model": "vm", "version": "3.7.12", "vendor": "Cumulus", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.214", "uptime": 75550, "timestamp":
+    1590167352550}]'
+- command: device show --columns=hostname --format=json --namespace=single-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_centralized/parquet-out
+  marks: device show
+  output: '[{"hostname": "edge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
+    {"hostname": "internet"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server102"},
+    {"hostname": "server103"}, {"hostname": "server104"}, {"hostname": "spine01"},
+    {"hostname": "spine02"}]'
+- command: device summarize --format=json --namespace=single-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_centralized/parquet-out
+  marks: device summarize
+  output: '{"single-attach_evpn_centralized": {"deviceCnt": 14, "vendorCnt": {"Cumulus":
+    9, "Ubuntu": 5}, "modelCnt": {"vm": 14}, "archCnt": {"x86-64": 14}, "versionCnt":
+    {"3.7.12": 9, "16.04.6 LTS": 5}, "upTimeStat": [75, 255, 75]}}'
+- command: device summarize --columns="namespace hostname" --format=json --namespace=single-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_centralized/parquet-out
+  error:
+    error: '{"error": {"0": "ERROR: You cannot specify columns with summarize"}}'
+  marks: device summarize
+- command: device unique --columns=hostname --format=json --namespace=single-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_centralized/parquet-out
+  marks: device unique
+  output: '[{"hostname": "spine02", "count": 1}, {"hostname": "spine01", "count":
+    1}, {"hostname": "server104", "count": 1}, {"hostname": "server103", "count":
+    1}, {"hostname": "server102", "count": 1}, {"hostname": "server101", "count":
+    1}, {"hostname": "leaf04", "count": 1}, {"hostname": "leaf03", "count": 1}, {"hostname":
+    "leaf02", "count": 1}, {"hostname": "leaf01", "count": 1}, {"hostname": "internet",
+    "count": 1}, {"hostname": "exit02", "count": 1}, {"hostname": "exit01", "count":
+    1}, {"hostname": "edge01", "count": 1}]'
+- command: device unique --columns="hostname namespace" --format=json --namespace=single-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_centralized/parquet-out
+  error:
+    error: '[{"error": "ERROR: Specify a single column with unique"}]'
+  marks: device unique
+- command: device unique --columns=badcolumn --format=json --namespace=single-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_centralized/parquet-out
+  error:
+    error: '[{"error": "ERROR: ''badcolumn''"}]'
+  marks: device unique
