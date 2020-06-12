@@ -49,13 +49,18 @@ class RoutesService(Service):
                     entry['prefix'] = '::0/0'
                 else:
                     entry['prefix'] = '0.0.0.0/0'
+
+            self._fix_ipvers(entry)
+
             if '/' not in entry['prefix']:
-                entry['prefix'] += '/32'
+                if entry['ipvers'] == 6:
+                    entry['prefix'] += '/128'
+                else:
+                    entry['prefix'] += '/32'
             if not entry["action"]:
                 entry["action"] = "forward"
             elif entry["action"] == "blackhole":
                 entry["oifs"] = ["blackhole"]
-            self._fix_ipvers(entry)
 
             entry['inHardware'] = True  # Till the offload flag is here
 
