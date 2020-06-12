@@ -16,7 +16,8 @@ class RoutesObj(SqEngineObject):
             df['prefix'] = df['prefix'].astype('ipnetwork')
 
             if prefixlen:
-                return df.query(f'prefix.ipnet.prefixlen {prefixlen}')
+                df = df.query(f'prefix.ipnet.prefixlen {prefixlen}')
+                df.loc[:, 'prefix'] = df['prefix'].astype(str)
 
         return df
 
