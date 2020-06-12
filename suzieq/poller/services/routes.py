@@ -1,4 +1,5 @@
 from suzieq.poller.services.service import Service
+import numpy as np
 
 
 class RoutesService(Service):
@@ -63,7 +64,9 @@ class RoutesService(Service):
     def _clean_junos_data(self, processed_data, raw_data):
         """Clean VRF name in JUNOS data"""
 
-        for entry in processed_data:
+        drop_entries_idx = []
+
+        for i, entry in enumerate(processed_data):
             vrf = entry.pop("vrf")[0]['data']
             if vrf == "inet.0":
                 vrf = "default"
@@ -84,6 +87,9 @@ class RoutesService(Service):
                 entry['oifs'] = [entry['localif']]
 
             entry['protocol'] = entry['protocol'].lower()
+            if entry['_rtlen'] != 0:
+                drop_entries_idx.append(i)
+
             if entry['activeTag'] == '*':
                 entry['active'] = True
             else:
@@ -92,6 +98,9 @@ class RoutesService(Service):
             entry['metric'] = int(entry['metric'])
             entry.pop('localif')
             entry.pop('activeTag')
+
+        processed_data = np.delete(processed_data,
+                                   drop_entries_idx).tolist()
 
         return processed_data
 
