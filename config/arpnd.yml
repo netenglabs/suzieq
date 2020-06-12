@@ -8,7 +8,7 @@ show-fields:
   - oif
   - macaddr
   - state
-  - offload
+  - remote
 
 apply:
   cumulus:
@@ -27,7 +27,7 @@ apply:
     "address: ipAddress",
     "interface: oif",
     "state: state?|reachable",
-    "offload: offload?|False",
+    "offload: remote?|False",
     ]'
 
   junos:
@@ -37,8 +37,8 @@ apply:
     "mac-address/[0]/data: macaddr",
     "ip-address/[0]/data: ipAddress",
     "interface-name/[0]/data: oif",
-    "interface-name/[0]/data: origIname",
+    "interface-name/[0]/data: origIfname",
     "arp-table-entry-flags: flags",
-    "offload: offload?|False",
+    "offload: remote?|False",
     ]'
       
