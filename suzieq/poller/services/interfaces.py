@@ -257,7 +257,7 @@ class InterfaceService(Service):
                 # NXOS doesn't do that. So, create a dummy interface
                 new_entry = {'ifname': entry['vrf'],
                              'mtu': 65536,
-                             'state': up,
+                             'state': 'up',
                              'type': 'vrf',
                              'master': None,
                              'vlan': 0}
@@ -277,12 +277,13 @@ class InterfaceService(Service):
             if 'ipAddressList' in entry:
                 pri_ipaddr = f"{entry['ipAddressList']}/{entry['_maskLen']}"
                 ipaddr = [pri_ipaddr]
-                for i, elem in enumerate(entry['_secIPs']):
+                for i, elem in enumerate(entry.get('_secIPs', [])):
                     ipaddr.append(f"{elem}/{entry['_secmasklens'][i]}")
                 entry['ipAddressList'] = ipaddr
 
             if 'ip6AddressList' in entry:
-                entry['ip6AddressList'].append(entry['_linklocal'])
+                if '_linklocal' in entry:
+                    entry['ip6AddressList'].append(entry['_linklocal'])
 
             if entry.get('_unnum_intf', ''):
                 if entry['ifname'] in unnum_intf:
@@ -329,6 +330,19 @@ class InterfaceService(Service):
 
         return processed_data
 
+    def _clean_linux_data(self, processed_data):
+        """Pluck admin state from flags"""
+        for entry in processed_data:
+            entry['state'] = entry['state'].lower()
+            if entry['state'] == 'unknown':
+                entry['state'] = 'up'  # loopback
+            if ',UP' in entry['_flags']:
+                entry['adminState'] = 'up'
+            else:
+                entry['adminState'] = 'down'
+
+        return processed_data
+
     def clean_data(self, processed_data, raw_data):
         """Homogenize the IP addresses across different implementations
         Input:
@@ -346,6 +360,8 @@ class InterfaceService(Service):
             processed_data = self._clean_junos_data(processed_data)
         elif devtype == "nxos":
             processed_data = self._clean_nxos_data(processed_data)
+        elif devtype == "linux":
+            processed_data = self._clean_linux_data(processed_data)
         else:
             for entry in processed_data:
                 entry['state'] = entry['state'].lower()

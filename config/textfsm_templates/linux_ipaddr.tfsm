@@ -1,5 +1,6 @@
 Value ifindex (\d+)
 Value ifname ([^:@]+)
+Value _flags (\S+)
 Value mtu (\d+)
 Value master (\S+)
 Value state (\S+)
@@ -13,8 +14,8 @@ Value type (loopback|ether|vlan|vxlan|vrf|bond|bridge|bridge_slave|bond_slave|ma
 
 Start
   ^\d+: -> Continue.Record
-  ^${ifindex}: ${ifname}.*: <.*> mtu ${mtu}.* master ${master} state ${state}.*$$
-  ^${ifindex}: ${ifname}.*: <.*> mtu ${mtu}.* state ${state}.*$$
+  ^${ifindex}: ${ifname}.*: <${_flags}> mtu ${mtu}.* master ${master} state ${state}.*$$
+  ^${ifindex}: ${ifname}.*: <${_flags}> mtu ${mtu}.* state ${state}.*$$
   ^\s*link/${type}\s+${macaddr} brd .*$$
   ^\s*inet\s+${ipAddressList}.*scope global.*$$
   ^\s*inet6\s+${ip6AddressList}.*scope global.*$$

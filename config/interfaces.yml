@@ -51,6 +51,7 @@ apply:
     command: show interface | display json
     normalize: 'interface-information/[0]/physical-interface/*/[
     "oper-status/[0]/data: state",
+    "admin-status/[0]/data: adminState",
     "speed/[0]/data: speed?|0",
     "name/[0]/data: ifname",
     "name/[0]/data: origIfname",
@@ -85,13 +86,14 @@ apply:
         "svi_reason_desc: reason?|reason",
         ]'
 
-      - command: show ip interface | json
+      - command: show ip interface vrf all | json
         normalize: 'TABLE_intf/ROW_intf/*/[
         "vrf-name-out: vrf",
         "intf-name: ifname",
         "proto-state: state",
         "prefix: ipAddressList",
         "masklen: _maskLen",
+        "admin-state: adminState",
         "mtu: mtu",
         "unnum-intf: _unnum_intf?|",
         "TABLE_unnuminf/ROW_unnuminf/unnum-child-inf: _child_intf?|[]",
@@ -99,10 +101,11 @@ apply:
         "TABLE_secondary_address/ROW_secondary_address/[*]?/masklen1: _secmasklens",
         ]'
 
-      - command: show ipv6 interface | json
+      - command: show ipv6 interface vrf all | json
         normalize: 'TABLE_intf/ROW_intf/*?/[
         "vrf-name-out: vrf",
         "intf-name: ifname",
+        "admin-state: adminState",
         "TABLE_addr/ROW_addr/[*]?/addr: ip6AddressList",
         "linklocal-addr: _linklocal"
         ]'
