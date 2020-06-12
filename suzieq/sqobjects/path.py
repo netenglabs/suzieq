@@ -64,13 +64,23 @@ class PathObj(basicobj.SqObject):
 
         self._macsobj = macs.MacsObj(context=self.ctxt, namespace=namespace)
 
-        self._src_df = self._if_df[self._if_df.ipAddressList.astype(str)
-                                   .str.contains(source + "/")]
+        if ':' in source:
+            self._src_df = self._if_df[self._if_df.ip6AddressList.astype(str)
+                                       .str.contains(source + "/")]
+        else:
+            self._src_df = self._if_df[self._if_df.ipAddressList.astype(str)
+                                       .str.contains(source + "/")]
+
         if self._src_df.empty:
             raise AttributeError(f"Invalid src {source}")
 
-        self._dest_df = self._if_df[self._if_df.ipAddressList.astype(str)
-                                    .str.contains(dest + "/")]
+        if ':' in dest:
+            self._dest_df = self._if_df[self._if_df.ip6AddressList.astype(str)
+                                        .str.contains(dest + "/")]
+        else:
+            self._dest_df = self._if_df[self._if_df.ipAddressList.astype(str)
+                                        .str.contains(dest + "/")]
+
         if self._dest_df.empty:
             raise AttributeError(f"Invalid dest {dest}")
 
