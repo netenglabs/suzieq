@@ -2,9 +2,9 @@ Value ipAddress ([0-9.]*)
 Value macaddr ([0-9a-f:]*)
 Value oif (\S+)
 Value state (\w+)
-Value offload (offload)
+Value remote (offload)
 
 Start
-  ^${ipAddress}\s+dev ${oif}\s+lladdr ${macaddr}\s+${offload}\s+${state} -> Record
+  ^${ipAddress}\s+dev ${oif}\s+lladdr ${macaddr}\s+${remote}\s+${state} -> Record
   ^${ipAddress}\s+dev ${oif}\s+lladdr ${macaddr}\s+${state} -> Record
 
