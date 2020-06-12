@@ -37,6 +37,7 @@ Overall, where we want to be by the end of the year
 
 ## Roadmap for the rest of 2020
 1. NXOS support -- including EVPN
+1. JunOS
 1. GUI
     * what should the GUI be based on
         * streamlit, detail, jupyter, grafana
@@ -58,7 +59,7 @@ our APIs documented.
 1. integration with performance analysis
     * integration with promethius and influxdb
     * what do we want to be able to do with this?
-1. JunOS
+
 1. BMP to collect BGP data
 1. Be sure that we can scale to at least 500 nodes without a problem
 1. users can do their own queries
@@ -74,6 +75,7 @@ our APIs documented.
 but let us know if you either need this or what to help contribute
 * SONIC
 * ISIS
+* make sure we can support 1M+ routes per device
 * understand BGP routing policy and route maps / etc
 * MPLS
 * make asserts more modular and easier to extend
