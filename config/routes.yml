@@ -39,6 +39,7 @@ apply:
     command: show route | display json
     normalize: 'route-information/[0]/route-table/*:table-name:vrf/rt/*/[
     "rt-destination/[0]/data: prefix",
+    "rt-prefix-length/[0]/data: _rtlen?|0",
     "rt-entry/[0]/protocol-name/[0]/data: protocol",
     "rt-entry/[0]/preference/[0]/data: metric?|0",
     "rt-entry/[0]/active-tag/[0]/data: activeTag",
