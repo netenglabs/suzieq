@@ -304,6 +304,7 @@ class InterfaceService(Service):
                 entry['type'] = 'vlan'
             elif entry['ifname'].startswith('nve'):
                 entry['type'] = 'vxlan'
+                entry['master'] = 'bridge'
             elif entry['ifname'].startswith('loopback'):
                 entry['type'] = 'loopback'
 
