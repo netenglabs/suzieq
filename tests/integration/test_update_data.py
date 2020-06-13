@@ -74,7 +74,7 @@ def run_cmd(cmd):
 def get_cndcn(path):
     os.chdir(path)
     run_cmd(['git', 'clone',
-              'https://github.com/ddutt/cloud-native-data-center-networking.git'])
+             'https://github.com/netenglabs/cloud-native-data-center-networking.git'])
     return os.getcwd() + '/cloud-native-data-center-networking'
 
 
@@ -192,7 +192,7 @@ class TestUpdate:
         shutil.rmtree('dual-attach/parquet-out')
         shutil.rmtree('single-attach/parquet-out')
 
-        collect_data('dual-attach', 'bgp', 'numbered', 'dual-bgp', orig_dir)
+        collect_data('dual-attach', 'bgp', 'unnumbered', 'dual-bgp', orig_dir)
 
         dst_dir = f'{orig_dir}/tests/data/basic_dual_bgp/parquet-out'
         if os.path.isdir(dst_dir):
