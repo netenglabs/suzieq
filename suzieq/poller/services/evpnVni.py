@@ -36,7 +36,7 @@ class EvpnVniService(Service):
             if entry['mcastGroup']:
                 entry['replicationType'] = 'multicast'
             else:
-                entry['replicationType'] = 'UnicastBGP'
+                entry['replicationType'] = 'ingressBGP'
                 entry['mcastGroup'] = "00:00:00:00:00:00"
 
         for idx in del_indices:
@@ -62,6 +62,7 @@ class EvpnVniService(Service):
                     entry['mcastGroup'] = entry['replicationType']
                     entry['replicationType'] = 'multicast'
                 else:
+                    entry['replicationType'] = 'ingressBGP'
                     entry['mcastGroup'] = "00:00:00:00:00:00"
 
                 # we'll fill this with the peers entries
@@ -109,7 +110,7 @@ class EvpnVniService(Service):
                                  }
 
                     if entry['replicationType'][i] == '0.0.0.0':
-                        vni_entry['replicationType'] = 'UnicastBGP'
+                        vni_entry['replicationType'] = 'ingressBGP'
                         vni_entry['mcastGroup'] = "00:00:00:99:00:00"
                     else:
                         vni_entry['replicationType'] = 'multicast'
