@@ -17,10 +17,26 @@ class EvpnvniObj(SqEngineObject):
 
         self._summarize_on_add_field = [
             ('deviceCnt', 'hostname', 'nunique'),
+            ('uniqueVniCnt', 'vni', 'nunique'),
         ]
+
+        l3vni_count = self.summary_df.query('type == "L3"').groupby(
+            by=['namespace'])['vni'].nunique()
+        for ns in l3vni_count.keys():
+            if l3vni_count[ns]:
+                self.ns[ns]['mode'] = 'symmetric'
+            else:
+                self.ns[ns]['mode'] = 'asymmetric'
+        self.summary_row_order.append('mode')
+
+        self._summarize_on_add_with_query = [
+            ('uniqueL3VniCnt', 'type == "L3"', 'vrf', 'nunique'),
+            ('uniqueL2VniCnt', 'type == "L2"', 'vni', 'nunique'),
+        ]
+
         self._summarize_on_add_list_or_count = [
-            ('uniqueVniCnt', 'vni'), ('UniqueVniTypeCnt', 'type'),
-            ('uniqueVrfCnt', 'vrf')
+            ('uniqueVniTypeValCnt', 'type'),
+            ('replTypeValCnt', 'replicationType')
         ]
 
         self._summarize_on_add_stat = [
@@ -43,10 +59,10 @@ class EvpnvniObj(SqEngineObject):
 
         if not self.summary_df.empty:
             herPerVtepCnt = self.summary_df.groupby(
-                by=['namespace', 'hostname'])['remoteVtepList'].count()
-            self._add_stats_to_summary(herPerVtepCnt, 'herPerVtepStat',
+                by=['namespace', 'hostname'])['remoteVtepList'].nunique()
+            self._add_stats_to_summary(herPerVtepCnt, 'ingressReplPerVtepStat',
                                        filter_by_ns=True)
-        self.summary_row_order.append('herPerVtepStat')
+        self.summary_row_order.append('ingressReplPerVtepStat')
 
         self._post_summarize(check_empty_col='deviceCnt')
         return self.ns_df.convert_dtypes()
@@ -65,12 +81,12 @@ class EvpnvniObj(SqEngineObject):
 
         # Gather the unique set of VTEPs per VNI
         vteps_df = df.explode(column='remoteVtepList') \
-                     .dropna(how='any') \
-                     .groupby(by=['vni', 'type'])['remoteVtepList'] \
-                     .aggregate(lambda x: x.unique().tolist()) \
-                     .reset_index() \
-                     .dropna(how='any') \
-                     .rename(columns={'remoteVtepList': 'allVteps'})
+            .dropna(how='any') \
+            .groupby(by=['vni', 'type'])['remoteVtepList'] \
+            .aggregate(lambda x: x.unique().tolist()) \
+            .reset_index() \
+            .dropna(how='any') \
+            .rename(columns={'remoteVtepList': 'allVteps'})
 
         df = df.merge(vteps_df)
 
@@ -96,19 +112,21 @@ class EvpnvniObj(SqEngineObject):
                             'vlan']],
                       on=['namespace', 'hostname', 'ifname'], how='left')
 
-        # vxlan interfaces for every VNI is part of bridge
+        # vxlan interfaces, if defined, for every VNI is part of bridge
+        # We ensure this is true artificially for NXOS, ignored for JunOS.
         df["assertReason"] += df.apply(
             lambda x: ['vni not in bridge']
-            if x['type'] == "L2" and x['master'] != "bridge" else [],
+            if (x['type'] == "L2" and x['ifname'] != '-'
+                and x['master'] != "bridge") else [],
             axis=1)
 
-        mac_df = MacsObj(context=self.ctxt) \
-            .get(namespace=kwargs.get("namespace", ""),
-                 macaddr=["00:00:00:00:00:00"])
+        # mac_df = MacsObj(context=self.ctxt) \
+        #     .get(namespace=kwargs.get("namespace", ""),
+        #          macaddr=["00:00:00:00:00:00"])
 
-        # Assert that we have HER for every remote VTEP
-        df['assertReason'] += df.apply(self._is_her_good,
-                                       args=(mac_df, ), axis=1)
+        # # Assert that we have HER for every remote VTEP
+        # df['assertReason'] += df.apply(self._is_her_good,
+        #                                args=(mac_df, ), axis=1)
 
         # Fill out the assert column
         df['assert'] = df.apply(lambda x: 'pass'
