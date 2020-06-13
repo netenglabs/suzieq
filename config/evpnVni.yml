@@ -30,7 +30,6 @@ apply:
     "mcastGroup: mcastGroup?|",
     "vrf: vrf",
     "vxlanIntf: ifname?|ifname",
-    "os: os?|cumulus",
     ]'
 
   linux:
@@ -44,7 +43,6 @@ apply:
     "remote-vtep-mode: _mode",
     "vxlan-dynamic-information/[0]/vxlan-format/[*]/vn-id/[0]/data: _vniList",
     "vxlan-dynamic-information/[0]/vxlan-format/[*]/multicast-address/[0]/data: replicationType",
-    "os: os?|junos"
     ]'
 
   nxos:
@@ -60,7 +58,6 @@ apply:
         "svi-state: _sviState",
         "mcast: replicationType",
         "rectype: _rectype?|VNI",
-        "os: os?|nxos",
         ]'
 
       - command: show nve interface nve regex * | json-pretty
