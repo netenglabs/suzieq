@@ -27,9 +27,56 @@ apply:
     "state: state?|up",
     "vxlanInterface: ifname?|",
     "routerMac: routerMac?|",
+    "mcastGroup: mcastGroup?|",
     "vrf: vrf",
+    "vxlanIntf: ifname?|ifname",
+    "os: os?|cumulus",
     ]'
 
   linux:
     copy: cumulus
 
+  junos:
+    version: all
+    command: show ethernet-switching vxlan-tunnel-end-point remote | display json
+    normalize: 'vxlan-source-vtep-information/[0]/svtep-format/*:source-vtep-address:srcVtepIp|vxlan-remote-vtep-information/*/[
+    "remote-vtep-address/[0]/data: remoteVtepList",
+    "remote-vtep-mode: _mode",
+    "vxlan-dynamic-information/[0]/vxlan-format/[*]/vn-id/[0]/data: _vniList",
+    "vxlan-dynamic-information/[0]/vxlan-format/[*]/multicast-address/[0]/data: replicationType",
+    "os: os?|junos"
+    ]'
+
+  nxos:
+    version: all
+    command:
+      - command: show nve vni all detail | json
+        normalize: 'TABLE_nve_vni/ROW_nve_vni/*?/[
+        "if-name: ifname",
+        "vni: vni",
+        "type: type",
+        "vni-state: state",
+        "vlan-bd: vlan?|0",
+        "svi-state: _sviState",
+        "mcast: replicationType",
+        "rectype: _rectype?|VNI",
+        "os: os?|nxos",
+        ]'
+
+      - command: show nve interface nve regex * | json-pretty
+        normalize: 'TABLE_nve_if/ROW_nve_if/*?/[
+        "primary-ip: srcVtepIp",
+        "encap-type: encapType",
+        "source-if: vni",
+        "if-name: ifname",
+        "recType: _rectype?|iface"
+        ]'
+
+      - command: show nve peers detail | json
+        normalize: 'TABLE_nve_peers/ROW_nve_peers/*?/[
+        "peer-ip: _peerIp",
+        "router-mac: routerMac",
+        "config-vnis: _configVnis",
+        "cp-vni: vni",
+        "rectype: _rectype?|peers",
+        ]'
