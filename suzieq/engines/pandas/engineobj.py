@@ -141,10 +141,17 @@ class SqEngineObject(object):
                 self._add_field_to_summary(col, function, field_name)
                 self.summary_row_order.append(field_name)
 
-        for field_name, query_str, field in self._summarize_on_add_with_query:
+        for flds in self._summarize_on_add_with_query:
+            field_name = flds[0]
+            query_str = flds[1]
+            field = flds[2]
+            if len(flds) == 4:
+                func = flds[3]
+            else:
+                func = 'count'
             fld_per_ns = self.summary_df.query(query_str) \
                                         .groupby(by=['namespace'])[field] \
-                                        .count()
+                                        .agg(func)
             for i in self.ns.keys():
                 self.ns[i].update({field_name: fld_per_ns[i]})
             self.summary_row_order.append(field_name)
