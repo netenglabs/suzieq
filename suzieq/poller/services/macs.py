@@ -14,6 +14,10 @@ class MacsService(Service):
         # We don't want millions of directories, one per prefix
         self.partition_cols.remove("macaddr")
 
+    def get_key_flds(self):
+        """The MAC table in Linux can have weird keys"""
+        return ['vlan', 'macaddr', 'oif', 'remoteVtepIp']
+
     def _add_mackey(self, entry):
         if not entry["vlan"]:
             # Without a VLAN, make the OIF the key

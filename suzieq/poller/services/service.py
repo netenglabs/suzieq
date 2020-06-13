@@ -353,10 +353,16 @@ class Service(object):
         result = self.merge_results(result_list, data)
         return self.clean_data(result, data)
 
+    def get_key_flds(self):
+        """Get the key fields associated with this service. 
+        Its a function because we want to override it.
+        """
+        return list(filter(lambda x: x not in ['namespace', 'hostname'],
+                           self.keys))
+
     def merge_results(self, result_list, data):
         int_res = {}
-        keyflds = list(filter(lambda x: x not in ['namespace', 'hostname'],
-                              self.keys))
+        keyflds = self.get_key_flds()
 
         for result in result_list:
             for entry in result:
