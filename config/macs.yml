@@ -28,7 +28,7 @@ apply:
     "l2ng-l2-mac-address/[0]/data: macaddr",
     "l2ng-l2-vlan-id/[0]/data: vlan?|0",
     "l2ng-l2-mac-logical-interface/[0]/data: oif",
-    "l2ng-l2-active-source/[0]/data: remoteVtepIp",
+    "l2ng-l2-active-source/[0]/data: remoteVtepIp?|",
     "l2ng-l2-mac-entry-flags/[0]/data: flags"
     ]'
 
@@ -38,7 +38,7 @@ apply:
     command: show mac address-table | json
     normalize: 'TABLE_mac_address/ROW_mac_address/*/[
     "disp_mac_addr: macaddr",
-    "disp_port: oif",
+    "disp_port: oif?|",
     "disp_vlan: vlan?|0",
     "disp_is_secure: isSecure?|",
     "disp_type: flags",
