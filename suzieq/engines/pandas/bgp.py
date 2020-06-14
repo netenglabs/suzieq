@@ -4,6 +4,7 @@ from suzieq.sqobjects.lldp import LldpObj
 
 import re
 import pandas as pd
+from datetime import datetime
 
 from .engineobj import SqEngineObject
 
@@ -62,11 +63,8 @@ class BgpObj(SqEngineObject):
         self._summarize_on_add_field = [
             ('deviceCnt', 'hostname', 'nunique'),
             ('totalPeerCnt', 'hostname', 'count'),
-        ]
-
-        self._summarize_on_add_list_or_count = [
-            ('uniqueAsnCnt', 'asn'),
-            ('uniqueVrfsCnt', 'vrf')
+            ('uniqueAsnCnt', 'peerAsn', 'nunique'),
+            ('uniqueVrfsCnt', 'vrf', 'nunique')
         ]
 
         self._summarize_on_add_with_query = [
@@ -75,6 +73,8 @@ class BgpObj(SqEngineObject):
 
         self._gen_summarize_data()
 
+        self.summary_df['estdTime'] = int(datetime.utcnow().timestamp()*1000) - \
+            self.summary_df['estdTime']
         # Now come the BGP specific ones
         established = self.summary_df.query("state == 'Established'") \
             .groupby(by=['namespace'])
@@ -86,14 +86,14 @@ class BgpObj(SqEngineObject):
         rx_updates = established["updatesRx"]
         tx_updates = established["updatesTx"]
 
-        self._add_stats_to_summary(uptime, 'upTimesStat')
+        self._add_stats_to_summary(uptime, 'upTimeStat')
         self._add_stats_to_summary(v4_updates, 'v4PfxRxStat')
         self._add_stats_to_summary(v6_updates, 'v6PfxRxStat')
         self._add_stats_to_summary(evpn_updates, 'evpnPfxRxStat')
         self._add_stats_to_summary(rx_updates, 'updatesRxStat')
         self._add_stats_to_summary(tx_updates, 'updatesTxStat')
 
-        self.summary_row_order.extend(['upTimesStat', 'v4PfxRxStat',
+        self.summary_row_order.extend(['upTimeStat', 'v4PfxRxStat',
                                        'v6PfxRxStat', 'evpnPfxRxStat',
                                        'updatesRxStat', 'updatesTxStat'])
 
