@@ -1,10 +1,10 @@
 from suzieq.poller.services.service import Service
-from suzieq.utils import build_cisco_timestring
-from datetime import datetime
+from suzieq.utils import get_timestamp_from_cisco_time
+from suzieq.utils import get_timestamp_from_junos_time
 
 
 class BgpService(Service):
-    """bgp service. Different class because minor munging of output due to versions"""
+    """bgp service. Different class because of munging of output across NOS"""
 
     def clean_data(self, processed_data, raw_data):
 
@@ -29,6 +29,7 @@ class BgpService(Service):
                 entry["bfdStatus"] = "down"
             entry["asn"] = int(entry["asn"])
             entry["peerAsn"] = int(entry["peerAsn"])
+            entry['estdTime'] = raw_data[0]['timestamp'] + entry['estdTime']
 
         return processed_data
 
@@ -94,6 +95,10 @@ class BgpService(Service):
             entry.pop('afiSafiEnabledList')
             if not entry.get('vrf', None):
                 entry['vrf'] = 'default'
+
+            # Junos doesn't provide this data in neighbor, only in summary
+            entry['estdTime'] = get_timestamp_from_junos_time(
+                entry['estdTime'], raw_data[0]['timestamp']/1000)
 
         return processed_data
 
@@ -167,10 +172,7 @@ class BgpService(Service):
             else:
                 entry['extnhEnabled'] = False
 
-            uptime = entry['estdTime']
-            period = datetime.strptime(uptime,
-                                       build_cisco_timestring(uptime)).time()
-            secs = period.hour*3600 + period.minute*60 + period.second
-            entry['estdTime'] = raw_data[0]['timestamp'] - secs*1000
+            entry['estdTime'] = get_timestamp_from_cisco_time(
+                entry['estdTime'], raw_data[0]['timestamp']/1000)
 
         return processed_data
