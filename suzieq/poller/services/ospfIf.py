@@ -12,6 +12,8 @@ class OspfIfService(Service):
             for entry in processed_data:
                 entry["vrf"] = "default"
                 entry["networkType"] = entry["networkType"].lower()
+                if entry['networkType'] == 'point2point':
+                    entry['networkType'] = 'p2p'
                 entry["passive"] = entry["passive"] == "Passive"
                 entry["isUnnumbered"] = entry["isUnnumbered"] == "UNNUMBERED"
                 entry["areaStub"] = entry["areaStub"] == "[Stub]"

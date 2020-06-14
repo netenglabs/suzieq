@@ -61,6 +61,10 @@ class OspfCmd(SqCommand):
             namespace=self.namespace,
         )
 
+        if not df.empty and 'lastChangeTime' in df.columns:
+            df['lastChangeTime'] = pd.to_datetime(df.lastChangeTime.astype(str),
+                                                  unit="ms")
+
         # Transform the lastChangeTime into human terms
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
@@ -89,11 +93,9 @@ class OspfCmd(SqCommand):
         Summarize OSPF data
         """
         self._init_summarize()
-        # TODO: time in this field looks ugly
-        #  it shows too many fields, we want it to look like BGP estdTime does in bgp summarize
-        if not self.summarize_df.empty and 'lastChangeTime' in self.summarize_df.index:
-            self.summarize_df.loc['lastChangeTime'] = self.summarize_df.loc['lastChangeTime'] \
-                .map(lambda x: [str(pd.to_timedelta(i)) for i in x])
+        if (not self.summarize_df.empty) and ('upTimeStat' in self.summarize_df.T.columns):
+            self.summarize_df.loc['upTimeStat'] = self.summarize_df.loc['upTimeStat'] \
+                .map(lambda x: [str(timedelta(milliseconds=int(i))) for i in x])
 
         return self._post_summarize()
 
