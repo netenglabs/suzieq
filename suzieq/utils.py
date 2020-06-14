@@ -4,6 +4,8 @@ from pathlib import Path
 import logging
 import json
 import yaml
+from dateutil.relativedelta import relativedelta
+from datetime import datetime
 
 import pandas as pd
 import pyarrow as pa
@@ -364,19 +366,56 @@ def calc_avg(oldval, newval):
     return float((oldval+newval)/2)
 
 
-def build_cisco_timestring(input):
-    timestr = 'P'
+def get_timestamp_from_cisco_time(input, timestamp):
+    """Get timestamp from the Cisco-specific timestamp string
+    Examples of Cisco timestamp str are P2DT14H45M16S, P1M17DT4H49M50S etc.
+    """
     if not input.startswith('P'):
-        return ''
+        return 0
+    day, timestr = input[1:].split('T')
+    if 'M' in day:
+        months, day = day.split('M')
+        months = int(months)
+    else:
+        months = 0
+    if 'D' in day:
+        days = int(day.split('D')[0])
+    else:
+        days = 0
 
-    if 'D' in input:
-        timestr += '%jD'
-    timestr += 'T'
-    if 'H' in input:
-        timestr += '%HH'
-    if 'M' in input:
-        timestr += '%MM'
-    if 'S' in input:
-        timestr += '%SS'
+    if 'H' in timestr:
+        hours, timestr = timestr.split('H')
+        hours = int(hours)
+    else:
+        hours = 0
+    if 'M' in timestr:
+        mins, timestr = timestr.split('M')
+        mins = int(mins)
+    else:
+        mins = 0
+    if 'S' in timestr:
+        secs = timestr.split('S')[0]
+        secs = int(secs)
+    else:
+        secs = 0
 
-    return timestr
+    delta = relativedelta(months=months, days=days,
+                          hours=hours, minutes=mins, seconds=secs)
+    return int((datetime.utcfromtimestamp(timestamp)-delta).timestamp()*1000)
+
+
+def get_timestamp_from_junos_time(input, timestamp):
+    """Get timestamp from the Junos-specific timestamp string
+    Examples of Cisco timestamp str are 00:00:23, 1d 09:24:36 etc
+    """
+
+    if 'd' in input:
+        days, timestr = input.split('d')
+        days = int(days)
+    else:
+        days = 0
+
+    hours, mins, secs = timestr.strip().split(':')
+    delta = relativedelta(days=days, hours=int(
+        hours), minutes=int(mins), seconds=int(secs))
+    return int((datetime.utcfromtimestamp(timestamp)-delta).timestamp()*1000)
