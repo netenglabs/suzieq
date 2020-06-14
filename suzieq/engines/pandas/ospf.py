@@ -1,5 +1,6 @@
 from ipaddress import IPv4Network
 import pandas as pd
+from datetime import datetime
 
 from suzieq.exceptions import NoLLdpError
 from suzieq.utils import SchemaForTable
@@ -63,12 +64,6 @@ class OspfObj(SqEngineObject):
             df.loc[df['adjState'].eq(False), 'adjState'] = 'fail'
             df.drop(columns=['passive'], inplace=True)
 
-        if 'lastChangeTime' in df.columns:
-            uptime_cols = (df['timestamp'] - pd.to_datetime(df['lastChangeTime'],
-                                                            unit='ms'))
-            uptime_cols = pd.to_timedelta(uptime_cols/1000, unit='s')
-            df['lastChangeTime'] = uptime_cols
-
         df.bfill(axis=0, inplace=True)
         if query_str:
             return df.query(query_str)
@@ -96,7 +91,7 @@ class OspfObj(SqEngineObject):
             ('stubbyPeerCnt', 'areaStub', 'areaStub'),
             ('passivePeerCnt', 'adjState == "passive"', 'ifname'),
             ('unnumberedPeerCnt', 'isUnnumbered', 'isUnnumbered'),
-            ('failedPeerCnt', 'adjState == "passive" and nbrCount == 0',
+            ('failedPeerCnt', 'adjState != "passive" and nbrCount == 0',
              'ifname'),
         ]
 
@@ -108,6 +103,10 @@ class OspfObj(SqEngineObject):
             ('retxTime', 'retxTime'),
             ('networkType', 'networkType'),
         ]
+
+        self.summary_df['lastChangeTime'] = (
+            int(datetime.utcnow().timestamp()*1000) -
+            self.summary_df['lastChangeTime'])
 
         self._summarize_on_add_stat = [
             ('adjChangesStat', '', 'numChanges'),

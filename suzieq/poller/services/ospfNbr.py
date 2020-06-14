@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from suzieq.poller.services.service import Service
-from suzieq.utils import build_cisco_timestring
+from suzieq.utils import get_timestamp_from_cisco_time
+from suzieq.utils import get_timestamp_from_junos_time
 
 
 class OspfNbrService(Service):
@@ -79,11 +80,9 @@ class OspfNbrService(Service):
                 entry['vrf'] = vrf
 
             entry['ifname'] = entry['ifname'].replace('/', '-')
-            hours, minutes, seconds = entry['lastChangeTime'].split(':')
-            entry['lastChangeTime'] = int(
-                (datetime.utcnow().timestamp() -
-                 timedelta(hours=int(hours), minutes=int(minutes),
-                           seconds=int(seconds)).seconds))*1000
+            entry['lastChangeTime'] = get_timestamp_from_junos_time(
+                entry['lastChangeTime'], raw_data[0]['timestamp']/1000)
+            entry['state'] = entry['state'].lower()
 
         return processed_data
 
@@ -93,11 +92,7 @@ class OspfNbrService(Service):
             entry['numChanges'] = int(entry['numChanges'])
             entry['ifname'] = entry['ifname'].replace('/', '-')
             # Cisco's format examples are PT7H28M21S, P1DT4H9M46S
-            change_time = entry['lastChangeTime']
-            period = datetime.strptime(change_time,
-                                       build_cisco_timestring(change_time)) \
-                .time()
-            secs = period.hour*3600 + period.minute*60 + period.second
-            entry['lastChangeTime'] = raw_data[0]['timestamp'] - secs*1000
+            entry['lastChangeTime'] = get_timestamp_from_cisco_time(
+                entry['lastChangeTime'], raw_data[0]['timestamp']/1000)
 
         return processed_data
