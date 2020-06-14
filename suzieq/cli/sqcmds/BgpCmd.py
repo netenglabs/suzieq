@@ -39,11 +39,11 @@ class BgpCmd(SqCommand):
 
         if "estdTime" in df.columns:
             df['estdTime'] = df.estdTime.apply(
-                lambda x: str(timedelta(seconds=int(x))))
-        elif 'upTimesStat' in df.columns:
-            df.loc['upTimesStat'] = df \
-              .loc['upTimesStat'] \
-              .map(lambda x: [str(timedelta(seconds=int(i))) for i in x])
+                lambda x: str(timedelta(milliseconds=int(x))))
+        elif 'upTimeStat' in df.columns:
+            df.loc['upTimeStat'] = df \
+              .loc['upTimeStat'] \
+              .map(lambda x: [str(timedelta(milliseconds=int(i))) for i in x])
 
         return df.dropna(how='any')
 
@@ -82,6 +82,9 @@ class BgpCmd(SqCommand):
             namespace=self.namespace, state=state, addnl_fields=addnl_fields
         )
 
+        if 'estdTime' in df.columns:
+            df['estdTime'] = pd.to_datetime(df.estdTime.astype(str), unit="ms")
+
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
 
@@ -93,9 +96,9 @@ class BgpCmd(SqCommand):
         self._init_summarize()
 
         # Convert columns into human friendly format
-        if (not self.summarize_df.empty) and ('upTimesStat' in self.summarize_df.T.columns):
-            self.summarize_df.loc['upTimesStat'] = self.summarize_df.loc['upTimesStat'] \
-                .map(lambda x: [str(timedelta(seconds=int(i))) for i in x])
+        if (not self.summarize_df.empty) and ('upTimeStat' in self.summarize_df.T.columns):
+            self.summarize_df.loc['upTimeStat'] = self.summarize_df.loc['upTimeStat'] \
+                .map(lambda x: [str(timedelta(milliseconds=int(i))) for i in x])
 
         return self._post_summarize()
 
