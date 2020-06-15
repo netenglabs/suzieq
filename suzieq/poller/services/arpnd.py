@@ -64,6 +64,6 @@ class ArpndService(Service):
             entry['macaddr'] = ':'.join(
                 [f'{x[:2]}:{x[2:]}' for x in entry['macaddr'].split('.')])
 
-            processed_data = np.delete(processed_data,
-                                       drop_indices).tolist()
+        processed_data = np.delete(processed_data,
+                                   drop_indices).tolist()
         return processed_data

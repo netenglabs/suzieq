@@ -48,7 +48,7 @@ apply:
       - command: show ip arp detail | json
         normalize: 'TABLE_vrf/ROW_vrf/*:vrf-name-out:vrf|TABLE_adj/ROW_adj/*?/[
         "intf-out: oif",
-        "intf-name: origIfname",
+        "intf-out: origIfname",
         "ip-addr-out: ipAddress",
         "flags: flags",
         "mac: macaddr"
@@ -56,8 +56,8 @@ apply:
 
       - command: show ipv6 neighbor detail | json
         normalize: 'TABLE_vrf/ROW_vrf/*:vrf-name-out:vrf|TABLE_afi/ROW_afi/*?/[
-        "intf-name: oif",
-        "intf-name: origIfname",
+        "intf-out: oif",
+        "intf-out: origIfname",
         "ip-addr-out: ipAddress",
         "flags: flags",
         "mac: macaddr"
