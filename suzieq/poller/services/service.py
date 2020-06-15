@@ -558,6 +558,7 @@ class Service(object):
 
                 write_poller_stat = all([Service.is_status_ok(x)
                                          for x in ostatus])
+                status = ostatus[0]
 
                 # We don't expect the output from two different hostnames
                 nodename = output[0]["hostname"]
