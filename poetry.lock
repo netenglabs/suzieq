@@ -191,14 +191,14 @@ description = "IP Address type for pandas"
 name = "cyberpandas"
 optional = false
 python-versions = "*"
-version = "1.1.2.dev8+g0f2ccc2"
+version = "1.1.2.dev10+g91e8ba4"
 
 [package.dependencies]
 pandas = ">=0.23.0"
 six = "*"
 
 [package.source]
-reference = "0f2ccc2e6dfbc27d08255706c363b2e906574294"
+reference = "91e8ba426d414fbab817606e1712f32cee6e5bb8"
 type = "git"
 url = "git://github.com/ddutt/cyberpandas.git"
 [[package]]
@@ -557,7 +557,7 @@ wcwidth = "*"
 [[package]]
 category = "dev"
 description = "Run a subprocess in a pseudo terminal"
-marker = "python_version >= \"3.4\" and sys_platform != \"win32\" or sys_platform != \"win32\""
+marker = "python_version >= \"3.4\" and sys_platform != \"win32\" or sys_platform != \"win32\" or python_version >= \"3.4\" and sys_platform != \"win32\" and (python_version >= \"3.4\" and sys_platform != \"win32\" or sys_platform != \"win32\")"
 name = "ptyprocess"
 optional = false
 python-versions = "*"
@@ -789,6 +789,7 @@ wcwidth = "*"
 reference = "8f299d7ac6f043fb20b6eea40461b53ad0830348"
 type = "git"
 url = "git://github.com/ddutt/python-nubia.git"
+
 [[package]]
 category = "main"
 description = "World timezone definitions, modern and historical"
