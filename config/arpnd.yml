@@ -41,4 +41,25 @@ apply:
     "arp-table-entry-flags: flags",
     "offload: remote?|False",
     ]'
+
+  nxos:
+    version: all
+    command:
+      - command: show ip arp detail | json
+        normalize: 'TABLE_vrf/ROW_vrf/*:vrf-name-out:vrf|TABLE_adj/ROW_adj/*?/[
+        "intf-out: oif",
+        "intf-name: origIfname",
+        "ip-addr-out: ipAddress",
+        "flags: flags",
+        "mac: macaddr"
+        ]'
+
+      - command: show ipv6 neighbor detail | json
+        normalize: 'TABLE_vrf/ROW_vrf/*:vrf-name-out:vrf|TABLE_afi/ROW_afi/*?/[
+        "intf-name: oif",
+        "intf-name: origIfname",
+        "ip-addr-out: ipAddress",
+        "flags: flags",
+        "mac: macaddr"
+        ]'
       
