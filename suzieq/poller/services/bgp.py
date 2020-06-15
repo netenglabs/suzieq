@@ -29,7 +29,8 @@ class BgpService(Service):
                 entry["bfdStatus"] = "down"
             entry["asn"] = int(entry["asn"])
             entry["peerAsn"] = int(entry["peerAsn"])
-            entry['estdTime'] = raw_data[0]['timestamp'] + entry['estdTime']
+            entry['estdTime'] = raw_data[0]['timestamp'] - \
+                (entry['estdTime']*1000)
 
         return processed_data
 
