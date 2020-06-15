@@ -73,8 +73,12 @@ class BgpObj(SqEngineObject):
 
         self._gen_summarize_data()
 
-        self.summary_df['estdTime'] = int(datetime.utcnow().timestamp()*1000) - \
-            self.summary_df['estdTime']
+        self.summary_df['estdTime'] = pd.to_datetime(
+            self.summary_df['estdTime'], unit='ms')
+        self.summary_df['estdTime'] = (
+            self.summary_df['timestamp'] - self.summary_df['estdTime'])
+        self.summary_df['estdTime'] = self.summary_df['estdTime'] \
+                                          .apply(lambda x: x.round('s'))
         # Now come the BGP specific ones
         established = self.summary_df.query("state == 'Established'") \
             .groupby(by=['namespace'])
@@ -153,8 +157,8 @@ class BgpObj(SqEngineObject):
         # We split off at this point to avoid merging mess because of lack of
         # LLDP info
         df = df.merge(lldp_df, on=['namespace', 'hostname', 'ifname'], how='left') \
-               .drop(columns=['timestamp']) \
-               .rename(columns={'timestamp_x': 'timestamp'})
+            .drop(columns=['timestamp']) \
+            .rename(columns={'timestamp_x': 'timestamp'})
         # Some munging to handle subinterfaces
         df['xx'] = df['peerIfname'] + '.' + df['cif'].str.split('.').str[1]
 
@@ -172,7 +176,7 @@ class BgpObj(SqEngineObject):
                              'reason_x': 'reason',
                              'notifcnReason_x': 'notifcnReason'})
         df['peer_y'] = df['peer_y'].astype(str) \
-                                   .where(df['peer_y'].notnull(), '')
+            .where(df['peer_y'].notnull(), '')
         df["assertReason"] = [[] for _ in range(len(df))]
         # Now all sessions with NaN in the oif column have no connected route
         df['assertReason'] += df.apply(

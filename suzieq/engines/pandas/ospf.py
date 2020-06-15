@@ -104,9 +104,12 @@ class OspfObj(SqEngineObject):
             ('networkType', 'networkType'),
         ]
 
+        self.summary_df['lastChangeTime'] = pd.to_datetime(
+            self.summary_df['lastChangeTime'], unit='ms')
         self.summary_df['lastChangeTime'] = (
-            int(datetime.utcnow().timestamp()*1000) -
-            self.summary_df['lastChangeTime'])
+            self.summary_df['timestamp'] - self.summary_df['lastChangeTime'])
+        self.summary_df['lastChangeTime'] = self.summary_df['lastChangeTime'] \
+                                                .apply(lambda x: x.round('s'))
 
         self._summarize_on_add_stat = [
             ('adjChangesStat', '', 'numChanges'),
@@ -150,7 +153,8 @@ class OspfObj(SqEngineObject):
         ospf_df["assertReason"] = [[] for _ in range(len(ospf_df))]
         df = (
             ospf_df[ospf_df["routerId"] != ""]
-            .groupby(["routerId", "namespace"], as_index=False)[["hostname", "namespace"]]
+            .groupby(["routerId", "namespace"], as_index=False)[["hostname",
+                                                                 "namespace"]]
             .agg(lambda x: x.unique().tolist())
         ).dropna(how='any')
 
