@@ -36,8 +36,6 @@ class MacsObj(SqEngineObject):
         self._summarize_on_perdevice_stat = [
             ('uniqueVlanperHostStat', 'vlan != 0 and vlan != ""', 'vlan',
              'nunique'),
-            ('herPerVtepStat', 'macaddr == "00:00:00:00:00:00"', 'macaddr',
-             'count')
         ]
 
         return super().summarize(**kwargs)
