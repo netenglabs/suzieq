@@ -94,12 +94,6 @@ class BgpCmd(SqCommand):
         Summarize bgp info
         """
         self._init_summarize()
-
-        # Convert columns into human friendly format
-        if (not self.summarize_df.empty) and ('upTimeStat' in self.summarize_df.T.columns):
-            self.summarize_df.loc['upTimeStat'] = self.summarize_df.loc['upTimeStat'] \
-                .map(lambda x: [str(timedelta(milliseconds=int(i))) for i in x])
-
         return self._post_summarize()
 
     @command("assert")
