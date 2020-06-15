@@ -1,5 +1,6 @@
 from suzieq.poller.services.service import Service
 import re
+import numpy as np
 
 
 class ArpndService(Service):
@@ -15,6 +16,8 @@ class ArpndService(Service):
             processed_data = self._clean_eos_data(processed_data, raw_data)
         elif devtype == 'junos':
             processed_data = self._clean_junos_data(processed_data, raw_data)
+        elif devtype == 'nxos':
+            processed_data = self._clean_nxos_data(processed_data, raw_data)
         else:
             for entry in processed_data:
                 entry['oif'] = entry['oif'].replace('/', '-')
@@ -27,7 +30,6 @@ class ArpndService(Service):
             entry["state"] = entry["state"].lower()
             if entry["state"] == "stale" or entry["state"] == "delay":
                 entry["state"] = "reachable"
-            entry['oif'] = entry['oif'].replace('/', '-')
 
         return processed_data
 
@@ -35,16 +37,33 @@ class ArpndService(Service):
         for entry in processed_data:
             entry['macaddr'] = ':'.join(
                 [f'{x[:2]}:{x[2:]}' for x in entry['macaddr'].split('.')])
-            entry['ifname'] = entry['ifname'].replace('/', '-')
+            entry['oif'] = entry['oif'].replace('/', '-')
 
         return processed_data
 
     def _clean_junos_data(self, processed_data, raw_data):
         for entry in processed_data:
-            entry['oif'] = entry['oif'].replace('/', '-')
+            if entry['oif']:
+                entry['oif'] = entry['oif'].replace('/', '-')
             if '[vtep.' in entry['oif']:
                 entry['remote'] = True
             entry['oif'] = re.sub(r' \[vtep\.\d+\]', '', entry['oif'])
             entry['state'] = 'reachable'
 
+        return processed_data
+
+    def _clean_nxos_data(self, processed_data, raw_data):
+
+        drop_indices = []
+        for i, entry in enumerate(processed_data):
+            if not entry['ipAddress']:
+                drop_indices.append(i)
+                continue
+            if entry['oif']:
+                entry['oif'] = entry['oif'].replace('/', '-')
+            entry['macaddr'] = ':'.join(
+                [f'{x[:2]}:{x[2:]}' for x in entry['macaddr'].split('.')])
+
+            processed_data = np.delete(processed_data,
+                                       drop_indices).tolist()
         return processed_data
