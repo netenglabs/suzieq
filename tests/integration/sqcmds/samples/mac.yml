@@ -862,16 +862,15 @@ tests:
   data-directory: tests/data/multidc/parquet-out/
   marks: mac summarize
   output: '{"dual-evpn": {"deviceCnt": 7, "totalMacsinNSCnt": 241, "uniqueMacCnt":
-    34, "uniqueVlanperHostStat": [0, 2, 2.0], "herPerVtepStat": [0, 6, 6.0]}, "ospf-ibgp":
-    {"deviceCnt": 7, "totalMacsinNSCnt": 103, "uniqueMacCnt": 37, "uniqueVlanperHostStat":
-    [0, 3, 3.0], "herPerVtepStat": [0, 2, 2.0]}, "ospf-single": {"deviceCnt": 4, "totalMacsinNSCnt":
-    12, "uniqueMacCnt": 8, "uniqueVlanperHostStat": [0, 1, 1.0], "herPerVtepStat":
-    [0, 0, 0.0]}}'
+    34, "uniqueVlanperHostStat": [0, 2, 2.0]}, "ospf-ibgp": {"deviceCnt": 7, "totalMacsinNSCnt":
+    103, "uniqueMacCnt": 37, "uniqueVlanperHostStat": [0, 3, 3.0]}, "ospf-single":
+    {"deviceCnt": 4, "totalMacsinNSCnt": 12, "uniqueMacCnt": 8, "uniqueVlanperHostStat":
+    [0, 1, 1.0]}}'
 - command: mac summarize --namespace=dual-evpn --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: mac summarize
   output: '{"dual-evpn": {"deviceCnt": 7, "totalMacsinNSCnt": 241, "uniqueMacCnt":
-    34, "uniqueVlanperHostStat": [0, 2, 2.0], "herPerVtepStat": [0, 6, 6.0]}}'
+    34, "uniqueVlanperHostStat": [0, 2, 2.0]}}'
 - command: mac unique --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: mac unique
