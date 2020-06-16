@@ -6,6 +6,15 @@ import numpy as np
 class ArpndService(Service):
     """arpnd service. Different class because minor munging of output"""
 
+    def __init__(self, name, defn, period, stype, keys, ignore_fields, schema,
+                 queue, run_once="forever"):
+
+        super().__init__(name, defn, period, stype, keys, ignore_fields, schema,
+                         queue, run_once)
+        # Change the partition columns to not include the IPAddress
+        # We don't want millions of directories, one per prefix
+        self.partition_cols.remove("ipAddress")
+
     def clean_data(self, processed_data, raw_data):
 
         devtype = self._get_devtype_from_input(raw_data)
@@ -30,7 +39,7 @@ class ArpndService(Service):
             entry["state"] = entry["state"].lower()
             if entry["state"] == "stale" or entry["state"] == "delay":
                 entry["state"] = "reachable"
-
+            entry['origIfname'] = entry['oif']
         return processed_data
 
     def _clean_eos_data(self, processed_data, raw_data):
