@@ -108,8 +108,10 @@ class SqCommand:
                     dont_strip_cols: bool = False):
         if df.columns.to_list() == ['error']:
             retcode = 1
+            max_colwidth = None
             cols = df.columns
         else:
+            max_colwidth = 50
             retcode = 0
             if self.columns != ['default'] and self.columns != ['*']:
                 cols = self.columns
@@ -130,6 +132,7 @@ class SqCommand:
             print(df[cols].to_csv())
         else:
             with pd.option_context('precision', 3,
+                                   'display.max_colwidth', max_colwidth,
                                    'display.max_rows', max(df.shape[0]+1, 64)):
                 if df.empty:
                     print(df)
