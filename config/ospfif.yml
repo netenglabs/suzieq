@@ -56,27 +56,40 @@ apply:
     "hello-interval/[0]/data: helloTime?|0",
     "dead-interval/[0]/data: deadTime?|0",
     "retransmit-interval/[0]/data: retxTime?|0",
+    "authentication-type/[0]/data: authType",
     "ospf-stub-type/[0]/data: stub",
     ]'
 
   nxos:
     version: all
-    command: show ip ospf interface vrf all | json
-    normalize: 'TABLE_ctx/ROW_ctx/*:cname:vrf|TABLE_intf/ROW_intf/*/[
-    "ifname: ifname",
-    "ifname: origIfname",
-    "state: state",
-    "addr: ipAddress",
-    "masklen: maskLen?|32",
-    "area: area",
-    "type_str: networkType?|",
-    "nbr_adjs: nbrCount?|0",
-    "hello_interval: helloTime?|10",
-    "dead_interval: deadTime?|40",
-    "rxmt_interval: retxTime?|5",
-    "cost: cost?|1",
-    "passive: passive?|False",
-    "unnumbered: isUnnumbered?|False",
-    ]'
+    command:
+      - command: show ip ospf interface vrf all | json
+        normalize: 'TABLE_ctx/ROW_ctx/*:cname:vrf|TABLE_intf/ROW_intf/*/[
+        "ifname: ifname",
+        "ifname: origIfname",
+        "state: state",
+        "addr: ipAddress",
+        "masklen: maskLen?|32",
+        "area: area",
+        "type_str: networkType?|",
+        "nbr_adjs: nbrCount?|0",
+        "hello_interval: helloTime?|10",
+        "dead_interval: deadTime?|40",
+        "rxmt_interval: retxTime?|5",
+        "cost: cost?|1",
+        "passive: passive?|False",
+        "unnumbered: isUnnumbered?|False",
+        "entry_type: _entryType?|interfaces",
+        ]'
 
-    
+      - command: show ip ospf vrf all | json
+        normalize: 'TABLE_ctx/ROW_ctx/*?/[
+        "rid: routerId",
+        "TABLE_area/ROW_area/[*]?/aname: ifname",
+        "TABLE_area/ROW_area/[*]?/stub: _stub",
+        "TABLE_area/ROW_area/[*]?/no_summary: _no_summary",
+        "TABLE_area/ROW_area/[*]?/nssa: _nssa",
+        "TABLE_area/ROW_area/[*]?/auth_type: authType",
+        "TABLE_area/ROW_area/[*]?/backbone_active: isBackbone?|[]",
+        "entry_type: _entryType?|areas",
+        ]'
