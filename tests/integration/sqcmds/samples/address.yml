@@ -767,3 +767,10 @@ tests:
     "exit02", "count": 47}, {"hostname": "exit01", "count": 47}, {"hostname": "leaf04",
     "count": 51}, {"hostname": "leaf03", "count": 51}, {"hostname": "leaf02", "count":
     51}, {"hostname": "leaf01", "count": 51}]'
+- command: address summarize --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address summarize
+  output: '{"dual-bgp": {"deviceCnt": 14, "addressCnt": 138, "uniqueV4AddressCnt":
+    48, "uniqueV6AddressCnt": 13, "uniqueIfMacCnt": 77, "deviceWithv4AddressCnt":
+    14, "deviceWithv6AddressCnt": 13, "subnetsUsed": ["24", "32", "30", "8", "31"],
+    "subnetTopCounts": [{"24": 26}, {"32": 13}, {"30": 12}]}}'

@@ -214,3 +214,77 @@ tests:
     8, "hopCount": 4, "namespace": "dual-bgp", "hostname": "server104", "iif": "bond0",
     "vrf": "default", "overlay": false, "mtuMatch": null, "mtu": 1500, "timestamp":
     1592340903222}]'
+- command: path show --src='2001:db8:0:1::101' --dest='2001:db8:0:4::104' --namespace=dual-bgp
+    --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: path show
+  output: '[{"pathid": 1, "hopCount": 0, "namespace": "dual-bgp", "hostname": "server101",
+    "iif": "bond0", "vrf": "default", "overlay": false, "mtuMatch": null, "mtu": 1500,
+    "timestamp": 1592340903837}, {"pathid": 1, "hopCount": 1, "namespace": "dual-bgp",
+    "hostname": "server104", "iif": "bond0", "vrf": "default", "overlay": false, "mtuMatch":
+    null, "mtu": 1500, "timestamp": 1592340903222}]'
+- command: path show --src='2001:db8::11' --dest='2001:db8::12' --namespace=dual-bgp
+    --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: path show
+  output: '[{"pathid": 1, "hopCount": 0, "namespace": "dual-bgp", "hostname": "leaf01",
+    "iif": "lo", "vrf": "default", "overlay": false, "mtuMatch": null, "mtu": 65536,
+    "timestamp": 1592340874904}, {"pathid": 1, "hopCount": 1, "namespace": "dual-bgp",
+    "hostname": "spine01", "iif": "swp1", "vrf": "default", "overlay": false, "mtuMatch":
+    true, "mtu": 1500, "timestamp": 1592340872604}, {"pathid": 1, "hopCount": 2, "namespace":
+    "dual-bgp", "hostname": "leaf02", "iif": "swp1", "vrf": "default", "overlay":
+    false, "mtuMatch": true, "mtu": 1500, "timestamp": 1592340872604}, {"pathid":
+    1, "hopCount": 2, "namespace": "dual-bgp", "hostname": "leaf02", "iif": "lo",
+    "vrf": "default", "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp":
+    1592340874850}, {"pathid": 2, "hopCount": 0, "namespace": "dual-bgp", "hostname":
+    "leaf01", "iif": "lo", "vrf": "default", "overlay": false, "mtuMatch": null, "mtu":
+    65536, "timestamp": 1592340874904}, {"pathid": 2, "hopCount": 1, "namespace":
+    "dual-bgp", "hostname": "spine01", "iif": "swp1", "vrf": "default", "overlay":
+    false, "mtuMatch": true, "mtu": 1500, "timestamp": 1592340872604}, {"pathid":
+    2, "hopCount": 2, "namespace": "dual-bgp", "hostname": "leaf04", "iif": "swp1",
+    "vrf": "default", "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp":
+    1592340872604}, {"pathid": 2, "hopCount": 3, "namespace": "dual-bgp", "hostname":
+    "leaf02", "iif": "lo", "vrf": "default", "overlay": false, "mtuMatch": null, "mtu":
+    65536, "timestamp": 1592340874850}, {"pathid": 3, "hopCount": 0, "namespace":
+    "dual-bgp", "hostname": "leaf01", "iif": "lo", "vrf": "default", "overlay": false,
+    "mtuMatch": null, "mtu": 65536, "timestamp": 1592340874904}, {"pathid": 3, "hopCount":
+    1, "namespace": "dual-bgp", "hostname": "spine01", "iif": "swp1", "vrf": "default",
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1592340872604},
+    {"pathid": 3, "hopCount": 2, "namespace": "dual-bgp", "hostname": "leaf03", "iif":
+    "swp1", "vrf": "default", "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp":
+    1592340872604}, {"pathid": 3, "hopCount": 3, "namespace": "dual-bgp", "hostname":
+    "leaf02", "iif": "lo", "vrf": "default", "overlay": false, "mtuMatch": null, "mtu":
+    65536, "timestamp": 1592340874850}, {"pathid": 4, "hopCount": 0, "namespace":
+    "dual-bgp", "hostname": "leaf01", "iif": "lo", "vrf": "default", "overlay": false,
+    "mtuMatch": null, "mtu": 65536, "timestamp": 1592340874904}, {"pathid": 4, "hopCount":
+    1, "namespace": "dual-bgp", "hostname": "spine02", "iif": "swp1", "vrf": "default",
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1592340872604},
+    {"pathid": 4, "hopCount": 2, "namespace": "dual-bgp", "hostname": "leaf04", "iif":
+    "swp2", "vrf": "default", "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp":
+    1592340872576}, {"pathid": 4, "hopCount": 3, "namespace": "dual-bgp", "hostname":
+    "leaf02", "iif": "lo", "vrf": "default", "overlay": false, "mtuMatch": null, "mtu":
+    65536, "timestamp": 1592340874850}, {"pathid": 5, "hopCount": 0, "namespace":
+    "dual-bgp", "hostname": "leaf01", "iif": "lo", "vrf": "default", "overlay": false,
+    "mtuMatch": null, "mtu": 65536, "timestamp": 1592340874904}, {"pathid": 5, "hopCount":
+    1, "namespace": "dual-bgp", "hostname": "spine02", "iif": "swp1", "vrf": "default",
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1592340872604},
+    {"pathid": 5, "hopCount": 2, "namespace": "dual-bgp", "hostname": "leaf02", "iif":
+    "swp2", "vrf": "default", "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp":
+    1592340872576}, {"pathid": 5, "hopCount": 2, "namespace": "dual-bgp", "hostname":
+    "leaf02", "iif": "lo", "vrf": "default", "overlay": false, "mtuMatch": null, "mtu":
+    65536, "timestamp": 1592340874850}, {"pathid": 6, "hopCount": 0, "namespace":
+    "dual-bgp", "hostname": "leaf01", "iif": "lo", "vrf": "default", "overlay": false,
+    "mtuMatch": null, "mtu": 65536, "timestamp": 1592340874904}, {"pathid": 6, "hopCount":
+    1, "namespace": "dual-bgp", "hostname": "spine02", "iif": "swp1", "vrf": "default",
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1592340872604},
+    {"pathid": 6, "hopCount": 2, "namespace": "dual-bgp", "hostname": "leaf03", "iif":
+    "swp2", "vrf": "default", "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp":
+    1592340872576}, {"pathid": 6, "hopCount": 3, "namespace": "dual-bgp", "hostname":
+    "leaf02", "iif": "lo", "vrf": "default", "overlay": false, "mtuMatch": null, "mtu":
+    65536, "timestamp": 1592340874850}]'
+- command: path show --src='2001:db8:0:1::1' --dest='2001:db8:0:4::1' --namespace=dual-bgp
+    --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  error:
+    error: '[{"error": "ERROR: ''PathObj'' object has no attribute ''_arp_df''"}]'
+  marks: path show
