@@ -21,8 +21,8 @@ apply:
 
   eos:
     version: all
-    command: show arp
-    normalize: 'ipV4Neighbors/[
+    command: show arp vrf all
+    normalize: 'vrfs/*:vrf/ipV4Neighbors/*/[
     "hwAddress: macaddr",
     "address: ipAddress",
     "interface: oif",
@@ -46,7 +46,7 @@ apply:
   nxos:
     version: all
     command:
-      - command: show ip arp detail | json
+      - command: show ip arp detail vrf all | json
         normalize: 'TABLE_vrf/ROW_vrf/*:vrf-name-out:vrf|TABLE_adj/ROW_adj/*?/[
         "intf-out: oif",
         "intf-out: origIfname",
