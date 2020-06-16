@@ -149,11 +149,16 @@ class SqEngineObject(object):
                 func = flds[3]
             else:
                 func = 'count'
-            fld_per_ns = self.summary_df.query(query_str) \
-                                        .groupby(by=['namespace'])[field] \
-                                        .agg(func)
-            for i in self.ns.keys():
-                self.ns[i].update({field_name: fld_per_ns[i]})
+            fld_df = self.summary_df.query(query_str)
+            if not fld_df.empty:
+                fld_per_ns = fld_df.groupby(by=['namespace'])[field] \
+                                   .agg(func)
+                for i in self.ns.keys():
+                    self.ns[i].update({field_name: fld_per_ns[i]})
+            else:
+                for i in self.ns.keys():
+                    self.ns[i].update({field_name: 0})
+
             self.summary_row_order.append(field_name)
 
         for field_name, field in self._summarize_on_add_list_or_count:

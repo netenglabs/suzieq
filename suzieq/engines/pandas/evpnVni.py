@@ -21,7 +21,7 @@ class EvpnvniObj(SqEngineObject):
         ]
 
         l3vni_count = self.summary_df.query('type == "L3"').groupby(
-            by=['namespace'])['vni'].nunique()
+            by=['namespace'])['vni'].count()
         for ns in self.ns.keys():
             if l3vni_count[ns]:
                 self.ns[ns]['mode'] = 'symmetric'
