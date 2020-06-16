@@ -161,6 +161,12 @@ class InterfaceService(Service):
 
             if entry['master'] == 'Ethernet-Bridge':
                 entry['master'] = 'bridge'
+            elif entry['master'] == 'unknown':
+                if entry['ifname'].startswith('jsv'):
+                    entry['type'] = 'sflowMonitor'
+                else:
+                    entry['type'] = 'virtual'
+                entry['master'] = None
 
             if entry['type'] == 'vxlan-tunnel-endpoint':
                 entry['type'] = 'vtep'
