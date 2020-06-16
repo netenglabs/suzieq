@@ -46,6 +46,8 @@ class LldpCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
+        ifname = ifname.replace('/', '-')
+
         df = self.sqobj.get(
             hostname=self.hostname,
             ifname=ifname.split(),
@@ -54,4 +56,3 @@ class LldpCmd(SqCommand):
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
-
