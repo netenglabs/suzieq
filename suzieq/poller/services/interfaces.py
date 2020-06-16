@@ -9,6 +9,7 @@ class InterfaceService(Service):
         """Clean up EOS interfaces output"""
 
         for entry in processed_data:
+            entry['origIfname'] = entry['ifname']
             entry["speed"] = int(entry["speed"] / 1000000)
             ts = entry["statusChangeTimestamp"]
             if ts:
@@ -72,6 +73,7 @@ class InterfaceService(Service):
                 entry['type'] = 'ethernet'
             if ifname not in new_data_dict:
 
+                entry['origIfname'] = entry['ifname']
                 if not entry['linkUpCnt']:
                     entry['linkUpCnt'] = 0
                 if not entry['linkDownCnt']:
@@ -341,6 +343,7 @@ class InterfaceService(Service):
                 entry['adminState'] = 'up'
             else:
                 entry['adminState'] = 'down'
+            entry['origIfname'] = entry['ifname']
 
         return processed_data
 
