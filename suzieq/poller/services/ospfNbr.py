@@ -59,6 +59,7 @@ class OspfNbrService(Service):
             entry["areaStub"] = entry["areaStub"] == "[Stub]"
             if not entry["bfdStatus"]:
                 entry["bfdStatus"] = "disabled"
+            entry['origIfname'] = entry['ifname']
 
         return processed_data
 
@@ -68,6 +69,8 @@ class OspfNbrService(Service):
             entry["lastChangeTime"] = int(entry["lastChangeTime"] * 1000)
             # What is provided is the opposite of stub and so we not it
             entry["areaStub"] = not entry["areaStub"]
+            entry['origIfname'] = entry['ifname']
+            entry['ifname'] = entry['ifname'].replace('/', '-')
 
         return processed_data
 
