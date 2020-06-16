@@ -1,0 +1,294 @@
+description: 'Testing verbs for route: show summarize unique lpm'
+tests:
+- command: route show --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: route show
+  output: '[{"namespace": "nxos", "hostname": "leaf1", "vrf": "default", "prefix":
+    "10.0.0.11/32", "nexthopIps": ["10.0.0.11", "10.0.0.11"], "oifs": ["Lo0", "Lo0"],
+    "protocol": "local", "source": "-", "metric": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1591856972358}, {"namespace": "nxos", "hostname": "leaf1", "vrf":
+    "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["Eth1/3", "Eth1/4"], "protocol": "ospf", "source": "-", "metric": 0,
+    "ipvers": 4, "action": "forward", "timestamp": 1591856972358}, {"namespace": "nxos",
+    "hostname": "leaf1", "vrf": "default", "prefix": "10.0.0.21/32", "nexthopIps":
+    [], "oifs": [], "protocol": "ospf", "source": "-", "metric": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1591856972358}, {"namespace": "nxos", "hostname": "leaf1",
+    "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps": [], "oifs": [], "protocol":
+    "ospf", "source": "-", "metric": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1591856972358}, {"namespace": "nxos", "hostname": "leaf1", "vrf": "default", "prefix":
+    "10.2.3.4/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["Eth1/3", "Eth1/4"],
+    "protocol": "ospf", "source": "-", "metric": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1591856972358}, {"namespace": "nxos", "hostname": "leaf1", "vrf":
+    "default", "prefix": "172.16.1.0/24", "nexthopIps": ["172.16.1.1", "172.16.1.25",
+    "172.16.1.254"], "oifs": ["Vlan10", "Vlan10", "Vlan10"], "protocol": "direct",
+    "source": "-", "metric": 0, "ipvers": 4, "action": "forward", "timestamp": 1591856972358},
+    {"namespace": "nxos", "hostname": "leaf1", "vrf": "default", "prefix": "172.16.1.1/32",
+    "nexthopIps": [], "oifs": [], "protocol": "local", "source": "-", "metric": 0,
+    "ipvers": 4, "action": "forward", "timestamp": 1591856972358}, {"namespace": "nxos",
+    "hostname": "leaf1", "vrf": "default", "prefix": "172.16.1.25/32", "nexthopIps":
+    [], "oifs": [], "protocol": "local", "source": "-", "metric": 0, "ipvers": 4,
+    "action": "forward", "timestamp": 1591856972358}, {"namespace": "nxos", "hostname":
+    "leaf1", "vrf": "default", "prefix": "172.16.1.254/32", "nexthopIps": [], "oifs":
+    [], "protocol": "local", "source": "-", "metric": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1591856972358}, {"namespace": "nxos", "hostname": "leaf1", "vrf":
+    "management", "prefix": "0.0.0.0/0", "nexthopIps": [], "oifs": [], "protocol":
+    "static", "source": "-", "metric": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1591856972358}, {"namespace": "nxos", "hostname": "leaf1", "vrf": "management",
+    "prefix": "10.255.2.0/24", "nexthopIps": [], "oifs": [], "protocol": "direct",
+    "source": "-", "metric": 0, "ipvers": 4, "action": "forward", "timestamp": 1591856972358},
+    {"namespace": "nxos", "hostname": "leaf1", "vrf": "management", "prefix": "10.255.2.44/32",
+    "nexthopIps": [], "oifs": [], "protocol": "local", "source": "-", "metric": 0,
+    "ipvers": 4, "action": "forward", "timestamp": 1591856972358}, {"namespace": "nxos",
+    "hostname": "leaf2", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["Eth1/3", "Eth1/4"], "protocol": "ospf",
+    "source": "-", "metric": 0, "ipvers": 4, "action": "forward", "timestamp": 1591856972468},
+    {"namespace": "nxos", "hostname": "leaf2", "vrf": "default", "prefix": "10.0.0.12/32",
+    "nexthopIps": ["10.0.0.12", "10.0.0.12"], "oifs": ["Lo0", "Lo0"], "protocol":
+    "local", "source": "-", "metric": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1591856972468}, {"namespace": "nxos", "hostname": "leaf2", "vrf": "default", "prefix":
+    "10.0.0.21/32", "nexthopIps": [], "oifs": [], "protocol": "ospf", "source": "-",
+    "metric": 0, "ipvers": 4, "action": "forward", "timestamp": 1591856972468}, {"namespace":
+    "nxos", "hostname": "leaf2", "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps":
+    [], "oifs": [], "protocol": "ospf", "source": "-", "metric": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1591856972468}, {"namespace": "nxos", "hostname": "leaf2",
+    "vrf": "default", "prefix": "10.2.3.4/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["Eth1/3", "Eth1/4"], "protocol": "ospf", "source": "-", "metric": 0,
+    "ipvers": 4, "action": "forward", "timestamp": 1591856972468}, {"namespace": "nxos",
+    "hostname": "leaf2", "vrf": "default", "prefix": "172.16.1.0/24", "nexthopIps":
+    [], "oifs": [], "protocol": "direct", "source": "-", "metric": 0, "ipvers": 4,
+    "action": "forward", "timestamp": 1591856972468}, {"namespace": "nxos", "hostname":
+    "leaf2", "vrf": "default", "prefix": "172.16.1.103/32", "nexthopIps": [], "oifs":
+    [], "protocol": "hmm", "source": "-", "metric": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1591856972468}, {"namespace": "nxos", "hostname": "leaf2", "vrf":
+    "default", "prefix": "172.16.1.254/32", "nexthopIps": [], "oifs": [], "protocol":
+    "local", "source": "-", "metric": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1591856972468}, {"namespace": "nxos", "hostname": "leaf2", "vrf": "default", "prefix":
+    "172.16.2.0/24", "nexthopIps": [], "oifs": [], "protocol": "direct", "source":
+    "-", "metric": 0, "ipvers": 4, "action": "forward", "timestamp": 1591856972468},
+    {"namespace": "nxos", "hostname": "leaf2", "vrf": "default", "prefix": "172.16.2.104/32",
+    "nexthopIps": [], "oifs": [], "protocol": "hmm", "source": "-", "metric": 0, "ipvers":
+    4, "action": "forward", "timestamp": 1591856972468}, {"namespace": "nxos", "hostname":
+    "leaf2", "vrf": "default", "prefix": "172.16.2.254/32", "nexthopIps": [], "oifs":
+    [], "protocol": "local", "source": "-", "metric": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1591856972468}, {"namespace": "nxos", "hostname": "leaf2", "vrf":
+    "management", "prefix": "0.0.0.0/0", "nexthopIps": [], "oifs": [], "protocol":
+    "static", "source": "-", "metric": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1591856972468}, {"namespace": "nxos", "hostname": "leaf2", "vrf": "management",
+    "prefix": "10.255.2.0/24", "nexthopIps": [], "oifs": [], "protocol": "direct",
+    "source": "-", "metric": 0, "ipvers": 4, "action": "forward", "timestamp": 1591856972468},
+    {"namespace": "nxos", "hostname": "leaf2", "vrf": "management", "prefix": "10.255.2.43/32",
+    "nexthopIps": [], "oifs": [], "protocol": "local", "source": "-", "metric": 0,
+    "ipvers": 4, "action": "forward", "timestamp": 1591856972468}, {"namespace": "nxos",
+    "hostname": "server1", "vrf": "default", "prefix": "::/0", "nexthopIps": ["fe80::200:ff:fe11:1234"],
+    "oifs": ["eth1"], "protocol": "ra", "source": "", "metric": 1024, "ipvers": 6,
+    "action": "forward", "timestamp": 1591856970680}, {"namespace": "nxos", "hostname":
+    "server1", "vrf": "default", "prefix": "10.255.2.0/24", "nexthopIps": [""], "oifs":
+    ["eth0"], "protocol": "kernel", "source": "10.255.2.68", "metric": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1591856970680}, {"namespace": "nxos", "hostname":
+    "server1", "vrf": "default", "prefix": "10.255.2.1/32", "nexthopIps": [""], "oifs":
+    ["eth0"], "protocol": "dhcp", "source": "10.255.2.68", "metric": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1591856970680}, {"namespace": "nxos", "hostname":
+    "server1", "vrf": "default", "prefix": "172.16.0.0/16", "nexthopIps": ["172.16.1.1"],
+    "oifs": ["eth1"], "protocol": "", "source": "", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1591856970680}, {"namespace": "nxos", "hostname": "server1",
+    "vrf": "default", "prefix": "172.16.1.0/24", "nexthopIps": [""], "oifs": ["eth1"],
+    "protocol": "kernel", "source": "172.16.1.101", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1591856970680}, {"namespace": "nxos", "hostname": "server2",
+    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs":
+    ["eth0"], "protocol": "", "source": "", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1591856970680}, {"namespace": "nxos", "hostname": "server2", "vrf":
+    "default", "prefix": "10.255.2.0/24", "nexthopIps": [""], "oifs": ["eth0"], "protocol":
+    "kernel", "source": "10.255.2.31", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1591856970680}, {"namespace": "nxos", "hostname": "server2", "vrf":
+    "default", "prefix": "10.255.2.1/32", "nexthopIps": [""], "oifs": ["eth0"], "protocol":
+    "dhcp", "source": "10.255.2.31", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1591856970680}, {"namespace": "nxos", "hostname": "server2", "vrf":
+    "default", "prefix": "172.16.0.0/16", "nexthopIps": ["172.16.2.1"], "oifs": ["eth1"],
+    "protocol": "", "source": "", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1591856970680}, {"namespace": "nxos", "hostname": "server2", "vrf":
+    "default", "prefix": "172.16.2.0/24", "nexthopIps": [""], "oifs": ["eth1"], "protocol":
+    "kernel", "source": "172.16.2.102", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1591856970680}, {"namespace": "nxos", "hostname": "server3", "vrf":
+    "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"],
+    "protocol": "", "source": "", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1591856970680}, {"namespace": "nxos", "hostname": "server3", "vrf":
+    "default", "prefix": "10.255.2.0/24", "nexthopIps": [""], "oifs": ["eth0"], "protocol":
+    "kernel", "source": "10.255.2.13", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1591856970680}, {"namespace": "nxos", "hostname": "server3", "vrf":
+    "default", "prefix": "10.255.2.1/32", "nexthopIps": [""], "oifs": ["eth0"], "protocol":
+    "dhcp", "source": "10.255.2.13", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1591856970680}, {"namespace": "nxos", "hostname": "server3", "vrf":
+    "default", "prefix": "172.16.0.0/16", "nexthopIps": ["172.16.1.1"], "oifs": ["eth1"],
+    "protocol": "", "source": "", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1591856970680}, {"namespace": "nxos", "hostname": "server3", "vrf":
+    "default", "prefix": "172.16.1.0/24", "nexthopIps": [""], "oifs": ["eth1"], "protocol":
+    "kernel", "source": "172.16.1.103", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1591856970680}, {"namespace": "nxos", "hostname": "server4", "vrf":
+    "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"],
+    "protocol": "", "source": "", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1591856970616}, {"namespace": "nxos", "hostname": "server4", "vrf":
+    "default", "prefix": "10.255.2.0/24", "nexthopIps": [""], "oifs": ["eth0"], "protocol":
+    "kernel", "source": "10.255.2.151", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1591856970616}, {"namespace": "nxos", "hostname": "server4", "vrf":
+    "default", "prefix": "10.255.2.1/32", "nexthopIps": [""], "oifs": ["eth0"], "protocol":
+    "dhcp", "source": "10.255.2.151", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1591856970616}, {"namespace": "nxos", "hostname": "server4", "vrf":
+    "default", "prefix": "172.16.0.0/16", "nexthopIps": ["172.16.2.1"], "oifs": ["eth1"],
+    "protocol": "", "source": "", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1591856970616}, {"namespace": "nxos", "hostname": "server4", "vrf":
+    "default", "prefix": "172.16.2.0/24", "nexthopIps": [""], "oifs": ["eth1"], "protocol":
+    "kernel", "source": "172.16.2.104", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1591856970616}, {"namespace": "nxos", "hostname": "spine1", "vrf":
+    "default", "prefix": "10.0.0.11/32", "nexthopIps": [], "oifs": [], "protocol":
+    "ospf", "source": "-", "metric": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1591856972280}, {"namespace": "nxos", "hostname": "spine1", "vrf": "default",
+    "prefix": "10.0.0.12/32", "nexthopIps": [], "oifs": [], "protocol": "ospf", "source":
+    "-", "metric": 0, "ipvers": 4, "action": "forward", "timestamp": 1591856972280},
+    {"namespace": "nxos", "hostname": "spine1", "vrf": "default", "prefix": "10.0.0.21/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.21"], "oifs": ["Lo0", "Lo0"], "protocol":
+    "local", "source": "-", "metric": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1591856972280}, {"namespace": "nxos", "hostname": "spine1", "vrf": "default",
+    "prefix": "10.0.0.22/32", "nexthopIps": ["10.0.0.11", "10.0.0.12"], "oifs": ["Eth1/1",
+    "Eth1/2"], "protocol": "ospf", "source": "-", "metric": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1591856972280}, {"namespace": "nxos", "hostname": "spine1",
+    "vrf": "default", "prefix": "10.2.3.4/32", "nexthopIps": ["10.2.3.4", "10.2.3.4"],
+    "oifs": ["Lo1", "Lo1"], "protocol": "local", "source": "-", "metric": 0, "ipvers":
+    4, "action": "forward", "timestamp": 1591856972280}, {"namespace": "nxos", "hostname":
+    "spine1", "vrf": "management", "prefix": "0.0.0.0/0", "nexthopIps": [], "oifs":
+    [], "protocol": "static", "source": "-", "metric": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1591856972280}, {"namespace": "nxos", "hostname": "spine1", "vrf":
+    "management", "prefix": "10.255.2.0/24", "nexthopIps": [], "oifs": [], "protocol":
+    "direct", "source": "-", "metric": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1591856972280}, {"namespace": "nxos", "hostname": "spine1", "vrf": "management",
+    "prefix": "10.255.2.50/32", "nexthopIps": [], "oifs": [], "protocol": "local",
+    "source": "-", "metric": 0, "ipvers": 4, "action": "forward", "timestamp": 1591856972280},
+    {"namespace": "nxos", "hostname": "spine2", "vrf": "default", "prefix": "10.0.0.11/32",
+    "nexthopIps": [], "oifs": [], "protocol": "ospf", "source": "-", "metric": 0,
+    "ipvers": 4, "action": "forward", "timestamp": 1591856972358}, {"namespace": "nxos",
+    "hostname": "spine2", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps":
+    [], "oifs": [], "protocol": "ospf", "source": "-", "metric": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1591856972358}, {"namespace": "nxos", "hostname": "spine2",
+    "vrf": "default", "prefix": "10.0.0.21/32", "nexthopIps": ["10.0.0.11", "10.0.0.12"],
+    "oifs": ["Eth1/1", "Eth1/2"], "protocol": "ospf", "source": "-", "metric": 0,
+    "ipvers": 4, "action": "forward", "timestamp": 1591856972358}, {"namespace": "nxos",
+    "hostname": "spine2", "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps":
+    ["10.0.0.22", "10.0.0.22"], "oifs": ["Lo0", "Lo0"], "protocol": "local", "source":
+    "-", "metric": 0, "ipvers": 4, "action": "forward", "timestamp": 1591856972358},
+    {"namespace": "nxos", "hostname": "spine2", "vrf": "default", "prefix": "10.2.3.4/32",
+    "nexthopIps": ["10.2.3.4", "10.2.3.4"], "oifs": ["Lo1", "Lo1"], "protocol": "local",
+    "source": "-", "metric": 0, "ipvers": 4, "action": "forward", "timestamp": 1591856972358},
+    {"namespace": "nxos", "hostname": "spine2", "vrf": "management", "prefix": "0.0.0.0/0",
+    "nexthopIps": [], "oifs": [], "protocol": "static", "source": "-", "metric": 0,
+    "ipvers": 4, "action": "forward", "timestamp": 1591856972358}, {"namespace": "nxos",
+    "hostname": "spine2", "vrf": "management", "prefix": "10.255.2.0/24", "nexthopIps":
+    [], "oifs": [], "protocol": "direct", "source": "-", "metric": 0, "ipvers": 4,
+    "action": "forward", "timestamp": 1591856972358}, {"namespace": "nxos", "hostname":
+    "spine2", "vrf": "management", "prefix": "10.255.2.47/32", "nexthopIps": [], "oifs":
+    [], "protocol": "local", "source": "-", "metric": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1591856972358}]'
+- command: route show --columns=hostname --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: route show
+  output: '[{"hostname": "leaf1"}, {"hostname": "leaf1"}, {"hostname": "leaf1"}, {"hostname":
+    "leaf1"}, {"hostname": "leaf1"}, {"hostname": "leaf1"}, {"hostname": "leaf1"},
+    {"hostname": "leaf1"}, {"hostname": "leaf1"}, {"hostname": "leaf1"}, {"hostname":
+    "leaf1"}, {"hostname": "leaf1"}, {"hostname": "leaf2"}, {"hostname": "leaf2"},
+    {"hostname": "leaf2"}, {"hostname": "leaf2"}, {"hostname": "leaf2"}, {"hostname":
+    "leaf2"}, {"hostname": "leaf2"}, {"hostname": "leaf2"}, {"hostname": "leaf2"},
+    {"hostname": "leaf2"}, {"hostname": "leaf2"}, {"hostname": "leaf2"}, {"hostname":
+    "leaf2"}, {"hostname": "leaf2"}, {"hostname": "server1"}, {"hostname": "server1"},
+    {"hostname": "server1"}, {"hostname": "server1"}, {"hostname": "server1"}, {"hostname":
+    "server2"}, {"hostname": "server2"}, {"hostname": "server2"}, {"hostname": "server2"},
+    {"hostname": "server2"}, {"hostname": "server3"}, {"hostname": "server3"}, {"hostname":
+    "server3"}, {"hostname": "server3"}, {"hostname": "server3"}, {"hostname": "server4"},
+    {"hostname": "server4"}, {"hostname": "server4"}, {"hostname": "server4"}, {"hostname":
+    "server4"}, {"hostname": "spine1"}, {"hostname": "spine1"}, {"hostname": "spine1"},
+    {"hostname": "spine1"}, {"hostname": "spine1"}, {"hostname": "spine1"}, {"hostname":
+    "spine1"}, {"hostname": "spine1"}, {"hostname": "spine2"}, {"hostname": "spine2"},
+    {"hostname": "spine2"}, {"hostname": "spine2"}, {"hostname": "spine2"}, {"hostname":
+    "spine2"}, {"hostname": "spine2"}, {"hostname": "spine2"}]'
+- command: route summarize --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: route summarize
+  output: '{"nxos": {"deviceCnt": 8, "uniquePrefixCnt": 22, "uniqueVrfsCnt": 2, "ifRoutesCnt":
+    0, "hostRoutesCnt": 35, "totalV4RoutesinNs": 61, "totalV6RoutesinNs": 1, "routingProtocolCnt":
+    9, "routesPerHostStat": [5, 14, 6.5], "routesperVrfStat": [12, 50, 31], "deviceWithNoDefRoute":
+    true}}'
+- command: route unique --columns=hostname --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: route unique
+  output: '[{"hostname": "leaf1", "count": 12}, {"hostname": "leaf2", "count": 14},
+    {"hostname": "server1", "count": 5}, {"hostname": "server2", "count": 5}, {"hostname":
+    "server3", "count": 5}, {"hostname": "server4", "count": 5}, {"hostname": "spine1",
+    "count": 8}, {"hostname": "spine2", "count": 8}]'
+- command: route lpm --address=10.0.0.1 --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: route lpm
+  output: '[{"namespace": "nxos", "hostname": "server2", "vrf": "default", "prefix":
+    "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"], "protocol": "", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1591856970680},
+    {"namespace": "nxos", "hostname": "server3", "vrf": "default", "prefix": "0.0.0.0/0",
+    "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"], "protocol": "", "source": "",
+    "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1591856970680}, {"namespace":
+    "nxos", "hostname": "server4", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["10.255.2.1"], "oifs": ["eth0"], "protocol": "", "source": "", "metric": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1591856970616}]'
+- command: route lpm --address="10.0.0.12" --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: route lpm
+  output: '[{"namespace": "nxos", "hostname": "leaf1", "vrf": "default", "prefix":
+    "10.0.0.12/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["Eth1/3", "Eth1/4"],
+    "protocol": "ospf", "source": "-", "metric": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1591856972358}, {"namespace": "nxos", "hostname": "leaf2", "vrf":
+    "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.12", "10.0.0.12"],
+    "oifs": ["Lo0", "Lo0"], "protocol": "local", "source": "-", "metric": 0, "ipvers":
+    4, "action": "forward", "timestamp": 1591856972468}, {"namespace": "nxos", "hostname":
+    "server2", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"],
+    "oifs": ["eth0"], "protocol": "", "source": "", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1591856970680}, {"namespace": "nxos", "hostname": "server3",
+    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs":
+    ["eth0"], "protocol": "", "source": "", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1591856970680}, {"namespace": "nxos", "hostname": "server4", "vrf":
+    "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"],
+    "protocol": "", "source": "", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1591856970616}, {"namespace": "nxos", "hostname": "spine1", "vrf":
+    "default", "prefix": "10.0.0.12/32", "nexthopIps": [], "oifs": [], "protocol":
+    "ospf", "source": "-", "metric": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1591856972280}, {"namespace": "nxos", "hostname": "spine2", "vrf": "default",
+    "prefix": "10.0.0.12/32", "nexthopIps": [], "oifs": [], "protocol": "ospf", "source":
+    "-", "metric": 0, "ipvers": 4, "action": "forward", "timestamp": 1591856972358}]'
+- command: route lpm --address="10.0.0.12" --hostname="server1 server3" --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: route lpm
+  output: '[{"namespace": "nxos", "hostname": "server3", "vrf": "default", "prefix":
+    "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"], "protocol": "", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1591856970680}]'
+- command: route lpm --address="10.0.0.12" --vrf=evpn-vrf --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: route lpm
+  output: '[]'
+- command: route lpm --address="10.0.0.11" --vrf=default --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: route lpm
+  output: '[{"namespace": "nxos", "hostname": "leaf1", "vrf": "default", "prefix":
+    "10.0.0.11/32", "nexthopIps": ["10.0.0.11", "10.0.0.11"], "oifs": ["Lo0", "Lo0"],
+    "protocol": "local", "source": "-", "metric": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1591856972358}, {"namespace": "nxos", "hostname": "leaf2", "vrf":
+    "default", "prefix": "10.0.0.11/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["Eth1/3", "Eth1/4"], "protocol": "ospf", "source": "-", "metric": 0,
+    "ipvers": 4, "action": "forward", "timestamp": 1591856972468}, {"namespace": "nxos",
+    "hostname": "server2", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["10.255.2.1"], "oifs": ["eth0"], "protocol": "", "source": "", "metric": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1591856970680}, {"namespace": "nxos",
+    "hostname": "server3", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["10.255.2.1"], "oifs": ["eth0"], "protocol": "", "source": "", "metric": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1591856970680}, {"namespace": "nxos",
+    "hostname": "server4", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["10.255.2.1"], "oifs": ["eth0"], "protocol": "", "source": "", "metric": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1591856970616}, {"namespace": "nxos",
+    "hostname": "spine1", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps":
+    [], "oifs": [], "protocol": "ospf", "source": "-", "metric": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1591856972280}, {"namespace": "nxos", "hostname": "spine2",
+    "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps": [], "oifs": [], "protocol":
+    "ospf", "source": "-", "metric": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1591856972358}]'

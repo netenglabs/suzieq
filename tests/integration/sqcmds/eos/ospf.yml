@@ -1,0 +1,29 @@
+description: 'Testing verbs for ospf: show summarize unique assert top'
+tests:
+- command: ospf show --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: ospf show
+  output: '[]'
+- command: ospf show --columns=hostname --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: ospf show
+  xfail:
+    error: '"Error running command: \"None of [Index([''hostname''], dtype=''object'')]
+      are in the [columns]\"\n------------------------------------------------------------\n------------------------------------------------------------"'
+    reason: uncaught exception
+- command: ospf summarize --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: ospf summarize
+  output: '{}'
+- command: ospf unique --columns=hostname --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: ospf unique
+  output: '[]'
+- command: ospf assert --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: ospf assert
+  output: '[]'
+- command: ospf top --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: ospf top
+  output: '[]'

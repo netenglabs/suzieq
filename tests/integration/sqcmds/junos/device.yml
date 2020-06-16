@@ -1,0 +1,54 @@
+description: 'Testing verbs for device: show summarize unique'
+tests:
+- command: device show --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: device show
+  output: '[{"namespace": "junos", "hostname": "srv11", "model": "vm", "version":
+    "16.04 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
+    "address": "127.0.0.1", "uptime": 8952334, "timestamp": 1591875887334}, {"namespace":
+    "junos", "hostname": "srv12", "model": "vm", "version": "16.04 LTS", "vendor":
+    "Ubuntu", "architecture": "x86-64", "status": "alive", "address": "127.0.0.1",
+    "uptime": 8904334, "timestamp": 1591875887334}, {"namespace": "junos", "hostname":
+    "srv21", "model": "vm", "version": "16.04 LTS", "vendor": "Ubuntu", "architecture":
+    "x86-64", "status": "alive", "address": "127.0.0.1", "uptime": 8732334, "timestamp":
+    1591875887334}, {"namespace": "junos", "hostname": "srv22", "model": "vm", "version":
+    "16.04 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
+    "address": "127.0.0.1", "uptime": 8674334, "timestamp": 1591875887334}, {"namespace":
+    "junos", "hostname": "vqfx1", "model": "vqfx-10000", "version": "19.4R1.10", "vendor":
+    "Juniper", "architecture": "-", "status": "alive", "address": "127.0.0.1", "uptime":
+    34387201, "timestamp": 1591875888201}, {"namespace": "junos", "hostname": "vqfx2",
+    "model": "vqfx-10000", "version": "19.4R1.10", "vendor": "Juniper", "architecture":
+    "-", "status": "alive", "address": "127.0.0.1", "uptime": 8811865, "timestamp":
+    1591875888865}]'
+- command: device show --columns=hostname --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: device show
+  output: '[{"hostname": "srv11"}, {"hostname": "srv12"}, {"hostname": "srv21"}, {"hostname":
+    "srv22"}, {"hostname": "vqfx1"}, {"hostname": "vqfx2"}]'
+- command: device summarize --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: device summarize
+  output: '{"junos": {"deviceCnt": 6, "vendorCnt": {"Ubuntu": 4, "Juniper": 2}, "modelCnt":
+    {"vm": 4, "vqfx-10000": 2}, "archCnt": {"x86-64": 4, "-": 2}, "versionCnt": {"16.04
+    LTS": 4, "19.4R1.10": 2}, "upTimeStat": [8674, 34387, 8858]}}'
+- command: device summarize --columns="namespace hostname" --format=json
+  data-directory: tests/data/junos/parquet-out/
+  error:
+    error: '{"error": {"0": "ERROR: You cannot specify columns with summarize"}}'
+  marks: device summarize
+- command: device unique --columns=hostname --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: device unique
+  output: '[{"hostname": "vqfx2", "count": 1}, {"hostname": "vqfx1", "count": 1},
+    {"hostname": "srv22", "count": 1}, {"hostname": "srv21", "count": 1}, {"hostname":
+    "srv12", "count": 1}, {"hostname": "srv11", "count": 1}]'
+- command: device unique --columns="hostname namespace" --format=json
+  data-directory: tests/data/junos/parquet-out/
+  error:
+    error: '[{"error": "ERROR: Specify a single column with unique"}]'
+  marks: device unique
+- command: device unique --columns=badcolumn --format=json
+  data-directory: tests/data/junos/parquet-out/
+  error:
+    error: '[{"error": "ERROR: ''badcolumn''"}]'
+  marks: device unique

@@ -1,0 +1,64 @@
+description: 'Testing verbs for device: show summarize unique'
+tests:
+- command: device show --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: device show
+  output: '[{"namespace": "nxos", "hostname": "leaf1", "model": "Nexus9000 C9300v
+    Chassis", "version": "9.3(4)", "vendor": "Cisco", "architecture": "Intel Core
+    Processor (Skylake, IBRS)", "status": "alive", "address": "10.255.2.44", "uptime":
+    260012558, "timestamp": 1591856971558}, {"namespace": "nxos", "hostname": "leaf2",
+    "model": "Nexus9000 C9300v Chassis", "version": "9.3(4)", "vendor": "Cisco", "architecture":
+    "Intel Core Processor (Skylake, IBRS)", "status": "alive", "address": "10.255.2.43",
+    "uptime": 276945831, "timestamp": 1591856971831}, {"namespace": "nxos", "hostname":
+    "server1", "model": "vm", "version": "18.04.3 LTS", "vendor": "Ubuntu", "architecture":
+    "x86-64", "status": "alive", "address": "10.255.2.68", "uptime": 283482027, "timestamp":
+    1591856970027}, {"namespace": "nxos", "hostname": "server2", "model": "vm", "version":
+    "18.04.3 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
+    "address": "10.255.2.31", "uptime": 283488026, "timestamp": 1591856970026}, {"namespace":
+    "nxos", "hostname": "server3", "model": "vm", "version": "18.04.3 LTS", "vendor":
+    "Ubuntu", "architecture": "x86-64", "status": "alive", "address": "10.255.2.13",
+    "uptime": 283483026, "timestamp": 1591856970026}, {"namespace": "nxos", "hostname":
+    "server4", "model": "vm", "version": "18.04.3 LTS", "vendor": "Ubuntu", "architecture":
+    "x86-64", "status": "alive", "address": "10.255.2.151", "uptime": 283482956, "timestamp":
+    1591856969956}, {"namespace": "nxos", "hostname": "spine1", "model": "Nexus9000
+    C9300v Chassis", "version": "9.3(4)", "vendor": "Cisco", "architecture": "Intel
+    Core Processor (Skylake, IBRS)", "status": "alive", "address": "10.255.2.50",
+    "uptime": 282478600, "timestamp": 1591856971600}, {"namespace": "nxos", "hostname":
+    "spine2", "model": "Nexus9000 C9300v Chassis", "version": "9.3(4)", "vendor":
+    "Cisco", "architecture": "Intel Core Processor (Skylake, IBRS)", "status": "alive",
+    "address": "10.255.2.47", "uptime": 282608781, "timestamp": 1591856971781}]'
+- command: device show --columns=hostname --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: device show
+  output: '[{"hostname": "leaf1"}, {"hostname": "leaf2"}, {"hostname": "server1"},
+    {"hostname": "server2"}, {"hostname": "server3"}, {"hostname": "server4"}, {"hostname":
+    "spine1"}, {"hostname": "spine2"}]'
+- command: device summarize --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: device summarize
+  output: '{"nxos": {"deviceCnt": 8, "vendorCnt": {"Cisco": 4, "Ubuntu": 4}, "modelCnt":
+    {"vm": 4, "Nexus9000 C9300v Chassis": 4}, "archCnt": {"Intel Core Processor (Skylake,
+    IBRS)": 4, "x86-64": 4}, "versionCnt": {"9.3(4)": 4, "18.04.3 LTS": 4}, "upTimeStat":
+    [260012, 283488, 283045]}}'
+- command: device summarize --columns="namespace hostname" --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  error:
+    error: '{"error": {"0": "ERROR: You cannot specify columns with summarize"}}'
+  marks: device summarize
+- command: device unique --columns=hostname --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: device unique
+  output: '[{"hostname": "spine2", "count": 1}, {"hostname": "spine1", "count": 1},
+    {"hostname": "server4", "count": 1}, {"hostname": "server3", "count": 1}, {"hostname":
+    "server2", "count": 1}, {"hostname": "server1", "count": 1}, {"hostname": "leaf2",
+    "count": 1}, {"hostname": "leaf1", "count": 1}]'
+- command: device unique --columns="hostname namespace" --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  error:
+    error: '[{"error": "ERROR: Specify a single column with unique"}]'
+  marks: device unique
+- command: device unique --columns=badcolumn --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  error:
+    error: '[{"error": "ERROR: ''badcolumn''"}]'
+  marks: device unique

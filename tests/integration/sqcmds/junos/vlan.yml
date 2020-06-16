@@ -1,0 +1,21 @@
+description: 'Testing verbs for vlan: show summarize unique'
+tests:
+- command: vlan show --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: vlan show
+  output: '[]'
+- command: vlan show --columns=hostname --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: vlan show
+  xfail:
+    error: '"Error running command: \"None of [Index([''hostname''], dtype=''object'')]
+      are in the [columns]\"\n------------------------------------------------------------\n------------------------------------------------------------"'
+    reason: uncaught exception
+- command: vlan summarize --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: vlan summarize
+  output: '{}'
+- command: vlan unique --columns=hostname --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: vlan unique
+  output: '[]'

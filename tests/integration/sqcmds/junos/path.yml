@@ -1,0 +1,44 @@
+description: 'Testing verbs for path: show summarize'
+tests:
+- command: path show --format=json --namespace=junos
+  data-directory: tests/data/junos/parquet-out/
+  error:
+    error: '[{"error": "ERROR: Must specify trace source and dest"}]'
+  marks: path show
+- command: path show --dest=172.16.2.104 --src=172.16.1.101 --format=json  --namespace=junos
+  data-directory: tests/data/junos/parquet-out/
+  error:
+    error: '[{"error": "ERROR: Invalid src 172.16.1.101"}]'
+  marks: path show
+- command: path show --dest=172.16.2.104 --src=10.10.1.10 --format=json --namespace=junos
+  data-directory: tests/data/junos/parquet-out/
+  error:
+    error: '[{"error": "ERROR: Invalid dest 172.16.2.104"}]'
+  marks: path show
+- command: path show --dest=10.10.1.10 --src=10.10.2.20 --format=json --namespace=junos
+  data-directory: tests/data/junos/parquet-out/
+  marks: path show
+  output: '[{"pathid": 1, "hopCount": 0, "namespace": "junos", "hostname": "srv22",
+    "iif": "eth1", "vrf": "default", "overlay": false, "mtuMatch": null, "mtu": 1500,
+    "timestamp": 1591991119487}, {"pathid": 1, "hopCount": 1, "namespace": "junos",
+    "hostname": "vqfx1", "iif": "irb.20000", "vrf": "irb", "overlay": false, "mtuMatch":
+    true, "mtu": 1500, "timestamp": 1591923382297}, {"pathid": 1, "hopCount": 2, "namespace":
+    "junos", "hostname": "srv11", "iif": "eth1", "vrf": "default", "overlay": false,
+    "mtuMatch": null, "mtu": 1500, "timestamp": 1591991119487}, {"pathid": 2, "hopCount":
+    0, "namespace": "junos", "hostname": "srv22", "iif": "eth1", "vrf": "default",
+    "overlay": false, "mtuMatch": null, "mtu": 1500, "timestamp": 1591991119487},
+    {"pathid": 2, "hopCount": 1, "namespace": "junos", "hostname": "vqfx2", "iif":
+    "irb.20000", "vrf": "default", "overlay": false, "mtuMatch": true, "mtu": 1500,
+    "timestamp": 1591923382297}, {"pathid": 2, "hopCount": 2, "namespace": "junos",
+    "hostname": "srv11", "iif": "eth1", "vrf": "default", "overlay": false, "mtuMatch":
+    null, "mtu": 1500, "timestamp": 1591991119487}]'
+- command: path summarize --dest=10.10.2.20 --src=10.10.1.10 --format=json --namespace=junos
+  data-directory: tests/data/junos/parquet-out/
+  marks: path summarize
+  output: '[{"junos": 2}, {"junos": [1, 2, 1]}, {"junos": 2}, {"junos": 2.0}, {"junos":
+    4}, {"junos": 1500}, {"junos": false}, {"junos": false}]'
+- command: path summarize --dest=10.10.1.20 --src=10.10.1.10 --format=json --namespace=junos
+  data-directory: tests/data/junos/parquet-out/
+  marks: path summarize
+  output: '[{"junos": 1}, {"junos": [1, 1]}, {"junos": 1}, {"junos": 1.0}, {"junos":
+    2}, {"junos": 1500}, {"junos": false}, {"junos": false}]'

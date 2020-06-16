@@ -1,0 +1,29 @@
+description: 'Testing verbs for evpnVni: show summarize unique'
+tests:
+- command: evpnVni show --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: evpnVni show
+  output: '[{"namespace": "junos", "hostname": "vqfx1", "vni": 10000, "type": "L2",
+    "numMacs": 0, "numArpNd": 0, "remoteVtepList": ["9.9.9.2"], "timestamp": 1592111206047},
+    {"namespace": "junos", "hostname": "vqfx1", "vni": 20000, "type": "L2", "numMacs":
+    0, "numArpNd": 0, "remoteVtepList": ["9.9.9.2"], "timestamp": 1592111206047},
+    {"namespace": "junos", "hostname": "vqfx2", "vni": 10000, "type": "L2", "numMacs":
+    0, "numArpNd": 0, "remoteVtepList": ["9.9.9.1"], "timestamp": 1592111206008},
+    {"namespace": "junos", "hostname": "vqfx2", "vni": 20000, "type": "L2", "numMacs":
+    0, "numArpNd": 0, "remoteVtepList": ["9.9.9.1"], "timestamp": 1592111206008}]'
+- command: evpnVni show --columns=hostname --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: evpnVni show
+  output: '[{"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx2"}, {"hostname":
+    "vqfx2"}]'
+- command: evpnVni summarize --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: evpnVni summarize
+  xfail:
+    error: '"Error running command: index 0 is out of bounds for axis 0 with size
+      0\n------------------------------------------------------------\n------------------------------------------------------------"'
+    reason: uncaught exception
+- command: evpnVni unique --columns=hostname --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: evpnVni unique
+  output: '[{"hostname": "vqfx2", "count": 2}, {"hostname": "vqfx1", "count": 2}]'
