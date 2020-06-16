@@ -204,39 +204,50 @@ apply:
 
   nxos:
     version: all
-    command: show bgp all neighbors vrf all | json
-    normalize: 'TABLE_neighbor/ROW_neighbor/*/[
-    "TABLE_af/ROW_af/[*]/TABLE_saf/ROW_saf/af-advertised: afAdvertised",
-    "neighbor: peer",
-    "remoteas: peerAsn?|0",
-    "remote-id: peerRouterId",
-    "vrf: vrf?|default",
-    "sourceif: ifname",
-    "passiveonly: passive?|False",
-    "state: state?Established|NotEstd",
-    "holdtime: holdTime?|0",
-    "keepalivetime: keepalivetime?|0",
-    "connsestablished: numChanges?|0",
-    "connsdropped: numChanges+numChanges",
-    "elapsedtime: estdTime?|",
-    "resetreason: reason",
-    "peerresetreason: "notifiCnReason?|",
-    "TABLE_af/ROW_af/[*]/TABLE_saf/ROW_saf/af-name: afiSafi",
-    "TABLE_af/ROW_af/[*]/TABLE_saf/ROW_saf/af-recvd: afRcvd",
-    "capextendednhadvertised: extnhAdvertised",
-    "capextendednhrecvd: extnhReceived",
-    "updatessent: updatesTx?|0",
-    "updatesrecvd: updatesRx?|0",
-    "TABLE_peraf/ROW_peraf/[*]/TABLE_persaf/ROW_persaf/per-af-name: afiPrefix",
-    "TABLE_peraf/ROW_peraf/[*]/TABLE_persaf/ROW_persaf/pfxrecvd: pfxRcvd",
-    "TABLE_peraf/ROW_peraf/[*]/TABLE_persaf/ROW_persaf/pfxsent: pfxSent",
-    "TABLE_peraf/ROW_peraf/[*]/TABLE_persaf/ROW_persaf/sendextcommunity: extendComm",
-    "TABLE_peraf/ROW_peraf/[*]/TABLE_persaf/ROW_persaf/sendextcommunity: sendComm",
-    "TABLE_peraf/ROW_peraf/[*]/TABLE_persaf/ROW_persaf/rrconfigured: rrclient?|",
-    "TABLE_peraf/ROW_peraf/[*]/TABLE_persaf/ROW_persaf/defaultoriginate: defaultOrig?|",
-    "localaddr: updateSource?|",
-    "remoteaddr: peerIP?|",
-    ]'
+    command:
+      - command: show bgp all neighbors vrf all | json
+        normalize: 'TABLE_neighbor/ROW_neighbor/*/[
+        "TABLE_af/ROW_af/[*]/TABLE_saf/ROW_saf/af-advertised: afAdvertised",
+        "neighbor: peer",
+        "remoteas: peerAsn?|0",
+        "remote-id: peerRouterId",
+        "vrf: vrf?|default",
+        "sourceif: ifname",
+        "passiveonly: passive?|False",
+        "state: state?Established|NotEstd",
+        "holdtime: holdTime?|0",
+        "keepalivetime: keepalivetime?|0",
+        "connsestablished: numChanges?|0",
+        "connsdropped: numChanges+numChanges",
+        "elapsedtime: estdTime?|",
+        "resetreason: reason",
+        "peerresetreason: "notifiCnReason?|",
+        "TABLE_af/ROW_af/[*]/TABLE_saf/ROW_saf/af-name: afiSafi",
+        "TABLE_af/ROW_af/[*]/TABLE_saf/ROW_saf/af-recvd: afRcvd",
+        "capextendednhadvertised: extnhAdvertised",
+        "capextendednhrecvd: extnhReceived",
+        "updatessent: updatesTx?|0",
+        "updatesrecvd: updatesRx?|0",
+        "TABLE_peraf/ROW_peraf/[*]/TABLE_persaf/ROW_persaf/per-af-name: afiPrefix",
+        "TABLE_peraf/ROW_peraf/[*]/TABLE_persaf/ROW_persaf/pfxrecvd: pfxRcvd",
+        "TABLE_peraf/ROW_peraf/[*]/TABLE_persaf/ROW_persaf/pfxsent: pfxSent",
+        "TABLE_peraf/ROW_peraf/[*]/TABLE_persaf/ROW_persaf/sendextcommunity: extendComm",
+        "TABLE_peraf/ROW_peraf/[*]/TABLE_persaf/ROW_persaf/sendextcommunity: sendComm",
+        "TABLE_peraf/ROW_peraf/[*]/TABLE_persaf/ROW_persaf/rrconfigured: rrclient?|",
+        "TABLE_peraf/ROW_peraf/[*]/TABLE_persaf/ROW_persaf/defaultoriginate: defaultOrig?|",
+        "localaddr: updateSource?|",
+        "remoteaddr: peerIP?|",
+        "entry-type: _entryType?|neighbors",
+        ]'
+
+      - command: show bgp all summary | json-pretty
+        normalize: 'TABLE_vrf/ROW_vrf/*?/[
+        "vrf-name-out: vrf",
+        "vrf-name-out: peer",
+        "vrf-local-as: asn",
+        "vrf-router-id: routerId",
+        "entry-type: _entryType?|summary",
+        ]'
 
   junos:
     version: all
