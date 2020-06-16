@@ -1,3 +1,5 @@
+import numpy as np
+
 from suzieq.poller.services.service import Service
 from suzieq.utils import get_timestamp_from_cisco_time
 from suzieq.utils import get_timestamp_from_junos_time
@@ -105,7 +107,17 @@ class BgpService(Service):
 
     def _clean_nxos_data(self, processed_data, raw_data):
 
-        for entry in processed_data:
+        entries_by_vrf = {}
+        drop_indices = []
+
+        for i, entry in enumerate(processed_data):
+            if entry['_entryType'] == 'summary':
+                for ventry in entries_by_vrf.get(entry['vrf'], []):
+                    ventry['asn'] = entry['asn']
+                    ventry['routerId'] = entry['routerId']
+                drop_indices.append(i)
+                continue
+
             for i, item in enumerate(entry['afiSafi']):
                 if item == 'IPv4 Unicast':
                     entry['v4Advertised'] = entry['afAdvertised'][i]
@@ -175,5 +187,10 @@ class BgpService(Service):
 
             entry['estdTime'] = get_timestamp_from_cisco_time(
                 entry['estdTime'], raw_data[0]['timestamp']/1000)
+            if entry['vrf'] not in entries_by_vrf:
+                entries_by_vrf[entry['vrf']] = []
 
+            entries_by_vrf[entry['vrf']].append(entry)
+
+        processed_data = np.delete(processed_data, drop_indices).tolist()
         return processed_data
