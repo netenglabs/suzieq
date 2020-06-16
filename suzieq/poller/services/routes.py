@@ -118,9 +118,10 @@ class RoutesService(Service):
                                 for x in entry['weights']]
             oiflist = []
             for oif in entry['oifs']:
-                if 'Eth' in oif:
-                    oif = oif.replace('Eth', 'Ethernet')
-                oiflist.append(oif)
+                if oif:
+                    if 'Eth' in oif:
+                        oif = oif.replace('Eth', 'Ethernet')
+                    oiflist.append(oif)
             entry['oifs'] = oiflist
 
             self._fix_ipvers(entry)
