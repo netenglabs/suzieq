@@ -116,6 +116,12 @@ class RoutesService(Service):
 
             entry['weights'] = [int(x) if x is not None else 0
                                 for x in entry['weights']]
+            oiflist = []
+            for oif in entry['oifs']:
+                if 'Eth' in oif:
+                    oif = oif.replace('Eth', 'Ethernet')
+                oiflist.append(oif)
+            entry['oifs'] = oiflist
 
             self._fix_ipvers(entry)
             if 'action' not in entry:
