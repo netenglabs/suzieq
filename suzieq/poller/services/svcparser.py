@@ -337,6 +337,9 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                 if any(x in subflds for x in ["*", "*?", "[*]?", "[*]"]):
                     # Returning a list is the only supported option for now
                     value = []
+                    maybe_list = True
+                else:
+                    maybe_list = False
 
                 while subflds:
                     subfld = subflds.pop(0).strip()
@@ -391,6 +394,8 @@ def cons_recs_from_json_template(tmplt_str, in_data):
 
                 if value is None:
                     value = tmpval
+                elif maybe_list and value == []:
+                    value = [tmpval]
             else:
                 value = x["rest"].get(lval.strip(), None)
 
