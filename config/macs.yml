@@ -32,7 +32,6 @@ apply:
     "l2ng-l2-mac-entry-flags/[0]/data: flags"
     ]'
 
-
   nxos:
     version: all
     command: show mac address-table | json
@@ -42,4 +41,13 @@ apply:
     "disp_vlan: vlan?|0",
     "disp_is_secure: isSecure?|",
     "disp_type: flags",
+    ]'
+
+  eos:
+    command: show mac-address-table unicast
+    normalize: 'unicastTable/tableEntries/*/[
+    "macAddress: macaddr",
+    "vlanId: vlan",
+    "entryType: flags",
+    "interface: oif",
     ]'
