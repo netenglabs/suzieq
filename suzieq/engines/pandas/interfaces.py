@@ -116,18 +116,22 @@ class InterfacesObj(SqEngineObject):
         """Workhorse routine that validates MTU match for specified input"""
         columns = kwargs.pop('columns', [])
 
-        lldpobj = LldpObj(context=self.ctxt)
-        lldp_df = lldpobj.get(**kwargs)
-
-        if lldp_df.empty:
-            raise NoLLdpError("No Valid LLDP info found")
-
-        columns = ["namespace", "hostname", "ifname", "state", "mtu",
+        columns = ["namespace", "hostname", "ifname", "state", "type", "mtu",
                    "timestamp"]
 
-        if_df = self.get(columns=columns, **kwargs)
+        type = kwargs.pop('type', 'ether')
+
+        if_df = self.get(columns=columns, type=type, **kwargs)
         if if_df.empty:
             return pd.DataFrame(columns=columns+["assert"])
+
+        lldpobj = LldpObj(context=self.ctxt)
+        lldp_df = lldpobj.get(**kwargs).query('peerIfname != "-"')
+
+        if lldp_df.empty:
+            if_df['assertReason'] = 'No LLDP peering info'
+            if_df['assert'] = 'fail'
+            return if_df
 
         # Now create a single DF where you get the MTU for the lldp
         # combo of (namespace, hostname, ifname) and the MTU for
@@ -161,7 +165,9 @@ class InterfacesObj(SqEngineObject):
         )
 
         if combined_df.empty:
-            return combined_df
+            if_df['assertReason'] = 'No LLDP peering info'
+            if_df['assert'] = 'fail'
+            return if_df
 
         combined_df['assert'] = combined_df.apply(lambda x: 'pass'
                                                   if x['mtu'] == x['peerMtu']
