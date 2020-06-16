@@ -5,6 +5,7 @@ from datetime import datetime
 from suzieq.exceptions import NoLLdpError
 from suzieq.utils import SchemaForTable
 from suzieq.sqobjects.lldp import LldpObj
+from suzieq.sqobjects.interfaces import IfObj
 from suzieq.engines.pandas.engineobj import SqEngineObject
 
 
@@ -36,6 +37,13 @@ class OspfObj(SqEngineObject):
                                    addnl_fields=addnl_nbr_fields, **kwargs)
         if nbr_df.empty:
             return nbr_df
+        else:
+            nbr_df['ifname'] = nbr_df['origIfname']
+            nbr_df.drop(columns=['origIfname'], inplace=True)
+
+        if not df.empty:
+            df['ifname'] = df['origIfname']
+            df.drop(columns=['origIfname'], inplace=True)
 
         # Merge the two tables
         df = df.merge(nbr_df, on=['namespace', 'hostname', 'ifname'],
@@ -142,6 +150,7 @@ class OspfObj(SqEngineObject):
             "timestamp",
             "area",
             "nbrCount",
+            "origIfname",
         ]
         sort_fields = ["namespace", "hostname", "ifname", "vrf"]
 
@@ -149,6 +158,9 @@ class OspfObj(SqEngineObject):
             "ospfIf", sort_fields, columns=columns, **kwargs)
         if ospf_df.empty:
             return pd.DataFrame(columns=columns)
+
+        ospf_df['ifname'] = ospf_df['origIfname']
+        ospf_df.drop(columns=['origIfname'], inplace=True)
 
         ospf_df["assertReason"] = [[] for _ in range(len(ospf_df))]
         df = (
@@ -174,10 +186,13 @@ class OspfObj(SqEngineObject):
             hostname=kwargs.get("hostname", ""),
             ifname=kwargs.get("ifname", ""),
             columns=["namespace", "hostname", "ifname", "peerHostname",
-                     "peerIfname"]
+                     "peerIfname", "peerMacaddr"]
         )
         if lldp_df.empty:
-            raise NoLLdpError("No LLDP info found")
+            ospf_df['assertReason'] = 'No LLDP peering info'
+            ospf_df['assert'] = 'fail'
+            return ospf_df[['namespace', 'hostname', 'vrf', 'ifname',
+                            'assertReason', 'assert']]
 
         # Create a single massive DF with fields populated appropriately
         use_cols = [
@@ -201,6 +216,12 @@ class OspfObj(SqEngineObject):
                                          on=["namespace", "hostname",
                                              "ifname"]) \
             .dropna(how="any")
+
+        if int_df.empty:
+            ospf_df['assertReason'] = 'No LLDP peering info'
+            ospf_df['assert'] = 'fail'
+            return ospf_df[['namespace', 'hostname', 'vrf', 'ifname',
+                            'assertReason', 'assert']]
 
         ospf_df = ospf_df.merge(int_df,
                                 left_on=["namespace", "hostname", "ifname"],
