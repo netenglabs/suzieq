@@ -1,0 +1,23 @@
+description: 'Testing verbs for lldp: show summarize unique'
+tests:
+- command: lldp show --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: lldp show
+  output: '[{"namespace": "junos", "hostname": "vqfx1", "ifname": "xe-0-0-0", "peerHostname":
+    "vqfx2", "peerIfname": "-", "description": "connect 2 vqfx1", "mgmtIP": "-", "timestamp":
+    1591875890161}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "xe-0-0-0",
+    "peerHostname": "vqfx1", "peerIfname": "-", "description": "connect 2 vqfx2",
+    "mgmtIP": "-", "timestamp": 1591875890203}]'
+- command: lldp show --columns=hostname --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: lldp show
+  output: '[{"hostname": "vqfx1"}, {"hostname": "vqfx2"}]'
+- command: lldp summarize --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: lldp summarize
+  output: '{"junos": {"deviceCnt": 2, "nbrCnt": 2, "peerHostnameCnt": 2, "uniquePeerMgmtIPCnt":
+    1, "missingPeerInfoCnt": 2}}'
+- command: lldp unique --columns=hostname --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: lldp unique
+  output: '[{"hostname": "vqfx2", "count": 1}, {"hostname": "vqfx1", "count": 1}]'

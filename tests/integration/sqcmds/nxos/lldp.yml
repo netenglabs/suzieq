@@ -1,0 +1,20 @@
+description: 'Testing verbs for lldp: show summarize unique'
+tests:
+- command: lldp show --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: lldp show
+  output: '[]'
+- command: lldp show --columns=hostname --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: lldp show
+  xfail:
+    error: '[]'
+    reason: uncaught exception
+- command: lldp summarize --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: lldp summarize
+  output: '{}'
+- command: lldp unique --columns=hostname --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: lldp unique
+  output: '[]'

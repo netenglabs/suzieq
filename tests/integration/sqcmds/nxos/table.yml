@@ -1,0 +1,95 @@
+description: 'Testing verbs for table: show describe'
+tests:
+- command: table show --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: table show
+  output: '[{"table": "arpnd", "first_time": 1592219791126, "latest_time": 1592219791450,
+    "intervals": 4, "all rows": 17, "namespaces": 1, "devices": 8}, {"table": "bgp",
+    "first_time": 1592168506252, "latest_time": 1592168506332, "intervals": 3, "all
+    rows": 8, "namespaces": 1, "devices": 4}, {"table": "device", "first_time": 1591854090860,
+    "latest_time": 1591856971831, "intervals": 19, "all rows": 28, "namespaces": 1,
+    "devices": 8}, {"table": "evpnVni", "first_time": 1592111184457, "latest_time":
+    1592111184457, "intervals": 1, "all rows": 6, "namespaces": 1, "devices": 2},
+    {"table": "fs", "first_time": 1591854091609, "latest_time": 1591856970512, "intervals":
+    8, "all rows": 128, "namespaces": 1, "devices": 4}, {"table": "interfaces", "first_time":
+    1592107144401, "latest_time": 1592107144834, "intervals": 7, "all rows": 300,
+    "namespaces": 1, "devices": 8}, {"table": "macs", "first_time": 1591854092295,
+    "latest_time": 1592031801982, "intervals": 16, "all rows": 178, "namespaces":
+    1, "devices": 6}, {"table": "ospfIf", "first_time": 1591854091699, "latest_time":
+    1591856971365, "intervals": 8, "all rows": 56, "namespaces": 1, "devices": 4},
+    {"table": "ospfNbr", "first_time": 1591854091565, "latest_time": 1591856971365,
+    "intervals": 11, "all rows": 32, "namespaces": 1, "devices": 4}, {"table": "routes",
+    "first_time": 1591856970616, "latest_time": 1591856972468, "intervals": 5, "all
+    rows": 62, "namespaces": 1, "devices": 8}, {"table": "time", "first_time": 1591854091901,
+    "latest_time": 1591856970819, "intervals": 7, "all rows": 13, "namespaces": 1,
+    "devices": 4}, {"table": "topcpu", "first_time": 1591854091077, "latest_time":
+    1591856970194, "intervals": 11, "all rows": 146, "namespaces": 1, "devices": 4},
+    {"table": "TOTAL", "first_time": 1591854090860, "latest_time": 1592219791450,
+    "intervals": 19, "all rows": 974, "namespaces": 1, "devices": 8}]'
+- command: table show --columns=hostname --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  error:
+    error: '[{"error": "ERROR: You cannot specify columns with table"}]'
+  marks: table show
+- command: table show --namespace=dummy --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: table show
+  output: '[]'
+- command: table show --view=changes --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: table show
+  output: '[]'
+- command: table show --view=latest --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: table show
+  output: '[{"table": "arpnd", "first_time": 1592219791126, "latest_time": 1592219791450,
+    "intervals": 4, "all rows": 17, "namespaces": 1, "devices": 8}, {"table": "bgp",
+    "first_time": 1592168506252, "latest_time": 1592168506332, "intervals": 3, "all
+    rows": 8, "namespaces": 1, "devices": 4}, {"table": "device", "first_time": 1591854090860,
+    "latest_time": 1591856971831, "intervals": 19, "all rows": 28, "namespaces": 1,
+    "devices": 8}, {"table": "evpnVni", "first_time": 1592111184457, "latest_time":
+    1592111184457, "intervals": 1, "all rows": 6, "namespaces": 1, "devices": 2},
+    {"table": "fs", "first_time": 1591854091609, "latest_time": 1591856970512, "intervals":
+    8, "all rows": 128, "namespaces": 1, "devices": 4}, {"table": "interfaces", "first_time":
+    1592107144401, "latest_time": 1592107144834, "intervals": 7, "all rows": 300,
+    "namespaces": 1, "devices": 8}, {"table": "macs", "first_time": 1591854092295,
+    "latest_time": 1592031801982, "intervals": 16, "all rows": 178, "namespaces":
+    1, "devices": 6}, {"table": "ospfIf", "first_time": 1591854091699, "latest_time":
+    1591856971365, "intervals": 8, "all rows": 56, "namespaces": 1, "devices": 4},
+    {"table": "ospfNbr", "first_time": 1591854091565, "latest_time": 1591856971365,
+    "intervals": 11, "all rows": 32, "namespaces": 1, "devices": 4}, {"table": "routes",
+    "first_time": 1591856970616, "latest_time": 1591856972468, "intervals": 5, "all
+    rows": 62, "namespaces": 1, "devices": 8}, {"table": "time", "first_time": 1591854091901,
+    "latest_time": 1591856970819, "intervals": 7, "all rows": 13, "namespaces": 1,
+    "devices": 4}, {"table": "topcpu", "first_time": 1591854091077, "latest_time":
+    1591856970194, "intervals": 11, "all rows": 146, "namespaces": 1, "devices": 4},
+    {"table": "TOTAL", "first_time": 1591854090860, "latest_time": 1592219791450,
+    "intervals": 19, "all rows": 974, "namespaces": 1, "devices": 8}]'
+- command: table show --hostname=leaf01 --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: table show
+  output: '[{"table": "arpnd", "first_time": null, "latest_time": null, "intervals":
+    0, "all rows": 0, "namespaces": 0, "devices": 0}, {"table": "bgp", "first_time":
+    null, "latest_time": null, "intervals": 0, "all rows": 0, "namespaces": 0, "devices":
+    0}, {"table": "device", "first_time": null, "latest_time": null, "intervals":
+    0, "all rows": 0, "namespaces": 0, "devices": 0}, {"table": "evpnVni", "first_time":
+    null, "latest_time": null, "intervals": 0, "all rows": 0, "namespaces": 0, "devices":
+    0}, {"table": "fs", "first_time": null, "latest_time": null, "intervals": 0, "all
+    rows": 0, "namespaces": 0, "devices": 0}, {"table": "interfaces", "first_time":
+    null, "latest_time": null, "intervals": 0, "all rows": 0, "namespaces": 0, "devices":
+    0}, {"table": "macs", "first_time": null, "latest_time": null, "intervals": 0,
+    "all rows": 0, "namespaces": 0, "devices": 0}, {"table": "ospfIf", "first_time":
+    null, "latest_time": null, "intervals": 0, "all rows": 0, "namespaces": 0, "devices":
+    0}, {"table": "ospfNbr", "first_time": null, "latest_time": null, "intervals":
+    0, "all rows": 0, "namespaces": 0, "devices": 0}, {"table": "routes", "first_time":
+    null, "latest_time": null, "intervals": 0, "all rows": 0, "namespaces": 0, "devices":
+    0}, {"table": "time", "first_time": null, "latest_time": null, "intervals": 0,
+    "all rows": 0, "namespaces": 0, "devices": 0}, {"table": "topcpu", "first_time":
+    null, "latest_time": null, "intervals": 0, "all rows": 0, "namespaces": 0, "devices":
+    0}, {"table": "TOTAL", "first_time": null, "latest_time": null, "intervals": 0,
+    "all rows": 0, "namespaces": 0, "devices": 0}]'
+- command: table describe --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  error:
+    error: '[{"error": "ERROR: Must specify a table"}]'
+  marks: table describe

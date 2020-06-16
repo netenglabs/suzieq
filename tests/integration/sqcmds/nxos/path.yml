@@ -1,0 +1,20 @@
+description: 'Testing verbs for path: show summarize'
+tests:
+- command: path show --format=json --namespace=nxos
+  data-directory: tests/data/nxos/parquet-out/
+  marks: path show
+- command: path show --dest=172.16.2.104 --src=172.16.1.101 --format=json --namespace=nxos
+  data-directory: tests/data/nxos/parquet-out/
+  marks: path show
+- command: path show --dest=172.16.2.104 --src=172.16.1.104 --format=json --namespace=nxos
+  data-directory: tests/data/nxos/parquet-out/
+  marks: path show
+- command: path show --dest=172.16.1.101 --src=1172.16.3.104 --format=json --namespace=nxos
+  data-directory: tests/data/nxos/parquet-out/
+  marks: path show
+- command: path show --src=10.0.0.11 --dest=10.0.0.14 --format=json --namespace=nxos
+  data-directory: tests/data/nxos/parquet-out/
+  marks: path show
+- command: path summarize --dest=172.16.1.101 --src=172.16.3.104 --format=json --namespace=nxos
+  data-directory: tests/data/nxos/parquet-out/
+  marks: path summarize

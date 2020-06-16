@@ -1,0 +1,59 @@
+description: 'Testing verbs for bgp: show summarize unique assert'
+tests:
+- command: bgp show --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: bgp show
+  output: '[{"namespace": "nxos", "hostname": "leaf1", "vrf": "default", "peer": "10.0.0.21",
+    "peerHostname": "-", "state": "Established", "asn": 0, "peerAsn": 64520, "v4PfxRx":
+    0, "estdTime": 1591939422332, "numChanges": 1, "timestamp": 1592168506332}, {"namespace":
+    "nxos", "hostname": "leaf1", "vrf": "default", "peer": "10.0.0.22", "peerHostname":
+    "-", "state": "Established", "asn": 0, "peerAsn": 64520, "v4PfxRx": 0, "estdTime":
+    1591939424332, "numChanges": 1, "timestamp": 1592168506332}, {"namespace": "nxos",
+    "hostname": "leaf2", "vrf": "default", "peer": "10.0.0.21", "peerHostname": "-",
+    "state": "Established", "asn": 0, "peerAsn": 64520, "v4PfxRx": 0, "estdTime":
+    1591939428331, "numChanges": 1, "timestamp": 1592168506331}, {"namespace": "nxos",
+    "hostname": "leaf2", "vrf": "default", "peer": "10.0.0.22", "peerHostname": "-",
+    "state": "Established", "asn": 0, "peerAsn": 64520, "v4PfxRx": 0, "estdTime":
+    1591939425331, "numChanges": 1, "timestamp": 1592168506331}, {"namespace": "nxos",
+    "hostname": "spine1", "vrf": "default", "peer": "10.0.0.11", "peerHostname": "-",
+    "state": "Established", "asn": 0, "peerAsn": 64520, "v4PfxRx": 0, "estdTime":
+    1591939422332, "numChanges": 1, "timestamp": 1592168506332}, {"namespace": "nxos",
+    "hostname": "spine1", "vrf": "default", "peer": "10.0.0.12", "peerHostname": "-",
+    "state": "Established", "asn": 0, "peerAsn": 64520, "v4PfxRx": 0, "estdTime":
+    1591939428332, "numChanges": 1, "timestamp": 1592168506332}, {"namespace": "nxos",
+    "hostname": "spine2", "vrf": "default", "peer": "10.0.0.11", "peerHostname": "-",
+    "state": "Established", "asn": 0, "peerAsn": 64520, "v4PfxRx": 0, "estdTime":
+    1591939424252, "numChanges": 1, "timestamp": 1592168506252}, {"namespace": "nxos",
+    "hostname": "spine2", "vrf": "default", "peer": "10.0.0.12", "peerHostname": "-",
+    "state": "Established", "asn": 0, "peerAsn": 64520, "v4PfxRx": 0, "estdTime":
+    1591939425252, "numChanges": 1, "timestamp": 1592168506252}]'
+- command: bgp show --columns=hostname --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: bgp show
+  output: '[{"hostname": "leaf1"}, {"hostname": "leaf1"}, {"hostname": "leaf2"}, {"hostname":
+    "leaf2"}, {"hostname": "spine1"}, {"hostname": "spine1"}, {"hostname": "spine2"},
+    {"hostname": "spine2"}]'
+- command: bgp summarize --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: bgp summarize
+  output: '{"nxos": {"deviceCnt": 4, "totalPeerCnt": 8, "uniqueAsnCnt": 1, "uniqueVrfsCnt":
+    1, "failedPeerCnt": 0, "upTimeStat": ["3 days, 17:45:24.459000", "3 days, 17:45:30.459000",
+    "3 days, 17:45:27.999000"], "v4PfxRxStat": [0, 0, 0], "v6PfxRxStat": [0, 0, 0],
+    "evpnPfxRxStat": [5, 7, 6], "updatesRxStat": [367, 476, 414.5], "updatesTxStat":
+    [367, 476, 414.5], "activeAfiSafiList": ["ipv4", "evpn"]}}'
+- command: bgp unique --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  error:
+    error: '[{"error": "ERROR: Must specify columns with unique"}]'
+  marks: bgp unique
+- command: bgp unique --columns=hostname --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: bgp unique
+  output: '[{"hostname": "spine2", "count": 2}, {"hostname": "spine1", "count": 2},
+    {"hostname": "leaf2", "count": 2}, {"hostname": "leaf1", "count": 2}]'
+- command: bgp assert --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: bgp assert
+  xfail:
+    error: '[]'
+    reason: uncaught exception

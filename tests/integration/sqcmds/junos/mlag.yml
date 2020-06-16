@@ -1,0 +1,14 @@
+description: 'Testing verbs for mlag: show summarize unique'
+tests:
+- command: mlag show --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: mlag show
+- command: mlag show --columns=hostname --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: mlag show
+- command: mlag summarize --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: mlag summarize
+- command: mlag unique --columns=hostname --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: mlag unique

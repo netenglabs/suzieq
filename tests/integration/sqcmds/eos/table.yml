@@ -1,0 +1,103 @@
+description: 'Testing verbs for table: show describe'
+tests:
+- command: table show --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: table show
+  output: '[{"table": "arpnd", "first_time": 1592214888028, "latest_time": 1592214995313,
+    "intervals": 13, "all rows": 48, "namespaces": 1, "devices": 14}, {"table": "bgp",
+    "first_time": 1592214889142, "latest_time": 1592214890018, "intervals": 8, "all
+    rows": 36, "namespaces": 1, "devices": 10}, {"table": "device", "first_time":
+    1592214887362, "latest_time": 1592214887672, "intervals": 13, "all rows": 14,
+    "namespaces": 1, "devices": 14}, {"table": "fs", "first_time": 1592214888247,
+    "latest_time": 1592214936170, "intervals": 12, "all rows": 189, "namespaces":
+    1, "devices": 14}, {"table": "interfaces", "first_time": 1592214889773, "latest_time":
+    1592214891011, "intervals": 10, "all rows": 126, "namespaces": 1, "devices": 14},
+    {"table": "lldp", "first_time": 1592214890038, "latest_time": 1592214891610, "intervals":
+    7, "all rows": 60, "namespaces": 1, "devices": 10}, {"table": "macs", "first_time":
+    1592214890018, "latest_time": 1592214890018, "intervals": 1, "all rows": 3, "namespaces":
+    1, "devices": 1}, {"table": "mlag", "first_time": 1592214890669, "latest_time":
+    1592214891558, "intervals": 7, "all rows": 8, "namespaces": 1, "devices": 8},
+    {"table": "routes", "first_time": 1592214889142, "latest_time": 1592214890245,
+    "intervals": 9, "all rows": 180, "namespaces": 1, "devices": 14}, {"table": "time",
+    "first_time": 1592214888771, "latest_time": 1592214889779, "intervals": 8, "all
+    rows": 14, "namespaces": 1, "devices": 14}, {"table": "topcpu", "first_time":
+    1592214887364, "latest_time": 1592215011144, "intervals": 56, "all rows": 322,
+    "namespaces": 1, "devices": 14}, {"table": "topmem", "first_time": 1592214890527,
+    "latest_time": 1592215014699, "intervals": 25, "all rows": 54, "namespaces": 1,
+    "devices": 9}, {"table": "vlan", "first_time": 1592214891554, "latest_time": 1592214892106,
+    "intervals": 5, "all rows": 12, "namespaces": 1, "devices": 6}, {"table": "TOTAL",
+    "first_time": 1592214887362, "latest_time": 1592215014699, "intervals": 56, "all
+    rows": 1066, "namespaces": 1, "devices": 14}]'
+- command: table show --columns=hostname --format=json
+  data-directory: tests/data/eos/parquet-out/
+  error:
+    error: '[{"error": "ERROR: You cannot specify columns with table"}]'
+  marks: table show
+- command: table show --namespace=dummy --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: table show
+  output: '[]'
+- command: table show --view=changes --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: table show
+  output: '[]'
+- command: table show --view=latest --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: table show
+  output: '[{"table": "arpnd", "first_time": 1592214888028, "latest_time": 1592214995313,
+    "intervals": 13, "all rows": 48, "namespaces": 1, "devices": 14}, {"table": "bgp",
+    "first_time": 1592214889142, "latest_time": 1592214890018, "intervals": 8, "all
+    rows": 36, "namespaces": 1, "devices": 10}, {"table": "device", "first_time":
+    1592214887362, "latest_time": 1592214887672, "intervals": 13, "all rows": 14,
+    "namespaces": 1, "devices": 14}, {"table": "fs", "first_time": 1592214888247,
+    "latest_time": 1592214936170, "intervals": 12, "all rows": 189, "namespaces":
+    1, "devices": 14}, {"table": "interfaces", "first_time": 1592214889773, "latest_time":
+    1592214891011, "intervals": 10, "all rows": 126, "namespaces": 1, "devices": 14},
+    {"table": "lldp", "first_time": 1592214890038, "latest_time": 1592214891610, "intervals":
+    7, "all rows": 60, "namespaces": 1, "devices": 10}, {"table": "macs", "first_time":
+    1592214890018, "latest_time": 1592214890018, "intervals": 1, "all rows": 3, "namespaces":
+    1, "devices": 1}, {"table": "mlag", "first_time": 1592214890669, "latest_time":
+    1592214891558, "intervals": 7, "all rows": 8, "namespaces": 1, "devices": 8},
+    {"table": "routes", "first_time": 1592214889142, "latest_time": 1592214890245,
+    "intervals": 9, "all rows": 180, "namespaces": 1, "devices": 14}, {"table": "time",
+    "first_time": 1592214888771, "latest_time": 1592214889779, "intervals": 8, "all
+    rows": 14, "namespaces": 1, "devices": 14}, {"table": "topcpu", "first_time":
+    1592214887364, "latest_time": 1592215011144, "intervals": 56, "all rows": 322,
+    "namespaces": 1, "devices": 14}, {"table": "topmem", "first_time": 1592214890527,
+    "latest_time": 1592215014699, "intervals": 25, "all rows": 54, "namespaces": 1,
+    "devices": 9}, {"table": "vlan", "first_time": 1592214891554, "latest_time": 1592214892106,
+    "intervals": 5, "all rows": 12, "namespaces": 1, "devices": 6}, {"table": "TOTAL",
+    "first_time": 1592214887362, "latest_time": 1592215014699, "intervals": 56, "all
+    rows": 1066, "namespaces": 1, "devices": 14}]'
+- command: table show --hostname=leaf01 --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: table show
+  output: '[{"table": "arpnd", "first_time": 1592214888250, "latest_time": 1592214888250,
+    "intervals": 1, "all rows": 3, "namespaces": 1, "devices": 1}, {"table": "bgp",
+    "first_time": 1592214889144, "latest_time": 1592214889144, "intervals": 1, "all
+    rows": 2, "namespaces": 1, "devices": 1}, {"table": "device", "first_time": 1592214887375,
+    "latest_time": 1592214887375, "intervals": 1, "all rows": 1, "namespaces": 1,
+    "devices": 1}, {"table": "fs", "first_time": 1592214888250, "latest_time": 1592214888250,
+    "intervals": 1, "all rows": 14, "namespaces": 1, "devices": 1}, {"table": "interfaces",
+    "first_time": 1592214889774, "latest_time": 1592214889774, "intervals": 1, "all
+    rows": 14, "namespaces": 1, "devices": 1}, {"table": "lldp", "first_time": 1592214890038,
+    "latest_time": 1592214890038, "intervals": 1, "all rows": 7, "namespaces": 1,
+    "devices": 1}, {"table": "macs", "first_time": null, "latest_time": null, "intervals":
+    0, "all rows": 0, "namespaces": 0, "devices": 0}, {"table": "mlag", "first_time":
+    1592214890923, "latest_time": 1592214890923, "intervals": 1, "all rows": 1, "namespaces":
+    1, "devices": 1}, {"table": "routes", "first_time": 1592214889461, "latest_time":
+    1592214889461, "intervals": 1, "all rows": 17, "namespaces": 1, "devices": 1},
+    {"table": "time", "first_time": 1592214888772, "latest_time": 1592214888772, "intervals":
+    1, "all rows": 1, "namespaces": 1, "devices": 1}, {"table": "topcpu", "first_time":
+    1592214887376, "latest_time": 1592215009494, "intervals": 4, "all rows": 23, "namespaces":
+    1, "devices": 1}, {"table": "topmem", "first_time": 1592214890527, "latest_time":
+    1592215013825, "intervals": 3, "all rows": 3, "namespaces": 1, "devices": 1},
+    {"table": "vlan", "first_time": 1592214891554, "latest_time": 1592214891554, "intervals":
+    1, "all rows": 3, "namespaces": 1, "devices": 1}, {"table": "TOTAL", "first_time":
+    1592214887375, "latest_time": 1592215013825, "intervals": 4, "all rows": 89, "namespaces":
+    1, "devices": 1}]'
+- command: table describe --format=json
+  data-directory: tests/data/eos/parquet-out/
+  error:
+    error: '[{"error": "ERROR: Must specify a table"}]'
+  marks: table describe

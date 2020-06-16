@@ -1,0 +1,58 @@
+description: 'Testing verbs for ospf: show summarize unique assert top'
+tests:
+- command: ospf show --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: ospf show
+  output: '[{"namespace": "junos", "hostname": "vqfx1", "vrf": "default", "ifname":
+    "lo0.0", "area": "0.0.0.0", "ifState": "DRother", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "-", "lastChangeTime": 1592074673133, "numChanges": 0.0, "timestamp":
+    1592201057133}, {"namespace": "junos", "hostname": "vqfx1", "vrf": "default",
+    "ifname": "xe-0-0-0.0", "area": "0.0.0.0", "ifState": "BDR", "nbrCount": 1, "adjState":
+    "full", "peerIP": "10.0.0.2", "lastChangeTime": 1592074673133, "numChanges": 0.0,
+    "timestamp": 1592201057133}, {"namespace": "junos", "hostname": "vqfx2", "vrf":
+    "default", "ifname": "lo0.0", "area": "0.0.0.0", "ifState": "DRother", "nbrCount":
+    0, "adjState": "passive", "peerIP": "-", "lastChangeTime": 1592074973173, "numChanges":
+    0.0, "timestamp": 1592201057173}, {"namespace": "junos", "hostname": "vqfx2",
+    "vrf": "default", "ifname": "xe-0-0-0.0", "area": "0.0.0.0", "ifState": "DR",
+    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.1", "lastChangeTime": 1592074973173,
+    "numChanges": 0.0, "timestamp": 1592201057173}]'
+- command: ospf show --columns=hostname --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: ospf show
+  output: '[{"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx2"}, {"hostname":
+    "vqfx2"}]'
+- command: ospf summarize --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: ospf summarize
+  output: '{"junos": {"deviceCnt": 2, "peerCnt": 4, "stubbyPeerCnt": 0, "passivePeerCnt":
+    2, "unnumberedPeerCnt": 0, "failedPeerCnt": 0, "area": {"0.0.0.0": 4}, "vrf":
+    {"default": 4}, "helloTime": {"10": 4}, "deadTime": {"40": 4}, "retxTime": {"5":
+    4}, "networkType": {"broadcast": 4}, "adjChangesStat": [0.0, 0.0, 0.0], "upTimeStat":
+    [-199084000, -198785000, -198934500]}}'
+- command: ospf unique --columns=hostname --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: ospf unique
+  output: '[{"hostname": "vqfx2", "count": 2}, {"hostname": "vqfx1", "count": 2}]'
+- command: ospf assert --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: ospf assert
+  xfail:
+    error: '"Error running command: ''NotImplementedType'' object has no attribute
+      ''reindex_like''\n------------------------------------------------------------\n------------------------------------------------------------"'
+    reason: uncaught exception
+- command: ospf top --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: ospf top
+  output: '[{"namespace": "junos", "hostname": "vqfx1", "vrf": "default", "ifname":
+    "lo0.0", "area": "0.0.0.0", "ifState": "DRother", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "-", "lastChangeTime": 1592074673133.0, "numChanges": 0.0, "timestamp":
+    1592201057133}, {"namespace": "junos", "hostname": "vqfx1", "vrf": "default",
+    "ifname": "xe-0-0-0.0", "area": "0.0.0.0", "ifState": "BDR", "nbrCount": 1, "adjState":
+    "full", "peerIP": "10.0.0.2", "lastChangeTime": 1592074673133.0, "numChanges":
+    0.0, "timestamp": 1592201057133}, {"namespace": "junos", "hostname": "vqfx2",
+    "vrf": "default", "ifname": "lo0.0", "area": "0.0.0.0", "ifState": "DRother",
+    "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime": 1592074973173.0,
+    "numChanges": 0.0, "timestamp": 1592201057173}, {"namespace": "junos", "hostname":
+    "vqfx2", "vrf": "default", "ifname": "xe-0-0-0.0", "area": "0.0.0.0", "ifState":
+    "DR", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.1", "lastChangeTime":
+    1592074973173.0, "numChanges": 0.0, "timestamp": 1592201057173}]'
