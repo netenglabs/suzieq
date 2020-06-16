@@ -1,3 +1,5 @@
+import numpy as np
+
 from suzieq.poller.services.service import Service
 import ipaddress
 
@@ -60,8 +62,9 @@ class OspfIfService(Service):
 
     def _clean_nxos_data(self, processed_data, raw_data):
         areas = {}              # Need to come back to fixup entries
+        drop_indices = []
 
-        for entry in processed_data:
+        for i, entry in enumerate(processed_data):
             if entry['_entryType'] == 'interfaces':
                 entry['ifname'] = entry['ifname'].replace('/', '-')
                 entry["networkType"] = entry["networkType"].lower()
@@ -74,10 +77,12 @@ class OspfIfService(Service):
                 areas[entry['area']].append(entry)
             else:
                 # ifname is really the area name
-                for i, area in enumerate(entry['ifname']):
+                for j, area in enumerate(entry['ifname']):
                     for ifentry in areas.get(area, []):
                         ifentry['routerId'] = entry['routerId']
-                        ifentry['authType'] = entry['authType'][i]
-                        ifentry['isBackbone'] = entry['isBackbone'][i] == "true"
+                        ifentry['authType'] = entry['authType'][j]
+                        ifentry['isBackbone'] = entry['isBackbone'][j] == "true"
+                drop_indices.append(i)
 
+        processed_data = np.delete(processed_data, drop_indices).tolist()
         return processed_data
