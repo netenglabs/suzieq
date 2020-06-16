@@ -29,6 +29,7 @@ class AddressObj(SqEngineObject):
         addr = kwargs.pop("address", None)
         columns = kwargs.get("columns", [])
         ipvers = kwargs.pop("ipvers", "")
+        addnl_fields = ['origIfname']
 
         if self.ctxt.sort_fields is None:
             sort_fields = None
@@ -36,10 +37,14 @@ class AddressObj(SqEngineObject):
             sort_fields = self.sort_fields
 
         addrcol = self._get_addr_col(addr, ipvers, columns)
-        df = self.get_valid_df("address", sort_fields, **kwargs)
+        df = self.get_valid_df("address", sort_fields,
+                               addnl_fields=addnl_fields, **kwargs)
 
         if df.empty:
             return df
+
+        df['ifname'] = df['origIfname']
+        df.drop(columns=['origIfname'], inplace=True)
 
         # Works with pandas 0.25.0 onwards
         if addr:

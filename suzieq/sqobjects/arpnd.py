@@ -14,3 +14,4 @@ class ArpndObj(basicobj.SqObject):
                          namespace, columns, context=context, table='arpnd')
         self._sort_fields = ['namespace', 'hostname', 'ipAddress']
         self._cat_fields = ['state']
+        self._ign_key_fields = ["ipAddress"]

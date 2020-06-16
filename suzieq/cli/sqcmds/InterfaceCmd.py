@@ -50,6 +50,8 @@ class InterfaceCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
+        ifname = ifname.replace('/', '-')
+
         df = self.sqobj.get(
             hostname=self.hostname,
             ifname=ifname.split(),
@@ -74,8 +76,10 @@ class InterfaceCmd(SqCommand):
         """
         Assert aspects about the interface
         """
-        if self.columns is None:
-            return
+        if self.columns != ["default"]:
+            df = pd.DataFrame(
+                {'error': ['ERROR: You cannot specify columns with assert']})
+            return self._gen_output(df)
 
         now = time.time()
 
@@ -90,7 +94,6 @@ class InterfaceCmd(SqCommand):
             df = self.sqobj.aver(
                 hostname=self.hostname,
                 ifname=ifname.split(),
-                columns=self.columns,
                 namespace=self.namespace,
                 what=what,
                 matchval=value,

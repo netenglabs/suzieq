@@ -6,6 +6,21 @@ from .engineobj import SqEngineObject
 
 
 class InterfacesObj(SqEngineObject):
+
+    def get(self, **kwargs):
+        """Replacing the original interface name in returned result"""
+
+        addnl_fields = kwargs.pop('addnl_fields', [])
+        addnl_fields.append('origIfname')
+        df = super().get(addnl_fields=addnl_fields, **kwargs)
+
+        if not df.empty:
+            if 'ifname' in df.columns:
+                df['ifname'] = df['origIfname']
+            df.drop(columns=['origIfname'], inplace=True)
+
+        return df
+
     def aver(self, what="mtu-match", **kwargs) -> pd.DataFrame:
         """Assert that interfaces are in good state"""
         if what == "mtu-match":
@@ -84,18 +99,12 @@ class InterfacesObj(SqEngineObject):
 
     def _assert_mtu_value(self, **kwargs) -> pd.DataFrame:
         """Workhorse routine to match MTU value"""
-        columns = ["namespace", "hostname",
-                   "ifname", "state", "mtu", "timestamp"]
-        sort_fields = ["namespace", "hostname", "ifname"]
 
-        result_df = self.get_valid_df(
-            "interfaces",
-            sort_fields,
-            hostname=kwargs.get("hostname", []),
-            namespace=kwargs.get("namespace", []),
-            columns=columns,
-            ifname=kwargs.get("ifname", []),
-        ).query('ifname != "lo"')
+        columns = ["namespace", "hostname", "ifname", "state", "mtu",
+                   "timestamp"]
+
+        result_df = self.get(columns=columns, **kwargs) \
+                        .query('ifname != "lo"')
 
         if not result_df.empty:
             result_df['assert'] = result_df.apply(
@@ -105,22 +114,18 @@ class InterfacesObj(SqEngineObject):
 
     def _assert_mtu_match(self, **kwargs) -> pd.DataFrame:
         """Workhorse routine that validates MTU match for specified input"""
+        columns = kwargs.pop('columns', [])
+
         lldpobj = LldpObj(context=self.ctxt)
         lldp_df = lldpobj.get(**kwargs)
 
         if lldp_df.empty:
             raise NoLLdpError("No Valid LLDP info found")
 
-        columns = ["namespace", "hostname",
-                   "ifname", "state", "mtu", "timestamp"]
-        if_df = self.get_valid_df(
-            "interfaces",
-            self.sort_fields,
-            hostname=kwargs.get("hostname", []),
-            namespace=kwargs.get("namespace", []),
-            columns=columns,
-            ifname=kwargs.get("ifname", []),
-        )
+        columns = ["namespace", "hostname", "ifname", "state", "mtu",
+                   "timestamp"]
+
+        if_df = self.get(columns=columns, **kwargs)
         if if_df.empty:
             return pd.DataFrame(columns=columns+["assert"])
 

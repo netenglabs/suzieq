@@ -47,6 +47,8 @@ class ArpndCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
+        oif = oif.replace('/', '-')
+
         df = self.sqobj.get(
             hostname=self.hostname,
             ipAddress=address.split(),
