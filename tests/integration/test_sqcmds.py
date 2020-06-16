@@ -334,3 +334,27 @@ def _test_sqcmds(testvar, context_config):
                         '/tests/integration/sqcmds/samples')))
 def test_sqcmds(testvar, create_context_config):
     _test_sqcmds(testvar, create_context_config)
+
+
+@pytest.mark.smoke
+@pytest.mark.sqcmds
+@pytest.mark.parametrize("testvar", load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
+                        '/tests/integration/sqcmds/nxos')))
+def test_nxos_sqcmds(testvar, create_context_config):
+    _test_sqcmds(testvar, create_context_config)
+
+
+@pytest.mark.smoke
+@pytest.mark.sqcmds
+@pytest.mark.parametrize("testvar", load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
+                        '/tests/integration/sqcmds/junos')))
+def test_nxos_sqcmds(testvar, create_context_config):
+    _test_sqcmds(testvar, create_context_config)
+
+
+@pytest.mark.smoke
+@pytest.mark.sqcmds
+@pytest.mark.parametrize("testvar", load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
+                        '/tests/integration/sqcmds/eos')))
+def test_nxos_sqcmds(testvar, create_context_config):
+    _test_sqcmds(testvar, create_context_config)
