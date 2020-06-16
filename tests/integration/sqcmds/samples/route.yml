@@ -2780,3 +2780,132 @@ tests:
   error:
     error: '[{"error": "ERROR: Cannot use NOT operator with prefix"}]'
   marks: route show prefix negate
+- command: route show --prefix='2001:db8:0:1::/64' --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out/
+  marks: route show
+  output: '[{"namespace": "dual-bgp", "hostname": "leaf02", "vrf": "default", "prefix":
+    "2001:db8:0:1::/64", "nexthopIps": ["fe80::5054:ff:fe78:483e", "fe80::5054:ff:fe82:388d"],
+    "oifs": ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers":
+    6, "action": "forward", "timestamp": 1592340872577}, {"namespace": "dual-bgp",
+    "hostname": "leaf03", "vrf": "default", "prefix": "2001:db8:0:1::/64", "nexthopIps":
+    ["fe80::5054:ff:fe13:d761", "fe80::5054:ff:feea:282b"], "oifs": ["swp1", "swp2"],
+    "protocol": "bgp", "source": "", "metric": 20, "ipvers": 6, "action": "forward",
+    "timestamp": 1592340872604}, {"namespace": "dual-bgp", "hostname": "leaf04", "vrf":
+    "default", "prefix": "2001:db8:0:1::/64", "nexthopIps": ["fe80::5054:ff:fe71:2c46",
+    "fe80::5054:ff:fe2a:d109"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 6, "action": "forward", "timestamp": 1592340872576},
+    {"namespace": "dual-bgp", "hostname": "spine01", "vrf": "default", "prefix": "2001:db8:0:1::/64",
+    "nexthopIps": ["fe80::5054:ff:feaf:3432"], "oifs": ["swp1"], "protocol": "bgp",
+    "source": "", "metric": 20, "ipvers": 6, "action": "forward", "timestamp": 1592340872604},
+    {"namespace": "dual-bgp", "hostname": "spine02", "vrf": "default", "prefix": "2001:db8:0:1::/64",
+    "nexthopIps": ["fe80::5054:ff:febc:eb31"], "oifs": ["swp1"], "protocol": "bgp",
+    "source": "", "metric": 20, "ipvers": 6, "action": "forward", "timestamp": 1592340872576}]'
+- command: route show --prefixlen="==64" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out/
+  marks: route show
+  output: '[{"namespace": "dual-bgp", "hostname": "leaf01", "vrf": "default", "prefix":
+    "2001:db8:0:3::/64", "nexthopIps": ["fe80::5054:ff:feca:980a", "fe80::5054:ff:fe16:df29"],
+    "oifs": ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers":
+    6, "action": "forward", "timestamp": 1592340872604}, {"namespace": "dual-bgp",
+    "hostname": "leaf01", "vrf": "default", "prefix": "2001:db8:0:4::/64", "nexthopIps":
+    ["fe80::5054:ff:feca:980a", "fe80::5054:ff:fe16:df29"], "oifs": ["swp1", "swp2"],
+    "protocol": "bgp", "source": "", "metric": 20, "ipvers": 6, "action": "forward",
+    "timestamp": 1592340872604}, {"namespace": "dual-bgp", "hostname": "leaf02", "vrf":
+    "default", "prefix": "2001:db8:0:1::/64", "nexthopIps": ["fe80::5054:ff:fe78:483e",
+    "fe80::5054:ff:fe82:388d"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 6, "action": "forward", "timestamp": 1592340872577},
+    {"namespace": "dual-bgp", "hostname": "leaf02", "vrf": "default", "prefix": "2001:db8:0:2::/64",
+    "nexthopIps": ["fe80::5054:ff:fe78:483e", "fe80::5054:ff:fe82:388d"], "oifs":
+    ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 6,
+    "action": "forward", "timestamp": 1592340872577}, {"namespace": "dual-bgp", "hostname":
+    "leaf02", "vrf": "default", "prefix": "2001:db8:0:3::/64", "nexthopIps": ["fe80::5054:ff:fe78:483e",
+    "fe80::5054:ff:fe82:388d"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 6, "action": "forward", "timestamp": 1592340872577},
+    {"namespace": "dual-bgp", "hostname": "leaf02", "vrf": "default", "prefix": "2001:db8:0:4::/64",
+    "nexthopIps": ["fe80::5054:ff:fe78:483e", "fe80::5054:ff:fe82:388d"], "oifs":
+    ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 6,
+    "action": "forward", "timestamp": 1592340872577}, {"namespace": "dual-bgp", "hostname":
+    "leaf03", "vrf": "default", "prefix": "2001:db8:0:1::/64", "nexthopIps": ["fe80::5054:ff:fe13:d761",
+    "fe80::5054:ff:feea:282b"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 6, "action": "forward", "timestamp": 1592340872604},
+    {"namespace": "dual-bgp", "hostname": "leaf03", "vrf": "default", "prefix": "2001:db8:0:2::/64",
+    "nexthopIps": ["fe80::5054:ff:fe13:d761", "fe80::5054:ff:feea:282b"], "oifs":
+    ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 6,
+    "action": "forward", "timestamp": 1592340872604}, {"namespace": "dual-bgp", "hostname":
+    "leaf04", "vrf": "default", "prefix": "2001:db8:0:1::/64", "nexthopIps": ["fe80::5054:ff:fe71:2c46",
+    "fe80::5054:ff:fe2a:d109"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 6, "action": "forward", "timestamp": 1592340872576},
+    {"namespace": "dual-bgp", "hostname": "leaf04", "vrf": "default", "prefix": "2001:db8:0:2::/64",
+    "nexthopIps": ["fe80::5054:ff:fe71:2c46", "fe80::5054:ff:fe2a:d109"], "oifs":
+    ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 6,
+    "action": "forward", "timestamp": 1592340872576}, {"namespace": "dual-bgp", "hostname":
+    "spine01", "vrf": "default", "prefix": "2001:db8:0:1::/64", "nexthopIps": ["fe80::5054:ff:feaf:3432"],
+    "oifs": ["swp1"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 6,
+    "action": "forward", "timestamp": 1592340872604}, {"namespace": "dual-bgp", "hostname":
+    "spine01", "vrf": "default", "prefix": "2001:db8:0:2::/64", "nexthopIps": ["fe80::5054:ff:feaf:3432"],
+    "oifs": ["swp1"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 6,
+    "action": "forward", "timestamp": 1592340872604}, {"namespace": "dual-bgp", "hostname":
+    "spine01", "vrf": "default", "prefix": "2001:db8:0:3::/64", "nexthopIps": ["fe80::5054:ff:fe0c:e6a4",
+    "fe80::5054:ff:fe04:3896"], "oifs": ["swp4", "swp3"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 6, "action": "forward", "timestamp": 1592340872604},
+    {"namespace": "dual-bgp", "hostname": "spine01", "vrf": "default", "prefix": "2001:db8:0:4::/64",
+    "nexthopIps": ["fe80::5054:ff:fe0c:e6a4", "fe80::5054:ff:fe04:3896"], "oifs":
+    ["swp4", "swp3"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 6,
+    "action": "forward", "timestamp": 1592340872604}, {"namespace": "dual-bgp", "hostname":
+    "spine02", "vrf": "default", "prefix": "2001:db8:0:1::/64", "nexthopIps": ["fe80::5054:ff:febc:eb31"],
+    "oifs": ["swp1"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 6,
+    "action": "forward", "timestamp": 1592340872576}, {"namespace": "dual-bgp", "hostname":
+    "spine02", "vrf": "default", "prefix": "2001:db8:0:2::/64", "nexthopIps": ["fe80::5054:ff:febc:eb31"],
+    "oifs": ["swp1"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 6,
+    "action": "forward", "timestamp": 1592340872576}, {"namespace": "dual-bgp", "hostname":
+    "spine02", "vrf": "default", "prefix": "2001:db8:0:3::/64", "nexthopIps": ["fe80::5054:ff:fe1d:a9a",
+    "fe80::5054:ff:fec5:44a3"], "oifs": ["swp4", "swp3"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 6, "action": "forward", "timestamp": 1592340872576},
+    {"namespace": "dual-bgp", "hostname": "spine02", "vrf": "default", "prefix": "2001:db8:0:4::/64",
+    "nexthopIps": ["fe80::5054:ff:fe1d:a9a", "fe80::5054:ff:fec5:44a3"], "oifs": ["swp4",
+    "swp3"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 6, "action":
+    "forward", "timestamp": 1592340872576}]'
+- command: route summarize --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out/
+  marks: route summarize
+  output: '{"dual-bgp": {"deviceCnt": 14, "uniquePrefixCnt": 35, "uniqueVrfsCnt":
+    3, "ifRoutesCnt": 16, "hostRoutesCnt": 119, "totalV4RoutesinNs": 228, "totalV6RoutesinNs":
+    38, "routingProtocolCnt": 4, "routesPerHostStat": [6, 35, 22.0], "routesperVrfStat":
+    [16, 216, 34], "deviceWithNoDefRoute": true}}'
+- command: route lpm --address 2001:db8::11 --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out/
+  marks: route lpm
+  output: '[{"namespace": "dual-bgp", "hostname": "leaf02", "vrf": "default", "prefix":
+    "2001:db8::11/128", "nexthopIps": ["fe80::5054:ff:fe78:483e", "fe80::5054:ff:fe82:388d"],
+    "oifs": ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers":
+    6, "action": "forward", "timestamp": 1592340872577}, {"namespace": "dual-bgp",
+    "hostname": "leaf03", "vrf": "default", "prefix": "2001:db8::11/128", "nexthopIps":
+    ["fe80::5054:ff:fe13:d761", "fe80::5054:ff:feea:282b"], "oifs": ["swp1", "swp2"],
+    "protocol": "bgp", "source": "", "metric": 20, "ipvers": 6, "action": "forward",
+    "timestamp": 1592340872604}, {"namespace": "dual-bgp", "hostname": "leaf04", "vrf":
+    "default", "prefix": "2001:db8::11/128", "nexthopIps": ["fe80::5054:ff:fe71:2c46",
+    "fe80::5054:ff:fe2a:d109"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 6, "action": "forward", "timestamp": 1592340872576},
+    {"namespace": "dual-bgp", "hostname": "server101", "vrf": "default", "prefix":
+    "2001:db8::/32", "nexthopIps": ["2001:db8:0:1::1"], "oifs": ["bond0"], "protocol":
+    "", "source": "", "metric": 20, "ipvers": 6, "action": "forward", "timestamp":
+    1592340918447}, {"namespace": "dual-bgp", "hostname": "server102", "vrf": "default",
+    "prefix": "2001:db8::/32", "nexthopIps": ["2001:db8:0:2::1"], "oifs": ["bond0"],
+    "protocol": "", "source": "", "metric": 20, "ipvers": 6, "action": "forward",
+    "timestamp": 1592340918235}, {"namespace": "dual-bgp", "hostname": "server103",
+    "vrf": "default", "prefix": "2001:db8::/32", "nexthopIps": ["2001:db8:0:3::1"],
+    "oifs": ["bond0"], "protocol": "", "source": "", "metric": 20, "ipvers": 6, "action":
+    "forward", "timestamp": 1592340903730}, {"namespace": "dual-bgp", "hostname":
+    "server104", "vrf": "default", "prefix": "2001:db8::/32", "nexthopIps": ["2001:db8:0:4::1"],
+    "oifs": ["bond0"], "protocol": "", "source": "", "metric": 20, "ipvers": 6, "action":
+    "forward", "timestamp": 1592340918041}, {"namespace": "dual-bgp", "hostname":
+    "spine01", "vrf": "default", "prefix": "2001:db8::11/128", "nexthopIps": ["fe80::5054:ff:feaf:3432"],
+    "oifs": ["swp1"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 6,
+    "action": "forward", "timestamp": 1592340872604}, {"namespace": "dual-bgp", "hostname":
+    "spine02", "vrf": "default", "prefix": "2001:db8::11/128", "nexthopIps": ["fe80::5054:ff:febc:eb31"],
+    "oifs": ["swp1"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 6,
+    "action": "forward", "timestamp": 1592340872576}]'
+- command: route lpm --address 2001:db:0:2::102 --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out/
+  marks: route lpm
+  output: '[]'

@@ -1212,3 +1212,9 @@ tests:
     "spine01", "count": 39}, {"hostname": "exit01", "count": 39}, {"hostname": "leaf03",
     "count": 49}, {"hostname": "leaf04", "count": 50}, {"hostname": "leaf02", "count":
     50}, {"hostname": "leaf01", "count": 50}]'
+- command: arpnd summarize --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: arpnd summarize
+  output: '{"dual-bgp": {"deviceCnt": 14, "arpNdEntriesCnt": 120, "macaddrCnt": 120,
+    "oifCnt": 120, "uniqueOifCnt": 17, "remoteEntriesCnt": 0, "staticEntriesCnt":
+    46, "failedEntryCnt": 0}}'
