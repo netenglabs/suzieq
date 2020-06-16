@@ -115,8 +115,11 @@ if __name__ == '__main__':
                 # sometimes we correctly produce no results, so avoid checking that
                 if result and (output or error or xfail):
                     assert globals()[result], \
-                        f"result {result}, output: {output}, error: {error}, xfail: {xfail}"
+                        f"result is different type than exepcted: result {result}, output: {output}, error: {error}, xfail: {xfail}"
 
+                if 'output' in test and len(output) == 0:
+                    assert len(test['output']) == 0,  \
+                        f" output was empty dataframe, but was expecting some values {test['output']}"
                 # TODO: what to do when captured output is correctly empty []
 
                 if not error and result != 'xfail':
