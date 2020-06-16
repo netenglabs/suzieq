@@ -48,3 +48,25 @@ apply:
     "lldp-remote-chassis-id/[0]/data: peerMacaddr?|",
     "lldp-remote-port-description/[0]/data: description",
     ]'
+
+  nxos:
+    version: all
+    command:
+      - command: show cdp neighbors | json
+        normalize: 'TABLE_cdp_neighbor_brief_info/ROW_cdp_neighbor_brief_info/*?/[
+        "intf_id: ifname",
+        "intf_id: origIfname",
+        "device_id: peerHostname",
+        "platform_id: description",
+        "port_id: peerIfname"
+        ]'
+
+      - command: show lldp neighbors | json
+        normalize: 'TABLE_nbor/ROW_nbor/*?/[
+        "chassis_id: peerHostname",
+        "l_port_id: ifname",
+        "l_port_id: origIfname",
+        "port_type: subtype",
+        "port_id: peerIfname",
+        "mgmt_addr: mgmtIP"
+        ]'
