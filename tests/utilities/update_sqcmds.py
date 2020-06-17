@@ -118,7 +118,7 @@ if __name__ == '__main__':
                         f"result is different type than exepcted: result {result}, output: {output}, error: {error}, xfail: {xfail}"
 
                 if 'output' in test and len(output) == 0:
-                    assert len(test['output']) == 0,  \
+                    assert test['output'] == '[]' or test['output'] == '{}',  \
                         f" output was empty dataframe, but was expecting some values {test['output']}"
                 # TODO: what to do when captured output is correctly empty []
 
