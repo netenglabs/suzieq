@@ -51,6 +51,7 @@ apply:
     command: show interface | display json
     normalize: 'interface-information/[0]/physical-interface/*/[
     "oper-status/[0]/data: state",
+    "snmp-index/[0]/data: ifIndex",
     "admin-status/[0]/data: adminState",
     "speed/[0]/data: speed?|0",
     "name/[0]/data: ifname",
