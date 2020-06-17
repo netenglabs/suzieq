@@ -7,10 +7,7 @@ tests:
 - command: mlag show --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: mlag show
-  xfail:
-    error: '"Error running command: \"None of [Index([''hostname''], dtype=''object'')]
-      are in the [columns]\"\n------------------------------------------------------------\n------------------------------------------------------------"'
-    reason: uncaught exception
+  output: '[]'
 - command: mlag summarize --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: mlag summarize
