@@ -36,6 +36,9 @@ class InterfaceService(Service):
             if entry['type']:
                 entry['type'] = entry['type'].lower()
 
+            if entry['type'] == 'vlan' and entry['ifname'].startswith('Vlan'):
+                entry['vlan'] = int(entry['ifname'].split('Vlan')[1])
+
             tmpent = entry.get("ipAddressList", [[]])
             if not tmpent:
                 continue
@@ -66,6 +69,8 @@ class InterfaceService(Service):
                 for elem in munge_entry.get("globalUnicastIp6s", []):
                     new_list.append(elem["subnet"])
                 entry["ip6AddressList"] = new_list
+
+        return processed_data
 
     def _clean_cumulus_data(self, processed_data):
         """We have to merge the appropriate outputs of two separate commands"""
@@ -273,12 +278,14 @@ class InterfaceService(Service):
                              'mtu': 65536,
                              'state': 'up',
                              'type': 'vrf',
-                             'master': None,
+                             'master': '',
                              'vlan': 0}
                 new_entries.append(new_entry)
                 created_if_list.add(entry['vrf'])
 
                 entry['master'] = entry['vrf']
+            else:
+                entry['master'] = ''
 
             if entry['_portmode'] == 'access' or entry['_portmode'] == 'trunk':
                 entry['master'] = 'bridge'
@@ -323,6 +330,9 @@ class InterfaceService(Service):
             elif entry['ifname'].startswith('loopback'):
                 entry['type'] = 'loopback'
 
+            if entry['type'] == 'vlan' and entry['ifname'].startswith('Vlan'):
+                entry['vlan'] = int(entry['ifname'].split('Vlan')[1])
+
             # have this at the end to avoid messing up processing
             entry['ifname'] = entry['ifname'].replace('/', '-')
 
@@ -337,7 +347,7 @@ class InterfaceService(Service):
                          'mtu': bridge_mtu,
                          'state': bridge_intf_state,
                          'type': 'bridge',
-                         'master': None,
+                         'master': '',
                          'vlan': 0}
             new_entries.append(new_entry)
 
