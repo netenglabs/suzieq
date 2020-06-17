@@ -17,9 +17,17 @@ class LldpService(Service):
             if not entry:
                 continue
             entry['ifname'] = entry['ifname'].replace('/', '-')
-            if entry.get('subtype', None) == 'Mac address':
+            if 'peerIfname' in entry:
+                entry['subtype'] = 'ifname'
+                entry['peerMacaddr'] = '00:00:00:00:00:00'
+                entry['peerIfindex'] = 0
+            elif 'peerMacaddr' in entry:
+                entry['subtype'] = 'macddress'
                 entry['peerIfname'] = '-'
-            else:
+                entry['peerIfindex'] = 0
+            elif 'peerIfindex' in entry:
+                entry['subtype'] = 'ifindex'
+                entry['peerIfname'] = '-'
                 entry['peerMacaddr'] = '00:00:00:00:00:00'
 
             if devtype == 'nxos':
