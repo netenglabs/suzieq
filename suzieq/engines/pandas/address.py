@@ -47,7 +47,9 @@ class AddressObj(SqEngineObject):
         df.drop(columns=['origIfname'], inplace=True)
 
         # Works with pandas 0.25.0 onwards
-        if addr:
+        if addr and addrcol == "macaddr":
+            return df[df[addrcol] == addr]
+        elif addr:
             df = df.explode(addrcol).dropna(how='any')
             if '/' in addr:
                 return df[df[addrcol].str.startswith(addr)]
