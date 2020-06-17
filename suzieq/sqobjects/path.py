@@ -1,5 +1,4 @@
 import typing
-import time
 from collections import OrderedDict
 from itertools import repeat
 
@@ -128,7 +127,7 @@ class PathObj(basicobj.SqObject):
             return []
 
         macaddr = rslt.iloc[0]["macaddr"]
-        oif = self._arpnd_df.iloc[0]["oif"]
+        oif = rslt.iloc[0]["oif"]
         # This is to handle the VRR interface on Cumulus Linux machines
         if oif.endswith("-v0"):
             oif = oif.split("-v0")[0]
@@ -144,7 +143,7 @@ class PathObj(basicobj.SqObject):
 
             overlay = mac_df.iloc[0].remoteVtepIp or False
             return ([(mac_df.iloc[0].remoteVtepIp, mac_df.iloc[0].oif,
-                      overlay)])
+                      overlay, True)])
         return []
 
     def _get_nexthops(self, device: str, vrf: str, dest: str) -> list:
@@ -156,10 +155,11 @@ class PathObj(basicobj.SqObject):
         rslt = self._rdf.query('hostname == "{}" and vrf == "{}"'
                                .format(device, vrf))
 
-        if not rslt.empty:
+        if not rslt.empty and (len(rslt.nexthopIps.iloc[0]) != 0 and
+                               rslt.nexthopIps.iloc[0][0] != ''):
             return zip(rslt.nexthopIps.iloc[0].tolist(),
                        rslt.oifs.iloc[0].tolist(),
-                       repeat(False))
+                       repeat(False), repeat(False))
 
         # We've either reached the end of routing or the end of knowledge
         # Look for L2 nexthop
@@ -191,7 +191,8 @@ class PathObj(basicobj.SqObject):
         nexthop_list = self._get_nexthops(device, vrf, dest)
 
         # Convert each OIF into its actual physical list
-        for nhip, iface, overlay in nexthop_list:
+        is_l2 = False
+        for nhip, iface, overlay, is_l2 in nexthop_list:
             vlan = 0
             # Remove VLAN subinterfaces
             if "." in iface:
@@ -212,7 +213,7 @@ class PathObj(basicobj.SqObject):
                 df = self._lldp_df[(self._lldp_df["hostname"] == device) &
                                    (self._lldp_df["ifname"] == slave)]
 
-                if df.empty:
+                if df.empty or df['peerHostname'].iloc[0] == '':
                     continue
 
                 this_peerh = df["peerHostname"].to_string(index=False).strip()
@@ -231,7 +232,8 @@ class PathObj(basicobj.SqObject):
                     if vlan:
                         this_peerif += ".{}".format(vlan)
                         slave = f"{slave}.{vlan}"
-                    nexthops.append((slave, this_peerh, this_peerif, overlay))
+                    nexthops.append((slave, this_peerh, this_peerif, overlay,
+                                     is_l2))
                     peer_device = this_peerh
 
             if not peer_device and (nhip and nhip != '169.254.0.1'):
@@ -243,9 +245,12 @@ class PathObj(basicobj.SqObject):
 
                 df.apply(lambda x, nexthops:
                          nexthops.append((iface, x['hostname'],
-                                          x['ifname'],  overlay))
+                                          x['ifname'],  overlay, is_l2))
                          if (x['namespace'] in self.namespace) else None,
                          args=(nexthops,), axis=1)
+
+        if not nexthops and is_l2:
+            return [(None, None, None, False, is_l2)]
 
         return nexthops
 
@@ -313,7 +318,7 @@ class PathObj(basicobj.SqObject):
         # ensuring that no device is visited twice in the same VRF. The VRF
         # qualification is required to ensure packets coming back from a
         # firewall or load balancer are not tagged as duplicates.
-
+        is_l2 = False
         while devices_iifs:
             nextdevices_iifs = OrderedDict()
             newpaths = []
@@ -346,21 +351,27 @@ class PathObj(basicobj.SqObject):
                                        .format(device, ivrf))
                 if not rslt.empty:
                     timestamp = str(rslt["timestamp"].max())
+                is_l2 = False
                 for nexthop in self._get_nh_with_peer(device, ivrf, dest):
-                    iface, peer_device, peer_if, overlay = nexthop
-                    mtu_match = self._is_mtu_match(device, iface, peer_device,
-                                                   peer_if)
+                    iface, peer_device, peer_if, overlay, is_l2 = nexthop
+                    if iface is not None:
+                        try:
+                            mtu_match = self._is_mtu_match(device, iface,
+                                                           peer_device,
+                                                           peer_if)
+                        except Exception:
+                            mtu_match = np.NaN
 
-                    newdevices_iifs[peer_device] = {
-                        "iif": peer_if,
-                        "vrf": ivrf,
-                        "overlay": overlay,
-                        "mtu": self._if_df[
-                            (self._if_df["hostname"] == peer_device) &
-                            (self._if_df["ifname"] == peer_if)].iloc[-1].mtu,
-                        "mtuMatch": mtu_match,
-                        "timestamp": timestamp,
-                    }
+                        newdevices_iifs[peer_device] = {
+                            "iif": peer_if,
+                            "vrf": ivrf,
+                            "overlay": overlay,
+                            "mtu": self._if_df[
+                                (self._if_df["hostname"] == peer_device) &
+                                (self._if_df["ifname"] == peer_if)].iloc[-1].mtu,
+                            "mtuMatch": mtu_match,
+                            "timestamp": timestamp,
+                        }
 
                 if not newdevices_iifs:
                     break
@@ -386,9 +397,8 @@ class PathObj(basicobj.SqObject):
         # Add the final destination to all paths
         for x in paths:
             for device in dest_device_iifs:
-                if x[-1].keys().isdisjoint([device]):
-                    continue
-                x.append(OrderedDict({device: dest_device_iifs[device]}))
+                if not x[-1].keys().isdisjoint([device]) or is_l2:
+                    x.append(OrderedDict({device: dest_device_iifs[device]}))
         # Construct the pandas dataframe.
         # Constructing the dataframe in one shot here as that's more efficient
         # for pandas
