@@ -38,15 +38,14 @@ apply:
 
   junos:
     version: all
-    command: show lldp neighbors | display json
+    command: show lldp neighbors detail | display json
     normalize: 'lldp-neighbors-information/[0]/lldp-neighbor-information/*/[
-    "lldp-local-port-id/[0]/data: ifname",
-    "lldp-local-port-id/[0]/data: origIfname",
+    "lldp-local-interface/[0]/data: ifname",
+    "lldp-local-interface/[0]/data: origIfname",
     "lldp-remote-system-name/[0]/data: peerHostname",
-    "lldp-remote-chassis-id-subtype/[0]/data: subtype",
-    "lldp-remote-chassis-id/[0]/data: peerIfname?|",
-    "lldp-remote-chassis-id/[0]/data: peerMacaddr?|",
+    "lldp-remote-port-id/[0]/data: peerIfindex?|0",
     "lldp-remote-port-description/[0]/data: description",
+    "lldp-system-description/[0]/lldp-remote-system-description/[0]/data: description",
     ]'
 
   nxos:
