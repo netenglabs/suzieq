@@ -125,7 +125,7 @@ class Service(object):
 
     def _get_default_vals(self) -> dict:
         return({
-            pa.string(): "-",
+            pa.string(): "",
             pa.int32(): 0,
             pa.int64(): 0,
             pa.float32(): 0.0,
