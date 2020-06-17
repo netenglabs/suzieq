@@ -119,7 +119,7 @@ class InterfacesObj(SqEngineObject):
         columns = ["namespace", "hostname", "ifname", "state", "type", "mtu",
                    "timestamp"]
 
-        type = kwargs.pop('type', 'ether')
+        type = kwargs.pop('type', 'ethernet')
 
         if_df = self.get(columns=columns, type=type, **kwargs)
         if if_df.empty:

@@ -33,6 +33,9 @@ class InterfaceService(Service):
             if entry["type"] == "vxlan":
                 entry["vlan"] = entry.get("vlan", [""])[0]
 
+            if entry['type']:
+                entry['type'] = entry['type'].lower()
+
             tmpent = entry.get("ipAddressList", [[]])
             if not tmpent:
                 continue
@@ -136,8 +139,6 @@ class InterfaceService(Service):
 
             if entry['type']:
                 entry['type'] = entry['type'].lower()
-                if entry['type'] == 'ethernet':
-                    entry['type'] = 'ether'
 
             if (entry['statusChangeTimestamp'] == 'Never' or
                     entry['statusChangeTimestamp'] is None):
@@ -166,6 +167,8 @@ class InterfaceService(Service):
                     entry['type'] = 'sflowMonitor'
                 else:
                     entry['type'] = 'virtual'
+                entry['master'] = None
+            else:
                 entry['master'] = None
 
             if entry['type'] == 'vxlan-tunnel-endpoint':
@@ -201,7 +204,7 @@ class InterfaceService(Service):
                              'origIfname': ifname,
                              'mtu': entry['afi'][i][0].get(
                                  'mtu', [{'data': 0}])[0]['data'],
-                             'type': entry['type'],
+                             'type': 'logical',
                              'speed': entry['speed'],
                              'master': entry['ifname'],
                              'description': entry['description'],
@@ -257,7 +260,7 @@ class InterfaceService(Service):
         for entry_idx, entry in enumerate(processed_data):
             entry['origIfname'] = entry['ifname']
             if entry['type'] == 'eth':
-                entry['type'] = 'ether'
+                entry['type'] = 'ethernet'
 
             if ('vrf' in entry and entry['vrf'] != 'default' and
                     entry['vrf'] not in created_if_list):
@@ -286,7 +289,8 @@ class InterfaceService(Service):
                 pri_ipaddr = f"{entry['ipAddressList']}/{entry['_maskLen']}"
                 ipaddr = [pri_ipaddr]
                 for i, elem in enumerate(entry.get('_secIPs', [])):
-                    ipaddr.append(f"{elem}/{entry['_secmasklens'][i]}")
+                    if elem:
+                        ipaddr.append(f"{elem}/{entry['_secmasklens'][i]}")
                 entry['ipAddressList'] = ipaddr
 
             if 'ip6AddressList' in entry:
