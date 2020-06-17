@@ -3,124 +3,129 @@ tests:
 - command: arpnd show --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: arpnd show
-  output: '[{"namespace": "eos", "hostname": "edge01", "ipAddress": "169.254.253.1",
-    "oif": "eth2.2", "macaddr": "52:54:00:b6:53:1b", "state": "reachable", "remote":
-    false, "timestamp": 1592214888771}, {"namespace": "eos", "hostname": "edge01",
+  output: '[{"namespace": "eos", "hostname": "edge01", "ipAddress": "192.168.121.1",
+    "oif": "eth0", "macaddr": "52:54:00:62:c2:57", "state": "reachable", "remote":
+    false, "timestamp": 1592382547896}, {"namespace": "eos", "hostname": "edge01",
     "ipAddress": "169.254.254.1", "oif": "eth1.2", "macaddr": "52:54:00:25:ab:14",
-    "state": "reachable", "remote": false, "timestamp": 1592214888771}, {"namespace":
-    "eos", "hostname": "edge01", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr":
-    "52:54:00:62:c2:57", "state": "reachable", "remote": false, "timestamp": 1592214888771},
+    "state": "reachable", "remote": false, "timestamp": 1592382547896}, {"namespace":
+    "eos", "hostname": "edge01", "ipAddress": "169.254.253.1", "oif": "eth2.2", "macaddr":
+    "52:54:00:b6:53:1b", "state": "reachable", "remote": false, "timestamp": 1592382547896},
     {"namespace": "eos", "hostname": "exit01", "ipAddress": "10.127.0.8", "oif": "Ethernet1",
     "macaddr": "44:39:39:c8:1a:37", "state": "reachable", "remote": false, "timestamp":
-    1592214888281}, {"namespace": "eos", "hostname": "exit01", "ipAddress": "10.127.1.8",
+    1592382546469}, {"namespace": "eos", "hostname": "exit01", "ipAddress": "10.127.1.8",
     "oif": "Ethernet2", "macaddr": "52:54:00:35:ab:1f", "state": "reachable", "remote":
-    false, "timestamp": 1592214888281}, {"namespace": "eos", "hostname": "exit01",
-    "ipAddress": "192.168.121.1", "oif": "Management1", "macaddr": "52:54:00:62:c2:57",
-    "state": "reachable", "remote": false, "timestamp": 1592214888281}, {"namespace":
-    "eos", "hostname": "exit02", "ipAddress": "10.127.0.10", "oif": "Ethernet1", "macaddr":
-    "44:39:39:c8:1a:37", "state": "reachable", "remote": false, "timestamp": 1592214888248},
-    {"namespace": "eos", "hostname": "exit02", "ipAddress": "10.127.1.10", "oif":
-    "Ethernet2", "macaddr": "52:54:00:35:ab:1f", "state": "reachable", "remote": false,
-    "timestamp": 1592214888248}, {"namespace": "eos", "hostname": "exit02", "ipAddress":
-    "192.168.121.1", "oif": "Management1", "macaddr": "52:54:00:62:c2:57", "state":
-    "reachable", "remote": false, "timestamp": 1592214888248}, {"namespace": "eos",
+    false, "timestamp": 1592382546469}, {"namespace": "eos", "hostname": "exit01",
+    "ipAddress": "169.254.127.0", "oif": "Ethernet6", "macaddr": "52:54:00:6e:45:62",
+    "state": "reachable", "remote": false, "timestamp": 1592382546469}, {"namespace":
+    "eos", "hostname": "exit01", "ipAddress": "192.168.121.1", "oif": "Management1",
+    "macaddr": "52:54:00:62:c2:57", "state": "reachable", "remote": false, "timestamp":
+    1592382546469}, {"namespace": "eos", "hostname": "exit02", "ipAddress": "10.127.0.10",
+    "oif": "Ethernet1", "macaddr": "44:39:39:c8:1a:37", "state": "reachable", "remote":
+    false, "timestamp": 1592382547182}, {"namespace": "eos", "hostname": "exit02",
+    "ipAddress": "10.127.1.10", "oif": "Ethernet2", "macaddr": "52:54:00:35:ab:1f",
+    "state": "reachable", "remote": false, "timestamp": 1592382547182}, {"namespace":
+    "eos", "hostname": "exit02", "ipAddress": "169.254.127.2", "oif": "Ethernet6",
+    "macaddr": "52:54:00:79:bc:7f", "state": "reachable", "remote": false, "timestamp":
+    1592382547182}, {"namespace": "eos", "hostname": "exit02", "ipAddress": "192.168.121.1",
+    "oif": "Management1", "macaddr": "52:54:00:62:c2:57", "state": "reachable", "remote":
+    false, "timestamp": 1592382547182}, {"namespace": "eos", "hostname": "internet",
+    "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:62:c2:57", "state":
+    "reachable", "remote": false, "timestamp": 1592382545198}, {"namespace": "eos",
     "hostname": "internet", "ipAddress": "169.254.127.1", "oif": "swp1", "macaddr":
-    "52:54:00:25:ab:14", "state": "reachable", "remote": false, "timestamp": 1592214889142},
+    "52:54:00:25:ab:14", "state": "reachable", "remote": false, "timestamp": 1592382545198},
     {"namespace": "eos", "hostname": "internet", "ipAddress": "169.254.127.3", "oif":
     "swp2", "macaddr": "52:54:00:b6:53:1b", "state": "reachable", "remote": false,
-    "timestamp": 1592214889142}, {"namespace": "eos", "hostname": "internet", "ipAddress":
-    "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:62:c2:57", "state": "reachable",
-    "remote": false, "timestamp": 1592214889142}, {"namespace": "eos", "hostname":
-    "leaf01", "ipAddress": "10.127.0.0", "oif": "Ethernet1", "macaddr": "44:39:39:c8:1a:37",
-    "state": "reachable", "remote": false, "timestamp": 1592214888250}, {"namespace":
-    "eos", "hostname": "leaf01", "ipAddress": "10.127.1.0", "oif": "Ethernet2", "macaddr":
-    "52:54:00:35:ab:1f", "state": "reachable", "remote": false, "timestamp": 1592214888250},
-    {"namespace": "eos", "hostname": "leaf01", "ipAddress": "192.168.121.1", "oif":
-    "Management1", "macaddr": "52:54:00:62:c2:57", "state": "reachable", "remote":
-    false, "timestamp": 1592214888250}, {"namespace": "eos", "hostname": "leaf02",
-    "ipAddress": "10.127.0.2", "oif": "Ethernet1", "macaddr": "44:39:39:c8:1a:37",
-    "state": "reachable", "remote": false, "timestamp": 1592214888029}, {"namespace":
-    "eos", "hostname": "leaf02", "ipAddress": "10.127.1.2", "oif": "Ethernet2", "macaddr":
-    "52:54:00:35:ab:1f", "state": "reachable", "remote": false, "timestamp": 1592214888029},
-    {"namespace": "eos", "hostname": "leaf02", "ipAddress": "192.168.121.1", "oif":
-    "Management1", "macaddr": "52:54:00:62:c2:57", "state": "reachable", "remote":
-    false, "timestamp": 1592214888029}, {"namespace": "eos", "hostname": "leaf03",
-    "ipAddress": "10.127.0.4", "oif": "Ethernet1", "macaddr": "44:39:39:c8:1a:37",
-    "state": "reachable", "remote": false, "timestamp": 1592214888247}, {"namespace":
-    "eos", "hostname": "leaf03", "ipAddress": "10.127.1.4", "oif": "Ethernet2", "macaddr":
-    "52:54:00:35:ab:1f", "state": "reachable", "remote": false, "timestamp": 1592214888247},
-    {"namespace": "eos", "hostname": "leaf03", "ipAddress": "192.168.121.1", "oif":
-    "Management1", "macaddr": "52:54:00:62:c2:57", "state": "reachable", "remote":
-    false, "timestamp": 1592214888247}, {"namespace": "eos", "hostname": "leaf04",
-    "ipAddress": "10.127.0.6", "oif": "Ethernet1", "macaddr": "44:39:39:c8:1a:37",
-    "state": "reachable", "remote": false, "timestamp": 1592214888170}, {"namespace":
-    "eos", "hostname": "leaf04", "ipAddress": "10.127.1.6", "oif": "Ethernet2", "macaddr":
-    "52:54:00:35:ab:1f", "state": "reachable", "remote": false, "timestamp": 1592214888170},
-    {"namespace": "eos", "hostname": "leaf04", "ipAddress": "192.168.121.1", "oif":
-    "Management1", "macaddr": "52:54:00:62:c2:57", "state": "reachable", "remote":
-    false, "timestamp": 1592214888170}, {"namespace": "eos", "hostname": "server101",
+    "timestamp": 1592382545198}, {"namespace": "eos", "hostname": "leaf01", "ipAddress":
+    "10.127.0.0", "oif": "Ethernet1", "macaddr": "44:39:39:c8:1a:37", "state": "reachable",
+    "remote": false, "timestamp": 1592382546471}, {"namespace": "eos", "hostname":
+    "leaf01", "ipAddress": "10.127.1.0", "oif": "Ethernet2", "macaddr": "52:54:00:35:ab:1f",
+    "state": "reachable", "remote": false, "timestamp": 1592382546471}, {"namespace":
+    "eos", "hostname": "leaf01", "ipAddress": "192.168.121.1", "oif": "Management1",
+    "macaddr": "52:54:00:62:c2:57", "state": "reachable", "remote": false, "timestamp":
+    1592382546471}, {"namespace": "eos", "hostname": "leaf02", "ipAddress": "10.127.0.2",
+    "oif": "Ethernet1", "macaddr": "44:39:39:c8:1a:37", "state": "reachable", "remote":
+    false, "timestamp": 1592382546472}, {"namespace": "eos", "hostname": "leaf02",
+    "ipAddress": "10.127.1.2", "oif": "Ethernet2", "macaddr": "52:54:00:35:ab:1f",
+    "state": "reachable", "remote": false, "timestamp": 1592382546472}, {"namespace":
+    "eos", "hostname": "leaf02", "ipAddress": "192.168.121.1", "oif": "Management1",
+    "macaddr": "52:54:00:62:c2:57", "state": "reachable", "remote": false, "timestamp":
+    1592382546472}, {"namespace": "eos", "hostname": "leaf03", "ipAddress": "10.127.0.4",
+    "oif": "Ethernet1", "macaddr": "44:39:39:c8:1a:37", "state": "reachable", "remote":
+    false, "timestamp": 1592382546466}, {"namespace": "eos", "hostname": "leaf03",
+    "ipAddress": "10.127.1.4", "oif": "Ethernet2", "macaddr": "52:54:00:35:ab:1f",
+    "state": "reachable", "remote": false, "timestamp": 1592382546466}, {"namespace":
+    "eos", "hostname": "leaf03", "ipAddress": "192.168.121.1", "oif": "Management1",
+    "macaddr": "52:54:00:62:c2:57", "state": "reachable", "remote": false, "timestamp":
+    1592382546466}, {"namespace": "eos", "hostname": "leaf04", "ipAddress": "10.127.0.6",
+    "oif": "Ethernet1", "macaddr": "44:39:39:c8:1a:37", "state": "reachable", "remote":
+    false, "timestamp": 1592382546472}, {"namespace": "eos", "hostname": "leaf04",
+    "ipAddress": "10.127.1.6", "oif": "Ethernet2", "macaddr": "52:54:00:35:ab:1f",
+    "state": "reachable", "remote": false, "timestamp": 1592382546472}, {"namespace":
+    "eos", "hostname": "leaf04", "ipAddress": "192.168.121.1", "oif": "Management1",
+    "macaddr": "52:54:00:62:c2:57", "state": "reachable", "remote": false, "timestamp":
+    1592382546472}, {"namespace": "eos", "hostname": "server101", "ipAddress": "192.168.121.1",
+    "oif": "eth0", "macaddr": "52:54:00:62:c2:57", "state": "reachable", "remote":
+    false, "timestamp": 1592382547167}, {"namespace": "eos", "hostname": "server102",
     "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:62:c2:57", "state":
-    "reachable", "remote": false, "timestamp": 1592214888517}, {"namespace": "eos",
-    "hostname": "server102", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr":
-    "52:54:00:62:c2:57", "state": "reachable", "remote": false, "timestamp": 1592214888281},
-    {"namespace": "eos", "hostname": "server103", "ipAddress": "192.168.121.1", "oif":
+    "reachable", "remote": false, "timestamp": 1592382545031}, {"namespace": "eos",
+    "hostname": "server103", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr":
+    "52:54:00:62:c2:57", "state": "reachable", "remote": false, "timestamp": 1592382547167},
+    {"namespace": "eos", "hostname": "server104", "ipAddress": "192.168.121.1", "oif":
     "eth0", "macaddr": "52:54:00:62:c2:57", "state": "reachable", "remote": false,
-    "timestamp": 1592214888281}, {"namespace": "eos", "hostname": "server104", "ipAddress":
-    "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:62:c2:57", "state": "reachable",
-    "remote": false, "timestamp": 1592214888281}, {"namespace": "eos", "hostname":
-    "spine01", "ipAddress": "10.127.0.1", "oif": "Ethernet1", "macaddr": "44:38:39:b8:e5:7d",
-    "state": "reachable", "remote": false, "timestamp": 1592214888028}, {"namespace":
-    "eos", "hostname": "spine01", "ipAddress": "10.127.0.11", "oif": "Ethernet5",
-    "macaddr": "52:54:00:b6:53:1b", "state": "reachable", "remote": false, "timestamp":
-    1592214888028}, {"namespace": "eos", "hostname": "spine01", "ipAddress": "10.127.0.3",
-    "oif": "Ethernet2", "macaddr": "44:38:39:f3:b9:3f", "state": "reachable", "remote":
-    false, "timestamp": 1592214888028}, {"namespace": "eos", "hostname": "spine01",
-    "ipAddress": "10.127.0.5", "oif": "Ethernet3", "macaddr": "44:38:39:46:b6:f9",
-    "state": "reachable", "remote": false, "timestamp": 1592214888028}, {"namespace":
-    "eos", "hostname": "spine01", "ipAddress": "10.127.0.7", "oif": "Ethernet4", "macaddr":
-    "44:38:39:3f:ab:99", "state": "reachable", "remote": false, "timestamp": 1592214888028},
-    {"namespace": "eos", "hostname": "spine01", "ipAddress": "10.127.0.9", "oif":
-    "Ethernet6", "macaddr": "52:54:00:25:ab:14", "state": "reachable", "remote": false,
-    "timestamp": 1592214888028}, {"namespace": "eos", "hostname": "spine01", "ipAddress":
-    "192.168.121.1", "oif": "Management1", "macaddr": "52:54:00:62:c2:57", "state":
-    "reachable", "remote": false, "timestamp": 1592214888028}, {"namespace": "eos",
-    "hostname": "spine02", "ipAddress": "10.127.1.1", "oif": "Ethernet1", "macaddr":
-    "44:38:39:b8:e5:7d", "state": "reachable", "remote": false, "timestamp": 1592214888028},
-    {"namespace": "eos", "hostname": "spine02", "ipAddress": "10.127.1.11", "oif":
-    "Ethernet5", "macaddr": "52:54:00:b6:53:1b", "state": "reachable", "remote": false,
-    "timestamp": 1592214888028}, {"namespace": "eos", "hostname": "spine02", "ipAddress":
-    "10.127.1.3", "oif": "Ethernet2", "macaddr": "44:38:39:f3:b9:3f", "state": "reachable",
-    "remote": false, "timestamp": 1592214888028}, {"namespace": "eos", "hostname":
-    "spine02", "ipAddress": "10.127.1.5", "oif": "Ethernet3", "macaddr": "44:38:39:46:b6:f9",
-    "state": "reachable", "remote": false, "timestamp": 1592214888028}, {"namespace":
-    "eos", "hostname": "spine02", "ipAddress": "10.127.1.7", "oif": "Ethernet4", "macaddr":
-    "44:38:39:3f:ab:99", "state": "reachable", "remote": false, "timestamp": 1592214888028},
-    {"namespace": "eos", "hostname": "spine02", "ipAddress": "10.127.1.9", "oif":
-    "Ethernet6", "macaddr": "52:54:00:25:ab:14", "state": "reachable", "remote": false,
-    "timestamp": 1592214888028}, {"namespace": "eos", "hostname": "spine02", "ipAddress":
-    "192.168.121.1", "oif": "Management1", "macaddr": "52:54:00:62:c2:57", "state":
-    "reachable", "remote": false, "timestamp": 1592214888028}]'
+    "timestamp": 1592382547167}, {"namespace": "eos", "hostname": "spine01", "ipAddress":
+    "10.127.0.1", "oif": "Ethernet1", "macaddr": "44:38:39:b8:e5:7d", "state": "reachable",
+    "remote": false, "timestamp": 1592382547191}, {"namespace": "eos", "hostname":
+    "spine01", "ipAddress": "10.127.0.3", "oif": "Ethernet2", "macaddr": "44:38:39:f3:b9:3f",
+    "state": "reachable", "remote": false, "timestamp": 1592382547191}, {"namespace":
+    "eos", "hostname": "spine01", "ipAddress": "10.127.0.5", "oif": "Ethernet3", "macaddr":
+    "44:38:39:46:b6:f9", "state": "reachable", "remote": false, "timestamp": 1592382547191},
+    {"namespace": "eos", "hostname": "spine01", "ipAddress": "10.127.0.7", "oif":
+    "Ethernet4", "macaddr": "44:38:39:3f:ab:99", "state": "reachable", "remote": false,
+    "timestamp": 1592382547191}, {"namespace": "eos", "hostname": "spine01", "ipAddress":
+    "10.127.0.11", "oif": "Ethernet5", "macaddr": "52:54:00:b6:53:1b", "state": "reachable",
+    "remote": false, "timestamp": 1592382547191}, {"namespace": "eos", "hostname":
+    "spine01", "ipAddress": "10.127.0.9", "oif": "Ethernet6", "macaddr": "52:54:00:25:ab:14",
+    "state": "reachable", "remote": false, "timestamp": 1592382547191}, {"namespace":
+    "eos", "hostname": "spine01", "ipAddress": "192.168.121.1", "oif": "Management1",
+    "macaddr": "52:54:00:62:c2:57", "state": "reachable", "remote": false, "timestamp":
+    1592382547191}, {"namespace": "eos", "hostname": "spine02", "ipAddress": "10.127.1.1",
+    "oif": "Ethernet1", "macaddr": "44:38:39:b8:e5:7d", "state": "reachable", "remote":
+    false, "timestamp": 1592382546468}, {"namespace": "eos", "hostname": "spine02",
+    "ipAddress": "10.127.1.3", "oif": "Ethernet2", "macaddr": "44:38:39:f3:b9:3f",
+    "state": "reachable", "remote": false, "timestamp": 1592382546468}, {"namespace":
+    "eos", "hostname": "spine02", "ipAddress": "10.127.1.5", "oif": "Ethernet3", "macaddr":
+    "44:38:39:46:b6:f9", "state": "reachable", "remote": false, "timestamp": 1592382546468},
+    {"namespace": "eos", "hostname": "spine02", "ipAddress": "10.127.1.7", "oif":
+    "Ethernet4", "macaddr": "44:38:39:3f:ab:99", "state": "reachable", "remote": false,
+    "timestamp": 1592382546468}, {"namespace": "eos", "hostname": "spine02", "ipAddress":
+    "10.127.1.11", "oif": "Ethernet5", "macaddr": "52:54:00:b6:53:1b", "state": "reachable",
+    "remote": false, "timestamp": 1592382546468}, {"namespace": "eos", "hostname":
+    "spine02", "ipAddress": "10.127.1.9", "oif": "Ethernet6", "macaddr": "52:54:00:25:ab:14",
+    "state": "reachable", "remote": false, "timestamp": 1592382546468}, {"namespace":
+    "eos", "hostname": "spine02", "ipAddress": "192.168.121.1", "oif": "Management1",
+    "macaddr": "52:54:00:62:c2:57", "state": "reachable", "remote": false, "timestamp":
+    1592382546468}]'
 - command: arpnd show --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: arpnd show
   output: '[{"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
     {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
-    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "internet"},
-    {"hostname": "internet"}, {"hostname": "internet"}, {"hostname": "leaf01"}, {"hostname":
-    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
-    {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
-    "leaf03"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
-    {"hostname": "server101"}, {"hostname": "server102"}, {"hostname": "server103"},
-    {"hostname": "server104"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "exit01"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "internet"}, {"hostname": "internet"}, {"hostname":
+    "internet"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname":
+    "server102"}, {"hostname": "server103"}, {"hostname": "server104"}, {"hostname":
     "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
-    {"hostname": "spine01"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
     "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
-    {"hostname": "spine02"}]'
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}]'
 - command: arpnd summarize --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: arpnd summarize
-  output: '{"eos": {"deviceCnt": 14, "arpNdEntriesCnt": 42, "macaddrCnt": 42, "oifCnt":
-    42, "uniqueOifCnt": 12, "extLearnEntriesCnt": 0, "staticEntriesCnt": 0, "failedEntryCnt":
+  output: '{"eos": {"deviceCnt": 14, "arpNdEntriesCnt": 44, "macaddrCnt": 44, "oifCnt":
+    44, "uniqueOifCnt": 12, "remoteEntriesCnt": 0, "staticEntriesCnt": 0, "failedEntryCnt":
     0}}'
 - command: arpnd unique --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
@@ -129,6 +134,6 @@ tests:
     1}, {"hostname": "server102", "count": 1}, {"hostname": "server101", "count":
     1}, {"hostname": "leaf04", "count": 3}, {"hostname": "leaf03", "count": 3}, {"hostname":
     "leaf02", "count": 3}, {"hostname": "leaf01", "count": 3}, {"hostname": "internet",
-    "count": 3}, {"hostname": "exit02", "count": 3}, {"hostname": "exit01", "count":
-    3}, {"hostname": "edge01", "count": 3}, {"hostname": "spine02", "count": 7}, {"hostname":
+    "count": 3}, {"hostname": "edge01", "count": 3}, {"hostname": "exit02", "count":
+    4}, {"hostname": "exit01", "count": 4}, {"hostname": "spine02", "count": 7}, {"hostname":
     "spine01", "count": 7}]'

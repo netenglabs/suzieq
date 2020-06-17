@@ -5,10 +5,10 @@ tests:
   marks: bgp show
   output: '[{"namespace": "junos", "hostname": "vqfx1", "vrf": "default", "peer":
     "-", "peerHostname": "-", "state": "Established", "asn": 64500, "peerAsn": 64500,
-    "v4PfxRx": 0, "estdTime": 1592074687056, "numChanges": 0, "timestamp": 1592202265056},
+    "v4PfxRx": 0, "estdTime": 1592075048442, "numChanges": 0, "timestamp": 1592382422442},
     {"namespace": "junos", "hostname": "vqfx2", "vrf": "default", "peer": "-", "peerHostname":
     "-", "state": "Established", "asn": 64500, "peerAsn": 64500, "v4PfxRx": 0, "estdTime":
-    1592074991055, "numChanges": 0, "timestamp": 1592202265055}]'
+    1592075708441, "numChanges": 0, "timestamp": 1592382422441}]'
 - command: bgp show --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: bgp show
@@ -17,7 +17,7 @@ tests:
   data-directory: tests/data/junos/parquet-out/
   marks: bgp summarize
   output: '{"junos": {"deviceCnt": 2, "totalPeerCnt": 2, "uniqueAsnCnt": 1, "uniqueVrfsCnt":
-    1, "failedPeerCnt": 0, "upTimeStat": [127274000, 127578000, 127426000], "v4PfxRxStat":
+    1, "failedPeerCnt": 0, "upTimeStat": [306714000, 307374000, 307044000], "v4PfxRxStat":
     [0, 0, 0], "v6PfxRxStat": [0, 0, 0], "evpnPfxRxStat": [13, 14, 13.5], "updatesRxStat":
     [8, 8, 8], "updatesTxStat": [7, 7, 7], "activeAfiSafiList": ["evpn"]}}'
 - command: bgp unique --format=json
@@ -35,9 +35,9 @@ tests:
     error: '[{"namespace": "junos", "hostname": "vqfx1", "vrf": "default", "peer":
       "-", "asn": 64500, "peerAsn": 64500, "state": "Established", "hostnamePeer":
       null, "vrfPeer": null, "peerPeer": "", "asnPeer": null, "peerAsnPeer": null,
-      "assert": "fail", "assertReason": "outgoing link down", "timestamp": 1592202265056},
+      "assert": "fail", "assertReason": "outgoing link down", "timestamp": 1592382422442},
       {"namespace": "junos", "hostname": "vqfx2", "vrf": "default", "peer": "-", "asn":
       64500, "peerAsn": 64500, "state": "Established", "hostnamePeer": null, "vrfPeer":
       null, "peerPeer": "", "asnPeer": null, "peerAsnPeer": null, "assert": "fail",
-      "assertReason": "outgoing link down", "timestamp": 1592202265055}]'
+      "assertReason": "outgoing link down", "timestamp": 1592382422441}]'
   marks: bgp assert

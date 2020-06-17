@@ -4,13 +4,13 @@ tests:
   data-directory: tests/data/junos/parquet-out/
   marks: evpnVni show
   output: '[{"namespace": "junos", "hostname": "vqfx1", "vni": 10000, "type": "L2",
-    "numMacs": 0, "numArpNd": 0, "remoteVtepList": ["9.9.9.2"], "timestamp": 1592111206047},
+    "numMacs": 0, "numArpNd": 0, "remoteVtepList": ["9.9.9.2"], "timestamp": 1592382420772},
     {"namespace": "junos", "hostname": "vqfx1", "vni": 20000, "type": "L2", "numMacs":
-    0, "numArpNd": 0, "remoteVtepList": ["9.9.9.2"], "timestamp": 1592111206047},
+    0, "numArpNd": 0, "remoteVtepList": ["9.9.9.2"], "timestamp": 1592382420772},
     {"namespace": "junos", "hostname": "vqfx2", "vni": 10000, "type": "L2", "numMacs":
-    0, "numArpNd": 0, "remoteVtepList": ["9.9.9.1"], "timestamp": 1592111206008},
+    0, "numArpNd": 0, "remoteVtepList": ["9.9.9.1"], "timestamp": 1592382420772},
     {"namespace": "junos", "hostname": "vqfx2", "vni": 20000, "type": "L2", "numMacs":
-    0, "numArpNd": 0, "remoteVtepList": ["9.9.9.1"], "timestamp": 1592111206008}]'
+    0, "numArpNd": 0, "remoteVtepList": ["9.9.9.1"], "timestamp": 1592382420772}]'
 - command: evpnVni show --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: evpnVni show
@@ -19,10 +19,10 @@ tests:
 - command: evpnVni summarize --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: evpnVni summarize
-  xfail:
-    error: '"Error running command: index 0 is out of bounds for axis 0 with size
-      0\n------------------------------------------------------------\n------------------------------------------------------------"'
-    reason: uncaught exception
+  output: '{"junos": {"mode": "asymmetric", "deviceCnt": 2, "uniqueVniCnt": 2, "uniqueL3VniCnt":
+    0, "uniqueL2VniCnt": 2, "uniqueVniTypeValCnt": {"L2": 4}, "replTypeValCnt": {"ingressBGP":
+    4}, "macsInVniStat": [0, 0, 0], "arpNdInVniStat": [0, 0, 0], "ingressReplPerVtepStat":
+    [1, 1, 1.0]}}'
 - command: evpnVni unique --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: evpnVni unique

@@ -3,31 +3,34 @@ tests:
 - command: table show --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: table show
-  output: '[{"table": "arpnd", "first_time": 1591903254182, "latest_time": 1591903255107,
-    "intervals": 3, "all rows": 19, "namespaces": 1, "devices": 6}, {"table": "bgp",
-    "first_time": 1592202265055, "latest_time": 1592202265056, "intervals": 2, "all
-    rows": 2, "namespaces": 1, "devices": 2}, {"table": "device", "first_time": 1591875887334,
-    "latest_time": 1591875888865, "intervals": 3, "all rows": 6, "namespaces": 1,
-    "devices": 6}, {"table": "evpnVni", "first_time": 1592111206008, "latest_time":
-    1592111206047, "intervals": 2, "all rows": 4, "namespaces": 1, "devices": 2},
-    {"table": "fs", "first_time": 1591875888197, "latest_time": 1591875888417, "intervals":
-    2, "all rows": 28, "namespaces": 1, "devices": 4}, {"table": "interfaces", "first_time":
-    1591991119409, "latest_time": 1591991119924, "intervals": 4, "all rows": 114,
-    "namespaces": 1, "devices": 6}, {"table": "lldp", "first_time": 1591875890161,
-    "latest_time": 1591875890203, "intervals": 2, "all rows": 2, "namespaces": 1,
-    "devices": 2}, {"table": "macs", "first_time": 1591875888872, "latest_time": 1591875889852,
-    "intervals": 5, "all rows": 18, "namespaces": 1, "devices": 6}, {"table": "ospfIf",
-    "first_time": 1591875888417, "latest_time": 1591875888865, "intervals": 2, "all
-    rows": 4, "namespaces": 1, "devices": 2}, {"table": "ospfNbr", "first_time": 1592201057133,
-    "latest_time": 1592201057173, "intervals": 2, "all rows": 2, "namespaces": 1,
-    "devices": 2}, {"table": "routes", "first_time": 1591923382297, "latest_time":
-    1591923382471, "intervals": 4, "all rows": 80, "namespaces": 1, "devices": 6},
-    {"table": "time", "first_time": 1591875888578, "latest_time": 1591875888579, "intervals":
-    2, "all rows": 4, "namespaces": 1, "devices": 4}, {"table": "topcpu", "first_time":
-    1591875887607, "latest_time": 1591876128510, "intervals": 25, "all rows": 157,
-    "namespaces": 1, "devices": 4}, {"table": "TOTAL", "first_time": 1591875887334,
-    "latest_time": 1592202265056, "intervals": 25, "all rows": 440, "namespaces":
-    1, "devices": 6}]'
+  output: '[{"table": "arpnd", "first_time": 1592382421173, "latest_time": 1592382423042,
+    "intervals": 2, "all rows": 37, "namespaces": 1, "devices": 6}, {"table": "bgp",
+    "first_time": 1592382422441, "latest_time": 1592382422442, "intervals": 2, "all
+    rows": 2, "namespaces": 1, "devices": 2}, {"table": "device", "first_time": 1592382420115,
+    "latest_time": 1592382420772, "intervals": 2, "all rows": 6, "namespaces": 1,
+    "devices": 6}, {"table": "evpnVni", "first_time": 1592382420772, "latest_time":
+    1592382420772, "intervals": 1, "all rows": 4, "namespaces": 1, "devices": 2},
+    {"table": "fs", "first_time": 1592382421173, "latest_time": 1592382436715, "intervals":
+    4, "all rows": 42, "namespaces": 1, "devices": 4}, {"table": "ifCounters", "first_time":
+    1592382421172, "latest_time": 1592382451787, "intervals": 11, "all rows": 36,
+    "namespaces": 1, "devices": 4}, {"table": "interfaces", "first_time": 1592382423020,
+    "latest_time": 1592382424718, "intervals": 5, "all rows": 114, "namespaces": 1,
+    "devices": 6}, {"table": "lldp", "first_time": 1592382424052, "latest_time": 1592382424118,
+    "intervals": 2, "all rows": 2, "namespaces": 1, "devices": 2}, {"table": "macs",
+    "first_time": 1592382421900, "latest_time": 1592382423991, "intervals": 5, "all
+    rows": 36, "namespaces": 1, "devices": 6}, {"table": "ospfIf", "first_time": 1592382420772,
+    "latest_time": 1592382420772, "intervals": 1, "all rows": 4, "namespaces": 1,
+    "devices": 2}, {"table": "ospfNbr", "first_time": 1592382420772, "latest_time":
+    1592382420772, "intervals": 1, "all rows": 2, "namespaces": 1, "devices": 2},
+    {"table": "routes", "first_time": 1592382421900, "latest_time": 1592382422568,
+    "intervals": 5, "all rows": 83, "namespaces": 1, "devices": 6}, {"table": "sqPoller",
+    "first_time": 1592382419564, "latest_time": 1592382441283, "intervals": 142, "all
+    rows": 167, "namespaces": 1, "devices": 7}, {"table": "time", "first_time": 1592382421908,
+    "latest_time": 1592382422433, "intervals": 3, "all rows": 4, "namespaces": 1,
+    "devices": 4}, {"table": "topcpu", "first_time": 1592382420124, "latest_time":
+    1592382420125, "intervals": 2, "all rows": 31, "namespaces": 1, "devices": 4},
+    {"table": "TOTAL", "first_time": 1592382419564, "latest_time": 1592382451787,
+    "intervals": 142, "all rows": 570, "namespaces": 1, "devices": 7}]'
 - command: table show --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   error:
@@ -44,31 +47,34 @@ tests:
 - command: table show --view=latest --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: table show
-  output: '[{"table": "arpnd", "first_time": 1591903254182, "latest_time": 1591903255107,
-    "intervals": 3, "all rows": 19, "namespaces": 1, "devices": 6}, {"table": "bgp",
-    "first_time": 1592202265055, "latest_time": 1592202265056, "intervals": 2, "all
-    rows": 2, "namespaces": 1, "devices": 2}, {"table": "device", "first_time": 1591875887334,
-    "latest_time": 1591875888865, "intervals": 3, "all rows": 6, "namespaces": 1,
-    "devices": 6}, {"table": "evpnVni", "first_time": 1592111206008, "latest_time":
-    1592111206047, "intervals": 2, "all rows": 4, "namespaces": 1, "devices": 2},
-    {"table": "fs", "first_time": 1591875888197, "latest_time": 1591875888417, "intervals":
-    2, "all rows": 28, "namespaces": 1, "devices": 4}, {"table": "interfaces", "first_time":
-    1591991119409, "latest_time": 1591991119924, "intervals": 4, "all rows": 114,
-    "namespaces": 1, "devices": 6}, {"table": "lldp", "first_time": 1591875890161,
-    "latest_time": 1591875890203, "intervals": 2, "all rows": 2, "namespaces": 1,
-    "devices": 2}, {"table": "macs", "first_time": 1591875888872, "latest_time": 1591875889852,
-    "intervals": 5, "all rows": 18, "namespaces": 1, "devices": 6}, {"table": "ospfIf",
-    "first_time": 1591875888417, "latest_time": 1591875888865, "intervals": 2, "all
-    rows": 4, "namespaces": 1, "devices": 2}, {"table": "ospfNbr", "first_time": 1592201057133,
-    "latest_time": 1592201057173, "intervals": 2, "all rows": 2, "namespaces": 1,
-    "devices": 2}, {"table": "routes", "first_time": 1591923382297, "latest_time":
-    1591923382471, "intervals": 4, "all rows": 80, "namespaces": 1, "devices": 6},
-    {"table": "time", "first_time": 1591875888578, "latest_time": 1591875888579, "intervals":
-    2, "all rows": 4, "namespaces": 1, "devices": 4}, {"table": "topcpu", "first_time":
-    1591875887607, "latest_time": 1591876128510, "intervals": 25, "all rows": 157,
-    "namespaces": 1, "devices": 4}, {"table": "TOTAL", "first_time": 1591875887334,
-    "latest_time": 1592202265056, "intervals": 25, "all rows": 440, "namespaces":
-    1, "devices": 6}]'
+  output: '[{"table": "arpnd", "first_time": 1592382421173, "latest_time": 1592382423042,
+    "intervals": 2, "all rows": 37, "namespaces": 1, "devices": 6}, {"table": "bgp",
+    "first_time": 1592382422441, "latest_time": 1592382422442, "intervals": 2, "all
+    rows": 2, "namespaces": 1, "devices": 2}, {"table": "device", "first_time": 1592382420115,
+    "latest_time": 1592382420772, "intervals": 2, "all rows": 6, "namespaces": 1,
+    "devices": 6}, {"table": "evpnVni", "first_time": 1592382420772, "latest_time":
+    1592382420772, "intervals": 1, "all rows": 4, "namespaces": 1, "devices": 2},
+    {"table": "fs", "first_time": 1592382421173, "latest_time": 1592382436715, "intervals":
+    4, "all rows": 42, "namespaces": 1, "devices": 4}, {"table": "ifCounters", "first_time":
+    1592382421172, "latest_time": 1592382451787, "intervals": 11, "all rows": 36,
+    "namespaces": 1, "devices": 4}, {"table": "interfaces", "first_time": 1592382423020,
+    "latest_time": 1592382424718, "intervals": 5, "all rows": 114, "namespaces": 1,
+    "devices": 6}, {"table": "lldp", "first_time": 1592382424052, "latest_time": 1592382424118,
+    "intervals": 2, "all rows": 2, "namespaces": 1, "devices": 2}, {"table": "macs",
+    "first_time": 1592382421900, "latest_time": 1592382423991, "intervals": 5, "all
+    rows": 36, "namespaces": 1, "devices": 6}, {"table": "ospfIf", "first_time": 1592382420772,
+    "latest_time": 1592382420772, "intervals": 1, "all rows": 4, "namespaces": 1,
+    "devices": 2}, {"table": "ospfNbr", "first_time": 1592382420772, "latest_time":
+    1592382420772, "intervals": 1, "all rows": 2, "namespaces": 1, "devices": 2},
+    {"table": "routes", "first_time": 1592382421900, "latest_time": 1592382422568,
+    "intervals": 5, "all rows": 83, "namespaces": 1, "devices": 6}, {"table": "sqPoller",
+    "first_time": 1592382419564, "latest_time": 1592382441283, "intervals": 142, "all
+    rows": 167, "namespaces": 1, "devices": 7}, {"table": "time", "first_time": 1592382421908,
+    "latest_time": 1592382422433, "intervals": 3, "all rows": 4, "namespaces": 1,
+    "devices": 4}, {"table": "topcpu", "first_time": 1592382420124, "latest_time":
+    1592382420125, "intervals": 2, "all rows": 31, "namespaces": 1, "devices": 4},
+    {"table": "TOTAL", "first_time": 1592382419564, "latest_time": 1592382451787,
+    "intervals": 142, "all rows": 570, "namespaces": 1, "devices": 7}]'
 - command: table show --hostname=leaf01 --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: table show
@@ -79,15 +85,18 @@ tests:
     0, "all rows": 0, "namespaces": 0, "devices": 0}, {"table": "evpnVni", "first_time":
     null, "latest_time": null, "intervals": 0, "all rows": 0, "namespaces": 0, "devices":
     0}, {"table": "fs", "first_time": null, "latest_time": null, "intervals": 0, "all
-    rows": 0, "namespaces": 0, "devices": 0}, {"table": "interfaces", "first_time":
+    rows": 0, "namespaces": 0, "devices": 0}, {"table": "ifCounters", "first_time":
     null, "latest_time": null, "intervals": 0, "all rows": 0, "namespaces": 0, "devices":
-    0}, {"table": "lldp", "first_time": null, "latest_time": null, "intervals": 0,
-    "all rows": 0, "namespaces": 0, "devices": 0}, {"table": "macs", "first_time":
+    0}, {"table": "interfaces", "first_time": null, "latest_time": null, "intervals":
+    0, "all rows": 0, "namespaces": 0, "devices": 0}, {"table": "lldp", "first_time":
     null, "latest_time": null, "intervals": 0, "all rows": 0, "namespaces": 0, "devices":
-    0}, {"table": "ospfIf", "first_time": null, "latest_time": null, "intervals":
-    0, "all rows": 0, "namespaces": 0, "devices": 0}, {"table": "ospfNbr", "first_time":
+    0}, {"table": "macs", "first_time": null, "latest_time": null, "intervals": 0,
+    "all rows": 0, "namespaces": 0, "devices": 0}, {"table": "ospfIf", "first_time":
     null, "latest_time": null, "intervals": 0, "all rows": 0, "namespaces": 0, "devices":
-    0}, {"table": "routes", "first_time": null, "latest_time": null, "intervals":
+    0}, {"table": "ospfNbr", "first_time": null, "latest_time": null, "intervals":
+    0, "all rows": 0, "namespaces": 0, "devices": 0}, {"table": "routes", "first_time":
+    null, "latest_time": null, "intervals": 0, "all rows": 0, "namespaces": 0, "devices":
+    0}, {"table": "sqPoller", "first_time": null, "latest_time": null, "intervals":
     0, "all rows": 0, "namespaces": 0, "devices": 0}, {"table": "time", "first_time":
     null, "latest_time": null, "intervals": 0, "all rows": 0, "namespaces": 0, "devices":
     0}, {"table": "topcpu", "first_time": null, "latest_time": null, "intervals":

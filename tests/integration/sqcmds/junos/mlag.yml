@@ -3,12 +3,19 @@ tests:
 - command: mlag show --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: mlag show
+  output: '[]'
 - command: mlag show --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: mlag show
+  xfail:
+    error: '"Error running command: \"None of [Index([''hostname''], dtype=''object'')]
+      are in the [columns]\"\n------------------------------------------------------------\n------------------------------------------------------------"'
+    reason: uncaught exception
 - command: mlag summarize --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: mlag summarize
+  output: '{}'
 - command: mlag unique --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: mlag unique
+  output: '[]'
