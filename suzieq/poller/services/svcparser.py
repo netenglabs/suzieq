@@ -352,6 +352,7 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                                 else:
                                     subele = tmp[subele].get(ele, None)
                                 if subele is None:
+                                    tmpval = None
                                     break
                             if subele:
                                 value.append(subele)
@@ -395,7 +396,8 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                 if value is None:
                     value = tmpval
                 elif maybe_list and value == []:
-                    value = [tmpval]
+                    if tmpval:
+                        value = [tmpval]
             else:
                 value = x["rest"].get(lval.strip(), None)
 
