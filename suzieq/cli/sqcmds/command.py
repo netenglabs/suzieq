@@ -118,7 +118,7 @@ class SqCommand:
             else:
                 cols = df.columns
 
-        if dont_strip_cols:
+        if dont_strip_cols or not all(item in df.columns for item in cols):
             cols = df.columns
 
         if self.format == 'json':
@@ -166,7 +166,7 @@ class SqCommand:
     def aver(self, **kwargs):
         raise NotImplementedError
 
-    @command("summarize", help='produce a summarize of the data')
+    @ command("summarize", help='produce a summarize of the data')
     def summarize(self, **kwargs):
         self._init_summarize()
         return self._post_summarize()
@@ -174,10 +174,10 @@ class SqCommand:
     def top(self, **kwargs):
         raise NotImplementedError
 
-    @command("unique", help="find the list of unique items in a column")
-    @argument("groupby", description="List of columns to group by")
-    @argument("type", description="Unique per host or table entry",
-              choices=['entry', 'host'])
+    @ command("unique", help="find the list of unique items in a column")
+    @ argument("groupby", description="List of columns to group by")
+    @ argument("type", description="Unique per host or table entry",
+               choices=['entry', 'host'])
     def unique(self, groupby='', type='entry', **kwargs):
         now = time.time()
         try:
