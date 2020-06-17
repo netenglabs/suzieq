@@ -113,8 +113,7 @@
 - action: forward
   inHardware: true
   metric: 0
-  nexthopIps:
-  - - interface: Management1
+  nexthopIps: &id001 []
   oifs:
   - Management1
   prefix: 192.168.121.0/24
@@ -123,8 +122,7 @@
 - action: forward
   inHardware: true
   metric: 0
-  nexthopIps:
-  - - interface: Ethernet1
+  nexthopIps: *id001
   oifs:
   - Ethernet1
   prefix: 10.127.0.8/31
@@ -133,8 +131,7 @@
 - action: forward
   inHardware: true
   metric: 0
-  nexthopIps:
-  - - interface: Loopback0
+  nexthopIps: *id001
   oifs:
   - Loopback0
   prefix: 10.0.0.101/32
@@ -183,8 +180,7 @@
 - action: forward
   inHardware: true
   metric: 0
-  nexthopIps:
-  - - interface: Ethernet5.2
+  nexthopIps: *id001
   oifs:
   - Ethernet5.2
   prefix: 169.254.254.0/30
@@ -193,8 +189,7 @@
 - action: forward
   inHardware: true
   metric: 0
-  nexthopIps:
-  - - interface: Ethernet2
+  nexthopIps: *id001
   oifs:
   - Ethernet2
   prefix: 10.127.1.8/31
@@ -213,8 +208,7 @@
 - action: forward
   inHardware: true
   metric: 0
-  nexthopIps:
-  - - interface: Ethernet5.4
+  nexthopIps: *id001
   oifs:
   - Ethernet5.4
   prefix: 169.254.254.8/30
@@ -223,8 +217,7 @@
 - action: forward
   inHardware: true
   metric: 0
-  nexthopIps:
-  - - interface: Ethernet6
+  nexthopIps: *id001
   oifs:
   - Ethernet6
   prefix: 169.254.127.0/31
@@ -233,8 +226,7 @@
 - action: forward
   inHardware: true
   metric: 0
-  nexthopIps:
-  - - interface: Loopback1
+  nexthopIps: *id001
   oifs:
   - Loopback1
   prefix: 10.0.0.101/32
