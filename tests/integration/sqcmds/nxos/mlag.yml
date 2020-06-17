@@ -8,7 +8,8 @@ tests:
   data-directory: tests/data/nxos/parquet-out/
   marks: mlag show
   xfail:
-    error: '[]'
+    error: '"Error running command: \"None of [Index([''hostname''], dtype=''object'')]
+      are in the [columns]\"\n------------------------------------------------------------\n------------------------------------------------------------"'
     reason: uncaught exception
 - command: mlag summarize --format=json
   data-directory: tests/data/nxos/parquet-out/

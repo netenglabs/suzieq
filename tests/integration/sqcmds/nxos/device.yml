@@ -5,28 +5,28 @@ tests:
   marks: device show
   output: '[{"namespace": "nxos", "hostname": "leaf1", "model": "Nexus9000 C9300v
     Chassis", "version": "9.3(4)", "vendor": "Cisco", "architecture": "Intel Core
-    Processor (Skylake, IBRS)", "status": "alive", "address": "10.255.2.44", "uptime":
-    260012558, "timestamp": 1591856971558}, {"namespace": "nxos", "hostname": "leaf2",
+    Processor (Skylake, IBRS)", "status": "alive", "address": "10.255.2.49", "uptime":
+    470159229, "timestamp": 1592382486229}, {"namespace": "nxos", "hostname": "leaf2",
     "model": "Nexus9000 C9300v Chassis", "version": "9.3(4)", "vendor": "Cisco", "architecture":
-    "Intel Core Processor (Skylake, IBRS)", "status": "alive", "address": "10.255.2.43",
-    "uptime": 276945831, "timestamp": 1591856971831}, {"namespace": "nxos", "hostname":
+    "Intel Core Processor (Skylake, IBRS)", "status": "alive", "address": "10.255.2.48",
+    "uptime": 470164457, "timestamp": 1592382486457}, {"namespace": "nxos", "hostname":
     "server1", "model": "vm", "version": "18.04.3 LTS", "vendor": "Ubuntu", "architecture":
-    "x86-64", "status": "alive", "address": "10.255.2.68", "uptime": 283482027, "timestamp":
-    1591856970027}, {"namespace": "nxos", "hostname": "server2", "model": "vm", "version":
+    "x86-64", "status": "alive", "address": "10.255.2.78", "uptime": 470208906, "timestamp":
+    1592382484906}, {"namespace": "nxos", "hostname": "server2", "model": "vm", "version":
     "18.04.3 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
-    "address": "10.255.2.31", "uptime": 283488026, "timestamp": 1591856970026}, {"namespace":
+    "address": "10.255.2.209", "uptime": 470207650, "timestamp": 1592382484650}, {"namespace":
     "nxos", "hostname": "server3", "model": "vm", "version": "18.04.3 LTS", "vendor":
-    "Ubuntu", "architecture": "x86-64", "status": "alive", "address": "10.255.2.13",
-    "uptime": 283483026, "timestamp": 1591856970026}, {"namespace": "nxos", "hostname":
+    "Ubuntu", "architecture": "x86-64", "status": "alive", "address": "10.255.2.86",
+    "uptime": 470209651, "timestamp": 1592382484651}, {"namespace": "nxos", "hostname":
     "server4", "model": "vm", "version": "18.04.3 LTS", "vendor": "Ubuntu", "architecture":
-    "x86-64", "status": "alive", "address": "10.255.2.151", "uptime": 283482956, "timestamp":
-    1591856969956}, {"namespace": "nxos", "hostname": "spine1", "model": "Nexus9000
+    "x86-64", "status": "alive", "address": "10.255.2.249", "uptime": 470211651, "timestamp":
+    1592382484651}, {"namespace": "nxos", "hostname": "spine1", "model": "Nexus9000
     C9300v Chassis", "version": "9.3(4)", "vendor": "Cisco", "architecture": "Intel
-    Core Processor (Skylake, IBRS)", "status": "alive", "address": "10.255.2.50",
-    "uptime": 282478600, "timestamp": 1591856971600}, {"namespace": "nxos", "hostname":
+    Core Processor (Skylake, IBRS)", "status": "alive", "address": "10.255.2.46",
+    "uptime": 470174412, "timestamp": 1592382486412}, {"namespace": "nxos", "hostname":
     "spine2", "model": "Nexus9000 C9300v Chassis", "version": "9.3(4)", "vendor":
     "Cisco", "architecture": "Intel Core Processor (Skylake, IBRS)", "status": "alive",
-    "address": "10.255.2.47", "uptime": 282608781, "timestamp": 1591856971781}]'
+    "address": "10.255.2.47", "uptime": 470172229, "timestamp": 1592382486229}]'
 - command: device show --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: device show
@@ -37,9 +37,9 @@ tests:
   data-directory: tests/data/nxos/parquet-out/
   marks: device summarize
   output: '{"nxos": {"deviceCnt": 8, "vendorCnt": {"Cisco": 4, "Ubuntu": 4}, "modelCnt":
-    {"vm": 4, "Nexus9000 C9300v Chassis": 4}, "archCnt": {"Intel Core Processor (Skylake,
+    {"Nexus9000 C9300v Chassis": 4, "vm": 4}, "archCnt": {"Intel Core Processor (Skylake,
     IBRS)": 4, "x86-64": 4}, "versionCnt": {"9.3(4)": 4, "18.04.3 LTS": 4}, "upTimeStat":
-    [260012, 283488, 283045]}}'
+    [470159, 470211, 470191]}}'
 - command: device summarize --columns="namespace hostname" --format=json
   data-directory: tests/data/nxos/parquet-out/
   error:
