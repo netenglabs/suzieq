@@ -46,6 +46,9 @@ class ArpndService(Service):
         for entry in processed_data:
             entry['macaddr'] = ':'.join(
                 [f'{x[:2]}:{x[2:]}' for x in entry['macaddr'].split('.')])
+            if ',' in entry['oif']:
+                entry['oif'] = entry['oif'].split(',')[0].strip()
+                entry['origIfname'] = entry['oif']
             entry['oif'] = entry['oif'].replace('/', '-')
 
         return processed_data
