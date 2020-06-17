@@ -128,7 +128,7 @@ class PathObj(basicobj.SqObject):
             return []
 
         macaddr = rslt.iloc[0]["macaddr"]
-        oif = self._arp_df.iloc[0]["oif"]
+        oif = self._arpnd_df.iloc[0]["oif"]
         # This is to handle the VRR interface on Cumulus Linux machines
         if oif.endswith("-v0"):
             oif = oif.split("-v0")[0]
@@ -278,30 +278,30 @@ class PathObj(basicobj.SqObject):
         # After this, at least we know we have the data to work on
         self._init_dfs(namespace, src, dest)
 
-        devices_iifs = OrderedDict(
-            {
-                self.src_device: {
-                    "iif": self._src_df["ifname"].unique()[0],
-                    "mtu": self._src_df["mtu"].unique()[0],
-                    "overlay": False,
-                    "timestamp": self._src_df["timestamp"].max(),
-                }
+        devices_iifs = OrderedDict()
+        for i in range(len(self._src_df)):
+            item = self._src_df.iloc[i]
+            devices_iifs[item.hostname] = {
+                "iif": item["ifname"],
+                "mtu": item["mtu"],
+                "overlay": False,
+                "timestamp": item["timestamp"],
             }
-        )
 
-        dest_device_iifs = OrderedDict(
-            {
-                self.dest_device: {
-                    "iif": self._dest_df["ifname"].unique()[0],
-                    "vrf": self._dest_df["master"].unique()[0] or "default",
-                    "mtu": self._dest_df["mtu"].unique()[0],
-                    "overlay": False,
-                    "timestamp": self._dest_df["timestamp"].max(),
-                }
+        dest_device_iifs = OrderedDict()
+        for i in range(len(self._dest_df)):
+            item = self._dest_df.iloc[i]
+            dest_device_iifs[item.hostname] = {
+                "iif": item["ifname"],
+                "vrf": item["master"] or "default",
+                "mtu": item["mtu"],
+                "overlay": False,
+                "timestamp": item["timestamp"],
             }
-        )
 
-        paths = [[devices_iifs]]
+        paths = []
+        for x in devices_iifs:
+            paths.append([OrderedDict({x: devices_iifs[x]})])
         visited_devices = set()
 
         # The logic is to loop through the nexthops till you reach the dest
@@ -384,8 +384,11 @@ class PathObj(basicobj.SqObject):
             devices_iifs = nextdevices_iifs
 
         # Add the final destination to all paths
-        for path in paths:
-            path.append(dest_device_iifs)
+        for x in paths:
+            for device in dest_device_iifs:
+                if x[-1].keys().isdisjoint([device]):
+                    continue
+                x.append(OrderedDict({device: dest_device_iifs[device]}))
         # Construct the pandas dataframe.
         # Constructing the dataframe in one shot here as that's more efficient
         # for pandas
