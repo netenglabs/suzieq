@@ -113,10 +113,13 @@ if __name__ == '__main__':
                 # make sure that the result is the same class of result from before
                 # there would be no result if no output had been specified in the captured output
                 # sometimes we correctly produce no results, so avoid checking that
+
                 if result and (output or error or xfail):
                     assert globals()[result], \
                         f"result is different type than exepcted: result {result}, output: {output}, error: {error}, xfail: {xfail}"
-
+                    if xfail:
+                        assert result == 'xfail', \
+                            f"expected xfail ({test[result]}), but got {result} ({globals()[result]}) "
                 if 'output' in test and len(output) == 0:
                     assert test['output'] == '[]' or test['output'] == '{}',  \
                         f" output was empty dataframe, but was expecting some values {test['output']}"
