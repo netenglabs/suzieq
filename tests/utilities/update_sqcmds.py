@@ -8,6 +8,7 @@ import argparse
 from subprocess import check_output, CalledProcessError
 import logging
 from tests import conftest
+import tempfile
 
 
 def create_config(testvar):
@@ -16,10 +17,10 @@ def create_config(testvar):
         tmpconfig = conftest._create_context_config()
         tmpconfig['data-directory'] = testvar['data-directory']
 
-        tmpfname = '/tmp/test-sq.cfg'
-        with open(tmpfname, 'w') as f:
-            f.write(yaml.dump(tmpconfig))
-        return tmpfname
+        tf = tempfile.NamedTemporaryFile(delete=False)
+        tf.write(b'{yaml.dump(tmpconfig)}')
+        tf.close
+        return tf.name
 
 
 def run_cmd(cmd_path, testvar):
