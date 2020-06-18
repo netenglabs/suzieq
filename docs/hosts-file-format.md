@@ -18,11 +18,11 @@ A sample hosts file looks as follows:
 - namespace: test
   hosts:
        - url: ssh://vagrant@192.168.122.20
-	   - url: https://vagrant@192.168.122.150 device=eos
-	   - url: ssh://vagrant@192.168.122.37
-	   - url: ssh://vagrant@127.0.0.1:2000
+       - url: https://vagrant@192.168.122.150 device=eos
+       - url: ssh://vagrant@192.168.122.37
+       - url: ssh://vagrant@127.0.0.1:2000
 ```
-The hostname specified must either be an IP address or a hostname resolvable via DNS. 
+The hostname specified must either be an IP address or a hostname resolvable via DNS.  **Do not use TABS in the file**.
 
 It is required to specify the device type when using REST API to query the information from the device because the REST API of each device is different and it is not possible to automatically identify that. In case of using ssh to query the device state, suzeiq runs the commands 'show version and hostnamectl' to try and identify the device. Most networking gear support the 'show version' model and all open networking products I'm aware of and servers support hostnamectl. Using these two commands, we can identify the type of device. If you're running a device that does not support either of these commands, specify it using the **device** parameter.
 
