@@ -44,39 +44,26 @@ You can join the conversation via [slack](https://netenglabs.slack.com). Send em
 
 We're also looking for collaborators to help us make Suzieq a truly useful multi-vendor, open source platform for observing all aspects of networking. Please read the [collaboration document](./CONTRIBUTING.md) for ideas on how you can help. 
 
+## Latest Release
+
+The latest release is 0.2 and the official release notes are here
+
 ## Quick Start
 
-We want to make it as easy as possible for you to start engaging with Suzieq. To that end, the quickest way to start is to download the docker image from github and also download the data we've already gathered for the 18 or so network scenarios from the [github](https://github.com/netenglabs/suzieq-data) repository associated with Dinesh's book, Cloud Native Data Center Networking. You can then use the introductory documentation to start exploring the data.
+We want to make it as easy as possible for you to start engaging with Suzieq. 
 
 - `docker run -it --name suzieq ddutt/suzieq-demo`
 - `suzieq-cli`
 
 When you're within the suzieq-cli, you can run ```device unique columns=namespace``` to see the list of different scenarios, we've gathered data for.
 
-If you're looking for more than just a demo, and would like to explore even more data that we've gathered, from all all scenarios listed in Dinesh's book, Cloud Native Data Center Networking, then use the following sequence of commands.
+Additional information about running the analyzer (suzieq-cli) is available via the official documentation page.
 
-- ```git clone https://github.com/netenglabs/suzieq-data.git```
-- ```docker run -itd -v /home/ddutt/suzieq-data/cloud-native-data-center-networking/parquet-out:/suzieq/parquet --name suzieq ddutt/suzieq:latest```
-- ```docker attach suzieq```
-- ```suzieq-cli```
+To run the poller to gather data from your network, rather than use the precanned data, you'll need to run sq-poller. This [document](https://suzieq.readthedocs.io/en/latest/poller/) describes how to run sq-poller. 
 
-Note that in the docker run command above, the directory name /home/ddutt/suzieq-data/... used assumed that the git clone of suzieq-data was done in the directory /home/ddutt. In other words, the host path name used in the -v option should be the **absolute path of the directory**, not the relative path.
+The official documentation is [here](https://suzieq.readthedocs.io/en/latest/) 
 
-To run the poller to gather data from your network, rather than use the precanned data, you'll need to run sq-poller. To do so, if you have an Ansible inventory file
-* Decide where on the host machine you'll save the captured data state used by Suzieq. Lets say this is in your home directory under work/mynetdata. 
-* Launch the suzieq container using the docker run command as in the previous examples above. Use the -v option to attach the data store location. For example, ```docker run -itd -v /home/maya/work/netdata:/suzieq/parquet --name suzieq ddutt/suzieq```
-* Decide where you'll store the private key files in the container (it should be under /suzieq).
-* Make a copy of the Ansible inventory and update the private key file location with the location you picked in the previous example
-* Copy the modified inventory file and the private key file(s) to the container (for example, ```docker cp inventory suzieq:/suzieq/inventory```)
-* Attach to the docker container (```docker attach suzieq```)
-* Run the poller providing it the location of the inventory file, and provide a namespace to associate with the data. For example: ```sq-poller -i inventory -n test```
-* This container will run forever gathering data. Be careful that it doesn't overflow the disk capacity.
-
-More details on using the poller is available in the official documentation.
-
-[Documentation](https://suzieq.readthedocs.io/en/latest/)
-
-We've also done some blogging about suzieq
+We've also done some blogging about Suzieq:
 
 - [Introducing Suzieq](https://elegantnetwork.github.io/posts/Suzieq/)
 - [10ish ways to explore your network with Suzieq](https://elegantnetwork.github.io/posts/10ish_ways_to_explore_your_network_with_Suzieq/)
