@@ -256,6 +256,7 @@ apply:
         normalize: 'bgp-information/[0]/bgp-peer/*/[
         "bgp-rib/[*]/advertised-prefix-count/[0]/data: pfxTxList",
         "peer-address/[0]/data: peerIP",
+        "peer-address/[0]/data: peer",
         "peer-as/[0]/data: peerAsn?|0",
         "local-address/[0]/data: updateSource",
         "local-as/[0]/data: asn",
@@ -278,10 +279,15 @@ apply:
         "bgp-rib/[*]/name/[0]/data: pfxType",
         "bgp-traffic/[0]/input-updates/[0]/data: updatesRx?|0",
         "output-updates/[0]/data: updatesTx?|0",
+        "vrf: vrf?|default",
+        "entry_type: _entryType?|neighbors",
         ]'
 
       - command: show bgp summary | display json
         normalize: 'bgp-information/bgp-peer/*/[
+        "peer-address/[0]/data: peer",
         "elapsed-time/[0]/data: estdTime",
+        "vrf: vrf?|default",
+        "entry_type: _entryType?|summary",
         ]'
 

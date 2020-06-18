@@ -38,9 +38,15 @@ class BgpService(Service):
 
     def _clean_junos_data(self, processed_data, raw_data):
 
-        for entry in processed_data:
+        drop_indices = []
+
+        for i, entry in enumerate(processed_data):
+            if entry['_entryType'] == 'summary':
+                drop_indices.append(i)
+                continue
             # JunOS adds entries which includes the port as IP+Port
             entry['peerIP'] = entry['peerIP'].split('+')[0]
+            entry['peer'] = entry['peer'].split('+')[0]
             entry['updateSource'] = entry['updateSource'].split('+')[0]
             entry['numChanges'] = int(entry['numChanges'])
             entry['updatesRx'] = int(entry['updatesRx'])
@@ -49,6 +55,9 @@ class BgpService(Service):
             entry['peerAsn'] = int(entry['peerAsn'])
             entry['keepaliveTime'] = int(entry['keepaliveTime'])
             entry['holdTime'] = int(entry['holdTime'])
+
+            if not 'estdTime' in entry:
+                entry['estdTime'] = '0d 00:00:00'
 
             # Assign counts to appropriate AFi/SAFI
             for i, afi in enumerate(entry.get('pfxType')):
@@ -103,6 +112,7 @@ class BgpService(Service):
             entry['estdTime'] = get_timestamp_from_junos_time(
                 entry['estdTime'], raw_data[0]['timestamp']/1000)
 
+        processed_data = np.delete(processed_data, drop_indices).tolist()
         return processed_data
 
     def _clean_nxos_data(self, processed_data, raw_data):
