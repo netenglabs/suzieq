@@ -5,21 +5,21 @@ is the BGP data
 that the bgp service collects from routers. 
 
 
-|         | Cumulus Linux | Arista EOS | Linux |
-|---------|---------------|------------|-------|
-| Arpnd   |    yes        |      yes   | yes   |
-| BGP     | yes | yes | yes |
-| Device  | yes | yes | yes |
-| EvpnVni         | yes | no | no
-| Filesystem (fs) | yes | yes | yes |
-| IfCounters      | yes | yes | yes |
-| Interfaces  | yes | yes | yes|
-| LLDP | yes | yes | yes |
-| Macs |yes | yes | yes |
-| Ospf If | yes | yes | yes |
-| Ospf Nbr |yes | yes | yes |
-| Routes | yes | yes | yes |
-| sqPoller | yes | yes | yes |
-| Topcpu | yes | yes | yes |
-| Topmem | yes | yes | yes |
-| VLAN | yes | yes | yes |
+|         | Cumulus Linux | Arista EOS | Linux | NXOS | JunOS |
+|---------|---------------|------------|-------|------|-------|
+| Arpnd   |    yes        |      yes   | yes   | yes  |  yes  |
+| BGP     | yes | yes | yes | yes | yes |
+| Device  | yes | yes | yes | yes | yes | 
+| EvpnVni         | yes | no | no | yes | yes |
+| Filesystem (fs) | yes | yes | yes | no | no |
+| IfCounters      | yes | yes | yes | no | no |
+| Interfaces  | yes | yes | yes| yes | yes |
+| LLDP | yes | yes | yes | yes | yes |
+| Macs |yes | yes | yes | yes | yes |
+| Ospf If | yes | yes | yes | yes | yes |
+| Ospf Nbr |yes | yes | yes | yes | yes |
+| Routes | yes | yes | yes | yes | yes |
+| sqPoller | yes | yes | yes | yes | yes |
+| Topcpu | yes | yes | yes | no | no |
+| Topmem | yes | yes | yes | no | no |
+| VLAN | yes | yes | yes | no | no |
