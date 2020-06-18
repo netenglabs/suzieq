@@ -31,6 +31,8 @@ The native format that contains the IP address, the access method (SSH or REST),
 **This file can be hand-crafted or generated from an Ansible inventory file** via the following python program shipped in the docker image: `/root/.local/lib/python3.7/site-packages/suzieq/genhosts.py`. You invoke the program as follows: 
 `python /root/.local/lib/python3.7/site-packages/suzieq/genhosts.py /suzieq/inventory eos.yml eos`.
 
+There's a template in the docs directory called hosts-template.yml. You can copy that file as the template and fill out the values for namespace and url (remember to delete the empty URLs and to not use TABS, some editors add them automatically if the filename extension isn't right). The URL is the standard URL format: <transport>://[username:password]@<hostname or IP>:<port>. For example, ssh://dinesh:dinesh@myvx or ssh://dinesh:dinesh@172.1.1.23. 
+
 In the command above, we're assuming the output file is called eos.yml and the *namespace* is called *eos*. `genhosts.py` is somewhat simplistic right now. It assumes we're using REST API for Arista nodes and SSH for everybody else. The Ansible inventory file is the file we mounted during `docker run`.
 
 Once you have either generated the hosts file or are using the Ansible inventory file, you can launch the poller inside the docker container as follows: `sq-poller -D eos` if you're using the native YAML hosts file or via `sq-poller -i /suzieq/inventory -n eos`. The poller creates a log file called /tmp/sq-poller.log. You can look at the file for errors. The output is stored in the parquet directory specified under /suzieq/parquet and visible in the host, outside the container, via the path specified during docker run above. 
