@@ -27,6 +27,7 @@ In this very early release of Suzieq, we've chosen some answers for the framewor
  * The analysis engine used in this release is pandas.
 
 **We support gathering data from Cumulus, Arista, JunOS and NXOS routers, and Linux servers.** We gather:
+
 * Basic device info
 * Interfaces
 * LLDP
