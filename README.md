@@ -26,11 +26,21 @@ In this very early release of Suzieq, we've chosen some answers for the framewor
 * All the analysis are exposed either via a CLI or via Python objects. The output can be rendered in various formats from plain text to JSON and CSV.
 * The analysis engine used in this release is pandas.
 
-**We support gathering data from Cumulus routers, Arista routers, and Linux servers.**
+**We support gathering data from Cumulus, Arista, JunOS and NXOS routers, and Linux servers.** We gather:
+* Basic device info
+* Interfaces
+* LLDP
+* MAC address table
+* MLAG (only for Cumulus and EOS at this time)
+* Routing table
+* ARP/ND table
+* OSPFv2
+* BGP (v4 unicast, v6 unicast and evpn AFI/SAFI)
+* EVPN VNI info (not for EOS at this time)
 
 We are just getting started with Suzieq. As befitting an early release, what you see is only a brief demonstration of what this approach can bring about. We've many, many ideas to implement in our upcoming releases, but we wanted to get this out so that people can start using it. And start understanding their networks to solve problems, validate or to make changes.
 
-You can join the conversation via [googlegroups](https://groups.google.com/d/forum/netenglabs-suzieq).
+You can join the conversation via [slack](https://netenglabs.slack.com). Send email to Dinesh or Justin with the email address to send the Slack invitation to.
 
 We're also looking for collaborators to help us make Suzieq a truly useful multi-vendor, open source platform for observing all aspects of networking. Please read the [collaboration document](./CONTRIBUTING.md) for ideas on how you can help. 
 
@@ -51,6 +61,18 @@ If you're looking for more than just a demo, and would like to explore even more
 - ```suzieq-cli```
 
 Note that in the docker run command above, the directory name /home/ddutt/suzieq-data/... used assumed that the git clone of suzieq-data was done in the directory /home/ddutt. In other words, the host path name used in the -v option should be the **absolute path of the directory**, not the relative path.
+
+To run the poller to gather data from your network, rather than use the precanned data, you'll need to run sq-poller. To do so, if you have an Ansible inventory file
+* Decide where on the host machine you'll save the captured data state used by Suzieq. Lets say this is in your home directory under work/mynetdata. 
+* Launch the suzieq container using the docker run command as in the previous examples above. Use the -v option to attach the data store location. For example, ```docker run -itd -v /home/maya/work/netdata:/suzieq/parquet --name suzieq ddutt/suzieq```
+* Decide where you'll store the private key files in the container (it should be under /suzieq).
+* Make a copy of the Ansible inventory and update the private key file location with the location you picked in the previous example
+* Copy the modified inventory file and the private key file(s) to the container (for example, ```docker cp inventory suzieq:/suzieq/inventory```)
+* Attach to the docker container (```docker attach suzieq```)
+* Run the poller providing it the location of the inventory file, and provide a namespace to associate with the data. For example: ```sq-poller -i inventory -n test```
+* This container will run forever gathering data. Be careful that it doesn't overflow the disk capacity.
+
+More details on using the poller is available in the official documentation.
 
 [Documentation](https://suzieq.readthedocs.io/en/latest/)
 
