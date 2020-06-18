@@ -5,43 +5,43 @@ tests:
   marks: device show
   output: '[{"namespace": "eos", "hostname": "edge01", "model": "vm", "version": "16.04.6
     LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive", "address":
-    "192.168.121.113", "uptime": 616257369, "timestamp": 1592382544369}, {"namespace":
+    "192.168.121.113", "uptime": 694965833, "timestamp": 1592461252833}, {"namespace":
     "eos", "hostname": "exit01", "model": "vEOS", "version": "4.23.3M", "vendor":
     "Arista", "architecture": "i686", "status": "alive", "address": "192.168.121.42",
-    "uptime": 1303247543, "timestamp": 1592382543543}, {"namespace": "eos", "hostname":
+    "uptime": 1381956627, "timestamp": 1592461252627}, {"namespace": "eos", "hostname":
     "exit02", "model": "vEOS", "version": "4.23.3M", "vendor": "Arista", "architecture":
-    "i686", "status": "alive", "address": "192.168.121.69", "uptime": 1303258557,
-    "timestamp": 1592382543557}, {"namespace": "eos", "hostname": "internet", "model":
+    "i686", "status": "alive", "address": "192.168.121.69", "uptime": 1381967639,
+    "timestamp": 1592461252639}, {"namespace": "eos", "hostname": "internet", "model":
     "vm", "version": "3.7.9", "vendor": "Cumulus", "architecture": "x86-64", "status":
-    "alive", "address": "192.168.121.157", "uptime": 616240927, "timestamp": 1592382543927},
+    "alive", "address": "192.168.121.157", "uptime": 694948000, "timestamp": 1592461253000},
     {"namespace": "eos", "hostname": "leaf01", "model": "vEOS", "version": "4.23.3M",
     "vendor": "Arista", "architecture": "i686", "status": "alive", "address": "192.168.121.163",
-    "uptime": 1304166596, "timestamp": 1592382543596}, {"namespace": "eos", "hostname":
+    "uptime": 1382875634, "timestamp": 1592461252634}, {"namespace": "eos", "hostname":
     "leaf02", "model": "vEOS", "version": "4.23.3M", "vendor": "Arista", "architecture":
-    "i686", "status": "alive", "address": "192.168.121.213", "uptime": 1303243539,
-    "timestamp": 1592382543539}, {"namespace": "eos", "hostname": "leaf03", "model":
+    "i686", "status": "alive", "address": "192.168.121.213", "uptime": 1381952636,
+    "timestamp": 1592461252636}, {"namespace": "eos", "hostname": "leaf03", "model":
     "vEOS", "version": "4.23.3M", "vendor": "Arista", "architecture": "i686", "status":
-    "alive", "address": "192.168.121.138", "uptime": 1303263576, "timestamp": 1592382543576},
+    "alive", "address": "192.168.121.138", "uptime": 1381972637, "timestamp": 1592461252637},
     {"namespace": "eos", "hostname": "leaf04", "model": "vEOS", "version": "4.23.3M",
     "vendor": "Arista", "architecture": "i686", "status": "alive", "address": "192.168.121.203",
-    "uptime": 1303249587, "timestamp": 1592382543587}, {"namespace": "eos", "hostname":
+    "uptime": 1381958631, "timestamp": 1592461252631}, {"namespace": "eos", "hostname":
     "server101", "model": "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture":
-    "x86-64", "status": "alive", "address": "192.168.121.71", "uptime": 542089369,
-    "timestamp": 1592382544369}, {"namespace": "eos", "hostname": "server102", "model":
+    "x86-64", "status": "alive", "address": "192.168.121.71", "uptime": 620798378,
+    "timestamp": 1592461254378}, {"namespace": "eos", "hostname": "server102", "model":
     "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture": "x86-64",
-    "status": "alive", "address": "192.168.121.117", "uptime": 1278067926, "timestamp":
-    1592382543926}, {"namespace": "eos", "hostname": "server103", "model": "vm", "version":
+    "status": "alive", "address": "192.168.121.117", "uptime": 1356777291, "timestamp":
+    1592461253291}, {"namespace": "eos", "hostname": "server103", "model": "vm", "version":
     "16.04.6 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
-    "address": "192.168.121.211", "uptime": 1278096369, "timestamp": 1592382544369},
+    "address": "192.168.121.211", "uptime": 1356805331, "timestamp": 1592461253331},
     {"namespace": "eos", "hostname": "server104", "model": "vm", "version": "16.04.6
     LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive", "address":
-    "192.168.121.210", "uptime": 1278078369, "timestamp": 1592382544369}, {"namespace":
+    "192.168.121.210", "uptime": 1356788236, "timestamp": 1592461253236}, {"namespace":
     "eos", "hostname": "spine01", "model": "vEOS", "version": "4.23.3M", "vendor":
     "Arista", "architecture": "i686", "status": "alive", "address": "192.168.121.43",
-    "uptime": 1302131562, "timestamp": 1592382543562}, {"namespace": "eos", "hostname":
+    "uptime": 1380840643, "timestamp": 1592461252643}, {"namespace": "eos", "hostname":
     "spine02", "model": "vEOS", "version": "4.23.3M", "vendor": "Arista", "architecture":
-    "i686", "status": "alive", "address": "192.168.121.253", "uptime": 1303268525,
-    "timestamp": 1592382543525}]'
+    "i686", "status": "alive", "address": "192.168.121.253", "uptime": 1381977640,
+    "timestamp": 1592461252640}]'
 - command: device show --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: device show
@@ -55,8 +55,8 @@ tests:
   marks: device summarize
   output: '{"eos": {"deviceCnt": 14, "vendorCnt": {"Arista": 8, "Ubuntu": 5, "Cumulus":
     1}, "modelCnt": {"vEOS": 8, "vm": 6}, "archCnt": {"i686": 8, "x86-64": 6}, "versionCnt":
-    {"4.23.3M": 8, "16.04.6 LTS": 5, "3.7.9": 1}, "upTimeStat": [542089, 1304166,
-    1302687]}}'
+    {"4.23.3M": 8, "16.04.6 LTS": 5, "3.7.9": 1}, "upTimeStat": [620798, 1382875,
+    1381396]}}'
 - command: device summarize --columns="namespace hostname" --format=json
   data-directory: tests/data/eos/parquet-out/
   error:

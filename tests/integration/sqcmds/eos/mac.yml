@@ -4,34 +4,44 @@ tests:
   data-directory: tests/data/eos/parquet-out/
   marks: mac show
   output: '[{"namespace": "eos", "hostname": "edge01", "vlan": 0, "macaddr": "33:33:00:00:00:01",
-    "oif": "eth2.4", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1592382549836},
+    "oif": "eth2.4", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1592461255421},
     {"namespace": "eos", "hostname": "edge01", "vlan": 0, "macaddr": "01:00:5e:00:00:01",
-    "oif": "eth2.4", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1592382549836},
+    "oif": "eth2.4", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1592461255421},
     {"namespace": "eos", "hostname": "edge01", "vlan": 0, "macaddr": "33:33:00:00:00:02",
-    "oif": "eth2.4", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1592382549836},
+    "oif": "eth2.4", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1592461255421},
     {"namespace": "eos", "hostname": "leaf01", "vlan": 1, "macaddr": "44:38:39:f3:b9:3f",
-    "oif": "Port-Channel12", "remoteVtepIp": "-", "flags": "dynamic", "timestamp":
-    1592382550801}, {"namespace": "eos", "hostname": "leaf02", "vlan": 1, "macaddr":
-    "44:38:39:b8:e5:7d", "oif": "Port-Channel12", "remoteVtepIp": "-", "flags": "dynamic",
-    "timestamp": 1592382550058}, {"namespace": "eos", "hostname": "leaf03", "vlan":
-    1, "macaddr": "44:38:39:3f:ab:99", "oif": "Port-Channel12", "remoteVtepIp": "-",
-    "flags": "dynamic", "timestamp": 1592382550063}, {"namespace": "eos", "hostname":
-    "leaf04", "vlan": 1, "macaddr": "44:38:39:46:b6:f9", "oif": "Port-Channel12",
-    "remoteVtepIp": "-", "flags": "dynamic", "timestamp": 1592382550804}]'
+    "oif": "Port-Channel12", "remoteVtepIp": "", "flags": "dynamic", "timestamp":
+    1592461256106}, {"namespace": "eos", "hostname": "leaf01", "vlan": 13, "macaddr":
+    "52:54:00:60:a1:56", "oif": "Port-Channel1", "remoteVtepIp": "", "flags": "dynamic",
+    "timestamp": 1592461334349}, {"namespace": "eos", "hostname": "leaf01", "vlan":
+    24, "macaddr": "52:54:00:62:07:17", "oif": "Port-Channel2", "remoteVtepIp": "",
+    "flags": "dynamic", "timestamp": 1592461334349}, {"namespace": "eos", "hostname":
+    "leaf02", "vlan": 1, "macaddr": "44:38:39:b8:e5:7d", "oif": "Port-Channel12",
+    "remoteVtepIp": "", "flags": "dynamic", "timestamp": 1592461255424}, {"namespace":
+    "eos", "hostname": "leaf03", "vlan": 1, "macaddr": "44:38:39:3f:ab:99", "oif":
+    "Port-Channel12", "remoteVtepIp": "", "flags": "dynamic", "timestamp": 1592461255787},
+    {"namespace": "eos", "hostname": "leaf03", "vlan": 13, "macaddr": "52:54:00:81:88:62",
+    "oif": "Port-Channel1", "remoteVtepIp": "", "flags": "dynamic", "timestamp": 1592461334795},
+    {"namespace": "eos", "hostname": "leaf03", "vlan": 24, "macaddr": "52:54:00:f3:03:a1",
+    "oif": "Port-Channel2", "remoteVtepIp": "", "flags": "dynamic", "timestamp": 1592461334795},
+    {"namespace": "eos", "hostname": "leaf04", "vlan": 1, "macaddr": "44:38:39:46:b6:f9",
+    "oif": "Port-Channel12", "remoteVtepIp": "", "flags": "dynamic", "timestamp":
+    1592461256107}]'
 - command: mac show --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: mac show
   output: '[{"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
-    {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname":
-    "leaf04"}]'
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf04"}]'
 - command: mac summarize --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: mac summarize
-  output: '{"eos": {"deviceCnt": 5, "totalMacsinNSCnt": 7, "uniqueMacCnt": 7, "uniqueVlanperHostStat":
-    [0, 1, 1.0]}}'
+  output: '{"eos": {"deviceCnt": 5, "totalMacsinNSCnt": 11, "uniqueMacCnt": 11, "uniqueVlanperHostStat":
+    [0, 3, 1.0]}}'
 - command: mac unique --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: mac unique
-  output: '[{"hostname": "leaf04", "count": 1}, {"hostname": "leaf03", "count": 1},
-    {"hostname": "leaf02", "count": 1}, {"hostname": "leaf01", "count": 1}, {"hostname":
+  output: '[{"hostname": "leaf04", "count": 1}, {"hostname": "leaf02", "count": 1},
+    {"hostname": "leaf03", "count": 3}, {"hostname": "leaf01", "count": 3}, {"hostname":
     "edge01", "count": 3}]'

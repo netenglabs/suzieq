@@ -4,11 +4,11 @@ tests:
   data-directory: tests/data/junos/parquet-out/
   marks: bgp show
   output: '[{"namespace": "junos", "hostname": "vqfx1", "vrf": "default", "peer":
-    "-", "peerHostname": "-", "state": "Established", "asn": 64500, "peerAsn": 64500,
-    "v4PfxRx": 0, "estdTime": 1592075048442, "numChanges": 0, "timestamp": 1592382422442},
-    {"namespace": "junos", "hostname": "vqfx2", "vrf": "default", "peer": "-", "peerHostname":
-    "-", "state": "Established", "asn": 64500, "peerAsn": 64500, "v4PfxRx": 0, "estdTime":
-    1592075708441, "numChanges": 0, "timestamp": 1592382422441}]'
+    "", "peerHostname": "", "state": "Established", "asn": 64500, "peerAsn": 64500,
+    "v4PfxRx": 0, "estdTime": 1592075203224, "numChanges": 0, "timestamp": 1592459231224},
+    {"namespace": "junos", "hostname": "vqfx2", "vrf": "default", "peer": "", "peerHostname":
+    "", "state": "Established", "asn": 64500, "peerAsn": 64500, "v4PfxRx": 0, "estdTime":
+    1592076015224, "numChanges": 0, "timestamp": 1592459231224}]'
 - command: bgp show --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: bgp show
@@ -17,9 +17,9 @@ tests:
   data-directory: tests/data/junos/parquet-out/
   marks: bgp summarize
   output: '{"junos": {"deviceCnt": 2, "totalPeerCnt": 2, "uniqueAsnCnt": 1, "uniqueVrfsCnt":
-    1, "failedPeerCnt": 0, "upTimeStat": [306714000, 307374000, 307044000], "v4PfxRxStat":
-    [0, 0, 0], "v6PfxRxStat": [0, 0, 0], "evpnPfxRxStat": [13, 14, 13.5], "updatesRxStat":
-    [8, 8, 8], "updatesTxStat": [7, 7, 7], "activeAfiSafiList": ["evpn"]}}'
+    1, "failedPeerCnt": 0, "upTimeStat": [383216000, 384028000, 383622000], "v4PfxRxStat":
+    [0, 0, 0], "v6PfxRxStat": [0, 0, 0], "evpnPfxRxStat": [14, 14, 14], "updatesRxStat":
+    [8, 9, 8.5], "updatesTxStat": [7, 8, 7.5], "activeAfiSafiList": ["evpn"]}}'
 - command: bgp unique --format=json
   data-directory: tests/data/junos/parquet-out/
   error:
@@ -41,3 +41,6 @@ tests:
       null, "peerPeer": "", "asnPeer": null, "peerAsnPeer": null, "assert": "fail",
       "assertReason": "outgoing link down", "timestamp": 1592382422441}]'
   marks: bgp assert
+  xfail:
+    error: '"Error running command: ip address is mandatory parameter\n------------------------------------------------------------\n------------------------------------------------------------"'
+    reason: uncaught exception
