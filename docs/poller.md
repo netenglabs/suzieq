@@ -7,6 +7,7 @@ The simplest way to run the poller is via the docker image.  Launch the docker i
 In the docker run command above, the two -v options provide host file/directory access to store the parquet output files (the first -v option), and the Ansible inventory file (the second -v option). If you don't use Ansible or don't want to provide that file, don't worry, you can still use the poller to gather data.
 
 The poller needs the list of the devices and their IP address to gather data from. This list can be supplied in one of two ways: 
+
 * via a Suzieq native YAML format file or 
 * via or an Ansible inventory file (supplied via the second -v option above, and available as file /suzieq/inventory inside the docker).
 
@@ -38,6 +39,7 @@ In the command above, we're assuming the output file is called eos.yml and the *
 There's a template in the docs directory called hosts-template.yml. You can copy that file as the template and fill out the values for namespace and url (remember to delete the empty URLs and to not use TABS, some editors add them automatically if the filename extension isn't right). The URL is the standard URL format: <transport>://[username:password]@<hostname or IP>:<port>. For example, ssh://dinesh:dinesh@myvx or ssh://dinesh:dinesh@172.1.1.23. 
 
 Once you have either generated the hosts file or are using the Ansible inventory file, you can launch the poller inside the docker container using **one** of the following two options: 
+
 * If you're using the native YAML hosts file, use the -D option like this: `sq-poller -D eos`  or
 * if you're using the Ansible inventory format, use the -i and -n options like this: via `sq-poller -i /suzieq/inventory -n eos`. 
 
@@ -48,14 +50,13 @@ Two important concepts in the poller are Nodes and Services. Nodes are devices o
 they are the object being monitored. Services are the data that is collected and consumed by Suzieq. 
 Service definitions describe how to get output from devices and then how to turn that into useful data.
 
-Currently Suzieq supports polling [Cumulus Linux](https://cumulusnetworks.com/), [Arista](https://www.arista.com/en/) devices, as well as native Linux devices such as servers. Suzieq can easily support other device types, we just haven't had access to those and not time to chase them down.
+Currently Suzieq supports polling [Cumulus Linux](https://cumulusnetworks.com/),
+[Arista](https://www.arista.com/en/),
+[Nexus](https://www.cisco.com/c/en/us/products/switches/data-center-switches/index.html),
+and (Juniper(https://www.juniper.com) devices, as well as native Linux devices such as servers. Suzieq can easily support other device types, we just haven't had access to those and not time to chase them down.
 
-Adding new device types starts by created a new [Service](service/service-format.md).
-Services do work work for what we have tested, but we have not tested around the edges of how
-services are parsed. 
-They might just work for you, but if you run into trouble we can only help a little right now. 
-
-Suzieq started out with least common denominator SSH and REST access to devices. 
+Suzieq started out with least common denominator SSH and REST access to devices.
+It doesn't much care about transport, we will use whatever gets the best data.
 Suzieq does have support for agents, such as Kafka and SNMP, to push data and we've done some experiments with them, but don't
 have production versions of that code. 
 
