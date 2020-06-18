@@ -5,10 +5,10 @@ tests:
   marks: bgp show
   output: '[{"namespace": "junos", "hostname": "vqfx1", "vrf": "default", "peer":
     "", "peerHostname": "", "state": "Established", "asn": 64500, "peerAsn": 64500,
-    "v4PfxRx": 0, "estdTime": 1592075203224, "numChanges": 0, "timestamp": 1592459231224},
+    "v4PfxRx": 0, "estdTime": 1592075222545, "numChanges": 0, "timestamp": 1592468674545},
     {"namespace": "junos", "hostname": "vqfx2", "vrf": "default", "peer": "", "peerHostname":
     "", "state": "Established", "asn": 64500, "peerAsn": 64500, "v4PfxRx": 0, "estdTime":
-    1592076015224, "numChanges": 0, "timestamp": 1592459231224}]'
+    1592076053545, "numChanges": 0, "timestamp": 1592468674545}]'
 - command: bgp show --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: bgp show
@@ -17,7 +17,7 @@ tests:
   data-directory: tests/data/junos/parquet-out/
   marks: bgp summarize
   output: '{"junos": {"deviceCnt": 2, "totalPeerCnt": 2, "uniqueAsnCnt": 1, "uniqueVrfsCnt":
-    1, "failedPeerCnt": 0, "upTimeStat": [383216000, 384028000, 383622000], "v4PfxRxStat":
+    1, "failedPeerCnt": 0, "upTimeStat": [392621000, 393452000, 393036500], "v4PfxRxStat":
     [0, 0, 0], "v6PfxRxStat": [0, 0, 0], "evpnPfxRxStat": [14, 14, 14], "updatesRxStat":
     [8, 9, 8.5], "updatesTxStat": [7, 8, 7.5], "activeAfiSafiList": ["evpn"]}}'
 - command: bgp unique --format=json

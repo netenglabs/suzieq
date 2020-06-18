@@ -5,17 +5,17 @@ tests:
   marks: ospf show
   output: '[{"namespace": "junos", "hostname": "vqfx1", "vrf": "default", "ifname":
     "lo0.0", "area": "0.0.0.0", "ifState": "DRother", "nbrCount": 0, "adjState": "passive",
-    "peerIP": "-", "lastChangeTime": 1592075192180, "numChanges": 0.0, "timestamp":
-    1592459230180}, {"namespace": "junos", "hostname": "vqfx1", "vrf": "default",
+    "peerIP": "-", "lastChangeTime": 1592075210601, "numChanges": 0.0, "timestamp":
+    1592468673601}, {"namespace": "junos", "hostname": "vqfx1", "vrf": "default",
     "ifname": "xe-0/0/0.0", "area": "0.0.0.0", "ifState": "DR", "nbrCount": 1, "adjState":
-    "full", "peerIP": "10.0.0.2", "lastChangeTime": 1592075192180, "numChanges": 0.0,
-    "timestamp": 1592459230180}, {"namespace": "junos", "hostname": "vqfx2", "vrf":
+    "full", "peerIP": "10.0.0.2", "lastChangeTime": 1592075210601, "numChanges": 0.0,
+    "timestamp": 1592468673601}, {"namespace": "junos", "hostname": "vqfx2", "vrf":
     "default", "ifname": "lo0.0", "area": "0.0.0.0", "ifState": "DRother", "nbrCount":
-    0, "adjState": "passive", "peerIP": "-", "lastChangeTime": 1592076003180, "numChanges":
-    0.0, "timestamp": 1592459230180}, {"namespace": "junos", "hostname": "vqfx2",
+    0, "adjState": "passive", "peerIP": "-", "lastChangeTime": 1592076040601, "numChanges":
+    0.0, "timestamp": 1592468673601}, {"namespace": "junos", "hostname": "vqfx2",
     "vrf": "default", "ifname": "xe-0/0/0.0", "area": "0.0.0.0", "ifState": "BDR",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.1", "lastChangeTime": 1592076003180,
-    "numChanges": 0.0, "timestamp": 1592459230180}]'
+    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.1", "lastChangeTime": 1592076040601,
+    "numChanges": 0.0, "timestamp": 1592468673601}]'
 - command: ospf show --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: ospf show
@@ -28,7 +28,7 @@ tests:
     2, "unnumberedPeerCnt": 0, "failedPeerCnt": 0, "area": {"0.0.0.0": 4}, "vrf":
     {"default": 4}, "helloTime": {"10": 4}, "deadTime": {"40": 4}, "retxTime": {"5":
     4}, "networkType": {"broadcast": 4}, "adjChangesStat": [0.0, 0.0, 0.0], "upTimeStat":
-    [383227000, 384038000, 383632500]}}'
+    [392633000, 393463000, 393048000]}}'
 - command: ospf unique --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: ospf unique
@@ -50,14 +50,14 @@ tests:
   marks: ospf top
   output: '[{"namespace": "junos", "hostname": "vqfx1", "vrf": "default", "ifname":
     "lo0.0", "area": "0.0.0.0", "ifState": "DRother", "nbrCount": 0, "adjState": "passive",
-    "peerIP": "-", "lastChangeTime": 1592075192180.0, "numChanges": 0.0, "timestamp":
-    1592459230180}, {"namespace": "junos", "hostname": "vqfx1", "vrf": "default",
+    "peerIP": "-", "lastChangeTime": 1592075210601.0, "numChanges": 0.0, "timestamp":
+    1592468673601}, {"namespace": "junos", "hostname": "vqfx1", "vrf": "default",
     "ifname": "xe-0/0/0.0", "area": "0.0.0.0", "ifState": "DR", "nbrCount": 1, "adjState":
-    "full", "peerIP": "10.0.0.2", "lastChangeTime": 1592075192180.0, "numChanges":
-    0.0, "timestamp": 1592459230180}, {"namespace": "junos", "hostname": "vqfx2",
+    "full", "peerIP": "10.0.0.2", "lastChangeTime": 1592075210601.0, "numChanges":
+    0.0, "timestamp": 1592468673601}, {"namespace": "junos", "hostname": "vqfx2",
     "vrf": "default", "ifname": "lo0.0", "area": "0.0.0.0", "ifState": "DRother",
-    "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime": 1592076003180.0,
-    "numChanges": 0.0, "timestamp": 1592459230180}, {"namespace": "junos", "hostname":
+    "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime": 1592076040601.0,
+    "numChanges": 0.0, "timestamp": 1592468673601}, {"namespace": "junos", "hostname":
     "vqfx2", "vrf": "default", "ifname": "xe-0/0/0.0", "area": "0.0.0.0", "ifState":
     "BDR", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.1", "lastChangeTime":
-    1592076003180.0, "numChanges": 0.0, "timestamp": 1592459230180}]'
+    1592076040601.0, "numChanges": 0.0, "timestamp": 1592468673601}]'
