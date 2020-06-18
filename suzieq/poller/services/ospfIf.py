@@ -44,7 +44,13 @@ class OspfIfService(Service):
         return processed_data
 
     def _clean_junos_data(self, processed_data, raw_data):
+
         for entry in processed_data:
+            if entry['_entryType'] == 'overview':
+                routerId = entry['routerId']
+                continue
+
+            entry['routerId'] = routerId
             entry['passive'] = entry['passive'] == "Passive"
             if entry['networkType'] == "LAN":
                 entry['networkType'] = "broadcast"
@@ -58,7 +64,7 @@ class OspfIfService(Service):
             # Rewrite '/' in interface names
             entry['ifname'] = entry['ifname'].replace('/', '-')
 
-        return processed_data
+        return processed_data[1:]
 
     def _clean_nxos_data(self, processed_data, raw_data):
         areas = {}              # Need to come back to fixup entries
