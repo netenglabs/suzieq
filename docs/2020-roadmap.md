@@ -20,10 +20,8 @@ that we aren't collecting everything we'd need to do a great job
 in other places and we don't have asserts tuned towards other use cases.
 
 First release (0.1), was focused on good fundamentals and a good 
-representation of what Suzieq can be used for. We know we need
-to have more NOSes are necessary. 
-
-(We should scope this either by effort or expected date)
+representation of what Suzieq can be used for. Second release (0.2)
+was focused on NXOS and Junos support.
 
 ## End of year problems solved
 Overall, where we want to be by the end of the year
@@ -32,13 +30,32 @@ Overall, where we want to be by the end of the year
 * understand kubernetes
     * calico, vxlan, cilium
 * how is an app spinning up going to effect my network
-    * I don't remember how we want to solve this
 
 
-## Roadmap for the rest of 2020
+## Categories of problems we want to solve
+1. platforms
+1. features
+   * new tables
+   * new services
+1. new segments
+   * server -- kubernetes
+   * isp / WAN
+   * enterprise
+1. performance
+   * scale
+      * devices we poll
+      * amount of data polled
+1. useability
+   * gui
+   * users define own queries
+   * user asserts
+1. integration with out systems
 
-1. NXOS support -- including EVPN
-1. JunOS
+## Roadmap for the rest of 2020 as of June 
+
+This is our best guess at priority. We are not sure how long these will take, but this is the order we intend as of now. We are also not sure if other things will come up for us this year. Let us know if there are things on this list missing or that you really want.
+
+1. testing and reference topology
 1. GUI
     * what should the GUI be based on
         * streamlit, detail, jupyter, grafana
@@ -48,60 +65,68 @@ Overall, where we want to be by the end of the year
         * show neighbors that we know about but aren't polling
         * maybe be able to just start with one IP address and then discover 
            everything that must be polled by suzieq
+1. schema evolution and versioning and make suzieq less brittle to changes in the schema
 1. Arista EVPN
 1. Kubernetes
     * understand topology, pod and cluster
     * calico, vxlan, cilium
     * asserts
-1. create tags or other ways to group probably in a hierarchical way
-1. fancy asserts -- what does this mean
-1. real documentation of our main functions so that we can get 
-our APIs documented.
 1. integration with performance analysis
     * integration with promethius and influxdb
     * what do we want to be able to do with this?
+1. integration with systems for notification of events
+   * slack
+   * ???
+1. create tags or other ways to group  in a hierarchical way
+    * possibly reuse ansible grouping
+    
+1. real documentation of our main functions so that we can get 
+our APIs documented.
 
-1. BMP to collect BGP data
 1. Be sure that we can scale to at least 500 nodes without a problem
 1. users can do their own queries
     * pandas or pandas sql query
     * is this only in the GUI?
-1. integration with systems for notification of events
-   * slack
-   * ???
 
-other things we need to mix in
-* refactor schemas and make suzieq less brittle to changes in the schema
+
+tech debt other things we need to mix in
 * not sure how to schedule the bugs and features we are accumulating in issues
+* how to separate out database 
 * better unit tests with mocking instead of end-to-end with real data.
 * great expectations or some other way of better verifying data output https://docs.greatexpectations.io/en/latest/
 
 
 ## things we are not yet expecting to do
-but let us know if you either need this or what to help contribute
+but let us know if you either need this or want to help contribute
 
-* protocols
-   * ISIS
-   * MPLS
-* performance
-   * make sure we can support 1M+ routes per device
-* understand BGP routing policy and route maps / etc
+By category:
 
-* make asserts more modular and easier to extend
-    * We're not sure how this should work, it's just if there are 500
-    asserts from 127 people it will be a mess the way it is
-    * asserts are ways to build health checks to assure your network is behaving
-    as expected even during changes
-* More Network OS
-   * SONIC
-   * IOSXR
-   * IOS XE
-
-* enterprise features
+1. platforms
+    * IOS XR
+    * IOS XE
+    * SONIC
+1. features
+    * temperature and power collection and tracking
+    * Cloud integration
+1. new segments
+    * understand BGP routing policy and route maps / etc
+    * ISIS 
+    * MPLS
     * ACLs
     * QoS
-* hardware
-   * temperature and power collection and tracking
-* Cloud integration
-   * no idea what this means at this time, but everybody says cloud things these days
+1. performance
+    * make sure we can support 1M+ routes per device
+    * BMP to collect BGP data
+1. useability
+    * make asserts more modular and easier to extend
+        * We're not sure how this should work, it's just if there are 500
+        asserts from 127 people it will be a mess the way it is
+        * asserts are ways to build health checks to assure your network is behaving
+        as expected even during changes
+1. integration with out systems
+
+
+## We believe users are moving away from: (If you disagree, let us know)
+
+* SNMP access to data
 
