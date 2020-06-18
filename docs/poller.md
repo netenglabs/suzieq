@@ -53,7 +53,7 @@ Service definitions describe how to get output from devices and then how to turn
 Currently Suzieq supports polling [Cumulus Linux](https://cumulusnetworks.com/),
 [Arista](https://www.arista.com/en/),
 [Nexus](https://www.cisco.com/c/en/us/products/switches/data-center-switches/index.html),
-and [Juniper](https://www.juniper.com) devices, as well as native Linux devices such as servers. Suzieq can easily support other device types, we just haven't had access to those and not time to chase them down.
+and [Juniper](https://www.juniper.net) devices, as well as native Linux devices such as servers. Suzieq can easily support other device types, we just haven't had access to those and not time to chase them down.
 
 Suzieq started out with least common denominator SSH and REST access to devices.
 It doesn't much care about transport, we will use whatever gets the best data.
