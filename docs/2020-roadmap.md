@@ -36,6 +36,7 @@ Overall, where we want to be by the end of the year
 
 
 ## Roadmap for the rest of 2020
+
 1. NXOS support -- including EVPN
 1. JunOS
 1. GUI
@@ -69,19 +70,38 @@ our APIs documented.
    * slack
    * ???
 
+other things we need to mix in
+* refactor schemas and make suzieq less brittle to changes in the schema
+* not sure how to schedule the bugs and features we are accumulating in issues
+* better unit tests with mocking instead of end-to-end with real data.
+* great expectations or some other way of better verifying data output https://docs.greatexpectations.io/en/latest/
 
 
 ## things we are not yet expecting to do
 but let us know if you either need this or what to help contribute
-* SONIC
-* ISIS
-* make sure we can support 1M+ routes per device
+
+* protocols
+   * ISIS
+   * MPLS
+* performance
+   * make sure we can support 1M+ routes per device
 * understand BGP routing policy and route maps / etc
-* MPLS
+
 * make asserts more modular and easier to extend
     * We're not sure how this should work, it's just if there are 500
     asserts from 127 people it will be a mess the way it is
-* IOSXR
-* IOS XE
-* temperature and power collection and tracking
+    * asserts are ways to build health checks to assure your network is behaving
+    as expected even during changes
+* More Network OS
+   * SONIC
+   * IOSXR
+   * IOS XE
+
+* enterprise features
+    * ACLs
+    * QoS
+* hardware
+   * temperature and power collection and tracking
+* Cloud integration
+   * no idea what this means at this time, but everybody says cloud things these days
 
