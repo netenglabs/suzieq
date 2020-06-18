@@ -41,24 +41,33 @@ apply:
 
   junos:
     version: all
-    command: show ospf interface detail | display json
-    normalize: 'ospf-interface-information/[0]/ospf-interface/*/[
-    "interface-name/[0]/data: ifname",
-    "interface-name/[0]/data: origIfname",
-    "ospf-interface-state/[0]/data: state",
-    "ospf-area/[0]/data: area",
-    "neighbor-count/[0]/data: nbrCount?|0",
-    "interface-type/[0]/data: networkType?|",
-    "interface-address/[0]/data: ipAddress",
-    "address-mask/[0]/data: maskLen?|32",
-    "interface-cost/[0]/data: cost?|0",
-    "passive/[0]/data: passive?Passive|False",
-    "hello-interval/[0]/data: helloTime?|0",
-    "dead-interval/[0]/data: deadTime?|0",
-    "retransmit-interval/[0]/data: retxTime?|0",
-    "authentication-type/[0]/data: authType",
-    "ospf-stub-type/[0]/data: stub",
-    ]'
+    command:
+      - command: show ospf overview | display json
+        normalize: 'ospf-overview-information/[0]/ospf-overview/*/[
+        "ospf-router-id/[0]/data: routerId",
+        "record-type: _entryType?|overview",
+        "ifname: ifname?|_overview",
+        ]'
+
+      - command: show ospf interface detail | display json
+        normalize: 'ospf-interface-information/[0]/ospf-interface/*/[
+        "interface-name/[0]/data: ifname",
+        "interface-name/[0]/data: origIfname",
+        "ospf-interface-state/[0]/data: state",
+        "ospf-area/[0]/data: area",
+        "neighbor-count/[0]/data: nbrCount?|0",
+        "interface-type/[0]/data: networkType?|",
+        "interface-address/[0]/data: ipAddress",
+        "address-mask/[0]/data: maskLen?|32",
+        "interface-cost/[0]/data: cost?|0",
+        "passive/[0]/data: passive?Passive|False",
+        "hello-interval/[0]/data: helloTime?|0",
+        "dead-interval/[0]/data: deadTime?|0",
+        "retransmit-interval/[0]/data: retxTime?|0",
+        "authentication-type/[0]/data: authType",
+        "ospf-stub-type/[0]/data: stub",
+        "record-type: _entryType?|peers",
+        ]'
 
   nxos:
     version: all
