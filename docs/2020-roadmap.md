@@ -1,4 +1,3 @@
-# DRAFT -- NOT YET AGREED UPON --
 This roadmap represents our best guess at what we intend to build in 2020. 
 The point is to demonstrate what we think we should work on and the general
 order of what we want to deliver.  If we are missing something that would make
@@ -83,7 +82,7 @@ This is our best guess at priority. We are not sure how long these will take, bu
 1. real documentation of our main functions so that we can get 
 our APIs documented.
 
-1. Be sure that we can scale to at least 500 nodes without a problem
+1. Be sure that we can scale to at least 500 nodes per poller instance without a problem
 1. users can do their own queries
     * pandas or pandas sql query
     * is this only in the GUI?
@@ -123,7 +122,7 @@ By category:
         asserts from 127 people it will be a mess the way it is
         * asserts are ways to build health checks to assure your network is behaving
         as expected even during changes
-1. integration with out systems
+1. integration with other systems
 
 
 ## We believe users are moving away from: (If you disagree, let us know)
