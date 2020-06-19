@@ -49,7 +49,7 @@ Overall, where we want to be by the end of the year
    * gui
    * users define own queries
    * user asserts
-1. integration with out systems
+1. integration with other systems
 
 ## Roadmap for the rest of 2020 as of June 
 
