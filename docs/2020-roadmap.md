@@ -22,17 +22,10 @@ First release (0.1), was focused on good fundamentals and a good
 representation of what Suzieq can be used for. Second release (0.2)
 was focused on NXOS and Junos support.
 
-## End of year problems solved
-Overall, where we want to be by the end of the year
-* support NOSes that most people use
-    * Cumulus Linux, Arista EOS, NX OS, JunOS
-* understand kubernetes
-    * calico, vxlan, cilium
-* how is an app spinning up going to effect my network
+## Areas of Development
+There are six major areas that Suzieq development can be broken down into.
 
-
-## Categories of problems we want to solve
-1. platforms
+1. platforms (new NOS)
 1. features
    * new tables
    * new services
@@ -54,7 +47,7 @@ Overall, where we want to be by the end of the year
 
 This is our best guess at priority. We are not sure how long these will take, but this is the order we intend as of now. We are also not sure if other things will come up for us this year. Let us know if there are things on this list missing or that you really want.
 
-1. testing and reference topology
+1. testing and reference topology for use across all NOS
 1. GUI
     * what should the GUI be based on
         * streamlit, detail, jupyter, grafana
@@ -82,7 +75,7 @@ This is our best guess at priority. We are not sure how long these will take, bu
 1. real documentation of our main functions so that we can get 
 our APIs documented.
 
-1. Be sure that we can scale to at least 500 nodes per poller instance without a problem
+1. Be sure that we can scale to at least 500 nodes per poller instance
 1. users can do their own queries
     * pandas or pandas sql query
     * is this only in the GUI?
@@ -114,9 +107,9 @@ By category:
     * ACLs
     * QoS
 1. performance
-    * make sure we can support 1M+ routes per device
+    * Supporting 1M+ routes per device
     * BMP to collect BGP data
-1. useability
+1. usability
     * make asserts more modular and easier to extend
         * We're not sure how this should work, it's just if there are 500
         asserts from 127 people it will be a mess the way it is
