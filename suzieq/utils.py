@@ -401,7 +401,7 @@ def get_timestamp_from_cisco_time(input, timestamp):
 
     delta = relativedelta(months=months, days=days,
                           hours=hours, minutes=mins, seconds=secs)
-    return int((datetime.utcfromtimestamp(timestamp)-delta).timestamp()*1000)
+    return int((datetime.fromtimestamp(timestamp)-delta).timestamp()*1000)
 
 
 def get_timestamp_from_junos_time(input, timestamp):
@@ -418,4 +418,4 @@ def get_timestamp_from_junos_time(input, timestamp):
     hours, mins, secs = timestr.strip().split(':')
     delta = relativedelta(days=days, hours=int(
         hours), minutes=int(mins), seconds=int(secs))
-    return int((datetime.utcfromtimestamp(timestamp)-delta).timestamp()*1000)
+    return int((datetime.fromtimestamp(timestamp)-delta).timestamp()*1000)
