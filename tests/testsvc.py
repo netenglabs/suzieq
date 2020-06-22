@@ -52,14 +52,15 @@ if __name__ == '__main__':
 
     # Extract the appropriate svc definition
 
-    svcstr = svcdef.get('apply', {}) \
+    cmdstr = svcdef.get('apply', {}) \
                    .get(userargs.device_type, {}) \
-                   .get('normalize', '')
+                   .get('command', '')
 
-    if not svcstr:
-        print('No normalization service string found for {} in {}/{}'.format(
-            userargs.device_type, userargs.service_dir, userargs.service))
-        sys.exit(1)
+    isList = True
+    if not isinstance(cmdstr, list):
+        cmdstr = [svcdef.get('apply', {})
+                  .get(userargs.device_type, {})]
+        isList = False
 
     raw_input = yml_inp.get('input', {}) \
                        .get(userargs.device_type, '')
@@ -69,6 +70,19 @@ if __name__ == '__main__':
             userargs.device_type, userargs.sample_dir, userargs.service))
         sys.exit(1)
 
-    records = cons_recs_from_json_template(svcstr, json.loads(raw_input))
+    input_data = json.loads(raw_input)
 
-    print(json.dumps(records))
+    for i, cmd in enumerate(cmdstr):
+        svcstr = cmd.get('normalize', '')
+
+        if not svcstr:
+            print('No normalization service string found for {} in {}/{}'.format(
+                userargs.device_type, userargs.service_dir, userargs.service))
+            sys.exit(1)
+
+        if isList:
+            records = cons_recs_from_json_template(svcstr, input_data[i])
+        else:
+            records = cons_recs_from_json_template(svcstr, input_data)
+
+        print(json.dumps(records, indent=4))
