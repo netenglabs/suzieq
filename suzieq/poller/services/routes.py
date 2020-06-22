@@ -112,7 +112,7 @@ class RoutesService(Service):
     def _clean_nxos_data(self, processed_data, raw_data):
 
         for entry in processed_data:
-            entry['protocol'] = entry['protocol'].split('-')[0]
+            entry['protocol'] = entry.get('protocol', '').split('-')[0]
 
             entry['weights'] = [int(x) if x is not None else 0
                                 for x in entry['weights']]
