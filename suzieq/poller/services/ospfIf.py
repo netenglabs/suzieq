@@ -87,7 +87,7 @@ class OspfIfService(Service):
                     for ifentry in areas.get(area, []):
                         ifentry['routerId'] = entry['routerId']
                         ifentry['authType'] = entry['authType'][j]
-                        ifentry['isBackbone'] = entry['isBackbone'][j] == "true"
+                        ifentry['isBackbone'] = area == "0.0.0.0"
                 drop_indices.append(i)
 
         processed_data = np.delete(processed_data, drop_indices).tolist()
