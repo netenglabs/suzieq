@@ -71,7 +71,7 @@ This is our best guess at priority. We are not sure how long these will take, bu
    * ???
 1. create tags or other ways to group  in a hierarchical way
     * possibly reuse ansible grouping
-    
+1. network wide summarize to take advantage of data across all commands    
 1. real documentation of our main functions so that we can get 
 our APIs documented.
 
@@ -82,8 +82,8 @@ our APIs documented.
 
 
 tech debt other things we need to mix in
-* not sure how to schedule the bugs and features we are accumulating in issues
-* how to separate out database 
+* Better separate database abstractions so that we can more easily add new databases
+* better unit tests with mocking instead of just end-to-end with real data.
 * better unit tests with mocking instead of end-to-end with real data.
 * great expectations or some other way of better verifying data output https://docs.greatexpectations.io/en/latest/
 
@@ -100,6 +100,7 @@ By category:
 1. features
     * temperature and power collection and tracking
     * Cloud integration
+    * Kafka integraion for streaming telemetry
 1. new segments
     * understand BGP routing policy and route maps / etc
     * ISIS 
@@ -109,6 +110,8 @@ By category:
 1. performance
     * Supporting 1M+ routes per device
     * BMP to collect BGP data
+    * Cache or even keep DataFrames between queries. right now Suzieq gets data from disk at every query.
+    * use a diffrent database such as spark or modin -- we have inital experiments with thse but we'd need to get them up-to-dat
 1. usability
     * make asserts more modular and easier to extend
         * We're not sure how this should work, it's just if there are 500
