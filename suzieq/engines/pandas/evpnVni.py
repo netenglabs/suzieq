@@ -8,7 +8,6 @@ from suzieq.sqobjects.routes import RoutesObj
 
 
 class EvpnvniObj(SqEngineObject):
-    pass
 
     def summarize(self, **kwargs):
         self._init_summarize(self.iobj._table, **kwargs)
@@ -70,33 +69,38 @@ class EvpnvniObj(SqEngineObject):
     def aver(self, **kwargs) -> pd.DataFrame:
         """Assert for EVPN Data"""
 
-        assert_cols = ["namespace", "hostname", "vni", "remoteVtepList", "vrf",
+        assert_cols = ["namespace", "hostname", "vni", "remoteVtepList", "vrf", "mcastGroup",
                        "type", "srcVtepIp", "state", "l2VniList", "ifname"]
 
         kwargs.pop("columns", None)  # Loose whatever's passed
 
         df = self.get(columns=assert_cols, **kwargs)
         if df.empty:
-            return pd.DataFrame(columns=assert_cols)
-
-        # Gather the unique set of VTEPs per VNI
-        vteps_df = df.explode(column='remoteVtepList') \
-            .dropna(how='any') \
-            .groupby(by=['vni', 'type'])['remoteVtepList'] \
-            .aggregate(lambda x: x.unique().tolist()) \
-            .reset_index() \
-            .dropna(how='any') \
-            .rename(columns={'remoteVtepList': 'allVteps'})
-
-        df = df.merge(vteps_df)
+            df = pd.DataFrame(columns=assert_cols)
+            df['assertReason'] = 'No data found'
+            df['assert'] = 'fail'
+            return df
 
         df["assertReason"] = [[] for _ in range(len(df))]
 
-        # Every VTEP has info about every other VTEP for a given VNI
-        df["assertReason"] += df.apply(self._all_vteps_present, axis=1)
+        her_df = df.query('type == "L2" and remoteVtepList.str.len() != 0')
+        if not her_df.empty:
+            # Gather the unique set of VTEPs per VNI
+            vteps_df = df.explode(column='remoteVtepList') \
+                .dropna(how='any') \
+                .groupby(by=['vni', 'type'])['remoteVtepList'] \
+                .aggregate(lambda x: x.unique().tolist()) \
+                .reset_index() \
+                .dropna(how='any') \
+                .rename(columns={'remoteVtepList': 'allVteps'})
 
-        # Every VTEP is reachable
-        df["assertReason"] += df.apply(self._is_vtep_reachable, axis=1)
+            df = df.merge(vteps_df)
+
+            # Every VTEP has info about every other VTEP for a given VNI
+            df["assertReason"] += df.apply(self._all_vteps_present, axis=1)
+
+            # Every VTEP is reachable
+            df["assertReason"] += df.apply(self._is_vtep_reachable, axis=1)
 
         # State is up
         df["assertReason"] += df.apply(
