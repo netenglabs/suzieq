@@ -228,13 +228,13 @@ apply:
         "capextendednhrecvd: extnhReceived",
         "updatessent: updatesTx?|0",
         "updatesrecvd: updatesRx?|0",
-        "TABLE_peraf/ROW_peraf/[*]/TABLE_persaf/ROW_persaf/per-af-name: afiPrefix",
-        "TABLE_peraf/ROW_peraf/[*]/TABLE_persaf/ROW_persaf/pfxrecvd: pfxRcvd",
-        "TABLE_peraf/ROW_peraf/[*]/TABLE_persaf/ROW_persaf/pfxsent: pfxSent",
-        "TABLE_peraf/ROW_peraf/[*]/TABLE_persaf/ROW_persaf/sendextcommunity: extendComm",
-        "TABLE_peraf/ROW_peraf/[*]/TABLE_persaf/ROW_persaf/sendextcommunity: sendComm",
-        "TABLE_peraf/ROW_peraf/[*]/TABLE_persaf/ROW_persaf/rrconfigured: rrclient?|",
-        "TABLE_peraf/ROW_peraf/[*]/TABLE_persaf/ROW_persaf/defaultoriginate: defaultOrig?|",
+        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/per-af-name: afiPrefix",
+        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/pfxrecvd: pfxRcvd",
+        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/pfxsent: pfxSent",
+        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/sendextcommunity: extendComm",
+        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/sendextcommunity: sendComm",
+        "TABLE_peraf/ROW_peraf/[0]?/TABLE_persaf/ROW_persaf/rrconfigured: rrclient?|False",
+        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/defaultoriginate: defaultOrig?|",
         "localaddr: updateSource?|",
         "remoteaddr: peerIP?|",
         "entry-type: _entryType?|neighbors",
@@ -252,6 +252,14 @@ apply:
   junos:
     version: all
     command:
+      - command: show bgp summary | display json
+        normalize: 'bgp-information/bgp-peer/*/[
+        "peer-address/[0]/data: peer",
+        "elapsed-time/[0]/data: estdTime",
+        "vrf: vrf?|default",
+        "entry_type: _entryType?|summary",
+        ]'
+
       - command: "show bgp neighbor | display json"
         normalize: 'bgp-information/[0]/bgp-peer/*/[
         "bgp-rib/[*]/advertised-prefix-count/[0]/data: pfxTxList",
@@ -281,13 +289,5 @@ apply:
         "output-updates/[0]/data: updatesTx?|0",
         "vrf: vrf?|default",
         "entry_type: _entryType?|neighbors",
-        ]'
-
-      - command: show bgp summary | display json
-        normalize: 'bgp-information/bgp-peer/*/[
-        "peer-address/[0]/data: peer",
-        "elapsed-time/[0]/data: estdTime",
-        "vrf: vrf?|default",
-        "entry_type: _entryType?|summary",
         ]'
 

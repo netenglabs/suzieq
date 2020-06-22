@@ -38,10 +38,12 @@ class BgpService(Service):
 
     def _clean_junos_data(self, processed_data, raw_data):
 
+        peer_uptimes = {}
         drop_indices = []
 
         for i, entry in enumerate(processed_data):
             if entry['_entryType'] == 'summary':
+                peer_uptimes[entry['peer']] = entry['estdTime']
                 drop_indices.append(i)
                 continue
             # JunOS adds entries which includes the port as IP+Port
@@ -56,7 +58,9 @@ class BgpService(Service):
             entry['keepaliveTime'] = int(entry['keepaliveTime'])
             entry['holdTime'] = int(entry['holdTime'])
 
-            if not 'estdTime' in entry:
+            if entry['peer'] in peer_uptimes:
+                entry['estdTime'] = peer_uptimes[entry['peer']]
+            else:
                 entry['estdTime'] = '0d 00:00:00'
 
             # Assign counts to appropriate AFi/SAFI
@@ -158,29 +162,33 @@ class BgpService(Service):
             entry.pop('afAdvertised')
             entry.pop('afRcvd')
 
-            if entry['rrclient'][0] == "true":
-                entry['rrClient'] = True
+            entry['rrClient'] = entry.get('rrclient', False) == "true"
 
+            defint_list = [0]*len(entry.get('afiPrefix', []))
+            defbool_list = [False]*len(entry.get('afiPrefix', []))
             for i, item in enumerate(entry['afiPrefix']):
                 if item == 'IPv4 Unicast':
-                    entry['v4PfxRx'] = entry['pfxRcvd'][i]
-                    entry['v4PfxTx'] = entry['pfxSent'][i]
-                    entry['v4DefaultSent'] = entry['defaultOrig'][i]
+                    entry['v4PfxRx'] = entry.get('pfxRcvd', defint_list)[i]
+                    entry['v4PfxTx'] = entry.get('pfxSent', defint_list)[i]
+                    entry['v4DefaultSent'] = entry.get('defaultOrig',
+                                                       defbool_list)[i]
                 elif item == 'IPv6 Unicast':
-                    entry['v6PfxRx'] = entry['pfxRcvd'][i]
-                    entry['v6PfxTx'] = entry['pfxSent'][i]
-                    entry['v6DefaultSent'] = entry['defaultOrig'][i]
+                    entry['v6PfxRx'] = entry.get('pfxRcvd', defint_list)[i]
+                    entry['v6PfxTx'] = entry.get('pfxSent', defint_list)[i]
+                    entry['v6DefaultSent'] = entry.get('defaultOrig',
+                                                       defbool_list[i])
                 elif item == 'L2VPN EVPN':
-                    entry['evpnPfxRx'] = entry['pfxRcvd'][i]
-                    entry['evpnPfxTx'] = entry['pfxSent'][i]
-                    if entry['sendComm'][i] == "true":
-                        if entry['extendComm'] == "true":
+                    entry['evpnPfxRx'] = entry.get('pfxRcvd', defint_list)[i]
+                    entry['evpnPfxTx'] = entry.get('pfxSent', defint_list)[i]
+                    if entry.get('sendComm', defbool_list)[i] == "true":
+                        if entry.get('extendComm', defbool_list) == "true":
                             entry['evpnSendCommunity'] = 'extendedAndstandard'
                         else:
                             entry['evpnSendCommunity'] = 'standard'
-                    elif entry['extendComm'] == "true":
+                    elif entry.get('extendComm', defbool_list) == "true":
                         entry['evpnSendCommunity'] = 'extended'
-                    entry['evpnDefaultSent'] = entry['defaultOrig'][i]
+                    entry['evpnDefaultSent'] = entry.get('defaultOrig',
+                                                         defbool_list)[i]
 
             entry.pop('afiPrefix')
             entry.pop('pfxRcvd')
@@ -189,8 +197,8 @@ class BgpService(Service):
             entry.pop('extendComm')
             entry.pop('defaultOrig')
 
-            if (entry['extnhAdvertised'] == "true" and
-                    entry['extnhReceived'] == "true"):
+            if (entry.get('extnhAdvertised', False) == "true" and
+                    entry.get('extnhReceived', False) == "true"):
                 entry['extnhEnabled'] = True
             else:
                 entry['extnhEnabled'] = False
