@@ -72,7 +72,10 @@ class EvpnVniService(Service):
                 vni_dict[entry['vni']] = entry
 
             elif entry['_rectype'] == 'peers':
-                vni_list = entry['vni'].split(',')
+                if entry.get('vni', ''):
+                    vni_list = entry['vni'].split(',')
+                else:
+                    vni_list = []
                 for vni in vni_list:
                     vni_entry = vni_dict.get(vni, None)
                     if vni_entry:
@@ -81,7 +84,7 @@ class EvpnVniService(Service):
                 drop_indices.append(i)
 
             elif entry['_rectype'] == 'iface':
-                if entry['encapType'] != "VXLAN":
+                if entry.get('encapType', '') != "VXLAN":
                     continue
                 for vni in vni_dict:
                     if vni_dict[vni]['ifname'] != entry['ifname']:
