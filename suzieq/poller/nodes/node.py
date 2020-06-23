@@ -73,7 +73,7 @@ async def init_hosts(hosts_file, ansible_file, namespace):
             nsname = namespace["namespace"]
 
         tasks = []
-        for host in namespace.get("hosts", None):
+        for host in namespace.get("hosts", []):
             entry = host.get("url", None)
             if entry:
                 words = entry.split()
@@ -103,6 +103,10 @@ async def init_hosts(hosts_file, ansible_file, namespace):
                     ssh_keyfile=keyfile,
                     namespace=nsname,
                 )]
+
+        if not tasks:
+            logger.error("No hosts detected in provided inventory file")
+            return []
 
         for f in asyncio.as_completed(tasks):
             newnode = await f
