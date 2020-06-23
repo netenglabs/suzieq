@@ -126,12 +126,17 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                         if tmpval:
                             result = tmpval
                 else:
-                    if (xstr == '*?' and len(result) == 1 and
-                            type(result[0]['rest']) != list):
+                    if (xstr == '*?'):
                         # Massaging the format to handle cases like NXOS that
                         # provide dict when there's a single element and a list
                         # if there's more than one element
-                        result = [[{'rest': [result[0]['rest']]}]]
+                        tmpres = []
+                        for item in result:
+                            if not isinstance(item, list):
+                                if not isinstance(item['rest'], list):
+                                    item['rest'] = [item['rest']]
+                                tmpres.append([item])
+                        result = tmpres
                     else:
                         result = list(map(_stepdown_rest, result))
                     if len(result) == 1:
