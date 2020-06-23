@@ -111,7 +111,13 @@ class RoutesService(Service):
 
     def _clean_nxos_data(self, processed_data, raw_data):
 
-        for entry in processed_data:
+        drop_indices = []
+
+        for i, entry in enumerate(processed_data):
+            if 'prefix' not in entry or not entry['prefix']:
+                drop_indices.append(i)
+                continue
+
             entry['protocol'] = entry.get('protocol', '').split('-')[0]
 
             entry['weights'] = [int(x) if x is not None else 0
@@ -128,4 +134,5 @@ class RoutesService(Service):
             if 'action' not in entry:
                 entry['action'] = 'forward'
 
+        processed_data = np.delete(processed_data, drop_indices).tolist()
         return processed_data
