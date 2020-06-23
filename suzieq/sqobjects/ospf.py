@@ -1,7 +1,7 @@
 import typing
 import pandas as pd
 
-from suzieq.sqobjects import basicobj
+from suzieq.sqobjects import basicobj, address
 from suzieq.utils import SchemaForTable
 
 
@@ -24,7 +24,19 @@ class OspfObj(basicobj.SqObject):
         if not self.ctxt.engine:
             raise AttributeError('No analysis engine specified')
 
-        return self.engine_obj.get(**kwargs)
+        # adding peerHostname from the peerIP
+
+        df = self.engine_obj.get(**kwargs)
+        a_df = address.AddressObj(context=self.ctxt).get(**kwargs)
+        a_df = a_df[['namespace', 'hostname', 'ipAddressList']]
+        a_df = a_df.explode('ipAddressList').dropna(how='any')
+        a_df = a_df.rename(columns={'ipAddressList': 'peerIP', 
+            'hostname': 'peerHostname'})
+        a_df['peerIP'] = a_df['peerIP'].str.replace("/.+", "")
+    
+        df = df.merge(a_df, on=['namespace', 'peerIP'], how='left')
+  
+        return df
 
     def summarize(self, **kwargs):
         """Describe the data"""
