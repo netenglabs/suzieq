@@ -166,29 +166,32 @@ class BgpService(Service):
 
             defint_list = [0]*len(entry.get('afiPrefix', []))
             defbool_list = [False]*len(entry.get('afiPrefix', []))
+            pfxRx_list = entry.get('pfxRcvd', []) or defint_list
+            pfxTx_list = entry.get('pfxSent', []) or defint_list
+            deforig_list = entry.get('defaultOrig', []) or defbool_list
+            extcomm_list = entry.get('extendComm', []) or defbool_list
+            comm_list = entry.get('sendComm', []) or defbool_list
+
             for i, item in enumerate(entry['afiPrefix']):
                 if item == 'IPv4 Unicast':
-                    entry['v4PfxRx'] = entry.get('pfxRcvd', defint_list)[i]
-                    entry['v4PfxTx'] = entry.get('pfxSent', defint_list)[i]
-                    entry['v4DefaultSent'] = entry.get('defaultOrig',
-                                                       defbool_list)[i]
+                    entry['v4PfxRx'] = pfxRx_list[i]
+                    entry['v4PfxTx'] = pfxTx_list[i]
+                    entry['v4DefaultSent'] = deforig_list[i]
                 elif item == 'IPv6 Unicast':
-                    entry['v6PfxRx'] = entry.get('pfxRcvd', defint_list)[i]
-                    entry['v6PfxTx'] = entry.get('pfxSent', defint_list)[i]
-                    entry['v6DefaultSent'] = entry.get('defaultOrig',
-                                                       defbool_list[i])
+                    entry['v6PfxRx'] = pfxRx_list[i]
+                    entry['v6PfxTx'] = pfxTx_list[i]
+                    entry['v6DefaultSent'] = deforig_list[i]
                 elif item == 'L2VPN EVPN':
-                    entry['evpnPfxRx'] = entry.get('pfxRcvd', defint_list)[i]
-                    entry['evpnPfxTx'] = entry.get('pfxSent', defint_list)[i]
-                    if entry.get('sendComm', defbool_list)[i] == "true":
-                        if entry.get('extendComm', defbool_list) == "true":
+                    entry['evpnPfxRx'] = pfxRx_list[i]
+                    entry['evpnPfxTx'] = pfxTx_list[i]
+                    entry['evpnDefaultSent'] = deforig_list[i]
+                    if comm_list[i] == "true":
+                        if extcomm_list[i] == "true":
                             entry['evpnSendCommunity'] = 'extendedAndstandard'
                         else:
                             entry['evpnSendCommunity'] = 'standard'
-                    elif entry.get('extendComm', defbool_list) == "true":
+                    elif extcomm_list[i] == "true":
                         entry['evpnSendCommunity'] = 'extended'
-                    entry['evpnDefaultSent'] = entry.get('defaultOrig',
-                                                         defbool_list)[i]
 
             entry.pop('afiPrefix')
             entry.pop('pfxRcvd')
