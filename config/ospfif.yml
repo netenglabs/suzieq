@@ -73,7 +73,7 @@ apply:
     version: all
     command:
       - command: show ip ospf interface vrf all | json
-        normalize: 'TABLE_ctx/ROW_ctx/*:cname:vrf|TABLE_intf/ROW_intf/*/[
+        normalize: 'TABLE_ctx/ROW_ctx/*:cname:vrf|TABLE_intf/ROW_intf/*?/[
         "ifname: ifname",
         "ifname: origIfname",
         "state: state",

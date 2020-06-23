@@ -54,7 +54,7 @@ apply:
   nxos: 
     version: all
     command: show ip route vrf all | json
-    normalize: 'TABLE_vrf/ROW_vrf/*:vrf-name-out:vrf|TABLE_addrf/ROW_addrf/TABLE_prefix/ROW_prefix/*/[
+    normalize: 'TABLE_vrf/ROW_vrf/*:vrf-name-out:vrf|TABLE_addrf/ROW_addrf/TABLE_prefix/ROW_prefix/*?/[
     "ipprefix: prefix",
     "TABLE_path/ROW_path/[0]?/clientname: protocol",
     "TABLE_path/ROW_path/[*]?/metric: weights",
