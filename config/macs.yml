@@ -35,7 +35,7 @@ apply:
   nxos:
     version: all
     command: show mac address-table | json
-    normalize: 'TABLE_mac_address/ROW_mac_address/*/[
+    normalize: 'TABLE_mac_address/ROW_mac_address/*?/[
     "disp_mac_addr: macaddr",
     "disp_port: oif?|",
     "disp_vlan: vlan?|0",

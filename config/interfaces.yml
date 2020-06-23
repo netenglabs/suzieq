@@ -74,7 +74,7 @@ apply:
     version: all
     command:
       - command: show interface brief | json
-        normalize: 'TABLE_interface/ROW_interface/*/[
+        normalize: 'TABLE_interface/ROW_interface/*?/[
         "interface: ifname",
         "state: state",
         "svi_admin_state: state?|state",
@@ -88,7 +88,7 @@ apply:
         ]'
 
       - command: show ip interface vrf all | json
-        normalize: 'TABLE_intf/ROW_intf/*/[
+        normalize: 'TABLE_intf/ROW_intf/*?/[
         "vrf-name-out: vrf",
         "intf-name: ifname",
         "proto-state: state",

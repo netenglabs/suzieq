@@ -206,8 +206,7 @@ apply:
     version: all
     command:
       - command: show bgp all neighbors vrf all | json
-        normalize: 'TABLE_neighbor/ROW_neighbor/*/[
-        "TABLE_af/ROW_af/[*]/TABLE_saf/ROW_saf/af-advertised: afAdvertised",
+        normalize: 'TABLE_neighbor/ROW_neighbor/*?/[
         "neighbor: peer",
         "remoteas: peerAsn?|0",
         "remote-id: peerRouterId",
@@ -222,8 +221,9 @@ apply:
         "elapsedtime: estdTime?|",
         "resetreason: reason",
         "peerresetreason: "notifiCnReason?|",
-        "TABLE_af/ROW_af/[*]/TABLE_saf/ROW_saf/af-name: afiSafi",
-        "TABLE_af/ROW_af/[*]/TABLE_saf/ROW_saf/af-recvd: afRcvd",
+        "TABLE_af/ROW_af/[*]?/TABLE_saf/ROW_saf/af-name: afiSafi",
+        "TABLE_af/ROW_af/[*]?/TABLE_saf/ROW_saf/af-recvd: afRcvd",
+        "TABLE_af/ROW_af/[*]?/TABLE_saf/ROW_saf/af-advertised: afAdvertised",
         "capextendednhadvertised: extnhAdvertised",
         "capextendednhrecvd: extnhReceived",
         "updatessent: updatesTx?|0",
