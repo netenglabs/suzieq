@@ -26,7 +26,7 @@ class DeviceObj(SqEngineObject):
         uptime_cols = (self.summary_df['timestamp'] -
                        pd.to_datetime(self.summary_df['bootupTimestamp']*1000,
                                       unit='ms'))
-        uptime_cols = pd.to_timedelta(uptime_cols/1000, unit='s')
+        uptime_cols = pd.to_timedelta(uptime_cols, unit='ms')
         self.summary_df.insert(len(self.summary_df.columns)-1,
                                'uptime', uptime_cols)
 
