@@ -536,6 +536,10 @@ class Service(object):
         """Start the service"""
         self.logger.info(f"running service {self.name} ")
 
+        if self.run_once:
+            total_nodes = len(self.node_postcall_list)
+        else:
+            total_nodes = 0
         # Fire up the initial posts
         await self.start_data_gather()
         loop = asyncio.get_running_loop()
@@ -573,17 +577,32 @@ class Service(object):
                     self._failed_node_set.remove(nodename)
 
                 # Process data independent of status to return an empty list
-                # so that the output can be updated. For example, if a service is
-                # disabled, this can be the condition.
+                # so that the output can be updated. For example, if a service
+                #  is disabled, this can be the condition.
+                if self.run_once == "gather":
+                    print(json.dumps(output, indent=4))
+                    total_nodes -= 1
+                    if total_nodes <= 0:
+                        sys.exit(0)
+                    continue
+
                 result = self.process_data(output)
                 # If a node from init state to good state, hostname will change
                 # So fix that in the node list
                 hostname = output[0]["hostname"]
+                if self.run_once == "process":
+                    print(json.dumps(result, indent=4))
+                    total_nodes -= 1
+                    if total_nodes <= 0:
+                        sys.exit(0)
+                    continue
+
                 if token.bootupTimestamp != self.node_boot_times[hostname]:
                     self.node_boot_times[hostname] = token.bootupTimestamp
                     # Flush the prev results data for this node
                     self.previous_results[hostname] = []
-                await self.commit_data(result, output[0]["namespace"], hostname)
+                await self.commit_data(result, output[0]["namespace"],
+                                       hostname)
                 empty_count = False
             else:
                 empty_count = True
@@ -622,7 +641,7 @@ class Service(object):
                         "partition_cols": ["namespace", "hostname", "service"]
                     })
 
-            # Post a command to fire up the next poll after the specified period
+            # Post a cmd to fire up the next poll after the specified period
             self.logger.debug(
                 f"Rescheduling service for {self.name} service")
             loop.call_later(self.period, self.call_node_postcmd,

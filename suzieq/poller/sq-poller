@@ -76,7 +76,8 @@ async def start_poller(userargs, cfg):
             "Service directory {} is not a directory".format(
                 cfg['service-directory'])
         )
-        print("Service directory {} is not a directory".format(cfg['service-directory']))
+        print("Service directory {} is not a directory".format(
+            cfg['service-directory']))
         sys.exit(1)
 
     if not cfg.get("schema-directory", None):
@@ -101,6 +102,11 @@ async def start_poller(userargs, cfg):
                       userargs.run_once or "forever"),
     ]
     nodes, svcs = await asyncio.gather(*tasks)
+
+    if not nodes or not svcs:
+        # Logging should've been done by init_nodes/services for details
+        print('Termminating because no nodes or services found')
+        sys.exit(0)
 
     node_callq = defaultdict(lambda: defaultdict(dict))
 
