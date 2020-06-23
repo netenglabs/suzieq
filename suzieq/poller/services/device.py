@@ -75,7 +75,7 @@ class DeviceService(Service):
                       int(entry.pop('kern_uptm_secs', 0)))
             if upsecs:
                 entry['bootupTimestamp'] = int(
-                    datetime.utcnow().timestamp() - upsecs)
+                    int(raw_data[0]["timestamp"])/1000 - upsecs)
 
     def get_diff(self, old, new):
         """Compare list of dictionaries ignoring certain fields
