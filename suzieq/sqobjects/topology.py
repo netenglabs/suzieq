@@ -7,7 +7,7 @@ import pandas as pd
 import networkx as nx
 import matplotlib.pyplot as plt
 
-from suzieq.sqobjects import interfaces, lldp, bgp, arpnd, macs, basicobj
+from suzieq.sqobjects import interfaces, lldp, bgp, ospf, basicobj, address
 from suzieq.exceptions import NoLLdpError, EmptyDataframeError, PathLoopError
 
 # TODO:
@@ -19,6 +19,7 @@ from suzieq.exceptions import NoLLdpError, EmptyDataframeError, PathLoopError
 #  ospf topology
 #  color by device type?
 #  be able to ask fi a node has neighbors by type (physical, overlay, protocol, etc)
+#  too much duplication between graph creation functions. make it smaller
 #  questions
 #    * is each topology a different command?
 #    * will we want more than one topology at a time?
@@ -70,9 +71,19 @@ class TopologyObj(basicobj.SqObject):
         for i in self._if_df['namespace'].unique():
             self.ns[i] = {}
 
-        self._create_lldp_topology(namespaces)
-        self._create_bgp_topology(namespaces)
-        
+        services = [
+            ('LLDP', lldp.LldpObj, 'peerHostname', 'ifname'),
+            ('BGP', bgp.BgpObj, 'peerHostname', 'peer' ),
+            ('OSPF', ospf.OspfObj, 'peerHostname', 'ifname')
+            ]
+
+        for name, obj, key, label_col in services:
+            df = obj(context=self.ctxt).get(
+                namespace=namespaces, columns=self.columns).dropna(how='any')
+            grp = df.groupby(by=['namespace'])
+            breakpoint()
+            self._create_topology_from_df(df, grp, name, key, label_col)
+
         return pd.DataFrame(self.ns)
        
     def _create_topology_from_df(self, df, group, label, key, label_col):
@@ -99,27 +110,7 @@ class TopologyObj(basicobj.SqObject):
         
         return graphs
 
-    def _create_lldp_topology(self, namespaces):
-            
-        self._lldp_df = lldp.LldpObj(context=self.ctxt).get(
-            namespace=namespaces, columns=self.columns)
-        if self._lldp_df.empty:
-            raise NoLLdpError(f"No LLDP information found")
-        self._lldp_grp = self._lldp_df.groupby(by=['namespace'])
-        self._create_topology_from_df(self._lldp_df, self._lldp_grp, 
-            'LLDP', 'peerHostname', 'ifname')
 
-    def _create_bgp_topology(self, namespaces):
-        self._bgp_df = bgp.BgpObj(context=self.ctxt).get(
-            namespace=namespaces, columns=self.columns)
-        if self._bgp_df.empty:
-            raise Exception(f"No BGP information found")
-        self._bgp_grp = self._bgp_df.groupby(by=['namespace'])
-        
-        self._create_topology_from_df(self._bgp_df, self._bgp_grp, 'BGP',
-            'peerHostname', 'peer')
-
-        
     def _make_image(self, graphs, label):
 
         for name, G in graphs.items():
