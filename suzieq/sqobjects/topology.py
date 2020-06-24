@@ -1,5 +1,5 @@
 import typing
-from collections import OrderedDict
+from collections import OrderedDict, defaultdict
 from itertools import repeat
 
 import numpy as np
@@ -11,19 +11,20 @@ from suzieq.sqobjects import interfaces, lldp, bgp, ospf, basicobj, address
 from suzieq.exceptions import NoLLdpError, EmptyDataframeError, PathLoopError
 
 # TODO:
-#  how do we collect and draw multiple topologies  
+#  redo everything as our own link state database with all the attributes
+#     we want, but then turn into Graphs just for analysis and maps
 #  can we do this if there isn't LLDP?
 #  topology for different VRFs?
 #  topology for eVPN / overlay
-#  bgp topology
-#  ospf topology
 #  color by device type?
-#  be able to ask fi a node has neighbors by type (physical, overlay, protocol, etc)
-#  too much duplication between graph creation functions. make it smaller
+#  how to draw multiple topologies
+#  be able to ask if a node has neighbors by type (physical, overlay, protocol, etc)
 #  questions
 #    * is each topology a different command?
 #    * will we want more than one topology at a time?
 #    * without knowing hierarchy, labels or tags it's unclear how to group things
+#    * should I make my own link state database and then at the end put that into graphs? 
+#       that way I can decide what data goes where
 # how could we add state of connection (like Established) per protocol
 
 
@@ -81,8 +82,7 @@ class TopologyObj(basicobj.SqObject):
 
         self.graphs = {}
         
-        for srv, obj, extra_args, key, label_col in services:
-            #breakpoint()       
+        for srv, obj, extra_args, key, label_col in services:     
             df = obj(context=self.ctxt).get(
                 namespace=namespaces, columns=self.columns,
                 **extra_args
@@ -108,22 +108,26 @@ class TopologyObj(basicobj.SqObject):
             G = nx.compose_all(gs)
             for srv, _, _, _, _ in services:
                 edge_labels[srv]=nx.get_edge_attributes(self.graphs[srv][ns], 'topology')
-
+            
             pos = nx.spring_layout(G)
             nx.draw(G, with_labels=True, pos=pos)
             colors = ['r', 'g', 'b']
             i = 0
-            for k,v in edge_labels.items():
+            el = defaultdict(list)
+            for srv, edges in edge_labels.items():
                 
-                nx.draw_networkx_edge_labels(G, pos, edge_labels=v, font_color=colors[i])
-                i=i+1
-                plt.savefig(f"{ns}_{i}.png")
+                for edge, _ in edges.items():
+                    el[edge].append(srv) 
+            for edge in el:
+                el[edge] = " ".join(el[edge])    
+
+            nx.draw_networkx_edge_labels(G, pos, edge_labels=el, font_size=6)
+            
             plt.savefig(f"{ns}.png")
             plt.close()
 
 
             multigraphs[ns] = G
-        #breakpoint()
         return pd.DataFrame(self.ns)
 
     def _create_empty_graphs_per_namespace(self, namespaces):
@@ -171,12 +175,13 @@ class TopologyObj(basicobj.SqObject):
         for name, G in graphs.items():
             if G.nodes:
                 self.ns[name][f'{label}_number_of_nodes'] = len(G.nodes)
+                self.ns[name][f'{label}_number_of_edges'] = len(G.edges)
                 if not nx.is_connected(G):
                     self.ns[name][f'{label}_is_fully_connected'] = False
-                    self.ns[name][f'{label}_barrycenter'] = False
+                    self.ns[name][f'{label}_center'] = False
                 else:
                     self.ns[name][f'{label}_is_fully_connected'] = True
-                    self.ns[name][f'{label}_barrycenter'] = nx.barycenter(G)
+                    self.ns[name][f'{label}_center'] = nx.barycenter(G)
                 
                 self.ns[name][f'{label}_self_loops'] = list(nx.nodes_with_selfloops(G))
                 
@@ -185,9 +190,10 @@ class TopologyObj(basicobj.SqObject):
                 self.ns[name][f'{label}_degree_histogram'] = nx.degree_histogram(G)
                 #self.ns[name][f'{label}_bridges'] = list(nx.bridges(G))
             else:
-                for k in [f'{label}_is_fully_connected', f'{label}_barrycenter',
+                for k in [f'{label}_is_fully_connected', f'{label}_center',
                      f'{label}_self_loops', f'{label}_number_of_subgroups', 
-                     f'{label}_degree_histogram', f'{label}_number_of_nodes']:
+                     f'{label}_degree_histogram', f'{label}_number_of_nodes',
+                     f'{label}_number_of_edges']:
                      self.ns[name][k] = "N/A"
             
         
