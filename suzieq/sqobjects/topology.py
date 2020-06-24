@@ -24,6 +24,7 @@ from suzieq.exceptions import NoLLdpError, EmptyDataframeError, PathLoopError
 #    * is each topology a different command?
 #    * will we want more than one topology at a time?
 #    * without knowing hierarchy, labels or tags it's unclear how to group things
+# how could we add state of connection (like Established) per protocol
 
 
 
@@ -68,23 +69,68 @@ class TopologyObj(basicobj.SqObject):
   
         self.ns = {}
         self._init_dfs(namespaces)
-        for i in self._if_df['namespace'].unique():
+        nses = self._if_df['namespace'].unique()
+        for i in nses:
             self.ns[i] = {}
 
         services = [
-            ('LLDP', lldp.LldpObj, 'peerHostname', 'ifname'),
-            ('BGP', bgp.BgpObj, 'peerHostname', 'peer' ),
-            ('OSPF', ospf.OspfObj, 'peerHostname', 'ifname')
+            ('LLDP', lldp.LldpObj, {}, 'peerHostname', 'ifname'),
+            ('BGP', bgp.BgpObj, {'state': 'Established'},'peerHostname', 'peer' ),
+            ('OSPF', ospf.OspfObj, {}, 'peerHostname', 'ifname')
             ]
 
-        for name, obj, key, label_col in services:
+        self.graphs = {}
+        
+        for srv, obj, extra_args, key, label_col in services:
+            #breakpoint()       
             df = obj(context=self.ctxt).get(
-                namespace=namespaces, columns=self.columns).dropna(how='any')
-            grp = df.groupby(by=['namespace'])
-            breakpoint()
-            self._create_topology_from_df(df, grp, name, key, label_col)
+                namespace=namespaces, columns=self.columns,
+                **extra_args
+                ).dropna(how='any')
+            if not df.empty:
+                grp = df.groupby(by=['namespace'])
+            
+                self.graphs[srv] = self._create_topology_from_df(df, grp, srv, key, label_col)
+            else:
+                print(f"EMPTY DF for {srv}")
+                self.graphs[srv] = self._create_empty_graphs_per_namespace(nses)
+        
+        multigraphs = {}
+        for ns in nses:
+            
+            gs = []
+            edge_labels = {}
+            
+            for srv, _, _, _, _ in services:
+                gs.append(self.graphs[srv][ns])
+                
+                
+            G = nx.compose_all(gs)
+            for srv, _, _, _, _ in services:
+                edge_labels[srv]=nx.get_edge_attributes(self.graphs[srv][ns], 'topology')
 
+            pos = nx.spring_layout(G)
+            nx.draw(G, with_labels=True, pos=pos)
+            colors = ['r', 'g', 'b']
+            i = 0
+            for k,v in edge_labels.items():
+                
+                nx.draw_networkx_edge_labels(G, pos, edge_labels=v, font_color=colors[i])
+                i=i+1
+                plt.savefig(f"{ns}_{i}.png")
+            plt.savefig(f"{ns}.png")
+            plt.close()
+
+
+            multigraphs[ns] = G
+        #breakpoint()
         return pd.DataFrame(self.ns)
+
+    def _create_empty_graphs_per_namespace(self, namespaces):
+        graphs = {}
+        for ns in namespaces:
+            graphs[ns] = nx.Graph()
+        return graphs
        
     def _create_topology_from_df(self, df, group, label, key, label_col):
         graphs = {}
@@ -103,7 +149,7 @@ class TopologyObj(basicobj.SqObject):
                 
                 for index, row in node_df.iterrows():
                     graphs[ns].add_edge(device, row[key], 
-                    ifname=row[label_col], topology=label)
+                    topology=label)
         
         self._analyze_graph(graphs, label)
         self._make_image(graphs, label)
@@ -124,7 +170,7 @@ class TopologyObj(basicobj.SqObject):
 
         for name, G in graphs.items():
             if G.nodes:
-
+                self.ns[name][f'{label}_number_of_nodes'] = len(G.nodes)
                 if not nx.is_connected(G):
                     self.ns[name][f'{label}_is_fully_connected'] = False
                     self.ns[name][f'{label}_barrycenter'] = False
@@ -141,7 +187,7 @@ class TopologyObj(basicobj.SqObject):
             else:
                 for k in [f'{label}_is_fully_connected', f'{label}_barrycenter',
                      f'{label}_self_loops', f'{label}_number_of_subgroups', 
-                     f'{label}_degree_histogram']:
+                     f'{label}_degree_histogram', f'{label}_number_of_nodes']:
                      self.ns[name][k] = "N/A"
             
         
