@@ -27,14 +27,15 @@ class OspfObj(basicobj.SqObject):
         # adding peerHostname from the peerIP
 
         df = self.engine_obj.get(**kwargs)
-        a_df = address.AddressObj(context=self.ctxt).get(**kwargs)
-        a_df = a_df[['namespace', 'hostname', 'ipAddressList']]
-        a_df = a_df.explode('ipAddressList').dropna(how='any')
-        a_df = a_df.rename(columns={'ipAddressList': 'peerIP', 
-            'hostname': 'peerHostname'})
-        a_df['peerIP'] = a_df['peerIP'].str.replace("/.+", "")
-    
-        df = df.merge(a_df, on=['namespace', 'peerIP'], how='left')
+        if not df.empty:
+            a_df = address.AddressObj(context=self.ctxt).get(**kwargs)
+            a_df = a_df[['namespace', 'hostname', 'ipAddressList']]
+            a_df = a_df.explode('ipAddressList').dropna(how='any')
+            a_df = a_df.rename(columns={'ipAddressList': 'peerIP', 
+                'hostname': 'peerHostname'})
+            a_df['peerIP'] = a_df['peerIP'].str.replace("/.+", "")
+            
+            df = df.merge(a_df, on=['namespace', 'peerIP'], how='left')
   
         return df
 
