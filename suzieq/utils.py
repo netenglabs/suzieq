@@ -1,4 +1,5 @@
 import os
+import re
 import sys
 from pathlib import Path
 import logging
@@ -419,3 +420,11 @@ def get_timestamp_from_junos_time(input, timestamp):
     delta = relativedelta(days=days, hours=int(
         hours), minutes=int(mins), seconds=int(secs))
     return int((datetime.fromtimestamp(timestamp)-delta).timestamp()*1000)
+
+
+def convert_macaddr_format_to_colon(macaddr):
+    """COnvert NXOS/EOS . macaddr form to standard : format"""
+    if re.match(r'[0-9a-z.]+', macaddr):
+        return ':'.join([f'{x[:2]}:{x[2:]}' for x in macaddr.split('.')])
+    else:
+        return('00:00:00:00:00:00')
