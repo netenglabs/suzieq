@@ -14,6 +14,7 @@ from _pytest.mark.structures import Mark, MarkDecorator
 from suzieq.cli.sqcmds import *
 from tests import conftest
 import logging
+import random
 
 # This is not just a set of tests, it will also update
 #  the data collected for other test_sqcmds tests
@@ -124,6 +125,8 @@ def collect_data(topology, proto, scenario, name, suzieq_dir):
     run_sqpoller(name, dir, suzieq_dir)
     check_suzieq_data(suzieq_dir, name)
     vagrant_down()
+    sleep_time = random.random() * 600
+    time.sleep(sleep_time)
     os.chdir('../..')
     return cfg_file
 
@@ -252,7 +255,8 @@ def _test_sqcmds(testvar, context_config):
         else:
             assert True
     elif 'error' in testvar and 'error' in testvar['error']:
-        assert error
+        assert error, \
+           f"expected error, but got: output: {output}, error: {error}, xfail: {xfail}"
     else:
         raise Exception(f"either xfail or output requried {error}")
 
@@ -309,17 +313,8 @@ class TestDualAttach:
     @pytest.mark.depends(on=['test_create_dual_data'])
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/dual-attach_bgp_numbered/")))
-    def test_dual_bgp_numbered_data(self, testvar,
-                                    test_cleanup_dual_numbered_suzieq):
+    def test_dual_bgp_numbered_data(self, testvar):
         _test_data('dual-attach', 'bgp', 'numbered', testvar)
-
-    @pytest.fixture(scope='session', autouse=True)
-    def test_cleanup_dual_numbered_suzieq(self):
-        yield
-        name = 'dual-attach_bgp_numbered'
-        dir = f"{parquet_dir}/{name}/parquet-out"
-        if os.path.isdir(dir):
-            shutil.rmtree(dir)
 
     @pytest.mark.dual_attach
     @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
@@ -328,17 +323,8 @@ class TestDualAttach:
     @pytest.mark.depends(on=['test_create_dual_data'])
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/dual-attach_bgp_unnumbered/")))
-    def test_dual_bgp_numbered_data(self, testvar,
-                                    test_cleanup_dual_numbered_suzieq):
+    def test_dual_bgp_numbered_data(self, testvar):
         _test_data('dual-attach', 'bgp', 'unnumbered', testvar)
-
-    @pytest.fixture(scope='session', autouse=True)
-    def test_cleanup_dual_unnumbered_suzieq(self):
-        yield
-        name = 'dual-attach_bgp_unnumbered'
-        dir = f"{parquet_dir}/{name}/parquet-out"
-        if os.path.isdir(dir):
-            shutil.rmtree(dir)
 
     @pytest.mark.dual_attach
     @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
@@ -347,16 +333,8 @@ class TestDualAttach:
     @pytest.mark.depends(on=['test_create_dual_data'])
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/dual-attach_bgp_docker/")))
-    def test_dual_bgp_numbered_data(self, testvar, test_cleanup_dual_numbered_suzieq):
+    def test_dual_bgp_numbered_data(self, testvar):
         _test_data('dual-attach', 'bgp', 'docker', testvar)
-
-    @pytest.fixture(scope='session', autouse=True)
-    def test_cleanup_dual_docker_suzieq(self):
-        yield
-        name = 'dual-attach_bgp_docker'
-        dir = f"{parquet_dir}/{name}/parquet-out"
-        if os.path.isdir(dir):
-            shutil.rmtree(dir)
 
     @pytest.mark.dual_attach
     @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
@@ -365,16 +343,8 @@ class TestDualAttach:
     @pytest.mark.depends(on=['test_create_dual_data'])
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/dual-attach_ospf_numbered/")))
-    def test_dual_ospf_numbered_data(self, testvar, test_cleanup_dual_numbered_suzieq):
+    def test_dual_ospf_numbered_data(self, testvar):
         _test_data('dual-attach', 'ospf', 'numbered', testvar)
-
-    @pytest.fixture(scope='session', autouse=True)
-    def test_cleanup_dual_numbered_suzieq(self):
-        yield
-        name = 'dual-attach_ospf_numbered'
-        dir = f"{parquet_dir}/{name}/parquet-out"
-        if os.path.isdir(dir):
-            shutil.rmtree(dir)
 
     @pytest.mark.dual_attach
     @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
@@ -383,16 +353,8 @@ class TestDualAttach:
     @pytest.mark.depends(on=['test_create_dual_data'])
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/dual-attach_ospf_unnumbered/")))
-    def test_dual_ospf_numbered_data(self, testvar, test_cleanup_dual_numbered_suzieq):
+    def test_dual_ospf_numbered_data(self, testvar):
         _test_data('dual-attach', 'ospf', 'unnumbered', testvar)
-
-    @pytest.fixture(scope='session', autouse=True)
-    def test_cleanup_dual_unnumbered_suzieq(self):
-        yield
-        name = 'dual-attach_ospf_unnumbered'
-        dir = f"{parquet_dir}/{name}/parquet-out"
-        if os.path.isdir(dir):
-            shutil.rmtree(dir)
 
     @pytest.mark.dual_attach
     @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
@@ -401,16 +363,8 @@ class TestDualAttach:
     @pytest.mark.depends(on=['test_create_dual_data'])
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/dual-attach_ospf_docker/")))
-    def test_dual_ospf_numbered_data(self, testvar, test_cleanup_dual_numbered_suzieq):
+    def test_dual_ospf_numbered_data(self, testvar):
         _test_data('dual-attach', 'ospf', 'docker', testvar)
-
-    @pytest.fixture(scope='session', autouse=True)
-    def test_cleanup_dual_docker_suzieq(self):
-        yield
-        name = 'dual-attach_ospf_docker'
-        dir = f"{parquet_dir}/{name}/parquet-out"
-        if os.path.isdir(dir):
-            shutil.rmtree(dir)
 
     @pytest.mark.dual_attach
     @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
@@ -419,16 +373,8 @@ class TestDualAttach:
     @pytest.mark.depends(on=['test_create_dual_data'])
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/dual-attach_evpn_centralized/")))
-    def test_dual_evpn_centralized_data(self, testvar, test_cleanup_evpn_centralized_suzieq):
+    def test_dual_evpn_centralized_data(self, testvar):
         _test_data('dual-attach', 'evpn', 'centralized', testvar)
-
-    @pytest.fixture(scope='session', autouse=True)
-    def test_cleanup_evpn_centralized_suzieq(self):
-        yield
-        name = 'dual-attach_evpn_centralized'
-        dir = f"{parquet_dir}/{name}/parquet-out"
-        if os.path.isdir(dir):
-            shutil.rmtree(dir)
 
     @pytest.mark.dual_attach
     @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
@@ -437,16 +383,8 @@ class TestDualAttach:
     @pytest.mark.depends(on=['test_create_dual_data'])
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/dual-attach_evpn_distributed/")))
-    def test_dual_evpn_distributed_data(self, testvar, test_cleanup_evpn_distributed_suzieq):
+    def test_dual_evpn_distributed_data(self, testvar):
         _test_data('dual-attach', 'evpn', 'distributed', testvar)
-
-    @pytest.fixture(scope='session', autouse=True)
-    def test_cleanup_evpn_distributed_suzieq(self):
-        yield
-        name = 'dual-attach_evpn_distributed'
-        dir = f"{parquet_dir}/{name}/parquet-out"
-        if os.path.isdir(dir):
-            shutil.rmtree(dir)
 
     @pytest.mark.dual_attach
     @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
@@ -455,16 +393,8 @@ class TestDualAttach:
     @pytest.mark.depends(on=['test_create_dual_data'])
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/dual-attach_evpn_ospf-ibgp/")))
-    def test_dual_evpn_ospf_ibgp_data(self, testvar, test_cleanup_evpn_ospf_ibgp_suzieq):
+    def test_dual_evpn_ospf_ibgp_data(self, testvar):
         _test_data('dual-attach', 'evpn', 'ospf-ibgp', testvar)
-
-    @pytest.fixture(scope='session', autouse=True)
-    def test_cleanup_evpn_ospf_ibgp_suzieq(self):
-        yield
-        name = 'dual-attach_evpn_ospf-ibgp'
-        dir = f"{parquet_dir}/{name}/parquet-out"
-        if os.path.isdir(dir):
-            shutil.rmtree(dir)
 
 
 class TestSingleAttach:
@@ -485,16 +415,8 @@ class TestSingleAttach:
     @pytest.mark.depends(on=['test_create_single_data'])
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/single-attach_bgp_numbered/")))
-    def test_single_bgp_numbered_data(self, testvar, test_cleanup_single_numbered_suzieq):
+    def test_single_bgp_numbered_data(self, testvar):
         _test_data('single-attach', 'bgp', 'numbered', testvar)
-
-    @pytest.fixture(scope='session', autouse=True)
-    def test_cleanup_single_numbered_suzieq(self):
-        yield
-        name = 'single-attach_bgp_numbered'
-        dir = f"{parquet_dir}/{name}/parquet-out"
-        if os.path.isdir(dir):
-            shutil.rmtree(dir)
 
     @pytest.mark.single_attach
     @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
@@ -503,16 +425,8 @@ class TestSingleAttach:
     @pytest.mark.depends(on=['test_create_single_data'])
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/single-attach_bgp_unnumbered/")))
-    def test_single_bgp_numbered_data(self, testvar, test_cleanup_single_numbered_suzieq):
+    def test_single_bgp_numbered_data(self, testvar):
         _test_data('single-attach', 'bgp', 'unnumbered', testvar)
-
-    @pytest.fixture(scope='session', autouse=True)
-    def test_cleanup_single_unnumbered_suzieq(self):
-        yield
-        name = 'single-attach_bgp_unnumbered'
-        dir = f"{parquet_dir}/{name}/parquet-out"
-        if os.path.isdir(dir):
-            shutil.rmtree(dir)
 
     @pytest.mark.single_attach
     @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
@@ -521,16 +435,8 @@ class TestSingleAttach:
     @pytest.mark.depends(on=['test_create_single_data'])
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/single-attach_bgp_docker/")))
-    def test_single_bgp_numbered_data(self, testvar, test_cleanup_single_numbered_suzieq):
+    def test_single_bgp_numbered_data(self, testvar):
         _test_data('single-attach', 'bgp', 'docker', testvar)
-
-    @pytest.fixture(scope='session', autouse=True)
-    def test_cleanup_single_docker_suzieq(self):
-        yield
-        name = 'single-attach_bgp_docker'
-        dir = f"{parquet_dir}/{name}/parquet-out"
-        if os.path.isdir(dir):
-            shutil.rmtree(dir)
 
     @pytest.mark.single_attach
     @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
@@ -539,16 +445,8 @@ class TestSingleAttach:
     @pytest.mark.depends(on=['test_create_single_data'])
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/single-attach_ospf_numbered/")))
-    def test_single_ospf_numbered_data(self, testvar, test_cleanup_single_numbered_suzieq):
+    def test_single_ospf_numbered_data(self, testvar):
         _test_data('single-attach', 'ospf', 'numbered', testvar)
-
-    @pytest.fixture(scope='session', autouse=True)
-    def test_cleanup_single_numbered_suzieq(self):
-        yield
-        name = 'single-attach_ospf_numbered'
-        dir = f"{parquet_dir}/{name}/parquet-out"
-        if os.path.isdir(dir):
-            shutil.rmtree(dir)
 
     @pytest.mark.single_attach
     @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
@@ -557,16 +455,8 @@ class TestSingleAttach:
     @pytest.mark.depends(on=['test_create_single_data'])
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/single-attach_ospf_unnumbered/")))
-    def test_single_ospf_numbered_data(self, testvar, test_cleanup_single_numbered_suzieq):
+    def test_single_ospf_numbered_data(self, testvar):
         _test_data('single-attach', 'ospf', 'unnumbered', testvar)
-
-    @pytest.fixture(scope='session', autouse=True)
-    def test_cleanup_single_unnumbered_suzieq(self):
-        yield
-        name = 'single-attach_ospf_unnumbered'
-        dir = f"{parquet_dir}/{name}/parquet-out"
-        if os.path.isdir(dir):
-            shutil.rmtree(dir)
 
     @pytest.mark.single_attach
     @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
@@ -575,16 +465,9 @@ class TestSingleAttach:
     @pytest.mark.depends(on=['test_create_single_data'])
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/single-attach_ospf_docker/")))
-    def test_single_ospf_numbered_data(self, testvar, test_cleanup_single_numbered_suzieq):
+    def test_single_ospf_numbered_data(self, testvar):
         _test_data('single-attach', 'ospf', 'docker', testvar)
 
-    @pytest.fixture(scope='session', autouse=True)
-    def test_cleanup_single_docker_suzieq(self):
-        yield
-        name = 'single-attach_ospf_docker'
-        dir = f"{parquet_dir}/{name}/parquet-out"
-        if os.path.isdir(dir):
-            shutil.rmtree(dir)
     @pytest.mark.single_attach
     @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
                         'UPDATE_SQCMDS' in os.environ,
@@ -592,16 +475,8 @@ class TestSingleAttach:
     @pytest.mark.depends(on=['test_create_single_data'])
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/single-attach_evpn_centralized/")))
-    def test_single_evpn_centralized_data(self, testvar, test_cleanup_evpn_centralized_suzieq):
+    def test_single_evpn_centralized_data(self, testvar):
         _test_data('single-attach', 'evpn', 'centralized', testvar)
-
-    @pytest.fixture(scope='session', autouse=True)
-    def test_cleanup_evpn_centralized_suzieq(self):
-        yield
-        name = 'single-attach_evpn_centralized'
-        dir = f"{parquet_dir}/{name}/parquet-out"
-        if os.path.isdir(dir):
-            shutil.rmtree(dir)
 
     @pytest.mark.single_attach
     @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
@@ -610,16 +485,8 @@ class TestSingleAttach:
     @pytest.mark.depends(on=['test_create_single_data'])
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/single-attach_evpn_distributed/")))
-    def test_single_evpn_distributed_data(self, testvar, test_cleanup_evpn_distributed_suzieq):
+    def test_single_evpn_distributed_data(self, testvar):
         _test_data('single-attach', 'evpn', 'distributed', testvar)
-
-    @pytest.fixture(scope='session', autouse=True)
-    def test_cleanup_evpn_distributed_suzieq(self):
-        yield
-        name = 'single-attach_evpn_distributed'
-        dir = f"{parquet_dir}/{name}/parquet-out"
-        if os.path.isdir(dir):
-            shutil.rmtree(dir)
 
     @pytest.mark.single_attach
     @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
@@ -628,16 +495,8 @@ class TestSingleAttach:
     @pytest.mark.depends(on=['test_create_single_data'])
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/single-attach_evpn_ospf-ibgp/")))
-    def test_single_evpn_ospf_ibgp_data(self, testvar, test_cleanup_evpn_ospf_ibgp_suzieq):
+    def test_single_evpn_ospf_ibgp_data(self, testvar):
         _test_data('single-attach', 'evpn', 'ospf-ibgp', testvar)
-
-    @pytest.fixture(scope='session', autouse=True)
-    def test_cleanup_evpn_ospf_ibgp_suzieq(self):
-        yield
-        name = 'single-attach_evpn_ospf-ibgp'
-        dir = f"{parquet_dir}/{name}/parquet-out"
-        if os.path.isdir(dir):
-            shutil.rmtree(dir)
 
 
 # This isn't actually a test, it's just used to cleanup any stray vagrant state
