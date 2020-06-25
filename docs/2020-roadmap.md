@@ -84,7 +84,6 @@ our APIs documented.
 tech debt other things we need to mix in
 * Better separate database abstractions so that we can more easily add new databases
 * better unit tests with mocking instead of just end-to-end with real data.
-* better unit tests with mocking instead of end-to-end with real data.
 * great expectations or some other way of better verifying data output https://docs.greatexpectations.io/en/latest/
 
 
@@ -101,6 +100,7 @@ By category:
     * temperature and power collection and tracking
     * Cloud integration
     * Kafka integraion for streaming telemetry
+    * redundancy -- some way of making sure that one poller is always running
 1. new segments
     * understand BGP routing policy and route maps / etc
     * ISIS 
