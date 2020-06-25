@@ -16,15 +16,13 @@ from suzieq.exceptions import NoLLdpError, EmptyDataframeError, PathLoopError
 #  can we do this if there isn't LLDP?
 #  topology for different VRFs?
 #  topology for eVPN / overlay
+#  iBGP vs eBGP?
 #  color by device type?
+#  physical topology without LLDP
 #  how to draw multiple topologies
 #  be able to ask if a node has neighbors by type (physical, overlay, protocol, etc)
 #  questions
-#    * is each topology a different command?
-#    * will we want more than one topology at a time?
 #    * without knowing hierarchy, labels or tags it's unclear how to group things
-#    * should I make my own link state database and then at the end put that into graphs? 
-#       that way I can decide what data goes where
 # how could we add state of connection (like Established) per protocol
 
 
@@ -70,6 +68,7 @@ class TopologyObj(basicobj.SqObject):
   
         self.ns = {}
         self._init_dfs(namespaces)
+        self.link_state_db = pd.DataFrame()
         nses = self._if_df['namespace'].unique()
         for i in nses:
             self.ns[i] = {}
@@ -108,6 +107,7 @@ class TopologyObj(basicobj.SqObject):
             G = nx.compose_all(gs)
             for srv, _, _, _, _ in services:
                 edge_labels[srv]=nx.get_edge_attributes(self.graphs[srv][ns], 'topology')
+            
             
             pos = nx.spring_layout(G)
             nx.draw(G, with_labels=True, pos=pos)
