@@ -134,7 +134,12 @@ class BgpObj(SqEngineObject):
         if df.empty:
             return pd.DataFrame()
 
-        if_df = IfObj(context=self.ctxt).get(namespace=kwargs.get("namespace", ""),
+        # Get the dataframes we need for processing
+        df['cif'] = df.apply(self._get_connect_if, axis=1)
+        df['ifname'] = df['cif'].str.split('.').str[0]
+
+        if_df = IfObj(context=self.ctxt).get(namespace=kwargs.get("namespace",
+                                                                  ""),
                                              columns=['namespace', 'hostname',
                                                       'ifname', 'state']) \
             .rename(columns={'state': 'ifState'})
@@ -144,78 +149,95 @@ class BgpObj(SqEngineObject):
             columns=['namespace', 'hostname', 'ifname', 'peerHostname',
                      'peerIfname'])
 
-        # Get the dataframes we need for processing
-        df['cif'] = df.apply(self._get_connect_if, axis=1)
-        df['ifname'] = df['cif'].str.split('.').str[0]
+        if if_df.empty or lldp_df.empty:
+            df["assertReason"] = [['No LLDP/Interface info']
+                                  for _ in range(len(df))]
+        else:
+            df = df.merge(if_df, left_on=['namespace', 'hostname', 'cif'],
+                          right_on=['namespace', 'hostname', 'ifname'],
+                          how='left') \
+                .drop(columns=['timestamp_y', 'ifname_y']) \
+                .rename(columns={'ifname_x': 'ifname'})
 
-        df = df.merge(if_df, left_on=['namespace', 'hostname', 'cif'],
-                      right_on=['namespace', 'hostname', 'ifname'],
-                      how='left') \
-            .drop(columns=['timestamp_y', 'ifname_y']) \
-            .rename(columns={'ifname_x': 'ifname'})
+            # We split off at this point to avoid merging mess because of lack
+            # of LLDP info
+            df = df.merge(lldp_df, on=['namespace', 'hostname', 'ifname'],
+                          how='left') \
+                .drop(columns=['timestamp']) \
+                .rename(columns={'timestamp_x': 'timestamp'})
+            # Some munging to handle subinterfaces
+            df['xx'] = df['peerIfname'] + '.' + df['cif'].str.split('.').str[1]
 
-        # We split off at this point to avoid merging mess because of lack of
-        # LLDP info
-        df = df.merge(lldp_df, on=['namespace', 'hostname', 'ifname'], how='left') \
-            .drop(columns=['timestamp']) \
-            .rename(columns={'timestamp_x': 'timestamp'})
-        # Some munging to handle subinterfaces
-        df['xx'] = df['peerIfname'] + '.' + df['cif'].str.split('.').str[1]
+            df['peerIfname'] = df['xx'].where(
+                df['xx'].notnull(), df['peerIfname'])
+            df.drop(columns=['xx'], inplace=True)
 
-        df['peerIfname'] = df['xx'].where(
-            df['xx'].notnull(), df['peerIfname'])
-        df.drop(columns=['xx'], inplace=True)
+            df = df.merge(df, left_on=['namespace', 'hostname', 'cif'],
+                          right_on=['namespace', 'peerHostname',
+                                    'peerIfname'], how='left') \
+                .drop(columns=['peerIfname_y', 'timestamp_y', 'cif_y',
+                               'ifState_y', 'reason_y', 'notifcnReason_y']) \
+                .rename(columns={'timestamp_x': 'timestamp',
+                                 'cif_x': 'cif', 'ifState_x': 'ifState',
+                                 'reason_x': 'reason',
+                                 'state_x': 'state',
+                                 'notifcnReason_x': 'notifcnReason'})
+            df['peer_y'] = df['peer_y'].astype(str) \
+                .where(df['peer_y'].notnull(), '')
 
-        df = df.merge(df, left_on=['namespace', 'hostname', 'cif'],
-                      right_on=['namespace', 'peerHostname',
-                                'peerIfname'], how='left') \
-            .drop(columns=['peerIfname_y', 'timestamp_y', 'cif_y',
-                           'ifState_y', 'reason_y', 'notifcnReason_y']) \
-            .rename(columns={'timestamp_x': 'timestamp',
-                             'cif_x': 'cif', 'ifState_x': 'ifState',
-                             'reason_x': 'reason',
-                             'notifcnReason_x': 'notifcnReason'})
-        df['peer_y'] = df['peer_y'].astype(str) \
-            .where(df['peer_y'].notnull(), '')
-        df["assertReason"] = [[] for _ in range(len(df))]
-        # Now all sessions with NaN in the oif column have no connected route
-        df['assertReason'] += df.apply(
-            lambda x: ["outgoing link down"]
-            if x['cif'] and x['ifState'] != "up" else [],
-            axis=1)
+            df['assertReason'] = [[] for _ in range(len(df))]
 
-        df['assertReason'] += df.apply(
-            lambda x: ["no route to peer"] if not len(x['cif']) else [],
-            axis=1)
+            df['assertReason'] += df.apply(self._check_afi_safi, axis=1)
 
-        df['assertReason'] += df.apply(self._check_afi_safi, axis=1)
-
-        df['assertReason'] += df.apply(lambda x: ["asn mismatch"] if x['peer_y']
-                                       and ((x["asn_x"] != x["peerAsn_y"]) or
+            df['assertReason'] += df.apply(lambda x: ["asn mismatch"]
+                                           if x['peer_y'] and
+                                           ((x["asn_x"] != x["peerAsn_y"]) or
                                             (x['asn_y'] != x['peerAsn_x']))
-                                       else [], axis=1)
+                                           else [], axis=1)
 
+        # Returning to performing checks even if we didn't get LLDP/Intf info
         df['assertReason'] += df.apply(lambda x:
                                        [f"{x['reason']}:{x['notifcnReason']}"]
                                        if (x['reason'] and
-                                           x['state_x'] != 'Established') else [],
+                                           x['state'] != 'Established')
+                                       else [],
                                        axis=1)
+
+        # Now all sessions with NaN in the oif column have no connected route
+        df['assertReason'] += df.apply(
+            lambda x: ["outgoing link down"]
+            if (x['state'] != "Established" and x['cif'] and
+                x.get('ifState', 'up') != "up") else [],
+            axis=1)
+
+        df['assertReason'] += df.apply(
+            lambda x: ["no route to peer"]
+            if x['state'] != "Established" and not len(x['cif']) else [],
+            axis=1)
 
         df['assert'] = df.apply(lambda x: 'pass'
                                 if not len(x.assertReason) else 'fail',
                                 axis=1)
+
+        if if_df.empty or lldp_df.empty:
+            return(df[['namespace', 'hostname', 'vrf', 'peer', 'asn', 'peerAsn',
+                       'state', 'assert', 'assertReason', 'timestamp']]
+                   .astype({'asn': 'Int64', 'peerAsn': 'Int64', }, copy=False)
+                   .explode(column='assertReason')
+                   .fillna({'assertReason': '-'}))
+
         return (df[['namespace', 'hostname_x', 'vrf_x', 'peer_x', 'asn_x',
-                    'peerAsn_x', 'state_x', 'peerHostname_x', 'vrf_y', 'peer_y',
-                    'asn_y', 'peerAsn_y', 'assert',
+                    'peerAsn_x', 'state', 'peerHostname_x', 'vrf_y',
+                    'peer_y', 'asn_y', 'peerAsn_y', 'assert',
                     'assertReason', 'timestamp']]
                 .rename(columns={'hostname_x': 'hostname', 'vrf_x':
                                  'vrf', 'peer_x': 'peer', 'asn_x': 'asn',
-                                 'peerAsn_x': 'peerAsn', 'state_x': 'state',
+                                 'peerAsn_x': 'peerAsn',
                                  'peerHostname_x': 'hostnamePeer',
                                  'vrf_y': 'vrfPeer', 'peer_y': 'peerPeer',
                                  'asn_y': 'asnPeer',
                                  'peerAsn_y': 'peerAsnPeer'}, copy=False)
-                .explode(column="assertReason")
                 .astype({'asn': 'Int64', 'peerAsn': 'Int64', 'asnPeer': 'Int64',
                          'peerAsnPeer': 'Int64'}, copy=False)
+                .explode(column="assertReason")
                 .fillna({'assertReason': '-'}))
