@@ -2,7 +2,7 @@ description: 'Testing verbs for lldp: show summarize unique'
 tests:
 - command: lldp show --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: lldp show
+  marks: lldp show junos
   output: '[{"namespace": "junos", "hostname": "vqfx1", "ifname": "xe-0/0/0", "peerHostname":
     "vqfx2", "peerIfname": "-", "description": "Juniper Networks, Inc. vqfx-10000
     Ethernet Switch, kernel JUNOS 19.4R1.10, Build date: 2019-12-19 03:14:17 UTC Copyright
@@ -13,14 +13,14 @@ tests:
     (c) 1996-2019 Juniper Networks, Inc.", "mgmtIP": "", "timestamp": 1592535893373}]'
 - command: lldp show --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: lldp show
+  marks: lldp show junos
   output: '[{"hostname": "vqfx1"}, {"hostname": "vqfx2"}]'
 - command: lldp summarize --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: lldp summarize
+  marks: lldp summarize junos
   output: '{"junos": {"deviceCnt": 2, "nbrCnt": 2, "peerHostnameCnt": 2, "uniquePeerMgmtIPCnt":
     1, "missingPeerInfoCnt": 2}}'
 - command: lldp unique --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: lldp unique
+  marks: lldp unique junos
   output: '[{"hostname": "vqfx2", "count": 1}, {"hostname": "vqfx1", "count": 1}]'

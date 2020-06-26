@@ -2,7 +2,7 @@ description: 'Testing verbs for evpnVni: show summarize unique'
 tests:
 - command: evpnVni show --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: evpnVni show
+  marks: evpnVni show junos
   output: '[{"namespace": "junos", "hostname": "vqfx1", "vni": 10000, "type": "L2",
     "numMacs": 0, "numArpNd": 0, "remoteVtepList": ["9.9.9.2"], "timestamp": 1592535890049},
     {"namespace": "junos", "hostname": "vqfx1", "vni": 20000, "type": "L2", "numMacs":
@@ -13,17 +13,17 @@ tests:
     0, "numArpNd": 0, "remoteVtepList": ["9.9.9.1"], "timestamp": 1592535890048}]'
 - command: evpnVni show --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: evpnVni show
+  marks: evpnVni show junos
   output: '[{"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx2"}, {"hostname":
     "vqfx2"}]'
 - command: evpnVni summarize --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: evpnVni summarize
+  marks: evpnVni summarize junos
   output: '{"junos": {"mode": "asymmetric", "deviceCnt": 2, "uniqueVniCnt": 2, "uniqueL3VniCnt":
     0, "uniqueL2VniCnt": 2, "uniqueVniTypeValCnt": {"L2": 4}, "replTypeValCnt": {"ingressBGP":
     4}, "macsInVniStat": [0, 0, 0], "arpNdInVniStat": [0, 0, 0], "ingressReplPerVtepStat":
     [1, 1, 1.0]}}'
 - command: evpnVni unique --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: evpnVni unique
+  marks: evpnVni unique junos
   output: '[{"hostname": "vqfx2", "count": 2}, {"hostname": "vqfx1", "count": 2}]'

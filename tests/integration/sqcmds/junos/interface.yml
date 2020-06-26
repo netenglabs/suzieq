@@ -2,7 +2,7 @@ description: 'Testing verbs for interface: show summarize unique assert top'
 tests:
 - command: interface show --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: interface show
+  marks: interface show junos
   output: '[{"namespace": "junos", "hostname": "srv11", "ifname": "eth0", "state":
     "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
     ["10.0.2.15/24"], "ip6AddressList": [], "timestamp": 1592535892556}, {"namespace":
@@ -308,7 +308,7 @@ tests:
     1592535893695}]'
 - command: interface show --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: interface show
+  marks: interface show junos
   output: '[{"hostname": "srv11"}, {"hostname": "srv11"}, {"hostname": "srv11"}, {"hostname":
     "srv12"}, {"hostname": "srv12"}, {"hostname": "srv12"}, {"hostname": "srv21"},
     {"hostname": "srv21"}, {"hostname": "srv21"}, {"hostname": "srv22"}, {"hostname":
@@ -344,14 +344,14 @@ tests:
     {"hostname": "vqfx2"}, {"hostname": "vqfx2"}]'
 - command: interface summarize --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: interface summarize
+  marks: interface summarize junos
   output: '{"junos": {"deviceCnt": 6, "interfaceCnt": 114, "devicesWithL2Cnt": 4,
     "devicesWithVxlanCnt": 0, "ifDownCnt": 4, "ifWithMultipleIPCnt": 6, "uniqueMTUCnt":
     7, "uniqueIfTypesCnt": 16, "ifChangesStat": [0, 0, 0], "ifPerDeviceStat": [3,
     51, 3.0], "uniqueIPv4AddrCnt": 24, "uniqueIPv6AddrCnt": 1}}'
 - command: interface unique --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: interface unique
+  marks: interface unique junos
   output: '[{"hostname": "srv22", "count": 3}, {"hostname": "srv21", "count": 3},
     {"hostname": "srv12", "count": 3}, {"hostname": "srv11", "count": 3}, {"hostname":
     "vqfx2", "count": 51}, {"hostname": "vqfx1", "count": 51}]'
@@ -476,10 +476,10 @@ tests:
       "assert": "fail"}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "xe-0/0/9",
       "state": "up", "type": "ethernet", "mtu": 1514, "timestamp": 1592535893695,
       "assertReason": "No LLDP peering info", "assert": "fail"}]'
-  marks: interface assert
+  marks: interface assert junos
 - command: interface top --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: interface top
+  marks: interface top junos
   output: '[{"namespace": "junos", "hostname": "srv11", "ifname": "eth0", "state":
     "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
     ["10.0.2.15/24"], "ip6AddressList": [], "numChanges": 0, "timestamp": 1592535892556},

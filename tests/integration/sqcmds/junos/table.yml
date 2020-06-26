@@ -2,7 +2,7 @@ description: 'Testing verbs for table: show describe'
 tests:
 - command: table show --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: table show
+  marks: table show junos
   output: '[{"table": "arpnd", "first_time": 1592535890352, "latest_time": 1592535893122,
     "intervals": 2, "all rows": 42, "namespaces": 1, "devices": 6}, {"table": "bgp",
     "first_time": 1592535892160, "latest_time": 1592535892160, "intervals": 1, "all
@@ -35,18 +35,18 @@ tests:
   data-directory: tests/data/junos/parquet-out/
   error:
     error: '[{"error": "ERROR: You cannot specify columns with table"}]'
-  marks: table show
+  marks: table show junos
 - command: table show --namespace=dummy --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: table show
+  marks: table show junos
   output: '[]'
 - command: table show --view=changes --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: table show
+  marks: table show junos
   output: '[]'
 - command: table show --view=latest --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: table show
+  marks: table show junos
   output: '[{"table": "arpnd", "first_time": 1592535890352, "latest_time": 1592535893122,
     "intervals": 2, "all rows": 42, "namespaces": 1, "devices": 6}, {"table": "bgp",
     "first_time": 1592535892160, "latest_time": 1592535892160, "intervals": 1, "all
@@ -77,7 +77,7 @@ tests:
     "intervals": 128, "all rows": 550, "namespaces": 1, "devices": 7}]'
 - command: table show --hostname=leaf01 --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: table show
+  marks: table show junos
   output: '[{"table": "arpnd", "first_time": null, "latest_time": null, "intervals":
     0, "all rows": 0, "namespaces": 0, "devices": 0}, {"table": "bgp", "first_time":
     null, "latest_time": null, "intervals": 0, "all rows": 0, "namespaces": 0, "devices":
@@ -107,4 +107,4 @@ tests:
   data-directory: tests/data/junos/parquet-out/
   error:
     error: '[{"error": "ERROR: Must specify a table"}]'
-  marks: table describe
+  marks: table describe junos
