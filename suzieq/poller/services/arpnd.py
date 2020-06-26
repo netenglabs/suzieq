@@ -1,6 +1,7 @@
 from suzieq.poller.services.service import Service
 import re
 import numpy as np
+from suzieq.utils import convert_macaddr_format_to_colon
 
 
 class ArpndService(Service):
@@ -40,12 +41,14 @@ class ArpndService(Service):
             if entry["state"] == "stale" or entry["state"] == "delay":
                 entry["state"] = "reachable"
             entry['origIfname'] = entry['oif']
+            if not entry.get('macaddr', None):
+                entry['macaddr'] = '00:00:00:00:00:00'
         return processed_data
 
     def _clean_eos_data(self, processed_data, raw_data):
         for entry in processed_data:
-            entry['macaddr'] = ':'.join(
-                [f'{x[:2]}:{x[2:]}' for x in entry['macaddr'].split('.')])
+            entry['macaddr'] = convert_macaddr_format_to_colon(
+                entry.get('macaddr', '0000.0000.0000'))
             if ',' in entry['oif']:
                 entry['oif'] = entry['oif'].split(',')[0].strip()
                 entry['origIfname'] = entry['oif']
@@ -61,6 +64,8 @@ class ArpndService(Service):
                 entry['oif'] = re.sub(r' \[.*\]', '', entry['oif'])
                 entry['oif'] = entry['oif'].replace('/', '-')
             entry['state'] = 'reachable'
+            if not entry.get('macaddr', None):
+                entry['macaddr'] = '00:00:00:00:00:00'
 
         return processed_data
 
@@ -73,8 +78,8 @@ class ArpndService(Service):
                 continue
             if entry['oif']:
                 entry['oif'] = entry['oif'].replace('/', '-')
-            entry['macaddr'] = ':'.join(
-                [f'{x[:2]}:{x[2:]}' for x in entry['macaddr'].split('.')])
+            entry['macaddr'] = convert_macaddr_format_to_colon(
+                entry.get('macaddr', '0000.0000.0000'))
 
         processed_data = np.delete(processed_data,
                                    drop_indices).tolist()
