@@ -72,14 +72,14 @@ async def init_services(svc_dir, schema_dir, queue, run_once):
                             continue
                         val = newval
 
-                    if ("command" not in val
-                                or ((isinstance(val['command'], list) and not
-                                     all('textfsm' in x or 'normalize' in x
-                                         for x in val['command'])) or
-                                    (not isinstance(val['command'], list) and (
-                                        "normalize" not in val
-                                        and "textfsm" not in val)))
-                            ):
+                    if ("command" not in val or
+                        ((isinstance(val['command'], list) and not
+                          all('textfsm' in x or 'normalize' in x
+                              for x in val['command'])) or
+                         (not isinstance(val['command'], list) and (
+                             "normalize" not in val
+                             and "textfsm" not in val)))
+                       ):
                         logger.error(
                             "Ignoring invalid service file "
                             'definition. Need both "command" and '
