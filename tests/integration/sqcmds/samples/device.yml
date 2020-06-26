@@ -139,18 +139,18 @@ tests:
   marks: device summarize
   output: '{"dual-evpn": {"deviceCnt": 14, "vendorCnt": {"Cumulus": 9, "Ubuntu": 5},
     "modelCnt": {"vm": 14}, "archCnt": {"x86-64": 14}, "versionCnt": {"3.7.12": 9,
-    "16.04.6 LTS": 5}, "upTimeStat": [67, 252, 69]}, "ospf-ibgp": {"deviceCnt": 14,
-    "vendorCnt": {"Cumulus": 9, "Ubuntu": 5}, "modelCnt": {"vm": 14}, "archCnt": {"x86-64":
-    14}, "versionCnt": {"3.7.12": 9, "16.04.6 LTS": 5}, "upTimeStat": [69, 270, 71]},
-    "ospf-single": {"deviceCnt": 14, "vendorCnt": {"Cumulus": 9, "Ubuntu": 5}, "modelCnt":
-    {"vm": 14}, "archCnt": {"x86-64": 14}, "versionCnt": {"3.7.12": 9, "16.04.6 LTS":
-    5}, "upTimeStat": [59, 249, 60]}}'
+    "16.04.6 LTS": 5}, "upTimeStat": [67139, 252171, 69170]}, "ospf-ibgp": {"deviceCnt":
+    14, "vendorCnt": {"Cumulus": 9, "Ubuntu": 5}, "modelCnt": {"vm": 14}, "archCnt":
+    {"x86-64": 14}, "versionCnt": {"3.7.12": 9, "16.04.6 LTS": 5}, "upTimeStat": [69734,
+    270734, 71734]}, "ospf-single": {"deviceCnt": 14, "vendorCnt": {"Cumulus": 9,
+    "Ubuntu": 5}, "modelCnt": {"vm": 14}, "archCnt": {"x86-64": 14}, "versionCnt":
+    {"3.7.12": 9, "16.04.6 LTS": 5}, "upTimeStat": [59441, 249583, 60941]}}'
 - command: device summarize --namespace=dual-evpn --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: device summarize
   output: '{"dual-evpn": {"deviceCnt": 14, "vendorCnt": {"Cumulus": 9, "Ubuntu": 5},
     "modelCnt": {"vm": 14}, "archCnt": {"x86-64": 14}, "versionCnt": {"3.7.12": 9,
-    "16.04.6 LTS": 5}, "upTimeStat": [67, 252, 69]}}'
+    "16.04.6 LTS": 5}, "upTimeStat": [67139, 252171, 69170]}}'
 - command: device summarize --columns="namespace hostname" --format=json
   data-directory: tests/data/multidc/parquet-out/
   error:
