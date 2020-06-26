@@ -18,24 +18,25 @@ def create_config(testvar):
         tmpconfig['data-directory'] = testvar['data-directory']
 
         tf = tempfile.NamedTemporaryFile(delete=False)
-        tf.write(b'{yaml.dump(tmpconfig)}')
-        tf.close
+        with open(tf.name, 'w') as f:
+            f.write(yaml.dump(tmpconfig))
         return tf.name
 
 
-def run_cmd(cmd_path, testvar):
+def run_cmd(cmd_path, testvar, logger):
     exec_cmd = cmd_path + shlex.split(testvar['command'])
     output = None
     error = None
     cmds = exec_cmd[:]
     _ = cmds.pop(0)
     _ = cmds.pop(0)
-    logging.warning(f"running {cmds}")
+
+    logger.warning(f"running {cmds}")
     try:
         output = check_output(exec_cmd)
     except CalledProcessError as e:
         error = e.output
-        logging.warning(f"ERROR: {e.output} {e.returncode}")
+        logger.warning(f"ERROR: {e.output} {e.returncode}")
 
     jout = []
     jerror = []
@@ -77,6 +78,7 @@ if __name__ == '__main__':
     parser.add_argument('--namespace', '-n', type=str)
     parser.add_argument('--reset', '-r', action='store_true')
     userargs = parser.parse_args()
+    logger = logging.getLogger('update_sqcmds')
 
     with open(userargs.filename, 'r') as f:
         data = yaml.load(f.read(), Loader=yaml.BaseLoader)
@@ -109,7 +111,7 @@ if __name__ == '__main__':
                 sqcmd = sqcmd_path + ['--config={}'.format(cfg_file)]
 
                 reason = None
-                output, error, xfail = run_cmd(sqcmd, test)
+                output, error, xfail = run_cmd(sqcmd, test, logger)
 
                 # make sure that the result is the same class of result from before
                 # there would be no result if no output had been specified in the captured output
