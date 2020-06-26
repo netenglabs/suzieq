@@ -69,8 +69,9 @@ class EvpnvniObj(SqEngineObject):
     def aver(self, **kwargs) -> pd.DataFrame:
         """Assert for EVPN Data"""
 
-        assert_cols = ["namespace", "hostname", "vni", "remoteVtepList", "vrf", "mcastGroup",
-                       "type", "srcVtepIp", "state", "l2VniList", "ifname"]
+        assert_cols = ["namespace", "hostname", "vni", "remoteVtepList", "vrf",
+                       "mcastGroup", "type", "srcVtepIp", "state", "l2VniList",
+                       "ifname"]
 
         kwargs.pop("columns", None)  # Loose whatever's passed
 
