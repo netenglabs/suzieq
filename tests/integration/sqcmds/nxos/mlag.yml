@@ -2,17 +2,17 @@ description: 'Testing verbs for mlag: show summarize unique'
 tests:
 - command: mlag show --format=json
   data-directory: tests/data/nxos/parquet-out/
-  marks: mlag show
+  marks: mlag show nxos
   output: '[]'
 - command: mlag show --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
-  marks: mlag show
+  marks: mlag show nxos
   output: '[]'
 - command: mlag summarize --format=json
   data-directory: tests/data/nxos/parquet-out/
-  marks: mlag summarize
+  marks: mlag summarize nxos
   output: '{}'
 - command: mlag unique --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
-  marks: mlag unique
+  marks: mlag unique nxos
   output: '[]'

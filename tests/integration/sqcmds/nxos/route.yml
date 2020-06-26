@@ -2,7 +2,7 @@ description: 'Testing verbs for route: show summarize unique lpm'
 tests:
 - command: route show --format=json
   data-directory: tests/data/nxos/parquet-out/
-  marks: route show
+  marks: route show nxos
   output: '[{"namespace": "nxos", "hostname": "leaf1", "vrf": "EVPN", "prefix": "172.16.3.0/24",
     "nexthopIps": ["172.16.3.254"], "oifs": ["Vlan30"], "protocol": "direct", "source":
     "", "metric": 0, "ipvers": 4, "action": "forward", "timestamp": 1593120799041},
@@ -188,7 +188,7 @@ tests:
     "action": "forward", "timestamp": 1593120798723}]'
 - command: route show --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
-  marks: route show
+  marks: route show nxos
   output: '[{"hostname": "leaf1"}, {"hostname": "leaf1"}, {"hostname": "leaf1"}, {"hostname":
     "leaf1"}, {"hostname": "leaf1"}, {"hostname": "leaf1"}, {"hostname": "leaf1"},
     {"hostname": "leaf1"}, {"hostname": "leaf1"}, {"hostname": "leaf1"}, {"hostname":
@@ -209,21 +209,21 @@ tests:
     "spine2"}]'
 - command: route summarize --format=json
   data-directory: tests/data/nxos/parquet-out/
-  marks: route summarize
+  marks: route summarize nxos
   output: '{"nxos": {"deviceCnt": 8, "uniquePrefixCnt": 19, "uniqueVrfsCnt": 3, "ifRoutesCnt":
     0, "hostRoutesCnt": 34, "totalV4RoutesinNs": 60, "totalV6RoutesinNs": 0, "routingProtocolCnt":
     9, "routesPerHostStat": [5, 12, 6.5], "routesperVrfStat": [8, 40, 12], "deviceWithNoDefRoute":
     true}}'
 - command: route unique --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
-  marks: route unique
+  marks: route unique nxos
   output: '[{"hostname": "leaf1", "count": 12}, {"hostname": "leaf2", "count": 12},
     {"hostname": "server1", "count": 5}, {"hostname": "server2", "count": 5}, {"hostname":
     "server3", "count": 5}, {"hostname": "server4", "count": 5}, {"hostname": "spine1",
     "count": 8}, {"hostname": "spine2", "count": 8}]'
 - command: route lpm --address=10.0.0.1 --format=json
   data-directory: tests/data/nxos/parquet-out/
-  marks: route lpm
+  marks: route lpm nxos
   output: '[{"namespace": "nxos", "hostname": "server1", "vrf": "default", "prefix":
     "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"], "protocol": "", "source":
     "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1593120797104},
@@ -238,7 +238,7 @@ tests:
     "ipvers": 4, "action": "forward", "timestamp": 1593120797104}]'
 - command: route lpm --address="10.0.0.12" --format=json
   data-directory: tests/data/nxos/parquet-out/
-  marks: route lpm
+  marks: route lpm nxos
   output: '[{"namespace": "nxos", "hostname": "leaf1", "vrf": "default", "prefix":
     "10.0.0.12/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["Ethernet1/3",
     "Ethernet1/4"], "protocol": "ospf", "source": "", "metric": 0, "ipvers": 4, "action":
@@ -266,7 +266,7 @@ tests:
     "timestamp": 1593120798723}]'
 - command: route lpm --address="10.0.0.12" --hostname="server1 server3" --format=json
   data-directory: tests/data/nxos/parquet-out/
-  marks: route lpm
+  marks: route lpm nxos
   output: '[{"namespace": "nxos", "hostname": "server1", "vrf": "default", "prefix":
     "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"], "protocol": "", "source":
     "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1593120797104},
@@ -275,11 +275,11 @@ tests:
     "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1593120796769}]'
 - command: route lpm --address="10.0.0.12" --vrf=evpn-vrf --format=json
   data-directory: tests/data/nxos/parquet-out/
-  marks: route lpm
+  marks: route lpm nxos
   output: '[]'
 - command: route lpm --address="10.0.0.11" --vrf=default --format=json
   data-directory: tests/data/nxos/parquet-out/
-  marks: route lpm
+  marks: route lpm nxos
   output: '[{"namespace": "nxos", "hostname": "leaf1", "vrf": "default", "prefix":
     "10.0.0.11/32", "nexthopIps": ["10.0.0.11", "10.0.0.11"], "oifs": ["Lo0", "Lo0"],
     "protocol": "local", "source": "", "metric": 0, "ipvers": 4, "action": "forward",
