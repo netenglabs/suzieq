@@ -105,21 +105,14 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                         result[0]["rest"] = eval("{}{}".format(
                             result[0]["rest"], xstr))
                     else:
-                        if isinstance(result[0]["rest"], list):
-                            if xstr not in result[0]["rest"][0]:
-                                return result
-                        elif xstr not in result[0]["rest"]:
-                            logging.error(
-                                f"Unnatural return from svcparser. \
-                                xstr is {xstr}. Result is {result}")
-                            return cleanup_and_return(result)
                         tmpval = []
                         for ele in result:
                             # EOS routes case: vrfs/*:vrf/routes/*:prefix
                             # Otherwise there's usually one element here
                             if isinstance(ele["rest"], list):
                                 for subele in ele["rest"]:
-                                    tmpval.append({"rest": subele[xstr]})
+                                    if xstr in subele:
+                                        tmpval.append({"rest": subele[xstr]})
                             else:
                                 if xstr in ele['rest']:
                                     ele["rest"] = ele["rest"][xstr]
