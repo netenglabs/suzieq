@@ -2,17 +2,17 @@ description: 'Testing verbs for evpnVni: show summarize unique'
 tests:
 - command: evpnVni show --format=json
   data-directory: tests/data/eos/parquet-out/
-  marks: evpnVni show
+  marks: evpnVni show eos
   output: '[]'
 - command: evpnVni show --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
-  marks: evpnVni show
+  marks: evpnVni show eos
   output: '[]'
 - command: evpnVni summarize --format=json
   data-directory: tests/data/eos/parquet-out/
-  marks: evpnVni summarize
+  marks: evpnVni summarize eos
   output: '{}'
 - command: evpnVni unique --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
-  marks: evpnVni unique
+  marks: evpnVni unique eos
   output: '[]'
