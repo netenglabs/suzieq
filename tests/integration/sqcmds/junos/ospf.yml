@@ -2,7 +2,7 @@ description: 'Testing verbs for ospf: show summarize unique assert top'
 tests:
 - command: ospf show --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: ospf show
+  marks: ospf show junos
   output: '[{"namespace": "junos", "hostname": "vqfx1", "vrf": "default", "ifname":
     "lo0.0", "area": "0.0.0.0", "ifState": "DRother", "nbrCount": 0, "adjState": "passive",
     "peerIP": "-", "lastChangeTime": 1592075346049, "numChanges": 0.0, "timestamp":
@@ -18,12 +18,12 @@ tests:
     "numChanges": 0.0, "timestamp": 1592535890048}]'
 - command: ospf show --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: ospf show
+  marks: ospf show junos
   output: '[{"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx2"}, {"hostname":
     "vqfx2"}]'
 - command: ospf summarize --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: ospf summarize
+  marks: ospf summarize junos
   output: '{"junos": {"deviceCnt": 2, "peerCnt": 4, "stubbyPeerCnt": 0, "passivePeerCnt":
     2, "unnumberedPeerCnt": 0, "failedPeerCnt": 0, "area": {"0.0.0.0": 4}, "vrf":
     {"default": 4}, "helloTime": {"10": 4}, "deadTime": {"40": 4}, "retxTime": {"5":
@@ -31,7 +31,7 @@ tests:
     [459581000, 460544000, 460062500]}}'
 - command: ospf unique --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: ospf unique
+  marks: ospf unique junos
   output: '[{"hostname": "vqfx2", "count": 2}, {"hostname": "vqfx1", "count": 2}]'
 - command: ospf assert --format=json
   data-directory: tests/data/junos/parquet-out/
@@ -44,10 +44,10 @@ tests:
       info", "assert": "fail"}, {"namespace": "junos", "hostname": "vqfx2", "vrf":
       "default", "ifname": "xe-0/0/0.0", "assertReason": "No LLDP peering info", "assert":
       "fail"}]'
-  marks: ospf assert
+  marks: ospf assert junos
 - command: ospf top --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: ospf top
+  marks: ospf top junos
   output: '[{"namespace": "junos", "hostname": "vqfx1", "vrf": "default", "ifname":
     "lo0.0", "area": "0.0.0.0", "ifState": "DRother", "nbrCount": 0, "adjState": "passive",
     "peerIP": "-", "lastChangeTime": 1592075346049.0, "numChanges": 0.0, "timestamp":

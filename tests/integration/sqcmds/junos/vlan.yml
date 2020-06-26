@@ -2,17 +2,17 @@ description: 'Testing verbs for vlan: show summarize unique'
 tests:
 - command: vlan show --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: vlan show
+  marks: vlan show junos
   output: '[]'
 - command: vlan show --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: vlan show
+  marks: vlan show junos
   output: '[]'
 - command: vlan summarize --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: vlan summarize
+  marks: vlan summarize junos
   output: '{}'
 - command: vlan unique --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: vlan unique
+  marks: vlan unique junos
   output: '[]'

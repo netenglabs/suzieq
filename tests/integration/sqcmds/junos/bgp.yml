@@ -2,7 +2,7 @@ description: 'Testing verbs for bgp: show summarize unique assert'
 tests:
 - command: bgp show --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: bgp show
+  marks: bgp show junos junos
   output: '[{"namespace": "junos", "hostname": "vqfx1", "vrf": "default", "peer":
     "9.9.9.2", "peerHostname": "", "state": "Established", "asn": 64500, "peerAsn":
     64500, "v4PfxRx": 0, "estdTime": 1592561092160, "numChanges": 0, "timestamp":
@@ -12,11 +12,11 @@ tests:
     1592535892160}]'
 - command: bgp show --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: bgp show
+  marks: bgp show junos junos
   output: '[{"hostname": "vqfx1"}, {"hostname": "vqfx2"}]'
 - command: bgp summarize --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: bgp summarize
+  marks: bgp summarize junos junos
   output: '{"junos": {"deviceCnt": 2, "totalPeerCnt": 2, "uniqueAsnCnt": 1, "uniqueVrfsCnt":
     1, "failedPeerCnt": 0, "upTimeStat": [-25200000, -25200000, -25200000], "v4PfxRxStat":
     [0, 0, 0], "v6PfxRxStat": [0, 0, 0], "evpnPfxRxStat": [14, 14, 14], "updatesRxStat":
@@ -25,14 +25,14 @@ tests:
   data-directory: tests/data/junos/parquet-out/
   error:
     error: '[{"error": "ERROR: Must specify columns with unique"}]'
-  marks: bgp unique
+  marks: bgp unique junos junos
 - command: bgp unique --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: bgp unique
+  marks: bgp unique junos junos
   output: '[{"hostname": "vqfx2", "count": 1}, {"hostname": "vqfx1", "count": 1}]'
 - command: bgp assert --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: bgp assert
+  marks: bgp assert junos junos
   output: '[{"namespace": "junos", "hostname": "vqfx1", "vrf": "default", "peer":
     "9.9.9.2", "asn": 64500, "peerAsn": 64500, "state": "Established", "hostnamePeer":
     "vqfx2", "vrfPeer": null, "peerPeer": "", "asnPeer": null, "peerAsnPeer": null,

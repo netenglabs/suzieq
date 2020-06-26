@@ -2,7 +2,7 @@ description: 'Testing verbs for address: show summarize unique'
 tests:
 - command: address show --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: address show
+  marks: address show junos
   output: '[{"namespace": "junos", "hostname": "srv11", "ifname": "eth0", "ipAddressList":
     ["10.0.2.15/24"], "macaddr": "08:00:27:55:12:9d", "ip6AddressList": [], "state":
     "up", "timestamp": 1592535892556}, {"namespace": "junos", "hostname": "srv11",
@@ -248,7 +248,7 @@ tests:
     ["-"], "state": "up", "timestamp": 1592535893695}]'
 - command: address show --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: address show
+  marks: address show junos
   output: '[{"hostname": "srv11"}, {"hostname": "srv11"}, {"hostname": "srv11"}, {"hostname":
     "srv12"}, {"hostname": "srv12"}, {"hostname": "srv12"}, {"hostname": "srv21"},
     {"hostname": "srv21"}, {"hostname": "srv21"}, {"hostname": "srv22"}, {"hostname":
@@ -284,14 +284,14 @@ tests:
     {"hostname": "vqfx2"}, {"hostname": "vqfx2"}]'
 - command: address summarize --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: address summarize
+  marks: address summarize junos
   output: '{"junos": {"deviceCnt": 6, "addressCnt": 114, "uniqueV4AddressCnt": 24,
     "uniqueV6AddressCnt": 1, "uniqueIfMacCnt": 56, "deviceWithv4AddressCnt": 6, "deviceWithv6AddressCnt":
     2, "subnetsUsed": ["24", "2", "30", "32"], "subnetTopCounts": [{"24": 24}, {"2":
     10}, {"30": 2}]}}'
 - command: address unique --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: address unique
+  marks: address unique junos
   output: '[{"hostname": "srv22", "count": 3}, {"hostname": "srv21", "count": 3},
     {"hostname": "srv12", "count": 3}, {"hostname": "srv11", "count": 3}, {"hostname":
     "vqfx2", "count": 51}, {"hostname": "vqfx1", "count": 51}]'

@@ -4,20 +4,20 @@ tests:
   data-directory: tests/data/junos/parquet-out/
   error:
     error: '[{"error": "ERROR: Must specify trace source and dest"}]'
-  marks: path show
+  marks: path show junos
 - command: path show --dest=172.16.2.104 --src=172.16.1.101 --format=json  --namespace=junos
   data-directory: tests/data/junos/parquet-out/
   error:
     error: '[{"error": "ERROR: Invalid src 172.16.1.101"}]'
-  marks: path show
+  marks: path show junos
 - command: path show --dest=172.16.2.104 --src=10.10.1.10 --format=json --namespace=junos
   data-directory: tests/data/junos/parquet-out/
   error:
     error: '[{"error": "ERROR: Invalid dest 172.16.2.104"}]'
-  marks: path show
+  marks: path show junos
 - command: path show --dest=10.10.1.10 --src=10.10.2.20 --format=json --namespace=junos
   data-directory: tests/data/junos/parquet-out/
-  marks: path show
+  marks: path show junos
   output: '[{"pathid": 1, "hopCount": 0, "namespace": "junos", "hostname": "srv22",
     "iif": "eth1", "vrf": "default", "overlay": false, "mtuMatch": null, "mtu": 1500,
     "timestamp": 1592535892556}, {"pathid": 1, "hopCount": 1, "namespace": "junos",
@@ -34,11 +34,11 @@ tests:
     null, "mtu": 1500, "timestamp": 1592535892556}]'
 - command: path summarize --dest=10.10.2.20 --src=10.10.1.10 --format=json --namespace=junos
   data-directory: tests/data/junos/parquet-out/
-  marks: path summarize
+  marks: path summarize junos
   output: '[{"junos": 1}, {"junos": [1, 1, 1, 1]}, {"junos": 3}, {"junos": 3.0}, {"junos":
     4}, {"junos": 1500}, {"junos": true}, {"junos": false}]'
 - command: path summarize --dest=10.10.1.20 --src=10.10.1.10 --format=json --namespace=junos
   data-directory: tests/data/junos/parquet-out/
-  marks: path summarize
+  marks: path summarize junos
   output: '[{"junos": 1}, {"junos": [1]}, {"junos": 0}, {"junos": 0.0}, {"junos":
     1}, {"junos": 1500}, {"junos": false}, {"junos": false}]'

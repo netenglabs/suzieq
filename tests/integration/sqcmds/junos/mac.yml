@@ -2,7 +2,7 @@ description: 'Testing verbs for mac: show summarize unique'
 tests:
 - command: mac show --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: mac show
+  marks: mac show junos
   output: '[{"namespace": "junos", "hostname": "srv11", "vlan": 0, "macaddr": "01:00:5e:00:00:01",
     "oif": "eth0", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1592535891407},
     {"namespace": "junos", "hostname": "srv11", "vlan": 0, "macaddr": "33:33:00:00:00:01",
@@ -79,7 +79,7 @@ tests:
     "9.9.9.1", "flags": "remote", "timestamp": 1592535892170}]'
 - command: mac show --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: mac show
+  marks: mac show junos
   output: '[{"hostname": "srv11"}, {"hostname": "srv11"}, {"hostname": "srv11"}, {"hostname":
     "srv11"}, {"hostname": "srv11"}, {"hostname": "srv11"}, {"hostname": "srv12"},
     {"hostname": "srv12"}, {"hostname": "srv12"}, {"hostname": "srv12"}, {"hostname":
@@ -93,12 +93,12 @@ tests:
     {"hostname": "vqfx2"}]'
 - command: mac summarize --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: mac summarize
+  marks: mac summarize junos
   output: '{"junos": {"deviceCnt": 6, "totalMacsinNSCnt": 36, "uniqueMacCnt": 13,
     "uniqueVlanperHostStat": [0, 2, 0.0]}}'
 - command: mac unique --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
-  marks: mac unique
+  marks: mac unique junos
   output: '[{"hostname": "vqfx2", "count": 6}, {"hostname": "vqfx1", "count": 6},
     {"hostname": "srv22", "count": 6}, {"hostname": "srv21", "count": 6}, {"hostname":
     "srv12", "count": 6}, {"hostname": "srv11", "count": 6}]'
