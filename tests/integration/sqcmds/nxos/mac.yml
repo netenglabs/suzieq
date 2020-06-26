@@ -2,7 +2,7 @@ description: 'Testing verbs for mac: show summarize unique'
 tests:
 - command: mac show --format=json
   data-directory: tests/data/nxos/parquet-out/
-  marks: mac show
+  marks: mac show nxos
   output: '[{"namespace": "nxos", "hostname": "leaf1", "vlan": 10, "macaddr": "44:38:39:00:00:02",
     "oif": "Eth1/1", "remoteVtepIp": "", "flags": "dynamic", "timestamp": 1593120800585},
     {"namespace": "nxos", "hostname": "leaf1", "vlan": 30, "macaddr": "44:38:39:00:00:04",
@@ -137,7 +137,7 @@ tests:
     "oif": "sup-eth1(R)", "remoteVtepIp": "", "flags": "static", "timestamp": 1593120799446}]'
 - command: mac show --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
-  marks: mac show
+  marks: mac show nxos
   output: '[{"hostname": "leaf1"}, {"hostname": "leaf1"}, {"hostname": "leaf1"}, {"hostname":
     "leaf1"}, {"hostname": "leaf1"}, {"hostname": "leaf1"}, {"hostname": "leaf1"},
     {"hostname": "leaf1"}, {"hostname": "leaf2"}, {"hostname": "leaf2"}, {"hostname":
@@ -159,12 +159,12 @@ tests:
     {"hostname": "server4"}, {"hostname": "spine1"}, {"hostname": "spine2"}]'
 - command: mac summarize --format=json
   data-directory: tests/data/nxos/parquet-out/
-  marks: mac summarize
+  marks: mac summarize nxos
   output: '{"nxos": {"deviceCnt": 8, "totalMacsinNSCnt": 66, "uniqueMacCnt": 22, "uniqueVlanperHostStat":
     [0, 3, 0.0]}}'
 - command: mac unique --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
-  marks: mac unique
+  marks: mac unique nxos
   output: '[{"hostname": "spine2", "count": 1}, {"hostname": "spine1", "count": 1},
     {"hostname": "leaf2", "count": 8}, {"hostname": "leaf1", "count": 8}, {"hostname":
     "server4", "count": 12}, {"hostname": "server3", "count": 12}, {"hostname": "server2",
