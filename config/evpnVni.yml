@@ -60,7 +60,7 @@ apply:
         "rectype: _rectype?|VNI",
         ]'
 
-      - command: show nve interface nve regex * | json-pretty
+      - command: show nve interface nve 1 | json-pretty
         normalize: 'TABLE_nve_if/ROW_nve_if/*?/[
         "primary-ip: srcVtepIp",
         "encap-type: encapType",
