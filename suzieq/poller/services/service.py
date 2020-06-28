@@ -480,15 +480,19 @@ class Service(object):
                         )
                         records.append(entry)
 
-            if records:
-                self.writer_queue.put_nowait(
-                    {
-                        "records": records,
-                        "topic": self.name,
-                        "schema": self.schema,
-                        "partition_cols": self.partition_cols,
-                    }
-                )
+                self._post_work_to_writer(records)
+
+    def _post_work_to_writer(self, records: dict):
+        """This posts the data to be written to the worker queue"""
+        if records:
+            self.writer_queue.put_nowait(
+                {
+                    "records": records,
+                    "topic": self.name,
+                    "schema": self.schema,
+                    "partition_cols": self.partition_cols,
+                }
+            )
 
     def compute_basic_stats(self, statsList, newval: int) -> None:
         """Compute min/max/avg for given stats with the new value
@@ -566,6 +570,11 @@ class Service(object):
 
                 # We don't expect the output from two different hostnames
                 nodename = output[0]["hostname"]
+
+                # We can terminate processing if we've no data returned
+                # and we're reading inputs from a file
+                if nodename == '_filedata' and status == HTTPStatus.NO_CONTENT:
+                    return
                 # Don't write the error every time the failure happens
                 if write_poller_stat:
                     if nodename in self._failed_node_set:
@@ -580,10 +589,11 @@ class Service(object):
                 # so that the output can be updated. For example, if a service
                 #  is disabled, this can be the condition.
                 if self.run_once == "gather":
-                    print(json.dumps(output, indent=4))
+                    if self.is_status_ok(status):
+                        self._post_work_to_writer(json.dumps(output, indent=4))
                     total_nodes -= 1
                     if total_nodes <= 0:
-                        sys.exit(0)
+                        return
                     continue
 
                 result = self.process_data(output)
@@ -591,10 +601,11 @@ class Service(object):
                 # So fix that in the node list
                 hostname = output[0]["hostname"]
                 if self.run_once == "process":
-                    print(json.dumps(result, indent=4))
+                    if self.is_status_ok(status):
+                        self._post_work_to_writer(json.dumps(result, indent=4))
                     total_nodes -= 1
                     if total_nodes <= 0:
-                        sys.exit(0)
+                        return
                     continue
 
                 if token.bootupTimestamp != self.node_boot_times[hostname]:
