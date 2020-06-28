@@ -76,7 +76,7 @@ class FileNode(object):
 
         required_keys = ['status', 'timestamp', 'cmd', 'devtype', 'namespace',
                          'hostname', 'address', 'version', 'data']
-        entries = re.split(r'\]\[', data)
+        entries = re.split(r'\]\n*\[', data)
         entlen = len(entries)
 
         for i, elem in enumerate(entries):
