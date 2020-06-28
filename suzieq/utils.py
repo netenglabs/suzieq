@@ -373,32 +373,29 @@ def get_timestamp_from_cisco_time(input, timestamp):
     """
     if not input.startswith('P'):
         return 0
+    months = days = hours = mins = secs = 0
+
     day, timestr = input[1:].split('T')
+
+    if 'Y' in day:
+        years, day = day.split('Y')
+        months = int(years)*12
+
     if 'M' in day:
-        months, day = day.split('M')
-        months = int(months)
-    else:
-        months = 0
+        mnt, day = day.split('M')
+        months = months + int(mnt)
     if 'D' in day:
         days = int(day.split('D')[0])
-    else:
-        days = 0
 
     if 'H' in timestr:
         hours, timestr = timestr.split('H')
         hours = int(hours)
-    else:
-        hours = 0
     if 'M' in timestr:
         mins, timestr = timestr.split('M')
         mins = int(mins)
-    else:
-        mins = 0
     if 'S' in timestr:
         secs = timestr.split('S')[0]
         secs = int(secs)
-    else:
-        secs = 0
 
     delta = relativedelta(months=months, days=days,
                           hours=hours, minutes=mins, seconds=secs)
@@ -424,7 +421,8 @@ def get_timestamp_from_junos_time(input, timestamp):
 
 def convert_macaddr_format_to_colon(macaddr):
     """COnvert NXOS/EOS . macaddr form to standard : format"""
-    if re.match(r'[0-9a-z.]+', macaddr):
+    if (isinstance(macaddr, str) and
+            re.match(r'[0-9a-z]{4}.[0-9a-z]{4}.[0-9a-z]{4}', macaddr)):
         return ':'.join([f'{x[:2]}:{x[2:]}' for x in macaddr.split('.')])
-    else:
-        return('00:00:00:00:00:00')
+
+    return('00:00:00:00:00:00')
