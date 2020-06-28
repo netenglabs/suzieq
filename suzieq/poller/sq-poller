@@ -11,7 +11,7 @@ from collections import defaultdict
 
 import uvloop
 
-from suzieq.poller.nodes import init_hosts
+from suzieq.poller.nodes import init_hosts, init_files
 from suzieq.poller.services import init_services
 
 from suzieq.poller.writer import init_output_workers, run_output_worker
@@ -90,17 +90,26 @@ async def start_poller(userargs, cfg):
     if "parquet" in userargs.outputs:
         validate_parquet_args(cfg, output_args, logger)
 
+    if userargs.run_once:
+        userargs.outputs = ["gather"]
+        output_args['output_dir'] = userargs.output_dir
+
     outputs = init_output_workers(userargs.outputs, output_args)
 
     queue = asyncio.Queue()
 
     logger.info("Initializing hosts and services")
-    tasks = [
-        init_hosts(userargs.devices_file, userargs.ansible_file,
-                   userargs.namespace),
-        init_services(cfg["service-directory"], schema_dir, queue,
-                      userargs.run_once or "forever"),
-    ]
+    tasks = []
+    if userargs.datadir:
+        tasks.append(init_files(userargs.datadir))
+    else:
+        tasks.append(init_hosts(userargs.devices_file,
+                                userargs.ansible_file,
+                                userargs.namespace))
+
+    tasks.append(init_services(cfg["service-directory"], schema_dir, queue,
+                               userargs.run_once or "forever"))
+
     nodes, svcs = await asyncio.gather(*tasks)
 
     if not nodes or not svcs:
@@ -131,10 +140,23 @@ async def start_poller(userargs, cfg):
         sys.exit(1)
 
     try:
+        # The logic below of handling the writer worker task separately is to ensure
+        # we can terminate properly when all the other tasks have finished as in the
+        # case of using file input instead of SSH
         tasks = [svc.run() for svc in working_svcs]
         tasks += [nodes[node].run() for node in nodes]
-        tasks.append(run_output_worker(queue, outputs))
-        await asyncio.gather(*tasks)
+        writer_task = run_output_worker(queue, outputs)
+        tasks.append(writer_task)
+
+        while tasks:
+            done, pending = await asyncio.wait(
+                tasks, return_when=asyncio.FIRST_COMPLETED)
+            taskobj = next(iter(pending))
+            if taskobj._coro == writer_task:
+                return
+            tasks = list(pending)
+        return
+
     except KeyboardInterrupt:
         logger.info("Received keyboard interrupt. Terminating")
         sys.exit(0)
@@ -159,6 +181,13 @@ if __name__ == "__main__":
         type=str,
         help="Ansible inventory file of devices to gather data from",
     )
+    requiredgrp.add_argument(
+        "-f",
+        "--datadir",
+        type=str,
+        help="Directory where previously gathered data outputs is"
+    )
+
     parser.add_argument(
         "-n",
         "--namespace",
@@ -171,6 +200,7 @@ if __name__ == "__main__":
         nargs="+",
         default=["parquet"],
         choices=supported_outputs,
+        type=list,
         help="Output formats to write to: parquet. Use "
         "this option multiple times for more than one output",
     )
@@ -182,9 +212,22 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
+        "-c",
+        "--config",
+        type=str, help="alternate config file"
+    )
+
+    parser.add_argument(
         "--run-once",
         type=str,
         choices=["gather", "process"],
+        help=argparse.SUPPRESS,
+    )
+
+    parser.add_argument(
+        "--output-dir",
+        type=str,
+        default=f'{os.path.abspath(os.curdir)}/sqpoller-output',
         help=argparse.SUPPRESS,
     )
 

@@ -1,5 +1,6 @@
 import os
 import logging
+import json
 
 import pandas as pd
 import pyarrow as pa
@@ -7,31 +8,26 @@ import pyarrow.parquet as pq
 
 
 class OutputWorker(object):
-    type = None
 
     def __init__(self, **kwargs):
         self.type = kwargs.get("type", None)
         self.logger = logging.getLogger(__name__)
+        output_dir = kwargs.get("output_dir", None)
+        if output_dir:
+            self.root_output_dir = output_dir
+            if not os.path.isdir(output_dir):
+                os.makedirs(output_dir)
+        else:
+            # TBD: The right error to raise here since this is a required
+            # keyword
+            self.logger.error("Need mandatory keyword arg: output_dir")
+            raise ValueError
 
     def write_data(self, data):
         raise NotImplementedError
 
 
 class ParquetOutputWorker(OutputWorker):
-
-    root_output_dir = None
-
-    def __init__(self, **kwargs):
-
-        super(ParquetOutputWorker, self).__init__(type="parquet")
-        output_dir = kwargs.get("output_dir", None)
-        if output_dir:
-            self.root_output_dir = output_dir
-        else:
-            # TBD: The right error to raise here since this is a required
-            # keyword
-            self.logger.error("Need mandatory keyword arg: output_dir")
-            raise ValueError
 
     def write_data(self, data):
         cdir = "{}/{}/".format(self.root_output_dir, data["topic"])
@@ -56,6 +52,16 @@ class ParquetOutputWorker(OutputWorker):
         )
 
 
+class GatherOutputWorker(OutputWorker):
+    """This is used to write output for the run-once data gather mode"""
+
+    def write_data(self, data):
+        file = f"{self.root_output_dir}/{data['topic']}.output"
+        with open(file, 'a') as f:
+            # Even though we use JSON dump, the output is not valid JSON
+            f.write(data['records'])
+
+
 async def run_output_worker(queue, output_workers):
 
     while True:
@@ -74,6 +80,16 @@ def init_output_workers(output_types, output_args):
             worker = ParquetOutputWorker(output_dir=output_args["output_dir"])
             if worker:
                 workers.append(worker)
+        elif otype == "gather":
+            try:
+                worker = GatherOutputWorker(
+                    output_dir=output_args["output_dir"])
+                if worker:
+                    workers.append(worker)
+            except Exception as e:
+                logger = logging.getLogger(__name__)
+                logger.error(
+                    f"Unable to create {otype} worker, exception {str(e)}")
         else:
             raise NotImplementedError("Unknown type: {}".format(otype))
 
