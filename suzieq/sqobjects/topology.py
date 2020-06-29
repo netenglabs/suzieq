@@ -81,8 +81,8 @@ class TopologyObj(basicobj.SqObject):
                 'peer', None),
             Services('OSPF', ospf.OspfObj, {}, 'peerHostname', 'ifname', 
                 self._augment_ospf_show),
-            #Services('EVPNVNI', evpnVni.EvpnvniObj, {}, 'remoteVtepHost',
-            #    'vni', self._augment_evpnvni_show)
+            Services('EVPNVNI', evpnVni.EvpnvniObj, {}, 'peerHostname',
+                'vni', self._augment_evpnvni_show)
 
             ]
         
@@ -102,7 +102,7 @@ class TopologyObj(basicobj.SqObject):
                 if self.lsdb.empty:
                     self.lsdb = df
                 else:
-                    self.lsdb = self.lsdb.merge(df, how='left')
+                    self.lsdb = self.lsdb.merge(df, how='outer')
                 grp = df.groupby(by=['namespace'])
 
         
@@ -176,8 +176,13 @@ class TopologyObj(basicobj.SqObject):
         return df
     
     def _augment_evpnvni_show(self, df):
+        
         if not df.empty:
-            pass            
+            df = df.explode('remoteVtepList').dropna(how='any')
+            df = df.rename(columns={'remoteVtepList':  'peerIP'})
+            df = df.merge(self.address_df, on=['namespace', 'peerIP'],
+                how='left').dropna(how='any')
+        return df
 
     @property
     def address_df(self):
