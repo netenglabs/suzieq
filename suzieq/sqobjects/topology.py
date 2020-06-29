@@ -8,23 +8,20 @@ import pandas as pd
 import networkx as nx
 import matplotlib.pyplot as plt
 
-from suzieq.sqobjects import interfaces, lldp, bgp, ospf, basicobj, address
+from suzieq.sqobjects import interfaces, lldp, bgp, ospf, basicobj, address, evpnVni
 from suzieq.sqobjects.basicobj import SqObject
 from suzieq.exceptions import NoLLdpError, EmptyDataframeError, PathLoopError
 
 # TODO:
-#  redo everything as our own link state database with all the attributes
-#     we want, but then turn into Graphs just for analysis and maps
-#  can we do this if there isn't LLDP?
 #  topology for different VRFs?
 #  topology for eVPN / overlay
 #  iBGP vs eBGP?
 #  color by device type?
-#  physical topology without LLDP
+#  physical topology without LLDP -- is this possible?
 #  how to draw multiple topologies
 #  be able to ask if a node has neighbors by type (physical, overlay, protocol, etc)
 #  questions
-#    * without knowing hierarchy, labels or tags it's unclear how to group things
+#    * without knowing hierarchy, labels or tags it's unclear how to group things for good picture
 # how could we add state of connection (like Established) per protocol
 
 
@@ -54,6 +51,7 @@ class TopologyObj(basicobj.SqObject):
         )
         self._sort_fields = ["namespace", "hostname"]
         self._cat_fields = []
+        self._a_df = None
 
     def _init_dfs(self, namespaces):
         """Initialize the dataframes used"""
@@ -82,7 +80,10 @@ class TopologyObj(basicobj.SqObject):
             Services('BGP', bgp.BgpObj, {'state': 'Established'},'peerHostname', 
                 'peer', None),
             Services('OSPF', ospf.OspfObj, {}, 'peerHostname', 'ifname', 
-                self._augment_ospf_show)
+                self._augment_ospf_show),
+            #Services('EVPNVNI', evpnVni.EvpnvniObj, {}, 'remoteVtepHost',
+            #    'vni', self._augment_evpnvni_show)
+
             ]
         
         for srv in self.services: 
@@ -108,41 +109,7 @@ class TopologyObj(basicobj.SqObject):
         self._create_graphs_from_lsdb()
         self._analyze_lsdb_graph()
         self._make_images()
-        # breakpoint()
-        # multigraphs = {}
-        # for ns in self.nses:
-            
-        #     gs = []
-        #     edge_labels = {}
-            
-        #     for srv in self.services:
-        #         gs.append(self.graphs[srv.name][ns])
-                
-                
-        #     G = nx.compose_all(gs)
-        #     for srv in self.services:
-        #         edge_labels[srv.name]=nx.get_edge_attributes(self.graphs[srv.name][ns], 'topology')
-            
-            
-        #     pos = nx.spring_layout(G)
-        #     nx.draw(G, with_labels=True, pos=pos)
-        #     colors = ['r', 'g', 'b']
-        #     i = 0
-        #     el = defaultdict(list)
-        #     for srv, edges in edge_labels.items():
-                
-        #         for edge, _ in edges.items():
-        #             el[edge].append(srv) 
-        #     for edge in el:
-        #         el[edge] = " ".join(el[edge])    
 
-        #     nx.draw_networkx_edge_labels(G, pos, edge_labels=el, font_size=6)
-            
-        #     plt.savefig(f"{ns}.png")
-        #     plt.close()
-
-
-        #     multigraphs[ns] = G
         return pd.DataFrame(self.ns)
 
  
@@ -199,22 +166,31 @@ class TopologyObj(basicobj.SqObject):
                     plt.savefig(f"{ns}_{name}.png")
                     plt.close()
 
-    # TODO: eventually this needs to move to ospf after we figure out the schema augmentation story
+    # TODO: eventually this needs to move to ospf after we figure out the 
+    #   schema augmentation story
     def _augment_ospf_show(self, df):
         if not df.empty:
-            a_df = address.AddressObj(context=self.ctxt).get(columns=self.columns)
-            
-            if not a_df.empty:
-                a_df = a_df[['namespace', 'hostname', 'ipAddressList']]
-                a_df = a_df.explode('ipAddressList').dropna(how='any')
-                a_df = a_df.rename(columns={'ipAddressList': 'peerIP', 
-                'hostname': 'peerHostname'})
-                a_df['peerIP'] = a_df['peerIP'].str.replace("/.+", "")
-
-                df = df.merge(a_df, on=['namespace', 'peerIP'], how='left').dropna(how='any')
+            df = df.merge(self.address_df, on=['namespace', 'peerIP'], 
+                how='left').dropna(how='any')
 
         return df
+    
+    def _augment_evpnvni_show(self, df):
+        if not df.empty:
+            pass            
 
+    @property
+    def address_df(self):
+        if self._a_df is None:
+            self._a_df = address.AddressObj(context=self.ctxt).get(columns=self.columns)
+            if not self._a_df.empty:
+                self._a_df = self._a_df[['namespace', 'hostname', 'ipAddressList']]
+                self._a_df = self._a_df.explode('ipAddressList').dropna(how='any')
+                self._a_df = self._a_df.rename(columns={'ipAddressList': 'peerIP', 
+                    'hostname': 'peerHostname'})
+                self._a_df['peerIP'] = self._a_df['peerIP'].str.replace("/.+", "")
+
+        return self._a_df
         
 @dataclass(frozen=True)
 class Services:
