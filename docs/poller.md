@@ -1,8 +1,10 @@
 # Running the Poller
 
 The simplest way to run the poller is via the docker image.  Launch the docker image and attach to it via the following steps:
-- ```docker run -itd -v /home/jpiet/parquet-out:/suzieq/parquet -v /home/jpiet/<ansible-inventory-file>:/suzieq/inventory --name sq-poller ddutt/suzieq:latest```
+
+- ```docker run -itd -v /home/${USER}/parquet-out:/suzieq/parquet -v /home/${USER}/<ansible-inventory-file>:/suzieq/inventory --name sq-poller ddutt/suzieq:latest```
 - ```docker attach sq-poller```
+- ```sq-poller -i inventory -n <namespace>```
 
 In the docker run command above, the two -v options provide host file/directory access to store the parquet output files (the first -v option), and the Ansible inventory file (the second -v option). If you don't use Ansible or don't want to provide that file, don't worry, you can still use the poller to gather data.
 
