@@ -52,9 +52,9 @@ class AddressObj(SqEngineObject):
         elif addr:
             df = df.explode(addrcol).dropna(how='any')
             if '/' in addr:
-                return df[df[addrcol].str.startswith(addr)]
-            else:
                 return df[df[addrcol].str.startswith(addr + '/')]
+            else:
+                return df[df[addrcol].str.startswith(addr)]
         elif addrcol in df.columns:
             return df[df[addrcol].str.len() != 0]
         else:
