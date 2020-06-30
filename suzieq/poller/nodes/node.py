@@ -282,9 +282,8 @@ class Node(object):
                 if hmatch:
                     hostname = hmatch.group(1)
             elif devtype == "nxos":
-                hmatch = re.search(r'Device name: (\S+)\s*\n', data)
-                if hmatch:
-                    hostname = hmatch.group(1)
+                data = output[3]["data"]
+                hostname = data.strip()
             elif output[3]["status"] == 0:
                 hostname = output[3]["data"].strip()
 
@@ -782,7 +781,7 @@ class NxosNode(Node):
     async def init_boot_time(self):
         """Fill in the boot time of the node by running requisite cmd"""
         await self.exec_cmd(self._parse_boottime_hostname,
-                            ["show version|json"], None)
+                            ["show version|json", "show hostname"], None)
 
     async def _parse_boottime_hostname(self, output, cb_token) -> None:
         """Parse the uptime command output"""
@@ -797,6 +796,7 @@ class NxosNode(Node):
                 self.bootupTimestamp = int(int(time.time()*1000)
                                            - float(upsecs)*1000)
 
-            hostname = data.get('host_name', None)
+        if output[1]["status"] == 0:
+            hostname = output[1]["data"].strip()
             if hostname:
                 self.set_hostname(hostname)
