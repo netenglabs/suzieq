@@ -76,12 +76,12 @@ class TopologyObj(basicobj.SqObject):
 
         self.services = [
 
-            Services('LLDP', lldp.LldpObj, {}, 'peerHostname', 'ifname', None),
-            Services('BGP', bgp.BgpObj, {'state': 'Established'},'peerHostname', 
+            Services('lldp', lldp.LldpObj, {}, 'peerHostname', 'ifname', None),
+            Services('bgp', bgp.BgpObj, {'state': 'Established'},'peerHostname', 
                 'peer', None),
-            Services('OSPF', ospf.OspfObj, {}, 'peerHostname', 'ifname', 
+            Services('ospf', ospf.OspfObj, {}, 'peerHostname', 'ifname', 
                 self._augment_ospf_show),
-            Services('EVPNVNI', evpnVni.EvpnvniObj, {}, 'peerHostname',
+            Services('evpnVni', evpnVni.EvpnvniObj, {}, 'peerHostname',
                 'vni', self._augment_evpnvni_show)
 
             ]
