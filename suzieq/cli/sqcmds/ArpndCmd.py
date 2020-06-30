@@ -32,8 +32,9 @@ class ArpndCmd(SqCommand):
 
     @command("show")
     @argument("address", description="IP address, in quotes, to qualify output")
+    @argument("macaddr", description="MAC address, in quotes, to qualify output")
     @argument("oif", description="outgoing interface to qualify")
-    def show(self, address: str = "", oif: str = ''):
+    def show(self, address: str = "", macaddr: str = '', oif: str = ''):
         """
         Show ARP/ND info
         """
@@ -55,6 +56,7 @@ class ArpndCmd(SqCommand):
             oif=oif.split(),
             columns=self.columns,
             namespace=self.namespace,
+            macaddr=macaddr.split()
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
