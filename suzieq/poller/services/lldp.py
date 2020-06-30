@@ -33,6 +33,10 @@ class LldpService(Service):
             if devtype == 'nxos':
                 entry['peerHostname'] = re.sub(r'\(.*\)', '',
                                                entry['peerHostname'])
+                entry['ifname'] = re.sub(
+                    r'^Eth?(\d)', 'Ethernet\g<1>', entry['ifname'])
+                entry['origIfname'] = re.sub(
+                    r'^Eth?(\d)', 'Ethernet\g<1>', entry['origIfname'])
             elif any(devtype == x for x in ['cumulus', 'linux', 'eos']):
                 entry['origIfname'] = entry['ifname']
 
