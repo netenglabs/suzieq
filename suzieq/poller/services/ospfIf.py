@@ -74,9 +74,10 @@ class OspfIfService(Service):
             if entry['_entryType'] == 'interfaces':
                 entry['ifname'] = entry['ifname'].replace('/', '-')
                 entry["networkType"] = entry["networkType"].lower()
-                if entry['networkType'] == "loopback":
+                if entry['ifname'].startswith('loopback'):
                     entry['passive'] = True
-                    entry['ipAddress'] = f"{entry['ipAddress']}/{entry['maskLen']}"
+                entry['ipAddress'] = \
+                    f"{entry['ipAddress']}/{entry['maskLen']}"
                 if entry['area'] not in areas:
                     areas[entry['area']] = []
 
