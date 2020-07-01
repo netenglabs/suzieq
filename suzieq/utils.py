@@ -407,11 +407,20 @@ def get_timestamp_from_junos_time(input, timestamp):
     Examples of Cisco timestamp str are 00:00:23, 1d 09:24:36 etc
     """
 
-    if 'd' in input:
-        days, timestr = input.split('d')
-        days = int(days)
-    else:
-        days = 0
+    days = 0
+    timestr = input
+
+    if 'y' in timestr:
+        years, timestr = input.split('w')
+        days += int(years)*365
+
+    if 'w' in timestr:
+        weeks, timestr = timestr.split('w')
+        days += int(weeks)*7
+
+    if 'd' in timestr:
+        d, timestr = timestr.split('d')
+        days += int(d)
 
     hours, mins, secs = timestr.strip().split(':')
     delta = relativedelta(days=days, hours=int(
