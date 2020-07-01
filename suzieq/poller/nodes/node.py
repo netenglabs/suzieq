@@ -427,9 +427,11 @@ class Node(object):
                 self.last_exception = e
                 result.append(self._create_error(cmd))
                 self.logger.error(
-                    "Unable to connect to node {} cmd {}".format(
-                        self.hostname, cmd))
-                self._conn = None
+                    "Unable to connect to node {} cmd {} due to {}".format(
+                        self.hostname, cmd, str(e)))
+                if not isinstance(e, asyncio.TimeoutError):
+                    breakpoint()
+                    self._close_connection()
                 break
 
         await service_callback(result, cb_token)
