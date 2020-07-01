@@ -111,7 +111,7 @@ class TopologyObj(SqEngineObject):
                     #self.ns[ns][f'{name}_bridges'] = list(nx.bridges(G))
                 else:
                     for k in [f'{name}_is_fully_connected', f'{name}_center',
-                        f'{name}_self_loops', f'{name}_number_of_subgroups_disjoint_sets', 
+                        f'{name}_self_loops', f'{name}_number_of_disjoint_sets', 
                         f'{name}_degree_histogram', f'{name}_number_of_nodes',
                         f'{name}_number_of_edges']:
                         self.ns[ns][k] = "N/A"
