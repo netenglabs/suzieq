@@ -46,6 +46,8 @@ There are six major areas that Suzieq development can be broken down into.
 
 Given the categories, here is a rough list of tasks we will be tackling. We welcome assistance with any of these tasks. We intend to work our way roughly down this list and so tasks later down the line will be tend to, in general, be worked on later. Some of these tasks are shorter in time and complexity and some are longer. We expect to add more items.
 
+* Building a reference topology to test all NOS
+* Anonymizing data
 * Topology as a first class property
     * draw a map for physical and logical layers, including routing protocols
     * neighbor discovery
@@ -94,7 +96,7 @@ Given the categories, here is a rough list of tasks we will be tackling. We welc
   * If you have ideas on what asserts you'd like or what problems you'd like asserts to solve, please file an issue so that we can gather more ideas on how to make asserts great.
 * Integration with other systems as both source of data and as a client.
 
-## How Can You Help
+## How You Can Help
 
 * By telling us which of these tasks you care to see sooner than later
 * Signing up to help with some of the tasks
