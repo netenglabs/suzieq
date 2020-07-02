@@ -81,7 +81,7 @@ class BgpCmd(SqCommand):
 
         df = self.sqobj.get(
             hostname=self.hostname, columns=self.columns,
-            namespace=self.namespace, state=state, addnl_fields=addnl_fields
+            namespace=self.namespace, state=state, addnl_fields=addnl_fields,
             vrf=vrf.split(), peer=peer.split()
         )
 
