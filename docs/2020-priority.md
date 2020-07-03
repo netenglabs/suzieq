@@ -54,6 +54,9 @@ Given the categories, here is a rough list of tasks we will be tackling. We welc
         * show neighbors that we know about but aren't polling
         * maybe be able to just start with one IP address and then discover 
            everything that must be polled by suzieq
+* support augmenting columns (like adding peerHostname in OSPF when all we have is peerIP) 
+* change gen_schema to ignore _ fields
+* make column manipulating at sq_object
 * Schema evolution and versioning to make suzieq less brittle to changes in the schema
 * Network wide summarize to take advantage of data across all commands
 * Web-based GUI
