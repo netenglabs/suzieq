@@ -59,8 +59,7 @@ class TopologyObj(SqEngineObject):
                 namespace=namespaces,
                 **srv.extra_args
                 ).dropna(how='any')
-            
-            
+                       
             if not df.empty:
                 if srv.augment:
                     df = srv.augment(df)
@@ -70,9 +69,7 @@ class TopologyObj(SqEngineObject):
                     self.lsdb = df
                 else:
                     self.lsdb = self.lsdb.merge(df, how='outer')
-                grp = df.groupby(by=['namespace'])
 
-        
         self._create_graphs_from_lsdb()
         self._analyze_lsdb_graph()
         self._make_images()
@@ -128,8 +125,9 @@ class TopologyObj(SqEngineObject):
                     d[name] == True]
                 if len(edges) > 1:    
                 
-                    nx.draw_networkx_nodes(self.graphs[ns], pos=pos)
-                    nx.draw_networkx_labels(self.graphs[ns], pos=pos)
+                    nx.draw_networkx_nodes(self.graphs[ns], pos=pos, node_size=100)
+                    if len(self.graphs[ns].nodes) < 20:
+                        nx.draw_networkx_labels(self.graphs[ns], pos=pos,font_size=8)
                     
                     nx.draw_networkx_edges(self.graphs[ns], edgelist = edges, pos=pos)
                     plt.savefig(f"{graph_output_dir}/{ns}_{name}.png")
@@ -163,6 +161,7 @@ class TopologyObj(SqEngineObject):
                 self._a_df = self._a_df.rename(columns={'ipAddressList': 'peerIP', 
                     'hostname': 'peerHostname'})
                 self._a_df['peerIP'] = self._a_df['peerIP'].str.replace("/.+", "")
+                self._a_df = self._a_df[self._a_df['peerIP'] != '-']
 
         return self._a_df
         
