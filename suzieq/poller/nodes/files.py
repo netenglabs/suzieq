@@ -28,6 +28,7 @@ class FileNode(object):
         self.logger = logging.getLogger(__name__)
         self.data = {}          # The dict of command to output entries
         self.hostname = '_filedata'  # Need this for the services
+        self.sigend = False
 
         self._service_queue = asyncio.Queue()
 
@@ -80,8 +81,7 @@ class FileNode(object):
         entlen = len(entries)
 
         for i, elem in enumerate(entries):
-            newelem = elem.replace('\\\\n', '').replace(
-                '\\n', '').replace('\n', '').strip()
+            newelem = elem.replace('\n', '').strip()
             if i == 0:
                 newelem = newelem + ']'
             elif i == entlen-1:
@@ -110,6 +110,9 @@ class FileNode(object):
     async def run(self):
 
         while True:
+            if self.sigend:
+                return
+
             request = await self._service_queue.get()
             # request consists of callback fn, service_defn string, cb_token
             if request:
