@@ -163,6 +163,7 @@ class Node(object):
         self.ssh_ready = asyncio.Event()
         self._last_exception = None
         self._last_exception_timestamp = None
+        self.sigend = False
 
         self.address = kwargs["address"]
         self.hostname = kwargs["address"]  # default till we get hostname
@@ -320,6 +321,9 @@ class Node(object):
     async def _parse_boottime_hostname(self, output, cb_token) -> None:
         """Parse the uptime command output"""
 
+        if self.sigend:
+            return
+
         if output[0]["status"] == 0:
             upsecs = output[0]["data"].split()[0]
             self.bootupTimestamp = int(int(time.time()*1000)
@@ -360,6 +364,10 @@ class Node(object):
                     result.append(self._create_error(cmd))
 
             except asyncio.TimeoutError as e:
+                if self.sigend:
+                    self._terminate()
+                    return
+
                 self.last_exception = e
                 result.append(self._create_error(cmd))
 
@@ -379,8 +387,15 @@ class Node(object):
     async def run(self):
         tasks = []
         while True:
+            if self.sigend:
+                self._terminate()
+                return
+
             while (len(tasks) < self.batch_size):
                 request = await self._service_queue.get()
+                if self.sigend:
+                    await self._terminate()
+                    return
                 if request:
                     tasks.append(self.exec_service(
                         request[0], request[1], request[2]))
@@ -388,6 +403,7 @@ class Node(object):
                         f"Scheduling {request[2].service} for execution")
                 if self._service_queue.empty():
                     break
+
             if tasks:
                 done, pending = await asyncio.wait(
                     tasks, return_when=asyncio.FIRST_COMPLETED)
@@ -424,14 +440,16 @@ class Node(object):
                 result.append(self._create_result(
                     cmd, output.exit_status, output.stdout))
             except Exception as e:
+                if self.sigend:
+                    self._terminate()
+                    return
                 self.last_exception = e
                 result.append(self._create_error(cmd))
                 self.logger.error(
                     "Unable to connect to node {} cmd {} due to {}".format(
                         self.hostname, cmd, str(e)))
                 if not isinstance(e, asyncio.TimeoutError):
-                    breakpoint()
-                    self._close_connection()
+                    await self._close_connection()
                 break
 
         await service_callback(result, cb_token)
@@ -440,6 +458,12 @@ class Node(object):
         self._conn.close()
         await self._conn.wait_closed()
         self._conn = None
+
+    async def _terminate(self):
+        self.logger.warning(
+            f'Node: {self.hostname} received signal to terminate')
+        await self._close_connection()
+        return
 
     def _init_service_queue(self):
         if not self._service_queue:
@@ -467,6 +491,9 @@ class Node(object):
                 if init_boot_time:
                     await self.init_boot_time()
             except Exception as e:
+                if self.sigend:
+                    self._terminate()
+                    return
                 self.logger.error(f"ERROR: Unable to connect, {str(e)}")
                 self.last_exception = e
                 self._conn = None
@@ -591,6 +618,9 @@ class EosNode(Node):
         try:
             await self.get_device_boottime_hostname()
         except Exception as e:
+            if self.sigend:
+                self._terminate()
+                return
             self.last_exception = e
 
     async def get_device_type_hostname(self):
@@ -670,6 +700,9 @@ class EosNode(Node):
                     }
                 )
         except Exception as e:
+            if self.sigend:
+                self._terminate()
+                return
             self.last_exception = e
             for cmd in cmd_list:
                 result.append(self._create_error(cmd))
@@ -739,6 +772,9 @@ class CumulusNode(Node):
                             }
                         )
         except Exception as e:
+            if self.sigend:
+                self._terminate()
+                return
             self.last_exception = e
             result.append(self._create_error(cmd))
             self.logger.error("ERROR: (REST) Unable to communicate with node "

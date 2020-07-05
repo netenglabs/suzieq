@@ -64,6 +64,7 @@ class Service(object):
         self.logger = logging.getLogger(__name__)
         self.run_once = run_once
         self.post_timeout = 5
+        self.sigend = False
 
         self.update_nodes = False  # we have a new node list
         self.rebuild_nodelist = False  # used only when a node gets init
@@ -551,6 +552,10 @@ class Service(object):
 
         while True:
             token, output = await self.result_queue.get()
+            if self.sigend:
+                self.logger.warning(
+                    f'Service: {self.name}: Received signal to terminate')
+                return
             qsize = self.result_queue.qsize()
 
             self.logger.debug(f"Extracted response for {self.name} service")
@@ -564,8 +569,8 @@ class Service(object):
             if output:
                 ostatus = [x.get('status', -1) for x in output]
 
-                write_poller_stat = all([Service.is_status_ok(x)
-                                         for x in ostatus])
+                write_poller_stat = not all([Service.is_status_ok(x)
+                                             for x in ostatus])
                 status = ostatus[0]
 
                 # We don't expect the output from two different hostnames

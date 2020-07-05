@@ -67,9 +67,23 @@ def init_logger():
     return logger
 
 
+def send_terminate_to_threads(nodes: list, svcs: list, writers: list):
+    """Set the terminate flag in all child threads"""
+    for elem in nodes:
+        elem.signend = True
+    for elem in svcs:
+        elem.sigend = True
+    for elem in writers:
+        elem.sigend = True
+
+
 async def start_poller(userargs, cfg):
 
     logger = init_logger()
+
+    if userargs.devices_file and userargs.namespace:
+        logger.error("Cannot specify both -D and -n options")
+        sys.exit(1)
 
     if not os.path.exists(cfg["service-directory"]):
         logger.error(
@@ -158,9 +172,10 @@ async def start_poller(userargs, cfg):
         return
 
     except KeyboardInterrupt:
-        logger.info("Received keyboard interrupt. Terminating")
-        sys.exit(0)
-
+        logger.warning("sq-poller: Received terminate signal. Terminating")
+        send_terminate_to_threads(nodes, svcs, outputs)
+        await asyncio.gather(*tasks)
+        raise
 
 if __name__ == "__main__":
 
@@ -233,8 +248,13 @@ if __name__ == "__main__":
 
     userargs = parser.parse_args()
 
-    cfg = load_sq_config(config_file=userargs.config)
-
     uvloop.install()
+    cfg = load_sq_config(config_file=userargs.config)
+    if not cfg:
+        print("Could not load config file, aborting")
+        sys.exit(1)
 
-    asyncio.run(start_poller(userargs, cfg))
+    try:
+        asyncio.run(start_poller(userargs, cfg))
+    except KeyboardInterrupt:
+        pass
