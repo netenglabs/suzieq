@@ -12,6 +12,8 @@ class OutputWorker(object):
     def __init__(self, **kwargs):
         self.type = kwargs.get("type", None)
         self.logger = logging.getLogger(__name__)
+        self.sigend = False
+
         output_dir = kwargs.get("output_dir", None)
         if output_dir:
             self.root_output_dir = output_dir
@@ -48,7 +50,6 @@ class ParquetOutputWorker(OutputWorker):
             root_path=cdir,
             partition_cols=data["partition_cols"],
             version="2.0",
-            flavor="spark",
         )
 
 
@@ -66,6 +67,14 @@ async def run_output_worker(queue, output_workers):
 
     while True:
         data = await queue.get()
+
+        if not output_workers:
+            return
+
+        if output_workers[0].sigend:
+            output_workers[0].logger.warning(
+                "Writer: Received terminate signal")
+            return
 
         for worker in output_workers:
             worker.write_data(data)
