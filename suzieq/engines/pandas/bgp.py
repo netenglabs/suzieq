@@ -5,11 +5,27 @@ from suzieq.sqobjects.lldp import LldpObj
 import re
 import pandas as pd
 from datetime import datetime
+import numpy as np
 
 from .engineobj import SqEngineObject
 
 
 class BgpObj(SqEngineObject):
+
+    def get(self, **kwargs):
+        """Replacing the original interface name in returned result"""
+
+        addnl_fields = kwargs.pop('addnl_fields', [])
+        addnl_fields.append('origPeer')
+        df = super().get(addnl_fields=addnl_fields, **kwargs)
+
+        if not df.empty:
+            if 'peer' in df.columns:
+                df['peer'] = np.where(df['origPeer'] != "",
+                                      df['origPeer'], df['peer'])
+            df.drop(columns=['origPeer'], inplace=True)
+
+        return df
 
     def _get_connect_if(self, row) -> str:
         """Given a BGP DF row, retrieve the connecting interface for the row"""
@@ -130,7 +146,7 @@ class BgpObj(SqEngineObject):
 
         kwargs.pop("columns", None)  # Loose whatever's passed
 
-        df = self.get(columns=assert_cols, **kwargs)
+        df = self.get(columns=assert_cols, state='!dynamic', **kwargs)
         if df.empty:
             return pd.DataFrame()
 

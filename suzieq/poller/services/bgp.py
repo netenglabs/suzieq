@@ -33,6 +33,7 @@ class BgpService(Service):
             entry["peerAsn"] = int(entry["peerAsn"])
             entry['estdTime'] = raw_data[0]['timestamp'] - \
                 (entry['estdTime']*1000)
+            entry['origPeer'] = entry['peer']
 
         return processed_data
 
@@ -131,6 +132,17 @@ class BgpService(Service):
                     ventry['routerId'] = entry['routerId']
                 drop_indices.append(i)
                 continue
+
+            if not entry['peer']:
+                if not entry.get('_dynPeer', None):
+                    drop_indices.append(i)
+                    continue
+                entry['peer'] = entry['_dynPeer'].replace('/', '-')
+                entry['origPeer'] = entry['_dynPeer']
+                entry['state'] = 'dynamic'
+                entry['v4PfxRx'] = entry['_activePeers']
+                entry['v4PfxTx'] = entry['_maxconcurrentpeers']
+                entry['estdTime'] = entry['_firstconvgtime']
 
             for i, item in enumerate(entry['afiSafi']):
                 if item == 'IPv4 Unicast':
