@@ -48,9 +48,11 @@ class BgpCmd(SqCommand):
         return df.dropna(how='any')
 
     @command("show")
+    @argument("vrf", description="vrf name to qualify")
+    @argument("peer", description="IP address, in quotes, or the interface name, of peer to qualify output")    
     @argument("status", description="status of the session to match",
               choices=["all", "pass", "fail"])
-    def show(self, status: str = "all"):
+    def show(self, status: str = "all", vrf: str = '', peer: str = ''):
         """
         Show bgp info
         """
@@ -79,7 +81,8 @@ class BgpCmd(SqCommand):
 
         df = self.sqobj.get(
             hostname=self.hostname, columns=self.columns,
-            namespace=self.namespace, state=state, addnl_fields=addnl_fields
+            namespace=self.namespace, state=state, addnl_fields=addnl_fields,
+            vrf=vrf.split(), peer=peer.split()
         )
 
         if 'estdTime' in df.columns:
