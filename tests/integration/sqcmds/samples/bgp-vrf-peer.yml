@@ -261,6 +261,14 @@ tests:
   data-directory: tests/data/multidc/parquet-out/
   marks: bgp show vrf
   output: '[]'
+- command: bgp show --vrf="evpn-vrf" --columns="namespace hostname peer state" --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: bgp show vrf
+  output: '[{"namespace": "dual-evpn", "hostname": "exit01", "peer": "swp5.3", "state":
+    "Established"}, {"namespace": "dual-evpn", "hostname": "exit02", "peer": "swp5.3",
+    "state": "Established"}, {"namespace": "ospf-ibgp", "hostname": "exit01", "peer":
+    "swp5.3", "state": "Established"}, {"namespace": "ospf-ibgp", "hostname": "exit02",
+    "peer": "swp5.3", "state": "Established"}]'
 - command: bgp show --peer="eth2.2" --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: bgp show peer
@@ -275,3 +283,9 @@ tests:
   data-directory: tests/data/multidc/parquet-out/
   marks: bgp show peer
   output: '[]'
+- command: bgp show --peer="eth2.2" --columns="namespace hostname peer state" --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: bgp show peer
+  output: '[{"namespace": "dual-evpn", "hostname": "edge01", "peer": "eth2.2", "state":
+    "Established"}, {"namespace": "ospf-ibgp", "hostname": "edge01", "peer": "eth2.2",
+    "state": "Established"}]'
