@@ -49,7 +49,7 @@ class BgpCmd(SqCommand):
 
     @command("show")
     @argument("vrf", description="vrf name to qualify")
-    @argument("peer", description="IP address, in quotes, to qualify output")    
+    @argument("peer", description="IP address, in quotes, or the interface name, of peer to qualify output")    
     @argument("status", description="status of the session to match",
               choices=["all", "pass", "fail"])
     def show(self, status: str = "all", vrf: str = '', peer: str = ''):
