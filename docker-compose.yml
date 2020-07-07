@@ -1,0 +1,22 @@
+version: '3.2'
+services:
+    sq-poller:
+        restart: unless-stopped
+        command: -D /suzieq/inventory
+        image:  ddutt/suzieq:prerc
+        volumes:
+            - "./parquet-output:/suzieq/parquet"
+            - "./sqpoller-output:/suzieq/sqpoller-output"
+            - "./suzieq-graphs:/tmp/suzieq-graphs"
+            - "./inventory.yml:/suzieq/inventory"
+        entrypoint:
+            - sq-poller
+    suzieq-cli:
+        restart: unless-stopped
+        image:  ddutt/suzieq:latest
+        stdin_open: true # docker run -i
+        tty: true        # docker run -t
+        volumes:
+            - "./parquet-out:/suzieq/parquet"
+        entrypoint:
+            - sh
