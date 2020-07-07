@@ -1,6 +1,8 @@
-from suzieq.poller.services.service import Service
 import re
 import numpy as np
+
+from suzieq.poller.services.service import Service
+from suzieq.utils import convert_rangestring_to_list
 
 
 class EvpnVniService(Service):
@@ -35,12 +37,15 @@ class EvpnVniService(Service):
                 del_indices.append(i)
             if entry['mcastGroup']:
                 entry['replicationType'] = 'multicast'
-            else:
+            elif entry['type'] != 'L3':
                 entry['replicationType'] = 'ingressBGP'
-                entry['mcastGroup'] = "00:00:00:00:00:00"
+                entry['mcastGroup'] = "0.0.0.0"
+            else:
+                entry['replicationType'] = ''
+                entry['mcastGroup'] = "0.0.0.0"
+                entry['remoteVtepList'] = None
 
-        for idx in del_indices:
-            del processed_data[idx]
+        processed_data = np.delete(processed_data, del_indices).tolist()
 
         return processed_data
 
@@ -51,6 +56,10 @@ class EvpnVniService(Service):
         drop_indices = []
 
         for i, entry in enumerate(processed_data):
+            if not entry['vni']:
+                drop_indices.append(i)
+                continue
+
             if entry['_rectype'] == 'VNI':
                 type, vrf = entry['type'].split()
                 if type == 'L3':
@@ -61,9 +70,12 @@ class EvpnVniService(Service):
                 if re.search(r'[0-9.]+', entry.get('replicationType', '')):
                     entry['mcastGroup'] = entry['replicationType']
                     entry['replicationType'] = 'multicast'
-                else:
+                elif entry['type'] != 'L3':
                     entry['replicationType'] = 'ingressBGP'
-                    entry['mcastGroup'] = "00:00:00:00:00:00"
+                    entry['mcastGroup'] = "0.0.0.0"
+                else:
+                    entry['replicationType'] = ''
+                    entry['mcastGroup'] = "0.0.0.0"
 
                 # we'll fill this with the peers entries
                 entry['remoteVtepList'] = []
@@ -72,24 +84,28 @@ class EvpnVniService(Service):
                 vni_dict[entry['vni']] = entry
 
             elif entry['_rectype'] == 'peers':
-                if entry.get('vni', ''):
-                    vni_list = entry['vni'].split(',')
-                else:
-                    vni_list = []
+                vni_list = convert_rangestring_to_list(
+                    entry.get('_vniList', ''))
                 for vni in vni_list:
-                    vni_entry = vni_dict.get(vni, None)
+                    vni_entry = vni_dict.get(str(vni), None)
                     if vni_entry:
-                        vni_entry['remoteVtepList'].append(entry['_peerIp'])
-                        vni_entry['routerMac'] = entry['routerMac']
+                        vni_entry['remoteVtepList'].append(entry['vni'])
                 drop_indices.append(i)
 
             elif entry['_rectype'] == 'iface':
                 if entry.get('encapType', '') != "VXLAN":
                     continue
+
                 for vni in vni_dict:
                     if vni_dict[vni]['ifname'] != entry['ifname']:
                         continue
-                    vni_dict[vni]['srcVtepIp'] = entry['srcVtepIp']
+                    vni_dict[vni]['priVtepIp'] = entry.get('priVtepIp', '')
+                    secIP = entry.get('secVtepIp', '')
+                    if secIP == '0.0.0.0':
+                        secIP = ''
+                    vni_dict[vni]['secVtepIp'] = secIP
+                    vni_dict[vni]['routerMac'] = entry.get('routerMac',
+                                                           '00:00:00:00:00:00')
                 drop_indices.append(i)
 
         processed_data = np.delete(processed_data, drop_indices).tolist()
@@ -101,12 +117,12 @@ class EvpnVniService(Service):
         newntries = {}
 
         for entry in processed_data:
-            srcVtepIp = entry['srcVtepIp'][0]['data']
+            priVtepIp = entry['priVtepIp'][0]['data']
             for i, vni in enumerate(entry['_vniList']):
                 if vni not in newntries:
                     vni_entry = {'vni': int(vni),
                                  'remoteVtepList': [],
-                                 'srcVtepIp': srcVtepIp,
+                                 'priVtepIp': priVtepIp,
                                  'type': 'L2',
                                  'state': 'up',
                                  'os': 'junos'
@@ -114,7 +130,7 @@ class EvpnVniService(Service):
 
                     if entry['replicationType'][i] == '0.0.0.0':
                         vni_entry['replicationType'] = 'ingressBGP'
-                        vni_entry['mcastGroup'] = "00:00:00:99:00:00"
+                        vni_entry['mcastGroup'] = "0.0.0.0"
                     else:
                         vni_entry['replicationType'] = 'multicast'
                         vni_entry['mcastGroup'] = entry['replicationType'][i]

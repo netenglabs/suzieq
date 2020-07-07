@@ -70,8 +70,8 @@ class EvpnvniObj(SqEngineObject):
         """Assert for EVPN Data"""
 
         assert_cols = ["namespace", "hostname", "vni", "remoteVtepList", "vrf",
-                       "mcastGroup", "type", "srcVtepIp", "state", "l2VniList",
-                       "ifname"]
+                       "mcastGroup", "type", "priVtepIp", "state", "l2VniList",
+                       "ifname", "secVtepIp"]
 
         kwargs.pop("columns", None)  # Loose whatever's passed
 
@@ -84,24 +84,49 @@ class EvpnvniObj(SqEngineObject):
 
         df["assertReason"] = [[] for _ in range(len(df))]
 
-        her_df = df.query('type == "L2" and remoteVtepList.str.len() != 0')
+        her_df = df.query('mcastGroup == "0.0.0.0"')
+        # When routed multicast is used as underlay, type 3 routes are not
+        # advertised and so its not certain that all VTEPs asssociated with
+        # a VNI will know about each other till there's an active local host
+        # A bad optimization for routing implementations to do, IMO.
         if not her_df.empty:
             # Gather the unique set of VTEPs per VNI
-            vteps_df = df.explode(column='remoteVtepList') \
-                .dropna(how='any') \
-                .groupby(by=['vni', 'type'])['remoteVtepList'] \
-                .aggregate(lambda x: x.unique().tolist()) \
-                .reset_index() \
-                .dropna(how='any') \
-                .rename(columns={'remoteVtepList': 'allVteps'})
+            vteps_df = her_df.explode(column='remoteVtepList') \
+                             .dropna(how='any') \
+                             .groupby(by=['vni', 'type'])['remoteVtepList'] \
+                             .aggregate(lambda x: x.unique().tolist()) \
+                             .reset_index() \
+                             .dropna(how='any') \
+                             .rename(columns={'remoteVtepList': 'allVteps'})
 
-            df = df.merge(vteps_df)
+            her_df = her_df.merge(vteps_df)
 
             # Every VTEP has info about every other VTEP for a given VNI
-            df["assertReason"] += df.apply(self._all_vteps_present, axis=1)
+            her_df["assertReason"] += her_df.apply(
+                self._all_vteps_present, axis=1)
 
             # Every VTEP is reachable
-            df["assertReason"] += df.apply(self._is_vtep_reachable, axis=1)
+            her_df["assertReason"] += her_df.apply(
+                self._is_vtep_reachable, axis=1)
+
+        mcast_df = df.query('mcastGroup != "0.0.0.0"')
+        if not mcast_df.empty:
+            # Ensure that all VNIs have at most one multicast group associated
+            # per namespace
+
+            mismatched_vni_df = mcast_df \
+                .groupby(by=['namespace', 'vni'])['mcastGroup'] \
+                .unique() \
+                .reset_index() \
+                .dropna() \
+                .query('mcastGroup.str.len() != 1')
+
+            if not mismatched_vni_df.empty:
+                df['assertReason'] += df.apply(
+                    lambda x, err_df: ['VNI has multiple mcast group']
+                    if (x['namespace'] in err_df['namespace'] and
+                        x['vni'] in err_df['vni']) else [], axis=1,
+                    args=(mismatched_vni_df, ))
 
         # State is up
         df["assertReason"] += df.apply(
@@ -111,7 +136,8 @@ class EvpnvniObj(SqEngineObject):
 
         devices = df["hostname"].unique().tolist()
         ifdf = IfObj(context=self.ctxt) \
-            .get(namespace=kwargs.get("namespace", ""), hostname=devices)
+            .get(namespace=kwargs.get("namespace", ""), hostname=devices,
+                 type='vxlan')
 
         df = df.merge(ifdf[['namespace', 'hostname', 'ifname', 'master',
                             'vlan']],
@@ -139,23 +165,29 @@ class EvpnvniObj(SqEngineObject):
                                 axis=1)
 
         return df[['namespace', 'hostname', 'vni', 'type',
-                   'assertReason', 'assert', 'timestamp']].explode(column='assertReason') \
+                   'assertReason', 'assert', 'timestamp']] \
+            .explode(column='assertReason') \
             .fillna({'assertReason': '-'})
 
     def _all_vteps_present(self, row):
-        if row['type'] != "L2":
+        if row['secVtepIp'] == '0.0.0.0':
+            myvteps = set([row['priVtepIp']])
+        else:
+            myvteps = set([row['secVtepIp'], row['priVtepIp']])
+
+        isitme = set(row['allVteps']).difference(set(row['remoteVtepList']))
+        if (isitme.intersection(myvteps) or
+                (row['type'] == "L3" and row['remoteVtepList'] == ["-"])):
             return []
 
-        if (set(row['remoteVtepList']).union(set([row['srcVtepIp']])) ==
-                set(row['allVteps'])):
-            return []
-
-        return(['some remote VTEPs missing'])
+        return (['some remote VTEPs missing'])
 
     def _is_vtep_reachable(self, row):
         reason = []
         defrt = ipaddress.IPv4Network("0.0.0.0/0")
         for vtep in row['remoteVtepList'].tolist():
+            if vtep == '-':
+                continue
             rdf = RoutesObj(context=self.ctxt) \
                 .lpm(namespace=row['namespace'], vrf=['default'],
                      hostname=row['hostname'], address=vtep)
