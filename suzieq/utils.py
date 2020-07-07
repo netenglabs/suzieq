@@ -64,8 +64,8 @@ def load_sq_config(validate=True, config_file=None):
 
     if config_file:
         cfgfile = config_file
-    elif os.path.exists("./suzieq-cfg.yml"):
-        cfgfile = "./suzieq-cfg.yml"
+    elif os.path.exists("./.suzieq/suzieq-cfg.yml"):
+        cfgfile = "./.suzieq/suzieq-cfg.yml"
     elif os.path.exists(os.getenv("HOME") + "/.suzieq/suzieq-cfg.yml"):
         cfgfile = os.getenv("HOME") + "/.suzieq/suzieq-cfg.yml"
 
@@ -77,7 +77,8 @@ def load_sq_config(validate=True, config_file=None):
             validate_sq_config(cfg, sys.stderr)
 
     if not cfg:
-        print(f"suzieq requires a configuration file either in ~/.suzieq-cfg.yml or ./suzieq/suzieq-cfg.yml")
+        print(f"suzieq requires a configuration file either in ./.suzieq/suzieq-cfg.yml "
+              "or ~/suzieq/suzieq-cfg.yml")
         exit(1)
 
     return cfg
