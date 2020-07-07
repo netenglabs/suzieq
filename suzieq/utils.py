@@ -435,3 +435,18 @@ def convert_macaddr_format_to_colon(macaddr):
         return ':'.join([f'{x[:2]}:{x[2:]}' for x in macaddr.split('.')])
 
     return('00:00:00:00:00:00')
+
+
+def convert_rangestring_to_list(rangestr: str) -> list:
+    """Convert a range list such as '1, 2-5, 10, 12-20' to list
+    """
+    if not isinstance(rangestr, str):
+        return []
+
+    try:
+        tmplst = [x.strip().split('-') for x in rangestr.split(',')]
+        tmplst = [range(int(i[0]), int(i[1]+1)) if len(i) == 2 else int(i[0])
+                  for i in tmplst]
+    except Exception:
+        return []
+    return tmplst

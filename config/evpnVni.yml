@@ -21,8 +21,8 @@ apply:
     "numRemoteVteps: remoteVtepList?|[]",
     "l2Vnis: l2VniList?|[]",
     "advertiseGatewayMacIp: advGateway?|False",
-    "vtepIp: srcVtepIp?|",
-    "localVtepIp: srcVtepIp?|srcVtepIp",
+    "vtepIp: priVtepIp?|",
+    "localVtepIp: priVtepIp?|priVtepIp",
     "vniFilter: vniFilter?|",
     "state: state?|up",
     "vxlanInterface: ifname?|",
@@ -38,7 +38,7 @@ apply:
   junos:
     version: all
     command: show ethernet-switching vxlan-tunnel-end-point remote | display json
-    normalize: 'vxlan-source-vtep-information/[0]/svtep-format/*:source-vtep-address:srcVtepIp|vxlan-remote-vtep-information/*/[
+    normalize: 'vxlan-source-vtep-information/[0]/svtep-format/*:source-vtep-address:priVtepIp|vxlan-remote-vtep-information/*/[
     "remote-vtep-address/[0]/data: remoteVtepList",
     "remote-vtep-mode: _mode",
     "vxlan-dynamic-information/[0]/vxlan-format/[*]/vn-id/[0]/data: _vniList",
@@ -62,18 +62,20 @@ apply:
 
       - command: show nve interface nve 1 | json-pretty
         normalize: 'TABLE_nve_if/ROW_nve_if/*?/[
-        "primary-ip: srcVtepIp",
+        "primary-ip: priVtepIp",
         "encap-type: encapType",
         "source-if: vni",
         "if-name: ifname",
-        "recType: _rectype?|iface"
+        "recType: _rectype?|iface",
+        "vpc-capability: _vpcCap?|",
+        "secondary-ip: secVtepIp?|",
+        "local-rmac: routerMac",
         ]'
 
       - command: show nve peers detail | json
         normalize: 'TABLE_nve_peers/ROW_nve_peers/*?/[
-        "peer-ip: _peerIp",
-        "router-mac: routerMac",
+        "peer-ip: vni",
         "config-vnis: _configVnis",
-        "cp-vni: vni",
+        "cp-vni: _vniList?|",
         "rectype: _rectype?|peers",
         ]'
