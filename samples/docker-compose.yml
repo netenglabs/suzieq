@@ -3,7 +3,7 @@ services:
     sq-poller:
         restart: unless-stopped
         command: -D /suzieq/inventory
-        image:  ddutt/suzieq:prerc
+        image:  ddutt/suzieq:latest
         volumes:
             - "./parquet-output:/suzieq/parquet"
             - "./sqpoller-output:/suzieq/sqpoller-output"
