@@ -32,9 +32,9 @@ class TopologyCmd(SqCommand):
         )
 
     @command("show")
-    @argument("vrf", description="VRF to trace topology in")
+    @argument("vrf", description="VRF to show topology in")
     def show(self, vrf: str = ''):
-        """show topologys between specified from source to target ip addresses"""
+        """show table of topology information"""
         # Get the default display field names
         if self.columns is None:
             return
@@ -47,7 +47,6 @@ class TopologyCmd(SqCommand):
 
         try:
             df = self.sqobj.get(
-                hostname=self.hostname, columns=self.columns,
                 namespace=self.namespace, vrf=vrf
             )
         except Exception as e:
@@ -58,9 +57,9 @@ class TopologyCmd(SqCommand):
             return self._gen_output(df)
 
     @command("summarize")
-    @argument("vrf", description="VRF to trace topology in")
+    @argument("vrf", description="VRF to show topology in")
     def summarize(self, src: str = "", dest: str = "", vrf: str = ''):
-        """Summarize topologys between specified from source to target ip addresses"""
+        """Summarize topologys topology information"""
         # Get the default display field names
         if self.columns is None:
             return
@@ -73,8 +72,7 @@ class TopologyCmd(SqCommand):
 
         try:
             df = self.sqobj.summarize(
-                hostname=self.hostname, columns=self.columns,
-                namespace=self.namespace, source=src, dest=dest,
+                namespace=self.namespace, 
                 vrf=vrf
             )
         except Exception as e:
