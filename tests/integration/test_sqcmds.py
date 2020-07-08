@@ -331,15 +331,15 @@ def _test_sqcmds(testvar, context_config):
 @pytest.mark.smoke
 @pytest.mark.sqcmds
 @pytest.mark.parametrize("testvar", load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
-                        '/tests/integration/sqcmds/samples')))
-def test_sqcmds(testvar, create_context_config):
+                        '/tests/integration/sqcmds/cumulus-samples')))
+def test_cumulus_sqcmds(testvar, create_context_config):
     _test_sqcmds(testvar, create_context_config)
 
 
 @pytest.mark.smoke
 @pytest.mark.sqcmds
 @pytest.mark.parametrize("testvar", load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
-                        '/tests/integration/sqcmds/nxos')))
+                        '/tests/integration/sqcmds/nxos-samples')))
 def test_nxos_sqcmds(testvar, create_context_config):
     _test_sqcmds(testvar, create_context_config)
 
@@ -347,7 +347,7 @@ def test_nxos_sqcmds(testvar, create_context_config):
 @pytest.mark.smoke
 @pytest.mark.sqcmds
 @pytest.mark.parametrize("testvar", load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
-                        '/tests/integration/sqcmds/junos')))
+                        '/tests/integration/sqcmds/junos-samples')))
 def test_junos_sqcmds(testvar, create_context_config):
     _test_sqcmds(testvar, create_context_config)
 
@@ -355,6 +355,6 @@ def test_junos_sqcmds(testvar, create_context_config):
 @pytest.mark.smoke
 @pytest.mark.sqcmds
 @pytest.mark.parametrize("testvar", load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
-                        '/tests/integration/sqcmds/eos')))
+                        '/tests/integration/sqcmds/eos-samples')))
 def test_eos_sqcmds(testvar, create_context_config):
     _test_sqcmds(testvar, create_context_config)
