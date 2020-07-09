@@ -49,7 +49,7 @@ class BgpCmd(SqCommand):
 
     @command("show")
     @argument("vrf", description="vrf name to qualify")
-    @argument("peer", description="IP address, in quotes, or the interface name, of peer to qualify output")    
+    @argument("peer", description="IP address, in quotes, or the interface name, of peer to qualify output")
     @argument("status", description="status of the session to match",
               choices=["all", "pass", "fail"])
     def show(self, status: str = "all", vrf: str = '', peer: str = ''):
@@ -86,7 +86,8 @@ class BgpCmd(SqCommand):
         )
 
         if 'estdTime' in df.columns:
-            df['estdTime'] = pd.to_datetime(df.estdTime.astype(str), unit="ms")
+            df['estdTime'] = pd.to_datetime(df.estdTime.astype(str), unit="ms",
+                                            errors='ignore')
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)

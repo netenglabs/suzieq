@@ -51,7 +51,7 @@ class DeviceCmd(SqCommand):
         if not df.empty and 'bootupTimestamp' in df.columns:
             uptime_cols = (df['timestamp'] -
                            pd.to_datetime(df['bootupTimestamp']*1000,
-                                          unit='ms'))
+                                          unit='ms', errors='ignore'))
             uptime_cols = pd.to_timedelta(uptime_cols, unit='ms')
             df.insert(len(df.columns)-1, 'uptime', uptime_cols)
             df = df.drop(columns=['bootupTimestamp'])
