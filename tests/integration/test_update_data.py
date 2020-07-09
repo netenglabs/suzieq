@@ -136,10 +136,10 @@ def gather_data(topology, proto, scenario, name, suzieq_dir):
     os.chdir('../..')
 
 
-def update_data(name, files_dir, suzieq_dir, tmp_path):
+def update_data(name, files_dir, suzieq_dir, tmp_path, number_of_devices='14'):
     cfg_file = create_config(tmp_path, suzieq_dir)
     run_sqpoller_process(files_dir, suzieq_dir, cfg_file)
-    check_suzieq_data(suzieq_dir, name, cfg_file)
+    check_suzieq_data(suzieq_dir, name, cfg_file, number_of_devices)
 
     return cfg_file
 
@@ -220,7 +220,7 @@ class TestUpdate:
     @pytest.mark.update_data
     @pytest.mark.skipif(not os.environ.get('SUZIEQ_POLLER', None),
                         reason='Not updating data')
-    def test_update_cumulus_data(self, tmp_path):
+    def test_update_cumulus_multidc_data(self, tmp_path):
         orig_dir = os.getcwd()
 
         update_data('ospf-ibgp', f'{orig_dir}/tests/integration/sqcmds/cumulus-input/ospf-ibgp', 
@@ -248,6 +248,45 @@ class TestUpdate:
 
         update_sqcmds(glob.glob(f'{sqcmds_dir}/cumulus-samples/*.yml'))
 
+    
+    @pytest.mark.update_data
+    @pytest.mark.skipif(not os.environ.get('SUZIEQ_POLLER', None),
+                        reason='Not updating data')
+    def test_update_eos_data(self, tmp_path):
+        orig_dir = os.getcwd()
+        nos = 'eos'
+
+        update_data(nos, f'{orig_dir}/tests/integration/sqcmds/{nos}-input/', 
+            orig_dir, tmp_path)
+        
+        dst_dir = f'{orig_dir}/tests/data/{nos}/parquet-out'
+        git_del_dir(dst_dir)
+        copytree(f'{tmp_path}/parquet-out', dst_dir)
+        shutil.rmtree(f'{tmp_path}/parquet-out')
+        
+        # update the samples data with updates from the newly collected data
+
+        update_sqcmds(glob.glob(f'{sqcmds_dir}/{nos}-samples/*.yml'))
+
+    
+    @pytest.mark.update_data
+    @pytest.mark.skipif(not os.environ.get('SUZIEQ_POLLER', None),
+                        reason='Not updating data')
+    def test_update_nxos_data(self, tmp_path):
+        orig_dir = os.getcwd()
+        nos = 'nxos'
+
+        update_data(nos, f'{orig_dir}/tests/integration/sqcmds/{nos}-input/', 
+            orig_dir, tmp_path, number_of_devices='8')
+        
+        dst_dir = f'{orig_dir}/tests/data/{nos}/parquet-out'
+        git_del_dir(dst_dir)
+        copytree(f'{tmp_path}/parquet-out', dst_dir)
+        shutil.rmtree(f'{tmp_path}/parquet-out')
+        
+        # update the samples data with updates from the newly collected data
+
+        update_sqcmds(glob.glob(f'{sqcmds_dir}/{nos}-samples/*.yml'))
 
 tests = [
     ['bgp', 'numbered'],
