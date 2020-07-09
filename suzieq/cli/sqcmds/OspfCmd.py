@@ -63,7 +63,7 @@ class OspfCmd(SqCommand):
 
         if not df.empty and 'lastChangeTime' in df.columns:
             df['lastChangeTime'] = pd.to_datetime(df.lastChangeTime.astype(str),
-                                                  unit="ms")
+                                                  unit="ms", errors='ignore')
 
         # Transform the lastChangeTime into human terms
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
