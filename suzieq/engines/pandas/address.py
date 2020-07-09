@@ -29,7 +29,8 @@ class AddressObj(SqEngineObject):
         addr = kwargs.pop("address", None)
         columns = kwargs.get("columns", [])
         ipvers = kwargs.pop("ipvers", "")
-        addnl_fields = ['origIfname']
+        vrf = kwargs.pop("vrf", "")
+        addnl_fields = ['origIfname', 'master']
 
         if self.ctxt.sort_fields is None:
             sort_fields = None
@@ -37,14 +38,17 @@ class AddressObj(SqEngineObject):
             sort_fields = self.sort_fields
 
         addrcol = self._get_addr_col(addr, ipvers, columns)
-        df = self.get_valid_df("address", sort_fields,
+        df = self.get_valid_df("address", sort_fields, master=vrf,
                                addnl_fields=addnl_fields, **kwargs)
 
         if df.empty:
             return df
 
         df['ifname'] = df['origIfname']
-        df.drop(columns=['origIfname'], inplace=True)
+        if not vrf and not any(i in columns for i in ["master", "vrf"]):
+            df.drop(columns=['origIfname', 'master'], inplace=True)
+        else:
+            df.drop(columns=['origIfname'], inplace=True)
 
         # Works with pandas 0.25.0 onwards
         if addr and addrcol == "macaddr":
@@ -59,6 +63,19 @@ class AddressObj(SqEngineObject):
             return df[df[addrcol].str.len() != 0]
         else:
             return df
+
+    def unique(self, **kwargs) -> pd.DataFrame:
+        """Specific here only to rename vrf column to master"""
+        column = kwargs.pop("columns", '')
+        if column == ["vrf"]:
+            column = ["master"]
+        df = super().unique(columns=column, **kwargs)
+        if not df.empty:
+            return df.query("master != 'bridge'") \
+                     .rename({'master': 'vrf'}, axis='columns') \
+                     .replace({'vrf': {'': 'default'}})
+
+        return df
 
     def summarize(self, **kwargs) -> pd.DataFrame:
         """Summarize address related info"""

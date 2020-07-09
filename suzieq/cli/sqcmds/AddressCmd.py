@@ -33,9 +33,10 @@ class AddressCmd(SqCommand):
 
     @command("show")
     @argument("address", description="Address, in quotes, to show info for")
+    @argument("vrf", description="VRF to qualify the address")
     @argument("ipvers", description="type of address, v4, v6 or l2",
               choices=["v4", "v6", "l2"])
-    def show(self, address: str = "", ipvers: str = "v4"):
+    def show(self, address: str = "", ipvers: str = "v4", vrf: str = ""):
         """
         Show address info
         """
@@ -51,6 +52,7 @@ class AddressCmd(SqCommand):
             columns=self.columns,
             address=address,
             ipvers=ipvers,
+            vrf=vrf,
             namespace=self.namespace,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
