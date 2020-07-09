@@ -77,11 +77,6 @@ class RoutesObj(SqEngineObject):
         if not self.iobj._table:
             raise NotImplementedError
 
-        if self.ctxt.sort_fields is None:
-            sort_fields = None
-        else:
-            sort_fields = self.iobj._sort_fields
-
         ipaddr = kwargs.get('address')
         del kwargs['address']
 
@@ -95,13 +90,10 @@ class RoutesObj(SqEngineObject):
             if 'ipvers' not in cols:
                 cols.insert(-1, 'ipvers')
 
-        df = self.get_valid_df(self.iobj._table, sort_fields, **kwargs)
+        df = self.get(**kwargs)
 
         if df.empty:
             return df
-
-        df = df.query('prefix != ""')
-        df['prefix'] = df.prefix.astype('ipnetwork')
 
         idx = df[['namespace', 'hostname', 'vrf', 'prefix']] \
             .query("prefix.ipnet.supernet_of('{}')".format(ipaddr)) \
