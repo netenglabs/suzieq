@@ -1,0 +1,141 @@
+[
+    {
+        "status": 0,
+        "timestamp": 1594213101373,
+        "cmd": "if systemctl status lldpd > /dev/null 2>&1; then sudo lldpctl; fi",
+        "devtype": "linux",
+        "namespace": "nxos",
+        "hostname": "server2",
+        "address": "10.255.2.168",
+        "version": "18.04",
+        "data": ""
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1594213101373,
+        "cmd": "if systemctl status lldpd > /dev/null 2>&1; then sudo lldpctl; fi",
+        "devtype": "linux",
+        "namespace": "nxos",
+        "hostname": "server1",
+        "address": "10.255.2.176",
+        "version": "18.04",
+        "data": ""
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1594213101373,
+        "cmd": "if systemctl status lldpd > /dev/null 2>&1; then sudo lldpctl; fi",
+        "devtype": "linux",
+        "namespace": "nxos",
+        "hostname": "server4",
+        "address": "10.255.2.14",
+        "version": "18.04",
+        "data": ""
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1594213101373,
+        "cmd": "if systemctl status lldpd > /dev/null 2>&1; then sudo lldpctl; fi",
+        "devtype": "linux",
+        "namespace": "nxos",
+        "hostname": "server3",
+        "address": "10.255.2.100",
+        "version": "18.04",
+        "data": ""
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1594213102372,
+        "cmd": "show cdp neighbors | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "spine1",
+        "address": "10.255.2.44",
+        "version": 0,
+        "data": "{\"TABLE_cdp_neighbor_brief_info\": {\"ROW_cdp_neighbor_brief_info\": [{\"ifindex\": \"83886080\", \"device_id\": \"leaf2(9VS3H6SNIQU)\", \"intf_id\": \"mgmt0\", \"ttl\": \"150\", \"capability\": [\"router\", \"switch\", \"Supports-STP-Dispute\"], \"platform_id\": \"N9K-C9300v\", \"port_id\": \"mgmt0\"}, {\"ifindex\": \"83886080\", \"device_id\": \"leaf1(9ZWXFIK98RH)\", \"intf_id\": \"mgmt0\", \"ttl\": \"145\", \"capability\": [\"router\", \"switch\", \"Supports-STP-Dispute\"], \"platform_id\": \"N9K-C9300v\", \"port_id\": \"mgmt0\"}, {\"ifindex\": \"83886080\", \"device_id\": \"spine2(9GTFKAEOZV5)\", \"intf_id\": \"mgmt0\", \"ttl\": \"141\", \"capability\": [\"router\", \"switch\", \"Supports-STP-Dispute\"], \"platform_id\": \"N9K-C9300v\", \"port_id\": \"mgmt0\"}, {\"ifindex\": \"436207616\", \"device_id\": \"leaf1(9ZWXFIK98RH)\", \"intf_id\": \"Ethernet1/1\", \"ttl\": \"135\", \"capability\": [\"router\", \"switch\", \"Supports-STP-Dispute\"], \"platform_id\": \"N9K-C9300v\", \"port_id\": \"Ethernet1/3\"}, {\"ifindex\": \"436208128\", \"device_id\": \"leaf2(9VS3H6SNIQU)\", \"intf_id\": \"Ethernet1/2\", \"ttl\": \"140\", \"capability\": [\"router\", \"switch\", \"Supports-STP-Dispute\"], \"platform_id\": \"N9K-C9300v\", \"port_id\": \"Ethernet1/3\"}]}, \"neigh_count\": \"5\"}\n"
+    },
+    {
+        "status": 16,
+        "timestamp": 1594213102770,
+        "cmd": "show lldp neighbors | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "spine1",
+        "address": "10.255.2.44",
+        "version": 0,
+        "data": "Syntax error while parsing 'show lldp neighbors | json'\n\n\nCmd exec error.\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1594213102347,
+        "cmd": "show cdp neighbors | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "spine2",
+        "address": "10.255.2.45",
+        "version": 0,
+        "data": "{\"TABLE_cdp_neighbor_brief_info\": {\"ROW_cdp_neighbor_brief_info\": [{\"ifindex\": \"83886080\", \"device_id\": \"leaf2(9VS3H6SNIQU)\", \"intf_id\": \"mgmt0\", \"ttl\": \"151\", \"capability\": [\"router\", \"switch\", \"Supports-STP-Dispute\"], \"platform_id\": \"N9K-C9300v\", \"port_id\": \"mgmt0\"}, {\"ifindex\": \"83886080\", \"device_id\": \"leaf1(9ZWXFIK98RH)\", \"intf_id\": \"mgmt0\", \"ttl\": \"145\", \"capability\": [\"router\", \"switch\", \"Supports-STP-Dispute\"], \"platform_id\": \"N9K-C9300v\", \"port_id\": \"mgmt0\"}, {\"ifindex\": \"83886080\", \"device_id\": \"spine1(9RFZ28AMG97)\", \"intf_id\": \"mgmt0\", \"ttl\": \"135\", \"capability\": [\"router\", \"switch\", \"Supports-STP-Dispute\"], \"platform_id\": \"N9K-C9300v\", \"port_id\": \"mgmt0\"}, {\"ifindex\": \"436207616\", \"device_id\": \"leaf1(9ZWXFIK98RH)\", \"intf_id\": \"Ethernet1/1\", \"ttl\": \"135\", \"capability\": [\"router\", \"switch\", \"Supports-STP-Dispute\"], \"platform_id\": \"N9K-C9300v\", \"port_id\": \"Ethernet1/4\"}, {\"ifindex\": \"436208128\", \"device_id\": \"leaf2(9VS3H6SNIQU)\", \"intf_id\": \"Ethernet1/2\", \"ttl\": \"140\", \"capability\": [\"router\", \"switch\", \"Supports-STP-Dispute\"], \"platform_id\": \"N9K-C9300v\", \"port_id\": \"Ethernet1/4\"}]}, \"neigh_count\": \"5\"}\n"
+    },
+    {
+        "status": 16,
+        "timestamp": 1594213102802,
+        "cmd": "show lldp neighbors | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "spine2",
+        "address": "10.255.2.45",
+        "version": 0,
+        "data": "Syntax error while parsing 'show lldp neighbors | json'\n\n\nCmd exec error.\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1594213102550,
+        "cmd": "show cdp neighbors | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf2",
+        "address": "10.255.2.43",
+        "version": 0,
+        "data": "{\"TABLE_cdp_neighbor_brief_info\": {\"ROW_cdp_neighbor_brief_info\": [{\"ifindex\": \"83886080\", \"device_id\": \"leaf1(9ZWXFIK98RH)\", \"intf_id\": \"mgmt0\", \"ttl\": \"145\", \"capability\": [\"router\", \"switch\", \"Supports-STP-Dispute\"], \"platform_id\": \"N9K-C9300v\", \"port_id\": \"mgmt0\"}, {\"ifindex\": \"83886080\", \"device_id\": \"spine1(9RFZ28AMG97)\", \"intf_id\": \"mgmt0\", \"ttl\": \"135\", \"capability\": [\"router\", \"switch\", \"Supports-STP-Dispute\"], \"platform_id\": \"N9K-C9300v\", \"port_id\": \"mgmt0\"}, {\"ifindex\": \"83886080\", \"device_id\": \"spine2(9GTFKAEOZV5)\", \"intf_id\": \"mgmt0\", \"ttl\": \"141\", \"capability\": [\"router\", \"switch\", \"Supports-STP-Dispute\"], \"platform_id\": \"N9K-C9300v\", \"port_id\": \"mgmt0\"}, {\"ifindex\": \"436208640\", \"device_id\": \"spine1(9RFZ28AMG97)\", \"intf_id\": \"Ethernet1/3\", \"ttl\": \"162\", \"capability\": [\"router\", \"switch\", \"Supports-STP-Dispute\"], \"platform_id\": \"N9K-C9300v\", \"port_id\": \"Ethernet1/2\"}, {\"ifindex\": \"436209152\", \"device_id\": \"spine2(9GTFKAEOZV5)\", \"intf_id\": \"Ethernet1/4\", \"ttl\": \"162\", \"capability\": [\"router\", \"switch\", \"Supports-STP-Dispute\"], \"platform_id\": \"N9K-C9300v\", \"port_id\": \"Ethernet1/2\"}]}, \"neigh_count\": \"5\"}\n"
+    },
+    {
+        "status": 16,
+        "timestamp": 1594213103076,
+        "cmd": "show lldp neighbors | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf2",
+        "address": "10.255.2.43",
+        "version": 0,
+        "data": "Syntax error while parsing 'show lldp neighbors | json'\n\n\nCmd exec error.\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1594213102595,
+        "cmd": "show cdp neighbors | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf1",
+        "address": "10.255.2.42",
+        "version": 0,
+        "data": "{\"TABLE_cdp_neighbor_brief_info\": {\"ROW_cdp_neighbor_brief_info\": [{\"ifindex\": \"83886080\", \"device_id\": \"leaf2(9VS3H6SNIQU)\", \"intf_id\": \"mgmt0\", \"ttl\": \"150\", \"capability\": [\"router\", \"switch\", \"Supports-STP-Dispute\"], \"platform_id\": \"N9K-C9300v\", \"port_id\": \"mgmt0\"}, {\"ifindex\": \"83886080\", \"device_id\": \"spine1(9RFZ28AMG97)\", \"intf_id\": \"mgmt0\", \"ttl\": \"135\", \"capability\": [\"router\", \"switch\", \"Supports-STP-Dispute\"], \"platform_id\": \"N9K-C9300v\", \"port_id\": \"mgmt0\"}, {\"ifindex\": \"83886080\", \"device_id\": \"spine2(9GTFKAEOZV5)\", \"intf_id\": \"mgmt0\", \"ttl\": \"141\", \"capability\": [\"router\", \"switch\", \"Supports-STP-Dispute\"], \"platform_id\": \"N9K-C9300v\", \"port_id\": \"mgmt0\"}, {\"ifindex\": \"436208640\", \"device_id\": \"spine1(9RFZ28AMG97)\", \"intf_id\": \"Ethernet1/3\", \"ttl\": \"160\", \"capability\": [\"router\", \"switch\", \"Supports-STP-Dispute\"], \"platform_id\": \"N9K-C9300v\", \"port_id\": \"Ethernet1/1\"}, {\"ifindex\": \"436209152\", \"device_id\": \"spine2(9GTFKAEOZV5)\", \"intf_id\": \"Ethernet1/4\", \"ttl\": \"160\", \"capability\": [\"router\", \"switch\", \"Supports-STP-Dispute\"], \"platform_id\": \"N9K-C9300v\", \"port_id\": \"Ethernet1/1\"}]}, \"neigh_count\": \"5\"}\n"
+    },
+    {
+        "status": 16,
+        "timestamp": 1594213103087,
+        "cmd": "show lldp neighbors | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf1",
+        "address": "10.255.2.42",
+        "version": 0,
+        "data": "Syntax error while parsing 'show lldp neighbors | json'\n\n\nCmd exec error.\n"
+    }
+]

@@ -1,3 +1,7 @@
+# updating parsing data
+
+# updating sqcmds when just the output changed, and no data changed
+
 
 # update test data for sqcmds
 The test data in tests/data is used by all the tests in tests_sqcmds:test_sqcmds.
@@ -7,7 +11,7 @@ data that the poller collects.
 to generate the updated the test data, go to the root suzieq directory
 
 ```bash
-SUZIEQ_POLLER=true pytest -m update_data -n0
+SUZIEQ_POLLER=true pytest -m update_data -n4
 ```
 This uses the data that has been gathered to produce parquet data to be analyzed.
 
@@ -51,7 +55,7 @@ So if it's nxos data,
 git rm -rf tests/data/nxos/parquet-out
 mkdir tests/data/nxos
 ```
-copy the generated data to tests/data/nxos/parquet-out
+copy the generated data to tests/data/nxos/parquet-out, or whatever os you are changing
 
 then add it to git
 ```bash
@@ -59,13 +63,6 @@ git add tests/data/nxos/parquet-out
 git commmit -m 'latest nxos test data'
 git push
 ```
-
-to update the sqmds
-```bash
-for file in tests/integration/sqcmds/nxos/*.yml; do echo $file; python3 tests/utilities/update_sqcmds.py -f $file -o; done
-```
-make sure that none of them fails. Just as above, if the data type returned is different
-update_sqcmds.py will fail.
 
 run pytest
 ```bash
@@ -75,7 +72,7 @@ assuming that all passed
 
 ```bash
 git add tests/integration/sqcmds/nxos
-git commit -m 'latest test sqcmds data  for nxos'
+git commit -m 'latest test sqcmds data for nxos'
 git push
 ```
 
@@ -94,6 +91,15 @@ git add tests/data/multidc/parquet-out tests/data/basic_dual_bgp/parquet-out
 git commit -m 'udpated cumulus test data'
 git push
 ```
+
+## junos / nxos /eos
+We don't have a way to automatically spin up VMs for these and gather the inital data,
+so if that needs to be replaced, for instance if a new command is added
+then you need to capture gather the data and put it into
+
+tests/integration/sqcmds/nxos-input
+
+and then do the updating as documented above.
 
 # CNDCN tests
 
