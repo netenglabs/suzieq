@@ -247,13 +247,13 @@ apply:
         "entry-type: _entryType?|neighbors",
         ]'
 
-      - command: show bgp all summary | json-pretty
+      - command: show bgp all summary vrf all | json
         normalize: 'TABLE_vrf/ROW_vrf/*?/[
         "vrf-name-out: vrf",
         "vrf-name-out: peer",
         "vrf-local-as: asn",
         "vrf-router-id: routerId",
-        "entry-type: _entryType?|summary",
+        "entry-type: _entryType?|summary"
         ]'
 
   junos:
