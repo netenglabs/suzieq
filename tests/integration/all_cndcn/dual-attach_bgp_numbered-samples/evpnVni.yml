@@ -7,10 +7,7 @@ tests:
 - command: evpnVni show --columns=hostname --format=json --namespace=dual-attach_bgp_numbered
   data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_numbered/parquet-out
   marks: evpnVni show
-  xfail:
-    error: '"Error running command: \"None of [Index([''hostname''], dtype=''object'')]
-      are in the [columns]\"\n------------------------------------------------------------\n------------------------------------------------------------"'
-    reason: uncaught exception
+  output: '[]'
 - command: evpnVni summarize --format=json --namespace=dual-attach_bgp_numbered
   data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_numbered/parquet-out
   marks: evpnVni summarize

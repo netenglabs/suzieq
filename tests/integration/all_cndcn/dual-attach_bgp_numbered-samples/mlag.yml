@@ -6,17 +6,17 @@ tests:
   output: '[{"namespace": "dual-attach_bgp_numbered", "hostname": "leaf01", "systemId":
     "44:39:39:ff:40:94", "state": "active", "peerAddress": "169.254.1.2", "role":
     "primary", "peerLink": "peerlink.4094", "mlagDualPortsCnt": 2, "mlagSinglePortsCnt":
-    0, "mlagErrorPortsCnt": 0, "timestamp": 1590176554046}, {"namespace": "dual-attach_bgp_numbered",
+    0, "mlagErrorPortsCnt": 0, "timestamp": 1594293667784}, {"namespace": "dual-attach_bgp_numbered",
     "hostname": "leaf02", "systemId": "44:39:39:ff:40:94", "state": "active", "peerAddress":
     "169.254.1.1", "role": "secondary", "peerLink": "peerlink.4094", "mlagDualPortsCnt":
-    2, "mlagSinglePortsCnt": 0, "mlagErrorPortsCnt": 0, "timestamp": 1590176554856},
+    2, "mlagSinglePortsCnt": 0, "mlagErrorPortsCnt": 0, "timestamp": 1594293667711},
     {"namespace": "dual-attach_bgp_numbered", "hostname": "leaf03", "systemId": "44:39:39:ff:40:95",
     "state": "active", "peerAddress": "169.254.1.2", "role": "primary", "peerLink":
     "peerlink.4094", "mlagDualPortsCnt": 2, "mlagSinglePortsCnt": 0, "mlagErrorPortsCnt":
-    0, "timestamp": 1590176554856}, {"namespace": "dual-attach_bgp_numbered", "hostname":
+    0, "timestamp": 1594293667811}, {"namespace": "dual-attach_bgp_numbered", "hostname":
     "leaf04", "systemId": "44:39:39:ff:40:95", "state": "active", "peerAddress": "169.254.1.1",
     "role": "secondary", "peerLink": "peerlink.4094", "mlagDualPortsCnt": 2, "mlagSinglePortsCnt":
-    0, "mlagErrorPortsCnt": 0, "timestamp": 1590176554856}]'
+    0, "mlagErrorPortsCnt": 0, "timestamp": 1594293667785}]'
 - command: mlag show --columns=hostname --format=json --namespace=dual-attach_bgp_numbered
   data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_numbered/parquet-out
   marks: mlag show
@@ -25,8 +25,8 @@ tests:
 - command: mlag summarize --format=json --namespace=dual-attach_bgp_numbered
   data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_numbered/parquet-out
   marks: mlag summarize
-  output: '{"dual-attach_bgp_numbered": {"deviceCnt": 4, "uniqueSystemIdCnt": 2, "hostsWithfailedStateCnt":
-    0, "hostsWithBackupInactiveCnt": 4, "mlagNumDualPortsStat": [2, 2, 2], "mlagNumSinglePortStat":
+  output: '{"dual-attach_bgp_numbered": {"deviceCnt": 4, "uniqueSystemIdCnt": 2, "devicesWithfailedStateCnt":
+    0, "devicesWithBackupInactiveCnt": 4, "mlagNumDualPortsStat": [2, 2, 2], "mlagNumSinglePortStat":
     [0, 0, 0], "mlagNumErrorPortStat": [0, 0, 0]}}'
 - command: mlag unique --columns=hostname --format=json --namespace=dual-attach_bgp_numbered
   data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_numbered/parquet-out
