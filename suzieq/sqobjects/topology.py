@@ -12,16 +12,6 @@ from suzieq.sqobjects import interfaces, lldp, bgp, ospf, basicobj, address, evp
 from suzieq.sqobjects.basicobj import SqObject
 from suzieq.exceptions import NoLLdpError, EmptyDataframeError, PathLoopError
 
-# TODO:
-#  topology for different VRFs?
-#  iBGP vs eBGP?
-#  color by device type?
-#  physical topology without LLDP -- is this possible?
-#  how to draw multiple topologies
-#  be able to ask if a node has neighbors by type (physical, overlay, protocol, etc)
-#  questions
-#    * without knowing hierarchy, labels or tags it's unclear how to group things for good picture
-# how could we add state of connection (like Established) per protocol
 
 
 
@@ -57,3 +47,8 @@ class TopologyObj(basicobj.SqObject):
             raise AttributeError('No analysis engine specified')
 
         return self.engine_obj.get(**kwargs)
+    
+    def summarize(self, **kwargs):
+        """Summarize topology info for one or more namespaces"""
+
+        return self.engine_obj.summarize(**kwargs)

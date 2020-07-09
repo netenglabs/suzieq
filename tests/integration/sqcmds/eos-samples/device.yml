@@ -1,0 +1,83 @@
+description: 'Testing verbs for device: show summarize unique'
+tests:
+- command: device show --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: device show eos
+  output: '[{"namespace": "eos", "hostname": "edge01", "model": "vm", "version": "16.04.6
+    LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive", "address":
+    "192.168.121.201", "uptime": 443389, "timestamp": 1594274559389}, {"namespace":
+    "eos", "hostname": "exit01", "model": "vEOS", "version": "4.23.3M", "vendor":
+    "Arista", "architecture": "i686", "status": "alive", "address": "192.168.121.66",
+    "uptime": 26223994, "timestamp": 1594274558994}, {"namespace": "eos", "hostname":
+    "exit02", "model": "vEOS", "version": "4.23.3M", "vendor": "Arista", "architecture":
+    "i686", "status": "alive", "address": "192.168.121.115", "uptime": 26222985, "timestamp":
+    1594274558985}, {"namespace": "eos", "hostname": "internet", "model": "vm", "version":
+    "3.7.9", "vendor": "Cumulus", "architecture": "x86-64", "status": "alive", "address":
+    "192.168.121.122", "uptime": 645710, "timestamp": 1594274559710}, {"namespace":
+    "eos", "hostname": "leaf01", "model": "vEOS", "version": "4.23.3M", "vendor":
+    "Arista", "architecture": "i686", "status": "alive", "address": "192.168.121.41",
+    "uptime": 26215989, "timestamp": 1594274558989}, {"namespace": "eos", "hostname":
+    "leaf02", "model": "vEOS", "version": "4.23.3M", "vendor": "Arista", "architecture":
+    "i686", "status": "alive", "address": "192.168.121.204", "uptime": 26219674, "timestamp":
+    1594274559674}, {"namespace": "eos", "hostname": "leaf03", "model": "vEOS", "version":
+    "4.23.3M", "vendor": "Arista", "architecture": "i686", "status": "alive", "address":
+    "192.168.121.189", "uptime": 26216979, "timestamp": 1594274558979}, {"namespace":
+    "eos", "hostname": "leaf04", "model": "vEOS", "version": "4.23.3M", "vendor":
+    "Arista", "architecture": "i686", "status": "alive", "address": "192.168.121.173",
+    "uptime": 26226974, "timestamp": 1594274558974}, {"namespace": "eos", "hostname":
+    "server101", "model": "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture":
+    "x86-64", "status": "alive", "address": "192.168.121.6", "uptime": 1039622, "timestamp":
+    1594274559622}, {"namespace": "eos", "hostname": "server102", "model": "vm", "version":
+    "16.04.6 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
+    "address": "192.168.121.227", "uptime": 1056623, "timestamp": 1594274559623},
+    {"namespace": "eos", "hostname": "server103", "model": "vm", "version": "16.04.6
+    LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive", "address":
+    "192.168.121.159", "uptime": 1060622, "timestamp": 1594274559622}, {"namespace":
+    "eos", "hostname": "server104", "model": "vm", "version": "16.04.6 LTS", "vendor":
+    "Ubuntu", "architecture": "x86-64", "status": "alive", "address": "192.168.121.38",
+    "uptime": 1062629, "timestamp": 1594274559629}, {"namespace": "eos", "hostname":
+    "spine01", "model": "vEOS", "version": "4.23.3M", "vendor": "Arista", "architecture":
+    "i686", "status": "alive", "address": "192.168.121.42", "uptime": 26229993, "timestamp":
+    1594274558993}, {"namespace": "eos", "hostname": "spine02", "model": "vEOS", "version":
+    "4.23.3M", "vendor": "Arista", "architecture": "i686", "status": "alive", "address":
+    "192.168.121.36", "uptime": 26212984, "timestamp": 1594274558984}]'
+- command: device show --columns=hostname --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: device show eos
+  output: '[{"hostname": "edge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
+    {"hostname": "internet"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server102"},
+    {"hostname": "server103"}, {"hostname": "server104"}, {"hostname": "spine01"},
+    {"hostname": "spine02"}]'
+- command: device summarize --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: device summarize eos
+  output: '{"eos": {"deviceCnt": 14, "vendorCnt": {"Arista": 8, "Ubuntu": 5, "Cumulus":
+    1}, "modelCnt": {"vEOS": 8, "vm": 6}, "archCnt": {"i686": 8, "x86-64": 6}, "versionCnt":
+    {"4.23.3M": 8, "16.04.6 LTS": 5, "3.7.9": 1}, "upTimeStat": [443389, 26229993,
+    26214486]}}'
+- command: device summarize --columns="namespace hostname" --format=json
+  data-directory: tests/data/eos/parquet-out/
+  error:
+    error: '{"error": {"0": "ERROR: You cannot specify columns with summarize"}}'
+  marks: device summarize eos
+- command: device unique --columns=hostname --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: device unique eos
+  output: '[{"hostname": "spine02", "count": 1}, {"hostname": "spine01", "count":
+    1}, {"hostname": "server104", "count": 1}, {"hostname": "server103", "count":
+    1}, {"hostname": "server102", "count": 1}, {"hostname": "server101", "count":
+    1}, {"hostname": "leaf04", "count": 1}, {"hostname": "leaf03", "count": 1}, {"hostname":
+    "leaf02", "count": 1}, {"hostname": "leaf01", "count": 1}, {"hostname": "internet",
+    "count": 1}, {"hostname": "exit02", "count": 1}, {"hostname": "exit01", "count":
+    1}, {"hostname": "edge01", "count": 1}]'
+- command: device unique --columns="hostname namespace" --format=json
+  data-directory: tests/data/eos/parquet-out/
+  error:
+    error: '[{"error": "ERROR: Specify a single column with unique"}]'
+  marks: device unique eos
+- command: device unique --columns=badcolumn --format=json
+  data-directory: tests/data/eos/parquet-out/
+  error:
+    error: '[{"error": "ERROR: ''badcolumn''"}]'
+  marks: device unique eos

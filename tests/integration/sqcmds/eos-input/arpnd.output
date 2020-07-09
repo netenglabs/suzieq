@@ -1,0 +1,493 @@
+[
+    {
+        "status": 0,
+        "timestamp": 1594274559380,
+        "cmd": "ip neigh show",
+        "devtype": "linux",
+        "namespace": "eos",
+        "hostname": "edge01",
+        "address": "192.168.121.201",
+        "version": "16.04",
+        "data": "169.254.254.1 dev eth1.2 lladdr 52:54:00:6e:11:5f STALE\n169.254.254.9 dev eth1.4 lladdr 52:54:00:6e:11:5f STALE\n169.254.253.1 dev eth2.2 lladdr 52:54:00:55:af:ab STALE\n192.168.121.1 dev eth0 lladdr 52:54:00:62:c2:57 REACHABLE\n169.254.253.9 dev eth2.4 lladdr 52:54:00:55:af:ab STALE\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1594274559622,
+        "cmd": "ip neigh show",
+        "devtype": "linux",
+        "namespace": "eos",
+        "hostname": "server103",
+        "address": "192.168.121.159",
+        "version": "16.04",
+        "data": "172.16.3.1 dev bond0 lladdr 44:38:39:46:b6:f9 STALE\n192.168.121.1 dev eth0 lladdr 52:54:00:62:c2:57 REACHABLE\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1594274559622,
+        "cmd": "ip neigh show",
+        "devtype": "linux",
+        "namespace": "eos",
+        "hostname": "server101",
+        "address": "192.168.121.6",
+        "version": "16.04",
+        "data": "172.16.1.1 dev bond0 lladdr 44:38:39:b8:e5:7d STALE\n192.168.121.1 dev eth0 lladdr 52:54:00:62:c2:57 DELAY\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1594274559623,
+        "cmd": "ip neigh show",
+        "devtype": "linux",
+        "namespace": "eos",
+        "hostname": "server102",
+        "address": "192.168.121.227",
+        "version": "16.04",
+        "data": "172.16.2.1 dev bond0 lladdr 44:38:39:b8:e5:7d STALE\n192.168.121.1 dev eth0 lladdr 52:54:00:62:c2:57 DELAY\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1594274559629,
+        "cmd": "ip neigh show",
+        "devtype": "linux",
+        "namespace": "eos",
+        "hostname": "server104",
+        "address": "192.168.121.38",
+        "version": "16.04",
+        "data": "172.16.4.1 dev bond0 lladdr 44:38:39:46:b6:f9 STALE\n192.168.121.1 dev eth0 lladdr 52:54:00:62:c2:57 REACHABLE\n"
+    }
+][
+    {
+        "status": 200,
+        "timestamp": 1594274558986,
+        "cmd": "show arp vrf all",
+        "devtype": "eos",
+        "namespace": "eos",
+        "hostname": "exit02",
+        "address": "192.168.121.115",
+        "data": {
+            "vrfs": {
+                "default": {
+                    "dynamicEntries": 3,
+                    "ipV4Neighbors": [
+                        {
+                            "hwAddress": "4439.39c8.1a37",
+                            "address": "10.127.0.10",
+                            "interface": "Ethernet1",
+                            "age": 15
+                        },
+                        {
+                            "hwAddress": "5254.003b.1bac",
+                            "address": "10.127.1.10",
+                            "interface": "Ethernet2",
+                            "age": 12
+                        },
+                        {
+                            "hwAddress": "5254.0062.c257",
+                            "address": "192.168.121.1",
+                            "interface": "Management1",
+                            "age": 0
+                        }
+                    ],
+                    "notLearnedEntries": 0,
+                    "totalEntries": 3,
+                    "staticEntries": 0
+                },
+                "internet-vrf": {
+                    "dynamicEntries": 1,
+                    "ipV4Neighbors": [
+                        {
+                            "hwAddress": "5254.0073.ddbe",
+                            "address": "169.254.127.2",
+                            "interface": "Ethernet6",
+                            "age": 0
+                        }
+                    ],
+                    "notLearnedEntries": 0,
+                    "totalEntries": 1,
+                    "staticEntries": 0
+                }
+            }
+        }
+    }
+][
+    {
+        "status": 200,
+        "timestamp": 1594274558981,
+        "cmd": "show arp vrf all",
+        "devtype": "eos",
+        "namespace": "eos",
+        "hostname": "leaf03",
+        "address": "192.168.121.189",
+        "data": {
+            "vrfs": {
+                "default": {
+                    "dynamicEntries": 5,
+                    "ipV4Neighbors": [
+                        {
+                            "hwAddress": "4439.39c8.1a37",
+                            "address": "10.127.0.4",
+                            "interface": "Ethernet1",
+                            "age": 28
+                        },
+                        {
+                            "hwAddress": "5254.003b.1bac",
+                            "address": "10.127.1.4",
+                            "interface": "Ethernet2",
+                            "age": 24
+                        },
+                        {
+                            "hwAddress": "5254.002d.5b69",
+                            "address": "172.16.3.103",
+                            "interface": "Vlan13, not learned",
+                            "age": 538
+                        },
+                        {
+                            "hwAddress": "5254.005a.aef1",
+                            "address": "172.16.4.104",
+                            "interface": "Vlan24, not learned",
+                            "age": 538
+                        },
+                        {
+                            "hwAddress": "5254.0062.c257",
+                            "address": "192.168.121.1",
+                            "interface": "Management1",
+                            "age": 0
+                        }
+                    ],
+                    "notLearnedEntries": 2,
+                    "totalEntries": 5,
+                    "staticEntries": 0
+                }
+            }
+        }
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1594274559694,
+        "cmd": "ip neigh show",
+        "devtype": "cumulus",
+        "namespace": "eos",
+        "hostname": "internet",
+        "address": "192.168.121.122",
+        "version": "3.7.9",
+        "data": "192.168.121.1 dev eth0 lladdr 52:54:00:62:c2:57 DELAY\n169.254.127.1 dev swp1 lladdr 52:54:00:6e:11:5f REACHABLE\n169.254.127.3 dev swp2 lladdr 52:54:00:55:af:ab REACHABLE\n"
+    }
+][
+    {
+        "status": 200,
+        "timestamp": 1594274558984,
+        "cmd": "show arp vrf all",
+        "devtype": "eos",
+        "namespace": "eos",
+        "hostname": "spine02",
+        "address": "192.168.121.36",
+        "data": {
+            "vrfs": {
+                "default": {
+                    "dynamicEntries": 7,
+                    "ipV4Neighbors": [
+                        {
+                            "hwAddress": "4438.39b8.e57d",
+                            "address": "10.127.1.1",
+                            "interface": "Ethernet1",
+                            "age": 24
+                        },
+                        {
+                            "hwAddress": "4438.39f3.b93f",
+                            "address": "10.127.1.3",
+                            "interface": "Ethernet2",
+                            "age": 24
+                        },
+                        {
+                            "hwAddress": "4438.3946.b6f9",
+                            "address": "10.127.1.5",
+                            "interface": "Ethernet3",
+                            "age": 24
+                        },
+                        {
+                            "hwAddress": "4438.393f.ab99",
+                            "address": "10.127.1.7",
+                            "interface": "Ethernet4",
+                            "age": 18
+                        },
+                        {
+                            "hwAddress": "5254.0055.afab",
+                            "address": "10.127.1.11",
+                            "interface": "Ethernet5",
+                            "age": 13
+                        },
+                        {
+                            "hwAddress": "5254.006e.115f",
+                            "address": "10.127.1.9",
+                            "interface": "Ethernet6",
+                            "age": 17
+                        },
+                        {
+                            "hwAddress": "5254.0062.c257",
+                            "address": "192.168.121.1",
+                            "interface": "Management1",
+                            "age": 0
+                        }
+                    ],
+                    "notLearnedEntries": 0,
+                    "totalEntries": 7,
+                    "staticEntries": 0
+                }
+            }
+        }
+    }
+][
+    {
+        "status": 200,
+        "timestamp": 1594274558991,
+        "cmd": "show arp vrf all",
+        "devtype": "eos",
+        "namespace": "eos",
+        "hostname": "spine01",
+        "address": "192.168.121.42",
+        "data": {
+            "vrfs": {
+                "default": {
+                    "dynamicEntries": 7,
+                    "ipV4Neighbors": [
+                        {
+                            "hwAddress": "4438.39b8.e57d",
+                            "address": "10.127.0.1",
+                            "interface": "Ethernet1",
+                            "age": 26
+                        },
+                        {
+                            "hwAddress": "4438.39f3.b93f",
+                            "address": "10.127.0.3",
+                            "interface": "Ethernet2",
+                            "age": 26
+                        },
+                        {
+                            "hwAddress": "4438.3946.b6f9",
+                            "address": "10.127.0.5",
+                            "interface": "Ethernet3",
+                            "age": 26
+                        },
+                        {
+                            "hwAddress": "4438.393f.ab99",
+                            "address": "10.127.0.7",
+                            "interface": "Ethernet4",
+                            "age": 19
+                        },
+                        {
+                            "hwAddress": "5254.0055.afab",
+                            "address": "10.127.0.11",
+                            "interface": "Ethernet5",
+                            "age": 14
+                        },
+                        {
+                            "hwAddress": "5254.006e.115f",
+                            "address": "10.127.0.9",
+                            "interface": "Ethernet6",
+                            "age": 18
+                        },
+                        {
+                            "hwAddress": "5254.0062.c257",
+                            "address": "192.168.121.1",
+                            "interface": "Management1",
+                            "age": 0
+                        }
+                    ],
+                    "notLearnedEntries": 0,
+                    "totalEntries": 7,
+                    "staticEntries": 0
+                }
+            }
+        }
+    }
+][
+    {
+        "status": 200,
+        "timestamp": 1594274558991,
+        "cmd": "show arp vrf all",
+        "devtype": "eos",
+        "namespace": "eos",
+        "hostname": "leaf01",
+        "address": "192.168.121.41",
+        "data": {
+            "vrfs": {
+                "default": {
+                    "dynamicEntries": 5,
+                    "ipV4Neighbors": [
+                        {
+                            "hwAddress": "4439.39c8.1a37",
+                            "address": "10.127.0.0",
+                            "interface": "Ethernet1",
+                            "age": 28
+                        },
+                        {
+                            "hwAddress": "5254.003b.1bac",
+                            "address": "10.127.1.0",
+                            "interface": "Ethernet2",
+                            "age": 24
+                        },
+                        {
+                            "hwAddress": "5254.00dc.1907",
+                            "address": "172.16.1.101",
+                            "interface": "Vlan13, not learned",
+                            "age": 538
+                        },
+                        {
+                            "hwAddress": "5254.0029.369f",
+                            "address": "172.16.2.102",
+                            "interface": "Vlan24, not learned",
+                            "age": 538
+                        },
+                        {
+                            "hwAddress": "5254.0062.c257",
+                            "address": "192.168.121.1",
+                            "interface": "Management1",
+                            "age": 0
+                        }
+                    ],
+                    "notLearnedEntries": 2,
+                    "totalEntries": 5,
+                    "staticEntries": 0
+                }
+            }
+        }
+    }
+][
+    {
+        "status": 200,
+        "timestamp": 1594274558995,
+        "cmd": "show arp vrf all",
+        "devtype": "eos",
+        "namespace": "eos",
+        "hostname": "exit01",
+        "address": "192.168.121.66",
+        "data": {
+            "vrfs": {
+                "default": {
+                    "dynamicEntries": 3,
+                    "ipV4Neighbors": [
+                        {
+                            "hwAddress": "4439.39c8.1a37",
+                            "address": "10.127.0.8",
+                            "interface": "Ethernet1",
+                            "age": 19
+                        },
+                        {
+                            "hwAddress": "5254.003b.1bac",
+                            "address": "10.127.1.8",
+                            "interface": "Ethernet2",
+                            "age": 16
+                        },
+                        {
+                            "hwAddress": "5254.0062.c257",
+                            "address": "192.168.121.1",
+                            "interface": "Management1",
+                            "age": 0
+                        }
+                    ],
+                    "notLearnedEntries": 0,
+                    "totalEntries": 3,
+                    "staticEntries": 0
+                },
+                "internet-vrf": {
+                    "dynamicEntries": 1,
+                    "ipV4Neighbors": [
+                        {
+                            "hwAddress": "5254.0068.e86c",
+                            "address": "169.254.127.0",
+                            "interface": "Ethernet6",
+                            "age": 0
+                        }
+                    ],
+                    "notLearnedEntries": 0,
+                    "totalEntries": 1,
+                    "staticEntries": 0
+                }
+            }
+        }
+    }
+][
+    {
+        "status": 200,
+        "timestamp": 1594274559673,
+        "cmd": "show arp vrf all",
+        "devtype": "eos",
+        "namespace": "eos",
+        "hostname": "leaf02",
+        "address": "192.168.121.204",
+        "data": {
+            "vrfs": {
+                "default": {
+                    "dynamicEntries": 3,
+                    "ipV4Neighbors": [
+                        {
+                            "hwAddress": "4439.39c8.1a37",
+                            "address": "10.127.0.2",
+                            "interface": "Ethernet1",
+                            "age": 28
+                        },
+                        {
+                            "hwAddress": "5254.003b.1bac",
+                            "address": "10.127.1.2",
+                            "interface": "Ethernet2",
+                            "age": 24
+                        },
+                        {
+                            "hwAddress": "5254.0062.c257",
+                            "address": "192.168.121.1",
+                            "interface": "Management1",
+                            "age": 0
+                        }
+                    ],
+                    "notLearnedEntries": 0,
+                    "totalEntries": 3,
+                    "staticEntries": 0
+                }
+            }
+        }
+    }
+][
+    {
+        "status": 200,
+        "timestamp": 1594274559661,
+        "cmd": "show arp vrf all",
+        "devtype": "eos",
+        "namespace": "eos",
+        "hostname": "leaf04",
+        "address": "192.168.121.173",
+        "data": {
+            "vrfs": {
+                "default": {
+                    "dynamicEntries": 3,
+                    "ipV4Neighbors": [
+                        {
+                            "hwAddress": "4439.39c8.1a37",
+                            "address": "10.127.0.6",
+                            "interface": "Ethernet1",
+                            "age": 20
+                        },
+                        {
+                            "hwAddress": "5254.003b.1bac",
+                            "address": "10.127.1.6",
+                            "interface": "Ethernet2",
+                            "age": 16
+                        },
+                        {
+                            "hwAddress": "5254.0062.c257",
+                            "address": "192.168.121.1",
+                            "interface": "Management1",
+                            "age": 0
+                        }
+                    ],
+                    "notLearnedEntries": 0,
+                    "totalEntries": 3,
+                    "staticEntries": 0
+                }
+            }
+        }
+    }
+]

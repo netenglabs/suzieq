@@ -1,0 +1,33 @@
+description: 'Testing verbs for evpnVni: show summarize unique'
+tests:
+- command: evpnVni show --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: evpnVni show nxos
+  output: '[{"namespace": "nxos", "hostname": "leaf1", "vni": 100010, "type": "L2",
+    "numMacs": 0, "numArpNd": 0, "remoteVtepList": [], "timestamp": 1594213101373},
+    {"namespace": "nxos", "hostname": "leaf1", "vni": 100030, "type": "L2", "numMacs":
+    0, "numArpNd": 0, "remoteVtepList": [], "timestamp": 1594213101373}, {"namespace":
+    "nxos", "hostname": "leaf1", "vni": 100999, "type": "L3", "numMacs": 0, "numArpNd":
+    0, "remoteVtepList": [], "timestamp": 1594213101373}, {"namespace": "nxos", "hostname":
+    "leaf2", "vni": 100020, "type": "L2", "numMacs": 0, "numArpNd": 0, "remoteVtepList":
+    [], "timestamp": 1594213101373}, {"namespace": "nxos", "hostname": "leaf2", "vni":
+    100030, "type": "L2", "numMacs": 0, "numArpNd": 0, "remoteVtepList": ["10.0.0.11"],
+    "timestamp": 1594213101373}, {"namespace": "nxos", "hostname": "leaf2", "vni":
+    100999, "type": "L3", "numMacs": 0, "numArpNd": 0, "remoteVtepList": [], "timestamp":
+    1594213101373}]'
+- command: evpnVni show --columns=hostname --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: evpnVni show nxos
+  output: '[{"hostname": "leaf1"}, {"hostname": "leaf1"}, {"hostname": "leaf1"}, {"hostname":
+    "leaf2"}, {"hostname": "leaf2"}, {"hostname": "leaf2"}]'
+- command: evpnVni summarize --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: evpnVni summarize nxos
+  output: '{"nxos": {"mode": "symmetric", "deviceCnt": 2, "uniqueVniCnt": 4, "uniqueL3VniCnt":
+    1, "uniqueL2VniCnt": 3, "uniqueVniTypeValCnt": {"L2": 4, "L3": 2}, "replTypeValCnt":
+    {"multicast": 4, "": 2}, "macsInVniStat": [0, 0, 0], "arpNdInVniStat": [0, 0,
+    0], "ingressReplPerVtepStat": [0, 1, 0.5]}}'
+- command: evpnVni unique --columns=hostname --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: evpnVni unique nxos
+  output: '[{"hostname": "leaf2", "count": 3}, {"hostname": "leaf1", "count": 3}]'
