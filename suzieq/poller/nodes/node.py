@@ -445,17 +445,23 @@ class Node(object):
                     return
                 self.last_exception = e
                 result.append(self._create_error(cmd))
-                self.logger.error(
-                    "Unable to connect to node {} cmd {} due to {}".format(
-                        self.hostname, cmd, str(e)))
                 if not isinstance(e, asyncio.TimeoutError):
+                    self.logger.error(
+                        f"Unable to connect to {self.hostname} for {cmd} "
+                        f"due to {str(e)}")
                     await self._close_connection()
+                else:
+                    self.logger.error(
+                        f"Unable to connect to {self.hostname} {cmd} "
+                        "due to timeout")
+
                 break
 
         await service_callback(result, cb_token)
 
     async def _close_connection(self):
         self._conn.close()
+
         await self._conn.wait_closed()
         self._conn = None
 
