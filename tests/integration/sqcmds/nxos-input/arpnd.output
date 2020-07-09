@@ -1,0 +1,141 @@
+[
+    {
+        "status": 0,
+        "timestamp": 1594213101633,
+        "cmd": "ip neigh show",
+        "devtype": "linux",
+        "namespace": "nxos",
+        "hostname": "server2",
+        "address": "10.255.2.168",
+        "version": "18.04",
+        "data": "10.255.2.1 dev eth0 lladdr 52:54:00:b4:85:af REACHABLE\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1594213101642,
+        "cmd": "ip neigh show",
+        "devtype": "linux",
+        "namespace": "nxos",
+        "hostname": "server1",
+        "address": "10.255.2.176",
+        "version": "18.04",
+        "data": "10.255.2.1 dev eth0 lladdr 52:54:00:b4:85:af REACHABLE\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1594213101654,
+        "cmd": "ip neigh show",
+        "devtype": "linux",
+        "namespace": "nxos",
+        "hostname": "server4",
+        "address": "10.255.2.14",
+        "version": "18.04",
+        "data": "10.255.2.1 dev eth0 lladdr 52:54:00:b4:85:af REACHABLE\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1594213101664,
+        "cmd": "ip neigh show",
+        "devtype": "linux",
+        "namespace": "nxos",
+        "hostname": "server3",
+        "address": "10.255.2.100",
+        "version": "18.04",
+        "data": "10.255.2.1 dev eth0 lladdr 52:54:00:b4:85:af REACHABLE\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1594213103590,
+        "cmd": "show ip arp detail vrf all | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "spine1",
+        "address": "10.255.2.44",
+        "version": 0,
+        "data": "{\"TABLE_vrf\": {\"ROW_vrf\": {\"vrf-name-out\": \"all\", \"cnt-total\": \"3\", \"TABLE_adj\": {\"ROW_adj\": [{\"intf-out\": \"mgmt0\", \"ip-addr-out\": \"10.255.2.1\", \"time-stamp\": \"PT1S\", \"mac\": \"5254.00b4.85af\", \"phy-intf\": \"mgmt0\", \"flags\": null}, {\"intf-out\": \"Ethernet1/1\", \"ip-addr-out\": \"10.0.0.11\", \"time-stamp\": \"PT8M55S\", \"mac\": \"4400.0001.1b08\", \"phy-intf\": \"Ethernet1/1\", \"flags\": null}, {\"intf-out\": \"Ethernet1/2\", \"ip-addr-out\": \"10.0.0.12\", \"time-stamp\": \"PT8M29S\", \"mac\": \"4400.0002.1b08\", \"phy-intf\": \"Ethernet1/2\", \"flags\": null}]}}}}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1594213104137,
+        "cmd": "show ipv6 neighbor detail | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "spine1",
+        "address": "10.255.2.44",
+        "version": 0,
+        "data": "{\"invalid_pkt_cnt\": \"0\", \"invalid_byte_cnt\": \"0\", \"global_drop_pkt_cnt\": \"0\", \"global_drop_byte_cnt\": \"0\", \"global_punt_pkt_cnt\": \"0\", \"global_punt_byte_cnt\": \"0\", \"global_glean_pkt_cnt\": \"0\", \"global_glean_byte_cnt\": \"0\", \"glean_pkt_cnt\": \"0\", \"glean_byte_cnt\": \"0\", \"normal_pkt_cnt\": \"0\", \"normal_byte_cnt\": \"0\", \"last_updated\": \"never\", \"TABLE_vrf\": {\"ROW_vrf\": {\"vrf-name-out\": \"default\", \"TABLE_afi\": {\"ROW_afi\": {\"afi\": \"ipv6\", \"count\": \"0\"}}}}}\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1594213103491,
+        "cmd": "show ip arp detail vrf all | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "spine2",
+        "address": "10.255.2.45",
+        "version": 0,
+        "data": "{\"TABLE_vrf\": {\"ROW_vrf\": {\"vrf-name-out\": \"all\", \"cnt-total\": \"3\", \"TABLE_adj\": {\"ROW_adj\": [{\"intf-out\": \"mgmt0\", \"ip-addr-out\": \"10.255.2.1\", \"time-stamp\": \"PT1S\", \"mac\": \"5254.00b4.85af\", \"phy-intf\": \"mgmt0\", \"flags\": null}, {\"intf-out\": \"Ethernet1/1\", \"ip-addr-out\": \"10.0.0.11\", \"time-stamp\": \"PT8M24S\", \"mac\": \"4400.0001.1b08\", \"phy-intf\": \"Ethernet1/1\", \"flags\": null}, {\"intf-out\": \"Ethernet1/2\", \"ip-addr-out\": \"10.0.0.12\", \"time-stamp\": \"PT8M24S\", \"mac\": \"4400.0002.1b08\", \"phy-intf\": \"Ethernet1/2\", \"flags\": null}]}}}}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1594213104143,
+        "cmd": "show ipv6 neighbor detail | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "spine2",
+        "address": "10.255.2.45",
+        "version": 0,
+        "data": "{\"invalid_pkt_cnt\": \"0\", \"invalid_byte_cnt\": \"0\", \"global_drop_pkt_cnt\": \"0\", \"global_drop_byte_cnt\": \"0\", \"global_punt_pkt_cnt\": \"0\", \"global_punt_byte_cnt\": \"0\", \"global_glean_pkt_cnt\": \"0\", \"global_glean_byte_cnt\": \"0\", \"glean_pkt_cnt\": \"0\", \"glean_byte_cnt\": \"0\", \"normal_pkt_cnt\": \"0\", \"normal_byte_cnt\": \"0\", \"last_updated\": \"never\", \"TABLE_vrf\": {\"ROW_vrf\": {\"vrf-name-out\": \"default\", \"TABLE_afi\": {\"ROW_afi\": {\"afi\": \"ipv6\", \"count\": \"0\"}}}}}\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1594213104112,
+        "cmd": "show ip arp detail vrf all | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf1",
+        "address": "10.255.2.42",
+        "version": 0,
+        "data": "{\"TABLE_vrf\": {\"ROW_vrf\": {\"vrf-name-out\": \"all\", \"cnt-total\": \"3\", \"TABLE_adj\": {\"ROW_adj\": [{\"intf-out\": \"mgmt0\", \"ip-addr-out\": \"10.255.2.1\", \"time-stamp\": \"PT2S\", \"mac\": \"5254.00b4.85af\", \"phy-intf\": \"mgmt0\", \"flags\": null}, {\"intf-out\": \"Ethernet1/3\", \"ip-addr-out\": \"10.0.0.21\", \"time-stamp\": \"PT8M55S\", \"mac\": \"4400.0003.1b08\", \"phy-intf\": \"Ethernet1/3\", \"flags\": null}, {\"intf-out\": \"Ethernet1/4\", \"ip-addr-out\": \"10.0.0.22\", \"time-stamp\": \"PT8M24S\", \"mac\": \"4400.0004.1b08\", \"phy-intf\": \"Ethernet1/4\", \"flags\": null}]}}}}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1594213104585,
+        "cmd": "show ipv6 neighbor detail | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf1",
+        "address": "10.255.2.42",
+        "version": 0,
+        "data": "{\"invalid_pkt_cnt\": \"0\", \"invalid_byte_cnt\": \"0\", \"global_drop_pkt_cnt\": \"0\", \"global_drop_byte_cnt\": \"0\", \"global_punt_pkt_cnt\": \"0\", \"global_punt_byte_cnt\": \"0\", \"global_glean_pkt_cnt\": \"0\", \"global_glean_byte_cnt\": \"0\", \"glean_pkt_cnt\": \"0\", \"glean_byte_cnt\": \"0\", \"normal_pkt_cnt\": \"0\", \"normal_byte_cnt\": \"0\", \"last_updated\": \"never\", \"TABLE_vrf\": {\"ROW_vrf\": {\"vrf-name-out\": \"default\", \"TABLE_afi\": {\"ROW_afi\": {\"afi\": \"ipv6\", \"count\": \"0\"}}}}}\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1594213104112,
+        "cmd": "show ip arp detail vrf all | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf2",
+        "address": "10.255.2.43",
+        "version": 0,
+        "data": "{\"TABLE_vrf\": {\"ROW_vrf\": {\"vrf-name-out\": \"all\", \"cnt-total\": \"3\", \"TABLE_adj\": {\"ROW_adj\": [{\"intf-out\": \"mgmt0\", \"ip-addr-out\": \"10.255.2.1\", \"time-stamp\": \"PT2S\", \"mac\": \"5254.00b4.85af\", \"phy-intf\": \"mgmt0\", \"flags\": null}, {\"intf-out\": \"Ethernet1/3\", \"ip-addr-out\": \"10.0.0.21\", \"time-stamp\": \"PT8M29S\", \"mac\": \"4400.0003.1b08\", \"phy-intf\": \"Ethernet1/3\", \"flags\": null}, {\"intf-out\": \"Ethernet1/4\", \"ip-addr-out\": \"10.0.0.22\", \"time-stamp\": \"PT8M24S\", \"mac\": \"4400.0004.1b08\", \"phy-intf\": \"Ethernet1/4\", \"flags\": null}]}}}}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1594213104769,
+        "cmd": "show ipv6 neighbor detail | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf2",
+        "address": "10.255.2.43",
+        "version": 0,
+        "data": "{\"invalid_pkt_cnt\": \"0\", \"invalid_byte_cnt\": \"0\", \"global_drop_pkt_cnt\": \"0\", \"global_drop_byte_cnt\": \"0\", \"global_punt_pkt_cnt\": \"0\", \"global_punt_byte_cnt\": \"0\", \"global_glean_pkt_cnt\": \"0\", \"global_glean_byte_cnt\": \"0\", \"glean_pkt_cnt\": \"0\", \"glean_byte_cnt\": \"0\", \"normal_pkt_cnt\": \"0\", \"normal_byte_cnt\": \"0\", \"last_updated\": \"never\", \"TABLE_vrf\": {\"ROW_vrf\": {\"vrf-name-out\": \"default\", \"TABLE_afi\": {\"ROW_afi\": {\"afi\": \"ipv6\", \"count\": \"0\"}}}}}\n"
+    }
+]

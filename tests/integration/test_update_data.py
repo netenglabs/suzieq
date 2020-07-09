@@ -20,13 +20,16 @@ import random
 #  the data collected for other test_sqcmds tests
 
 ansible_file = '/.vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory'
-samples_dir = 'tests/integration/sqcmds/samples/'
+sqcmds_dir = 'tests/integration/sqcmds/'
 UPDATE_SQCMDS = 'tests/utilities/update_sqcmds.py'
 cndcn_samples_dir = 'tests/integration/all_cndcn/'
 parquet_dir = '/tmp/suzieq-tests-parquet'
 
 
 def copytree(src, dst, symlinks=False, ignore=None):
+    
+    if not os.path.isdir(dst):
+        os.makedirs(dst)
     for item in os.listdir(src):
         s = os.path.join(src, item)
         d = os.path.join(dst, item)
@@ -46,7 +49,7 @@ def create_config(t_dir, suzieq_dir):
     tmpconfig['service-directory'] = f"{suzieq_dir}/{tmpconfig['service-directory']}"
     tmpconfig['schema-directory'] = f"{suzieq_dir}/{tmpconfig['schema-directory']}"
 
-    fname = 'suzieq-cfg.yml'
+    fname = f'{t_dir}/suzieq-cfg.yml'
 
     with open(fname, 'w') as f:
         f.write(yaml.dump(tmpconfig))
@@ -79,28 +82,34 @@ def get_cndcn(path):
     return os.getcwd() + '/cloud-native-data-center-networking'
 
 
-def run_sqpoller(name, ansible_dir, suzieq_dir):
+def run_sqpoller_gather(name, ansible_dir, suzieq_dir):
     sqcmd_path = [sys.executable, f"{suzieq_dir}/suzieq/poller/sq-poller"]
-    sqcmd = sqcmd_path + ['-i', ansible_dir + ansible_file, '-n', name]
+    sqcmd = sqcmd_path + ['-i', ansible_dir + ansible_file, '-n', name, 
+        '--run-once', 'gather', '--output-dir', '/tmp/suzieq-input']
+    out, code, _ =run_cmd(sqcmd)
+    assert code is 0 or code is None
 
-    pid = Popen(sqcmd).pid
-    time.sleep(60)
-    os.kill(pid, signal.SIGSTOP)
-
+def run_sqpoller_process(files_dir, suzieq_dir, cfg_file):
+    sqcmd_path = [sys.executable, f"{suzieq_dir}/suzieq/poller/sq-poller"]
+    sqcmd = sqcmd_path + ['-f', files_dir, '-c', cfg_file]
+    run_cmd(sqcmd)
+    out, code, _ =run_cmd(sqcmd)
+    assert code is 0 or code is None
 
 def run_scenario(scenario):
     run_cmd(['ansible-playbook', '-b', '-e', f'scenario={scenario}',
               'deploy.yml'])
-    time.sleep(15)
+    time.sleep(10)
     out, code, err = run_cmd(['ansible-playbook', 'ping.yml'])
-
+    logging.warning(f"ping results {out} {code} {err}")
+    print(f"ping results {out} {code} {err}")
     return out, code
 
 
-def check_suzieq_data(suzieq_dir, name, threshold='14'):
+def check_suzieq_data(suzieq_dir, name, cfg_file, threshold='14'):
     sqcmd_path = [sys.executable, f"{suzieq_dir}/{conftest.suzieq_cli_path}"]
     sqcmd = sqcmd_path + ['device', 'unique', '--columns=namespace',
-                          f'--namespace={name}']
+                          f'--namespace={name}', '-c', cfg_file]
     out, ret, err = run_cmd(sqcmd)
     assert threshold in out, f'failed {out}, {err}'  # there should be 14 different hosts collected
     for cmd in ['bgp', 'interface', 'ospf', 'evpnVni']:
@@ -109,7 +118,7 @@ def check_suzieq_data(suzieq_dir, name, threshold='14'):
         assert code is None or code is 1 or code is 255
 
 
-def collect_data(topology, proto, scenario, name, suzieq_dir):
+def gather_data(topology, proto, scenario, name, suzieq_dir):
     os.chdir(f"{topology}/{proto}")
     vagrant_up()
     out, code = run_scenario(scenario)
@@ -120,14 +129,18 @@ def collect_data(topology, proto, scenario, name, suzieq_dir):
         vagrant_up()
         run_scenario(scenario)
     dir = os.getcwd() + '/..'
-    cfg_file = create_config('../', suzieq_dir)
-    logging.warning(f"config file {os.getcwd()}/{cfg_file}")
-    run_sqpoller(name, dir, suzieq_dir)
-    check_suzieq_data(suzieq_dir, name)
+    run_sqpoller_gather(name, dir, suzieq_dir)
     vagrant_down()
-    sleep_time = random.random() * 600
-    time.sleep(sleep_time)
+    #sleep_time = random.random() * 30
+    time.sleep(60)
     os.chdir('../..')
+
+
+def update_data(name, files_dir, suzieq_dir, tmp_path, number_of_devices='14'):
+    cfg_file = create_config(tmp_path, suzieq_dir)
+    run_sqpoller_process(files_dir, suzieq_dir, cfg_file)
+    check_suzieq_data(suzieq_dir, name, cfg_file, number_of_devices)
+
     return cfg_file
 
 
@@ -158,7 +171,7 @@ def vagrant_setup():
 def git_del_dir(dir):
     if os.path.isdir(dir):
         try:
-            check_call(['git', 'rm', dir])
+            check_call(['git', 'rm', '-rf', dir])
         except CalledProcessError as e:
             shutil.rmtree(dir)
 
@@ -175,41 +188,105 @@ def update_sqcmds(files, data_dir=None, namespace=None):
         assert code is None or code == 0, f"{file} failed, {out} {code} {error}"
 
 
+def update_input_data(root_dir, nos, scenario):
+        dst_dir = f'{root_dir}/tests/integration/sqcmds/{nos}-input/{scenario}/'
+        git_del_dir(dst_dir)
+        copytree('/tmp/suzieq-input', dst_dir)
+        shutil.rmtree('/tmp/suzieq-input')
+
+
 class TestUpdate:
-    @pytest.mark.update_data
+
+    @pytest.mark.gather_data
     @pytest.mark.skipif(not os.environ.get('SUZIEQ_POLLER', None),
-                        reason='Not updating data')
-    def test_update_data(self, tmp_path, vagrant_setup):
+                        reason='Not gathering data')
+    def test_gather_cumulus_data(self, tmp_path, vagrant_setup):
         orig_dir = os.getcwd()
         path = get_cndcn(tmp_path)
         os.chdir(path + '/topologies')
 
-        collect_data('dual-attach', 'evpn', 'ospf-ibgp', 'ospf-ibgp', orig_dir)
-        collect_data('dual-attach', 'evpn', 'centralized', 'dual-evpn', orig_dir)
-        collect_data('single-attach', 'ospf', 'numbered', 'ospf-single', orig_dir)
+        gather_data('dual-attach', 'evpn', 'ospf-ibgp', 'ospf-ibgp', orig_dir)
+        update_input_data(orig_dir, 'cumulus', 'ospf-ibgp')
+
+        gather_data('dual-attach', 'evpn', 'centralized', 'dual-evpn', orig_dir)
+        update_input_data(orig_dir, 'cumulus', 'dual-evpn')
+        
+        gather_data('single-attach', 'ospf', 'numbered', 'ospf-single', orig_dir)
+        update_input_data(orig_dir, 'cumulus', 'ospf-single')
+
+        gather_data('dual-attach', 'bgp', 'unnumbered', 'dual-bgp', orig_dir)
+        update_input_data(orig_dir, 'cumulus', 'dual-bgp')
+
+    @pytest.mark.update_data
+    @pytest.mark.skipif(not os.environ.get('SUZIEQ_POLLER', None),
+                        reason='Not updating data')
+    def test_update_cumulus_multidc_data(self, tmp_path):
+        orig_dir = os.getcwd()
+
+        update_data('ospf-ibgp', f'{orig_dir}/tests/integration/sqcmds/cumulus-input/ospf-ibgp', 
+            orig_dir, tmp_path)
+        update_data('dual-evpn', f'{orig_dir}/tests/integration/sqcmds/cumulus-input/dual-evpn', 
+            orig_dir, tmp_path)
+        update_data('ospf-single', f'{orig_dir}/tests/integration/sqcmds/cumulus-input/ospf-single', 
+            orig_dir, tmp_path)
 
         dst_dir = f'{orig_dir}/tests/data/multidc/parquet-out'
         git_del_dir(dst_dir)
-        copytree('dual-attach/parquet-out', dst_dir)
-        copytree('single-attach/parquet-out', dst_dir)
-        shutil.rmtree('dual-attach/parquet-out')
-        shutil.rmtree('single-attach/parquet-out')
-
-        collect_data('dual-attach', 'bgp', 'unnumbered', 'dual-bgp', orig_dir)
+        copytree(f'{tmp_path}/parquet-out', dst_dir)
+        shutil.rmtree(f'{tmp_path}/parquet-out')
+        
+        update_data('dual-bgp', f'{orig_dir}/tests/integration/sqcmds/cumulus-input/dual-bgp', 
+            orig_dir, tmp_path)
 
         dst_dir = f'{orig_dir}/tests/data/basic_dual_bgp/parquet-out'
-        if os.path.isdir(dst_dir):
-            shutil.rmtree(dst_dir)
-
-        copytree('dual-attach/parquet-out', dst_dir)
-        shutil.rmtree('dual-attach/parquet-out')
+        git_del_dir(dst_dir)
+        
+        copytree(f'{tmp_path}/parquet-out', dst_dir)
+        shutil.rmtree(f'{tmp_path}/parquet-out')
 
         # update the samples data with updates from the newly collected data
-        os.chdir(orig_dir)
-        update_sqcmds(glob.glob(f'{samples_dir}/*.yml'))
 
-# TODO
-# have vagrant only go up/down when changing single/dual ?
+        update_sqcmds(glob.glob(f'{sqcmds_dir}/cumulus-samples/*.yml'))
+
+    
+    @pytest.mark.update_data
+    @pytest.mark.skipif(not os.environ.get('SUZIEQ_POLLER', None),
+                        reason='Not updating data')
+    def test_update_eos_data(self, tmp_path):
+        orig_dir = os.getcwd()
+        nos = 'eos'
+
+        update_data(nos, f'{orig_dir}/tests/integration/sqcmds/{nos}-input/', 
+            orig_dir, tmp_path)
+        
+        dst_dir = f'{orig_dir}/tests/data/{nos}/parquet-out'
+        git_del_dir(dst_dir)
+        copytree(f'{tmp_path}/parquet-out', dst_dir)
+        shutil.rmtree(f'{tmp_path}/parquet-out')
+        
+        # update the samples data with updates from the newly collected data
+
+        update_sqcmds(glob.glob(f'{sqcmds_dir}/{nos}-samples/*.yml'))
+
+    
+    @pytest.mark.update_data
+    @pytest.mark.skipif(not os.environ.get('SUZIEQ_POLLER', None),
+                        reason='Not updating data')
+    def test_update_nxos_data(self, tmp_path):
+        orig_dir = os.getcwd()
+        nos = 'nxos'
+
+        update_data(nos, f'{orig_dir}/tests/integration/sqcmds/{nos}-input/', 
+            orig_dir, tmp_path, number_of_devices='8')
+        
+        dst_dir = f'{orig_dir}/tests/data/{nos}/parquet-out'
+        git_del_dir(dst_dir)
+        copytree(f'{tmp_path}/parquet-out', dst_dir)
+        shutil.rmtree(f'{tmp_path}/parquet-out')
+        
+        # update the samples data with updates from the newly collected data
+
+        update_sqcmds(glob.glob(f'{sqcmds_dir}/{nos}-samples/*.yml'))
 
 tests = [
     ['bgp', 'numbered'],
@@ -267,7 +344,7 @@ def _create_data(topology, proto, scenario, path):
     os.chdir(path + '/topologies')
     name = f'{topology}_{proto}_{scenario}'
 
-    collect_data(topology, proto, scenario, name, orig_dir)
+    update_data(topology, proto, scenario, name, orig_dir)
 
     if not os.path.isdir(parquet_dir):
         os.mkdir(parquet_dir)
