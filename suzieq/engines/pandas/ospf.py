@@ -60,10 +60,10 @@ class OspfObj(SqEngineObject):
         else:
             df = df.rename(columns={'vrf_x': 'vrf', 'area_x': 'area',
                                     'state_x': 'ifState', 'state_y': 'adjState',
-                                    'timestamp_y': 'timestamp'})
+                                    'timestamp_x': 'timestamp'})
             df = df.drop(list(df.filter(regex='_y$')), axis=1) \
-                   .drop(columns=['timestamp_x']) \
-                .fillna({'peerIP': '-', 'numChanges': 0})
+                .fillna({'peerIP': '-', 'numChanges': 0,
+                         'lastChangeTime': '-'})
 
         # Fill the adjState column with passive if passive
         if 'passive' in df.columns:
@@ -113,7 +113,7 @@ class OspfObj(SqEngineObject):
         ]
 
         self.summary_df['lastChangeTime'] = pd.to_datetime(
-            self.summary_df['lastChangeTime'], unit='ms')
+            self.summary_df['lastChangeTime'], unit='ms', errors='ignore')
         self.summary_df['lastChangeTime'] = (
             self.summary_df['timestamp'] - self.summary_df['lastChangeTime'])
         self.summary_df['lastChangeTime'] = self.summary_df['lastChangeTime'] \
@@ -189,6 +189,8 @@ class OspfObj(SqEngineObject):
                      "peerIfname", "peerMacaddr"]
         )
         if lldp_df.empty:
+            ospf_df = ospf_df[~(ospf_df.ifname.str.contains('loopback') |
+                                ospf_df.ifname.str.contains('Vlan'))]
             ospf_df['assertReason'] = 'No LLDP peering info'
             ospf_df['assert'] = 'fail'
             return ospf_df[['namespace', 'hostname', 'vrf', 'ifname',
@@ -218,6 +220,9 @@ class OspfObj(SqEngineObject):
             .dropna(how="any")
 
         if int_df.empty:
+            # Weed out the loopback and SVI interfaces as they have no LLDP peers
+            ospf_df = ospf_df[~(ospf_df.ifname.str.contains('loopback') |
+                                ospf_df.ifname.str.contains('Vlan'))]
             ospf_df['assertReason'] = 'No LLDP peering info'
             ospf_df['assert'] = 'fail'
             return ospf_df[['namespace', 'hostname', 'vrf', 'ifname',
