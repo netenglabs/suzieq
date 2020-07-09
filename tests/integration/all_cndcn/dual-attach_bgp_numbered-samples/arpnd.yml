@@ -1,0 +1,305 @@
+description: 'Testing verbs for arpnd: show summarize unique'
+tests:
+- command: arpnd show --format=json --namespace=dual-attach_bgp_numbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_numbered/parquet-out
+  marks: arpnd show
+  output: '[{"namespace": "dual-attach_bgp_numbered", "hostname": "edge01", "ipAddress":
+    "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:98:16:73", "state": "reachable",
+    "remote": false, "timestamp": 1594293667818}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "edge01", "ipAddress": "169.254.254.1", "oif": "eth1.2", "macaddr":
+    "52:54:00:e7:4b:91", "state": "reachable", "remote": false, "timestamp": 1594293667818},
+    {"namespace": "dual-attach_bgp_numbered", "hostname": "edge01", "ipAddress": "169.254.254.9",
+    "oif": "eth1.4", "macaddr": "52:54:00:e7:4b:91", "state": "reachable", "remote":
+    false, "timestamp": 1594293667818}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "edge01", "ipAddress": "169.254.253.1", "oif": "eth2.2", "macaddr":
+    "52:54:00:82:7f:87", "state": "reachable", "remote": false, "timestamp": 1594293667818},
+    {"namespace": "dual-attach_bgp_numbered", "hostname": "edge01", "ipAddress": "169.254.253.9",
+    "oif": "eth2.4", "macaddr": "52:54:00:82:7f:87", "state": "reachable", "remote":
+    false, "timestamp": 1594293667818}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "exit01", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr":
+    "52:54:00:98:16:73", "state": "reachable", "remote": false, "timestamp": 1594293668076},
+    {"namespace": "dual-attach_bgp_numbered", "hostname": "exit01", "ipAddress": "10.127.0.8",
+    "oif": "swp1", "macaddr": "52:54:00:15:e5:f6", "state": "reachable", "remote":
+    false, "timestamp": 1594293668076}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "exit01", "ipAddress": "10.127.1.8", "oif": "swp2", "macaddr": "52:54:00:b4:b6:b6",
+    "state": "reachable", "remote": false, "timestamp": 1594293668076}, {"namespace":
+    "dual-attach_bgp_numbered", "hostname": "exit01", "ipAddress": "169.254.254.2",
+    "oif": "swp5.2", "macaddr": "52:54:00:a7:ef:ba", "state": "reachable", "remote":
+    false, "timestamp": 1594293668076}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "exit01", "ipAddress": "169.254.254.10", "oif": "swp5.4", "macaddr":
+    "52:54:00:a7:ef:ba", "state": "reachable", "remote": false, "timestamp": 1594293668076},
+    {"namespace": "dual-attach_bgp_numbered", "hostname": "exit01", "ipAddress": "169.254.127.0",
+    "oif": "swp6", "macaddr": "52:54:00:67:64:6f", "state": "reachable", "remote":
+    false, "timestamp": 1594293668076}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "exit01", "ipAddress": "fe80::5054:ff:fe6d:7764", "oif": "swp6", "macaddr":
+    "00:00:00:00:00:00", "state": "failed", "remote": false, "timestamp": 1594293668076},
+    {"namespace": "dual-attach_bgp_numbered", "hostname": "exit01", "ipAddress": "fe80::5054:ff:fe67:646f",
+    "oif": "swp6", "macaddr": "52:54:00:67:64:6f", "state": "router", "remote": false,
+    "timestamp": 1594293668076}, {"namespace": "dual-attach_bgp_numbered", "hostname":
+    "exit02", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:98:16:73",
+    "state": "reachable", "remote": false, "timestamp": 1594293668001}, {"namespace":
+    "dual-attach_bgp_numbered", "hostname": "exit02", "ipAddress": "10.127.0.10",
+    "oif": "swp1", "macaddr": "52:54:00:36:87:7d", "state": "reachable", "remote":
+    false, "timestamp": 1594293668001}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "exit02", "ipAddress": "10.127.1.10", "oif": "swp2", "macaddr": "52:54:00:7c:b9:15",
+    "state": "reachable", "remote": false, "timestamp": 1594293668001}, {"namespace":
+    "dual-attach_bgp_numbered", "hostname": "exit02", "ipAddress": "169.254.253.2",
+    "oif": "swp5.2", "macaddr": "52:54:00:41:48:61", "state": "reachable", "remote":
+    false, "timestamp": 1594293668001}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "exit02", "ipAddress": "169.254.253.10", "oif": "swp5.4", "macaddr":
+    "52:54:00:41:48:61", "state": "reachable", "remote": false, "timestamp": 1594293668001},
+    {"namespace": "dual-attach_bgp_numbered", "hostname": "exit02", "ipAddress": "169.254.127.2",
+    "oif": "swp6", "macaddr": "52:54:00:aa:37:a2", "state": "reachable", "remote":
+    false, "timestamp": 1594293668001}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "exit02", "ipAddress": "fe80::5054:ff:feaa:37a2", "oif": "swp6", "macaddr":
+    "52:54:00:aa:37:a2", "state": "router", "remote": false, "timestamp": 1594293668001},
+    {"namespace": "dual-attach_bgp_numbered", "hostname": "internet", "ipAddress":
+    "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:98:16:73", "state": "reachable",
+    "remote": false, "timestamp": 1594293668033}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "internet", "ipAddress": "169.254.127.1", "oif": "swp1", "macaddr":
+    "52:54:00:6d:77:64", "state": "reachable", "remote": false, "timestamp": 1594293668033},
+    {"namespace": "dual-attach_bgp_numbered", "hostname": "internet", "ipAddress":
+    "fe80::5054:ff:fe6d:7764", "oif": "swp1", "macaddr": "52:54:00:6d:77:64", "state":
+    "router", "remote": false, "timestamp": 1594293668033}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "internet", "ipAddress": "169.254.127.3", "oif": "swp2", "macaddr":
+    "52:54:00:cd:50:1e", "state": "reachable", "remote": false, "timestamp": 1594293668033},
+    {"namespace": "dual-attach_bgp_numbered", "hostname": "internet", "ipAddress":
+    "fe80::5054:ff:fecd:501e", "oif": "swp2", "macaddr": "52:54:00:cd:50:1e", "state":
+    "router", "remote": false, "timestamp": 1594293668033}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "leaf01", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr":
+    "52:54:00:98:16:73", "state": "reachable", "remote": false, "timestamp": 1594293668002},
+    {"namespace": "dual-attach_bgp_numbered", "hostname": "leaf01", "ipAddress": "169.254.1.2",
+    "oif": "peerlink.4094", "macaddr": "52:54:00:fe:ba:2d", "state": "reachable",
+    "remote": false, "timestamp": 1594293668002}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "leaf01", "ipAddress": "10.127.0.0", "oif": "swp1", "macaddr": "52:54:00:ad:c4:9b",
+    "state": "reachable", "remote": false, "timestamp": 1594293668002}, {"namespace":
+    "dual-attach_bgp_numbered", "hostname": "leaf01", "ipAddress": "10.127.1.0", "oif":
+    "swp2", "macaddr": "52:54:00:a6:d8:f9", "state": "reachable", "remote": false,
+    "timestamp": 1594293668002}, {"namespace": "dual-attach_bgp_numbered", "hostname":
+    "leaf01", "ipAddress": "172.16.1.101", "oif": "vlan13", "macaddr": "52:54:00:31:b4:b5",
+    "state": "reachable", "remote": false, "timestamp": 1594293668002}, {"namespace":
+    "dual-attach_bgp_numbered", "hostname": "leaf01", "ipAddress": "172.16.1.1", "oif":
+    "vlan13", "macaddr": "52:54:00:78:17:3f", "state": "permanent", "remote": false,
+    "timestamp": 1594293668002}, {"namespace": "dual-attach_bgp_numbered", "hostname":
+    "leaf01", "ipAddress": "fe80::5054:ff:fe31:b4b5", "oif": "vlan13", "macaddr":
+    "52:54:00:31:b4:b5", "state": "reachable", "remote": false, "timestamp": 1594293668002},
+    {"namespace": "dual-attach_bgp_numbered", "hostname": "leaf01", "ipAddress": "fe80::5054:ff:fe78:173f",
+    "oif": "vlan13", "macaddr": "52:54:00:78:17:3f", "state": "permanent", "remote":
+    false, "timestamp": 1594293668002}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "leaf01", "ipAddress": "172.16.2.1", "oif": "vlan24", "macaddr": "52:54:00:78:17:3f",
+    "state": "permanent", "remote": false, "timestamp": 1594293668002}, {"namespace":
+    "dual-attach_bgp_numbered", "hostname": "leaf01", "ipAddress": "172.16.2.102",
+    "oif": "vlan24", "macaddr": "52:54:00:af:8d:ee", "state": "reachable", "remote":
+    false, "timestamp": 1594293668002}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "leaf01", "ipAddress": "fe80::5054:ff:fe78:173f", "oif": "vlan24",
+    "macaddr": "52:54:00:78:17:3f", "state": "permanent", "remote": false, "timestamp":
+    1594293668002}, {"namespace": "dual-attach_bgp_numbered", "hostname": "leaf01",
+    "ipAddress": "fe80::5054:ff:feaf:8dee", "oif": "vlan24", "macaddr": "52:54:00:af:8d:ee",
+    "state": "reachable", "remote": false, "timestamp": 1594293668002}, {"namespace":
+    "dual-attach_bgp_numbered", "hostname": "leaf02", "ipAddress": "192.168.121.1",
+    "oif": "eth0", "macaddr": "52:54:00:98:16:73", "state": "reachable", "remote":
+    false, "timestamp": 1594293668094}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "leaf02", "ipAddress": "169.254.1.1", "oif": "peerlink.4094", "macaddr":
+    "52:54:00:6b:69:d6", "state": "reachable", "remote": false, "timestamp": 1594293668094},
+    {"namespace": "dual-attach_bgp_numbered", "hostname": "leaf02", "ipAddress": "10.127.0.2",
+    "oif": "swp1", "macaddr": "52:54:00:0b:5e:bb", "state": "reachable", "remote":
+    false, "timestamp": 1594293668094}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "leaf02", "ipAddress": "10.127.1.2", "oif": "swp2", "macaddr": "52:54:00:e7:2d:63",
+    "state": "reachable", "remote": false, "timestamp": 1594293668094}, {"namespace":
+    "dual-attach_bgp_numbered", "hostname": "leaf02", "ipAddress": "172.16.1.101",
+    "oif": "vlan13", "macaddr": "52:54:00:31:b4:b5", "state": "reachable", "remote":
+    false, "timestamp": 1594293668094}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "leaf02", "ipAddress": "fe80::5054:ff:fe63:78e3", "oif": "vlan13",
+    "macaddr": "52:54:00:63:78:e3", "state": "permanent", "remote": false, "timestamp":
+    1594293668094}, {"namespace": "dual-attach_bgp_numbered", "hostname": "leaf02",
+    "ipAddress": "fe80::5054:ff:fe31:b4b5", "oif": "vlan13", "macaddr": "52:54:00:31:b4:b5",
+    "state": "reachable", "remote": false, "timestamp": 1594293668094}, {"namespace":
+    "dual-attach_bgp_numbered", "hostname": "leaf02", "ipAddress": "172.16.2.102",
+    "oif": "vlan24", "macaddr": "52:54:00:af:8d:ee", "state": "reachable", "remote":
+    false, "timestamp": 1594293668094}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "leaf02", "ipAddress": "fe80::5054:ff:fe63:78e3", "oif": "vlan24",
+    "macaddr": "52:54:00:63:78:e3", "state": "permanent", "remote": false, "timestamp":
+    1594293668094}, {"namespace": "dual-attach_bgp_numbered", "hostname": "leaf02",
+    "ipAddress": "fe80::5054:ff:feaf:8dee", "oif": "vlan24", "macaddr": "52:54:00:af:8d:ee",
+    "state": "reachable", "remote": false, "timestamp": 1594293668094}, {"namespace":
+    "dual-attach_bgp_numbered", "hostname": "leaf03", "ipAddress": "192.168.121.1",
+    "oif": "eth0", "macaddr": "52:54:00:98:16:73", "state": "reachable", "remote":
+    false, "timestamp": 1594293668095}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "leaf03", "ipAddress": "169.254.1.2", "oif": "peerlink.4094", "macaddr":
+    "52:54:00:c5:dd:36", "state": "reachable", "remote": false, "timestamp": 1594293668095},
+    {"namespace": "dual-attach_bgp_numbered", "hostname": "leaf03", "ipAddress": "10.127.0.4",
+    "oif": "swp1", "macaddr": "52:54:00:f6:1a:f1", "state": "reachable", "remote":
+    false, "timestamp": 1594293668095}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "leaf03", "ipAddress": "10.127.1.4", "oif": "swp2", "macaddr": "52:54:00:e2:4e:4e",
+    "state": "reachable", "remote": false, "timestamp": 1594293668095}, {"namespace":
+    "dual-attach_bgp_numbered", "hostname": "leaf03", "ipAddress": "172.16.3.1", "oif":
+    "vlan13", "macaddr": "52:54:00:72:f5:43", "state": "permanent", "remote": false,
+    "timestamp": 1594293668095}, {"namespace": "dual-attach_bgp_numbered", "hostname":
+    "leaf03", "ipAddress": "172.16.3.103", "oif": "vlan13", "macaddr": "52:54:00:84:70:ea",
+    "state": "reachable", "remote": false, "timestamp": 1594293668095}, {"namespace":
+    "dual-attach_bgp_numbered", "hostname": "leaf03", "ipAddress": "fe80::5054:ff:fe84:70ea",
+    "oif": "vlan13", "macaddr": "52:54:00:84:70:ea", "state": "reachable", "remote":
+    false, "timestamp": 1594293668095}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "leaf03", "ipAddress": "fe80::5054:ff:fe72:f543", "oif": "vlan13",
+    "macaddr": "52:54:00:72:f5:43", "state": "permanent", "remote": false, "timestamp":
+    1594293668095}, {"namespace": "dual-attach_bgp_numbered", "hostname": "leaf03",
+    "ipAddress": "172.16.4.104", "oif": "vlan24", "macaddr": "52:54:00:ba:16:5c",
+    "state": "reachable", "remote": false, "timestamp": 1594293668095}, {"namespace":
+    "dual-attach_bgp_numbered", "hostname": "leaf03", "ipAddress": "172.16.4.1", "oif":
+    "vlan24", "macaddr": "52:54:00:72:f5:43", "state": "permanent", "remote": false,
+    "timestamp": 1594293668095}, {"namespace": "dual-attach_bgp_numbered", "hostname":
+    "leaf03", "ipAddress": "fe80::5054:ff:feba:165c", "oif": "vlan24", "macaddr":
+    "52:54:00:ba:16:5c", "state": "reachable", "remote": false, "timestamp": 1594293668095},
+    {"namespace": "dual-attach_bgp_numbered", "hostname": "leaf03", "ipAddress": "fe80::5054:ff:fe72:f543",
+    "oif": "vlan24", "macaddr": "52:54:00:72:f5:43", "state": "permanent", "remote":
+    false, "timestamp": 1594293668095}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "leaf04", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr":
+    "52:54:00:98:16:73", "state": "reachable", "remote": false, "timestamp": 1594293668033},
+    {"namespace": "dual-attach_bgp_numbered", "hostname": "leaf04", "ipAddress": "169.254.1.1",
+    "oif": "peerlink.4094", "macaddr": "52:54:00:7c:ee:a9", "state": "reachable",
+    "remote": false, "timestamp": 1594293668033}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "leaf04", "ipAddress": "10.127.0.6", "oif": "swp1", "macaddr": "52:54:00:dd:23:ec",
+    "state": "reachable", "remote": false, "timestamp": 1594293668033}, {"namespace":
+    "dual-attach_bgp_numbered", "hostname": "leaf04", "ipAddress": "10.127.1.6", "oif":
+    "swp2", "macaddr": "52:54:00:6b:71:8a", "state": "reachable", "remote": false,
+    "timestamp": 1594293668033}, {"namespace": "dual-attach_bgp_numbered", "hostname":
+    "leaf04", "ipAddress": "172.16.3.103", "oif": "vlan13", "macaddr": "52:54:00:84:70:ea",
+    "state": "reachable", "remote": false, "timestamp": 1594293668033}, {"namespace":
+    "dual-attach_bgp_numbered", "hostname": "leaf04", "ipAddress": "fe80::5054:ff:fe86:d808",
+    "oif": "vlan13", "macaddr": "52:54:00:86:d8:08", "state": "permanent", "remote":
+    false, "timestamp": 1594293668033}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "leaf04", "ipAddress": "fe80::5054:ff:fe84:70ea", "oif": "vlan13",
+    "macaddr": "52:54:00:84:70:ea", "state": "reachable", "remote": false, "timestamp":
+    1594293668033}, {"namespace": "dual-attach_bgp_numbered", "hostname": "leaf04",
+    "ipAddress": "172.16.4.104", "oif": "vlan24", "macaddr": "52:54:00:ba:16:5c",
+    "state": "reachable", "remote": false, "timestamp": 1594293668033}, {"namespace":
+    "dual-attach_bgp_numbered", "hostname": "leaf04", "ipAddress": "fe80::5054:ff:fe86:d808",
+    "oif": "vlan24", "macaddr": "52:54:00:86:d8:08", "state": "permanent", "remote":
+    false, "timestamp": 1594293668033}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "leaf04", "ipAddress": "fe80::5054:ff:feba:165c", "oif": "vlan24",
+    "macaddr": "52:54:00:ba:16:5c", "state": "reachable", "remote": false, "timestamp":
+    1594293668033}, {"namespace": "dual-attach_bgp_numbered", "hostname": "server101",
+    "ipAddress": "172.16.1.1", "oif": "bond0", "macaddr": "52:54:00:63:78:e3", "state":
+    "reachable", "remote": false, "timestamp": 1594293667785}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "server101", "ipAddress": "fe80::5054:ff:fe63:78e3", "oif": "bond0",
+    "macaddr": "52:54:00:63:78:e3", "state": "router", "remote": false, "timestamp":
+    1594293667785}, {"namespace": "dual-attach_bgp_numbered", "hostname": "server101",
+    "ipAddress": "fe80::5054:ff:fe78:173f", "oif": "bond0", "macaddr": "52:54:00:78:17:3f",
+    "state": "router", "remote": false, "timestamp": 1594293667785}, {"namespace":
+    "dual-attach_bgp_numbered", "hostname": "server101", "ipAddress": "192.168.121.1",
+    "oif": "eth0", "macaddr": "52:54:00:98:16:73", "state": "reachable", "remote":
+    false, "timestamp": 1594293667785}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "server102", "ipAddress": "172.16.2.1", "oif": "bond0", "macaddr":
+    "52:54:00:63:78:e3", "state": "reachable", "remote": false, "timestamp": 1594293667785},
+    {"namespace": "dual-attach_bgp_numbered", "hostname": "server102", "ipAddress":
+    "fe80::5054:ff:fe78:173f", "oif": "bond0", "macaddr": "52:54:00:78:17:3f", "state":
+    "router", "remote": false, "timestamp": 1594293667785}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "server102", "ipAddress": "fe80::5054:ff:fe63:78e3", "oif": "bond0",
+    "macaddr": "52:54:00:63:78:e3", "state": "router", "remote": false, "timestamp":
+    1594293667785}, {"namespace": "dual-attach_bgp_numbered", "hostname": "server102",
+    "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:98:16:73", "state":
+    "reachable", "remote": false, "timestamp": 1594293667785}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "server103", "ipAddress": "172.16.3.1", "oif": "bond0", "macaddr":
+    "52:54:00:72:f5:43", "state": "reachable", "remote": false, "timestamp": 1594293667784},
+    {"namespace": "dual-attach_bgp_numbered", "hostname": "server103", "ipAddress":
+    "fe80::5054:ff:fe86:d808", "oif": "bond0", "macaddr": "52:54:00:86:d8:08", "state":
+    "router", "remote": false, "timestamp": 1594293667784}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "server103", "ipAddress": "fe80::5054:ff:fe72:f543", "oif": "bond0",
+    "macaddr": "52:54:00:72:f5:43", "state": "router", "remote": false, "timestamp":
+    1594293667784}, {"namespace": "dual-attach_bgp_numbered", "hostname": "server103",
+    "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:98:16:73", "state":
+    "reachable", "remote": false, "timestamp": 1594293667784}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "server104", "ipAddress": "172.16.4.1", "oif": "bond0", "macaddr":
+    "52:54:00:72:f5:43", "state": "reachable", "remote": false, "timestamp": 1594293667784},
+    {"namespace": "dual-attach_bgp_numbered", "hostname": "server104", "ipAddress":
+    "fe80::5054:ff:fe72:f543", "oif": "bond0", "macaddr": "52:54:00:72:f5:43", "state":
+    "router", "remote": false, "timestamp": 1594293667784}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "server104", "ipAddress": "fe80::5054:ff:fe86:d808", "oif": "bond0",
+    "macaddr": "52:54:00:86:d8:08", "state": "router", "remote": false, "timestamp":
+    1594293667784}, {"namespace": "dual-attach_bgp_numbered", "hostname": "server104",
+    "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:98:16:73", "state":
+    "reachable", "remote": false, "timestamp": 1594293667784}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "spine01", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr":
+    "52:54:00:98:16:73", "state": "reachable", "remote": false, "timestamp": 1594293667978},
+    {"namespace": "dual-attach_bgp_numbered", "hostname": "spine01", "ipAddress":
+    "10.127.0.1", "oif": "swp1", "macaddr": "52:54:00:8e:d5:e8", "state": "reachable",
+    "remote": false, "timestamp": 1594293667978}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "spine01", "ipAddress": "10.127.0.3", "oif": "swp2", "macaddr": "52:54:00:bb:a2:1a",
+    "state": "reachable", "remote": false, "timestamp": 1594293667978}, {"namespace":
+    "dual-attach_bgp_numbered", "hostname": "spine01", "ipAddress": "10.127.0.5",
+    "oif": "swp3", "macaddr": "52:54:00:35:0e:45", "state": "reachable", "remote":
+    false, "timestamp": 1594293667978}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "spine01", "ipAddress": "10.127.0.7", "oif": "swp4", "macaddr": "52:54:00:ed:5a:e0",
+    "state": "reachable", "remote": false, "timestamp": 1594293667978}, {"namespace":
+    "dual-attach_bgp_numbered", "hostname": "spine01", "ipAddress": "10.127.0.11",
+    "oif": "swp5", "macaddr": "52:54:00:86:4b:96", "state": "reachable", "remote":
+    false, "timestamp": 1594293667978}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "spine01", "ipAddress": "10.127.0.9", "oif": "swp6", "macaddr": "52:54:00:65:51:8d",
+    "state": "reachable", "remote": false, "timestamp": 1594293667978}, {"namespace":
+    "dual-attach_bgp_numbered", "hostname": "spine02", "ipAddress": "192.168.121.1",
+    "oif": "eth0", "macaddr": "52:54:00:98:16:73", "state": "reachable", "remote":
+    false, "timestamp": 1594293668001}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "spine02", "ipAddress": "10.127.1.1", "oif": "swp1", "macaddr": "52:54:00:b7:38:e5",
+    "state": "reachable", "remote": false, "timestamp": 1594293668001}, {"namespace":
+    "dual-attach_bgp_numbered", "hostname": "spine02", "ipAddress": "10.127.1.3",
+    "oif": "swp2", "macaddr": "52:54:00:3b:96:98", "state": "reachable", "remote":
+    false, "timestamp": 1594293668001}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "spine02", "ipAddress": "10.127.1.5", "oif": "swp3", "macaddr": "52:54:00:05:48:37",
+    "state": "reachable", "remote": false, "timestamp": 1594293668001}, {"namespace":
+    "dual-attach_bgp_numbered", "hostname": "spine02", "ipAddress": "10.127.1.7",
+    "oif": "swp4", "macaddr": "52:54:00:77:2e:2b", "state": "reachable", "remote":
+    false, "timestamp": 1594293668001}, {"namespace": "dual-attach_bgp_numbered",
+    "hostname": "spine02", "ipAddress": "10.127.1.11", "oif": "swp5", "macaddr": "52:54:00:4e:02:81",
+    "state": "reachable", "remote": false, "timestamp": 1594293668001}, {"namespace":
+    "dual-attach_bgp_numbered", "hostname": "spine02", "ipAddress": "10.127.1.9",
+    "oif": "swp6", "macaddr": "52:54:00:1d:02:9e", "state": "reachable", "remote":
+    false, "timestamp": 1594293668001}]'
+- command: arpnd show --columns=hostname --format=json --namespace=dual-attach_bgp_numbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_numbered/parquet-out
+  marks: arpnd show
+  output: '[{"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
+    {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "internet"}, {"hostname": "internet"}, {"hostname": "internet"}, {"hostname":
+    "internet"}, {"hostname": "internet"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "server101"}, {"hostname": "server101"}, {"hostname": "server101"},
+    {"hostname": "server101"}, {"hostname": "server102"}, {"hostname": "server102"},
+    {"hostname": "server102"}, {"hostname": "server102"}, {"hostname": "server103"},
+    {"hostname": "server103"}, {"hostname": "server103"}, {"hostname": "server103"},
+    {"hostname": "server104"}, {"hostname": "server104"}, {"hostname": "server104"},
+    {"hostname": "server104"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}]'
+- command: arpnd summarize --format=json --namespace=dual-attach_bgp_numbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_numbered/parquet-out
+  marks: arpnd summarize
+  output: '{"dual-attach_bgp_numbered": {"deviceCnt": 14, "arpNdEntriesCnt": 99, "macaddrCnt":
+    99, "oifCnt": 99, "uniqueOifCnt": 17, "remoteEntriesCnt": 0, "staticEntriesCnt":
+    12, "failedEntryCnt": 1}}'
+- command: arpnd unique --columns=hostname --format=json --namespace=dual-attach_bgp_numbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_numbered/parquet-out
+  marks: arpnd unique
+  output: '[{"hostname": "server104", "count": 4}, {"hostname": "server103", "count":
+    4}, {"hostname": "server102", "count": 4}, {"hostname": "server101", "count":
+    4}, {"hostname": "internet", "count": 5}, {"hostname": "edge01", "count": 5},
+    {"hostname": "spine02", "count": 7}, {"hostname": "spine01", "count": 7}, {"hostname":
+    "exit02", "count": 7}, {"hostname": "exit01", "count": 8}, {"hostname": "leaf04",
+    "count": 10}, {"hostname": "leaf02", "count": 10}, {"hostname": "leaf03", "count":
+    12}, {"hostname": "leaf01", "count": 12}]'
