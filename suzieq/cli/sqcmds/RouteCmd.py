@@ -127,7 +127,7 @@ class RouteCmd(SqCommand):
     @command('lpm')
     @argument("address", description="IP Address, in quotes, for lpm query")
     @argument("vrf", description="specific VRF to qualify")
-    def lpm(self, address: str = "", vrf: str = "default"):
+    def lpm(self, address: str = '', vrf: str = ''):
         """
         Show the Longest Prefix Match on a given prefix, vrf
         """
