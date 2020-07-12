@@ -8,7 +8,7 @@ Do you login to every network node you have to figure out answers to a questions
 
 If you answered yes to one or more of these questions, then Suzieq is a tool that we think will be interesting to you. 
 
-**Suzieq** is both a framework and an application using that framework, that is focused on **improving the observability of your network**.  We define observaility as the ability of a system to answer either trivial or complex questions that you pose as you go about operating your network. How easily you can answer your questions is a measure of how good the system's observability is. A good observable system goes well beyond monitoring and alerting. Suzieq is primarily meant for use by network engineers and designers.
+**Suzieq** is both a framework and an application using that framework, that is focused on **improving the observability of your network**.  We define observability as the ability of a system to answer either trivial or complex questions that you pose as you go about operating your network. How easily you can answer your questions is a measure of how good the system's observability is. A good observable system goes well beyond monitoring and alerting. Suzieq is primarily meant for use by network engineers and designers.
 
 Suzieq does multiple things. It collects data from different devices and systems. It normalizes the data and then stores it in a vendor independent way. Then it allows analysis of that data. 
 
