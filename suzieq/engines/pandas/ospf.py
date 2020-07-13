@@ -63,7 +63,7 @@ class OspfObj(SqEngineObject):
                                     'timestamp_x': 'timestamp'})
             df = df.drop(list(df.filter(regex='_y$')), axis=1) \
                 .fillna({'peerIP': '-', 'numChanges': 0,
-                         'lastChangeTime': '-'})
+                         'lastChangeTime': 0})
 
         # Fill the adjState column with passive if passive
         if 'passive' in df.columns:
@@ -73,9 +73,14 @@ class OspfObj(SqEngineObject):
             df.drop(columns=['passive'], inplace=True)
 
         df.bfill(axis=0, inplace=True)
+
+        # Move the timestamp column to the end
+        cols = df.columns.to_list()
+        cols.remove('timestamp')
+        cols.append('timestamp')
         if query_str:
-            return df.query(query_str)
-        return df
+            return df[cols].query(query_str)
+        return df[cols]
 
     def get(self, **kwargs):
         return self._get_combined_df(**kwargs)
