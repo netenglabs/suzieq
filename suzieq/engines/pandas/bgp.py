@@ -1,10 +1,10 @@
-from suzieq.sqobjects.routes import RoutesObj
+from suzieq.sqobjects.address import AddressObj
 
-import re
 import pandas as pd
 import numpy as np
 
 from .engineobj import SqEngineObject
+from suzieq.utils import build_query_str
 
 
 class BgpObj(SqEngineObject):
@@ -14,7 +14,12 @@ class BgpObj(SqEngineObject):
 
         addnl_fields = kwargs.pop('addnl_fields', [])
         columns = kwargs.get('columns', ['default'])
+        vrf = kwargs.pop('vrf', None)
+        peer = kwargs.pop('peer', None)
+        hostname = kwargs.pop('hostname', None)
+
         drop_cols = ['origPeer', 'peerHost']
+        addnl_fields.extend(['origPeer'])
 
         if columns != ['*']:
             if 'peerIP' not in columns:
@@ -24,36 +29,28 @@ class BgpObj(SqEngineObject):
                 addnl_fields.append('updateSource')
                 drop_cols.append('updateSource')
 
-        addnl_fields.extend(['origPeer'])
-
         df = super().get(addnl_fields=addnl_fields, **kwargs)
 
         if df.empty:
             return df
 
+        query_str = build_query_str([], vrf=vrf, peer=peer,
+                                    hostname=hostname)
         if 'peer' in df.columns:
             df['peer'] = np.where(df['origPeer'] != "",
                                   df['origPeer'], df['peer'])
+        if 'peerHostname' in df.columns:
+            mdf = self._get_peer_matched_df(df)
+            drop_cols = [x for x in drop_cols if x in mdf.columns]
+            drop_cols.extend(list(mdf.filter(regex='_y')))
+        else:
+            mdf = df
 
-        if not all(i in df.columns for i in ['namespace', 'hostname', 'vrf',
-                                             'peerIP', 'updateSource']):
-            return df.drop(columns=['origPeer'])
-
-        mdf = df.merge(df[['namespace', 'hostname', 'vrf', 'peerIP',
-                           'updateSource']],
-                       left_on=['namespace', 'vrf', 'peerIP'],
-                       right_on=['namespace', 'vrf', 'updateSource'],
-                       how='left') \
-            .query('peerIP_x == updateSource_y and '
-                   'peerIP_y == updateSource_x') \
-            .rename(columns={'hostname_y': 'peerHost',
-                             'hostname_x': 'hostname',
-                             'updateSource_x': 'updateSource',
-                             'peerIP_x': 'peerIP'}) \
-            .drop(columns=['updateSource_y', 'peerIP_y'])
-
-        mdf['peerHostname'] = mdf['peerHost']
-        return mdf.drop(columns=drop_cols)
+        if query_str:
+            return mdf.query(query_str).drop(columns=drop_cols,
+                                             errors='ignore')
+        else:
+            return mdf.drop(columns=drop_cols, errors='ignore')
 
     def _check_afi_safi(self, row) -> list:
         """Checks that AFI/SAFI is compatible across the peers"""
@@ -62,20 +59,20 @@ class BgpObj(SqEngineObject):
         if not row['peer_y']:
             return []
 
-        if row["v4Enabled_x"] != row["v4Enabled_y"]:
-            if row["v4Advertised_x"] and not row["v4Received_x"]:
+        if row["v4Enabled"] != row["v4Enabled_y"]:
+            if row["v4Advertised"] and not row["v4Received"]:
                 reasons += " peer not advertising ipv4/unicast"
-            elif row["v4Received_x"] and not row["v4Advertised_x"]:
+            elif row["v4Received"] and not row["v4Advertised"]:
                 reasons += " not advertising ipv4/unicast"
-        if row["v6Enabled_x"] != row["v6Enabled_y"]:
-            if row["v6Advertised_x"] and not row["v6Received_x"]:
+        if row["v6Enabled"] != row["v6Enabled_y"]:
+            if row["v6Advertised"] and not row["v6Received"]:
                 reasons += " peer not advertising ipv6/unicast"
-            elif row["v6Received_x"] and not row["v6Advertised_x"]:
+            elif row["v6Received"] and not row["v6Advertised"]:
                 reasons += " not advertising ipv6/unicast"
-        if row["evpnEnabled_x"] != row["evpnEnabled_y"]:
-            if row["evpnAdvertised_x"] and not row["evpnReceived_x"]:
+        if row["evpnEnabled"] != row["evpnEnabled_y"]:
+            if row["evpnAdvertised"] and not row["evpnReceived"]:
                 reasons += " peer not advertising evpn"
-            elif row["evpnReceived_x"] and not row["evpnAdvertised_x"]:
+            elif row["evpnReceived"] and not row["evpnAdvertised"]:
                 reasons += " not advertising evpn"
 
         if reasons:
@@ -151,19 +148,32 @@ class BgpObj(SqEngineObject):
     def _get_peer_matched_df(self, df) -> pd.DataFrame:
         """Get a BGP dataframe that also contains a session's matching peer"""
 
-        mdf = df.merge(df, left_on=['namespace', 'peerIP'],
-                       right_on=['namespace', 'updateSource'], how='left') \
-            .query('peerIP_x == updateSource_y and '
-                   'peerIP_y == updateSource_x') \
-            .rename(columns={'hostname_x': 'hostname', 'vrf_x': 'vrf',
-                             'hostname_y': 'peerHostname',
-                             'state_x': 'state',
-                             'reason_x': 'reason',
-                             'timestamp_x': 'timestamp',
-                             'vrf_y': 'vrfPeer',
-                             'notificnReason_x': 'notificnReason'}) \
-            .drop(columns=['state_y', 'reason_y', 'timestamp_y', 'peerIP_x',
-                           'peerIP_y'])
+        # We have to separate out the Established and non Established entries
+        # for the merge. Otherwise we end up with a mess
+        estd_df = df[df.state == 'Established']
+        if not estd_df.empty:
+            mestd_df = estd_df.merge(estd_df, left_on=['namespace', 'peerIP'],
+                                     right_on=['namespace', 'updateSource'],
+                                     how='left',
+                                     suffixes=('', '_y')) \
+                .drop_duplicates(subset=['namespace', 'hostname', 'vrf',
+                                         'peer']) \
+                .rename(columns={'hostname_y': 'peerHost'})
+            # I've not seen the diff between ignore_index and not and so
+            # deliberately ignoring
+            mdf = mestd_df.append(df[df.state != 'Established'])
+            mdf.fillna({'peerHostname': '', 'vrf_y': '', 'peer_y': '',
+                        'peerHost': '', 'asn_y': 0, 'peerAsn_y': 0},
+                       inplace=True)
+
+            if 'peerHostname' in df.columns:
+                mdf['peerHostname'] = np.where(mdf['state'] == 'Established',
+                                               mdf['peerHost'],
+                                               mdf['peerHostname'])
+            else:
+                mdf.rename(columns={'peerHost': 'peerHostname'}, inplace=True)
+        else:
+            mdf = df
 
         return mdf
 
@@ -185,6 +195,8 @@ class BgpObj(SqEngineObject):
             return df
 
         df = self._get_peer_matched_df(df)
+        df = df.rename(columns={'vrf_y': 'vrfPeer', 'peerIP_y': 'peerPeerIP'}) \
+               .drop(columns={'state_y', 'reason_y', 'timestamp_y'})
         if df.empty:
             df['assert'] = 'fail'
             df['assertReason'] = 'No data'
@@ -196,37 +208,35 @@ class BgpObj(SqEngineObject):
 
         df['assertReason'] += df.apply(lambda x: ["asn mismatch"]
                                        if x['state'] != "Established" and
-                                       (x['peer_y'] and
-                                        ((x["asn_x"] != x["peerAsn_y"]) or
-                                         (x['asn_y'] != x['peerAsn_x'])))
+                                       (x['peerHostname'] and
+                                        ((x["asn"] != x["peerAsn_y"]) or
+                                         (x['asn_y'] != x['peerAsn'])))
                                        else [], axis=1)
 
+        # Get list of peer IP addresses for peer not in Established state
         # Returning to performing checks even if we didn't get LLDP/Intf info
-        df['assertReason'] += df.apply(lambda x:
-                                       [f"{x['reason']}:{x['notifcnReason']}"]
-                                       if (x['reason'] and
-                                           x['state'] != 'Established')
-                                       else [],
-                                       axis=1)
+        df['assertReason'] += df.apply(
+            lambda x: [f"{x['reason']}:{x['notifcnReason']}"]
+            if ((x['state'] != 'Established') and
+                (x['reason'] and x['reason'] != 'None' and
+                 x['reason'] != "No error"))
+            else [],
+            axis=1)
 
         df['assertReason'] += df.apply(
-            lambda x: ["no route to peer"]
-            if x['state'] != "Established" else [],
-            axis=1)
+            lambda x: ['Matching BGP Peer not found']
+            if x['state'] == 'NotEstd' and not x['assertReason']
+            else [],  axis=1)
 
         df['assert'] = df.apply(lambda x: 'pass'
                                 if not len(x.assertReason) else 'fail',
                                 axis=1)
 
-        return (df[['namespace', 'hostname', 'vrf', 'peer_x', 'asn_x',
-                    'peerAsn_x', 'state', 'peerHostname', 'vrfPeer',
+        return (df[['namespace', 'hostname', 'vrf', 'peer', 'asn',
+                    'peerAsn', 'state', 'peerHostname', 'vrfPeer',
                     'peer_y', 'asn_y', 'peerAsn_y', 'assert',
                     'assertReason', 'timestamp']]
-                .rename(columns={'hostname_x': 'hostname',
-                                 'peer_x': 'peer', 'asn_x': 'asn',
-                                 'peerAsn_x': 'peerAsn',
-                                 'peerHostname_x': 'hostnamePeer',
-                                 'peer_y': 'peerPeer',
+                .rename(columns={'peer_y': 'peerPeer',
                                  'asn_y': 'asnPeer',
                                  'peerAsn_y': 'peerAsnPeer'}, copy=False)
                 .astype({'asn': 'Int64', 'peerAsn': 'Int64', 'asnPeer': 'Int64',
