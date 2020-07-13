@@ -20,32 +20,30 @@ tests:
   marks: path show
   output: '[{"pathid": 1, "hopCount": 0, "namespace": "dual-attach_bgp_docker", "hostname":
     "leaf04", "iif": "lo", "vrf": "default", "overlay": false, "mtuMatch": null, "mtu":
-    65536, "timestamp": 1590175504903}, {"pathid": 1, "hopCount": 1, "namespace":
+    65536, "timestamp": 1594706580243}, {"pathid": 1, "hopCount": 1, "namespace":
     "dual-attach_bgp_docker", "hostname": "spine01", "iif": "swp4", "vrf": "default",
-    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590175504016},
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594706580419},
     {"pathid": 1, "hopCount": 2, "namespace": "dual-attach_bgp_docker", "hostname":
     "leaf01", "iif": "swp1", "vrf": "default", "overlay": false, "mtuMatch": true,
-    "mtu": 1500, "timestamp": 1590175504061}, {"pathid": 1, "hopCount": 2, "namespace":
+    "mtu": 1500, "timestamp": 1594706580387}, {"pathid": 1, "hopCount": 2, "namespace":
     "dual-attach_bgp_docker", "hostname": "leaf01", "iif": "lo", "vrf": "default",
-    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1590175504903},
+    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1594706580162},
     {"pathid": 2, "hopCount": 0, "namespace": "dual-attach_bgp_docker", "hostname":
     "leaf04", "iif": "lo", "vrf": "default", "overlay": false, "mtuMatch": null, "mtu":
-    65536, "timestamp": 1590175504903}, {"pathid": 2, "hopCount": 1, "namespace":
+    65536, "timestamp": 1594706580243}, {"pathid": 2, "hopCount": 1, "namespace":
     "dual-attach_bgp_docker", "hostname": "spine02", "iif": "swp4", "vrf": "default",
-    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590175504016},
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594706580419},
     {"pathid": 2, "hopCount": 2, "namespace": "dual-attach_bgp_docker", "hostname":
     "leaf01", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch": true,
-    "mtu": 1500, "timestamp": 1590175504308}, {"pathid": 2, "hopCount": 2, "namespace":
+    "mtu": 1500, "timestamp": 1594706580388}, {"pathid": 2, "hopCount": 2, "namespace":
     "dual-attach_bgp_docker", "hostname": "leaf01", "iif": "lo", "vrf": "default",
-    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1590175504903}]'
+    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1594706580162}]'
 - command: path show --src=172.16.1.101 --dest=172.16.253.1 --format=json --namespace=dual-attach_bgp_docker
   data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_docker/parquet-out
   marks: path show
   output: '[{"pathid": 1, "hopCount": 0, "namespace": "dual-attach_bgp_docker", "hostname":
     "server101", "iif": "lo", "vrf": "default", "overlay": false, "mtuMatch": null,
-    "mtu": 65536, "timestamp": 1590175504347}, {"pathid": 1, "hopCount": 1, "namespace":
-    "dual-attach_bgp_docker", "hostname": "internet", "iif": "lo", "vrf": "default",
-    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1590175504903}]'
+    "mtu": 65536, "timestamp": 1594706580036}]'
 - command: path summarize --dest=172.16.2.104 --src=172.16.1.101 --format=json --namespace=dual-attach_bgp_docker
   data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_docker/parquet-out
   error:

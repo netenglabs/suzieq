@@ -19,25 +19,25 @@ tests:
   data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_docker/parquet-out
   marks: path show
   output: '[{"pathid": 1, "hopCount": 0, "namespace": "dual-attach_ospf_docker", "hostname":
-    "leaf04", "iif": "lo", "vrf": "default", "overlay": false, "mtuMatch": null, "mtu":
-    65536, "timestamp": 1590173644550}, {"pathid": 1, "hopCount": 1, "namespace":
+    "leaf04", "iif": "swp6", "vrf": "default", "overlay": false, "mtuMatch": null,
+    "mtu": 1500, "timestamp": 1594435492722}, {"pathid": 1, "hopCount": 1, "namespace":
     "dual-attach_ospf_docker", "hostname": "spine01", "iif": "swp4", "vrf": "default",
-    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590173643833},
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594435492964},
     {"pathid": 1, "hopCount": 2, "namespace": "dual-attach_ospf_docker", "hostname":
     "leaf01", "iif": "swp1", "vrf": "default", "overlay": false, "mtuMatch": true,
-    "mtu": 1500, "timestamp": 1590173643833}, {"pathid": 1, "hopCount": 2, "namespace":
-    "dual-attach_ospf_docker", "hostname": "leaf01", "iif": "lo", "vrf": "default",
-    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1590173645028},
+    "mtu": 1500, "timestamp": 1594435492954}, {"pathid": 1, "hopCount": 2, "namespace":
+    "dual-attach_ospf_docker", "hostname": "leaf01", "iif": "swp6", "vrf": "default",
+    "overlay": false, "mtuMatch": null, "mtu": 1500, "timestamp": 1594435492714},
     {"pathid": 2, "hopCount": 0, "namespace": "dual-attach_ospf_docker", "hostname":
-    "leaf04", "iif": "lo", "vrf": "default", "overlay": false, "mtuMatch": null, "mtu":
-    65536, "timestamp": 1590173644550}, {"pathid": 2, "hopCount": 1, "namespace":
+    "leaf04", "iif": "swp6", "vrf": "default", "overlay": false, "mtuMatch": null,
+    "mtu": 1500, "timestamp": 1594435492722}, {"pathid": 2, "hopCount": 1, "namespace":
     "dual-attach_ospf_docker", "hostname": "spine02", "iif": "swp4", "vrf": "default",
-    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590173643833},
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594435492964},
     {"pathid": 2, "hopCount": 2, "namespace": "dual-attach_ospf_docker", "hostname":
     "leaf01", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch": true,
-    "mtu": 1500, "timestamp": 1590173643990}, {"pathid": 2, "hopCount": 2, "namespace":
-    "dual-attach_ospf_docker", "hostname": "leaf01", "iif": "lo", "vrf": "default",
-    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1590173645028}]'
+    "mtu": 1500, "timestamp": 1594435492959}, {"pathid": 2, "hopCount": 2, "namespace":
+    "dual-attach_ospf_docker", "hostname": "leaf01", "iif": "swp6", "vrf": "default",
+    "overlay": false, "mtuMatch": null, "mtu": 1500, "timestamp": 1594435492714}]'
 - command: path show --src=172.16.1.101 --dest=172.16.253.1 --format=json --namespace=dual-attach_ospf_docker
   data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_docker/parquet-out
   error:

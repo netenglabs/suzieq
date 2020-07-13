@@ -20,187 +20,187 @@ tests:
   marks: path show
   output: '[{"pathid": 1, "hopCount": 0, "namespace": "dual-attach_bgp_unnumbered",
     "hostname": "leaf04", "iif": "lo", "vrf": "default", "overlay": false, "mtuMatch":
-    null, "mtu": 65536, "timestamp": 1590176033378}, {"pathid": 1, "hopCount": 1,
+    null, "mtu": 65536, "timestamp": 1594437074270}, {"pathid": 1, "hopCount": 1,
     "namespace": "dual-attach_bgp_unnumbered", "hostname": "spine01", "iif": "swp4",
     "vrf": "default", "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp":
-    1590176032357}, {"pathid": 1, "hopCount": 2, "namespace": "dual-attach_bgp_unnumbered",
+    1594437074355}, {"pathid": 1, "hopCount": 2, "namespace": "dual-attach_bgp_unnumbered",
     "hostname": "leaf01", "iif": "swp1", "vrf": "default", "overlay": false, "mtuMatch":
-    true, "mtu": 1500, "timestamp": 1590176032356}, {"pathid": 1, "hopCount": 2, "namespace":
+    true, "mtu": 1500, "timestamp": 1594437074355}, {"pathid": 1, "hopCount": 2, "namespace":
     "dual-attach_bgp_unnumbered", "hostname": "leaf01", "iif": "lo", "vrf": "default",
-    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1590176033378},
+    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1594437074268},
     {"pathid": 2, "hopCount": 0, "namespace": "dual-attach_bgp_unnumbered", "hostname":
     "leaf04", "iif": "lo", "vrf": "default", "overlay": false, "mtuMatch": null, "mtu":
-    65536, "timestamp": 1590176033378}, {"pathid": 2, "hopCount": 1, "namespace":
+    65536, "timestamp": 1594437074270}, {"pathid": 2, "hopCount": 1, "namespace":
     "dual-attach_bgp_unnumbered", "hostname": "spine02", "iif": "swp4", "vrf": "default",
-    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590176032357},
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594437074355},
     {"pathid": 2, "hopCount": 2, "namespace": "dual-attach_bgp_unnumbered", "hostname":
     "leaf01", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch": true,
-    "mtu": 1500, "timestamp": 1590176032357}, {"pathid": 2, "hopCount": 2, "namespace":
+    "mtu": 1500, "timestamp": 1594437074260}, {"pathid": 2, "hopCount": 2, "namespace":
     "dual-attach_bgp_unnumbered", "hostname": "leaf01", "iif": "lo", "vrf": "default",
-    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1590176033378}]'
+    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1594437074268}]'
 - command: path show --src=172.16.1.101 --dest=172.16.253.1 --format=json --namespace=dual-attach_bgp_unnumbered
   data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_unnumbered/parquet-out
   marks: path show
   output: '[{"pathid": 1, "hopCount": 0, "namespace": "dual-attach_bgp_unnumbered",
     "hostname": "server101", "iif": "bond0", "vrf": "default", "overlay": false, "mtuMatch":
-    null, "mtu": 1500, "timestamp": 1590176032357}, {"pathid": 1, "hopCount": 1, "namespace":
+    null, "mtu": 1500, "timestamp": 1594437074014}, {"pathid": 1, "hopCount": 1, "namespace":
     "dual-attach_bgp_unnumbered", "hostname": "leaf01", "iif": "vlan13", "vrf": "default",
-    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590176032356},
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594437074098},
     {"pathid": 1, "hopCount": 2, "namespace": "dual-attach_bgp_unnumbered", "hostname":
-    "spine02", "iif": "swp1", "vrf": "default", "overlay": false, "mtuMatch": true,
-    "mtu": 1500, "timestamp": 1590176033039}, {"pathid": 1, "hopCount": 3, "namespace":
-    "dual-attach_bgp_unnumbered", "hostname": "exit02", "iif": "swp2", "vrf": "default",
-    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590176032357},
+    "spine01", "iif": "swp1", "vrf": "default", "overlay": false, "mtuMatch": true,
+    "mtu": 1500, "timestamp": 1594437074355}, {"pathid": 1, "hopCount": 3, "namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "exit02", "iif": "swp1", "vrf": "default",
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594437074355},
     {"pathid": 1, "hopCount": 4, "namespace": "dual-attach_bgp_unnumbered", "hostname":
     "edge01", "iif": "eth2.2", "vrf": "default", "overlay": false, "mtuMatch": true,
-    "mtu": 1500, "timestamp": 1590176033039}, {"pathid": 1, "hopCount": 5, "namespace":
+    "mtu": 1500, "timestamp": 1594437074311}, {"pathid": 1, "hopCount": 5, "namespace":
     "dual-attach_bgp_unnumbered", "hostname": "exit02", "iif": "swp5.4", "vrf": "internet-vrf",
-    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590176032357},
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594437074125},
     {"pathid": 1, "hopCount": 6, "namespace": "dual-attach_bgp_unnumbered", "hostname":
     "internet", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch": true,
-    "mtu": 1500, "timestamp": 1590176033039}, {"pathid": 1, "hopCount": 6, "namespace":
+    "mtu": 1500, "timestamp": 1594437074311}, {"pathid": 1, "hopCount": 6, "namespace":
     "dual-attach_bgp_unnumbered", "hostname": "internet", "iif": "lo", "vrf": "default",
-    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1590176033378},
+    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1594437074270},
     {"pathid": 2, "hopCount": 0, "namespace": "dual-attach_bgp_unnumbered", "hostname":
     "server101", "iif": "bond0", "vrf": "default", "overlay": false, "mtuMatch": null,
-    "mtu": 1500, "timestamp": 1590176032357}, {"pathid": 2, "hopCount": 1, "namespace":
+    "mtu": 1500, "timestamp": 1594437074014}, {"pathid": 2, "hopCount": 1, "namespace":
     "dual-attach_bgp_unnumbered", "hostname": "leaf02", "iif": "vlan13", "vrf": "default",
-    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590176032356},
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594437074098},
     {"pathid": 2, "hopCount": 2, "namespace": "dual-attach_bgp_unnumbered", "hostname":
-    "spine02", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch": true,
-    "mtu": 1500, "timestamp": 1590176032356}, {"pathid": 2, "hopCount": 3, "namespace":
-    "dual-attach_bgp_unnumbered", "hostname": "exit02", "iif": "swp2", "vrf": "default",
-    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590176032357},
+    "spine01", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch": true,
+    "mtu": 1500, "timestamp": 1594437074372}, {"pathid": 2, "hopCount": 3, "namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "exit02", "iif": "swp1", "vrf": "default",
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594437074355},
     {"pathid": 2, "hopCount": 4, "namespace": "dual-attach_bgp_unnumbered", "hostname":
     "edge01", "iif": "eth2.2", "vrf": "default", "overlay": false, "mtuMatch": true,
-    "mtu": 1500, "timestamp": 1590176033039}, {"pathid": 2, "hopCount": 5, "namespace":
+    "mtu": 1500, "timestamp": 1594437074311}, {"pathid": 2, "hopCount": 5, "namespace":
     "dual-attach_bgp_unnumbered", "hostname": "exit02", "iif": "swp5.4", "vrf": "internet-vrf",
-    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590176032357},
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594437074125},
     {"pathid": 2, "hopCount": 6, "namespace": "dual-attach_bgp_unnumbered", "hostname":
     "internet", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch": true,
-    "mtu": 1500, "timestamp": 1590176033039}, {"pathid": 2, "hopCount": 6, "namespace":
+    "mtu": 1500, "timestamp": 1594437074311}, {"pathid": 2, "hopCount": 6, "namespace":
     "dual-attach_bgp_unnumbered", "hostname": "internet", "iif": "lo", "vrf": "default",
-    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1590176033378},
+    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1594437074270},
     {"pathid": 3, "hopCount": 0, "namespace": "dual-attach_bgp_unnumbered", "hostname":
     "server101", "iif": "bond0", "vrf": "default", "overlay": false, "mtuMatch": null,
-    "mtu": 1500, "timestamp": 1590176032357}, {"pathid": 3, "hopCount": 1, "namespace":
+    "mtu": 1500, "timestamp": 1594437074014}, {"pathid": 3, "hopCount": 1, "namespace":
     "dual-attach_bgp_unnumbered", "hostname": "leaf01", "iif": "vlan13", "vrf": "default",
-    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590176032356},
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594437074098},
     {"pathid": 3, "hopCount": 2, "namespace": "dual-attach_bgp_unnumbered", "hostname":
-    "spine01", "iif": "swp1", "vrf": "default", "overlay": false, "mtuMatch": true,
-    "mtu": 1500, "timestamp": 1590176033039}, {"pathid": 3, "hopCount": 3, "namespace":
-    "dual-attach_bgp_unnumbered", "hostname": "exit02", "iif": "swp1", "vrf": "default",
-    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590176032356},
+    "spine02", "iif": "swp1", "vrf": "default", "overlay": false, "mtuMatch": true,
+    "mtu": 1500, "timestamp": 1594437074355}, {"pathid": 3, "hopCount": 3, "namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "exit02", "iif": "swp2", "vrf": "default",
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594437074260},
     {"pathid": 3, "hopCount": 4, "namespace": "dual-attach_bgp_unnumbered", "hostname":
     "edge01", "iif": "eth2.2", "vrf": "default", "overlay": false, "mtuMatch": true,
-    "mtu": 1500, "timestamp": 1590176033039}, {"pathid": 3, "hopCount": 5, "namespace":
+    "mtu": 1500, "timestamp": 1594437074311}, {"pathid": 3, "hopCount": 5, "namespace":
     "dual-attach_bgp_unnumbered", "hostname": "exit02", "iif": "swp5.4", "vrf": "internet-vrf",
-    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590176032357},
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594437074125},
     {"pathid": 3, "hopCount": 6, "namespace": "dual-attach_bgp_unnumbered", "hostname":
     "internet", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch": true,
-    "mtu": 1500, "timestamp": 1590176033039}, {"pathid": 3, "hopCount": 6, "namespace":
+    "mtu": 1500, "timestamp": 1594437074311}, {"pathid": 3, "hopCount": 6, "namespace":
     "dual-attach_bgp_unnumbered", "hostname": "internet", "iif": "lo", "vrf": "default",
-    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1590176033378},
+    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1594437074270},
     {"pathid": 4, "hopCount": 0, "namespace": "dual-attach_bgp_unnumbered", "hostname":
     "server101", "iif": "bond0", "vrf": "default", "overlay": false, "mtuMatch": null,
-    "mtu": 1500, "timestamp": 1590176032357}, {"pathid": 4, "hopCount": 1, "namespace":
+    "mtu": 1500, "timestamp": 1594437074014}, {"pathid": 4, "hopCount": 1, "namespace":
     "dual-attach_bgp_unnumbered", "hostname": "leaf02", "iif": "vlan13", "vrf": "default",
-    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590176032356},
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594437074098},
     {"pathid": 4, "hopCount": 2, "namespace": "dual-attach_bgp_unnumbered", "hostname":
-    "spine01", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch": true,
-    "mtu": 1500, "timestamp": 1590176032356}, {"pathid": 4, "hopCount": 3, "namespace":
-    "dual-attach_bgp_unnumbered", "hostname": "exit02", "iif": "swp1", "vrf": "default",
-    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590176032356},
+    "spine02", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch": true,
+    "mtu": 1500, "timestamp": 1594437074372}, {"pathid": 4, "hopCount": 3, "namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "exit02", "iif": "swp2", "vrf": "default",
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594437074260},
     {"pathid": 4, "hopCount": 4, "namespace": "dual-attach_bgp_unnumbered", "hostname":
     "edge01", "iif": "eth2.2", "vrf": "default", "overlay": false, "mtuMatch": true,
-    "mtu": 1500, "timestamp": 1590176033039}, {"pathid": 4, "hopCount": 5, "namespace":
+    "mtu": 1500, "timestamp": 1594437074311}, {"pathid": 4, "hopCount": 5, "namespace":
     "dual-attach_bgp_unnumbered", "hostname": "exit02", "iif": "swp5.4", "vrf": "internet-vrf",
-    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590176032357},
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594437074125},
     {"pathid": 4, "hopCount": 6, "namespace": "dual-attach_bgp_unnumbered", "hostname":
     "internet", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch": true,
-    "mtu": 1500, "timestamp": 1590176033039}, {"pathid": 4, "hopCount": 6, "namespace":
+    "mtu": 1500, "timestamp": 1594437074311}, {"pathid": 4, "hopCount": 6, "namespace":
     "dual-attach_bgp_unnumbered", "hostname": "internet", "iif": "lo", "vrf": "default",
-    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1590176033378},
+    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1594437074270},
     {"pathid": 5, "hopCount": 0, "namespace": "dual-attach_bgp_unnumbered", "hostname":
     "server101", "iif": "bond0", "vrf": "default", "overlay": false, "mtuMatch": null,
-    "mtu": 1500, "timestamp": 1590176032357}, {"pathid": 5, "hopCount": 1, "namespace":
+    "mtu": 1500, "timestamp": 1594437074014}, {"pathid": 5, "hopCount": 1, "namespace":
     "dual-attach_bgp_unnumbered", "hostname": "leaf01", "iif": "vlan13", "vrf": "default",
-    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590176032356},
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594437074098},
     {"pathid": 5, "hopCount": 2, "namespace": "dual-attach_bgp_unnumbered", "hostname":
-    "spine02", "iif": "swp1", "vrf": "default", "overlay": false, "mtuMatch": true,
-    "mtu": 1500, "timestamp": 1590176033039}, {"pathid": 5, "hopCount": 3, "namespace":
-    "dual-attach_bgp_unnumbered", "hostname": "exit02", "iif": "swp2", "vrf": "default",
-    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590176032357},
+    "spine01", "iif": "swp1", "vrf": "default", "overlay": false, "mtuMatch": true,
+    "mtu": 1500, "timestamp": 1594437074355}, {"pathid": 5, "hopCount": 3, "namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "exit02", "iif": "swp1", "vrf": "default",
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594437074355},
     {"pathid": 5, "hopCount": 4, "namespace": "dual-attach_bgp_unnumbered", "hostname":
     "edge01", "iif": "eth2.2", "vrf": "default", "overlay": false, "mtuMatch": true,
-    "mtu": 1500, "timestamp": 1590176033039}, {"pathid": 5, "hopCount": 5, "namespace":
+    "mtu": 1500, "timestamp": 1594437074311}, {"pathid": 5, "hopCount": 5, "namespace":
     "dual-attach_bgp_unnumbered", "hostname": "exit01", "iif": "swp5.4", "vrf": "internet-vrf",
-    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590176032357},
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594437074125},
     {"pathid": 5, "hopCount": 6, "namespace": "dual-attach_bgp_unnumbered", "hostname":
     "internet", "iif": "swp1", "vrf": "internet-vrf", "overlay": false, "mtuMatch":
-    true, "mtu": 1500, "timestamp": 1590176032193}, {"pathid": 5, "hopCount": 6, "namespace":
+    true, "mtu": 1500, "timestamp": 1594437074309}, {"pathid": 5, "hopCount": 6, "namespace":
     "dual-attach_bgp_unnumbered", "hostname": "internet", "iif": "lo", "vrf": "default",
-    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1590176033378},
+    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1594437074270},
     {"pathid": 6, "hopCount": 0, "namespace": "dual-attach_bgp_unnumbered", "hostname":
     "server101", "iif": "bond0", "vrf": "default", "overlay": false, "mtuMatch": null,
-    "mtu": 1500, "timestamp": 1590176032357}, {"pathid": 6, "hopCount": 1, "namespace":
+    "mtu": 1500, "timestamp": 1594437074014}, {"pathid": 6, "hopCount": 1, "namespace":
     "dual-attach_bgp_unnumbered", "hostname": "leaf02", "iif": "vlan13", "vrf": "default",
-    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590176032356},
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594437074098},
     {"pathid": 6, "hopCount": 2, "namespace": "dual-attach_bgp_unnumbered", "hostname":
-    "spine02", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch": true,
-    "mtu": 1500, "timestamp": 1590176032356}, {"pathid": 6, "hopCount": 3, "namespace":
-    "dual-attach_bgp_unnumbered", "hostname": "exit02", "iif": "swp2", "vrf": "default",
-    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590176032357},
+    "spine01", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch": true,
+    "mtu": 1500, "timestamp": 1594437074372}, {"pathid": 6, "hopCount": 3, "namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "exit02", "iif": "swp1", "vrf": "default",
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594437074355},
     {"pathid": 6, "hopCount": 4, "namespace": "dual-attach_bgp_unnumbered", "hostname":
     "edge01", "iif": "eth2.2", "vrf": "default", "overlay": false, "mtuMatch": true,
-    "mtu": 1500, "timestamp": 1590176033039}, {"pathid": 6, "hopCount": 5, "namespace":
+    "mtu": 1500, "timestamp": 1594437074311}, {"pathid": 6, "hopCount": 5, "namespace":
     "dual-attach_bgp_unnumbered", "hostname": "exit01", "iif": "swp5.4", "vrf": "internet-vrf",
-    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590176032357},
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594437074125},
     {"pathid": 6, "hopCount": 6, "namespace": "dual-attach_bgp_unnumbered", "hostname":
     "internet", "iif": "swp1", "vrf": "internet-vrf", "overlay": false, "mtuMatch":
-    true, "mtu": 1500, "timestamp": 1590176032193}, {"pathid": 6, "hopCount": 6, "namespace":
+    true, "mtu": 1500, "timestamp": 1594437074309}, {"pathid": 6, "hopCount": 6, "namespace":
     "dual-attach_bgp_unnumbered", "hostname": "internet", "iif": "lo", "vrf": "default",
-    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1590176033378},
+    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1594437074270},
     {"pathid": 7, "hopCount": 0, "namespace": "dual-attach_bgp_unnumbered", "hostname":
     "server101", "iif": "bond0", "vrf": "default", "overlay": false, "mtuMatch": null,
-    "mtu": 1500, "timestamp": 1590176032357}, {"pathid": 7, "hopCount": 1, "namespace":
+    "mtu": 1500, "timestamp": 1594437074014}, {"pathid": 7, "hopCount": 1, "namespace":
     "dual-attach_bgp_unnumbered", "hostname": "leaf01", "iif": "vlan13", "vrf": "default",
-    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590176032356},
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594437074098},
     {"pathid": 7, "hopCount": 2, "namespace": "dual-attach_bgp_unnumbered", "hostname":
-    "spine01", "iif": "swp1", "vrf": "default", "overlay": false, "mtuMatch": true,
-    "mtu": 1500, "timestamp": 1590176033039}, {"pathid": 7, "hopCount": 3, "namespace":
-    "dual-attach_bgp_unnumbered", "hostname": "exit02", "iif": "swp1", "vrf": "default",
-    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590176032356},
+    "spine02", "iif": "swp1", "vrf": "default", "overlay": false, "mtuMatch": true,
+    "mtu": 1500, "timestamp": 1594437074355}, {"pathid": 7, "hopCount": 3, "namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "exit02", "iif": "swp2", "vrf": "default",
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594437074260},
     {"pathid": 7, "hopCount": 4, "namespace": "dual-attach_bgp_unnumbered", "hostname":
     "edge01", "iif": "eth2.2", "vrf": "default", "overlay": false, "mtuMatch": true,
-    "mtu": 1500, "timestamp": 1590176033039}, {"pathid": 7, "hopCount": 5, "namespace":
+    "mtu": 1500, "timestamp": 1594437074311}, {"pathid": 7, "hopCount": 5, "namespace":
     "dual-attach_bgp_unnumbered", "hostname": "exit01", "iif": "swp5.4", "vrf": "internet-vrf",
-    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590176032357},
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594437074125},
     {"pathid": 7, "hopCount": 6, "namespace": "dual-attach_bgp_unnumbered", "hostname":
     "internet", "iif": "swp1", "vrf": "internet-vrf", "overlay": false, "mtuMatch":
-    true, "mtu": 1500, "timestamp": 1590176032193}, {"pathid": 7, "hopCount": 6, "namespace":
+    true, "mtu": 1500, "timestamp": 1594437074309}, {"pathid": 7, "hopCount": 6, "namespace":
     "dual-attach_bgp_unnumbered", "hostname": "internet", "iif": "lo", "vrf": "default",
-    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1590176033378},
+    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1594437074270},
     {"pathid": 8, "hopCount": 0, "namespace": "dual-attach_bgp_unnumbered", "hostname":
     "server101", "iif": "bond0", "vrf": "default", "overlay": false, "mtuMatch": null,
-    "mtu": 1500, "timestamp": 1590176032357}, {"pathid": 8, "hopCount": 1, "namespace":
+    "mtu": 1500, "timestamp": 1594437074014}, {"pathid": 8, "hopCount": 1, "namespace":
     "dual-attach_bgp_unnumbered", "hostname": "leaf02", "iif": "vlan13", "vrf": "default",
-    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590176032356},
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594437074098},
     {"pathid": 8, "hopCount": 2, "namespace": "dual-attach_bgp_unnumbered", "hostname":
-    "spine01", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch": true,
-    "mtu": 1500, "timestamp": 1590176032356}, {"pathid": 8, "hopCount": 3, "namespace":
-    "dual-attach_bgp_unnumbered", "hostname": "exit02", "iif": "swp1", "vrf": "default",
-    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590176032356},
+    "spine02", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch": true,
+    "mtu": 1500, "timestamp": 1594437074372}, {"pathid": 8, "hopCount": 3, "namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "exit02", "iif": "swp2", "vrf": "default",
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594437074260},
     {"pathid": 8, "hopCount": 4, "namespace": "dual-attach_bgp_unnumbered", "hostname":
     "edge01", "iif": "eth2.2", "vrf": "default", "overlay": false, "mtuMatch": true,
-    "mtu": 1500, "timestamp": 1590176033039}, {"pathid": 8, "hopCount": 5, "namespace":
+    "mtu": 1500, "timestamp": 1594437074311}, {"pathid": 8, "hopCount": 5, "namespace":
     "dual-attach_bgp_unnumbered", "hostname": "exit01", "iif": "swp5.4", "vrf": "internet-vrf",
-    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590176032357},
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594437074125},
     {"pathid": 8, "hopCount": 6, "namespace": "dual-attach_bgp_unnumbered", "hostname":
     "internet", "iif": "swp1", "vrf": "internet-vrf", "overlay": false, "mtuMatch":
-    true, "mtu": 1500, "timestamp": 1590176032193}, {"pathid": 8, "hopCount": 6, "namespace":
+    true, "mtu": 1500, "timestamp": 1594437074309}, {"pathid": 8, "hopCount": 6, "namespace":
     "dual-attach_bgp_unnumbered", "hostname": "internet", "iif": "lo", "vrf": "default",
-    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1590176033378}]'
+    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1594437074270}]'
 - command: path summarize --dest=172.16.2.104 --src=172.16.1.101 --format=json --namespace=dual-attach_bgp_unnumbered
   data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_unnumbered/parquet-out
   error:
