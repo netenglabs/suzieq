@@ -6,17 +6,17 @@ tests:
   output: '[{"namespace": "dual-attach_evpn_centralized", "hostname": "leaf01", "systemId":
     "44:39:39:ff:40:94", "state": "active", "peerAddress": "169.254.1.2", "role":
     "primary", "peerLink": "peerlink.4094", "mlagDualPortsCnt": 4, "mlagSinglePortsCnt":
-    0, "mlagErrorPortsCnt": 0, "timestamp": 1590172817303}, {"namespace": "dual-attach_evpn_centralized",
+    0, "mlagErrorPortsCnt": 0, "timestamp": 1594434801421}, {"namespace": "dual-attach_evpn_centralized",
     "hostname": "leaf02", "systemId": "44:39:39:ff:40:94", "state": "active", "peerAddress":
     "169.254.1.1", "role": "secondary", "peerLink": "peerlink.4094", "mlagDualPortsCnt":
-    4, "mlagSinglePortsCnt": 0, "mlagErrorPortsCnt": 0, "timestamp": 1590172817303},
+    4, "mlagSinglePortsCnt": 0, "mlagErrorPortsCnt": 0, "timestamp": 1594434801470},
     {"namespace": "dual-attach_evpn_centralized", "hostname": "leaf03", "systemId":
     "44:39:39:ff:40:94", "state": "active", "peerAddress": "169.254.1.2", "role":
     "primary", "peerLink": "peerlink.4094", "mlagDualPortsCnt": 4, "mlagSinglePortsCnt":
-    0, "mlagErrorPortsCnt": 0, "timestamp": 1590172817303}, {"namespace": "dual-attach_evpn_centralized",
+    0, "mlagErrorPortsCnt": 0, "timestamp": 1594434801521}, {"namespace": "dual-attach_evpn_centralized",
     "hostname": "leaf04", "systemId": "44:39:39:ff:40:94", "state": "active", "peerAddress":
     "169.254.1.1", "role": "secondary", "peerLink": "peerlink.4094", "mlagDualPortsCnt":
-    4, "mlagSinglePortsCnt": 0, "mlagErrorPortsCnt": 0, "timestamp": 1590172817303}]'
+    4, "mlagSinglePortsCnt": 0, "mlagErrorPortsCnt": 0, "timestamp": 1594434801421}]'
 - command: mlag show --columns=hostname --format=json --namespace=dual-attach_evpn_centralized
   data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_centralized/parquet-out
   marks: mlag show
@@ -26,7 +26,7 @@ tests:
   data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_centralized/parquet-out
   marks: mlag summarize
   output: '{"dual-attach_evpn_centralized": {"deviceCnt": 4, "uniqueSystemIdCnt":
-    1, "hostsWithfailedStateCnt": 0, "hostsWithBackupInactiveCnt": 4, "mlagNumDualPortsStat":
+    1, "devicesWithfailedStateCnt": 0, "devicesWithBackupInactiveCnt": 4, "mlagNumDualPortsStat":
     [4, 4, 4], "mlagNumSinglePortStat": [0, 0, 0], "mlagNumErrorPortStat": [0, 0,
     0]}}'
 - command: mlag unique --columns=hostname --format=json --namespace=dual-attach_evpn_centralized

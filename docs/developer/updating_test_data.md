@@ -84,6 +84,7 @@ git push
 ```
 
 ## gathering input data
+
 if the data that we are collecting changes, then we have to spin up simulations and gathers the data.
 
 ```bash
@@ -99,6 +100,7 @@ git push
 ```
 
 ### junos / nxos /eos
+
 We don't have a way to automatically spin up VMs for these and gather the inital data,
 so if that needs to be replaced, for instance if a new command is added
 then you need to capture gather the data and put it into
@@ -109,15 +111,10 @@ and then do the updating as documented above.
 
 ## CNDCN tests
 
-These take hours
-
-I can't get these to run successfully in parallel. It should be possible, I've done it with a bash
-script, but I can't get it to work correctly with pytest.
-
 run the tests
 
 ```bash
- SUZIEQ_POLLER=true pytest -m "single_attach or dual_attach" -n0
+ SUZIEQ_POLLER=true pytest -m "single_attach or dual_attach"
 ```
 
 if you want to try parallel
@@ -126,13 +123,23 @@ if you want to try parallel
  SUZIEQ_POLLER=true pytest -m "single_attach or dual_attach" -n2 --dist=loadscope
 ```
 
-if something big has changed and the captured sample *.yml needs to be updated, then
-run :
+### Gathering the  data
 
-update the data
+This runs each of the 18 CNDCN scenarios in vagrant and gathers the data. It should only be necessary if the commands run are diferent.
+
+These take 2+ hours. I can't get these to run successfully in parallel. It should be possible, I've done it with a bash
+script, but I can't get it to work correctly with pytest. The problems I run into are getting vagrant to reliable destroy and up every single time. Sometimes either vagrant destroy or vagrant up
 
 ```bash
-UPDATE_SQCMDS=true SUZIEQ_POLLER=true pytest -m "single_attach or dual_attach" -n0
+SUZIEQ_POLLER=true pytest -m "single_attach or dual_attach" -n0
+```
+
+### update the data
+
+To update the samples data if any of the data parquet schema has changed:
+
+```bash
+UPDATE_SQCMDS=true SUZIEQ_POLLER=true pytest -m "single_attach or dual_attach"
 ```
 
 you'll need to check in the changes that are made to tests/integration/all_cndcn/*
