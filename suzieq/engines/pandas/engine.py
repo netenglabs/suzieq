@@ -15,7 +15,7 @@ import pandas as pd
 import pyarrow.parquet as pa
 
 from suzieq.engines.base_engine import SqEngine
-from suzieq.utils import get_latest_files, SchemaForTable
+from suzieq.utils import get_latest_files, SchemaForTable, build_query_str
 
 
 class SqPandasEngine(SqEngine):
@@ -91,23 +91,8 @@ class SqPandasEngine(SqEngine):
                 fields.append(f)
 
         # Create the filter to select only specified columns
-        query_str = ""
-        prefix = ""
         addnl_filter = kwargs.pop('add_filter', None)
-        for f, v in kwargs.items():
-            if not v or f in key_fields or f in ["groupby"]:
-                continue
-            if isinstance(v, str):
-                if v.startswith('!'):
-                    v = v[1:]
-                    op = '!='
-                else:
-                    op = '=='
-                query_str += "{} {}{}'{}' ".format(prefix, f, op, v)
-                prefix = "and"
-            else:
-                query_str += "{} {}=={} ".format(prefix, f, v)
-                prefix = "and"
+        query_str = build_query_str(key_fields, **kwargs)
 
         # Add the ignored fields back to key fields to ensure we
         # do the drop_duplicates correctly below incl reading reqd cols
