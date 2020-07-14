@@ -7,9 +7,7 @@ tests:
 - command: ospf show --columns=hostname --format=json --namespace=dual-attach_evpn_distributed
   data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_distributed/parquet-out
   marks: ospf show
-  xfail:
-    error: '[]'
-    reason: uncaught exception
+  output: '[]'
 - command: ospf summarize --format=json --namespace=dual-attach_evpn_distributed
   data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_distributed/parquet-out
   marks: ospf summarize

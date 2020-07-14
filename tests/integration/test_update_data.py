@@ -468,75 +468,89 @@ class TestDualAttach:
             f'missing {parquet_dir}/{name} directory. you need to run update_dual_attach test first'
         _test_data(self.topology, proto, scenario, testvar)
 
-    # @pytest.mark.dual_attach
-    # @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
-    #                     'UPDATE_SQCMDS' in os.environ,
-    #                     reason='Not updating data')
-    # @pytest.mark.depends(on=['test_create_dual_data'])
-    # @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
-    #     os.scandir(f"{cndcn_samples_dir}/dual-attach_bgp_docker-samples/")))
-    # def test_dual_bgp_numbered_data(self, testvar):
-    #     _test_data('dual-attach', 'bgp', 'docker', testvar)
+    @pytest.mark.cndcn
+    @pytest.mark.dual_attach
+    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ,
+                        reason='Not updating data')
+    @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
+        os.scandir(f"{cndcn_samples_dir}/dual-attach_ospf_numbered-samples/")))
+    def test_dual_ospf_numbered_data(self, testvar): 
+        proto = 'ospf'
+        scenario = 'numbered'
+        name = f'{self.topology}_{proto}_{scenario}'
+        assert os.path.isdir(f'{parquet_dir}/{name}'), \
+            f'missing {parquet_dir}/{name} directory. you need to run update_dual_attach test first'
+        _test_data(self.topology, proto, scenario, testvar)
 
-    # @pytest.mark.dual_attach
-    # @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
-    #                     'UPDATE_SQCMDS' in os.environ,
-    #                     reason='Not updating data')
-    # @pytest.mark.depends(on=['test_create_dual_data'])
-    # @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
-    #     os.scandir(f"{cndcn_samples_dir}/dual-attach_ospf_numbered-samples/")))
-    # def test_dual_ospf_numbered_data(self, testvar):
-    #     _test_data('dual-attach', 'ospf', 'numbered', testvar)
+    @pytest.mark.cndcn
+    @pytest.mark.dual_attach
+    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ,
+                        reason='Not updating data')
+    @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
+        os.scandir(f"{cndcn_samples_dir}/dual-attach_ospf_unnumbered-samples/")))
+    def test_dual_ospf_unnumbered_data(self, testvar): 
+        proto = 'ospf'
+        scenario = 'unnumbered'
+        name = f'{self.topology}_{proto}_{scenario}'
+        assert os.path.isdir(f'{parquet_dir}/{name}'), \
+            f'missing {parquet_dir}/{name} directory. you need to run update_dual_attach test first'
+        _test_data(self.topology, proto, scenario, testvar)
 
-    # @pytest.mark.dual_attach
-    # @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
-    #                     'UPDATE_SQCMDS' in os.environ,
-    #                     reason='Not updating data')
-    # @pytest.mark.depends(on=['test_create_dual_data'])
-    # @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
-    #     os.scandir(f"{cndcn_samples_dir}/dual-attach_ospf_unnumbered-samples/")))
-    # def test_dual_ospf_numbered_data(self, testvar):
-    #     _test_data('dual-attach', 'ospf', 'unnumbered', testvar)
+    @pytest.mark.cndcn
+    @pytest.mark.dual_attach
+    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ,
+                        reason='Not updating data')
+    @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
+        os.scandir(f"{cndcn_samples_dir}/dual-attach_ospf_docker-samples/")))
+    def test_dual_ospf_docker_data(self, testvar): 
+        proto = 'ospf'
+        scenario = 'docker'
+        name = f'{self.topology}_{proto}_{scenario}'
+        assert os.path.isdir(f'{parquet_dir}/{name}'), \
+            f'missing {parquet_dir}/{name} directory. you need to run update_dual_attach test first'
+        _test_data(self.topology, proto, scenario, testvar)
 
-    # @pytest.mark.dual_attach
-    # @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
-    #                     'UPDATE_SQCMDS' in os.environ,
-    #                     reason='Not updating data')
-    # @pytest.mark.depends(on=['test_create_dual_data'])
-    # @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
-    #     os.scandir(f"{cndcn_samples_dir}/dual-attach_ospf_docker-samples/")))
-    # def test_dual_ospf_numbered_data(self, testvar):
-    #     _test_data('dual-attach', 'ospf', 'docker', testvar)
+    @pytest.mark.cndcn
+    @pytest.mark.dual_attach
+    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ,
+                        reason='Not updating data')
+    @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
+        os.scandir(f"{cndcn_samples_dir}/dual-attach_evpn_centralized-samples/")))
+    def test_dual_evpn_centralized_data(self, testvar): 
+        proto = 'evpn'
+        scenario = 'centralized'
+        name = f'{self.topology}_{proto}_{scenario}'
+        assert os.path.isdir(f'{parquet_dir}/{name}'), \
+            f'missing {parquet_dir}/{name} directory. you need to run update_dual_attach test first'
+        _test_data(self.topology, proto, scenario, testvar)
 
-    # @pytest.mark.dual_attach
-    # @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
-    #                     'UPDATE_SQCMDS' in os.environ,
-    #                     reason='Not updating data')
-    # @pytest.mark.depends(on=['test_create_dual_data'])
-    # @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
-    #     os.scandir(f"{cndcn_samples_dir}/dual-attach_evpn_centralized-samples/")))
-    # def test_dual_evpn_centralized_data(self, testvar):
-    #     _test_data('dual-attach', 'evpn', 'centralized', testvar)
+    @pytest.mark.cndcn
+    @pytest.mark.dual_attach
+    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ,
+                        reason='Not updating data')
+    @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
+        os.scandir(f"{cndcn_samples_dir}/dual-attach_evpn_distributed-samples/")))
+    def test_dual_evpn_distributed_data(self, testvar): 
+        proto = 'evpn'
+        scenario = 'distributed'
+        name = f'{self.topology}_{proto}_{scenario}'
+        assert os.path.isdir(f'{parquet_dir}/{name}'), \
+            f'missing {parquet_dir}/{name} directory. you need to run update_dual_attach test first'
+        _test_data(self.topology, proto, scenario, testvar)
 
-    # @pytest.mark.dual_attach
-    # @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
-    #                     'UPDATE_SQCMDS' in os.environ,
-    #                     reason='Not updating data')
-    # @pytest.mark.depends(on=['test_create_dual_data'])
-    # @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
-    #     os.scandir(f"{cndcn_samples_dir}/dual-attach_evpn_distributed-samples/")))
-    # def test_dual_evpn_distributed_data(self, testvar):
-    #     _test_data('dual-attach', 'evpn', 'distributed', testvar)
-
-    # @pytest.mark.dual_attach
-    # @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
-    #                     'UPDATE_SQCMDS' in os.environ,
-    #                     reason='Not updating data')
-    # @pytest.mark.depends(on=['test_create_dual_data'])
-    # @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
-    #     os.scandir(f"{cndcn_samples_dir}/dual-attach_evpn_ospf-ibgp-samples/")))
-    # def test_dual_evpn_ospf_ibgp_data(self, testvar):
-    #     _test_data('dual-attach', 'evpn', 'ospf-ibgp', testvar)
+    @pytest.mark.cndcn
+    @pytest.mark.dual_attach
+    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ,
+                        reason='Not updating data')
+    @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
+        os.scandir(f"{cndcn_samples_dir}/dual-attach_evpn_ospf-ibgp-samples/")))
+    def test_dual_evpn_ospf_ibgp_data(self, testvar): 
+        proto = 'evpn'
+        scenario = 'ospf-ibgp'
+        name = f'{self.topology}_{proto}_{scenario}'
+        assert os.path.isdir(f'{parquet_dir}/{name}'), \
+            f'missing {parquet_dir}/{name} directory. you need to run update_dual_attach test first'
+        _test_data(self.topology, proto, scenario, testvar)
 
 
 class TestSingleAttach:

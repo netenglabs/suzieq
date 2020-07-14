@@ -7,9 +7,7 @@ tests:
 - command: mlag show --columns=hostname --format=json --namespace=dual-attach_ospf_docker
   data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_docker/parquet-out
   marks: mlag show
-  xfail:
-    error: '[]'
-    reason: uncaught exception
+  output: '[]'
 - command: mlag summarize --format=json --namespace=dual-attach_ospf_docker
   data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_docker/parquet-out
   marks: mlag summarize
