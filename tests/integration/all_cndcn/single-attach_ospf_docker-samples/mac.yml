@@ -7,9 +7,7 @@ tests:
 - command: mac show --columns=hostname --format=json --namespace=single-attach_ospf_docker
   data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
   marks: mac show
-  xfail:
-    error: '[]'
-    reason: uncaught exception
+  output: '[]'
 - command: mac summarize --format=json --namespace=single-attach_ospf_docker
   data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
   marks: mac summarize

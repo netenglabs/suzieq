@@ -19,25 +19,25 @@ tests:
   data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_unnumbered/parquet-out
   marks: path show
   output: '[{"pathid": 1, "hopCount": 0, "namespace": "single-attach_ospf_unnumbered",
-    "hostname": "leaf04", "iif": "lo", "vrf": "default", "overlay": false, "mtuMatch":
-    null, "mtu": 65536, "timestamp": 1590168722226}, {"pathid": 1, "hopCount": 1,
-    "namespace": "single-attach_ospf_unnumbered", "hostname": "spine01", "iif": "swp4",
-    "vrf": "default", "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp":
-    1590168722226}, {"pathid": 1, "hopCount": 2, "namespace": "single-attach_ospf_unnumbered",
-    "hostname": "leaf01", "iif": "swp1", "vrf": "default", "overlay": false, "mtuMatch":
-    true, "mtu": 1500, "timestamp": 1590168722226}, {"pathid": 1, "hopCount": 2, "namespace":
-    "single-attach_ospf_unnumbered", "hostname": "leaf01", "iif": "lo", "vrf": "default",
-    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1590168722263},
+    "hostname": "leaf04", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch":
+    null, "mtu": 1500, "timestamp": 1594387702748}, {"pathid": 1, "hopCount": 1, "namespace":
+    "single-attach_ospf_unnumbered", "hostname": "spine01", "iif": "swp6", "vrf":
+    "default", "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594387702913},
+    {"pathid": 1, "hopCount": 2, "namespace": "single-attach_ospf_unnumbered", "hostname":
+    "leaf01", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch": true,
+    "mtu": 1500, "timestamp": 1594387702847}, {"pathid": 1, "hopCount": 2, "namespace":
+    "single-attach_ospf_unnumbered", "hostname": "leaf01", "iif": "swp2", "vrf": "default",
+    "overlay": false, "mtuMatch": null, "mtu": 1500, "timestamp": 1594387702748},
     {"pathid": 2, "hopCount": 0, "namespace": "single-attach_ospf_unnumbered", "hostname":
-    "leaf04", "iif": "lo", "vrf": "default", "overlay": false, "mtuMatch": null, "mtu":
-    65536, "timestamp": 1590168722226}, {"pathid": 2, "hopCount": 1, "namespace":
-    "single-attach_ospf_unnumbered", "hostname": "spine02", "iif": "swp4", "vrf":
-    "default", "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590168722226},
+    "leaf04", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch": null,
+    "mtu": 1500, "timestamp": 1594387702748}, {"pathid": 2, "hopCount": 1, "namespace":
+    "single-attach_ospf_unnumbered", "hostname": "spine02", "iif": "swp6", "vrf":
+    "default", "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594387702913},
     {"pathid": 2, "hopCount": 2, "namespace": "single-attach_ospf_unnumbered", "hostname":
     "leaf01", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch": true,
-    "mtu": 1500, "timestamp": 1590168721828}, {"pathid": 2, "hopCount": 2, "namespace":
-    "single-attach_ospf_unnumbered", "hostname": "leaf01", "iif": "lo", "vrf": "default",
-    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1590168722263}]'
+    "mtu": 1500, "timestamp": 1594387702933}, {"pathid": 2, "hopCount": 2, "namespace":
+    "single-attach_ospf_unnumbered", "hostname": "leaf01", "iif": "swp2", "vrf": "default",
+    "overlay": false, "mtuMatch": null, "mtu": 1500, "timestamp": 1594387702748}]'
 - command: path show --src=172.16.1.101 --dest=172.16.253.1 --format=json --namespace=single-attach_ospf_unnumbered
   data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_unnumbered/parquet-out
   error:

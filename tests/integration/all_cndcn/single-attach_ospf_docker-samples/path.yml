@@ -19,25 +19,25 @@ tests:
   data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
   marks: path show
   output: '[{"pathid": 1, "hopCount": 0, "namespace": "single-attach_ospf_docker",
-    "hostname": "leaf04", "iif": "lo", "vrf": "default", "overlay": false, "mtuMatch":
-    null, "mtu": 65536, "timestamp": 1590168187715}, {"pathid": 1, "hopCount": 1,
-    "namespace": "single-attach_ospf_docker", "hostname": "spine01", "iif": "swp4",
-    "vrf": "default", "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp":
-    1590168186692}, {"pathid": 1, "hopCount": 2, "namespace": "single-attach_ospf_docker",
-    "hostname": "leaf01", "iif": "swp1", "vrf": "default", "overlay": false, "mtuMatch":
-    true, "mtu": 1500, "timestamp": 1590168187231}, {"pathid": 1, "hopCount": 2, "namespace":
-    "single-attach_ospf_docker", "hostname": "leaf01", "iif": "lo", "vrf": "default",
-    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1590168187811},
+    "hostname": "leaf04", "iif": "swp5", "vrf": "default", "overlay": false, "mtuMatch":
+    null, "mtu": 1500, "timestamp": 1594387420128}, {"pathid": 1, "hopCount": 1, "namespace":
+    "single-attach_ospf_docker", "hostname": "spine01", "iif": "swp6", "vrf": "default",
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594387420277},
+    {"pathid": 1, "hopCount": 2, "namespace": "single-attach_ospf_docker", "hostname":
+    "leaf01", "iif": "swp1", "vrf": "default", "overlay": false, "mtuMatch": true,
+    "mtu": 1500, "timestamp": 1594387420263}, {"pathid": 1, "hopCount": 2, "namespace":
+    "single-attach_ospf_docker", "hostname": "leaf01", "iif": "swp5", "vrf": "default",
+    "overlay": false, "mtuMatch": null, "mtu": 1500, "timestamp": 1594387420113},
     {"pathid": 2, "hopCount": 0, "namespace": "single-attach_ospf_docker", "hostname":
-    "leaf04", "iif": "lo", "vrf": "default", "overlay": false, "mtuMatch": null, "mtu":
-    65536, "timestamp": 1590168187715}, {"pathid": 2, "hopCount": 1, "namespace":
-    "single-attach_ospf_docker", "hostname": "spine02", "iif": "swp4", "vrf": "default",
-    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590168186692},
+    "leaf04", "iif": "swp5", "vrf": "default", "overlay": false, "mtuMatch": null,
+    "mtu": 1500, "timestamp": 1594387420128}, {"pathid": 2, "hopCount": 1, "namespace":
+    "single-attach_ospf_docker", "hostname": "spine02", "iif": "swp6", "vrf": "default",
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594387420277},
     {"pathid": 2, "hopCount": 2, "namespace": "single-attach_ospf_docker", "hostname":
     "leaf01", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch": true,
-    "mtu": 1500, "timestamp": 1590168187231}, {"pathid": 2, "hopCount": 2, "namespace":
-    "single-attach_ospf_docker", "hostname": "leaf01", "iif": "lo", "vrf": "default",
-    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1590168187811}]'
+    "mtu": 1500, "timestamp": 1594387420233}, {"pathid": 2, "hopCount": 2, "namespace":
+    "single-attach_ospf_docker", "hostname": "leaf01", "iif": "swp5", "vrf": "default",
+    "overlay": false, "mtuMatch": null, "mtu": 1500, "timestamp": 1594387420113}]'
 - command: path show --src=172.16.1.101 --dest=172.16.253.1 --format=json --namespace=single-attach_ospf_docker
   data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
   error:

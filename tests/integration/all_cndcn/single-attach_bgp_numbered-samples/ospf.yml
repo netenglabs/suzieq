@@ -7,9 +7,7 @@ tests:
 - command: ospf show --columns=hostname --format=json --namespace=single-attach_bgp_numbered
   data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_numbered/parquet-out
   marks: ospf show
-  xfail:
-    error: '[]'
-    reason: uncaught exception
+  output: '[]'
 - command: ospf summarize --format=json --namespace=single-attach_bgp_numbered
   data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_numbered/parquet-out
   marks: ospf summarize

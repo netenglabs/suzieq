@@ -4,35 +4,35 @@ tests:
   data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_centralized/parquet-out
   marks: vlan show
   output: '[{"namespace": "single-attach_evpn_centralized", "hostname": "exit01",
-    "ifname": "bridge", "vlan": ["13", "24"], "pvid": 0, "timestamp": 1590167349707},
+    "ifname": "bridge", "vlan": ["13", "24"], "pvid": 0, "timestamp": 1594386755573},
     {"namespace": "single-attach_evpn_centralized", "hostname": "exit01", "ifname":
-    "vni13", "vlan": ["13"], "pvid": 13, "timestamp": 1590167349707}, {"namespace":
+    "vni13", "vlan": ["13"], "pvid": 13, "timestamp": 1594386755573}, {"namespace":
     "single-attach_evpn_centralized", "hostname": "exit01", "ifname": "vni24", "vlan":
-    ["24"], "pvid": 24, "timestamp": 1590167349707}, {"namespace": "single-attach_evpn_centralized",
+    ["24"], "pvid": 24, "timestamp": 1594386755573}, {"namespace": "single-attach_evpn_centralized",
     "hostname": "exit02", "ifname": "bridge", "vlan": ["13", "24", "4001"], "pvid":
-    0, "timestamp": 1590167349246}, {"namespace": "single-attach_evpn_centralized",
+    0, "timestamp": 1594386755556}, {"namespace": "single-attach_evpn_centralized",
     "hostname": "exit02", "ifname": "vxlan4001", "vlan": ["4001"], "pvid": 4001, "timestamp":
-    1590167349246}, {"namespace": "single-attach_evpn_centralized", "hostname": "leaf01",
-    "ifname": "bridge", "vlan": ["13"], "pvid": 0, "timestamp": 1590167349246}, {"namespace":
+    1594386755556}, {"namespace": "single-attach_evpn_centralized", "hostname": "leaf01",
+    "ifname": "bridge", "vlan": ["13"], "pvid": 0, "timestamp": 1594386755571}, {"namespace":
     "single-attach_evpn_centralized", "hostname": "leaf01", "ifname": "swp5", "vlan":
-    ["13"], "pvid": 13, "timestamp": 1590167349246}, {"namespace": "single-attach_evpn_centralized",
+    ["13"], "pvid": 13, "timestamp": 1594386755571}, {"namespace": "single-attach_evpn_centralized",
     "hostname": "leaf01", "ifname": "vni13", "vlan": ["13"], "pvid": 13, "timestamp":
-    1590167349246}, {"namespace": "single-attach_evpn_centralized", "hostname": "leaf02",
-    "ifname": "bridge", "vlan": ["24"], "pvid": 0, "timestamp": 1590167349707}, {"namespace":
+    1594386755571}, {"namespace": "single-attach_evpn_centralized", "hostname": "leaf02",
+    "ifname": "bridge", "vlan": ["24"], "pvid": 0, "timestamp": 1594386755521}, {"namespace":
     "single-attach_evpn_centralized", "hostname": "leaf02", "ifname": "swp5", "vlan":
-    ["24"], "pvid": 24, "timestamp": 1590167349707}, {"namespace": "single-attach_evpn_centralized",
+    ["24"], "pvid": 24, "timestamp": 1594386755521}, {"namespace": "single-attach_evpn_centralized",
     "hostname": "leaf02", "ifname": "vni24", "vlan": ["24"], "pvid": 24, "timestamp":
-    1590167349707}, {"namespace": "single-attach_evpn_centralized", "hostname": "leaf03",
-    "ifname": "bridge", "vlan": ["13"], "pvid": 0, "timestamp": 1590167349345}, {"namespace":
+    1594386755521}, {"namespace": "single-attach_evpn_centralized", "hostname": "leaf03",
+    "ifname": "bridge", "vlan": ["13"], "pvid": 0, "timestamp": 1594386755553}, {"namespace":
     "single-attach_evpn_centralized", "hostname": "leaf03", "ifname": "swp5", "vlan":
-    ["13"], "pvid": 13, "timestamp": 1590167349345}, {"namespace": "single-attach_evpn_centralized",
+    ["13"], "pvid": 13, "timestamp": 1594386755553}, {"namespace": "single-attach_evpn_centralized",
     "hostname": "leaf03", "ifname": "vni13", "vlan": ["13"], "pvid": 13, "timestamp":
-    1590167349345}, {"namespace": "single-attach_evpn_centralized", "hostname": "leaf04",
-    "ifname": "bridge", "vlan": ["24"], "pvid": 0, "timestamp": 1590167349246}, {"namespace":
+    1594386755553}, {"namespace": "single-attach_evpn_centralized", "hostname": "leaf04",
+    "ifname": "bridge", "vlan": ["24"], "pvid": 0, "timestamp": 1594386755524}, {"namespace":
     "single-attach_evpn_centralized", "hostname": "leaf04", "ifname": "swp5", "vlan":
-    ["24"], "pvid": 24, "timestamp": 1590167349246}, {"namespace": "single-attach_evpn_centralized",
+    ["24"], "pvid": 24, "timestamp": 1594386755524}, {"namespace": "single-attach_evpn_centralized",
     "hostname": "leaf04", "ifname": "vni24", "vlan": ["24"], "pvid": 24, "timestamp":
-    1590167349246}]'
+    1594386755524}]'
 - command: vlan show --columns=hostname --format=json --namespace=single-attach_evpn_centralized
   data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_centralized/parquet-out
   marks: vlan show
@@ -45,7 +45,7 @@ tests:
   data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_centralized/parquet-out
   marks: vlan summarize
   output: '{"single-attach_evpn_centralized": {"deviceCnt": 17, "uniquePvidCnt": 4,
-    "uniqueVlanCnt": {"24": 9, "13": 9, "4001": 2}}}'
+    "uniqueVlanCnt": {"13": 9, "24": 9, "4001": 2}}}'
 - command: vlan unique --columns=hostname --format=json --namespace=single-attach_evpn_centralized
   data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_centralized/parquet-out
   marks: vlan unique
