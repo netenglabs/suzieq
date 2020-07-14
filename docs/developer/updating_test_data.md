@@ -131,7 +131,7 @@ These take 2+ hours. I can't get these to run successfully in parallel. It shoul
 script, but I can't get it to work correctly with pytest. The problems I run into are getting vagrant to reliable destroy and up every single time. Sometimes either vagrant destroy or vagrant up
 
 ```bash
-SUZIEQ_POLLER=true pytest -m "single_attach or dual_attach" -n0
+SUZIEQ_POLLER=true pytest -m "gather_single_attach or gather_dual_attach" -n0
 ```
 
 ### update the data

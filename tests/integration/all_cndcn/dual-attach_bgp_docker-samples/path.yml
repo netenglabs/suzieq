@@ -40,10 +40,9 @@ tests:
     "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1594706580162}]'
 - command: path show --src=172.16.1.101 --dest=172.16.253.1 --format=json --namespace=dual-attach_bgp_docker
   data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_docker/parquet-out
+  error:
+    error: '[{"error": "ERROR: No routes found for server101"}]'
   marks: path show
-  output: '[{"pathid": 1, "hopCount": 0, "namespace": "dual-attach_bgp_docker", "hostname":
-    "server101", "iif": "lo", "vrf": "default", "overlay": false, "mtuMatch": null,
-    "mtu": 65536, "timestamp": 1594706580036}]'
 - command: path summarize --dest=172.16.2.104 --src=172.16.1.101 --format=json --namespace=dual-attach_bgp_docker
   data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_docker/parquet-out
   error:
