@@ -14,8 +14,8 @@ services:
     suzieq-cli:
         restart: unless-stopped
         image:  ddutt/suzieq:latest
-        stdin_open: true # docker run -i
-        tty: true        # docker run -t
+        stdin_open: true
+        tty: true
         volumes:
             - "./parquet-out:/suzieq/parquet"
         entrypoint:
