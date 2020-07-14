@@ -5,38 +5,38 @@ tests:
   marks: mac show
   output: '[{"namespace": "single-attach_bgp_unnumbered", "hostname": "edge01", "vlan":
     0, "macaddr": "33:33:00:00:00:01", "oif": "eth2.4", "remoteVtepIp": "", "flags":
-    "permanent", "timestamp": 1590170640420}, {"namespace": "single-attach_bgp_unnumbered",
+    "permanent", "timestamp": 1594390070133}, {"namespace": "single-attach_bgp_unnumbered",
     "hostname": "edge01", "vlan": 0, "macaddr": "01:00:5e:00:00:01", "oif": "eth2.4",
-    "remoteVtepIp": "", "flags": "permanent", "timestamp": 1590170640420}, {"namespace":
+    "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594390070133}, {"namespace":
     "single-attach_bgp_unnumbered", "hostname": "edge01", "vlan": 0, "macaddr": "33:33:00:00:00:02",
-    "oif": "eth2.4", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1590170640420},
-    {"namespace": "single-attach_bgp_unnumbered", "hostname": "leaf01", "vlan": 0,
-    "macaddr": "44:38:39:00:00:03", "oif": "swp5", "remoteVtepIp": "", "flags": "permanent",
-    "timestamp": 1590170640420}, {"namespace": "single-attach_bgp_unnumbered", "hostname":
-    "leaf01", "vlan": 10, "macaddr": "00:03:00:11:11:01", "oif": "swp5", "remoteVtepIp":
-    "", "flags": "", "timestamp": 1590170640420}, {"namespace": "single-attach_bgp_unnumbered",
+    "oif": "eth2.4", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594390070133},
+    {"namespace": "single-attach_bgp_unnumbered", "hostname": "leaf01", "vlan": 10,
+    "macaddr": "00:03:00:11:11:01", "oif": "swp5", "remoteVtepIp": "", "flags": "",
+    "timestamp": 1594390070178}, {"namespace": "single-attach_bgp_unnumbered", "hostname":
+    "leaf01", "vlan": 0, "macaddr": "44:38:39:00:00:03", "oif": "swp5", "remoteVtepIp":
+    "", "flags": "permanent", "timestamp": 1594390070178}, {"namespace": "single-attach_bgp_unnumbered",
     "hostname": "leaf01", "vlan": 10, "macaddr": "44:38:39:00:00:03", "oif": "bridge",
-    "remoteVtepIp": "", "flags": "permanent", "timestamp": 1590170640420}, {"namespace":
+    "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594390070178}, {"namespace":
     "single-attach_bgp_unnumbered", "hostname": "leaf02", "vlan": 0, "macaddr": "44:38:39:00:00:18",
-    "oif": "swp5", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1590170639722},
+    "oif": "swp5", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594390070155},
     {"namespace": "single-attach_bgp_unnumbered", "hostname": "leaf02", "vlan": 10,
     "macaddr": "00:03:00:22:22:02", "oif": "swp5", "remoteVtepIp": "", "flags": "",
-    "timestamp": 1590170639722}, {"namespace": "single-attach_bgp_unnumbered", "hostname":
+    "timestamp": 1594390070155}, {"namespace": "single-attach_bgp_unnumbered", "hostname":
     "leaf02", "vlan": 10, "macaddr": "44:38:39:00:00:18", "oif": "bridge", "remoteVtepIp":
-    "", "flags": "permanent", "timestamp": 1590170639722}, {"namespace": "single-attach_bgp_unnumbered",
+    "", "flags": "permanent", "timestamp": 1594390070155}, {"namespace": "single-attach_bgp_unnumbered",
     "hostname": "leaf03", "vlan": 10, "macaddr": "00:03:00:33:33:01", "oif": "swp5",
-    "remoteVtepIp": "", "flags": "", "timestamp": 1590170639722}, {"namespace": "single-attach_bgp_unnumbered",
+    "remoteVtepIp": "", "flags": "", "timestamp": 1594390070152}, {"namespace": "single-attach_bgp_unnumbered",
     "hostname": "leaf03", "vlan": 0, "macaddr": "44:38:39:00:00:1f", "oif": "swp5",
-    "remoteVtepIp": "", "flags": "permanent", "timestamp": 1590170639722}, {"namespace":
+    "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594390070152}, {"namespace":
     "single-attach_bgp_unnumbered", "hostname": "leaf03", "vlan": 10, "macaddr": "44:38:39:00:00:1f",
-    "oif": "bridge", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1590170639722},
+    "oif": "bridge", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594390070152},
     {"namespace": "single-attach_bgp_unnumbered", "hostname": "leaf04", "vlan": 0,
     "macaddr": "44:38:39:00:00:2c", "oif": "swp5", "remoteVtepIp": "", "flags": "permanent",
-    "timestamp": 1590170639723}, {"namespace": "single-attach_bgp_unnumbered", "hostname":
+    "timestamp": 1594390070178}, {"namespace": "single-attach_bgp_unnumbered", "hostname":
     "leaf04", "vlan": 10, "macaddr": "00:03:00:44:44:02", "oif": "swp5", "remoteVtepIp":
-    "", "flags": "", "timestamp": 1590170639723}, {"namespace": "single-attach_bgp_unnumbered",
+    "", "flags": "", "timestamp": 1594390070178}, {"namespace": "single-attach_bgp_unnumbered",
     "hostname": "leaf04", "vlan": 10, "macaddr": "44:38:39:00:00:2c", "oif": "bridge",
-    "remoteVtepIp": "", "flags": "permanent", "timestamp": 1590170639723}]'
+    "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594390070178}]'
 - command: mac show --columns=hostname --format=json --namespace=single-attach_bgp_unnumbered
   data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_unnumbered/parquet-out
   marks: mac show
@@ -49,8 +49,7 @@ tests:
   data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_unnumbered/parquet-out
   marks: mac summarize
   output: '{"single-attach_bgp_unnumbered": {"deviceCnt": 5, "totalMacsinNSCnt": 15,
-    "uniqueMacCnt": 11, "uniqueVlanperHostStat": [0, 1, 1.0], "herPerVtepStat": [0,
-    0, 0.0]}}'
+    "uniqueMacCnt": 11, "uniqueVlanperHostStat": [0, 1, 1.0]}}'
 - command: mac unique --columns=hostname --format=json --namespace=single-attach_bgp_unnumbered
   data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_unnumbered/parquet-out
   marks: mac unique

@@ -194,7 +194,7 @@ def update_input_data(root_dir, nos, scenario, input_path):
 
 
 class TestUpdate:
-
+    @pytest.mark.test_update
     @pytest.mark.gather_data
     @pytest.mark.skipif(not os.environ.get('SUZIEQ_POLLER', None),
                         reason='Not gathering data')
@@ -214,7 +214,8 @@ class TestUpdate:
 
         gather_data('dual-attach', 'bgp', 'unnumbered', 'dual-bgp', orig_dir, tmp_path)
         update_input_data(orig_dir, 'cumulus', 'dual-bgp', tmp_path)
-
+    
+    @pytest.mark.test_update
     @pytest.mark.update_data
     @pytest.mark.skipif(not os.environ.get('SUZIEQ_POLLER', None),
                         reason='Not updating data')
@@ -246,7 +247,7 @@ class TestUpdate:
 
         update_sqcmds(glob.glob(f'{sqcmds_dir}/cumulus-samples/*.yml'))
 
-    
+    @pytest.mark.test_update
     @pytest.mark.update_data
     @pytest.mark.skipif(not os.environ.get('SUZIEQ_POLLER', None),
                         reason='Not updating data')
@@ -266,7 +267,7 @@ class TestUpdate:
 
         update_sqcmds(glob.glob(f'{sqcmds_dir}/{nos}-samples/*.yml'))
 
-    
+    @pytest.mark.test_update
     @pytest.mark.update_data
     @pytest.mark.skipif(not os.environ.get('SUZIEQ_POLLER', None),
                         reason='Not updating data')
@@ -286,6 +287,7 @@ class TestUpdate:
 
         update_sqcmds(glob.glob(f'{sqcmds_dir}/{nos}-samples/*.yml'))
 
+    @pytest.mark.test_update
     @pytest.mark.update_data
     @pytest.mark.skipif(not os.environ.get('SUZIEQ_POLLER', None),
                         reason='Not updating data')
@@ -410,7 +412,6 @@ class TestDualAttach:
     def test_gather_dual_data(self, proto, scenario, tmp_path, vagrant_setup):
         _gather_cndcn_data(topology, proto, scenario, tmp_path)
 
-
     @pytest.mark.update_dual_attach
     @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ,
                         reason='Not updating data')
@@ -422,17 +423,15 @@ class TestDualAttach:
         #   it will update the data in the samples directories
         _update_cndcn_data(self.topology, proto, scenario, tmp_path)
 
-
-    # this needs to be run after the tests are created and updated
+    # these needs to be run after the tests are created and updated
     #  there is no way to have pytest run the load_up_the_tests before the updater
-
     @pytest.mark.cndcn
     @pytest.mark.dual_attach
     @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ,
                         reason='Not updating data')
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/dual-attach_bgp_numbered-samples/")))
-    def test_dual_bgp_numbered_data(self, testvar): 
+    def test_dual_bgp_numbered_data(self, testvar, tmp_path): 
         proto = 'bgp'
         scenario = 'numbered'
         name = f'{self.topology}_{proto}_{scenario}'
@@ -554,6 +553,8 @@ class TestDualAttach:
 
 
 class TestSingleAttach:
+    topology = 'single-attach'
+
     @pytest.mark.cndcn
     @pytest.mark.gather_single_attach
     @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ,
@@ -563,100 +564,146 @@ class TestSingleAttach:
         _gather_cndcn_data('single-attach', proto, scenario, tmp_path)
 
 
+    @pytest.mark.update_single_attach
+    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ,
+                        reason='Not updating data')
+    @pytest.mark.parametrize("proto, scenario", tests)
+    def test_update_single_data(self, proto, scenario, tmp_path):
+        # this takes the data that was captured with run-once=gather
+        #  and creates the parquet data
+        #   if you also have UPDATE_SQCMDS in your os environment
+        #   it will update the data in the samples directories
+        _update_cndcn_data(self.topology, proto, scenario, tmp_path)
 
-#     # this needs to be run after the tests are created and updated
-#     #  there is no way to have pytest run the load_up_the_tests before the updater
-#     #  so we prevent this running if you are updating the sqcmds
-#     @pytest.mark.single_attach
-#     @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
-#                         'UPDATE_SQCMDS' in os.environ,
-#                         reason='Not updating data')
-#     @pytest.mark.depends(on=['test_create_single_data'])
-#     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
-#         os.scandir(f"{cndcn_samples_dir}/single-attach_bgp_numbered-samples/")))
-#     def test_single_bgp_numbered_data(self, testvar):
-#         _test_data('single-attach', 'bgp', 'numbered', testvar)
 
-#     @pytest.mark.single_attach
-#     @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
-#                         'UPDATE_SQCMDS' in os.environ,
-#                         reason='Not updating data')
-#     @pytest.mark.depends(on=['test_create_single_data'])
-#     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
-#         os.scandir(f"{cndcn_samples_dir}/single-attach_bgp_unnumbered-samples/")))
-#     def test_single_bgp_numbered_data(self, testvar):
-#         _test_data('single-attach', 'bgp', 'unnumbered', testvar)
+    # this needs to be run after the tests are created and updated
+    #  there is no way to have pytest run the load_up_the_tests before the updater
 
-#     @pytest.mark.single_attach
-#     @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
-#                         'UPDATE_SQCMDS' in os.environ,
-#                         reason='Not updating data')
-#     @pytest.mark.depends(on=['test_create_single_data'])
-#     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
-#         os.scandir(f"{cndcn_samples_dir}/single-attach_bgp_docker-samples/")))
-#     def test_single_bgp_numbered_data(self, testvar):
-#         _test_data('single-attach', 'bgp', 'docker', testvar)
+    @pytest.mark.cndcn
+    @pytest.mark.single_attach
+    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ,
+                        reason='Not updating data')
+    @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
+        os.scandir(f"{cndcn_samples_dir}/single-attach_bgp_numbered-samples/")))
+    def test_single_bgp_numbered_data(self, testvar): 
+        proto = 'bgp'
+        scenario = 'numbered'
+        name = f'{self.topology}_{proto}_{scenario}'
+        assert os.path.isdir(f'{parquet_dir}/{name}'), \
+            f'missing {parquet_dir}/{name} directory. you need to run update_single_attach test first'
+        _test_data(self.topology, proto, scenario, testvar)
 
-#     @pytest.mark.single_attach
-#     @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
-#                         'UPDATE_SQCMDS' in os.environ,
-#                         reason='Not updating data')
-#     @pytest.mark.depends(on=['test_create_single_data'])
-#     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
-#         os.scandir(f"{cndcn_samples_dir}/single-attach_ospf_numbered-samples/")))
-#     def test_single_ospf_numbered_data(self, testvar):
-#         _test_data('single-attach', 'ospf', 'numbered', testvar)
+    @pytest.mark.cndcn
+    @pytest.mark.single_attach
+    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ,
+                        reason='Not updating data')
+    @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
+        os.scandir(f"{cndcn_samples_dir}/single-attach_bgp_unnumbered-samples/")))
+    def test_single_bgp_unnumbered_data(self, testvar): 
+        proto = 'bgp'
+        scenario = 'unnumbered'
+        name = f'{self.topology}_{proto}_{scenario}'
+        assert os.path.isdir(f'{parquet_dir}/{name}'), \
+            f'missing {parquet_dir}/{name} directory. you need to run update_single_attach test first'
+        _test_data(self.topology, proto, scenario, testvar)
 
-#     @pytest.mark.single_attach
-#     @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
-#                         'UPDATE_SQCMDS' in os.environ,
-#                         reason='Not updating data')
-#     @pytest.mark.depends(on=['test_create_single_data'])
-#     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
-#         os.scandir(f"{cndcn_samples_dir}/single-attach_ospf_unnumbered-samples/")))
-#     def test_single_ospf_numbered_data(self, testvar):
-#         _test_data('single-attach', 'ospf', 'unnumbered', testvar)
+    @pytest.mark.cndcn
+    @pytest.mark.single_attach
+    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ,
+                        reason='Not updating data')
+    @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
+        os.scandir(f"{cndcn_samples_dir}/single-attach_bgp_docker-samples/")))
+    def test_single_bgp_docker_data(self, testvar): 
+        proto = 'bgp'
+        scenario = 'docker'
+        name = f'{self.topology}_{proto}_{scenario}'
+        assert os.path.isdir(f'{parquet_dir}/{name}'), \
+            f'missing {parquet_dir}/{name} directory. you need to run update_single_attach test first'
+        _test_data(self.topology, proto, scenario, testvar)
 
-#     @pytest.mark.single_attach
-#     @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
-#                         'UPDATE_SQCMDS' in os.environ,
-#                         reason='Not updating data')
-#     @pytest.mark.depends(on=['test_create_single_data'])
-#     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
-#         os.scandir(f"{cndcn_samples_dir}/single-attach_ospf_docker-samples/")))
-#     def test_single_ospf_numbered_data(self, testvar):
-#         _test_data('single-attach', 'ospf', 'docker', testvar)
+    @pytest.mark.cndcn
+    @pytest.mark.single_attach
+    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ,
+                        reason='Not updating data')
+    @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
+        os.scandir(f"{cndcn_samples_dir}/single-attach_ospf_numbered-samples/")))
+    def test_single_ospf_numbered_data(self, testvar): 
+        proto = 'ospf'
+        scenario = 'numbered'
+        name = f'{self.topology}_{proto}_{scenario}'
+        assert os.path.isdir(f'{parquet_dir}/{name}'), \
+            f'missing {parquet_dir}/{name} directory. you need to run update_single_attach test first'
+        _test_data(self.topology, proto, scenario, testvar)
 
-#     @pytest.mark.single_attach
-#     @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
-#                         'UPDATE_SQCMDS' in os.environ,
-#                         reason='Not updating data')
-#     @pytest.mark.depends(on=['test_create_single_data'])
-#     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
-#         os.scandir(f"{cndcn_samples_dir}/single-attach_evpn_centralized-samples/")))
-#     def test_single_evpn_centralized_data(self, testvar):
-#         _test_data('single-attach', 'evpn', 'centralized', testvar)
+    @pytest.mark.cndcn
+    @pytest.mark.single_attach
+    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ,
+                        reason='Not updating data')
+    @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
+        os.scandir(f"{cndcn_samples_dir}/single-attach_ospf_unnumbered-samples/")))
+    def test_single_ospf_unnumbered_data(self, testvar): 
+        proto = 'ospf'
+        scenario = 'unnumbered'
+        name = f'{self.topology}_{proto}_{scenario}'
+        assert os.path.isdir(f'{parquet_dir}/{name}'), \
+            f'missing {parquet_dir}/{name} directory. you need to run update_single_attach test first'
+        _test_data(self.topology, proto, scenario, testvar)
 
-#     @pytest.mark.single_attach
-#     @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
-#                         'UPDATE_SQCMDS' in os.environ,
-#                         reason='Not updating data')
-#     @pytest.mark.depends(on=['test_create_single_data'])
-#     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
-#         os.scandir(f"{cndcn_samples_dir}/single-attach_evpn_distributed-samples/")))
-#     def test_single_evpn_distributed_data(self, testvar):
-#         _test_data('single-attach', 'evpn', 'distributed', testvar)
+    @pytest.mark.cndcn
+    @pytest.mark.single_attach
+    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ,
+                        reason='Not updating data')
+    @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
+        os.scandir(f"{cndcn_samples_dir}/single-attach_ospf_docker-samples/")))
+    def test_single_ospf_docker_data(self, testvar): 
+        proto = 'ospf'
+        scenario = 'docker'
+        name = f'{self.topology}_{proto}_{scenario}'
+        assert os.path.isdir(f'{parquet_dir}/{name}'), \
+            f'missing {parquet_dir}/{name} directory. you need to run update_single_attach test first'
+        _test_data(self.topology, proto, scenario, testvar)
 
-#     @pytest.mark.single_attach
-#     @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
-#                         'UPDATE_SQCMDS' in os.environ,
-#                         reason='Not updating data')
-#     @pytest.mark.depends(on=['test_create_single_data'])
-#     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
-#         os.scandir(f"{cndcn_samples_dir}/single-attach_evpn_ospf-ibgp-samples/")))
-#     def test_single_evpn_ospf_ibgp_data(self, testvar):
-#         _test_data('single-attach', 'evpn', 'ospf-ibgp', testvar)
+    @pytest.mark.cndcn
+    @pytest.mark.single_attach
+    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ,
+                        reason='Not updating data')
+    @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
+        os.scandir(f"{cndcn_samples_dir}/single-attach_evpn_centralized-samples/")))
+    def test_single_evpn_centralized_data(self, testvar): 
+        proto = 'evpn'
+        scenario = 'centralized'
+        name = f'{self.topology}_{proto}_{scenario}'
+        assert os.path.isdir(f'{parquet_dir}/{name}'), \
+            f'missing {parquet_dir}/{name} directory. you need to run update_single_attach test first'
+        _test_data(self.topology, proto, scenario, testvar)
 
+    @pytest.mark.cndcn
+    @pytest.mark.single_attach
+    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ,
+                        reason='Not updating data')
+    @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
+        os.scandir(f"{cndcn_samples_dir}/single-attach_evpn_distributed-samples/")))
+    def test_single_evpn_distributed_data(self, testvar): 
+        proto = 'evpn'
+        scenario = 'distributed'
+        name = f'{self.topology}_{proto}_{scenario}'
+        assert os.path.isdir(f'{parquet_dir}/{name}'), \
+            f'missing {parquet_dir}/{name} directory. you need to run update_single_attach test first'
+        _test_data(self.topology, proto, scenario, testvar)
+
+    @pytest.mark.cndcn
+    @pytest.mark.single_attach
+    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ,
+                        reason='Not updating data')
+    @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
+        os.scandir(f"{cndcn_samples_dir}/single-attach_evpn_ospf-ibgp-samples/")))
+    def test_single_evpn_ospf_ibgp_data(self, testvar): 
+        proto = 'evpn'
+        scenario = 'ospf-ibgp'
+        name = f'{self.topology}_{proto}_{scenario}'
+        assert os.path.isdir(f'{parquet_dir}/{name}'), \
+            f'missing {parquet_dir}/{name} directory. you need to run update_single_attach test first'
+        _test_data(self.topology, proto, scenario, testvar)
 
 # This isn't actually a test, it's just used to cleanup any stray vagrant state
 @pytest.mark.cleanup

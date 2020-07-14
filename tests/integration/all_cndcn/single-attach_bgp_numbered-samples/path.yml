@@ -20,67 +20,32 @@ tests:
   marks: path show
   output: '[{"pathid": 1, "hopCount": 0, "namespace": "single-attach_bgp_numbered",
     "hostname": "leaf04", "iif": "lo", "vrf": "default", "overlay": false, "mtuMatch":
-    null, "mtu": 65536, "timestamp": 1590171176574}, {"pathid": 1, "hopCount": 1,
-    "namespace": "single-attach_bgp_numbered", "hostname": "spine01", "iif": "swp4",
+    null, "mtu": 65536, "timestamp": 1594390551054}, {"pathid": 1, "hopCount": 1,
+    "namespace": "single-attach_bgp_numbered", "hostname": "spine02", "iif": "swp4",
     "vrf": "default", "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp":
-    1590171175858}, {"pathid": 1, "hopCount": 2, "namespace": "single-attach_bgp_numbered",
-    "hostname": "leaf01", "iif": "swp1", "vrf": "default", "overlay": false, "mtuMatch":
-    true, "mtu": 1500, "timestamp": 1590171175692}, {"pathid": 1, "hopCount": 2, "namespace":
+    1594390551189}, {"pathid": 1, "hopCount": 2, "namespace": "single-attach_bgp_numbered",
+    "hostname": "leaf01", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch":
+    true, "mtu": 1500, "timestamp": 1594390551189}, {"pathid": 1, "hopCount": 2, "namespace":
     "single-attach_bgp_numbered", "hostname": "leaf01", "iif": "lo", "vrf": "default",
-    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1590171176960},
+    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1594390551101},
     {"pathid": 2, "hopCount": 0, "namespace": "single-attach_bgp_numbered", "hostname":
     "leaf04", "iif": "lo", "vrf": "default", "overlay": false, "mtuMatch": null, "mtu":
-    65536, "timestamp": 1590171176574}, {"pathid": 2, "hopCount": 1, "namespace":
-    "single-attach_bgp_numbered", "hostname": "spine02", "iif": "swp4", "vrf": "default",
-    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590171175858},
+    65536, "timestamp": 1594390551054}, {"pathid": 2, "hopCount": 1, "namespace":
+    "single-attach_bgp_numbered", "hostname": "spine01", "iif": "swp4", "vrf": "default",
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594390551189},
     {"pathid": 2, "hopCount": 2, "namespace": "single-attach_bgp_numbered", "hostname":
-    "leaf01", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch": true,
-    "mtu": 1500, "timestamp": 1590171175859}, {"pathid": 2, "hopCount": 2, "namespace":
+    "leaf01", "iif": "swp1", "vrf": "default", "overlay": false, "mtuMatch": true,
+    "mtu": 1500, "timestamp": 1594390551154}, {"pathid": 2, "hopCount": 2, "namespace":
     "single-attach_bgp_numbered", "hostname": "leaf01", "iif": "lo", "vrf": "default",
-    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1590171176960}]'
+    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1594390551101}]'
 - command: path show --src=172.16.1.101 --dest=172.16.253.1 --format=json --namespace=single-attach_bgp_numbered
   data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_numbered/parquet-out
   marks: path show
   output: '[{"pathid": 1, "hopCount": 0, "namespace": "single-attach_bgp_numbered",
     "hostname": "server101", "iif": "eth1", "vrf": "default", "overlay": false, "mtuMatch":
-    null, "mtu": 1500, "timestamp": 1590171175859}, {"pathid": 1, "hopCount": 1, "namespace":
+    null, "mtu": 1500, "timestamp": 1594390550927}, {"pathid": 1, "hopCount": 1, "namespace":
     "single-attach_bgp_numbered", "hostname": "leaf01", "iif": "vlan10", "vrf": "default",
-    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590171175859},
-    {"pathid": 1, "hopCount": 2, "namespace": "single-attach_bgp_numbered", "hostname":
-    "spine01", "iif": "swp1", "vrf": "default", "overlay": false, "mtuMatch": true,
-    "mtu": 1500, "timestamp": 1590171175858}, {"pathid": 1, "hopCount": 3, "namespace":
-    "single-attach_bgp_numbered", "hostname": "exit01", "iif": "swp1", "vrf": "default",
-    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590171175692},
-    {"pathid": 1, "hopCount": 4, "namespace": "single-attach_bgp_numbered", "hostname":
-    "edge01", "iif": "eth1.2", "vrf": "default", "overlay": false, "mtuMatch": true,
-    "mtu": 1500, "timestamp": 1590171175859}, {"pathid": 1, "hopCount": 5, "namespace":
-    "single-attach_bgp_numbered", "hostname": "exit01", "iif": "swp5.4", "vrf": "internet-vrf",
-    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590171175859},
-    {"pathid": 1, "hopCount": 6, "namespace": "single-attach_bgp_numbered", "hostname":
-    "internet", "iif": "swp1", "vrf": "default", "overlay": false, "mtuMatch": true,
-    "mtu": 1500, "timestamp": 1590171175859}, {"pathid": 1, "hopCount": 6, "namespace":
-    "single-attach_bgp_numbered", "hostname": "internet", "iif": "lo", "vrf": "default",
-    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1590171175862},
-    {"pathid": 2, "hopCount": 0, "namespace": "single-attach_bgp_numbered", "hostname":
-    "server101", "iif": "eth1", "vrf": "default", "overlay": false, "mtuMatch": null,
-    "mtu": 1500, "timestamp": 1590171175859}, {"pathid": 2, "hopCount": 1, "namespace":
-    "single-attach_bgp_numbered", "hostname": "leaf01", "iif": "vlan10", "vrf": "default",
-    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590171175859},
-    {"pathid": 2, "hopCount": 2, "namespace": "single-attach_bgp_numbered", "hostname":
-    "spine02", "iif": "swp1", "vrf": "default", "overlay": false, "mtuMatch": true,
-    "mtu": 1500, "timestamp": 1590171175858}, {"pathid": 2, "hopCount": 3, "namespace":
-    "single-attach_bgp_numbered", "hostname": "exit01", "iif": "swp2", "vrf": "default",
-    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590171175859},
-    {"pathid": 2, "hopCount": 4, "namespace": "single-attach_bgp_numbered", "hostname":
-    "edge01", "iif": "eth1.2", "vrf": "default", "overlay": false, "mtuMatch": true,
-    "mtu": 1500, "timestamp": 1590171175859}, {"pathid": 2, "hopCount": 5, "namespace":
-    "single-attach_bgp_numbered", "hostname": "exit01", "iif": "swp5.4", "vrf": "internet-vrf",
-    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590171175859},
-    {"pathid": 2, "hopCount": 6, "namespace": "single-attach_bgp_numbered", "hostname":
-    "internet", "iif": "swp1", "vrf": "default", "overlay": false, "mtuMatch": true,
-    "mtu": 1500, "timestamp": 1590171175859}, {"pathid": 2, "hopCount": 6, "namespace":
-    "single-attach_bgp_numbered", "hostname": "internet", "iif": "lo", "vrf": "default",
-    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1590171175862}]'
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594390551076}]'
 - command: path summarize --dest=172.16.2.104 --src=172.16.1.101 --format=json --namespace=single-attach_bgp_numbered
   data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_numbered/parquet-out
   error:

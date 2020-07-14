@@ -7,9 +7,7 @@ tests:
 - command: mlag show --columns=hostname --format=json --namespace=single-attach_evpn_centralized
   data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_centralized/parquet-out
   marks: mlag show
-  xfail:
-    error: '[]'
-    reason: uncaught exception
+  output: '[]'
 - command: mlag summarize --format=json --namespace=single-attach_evpn_centralized
   data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_centralized/parquet-out
   marks: mlag summarize

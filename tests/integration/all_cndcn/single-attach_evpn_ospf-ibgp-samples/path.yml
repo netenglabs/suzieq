@@ -7,9 +7,27 @@ tests:
   marks: path show
 - command: path show --dest=172.16.2.104 --src=172.16.1.101 --format=json --namespace=single-attach_evpn_ospf-ibgp
   data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_ospf-ibgp/parquet-out
-  error:
-    error: '[{"error": "ERROR: ''PathObj'' object has no attribute ''_arp_df''"}]'
   marks: path show
+  output: '[{"pathid": 1, "hopCount": 0, "namespace": "single-attach_evpn_ospf-ibgp",
+    "hostname": "server101", "iif": "eth1", "vrf": "default", "overlay": false, "mtuMatch":
+    null, "mtu": 9000, "timestamp": 1594385818777}, {"pathid": 1, "hopCount": 1, "namespace":
+    "single-attach_evpn_ospf-ibgp", "hostname": "leaf01", "iif": "vlan13-v0", "vrf":
+    "evpn-vrf", "overlay": false, "mtuMatch": true, "mtu": 9000, "timestamp": 1594385818974},
+    {"pathid": 1, "hopCount": 2, "namespace": "single-attach_evpn_ospf-ibgp", "hostname":
+    "leaf04", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch": false,
+    "mtu": 9216, "timestamp": 1594385819131}, {"pathid": 1, "hopCount": 3, "namespace":
+    "single-attach_evpn_ospf-ibgp", "hostname": "server104", "iif": "eth1", "vrf":
+    "default", "overlay": false, "mtuMatch": null, "mtu": 9000, "timestamp": 1594385818777},
+    {"pathid": 2, "hopCount": 0, "namespace": "single-attach_evpn_ospf-ibgp", "hostname":
+    "server101", "iif": "eth1", "vrf": "default", "overlay": false, "mtuMatch": null,
+    "mtu": 9000, "timestamp": 1594385818777}, {"pathid": 2, "hopCount": 1, "namespace":
+    "single-attach_evpn_ospf-ibgp", "hostname": "leaf03", "iif": "vlan13-v0", "vrf":
+    "evpn-vrf", "overlay": false, "mtuMatch": true, "mtu": 9000, "timestamp": 1594385818974},
+    {"pathid": 2, "hopCount": 2, "namespace": "single-attach_evpn_ospf-ibgp", "hostname":
+    "leaf04", "iif": "swp2", "vrf": "evpn-vrf", "overlay": false, "mtuMatch": false,
+    "mtu": 9216, "timestamp": 1594385819094}, {"pathid": 2, "hopCount": 3, "namespace":
+    "single-attach_evpn_ospf-ibgp", "hostname": "server104", "iif": "eth1", "vrf":
+    "default", "overlay": false, "mtuMatch": null, "mtu": 9000, "timestamp": 1594385818777}]'
 - command: path show --dest=172.16.2.104 --src=172.16.1.104 --format=json --namespace=single-attach_evpn_ospf-ibgp
   data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_ospf-ibgp/parquet-out
   error:
@@ -19,174 +37,45 @@ tests:
   data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_ospf-ibgp/parquet-out
   marks: path show
   output: '[{"pathid": 1, "hopCount": 0, "namespace": "single-attach_evpn_ospf-ibgp",
-    "hostname": "leaf04", "iif": "lo", "vrf": "default", "overlay": false, "mtuMatch":
-    null, "mtu": 65536, "timestamp": 1590165932520}, {"pathid": 1, "hopCount": 1,
-    "namespace": "single-attach_evpn_ospf-ibgp", "hostname": "spine01", "iif": "swp4",
-    "vrf": "default", "overlay": false, "mtuMatch": true, "mtu": 9216, "timestamp":
-    1590165930977}, {"pathid": 1, "hopCount": 2, "namespace": "single-attach_evpn_ospf-ibgp",
-    "hostname": "leaf01", "iif": "swp1", "vrf": "default", "overlay": false, "mtuMatch":
-    true, "mtu": 9216, "timestamp": 1590165930882}, {"pathid": 1, "hopCount": 2, "namespace":
-    "single-attach_evpn_ospf-ibgp", "hostname": "leaf01", "iif": "lo", "vrf": "default",
-    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1590165930984},
+    "hostname": "leaf04", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch":
+    null, "mtu": 9216, "timestamp": 1594385818908}, {"pathid": 1, "hopCount": 1, "namespace":
+    "single-attach_evpn_ospf-ibgp", "hostname": "spine01", "iif": "swp4", "vrf": "default",
+    "overlay": false, "mtuMatch": true, "mtu": 9216, "timestamp": 1594385819059},
+    {"pathid": 1, "hopCount": 2, "namespace": "single-attach_evpn_ospf-ibgp", "hostname":
+    "leaf01", "iif": "swp1", "vrf": "default", "overlay": false, "mtuMatch": true,
+    "mtu": 9216, "timestamp": 1594385819155}, {"pathid": 1, "hopCount": 2, "namespace":
+    "single-attach_evpn_ospf-ibgp", "hostname": "leaf01", "iif": "swp2", "vrf": "default",
+    "overlay": false, "mtuMatch": null, "mtu": 9216, "timestamp": 1594385818910},
     {"pathid": 2, "hopCount": 0, "namespace": "single-attach_evpn_ospf-ibgp", "hostname":
-    "leaf04", "iif": "lo", "vrf": "default", "overlay": false, "mtuMatch": null, "mtu":
-    65536, "timestamp": 1590165932520}, {"pathid": 2, "hopCount": 1, "namespace":
+    "leaf04", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch": null,
+    "mtu": 9216, "timestamp": 1594385818908}, {"pathid": 2, "hopCount": 1, "namespace":
     "single-attach_evpn_ospf-ibgp", "hostname": "spine02", "iif": "swp4", "vrf": "default",
-    "overlay": false, "mtuMatch": true, "mtu": 9216, "timestamp": 1590165930977},
+    "overlay": false, "mtuMatch": true, "mtu": 9216, "timestamp": 1594385819059},
     {"pathid": 2, "hopCount": 2, "namespace": "single-attach_evpn_ospf-ibgp", "hostname":
     "leaf01", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch": true,
-    "mtu": 9216, "timestamp": 1590165930882}, {"pathid": 2, "hopCount": 2, "namespace":
-    "single-attach_evpn_ospf-ibgp", "hostname": "leaf01", "iif": "lo", "vrf": "default",
-    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1590165930984}]'
+    "mtu": 9216, "timestamp": 1594385819155}, {"pathid": 2, "hopCount": 2, "namespace":
+    "single-attach_evpn_ospf-ibgp", "hostname": "leaf01", "iif": "swp2", "vrf": "default",
+    "overlay": false, "mtuMatch": null, "mtu": 9216, "timestamp": 1594385818910}]'
 - command: path show --src=172.16.1.101 --dest=172.16.253.1 --format=json --namespace=single-attach_evpn_ospf-ibgp
   data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_ospf-ibgp/parquet-out
   marks: path show
   output: '[{"pathid": 1, "hopCount": 0, "namespace": "single-attach_evpn_ospf-ibgp",
     "hostname": "server101", "iif": "eth1", "vrf": "default", "overlay": false, "mtuMatch":
-    null, "mtu": 9000, "timestamp": 1590165930977}, {"pathid": 1, "hopCount": 1, "namespace":
+    null, "mtu": 9000, "timestamp": 1594385818777}, {"pathid": 1, "hopCount": 1, "namespace":
     "single-attach_evpn_ospf-ibgp", "hostname": "leaf01", "iif": "vlan13-v0", "vrf":
-    "evpn-vrf", "overlay": false, "mtuMatch": true, "mtu": 9000, "timestamp": 1590165930977},
-    {"pathid": 1, "hopCount": 2, "namespace": "single-attach_evpn_ospf-ibgp", "hostname":
-    "exit01", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch": false,
-    "mtu": 9216, "timestamp": 1590165930882}, {"pathid": 1, "hopCount": 3, "namespace":
-    "single-attach_evpn_ospf-ibgp", "hostname": "edge01", "iif": "eth1.2", "vrf":
-    "default", "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590165930977},
-    {"pathid": 1, "hopCount": 4, "namespace": "single-attach_evpn_ospf-ibgp", "hostname":
-    "exit02", "iif": "swp5.4", "vrf": "internet-vrf", "overlay": false, "mtuMatch":
-    true, "mtu": 1500, "timestamp": 1590165932078}, {"pathid": 1, "hopCount": 5, "namespace":
-    "single-attach_evpn_ospf-ibgp", "hostname": "internet", "iif": "swp2", "vrf":
-    "default", "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590165930882},
-    {"pathid": 1, "hopCount": 5, "namespace": "single-attach_evpn_ospf-ibgp", "hostname":
-    "internet", "iif": "lo", "vrf": "default", "overlay": false, "mtuMatch": null,
-    "mtu": 65536, "timestamp": 1590165932102}, {"pathid": 2, "hopCount": 0, "namespace":
-    "single-attach_evpn_ospf-ibgp", "hostname": "server101", "iif": "eth1", "vrf":
-    "default", "overlay": false, "mtuMatch": null, "mtu": 9000, "timestamp": 1590165930977},
-    {"pathid": 2, "hopCount": 1, "namespace": "single-attach_evpn_ospf-ibgp", "hostname":
-    "leaf03", "iif": "vlan13-v0", "vrf": "evpn-vrf", "overlay": false, "mtuMatch":
-    true, "mtu": 9000, "timestamp": 1590165930977}, {"pathid": 2, "hopCount": 2, "namespace":
-    "single-attach_evpn_ospf-ibgp", "hostname": "exit01", "iif": "swp2", "vrf": "evpn-vrf",
-    "overlay": false, "mtuMatch": false, "mtu": 9216, "timestamp": 1590165930977},
-    {"pathid": 2, "hopCount": 3, "namespace": "single-attach_evpn_ospf-ibgp", "hostname":
-    "edge01", "iif": "eth1.2", "vrf": "default", "overlay": false, "mtuMatch": true,
-    "mtu": 1500, "timestamp": 1590165930977}, {"pathid": 2, "hopCount": 4, "namespace":
-    "single-attach_evpn_ospf-ibgp", "hostname": "exit02", "iif": "swp5.4", "vrf":
-    "internet-vrf", "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp":
-    1590165932078}, {"pathid": 2, "hopCount": 5, "namespace": "single-attach_evpn_ospf-ibgp",
-    "hostname": "internet", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch":
-    true, "mtu": 1500, "timestamp": 1590165930882}, {"pathid": 2, "hopCount": 5, "namespace":
-    "single-attach_evpn_ospf-ibgp", "hostname": "internet", "iif": "lo", "vrf": "default",
-    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1590165932102},
-    {"pathid": 3, "hopCount": 0, "namespace": "single-attach_evpn_ospf-ibgp", "hostname":
+    "evpn-vrf", "overlay": false, "mtuMatch": true, "mtu": 9000, "timestamp": 1594385818974},
+    {"pathid": 2, "hopCount": 0, "namespace": "single-attach_evpn_ospf-ibgp", "hostname":
     "server101", "iif": "eth1", "vrf": "default", "overlay": false, "mtuMatch": null,
-    "mtu": 9000, "timestamp": 1590165930977}, {"pathid": 3, "hopCount": 1, "namespace":
-    "single-attach_evpn_ospf-ibgp", "hostname": "leaf01", "iif": "vlan13-v0", "vrf":
-    "evpn-vrf", "overlay": false, "mtuMatch": true, "mtu": 9000, "timestamp": 1590165930977},
-    {"pathid": 3, "hopCount": 2, "namespace": "single-attach_evpn_ospf-ibgp", "hostname":
-    "exit02", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch": false,
-    "mtu": 9216, "timestamp": 1590165930882}, {"pathid": 3, "hopCount": 3, "namespace":
-    "single-attach_evpn_ospf-ibgp", "hostname": "edge01", "iif": "eth2.2", "vrf":
-    "default", "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590165930882},
-    {"pathid": 3, "hopCount": 4, "namespace": "single-attach_evpn_ospf-ibgp", "hostname":
-    "exit02", "iif": "swp5.4", "vrf": "internet-vrf", "overlay": false, "mtuMatch":
-    true, "mtu": 1500, "timestamp": 1590165932078}, {"pathid": 3, "hopCount": 5, "namespace":
-    "single-attach_evpn_ospf-ibgp", "hostname": "internet", "iif": "swp2", "vrf":
-    "default", "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590165930882},
-    {"pathid": 3, "hopCount": 5, "namespace": "single-attach_evpn_ospf-ibgp", "hostname":
-    "internet", "iif": "lo", "vrf": "default", "overlay": false, "mtuMatch": null,
-    "mtu": 65536, "timestamp": 1590165932102}, {"pathid": 4, "hopCount": 0, "namespace":
-    "single-attach_evpn_ospf-ibgp", "hostname": "server101", "iif": "eth1", "vrf":
-    "default", "overlay": false, "mtuMatch": null, "mtu": 9000, "timestamp": 1590165930977},
-    {"pathid": 4, "hopCount": 1, "namespace": "single-attach_evpn_ospf-ibgp", "hostname":
-    "leaf03", "iif": "vlan13-v0", "vrf": "evpn-vrf", "overlay": false, "mtuMatch":
-    true, "mtu": 9000, "timestamp": 1590165930977}, {"pathid": 4, "hopCount": 2, "namespace":
-    "single-attach_evpn_ospf-ibgp", "hostname": "exit02", "iif": "swp2", "vrf": "evpn-vrf",
-    "overlay": false, "mtuMatch": false, "mtu": 9216, "timestamp": 1590165930977},
-    {"pathid": 4, "hopCount": 3, "namespace": "single-attach_evpn_ospf-ibgp", "hostname":
-    "edge01", "iif": "eth2.2", "vrf": "default", "overlay": false, "mtuMatch": true,
-    "mtu": 1500, "timestamp": 1590165930882}, {"pathid": 4, "hopCount": 4, "namespace":
-    "single-attach_evpn_ospf-ibgp", "hostname": "exit02", "iif": "swp5.4", "vrf":
-    "internet-vrf", "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp":
-    1590165932078}, {"pathid": 4, "hopCount": 5, "namespace": "single-attach_evpn_ospf-ibgp",
-    "hostname": "internet", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch":
-    true, "mtu": 1500, "timestamp": 1590165930882}, {"pathid": 4, "hopCount": 5, "namespace":
-    "single-attach_evpn_ospf-ibgp", "hostname": "internet", "iif": "lo", "vrf": "default",
-    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1590165932102},
-    {"pathid": 5, "hopCount": 0, "namespace": "single-attach_evpn_ospf-ibgp", "hostname":
-    "server101", "iif": "eth1", "vrf": "default", "overlay": false, "mtuMatch": null,
-    "mtu": 9000, "timestamp": 1590165930977}, {"pathid": 5, "hopCount": 1, "namespace":
-    "single-attach_evpn_ospf-ibgp", "hostname": "leaf01", "iif": "vlan13-v0", "vrf":
-    "evpn-vrf", "overlay": false, "mtuMatch": true, "mtu": 9000, "timestamp": 1590165930977},
-    {"pathid": 5, "hopCount": 2, "namespace": "single-attach_evpn_ospf-ibgp", "hostname":
-    "exit01", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch": false,
-    "mtu": 9216, "timestamp": 1590165930882}, {"pathid": 5, "hopCount": 3, "namespace":
-    "single-attach_evpn_ospf-ibgp", "hostname": "edge01", "iif": "eth1.2", "vrf":
-    "default", "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590165930977},
-    {"pathid": 5, "hopCount": 4, "namespace": "single-attach_evpn_ospf-ibgp", "hostname":
-    "exit01", "iif": "swp5.4", "vrf": "internet-vrf", "overlay": false, "mtuMatch":
-    true, "mtu": 1500, "timestamp": 1590165932078}, {"pathid": 5, "hopCount": 5, "namespace":
-    "single-attach_evpn_ospf-ibgp", "hostname": "internet", "iif": "swp1", "vrf":
-    "internet-vrf", "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp":
-    1590165930977}, {"pathid": 5, "hopCount": 5, "namespace": "single-attach_evpn_ospf-ibgp",
-    "hostname": "internet", "iif": "lo", "vrf": "default", "overlay": false, "mtuMatch":
-    null, "mtu": 65536, "timestamp": 1590165932102}, {"pathid": 6, "hopCount": 0,
-    "namespace": "single-attach_evpn_ospf-ibgp", "hostname": "server101", "iif": "eth1",
-    "vrf": "default", "overlay": false, "mtuMatch": null, "mtu": 9000, "timestamp":
-    1590165930977}, {"pathid": 6, "hopCount": 1, "namespace": "single-attach_evpn_ospf-ibgp",
-    "hostname": "leaf03", "iif": "vlan13-v0", "vrf": "evpn-vrf", "overlay": false,
-    "mtuMatch": true, "mtu": 9000, "timestamp": 1590165930977}, {"pathid": 6, "hopCount":
-    2, "namespace": "single-attach_evpn_ospf-ibgp", "hostname": "exit01", "iif": "swp2",
-    "vrf": "evpn-vrf", "overlay": false, "mtuMatch": false, "mtu": 9216, "timestamp":
-    1590165930977}, {"pathid": 6, "hopCount": 3, "namespace": "single-attach_evpn_ospf-ibgp",
-    "hostname": "edge01", "iif": "eth1.2", "vrf": "default", "overlay": false, "mtuMatch":
-    true, "mtu": 1500, "timestamp": 1590165930977}, {"pathid": 6, "hopCount": 4, "namespace":
-    "single-attach_evpn_ospf-ibgp", "hostname": "exit01", "iif": "swp5.4", "vrf":
-    "internet-vrf", "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp":
-    1590165932078}, {"pathid": 6, "hopCount": 5, "namespace": "single-attach_evpn_ospf-ibgp",
-    "hostname": "internet", "iif": "swp1", "vrf": "internet-vrf", "overlay": false,
-    "mtuMatch": true, "mtu": 1500, "timestamp": 1590165930977}, {"pathid": 6, "hopCount":
-    5, "namespace": "single-attach_evpn_ospf-ibgp", "hostname": "internet", "iif":
-    "lo", "vrf": "default", "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp":
-    1590165932102}, {"pathid": 7, "hopCount": 0, "namespace": "single-attach_evpn_ospf-ibgp",
-    "hostname": "server101", "iif": "eth1", "vrf": "default", "overlay": false, "mtuMatch":
-    null, "mtu": 9000, "timestamp": 1590165930977}, {"pathid": 7, "hopCount": 1, "namespace":
-    "single-attach_evpn_ospf-ibgp", "hostname": "leaf01", "iif": "vlan13-v0", "vrf":
-    "evpn-vrf", "overlay": false, "mtuMatch": true, "mtu": 9000, "timestamp": 1590165930977},
-    {"pathid": 7, "hopCount": 2, "namespace": "single-attach_evpn_ospf-ibgp", "hostname":
-    "exit02", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch": false,
-    "mtu": 9216, "timestamp": 1590165930882}, {"pathid": 7, "hopCount": 3, "namespace":
-    "single-attach_evpn_ospf-ibgp", "hostname": "edge01", "iif": "eth2.2", "vrf":
-    "default", "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1590165930882},
-    {"pathid": 7, "hopCount": 4, "namespace": "single-attach_evpn_ospf-ibgp", "hostname":
-    "exit01", "iif": "swp5.4", "vrf": "internet-vrf", "overlay": false, "mtuMatch":
-    true, "mtu": 1500, "timestamp": 1590165932078}, {"pathid": 7, "hopCount": 5, "namespace":
-    "single-attach_evpn_ospf-ibgp", "hostname": "internet", "iif": "swp1", "vrf":
-    "internet-vrf", "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp":
-    1590165930977}, {"pathid": 7, "hopCount": 5, "namespace": "single-attach_evpn_ospf-ibgp",
-    "hostname": "internet", "iif": "lo", "vrf": "default", "overlay": false, "mtuMatch":
-    null, "mtu": 65536, "timestamp": 1590165932102}, {"pathid": 8, "hopCount": 0,
-    "namespace": "single-attach_evpn_ospf-ibgp", "hostname": "server101", "iif": "eth1",
-    "vrf": "default", "overlay": false, "mtuMatch": null, "mtu": 9000, "timestamp":
-    1590165930977}, {"pathid": 8, "hopCount": 1, "namespace": "single-attach_evpn_ospf-ibgp",
-    "hostname": "leaf03", "iif": "vlan13-v0", "vrf": "evpn-vrf", "overlay": false,
-    "mtuMatch": true, "mtu": 9000, "timestamp": 1590165930977}, {"pathid": 8, "hopCount":
-    2, "namespace": "single-attach_evpn_ospf-ibgp", "hostname": "exit02", "iif": "swp2",
-    "vrf": "evpn-vrf", "overlay": false, "mtuMatch": false, "mtu": 9216, "timestamp":
-    1590165930977}, {"pathid": 8, "hopCount": 3, "namespace": "single-attach_evpn_ospf-ibgp",
-    "hostname": "edge01", "iif": "eth2.2", "vrf": "default", "overlay": false, "mtuMatch":
-    true, "mtu": 1500, "timestamp": 1590165930882}, {"pathid": 8, "hopCount": 4, "namespace":
-    "single-attach_evpn_ospf-ibgp", "hostname": "exit01", "iif": "swp5.4", "vrf":
-    "internet-vrf", "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp":
-    1590165932078}, {"pathid": 8, "hopCount": 5, "namespace": "single-attach_evpn_ospf-ibgp",
-    "hostname": "internet", "iif": "swp1", "vrf": "internet-vrf", "overlay": false,
-    "mtuMatch": true, "mtu": 1500, "timestamp": 1590165930977}, {"pathid": 8, "hopCount":
-    5, "namespace": "single-attach_evpn_ospf-ibgp", "hostname": "internet", "iif":
-    "lo", "vrf": "default", "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp":
-    1590165932102}]'
+    "mtu": 9000, "timestamp": 1594385818777}, {"pathid": 2, "hopCount": 1, "namespace":
+    "single-attach_evpn_ospf-ibgp", "hostname": "leaf03", "iif": "vlan13-v0", "vrf":
+    "default", "overlay": false, "mtuMatch": true, "mtu": 9000, "timestamp": 1594385818974}]'
 - command: path summarize --dest=172.16.2.104 --src=172.16.1.101 --format=json --namespace=single-attach_evpn_ospf-ibgp
   data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_ospf-ibgp/parquet-out
-  error:
-    error: '[{"error": "ERROR: ''PathObj'' object has no attribute ''_arp_df''"}]'
   marks: path summarize
+  output: '[{"single-attach_evpn_ospf-ibgp": 2}, {"single-attach_evpn_ospf-ibgp":
+    [1, 2, 1, 1]}, {"single-attach_evpn_ospf-ibgp": 3}, {"single-attach_evpn_ospf-ibgp":
+    3.0}, {"single-attach_evpn_ospf-ibgp": 5}, {"single-attach_evpn_ospf-ibgp": 9000},
+    {"single-attach_evpn_ospf-ibgp": false}, {"single-attach_evpn_ospf-ibgp": true}]'
 - command: path summarize --dest=10.0.0.11 --src=10.0.0.14 --format=json --namespace=single-attach_evpn_ospf-ibgp
   data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_ospf-ibgp/parquet-out
   marks: path summarize
