@@ -288,6 +288,25 @@ class TestUpdate:
 
         update_sqcmds(glob.glob(f'{sqcmds_dir}/{nos}-samples/*.yml'))
 
+    @pytest.mark.update_data
+    @pytest.mark.skipif(not os.environ.get('SUZIEQ_POLLER', None),
+                        reason='Not updating data')
+    def test_update_junos_data(self, tmp_path):
+        orig_dir = os.getcwd()
+        nos = 'junos'
+
+        update_data(nos, f'{orig_dir}/tests/integration/sqcmds/{nos}-input/', 
+            orig_dir, tmp_path, number_of_devices='6')
+        
+        dst_dir = f'{orig_dir}/tests/data/{nos}/parquet-out'
+        git_del_dir(dst_dir)
+        copytree(f'{tmp_path}/parquet-out', dst_dir)
+        shutil.rmtree(f'{tmp_path}/parquet-out')
+        
+        # update the samples data with updates from the newly collected data
+
+        update_sqcmds(glob.glob(f'{sqcmds_dir}/{nos}-samples/*.yml'))
+
 tests = [
     ['bgp', 'numbered'],
     ['bgp', 'unnumbered'],
