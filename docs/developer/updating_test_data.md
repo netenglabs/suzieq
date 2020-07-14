@@ -4,6 +4,10 @@
 
 ## updating sqcmds when just the output changed, and no data changed
 
+The data that needs to get updated is in tests/integration/sqcmds/*-samples/
+
+The way to update these files is use tests/utilities/update_data.py
+
 ## update test data for sqcmds
 
 The test data in tests/data is used by all the tests in tests_sqcmds:test_sqcmds.
@@ -50,7 +54,11 @@ git push
 ## updating NXOS, Junos, or EOS data
 
 We don't have automatic capture of these platforms yet. So you will have to manually
-generate the data and run tests. After generating the data, first git rm the previous data.
+generate the data and run tests. After generating the data, first git rm the previous data. 
+
+However, usually you will not need to update the gathered data, unless we change the commands
+that we are running to gather data. If you just need to change the data schema, then you don't need
+to worry about this part.
 
 So if it's nxos data,
 
@@ -111,27 +119,16 @@ and then do the updating as documented above.
 
 ## CNDCN tests
 
-run the tests
+first you must turn all the gathered data into parquet data
+
+```bash
+SUZIEQ_POLLER=true pytest -m "update_dual_attach or update_single_attach"
+```
+
+Then to run the tests:
 
 ```bash
  SUZIEQ_POLLER=true pytest -m "single_attach or dual_attach"
-```
-
-if you want to try parallel
-
-```bash
- SUZIEQ_POLLER=true pytest -m "single_attach or dual_attach" -n2 --dist=loadscope
-```
-
-### Gathering the  data
-
-This runs each of the 18 CNDCN scenarios in vagrant and gathers the data. It should only be necessary if the commands run are diferent.
-
-These take 2+ hours. I can't get these to run successfully in parallel. It should be possible, I've done it with a bash
-script, but I can't get it to work correctly with pytest. The problems I run into are getting vagrant to reliable destroy and up every single time. Sometimes either vagrant destroy or vagrant up
-
-```bash
-SUZIEQ_POLLER=true pytest -m "gather_single_attach or gather_dual_attach" -n0
 ```
 
 ### update the data
@@ -143,6 +140,17 @@ UPDATE_SQCMDS=true SUZIEQ_POLLER=true pytest -m "single_attach or dual_attach"
 ```
 
 you'll need to check in the changes that are made to tests/integration/all_cndcn/*
+
+### Gathering the  data
+
+This runs each of the 18 CNDCN scenarios in vagrant and gathers the data. It should only be necessary if the commands run are diferent.
+
+These take 2+ hours. I can't get these to run successfully in parallel. It should be possible,
+The problems I run into are getting vagrant to reliable destroy and up every single time. Sometimes either vagrant destroy or vagrant up hang and never recover.
+
+```bash
+SUZIEQ_POLLER=true pytest -m "gather_single_attach or gather_dual_attach" -n0
+```
 
 ## Cleanup
 
