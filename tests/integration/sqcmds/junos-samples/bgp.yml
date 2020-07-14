@@ -4,12 +4,12 @@ tests:
   data-directory: tests/data/junos/parquet-out/
   marks: bgp show junos junos
   output: '[{"namespace": "junos", "hostname": "vqfx1", "vrf": "default", "peer":
-    "9.9.9.2", "peerHostname": "", "state": "Established", "asn": 64500, "peerAsn":
-    64500, "v4PfxRx": 0, "estdTime": 1592561092160, "numChanges": 0, "timestamp":
-    1592535892160}, {"namespace": "junos", "hostname": "vqfx2", "vrf": "default",
-    "peer": "9.9.9.1", "peerHostname": "", "state": "Established", "asn": 64500, "peerAsn":
-    64500, "v4PfxRx": 0, "estdTime": 1592561092160, "numChanges": 0, "timestamp":
-    1592535892160}]'
+    "9.9.9.2", "peerHostname": "vqfx2", "state": "Established", "asn": 64500, "peerAsn":
+    64500, "v4PfxRx": 0, "estdTime": 1594691936918, "numChanges": 0, "timestamp":
+    1594712996918}, {"namespace": "junos", "hostname": "vqfx2", "vrf": "default",
+    "peer": "9.9.9.1", "peerHostname": "vqfx1", "state": "Established", "asn": 64500,
+    "peerAsn": 64500, "v4PfxRx": 0, "estdTime": 1594691905011, "numChanges": 0, "timestamp":
+    1594712997011}]'
 - command: bgp show --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: bgp show junos junos
@@ -18,9 +18,9 @@ tests:
   data-directory: tests/data/junos/parquet-out/
   marks: bgp summarize junos junos
   output: '{"junos": {"deviceCnt": 2, "totalPeerCnt": 2, "uniqueAsnCnt": 1, "uniqueVrfsCnt":
-    1, "failedPeerCnt": 0, "upTimeStat": [-25200000, -25200000, -25200000], "v4PfxRxStat":
-    [0, 0, 0], "v6PfxRxStat": [0, 0, 0], "evpnPfxRxStat": [14, 14, 14], "updatesRxStat":
-    [8, 9, 8.5], "updatesTxStat": [7, 8, 7.5], "activeAfiSafiList": ["evpn"]}}'
+    1, "failedPeerCnt": 0, "upTimeStat": [21060000, 21092000, 21076000], "v4PfxRxStat":
+    [0, 0, 0], "v6PfxRxStat": [0, 0, 0], "evpnPfxRxStat": [11, 12, 11.5], "updatesRxStat":
+    [6, 7, 6.5], "updatesTxStat": [5, 6, 5.5], "activeAfiSafiList": ["evpn"]}}'
 - command: bgp unique --format=json
   data-directory: tests/data/junos/parquet-out/
   error:
@@ -34,10 +34,10 @@ tests:
   data-directory: tests/data/junos/parquet-out/
   marks: bgp assert junos junos
   output: '[{"namespace": "junos", "hostname": "vqfx1", "vrf": "default", "peer":
-    "9.9.9.2", "asn": 64500, "peerAsn": 64500, "state": "Established", "hostnamePeer":
-    "vqfx2", "vrfPeer": null, "peerPeer": "", "asnPeer": null, "peerAsnPeer": null,
-    "assert": "pass", "assertReason": "-", "timestamp": 1592535892160}, {"namespace":
+    "9.9.9.2", "asn": 64500, "peerAsn": 64500, "state": "Established", "peerHostname":
+    "vqfx2", "vrfPeer": "default", "peerPeer": "9.9.9.1", "asnPeer": 64500, "peerAsnPeer":
+    64500, "assert": "pass", "assertReason": "-", "timestamp": 1594712996918}, {"namespace":
     "junos", "hostname": "vqfx2", "vrf": "default", "peer": "9.9.9.1", "asn": 64500,
-    "peerAsn": 64500, "state": "Established", "hostnamePeer": "vqfx1", "vrfPeer":
-    null, "peerPeer": "", "asnPeer": null, "peerAsnPeer": null, "assert": "pass",
-    "assertReason": "-", "timestamp": 1592535892160}]'
+    "peerAsn": 64500, "state": "Established", "peerHostname": "vqfx1", "vrfPeer":
+    "default", "peerPeer": "9.9.9.2", "asnPeer": 64500, "peerAsnPeer": 64500, "assert":
+    "pass", "assertReason": "-", "timestamp": 1594712997011}]'
