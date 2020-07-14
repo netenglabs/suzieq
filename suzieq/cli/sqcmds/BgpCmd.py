@@ -69,7 +69,7 @@ class BgpCmd(SqCommand):
         if status == "pass":
             state = "Established"
         elif status == "fail":
-            state = "!Established"
+            state = "NotEstd"
         else:
             state = ''
 
@@ -150,6 +150,8 @@ class BgpCmd(SqCommand):
             columns=self.columns,
             namespace=self.namespace,
         )
+        df['estdTime'] = df['timestamp'] - pd.to_datetime(
+            df.estdTime.astype(str), unit="ms", errors='ignore')
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        return self._gen_output(self._clean_output(df))
+        return self._gen_output(df)

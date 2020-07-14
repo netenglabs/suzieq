@@ -99,13 +99,14 @@ class EvpnvniObj(SqEngineObject):
                              .dropna(how='any') \
                              .rename(columns={'remoteVtepList': 'allVteps'})
 
-            her_df = her_df.merge(vteps_df)
+            if not vteps_df.empty:
+                her_df = her_df.merge(vteps_df)
 
-            # Every VTEP has info about every other VTEP for a given VNI
-            her_df["assertReason"] += her_df.apply(
-                self._all_vteps_present, axis=1)
+        if (her_df.remoteVtepList.str.len() != 0).any():
+            # Check if every VTEP we know is reachable
+            self._routes_df = RoutesObj(context=self.ctxt).get(
+                namespace=kwargs.get('namespace'), vrf='default')
 
-            # Every VTEP is reachable
             her_df["assertReason"] += her_df.apply(
                 self._is_vtep_reachable, axis=1)
 
@@ -127,6 +128,10 @@ class EvpnvniObj(SqEngineObject):
                     if (x['namespace'] in err_df['namespace'] and
                         x['vni'] in err_df['vni']) else [], axis=1,
                     args=(mismatched_vni_df, ))
+        elif not her_df.empty:
+            # Every VTEP has info about every other VTEP for a given VNI
+            her_df["assertReason"] += her_df.apply(
+                self._all_vteps_present, axis=1)
 
         # State is up
         df["assertReason"] += df.apply(
@@ -188,13 +193,22 @@ class EvpnvniObj(SqEngineObject):
         for vtep in row['remoteVtepList'].tolist():
             if vtep == '-':
                 continue
-            rdf = RoutesObj(context=self.ctxt) \
-                .lpm(namespace=row['namespace'], vrf=['default'],
-                     hostname=row['hostname'], address=vtep)
-            if rdf.empty:
+
+            # Have to hardcode lpm query here sadly to avoid reading of the
+            # data repeatedly. The time for asserting the state of 500 VNIs
+            # came down from 194s to 4s with the below piece of code instead
+            # of invoking route's lpm to accomplish the task.
+            route = self._routes_df \
+                        .query('hostname == "{}" and namespace == "{}"'
+                               .format(row['hostname'], row['namespace'])) \
+                        .query("prefix.ipnet.supernet_of('{}')"
+                               .format(vtep))['prefix'] \
+                        .max()
+
+            if not route:
                 reason += [f"{vtep} not reachable"]
                 continue
-            if rdf.prefix[0] == defrt:
+            if route == defrt:
                 reason += [f"{vtep} reachable via default"]
 
         return reason

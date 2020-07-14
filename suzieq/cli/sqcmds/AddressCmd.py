@@ -50,7 +50,7 @@ class AddressCmd(SqCommand):
         df = self.sqobj.get(
             hostname=self.hostname,
             columns=self.columns,
-            address=address,
+            address=address.split(),
             ipvers=ipvers,
             vrf=vrf,
             namespace=self.namespace,

@@ -64,8 +64,8 @@ def load_sq_config(validate=True, config_file=None):
 
     if config_file:
         cfgfile = config_file
-    elif os.path.exists("./.suzieq/suzieq-cfg.yml"):
-        cfgfile = "./.suzieq/suzieq-cfg.yml"
+    elif os.path.exists("./suzieq-cfg.yml"):
+        cfgfile = "./suzieq-cfg.yml"
     elif os.path.exists(os.getenv("HOME") + "/.suzieq/suzieq-cfg.yml"):
         cfgfile = os.getenv("HOME") + "/.suzieq/suzieq-cfg.yml"
 
@@ -77,7 +77,7 @@ def load_sq_config(validate=True, config_file=None):
             validate_sq_config(cfg, sys.stderr)
 
     if not cfg:
-        print(f"suzieq requires a configuration file either in ./.suzieq/suzieq-cfg.yml "
+        print(f"suzieq requires a configuration file either in ./suzieq-cfg.yml "
               "or ~/suzieq/suzieq-cfg.yml")
         exit(1)
 
@@ -441,13 +441,54 @@ def convert_macaddr_format_to_colon(macaddr):
 def convert_rangestring_to_list(rangestr: str) -> list:
     """Convert a range list such as '1, 2-5, 10, 12-20' to list
     """
+
+    tmplst = []
     if not isinstance(rangestr, str):
-        return []
+        return tmplst
 
     try:
-        tmplst = [x.strip().split('-') for x in rangestr.split(',')]
-        tmplst = [range(int(i[0]), int(i[1]+1)) if len(i) == 2 else int(i[0])
-                  for i in tmplst]
+        for x in rangestr.split(','):
+            x = x.strip().split('-')
+            if x[0]:
+                if len(x) == 2:
+                    intrange = list(range(int(x[0]), int(x[1])+1))
+                    tmplst.extend(intrange)
+                else:
+                    tmplst.append(int(x[0]))
     except Exception:
+        logger.error(f"Range string parsing failed for {rangestr}")
         return []
     return tmplst
+
+
+def build_query_str(skip_fields: list, **kwargs) -> str:
+    """Build a pandas query string given key/val pairs
+    """
+    query_str = ''
+    prefix = ''
+
+    for f, v in kwargs.items():
+        if not v or f in skip_fields or f in ["groupby"]:
+            continue
+        if isinstance(v, str):
+            if v.startswith('!'):
+                v = v[1:]
+                op = '!='
+            else:
+                op = '=='
+            query_str += "{} {}{}'{}' ".format(prefix, f, op, v)
+            prefix = "and"
+        elif isinstance(v, list):
+            for elem in v:
+                if elem.startswith('!'):
+                    elem = elem[1:]
+                    op = '!='
+                else:
+                    op = '=='
+                query_str += "{} {}{}'{}' ".format(prefix, f, op, elem)
+                prefix = "and"
+        else:
+            query_str += "{} {}=={} ".format(prefix, f, v)
+            prefix = "and"
+
+    return query_str

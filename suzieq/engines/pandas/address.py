@@ -50,15 +50,16 @@ class AddressObj(SqEngineObject):
         else:
             df.drop(columns=['origIfname'], inplace=True)
 
+        if addr:
+            addr = [x+'/' if '/' not in x else x for x in addr]
+            pattern = '|'.join(addr)
+
         # Works with pandas 0.25.0 onwards
         if addr and addrcol == "macaddr":
             return df[df[addrcol] == addr]
         elif addr:
             df = df.explode(addrcol).dropna(how='any')
-            if '/' in addr:
-                return df[df[addrcol].str.startswith(addr + '/')]
-            else:
-                return df[df[addrcol].str.startswith(addr)]
+            return df[df[addrcol].str.contains(pattern)]
         elif addrcol in df.columns:
             return df[df[addrcol].str.len() != 0]
         else:
@@ -71,10 +72,10 @@ class AddressObj(SqEngineObject):
             column = ["master"]
         df = super().unique(columns=column, **kwargs)
         if not df.empty:
-            return df.query("master != 'bridge'") \
-                     .rename({'master': 'vrf'}, axis='columns') \
-                     .replace({'vrf': {'': 'default'}})
-
+            if 'vrf' in column:
+                return df.query("master != 'bridge'") \
+                         .rename({'master': 'vrf'}, axis='columns') \
+                         .replace({'vrf': {'': 'default'}})
         return df
 
     def summarize(self, **kwargs) -> pd.DataFrame:
