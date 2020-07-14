@@ -7,9 +7,7 @@ tests:
 - command: evpnVni show --columns=hostname --format=json --namespace=dual-attach_ospf_unnumbered
   data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_unnumbered/parquet-out
   marks: evpnVni show
-  xfail:
-    error: '[]'
-    reason: uncaught exception
+  output: '[]'
 - command: evpnVni summarize --format=json --namespace=dual-attach_ospf_unnumbered
   data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_unnumbered/parquet-out
   marks: evpnVni summarize

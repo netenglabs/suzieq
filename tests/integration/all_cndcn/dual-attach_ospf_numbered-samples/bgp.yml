@@ -7,9 +7,7 @@ tests:
 - command: bgp show --columns=hostname --format=json --namespace=dual-attach_ospf_numbered
   data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_numbered/parquet-out
   marks: bgp show
-  xfail:
-    error: '[]'
-    reason: uncaught exception
+  output: '[]'
 - command: bgp summarize --format=json --namespace=dual-attach_ospf_numbered
   data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_numbered/parquet-out
   marks: bgp summarize
