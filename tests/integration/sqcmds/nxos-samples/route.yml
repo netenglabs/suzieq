@@ -198,84 +198,15 @@ tests:
 - command: route lpm --address=10.0.0.1 --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: route lpm nxos
-  output: '[{"namespace": "nxos", "hostname": "server1", "vrf": "default", "prefix":
-    "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"], "protocol": "", "source":
-    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594213101642},
-    {"namespace": "nxos", "hostname": "server2", "vrf": "default", "prefix": "0.0.0.0/0",
-    "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"], "protocol": "", "source": "",
-    "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594213101642}, {"namespace":
-    "nxos", "hostname": "server3", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
-    ["10.255.2.1"], "oifs": ["eth0"], "protocol": "", "source": "", "metric": 20,
-    "ipvers": 4, "action": "forward", "timestamp": 1594213101664}, {"namespace": "nxos",
-    "hostname": "server4", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
-    ["10.255.2.1"], "oifs": ["eth0"], "protocol": "", "source": "", "metric": 20,
-    "ipvers": 4, "action": "forward", "timestamp": 1594213101642}]'
 - command: route lpm --address="10.0.0.12" --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: route lpm nxos
-  output: '[{"namespace": "nxos", "hostname": "leaf1", "vrf": "default", "prefix":
-    "10.0.0.12/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["Ethernet1/3",
-    "Ethernet1/4"], "protocol": "ospf", "source": "", "metric": 0, "ipvers": 4, "action":
-    "forward", "timestamp": 1594213104137}, {"namespace": "nxos", "hostname": "leaf2",
-    "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.12", "10.0.0.12"],
-    "oifs": ["Lo0", "Lo0"], "protocol": "local", "source": "", "metric": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1594213104217}, {"namespace": "nxos", "hostname":
-    "server1", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"],
-    "oifs": ["eth0"], "protocol": "", "source": "", "metric": 20, "ipvers": 4, "action":
-    "forward", "timestamp": 1594213101642}, {"namespace": "nxos", "hostname": "server2",
-    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs":
-    ["eth0"], "protocol": "", "source": "", "metric": 20, "ipvers": 4, "action": "forward",
-    "timestamp": 1594213101642}, {"namespace": "nxos", "hostname": "server3", "vrf":
-    "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"],
-    "protocol": "", "source": "", "metric": 20, "ipvers": 4, "action": "forward",
-    "timestamp": 1594213101664}, {"namespace": "nxos", "hostname": "server4", "vrf":
-    "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"],
-    "protocol": "", "source": "", "metric": 20, "ipvers": 4, "action": "forward",
-    "timestamp": 1594213101642}, {"namespace": "nxos", "hostname": "spine1", "vrf":
-    "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.12"], "oifs": ["Ethernet1/2"],
-    "protocol": "ospf", "source": "", "metric": 0, "ipvers": 4, "action": "forward",
-    "timestamp": 1594213103607}, {"namespace": "nxos", "hostname": "spine2", "vrf":
-    "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.12"], "oifs": ["Ethernet1/2"],
-    "protocol": "ospf", "source": "", "metric": 0, "ipvers": 4, "action": "forward",
-    "timestamp": 1594213103595}]'
 - command: route lpm --address="10.0.0.12" --hostname="server1 server3" --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: route lpm nxos
-  output: '[{"namespace": "nxos", "hostname": "server1", "vrf": "default", "prefix":
-    "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"], "protocol": "", "source":
-    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594213101642},
-    {"namespace": "nxos", "hostname": "server3", "vrf": "default", "prefix": "0.0.0.0/0",
-    "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"], "protocol": "", "source": "",
-    "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594213101664}]'
 - command: route lpm --address="10.0.0.12" --vrf=evpn-vrf --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: route lpm nxos
-  output: '[]'
 - command: route lpm --address="10.0.0.11" --vrf=default --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: route lpm nxos
-  output: '[{"namespace": "nxos", "hostname": "leaf1", "vrf": "default", "prefix":
-    "10.0.0.11/32", "nexthopIps": ["10.0.0.11", "10.0.0.11"], "oifs": ["Lo0", "Lo0"],
-    "protocol": "local", "source": "", "metric": 0, "ipvers": 4, "action": "forward",
-    "timestamp": 1594213104137}, {"namespace": "nxos", "hostname": "leaf2", "vrf":
-    "default", "prefix": "10.0.0.11/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
-    "oifs": ["Ethernet1/3", "Ethernet1/4"], "protocol": "ospf", "source": "", "metric":
-    0, "ipvers": 4, "action": "forward", "timestamp": 1594213104217}, {"namespace":
-    "nxos", "hostname": "server1", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
-    ["10.255.2.1"], "oifs": ["eth0"], "protocol": "", "source": "", "metric": 20,
-    "ipvers": 4, "action": "forward", "timestamp": 1594213101642}, {"namespace": "nxos",
-    "hostname": "server2", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
-    ["10.255.2.1"], "oifs": ["eth0"], "protocol": "", "source": "", "metric": 20,
-    "ipvers": 4, "action": "forward", "timestamp": 1594213101642}, {"namespace": "nxos",
-    "hostname": "server3", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
-    ["10.255.2.1"], "oifs": ["eth0"], "protocol": "", "source": "", "metric": 20,
-    "ipvers": 4, "action": "forward", "timestamp": 1594213101664}, {"namespace": "nxos",
-    "hostname": "server4", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
-    ["10.255.2.1"], "oifs": ["eth0"], "protocol": "", "source": "", "metric": 20,
-    "ipvers": 4, "action": "forward", "timestamp": 1594213101642}, {"namespace": "nxos",
-    "hostname": "spine1", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps":
-    ["10.0.0.11"], "oifs": ["Ethernet1/1"], "protocol": "ospf", "source": "", "metric":
-    0, "ipvers": 4, "action": "forward", "timestamp": 1594213103607}, {"namespace":
-    "nxos", "hostname": "spine2", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps":
-    ["10.0.0.11"], "oifs": ["Ethernet1/1"], "protocol": "ospf", "source": "", "metric":
-    0, "ipvers": 4, "action": "forward", "timestamp": 1594213103595}]'
