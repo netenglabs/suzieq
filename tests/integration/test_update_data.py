@@ -400,12 +400,15 @@ def _test_data(topology, proto, scenario, testvar):
 # two simulations at a time, one single-attach and one dual-attach
 
 class TestDualAttach:
+    topology = 'dual-attach'
+
+    @pytest.mark.cndcn
     @pytest.mark.gather_dual_attach
     @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ,
                         reason='Not updating data')
     @pytest.mark.parametrize("proto, scenario", tests)
     def test_gather_dual_data(self, proto, scenario, tmp_path, vagrant_setup):
-        _gather_cndcn_data('dual-attach', proto, scenario, tmp_path)
+        _gather_cndcn_data(topology, proto, scenario, tmp_path)
 
 
     @pytest.mark.update_dual_attach
@@ -413,20 +416,57 @@ class TestDualAttach:
                         reason='Not updating data')
     @pytest.mark.parametrize("proto, scenario", tests)
     def test_update_dual_data(self, proto, scenario, tmp_path):
-        _update_cndcn_data('dual-attach', proto, scenario, tmp_path)
+        # this takes the data that was captured with run-once=gather
+        #  and creates the parquet data
+        #   if you also have UPDATE_SQCMDS in your os environment
+        #   it will update the data in the samples directories
+        _update_cndcn_data(self.topology, proto, scenario, tmp_path)
+
 
     # this needs to be run after the tests are created and updated
     #  there is no way to have pytest run the load_up_the_tests before the updater
-    #  so we prevent this running if you are updating the sqcmds
-    @pytest.mark.update_dual_attach
-    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
-                        'UPDATE_SQCMDS' in os.environ,
+
+    @pytest.mark.cndcn
+    @pytest.mark.dual_attach
+    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ,
                         reason='Not updating data')
-    @pytest.mark.depends(on=['test_update_dual_data'])
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/dual-attach_bgp_numbered-samples/")))
-    def test_dual_bgp_numbered_data(self, testvar):
-        _test_data('dual-attach', 'bgp', 'numbered', testvar)
+    def test_dual_bgp_numbered_data(self, testvar): 
+        proto = 'bgp'
+        scenario = 'numbered'
+        name = f'{self.topology}_{proto}_{scenario}'
+        assert os.path.isdir(f'{parquet_dir}/{name}'), \
+            f'missing {parquet_dir}/{name} directory. you need to run update_dual_attach test first'
+        _test_data(self.topology, proto, scenario, testvar)
+
+    @pytest.mark.cndcn
+    @pytest.mark.dual_attach
+    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ,
+                        reason='Not updating data')
+    @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
+        os.scandir(f"{cndcn_samples_dir}/dual-attach_bgp_unnumbered-samples/")))
+    def test_dual_bgp_unnumbered_data(self, testvar): 
+        proto = 'bgp'
+        scenario = 'unnumbered'
+        name = f'{self.topology}_{proto}_{scenario}'
+        assert os.path.isdir(f'{parquet_dir}/{name}'), \
+            f'missing {parquet_dir}/{name} directory. you need to run update_dual_attach test first'
+        _test_data(self.topology, proto, scenario, testvar)
+
+    @pytest.mark.cndcn
+    @pytest.mark.dual_attach
+    @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ,
+                        reason='Not updating data')
+    @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
+        os.scandir(f"{cndcn_samples_dir}/dual-attach_bgp_docker-samples/")))
+    def test_dual_bgp_docker_data(self, testvar): 
+        proto = 'bgp'
+        scenario = 'docker'
+        name = f'{self.topology}_{proto}_{scenario}'
+        assert os.path.isdir(f'{parquet_dir}/{name}'), \
+            f'missing {parquet_dir}/{name} directory. you need to run update_dual_attach test first'
+        _test_data(self.topology, proto, scenario, testvar)
 
     # @pytest.mark.dual_attach
     # @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
@@ -434,17 +474,7 @@ class TestDualAttach:
     #                     reason='Not updating data')
     # @pytest.mark.depends(on=['test_create_dual_data'])
     # @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
-    #     os.scandir(f"{cndcn_samples_dir}/dual-attach_bgp_unnumbered/")))
-    # def test_dual_bgp_numbered_data(self, testvar):
-    #     _test_data('dual-attach', 'bgp', 'unnumbered', testvar)
-
-    # @pytest.mark.dual_attach
-    # @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ or
-    #                     'UPDATE_SQCMDS' in os.environ,
-    #                     reason='Not updating data')
-    # @pytest.mark.depends(on=['test_create_dual_data'])
-    # @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
-    #     os.scandir(f"{cndcn_samples_dir}/dual-attach_bgp_docker/")))
+    #     os.scandir(f"{cndcn_samples_dir}/dual-attach_bgp_docker-samples/")))
     # def test_dual_bgp_numbered_data(self, testvar):
     #     _test_data('dual-attach', 'bgp', 'docker', testvar)
 
@@ -454,7 +484,7 @@ class TestDualAttach:
     #                     reason='Not updating data')
     # @pytest.mark.depends(on=['test_create_dual_data'])
     # @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
-    #     os.scandir(f"{cndcn_samples_dir}/dual-attach_ospf_numbered/")))
+    #     os.scandir(f"{cndcn_samples_dir}/dual-attach_ospf_numbered-samples/")))
     # def test_dual_ospf_numbered_data(self, testvar):
     #     _test_data('dual-attach', 'ospf', 'numbered', testvar)
 
@@ -464,7 +494,7 @@ class TestDualAttach:
     #                     reason='Not updating data')
     # @pytest.mark.depends(on=['test_create_dual_data'])
     # @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
-    #     os.scandir(f"{cndcn_samples_dir}/dual-attach_ospf_unnumbered/")))
+    #     os.scandir(f"{cndcn_samples_dir}/dual-attach_ospf_unnumbered-samples/")))
     # def test_dual_ospf_numbered_data(self, testvar):
     #     _test_data('dual-attach', 'ospf', 'unnumbered', testvar)
 
@@ -474,7 +504,7 @@ class TestDualAttach:
     #                     reason='Not updating data')
     # @pytest.mark.depends(on=['test_create_dual_data'])
     # @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
-    #     os.scandir(f"{cndcn_samples_dir}/dual-attach_ospf_docker/")))
+    #     os.scandir(f"{cndcn_samples_dir}/dual-attach_ospf_docker-samples/")))
     # def test_dual_ospf_numbered_data(self, testvar):
     #     _test_data('dual-attach', 'ospf', 'docker', testvar)
 
@@ -484,7 +514,7 @@ class TestDualAttach:
     #                     reason='Not updating data')
     # @pytest.mark.depends(on=['test_create_dual_data'])
     # @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
-    #     os.scandir(f"{cndcn_samples_dir}/dual-attach_evpn_centralized/")))
+    #     os.scandir(f"{cndcn_samples_dir}/dual-attach_evpn_centralized-samples/")))
     # def test_dual_evpn_centralized_data(self, testvar):
     #     _test_data('dual-attach', 'evpn', 'centralized', testvar)
 
@@ -494,7 +524,7 @@ class TestDualAttach:
     #                     reason='Not updating data')
     # @pytest.mark.depends(on=['test_create_dual_data'])
     # @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
-    #     os.scandir(f"{cndcn_samples_dir}/dual-attach_evpn_distributed/")))
+    #     os.scandir(f"{cndcn_samples_dir}/dual-attach_evpn_distributed-samples/")))
     # def test_dual_evpn_distributed_data(self, testvar):
     #     _test_data('dual-attach', 'evpn', 'distributed', testvar)
 
@@ -504,12 +534,13 @@ class TestDualAttach:
     #                     reason='Not updating data')
     # @pytest.mark.depends(on=['test_create_dual_data'])
     # @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
-    #     os.scandir(f"{cndcn_samples_dir}/dual-attach_evpn_ospf-ibgp/")))
+    #     os.scandir(f"{cndcn_samples_dir}/dual-attach_evpn_ospf-ibgp-samples/")))
     # def test_dual_evpn_ospf_ibgp_data(self, testvar):
     #     _test_data('dual-attach', 'evpn', 'ospf-ibgp', testvar)
 
 
 class TestSingleAttach:
+    @pytest.mark.cndcn
     @pytest.mark.gather_single_attach
     @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ,
                         reason='Not updating data')
@@ -528,7 +559,7 @@ class TestSingleAttach:
 #                         reason='Not updating data')
 #     @pytest.mark.depends(on=['test_create_single_data'])
 #     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
-#         os.scandir(f"{cndcn_samples_dir}/single-attach_bgp_numbered/")))
+#         os.scandir(f"{cndcn_samples_dir}/single-attach_bgp_numbered-samples/")))
 #     def test_single_bgp_numbered_data(self, testvar):
 #         _test_data('single-attach', 'bgp', 'numbered', testvar)
 
@@ -538,7 +569,7 @@ class TestSingleAttach:
 #                         reason='Not updating data')
 #     @pytest.mark.depends(on=['test_create_single_data'])
 #     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
-#         os.scandir(f"{cndcn_samples_dir}/single-attach_bgp_unnumbered/")))
+#         os.scandir(f"{cndcn_samples_dir}/single-attach_bgp_unnumbered-samples/")))
 #     def test_single_bgp_numbered_data(self, testvar):
 #         _test_data('single-attach', 'bgp', 'unnumbered', testvar)
 
@@ -548,7 +579,7 @@ class TestSingleAttach:
 #                         reason='Not updating data')
 #     @pytest.mark.depends(on=['test_create_single_data'])
 #     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
-#         os.scandir(f"{cndcn_samples_dir}/single-attach_bgp_docker/")))
+#         os.scandir(f"{cndcn_samples_dir}/single-attach_bgp_docker-samples/")))
 #     def test_single_bgp_numbered_data(self, testvar):
 #         _test_data('single-attach', 'bgp', 'docker', testvar)
 
@@ -558,7 +589,7 @@ class TestSingleAttach:
 #                         reason='Not updating data')
 #     @pytest.mark.depends(on=['test_create_single_data'])
 #     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
-#         os.scandir(f"{cndcn_samples_dir}/single-attach_ospf_numbered/")))
+#         os.scandir(f"{cndcn_samples_dir}/single-attach_ospf_numbered-samples/")))
 #     def test_single_ospf_numbered_data(self, testvar):
 #         _test_data('single-attach', 'ospf', 'numbered', testvar)
 
@@ -568,7 +599,7 @@ class TestSingleAttach:
 #                         reason='Not updating data')
 #     @pytest.mark.depends(on=['test_create_single_data'])
 #     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
-#         os.scandir(f"{cndcn_samples_dir}/single-attach_ospf_unnumbered/")))
+#         os.scandir(f"{cndcn_samples_dir}/single-attach_ospf_unnumbered-samples/")))
 #     def test_single_ospf_numbered_data(self, testvar):
 #         _test_data('single-attach', 'ospf', 'unnumbered', testvar)
 
@@ -578,7 +609,7 @@ class TestSingleAttach:
 #                         reason='Not updating data')
 #     @pytest.mark.depends(on=['test_create_single_data'])
 #     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
-#         os.scandir(f"{cndcn_samples_dir}/single-attach_ospf_docker/")))
+#         os.scandir(f"{cndcn_samples_dir}/single-attach_ospf_docker-samples/")))
 #     def test_single_ospf_numbered_data(self, testvar):
 #         _test_data('single-attach', 'ospf', 'docker', testvar)
 
@@ -588,7 +619,7 @@ class TestSingleAttach:
 #                         reason='Not updating data')
 #     @pytest.mark.depends(on=['test_create_single_data'])
 #     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
-#         os.scandir(f"{cndcn_samples_dir}/single-attach_evpn_centralized/")))
+#         os.scandir(f"{cndcn_samples_dir}/single-attach_evpn_centralized-samples/")))
 #     def test_single_evpn_centralized_data(self, testvar):
 #         _test_data('single-attach', 'evpn', 'centralized', testvar)
 
@@ -598,7 +629,7 @@ class TestSingleAttach:
 #                         reason='Not updating data')
 #     @pytest.mark.depends(on=['test_create_single_data'])
 #     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
-#         os.scandir(f"{cndcn_samples_dir}/single-attach_evpn_distributed/")))
+#         os.scandir(f"{cndcn_samples_dir}/single-attach_evpn_distributed-samples/")))
 #     def test_single_evpn_distributed_data(self, testvar):
 #         _test_data('single-attach', 'evpn', 'distributed', testvar)
 
@@ -608,7 +639,7 @@ class TestSingleAttach:
 #                         reason='Not updating data')
 #     @pytest.mark.depends(on=['test_create_single_data'])
 #     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
-#         os.scandir(f"{cndcn_samples_dir}/single-attach_evpn_ospf-ibgp/")))
+#         os.scandir(f"{cndcn_samples_dir}/single-attach_evpn_ospf-ibgp-samples/")))
 #     def test_single_evpn_ospf_ibgp_data(self, testvar):
 #         _test_data('single-attach', 'evpn', 'ospf-ibgp', testvar)
 

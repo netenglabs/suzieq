@@ -145,7 +145,7 @@ tests:
   output: '{"dual-attach_ospf_numbered": {"deviceCnt": 8, "peerCnt": 40, "stubbyPeerCnt":
     0, "passivePeerCnt": 16, "unnumberedPeerCnt": 0, "failedPeerCnt": 0, "area": {"0.0.0.0":
     40}, "vrf": {"default": 40}, "helloTime": {"10": 40}, "deadTime": {"40": 40},
-    "retxTime": {"5": 40}, "networkType": {"pointopoint": 24, "loopback": 8, "broadcast":
+    "retxTime": {"5": 40}, "networkType": {"pointopoint": 24, "broadcast": 8, "loopback":
     8}, "adjChangesStat": [5.0, 5.0, 5.0], "upTimeStat": [1594706823000, 1594706823000,
     1594706823000]}}'
 - command: ospf unique --columns=hostname --format=json --namespace=dual-attach_ospf_numbered
@@ -164,7 +164,13 @@ tests:
     "ifname": "swp2", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
     1594706823052}, {"namespace": "dual-attach_ospf_numbered", "hostname": "exit02",
     "ifname": "swp1", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
-    1594706823052}]'
+    1594706823052}, {"namespace": "dual-attach_ospf_numbered", "hostname": "exit02",
+    "ifname": "swp2", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1594706823052}, {"namespace": "dual-attach_ospf_numbered", "hostname": "leaf01",
+    "ifname": "swp1", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1594706823055}, {"namespace": "dual-attach_ospf_numbered", "hostname": "leaf01",
+    "ifname": "swp2", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1594706823055}]'
 - command: ospf top --format=json --namespace=dual-attach_ospf_numbered
   data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_numbered/parquet-out
   marks: ospf top
