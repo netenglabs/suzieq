@@ -283,72 +283,12 @@ tests:
 - command: route lpm --address=10.0.0.1 --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: route lpm junos
-  output: '[{"namespace": "junos", "hostname": "srv11", "vrf": "default", "prefix":
-    "0.0.0.0/0", "nexthopIps": ["10.0.2.2"], "oifs": ["eth0"], "protocol": "", "source":
-    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594712995177},
-    {"namespace": "junos", "hostname": "srv12", "vrf": "default", "prefix": "0.0.0.0/0",
-    "nexthopIps": ["10.0.2.2"], "oifs": ["eth0"], "protocol": "", "source": "", "metric":
-    20, "ipvers": 4, "action": "forward", "timestamp": 1594712995175}, {"namespace":
-    "junos", "hostname": "srv21", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
-    ["10.0.2.2"], "oifs": ["eth0"], "protocol": "", "source": "", "metric": 20, "ipvers":
-    4, "action": "forward", "timestamp": 1594712995181}, {"namespace": "junos", "hostname":
-    "srv22", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.0.2.2"],
-    "oifs": ["eth0"], "protocol": "", "source": "", "metric": 20, "ipvers": 4, "action":
-    "forward", "timestamp": 1594712995171}, {"namespace": "junos", "hostname": "vqfx1",
-    "vrf": "default", "prefix": "10.0.0.1/32", "nexthopIps": ["None"], "oifs": ["xe-0/0/0.0"],
-    "protocol": "local", "source": "", "metric": 0, "ipvers": 4, "action": "Local",
-    "timestamp": 1594712997368}, {"namespace": "junos", "hostname": "vqfx2", "vrf":
-    "default", "prefix": "10.0.0.0/30", "nexthopIps": ["None"], "oifs": ["xe-0/0/0.0"],
-    "protocol": "direct", "source": "", "metric": 0, "ipvers": 4, "action": "forward",
-    "timestamp": 1594712996842}]'
 - command: route lpm --address="10.0.0.12" --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: route lpm junos
-  output: '[{"namespace": "junos", "hostname": "srv11", "vrf": "default", "prefix":
-    "0.0.0.0/0", "nexthopIps": ["10.0.2.2"], "oifs": ["eth0"], "protocol": "", "source":
-    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594712995177},
-    {"namespace": "junos", "hostname": "srv12", "vrf": "default", "prefix": "0.0.0.0/0",
-    "nexthopIps": ["10.0.2.2"], "oifs": ["eth0"], "protocol": "", "source": "", "metric":
-    20, "ipvers": 4, "action": "forward", "timestamp": 1594712995175}, {"namespace":
-    "junos", "hostname": "srv21", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
-    ["10.0.2.2"], "oifs": ["eth0"], "protocol": "", "source": "", "metric": 20, "ipvers":
-    4, "action": "forward", "timestamp": 1594712995181}, {"namespace": "junos", "hostname":
-    "srv22", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.0.2.2"],
-    "oifs": ["eth0"], "protocol": "", "source": "", "metric": 20, "ipvers": 4, "action":
-    "forward", "timestamp": 1594712995171}, {"namespace": "junos", "hostname": "vqfx1",
-    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.0.2.2"], "oifs": ["em0.0"],
-    "protocol": "access-internal", "source": "", "metric": 12, "ipvers": 4, "action":
-    "forward", "timestamp": 1594712997368}, {"namespace": "junos", "hostname": "vqfx2",
-    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.0.2.2"], "oifs": ["em0.0"],
-    "protocol": "access-internal", "source": "", "metric": 12, "ipvers": 4, "action":
-    "forward", "timestamp": 1594712996842}]'
 - command: route lpm --address="10.10.1.10" --hostname="srv11 srv22" --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: route lpm junos
-  output: '[{"namespace": "junos", "hostname": "srv11", "vrf": "default", "prefix":
-    "10.10.1.0/24", "nexthopIps": [""], "oifs": ["eth1"], "protocol": "kernel", "source":
-    "10.10.1.10", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594712995177},
-    {"namespace": "junos", "hostname": "srv22", "vrf": "default", "prefix": "10.10.0.0/16",
-    "nexthopIps": ["10.10.2.254"], "oifs": ["eth1"], "protocol": "", "source": "",
-    "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594712995171}]'
 - command: route lpm --address="10.10.1.10" --vrf=default --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: route lpm junos
-  output: '[{"namespace": "junos", "hostname": "srv11", "vrf": "default", "prefix":
-    "10.10.1.0/24", "nexthopIps": [""], "oifs": ["eth1"], "protocol": "kernel", "source":
-    "10.10.1.10", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594712995177},
-    {"namespace": "junos", "hostname": "srv12", "vrf": "default", "prefix": "10.10.0.0/16",
-    "nexthopIps": ["10.10.2.254"], "oifs": ["eth1"], "protocol": "", "source": "",
-    "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594712995175}, {"namespace":
-    "junos", "hostname": "srv21", "vrf": "default", "prefix": "10.10.1.0/24", "nexthopIps":
-    [""], "oifs": ["eth1"], "protocol": "kernel", "source": "10.10.1.20", "metric":
-    20, "ipvers": 4, "action": "forward", "timestamp": 1594712995181}, {"namespace":
-    "junos", "hostname": "srv22", "vrf": "default", "prefix": "10.10.0.0/16", "nexthopIps":
-    ["10.10.2.254"], "oifs": ["eth1"], "protocol": "", "source": "", "metric": 20,
-    "ipvers": 4, "action": "forward", "timestamp": 1594712995171}, {"namespace": "junos",
-    "hostname": "vqfx1", "vrf": "default", "prefix": "10.10.1.0/24", "nexthopIps":
-    ["None"], "oifs": ["irb.10000"], "protocol": "direct", "source": "", "metric":
-    0, "ipvers": 4, "action": "forward", "timestamp": 1594712997368}, {"namespace":
-    "junos", "hostname": "vqfx2", "vrf": "default", "prefix": "10.10.1.0/24", "nexthopIps":
-    ["None"], "oifs": ["irb.10000"], "protocol": "direct", "source": "", "metric":
-    0, "ipvers": 4, "action": "forward", "timestamp": 1594712996842}]'
