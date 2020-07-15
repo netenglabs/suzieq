@@ -478,15 +478,19 @@ def build_query_str(skip_fields: list, **kwargs) -> str:
                 op = '=='
             query_str += "{} {}{}'{}' ".format(prefix, f, op, v)
             prefix = "and"
-        elif isinstance(v, list):
+        elif isinstance(v, list) and len(v):
+            subq = ''
+            subcond = ''
             for elem in v:
-                if elem.startswith('!'):
+                if isinstance(elem, str) and elem.startswith('!'):
                     elem = elem[1:]
                     op = '!='
                 else:
                     op = '=='
-                query_str += "{} {}{}'{}' ".format(prefix, f, op, elem)
-                prefix = "and"
+                subq += "{} {}{}'{}' ".format(subcond, f, op, elem)
+                subcond = 'or'
+            query_str += '{} ({})'.format(prefix, subq)
+            prefix = "and"
         else:
             query_str += "{} {}=={} ".format(prefix, f, v)
             prefix = "and"
