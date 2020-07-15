@@ -1,5 +1,15 @@
 ## Release Notes
 
+## 0.3 (July 15, 2020)
+
+First release with third-party contributions! Vastly improved support for realistic NXOS data center deployments. Besides 32 closed bugs, Main enhancements include:
+
+* Improved EVPN assert to handle cases of using routed multicast underlay instead of ingress replication. This includes checking for consistency of multicast groups for a VNI across nodes.
+* Improved EVPN show and summarize to include more meaningful outputs.
+* Improved BGP and OSPF assert. BGP assert especially handles a few more cases such as when peering is not over directly connected interfaces. 
+* **ALPHA feature** Support for topology as a first class resource. Try topology show and topology summarize. This is still work in progress.
+* Support for the poller to gather data from nodes and saving them to a directory. You can then run the poller to read this directory to build the output files.
+
 ## 0.2.1 (June 18, 2020)
 
 The main issue was fixing a bug in Junos BGP data capture that got missed in the tests. This is issue #170. We also fixed #169 listed below as part of release 0.2. However, another Junos bug is still open
