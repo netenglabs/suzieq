@@ -2,7 +2,7 @@
 
 ## 0.3 (July 15, 2020)
 
-First release with third-party contributions! Vastly improved support for realistic NXOS data center deployments. Besides 32 closed bugs, Main enhancements include:
+First release with third-party contributions! Vastly improved support for realistic NXOS data center deployments. Besides 32 closed bugs, main enhancements include:
 
 * Improved EVPN assert to handle cases of using routed multicast underlay instead of ingress replication. This includes checking for consistency of multicast groups for a VNI across nodes.
 * Improved EVPN show and summarize to include more meaningful outputs.
