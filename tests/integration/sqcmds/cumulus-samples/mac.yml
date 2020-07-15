@@ -874,3 +874,104 @@ tests:
     {"hostname": "exit01", "count": 41}, {"hostname": "leaf04", "count": 64}, {"hostname":
     "leaf03", "count": 64}, {"hostname": "leaf02", "count": 64}, {"hostname": "leaf01",
     "count": 64}]'
+- command: mac show --namespace=ospf-ibgp --vlan='13 24' --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: mac filter show
+  output: '[{"namespace": "ospf-ibgp", "hostname": "leaf01", "vlan": 13, "macaddr":
+    "52:54:00:82:a3:57", "oif": "peerlink", "remoteVtepIp": "", "flags": "static",
+    "timestamp": 1594267161254}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
+    "vlan": 24, "macaddr": "52:54:00:82:a3:57", "oif": "peerlink", "remoteVtepIp":
+    "", "flags": "static", "timestamp": 1594267161254}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf01", "vlan": 24, "macaddr": "52:54:00:60:6d:c3", "oif": "bond02",
+    "remoteVtepIp": "", "flags": "", "timestamp": 1594267161254}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf01", "vlan": 13, "macaddr": "52:54:00:f9:e2:23", "oif": "bond01",
+    "remoteVtepIp": "", "flags": "", "timestamp": 1594267161254}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf01", "vlan": 24, "macaddr": "44:39:39:ff:00:24", "oif": "bridge",
+    "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594267161254}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf01", "vlan": 13, "macaddr": "44:39:39:ff:00:13",
+    "oif": "bridge", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594267161254},
+    {"namespace": "ospf-ibgp", "hostname": "leaf01", "vlan": 13, "macaddr": "52:54:00:84:b6:4a",
+    "oif": "bridge", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594267161254},
+    {"namespace": "ospf-ibgp", "hostname": "leaf01", "vlan": 24, "macaddr": "52:54:00:84:b6:4a",
+    "oif": "bridge", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594267161254},
+    {"namespace": "ospf-ibgp", "hostname": "leaf02", "vlan": 13, "macaddr": "52:54:00:84:b6:4a",
+    "oif": "peerlink", "remoteVtepIp": "", "flags": "static", "timestamp": 1594267161392},
+    {"namespace": "ospf-ibgp", "hostname": "leaf02", "vlan": 24, "macaddr": "52:54:00:84:b6:4a",
+    "oif": "peerlink", "remoteVtepIp": "", "flags": "static", "timestamp": 1594267161392},
+    {"namespace": "ospf-ibgp", "hostname": "leaf02", "vlan": 24, "macaddr": "52:54:00:60:6d:c3",
+    "oif": "bond02", "remoteVtepIp": "", "flags": "", "timestamp": 1594267161392},
+    {"namespace": "ospf-ibgp", "hostname": "leaf02", "vlan": 13, "macaddr": "52:54:00:f9:e2:23",
+    "oif": "bond01", "remoteVtepIp": "", "flags": "", "timestamp": 1594267161392},
+    {"namespace": "ospf-ibgp", "hostname": "leaf02", "vlan": 24, "macaddr": "52:54:00:82:a3:57",
+    "oif": "bridge", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594267161392},
+    {"namespace": "ospf-ibgp", "hostname": "leaf02", "vlan": 13, "macaddr": "52:54:00:82:a3:57",
+    "oif": "bridge", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594267161392},
+    {"namespace": "ospf-ibgp", "hostname": "leaf02", "vlan": 13, "macaddr": "44:39:39:ff:00:13",
+    "oif": "bridge", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594267161392},
+    {"namespace": "ospf-ibgp", "hostname": "leaf02", "vlan": 24, "macaddr": "44:39:39:ff:00:24",
+    "oif": "bridge", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594267161392},
+    {"namespace": "ospf-ibgp", "hostname": "leaf03", "vlan": 13, "macaddr": "52:54:00:2d:6d:6d",
+    "oif": "peerlink", "remoteVtepIp": "", "flags": "static", "timestamp": 1594267161271},
+    {"namespace": "ospf-ibgp", "hostname": "leaf03", "vlan": 24, "macaddr": "52:54:00:2d:6d:6d",
+    "oif": "peerlink", "remoteVtepIp": "", "flags": "static", "timestamp": 1594267161271},
+    {"namespace": "ospf-ibgp", "hostname": "leaf03", "vlan": 24, "macaddr": "52:54:00:82:fb:e9",
+    "oif": "bond02", "remoteVtepIp": "", "flags": "", "timestamp": 1594267161271},
+    {"namespace": "ospf-ibgp", "hostname": "leaf03", "vlan": 13, "macaddr": "52:54:00:45:7c:e1",
+    "oif": "bond01", "remoteVtepIp": "", "flags": "", "timestamp": 1594267161271},
+    {"namespace": "ospf-ibgp", "hostname": "leaf03", "vlan": 13, "macaddr": "44:39:39:ff:00:13",
+    "oif": "bridge", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594267161271},
+    {"namespace": "ospf-ibgp", "hostname": "leaf03", "vlan": 24, "macaddr": "44:39:39:ff:00:24",
+    "oif": "bridge", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594267161271},
+    {"namespace": "ospf-ibgp", "hostname": "leaf03", "vlan": 13, "macaddr": "52:54:00:61:8d:16",
+    "oif": "bridge", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594267161271},
+    {"namespace": "ospf-ibgp", "hostname": "leaf03", "vlan": 24, "macaddr": "52:54:00:61:8d:16",
+    "oif": "bridge", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594267161271},
+    {"namespace": "ospf-ibgp", "hostname": "leaf04", "vlan": 24, "macaddr": "52:54:00:61:8d:16",
+    "oif": "peerlink", "remoteVtepIp": "", "flags": "static", "timestamp": 1594267161271},
+    {"namespace": "ospf-ibgp", "hostname": "leaf04", "vlan": 13, "macaddr": "52:54:00:61:8d:16",
+    "oif": "peerlink", "remoteVtepIp": "", "flags": "static", "timestamp": 1594267161271},
+    {"namespace": "ospf-ibgp", "hostname": "leaf04", "vlan": 24, "macaddr": "52:54:00:82:fb:e9",
+    "oif": "bond02", "remoteVtepIp": "", "flags": "", "timestamp": 1594267161271},
+    {"namespace": "ospf-ibgp", "hostname": "leaf04", "vlan": 13, "macaddr": "52:54:00:45:7c:e1",
+    "oif": "bond01", "remoteVtepIp": "", "flags": "", "timestamp": 1594267161271},
+    {"namespace": "ospf-ibgp", "hostname": "leaf04", "vlan": 24, "macaddr": "52:54:00:2d:6d:6d",
+    "oif": "bridge", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594267161271},
+    {"namespace": "ospf-ibgp", "hostname": "leaf04", "vlan": 13, "macaddr": "44:39:39:ff:00:13",
+    "oif": "bridge", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594267161271},
+    {"namespace": "ospf-ibgp", "hostname": "leaf04", "vlan": 24, "macaddr": "44:39:39:ff:00:24",
+    "oif": "bridge", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594267161271},
+    {"namespace": "ospf-ibgp", "hostname": "leaf04", "vlan": 13, "macaddr": "52:54:00:2d:6d:6d",
+    "oif": "bridge", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594267161271}]'
+- command: mac show --namespace=ospf-ibgp --vlan='!24' --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  error:
+    error: '[{"error": "Cannot use ! with VLAN yet"}]'
+  marks: mac show filter
+- command: mac show --namespace=ospf-ibgp --vlan='10 100' --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: mac show filter
+  output: '[]'
+- command: mac show --vlan='13' --columns='remoteVtepIp' --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: mac show filter
+  output: '[{"remoteVtepIp": ""}, {"remoteVtepIp": ""}, {"remoteVtepIp": ""}, {"remoteVtepIp":
+    ""}, {"remoteVtepIp": ""}, {"remoteVtepIp": ""}, {"remoteVtepIp": ""}, {"remoteVtepIp":
+    ""}, {"remoteVtepIp": ""}, {"remoteVtepIp": ""}, {"remoteVtepIp": ""}, {"remoteVtepIp":
+    ""}, {"remoteVtepIp": ""}, {"remoteVtepIp": ""}, {"remoteVtepIp": ""}, {"remoteVtepIp":
+    ""}, {"remoteVtepIp": ""}, {"remoteVtepIp": ""}, {"remoteVtepIp": ""}, {"remoteVtepIp":
+    ""}, {"remoteVtepIp": ""}, {"remoteVtepIp": ""}, {"remoteVtepIp": ""}, {"remoteVtepIp":
+    ""}, {"remoteVtepIp": ""}, {"remoteVtepIp": ""}, {"remoteVtepIp": ""}, {"remoteVtepIp":
+    ""}, {"remoteVtepIp": ""}, {"remoteVtepIp": ""}, {"remoteVtepIp": ""}, {"remoteVtepIp":
+    ""}, {"remoteVtepIp": ""}, {"remoteVtepIp": ""}, {"remoteVtepIp": ""}, {"remoteVtepIp":
+    ""}, {"remoteVtepIp": ""}, {"remoteVtepIp": ""}, {"remoteVtepIp": ""}, {"remoteVtepIp":
+    ""}, {"remoteVtepIp": ""}, {"remoteVtepIp": ""}, {"remoteVtepIp": ""}, {"remoteVtepIp":
+    ""}, {"remoteVtepIp": ""}, {"remoteVtepIp": ""}, {"remoteVtepIp": ""}, {"remoteVtepIp":
+    ""}, {"remoteVtepIp": ""}, {"remoteVtepIp": ""}, {"remoteVtepIp": ""}, {"remoteVtepIp":
+    ""}, {"remoteVtepIp": ""}, {"remoteVtepIp": ""}, {"remoteVtepIp": ""}, {"remoteVtepIp":
+    ""}, {"remoteVtepIp": ""}, {"remoteVtepIp": ""}, {"remoteVtepIp": ""}, {"remoteVtepIp":
+    ""}, {"remoteVtepIp": ""}, {"remoteVtepIp": ""}]'
+- command: mac show --vlan='abc' --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  error:
+    error: '[{"error": "Invalid VLAN value: [''abc'']"}]'
+  marks: mac show filter
