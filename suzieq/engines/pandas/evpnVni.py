@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 import ipaddress
 
@@ -9,13 +10,78 @@ from suzieq.sqobjects.routes import RoutesObj
 
 class EvpnvniObj(SqEngineObject):
 
+    def get(self, **kwargs) -> pd.DataFrame:
+        """Class-specific to extract info from addnl tables"""
+
+        drop_cols = []
+        addnl_fields = kwargs.pop('addnl_fields', [])
+        columns = kwargs.get('columns', [])
+        if 'ifname' not in columns and 'ifname' not in addnl_fields:
+            addnl_fields.append('ifname')
+            drop_cols.append('ifname')
+
+        if (columns == ['default'] or columns == ['*'] or
+                'remoteVtepCnt' in columns):
+            getVtepCnt = True
+            if columns != ['*'] and 'remoteVtepList' not in columns:
+                addnl_fields.append('remoteVtepList')
+                drop_cols.append('remoteVtepList')
+        else:
+            getVtepCnt = False
+
+        df = super().get(addnl_fields=addnl_fields, **kwargs)
+        if df.empty:
+            return df
+
+        if getVtepCnt:
+            df.insert(len(df.columns)-4, 'remoteVtepCnt',
+                      df.remoteVtepList.str.len())
+
+        # See if we can retrieve the info to fill out the rest of the data
+        # Start with VLAN values
+        if 'vlan' not in df.columns:
+            return df.drop(columns=drop_cols, errors='ignore')
+
+        iflist = df[df.vlan == 0]['ifname'].to_list()
+        if iflist:
+            ifdf = IfObj(context=self.ctxt).get(
+                namespace=kwargs.get('namespace'), ifname=iflist,
+                columns=['namespace', 'hostname', 'ifname', 'state', 'vlan',
+                         'vni'])
+
+            if not ifdf.empty:
+                df = df.merge(ifdf, on=['namespace', 'hostname', 'ifname',
+                                        'vni'], how='left',
+                              suffixes=('', '_y')) \
+                    .drop(columns=['timestamp_y', 'state_y'])
+
+                df['vlan'] = np.where(df['vlan_y'], df['vlan_y'], df['vlan'])
+                df.drop(columns=['vlan_y'], inplace=True)
+
+        # Fill out the numMacs and numArps columns if we can
+        if 'numMacs' in df.columns:
+            vlanlist = list(set(df[df.numMacs == 0]['vlan'].to_list()))
+        else:
+            vlanlist = []
+        if vlanlist:
+            if 'numMacs' in df.columns:
+                macdf = MacsObj(context=self.ctxt).get(
+                    namespace=kwargs.get('namespace'))
+                df['numMacs'] = df.apply(self._count_macs, axis=1,
+                                         args=(macdf, ))
+        return df.drop(columns=drop_cols, errors='ignore')
+
+    def _count_macs(self, x, df):
+        return df[(df.namespace == x['namespace']) & (df.vlan == x['vlan']) &
+                  (df.hostname == x['hostname'])].count()
+
     def summarize(self, **kwargs):
         self._init_summarize(self.iobj._table, **kwargs)
         if self.summary_df.empty:
             return self.summary_df
 
         self._summarize_on_add_field = [
-            ('deviceCnt', 'hostname', 'nunique'),
+            ('uniqueVtepCnt', 'hostname', 'nunique'),
             ('uniqueVniCnt', 'vni', 'nunique'),
         ]
 
@@ -31,16 +97,20 @@ class EvpnvniObj(SqEngineObject):
         self._summarize_on_add_with_query = [
             ('uniqueL3VniCnt', 'type == "L3"', 'vrf', 'nunique'),
             ('uniqueL2VniCnt', 'type == "L2"', 'vni', 'nunique'),
+            ('uniqueMulticastGroups', 'mcastGroup != "0.0.0.0"', 'mcastGroup',
+             'nunique'),
+            ('vnisUsingMulticast', 'type == "L2" and mcastGroup != "0.0.0.0"',
+             'vni', 'nunique'),
+            ('vnisUsingIngressRepl', 'type == "L2" and mcastGroup == "0.0.0.0"',
+             'vni', 'nunique')
         ]
 
         self._summarize_on_add_list_or_count = [
             ('uniqueVniTypeValCnt', 'type'),
-            ('replTypeValCnt', 'replicationType')
         ]
 
         self._summarize_on_add_stat = [
             ('macsInVniStat', '', 'numMacs'),
-            ('arpNdInVniStat', '', 'numArpNd')
         ]
 
         self._gen_summarize_data()
@@ -59,11 +129,11 @@ class EvpnvniObj(SqEngineObject):
         if not self.summary_df.empty:
             herPerVtepCnt = self.summary_df.groupby(
                 by=['namespace', 'hostname'])['remoteVtepList'].nunique()
-            self._add_stats_to_summary(herPerVtepCnt, 'ingressReplPerVtepStat',
+            self._add_stats_to_summary(herPerVtepCnt, 'remoteVtepsPerVtepStat',
                                        filter_by_ns=True)
-        self.summary_row_order.append('ingressReplPerVtepStat')
+        self.summary_row_order.append('remoteVtepsPerVtepStat')
 
-        self._post_summarize(check_empty_col='deviceCnt')
+        self._post_summarize(check_empty_col='uniqueVtepCnt')
         return self.ns_df.convert_dtypes()
 
     def aver(self, **kwargs) -> pd.DataFrame:
@@ -84,25 +154,22 @@ class EvpnvniObj(SqEngineObject):
 
         df["assertReason"] = [[] for _ in range(len(df))]
 
-        her_df = df.query('mcastGroup == "0.0.0.0"')
-        # When routed multicast is used as underlay, type 3 routes are not
-        # advertised and so its not certain that all VTEPs asssociated with
-        # a VNI will know about each other till there's an active local host
-        # A bad optimization for routing implementations to do, IMO.
-        if not her_df.empty:
-            # Gather the unique set of VTEPs per VNI
-            vteps_df = her_df.explode(column='remoteVtepList') \
-                             .dropna(how='any') \
-                             .groupby(by=['vni', 'type'])['remoteVtepList'] \
-                             .aggregate(lambda x: x.unique().tolist()) \
-                             .reset_index() \
-                             .dropna(how='any') \
-                             .rename(columns={'remoteVtepList': 'allVteps'})
+        # Gather the unique set of VTEPs per VNI
+        vteps_df = df.explode(column='remoteVtepList') \
+            .dropna(how='any') \
+            .groupby(by=['vni', 'type'])['remoteVtepList'] \
+            .aggregate(lambda x: x.unique().tolist()) \
+            .reset_index() \
+            .dropna(how='any') \
+            .rename(columns={'remoteVtepList': 'allVteps'})
 
-            if not vteps_df.empty:
-                her_df = her_df.merge(vteps_df)
+        if not vteps_df.empty:
+            her_df = df.merge(vteps_df)
+        else:
+            her_df = pd.DataFrame()
 
-        if (her_df.remoteVtepList.str.len() != 0).any():
+        if (not her_df.empty and
+                (her_df.remoteVtepList.str.len() != 0).any()):
             # Check if every VTEP we know is reachable
             self._routes_df = RoutesObj(context=self.ctxt).get(
                 namespace=kwargs.get('namespace'), vrf='default')
@@ -199,11 +266,11 @@ class EvpnvniObj(SqEngineObject):
             # came down from 194s to 4s with the below piece of code instead
             # of invoking route's lpm to accomplish the task.
             route = self._routes_df \
-                        .query('hostname == "{}" and namespace == "{}"'
-                               .format(row['hostname'], row['namespace'])) \
-                        .query("prefix.ipnet.supernet_of('{}')"
-                               .format(vtep))['prefix'] \
-                        .max()
+                .query('hostname == "{}" and namespace == "{}"'
+                       .format(row['hostname'], row['namespace'])) \
+                .query("prefix.ipnet.supernet_of('{}')"
+                       .format(vtep))['prefix'] \
+                .max()
 
             if not route:
                 reason += [f"{vtep} not reachable"]
