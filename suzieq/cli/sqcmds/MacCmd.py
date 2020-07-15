@@ -49,11 +49,21 @@ class MacCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
+        vlans = vlan.split()
+        if vlans and '!' in vlan:
+            df = pd.DataFrame({'error': 'Cannot use ! with VLAN yet'})
+            return self._gen_output(df)
+        try:
+            vlans = [int(x) for x in vlans]
+        except Exception:
+            df = pd.DataFrame({'error': 'Invalid value passed for VLAN'})
+            return self._gen_output(df)
+
         df = self.sqobj.get(
             hostname=self.hostname,
-            vlan=vlan.split(),
             macaddr=macaddr.split(),
             remoteVtepIp=remoteVtepIp.split(),
+            vlan=vlans,
             columns=self.columns,
             namespace=self.namespace,
         )
