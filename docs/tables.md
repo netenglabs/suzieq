@@ -10,7 +10,7 @@ that the bgp service collects from routers. To see what information is collected
 | Arpnd   |    yes        |      yes   | yes   | yes  |  yes  |
 | BGP     | yes | yes | yes | yes | yes |
 | Device  | yes | yes | yes | yes | yes | 
-| EvpnVni         | yes | no | no | yes | yes |
+| EvpnVni         | yes | no | no | yes* | yes |
 | Filesystem (fs) | yes | yes | yes | no | no |
 | IfCounters      | yes | yes | yes | no | no |
 | Interfaces  | yes | yes | yes| yes | yes |
@@ -22,3 +22,4 @@ that the bgp service collects from routers. To see what information is collected
 | Topcpu | yes | yes | yes | no | no |
 | Topmem | yes | yes | yes | no | no |
 | VLAN | yes | yes | yes | no | no |
+\* - EVPN support for NXOS requires version 9.3.3 or above
