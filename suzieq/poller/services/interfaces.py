@@ -1,11 +1,13 @@
+import re
 from datetime import datetime
 from suzieq.poller.services.service import Service
+from suzieq.utils import get_timestamp_from_junos_time
 
 
 class InterfaceService(Service):
     """Service class for interfaces. Cleanup of data is specific"""
 
-    def _clean_eos_data(self, processed_data):
+    def _clean_eos_data(self, processed_data, raw_data):
         """Clean up EOS interfaces output"""
 
         for entry in processed_data:
@@ -72,7 +74,7 @@ class InterfaceService(Service):
 
         return processed_data
 
-    def _clean_cumulus_data(self, processed_data):
+    def _clean_cumulus_data(self, processed_data, raw_data):
         """We have to merge the appropriate outputs of two separate commands"""
         new_data_dict = {}
         for entry in processed_data:
@@ -135,7 +137,7 @@ class InterfaceService(Service):
 
         return processed_data
 
-    def _clean_junos_data(self, processed_data):
+    def _clean_junos_data(self, processed_data, raw_data):
         """Cleanup IP addresses and such"""
         new_entries = []        # Add new interface entries for logical ifs
         for entry in processed_data:
@@ -152,11 +154,11 @@ class InterfaceService(Service):
                     entry['statusChangeTimestamp'] is None):
                 entry['statusChangeTimestamp'] = 0
             else:
-                timestamp = datetime.strptime(entry['statusChangeTimestamp']
-                                              .split('(')[0].strip(),
-                                              '%Y-%m-%d %H:%M:%S %Z')
-                entry['statusChangeTimestamp'] = int(
-                    timestamp.timestamp()*1000)
+                ts_str = re.match(r'.*\((.+) ago\)$',
+                                  entry['statusChangeTimestamp'])
+                ts = get_timestamp_from_junos_time(
+                    ts_str.group(1), raw_data[0]['timestamp']/1000)
+                entry['statusChangeTimestamp'] = int(ts)
 
             if entry['speed']:
                 if entry['speed'].endswith('mbps'):
@@ -254,7 +256,7 @@ class InterfaceService(Service):
             processed_data.extend(new_entries)
         return processed_data
 
-    def _clean_nxos_data(self, processed_data):
+    def _clean_nxos_data(self, processed_data, raw_data):
         """Complex cleanup of NXOS interface data"""
         new_entries = []
         created_if_list = set()
@@ -356,7 +358,7 @@ class InterfaceService(Service):
 
         return processed_data
 
-    def _clean_linux_data(self, processed_data):
+    def _clean_linux_data(self, processed_data, raw_data):
         """Pluck admin state from flags"""
         for entry in processed_data:
             entry['state'] = entry['state'].lower()
@@ -380,15 +382,15 @@ class InterfaceService(Service):
         """
         devtype = self._get_devtype_from_input(raw_data)
         if devtype == "eos":
-            self._clean_eos_data(processed_data)
+            self._clean_eos_data(processed_data, raw_data)
         elif devtype == "cumulus":
-            processed_data = self._clean_cumulus_data(processed_data)
+            processed_data = self._clean_cumulus_data(processed_data, raw_data)
         elif devtype == "junos":
-            processed_data = self._clean_junos_data(processed_data)
+            processed_data = self._clean_junos_data(processed_data, raw_data)
         elif devtype == "nxos":
-            processed_data = self._clean_nxos_data(processed_data)
+            processed_data = self._clean_nxos_data(processed_data, raw_data)
         elif devtype == "linux":
-            processed_data = self._clean_linux_data(processed_data)
+            processed_data = self._clean_linux_data(processed_data, raw_data)
         else:
             for entry in processed_data:
                 entry['state'] = entry['state'].lower()
