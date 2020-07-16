@@ -5,6 +5,7 @@
 First release with third-party contributions! Vastly improved support for realistic NXOS data center deployments. Besides 32 closed bugs, main enhancements include:
 
 * Improved EVPN assert to handle cases of using routed multicast underlay instead of ingress replication. This includes checking for consistency of multicast groups for a VNI across nodes.
+* NXOS support for EVPN requires version 9.3.3 or later as there's no command to get certain info about all VNI, only by specific VNI values.
 * Improved EVPN show and summarize to include more meaningful outputs.
 * Improved BGP and OSPF assert. BGP assert especially handles a few more cases such as when peering is not over directly connected interfaces. 
 * **ALPHA feature** Support for topology as a first class resource. Try topology show and topology summarize. This is still work in progress.
