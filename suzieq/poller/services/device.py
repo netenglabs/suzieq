@@ -1,5 +1,6 @@
 from suzieq.poller.services.service import Service
 from datetime import datetime
+from suzieq.utils import get_timestamp_from_junos_time
 
 
 class DeviceService(Service):
@@ -63,9 +64,9 @@ class DeviceService(Service):
 
         for entry in processed_data:
             if entry.get('bootupTimestamp', '-') != '-':
-                entry['bootupTimestamp'] = datetime.strptime(
-                    entry['bootupTimestamp'], '%Y-%m-%d %H:%M:%S %Z') \
-                    .timestamp()
+                entry['bootupTimestamp'] = (get_timestamp_from_junos_time(
+                    entry['bootupTimestamp'],
+                    (raw_data[0]['timestamp']/1000)))/1000
 
     def nxos_clean_data(self, processed_data, raw_data):
         for entry in processed_data:
