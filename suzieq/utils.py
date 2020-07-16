@@ -369,7 +369,7 @@ def calc_avg(oldval, newval):
 
 
 def get_timestamp_from_cisco_time(input, timestamp):
-    """Get timestamp from the Cisco-specific timestamp string
+    """Get timestamp in ms from the Cisco-specific timestamp string
     Examples of Cisco timestamp str are P2DT14H45M16S, P1M17DT4H49M50S etc.
     """
     if not input.startswith('P'):
@@ -404,11 +404,12 @@ def get_timestamp_from_cisco_time(input, timestamp):
 
 
 def get_timestamp_from_junos_time(input, timestamp):
-    """Get timestamp from the Junos-specific timestamp string
+    """Get timestamp in ms from the Junos-specific timestamp string
     Examples of Cisco timestamp str are 00:00:23, 1d 09:24:36 etc
     """
 
     days = 0
+    secs = 0
     timestr = input
 
     if 'y' in timestr:
@@ -423,7 +424,11 @@ def get_timestamp_from_junos_time(input, timestamp):
         d, timestr = timestr.split('d')
         days += int(d)
 
-    hours, mins, secs = timestr.strip().split(':')
+    hours, *rest = timestr.strip().split(':')
+    if len(rest) == 2:
+        mins, secs = rest
+    else:
+        mins = rest[0]
     delta = relativedelta(days=days, hours=int(
         hours), minutes=int(mins), seconds=int(secs))
     return int((datetime.fromtimestamp(timestamp)-delta).timestamp()*1000)
