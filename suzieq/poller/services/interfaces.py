@@ -2,6 +2,7 @@ import re
 from datetime import datetime
 from suzieq.poller.services.service import Service
 from suzieq.utils import get_timestamp_from_junos_time
+from suzieq.utils import convert_macaddr_format_to_colon
 
 
 class InterfaceService(Service):
@@ -308,6 +309,9 @@ class InterfaceService(Service):
             if 'ip6AddressList' in entry:
                 if '_linklocal' in entry:
                     entry['ip6AddressList'].append(entry['_linklocal'])
+
+            entry['macaddr'] = convert_macaddr_format_to_colon(
+                entry.get('macaddr', '0000.0000.0000'))
 
             if entry.get('_unnum_intf', ''):
                 if entry['ifname'] in unnum_intf:
