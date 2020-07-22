@@ -1,0 +1,26 @@
+description: 'Testing verbs for ospf: show summarize unique assert top'
+tests:
+- command: ospf show --format=json --namespace=single-attach_evpn_distributed
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_distributed/parquet-out
+  marks: ospf show
+  output: '[]'
+- command: ospf show --columns=hostname --format=json --namespace=single-attach_evpn_distributed
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_distributed/parquet-out
+  marks: ospf show
+  output: '[]'
+- command: ospf summarize --format=json --namespace=single-attach_evpn_distributed
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_distributed/parquet-out
+  marks: ospf summarize
+  output: '{}'
+- command: ospf unique --columns=hostname --format=json --namespace=single-attach_evpn_distributed
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_distributed/parquet-out
+  marks: ospf unique
+  output: '[]'
+- command: ospf assert --format=json --namespace=single-attach_evpn_distributed
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_distributed/parquet-out
+  marks: ospf assert
+  output: '[]'
+- command: ospf top --format=json --namespace=single-attach_evpn_distributed
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_distributed/parquet-out
+  marks: ospf top
+  output: '[]'

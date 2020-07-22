@@ -1,0 +1,513 @@
+description: 'Testing verbs for interface: show summarize unique assert top'
+tests:
+- command: interface show --format=json --namespace=dual-attach_ospf_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_unnumbered/parquet-out
+  marks: interface show
+  output: '[{"namespace": "dual-attach_ospf_unnumbered", "hostname": "edge01", "ifname":
+    "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "",
+    "ipAddressList": ["192.168.121.81/24"], "ip6AddressList": [], "timestamp": 1594435777947},
+    {"namespace": "dual-attach_ospf_unnumbered", "hostname": "edge01", "ifname": "eth1",
+    "state": "down", "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1594435777947}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "edge01", "ifname": "eth2", "state": "down", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1594435777947}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "edge01",
+    "ifname": "lo", "state": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594435777947}, {"namespace":
+    "dual-attach_ospf_unnumbered", "hostname": "exit01", "ifname": "eth0", "state":
+    "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "mgmt", "ipAddressList":
+    ["192.168.121.118/24"], "ip6AddressList": ["fe80::5054:ff:fe09:9210/64"], "timestamp":
+    1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "exit01",
+    "ifname": "lo", "state": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": ["10.0.0.101/32"], "ip6AddressList": ["::1/128"], "timestamp":
+    1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "exit01",
+    "ifname": "mgmt", "state": "up", "type": "vrf", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": ["127.0.0.1/8"], "ip6AddressList": [], "timestamp": 1594435778108},
+    {"namespace": "dual-attach_ospf_unnumbered", "hostname": "exit01", "ifname": "swp1",
+    "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    ["10.0.0.101/32"], "ip6AddressList": ["fe80::5054:ff:fe6d:86fe/64"], "timestamp":
+    1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "exit01",
+    "ifname": "swp2", "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["10.0.0.101/32"], "ip6AddressList": ["fe80::5054:ff:fed2:1c4a/64"],
+    "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname":
+    "exit01", "ifname": "swp3", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:feb6:72e0/64"],
+    "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname":
+    "exit01", "ifname": "swp4", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe91:3bd8/64"],
+    "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname":
+    "exit01", "ifname": "swp5", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe6b:2db/64"],
+    "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname":
+    "exit01", "ifname": "swp6", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fecb:6c32/64"],
+    "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname":
+    "exit02", "ifname": "eth0", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "mgmt", "ipAddressList": ["192.168.121.239/24"], "ip6AddressList":
+    ["fe80::5054:ff:fe41:212b/64"], "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "exit02", "ifname": "lo", "state": "up", "type": "loopback", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.102/32"], "ip6AddressList":
+    ["::1/128"], "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "exit02", "ifname": "mgmt", "state": "up", "type": "vrf", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": ["127.0.0.1/8"], "ip6AddressList": [],
+    "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname":
+    "exit02", "ifname": "swp1", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.102/32"], "ip6AddressList": ["fe80::5054:ff:fe16:72f1/64"],
+    "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname":
+    "exit02", "ifname": "swp2", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.102/32"], "ip6AddressList": ["fe80::5054:ff:fecc:bd24/64"],
+    "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname":
+    "exit02", "ifname": "swp3", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe00:1de8/64"],
+    "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname":
+    "exit02", "ifname": "swp4", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe67:b629/64"],
+    "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname":
+    "exit02", "ifname": "swp5", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe5f:e09f/64"],
+    "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname":
+    "exit02", "ifname": "swp6", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe59:959a/64"],
+    "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname":
+    "internet", "ifname": "eth0", "state": "", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["192.168.121.62/24"], "ip6AddressList": ["fe80::5054:ff:fe8d:1ba6/64"],
+    "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname":
+    "internet", "ifname": "lo", "state": "", "type": "loopback", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": ["127.0.0.1/8"], "ip6AddressList": ["::1/128"],
+    "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname":
+    "internet", "ifname": "swp1", "state": "", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594435778108},
+    {"namespace": "dual-attach_ospf_unnumbered", "hostname": "internet", "ifname":
+    "swp2", "state": "", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594435778108}, {"namespace":
+    "dual-attach_ospf_unnumbered", "hostname": "leaf01", "ifname": "bond01", "state":
+    "up", "type": "bond", "mtu": 1500, "vlan": 0, "master": "bridge", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "leaf01", "ifname": "bond02", "state": "up", "type": "bond", "mtu":
+    1500, "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname":
+    "leaf01", "ifname": "bridge", "state": "up", "type": "bridge", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe52:aa72/64"],
+    "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname":
+    "leaf01", "ifname": "eth0", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "mgmt", "ipAddressList": ["192.168.121.16/24"], "ip6AddressList":
+    ["fe80::5054:ff:feec:f834/64"], "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "leaf01", "ifname": "lo", "state": "up", "type": "loopback", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.11/32"], "ip6AddressList":
+    ["::1/128"], "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "leaf01", "ifname": "mgmt", "state": "up", "type": "vrf", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": ["127.0.0.1/8"], "ip6AddressList": [],
+    "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname":
+    "leaf01", "ifname": "peerlink.4094", "state": "up", "type": "vlan", "mtu": 1500,
+    "vlan": 4094, "master": "", "ipAddressList": ["169.254.1.1/30"], "ip6AddressList":
+    ["fe80::5054:ff:feb8:e5d/64"], "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "leaf01", "ifname": "peerlink", "state": "up", "type": "bond", "mtu":
+    1500, "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname":
+    "leaf01", "ifname": "swp1", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.11/32"], "ip6AddressList": ["fe80::5054:ff:fe7a:64a2/64"],
+    "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname":
+    "leaf01", "ifname": "swp2", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.11/32"], "ip6AddressList": ["fe80::5054:ff:fe5e:23e/64"],
+    "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname":
+    "leaf01", "ifname": "swp3", "state": "up", "type": "bond_slave", "mtu": 1500,
+    "vlan": 0, "master": "peerlink", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf01",
+    "ifname": "swp4", "state": "up", "type": "bond_slave", "mtu": 1500, "vlan": 0,
+    "master": "peerlink", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf01",
+    "ifname": "swp5", "state": "up", "type": "bond_slave", "mtu": 1500, "vlan": 0,
+    "master": "bond01", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594435778108},
+    {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf01", "ifname": "swp6",
+    "state": "up", "type": "bond_slave", "mtu": 1500, "vlan": 0, "master": "bond02",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594435778108}, {"namespace":
+    "dual-attach_ospf_unnumbered", "hostname": "leaf01", "ifname": "vlan13", "state":
+    "up", "type": "vlan", "mtu": 1500, "vlan": 13, "master": "", "ipAddressList":
+    ["172.16.1.1/24"], "ip6AddressList": ["fe80::5054:ff:fe52:aa72/64"], "timestamp":
+    1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf01",
+    "ifname": "vlan24", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 24, "master":
+    "", "ipAddressList": ["172.16.2.1/24"], "ip6AddressList": ["fe80::5054:ff:fe52:aa72/64"],
+    "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname":
+    "leaf02", "ifname": "bond01", "state": "up", "type": "bond", "mtu": 1500, "vlan":
+    0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1594435778162}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf02",
+    "ifname": "bond02", "state": "up", "type": "bond", "mtu": 1500, "vlan": 0, "master":
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594435778162},
+    {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf02", "ifname": "bridge",
+    "state": "up", "type": "bridge", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": ["fe80::5054:ff:fe7d:44c3/64"], "timestamp": 1594435778162},
+    {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf02", "ifname": "eth0",
+    "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "mgmt", "ipAddressList":
+    ["192.168.121.97/24"], "ip6AddressList": ["fe80::5054:ff:fe3f:f42c/64"], "timestamp":
+    1594435778162}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf02",
+    "ifname": "lo", "state": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": ["10.0.0.12/32"], "ip6AddressList": ["::1/128"], "timestamp":
+    1594435778162}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf02",
+    "ifname": "mgmt", "state": "up", "type": "vrf", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": ["127.0.0.1/8"], "ip6AddressList": [], "timestamp": 1594435778162},
+    {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf02", "ifname": "peerlink.4094",
+    "state": "up", "type": "vlan", "mtu": 1500, "vlan": 4094, "master": "", "ipAddressList":
+    ["169.254.1.2/30"], "ip6AddressList": ["fe80::5054:ff:fe18:d976/64"], "timestamp":
+    1594435778162}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf02",
+    "ifname": "peerlink", "state": "up", "type": "bond", "mtu": 1500, "vlan": 0, "master":
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594435778162},
+    {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf02", "ifname": "swp1",
+    "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    ["10.0.0.12/32"], "ip6AddressList": ["fe80::5054:ff:feab:30c/64"], "timestamp":
+    1594435778162}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf02",
+    "ifname": "swp2", "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["10.0.0.12/32"], "ip6AddressList": ["fe80::5054:ff:fef4:75f5/64"],
+    "timestamp": 1594435778162}, {"namespace": "dual-attach_ospf_unnumbered", "hostname":
+    "leaf02", "ifname": "swp3", "state": "up", "type": "bond_slave", "mtu": 1500,
+    "vlan": 0, "master": "peerlink", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1594435778162}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf02",
+    "ifname": "swp4", "state": "up", "type": "bond_slave", "mtu": 1500, "vlan": 0,
+    "master": "peerlink", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1594435778162}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf02",
+    "ifname": "swp5", "state": "up", "type": "bond_slave", "mtu": 1500, "vlan": 0,
+    "master": "bond01", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594435778162},
+    {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf02", "ifname": "swp6",
+    "state": "up", "type": "bond_slave", "mtu": 1500, "vlan": 0, "master": "bond02",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594435778162}, {"namespace":
+    "dual-attach_ospf_unnumbered", "hostname": "leaf02", "ifname": "vlan13", "state":
+    "up", "type": "vlan", "mtu": 1500, "vlan": 13, "master": "", "ipAddressList":
+    ["172.16.1.1/24"], "ip6AddressList": ["fe80::5054:ff:fe7d:44c3/64"], "timestamp":
+    1594435778162}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf02",
+    "ifname": "vlan24", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 24, "master":
+    "", "ipAddressList": ["172.16.2.1/24"], "ip6AddressList": ["fe80::5054:ff:fe7d:44c3/64"],
+    "timestamp": 1594435778162}, {"namespace": "dual-attach_ospf_unnumbered", "hostname":
+    "leaf03", "ifname": "bond01", "state": "up", "type": "bond", "mtu": 1500, "vlan":
+    0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1594435778111}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf03",
+    "ifname": "bond02", "state": "up", "type": "bond", "mtu": 1500, "vlan": 0, "master":
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594435778111},
+    {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf03", "ifname": "bridge",
+    "state": "up", "type": "bridge", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": ["fe80::5054:ff:fe50:60b7/64"], "timestamp": 1594435778111},
+    {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf03", "ifname": "eth0",
+    "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "mgmt", "ipAddressList":
+    ["192.168.121.93/24"], "ip6AddressList": ["fe80::5054:ff:fe3a:29c0/64"], "timestamp":
+    1594435778111}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf03",
+    "ifname": "lo", "state": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": ["10.0.0.13/32"], "ip6AddressList": ["::1/128"], "timestamp":
+    1594435778111}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf03",
+    "ifname": "mgmt", "state": "up", "type": "vrf", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": ["127.0.0.1/8"], "ip6AddressList": [], "timestamp": 1594435778111},
+    {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf03", "ifname": "peerlink.4094",
+    "state": "up", "type": "vlan", "mtu": 1500, "vlan": 4094, "master": "", "ipAddressList":
+    ["169.254.1.1/30"], "ip6AddressList": ["fe80::5054:ff:fe7c:d697/64"], "timestamp":
+    1594435778111}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf03",
+    "ifname": "peerlink", "state": "up", "type": "bond", "mtu": 1500, "vlan": 0, "master":
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594435778111},
+    {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf03", "ifname": "swp1",
+    "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    ["10.0.0.13/32"], "ip6AddressList": ["fe80::5054:ff:fe9b:2289/64"], "timestamp":
+    1594435778111}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf03",
+    "ifname": "swp2", "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["10.0.0.13/32"], "ip6AddressList": ["fe80::5054:ff:fe68:b3ae/64"],
+    "timestamp": 1594435778111}, {"namespace": "dual-attach_ospf_unnumbered", "hostname":
+    "leaf03", "ifname": "swp3", "state": "up", "type": "bond_slave", "mtu": 1500,
+    "vlan": 0, "master": "peerlink", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1594435778111}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf03",
+    "ifname": "swp4", "state": "up", "type": "bond_slave", "mtu": 1500, "vlan": 0,
+    "master": "peerlink", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1594435778111}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf03",
+    "ifname": "swp5", "state": "up", "type": "bond_slave", "mtu": 1500, "vlan": 0,
+    "master": "bond01", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594435778111},
+    {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf03", "ifname": "swp6",
+    "state": "up", "type": "bond_slave", "mtu": 1500, "vlan": 0, "master": "bond02",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594435778111}, {"namespace":
+    "dual-attach_ospf_unnumbered", "hostname": "leaf03", "ifname": "vlan13", "state":
+    "up", "type": "vlan", "mtu": 1500, "vlan": 13, "master": "", "ipAddressList":
+    ["172.16.3.1/24"], "ip6AddressList": ["fe80::5054:ff:fe50:60b7/64"], "timestamp":
+    1594435778111}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf03",
+    "ifname": "vlan24", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 24, "master":
+    "", "ipAddressList": ["172.16.4.1/24"], "ip6AddressList": ["fe80::5054:ff:fe50:60b7/64"],
+    "timestamp": 1594435778111}, {"namespace": "dual-attach_ospf_unnumbered", "hostname":
+    "leaf04", "ifname": "bond01", "state": "up", "type": "bond", "mtu": 1500, "vlan":
+    0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf04",
+    "ifname": "bond02", "state": "up", "type": "bond", "mtu": 1500, "vlan": 0, "master":
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594435778108},
+    {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf04", "ifname": "bridge",
+    "state": "up", "type": "bridge", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": ["fe80::5054:ff:fe2c:ce87/64"], "timestamp": 1594435778108},
+    {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf04", "ifname": "eth0",
+    "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "mgmt", "ipAddressList":
+    ["192.168.121.162/24"], "ip6AddressList": ["fe80::5054:ff:fe9e:918d/64"], "timestamp":
+    1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf04",
+    "ifname": "lo", "state": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": ["10.0.0.14/32"], "ip6AddressList": ["::1/128"], "timestamp":
+    1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf04",
+    "ifname": "mgmt", "state": "up", "type": "vrf", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": ["127.0.0.1/8"], "ip6AddressList": [], "timestamp": 1594435778108},
+    {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf04", "ifname": "peerlink.4094",
+    "state": "up", "type": "vlan", "mtu": 1500, "vlan": 4094, "master": "", "ipAddressList":
+    ["169.254.1.2/30"], "ip6AddressList": ["fe80::5054:ff:fe02:aa87/64"], "timestamp":
+    1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf04",
+    "ifname": "peerlink", "state": "up", "type": "bond", "mtu": 1500, "vlan": 0, "master":
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594435778108},
+    {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf04", "ifname": "swp1",
+    "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    ["10.0.0.14/32"], "ip6AddressList": ["fe80::5054:ff:fe09:571c/64"], "timestamp":
+    1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf04",
+    "ifname": "swp2", "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["10.0.0.14/32"], "ip6AddressList": ["fe80::5054:ff:fee9:1532/64"],
+    "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname":
+    "leaf04", "ifname": "swp3", "state": "up", "type": "bond_slave", "mtu": 1500,
+    "vlan": 0, "master": "peerlink", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf04",
+    "ifname": "swp4", "state": "up", "type": "bond_slave", "mtu": 1500, "vlan": 0,
+    "master": "peerlink", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf04",
+    "ifname": "swp5", "state": "up", "type": "bond_slave", "mtu": 1500, "vlan": 0,
+    "master": "bond01", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594435778108},
+    {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf04", "ifname": "swp6",
+    "state": "up", "type": "bond_slave", "mtu": 1500, "vlan": 0, "master": "bond02",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594435778108}, {"namespace":
+    "dual-attach_ospf_unnumbered", "hostname": "leaf04", "ifname": "vlan13", "state":
+    "up", "type": "vlan", "mtu": 1500, "vlan": 13, "master": "", "ipAddressList":
+    ["172.16.3.1/24"], "ip6AddressList": ["fe80::5054:ff:fe2c:ce87/64"], "timestamp":
+    1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf04",
+    "ifname": "vlan24", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 24, "master":
+    "", "ipAddressList": ["172.16.4.1/24"], "ip6AddressList": ["fe80::5054:ff:fe2c:ce87/64"],
+    "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname":
+    "server101", "ifname": "bond0", "state": "up", "type": "bond", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["172.16.1.101/24"], "ip6AddressList": [], "timestamp":
+    1594435777947}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "server101",
+    "ifname": "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["192.168.121.141/24"], "ip6AddressList": [], "timestamp":
+    1594435777947}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "server101",
+    "ifname": "eth1", "state": "up", "type": "bond_slave", "mtu": 1500, "vlan": 0,
+    "master": "bond0", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594435777947},
+    {"namespace": "dual-attach_ospf_unnumbered", "hostname": "server101", "ifname":
+    "eth2", "state": "up", "type": "bond_slave", "mtu": 1500, "vlan": 0, "master":
+    "bond0", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594435777947},
+    {"namespace": "dual-attach_ospf_unnumbered", "hostname": "server101", "ifname":
+    "lo", "state": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594435777947}, {"namespace":
+    "dual-attach_ospf_unnumbered", "hostname": "server102", "ifname": "bond0", "state":
+    "up", "type": "bond", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["172.16.2.102/24"],
+    "ip6AddressList": [], "timestamp": 1594435777947}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "server102", "ifname": "eth0", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": ["192.168.121.192/24"], "ip6AddressList":
+    [], "timestamp": 1594435777947}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "server102", "ifname": "eth1", "state": "up", "type": "bond_slave",
+    "mtu": 1500, "vlan": 0, "master": "bond0", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1594435777947}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "server102", "ifname": "eth2", "state": "up", "type": "bond_slave",
+    "mtu": 1500, "vlan": 0, "master": "bond0", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1594435777947}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "server102", "ifname": "lo", "state": "up", "type": "loopback", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1594435777947}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "server103",
+    "ifname": "bond0", "state": "up", "type": "bond", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["172.16.3.103/24"], "ip6AddressList": [], "timestamp": 1594435777947},
+    {"namespace": "dual-attach_ospf_unnumbered", "hostname": "server103", "ifname":
+    "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "",
+    "ipAddressList": ["192.168.121.18/24"], "ip6AddressList": [], "timestamp": 1594435777947},
+    {"namespace": "dual-attach_ospf_unnumbered", "hostname": "server103", "ifname":
+    "eth1", "state": "up", "type": "bond_slave", "mtu": 1500, "vlan": 0, "master":
+    "bond0", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594435777947},
+    {"namespace": "dual-attach_ospf_unnumbered", "hostname": "server103", "ifname":
+    "eth2", "state": "up", "type": "bond_slave", "mtu": 1500, "vlan": 0, "master":
+    "bond0", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594435777947},
+    {"namespace": "dual-attach_ospf_unnumbered", "hostname": "server103", "ifname":
+    "lo", "state": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594435777947}, {"namespace":
+    "dual-attach_ospf_unnumbered", "hostname": "server104", "ifname": "bond0", "state":
+    "up", "type": "bond", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["172.16.4.104/24"],
+    "ip6AddressList": [], "timestamp": 1594435777947}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "server104", "ifname": "eth0", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": ["192.168.121.87/24"], "ip6AddressList":
+    [], "timestamp": 1594435777947}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "server104", "ifname": "eth1", "state": "up", "type": "bond_slave",
+    "mtu": 1500, "vlan": 0, "master": "bond0", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1594435777947}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "server104", "ifname": "eth2", "state": "up", "type": "bond_slave",
+    "mtu": 1500, "vlan": 0, "master": "bond0", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1594435777947}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "server104", "ifname": "lo", "state": "up", "type": "loopback", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1594435777947}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "spine01",
+    "ifname": "eth0", "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master":
+    "mgmt", "ipAddressList": ["192.168.121.218/24"], "ip6AddressList": ["fe80::5054:ff:fe34:d4cb/64"],
+    "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname":
+    "spine01", "ifname": "lo", "state": "up", "type": "loopback", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.21/32"], "ip6AddressList": ["::1/128"],
+    "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname":
+    "spine01", "ifname": "mgmt", "state": "up", "type": "vrf", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": ["127.0.0.1/8"], "ip6AddressList": [], "timestamp":
+    1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "spine01",
+    "ifname": "swp1", "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["10.0.0.21/32"], "ip6AddressList": ["fe80::5054:ff:fef8:3b77/64"],
+    "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname":
+    "spine01", "ifname": "swp2", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.21/32"], "ip6AddressList": ["fe80::5054:ff:fe2f:39e0/64"],
+    "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname":
+    "spine01", "ifname": "swp3", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.21/32"], "ip6AddressList": ["fe80::5054:ff:fe6f:8cc7/64"],
+    "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname":
+    "spine01", "ifname": "swp4", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.21/32"], "ip6AddressList": ["fe80::5054:ff:fe75:cea0/64"],
+    "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname":
+    "spine01", "ifname": "swp5", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.21/32"], "ip6AddressList": ["fe80::5054:ff:fe75:c58b/64"],
+    "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname":
+    "spine01", "ifname": "swp6", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.21/32"], "ip6AddressList": ["fe80::5054:ff:fea5:d19b/64"],
+    "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered", "hostname":
+    "spine02", "ifname": "eth0", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "mgmt", "ipAddressList": ["192.168.121.193/24"], "ip6AddressList":
+    ["fe80::5054:ff:fe6a:3003/64"], "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "spine02", "ifname": "lo", "state": "up", "type": "loopback", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.22/32"], "ip6AddressList":
+    ["::1/128"], "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "spine02", "ifname": "mgmt", "state": "up", "type": "vrf", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": ["127.0.0.1/8"], "ip6AddressList":
+    [], "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "spine02", "ifname": "swp1", "state": "up", "type": "ethernet", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.22/32"], "ip6AddressList":
+    ["fe80::5054:ff:fe0e:f897/64"], "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "spine02", "ifname": "swp2", "state": "up", "type": "ethernet", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.22/32"], "ip6AddressList":
+    ["fe80::5054:ff:fedc:6891/64"], "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "spine02", "ifname": "swp3", "state": "up", "type": "ethernet", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.22/32"], "ip6AddressList":
+    ["fe80::5054:ff:feba:900b/64"], "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "spine02", "ifname": "swp4", "state": "up", "type": "ethernet", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.22/32"], "ip6AddressList":
+    ["fe80::5054:ff:fe6d:feb5/64"], "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "spine02", "ifname": "swp5", "state": "up", "type": "ethernet", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.22/32"], "ip6AddressList":
+    ["fe80::5054:ff:fe29:5379/64"], "timestamp": 1594435778108}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "spine02", "ifname": "swp6", "state": "up", "type": "ethernet", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.22/32"], "ip6AddressList":
+    ["fe80::5054:ff:fe77:c9c9/64"], "timestamp": 1594435778108}]'
+- command: interface show --columns=hostname --format=json --namespace=dual-attach_ospf_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_unnumbered/parquet-out
+  marks: interface show
+  output: '[{"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
+    {"hostname": "edge01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "internet"}, {"hostname": "internet"},
+    {"hostname": "internet"}, {"hostname": "internet"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "server101"}, {"hostname": "server101"}, {"hostname": "server101"}, {"hostname":
+    "server101"}, {"hostname": "server101"}, {"hostname": "server102"}, {"hostname":
+    "server102"}, {"hostname": "server102"}, {"hostname": "server102"}, {"hostname":
+    "server102"}, {"hostname": "server103"}, {"hostname": "server103"}, {"hostname":
+    "server103"}, {"hostname": "server103"}, {"hostname": "server103"}, {"hostname":
+    "server104"}, {"hostname": "server104"}, {"hostname": "server104"}, {"hostname":
+    "server104"}, {"hostname": "server104"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}]'
+- command: interface summarize --format=json --namespace=dual-attach_ospf_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_unnumbered/parquet-out
+  marks: interface summarize
+  output: '{"dual-attach_ospf_unnumbered": {"deviceCnt": 14, "interfaceCnt": 128,
+    "devicesWithL2Cnt": 12, "devicesWithVxlanCnt": 0, "ifDownCnt": 6, "ifWithMultipleIPCnt":
+    0, "uniqueMTUCnt": {"1500": 106, "65536": 22}, "uniqueIfTypesCnt": 8, "ifChangesStat":
+    [0, 4, 0], "ifPerDeviceStat": [4, 16, 9.0], "uniqueIPv4AddrCnt": 32, "uniqueIPv6AddrCnt":
+    1}}'
+- command: interface unique --columns=hostname --format=json --namespace=dual-attach_ospf_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_unnumbered/parquet-out
+  marks: interface unique
+  output: '[{"hostname": "internet", "count": 4}, {"hostname": "edge01", "count":
+    4}, {"hostname": "server104", "count": 5}, {"hostname": "server103", "count":
+    5}, {"hostname": "server102", "count": 5}, {"hostname": "server101", "count":
+    5}, {"hostname": "spine02", "count": 9}, {"hostname": "spine01", "count": 9},
+    {"hostname": "exit02", "count": 9}, {"hostname": "exit01", "count": 9}, {"hostname":
+    "leaf04", "count": 16}, {"hostname": "leaf03", "count": 16}, {"hostname": "leaf02",
+    "count": 16}, {"hostname": "leaf01", "count": 16}]'
+- command: interface assert --format=json --namespace=dual-attach_ospf_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_unnumbered/parquet-out
+  marks: interface assert
+  output: '[{"namespace": "dual-attach_ospf_unnumbered", "hostname": "exit01", "ifname":
+    "swp1", "peerHostname": "spine01", "peerIfname": "swp6", "timestamp": 1594435777947,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "exit01", "ifname": "swp2", "peerHostname": "spine02", "peerIfname":
+    "swp6", "timestamp": 1594435777947, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "exit01", "ifname":
+    "swp3", "peerHostname": "exit01", "peerIfname": "swp4", "timestamp": 1594435777947,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "exit01", "ifname": "swp4", "peerHostname": "exit01", "peerIfname":
+    "swp3", "timestamp": 1594435777947, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "exit02", "ifname":
+    "swp1", "peerHostname": "spine01", "peerIfname": "swp5", "timestamp": 1594435777947,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "exit02", "ifname": "swp2", "peerHostname": "spine02", "peerIfname":
+    "swp5", "timestamp": 1594435777947, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "exit02", "ifname":
+    "swp3", "peerHostname": "exit02", "peerIfname": "swp4", "timestamp": 1594435777947,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "exit02", "ifname": "swp4", "peerHostname": "exit02", "peerIfname":
+    "swp3", "timestamp": 1594435777947, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf01", "ifname":
+    "swp1", "peerHostname": "spine01", "peerIfname": "swp1", "timestamp": 1594435777947,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "leaf01", "ifname": "swp2", "peerHostname": "spine02", "peerIfname":
+    "swp1", "timestamp": 1594435777947, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "leaf03", "ifname":
+    "swp1", "peerHostname": "spine01", "peerIfname": "swp3", "timestamp": 1594435777948,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "leaf03", "ifname": "swp2", "peerHostname": "spine02", "peerIfname":
+    "swp3", "timestamp": 1594435777948, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "spine02", "ifname":
+    "swp1", "peerHostname": "leaf01", "peerIfname": "swp2", "timestamp": 1594435777947,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "spine02", "ifname": "swp2", "peerHostname": "leaf02", "peerIfname":
+    "swp2", "timestamp": 1594435777947, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "spine02", "ifname":
+    "swp3", "peerHostname": "leaf03", "peerIfname": "swp2", "timestamp": 1594435777947,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "spine02", "ifname": "swp4", "peerHostname": "leaf04", "peerIfname":
+    "swp2", "timestamp": 1594435777947, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "spine02", "ifname":
+    "swp5", "peerHostname": "exit02", "peerIfname": "swp2", "timestamp": 1594435777947,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "dual-attach_ospf_unnumbered",
+    "hostname": "spine02", "ifname": "swp6", "peerHostname": "exit01", "peerIfname":
+    "swp2", "timestamp": 1594435777947, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}]'
+- command: interface top --format=json --namespace=dual-attach_ospf_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_unnumbered/parquet-out
+  marks: interface top
+  output: '[{"namespace": "dual-attach_ospf_unnumbered", "hostname": "edge01", "ifname":
+    "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "",
+    "ipAddressList": ["192.168.121.81/24"], "ip6AddressList": [], "numChanges": 0,
+    "timestamp": 1594435777947}, {"namespace": "dual-attach_ospf_unnumbered", "hostname":
+    "edge01", "ifname": "eth1", "state": "down", "type": "ether", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "numChanges": 0, "timestamp":
+    1594435777947}, {"namespace": "dual-attach_ospf_unnumbered", "hostname": "edge01",
+    "ifname": "eth2", "state": "down", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "numChanges": 0, "timestamp": 1594435777947},
+    {"namespace": "dual-attach_ospf_unnumbered", "hostname": "server101", "ifname":
+    "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "",
+    "ipAddressList": ["192.168.121.141/24"], "ip6AddressList": [], "numChanges": 0,
+    "timestamp": 1594435777947}, {"namespace": "dual-attach_ospf_unnumbered", "hostname":
+    "server102", "ifname": "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["192.168.121.192/24"], "ip6AddressList": [],
+    "numChanges": 0, "timestamp": 1594435777947}]'

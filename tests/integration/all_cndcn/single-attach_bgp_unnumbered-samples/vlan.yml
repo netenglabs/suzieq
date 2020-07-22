@@ -1,0 +1,35 @@
+description: 'Testing verbs for vlan: show summarize unique'
+tests:
+- command: vlan show --format=json --namespace=single-attach_bgp_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_unnumbered/parquet-out
+  marks: vlan show
+  output: '[{"namespace": "single-attach_bgp_unnumbered", "hostname": "leaf01", "ifname":
+    "bridge", "vlan": ["10"], "pvid": 0, "timestamp": 1594390070179}, {"namespace":
+    "single-attach_bgp_unnumbered", "hostname": "leaf01", "ifname": "swp5", "vlan":
+    ["10"], "pvid": 10, "timestamp": 1594390070179}, {"namespace": "single-attach_bgp_unnumbered",
+    "hostname": "leaf02", "ifname": "bridge", "vlan": ["10"], "pvid": 0, "timestamp":
+    1594390070182}, {"namespace": "single-attach_bgp_unnumbered", "hostname": "leaf02",
+    "ifname": "swp5", "vlan": ["10"], "pvid": 10, "timestamp": 1594390070182}, {"namespace":
+    "single-attach_bgp_unnumbered", "hostname": "leaf03", "ifname": "bridge", "vlan":
+    ["10"], "pvid": 0, "timestamp": 1594390070179}, {"namespace": "single-attach_bgp_unnumbered",
+    "hostname": "leaf03", "ifname": "swp5", "vlan": ["10"], "pvid": 10, "timestamp":
+    1594390070179}, {"namespace": "single-attach_bgp_unnumbered", "hostname": "leaf04",
+    "ifname": "bridge", "vlan": ["10"], "pvid": 0, "timestamp": 1594390070178}, {"namespace":
+    "single-attach_bgp_unnumbered", "hostname": "leaf04", "ifname": "swp5", "vlan":
+    ["10"], "pvid": 10, "timestamp": 1594390070178}]'
+- command: vlan show --columns=hostname --format=json --namespace=single-attach_bgp_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_unnumbered/parquet-out
+  marks: vlan show
+  output: '[{"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}]'
+- command: vlan summarize --format=json --namespace=single-attach_bgp_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_unnumbered/parquet-out
+  marks: vlan summarize
+  output: '{"single-attach_bgp_unnumbered": {"deviceCnt": 8, "uniquePvidCnt": {"10":
+    4, "0": 4}, "uniqueVlanCnt": {"10": 8}}}'
+- command: vlan unique --columns=hostname --format=json --namespace=single-attach_bgp_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_unnumbered/parquet-out
+  marks: vlan unique
+  output: '[{"hostname": "leaf04", "count": 2}, {"hostname": "leaf03", "count": 2},
+    {"hostname": "leaf02", "count": 2}, {"hostname": "leaf01", "count": 2}]'

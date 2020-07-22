@@ -1,0 +1,55 @@
+description: 'Testing verbs for evpnVni: show summarize unique'
+tests:
+- command: evpnVni show --format=json --namespace=dual-attach_evpn_distributed
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_distributed/parquet-out
+  marks: evpnVni show
+  output: '[{"namespace": "dual-attach_evpn_distributed", "hostname": "exit01", "vni":
+    104001, "type": "L3", "numMacs": 0, "numArpNd": 0, "remoteVtepList": ["-"], "timestamp":
+    1594434328354}, {"namespace": "dual-attach_evpn_distributed", "hostname": "exit02",
+    "vni": 104001, "type": "L3", "numMacs": 0, "numArpNd": 0, "remoteVtepList": ["-"],
+    "timestamp": 1594434328285}, {"namespace": "dual-attach_evpn_distributed", "hostname":
+    "leaf01", "vni": 104001, "type": "L3", "numMacs": 0, "numArpNd": 0, "remoteVtepList":
+    ["-"], "timestamp": 1594434328355}, {"namespace": "dual-attach_evpn_distributed",
+    "hostname": "leaf01", "vni": 13, "type": "L2", "numMacs": 4, "numArpNd": 6, "remoteVtepList":
+    ["10.0.0.134"], "timestamp": 1594434328355}, {"namespace": "dual-attach_evpn_distributed",
+    "hostname": "leaf01", "vni": 24, "type": "L2", "numMacs": 4, "numArpNd": 6, "remoteVtepList":
+    ["10.0.0.134"], "timestamp": 1594434328355}, {"namespace": "dual-attach_evpn_distributed",
+    "hostname": "leaf02", "vni": 104001, "type": "L3", "numMacs": 0, "numArpNd": 0,
+    "remoteVtepList": ["-"], "timestamp": 1594434328354}, {"namespace": "dual-attach_evpn_distributed",
+    "hostname": "leaf02", "vni": 13, "type": "L2", "numMacs": 4, "numArpNd": 6, "remoteVtepList":
+    ["10.0.0.134"], "timestamp": 1594434328354}, {"namespace": "dual-attach_evpn_distributed",
+    "hostname": "leaf02", "vni": 24, "type": "L2", "numMacs": 4, "numArpNd": 6, "remoteVtepList":
+    ["10.0.0.134"], "timestamp": 1594434328354}, {"namespace": "dual-attach_evpn_distributed",
+    "hostname": "leaf03", "vni": 104001, "type": "L3", "numMacs": 0, "numArpNd": 0,
+    "remoteVtepList": ["-"], "timestamp": 1594434328326}, {"namespace": "dual-attach_evpn_distributed",
+    "hostname": "leaf03", "vni": 13, "type": "L2", "numMacs": 4, "numArpNd": 6, "remoteVtepList":
+    ["10.0.0.112"], "timestamp": 1594434328326}, {"namespace": "dual-attach_evpn_distributed",
+    "hostname": "leaf03", "vni": 24, "type": "L2", "numMacs": 4, "numArpNd": 6, "remoteVtepList":
+    ["10.0.0.112"], "timestamp": 1594434328326}, {"namespace": "dual-attach_evpn_distributed",
+    "hostname": "leaf04", "vni": 104001, "type": "L3", "numMacs": 0, "numArpNd": 0,
+    "remoteVtepList": ["-"], "timestamp": 1594434328359}, {"namespace": "dual-attach_evpn_distributed",
+    "hostname": "leaf04", "vni": 13, "type": "L2", "numMacs": 4, "numArpNd": 6, "remoteVtepList":
+    ["10.0.0.112"], "timestamp": 1594434328359}, {"namespace": "dual-attach_evpn_distributed",
+    "hostname": "leaf04", "vni": 24, "type": "L2", "numMacs": 4, "numArpNd": 6, "remoteVtepList":
+    ["10.0.0.112"], "timestamp": 1594434328359}]'
+- command: evpnVni show --columns=hostname --format=json --namespace=dual-attach_evpn_distributed
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_distributed/parquet-out
+  marks: evpnVni show
+  output: '[{"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}]'
+- command: evpnVni summarize --format=json --namespace=dual-attach_evpn_distributed
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_distributed/parquet-out
+  marks: evpnVni summarize
+  output: '{"dual-attach_evpn_distributed": {"mode": "symmetric", "deviceCnt": 6,
+    "uniqueVniCnt": 3, "uniqueL3VniCnt": 1, "uniqueL2VniCnt": 2, "uniqueVniTypeValCnt":
+    {"L2": 8, "L3": 6}, "replTypeValCnt": {"ingressBGP": 8, "": 6}, "macsInVniStat":
+    [0, 4, 4], "arpNdInVniStat": [0, 6, 6], "ingressReplPerVtepStat": [1, 2, 2.0]}}'
+- command: evpnVni unique --columns=hostname --format=json --namespace=dual-attach_evpn_distributed
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_distributed/parquet-out
+  marks: evpnVni unique
+  output: '[{"hostname": "exit02", "count": 1}, {"hostname": "exit01", "count": 1},
+    {"hostname": "leaf04", "count": 3}, {"hostname": "leaf03", "count": 3}, {"hostname":
+    "leaf02", "count": 3}, {"hostname": "leaf01", "count": 3}]'

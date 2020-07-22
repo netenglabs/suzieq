@@ -1,0 +1,23 @@
+description: 'Testing verbs for mac: show summarize unique'
+tests:
+- command: mac show --format=json --namespace=dual-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_docker/parquet-out
+  marks: mac show
+  output: '[{"namespace": "dual-attach_bgp_docker", "hostname": "edge01", "vlan":
+    0, "macaddr": "01:00:5e:00:00:01", "oif": "eth2.4", "remoteVtepIp": "", "flags":
+    "permanent", "timestamp": 1594706580153}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "edge01", "vlan": 0, "macaddr": "33:33:00:00:00:02", "oif": "eth2.4",
+    "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594706580153}]'
+- command: mac show --columns=hostname --format=json --namespace=dual-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_docker/parquet-out
+  marks: mac show
+  output: '[{"hostname": "edge01"}, {"hostname": "edge01"}]'
+- command: mac summarize --format=json --namespace=dual-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_docker/parquet-out
+  marks: mac summarize
+  output: '{"dual-attach_bgp_docker": {"deviceCnt": 1, "totalMacsinNSCnt": 2, "uniqueMacCnt":
+    2, "uniqueVlanperHostStat": [0, 0, 0.0]}}'
+- command: mac unique --columns=hostname --format=json --namespace=dual-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_docker/parquet-out
+  marks: mac unique
+  output: '[{"hostname": "edge01", "count": 2}]'

@@ -1,0 +1,265 @@
+description: 'Testing verbs for address: show summarize unique'
+tests:
+- command: address show --format=json --namespace=dual-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_centralized/parquet-out
+  marks: address show
+  output: '[{"namespace": "dual-attach_evpn_centralized", "hostname": "edge01", "ifname":
+    "eth0", "ipAddressList": ["192.168.121.235/24"], "macaddr": "52:54:00:94:7b:c3",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594434801204}, {"namespace":
+    "dual-attach_evpn_centralized", "hostname": "edge01", "ifname": "eth1.2", "ipAddressList":
+    ["169.254.254.2/30"], "macaddr": "52:54:00:e4:2b:e9", "ip6AddressList": [], "state":
+    "up", "timestamp": 1594434801204}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "edge01", "ifname": "eth1.3", "ipAddressList": ["169.254.254.6/30"],
+    "macaddr": "52:54:00:e4:2b:e9", "ip6AddressList": [], "state": "up", "timestamp":
+    1594434801204}, {"namespace": "dual-attach_evpn_centralized", "hostname": "edge01",
+    "ifname": "eth1.4", "ipAddressList": ["169.254.254.10/30"], "macaddr": "52:54:00:e4:2b:e9",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594434801204}, {"namespace":
+    "dual-attach_evpn_centralized", "hostname": "edge01", "ifname": "eth2.2", "ipAddressList":
+    ["169.254.253.2/30"], "macaddr": "52:54:00:9e:c0:e5", "ip6AddressList": [], "state":
+    "up", "timestamp": 1594434801204}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "edge01", "ifname": "eth2.3", "ipAddressList": ["169.254.253.6/30"],
+    "macaddr": "52:54:00:9e:c0:e5", "ip6AddressList": [], "state": "up", "timestamp":
+    1594434801204}, {"namespace": "dual-attach_evpn_centralized", "hostname": "edge01",
+    "ifname": "eth2.4", "ipAddressList": ["169.254.253.10/30"], "macaddr": "52:54:00:9e:c0:e5",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594434801204}, {"namespace":
+    "dual-attach_evpn_centralized", "hostname": "edge01", "ifname": "lo", "ipAddressList":
+    ["10.0.0.100/32"], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state":
+    "up", "timestamp": 1594434801204}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "exit01", "ifname": "eth0", "ipAddressList": ["192.168.121.52/24"],
+    "macaddr": "52:54:00:03:d0:1c", "ip6AddressList": ["fe80::5054:ff:fe03:d01c/64"],
+    "state": "up", "timestamp": 1594434801367}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "exit01", "ifname": "evpn-vrf", "ipAddressList": ["10.0.0.101/32"],
+    "macaddr": "f6:4e:9f:29:c0:e4", "ip6AddressList": [], "state": "up", "timestamp":
+    1594434801367}, {"namespace": "dual-attach_evpn_centralized", "hostname": "exit01",
+    "ifname": "internet-vrf", "ipAddressList": ["10.0.0.101/32"], "macaddr": "6e:4c:c0:98:63:e8",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594434801367}, {"namespace":
+    "dual-attach_evpn_centralized", "hostname": "exit01", "ifname": "lo", "ipAddressList":
+    ["10.0.0.101/32"], "macaddr": "00:00:00:00:00:00", "ip6AddressList": ["::1/128"],
+    "state": "up", "timestamp": 1594434801367}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "exit01", "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"], "macaddr":
+    "2a:ed:cd:03:ab:1c", "ip6AddressList": [], "state": "up", "timestamp": 1594434801367},
+    {"namespace": "dual-attach_evpn_centralized", "hostname": "exit01", "ifname":
+    "swp5.2", "ipAddressList": ["169.254.254.1/30"], "macaddr": "52:54:00:bc:fd:9a",
+    "ip6AddressList": ["fe80::5054:ff:febc:fd9a/64"], "state": "up", "timestamp":
+    1594434801367}, {"namespace": "dual-attach_evpn_centralized", "hostname": "exit01",
+    "ifname": "swp5.3", "ipAddressList": ["169.254.254.5/30"], "macaddr": "52:54:00:bc:fd:9a",
+    "ip6AddressList": ["fe80::5054:ff:febc:fd9a/64"], "state": "up", "timestamp":
+    1594434801367}, {"namespace": "dual-attach_evpn_centralized", "hostname": "exit01",
+    "ifname": "swp5.4", "ipAddressList": ["169.254.254.9/30"], "macaddr": "52:54:00:bc:fd:9a",
+    "ip6AddressList": ["fe80::5054:ff:febc:fd9a/64"], "state": "up", "timestamp":
+    1594434801367}, {"namespace": "dual-attach_evpn_centralized", "hostname": "exit01",
+    "ifname": "swp6", "ipAddressList": ["169.254.127.1/31"], "macaddr": "52:54:00:a8:37:7c",
+    "ip6AddressList": ["fe80::5054:ff:fea8:377c/64"], "state": "up", "timestamp":
+    1594434801367}, {"namespace": "dual-attach_evpn_centralized", "hostname": "exit01",
+    "ifname": "vlan13-v0", "ipAddressList": ["172.16.1.1/24"], "macaddr": "44:39:39:ff:00:13",
+    "ip6AddressList": ["fe80::4639:39ff:feff:13/64"], "state": "up", "timestamp":
+    1594434801367}, {"namespace": "dual-attach_evpn_centralized", "hostname": "exit01",
+    "ifname": "vlan13", "ipAddressList": ["172.16.1.11/24"], "macaddr": "06:68:12:25:c9:58",
+    "ip6AddressList": ["fe80::468:12ff:fe25:c958/64"], "state": "up", "timestamp":
+    1594434801367}, {"namespace": "dual-attach_evpn_centralized", "hostname": "exit01",
+    "ifname": "vlan24-v0", "ipAddressList": ["172.16.2.1/24"], "macaddr": "44:39:39:ff:00:24",
+    "ip6AddressList": ["fe80::4639:39ff:feff:24/64"], "state": "up", "timestamp":
+    1594434801367}, {"namespace": "dual-attach_evpn_centralized", "hostname": "exit01",
+    "ifname": "vlan24", "ipAddressList": ["172.16.2.11/24"], "macaddr": "06:68:12:25:c9:58",
+    "ip6AddressList": ["fe80::468:12ff:fe25:c958/64"], "state": "up", "timestamp":
+    1594434801367}, {"namespace": "dual-attach_evpn_centralized", "hostname": "exit02",
+    "ifname": "eth0", "ipAddressList": ["192.168.121.158/24"], "macaddr": "52:54:00:c1:e1:19",
+    "ip6AddressList": ["fe80::5054:ff:fec1:e119/64"], "state": "up", "timestamp":
+    1594434801468}, {"namespace": "dual-attach_evpn_centralized", "hostname": "exit02",
+    "ifname": "evpn-vrf", "ipAddressList": ["10.0.0.102/32"], "macaddr": "e6:2e:dc:14:01:81",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594434801468}, {"namespace":
+    "dual-attach_evpn_centralized", "hostname": "exit02", "ifname": "internet-vrf",
+    "ipAddressList": ["10.0.0.102/32"], "macaddr": "0a:d1:34:9a:17:42", "ip6AddressList":
+    [], "state": "up", "timestamp": 1594434801468}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "exit02", "ifname": "lo", "ipAddressList": ["10.0.0.102/32"], "macaddr":
+    "00:00:00:00:00:00", "ip6AddressList": ["::1/128"], "state": "up", "timestamp":
+    1594434801468}, {"namespace": "dual-attach_evpn_centralized", "hostname": "exit02",
+    "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"], "macaddr": "76:28:8e:71:0c:8d",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594434801468}, {"namespace":
+    "dual-attach_evpn_centralized", "hostname": "exit02", "ifname": "swp5.2", "ipAddressList":
+    ["169.254.253.1/30"], "macaddr": "52:54:00:0b:7f:ad", "ip6AddressList": ["fe80::5054:ff:fe0b:7fad/64"],
+    "state": "up", "timestamp": 1594434801468}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "exit02", "ifname": "swp5.3", "ipAddressList": ["169.254.253.5/30"],
+    "macaddr": "52:54:00:0b:7f:ad", "ip6AddressList": ["fe80::5054:ff:fe0b:7fad/64"],
+    "state": "up", "timestamp": 1594434801468}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "exit02", "ifname": "swp5.4", "ipAddressList": ["169.254.253.9/30"],
+    "macaddr": "52:54:00:0b:7f:ad", "ip6AddressList": ["fe80::5054:ff:fe0b:7fad/64"],
+    "state": "up", "timestamp": 1594434801468}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "exit02", "ifname": "swp6", "ipAddressList": ["169.254.127.3/31"],
+    "macaddr": "52:54:00:6c:6b:a1", "ip6AddressList": ["fe80::5054:ff:fe6c:6ba1/64"],
+    "state": "up", "timestamp": 1594434801468}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "exit02", "ifname": "vlan13-v0", "ipAddressList": ["172.16.1.1/24"],
+    "macaddr": "44:39:39:ff:00:13", "ip6AddressList": ["fe80::4639:39ff:feff:13/64"],
+    "state": "up", "timestamp": 1594434801468}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "exit02", "ifname": "vlan13", "ipAddressList": ["172.16.1.12/24"],
+    "macaddr": "b6:60:65:27:bb:74", "ip6AddressList": ["fe80::b460:65ff:fe27:bb74/64"],
+    "state": "up", "timestamp": 1594434801468}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "exit02", "ifname": "vlan24-v0", "ipAddressList": ["172.16.2.1/24"],
+    "macaddr": "44:39:39:ff:00:24", "ip6AddressList": ["fe80::4639:39ff:feff:24/64"],
+    "state": "up", "timestamp": 1594434801468}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "exit02", "ifname": "vlan24", "ipAddressList": ["172.16.2.12/24"],
+    "macaddr": "b6:60:65:27:bb:74", "ip6AddressList": ["fe80::b460:65ff:fe27:bb74/64"],
+    "state": "up", "timestamp": 1594434801468}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "internet", "ifname": "eth0", "ipAddressList": ["192.168.121.219/24"],
+    "macaddr": "52:54:00:2c:4f:c5", "ip6AddressList": ["fe80::5054:ff:fe2c:4fc5/64"],
+    "state": "up", "timestamp": 1594434801470}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "internet", "ifname": "lo", "ipAddressList": ["10.0.0.253/32", "172.16.253.1/32"],
+    "macaddr": "00:00:00:00:00:00", "ip6AddressList": ["::1/128"], "state": "up",
+    "timestamp": 1594434801470}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+    "internet", "ifname": "swp1", "ipAddressList": ["169.254.127.0/31"], "macaddr":
+    "52:54:00:60:48:56", "ip6AddressList": ["fe80::5054:ff:fe60:4856/64"], "state":
+    "up", "timestamp": 1594434801470}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "internet", "ifname": "swp2", "ipAddressList": ["169.254.127.2/31"],
+    "macaddr": "52:54:00:70:cc:09", "ip6AddressList": ["fe80::5054:ff:fe70:cc09/64"],
+    "state": "up", "timestamp": 1594434801470}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "leaf01", "ifname": "eth0", "ipAddressList": ["192.168.121.198/24"],
+    "macaddr": "52:54:00:82:90:11", "ip6AddressList": ["fe80::5054:ff:fe82:9011/64"],
+    "state": "up", "timestamp": 1594434801402}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "leaf01", "ifname": "lo", "ipAddressList": ["10.0.0.11/32", "10.0.0.112/32"],
+    "macaddr": "00:00:00:00:00:00", "ip6AddressList": ["::1/128"], "state": "up",
+    "timestamp": 1594434801402}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+    "leaf01", "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"], "macaddr": "ae:fd:fa:5c:c2:69",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594434801402}, {"namespace":
+    "dual-attach_evpn_centralized", "hostname": "leaf01", "ifname": "peerlink.4094",
+    "ipAddressList": ["169.254.1.1/30"], "macaddr": "52:54:00:ef:80:64", "ip6AddressList":
+    ["fe80::5054:ff:feef:8064/64"], "state": "up", "timestamp": 1594434801402}, {"namespace":
+    "dual-attach_evpn_centralized", "hostname": "leaf02", "ifname": "eth0", "ipAddressList":
+    ["192.168.121.217/24"], "macaddr": "52:54:00:85:9c:24", "ip6AddressList": ["fe80::5054:ff:fe85:9c24/64"],
+    "state": "up", "timestamp": 1594434801470}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "leaf02", "ifname": "lo", "ipAddressList": ["10.0.0.12/32", "10.0.0.112/32"],
+    "macaddr": "00:00:00:00:00:00", "ip6AddressList": ["::1/128"], "state": "up",
+    "timestamp": 1594434801470}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+    "leaf02", "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"], "macaddr": "36:a0:e1:54:39:1b",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594434801470}, {"namespace":
+    "dual-attach_evpn_centralized", "hostname": "leaf02", "ifname": "peerlink.4094",
+    "ipAddressList": ["169.254.1.2/30"], "macaddr": "52:54:00:93:19:af", "ip6AddressList":
+    ["fe80::5054:ff:fe93:19af/64"], "state": "up", "timestamp": 1594434801470}, {"namespace":
+    "dual-attach_evpn_centralized", "hostname": "leaf03", "ifname": "eth0", "ipAddressList":
+    ["192.168.121.157/24"], "macaddr": "52:54:00:5b:41:8a", "ip6AddressList": ["fe80::5054:ff:fe5b:418a/64"],
+    "state": "up", "timestamp": 1594434801470}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "leaf03", "ifname": "lo", "ipAddressList": ["10.0.0.13/32", "10.0.0.134/32"],
+    "macaddr": "00:00:00:00:00:00", "ip6AddressList": ["::1/128"], "state": "up",
+    "timestamp": 1594434801470}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+    "leaf03", "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"], "macaddr": "42:3a:78:ce:fb:5a",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594434801470}, {"namespace":
+    "dual-attach_evpn_centralized", "hostname": "leaf03", "ifname": "peerlink.4094",
+    "ipAddressList": ["169.254.1.1/30"], "macaddr": "52:54:00:7e:71:c6", "ip6AddressList":
+    ["fe80::5054:ff:fe7e:71c6/64"], "state": "up", "timestamp": 1594434801470}, {"namespace":
+    "dual-attach_evpn_centralized", "hostname": "leaf04", "ifname": "eth0", "ipAddressList":
+    ["192.168.121.211/24"], "macaddr": "52:54:00:50:a1:25", "ip6AddressList": ["fe80::5054:ff:fe50:a125/64"],
+    "state": "up", "timestamp": 1594434801402}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "leaf04", "ifname": "lo", "ipAddressList": ["10.0.0.14/32", "10.0.0.134/32"],
+    "macaddr": "00:00:00:00:00:00", "ip6AddressList": ["::1/128"], "state": "up",
+    "timestamp": 1594434801402}, {"namespace": "dual-attach_evpn_centralized", "hostname":
+    "leaf04", "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"], "macaddr": "22:74:9f:55:05:1b",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594434801402}, {"namespace":
+    "dual-attach_evpn_centralized", "hostname": "leaf04", "ifname": "peerlink.4094",
+    "ipAddressList": ["169.254.1.2/30"], "macaddr": "52:54:00:5e:47:0d", "ip6AddressList":
+    ["fe80::5054:ff:fe5e:470d/64"], "state": "up", "timestamp": 1594434801402}, {"namespace":
+    "dual-attach_evpn_centralized", "hostname": "server101", "ifname": "bond0", "ipAddressList":
+    ["172.16.1.101/24"], "macaddr": "52:54:00:4d:a6:fd", "ip6AddressList": [], "state":
+    "up", "timestamp": 1594434801201}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "server101", "ifname": "eth0", "ipAddressList": ["192.168.121.151/24"],
+    "macaddr": "52:54:00:25:ad:fa", "ip6AddressList": [], "state": "up", "timestamp":
+    1594434801201}, {"namespace": "dual-attach_evpn_centralized", "hostname": "server102",
+    "ifname": "bond0", "ipAddressList": ["172.16.2.102/24"], "macaddr": "52:54:00:d3:a7:d2",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594434801202}, {"namespace":
+    "dual-attach_evpn_centralized", "hostname": "server102", "ifname": "eth0", "ipAddressList":
+    ["192.168.121.166/24"], "macaddr": "52:54:00:2f:d7:db", "ip6AddressList": [],
+    "state": "up", "timestamp": 1594434801202}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "server103", "ifname": "bond0", "ipAddressList": ["172.16.1.103/24"],
+    "macaddr": "52:54:00:fc:85:61", "ip6AddressList": [], "state": "up", "timestamp":
+    1594434801260}, {"namespace": "dual-attach_evpn_centralized", "hostname": "server103",
+    "ifname": "eth0", "ipAddressList": ["192.168.121.245/24"], "macaddr": "52:54:00:e7:f3:7f",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594434801260}, {"namespace":
+    "dual-attach_evpn_centralized", "hostname": "server104", "ifname": "bond0", "ipAddressList":
+    ["172.16.2.104/24"], "macaddr": "52:54:00:d6:a5:76", "ip6AddressList": [], "state":
+    "up", "timestamp": 1594434801202}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "server104", "ifname": "eth0", "ipAddressList": ["192.168.121.71/24"],
+    "macaddr": "52:54:00:19:a5:19", "ip6AddressList": [], "state": "up", "timestamp":
+    1594434801202}, {"namespace": "dual-attach_evpn_centralized", "hostname": "spine01",
+    "ifname": "eth0", "ipAddressList": ["192.168.121.160/24"], "macaddr": "52:54:00:68:07:e7",
+    "ip6AddressList": ["fe80::5054:ff:fe68:7e7/64"], "state": "up", "timestamp": 1594434801402},
+    {"namespace": "dual-attach_evpn_centralized", "hostname": "spine01", "ifname":
+    "lo", "ipAddressList": ["10.0.0.21/32"], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
+    ["::1/128"], "state": "up", "timestamp": 1594434801402}, {"namespace": "dual-attach_evpn_centralized",
+    "hostname": "spine01", "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"], "macaddr":
+    "26:49:2f:79:2f:71", "ip6AddressList": [], "state": "up", "timestamp": 1594434801402},
+    {"namespace": "dual-attach_evpn_centralized", "hostname": "spine02", "ifname":
+    "eth0", "ipAddressList": ["192.168.121.83/24"], "macaddr": "52:54:00:b9:77:a4",
+    "ip6AddressList": ["fe80::5054:ff:feb9:77a4/64"], "state": "up", "timestamp":
+    1594434801429}, {"namespace": "dual-attach_evpn_centralized", "hostname": "spine02",
+    "ifname": "lo", "ipAddressList": ["10.0.0.22/32"], "macaddr": "00:00:00:00:00:00",
+    "ip6AddressList": ["::1/128"], "state": "up", "timestamp": 1594434801429}, {"namespace":
+    "dual-attach_evpn_centralized", "hostname": "spine02", "ifname": "mgmt", "ipAddressList":
+    ["127.0.0.1/8"], "macaddr": "fa:b2:d5:8c:c1:f0", "ip6AddressList": [], "state":
+    "up", "timestamp": 1594434801429}]'
+- command: address show --columns=hostname --format=json --namespace=dual-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_centralized/parquet-out
+  marks: address show
+  output: '[{"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
+    {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname":
+    "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "internet"}, {"hostname": "internet"}, {"hostname": "internet"},
+    {"hostname": "internet"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "server101"}, {"hostname": "server101"}, {"hostname": "server101"}, {"hostname":
+    "server101"}, {"hostname": "server101"}, {"hostname": "server102"}, {"hostname":
+    "server102"}, {"hostname": "server102"}, {"hostname": "server102"}, {"hostname":
+    "server102"}, {"hostname": "server103"}, {"hostname": "server103"}, {"hostname":
+    "server103"}, {"hostname": "server103"}, {"hostname": "server103"}, {"hostname":
+    "server104"}, {"hostname": "server104"}, {"hostname": "server104"}, {"hostname":
+    "server104"}, {"hostname": "server104"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}]'
+- command: address summarize --format=json --namespace=dual-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_centralized/parquet-out
+  marks: address summarize
+  output: '{"dual-attach_evpn_centralized": {"deviceCnt": 14, "addressCnt": 166, "uniqueV4AddressCnt":
+    56, "uniqueV6AddressCnt": 1, "uniqueIfMacCnt": 93, "deviceWithv4AddressCnt": 14,
+    "deviceWithv6AddressCnt": 9, "subnetsUsed": ["24", "32", "30", "8", "31"], "subnetTopCounts":
+    [{"24": 26}, {"32": 19}, {"30": 16}]}}'
+- command: address unique --columns=hostname --format=json --namespace=dual-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_centralized/parquet-out
+  marks: address unique
+  output: '[{"hostname": "internet", "count": 4}, {"hostname": "server104", "count":
+    5}, {"hostname": "server103", "count": 5}, {"hostname": "server102", "count":
+    5}, {"hostname": "server101", "count": 5}, {"hostname": "spine02", "count": 9},
+    {"hostname": "spine01", "count": 9}, {"hostname": "edge01", "count": 10}, {"hostname":
+    "leaf04", "count": 18}, {"hostname": "leaf03", "count": 18}, {"hostname": "leaf02",
+    "count": 18}, {"hostname": "leaf01", "count": 18}, {"hostname": "exit02", "count":
+    21}, {"hostname": "exit01", "count": 21}]'

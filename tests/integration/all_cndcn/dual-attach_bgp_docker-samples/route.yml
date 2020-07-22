@@ -1,0 +1,679 @@
+description: 'Testing verbs for route: show summarize unique lpm'
+tests:
+- command: route show --format=json --namespace=dual-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_docker/parquet-out
+  marks: route show
+  output: '[{"namespace": "dual-attach_bgp_docker", "hostname": "edge01", "vrf": "default",
+    "prefix": "0.0.0.0/0", "nexthopIps": ["192.168.121.1"], "oifs": ["eth0"], "protocol":
+    "", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594706580277}, {"namespace": "dual-attach_bgp_docker", "hostname": "edge01",
+    "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps": ["169.254.253.1", "169.254.254.1"],
+    "oifs": ["eth2.2", "eth1.2"], "protocol": "186", "source": "10.0.0.100", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594706580277}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "edge01", "vrf": "default", "prefix": "10.0.0.12/32",
+    "nexthopIps": ["169.254.253.1", "169.254.254.1"], "oifs": ["eth2.2", "eth1.2"],
+    "protocol": "186", "source": "10.0.0.100", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594706580277}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "edge01", "vrf": "default", "prefix": "10.0.0.13/32", "nexthopIps":
+    ["169.254.253.1", "169.254.254.1"], "oifs": ["eth2.2", "eth1.2"], "protocol":
+    "186", "source": "10.0.0.100", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594706580277}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "edge01", "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps": ["169.254.253.1",
+    "169.254.254.1"], "oifs": ["eth2.2", "eth1.2"], "protocol": "186", "source": "10.0.0.100",
+    "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580277}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "edge01", "vrf": "default", "prefix": "10.0.0.21/32",
+    "nexthopIps": ["169.254.253.1", "169.254.254.1"], "oifs": ["eth2.2", "eth1.2"],
+    "protocol": "186", "source": "10.0.0.100", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594706580277}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "edge01", "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps":
+    ["169.254.253.1", "169.254.254.1"], "oifs": ["eth2.2", "eth1.2"], "protocol":
+    "186", "source": "10.0.0.100", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594706580277}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "edge01", "vrf": "default", "prefix": "10.0.0.101/32", "nexthopIps": ["169.254.254.1",
+    "169.254.254.9"], "oifs": ["eth1.2", "eth1.4"], "protocol": "186", "source": "10.0.0.100",
+    "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580277}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "edge01", "vrf": "default", "prefix": "10.0.0.102/32",
+    "nexthopIps": ["169.254.253.1", "169.254.253.9"], "oifs": ["eth2.2", "eth2.4"],
+    "protocol": "186", "source": "10.0.0.100", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594706580277}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "edge01", "vrf": "default", "prefix": "10.0.0.253/32", "nexthopIps":
+    ["169.254.253.9", "169.254.254.9"], "oifs": ["eth2.4", "eth1.4"], "protocol":
+    "186", "source": "10.0.0.100", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594706580277}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "edge01", "vrf": "default", "prefix": "169.254.253.0/30", "nexthopIps": [""],
+    "oifs": ["eth2.2"], "protocol": "kernel", "source": "169.254.253.2", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594706580277}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "edge01", "vrf": "default", "prefix": "169.254.253.8/30",
+    "nexthopIps": [""], "oifs": ["eth2.4"], "protocol": "kernel", "source": "169.254.253.10",
+    "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580277}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "edge01", "vrf": "default", "prefix": "169.254.254.0/30",
+    "nexthopIps": [""], "oifs": ["eth1.2"], "protocol": "kernel", "source": "169.254.254.2",
+    "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580277}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "edge01", "vrf": "default", "prefix": "169.254.254.8/30",
+    "nexthopIps": [""], "oifs": ["eth1.4"], "protocol": "kernel", "source": "169.254.254.10",
+    "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580277}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "edge01", "vrf": "default", "prefix": "172.16.253.1/32",
+    "nexthopIps": ["169.254.253.9", "169.254.254.9"], "oifs": ["eth2.4", "eth1.4"],
+    "protocol": "186", "source": "10.0.0.100", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594706580277}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "edge01", "vrf": "default", "prefix": "192.168.121.0/24", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "192.168.121.62", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594706580277}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.11/32",
+    "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol":
+    "bgp", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594706580419}, {"namespace": "dual-attach_bgp_docker", "hostname": "exit01",
+    "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": ["169.254.0.1", "169.254.0.1"],
+    "oifs": ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1594706580419}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.13/32", "nexthopIps":
+    ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580419},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "exit01", "vrf": "default",
+    "prefix": "10.0.0.14/32", "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs":
+    ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594706580419}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.21/32", "nexthopIps":
+    ["169.254.0.1"], "oifs": ["swp1"], "protocol": "bgp", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594706580419}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.22/32",
+    "nexthopIps": ["169.254.0.1"], "oifs": ["swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580419},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "exit01", "vrf": "default",
+    "prefix": "10.0.0.100/32", "nexthopIps": ["169.254.254.2"], "oifs": ["swp5.2"],
+    "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594706580419}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "exit01", "vrf": "default", "prefix": "10.0.0.102/32", "nexthopIps": ["169.254.0.1",
+    "169.254.0.1"], "oifs": ["swp2", "swp1"], "protocol": "bgp", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594706580419}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "exit01", "vrf": "default", "prefix": "169.254.254.0/30",
+    "nexthopIps": [""], "oifs": ["swp5.2"], "protocol": "kernel", "source": "169.254.254.1",
+    "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580419}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "exit01", "vrf": "internet-vrf", "prefix":
+    "0.0.0.0/0", "nexthopIps": ["169.254.127.0"], "oifs": ["swp6"], "protocol": "bgp",
+    "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580419},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "exit01", "vrf": "internet-vrf",
+    "prefix": "10.0.0.11/32", "nexthopIps": ["169.254.254.10"], "oifs": ["swp5.4"],
+    "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594706580419}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "exit01", "vrf": "internet-vrf", "prefix": "10.0.0.12/32", "nexthopIps": ["169.254.254.10"],
+    "oifs": ["swp5.4"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594706580419}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "exit01", "vrf": "internet-vrf", "prefix": "10.0.0.13/32", "nexthopIps":
+    ["169.254.254.10"], "oifs": ["swp5.4"], "protocol": "bgp", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594706580419}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "exit01", "vrf": "internet-vrf", "prefix":
+    "10.0.0.14/32", "nexthopIps": ["169.254.254.10"], "oifs": ["swp5.4"], "protocol":
+    "bgp", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594706580419}, {"namespace": "dual-attach_bgp_docker", "hostname": "exit01",
+    "vrf": "internet-vrf", "prefix": "10.0.0.21/32", "nexthopIps": ["169.254.254.10"],
+    "oifs": ["swp5.4"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594706580419}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "exit01", "vrf": "internet-vrf", "prefix": "10.0.0.22/32", "nexthopIps":
+    ["169.254.254.10"], "oifs": ["swp5.4"], "protocol": "bgp", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594706580419}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "exit01", "vrf": "internet-vrf", "prefix":
+    "10.0.0.100/32", "nexthopIps": ["169.254.254.10"], "oifs": ["swp5.4"], "protocol":
+    "bgp", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594706580419}, {"namespace": "dual-attach_bgp_docker", "hostname": "exit01",
+    "vrf": "internet-vrf", "prefix": "10.0.0.102/32", "nexthopIps": ["169.254.254.10"],
+    "oifs": ["swp5.4"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594706580419}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "exit01", "vrf": "internet-vrf", "prefix": "10.0.0.253/32", "nexthopIps":
+    ["169.254.127.0"], "oifs": ["swp6"], "protocol": "bgp", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594706580419}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "exit01", "vrf": "internet-vrf", "prefix":
+    "169.254.127.0/31", "nexthopIps": [""], "oifs": ["swp6"], "protocol": "kernel",
+    "source": "169.254.127.1", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594706580419}, {"namespace": "dual-attach_bgp_docker", "hostname": "exit01",
+    "vrf": "internet-vrf", "prefix": "169.254.254.8/30", "nexthopIps": [""], "oifs":
+    ["swp5.4"], "protocol": "kernel", "source": "169.254.254.9", "metric": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1594706580419}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "exit01", "vrf": "internet-vrf", "prefix": "172.16.253.1/32", "nexthopIps":
+    ["169.254.127.0"], "oifs": ["swp6"], "protocol": "bgp", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594706580419}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "exit01", "vrf": "mgmt", "prefix": "192.168.121.0/24",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel", "source": "192.168.121.244",
+    "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580419}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "exit02", "vrf": "default", "prefix": "0.0.0.0/0",
+    "nexthopIps": ["169.254.253.2"], "oifs": ["swp5.2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580388},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "exit02", "vrf": "default",
+    "prefix": "10.0.0.11/32", "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs":
+    ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594706580388}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps":
+    ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580388},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "exit02", "vrf": "default",
+    "prefix": "10.0.0.13/32", "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs":
+    ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594706580388}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps":
+    ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580388},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "exit02", "vrf": "default",
+    "prefix": "10.0.0.21/32", "nexthopIps": ["169.254.0.1"], "oifs": ["swp1"], "protocol":
+    "bgp", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594706580388}, {"namespace": "dual-attach_bgp_docker", "hostname": "exit02",
+    "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps": ["169.254.0.1"], "oifs":
+    ["swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594706580388}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.100/32", "nexthopIps":
+    ["169.254.253.2"], "oifs": ["swp5.2"], "protocol": "bgp", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594706580388}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.101/32",
+    "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol":
+    "bgp", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594706580388}, {"namespace": "dual-attach_bgp_docker", "hostname": "exit02",
+    "vrf": "default", "prefix": "10.0.0.253/32", "nexthopIps": ["169.254.253.2"],
+    "oifs": ["swp5.2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594706580388}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "exit02", "vrf": "default", "prefix": "169.254.253.0/30", "nexthopIps":
+    [""], "oifs": ["swp5.2"], "protocol": "kernel", "source": "169.254.253.1", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594706580388}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "exit02", "vrf": "default", "prefix": "172.16.253.1/32",
+    "nexthopIps": ["169.254.253.2"], "oifs": ["swp5.2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580388},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "exit02", "vrf": "internet-vrf",
+    "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.127.2"], "oifs": ["swp6"], "protocol":
+    "bgp", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594706580388}, {"namespace": "dual-attach_bgp_docker", "hostname": "exit02",
+    "vrf": "internet-vrf", "prefix": "10.0.0.11/32", "nexthopIps": ["169.254.253.10"],
+    "oifs": ["swp5.4"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594706580388}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "exit02", "vrf": "internet-vrf", "prefix": "10.0.0.12/32", "nexthopIps":
+    ["169.254.253.10"], "oifs": ["swp5.4"], "protocol": "bgp", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594706580388}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "exit02", "vrf": "internet-vrf", "prefix":
+    "10.0.0.13/32", "nexthopIps": ["169.254.253.10"], "oifs": ["swp5.4"], "protocol":
+    "bgp", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594706580388}, {"namespace": "dual-attach_bgp_docker", "hostname": "exit02",
+    "vrf": "internet-vrf", "prefix": "10.0.0.14/32", "nexthopIps": ["169.254.253.10"],
+    "oifs": ["swp5.4"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594706580388}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "exit02", "vrf": "internet-vrf", "prefix": "10.0.0.21/32", "nexthopIps":
+    ["169.254.253.10"], "oifs": ["swp5.4"], "protocol": "bgp", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594706580388}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "exit02", "vrf": "internet-vrf", "prefix":
+    "10.0.0.22/32", "nexthopIps": ["169.254.253.10"], "oifs": ["swp5.4"], "protocol":
+    "bgp", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594706580388}, {"namespace": "dual-attach_bgp_docker", "hostname": "exit02",
+    "vrf": "internet-vrf", "prefix": "10.0.0.100/32", "nexthopIps": ["169.254.253.10"],
+    "oifs": ["swp5.4"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594706580388}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "exit02", "vrf": "internet-vrf", "prefix": "10.0.0.101/32", "nexthopIps":
+    ["169.254.253.10"], "oifs": ["swp5.4"], "protocol": "bgp", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594706580388}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "exit02", "vrf": "internet-vrf", "prefix":
+    "10.0.0.253/32", "nexthopIps": ["169.254.127.2"], "oifs": ["swp6"], "protocol":
+    "bgp", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594706580388}, {"namespace": "dual-attach_bgp_docker", "hostname": "exit02",
+    "vrf": "internet-vrf", "prefix": "169.254.127.2/31", "nexthopIps": [""], "oifs":
+    ["swp6"], "protocol": "kernel", "source": "169.254.127.3", "metric": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1594706580388}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "exit02", "vrf": "internet-vrf", "prefix": "169.254.253.8/30", "nexthopIps":
+    [""], "oifs": ["swp5.4"], "protocol": "kernel", "source": "169.254.253.9", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594706580388}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "exit02", "vrf": "internet-vrf", "prefix":
+    "172.16.253.1/32", "nexthopIps": ["169.254.127.2"], "oifs": ["swp6"], "protocol":
+    "bgp", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594706580388}, {"namespace": "dual-attach_bgp_docker", "hostname": "exit02",
+    "vrf": "mgmt", "prefix": "192.168.121.0/24", "nexthopIps": [""], "oifs": ["eth0"],
+    "protocol": "kernel", "source": "192.168.121.243", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594706580388}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "internet", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["192.168.121.1"], "oifs": ["eth0"], "protocol": "", "source": "", "metric": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1594706580388}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "internet", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps":
+    ["169.254.127.1", "169.254.127.3"], "oifs": ["swp1", "swp2"], "protocol": "bgp",
+    "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580388},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "internet", "vrf": "default",
+    "prefix": "10.0.0.12/32", "nexthopIps": ["169.254.127.1", "169.254.127.3"], "oifs":
+    ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594706580388}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "internet", "vrf": "default", "prefix": "10.0.0.13/32", "nexthopIps":
+    ["169.254.127.1", "169.254.127.3"], "oifs": ["swp1", "swp2"], "protocol": "bgp",
+    "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580388},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "internet", "vrf": "default",
+    "prefix": "10.0.0.14/32", "nexthopIps": ["169.254.127.1", "169.254.127.3"], "oifs":
+    ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594706580388}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "internet", "vrf": "default", "prefix": "10.0.0.21/32", "nexthopIps":
+    ["169.254.127.1", "169.254.127.3"], "oifs": ["swp1", "swp2"], "protocol": "bgp",
+    "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580388},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "internet", "vrf": "default",
+    "prefix": "10.0.0.22/32", "nexthopIps": ["169.254.127.1", "169.254.127.3"], "oifs":
+    ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594706580388}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "internet", "vrf": "default", "prefix": "10.0.0.100/32", "nexthopIps":
+    ["169.254.127.1", "169.254.127.3"], "oifs": ["swp1", "swp2"], "protocol": "bgp",
+    "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580388},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "internet", "vrf": "default",
+    "prefix": "10.0.0.101/32", "nexthopIps": ["169.254.127.1"], "oifs": ["swp1"],
+    "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594706580388}, {"namespace": "dual-attach_bgp_docker", "hostname":
+    "internet", "vrf": "default", "prefix": "10.0.0.102/32", "nexthopIps": ["169.254.127.3"],
+    "oifs": ["swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594706580388}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "internet", "vrf": "default", "prefix": "169.254.127.0/31", "nexthopIps":
+    [""], "oifs": ["swp1"], "protocol": "kernel", "source": "169.254.127.0", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594706580388}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "internet", "vrf": "default", "prefix":
+    "169.254.127.2/31", "nexthopIps": [""], "oifs": ["swp2"], "protocol": "kernel",
+    "source": "169.254.127.2", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594706580388}, {"namespace": "dual-attach_bgp_docker", "hostname": "internet",
+    "vrf": "default", "prefix": "192.168.121.0/24", "nexthopIps": [""], "oifs": ["eth0"],
+    "protocol": "kernel", "source": "192.168.121.117", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594706580388}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "leaf01", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.0.1",
+    "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594706580419}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "leaf01", "vrf": "default", "prefix": "10.0.0.12/32",
+    "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol":
+    "bgp", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594706580419}, {"namespace": "dual-attach_bgp_docker", "hostname": "leaf01",
+    "vrf": "default", "prefix": "10.0.0.13/32", "nexthopIps": ["169.254.0.1", "169.254.0.1"],
+    "oifs": ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1594706580419}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "leaf01", "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps":
+    ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580419},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "leaf01", "vrf": "default",
+    "prefix": "10.0.0.21/32", "nexthopIps": ["169.254.0.1"], "oifs": ["swp1"], "protocol":
+    "bgp", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594706580419}, {"namespace": "dual-attach_bgp_docker", "hostname": "leaf01",
+    "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps": ["169.254.0.1"], "oifs":
+    ["swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594706580419}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "leaf01", "vrf": "default", "prefix": "10.0.0.100/32", "nexthopIps":
+    ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580419},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "leaf01", "vrf": "default",
+    "prefix": "10.0.0.101/32", "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs":
+    ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594706580419}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "leaf01", "vrf": "default", "prefix": "10.0.0.102/32", "nexthopIps":
+    ["169.254.0.1", "169.254.0.1"], "oifs": ["swp2", "swp1"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580419},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "leaf01", "vrf": "default",
+    "prefix": "10.0.0.253/32", "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs":
+    ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594706580419}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "leaf01", "vrf": "default", "prefix": "172.16.253.1/32", "nexthopIps":
+    ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580419},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "leaf01", "vrf": "mgmt", "prefix":
+    "192.168.121.0/24", "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel",
+    "source": "192.168.121.119", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594706580419}, {"namespace": "dual-attach_bgp_docker", "hostname": "leaf02",
+    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.0.1", "169.254.0.1"],
+    "oifs": ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1594706580385}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "leaf02", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps":
+    ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580385},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "leaf02", "vrf": "default",
+    "prefix": "10.0.0.13/32", "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs":
+    ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594706580385}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "leaf02", "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps":
+    ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580385},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "leaf02", "vrf": "default",
+    "prefix": "10.0.0.21/32", "nexthopIps": ["169.254.0.1"], "oifs": ["swp1"], "protocol":
+    "bgp", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594706580385}, {"namespace": "dual-attach_bgp_docker", "hostname": "leaf02",
+    "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps": ["169.254.0.1"], "oifs":
+    ["swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594706580385}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "leaf02", "vrf": "default", "prefix": "10.0.0.100/32", "nexthopIps":
+    ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580385},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "leaf02", "vrf": "default",
+    "prefix": "10.0.0.101/32", "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs":
+    ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594706580385}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "leaf02", "vrf": "default", "prefix": "10.0.0.102/32", "nexthopIps":
+    ["169.254.0.1", "169.254.0.1"], "oifs": ["swp2", "swp1"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580385},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "leaf02", "vrf": "default",
+    "prefix": "10.0.0.253/32", "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs":
+    ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594706580385}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "leaf02", "vrf": "default", "prefix": "172.16.253.1/32", "nexthopIps":
+    ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580385},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "leaf02", "vrf": "mgmt", "prefix":
+    "192.168.121.0/24", "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel",
+    "source": "192.168.121.29", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594706580385}, {"namespace": "dual-attach_bgp_docker", "hostname": "leaf03",
+    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.0.1", "169.254.0.1"],
+    "oifs": ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1594706580387}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "leaf03", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps":
+    ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580387},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "leaf03", "vrf": "default",
+    "prefix": "10.0.0.12/32", "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs":
+    ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594706580387}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "leaf03", "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps":
+    ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580387},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "leaf03", "vrf": "default",
+    "prefix": "10.0.0.21/32", "nexthopIps": ["169.254.0.1"], "oifs": ["swp1"], "protocol":
+    "bgp", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594706580387}, {"namespace": "dual-attach_bgp_docker", "hostname": "leaf03",
+    "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps": ["169.254.0.1"], "oifs":
+    ["swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594706580387}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "leaf03", "vrf": "default", "prefix": "10.0.0.100/32", "nexthopIps":
+    ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580387},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "leaf03", "vrf": "default",
+    "prefix": "10.0.0.101/32", "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs":
+    ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594706580387}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "leaf03", "vrf": "default", "prefix": "10.0.0.102/32", "nexthopIps":
+    ["169.254.0.1", "169.254.0.1"], "oifs": ["swp2", "swp1"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580387},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "leaf03", "vrf": "default",
+    "prefix": "10.0.0.253/32", "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs":
+    ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594706580387}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "leaf03", "vrf": "default", "prefix": "172.16.253.1/32", "nexthopIps":
+    ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580387},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "leaf03", "vrf": "mgmt", "prefix":
+    "192.168.121.0/24", "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel",
+    "source": "192.168.121.41", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594706580387}, {"namespace": "dual-attach_bgp_docker", "hostname": "leaf04",
+    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.0.1", "169.254.0.1"],
+    "oifs": ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1594706580419}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "leaf04", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps":
+    ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580419},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "leaf04", "vrf": "default",
+    "prefix": "10.0.0.12/32", "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs":
+    ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594706580419}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "leaf04", "vrf": "default", "prefix": "10.0.0.13/32", "nexthopIps":
+    ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580419},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "leaf04", "vrf": "default",
+    "prefix": "10.0.0.21/32", "nexthopIps": ["169.254.0.1"], "oifs": ["swp1"], "protocol":
+    "bgp", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594706580419}, {"namespace": "dual-attach_bgp_docker", "hostname": "leaf04",
+    "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps": ["169.254.0.1"], "oifs":
+    ["swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594706580419}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "leaf04", "vrf": "default", "prefix": "10.0.0.100/32", "nexthopIps":
+    ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580419},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "leaf04", "vrf": "default",
+    "prefix": "10.0.0.101/32", "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs":
+    ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594706580419}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "leaf04", "vrf": "default", "prefix": "10.0.0.102/32", "nexthopIps":
+    ["169.254.0.1", "169.254.0.1"], "oifs": ["swp2", "swp1"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580419},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "leaf04", "vrf": "default",
+    "prefix": "10.0.0.253/32", "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs":
+    ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594706580419}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "leaf04", "vrf": "default", "prefix": "172.16.253.1/32", "nexthopIps":
+    ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580419},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "leaf04", "vrf": "mgmt", "prefix":
+    "192.168.121.0/24", "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel",
+    "source": "192.168.121.67", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594706580419}, {"namespace": "dual-attach_bgp_docker", "hostname": "server101",
+    "vrf": "default", "prefix": "192.168.10.0/24", "nexthopIps": [""], "oifs": ["docker0"],
+    "protocol": "kernel", "source": "192.168.10.1", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594706580285}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "server101", "vrf": "default", "prefix": "192.168.121.0/24", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "192.168.121.154", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594706580285}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "server102", "vrf": "default", "prefix":
+    "192.168.11.0/24", "nexthopIps": [""], "oifs": ["docker0"], "protocol": "kernel",
+    "source": "192.168.11.1", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594706580273}, {"namespace": "dual-attach_bgp_docker", "hostname": "server102",
+    "vrf": "default", "prefix": "192.168.121.0/24", "nexthopIps": [""], "oifs": ["eth0"],
+    "protocol": "kernel", "source": "192.168.121.91", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594706580273}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "server103", "vrf": "default", "prefix": "192.168.12.0/24", "nexthopIps":
+    [""], "oifs": ["docker0"], "protocol": "kernel", "source": "192.168.12.1", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594706580280}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "server103", "vrf": "default", "prefix":
+    "192.168.121.0/24", "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel",
+    "source": "192.168.121.124", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594706580280}, {"namespace": "dual-attach_bgp_docker", "hostname": "server104",
+    "vrf": "default", "prefix": "192.168.13.0/24", "nexthopIps": [""], "oifs": ["docker0"],
+    "protocol": "kernel", "source": "192.168.13.1", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594706580330}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "server104", "vrf": "default", "prefix": "192.168.121.0/24", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "192.168.121.109", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594706580330}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "spine01", "vrf": "default", "prefix": "0.0.0.0/0",
+    "nexthopIps": ["169.254.0.1"], "oifs": ["swp5"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580387},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "spine01", "vrf": "default",
+    "prefix": "10.0.0.11/32", "nexthopIps": ["169.254.0.1"], "oifs": ["swp1"], "protocol":
+    "bgp", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594706580387}, {"namespace": "dual-attach_bgp_docker", "hostname": "spine01",
+    "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": ["169.254.0.1"], "oifs":
+    ["swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594706580387}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.13/32", "nexthopIps":
+    ["169.254.0.1"], "oifs": ["swp3"], "protocol": "bgp", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594706580387}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.14/32",
+    "nexthopIps": ["169.254.0.1"], "oifs": ["swp4"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580387},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "spine01", "vrf": "default",
+    "prefix": "10.0.0.100/32", "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs":
+    ["swp6", "swp5"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594706580387}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.101/32", "nexthopIps":
+    ["169.254.0.1"], "oifs": ["swp6"], "protocol": "bgp", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594706580387}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.102/32",
+    "nexthopIps": ["169.254.0.1"], "oifs": ["swp5"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580387},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "spine01", "vrf": "default",
+    "prefix": "10.0.0.253/32", "nexthopIps": ["169.254.0.1"], "oifs": ["swp5"], "protocol":
+    "bgp", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594706580387}, {"namespace": "dual-attach_bgp_docker", "hostname": "spine01",
+    "vrf": "default", "prefix": "172.16.253.1/32", "nexthopIps": ["169.254.0.1"],
+    "oifs": ["swp5"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594706580387}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "spine01", "vrf": "mgmt", "prefix": "192.168.121.0/24", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "192.168.121.65", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594706580387}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "spine02", "vrf": "default", "prefix": "0.0.0.0/0",
+    "nexthopIps": ["169.254.0.1"], "oifs": ["swp5"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580388},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "spine02", "vrf": "default",
+    "prefix": "10.0.0.11/32", "nexthopIps": ["169.254.0.1"], "oifs": ["swp1"], "protocol":
+    "bgp", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594706580388}, {"namespace": "dual-attach_bgp_docker", "hostname": "spine02",
+    "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": ["169.254.0.1"], "oifs":
+    ["swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594706580388}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.13/32", "nexthopIps":
+    ["169.254.0.1"], "oifs": ["swp3"], "protocol": "bgp", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594706580388}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.14/32",
+    "nexthopIps": ["169.254.0.1"], "oifs": ["swp4"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580388},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "spine02", "vrf": "default",
+    "prefix": "10.0.0.100/32", "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs":
+    ["swp6", "swp5"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594706580388}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.101/32", "nexthopIps":
+    ["169.254.0.1"], "oifs": ["swp6"], "protocol": "bgp", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594706580388}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.102/32",
+    "nexthopIps": ["169.254.0.1"], "oifs": ["swp5"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580388},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "spine02", "vrf": "default",
+    "prefix": "10.0.0.253/32", "nexthopIps": ["169.254.0.1"], "oifs": ["swp5"], "protocol":
+    "bgp", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594706580388}, {"namespace": "dual-attach_bgp_docker", "hostname": "spine02",
+    "vrf": "default", "prefix": "172.16.253.1/32", "nexthopIps": ["169.254.0.1"],
+    "oifs": ["swp5"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594706580388}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "spine02", "vrf": "mgmt", "prefix": "192.168.121.0/24", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "192.168.121.251", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594706580388}]'
+- command: route show --columns=hostname --format=json --namespace=dual-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_docker/parquet-out
+  marks: route show
+  output: '[{"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
+    {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname":
+    "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
+    {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname":
+    "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "internet"},
+    {"hostname": "internet"}, {"hostname": "internet"}, {"hostname": "internet"},
+    {"hostname": "internet"}, {"hostname": "internet"}, {"hostname": "internet"},
+    {"hostname": "internet"}, {"hostname": "internet"}, {"hostname": "internet"},
+    {"hostname": "internet"}, {"hostname": "internet"}, {"hostname": "internet"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "server101"},
+    {"hostname": "server101"}, {"hostname": "server102"}, {"hostname": "server102"},
+    {"hostname": "server103"}, {"hostname": "server103"}, {"hostname": "server104"},
+    {"hostname": "server104"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}]'
+- command: route summarize --format=json --namespace=dual-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_docker/parquet-out
+  marks: route summarize
+  output: '{"dual-attach_bgp_docker": {"deviceCnt": 14, "uniquePrefixCnt": 23, "uniqueVrfsCnt":
+    3, "ifRoutesCnt": 12, "hostRoutesCnt": 115, "totalV4RoutesinNs": 164, "totalV6RoutesinNs":
+    0, "routingProtocolCnt": 4, "routesPerHostStat": [2, 27, 13.0], "routesperVrfStat":
+    [16, 122, 26], "deviceWithNoDefRoute": true}}'
+- command: route unique --columns=hostname --format=json --namespace=dual-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_docker/parquet-out
+  marks: route unique
+  output: '[{"hostname": "edge01", "count": 16}, {"hostname": "exit01", "count": 25},
+    {"hostname": "exit02", "count": 28}, {"hostname": "internet", "count": 13}, {"hostname":
+    "leaf01", "count": 14}, {"hostname": "leaf02", "count": 14}, {"hostname": "leaf03",
+    "count": 14}, {"hostname": "leaf04", "count": 14}, {"hostname": "server101", "count":
+    2}, {"hostname": "server102", "count": 2}, {"hostname": "server103", "count":
+    2}, {"hostname": "server104", "count": 2}, {"hostname": "spine01", "count": 13},
+    {"hostname": "spine02", "count": 13}]'
+- command: route lpm --address=10.0.0.1 --format=json --namespace=dual-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_docker/parquet-out
+  marks: route lpm
+  output: '[{"namespace": "dual-attach_bgp_docker", "hostname": "edge01", "vrf": "default",
+    "prefix": "0.0.0.0/0", "nexthopIps": ["192.168.121.1"], "oifs": ["eth0"], "protocol":
+    "", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594706580277}, {"namespace": "dual-attach_bgp_docker", "hostname": "exit02",
+    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.253.2"], "oifs":
+    ["swp5.2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594706580388}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "internet", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["192.168.121.1"], "oifs": ["eth0"], "protocol": "", "source": "", "metric": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1594706580388}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "leaf01", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.0.1",
+    "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594706580419}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "leaf02", "vrf": "default", "prefix": "0.0.0.0/0",
+    "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol":
+    "bgp", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594706580385}, {"namespace": "dual-attach_bgp_docker", "hostname": "leaf03",
+    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.0.1", "169.254.0.1"],
+    "oifs": ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1594706580387}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "leaf04", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.0.1",
+    "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594706580419}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "spine01", "vrf": "default", "prefix": "0.0.0.0/0",
+    "nexthopIps": ["169.254.0.1"], "oifs": ["swp5"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580387},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "spine02", "vrf": "default",
+    "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.0.1"], "oifs": ["swp5"], "protocol":
+    "bgp", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594706580388}]'
+- command: route lpm --address="10.0.0.12" --format=json --namespace=dual-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_docker/parquet-out
+  marks: route lpm
+  output: '[{"namespace": "dual-attach_bgp_docker", "hostname": "edge01", "vrf": "default",
+    "prefix": "10.0.0.12/32", "nexthopIps": ["169.254.253.1", "169.254.254.1"], "oifs":
+    ["eth2.2", "eth1.2"], "protocol": "186", "source": "10.0.0.100", "metric": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1594706580277}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps":
+    ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580419},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "exit02", "vrf": "default",
+    "prefix": "10.0.0.12/32", "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs":
+    ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594706580388}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "internet", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps":
+    ["169.254.127.1", "169.254.127.3"], "oifs": ["swp1", "swp2"], "protocol": "bgp",
+    "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580388},
+    {"namespace": "dual-attach_bgp_docker", "hostname": "leaf01", "vrf": "default",
+    "prefix": "10.0.0.12/32", "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs":
+    ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594706580419}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "leaf02", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.0.1",
+    "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594706580385}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "leaf03", "vrf": "default", "prefix": "10.0.0.12/32",
+    "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol":
+    "bgp", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594706580387}, {"namespace": "dual-attach_bgp_docker", "hostname": "leaf04",
+    "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": ["169.254.0.1", "169.254.0.1"],
+    "oifs": ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1594706580419}, {"namespace": "dual-attach_bgp_docker",
+    "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps":
+    ["169.254.0.1"], "oifs": ["swp2"], "protocol": "bgp", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594706580387}, {"namespace":
+    "dual-attach_bgp_docker", "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.12/32",
+    "nexthopIps": ["169.254.0.1"], "oifs": ["swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594706580388}]'
+- command: route lpm --address="10.0.0.12" --hostname="server101 server103" --format=json
+    --namespace=dual-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_docker/parquet-out
+  marks: route lpm
+  output: '[]'
+- command: route lpm --address="10.0.0.12" --vrf=evpn-vrf --format=json --namespace=dual-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_docker/parquet-out
+  marks: route lpm
+  output: '[]'
+- command: route lpm --address="10.0.0.11" --vrf=evpn-vrf --format=json --namespace=dual-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_docker/parquet-out
+  marks: route lpm
+  output: '[]'

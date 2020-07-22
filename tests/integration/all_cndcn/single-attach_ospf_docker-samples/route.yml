@@ -1,0 +1,362 @@
+description: 'Testing verbs for route: show summarize unique lpm'
+tests:
+- command: route show --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: route show
+  output: '[{"namespace": "single-attach_ospf_docker", "hostname": "edge01", "vrf":
+    "default", "prefix": "0.0.0.0/0", "nexthopIps": ["192.168.121.1"], "oifs": ["eth0"],
+    "protocol": "", "source": "", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594387420165}, {"namespace": "single-attach_ospf_docker", "hostname":
+    "edge01", "vrf": "default", "prefix": "192.168.121.0/24", "nexthopIps": [""],
+    "oifs": ["eth0"], "protocol": "kernel", "source": "192.168.121.41", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594387420165}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "exit01", "vrf": "default", "prefix":
+    "10.0.0.11/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"],
+    "protocol": "ospf", "source": "", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594387420263}, {"namespace": "single-attach_ospf_docker", "hostname":
+    "exit01", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.21",
+    "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594387420263}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "exit01", "vrf": "default", "prefix":
+    "10.0.0.13/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"],
+    "protocol": "ospf", "source": "", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594387420263}, {"namespace": "single-attach_ospf_docker", "hostname":
+    "exit01", "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps": ["10.0.0.21",
+    "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594387420263}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "exit01", "vrf": "default", "prefix":
+    "10.0.0.21/32", "nexthopIps": ["10.0.0.21"], "oifs": ["swp1"], "protocol": "ospf",
+    "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594387420263},
+    {"namespace": "single-attach_ospf_docker", "hostname": "exit01", "vrf": "default",
+    "prefix": "10.0.0.22/32", "nexthopIps": ["10.0.0.22"], "oifs": ["swp2"], "protocol":
+    "ospf", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594387420263}, {"namespace": "single-attach_ospf_docker", "hostname": "exit01",
+    "vrf": "default", "prefix": "10.0.0.102/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "metric": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1594387420263}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "exit01", "vrf": "mgmt", "prefix": "192.168.121.0/24", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "192.168.121.42", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594387420263}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "exit02", "vrf": "default", "prefix":
+    "10.0.0.11/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"],
+    "protocol": "ospf", "source": "", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594387420277}, {"namespace": "single-attach_ospf_docker", "hostname":
+    "exit02", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.21",
+    "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594387420277}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "exit02", "vrf": "default", "prefix":
+    "10.0.0.13/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"],
+    "protocol": "ospf", "source": "", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594387420277}, {"namespace": "single-attach_ospf_docker", "hostname":
+    "exit02", "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps": ["10.0.0.21",
+    "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594387420277}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "exit02", "vrf": "default", "prefix":
+    "10.0.0.21/32", "nexthopIps": ["10.0.0.21"], "oifs": ["swp1"], "protocol": "ospf",
+    "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594387420277},
+    {"namespace": "single-attach_ospf_docker", "hostname": "exit02", "vrf": "default",
+    "prefix": "10.0.0.22/32", "nexthopIps": ["10.0.0.22"], "oifs": ["swp2"], "protocol":
+    "ospf", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594387420277}, {"namespace": "single-attach_ospf_docker", "hostname": "exit02",
+    "vrf": "default", "prefix": "10.0.0.101/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "metric": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1594387420277}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "exit02", "vrf": "mgmt", "prefix": "192.168.121.0/24", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "192.168.121.48", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594387420277}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "internet", "vrf": "default", "prefix":
+    "0.0.0.0/0", "nexthopIps": ["192.168.121.1"], "oifs": ["eth0"], "protocol": "",
+    "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594387420277},
+    {"namespace": "single-attach_ospf_docker", "hostname": "internet", "vrf": "default",
+    "prefix": "192.168.121.0/24", "nexthopIps": [""], "oifs": ["eth0"], "protocol":
+    "kernel", "source": "192.168.121.144", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594387420277}, {"namespace": "single-attach_ospf_docker", "hostname":
+    "leaf01", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.21",
+    "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594387420226}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "leaf01", "vrf": "default", "prefix":
+    "10.0.0.13/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"],
+    "protocol": "ospf", "source": "", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594387420226}, {"namespace": "single-attach_ospf_docker", "hostname":
+    "leaf01", "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps": ["10.0.0.21",
+    "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594387420226}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "leaf01", "vrf": "default", "prefix":
+    "10.0.0.21/32", "nexthopIps": ["10.0.0.21"], "oifs": ["swp1"], "protocol": "ospf",
+    "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594387420226},
+    {"namespace": "single-attach_ospf_docker", "hostname": "leaf01", "vrf": "default",
+    "prefix": "10.0.0.22/32", "nexthopIps": ["10.0.0.22"], "oifs": ["swp2"], "protocol":
+    "ospf", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594387420226}, {"namespace": "single-attach_ospf_docker", "hostname": "leaf01",
+    "vrf": "default", "prefix": "10.0.0.101/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "metric": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1594387420226}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf01", "vrf": "default", "prefix": "10.0.0.102/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594387420226},
+    {"namespace": "single-attach_ospf_docker", "hostname": "leaf01", "vrf": "mgmt",
+    "prefix": "192.168.121.0/24", "nexthopIps": [""], "oifs": ["eth0"], "protocol":
+    "kernel", "source": "192.168.121.212", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594387420226}, {"namespace": "single-attach_ospf_docker", "hostname":
+    "leaf02", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps": ["10.0.0.21",
+    "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594387420226}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "leaf02", "vrf": "default", "prefix":
+    "10.0.0.13/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"],
+    "protocol": "ospf", "source": "", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594387420226}, {"namespace": "single-attach_ospf_docker", "hostname":
+    "leaf02", "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps": ["10.0.0.21",
+    "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594387420226}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "leaf02", "vrf": "default", "prefix":
+    "10.0.0.21/32", "nexthopIps": ["10.0.0.21"], "oifs": ["swp1"], "protocol": "ospf",
+    "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594387420226},
+    {"namespace": "single-attach_ospf_docker", "hostname": "leaf02", "vrf": "default",
+    "prefix": "10.0.0.22/32", "nexthopIps": ["10.0.0.22"], "oifs": ["swp2"], "protocol":
+    "ospf", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594387420226}, {"namespace": "single-attach_ospf_docker", "hostname": "leaf02",
+    "vrf": "default", "prefix": "10.0.0.101/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "metric": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1594387420226}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf02", "vrf": "default", "prefix": "10.0.0.102/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594387420226},
+    {"namespace": "single-attach_ospf_docker", "hostname": "leaf02", "vrf": "mgmt",
+    "prefix": "192.168.121.0/24", "nexthopIps": [""], "oifs": ["eth0"], "protocol":
+    "kernel", "source": "192.168.121.145", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594387420226}, {"namespace": "single-attach_ospf_docker", "hostname":
+    "leaf03", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps": ["10.0.0.21",
+    "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594387420240}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "leaf03", "vrf": "default", "prefix":
+    "10.0.0.12/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"],
+    "protocol": "ospf", "source": "", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594387420240}, {"namespace": "single-attach_ospf_docker", "hostname":
+    "leaf03", "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps": ["10.0.0.21",
+    "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594387420240}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "leaf03", "vrf": "default", "prefix":
+    "10.0.0.21/32", "nexthopIps": ["10.0.0.21"], "oifs": ["swp1"], "protocol": "ospf",
+    "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594387420240},
+    {"namespace": "single-attach_ospf_docker", "hostname": "leaf03", "vrf": "default",
+    "prefix": "10.0.0.22/32", "nexthopIps": ["10.0.0.22"], "oifs": ["swp2"], "protocol":
+    "ospf", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594387420240}, {"namespace": "single-attach_ospf_docker", "hostname": "leaf03",
+    "vrf": "default", "prefix": "10.0.0.101/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "metric": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1594387420240}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf03", "vrf": "default", "prefix": "10.0.0.102/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594387420240},
+    {"namespace": "single-attach_ospf_docker", "hostname": "leaf03", "vrf": "mgmt",
+    "prefix": "192.168.121.0/24", "nexthopIps": [""], "oifs": ["eth0"], "protocol":
+    "kernel", "source": "192.168.121.167", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594387420240}, {"namespace": "single-attach_ospf_docker", "hostname":
+    "leaf04", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps": ["10.0.0.21",
+    "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594387420277}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "leaf04", "vrf": "default", "prefix":
+    "10.0.0.12/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"],
+    "protocol": "ospf", "source": "", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594387420277}, {"namespace": "single-attach_ospf_docker", "hostname":
+    "leaf04", "vrf": "default", "prefix": "10.0.0.13/32", "nexthopIps": ["10.0.0.21",
+    "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594387420277}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "leaf04", "vrf": "default", "prefix":
+    "10.0.0.21/32", "nexthopIps": ["10.0.0.21"], "oifs": ["swp1"], "protocol": "ospf",
+    "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594387420277},
+    {"namespace": "single-attach_ospf_docker", "hostname": "leaf04", "vrf": "default",
+    "prefix": "10.0.0.22/32", "nexthopIps": ["10.0.0.22"], "oifs": ["swp2"], "protocol":
+    "ospf", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594387420277}, {"namespace": "single-attach_ospf_docker", "hostname": "leaf04",
+    "vrf": "default", "prefix": "10.0.0.101/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "metric": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1594387420277}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf04", "vrf": "default", "prefix": "10.0.0.102/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594387420277},
+    {"namespace": "single-attach_ospf_docker", "hostname": "leaf04", "vrf": "mgmt",
+    "prefix": "192.168.121.0/24", "nexthopIps": [""], "oifs": ["eth0"], "protocol":
+    "kernel", "source": "192.168.121.246", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594387420277}, {"namespace": "single-attach_ospf_docker", "hostname":
+    "server101", "vrf": "default", "prefix": "192.168.10.0/24", "nexthopIps": [""],
+    "oifs": ["docker0"], "protocol": "kernel", "source": "192.168.10.1", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594387420172}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "server101", "vrf": "default", "prefix":
+    "192.168.121.0/24", "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel",
+    "source": "192.168.121.16", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594387420172}, {"namespace": "single-attach_ospf_docker", "hostname": "server102",
+    "vrf": "default", "prefix": "192.168.11.0/24", "nexthopIps": [""], "oifs": ["docker0"],
+    "protocol": "kernel", "source": "192.168.11.1", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594387420170}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "server102", "vrf": "default", "prefix": "192.168.121.0/24", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "192.168.121.243", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594387420170}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "server103", "vrf": "default", "prefix":
+    "192.168.12.0/24", "nexthopIps": [""], "oifs": ["docker0"], "protocol": "kernel",
+    "source": "192.168.12.1", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594387420172}, {"namespace": "single-attach_ospf_docker", "hostname": "server103",
+    "vrf": "default", "prefix": "192.168.121.0/24", "nexthopIps": [""], "oifs": ["eth0"],
+    "protocol": "kernel", "source": "192.168.121.124", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594387420172}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "server104", "vrf": "default", "prefix": "192.168.13.0/24", "nexthopIps":
+    [""], "oifs": ["docker0"], "protocol": "kernel", "source": "192.168.13.1", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594387420165}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "server104", "vrf": "default", "prefix":
+    "192.168.121.0/24", "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel",
+    "source": "192.168.121.160", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594387420165}, {"namespace": "single-attach_ospf_docker", "hostname": "spine01",
+    "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps": ["10.0.0.11"], "oifs":
+    ["swp1"], "protocol": "ospf", "source": "", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594387420263}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps":
+    ["10.0.0.12"], "oifs": ["swp2"], "protocol": "ospf", "source": "", "metric": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1594387420263}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.13/32", "nexthopIps":
+    ["10.0.0.13"], "oifs": ["swp3"], "protocol": "ospf", "source": "", "metric": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1594387420263}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps":
+    ["10.0.0.14"], "oifs": ["swp4"], "protocol": "ospf", "source": "", "metric": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1594387420263}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps":
+    ["10.0.0.11", "10.0.0.12", "10.0.0.14", "10.0.0.101", "10.0.0.102", "10.0.0.13"],
+    "oifs": ["swp1", "swp2", "swp4", "swp6", "swp5", "swp3"], "protocol": "ospf",
+    "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594387420263},
+    {"namespace": "single-attach_ospf_docker", "hostname": "spine01", "vrf": "default",
+    "prefix": "10.0.0.101/32", "nexthopIps": ["10.0.0.101"], "oifs": ["swp6"], "protocol":
+    "ospf", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594387420263}, {"namespace": "single-attach_ospf_docker", "hostname": "spine01",
+    "vrf": "default", "prefix": "10.0.0.102/32", "nexthopIps": ["10.0.0.102"], "oifs":
+    ["swp5"], "protocol": "ospf", "source": "", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594387420263}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine01", "vrf": "mgmt", "prefix": "192.168.121.0/24", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "192.168.121.220", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594387420263}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "spine02", "vrf": "default", "prefix":
+    "10.0.0.11/32", "nexthopIps": ["10.0.0.11"], "oifs": ["swp1"], "protocol": "ospf",
+    "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594387420233},
+    {"namespace": "single-attach_ospf_docker", "hostname": "spine02", "vrf": "default",
+    "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.12"], "oifs": ["swp2"], "protocol":
+    "ospf", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594387420233}, {"namespace": "single-attach_ospf_docker", "hostname": "spine02",
+    "vrf": "default", "prefix": "10.0.0.13/32", "nexthopIps": ["10.0.0.13"], "oifs":
+    ["swp3"], "protocol": "ospf", "source": "", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594387420233}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps":
+    ["10.0.0.14"], "oifs": ["swp4"], "protocol": "ospf", "source": "", "metric": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1594387420233}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.21/32", "nexthopIps":
+    ["10.0.0.11", "10.0.0.12", "10.0.0.14", "10.0.0.101", "10.0.0.102", "10.0.0.13"],
+    "oifs": ["swp1", "swp2", "swp4", "swp6", "swp5", "swp3"], "protocol": "ospf",
+    "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594387420233},
+    {"namespace": "single-attach_ospf_docker", "hostname": "spine02", "vrf": "default",
+    "prefix": "10.0.0.101/32", "nexthopIps": ["10.0.0.101"], "oifs": ["swp6"], "protocol":
+    "ospf", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594387420233}, {"namespace": "single-attach_ospf_docker", "hostname": "spine02",
+    "vrf": "default", "prefix": "10.0.0.102/32", "nexthopIps": ["10.0.0.102"], "oifs":
+    ["swp5"], "protocol": "ospf", "source": "", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594387420233}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine02", "vrf": "mgmt", "prefix": "192.168.121.0/24", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "192.168.121.130", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594387420233}]'
+- command: route show --columns=hostname --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: route show
+  output: '[{"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "internet"}, {"hostname": "internet"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "server101"}, {"hostname": "server101"}, {"hostname": "server102"},
+    {"hostname": "server102"}, {"hostname": "server103"}, {"hostname": "server103"},
+    {"hostname": "server104"}, {"hostname": "server104"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}]'
+- command: route summarize --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: route summarize
+  output: '{"single-attach_ospf_docker": {"deviceCnt": 14, "uniquePrefixCnt": 14,
+    "uniqueVrfsCnt": 2, "ifRoutesCnt": 0, "hostRoutesCnt": 56, "totalV4RoutesinNs":
+    84, "totalV6RoutesinNs": 0, "routingProtocolCnt": {"ospf": 56, "kernel": 18, "":
+    10}, "routesPerHostStat": [2, 9, 9.0], "routesperVrfStat": [16, 68, 42], "deviceWithNoDefRoute":
+    true}}'
+- command: route unique --columns=hostname --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: route unique
+  output: '[{"hostname": "edge01", "count": 2}, {"hostname": "exit01", "count": 10},
+    {"hostname": "exit02", "count": 10}, {"hostname": "internet", "count": 2}, {"hostname":
+    "leaf01", "count": 10}, {"hostname": "leaf02", "count": 10}, {"hostname": "leaf03",
+    "count": 10}, {"hostname": "leaf04", "count": 10}, {"hostname": "server101", "count":
+    2}, {"hostname": "server102", "count": 2}, {"hostname": "server103", "count":
+    2}, {"hostname": "server104", "count": 2}, {"hostname": "spine01", "count": 10},
+    {"hostname": "spine02", "count": 10}]'
+- command: route lpm --address=10.0.0.1 --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: route lpm
+  output: '[{"namespace": "single-attach_ospf_docker", "hostname": "edge01", "vrf":
+    "default", "prefix": "0.0.0.0/0", "nexthopIps": ["192.168.121.1"], "oifs": ["eth0"],
+    "protocol": "", "source": "", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594387420165}, {"namespace": "single-attach_ospf_docker", "hostname":
+    "internet", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["192.168.121.1"],
+    "oifs": ["eth0"], "protocol": "", "source": "", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594387420277}]'
+- command: route lpm --address="10.0.0.12" --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: route lpm
+  output: '[{"namespace": "single-attach_ospf_docker", "hostname": "edge01", "vrf":
+    "default", "prefix": "0.0.0.0/0", "nexthopIps": ["192.168.121.1"], "oifs": ["eth0"],
+    "protocol": "", "source": "", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594387420165}, {"namespace": "single-attach_ospf_docker", "hostname":
+    "exit01", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.21",
+    "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594387420263}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "exit02", "vrf": "default", "prefix":
+    "10.0.0.12/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"],
+    "protocol": "ospf", "source": "", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594387420277}, {"namespace": "single-attach_ospf_docker", "hostname":
+    "internet", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["192.168.121.1"],
+    "oifs": ["eth0"], "protocol": "", "source": "", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594387420277}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf01", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594387420226},
+    {"namespace": "single-attach_ospf_docker", "hostname": "leaf03", "vrf": "default",
+    "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1",
+    "swp2"], "protocol": "ospf", "source": "", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594387420240}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf04", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594387420277},
+    {"namespace": "single-attach_ospf_docker", "hostname": "spine01", "vrf": "default",
+    "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.12"], "oifs": ["swp2"], "protocol":
+    "ospf", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594387420263}, {"namespace": "single-attach_ospf_docker", "hostname": "spine02",
+    "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.12"], "oifs":
+    ["swp2"], "protocol": "ospf", "source": "", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594387420233}]'
+- command: route lpm --address="10.0.0.12" --hostname="server101 server103" --format=json
+    --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: route lpm
+  output: '[]'
+- command: route lpm --address="10.0.0.12" --vrf=evpn-vrf --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: route lpm
+  output: '[]'
+- command: route lpm --address="10.0.0.11" --vrf=evpn-vrf --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: route lpm
+  output: '[]'

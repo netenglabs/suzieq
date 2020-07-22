@@ -1,4 +1,5 @@
 import time
+import pandas as pd
 from nubia import command, argument
 
 from suzieq.cli.sqcmds.command import SqCommand
@@ -49,15 +50,36 @@ class MacCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
+        drop_cols = []
+        vlans = vlan.split()
+        if vlans and '!' in vlan:
+            df = pd.DataFrame({'error': ['Cannot use ! with VLAN yet']})
+            return self._gen_output(df)
+        try:
+            vlans = [int(x) for x in vlans]
+        except Exception:
+            df = pd.DataFrame({'error': [f'Invalid VLAN value: {vlans}']})
+            return self._gen_output(df)
+
+        if vlans and (self.columns != ['default'] and self.columns != ['*'] and
+                      'vlan' not in self.columns):
+            addnl_fields = ['vlan']
+            drop_cols.append('vlan')
+        else:
+            addnl_fields = []
+
         df = self.sqobj.get(
             hostname=self.hostname,
-            vlan=vlan.split(),
             macaddr=macaddr.split(),
+            addnl_fields=addnl_fields,
             remoteVtepIp=remoteVtepIp.split(),
+            vlan=vlans,
             columns=self.columns,
             namespace=self.namespace,
         )
         if not df.empty and "mackey" in df.columns:
-            df.drop(columns=['mackey'], inplace=True)
+            drop_cols.append('mackey')
+
+        df.drop(columns=drop_cols, inplace=True)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)

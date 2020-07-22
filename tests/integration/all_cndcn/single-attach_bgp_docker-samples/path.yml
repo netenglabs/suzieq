@@ -1,0 +1,60 @@
+description: 'Testing verbs for path: show summarize'
+tests:
+- command: path show --format=json --namespace=single-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_docker/parquet-out
+  error:
+    error: '[{"error": "ERROR: Must specify trace source and dest"}]'
+  marks: path show
+- command: path show --dest=172.16.2.104 --src=172.16.1.101 --format=json --namespace=single-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_docker/parquet-out
+  error:
+    error: '[{"error": "ERROR: Invalid dest 172.16.2.104"}]'
+  marks: path show
+- command: path show --dest=172.16.2.104 --src=172.16.1.104 --format=json --namespace=single-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_docker/parquet-out
+  error:
+    error: '[{"error": "ERROR: Invalid src 172.16.1.104"}]'
+  marks: path show
+- command: path show --dest=10.0.0.11 --src=10.0.0.14 --format=json --namespace=single-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_docker/parquet-out
+  marks: path show
+  output: '[{"pathid": 1, "hopCount": 0, "namespace": "single-attach_bgp_docker",
+    "hostname": "leaf04", "iif": "lo", "vrf": "default", "overlay": false, "mtuMatch":
+    null, "mtu": 65536, "timestamp": 1594389609527}, {"pathid": 1, "hopCount": 1,
+    "namespace": "single-attach_bgp_docker", "hostname": "spine01", "iif": "swp4",
+    "vrf": "default", "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp":
+    1594389609632}, {"pathid": 1, "hopCount": 2, "namespace": "single-attach_bgp_docker",
+    "hostname": "leaf01", "iif": "swp1", "vrf": "default", "overlay": false, "mtuMatch":
+    true, "mtu": 1500, "timestamp": 1594389609664}, {"pathid": 1, "hopCount": 2, "namespace":
+    "single-attach_bgp_docker", "hostname": "leaf01", "iif": "lo", "vrf": "default",
+    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1594389609545},
+    {"pathid": 2, "hopCount": 0, "namespace": "single-attach_bgp_docker", "hostname":
+    "leaf04", "iif": "lo", "vrf": "default", "overlay": false, "mtuMatch": null, "mtu":
+    65536, "timestamp": 1594389609527}, {"pathid": 2, "hopCount": 1, "namespace":
+    "single-attach_bgp_docker", "hostname": "spine02", "iif": "swp4", "vrf": "default",
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594389609632},
+    {"pathid": 2, "hopCount": 2, "namespace": "single-attach_bgp_docker", "hostname":
+    "leaf01", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch": true,
+    "mtu": 1500, "timestamp": 1594389609656}, {"pathid": 2, "hopCount": 2, "namespace":
+    "single-attach_bgp_docker", "hostname": "leaf01", "iif": "lo", "vrf": "default",
+    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1594389609545}]'
+- command: path show --src=172.16.1.101 --dest=172.16.253.1 --format=json --namespace=single-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_docker/parquet-out
+  marks: path show
+  output: '[{"pathid": 1, "hopCount": 0, "namespace": "single-attach_bgp_docker",
+    "hostname": "server101", "iif": "eth1", "vrf": "default", "overlay": false, "mtuMatch":
+    null, "mtu": 1500, "timestamp": 1594389609308}, {"pathid": 1, "hopCount": 1, "namespace":
+    "single-attach_bgp_docker", "hostname": "leaf01", "iif": "vlan10", "vrf": "default",
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594389609477}]'
+- command: path summarize --dest=172.16.2.104 --src=172.16.1.101 --format=json --namespace=single-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_docker/parquet-out
+  error:
+    error: '[{"error": "ERROR: Invalid dest 172.16.2.104"}]'
+  marks: path summarize
+- command: path summarize --dest=10.0.0.11 --src=10.0.0.14 --format=json --namespace=single-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_docker/parquet-out
+  marks: path summarize
+  output: '[{"single-attach_bgp_docker": 2}, {"single-attach_bgp_docker": [1, 2, 1]},
+    {"single-attach_bgp_docker": 2}, {"single-attach_bgp_docker": 2.0}, {"single-attach_bgp_docker":
+    4}, {"single-attach_bgp_docker": 1500}, {"single-attach_bgp_docker": false}, {"single-attach_bgp_docker":
+    false}]'

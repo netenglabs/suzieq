@@ -1,0 +1,28 @@
+description: 'Testing verbs for vlan: show summarize unique'
+tests:
+- command: vlan show --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: vlan show
+  output: '[{"namespace": "single-attach_ospf_docker", "hostname": "server101", "ifname":
+    "docker0", "vlan": ["1"], "pvid": 1, "timestamp": 1594387420164}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "server102", "ifname": "docker0", "vlan":
+    ["1"], "pvid": 1, "timestamp": 1594387420165}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "server103", "ifname": "docker0", "vlan": ["1"], "pvid": 1, "timestamp":
+    1594387420165}, {"namespace": "single-attach_ospf_docker", "hostname": "server104",
+    "ifname": "docker0", "vlan": ["1"], "pvid": 1, "timestamp": 1594387420164}]'
+- command: vlan show --columns=hostname --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: vlan show
+  output: '[{"hostname": "server101"}, {"hostname": "server102"}, {"hostname": "server103"},
+    {"hostname": "server104"}]'
+- command: vlan summarize --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: vlan summarize
+  output: '{"single-attach_ospf_docker": {"deviceCnt": 4, "uniquePvidCnt": {"1": 4},
+    "uniqueVlanCnt": {"1": 4}}}'
+- command: vlan unique --columns=hostname --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: vlan unique
+  output: '[{"hostname": "server104", "count": 1}, {"hostname": "server103", "count":
+    1}, {"hostname": "server102", "count": 1}, {"hostname": "server101", "count":
+    1}]'

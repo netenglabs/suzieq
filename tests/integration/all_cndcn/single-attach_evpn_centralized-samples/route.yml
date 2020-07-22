@@ -1,0 +1,535 @@
+description: 'Testing verbs for route: show summarize unique lpm'
+tests:
+- command: route show --format=json --namespace=single-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_centralized/parquet-out
+  marks: route show
+  output: '[{"namespace": "single-attach_evpn_centralized", "hostname": "edge01",
+    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["192.168.121.1"], "oifs":
+    ["eth0"], "protocol": "", "source": "", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594386755533}, {"namespace": "single-attach_evpn_centralized", "hostname":
+    "edge01", "vrf": "default", "prefix": "169.254.253.0/30", "nexthopIps": [""],
+    "oifs": ["eth2.2"], "protocol": "kernel", "source": "169.254.253.2", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594386755533}, {"namespace":
+    "single-attach_evpn_centralized", "hostname": "edge01", "vrf": "default", "prefix":
+    "169.254.253.4/30", "nexthopIps": [""], "oifs": ["eth2.3"], "protocol": "kernel",
+    "source": "169.254.253.6", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594386755533}, {"namespace": "single-attach_evpn_centralized", "hostname": "edge01",
+    "vrf": "default", "prefix": "169.254.253.8/30", "nexthopIps": [""], "oifs": ["eth2.4"],
+    "protocol": "kernel", "source": "169.254.253.10", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594386755533}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "edge01", "vrf": "default", "prefix": "169.254.254.0/30", "nexthopIps":
+    [""], "oifs": ["eth1.2"], "protocol": "kernel", "source": "169.254.254.2", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594386755533}, {"namespace":
+    "single-attach_evpn_centralized", "hostname": "edge01", "vrf": "default", "prefix":
+    "169.254.254.4/30", "nexthopIps": [""], "oifs": ["eth1.3"], "protocol": "kernel",
+    "source": "169.254.254.6", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594386755533}, {"namespace": "single-attach_evpn_centralized", "hostname": "edge01",
+    "vrf": "default", "prefix": "169.254.254.8/30", "nexthopIps": [""], "oifs": ["eth1.4"],
+    "protocol": "kernel", "source": "169.254.254.10", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594386755533}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "edge01", "vrf": "default", "prefix": "192.168.121.0/24", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "192.168.121.232", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594386755533}, {"namespace":
+    "single-attach_evpn_centralized", "hostname": "exit01", "vrf": "default", "prefix":
+    "10.0.0.11/32", "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1",
+    "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594386755623}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps":
+    ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594386755623},
+    {"namespace": "single-attach_evpn_centralized", "hostname": "exit01", "vrf": "default",
+    "prefix": "10.0.0.13/32", "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs":
+    ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594386755623}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps":
+    ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594386755623},
+    {"namespace": "single-attach_evpn_centralized", "hostname": "exit01", "vrf": "default",
+    "prefix": "10.0.0.21/32", "nexthopIps": ["169.254.0.1"], "oifs": ["swp1"], "protocol":
+    "bgp", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594386755623}, {"namespace": "single-attach_evpn_centralized", "hostname": "exit01",
+    "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps": ["169.254.0.1"], "oifs":
+    ["swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594386755623}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.102/32", "nexthopIps":
+    ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594386755623},
+    {"namespace": "single-attach_evpn_centralized", "hostname": "exit01", "vrf": "default",
+    "prefix": "169.254.254.0/30", "nexthopIps": [""], "oifs": ["swp5.2"], "protocol":
+    "kernel", "source": "169.254.254.1", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594386755623}, {"namespace": "single-attach_evpn_centralized", "hostname":
+    "exit01", "vrf": "evpn-vrf", "prefix": "169.254.254.4/30", "nexthopIps": [""],
+    "oifs": ["swp5.3"], "protocol": "kernel", "source": "169.254.254.5", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594386755623}, {"namespace":
+    "single-attach_evpn_centralized", "hostname": "exit01", "vrf": "evpn-vrf", "prefix":
+    "172.16.1.0/24", "nexthopIps": [""], "oifs": ["vlan13"], "protocol": "kernel",
+    "source": "172.16.1.11", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594386755623}, {"namespace": "single-attach_evpn_centralized", "hostname": "exit01",
+    "vrf": "evpn-vrf", "prefix": "172.16.2.0/24", "nexthopIps": [""], "oifs": ["vlan24"],
+    "protocol": "kernel", "source": "172.16.2.11", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594386755623}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "exit01", "vrf": "internet-vrf", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["169.254.127.0"], "oifs": ["swp6"], "protocol": "bgp", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594386755623}, {"namespace":
+    "single-attach_evpn_centralized", "hostname": "exit01", "vrf": "internet-vrf",
+    "prefix": "10.0.0.102/32", "nexthopIps": ["169.254.127.0"], "oifs": ["swp6"],
+    "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594386755623}, {"namespace": "single-attach_evpn_centralized", "hostname":
+    "exit01", "vrf": "internet-vrf", "prefix": "10.0.0.253/32", "nexthopIps": ["169.254.127.0"],
+    "oifs": ["swp6"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594386755623}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "exit01", "vrf": "internet-vrf", "prefix": "169.254.127.0/31", "nexthopIps":
+    [""], "oifs": ["swp6"], "protocol": "kernel", "source": "169.254.127.1", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594386755623}, {"namespace":
+    "single-attach_evpn_centralized", "hostname": "exit01", "vrf": "internet-vrf",
+    "prefix": "169.254.254.8/30", "nexthopIps": [""], "oifs": ["swp5.4"], "protocol":
+    "kernel", "source": "169.254.254.9", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594386755623}, {"namespace": "single-attach_evpn_centralized", "hostname":
+    "exit01", "vrf": "internet-vrf", "prefix": "172.16.253.1/32", "nexthopIps": ["169.254.127.0"],
+    "oifs": ["swp6"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594386755623}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "exit01", "vrf": "mgmt", "prefix": "192.168.121.0/24", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "192.168.121.230", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594386755623}, {"namespace":
+    "single-attach_evpn_centralized", "hostname": "exit02", "vrf": "default", "prefix":
+    "10.0.0.11/32", "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1",
+    "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594386755620}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps":
+    ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594386755620},
+    {"namespace": "single-attach_evpn_centralized", "hostname": "exit02", "vrf": "default",
+    "prefix": "10.0.0.13/32", "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs":
+    ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594386755620}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps":
+    ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594386755620},
+    {"namespace": "single-attach_evpn_centralized", "hostname": "exit02", "vrf": "default",
+    "prefix": "10.0.0.21/32", "nexthopIps": ["169.254.0.1"], "oifs": ["swp1"], "protocol":
+    "bgp", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594386755620}, {"namespace": "single-attach_evpn_centralized", "hostname": "exit02",
+    "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps": ["169.254.0.1"], "oifs":
+    ["swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594386755620}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.101/32", "nexthopIps":
+    ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594386755620},
+    {"namespace": "single-attach_evpn_centralized", "hostname": "exit02", "vrf": "default",
+    "prefix": "169.254.253.0/30", "nexthopIps": [""], "oifs": ["swp5.2"], "protocol":
+    "kernel", "source": "169.254.253.1", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594386755620}, {"namespace": "single-attach_evpn_centralized", "hostname":
+    "exit02", "vrf": "evpn-vrf", "prefix": "169.254.253.4/30", "nexthopIps": [""],
+    "oifs": ["swp5.3"], "protocol": "kernel", "source": "169.254.253.5", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594386755620}, {"namespace":
+    "single-attach_evpn_centralized", "hostname": "exit02", "vrf": "evpn-vrf", "prefix":
+    "172.16.1.0/24", "nexthopIps": [""], "oifs": ["vlan13"], "protocol": "kernel",
+    "source": "172.16.1.12", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594386755620}, {"namespace": "single-attach_evpn_centralized", "hostname": "exit02",
+    "vrf": "evpn-vrf", "prefix": "172.16.2.0/24", "nexthopIps": [""], "oifs": ["vlan24"],
+    "protocol": "kernel", "source": "172.16.2.12", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594386755620}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "exit02", "vrf": "internet-vrf", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["169.254.127.2"], "oifs": ["swp6"], "protocol": "bgp", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594386755620}, {"namespace":
+    "single-attach_evpn_centralized", "hostname": "exit02", "vrf": "internet-vrf",
+    "prefix": "10.0.0.101/32", "nexthopIps": ["169.254.127.2"], "oifs": ["swp6"],
+    "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594386755620}, {"namespace": "single-attach_evpn_centralized", "hostname":
+    "exit02", "vrf": "internet-vrf", "prefix": "10.0.0.253/32", "nexthopIps": ["169.254.127.2"],
+    "oifs": ["swp6"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594386755620}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "exit02", "vrf": "internet-vrf", "prefix": "169.254.127.2/31", "nexthopIps":
+    [""], "oifs": ["swp6"], "protocol": "kernel", "source": "169.254.127.3", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594386755620}, {"namespace":
+    "single-attach_evpn_centralized", "hostname": "exit02", "vrf": "internet-vrf",
+    "prefix": "169.254.253.8/30", "nexthopIps": [""], "oifs": ["swp5.4"], "protocol":
+    "kernel", "source": "169.254.253.9", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594386755620}, {"namespace": "single-attach_evpn_centralized", "hostname":
+    "exit02", "vrf": "internet-vrf", "prefix": "172.16.253.1/32", "nexthopIps": ["169.254.127.2"],
+    "oifs": ["swp6"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594386755620}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "exit02", "vrf": "mgmt", "prefix": "192.168.121.0/24", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "192.168.121.129", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594386755620}, {"namespace":
+    "single-attach_evpn_centralized", "hostname": "internet", "vrf": "default", "prefix":
+    "0.0.0.0/0", "nexthopIps": ["192.168.121.1"], "oifs": ["eth0"], "protocol": "",
+    "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594386755623},
+    {"namespace": "single-attach_evpn_centralized", "hostname": "internet", "vrf":
+    "default", "prefix": "10.0.0.101/32", "nexthopIps": ["169.254.127.1"], "oifs":
+    ["swp1"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594386755623}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "internet", "vrf": "default", "prefix": "10.0.0.102/32", "nexthopIps":
+    ["169.254.127.3"], "oifs": ["swp2"], "protocol": "bgp", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594386755623}, {"namespace":
+    "single-attach_evpn_centralized", "hostname": "internet", "vrf": "default", "prefix":
+    "169.254.127.0/31", "nexthopIps": [""], "oifs": ["swp1"], "protocol": "kernel",
+    "source": "169.254.127.0", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594386755623}, {"namespace": "single-attach_evpn_centralized", "hostname": "internet",
+    "vrf": "default", "prefix": "169.254.127.2/31", "nexthopIps": [""], "oifs": ["swp2"],
+    "protocol": "kernel", "source": "169.254.127.2", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594386755623}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "internet", "vrf": "default", "prefix": "192.168.121.0/24", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "192.168.121.15", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594386755623}, {"namespace":
+    "single-attach_evpn_centralized", "hostname": "leaf01", "vrf": "default", "prefix":
+    "10.0.0.12/32", "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1",
+    "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594386755622}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "leaf01", "vrf": "default", "prefix": "10.0.0.13/32", "nexthopIps":
+    ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594386755622},
+    {"namespace": "single-attach_evpn_centralized", "hostname": "leaf01", "vrf": "default",
+    "prefix": "10.0.0.14/32", "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs":
+    ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594386755622}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "leaf01", "vrf": "default", "prefix": "10.0.0.21/32", "nexthopIps":
+    ["169.254.0.1"], "oifs": ["swp1"], "protocol": "bgp", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594386755622}, {"namespace":
+    "single-attach_evpn_centralized", "hostname": "leaf01", "vrf": "default", "prefix":
+    "10.0.0.22/32", "nexthopIps": ["169.254.0.1"], "oifs": ["swp2"], "protocol": "bgp",
+    "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594386755622},
+    {"namespace": "single-attach_evpn_centralized", "hostname": "leaf01", "vrf": "default",
+    "prefix": "10.0.0.101/32", "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs":
+    ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594386755622}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "leaf01", "vrf": "default", "prefix": "10.0.0.102/32", "nexthopIps":
+    ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594386755622},
+    {"namespace": "single-attach_evpn_centralized", "hostname": "leaf01", "vrf": "mgmt",
+    "prefix": "192.168.121.0/24", "nexthopIps": [""], "oifs": ["eth0"], "protocol":
+    "kernel", "source": "192.168.121.11", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594386755622}, {"namespace": "single-attach_evpn_centralized", "hostname":
+    "leaf02", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps": ["169.254.0.1",
+    "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594386755556}, {"namespace":
+    "single-attach_evpn_centralized", "hostname": "leaf02", "vrf": "default", "prefix":
+    "10.0.0.13/32", "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1",
+    "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594386755556}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "leaf02", "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps":
+    ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594386755556},
+    {"namespace": "single-attach_evpn_centralized", "hostname": "leaf02", "vrf": "default",
+    "prefix": "10.0.0.21/32", "nexthopIps": ["169.254.0.1"], "oifs": ["swp1"], "protocol":
+    "bgp", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594386755556}, {"namespace": "single-attach_evpn_centralized", "hostname": "leaf02",
+    "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps": ["169.254.0.1"], "oifs":
+    ["swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594386755556}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "leaf02", "vrf": "default", "prefix": "10.0.0.101/32", "nexthopIps":
+    ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594386755556},
+    {"namespace": "single-attach_evpn_centralized", "hostname": "leaf02", "vrf": "default",
+    "prefix": "10.0.0.102/32", "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs":
+    ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594386755556}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "leaf02", "vrf": "mgmt", "prefix": "192.168.121.0/24", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "192.168.121.5", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594386755556}, {"namespace":
+    "single-attach_evpn_centralized", "hostname": "leaf03", "vrf": "default", "prefix":
+    "10.0.0.11/32", "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1",
+    "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594386755607}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "leaf03", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps":
+    ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594386755607},
+    {"namespace": "single-attach_evpn_centralized", "hostname": "leaf03", "vrf": "default",
+    "prefix": "10.0.0.14/32", "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs":
+    ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594386755607}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "leaf03", "vrf": "default", "prefix": "10.0.0.21/32", "nexthopIps":
+    ["169.254.0.1"], "oifs": ["swp1"], "protocol": "bgp", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594386755607}, {"namespace":
+    "single-attach_evpn_centralized", "hostname": "leaf03", "vrf": "default", "prefix":
+    "10.0.0.22/32", "nexthopIps": ["169.254.0.1"], "oifs": ["swp2"], "protocol": "bgp",
+    "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594386755607},
+    {"namespace": "single-attach_evpn_centralized", "hostname": "leaf03", "vrf": "default",
+    "prefix": "10.0.0.101/32", "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs":
+    ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594386755607}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "leaf03", "vrf": "default", "prefix": "10.0.0.102/32", "nexthopIps":
+    ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594386755607},
+    {"namespace": "single-attach_evpn_centralized", "hostname": "leaf03", "vrf": "mgmt",
+    "prefix": "192.168.121.0/24", "nexthopIps": [""], "oifs": ["eth0"], "protocol":
+    "kernel", "source": "192.168.121.18", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594386755607}, {"namespace": "single-attach_evpn_centralized", "hostname":
+    "leaf04", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps": ["169.254.0.1",
+    "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594386755571}, {"namespace":
+    "single-attach_evpn_centralized", "hostname": "leaf04", "vrf": "default", "prefix":
+    "10.0.0.12/32", "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1",
+    "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594386755571}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "leaf04", "vrf": "default", "prefix": "10.0.0.13/32", "nexthopIps":
+    ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594386755571},
+    {"namespace": "single-attach_evpn_centralized", "hostname": "leaf04", "vrf": "default",
+    "prefix": "10.0.0.21/32", "nexthopIps": ["169.254.0.1"], "oifs": ["swp1"], "protocol":
+    "bgp", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594386755571}, {"namespace": "single-attach_evpn_centralized", "hostname": "leaf04",
+    "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps": ["169.254.0.1"], "oifs":
+    ["swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594386755571}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "leaf04", "vrf": "default", "prefix": "10.0.0.101/32", "nexthopIps":
+    ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594386755571},
+    {"namespace": "single-attach_evpn_centralized", "hostname": "leaf04", "vrf": "default",
+    "prefix": "10.0.0.102/32", "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs":
+    ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594386755571}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "leaf04", "vrf": "mgmt", "prefix": "192.168.121.0/24", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "192.168.121.96", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594386755571}, {"namespace":
+    "single-attach_evpn_centralized", "hostname": "server101", "vrf": "default", "prefix":
+    "0.0.0.0/0", "nexthopIps": ["192.168.121.1"], "oifs": ["eth0"], "protocol": "",
+    "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594386755467},
+    {"namespace": "single-attach_evpn_centralized", "hostname": "server101", "vrf":
+    "default", "prefix": "172.16.0.0/16", "nexthopIps": ["172.16.1.1"], "oifs": ["eth1"],
+    "protocol": "", "source": "", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594386755467}, {"namespace": "single-attach_evpn_centralized", "hostname":
+    "server101", "vrf": "default", "prefix": "172.16.1.0/24", "nexthopIps": [""],
+    "oifs": ["eth1"], "protocol": "kernel", "source": "172.16.1.101", "metric": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1594386755467}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "server101", "vrf": "default", "prefix": "192.168.121.0/24", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "192.168.121.193", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594386755467}, {"namespace":
+    "single-attach_evpn_centralized", "hostname": "server102", "vrf": "default", "prefix":
+    "0.0.0.0/0", "nexthopIps": ["192.168.121.1"], "oifs": ["eth0"], "protocol": "",
+    "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594386755473},
+    {"namespace": "single-attach_evpn_centralized", "hostname": "server102", "vrf":
+    "default", "prefix": "172.16.0.0/16", "nexthopIps": ["172.16.2.1"], "oifs": ["eth1"],
+    "protocol": "", "source": "", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594386755473}, {"namespace": "single-attach_evpn_centralized", "hostname":
+    "server102", "vrf": "default", "prefix": "172.16.2.0/24", "nexthopIps": [""],
+    "oifs": ["eth1"], "protocol": "kernel", "source": "172.16.2.102", "metric": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1594386755473}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "server102", "vrf": "default", "prefix": "192.168.121.0/24", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "192.168.121.241", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594386755473}, {"namespace":
+    "single-attach_evpn_centralized", "hostname": "server103", "vrf": "default", "prefix":
+    "0.0.0.0/0", "nexthopIps": ["192.168.121.1"], "oifs": ["eth0"], "protocol": "",
+    "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594386755473},
+    {"namespace": "single-attach_evpn_centralized", "hostname": "server103", "vrf":
+    "default", "prefix": "172.16.0.0/16", "nexthopIps": ["172.16.1.1"], "oifs": ["eth1"],
+    "protocol": "", "source": "", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594386755473}, {"namespace": "single-attach_evpn_centralized", "hostname":
+    "server103", "vrf": "default", "prefix": "172.16.1.0/24", "nexthopIps": [""],
+    "oifs": ["eth1"], "protocol": "kernel", "source": "172.16.1.103", "metric": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1594386755473}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "server103", "vrf": "default", "prefix": "192.168.121.0/24", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "192.168.121.102", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594386755473}, {"namespace":
+    "single-attach_evpn_centralized", "hostname": "server104", "vrf": "default", "prefix":
+    "0.0.0.0/0", "nexthopIps": ["192.168.121.1"], "oifs": ["eth0"], "protocol": "",
+    "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594386755481},
+    {"namespace": "single-attach_evpn_centralized", "hostname": "server104", "vrf":
+    "default", "prefix": "172.16.0.0/16", "nexthopIps": ["172.16.2.1"], "oifs": ["eth1"],
+    "protocol": "", "source": "", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594386755481}, {"namespace": "single-attach_evpn_centralized", "hostname":
+    "server104", "vrf": "default", "prefix": "172.16.2.0/24", "nexthopIps": [""],
+    "oifs": ["eth1"], "protocol": "kernel", "source": "172.16.2.104", "metric": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1594386755481}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "server104", "vrf": "default", "prefix": "192.168.121.0/24", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "192.168.121.134", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594386755481}, {"namespace":
+    "single-attach_evpn_centralized", "hostname": "spine01", "vrf": "default", "prefix":
+    "10.0.0.11/32", "nexthopIps": ["169.254.0.1"], "oifs": ["swp1"], "protocol": "bgp",
+    "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594386755573},
+    {"namespace": "single-attach_evpn_centralized", "hostname": "spine01", "vrf":
+    "default", "prefix": "10.0.0.12/32", "nexthopIps": ["169.254.0.1"], "oifs": ["swp2"],
+    "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594386755573}, {"namespace": "single-attach_evpn_centralized", "hostname":
+    "spine01", "vrf": "default", "prefix": "10.0.0.13/32", "nexthopIps": ["169.254.0.1"],
+    "oifs": ["swp3"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594386755573}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps":
+    ["169.254.0.1"], "oifs": ["swp4"], "protocol": "bgp", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594386755573}, {"namespace":
+    "single-attach_evpn_centralized", "hostname": "spine01", "vrf": "default", "prefix":
+    "10.0.0.101/32", "nexthopIps": ["169.254.0.1"], "oifs": ["swp6"], "protocol":
+    "bgp", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594386755573}, {"namespace": "single-attach_evpn_centralized", "hostname": "spine01",
+    "vrf": "default", "prefix": "10.0.0.102/32", "nexthopIps": ["169.254.0.1"], "oifs":
+    ["swp5"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594386755573}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "spine01", "vrf": "mgmt", "prefix": "192.168.121.0/24", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "192.168.121.115", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594386755573}, {"namespace":
+    "single-attach_evpn_centralized", "hostname": "spine02", "vrf": "default", "prefix":
+    "10.0.0.11/32", "nexthopIps": ["169.254.0.1"], "oifs": ["swp1"], "protocol": "bgp",
+    "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594386755642},
+    {"namespace": "single-attach_evpn_centralized", "hostname": "spine02", "vrf":
+    "default", "prefix": "10.0.0.12/32", "nexthopIps": ["169.254.0.1"], "oifs": ["swp2"],
+    "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594386755642}, {"namespace": "single-attach_evpn_centralized", "hostname":
+    "spine02", "vrf": "default", "prefix": "10.0.0.13/32", "nexthopIps": ["169.254.0.1"],
+    "oifs": ["swp3"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594386755642}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps":
+    ["169.254.0.1"], "oifs": ["swp4"], "protocol": "bgp", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594386755642}, {"namespace":
+    "single-attach_evpn_centralized", "hostname": "spine02", "vrf": "default", "prefix":
+    "10.0.0.101/32", "nexthopIps": ["169.254.0.1"], "oifs": ["swp6"], "protocol":
+    "bgp", "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1594386755642}, {"namespace": "single-attach_evpn_centralized", "hostname": "spine02",
+    "vrf": "default", "prefix": "10.0.0.102/32", "nexthopIps": ["169.254.0.1"], "oifs":
+    ["swp5"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594386755642}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "spine02", "vrf": "mgmt", "prefix": "192.168.121.0/24", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "192.168.121.8", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594386755642}]'
+- command: route show --columns=hostname --format=json --namespace=single-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_centralized/parquet-out
+  marks: route show
+  output: '[{"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
+    {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname":
+    "edge01"}, {"hostname": "edge01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "internet"},
+    {"hostname": "internet"}, {"hostname": "internet"}, {"hostname": "internet"},
+    {"hostname": "internet"}, {"hostname": "internet"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "server101"},
+    {"hostname": "server101"}, {"hostname": "server101"}, {"hostname": "server101"},
+    {"hostname": "server102"}, {"hostname": "server102"}, {"hostname": "server102"},
+    {"hostname": "server102"}, {"hostname": "server103"}, {"hostname": "server103"},
+    {"hostname": "server103"}, {"hostname": "server103"}, {"hostname": "server104"},
+    {"hostname": "server104"}, {"hostname": "server104"}, {"hostname": "server104"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}]'
+- command: route summarize --format=json --namespace=single-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_centralized/parquet-out
+  marks: route summarize
+  output: '{"single-attach_evpn_centralized": {"deviceCnt": 14, "uniquePrefixCnt":
+    23, "uniqueVrfsCnt": 4, "ifRoutesCnt": 16, "hostRoutesCnt": 62, "totalV4RoutesinNs":
+    122, "totalV6RoutesinNs": 0, "routingProtocolCnt": {"bgp": 64, "kernel": 38, "":
+    20}, "routesPerHostStat": [4, 20, 8.0], "routesperVrfStat": [8, 86, 14], "deviceWithNoDefRoute":
+    true}}'
+- command: route unique --columns=hostname --format=json --namespace=single-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_centralized/parquet-out
+  marks: route unique
+  output: '[{"hostname": "edge01", "count": 8}, {"hostname": "exit01", "count": 21},
+    {"hostname": "exit02", "count": 21}, {"hostname": "internet", "count": 6}, {"hostname":
+    "leaf01", "count": 10}, {"hostname": "leaf02", "count": 10}, {"hostname": "leaf03",
+    "count": 10}, {"hostname": "leaf04", "count": 10}, {"hostname": "server101", "count":
+    4}, {"hostname": "server102", "count": 4}, {"hostname": "server103", "count":
+    4}, {"hostname": "server104", "count": 4}, {"hostname": "spine01", "count": 9},
+    {"hostname": "spine02", "count": 9}]'
+- command: route lpm --address=10.0.0.1 --format=json --namespace=single-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_centralized/parquet-out
+  marks: route lpm
+  output: '[{"namespace": "single-attach_evpn_centralized", "hostname": "edge01",
+    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["192.168.121.1"], "oifs":
+    ["eth0"], "protocol": "", "source": "", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594386755533}, {"namespace": "single-attach_evpn_centralized", "hostname":
+    "internet", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["192.168.121.1"],
+    "oifs": ["eth0"], "protocol": "", "source": "", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594386755623}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "server101", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["192.168.121.1"], "oifs": ["eth0"], "protocol": "", "source": "", "metric": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1594386755467}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "server102", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["192.168.121.1"], "oifs": ["eth0"], "protocol": "", "source": "", "metric": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1594386755473}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "server103", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["192.168.121.1"], "oifs": ["eth0"], "protocol": "", "source": "", "metric": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1594386755473}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "server104", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["192.168.121.1"], "oifs": ["eth0"], "protocol": "", "source": "", "metric": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1594386755481}]'
+- command: route lpm --address="10.0.0.12" --format=json --namespace=single-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_centralized/parquet-out
+  marks: route lpm
+  output: '[{"namespace": "single-attach_evpn_centralized", "hostname": "edge01",
+    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["192.168.121.1"], "oifs":
+    ["eth0"], "protocol": "", "source": "", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594386755533}, {"namespace": "single-attach_evpn_centralized", "hostname":
+    "exit01", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": ["169.254.0.1",
+    "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594386755623}, {"namespace":
+    "single-attach_evpn_centralized", "hostname": "exit02", "vrf": "default", "prefix":
+    "10.0.0.12/32", "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1",
+    "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594386755620}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "internet", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["192.168.121.1"], "oifs": ["eth0"], "protocol": "", "source": "", "metric": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1594386755623}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "leaf01", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps":
+    ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594386755622},
+    {"namespace": "single-attach_evpn_centralized", "hostname": "leaf03", "vrf": "default",
+    "prefix": "10.0.0.12/32", "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs":
+    ["swp1", "swp2"], "protocol": "bgp", "source": "", "metric": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1594386755607}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "leaf04", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps":
+    ["169.254.0.1", "169.254.0.1"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source":
+    "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594386755571},
+    {"namespace": "single-attach_evpn_centralized", "hostname": "server101", "vrf":
+    "default", "prefix": "0.0.0.0/0", "nexthopIps": ["192.168.121.1"], "oifs": ["eth0"],
+    "protocol": "", "source": "", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594386755467}, {"namespace": "single-attach_evpn_centralized", "hostname":
+    "server102", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["192.168.121.1"],
+    "oifs": ["eth0"], "protocol": "", "source": "", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594386755473}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "server103", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["192.168.121.1"], "oifs": ["eth0"], "protocol": "", "source": "", "metric": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1594386755473}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "server104", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["192.168.121.1"], "oifs": ["eth0"], "protocol": "", "source": "", "metric": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1594386755481}, {"namespace": "single-attach_evpn_centralized",
+    "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps":
+    ["169.254.0.1"], "oifs": ["swp2"], "protocol": "bgp", "source": "", "metric":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1594386755573}, {"namespace":
+    "single-attach_evpn_centralized", "hostname": "spine02", "vrf": "default", "prefix":
+    "10.0.0.12/32", "nexthopIps": ["169.254.0.1"], "oifs": ["swp2"], "protocol": "bgp",
+    "source": "", "metric": 20, "ipvers": 4, "action": "forward", "timestamp": 1594386755642}]'
+- command: route lpm --address="10.0.0.12" --hostname="server101 server103" --format=json
+    --namespace=single-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_centralized/parquet-out
+  marks: route lpm
+  output: '[{"namespace": "single-attach_evpn_centralized", "hostname": "server101",
+    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["192.168.121.1"], "oifs":
+    ["eth0"], "protocol": "", "source": "", "metric": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1594386755467}, {"namespace": "single-attach_evpn_centralized", "hostname":
+    "server103", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["192.168.121.1"],
+    "oifs": ["eth0"], "protocol": "", "source": "", "metric": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1594386755473}]'
+- command: route lpm --address="10.0.0.12" --vrf=evpn-vrf --format=json --namespace=single-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_centralized/parquet-out
+  marks: route lpm
+  output: '[{"namespace": "single-attach_evpn_centralized", "hostname": "exit01",
+    "vrf": "evpn-vrf", "prefix": "0.0.0.0/0", "nexthopIps": [""], "oifs": [""], "protocol":
+    "", "source": "", "metric": 4278198272, "ipvers": 4, "action": "forward", "timestamp":
+    1594386755623}, {"namespace": "single-attach_evpn_centralized", "hostname": "exit02",
+    "vrf": "evpn-vrf", "prefix": "0.0.0.0/0", "nexthopIps": [""], "oifs": [""], "protocol":
+    "", "source": "", "metric": 4278198272, "ipvers": 4, "action": "forward", "timestamp":
+    1594386755620}]'
+- command: route lpm --address="10.0.0.11" --vrf=evpn-vrf --format=json --namespace=single-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_centralized/parquet-out
+  marks: route lpm
+  output: '[{"namespace": "single-attach_evpn_centralized", "hostname": "exit01",
+    "vrf": "evpn-vrf", "prefix": "0.0.0.0/0", "nexthopIps": [""], "oifs": [""], "protocol":
+    "", "source": "", "metric": 4278198272, "ipvers": 4, "action": "forward", "timestamp":
+    1594386755623}, {"namespace": "single-attach_evpn_centralized", "hostname": "exit02",
+    "vrf": "evpn-vrf", "prefix": "0.0.0.0/0", "nexthopIps": [""], "oifs": [""], "protocol":
+    "", "source": "", "metric": 4278198272, "ipvers": 4, "action": "forward", "timestamp":
+    1594386755620}]'

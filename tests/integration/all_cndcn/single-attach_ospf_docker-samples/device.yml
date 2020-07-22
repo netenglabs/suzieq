@@ -1,0 +1,87 @@
+description: 'Testing verbs for device: show summarize unique'
+tests:
+- command: device show --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: device show
+  output: '[{"namespace": "single-attach_ospf_docker", "hostname": "edge01", "model":
+    "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.41", "uptime": 246928, "timestamp":
+    1594387419928}, {"namespace": "single-attach_ospf_docker", "hostname": "exit01",
+    "model": "vm", "version": "3.7.12", "vendor": "Cumulus", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.42", "uptime": 144930, "timestamp":
+    1594387419930}, {"namespace": "single-attach_ospf_docker", "hostname": "exit02",
+    "model": "vm", "version": "3.7.12", "vendor": "Cumulus", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.48", "uptime": 144933, "timestamp":
+    1594387419933}, {"namespace": "single-attach_ospf_docker", "hostname": "internet",
+    "model": "vm", "version": "3.7.12", "vendor": "Cumulus", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.144", "uptime": 236929, "timestamp":
+    1594387419929}, {"namespace": "single-attach_ospf_docker", "hostname": "leaf01",
+    "model": "vm", "version": "3.7.12", "vendor": "Cumulus", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.212", "uptime": 144928, "timestamp":
+    1594387419928}, {"namespace": "single-attach_ospf_docker", "hostname": "leaf02",
+    "model": "vm", "version": "3.7.12", "vendor": "Cumulus", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.145", "uptime": 144928, "timestamp":
+    1594387419928}, {"namespace": "single-attach_ospf_docker", "hostname": "leaf03",
+    "model": "vm", "version": "3.7.12", "vendor": "Cumulus", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.167", "uptime": 144928, "timestamp":
+    1594387419928}, {"namespace": "single-attach_ospf_docker", "hostname": "leaf04",
+    "model": "vm", "version": "3.7.12", "vendor": "Cumulus", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.246", "uptime": 144931, "timestamp":
+    1594387419931}, {"namespace": "single-attach_ospf_docker", "hostname": "server101",
+    "model": "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.16", "uptime": 33925, "timestamp":
+    1594387419925}, {"namespace": "single-attach_ospf_docker", "hostname": "server102",
+    "model": "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.243", "uptime": 33928, "timestamp":
+    1594387419928}, {"namespace": "single-attach_ospf_docker", "hostname": "server103",
+    "model": "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.124", "uptime": 33925, "timestamp":
+    1594387419925}, {"namespace": "single-attach_ospf_docker", "hostname": "server104",
+    "model": "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.160", "uptime": 33924, "timestamp":
+    1594387419924}, {"namespace": "single-attach_ospf_docker", "hostname": "spine01",
+    "model": "vm", "version": "3.7.12", "vendor": "Cumulus", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.220", "uptime": 144931, "timestamp":
+    1594387419931}, {"namespace": "single-attach_ospf_docker", "hostname": "spine02",
+    "model": "vm", "version": "3.7.12", "vendor": "Cumulus", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.130", "uptime": 143935, "timestamp":
+    1594387419935}]'
+- command: device show --columns=hostname --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: device show
+  output: '[{"hostname": "edge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
+    {"hostname": "internet"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server102"},
+    {"hostname": "server103"}, {"hostname": "server104"}, {"hostname": "spine01"},
+    {"hostname": "spine02"}]'
+- command: device summarize --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: device summarize
+  output: '{"single-attach_ospf_docker": {"deviceCnt": 14, "vendorCnt": {"Cumulus":
+    9, "Ubuntu": 5}, "modelCnt": {"vm": 14}, "archCnt": {"x86-64": 14}, "versionCnt":
+    {"3.7.12": 9, "16.04.6 LTS": 5}, "upTimeStat": [33924, 246928, 144928]}}'
+- command: device summarize --columns="namespace hostname" --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  error:
+    error: '{"error": {"0": "ERROR: You cannot specify columns with summarize"}}'
+  marks: device summarize
+- command: device unique --columns=hostname --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: device unique
+  output: '[{"hostname": "spine02", "count": 1}, {"hostname": "spine01", "count":
+    1}, {"hostname": "server104", "count": 1}, {"hostname": "server103", "count":
+    1}, {"hostname": "server102", "count": 1}, {"hostname": "server101", "count":
+    1}, {"hostname": "leaf04", "count": 1}, {"hostname": "leaf03", "count": 1}, {"hostname":
+    "leaf02", "count": 1}, {"hostname": "leaf01", "count": 1}, {"hostname": "internet",
+    "count": 1}, {"hostname": "exit02", "count": 1}, {"hostname": "exit01", "count":
+    1}, {"hostname": "edge01", "count": 1}]'
+- command: device unique --columns="hostname namespace" --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  error:
+    error: '[{"error": "ERROR: Specify a single column with unique"}]'
+  marks: device unique
+- command: device unique --columns=badcolumn --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  error:
+    error: '[{"error": "ERROR: ''badcolumn''"}]'
+  marks: device unique

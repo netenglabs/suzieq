@@ -1,0 +1,143 @@
+description: 'Testing verbs for table: show describe'
+tests:
+- command: table show --format=json --namespace=single-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_centralized/parquet-out
+  marks: table show
+  output: '[{"table": "arpnd", "first_time": 1594386755321, "latest_time": 1594386755445,
+    "intervals": 7, "all rows": 1000, "namespaces": 1, "devices": 14}, {"table": "bgp",
+    "first_time": 1594386755644, "latest_time": 1594386755703, "intervals": 5, "all
+    rows": 272, "namespaces": 1, "devices": 9}, {"table": "device", "first_time":
+    1594386755321, "latest_time": 1594386755380, "intervals": 5, "all rows": 112,
+    "namespaces": 1, "devices": 14}, {"table": "evpnVni", "first_time": 1594386755551,
+    "latest_time": 1594386755621, "intervals": 5, "all rows": 104, "namespaces": 1,
+    "devices": 6}, {"table": "fs", "first_time": 1594386755273, "latest_time": 1594386755380,
+    "intervals": 3, "all rows": 1832, "namespaces": 1, "devices": 14}, {"table": "ifCounters",
+    "first_time": 1594386755273, "latest_time": 1594386755380, "intervals": 2, "all
+    rows": 1064, "namespaces": 1, "devices": 14}, {"table": "interfaces", "first_time":
+    1594386755321, "latest_time": 1594386755587, "intervals": 11, "all rows": 1064,
+    "namespaces": 1, "devices": 14}, {"table": "lldp", "first_time": 1594386755273,
+    "latest_time": 1594386755410, "intervals": 6, "all rows": 320, "namespaces": 1,
+    "devices": 10}, {"table": "macs", "first_time": 1594386755381, "latest_time":
+    1594386755473, "intervals": 5, "all rows": 616, "namespaces": 1, "devices": 7},
+    {"table": "routes", "first_time": 1594386755467, "latest_time": 1594386755642,
+    "intervals": 12, "all rows": 1040, "namespaces": 1, "devices": 14}, {"table":
+    "sqPoller", "first_time": 1594734206923, "latest_time": 1594793458373, "intervals":
+    884, "all rows": 1704, "namespaces": 1, "devices": 14}, {"table": "time", "first_time":
+    1594386755400, "latest_time": 1594386755541, "intervals": 11, "all rows": 112,
+    "namespaces": 1, "devices": 14}, {"table": "topcpu", "first_time": 1594386755528,
+    "latest_time": 1594386755723, "intervals": 13, "all rows": 1032, "namespaces":
+    1, "devices": 14}, {"table": "topmem", "first_time": 1594386755693, "latest_time":
+    1594386755781, "intervals": 6, "all rows": 696, "namespaces": 1, "devices": 9},
+    {"table": "vlan", "first_time": 1594386755521, "latest_time": 1594386755573, "intervals":
+    6, "all rows": 136, "namespaces": 1, "devices": 6}, {"table": "TOTAL", "first_time":
+    1594386755273, "latest_time": 1594793458373, "intervals": 884, "all rows": 11104,
+    "namespaces": 1, "devices": 14}]'
+- command: table show --columns=hostname --format=json --namespace=single-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_centralized/parquet-out
+  error:
+    error: '[{"error": "ERROR: You cannot specify columns with table"}]'
+  marks: table show
+- command: table show --namespace=dummy --format=json --namespace=single-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_centralized/parquet-out
+  marks: table show
+  output: '[{"table": "arpnd", "first_time": 1594386755321, "latest_time": 1594386755445,
+    "intervals": 7, "all rows": 1000, "namespaces": 1, "devices": 14}, {"table": "bgp",
+    "first_time": 1594386755644, "latest_time": 1594386755703, "intervals": 5, "all
+    rows": 272, "namespaces": 1, "devices": 9}, {"table": "device", "first_time":
+    1594386755321, "latest_time": 1594386755380, "intervals": 5, "all rows": 112,
+    "namespaces": 1, "devices": 14}, {"table": "evpnVni", "first_time": 1594386755551,
+    "latest_time": 1594386755621, "intervals": 5, "all rows": 104, "namespaces": 1,
+    "devices": 6}, {"table": "fs", "first_time": 1594386755273, "latest_time": 1594386755380,
+    "intervals": 3, "all rows": 1832, "namespaces": 1, "devices": 14}, {"table": "ifCounters",
+    "first_time": 1594386755273, "latest_time": 1594386755380, "intervals": 2, "all
+    rows": 1064, "namespaces": 1, "devices": 14}, {"table": "interfaces", "first_time":
+    1594386755321, "latest_time": 1594386755587, "intervals": 11, "all rows": 1064,
+    "namespaces": 1, "devices": 14}, {"table": "lldp", "first_time": 1594386755273,
+    "latest_time": 1594386755410, "intervals": 6, "all rows": 320, "namespaces": 1,
+    "devices": 10}, {"table": "macs", "first_time": 1594386755381, "latest_time":
+    1594386755473, "intervals": 5, "all rows": 616, "namespaces": 1, "devices": 7},
+    {"table": "routes", "first_time": 1594386755467, "latest_time": 1594386755642,
+    "intervals": 12, "all rows": 1040, "namespaces": 1, "devices": 14}, {"table":
+    "sqPoller", "first_time": 1594734206923, "latest_time": 1594793458373, "intervals":
+    884, "all rows": 1704, "namespaces": 1, "devices": 14}, {"table": "time", "first_time":
+    1594386755400, "latest_time": 1594386755541, "intervals": 11, "all rows": 112,
+    "namespaces": 1, "devices": 14}, {"table": "topcpu", "first_time": 1594386755528,
+    "latest_time": 1594386755723, "intervals": 13, "all rows": 1032, "namespaces":
+    1, "devices": 14}, {"table": "topmem", "first_time": 1594386755693, "latest_time":
+    1594386755781, "intervals": 6, "all rows": 696, "namespaces": 1, "devices": 9},
+    {"table": "vlan", "first_time": 1594386755521, "latest_time": 1594386755573, "intervals":
+    6, "all rows": 136, "namespaces": 1, "devices": 6}, {"table": "TOTAL", "first_time":
+    1594386755273, "latest_time": 1594793458373, "intervals": 884, "all rows": 11104,
+    "namespaces": 1, "devices": 14}]'
+- command: table show --view=changes --format=json --namespace=single-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_centralized/parquet-out
+  marks: table show
+  output: '[]'
+- command: table show --view=latest --format=json --namespace=single-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_centralized/parquet-out
+  marks: table show
+  output: '[{"table": "arpnd", "first_time": 1594386755321, "latest_time": 1594386755445,
+    "intervals": 7, "all rows": 1000, "namespaces": 1, "devices": 14}, {"table": "bgp",
+    "first_time": 1594386755644, "latest_time": 1594386755703, "intervals": 5, "all
+    rows": 272, "namespaces": 1, "devices": 9}, {"table": "device", "first_time":
+    1594386755321, "latest_time": 1594386755380, "intervals": 5, "all rows": 112,
+    "namespaces": 1, "devices": 14}, {"table": "evpnVni", "first_time": 1594386755551,
+    "latest_time": 1594386755621, "intervals": 5, "all rows": 104, "namespaces": 1,
+    "devices": 6}, {"table": "fs", "first_time": 1594386755273, "latest_time": 1594386755380,
+    "intervals": 3, "all rows": 1832, "namespaces": 1, "devices": 14}, {"table": "ifCounters",
+    "first_time": 1594386755273, "latest_time": 1594386755380, "intervals": 2, "all
+    rows": 1064, "namespaces": 1, "devices": 14}, {"table": "interfaces", "first_time":
+    1594386755321, "latest_time": 1594386755587, "intervals": 11, "all rows": 1064,
+    "namespaces": 1, "devices": 14}, {"table": "lldp", "first_time": 1594386755273,
+    "latest_time": 1594386755410, "intervals": 6, "all rows": 320, "namespaces": 1,
+    "devices": 10}, {"table": "macs", "first_time": 1594386755381, "latest_time":
+    1594386755473, "intervals": 5, "all rows": 616, "namespaces": 1, "devices": 7},
+    {"table": "routes", "first_time": 1594386755467, "latest_time": 1594386755642,
+    "intervals": 12, "all rows": 1040, "namespaces": 1, "devices": 14}, {"table":
+    "sqPoller", "first_time": 1594734206923, "latest_time": 1594793458373, "intervals":
+    884, "all rows": 1704, "namespaces": 1, "devices": 14}, {"table": "time", "first_time":
+    1594386755400, "latest_time": 1594386755541, "intervals": 11, "all rows": 112,
+    "namespaces": 1, "devices": 14}, {"table": "topcpu", "first_time": 1594386755528,
+    "latest_time": 1594386755723, "intervals": 13, "all rows": 1032, "namespaces":
+    1, "devices": 14}, {"table": "topmem", "first_time": 1594386755693, "latest_time":
+    1594386755781, "intervals": 6, "all rows": 696, "namespaces": 1, "devices": 9},
+    {"table": "vlan", "first_time": 1594386755521, "latest_time": 1594386755573, "intervals":
+    6, "all rows": 136, "namespaces": 1, "devices": 6}, {"table": "TOTAL", "first_time":
+    1594386755273, "latest_time": 1594793458373, "intervals": 884, "all rows": 11104,
+    "namespaces": 1, "devices": 14}]'
+- command: table show --hostname=leaf01 --format=json --namespace=single-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_centralized/parquet-out
+  marks: table show
+  output: '[{"table": "arpnd", "first_time": 1594386755383, "latest_time": 1594386755383,
+    "intervals": 1, "all rows": 72, "namespaces": 1, "devices": 1}, {"table": "bgp",
+    "first_time": 1594386755703, "latest_time": 1594386755703, "intervals": 1, "all
+    rows": 16, "namespaces": 1, "devices": 1}, {"table": "device", "first_time": 1594386755324,
+    "latest_time": 1594386755324, "intervals": 1, "all rows": 8, "namespaces": 1,
+    "devices": 1}, {"table": "evpnVni", "first_time": 1594386755601, "latest_time":
+    1594386755601, "intervals": 1, "all rows": 16, "namespaces": 1, "devices": 1},
+    {"table": "fs", "first_time": 1594386755273, "latest_time": 1594386755273, "intervals":
+    1, "all rows": 168, "namespaces": 1, "devices": 1}, {"table": "ifCounters", "first_time":
+    1594386755273, "latest_time": 1594386755273, "intervals": 1, "all rows": 88, "namespaces":
+    1, "devices": 1}, {"table": "interfaces", "first_time": 1594386755495, "latest_time":
+    1594386755495, "intervals": 1, "all rows": 88, "namespaces": 1, "devices": 1},
+    {"table": "lldp", "first_time": 1594386755324, "latest_time": 1594386755324, "intervals":
+    1, "all rows": 32, "namespaces": 1, "devices": 1}, {"table": "macs", "first_time":
+    1594386755449, "latest_time": 1594386755449, "intervals": 1, "all rows": 88, "namespaces":
+    1, "devices": 1}, {"table": "routes", "first_time": 1594386755622, "latest_time":
+    1594386755622, "intervals": 1, "all rows": 80, "namespaces": 1, "devices": 1},
+    {"table": "sqPoller", "first_time": 1594734206924, "latest_time": 1594793458372,
+    "intervals": 131, "all rows": 136, "namespaces": 1, "devices": 1}, {"table": "time",
+    "first_time": 1594386755522, "latest_time": 1594386755522, "intervals": 1, "all
+    rows": 8, "namespaces": 1, "devices": 1}, {"table": "topcpu", "first_time": 1594386755685,
+    "latest_time": 1594386755685, "intervals": 1, "all rows": 80, "namespaces": 1,
+    "devices": 1}, {"table": "topmem", "first_time": 1594386755711, "latest_time":
+    1594386755711, "intervals": 1, "all rows": 72, "namespaces": 1, "devices": 1},
+    {"table": "vlan", "first_time": 1594386755571, "latest_time": 1594386755571, "intervals":
+    1, "all rows": 24, "namespaces": 1, "devices": 1}, {"table": "TOTAL", "first_time":
+    1594386755273, "latest_time": 1594793458372, "intervals": 131, "all rows": 976,
+    "namespaces": 1, "devices": 1}]'
+- command: table describe --format=json --namespace=single-attach_evpn_centralized
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_centralized/parquet-out
+  error:
+    error: '[{"error": "ERROR: Must specify a table"}]'
+  marks: table describe
