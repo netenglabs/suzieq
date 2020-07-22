@@ -110,3 +110,9 @@ apply:
         "TABLE_addr/ROW_addr/[*]?/addr: ip6AddressList",
         "linklocal-addr: _linklocal"
         ]'
+
+      - command: show interface mac-address  | json
+        normalize: 'TABLE_interface/ROW_interface/*?/[
+        "interface: ifname",
+        "address: macaddr",
+        ]'
