@@ -60,6 +60,9 @@ class InterfaceCmd(SqCommand):
             state=state,
             type=type.split(),
         )
+        if 'statusChangeTimestamp' in df.columns:
+            df['statusChangeTimestamp'] = pd.to_datetime(
+                df['statusChangeTimestamp'], unit='ms')
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
 

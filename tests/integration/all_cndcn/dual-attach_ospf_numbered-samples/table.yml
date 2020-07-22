@@ -1,0 +1,151 @@
+description: 'Testing verbs for table: show describe'
+tests:
+- command: table show --format=json --namespace=dual-attach_ospf_numbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_numbered/parquet-out
+  marks: table show
+  output: '[{"table": "arpnd", "first_time": 1594706822714, "latest_time": 1594706822876,
+    "intervals": 5, "all rows": 315, "namespaces": 1, "devices": 14}, {"table": "device",
+    "first_time": 1594706822714, "latest_time": 1594706822757, "intervals": 4, "all
+    rows": 70, "namespaces": 1, "devices": 14}, {"table": "fs", "first_time": 1594706822667,
+    "latest_time": 1594706822757, "intervals": 5, "all rows": 1145, "namespaces":
+    1, "devices": 14}, {"table": "ifCounters", "first_time": 1594706822667, "latest_time":
+    1594706822757, "intervals": 4, "all rows": 640, "namespaces": 1, "devices": 14},
+    {"table": "interfaces", "first_time": 1594706822714, "latest_time": 1594706822876,
+    "intervals": 4, "all rows": 640, "namespaces": 1, "devices": 14}, {"table": "lldp",
+    "first_time": 1594706822714, "latest_time": 1594706822714, "intervals": 1, "all
+    rows": 140, "namespaces": 1, "devices": 6}, {"table": "macs", "first_time": 1594706822958,
+    "latest_time": 1594706822979, "intervals": 2, "all rows": 140, "namespaces": 1,
+    "devices": 4}, {"table": "mlag", "first_time": 1594706822875, "latest_time": 1594706823052,
+    "intervals": 2, "all rows": 20, "namespaces": 1, "devices": 4}, {"table": "ospfIf",
+    "first_time": 1594706823051, "latest_time": 1594706823055, "intervals": 3, "all
+    rows": 200, "namespaces": 1, "devices": 8}, {"table": "ospfNbr", "first_time":
+    1594706822873, "latest_time": 1594706822875, "intervals": 3, "all rows": 120,
+    "namespaces": 1, "devices": 8}, {"table": "routes", "first_time": 1594706822929,
+    "latest_time": 1594706823086, "intervals": 8, "all rows": 1180, "namespaces":
+    1, "devices": 14}, {"table": "sqPoller", "first_time": 1594713060931, "latest_time":
+    1594727746670, "intervals": 506, "all rows": 970, "namespaces": 1, "devices":
+    14}, {"table": "time", "first_time": 1594706822873, "latest_time": 1594706822943,
+    "intervals": 6, "all rows": 70, "namespaces": 1, "devices": 14}, {"table": "topcpu",
+    "first_time": 1594706822875, "latest_time": 1594706822958, "intervals": 5, "all
+    rows": 615, "namespaces": 1, "devices": 14}, {"table": "topmem", "first_time":
+    1594706823139, "latest_time": 1594706823225, "intervals": 4, "all rows": 435,
+    "namespaces": 1, "devices": 9}, {"table": "vlan", "first_time": 1594706822958,
+    "latest_time": 1594706823069, "intervals": 3, "all rows": 80, "namespaces": 1,
+    "devices": 4}, {"table": "TOTAL", "first_time": 1594706822667, "latest_time":
+    1594727746670, "intervals": 506, "all rows": 6780, "namespaces": 1, "devices":
+    14}]'
+- command: table show --columns=hostname --format=json --namespace=dual-attach_ospf_numbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_numbered/parquet-out
+  error:
+    error: '[{"error": "ERROR: You cannot specify columns with table"}]'
+  marks: table show
+- command: table show --namespace=dummy --format=json --namespace=dual-attach_ospf_numbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_numbered/parquet-out
+  marks: table show
+  output: '[{"table": "arpnd", "first_time": 1594706822714, "latest_time": 1594706822876,
+    "intervals": 5, "all rows": 315, "namespaces": 1, "devices": 14}, {"table": "device",
+    "first_time": 1594706822714, "latest_time": 1594706822757, "intervals": 4, "all
+    rows": 70, "namespaces": 1, "devices": 14}, {"table": "fs", "first_time": 1594706822667,
+    "latest_time": 1594706822757, "intervals": 5, "all rows": 1145, "namespaces":
+    1, "devices": 14}, {"table": "ifCounters", "first_time": 1594706822667, "latest_time":
+    1594706822757, "intervals": 4, "all rows": 640, "namespaces": 1, "devices": 14},
+    {"table": "interfaces", "first_time": 1594706822714, "latest_time": 1594706822876,
+    "intervals": 4, "all rows": 640, "namespaces": 1, "devices": 14}, {"table": "lldp",
+    "first_time": 1594706822714, "latest_time": 1594706822714, "intervals": 1, "all
+    rows": 140, "namespaces": 1, "devices": 6}, {"table": "macs", "first_time": 1594706822958,
+    "latest_time": 1594706822979, "intervals": 2, "all rows": 140, "namespaces": 1,
+    "devices": 4}, {"table": "mlag", "first_time": 1594706822875, "latest_time": 1594706823052,
+    "intervals": 2, "all rows": 20, "namespaces": 1, "devices": 4}, {"table": "ospfIf",
+    "first_time": 1594706823051, "latest_time": 1594706823055, "intervals": 3, "all
+    rows": 200, "namespaces": 1, "devices": 8}, {"table": "ospfNbr", "first_time":
+    1594706822873, "latest_time": 1594706822875, "intervals": 3, "all rows": 120,
+    "namespaces": 1, "devices": 8}, {"table": "routes", "first_time": 1594706822929,
+    "latest_time": 1594706823086, "intervals": 8, "all rows": 1180, "namespaces":
+    1, "devices": 14}, {"table": "sqPoller", "first_time": 1594713060931, "latest_time":
+    1594727746670, "intervals": 506, "all rows": 970, "namespaces": 1, "devices":
+    14}, {"table": "time", "first_time": 1594706822873, "latest_time": 1594706822943,
+    "intervals": 6, "all rows": 70, "namespaces": 1, "devices": 14}, {"table": "topcpu",
+    "first_time": 1594706822875, "latest_time": 1594706822958, "intervals": 5, "all
+    rows": 615, "namespaces": 1, "devices": 14}, {"table": "topmem", "first_time":
+    1594706823139, "latest_time": 1594706823225, "intervals": 4, "all rows": 435,
+    "namespaces": 1, "devices": 9}, {"table": "vlan", "first_time": 1594706822958,
+    "latest_time": 1594706823069, "intervals": 3, "all rows": 80, "namespaces": 1,
+    "devices": 4}, {"table": "TOTAL", "first_time": 1594706822667, "latest_time":
+    1594727746670, "intervals": 506, "all rows": 6780, "namespaces": 1, "devices":
+    14}]'
+- command: table show --view=changes --format=json --namespace=dual-attach_ospf_numbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_numbered/parquet-out
+  marks: table show
+  output: '[]'
+- command: table show --view=latest --format=json --namespace=dual-attach_ospf_numbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_numbered/parquet-out
+  marks: table show
+  output: '[{"table": "arpnd", "first_time": 1594706822714, "latest_time": 1594706822876,
+    "intervals": 5, "all rows": 315, "namespaces": 1, "devices": 14}, {"table": "device",
+    "first_time": 1594706822714, "latest_time": 1594706822757, "intervals": 4, "all
+    rows": 70, "namespaces": 1, "devices": 14}, {"table": "fs", "first_time": 1594706822667,
+    "latest_time": 1594706822757, "intervals": 5, "all rows": 1145, "namespaces":
+    1, "devices": 14}, {"table": "ifCounters", "first_time": 1594706822667, "latest_time":
+    1594706822757, "intervals": 4, "all rows": 640, "namespaces": 1, "devices": 14},
+    {"table": "interfaces", "first_time": 1594706822714, "latest_time": 1594706822876,
+    "intervals": 4, "all rows": 640, "namespaces": 1, "devices": 14}, {"table": "lldp",
+    "first_time": 1594706822714, "latest_time": 1594706822714, "intervals": 1, "all
+    rows": 140, "namespaces": 1, "devices": 6}, {"table": "macs", "first_time": 1594706822958,
+    "latest_time": 1594706822979, "intervals": 2, "all rows": 140, "namespaces": 1,
+    "devices": 4}, {"table": "mlag", "first_time": 1594706822875, "latest_time": 1594706823052,
+    "intervals": 2, "all rows": 20, "namespaces": 1, "devices": 4}, {"table": "ospfIf",
+    "first_time": 1594706823051, "latest_time": 1594706823055, "intervals": 3, "all
+    rows": 200, "namespaces": 1, "devices": 8}, {"table": "ospfNbr", "first_time":
+    1594706822873, "latest_time": 1594706822875, "intervals": 3, "all rows": 120,
+    "namespaces": 1, "devices": 8}, {"table": "routes", "first_time": 1594706822929,
+    "latest_time": 1594706823086, "intervals": 8, "all rows": 1180, "namespaces":
+    1, "devices": 14}, {"table": "sqPoller", "first_time": 1594713060931, "latest_time":
+    1594727746670, "intervals": 506, "all rows": 970, "namespaces": 1, "devices":
+    14}, {"table": "time", "first_time": 1594706822873, "latest_time": 1594706822943,
+    "intervals": 6, "all rows": 70, "namespaces": 1, "devices": 14}, {"table": "topcpu",
+    "first_time": 1594706822875, "latest_time": 1594706822958, "intervals": 5, "all
+    rows": 615, "namespaces": 1, "devices": 14}, {"table": "topmem", "first_time":
+    1594706823139, "latest_time": 1594706823225, "intervals": 4, "all rows": 435,
+    "namespaces": 1, "devices": 9}, {"table": "vlan", "first_time": 1594706822958,
+    "latest_time": 1594706823069, "intervals": 3, "all rows": 80, "namespaces": 1,
+    "devices": 4}, {"table": "TOTAL", "first_time": 1594706822667, "latest_time":
+    1594727746670, "intervals": 506, "all rows": 6780, "namespaces": 1, "devices":
+    14}]'
+- command: table show --hostname=leaf01 --format=json --namespace=dual-attach_ospf_numbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_numbered/parquet-out
+  marks: table show
+  output: '[{"table": "arpnd", "first_time": 1594706822875, "latest_time": 1594706822875,
+    "intervals": 1, "all rows": 30, "namespaces": 1, "devices": 1}, {"table": "device",
+    "first_time": 1594706822757, "latest_time": 1594706822757, "intervals": 1, "all
+    rows": 5, "namespaces": 1, "devices": 1}, {"table": "fs", "first_time": 1594706822756,
+    "latest_time": 1594706822756, "intervals": 1, "all rows": 105, "namespaces": 1,
+    "devices": 1}, {"table": "ifCounters", "first_time": 1594706822757, "latest_time":
+    1594706822757, "intervals": 1, "all rows": 80, "namespaces": 1, "devices": 1},
+    {"table": "interfaces", "first_time": 1594706822875, "latest_time": 1594706822875,
+    "intervals": 1, "all rows": 80, "namespaces": 1, "devices": 1}, {"table": "lldp",
+    "first_time": null, "latest_time": null, "intervals": 0, "all rows": 0, "namespaces":
+    0, "devices": 0}, {"table": "macs", "first_time": 1594706822979, "latest_time":
+    1594706822979, "intervals": 1, "all rows": 35, "namespaces": 1, "devices": 1},
+    {"table": "mlag", "first_time": 1594706823052, "latest_time": 1594706823052, "intervals":
+    1, "all rows": 5, "namespaces": 1, "devices": 1}, {"table": "ospfIf", "first_time":
+    1594706823055, "latest_time": 1594706823055, "intervals": 1, "all rows": 25, "namespaces":
+    1, "devices": 1}, {"table": "ospfNbr", "first_time": 1594706822875, "latest_time":
+    1594706822875, "intervals": 1, "all rows": 10, "namespaces": 1, "devices": 1},
+    {"table": "routes", "first_time": 1594706823086, "latest_time": 1594706823086,
+    "intervals": 1, "all rows": 135, "namespaces": 1, "devices": 1}, {"table": "sqPoller",
+    "first_time": 1594713060931, "latest_time": 1594727746667, "intervals": 75, "all
+    rows": 75, "namespaces": 1, "devices": 1}, {"table": "time", "first_time": 1594706822930,
+    "latest_time": 1594706822930, "intervals": 1, "all rows": 5, "namespaces": 1,
+    "devices": 1}, {"table": "topcpu", "first_time": 1594706822943, "latest_time":
+    1594706822943, "intervals": 1, "all rows": 40, "namespaces": 1, "devices": 1},
+    {"table": "topmem", "first_time": 1594706823225, "latest_time": 1594706823225,
+    "intervals": 1, "all rows": 45, "namespaces": 1, "devices": 1}, {"table": "vlan",
+    "first_time": 1594706823069, "latest_time": 1594706823069, "intervals": 1, "all
+    rows": 20, "namespaces": 1, "devices": 1}, {"table": "TOTAL", "first_time": 1594706822756,
+    "latest_time": 1594727746667, "intervals": 75, "all rows": 695, "namespaces":
+    1, "devices": 1}]'
+- command: table describe --format=json --namespace=dual-attach_ospf_numbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_numbered/parquet-out
+  error:
+    error: '[{"error": "ERROR: Must specify a table"}]'
+  marks: table describe

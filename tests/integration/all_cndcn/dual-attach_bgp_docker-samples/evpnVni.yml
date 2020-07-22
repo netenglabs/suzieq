@@ -1,0 +1,18 @@
+description: 'Testing verbs for evpnVni: show summarize unique'
+tests:
+- command: evpnVni show --format=json --namespace=dual-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_docker/parquet-out
+  marks: evpnVni show
+  output: '[]'
+- command: evpnVni show --columns=hostname --format=json --namespace=dual-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_docker/parquet-out
+  marks: evpnVni show
+  output: '[]'
+- command: evpnVni summarize --format=json --namespace=dual-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_docker/parquet-out
+  marks: evpnVni summarize
+  output: '{}'
+- command: evpnVni unique --columns=hostname --format=json --namespace=dual-attach_bgp_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_docker/parquet-out
+  marks: evpnVni unique
+  output: '[]'

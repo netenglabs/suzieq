@@ -1,0 +1,232 @@
+description: 'Testing verbs for address: show summarize unique'
+tests:
+- command: address show --format=json --namespace=single-attach_ospf_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_unnumbered/parquet-out
+  marks: address show
+  output: '[{"namespace": "single-attach_ospf_unnumbered", "hostname": "edge01", "ifname":
+    "eth0", "ipAddressList": ["192.168.121.218/24"], "macaddr": "52:54:00:b8:fc:b3",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594387702542}, {"namespace":
+    "single-attach_ospf_unnumbered", "hostname": "exit01", "ifname": "eth0", "ipAddressList":
+    ["192.168.121.174/24"], "macaddr": "52:54:00:8e:8d:70", "ip6AddressList": ["fe80::5054:ff:fe8e:8d70/64"],
+    "state": "up", "timestamp": 1594387702748}, {"namespace": "single-attach_ospf_unnumbered",
+    "hostname": "exit01", "ifname": "lo", "ipAddressList": ["10.0.0.101/32"], "macaddr":
+    "00:00:00:00:00:00", "ip6AddressList": ["::1/128"], "state": "up", "timestamp":
+    1594387702748}, {"namespace": "single-attach_ospf_unnumbered", "hostname": "exit01",
+    "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"], "macaddr": "92:1f:8e:37:b4:67",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594387702748}, {"namespace":
+    "single-attach_ospf_unnumbered", "hostname": "exit01", "ifname": "swp1", "ipAddressList":
+    ["10.0.0.101/32"], "macaddr": "44:38:39:00:00:09", "ip6AddressList": ["fe80::4638:39ff:fe00:9/64"],
+    "state": "up", "timestamp": 1594387702748}, {"namespace": "single-attach_ospf_unnumbered",
+    "hostname": "exit01", "ifname": "swp2", "ipAddressList": ["10.0.0.101/32"], "macaddr":
+    "44:38:39:00:00:5a", "ip6AddressList": ["fe80::4638:39ff:fe00:5a/64"], "state":
+    "up", "timestamp": 1594387702748}, {"namespace": "single-attach_ospf_unnumbered",
+    "hostname": "exit02", "ifname": "eth0", "ipAddressList": ["192.168.121.198/24"],
+    "macaddr": "52:54:00:ef:6f:41", "ip6AddressList": ["fe80::5054:ff:feef:6f41/64"],
+    "state": "up", "timestamp": 1594387702748}, {"namespace": "single-attach_ospf_unnumbered",
+    "hostname": "exit02", "ifname": "lo", "ipAddressList": ["10.0.0.102/32"], "macaddr":
+    "00:00:00:00:00:00", "ip6AddressList": ["::1/128"], "state": "up", "timestamp":
+    1594387702748}, {"namespace": "single-attach_ospf_unnumbered", "hostname": "exit02",
+    "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"], "macaddr": "36:cd:15:61:63:55",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594387702748}, {"namespace":
+    "single-attach_ospf_unnumbered", "hostname": "exit02", "ifname": "swp1", "ipAddressList":
+    ["10.0.0.102/32"], "macaddr": "44:38:39:00:00:21", "ip6AddressList": ["fe80::4638:39ff:fe00:21/64"],
+    "state": "up", "timestamp": 1594387702748}, {"namespace": "single-attach_ospf_unnumbered",
+    "hostname": "exit02", "ifname": "swp2", "ipAddressList": ["10.0.0.102/32"], "macaddr":
+    "44:38:39:00:00:55", "ip6AddressList": ["fe80::4638:39ff:fe00:55/64"], "state":
+    "up", "timestamp": 1594387702748}, {"namespace": "single-attach_ospf_unnumbered",
+    "hostname": "internet", "ifname": "eth0", "ipAddressList": ["192.168.121.248/24"],
+    "macaddr": "52:54:00:6a:b6:d9", "ip6AddressList": ["fe80::5054:ff:fe6a:b6d9/64"],
+    "state": "", "timestamp": 1594387702748}, {"namespace": "single-attach_ospf_unnumbered",
+    "hostname": "internet", "ifname": "lo", "ipAddressList": ["127.0.0.1/8"], "macaddr":
+    "00:00:00:00:00:00", "ip6AddressList": ["::1/128"], "state": "", "timestamp":
+    1594387702748}, {"namespace": "single-attach_ospf_unnumbered", "hostname": "leaf01",
+    "ifname": "eth0", "ipAddressList": ["192.168.121.20/24"], "macaddr": "52:54:00:bf:c5:29",
+    "ip6AddressList": ["fe80::5054:ff:febf:c529/64"], "state": "up", "timestamp":
+    1594387702748}, {"namespace": "single-attach_ospf_unnumbered", "hostname": "leaf01",
+    "ifname": "lo", "ipAddressList": ["10.0.0.11/32"], "macaddr": "00:00:00:00:00:00",
+    "ip6AddressList": ["::1/128"], "state": "up", "timestamp": 1594387702748}, {"namespace":
+    "single-attach_ospf_unnumbered", "hostname": "leaf01", "ifname": "mgmt", "ipAddressList":
+    ["127.0.0.1/8"], "macaddr": "36:d2:9c:ee:48:32", "ip6AddressList": [], "state":
+    "up", "timestamp": 1594387702748}, {"namespace": "single-attach_ospf_unnumbered",
+    "hostname": "leaf01", "ifname": "swp1", "ipAddressList": ["10.0.0.11/32"], "macaddr":
+    "44:38:39:00:00:53", "ip6AddressList": ["fe80::4638:39ff:fe00:53/64"], "state":
+    "up", "timestamp": 1594387702748}, {"namespace": "single-attach_ospf_unnumbered",
+    "hostname": "leaf01", "ifname": "swp2", "ipAddressList": ["10.0.0.11/32"], "macaddr":
+    "44:38:39:00:00:24", "ip6AddressList": ["fe80::4638:39ff:fe00:24/64"], "state":
+    "up", "timestamp": 1594387702748}, {"namespace": "single-attach_ospf_unnumbered",
+    "hostname": "leaf01", "ifname": "vlan10", "ipAddressList": ["172.16.1.1/24"],
+    "macaddr": "44:38:39:00:00:03", "ip6AddressList": ["fe80::4638:39ff:fe00:3/64"],
+    "state": "up", "timestamp": 1594387702748}, {"namespace": "single-attach_ospf_unnumbered",
+    "hostname": "leaf02", "ifname": "eth0", "ipAddressList": ["192.168.121.215/24"],
+    "macaddr": "52:54:00:d0:be:66", "ip6AddressList": ["fe80::5054:ff:fed0:be66/64"],
+    "state": "up", "timestamp": 1594387702747}, {"namespace": "single-attach_ospf_unnumbered",
+    "hostname": "leaf02", "ifname": "lo", "ipAddressList": ["10.0.0.12/32"], "macaddr":
+    "00:00:00:00:00:00", "ip6AddressList": ["::1/128"], "state": "up", "timestamp":
+    1594387702747}, {"namespace": "single-attach_ospf_unnumbered", "hostname": "leaf02",
+    "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"], "macaddr": "fe:36:47:ae:36:d6",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594387702747}, {"namespace":
+    "single-attach_ospf_unnumbered", "hostname": "leaf02", "ifname": "swp1", "ipAddressList":
+    ["10.0.0.12/32"], "macaddr": "44:38:39:00:00:28", "ip6AddressList": ["fe80::4638:39ff:fe00:28/64"],
+    "state": "up", "timestamp": 1594387702747}, {"namespace": "single-attach_ospf_unnumbered",
+    "hostname": "leaf02", "ifname": "swp2", "ipAddressList": ["10.0.0.12/32"], "macaddr":
+    "44:38:39:00:00:5d", "ip6AddressList": ["fe80::4638:39ff:fe00:5d/64"], "state":
+    "up", "timestamp": 1594387702747}, {"namespace": "single-attach_ospf_unnumbered",
+    "hostname": "leaf02", "ifname": "vlan10", "ipAddressList": ["172.16.2.1/24"],
+    "macaddr": "44:38:39:00:00:18", "ip6AddressList": ["fe80::4638:39ff:fe00:18/64"],
+    "state": "up", "timestamp": 1594387702747}, {"namespace": "single-attach_ospf_unnumbered",
+    "hostname": "leaf03", "ifname": "eth0", "ipAddressList": ["192.168.121.121/24"],
+    "macaddr": "52:54:00:2b:ea:1d", "ip6AddressList": ["fe80::5054:ff:fe2b:ea1d/64"],
+    "state": "up", "timestamp": 1594387702748}, {"namespace": "single-attach_ospf_unnumbered",
+    "hostname": "leaf03", "ifname": "lo", "ipAddressList": ["10.0.0.13/32"], "macaddr":
+    "00:00:00:00:00:00", "ip6AddressList": ["::1/128"], "state": "up", "timestamp":
+    1594387702748}, {"namespace": "single-attach_ospf_unnumbered", "hostname": "leaf03",
+    "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"], "macaddr": "c2:83:a9:0f:4a:8e",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594387702748}, {"namespace":
+    "single-attach_ospf_unnumbered", "hostname": "leaf03", "ifname": "swp1", "ipAddressList":
+    ["10.0.0.13/32"], "macaddr": "44:38:39:00:00:4f", "ip6AddressList": ["fe80::4638:39ff:fe00:4f/64"],
+    "state": "up", "timestamp": 1594387702748}, {"namespace": "single-attach_ospf_unnumbered",
+    "hostname": "leaf03", "ifname": "swp2", "ipAddressList": ["10.0.0.13/32"], "macaddr":
+    "44:38:39:00:00:1b", "ip6AddressList": ["fe80::4638:39ff:fe00:1b/64"], "state":
+    "up", "timestamp": 1594387702748}, {"namespace": "single-attach_ospf_unnumbered",
+    "hostname": "leaf03", "ifname": "vlan10", "ipAddressList": ["172.16.3.1/24"],
+    "macaddr": "44:38:39:00:00:1f", "ip6AddressList": ["fe80::4638:39ff:fe00:1f/64"],
+    "state": "up", "timestamp": 1594387702748}, {"namespace": "single-attach_ospf_unnumbered",
+    "hostname": "leaf04", "ifname": "eth0", "ipAddressList": ["192.168.121.214/24"],
+    "macaddr": "52:54:00:56:2c:5b", "ip6AddressList": ["fe80::5054:ff:fe56:2c5b/64"],
+    "state": "up", "timestamp": 1594387702748}, {"namespace": "single-attach_ospf_unnumbered",
+    "hostname": "leaf04", "ifname": "lo", "ipAddressList": ["10.0.0.14/32"], "macaddr":
+    "00:00:00:00:00:00", "ip6AddressList": ["::1/128"], "state": "up", "timestamp":
+    1594387702748}, {"namespace": "single-attach_ospf_unnumbered", "hostname": "leaf04",
+    "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"], "macaddr": "f2:72:bb:bf:24:e7",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594387702748}, {"namespace":
+    "single-attach_ospf_unnumbered", "hostname": "leaf04", "ifname": "swp1", "ipAddressList":
+    ["10.0.0.14/32"], "macaddr": "44:38:39:00:00:3b", "ip6AddressList": ["fe80::4638:39ff:fe00:3b/64"],
+    "state": "up", "timestamp": 1594387702748}, {"namespace": "single-attach_ospf_unnumbered",
+    "hostname": "leaf04", "ifname": "swp2", "ipAddressList": ["10.0.0.14/32"], "macaddr":
+    "44:38:39:00:00:46", "ip6AddressList": ["fe80::4638:39ff:fe00:46/64"], "state":
+    "up", "timestamp": 1594387702748}, {"namespace": "single-attach_ospf_unnumbered",
+    "hostname": "leaf04", "ifname": "vlan10", "ipAddressList": ["172.16.4.1/24"],
+    "macaddr": "44:38:39:00:00:2c", "ip6AddressList": ["fe80::4638:39ff:fe00:2c/64"],
+    "state": "up", "timestamp": 1594387702748}, {"namespace": "single-attach_ospf_unnumbered",
+    "hostname": "server101", "ifname": "eth0", "ipAddressList": ["192.168.121.247/24"],
+    "macaddr": "52:54:00:f0:87:80", "ip6AddressList": [], "state": "up", "timestamp":
+    1594387702542}, {"namespace": "single-attach_ospf_unnumbered", "hostname": "server101",
+    "ifname": "eth1", "ipAddressList": ["172.16.1.101/24"], "macaddr": "00:03:00:11:11:01",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594387702542}, {"namespace":
+    "single-attach_ospf_unnumbered", "hostname": "server102", "ifname": "eth0", "ipAddressList":
+    ["192.168.121.119/24"], "macaddr": "52:54:00:e1:f5:23", "ip6AddressList": [],
+    "state": "up", "timestamp": 1594387702542}, {"namespace": "single-attach_ospf_unnumbered",
+    "hostname": "server102", "ifname": "eth1", "ipAddressList": ["172.16.2.102/24"],
+    "macaddr": "00:03:00:22:22:02", "ip6AddressList": [], "state": "up", "timestamp":
+    1594387702542}, {"namespace": "single-attach_ospf_unnumbered", "hostname": "server103",
+    "ifname": "eth0", "ipAddressList": ["192.168.121.86/24"], "macaddr": "52:54:00:6e:05:7e",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594387702542}, {"namespace":
+    "single-attach_ospf_unnumbered", "hostname": "server103", "ifname": "eth1", "ipAddressList":
+    ["172.16.3.103/24"], "macaddr": "00:03:00:33:33:01", "ip6AddressList": [], "state":
+    "up", "timestamp": 1594387702542}, {"namespace": "single-attach_ospf_unnumbered",
+    "hostname": "server104", "ifname": "eth0", "ipAddressList": ["192.168.121.252/24"],
+    "macaddr": "52:54:00:f8:4a:bb", "ip6AddressList": [], "state": "up", "timestamp":
+    1594387702542}, {"namespace": "single-attach_ospf_unnumbered", "hostname": "server104",
+    "ifname": "eth1", "ipAddressList": ["172.16.4.104/24"], "macaddr": "00:03:00:44:44:02",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594387702542}, {"namespace":
+    "single-attach_ospf_unnumbered", "hostname": "spine01", "ifname": "eth0", "ipAddressList":
+    ["192.168.121.234/24"], "macaddr": "52:54:00:93:58:92", "ip6AddressList": ["fe80::5054:ff:fe93:5892/64"],
+    "state": "up", "timestamp": 1594387702747}, {"namespace": "single-attach_ospf_unnumbered",
+    "hostname": "spine01", "ifname": "lo", "ipAddressList": ["10.0.0.21/32"], "macaddr":
+    "00:00:00:00:00:00", "ip6AddressList": ["::1/128"], "state": "up", "timestamp":
+    1594387702747}, {"namespace": "single-attach_ospf_unnumbered", "hostname": "spine01",
+    "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"], "macaddr": "fe:09:b8:e5:89:2c",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594387702747}, {"namespace":
+    "single-attach_ospf_unnumbered", "hostname": "spine01", "ifname": "swp1", "ipAddressList":
+    ["10.0.0.21/32"], "macaddr": "44:38:39:00:00:54", "ip6AddressList": ["fe80::4638:39ff:fe00:54/64"],
+    "state": "up", "timestamp": 1594387702747}, {"namespace": "single-attach_ospf_unnumbered",
+    "hostname": "spine01", "ifname": "swp2", "ipAddressList": ["10.0.0.21/32"], "macaddr":
+    "44:38:39:00:00:29", "ip6AddressList": ["fe80::4638:39ff:fe00:29/64"], "state":
+    "up", "timestamp": 1594387702747}, {"namespace": "single-attach_ospf_unnumbered",
+    "hostname": "spine01", "ifname": "swp3", "ipAddressList": ["10.0.0.21/32"], "macaddr":
+    "44:38:39:00:00:50", "ip6AddressList": ["fe80::4638:39ff:fe00:50/64"], "state":
+    "up", "timestamp": 1594387702747}, {"namespace": "single-attach_ospf_unnumbered",
+    "hostname": "spine01", "ifname": "swp4", "ipAddressList": ["10.0.0.21/32"], "macaddr":
+    "44:38:39:00:00:3c", "ip6AddressList": ["fe80::4638:39ff:fe00:3c/64"], "state":
+    "up", "timestamp": 1594387702747}, {"namespace": "single-attach_ospf_unnumbered",
+    "hostname": "spine01", "ifname": "swp5", "ipAddressList": ["10.0.0.21/32"], "macaddr":
+    "44:38:39:00:00:22", "ip6AddressList": ["fe80::4638:39ff:fe00:22/64"], "state":
+    "up", "timestamp": 1594387702747}, {"namespace": "single-attach_ospf_unnumbered",
+    "hostname": "spine01", "ifname": "swp6", "ipAddressList": ["10.0.0.21/32"], "macaddr":
+    "44:38:39:00:00:0a", "ip6AddressList": ["fe80::4638:39ff:fe00:a/64"], "state":
+    "up", "timestamp": 1594387702747}, {"namespace": "single-attach_ospf_unnumbered",
+    "hostname": "spine02", "ifname": "eth0", "ipAddressList": ["192.168.121.28/24"],
+    "macaddr": "52:54:00:1a:69:22", "ip6AddressList": ["fe80::5054:ff:fe1a:6922/64"],
+    "state": "up", "timestamp": 1594387702748}, {"namespace": "single-attach_ospf_unnumbered",
+    "hostname": "spine02", "ifname": "lo", "ipAddressList": ["10.0.0.22/32"], "macaddr":
+    "00:00:00:00:00:00", "ip6AddressList": ["::1/128"], "state": "up", "timestamp":
+    1594387702748}, {"namespace": "single-attach_ospf_unnumbered", "hostname": "spine02",
+    "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"], "macaddr": "82:bd:1e:eb:48:b4",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594387702748}, {"namespace":
+    "single-attach_ospf_unnumbered", "hostname": "spine02", "ifname": "swp1", "ipAddressList":
+    ["10.0.0.22/32"], "macaddr": "44:38:39:00:00:25", "ip6AddressList": ["fe80::4638:39ff:fe00:25/64"],
+    "state": "up", "timestamp": 1594387702748}, {"namespace": "single-attach_ospf_unnumbered",
+    "hostname": "spine02", "ifname": "swp2", "ipAddressList": ["10.0.0.22/32"], "macaddr":
+    "44:38:39:00:00:5e", "ip6AddressList": ["fe80::4638:39ff:fe00:5e/64"], "state":
+    "up", "timestamp": 1594387702748}, {"namespace": "single-attach_ospf_unnumbered",
+    "hostname": "spine02", "ifname": "swp3", "ipAddressList": ["10.0.0.22/32"], "macaddr":
+    "44:38:39:00:00:1c", "ip6AddressList": ["fe80::4638:39ff:fe00:1c/64"], "state":
+    "up", "timestamp": 1594387702748}, {"namespace": "single-attach_ospf_unnumbered",
+    "hostname": "spine02", "ifname": "swp4", "ipAddressList": ["10.0.0.22/32"], "macaddr":
+    "44:38:39:00:00:47", "ip6AddressList": ["fe80::4638:39ff:fe00:47/64"], "state":
+    "up", "timestamp": 1594387702748}, {"namespace": "single-attach_ospf_unnumbered",
+    "hostname": "spine02", "ifname": "swp5", "ipAddressList": ["10.0.0.22/32"], "macaddr":
+    "44:38:39:00:00:56", "ip6AddressList": ["fe80::4638:39ff:fe00:56/64"], "state":
+    "up", "timestamp": 1594387702748}, {"namespace": "single-attach_ospf_unnumbered",
+    "hostname": "spine02", "ifname": "swp6", "ipAddressList": ["10.0.0.22/32"], "macaddr":
+    "44:38:39:00:00:5b", "ip6AddressList": ["fe80::4638:39ff:fe00:5b/64"], "state":
+    "up", "timestamp": 1594387702748}]'
+- command: address show --columns=hostname --format=json --namespace=single-attach_ospf_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_unnumbered/parquet-out
+  marks: address show
+  output: '[{"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
+    {"hostname": "edge01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "internet"}, {"hostname": "internet"},
+    {"hostname": "internet"}, {"hostname": "internet"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "server101"}, {"hostname": "server101"}, {"hostname": "server101"},
+    {"hostname": "server102"}, {"hostname": "server102"}, {"hostname": "server102"},
+    {"hostname": "server103"}, {"hostname": "server103"}, {"hostname": "server103"},
+    {"hostname": "server104"}, {"hostname": "server104"}, {"hostname": "server104"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}]'
+- command: address summarize --format=json --namespace=single-attach_ospf_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_unnumbered/parquet-out
+  marks: address summarize
+  output: '{"single-attach_ospf_unnumbered": {"deviceCnt": 14, "addressCnt": 96, "uniqueV4AddressCnt":
+    31, "uniqueV6AddressCnt": 1, "uniqueIfMacCnt": 75, "deviceWithv4AddressCnt": 14,
+    "deviceWithv6AddressCnt": 9, "subnetsUsed": ["32", "24", "8"], "subnetTopCounts":
+    [{"32": 32}, {"24": 22}, {"8": 9}]}}'
+- command: address unique --columns=hostname --format=json --namespace=single-attach_ospf_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_unnumbered/parquet-out
+  marks: address unique
+  output: '[{"hostname": "server104", "count": 3}, {"hostname": "server103", "count":
+    3}, {"hostname": "server102", "count": 3}, {"hostname": "server101", "count":
+    3}, {"hostname": "internet", "count": 4}, {"hostname": "edge01", "count": 4},
+    {"hostname": "spine02", "count": 9}, {"hostname": "spine01", "count": 9}, {"hostname":
+    "exit02", "count": 9}, {"hostname": "exit01", "count": 9}, {"hostname": "leaf04",
+    "count": 10}, {"hostname": "leaf03", "count": 10}, {"hostname": "leaf02", "count":
+    10}, {"hostname": "leaf01", "count": 10}]'

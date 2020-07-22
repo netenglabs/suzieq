@@ -1,0 +1,436 @@
+description: 'Testing verbs for interface: show summarize unique assert top'
+tests:
+- command: interface show --format=json --namespace=dual-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_docker/parquet-out
+  marks: interface show
+  output: '[{"namespace": "dual-attach_ospf_docker", "hostname": "edge01", "ifname":
+    "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "",
+    "ipAddressList": ["192.168.121.171/24"], "ip6AddressList": [], "timestamp": 1594435492572},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "edge01", "ifname": "eth1",
+    "state": "down", "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1594435492572}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "edge01", "ifname": "eth2", "state": "down", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1594435492572}, {"namespace": "dual-attach_ospf_docker", "hostname": "edge01",
+    "ifname": "lo", "state": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594435492572}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "exit01", "ifname": "eth0", "state": "up",
+    "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "mgmt", "ipAddressList":
+    ["192.168.121.2/24"], "ip6AddressList": ["fe80::5054:ff:fef4:f459/64"], "timestamp":
+    1594435492714}, {"namespace": "dual-attach_ospf_docker", "hostname": "exit01",
+    "ifname": "lo", "state": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": ["10.0.0.101/32"], "ip6AddressList": ["::1/128"], "timestamp":
+    1594435492714}, {"namespace": "dual-attach_ospf_docker", "hostname": "exit01",
+    "ifname": "mgmt", "state": "up", "type": "vrf", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": ["127.0.0.1/8"], "ip6AddressList": [], "timestamp": 1594435492714},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "exit01", "ifname": "swp1",
+    "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    ["10.0.0.101/32"], "ip6AddressList": ["fe80::5054:ff:feb0:60f5/64"], "timestamp":
+    1594435492714}, {"namespace": "dual-attach_ospf_docker", "hostname": "exit01",
+    "ifname": "swp2", "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["10.0.0.101/32"], "ip6AddressList": ["fe80::5054:ff:fecf:c4e5/64"],
+    "timestamp": 1594435492714}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "exit01", "ifname": "swp3", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:feb5:1db2/64"],
+    "timestamp": 1594435492714}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "exit01", "ifname": "swp4", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fec9:6563/64"],
+    "timestamp": 1594435492714}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "exit01", "ifname": "swp5", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe9d:466f/64"],
+    "timestamp": 1594435492714}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "exit01", "ifname": "swp6", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe07:e0b7/64"],
+    "timestamp": 1594435492714}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "exit02", "ifname": "eth0", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "mgmt", "ipAddressList": ["192.168.121.84/24"], "ip6AddressList":
+    ["fe80::5054:ff:fe07:dfd4/64"], "timestamp": 1594435492714}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "exit02", "ifname": "lo", "state": "up", "type": "loopback", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.102/32"], "ip6AddressList":
+    ["::1/128"], "timestamp": 1594435492714}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "exit02", "ifname": "mgmt", "state": "up", "type": "vrf", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": ["127.0.0.1/8"], "ip6AddressList": [],
+    "timestamp": 1594435492714}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "exit02", "ifname": "swp1", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.102/32"], "ip6AddressList": ["fe80::5054:ff:fe52:2fa7/64"],
+    "timestamp": 1594435492714}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "exit02", "ifname": "swp2", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.102/32"], "ip6AddressList": ["fe80::5054:ff:fec0:250d/64"],
+    "timestamp": 1594435492714}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "exit02", "ifname": "swp3", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe73:613c/64"],
+    "timestamp": 1594435492714}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "exit02", "ifname": "swp4", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe5a:76e6/64"],
+    "timestamp": 1594435492714}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "exit02", "ifname": "swp5", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe13:febe/64"],
+    "timestamp": 1594435492714}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "exit02", "ifname": "swp6", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe33:2836/64"],
+    "timestamp": 1594435492714}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "internet", "ifname": "eth0", "state": "", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["192.168.121.221/24"], "ip6AddressList": ["fe80::5054:ff:fecd:4eca/64"],
+    "timestamp": 1594435492706}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "internet", "ifname": "lo", "state": "", "type": "loopback", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": ["127.0.0.1/8"], "ip6AddressList": ["::1/128"],
+    "timestamp": 1594435492706}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "internet", "ifname": "swp1", "state": "", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594435492706},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "internet", "ifname": "swp2",
+    "state": "", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1594435492706}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "leaf01", "ifname": "eth0", "state": "up", "type": "ethernet", "mtu":
+    1500, "vlan": 0, "master": "mgmt", "ipAddressList": ["192.168.121.14/24"], "ip6AddressList":
+    ["fe80::5054:ff:fed2:16b2/64"], "timestamp": 1594435492714}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "leaf01", "ifname": "lo", "state": "up", "type": "loopback", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.11/32"], "ip6AddressList":
+    ["::1/128"], "timestamp": 1594435492714}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "leaf01", "ifname": "mgmt", "state": "up", "type": "vrf", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": ["127.0.0.1/8"], "ip6AddressList": [],
+    "timestamp": 1594435492714}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "leaf01", "ifname": "swp1", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.11/32"], "ip6AddressList": ["fe80::5054:ff:fe7e:9989/64"],
+    "timestamp": 1594435492714}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "leaf01", "ifname": "swp2", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.11/32"], "ip6AddressList": ["fe80::5054:ff:fe16:6cd0/64"],
+    "timestamp": 1594435492714}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "leaf01", "ifname": "swp3", "state": "", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594435492714},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "leaf01", "ifname": "swp4",
+    "state": "", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1594435492714}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "leaf01", "ifname": "swp5", "state": "up", "type": "ethernet", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.11/32"], "ip6AddressList":
+    ["fe80::5054:ff:fef6:d4d2/64"], "timestamp": 1594435492714}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "leaf01", "ifname": "swp6", "state": "up", "type": "ethernet", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.11/32"], "ip6AddressList":
+    ["fe80::5054:ff:fe94:cea2/64"], "timestamp": 1594435492714}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "leaf02", "ifname": "eth0", "state": "up", "type": "ethernet", "mtu":
+    1500, "vlan": 0, "master": "mgmt", "ipAddressList": ["192.168.121.65/24"], "ip6AddressList":
+    ["fe80::5054:ff:fe7c:c147/64"], "timestamp": 1594435492729}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "leaf02", "ifname": "lo", "state": "up", "type": "loopback", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.12/32"], "ip6AddressList":
+    ["::1/128"], "timestamp": 1594435492729}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "leaf02", "ifname": "mgmt", "state": "up", "type": "vrf", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": ["127.0.0.1/8"], "ip6AddressList": [],
+    "timestamp": 1594435492729}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "leaf02", "ifname": "swp1", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.12/32"], "ip6AddressList": ["fe80::5054:ff:fe40:1ea8/64"],
+    "timestamp": 1594435492729}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "leaf02", "ifname": "swp2", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.12/32"], "ip6AddressList": ["fe80::5054:ff:fea6:4d9a/64"],
+    "timestamp": 1594435492729}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "leaf02", "ifname": "swp3", "state": "", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594435492729},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "leaf02", "ifname": "swp4",
+    "state": "", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1594435492729}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "leaf02", "ifname": "swp5", "state": "up", "type": "ethernet", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.12/32"], "ip6AddressList":
+    ["fe80::5054:ff:fe83:8dd9/64"], "timestamp": 1594435492729}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "leaf02", "ifname": "swp6", "state": "up", "type": "ethernet", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.12/32"], "ip6AddressList":
+    ["fe80::5054:ff:fe77:c847/64"], "timestamp": 1594435492729}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "leaf03", "ifname": "eth0", "state": "up", "type": "ethernet", "mtu":
+    1500, "vlan": 0, "master": "mgmt", "ipAddressList": ["192.168.121.154/24"], "ip6AddressList":
+    ["fe80::5054:ff:fec0:42a1/64"], "timestamp": 1594435492926}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "leaf03", "ifname": "lo", "state": "up", "type": "loopback", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.13/32"], "ip6AddressList":
+    ["::1/128"], "timestamp": 1594435492926}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "leaf03", "ifname": "mgmt", "state": "up", "type": "vrf", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": ["127.0.0.1/8"], "ip6AddressList": [],
+    "timestamp": 1594435492926}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "leaf03", "ifname": "swp1", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.13/32"], "ip6AddressList": ["fe80::5054:ff:fe85:8212/64"],
+    "timestamp": 1594435492926}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "leaf03", "ifname": "swp2", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.13/32"], "ip6AddressList": ["fe80::5054:ff:fedb:b363/64"],
+    "timestamp": 1594435492926}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "leaf03", "ifname": "swp3", "state": "", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594435492926},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "leaf03", "ifname": "swp4",
+    "state": "", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1594435492926}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "leaf03", "ifname": "swp5", "state": "up", "type": "ethernet", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.13/32"], "ip6AddressList":
+    ["fe80::5054:ff:fef7:666/64"], "timestamp": 1594435492926}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "leaf03", "ifname": "swp6", "state": "up", "type": "ethernet", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.13/32"], "ip6AddressList":
+    ["fe80::5054:ff:fedd:b3bd/64"], "timestamp": 1594435492926}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "leaf04", "ifname": "eth0", "state": "up", "type": "ethernet", "mtu":
+    1500, "vlan": 0, "master": "mgmt", "ipAddressList": ["192.168.121.226/24"], "ip6AddressList":
+    ["fe80::5054:ff:fec2:883b/64"], "timestamp": 1594435492722}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "leaf04", "ifname": "lo", "state": "up", "type": "loopback", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.14/32"], "ip6AddressList":
+    ["::1/128"], "timestamp": 1594435492722}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "leaf04", "ifname": "mgmt", "state": "up", "type": "vrf", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": ["127.0.0.1/8"], "ip6AddressList": [],
+    "timestamp": 1594435492722}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "leaf04", "ifname": "swp1", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.14/32"], "ip6AddressList": ["fe80::5054:ff:fe9c:3939/64"],
+    "timestamp": 1594435492722}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "leaf04", "ifname": "swp2", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.14/32"], "ip6AddressList": ["fe80::5054:ff:fefb:4eb6/64"],
+    "timestamp": 1594435492722}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "leaf04", "ifname": "swp3", "state": "", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594435492722},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "leaf04", "ifname": "swp4",
+    "state": "", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1594435492722}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "leaf04", "ifname": "swp5", "state": "up", "type": "ethernet", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.14/32"], "ip6AddressList":
+    ["fe80::5054:ff:fee5:26c0/64"], "timestamp": 1594435492722}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "leaf04", "ifname": "swp6", "state": "up", "type": "ethernet", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.14/32"], "ip6AddressList":
+    ["fe80::5054:ff:fe22:4b95/64"], "timestamp": 1594435492722}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "server101", "ifname": "docker0", "state": "down", "type": "bridge",
+    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["192.168.10.1/24"], "ip6AddressList":
+    [], "timestamp": 1594435492567}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "server101", "ifname": "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["192.168.121.164/24"], "ip6AddressList": [],
+    "timestamp": 1594435492567}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "server101", "ifname": "eth1", "state": "up", "type": "ether", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["172.16.1.101/32"], "ip6AddressList": [], "timestamp":
+    1594435492567}, {"namespace": "dual-attach_ospf_docker", "hostname": "server101",
+    "ifname": "eth2", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["172.16.1.101/32"], "ip6AddressList": [], "timestamp": 1594435492567},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "server101", "ifname": "lo",
+    "state": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    ["172.16.1.101/32"], "ip6AddressList": [], "timestamp": 1594435492567}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "server102", "ifname": "docker0", "state":
+    "down", "type": "bridge", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    ["192.168.11.1/24"], "ip6AddressList": [], "timestamp": 1594435492573}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "server102", "ifname": "eth0", "state":
+    "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    ["192.168.121.34/24"], "ip6AddressList": [], "timestamp": 1594435492573}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "server102", "ifname": "eth1", "state":
+    "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    ["172.16.2.102/32"], "ip6AddressList": [], "timestamp": 1594435492573}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "server102", "ifname": "eth2", "state":
+    "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    ["172.16.2.102/32"], "ip6AddressList": [], "timestamp": 1594435492573}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "server102", "ifname": "lo", "state": "up",
+    "type": "loopback", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": ["172.16.2.102/32"],
+    "ip6AddressList": [], "timestamp": 1594435492573}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "server103", "ifname": "docker0", "state": "down", "type": "bridge",
+    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["192.168.12.1/24"], "ip6AddressList":
+    [], "timestamp": 1594435492572}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "server103", "ifname": "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["192.168.121.13/24"], "ip6AddressList": [],
+    "timestamp": 1594435492572}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "server103", "ifname": "eth1", "state": "up", "type": "ether", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["172.16.3.103/32"], "ip6AddressList": [], "timestamp":
+    1594435492572}, {"namespace": "dual-attach_ospf_docker", "hostname": "server103",
+    "ifname": "eth2", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["172.16.3.103/32"], "ip6AddressList": [], "timestamp": 1594435492572},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "server103", "ifname": "lo",
+    "state": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    ["172.16.3.103/32"], "ip6AddressList": [], "timestamp": 1594435492572}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "server104", "ifname": "docker0", "state":
+    "down", "type": "bridge", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    ["192.168.13.1/24"], "ip6AddressList": [], "timestamp": 1594435492567}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "server104", "ifname": "eth0", "state":
+    "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    ["192.168.121.75/24"], "ip6AddressList": [], "timestamp": 1594435492567}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "server104", "ifname": "eth1", "state":
+    "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    ["172.16.4.104/32"], "ip6AddressList": [], "timestamp": 1594435492567}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "server104", "ifname": "eth2", "state":
+    "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    ["172.16.4.104/32"], "ip6AddressList": [], "timestamp": 1594435492567}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "server104", "ifname": "lo", "state": "up",
+    "type": "loopback", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": ["172.16.4.104/32"],
+    "ip6AddressList": [], "timestamp": 1594435492567}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "spine01", "ifname": "eth0", "state": "up", "type": "ethernet", "mtu":
+    1500, "vlan": 0, "master": "mgmt", "ipAddressList": ["192.168.121.46/24"], "ip6AddressList":
+    ["fe80::5054:ff:fe9d:85e3/64"], "timestamp": 1594435492722}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "spine01", "ifname": "lo", "state": "up", "type": "loopback", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.21/32"], "ip6AddressList":
+    ["::1/128"], "timestamp": 1594435492722}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "spine01", "ifname": "mgmt", "state": "up", "type": "vrf", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": ["127.0.0.1/8"], "ip6AddressList":
+    [], "timestamp": 1594435492722}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "spine01", "ifname": "swp1", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.21/32"], "ip6AddressList": ["fe80::5054:ff:fe2b:c539/64"],
+    "timestamp": 1594435492722}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "spine01", "ifname": "swp2", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.21/32"], "ip6AddressList": ["fe80::5054:ff:fed3:8db5/64"],
+    "timestamp": 1594435492722}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "spine01", "ifname": "swp3", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.21/32"], "ip6AddressList": ["fe80::5054:ff:feb2:cdca/64"],
+    "timestamp": 1594435492722}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "spine01", "ifname": "swp4", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.21/32"], "ip6AddressList": ["fe80::5054:ff:fef1:7a8a/64"],
+    "timestamp": 1594435492722}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "spine01", "ifname": "swp5", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.21/32"], "ip6AddressList": ["fe80::5054:ff:fea3:38cb/64"],
+    "timestamp": 1594435492722}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "spine01", "ifname": "swp6", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.21/32"], "ip6AddressList": ["fe80::5054:ff:feae:3c16/64"],
+    "timestamp": 1594435492722}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "spine02", "ifname": "eth0", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "mgmt", "ipAddressList": ["192.168.121.196/24"], "ip6AddressList":
+    ["fe80::5054:ff:fe88:7a33/64"], "timestamp": 1594435492714}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "spine02", "ifname": "lo", "state": "up", "type": "loopback", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.22/32"], "ip6AddressList":
+    ["::1/128"], "timestamp": 1594435492714}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "spine02", "ifname": "mgmt", "state": "up", "type": "vrf", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": ["127.0.0.1/8"], "ip6AddressList":
+    [], "timestamp": 1594435492714}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "spine02", "ifname": "swp1", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.22/32"], "ip6AddressList": ["fe80::5054:ff:fea1:f98c/64"],
+    "timestamp": 1594435492714}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "spine02", "ifname": "swp2", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.22/32"], "ip6AddressList": ["fe80::5054:ff:fe05:ff5d/64"],
+    "timestamp": 1594435492714}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "spine02", "ifname": "swp3", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.22/32"], "ip6AddressList": ["fe80::5054:ff:feb7:f335/64"],
+    "timestamp": 1594435492714}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "spine02", "ifname": "swp4", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.22/32"], "ip6AddressList": ["fe80::5054:ff:fe32:7ed7/64"],
+    "timestamp": 1594435492714}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "spine02", "ifname": "swp5", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.22/32"], "ip6AddressList": ["fe80::5054:ff:fe8c:ac19/64"],
+    "timestamp": 1594435492714}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "spine02", "ifname": "swp6", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.22/32"], "ip6AddressList": ["fe80::5054:ff:fee6:bd59/64"],
+    "timestamp": 1594435492714}]'
+- command: interface show --columns=hostname --format=json --namespace=dual-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_docker/parquet-out
+  marks: interface show
+  output: '[{"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
+    {"hostname": "edge01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "internet"}, {"hostname": "internet"},
+    {"hostname": "internet"}, {"hostname": "internet"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "server101"}, {"hostname": "server101"}, {"hostname": "server101"}, {"hostname":
+    "server101"}, {"hostname": "server101"}, {"hostname": "server102"}, {"hostname":
+    "server102"}, {"hostname": "server102"}, {"hostname": "server102"}, {"hostname":
+    "server102"}, {"hostname": "server103"}, {"hostname": "server103"}, {"hostname":
+    "server103"}, {"hostname": "server103"}, {"hostname": "server103"}, {"hostname":
+    "server104"}, {"hostname": "server104"}, {"hostname": "server104"}, {"hostname":
+    "server104"}, {"hostname": "server104"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}]'
+- command: interface summarize --format=json --namespace=dual-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_docker/parquet-out
+  marks: interface summarize
+  output: '{"dual-attach_ospf_docker": {"deviceCnt": 14, "interfaceCnt": 100, "devicesWithL2Cnt":
+    0, "devicesWithVxlanCnt": 0, "ifDownCnt": 18, "ifWithMultipleIPCnt": 0, "uniqueMTUCnt":
+    {"1500": 78, "65536": 22}, "uniqueIfTypesCnt": 5, "ifChangesStat": [0, 0, 0],
+    "ifPerDeviceStat": [4, 9, 9.0], "uniqueIPv4AddrCnt": 30, "uniqueIPv6AddrCnt":
+    1}}'
+- command: interface unique --columns=hostname --format=json --namespace=dual-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_docker/parquet-out
+  marks: interface unique
+  output: '[{"hostname": "internet", "count": 4}, {"hostname": "edge01", "count":
+    4}, {"hostname": "server104", "count": 5}, {"hostname": "server103", "count":
+    5}, {"hostname": "server102", "count": 5}, {"hostname": "server101", "count":
+    5}, {"hostname": "spine02", "count": 9}, {"hostname": "spine01", "count": 9},
+    {"hostname": "leaf04", "count": 9}, {"hostname": "leaf03", "count": 9}, {"hostname":
+    "leaf02", "count": 9}, {"hostname": "leaf01", "count": 9}, {"hostname": "exit02",
+    "count": 9}, {"hostname": "exit01", "count": 9}]'
+- command: interface assert --format=json --namespace=dual-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_docker/parquet-out
+  marks: interface assert
+  output: '[{"namespace": "dual-attach_ospf_docker", "hostname": "exit01", "ifname":
+    "swp1", "peerHostname": "spine01", "peerIfname": "swp6", "timestamp": 1594435492555,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "exit01", "ifname": "swp2", "peerHostname": "spine02", "peerIfname":
+    "swp6", "timestamp": 1594435492555, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}, {"namespace": "dual-attach_ospf_docker", "hostname": "exit01", "ifname":
+    "swp3", "peerHostname": "exit01", "peerIfname": "swp4", "timestamp": 1594435492555,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "exit01", "ifname": "swp4", "peerHostname": "exit01", "peerIfname":
+    "swp3", "timestamp": 1594435492555, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}, {"namespace": "dual-attach_ospf_docker", "hostname": "exit02", "ifname":
+    "swp1", "peerHostname": "spine01", "peerIfname": "swp5", "timestamp": 1594435492555,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "exit02", "ifname": "swp2", "peerHostname": "spine02", "peerIfname":
+    "swp5", "timestamp": 1594435492555, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}, {"namespace": "dual-attach_ospf_docker", "hostname": "exit02", "ifname":
+    "swp3", "peerHostname": "exit02", "peerIfname": "swp4", "timestamp": 1594435492555,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "exit02", "ifname": "swp4", "peerHostname": "exit02", "peerIfname":
+    "swp3", "timestamp": 1594435492555, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}, {"namespace": "dual-attach_ospf_docker", "hostname": "leaf01", "ifname":
+    "swp1", "peerHostname": "spine01", "peerIfname": "swp1", "timestamp": 1594435492552,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "leaf01", "ifname": "swp2", "peerHostname": "spine02", "peerIfname":
+    "swp1", "timestamp": 1594435492552, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}, {"namespace": "dual-attach_ospf_docker", "hostname": "leaf02", "ifname":
+    "swp1", "peerHostname": "spine01", "peerIfname": "swp2", "timestamp": 1594435492568,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "leaf02", "ifname": "swp2", "peerHostname": "spine02", "peerIfname":
+    "swp2", "timestamp": 1594435492568, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}, {"namespace": "dual-attach_ospf_docker", "hostname": "leaf04", "ifname":
+    "swp1", "peerHostname": "spine01", "peerIfname": "swp4", "timestamp": 1594435492562,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "leaf04", "ifname": "swp2", "peerHostname": "spine02", "peerIfname":
+    "swp4", "timestamp": 1594435492562, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}, {"namespace": "dual-attach_ospf_docker", "hostname": "spine01", "ifname":
+    "swp1", "peerHostname": "leaf01", "peerIfname": "swp1", "timestamp": 1594435492562,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "spine01", "ifname": "swp2", "peerHostname": "leaf02", "peerIfname":
+    "swp1", "timestamp": 1594435492562, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}, {"namespace": "dual-attach_ospf_docker", "hostname": "spine01", "ifname":
+    "swp3", "peerHostname": "leaf03", "peerIfname": "swp1", "timestamp": 1594435492562,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "spine01", "ifname": "swp4", "peerHostname": "leaf04", "peerIfname":
+    "swp1", "timestamp": 1594435492562, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}, {"namespace": "dual-attach_ospf_docker", "hostname": "spine01", "ifname":
+    "swp5", "peerHostname": "exit02", "peerIfname": "swp1", "timestamp": 1594435492562,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "spine01", "ifname": "swp6", "peerHostname": "exit01", "peerIfname":
+    "swp1", "timestamp": 1594435492562, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}, {"namespace": "dual-attach_ospf_docker", "hostname": "spine02", "ifname":
+    "swp1", "peerHostname": "leaf01", "peerIfname": "swp2", "timestamp": 1594435492552,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "spine02", "ifname": "swp2", "peerHostname": "leaf02", "peerIfname":
+    "swp2", "timestamp": 1594435492552, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}, {"namespace": "dual-attach_ospf_docker", "hostname": "spine02", "ifname":
+    "swp3", "peerHostname": "leaf03", "peerIfname": "swp2", "timestamp": 1594435492552,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "spine02", "ifname": "swp4", "peerHostname": "leaf04", "peerIfname":
+    "swp2", "timestamp": 1594435492552, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}, {"namespace": "dual-attach_ospf_docker", "hostname": "spine02", "ifname":
+    "swp5", "peerHostname": "exit02", "peerIfname": "swp2", "timestamp": 1594435492552,
+    "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "spine02", "ifname": "swp6", "peerHostname": "exit01", "peerIfname":
+    "swp2", "timestamp": 1594435492552, "mtu": 1500.0, "peerMtu": 1500, "assert":
+    "pass"}]'
+- command: interface top --format=json --namespace=dual-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_docker/parquet-out
+  marks: interface top
+  output: '[{"namespace": "dual-attach_ospf_docker", "hostname": "edge01", "ifname":
+    "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "",
+    "ipAddressList": ["192.168.121.171/24"], "ip6AddressList": [], "numChanges": 0,
+    "timestamp": 1594435492572}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "edge01", "ifname": "eth1", "state": "down", "type": "ether", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "numChanges": 0, "timestamp":
+    1594435492572}, {"namespace": "dual-attach_ospf_docker", "hostname": "edge01",
+    "ifname": "eth2", "state": "down", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "numChanges": 0, "timestamp": 1594435492572},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "server101", "ifname": "eth0",
+    "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    ["192.168.121.164/24"], "ip6AddressList": [], "numChanges": 0, "timestamp": 1594435492567},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "server101", "ifname": "eth1",
+    "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    ["172.16.1.101/32"], "ip6AddressList": [], "numChanges": 0, "timestamp": 1594435492567}]'

@@ -1,0 +1,693 @@
+description: 'Testing verbs for sqpoller: show summarize unique'
+tests:
+- command: sqpoller show --format=json --namespace=single-attach_evpn_distributed
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_distributed/parquet-out
+  marks: sqpoller show
+  output: '[{"namespace": "single-attach_evpn_distributed", "hostname": "edge01",
+    "service": "arpnd", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594784984648},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "edge01", "service":
+    "device", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594793456965}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "edge01", "service": "fs", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594793457015}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "edge01", "service": "ifCounters", "status": 0, "gatherTime": [],
+    "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount":
+    0, "timestamp": 1594792624697}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "edge01", "service": "interfaces", "status": 0, "gatherTime": [],
+    "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount":
+    0, "timestamp": 1594734206915}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "edge01", "service": "lldp", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594791589374}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "edge01", "service": "macs", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594791346231},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "edge01", "service":
+    "routes", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594790884996}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "edge01", "service": "time", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594792281893}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "edge01", "service": "topcpu", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594734208249}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "edge01", "service": "topmem", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594784984650}, {"namespace": "single-attach_evpn_distributed", "hostname": "edge01",
+    "service": "vlan", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594791346236},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "exit01", "service":
+    "arpnd", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594784984647}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "exit01", "service": "bgp", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594791590621}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "exit01", "service": "device", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594791344955}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "exit01", "service": "evpnVni", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594792281962}, {"namespace": "single-attach_evpn_distributed", "hostname": "exit01",
+    "service": "fs", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [],
+    "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594784983463},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "exit01", "service":
+    "ifCounters", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [],
+    "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594793457027},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "exit01", "service":
+    "interfaces", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [],
+    "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594784983448},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "exit01", "service":
+    "lldp", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594793457041}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "exit01", "service": "macs", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594793457049}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "exit01", "service": "mlag", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594791590556}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "exit01", "service": "ospfIf", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594791590555}, {"namespace": "single-attach_evpn_distributed", "hostname": "exit01",
+    "service": "ospfNbr", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594734206988},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "exit01", "service":
+    "routes", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594784984674}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "exit01", "service": "time", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594791346232}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "exit01", "service": "topcpu", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594792281900}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "exit01", "service": "topmem", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594791346262}, {"namespace": "single-attach_evpn_distributed", "hostname": "exit01",
+    "service": "vlan", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594792281895},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "exit02", "service":
+    "arpnd", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594790884963}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "exit02", "service": "bgp", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594792626127}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "exit02", "service": "device", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594790883662}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "exit02", "service": "evpnVni", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594793458443}, {"namespace": "single-attach_evpn_distributed", "hostname": "exit02",
+    "service": "fs", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [],
+    "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594784983460},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "exit02", "service":
+    "ifCounters", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [],
+    "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594784983473},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "exit02", "service":
+    "interfaces", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [],
+    "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594793456984},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "exit02", "service":
+    "lldp", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594793457035}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "exit02", "service": "macs", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594791590549}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "exit02", "service": "mlag", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594734208236}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "exit02", "service": "ospfIf", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594792626070}, {"namespace": "single-attach_evpn_distributed", "hostname": "exit02",
+    "service": "ospfNbr", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594734206987},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "exit02", "service":
+    "routes", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594793458412}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "exit02", "service": "time", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594734208234}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "exit02", "service": "topcpu", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594791590559}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "exit02", "service": "topmem", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594791346260}, {"namespace": "single-attach_evpn_distributed", "hostname": "exit02",
+    "service": "vlan", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594784984627},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "internet", "service":
+    "arpnd", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594792281913}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "internet", "service": "bgp", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594792626136}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "internet", "service": "device", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594784983418}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "internet", "service": "evpnVni", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594792626139}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "internet", "service": "fs", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594791589344},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "internet", "service":
+    "ifCounters", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [],
+    "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594791589353},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "internet", "service":
+    "interfaces", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [],
+    "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594792280523},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "internet", "service":
+    "lldp", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594791345025}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "internet", "service": "macs", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594792280567}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "internet", "service": "mlag", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594734208237}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "internet", "service": "ospfIf", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594791590555}, {"namespace": "single-attach_evpn_distributed", "hostname": "internet",
+    "service": "ospfNbr", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594734206988},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "internet", "service":
+    "routes", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594784984675}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "internet", "service": "time", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594792624716}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "internet", "service": "topcpu", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594784984635}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "internet", "service": "topmem", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594790884977}, {"namespace": "single-attach_evpn_distributed", "hostname": "internet",
+    "service": "vlan", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594784984628},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "leaf01", "service":
+    "arpnd", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594784984648}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "leaf01", "service": "bgp", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594734208295}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "leaf01", "service": "device", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594793456964}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "leaf01", "service": "evpnVni", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594790885014}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf01",
+    "service": "fs", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [],
+    "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594734206959},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "leaf01", "service":
+    "ifCounters", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [],
+    "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594734206971},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "leaf01", "service":
+    "interfaces", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [],
+    "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594792280512},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "leaf01", "service":
+    "lldp", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594784983492}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "leaf01", "service": "macs", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594734208232}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "leaf01", "service": "mlag", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594791590556}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "leaf01", "service": "ospfIf", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594791346233}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf01",
+    "service": "ospfNbr", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594790883739},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "leaf01", "service":
+    "routes", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594793458420}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "leaf01", "service": "time", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594793458375}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "leaf01", "service": "topcpu", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594792281905}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "leaf01", "service": "topmem", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594792626101}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf01",
+    "service": "vlan", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594734208238},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "leaf02", "service":
+    "arpnd", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594734208257}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "leaf02", "service": "bgp", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594734208302}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "leaf02", "service": "device", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594784983419}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "leaf02", "service": "evpnVni", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594791590626}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf02",
+    "service": "fs", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [],
+    "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594792280536},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "leaf02", "service":
+    "ifCounters", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [],
+    "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594791589361},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "leaf02", "service":
+    "interfaces", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [],
+    "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594784983453},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "leaf02", "service":
+    "lldp", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594791345028}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "leaf02", "service": "macs", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594792624715}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "leaf02", "service": "mlag", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594784984627}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "leaf02", "service": "ospfIf", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594792626070}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf02",
+    "service": "ospfNbr", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594734206988},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "leaf02", "service":
+    "routes", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594792281943}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "leaf02", "service": "time", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594734208235}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "leaf02", "service": "topcpu", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594791590566}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "leaf02", "service": "topmem", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594791346267}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf02",
+    "service": "vlan", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594790884947},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "leaf03", "service":
+    "arpnd", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594791346252}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "leaf03", "service": "bgp", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594792281948}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "leaf03", "service": "device", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594790883662}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "leaf03", "service": "evpnVni", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594793458443}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf03",
+    "service": "fs", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [],
+    "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594792280528},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "leaf03", "service":
+    "ifCounters", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [],
+    "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594793457019},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "leaf03", "service":
+    "interfaces", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [],
+    "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594784983425},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "leaf03", "service":
+    "lldp", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594790883731}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "leaf03", "service": "macs", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594792280565}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "leaf03", "service": "mlag", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594784984626}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "leaf03", "service": "ospfIf", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594792281893}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf03",
+    "service": "ospfNbr", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594790883738},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "leaf03", "service":
+    "routes", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594790884983}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "leaf03", "service": "time", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594792624715}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "leaf03", "service": "topcpu", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594791590561}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "leaf03", "service": "topmem", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594784984654}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf03",
+    "service": "vlan", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594792281895},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "leaf04", "service":
+    "arpnd", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594793458396}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "leaf04", "service": "bgp", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594734208298}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "leaf04", "service": "device", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594793456964}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "leaf04", "service": "evpnVni", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594793458444}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf04",
+    "service": "fs", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [],
+    "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594792624676},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "leaf04", "service":
+    "ifCounters", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [],
+    "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594790883716},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "leaf04", "service":
+    "interfaces", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [],
+    "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594791589324},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "leaf04", "service":
+    "lldp", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594791589370}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "leaf04", "service": "macs", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594793457048}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "leaf04", "service": "mlag", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594792626071}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "leaf04", "service": "ospfIf", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594792281893}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf04",
+    "service": "ospfNbr", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594792280564},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "leaf04", "service":
+    "routes", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594791590598}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "leaf04", "service": "time", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594792624716}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "leaf04", "service": "topcpu", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594791346241}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "leaf04", "service": "topmem", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594793458406}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf04",
+    "service": "vlan", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594734208238},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "server101", "service":
+    "arpnd", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594793458399}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "server101", "service": "device",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594790883664}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "server101", "service": "fs", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594793457018}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "server101", "service": "ifCounters", "status": 0, "gatherTime": [],
+    "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount":
+    0, "timestamp": 1594792280551}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "server101", "service": "interfaces", "status": 0, "gatherTime": [],
+    "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount":
+    0, "timestamp": 1594784983456}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "server101", "service": "lldp", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594792280552}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "server101", "service": "macs", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594791346231}, {"namespace": "single-attach_evpn_distributed", "hostname": "server101",
+    "service": "routes", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594792281947},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "server101", "service":
+    "time", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594791590555}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "server101", "service": "topcpu",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594791346250}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "server101", "service": "topmem",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594791346257}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "server101", "service": "vlan",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594793458379}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "server102", "service": "arpnd",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594793458398}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "server102", "service": "device",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594784983420}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "server102", "service": "fs", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594791589341}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "server102", "service": "ifCounters", "status": 0, "gatherTime": [],
+    "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount":
+    0, "timestamp": 1594792280540}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "server102", "service": "interfaces", "status": 0, "gatherTime": [],
+    "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount":
+    0, "timestamp": 1594791589336}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "server102", "service": "lldp", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594790883738}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "server102", "service": "macs", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594793457051}, {"namespace": "single-attach_evpn_distributed", "hostname": "server102",
+    "service": "routes", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594792626122},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "server102", "service":
+    "time", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594784984625}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "server102", "service": "topcpu",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594790884959}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "server102", "service": "topmem",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594791346257}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "server102", "service": "vlan",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594790884947}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "server103", "service": "arpnd",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594792281916}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "server103", "service": "device",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594791344956}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "server103", "service": "fs", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594793457018}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "server103", "service": "ifCounters", "status": 0, "gatherTime": [],
+    "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount":
+    0, "timestamp": 1594784983478}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "server103", "service": "interfaces", "status": 0, "gatherTime": [],
+    "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount":
+    0, "timestamp": 1594790883700}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "server103", "service": "lldp", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594791345028}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "server103", "service": "macs", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594784984624}, {"namespace": "single-attach_evpn_distributed", "hostname": "server103",
+    "service": "routes", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594784984679},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "server103", "service":
+    "time", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594790884944}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "server103", "service": "topcpu",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594791590570}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "server103", "service": "topmem",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594790884968}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "server103", "service": "vlan",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594734208239}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "server104", "service": "arpnd",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594791590579}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "server104", "service": "device",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594792624637}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "server104", "service": "fs", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594793457017}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "server104", "service": "ifCounters", "status": 0, "gatherTime": [],
+    "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount":
+    0, "timestamp": 1594792624695}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "server104", "service": "interfaces", "status": 0, "gatherTime": [],
+    "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount":
+    0, "timestamp": 1594734206916}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "server104", "service": "lldp", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594792624698}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "server104", "service": "macs", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594784984624}, {"namespace": "single-attach_evpn_distributed", "hostname": "server104",
+    "service": "routes", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594734208288},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "server104", "service":
+    "time", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594791590555}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "server104", "service": "topcpu",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594791346249}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "server104", "service": "topmem",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594791346257}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "server104", "service": "vlan",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594790884947}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "spine01", "service": "arpnd", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594792626088}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "spine01", "service": "bgp", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594784984685}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "spine01", "service": "device", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594784983418}, {"namespace": "single-attach_evpn_distributed", "hostname": "spine01",
+    "service": "evpnVni", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594791346300},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "spine01", "service":
+    "fs", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594734206952}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "spine01", "service": "ifCounters",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594792280540}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "spine01", "service": "interfaces",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594790883680}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "spine01", "service": "lldp", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594790883728}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "spine01", "service": "macs", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594792280565}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "spine01", "service": "mlag", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594791346234}, {"namespace": "single-attach_evpn_distributed", "hostname": "spine01",
+    "service": "ospfIf", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594734208236},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "spine01", "service":
+    "ospfNbr", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594792624711}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "spine01", "service": "routes",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594734208275}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "spine01", "service": "time", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594792281892}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "spine01", "service": "topcpu", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594791590565}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "spine01", "service": "topmem", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594792626096}, {"namespace": "single-attach_evpn_distributed", "hostname": "spine01",
+    "service": "vlan", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594792281895},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "spine02", "service":
+    "arpnd", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594790884963}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "spine02", "service": "bgp", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594793458438}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "spine02", "service": "device", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594793456963}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "spine02", "service": "evpnVni", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594790885013}, {"namespace": "single-attach_evpn_distributed", "hostname": "spine02",
+    "service": "fs", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [],
+    "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594784983462},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "spine02", "service":
+    "ifCounters", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [],
+    "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594792624691},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "spine02", "service":
+    "interfaces", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [],
+    "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594793456987},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "spine02", "service":
+    "lldp", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594784983488}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "spine02", "service": "macs", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594792624714}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "spine02", "service": "mlag", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594784984626}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "spine02", "service": "ospfIf", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594790884944}, {"namespace": "single-attach_evpn_distributed", "hostname": "spine02",
+    "service": "ospfNbr", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594784983494},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "spine02", "service":
+    "routes", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594791346274}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "spine02", "service": "time", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594790884943}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "spine02", "service": "topcpu", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594791590560}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "spine02", "service": "topmem", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594792281918}, {"namespace": "single-attach_evpn_distributed", "hostname": "spine02",
+    "service": "vlan", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594791346235}]'
+- command: sqpoller show --columns=hostname --format=json --namespace=single-attach_evpn_distributed
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_distributed/parquet-out
+  marks: sqpoller show
+  output: '[{"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
+    {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname":
+    "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
+    {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "internet"}, {"hostname": "internet"}, {"hostname":
+    "internet"}, {"hostname": "internet"}, {"hostname": "internet"}, {"hostname":
+    "internet"}, {"hostname": "internet"}, {"hostname": "internet"}, {"hostname":
+    "internet"}, {"hostname": "internet"}, {"hostname": "internet"}, {"hostname":
+    "internet"}, {"hostname": "internet"}, {"hostname": "internet"}, {"hostname":
+    "internet"}, {"hostname": "internet"}, {"hostname": "internet"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server101"},
+    {"hostname": "server101"}, {"hostname": "server101"}, {"hostname": "server101"},
+    {"hostname": "server101"}, {"hostname": "server101"}, {"hostname": "server101"},
+    {"hostname": "server101"}, {"hostname": "server101"}, {"hostname": "server101"},
+    {"hostname": "server101"}, {"hostname": "server102"}, {"hostname": "server102"},
+    {"hostname": "server102"}, {"hostname": "server102"}, {"hostname": "server102"},
+    {"hostname": "server102"}, {"hostname": "server102"}, {"hostname": "server102"},
+    {"hostname": "server102"}, {"hostname": "server102"}, {"hostname": "server102"},
+    {"hostname": "server102"}, {"hostname": "server103"}, {"hostname": "server103"},
+    {"hostname": "server103"}, {"hostname": "server103"}, {"hostname": "server103"},
+    {"hostname": "server103"}, {"hostname": "server103"}, {"hostname": "server103"},
+    {"hostname": "server103"}, {"hostname": "server103"}, {"hostname": "server103"},
+    {"hostname": "server103"}, {"hostname": "server104"}, {"hostname": "server104"},
+    {"hostname": "server104"}, {"hostname": "server104"}, {"hostname": "server104"},
+    {"hostname": "server104"}, {"hostname": "server104"}, {"hostname": "server104"},
+    {"hostname": "server104"}, {"hostname": "server104"}, {"hostname": "server104"},
+    {"hostname": "server104"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}]'
+- command: sqpoller summarize --format=json --namespace=single-attach_evpn_distributed
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_distributed/parquet-out
+  marks: sqpoller summarize
+  output: '{"single-attach_evpn_distributed": {"deviceCnt": 14, "entriesCnt": 213,
+    "service": 17, "status": {"0": 213}, "pollExcdPeriodStat": [0, 0, 0]}}'
+- command: sqpoller unique --columns=hostname --format=json --namespace=single-attach_evpn_distributed
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_distributed/parquet-out
+  marks: sqpoller unique
+  output: '[{"hostname": "server104", "count": 12}, {"hostname": "server103", "count":
+    12}, {"hostname": "server102", "count": 12}, {"hostname": "server101", "count":
+    12}, {"hostname": "edge01", "count": 12}, {"hostname": "spine02", "count": 17},
+    {"hostname": "spine01", "count": 17}, {"hostname": "leaf04", "count": 17}, {"hostname":
+    "leaf03", "count": 17}, {"hostname": "leaf02", "count": 17}, {"hostname": "leaf01",
+    "count": 17}, {"hostname": "internet", "count": 17}, {"hostname": "exit02", "count":
+    17}, {"hostname": "exit01", "count": 17}]'

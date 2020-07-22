@@ -1,0 +1,593 @@
+description: 'Testing verbs for interface: show summarize unique assert top'
+tests:
+- command: interface show --format=json --namespace=single-attach_evpn_distributed
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_distributed/parquet-out
+  marks: interface show
+  output: '[{"namespace": "single-attach_evpn_distributed", "hostname": "edge01",
+    "ifname": "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["192.168.121.99/24"], "ip6AddressList": [], "timestamp":
+    1594386286709}, {"namespace": "single-attach_evpn_distributed", "hostname": "edge01",
+    "ifname": "eth1.2", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 2, "master":
+    "", "ipAddressList": ["169.254.254.2/30"], "ip6AddressList": [], "timestamp":
+    1594386286709}, {"namespace": "single-attach_evpn_distributed", "hostname": "edge01",
+    "ifname": "eth1.3", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 3, "master":
+    "", "ipAddressList": ["169.254.254.6/30"], "ip6AddressList": [], "timestamp":
+    1594386286709}, {"namespace": "single-attach_evpn_distributed", "hostname": "edge01",
+    "ifname": "eth1.4", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 4, "master":
+    "", "ipAddressList": ["169.254.254.10/30"], "ip6AddressList": [], "timestamp":
+    1594386286709}, {"namespace": "single-attach_evpn_distributed", "hostname": "edge01",
+    "ifname": "eth1", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594386286709}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "edge01", "ifname": "eth2.2", "state":
+    "up", "type": "vlan", "mtu": 1500, "vlan": 2, "master": "", "ipAddressList": ["169.254.253.2/30"],
+    "ip6AddressList": [], "timestamp": 1594386286709}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "edge01", "ifname": "eth2.3", "state": "up", "type": "vlan", "mtu":
+    1500, "vlan": 3, "master": "", "ipAddressList": ["169.254.253.6/30"], "ip6AddressList":
+    [], "timestamp": 1594386286709}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "edge01", "ifname": "eth2.4", "state": "up", "type": "vlan", "mtu":
+    1500, "vlan": 4, "master": "", "ipAddressList": ["169.254.253.10/30"], "ip6AddressList":
+    [], "timestamp": 1594386286709}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "edge01", "ifname": "eth2", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1594386286709}, {"namespace": "single-attach_evpn_distributed", "hostname": "edge01",
+    "ifname": "lo", "state": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": ["10.0.0.100/32"], "ip6AddressList": [], "timestamp": 1594386286709},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "exit01", "ifname":
+    "bridge", "state": "up", "type": "bridge", "mtu": 9216, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": ["fe80::3c3d:bcff:fe0f:9a95/64"], "timestamp":
+    1594386286903}, {"namespace": "single-attach_evpn_distributed", "hostname": "exit01",
+    "ifname": "eth0", "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master":
+    "mgmt", "ipAddressList": ["192.168.121.83/24"], "ip6AddressList": ["fe80::5054:ff:feee:47f5/64"],
+    "timestamp": 1594386286903}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "exit01", "ifname": "evpn-vrf", "state": "up", "type": "vrf", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.101/32"], "ip6AddressList": [], "timestamp":
+    1594386286903}, {"namespace": "single-attach_evpn_distributed", "hostname": "exit01",
+    "ifname": "internet-vrf", "state": "up", "type": "vrf", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.101/32"], "ip6AddressList": [], "timestamp":
+    1594386286903}, {"namespace": "single-attach_evpn_distributed", "hostname": "exit01",
+    "ifname": "lo", "state": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": ["10.0.0.101/32"], "ip6AddressList": ["::1/128"], "timestamp":
+    1594386286903}, {"namespace": "single-attach_evpn_distributed", "hostname": "exit01",
+    "ifname": "mgmt", "state": "up", "type": "vrf", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": ["127.0.0.1/8"], "ip6AddressList": [], "timestamp": 1594386286903},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "exit01", "ifname":
+    "swp1", "state": "up", "type": "ethernet", "mtu": 9216, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:9/64"], "timestamp":
+    1594386286903}, {"namespace": "single-attach_evpn_distributed", "hostname": "exit01",
+    "ifname": "swp2", "state": "up", "type": "ethernet", "mtu": 9216, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:5a/64"], "timestamp":
+    1594386286903}, {"namespace": "single-attach_evpn_distributed", "hostname": "exit01",
+    "ifname": "swp3", "state": "", "type": "ethernet", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594386286903}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "exit01", "ifname": "swp4", "state":
+    "", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1594386286903}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "exit01", "ifname": "swp5.2", "state": "up", "type": "vlan", "mtu":
+    1500, "vlan": 2, "master": "", "ipAddressList": ["169.254.254.1/30"], "ip6AddressList":
+    ["fe80::4638:39ff:fe00:4b/64"], "timestamp": 1594386286903}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "exit01", "ifname": "swp5.3", "state": "up", "type": "vlan", "mtu":
+    1500, "vlan": 3, "master": "evpn-vrf", "ipAddressList": ["169.254.254.5/30"],
+    "ip6AddressList": ["fe80::4638:39ff:fe00:4b/64"], "timestamp": 1594386286903},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "exit01", "ifname":
+    "swp5.4", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 4, "master": "internet-vrf",
+    "ipAddressList": ["169.254.254.9/30"], "ip6AddressList": ["fe80::4638:39ff:fe00:4b/64"],
+    "timestamp": 1594386286903}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "exit01", "ifname": "swp5", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:4b/64"],
+    "timestamp": 1594386286903}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "exit01", "ifname": "swp6", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "internet-vrf", "ipAddressList": ["169.254.127.1/31"], "ip6AddressList":
+    ["fe80::4638:39ff:fe00:8/64"], "timestamp": 1594386286903}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "exit01", "ifname": "vlan4001", "state": "up", "type": "vlan", "mtu":
+    9216, "vlan": 4001, "master": "evpn-vrf", "ipAddressList": [], "ip6AddressList":
+    ["fe80::3c3d:bcff:fe0f:9a95/64"], "timestamp": 1594386286903}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "exit01", "ifname": "vxlan4001", "state": "up", "type": "vxlan", "mtu":
+    9216, "vlan": 4001, "master": "bridge", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1594386286903}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "exit02", "ifname": "bridge", "state": "up", "type": "bridge", "mtu":
+    9216, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::544f:94ff:fe8b:ea9e/64"],
+    "timestamp": 1594386286940}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "exit02", "ifname": "eth0", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "mgmt", "ipAddressList": ["192.168.121.224/24"], "ip6AddressList":
+    ["fe80::5054:ff:fe13:9652/64"], "timestamp": 1594386286940}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "exit02", "ifname": "evpn-vrf", "state": "up", "type": "vrf", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.102/32"], "ip6AddressList":
+    [], "timestamp": 1594386286940}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "exit02", "ifname": "internet-vrf", "state": "up", "type": "vrf",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.102/32"], "ip6AddressList":
+    [], "timestamp": 1594386286940}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "exit02", "ifname": "lo", "state": "up", "type": "loopback", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.102/32"], "ip6AddressList":
+    ["::1/128"], "timestamp": 1594386286940}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "exit02", "ifname": "mgmt", "state": "up", "type": "vrf", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": ["127.0.0.1/8"], "ip6AddressList": [],
+    "timestamp": 1594386286940}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "exit02", "ifname": "swp1", "state": "up", "type": "ethernet", "mtu": 9216, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:21/64"],
+    "timestamp": 1594386286940}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "exit02", "ifname": "swp2", "state": "up", "type": "ethernet", "mtu": 9216, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:55/64"],
+    "timestamp": 1594386286940}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "exit02", "ifname": "swp3", "state": "", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594386286940},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "exit02", "ifname":
+    "swp4", "state": "", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594386286940}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "exit02", "ifname": "swp5.2", "state":
+    "up", "type": "vlan", "mtu": 1500, "vlan": 2, "master": "", "ipAddressList": ["169.254.253.1/30"],
+    "ip6AddressList": ["fe80::4638:39ff:fe00:c/64"], "timestamp": 1594386286940},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "exit02", "ifname":
+    "swp5.3", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 3, "master": "evpn-vrf",
+    "ipAddressList": ["169.254.253.5/30"], "ip6AddressList": ["fe80::4638:39ff:fe00:c/64"],
+    "timestamp": 1594386286940}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "exit02", "ifname": "swp5.4", "state": "up", "type": "vlan", "mtu": 1500, "vlan":
+    4, "master": "internet-vrf", "ipAddressList": ["169.254.253.9/30"], "ip6AddressList":
+    ["fe80::4638:39ff:fe00:c/64"], "timestamp": 1594386286940}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "exit02", "ifname": "swp5", "state": "up", "type": "ethernet", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:c/64"],
+    "timestamp": 1594386286940}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "exit02", "ifname": "swp6", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "internet-vrf", "ipAddressList": ["169.254.127.3/31"], "ip6AddressList":
+    ["fe80::4638:39ff:fe00:3f/64"], "timestamp": 1594386286940}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "exit02", "ifname": "vlan4001", "state": "up", "type": "vlan", "mtu":
+    9216, "vlan": 4001, "master": "evpn-vrf", "ipAddressList": [], "ip6AddressList":
+    ["fe80::544f:94ff:fe8b:ea9e/64"], "timestamp": 1594386286940}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "exit02", "ifname": "vxlan4001", "state": "up", "type": "vxlan", "mtu":
+    9216, "vlan": 4001, "master": "bridge", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1594386286940}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "internet", "ifname": "eth0", "state": "up", "type": "ethernet", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": ["192.168.121.227/24"], "ip6AddressList":
+    ["fe80::5054:ff:feb1:3972/64"], "timestamp": 1594386286899}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "internet", "ifname": "lo", "state": "up", "type": "loopback", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.253/32", "172.16.253.1/32"],
+    "ip6AddressList": ["::1/128"], "timestamp": 1594386286899}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "internet", "ifname": "swp1", "state": "up", "type": "ethernet", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": ["169.254.127.0/31"], "ip6AddressList":
+    ["fe80::4638:39ff:fe00:7/64"], "timestamp": 1594386286899}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "internet", "ifname": "swp2", "state": "up", "type": "ethernet", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": ["169.254.127.2/31"], "ip6AddressList":
+    ["fe80::4638:39ff:fe00:3e/64"], "timestamp": 1594386286899}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "leaf01", "ifname": "bridge", "state": "up", "type": "bridge", "mtu":
+    9000, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:3/64"],
+    "timestamp": 1594386286938}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "leaf01", "ifname": "eth0", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "mgmt", "ipAddressList": ["192.168.121.211/24"], "ip6AddressList":
+    ["fe80::5054:ff:fe79:3ca/64"], "timestamp": 1594386286938}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "leaf01", "ifname": "evpn-vrf", "state": "up", "type": "vrf", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1594386286938}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf01",
+    "ifname": "lo", "state": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": ["10.0.0.11/32"], "ip6AddressList": ["::1/128"], "timestamp":
+    1594386286938}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf01",
+    "ifname": "mgmt", "state": "up", "type": "vrf", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": ["127.0.0.1/8"], "ip6AddressList": [], "timestamp": 1594386286938},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "leaf01", "ifname":
+    "swp1", "state": "up", "type": "ethernet", "mtu": 9216, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:53/64"], "timestamp":
+    1594386286938}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf01",
+    "ifname": "swp2", "state": "up", "type": "ethernet", "mtu": 9216, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:24/64"], "timestamp":
+    1594386286938}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf01",
+    "ifname": "swp3", "state": "up", "type": "ethernet", "mtu": 9000, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:1d/64"], "timestamp":
+    1594386286938}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf01",
+    "ifname": "swp4", "state": "up", "type": "ethernet", "mtu": 9000, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:1e/64"], "timestamp":
+    1594386286938}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf01",
+    "ifname": "swp5", "state": "up", "type": "ethernet", "mtu": 9000, "vlan": 0, "master":
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594386286938},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "leaf01", "ifname":
+    "vlan13-v0", "state": "up", "type": "macvlan", "mtu": 9000, "vlan": 0, "master":
+    "evpn-vrf", "ipAddressList": ["172.16.1.1/24"], "ip6AddressList": ["fe80::4639:39ff:feff:13/64"],
+    "timestamp": 1594386286938}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "leaf01", "ifname": "vlan13", "state": "up", "type": "vlan", "mtu": 9000, "vlan":
+    13, "master": "evpn-vrf", "ipAddressList": ["172.16.1.11/24"], "ip6AddressList":
+    ["fe80::4638:39ff:fe00:3/64"], "timestamp": 1594386286938}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "leaf01", "ifname": "vlan4001", "state": "up", "type": "vlan", "mtu":
+    9000, "vlan": 4001, "master": "evpn-vrf", "ipAddressList": [], "ip6AddressList":
+    ["fe80::4639:39ff:feff:4096/64"], "timestamp": 1594386286938}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "leaf01", "ifname": "vni13", "state": "up", "type": "vxlan", "mtu":
+    9000, "vlan": 13, "master": "bridge", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1594386286938}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "leaf01", "ifname": "vxlan4001", "state": "up", "type": "vxlan", "mtu": 9216,
+    "vlan": 4001, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1594386286938}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf02",
+    "ifname": "bridge", "state": "up", "type": "bridge", "mtu": 9000, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:18/64"], "timestamp":
+    1594386286885}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf02",
+    "ifname": "eth0", "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master":
+    "mgmt", "ipAddressList": ["192.168.121.176/24"], "ip6AddressList": ["fe80::5054:ff:fe78:8f58/64"],
+    "timestamp": 1594386286885}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "leaf02", "ifname": "evpn-vrf", "state": "up", "type": "vrf", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594386286885},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "leaf02", "ifname":
+    "lo", "state": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master": "",
+    "ipAddressList": ["10.0.0.12/32"], "ip6AddressList": ["::1/128"], "timestamp":
+    1594386286885}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf02",
+    "ifname": "mgmt", "state": "up", "type": "vrf", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": ["127.0.0.1/8"], "ip6AddressList": [], "timestamp": 1594386286885},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "leaf02", "ifname":
+    "swp1", "state": "up", "type": "ethernet", "mtu": 9216, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:28/64"], "timestamp":
+    1594386286885}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf02",
+    "ifname": "swp2", "state": "up", "type": "ethernet", "mtu": 9216, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:5d/64"], "timestamp":
+    1594386286885}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf02",
+    "ifname": "swp3", "state": "up", "type": "ethernet", "mtu": 9000, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:d/64"], "timestamp":
+    1594386286885}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf02",
+    "ifname": "swp4", "state": "up", "type": "ethernet", "mtu": 9000, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:e/64"], "timestamp":
+    1594386286885}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf02",
+    "ifname": "swp5", "state": "up", "type": "ethernet", "mtu": 9000, "vlan": 0, "master":
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594386286885},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "leaf02", "ifname":
+    "vlan24-v0", "state": "up", "type": "macvlan", "mtu": 9000, "vlan": 0, "master":
+    "evpn-vrf", "ipAddressList": ["172.16.2.1/24"], "ip6AddressList": ["fe80::4639:39ff:feff:14/64"],
+    "timestamp": 1594386286885}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "leaf02", "ifname": "vlan24", "state": "up", "type": "vlan", "mtu": 9000, "vlan":
+    24, "master": "evpn-vrf", "ipAddressList": ["172.16.2.12/24"], "ip6AddressList":
+    ["fe80::4638:39ff:fe00:18/64"], "timestamp": 1594386286885}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "leaf02", "ifname": "vlan4001", "state": "up", "type": "vlan", "mtu":
+    9000, "vlan": 4001, "master": "evpn-vrf", "ipAddressList": [], "ip6AddressList":
+    ["fe80::4639:39ff:feff:4095/64"], "timestamp": 1594386286885}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "leaf02", "ifname": "vni24", "state": "up", "type": "vxlan", "mtu":
+    9000, "vlan": 24, "master": "bridge", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1594386286885}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "leaf02", "ifname": "vxlan4001", "state": "up", "type": "vxlan", "mtu": 9216,
+    "vlan": 4001, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1594386286885}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf03",
+    "ifname": "bridge", "state": "up", "type": "bridge", "mtu": 9000, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:1f/64"], "timestamp":
+    1594386286972}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf03",
+    "ifname": "eth0", "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master":
+    "mgmt", "ipAddressList": ["192.168.121.200/24"], "ip6AddressList": ["fe80::5054:ff:fe8e:a928/64"],
+    "timestamp": 1594386286972}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "leaf03", "ifname": "evpn-vrf", "state": "up", "type": "vrf", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594386286972},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "leaf03", "ifname":
+    "lo", "state": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master": "",
+    "ipAddressList": ["10.0.0.13/32"], "ip6AddressList": ["::1/128"], "timestamp":
+    1594386286972}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf03",
+    "ifname": "mgmt", "state": "up", "type": "vrf", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": ["127.0.0.1/8"], "ip6AddressList": [], "timestamp": 1594386286972},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "leaf03", "ifname":
+    "swp1", "state": "up", "type": "ethernet", "mtu": 9216, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:4f/64"], "timestamp":
+    1594386286972}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf03",
+    "ifname": "swp2", "state": "up", "type": "ethernet", "mtu": 9216, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:1b/64"], "timestamp":
+    1594386286972}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf03",
+    "ifname": "swp3", "state": "up", "type": "ethernet", "mtu": 9000, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:2a/64"], "timestamp":
+    1594386286972}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf03",
+    "ifname": "swp4", "state": "up", "type": "ethernet", "mtu": 9000, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:2b/64"], "timestamp":
+    1594386286972}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf03",
+    "ifname": "swp5", "state": "up", "type": "ethernet", "mtu": 9000, "vlan": 0, "master":
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594386286972},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "leaf03", "ifname":
+    "vlan13-v0", "state": "up", "type": "macvlan", "mtu": 9000, "vlan": 0, "master":
+    "evpn-vrf", "ipAddressList": ["172.16.1.1/24"], "ip6AddressList": ["fe80::4639:39ff:feff:13/64"],
+    "timestamp": 1594386286972}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "leaf03", "ifname": "vlan13", "state": "up", "type": "vlan", "mtu": 9000, "vlan":
+    13, "master": "evpn-vrf", "ipAddressList": ["172.16.1.13/24"], "ip6AddressList":
+    ["fe80::4638:39ff:fe00:1f/64"], "timestamp": 1594386286972}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "leaf03", "ifname": "vlan4001", "state": "up", "type": "vlan", "mtu":
+    9000, "vlan": 4001, "master": "evpn-vrf", "ipAddressList": [], "ip6AddressList":
+    ["fe80::4639:39ff:feff:4096/64"], "timestamp": 1594386286972}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "leaf03", "ifname": "vni13", "state": "up", "type": "vxlan", "mtu":
+    9000, "vlan": 13, "master": "bridge", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1594386286972}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "leaf03", "ifname": "vxlan4001", "state": "up", "type": "vxlan", "mtu": 9216,
+    "vlan": 4001, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1594386286972}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf04",
+    "ifname": "bridge", "state": "up", "type": "bridge", "mtu": 9000, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:2c/64"], "timestamp":
+    1594386286938}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf04",
+    "ifname": "eth0", "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master":
+    "mgmt", "ipAddressList": ["192.168.121.188/24"], "ip6AddressList": ["fe80::5054:ff:feac:f348/64"],
+    "timestamp": 1594386286938}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "leaf04", "ifname": "evpn-vrf", "state": "up", "type": "vrf", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594386286938},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "leaf04", "ifname":
+    "lo", "state": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master": "",
+    "ipAddressList": ["10.0.0.14/32"], "ip6AddressList": ["::1/128"], "timestamp":
+    1594386286938}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf04",
+    "ifname": "mgmt", "state": "up", "type": "vrf", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": ["127.0.0.1/8"], "ip6AddressList": [], "timestamp": 1594386286938},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "leaf04", "ifname":
+    "swp1", "state": "up", "type": "ethernet", "mtu": 9216, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:3b/64"], "timestamp":
+    1594386286938}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf04",
+    "ifname": "swp2", "state": "up", "type": "ethernet", "mtu": 9216, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:46/64"], "timestamp":
+    1594386286938}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf04",
+    "ifname": "swp3", "state": "up", "type": "ethernet", "mtu": 9000, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:19/64"], "timestamp":
+    1594386286938}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf04",
+    "ifname": "swp4", "state": "up", "type": "ethernet", "mtu": 9000, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:1a/64"], "timestamp":
+    1594386286938}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf04",
+    "ifname": "swp5", "state": "up", "type": "ethernet", "mtu": 9000, "vlan": 0, "master":
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594386286938},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "leaf04", "ifname":
+    "vlan24-v0", "state": "up", "type": "macvlan", "mtu": 9000, "vlan": 0, "master":
+    "evpn-vrf", "ipAddressList": ["172.16.2.1/24"], "ip6AddressList": ["fe80::4639:39ff:feff:14/64"],
+    "timestamp": 1594386286938}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "leaf04", "ifname": "vlan24", "state": "up", "type": "vlan", "mtu": 9000, "vlan":
+    24, "master": "evpn-vrf", "ipAddressList": ["172.16.2.14/24"], "ip6AddressList":
+    ["fe80::4638:39ff:fe00:2c/64"], "timestamp": 1594386286938}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "leaf04", "ifname": "vlan4001", "state": "up", "type": "vlan", "mtu":
+    9000, "vlan": 4001, "master": "evpn-vrf", "ipAddressList": [], "ip6AddressList":
+    ["fe80::4639:39ff:feff:4097/64"], "timestamp": 1594386286938}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "leaf04", "ifname": "vni24", "state": "up", "type": "vxlan", "mtu":
+    9000, "vlan": 24, "master": "bridge", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1594386286938}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "leaf04", "ifname": "vxlan4001", "state": "up", "type": "vxlan", "mtu": 9216,
+    "vlan": 4001, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1594386286938}, {"namespace": "single-attach_evpn_distributed", "hostname": "server101",
+    "ifname": "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["192.168.121.24/24"], "ip6AddressList": [], "timestamp":
+    1594386286660}, {"namespace": "single-attach_evpn_distributed", "hostname": "server101",
+    "ifname": "eth1", "state": "up", "type": "ether", "mtu": 9000, "vlan": 0, "master":
+    "", "ipAddressList": ["172.16.1.101/24"], "ip6AddressList": [], "timestamp": 1594386286660},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "server101", "ifname":
+    "lo", "state": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594386286660}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "server102", "ifname": "eth0", "state":
+    "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    ["192.168.121.175/24"], "ip6AddressList": [], "timestamp": 1594386286660}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "server102", "ifname": "eth1", "state":
+    "up", "type": "ether", "mtu": 9000, "vlan": 0, "master": "", "ipAddressList":
+    ["172.16.2.102/24"], "ip6AddressList": [], "timestamp": 1594386286660}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "server102", "ifname": "lo", "state":
+    "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1594386286660}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "server103", "ifname": "eth0", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": ["192.168.121.17/24"], "ip6AddressList":
+    [], "timestamp": 1594386286660}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "server103", "ifname": "eth1", "state": "up", "type": "ether", "mtu":
+    9000, "vlan": 0, "master": "", "ipAddressList": ["172.16.1.103/24"], "ip6AddressList":
+    [], "timestamp": 1594386286660}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "server103", "ifname": "lo", "state": "up", "type": "loopback", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1594386286660}, {"namespace": "single-attach_evpn_distributed", "hostname": "server104",
+    "ifname": "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["192.168.121.61/24"], "ip6AddressList": [], "timestamp":
+    1594386286660}, {"namespace": "single-attach_evpn_distributed", "hostname": "server104",
+    "ifname": "eth1", "state": "up", "type": "ether", "mtu": 9000, "vlan": 0, "master":
+    "", "ipAddressList": ["172.16.2.104/24"], "ip6AddressList": [], "timestamp": 1594386286660},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "server104", "ifname":
+    "lo", "state": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1594386286660}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "spine01", "ifname": "eth0", "state":
+    "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "mgmt", "ipAddressList":
+    ["192.168.121.219/24"], "ip6AddressList": ["fe80::5054:ff:fe7a:4f4/64"], "timestamp":
+    1594386286939}, {"namespace": "single-attach_evpn_distributed", "hostname": "spine01",
+    "ifname": "lo", "state": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": ["10.0.0.21/32"], "ip6AddressList": ["::1/128"], "timestamp":
+    1594386286939}, {"namespace": "single-attach_evpn_distributed", "hostname": "spine01",
+    "ifname": "mgmt", "state": "up", "type": "vrf", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": ["127.0.0.1/8"], "ip6AddressList": [], "timestamp": 1594386286939},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "spine01", "ifname":
+    "swp1", "state": "up", "type": "ethernet", "mtu": 9216, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:54/64"], "timestamp":
+    1594386286939}, {"namespace": "single-attach_evpn_distributed", "hostname": "spine01",
+    "ifname": "swp2", "state": "up", "type": "ethernet", "mtu": 9216, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:29/64"], "timestamp":
+    1594386286939}, {"namespace": "single-attach_evpn_distributed", "hostname": "spine01",
+    "ifname": "swp3", "state": "up", "type": "ethernet", "mtu": 9216, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:50/64"], "timestamp":
+    1594386286939}, {"namespace": "single-attach_evpn_distributed", "hostname": "spine01",
+    "ifname": "swp4", "state": "up", "type": "ethernet", "mtu": 9216, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:3c/64"], "timestamp":
+    1594386286939}, {"namespace": "single-attach_evpn_distributed", "hostname": "spine01",
+    "ifname": "swp5", "state": "up", "type": "ethernet", "mtu": 9216, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:22/64"], "timestamp":
+    1594386286939}, {"namespace": "single-attach_evpn_distributed", "hostname": "spine01",
+    "ifname": "swp6", "state": "up", "type": "ethernet", "mtu": 9216, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:a/64"], "timestamp":
+    1594386286939}, {"namespace": "single-attach_evpn_distributed", "hostname": "spine02",
+    "ifname": "eth0", "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master":
+    "mgmt", "ipAddressList": ["192.168.121.239/24"], "ip6AddressList": ["fe80::5054:ff:fe74:88e0/64"],
+    "timestamp": 1594386286940}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "spine02", "ifname": "lo", "state": "up", "type": "loopback", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.0.22/32"], "ip6AddressList": ["::1/128"],
+    "timestamp": 1594386286940}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "spine02", "ifname": "mgmt", "state": "up", "type": "vrf", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": ["127.0.0.1/8"], "ip6AddressList": [], "timestamp":
+    1594386286940}, {"namespace": "single-attach_evpn_distributed", "hostname": "spine02",
+    "ifname": "swp1", "state": "up", "type": "ethernet", "mtu": 9216, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:25/64"], "timestamp":
+    1594386286940}, {"namespace": "single-attach_evpn_distributed", "hostname": "spine02",
+    "ifname": "swp2", "state": "up", "type": "ethernet", "mtu": 9216, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:5e/64"], "timestamp":
+    1594386286940}, {"namespace": "single-attach_evpn_distributed", "hostname": "spine02",
+    "ifname": "swp3", "state": "up", "type": "ethernet", "mtu": 9216, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:1c/64"], "timestamp":
+    1594386286940}, {"namespace": "single-attach_evpn_distributed", "hostname": "spine02",
+    "ifname": "swp4", "state": "up", "type": "ethernet", "mtu": 9216, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:47/64"], "timestamp":
+    1594386286940}, {"namespace": "single-attach_evpn_distributed", "hostname": "spine02",
+    "ifname": "swp5", "state": "up", "type": "ethernet", "mtu": 9216, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:56/64"], "timestamp":
+    1594386286940}, {"namespace": "single-attach_evpn_distributed", "hostname": "spine02",
+    "ifname": "swp6", "state": "up", "type": "ethernet", "mtu": 9216, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": ["fe80::4638:39ff:fe00:5b/64"], "timestamp":
+    1594386286940}]'
+- command: interface show --columns=hostname --format=json --namespace=single-attach_evpn_distributed
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_distributed/parquet-out
+  marks: interface show
+  output: '[{"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
+    {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname":
+    "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "internet"},
+    {"hostname": "internet"}, {"hostname": "internet"}, {"hostname": "internet"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "server101"}, {"hostname": "server101"}, {"hostname":
+    "server101"}, {"hostname": "server102"}, {"hostname": "server102"}, {"hostname":
+    "server102"}, {"hostname": "server103"}, {"hostname": "server103"}, {"hostname":
+    "server103"}, {"hostname": "server104"}, {"hostname": "server104"}, {"hostname":
+    "server104"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}]'
+- command: interface summarize --format=json --namespace=single-attach_evpn_distributed
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_distributed/parquet-out
+  marks: interface summarize
+  output: '{"single-attach_evpn_distributed": {"deviceCnt": 14, "interfaceCnt": 138,
+    "devicesWithL2Cnt": 14, "devicesWithVxlanCnt": 10, "ifDownCnt": 4, "ifWithMultipleIPCnt":
+    1, "uniqueMTUCnt": 4, "uniqueIfTypesCnt": 8, "ifChangesStat": [0, 0, 0], "ifPerDeviceStat":
+    [3, 17, 9.5], "uniqueIPv4AddrCnt": 52, "uniqueIPv6AddrCnt": 1}}'
+- command: interface unique --columns=hostname --format=json --namespace=single-attach_evpn_distributed
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_distributed/parquet-out
+  marks: interface unique
+  output: '[{"hostname": "server104", "count": 3}, {"hostname": "server103", "count":
+    3}, {"hostname": "server102", "count": 3}, {"hostname": "server101", "count":
+    3}, {"hostname": "internet", "count": 4}, {"hostname": "spine02", "count": 9},
+    {"hostname": "spine01", "count": 9}, {"hostname": "edge01", "count": 10}, {"hostname":
+    "leaf04", "count": 15}, {"hostname": "leaf03", "count": 15}, {"hostname": "leaf02",
+    "count": 15}, {"hostname": "leaf01", "count": 15}, {"hostname": "exit02", "count":
+    17}, {"hostname": "exit01", "count": 17}]'
+- command: interface assert --format=json --namespace=single-attach_evpn_distributed
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_distributed/parquet-out
+  marks: interface assert
+  output: '[{"namespace": "single-attach_evpn_distributed", "hostname": "exit01",
+    "ifname": "swp1", "peerHostname": "spine01", "peerIfname": "swp6", "timestamp":
+    1594386286692, "mtu": 9216.0, "peerMtu": 9216.0, "assert": "pass"}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "exit01", "ifname": "swp2", "peerHostname":
+    "spine02", "peerIfname": "swp6", "timestamp": 1594386286692, "mtu": 9216.0, "peerMtu":
+    9216.0, "assert": "pass"}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "exit01", "ifname": "swp6", "peerHostname": "internet", "peerIfname": "swp1",
+    "timestamp": 1594386286692, "mtu": 1500.0, "peerMtu": 1500.0, "assert": "pass"},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "exit02", "ifname":
+    "swp1", "peerHostname": "spine01", "peerIfname": "swp5", "timestamp": 1594386286709,
+    "mtu": 9216.0, "peerMtu": 9216.0, "assert": "pass"}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "exit02", "ifname": "swp2", "peerHostname": "spine02", "peerIfname":
+    "swp5", "timestamp": 1594386286709, "mtu": 9216.0, "peerMtu": 9216.0, "assert":
+    "pass"}, {"namespace": "single-attach_evpn_distributed", "hostname": "exit02",
+    "ifname": "swp6", "peerHostname": "internet", "peerIfname": "swp2", "timestamp":
+    1594386286709, "mtu": 1500.0, "peerMtu": 1500.0, "assert": "pass"}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "internet", "ifname": "swp1", "peerHostname":
+    "exit01", "peerIfname": "swp6", "timestamp": 1594386286694, "mtu": 1500.0, "peerMtu":
+    1500.0, "assert": "pass"}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "internet", "ifname": "swp2", "peerHostname": "exit02", "peerIfname": "swp6",
+    "timestamp": 1594386286694, "mtu": 1500.0, "peerMtu": 1500.0, "assert": "pass"},
+    {"namespace": "single-attach_evpn_distributed", "hostname": "leaf01", "ifname":
+    "swp1", "peerHostname": "spine01", "peerIfname": "swp1", "timestamp": 1594386286686,
+    "mtu": 9216.0, "peerMtu": 9216.0, "assert": "pass"}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "leaf01", "ifname": "swp2", "peerHostname": "spine02", "peerIfname":
+    "swp1", "timestamp": 1594386286686, "mtu": 9216.0, "peerMtu": 9216.0, "assert":
+    "pass"}, {"namespace": "single-attach_evpn_distributed", "hostname": "leaf01",
+    "ifname": "swp3", "peerHostname": "leaf02", "peerIfname": "swp3", "timestamp":
+    1594386286686, "mtu": 9000.0, "peerMtu": 9000.0, "assert": "pass"}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "leaf01", "ifname": "swp4", "peerHostname":
+    "leaf02", "peerIfname": "swp4", "timestamp": 1594386286686, "mtu": 9000.0, "peerMtu":
+    9000.0, "assert": "pass"}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "leaf02", "ifname": "swp1", "peerHostname": "spine01", "peerIfname": "swp2", "timestamp":
+    1594386286676, "mtu": 9216.0, "peerMtu": 9216.0, "assert": "pass"}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "leaf02", "ifname": "swp2", "peerHostname":
+    "spine02", "peerIfname": "swp2", "timestamp": 1594386286676, "mtu": 9216.0, "peerMtu":
+    9216.0, "assert": "pass"}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "leaf02", "ifname": "swp3", "peerHostname": "leaf01", "peerIfname": "swp3", "timestamp":
+    1594386286676, "mtu": 9000.0, "peerMtu": 9000.0, "assert": "pass"}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "leaf02", "ifname": "swp4", "peerHostname":
+    "leaf01", "peerIfname": "swp4", "timestamp": 1594386286676, "mtu": 9000.0, "peerMtu":
+    9000.0, "assert": "pass"}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "leaf03", "ifname": "swp1", "peerHostname": "spine01", "peerIfname": "swp3", "timestamp":
+    1594386286701, "mtu": 9216.0, "peerMtu": 9216.0, "assert": "pass"}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "leaf03", "ifname": "swp2", "peerHostname":
+    "spine02", "peerIfname": "swp3", "timestamp": 1594386286701, "mtu": 9216.0, "peerMtu":
+    9216.0, "assert": "pass"}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "leaf03", "ifname": "swp3", "peerHostname": "leaf04", "peerIfname": "swp3", "timestamp":
+    1594386286701, "mtu": 9000.0, "peerMtu": 9000.0, "assert": "pass"}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "leaf03", "ifname": "swp4", "peerHostname":
+    "leaf04", "peerIfname": "swp4", "timestamp": 1594386286701, "mtu": 9000.0, "peerMtu":
+    9000.0, "assert": "pass"}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "leaf04", "ifname": "swp1", "peerHostname": "spine01", "peerIfname": "swp4", "timestamp":
+    1594386286695, "mtu": 9216.0, "peerMtu": 9216.0, "assert": "pass"}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "leaf04", "ifname": "swp2", "peerHostname":
+    "spine02", "peerIfname": "swp4", "timestamp": 1594386286695, "mtu": 9216.0, "peerMtu":
+    9216.0, "assert": "pass"}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "leaf04", "ifname": "swp3", "peerHostname": "leaf03", "peerIfname": "swp3", "timestamp":
+    1594386286695, "mtu": 9000.0, "peerMtu": 9000.0, "assert": "pass"}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "leaf04", "ifname": "swp4", "peerHostname":
+    "leaf03", "peerIfname": "swp4", "timestamp": 1594386286695, "mtu": 9000.0, "peerMtu":
+    9000.0, "assert": "pass"}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "spine01", "ifname": "swp1", "peerHostname": "leaf01", "peerIfname": "swp1", "timestamp":
+    1594386286760, "mtu": 9216.0, "peerMtu": 9216.0, "assert": "pass"}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "spine01", "ifname": "swp2", "peerHostname":
+    "leaf02", "peerIfname": "swp1", "timestamp": 1594386286760, "mtu": 9216.0, "peerMtu":
+    9216.0, "assert": "pass"}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "spine01", "ifname": "swp3", "peerHostname": "leaf03", "peerIfname": "swp1", "timestamp":
+    1594386286760, "mtu": 9216.0, "peerMtu": 9216.0, "assert": "pass"}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "spine01", "ifname": "swp4", "peerHostname":
+    "leaf04", "peerIfname": "swp1", "timestamp": 1594386286760, "mtu": 9216.0, "peerMtu":
+    9216.0, "assert": "pass"}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "spine01", "ifname": "swp5", "peerHostname": "exit02", "peerIfname": "swp1", "timestamp":
+    1594386286760, "mtu": 9216.0, "peerMtu": 9216.0, "assert": "pass"}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "spine01", "ifname": "swp6", "peerHostname":
+    "exit01", "peerIfname": "swp1", "timestamp": 1594386286760, "mtu": 9216.0, "peerMtu":
+    9216.0, "assert": "pass"}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "spine02", "ifname": "swp1", "peerHostname": "leaf01", "peerIfname": "swp2", "timestamp":
+    1594386286698, "mtu": 9216.0, "peerMtu": 9216.0, "assert": "pass"}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "spine02", "ifname": "swp2", "peerHostname":
+    "leaf02", "peerIfname": "swp2", "timestamp": 1594386286698, "mtu": 9216.0, "peerMtu":
+    9216.0, "assert": "pass"}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "spine02", "ifname": "swp3", "peerHostname": "leaf03", "peerIfname": "swp2", "timestamp":
+    1594386286698, "mtu": 9216.0, "peerMtu": 9216.0, "assert": "pass"}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "spine02", "ifname": "swp4", "peerHostname":
+    "leaf04", "peerIfname": "swp2", "timestamp": 1594386286698, "mtu": 9216.0, "peerMtu":
+    9216.0, "assert": "pass"}, {"namespace": "single-attach_evpn_distributed", "hostname":
+    "spine02", "ifname": "swp5", "peerHostname": "exit02", "peerIfname": "swp2", "timestamp":
+    1594386286698, "mtu": 9216.0, "peerMtu": 9216.0, "assert": "pass"}, {"namespace":
+    "single-attach_evpn_distributed", "hostname": "spine02", "ifname": "swp6", "peerHostname":
+    "exit01", "peerIfname": "swp2", "timestamp": 1594386286698, "mtu": 9216.0, "peerMtu":
+    9216.0, "assert": "pass"}]'
+- command: interface top --format=json --namespace=single-attach_evpn_distributed
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_distributed/parquet-out
+  marks: interface top
+  output: '[{"namespace": "single-attach_evpn_distributed", "hostname": "edge01",
+    "ifname": "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["192.168.121.99/24"], "ip6AddressList": [], "numChanges":
+    0, "timestamp": 1594386286709}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "edge01", "ifname": "eth1", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "numChanges":
+    0, "timestamp": 1594386286709}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "edge01", "ifname": "eth2", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "numChanges":
+    0, "timestamp": 1594386286709}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "server101", "ifname": "eth0", "state": "up", "type": "ether", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": ["192.168.121.24/24"], "ip6AddressList":
+    [], "numChanges": 0, "timestamp": 1594386286660}, {"namespace": "single-attach_evpn_distributed",
+    "hostname": "server101", "ifname": "eth1", "state": "up", "type": "ether", "mtu":
+    9000, "vlan": 0, "master": "", "ipAddressList": ["172.16.1.101/24"], "ip6AddressList":
+    [], "numChanges": 0, "timestamp": 1594386286660}]'

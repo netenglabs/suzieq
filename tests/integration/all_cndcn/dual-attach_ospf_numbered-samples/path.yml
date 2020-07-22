@@ -1,0 +1,57 @@
+description: 'Testing verbs for path: show summarize'
+tests:
+- command: path show --format=json --namespace=dual-attach_ospf_numbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_numbered/parquet-out
+  error:
+    error: '[{"error": "ERROR: Must specify trace source and dest"}]'
+  marks: path show
+- command: path show --dest=172.16.2.104 --src=172.16.1.101 --format=json --namespace=dual-attach_ospf_numbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_numbered/parquet-out
+  error:
+    error: '[{"error": "ERROR: Invalid dest 172.16.2.104"}]'
+  marks: path show
+- command: path show --dest=172.16.2.104 --src=172.16.1.104 --format=json --namespace=dual-attach_ospf_numbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_numbered/parquet-out
+  error:
+    error: '[{"error": "ERROR: Invalid src 172.16.1.104"}]'
+  marks: path show
+- command: path show --dest=10.0.0.11 --src=10.0.0.14 --format=json --namespace=dual-attach_ospf_numbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_numbered/parquet-out
+  marks: path show
+  output: '[{"pathid": 1, "hopCount": 0, "namespace": "dual-attach_ospf_numbered",
+    "hostname": "leaf04", "iif": "lo", "vrf": "default", "overlay": false, "mtuMatch":
+    null, "mtu": 65536, "timestamp": 1594706822874}, {"pathid": 1, "hopCount": 1,
+    "namespace": "dual-attach_ospf_numbered", "hostname": "spine01", "iif": "swp4",
+    "vrf": "default", "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp":
+    1594706823050}, {"pathid": 1, "hopCount": 2, "namespace": "dual-attach_ospf_numbered",
+    "hostname": "leaf01", "iif": "swp1", "vrf": "default", "overlay": false, "mtuMatch":
+    true, "mtu": 1500, "timestamp": 1594706823051}, {"pathid": 1, "hopCount": 2, "namespace":
+    "dual-attach_ospf_numbered", "hostname": "leaf01", "iif": "lo", "vrf": "default",
+    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1594706822875},
+    {"pathid": 2, "hopCount": 0, "namespace": "dual-attach_ospf_numbered", "hostname":
+    "leaf04", "iif": "lo", "vrf": "default", "overlay": false, "mtuMatch": null, "mtu":
+    65536, "timestamp": 1594706822874}, {"pathid": 2, "hopCount": 1, "namespace":
+    "dual-attach_ospf_numbered", "hostname": "spine02", "iif": "swp4", "vrf": "default",
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594706823050},
+    {"pathid": 2, "hopCount": 2, "namespace": "dual-attach_ospf_numbered", "hostname":
+    "leaf01", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch": true,
+    "mtu": 1500, "timestamp": 1594706823050}, {"pathid": 2, "hopCount": 2, "namespace":
+    "dual-attach_ospf_numbered", "hostname": "leaf01", "iif": "lo", "vrf": "default",
+    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1594706822875}]'
+- command: path show --src=172.16.1.101 --dest=172.16.253.1 --format=json --namespace=dual-attach_ospf_numbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_numbered/parquet-out
+  error:
+    error: '[{"error": "ERROR: Invalid dest 172.16.253.1"}]'
+  marks: path show
+- command: path summarize --dest=172.16.2.104 --src=172.16.1.101 --format=json --namespace=dual-attach_ospf_numbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_numbered/parquet-out
+  error:
+    error: '[{"error": "ERROR: Invalid dest 172.16.2.104"}]'
+  marks: path summarize
+- command: path summarize --dest=10.0.0.11 --src=10.0.0.14 --format=json --namespace=dual-attach_ospf_numbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_numbered/parquet-out
+  marks: path summarize
+  output: '[{"dual-attach_ospf_numbered": 2}, {"dual-attach_ospf_numbered": [1, 2,
+    1]}, {"dual-attach_ospf_numbered": 2}, {"dual-attach_ospf_numbered": 2.0}, {"dual-attach_ospf_numbered":
+    4}, {"dual-attach_ospf_numbered": 1500}, {"dual-attach_ospf_numbered": false},
+    {"dual-attach_ospf_numbered": false}]'

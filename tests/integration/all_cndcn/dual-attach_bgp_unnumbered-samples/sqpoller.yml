@@ -1,0 +1,698 @@
+description: 'Testing verbs for sqpoller: show summarize unique'
+tests:
+- command: sqpoller show --format=json --namespace=dual-attach_bgp_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_unnumbered/parquet-out
+  marks: sqpoller show
+  output: '[{"namespace": "dual-attach_bgp_unnumbered", "hostname": "edge01", "service":
+    "arpnd", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713062425}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "edge01", "service": "bgp", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594727746465}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "edge01", "service": "device", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594726777252}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "edge01", "service": "evpnVni", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594726778699}, {"namespace": "dual-attach_bgp_unnumbered", "hostname": "edge01",
+    "service": "fs", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [],
+    "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713196335},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "edge01", "service": "ifCounters",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594725946740}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "edge01", "service": "interfaces", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594727745099}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "edge01", "service": "lldp", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713196352}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "edge01", "service": "macs", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713061019},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "edge01", "service": "ospfIf",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713197557}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "edge01", "service": "ospfNbr", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594727745147}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "edge01", "service": "routes", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594727746448}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "edge01", "service": "time", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594727746386},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "edge01", "service": "topcpu",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713062416}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "edge01", "service": "topmem", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594725948120}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "edge01", "service": "vlan", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594725948099}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "exit01", "service": "arpnd", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594713197580}, {"namespace": "dual-attach_bgp_unnumbered", "hostname": "exit01",
+    "service": "bgp", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594727746462},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "exit01", "service": "device",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594725946683}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "exit01", "service": "evpnVni", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594725948175}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "exit01", "service": "fs", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594726777292}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "exit01", "service": "ifCounters", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594726777305}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "exit01", "service": "interfaces", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713196316}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "exit01", "service": "lldp", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713061014},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "exit01", "service": "macs",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713197554}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "exit01", "service": "mlag", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594713062403}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "exit01", "service": "ospfIf", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594727746387}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "exit01", "service": "ospfNbr", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594713196365}, {"namespace": "dual-attach_bgp_unnumbered", "hostname": "exit01",
+    "service": "routes", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713062459},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "exit01", "service": "time",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594726778612}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "exit01", "service": "topcpu", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594713197570}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "exit01", "service": "topmem", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594727746420}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "exit01", "service": "vlan", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594726778616},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "exit02", "service": "arpnd",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594727746409}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "exit02", "service": "bgp", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594713062477}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "exit02", "service": "device", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594726777252}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "exit02", "service": "evpnVni", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594713197636}, {"namespace": "dual-attach_bgp_unnumbered", "hostname": "exit02",
+    "service": "fs", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [],
+    "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713060984},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "exit02", "service": "ifCounters",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594725946745}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "exit02", "service": "interfaces", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594713196320}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "exit02", "service": "lldp", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713196365}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "exit02", "service": "macs", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594727745150},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "exit02", "service": "mlag",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713197558}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "exit02", "service": "ospfIf", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594727746387}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "exit02", "service": "ospfNbr", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713196365}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "exit02", "service": "routes", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594713062455}, {"namespace": "dual-attach_bgp_unnumbered", "hostname": "exit02",
+    "service": "time", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594725948092},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "exit02", "service": "topcpu",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594727746398}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "exit02", "service": "topmem", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594713062434}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "exit02", "service": "vlan", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713062404}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "internet", "service": "arpnd", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594725948115}, {"namespace": "dual-attach_bgp_unnumbered", "hostname": "internet",
+    "service": "bgp", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594725948163},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "internet", "service":
+    "device", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594726777250}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "internet", "service": "evpnVni", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594713197636}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "internet", "service": "fs", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594727745103}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "internet", "service": "ifCounters", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713196338}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "internet", "service": "interfaces", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594727745076}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "internet", "service": "lldp", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594726777319}, {"namespace": "dual-attach_bgp_unnumbered", "hostname": "internet",
+    "service": "macs", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713061019},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "internet", "service":
+    "mlag", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713197558}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "internet", "service": "ospfIf", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594726778613}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "internet", "service": "ospfNbr", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713196365}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "internet", "service": "routes", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594713197599}, {"namespace": "dual-attach_bgp_unnumbered", "hostname": "internet",
+    "service": "time", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594726778612},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "internet", "service":
+    "topcpu", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594726778623}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "internet", "service": "topmem", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594713197585}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "internet", "service": "vlan", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594726778616}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "leaf01", "service": "arpnd", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594726778634}, {"namespace": "dual-attach_bgp_unnumbered", "hostname": "leaf01",
+    "service": "bgp", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713197627},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "leaf01", "service": "device",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594725946684}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "leaf01", "service": "evpnVni", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594726778699}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "leaf01", "service": "fs", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713060981}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "leaf01", "service": "ifCounters", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713060994}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "leaf01", "service": "interfaces", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594727745085}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "leaf01", "service": "lldp", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594726777324},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "leaf01", "service": "macs",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594726777331}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "leaf01", "service": "mlag", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594727746388}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "leaf01", "service": "ospfIf", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713197557}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "leaf01", "service": "ospfNbr", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594726777330}, {"namespace": "dual-attach_bgp_unnumbered", "hostname": "leaf01",
+    "service": "routes", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713197606},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "leaf01", "service": "time",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594726778612}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "leaf01", "service": "topcpu", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594713197565}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "leaf01", "service": "topmem", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594725948126}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "leaf01", "service": "vlan", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594725948098},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "leaf02", "service": "arpnd",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594727746407}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "leaf02", "service": "bgp", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594725948164}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "leaf02", "service": "device", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594727745061}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "leaf02", "service": "evpnVni", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594713197636}, {"namespace": "dual-attach_bgp_unnumbered", "hostname": "leaf02",
+    "service": "fs", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [],
+    "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594725946727},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "leaf02", "service": "ifCounters",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713196347}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "leaf02", "service": "interfaces", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594727745070}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "leaf02", "service": "lldp", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594727745131}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "leaf02", "service": "macs", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594725946762},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "leaf02", "service": "mlag",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594725948095}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "leaf02", "service": "ospfIf", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594726778613}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "leaf02", "service": "ospfNbr", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713061016}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "leaf02", "service": "routes", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594725948136}, {"namespace": "dual-attach_bgp_unnumbered", "hostname": "leaf02",
+    "service": "time", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594726778611},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "leaf02", "service": "topcpu",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594725948100}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "leaf02", "service": "topmem", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594713197583}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "leaf02", "service": "vlan", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594725948098}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "leaf03", "service": "arpnd", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594713197576}, {"namespace": "dual-attach_bgp_unnumbered", "hostname": "leaf03",
+    "service": "bgp", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594726778686},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "leaf03", "service": "device",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594726777250}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "leaf03", "service": "evpnVni", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594713062481}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "leaf03", "service": "fs", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594727745104}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "leaf03", "service": "ifCounters", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594725946734}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "leaf03", "service": "interfaces", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594727745075}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "leaf03", "service": "lldp", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594726777318},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "leaf03", "service": "macs",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594725946761}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "leaf03", "service": "mlag", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594726778614}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "leaf03", "service": "ospfIf", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713197556}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "leaf03", "service": "ospfNbr", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594727745147}, {"namespace": "dual-attach_bgp_unnumbered", "hostname": "leaf03",
+    "service": "routes", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713062439},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "leaf03", "service": "time",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713061019}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "leaf03", "service": "topcpu", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594713062410}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "leaf03", "service": "topmem", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713197582}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "leaf03", "service": "vlan", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713062403},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "leaf04", "service": "arpnd",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713197579}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "leaf04", "service": "bgp", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594725948168}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "leaf04", "service": "device", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594726777251}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "leaf04", "service": "evpnVni", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594726778699}, {"namespace": "dual-attach_bgp_unnumbered", "hostname": "leaf04",
+    "service": "fs", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [],
+    "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594727745107},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "leaf04", "service": "ifCounters",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594727745124}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "leaf04", "service": "interfaces", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594713196305}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "leaf04", "service": "lldp", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594726777323}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "leaf04", "service": "macs", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713061018},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "leaf04", "service": "mlag",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713197558}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "leaf04", "service": "ospfIf", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594727746387}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "leaf04", "service": "ospfNbr", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594725946760}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "leaf04", "service": "routes", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594713197601}, {"namespace": "dual-attach_bgp_unnumbered", "hostname": "leaf04",
+    "service": "time", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594727746385},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "leaf04", "service": "topcpu",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713062408}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "leaf04", "service": "topmem", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594725948124}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "leaf04", "service": "vlan", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594727746390}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "server101", "service": "arpnd", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594713062426}, {"namespace": "dual-attach_bgp_unnumbered", "hostname": "server101",
+    "service": "device", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713060938},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "server101", "service":
+    "fs", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713196336}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "server101", "service": "ifCounters",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713060993}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "server101", "service": "interfaces",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594725946720}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "server101", "service": "lldp", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594725946746}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "server101", "service": "macs", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713061019}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "server101", "service": "routes", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713197618}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "server101", "service": "time", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594727746386}, {"namespace": "dual-attach_bgp_unnumbered", "hostname": "server101",
+    "service": "topcpu", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713062420},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "server101", "service":
+    "topmem", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594726778638}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "server101", "service": "vlan", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594727746390}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "server102", "service": "arpnd", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713062426}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "server102", "service": "device", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713060938}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "server102", "service": "fs", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594726777302}, {"namespace": "dual-attach_bgp_unnumbered", "hostname": "server102",
+    "service": "ifCounters", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713061002},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "server102", "service":
+    "interfaces", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [],
+    "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594725946722},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "server102", "service":
+    "lldp", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594726777316}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "server102", "service": "macs", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594713061019}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "server102", "service": "routes", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594726778684}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "server102", "service": "time", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594713061021}, {"namespace": "dual-attach_bgp_unnumbered", "hostname": "server102",
+    "service": "topcpu", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713197573},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "server102", "service":
+    "topmem", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594726778638}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "server102", "service": "vlan", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594713197560}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "server103", "service": "arpnd", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713197581}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "server103", "service": "device", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594726777252}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "server103", "service": "fs", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594713196337}, {"namespace": "dual-attach_bgp_unnumbered", "hostname": "server103",
+    "service": "ifCounters", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713060992},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "server103", "service":
+    "interfaces", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [],
+    "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713060942},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "server103", "service":
+    "lldp", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594725946746}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "server103", "service": "macs", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594726777332}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "server103", "service": "routes", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713062465}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "server103", "service": "time", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594713197556}, {"namespace": "dual-attach_bgp_unnumbered", "hostname": "server103",
+    "service": "topcpu", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713062419},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "server103", "service":
+    "topmem", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713062436}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "server103", "service": "vlan", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594713197560}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "server104", "service": "arpnd", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713197581}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "server104", "service": "device", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594727745063}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "server104", "service": "fs", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594713196336}, {"namespace": "dual-attach_bgp_unnumbered", "hostname": "server104",
+    "service": "ifCounters", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594727745120},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "server104", "service":
+    "interfaces", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [],
+    "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713060943},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "server104", "service":
+    "lldp", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594725946747}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "server104", "service": "macs", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594726777332}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "server104", "service": "routes", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713062465}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "server104", "service": "time", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594713197556}, {"namespace": "dual-attach_bgp_unnumbered", "hostname": "server104",
+    "service": "topcpu", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713197572},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "server104", "service":
+    "topmem", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594725948120}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "server104", "service": "vlan", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594713062405}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "spine01", "service": "arpnd", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594725948116}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "spine01", "service": "bgp", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713062473},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "spine01", "service":
+    "device", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594726777251}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "spine01", "service": "evpnVni", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594713197636}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "spine01", "service": "fs", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713196336}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "spine01", "service": "ifCounters", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713061003}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "spine01", "service": "interfaces", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594725946708}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "spine01", "service": "lldp", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594725946752}, {"namespace": "dual-attach_bgp_unnumbered", "hostname": "spine01",
+    "service": "macs", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713197554},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "spine01", "service":
+    "mlag", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594726778615}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "spine01", "service": "ospfIf", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594713062401}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "spine01", "service": "ospfNbr", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594727745147}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "spine01", "service": "routes", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594713062449}, {"namespace": "dual-attach_bgp_unnumbered", "hostname": "spine01",
+    "service": "time", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713061020},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "spine01", "service":
+    "topcpu", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594726778619}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "spine01", "service": "topmem", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594727746418}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "spine01", "service": "vlan", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713197560}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "spine02", "service": "arpnd", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594713197580}, {"namespace": "dual-attach_bgp_unnumbered", "hostname": "spine02",
+    "service": "bgp", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594727746464},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "spine02", "service":
+    "device", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594726777252}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "spine02", "service": "evpnVni", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594725948175}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "spine02", "service": "fs", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713060985}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "spine02", "service": "ifCounters", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594726777308}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "spine02", "service": "interfaces", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594726777290}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "spine02", "service": "lldp", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594713196361}, {"namespace": "dual-attach_bgp_unnumbered", "hostname": "spine02",
+    "service": "macs", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594725946762},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "spine02", "service":
+    "mlag", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594726778615}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "spine02", "service": "ospfIf", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594713197557}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "spine02", "service": "ospfNbr", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713196365}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "spine02", "service": "routes", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594725948155}, {"namespace": "dual-attach_bgp_unnumbered", "hostname": "spine02",
+    "service": "time", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713061020},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "spine02", "service":
+    "topcpu", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594726778626}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "spine02", "service": "topmem", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594725948130}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "spine02", "service": "vlan", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594726778616}]'
+- command: sqpoller show --columns=hostname --format=json --namespace=dual-attach_bgp_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_unnumbered/parquet-out
+  marks: sqpoller show
+  output: '[{"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
+    {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname":
+    "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
+    {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname":
+    "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "internet"}, {"hostname": "internet"},
+    {"hostname": "internet"}, {"hostname": "internet"}, {"hostname": "internet"},
+    {"hostname": "internet"}, {"hostname": "internet"}, {"hostname": "internet"},
+    {"hostname": "internet"}, {"hostname": "internet"}, {"hostname": "internet"},
+    {"hostname": "internet"}, {"hostname": "internet"}, {"hostname": "internet"},
+    {"hostname": "internet"}, {"hostname": "internet"}, {"hostname": "internet"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server101"},
+    {"hostname": "server101"}, {"hostname": "server101"}, {"hostname": "server101"},
+    {"hostname": "server101"}, {"hostname": "server101"}, {"hostname": "server101"},
+    {"hostname": "server101"}, {"hostname": "server101"}, {"hostname": "server101"},
+    {"hostname": "server101"}, {"hostname": "server102"}, {"hostname": "server102"},
+    {"hostname": "server102"}, {"hostname": "server102"}, {"hostname": "server102"},
+    {"hostname": "server102"}, {"hostname": "server102"}, {"hostname": "server102"},
+    {"hostname": "server102"}, {"hostname": "server102"}, {"hostname": "server102"},
+    {"hostname": "server102"}, {"hostname": "server103"}, {"hostname": "server103"},
+    {"hostname": "server103"}, {"hostname": "server103"}, {"hostname": "server103"},
+    {"hostname": "server103"}, {"hostname": "server103"}, {"hostname": "server103"},
+    {"hostname": "server103"}, {"hostname": "server103"}, {"hostname": "server103"},
+    {"hostname": "server103"}, {"hostname": "server104"}, {"hostname": "server104"},
+    {"hostname": "server104"}, {"hostname": "server104"}, {"hostname": "server104"},
+    {"hostname": "server104"}, {"hostname": "server104"}, {"hostname": "server104"},
+    {"hostname": "server104"}, {"hostname": "server104"}, {"hostname": "server104"},
+    {"hostname": "server104"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}]'
+- command: sqpoller summarize --format=json --namespace=dual-attach_bgp_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_unnumbered/parquet-out
+  marks: sqpoller summarize
+  output: '{"dual-attach_bgp_unnumbered": {"deviceCnt": 14, "entriesCnt": 217, "service":
+    17, "status": {"0": 217}, "pollExcdPeriodStat": [0, 0, 0]}}'
+- command: sqpoller unique --columns=hostname --format=json --namespace=dual-attach_bgp_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_unnumbered/parquet-out
+  marks: sqpoller unique
+  output: '[{"hostname": "server104", "count": 12}, {"hostname": "server103", "count":
+    12}, {"hostname": "server102", "count": 12}, {"hostname": "server101", "count":
+    12}, {"hostname": "edge01", "count": 16}, {"hostname": "spine02", "count": 17},
+    {"hostname": "spine01", "count": 17}, {"hostname": "leaf04", "count": 17}, {"hostname":
+    "leaf03", "count": 17}, {"hostname": "leaf02", "count": 17}, {"hostname": "leaf01",
+    "count": 17}, {"hostname": "internet", "count": 17}, {"hostname": "exit02", "count":
+    17}, {"hostname": "exit01", "count": 17}]'

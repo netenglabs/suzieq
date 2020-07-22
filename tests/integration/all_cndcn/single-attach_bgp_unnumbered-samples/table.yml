@@ -1,0 +1,136 @@
+description: 'Testing verbs for table: show describe'
+tests:
+- command: table show --format=json --namespace=single-attach_bgp_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_unnumbered/parquet-out
+  marks: table show
+  output: '[{"table": "arpnd", "first_time": 1594390069942, "latest_time": 1594390070050,
+    "intervals": 5, "all rows": 752, "namespaces": 1, "devices": 14}, {"table": "bgp",
+    "first_time": 1594390070026, "latest_time": 1594390070103, "intervals": 7, "all
+    rows": 256, "namespaces": 1, "devices": 9}, {"table": "device", "first_time":
+    1594390069937, "latest_time": 1594390070001, "intervals": 5, "all rows": 112,
+    "namespaces": 1, "devices": 14}, {"table": "fs", "first_time": 1594390069872,
+    "latest_time": 1594390070001, "intervals": 5, "all rows": 1832, "namespaces":
+    1, "devices": 14}, {"table": "ifCounters", "first_time": 1594390069872, "latest_time":
+    1594390070001, "intervals": 4, "all rows": 848, "namespaces": 1, "devices": 14},
+    {"table": "interfaces", "first_time": 1594390069937, "latest_time": 1594390070124,
+    "intervals": 11, "all rows": 848, "namespaces": 1, "devices": 14}, {"table": "lldp",
+    "first_time": 1594390069873, "latest_time": 1594390069938, "intervals": 5, "all
+    rows": 288, "namespaces": 1, "devices": 10}, {"table": "macs", "first_time": 1594390070133,
+    "latest_time": 1594390070178, "intervals": 4, "all rows": 120, "namespaces": 1,
+    "devices": 5}, {"table": "routes", "first_time": 1594390070104, "latest_time":
+    1594390070237, "intervals": 9, "all rows": 1248, "namespaces": 1, "devices": 14},
+    {"table": "sqPoller", "first_time": 1594734206919, "latest_time": 1594793458300,
+    "intervals": 831, "all rows": 1704, "namespaces": 1, "devices": 14}, {"table":
+    "time", "first_time": 1594390070055, "latest_time": 1594390070157, "intervals":
+    13, "all rows": 112, "namespaces": 1, "devices": 14}, {"table": "topcpu", "first_time":
+    1594390070127, "latest_time": 1594390070218, "intervals": 12, "all rows": 984,
+    "namespaces": 1, "devices": 14}, {"table": "topmem", "first_time": 1594390070312,
+    "latest_time": 1594390070376, "intervals": 7, "all rows": 688, "namespaces": 1,
+    "devices": 9}, {"table": "vlan", "first_time": 1594390070178, "latest_time": 1594390070182,
+    "intervals": 3, "all rows": 64, "namespaces": 1, "devices": 4}, {"table": "TOTAL",
+    "first_time": 1594390069872, "latest_time": 1594793458300, "intervals": 831, "all
+    rows": 9856, "namespaces": 1, "devices": 14}]'
+- command: table show --columns=hostname --format=json --namespace=single-attach_bgp_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_unnumbered/parquet-out
+  error:
+    error: '[{"error": "ERROR: You cannot specify columns with table"}]'
+  marks: table show
+- command: table show --namespace=dummy --format=json --namespace=single-attach_bgp_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_unnumbered/parquet-out
+  marks: table show
+  output: '[{"table": "arpnd", "first_time": 1594390069942, "latest_time": 1594390070050,
+    "intervals": 5, "all rows": 752, "namespaces": 1, "devices": 14}, {"table": "bgp",
+    "first_time": 1594390070026, "latest_time": 1594390070103, "intervals": 7, "all
+    rows": 256, "namespaces": 1, "devices": 9}, {"table": "device", "first_time":
+    1594390069937, "latest_time": 1594390070001, "intervals": 5, "all rows": 112,
+    "namespaces": 1, "devices": 14}, {"table": "fs", "first_time": 1594390069872,
+    "latest_time": 1594390070001, "intervals": 5, "all rows": 1832, "namespaces":
+    1, "devices": 14}, {"table": "ifCounters", "first_time": 1594390069872, "latest_time":
+    1594390070001, "intervals": 4, "all rows": 848, "namespaces": 1, "devices": 14},
+    {"table": "interfaces", "first_time": 1594390069937, "latest_time": 1594390070124,
+    "intervals": 11, "all rows": 848, "namespaces": 1, "devices": 14}, {"table": "lldp",
+    "first_time": 1594390069873, "latest_time": 1594390069938, "intervals": 5, "all
+    rows": 288, "namespaces": 1, "devices": 10}, {"table": "macs", "first_time": 1594390070133,
+    "latest_time": 1594390070178, "intervals": 4, "all rows": 120, "namespaces": 1,
+    "devices": 5}, {"table": "routes", "first_time": 1594390070104, "latest_time":
+    1594390070237, "intervals": 9, "all rows": 1248, "namespaces": 1, "devices": 14},
+    {"table": "sqPoller", "first_time": 1594734206919, "latest_time": 1594793458300,
+    "intervals": 831, "all rows": 1704, "namespaces": 1, "devices": 14}, {"table":
+    "time", "first_time": 1594390070055, "latest_time": 1594390070157, "intervals":
+    13, "all rows": 112, "namespaces": 1, "devices": 14}, {"table": "topcpu", "first_time":
+    1594390070127, "latest_time": 1594390070218, "intervals": 12, "all rows": 984,
+    "namespaces": 1, "devices": 14}, {"table": "topmem", "first_time": 1594390070312,
+    "latest_time": 1594390070376, "intervals": 7, "all rows": 688, "namespaces": 1,
+    "devices": 9}, {"table": "vlan", "first_time": 1594390070178, "latest_time": 1594390070182,
+    "intervals": 3, "all rows": 64, "namespaces": 1, "devices": 4}, {"table": "TOTAL",
+    "first_time": 1594390069872, "latest_time": 1594793458300, "intervals": 831, "all
+    rows": 9856, "namespaces": 1, "devices": 14}]'
+- command: table show --view=changes --format=json --namespace=single-attach_bgp_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_unnumbered/parquet-out
+  marks: table show
+  output: '[]'
+- command: table show --view=latest --format=json --namespace=single-attach_bgp_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_unnumbered/parquet-out
+  marks: table show
+  output: '[{"table": "arpnd", "first_time": 1594390069942, "latest_time": 1594390070050,
+    "intervals": 5, "all rows": 752, "namespaces": 1, "devices": 14}, {"table": "bgp",
+    "first_time": 1594390070026, "latest_time": 1594390070103, "intervals": 7, "all
+    rows": 256, "namespaces": 1, "devices": 9}, {"table": "device", "first_time":
+    1594390069937, "latest_time": 1594390070001, "intervals": 5, "all rows": 112,
+    "namespaces": 1, "devices": 14}, {"table": "fs", "first_time": 1594390069872,
+    "latest_time": 1594390070001, "intervals": 5, "all rows": 1832, "namespaces":
+    1, "devices": 14}, {"table": "ifCounters", "first_time": 1594390069872, "latest_time":
+    1594390070001, "intervals": 4, "all rows": 848, "namespaces": 1, "devices": 14},
+    {"table": "interfaces", "first_time": 1594390069937, "latest_time": 1594390070124,
+    "intervals": 11, "all rows": 848, "namespaces": 1, "devices": 14}, {"table": "lldp",
+    "first_time": 1594390069873, "latest_time": 1594390069938, "intervals": 5, "all
+    rows": 288, "namespaces": 1, "devices": 10}, {"table": "macs", "first_time": 1594390070133,
+    "latest_time": 1594390070178, "intervals": 4, "all rows": 120, "namespaces": 1,
+    "devices": 5}, {"table": "routes", "first_time": 1594390070104, "latest_time":
+    1594390070237, "intervals": 9, "all rows": 1248, "namespaces": 1, "devices": 14},
+    {"table": "sqPoller", "first_time": 1594734206919, "latest_time": 1594793458300,
+    "intervals": 831, "all rows": 1704, "namespaces": 1, "devices": 14}, {"table":
+    "time", "first_time": 1594390070055, "latest_time": 1594390070157, "intervals":
+    13, "all rows": 112, "namespaces": 1, "devices": 14}, {"table": "topcpu", "first_time":
+    1594390070127, "latest_time": 1594390070218, "intervals": 12, "all rows": 984,
+    "namespaces": 1, "devices": 14}, {"table": "topmem", "first_time": 1594390070312,
+    "latest_time": 1594390070376, "intervals": 7, "all rows": 688, "namespaces": 1,
+    "devices": 9}, {"table": "vlan", "first_time": 1594390070178, "latest_time": 1594390070182,
+    "intervals": 3, "all rows": 64, "namespaces": 1, "devices": 4}, {"table": "TOTAL",
+    "first_time": 1594390069872, "latest_time": 1594793458300, "intervals": 831, "all
+    rows": 9856, "namespaces": 1, "devices": 14}]'
+- command: table show --hostname=leaf01 --format=json --namespace=single-attach_bgp_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_unnumbered/parquet-out
+  marks: table show
+  output: '[{"table": "arpnd", "first_time": 1594390070005, "latest_time": 1594390070005,
+    "intervals": 1, "all rows": 48, "namespaces": 1, "devices": 1}, {"table": "bgp",
+    "first_time": 1594390070103, "latest_time": 1594390070103, "intervals": 1, "all
+    rows": 16, "namespaces": 1, "devices": 1}, {"table": "device", "first_time": 1594390069939,
+    "latest_time": 1594390069939, "intervals": 1, "all rows": 8, "namespaces": 1,
+    "devices": 1}, {"table": "fs", "first_time": 1594390069939, "latest_time": 1594390069939,
+    "intervals": 1, "all rows": 168, "namespaces": 1, "devices": 1}, {"table": "ifCounters",
+    "first_time": 1594390069872, "latest_time": 1594390069872, "intervals": 1, "all
+    rows": 80, "namespaces": 1, "devices": 1}, {"table": "interfaces", "first_time":
+    1594390070103, "latest_time": 1594390070103, "intervals": 1, "all rows": 80, "namespaces":
+    1, "devices": 1}, {"table": "lldp", "first_time": 1594390069938, "latest_time":
+    1594390069938, "intervals": 1, "all rows": 16, "namespaces": 1, "devices": 1},
+    {"table": "macs", "first_time": 1594390070178, "latest_time": 1594390070178, "intervals":
+    1, "all rows": 24, "namespaces": 1, "devices": 1}, {"table": "routes", "first_time":
+    1594390070220, "latest_time": 1594390070220, "intervals": 1, "all rows": 112,
+    "namespaces": 1, "devices": 1}, {"table": "sqPoller", "first_time": 1594734206920,
+    "latest_time": 1594793458299, "intervals": 135, "all rows": 136, "namespaces":
+    1, "devices": 1}, {"table": "time", "first_time": 1594390070149, "latest_time":
+    1594390070149, "intervals": 1, "all rows": 8, "namespaces": 1, "devices": 1},
+    {"table": "topcpu", "first_time": 1594390070182, "latest_time": 1594390070182,
+    "intervals": 1, "all rows": 72, "namespaces": 1, "devices": 1}, {"table": "topmem",
+    "first_time": 1594390070356, "latest_time": 1594390070356, "intervals": 1, "all
+    rows": 80, "namespaces": 1, "devices": 1}, {"table": "vlan", "first_time": 1594390070179,
+    "latest_time": 1594390070179, "intervals": 1, "all rows": 16, "namespaces": 1,
+    "devices": 1}, {"table": "TOTAL", "first_time": 1594390069872, "latest_time":
+    1594793458299, "intervals": 135, "all rows": 864, "namespaces": 1, "devices":
+    1}]'
+- command: table describe --format=json --namespace=single-attach_bgp_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_unnumbered/parquet-out
+  error:
+    error: '[{"error": "ERROR: Must specify a table"}]'
+  marks: table describe

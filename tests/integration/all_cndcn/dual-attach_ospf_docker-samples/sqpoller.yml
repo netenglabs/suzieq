@@ -1,0 +1,648 @@
+description: 'Testing verbs for sqpoller: show summarize unique'
+tests:
+- command: sqpoller show --format=json --namespace=dual-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_docker/parquet-out
+  marks: sqpoller show
+  output: '[{"namespace": "dual-attach_ospf_docker", "hostname": "edge01", "service":
+    "arpnd", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize":
+    [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594726778008}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "edge01", "service": "device", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594725947419}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "edge01", "service": "fs", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594726777281}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "edge01", "service": "ifCounters", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713060975}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "edge01", "service": "interfaces", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594726778051}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "edge01", "service": "lldp", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713196244},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "edge01", "service": "macs",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713061687}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "edge01", "service": "routes", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594726778079}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "edge01", "service": "time", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594726778022}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "edge01", "service": "topcpu", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594725947386}, {"namespace": "dual-attach_ospf_docker", "hostname": "edge01",
+    "service": "topmem", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594727745729},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "edge01", "service": "vlan",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713196997}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "exit01", "service": "arpnd", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594727745679}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "exit01", "service": "device", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594727745725}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "exit01", "service": "evpnVni", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594727745696}, {"namespace": "dual-attach_ospf_docker", "hostname": "exit01",
+    "service": "fs", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [],
+    "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594725946736},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "exit01", "service": "ifCounters",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594725946726}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "exit01", "service": "interfaces", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594726778041}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "exit01", "service": "lldp", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594725946747}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "exit01", "service": "macs", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594725947420},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "exit01", "service": "mlag",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713196258}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "exit01", "service": "ospfIf", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594713196962}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "exit01", "service": "ospfNbr", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594725946753}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "exit01", "service": "routes", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594713061707}, {"namespace": "dual-attach_ospf_docker", "hostname": "exit01",
+    "service": "time", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594726778023},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "exit01", "service": "topcpu",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594726778013}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "exit01", "service": "topmem", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594727745737}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "exit01", "service": "vlan", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713196997}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "exit02", "service": "arpnd", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594713196940}, {"namespace": "dual-attach_ospf_docker", "hostname": "exit02",
+    "service": "device", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594725947418},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "exit02", "service": "evpnVni",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713196958}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "exit02", "service": "fs", "status": 0,
+    "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594713060989}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "exit02", "service": "ifCounters", "status": 0, "gatherTime": [],
+    "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount":
+    0, "timestamp": 1594726777271}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "exit02", "service": "interfaces", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713061676}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "exit02", "service": "lldp", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594725946746},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "exit02", "service": "macs",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713061687}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "exit02", "service": "mlag", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594713061003}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "exit02", "service": "ospfIf", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594727745698}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "exit02", "service": "ospfNbr", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594727745062}, {"namespace": "dual-attach_ospf_docker", "hostname": "exit02",
+    "service": "routes", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713197012},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "exit02", "service": "time",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594727745681}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "exit02", "service": "topcpu", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594713196950}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "exit02", "service": "topmem", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594725947429}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "exit02", "service": "vlan", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594727745728},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "internet", "service": "arpnd",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713196941}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "internet", "service": "device", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594727745726}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "internet", "service": "evpnVni", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713061657}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "internet", "service": "fs", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594725946741},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "internet", "service": "ifCounters",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713196234}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "internet", "service": "interfaces", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594713196990}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "internet", "service": "macs", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594726778054}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "internet", "service": "mlag", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594727745063}, {"namespace": "dual-attach_ospf_docker", "hostname": "internet",
+    "service": "ospfIf", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713196961},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "internet", "service": "routes",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713197009}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "internet", "service": "time", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594725947387}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "internet", "service": "topcpu", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713196948}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "internet", "service": "topmem", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594725947424}, {"namespace": "dual-attach_ospf_docker", "hostname": "internet",
+    "service": "vlan", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594726778055},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "leaf01", "service": "arpnd",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713061640}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "leaf01", "service": "device", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594726778054}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "leaf01", "service": "evpnVni", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713196958}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "leaf01", "service": "fs", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594727745038},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "leaf01", "service": "ifCounters",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594727745022}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "leaf01", "service": "interfaces", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594725947413}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "leaf01", "service": "lldp", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713060999}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "leaf01", "service": "macs", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713061687},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "leaf01", "service": "mlag",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713061003}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "leaf01", "service": "ospfIf", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594725947395}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "leaf01", "service": "ospfNbr", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594725946752}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "leaf01", "service": "routes", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594713197019}, {"namespace": "dual-attach_ospf_docker", "hostname": "leaf01",
+    "service": "time", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713196957},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "leaf01", "service": "topcpu",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594727745688}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "leaf01", "service": "topmem", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594727745738}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "leaf01", "service": "vlan", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594726778055}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "leaf02", "service": "arpnd", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594713196942}, {"namespace": "dual-attach_ospf_docker", "hostname": "leaf02",
+    "service": "device", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713061685},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "leaf02", "service": "evpnVni",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713061656}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "leaf02", "service": "fs", "status": 0,
+    "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594725946735}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "leaf02", "service": "ifCounters", "status": 0, "gatherTime": [],
+    "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount":
+    0, "timestamp": 1594713196229}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "leaf02", "service": "interfaces", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713061667}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "leaf02", "service": "lldp", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594726777291},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "leaf02", "service": "macs",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713061687}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "leaf02", "service": "mlag", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594713196257}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "leaf02", "service": "ospfIf", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594727745700}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "leaf02", "service": "ospfNbr", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594727745057}, {"namespace": "dual-attach_ospf_docker", "hostname": "leaf02",
+    "service": "routes", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594727745746},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "leaf02", "service": "time",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594727745681}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "leaf02", "service": "topcpu", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594727745683}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "leaf02", "service": "topmem", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713061692}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "leaf02", "service": "vlan", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713061688},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "leaf03", "service": "arpnd",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713196939}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "leaf03", "service": "device", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594725947417}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "leaf03", "service": "evpnVni", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594727745696}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "leaf03", "service": "fs", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713196235},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "leaf03", "service": "ifCounters",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713196224}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "leaf03", "service": "interfaces", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594725947397}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "leaf03", "service": "macs", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713061687}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "leaf03", "service": "mlag", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594725946753},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "leaf03", "service": "ospfIf",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713196959}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "leaf03", "service": "ospfNbr", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594727745056}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "leaf03", "service": "routes", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713197009}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "leaf03", "service": "time", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594727745680},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "leaf03", "service": "topcpu",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594725947374}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "leaf03", "service": "topmem", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594713196999}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "leaf03", "service": "vlan", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713061688}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "leaf04", "service": "arpnd", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594713061639}, {"namespace": "dual-attach_ospf_docker", "hostname": "leaf04",
+    "service": "device", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713061686},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "leaf04", "service": "evpnVni",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594727745696}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "leaf04", "service": "fs", "status": 0,
+    "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594725946739}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "leaf04", "service": "ifCounters", "status": 0, "gatherTime": [],
+    "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount":
+    0, "timestamp": 1594725946728}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "leaf04", "service": "interfaces", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594727745715}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "leaf04", "service": "lldp", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594725946744},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "leaf04", "service": "macs",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594726778054}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "leaf04", "service": "mlag", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594713061003}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "leaf04", "service": "ospfIf", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594726778026}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "leaf04", "service": "ospfNbr", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594713196254}, {"namespace": "dual-attach_ospf_docker", "hostname": "leaf04",
+    "service": "routes", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713061702},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "leaf04", "service": "time",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713196957}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "leaf04", "service": "topcpu", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594713061649}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "leaf04", "service": "topmem", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594726778062}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "leaf04", "service": "vlan", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713061688},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "server101", "service": "arpnd",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594727745679}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "server101", "service": "device", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594726778054}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "server101", "service": "fs", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713196237}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "server101", "service": "ifCounters", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594726777261}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "server101", "service": "interfaces", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713196994}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "server101", "service": "lldp", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594713196245}, {"namespace": "dual-attach_ospf_docker", "hostname": "server101",
+    "service": "macs", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713196996},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "server101", "service": "routes",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594725947445}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "server101", "service": "time", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594727745680}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "server101", "service": "topcpu", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594726778018}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "server101", "service": "topmem", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594725947421}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "server101", "service": "vlan", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594725947421}, {"namespace": "dual-attach_ospf_docker", "hostname": "server102",
+    "service": "arpnd", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594725947373},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "server102", "service": "device",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713196995}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "server102", "service": "fs", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594727745033}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "server102", "service": "ifCounters", "status": 0, "gatherTime": [],
+    "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount":
+    0, "timestamp": 1594713060974}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "server102", "service": "interfaces", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713196991}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "server102", "service": "lldp", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594726777289}, {"namespace": "dual-attach_ospf_docker", "hostname": "server102",
+    "service": "macs", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594727745727},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "server102", "service": "routes",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594727745750}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "server102", "service": "time", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594726778022}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "server102", "service": "topcpu", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594725947387}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "server102", "service": "topmem", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713197007}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "server102", "service": "vlan", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594725947421}, {"namespace": "dual-attach_ospf_docker", "hostname": "server103",
+    "service": "arpnd", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713196942},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "server103", "service": "device",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713061686}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "server103", "service": "fs", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594713196242}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "server103", "service": "ifCounters", "status": 0, "gatherTime": [],
+    "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount":
+    0, "timestamp": 1594725946728}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "server103", "service": "interfaces", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713061683}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "server103", "service": "lldp", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594713196245}, {"namespace": "dual-attach_ospf_docker", "hostname": "server103",
+    "service": "macs", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594726778055},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "server103", "service": "routes",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594726778078}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "server103", "service": "time", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594725947388}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "server103", "service": "topcpu", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594727745694}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "server103", "service": "topmem", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594725947421}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "server103", "service": "vlan", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594726778056}, {"namespace": "dual-attach_ospf_docker", "hostname": "server104",
+    "service": "arpnd", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594726778007},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "server104", "service": "device",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713196996}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "server104", "service": "fs", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594726777275}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "server104", "service": "ifCounters", "status": 0, "gatherTime": [],
+    "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount":
+    0, "timestamp": 1594713196226}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "server104", "service": "interfaces", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594726778051}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "server104", "service": "lldp", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594726777289}, {"namespace": "dual-attach_ospf_docker", "hostname": "server104",
+    "service": "macs", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594725947420},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "server104", "service": "routes",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713197021}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "server104", "service": "time", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594713061655}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "server104", "service": "topcpu", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713196953}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "server104", "service": "topmem", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594727745728}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "server104", "service": "vlan", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594727745728}, {"namespace": "dual-attach_ospf_docker", "hostname": "spine01",
+    "service": "arpnd", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713196940},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "spine01", "service": "device",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594727745725}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "spine01", "service": "evpnVni", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594726778024}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "spine01", "service": "fs", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713196236}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "spine01", "service": "ifCounters", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713060971}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "spine01", "service": "interfaces", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713196971}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "spine01", "service": "lldp", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594725946744}, {"namespace": "dual-attach_ospf_docker", "hostname": "spine01",
+    "service": "macs", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594727745727},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "spine01", "service": "mlag",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594727745063}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "spine01", "service": "ospfIf", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594726778027}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "spine01", "service": "ospfNbr", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713061001}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "spine01", "service": "routes", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594725947441}, {"namespace": "dual-attach_ospf_docker", "hostname": "spine01",
+    "service": "time", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594725947388},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "spine01", "service": "topcpu",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594727745684}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "spine01", "service": "topmem", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594725947426}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "spine01", "service": "vlan", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713061688}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "spine02", "service": "arpnd", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594713061640}, {"namespace": "dual-attach_ospf_docker", "hostname": "spine02",
+    "service": "device", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713196995},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "spine02", "service": "evpnVni",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594726778024}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "spine02", "service": "fs", "status": 0,
+    "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594725946733}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "spine02", "service": "ifCounters", "status": 0, "gatherTime": [],
+    "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount":
+    0, "timestamp": 1594713060972}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "spine02", "service": "interfaces", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594727745722}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "spine02", "service": "lldp", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594725946748}, {"namespace": "dual-attach_ospf_docker", "hostname": "spine02",
+    "service": "macs", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594725947419},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "spine02", "service": "mlag",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594725946753}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "spine02", "service": "ospfIf", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594713196963}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "spine02", "service": "ospfNbr", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713061002}, {"namespace": "dual-attach_ospf_docker", "hostname":
+    "spine02", "service": "routes", "status": 0, "gatherTime": [], "totalTime": [],
+    "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp":
+    1594713061704}, {"namespace": "dual-attach_ospf_docker", "hostname": "spine02",
+    "service": "time", "status": 0, "gatherTime": [], "totalTime": [], "svcQsize":
+    [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713061655},
+    {"namespace": "dual-attach_ospf_docker", "hostname": "spine02", "service": "topcpu",
+    "status": 0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [],
+    "nodeQsize": [], "pollExcdPeriodCount": 0, "timestamp": 1594713196946}, {"namespace":
+    "dual-attach_ospf_docker", "hostname": "spine02", "service": "topmem", "status":
+    0, "gatherTime": [], "totalTime": [], "svcQsize": [], "wrQsize": [], "nodeQsize":
+    [], "pollExcdPeriodCount": 0, "timestamp": 1594726778061}, {"namespace": "dual-attach_ospf_docker",
+    "hostname": "spine02", "service": "vlan", "status": 0, "gatherTime": [], "totalTime":
+    [], "svcQsize": [], "wrQsize": [], "nodeQsize": [], "pollExcdPeriodCount": 0,
+    "timestamp": 1594713061688}]'
+- command: sqpoller show --columns=hostname --format=json --namespace=dual-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_docker/parquet-out
+  marks: sqpoller show
+  output: '[{"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
+    {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname":
+    "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
+    {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "internet"},
+    {"hostname": "internet"}, {"hostname": "internet"}, {"hostname": "internet"},
+    {"hostname": "internet"}, {"hostname": "internet"}, {"hostname": "internet"},
+    {"hostname": "internet"}, {"hostname": "internet"}, {"hostname": "internet"},
+    {"hostname": "internet"}, {"hostname": "internet"}, {"hostname": "internet"},
+    {"hostname": "internet"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server101"},
+    {"hostname": "server101"}, {"hostname": "server101"}, {"hostname": "server101"},
+    {"hostname": "server101"}, {"hostname": "server101"}, {"hostname": "server101"},
+    {"hostname": "server101"}, {"hostname": "server101"}, {"hostname": "server101"},
+    {"hostname": "server101"}, {"hostname": "server102"}, {"hostname": "server102"},
+    {"hostname": "server102"}, {"hostname": "server102"}, {"hostname": "server102"},
+    {"hostname": "server102"}, {"hostname": "server102"}, {"hostname": "server102"},
+    {"hostname": "server102"}, {"hostname": "server102"}, {"hostname": "server102"},
+    {"hostname": "server102"}, {"hostname": "server103"}, {"hostname": "server103"},
+    {"hostname": "server103"}, {"hostname": "server103"}, {"hostname": "server103"},
+    {"hostname": "server103"}, {"hostname": "server103"}, {"hostname": "server103"},
+    {"hostname": "server103"}, {"hostname": "server103"}, {"hostname": "server103"},
+    {"hostname": "server103"}, {"hostname": "server104"}, {"hostname": "server104"},
+    {"hostname": "server104"}, {"hostname": "server104"}, {"hostname": "server104"},
+    {"hostname": "server104"}, {"hostname": "server104"}, {"hostname": "server104"},
+    {"hostname": "server104"}, {"hostname": "server104"}, {"hostname": "server104"},
+    {"hostname": "server104"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}]'
+- command: sqpoller summarize --format=json --namespace=dual-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_docker/parquet-out
+  marks: sqpoller summarize
+  output: '{"dual-attach_ospf_docker": {"deviceCnt": 14, "entriesCnt": 201, "service":
+    16, "status": {"0": 201}, "pollExcdPeriodStat": [0, 0, 0]}}'
+- command: sqpoller unique --columns=hostname --format=json --namespace=dual-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_ospf_docker/parquet-out
+  marks: sqpoller unique
+  output: '[{"hostname": "server104", "count": 12}, {"hostname": "server103", "count":
+    12}, {"hostname": "server102", "count": 12}, {"hostname": "server101", "count":
+    12}, {"hostname": "edge01", "count": 12}, {"hostname": "internet", "count": 14},
+    {"hostname": "leaf03", "count": 15}, {"hostname": "spine02", "count": 16}, {"hostname":
+    "spine01", "count": 16}, {"hostname": "leaf04", "count": 16}, {"hostname": "leaf02",
+    "count": 16}, {"hostname": "leaf01", "count": 16}, {"hostname": "exit02", "count":
+    16}, {"hostname": "exit01", "count": 16}]'

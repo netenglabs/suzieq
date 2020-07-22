@@ -1,0 +1,286 @@
+description: 'Testing verbs for mac: show summarize unique'
+tests:
+- command: mac show --format=json --namespace=dual-attach_evpn_ospf-ibgp
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_ospf-ibgp/parquet-out
+  marks: mac show
+  output: '[{"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "edge01", "vlan":
+    0, "macaddr": "01:00:5e:00:00:01", "oif": "eth2.3", "remoteVtepIp": "", "flags":
+    "permanent", "timestamp": 1594433847324}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "edge01", "vlan": 0, "macaddr": "33:33:00:00:00:02", "oif": "eth2.3",
+    "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594433847324}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "edge01", "vlan": 0, "macaddr": "33:33:00:00:00:01",
+    "oif": "eth1.4", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594433847324},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "edge01", "vlan": 0, "macaddr":
+    "01:00:5e:00:00:01", "oif": "eth1.4", "remoteVtepIp": "", "flags": "permanent",
+    "timestamp": 1594433847324}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname":
+    "edge01", "vlan": 0, "macaddr": "33:33:00:00:00:02", "oif": "eth1.4", "remoteVtepIp":
+    "", "flags": "permanent", "timestamp": 1594433847324}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "edge01", "vlan": 0, "macaddr": "33:33:00:00:00:01", "oif": "eth2.4",
+    "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594433847324}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "edge01", "vlan": 0, "macaddr": "01:00:5e:00:00:01",
+    "oif": "eth2.4", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594433847324},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "edge01", "vlan": 0, "macaddr":
+    "33:33:00:00:00:02", "oif": "eth2.4", "remoteVtepIp": "", "flags": "permanent",
+    "timestamp": 1594433847324}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname":
+    "exit01", "vlan": 0, "macaddr": "da:88:bb:db:0e:fa", "oif": "vxlan4001", "remoteVtepIp":
+    "", "flags": "permanent", "timestamp": 1594433847425}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "exit01", "vlan": 0, "macaddr": "44:39:39:ff:40:94", "oif": "vxlan4001",
+    "remoteVtepIp": "10.0.0.134", "flags": "remote", "timestamp": 1594433847425},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "exit01", "vlan": 4001,
+    "macaddr": "da:88:bb:db:0e:fa", "oif": "bridge", "remoteVtepIp": "", "flags":
+    "permanent", "timestamp": 1594433847425}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "exit02", "vlan": 0, "macaddr": "56:f6:56:45:72:df", "oif": "vxlan4001",
+    "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594433847353}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "exit02", "vlan": 0, "macaddr": "44:39:39:ff:40:94",
+    "oif": "vxlan4001", "remoteVtepIp": "10.0.0.134", "flags": "remote", "timestamp":
+    1594433847353}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "exit02",
+    "vlan": 4001, "macaddr": "56:f6:56:45:72:df", "oif": "bridge", "remoteVtepIp":
+    "", "flags": "permanent", "timestamp": 1594433847353}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf01", "vlan": 24, "macaddr": "52:54:00:76:82:6a", "oif": "peerlink",
+    "remoteVtepIp": "", "flags": "static", "timestamp": 1594433847356}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf01", "vlan": 13, "macaddr": "52:54:00:76:82:6a",
+    "oif": "peerlink", "remoteVtepIp": "", "flags": "static", "timestamp": 1594433847356},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf01", "vlan": 0, "macaddr":
+    "52:54:00:7d:64:da", "oif": "peerlink", "remoteVtepIp": "", "flags": "permanent",
+    "timestamp": 1594433847356}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname":
+    "leaf01", "vlan": 0, "macaddr": "6a:a6:ae:a4:72:fb", "oif": "vni24", "remoteVtepIp":
+    "", "flags": "permanent", "timestamp": 1594433847356}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf01", "vlan": 0, "macaddr": "00:00:00:00:00:00", "oif": "vni24",
+    "remoteVtepIp": "10.0.0.134", "flags": "permanent", "timestamp": 1594433847356},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf01", "vlan": 0, "macaddr":
+    "de:a1:8e:66:fe:77", "oif": "vni13", "remoteVtepIp": "", "flags": "permanent",
+    "timestamp": 1594433847356}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname":
+    "leaf01", "vlan": 0, "macaddr": "00:00:00:00:00:00", "oif": "vni13", "remoteVtepIp":
+    "10.0.0.134", "flags": "permanent", "timestamp": 1594433847356}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf01", "vlan": 24, "macaddr": "52:54:00:06:00:eb",
+    "oif": "bond02", "remoteVtepIp": "", "flags": "", "timestamp": 1594433847356},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf01", "vlan": 0, "macaddr":
+    "52:54:00:b3:e1:f8", "oif": "bond02", "remoteVtepIp": "", "flags": "permanent",
+    "timestamp": 1594433847356}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname":
+    "leaf01", "vlan": 0, "macaddr": "52:54:00:4e:b2:1e", "oif": "bond01", "remoteVtepIp":
+    "", "flags": "permanent", "timestamp": 1594433847356}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf01", "vlan": 13, "macaddr": "52:54:00:ac:88:6d", "oif": "bond01",
+    "remoteVtepIp": "", "flags": "", "timestamp": 1594433847356}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf01", "vlan": 0, "macaddr": "9e:95:71:e1:8b:73", "oif": "vxlan4001",
+    "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594433847356}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf01", "vlan": 0, "macaddr": "56:f6:56:45:72:df",
+    "oif": "vxlan4001", "remoteVtepIp": "10.0.0.102", "flags": "remote", "timestamp":
+    1594433847356}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf01",
+    "vlan": 0, "macaddr": "da:88:bb:db:0e:fa", "oif": "vxlan4001", "remoteVtepIp":
+    "10.0.0.101", "flags": "remote", "timestamp": 1594433847356}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf01", "vlan": 4001, "macaddr": "44:39:39:ff:40:94", "oif": "bridge",
+    "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594433847356}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf01", "vlan": 24, "macaddr": "52:54:00:4e:b2:1e",
+    "oif": "bridge", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594433847356},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf01", "vlan": 13,
+    "macaddr": "52:54:00:4e:b2:1e", "oif": "bridge", "remoteVtepIp": "", "flags":
+    "permanent", "timestamp": 1594433847356}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf01", "vlan": 13, "macaddr": "44:39:39:ff:00:13", "oif": "bridge",
+    "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594433847356}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf01", "vlan": 24, "macaddr": "44:39:39:ff:00:24",
+    "oif": "bridge", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594433847356},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf01", "vlan": 4001,
+    "macaddr": "52:54:00:4e:b2:1e", "oif": "bridge", "remoteVtepIp": "", "flags":
+    "permanent", "timestamp": 1594433847356}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf01", "vlan": 0, "macaddr": "44:39:39:ff:00:13", "oif": "vlan13",
+    "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594433847356}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf01", "vlan": 0, "macaddr": "44:39:39:ff:00:24",
+    "oif": "vlan24", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594433847356},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf02", "vlan": 13,
+    "macaddr": "52:54:00:4e:b2:1e", "oif": "peerlink", "remoteVtepIp": "", "flags":
+    "static", "timestamp": 1594433847354}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf02", "vlan": 24, "macaddr": "52:54:00:4e:b2:1e", "oif": "peerlink",
+    "remoteVtepIp": "", "flags": "static", "timestamp": 1594433847354}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf02", "vlan": 0, "macaddr": "52:54:00:41:a1:44",
+    "oif": "peerlink", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594433847354},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf02", "vlan": 0, "macaddr":
+    "7e:10:ce:b6:ab:4b", "oif": "vni24", "remoteVtepIp": "", "flags": "permanent",
+    "timestamp": 1594433847354}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname":
+    "leaf02", "vlan": 0, "macaddr": "00:00:00:00:00:00", "oif": "vni24", "remoteVtepIp":
+    "10.0.0.134", "flags": "permanent", "timestamp": 1594433847354}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf02", "vlan": 0, "macaddr": "ea:db:66:6e:7d:b4",
+    "oif": "vni13", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594433847354},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf02", "vlan": 0, "macaddr":
+    "00:00:00:00:00:00", "oif": "vni13", "remoteVtepIp": "10.0.0.134", "flags": "permanent",
+    "timestamp": 1594433847354}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname":
+    "leaf02", "vlan": 0, "macaddr": "52:54:00:06:27:95", "oif": "bond02", "remoteVtepIp":
+    "", "flags": "permanent", "timestamp": 1594433847354}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf02", "vlan": 24, "macaddr": "52:54:00:06:00:eb", "oif": "bond02",
+    "remoteVtepIp": "", "flags": "", "timestamp": 1594433847354}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf02", "vlan": 13, "macaddr": "52:54:00:ac:88:6d", "oif": "bond01",
+    "remoteVtepIp": "", "flags": "", "timestamp": 1594433847354}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf02", "vlan": 0, "macaddr": "52:54:00:76:82:6a", "oif": "bond01",
+    "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594433847354}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf02", "vlan": 0, "macaddr": "6e:ed:1f:1f:c4:f0",
+    "oif": "vxlan4001", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594433847354},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf02", "vlan": 0, "macaddr":
+    "56:f6:56:45:72:df", "oif": "vxlan4001", "remoteVtepIp": "10.0.0.102", "flags":
+    "remote", "timestamp": 1594433847354}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf02", "vlan": 0, "macaddr": "da:88:bb:db:0e:fa", "oif": "vxlan4001",
+    "remoteVtepIp": "10.0.0.101", "flags": "remote", "timestamp": 1594433847354},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf02", "vlan": 4001,
+    "macaddr": "44:39:39:ff:40:94", "oif": "bridge", "remoteVtepIp": "", "flags":
+    "permanent", "timestamp": 1594433847354}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf02", "vlan": 4001, "macaddr": "52:54:00:76:82:6a", "oif": "bridge",
+    "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594433847354}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf02", "vlan": 24, "macaddr": "44:39:39:ff:00:24",
+    "oif": "bridge", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594433847354},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf02", "vlan": 13,
+    "macaddr": "52:54:00:76:82:6a", "oif": "bridge", "remoteVtepIp": "", "flags":
+    "permanent", "timestamp": 1594433847354}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf02", "vlan": 24, "macaddr": "52:54:00:76:82:6a", "oif": "bridge",
+    "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594433847354}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf02", "vlan": 13, "macaddr": "44:39:39:ff:00:13",
+    "oif": "bridge", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594433847354},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf02", "vlan": 0, "macaddr":
+    "44:39:39:ff:00:13", "oif": "vlan13", "remoteVtepIp": "", "flags": "permanent",
+    "timestamp": 1594433847354}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname":
+    "leaf02", "vlan": 0, "macaddr": "44:39:39:ff:00:24", "oif": "vlan24", "remoteVtepIp":
+    "", "flags": "permanent", "timestamp": 1594433847354}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf03", "vlan": 24, "macaddr": "52:54:00:aa:5b:3f", "oif": "peerlink",
+    "remoteVtepIp": "", "flags": "static", "timestamp": 1594433847425}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf03", "vlan": 0, "macaddr": "52:54:00:f4:b9:f9",
+    "oif": "peerlink", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594433847425},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf03", "vlan": 13,
+    "macaddr": "52:54:00:aa:5b:3f", "oif": "peerlink", "remoteVtepIp": "", "flags":
+    "static", "timestamp": 1594433847425}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf03", "vlan": 0, "macaddr": "f6:36:97:10:52:ce", "oif": "vni24",
+    "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594433847425}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf03", "vlan": 0, "macaddr": "00:00:00:00:00:00",
+    "oif": "vni24", "remoteVtepIp": "10.0.0.112", "flags": "permanent", "timestamp":
+    1594433847425}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf03",
+    "vlan": 0, "macaddr": "fa:7b:45:71:cd:c3", "oif": "vni13", "remoteVtepIp": "",
+    "flags": "permanent", "timestamp": 1594433847425}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf03", "vlan": 0, "macaddr": "00:00:00:00:00:00", "oif": "vni13",
+    "remoteVtepIp": "10.0.0.112", "flags": "permanent", "timestamp": 1594433847425},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf03", "vlan": 0, "macaddr":
+    "52:54:00:bc:f6:7c", "oif": "bond02", "remoteVtepIp": "", "flags": "permanent",
+    "timestamp": 1594433847425}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname":
+    "leaf03", "vlan": 24, "macaddr": "52:54:00:77:8f:5f", "oif": "bond02", "remoteVtepIp":
+    "", "flags": "", "timestamp": 1594433847425}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf03", "vlan": 13, "macaddr": "52:54:00:ed:16:fa", "oif": "bond01",
+    "remoteVtepIp": "", "flags": "", "timestamp": 1594433847425}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf03", "vlan": 0, "macaddr": "52:54:00:a8:6a:ab", "oif": "bond01",
+    "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594433847425}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf03", "vlan": 0, "macaddr": "aa:90:a3:6c:e3:8b",
+    "oif": "vxlan4001", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594433847425},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf03", "vlan": 0, "macaddr":
+    "56:f6:56:45:72:df", "oif": "vxlan4001", "remoteVtepIp": "10.0.0.102", "flags":
+    "remote", "timestamp": 1594433847425}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf03", "vlan": 0, "macaddr": "da:88:bb:db:0e:fa", "oif": "vxlan4001",
+    "remoteVtepIp": "10.0.0.101", "flags": "remote", "timestamp": 1594433847425},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf03", "vlan": 4001,
+    "macaddr": "52:54:00:a8:6a:ab", "oif": "bridge", "remoteVtepIp": "", "flags":
+    "permanent", "timestamp": 1594433847425}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf03", "vlan": 13, "macaddr": "52:54:00:a8:6a:ab", "oif": "bridge",
+    "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594433847425}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf03", "vlan": 24, "macaddr": "44:39:39:ff:00:24",
+    "oif": "bridge", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594433847425},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf03", "vlan": 13,
+    "macaddr": "44:39:39:ff:00:13", "oif": "bridge", "remoteVtepIp": "", "flags":
+    "permanent", "timestamp": 1594433847425}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf03", "vlan": 24, "macaddr": "52:54:00:a8:6a:ab", "oif": "bridge",
+    "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594433847425}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf03", "vlan": 4001, "macaddr": "44:39:39:ff:40:94",
+    "oif": "bridge", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594433847425},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf03", "vlan": 0, "macaddr":
+    "44:39:39:ff:00:13", "oif": "vlan13", "remoteVtepIp": "", "flags": "permanent",
+    "timestamp": 1594433847425}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname":
+    "leaf03", "vlan": 0, "macaddr": "44:39:39:ff:00:24", "oif": "vlan24", "remoteVtepIp":
+    "", "flags": "permanent", "timestamp": 1594433847425}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf04", "vlan": 24, "macaddr": "52:54:00:a8:6a:ab", "oif": "peerlink",
+    "remoteVtepIp": "", "flags": "static", "timestamp": 1594433847349}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf04", "vlan": 0, "macaddr": "52:54:00:b1:27:f0",
+    "oif": "peerlink", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594433847349},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf04", "vlan": 13,
+    "macaddr": "52:54:00:a8:6a:ab", "oif": "peerlink", "remoteVtepIp": "", "flags":
+    "static", "timestamp": 1594433847349}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf04", "vlan": 0, "macaddr": "96:c0:9b:41:8d:1e", "oif": "vni24",
+    "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594433847349}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf04", "vlan": 0, "macaddr": "00:00:00:00:00:00",
+    "oif": "vni24", "remoteVtepIp": "10.0.0.112", "flags": "permanent", "timestamp":
+    1594433847349}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf04",
+    "vlan": 0, "macaddr": "0a:00:9c:08:f1:85", "oif": "vni13", "remoteVtepIp": "",
+    "flags": "permanent", "timestamp": 1594433847349}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf04", "vlan": 0, "macaddr": "00:00:00:00:00:00", "oif": "vni13",
+    "remoteVtepIp": "10.0.0.112", "flags": "permanent", "timestamp": 1594433847349},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf04", "vlan": 24,
+    "macaddr": "52:54:00:77:8f:5f", "oif": "bond02", "remoteVtepIp": "", "flags":
+    "", "timestamp": 1594433847349}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname":
+    "leaf04", "vlan": 0, "macaddr": "52:54:00:54:35:58", "oif": "bond02", "remoteVtepIp":
+    "", "flags": "permanent", "timestamp": 1594433847349}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf04", "vlan": 0, "macaddr": "52:54:00:aa:5b:3f", "oif": "bond01",
+    "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594433847349}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf04", "vlan": 13, "macaddr": "52:54:00:ed:16:fa",
+    "oif": "bond01", "remoteVtepIp": "", "flags": "", "timestamp": 1594433847349},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf04", "vlan": 0, "macaddr":
+    "26:1b:98:4e:6d:18", "oif": "vxlan4001", "remoteVtepIp": "", "flags": "permanent",
+    "timestamp": 1594433847349}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname":
+    "leaf04", "vlan": 0, "macaddr": "56:f6:56:45:72:df", "oif": "vxlan4001", "remoteVtepIp":
+    "10.0.0.102", "flags": "remote", "timestamp": 1594433847349}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf04", "vlan": 0, "macaddr": "da:88:bb:db:0e:fa", "oif": "vxlan4001",
+    "remoteVtepIp": "10.0.0.101", "flags": "remote", "timestamp": 1594433847349},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf04", "vlan": 4001,
+    "macaddr": "44:39:39:ff:40:94", "oif": "bridge", "remoteVtepIp": "", "flags":
+    "permanent", "timestamp": 1594433847349}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf04", "vlan": 13, "macaddr": "44:39:39:ff:00:13", "oif": "bridge",
+    "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594433847349}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf04", "vlan": 13, "macaddr": "52:54:00:aa:5b:3f",
+    "oif": "bridge", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594433847349},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf04", "vlan": 4001,
+    "macaddr": "52:54:00:aa:5b:3f", "oif": "bridge", "remoteVtepIp": "", "flags":
+    "permanent", "timestamp": 1594433847349}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf04", "vlan": 24, "macaddr": "44:39:39:ff:00:24", "oif": "bridge",
+    "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594433847349}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf04", "vlan": 24, "macaddr": "52:54:00:aa:5b:3f",
+    "oif": "bridge", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594433847349},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf04", "vlan": 0, "macaddr":
+    "44:39:39:ff:00:13", "oif": "vlan13", "remoteVtepIp": "", "flags": "permanent",
+    "timestamp": 1594433847349}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname":
+    "leaf04", "vlan": 0, "macaddr": "44:39:39:ff:00:24", "oif": "vlan24", "remoteVtepIp":
+    "", "flags": "permanent", "timestamp": 1594433847349}]'
+- command: mac show --columns=hostname --format=json --namespace=dual-attach_evpn_ospf-ibgp
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_ospf-ibgp/parquet-out
+  marks: mac show
+  output: '[{"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
+    {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname":
+    "edge01"}, {"hostname": "edge01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}]'
+- command: mac summarize --format=json --namespace=dual-attach_evpn_ospf-ibgp
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_ospf-ibgp/parquet-out
+  marks: mac summarize
+  output: '{"dual-attach_evpn_ospf-ibgp": {"deviceCnt": 7, "totalMacsinNSCnt": 102,
+    "uniqueMacCnt": 37, "uniqueVlanperHostStat": [0, 3, 3.0]}}'
+- command: mac unique --columns=hostname --format=json --namespace=dual-attach_evpn_ospf-ibgp
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_ospf-ibgp/parquet-out
+  marks: mac unique
+  output: '[{"hostname": "exit02", "count": 3}, {"hostname": "exit01", "count": 3},
+    {"hostname": "edge01", "count": 8}, {"hostname": "leaf04", "count": 22}, {"hostname":
+    "leaf03", "count": 22}, {"hostname": "leaf02", "count": 22}, {"hostname": "leaf01",
+    "count": 22}]'

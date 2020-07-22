@@ -1,0 +1,87 @@
+description: 'Testing verbs for path: show summarize'
+tests:
+- command: path show --format=json --namespace=single-attach_evpn_distributed
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_distributed/parquet-out
+  error:
+    error: '[{"error": "ERROR: Must specify trace source and dest"}]'
+  marks: path show
+- command: path show --dest=172.16.2.104 --src=172.16.1.101 --format=json --namespace=single-attach_evpn_distributed
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_distributed/parquet-out
+  marks: path show
+  output: '[{"pathid": 1, "hopCount": 0, "namespace": "single-attach_evpn_distributed",
+    "hostname": "server101", "iif": "eth1", "vrf": "default", "overlay": false, "mtuMatch":
+    null, "mtu": 9000, "timestamp": 1594386286660}, {"pathid": 1, "hopCount": 1, "namespace":
+    "single-attach_evpn_distributed", "hostname": "leaf01", "iif": "vlan13-v0", "vrf":
+    "evpn-vrf", "overlay": false, "mtuMatch": true, "mtu": 9000, "timestamp": 1594386286758},
+    {"pathid": 1, "hopCount": 2, "namespace": "single-attach_evpn_distributed", "hostname":
+    "leaf04", "iif": "lo", "vrf": "default", "overlay": false, "mtuMatch": false,
+    "mtu": 65536, "timestamp": 1594386287016}, {"pathid": 1, "hopCount": 3, "namespace":
+    "single-attach_evpn_distributed", "hostname": "server104", "iif": "eth1", "vrf":
+    "default", "overlay": false, "mtuMatch": null, "mtu": 9000, "timestamp": 1594386286660},
+    {"pathid": 2, "hopCount": 0, "namespace": "single-attach_evpn_distributed", "hostname":
+    "server101", "iif": "eth1", "vrf": "default", "overlay": false, "mtuMatch": null,
+    "mtu": 9000, "timestamp": 1594386286660}, {"pathid": 2, "hopCount": 1, "namespace":
+    "single-attach_evpn_distributed", "hostname": "leaf03", "iif": "vlan13-v0", "vrf":
+    "evpn-vrf", "overlay": false, "mtuMatch": true, "mtu": 9000, "timestamp": 1594386286758},
+    {"pathid": 2, "hopCount": 2, "namespace": "single-attach_evpn_distributed", "hostname":
+    "leaf04", "iif": "lo", "vrf": "evpn-vrf", "overlay": false, "mtuMatch": false,
+    "mtu": 65536, "timestamp": 1594386287031}, {"pathid": 2, "hopCount": 3, "namespace":
+    "single-attach_evpn_distributed", "hostname": "server104", "iif": "eth1", "vrf":
+    "default", "overlay": false, "mtuMatch": null, "mtu": 9000, "timestamp": 1594386286660}]'
+- command: path show --dest=172.16.2.104 --src=172.16.1.104 --format=json --namespace=single-attach_evpn_distributed
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_distributed/parquet-out
+  error:
+    error: '[{"error": "ERROR: Invalid src 172.16.1.104"}]'
+  marks: path show
+- command: path show --dest=10.0.0.11 --src=10.0.0.14 --format=json --namespace=single-attach_evpn_distributed
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_distributed/parquet-out
+  marks: path show
+  output: '[{"pathid": 1, "hopCount": 0, "namespace": "single-attach_evpn_distributed",
+    "hostname": "leaf04", "iif": "lo", "vrf": "default", "overlay": false, "mtuMatch":
+    null, "mtu": 65536, "timestamp": 1594386286938}, {"pathid": 1, "hopCount": 1,
+    "namespace": "single-attach_evpn_distributed", "hostname": "spine01", "iif": "swp4",
+    "vrf": "default", "overlay": false, "mtuMatch": true, "mtu": 9216, "timestamp":
+    1594386287016}, {"pathid": 1, "hopCount": 2, "namespace": "single-attach_evpn_distributed",
+    "hostname": "leaf01", "iif": "swp1", "vrf": "default", "overlay": false, "mtuMatch":
+    true, "mtu": 9216, "timestamp": 1594386287016}, {"pathid": 1, "hopCount": 2, "namespace":
+    "single-attach_evpn_distributed", "hostname": "leaf01", "iif": "lo", "vrf": "default",
+    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1594386286938},
+    {"pathid": 2, "hopCount": 0, "namespace": "single-attach_evpn_distributed", "hostname":
+    "leaf04", "iif": "lo", "vrf": "default", "overlay": false, "mtuMatch": null, "mtu":
+    65536, "timestamp": 1594386286938}, {"pathid": 2, "hopCount": 1, "namespace":
+    "single-attach_evpn_distributed", "hostname": "spine02", "iif": "swp4", "vrf":
+    "default", "overlay": false, "mtuMatch": true, "mtu": 9216, "timestamp": 1594386287016},
+    {"pathid": 2, "hopCount": 2, "namespace": "single-attach_evpn_distributed", "hostname":
+    "leaf01", "iif": "swp2", "vrf": "default", "overlay": false, "mtuMatch": true,
+    "mtu": 9216, "timestamp": 1594386287016}, {"pathid": 2, "hopCount": 2, "namespace":
+    "single-attach_evpn_distributed", "hostname": "leaf01", "iif": "lo", "vrf": "default",
+    "overlay": false, "mtuMatch": null, "mtu": 65536, "timestamp": 1594386286938}]'
+- command: path show --src=172.16.1.101 --dest=172.16.253.1 --format=json --namespace=single-attach_evpn_distributed
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_distributed/parquet-out
+  marks: path show
+  output: '[{"pathid": 1, "hopCount": 0, "namespace": "single-attach_evpn_distributed",
+    "hostname": "server101", "iif": "eth1", "vrf": "default", "overlay": false, "mtuMatch":
+    null, "mtu": 9000, "timestamp": 1594386286660}, {"pathid": 1, "hopCount": 1, "namespace":
+    "single-attach_evpn_distributed", "hostname": "leaf01", "iif": "vlan13-v0", "vrf":
+    "evpn-vrf", "overlay": false, "mtuMatch": true, "mtu": 9000, "timestamp": 1594386286758},
+    {"pathid": 2, "hopCount": 0, "namespace": "single-attach_evpn_distributed", "hostname":
+    "server101", "iif": "eth1", "vrf": "default", "overlay": false, "mtuMatch": null,
+    "mtu": 9000, "timestamp": 1594386286660}, {"pathid": 2, "hopCount": 1, "namespace":
+    "single-attach_evpn_distributed", "hostname": "leaf03", "iif": "vlan13-v0", "vrf":
+    "default", "overlay": false, "mtuMatch": true, "mtu": 9000, "timestamp": 1594386286758}]'
+- command: path summarize --dest=172.16.2.104 --src=172.16.1.101 --format=json --namespace=single-attach_evpn_distributed
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_distributed/parquet-out
+  marks: path summarize
+  output: '[{"single-attach_evpn_distributed": 2}, {"single-attach_evpn_distributed":
+    [1, 2, 1, 1]}, {"single-attach_evpn_distributed": 3}, {"single-attach_evpn_distributed":
+    3.0}, {"single-attach_evpn_distributed": 5}, {"single-attach_evpn_distributed":
+    9000}, {"single-attach_evpn_distributed": false}, {"single-attach_evpn_distributed":
+    true}]'
+- command: path summarize --dest=10.0.0.11 --src=10.0.0.14 --format=json --namespace=single-attach_evpn_distributed
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_evpn_distributed/parquet-out
+  marks: path summarize
+  output: '[{"single-attach_evpn_distributed": 2}, {"single-attach_evpn_distributed":
+    [1, 2, 1]}, {"single-attach_evpn_distributed": 2}, {"single-attach_evpn_distributed":
+    2.0}, {"single-attach_evpn_distributed": 4}, {"single-attach_evpn_distributed":
+    9216}, {"single-attach_evpn_distributed": false}, {"single-attach_evpn_distributed":
+    false}]'

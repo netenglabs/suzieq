@@ -1,0 +1,586 @@
+description: 'Testing verbs for arpnd: show summarize unique'
+tests:
+- command: arpnd show --format=json --namespace=dual-attach_evpn_ospf-ibgp
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_ospf-ibgp/parquet-out
+  marks: arpnd show
+  output: '[{"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "edge01", "ipAddress":
+    "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:98:16:73", "state": "reachable",
+    "remote": false, "timestamp": 1594433847125}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "edge01", "ipAddress": "169.254.254.1", "oif": "eth1.2", "macaddr":
+    "52:54:00:dc:ba:31", "state": "reachable", "remote": false, "timestamp": 1594433847125},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "edge01", "ipAddress":
+    "169.254.254.5", "oif": "eth1.3", "macaddr": "52:54:00:dc:ba:31", "state": "reachable",
+    "remote": false, "timestamp": 1594433847125}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "edge01", "ipAddress": "169.254.254.9", "oif": "eth1.4", "macaddr":
+    "52:54:00:dc:ba:31", "state": "reachable", "remote": false, "timestamp": 1594433847125},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "edge01", "ipAddress":
+    "169.254.253.1", "oif": "eth2.2", "macaddr": "52:54:00:31:b9:93", "state": "reachable",
+    "remote": false, "timestamp": 1594433847125}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "edge01", "ipAddress": "169.254.253.5", "oif": "eth2.3", "macaddr":
+    "52:54:00:31:b9:93", "state": "reachable", "remote": false, "timestamp": 1594433847125},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "edge01", "ipAddress":
+    "169.254.253.9", "oif": "eth2.4", "macaddr": "52:54:00:31:b9:93", "state": "reachable",
+    "remote": false, "timestamp": 1594433847125}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "exit01", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr":
+    "52:54:00:98:16:73", "state": "reachable", "remote": false, "timestamp": 1594433847349},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "exit01", "ipAddress":
+    "10.0.0.22", "oif": "swp1", "macaddr": "52:54:00:c7:83:37", "state": "reachable",
+    "remote": false, "timestamp": 1594433847349}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "exit01", "ipAddress": "169.254.0.1", "oif": "swp1", "macaddr": "52:54:00:c7:83:37",
+    "state": "permanent", "remote": false, "timestamp": 1594433847349}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "exit01", "ipAddress": "fe80::5054:ff:fec7:8337",
+    "oif": "swp1", "macaddr": "52:54:00:c7:83:37", "state": "router", "remote": false,
+    "timestamp": 1594433847349}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname":
+    "exit01", "ipAddress": "fe80::5054:ff:fe6b:13e0", "oif": "swp1", "macaddr": "00:00:00:00:00:00",
+    "state": "failed", "remote": false, "timestamp": 1594433847349}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "exit01", "ipAddress": "169.254.0.1",
+    "oif": "swp2", "macaddr": "52:54:00:b6:bf:07", "state": "permanent", "remote":
+    false, "timestamp": 1594433847349}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "exit01", "ipAddress": "10.0.0.21", "oif": "swp2", "macaddr": "52:54:00:b6:bf:07",
+    "state": "reachable", "remote": false, "timestamp": 1594433847349}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "exit01", "ipAddress": "fe80::5054:ff:feb6:bf07",
+    "oif": "swp2", "macaddr": "52:54:00:b6:bf:07", "state": "router", "remote": false,
+    "timestamp": 1594433847349}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname":
+    "exit01", "ipAddress": "169.254.254.2", "oif": "swp5.2", "macaddr": "52:54:00:b0:8a:c0",
+    "state": "reachable", "remote": false, "timestamp": 1594433847349}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "exit01", "ipAddress": "169.254.254.6",
+    "oif": "swp5.3", "macaddr": "52:54:00:b0:8a:c0", "state": "reachable", "remote":
+    false, "timestamp": 1594433847349}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "exit01", "ipAddress": "169.254.254.10", "oif": "swp5.4", "macaddr":
+    "52:54:00:b0:8a:c0", "state": "reachable", "remote": false, "timestamp": 1594433847349},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "exit01", "ipAddress":
+    "169.254.0.1", "oif": "swp6", "macaddr": "52:54:00:b2:9c:33", "state": "permanent",
+    "remote": false, "timestamp": 1594433847349}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "exit01", "ipAddress": "169.254.127.0", "oif": "swp6", "macaddr":
+    "52:54:00:b2:9c:33", "state": "reachable", "remote": false, "timestamp": 1594433847349},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "exit01", "ipAddress":
+    "fe80::5054:ff:feb2:9c33", "oif": "swp6", "macaddr": "52:54:00:b2:9c:33", "state":
+    "router", "remote": false, "timestamp": 1594433847349}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "exit01", "ipAddress": "10.0.0.134", "oif": "vlan4001", "macaddr":
+    "44:39:39:ff:40:94", "state": "noarp", "remote": true, "timestamp": 1594433847349},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "exit01", "ipAddress":
+    "10.0.0.112", "oif": "vlan4001", "macaddr": "44:39:39:ff:40:94", "state": "noarp",
+    "remote": true, "timestamp": 1594433847349}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "exit02", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr":
+    "52:54:00:98:16:73", "state": "reachable", "remote": false, "timestamp": 1594433847307},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "exit02", "ipAddress":
+    "10.0.0.22", "oif": "swp1", "macaddr": "52:54:00:21:6d:3a", "state": "reachable",
+    "remote": false, "timestamp": 1594433847307}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "exit02", "ipAddress": "169.254.0.1", "oif": "swp1", "macaddr": "52:54:00:21:6d:3a",
+    "state": "permanent", "remote": false, "timestamp": 1594433847307}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "exit02", "ipAddress": "fe80::5054:ff:fec4:b9e6",
+    "oif": "swp1", "macaddr": "00:00:00:00:00:00", "state": "failed", "remote": false,
+    "timestamp": 1594433847307}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname":
+    "exit02", "ipAddress": "fe80::5054:ff:fe21:6d3a", "oif": "swp1", "macaddr": "52:54:00:21:6d:3a",
+    "state": "router", "remote": false, "timestamp": 1594433847307}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "exit02", "ipAddress": "10.0.0.21",
+    "oif": "swp2", "macaddr": "52:54:00:47:08:43", "state": "reachable", "remote":
+    false, "timestamp": 1594433847307}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "exit02", "ipAddress": "fe80::5054:ff:fe47:843", "oif": "swp2", "macaddr":
+    "52:54:00:47:08:43", "state": "router", "remote": false, "timestamp": 1594433847307},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "exit02", "ipAddress":
+    "169.254.253.2", "oif": "swp5.2", "macaddr": "52:54:00:cf:9b:6f", "state": "reachable",
+    "remote": false, "timestamp": 1594433847307}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "exit02", "ipAddress": "169.254.253.6", "oif": "swp5.3", "macaddr":
+    "52:54:00:cf:9b:6f", "state": "reachable", "remote": false, "timestamp": 1594433847307},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "exit02", "ipAddress":
+    "169.254.253.10", "oif": "swp5.4", "macaddr": "52:54:00:cf:9b:6f", "state": "reachable",
+    "remote": false, "timestamp": 1594433847307}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "exit02", "ipAddress": "169.254.0.1", "oif": "swp6", "macaddr": "52:54:00:f4:c4:04",
+    "state": "permanent", "remote": false, "timestamp": 1594433847307}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "exit02", "ipAddress": "169.254.127.2",
+    "oif": "swp6", "macaddr": "52:54:00:f4:c4:04", "state": "reachable", "remote":
+    false, "timestamp": 1594433847307}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "exit02", "ipAddress": "fe80::5054:ff:fef4:c404", "oif": "swp6", "macaddr":
+    "52:54:00:f4:c4:04", "state": "router", "remote": false, "timestamp": 1594433847307},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "exit02", "ipAddress":
+    "10.0.0.112", "oif": "vlan4001", "macaddr": "44:39:39:ff:40:94", "state": "noarp",
+    "remote": true, "timestamp": 1594433847307}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "exit02", "ipAddress": "10.0.0.134", "oif": "vlan4001", "macaddr":
+    "44:39:39:ff:40:94", "state": "noarp", "remote": true, "timestamp": 1594433847307},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "internet", "ipAddress":
+    "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:98:16:73", "state": "reachable",
+    "remote": false, "timestamp": 1594433847344}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "internet", "ipAddress": "169.254.127.1", "oif": "swp1", "macaddr":
+    "52:54:00:93:dd:3e", "state": "reachable", "remote": false, "timestamp": 1594433847344},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "internet", "ipAddress":
+    "169.254.0.1", "oif": "swp1", "macaddr": "52:54:00:93:dd:3e", "state": "permanent",
+    "remote": false, "timestamp": 1594433847344}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "internet", "ipAddress": "fe80::5054:ff:fe93:dd3e", "oif": "swp1",
+    "macaddr": "52:54:00:93:dd:3e", "state": "router", "remote": false, "timestamp":
+    1594433847344}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "internet",
+    "ipAddress": "169.254.127.3", "oif": "swp2", "macaddr": "52:54:00:b1:0c:0f", "state":
+    "reachable", "remote": false, "timestamp": 1594433847344}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "internet", "ipAddress": "169.254.0.1", "oif": "swp2", "macaddr":
+    "52:54:00:b1:0c:0f", "state": "permanent", "remote": false, "timestamp": 1594433847344},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "internet", "ipAddress":
+    "fe80::5054:ff:feb1:c0f", "oif": "swp2", "macaddr": "52:54:00:b1:0c:0f", "state":
+    "router", "remote": false, "timestamp": 1594433847344}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf01", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr":
+    "52:54:00:98:16:73", "state": "reachable", "remote": false, "timestamp": 1594433847310},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf01", "ipAddress":
+    "169.254.1.2", "oif": "peerlink.4094", "macaddr": "52:54:00:41:a1:44", "state":
+    "reachable", "remote": false, "timestamp": 1594433847310}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf01", "ipAddress": "169.254.0.1", "oif": "swp1", "macaddr": "52:54:00:29:35:3a",
+    "state": "permanent", "remote": false, "timestamp": 1594433847310}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf01", "ipAddress": "10.0.0.22",
+    "oif": "swp1", "macaddr": "52:54:00:29:35:3a", "state": "reachable", "remote":
+    false, "timestamp": 1594433847310}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf01", "ipAddress": "fe80::5054:ff:fe29:353a", "oif": "swp1", "macaddr":
+    "52:54:00:29:35:3a", "state": "router", "remote": false, "timestamp": 1594433847310},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf01", "ipAddress":
+    "10.0.0.21", "oif": "swp2", "macaddr": "52:54:00:7c:44:59", "state": "reachable",
+    "remote": false, "timestamp": 1594433847310}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf01", "ipAddress": "169.254.0.1", "oif": "swp2", "macaddr": "52:54:00:7c:44:59",
+    "state": "permanent", "remote": false, "timestamp": 1594433847310}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf01", "ipAddress": "fe80::5054:ff:fe7c:4459",
+    "oif": "swp2", "macaddr": "52:54:00:7c:44:59", "state": "router", "remote": false,
+    "timestamp": 1594433847310}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname":
+    "leaf01", "ipAddress": "172.16.1.101", "oif": "vlan13-v0", "macaddr": "52:54:00:ac:88:6d",
+    "state": "reachable", "remote": false, "timestamp": 1594433847310}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf01", "ipAddress": "172.16.1.103",
+    "oif": "vlan13-v0", "macaddr": "52:54:00:ed:16:fa", "state": "reachable", "remote":
+    false, "timestamp": 1594433847310}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf01", "ipAddress": "172.16.1.12", "oif": "vlan13", "macaddr":
+    "52:54:00:76:82:6a", "state": "permanent", "remote": false, "timestamp": 1594433847310},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf01", "ipAddress":
+    "172.16.1.103", "oif": "vlan13", "macaddr": "52:54:00:ed:16:fa", "state": "reachable",
+    "remote": false, "timestamp": 1594433847310}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf01", "ipAddress": "172.16.1.101", "oif": "vlan13", "macaddr":
+    "52:54:00:ac:88:6d", "state": "reachable", "remote": false, "timestamp": 1594433847310},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf01", "ipAddress":
+    "fe80::5054:ff:fe76:826a", "oif": "vlan13", "macaddr": "52:54:00:76:82:6a", "state":
+    "permanent", "remote": false, "timestamp": 1594433847310}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf01", "ipAddress": "172.16.2.102", "oif": "vlan24-v0", "macaddr":
+    "52:54:00:06:00:eb", "state": "reachable", "remote": false, "timestamp": 1594433847310},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf01", "ipAddress":
+    "172.16.2.102", "oif": "vlan24", "macaddr": "52:54:00:06:00:eb", "state": "reachable",
+    "remote": false, "timestamp": 1594433847310}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf01", "ipAddress": "172.16.2.104", "oif": "vlan24", "macaddr":
+    "52:54:00:77:8f:5f", "state": "reachable", "remote": false, "timestamp": 1594433847310},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf01", "ipAddress":
+    "172.16.2.12", "oif": "vlan24", "macaddr": "52:54:00:76:82:6a", "state": "permanent",
+    "remote": false, "timestamp": 1594433847310}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf01", "ipAddress": "fe80::5054:ff:fe76:826a", "oif": "vlan24",
+    "macaddr": "52:54:00:76:82:6a", "state": "permanent", "remote": false, "timestamp":
+    1594433847310}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf01",
+    "ipAddress": "10.0.0.102", "oif": "vlan4001", "macaddr": "56:f6:56:45:72:df",
+    "state": "noarp", "remote": true, "timestamp": 1594433847310}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf01", "ipAddress": "10.0.0.101", "oif": "vlan4001", "macaddr":
+    "da:88:bb:db:0e:fa", "state": "noarp", "remote": true, "timestamp": 1594433847310},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf01", "ipAddress":
+    "fe80::4639:39ff:feff:4094", "oif": "vlan4001", "macaddr": "44:39:39:ff:40:94",
+    "state": "permanent", "remote": false, "timestamp": 1594433847310}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf02", "ipAddress": "192.168.121.1",
+    "oif": "eth0", "macaddr": "52:54:00:98:16:73", "state": "reachable", "remote":
+    false, "timestamp": 1594433847310}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf02", "ipAddress": "169.254.1.1", "oif": "peerlink.4094", "macaddr":
+    "52:54:00:7d:64:da", "state": "reachable", "remote": false, "timestamp": 1594433847310},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf02", "ipAddress":
+    "169.254.0.1", "oif": "swp1", "macaddr": "52:54:00:a0:0d:da", "state": "permanent",
+    "remote": false, "timestamp": 1594433847310}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf02", "ipAddress": "10.0.0.22", "oif": "swp1", "macaddr": "52:54:00:a0:0d:da",
+    "state": "reachable", "remote": false, "timestamp": 1594433847310}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf02", "ipAddress": "fe80::5054:ff:fe55:b4f4",
+    "oif": "swp1", "macaddr": "00:00:00:00:00:00", "state": "failed", "remote": false,
+    "timestamp": 1594433847310}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname":
+    "leaf02", "ipAddress": "fe80::5054:ff:fea0:dda", "oif": "swp1", "macaddr": "52:54:00:a0:0d:da",
+    "state": "router", "remote": false, "timestamp": 1594433847310}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf02", "ipAddress": "10.0.0.21",
+    "oif": "swp2", "macaddr": "52:54:00:3b:e8:bc", "state": "reachable", "remote":
+    false, "timestamp": 1594433847310}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf02", "ipAddress": "169.254.0.1", "oif": "swp2", "macaddr": "52:54:00:3b:e8:bc",
+    "state": "permanent", "remote": false, "timestamp": 1594433847310}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf02", "ipAddress": "fe80::5054:ff:fe3b:e8bc",
+    "oif": "swp2", "macaddr": "52:54:00:3b:e8:bc", "state": "router", "remote": false,
+    "timestamp": 1594433847310}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname":
+    "leaf02", "ipAddress": "172.16.1.103", "oif": "vlan13-v0", "macaddr": "52:54:00:ed:16:fa",
+    "state": "reachable", "remote": false, "timestamp": 1594433847310}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf02", "ipAddress": "172.16.1.101",
+    "oif": "vlan13-v0", "macaddr": "52:54:00:ac:88:6d", "state": "reachable", "remote":
+    false, "timestamp": 1594433847310}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf02", "ipAddress": "172.16.1.103", "oif": "vlan13", "macaddr":
+    "52:54:00:ed:16:fa", "state": "reachable", "remote": false, "timestamp": 1594433847310},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf02", "ipAddress":
+    "172.16.1.101", "oif": "vlan13", "macaddr": "52:54:00:ac:88:6d", "state": "reachable",
+    "remote": false, "timestamp": 1594433847310}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf02", "ipAddress": "172.16.1.11", "oif": "vlan13", "macaddr":
+    "52:54:00:4e:b2:1e", "state": "permanent", "remote": false, "timestamp": 1594433847310},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf02", "ipAddress":
+    "fe80::5054:ff:fe4e:b21e", "oif": "vlan13", "macaddr": "52:54:00:4e:b2:1e", "state":
+    "permanent", "remote": false, "timestamp": 1594433847310}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf02", "ipAddress": "172.16.2.102", "oif": "vlan24-v0", "macaddr":
+    "52:54:00:06:00:eb", "state": "reachable", "remote": false, "timestamp": 1594433847310},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf02", "ipAddress":
+    "172.16.2.102", "oif": "vlan24", "macaddr": "52:54:00:06:00:eb", "state": "reachable",
+    "remote": false, "timestamp": 1594433847310}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf02", "ipAddress": "172.16.2.11", "oif": "vlan24", "macaddr":
+    "52:54:00:4e:b2:1e", "state": "permanent", "remote": false, "timestamp": 1594433847310},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf02", "ipAddress":
+    "172.16.2.104", "oif": "vlan24", "macaddr": "52:54:00:77:8f:5f", "state": "reachable",
+    "remote": false, "timestamp": 1594433847310}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf02", "ipAddress": "fe80::5054:ff:fe4e:b21e", "oif": "vlan24",
+    "macaddr": "52:54:00:4e:b2:1e", "state": "permanent", "remote": false, "timestamp":
+    1594433847310}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf02",
+    "ipAddress": "10.0.0.102", "oif": "vlan4001", "macaddr": "56:f6:56:45:72:df",
+    "state": "noarp", "remote": true, "timestamp": 1594433847310}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf02", "ipAddress": "10.0.0.101", "oif": "vlan4001", "macaddr":
+    "da:88:bb:db:0e:fa", "state": "noarp", "remote": true, "timestamp": 1594433847310},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf02", "ipAddress":
+    "fe80::4639:39ff:feff:4094", "oif": "vlan4001", "macaddr": "44:39:39:ff:40:94",
+    "state": "permanent", "remote": false, "timestamp": 1594433847310}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf03", "ipAddress": "192.168.121.1",
+    "oif": "eth0", "macaddr": "52:54:00:98:16:73", "state": "reachable", "remote":
+    false, "timestamp": 1594433847347}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf03", "ipAddress": "169.254.1.2", "oif": "peerlink.4094", "macaddr":
+    "52:54:00:b1:27:f0", "state": "reachable", "remote": false, "timestamp": 1594433847347},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf03", "ipAddress":
+    "169.254.0.1", "oif": "swp1", "macaddr": "52:54:00:82:26:a8", "state": "permanent",
+    "remote": false, "timestamp": 1594433847347}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf03", "ipAddress": "10.0.0.22", "oif": "swp1", "macaddr": "52:54:00:82:26:a8",
+    "state": "reachable", "remote": false, "timestamp": 1594433847347}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf03", "ipAddress": "fe80::5054:ff:fe54:ba95",
+    "oif": "swp1", "macaddr": "00:00:00:00:00:00", "state": "failed", "remote": false,
+    "timestamp": 1594433847347}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname":
+    "leaf03", "ipAddress": "fe80::5054:ff:fe82:26a8", "oif": "swp1", "macaddr": "52:54:00:82:26:a8",
+    "state": "router", "remote": false, "timestamp": 1594433847347}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf03", "ipAddress": "10.0.0.21",
+    "oif": "swp2", "macaddr": "52:54:00:31:ab:cb", "state": "reachable", "remote":
+    false, "timestamp": 1594433847347}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf03", "ipAddress": "169.254.0.1", "oif": "swp2", "macaddr": "52:54:00:31:ab:cb",
+    "state": "permanent", "remote": false, "timestamp": 1594433847347}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf03", "ipAddress": "fe80::5054:ff:fe31:abcb",
+    "oif": "swp2", "macaddr": "52:54:00:31:ab:cb", "state": "router", "remote": false,
+    "timestamp": 1594433847347}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname":
+    "leaf03", "ipAddress": "172.16.1.103", "oif": "vlan13-v0", "macaddr": "52:54:00:ed:16:fa",
+    "state": "reachable", "remote": false, "timestamp": 1594433847347}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf03", "ipAddress": "172.16.1.101",
+    "oif": "vlan13-v0", "macaddr": "52:54:00:ac:88:6d", "state": "reachable", "remote":
+    false, "timestamp": 1594433847347}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf03", "ipAddress": "172.16.1.103", "oif": "vlan13", "macaddr":
+    "52:54:00:ed:16:fa", "state": "reachable", "remote": false, "timestamp": 1594433847347},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf03", "ipAddress":
+    "172.16.1.14", "oif": "vlan13", "macaddr": "52:54:00:aa:5b:3f", "state": "permanent",
+    "remote": false, "timestamp": 1594433847347}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf03", "ipAddress": "172.16.1.101", "oif": "vlan13", "macaddr":
+    "52:54:00:ac:88:6d", "state": "reachable", "remote": false, "timestamp": 1594433847347},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf03", "ipAddress":
+    "fe80::5054:ff:feaa:5b3f", "oif": "vlan13", "macaddr": "52:54:00:aa:5b:3f", "state":
+    "permanent", "remote": false, "timestamp": 1594433847347}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf03", "ipAddress": "172.16.2.104", "oif": "vlan24-v0", "macaddr":
+    "52:54:00:77:8f:5f", "state": "reachable", "remote": false, "timestamp": 1594433847347},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf03", "ipAddress":
+    "172.16.2.104", "oif": "vlan24", "macaddr": "52:54:00:77:8f:5f", "state": "reachable",
+    "remote": false, "timestamp": 1594433847347}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf03", "ipAddress": "172.16.2.14", "oif": "vlan24", "macaddr":
+    "52:54:00:aa:5b:3f", "state": "permanent", "remote": false, "timestamp": 1594433847347},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf03", "ipAddress":
+    "172.16.2.102", "oif": "vlan24", "macaddr": "52:54:00:06:00:eb", "state": "reachable",
+    "remote": false, "timestamp": 1594433847347}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf03", "ipAddress": "fe80::5054:ff:feaa:5b3f", "oif": "vlan24",
+    "macaddr": "52:54:00:aa:5b:3f", "state": "permanent", "remote": false, "timestamp":
+    1594433847347}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf03",
+    "ipAddress": "10.0.0.101", "oif": "vlan4001", "macaddr": "da:88:bb:db:0e:fa",
+    "state": "noarp", "remote": true, "timestamp": 1594433847347}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf03", "ipAddress": "10.0.0.102", "oif": "vlan4001", "macaddr":
+    "56:f6:56:45:72:df", "state": "noarp", "remote": true, "timestamp": 1594433847347},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf03", "ipAddress":
+    "fe80::4639:39ff:feff:4094", "oif": "vlan4001", "macaddr": "44:39:39:ff:40:94",
+    "state": "permanent", "remote": false, "timestamp": 1594433847347}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf04", "ipAddress": "192.168.121.1",
+    "oif": "eth0", "macaddr": "52:54:00:98:16:73", "state": "reachable", "remote":
+    false, "timestamp": 1594433847307}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf04", "ipAddress": "169.254.1.1", "oif": "peerlink.4094", "macaddr":
+    "52:54:00:f4:b9:f9", "state": "reachable", "remote": false, "timestamp": 1594433847307},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf04", "ipAddress":
+    "169.254.0.1", "oif": "swp1", "macaddr": "52:54:00:59:88:58", "state": "permanent",
+    "remote": false, "timestamp": 1594433847307}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf04", "ipAddress": "10.0.0.22", "oif": "swp1", "macaddr": "52:54:00:59:88:58",
+    "state": "reachable", "remote": false, "timestamp": 1594433847307}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf04", "ipAddress": "fe80::5054:ff:fe59:8858",
+    "oif": "swp1", "macaddr": "52:54:00:59:88:58", "state": "router", "remote": false,
+    "timestamp": 1594433847307}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname":
+    "leaf04", "ipAddress": "10.0.0.21", "oif": "swp2", "macaddr": "52:54:00:9f:20:18",
+    "state": "reachable", "remote": false, "timestamp": 1594433847307}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf04", "ipAddress": "169.254.0.1",
+    "oif": "swp2", "macaddr": "52:54:00:9f:20:18", "state": "permanent", "remote":
+    false, "timestamp": 1594433847307}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf04", "ipAddress": "fe80::5054:ff:fe9f:2018", "oif": "swp2", "macaddr":
+    "52:54:00:9f:20:18", "state": "router", "remote": false, "timestamp": 1594433847307},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf04", "ipAddress":
+    "172.16.1.101", "oif": "vlan13-v0", "macaddr": "52:54:00:ac:88:6d", "state": "reachable",
+    "remote": false, "timestamp": 1594433847307}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf04", "ipAddress": "172.16.1.103", "oif": "vlan13-v0", "macaddr":
+    "52:54:00:ed:16:fa", "state": "reachable", "remote": false, "timestamp": 1594433847307},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf04", "ipAddress":
+    "172.16.1.101", "oif": "vlan13", "macaddr": "52:54:00:ac:88:6d", "state": "reachable",
+    "remote": false, "timestamp": 1594433847307}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf04", "ipAddress": "172.16.1.13", "oif": "vlan13", "macaddr":
+    "52:54:00:a8:6a:ab", "state": "permanent", "remote": false, "timestamp": 1594433847307},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf04", "ipAddress":
+    "172.16.1.103", "oif": "vlan13", "macaddr": "52:54:00:ed:16:fa", "state": "reachable",
+    "remote": false, "timestamp": 1594433847307}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf04", "ipAddress": "fe80::5054:ff:fea8:6aab", "oif": "vlan13",
+    "macaddr": "52:54:00:a8:6a:ab", "state": "permanent", "remote": false, "timestamp":
+    1594433847307}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf04",
+    "ipAddress": "172.16.2.104", "oif": "vlan24-v0", "macaddr": "52:54:00:77:8f:5f",
+    "state": "reachable", "remote": false, "timestamp": 1594433847307}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf04", "ipAddress": "172.16.2.104",
+    "oif": "vlan24", "macaddr": "52:54:00:77:8f:5f", "state": "reachable", "remote":
+    false, "timestamp": 1594433847307}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf04", "ipAddress": "172.16.2.13", "oif": "vlan24", "macaddr":
+    "52:54:00:a8:6a:ab", "state": "permanent", "remote": false, "timestamp": 1594433847307},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf04", "ipAddress":
+    "172.16.2.102", "oif": "vlan24", "macaddr": "52:54:00:06:00:eb", "state": "reachable",
+    "remote": false, "timestamp": 1594433847307}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf04", "ipAddress": "fe80::5054:ff:fea8:6aab", "oif": "vlan24",
+    "macaddr": "52:54:00:a8:6a:ab", "state": "permanent", "remote": false, "timestamp":
+    1594433847307}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf04",
+    "ipAddress": "10.0.0.102", "oif": "vlan4001", "macaddr": "56:f6:56:45:72:df",
+    "state": "noarp", "remote": true, "timestamp": 1594433847307}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf04", "ipAddress": "10.0.0.101", "oif": "vlan4001", "macaddr":
+    "da:88:bb:db:0e:fa", "state": "noarp", "remote": true, "timestamp": 1594433847307},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf04", "ipAddress":
+    "fe80::4639:39ff:feff:4094", "oif": "vlan4001", "macaddr": "44:39:39:ff:40:94",
+    "state": "permanent", "remote": false, "timestamp": 1594433847307}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "server101", "ipAddress": "172.16.1.14",
+    "oif": "bond0", "macaddr": "52:54:00:aa:5b:3f", "state": "reachable", "remote":
+    false, "timestamp": 1594433847098}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "server101", "ipAddress": "172.16.1.1", "oif": "bond0", "macaddr":
+    "44:39:39:ff:00:13", "state": "reachable", "remote": false, "timestamp": 1594433847098},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "server101", "ipAddress":
+    "172.16.1.12", "oif": "bond0", "macaddr": "52:54:00:76:82:6a", "state": "reachable",
+    "remote": false, "timestamp": 1594433847098}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "server101", "ipAddress": "172.16.1.13", "oif": "bond0", "macaddr":
+    "52:54:00:a8:6a:ab", "state": "reachable", "remote": false, "timestamp": 1594433847098},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "server101", "ipAddress":
+    "172.16.1.11", "oif": "bond0", "macaddr": "52:54:00:4e:b2:1e", "state": "reachable",
+    "remote": false, "timestamp": 1594433847098}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "server101", "ipAddress": "172.16.1.103", "oif": "bond0", "macaddr":
+    "52:54:00:ed:16:fa", "state": "reachable", "remote": false, "timestamp": 1594433847098},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "server101", "ipAddress":
+    "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:98:16:73", "state": "reachable",
+    "remote": false, "timestamp": 1594433847098}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "server102", "ipAddress": "172.16.2.13", "oif": "bond0", "macaddr":
+    "52:54:00:a8:6a:ab", "state": "reachable", "remote": false, "timestamp": 1594433847098},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "server102", "ipAddress":
+    "172.16.2.104", "oif": "bond0", "macaddr": "52:54:00:77:8f:5f", "state": "reachable",
+    "remote": false, "timestamp": 1594433847098}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "server102", "ipAddress": "172.16.2.14", "oif": "bond0", "macaddr":
+    "52:54:00:aa:5b:3f", "state": "reachable", "remote": false, "timestamp": 1594433847098},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "server102", "ipAddress":
+    "172.16.2.1", "oif": "bond0", "macaddr": "44:39:39:ff:00:24", "state": "reachable",
+    "remote": false, "timestamp": 1594433847098}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "server102", "ipAddress": "172.16.2.11", "oif": "bond0", "macaddr":
+    "52:54:00:4e:b2:1e", "state": "reachable", "remote": false, "timestamp": 1594433847098},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "server102", "ipAddress":
+    "172.16.2.12", "oif": "bond0", "macaddr": "52:54:00:76:82:6a", "state": "reachable",
+    "remote": false, "timestamp": 1594433847098}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "server102", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr":
+    "52:54:00:98:16:73", "state": "reachable", "remote": false, "timestamp": 1594433847098},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "server103", "ipAddress":
+    "172.16.1.13", "oif": "bond0", "macaddr": "52:54:00:a8:6a:ab", "state": "reachable",
+    "remote": false, "timestamp": 1594433847100}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "server103", "ipAddress": "172.16.1.101", "oif": "bond0", "macaddr":
+    "52:54:00:ac:88:6d", "state": "reachable", "remote": false, "timestamp": 1594433847100},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "server103", "ipAddress":
+    "172.16.1.1", "oif": "bond0", "macaddr": "44:39:39:ff:00:13", "state": "reachable",
+    "remote": false, "timestamp": 1594433847100}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "server103", "ipAddress": "172.16.1.11", "oif": "bond0", "macaddr":
+    "52:54:00:4e:b2:1e", "state": "reachable", "remote": false, "timestamp": 1594433847100},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "server103", "ipAddress":
+    "172.16.1.14", "oif": "bond0", "macaddr": "52:54:00:aa:5b:3f", "state": "reachable",
+    "remote": false, "timestamp": 1594433847100}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "server103", "ipAddress": "172.16.1.12", "oif": "bond0", "macaddr":
+    "52:54:00:76:82:6a", "state": "reachable", "remote": false, "timestamp": 1594433847100},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "server103", "ipAddress":
+    "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:98:16:73", "state": "reachable",
+    "remote": false, "timestamp": 1594433847100}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "server104", "ipAddress": "172.16.2.14", "oif": "bond0", "macaddr":
+    "52:54:00:aa:5b:3f", "state": "reachable", "remote": false, "timestamp": 1594433847100},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "server104", "ipAddress":
+    "172.16.2.1", "oif": "bond0", "macaddr": "44:39:39:ff:00:24", "state": "reachable",
+    "remote": false, "timestamp": 1594433847100}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "server104", "ipAddress": "172.16.2.12", "oif": "bond0", "macaddr":
+    "52:54:00:76:82:6a", "state": "reachable", "remote": false, "timestamp": 1594433847100},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "server104", "ipAddress":
+    "172.16.2.102", "oif": "bond0", "macaddr": "52:54:00:06:00:eb", "state": "reachable",
+    "remote": false, "timestamp": 1594433847100}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "server104", "ipAddress": "172.16.2.13", "oif": "bond0", "macaddr":
+    "52:54:00:a8:6a:ab", "state": "reachable", "remote": false, "timestamp": 1594433847100},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "server104", "ipAddress":
+    "172.16.2.11", "oif": "bond0", "macaddr": "52:54:00:4e:b2:1e", "state": "reachable",
+    "remote": false, "timestamp": 1594433847100}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "server104", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr":
+    "52:54:00:98:16:73", "state": "reachable", "remote": false, "timestamp": 1594433847100},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "spine01", "ipAddress":
+    "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:98:16:73", "state": "reachable",
+    "remote": false, "timestamp": 1594433847308}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "spine01", "ipAddress": "169.254.0.1", "oif": "swp1", "macaddr": "52:54:00:06:47:95",
+    "state": "permanent", "remote": false, "timestamp": 1594433847308}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "spine01", "ipAddress": "10.0.0.11",
+    "oif": "swp1", "macaddr": "52:54:00:06:47:95", "state": "reachable", "remote":
+    false, "timestamp": 1594433847308}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "spine01", "ipAddress": "fe80::5054:ff:fe06:4795", "oif": "swp1",
+    "macaddr": "52:54:00:06:47:95", "state": "router", "remote": false, "timestamp":
+    1594433847308}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "spine01",
+    "ipAddress": "10.0.0.12", "oif": "swp2", "macaddr": "52:54:00:55:b4:f4", "state":
+    "reachable", "remote": false, "timestamp": 1594433847308}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "spine01", "ipAddress": "169.254.0.1", "oif": "swp2", "macaddr": "52:54:00:55:b4:f4",
+    "state": "permanent", "remote": false, "timestamp": 1594433847308}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "spine01", "ipAddress": "fe80::5054:ff:fe55:b4f4",
+    "oif": "swp2", "macaddr": "52:54:00:55:b4:f4", "state": "router", "remote": false,
+    "timestamp": 1594433847308}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname":
+    "spine01", "ipAddress": "169.254.0.1", "oif": "swp3", "macaddr": "52:54:00:54:ba:95",
+    "state": "permanent", "remote": false, "timestamp": 1594433847308}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "spine01", "ipAddress": "10.0.0.13",
+    "oif": "swp3", "macaddr": "52:54:00:54:ba:95", "state": "reachable", "remote":
+    false, "timestamp": 1594433847308}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "spine01", "ipAddress": "fe80::5054:ff:fe54:ba95", "oif": "swp3",
+    "macaddr": "52:54:00:54:ba:95", "state": "router", "remote": false, "timestamp":
+    1594433847308}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "spine01",
+    "ipAddress": "169.254.0.1", "oif": "swp4", "macaddr": "52:54:00:d6:05:45", "state":
+    "permanent", "remote": false, "timestamp": 1594433847308}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "spine01", "ipAddress": "10.0.0.14", "oif": "swp4", "macaddr": "52:54:00:d6:05:45",
+    "state": "reachable", "remote": false, "timestamp": 1594433847308}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "spine01", "ipAddress": "fe80::5054:ff:fed6:545",
+    "oif": "swp4", "macaddr": "52:54:00:d6:05:45", "state": "router", "remote": false,
+    "timestamp": 1594433847308}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname":
+    "spine01", "ipAddress": "169.254.0.1", "oif": "swp5", "macaddr": "52:54:00:c4:b9:e6",
+    "state": "permanent", "remote": false, "timestamp": 1594433847308}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "spine01", "ipAddress": "10.0.0.102",
+    "oif": "swp5", "macaddr": "52:54:00:c4:b9:e6", "state": "reachable", "remote":
+    false, "timestamp": 1594433847308}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "spine01", "ipAddress": "fe80::5054:ff:fec4:b9e6", "oif": "swp5",
+    "macaddr": "52:54:00:c4:b9:e6", "state": "router", "remote": false, "timestamp":
+    1594433847308}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "spine01",
+    "ipAddress": "169.254.0.1", "oif": "swp6", "macaddr": "52:54:00:6b:13:e0", "state":
+    "permanent", "remote": false, "timestamp": 1594433847308}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "spine01", "ipAddress": "10.0.0.101", "oif": "swp6", "macaddr": "52:54:00:6b:13:e0",
+    "state": "reachable", "remote": false, "timestamp": 1594433847308}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "spine01", "ipAddress": "fe80::5054:ff:fe6b:13e0",
+    "oif": "swp6", "macaddr": "52:54:00:6b:13:e0", "state": "router", "remote": false,
+    "timestamp": 1594433847308}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname":
+    "spine02", "ipAddress": "192.168.121.1", "oif": "eth0", "macaddr": "52:54:00:98:16:73",
+    "state": "reachable", "remote": false, "timestamp": 1594433847307}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "spine02", "ipAddress": "169.254.0.1",
+    "oif": "swp1", "macaddr": "52:54:00:e9:cc:5b", "state": "permanent", "remote":
+    false, "timestamp": 1594433847307}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "spine02", "ipAddress": "10.0.0.11", "oif": "swp1", "macaddr": "52:54:00:e9:cc:5b",
+    "state": "reachable", "remote": false, "timestamp": 1594433847307}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "spine02", "ipAddress": "fe80::5054:ff:fee9:cc5b",
+    "oif": "swp1", "macaddr": "52:54:00:e9:cc:5b", "state": "router", "remote": false,
+    "timestamp": 1594433847307}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname":
+    "spine02", "ipAddress": "10.0.0.12", "oif": "swp2", "macaddr": "52:54:00:6e:95:00",
+    "state": "reachable", "remote": false, "timestamp": 1594433847307}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "spine02", "ipAddress": "169.254.0.1",
+    "oif": "swp2", "macaddr": "52:54:00:6e:95:00", "state": "permanent", "remote":
+    false, "timestamp": 1594433847307}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "spine02", "ipAddress": "fe80::5054:ff:fe6e:9500", "oif": "swp2",
+    "macaddr": "52:54:00:6e:95:00", "state": "router", "remote": false, "timestamp":
+    1594433847307}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "spine02",
+    "ipAddress": "169.254.0.1", "oif": "swp3", "macaddr": "52:54:00:2e:7b:5c", "state":
+    "permanent", "remote": false, "timestamp": 1594433847307}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "spine02", "ipAddress": "10.0.0.13", "oif": "swp3", "macaddr": "52:54:00:2e:7b:5c",
+    "state": "reachable", "remote": false, "timestamp": 1594433847307}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "spine02", "ipAddress": "fe80::5054:ff:fe2e:7b5c",
+    "oif": "swp3", "macaddr": "52:54:00:2e:7b:5c", "state": "router", "remote": false,
+    "timestamp": 1594433847307}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname":
+    "spine02", "ipAddress": "169.254.0.1", "oif": "swp4", "macaddr": "52:54:00:75:ab:5a",
+    "state": "permanent", "remote": false, "timestamp": 1594433847307}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "spine02", "ipAddress": "10.0.0.14",
+    "oif": "swp4", "macaddr": "52:54:00:75:ab:5a", "state": "reachable", "remote":
+    false, "timestamp": 1594433847307}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "spine02", "ipAddress": "fe80::5054:ff:fe75:ab5a", "oif": "swp4",
+    "macaddr": "52:54:00:75:ab:5a", "state": "router", "remote": false, "timestamp":
+    1594433847307}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "spine02",
+    "ipAddress": "10.0.0.102", "oif": "swp5", "macaddr": "52:54:00:79:28:89", "state":
+    "reachable", "remote": false, "timestamp": 1594433847307}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "spine02", "ipAddress": "fe80::5054:ff:fe79:2889", "oif": "swp5",
+    "macaddr": "52:54:00:79:28:89", "state": "router", "remote": false, "timestamp":
+    1594433847307}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "spine02",
+    "ipAddress": "10.0.0.101", "oif": "swp6", "macaddr": "52:54:00:cf:65:f2", "state":
+    "reachable", "remote": false, "timestamp": 1594433847307}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "spine02", "ipAddress": "169.254.0.1", "oif": "swp6", "macaddr": "52:54:00:cf:65:f2",
+    "state": "permanent", "remote": false, "timestamp": 1594433847307}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "spine02", "ipAddress": "fe80::5054:ff:fecf:65f2",
+    "oif": "swp6", "macaddr": "52:54:00:cf:65:f2", "state": "router", "remote": false,
+    "timestamp": 1594433847307}]'
+- command: arpnd show --columns=hostname --format=json --namespace=dual-attach_evpn_ospf-ibgp
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_ospf-ibgp/parquet-out
+  marks: arpnd show
+  output: '[{"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
+    {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname":
+    "edge01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "internet"}, {"hostname": "internet"}, {"hostname": "internet"},
+    {"hostname": "internet"}, {"hostname": "internet"}, {"hostname": "internet"},
+    {"hostname": "internet"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "server101"}, {"hostname": "server101"}, {"hostname": "server101"},
+    {"hostname": "server101"}, {"hostname": "server101"}, {"hostname": "server101"},
+    {"hostname": "server101"}, {"hostname": "server102"}, {"hostname": "server102"},
+    {"hostname": "server102"}, {"hostname": "server102"}, {"hostname": "server102"},
+    {"hostname": "server102"}, {"hostname": "server102"}, {"hostname": "server103"},
+    {"hostname": "server103"}, {"hostname": "server103"}, {"hostname": "server103"},
+    {"hostname": "server103"}, {"hostname": "server103"}, {"hostname": "server103"},
+    {"hostname": "server104"}, {"hostname": "server104"}, {"hostname": "server104"},
+    {"hostname": "server104"}, {"hostname": "server104"}, {"hostname": "server104"},
+    {"hostname": "server104"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}]'
+- command: arpnd summarize --format=json --namespace=dual-attach_evpn_ospf-ibgp
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_ospf-ibgp/parquet-out
+  marks: arpnd summarize
+  output: '{"dual-attach_evpn_ospf-ibgp": {"deviceCnt": 14, "arpNdEntriesCnt": 200,
+    "macaddrCnt": 200, "oifCnt": 200, "uniqueOifCnt": 23, "remoteEntriesCnt": 0, "staticEntriesCnt":
+    46, "failedEntryCnt": 4}}'
+- command: arpnd unique --columns=hostname --format=json --namespace=dual-attach_evpn_ospf-ibgp
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_ospf-ibgp/parquet-out
+  marks: arpnd unique
+  output: '[{"hostname": "server104", "count": 7}, {"hostname": "server103", "count":
+    7}, {"hostname": "server102", "count": 7}, {"hostname": "server101", "count":
+    7}, {"hostname": "internet", "count": 7}, {"hostname": "edge01", "count": 7},
+    {"hostname": "exit02", "count": 15}, {"hostname": "exit01", "count": 16}, {"hostname":
+    "spine02", "count": 18}, {"hostname": "spine01", "count": 19}, {"hostname": "leaf04",
+    "count": 22}, {"hostname": "leaf01", "count": 22}, {"hostname": "leaf03", "count":
+    23}, {"hostname": "leaf02", "count": 23}]'

@@ -1,0 +1,172 @@
+description: 'Testing verbs for ospf: show summarize unique assert top'
+tests:
+- command: ospf show --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: ospf show
+  output: '[{"namespace": "single-attach_ospf_docker", "hostname": "exit01", "vrf":
+    "default", "ifname": "lo", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0,
+    "adjState": "passive", "peerIP": "-", "lastChangeTime": 0, "numChanges": 0.0,
+    "timestamp": 1594387420242}, {"namespace": "single-attach_ospf_docker", "hostname":
+    "exit01", "vrf": "default", "ifname": "swp1", "area": "0.0.0.0", "ifState": "up",
+    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21", "lastChangeTime": 1594791459358,
+    "numChanges": 5.0, "timestamp": 1594387420242}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "exit01", "vrf": "default", "ifname": "swp2", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "lastChangeTime":
+    1594792504686, "numChanges": 5.0, "timestamp": 1594387420242}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "exit02", "vrf": "default", "ifname": "lo", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime": 0,
+    "numChanges": 0.0, "timestamp": 1594387420262}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "exit02", "vrf": "default", "ifname": "swp1", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21", "lastChangeTime":
+    1594734081951, "numChanges": 5.0, "timestamp": 1594387420262}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "exit02", "vrf": "default", "ifname": "swp2", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "lastChangeTime":
+    1594793327059, "numChanges": 5.0, "timestamp": 1594387420262}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf01", "vrf": "default", "ifname": "lo", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime": 0,
+    "numChanges": 0.0, "timestamp": 1594387420239}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf01", "vrf": "default", "ifname": "swp1", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21", "lastChangeTime":
+    1594792499689, "numChanges": 5.0, "timestamp": 1594387420239}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf01", "vrf": "default", "ifname": "swp2", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "lastChangeTime":
+    1594792150584, "numChanges": 5.0, "timestamp": 1594387420239}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf01", "vrf": "default", "ifname": "swp5", "area": "0.0.0.1", "ifState":
+    "up", "nbrCount": 0, "adjState": "fail", "peerIP": "-", "lastChangeTime": 0, "numChanges":
+    0.0, "timestamp": 1594387420239}, {"namespace": "single-attach_ospf_docker", "hostname":
+    "leaf02", "vrf": "default", "ifname": "lo", "area": "0.0.0.0", "ifState": "up",
+    "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime": 0, "numChanges":
+    0.0, "timestamp": 1594387420233}, {"namespace": "single-attach_ospf_docker", "hostname":
+    "leaf02", "vrf": "default", "ifname": "swp1", "area": "0.0.0.0", "ifState": "up",
+    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21", "lastChangeTime": 1594792155580,
+    "numChanges": 5.0, "timestamp": 1594387420233}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf02", "vrf": "default", "ifname": "swp2", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "lastChangeTime":
+    1594734076952, "numChanges": 5.0, "timestamp": 1594387420233}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf02", "vrf": "default", "ifname": "swp5", "area": "0.0.0.1", "ifState":
+    "up", "nbrCount": 0, "adjState": "fail", "peerIP": "-", "lastChangeTime": 0, "numChanges":
+    0.0, "timestamp": 1594387420233}, {"namespace": "single-attach_ospf_docker", "hostname":
+    "leaf03", "vrf": "default", "ifname": "lo", "area": "0.0.0.0", "ifState": "up",
+    "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime": 0, "numChanges":
+    0.0, "timestamp": 1594387420233}, {"namespace": "single-attach_ospf_docker", "hostname":
+    "leaf03", "vrf": "default", "ifname": "swp1", "area": "0.0.0.0", "ifState": "up",
+    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21", "lastChangeTime": 1594734076952,
+    "numChanges": 5.0, "timestamp": 1594387420233}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf03", "vrf": "default", "ifname": "swp2", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "lastChangeTime":
+    1594793327061, "numChanges": 5.0, "timestamp": 1594387420233}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf03", "vrf": "default", "ifname": "swp5", "area": "0.0.0.1", "ifState":
+    "up", "nbrCount": 0, "adjState": "fail", "peerIP": "-", "lastChangeTime": 0, "numChanges":
+    0.0, "timestamp": 1594387420233}, {"namespace": "single-attach_ospf_docker", "hostname":
+    "leaf04", "vrf": "default", "ifname": "lo", "area": "0.0.0.0", "ifState": "up",
+    "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime": 0, "numChanges":
+    0.0, "timestamp": 1594387420263}, {"namespace": "single-attach_ospf_docker", "hostname":
+    "leaf04", "vrf": "default", "ifname": "swp1", "area": "0.0.0.0", "ifState": "up",
+    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21", "lastChangeTime": 1594784858448,
+    "numChanges": 5.0, "timestamp": 1594387420263}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf04", "vrf": "default", "ifname": "swp2", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "lastChangeTime":
+    1594792494686, "numChanges": 5.0, "timestamp": 1594387420263}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf04", "vrf": "default", "ifname": "swp5", "area": "0.0.0.1", "ifState":
+    "up", "nbrCount": 0, "adjState": "fail", "peerIP": "-", "lastChangeTime": 0, "numChanges":
+    0.0, "timestamp": 1594387420263}, {"namespace": "single-attach_ospf_docker", "hostname":
+    "spine01", "vrf": "default", "ifname": "lo", "area": "0.0.0.0", "ifState": "up",
+    "nbrCount": 0, "adjState": "fail", "peerIP": "-", "lastChangeTime": 0, "numChanges":
+    0.0, "timestamp": 1594387420242}, {"namespace": "single-attach_ospf_docker", "hostname":
+    "spine01", "vrf": "default", "ifname": "swp1", "area": "0.0.0.0", "ifState": "up",
+    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.11", "lastChangeTime": 1594792494688,
+    "numChanges": 5.0, "timestamp": 1594387420242}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine01", "vrf": "default", "ifname": "swp2", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.12", "lastChangeTime":
+    1594784853450, "numChanges": 5.0, "timestamp": 1594387420242}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine01", "vrf": "default", "ifname": "swp3", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.13", "lastChangeTime":
+    1594792494688, "numChanges": 5.0, "timestamp": 1594387420242}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine01", "vrf": "default", "ifname": "swp4", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.14", "lastChangeTime":
+    1594792494688, "numChanges": 5.0, "timestamp": 1594387420242}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine01", "vrf": "default", "ifname": "swp5", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.102", "lastChangeTime":
+    1594784858450, "numChanges": 5.0, "timestamp": 1594387420242}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine01", "vrf": "default", "ifname": "swp6", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.101", "lastChangeTime":
+    1594792494688, "numChanges": 5.0, "timestamp": 1594387420242}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine02", "vrf": "default", "ifname": "lo", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "fail", "peerIP": "-", "lastChangeTime": 0, "numChanges":
+    0.0, "timestamp": 1594387420242}, {"namespace": "single-attach_ospf_docker", "hostname":
+    "spine02", "vrf": "default", "ifname": "swp1", "area": "0.0.0.0", "ifState": "up",
+    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.11", "lastChangeTime": 1594734076954,
+    "numChanges": 5.0, "timestamp": 1594387420242}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine02", "vrf": "default", "ifname": "swp2", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.12", "lastChangeTime":
+    1594784853451, "numChanges": 5.0, "timestamp": 1594387420242}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine02", "vrf": "default", "ifname": "swp3", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.13", "lastChangeTime":
+    1594792150583, "numChanges": 4.0, "timestamp": 1594387420242}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine02", "vrf": "default", "ifname": "swp4", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.14", "lastChangeTime":
+    1594790753755, "numChanges": 5.0, "timestamp": 1594387420242}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine02", "vrf": "default", "ifname": "swp5", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.102", "lastChangeTime":
+    1594790753755, "numChanges": 5.0, "timestamp": 1594387420242}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "spine02", "vrf": "default", "ifname": "swp6", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.101", "lastChangeTime":
+    1594793332063, "numChanges": 5.0, "timestamp": 1594387420242}]'
+- command: ospf show --columns=hostname --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: ospf show
+  output: '[{"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}]'
+- command: ospf summarize --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: ospf summarize
+  output: '{"single-attach_ospf_docker": {"deviceCnt": 8, "peerCnt": 36, "stubbyPeerCnt":
+    4, "passivePeerCnt": 6, "unnumberedPeerCnt": 28, "failedPeerCnt": 6, "area": {"0.0.0.0":
+    32, "0.0.0.1": 4}, "vrf": {"default": 36}, "helloTime": {"10": 36}, "deadTime":
+    {"40": 36}, "retxTime": {"5": 36}, "networkType": {"pointopoint": 28, "loopback":
+    8}, "adjChangesStat": [4.0, 5.0, 5.0], "upTimeStat": [-405912000, -346657000,
+    -404730000]}}'
+- command: ospf unique --columns=hostname --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: ospf unique
+  output: '[{"hostname": "exit02", "count": 3}, {"hostname": "exit01", "count": 3},
+    {"hostname": "leaf04", "count": 4}, {"hostname": "leaf03", "count": 4}, {"hostname":
+    "leaf02", "count": 4}, {"hostname": "leaf01", "count": 4}, {"hostname": "spine02",
+    "count": 7}, {"hostname": "spine01", "count": 7}]'
+- command: ospf assert --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: ospf assert
+  output: '[{"namespace": "single-attach_ospf_docker", "hostname": "exit01", "ifname":
+    "swp1", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1594387420242}, {"namespace": "single-attach_ospf_docker", "hostname": "exit01",
+    "ifname": "swp2", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1594387420242}]'
+- command: ospf top --format=json --namespace=single-attach_ospf_docker
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_ospf_docker/parquet-out
+  marks: ospf top
+  output: '[{"namespace": "single-attach_ospf_docker", "hostname": "exit01", "vrf":
+    "default", "ifname": "swp1", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
+    "adjState": "full", "peerIP": "10.0.0.21", "lastChangeTime": 1594791459358.0,
+    "numChanges": 5.0, "timestamp": 1594387420242}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "exit01", "vrf": "default", "ifname": "swp2", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "lastChangeTime":
+    1594792504686.0, "numChanges": 5.0, "timestamp": 1594387420242}, {"namespace":
+    "single-attach_ospf_docker", "hostname": "exit02", "vrf": "default", "ifname":
+    "swp1", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.21", "lastChangeTime": 1594734081951.0, "numChanges": 5.0, "timestamp":
+    1594387420262}, {"namespace": "single-attach_ospf_docker", "hostname": "exit02",
+    "vrf": "default", "ifname": "swp2", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.22", "lastChangeTime": 1594793327059.0,
+    "numChanges": 5.0, "timestamp": 1594387420262}, {"namespace": "single-attach_ospf_docker",
+    "hostname": "leaf01", "vrf": "default", "ifname": "swp1", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21", "lastChangeTime":
+    1594792499689.0, "numChanges": 5.0, "timestamp": 1594387420239}]'

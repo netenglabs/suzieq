@@ -1,0 +1,87 @@
+description: 'Testing verbs for device: show summarize unique'
+tests:
+- command: device show --format=json --namespace=single-attach_bgp_numbered
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_numbered/parquet-out
+  marks: device show
+  output: '[{"namespace": "single-attach_bgp_numbered", "hostname": "edge01", "model":
+    "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.176", "uptime": 44867, "timestamp":
+    1594390550867}, {"namespace": "single-attach_bgp_numbered", "hostname": "exit01",
+    "model": "vm", "version": "3.7.12", "vendor": "Cumulus", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.253", "uptime": 39866, "timestamp":
+    1594390550866}, {"namespace": "single-attach_bgp_numbered", "hostname": "exit02",
+    "model": "vm", "version": "3.7.12", "vendor": "Cumulus", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.175", "uptime": 39924, "timestamp":
+    1594390550924}, {"namespace": "single-attach_bgp_numbered", "hostname": "internet",
+    "model": "vm", "version": "3.7.12", "vendor": "Cumulus", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.216", "uptime": 40925, "timestamp":
+    1594390550925}, {"namespace": "single-attach_bgp_numbered", "hostname": "leaf01",
+    "model": "vm", "version": "3.7.12", "vendor": "Cumulus", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.109", "uptime": 40867, "timestamp":
+    1594390550867}, {"namespace": "single-attach_bgp_numbered", "hostname": "leaf02",
+    "model": "vm", "version": "3.7.12", "vendor": "Cumulus", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.254", "uptime": 40867, "timestamp":
+    1594390550867}, {"namespace": "single-attach_bgp_numbered", "hostname": "leaf03",
+    "model": "vm", "version": "3.7.12", "vendor": "Cumulus", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.55", "uptime": 40867, "timestamp":
+    1594390550867}, {"namespace": "single-attach_bgp_numbered", "hostname": "leaf04",
+    "model": "vm", "version": "3.7.12", "vendor": "Cumulus", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.2", "uptime": 39869, "timestamp": 1594390550869},
+    {"namespace": "single-attach_bgp_numbered", "hostname": "server101", "model":
+    "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.227", "uptime": 158867, "timestamp":
+    1594390550867}, {"namespace": "single-attach_bgp_numbered", "hostname": "server102",
+    "model": "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.76", "uptime": 153865, "timestamp":
+    1594390550865}, {"namespace": "single-attach_bgp_numbered", "hostname": "server103",
+    "model": "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.237", "uptime": 164865, "timestamp":
+    1594390550865}, {"namespace": "single-attach_bgp_numbered", "hostname": "server104",
+    "model": "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.157", "uptime": 159867, "timestamp":
+    1594390550867}, {"namespace": "single-attach_bgp_numbered", "hostname": "spine01",
+    "model": "vm", "version": "3.7.12", "vendor": "Cumulus", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.238", "uptime": 39869, "timestamp":
+    1594390550869}, {"namespace": "single-attach_bgp_numbered", "hostname": "spine02",
+    "model": "vm", "version": "3.7.12", "vendor": "Cumulus", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.121.213", "uptime": 40866, "timestamp":
+    1594390550866}]'
+- command: device show --columns=hostname --format=json --namespace=single-attach_bgp_numbered
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_numbered/parquet-out
+  marks: device show
+  output: '[{"hostname": "edge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
+    {"hostname": "internet"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server102"},
+    {"hostname": "server103"}, {"hostname": "server104"}, {"hostname": "spine01"},
+    {"hostname": "spine02"}]'
+- command: device summarize --format=json --namespace=single-attach_bgp_numbered
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_numbered/parquet-out
+  marks: device summarize
+  output: '{"single-attach_bgp_numbered": {"deviceCnt": 14, "vendorCnt": {"Cumulus":
+    9, "Ubuntu": 5}, "modelCnt": {"vm": 14}, "archCnt": {"x86-64": 14}, "versionCnt":
+    {"3.7.12": 9, "16.04.6 LTS": 5}, "upTimeStat": [39866, 164865, 40867]}}'
+- command: device summarize --columns="namespace hostname" --format=json --namespace=single-attach_bgp_numbered
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_numbered/parquet-out
+  error:
+    error: '{"error": {"0": "ERROR: You cannot specify columns with summarize"}}'
+  marks: device summarize
+- command: device unique --columns=hostname --format=json --namespace=single-attach_bgp_numbered
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_numbered/parquet-out
+  marks: device unique
+  output: '[{"hostname": "spine02", "count": 1}, {"hostname": "spine01", "count":
+    1}, {"hostname": "server104", "count": 1}, {"hostname": "server103", "count":
+    1}, {"hostname": "server102", "count": 1}, {"hostname": "server101", "count":
+    1}, {"hostname": "leaf04", "count": 1}, {"hostname": "leaf03", "count": 1}, {"hostname":
+    "leaf02", "count": 1}, {"hostname": "leaf01", "count": 1}, {"hostname": "internet",
+    "count": 1}, {"hostname": "exit02", "count": 1}, {"hostname": "exit01", "count":
+    1}, {"hostname": "edge01", "count": 1}]'
+- command: device unique --columns="hostname namespace" --format=json --namespace=single-attach_bgp_numbered
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_numbered/parquet-out
+  error:
+    error: '[{"error": "ERROR: Specify a single column with unique"}]'
+  marks: device unique
+- command: device unique --columns=badcolumn --format=json --namespace=single-attach_bgp_numbered
+  data-directory: /tmp/suzieq-tests-parquet/single-attach_bgp_numbered/parquet-out
+  error:
+    error: '[{"error": "ERROR: ''badcolumn''"}]'
+  marks: device unique

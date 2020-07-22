@@ -1,0 +1,116 @@
+description: 'Testing verbs for mac: show summarize unique'
+tests:
+- command: mac show --format=json --namespace=dual-attach_bgp_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_unnumbered/parquet-out
+  marks: mac show
+  output: '[{"namespace": "dual-attach_bgp_unnumbered", "hostname": "edge01", "vlan":
+    0, "macaddr": "01:00:5e:00:00:01", "oif": "eth2.4", "remoteVtepIp": "", "flags":
+    "permanent", "timestamp": 1594437074093}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "edge01", "vlan": 0, "macaddr": "33:33:00:00:00:02", "oif": "eth2.4",
+    "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594437074093}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "leaf01", "vlan": 24, "macaddr": "52:54:00:de:89:d5",
+    "oif": "peerlink", "remoteVtepIp": "", "flags": "static", "timestamp": 1594437074347},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "leaf01", "vlan": 13,
+    "macaddr": "52:54:00:de:89:d5", "oif": "peerlink", "remoteVtepIp": "", "flags":
+    "static", "timestamp": 1594437074347}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "leaf01", "vlan": 0, "macaddr": "52:54:00:b9:6f:69", "oif": "peerlink",
+    "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594437074347}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "leaf01", "vlan": 0, "macaddr": "52:54:00:38:63:c3",
+    "oif": "bond01", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594437074347},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "leaf01", "vlan": 13,
+    "macaddr": "52:54:00:41:1d:be", "oif": "bond01", "remoteVtepIp": "", "flags":
+    "", "timestamp": 1594437074347}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "leaf01", "vlan": 24, "macaddr": "52:54:00:82:50:5b", "oif": "bond02", "remoteVtepIp":
+    "", "flags": "", "timestamp": 1594437074347}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "leaf01", "vlan": 0, "macaddr": "52:54:00:94:82:cb", "oif": "bond02",
+    "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594437074347}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "leaf01", "vlan": 24, "macaddr": "52:54:00:38:63:c3",
+    "oif": "bridge", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594437074347},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "leaf01", "vlan": 13,
+    "macaddr": "52:54:00:38:63:c3", "oif": "bridge", "remoteVtepIp": "", "flags":
+    "permanent", "timestamp": 1594437074347}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "leaf02", "vlan": 13, "macaddr": "52:54:00:38:63:c3", "oif": "peerlink",
+    "remoteVtepIp": "", "flags": "static", "timestamp": 1594437074326}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "leaf02", "vlan": 0, "macaddr": "52:54:00:2a:a1:67",
+    "oif": "peerlink", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594437074326},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "leaf02", "vlan": 24,
+    "macaddr": "52:54:00:38:63:c3", "oif": "peerlink", "remoteVtepIp": "", "flags":
+    "static", "timestamp": 1594437074326}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "leaf02", "vlan": 13, "macaddr": "52:54:00:41:1d:be", "oif": "bond01",
+    "remoteVtepIp": "", "flags": "", "timestamp": 1594437074326}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "leaf02", "vlan": 0, "macaddr": "52:54:00:de:89:d5", "oif": "bond01",
+    "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594437074326}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "leaf02", "vlan": 24, "macaddr": "52:54:00:82:50:5b",
+    "oif": "bond02", "remoteVtepIp": "", "flags": "", "timestamp": 1594437074326},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "leaf02", "vlan": 0, "macaddr":
+    "52:54:00:cb:e1:5a", "oif": "bond02", "remoteVtepIp": "", "flags": "permanent",
+    "timestamp": 1594437074326}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "leaf02", "vlan": 13, "macaddr": "52:54:00:de:89:d5", "oif": "bridge", "remoteVtepIp":
+    "", "flags": "permanent", "timestamp": 1594437074326}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "leaf02", "vlan": 24, "macaddr": "52:54:00:de:89:d5", "oif": "bridge",
+    "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594437074326}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "leaf03", "vlan": 13, "macaddr": "52:54:00:fd:d3:58",
+    "oif": "peerlink", "remoteVtepIp": "", "flags": "static", "timestamp": 1594437074354},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "leaf03", "vlan": 0, "macaddr":
+    "52:54:00:e1:ce:4c", "oif": "peerlink", "remoteVtepIp": "", "flags": "permanent",
+    "timestamp": 1594437074354}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "leaf03", "vlan": 24, "macaddr": "52:54:00:fd:d3:58", "oif": "peerlink", "remoteVtepIp":
+    "", "flags": "static", "timestamp": 1594437074354}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "leaf03", "vlan": 13, "macaddr": "52:54:00:8c:5f:b8", "oif": "bond01",
+    "remoteVtepIp": "", "flags": "", "timestamp": 1594437074354}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "leaf03", "vlan": 0, "macaddr": "52:54:00:55:98:a8", "oif": "bond01",
+    "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594437074354}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "leaf03", "vlan": 0, "macaddr": "52:54:00:77:49:5e",
+    "oif": "bond02", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594437074354},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "leaf03", "vlan": 24,
+    "macaddr": "52:54:00:09:51:db", "oif": "bond02", "remoteVtepIp": "", "flags":
+    "", "timestamp": 1594437074354}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "leaf03", "vlan": 24, "macaddr": "52:54:00:55:98:a8", "oif": "bridge", "remoteVtepIp":
+    "", "flags": "permanent", "timestamp": 1594437074354}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "leaf03", "vlan": 13, "macaddr": "52:54:00:55:98:a8", "oif": "bridge",
+    "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594437074354}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "leaf04", "vlan": 24, "macaddr": "52:54:00:55:98:a8",
+    "oif": "peerlink", "remoteVtepIp": "", "flags": "static", "timestamp": 1594437074329},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "leaf04", "vlan": 0, "macaddr":
+    "52:54:00:57:f1:39", "oif": "peerlink", "remoteVtepIp": "", "flags": "permanent",
+    "timestamp": 1594437074329}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "leaf04", "vlan": 13, "macaddr": "52:54:00:55:98:a8", "oif": "peerlink", "remoteVtepIp":
+    "", "flags": "static", "timestamp": 1594437074329}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "leaf04", "vlan": 0, "macaddr": "52:54:00:fd:d3:58", "oif": "bond01",
+    "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594437074329}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "leaf04", "vlan": 13, "macaddr": "52:54:00:8c:5f:b8",
+    "oif": "bond01", "remoteVtepIp": "", "flags": "", "timestamp": 1594437074329},
+    {"namespace": "dual-attach_bgp_unnumbered", "hostname": "leaf04", "vlan": 24,
+    "macaddr": "52:54:00:09:51:db", "oif": "bond02", "remoteVtepIp": "", "flags":
+    "", "timestamp": 1594437074329}, {"namespace": "dual-attach_bgp_unnumbered", "hostname":
+    "leaf04", "vlan": 0, "macaddr": "52:54:00:b4:98:12", "oif": "bond02", "remoteVtepIp":
+    "", "flags": "permanent", "timestamp": 1594437074329}, {"namespace": "dual-attach_bgp_unnumbered",
+    "hostname": "leaf04", "vlan": 13, "macaddr": "52:54:00:fd:d3:58", "oif": "bridge",
+    "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594437074329}, {"namespace":
+    "dual-attach_bgp_unnumbered", "hostname": "leaf04", "vlan": 24, "macaddr": "52:54:00:fd:d3:58",
+    "oif": "bridge", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594437074329}]'
+- command: mac show --columns=hostname --format=json --namespace=dual-attach_bgp_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_unnumbered/parquet-out
+  marks: mac show
+  output: '[{"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}]'
+- command: mac summarize --format=json --namespace=dual-attach_bgp_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_unnumbered/parquet-out
+  marks: mac summarize
+  output: '{"dual-attach_bgp_unnumbered": {"deviceCnt": 5, "totalMacsinNSCnt": 38,
+    "uniqueMacCnt": 18, "uniqueVlanperHostStat": [0, 2, 2.0]}}'
+- command: mac unique --columns=hostname --format=json --namespace=dual-attach_bgp_unnumbered
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_bgp_unnumbered/parquet-out
+  marks: mac unique
+  output: '[{"hostname": "edge01", "count": 2}, {"hostname": "leaf04", "count": 9},
+    {"hostname": "leaf03", "count": 9}, {"hostname": "leaf02", "count": 9}, {"hostname":
+    "leaf01", "count": 9}]'

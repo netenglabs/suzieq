@@ -20,6 +20,7 @@ from concurrent.futures._base import TimeoutError
 
 from suzieq.poller.services.service import RsltToken
 from suzieq.poller.genhosts import process_ansible_inventory
+from suzieq.utils import get_timestamp_from_junos_time
 
 logger = logging.getLogger(__name__)
 
@@ -807,11 +808,10 @@ class JunosNode(Node):
 
         if output[0]["status"] == 0:
             data = output[0]["data"]
-            bootts = re.search(r'\nSystem booted: ([^\(]*)', data)
+            bootts = re.search(r'\nSystem booted:.*\((.+) ago\)', data)
             if bootts:
-                self.bootupTimestamp = datetime.strptime(
-                    bootts.group(1).strip(), '%Y-%m-%d %H:%M:%S %Z') \
-                    .timestamp()
+                self.bootupTimestamp = get_timestamp_from_junos_time(
+                    bootts.group(1), output[0]['timestamp']/1000)
 
         if output[1]["status"] == 0:
             data = output[0]["data"]

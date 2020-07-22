@@ -1,0 +1,84 @@
+description: 'Testing verbs for vlan: show summarize unique'
+tests:
+- command: vlan show --format=json --namespace=dual-attach_evpn_ospf-ibgp
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_ospf-ibgp/parquet-out
+  marks: vlan show
+  output: '[{"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "exit01", "ifname":
+    "bridge", "vlan": ["4001"], "pvid": 0, "timestamp": 1594433847425}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "exit01", "ifname": "vxlan4001", "vlan":
+    ["4001"], "pvid": 4001, "timestamp": 1594433847425}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "exit02", "ifname": "bridge", "vlan": ["4001"], "pvid": 0, "timestamp":
+    1594433847366}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "exit02",
+    "ifname": "vxlan4001", "vlan": ["4001"], "pvid": 4001, "timestamp": 1594433847366},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf01", "ifname": "bond01",
+    "vlan": ["13"], "pvid": 13, "timestamp": 1594433847390}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf01", "ifname": "bond02", "vlan": ["24"], "pvid": 24, "timestamp":
+    1594433847390}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf01",
+    "ifname": "bridge", "vlan": ["13", "24", "4001"], "pvid": 0, "timestamp": 1594433847390},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf01", "ifname": "peerlink",
+    "vlan": ["1", "13", "24"], "pvid": 1, "timestamp": 1594433847390}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf01", "ifname": "vni13", "vlan":
+    ["13"], "pvid": 13, "timestamp": 1594433847390}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf01", "ifname": "vni24", "vlan": ["24"], "pvid": 24, "timestamp":
+    1594433847390}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf01",
+    "ifname": "vxlan4001", "vlan": ["4001"], "pvid": 4001, "timestamp": 1594433847390},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf02", "ifname": "bond01",
+    "vlan": ["13"], "pvid": 13, "timestamp": 1594433847390}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf02", "ifname": "bond02", "vlan": ["24"], "pvid": 24, "timestamp":
+    1594433847390}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf02",
+    "ifname": "bridge", "vlan": ["13", "24", "4001"], "pvid": 0, "timestamp": 1594433847390},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf02", "ifname": "peerlink",
+    "vlan": ["1", "13", "24"], "pvid": 1, "timestamp": 1594433847390}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf02", "ifname": "vni13", "vlan":
+    ["13"], "pvid": 13, "timestamp": 1594433847390}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf02", "ifname": "vni24", "vlan": ["24"], "pvid": 24, "timestamp":
+    1594433847390}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf02",
+    "ifname": "vxlan4001", "vlan": ["4001"], "pvid": 4001, "timestamp": 1594433847390},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf03", "ifname": "bond01",
+    "vlan": ["13"], "pvid": 13, "timestamp": 1594433847469}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf03", "ifname": "bond02", "vlan": ["24"], "pvid": 24, "timestamp":
+    1594433847469}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf03",
+    "ifname": "bridge", "vlan": ["13", "24", "4001"], "pvid": 0, "timestamp": 1594433847469},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf03", "ifname": "peerlink",
+    "vlan": ["1", "13", "24"], "pvid": 1, "timestamp": 1594433847469}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf03", "ifname": "vni13", "vlan":
+    ["13"], "pvid": 13, "timestamp": 1594433847469}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf03", "ifname": "vni24", "vlan": ["24"], "pvid": 24, "timestamp":
+    1594433847469}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf03",
+    "ifname": "vxlan4001", "vlan": ["4001"], "pvid": 4001, "timestamp": 1594433847469},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf04", "ifname": "bond01",
+    "vlan": ["13"], "pvid": 13, "timestamp": 1594433847388}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf04", "ifname": "bond02", "vlan": ["24"], "pvid": 24, "timestamp":
+    1594433847388}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf04",
+    "ifname": "bridge", "vlan": ["13", "24", "4001"], "pvid": 0, "timestamp": 1594433847388},
+    {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf04", "ifname": "peerlink",
+    "vlan": ["1", "13", "24"], "pvid": 1, "timestamp": 1594433847388}, {"namespace":
+    "dual-attach_evpn_ospf-ibgp", "hostname": "leaf04", "ifname": "vni13", "vlan":
+    ["13"], "pvid": 13, "timestamp": 1594433847388}, {"namespace": "dual-attach_evpn_ospf-ibgp",
+    "hostname": "leaf04", "ifname": "vni24", "vlan": ["24"], "pvid": 24, "timestamp":
+    1594433847388}, {"namespace": "dual-attach_evpn_ospf-ibgp", "hostname": "leaf04",
+    "ifname": "vxlan4001", "vlan": ["4001"], "pvid": 4001, "timestamp": 1594433847388}]'
+- command: vlan show --columns=hostname --format=json --namespace=dual-attach_evpn_ospf-ibgp
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_ospf-ibgp/parquet-out
+  marks: vlan show
+  output: '[{"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}]'
+- command: vlan summarize --format=json --namespace=dual-attach_evpn_ospf-ibgp
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_ospf-ibgp/parquet-out
+  marks: vlan summarize
+  output: '{"dual-attach_evpn_ospf-ibgp": {"deviceCnt": 32, "uniquePvidCnt": 5, "uniqueVlanCnt":
+    4}}'
+- command: vlan unique --columns=hostname --format=json --namespace=dual-attach_evpn_ospf-ibgp
+  data-directory: /tmp/suzieq-tests-parquet/dual-attach_evpn_ospf-ibgp/parquet-out
+  marks: vlan unique
+  output: '[{"hostname": "exit02", "count": 2}, {"hostname": "exit01", "count": 2},
+    {"hostname": "leaf04", "count": 7}, {"hostname": "leaf03", "count": 7}, {"hostname":
+    "leaf02", "count": 7}, {"hostname": "leaf01", "count": 7}]'
