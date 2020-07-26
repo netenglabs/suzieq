@@ -5,20 +5,20 @@ tests:
   marks: evpnVni show nxos
   output: '[{"namespace": "nxos", "hostname": "leaf1", "vni": 100010, "type": "L2",
     "vlan": 10, "state": "up", "mcastGroup": "224.1.1.192", "remoteVtepCnt": 0, "priVtepIp":
-    "10.0.0.11", "secVtepIp": "", "timestamp": 1594213101373}, {"namespace": "nxos",
+    "10.0.0.11", "secVtepIp": "", "timestamp": 1595758998408}, {"namespace": "nxos",
     "hostname": "leaf1", "vni": 100030, "type": "L2", "vlan": 30, "state": "up", "mcastGroup":
     "224.1.1.192", "remoteVtepCnt": 0, "priVtepIp": "10.0.0.11", "secVtepIp": "",
-    "timestamp": 1594213101373}, {"namespace": "nxos", "hostname": "leaf1", "vni":
+    "timestamp": 1595758998408}, {"namespace": "nxos", "hostname": "leaf1", "vni":
     100999, "type": "L3", "vlan": 999, "state": "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt":
-    0, "priVtepIp": "10.0.0.11", "secVtepIp": "", "timestamp": 1594213101373}, {"namespace":
+    0, "priVtepIp": "10.0.0.11", "secVtepIp": "", "timestamp": 1595758998408}, {"namespace":
     "nxos", "hostname": "leaf2", "vni": 100020, "type": "L2", "vlan": 20, "state":
     "up", "mcastGroup": "224.1.1.192", "remoteVtepCnt": 0, "priVtepIp": "10.0.0.12",
-    "secVtepIp": "", "timestamp": 1594213101373}, {"namespace": "nxos", "hostname":
+    "secVtepIp": "", "timestamp": 1595758998608}, {"namespace": "nxos", "hostname":
     "leaf2", "vni": 100030, "type": "L2", "vlan": 30, "state": "up", "mcastGroup":
-    "224.1.1.192", "remoteVtepCnt": 1, "priVtepIp": "10.0.0.12", "secVtepIp": "",
-    "timestamp": 1594213101373}, {"namespace": "nxos", "hostname": "leaf2", "vni":
+    "224.1.1.192", "remoteVtepCnt": 0, "priVtepIp": "10.0.0.12", "secVtepIp": "",
+    "timestamp": 1595758998608}, {"namespace": "nxos", "hostname": "leaf2", "vni":
     100999, "type": "L3", "vlan": 999, "state": "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt":
-    0, "priVtepIp": "10.0.0.12", "secVtepIp": "", "timestamp": 1594213101373}]'
+    0, "priVtepIp": "10.0.0.12", "secVtepIp": "", "timestamp": 1595758998608}]'
 - command: evpnVni show --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: evpnVni show nxos
@@ -29,8 +29,8 @@ tests:
   marks: evpnVni summarize nxos
   output: '{"nxos": {"mode": "symmetric", "uniqueVtepCnt": 2, "uniqueVniCnt": 4, "uniqueL3VniCnt":
     1, "uniqueL2VniCnt": 3, "uniqueMulticastGroups": 1, "vnisUsingMulticast": 3, "vnisUsingIngressRepl":
-    0, "uniqueVniTypeValCnt": {"L2": 4, "L3": 2}, "macsInVniStat": [1, 1, 1], "remoteVtepsPerVtepStat":
-    [0, 1, 0.5]}}'
+    0, "uniqueVniTypeValCnt": {"L2": 4, "L3": 2}, "macsInVniStat": [0, 1, 0.5], "remoteVtepsPerVtepStat":
+    null}}'
 - command: evpnVni unique --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: evpnVni unique nxos
@@ -41,7 +41,7 @@ tests:
   output: '[{"hostname": "leaf1", "vni": 100010, "remoteVtepCnt": 0}, {"hostname":
     "leaf1", "vni": 100030, "remoteVtepCnt": 0}, {"hostname": "leaf1", "vni": 100999,
     "remoteVtepCnt": 0}, {"hostname": "leaf2", "vni": 100020, "remoteVtepCnt": 0},
-    {"hostname": "leaf2", "vni": 100030, "remoteVtepCnt": 1}, {"hostname": "leaf2",
+    {"hostname": "leaf2", "vni": 100030, "remoteVtepCnt": 0}, {"hostname": "leaf2",
     "vni": 100999, "remoteVtepCnt": 0}]'
 - command: evpnVni show --columns='hostname vni remoteVtepList' --format=json
   data-directory: tests/data/nxos/parquet-out/
@@ -49,7 +49,7 @@ tests:
   output: '[{"hostname": "leaf1", "vni": 100010, "remoteVtepList": []}, {"hostname":
     "leaf1", "vni": 100030, "remoteVtepList": []}, {"hostname": "leaf1", "vni": 100999,
     "remoteVtepList": []}, {"hostname": "leaf2", "vni": 100020, "remoteVtepList":
-    []}, {"hostname": "leaf2", "vni": 100030, "remoteVtepList": ["10.0.0.11"]}, {"hostname":
+    []}, {"hostname": "leaf2", "vni": 100030, "remoteVtepList": []}, {"hostname":
     "leaf2", "vni": 100999, "remoteVtepList": []}]'
 - command: evpnVni show --columns='hostname vni remoteVtepCnt remoteVtepList' --format=json
   data-directory: tests/data/nxos/parquet-out/
@@ -58,6 +58,6 @@ tests:
     []}, {"hostname": "leaf1", "vni": 100030, "remoteVtepCnt": 0, "remoteVtepList":
     []}, {"hostname": "leaf1", "vni": 100999, "remoteVtepCnt": 0, "remoteVtepList":
     []}, {"hostname": "leaf2", "vni": 100020, "remoteVtepCnt": 0, "remoteVtepList":
-    []}, {"hostname": "leaf2", "vni": 100030, "remoteVtepCnt": 1, "remoteVtepList":
-    ["10.0.0.11"]}, {"hostname": "leaf2", "vni": 100999, "remoteVtepCnt": 0, "remoteVtepList":
+    []}, {"hostname": "leaf2", "vni": 100030, "remoteVtepCnt": 0, "remoteVtepList":
+    []}, {"hostname": "leaf2", "vni": 100999, "remoteVtepCnt": 0, "remoteVtepList":
     []}]'
