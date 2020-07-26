@@ -1,5 +1,4 @@
 import os
-import sys
 import asyncio
 from datetime import datetime
 import time
@@ -11,12 +10,10 @@ from tempfile import mkstemp
 from dataclasses import dataclass
 from http import HTTPStatus
 from collections import defaultdict
-from itertools import zip_longest
 
 import pyarrow as pa
 
 from suzieq.poller.services.svcparser import cons_recs_from_json_template
-from typing import List
 
 HOLD_TIME_IN_MSECS = 60000  # How long b4 declaring node dead
 
