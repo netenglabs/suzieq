@@ -1596,344 +1596,45 @@ tests:
     "timestamp": 1594267818810}, {"namespace": "ospf-single", "hostname": "edge01",
     "device": "tmpfs", "totalSize": "74M", "usedSize": "0", "usedPercent": 0, "mountPoint":
     "/run/user/1000", "timestamp": 1594267818810}]'
-- command: fs show --namespace="dual-evpn" --device="/dev/vda4" --format=json
+- command: fs show --namespace="dual-evpn" --mountPoint="/opt" --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: fs show
-  output: '[{"namespace": "dual-evpn", "hostname": "exit01", "device": "/dev/vda4",
-    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/",
-    "timestamp": 1594267588663}, {"namespace": "dual-evpn", "hostname": "exit01",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/var/lib/libvirt/images", "timestamp": 1594267588663}, {"namespace":
-    "dual-evpn", "hostname": "exit01", "device": "/dev/vda4", "totalSize": "5.8G",
-    "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/var/cache/cumulus", "timestamp":
-    1594267588663}, {"namespace": "dual-evpn", "hostname": "exit01", "device": "/dev/vda4",
-    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/var/opt",
-    "timestamp": 1594267588663}, {"namespace": "dual-evpn", "hostname": "exit01",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/var/spool", "timestamp": 1594267588663}, {"namespace": "dual-evpn",
-    "hostname": "exit01", "device": "/dev/vda4", "totalSize": "5.8G", "usedSize":
-    "1.1G", "usedPercent": 20, "mountPoint": "/usr/local", "timestamp": 1594267588663},
-    {"namespace": "dual-evpn", "hostname": "exit01", "device": "/dev/vda4", "totalSize":
-    "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/srv", "timestamp":
-    1594267588663}, {"namespace": "dual-evpn", "hostname": "exit01", "device": "/dev/vda4",
-    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/opt",
-    "timestamp": 1594267588663}, {"namespace": "dual-evpn", "hostname": "exit01",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/var/log", "timestamp": 1594267588663}, {"namespace": "dual-evpn",
-    "hostname": "exit01", "device": "/dev/vda4", "totalSize": "5.8G", "usedSize":
-    "1.1G", "usedPercent": 20, "mountPoint": "/var/support", "timestamp": 1594267588663},
-    {"namespace": "dual-evpn", "hostname": "exit01", "device": "/dev/vda4", "totalSize":
-    "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/var/tmp", "timestamp":
-    1594267588663}, {"namespace": "dual-evpn", "hostname": "exit01", "device": "/dev/vda4",
-    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/boot/grub/x86_64-efi",
-    "timestamp": 1594267588663}, {"namespace": "dual-evpn", "hostname": "exit01",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/home", "timestamp": 1594267588663}, {"namespace": "dual-evpn",
-    "hostname": "exit01", "device": "/dev/vda4", "totalSize": "5.8G", "usedSize":
-    "1.1G", "usedPercent": 20, "mountPoint": "/boot/grub/i386-pc", "timestamp": 1594267588663},
-    {"namespace": "dual-evpn", "hostname": "exit01", "device": "/dev/vda4", "totalSize":
-    "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/.snapshots", "timestamp":
-    1594267588663}, {"namespace": "dual-evpn", "hostname": "exit01", "device": "/dev/vda4",
-    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/tmp",
+  output: '[{"namespace": "dual-evpn", "hostname": "exit01", "mountPoint": "/opt",
+    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "device": "/dev/vda4",
     "timestamp": 1594267588663}, {"namespace": "dual-evpn", "hostname": "exit02",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/", "timestamp": 1594267588663}, {"namespace": "dual-evpn",
-    "hostname": "exit02", "device": "/dev/vda4", "totalSize": "5.8G", "usedSize":
-    "1.1G", "usedPercent": 20, "mountPoint": "/var/lib/libvirt/images", "timestamp":
-    1594267588663}, {"namespace": "dual-evpn", "hostname": "exit02", "device": "/dev/vda4",
-    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/var/cache/cumulus",
-    "timestamp": 1594267588663}, {"namespace": "dual-evpn", "hostname": "exit02",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/var/opt", "timestamp": 1594267588663}, {"namespace": "dual-evpn",
-    "hostname": "exit02", "device": "/dev/vda4", "totalSize": "5.8G", "usedSize":
-    "1.1G", "usedPercent": 20, "mountPoint": "/var/spool", "timestamp": 1594267588663},
-    {"namespace": "dual-evpn", "hostname": "exit02", "device": "/dev/vda4", "totalSize":
-    "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/usr/local", "timestamp":
-    1594267588663}, {"namespace": "dual-evpn", "hostname": "exit02", "device": "/dev/vda4",
-    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/srv",
-    "timestamp": 1594267588663}, {"namespace": "dual-evpn", "hostname": "exit02",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/opt", "timestamp": 1594267588663}, {"namespace": "dual-evpn",
-    "hostname": "exit02", "device": "/dev/vda4", "totalSize": "5.8G", "usedSize":
-    "1.1G", "usedPercent": 20, "mountPoint": "/var/log", "timestamp": 1594267588663},
-    {"namespace": "dual-evpn", "hostname": "exit02", "device": "/dev/vda4", "totalSize":
-    "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/var/support", "timestamp":
-    1594267588663}, {"namespace": "dual-evpn", "hostname": "exit02", "device": "/dev/vda4",
-    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/var/tmp",
-    "timestamp": 1594267588663}, {"namespace": "dual-evpn", "hostname": "exit02",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/home", "timestamp": 1594267588663}, {"namespace": "dual-evpn",
-    "hostname": "exit02", "device": "/dev/vda4", "totalSize": "5.8G", "usedSize":
-    "1.1G", "usedPercent": 20, "mountPoint": "/boot/grub/x86_64-efi", "timestamp":
-    1594267588663}, {"namespace": "dual-evpn", "hostname": "exit02", "device": "/dev/vda4",
-    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/boot/grub/i386-pc",
-    "timestamp": 1594267588663}, {"namespace": "dual-evpn", "hostname": "exit02",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/.snapshots", "timestamp": 1594267588663}, {"namespace": "dual-evpn",
-    "hostname": "exit02", "device": "/dev/vda4", "totalSize": "5.8G", "usedSize":
-    "1.1G", "usedPercent": 20, "mountPoint": "/tmp", "timestamp": 1594267588663},
-    {"namespace": "dual-evpn", "hostname": "internet", "device": "/dev/vda4", "totalSize":
-    "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/", "timestamp":
-    1594267588663}, {"namespace": "dual-evpn", "hostname": "internet", "device": "/dev/vda4",
-    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/var/lib/libvirt/images",
-    "timestamp": 1594267588663}, {"namespace": "dual-evpn", "hostname": "internet",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/var/cache/cumulus", "timestamp": 1594267588663}, {"namespace":
-    "dual-evpn", "hostname": "internet", "device": "/dev/vda4", "totalSize": "5.8G",
-    "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/var/opt", "timestamp":
-    1594267588663}, {"namespace": "dual-evpn", "hostname": "internet", "device": "/dev/vda4",
-    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/var/spool",
-    "timestamp": 1594267588663}, {"namespace": "dual-evpn", "hostname": "internet",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/usr/local", "timestamp": 1594267588663}, {"namespace": "dual-evpn",
-    "hostname": "internet", "device": "/dev/vda4", "totalSize": "5.8G", "usedSize":
-    "1.1G", "usedPercent": 20, "mountPoint": "/srv", "timestamp": 1594267588663},
-    {"namespace": "dual-evpn", "hostname": "internet", "device": "/dev/vda4", "totalSize":
-    "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/opt", "timestamp":
-    1594267588663}, {"namespace": "dual-evpn", "hostname": "internet", "device": "/dev/vda4",
-    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/var/log",
-    "timestamp": 1594267588663}, {"namespace": "dual-evpn", "hostname": "internet",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/var/support", "timestamp": 1594267588663}, {"namespace": "dual-evpn",
-    "hostname": "internet", "device": "/dev/vda4", "totalSize": "5.8G", "usedSize":
-    "1.1G", "usedPercent": 20, "mountPoint": "/var/tmp", "timestamp": 1594267588663},
-    {"namespace": "dual-evpn", "hostname": "internet", "device": "/dev/vda4", "totalSize":
-    "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/home", "timestamp":
-    1594267588663}, {"namespace": "dual-evpn", "hostname": "internet", "device": "/dev/vda4",
-    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/boot/grub/x86_64-efi",
-    "timestamp": 1594267588663}, {"namespace": "dual-evpn", "hostname": "internet",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/boot/grub/i386-pc", "timestamp": 1594267588663}, {"namespace":
-    "dual-evpn", "hostname": "internet", "device": "/dev/vda4", "totalSize": "5.8G",
-    "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/.snapshots", "timestamp":
-    1594267588663}, {"namespace": "dual-evpn", "hostname": "internet", "device": "/dev/vda4",
-    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/tmp",
-    "timestamp": 1594267588663}, {"namespace": "dual-evpn", "hostname": "leaf01",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/", "timestamp": 1594267588663}, {"namespace": "dual-evpn",
-    "hostname": "leaf01", "device": "/dev/vda4", "totalSize": "5.8G", "usedSize":
-    "1.1G", "usedPercent": 20, "mountPoint": "/var/lib/libvirt/images", "timestamp":
-    1594267588663}, {"namespace": "dual-evpn", "hostname": "leaf01", "device": "/dev/vda4",
-    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/var/cache/cumulus",
-    "timestamp": 1594267588663}, {"namespace": "dual-evpn", "hostname": "leaf01",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/var/opt", "timestamp": 1594267588663}, {"namespace": "dual-evpn",
-    "hostname": "leaf01", "device": "/dev/vda4", "totalSize": "5.8G", "usedSize":
-    "1.1G", "usedPercent": 20, "mountPoint": "/var/spool", "timestamp": 1594267588663},
-    {"namespace": "dual-evpn", "hostname": "leaf01", "device": "/dev/vda4", "totalSize":
-    "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/usr/local", "timestamp":
-    1594267588663}, {"namespace": "dual-evpn", "hostname": "leaf01", "device": "/dev/vda4",
-    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/srv",
-    "timestamp": 1594267588663}, {"namespace": "dual-evpn", "hostname": "leaf01",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/opt", "timestamp": 1594267588663}, {"namespace": "dual-evpn",
-    "hostname": "leaf01", "device": "/dev/vda4", "totalSize": "5.8G", "usedSize":
-    "1.1G", "usedPercent": 20, "mountPoint": "/var/log", "timestamp": 1594267588663},
-    {"namespace": "dual-evpn", "hostname": "leaf01", "device": "/dev/vda4", "totalSize":
-    "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/var/support", "timestamp":
-    1594267588663}, {"namespace": "dual-evpn", "hostname": "leaf01", "device": "/dev/vda4",
-    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/var/tmp",
-    "timestamp": 1594267588663}, {"namespace": "dual-evpn", "hostname": "leaf01",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/home", "timestamp": 1594267588663}, {"namespace": "dual-evpn",
-    "hostname": "leaf01", "device": "/dev/vda4", "totalSize": "5.8G", "usedSize":
-    "1.1G", "usedPercent": 20, "mountPoint": "/boot/grub/x86_64-efi", "timestamp":
-    1594267588663}, {"namespace": "dual-evpn", "hostname": "leaf01", "device": "/dev/vda4",
-    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/boot/grub/i386-pc",
-    "timestamp": 1594267588663}, {"namespace": "dual-evpn", "hostname": "leaf01",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/.snapshots", "timestamp": 1594267588663}, {"namespace": "dual-evpn",
-    "hostname": "leaf01", "device": "/dev/vda4", "totalSize": "5.8G", "usedSize":
-    "1.1G", "usedPercent": 20, "mountPoint": "/tmp", "timestamp": 1594267588663},
-    {"namespace": "dual-evpn", "hostname": "leaf02", "device": "/dev/vda4", "totalSize":
-    "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/", "timestamp":
-    1594267588663}, {"namespace": "dual-evpn", "hostname": "leaf02", "device": "/dev/vda4",
-    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/var/lib/libvirt/images",
-    "timestamp": 1594267588663}, {"namespace": "dual-evpn", "hostname": "leaf02",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/var/cache/cumulus", "timestamp": 1594267588663}, {"namespace":
-    "dual-evpn", "hostname": "leaf02", "device": "/dev/vda4", "totalSize": "5.8G",
-    "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/var/opt", "timestamp":
-    1594267588663}, {"namespace": "dual-evpn", "hostname": "leaf02", "device": "/dev/vda4",
-    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/var/spool",
-    "timestamp": 1594267588663}, {"namespace": "dual-evpn", "hostname": "leaf02",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/usr/local", "timestamp": 1594267588663}, {"namespace": "dual-evpn",
-    "hostname": "leaf02", "device": "/dev/vda4", "totalSize": "5.8G", "usedSize":
-    "1.1G", "usedPercent": 20, "mountPoint": "/srv", "timestamp": 1594267588663},
-    {"namespace": "dual-evpn", "hostname": "leaf02", "device": "/dev/vda4", "totalSize":
-    "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/opt", "timestamp":
-    1594267588663}, {"namespace": "dual-evpn", "hostname": "leaf02", "device": "/dev/vda4",
-    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/var/log",
-    "timestamp": 1594267588663}, {"namespace": "dual-evpn", "hostname": "leaf02",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/var/support", "timestamp": 1594267588663}, {"namespace": "dual-evpn",
-    "hostname": "leaf02", "device": "/dev/vda4", "totalSize": "5.8G", "usedSize":
-    "1.1G", "usedPercent": 20, "mountPoint": "/var/tmp", "timestamp": 1594267588663},
-    {"namespace": "dual-evpn", "hostname": "leaf02", "device": "/dev/vda4", "totalSize":
-    "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/home", "timestamp":
-    1594267588663}, {"namespace": "dual-evpn", "hostname": "leaf02", "device": "/dev/vda4",
-    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/boot/grub/x86_64-efi",
-    "timestamp": 1594267588663}, {"namespace": "dual-evpn", "hostname": "leaf02",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/boot/grub/i386-pc", "timestamp": 1594267588663}, {"namespace":
-    "dual-evpn", "hostname": "leaf02", "device": "/dev/vda4", "totalSize": "5.8G",
-    "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/.snapshots", "timestamp":
-    1594267588663}, {"namespace": "dual-evpn", "hostname": "leaf02", "device": "/dev/vda4",
-    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/tmp",
-    "timestamp": 1594267588663}, {"namespace": "dual-evpn", "hostname": "leaf03",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/", "timestamp": 1594267588729}, {"namespace": "dual-evpn",
-    "hostname": "leaf03", "device": "/dev/vda4", "totalSize": "5.8G", "usedSize":
-    "1.1G", "usedPercent": 20, "mountPoint": "/var/lib/libvirt/images", "timestamp":
-    1594267588729}, {"namespace": "dual-evpn", "hostname": "leaf03", "device": "/dev/vda4",
-    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/var/cache/cumulus",
-    "timestamp": 1594267588729}, {"namespace": "dual-evpn", "hostname": "leaf03",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/var/opt", "timestamp": 1594267588729}, {"namespace": "dual-evpn",
-    "hostname": "leaf03", "device": "/dev/vda4", "totalSize": "5.8G", "usedSize":
-    "1.1G", "usedPercent": 20, "mountPoint": "/var/spool", "timestamp": 1594267588729},
-    {"namespace": "dual-evpn", "hostname": "leaf03", "device": "/dev/vda4", "totalSize":
-    "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/usr/local", "timestamp":
-    1594267588729}, {"namespace": "dual-evpn", "hostname": "leaf03", "device": "/dev/vda4",
-    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/srv",
-    "timestamp": 1594267588729}, {"namespace": "dual-evpn", "hostname": "leaf03",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/opt", "timestamp": 1594267588729}, {"namespace": "dual-evpn",
-    "hostname": "leaf03", "device": "/dev/vda4", "totalSize": "5.8G", "usedSize":
-    "1.1G", "usedPercent": 20, "mountPoint": "/var/log", "timestamp": 1594267588729},
-    {"namespace": "dual-evpn", "hostname": "leaf03", "device": "/dev/vda4", "totalSize":
-    "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/var/support", "timestamp":
-    1594267588729}, {"namespace": "dual-evpn", "hostname": "leaf03", "device": "/dev/vda4",
-    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/var/tmp",
-    "timestamp": 1594267588729}, {"namespace": "dual-evpn", "hostname": "leaf03",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/boot/grub/x86_64-efi", "timestamp": 1594267588729}, {"namespace":
-    "dual-evpn", "hostname": "leaf03", "device": "/dev/vda4", "totalSize": "5.8G",
-    "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/home", "timestamp": 1594267588729},
-    {"namespace": "dual-evpn", "hostname": "leaf03", "device": "/dev/vda4", "totalSize":
-    "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/boot/grub/i386-pc",
-    "timestamp": 1594267588729}, {"namespace": "dual-evpn", "hostname": "leaf03",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/.snapshots", "timestamp": 1594267588729}, {"namespace": "dual-evpn",
-    "hostname": "leaf03", "device": "/dev/vda4", "totalSize": "5.8G", "usedSize":
-    "1.1G", "usedPercent": 20, "mountPoint": "/tmp", "timestamp": 1594267588729},
-    {"namespace": "dual-evpn", "hostname": "leaf04", "device": "/dev/vda4", "totalSize":
-    "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/", "timestamp":
-    1594267588664}, {"namespace": "dual-evpn", "hostname": "leaf04", "device": "/dev/vda4",
-    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/var/lib/libvirt/images",
-    "timestamp": 1594267588664}, {"namespace": "dual-evpn", "hostname": "leaf04",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/var/cache/cumulus", "timestamp": 1594267588664}, {"namespace":
-    "dual-evpn", "hostname": "leaf04", "device": "/dev/vda4", "totalSize": "5.8G",
-    "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/var/opt", "timestamp":
-    1594267588664}, {"namespace": "dual-evpn", "hostname": "leaf04", "device": "/dev/vda4",
-    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/var/spool",
-    "timestamp": 1594267588664}, {"namespace": "dual-evpn", "hostname": "leaf04",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/usr/local", "timestamp": 1594267588664}, {"namespace": "dual-evpn",
-    "hostname": "leaf04", "device": "/dev/vda4", "totalSize": "5.8G", "usedSize":
-    "1.1G", "usedPercent": 20, "mountPoint": "/srv", "timestamp": 1594267588664},
-    {"namespace": "dual-evpn", "hostname": "leaf04", "device": "/dev/vda4", "totalSize":
-    "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/opt", "timestamp":
-    1594267588664}, {"namespace": "dual-evpn", "hostname": "leaf04", "device": "/dev/vda4",
-    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/var/log",
-    "timestamp": 1594267588664}, {"namespace": "dual-evpn", "hostname": "leaf04",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/var/support", "timestamp": 1594267588664}, {"namespace": "dual-evpn",
-    "hostname": "leaf04", "device": "/dev/vda4", "totalSize": "5.8G", "usedSize":
-    "1.1G", "usedPercent": 20, "mountPoint": "/var/tmp", "timestamp": 1594267588664},
-    {"namespace": "dual-evpn", "hostname": "leaf04", "device": "/dev/vda4", "totalSize":
-    "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/home", "timestamp":
-    1594267588664}, {"namespace": "dual-evpn", "hostname": "leaf04", "device": "/dev/vda4",
-    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/boot/grub/x86_64-efi",
-    "timestamp": 1594267588664}, {"namespace": "dual-evpn", "hostname": "leaf04",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/boot/grub/i386-pc", "timestamp": 1594267588664}, {"namespace":
-    "dual-evpn", "hostname": "leaf04", "device": "/dev/vda4", "totalSize": "5.8G",
-    "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/tmp", "timestamp": 1594267588664},
-    {"namespace": "dual-evpn", "hostname": "leaf04", "device": "/dev/vda4", "totalSize":
-    "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/.snapshots", "timestamp":
-    1594267588664}, {"namespace": "dual-evpn", "hostname": "spine01", "device": "/dev/vda4",
-    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/",
-    "timestamp": 1594267588708}, {"namespace": "dual-evpn", "hostname": "spine01",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/var/lib/libvirt/images", "timestamp": 1594267588708}, {"namespace":
-    "dual-evpn", "hostname": "spine01", "device": "/dev/vda4", "totalSize": "5.8G",
-    "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/var/cache/cumulus", "timestamp":
-    1594267588708}, {"namespace": "dual-evpn", "hostname": "spine01", "device": "/dev/vda4",
-    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/var/opt",
-    "timestamp": 1594267588708}, {"namespace": "dual-evpn", "hostname": "spine01",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/var/spool", "timestamp": 1594267588708}, {"namespace": "dual-evpn",
-    "hostname": "spine01", "device": "/dev/vda4", "totalSize": "5.8G", "usedSize":
-    "1.1G", "usedPercent": 20, "mountPoint": "/usr/local", "timestamp": 1594267588708},
-    {"namespace": "dual-evpn", "hostname": "spine01", "device": "/dev/vda4", "totalSize":
-    "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/srv", "timestamp":
-    1594267588708}, {"namespace": "dual-evpn", "hostname": "spine01", "device": "/dev/vda4",
-    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/opt",
-    "timestamp": 1594267588708}, {"namespace": "dual-evpn", "hostname": "spine01",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/var/log", "timestamp": 1594267588708}, {"namespace": "dual-evpn",
-    "hostname": "spine01", "device": "/dev/vda4", "totalSize": "5.8G", "usedSize":
-    "1.1G", "usedPercent": 20, "mountPoint": "/var/support", "timestamp": 1594267588708},
-    {"namespace": "dual-evpn", "hostname": "spine01", "device": "/dev/vda4", "totalSize":
-    "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/var/tmp", "timestamp":
-    1594267588708}, {"namespace": "dual-evpn", "hostname": "spine01", "device": "/dev/vda4",
-    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/home",
-    "timestamp": 1594267588708}, {"namespace": "dual-evpn", "hostname": "spine01",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/boot/grub/x86_64-efi", "timestamp": 1594267588708}, {"namespace":
-    "dual-evpn", "hostname": "spine01", "device": "/dev/vda4", "totalSize": "5.8G",
-    "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/boot/grub/i386-pc", "timestamp":
-    1594267588708}, {"namespace": "dual-evpn", "hostname": "spine01", "device": "/dev/vda4",
-    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/.snapshots",
-    "timestamp": 1594267588708}, {"namespace": "dual-evpn", "hostname": "spine01",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/tmp", "timestamp": 1594267588708}, {"namespace": "dual-evpn",
-    "hostname": "spine02", "device": "/dev/vda4", "totalSize": "5.8G", "usedSize":
-    "1.1G", "usedPercent": 20, "mountPoint": "/", "timestamp": 1594267588663}, {"namespace":
-    "dual-evpn", "hostname": "spine02", "device": "/dev/vda4", "totalSize": "5.8G",
-    "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/var/lib/libvirt/images",
-    "timestamp": 1594267588663}, {"namespace": "dual-evpn", "hostname": "spine02",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/var/cache/cumulus", "timestamp": 1594267588663}, {"namespace":
-    "dual-evpn", "hostname": "spine02", "device": "/dev/vda4", "totalSize": "5.8G",
-    "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/var/opt", "timestamp":
-    1594267588663}, {"namespace": "dual-evpn", "hostname": "spine02", "device": "/dev/vda4",
-    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/var/spool",
-    "timestamp": 1594267588663}, {"namespace": "dual-evpn", "hostname": "spine02",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/usr/local", "timestamp": 1594267588663}, {"namespace": "dual-evpn",
-    "hostname": "spine02", "device": "/dev/vda4", "totalSize": "5.8G", "usedSize":
-    "1.1G", "usedPercent": 20, "mountPoint": "/srv", "timestamp": 1594267588663},
-    {"namespace": "dual-evpn", "hostname": "spine02", "device": "/dev/vda4", "totalSize":
-    "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/var/log", "timestamp":
-    1594267588663}, {"namespace": "dual-evpn", "hostname": "spine02", "device": "/dev/vda4",
-    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/opt",
-    "timestamp": 1594267588663}, {"namespace": "dual-evpn", "hostname": "spine02",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/var/support", "timestamp": 1594267588663}, {"namespace": "dual-evpn",
-    "hostname": "spine02", "device": "/dev/vda4", "totalSize": "5.8G", "usedSize":
-    "1.1G", "usedPercent": 20, "mountPoint": "/var/tmp", "timestamp": 1594267588663},
-    {"namespace": "dual-evpn", "hostname": "spine02", "device": "/dev/vda4", "totalSize":
-    "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/home", "timestamp":
-    1594267588663}, {"namespace": "dual-evpn", "hostname": "spine02", "device": "/dev/vda4",
-    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/boot/grub/x86_64-efi",
-    "timestamp": 1594267588663}, {"namespace": "dual-evpn", "hostname": "spine02",
-    "device": "/dev/vda4", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
-    20, "mountPoint": "/boot/grub/i386-pc", "timestamp": 1594267588663}, {"namespace":
-    "dual-evpn", "hostname": "spine02", "device": "/dev/vda4", "totalSize": "5.8G",
-    "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/.snapshots", "timestamp":
-    1594267588663}, {"namespace": "dual-evpn", "hostname": "spine02", "device": "/dev/vda4",
-    "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "mountPoint": "/tmp",
-    "timestamp": 1594267588663}]'
-- command: fs unique --columns="device" --format=json
+    "mountPoint": "/opt", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
+    20, "device": "/dev/vda4", "timestamp": 1594267588663}, {"namespace": "dual-evpn",
+    "hostname": "internet", "mountPoint": "/opt", "totalSize": "5.8G", "usedSize":
+    "1.1G", "usedPercent": 20, "device": "/dev/vda4", "timestamp": 1594267588663},
+    {"namespace": "dual-evpn", "hostname": "leaf01", "mountPoint": "/opt", "totalSize":
+    "5.8G", "usedSize": "1.1G", "usedPercent": 20, "device": "/dev/vda4", "timestamp":
+    1594267588663}, {"namespace": "dual-evpn", "hostname": "leaf02", "mountPoint":
+    "/opt", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent": 20, "device":
+    "/dev/vda4", "timestamp": 1594267588663}, {"namespace": "dual-evpn", "hostname":
+    "leaf03", "mountPoint": "/opt", "totalSize": "5.8G", "usedSize": "1.1G", "usedPercent":
+    20, "device": "/dev/vda4", "timestamp": 1594267588729}, {"namespace": "dual-evpn",
+    "hostname": "leaf04", "mountPoint": "/opt", "totalSize": "5.8G", "usedSize": "1.1G",
+    "usedPercent": 20, "device": "/dev/vda4", "timestamp": 1594267588664}, {"namespace":
+    "dual-evpn", "hostname": "spine01", "mountPoint": "/opt", "totalSize": "5.8G",
+    "usedSize": "1.1G", "usedPercent": 20, "device": "/dev/vda4", "timestamp": 1594267588708},
+    {"namespace": "dual-evpn", "hostname": "spine02", "mountPoint": "/opt", "totalSize":
+    "5.8G", "usedSize": "1.1G", "usedPercent": 20, "device": "/dev/vda4", "timestamp":
+    1594267588663}]'
+- command: fs unique --columns="mountPoint" --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: fs unique
-  output: '[{"device": "/dev/vda3", "count": 15}, {"device": "/dev/vda1", "count":
-    15}, {"device": "udev", "count": 42}, {"device": "tmpfs", "count": 183}, {"device":
-    "/dev/vda4", "count": 432}]'
+  output: '[{"mountPoint": "/boot", "count": 15}, {"mountPoint": "/run/user/1000",
+    "count": 15}, {"mountPoint": "/boot/grub/x86_64-efi", "count": 27}, {"mountPoint":
+    "/var/spool", "count": 27}, {"mountPoint": "/.snapshots", "count": 27}, {"mountPoint":
+    "/tmp", "count": 27}, {"mountPoint": "/boot/grub/i386-pc", "count": 27}, {"mountPoint":
+    "/var/tmp", "count": 27}, {"mountPoint": "/var/lib/libvirt/images", "count": 27},
+    {"mountPoint": "/home", "count": 27}, {"mountPoint": "/var/cache/cumulus", "count":
+    27}, {"mountPoint": "/var/opt", "count": 27}, {"mountPoint": "/usr/local", "count":
+    27}, {"mountPoint": "/opt", "count": 27}, {"mountPoint": "/var/log", "count":
+    27}, {"mountPoint": "/srv", "count": 27}, {"mountPoint": "/var/support", "count":
+    27}, {"mountPoint": "/sys/fs/cgroup", "count": 42}, {"mountPoint": "/", "count":
+    42}, {"mountPoint": "/dev/shm", "count": 42}, {"mountPoint": "/run/lock", "count":
+    42}, {"mountPoint": "/run", "count": 42}, {"mountPoint": "/dev", "count": 42}]'
 - command: fs unique --columns="hostname" --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: fs unique
