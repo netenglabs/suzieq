@@ -139,15 +139,15 @@ tests:
 - command: vlan summarize --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: vlan summarize
-  output: '{"dual-evpn": {"deviceCnt": 30, "uniquePvidCnt": 4, "uniqueVlanCnt": {"24":
-    20, "13": 20, "1": 4}}, "ospf-ibgp": {"deviceCnt": 32, "uniquePvidCnt": 5, "uniqueVlanCnt":
+  output: '{"dual-evpn": {"deviceCnt": 30, "uniquePvidCnt": 4, "uniqueVlanCnt": {"13":
+    20, "24": 20, "1": 4}}, "ospf-ibgp": {"deviceCnt": 32, "uniquePvidCnt": 5, "uniqueVlanCnt":
     4}, "ospf-single": {"deviceCnt": 8, "uniquePvidCnt": {"10": 4, "0": 4}, "uniqueVlanCnt":
     {"10": 8}}}'
 - command: vlan summarize --namespace=dual-evpn --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: vlan summarize
-  output: '{"dual-evpn": {"deviceCnt": 30, "uniquePvidCnt": 4, "uniqueVlanCnt": {"13":
-    20, "24": 20, "1": 4}}}'
+  output: '{"dual-evpn": {"deviceCnt": 30, "uniquePvidCnt": 4, "uniqueVlanCnt": {"24":
+    20, "13": 20, "1": 4}}}'
 - command: vlan unique --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: vlan unique

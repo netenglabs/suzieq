@@ -299,40 +299,40 @@ tests:
   data-directory: tests/data/multidc/parquet-out/
   marks: ospf top
   output: '[{"namespace": "ospf-ibgp", "hostname": "exit01", "vrf": "default", "ifname":
-    "swp1", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "timestamp": 1594267161326,
-    "adjState": "full", "peerIP": "10.0.0.22", "lastChangeTime": 0.0, "numChanges":
-    5.0}, {"namespace": "ospf-ibgp", "hostname": "exit02", "vrf": "default", "ifname":
-    "swp1", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "timestamp": 1594267161328,
-    "adjState": "full", "peerIP": "10.0.0.22", "lastChangeTime": 0.0, "numChanges":
-    5.0}, {"namespace": "ospf-ibgp", "hostname": "exit02", "vrf": "default", "ifname":
-    "swp2", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "timestamp": 1594267161328,
-    "adjState": "full", "peerIP": "10.0.0.21", "lastChangeTime": 0.0, "numChanges":
-    5.0}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "vrf": "default", "ifname":
-    "swp2", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "timestamp": 1594267161392,
-    "adjState": "full", "peerIP": "10.0.0.21", "lastChangeTime": 0.0, "numChanges":
-    5.0}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "vrf": "default", "ifname":
-    "swp1", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "timestamp": 1594267161331,
-    "adjState": "full", "peerIP": "10.0.0.22", "lastChangeTime": 0.0, "numChanges":
-    5.0}]'
+    "swp1", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.22", "lastChangeTime": 0.0, "numChanges": 5.0, "timestamp":
+    1594267161326}, {"namespace": "ospf-ibgp", "hostname": "exit02", "vrf": "default",
+    "ifname": "swp1", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState":
+    "full", "peerIP": "10.0.0.22", "lastChangeTime": 0.0, "numChanges": 5.0, "timestamp":
+    1594267161328}, {"namespace": "ospf-ibgp", "hostname": "exit02", "vrf": "default",
+    "ifname": "swp2", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState":
+    "full", "peerIP": "10.0.0.21", "lastChangeTime": 0.0, "numChanges": 5.0, "timestamp":
+    1594267161328}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "vrf": "default",
+    "ifname": "swp2", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState":
+    "full", "peerIP": "10.0.0.21", "lastChangeTime": 0.0, "numChanges": 5.0, "timestamp":
+    1594267161392}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "vrf": "default",
+    "ifname": "swp1", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState":
+    "full", "peerIP": "10.0.0.22", "lastChangeTime": 0.0, "numChanges": 5.0, "timestamp":
+    1594267161331}]'
 - command: ospf top --what="flaps" --namespace="ospf-single" --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: ospf top
   output: '[{"namespace": "ospf-single", "hostname": "exit01", "vrf": "default", "ifname":
-    "swp1", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "timestamp": 1594267819268,
-    "adjState": "full", "peerIP": "10.127.0.8", "lastChangeTime": 0.0, "numChanges":
-    5.0}, {"namespace": "ospf-single", "hostname": "exit01", "vrf": "default", "ifname":
-    "swp2", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "timestamp": 1594267819268,
-    "adjState": "full", "peerIP": "10.127.1.8", "lastChangeTime": 0.0, "numChanges":
-    5.0}, {"namespace": "ospf-single", "hostname": "exit02", "vrf": "default", "ifname":
-    "swp1", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "timestamp": 1594267819277,
-    "adjState": "full", "peerIP": "10.127.0.10", "lastChangeTime": 0.0, "numChanges":
-    5.0}, {"namespace": "ospf-single", "hostname": "exit02", "vrf": "default", "ifname":
-    "swp2", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "timestamp": 1594267819277,
-    "adjState": "full", "peerIP": "10.127.1.10", "lastChangeTime": 0.0, "numChanges":
-    5.0}, {"namespace": "ospf-single", "hostname": "leaf01", "vrf": "default", "ifname":
-    "swp1", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "timestamp": 1594267819268,
-    "adjState": "full", "peerIP": "10.127.0.0", "lastChangeTime": 0.0, "numChanges":
-    5.0}]'
+    "swp1", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.127.0.8", "lastChangeTime": 0.0, "numChanges": 5.0, "timestamp":
+    1594267819268}, {"namespace": "ospf-single", "hostname": "exit01", "vrf": "default",
+    "ifname": "swp2", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState":
+    "full", "peerIP": "10.127.1.8", "lastChangeTime": 0.0, "numChanges": 5.0, "timestamp":
+    1594267819268}, {"namespace": "ospf-single", "hostname": "exit02", "vrf": "default",
+    "ifname": "swp1", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState":
+    "full", "peerIP": "10.127.0.10", "lastChangeTime": 0.0, "numChanges": 5.0, "timestamp":
+    1594267819277}, {"namespace": "ospf-single", "hostname": "exit02", "vrf": "default",
+    "ifname": "swp2", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState":
+    "full", "peerIP": "10.127.1.10", "lastChangeTime": 0.0, "numChanges": 5.0, "timestamp":
+    1594267819277}, {"namespace": "ospf-single", "hostname": "leaf01", "vrf": "default",
+    "ifname": "swp1", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState":
+    "full", "peerIP": "10.127.0.0", "lastChangeTime": 0.0, "numChanges": 5.0, "timestamp":
+    1594267819268}]'
 - command: ospf top --what="flaps" --columns="hostname ifname adjState" --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: ospf top
