@@ -1,4 +1,4 @@
-import time
+mport time
 from nubia import command, argument
 
 from suzieq.cli.sqcmds.command import SqCommand
@@ -31,7 +31,8 @@ class FsCmd(SqCommand):
         )
 
     @command("show")
-    def show(self, ifname: str = ""):
+    @argument("device", description="The Filesystem name")
+    def show(self, device: str = ''):
         """
         Show File System info
         """
@@ -47,9 +48,10 @@ class FsCmd(SqCommand):
 
         df = self.sqobj.get(
             hostname=self.hostname,
-            device=self.device,
+            device=device,
             columns=self.columns,
             namespace=self.namespace,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
+
