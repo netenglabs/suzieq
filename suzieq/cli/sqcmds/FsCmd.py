@@ -1,5 +1,6 @@
 import time
 from nubia import command, argument
+import pandas as pd
 
 from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.fs import FsObj
@@ -31,8 +32,10 @@ class FsCmd(SqCommand):
         )
 
     @command("show")
-    @argument("device", description="The Filesystem name")
-    def show(self, device: str = ''):
+    @argument("mountPoint", description="The mount point inside the FileSystem")
+    @argument("used_percent", description="must be of the form "
+              "[==|<|<=|>=|>|!=] value")
+    def show(self, mountPoint: str = '', used_percent: str = ''):
         """
         Show File System info
         """
@@ -46,11 +49,17 @@ class FsCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
+        if used_percent and not any(used_percent.startswith(x)
+                                 for x in ['==', '<=', '>=', '<', '>', '!=']):
+            df = pd.DataFrame({'error': ['ERROR invalid used-percent operation']})
+            return self._gen_output(df)
+
         df = self.sqobj.get(
             hostname=self.hostname,
-            device=device,
             columns=self.columns,
             namespace=self.namespace,
+            mountPoint=mountPoint,
+            usedPercent=used_percent,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
