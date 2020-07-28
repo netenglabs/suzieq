@@ -1,6 +1,7 @@
 import re
 import ast
 import logging
+import operator as op
 
 
 def _stepdown_rest(entry) -> list:
@@ -101,9 +102,8 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                 if xstr != "*" and xstr != '*?':
                     # Handle xstr being a specific array index or dict key
                     if xstr.startswith('['):
-                        xstr = ast.literal_eval(xstr)
-                        result[0]["rest"] = eval("{}{}".format(
-                            result[0]["rest"], xstr))
+                        result[0]["rest"] = result[0]["rest"][eval_expr(xstr)]
+
                     else:
                         tmpval = []
                         for ele in result:
@@ -378,14 +378,13 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                                         value.append(subele)
                                         break
                                     if subfld.startswith('['):
-                                        subele = eval(
-                                            'subele{}'.format(subfld))
+                                        subele = subele[eval_expr(subfld)]
                                     else:
                                         subele = subele.get(subfld)
                                 value.append(subele)
                             subflds = []
                         elif tmpval:
-                            tmpval = eval('tmpval{}'.format(subfld))
+                            tmpval = tmpval[eval_expr(subfld)]
                     else:
                         tmpval = tmpval.get(subfld, None)
                     if not tmpval:
@@ -412,9 +411,9 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                 iop = rval1[1]
                 if value is not None:
                     if rval1[0] in x:
-                        value = eval("{}{}{}".format(value, iop, x[rval1[0]]))
+                        value = eval_expr(f'{value}{iop}{x[rval1[0]]}')
                     else:
-                        value = eval("{}{}{}".format(value, iop, rval1[2]))
+                        value = eval_expr(f'{value}{iop}{rval1[2]}')
                 try:
                     x.update({rval1[0]: value})
                 except ValueError:
@@ -443,3 +442,26 @@ def cleanup_and_return(result):
                 entry.update(elem)
 
     return result
+
+
+def eval_expr(expr):
+    """Evaluate numerical expression without eval or other packages"""
+    return num_eval(ast.parse(expr, mode='eval').body)
+
+
+def num_eval(node):
+    # supported arithmetic operators
+    operators = {ast.Add: op.add, ast.Sub: op.sub, ast.Mult: op.mul,
+                 ast.Div: op.truediv, ast.Pow: op.pow}
+
+    if isinstance(node, ast.Num):  # <number>
+        return node.n
+    elif isinstance(node, ast.BinOp):  # <left> <operator> <right>
+        return operators[type(node.op)](num_eval(node.left),
+                                        num_eval(node.right))
+    elif isinstance(node, ast.UnaryOp):  # <operator> <operand> e.g., -1
+        return operators[type(node.op)](num_eval(node.operand))
+    elif isinstance(node, ast.List):
+        return node.col_offset
+    else:
+        raise TypeError(node)
