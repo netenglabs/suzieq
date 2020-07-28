@@ -12,5 +12,5 @@ class FsObj(basicobj.SqObject):
                  context=None) -> None:
         super().__init__(engine, hostname, start_time, end_time, view,
                          namespace, columns, context=context, table='fs')
-        self._sort_fields = ['namespace', 'hostname']
+        self._sort_fields = ['namespace', 'hostname', 'device']
         self._cat_fields = []
