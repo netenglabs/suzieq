@@ -5,7 +5,7 @@ from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.fs import FsObj
 
 
-@command("fs", help="Act on Fs data")
+@command("fs", help="Act on File System data")
 class FsCmd(SqCommand):
     def __init__(
         self,
@@ -33,7 +33,7 @@ class FsCmd(SqCommand):
     @command("show")
     def show(self, ifname: str = ""):
         """
-        Show FS info
+        Show File System info
         """
         if self.columns is None:
             return
