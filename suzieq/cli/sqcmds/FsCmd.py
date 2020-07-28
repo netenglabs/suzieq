@@ -47,7 +47,7 @@ class FsCmd(SqCommand):
 
         df = self.sqobj.get(
             hostname=self.hostname,
-            ifname=ifname.split(),
+            device=self.device,
             columns=self.columns,
             namespace=self.namespace,
         )
