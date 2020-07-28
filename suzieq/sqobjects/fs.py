@@ -14,3 +14,4 @@ class FsObj(basicobj.SqObject):
                          namespace, columns, context=context, table='fs')
         self._sort_fields = ['namespace', 'hostname', 'device']
         self._cat_fields = []
+        self._ign_key_fields = ["device"]  # device is not a partition tool
