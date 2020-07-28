@@ -73,3 +73,6 @@ We've also done some blogging about Suzieq:
 * [Questions to Suzieq](https://elegantnetwork.github.io/posts/10qa-suzieq/)
 * [Time in Suzieq](https://elegantnetwork.github.io/posts/time-suzieq/)
 
+## Suzieq Priorities
+
+We don't have a roadmap, but we do have a list of the our priorities: [2020 Priorities](https://github.com/netenglabs/suzieq/blob/master/docs/2020-priority.md). We mix this with the [issues reported](https://github.com/netenglabs/suzieq/issues). 
