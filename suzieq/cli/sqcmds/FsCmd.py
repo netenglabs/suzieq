@@ -1,4 +1,4 @@
-mport time
+import time
 from nubia import command, argument
 
 from suzieq.cli.sqcmds.command import SqCommand
