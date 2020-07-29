@@ -206,7 +206,7 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                                       for x in ks]
                     else:
                         if nxtfld:
-                            intres = [{rval: x[lval[1]], "rest": x[nxtfld]}
+                            intres = [{rval: x[lval[1]], "rest": x.get(nxtfld, [])}
                                       for x in ele["rest"]]
                         else:
                             intres = [{rval: x[lval[1]], "rest": x}
