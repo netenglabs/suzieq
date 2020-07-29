@@ -1,4 +1,5 @@
 import time
+import typing
 from nubia import command, argument
 import pandas as pd
 
@@ -35,7 +36,7 @@ class FsCmd(SqCommand):
     @argument("mountPoint", description="The mount point inside the FileSystem")
     @argument("used_percent", description="must be of the form "
               "[==|<|<=|>=|>|!=] value")
-    def show(self, mountPoint: str = '', used_percent: str = ''):
+    def show(self, mountPoint: typing.List[str] = [], used_percent: str = ''):
         """
         Show File System info
         """
