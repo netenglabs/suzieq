@@ -501,3 +501,8 @@ def build_query_str(skip_fields: list, **kwargs) -> str:
             prefix = "and"
 
     return query_str
+
+
+def known_devtypes() -> list:
+    """Returns the list of known dev types"""
+    return(['cumulus', 'eos', 'junos-mx', 'junos-qfx', 'linux', 'nxos'])
