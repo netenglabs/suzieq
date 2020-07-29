@@ -1,6 +1,8 @@
+# Contributing
+
 Suzieq is an open source project focused on IP Network Observability.
 
-# Contributing
+
 We are just getting started with Suzieq and we appreciate any participation and collaboration.
 
 The number one way we'd like your help is to try out Suzieq and tell us what would make it more 
@@ -19,12 +21,14 @@ There's always a need for better testing. We've focused on end-to-end testing an
 unit testing as we'd like. Any thoughts or contributions here would help a lot.
 
 ## Adding or Changing Code
-When making a change to suzieq, first start by adding an issue to discuss the work. 
+
+When making a change to suzieq, first start by adding an issue to discuss the work.
 
 After discussion, [fork Suzieq](https://help.github.com/articles/fork-a-repo), make a branch,
 run tests to make sure everything is in place and working correctly. T
 he tests are run in the main suzieq directory.
-```
+
+``` bash
 pytest
 ```
 
@@ -32,12 +36,17 @@ Implement your change and run tests again.
 
 [make a pull request](https://help.github.com/articles/creating-a-pull-request)
 
+## Filing Bugs
 
-# Filing Bugs
 Please include as much useful information as possible. 
 [Add an issue](https://github.com/netenglabs/suzieq/issues/new)
 
-# License
+## Generating test data
+
+If you've changed the way that data gets processed, start https://github.com/netenglabs/suzieq/blob/master/docs/developer/updating_test_data.md
+
+## License
+
 By submitting a pull request for this project, you are agreeing to license 
 your contribution and to grant a perpetual, world-wide, non-exclusive, no-charge, 
 royalty-free, irrevocable copyright license to suzieq and any derivative works.

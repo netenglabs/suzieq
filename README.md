@@ -13,6 +13,7 @@ If you answered yes to one or more of these questions, then Suzieq is a tool tha
 Suzieq does multiple things. It collects data from different devices and systems. It normalizes the data and then stores it in a vendor independent way. Then it allows analysis of that data. 
 
 We believe Suzieq is novel because it is a disaggregated framework that allows you to independently pick:
+
 * how you gather your data (agentless or agent-based)
 * how you store your data
 * how you interact with the data i.e. how you ask the questions and how you see the answers.
@@ -20,6 +21,7 @@ We believe Suzieq is novel because it is a disaggregated framework that allows y
 With the applications that we build on top of the framework we want to demonstrate a different and more systematic approach to thinking about networks. We want to show how useful it is to think of your network holistically.
 
 In this very early release of Suzieq, we've chosen some answers for the framework to get the ball rolling. 
+
 * We gather data using an agentless model using either SSH or REST API as the transport. 
 * We normalize the data into a vendor-agnostic format.
 * We store all data in files using the popular big data format, Parquet. 
@@ -27,6 +29,7 @@ In this very early release of Suzieq, we've chosen some answers for the framewor
 * The analysis engine used in this release is pandas.
 
 **We support gathering data from Cumulus, Arista, JunOS and NXOS routers, and Linux servers.** We gather:
+
 * Basic device info
 * Interfaces
 * LLDP
@@ -52,8 +55,8 @@ The latest release is 0.3 and the official release notes are [here](https://suzi
 
 We want to make it as easy as possible for you to start engaging with Suzieq. 
 
-- `docker run -it --name suzieq ddutt/suzieq-demo`
-- `suzieq-cli`
+* `docker run -it --name suzieq ddutt/suzieq-demo`
+* `suzieq-cli`
 
 When you're within the suzieq-cli, you can run ```device unique columns=namespace``` to see the list of different scenarios, we've gathered data for.
 
@@ -65,8 +68,11 @@ The official documentation is [here](https://suzieq.readthedocs.io/en/latest/)
 
 We've also done some blogging about Suzieq:
 
-- [Introducing Suzieq](https://elegantnetwork.github.io/posts/Suzieq/)
-- [10ish ways to explore your network with Suzieq](https://elegantnetwork.github.io/posts/10ish_ways_to_explore_your_network_with_Suzieq/)
-- [Questions to Suzieq](https://elegantnetwork.github.io/posts/10qa-suzieq/)
-- [Time in Suzieq](https://elegantnetwork.github.io/posts/time-suzieq/)
+* [Introducing Suzieq](https://elegantnetwork.github.io/posts/Suzieq/)
+* [10ish ways to explore your network with Suzieq](https://elegantnetwork.github.io/posts/10ish_ways_to_explore_your_network_with_Suzieq/)
+* [Questions to Suzieq](https://elegantnetwork.github.io/posts/10qa-suzieq/)
+* [Time in Suzieq](https://elegantnetwork.github.io/posts/time-suzieq/)
 
+## Suzieq Priorities
+
+We don't have a roadmap, but we do have a list of the our priorities: [2020 Priorities](https://github.com/netenglabs/suzieq/blob/master/docs/2020-priority.md). We mix this with the [issues reported](https://github.com/netenglabs/suzieq/issues). 
