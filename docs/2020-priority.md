@@ -1,4 +1,6 @@
-(last updated June 2020)
+# Suzieq Priorities
+
+(last updated July 2020)
 
 This roadmap represents our best guess at broad priorities. 
 The point is to demonstrate what we think we should work on and the general
@@ -22,6 +24,7 @@ representation of what Suzieq can be used for. Second release (0.2)
 was focused on NXOS and Junos support.
 
 ## Areas of Development
+
 There are six major areas that Suzieq development can be broken down into.
 
 1. Platforms (new NOS)
@@ -46,41 +49,45 @@ There are six major areas that Suzieq development can be broken down into.
 
 Given the categories, here is a rough list of tasks we will be tackling. We welcome assistance with any of these tasks. We intend to work our way roughly down this list and so tasks later down the line will be tend to, in general, be worked on later. Some of these tasks are shorter in time and complexity and some are longer. We expect to add more items.
 
+* Anonymizing data -- almost done, needs tests, docs, and moved to master
+* Junos support for qfx/mx
 * Building a reference topology to test all NOS
-* Anonymizing data
 * Topology as a first class property
-    * draw a map for physical and logical layers, including routing protocols
-    * neighbor discovery
-        * show neighbors that we know about but aren't polling
-        * maybe be able to just start with one IP address and then discover 
-           everything that must be polled by suzieq
+  * draw a map for physical and logical layers, including routing protocols
+  * neighbor discovery
+    * show neighbors that we know about but aren't polling
+    * maybe be able to just start with one IP address and then discover 
+      everything that must be polled by suzieq
 * support augmenting columns (like adding peerHostname in OSPF when all we have is peerIP) 
 * change gen_schema to ignore _ fields
 * make column manipulating at sq_object
 * Schema evolution and versioning to make suzieq less brittle to changes in the schema
 * Network wide summarize to take advantage of data across all commands
 * Web-based GUI
-    * Do you have a framework you'd like the GUI to use? 
-	* For what functions would you use a GUI?
-* Arista EVPN
-* REST API    
+  * Do you have a framework you'd like the GUI to use? 
+  * For what functions would you use a GUI?
+  * caching and performance
+* suzieq as a daemon
+  * do we need suzieq as a daemon -- what are the use cases
+* REST API
 * Create tags or other ways to group  in a hierarchical way
-    * possibly reuse ansible grouping
+  * possibly reuse ansible grouping
 * Kubernetes
-    * understand topology, pod and cluster
-    * calico, cilium, vxlan
-    * asserts
+  * understand topology, pod and cluster
+  * calico, cilium, vxlan
+  * asserts
 * Better unit tests with mocking instead of just end-to-end with real data.
 * Integration with performance analysis
-    * integration with promethius and influxdb
-    * what do we want to be able to do with this?
+  * integration with promethius and influxdb
+  * what do we want to be able to do with this?
+* Arista EVPN
 * Integration with systems for notification of events
-   * slack   * ???
+  * slack   * ???
 * Be sure that we can scale to at least 500 nodes per poller instance
 * Users can do their own queries
-    * pandas or pandas sql query
-    * is this only in the GUI?
-* Great expectations or some other way of better verifying data output https://docs.greatexpectations.io/en/latest/
+  * pandas or pandas sql query
+  * is this only in the GUI?
+* Great expectations or some other way of better verifying data output <https://docs.greatexpectations.io/en/latest/>
 * Better database abstractions so that we can more easily add new databases
 * Support for SONIC
   * This includes SONIC-specific stuff only. Linux-specific and FRR are already supported.
@@ -110,4 +117,3 @@ Given the categories, here is a rough list of tasks we will be tackling. We welc
 ## We believe users are moving away from: (If you disagree, let us know)
 
 * SNMP access to data
-
