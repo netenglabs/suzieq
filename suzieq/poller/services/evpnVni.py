@@ -16,18 +16,6 @@ class EvpnVniService(Service):
                                         data['data']) + ']'
             return data['data']
 
-    def clean_data(self, processed_data, raw_data):
-
-        devtype = self._get_devtype_from_input(raw_data)
-        if devtype == 'cumulus':
-            processed_data = self._clean_cumulus_data(processed_data, raw_data)
-        elif devtype == 'nxos':
-            processed_data = self._clean_nxos_data(processed_data, raw_data)
-        elif devtype == "junos":
-            processed_data = self._clean_junos_data(processed_data, raw_data)
-
-        return super().clean_data(processed_data, raw_data)
-
     def _clean_cumulus_data(self, processed_data, raw_data):
         """Clean out null entries among other cleanup"""
 

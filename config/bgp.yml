@@ -256,7 +256,7 @@ apply:
         "entry-type: _entryType?|summary"
         ]'
 
-  junos:
+  junos-qfx:
     version: all
     command:
       - command: show bgp summary | display json
@@ -280,9 +280,9 @@ apply:
         "bgp-option-information/[0]/export-policy/[0]/data: v4EgressRmap",
         "bgp-option-information/[0]/import-policy/[0]/data: v4IngressRmap",
         "bgp-option-information/[0]/holdtime/[0]/data: holdTime?|0",
-        "bgp-option-information/[0]/address-families/[0]/data: afiSafiAdvList",
-        "nlri-type-session/[0]/data: afiSafiEnabledList",
-        "nlri-type-peer/[0]/data: afiSafiRcvList",
+        "bgp-option-information/[0]/address-families/[0]/data: afiSafiAdvList?|",
+        "nlri-type-session/[0]/data: afiSafiEnabledList?|",
+        "nlri-type-peer/[0]/data: afiSafiRcvList?|",
         "bgp-error/[0]/name/[0]/data: notificnReason?|",
         "flap-count/[0]/data: numChanges?|0",
         "peer-id/[0]/data: peerRouterId",
@@ -290,7 +290,7 @@ apply:
         "keepalive-interval/[0]/data: keepaliveTime?|0",
         "bgp-bfd/[0]/bfd-operational-state/[0]/data: bfdStatus",
         "local-interface-name/[0]/data: ifname",
-        "bgp-rib/[*]/received-prefix-count/[0]/data: pfxRxList",
+        "bgp-rib/[*]/received-prefix-count/[0]/data: pfxRxList?|",
         "bgp-rib/[*]/name/[0]/data: pfxType",
         "bgp-traffic/[0]/input-updates/[0]/data: updatesRx?|0",
         "output-updates/[0]/data: updatesTx?|0",
@@ -298,3 +298,5 @@ apply:
         "entry_type: _entryType?|neighbors",
         ]'
 
+  junos-mx:
+    copy: junos-qfx

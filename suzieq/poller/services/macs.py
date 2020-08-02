@@ -29,20 +29,6 @@ class MacsService(Service):
         else:
             entry["mackey"] = entry["vlan"]
 
-    def clean_data(self, processed_data, raw_data):
-        """CLeanup needed for the messed up MAC table entries in Linux"""
-
-        devtype = self._get_devtype_from_input(raw_data)
-        if any([devtype == x for x in ["cumulus", "linux"]]):
-            processed_data = self._clean_linux_data(processed_data, raw_data)
-        elif devtype == "junos":
-            processed_data = self._clean_junos_data(processed_data, raw_data)
-        elif devtype == "nxos":
-            processed_data = self._clean_nxos_data(processed_data, raw_data)
-        elif devtype == "eos":
-            processed_data = self._clean_eos_data(processed_data, raw_data)
-        return super().clean_data(processed_data, raw_data)
-
     def _clean_linux_data(self, processed_data, raw_data):
         for entry in processed_data:
             if entry['flags'] == 'offload' or entry['flags'] == 'extern_learn':
@@ -51,6 +37,9 @@ class MacsService(Service):
             self._add_mackey(entry)
 
         return processed_data
+
+    def _clean_cumulus_data(self, processed_data, raw_data):
+        return self._clean_linux_data(processed_data, raw_data)
 
     def _clean_junos_data(self, processed_data, raw_data):
         for entry in processed_data:

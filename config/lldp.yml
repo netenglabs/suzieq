@@ -36,7 +36,7 @@ apply:
     command: if systemctl status lldpd > /dev/null 2>&1; then sudo lldpctl; fi
     textfsm: textfsm_templates/lldpd.tfsm
 
-  junos:
+  junos-qfx:
     version: all
     command: show lldp neighbors detail | display json
     normalize: 'lldp-neighbors-information/[0]/lldp-neighbor-information/*/[
@@ -46,6 +46,16 @@ apply:
     "lldp-remote-port-id/[0]/data: peerIfindex?|0",
     "lldp-remote-port-description/[0]/data: description",
     "lldp-system-description/[0]/lldp-remote-system-description/[0]/data: description",
+    ]'
+
+  junos-mx:
+    version: all
+    command: show lldp neighbors | display json
+    normalize: 'lldp-neighbors-information/[0]/lldp-neighbor-information/*/[
+    "lldp-local-port-id/[0]/data: ifname",
+    "lldp-local-port-id/[0]/data: origIfname",
+    "lldp-remote-system-name/[0]/data: peerHostname",
+    "lldp-remote-port-id/[0]/data: peerIfindex?|0",
     ]'
 
   nxos:

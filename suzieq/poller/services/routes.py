@@ -20,21 +20,11 @@ class RoutesService(Service):
         else:
             entry['ipvers'] = 4
 
-    def clean_data(self, processed_data, raw_data):
+    def _common_data_cleaner(self, processed_data, raw_data):
+        for entry in processed_data:
+            self._fix_ipvers(entry)
 
-        devtype = self._get_devtype_from_input(raw_data)
-        if any([devtype == x for x in ["cumulus", "linux"]]):
-            processed_data = self._clean_linux_data(processed_data, raw_data)
-        elif devtype == "junos":
-            processed_data = self._clean_junos_data(processed_data, raw_data)
-        elif devtype == "nxos":
-            processed_data = self._clean_nxos_data(processed_data, raw_data)
-        else:
-            # Fix IP version for all entries
-            for entry in processed_data:
-                self._fix_ipvers(entry)
-
-        return super().clean_data(processed_data, raw_data)
+        return processed_data
 
     def _clean_linux_data(self, processed_data, raw_data):
         """Clean Linux ip route data"""

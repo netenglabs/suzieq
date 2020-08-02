@@ -34,7 +34,7 @@ apply:
         "vias/*/nexthopAddr: nexthopIps?|[]",
         "vias/*/interface": oifs"]'
   
-  junos:
+  junos-qfx:
     version: all
     command: show route | display json
     normalize: 'route-information/[0]/route-table/*:table-name:vrf/rt/*/[
