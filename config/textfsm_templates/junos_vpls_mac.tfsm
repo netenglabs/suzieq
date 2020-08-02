@@ -1,0 +1,36 @@
+Value Filldown bd (\S+)
+Value Required macaddr ([0-9a-f:]+)
+Value flags ([SDLCONR][EM]?)
+Value oif (\S+)
+Value vlan (\d+)
+
+Start
+  ^\s+Bridging domain :\s+${bd},\s*VLAN : ${vlan}.*$$
+  ^\s+Bridging domain :\s+${bd},.*$$
+  ^\s+${macaddr}\s+${flags}\s+${oif}.*$$ -> Record
+
+
+#MAC flags       (S -static MAC, D -dynamic MAC, L -locally learned, C -Control MAC
+#    O -OVSDB MAC, SE -Statistics enabled, NM -Non configured MAC, R -Remote PE MAC)
+#Routing instance : l2bgp_AGZ-DMZ-UGICORP-REC_2008
+# Bridging domain : __l2bgp_AGZ-DMZ-UGICORP-REC_2008__, VLAN : NA
+#   MAC                 MAC      Logical          NH     RTR
+#   address             flags    interface        Index  ID
+#   b4:0c:25:e0:80:43   D        lsi.1446416
+#MAC flags       (S -static MAC, D -dynamic MAC, L -locally learned, C -Control MAC
+#    O -OVSDB MAC, SE -Statistics enabled, NM -Non configured MAC, R -Remote PE MAC)
+#Routing instance : l2bgp_AGZ-FW-HA1_2319
+# Bridging domain : __l2bgp_AGZ-FW-HA1_2319__, VLAN : NA
+#   MAC                 MAC      Logical          NH     RTR
+#   address             flags    interface        Index  ID
+#   08:66:1f:01:90:de   D        lsi.1445682
+#   08:66:1f:01:92:6a   D        xe-2/1/0.2319
+#MAC flags       (S -static MAC, D -dynamic MAC, L -locally learned, C -Control MAC
+#    O -OVSDB MAC, SE -Statistics enabled, NM -Non configured MAC, R -Remote PE MAC)
+#Routing instance : l2bgp_AGZ-FW-HA2_2320
+# Bridging domain : __l2bgp_AGZ-FW-HA2_2320__, VLAN : 10
+#   MAC                 MAC      Logical          NH     RTR
+#   address             flags    interface        Index  ID
+#   c4:24:56:0b:a8:4a   D        lsi.1445373
+#   c4:24:56:0b:c8:4a   D        xe-2/1/0.2320
+#
