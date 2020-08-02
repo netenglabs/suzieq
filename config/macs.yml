@@ -21,7 +21,7 @@ apply:
   linux:
     copy: cumulus
 
-  junos:
+  junos-qfx:
     version: all
     command: show ethernet-switching table detail | display json
     normalize: 'l2ng-l2ald-rtb-macdb/[0]/l2ng-l2ald-mac-entry-vlan/*/[
@@ -31,6 +31,11 @@ apply:
     "l2ng-l2-active-source/[0]/data: remoteVtepIp?|",
     "l2ng-l2-mac-entry-flags/[0]/data: flags"
     ]'
+
+  junos-mx:
+    version: all
+    command: show vpls mac-table
+    textfsm: textfsm_templates/junos_vpls_mac.tfsm
 
   nxos:
     version: all

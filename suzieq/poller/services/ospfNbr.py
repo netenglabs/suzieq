@@ -28,20 +28,6 @@ class OspfNbrService(Service):
 
         return int((datetime.utcnow().timestamp() - secs) * 1000)
 
-    def clean_data(self, processed_data, raw_data):
-
-        dev_type = self._get_devtype_from_input(raw_data)
-        if dev_type == "cumulus" or dev_type == "linux":
-            processed_data = self._clean_linux_data(processed_data, raw_data)
-        elif dev_type == "eos":
-            processed_data = self._clean_eos_data(processed_data, raw_data)
-        elif dev_type == "junos":
-            processed_data = self._clean_junos_data(processed_data, raw_data)
-        elif dev_type == "nxos":
-            processed_data = self._clean_nxos_data(processed_data, raw_data)
-
-        return super().clean_data(processed_data, raw_data)
-
     def _clean_linux_data(self, processed_data, raw_data):
         for entry in processed_data:
             entry["vrf"] = "default"

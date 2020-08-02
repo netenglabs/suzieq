@@ -376,27 +376,8 @@ class InterfaceService(Service):
 
         return processed_data
 
-    def clean_data(self, processed_data, raw_data):
-        """Homogenize the IP addresses across different implementations
-        Input:
-            - list of processed output entries
-            - raw unprocessed data
-        Output:
-            - processed output entries cleaned up
-        """
-        devtype = self._get_devtype_from_input(raw_data)
-        if devtype == "eos":
-            self._clean_eos_data(processed_data, raw_data)
-        elif devtype == "cumulus":
-            processed_data = self._clean_cumulus_data(processed_data, raw_data)
-        elif devtype == "junos":
-            processed_data = self._clean_junos_data(processed_data, raw_data)
-        elif devtype == "nxos":
-            processed_data = self._clean_nxos_data(processed_data, raw_data)
-        elif devtype == "linux":
-            processed_data = self._clean_linux_data(processed_data, raw_data)
-        else:
-            for entry in processed_data:
-                entry['state'] = entry['state'].lower()
+    def _common_data_cleaner(self, processed_data, raw_data):
+        for entry in processed_data:
+            entry['state'] = entry['state'].lower()
 
-        return super().clean_data(processed_data, raw_data)
+        return processed_data

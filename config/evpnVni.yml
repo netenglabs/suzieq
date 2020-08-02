@@ -36,7 +36,7 @@ apply:
   linux:
     copy: cumulus
 
-  junos:
+  junos-qfx:
     version: all
     command: show ethernet-switching vxlan-tunnel-end-point remote | display json
     normalize: 'vxlan-source-vtep-information/[0]/svtep-format/*:source-vtep-address:priVtepIp|vxlan-remote-vtep-information/*/[

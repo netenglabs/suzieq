@@ -40,7 +40,7 @@ apply:
   linux:
     copy: cumulus
 
-  junos:
+  junos-qfx:
     version: all
     command: show ospf neighbor instance all detail | display json
     normalize: 'ospf-neighbor-information-all/[0]/ospf-instance-neighbor/*:ospf-instance-name:vrf|ospf-neighbor/*/[
@@ -53,6 +53,9 @@ apply:
     "ospf-area/[0]/data: area",
     "neighbor-up-time/[0]/data: lastChangeTime"
     ]'
+
+  junos-mx:
+    copy: junos-qfx
 
   nxos:
     version: all

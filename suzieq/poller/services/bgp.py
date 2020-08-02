@@ -8,20 +8,6 @@ from suzieq.utils import get_timestamp_from_junos_time
 class BgpService(Service):
     """bgp service. Different class because of munging of output across NOS"""
 
-    def clean_data(self, processed_data, raw_data):
-
-        devtype = self._get_devtype_from_input(raw_data)
-        # The AFI/SAFI key string changed in version 7.x of FRR and so we have
-        # to munge the output to get the data out of the right key_fields
-        if devtype == "eos":
-            processed_data = self._clean_eos_data(processed_data, raw_data)
-        elif devtype == "junos":
-            processed_data = self._clean_junos_data(processed_data, raw_data)
-        elif devtype == "nxos":
-            processed_data = self._clean_nxos_data(processed_data, raw_data)
-
-        return super().clean_data(processed_data, raw_data)
-
     def _clean_eos_data(self, processed_data, raw_data):
 
         for entry in processed_data:

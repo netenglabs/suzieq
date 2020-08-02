@@ -15,24 +15,14 @@ class DeviceService(Service):
                          schema, queue, run_once)
         self.ignore_fields.append("bootupTimestamp")
 
-    def clean_data(self, processed_data, raw_data):
-        """Cleanup the bootup timestamp for Linux nodes"""
-
-        devtype = self._get_devtype_from_input(raw_data)
-        if devtype == "cumulus" or devtype == "linux":
-            self.linux_clean_data(processed_data, raw_data)
-        elif devtype == "junos":
-            self.junos_clean_data(processed_data, raw_data)
-        elif devtype == "nxos":
-            self.nxos_clean_data(processed_data, raw_data)
-
+    def _common_data_cleaner(self, processed_data, raw_data):
         for entry in processed_data:
             entry['status'] = "alive"
             entry["address"] = raw_data[0]["address"]
 
-        return super().clean_data(processed_data, raw_data)
+        return processed_data
 
-    def linux_clean_data(self, processed_data, raw_data):
+    def _clean_linux_data(self, processed_data, raw_data):
 
         for entry in processed_data:
             # We're assuming that if the entry doesn't provide the
@@ -60,7 +50,12 @@ class DeviceService(Service):
                             entry["version"] = ' '.join(osstr[1:])
                     del entry["os"]
 
-    def junos_clean_data(self, processed_data, raw_data):
+        return self._common_data_cleaner(processed_data, raw_data)
+
+    def _clean_cumulus_data(self, processed_data, raw_data):
+        return self._clean_linux_data(processed_data, raw_data)
+
+    def _clean_junos_data(self, processed_data, raw_data):
 
         for entry in processed_data:
             if entry.get('bootupTimestamp', '-') != '-':
@@ -68,7 +63,9 @@ class DeviceService(Service):
                     entry['bootupTimestamp'],
                     (raw_data[0]['timestamp']/1000)))/1000
 
-    def nxos_clean_data(self, processed_data, raw_data):
+        return self._common_data_cleaner(processed_data, raw_data)
+
+    def _clean_nxos_data(self, processed_data, raw_data):
         for entry in processed_data:
             upsecs = (24*3600*int(entry.pop('kern_uptm_days', 0)) +
                       3600*int(entry.pop('kern_uptm_hrs', 0)) +
@@ -77,6 +74,8 @@ class DeviceService(Service):
             if upsecs:
                 entry['bootupTimestamp'] = int(
                     int(raw_data[0]["timestamp"])/1000 - upsecs)
+
+        return self._common_data_cleaner(processed_data, raw_data)
 
     def get_diff(self, old, new):
         """Compare list of dictionaries ignoring certain fields

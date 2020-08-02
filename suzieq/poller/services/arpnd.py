@@ -16,23 +16,11 @@ class ArpndService(Service):
         # We don't want millions of directories, one per prefix
         self.partition_cols.remove("ipAddress")
 
-    def clean_data(self, processed_data, raw_data):
+    def _common_data_cleaner(self, processed_data, raw_data):
+        for entry in processed_data:
+            entry['oif'] = entry['oif'].replace('/', '-')
 
-        devtype = self._get_devtype_from_input(raw_data)
-
-        if any([devtype == x for x in ["cumulus", "linux"]]):
-            processed_data = self._clean_linux_data(processed_data, raw_data)
-        elif devtype == 'eos':
-            processed_data = self._clean_eos_data(processed_data, raw_data)
-        elif devtype == 'junos':
-            processed_data = self._clean_junos_data(processed_data, raw_data)
-        elif devtype == 'nxos':
-            processed_data = self._clean_nxos_data(processed_data, raw_data)
-        else:
-            for entry in processed_data:
-                entry['oif'] = entry['oif'].replace('/', '-')
-
-        return super().clean_data(processed_data, raw_data)
+        return processed_data
 
     def _clean_linux_data(self, processed_data, raw_data):
         for entry in processed_data:

@@ -39,7 +39,7 @@ apply:
   linux:
     copy: cumulus
 
-  junos:
+  junos-qfx:
     version: all
     command:
       - command: show ospf overview | display json
@@ -53,7 +53,7 @@ apply:
         normalize: 'ospf-interface-information/[0]/ospf-interface/*/[
         "interface-name/[0]/data: ifname",
         "interface-name/[0]/data: origIfname",
-        "ospf-interface-state/[0]/data: state",
+        "ospf-interface-state/[0]/data: state?Down|Up",
         "ospf-area/[0]/data: area",
         "neighbor-count/[0]/data: nbrCount?|0",
         "interface-type/[0]/data: networkType?|",
@@ -68,6 +68,9 @@ apply:
         "ospf-stub-type/[0]/data: stub",
         "record-type: _entryType?|peers",
         ]'
+
+  junos-mx:
+    copy: junos-qfx
 
   nxos:
     version: all

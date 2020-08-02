@@ -44,7 +44,7 @@ apply:
     "cpu_name: architecture"
     ]'
 
-  junos:
+  junos-qfx:
     version: all
     command:
       - command: "show system information | display json"
@@ -58,4 +58,19 @@ apply:
         normalize: 'multi-routing-engine-results/[0]/multi-routing-engine-item/[0]/system-uptime-information/*/[
         "system-booted-time/[0]/time-length/[0]/data: bootupTimestamp"
         ]'
-    
+
+  junos-mx:
+    version: all
+    command:
+      - command: "show system information | display json"
+        normalize: 'system-information/*/[
+        "hardware-model/[0]/data: model",
+        "os-name/[0]/data: os",
+        "os-version/[0]/data: version",
+        "vendor: vendor?|Juniper"
+        ]'
+      - command: "show system uptime | display json"
+        normalize: 'system-uptime-information/*/[
+        "system-booted-time/[0]/time-length/[0]/data: bootupTimestamp"
+        ]'
+        

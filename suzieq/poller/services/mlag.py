@@ -4,14 +4,6 @@ from suzieq.poller.services.service import Service
 class MlagService(Service):
     """MLAG service. Different class because output needs to be munged"""
 
-    def clean_data(self, processed_data, raw_data):
-
-        devtype = self._get_devtype_from_input(raw_data)
-        if devtype == "cumulus":
-            processed_data = self._clean_cumulus_data(processed_data, raw_data)
-
-        return super().clean_data(processed_data, raw_data)
-
     def _clean_cumulus_data(self, processed_data, raw_data):
         """Populate the different portlists and counts"""
 
