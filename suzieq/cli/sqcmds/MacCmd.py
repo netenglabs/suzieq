@@ -36,7 +36,9 @@ class MacCmd(SqCommand):
     @argument("macaddr",
               description="MAC address(es), in quotes, to qualify output")
     @argument("remoteVtepIp", description="only with this remoteVtepIp; use any for all")
-    def show(self, vlan: str = '', macaddr: str = '', remoteVtepIp: str = ''):
+    @argument("bd", description="filter entries with this bridging domain")
+    def show(self, vlan: str = '', macaddr: str = '', remoteVtepIp: str = '',
+             bd: str = ''):
         """
         Show MAC table info
         """
@@ -74,6 +76,7 @@ class MacCmd(SqCommand):
             addnl_fields=addnl_fields,
             remoteVtepIp=remoteVtepIp.split(),
             vlan=vlans,
+            bd=bd,
             columns=self.columns,
             namespace=self.namespace,
         )
@@ -81,5 +84,6 @@ class MacCmd(SqCommand):
             drop_cols.append('mackey')
 
         df.drop(columns=drop_cols, inplace=True)
+
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
