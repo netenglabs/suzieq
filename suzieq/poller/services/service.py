@@ -101,9 +101,8 @@ class Service(object):
                 dev = 'junos'
             else:
                 dev = x
-            if hasattr(self, f'_clean_{dev}_data'):
-                self.dev_clean_fn[x] = getattr(
-                    self, f'_clean_{dev}_data', None) or common_dev_clean_fn
+            self.dev_clean_fn[x] = getattr(
+                self, f'_clean_{dev}_data', None) or common_dev_clean_fn
 
     @ staticmethod
     def is_status_ok(status: int) -> bool:
@@ -334,12 +333,14 @@ class Service(object):
                     if not tfsm_template:
                         return result
 
-                    if "output" in data["data"]:
-                        in_info = data["data"]["output"]
-                    elif "messages" in data["data"]:
-                        # This is Arista's bash output format
-                        in_info = data["data"]["messages"][0]
-                    else:
+                    in_info = []
+                    if isinstance(data['data'], dict):
+                        if "output" in data["data"]:
+                            in_info = data["data"]["output"]
+                        elif "messages" in data["data"]:
+                            # This is Arista's bash output format
+                            in_info = data["data"]["messages"][0]
+                    if not in_info:
                         in_info = data["data"]
                     # Clean data is invoked inside this due to the way we
                     # munge the data and force the types to adhere to the
