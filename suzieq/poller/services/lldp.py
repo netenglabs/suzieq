@@ -37,7 +37,7 @@ class LldpService(Service):
                     r'^Eth?(\d)', 'Ethernet\g<1>', entry['ifname'])
                 entry['origIfname'] = re.sub(
                     r'^Eth?(\d)', 'Ethernet\g<1>', entry['origIfname'])
-            elif any(devtype == x for x in ['cumulus', 'linux', 'eos']):
+            elif any(devtype == x for x in ['linux', 'eos']):
                 entry['origIfname'] = entry['ifname']
 
         return processed_data

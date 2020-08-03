@@ -56,6 +56,9 @@ class RoutesService(Service):
 
         return processed_data
 
+    def _clean_cumulus_data(self, processed_data, raw_data):
+        return self._clean_linux_data(processed_data, raw_data)
+
     def _clean_junos_data(self, processed_data, raw_data):
         """Clean VRF name in JUNOS data"""
 
