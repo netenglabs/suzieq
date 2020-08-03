@@ -33,7 +33,8 @@ class TopologyCmd(SqCommand):
 
     @command("show")
     @argument("vrf", description="VRF to show topology in")
-    def show(self, vrf: str = ''):
+    @argument("polled_neighbor", description="Is the neighbor a device Suzieq polls")
+    def show(self, vrf: str = '', polled_neighbor: bool = ''):
         """show table of topology information"""
         # Get the default display field names
         if self.columns is None:
@@ -47,7 +48,7 @@ class TopologyCmd(SqCommand):
 
         try:
             df = self.sqobj.get(
-                namespace=self.namespace, vrf=vrf
+                namespace=self.namespace, vrf=vrf, polled_neighbor=polled_neighbor
             )
         except Exception as e:
             df = pd.DataFrame({'error': ['ERROR: {}'.format(str(e))]})
