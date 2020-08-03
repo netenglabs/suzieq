@@ -13,6 +13,7 @@ apply:
     command: net show lldp json
     normalize: 'lldp/[0]/interface/*/[
     "name: ifname",
+    "name: origIfname",
     "chassis/[0]/name/[0]/value: peerHostname?|",
     "chassis/[0]/descr/[0]/value: description?|",
     "chassis/[0]/mgmt-ip/[0]/value: mgmtIP?|",
