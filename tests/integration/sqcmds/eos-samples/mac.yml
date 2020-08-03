@@ -4,20 +4,21 @@ tests:
   data-directory: tests/data/eos/parquet-out/
   marks: mac show eos
   output: '[{"namespace": "eos", "hostname": "edge01", "vlan": 0, "macaddr": "33:33:00:00:00:01",
-    "oif": "eth1.4", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594274559644},
-    {"namespace": "eos", "hostname": "edge01", "vlan": 0, "macaddr": "01:00:5e:00:00:01",
-    "oif": "eth1.4", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594274559644},
-    {"namespace": "eos", "hostname": "edge01", "vlan": 0, "macaddr": "33:33:00:00:00:02",
-    "oif": "eth1.4", "remoteVtepIp": "", "flags": "permanent", "timestamp": 1594274559644},
-    {"namespace": "eos", "hostname": "leaf01", "vlan": 1, "macaddr": "00:00:00:00:00:00",
-    "oif": "Port-Channel12", "remoteVtepIp": "", "flags": "dynamic", "timestamp":
-    1594274559726}, {"namespace": "eos", "hostname": "leaf02", "vlan": 1, "macaddr":
-    "00:00:00:00:00:00", "oif": "Port-Channel12", "remoteVtepIp": "", "flags": "dynamic",
-    "timestamp": 1594274559862}, {"namespace": "eos", "hostname": "leaf03", "vlan":
-    1, "macaddr": "00:00:00:00:00:00", "oif": "Port-Channel12", "remoteVtepIp": "",
-    "flags": "dynamic", "timestamp": 1594274559712}, {"namespace": "eos", "hostname":
-    "leaf04", "vlan": 1, "macaddr": "00:00:00:00:00:00", "oif": "Port-Channel12",
-    "remoteVtepIp": "", "flags": "dynamic", "timestamp": 1594274560105}]'
+    "oif": "eth1.4", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp":
+    1594274559644}, {"namespace": "eos", "hostname": "edge01", "vlan": 0, "macaddr":
+    "01:00:5e:00:00:01", "oif": "eth1.4", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "timestamp": 1594274559644}, {"namespace": "eos", "hostname": "edge01", "vlan":
+    0, "macaddr": "33:33:00:00:00:02", "oif": "eth1.4", "remoteVtepIp": "", "bd":
+    "", "flags": "permanent", "timestamp": 1594274559644}, {"namespace": "eos", "hostname":
+    "leaf01", "vlan": 1, "macaddr": "00:00:00:00:00:00", "oif": "Port-Channel12",
+    "remoteVtepIp": "", "bd": "", "flags": "dynamic", "timestamp": 1594274559726},
+    {"namespace": "eos", "hostname": "leaf02", "vlan": 1, "macaddr": "00:00:00:00:00:00",
+    "oif": "Port-Channel12", "remoteVtepIp": "", "bd": "", "flags": "dynamic", "timestamp":
+    1594274559862}, {"namespace": "eos", "hostname": "leaf03", "vlan": 1, "macaddr":
+    "00:00:00:00:00:00", "oif": "Port-Channel12", "remoteVtepIp": "", "bd": "", "flags":
+    "dynamic", "timestamp": 1594274559712}, {"namespace": "eos", "hostname": "leaf04",
+    "vlan": 1, "macaddr": "00:00:00:00:00:00", "oif": "Port-Channel12", "remoteVtepIp":
+    "", "bd": "", "flags": "dynamic", "timestamp": 1594274560105}]'
 - command: mac show --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: mac show eos
