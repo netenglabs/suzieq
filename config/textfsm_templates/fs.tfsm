@@ -8,4 +8,26 @@ Value mountPoint ([^ ]*)
 
 Start
   ^Filesystem\s+Type.*$$
+  ^Filesystem\s+Size.*$$
   ^${device}\s+${fstype}\s+${totalSize}\s+${usedSize}\s+${availSize}\s+${usedPercent}%\s+${mountPoint}$$ -> Record
+  ^${device}\s+${totalSize}\s+${usedSize}\s+${availSize}\s+${usedPercent}%\s+${mountPoint}$$ -> Record
+
+#Filesystem           Type      Size  Used Avail Use% Mounted on
+#udev                 devtmpfs  7.7G     0  7.7G   0% /dev
+#tmpfs                tmpfs     1.6G  2.4M  1.6G   1% /run
+#/dev/nvme0n1p5       ext4       39G   15G   23G  40% /
+#tmpfs                tmpfs     7.7G  495M  7.3G   7% /dev/shm
+#tmpfs                tmpfs     5.0M  4.0K  5.0M   1% /run/lock
+#tmpfs                tmpfs     7.7G     0  7.7G   0% /sys/fs/cgroup
+#/dev/nvme0n1p4       ext4       29G   20G  8.0G  71% /var
+#/dev/nvme0n1p1       vfat      256M   35M  222M  14% /boot/efi
+#fpc0:
+#--------------------------------------------------------------------------
+#Filesystem              Size       Used      Avail  Capacity   Mounted on
+#/dev/ad0s1a             2.4G       595M       1.6G       27%  /
+#devfs                   1.0K       1.0K         0B      100%  /dev
+#/dev/md0                116M       116M         0B      100%  /packages/mnt/jbase
+#/dev/md1                665M       665M         0B      100%  /packages/mnt/jkernel-qfx-x86-32-19.4R1.10
+#/dev/md2                 52M        52M         0B      100%  /packages/mnt/jpfe-qfx-10-f-19.4R1.10
+#/dev/md3                 13M        13M         0B      100%  /packages/mnt/jdocs-dc-re-19.4R1.10
+#

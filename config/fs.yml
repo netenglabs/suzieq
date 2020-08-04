@@ -1,7 +1,6 @@
 service: fs
 type: counters
 keys:
-  - device
   - mountPoint
 ignore-fields:
   - usedSize
@@ -30,3 +29,11 @@ apply:
     version: all
     command: run bash df -hT
     textfsm: textfsm_templates/fs.tfsm
+
+  junos-qfx:
+    version: all
+    command: show system storage
+    textfsm: textfsm_templates/fs.tfsm
+
+  junos-mx:
+    copy: junos-qfx
