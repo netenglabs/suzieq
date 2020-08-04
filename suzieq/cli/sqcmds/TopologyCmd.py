@@ -32,7 +32,6 @@ class TopologyCmd(SqCommand):
         )
 
     @command("show")
-    @argument("vrf", description="VRF to show topology in")
     @argument("polled_neighbor", description="Is the neighbor a device Suzieq polls")
     def show(self, vrf: str = '', polled_neighbor: bool = ''):
         """show table of topology information"""
@@ -58,8 +57,9 @@ class TopologyCmd(SqCommand):
             return self._gen_output(df)
 
     @command("summarize")
-    @argument("vrf", description="VRF to show topology in")
-    def summarize(self, src: str = "", dest: str = "", vrf: str = ''):
+    @argument("polled_neighbor", description="Is the neighbor a device Suzieq polls")
+    def summarize(self, src: str = "", dest: str = "", 
+                    polled_neighbor: bool = ''):
         """Summarize topologys topology information"""
         # Get the default display field names
         if self.columns is None:
@@ -74,7 +74,7 @@ class TopologyCmd(SqCommand):
         try:
             df = self.sqobj.summarize(
                 namespace=self.namespace, 
-                vrf=vrf
+                polled_neighbor=polled_neighbor
             )
         except Exception as e:
             df = pd.DataFrame({'error': ['ERROR: {}'.format(str(e))]})

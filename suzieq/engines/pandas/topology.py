@@ -89,9 +89,6 @@ class TopologyObj(SqEngineObject):
                 else:
                     
                     self.lsdb = self.lsdb.merge(df, how='outer')
-
-        self._create_graphs_from_lsdb()
-        
         
         devices = device.DeviceObj(context=self.ctxt).get(namespace=self._namespaces,
                                                         columns=['namespace', 'hostname'])
@@ -103,7 +100,9 @@ class TopologyObj(SqEngineObject):
 
         if polled_neighbor !='':
             self.lsdb = self.lsdb[self.lsdb.polled_neighbor == polled_neighbor]
-
+        
+        self._create_graphs_from_lsdb()
+        
         return self.lsdb
 
     def _create_graphs_from_lsdb(self):
