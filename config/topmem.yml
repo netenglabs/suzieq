@@ -19,7 +19,7 @@ apply:
 
   linux:
     version: all
-    command: top -bn 1 '%MEM' | head -17
+    command: top -bn 1 -o '%MEM' | head -17
     textfsm: textfsm_templates/linux_top.tfsm
 
   eos:
