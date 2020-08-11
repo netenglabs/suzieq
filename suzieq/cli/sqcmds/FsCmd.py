@@ -36,7 +36,7 @@ class FsCmd(SqCommand):
     @argument("mountPoint", description="The mount point inside the FileSystem")
     @argument("used_percent", description="must be of the form "
               "[==|<|<=|>=|>|!=] value")
-    def show(self, mountPoint: typing.List[str] = [], used_percent: str = ''):
+    def show(self, mountPoint: str = '', used_percent: str = ''):
         """
         Show File System info
         """
@@ -51,17 +51,20 @@ class FsCmd(SqCommand):
             self.ctxt.sort_fields = []
 
         if used_percent and not any(used_percent.startswith(x)
-                                 for x in ['==', '<=', '>=', '<', '>', '!=']):
-            df = pd.DataFrame({'error': ['ERROR invalid used-percent operation']})
-            return self._gen_output(df)
+                                    for x in ['<=', '>=', '<', '>', '!=']):
+            try:
+                int(used_percent)
+            except ValueError:
+                df = pd.DataFrame(
+                    {'error': ['ERROR invalid used-percent operation']})
+                return self._gen_output(df)
 
         df = self.sqobj.get(
             hostname=self.hostname,
             columns=self.columns,
             namespace=self.namespace,
-            mountPoint=mountPoint,
+            mountPoint=mountPoint.split(),
             usedPercent=used_percent,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
-
