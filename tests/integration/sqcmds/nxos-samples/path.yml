@@ -18,7 +18,8 @@ tests:
 - command: path show --dest=172.16.1.101 --src=1172.16.3.104 --format=json --namespace=nxos
   data-directory: tests/data/nxos/parquet-out/
   error:
-    error: '[{"error": "ERROR: Invalid src 1172.16.3.104"}]'
+    error: '[{"error": "ERROR: ''1172.16.3.104'' does not appear to be an IPv4 or
+      IPv6 network"}]'
   marks: path show nxos
 - command: path show --src=10.0.0.11 --dest=10.0.0.14 --format=json --namespace=nxos
   data-directory: tests/data/nxos/parquet-out/
