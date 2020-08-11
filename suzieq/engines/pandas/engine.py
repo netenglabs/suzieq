@@ -92,7 +92,7 @@ class SqPandasEngine(SqEngine):
 
         # Create the filter to select only specified columns
         addnl_filter = kwargs.pop('add_filter', None)
-        query_str = build_query_str(key_fields, **kwargs)
+        query_str = build_query_str(key_fields, sch, **kwargs)
 
         # Add the ignored fields back to key fields to ensure we
         # do the drop_duplicates correctly below incl reading reqd cols

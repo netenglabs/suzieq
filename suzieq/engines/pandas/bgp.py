@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 
 from .engineobj import SqEngineObject
-from suzieq.utils import build_query_str
+from suzieq.utils import build_query_str, SchemaForTable
 
 
 class BgpObj(SqEngineObject):
@@ -34,7 +34,8 @@ class BgpObj(SqEngineObject):
         if df.empty:
             return df
 
-        query_str = build_query_str([], vrf=vrf, peer=peer,
+        sch = SchemaForTable(self.iobj._table, self.schemas)
+        query_str = build_query_str([], sch, vrf=vrf, peer=peer,
                                     hostname=hostname)
         if 'peer' in df.columns:
             df['peer'] = np.where(df['origPeer'] != "",

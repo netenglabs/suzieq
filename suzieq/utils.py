@@ -466,38 +466,46 @@ def convert_rangestring_to_list(rangestr: str) -> list:
     return tmplst
 
 
-def build_query_str(skip_fields: list, **kwargs) -> str:
+def build_query_str(skip_fields: list, schema, **kwargs) -> str:
     """Build a pandas query string given key/val pairs
     """
     query_str = ''
     prefix = ''
 
+    def build_query_str(fld, fldtype) -> str:
+        """Builds the string from the provided user input"""
+
+        if ((fldtype == "long" or fldtype == "float") and not
+                isinstance(fld, str)):
+            result = f'=={fld}'
+
+        elif fld.startswith('!'):
+            fld = fld[1:]
+            if fldtype == "long" or fldtype == "float":
+                result = f'!= {fld}'
+            else:
+                result = f'!= "{fld}"'
+        elif fld.startswith('<') or fld.startswith('>'):
+            result = fld
+        else:
+            result = f'=="{fld}"'
+
+        return result
+
     for f, v in kwargs.items():
         if not v or f in skip_fields or f in ["groupby"]:
             continue
+        type = schema.field(f).get('type', 'string')
         if isinstance(v, str):
-            if v.startswith('!'):
-                v = v[1:]
-                op = '!='
-            else:
-                op = '=='
-            query_str += "{} {}{}'{}' ".format(prefix, f, op, v)
+            query_str += f'{prefix} {f}{build_query_str(v, type)} '
             prefix = "and"
         elif isinstance(v, list) and len(v):
             subq = ''
             subcond = ''
             for elem in v:
-                if isinstance(elem, str) and elem.startswith('!'):
-                    elem = elem[1:]
-                    op = '!='
-                else:
-                    op = '=='
-                subq += "{} {}{}'{}' ".format(subcond, f, op, elem)
+                subq += f'{subcond} {f}{build_query_str(elem, type)} '
                 subcond = 'or'
             query_str += '{} ({})'.format(prefix, subq)
-            prefix = "and"
-        else:
-            query_str += "{} {}=={} ".format(prefix, f, v)
             prefix = "and"
 
     return query_str
