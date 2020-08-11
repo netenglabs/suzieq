@@ -37,10 +37,12 @@ class MacCmd(SqCommand):
               description="MAC address(es), in quotes, to qualify output")
     @argument("remoteVtepIp", description="only with this remoteVtepIp; use any for all")
     @argument("bd", description="filter entries with this bridging domain")
+    @argument("local", description="filter entries with no remoteVtep")
     def show(self, vlan: str = '', macaddr: str = '', remoteVtepIp: str = '',
-             bd: str = ''):
-        """
-        Show MAC table info
+             bd: str = '', local: bool = False):
+        """Show MAC table info
+
+        The remoteVtepInfo is set to "-" to allow to fetch local entries only
         """
         if self.columns is None:
             return
@@ -76,6 +78,7 @@ class MacCmd(SqCommand):
             addnl_fields=addnl_fields,
             remoteVtepIp=remoteVtepIp.split(),
             vlan=vlans,
+            localOnly=local,
             bd=bd,
             columns=self.columns,
             namespace=self.namespace,

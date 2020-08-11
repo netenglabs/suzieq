@@ -13,14 +13,18 @@ class MacsObj(SqEngineObject):
             sort_fields = self.iobj._sort_fields
 
         remoteOnly = False
-        if kwargs.get('remoteVtepIp', []):
+        localOnly = kwargs.pop('localOnly', False)
+        vtep = kwargs.get('remoteVtepIp', [])
+        if vtep:
             if kwargs['remoteVtepIp'] == ['any']:
-                remoteOnly = True
                 del kwargs['remoteVtepIp']
+                remoteOnly = True
 
         df = self.get_valid_df(self.iobj._table, sort_fields, **kwargs)
         if remoteOnly:
             return df.query("remoteVtepIp != ''")
+        elif localOnly:
+            return df.query("remoteVtepIp == ''")
 
         return df
 
