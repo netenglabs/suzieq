@@ -20,31 +20,25 @@ tests:
   marks: path show eos
   output: '[{"pathid": 1, "hopCount": 0, "namespace": "eos", "hostname": "leaf04",
     "iif": "Loopback0", "vrf": "default", "overlay": false, "mtuMatch": null, "mtu":
-    65535, "timestamp": 1594274561043}, {"pathid": 1, "hopCount": 1, "namespace":
-    "eos", "hostname": "spine01", "iif": "Ethernet4", "vrf": "default", "overlay":
-    false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594274560552}, {"pathid":
-    1, "hopCount": 2, "namespace": "eos", "hostname": "leaf01", "iif": "Ethernet1",
-    "vrf": "default", "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp":
-    1594274560304}, {"pathid": 1, "hopCount": 2, "namespace": "eos", "hostname": "leaf01",
-    "iif": "Loopback0", "vrf": "default", "overlay": false, "mtuMatch": null, "mtu":
-    65535, "timestamp": 1594274560834}]'
+    65535, "is_l2": false, "timestamp": 1594274561043}, {"pathid": 1, "hopCount":
+    1, "namespace": "eos", "hostname": "spine01", "iif": "Ethernet4", "vrf": "default",
+    "overlay": false, "mtuMatch": true, "mtu": 1500, "is_l2": false, "timestamp":
+    1594274560552}, {"pathid": 1, "hopCount": 2, "namespace": "eos", "hostname": "leaf01",
+    "iif": "Ethernet1", "vrf": "default", "overlay": false, "mtuMatch": true, "mtu":
+    1500, "is_l2": false, "timestamp": 1594274560304}]'
 - command: path show --src=172.16.1.101 --dest=172.16.253.1 --format=json --namespace=eos
   data-directory: tests/data/eos/parquet-out/
   marks: path show eos
   output: '[{"pathid": 1, "hopCount": 0, "namespace": "eos", "hostname": "server101",
     "iif": "bond0", "vrf": "default", "overlay": false, "mtuMatch": null, "mtu": 1500,
-    "timestamp": 1594274559861}, {"pathid": 1, "hopCount": 1, "namespace": "eos",
-    "hostname": "leaf01", "iif": "Vlan13", "vrf": "default", "overlay": false, "mtuMatch":
-    true, "mtu": 1500, "timestamp": 1594274559790}, {"pathid": 2, "hopCount": 0, "namespace":
-    "eos", "hostname": "server101", "iif": "bond0", "vrf": "default", "overlay": false,
-    "mtuMatch": null, "mtu": 1500, "timestamp": 1594274559861}, {"pathid": 2, "hopCount":
-    1, "namespace": "eos", "hostname": "leaf02", "iif": "Vlan13", "vrf": "default",
-    "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp": 1594274559790}]'
+    "is_l2": false, "timestamp": 1594274559861}, {"pathid": 1, "hopCount": 1, "namespace":
+    "eos", "hostname": "leaf01", "iif": "Vlan13", "vrf": "default", "overlay": false,
+    "mtuMatch": true, "mtu": 1500, "is_l2": false, "timestamp": 1594274559790}]'
 - command: path summarize --dest=172.16.4.104 --src=172.16.1.101 --format=json --namespace=eos
   data-directory: tests/data/eos/parquet-out/
   marks: path summarize eos
-  output: '[{"eos": 2}, {"eos": [1, 2, 1, 1]}, {"eos": 3}, {"eos": 3.0}, {"eos": 5},
-    {"eos": 1500}, {"eos": false}, {"eos": false}]'
+  output: '[{"eos": 1}, {"eos": [1, 1, 1, 1, 1]}, {"eos": 4}, {"eos": 4.0}, {"eos":
+    5}, {"eos": 1500}, {"eos": false}, {"eos": false}]'
 - command: path summarize --dest=10.0.0.11 --src=10.0.0.14 --format=json --namespace=eos
   data-directory: tests/data/eos/parquet-out/
   marks: path summarize eos
