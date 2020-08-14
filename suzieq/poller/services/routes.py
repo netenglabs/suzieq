@@ -81,21 +81,18 @@ class RoutesService(Service):
             entry['vrf'] = vrf
             entry['ipvers'] = vers
 
-            if entry['localif']:
-                entry['oifs'] = [entry['localif']]
+            if entry['_localif']:
+                entry['oifs'] = [entry['_localif']]
 
             entry['protocol'] = entry['protocol'].lower()
             if entry['_rtlen'] != 0:
                 drop_entries_idx.append(i)
 
-            if entry['activeTag'] == '*':
-                entry['active'] = True
-            else:
-                entry['active'] = False
+            entry['active'] = entry['_activeTag'] == '*'
 
             entry['metric'] = int(entry['metric'])
-            entry.pop('localif')
-            entry.pop('activeTag')
+            entry.pop('_localif')
+            entry.pop('_activeTag')
 
         processed_data = np.delete(processed_data,
                                    drop_entries_idx).tolist()
@@ -122,6 +119,13 @@ class RoutesService(Service):
                         oif = oif.replace('Eth', 'Ethernet')
                     oiflist.append(oif)
             entry['oifs'] = oiflist
+
+            if not entry['oifs']:
+                oiflist = []
+                for nhv in entry.get('_nexthopVrf', []):
+                    if nhv:
+                        oiflist.append(f'_nexthopVrf:{nhv}')
+                entry['oifs'] = oiflist
 
             self._fix_ipvers(entry)
             if 'action' not in entry:
