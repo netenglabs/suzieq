@@ -36,7 +36,7 @@ class AddressCmd(SqCommand):
     @argument("vrf", description="VRF to qualify the address")
     @argument("ipvers", description="type of address, v4, v6 or l2",
               choices=["v4", "v6", "l2"])
-    def show(self, address: str = "", ipvers: str = "v4", vrf: str = ""):
+    def show(self, address: str = "", ipvers: str = "", vrf: str = ""):
         """
         Show address info
         """

@@ -1,43 +1,72 @@
 import pandas as pd
+from ipaddress import ip_interface
 
 from .engineobj import SqEngineObject
+from suzieq.utils import build_query_str
 
 
 class AddressObj(SqEngineObject):
 
-    def _get_addr_col(self, addr: str, ipvers: str, columns: str) -> str:
-        """Get the address column to fetch based on columns specified.
-        Address is not a real table and so we need to craft what we expose
-        """
+    def addr_type(self, addr: list) -> list:
 
-        addrcol = None
-        if addr and "::" in addr:
-            addrcol = "ip6AddressList"
-        elif addr and ':' in addr:
-            addrcol = "macaddr"
-        elif addr:
-            addrcol = "ipAddressList"
-        elif ipvers == "v4":
-            addrcol = "ipAddressList"
-        elif ipvers == "v6":
-            addrcol = "ip6AddressList"
-        return addrcol
+        rslt = []
+        for a in addr:
+            if ':' in a and '::' not in a:
+                rslt.append(0)
+            else:
+                ipa = ip_interface(a)
+                rslt.append(ipa._version)
+        return rslt
 
     def get(self, **kwargs) -> pd.DataFrame:
         """Retrieve the dataframe that matches a given IPv4/v6/MAC address"""
 
-        addr = kwargs.pop("address", None)
+        addr = kwargs.pop("address", [])
         columns = kwargs.get("columns", [])
         ipvers = kwargs.pop("ipvers", "")
         vrf = kwargs.pop("vrf", "")
         addnl_fields = ['origIfname', 'master']
+        drop_cols = []
 
         if self.ctxt.sort_fields is None:
             sort_fields = None
         else:
             sort_fields = self.sort_fields
 
-        addrcol = self._get_addr_col(addr, ipvers, columns)
+        v4addr = []
+        v6addr = []
+        macaddr = []
+        try:
+            addr_types = self.addr_type(addr)
+        except ValueError:
+            return pd.DataFrame({'error': ['Invalid address specified']})
+
+        if columns != ['default'] and columns != ['*']:
+            if ((4 in addr_types or ipvers == "v4") and
+                    'ipAddressList' not in columns):
+                addnl_fields.append('ipAddressList')
+                drop_cols.append('ipAddressList')
+            if ((6 in addr_types or ipvers == 'v6') and
+                    'ip6AddressList' not in columns):
+                addnl_fields.append('ip6AddressList')
+                drop_cols.append('ip6AddressList')
+            if ((0 in addr_types or ipvers == "l2") and
+                    'macaddr' not in columns):
+                addnl_fields.append('macaddr')
+                drop_cols.append('macaddr')
+
+        for i, a in enumerate(addr):
+            if addr_types[i] == 0:
+                macaddr.append(a)
+            elif addr_types[i] == 4:
+                if '/' not in a:
+                    a += '/'
+                v4addr.append(a)
+            elif addr_types[i] == 6:
+                if '/' not in a:
+                    a += '/'
+                v6addr.append(a)
+
         df = self.get_valid_df("address", sort_fields, master=vrf,
                                addnl_fields=addnl_fields, **kwargs)
 
@@ -50,20 +79,40 @@ class AddressObj(SqEngineObject):
         else:
             df.drop(columns=['origIfname'], inplace=True)
 
-        if addr:
-            addr = [x+'/' if '/' not in x else x for x in addr]
-            pattern = '|'.join(addr)
+        if 4 in addr_types:
+            df = df.explode('ipAddressList').fillna({'ipAddressList': ''})
+        if 6 in addr_types:
+            df = df.explode('ip6AddressList').fillna({'ip6AddressList': ''})
 
-        # Works with pandas 0.25.0 onwards
-        if addr and addrcol == "macaddr":
-            return df[df[addrcol] == addr]
-        elif addr:
-            df = df.explode(addrcol).dropna(how='any')
-            return df[df[addrcol].str.contains(pattern)]
-        elif addrcol in df.columns:
-            return df[df[addrcol].str.len() != 0]
+        query_str = ''
+        prefix = ''
+        # IMPORTANT: Don't mess with this order of query. Some bug in pandas
+        # prevents it from working if macaddr isn't first and your query
+        # contains both a macaddr and an IP address.
+        if macaddr:
+            query_str += f'{prefix} macaddr.isin({macaddr}) '
+            prefix = 'or'
+        if v4addr:
+            for a in v4addr:
+                query_str += f'{prefix} ipAddressList.str.startswith("{a}") '
+                prefix = 'or'
+        if v6addr:
+            for a in v6addr:
+                query_str += f'{prefix} ip6AddressList.str.startswith("{a}") '
+                prefix = 'or'
+
+        if not query_str:
+            if ipvers == "v4":
+                query_str = 'ipAddressList.str.len() != 0'
+            elif ipvers == "v6":
+                query_str = 'ip6AddressList.str.len() != 0'
+            elif ipvers == "l2":
+                query_str == 'macaddr.str.len() != 0'
+
+        if query_str:
+            return df.query(query_str).drop(columns=drop_cols)
         else:
-            return df
+            return df.drop(columns=drop_cols)
 
     def unique(self, **kwargs) -> pd.DataFrame:
         """Specific here only to rename vrf column to master"""
@@ -121,8 +170,9 @@ class AddressObj(SqEngineObject):
             #  they are equivalent
             # v4pfx = v4df.groupby(by=['namespace'])['prefixlen'] \
             #             .value_counts().rename('count').reset_index()
-            v4pfx = v4df.groupby(by=['namespace', 'prefixlen'], as_index=False)[
-                'ipAddressList'].count().dropna()
+            v4pfx = v4df.groupby(by=['namespace', 'prefixlen'],
+                                 as_index=False)['ipAddressList'].count() \
+                .dropna()
             v4pfx = v4pfx.rename(columns={'ipAddressList': 'count'})
             v4pfx['count'] = v4pfx['count'].astype(int)
             v4pfx = v4pfx.sort_values(by=['count'], ascending=False)

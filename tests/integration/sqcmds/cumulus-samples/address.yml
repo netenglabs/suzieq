@@ -2,7 +2,7 @@ description: 'Testing verbs for address: show summarize unique'
 tests:
 - command: address show --format=json
   data-directory: tests/data/multidc/parquet-out/
-  marks: address show
+  marks: address show cumulus
   output: '[{"namespace": "dual-evpn", "hostname": "edge01", "ifname": "eth0", "ipAddressList":
     ["192.168.121.12/24"], "macaddr": "52:54:00:8e:7e:c1", "ip6AddressList": [], "state":
     "up", "timestamp": 1594267588796}, {"namespace": "dual-evpn", "hostname": "edge01",
@@ -13,16 +13,23 @@ tests:
     1594267588796}, {"namespace": "dual-evpn", "hostname": "edge01", "ifname": "eth1.4",
     "ipAddressList": ["169.254.254.10/30"], "macaddr": "52:54:00:ae:e5:6a", "ip6AddressList":
     [], "state": "up", "timestamp": 1594267588796}, {"namespace": "dual-evpn", "hostname":
-    "edge01", "ifname": "eth2.2", "ipAddressList": ["169.254.253.2/30"], "macaddr":
-    "52:54:00:01:cc:19", "ip6AddressList": [], "state": "up", "timestamp": 1594267588796},
-    {"namespace": "dual-evpn", "hostname": "edge01", "ifname": "eth2.3", "ipAddressList":
-    ["169.254.253.6/30"], "macaddr": "52:54:00:01:cc:19", "ip6AddressList": [], "state":
-    "up", "timestamp": 1594267588796}, {"namespace": "dual-evpn", "hostname": "edge01",
-    "ifname": "eth2.4", "ipAddressList": ["169.254.253.10/30"], "macaddr": "52:54:00:01:cc:19",
+    "edge01", "ifname": "eth1", "ipAddressList": [], "macaddr": "52:54:00:ae:e5:6a",
     "ip6AddressList": [], "state": "up", "timestamp": 1594267588796}, {"namespace":
-    "dual-evpn", "hostname": "edge01", "ifname": "lo", "ipAddressList": ["10.0.0.100/32"],
-    "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "timestamp":
-    1594267588796}, {"namespace": "dual-evpn", "hostname": "exit01", "ifname": "eth0",
+    "dual-evpn", "hostname": "edge01", "ifname": "eth2.2", "ipAddressList": ["169.254.253.2/30"],
+    "macaddr": "52:54:00:01:cc:19", "ip6AddressList": [], "state": "up", "timestamp":
+    1594267588796}, {"namespace": "dual-evpn", "hostname": "edge01", "ifname": "eth2.3",
+    "ipAddressList": ["169.254.253.6/30"], "macaddr": "52:54:00:01:cc:19", "ip6AddressList":
+    [], "state": "up", "timestamp": 1594267588796}, {"namespace": "dual-evpn", "hostname":
+    "edge01", "ifname": "eth2.4", "ipAddressList": ["169.254.253.10/30"], "macaddr":
+    "52:54:00:01:cc:19", "ip6AddressList": [], "state": "up", "timestamp": 1594267588796},
+    {"namespace": "dual-evpn", "hostname": "edge01", "ifname": "eth2", "ipAddressList":
+    [], "macaddr": "52:54:00:01:cc:19", "ip6AddressList": [], "state": "up", "timestamp":
+    1594267588796}, {"namespace": "dual-evpn", "hostname": "edge01", "ifname": "lo",
+    "ipAddressList": ["10.0.0.100/32"], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
+    [], "state": "up", "timestamp": 1594267588796}, {"namespace": "dual-evpn", "hostname":
+    "exit01", "ifname": "bridge", "ipAddressList": [], "macaddr": "4e:c3:bf:96:85:3d",
+    "ip6AddressList": ["fe80::4cc3:bfff:fe96:853d/64"], "state": "up", "timestamp":
+    1594267588826}, {"namespace": "dual-evpn", "hostname": "exit01", "ifname": "eth0",
     "ipAddressList": ["192.168.121.216/24"], "macaddr": "52:54:00:8b:de:12", "ip6AddressList":
     ["fe80::5054:ff:fe8b:de12/64"], "state": "up", "timestamp": 1594267588826}, {"namespace":
     "dual-evpn", "hostname": "exit01", "ifname": "evpn-vrf", "ipAddressList": ["10.0.0.101/32"],
@@ -34,13 +41,25 @@ tests:
     "ip6AddressList": ["::1/128"], "state": "up", "timestamp": 1594267588826}, {"namespace":
     "dual-evpn", "hostname": "exit01", "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"],
     "macaddr": "76:fc:ff:da:09:b1", "ip6AddressList": [], "state": "up", "timestamp":
-    1594267588826}, {"namespace": "dual-evpn", "hostname": "exit01", "ifname": "swp5.2",
-    "ipAddressList": ["169.254.254.1/30"], "macaddr": "52:54:00:dc:d8:f4", "ip6AddressList":
-    ["fe80::5054:ff:fedc:d8f4/64"], "state": "up", "timestamp": 1594267588826}, {"namespace":
-    "dual-evpn", "hostname": "exit01", "ifname": "swp5.3", "ipAddressList": ["169.254.254.5/30"],
-    "macaddr": "52:54:00:dc:d8:f4", "ip6AddressList": ["fe80::5054:ff:fedc:d8f4/64"],
+    1594267588826}, {"namespace": "dual-evpn", "hostname": "exit01", "ifname": "swp1",
+    "ipAddressList": [], "macaddr": "52:54:00:0c:8c:e0", "ip6AddressList": ["fe80::5054:ff:fe0c:8ce0/64"],
     "state": "up", "timestamp": 1594267588826}, {"namespace": "dual-evpn", "hostname":
-    "exit01", "ifname": "swp5.4", "ipAddressList": ["169.254.254.9/30"], "macaddr":
+    "exit01", "ifname": "swp2", "ipAddressList": [], "macaddr": "52:54:00:7b:65:aa",
+    "ip6AddressList": ["fe80::5054:ff:fe7b:65aa/64"], "state": "up", "timestamp":
+    1594267588826}, {"namespace": "dual-evpn", "hostname": "exit01", "ifname": "swp3",
+    "ipAddressList": [], "macaddr": "52:54:00:72:c7:30", "ip6AddressList": [], "state":
+    "", "timestamp": 1594267588826}, {"namespace": "dual-evpn", "hostname": "exit01",
+    "ifname": "swp4", "ipAddressList": [], "macaddr": "52:54:00:62:cb:57", "ip6AddressList":
+    [], "state": "", "timestamp": 1594267588826}, {"namespace": "dual-evpn", "hostname":
+    "exit01", "ifname": "swp5.2", "ipAddressList": ["169.254.254.1/30"], "macaddr":
+    "52:54:00:dc:d8:f4", "ip6AddressList": ["fe80::5054:ff:fedc:d8f4/64"], "state":
+    "up", "timestamp": 1594267588826}, {"namespace": "dual-evpn", "hostname": "exit01",
+    "ifname": "swp5.3", "ipAddressList": ["169.254.254.5/30"], "macaddr": "52:54:00:dc:d8:f4",
+    "ip6AddressList": ["fe80::5054:ff:fedc:d8f4/64"], "state": "up", "timestamp":
+    1594267588826}, {"namespace": "dual-evpn", "hostname": "exit01", "ifname": "swp5.4",
+    "ipAddressList": ["169.254.254.9/30"], "macaddr": "52:54:00:dc:d8:f4", "ip6AddressList":
+    ["fe80::5054:ff:fedc:d8f4/64"], "state": "up", "timestamp": 1594267588826}, {"namespace":
+    "dual-evpn", "hostname": "exit01", "ifname": "swp5", "ipAddressList": [], "macaddr":
     "52:54:00:dc:d8:f4", "ip6AddressList": ["fe80::5054:ff:fedc:d8f4/64"], "state":
     "up", "timestamp": 1594267588826}, {"namespace": "dual-evpn", "hostname": "exit01",
     "ifname": "swp6", "ipAddressList": ["169.254.127.1/31"], "macaddr": "52:54:00:28:fd:69",
@@ -56,7 +75,14 @@ tests:
     "up", "timestamp": 1594267588826}, {"namespace": "dual-evpn", "hostname": "exit01",
     "ifname": "vlan24", "ipAddressList": ["172.16.2.11/24"], "macaddr": "4e:c3:bf:96:85:3d",
     "ip6AddressList": ["fe80::4cc3:bfff:fe96:853d/64"], "state": "up", "timestamp":
-    1594267588826}, {"namespace": "dual-evpn", "hostname": "exit02", "ifname": "eth0",
+    1594267588826}, {"namespace": "dual-evpn", "hostname": "exit01", "ifname": "vni13",
+    "ipAddressList": [], "macaddr": "4e:c3:bf:96:85:3d", "ip6AddressList": [], "state":
+    "up", "timestamp": 1594267588826}, {"namespace": "dual-evpn", "hostname": "exit01",
+    "ifname": "vni24", "ipAddressList": [], "macaddr": "a2:70:3d:f8:ef:7a", "ip6AddressList":
+    [], "state": "up", "timestamp": 1594267588826}, {"namespace": "dual-evpn", "hostname":
+    "exit02", "ifname": "bridge", "ipAddressList": [], "macaddr": "8e:75:76:84:7f:df",
+    "ip6AddressList": ["fe80::8c75:76ff:fe84:7fdf/64"], "state": "up", "timestamp":
+    1594267588821}, {"namespace": "dual-evpn", "hostname": "exit02", "ifname": "eth0",
     "ipAddressList": ["192.168.121.26/24"], "macaddr": "52:54:00:73:f1:f1", "ip6AddressList":
     ["fe80::5054:ff:fe73:f1f1/64"], "state": "up", "timestamp": 1594267588821}, {"namespace":
     "dual-evpn", "hostname": "exit02", "ifname": "evpn-vrf", "ipAddressList": ["10.0.0.102/32"],
@@ -68,19 +94,31 @@ tests:
     "ip6AddressList": ["::1/128"], "state": "up", "timestamp": 1594267588821}, {"namespace":
     "dual-evpn", "hostname": "exit02", "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"],
     "macaddr": "32:3f:81:fc:0c:ec", "ip6AddressList": [], "state": "up", "timestamp":
-    1594267588821}, {"namespace": "dual-evpn", "hostname": "exit02", "ifname": "swp5.2",
-    "ipAddressList": ["169.254.253.1/30"], "macaddr": "52:54:00:d7:c3:41", "ip6AddressList":
+    1594267588821}, {"namespace": "dual-evpn", "hostname": "exit02", "ifname": "swp1",
+    "ipAddressList": [], "macaddr": "52:54:00:9b:7d:02", "ip6AddressList": ["fe80::5054:ff:fe9b:7d02/64"],
+    "state": "up", "timestamp": 1594267588821}, {"namespace": "dual-evpn", "hostname":
+    "exit02", "ifname": "swp2", "ipAddressList": [], "macaddr": "52:54:00:61:05:42",
+    "ip6AddressList": ["fe80::5054:ff:fe61:542/64"], "state": "up", "timestamp": 1594267588821},
+    {"namespace": "dual-evpn", "hostname": "exit02", "ifname": "swp3", "ipAddressList":
+    [], "macaddr": "52:54:00:9c:54:78", "ip6AddressList": [], "state": "", "timestamp":
+    1594267588821}, {"namespace": "dual-evpn", "hostname": "exit02", "ifname": "swp4",
+    "ipAddressList": [], "macaddr": "52:54:00:cf:09:30", "ip6AddressList": [], "state":
+    "", "timestamp": 1594267588821}, {"namespace": "dual-evpn", "hostname": "exit02",
+    "ifname": "swp5.2", "ipAddressList": ["169.254.253.1/30"], "macaddr": "52:54:00:d7:c3:41",
+    "ip6AddressList": ["fe80::5054:ff:fed7:c341/64"], "state": "up", "timestamp":
+    1594267588821}, {"namespace": "dual-evpn", "hostname": "exit02", "ifname": "swp5.3",
+    "ipAddressList": ["169.254.253.5/30"], "macaddr": "52:54:00:d7:c3:41", "ip6AddressList":
     ["fe80::5054:ff:fed7:c341/64"], "state": "up", "timestamp": 1594267588821}, {"namespace":
-    "dual-evpn", "hostname": "exit02", "ifname": "swp5.3", "ipAddressList": ["169.254.253.5/30"],
+    "dual-evpn", "hostname": "exit02", "ifname": "swp5.4", "ipAddressList": ["169.254.253.9/30"],
     "macaddr": "52:54:00:d7:c3:41", "ip6AddressList": ["fe80::5054:ff:fed7:c341/64"],
     "state": "up", "timestamp": 1594267588821}, {"namespace": "dual-evpn", "hostname":
-    "exit02", "ifname": "swp5.4", "ipAddressList": ["169.254.253.9/30"], "macaddr":
-    "52:54:00:d7:c3:41", "ip6AddressList": ["fe80::5054:ff:fed7:c341/64"], "state":
-    "up", "timestamp": 1594267588821}, {"namespace": "dual-evpn", "hostname": "exit02",
-    "ifname": "swp6", "ipAddressList": ["169.254.127.3/31"], "macaddr": "52:54:00:1f:03:13",
-    "ip6AddressList": ["fe80::5054:ff:fe1f:313/64"], "state": "up", "timestamp": 1594267588821},
-    {"namespace": "dual-evpn", "hostname": "exit02", "ifname": "vlan13-v0", "ipAddressList":
-    ["172.16.1.1/24"], "macaddr": "44:39:39:ff:00:13", "ip6AddressList": ["fe80::4639:39ff:feff:13/64"],
+    "exit02", "ifname": "swp5", "ipAddressList": [], "macaddr": "52:54:00:d7:c3:41",
+    "ip6AddressList": ["fe80::5054:ff:fed7:c341/64"], "state": "up", "timestamp":
+    1594267588821}, {"namespace": "dual-evpn", "hostname": "exit02", "ifname": "swp6",
+    "ipAddressList": ["169.254.127.3/31"], "macaddr": "52:54:00:1f:03:13", "ip6AddressList":
+    ["fe80::5054:ff:fe1f:313/64"], "state": "up", "timestamp": 1594267588821}, {"namespace":
+    "dual-evpn", "hostname": "exit02", "ifname": "vlan13-v0", "ipAddressList": ["172.16.1.1/24"],
+    "macaddr": "44:39:39:ff:00:13", "ip6AddressList": ["fe80::4639:39ff:feff:13/64"],
     "state": "up", "timestamp": 1594267588821}, {"namespace": "dual-evpn", "hostname":
     "exit02", "ifname": "vlan13", "ipAddressList": ["172.16.1.12/24"], "macaddr":
     "8e:75:76:84:7f:df", "ip6AddressList": ["fe80::8c75:76ff:fe84:7fdf/64"], "state":
@@ -90,38 +128,115 @@ tests:
     1594267588821}, {"namespace": "dual-evpn", "hostname": "exit02", "ifname": "vlan24",
     "ipAddressList": ["172.16.2.12/24"], "macaddr": "8e:75:76:84:7f:df", "ip6AddressList":
     ["fe80::8c75:76ff:fe84:7fdf/64"], "state": "up", "timestamp": 1594267588821},
-    {"namespace": "dual-evpn", "hostname": "internet", "ifname": "eth0", "ipAddressList":
-    ["192.168.121.161/24"], "macaddr": "52:54:00:67:83:d2", "ip6AddressList": ["fe80::5054:ff:fe67:83d2/64"],
+    {"namespace": "dual-evpn", "hostname": "exit02", "ifname": "vni13", "ipAddressList":
+    [], "macaddr": "de:e0:44:44:19:bc", "ip6AddressList": [], "state": "up", "timestamp":
+    1594267588821}, {"namespace": "dual-evpn", "hostname": "exit02", "ifname": "vni24",
+    "ipAddressList": [], "macaddr": "8e:75:76:84:7f:df", "ip6AddressList": [], "state":
+    "up", "timestamp": 1594267588821}, {"namespace": "dual-evpn", "hostname": "internet",
+    "ifname": "eth0", "ipAddressList": ["192.168.121.161/24"], "macaddr": "52:54:00:67:83:d2",
+    "ip6AddressList": ["fe80::5054:ff:fe67:83d2/64"], "state": "up", "timestamp":
+    1594267588826}, {"namespace": "dual-evpn", "hostname": "internet", "ifname": "lo",
+    "ipAddressList": ["10.0.0.253/32", "172.16.253.1/32"], "macaddr": "00:00:00:00:00:00",
+    "ip6AddressList": ["::1/128"], "state": "up", "timestamp": 1594267588826}, {"namespace":
+    "dual-evpn", "hostname": "internet", "ifname": "swp1", "ipAddressList": ["169.254.127.0/31"],
+    "macaddr": "52:54:00:24:00:a5", "ip6AddressList": ["fe80::5054:ff:fe24:a5/64"],
     "state": "up", "timestamp": 1594267588826}, {"namespace": "dual-evpn", "hostname":
-    "internet", "ifname": "lo", "ipAddressList": ["10.0.0.253/32", "172.16.253.1/32"],
-    "macaddr": "00:00:00:00:00:00", "ip6AddressList": ["::1/128"], "state": "up",
-    "timestamp": 1594267588826}, {"namespace": "dual-evpn", "hostname": "internet",
-    "ifname": "swp1", "ipAddressList": ["169.254.127.0/31"], "macaddr": "52:54:00:24:00:a5",
-    "ip6AddressList": ["fe80::5054:ff:fe24:a5/64"], "state": "up", "timestamp": 1594267588826},
-    {"namespace": "dual-evpn", "hostname": "internet", "ifname": "swp2", "ipAddressList":
-    ["169.254.127.2/31"], "macaddr": "52:54:00:36:cd:f5", "ip6AddressList": ["fe80::5054:ff:fe36:cdf5/64"],
-    "state": "up", "timestamp": 1594267588826}, {"namespace": "dual-evpn", "hostname":
-    "leaf01", "ifname": "eth0", "ipAddressList": ["192.168.121.165/24"], "macaddr":
-    "52:54:00:0c:73:94", "ip6AddressList": ["fe80::5054:ff:fe0c:7394/64"], "state":
+    "internet", "ifname": "swp2", "ipAddressList": ["169.254.127.2/31"], "macaddr":
+    "52:54:00:36:cd:f5", "ip6AddressList": ["fe80::5054:ff:fe36:cdf5/64"], "state":
     "up", "timestamp": 1594267588826}, {"namespace": "dual-evpn", "hostname": "leaf01",
-    "ifname": "lo", "ipAddressList": ["10.0.0.11/32", "10.0.0.112/32"], "macaddr":
-    "00:00:00:00:00:00", "ip6AddressList": ["::1/128"], "state": "up", "timestamp":
-    1594267588826}, {"namespace": "dual-evpn", "hostname": "leaf01", "ifname": "mgmt",
-    "ipAddressList": ["127.0.0.1/8"], "macaddr": "ea:1a:96:f0:ef:0c", "ip6AddressList":
+    "ifname": "bond01", "ipAddressList": [], "macaddr": "52:54:00:46:64:9a", "ip6AddressList":
     [], "state": "up", "timestamp": 1594267588826}, {"namespace": "dual-evpn", "hostname":
-    "leaf01", "ifname": "peerlink.4094", "ipAddressList": ["169.254.1.1/30"], "macaddr":
-    "52:54:00:81:98:e6", "ip6AddressList": ["fe80::5054:ff:fe81:98e6/64"], "state":
-    "up", "timestamp": 1594267588826}, {"namespace": "dual-evpn", "hostname": "leaf02",
-    "ifname": "eth0", "ipAddressList": ["192.168.121.200/24"], "macaddr": "52:54:00:ea:19:fe",
-    "ip6AddressList": ["fe80::5054:ff:feea:19fe/64"], "state": "up", "timestamp":
-    1594267588822}, {"namespace": "dual-evpn", "hostname": "leaf02", "ifname": "lo",
-    "ipAddressList": ["10.0.0.12/32"], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    ["::1/128"], "state": "up", "timestamp": 1594267588822}, {"namespace": "dual-evpn",
-    "hostname": "leaf02", "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"], "macaddr":
-    "4a:ea:2e:2a:c6:0b", "ip6AddressList": [], "state": "up", "timestamp": 1594267588822},
-    {"namespace": "dual-evpn", "hostname": "leaf02", "ifname": "peerlink.4094", "ipAddressList":
-    ["169.254.1.2/30"], "macaddr": "52:54:00:b2:c8:e4", "ip6AddressList": ["fe80::5054:ff:feb2:c8e4/64"],
+    "leaf01", "ifname": "bond02", "ipAddressList": [], "macaddr": "52:54:00:31:5f:5e",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594267588826}, {"namespace":
+    "dual-evpn", "hostname": "leaf01", "ifname": "bridge", "ipAddressList": [], "macaddr":
+    "52:54:00:46:64:9a", "ip6AddressList": ["fe80::5054:ff:fe46:649a/64"], "state":
+    "up", "timestamp": 1594267588826}, {"namespace": "dual-evpn", "hostname": "leaf01",
+    "ifname": "eth0", "ipAddressList": ["192.168.121.165/24"], "macaddr": "52:54:00:0c:73:94",
+    "ip6AddressList": ["fe80::5054:ff:fe0c:7394/64"], "state": "up", "timestamp":
+    1594267588826}, {"namespace": "dual-evpn", "hostname": "leaf01", "ifname": "lo",
+    "ipAddressList": ["10.0.0.11/32", "10.0.0.112/32"], "macaddr": "00:00:00:00:00:00",
+    "ip6AddressList": ["::1/128"], "state": "up", "timestamp": 1594267588826}, {"namespace":
+    "dual-evpn", "hostname": "leaf01", "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"],
+    "macaddr": "ea:1a:96:f0:ef:0c", "ip6AddressList": [], "state": "up", "timestamp":
+    1594267588826}, {"namespace": "dual-evpn", "hostname": "leaf01", "ifname": "peerlink.4094",
+    "ipAddressList": ["169.254.1.1/30"], "macaddr": "52:54:00:81:98:e6", "ip6AddressList":
+    ["fe80::5054:ff:fe81:98e6/64"], "state": "up", "timestamp": 1594267588826}, {"namespace":
+    "dual-evpn", "hostname": "leaf01", "ifname": "peerlink", "ipAddressList": [],
+    "macaddr": "52:54:00:81:98:e6", "ip6AddressList": [], "state": "up", "timestamp":
+    1594267588826}, {"namespace": "dual-evpn", "hostname": "leaf01", "ifname": "swp1",
+    "ipAddressList": [], "macaddr": "52:54:00:89:68:25", "ip6AddressList": ["fe80::5054:ff:fe89:6825/64"],
+    "state": "up", "timestamp": 1594267588826}, {"namespace": "dual-evpn", "hostname":
+    "leaf01", "ifname": "swp2", "ipAddressList": [], "macaddr": "52:54:00:05:25:fe",
+    "ip6AddressList": ["fe80::5054:ff:fe05:25fe/64"], "state": "up", "timestamp":
+    1594267588826}, {"namespace": "dual-evpn", "hostname": "leaf01", "ifname": "swp3",
+    "ipAddressList": [], "macaddr": "52:54:00:81:98:e6", "ip6AddressList": [], "state":
+    "up", "timestamp": 1594267588826}, {"namespace": "dual-evpn", "hostname": "leaf01",
+    "ifname": "swp4", "ipAddressList": [], "macaddr": "52:54:00:81:98:e6", "ip6AddressList":
+    [], "state": "up", "timestamp": 1594267588826}, {"namespace": "dual-evpn", "hostname":
+    "leaf01", "ifname": "swp5", "ipAddressList": [], "macaddr": "52:54:00:46:64:9a",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594267588826}, {"namespace":
+    "dual-evpn", "hostname": "leaf01", "ifname": "swp6", "ipAddressList": [], "macaddr":
+    "52:54:00:31:5f:5e", "ip6AddressList": [], "state": "up", "timestamp": 1594267588826},
+    {"namespace": "dual-evpn", "hostname": "leaf01", "ifname": "vlan13", "ipAddressList":
+    [], "macaddr": "52:54:00:46:64:9a", "ip6AddressList": ["fe80::5054:ff:fe46:649a/64"],
+    "state": "up", "timestamp": 1594267588826}, {"namespace": "dual-evpn", "hostname":
+    "leaf01", "ifname": "vlan24", "ipAddressList": [], "macaddr": "52:54:00:46:64:9a",
+    "ip6AddressList": ["fe80::5054:ff:fe46:649a/64"], "state": "up", "timestamp":
+    1594267588826}, {"namespace": "dual-evpn", "hostname": "leaf01", "ifname": "vni13",
+    "ipAddressList": [], "macaddr": "22:70:3e:41:a0:63", "ip6AddressList": [], "state":
+    "up", "timestamp": 1594267588826}, {"namespace": "dual-evpn", "hostname": "leaf01",
+    "ifname": "vni24", "ipAddressList": [], "macaddr": "ba:db:12:8a:d8:78", "ip6AddressList":
+    [], "state": "up", "timestamp": 1594267588826}, {"namespace": "dual-evpn", "hostname":
+    "leaf02", "ifname": "bond01", "ipAddressList": [], "macaddr": "52:54:00:02:89:17",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594267588822}, {"namespace":
+    "dual-evpn", "hostname": "leaf02", "ifname": "bond02", "ipAddressList": [], "macaddr":
+    "52:54:00:c8:97:f2", "ip6AddressList": [], "state": "up", "timestamp": 1594267588822},
+    {"namespace": "dual-evpn", "hostname": "leaf02", "ifname": "bridge", "ipAddressList":
+    [], "macaddr": "52:54:00:02:89:17", "ip6AddressList": ["fe80::5054:ff:fe02:8917/64"],
     "state": "up", "timestamp": 1594267588822}, {"namespace": "dual-evpn", "hostname":
+    "leaf02", "ifname": "eth0", "ipAddressList": ["192.168.121.200/24"], "macaddr":
+    "52:54:00:ea:19:fe", "ip6AddressList": ["fe80::5054:ff:feea:19fe/64"], "state":
+    "up", "timestamp": 1594267588822}, {"namespace": "dual-evpn", "hostname": "leaf02",
+    "ifname": "lo", "ipAddressList": ["10.0.0.12/32"], "macaddr": "00:00:00:00:00:00",
+    "ip6AddressList": ["::1/128"], "state": "up", "timestamp": 1594267588822}, {"namespace":
+    "dual-evpn", "hostname": "leaf02", "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"],
+    "macaddr": "4a:ea:2e:2a:c6:0b", "ip6AddressList": [], "state": "up", "timestamp":
+    1594267588822}, {"namespace": "dual-evpn", "hostname": "leaf02", "ifname": "peerlink.4094",
+    "ipAddressList": ["169.254.1.2/30"], "macaddr": "52:54:00:b2:c8:e4", "ip6AddressList":
+    ["fe80::5054:ff:feb2:c8e4/64"], "state": "up", "timestamp": 1594267588822}, {"namespace":
+    "dual-evpn", "hostname": "leaf02", "ifname": "peerlink", "ipAddressList": [],
+    "macaddr": "52:54:00:b2:c8:e4", "ip6AddressList": [], "state": "up", "timestamp":
+    1594267588822}, {"namespace": "dual-evpn", "hostname": "leaf02", "ifname": "swp1",
+    "ipAddressList": [], "macaddr": "52:54:00:24:16:8b", "ip6AddressList": ["fe80::5054:ff:fe24:168b/64"],
+    "state": "up", "timestamp": 1594267588822}, {"namespace": "dual-evpn", "hostname":
+    "leaf02", "ifname": "swp2", "ipAddressList": [], "macaddr": "52:54:00:74:c5:39",
+    "ip6AddressList": ["fe80::5054:ff:fe74:c539/64"], "state": "up", "timestamp":
+    1594267588822}, {"namespace": "dual-evpn", "hostname": "leaf02", "ifname": "swp3",
+    "ipAddressList": [], "macaddr": "52:54:00:b2:c8:e4", "ip6AddressList": [], "state":
+    "up", "timestamp": 1594267588822}, {"namespace": "dual-evpn", "hostname": "leaf02",
+    "ifname": "swp4", "ipAddressList": [], "macaddr": "52:54:00:b2:c8:e4", "ip6AddressList":
+    [], "state": "up", "timestamp": 1594267588822}, {"namespace": "dual-evpn", "hostname":
+    "leaf02", "ifname": "swp5", "ipAddressList": [], "macaddr": "52:54:00:02:89:17",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594267588822}, {"namespace":
+    "dual-evpn", "hostname": "leaf02", "ifname": "swp6", "ipAddressList": [], "macaddr":
+    "52:54:00:c8:97:f2", "ip6AddressList": [], "state": "up", "timestamp": 1594267588822},
+    {"namespace": "dual-evpn", "hostname": "leaf02", "ifname": "vlan13", "ipAddressList":
+    [], "macaddr": "52:54:00:02:89:17", "ip6AddressList": ["fe80::5054:ff:fe02:8917/64"],
+    "state": "up", "timestamp": 1594267588822}, {"namespace": "dual-evpn", "hostname":
+    "leaf02", "ifname": "vlan24", "ipAddressList": [], "macaddr": "52:54:00:02:89:17",
+    "ip6AddressList": ["fe80::5054:ff:fe02:8917/64"], "state": "up", "timestamp":
+    1594267588822}, {"namespace": "dual-evpn", "hostname": "leaf02", "ifname": "vni13",
+    "ipAddressList": [], "macaddr": "8a:86:03:bd:07:54", "ip6AddressList": [], "state":
+    "up", "timestamp": 1594267588822}, {"namespace": "dual-evpn", "hostname": "leaf02",
+    "ifname": "vni24", "ipAddressList": [], "macaddr": "fe:d6:6c:29:0d:5b", "ip6AddressList":
+    [], "state": "up", "timestamp": 1594267588822}, {"namespace": "dual-evpn", "hostname":
+    "leaf03", "ifname": "bond01", "ipAddressList": [], "macaddr": "52:54:00:59:57:3e",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594267588961}, {"namespace":
+    "dual-evpn", "hostname": "leaf03", "ifname": "bond02", "ipAddressList": [], "macaddr":
+    "52:54:00:7b:d1:4c", "ip6AddressList": [], "state": "up", "timestamp": 1594267588961},
+    {"namespace": "dual-evpn", "hostname": "leaf03", "ifname": "bridge", "ipAddressList":
+    [], "macaddr": "52:54:00:59:57:3e", "ip6AddressList": ["fe80::5054:ff:fe59:573e/64"],
+    "state": "up", "timestamp": 1594267588961}, {"namespace": "dual-evpn", "hostname":
     "leaf03", "ifname": "eth0", "ipAddressList": ["192.168.121.58/24"], "macaddr":
     "52:54:00:3e:93:38", "ip6AddressList": ["fe80::5054:ff:fe3e:9338/64"], "state":
     "up", "timestamp": 1594267588961}, {"namespace": "dual-evpn", "hostname": "leaf03",
@@ -132,44 +247,144 @@ tests:
     [], "state": "up", "timestamp": 1594267588961}, {"namespace": "dual-evpn", "hostname":
     "leaf03", "ifname": "peerlink.4094", "ipAddressList": ["169.254.1.1/30"], "macaddr":
     "52:54:00:28:4f:d0", "ip6AddressList": ["fe80::5054:ff:fe28:4fd0/64"], "state":
-    "up", "timestamp": 1594267588961}, {"namespace": "dual-evpn", "hostname": "leaf04",
-    "ifname": "eth0", "ipAddressList": ["192.168.121.241/24"], "macaddr": "52:54:00:40:25:bb",
-    "ip6AddressList": ["fe80::5054:ff:fe40:25bb/64"], "state": "up", "timestamp":
-    1594267588822}, {"namespace": "dual-evpn", "hostname": "leaf04", "ifname": "lo",
-    "ipAddressList": ["10.0.0.14/32", "10.0.0.134/32"], "macaddr": "00:00:00:00:00:00",
-    "ip6AddressList": ["::1/128"], "state": "up", "timestamp": 1594267588822}, {"namespace":
-    "dual-evpn", "hostname": "leaf04", "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"],
-    "macaddr": "02:1b:7e:cf:98:e4", "ip6AddressList": [], "state": "up", "timestamp":
-    1594267588822}, {"namespace": "dual-evpn", "hostname": "leaf04", "ifname": "peerlink.4094",
-    "ipAddressList": ["169.254.1.2/30"], "macaddr": "52:54:00:8b:08:93", "ip6AddressList":
-    ["fe80::5054:ff:fe8b:893/64"], "state": "up", "timestamp": 1594267588822}, {"namespace":
+    "up", "timestamp": 1594267588961}, {"namespace": "dual-evpn", "hostname": "leaf03",
+    "ifname": "peerlink", "ipAddressList": [], "macaddr": "52:54:00:28:4f:d0", "ip6AddressList":
+    [], "state": "up", "timestamp": 1594267588961}, {"namespace": "dual-evpn", "hostname":
+    "leaf03", "ifname": "swp1", "ipAddressList": [], "macaddr": "52:54:00:ed:a8:51",
+    "ip6AddressList": ["fe80::5054:ff:feed:a851/64"], "state": "up", "timestamp":
+    1594267588961}, {"namespace": "dual-evpn", "hostname": "leaf03", "ifname": "swp2",
+    "ipAddressList": [], "macaddr": "52:54:00:a6:a4:3d", "ip6AddressList": ["fe80::5054:ff:fea6:a43d/64"],
+    "state": "up", "timestamp": 1594267588961}, {"namespace": "dual-evpn", "hostname":
+    "leaf03", "ifname": "swp3", "ipAddressList": [], "macaddr": "52:54:00:28:4f:d0",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594267588961}, {"namespace":
+    "dual-evpn", "hostname": "leaf03", "ifname": "swp4", "ipAddressList": [], "macaddr":
+    "52:54:00:28:4f:d0", "ip6AddressList": [], "state": "up", "timestamp": 1594267588961},
+    {"namespace": "dual-evpn", "hostname": "leaf03", "ifname": "swp5", "ipAddressList":
+    [], "macaddr": "52:54:00:59:57:3e", "ip6AddressList": [], "state": "up", "timestamp":
+    1594267588961}, {"namespace": "dual-evpn", "hostname": "leaf03", "ifname": "swp6",
+    "ipAddressList": [], "macaddr": "52:54:00:7b:d1:4c", "ip6AddressList": [], "state":
+    "up", "timestamp": 1594267588961}, {"namespace": "dual-evpn", "hostname": "leaf03",
+    "ifname": "vlan13", "ipAddressList": [], "macaddr": "52:54:00:59:57:3e", "ip6AddressList":
+    ["fe80::5054:ff:fe59:573e/64"], "state": "up", "timestamp": 1594267588961}, {"namespace":
+    "dual-evpn", "hostname": "leaf03", "ifname": "vlan24", "ipAddressList": [], "macaddr":
+    "52:54:00:59:57:3e", "ip6AddressList": ["fe80::5054:ff:fe59:573e/64"], "state":
+    "up", "timestamp": 1594267588961}, {"namespace": "dual-evpn", "hostname": "leaf03",
+    "ifname": "vni13", "ipAddressList": [], "macaddr": "b2:e5:10:9a:47:c1", "ip6AddressList":
+    [], "state": "up", "timestamp": 1594267588961}, {"namespace": "dual-evpn", "hostname":
+    "leaf03", "ifname": "vni24", "ipAddressList": [], "macaddr": "96:0f:24:78:ff:99",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594267588961}, {"namespace":
+    "dual-evpn", "hostname": "leaf04", "ifname": "bond01", "ipAddressList": [], "macaddr":
+    "52:54:00:f2:28:29", "ip6AddressList": [], "state": "up", "timestamp": 1594267588822},
+    {"namespace": "dual-evpn", "hostname": "leaf04", "ifname": "bond02", "ipAddressList":
+    [], "macaddr": "52:54:00:e2:58:26", "ip6AddressList": [], "state": "up", "timestamp":
+    1594267588822}, {"namespace": "dual-evpn", "hostname": "leaf04", "ifname": "bridge",
+    "ipAddressList": [], "macaddr": "52:54:00:f2:28:29", "ip6AddressList": ["fe80::5054:ff:fef2:2829/64"],
+    "state": "up", "timestamp": 1594267588822}, {"namespace": "dual-evpn", "hostname":
+    "leaf04", "ifname": "eth0", "ipAddressList": ["192.168.121.241/24"], "macaddr":
+    "52:54:00:40:25:bb", "ip6AddressList": ["fe80::5054:ff:fe40:25bb/64"], "state":
+    "up", "timestamp": 1594267588822}, {"namespace": "dual-evpn", "hostname": "leaf04",
+    "ifname": "lo", "ipAddressList": ["10.0.0.14/32", "10.0.0.134/32"], "macaddr":
+    "00:00:00:00:00:00", "ip6AddressList": ["::1/128"], "state": "up", "timestamp":
+    1594267588822}, {"namespace": "dual-evpn", "hostname": "leaf04", "ifname": "mgmt",
+    "ipAddressList": ["127.0.0.1/8"], "macaddr": "02:1b:7e:cf:98:e4", "ip6AddressList":
+    [], "state": "up", "timestamp": 1594267588822}, {"namespace": "dual-evpn", "hostname":
+    "leaf04", "ifname": "peerlink.4094", "ipAddressList": ["169.254.1.2/30"], "macaddr":
+    "52:54:00:8b:08:93", "ip6AddressList": ["fe80::5054:ff:fe8b:893/64"], "state":
+    "up", "timestamp": 1594267588822}, {"namespace": "dual-evpn", "hostname": "leaf04",
+    "ifname": "peerlink", "ipAddressList": [], "macaddr": "52:54:00:8b:08:93", "ip6AddressList":
+    [], "state": "up", "timestamp": 1594267588822}, {"namespace": "dual-evpn", "hostname":
+    "leaf04", "ifname": "swp1", "ipAddressList": [], "macaddr": "52:54:00:fd:3a:72",
+    "ip6AddressList": ["fe80::5054:ff:fefd:3a72/64"], "state": "up", "timestamp":
+    1594267588822}, {"namespace": "dual-evpn", "hostname": "leaf04", "ifname": "swp2",
+    "ipAddressList": [], "macaddr": "52:54:00:02:d1:62", "ip6AddressList": ["fe80::5054:ff:fe02:d162/64"],
+    "state": "up", "timestamp": 1594267588822}, {"namespace": "dual-evpn", "hostname":
+    "leaf04", "ifname": "swp3", "ipAddressList": [], "macaddr": "52:54:00:8b:08:93",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594267588822}, {"namespace":
+    "dual-evpn", "hostname": "leaf04", "ifname": "swp4", "ipAddressList": [], "macaddr":
+    "52:54:00:8b:08:93", "ip6AddressList": [], "state": "up", "timestamp": 1594267588822},
+    {"namespace": "dual-evpn", "hostname": "leaf04", "ifname": "swp5", "ipAddressList":
+    [], "macaddr": "52:54:00:f2:28:29", "ip6AddressList": [], "state": "up", "timestamp":
+    1594267588822}, {"namespace": "dual-evpn", "hostname": "leaf04", "ifname": "swp6",
+    "ipAddressList": [], "macaddr": "52:54:00:e2:58:26", "ip6AddressList": [], "state":
+    "up", "timestamp": 1594267588822}, {"namespace": "dual-evpn", "hostname": "leaf04",
+    "ifname": "vlan13", "ipAddressList": [], "macaddr": "52:54:00:f2:28:29", "ip6AddressList":
+    ["fe80::5054:ff:fef2:2829/64"], "state": "up", "timestamp": 1594267588822}, {"namespace":
+    "dual-evpn", "hostname": "leaf04", "ifname": "vlan24", "ipAddressList": [], "macaddr":
+    "52:54:00:f2:28:29", "ip6AddressList": ["fe80::5054:ff:fef2:2829/64"], "state":
+    "up", "timestamp": 1594267588822}, {"namespace": "dual-evpn", "hostname": "leaf04",
+    "ifname": "vni13", "ipAddressList": [], "macaddr": "7e:e0:64:e3:61:ca", "ip6AddressList":
+    [], "state": "up", "timestamp": 1594267588822}, {"namespace": "dual-evpn", "hostname":
+    "leaf04", "ifname": "vni24", "ipAddressList": [], "macaddr": "7e:e2:ae:94:5f:e7",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594267588822}, {"namespace":
     "dual-evpn", "hostname": "server101", "ifname": "bond0", "ipAddressList": ["172.16.1.101/24"],
     "macaddr": "52:54:00:23:b3:95", "ip6AddressList": [], "state": "up", "timestamp":
     1594267588663}, {"namespace": "dual-evpn", "hostname": "server101", "ifname":
     "eth0", "ipAddressList": ["192.168.121.164/24"], "macaddr": "52:54:00:51:dd:85",
     "ip6AddressList": [], "state": "up", "timestamp": 1594267588663}, {"namespace":
-    "dual-evpn", "hostname": "server102", "ifname": "bond0", "ipAddressList": ["172.16.2.102/24"],
-    "macaddr": "52:54:00:0a:6b:70", "ip6AddressList": [], "state": "up", "timestamp":
-    1594267588662}, {"namespace": "dual-evpn", "hostname": "server102", "ifname":
-    "eth0", "ipAddressList": ["192.168.121.252/24"], "macaddr": "52:54:00:d0:86:50",
+    "dual-evpn", "hostname": "server101", "ifname": "eth1", "ipAddressList": [], "macaddr":
+    "52:54:00:23:b3:95", "ip6AddressList": [], "state": "up", "timestamp": 1594267588663},
+    {"namespace": "dual-evpn", "hostname": "server101", "ifname": "eth2", "ipAddressList":
+    [], "macaddr": "52:54:00:23:b3:95", "ip6AddressList": [], "state": "up", "timestamp":
+    1594267588663}, {"namespace": "dual-evpn", "hostname": "server101", "ifname":
+    "lo", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [],
+    "state": "up", "timestamp": 1594267588663}, {"namespace": "dual-evpn", "hostname":
+    "server102", "ifname": "bond0", "ipAddressList": ["172.16.2.102/24"], "macaddr":
+    "52:54:00:0a:6b:70", "ip6AddressList": [], "state": "up", "timestamp": 1594267588662},
+    {"namespace": "dual-evpn", "hostname": "server102", "ifname": "eth0", "ipAddressList":
+    ["192.168.121.252/24"], "macaddr": "52:54:00:d0:86:50", "ip6AddressList": [],
+    "state": "up", "timestamp": 1594267588662}, {"namespace": "dual-evpn", "hostname":
+    "server102", "ifname": "eth1", "ipAddressList": [], "macaddr": "52:54:00:0a:6b:70",
     "ip6AddressList": [], "state": "up", "timestamp": 1594267588662}, {"namespace":
-    "dual-evpn", "hostname": "server103", "ifname": "bond0", "ipAddressList": ["172.16.1.103/24"],
-    "macaddr": "52:54:00:d7:91:75", "ip6AddressList": [], "state": "up", "timestamp":
+    "dual-evpn", "hostname": "server102", "ifname": "eth2", "ipAddressList": [], "macaddr":
+    "52:54:00:0a:6b:70", "ip6AddressList": [], "state": "up", "timestamp": 1594267588662},
+    {"namespace": "dual-evpn", "hostname": "server102", "ifname": "lo", "ipAddressList":
+    [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "timestamp":
+    1594267588662}, {"namespace": "dual-evpn", "hostname": "server103", "ifname":
+    "bond0", "ipAddressList": ["172.16.1.103/24"], "macaddr": "52:54:00:d7:91:75",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594267588663}, {"namespace":
+    "dual-evpn", "hostname": "server103", "ifname": "eth0", "ipAddressList": ["192.168.121.198/24"],
+    "macaddr": "52:54:00:c5:fb:f3", "ip6AddressList": [], "state": "up", "timestamp":
     1594267588663}, {"namespace": "dual-evpn", "hostname": "server103", "ifname":
-    "eth0", "ipAddressList": ["192.168.121.198/24"], "macaddr": "52:54:00:c5:fb:f3",
+    "eth1", "ipAddressList": [], "macaddr": "52:54:00:d7:91:75", "ip6AddressList":
+    [], "state": "up", "timestamp": 1594267588663}, {"namespace": "dual-evpn", "hostname":
+    "server103", "ifname": "eth2", "ipAddressList": [], "macaddr": "52:54:00:d7:91:75",
     "ip6AddressList": [], "state": "up", "timestamp": 1594267588663}, {"namespace":
-    "dual-evpn", "hostname": "server104", "ifname": "bond0", "ipAddressList": ["172.16.2.104/24"],
-    "macaddr": "52:54:00:61:97:97", "ip6AddressList": [], "state": "up", "timestamp":
+    "dual-evpn", "hostname": "server103", "ifname": "lo", "ipAddressList": [], "macaddr":
+    "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "timestamp": 1594267588663},
+    {"namespace": "dual-evpn", "hostname": "server104", "ifname": "bond0", "ipAddressList":
+    ["172.16.2.104/24"], "macaddr": "52:54:00:61:97:97", "ip6AddressList": [], "state":
+    "up", "timestamp": 1594267588663}, {"namespace": "dual-evpn", "hostname": "server104",
+    "ifname": "eth0", "ipAddressList": ["192.168.121.25/24"], "macaddr": "52:54:00:a2:15:4d",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594267588663}, {"namespace":
+    "dual-evpn", "hostname": "server104", "ifname": "eth1", "ipAddressList": [], "macaddr":
+    "52:54:00:61:97:97", "ip6AddressList": [], "state": "up", "timestamp": 1594267588663},
+    {"namespace": "dual-evpn", "hostname": "server104", "ifname": "eth2", "ipAddressList":
+    [], "macaddr": "52:54:00:61:97:97", "ip6AddressList": [], "state": "up", "timestamp":
     1594267588663}, {"namespace": "dual-evpn", "hostname": "server104", "ifname":
-    "eth0", "ipAddressList": ["192.168.121.25/24"], "macaddr": "52:54:00:a2:15:4d",
-    "ip6AddressList": [], "state": "up", "timestamp": 1594267588663}, {"namespace":
-    "dual-evpn", "hostname": "spine01", "ifname": "eth0", "ipAddressList": ["192.168.121.47/24"],
-    "macaddr": "52:54:00:48:d1:b7", "ip6AddressList": ["fe80::5054:ff:fe48:d1b7/64"],
-    "state": "up", "timestamp": 1594267588821}, {"namespace": "dual-evpn", "hostname":
-    "spine01", "ifname": "lo", "ipAddressList": ["10.0.0.21/32"], "macaddr": "00:00:00:00:00:00",
+    "lo", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [],
+    "state": "up", "timestamp": 1594267588663}, {"namespace": "dual-evpn", "hostname":
+    "spine01", "ifname": "eth0", "ipAddressList": ["192.168.121.47/24"], "macaddr":
+    "52:54:00:48:d1:b7", "ip6AddressList": ["fe80::5054:ff:fe48:d1b7/64"], "state":
+    "up", "timestamp": 1594267588821}, {"namespace": "dual-evpn", "hostname": "spine01",
+    "ifname": "lo", "ipAddressList": ["10.0.0.21/32"], "macaddr": "00:00:00:00:00:00",
     "ip6AddressList": ["::1/128"], "state": "up", "timestamp": 1594267588821}, {"namespace":
     "dual-evpn", "hostname": "spine01", "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"],
     "macaddr": "fa:99:2c:08:0e:74", "ip6AddressList": [], "state": "up", "timestamp":
+    1594267588821}, {"namespace": "dual-evpn", "hostname": "spine01", "ifname": "swp1",
+    "ipAddressList": [], "macaddr": "52:54:00:1d:dc:6d", "ip6AddressList": ["fe80::5054:ff:fe1d:dc6d/64"],
+    "state": "up", "timestamp": 1594267588821}, {"namespace": "dual-evpn", "hostname":
+    "spine01", "ifname": "swp2", "ipAddressList": [], "macaddr": "52:54:00:f4:54:24",
+    "ip6AddressList": ["fe80::5054:ff:fef4:5424/64"], "state": "up", "timestamp":
+    1594267588821}, {"namespace": "dual-evpn", "hostname": "spine01", "ifname": "swp3",
+    "ipAddressList": [], "macaddr": "52:54:00:16:86:6b", "ip6AddressList": ["fe80::5054:ff:fe16:866b/64"],
+    "state": "up", "timestamp": 1594267588821}, {"namespace": "dual-evpn", "hostname":
+    "spine01", "ifname": "swp4", "ipAddressList": [], "macaddr": "52:54:00:4f:98:3c",
+    "ip6AddressList": ["fe80::5054:ff:fe4f:983c/64"], "state": "up", "timestamp":
+    1594267588821}, {"namespace": "dual-evpn", "hostname": "spine01", "ifname": "swp5",
+    "ipAddressList": [], "macaddr": "52:54:00:cf:4f:8c", "ip6AddressList": ["fe80::5054:ff:fecf:4f8c/64"],
+    "state": "up", "timestamp": 1594267588821}, {"namespace": "dual-evpn", "hostname":
+    "spine01", "ifname": "swp6", "ipAddressList": [], "macaddr": "52:54:00:ab:23:23",
+    "ip6AddressList": ["fe80::5054:ff:feab:2323/64"], "state": "up", "timestamp":
     1594267588821}, {"namespace": "dual-evpn", "hostname": "spine02", "ifname": "eth0",
     "ipAddressList": ["192.168.121.181/24"], "macaddr": "52:54:00:22:a2:d3", "ip6AddressList":
     ["fe80::5054:ff:fe22:a2d3/64"], "state": "up", "timestamp": 1594267588826}, {"namespace":
@@ -178,6 +393,21 @@ tests:
     "timestamp": 1594267588826}, {"namespace": "dual-evpn", "hostname": "spine02",
     "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"], "macaddr": "7a:fd:a9:38:b1:4a",
     "ip6AddressList": [], "state": "up", "timestamp": 1594267588826}, {"namespace":
+    "dual-evpn", "hostname": "spine02", "ifname": "swp1", "ipAddressList": [], "macaddr":
+    "52:54:00:95:47:3a", "ip6AddressList": ["fe80::5054:ff:fe95:473a/64"], "state":
+    "up", "timestamp": 1594267588826}, {"namespace": "dual-evpn", "hostname": "spine02",
+    "ifname": "swp2", "ipAddressList": [], "macaddr": "52:54:00:58:6d:f0", "ip6AddressList":
+    ["fe80::5054:ff:fe58:6df0/64"], "state": "up", "timestamp": 1594267588826}, {"namespace":
+    "dual-evpn", "hostname": "spine02", "ifname": "swp3", "ipAddressList": [], "macaddr":
+    "52:54:00:9e:0b:94", "ip6AddressList": ["fe80::5054:ff:fe9e:b94/64"], "state":
+    "up", "timestamp": 1594267588826}, {"namespace": "dual-evpn", "hostname": "spine02",
+    "ifname": "swp4", "ipAddressList": [], "macaddr": "52:54:00:b0:37:2c", "ip6AddressList":
+    ["fe80::5054:ff:feb0:372c/64"], "state": "up", "timestamp": 1594267588826}, {"namespace":
+    "dual-evpn", "hostname": "spine02", "ifname": "swp5", "ipAddressList": [], "macaddr":
+    "52:54:00:18:78:dc", "ip6AddressList": ["fe80::5054:ff:fe18:78dc/64"], "state":
+    "up", "timestamp": 1594267588826}, {"namespace": "dual-evpn", "hostname": "spine02",
+    "ifname": "swp6", "ipAddressList": [], "macaddr": "52:54:00:75:f2:ae", "ip6AddressList":
+    ["fe80::5054:ff:fe75:f2ae/64"], "state": "up", "timestamp": 1594267588826}, {"namespace":
     "ospf-ibgp", "hostname": "edge01", "ifname": "eth0", "ipAddressList": ["192.168.121.76/24"],
     "macaddr": "52:54:00:1b:70:df", "ip6AddressList": [], "state": "up", "timestamp":
     1594267161151}, {"namespace": "ospf-ibgp", "hostname": "edge01", "ifname": "eth1.2",
@@ -188,17 +418,24 @@ tests:
     {"namespace": "ospf-ibgp", "hostname": "edge01", "ifname": "eth1.4", "ipAddressList":
     ["169.254.254.10/30"], "macaddr": "52:54:00:03:66:57", "ip6AddressList": [], "state":
     "up", "timestamp": 1594267161151}, {"namespace": "ospf-ibgp", "hostname": "edge01",
-    "ifname": "eth2.2", "ipAddressList": ["169.254.253.2/30"], "macaddr": "52:54:00:9e:29:aa",
-    "ip6AddressList": [], "state": "up", "timestamp": 1594267161151}, {"namespace":
-    "ospf-ibgp", "hostname": "edge01", "ifname": "eth2.3", "ipAddressList": ["169.254.253.6/30"],
-    "macaddr": "52:54:00:9e:29:aa", "ip6AddressList": [], "state": "up", "timestamp":
-    1594267161151}, {"namespace": "ospf-ibgp", "hostname": "edge01", "ifname": "eth2.4",
-    "ipAddressList": ["169.254.253.10/30"], "macaddr": "52:54:00:9e:29:aa", "ip6AddressList":
+    "ifname": "eth1", "ipAddressList": [], "macaddr": "52:54:00:03:66:57", "ip6AddressList":
     [], "state": "up", "timestamp": 1594267161151}, {"namespace": "ospf-ibgp", "hostname":
-    "edge01", "ifname": "lo", "ipAddressList": ["10.0.0.100/32"], "macaddr": "00:00:00:00:00:00",
+    "edge01", "ifname": "eth2.2", "ipAddressList": ["169.254.253.2/30"], "macaddr":
+    "52:54:00:9e:29:aa", "ip6AddressList": [], "state": "up", "timestamp": 1594267161151},
+    {"namespace": "ospf-ibgp", "hostname": "edge01", "ifname": "eth2.3", "ipAddressList":
+    ["169.254.253.6/30"], "macaddr": "52:54:00:9e:29:aa", "ip6AddressList": [], "state":
+    "up", "timestamp": 1594267161151}, {"namespace": "ospf-ibgp", "hostname": "edge01",
+    "ifname": "eth2.4", "ipAddressList": ["169.254.253.10/30"], "macaddr": "52:54:00:9e:29:aa",
     "ip6AddressList": [], "state": "up", "timestamp": 1594267161151}, {"namespace":
-    "ospf-ibgp", "hostname": "exit01", "ifname": "eth0", "ipAddressList": ["192.168.121.196/24"],
-    "macaddr": "52:54:00:e9:4f:59", "ip6AddressList": ["fe80::5054:ff:fee9:4f59/64"],
+    "ospf-ibgp", "hostname": "edge01", "ifname": "eth2", "ipAddressList": [], "macaddr":
+    "52:54:00:9e:29:aa", "ip6AddressList": [], "state": "up", "timestamp": 1594267161151},
+    {"namespace": "ospf-ibgp", "hostname": "edge01", "ifname": "lo", "ipAddressList":
+    ["10.0.0.100/32"], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state":
+    "up", "timestamp": 1594267161151}, {"namespace": "ospf-ibgp", "hostname": "exit01",
+    "ifname": "bridge", "ipAddressList": [], "macaddr": "4e:c3:ad:8d:d0:eb", "ip6AddressList":
+    ["fe80::4cc3:adff:fe8d:d0eb/64"], "state": "up", "timestamp": 1594267161392},
+    {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname": "eth0", "ipAddressList":
+    ["192.168.121.196/24"], "macaddr": "52:54:00:e9:4f:59", "ip6AddressList": ["fe80::5054:ff:fee9:4f59/64"],
     "state": "up", "timestamp": 1594267161392}, {"namespace": "ospf-ibgp", "hostname":
     "exit01", "ifname": "evpn-vrf", "ipAddressList": ["10.0.0.101/32"], "macaddr":
     "8e:68:0b:07:1a:c8", "ip6AddressList": [], "state": "up", "timestamp": 1594267161392},
@@ -215,17 +452,31 @@ tests:
     "ospf-ibgp", "hostname": "exit01", "ifname": "swp2", "ipAddressList": ["10.0.0.101/32"],
     "macaddr": "52:54:00:ec:59:2f", "ip6AddressList": ["fe80::5054:ff:feec:592f/64"],
     "state": "up", "timestamp": 1594267161392}, {"namespace": "ospf-ibgp", "hostname":
-    "exit01", "ifname": "swp5.2", "ipAddressList": ["169.254.254.1/30"], "macaddr":
+    "exit01", "ifname": "swp3", "ipAddressList": [], "macaddr": "52:54:00:35:16:12",
+    "ip6AddressList": [], "state": "", "timestamp": 1594267161392}, {"namespace":
+    "ospf-ibgp", "hostname": "exit01", "ifname": "swp4", "ipAddressList": [], "macaddr":
+    "52:54:00:6f:e7:39", "ip6AddressList": [], "state": "", "timestamp": 1594267161392},
+    {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname": "swp5.2", "ipAddressList":
+    ["169.254.254.1/30"], "macaddr": "52:54:00:5d:27:71", "ip6AddressList": ["fe80::5054:ff:fe5d:2771/64"],
+    "state": "up", "timestamp": 1594267161392}, {"namespace": "ospf-ibgp", "hostname":
+    "exit01", "ifname": "swp5.3", "ipAddressList": ["169.254.254.5/30"], "macaddr":
     "52:54:00:5d:27:71", "ip6AddressList": ["fe80::5054:ff:fe5d:2771/64"], "state":
     "up", "timestamp": 1594267161392}, {"namespace": "ospf-ibgp", "hostname": "exit01",
-    "ifname": "swp5.3", "ipAddressList": ["169.254.254.5/30"], "macaddr": "52:54:00:5d:27:71",
+    "ifname": "swp5.4", "ipAddressList": ["169.254.254.9/30"], "macaddr": "52:54:00:5d:27:71",
     "ip6AddressList": ["fe80::5054:ff:fe5d:2771/64"], "state": "up", "timestamp":
-    1594267161392}, {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname": "swp5.4",
-    "ipAddressList": ["169.254.254.9/30"], "macaddr": "52:54:00:5d:27:71", "ip6AddressList":
-    ["fe80::5054:ff:fe5d:2771/64"], "state": "up", "timestamp": 1594267161392}, {"namespace":
-    "ospf-ibgp", "hostname": "exit01", "ifname": "swp6", "ipAddressList": ["169.254.127.1/31"],
-    "macaddr": "52:54:00:be:66:b2", "ip6AddressList": ["fe80::5054:ff:febe:66b2/64"],
+    1594267161392}, {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname": "swp5",
+    "ipAddressList": [], "macaddr": "52:54:00:5d:27:71", "ip6AddressList": ["fe80::5054:ff:fe5d:2771/64"],
     "state": "up", "timestamp": 1594267161392}, {"namespace": "ospf-ibgp", "hostname":
+    "exit01", "ifname": "swp6", "ipAddressList": ["169.254.127.1/31"], "macaddr":
+    "52:54:00:be:66:b2", "ip6AddressList": ["fe80::5054:ff:febe:66b2/64"], "state":
+    "up", "timestamp": 1594267161392}, {"namespace": "ospf-ibgp", "hostname": "exit01",
+    "ifname": "vlan4001", "ipAddressList": [], "macaddr": "4e:c3:ad:8d:d0:eb", "ip6AddressList":
+    ["fe80::4cc3:adff:fe8d:d0eb/64"], "state": "up", "timestamp": 1594267161392},
+    {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname": "vxlan4001", "ipAddressList":
+    [], "macaddr": "4e:c3:ad:8d:d0:eb", "ip6AddressList": [], "state": "up", "timestamp":
+    1594267161392}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "bridge",
+    "ipAddressList": [], "macaddr": "56:e5:72:01:af:1e", "ip6AddressList": ["fe80::54e5:72ff:fe01:af1e/64"],
+    "state": "up", "timestamp": 1594267161390}, {"namespace": "ospf-ibgp", "hostname":
     "exit02", "ifname": "eth0", "ipAddressList": ["192.168.121.134/24"], "macaddr":
     "52:54:00:2a:1b:60", "ip6AddressList": ["fe80::5054:ff:fe2a:1b60/64"], "state":
     "up", "timestamp": 1594267161390}, {"namespace": "ospf-ibgp", "hostname": "exit02",
@@ -244,58 +495,108 @@ tests:
     "ospf-ibgp", "hostname": "exit02", "ifname": "swp2", "ipAddressList": ["10.0.0.102/32"],
     "macaddr": "52:54:00:67:45:6a", "ip6AddressList": ["fe80::5054:ff:fe67:456a/64"],
     "state": "up", "timestamp": 1594267161390}, {"namespace": "ospf-ibgp", "hostname":
-    "exit02", "ifname": "swp5.2", "ipAddressList": ["169.254.253.1/30"], "macaddr":
+    "exit02", "ifname": "swp3", "ipAddressList": [], "macaddr": "52:54:00:4a:c8:98",
+    "ip6AddressList": [], "state": "", "timestamp": 1594267161390}, {"namespace":
+    "ospf-ibgp", "hostname": "exit02", "ifname": "swp4", "ipAddressList": [], "macaddr":
+    "52:54:00:28:8a:ff", "ip6AddressList": [], "state": "", "timestamp": 1594267161390},
+    {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "swp5.2", "ipAddressList":
+    ["169.254.253.1/30"], "macaddr": "52:54:00:23:d9:1c", "ip6AddressList": ["fe80::5054:ff:fe23:d91c/64"],
+    "state": "up", "timestamp": 1594267161390}, {"namespace": "ospf-ibgp", "hostname":
+    "exit02", "ifname": "swp5.3", "ipAddressList": ["169.254.253.5/30"], "macaddr":
     "52:54:00:23:d9:1c", "ip6AddressList": ["fe80::5054:ff:fe23:d91c/64"], "state":
     "up", "timestamp": 1594267161390}, {"namespace": "ospf-ibgp", "hostname": "exit02",
-    "ifname": "swp5.3", "ipAddressList": ["169.254.253.5/30"], "macaddr": "52:54:00:23:d9:1c",
+    "ifname": "swp5.4", "ipAddressList": ["169.254.253.9/30"], "macaddr": "52:54:00:23:d9:1c",
     "ip6AddressList": ["fe80::5054:ff:fe23:d91c/64"], "state": "up", "timestamp":
-    1594267161390}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "swp5.4",
-    "ipAddressList": ["169.254.253.9/30"], "macaddr": "52:54:00:23:d9:1c", "ip6AddressList":
-    ["fe80::5054:ff:fe23:d91c/64"], "state": "up", "timestamp": 1594267161390}, {"namespace":
-    "ospf-ibgp", "hostname": "exit02", "ifname": "swp6", "ipAddressList": ["169.254.127.3/31"],
-    "macaddr": "52:54:00:09:1c:6c", "ip6AddressList": ["fe80::5054:ff:fe09:1c6c/64"],
+    1594267161390}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "swp5",
+    "ipAddressList": [], "macaddr": "52:54:00:23:d9:1c", "ip6AddressList": ["fe80::5054:ff:fe23:d91c/64"],
     "state": "up", "timestamp": 1594267161390}, {"namespace": "ospf-ibgp", "hostname":
-    "internet", "ifname": "eth0", "ipAddressList": ["192.168.121.23/24"], "macaddr":
-    "52:54:00:4d:bd:d7", "ip6AddressList": ["fe80::5054:ff:fe4d:bdd7/64"], "state":
-    "up", "timestamp": 1594267161392}, {"namespace": "ospf-ibgp", "hostname": "internet",
-    "ifname": "lo", "ipAddressList": ["10.0.0.253/32", "172.16.253.1/32"], "macaddr":
-    "00:00:00:00:00:00", "ip6AddressList": ["::1/128"], "state": "up", "timestamp":
-    1594267161392}, {"namespace": "ospf-ibgp", "hostname": "internet", "ifname": "swp1",
-    "ipAddressList": ["169.254.127.0/31"], "macaddr": "52:54:00:78:e4:ca", "ip6AddressList":
-    ["fe80::5054:ff:fe78:e4ca/64"], "state": "up", "timestamp": 1594267161392}, {"namespace":
-    "ospf-ibgp", "hostname": "internet", "ifname": "swp2", "ipAddressList": ["169.254.127.2/31"],
-    "macaddr": "52:54:00:91:b8:b1", "ip6AddressList": ["fe80::5054:ff:fe91:b8b1/64"],
+    "exit02", "ifname": "swp6", "ipAddressList": ["169.254.127.3/31"], "macaddr":
+    "52:54:00:09:1c:6c", "ip6AddressList": ["fe80::5054:ff:fe09:1c6c/64"], "state":
+    "up", "timestamp": 1594267161390}, {"namespace": "ospf-ibgp", "hostname": "exit02",
+    "ifname": "vlan4001", "ipAddressList": [], "macaddr": "56:e5:72:01:af:1e", "ip6AddressList":
+    ["fe80::54e5:72ff:fe01:af1e/64"], "state": "up", "timestamp": 1594267161390},
+    {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "vxlan4001", "ipAddressList":
+    [], "macaddr": "56:e5:72:01:af:1e", "ip6AddressList": [], "state": "up", "timestamp":
+    1594267161390}, {"namespace": "ospf-ibgp", "hostname": "internet", "ifname": "eth0",
+    "ipAddressList": ["192.168.121.23/24"], "macaddr": "52:54:00:4d:bd:d7", "ip6AddressList":
+    ["fe80::5054:ff:fe4d:bdd7/64"], "state": "up", "timestamp": 1594267161392}, {"namespace":
+    "ospf-ibgp", "hostname": "internet", "ifname": "lo", "ipAddressList": ["10.0.0.253/32",
+    "172.16.253.1/32"], "macaddr": "00:00:00:00:00:00", "ip6AddressList": ["::1/128"],
     "state": "up", "timestamp": 1594267161392}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf01", "ifname": "eth0", "ipAddressList": ["192.168.121.204/24"], "macaddr":
-    "52:54:00:16:f6:16", "ip6AddressList": ["fe80::5054:ff:fe16:f616/64"], "state":
+    "internet", "ifname": "swp1", "ipAddressList": ["169.254.127.0/31"], "macaddr":
+    "52:54:00:78:e4:ca", "ip6AddressList": ["fe80::5054:ff:fe78:e4ca/64"], "state":
+    "up", "timestamp": 1594267161392}, {"namespace": "ospf-ibgp", "hostname": "internet",
+    "ifname": "swp2", "ipAddressList": ["169.254.127.2/31"], "macaddr": "52:54:00:91:b8:b1",
+    "ip6AddressList": ["fe80::5054:ff:fe91:b8b1/64"], "state": "up", "timestamp":
+    1594267161392}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "bond01",
+    "ipAddressList": [], "macaddr": "52:54:00:84:b6:4a", "ip6AddressList": [], "state":
     "up", "timestamp": 1594267161402}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
-    "ifname": "lo", "ipAddressList": ["10.0.0.11/32", "10.0.0.112/32"], "macaddr":
-    "00:00:00:00:00:00", "ip6AddressList": ["::1/128"], "state": "up", "timestamp":
-    1594267161402}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "mgmt",
-    "ipAddressList": ["127.0.0.1/8"], "macaddr": "2e:2b:9e:03:76:22", "ip6AddressList":
+    "ifname": "bond02", "ipAddressList": [], "macaddr": "52:54:00:65:61:f4", "ip6AddressList":
     [], "state": "up", "timestamp": 1594267161402}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf01", "ifname": "peerlink.4094", "ipAddressList": ["169.254.1.1/30"], "macaddr":
-    "52:54:00:33:d8:f5", "ip6AddressList": ["fe80::5054:ff:fe33:d8f5/64"], "state":
-    "up", "timestamp": 1594267161402}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
-    "ifname": "swp1", "ipAddressList": ["10.0.0.11/32"], "macaddr": "52:54:00:8c:bf:21",
-    "ip6AddressList": ["fe80::5054:ff:fe8c:bf21/64"], "state": "up", "timestamp":
-    1594267161402}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "swp2",
-    "ipAddressList": ["10.0.0.11/32"], "macaddr": "52:54:00:ca:e6:52", "ip6AddressList":
-    ["fe80::5054:ff:feca:e652/64"], "state": "up", "timestamp": 1594267161402}, {"namespace":
-    "ospf-ibgp", "hostname": "leaf01", "ifname": "vlan13-v0", "ipAddressList": ["172.16.1.1/24"],
-    "macaddr": "44:39:39:ff:00:13", "ip6AddressList": ["fe80::4639:39ff:feff:13/64"],
+    "leaf01", "ifname": "bridge", "ipAddressList": [], "macaddr": "52:54:00:84:b6:4a",
+    "ip6AddressList": ["fe80::5054:ff:fe84:b64a/64"], "state": "up", "timestamp":
+    1594267161402}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "eth0",
+    "ipAddressList": ["192.168.121.204/24"], "macaddr": "52:54:00:16:f6:16", "ip6AddressList":
+    ["fe80::5054:ff:fe16:f616/64"], "state": "up", "timestamp": 1594267161402}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf01", "ifname": "evpn-vrf", "ipAddressList": [],
+    "macaddr": "a2:7b:a9:30:57:0f", "ip6AddressList": [], "state": "up", "timestamp":
+    1594267161402}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "lo",
+    "ipAddressList": ["10.0.0.11/32", "10.0.0.112/32"], "macaddr": "00:00:00:00:00:00",
+    "ip6AddressList": ["::1/128"], "state": "up", "timestamp": 1594267161402}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf01", "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"],
+    "macaddr": "2e:2b:9e:03:76:22", "ip6AddressList": [], "state": "up", "timestamp":
+    1594267161402}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "peerlink.4094",
+    "ipAddressList": ["169.254.1.1/30"], "macaddr": "52:54:00:33:d8:f5", "ip6AddressList":
+    ["fe80::5054:ff:fe33:d8f5/64"], "state": "up", "timestamp": 1594267161402}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf01", "ifname": "peerlink", "ipAddressList": [],
+    "macaddr": "52:54:00:33:d8:f5", "ip6AddressList": [], "state": "up", "timestamp":
+    1594267161402}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "swp1",
+    "ipAddressList": ["10.0.0.11/32"], "macaddr": "52:54:00:8c:bf:21", "ip6AddressList":
+    ["fe80::5054:ff:fe8c:bf21/64"], "state": "up", "timestamp": 1594267161402}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf01", "ifname": "swp2", "ipAddressList": ["10.0.0.11/32"],
+    "macaddr": "52:54:00:ca:e6:52", "ip6AddressList": ["fe80::5054:ff:feca:e652/64"],
     "state": "up", "timestamp": 1594267161402}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf01", "ifname": "vlan13", "ipAddressList": ["172.16.1.11/24"], "macaddr":
+    "leaf01", "ifname": "swp3", "ipAddressList": [], "macaddr": "52:54:00:33:d8:f5",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594267161402}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf01", "ifname": "swp4", "ipAddressList": [], "macaddr":
+    "52:54:00:33:d8:f5", "ip6AddressList": [], "state": "up", "timestamp": 1594267161402},
+    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "swp5", "ipAddressList":
+    [], "macaddr": "52:54:00:84:b6:4a", "ip6AddressList": [], "state": "up", "timestamp":
+    1594267161402}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "swp6",
+    "ipAddressList": [], "macaddr": "52:54:00:65:61:f4", "ip6AddressList": [], "state":
+    "up", "timestamp": 1594267161402}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
+    "ifname": "vlan13-v0", "ipAddressList": ["172.16.1.1/24"], "macaddr": "44:39:39:ff:00:13",
+    "ip6AddressList": ["fe80::4639:39ff:feff:13/64"], "state": "up", "timestamp":
+    1594267161402}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "vlan13",
+    "ipAddressList": ["172.16.1.11/24"], "macaddr": "52:54:00:84:b6:4a", "ip6AddressList":
+    ["fe80::5054:ff:fe84:b64a/64"], "state": "up", "timestamp": 1594267161402}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf01", "ifname": "vlan24-v0", "ipAddressList": ["172.16.2.1/24"],
+    "macaddr": "44:39:39:ff:00:24", "ip6AddressList": ["fe80::4639:39ff:feff:24/64"],
+    "state": "up", "timestamp": 1594267161402}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf01", "ifname": "vlan24", "ipAddressList": ["172.16.2.11/24"], "macaddr":
     "52:54:00:84:b6:4a", "ip6AddressList": ["fe80::5054:ff:fe84:b64a/64"], "state":
     "up", "timestamp": 1594267161402}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
-    "ifname": "vlan24-v0", "ipAddressList": ["172.16.2.1/24"], "macaddr": "44:39:39:ff:00:24",
-    "ip6AddressList": ["fe80::4639:39ff:feff:24/64"], "state": "up", "timestamp":
-    1594267161402}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "vlan24",
-    "ipAddressList": ["172.16.2.11/24"], "macaddr": "52:54:00:84:b6:4a", "ip6AddressList":
-    ["fe80::5054:ff:fe84:b64a/64"], "state": "up", "timestamp": 1594267161402}, {"namespace":
-    "ospf-ibgp", "hostname": "leaf02", "ifname": "eth0", "ipAddressList": ["192.168.121.98/24"],
-    "macaddr": "52:54:00:4b:78:90", "ip6AddressList": ["fe80::5054:ff:fe4b:7890/64"],
+    "ifname": "vlan4001", "ipAddressList": [], "macaddr": "44:39:39:ff:40:94", "ip6AddressList":
+    ["fe80::4639:39ff:feff:4094/64"], "state": "up", "timestamp": 1594267161402},
+    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "vni13", "ipAddressList":
+    [], "macaddr": "ee:a1:15:82:c2:75", "ip6AddressList": [], "state": "up", "timestamp":
+    1594267161402}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "vni24",
+    "ipAddressList": [], "macaddr": "42:5e:55:5c:66:a6", "ip6AddressList": [], "state":
+    "up", "timestamp": 1594267161402}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
+    "ifname": "vxlan4001", "ipAddressList": [], "macaddr": "02:c0:6a:b3:00:f9", "ip6AddressList":
+    [], "state": "up", "timestamp": 1594267161402}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf02", "ifname": "bond01", "ipAddressList": [], "macaddr": "52:54:00:82:a3:57",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594267161390}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf02", "ifname": "bond02", "ipAddressList": [], "macaddr":
+    "52:54:00:00:42:b8", "ip6AddressList": [], "state": "up", "timestamp": 1594267161390},
+    {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "bridge", "ipAddressList":
+    [], "macaddr": "52:54:00:82:a3:57", "ip6AddressList": ["fe80::5054:ff:fe82:a357/64"],
     "state": "up", "timestamp": 1594267161390}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf02", "ifname": "eth0", "ipAddressList": ["192.168.121.98/24"], "macaddr":
+    "52:54:00:4b:78:90", "ip6AddressList": ["fe80::5054:ff:fe4b:7890/64"], "state":
+    "up", "timestamp": 1594267161390}, {"namespace": "ospf-ibgp", "hostname": "leaf02",
+    "ifname": "evpn-vrf", "ipAddressList": [], "macaddr": "fa:05:e7:a8:b4:20", "ip6AddressList":
+    [], "state": "up", "timestamp": 1594267161390}, {"namespace": "ospf-ibgp", "hostname":
     "leaf02", "ifname": "lo", "ipAddressList": ["10.0.0.12/32"], "macaddr": "00:00:00:00:00:00",
     "ip6AddressList": ["::1/128"], "state": "up", "timestamp": 1594267161390}, {"namespace":
     "ospf-ibgp", "hostname": "leaf02", "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"],
@@ -303,40 +604,81 @@ tests:
     1594267161390}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "peerlink.4094",
     "ipAddressList": ["169.254.1.2/30"], "macaddr": "52:54:00:a5:35:bb", "ip6AddressList":
     ["fe80::5054:ff:fea5:35bb/64"], "state": "up", "timestamp": 1594267161390}, {"namespace":
-    "ospf-ibgp", "hostname": "leaf02", "ifname": "swp1", "ipAddressList": ["10.0.0.12/32"],
-    "macaddr": "52:54:00:5a:f5:7c", "ip6AddressList": ["fe80::5054:ff:fe5a:f57c/64"],
+    "ospf-ibgp", "hostname": "leaf02", "ifname": "peerlink", "ipAddressList": [],
+    "macaddr": "52:54:00:a5:35:bb", "ip6AddressList": [], "state": "up", "timestamp":
+    1594267161390}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "swp1",
+    "ipAddressList": ["10.0.0.12/32"], "macaddr": "52:54:00:5a:f5:7c", "ip6AddressList":
+    ["fe80::5054:ff:fe5a:f57c/64"], "state": "up", "timestamp": 1594267161390}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf02", "ifname": "swp2", "ipAddressList": ["10.0.0.12/32"],
+    "macaddr": "52:54:00:21:d0:a3", "ip6AddressList": ["fe80::5054:ff:fe21:d0a3/64"],
     "state": "up", "timestamp": 1594267161390}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf02", "ifname": "swp2", "ipAddressList": ["10.0.0.12/32"], "macaddr": "52:54:00:21:d0:a3",
-    "ip6AddressList": ["fe80::5054:ff:fe21:d0a3/64"], "state": "up", "timestamp":
-    1594267161390}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "vlan13-v0",
-    "ipAddressList": ["172.16.1.1/24"], "macaddr": "44:39:39:ff:00:13", "ip6AddressList":
-    ["fe80::4639:39ff:feff:13/64"], "state": "up", "timestamp": 1594267161390}, {"namespace":
-    "ospf-ibgp", "hostname": "leaf02", "ifname": "vlan13", "ipAddressList": ["172.16.1.12/24"],
-    "macaddr": "52:54:00:82:a3:57", "ip6AddressList": ["fe80::5054:ff:fe82:a357/64"],
-    "state": "up", "timestamp": 1594267161390}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf02", "ifname": "vlan24-v0", "ipAddressList": ["172.16.2.1/24"], "macaddr":
-    "44:39:39:ff:00:24", "ip6AddressList": ["fe80::4639:39ff:feff:24/64"], "state":
+    "leaf02", "ifname": "swp3", "ipAddressList": [], "macaddr": "52:54:00:a5:35:bb",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594267161390}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf02", "ifname": "swp4", "ipAddressList": [], "macaddr":
+    "52:54:00:a5:35:bb", "ip6AddressList": [], "state": "up", "timestamp": 1594267161390},
+    {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "swp5", "ipAddressList":
+    [], "macaddr": "52:54:00:82:a3:57", "ip6AddressList": [], "state": "up", "timestamp":
+    1594267161390}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "swp6",
+    "ipAddressList": [], "macaddr": "52:54:00:00:42:b8", "ip6AddressList": [], "state":
     "up", "timestamp": 1594267161390}, {"namespace": "ospf-ibgp", "hostname": "leaf02",
-    "ifname": "vlan24", "ipAddressList": ["172.16.2.12/24"], "macaddr": "52:54:00:82:a3:57",
-    "ip6AddressList": ["fe80::5054:ff:fe82:a357/64"], "state": "up", "timestamp":
-    1594267161390}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "eth0",
-    "ipAddressList": ["192.168.121.71/24"], "macaddr": "52:54:00:3a:c7:fd", "ip6AddressList":
-    ["fe80::5054:ff:fe3a:c7fd/64"], "state": "up", "timestamp": 1594267161449}, {"namespace":
-    "ospf-ibgp", "hostname": "leaf03", "ifname": "lo", "ipAddressList": ["10.0.0.13/32",
-    "10.0.0.134/32"], "macaddr": "00:00:00:00:00:00", "ip6AddressList": ["::1/128"],
+    "ifname": "vlan13-v0", "ipAddressList": ["172.16.1.1/24"], "macaddr": "44:39:39:ff:00:13",
+    "ip6AddressList": ["fe80::4639:39ff:feff:13/64"], "state": "up", "timestamp":
+    1594267161390}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "vlan13",
+    "ipAddressList": ["172.16.1.12/24"], "macaddr": "52:54:00:82:a3:57", "ip6AddressList":
+    ["fe80::5054:ff:fe82:a357/64"], "state": "up", "timestamp": 1594267161390}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf02", "ifname": "vlan24-v0", "ipAddressList": ["172.16.2.1/24"],
+    "macaddr": "44:39:39:ff:00:24", "ip6AddressList": ["fe80::4639:39ff:feff:24/64"],
+    "state": "up", "timestamp": 1594267161390}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf02", "ifname": "vlan24", "ipAddressList": ["172.16.2.12/24"], "macaddr":
+    "52:54:00:82:a3:57", "ip6AddressList": ["fe80::5054:ff:fe82:a357/64"], "state":
+    "up", "timestamp": 1594267161390}, {"namespace": "ospf-ibgp", "hostname": "leaf02",
+    "ifname": "vlan4001", "ipAddressList": [], "macaddr": "44:39:39:ff:40:94", "ip6AddressList":
+    ["fe80::4639:39ff:feff:4094/64"], "state": "up", "timestamp": 1594267161390},
+    {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "vni13", "ipAddressList":
+    [], "macaddr": "6e:72:e2:75:ac:27", "ip6AddressList": [], "state": "up", "timestamp":
+    1594267161390}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "vni24",
+    "ipAddressList": [], "macaddr": "0a:16:70:d3:eb:33", "ip6AddressList": [], "state":
+    "up", "timestamp": 1594267161390}, {"namespace": "ospf-ibgp", "hostname": "leaf02",
+    "ifname": "vxlan4001", "ipAddressList": [], "macaddr": "be:63:9b:36:f3:c3", "ip6AddressList":
+    [], "state": "up", "timestamp": 1594267161390}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf03", "ifname": "bond01", "ipAddressList": [], "macaddr": "52:54:00:61:8d:16",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594267161449}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf03", "ifname": "bond02", "ipAddressList": [], "macaddr":
+    "52:54:00:0f:36:00", "ip6AddressList": [], "state": "up", "timestamp": 1594267161449},
+    {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "bridge", "ipAddressList":
+    [], "macaddr": "52:54:00:61:8d:16", "ip6AddressList": ["fe80::5054:ff:fe61:8d16/64"],
     "state": "up", "timestamp": 1594267161449}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf03", "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"], "macaddr": "56:ab:94:f0:d7:26",
+    "leaf03", "ifname": "eth0", "ipAddressList": ["192.168.121.71/24"], "macaddr":
+    "52:54:00:3a:c7:fd", "ip6AddressList": ["fe80::5054:ff:fe3a:c7fd/64"], "state":
+    "up", "timestamp": 1594267161449}, {"namespace": "ospf-ibgp", "hostname": "leaf03",
+    "ifname": "evpn-vrf", "ipAddressList": [], "macaddr": "d2:64:d4:f1:11:cb", "ip6AddressList":
+    [], "state": "up", "timestamp": 1594267161449}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf03", "ifname": "lo", "ipAddressList": ["10.0.0.13/32", "10.0.0.134/32"],
+    "macaddr": "00:00:00:00:00:00", "ip6AddressList": ["::1/128"], "state": "up",
+    "timestamp": 1594267161449}, {"namespace": "ospf-ibgp", "hostname": "leaf03",
+    "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"], "macaddr": "56:ab:94:f0:d7:26",
     "ip6AddressList": [], "state": "up", "timestamp": 1594267161449}, {"namespace":
     "ospf-ibgp", "hostname": "leaf03", "ifname": "peerlink.4094", "ipAddressList":
     ["169.254.1.1/30"], "macaddr": "52:54:00:20:9e:e9", "ip6AddressList": ["fe80::5054:ff:fe20:9ee9/64"],
     "state": "up", "timestamp": 1594267161449}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf03", "ifname": "swp1", "ipAddressList": ["10.0.0.13/32"], "macaddr": "52:54:00:26:46:dc",
-    "ip6AddressList": ["fe80::5054:ff:fe26:46dc/64"], "state": "up", "timestamp":
-    1594267161449}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "swp2",
-    "ipAddressList": ["10.0.0.13/32"], "macaddr": "52:54:00:32:95:d2", "ip6AddressList":
-    ["fe80::5054:ff:fe32:95d2/64"], "state": "up", "timestamp": 1594267161449}, {"namespace":
-    "ospf-ibgp", "hostname": "leaf03", "ifname": "vlan13-v0", "ipAddressList": ["172.16.1.1/24"],
-    "macaddr": "44:39:39:ff:00:13", "ip6AddressList": ["fe80::4639:39ff:feff:13/64"],
+    "leaf03", "ifname": "peerlink", "ipAddressList": [], "macaddr": "52:54:00:20:9e:e9",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594267161449}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf03", "ifname": "swp1", "ipAddressList": ["10.0.0.13/32"],
+    "macaddr": "52:54:00:26:46:dc", "ip6AddressList": ["fe80::5054:ff:fe26:46dc/64"],
+    "state": "up", "timestamp": 1594267161449}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf03", "ifname": "swp2", "ipAddressList": ["10.0.0.13/32"], "macaddr": "52:54:00:32:95:d2",
+    "ip6AddressList": ["fe80::5054:ff:fe32:95d2/64"], "state": "up", "timestamp":
+    1594267161449}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "swp3",
+    "ipAddressList": [], "macaddr": "52:54:00:20:9e:e9", "ip6AddressList": [], "state":
+    "up", "timestamp": 1594267161449}, {"namespace": "ospf-ibgp", "hostname": "leaf03",
+    "ifname": "swp4", "ipAddressList": [], "macaddr": "52:54:00:20:9e:e9", "ip6AddressList":
+    [], "state": "up", "timestamp": 1594267161449}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf03", "ifname": "swp5", "ipAddressList": [], "macaddr": "52:54:00:61:8d:16",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594267161449}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf03", "ifname": "swp6", "ipAddressList": [], "macaddr":
+    "52:54:00:0f:36:00", "ip6AddressList": [], "state": "up", "timestamp": 1594267161449},
+    {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "vlan13-v0", "ipAddressList":
+    ["172.16.1.1/24"], "macaddr": "44:39:39:ff:00:13", "ip6AddressList": ["fe80::4639:39ff:feff:13/64"],
     "state": "up", "timestamp": 1594267161449}, {"namespace": "ospf-ibgp", "hostname":
     "leaf03", "ifname": "vlan13", "ipAddressList": ["172.16.1.13/24"], "macaddr":
     "52:54:00:61:8d:16", "ip6AddressList": ["fe80::5054:ff:fe61:8d16/64"], "state":
@@ -346,102 +688,174 @@ tests:
     1594267161449}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "vlan24",
     "ipAddressList": ["172.16.2.13/24"], "macaddr": "52:54:00:61:8d:16", "ip6AddressList":
     ["fe80::5054:ff:fe61:8d16/64"], "state": "up", "timestamp": 1594267161449}, {"namespace":
-    "ospf-ibgp", "hostname": "leaf04", "ifname": "eth0", "ipAddressList": ["192.168.121.176/24"],
-    "macaddr": "52:54:00:0d:6a:66", "ip6AddressList": ["fe80::5054:ff:fe0d:6a66/64"],
+    "ospf-ibgp", "hostname": "leaf03", "ifname": "vlan4001", "ipAddressList": [],
+    "macaddr": "44:39:39:ff:40:94", "ip6AddressList": ["fe80::4639:39ff:feff:4094/64"],
     "state": "up", "timestamp": 1594267161449}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf04", "ifname": "lo", "ipAddressList": ["10.0.0.14/32", "10.0.0.134/32"],
-    "macaddr": "00:00:00:00:00:00", "ip6AddressList": ["::1/128"], "state": "up",
-    "timestamp": 1594267161449}, {"namespace": "ospf-ibgp", "hostname": "leaf04",
-    "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"], "macaddr": "c6:59:bd:08:bc:01",
+    "leaf03", "ifname": "vni13", "ipAddressList": [], "macaddr": "2e:87:45:5b:9c:0e",
     "ip6AddressList": [], "state": "up", "timestamp": 1594267161449}, {"namespace":
-    "ospf-ibgp", "hostname": "leaf04", "ifname": "peerlink.4094", "ipAddressList":
-    ["169.254.1.2/30"], "macaddr": "52:54:00:be:2b:e5", "ip6AddressList": ["fe80::5054:ff:febe:2be5/64"],
+    "ospf-ibgp", "hostname": "leaf03", "ifname": "vni24", "ipAddressList": [], "macaddr":
+    "5a:10:9d:c8:19:ee", "ip6AddressList": [], "state": "up", "timestamp": 1594267161449},
+    {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "vxlan4001", "ipAddressList":
+    [], "macaddr": "16:aa:87:20:cf:5e", "ip6AddressList": [], "state": "up", "timestamp":
+    1594267161449}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "bond01",
+    "ipAddressList": [], "macaddr": "52:54:00:2d:6d:6d", "ip6AddressList": [], "state":
+    "up", "timestamp": 1594267161449}, {"namespace": "ospf-ibgp", "hostname": "leaf04",
+    "ifname": "bond02", "ipAddressList": [], "macaddr": "52:54:00:f7:76:28", "ip6AddressList":
+    [], "state": "up", "timestamp": 1594267161449}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf04", "ifname": "bridge", "ipAddressList": [], "macaddr": "52:54:00:2d:6d:6d",
+    "ip6AddressList": ["fe80::5054:ff:fe2d:6d6d/64"], "state": "up", "timestamp":
+    1594267161449}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "eth0",
+    "ipAddressList": ["192.168.121.176/24"], "macaddr": "52:54:00:0d:6a:66", "ip6AddressList":
+    ["fe80::5054:ff:fe0d:6a66/64"], "state": "up", "timestamp": 1594267161449}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf04", "ifname": "evpn-vrf", "ipAddressList": [],
+    "macaddr": "5e:d1:c8:4c:68:ac", "ip6AddressList": [], "state": "up", "timestamp":
+    1594267161449}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "lo",
+    "ipAddressList": ["10.0.0.14/32", "10.0.0.134/32"], "macaddr": "00:00:00:00:00:00",
+    "ip6AddressList": ["::1/128"], "state": "up", "timestamp": 1594267161449}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf04", "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"],
+    "macaddr": "c6:59:bd:08:bc:01", "ip6AddressList": [], "state": "up", "timestamp":
+    1594267161449}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "peerlink.4094",
+    "ipAddressList": ["169.254.1.2/30"], "macaddr": "52:54:00:be:2b:e5", "ip6AddressList":
+    ["fe80::5054:ff:febe:2be5/64"], "state": "up", "timestamp": 1594267161449}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf04", "ifname": "peerlink", "ipAddressList": [],
+    "macaddr": "52:54:00:be:2b:e5", "ip6AddressList": [], "state": "up", "timestamp":
+    1594267161449}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "swp1",
+    "ipAddressList": ["10.0.0.14/32"], "macaddr": "52:54:00:cd:31:ae", "ip6AddressList":
+    ["fe80::5054:ff:fecd:31ae/64"], "state": "up", "timestamp": 1594267161449}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf04", "ifname": "swp2", "ipAddressList": ["10.0.0.14/32"],
+    "macaddr": "52:54:00:82:10:03", "ip6AddressList": ["fe80::5054:ff:fe82:1003/64"],
     "state": "up", "timestamp": 1594267161449}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf04", "ifname": "swp1", "ipAddressList": ["10.0.0.14/32"], "macaddr": "52:54:00:cd:31:ae",
-    "ip6AddressList": ["fe80::5054:ff:fecd:31ae/64"], "state": "up", "timestamp":
-    1594267161449}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "swp2",
-    "ipAddressList": ["10.0.0.14/32"], "macaddr": "52:54:00:82:10:03", "ip6AddressList":
-    ["fe80::5054:ff:fe82:1003/64"], "state": "up", "timestamp": 1594267161449}, {"namespace":
-    "ospf-ibgp", "hostname": "leaf04", "ifname": "vlan13-v0", "ipAddressList": ["172.16.1.1/24"],
-    "macaddr": "44:39:39:ff:00:13", "ip6AddressList": ["fe80::4639:39ff:feff:13/64"],
+    "leaf04", "ifname": "swp3", "ipAddressList": [], "macaddr": "52:54:00:be:2b:e5",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594267161449}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf04", "ifname": "swp4", "ipAddressList": [], "macaddr":
+    "52:54:00:be:2b:e5", "ip6AddressList": [], "state": "up", "timestamp": 1594267161449},
+    {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "swp5", "ipAddressList":
+    [], "macaddr": "52:54:00:2d:6d:6d", "ip6AddressList": [], "state": "up", "timestamp":
+    1594267161449}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "swp6",
+    "ipAddressList": [], "macaddr": "52:54:00:f7:76:28", "ip6AddressList": [], "state":
+    "up", "timestamp": 1594267161449}, {"namespace": "ospf-ibgp", "hostname": "leaf04",
+    "ifname": "vlan13-v0", "ipAddressList": ["172.16.1.1/24"], "macaddr": "44:39:39:ff:00:13",
+    "ip6AddressList": ["fe80::4639:39ff:feff:13/64"], "state": "up", "timestamp":
+    1594267161449}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "vlan13",
+    "ipAddressList": ["172.16.1.14/24"], "macaddr": "52:54:00:2d:6d:6d", "ip6AddressList":
+    ["fe80::5054:ff:fe2d:6d6d/64"], "state": "up", "timestamp": 1594267161449}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf04", "ifname": "vlan24-v0", "ipAddressList": ["172.16.2.1/24"],
+    "macaddr": "44:39:39:ff:00:24", "ip6AddressList": ["fe80::4639:39ff:feff:24/64"],
     "state": "up", "timestamp": 1594267161449}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf04", "ifname": "vlan13", "ipAddressList": ["172.16.1.14/24"], "macaddr":
+    "leaf04", "ifname": "vlan24", "ipAddressList": ["172.16.2.14/24"], "macaddr":
     "52:54:00:2d:6d:6d", "ip6AddressList": ["fe80::5054:ff:fe2d:6d6d/64"], "state":
     "up", "timestamp": 1594267161449}, {"namespace": "ospf-ibgp", "hostname": "leaf04",
-    "ifname": "vlan24-v0", "ipAddressList": ["172.16.2.1/24"], "macaddr": "44:39:39:ff:00:24",
-    "ip6AddressList": ["fe80::4639:39ff:feff:24/64"], "state": "up", "timestamp":
-    1594267161449}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "vlan24",
-    "ipAddressList": ["172.16.2.14/24"], "macaddr": "52:54:00:2d:6d:6d", "ip6AddressList":
-    ["fe80::5054:ff:fe2d:6d6d/64"], "state": "up", "timestamp": 1594267161449}, {"namespace":
-    "ospf-ibgp", "hostname": "server101", "ifname": "bond0", "ipAddressList": ["172.16.1.101/24"],
-    "macaddr": "52:54:00:f9:e2:23", "ip6AddressList": [], "state": "up", "timestamp":
-    1594267161077}, {"namespace": "ospf-ibgp", "hostname": "server101", "ifname":
-    "eth0", "ipAddressList": ["192.168.121.128/24"], "macaddr": "52:54:00:61:28:5c",
+    "ifname": "vlan4001", "ipAddressList": [], "macaddr": "44:39:39:ff:40:94", "ip6AddressList":
+    ["fe80::4639:39ff:feff:4094/64"], "state": "up", "timestamp": 1594267161449},
+    {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "vni13", "ipAddressList":
+    [], "macaddr": "ae:12:6f:f3:ba:b6", "ip6AddressList": [], "state": "up", "timestamp":
+    1594267161449}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "vni24",
+    "ipAddressList": [], "macaddr": "da:d8:57:7e:8b:a4", "ip6AddressList": [], "state":
+    "up", "timestamp": 1594267161449}, {"namespace": "ospf-ibgp", "hostname": "leaf04",
+    "ifname": "vxlan4001", "ipAddressList": [], "macaddr": "ce:41:6d:6c:e0:1c", "ip6AddressList":
+    [], "state": "up", "timestamp": 1594267161449}, {"namespace": "ospf-ibgp", "hostname":
+    "server101", "ifname": "bond0", "ipAddressList": ["172.16.1.101/24"], "macaddr":
+    "52:54:00:f9:e2:23", "ip6AddressList": [], "state": "up", "timestamp": 1594267161077},
+    {"namespace": "ospf-ibgp", "hostname": "server101", "ifname": "eth0", "ipAddressList":
+    ["192.168.121.128/24"], "macaddr": "52:54:00:61:28:5c", "ip6AddressList": [],
+    "state": "up", "timestamp": 1594267161077}, {"namespace": "ospf-ibgp", "hostname":
+    "server101", "ifname": "eth1", "ipAddressList": [], "macaddr": "52:54:00:f9:e2:23",
     "ip6AddressList": [], "state": "up", "timestamp": 1594267161077}, {"namespace":
-    "ospf-ibgp", "hostname": "server102", "ifname": "bond0", "ipAddressList": ["172.16.2.102/24"],
-    "macaddr": "52:54:00:60:6d:c3", "ip6AddressList": [], "state": "up", "timestamp":
+    "ospf-ibgp", "hostname": "server101", "ifname": "eth2", "ipAddressList": [], "macaddr":
+    "52:54:00:f9:e2:23", "ip6AddressList": [], "state": "up", "timestamp": 1594267161077},
+    {"namespace": "ospf-ibgp", "hostname": "server101", "ifname": "lo", "ipAddressList":
+    [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "timestamp":
+    1594267161077}, {"namespace": "ospf-ibgp", "hostname": "server102", "ifname":
+    "bond0", "ipAddressList": ["172.16.2.102/24"], "macaddr": "52:54:00:60:6d:c3",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594267161076}, {"namespace":
+    "ospf-ibgp", "hostname": "server102", "ifname": "eth0", "ipAddressList": ["192.168.121.136/24"],
+    "macaddr": "52:54:00:74:99:fc", "ip6AddressList": [], "state": "up", "timestamp":
     1594267161076}, {"namespace": "ospf-ibgp", "hostname": "server102", "ifname":
-    "eth0", "ipAddressList": ["192.168.121.136/24"], "macaddr": "52:54:00:74:99:fc",
+    "eth1", "ipAddressList": [], "macaddr": "52:54:00:60:6d:c3", "ip6AddressList":
+    [], "state": "up", "timestamp": 1594267161076}, {"namespace": "ospf-ibgp", "hostname":
+    "server102", "ifname": "eth2", "ipAddressList": [], "macaddr": "52:54:00:60:6d:c3",
     "ip6AddressList": [], "state": "up", "timestamp": 1594267161076}, {"namespace":
-    "ospf-ibgp", "hostname": "server103", "ifname": "bond0", "ipAddressList": ["172.16.1.103/24"],
-    "macaddr": "52:54:00:45:7c:e1", "ip6AddressList": [], "state": "up", "timestamp":
-    1594267161077}, {"namespace": "ospf-ibgp", "hostname": "server103", "ifname":
-    "eth0", "ipAddressList": ["192.168.121.205/24"], "macaddr": "52:54:00:2e:ff:13",
+    "ospf-ibgp", "hostname": "server102", "ifname": "lo", "ipAddressList": [], "macaddr":
+    "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "timestamp": 1594267161076},
+    {"namespace": "ospf-ibgp", "hostname": "server103", "ifname": "bond0", "ipAddressList":
+    ["172.16.1.103/24"], "macaddr": "52:54:00:45:7c:e1", "ip6AddressList": [], "state":
+    "up", "timestamp": 1594267161077}, {"namespace": "ospf-ibgp", "hostname": "server103",
+    "ifname": "eth0", "ipAddressList": ["192.168.121.205/24"], "macaddr": "52:54:00:2e:ff:13",
     "ip6AddressList": [], "state": "up", "timestamp": 1594267161077}, {"namespace":
-    "ospf-ibgp", "hostname": "server104", "ifname": "bond0", "ipAddressList": ["172.16.2.104/24"],
-    "macaddr": "52:54:00:82:fb:e9", "ip6AddressList": [], "state": "up", "timestamp":
-    1594267161076}, {"namespace": "ospf-ibgp", "hostname": "server104", "ifname":
-    "eth0", "ipAddressList": ["192.168.121.192/24"], "macaddr": "52:54:00:4b:d5:67",
+    "ospf-ibgp", "hostname": "server103", "ifname": "eth1", "ipAddressList": [], "macaddr":
+    "52:54:00:45:7c:e1", "ip6AddressList": [], "state": "up", "timestamp": 1594267161077},
+    {"namespace": "ospf-ibgp", "hostname": "server103", "ifname": "eth2", "ipAddressList":
+    [], "macaddr": "52:54:00:45:7c:e1", "ip6AddressList": [], "state": "up", "timestamp":
+    1594267161077}, {"namespace": "ospf-ibgp", "hostname": "server103", "ifname":
+    "lo", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [],
+    "state": "up", "timestamp": 1594267161077}, {"namespace": "ospf-ibgp", "hostname":
+    "server104", "ifname": "bond0", "ipAddressList": ["172.16.2.104/24"], "macaddr":
+    "52:54:00:82:fb:e9", "ip6AddressList": [], "state": "up", "timestamp": 1594267161076},
+    {"namespace": "ospf-ibgp", "hostname": "server104", "ifname": "eth0", "ipAddressList":
+    ["192.168.121.192/24"], "macaddr": "52:54:00:4b:d5:67", "ip6AddressList": [],
+    "state": "up", "timestamp": 1594267161076}, {"namespace": "ospf-ibgp", "hostname":
+    "server104", "ifname": "eth1", "ipAddressList": [], "macaddr": "52:54:00:82:fb:e9",
     "ip6AddressList": [], "state": "up", "timestamp": 1594267161076}, {"namespace":
-    "ospf-ibgp", "hostname": "spine01", "ifname": "eth0", "ipAddressList": ["192.168.121.162/24"],
-    "macaddr": "52:54:00:23:e6:36", "ip6AddressList": ["fe80::5054:ff:fe23:e636/64"],
-    "state": "up", "timestamp": 1594267161392}, {"namespace": "ospf-ibgp", "hostname":
-    "spine01", "ifname": "lo", "ipAddressList": ["10.0.0.22/32"], "macaddr": "00:00:00:00:00:00",
-    "ip6AddressList": ["::1/128"], "state": "up", "timestamp": 1594267161392}, {"namespace":
-    "ospf-ibgp", "hostname": "spine01", "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"],
-    "macaddr": "52:3c:99:d3:75:8d", "ip6AddressList": [], "state": "up", "timestamp":
-    1594267161392}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp1",
-    "ipAddressList": ["10.0.0.22/32"], "macaddr": "52:54:00:aa:f8:a6", "ip6AddressList":
-    ["fe80::5054:ff:feaa:f8a6/64"], "state": "up", "timestamp": 1594267161392}, {"namespace":
-    "ospf-ibgp", "hostname": "spine01", "ifname": "swp2", "ipAddressList": ["10.0.0.22/32"],
-    "macaddr": "52:54:00:2b:4a:90", "ip6AddressList": ["fe80::5054:ff:fe2b:4a90/64"],
-    "state": "up", "timestamp": 1594267161392}, {"namespace": "ospf-ibgp", "hostname":
-    "spine01", "ifname": "swp3", "ipAddressList": ["10.0.0.22/32"], "macaddr": "52:54:00:21:5d:81",
-    "ip6AddressList": ["fe80::5054:ff:fe21:5d81/64"], "state": "up", "timestamp":
-    1594267161392}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp4",
-    "ipAddressList": ["10.0.0.22/32"], "macaddr": "52:54:00:d5:4d:ca", "ip6AddressList":
-    ["fe80::5054:ff:fed5:4dca/64"], "state": "up", "timestamp": 1594267161392}, {"namespace":
-    "ospf-ibgp", "hostname": "spine01", "ifname": "swp5", "ipAddressList": ["10.0.0.22/32"],
-    "macaddr": "52:54:00:3f:6d:01", "ip6AddressList": ["fe80::5054:ff:fe3f:6d01/64"],
-    "state": "up", "timestamp": 1594267161392}, {"namespace": "ospf-ibgp", "hostname":
-    "spine01", "ifname": "swp6", "ipAddressList": ["10.0.0.22/32"], "macaddr": "52:54:00:51:56:76",
-    "ip6AddressList": ["fe80::5054:ff:fe51:5676/64"], "state": "up", "timestamp":
-    1594267161392}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "eth0",
-    "ipAddressList": ["192.168.121.232/24"], "macaddr": "52:54:00:66:2b:ec", "ip6AddressList":
-    ["fe80::5054:ff:fe66:2bec/64"], "state": "up", "timestamp": 1594267161388}, {"namespace":
-    "ospf-ibgp", "hostname": "spine02", "ifname": "lo", "ipAddressList": ["10.0.0.21/32"],
+    "ospf-ibgp", "hostname": "server104", "ifname": "eth2", "ipAddressList": [], "macaddr":
+    "52:54:00:82:fb:e9", "ip6AddressList": [], "state": "up", "timestamp": 1594267161076},
+    {"namespace": "ospf-ibgp", "hostname": "server104", "ifname": "lo", "ipAddressList":
+    [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "timestamp":
+    1594267161076}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "eth0",
+    "ipAddressList": ["192.168.121.162/24"], "macaddr": "52:54:00:23:e6:36", "ip6AddressList":
+    ["fe80::5054:ff:fe23:e636/64"], "state": "up", "timestamp": 1594267161392}, {"namespace":
+    "ospf-ibgp", "hostname": "spine01", "ifname": "lo", "ipAddressList": ["10.0.0.22/32"],
     "macaddr": "00:00:00:00:00:00", "ip6AddressList": ["::1/128"], "state": "up",
-    "timestamp": 1594267161388}, {"namespace": "ospf-ibgp", "hostname": "spine02",
-    "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"], "macaddr": "fa:c6:b5:0b:a1:cf",
-    "ip6AddressList": [], "state": "up", "timestamp": 1594267161388}, {"namespace":
-    "ospf-ibgp", "hostname": "spine02", "ifname": "swp1", "ipAddressList": ["10.0.0.21/32"],
-    "macaddr": "52:54:00:ae:a2:c5", "ip6AddressList": ["fe80::5054:ff:feae:a2c5/64"],
+    "timestamp": 1594267161392}, {"namespace": "ospf-ibgp", "hostname": "spine01",
+    "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"], "macaddr": "52:3c:99:d3:75:8d",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594267161392}, {"namespace":
+    "ospf-ibgp", "hostname": "spine01", "ifname": "swp1", "ipAddressList": ["10.0.0.22/32"],
+    "macaddr": "52:54:00:aa:f8:a6", "ip6AddressList": ["fe80::5054:ff:feaa:f8a6/64"],
+    "state": "up", "timestamp": 1594267161392}, {"namespace": "ospf-ibgp", "hostname":
+    "spine01", "ifname": "swp2", "ipAddressList": ["10.0.0.22/32"], "macaddr": "52:54:00:2b:4a:90",
+    "ip6AddressList": ["fe80::5054:ff:fe2b:4a90/64"], "state": "up", "timestamp":
+    1594267161392}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp3",
+    "ipAddressList": ["10.0.0.22/32"], "macaddr": "52:54:00:21:5d:81", "ip6AddressList":
+    ["fe80::5054:ff:fe21:5d81/64"], "state": "up", "timestamp": 1594267161392}, {"namespace":
+    "ospf-ibgp", "hostname": "spine01", "ifname": "swp4", "ipAddressList": ["10.0.0.22/32"],
+    "macaddr": "52:54:00:d5:4d:ca", "ip6AddressList": ["fe80::5054:ff:fed5:4dca/64"],
+    "state": "up", "timestamp": 1594267161392}, {"namespace": "ospf-ibgp", "hostname":
+    "spine01", "ifname": "swp5", "ipAddressList": ["10.0.0.22/32"], "macaddr": "52:54:00:3f:6d:01",
+    "ip6AddressList": ["fe80::5054:ff:fe3f:6d01/64"], "state": "up", "timestamp":
+    1594267161392}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp6",
+    "ipAddressList": ["10.0.0.22/32"], "macaddr": "52:54:00:51:56:76", "ip6AddressList":
+    ["fe80::5054:ff:fe51:5676/64"], "state": "up", "timestamp": 1594267161392}, {"namespace":
+    "ospf-ibgp", "hostname": "spine02", "ifname": "eth0", "ipAddressList": ["192.168.121.232/24"],
+    "macaddr": "52:54:00:66:2b:ec", "ip6AddressList": ["fe80::5054:ff:fe66:2bec/64"],
     "state": "up", "timestamp": 1594267161388}, {"namespace": "ospf-ibgp", "hostname":
-    "spine02", "ifname": "swp2", "ipAddressList": ["10.0.0.21/32"], "macaddr": "52:54:00:c2:6a:db",
-    "ip6AddressList": ["fe80::5054:ff:fec2:6adb/64"], "state": "up", "timestamp":
-    1594267161388}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp3",
-    "ipAddressList": ["10.0.0.21/32"], "macaddr": "52:54:00:96:72:14", "ip6AddressList":
-    ["fe80::5054:ff:fe96:7214/64"], "state": "up", "timestamp": 1594267161388}, {"namespace":
-    "ospf-ibgp", "hostname": "spine02", "ifname": "swp4", "ipAddressList": ["10.0.0.21/32"],
-    "macaddr": "52:54:00:8b:8b:cc", "ip6AddressList": ["fe80::5054:ff:fe8b:8bcc/64"],
+    "spine02", "ifname": "lo", "ipAddressList": ["10.0.0.21/32"], "macaddr": "00:00:00:00:00:00",
+    "ip6AddressList": ["::1/128"], "state": "up", "timestamp": 1594267161388}, {"namespace":
+    "ospf-ibgp", "hostname": "spine02", "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"],
+    "macaddr": "fa:c6:b5:0b:a1:cf", "ip6AddressList": [], "state": "up", "timestamp":
+    1594267161388}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp1",
+    "ipAddressList": ["10.0.0.21/32"], "macaddr": "52:54:00:ae:a2:c5", "ip6AddressList":
+    ["fe80::5054:ff:feae:a2c5/64"], "state": "up", "timestamp": 1594267161388}, {"namespace":
+    "ospf-ibgp", "hostname": "spine02", "ifname": "swp2", "ipAddressList": ["10.0.0.21/32"],
+    "macaddr": "52:54:00:c2:6a:db", "ip6AddressList": ["fe80::5054:ff:fec2:6adb/64"],
     "state": "up", "timestamp": 1594267161388}, {"namespace": "ospf-ibgp", "hostname":
-    "spine02", "ifname": "swp5", "ipAddressList": ["10.0.0.21/32"], "macaddr": "52:54:00:f8:8e:c5",
-    "ip6AddressList": ["fe80::5054:ff:fef8:8ec5/64"], "state": "up", "timestamp":
-    1594267161388}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp6",
-    "ipAddressList": ["10.0.0.21/32"], "macaddr": "52:54:00:f4:1a:ec", "ip6AddressList":
-    ["fe80::5054:ff:fef4:1aec/64"], "state": "up", "timestamp": 1594267161388}, {"namespace":
-    "ospf-single", "hostname": "edge01", "ifname": "eth0", "ipAddressList": ["192.168.121.52/24"],
-    "macaddr": "52:54:00:37:e2:a0", "ip6AddressList": [], "state": "up", "timestamp":
+    "spine02", "ifname": "swp3", "ipAddressList": ["10.0.0.21/32"], "macaddr": "52:54:00:96:72:14",
+    "ip6AddressList": ["fe80::5054:ff:fe96:7214/64"], "state": "up", "timestamp":
+    1594267161388}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp4",
+    "ipAddressList": ["10.0.0.21/32"], "macaddr": "52:54:00:8b:8b:cc", "ip6AddressList":
+    ["fe80::5054:ff:fe8b:8bcc/64"], "state": "up", "timestamp": 1594267161388}, {"namespace":
+    "ospf-ibgp", "hostname": "spine02", "ifname": "swp5", "ipAddressList": ["10.0.0.21/32"],
+    "macaddr": "52:54:00:f8:8e:c5", "ip6AddressList": ["fe80::5054:ff:fef8:8ec5/64"],
+    "state": "up", "timestamp": 1594267161388}, {"namespace": "ospf-ibgp", "hostname":
+    "spine02", "ifname": "swp6", "ipAddressList": ["10.0.0.21/32"], "macaddr": "52:54:00:f4:1a:ec",
+    "ip6AddressList": ["fe80::5054:ff:fef4:1aec/64"], "state": "up", "timestamp":
+    1594267161388}, {"namespace": "ospf-single", "hostname": "edge01", "ifname": "eth0",
+    "ipAddressList": ["192.168.121.52/24"], "macaddr": "52:54:00:37:e2:a0", "ip6AddressList":
+    [], "state": "up", "timestamp": 1594267818864}, {"namespace": "ospf-single", "hostname":
+    "edge01", "ifname": "eth1", "ipAddressList": [], "macaddr": "44:38:39:00:00:4a",
+    "ip6AddressList": [], "state": "down", "timestamp": 1594267818864}, {"namespace":
+    "ospf-single", "hostname": "edge01", "ifname": "eth2", "ipAddressList": [], "macaddr":
+    "44:38:39:00:00:0b", "ip6AddressList": [], "state": "down", "timestamp": 1594267818864},
+    {"namespace": "ospf-single", "hostname": "edge01", "ifname": "lo", "ipAddressList":
+    [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "timestamp":
     1594267818864}, {"namespace": "ospf-single", "hostname": "exit01", "ifname": "eth0",
     "ipAddressList": ["192.168.121.233/24"], "macaddr": "52:54:00:24:93:c5", "ip6AddressList":
     ["fe80::5054:ff:fe24:93c5/64"], "state": "up", "timestamp": 1594267819093}, {"namespace":
@@ -455,29 +869,55 @@ tests:
     "state": "up", "timestamp": 1594267819093}, {"namespace": "ospf-single", "hostname":
     "exit01", "ifname": "swp2", "ipAddressList": ["10.127.1.9/31"], "macaddr": "44:38:39:00:00:5a",
     "ip6AddressList": ["fe80::4638:39ff:fe00:5a/64"], "state": "up", "timestamp":
-    1594267819093}, {"namespace": "ospf-single", "hostname": "exit02", "ifname": "eth0",
-    "ipAddressList": ["192.168.121.225/24"], "macaddr": "52:54:00:4a:8d:23", "ip6AddressList":
-    ["fe80::5054:ff:fe4a:8d23/64"], "state": "up", "timestamp": 1594267819093}, {"namespace":
-    "ospf-single", "hostname": "exit02", "ifname": "lo", "ipAddressList": ["10.0.0.102/32"],
-    "macaddr": "00:00:00:00:00:00", "ip6AddressList": ["::1/128"], "state": "up",
-    "timestamp": 1594267819093}, {"namespace": "ospf-single", "hostname": "exit02",
-    "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"], "macaddr": "ba:d1:b3:14:62:51",
-    "ip6AddressList": [], "state": "up", "timestamp": 1594267819093}, {"namespace":
-    "ospf-single", "hostname": "exit02", "ifname": "swp1", "ipAddressList": ["10.127.0.11/31"],
-    "macaddr": "44:38:39:00:00:21", "ip6AddressList": ["fe80::4638:39ff:fe00:21/64"],
+    1594267819093}, {"namespace": "ospf-single", "hostname": "exit01", "ifname": "swp3",
+    "ipAddressList": [], "macaddr": "44:38:39:00:00:44", "ip6AddressList": ["fe80::4638:39ff:fe00:44/64"],
     "state": "up", "timestamp": 1594267819093}, {"namespace": "ospf-single", "hostname":
-    "exit02", "ifname": "swp2", "ipAddressList": ["10.127.1.11/31"], "macaddr": "44:38:39:00:00:55",
-    "ip6AddressList": ["fe80::4638:39ff:fe00:55/64"], "state": "up", "timestamp":
-    1594267819093}, {"namespace": "ospf-single", "hostname": "internet", "ifname":
-    "eth0", "ipAddressList": ["192.168.121.46/24"], "macaddr": "52:54:00:4f:a2:d6",
-    "ip6AddressList": ["fe80::5054:ff:fe4f:a2d6/64"], "state": "", "timestamp": 1594267819095},
-    {"namespace": "ospf-single", "hostname": "internet", "ifname": "lo", "ipAddressList":
-    ["127.0.0.1/8"], "macaddr": "00:00:00:00:00:00", "ip6AddressList": ["::1/128"],
-    "state": "", "timestamp": 1594267819095}, {"namespace": "ospf-single", "hostname":
-    "leaf01", "ifname": "eth0", "ipAddressList": ["192.168.121.4/24"], "macaddr":
-    "52:54:00:ac:35:ac", "ip6AddressList": ["fe80::5054:ff:feac:35ac/64"], "state":
-    "up", "timestamp": 1594267819094}, {"namespace": "ospf-single", "hostname": "leaf01",
-    "ifname": "lo", "ipAddressList": ["10.0.0.11/32"], "macaddr": "00:00:00:00:00:00",
+    "exit01", "ifname": "swp4", "ipAddressList": [], "macaddr": "44:38:39:00:00:45",
+    "ip6AddressList": ["fe80::4638:39ff:fe00:45/64"], "state": "up", "timestamp":
+    1594267819093}, {"namespace": "ospf-single", "hostname": "exit01", "ifname": "swp5",
+    "ipAddressList": [], "macaddr": "44:38:39:00:00:4b", "ip6AddressList": ["fe80::4638:39ff:fe00:4b/64"],
+    "state": "up", "timestamp": 1594267819093}, {"namespace": "ospf-single", "hostname":
+    "exit01", "ifname": "swp6", "ipAddressList": [], "macaddr": "44:38:39:00:00:08",
+    "ip6AddressList": ["fe80::4638:39ff:fe00:8/64"], "state": "up", "timestamp": 1594267819093},
+    {"namespace": "ospf-single", "hostname": "exit02", "ifname": "eth0", "ipAddressList":
+    ["192.168.121.225/24"], "macaddr": "52:54:00:4a:8d:23", "ip6AddressList": ["fe80::5054:ff:fe4a:8d23/64"],
+    "state": "up", "timestamp": 1594267819093}, {"namespace": "ospf-single", "hostname":
+    "exit02", "ifname": "lo", "ipAddressList": ["10.0.0.102/32"], "macaddr": "00:00:00:00:00:00",
+    "ip6AddressList": ["::1/128"], "state": "up", "timestamp": 1594267819093}, {"namespace":
+    "ospf-single", "hostname": "exit02", "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"],
+    "macaddr": "ba:d1:b3:14:62:51", "ip6AddressList": [], "state": "up", "timestamp":
+    1594267819093}, {"namespace": "ospf-single", "hostname": "exit02", "ifname": "swp1",
+    "ipAddressList": ["10.127.0.11/31"], "macaddr": "44:38:39:00:00:21", "ip6AddressList":
+    ["fe80::4638:39ff:fe00:21/64"], "state": "up", "timestamp": 1594267819093}, {"namespace":
+    "ospf-single", "hostname": "exit02", "ifname": "swp2", "ipAddressList": ["10.127.1.11/31"],
+    "macaddr": "44:38:39:00:00:55", "ip6AddressList": ["fe80::4638:39ff:fe00:55/64"],
+    "state": "up", "timestamp": 1594267819093}, {"namespace": "ospf-single", "hostname":
+    "exit02", "ifname": "swp3", "ipAddressList": [], "macaddr": "44:38:39:00:00:30",
+    "ip6AddressList": ["fe80::4638:39ff:fe00:30/64"], "state": "up", "timestamp":
+    1594267819093}, {"namespace": "ospf-single", "hostname": "exit02", "ifname": "swp4",
+    "ipAddressList": [], "macaddr": "44:38:39:00:00:31", "ip6AddressList": ["fe80::4638:39ff:fe00:31/64"],
+    "state": "up", "timestamp": 1594267819093}, {"namespace": "ospf-single", "hostname":
+    "exit02", "ifname": "swp5", "ipAddressList": [], "macaddr": "44:38:39:00:00:0c",
+    "ip6AddressList": ["fe80::4638:39ff:fe00:c/64"], "state": "up", "timestamp": 1594267819093},
+    {"namespace": "ospf-single", "hostname": "exit02", "ifname": "swp6", "ipAddressList":
+    [], "macaddr": "44:38:39:00:00:3f", "ip6AddressList": ["fe80::4638:39ff:fe00:3f/64"],
+    "state": "up", "timestamp": 1594267819093}, {"namespace": "ospf-single", "hostname":
+    "internet", "ifname": "eth0", "ipAddressList": ["192.168.121.46/24"], "macaddr":
+    "52:54:00:4f:a2:d6", "ip6AddressList": ["fe80::5054:ff:fe4f:a2d6/64"], "state":
+    "", "timestamp": 1594267819095}, {"namespace": "ospf-single", "hostname": "internet",
+    "ifname": "lo", "ipAddressList": ["127.0.0.1/8"], "macaddr": "00:00:00:00:00:00",
+    "ip6AddressList": ["::1/128"], "state": "", "timestamp": 1594267819095}, {"namespace":
+    "ospf-single", "hostname": "internet", "ifname": "swp1", "ipAddressList": [],
+    "macaddr": "44:38:39:00:00:07", "ip6AddressList": [], "state": "", "timestamp":
+    1594267819095}, {"namespace": "ospf-single", "hostname": "internet", "ifname":
+    "swp2", "ipAddressList": [], "macaddr": "44:38:39:00:00:3e", "ip6AddressList":
+    [], "state": "", "timestamp": 1594267819095}, {"namespace": "ospf-single", "hostname":
+    "leaf01", "ifname": "bridge", "ipAddressList": [], "macaddr": "44:38:39:00:00:03",
+    "ip6AddressList": ["fe80::4638:39ff:fe00:3/64"], "state": "up", "timestamp": 1594267819094},
+    {"namespace": "ospf-single", "hostname": "leaf01", "ifname": "eth0", "ipAddressList":
+    ["192.168.121.4/24"], "macaddr": "52:54:00:ac:35:ac", "ip6AddressList": ["fe80::5054:ff:feac:35ac/64"],
+    "state": "up", "timestamp": 1594267819094}, {"namespace": "ospf-single", "hostname":
+    "leaf01", "ifname": "lo", "ipAddressList": ["10.0.0.11/32"], "macaddr": "00:00:00:00:00:00",
     "ip6AddressList": ["::1/128"], "state": "up", "timestamp": 1594267819094}, {"namespace":
     "ospf-single", "hostname": "leaf01", "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"],
     "macaddr": "02:58:bc:86:65:91", "ip6AddressList": [], "state": "up", "timestamp":
@@ -487,12 +927,22 @@ tests:
     "ospf-single", "hostname": "leaf01", "ifname": "swp2", "ipAddressList": ["10.127.1.1/31"],
     "macaddr": "44:38:39:00:00:24", "ip6AddressList": ["fe80::4638:39ff:fe00:24/64"],
     "state": "up", "timestamp": 1594267819094}, {"namespace": "ospf-single", "hostname":
-    "leaf01", "ifname": "vlan10", "ipAddressList": ["172.16.1.1/24"], "macaddr": "44:38:39:00:00:03",
-    "ip6AddressList": ["fe80::4638:39ff:fe00:3/64"], "state": "up", "timestamp": 1594267819094},
-    {"namespace": "ospf-single", "hostname": "leaf02", "ifname": "eth0", "ipAddressList":
-    ["192.168.121.102/24"], "macaddr": "52:54:00:05:02:6c", "ip6AddressList": ["fe80::5054:ff:fe05:26c/64"],
+    "leaf01", "ifname": "swp3", "ipAddressList": [], "macaddr": "44:38:39:00:00:1d",
+    "ip6AddressList": [], "state": "", "timestamp": 1594267819094}, {"namespace":
+    "ospf-single", "hostname": "leaf01", "ifname": "swp4", "ipAddressList": [], "macaddr":
+    "44:38:39:00:00:1e", "ip6AddressList": [], "state": "", "timestamp": 1594267819094},
+    {"namespace": "ospf-single", "hostname": "leaf01", "ifname": "swp5", "ipAddressList":
+    [], "macaddr": "44:38:39:00:00:03", "ip6AddressList": [], "state": "up", "timestamp":
+    1594267819094}, {"namespace": "ospf-single", "hostname": "leaf01", "ifname": "vlan10",
+    "ipAddressList": ["172.16.1.1/24"], "macaddr": "44:38:39:00:00:03", "ip6AddressList":
+    ["fe80::4638:39ff:fe00:3/64"], "state": "up", "timestamp": 1594267819094}, {"namespace":
+    "ospf-single", "hostname": "leaf02", "ifname": "bridge", "ipAddressList": [],
+    "macaddr": "44:38:39:00:00:18", "ip6AddressList": ["fe80::4638:39ff:fe00:18/64"],
     "state": "up", "timestamp": 1594267819094}, {"namespace": "ospf-single", "hostname":
-    "leaf02", "ifname": "lo", "ipAddressList": ["10.0.0.12/32"], "macaddr": "00:00:00:00:00:00",
+    "leaf02", "ifname": "eth0", "ipAddressList": ["192.168.121.102/24"], "macaddr":
+    "52:54:00:05:02:6c", "ip6AddressList": ["fe80::5054:ff:fe05:26c/64"], "state":
+    "up", "timestamp": 1594267819094}, {"namespace": "ospf-single", "hostname": "leaf02",
+    "ifname": "lo", "ipAddressList": ["10.0.0.12/32"], "macaddr": "00:00:00:00:00:00",
     "ip6AddressList": ["::1/128"], "state": "up", "timestamp": 1594267819094}, {"namespace":
     "ospf-single", "hostname": "leaf02", "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"],
     "macaddr": "e2:08:ee:6b:71:47", "ip6AddressList": [], "state": "up", "timestamp":
@@ -502,28 +952,47 @@ tests:
     "ospf-single", "hostname": "leaf02", "ifname": "swp2", "ipAddressList": ["10.127.1.3/31"],
     "macaddr": "44:38:39:00:00:5d", "ip6AddressList": ["fe80::4638:39ff:fe00:5d/64"],
     "state": "up", "timestamp": 1594267819094}, {"namespace": "ospf-single", "hostname":
-    "leaf02", "ifname": "vlan10", "ipAddressList": ["172.16.2.1/24"], "macaddr": "44:38:39:00:00:18",
-    "ip6AddressList": ["fe80::4638:39ff:fe00:18/64"], "state": "up", "timestamp":
-    1594267819094}, {"namespace": "ospf-single", "hostname": "leaf03", "ifname": "eth0",
-    "ipAddressList": ["192.168.121.11/24"], "macaddr": "52:54:00:2f:dd:aa", "ip6AddressList":
-    ["fe80::5054:ff:fe2f:ddaa/64"], "state": "up", "timestamp": 1594267819094}, {"namespace":
-    "ospf-single", "hostname": "leaf03", "ifname": "lo", "ipAddressList": ["10.0.0.13/32"],
-    "macaddr": "00:00:00:00:00:00", "ip6AddressList": ["::1/128"], "state": "up",
-    "timestamp": 1594267819094}, {"namespace": "ospf-single", "hostname": "leaf03",
-    "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"], "macaddr": "3a:8b:8a:30:ff:6a",
-    "ip6AddressList": [], "state": "up", "timestamp": 1594267819094}, {"namespace":
-    "ospf-single", "hostname": "leaf03", "ifname": "swp1", "ipAddressList": ["10.127.0.5/31"],
-    "macaddr": "44:38:39:00:00:4f", "ip6AddressList": ["fe80::4638:39ff:fe00:4f/64"],
+    "leaf02", "ifname": "swp3", "ipAddressList": [], "macaddr": "44:38:39:00:00:0d",
+    "ip6AddressList": [], "state": "", "timestamp": 1594267819094}, {"namespace":
+    "ospf-single", "hostname": "leaf02", "ifname": "swp4", "ipAddressList": [], "macaddr":
+    "44:38:39:00:00:0e", "ip6AddressList": [], "state": "", "timestamp": 1594267819094},
+    {"namespace": "ospf-single", "hostname": "leaf02", "ifname": "swp5", "ipAddressList":
+    [], "macaddr": "44:38:39:00:00:18", "ip6AddressList": [], "state": "up", "timestamp":
+    1594267819094}, {"namespace": "ospf-single", "hostname": "leaf02", "ifname": "vlan10",
+    "ipAddressList": ["172.16.2.1/24"], "macaddr": "44:38:39:00:00:18", "ip6AddressList":
+    ["fe80::4638:39ff:fe00:18/64"], "state": "up", "timestamp": 1594267819094}, {"namespace":
+    "ospf-single", "hostname": "leaf03", "ifname": "bridge", "ipAddressList": [],
+    "macaddr": "44:38:39:00:00:1f", "ip6AddressList": ["fe80::4638:39ff:fe00:1f/64"],
     "state": "up", "timestamp": 1594267819094}, {"namespace": "ospf-single", "hostname":
-    "leaf03", "ifname": "swp2", "ipAddressList": ["10.127.1.5/31"], "macaddr": "44:38:39:00:00:1b",
-    "ip6AddressList": ["fe80::4638:39ff:fe00:1b/64"], "state": "up", "timestamp":
+    "leaf03", "ifname": "eth0", "ipAddressList": ["192.168.121.11/24"], "macaddr":
+    "52:54:00:2f:dd:aa", "ip6AddressList": ["fe80::5054:ff:fe2f:ddaa/64"], "state":
+    "up", "timestamp": 1594267819094}, {"namespace": "ospf-single", "hostname": "leaf03",
+    "ifname": "lo", "ipAddressList": ["10.0.0.13/32"], "macaddr": "00:00:00:00:00:00",
+    "ip6AddressList": ["::1/128"], "state": "up", "timestamp": 1594267819094}, {"namespace":
+    "ospf-single", "hostname": "leaf03", "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"],
+    "macaddr": "3a:8b:8a:30:ff:6a", "ip6AddressList": [], "state": "up", "timestamp":
+    1594267819094}, {"namespace": "ospf-single", "hostname": "leaf03", "ifname": "swp1",
+    "ipAddressList": ["10.127.0.5/31"], "macaddr": "44:38:39:00:00:4f", "ip6AddressList":
+    ["fe80::4638:39ff:fe00:4f/64"], "state": "up", "timestamp": 1594267819094}, {"namespace":
+    "ospf-single", "hostname": "leaf03", "ifname": "swp2", "ipAddressList": ["10.127.1.5/31"],
+    "macaddr": "44:38:39:00:00:1b", "ip6AddressList": ["fe80::4638:39ff:fe00:1b/64"],
+    "state": "up", "timestamp": 1594267819094}, {"namespace": "ospf-single", "hostname":
+    "leaf03", "ifname": "swp3", "ipAddressList": [], "macaddr": "44:38:39:00:00:2a",
+    "ip6AddressList": [], "state": "", "timestamp": 1594267819094}, {"namespace":
+    "ospf-single", "hostname": "leaf03", "ifname": "swp4", "ipAddressList": [], "macaddr":
+    "44:38:39:00:00:2b", "ip6AddressList": [], "state": "", "timestamp": 1594267819094},
+    {"namespace": "ospf-single", "hostname": "leaf03", "ifname": "swp5", "ipAddressList":
+    [], "macaddr": "44:38:39:00:00:1f", "ip6AddressList": [], "state": "up", "timestamp":
     1594267819094}, {"namespace": "ospf-single", "hostname": "leaf03", "ifname": "vlan10",
     "ipAddressList": ["172.16.3.1/24"], "macaddr": "44:38:39:00:00:1f", "ip6AddressList":
     ["fe80::4638:39ff:fe00:1f/64"], "state": "up", "timestamp": 1594267819094}, {"namespace":
-    "ospf-single", "hostname": "leaf04", "ifname": "eth0", "ipAddressList": ["192.168.121.146/24"],
-    "macaddr": "52:54:00:ff:86:38", "ip6AddressList": ["fe80::5054:ff:feff:8638/64"],
+    "ospf-single", "hostname": "leaf04", "ifname": "bridge", "ipAddressList": [],
+    "macaddr": "44:38:39:00:00:2c", "ip6AddressList": ["fe80::4638:39ff:fe00:2c/64"],
     "state": "up", "timestamp": 1594267819095}, {"namespace": "ospf-single", "hostname":
-    "leaf04", "ifname": "lo", "ipAddressList": ["10.0.0.14/32"], "macaddr": "00:00:00:00:00:00",
+    "leaf04", "ifname": "eth0", "ipAddressList": ["192.168.121.146/24"], "macaddr":
+    "52:54:00:ff:86:38", "ip6AddressList": ["fe80::5054:ff:feff:8638/64"], "state":
+    "up", "timestamp": 1594267819095}, {"namespace": "ospf-single", "hostname": "leaf04",
+    "ifname": "lo", "ipAddressList": ["10.0.0.14/32"], "macaddr": "00:00:00:00:00:00",
     "ip6AddressList": ["::1/128"], "state": "up", "timestamp": 1594267819095}, {"namespace":
     "ospf-single", "hostname": "leaf04", "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"],
     "macaddr": "46:ec:f3:d3:e4:48", "ip6AddressList": [], "state": "up", "timestamp":
@@ -533,54 +1002,69 @@ tests:
     "ospf-single", "hostname": "leaf04", "ifname": "swp2", "ipAddressList": ["10.127.1.7/31"],
     "macaddr": "44:38:39:00:00:46", "ip6AddressList": ["fe80::4638:39ff:fe00:46/64"],
     "state": "up", "timestamp": 1594267819095}, {"namespace": "ospf-single", "hostname":
-    "leaf04", "ifname": "vlan10", "ipAddressList": ["172.16.4.1/24"], "macaddr": "44:38:39:00:00:2c",
-    "ip6AddressList": ["fe80::4638:39ff:fe00:2c/64"], "state": "up", "timestamp":
-    1594267819095}, {"namespace": "ospf-single", "hostname": "server101", "ifname":
-    "eth0", "ipAddressList": ["192.168.121.240/24"], "macaddr": "52:54:00:0f:e0:4e",
+    "leaf04", "ifname": "swp3", "ipAddressList": [], "macaddr": "44:38:39:00:00:19",
+    "ip6AddressList": [], "state": "", "timestamp": 1594267819095}, {"namespace":
+    "ospf-single", "hostname": "leaf04", "ifname": "swp4", "ipAddressList": [], "macaddr":
+    "44:38:39:00:00:1a", "ip6AddressList": [], "state": "", "timestamp": 1594267819095},
+    {"namespace": "ospf-single", "hostname": "leaf04", "ifname": "swp5", "ipAddressList":
+    [], "macaddr": "44:38:39:00:00:2c", "ip6AddressList": [], "state": "up", "timestamp":
+    1594267819095}, {"namespace": "ospf-single", "hostname": "leaf04", "ifname": "vlan10",
+    "ipAddressList": ["172.16.4.1/24"], "macaddr": "44:38:39:00:00:2c", "ip6AddressList":
+    ["fe80::4638:39ff:fe00:2c/64"], "state": "up", "timestamp": 1594267819095}, {"namespace":
+    "ospf-single", "hostname": "server101", "ifname": "eth0", "ipAddressList": ["192.168.121.240/24"],
+    "macaddr": "52:54:00:0f:e0:4e", "ip6AddressList": [], "state": "up", "timestamp":
+    1594267818864}, {"namespace": "ospf-single", "hostname": "server101", "ifname":
+    "eth1", "ipAddressList": ["172.16.1.101/24"], "macaddr": "00:03:00:11:11:01",
     "ip6AddressList": [], "state": "up", "timestamp": 1594267818864}, {"namespace":
-    "ospf-single", "hostname": "server101", "ifname": "eth1", "ipAddressList": ["172.16.1.101/24"],
-    "macaddr": "00:03:00:11:11:01", "ip6AddressList": [], "state": "up", "timestamp":
-    1594267818864}, {"namespace": "ospf-single", "hostname": "server102", "ifname":
-    "eth0", "ipAddressList": ["192.168.121.147/24"], "macaddr": "52:54:00:80:91:d1",
-    "ip6AddressList": [], "state": "up", "timestamp": 1594267818864}, {"namespace":
-    "ospf-single", "hostname": "server102", "ifname": "eth1", "ipAddressList": ["172.16.2.102/24"],
-    "macaddr": "00:03:00:22:22:02", "ip6AddressList": [], "state": "up", "timestamp":
+    "ospf-single", "hostname": "server101", "ifname": "lo", "ipAddressList": [], "macaddr":
+    "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "timestamp": 1594267818864},
+    {"namespace": "ospf-single", "hostname": "server102", "ifname": "eth0", "ipAddressList":
+    ["192.168.121.147/24"], "macaddr": "52:54:00:80:91:d1", "ip6AddressList": [],
+    "state": "up", "timestamp": 1594267818864}, {"namespace": "ospf-single", "hostname":
+    "server102", "ifname": "eth1", "ipAddressList": ["172.16.2.102/24"], "macaddr":
+    "00:03:00:22:22:02", "ip6AddressList": [], "state": "up", "timestamp": 1594267818864},
+    {"namespace": "ospf-single", "hostname": "server102", "ifname": "lo", "ipAddressList":
+    [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "timestamp":
     1594267818864}, {"namespace": "ospf-single", "hostname": "server103", "ifname":
     "eth0", "ipAddressList": ["192.168.121.53/24"], "macaddr": "52:54:00:5f:10:9a",
     "ip6AddressList": [], "state": "up", "timestamp": 1594267818863}, {"namespace":
     "ospf-single", "hostname": "server103", "ifname": "eth1", "ipAddressList": ["172.16.3.103/24"],
     "macaddr": "00:03:00:33:33:01", "ip6AddressList": [], "state": "up", "timestamp":
-    1594267818863}, {"namespace": "ospf-single", "hostname": "server104", "ifname":
-    "eth0", "ipAddressList": ["192.168.121.100/24"], "macaddr": "52:54:00:61:27:83",
-    "ip6AddressList": [], "state": "up", "timestamp": 1594267818863}, {"namespace":
-    "ospf-single", "hostname": "server104", "ifname": "eth1", "ipAddressList": ["172.16.4.104/24"],
-    "macaddr": "00:03:00:44:44:02", "ip6AddressList": [], "state": "up", "timestamp":
-    1594267818863}, {"namespace": "ospf-single", "hostname": "spine01", "ifname":
-    "eth0", "ipAddressList": ["192.168.121.13/24"], "macaddr": "52:54:00:3f:85:20",
-    "ip6AddressList": ["fe80::5054:ff:fe3f:8520/64"], "state": "up", "timestamp":
+    1594267818863}, {"namespace": "ospf-single", "hostname": "server103", "ifname":
+    "lo", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [],
+    "state": "up", "timestamp": 1594267818863}, {"namespace": "ospf-single", "hostname":
+    "server104", "ifname": "eth0", "ipAddressList": ["192.168.121.100/24"], "macaddr":
+    "52:54:00:61:27:83", "ip6AddressList": [], "state": "up", "timestamp": 1594267818863},
+    {"namespace": "ospf-single", "hostname": "server104", "ifname": "eth1", "ipAddressList":
+    ["172.16.4.104/24"], "macaddr": "00:03:00:44:44:02", "ip6AddressList": [], "state":
+    "up", "timestamp": 1594267818863}, {"namespace": "ospf-single", "hostname": "server104",
+    "ifname": "lo", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
+    [], "state": "up", "timestamp": 1594267818863}, {"namespace": "ospf-single", "hostname":
+    "spine01", "ifname": "eth0", "ipAddressList": ["192.168.121.13/24"], "macaddr":
+    "52:54:00:3f:85:20", "ip6AddressList": ["fe80::5054:ff:fe3f:8520/64"], "state":
+    "up", "timestamp": 1594267819093}, {"namespace": "ospf-single", "hostname": "spine01",
+    "ifname": "lo", "ipAddressList": ["10.0.0.21/32"], "macaddr": "00:00:00:00:00:00",
+    "ip6AddressList": ["::1/128"], "state": "up", "timestamp": 1594267819093}, {"namespace":
+    "ospf-single", "hostname": "spine01", "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"],
+    "macaddr": "26:6e:b6:60:98:c6", "ip6AddressList": [], "state": "up", "timestamp":
     1594267819093}, {"namespace": "ospf-single", "hostname": "spine01", "ifname":
-    "lo", "ipAddressList": ["10.0.0.21/32"], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    ["::1/128"], "state": "up", "timestamp": 1594267819093}, {"namespace": "ospf-single",
-    "hostname": "spine01", "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"], "macaddr":
-    "26:6e:b6:60:98:c6", "ip6AddressList": [], "state": "up", "timestamp": 1594267819093},
-    {"namespace": "ospf-single", "hostname": "spine01", "ifname": "swp1", "ipAddressList":
-    ["10.127.0.0/31"], "macaddr": "44:38:39:00:00:54", "ip6AddressList": ["fe80::4638:39ff:fe00:54/64"],
+    "swp1", "ipAddressList": ["10.127.0.0/31"], "macaddr": "44:38:39:00:00:54", "ip6AddressList":
+    ["fe80::4638:39ff:fe00:54/64"], "state": "up", "timestamp": 1594267819093}, {"namespace":
+    "ospf-single", "hostname": "spine01", "ifname": "swp2", "ipAddressList": ["10.127.0.2/31"],
+    "macaddr": "44:38:39:00:00:29", "ip6AddressList": ["fe80::4638:39ff:fe00:29/64"],
     "state": "up", "timestamp": 1594267819093}, {"namespace": "ospf-single", "hostname":
-    "spine01", "ifname": "swp2", "ipAddressList": ["10.127.0.2/31"], "macaddr": "44:38:39:00:00:29",
-    "ip6AddressList": ["fe80::4638:39ff:fe00:29/64"], "state": "up", "timestamp":
+    "spine01", "ifname": "swp3", "ipAddressList": ["10.127.0.4/31"], "macaddr": "44:38:39:00:00:50",
+    "ip6AddressList": ["fe80::4638:39ff:fe00:50/64"], "state": "up", "timestamp":
     1594267819093}, {"namespace": "ospf-single", "hostname": "spine01", "ifname":
-    "swp3", "ipAddressList": ["10.127.0.4/31"], "macaddr": "44:38:39:00:00:50", "ip6AddressList":
-    ["fe80::4638:39ff:fe00:50/64"], "state": "up", "timestamp": 1594267819093}, {"namespace":
-    "ospf-single", "hostname": "spine01", "ifname": "swp4", "ipAddressList": ["10.127.0.6/31"],
-    "macaddr": "44:38:39:00:00:3c", "ip6AddressList": ["fe80::4638:39ff:fe00:3c/64"],
+    "swp4", "ipAddressList": ["10.127.0.6/31"], "macaddr": "44:38:39:00:00:3c", "ip6AddressList":
+    ["fe80::4638:39ff:fe00:3c/64"], "state": "up", "timestamp": 1594267819093}, {"namespace":
+    "ospf-single", "hostname": "spine01", "ifname": "swp5", "ipAddressList": ["10.127.0.10/31"],
+    "macaddr": "44:38:39:00:00:22", "ip6AddressList": ["fe80::4638:39ff:fe00:22/64"],
     "state": "up", "timestamp": 1594267819093}, {"namespace": "ospf-single", "hostname":
-    "spine01", "ifname": "swp5", "ipAddressList": ["10.127.0.10/31"], "macaddr": "44:38:39:00:00:22",
-    "ip6AddressList": ["fe80::4638:39ff:fe00:22/64"], "state": "up", "timestamp":
-    1594267819093}, {"namespace": "ospf-single", "hostname": "spine01", "ifname":
-    "swp6", "ipAddressList": ["10.127.0.8/31"], "macaddr": "44:38:39:00:00:0a", "ip6AddressList":
-    ["fe80::4638:39ff:fe00:a/64"], "state": "up", "timestamp": 1594267819093}, {"namespace":
-    "ospf-single", "hostname": "spine02", "ifname": "eth0", "ipAddressList": ["192.168.121.171/24"],
-    "macaddr": "52:54:00:75:64:7f", "ip6AddressList": ["fe80::5054:ff:fe75:647f/64"],
+    "spine01", "ifname": "swp6", "ipAddressList": ["10.127.0.8/31"], "macaddr": "44:38:39:00:00:0a",
+    "ip6AddressList": ["fe80::4638:39ff:fe00:a/64"], "state": "up", "timestamp": 1594267819093},
+    {"namespace": "ospf-single", "hostname": "spine02", "ifname": "eth0", "ipAddressList":
+    ["192.168.121.171/24"], "macaddr": "52:54:00:75:64:7f", "ip6AddressList": ["fe80::5054:ff:fe75:647f/64"],
     "state": "up", "timestamp": 1594267819095}, {"namespace": "ospf-single", "hostname":
     "spine02", "ifname": "lo", "ipAddressList": ["10.0.0.22/32"], "macaddr": "00:00:00:00:00:00",
     "ip6AddressList": ["::1/128"], "state": "up", "timestamp": 1594267819095}, {"namespace":
@@ -605,7 +1089,7 @@ tests:
     1594267819095}]'
 - command: address show --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
-  marks: address show
+  marks: address show cumulus
   output: '[{"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
     {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname":
     "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
@@ -737,7 +1221,7 @@ tests:
     "spine02"}, {"hostname": "spine02"}]'
 - command: address summarize --format=json
   data-directory: tests/data/multidc/parquet-out/
-  marks: address summarize
+  marks: address summarize cumulus
   output: '{"dual-evpn": {"deviceCnt": 14, "addressCnt": 166, "uniqueV4AddressCnt":
     56, "uniqueV6AddressCnt": 1, "uniqueIfMacCnt": 93, "deviceWithv4AddressCnt": 14,
     "deviceWithv6AddressCnt": 9, "subnetsUsed": ["24", "32", "30", "8", "31"], "subnetTopCounts":
@@ -751,7 +1235,7 @@ tests:
     22}, {"8": 9}]}}'
 - command: address summarize --namespace=dual-evpn --format=json
   data-directory: tests/data/multidc/parquet-out/
-  marks: address summarize
+  marks: address summarize cumulus
   output: '{"dual-evpn": {"deviceCnt": 14, "addressCnt": 166, "uniqueV4AddressCnt":
     56, "uniqueV6AddressCnt": 1, "uniqueIfMacCnt": 93, "deviceWithv4AddressCnt": 14,
     "deviceWithv6AddressCnt": 9, "subnetsUsed": ["24", "32", "30", "8", "31"], "subnetTopCounts":
@@ -768,8 +1252,164 @@ tests:
     51}, {"hostname": "leaf01", "count": 51}]'
 - command: address summarize --format=json
   data-directory: tests/data/basic_dual_bgp/parquet-out
-  marks: address summarize
+  marks: address summarize cumulus
   output: '{"dual-bgp": {"deviceCnt": 14, "addressCnt": 138, "uniqueV4AddressCnt":
     48, "uniqueV6AddressCnt": 13, "uniqueIfMacCnt": 77, "deviceWithv4AddressCnt":
     14, "deviceWithv6AddressCnt": 13, "subnetsUsed": ["24", "32", "30", "8", "31"],
     "subnetTopCounts": [{"24": 26}, {"32": 13}, {"30": 12}]}}'
+- command: address show --address="10.0.0.21" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show cumulus filter
+  output: '[{"namespace": "dual-bgp", "hostname": "spine01", "ifname": "lo", "ipAddressList":
+    "10.0.0.21/32", "macaddr": "00:00:00:00:00:00", "ip6AddressList": ["2001:db8::21/128",
+    "::1/128"], "state": "up", "timestamp": 1594268228413}]'
+- command: address show --address="10.0.0.11/32" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show cumulus filter
+  output: '[{"namespace": "dual-bgp", "hostname": "leaf01", "ifname": "lo", "ipAddressList":
+    "10.0.0.11/32", "macaddr": "00:00:00:00:00:00", "ip6AddressList": ["2001:db8::11/128",
+    "::1/128"], "state": "up", "timestamp": 1594268228523}]'
+- command: address show --address="10.0.0.2" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show cumulus filter
+  output: '[]'
+- command: address show --address="10.0.0.21 172.16.1.101"  --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show cumulus filter
+  output: '[{"namespace": "dual-bgp", "hostname": "server101", "ifname": "bond0",
+    "ipAddressList": "172.16.1.101/24", "macaddr": "52:54:00:ac:5c:1e", "ip6AddressList":
+    ["2001:db8:0:1::101/64"], "state": "up", "timestamp": 1594268228206}, {"namespace":
+    "dual-bgp", "hostname": "spine01", "ifname": "lo", "ipAddressList": "10.0.0.21/32",
+    "macaddr": "00:00:00:00:00:00", "ip6AddressList": ["2001:db8::21/128", "::1/128"],
+    "state": "up", "timestamp": 1594268228413}]'
+- command: address show --address="11.0.0.21 172.16.1.101"  --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show cumulus filter
+  output: '[{"namespace": "dual-bgp", "hostname": "server101", "ifname": "bond0",
+    "ipAddressList": "172.16.1.101/24", "macaddr": "52:54:00:ac:5c:1e", "ip6AddressList":
+    ["2001:db8:0:1::101/64"], "state": "up", "timestamp": 1594268228206}]'
+- command: address show --address="52:54:00:a1:ce:7d"  --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show cumulus filter
+  output: '[{"namespace": "dual-bgp", "hostname": "spine02", "ifname": "swp1", "ipAddressList":
+    [], "macaddr": "52:54:00:a1:ce:7d", "ip6AddressList": ["fe80::5054:ff:fea1:ce7d/64"],
+    "state": "up", "timestamp": 1594268228413}]'
+- command: address show --address="52:54:00:80:c2:10 52:54:00:68:43:f4"  --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show cumulus filter
+  output: '[{"namespace": "dual-bgp", "hostname": "server102", "ifname": "bond0",
+    "ipAddressList": ["172.16.2.102/24"], "macaddr": "52:54:00:68:43:f4", "ip6AddressList":
+    ["2001:db8:0:2::102/64"], "state": "up", "timestamp": 1594268228244}, {"namespace":
+    "dual-bgp", "hostname": "server102", "ifname": "eth1", "ipAddressList": [], "macaddr":
+    "52:54:00:68:43:f4", "ip6AddressList": [], "state": "up", "timestamp": 1594268228244},
+    {"namespace": "dual-bgp", "hostname": "server102", "ifname": "eth2", "ipAddressList":
+    [], "macaddr": "52:54:00:68:43:f4", "ip6AddressList": [], "state": "up", "timestamp":
+    1594268228244}, {"namespace": "dual-bgp", "hostname": "spine01", "ifname": "swp4",
+    "ipAddressList": [], "macaddr": "52:54:00:80:c2:10", "ip6AddressList": ["fe80::5054:ff:fe80:c210/64"],
+    "state": "up", "timestamp": 1594268228413}]'
+- command: address show --address="172.16.1.1/32 172.16.4.104 52:54:00:40:4a:21"  --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show cumulus filter
+  output: '[{"namespace": "dual-bgp", "hostname": "server104", "ifname": "bond0",
+    "ipAddressList": "172.16.4.104/24", "macaddr": "52:54:00:6d:b0:33", "ip6AddressList":
+    ["2001:db8:0:4::104/64"], "state": "up", "timestamp": 1594268228206}, {"namespace":
+    "dual-bgp", "hostname": "spine02", "ifname": "swp6", "ipAddressList": "", "macaddr":
+    "52:54:00:40:4a:21", "ip6AddressList": ["fe80::5054:ff:fe40:4a21/64"], "state":
+    "up", "timestamp": 1594268228413}]'
+- command: address show --address="52:54:00:8c:ab:b3"  --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show cumulus filter
+  output: '[{"namespace": "dual-bgp", "hostname": "leaf04", "ifname": "bond01", "ipAddressList":
+    [], "macaddr": "52:54:00:8c:ab:b3", "ip6AddressList": [], "state": "up", "timestamp":
+    1594268228417}, {"namespace": "dual-bgp", "hostname": "leaf04", "ifname": "bridge",
+    "ipAddressList": [], "macaddr": "52:54:00:8c:ab:b3", "ip6AddressList": ["fe80::5054:ff:fe8c:abb3/64"],
+    "state": "up", "timestamp": 1594268228417}, {"namespace": "dual-bgp", "hostname":
+    "leaf04", "ifname": "swp5", "ipAddressList": [], "macaddr": "52:54:00:8c:ab:b3",
+    "ip6AddressList": [], "state": "up", "timestamp": 1594268228417}, {"namespace":
+    "dual-bgp", "hostname": "leaf04", "ifname": "vlan13", "ipAddressList": ["172.16.3.1/24"],
+    "macaddr": "52:54:00:8c:ab:b3", "ip6AddressList": ["2001:db8:0:3::1/64", "fe80::5054:ff:fe8c:abb3/64"],
+    "state": "up", "timestamp": 1594268228417}, {"namespace": "dual-bgp", "hostname":
+    "leaf04", "ifname": "vlan24", "ipAddressList": ["172.16.4.1/24"], "macaddr": "52:54:00:8c:ab:b3",
+    "ip6AddressList": ["2001:db8:0:4::1/64", "fe80::5054:ff:fe8c:abb3/64"], "state":
+    "up", "timestamp": 1594268228417}]'
+- command: address show --address="2001:db8::21/128"  --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show cumulus filter
+  output: '[{"namespace": "dual-bgp", "hostname": "spine01", "ifname": "lo", "ipAddressList":
+    ["10.0.0.21/32"], "macaddr": "00:00:00:00:00:00", "ip6AddressList": "2001:db8::21/128",
+    "state": "up", "timestamp": 1594268228413}]'
+- command: address show --address="2001:db9::21/128"  --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show cumulus filter
+  output: '[]'
+- command: address show --address="2001:db8:0:1::101 2001:db8::12"  --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show cumulus filter
+  output: '[{"namespace": "dual-bgp", "hostname": "leaf02", "ifname": "lo", "ipAddressList":
+    ["10.0.0.12/32"], "macaddr": "00:00:00:00:00:00", "ip6AddressList": "2001:db8::12/128",
+    "state": "up", "timestamp": 1594268228434}, {"namespace": "dual-bgp", "hostname":
+    "leaf03", "ifname": "lo", "ipAddressList": ["10.0.0.13/32"], "macaddr": "00:00:00:00:00:00",
+    "ip6AddressList": "2001:db8::12/128", "state": "up", "timestamp": 1594268228413},
+    {"namespace": "dual-bgp", "hostname": "leaf04", "ifname": "lo", "ipAddressList":
+    ["10.0.0.14/32"], "macaddr": "00:00:00:00:00:00", "ip6AddressList": "2001:db8::12/128",
+    "state": "up", "timestamp": 1594268228417}, {"namespace": "dual-bgp", "hostname":
+    "server101", "ifname": "bond0", "ipAddressList": ["172.16.1.101/24"], "macaddr":
+    "52:54:00:ac:5c:1e", "ip6AddressList": "2001:db8:0:1::101/64", "state": "up",
+    "timestamp": 1594268228206}]'
+- command: address show --address="2001:db8::12  2001:db8:0:1::101 10.0.0.101"  --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show cumulus filter
+  output: '[{"namespace": "dual-bgp", "hostname": "exit01", "ifname": "internet-vrf",
+    "ipAddressList": "10.0.0.101/32", "macaddr": "62:98:fa:03:8c:5b", "ip6AddressList":
+    "", "state": "up", "timestamp": 1594268228370}, {"namespace": "dual-bgp", "hostname":
+    "exit01", "ifname": "lo", "ipAddressList": "10.0.0.101/32", "macaddr": "00:00:00:00:00:00",
+    "ip6AddressList": "::1/128", "state": "up", "timestamp": 1594268228370}, {"namespace":
+    "dual-bgp", "hostname": "leaf02", "ifname": "lo", "ipAddressList": "10.0.0.12/32",
+    "macaddr": "00:00:00:00:00:00", "ip6AddressList": "2001:db8::12/128", "state":
+    "up", "timestamp": 1594268228434}, {"namespace": "dual-bgp", "hostname": "leaf03",
+    "ifname": "lo", "ipAddressList": "10.0.0.13/32", "macaddr": "00:00:00:00:00:00",
+    "ip6AddressList": "2001:db8::12/128", "state": "up", "timestamp": 1594268228413},
+    {"namespace": "dual-bgp", "hostname": "leaf04", "ifname": "lo", "ipAddressList":
+    "10.0.0.14/32", "macaddr": "00:00:00:00:00:00", "ip6AddressList": "2001:db8::12/128",
+    "state": "up", "timestamp": 1594268228417}, {"namespace": "dual-bgp", "hostname":
+    "server101", "ifname": "bond0", "ipAddressList": "172.16.1.101/24", "macaddr":
+    "52:54:00:ac:5c:1e", "ip6AddressList": "2001:db8:0:1::101/64", "state": "up",
+    "timestamp": 1594268228206}]'
+- command: address show --address="2001:db8::12  2001:db8:0:1::101 10.0.0.101 52:54:00:6d:fc:87
+    10.0.0.14 52:54:00:40:4a:21"  --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show cumulus filter
+  output: '[{"namespace": "dual-bgp", "hostname": "exit01", "ifname": "internet-vrf",
+    "ipAddressList": "10.0.0.101/32", "macaddr": "62:98:fa:03:8c:5b", "ip6AddressList":
+    "", "state": "up", "timestamp": 1594268228370}, {"namespace": "dual-bgp", "hostname":
+    "exit01", "ifname": "lo", "ipAddressList": "10.0.0.101/32", "macaddr": "00:00:00:00:00:00",
+    "ip6AddressList": "::1/128", "state": "up", "timestamp": 1594268228370}, {"namespace":
+    "dual-bgp", "hostname": "leaf02", "ifname": "lo", "ipAddressList": "10.0.0.12/32",
+    "macaddr": "00:00:00:00:00:00", "ip6AddressList": "2001:db8::12/128", "state":
+    "up", "timestamp": 1594268228434}, {"namespace": "dual-bgp", "hostname": "leaf03",
+    "ifname": "lo", "ipAddressList": "10.0.0.13/32", "macaddr": "00:00:00:00:00:00",
+    "ip6AddressList": "2001:db8::12/128", "state": "up", "timestamp": 1594268228413},
+    {"namespace": "dual-bgp", "hostname": "leaf04", "ifname": "lo", "ipAddressList":
+    "10.0.0.14/32", "macaddr": "00:00:00:00:00:00", "ip6AddressList": "2001:db8::12/128",
+    "state": "up", "timestamp": 1594268228417}, {"namespace": "dual-bgp", "hostname":
+    "leaf04", "ifname": "lo", "ipAddressList": "10.0.0.14/32", "macaddr": "00:00:00:00:00:00",
+    "ip6AddressList": "::1/128", "state": "up", "timestamp": 1594268228417}, {"namespace":
+    "dual-bgp", "hostname": "server101", "ifname": "bond0", "ipAddressList": "172.16.1.101/24",
+    "macaddr": "52:54:00:ac:5c:1e", "ip6AddressList": "2001:db8:0:1::101/64", "state":
+    "up", "timestamp": 1594268228206}, {"namespace": "dual-bgp", "hostname": "spine02",
+    "ifname": "swp2", "ipAddressList": "", "macaddr": "52:54:00:6d:fc:87", "ip6AddressList":
+    "fe80::5054:ff:fe6d:fc87/64", "state": "up", "timestamp": 1594268228413}, {"namespace":
+    "dual-bgp", "hostname": "spine02", "ifname": "swp6", "ipAddressList": "", "macaddr":
+    "52:54:00:40:4a:21", "ip6AddressList": "fe80::5054:ff:fe40:4a21/64", "state":
+    "up", "timestamp": 1594268228413}]'
+- command: address show --address="172.16.1.1/32 172.16.4.104 52:54:00:40:4a:21" --columns='ifname
+    ip6AddressList' --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show cumulus filter
+  output: '[{"ifname": "bond0", "ip6AddressList": ["2001:db8:0:4::104/64"]}, {"ifname":
+    "swp6", "ip6AddressList": ["fe80::5054:ff:fe40:4a21/64"]}]'
+- command: address show --ipvers=v4 --address="2001:db8:0:1::101" --columns="ifname
+    macaddr" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show cumulus filter
+  output: '[{"ifname": "bond0", "macaddr": "52:54:00:ac:5c:1e"}]'
