@@ -208,6 +208,10 @@ class InterfaceService(Service):
                         afi = x.get('interface-address', None)
                     if afi and afi is not None:
                         break
+                    foo = x.get('address-family-name', None)
+                    if foo and (foo[0].get('data', None) == "eth-switch"):
+                        afi = []
+                        break
                 else:
                     continue
 
@@ -217,7 +221,7 @@ class InterfaceService(Service):
                                  'mtu', [{'data': 0}])[0]['data'],
                              'type': 'logical',
                              'speed': entry['speed'],
-                             'master': entry['ifname'],
+                             'master': '',
                              'description': entry['description'],
                              'statusChangeTimestamp':
                              entry['statusChangeTimestamp'],
