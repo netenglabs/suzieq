@@ -31,9 +31,7 @@ tests:
   marks: path show eos
   output: '[{"pathid": 1, "hopCount": 0, "namespace": "eos", "hostname": "server101",
     "iif": "bond0", "vrf": "default", "overlay": false, "mtuMatch": null, "mtu": 1500,
-    "is_l2": false, "timestamp": 1594274559861}, {"pathid": 1, "hopCount": 1, "namespace":
-    "eos", "hostname": "leaf01", "iif": "Vlan13", "vrf": "default", "overlay": false,
-    "mtuMatch": true, "mtu": 1500, "is_l2": false, "timestamp": 1594274559790}]'
+    "is_l2": false, "timestamp": 1594274559861}]'
 - command: path summarize --dest=172.16.4.104 --src=172.16.1.101 --format=json --namespace=eos
   data-directory: tests/data/eos/parquet-out/
   marks: path summarize eos

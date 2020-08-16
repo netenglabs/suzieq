@@ -5,21 +5,21 @@ tests:
   marks: device show junos
   output: '[{"namespace": "junos", "hostname": "srv11", "model": "vm", "version":
     "16.04 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
-    "address": "127.0.0.1", "uptime": 21361259, "timestamp": 1594712995259}, {"namespace":
+    "address": "127.0.0.1", "uptime": 1289018561, "timestamp": 1597189830561}, {"namespace":
     "junos", "hostname": "srv12", "model": "vm", "version": "16.04 LTS", "vendor":
     "Ubuntu", "architecture": "x86-64", "status": "alive", "address": "127.0.0.1",
-    "uptime": 21303258, "timestamp": 1594712995258}, {"namespace": "junos", "hostname":
+    "uptime": 1288959559, "timestamp": 1597189830559}, {"namespace": "junos", "hostname":
     "srv21", "model": "vm", "version": "16.04 LTS", "vendor": "Ubuntu", "architecture":
-    "x86-64", "status": "alive", "address": "127.0.0.1", "uptime": 21110269, "timestamp":
-    1594712995269}, {"namespace": "junos", "hostname": "srv22", "model": "vm", "version":
+    "x86-64", "status": "alive", "address": "127.0.0.1", "uptime": 1288770559, "timestamp":
+    1597189830559}, {"namespace": "junos", "hostname": "srv22", "model": "vm", "version":
     "16.04 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
-    "address": "127.0.0.1", "uptime": 21048258, "timestamp": 1594712995258}, {"namespace":
+    "address": "127.0.0.1", "uptime": 1288716559, "timestamp": 1597189830559}, {"namespace":
     "junos", "hostname": "vqfx1", "model": "vqfx-10000", "version": "19.4R1.10", "vendor":
     "Juniper", "architecture": "", "status": "alive", "address": "127.0.0.1", "uptime":
-    21422000, "timestamp": 1594712998662}, {"namespace": "junos", "hostname": "vqfx2",
+    1289700000, "timestamp": 1597189832029}, {"namespace": "junos", "hostname": "vqfx2",
     "model": "vqfx-10000", "version": "19.4R1.10", "vendor": "Juniper", "architecture":
-    "", "status": "alive", "address": "127.0.0.1", "uptime": 21215000, "timestamp":
-    1594712998775}]'
+    "", "status": "alive", "address": "127.0.0.1", "uptime": 1287720000, "timestamp":
+    1597189832037}]'
 - command: device show --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: device show junos
@@ -30,7 +30,7 @@ tests:
   marks: device summarize junos
   output: '{"junos": {"deviceCnt": 6, "vendorCnt": {"Ubuntu": 4, "Juniper": 2}, "modelCnt":
     {"vm": 4, "vqfx-10000": 2}, "archCnt": {"x86-64": 4, "": 2}, "versionCnt": {"16.04
-    LTS": 4, "19.4R1.10": 2}, "upTimeStat": [21048258, 21422000, 21259129]}}'
+    LTS": 4, "19.4R1.10": 2}, "upTimeStat": [1287720000, 1289700000, 1288865059]}}'
 - command: device summarize --columns="namespace hostname" --format=json
   data-directory: tests/data/junos/parquet-out/
   error:

@@ -29,5 +29,32 @@ tests:
 - command: path summarize --dest=172.16.1.101 --src=172.16.3.104 --format=json --namespace=nxos
   data-directory: tests/data/nxos/parquet-out/
   marks: path summarize nxos
-  output: '[{"nxos": 2}, {"nxos": [1, 2]}, {"nxos": 1}, {"nxos": 1.0}, {"nxos": 3},
-    {"nxos": 1500}, {"nxos": false}, {"nxos": false}]'
+  output: '[{"nxos": 1}, {"nxos": [1]}, {"nxos": 0}, {"nxos": 0.0}, {"nxos": 1}, {"nxos":
+    1500}, {"nxos": false}, {"nxos": false}]'
+- command: path show --namespace=nxos --src="172.16.1.101" --dest="172.16.3.104" --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: path show nxos
+  output: '[{"pathid": 1, "hopCount": 0, "namespace": "nxos", "hostname": "server1",
+    "iif": "eth1", "vrf": "default", "overlay": false, "mtuMatch": null, "mtu": 1500,
+    "is_l2": false, "timestamp": 1597173308926}, {"pathid": 1, "hopCount": 1, "namespace":
+    "nxos", "hostname": "leaf1", "iif": "Vlan10", "vrf": "EVPN", "overlay": false,
+    "mtuMatch": true, "mtu": 1500, "is_l2": false, "timestamp": 1597173308821}, {"pathid":
+    1, "hopCount": 2, "namespace": "nxos", "hostname": "spine1", "iif": "Ethernet1/2",
+    "vrf": "default", "overlay": true, "mtuMatch": true, "mtu": 1500, "is_l2": true,
+    "timestamp": 1597173310994}, {"pathid": 1, "hopCount": 3, "namespace": "nxos",
+    "hostname": "leaf2", "iif": "Ethernet1/4", "vrf": "EVPN", "overlay": true, "mtuMatch":
+    true, "mtu": 1500, "is_l2": true, "timestamp": 1597173310994}, {"pathid": 1, "hopCount":
+    4, "namespace": "nxos", "hostname": "server4", "iif": "eth1", "vrf": "EVPN", "overlay":
+    false, "mtuMatch": true, "mtu": 1500, "is_l2": false, "timestamp": 1597173310994},
+    {"pathid": 2, "hopCount": 0, "namespace": "nxos", "hostname": "server1", "iif":
+    "eth1", "vrf": "default", "overlay": false, "mtuMatch": null, "mtu": 1500, "is_l2":
+    false, "timestamp": 1597173308926}, {"pathid": 2, "hopCount": 1, "namespace":
+    "nxos", "hostname": "leaf1", "iif": "Vlan10", "vrf": "EVPN", "overlay": false,
+    "mtuMatch": true, "mtu": 1500, "is_l2": false, "timestamp": 1597173308821}, {"pathid":
+    2, "hopCount": 2, "namespace": "nxos", "hostname": "spine2", "iif": "Ethernet1/2",
+    "vrf": "default", "overlay": true, "mtuMatch": true, "mtu": 1500, "is_l2": true,
+    "timestamp": 1597173310994}, {"pathid": 2, "hopCount": 3, "namespace": "nxos",
+    "hostname": "leaf2", "iif": "Ethernet1/4", "vrf": "EVPN", "overlay": true, "mtuMatch":
+    true, "mtu": 1500, "is_l2": true, "timestamp": 1597173310994}, {"pathid": 2, "hopCount":
+    4, "namespace": "nxos", "hostname": "server4", "iif": "eth1", "vrf": "EVPN", "overlay":
+    false, "mtuMatch": true, "mtu": 1500, "is_l2": false, "timestamp": 1597173310994}]'
