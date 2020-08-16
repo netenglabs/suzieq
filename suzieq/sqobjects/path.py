@@ -483,6 +483,7 @@ class PathObj(basicobj.SqObject):
                 "overlay_nhip": '',
                 "timestamp": item["timestamp"],
             }
+        src_device_iifs = devices_iifs
 
         dest_device_iifs = OrderedDict()
         for i in range(len(self._dest_df)):
@@ -498,6 +499,9 @@ class PathObj(basicobj.SqObject):
             }
 
         paths = []
+        for x in src_device_iifs:
+            paths.append([OrderedDict({x: devices_iifs[x]})])
+
         l3_visited_devices = set()
         l2_visited_devices = set()
 
@@ -511,6 +515,7 @@ class PathObj(basicobj.SqObject):
         # qualification is required to ensure packets coming back from a
         # firewall or load balancer are not tagged as duplicates.
 
+        on_src_node = True
         while devices_iifs:
             nextdevices_iifs = OrderedDict()
             newpaths = []
@@ -524,6 +529,10 @@ class PathObj(basicobj.SqObject):
 
                 # We've reached the destination, so stop this loop
                 if device in dest_device_iifs:
+                    for x in paths:
+                        z = x + [OrderedDict({device: devices_iifs[device]})]
+                        if z not in newpaths:
+                            newpaths.append(z)
                     continue
 
                 newdevices_iifs = {}  # NHs from this NH to add to the next round
@@ -634,15 +643,11 @@ class PathObj(basicobj.SqObject):
                 if not newdevices_iifs:
                     break
 
-                for x in paths:
-                    for y in devices_iifs:
-                        z = x + [OrderedDict({y: devices_iifs[y]})]
+                if not on_src_node:
+                    for x in paths:
+                        z = x + [OrderedDict({device: devices_iifs[device]})]
                         if z not in newpaths:
                             newpaths.append(z)
-
-                if not paths:
-                    for x in devices_iifs:
-                        paths.append([OrderedDict({x: devices_iifs[x]})])
 
                 for x in newdevices_iifs:
                     if x not in nextdevices_iifs:
@@ -656,11 +661,12 @@ class PathObj(basicobj.SqObject):
             l2_visited_devices = l3_visited_devices.union(
                 l2_devices_this_round)
             devices_iifs = nextdevices_iifs
+            on_src_node = False
 
         # Add the final destination to all paths
-        for x in paths:
-            for device in dest_device_iifs:
-                x.append(OrderedDict({device: dest_device_iifs[device]}))
+        # for x in paths:
+        #    for device in dest_device_iifs:
+        #        x.append(OrderedDict({device: dest_device_iifs[device]}))
 
         # Construct the pandas dataframe.
         # Constructing the dataframe in one shot here as that's more efficient
