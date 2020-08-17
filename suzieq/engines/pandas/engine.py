@@ -171,7 +171,7 @@ class SqPandasEngine(SqEngine):
             fields.remove('active')
 
         final_df = df_timestamp_to_datetime(final_df)
-
+        fields = set(fields).intersection(set(final_df.columns))
         if sort_fields and all(x in sort_fields for x in fields):
             return final_df[fields].sort_values(by=sort_fields)
         else:
