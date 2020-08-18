@@ -136,6 +136,11 @@ class SqEngineObject(object):
     def _gen_summarize_data(self):
         """Generate the data required for summary"""
 
+        if not self._summarize_on_add_field:
+            # Add the only field we truly know to add
+            self._summarize_on_add_field = [
+                ('deviceCnt', 'hostname', 'nunique'),
+            ]
         for field_name, col, function in self._summarize_on_add_field:
             if col != 'namespace' and col != 'timestamp':
                 self._add_field_to_summary(col, function, field_name)
