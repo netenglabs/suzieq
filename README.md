@@ -33,7 +33,7 @@ In this very early release of Suzieq, we've chosen some answers for the framewor
 * Basic device info
 * Interfaces
 * LLDP
-* MAC address table
+* MAC address table (VPLS MAC table for Junos MX)
 * MLAG (only for Cumulus and EOS at this time)
 * Routing table
 * ARP/ND table
@@ -49,7 +49,7 @@ We're also looking for collaborators to help us make Suzieq a truly useful multi
 
 ## Latest Release
 
-The latest release is 0.3 and the official release notes are [here](https://suzieq.readthedocs.io/en/latest/release-notes/).
+The latest release is 0.4 and the official release notes are [here](https://suzieq.readthedocs.io/en/latest/release-notes/).
 
 ## Quick Start
 
