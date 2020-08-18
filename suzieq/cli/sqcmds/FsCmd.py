@@ -1,5 +1,4 @@
 import time
-import typing
 from nubia import command, argument
 import pandas as pd
 
@@ -67,4 +66,12 @@ class FsCmd(SqCommand):
             usedPercent=used_percent,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
+        return self._gen_output(df)
+
+    @command("summarize")
+    def summarize(self):
+        """
+        Summarize the filesystem/storage info
+        """
+        df = pd.DataFrame({'error': ['Summarize not yet supported for FS']})
         return self._gen_output(df)
