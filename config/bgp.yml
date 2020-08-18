@@ -137,7 +137,7 @@ apply:
         "hostForeign: peerIP?|"]'
   linux:
       version: all
-      command: sudo vtysh -c "show ip bgp vrf all neighbors json"
+      command: sudo vtysh -c "show bgp vrf all neighbors json"
       normalize: '*:vrf/*:peer/[
         "remoteAs: peerAsn",
         "localAs: asn",
