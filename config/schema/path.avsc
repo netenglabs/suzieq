@@ -13,47 +13,68 @@
         {
             "name": "pathid",
             "type": "long",
-	    "display": 1
+	    "display": 1,
+	    "description": "identifies each unique path"
         },
         {
             "name": "hopcout",
             "type": "long",
-            "display": 2
+            "display": 2,
+	    "description": "unique hop within a path, can be L2 or L3 path"
         },
         {
             "name": "namespace",
             "type": "string",
-	    "display": 3
+	    "display": 3,
+	    "description": "namespace within which path analysis is run"
         },
         {
             "name": "hostname",
             "type": "string",
-	    "display": 4
+	    "display": 4,
+	    "description": "hostname associated with this hop"
         },
         {
             "name": "iif",
             "type": "string",
-	    "display": 5
+	    "display": 5,
+	    "description": "incoming interface on the host"
+        },
+        {
+            "name": "oif",
+            "type": "string",
+	    "display": 6,
+	    "description": "incoming interface on the host"
         },
         {
             "name": "vrf",
             "type": "string",
-	    "display": 6
+	    "display": 7,
+	    "description": "VRF used to do lookup, ignored on L2 hop"
+        },
+        {
+            "name": "isL2",
+            "type": "boolean",
+            "display": 8,
+	    "description": "True if this is an L2 hop"
         },
         {
             "name": "overlay",
             "type": "boolean",
-	    "display": 7
+	    "display": 9,
+	    "description": "True if packet is tunneled"
         },
         {
             "name": "mtuMatch",
             "type": "boolean",
-            "display": 8
+            "display": 10,
+	    "description": "True if the MTU of peering interfaces match"
         },
         {
             "name": "mtu",
             "type": "long",
-            "display": 9
+            "display": 11,
+	    "description": "MTU of the incoming interface"
         },
         {
             "name": "timestamp",
