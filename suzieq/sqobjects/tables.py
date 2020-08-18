@@ -44,7 +44,7 @@ class TablesObj(basicobj.SqObject):
                                    df['intervals'].max(),
                                    df['all rows'].sum(), df['namespaces'].max(), df['devices'].max()]],
                                  columns=cols)
-            df = df.append(total, ignore_index=True)
+            df = df.append(total, ignore_index=True).dropna()
         return df
 
     def describe(self, **kwargs):
@@ -61,7 +61,8 @@ class TablesObj(basicobj.SqObject):
             return df
 
         entries = [{'name': x['name'], 'type': x['type'], 'key': x.get('key', ''),
-                    'display': x.get('display', '')}
+                    'display': x.get('display', ''),
+                    'description': x.get('description', '')}
                    for x in sch.get_raw_schema()]
         df = pd.DataFrame.from_dict(entries).sort_values('name')
 
