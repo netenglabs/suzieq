@@ -47,7 +47,10 @@ class TopologyCmd(SqCommand):
 
         try:
             df = self.sqobj.get(
-                namespace=self.namespace, vrf=vrf, polled_neighbor=polled_neighbor
+                namespace=self.namespace, 
+                vrf=vrf, 
+                polled_neighbor=polled_neighbor,
+                hostname=self.hostname,
             )
         except Exception as e:
             df = pd.DataFrame({'error': ['ERROR: {}'.format(str(e))]})
