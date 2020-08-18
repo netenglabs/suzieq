@@ -2,6 +2,7 @@ import typing
 from ipaddress import ip_network, ip_address
 from collections import OrderedDict
 from itertools import repeat
+from functools import lru_cache
 
 import numpy as np
 import pandas as pd
@@ -158,7 +159,7 @@ class PathObj(basicobj.SqObject):
              return null;
           extract unique MAC and search MAC table for this MAC;
           if the MAC table search is empty:
-             return null; 
+             return null;
           concat the dataframe using every row of the MAC DF to find if_df
           Return the concat if_df as FHR
         """
@@ -318,6 +319,7 @@ class PathObj(basicobj.SqObject):
         # Look for L2 nexthop
         return self._get_l2_nexthop(device, dest)
 
+    @lru_cache(maxsize=256)
     def _get_nh_with_peer(self, device: str, vrf: str, dest: str, is_l2: bool,
                           vtep_ip) -> list:
         """Get the nexthops & peer node for each nexthop for a given device/vrf
@@ -473,7 +475,7 @@ class PathObj(basicobj.SqObject):
         devices_iifs = OrderedDict()
         for i in range(len(self._src_df)):
             item = self._src_df.iloc[i]
-            devices_iifs[item.hostname] = {
+            devices_iifs[f'{item.hostname}/'] = {
                 "iif": item["ifname"],
                 "mtu": item["mtu"],
                 "overlay": '',
@@ -481,6 +483,7 @@ class PathObj(basicobj.SqObject):
                 "is_l2": self.is_l2,
                 "nhip": self.dest,  # Greased to handle a pure l2 path
                 "overlay_nhip": '',
+                "oif": item["ifname"],
                 "timestamp": item["timestamp"],
             }
         src_device_iifs = devices_iifs
@@ -488,13 +491,14 @@ class PathObj(basicobj.SqObject):
         dest_device_iifs = OrderedDict()
         for i in range(len(self._dest_df)):
             item = self._dest_df.iloc[i]
-            dest_device_iifs[item.hostname] = {
+            dest_device_iifs[f'{item.hostname}/'] = {
                 "iif": item["ifname"],
                 "vrf": item["master"] or "default",
                 "mtu": item["mtu"],
                 "overlay": '',
                 "is_l2": False,
                 "overlay_nhip": '',
+                "oif": '',
                 "timestamp": item["timestamp"],
             }
 
@@ -522,28 +526,36 @@ class PathObj(basicobj.SqObject):
             l3_devices_this_round = set()
             l2_devices_this_round = set()
 
-            for device in devices_iifs:
-                iif = devices_iifs[device]["iif"]
-                devvrf = devices_iifs[device]["vrf"]
-                ioverlay = devices_iifs[device]["overlay"]
+            for devkey in devices_iifs:
+                device = devkey.split('/')[0]
+                iif = devices_iifs[devkey]["iif"]
+                devvrf = devices_iifs[devkey]["vrf"]
+                ioverlay = devices_iifs[devkey]["overlay"]
 
                 # We've reached the destination, so stop this loop
-                if device in dest_device_iifs:
+                destdevkey = f'{device}/'
+                if destdevkey in dest_device_iifs:
+                    pdev1 = devkey.split('/')[1]
                     for x in paths:
-                        z = x + [OrderedDict({device: devices_iifs[device]})]
+                        pdev2 = list(x[-1].keys())[0].split('/')[0]
+                        if pdev1 != pdev2:
+                            continue
+                        dest_device_iifs[destdevkey]['oif'] = devices_iifs[devkey]['oif']
+                        z = x + [OrderedDict(
+                            {destdevkey: dest_device_iifs[destdevkey]})]
                         if z not in newpaths:
                             newpaths.append(z)
                     continue
 
                 newdevices_iifs = {}  # NHs from this NH to add to the next round
-                is_l2 = devices_iifs[device]['is_l2']
+                is_l2 = devices_iifs[devkey]['is_l2']
 
                 end_overlay = True
                 if is_l2 or ioverlay:
                     if ioverlay:
                         ndst = ioverlay
                     else:
-                        ndst = devices_iifs[device].get('nhip', None)
+                        ndst = devices_iifs[devkey].get('nhip', None)
                     # Check if this is the end of the L2 path or overlay
                     nhdf = self._if_df.query(f'hostname=="{device}"')
                     if not nhdf.empty:
@@ -565,14 +577,14 @@ class PathObj(basicobj.SqObject):
                 if not ndst:
                     ndst = dest
 
-                if end_overlay and devices_iifs[device]['overlay_nhip']:
+                if end_overlay and devices_iifs[devkey]['overlay_nhip']:
                     ivrf = self._get_vrf(device, '',
-                                         devices_iifs[device]['overlay_nhip'])
+                                         devices_iifs[devkey]['overlay_nhip'])
                     if not ivrf:
                         ivrf = devvrf
-                elif devices_iifs[device]['nhip'] != "19.254.0.1":
+                elif devices_iifs[devkey]['nhip'] != "19.254.0.1":
                     ivrf = self._get_vrf(device, '',
-                                         devices_iifs[device]['nhip'])
+                                         devices_iifs[devkey]['nhip'])
                     if not ivrf:
                         ivrf = self._get_vrf(device, iif, '')
 
@@ -598,14 +610,14 @@ class PathObj(basicobj.SqObject):
                     else:
                         l3_devices_this_round.add(skey)
 
-                devices_iifs[device]['vrf'] = ivrf
+                devices_iifs[devkey]['vrf'] = ivrf
                 rslt = self._rdf.query('hostname == "{}" and vrf == "{}"'
                                        .format(device, ivrf))
                 if not rslt.empty:
                     timestamp = str(rslt["timestamp"].max())
 
-                for nexthop in self._get_nh_with_peer(device, ivrf, ndst,
-                                                      is_l2, ioverlay):
+                for i, nexthop in enumerate(self._get_nh_with_peer(
+                        device, ivrf, ndst, is_l2, ioverlay)):
                     iface, peer_device, peer_if, overlay, is_l2, nhip = nexthop
                     if iface is not None:
                         try:
@@ -623,10 +635,10 @@ class PathObj(basicobj.SqObject):
                         if overlay and not ioverlay:
                             overlay_nhip = ndst
                         elif not end_overlay:
-                            overlay_nhip = devices_iifs[device]['overlay_nhip']
+                            overlay_nhip = devices_iifs[devkey]['overlay_nhip']
                         else:
                             overlay_nhip = ''
-                        newdevices_iifs[peer_device] = {
+                        newdevices_iifs[f'{peer_device}/{device}'] = {
                             "iif": peer_if,
                             "vrf": vrf,
                             "overlay": overlay,
@@ -636,18 +648,24 @@ class PathObj(basicobj.SqObject):
                             "mtuMatch": mtu_match,
                             "is_l2": is_l2,
                             "nhip": nhip,
+                            "oif": iface,
                             "overlay_nhip": overlay_nhip,
                             "timestamp": timestamp,
                         }
 
-                if not newdevices_iifs:
-                    break
-
                 if not on_src_node:
+                    pdev1 = devkey.split('/')[1]
                     for x in paths:
-                        z = x + [OrderedDict({device: devices_iifs[device]})]
+                        xkey = list(x[-1].keys())[0]
+                        pdev2 = xkey.split('/')[0]
+                        if pdev1 != pdev2:
+                            continue
+                        z = x + [OrderedDict({devkey: devices_iifs[devkey]})]
                         if z not in newpaths:
                             newpaths.append(z)
+
+                if not newdevices_iifs:
+                    break
 
                 for x in newdevices_iifs:
                     if x not in nextdevices_iifs:
@@ -694,18 +712,22 @@ class PathObj(basicobj.SqObject):
                         "namespace": (namespace[0]
                                       if isinstance(namespace, list)
                                       else namespace),
-                        "hostname": item,
+                        "hostname": item.split('/')[0],
                         "iif": ele[item]["iif"],
+                        "oif": ele[item]['oif'],
                         "vrf": ele[item]["vrf"],
+                        "isL2": ele[item].get("is_l2", False),
                         "overlay": overlay,
                         "mtuMatch": ele[item].get("mtuMatch", np.nan),
                         "mtu": ele[item].get("mtu", 0),
-                        "is_l2": ele[item].get("is_l2", False),
                         "timestamp": ele[item].get("timestamp", np.nan)
                     }
                 )
+                if j:
+                    df_plist[-2]['oif'] = ele[item]['oif']
+            df_plist[-1]['oif'] = ''
         paths_df = pd.DataFrame(df_plist)
-        return paths_df
+        return paths_df.drop_duplicates()
 
     def summarize(self, **kwargs):
         """return a pandas dataframe summarizing the path info between src/dest
