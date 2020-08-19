@@ -1,5 +1,15 @@
 ## Release Notes
 
+## 0.4 (August 18, 2020)
+
+In addition to bug fixes, the new features in this release are:
+
+* Support for vastly improved path command. You can get overlay plus undelay path traced, support for outgoing interface as well as incoming interface, a bunch of bugs fixed.
+* Support for looking at JunOS based on model, junos-mx and junos-qfx. The main support in MX is support for gathering MAC address from VPLS. 
+* Mac show now handles VPLS MAC instance filtering in addition to the existing filters. 
+* Support for new table, FS, for file system. Support for gathering FS data from all supported platforms now: Cisco, Cumulus, Juniper, Arista and Linux servers. You can filter FS output based on mountpoint, used percentages.
+* **ALPHA FEATURE** topology table continues to see improvements and additions. We've added support for displaying ARP neighbors in the topology view.
+
 ## 0.3 (July 15, 2020)
 
 First release with third-party contributions! Vastly improved support for realistic NXOS data center deployments. Besides 32 closed bugs, main enhancements include:
