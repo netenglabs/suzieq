@@ -8,6 +8,7 @@ Current commands are:
  - bgp
  - device
  - evpnVni
+ - fs
  - interface
  - lldp
  - mac
@@ -17,4 +18,5 @@ Current commands are:
  - route
  - sqpoller
  - table
+ - topology (alpha)
  - vlan
