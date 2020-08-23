@@ -25,8 +25,6 @@ class SqPandasEngine(SqEngine):
     def get_table_df(self, cfg, schemas, **kwargs) -> pd.DataFrame:
         """Use Pandas instead of Spark to retrieve the data"""
 
-        MAX_FILECNT_TO_READ_FOLDER = 10000
-
         self.cfg = cfg
 
         table = kwargs.pop("table")
@@ -53,31 +51,10 @@ class SqPandasEngine(SqEngine):
                 if not isinstance(v, list):
                     folder += "/namespace={}/".format(v)
 
-        fcnt = self.get_filecnt(folder)
-
-        if fcnt == 0:
-            return pd.DataFrame()
-
-        # We are going to hard code use_get_files until we have some autoamted testing
-        use_get_files = False
-
-        # use_get_files = (
-        #    (fcnt > MAX_FILECNT_TO_READ_FOLDER and view == "latest") or
-        #    start or end
-        # )
-
-        if use_get_files:
-            # Switch to more efficient method when there are lotsa files
-            # Reduce I/O since that is the worst drag
-            key_fields = []
-            if len(kwargs.get("namespace", [])) > 1:
-                del kwargs["namespace"]
-            files = get_latest_files(folder, start, end, view)
-        else:
-            # ign_key_fields contains key fields that are not partition cols
-            key_fields = [i for i in sch.key_fields()
-                          if i not in ign_key_fields]
-            filters = self.build_pa_filters(start, end, key_fields, **kwargs)
+        # ign_key_fields contains key fields that are not partition cols
+        key_fields = [i for i in sch.key_fields()
+                      if i not in ign_key_fields]
+        filters = self.build_pa_filters(start, end, key_fields, **kwargs)
 
         if "columns" in kwargs:
             columns = kwargs["columns"]
@@ -114,68 +91,32 @@ class SqPandasEngine(SqEngine):
 
         # Restore the folder to what it needs to be
         folder = self._get_table_directory(phy_table)
-        if use_get_files:
-            if not query_str:
-                query_str = "active == True"
+        if not query_str:
+            # Make up a dummy query string to avoid if/then/else
+            query_str = "timestamp != 0"
 
-            pdf_list = []
-            with Executor(max_workers=8) as exe:
-                jobs = [
-                    exe.submit(self.read_pq_file, f, fields, query_str)
-                    for f in files
-                ]
-                pdf_list = [job.result() for job in jobs]
-
-            if pdf_list:
-                final_df = pd.concat(pdf_list)
-            else:
-                final_df = pd.DataFrame(columns=fields)
-
-        elif view == "latest":
-            if not query_str:
-                # Make up a dummy query string to avoid if/then/else
-                query_str = "timestamp != 0"
-
-            try:
-                final_df = (
-                    pa.ParquetDataset(
-                        folder, filters=filters or None, validate_schema=False
-                    )
-                    .read(columns=fields)
-                    .to_pandas(split_blocks=True, self_destruct=True)
-                    .query(query_str)
-                    .drop_duplicates(subset=key_fields, keep="last")
-                    .query("active == True")
+        try:
+            final_df = (
+                pa.ParquetDataset(
+                    folder, filters=filters or None, validate_schema=False
                 )
-            except pa.lib.ArrowInvalid:
-                return pd.DataFrame(columns=fields)
-        else:
-            if not query_str:
-                # Make up a dummy query string to avoid if/then/else
-                query_str = 'timestamp != "0"'
-
-            try:
-                final_df = (
-                    pa.ParquetDataset(
-                        folder, filters=filters or None, validate_schema=False
-                    )
-                    .read(columns=fields)
-                    .to_pandas()
-                    .query(query_str)
-                )
-            except pa.lib.ArrowInvalid:
-                return pd.DataFrame(columns=fields)
+                .read(columns=fields)
+                .to_pandas(split_blocks=True, self_destruct=True)
+                .query(query_str)
+                .query('~index.duplicated(keep="last")')
+                .query('active==True')
+                .reset_index()
+            )
+        except pa.lib.ArrowInvalid:
+            return pd.DataFrame(columns=fields)
 
         if 'active' not in columns:
             final_df.drop(columns=['active'], axis=1, inplace=True)
             fields.remove('active')
 
         final_df = df_timestamp_to_datetime(final_df)
-        fields = set(fields).intersection(set(final_df.columns))
-        if sort_fields and all(x in sort_fields for x in fields):
-            return final_df[fields].sort_values(by=sort_fields)
-        else:
-            return final_df[fields]
+        fields = [x for x in fields if x in final_df.columns]
+        return final_df[fields]
 
     def get_object(self, objname: str, iobj):
         module = import_module("suzieq.engines.pandas." + objname)
