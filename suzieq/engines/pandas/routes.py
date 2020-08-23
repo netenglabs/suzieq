@@ -2,6 +2,7 @@ from suzieq.engines.pandas.engineobj import SqEngineObject
 # this is needed for calling .astype('ipnetwork')
 from cyberpandas import IPNetworkType
 import pandas as pd
+from ipaddress import ip_network
 
 
 class RoutesObj(SqEngineObject):
@@ -13,10 +14,9 @@ class RoutesObj(SqEngineObject):
         if not df.empty and 'prefix' in df.columns:
             df = df.loc[df['prefix'] != "127.0.0.0/8"]
             df['prefix'].replace('default', '0.0.0.0/0', inplace=True)
-            df['prefix'] = df['prefix'].astype('ipnetwork')
 
             if prefixlen:
-                df = df.query(f'prefix.ipnet.prefixlen {prefixlen}')
+                df['prefixlen'] = df['prefix'].str.split('/')[1]
 
         return df
 
@@ -26,6 +26,8 @@ class RoutesObj(SqEngineObject):
         if self.summary_df.empty:
             return self.summary_df
 
+        self.summary_df['prefixlen'] = self.summary_df \
+                                           .prefix.str.split('/').str[1]
         self._summarize_on_add_field = [
             ('deviceCnt', 'hostname', 'nunique'),
             ('uniquePrefixCnt', 'prefix', 'nunique'),
@@ -38,9 +40,8 @@ class RoutesObj(SqEngineObject):
 
         self._summarize_on_add_with_query = [
             ('ifRoutesCnt',
-             'prefix.ipnet.prefixlen == 30 or prefix.ipnet.prefixlen == 31',
-             'prefix'),
-            ('hostRoutesCnt', 'prefix.ipnet.prefixlen == 32', 'prefix'),
+             'prefixlen == 30 or prefixlen == 31', 'prefix'),
+            ('hostRoutesCnt', 'prefixlen == 32', 'prefix'),
             ('totalV4RoutesinNs', 'ipvers == 4', 'prefix'),
             ('totalV6RoutesinNs', 'ipvers == 6', 'prefix'),
         ]
@@ -58,7 +59,7 @@ class RoutesObj(SqEngineObject):
         self.summary_row_order.append('routesperVrfStat')
 
         device_with_defrt_per_vrfns = self.summary_df \
-            .query("prefix.ipnet.is_default") \
+            .query('prefix == "0.0.0.0/0"') \
             .groupby(by=["namespace", "vrf"])[
                 "hostname"].nunique()
         devices_per_vrfns = self.summary_df.groupby(by=["namespace", "vrf"])[
@@ -95,6 +96,7 @@ class RoutesObj(SqEngineObject):
         if df.empty:
             return df
 
+        df['prefix'] = df.prefix.astype('ipnetwork')
         idx = df[['namespace', 'hostname', 'vrf', 'prefix']] \
             .query("prefix.ipnet.supernet_of('{}')".format(ipaddr)) \
             .groupby(by=['namespace', 'hostname', 'vrf'])['prefix'] \
