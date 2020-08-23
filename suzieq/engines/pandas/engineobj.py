@@ -293,7 +293,7 @@ class SqEngineObject(object):
             return df
 
         self.ns = {i: {} for i in df['namespace'].unique()}
-        self.nsgrp = df.groupby(by=["namespace"])
+        self.nsgrp = df.groupby(by=["namespace"], observed=True)
 
     def _post_summarize(self, check_empty_col='deviceCnt'):
         # this is needed in the case that there is a namespace that has no

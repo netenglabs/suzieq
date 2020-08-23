@@ -133,11 +133,17 @@ class SqCommand:
         else:
             with pd.option_context('precision', 3,
                                    'display.max_colwidth', max_colwidth,
-                                   'display.max_rows', max(df.shape[0]+1, 64)):
+                                   'display.max_rows', 256):
                 if df.empty:
                     print(df)
                 else:
-                    print(df[cols])
+                    sort_fields = list(
+                        set(self.sqobj._sort_fields)
+                        .intersection(set(df.columns)))
+                    if sort_fields:
+                        print(df[cols].sort_values(by=sort_fields))
+                    else:
+                        print(df[cols])
 
         return retcode
 
