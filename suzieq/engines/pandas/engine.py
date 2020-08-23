@@ -116,6 +116,7 @@ class SqPandasEngine(SqEngine):
 
         final_df = df_timestamp_to_datetime(final_df)
         fields = [x for x in fields if x in final_df.columns]
+
         return final_df[fields]
 
     def get_object(self, objname: str, iobj):
