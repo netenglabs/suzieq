@@ -178,14 +178,18 @@ class Service(object):
         koldkeys = []
         knewkeys = []
 
+        # keys that start with _ are transient and must be ignored
+        # from comparison
         for i, elem in enumerate(old):
-            vals = [v for k, v in elem.items() if k not in self.ignore_fields]
+            vals = [v for k, v in elem.items()
+                    if k not in self.ignore_fields and not k.startswith('_')]
             kvals = [v for k, v in elem.items() if k in self.keys]
             koldvals.update({tuple(str(vals)): i})
             koldkeys.append(kvals)
 
         for i, elem in enumerate(new):
-            vals = [v for k, v in elem.items() if k not in self.ignore_fields]
+            vals = [v for k, v in elem.items()
+                    if k not in self.ignore_fields and not k.startswith('_')]
             kvals = [v for k, v in elem.items() if k in self.keys]
             knewvals.update({tuple(str(vals)): i})
             knewkeys.append(kvals)

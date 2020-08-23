@@ -1,5 +1,14 @@
 ## Release Notes
 
+## 0.4.1 (August 23, 2020)
+
+This is a hotfix release to fix the following two critical bugs in the 0.4 release:
+
+* [Issue 237](https://github.com/netenglabs/suzieq/issues/237). JunOS interface poller had a bug that caused it to continue dumping the interface information gathered every polling interval even if nothing has changed. This causes the interface database to increase unnecessarily.
+* The show commands had their column display order jumbled up instead of a well-known, fixed order.
+
+Besides this, there was another bug fixed which ensured that we didn't use the transient, unmassaged fields in the computation of the difference between the current poller result from the result of the previous poll.
+
 ## 0.4 (August 18, 2020)
 
 In addition to bug fixes, the new features in this release are:
