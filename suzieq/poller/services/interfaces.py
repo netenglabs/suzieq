@@ -8,6 +8,16 @@ from suzieq.utils import convert_macaddr_format_to_colon
 class InterfaceService(Service):
     """Service class for interfaces. Cleanup of data is specific"""
 
+    def __init__(self, name, defn, period, stype, keys, ignore_fields, schema,
+                 queue, run_once="forever"):
+
+        super().__init__(name, defn, period, stype, keys, ignore_fields,
+                         schema, queue, run_once)
+        # Thanks to JunOS obsolete timestamp, we cannot use the
+        # statusChangeTimestamp field directly. We use an artificial field
+        # called statusChangeTimestamp1 to ensure we capture changes
+        self.ignore_fields.append("statusChangeTimestamp")
+
     def _clean_eos_data(self, processed_data, raw_data):
         """Clean up EOS interfaces output"""
 
@@ -19,6 +29,9 @@ class InterfaceService(Service):
                 entry["statusChangeTimestamp"] = int(float(ts) * 1000)
             else:
                 entry["statusChangeTimestamp"] = 0
+            # artificial field for comparison with previous poll result
+            entry["statusChangeTimestamp1"] = entry.get(
+                "statusChangeTimestamp", '')
             if entry["type"] == "portChannel":
                 entry["type"] = "bond"
             words = entry.get("master", "")
@@ -110,6 +123,9 @@ class InterfaceService(Service):
                         * 1000
                     )
                 entry["statusChangeTimestamp"] = ts
+                # artificial field for comparison with previous poll result
+                entry["statusChangeTimestamp1"] = entry.get(
+                    "statusChangeTimestamp", '')
 
                 if '(' in entry['master']:
                     entry['master'] = entry['master'].replace(
@@ -154,12 +170,18 @@ class InterfaceService(Service):
             if (entry['statusChangeTimestamp'] == 'Never' or
                     entry['statusChangeTimestamp'] is None):
                 entry['statusChangeTimestamp'] = 0
+                # artificial field for comparison with previous poll result
+                entry["statusChangeTimestamp1"] = 0
             else:
                 ts_str = re.match(r'.*\((.+) ago\)$',
                                   entry['statusChangeTimestamp'])
+                ts1_str = re.match(r'^[^(]*',
+                                   entry['statusChangeTimestamp'])
                 ts = get_timestamp_from_junos_time(
                     ts_str.group(1), raw_data[0]['timestamp']/1000)
                 entry['statusChangeTimestamp'] = int(ts)
+                # artificial field for comparison with previous poll result
+                entry["statusChangeTimestamp1"] = ts1_str
 
             if entry['speed']:
                 if entry['speed'].endswith('mbps'):
@@ -274,6 +296,9 @@ class InterfaceService(Service):
 
         for entry_idx, entry in enumerate(processed_data):
             entry['origIfname'] = entry['ifname']
+            # artificial field for comparison with previous poll result
+            entry["statusChangeTimestamp1"] = entry.get(
+                "statusChangeTimestamp", '')
             if entry['type'] == 'eth':
                 entry['type'] = 'ethernet'
 
@@ -377,6 +402,7 @@ class InterfaceService(Service):
             else:
                 entry['adminState'] = 'down'
             entry['origIfname'] = entry['ifname']
+            # Linux interface output has no status change timestamp
 
         return processed_data
 
