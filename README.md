@@ -49,7 +49,7 @@ We're also looking for collaborators to help us make Suzieq a truly useful multi
 
 ## Latest Release
 
-The latest release is 0.4 and the official release notes are [here](https://suzieq.readthedocs.io/en/latest/release-notes/).
+The latest release is 0.4.1 and the official release notes are [here](https://suzieq.readthedocs.io/en/latest/release-notes/).
 
 ## Quick Start
 
