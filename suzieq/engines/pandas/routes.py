@@ -1,8 +1,6 @@
 from suzieq.engines.pandas.engineobj import SqEngineObject
-# this is needed for calling .astype('ipnetwork')
-from cyberpandas import IPNetworkType
 import pandas as pd
-from ipaddress import ip_network
+from ipaddress import ip_address, ip_network
 
 
 class RoutesObj(SqEngineObject):
@@ -10,14 +8,21 @@ class RoutesObj(SqEngineObject):
     def get(self, **kwargs):
 
         prefixlen = kwargs.pop('prefixlen', None)
+        columns = kwargs.get('columns', ['default'])
         df = super().get(**kwargs)
         if not df.empty and 'prefix' in df.columns:
             df = df.loc[df['prefix'] != "127.0.0.0/8"]
             df['prefix'].replace('default', '0.0.0.0/0', inplace=True)
 
-            if prefixlen:
-                df['prefixlen'] = df['prefix'].str.split('/')[1]
+            if prefixlen or ('prefixlen' in columns or columns == ['*']):
+                df['prefixlen'] = df['prefix'].str.split(
+                    '/').str[1].astype('int')
 
+            if prefixlen:
+                df = df.query(f'prefixlen {prefixlen}')
+
+            if columns != ['*'] and 'prefixlen' not in columns:
+                df.drop(columns=['prefixlen'], inplace=True, errors='ignore')
         return df
 
     def summarize(self, **kwargs):
@@ -26,8 +31,6 @@ class RoutesObj(SqEngineObject):
         if self.summary_df.empty:
             return self.summary_df
 
-        self.summary_df['prefixlen'] = self.summary_df \
-                                           .prefix.str.split('/').str[1]
         self._summarize_on_add_field = [
             ('deviceCnt', 'hostname', 'nunique'),
             ('uniquePrefixCnt', 'prefix', 'nunique'),
@@ -78,36 +81,60 @@ class RoutesObj(SqEngineObject):
         if not self.iobj._table:
             raise NotImplementedError
 
-        ipaddr = kwargs.get('address')
-        del kwargs['address']
+        addr = kwargs.pop('address')
+        kwargs.pop('ipvers', None)
 
-        cols = kwargs.get("columns", ["namespace", "hostname", "vrf",
-                                      "prefix", "nexthopIps", "oifs",
-                                      "protocol", "ipvers"])
+        try:
+            ipaddr = ip_address(addr)
+            ipvers = ipaddr._version
+        except ValueError as e:
+            raise ValueError(e)
+
+        cols = kwargs.pop("columns", ["namespace", "hostname", "vrf",
+                                      "prefix", "prefixlen", "nexthopIps",
+                                      "oifs", "protocol", "ipvers"])
 
         if cols != ['default']:
             if 'prefix' not in cols:
                 cols.insert(-1, 'prefix')
             if 'ipvers' not in cols:
                 cols.insert(-1, 'ipvers')
+            if 'prefixlen' not in cols:
+                cols.insert(-1, 'prefixlen')
 
-        df = self.get(**kwargs)
+        rslt = pd.DataFrame(cols)
+
+        df = self.get(ipvers=ipvers, columns=cols, **kwargs)
 
         if df.empty:
             return df
 
-        df['prefix'] = df.prefix.astype('ipnetwork')
-        idx = df[['namespace', 'hostname', 'vrf', 'prefix']] \
-            .query("prefix.ipnet.supernet_of('{}')".format(ipaddr)) \
-            .groupby(by=['namespace', 'hostname', 'vrf'])['prefix'] \
-            .max() \
-            .dropna() \
-            .reset_index()
+        if 'prefixlen' not in df.columns and 'prefix' in df.columns:
+            df['prefixlen'] = df['prefix'].str.split('/').str[1].astype('int')
 
-        if idx.empty:
-            return pd.DataFrame(columns=cols)
+        # Vectorized operation for faster results with IPv4:
+        if ipvers == 4:
+            intaddr = df.prefix.str.split('/').str[0] \
+                        .map(lambda y: int(''.join(['%02x' % int(x)
+                                                    for x in y.split('.')]),
+                                           16))
+            netmask = df.prefixlen \
+                        .map(lambda x: (0xffffffff << (32 - x)) & 0xffffffff)
+            match = (ipaddr._ip & netmask) == (intaddr & netmask)
+            rslt = df.loc[match.loc[match].index] \
+                     .sort_values('prefixlen', ascending=False) \
+                     .drop_duplicates(['namespace', 'hostname', 'vrf'])
+        else:
+            rslt = df.loc[df.apply(
+                lambda x, ipaddr: ipaddr in ip_network(x['prefix']),
+                args=(ipaddr, ), axis=1)] \
+                .sort_values('prefixlen', ascending=False) \
+                .drop_duplicates(['namespace', 'hostname', 'vrf'])
 
-        return idx.merge(df)
+        if 'prefixlen' not in cols:
+            return rslt.drop(columns=['prefixlen'])
+        else:
+            return rslt
 
     def aver(self, **kwargs) -> pd.DataFrame:
         """Verify that the routing table is consistent
