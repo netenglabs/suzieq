@@ -137,9 +137,8 @@ class SqCommand:
                 if df.empty:
                     print(df)
                 else:
-                    sort_fields = list(
-                        set(self.sqobj._sort_fields)
-                        .intersection(set(df.columns)))
+                    sort_fields = [x for x in self.sqobj._sort_fields
+                                   if x in df.columns]
                     if sort_fields:
                         print(df[cols].sort_values(by=sort_fields))
                     else:
