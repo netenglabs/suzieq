@@ -102,12 +102,17 @@ class SqPandasEngine(SqEngine):
                 )
                 .read(columns=fields)
                 .to_pandas(split_blocks=True, self_destruct=True)
-                .query(query_str)
-                .query('~index.duplicated(keep="last")')
-                .query('active==True')
-                .reset_index()
-            )
-        except pa.lib.ArrowInvalid:
+                .query(query_str))
+
+            if (not final_df.empty and
+                    all(x in final_df.columns for x in key_fields)):
+                final_df = final_df.set_index(key_fields) \
+                                   .query('~index.duplicated(keep="last")') \
+                                   .query('active==True') \
+                                   .reset_index()
+            elif not final_df.empty:
+                final_df = final_df.query('active == True')
+        except (pa.lib.ArrowInvalid, OSError):
             return pd.DataFrame(columns=fields)
 
         if 'active' not in columns:
