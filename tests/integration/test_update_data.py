@@ -27,7 +27,7 @@ parquet_dir = '/tmp/suzieq-tests-parquet'
 
 
 def copytree(src, dst, symlinks=False, ignore=None):
-    
+
     if not os.path.isdir(dst):
         os.makedirs(dst)
     for item in os.listdir(src):
@@ -84,10 +84,11 @@ def get_cndcn(path):
 
 def run_sqpoller_gather(name, ansible_dir, suzieq_dir, input_path):
     sqcmd_path = [sys.executable, f"{suzieq_dir}/suzieq/poller/sq-poller"]
-    sqcmd = sqcmd_path + ['-i', ansible_dir + ansible_file, '-n', name, 
-        '--run-once', 'gather', '--output-dir', f'{input_path}/suzieq-input']
-    out, code, _ =run_cmd(sqcmd)
+    sqcmd = sqcmd_path + ['-i', ansible_dir + ansible_file, '-n', name,
+                          '--run-once', 'gather', '--output-dir', f'{input_path}/suzieq-input']
+    out, code, _ = run_cmd(sqcmd)
     assert code is 0 or code is None
+
 
 def run_sqpoller_process(files_dir, suzieq_dir, cfg_file):
     sqcmd_path = [sys.executable, f"{suzieq_dir}/suzieq/poller/sq-poller"]
@@ -95,9 +96,10 @@ def run_sqpoller_process(files_dir, suzieq_dir, cfg_file):
     out, code, _ = run_cmd(sqcmd)
     assert code is 0 or code is None
 
+
 def run_scenario(scenario):
     run_cmd(['ansible-playbook', '-b', '-e', f'scenario={scenario}',
-              'deploy.yml'])
+             'deploy.yml'])
     time.sleep(10)
     out, code, err = run_cmd(['ansible-playbook', 'ping.yml'])
     logging.warning(f"ping results {out} {code} {err}")
@@ -110,7 +112,8 @@ def check_suzieq_data(suzieq_dir, name, cfg_file, threshold='14'):
     sqcmd = sqcmd_path + ['device', 'unique', '--columns=namespace',
                           f'--namespace={name}', '-c', cfg_file]
     out, ret, err = run_cmd(sqcmd)
-    assert threshold in out, f'failed {out}, {err}'  # there should be 14 different hosts collected
+    # there should be 14 different hosts collected
+    assert threshold in out, f'failed {out}, {err}'
     for cmd in ['bgp', 'interface', 'ospf', 'evpnVni']:
         sqcmd = sqcmd_path + [cmd, 'assert', f'--namespace={name}']
         out, code, err = run_cmd(sqcmd)
@@ -188,12 +191,13 @@ def update_sqcmds(files, data_dir=None, namespace=None):
 
 
 def update_input_data(root_dir, nos, scenario, input_path):
-        dst_dir = f'{root_dir}/tests/integration/sqcmds/{nos}-input/{scenario}/'
-        git_del_dir(dst_dir)
-        copytree(f'{input_path}/suzieq-input', dst_dir)
+    dst_dir = f'{root_dir}/tests/integration/sqcmds/{nos}-input/{scenario}/'
+    git_del_dir(dst_dir)
+    copytree(f'{input_path}/suzieq-input', dst_dir)
 
 
 class TestUpdate:
+
     @pytest.mark.test_update
     @pytest.mark.gather_data
     @pytest.mark.skipif(not os.environ.get('SUZIEQ_POLLER', None),
@@ -203,18 +207,22 @@ class TestUpdate:
         path = get_cndcn(tmp_path)
         os.chdir(path + '/topologies')
 
-        gather_data('dual-attach', 'evpn', 'ospf-ibgp', 'ospf-ibgp', orig_dir, tmp_path)
+        gather_data('dual-attach', 'evpn', 'ospf-ibgp',
+                    'ospf-ibgp', orig_dir, tmp_path)
         update_input_data(orig_dir, 'cumulus', 'ospf-ibgp', tmp_path)
 
-        gather_data('dual-attach', 'evpn', 'centralized', 'dual-evpn', orig_dir, tmp_path)
+        gather_data('dual-attach', 'evpn', 'centralized',
+                    'dual-evpn', orig_dir, tmp_path)
         update_input_data(orig_dir, 'cumulus', 'dual-evpn', tmp_path)
-        
-        gather_data('single-attach', 'ospf', 'numbered', 'ospf-single', orig_dir, tmp_path)
+
+        gather_data('single-attach', 'ospf', 'numbered',
+                    'ospf-single', orig_dir, tmp_path)
         update_input_data(orig_dir, 'cumulus', 'ospf-single', tmp_path)
 
-        gather_data('dual-attach', 'bgp', 'unnumbered', 'dual-bgp', orig_dir, tmp_path)
+        gather_data('dual-attach', 'bgp', 'unnumbered',
+                    'dual-bgp', orig_dir, tmp_path)
         update_input_data(orig_dir, 'cumulus', 'dual-bgp', tmp_path)
-    
+
     @pytest.mark.test_update
     @pytest.mark.update_data
     @pytest.mark.skipif(not os.environ.get('SUZIEQ_POLLER', None),
@@ -222,30 +230,30 @@ class TestUpdate:
     def test_update_cumulus_multidc_data(self, tmp_path):
         orig_dir = os.getcwd()
 
-        update_data('ospf-ibgp', f'{orig_dir}/tests/integration/sqcmds/cumulus-input/ospf-ibgp', 
-            orig_dir, tmp_path)
-        update_data('dual-evpn', f'{orig_dir}/tests/integration/sqcmds/cumulus-input/dual-evpn', 
-            orig_dir, tmp_path)
-        update_data('ospf-single', f'{orig_dir}/tests/integration/sqcmds/cumulus-input/ospf-single', 
-            orig_dir, tmp_path)
+        update_data('ospf-ibgp', f'{orig_dir}/tests/integration/sqcmds/cumulus-input/ospf-ibgp',
+                    orig_dir, tmp_path)
+        update_data('dual-evpn', f'{orig_dir}/tests/integration/sqcmds/cumulus-input/dual-evpn',
+                    orig_dir, tmp_path)
+        update_data('ospf-single', f'{orig_dir}/tests/integration/sqcmds/cumulus-input/ospf-single',
+                    orig_dir, tmp_path)
 
         dst_dir = f'{orig_dir}/tests/data/multidc/parquet-out'
         git_del_dir(dst_dir)
         copytree(f'{tmp_path}/parquet-out', dst_dir)
         shutil.rmtree(f'{tmp_path}/parquet-out')
-        
-        update_data('dual-bgp', f'{orig_dir}/tests/integration/sqcmds/cumulus-input/dual-bgp', 
-            orig_dir, tmp_path)
+
+        update_data('dual-bgp', f'{orig_dir}/tests/integration/sqcmds/cumulus-input/dual-bgp',
+                    orig_dir, tmp_path)
 
         dst_dir = f'{orig_dir}/tests/data/basic_dual_bgp/parquet-out'
         git_del_dir(dst_dir)
-        
+
         copytree(f'{tmp_path}/parquet-out', dst_dir)
         shutil.rmtree(f'{tmp_path}/parquet-out')
 
         # update the samples data with updates from the newly collected data
 
-        update_sqcmds(glob.glob(f'{sqcmds_dir}/cumulus-samples/*.yml'))
+        # update_sqcmds(glob.glob(f'{sqcmds_dir}/cumulus-samples/*.yml'))
 
     @pytest.mark.test_update
     @pytest.mark.update_data
@@ -255,17 +263,17 @@ class TestUpdate:
         orig_dir = os.getcwd()
         nos = 'eos'
 
-        update_data(nos, f'{orig_dir}/tests/integration/sqcmds/{nos}-input/', 
-            orig_dir, tmp_path)
-        
+        update_data(nos, f'{orig_dir}/tests/integration/sqcmds/{nos}-input/',
+                    orig_dir, tmp_path)
+
         dst_dir = f'{orig_dir}/tests/data/{nos}/parquet-out'
         git_del_dir(dst_dir)
         copytree(f'{tmp_path}/parquet-out', dst_dir)
         shutil.rmtree(f'{tmp_path}/parquet-out')
-        
+
         # update the samples data with updates from the newly collected data
 
-        update_sqcmds(glob.glob(f'{sqcmds_dir}/{nos}-samples/*.yml'))
+        # update_sqcmds(glob.glob(f'{sqcmds_dir}/{nos}-samples/*.yml'))
 
     @pytest.mark.test_update
     @pytest.mark.update_data
@@ -275,17 +283,17 @@ class TestUpdate:
         orig_dir = os.getcwd()
         nos = 'nxos'
 
-        update_data(nos, f'{orig_dir}/tests/integration/sqcmds/{nos}-input/', 
-            orig_dir, tmp_path, number_of_devices='8')
-        
+        update_data(nos, f'{orig_dir}/tests/integration/sqcmds/{nos}-input/',
+                    orig_dir, tmp_path, number_of_devices='8')
+
         dst_dir = f'{orig_dir}/tests/data/{nos}/parquet-out'
         git_del_dir(dst_dir)
         copytree(f'{tmp_path}/parquet-out', dst_dir)
         shutil.rmtree(f'{tmp_path}/parquet-out')
-        
+
         # update the samples data with updates from the newly collected data
 
-        update_sqcmds(glob.glob(f'{sqcmds_dir}/{nos}-samples/*.yml'))
+        # update_sqcmds(glob.glob(f'{sqcmds_dir}/{nos}-samples/*.yml'))
 
     @pytest.mark.test_update
     @pytest.mark.update_data
@@ -295,17 +303,18 @@ class TestUpdate:
         orig_dir = os.getcwd()
         nos = 'junos'
 
-        update_data(nos, f'{orig_dir}/tests/integration/sqcmds/{nos}-input/', 
-            orig_dir, tmp_path, number_of_devices='6')
-        
+        update_data(nos, f'{orig_dir}/tests/integration/sqcmds/{nos}-input/',
+                    orig_dir, tmp_path, number_of_devices='6')
+
         dst_dir = f'{orig_dir}/tests/data/{nos}/parquet-out'
         git_del_dir(dst_dir)
         copytree(f'{tmp_path}/parquet-out', dst_dir)
         shutil.rmtree(f'{tmp_path}/parquet-out')
-        
+
         # update the samples data with updates from the newly collected data
 
-        update_sqcmds(glob.glob(f'{sqcmds_dir}/{nos}-samples/*.yml'))
+        # update_sqcmds(glob.glob(f'{sqcmds_dir}/{nos}-samples/*.yml'))
+
 
 tests = [
     ['bgp', 'numbered'],
@@ -352,7 +361,7 @@ def _test_sqcmds(testvar, context_config):
             assert True
     elif 'error' in testvar and 'error' in testvar['error']:
         assert error, \
-           f"expected error, but got: output: {output}, error: {error}, xfail: {xfail}"
+            f"expected error, but got: output: {output}, error: {error}, xfail: {xfail}"
     else:
         raise Exception(f"either xfail or output requried {error}")
 
@@ -374,7 +383,7 @@ def _update_cndcn_data(topology, proto, scenario, tmp_path):
     name = f'{topology}_{proto}_{scenario}'
 
     update_data(name, f'{orig_dir}/tests/integration/all_cndcn/{name}-input',
-        orig_dir, tmp_path)
+                orig_dir, tmp_path)
 
     if not os.path.isdir(parquet_dir):
         os.mkdir(parquet_dir)
@@ -431,7 +440,7 @@ class TestDualAttach:
                         reason='Not updating data')
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/dual-attach_bgp_numbered-samples/")))
-    def test_dual_bgp_numbered_data(self, testvar, tmp_path): 
+    def test_dual_bgp_numbered_data(self, testvar, tmp_path):
         proto = 'bgp'
         scenario = 'numbered'
         name = f'{self.topology}_{proto}_{scenario}'
@@ -445,7 +454,7 @@ class TestDualAttach:
                         reason='Not updating data')
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/dual-attach_bgp_unnumbered-samples/")))
-    def test_dual_bgp_unnumbered_data(self, testvar): 
+    def test_dual_bgp_unnumbered_data(self, testvar):
         proto = 'bgp'
         scenario = 'unnumbered'
         name = f'{self.topology}_{proto}_{scenario}'
@@ -459,7 +468,7 @@ class TestDualAttach:
                         reason='Not updating data')
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/dual-attach_bgp_docker-samples/")))
-    def test_dual_bgp_docker_data(self, testvar): 
+    def test_dual_bgp_docker_data(self, testvar):
         proto = 'bgp'
         scenario = 'docker'
         name = f'{self.topology}_{proto}_{scenario}'
@@ -473,7 +482,7 @@ class TestDualAttach:
                         reason='Not updating data')
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/dual-attach_ospf_numbered-samples/")))
-    def test_dual_ospf_numbered_data(self, testvar): 
+    def test_dual_ospf_numbered_data(self, testvar):
         proto = 'ospf'
         scenario = 'numbered'
         name = f'{self.topology}_{proto}_{scenario}'
@@ -487,7 +496,7 @@ class TestDualAttach:
                         reason='Not updating data')
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/dual-attach_ospf_unnumbered-samples/")))
-    def test_dual_ospf_unnumbered_data(self, testvar): 
+    def test_dual_ospf_unnumbered_data(self, testvar):
         proto = 'ospf'
         scenario = 'unnumbered'
         name = f'{self.topology}_{proto}_{scenario}'
@@ -501,7 +510,7 @@ class TestDualAttach:
                         reason='Not updating data')
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/dual-attach_ospf_docker-samples/")))
-    def test_dual_ospf_docker_data(self, testvar): 
+    def test_dual_ospf_docker_data(self, testvar):
         proto = 'ospf'
         scenario = 'docker'
         name = f'{self.topology}_{proto}_{scenario}'
@@ -515,7 +524,7 @@ class TestDualAttach:
                         reason='Not updating data')
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/dual-attach_evpn_centralized-samples/")))
-    def test_dual_evpn_centralized_data(self, testvar): 
+    def test_dual_evpn_centralized_data(self, testvar):
         proto = 'evpn'
         scenario = 'centralized'
         name = f'{self.topology}_{proto}_{scenario}'
@@ -529,7 +538,7 @@ class TestDualAttach:
                         reason='Not updating data')
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/dual-attach_evpn_distributed-samples/")))
-    def test_dual_evpn_distributed_data(self, testvar): 
+    def test_dual_evpn_distributed_data(self, testvar):
         proto = 'evpn'
         scenario = 'distributed'
         name = f'{self.topology}_{proto}_{scenario}'
@@ -543,7 +552,7 @@ class TestDualAttach:
                         reason='Not updating data')
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/dual-attach_evpn_ospf-ibgp-samples/")))
-    def test_dual_evpn_ospf_ibgp_data(self, testvar): 
+    def test_dual_evpn_ospf_ibgp_data(self, testvar):
         proto = 'evpn'
         scenario = 'ospf-ibgp'
         name = f'{self.topology}_{proto}_{scenario}'
@@ -563,7 +572,6 @@ class TestSingleAttach:
     def test_gather_single_data(self, proto, scenario, tmp_path, vagrant_setup):
         _gather_cndcn_data('single-attach', proto, scenario, tmp_path)
 
-
     @pytest.mark.update_single_attach
     @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ,
                         reason='Not updating data')
@@ -575,7 +583,6 @@ class TestSingleAttach:
         #   it will update the data in the samples directories
         _update_cndcn_data(self.topology, proto, scenario, tmp_path)
 
-
     # this needs to be run after the tests are created and updated
     #  there is no way to have pytest run the load_up_the_tests before the updater
 
@@ -585,7 +592,7 @@ class TestSingleAttach:
                         reason='Not updating data')
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/single-attach_bgp_numbered-samples/")))
-    def test_single_bgp_numbered_data(self, testvar): 
+    def test_single_bgp_numbered_data(self, testvar):
         proto = 'bgp'
         scenario = 'numbered'
         name = f'{self.topology}_{proto}_{scenario}'
@@ -599,7 +606,7 @@ class TestSingleAttach:
                         reason='Not updating data')
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/single-attach_bgp_unnumbered-samples/")))
-    def test_single_bgp_unnumbered_data(self, testvar): 
+    def test_single_bgp_unnumbered_data(self, testvar):
         proto = 'bgp'
         scenario = 'unnumbered'
         name = f'{self.topology}_{proto}_{scenario}'
@@ -613,7 +620,7 @@ class TestSingleAttach:
                         reason='Not updating data')
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/single-attach_bgp_docker-samples/")))
-    def test_single_bgp_docker_data(self, testvar): 
+    def test_single_bgp_docker_data(self, testvar):
         proto = 'bgp'
         scenario = 'docker'
         name = f'{self.topology}_{proto}_{scenario}'
@@ -627,7 +634,7 @@ class TestSingleAttach:
                         reason='Not updating data')
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/single-attach_ospf_numbered-samples/")))
-    def test_single_ospf_numbered_data(self, testvar): 
+    def test_single_ospf_numbered_data(self, testvar):
         proto = 'ospf'
         scenario = 'numbered'
         name = f'{self.topology}_{proto}_{scenario}'
@@ -641,7 +648,7 @@ class TestSingleAttach:
                         reason='Not updating data')
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/single-attach_ospf_unnumbered-samples/")))
-    def test_single_ospf_unnumbered_data(self, testvar): 
+    def test_single_ospf_unnumbered_data(self, testvar):
         proto = 'ospf'
         scenario = 'unnumbered'
         name = f'{self.topology}_{proto}_{scenario}'
@@ -655,7 +662,7 @@ class TestSingleAttach:
                         reason='Not updating data')
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/single-attach_ospf_docker-samples/")))
-    def test_single_ospf_docker_data(self, testvar): 
+    def test_single_ospf_docker_data(self, testvar):
         proto = 'ospf'
         scenario = 'docker'
         name = f'{self.topology}_{proto}_{scenario}'
@@ -669,7 +676,7 @@ class TestSingleAttach:
                         reason='Not updating data')
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/single-attach_evpn_centralized-samples/")))
-    def test_single_evpn_centralized_data(self, testvar): 
+    def test_single_evpn_centralized_data(self, testvar):
         proto = 'evpn'
         scenario = 'centralized'
         name = f'{self.topology}_{proto}_{scenario}'
@@ -683,7 +690,7 @@ class TestSingleAttach:
                         reason='Not updating data')
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/single-attach_evpn_distributed-samples/")))
-    def test_single_evpn_distributed_data(self, testvar): 
+    def test_single_evpn_distributed_data(self, testvar):
         proto = 'evpn'
         scenario = 'distributed'
         name = f'{self.topology}_{proto}_{scenario}'
@@ -697,7 +704,7 @@ class TestSingleAttach:
                         reason='Not updating data')
     @pytest.mark.parametrize("testvar", conftest.load_up_the_tests(
         os.scandir(f"{cndcn_samples_dir}/single-attach_evpn_ospf-ibgp-samples/")))
-    def test_single_evpn_ospf_ibgp_data(self, testvar): 
+    def test_single_evpn_ospf_ibgp_data(self, testvar):
         proto = 'evpn'
         scenario = 'ospf-ibgp'
         name = f'{self.topology}_{proto}_{scenario}'
@@ -706,6 +713,8 @@ class TestSingleAttach:
         _test_data(self.topology, proto, scenario, testvar)
 
 # This isn't actually a test, it's just used to cleanup any stray vagrant state
+
+
 @pytest.mark.cleanup
 @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ,
                     reason='not sqpoller')
@@ -729,7 +738,8 @@ def test_cleanup_vagrant():
         print(f"virsh destroy {out} {err}")
         out, ret, err = run_cmd(['virsh', 'undefine', device])
         print(f"virsh undefine {out} {err}")
-        out, ret, err = run_cmd(['virsh', 'vol-delete', f"{device}.img", '--pool', 'default'])
+        out, ret, err = run_cmd(
+            ['virsh', 'vol-delete', f"{device}.img", '--pool', 'default'])
         print(f"virsh vol-delete {out} {err}")
     out, ret, err = run_cmd(['vagrant', 'global-status', '--prune'])
     print(f"global status {out} {err}")
