@@ -496,16 +496,16 @@ def build_query_str(skip_fields: list, schema, **kwargs) -> str:
         if not v or f in skip_fields or f in ["groupby"]:
             continue
         type = schema.field(f).get('type', 'string')
-        if isinstance(v, str):
-            query_str += f'{prefix} {f}{build_query_str(v, type)} '
-            prefix = "and"
-        elif isinstance(v, list) and len(v):
+        if isinstance(v, list) and len(v):
             subq = ''
             subcond = ''
             for elem in v:
                 subq += f'{subcond} {f}{build_query_str(elem, type)} '
                 subcond = 'or'
             query_str += '{} ({})'.format(prefix, subq)
+            prefix = "and"
+        else:
+            query_str += f'{prefix} {f}{build_query_str(v, type)} '
             prefix = "and"
 
     return query_str
