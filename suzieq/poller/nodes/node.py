@@ -49,7 +49,7 @@ def get_hostsdata_from_hostsfile(hosts_file) -> dict:
     return hostsconf
 
 
-async def init_hosts(hosts_file, ansible_file, namespace):
+async def init_hosts(hosts_file, ansible_file, namespace, passphrase):
     """Process list of devices to gather data from.
     This involves creating a node for each device listed, and connecting to
     those devices and initializing state about those devices"""
@@ -99,6 +99,7 @@ async def init_hosts(hosts_file, ansible_file, namespace):
                     username=username,
                     port=port,
                     password=password,
+                    passphrase=passphrase,
                     transport=result.scheme,
                     devtype=devtype,
                     ssh_keyfile=keyfile,
@@ -175,9 +176,11 @@ class Node(object):
         self.port = kwargs.get("port", 0)
         self.devtype = None
         pvtkey_file = kwargs.get("ssh_keyfile", None)
+        passphrase = kwargs.get("passphrase", None)
         if pvtkey_file:
             try:
-                self.pvtkey = asyncssh.public_key.read_private_key(pvtkey_file)
+                self.pvtkey = asyncssh.public_key.read_private_key(
+                    pvtkey_file, passphrase)
             except Exception as e:
                 self.logger.error("ERROR: Unable to read private key file {} "
                                   "for {} due to {}".format(pvtkey_file,

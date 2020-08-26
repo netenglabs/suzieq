@@ -8,6 +8,7 @@ import asyncio
 import logging
 from pathlib import Path
 from collections import defaultdict
+import getpass
 
 import uvloop
 
@@ -114,12 +115,14 @@ async def start_poller(userargs, cfg):
 
     logger.info("Initializing hosts and services")
     tasks = []
+
     if userargs.datadir:
         tasks.append(init_files(userargs.datadir))
     else:
         tasks.append(init_hosts(userargs.devices_file,
                                 userargs.ansible_file,
-                                userargs.namespace))
+                                userargs.namespace,
+                                userargs.password))
 
     tasks.append(init_services(cfg["service-directory"], schema_dir, queue,
                                userargs.run_once or "forever"))
@@ -247,7 +250,19 @@ if __name__ == "__main__":
         help=argparse.SUPPRESS,
     )
 
+    parser.add_argument(
+        "--prompt",
+        default=False,
+        action='store_true',
+        help="prompt to enter passphrase",
+    )
+
     userargs = parser.parse_args()
+
+    if userargs.prompt:
+        userargs.password = getpass.getpass()
+    else:
+        userargs.password = None
 
     uvloop.install()
     cfg = load_sq_config(config_file=userargs.config)
