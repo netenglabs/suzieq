@@ -36,29 +36,31 @@ class ParquetOutputWorker(OutputWorker):
         if not os.path.isdir(cdir):
             os.makedirs(cdir)
 
-        df = pd.DataFrame.from_dict(data["records"]) \
-                         .set_index(data.get("key_fields",
-                                             ['namespace', 'hostname']))
+        # dtypes = {x: data['schema'].field(x).type.__str__()
+        #           if 'list' not in data['schema'].field(x).type.__str__()
+        #           else data['schema'].field(x).type.to_pandas_dtype()
+        #           for x in data['schema'].names}
 
-        df.to_parquet(
-            path=cdir,
-            partition_cols=data['partition_cols'],
-            index=True,
-            engine='pyarrow')
+        df = pd.DataFrame.from_dict(data["records"])
+        # df.to_parquet(
+        #     path=cdir,
+        #     partition_cols=data['partition_cols'],
+        #     index=True,
+        #     engine='pyarrow')
         # pq.write_metadata(
         #     self.schema,'{}/_metadata'.format(cdir),
         #     version='2.0',
         #     coerce_timestamps='us')
 
-        # table = pa.Table.from_pandas(df, schema=data["schema"],
-        #                              preserve_index=True)
+        table = pa.Table.from_pandas(df, schema=data["schema"],
+                                     preserve_index=False)
 
-        # pq.write_to_dataset(
-        #     table,
-        #     root_path=cdir,
-        #     partition_cols=["namespace", "hostname"],
-        #     version="2.0",
-        # )
+        pq.write_to_dataset(
+            table,
+            root_path=cdir,
+            partition_cols=["namespace", "hostname"],
+            version="2.0",
+        )
 
 
 class GatherOutputWorker(OutputWorker):
