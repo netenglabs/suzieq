@@ -138,7 +138,7 @@ class SqCommand:
                     print(df)
                 else:
                     sort_fields = [x for x in self.sqobj._sort_fields
-                                   if x in df.columns]
+                                   if x in df.columns and x in cols]
                     if sort_fields:
                         print(df[cols].sort_values(by=sort_fields))
                     else:
