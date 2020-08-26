@@ -522,7 +522,7 @@ class Service(object):
                     "records": records,
                     "topic": self.name,
                     "schema": self.schema,
-                    "partition_cols": self.partition_cols,
+                    "partition_cols": ['namespace', 'hostname']
                 }
             )
 
