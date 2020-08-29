@@ -163,8 +163,11 @@ class BgpObj(SqEngineObject):
             # I've not seen the diff between ignore_index and not and so
             # deliberately ignoring
             mdf = mestd_df.append(df[df.state != 'Established'])
-            mdf.fillna({'peerHostname': '', 'vrf_y': '', 'peer_y': '',
-                        'peerHost': '', 'asn_y': 0, 'peerAsn_y': 0},
+            # Pandas 1.1.1 insists on fill values being in category already
+            for i in mdf.select_dtypes(include='category'):
+                mdf[i].cat.add_categories('', inplace=True)
+            mdf.fillna(value={'peerHostname': '', 'vrf_y': '', 'peer_y': '',
+                              'peerHost': '', 'asn_y': 0, 'peerAsn_y': 0},
                        inplace=True)
 
             if 'peerHostname' in df.columns:
