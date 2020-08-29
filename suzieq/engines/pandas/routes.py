@@ -1,3 +1,4 @@
+from collections import defaultdict
 from suzieq.engines.pandas.engineobj import SqEngineObject
 import pandas as pd
 from ipaddress import ip_address, ip_network
@@ -125,14 +126,22 @@ class RoutesObj(SqEngineObject):
                      .sort_values('prefixlen', ascending=False) \
                      .drop_duplicates(['namespace', 'hostname', 'vrf'])
         else:
-            rslt = df.loc[df.apply(
-                lambda x, ipaddr: ipaddr in ip_network(x['prefix']),
-                args=(ipaddr, ), axis=1)] \
-                .sort_values('prefixlen', ascending=False) \
-                .drop_duplicates(['namespace', 'hostname', 'vrf'])
+            selected_entries = {}
+            max_plens = defaultdict(int)
+            for row in df.itertuples():
+                rtentry = ip_network(row.prefix)
+                if ipaddr in rtentry:
+                    key = f'{row.namespace}-{row.hostname}-{row.vrf}'
+                    if rtentry.prefixlen > max_plens[key]:
+                        max_plens[key] = rtentry.prefixlen
+                        selected_entries[key] = row
+            if selected_entries:
+                rslt = pd.DataFrame(list(selected_entries.values()))
+            else:
+                rslt = pd.DataFrame(cols)
 
         if 'prefixlen' not in cols:
-            return rslt.drop(columns=['prefixlen'])
+            return rslt.drop(columns=['prefixlen'], errors='ignore')
         else:
             return rslt
 
