@@ -30,5 +30,5 @@ ENTRYPOINT ["/bin/bash"]
 # USER 1001
 
 LABEL name=suzieq
-LABEL version=0.4.1
+LABEL version=0.5-prerc
 LABEL description="Network Observability Tool"
