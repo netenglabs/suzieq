@@ -176,11 +176,11 @@ class Node(object):
         self.port = kwargs.get("port", 0)
         self.devtype = None
         pvtkey_file = kwargs.get("ssh_keyfile", None)
-        passphrase = kwargs.get("passphrase", None)
+        self.passphrase = kwargs.get("passphrase", None)
         if pvtkey_file:
             try:
                 self.pvtkey = asyncssh.public_key.read_private_key(
-                    pvtkey_file, passphrase)
+                    pvtkey_file, self.passphrase)
             except Exception as e:
                 self.logger.error("ERROR: Unable to read private key file {} "
                                   "for {} due to {}".format(pvtkey_file,
@@ -497,6 +497,7 @@ class Node(object):
                         known_hosts=None,
                         client_keys=self.pvtkey if self.pvtkey else None,
                         username=self.username,
+                        passphrase=self.passphrase,
                         password=self.password if not self.pvtkey else None,
                     ),
                     timeout=self.cmd_timeout,
