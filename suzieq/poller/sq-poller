@@ -122,7 +122,7 @@ async def start_poller(userargs, cfg):
         tasks.append(init_hosts(userargs.devices_file,
                                 userargs.ansible_file,
                                 userargs.namespace,
-                                userargs.password))
+                                userargs.passphrase))
 
     tasks.append(init_services(cfg["service-directory"], schema_dir, queue,
                                userargs.run_once or "forever"))
@@ -251,18 +251,19 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
-        "--prompt",
+        "--passphrase",
         default=False,
         action='store_true',
-        help="prompt to enter passphrase",
+        help="prompt to enter private key passphrase",
     )
 
     userargs = parser.parse_args()
 
-    if userargs.prompt:
-        userargs.password = getpass.getpass()
+    if userargs.passphrase:
+        userargs.passphrase = getpass.getpass(
+            'Passphrase to decode private key file: ')
     else:
-        userargs.password = None
+        userargs.passphrase = None
 
     uvloop.install()
     cfg = load_sq_config(config_file=userargs.config)
