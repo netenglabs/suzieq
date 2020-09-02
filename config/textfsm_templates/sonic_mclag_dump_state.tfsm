@@ -1,0 +1,41 @@
+####################################################
+#admin@sonic:~$ mclagdctl dump state
+#The MCLAG's keepalive is: OK
+#MCLAG info sync is: completed
+#Domain id: 1
+#Local Ip: 10.116.4.25
+#Peer Ip: 10.116.4.26
+#Peer Link Interface: PortChannel1
+#Keepalive time: 1
+#sesssion Timeout : 30
+#Peer Link Mac: 54:bf:64:e6:de:c1
+#System Mac: 54:bf:64:e6:de:c1
+#Gateway Mac: Not Configured
+#Role: Active
+#MCLAG Interface: PortChannel11
+#Loglevel: NOTICE
+#####################################################
+Value state (\w+)
+Value domainId (\d+)
+Value localAddress (\d+\.\d+\.\d+\.\d+)
+Value peerAddress (\d+\.\d+\.\d+\.\d+)
+Value peerLink (\w+)
+Value keepalive_timer (\d+)
+Value session_timer (\d+)
+Value systemId (\w\w:\w\w:\w\w:\w\w:\w\w:\w\w)
+Value peerMacAddress (\w\w:\w\w:\w\w:\w\w:\w\w:\w\w)
+Value role (\w+)
+Value mlagInterfacesList ([\w+\,]+\w+)
+
+Start
+  ^\s*The\s*MCLAG\'s\s*keepalive\s*is\s*:\s*${state}$$
+  ^\s*Domain\s*id\s*:\s*${domainId}$$
+  ^\s*Local\s*Ip\s*:\s*${localAddress}$$
+  ^\s*Peer\s*Ip\s*:\s*${peerAddress}$$
+  ^\s*Peer\s*Link\s*Interface\s*:\s*${peerLink}$$
+  ^\s*Keepalive\s*time\s*:\s*${keepalive_timer}$$
+  ^\s*sesssion\s*Timeout\s*:\s*${session_timer}$$
+  ^\s*System\s*Mac\s*:\s*${systemId}$$
+  ^\s*Peer\s*Link\s*Mac\s*:\s*${peerMacAddress}$$
+  ^\s*Role\s*:\s*${role}$$
+  ^\s*MCLAG\s*Interface\s*:\s*${mlagInterfacesList}$$ -> Record
