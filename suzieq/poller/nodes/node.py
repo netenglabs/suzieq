@@ -296,6 +296,8 @@ class Node(object):
             self.__class__ = JunosNode
         elif self.devtype == "nxos":
             self.__class__ = NxosNode
+        elif self.devtype.startswith ("sonic"):
+            self.__class__ == SonicNode
 
     async def get_device_type_hostname(self):
         """Determine the type of device we are talking to if using ssh/local"""
@@ -326,6 +328,8 @@ class Node(object):
                     devtype = "junos"
             elif "NX-OS" in data:
                 devtype = "nxos"
+            elif "SONiC" in data:
+                devtype = "sonic"
 
             if devtype.startswith("junos"):
                 hmatch = re.search(r'\nHostname:\s+(\S+)\n', data)
@@ -923,3 +927,23 @@ class NxosNode(Node):
             hostname = output[1]["data"].strip()
             if hostname:
                 self.set_hostname(hostname)
+
+
+class SonicNode(Node):
+
+    async def init_boot_time(self):
+        """Fill in the boot time of the node by running requisite cmd"""
+        await self.exec_cmd(self._parse_boottime_hostname, ["cat /proc/uptime",
+                                                            "hostname"], None)
+
+    async def _parse_boottime_hostname(self, output, cb_token) -> None:
+        """Parse the uptime command output"""
+
+        if output[0]["status"] == 0:
+            upsecs = output[0]["data"].split()[0]
+            self.bootupTimestamp = int(int(time.time()*1000)
+                                       - float(upsecs)*1000)
+        if output[1]["status"] == 0:
+            self.hostname = output[1]["data"].strip()
+
+

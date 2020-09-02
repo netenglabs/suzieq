@@ -81,7 +81,7 @@ class TopologyObj(SqEngineObject):
                     self.lsdb = self.lsdb.merge(df, how='outer')
 
         self._find_polled_neighbors(polled_neighbor)
-        self.lsdb = self.lsdb[~self.lsdb.hostname.isna()]
+        self.lsdb = self.lsdb[~self.lsdb.hostname.isna()].drop_duplicates()
         self._create_graphs_from_lsdb()
 
         return self.lsdb

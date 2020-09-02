@@ -1,0 +1,12 @@
+Value sysUptime (\d+.\d+)
+Value architecture (\S+)
+Value version (\S+)
+Value vendor (.*)
+Value model (\S+)
+
+Start
+  ^${sysUptime}.*$$
+  ^\s*Architecture:\s+${architecture}\s*$$
+  ^SONiC Software Version\s*:\s*${version}\s*$$
+  ^Product: Enterprise SONiC Distribution by\s*${vendor}\s*$$
+  ^HwSKU\s*:\s+${model}\s*$$
