@@ -17,6 +17,9 @@ apply:
     command: sudo vtysh -c "show int vrf all"; ip -d address show
     textfsm: textfsm_templates/cl_interfaces.tfsm
 
+  sonic:
+    copy: cumulus
+
   eos:
     version: all
     command: show interfaces

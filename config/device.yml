@@ -29,6 +29,11 @@ apply:
     command: cat /proc/uptime; hostnamectl
     textfsm: textfsm_templates/linux_showsys.tfsm
 
+  sonic:
+    version: all
+    command: cat /proc/uptime; hostnamectl; show version
+    textfsm: textfsm_templates/sonic_showsys.tfsm
+
   nxos:
     version: all
     command: "show version | json"

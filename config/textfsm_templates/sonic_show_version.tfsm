@@ -1,0 +1,12 @@
+Value version (\S+)
+Value vendor (.*)
+Value model (\S+)
+Value uptime (.*)
+
+Start
+  ^SONiC Software Version\s*:\s*${version}\s*$$ -> CLICK
+
+CLICK
+  ^Product\s*:\s+Distribution by\s+${vendor}\s*$$
+  ^HwSKU\s*:\s+${model}\s*$$
+  ^Uptime:\s+${uptime},\s+${user}\s+user,\s+load average:\s+${load_average}\s*$$

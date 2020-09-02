@@ -29,6 +29,12 @@ apply:
     "status/vxlanAnycast: vtepIP",
     "clagIntfs: mlagInterfacesList",
     ]'
+
+  sonic:
+    version: all
+    command: mclagdctl dump state
+    textfsm: textfsm_templates/sonic_mclag_dump_state.tfsm
+
   eos:
     version: all
     command: show mlag detail
