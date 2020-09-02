@@ -49,17 +49,34 @@ def get_hostsdata_from_hostsfile(hosts_file) -> dict:
     return hostsconf
 
 
-async def init_hosts(hosts_file, ansible_file, namespace, passphrase):
+async def init_hosts(**kwargs):
     """Process list of devices to gather data from.
     This involves creating a node for each device listed, and connecting to
-    those devices and initializing state about those devices"""
+    those devices and initializing state about those devices
+    """
 
     nodes = {}
 
-    if hosts_file:
-        hostsconf = get_hostsdata_from_hostsfile(hosts_file)
+    inventory = kwargs.pop('inventory', None)
+    if not inventory:
+        ans_inventory = kwargs.pop('ans_inventory', None)
     else:
-        hostlines = process_ansible_inventory(ansible_file, namespace)
+        _ = kwargs.pop('ans_inventory', None)
+
+    namespace = kwargs.pop('namespace', 'default')
+    passphrase = kwargs.pop('passphrase', None)
+    ssh_config_file = kwargs.pop('ssh_config_file', None)
+    jump_host = kwargs.pop('jump_host', None)
+    ignore_known_hosts = kwargs.pop('ignore_known_hosts', False)
+
+    if kwargs:
+        logger.error(f'Received unrecognized keywords {kwargs}, aborting')
+        sys.exit(1)
+
+    if inventory:
+        hostsconf = get_hostsdata_from_hostsfile(inventory)
+    else:
+        hostlines = process_ansible_inventory(ans_inventory, namespace)
         hostsconf = yaml.safe_load('\n'.join(hostlines))
 
     if not hostsconf:
@@ -103,7 +120,10 @@ async def init_hosts(hosts_file, ansible_file, namespace, passphrase):
                     transport=result.scheme,
                     devtype=devtype,
                     ssh_keyfile=keyfile,
+                    ssh_config_file=ssh_config_file,
+                    jump_host=jump_host,
                     namespace=nsname,
+                    ignore_known_hosts=ignore_known_hosts,
                 )]
 
         if not tasks:
@@ -159,6 +179,7 @@ class Node(object):
         self.version = 0                 # OS Version to pick the right defn
         self._service_queue = None
         self._conn = None
+        self._tunnel = None
         self._status = "init"
         self.svcs_proc = set()
         self.error_svcs_proc = set()
@@ -175,12 +196,24 @@ class Node(object):
         self.nsname = kwargs.get("namespace", "default")
         self.port = kwargs.get("port", 0)
         self.devtype = None
+        self.ssh_config_file = kwargs.get("ssh_config_file", None)
+
+        jump_host = kwargs.get("jump_host", "")
+        if jump_host:
+            jump_result = urlparse(jump_host)
+            self.jump_user = jump_result.username or self.username
+            self.jump_host = jump_result.hostname
+            self.jump_port = jump_result.port
+        else:
+            self.jump_host = None
+
+        self.ignore_known_hosts = kwargs.get('ignore_known_hosts', False)
         pvtkey_file = kwargs.get("ssh_keyfile", None)
-        self.passphrase = kwargs.get("passphrase", None)
+        passphrase = kwargs.get("passphrase", None)
         if pvtkey_file:
             try:
                 self.pvtkey = asyncssh.public_key.read_private_key(
-                    pvtkey_file, self.passphrase)
+                    pvtkey_file, passphrase)
             except Exception as e:
                 self.logger.error("ERROR: Unable to read private key file {} "
                                   "for {} due to {}".format(pvtkey_file,
@@ -470,10 +503,15 @@ class Node(object):
         await service_callback(result, cb_token)
 
     async def _close_connection(self):
-        self._conn.close()
+        if self._conn:
+            self._conn.close()
+            await self._conn.wait_closed()
+        if self._tunnel:
+            self._tunnel.close()
+            await self._tunnel.wait_closed()
 
-        await self._conn.wait_closed()
         self._conn = None
+        self._tunnel = None
 
     async def _terminate(self):
         self.logger.warning(
@@ -489,19 +527,55 @@ class Node(object):
         await self.ssh_ready.wait()
         if not self._conn:
             self.ssh_ready.clear()
-            try:
-                self._conn = await asyncio.wait_for(
-                    asyncssh.connect(
-                        self.address,
-                        port=self.port,
-                        known_hosts=None,
-                        client_keys=self.pvtkey if self.pvtkey else None,
-                        username=self.username,
-                        passphrase=self.passphrase,
-                        password=self.password if not self.pvtkey else None,
-                    ),
-                    timeout=self.cmd_timeout,
+            if self.ignore_known_hosts:
+                options = asyncssh.SSHClientConnectionOptions(
+                    client_keys=self.pvtkey if self.pvtkey else None,
+                    login_timeout=self.cmd_timeout,
+                    password=self.password if not self.pvtkey else None,
+                    known_hosts=None,
+                    config=self.ssh_config_file
                 )
+            else:
+                options = asyncssh.SSHClientConnectionOptions(
+                    client_keys=self.pvtkey if self.pvtkey else None,
+                    login_timeout=self.cmd_timeout,
+                    password=self.password if not self.pvtkey else None,
+                    config=self.ssh_config_file,
+                )
+
+            try:
+                if self.jump_host:
+                    self.logger.info(
+                        'Using jump host: {}, with username: {}, and port: {}'
+                        .format(self.jump_host, self.jump_user, self.jump_port)
+                    )
+                    self._tunnel = await asyncssh.connect(
+                        self.jump_host, port=self.jump_port,
+                        options=options, username=self.jump_user)
+                    self.logger.info(
+                        f'Connection to jump host {self.jump_host} succeeded')
+
+            except Exception as e:
+                if self.sigend:
+                    self._terminate()
+                    return
+                self.logger.error(
+                    f"ERROR: Cannot connect to jump host: {self.jump_host}, "
+                    f" {str(e)}")
+                self.last_exception = e
+                self._conn = None
+                self._tunnel = None
+                self.ssh_ready.set()
+                return
+
+            try:
+                self._conn = await asyncssh.connect(
+                    self.address,
+                    tunnel=self._tunnel,
+                    username=self.username,
+                    port=self.port,
+                    options=options)
+
                 self.logger.info(
                     f"Connected to {self.address} at {time.time()}")
                 self.ssh_ready.set()
@@ -514,6 +588,7 @@ class Node(object):
                 self.logger.error(f"ERROR: Unable to connect, {str(e)}")
                 self.last_exception = e
                 self._conn = None
+                self._tunnel = None
                 self.ssh_ready.set()
         return
 

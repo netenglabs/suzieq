@@ -95,10 +95,23 @@ async def start_poller(userargs, cfg):
             cfg['service-directory']))
         sys.exit(1)
 
+    if userargs.jump_host and not userargs.jump_host.startswith('//'):
+        logger.error("Jump host format is //<username>@<jumphost>:<port>")
+        print("Jump host format is //<username>@<jumphost>:<port>")
+        sys.exit(1)
+
     if not cfg.get("schema-directory", None):
         schema_dir = "{}/{}".format(userargs.service_dir, "schema")
     else:
         schema_dir = cfg["schema-directory"]
+
+    if userargs.ssh_config_file:
+        ssh_config_file = os.path.expanduser(userargs.ssh_config_file)
+        if (os.stat(
+                os.path.dirname(ssh_config_file)).st_mode | 0o40700 != 0o40700):
+            logger.error('ssh directory has wrong permissions, must be 0700')
+            print('ERROR: ssh directory has wrong permissions, must be 0700')
+            sys.exit(1)
 
     output_args = {}
 
@@ -116,13 +129,17 @@ async def start_poller(userargs, cfg):
     logger.info("Initializing hosts and services")
     tasks = []
 
-    if userargs.datadir:
-        tasks.append(init_files(userargs.datadir))
+    ignore_known_hosts = userargs.ignore_known_hosts or None
+
+    if userargs.input_dir:
+        tasks.append(init_files(userargs.input_dir))
     else:
-        tasks.append(init_hosts(userargs.devices_file,
-                                userargs.ansible_file,
-                                userargs.namespace,
-                                userargs.passphrase))
+        tasks.append(init_hosts(inventory=userargs.devices_file,
+                                ans_inventory=userargs.ansible_file,
+                                namespace=userargs.namespace,
+                                passphrase=userargs.passphrase,
+                                jump_host=userargs.jump_host,
+                                ignore_known_hosts=ignore_known_hosts))
 
     tasks.append(init_services(cfg["service-directory"], schema_dir, queue,
                                userargs.run_once or "forever"))
@@ -195,22 +212,22 @@ if __name__ == "__main__":
         help="File with URL of devices to gather data from",
     )
     requiredgrp.add_argument(
-        "-i",
+        "-a",
         "--ansible-file",
         type=str,
         help="Ansible inventory file of devices to gather data from",
     )
     requiredgrp.add_argument(
-        "-f",
-        "--datadir",
+        "-i",
+        "--input-dir",
         type=str,
-        help="Directory where previously gathered data outputs is"
+        help="Directory where run-once=gather data is"
     )
 
     parser.add_argument(
         "-n",
         "--namespace",
-        type=str, required='--ansible-file' in sys.argv or "-i" in sys.argv,
+        type=str, required='--ansible-file' in sys.argv or "-a" in sys.argv,
         help="Namespace to associate for the gathered data"
     )
     parser.add_argument(
@@ -255,6 +272,29 @@ if __name__ == "__main__":
         default=False,
         action='store_true',
         help="prompt to enter private key passphrase",
+    )
+
+    parser.add_argument(
+        "-j",
+        "--jump-host",
+        default="",
+        type=str,
+        help="Jump Host via which to access the devices, IP addr or DNS hostname"
+    )
+
+    parser.add_argument(
+        "-k",
+        "--ignore-known-hosts",
+        default=False,
+        action='store_true',
+        help="Ignore Known Hosts File",
+    )
+
+    parser.add_argument(
+        "--ssh-config-file",
+        type=str,
+        default=None,
+        help="Path to ssh config file to use. If not set, config file is not used"
     )
 
     userargs = parser.parse_args()
