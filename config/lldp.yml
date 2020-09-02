@@ -37,6 +37,9 @@ apply:
     command: if systemctl status lldpd > /dev/null 2>&1; then sudo lldpctl; fi
     textfsm: textfsm_templates/lldpd.tfsm
 
+  sonic:
+    copy: linux
+
   junos-qfx:
     version: all
     command: show lldp neighbors detail | display json

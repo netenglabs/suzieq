@@ -22,6 +22,9 @@ apply:
     command: top -bn 1 | head -17
     textfsm: textfsm_templates/linux_top.tfsm
 
+  sonic:
+    copy: linux
+
   eos:
     version: all
     command: bash timeout 5 top -bn 1 | head -17
