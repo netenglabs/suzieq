@@ -11,7 +11,8 @@ class EvpnVniService(Service):
     def clean_json_input(self, data):
         """FRR JSON data needs some work"""
 
-        if data.get("devtype", None) == "cumulus":
+        devtype = data.get("devtype", None)
+        if any(x == devtype for x in ["cumulus", "sonic", "linux"]):
             data['data'] = '[' + re.sub(r'}\n\n{\n', r'},\n\n{\n',
                                         data['data']) + ']'
             return data['data']
