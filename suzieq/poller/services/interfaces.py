@@ -299,8 +299,6 @@ class InterfaceService(Service):
             # artificial field for comparison with previous poll result
             entry["statusChangeTimestamp1"] = entry.get(
                 "statusChangeTimestamp", '')
-            if entry['type'] == 'eth':
-                entry['type'] = 'ethernet'
 
             if ('vrf' in entry and entry['vrf'] != 'default' and
                     entry['vrf'] not in created_if_list):
@@ -319,10 +317,11 @@ class InterfaceService(Service):
             else:
                 entry['master'] = ''
 
-            if entry['_portmode'] == 'access' or entry['_portmode'] == 'trunk':
+            portmode = entry.get('_portmode', '')
+            if portmode == 'access' or portmode == 'trunk':
                 entry['master'] = 'bridge'
                 add_bridge_intf = True
-                if entry['state'] == "up":
+                if entry.get('state', '') == "up":
                     bridge_intf_state = "up"
                 if entry.get('mtu', 1500) < bridge_mtu:
                     bridge_mtu = entry.get('mtu', 0)
@@ -356,7 +355,10 @@ class InterfaceService(Service):
             if isinstance(speed, str) and speed.startswith("unknown enum"):
                 entry['speed'] = 0
 
-            entry['type'] = entry['type'].lower()
+            entry['type'] = entry.get('type', '').lower()
+            if entry['type'] == 'eth':
+                entry['type'] = 'ethernet'
+
             if entry['ifname'].startswith('Vlan'):
                 entry['type'] = 'vlan'
             elif entry['ifname'].startswith('nve'):
