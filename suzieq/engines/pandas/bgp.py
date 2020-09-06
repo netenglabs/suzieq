@@ -188,7 +188,7 @@ class BgpObj(SqEngineObject):
                        "peerAsn", "v4Enabled", "v6Enabled", "evpnEnabled",
                        "v4Advertised", "v6Advertised", "evpnAdvertised",
                        "v4Received", "v6Received", "evpnReceived", "bfdStatus",
-                       "reason", "notifcnReason", "peerIP", "updateSource"]
+                       "reason", "notificnReason", "peerIP", "updateSource"]
 
         kwargs.pop("columns", None)  # Loose whatever's passed
 
@@ -220,7 +220,7 @@ class BgpObj(SqEngineObject):
         # Get list of peer IP addresses for peer not in Established state
         # Returning to performing checks even if we didn't get LLDP/Intf info
         df['assertReason'] += df.apply(
-            lambda x: [f"{x['reason']}:{x['notifcnReason']}"]
+            lambda x: [f"{x['reason']}:{x['notificnReason']}"]
             if ((x['state'] != 'Established') and
                 (x['reason'] and x['reason'] != 'None' and
                  x['reason'] != "No error"))
