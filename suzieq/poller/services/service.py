@@ -634,7 +634,13 @@ class Service(object):
                         return
                     continue
 
-                result = self.process_data(output)
+                try:
+                    result = self.process_data(output)
+                except Exception:
+                    self.logger.exception(
+                        f'Processing data failed for service '
+                        f'{self.name} on node {nodename}')
+                    result = []
                 # If a node from init state to good state, hostname will change
                 # So fix that in the node list
                 hostname = output[0]["hostname"]
