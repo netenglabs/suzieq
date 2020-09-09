@@ -58,7 +58,7 @@ class PathCmd(SqCommand):
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         if not df.empty:
-            return self._gen_output(df)
+            return self._gen_output(df, sort=False)
 
     @command("summarize")
     @argument("src", description="Source IP address, in quotes")
@@ -88,7 +88,7 @@ class PathCmd(SqCommand):
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         if not df.empty:
             return self._gen_output(df)
-        
+
     @command("unique", help="find the list of unique items in a column")
     def unique(self, **kwargs):
 
