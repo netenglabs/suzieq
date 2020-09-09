@@ -16,7 +16,7 @@ Suzieq can identify the NOS automatically if it can access the device via SSH. E
 
 ### Automatic Identification of NOS
 
-This is not a mandatory step, but this method enables easier inventory specification if provided. 
+This is not a mandatory step, but this method enables easier inventory specification if provided.gi
 
 Find the command, via SSH, that can be used to identify the NOS type. Specifically, Suzieq needs to identify the following pieces of info for a node:
 
@@ -55,24 +55,24 @@ Hardware
   bootflash:    4287040 kB
 Kernel uptime is 2 day(s), 7 hour(s), 11 minute(s), 10 second(s) <--- Uptime Identification
 
-Last reset 
+Last reset
   Reason: Unknown
-  System version: 
-  Service: 
+  System version:
+  Service:
 
 plugin
   Core Plugin, Ethernet Plugin
 
 Active Package(s):
         
-leaf1# 
+leaf1#
 ```
 
 In the output above, the markings show the specific places where the key pieces of information resides (i) the NOS name, (ii) the NOS model and (iii) the device uptime.
 
-If the command is something other than `show version` or `hostnamectl`, you'll need to add the command to the list passed in the routine `get_device_type_hostname` in the file suzieq/poller/nodes/node.py. 
+If the command is something other than `show version` or `hostnamectl`, you'll need to add the command to the list passed in the routine `get_device_type_hostname` in the file suzieq/poller/nodes/node.py.
 
-Hostnames can be tricky. NXOS provides the non-FQDN output in `show version`, but uses the FQDN version in other command outputs (such as LLDP). For this reason, its important to ensure that you use the right command to extract the hostname. If the NOS you're adding uses `show hostname`, then there's no new command to add. Otherwise, add the command to extract the hostname also to the list in the routine `get_device_type_hostname`. 
+Hostnames can be tricky. NXOS provides the non-FQDN output in `show version`, but uses the FQDN version in other command outputs (such as LLDP). For this reason, its important to ensure that you use the right command to extract the hostname. If the NOS you're adding uses `show hostname`, then there's no new command to add. Otherwise, add the command to extract the hostname also to the list in the routine `get_device_type_hostname`.
 
 Once the output is extracted, you need to handle the parsing and specification of it. This is done in the routine `_parse_device_type_hostname`, also in the same file, suzieq/poller/nodes/node.py. Look at the code in that routine to add support for determining the NOS type and the hostname.
 
@@ -80,19 +80,19 @@ Once the output is extracted, you need to handle the parsing and specification o
 
 Since each NOS has its own command and output for parsing boot up time, retrieving the version of the NOS etc, you'll need to create a new NOS-specific class in the file suzieq/poller/nodes/node.py. Look at either the NxosNode class or JunosNode class to see how to add a new NOS type and what the additional routines to support are. Typically, you'll need to add two routines, `init_boot_time` and `_parse_device_type_hostname` routines to this Node class as the commands and outputs to get this information is specific to each NOS.  
 
-If you're using the REST API to access the information from this NOS, you will need to add another routine, `rest_gather` to this new NOS Node class. Look at EosNode's `rest_gather` method in the file to get the template for creating this class. In general, there's a little more work to do if you're using the REST API. This maybe a limitation of the current implementation in Suzieq rather than a reflection of REST support. 
+If you're using the REST API to access the information from this NOS, you will need to add another routine, `rest_gather` to this new NOS Node class. Look at EosNode's `rest_gather` method in the file to get the template for creating this class. In general, there's a little more work to do if you're using the REST API. This maybe a limitation of the current implementation in Suzieq rather than a reflection of REST support.
 
 ### Authentication Methods Supported
 
-At the time of this writing, private key files is the recommended method for authenticating with SSH. With the REST API, the only authentication method supported is username/password. No vault support is present at this time, and so the Suzieq code needs to have restricted access to avoid anyone from poking into the files to obtain the credentials. 
+At the time of this writing, private key files is the recommended method for authenticating with SSH. With the REST API, the only authentication method supported is username/password. No vault support is present at this time, and so the Suzieq code needs to have restricted access to avoid anyone from poking into the files to obtain the credentials.
 
 Suzieq MUST NEVER access any update command. The only commands it cares about are read commands. For this reason, its critical to assign a username for Suzieq that has only read permission.
 
 ## Adding the Commands to Gather Information
 
-Once you've created this information, you're now ready to gather inputs. 
+Once you've created this information, you're now ready to gather inputs.
 
-For every file in config/*.yml in the Suzieq tree, determine the command that provides the information relevant to the table for the NOS you're adding support. For example, BGP information is extracted from the file config/bgp.yml. For Cumulus, the command to extract the relevant BGP information is "net show bgp vrf all neighbor json", and is visible under the cumulus NOS key in that file. Some of the tables need more than one command to gather the output at times (see NXOS' bgp command set in the same file). 
+For every file in config/*.yml in the Suzieq tree, determine the command that provides the information relevant to the table for the NOS you're adding support. For example, BGP information is extracted from the file config/bgp.yml. For Cumulus, the command to extract the relevant BGP information is "net show bgp vrf all neighbor json", and is visible under the cumulus NOS key in that file. Some of the tables need more than one command to gather the output at times (see NXOS' bgp command set in the same file).
 
 Pick a command output that is structured, specifically JSON. Unstructured output is acceptable, but you'll need to know how to write textfsm parsers for those commands. Choose a command that provides all the info over one that is structured, but incomplete. If multiple commands are used, its fine to have mix commands that provide structured output with commands that don't. Textfsm parsers MUST be present in the config/textfsm_templates directory.
 
@@ -109,6 +109,7 @@ All data stored by Suzieq is structured and has a schema. This schema is stored 
 It is recommended that you first check that the NOS can be recognized, if you're using automatic NOS detection method (available with SSH access only). You can point the poller with an inventory file that contains a single device and test the connectivity and command access via the use of a single service, such as lldp or device. Look at the output of /tmp/sq-poller.log for the results of the connection to the device. Any errors will be reported there. 
 
 You can debug the SSH or HTTP process by setting the log level to DEBUG or INFO in the default suzieq config file, stored at ~/.suzieq/suzieq-cfg.yml. An example of the contents of this file is:
+
 ```
 data-directory: /home/ddutt/work/suzieq/tests/data/multidc/parquet-out
 service-directory: /home/ddutt/work/suzieq/config
@@ -120,5 +121,6 @@ logging-level: WARNING
 
 Change the last line that has WARNING in it to INFO or DEBUG to troubleshoot any issues. The log file, /tmp/sq-poller.log contains the relevant output.
 
+## Testing
 
-
+We have to have tests for any new code, especially to support a new NOS. At a minimum we need to have a reliable topology that we can then use to reliably generate run-once=gather output so that we can run through all the necessary tests. See our [testing doc](testing.md)
