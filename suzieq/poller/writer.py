@@ -60,6 +60,8 @@ class ParquetOutputWorker(OutputWorker):
             root_path=cdir,
             partition_cols=["namespace", "hostname"],
             version="2.0",
+            compression='ZSTD',
+            row_group_size=100000,
         )
 
 
