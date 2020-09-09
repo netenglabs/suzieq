@@ -92,7 +92,7 @@ def run_sqpoller_gather(name, ansible_dir, suzieq_dir, input_path):
 
 def run_sqpoller_process(files_dir, suzieq_dir, cfg_file):
     sqcmd_path = [sys.executable, f"{suzieq_dir}/suzieq/poller/sq-poller"]
-    sqcmd = sqcmd_path + ['-f', files_dir, '-c', cfg_file]
+    sqcmd = sqcmd_path + ['if', files_dir, '-c', cfg_file]
     out, code, _ = run_cmd(sqcmd)
     assert code is 0 or code is None
 
@@ -180,7 +180,7 @@ def git_del_dir(dir):
 
 def update_sqcmds(files, data_dir=None, namespace=None):
     for file in files:
-        cmd = ['python3', UPDATE_SQCMDS, '-f', file, '-o']
+        cmd = ['python3', UPDATE_SQCMDS, '-i', file, '-o']
         if data_dir:
             cmd += ['-d', data_dir]
         if namespace:
