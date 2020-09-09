@@ -105,7 +105,7 @@ class SqCommand:
         return self._schemas
 
     def _gen_output(self, df: pd.DataFrame, json_orient: str = "records",
-                    dont_strip_cols: bool = False):
+                    dont_strip_cols: bool = False, sort: bool = True):
         if df.columns.to_list() == ['error']:
             retcode = 1
             max_colwidth = None
@@ -136,13 +136,15 @@ class SqCommand:
                                    'display.max_rows', 256):
                 if df.empty:
                     print(df)
-                else:
+                elif sort:
                     sort_fields = [x for x in self.sqobj._sort_fields
                                    if x in df.columns and x in cols]
                     if sort_fields:
                         print(df[cols].sort_values(by=sort_fields))
                     else:
                         print(df[cols])
+                else:
+                    print(df[cols])
 
         return retcode
 
