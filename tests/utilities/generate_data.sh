@@ -15,7 +15,7 @@ run_sqpoller () {
     ansible_file=${ansible_dir}/provisioners/ansible/inventory/vagrant_ansible_inventory
     sudo chown -R ${USER} ${ansible_dir}
     echo "SUZIEQ"
-    python3 ${suzieq_dir}/poller/sq-poller -i ${ansible_file} -n ${name} &
+    python3 ${suzieq_dir}/poller/sq-poller -a ${ansible_file} -n ${name} &
     RESULT_sq=$?
     if (( ${RESULT_sq} > 0 )) ; then
         return RESULT_sq
