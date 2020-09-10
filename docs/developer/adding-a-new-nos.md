@@ -84,7 +84,11 @@ If you're using the REST API to access the information from this NOS, you will n
 
 ### Authentication Methods Supported
 
-At the time of this writing, private key files is the recommended method for authenticating with SSH. With the REST API, the only authentication method supported is username/password. No vault support is present at this time, and so the Suzieq code needs to have restricted access to avoid anyone from poking into the files to obtain the credentials.
+At the time of this writing, Suzieq supports the following authentication methods:
+- Username/password
+- Private key files (recommended)
+- Private Key files with passphrase (recommended)
+- Use SSH Config file for more complex cases
 
 Suzieq MUST NEVER access any update command. The only commands it cares about are read commands. For this reason, its critical to assign a username for Suzieq that has only read permission.
 
@@ -103,6 +107,10 @@ Tar this directory and supply it to one of the developers, Dinesh or Justin, at 
 ## Massaging the Output Gathered
 
 All data stored by Suzieq is structured and has a schema. This schema is stored in config/schema. In many cases, it is not possible for the command output to fit into the schema directly. In such cases, its required to massage the output to fit the schema. Each file in config/*.yml has a corresponding python file under suzieq/poller/services/ directory that contains the code to massage the output. For example, suzieq/poller/services/bgp.py contains code that massages the output for the BGP commands from different NOS. Look at an existing file to determine how to add support for your NOS.
+
+## Adding the NOS to the List of Known NOS
+
+In the file suzieq/utils.py is a routine called known_devtypes(). Please add the new NOS name to this list.
 
 ## Debugging the Setup
 
@@ -123,4 +131,9 @@ Change the last line that has WARNING in it to INFO or DEBUG to troubleshoot any
 
 ## Testing
 
-We have to have tests for any new code, especially to support a new NOS. At a minimum we need to have a reliable topology that we can then use to reliably generate run-once=gather output so that we can run through all the necessary tests. See our [testing doc](testing.md)
+We have to have tests for any new code, especially to support a new NOS. At a minimum we need to have a reliable topology that we can then use to reliably generate run-once=gather output so that we can run through all the necessary tests. See our [testing doc](testing.md). So as part of the PR submitted, its essential that we get the data we need to run our tests. Primairly, we want:
+- The data gathered by running the poller with the --run-once=gather. The output directory (sqpoller-output, by default) can be run through an anonymizer to anonymize the output. The anonymizer anonymizes the hostname, IP address and MAC address at this time. The anonymizer is beta code, and we don't guarantee that everything is anonymized. Please verify that it is. Provide us the sqpoller-directory with the *_anon.utput files.
+- This data can be added to the tests/integration/sqcmds directory with the name <nos>-input, just like nxos-input, eos-input etc.
+- Write the equivalent tests in the <nos>-samples directory. You can copy the existing files from cumulus-samples directory, and then run ```python suzieq/tests/utilities/update_sqcmds.py -o -f <each file in the samples fir>```.
+- Update the tags to add your NOS name to the list.
+- Run pytests to make sure that all tests pass with this data.
