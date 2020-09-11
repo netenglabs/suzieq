@@ -28,7 +28,7 @@ class TablesObj(basicobj.SqObject):
 
                 table_obj = eobj(self)
                 info = {'table': table}
-                info.update(table_obj.get_table_info(table, **kwargs))
+                info.update(table_obj.get_table_info(table, columns="", **kwargs))
                 tables[i] = info
 
             if unknown_tables:
