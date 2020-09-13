@@ -56,13 +56,14 @@ class Service(object):
         self.ignore_fields = ignore_fields or []
         self.writer_queue = queue
         self.keys = keys
-        self.schema = schema
+        self.schema = schema.get_arrow_schema()
         self.period = period
         self.stype = stype
         self.logger = logging.getLogger(__name__)
         self.run_once = run_once
         self.post_timeout = 5
         self.sigend = False
+        self.version = schema.version
 
         self.update_nodes = False  # we have a new node list
         self.rebuild_nodelist = False  # used only when a node gets init
@@ -88,10 +89,7 @@ class Service(object):
         if "hostname" not in self.keys:
             self.keys.insert(1, "hostname")
 
-        if self.stype == "counters":
-            self.partition_cols = ["namespace", "hostname"]
-        else:
-            self.partition_cols = self.keys + ["timestamp"]
+        self.partition_cols = schema.get_partition_columns()
 
         # Setup dictionary of NOS specific extracted data cleaners
         self.dev_clean_fn = {}
@@ -461,6 +459,7 @@ class Service(object):
             entry.update({"hostname": read_from["hostname"]})
             entry.update({"namespace": read_from["namespace"]})
             entry.update({"timestamp": read_from["timestamp"]})
+            entry.update({"sqvers": self.version})
             for fld in schema_rec:
                 if fld not in entry:
                     if fld == "active":
@@ -487,7 +486,6 @@ class Service(object):
                                         raise ValueError
                                 except (ValueError, TypeError):
                                     entry[fld][i] = schema_rec[fld]
-
         return processed_data
 
     async def commit_data(self, result, namespace, hostname):
@@ -522,7 +520,7 @@ class Service(object):
                     "records": records,
                     "topic": self.name,
                     "schema": self.schema,
-                    "partition_cols": ['namespace', 'hostname']
+                    "partition_cols": self.partition_cols
                 }
             )
 
@@ -682,6 +680,7 @@ class Service(object):
                 stats = pernode_stats[statskey]
                 poller_stat = [
                     {"hostname": output[0]["hostname"],
+                     "sqvers": self.version,
                      "namespace": output[0]["namespace"],
                      "active": True,
                      "service": self.name,
@@ -700,7 +699,7 @@ class Service(object):
                         "records": poller_stat,
                         "topic": "sqPoller",
                         "schema": self.poller_schema,
-                        "partition_cols": ["namespace", "hostname", "service"]
+                        "partition_cols": self.partition_cols
                     })
 
             # Post a cmd to fire up the next poll after the specified period

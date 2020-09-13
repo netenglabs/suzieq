@@ -8,7 +8,7 @@ from inspect import getmembers, isclass, getfile
 import importlib
 from collections import defaultdict
 
-from suzieq.utils import Schema
+from suzieq.utils import Schema, SchemaForTable
 from .service import Service
 
 
@@ -72,14 +72,14 @@ async def init_services(svc_dir, schema_dir, queue, run_once):
                             continue
                         val = newval
 
-                    if ("command" not in val or
-                        ((isinstance(val['command'], list) and not
-                          all('textfsm' in x or 'normalize' in x
-                              for x in val['command'])) or
-                         (not isinstance(val['command'], list) and (
-                             "normalize" not in val
-                             and "textfsm" not in val)))
-                       ):
+                    if (("command" not in val) or
+                                ((isinstance(val['command'], list) and not
+                                  all('textfsm' in x or 'normalize' in x
+                                      for x in val['command'])) or
+                                 (not isinstance(val['command'], list) and (
+                                     "normalize" not in val
+                                     and "textfsm" not in val)))
+                            ):
                         logger.error(
                             "Ignoring invalid service file "
                             'definition. Need both "command" and '
@@ -109,13 +109,14 @@ async def init_services(svc_dir, schema_dir, queue, run_once):
                         tfsm_template = None
 
                 try:
-                    schema = schemas.get_arrow_schema(svc_def['service'])
+                    schema = SchemaForTable(svc_def['service'],
+                                            schema=schemas)
                 except Exception:
                     logger.error(
                         f"No matching schema for {svc_def['service']}")
                     continue
 
-                if schema == "derivedRecord":
+                if schema.type == "derivedRecord":
                     # These are not real services and so ignore them
                     continue
 
@@ -130,7 +131,7 @@ async def init_services(svc_dir, schema_dir, queue, run_once):
                         svc_def.get("ignore-fields", []),
                         schema,
                         queue,
-                        run_once
+                        run_once,
                     )
                 else:
                     service = Service(

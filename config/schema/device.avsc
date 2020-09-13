@@ -4,6 +4,12 @@
     "type": "record",
     "fields": [
         {
+	    "name": "sqvers",
+	    "type": "string",
+	    "partition": 0,
+	    "default": "2.0"
+	},
+        {
             "name": "architecture",
             "type": "string",
             "display": 5
@@ -29,6 +35,11 @@
             "display": 4
         },
         {
+            "name": "sku",
+            "type": "string",
+            "display": 8
+        },
+        {
             "name": "version",
             "type": "string",
             "display": 3
@@ -36,19 +47,21 @@
         {
             "name": "bootupTimestamp",
             "type": "double",
-            "display": 8
+            "display": 9
         },
         {
             "name": "hostname",
             "type": "string",
             "key": 1,
-            "display": 1
+            "display": 1,
+	    "partition": 2
         },
         {
             "name": "namespace",
             "type": "string",
             "key": 0,
-            "display": 0
+            "display": 0,
+	    "partition": 1
         },
         {
             "name": "timestamp",

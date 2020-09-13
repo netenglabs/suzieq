@@ -4,6 +4,12 @@
     "type": "record",
     "fields": [
         {
+	    "name": "sqvers",
+	    "type": "string",
+	    "partition": 0,
+	    "default": "1.0"
+	},
+        {
             "name": "gatherTime",
             "type": {
                 "type": "array",
@@ -72,19 +78,22 @@
             "name": "service",
             "type": "string",
             "key": 2,
-            "display": 2
+            "display": 2,
+	    "partition": 2
         },
         {
             "name": "hostname",
             "type": "string",
             "key": 1,
-            "display": 1
+            "display": 1,
+	    "partition": 2
         },
         {
             "name": "namespace",
             "type": "string",
             "key": 0,
-            "display": 0
+	    "display": 0,         
+	    "partition": 1
         },
         {
             "name": "timestamp",

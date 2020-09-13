@@ -4,252 +4,319 @@
     "type": "record",
     "fields": [
         {
+	    "name": "sqvers",
+	    "type": "string",
+	    "partition": 0,
+	    "default": "1.0",
+	    "suppress": true	    
+	},
+        {
             "name": "peer",
             "type": "string",
             "key": 3,
-            "display": 3
+            "display": 3,
+	    "description": "IP address or ifname of BGP peer"
         },
         {
             "name": "origPeer",
-            "type": "string"
+            "type": "string",
+	    "suppress": true
         },
         {
             "name": "evpnPfxRx",
-            "type": "long"
+            "type": "long",
+	    "description": "Count of EVPN prefixes rcvd"
         },
         {
             "name": "advertiseAllVnis",
-            "type": "boolean"
+            "type": "boolean",
+	    "description": "True if FRR has advertiseAllVnis configured"
         },
         {
             "name": "v6EgressRmap",
-            "type": "string"
+            "type": "string",
+	    "description": "route map name associated with IPv6 outbound advt"
         },
         {
             "name": "v6Enabled",
-            "type": "boolean"
+            "type": "boolean",
+	    "description": "True is IPv6 Unicast AFI/SAFI is exchanged"
         },
         {
             "name": "v6Advertised",
-            "type": "boolean"
+            "type": "boolean",
+	    "description": "True if IPv4 Unicast AFI/SAFI is being exchanged"
         },
         {
             "name": "v6IngressRmap",
-            "type": "string"
+            "type": "string",
+	    "description": "route map name applied on IPv6 inbound advt"
         },
         {
             "name": "v4EgressRmap",
-            "type": "string"
+            "type": "string",
+	    "description": "route map name applied on IPv4 outbound advt"
         },
         {
             "name": "v6PfxRx",
-            "type": "long"
+            "type": "long",
+	    "description": "Count of IPv6 unicast prefixes rcvd"
         },
         {
             "name": "v4DefaultSent",
-            "type": "boolean"
+            "type": "boolean",
+	    "description": "True if advertising IPv6 default route"
         },
         {
             "name": "keepaliveTime",
-            "type": "long"
+            "type": "long",
+	    "description": "BGP peer keepalive time in secs"
         },
         {
             "name": "estdTime",
             "type": "timedelta64[s]",
-            "display": 9
+            "display": 9,
+	    "description": "Session uptime"
         },
         {
             "name": "updatesTx",
-            "type": "long"
+            "type": "long",
+	    "description": "count of BGP update messages tx"
         },
         {
             "name": "updateSource",
-            "type": "string"
+            "type": "string",
+	    "description": "Interface whose IP is used as source IP of BGP peering"
         },
         {
             "name": "v4Enabled",
-            "type": "boolean"
+            "type": "boolean",
+	    "description": "True if IPv4 unicast AFI/SAFI is being exchanged"
         },
         {
             "name": "holdTime",
-            "type": "long"
+            "type": "long",
+	    "description": "BGP hold time"
         },
         {
             "name": "peerHostname",
             "type": "string",
-            "display": 4
+            "display": 4,
+	    "description": "Hostname of BGP peer"
         },
         {
             "name": "vrf",
             "type": "string",
             "key": 2,
-            "display": 2
+            "display": 2,
+	    "description": "VRF associated with session"
         },
         {
             "name": "numChanges",
             "type": "long",
-            "display": 10
+            "display": 10,
+	    "description": "count of changes in BGP session state"
         },
         {
             "name": "peerRouterId",
             "type": "string",
-            "default": "0.0.0.0"
+            "default": "0.0.0.0",
+	    "description": "peer router ID"
         },
         {
             "name": "routerId",
-            "type": "string"
+            "type": "string",
+	    "description": "This device's router ID"
         },
         {
             "name": "bfdStatus",
-            "type": "string"
+            "type": "string",
+	    "description": "BFD status"
         },
         {
             "name": "v4IngressRmap",
-            "type": "string"
+            "type": "string",
+	    "description": "route map name applied on IPv4 unicast inbound advt"
         },
         {
             "name": "nhUnchanged",
-            "type": "boolean"
+            "type": "boolean",
+	    "description":  "True if set nexthop unchanged is configured"
         },
         {
             "name": "v4PfxTx",
-            "type": "long"
+            "type": "long",
+	    "description": "IPv4 unicast prefixes sent"
         },
         {
             "name": "rrclient",
-            "type": "string"
+            "type": "string",
+	    "description": "True is peer is Route Reflector client"
         },
         {
             "name": "evpnDefaultSent",
-            "type": "boolean"
+            "type": "boolean",
+	    "description": "True if default route is advt with EVPN Type-5"
         },
         {
             "name": "asn",
             "type": "long",
-            "display": 6
+            "display": 6,
+	    "description": "This devices' ASN"
         },
         {
             "name": "evpnIngressRmap",
-            "type": "string"
+            "type": "string",
+	    "description": "route map name applied on EVPN inbound advt"
         },
         {
             "name": "v6Received",
-            "type": "boolean"
+            "type": "boolean",
+	    "description": "IPv6 Unicast AFI/SAFI capability rcvd"
         },
         {
             "name": "v6DefaultSent",
-            "type": "boolean"
+            "type": "boolean",
+	    "description": "IPv6 unicast AFI/SAFI capability sent"
         },
         {
             "name": "notificnReason",
-            "type": "string"
+            "type": "string",
+	    "description": "last BGP notification reason"
         },
         {
             "name": "extnhAdvertised",
-            "type": "boolean"
+            "type": "boolean",
+	    "description": "Extended NextHop capability sent"
         },
         {
             "name": "extnhReceived",
-            "type": "boolean"
+            "type": "boolean",
+	    "description": "Extended NextHop capability rcvd"
         },
         {
             "name": "extnhEnabled",
-            "type": "boolean"
+            "type": "boolean",
+	    "description": "Extended NextHop capability enabled on session"
         },
         {
             "name": "peerAsn",
             "type": "long",
-            "display": 7
+            "display": 7,
+	    "description": "Peer device's ASN"
         },
         {
             "name": "peerIP",
-            "type": "string"
+            "type": "string",
+	    "description": "Peering IP address, if any"
         },
         {
             "name": "evpnEgressRmap",
-            "type": "string"
+            "type": "string",
+	    "description": "route map name applied to EVPN outbound advt"
         },
         {
             "name": "evpnAdvertised",
-            "type": "boolean"
+            "type": "boolean",
+	    "description": "True if EVPN NLRI capability is advertised"
         },
         {
             "name": "mrai",
-            "type": "long"
+            "type": "long",
+	    "description": "Min Route Adv Interval, in secs"
         },
         {
             "name": "state",
             "type": "string",
-            "display": 5
+            "display": 5,
+	    "description": "State of BGP session, Established or NotEstd"
         },
         {
             "name": "evpnEnabled",
-            "type": "boolean"
+            "type": "boolean",
+	    "description": "True if EVPN NLRI are being exchanged"
         },
         {
             "name": "reason",
-            "type": "string"
+            "type": "string",
+	    "description": "Reason for BGP session being down"
         },
         {
             "name": "evpnSendCommunity",
-            "type": "string"
+            "type": "string",
+	    "description": "True if Send Community is enabled for EVPN"
         },
         {
             "name": "v4Advertised",
-            "type": "boolean"
+            "type": "boolean",
+	    "description": "True if IPv4 Unicast NLRI capavility is adv"
         },
         {
             "name": "v6PfxTx",
-            "type": "long"
+            "type": "long",
+	    "description": "Count of IPv6 Unicast prefixes sent"
         },
         {
             "name": "lastDownTime",
-            "type": "timestamp"
+            "type": "timestamp",
+	    "description": "Unix epoch indicating when session was last down"
         },
         {
             "name": "evpnPfxTx",
-            "type": "long"
+            "type": "long",
+	    "description": "Count of EVPN prefixes sent"
         },
         {
             "name": "ifname",
-            "type": "string"
+            "type": "string",
+	    "description": "interface name associated with session"
         },
         {
             "name": "v4PfxRx",
             "type": "long",
-            "display": 8
+            "display": 8,
+	    "description": "Count of IPv4 Unicast prefixes rcvd"
         },
         {
             "name": "v4Received",
-            "type": "boolean"
+            "type": "boolean",
+	    "description": "True if IPv4 NLRI capability was rcvd"
         },
         {
             "name": "updatesRx",
-            "type": "long"
+            "type": "long",
+	    "description": "Count of BGP Update messages rcvd"
         },
         {
             "name": "evpnReceived",
-            "type": "boolean"
+            "type": "boolean",
+	    "description": "True if EVPN NLRI capability rcvd"
         },
         {
             "name": "hostname",
             "type": "string",
             "key": 1,
-            "display": 1
+            "display": 1,
+	    "partition": 2,
+	    "description": "hostname associated with this hop"
         },
         {
             "name": "namespace",
             "type": "string",
             "key": 0,
-            "display": 0
+            "display": 0,
+	    "partition": 1,
+	    "description": "namespace within which path analysis is run"
         },
         {
             "name": "timestamp",
-            "type": "timestamp"
+            "type": "timestamp",
+	    "description": "Unix epach When this record was created, in ms"
         },
         {
             "name": "active",
-            "type": "boolean"
+            "type": "boolean",
+	    "description": "If this entry is active or deleted"
         }
     ]
 }

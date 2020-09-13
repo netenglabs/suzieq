@@ -4,12 +4,17 @@
     "type": "derivedRecord",
     "depends": [
         "routes",
-    	"lldp",
 	"arpnd",
 	"macs",
 	"interfaces"
     ],
     "fields": [
+        {
+	    "name": "sqvers",
+	    "type": "string",
+	    "partition": 0,
+	    "default": "1.0"
+	},
         {
             "name": "pathid",
             "type": "long",
@@ -26,13 +31,15 @@
             "name": "namespace",
             "type": "string",
 	    "display": 3,
-	    "description": "namespace within which path analysis is run"
+	    "description": "namespace within which path analysis is run",
+	    "partition": 1
         },
         {
             "name": "hostname",
             "type": "string",
 	    "display": 4,
-	    "description": "hostname associated with this hop"
+	    "description": "hostname associated with this hop",
+	    "partition": 2
         },
         {
             "name": "iif",

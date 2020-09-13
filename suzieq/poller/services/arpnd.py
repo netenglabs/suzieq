@@ -7,15 +7,6 @@ from suzieq.utils import convert_macaddr_format_to_colon
 class ArpndService(Service):
     """arpnd service. Different class because minor munging of output"""
 
-    def __init__(self, name, defn, period, stype, keys, ignore_fields, schema,
-                 queue, run_once="forever"):
-
-        super().__init__(name, defn, period, stype, keys, ignore_fields, schema,
-                         queue, run_once)
-        # Change the partition columns to not include the IPAddress
-        # We don't want millions of directories, one per prefix
-        self.partition_cols.remove("ipAddress")
-
     def _common_data_cleaner(self, processed_data, raw_data):
         for entry in processed_data:
             entry['oif'] = entry['oif'].replace('/', '-')

@@ -58,7 +58,7 @@ class ParquetOutputWorker(OutputWorker):
         pq.write_to_dataset(
             table,
             root_path=cdir,
-            partition_cols=["namespace", "hostname"],
+            partition_cols=data['partition_cols'],
             version="2.0",
             compression='ZSTD',
             row_group_size=100000,

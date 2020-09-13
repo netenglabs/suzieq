@@ -49,7 +49,7 @@ class RouteCmd(SqCommand):
         elif '.' in value:
             ipvers = 4
         else:
-            ipvers = None
+            ipvers = ''
 
         return ipvers
 
@@ -90,28 +90,18 @@ class RouteCmd(SqCommand):
             else:
                 prefix += '/128'
 
-        if prefix.startswith('!'):
-            df = pd.DataFrame(
-                {'error': ['ERROR: Cannot use NOT operator with prefix']})
-            return self._gen_output(df)
-
         if (self.columns != ['default'] and self.columns != ['*'] and
                 'ipvers' not in self.columns):
             addnl_fields = ['ipvers']
         else:
             addnl_fields = []
 
-        if prefixlen and not any(prefixlen.startswith(x)
-                                 for x in ['==', '<=', '>=', '<', '>', '!=']):
-            df = pd.DataFrame({'error': ['ERROR invalid prefixlen operation']})
-            return self._gen_output(df)
-
         df = self.sqobj.get(
             hostname=self.hostname,
             prefix=prefix.split(),
             vrf=vrf.split(),
             protocol=protocol.split(),
-            ipvers=ipvers,
+            ipvers=str(ipvers),
             columns=self.columns,
             addnl_fields=addnl_fields,
             namespace=self.namespace,
