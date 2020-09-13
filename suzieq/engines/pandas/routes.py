@@ -20,7 +20,13 @@ class RoutesObj(SqEngineObject):
                     '/').str[1].astype('int')
 
             if prefixlen:
-                df = df.query(f'prefixlen {prefixlen}')
+                if any(map(prefixlen.startswith, ['<', '>'])):
+                    query_str = f'prefixlen {prefixlen}'
+                elif prefixlen.startswith('!'):
+                    query_str = f'prefixlen != {prefixlen[1:]}'
+                else:
+                    query_str = f'prefixlen == {prefixlen}'
+                df = df.query(query_str).reset_index()
 
             if columns != ['*'] and 'prefixlen' not in columns:
                 df.drop(columns=['prefixlen'], inplace=True, errors='ignore')
@@ -105,7 +111,7 @@ class RoutesObj(SqEngineObject):
 
         rslt = pd.DataFrame(cols)
 
-        df = self.get(ipvers=ipvers, columns=cols, **kwargs)
+        df = self.get(ipvers=str(ipvers), columns=cols, **kwargs)
 
         if df.empty:
             return df

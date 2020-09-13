@@ -5,15 +5,6 @@ import numpy as np
 class RoutesService(Service):
     """routes service. Different class because vrf default needs to be added"""
 
-    def __init__(self, name, defn, period, stype, keys, ignore_fields, schema,
-                 queue, run_once="forever"):
-
-        super().__init__(name, defn, period, stype, keys, ignore_fields, schema,
-                         queue, run_once)
-        # Change the partition columns to not include the prefix
-        # We don't want millions of directories, one per prefix
-        self.partition_cols.remove("prefix")
-
     def _fix_ipvers(self, entry):
         if ':' in entry['prefix']:
             entry['ipvers'] = 6

@@ -1,10 +1,9 @@
 import os
-import sys
-from concurrent.futures import ProcessPoolExecutor as Executor
+import logging
 from pathlib import Path
 from importlib import import_module
 from copy import deepcopy
-
+import pyarrow.dataset as ds
 
 try:
     # We need this if we're switching the engine from Pandas to Modin
@@ -20,7 +19,7 @@ from suzieq.utils import get_latest_files, SchemaForTable, build_query_str
 
 class SqPandasEngine(SqEngine):
     def __init__(self):
-        pass
+        self.logger = logging.getLogger()
 
     def get_table_df(self, cfg, schemas, **kwargs) -> pd.DataFrame:
         """Use Pandas instead of Spark to retrieve the data"""
@@ -31,9 +30,11 @@ class SqPandasEngine(SqEngine):
         start = kwargs.pop("start_time")
         end = kwargs.pop("end_time")
         view = kwargs.pop("view")
-        sort_fields = kwargs.pop("sort_fields")
+        kwargs.pop("sort_fields")
         ign_key_fields = kwargs.pop("ign_key", [])
         addnl_fields = kwargs.pop("addnl_fields", [])
+        columns = kwargs.pop("columns", ['default'])
+        addnl_filter = kwargs.pop('add_filter', None)
 
         for f in ['active', 'timestamp']:
             if f not in addnl_fields:
@@ -44,36 +45,13 @@ class SqPandasEngine(SqEngine):
 
         folder = self._get_table_directory(phy_table)
 
-        # Restrict to a single DC if thats whats asked
-        if "namespace" in kwargs:
-            v = kwargs["namespace"]
-            if v:
-                if not isinstance(v, list):
-                    folder += "/namespace={}/".format(v)
-
         # ign_key_fields contains key fields that are not partition cols
-        key_fields = [i for i in sch.key_fields()
-                      if i not in ign_key_fields]
-        filters = self.build_pa_filters(start, end, key_fields, **kwargs)
-
-        if "columns" in kwargs:
-            columns = kwargs["columns"]
-            del kwargs["columns"]
-        else:
-            columns = ["default"]
+        key_fields = [i for i in sch.key_fields()]
 
         fields = sch.get_display_fields(columns)
         for f in addnl_fields:
             if f not in fields:
                 fields.append(f)
-
-        # Create the filter to select only specified columns
-        addnl_filter = kwargs.pop('add_filter', None)
-        query_str = build_query_str(key_fields, sch, **kwargs)
-
-        # Add the ignored fields back to key fields to ensure we
-        # do the drop_duplicates correctly below incl reading reqd cols
-        key_fields.extend(ign_key_fields)
 
         # Handle the case where key fields are missing from display fields
         fldset = set(fields)
@@ -84,34 +62,48 @@ class SqPandasEngine(SqEngine):
 
         if addnl_filter:
             # This is for special cases that are specific to an object
-            if not query_str:
-                query_str = addnl_filter
-            else:
-                query_str += ' and {}'.format(addnl_filter)
+            query_str = addnl_filter
+        else:
+            query_str = None
 
         # Restore the folder to what it needs to be
         folder = self._get_table_directory(phy_table)
-        if not query_str:
+        if query_str is None:
             # Make up a dummy query string to avoid if/then/else
             query_str = "timestamp != 0"
 
         try:
-            final_df = (
-                pa.ParquetDataset(
-                    folder, filters=filters or None, validate_schema=False
-                )
-                .read(columns=fields)
-                .to_pandas(split_blocks=True, self_destruct=True)
-                .query(query_str))
+            dirs = Path(folder)
+            datasets = []
+            for elem in dirs.iterdir():
+                if 'sqvers=' not in str(elem):
+                    continue
+                datasets.append(ds.dataset(elem, format='parquet',
+                                           partitioning='hive'))
+
+            if not datasets:
+                datasets = [ds.dataset(folder, format='parquet',
+                                       partitioning='hive')]
+
+            # Build the filters for predicate pushdown
+            master_schema = self._build_master_schema(datasets)
+            filters = self.build_ds_filters(
+                start, end, master_schema, **kwargs)
+
+            final_df = ds.dataset(datasets) \
+                         .to_table(filter=filters, columns=fields) \
+                         .to_pandas(self_destruct=True) \
+                         .query(query_str)
 
             if (not final_df.empty and (view == 'latest') and
                     all(x in final_df.columns for x in key_fields)):
                 final_df = final_df.set_index(key_fields) \
-                                   .query('~index.duplicated(keep="last")') \
-                                   .query('active==True') \
-                                   .reset_index()
+                    .query('~index.duplicated(keep="last")') \
+                    .query('active==True') \
+                    .reset_index()
             elif not final_df.empty:
-                final_df = final_df.query('active == True').reset_index()
+                final_df = final_df.query('active == True') \
+                                   .reset_index()
         except (pa.lib.ArrowInvalid, OSError):
             return pd.DataFrame(columns=fields)
 
@@ -124,24 +116,36 @@ class SqPandasEngine(SqEngine):
 
         return final_df[fields]
 
+    def _build_master_schema(self, datasets: list) -> pa.lib.Schema:
+        """Build the master schema from the list of diff versions
+        We use this to build the filters and use the right type-based check
+        for a field.
+        """
+        msch = datasets[0].schema
+        msch_set = set(msch)
+        for dataset in datasets[1:]:
+            sch = dataset.schema
+            sch_set = set(sch)
+            if msch_set.issuperset(sch):
+                continue
+            elif sch_set.issuperset(msch):
+                msch = sch
+            else:
+                for fld in sch_set-msch_set:
+                    index = sch.get_field_index(fld.name)
+                    msch.insert(index, fld)
+
+        return msch
+
     def get_object(self, objname: str, iobj):
         module = import_module("suzieq.engines.pandas." + objname)
         eobj = getattr(module, "{}Obj".format(objname.title()))
         return eobj(iobj)
 
-    def get_filecnt(self, path="."):
-        total = 0
-        if os.path.isdir(path):
-            for entry in os.scandir(path):
-                if entry.is_file():
-                    total += 1
-                elif entry.is_dir():
-                    total += self.get_filecnt(entry.path)
-        return total
-
-    def build_pa_filters(self, start_tm: str, end_tm: str, key_fields: list,
-                         **kwargs):
-        """Build filters for predicate pushdown of parquet read"""
+    def build_ds_filters(self, start_tm: str, end_tm: str,
+                         schema: pa.lib.Schema,
+                         **kwargs) -> ds.Expression:
+        """The new style of filters using dataset instead of ParquetDataset"""
 
         # The time filters first
         timeset = []
@@ -151,7 +155,7 @@ class SqPandasEngine(SqEngine):
                 periods=2,
                 freq="15min",
             )
-            filters = [[("timestamp", ">=", timeset[0].timestamp() * 1000)]]
+            filters = ds.field("timestamp") >= (timeset[0].timestamp() * 1000)
         elif end_tm and not start_tm:
             timeset = pd.date_range(
                 end=pd.to_datetime(
@@ -159,78 +163,60 @@ class SqPandasEngine(SqEngine):
                 periods=2,
                 freq="15min",
             )
-            filters = [
-                [("timestamp", "<=", timeset[-1].timestamp() * 1000)]]
+            filters = ds.field("timestamp") <= (timeset[-1].timestamp() * 1000)
         elif start_tm and end_tm:
             timeset = [
                 pd.to_datetime(start_tm, infer_datetime_format=True),
                 pd.to_datetime(end_tm, infer_datetime_format=True),
             ]
-            filters = [
-                [
-                    ("timestamp", ">=", timeset[0].timestamp() * 1000),
-                    ("timestamp", "<=", timeset[-1].timestamp() * 1000),
-                ]
-            ]
+            filters = ((ds.field("timestamp") >= (timeset[0].timestamp() * 1000))
+                       & (ds.field("timestamp") <= (timeset[-1].timestamp() * 1000)))
         else:
-            filters = []
+            filters = (ds.field("timestamp") != 0)
 
-        # pyarrow's filters are in Disjunctive Normative Form and so filters
-        # can get a bit long when lists are present in the kwargs
-
+        sch_fields = schema.names
         for k, v in kwargs.items():
-            if v and k in key_fields:
-                if isinstance(v, list):
-                    kwdor = []
-                    for e in v:
-                        if e.startswith("!"):
-                            e = e[1:]
-                            op = "!="
-                        else:
-                            op = "=="
+            if not v:
+                continue
+            if k not in sch_fields:
+                self.logger.warning(f'Ignoring invalid field {k} in filter')
+                continue
 
-                        if not filters:
-                            kwdor.append(
-                                [tuple(("{}".format(k), op, "{}".format(e)))]
-                            )
+            ftype = schema.field(k).type
+            if isinstance(v, list):
+                infld = []
+                notinfld = []
+                for e in v:
+                    if isinstance(e, str) and e.startswith("!"):
+                        if ftype == 'int64':
+                            notinfld.append(int(e[1:]))
                         else:
-                            for entry in filters:
-                                foo = deepcopy(entry)
-                                foo.append(
-                                    tuple(("{}".format(k), op, "{}".format(
-                                        e)))
-                                )
-                                kwdor.append(foo)
-
-                    filters = kwdor
+                            notinfld.append(e[1:])
+                    else:
+                        if ftype == 'int64':
+                            infld.append(int(e))
+                        else:
+                            infld.append(e)
+                if infld and notinfld:
+                    filters = filters & (ds.field(k).isin(infld) &
+                                         ~ds.field(k).isin(notinfld))
+                elif infld:
+                    filters = filters & (ds.field(k).isin(infld))
+                elif notinfld:
+                    filters = filters & (~ds.field(k).isin(notinfld))
+            else:
+                if isinstance(v, str) and v.startswith("!"):
+                    if ftype == 'int64':
+                        filters = filters & (ds.field(k) != int(v[1:]))
+                    else:
+                        filters = filters & (ds.field(k) != v[1:])
                 else:
-                    if v.startswith("!"):
-                        v = v[1:]
-                        op = "!="
+                    if ftype == 'int64':
+                        filters = filters & (ds.field(k) == int(v))
                     else:
-                        op = "=="
-
-                    if not filters:
-                        filters.append([tuple(("{}".format(k), op, "{}".
-                                               format(v)))])
-                    else:
-                        for entry in filters:
-                            entry.append(tuple(("{}".format(k), op, "{}".
-                                                format(v))))
+                        filters = filters & (ds.field(k) == v)
 
         return filters
-
-    def read_pq_file(self, file: str, fields: list,
-                     query_str: str) -> pd.DataFrame:
-        # Sadly predicate pushdown doesn't work in this method.
-        # We use query on the output to filter
-        df = pa.ParquetDataset(file).read(columns=fields).to_pandas()
-        pth = Path(file).parts
-        for elem in pth:
-            if "=" in elem:
-                k, v = elem.split("=")
-                df[k] = v
-        return df.query(query_str)
 
     def _get_table_directory(self, table):
         assert table
