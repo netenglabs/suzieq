@@ -22,7 +22,6 @@ class InterfaceService(Service):
         """Clean up EOS interfaces output"""
 
         for entry in processed_data:
-            entry['origIfname'] = entry['ifname']
             entry["speed"] = int(entry["speed"] / 1000000)
             ts = entry["statusChangeTimestamp"]
             if ts:
@@ -100,7 +99,6 @@ class InterfaceService(Service):
                 entry['type'] = 'ethernet'
             if ifname not in new_data_dict:
 
-                entry['origIfname'] = entry['ifname']
                 if not entry['linkUpCnt']:
                     entry['linkUpCnt'] = 0
                 if not entry['linkDownCnt']:
@@ -191,8 +189,6 @@ class InterfaceService(Service):
                 elif entry['speed'] == 'Unlimited':
                     entry['speed'] = 0
 
-            entry['ifname'] = entry['ifname'].replace('/', '-')
-
             if entry['master'] == 'Ethernet-Bridge':
                 entry['master'] = 'bridge'
             elif entry['master'] == 'unknown':
@@ -238,7 +234,6 @@ class InterfaceService(Service):
                     continue
 
                 new_entry = {'ifname': ifname,
-                             'origIfname': ifname,
                              'mtu': entry['afi'][i][0].get(
                                  'mtu', [{'data': 0}])[0]['data'],
                              'type': 'logical',
@@ -274,7 +269,6 @@ class InterfaceService(Service):
                 new_entry['ip6AddressList'] = v6addresses
                 new_entry['ipAddressList'] = v4addresses
 
-                new_entry['ifname'] = new_entry['ifname'].replace('/', '-')
                 new_entries.append(new_entry)
 
             entry.pop('vlanName')
@@ -295,7 +289,6 @@ class InterfaceService(Service):
         unnum_intf_entry_idx = []  # backtrack to interface to fix
 
         for entry_idx, entry in enumerate(processed_data):
-            entry['origIfname'] = entry['ifname']
             # artificial field for comparison with previous poll result
             entry["statusChangeTimestamp1"] = entry.get(
                 "statusChangeTimestamp", '')
@@ -371,12 +364,11 @@ class InterfaceService(Service):
                 entry['vlan'] = int(entry['ifname'].split('Vlan')[1])
 
             # have this at the end to avoid messing up processing
-            entry['ifname'] = entry['ifname'].replace('/', '-')
 
         # Fix unnumbered interface references
         for idx in unnum_intf_entry_idx:
             entry = processed_data[idx]
-            entry['ipAddressList'] = unnum_intf.get(entry['origIfname'], [])
+            entry['ipAddressList'] = unnum_intf.get(entry['ifname'], [])
 
         # Add bridge interface
         if add_bridge_intf:
@@ -403,7 +395,6 @@ class InterfaceService(Service):
                 entry['adminState'] = 'up'
             else:
                 entry['adminState'] = 'down'
-            entry['origIfname'] = entry['ifname']
             # Linux interface output has no status change timestamp
 
         return processed_data

@@ -15,7 +15,6 @@ class OspfIfService(Service):
                 entry['networkType'] = 'p2p'
             entry["passive"] = entry["passive"] == "Passive"
             entry["isUnnumbered"] = entry["isUnnumbered"] == "UNNUMBERED"
-            entry['origIfname'] = entry['ifname']
 
         return processed_data
 
@@ -26,9 +25,7 @@ class OspfIfService(Service):
         for entry in processed_data:
             entry["networkType"] = entry["networkType"].lower()
             entry["isUnnumbered"] = False
-            entry['origIfname'] = entry['ifname']
             # Rewrite '/' in interface names
-            entry['ifname'] = entry['ifname'].replace('/', '-')
 
         return processed_data
 
@@ -52,9 +49,6 @@ class OspfIfService(Service):
             entry['vrf'] = 'default'  # Juniper doesn't provide this info
             entry['authType'] = entry['authType'].lower()
 
-            # Rewrite '/' in interface names
-            entry['ifname'] = entry['ifname'].replace('/', '-')
-
         # Skip the original record as we don't need the overview record
         return processed_data[1:]
 
@@ -64,7 +58,6 @@ class OspfIfService(Service):
 
         for i, entry in enumerate(processed_data):
             if entry['_entryType'] == 'interfaces':
-                entry['ifname'] = entry['ifname'].replace('/', '-')
                 entry["networkType"] = entry["networkType"].lower()
                 if entry['ifname'].startswith('loopback'):
                     entry['passive'] = True

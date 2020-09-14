@@ -13,7 +13,6 @@ apply:
     command: net show lldp json
     normalize: 'lldp/[0]/interface/*/[
     "name: ifname",
-    "name: origIfname",
     "chassis/[0]/name/[0]/value: peerHostname?|",
     "chassis/[0]/descr/[0]/value: description?|",
     "chassis/[0]/mgmt-ip/[0]/value: mgmtIP?|",
@@ -45,7 +44,6 @@ apply:
     command: show lldp neighbors detail | display json
     normalize: 'lldp-neighbors-information/[0]/lldp-neighbor-information/*/[
     "lldp-local-interface/[0]/data: ifname",
-    "lldp-local-interface/[0]/data: origIfname",
     "lldp-remote-system-name/[0]/data: peerHostname",
     "lldp-remote-port-id/[0]/data: peerIfindex?|0",
     "lldp-remote-port-description/[0]/data: description",
@@ -57,7 +55,6 @@ apply:
     command: show lldp neighbors | display json
     normalize: 'lldp-neighbors-information/[0]/lldp-neighbor-information/*/[
     "lldp-local-port-id/[0]/data: ifname",
-    "lldp-local-port-id/[0]/data: origIfname",
     "lldp-remote-system-name/[0]/data: peerHostname",
     "lldp-remote-port-id/[0]/data: peerIfindex?|0",
     ]'
@@ -68,7 +65,6 @@ apply:
       - command: show cdp neighbors | json
         normalize: 'TABLE_cdp_neighbor_brief_info/ROW_cdp_neighbor_brief_info/*?/[
         "intf_id: ifname",
-        "intf_id: origIfname",
         "device_id: peerHostname",
         "platform_id: description",
         "port_id: peerIfname"
@@ -78,7 +74,6 @@ apply:
         normalize: 'TABLE_nbor/ROW_nbor/*?/[
         "chassis_id: peerHostname",
         "l_port_id: ifname",
-        "l_port_id: origIfname",
         "port_type: subtype",
         "port_id: peerIfname",
         "mgmt_addr: mgmtIP"

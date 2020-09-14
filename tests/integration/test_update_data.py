@@ -253,7 +253,7 @@ class TestUpdate:
 
         # update the samples data with updates from the newly collected data
 
-        # update_sqcmds(glob.glob(f'{sqcmds_dir}/cumulus-samples/*.yml'))
+        update_sqcmds(glob.glob(f'{sqcmds_dir}/cumulus-samples/*.yml'))
 
     @pytest.mark.test_update
     @pytest.mark.update_data
@@ -273,7 +273,7 @@ class TestUpdate:
 
         # update the samples data with updates from the newly collected data
 
-        # update_sqcmds(glob.glob(f'{sqcmds_dir}/{nos}-samples/*.yml'))
+        update_sqcmds(glob.glob(f'{sqcmds_dir}/{nos}-samples/*.yml'))
 
     @pytest.mark.test_update
     @pytest.mark.update_data
@@ -293,7 +293,7 @@ class TestUpdate:
 
         # update the samples data with updates from the newly collected data
 
-        # update_sqcmds(glob.glob(f'{sqcmds_dir}/{nos}-samples/*.yml'))
+        update_sqcmds(glob.glob(f'{sqcmds_dir}/{nos}-samples/*.yml'))
 
     @pytest.mark.test_update
     @pytest.mark.update_data
@@ -313,7 +313,7 @@ class TestUpdate:
 
         # update the samples data with updates from the newly collected data
 
-        # update_sqcmds(glob.glob(f'{sqcmds_dir}/{nos}-samples/*.yml'))
+        update_sqcmds(glob.glob(f'{sqcmds_dir}/{nos}-samples/*.yml'))
 
 
 tests = [

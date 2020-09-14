@@ -55,7 +55,6 @@ apply:
       - command: show ospf interface detail | display json
         normalize: 'ospf-interface-information/[0]/ospf-interface/*/[
         "interface-name/[0]/data: ifname",
-        "interface-name/[0]/data: origIfname",
         "ospf-interface-state/[0]/data: state?Down|Up",
         "ospf-area/[0]/data: area",
         "neighbor-count/[0]/data: nbrCount?|0",
@@ -81,7 +80,6 @@ apply:
       - command: show ip ospf interface vrf all | json
         normalize: 'TABLE_ctx/ROW_ctx/*:cname:vrf|TABLE_intf/ROW_intf/*?/[
         "ifname: ifname",
-        "ifname: origIfname",
         "state: state",
         "addr: ipAddress",
         "masklen: maskLen?|32",
