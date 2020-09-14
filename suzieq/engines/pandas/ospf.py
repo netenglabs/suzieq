@@ -1,11 +1,7 @@
 from ipaddress import IPv4Network
 import pandas as pd
-from datetime import datetime
 
-from suzieq.exceptions import NoLLdpError
-from suzieq.utils import SchemaForTable
 from suzieq.sqobjects.lldp import LldpObj
-from suzieq.sqobjects.interfaces import IfObj
 from suzieq.engines.pandas.engineobj import SqEngineObject
 
 
