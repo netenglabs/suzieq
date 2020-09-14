@@ -242,6 +242,9 @@ class SchemaForTable(object):
     def fields(self):
         return self._all_schemas.fields_for_table(self._table)
 
+    def get_phy_table(self):
+        return self._all_schemas.get_phy_table_for_table(self._table)
+
     def get_partition_columns(self):
         return self._all_schemas.get_partition_columns_for_table(self._table)
 

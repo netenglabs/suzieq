@@ -93,6 +93,10 @@ class SqObject(object):
     def cfg(self):
         return self._cfg
 
+    @property
+    def table(self):
+        return self._table
+
     def get(self, **kwargs) -> pd.DataFrame:
         if not self._table:
             raise NotImplementedError

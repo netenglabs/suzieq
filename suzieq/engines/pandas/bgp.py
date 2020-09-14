@@ -34,7 +34,7 @@ class BgpObj(SqEngineObject):
         if df.empty:
             return df
 
-        sch = SchemaForTable(self.iobj._table, self.schemas)
+        sch = SchemaForTable(self.iobj.table, self.schemas)
         query_str = build_query_str([], sch, vrf=vrf, peer=peer,
                                     hostname=hostname)
         if 'peer' in df.columns:
