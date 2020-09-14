@@ -29,7 +29,6 @@ apply:
     "hwAddress: macaddr",
     "address: ipAddress",
     "interface: oif",
-    "interface: origIfname",
     "state: state?|reachable",
     "offload: remote?|False",
     ]'
@@ -41,7 +40,6 @@ apply:
     "mac-address/[0]/data: macaddr",
     "ip-address/[0]/data: ipAddress",
     "interface-name/[0]/data: oif",
-    "interface-name/[0]/data: origIfname",
     "arp-table-entry-flags: flags",
     "offload: remote?|False",
     ]'
@@ -53,7 +51,6 @@ apply:
     "mac-address/[0]/data: macaddr",
     "ip-address/[0]/data: ipAddress",
     "interface-name/[0]/data: oif",
-    "interface-name/[0]/data: origIfname",
     "arp-table-entry-flags: flags",
     "offload: remote?|False",
     ]'
@@ -64,7 +61,6 @@ apply:
       - command: show ip arp detail vrf all | json
         normalize: 'TABLE_vrf/ROW_vrf/*:vrf-name-out:vrf|TABLE_adj/ROW_adj/*?/[
         "intf-out: oif",
-        "intf-out: origIfname",
         "ip-addr-out: ipAddress",
         "flags: flags",
         "mac: macaddr"
@@ -73,7 +69,6 @@ apply:
       - command: show ipv6 neighbor detail | json
         normalize: 'TABLE_vrf/ROW_vrf/*:vrf-name-out:vrf|TABLE_afi/ROW_afi/*?/[
         "intf-out: oif",
-        "intf-out: origIfname",
         "ip-addr-out: ipAddress",
         "flags: flags",
         "mac: macaddr"

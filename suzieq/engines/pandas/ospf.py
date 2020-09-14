@@ -37,13 +37,6 @@ class OspfObj(SqEngineObject):
                                    addnl_fields=addnl_nbr_fields, **kwargs)
         if nbr_df.empty:
             return nbr_df
-        else:
-            nbr_df['ifname'] = nbr_df['origIfname']
-            nbr_df.drop(columns=['origIfname'], inplace=True)
-
-        if not df.empty:
-            df['ifname'] = df['origIfname']
-            df.drop(columns=['origIfname'], inplace=True)
 
         # Merge the two tables
         df = df.merge(nbr_df, on=['namespace', 'hostname', 'ifname'],
@@ -155,7 +148,6 @@ class OspfObj(SqEngineObject):
             "timestamp",
             "area",
             "nbrCount",
-            "origIfname",
         ]
         sort_fields = ["namespace", "hostname", "ifname", "vrf"]
 
@@ -163,9 +155,6 @@ class OspfObj(SqEngineObject):
             "ospfIf", sort_fields, columns=columns, **kwargs)
         if ospf_df.empty:
             return pd.DataFrame(columns=columns)
-
-        ospf_df['ifname'] = ospf_df['origIfname']
-        ospf_df.drop(columns=['origIfname'], inplace=True)
 
         ospf_df["assertReason"] = [[] for _ in range(len(ospf_df))]
         df = (

@@ -7,19 +7,12 @@ from suzieq.utils import convert_macaddr_format_to_colon
 class ArpndService(Service):
     """arpnd service. Different class because minor munging of output"""
 
-    def _common_data_cleaner(self, processed_data, raw_data):
-        for entry in processed_data:
-            entry['oif'] = entry['oif'].replace('/', '-')
-
-        return processed_data
-
     def _clean_linux_data(self, processed_data, raw_data):
         for entry in processed_data:
             entry["remote"] = entry["remote"] == "offload"
             entry["state"] = entry["state"].lower()
             if entry["state"] == "stale" or entry["state"] == "delay":
                 entry["state"] = "reachable"
-            entry['origIfname'] = entry['oif']
             if not entry.get('macaddr', None):
                 entry['macaddr'] = '00:00:00:00:00:00'
         return processed_data
@@ -33,8 +26,6 @@ class ArpndService(Service):
                 entry.get('macaddr', '0000.0000.0000'))
             if ',' in entry['oif']:
                 entry['oif'] = entry['oif'].split(',')[0].strip()
-                entry['origIfname'] = entry['oif']
-            entry['oif'] = entry['oif'].replace('/', '-')
 
         return processed_data
 
@@ -44,7 +35,6 @@ class ArpndService(Service):
                 entry['remote'] = True
             if entry['oif']:
                 entry['oif'] = re.sub(r' \[.*\]', '', entry['oif'])
-                entry['oif'] = entry['oif'].replace('/', '-')
             entry['state'] = 'reachable'
             if not entry.get('macaddr', None):
                 entry['macaddr'] = '00:00:00:00:00:00'
@@ -58,8 +48,7 @@ class ArpndService(Service):
             if not entry['ipAddress']:
                 drop_indices.append(i)
                 continue
-            if entry['oif']:
-                entry['oif'] = entry['oif'].replace('/', '-')
+
             entry['macaddr'] = convert_macaddr_format_to_colon(
                 entry.get('macaddr', '0000.0000.0000'))
 

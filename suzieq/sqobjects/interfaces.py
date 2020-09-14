@@ -16,7 +16,6 @@ class IfObj(basicobj.SqObject):
                          table='interfaces')
         self._sort_fields = ['namespace', 'hostname', 'ifname']
         self._cat_fields = ['mtu']
-        self._addnl_fields = ['origIfname']
 
     def summarize(self, namespace=[]):
         """Summarize routing info for one or more namespaces"""

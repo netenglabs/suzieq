@@ -45,7 +45,6 @@ class OspfNbrService(Service):
             entry["areaStub"] = entry["areaStub"] == "[Stub]"
             if not entry["bfdStatus"]:
                 entry["bfdStatus"] = "disabled"
-            entry['origIfname'] = entry['ifname']
 
         return processed_data
 
@@ -58,8 +57,6 @@ class OspfNbrService(Service):
             entry["lastChangeTime"] = int(entry["lastChangeTime"] * 1000)
             # What is provided is the opposite of stub and so we not it
             entry["areaStub"] = not entry["areaStub"]
-            entry['origIfname'] = entry['ifname']
-            entry['ifname'] = entry['ifname'].replace('/', '-')
 
         return processed_data
 
@@ -71,7 +68,6 @@ class OspfNbrService(Service):
             else:
                 entry['vrf'] = vrf
 
-            entry['ifname'] = entry['ifname'].replace('/', '-')
             entry['lastChangeTime'] = get_timestamp_from_junos_time(
                 entry['lastChangeTime'], raw_data[0]['timestamp']/1000)
             entry['state'] = entry['state'].lower()
@@ -82,7 +78,6 @@ class OspfNbrService(Service):
         for entry in processed_data:
             entry['state'] = entry['state'].lower()
             entry['numChanges'] = int(entry['numChanges'])
-            entry['ifname'] = entry['ifname'].replace('/', '-')
             # Cisco's format examples are PT7H28M21S, P1DT4H9M46S
             entry['lastChangeTime'] = get_timestamp_from_cisco_time(
                 entry['lastChangeTime'], raw_data[0]['timestamp']/1000)

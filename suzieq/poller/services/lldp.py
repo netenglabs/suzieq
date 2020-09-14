@@ -16,7 +16,6 @@ class LldpService(Service):
         for entry in processed_data:
             if not entry:
                 continue
-            entry['ifname'] = entry['ifname'].replace('/', '-')
             if 'peerIfname' in entry:
                 entry['subtype'] = 'ifname'
                 entry['peerMacaddr'] = '00:00:00:00:00:00'
@@ -35,9 +34,5 @@ class LldpService(Service):
                                                entry['peerHostname'])
                 entry['ifname'] = re.sub(
                     r'^Eth?(\d)', 'Ethernet\g<1>', entry['ifname'])
-                entry['origIfname'] = re.sub(
-                    r'^Eth?(\d)', 'Ethernet\g<1>', entry['origIfname'])
-            elif any(devtype == x for x in ['linux', 'eos']):
-                entry['origIfname'] = entry['ifname']
 
         return processed_data
