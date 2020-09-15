@@ -58,7 +58,7 @@ class RouteCmd(SqCommand):
     @argument("vrf", description="VRF to qualify")
     @argument("protocol", description="routing protocol to qualify")
     @argument("prefixlen", description="must be of the form "
-              "[==|<|<=|>=|>|!=] length")
+              "[<|<=|>=|>|!] length")
     def show(self, prefix: str = "", vrf: str = '', protocol: str = "",
              prefixlen: str = ""):
         """
