@@ -110,6 +110,7 @@ class SqCommand:
             retcode = 1
             max_colwidth = None
             cols = df.columns
+            is_error = True
         else:
             max_colwidth = 50
             retcode = 0
@@ -117,6 +118,7 @@ class SqCommand:
                 cols = self.columns
             else:
                 cols = df.columns
+            is_error = False
 
         if dont_strip_cols or not all(item in df.columns for item in cols):
             cols = df.columns
@@ -137,12 +139,15 @@ class SqCommand:
                 if df.empty:
                     print(df)
                 elif sort:
-                    sort_fields = [x for x in self.sqobj._sort_fields
-                                   if x in df.columns and x in cols]
-                    if sort_fields:
-                        print(df[cols].sort_values(by=sort_fields))
-                    else:
+                    if is_error:
                         print(df[cols])
+                    else:
+                        sort_fields = [x for x in self.sqobj._sort_fields
+                                       if x in df.columns and x in cols]
+                        if sort_fields:
+                            print(df[cols].sort_values(by=sort_fields))
+                        else:
+                            print(df[cols])
                 else:
                     print(df[cols])
 
@@ -181,10 +186,10 @@ class SqCommand:
     def top(self, **kwargs):
         raise NotImplementedError
 
-    @ command("unique", help="find the list of unique items in a column")
-    @ argument("groupby", description="List of columns to group by")
-    @ argument("type", description="Unique per host or table entry",
-               choices=['entry', 'host'])
+    @command("unique", help="find the list of unique items in a column")
+    @argument("groupby", description="List of columns to group by")
+    @argument("type", description="Unique per host or table entry",
+              choices=['entry', 'host'])
     def unique(self, groupby='', type='entry', **kwargs):
         now = time.time()
         try:
