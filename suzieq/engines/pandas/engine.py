@@ -39,12 +39,30 @@ class SqPandasEngine(SqEngine):
             # Make up a dummy query string to avoid if/then/else
             query_str = "timestamp != 0"
 
+        # If sqvers is in the requested data, we've to handle it separately
+        if 'sqvers' in fields:
+            fields.remove('sqvers')
+            need_sqvers = True
+            max_vers = 0
+        else:
+            need_sqvers = False
+
+        # If requesting a specific version of the data, handle that diff too
+        sqvers = kwargs.pop('sqvers', None)
         try:
             dirs = Path(folder)
             datasets = []
             for elem in dirs.iterdir():
+                # Additional processing around sqvers filtering and data
                 if 'sqvers=' not in str(elem):
                     continue
+                if sqvers and f'sqvers={sqvers}' != elem:
+                    continue
+                elif need_sqvers:
+                    vers = float(str(elem).split('=')[-1])
+                    if vers > max_vers:
+                        max_vers = vers
+
                 datasets.append(ds.dataset(elem, format='parquet',
                                            partitioning='hive'))
 
@@ -75,7 +93,10 @@ class SqPandasEngine(SqEngine):
         except (pa.lib.ArrowInvalid, OSError):
             return pd.DataFrame(columns=fields)
 
-        fields = [x for x in fields if x in final_df.columns]
+        fields = [x for x in final_df.columns if x in fields]
+        if need_sqvers:
+            final_df['sqvers'] = max_vers
+            fields.insert(0, 'sqvers')
 
         return final_df[fields]
 
