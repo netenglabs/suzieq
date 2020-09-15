@@ -34,7 +34,7 @@ class FsCmd(SqCommand):
     @command("show")
     @argument("mountPoint", description="The mount point inside the FileSystem")
     @argument("used_percent", description="must be of the form "
-              "[==|<|<=|>=|>|!=] value")
+              "[<|<=|>=|>|!]value. Eg: '<=20'")
     def show(self, mountPoint: str = '', used_percent: str = ''):
         """
         Show File System info
@@ -50,7 +50,7 @@ class FsCmd(SqCommand):
             self.ctxt.sort_fields = []
 
         if used_percent and not any(used_percent.startswith(x)
-                                    for x in ['<=', '>=', '<', '>', '!=']):
+                                    for x in ['<=', '>=', '<', '>', '!']):
             try:
                 int(used_percent)
             except ValueError:
