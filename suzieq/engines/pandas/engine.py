@@ -2,26 +2,19 @@ import os
 import logging
 from pathlib import Path
 from importlib import import_module
-from copy import deepcopy
 import pyarrow.dataset as ds
 
-try:
-    # We need this if we're switching the engine from Pandas to Modin
-    import ray
-except ImportError:
-    pass
 import pandas as pd
 import pyarrow.parquet as pa
 
 from suzieq.engines.base_engine import SqEngine
-from suzieq.utils import get_latest_files, SchemaForTable, build_query_str
 
 
 class SqPandasEngine(SqEngine):
     def __init__(self):
         self.logger = logging.getLogger()
 
-    def get_table_df(self, cfg, schemas, **kwargs) -> pd.DataFrame:
+    def get_table_df(self, cfg, **kwargs) -> pd.DataFrame:
         """Use Pandas instead of Spark to retrieve the data"""
 
         self.cfg = cfg
@@ -30,35 +23,11 @@ class SqPandasEngine(SqEngine):
         start = kwargs.pop("start_time")
         end = kwargs.pop("end_time")
         view = kwargs.pop("view")
-        kwargs.pop("sort_fields")
-        ign_key_fields = kwargs.pop("ign_key", [])
-        addnl_fields = kwargs.pop("addnl_fields", [])
-        columns = kwargs.pop("columns", ['default'])
-        addnl_filter = kwargs.pop('add_filter', None)
+        fields = kwargs.pop("columns")
+        addnl_filter = kwargs.pop("add_filter", None)
+        key_fields = kwargs.pop("key_fields")
 
-        for f in ['active', 'timestamp']:
-            if f not in addnl_fields:
-                addnl_fields.append(f)
-
-        sch = SchemaForTable(table, schema=schemas)
-        phy_table = sch.get_phy_table_for_table()
-
-        folder = self._get_table_directory(phy_table)
-
-        # ign_key_fields contains key fields that are not partition cols
-        key_fields = [i for i in sch.key_fields()]
-
-        fields = sch.get_display_fields(columns)
-        for f in addnl_fields:
-            if f not in fields:
-                fields.append(f)
-
-        # Handle the case where key fields are missing from display fields
-        fldset = set(fields)
-        kfldset = set(key_fields)
-        add_flds = kfldset.difference(fldset)
-        if add_flds:
-            fields.extend(list(add_flds))
+        folder = self._get_table_directory(table)
 
         if addnl_filter:
             # This is for special cases that are specific to an object
@@ -66,8 +35,6 @@ class SqPandasEngine(SqEngine):
         else:
             query_str = None
 
-        # Restore the folder to what it needs to be
-        folder = self._get_table_directory(phy_table)
         if query_str is None:
             # Make up a dummy query string to avoid if/then/else
             query_str = "timestamp != 0"
@@ -87,6 +54,7 @@ class SqPandasEngine(SqEngine):
 
             # Build the filters for predicate pushdown
             master_schema = self._build_master_schema(datasets)
+
             filters = self.build_ds_filters(
                 start, end, master_schema, **kwargs)
 
@@ -107,11 +75,6 @@ class SqPandasEngine(SqEngine):
         except (pa.lib.ArrowInvalid, OSError):
             return pd.DataFrame(columns=fields)
 
-        if 'active' not in columns:
-            final_df.drop(columns=['active'], axis=1, inplace=True)
-            fields.remove('active')
-
-        final_df = df_timestamp_to_datetime(final_df)
         fields = [x for x in fields if x in final_df.columns]
 
         return final_df[fields]
@@ -242,9 +205,3 @@ class SqPandasEngine(SqEngine):
                         dfolder, x, dc)), tables))
 
         return tables
-
-
-def df_timestamp_to_datetime(df):
-    if not df.empty:
-        df["timestamp"] = pd.to_datetime(df.timestamp.astype(str), unit="ms")
-    return df

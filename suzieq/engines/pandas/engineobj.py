@@ -28,14 +28,33 @@ class SqEngineObject(object):
     def table(self):
         return self.iobj._table
 
-    @property
-    def sort_fields(self):
-        return self.iobj._sort_fields
-
-    def get_valid_df(self, table, sort_fields, **kwargs) -> pd.DataFrame:
+    def get_valid_df(self, table, **kwargs) -> pd.DataFrame:
         if not self.ctxt.engine:
             print("Specify an analysis engine using set engine command")
             return pd.DataFrame(columns=["namespace", "hostname"])
+
+        sch = SchemaForTable(table, schema=self.schemas)
+        phy_table = sch.get_phy_table_for_table()
+
+        columns = kwargs.pop('columns', ['default'])
+        addnl_fields = kwargs.pop('addnl_fields', [])
+        view = kwargs.pop('view', self.iobj.view)
+
+        fields = sch.get_display_fields(columns)
+        key_fields = sch.key_fields()
+        drop_cols = []
+
+        if 'timestamp' not in fields:
+            fields.append('timestamp')
+
+        if 'active' not in fields:
+            addnl_fields.append('active')
+            drop_cols.append('active')
+
+        for f in addnl_fields:
+            if f not in fields:
+                # timestamp is always the last field
+                fields.insert(-1, f)
 
         for dt in [self.iobj.start_time, self.iobj.end_time]:
             if dt:
@@ -47,40 +66,39 @@ class SqEngineObject(object):
 
         table_df = self.ctxt.engine.get_table_df(
             self.cfg,
-            self.schemas,
-            table=table,
-            view=self.iobj.view,
+            table=phy_table,
             start_time=self.iobj.start_time,
             end_time=self.iobj.end_time,
-            sort_fields=sort_fields,
+            columns=fields,
+            view=view,
+            key_fields=key_fields,
             **kwargs
         )
+
+        if not table_df.empty:
+            table_df.drop(columns=drop_cols, inplace=True)
+            table_df['timestamp'] = pd.to_datetime(
+                table_df.timestamp.astype(str), unit="ms")
 
         return table_df
 
     def get(self, **kwargs):
-        if not self.iobj._table:
+        if not self.iobj.table:
             raise NotImplementedError
 
-        if self.ctxt.sort_fields is None:
-            sort_fields = None
-        else:
-            sort_fields = self.iobj._sort_fields
-
         try:
-            df = self.get_valid_df(self.iobj._table, sort_fields, **kwargs)
+            df = self.get_valid_df(self.iobj.table, **kwargs)
         except pa.lib.ArrowInvalid:
             return pd.DataFrame(columns=['namespace', 'hostname'])
 
         return df
 
     def get_table_info(self, table, **kwargs):
-        sch = SchemaForTable(table, schema=self.schemas)
-        key_fields = sch.key_fields()
         # You can't use view from user because we need to see all the data
         # to compute data required.
         kwargs.pop('view', None)
-        all_time_df = self._get_table_info(table, view='all', **kwargs)
+
+        all_time_df = self.get_valid_df(table, view='all', **kwargs)
         times = all_time_df['timestamp'].unique()
         ret = {'first_time': all_time_df.timestamp.min(),
                'latest_time': all_time_df.timestamp.max(),
@@ -97,25 +115,16 @@ class SqEngineObject(object):
         else:
             return 0
 
-    def _get_table_info(self, table, view='latest', **kwargs):
-        df = self.ctxt.engine.get_table_df(
-            self.cfg,
-            self.schemas,
-            table=table,
-            view=view,
-            start_time='',
-            end_time='',
-            sort_fields=None,
-            **kwargs
-        )
-        return df
-
     def summarize(self, **kwargs):
-        """There is a pattern of how to do these
-        use self._init_summarize(),
-            creates self.summary_df, which is the initial pandas dataframe based on the table
-            creates self.nsgrp of data grouped by namespace
-            self.ns is the dict to add data to which will be turned into a dataframe and then returned
+        """Summarize the info about this resource/service.
+
+        There is a pattern of how to do these
+        use self._init_summarize():
+           - creates self.summary_df, which is the initial pandas dataframe
+             based on the table
+           - creates self.nsgrp of data grouped by namespace
+           - self.ns is the dict to add data to which will be turned into a 
+             dataframe and then returned
 
         if you want to simply take a field and run a pandas functon, then use
           self._add_field_to_summary
