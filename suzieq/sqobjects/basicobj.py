@@ -7,8 +7,8 @@ from suzieq.engines import get_sqengine
 
 class SqContext(object):
 
-    def __init__(self, engine):
-        self.cfg = load_sq_config(validate=False)
+    def __init__(self, engine, config_file=None):
+        self.cfg = load_sq_config(validate=False, config_file=config_file)
 
         self.schemas = Schema(self.cfg['schema-directory'])
 
@@ -31,10 +31,10 @@ class SqObject(object):
                  start_time: str = '', end_time: str = '',
                  view: str = 'latest', namespace: typing.List[str] = [],
                  columns: typing.List[str] = ['default'],
-                 context=None, table: str = '') -> None:
+                 context=None, table: str = '', config_file=None) -> None:
 
         if context is None:
-            self.ctxt = SqContext(engine_name)
+            self.ctxt = SqContext(engine_name, config_file)
         else:
             self.ctxt = context
             if not self.ctxt:
