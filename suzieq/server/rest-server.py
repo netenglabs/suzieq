@@ -17,7 +17,7 @@ async def read_service(service: str, verb: str, hostname: str = "",
                       view: str = "latest", namespace: str = ""):
     if verb == 'show':
         verb = 'get'
-
+    service_name = service
     try: 
         module = globals()[service]
     except KeyError:
@@ -35,16 +35,16 @@ async def read_service(service: str, verb: str, hostname: str = "",
                                     namespace=namespace), verb)\
                                     (hostname=hostname, 
                                     namespace=namespace)\
-                                    .to_json(orient="records")    
-
-     # TODO: why can't i catch NotImplemented? that's what I want here?
+                                    .to_json(orient="records")
+    
     except AttributeError as err:
         u = uuid.uuid1()
-        logger.warning(f"{verb} not supported for {service}: {err} id={u}")
-        raise HTTPException(status_code=404,
-                            detail=f"{verb} not supported for {service}: {err} id={u}")
+        logger.warning(f"{verb} not supported for {service_name}: {err} id={u}")
+        raise HTTPException(status_code=404, 
+                            detail=f"{verb} not supported for {service_name}: {err} id={u}")
+    # TODO: why can't i catch NotImplemented? that's what I want here?  
     except Exception as err:
         u = uuid.uuid1()
-        logger.warning(f"exceptional exception {verb} for {service}: {err} id={u}")
-        raise HTTPException(status_code=404,
-                            detail=f"exceptional exception {verb} for {service}: {err} id={u}")         
+        logger.warning(f"exceptional exception {verb} for {service_name}: {err} id={u}")
+        raise HTTPException(status_code=404, 
+                            detail=f"exceptional exception {verb} for {service_name}: {err} id={u}")
