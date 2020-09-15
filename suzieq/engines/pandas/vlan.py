@@ -11,11 +11,6 @@ class VlanObj(SqEngineObject):
         if not self.iobj._table:
             raise NotImplementedError
 
-        if self.ctxt.sort_fields is None:
-            sort_fields = None
-        else:
-            sort_fields = self.sort_fields
-
         # Our query string formatter doesn't understand handling queries
         # with lists yet. So, pull it out.
         vlan = kwargs.get('vlan', None)
@@ -25,7 +20,7 @@ class VlanObj(SqEngineObject):
         else:
             vset = None
 
-        df = self.get_valid_df("vlan", sort_fields, **kwargs)
+        df = self.get_valid_df("vlan", **kwargs)
 
         # We're checking if any element of given list is in the vlan
         # column

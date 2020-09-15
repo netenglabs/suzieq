@@ -10,11 +10,6 @@ class OspfObj(SqEngineObject):
     def _get_combined_df(self, **kwargs):
         """OSPF has info divided across multiple tables. Get a single one"""
 
-        if self.ctxt.sort_fields is None:
-            sort_fields = None
-        else:
-            sort_fields = self.sort_fields
-
         columns = kwargs.get('columns', ['default'])
         state = kwargs.pop('state', '')
         addnl_fields = kwargs.pop('addnl_fields', self.iobj._addnl_fields)
@@ -27,10 +22,9 @@ class OspfObj(SqEngineObject):
         else:
             query_str = ''
 
-        df = self.get_valid_df('ospfIf', sort_fields,
-                               addnl_fields=addnl_fields, **kwargs)
-        nbr_df = self.get_valid_df('ospfNbr', sort_fields,
-                                   addnl_fields=addnl_nbr_fields, **kwargs)
+        df = self.get_valid_df('ospfIf', addnl_fields=addnl_fields, **kwargs)
+        nbr_df = self.get_valid_df('ospfNbr', addnl_fields=addnl_nbr_fields,
+                                   **kwargs)
         if nbr_df.empty:
             return nbr_df
 
@@ -145,10 +139,8 @@ class OspfObj(SqEngineObject):
             "area",
             "nbrCount",
         ]
-        sort_fields = ["namespace", "hostname", "ifname", "vrf"]
 
-        ospf_df = self.get_valid_df(
-            "ospfIf", sort_fields, columns=columns, **kwargs)
+        ospf_df = self.get_valid_df("ospfIf", columns=columns, **kwargs)
         if ospf_df.empty:
             return pd.DataFrame(columns=columns)
 
