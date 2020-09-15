@@ -1,0 +1,89 @@
+{
+    "namespace": "suzieq",
+    "name": "topology",
+    "type": "derivedRecord",
+    "depends": [
+        "address",
+        "arpnd",
+        "bgp",
+        "device",
+        "evpnVni",
+        "interfaces",
+        "lldp", 
+        "macs",
+        "ospf",
+        "routes"
+    ],
+    "fields": [
+        {
+	    "name": "sqvers",
+	    "type": "string",
+	    "partition": 0,
+	    "default": "1.0"
+	},
+
+        {
+            "name": "namespace",
+            "type": "string",
+            "display": 1,
+            "description": "namespace within which path analysis is run",
+            "partition": 1
+        },
+        {
+            "name": "hostname",
+            "type": "string",
+            "display": 2,
+            "description": "name of the host being queried",
+            "partition": 2
+        },
+        {
+            "name": "peerHostname",
+            "type": "string",
+            "display": 3,
+            "description": "name of the other side of the connection"
+        },
+        {
+            "name": "ifname",
+            "type": "string",
+            "display": 4,
+            "description": "interface that the host is connected on, discovered through lldp"
+
+        },
+        {
+            "name": "arpnd",
+            "type": "string",
+            "display": 5,
+            "description": "is this connection discovered via ARP"
+        },
+        {
+            "name": "bgp",
+            "type": "string",
+            "display": 6,
+            "description": "is this connection discovered via BGP"
+        },
+        {
+            "name": "lldp",
+            "type": "string",
+            "display": 7,
+            "description": "is this connection discovered via LLDP"
+        },
+        {
+            "name": "ospf",
+            "type": "string",
+            "display": 8,
+            "description": "is this connection discovered via OSPF"
+        },
+        {
+            "name": "vrf",
+            "type": "string",
+            "display": 9,
+            "description": "VRF that the connection is in"
+        },
+        {
+            "name": "polled_neighbor",
+            "type": "string",
+            "display": 10,
+            "description": "is this peerHostname polled by Suzieq"
+        }
+    ]
+}

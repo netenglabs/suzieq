@@ -2,7 +2,7 @@ import pytest
 from suzieq.cli.sqcmds import *
 from nubia import context
 import os
-from tests.conftest import commands, load_up_the_tests
+from tests.conftest import commands, load_up_the_tests, tables
 from tempfile import mkstemp
 import json
 from tests.conftest import setup_sqcmds
@@ -87,7 +87,7 @@ def test_namespace_show_filter(setup_nubia, cmd):
     s = _test_command(cmd, 'show', None, {'namespace': 'dual-bgp'})
     assert s == 0
 
-
+ 
 @pytest.mark.filter
 @pytest.mark.parametrize("cmd", good_commands)
 def test_view_show_filter(setup_nubia, cmd):
@@ -222,6 +222,12 @@ def test_context_start_time_filtering(setup_nubia, cmd):
     # before the latest data, so might be more data than the default
     s = _test_context_filtering(cmd, {'start_time': '2020-01-20 0:0:0'})
     assert s == 0
+
+
+@pytest.mark.parametrize('table', tables)
+def test_table_describe(setup_nubia, table):
+    out = _test_command('TableCmd', 'describe', {"table": table})
+    assert out == 0
 
 
 def _test_context_filtering(cmd, filter):
