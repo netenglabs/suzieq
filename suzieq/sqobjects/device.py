@@ -1,14 +1,6 @@
-import typing
-from suzieq.sqobjects import basicobj
+from suzieq.sqobjects.basicobj import SqObject
 
 
-class DeviceObj(basicobj.SqObject):
-    def __init__(self, engine: str = '', hostname: typing.List[str] = [],
-                 start_time: str = '', end_time: str = '',
-                 view: str = 'latest', namespace: typing.List[str] = [],
-                 columns: typing.List[str] = ['default'],
-                 context=None) -> None:
-        super().__init__(engine, hostname, start_time, end_time, view,
-                         namespace, columns, context=context, table='device')
-        self._sort_fields = ['namespace', 'hostname']
-        self._cat_fields = []
+class DeviceObj(SqObject):
+    def __init__(self, **kwargs):
+        super().__init__(table='device', **kwargs)

@@ -41,11 +41,9 @@ class SqObject(object):
                 self.ctxt = SqContext(engine_name)
 
         self._cfg = self.ctxt.cfg
-        self._schemas = self.ctxt.schemas
+        self._schema = SchemaForTable(table, self.ctxt.schemas)
         self._table = table
-        self._sort_fields = []
-        self._cat_fields = []
-        self._ign_key_fields = []  # Used when keys != parquet partition cols
+        self._sort_fields = self._schema.key_fields()
 
         if not namespace and self.ctxt.namespace:
             self.namespace = self.ctxt.namespace
@@ -86,8 +84,12 @@ class SqObject(object):
         self._addnl_fields = []
 
     @property
-    def schemas(self):
+    def all_schemas(self):
         return self.ctxt.schemas
+
+    @property
+    def schema(self):
+        return self._schema
 
     @property
     def cfg(self):
@@ -96,6 +98,10 @@ class SqObject(object):
     @property
     def table(self):
         return self._table
+
+    def validate_input(self, **kwargs):
+        """Dummy validate input"""
+        return
 
     def get(self, **kwargs) -> pd.DataFrame:
         if not self._table:
@@ -107,8 +113,12 @@ class SqObject(object):
         if self._addnl_filter:
             kwargs['add_filter'] = self._addnl_filter
 
-        if self._ign_key_fields:
-            kwargs['ign_key'] = self._ign_key_fields
+        # This raises exceptions if it fails
+        try:
+            self.validate_input(**kwargs)
+        except Exception as error:
+            df = pd.DataFrame({'error': [f'{error}']})
+            return df
 
         return self.engine_obj.get(**kwargs)
 
@@ -146,7 +156,7 @@ class SqObject(object):
         else:
             columns = ["default"]
 
-        table_schema = SchemaForTable(self._table, self.schemas)
+        table_schema = SchemaForTable(self._table, self.all_schemas)
         columns = table_schema.get_display_fields(columns)
 
         if what not in columns:

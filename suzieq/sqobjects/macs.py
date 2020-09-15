@@ -1,16 +1,21 @@
-import typing
+import re
+from suzieq.sqobjects.basicobj import SqObject
 
-from suzieq.sqobjects import basicobj
 
+class MacsObj(SqObject):
+    def __init__(self, **kwargs):
+        super().__init__(table='macs', **kwargs)
 
-class MacsObj(basicobj.SqObject):
-    def __init__(self, engine: str = '', hostname: typing.List[str] = [],
-                 start_time: str = '', end_time: str = '',
-                 view: str = 'latest', namespace: typing.List[str] = [],
-                 columns: typing.List[str] = ['default'],
-                 context=None) -> None:
-        super().__init__(engine, hostname, start_time, end_time, view,
-                         namespace, columns, context=context, table='macs')
-        self._sort_fields = ['namespace', 'hostname', 'vlan', 'macaddr']
-        self._cat_fields = []
-        self._ign_key_fields = ['macaddr']  # MACaddr is not a partition col
+    def validate_input(self, **kwargs):
+        for key in kwargs:
+            if key == 'vlan':
+                for ele in kwargs[key]:
+                    if (ele.startswith(('<', '>', '!')) and (
+                            ele in ['<', '<=', '>', '>=', '!=', '!'])):
+                        raise ValueError('operator must not be separated by '
+                                         'space, as in "<20"')
+                    words = re.split(r'<|<=|>|>=|!', ele)
+                    try:
+                        int(words[-1])
+                    except Exception:
+                        raise ValueError(f'Invalid VLAN value: {kwargs[key]}')
