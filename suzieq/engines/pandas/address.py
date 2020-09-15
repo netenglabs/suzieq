@@ -28,11 +28,6 @@ class AddressObj(SqEngineObject):
         addnl_fields = ['master']
         drop_cols = []
 
-        if self.ctxt.sort_fields is None:
-            sort_fields = None
-        else:
-            sort_fields = self.sort_fields
-
         v4addr = []
         v6addr = []
         macaddr = []
@@ -67,7 +62,7 @@ class AddressObj(SqEngineObject):
                     a += '/'
                 v6addr.append(a)
 
-        df = self.get_valid_df("address", sort_fields, master=vrf,
+        df = self.get_valid_df("address", master=vrf,
                                addnl_fields=addnl_fields, **kwargs)
 
         if df.empty:

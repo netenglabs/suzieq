@@ -7,11 +7,6 @@ class MacsObj(SqEngineObject):
         if not self.iobj._table:
             raise NotImplementedError
 
-        if self.ctxt.sort_fields is None:
-            sort_fields = None
-        else:
-            sort_fields = self.iobj._sort_fields
-
         remoteOnly = False
         localOnly = kwargs.pop('localOnly', False)
         vtep = kwargs.get('remoteVtepIp', [])
@@ -20,7 +15,7 @@ class MacsObj(SqEngineObject):
                 del kwargs['remoteVtepIp']
                 remoteOnly = True
 
-        df = self.get_valid_df(self.iobj._table, sort_fields, **kwargs)
+        df = self.get_valid_df(self.iobj._table, **kwargs)
         if remoteOnly:
             return df.query("remoteVtepIp != ''")
         elif localOnly:
