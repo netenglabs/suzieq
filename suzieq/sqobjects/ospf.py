@@ -1,21 +1,12 @@
-import typing
 import pandas as pd
 
-from suzieq.sqobjects import basicobj
+from suzieq.sqobjects.basicobj import SqObject
 from suzieq.utils import SchemaForTable
 
 
-class OspfObj(basicobj.SqObject):
-
-    def __init__(self, engine: str = '', hostname: typing.List[str] = [],
-                 start_time: str = '', end_time: str = '',
-                 view: str = 'latest', namespace: typing.List[str] = [],
-                 columns: typing.List[str] = ['default'],
-                 context=None) -> None:
-        super().__init__(engine, hostname, start_time, end_time, view,
-                         namespace, columns, context=context, table='ospf')
-        self._sort_fields = ['namespace', 'hostname', 'vrf', 'ifname']
-        self._cat_fields = []
+class OspfObj(SqObject):
+    def __init__(self, **kwargs):
+        super().__init__(table='ospf', **kwargs)
         self._addnl_fields = ['passive', 'area', 'state']
         self._addnl_nbr_fields = ['state']
 
@@ -42,8 +33,7 @@ class OspfObj(basicobj.SqObject):
 
         return self.engine_obj.aver(**kwargs)
 
-    def top(self, what='', n=5, reverse=False,
-            **kwargs) -> pd.DataFrame:
+    def top(self, what='', n=5, reverse=False, **kwargs) -> pd.DataFrame:
         """Get the list of top/bottom entries of "what" field"""
 
         if "columns" in kwargs:
@@ -52,7 +42,7 @@ class OspfObj(basicobj.SqObject):
         else:
             columns = ["default"]
 
-        table_schema = SchemaForTable(self._table, self.schemas)
+        table_schema = SchemaForTable(self._table, self.all_schemas)
         columns = table_schema.get_display_fields(columns)
 
         if what == "numChanges" and what not in columns:

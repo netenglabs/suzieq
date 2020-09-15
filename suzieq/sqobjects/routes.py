@@ -1,21 +1,10 @@
-import typing
-
-from suzieq.sqobjects import basicobj
+from suzieq.sqobjects.basicobj import SqObject
 
 
-class RoutesObj(basicobj.SqObject):
-
-    def __init__(self, engine: str = '', hostname: typing.List[str] = [],
-                 start_time: str = '', end_time: str = '',
-                 view: str = 'latest', namespace: typing.List[str] = [],
-                 columns: typing.List[str] = ['default'],
-                 context=None) -> None:
-        super().__init__(engine, hostname, start_time, end_time, view,
-                         namespace, columns, context=context, table='routes')
-        self._sort_fields = ['hostname', 'vrf', 'prefix']
-        self._cat_fields = ['protocol', 'metric']
+class RoutesObj(SqObject):
+    def __init__(self, **kwargs):
+        super().__init__(table='routes', **kwargs)
         self._addnl_filter = 'metric != 4278198272'
-        self._ign_key_fields = ["prefix"]  # prefix is not a partition col
 
     def lpm(self, **kwargs):
         '''Get the lpm for the given address'''
