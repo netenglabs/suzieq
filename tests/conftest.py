@@ -30,8 +30,8 @@ cli_commands = [('address'), ('bgp'), ('device'), ('evpnVni'),
 
 tables = [('arpnd'), ('bgp'), ('evpnVni'), ('device'), ('fs'), ('ifCounters'),
           ('interfaces'), ('lldp'), ('macs'), ('mlag'),
-          ('ospfIf'), ('ospfNbr'), ('routes'), ('time'),
-          ('topcpu'), ('topmem'), ('vlan')]
+          ('ospfIf'), ('ospfNbr'), ('path'), ('routes'), ('time'),
+          ('topcpu'), ('topmem'), ('topology'), ('vlan')]
 
 
 @pytest.fixture(scope='function')
