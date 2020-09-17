@@ -2,6 +2,7 @@ from typing import Optional
 from fastapi import FastAPI, HTTPException
 import logging 
 import uuid
+import uvicorn
 
 from suzieq.sqobjects import *
 
@@ -26,16 +27,19 @@ async def read_service(service: str, verb: str, hostname: str = "",
 
     svc = getattr(module, f"{service.title()}Obj")
 
+    service_args = {'hostname': hostname,
+                    'start_time': start_time,
+                    'end_time': end_time,
+                    'view': view,
+                    'namespace': 'namespace'}
+    verb_args = {'hostname': hostname,
+                'namespace': namespace}
+    if verb == 'summarize':
+        verb_args.pop('hostname', None)
     try:
 
-        return getattr(svc(hostname=hostname,
-                                    start_time=start_time,
-                                    end_time=end_time,
-                                    view=view,
-                                    namespace=namespace), verb)\
-                                    (hostname=hostname, 
-                                    namespace=namespace)\
-                                    .to_json(orient="records")
+        return getattr(svc(**service_args), verb)\
+                            (**verb_args).to_json(orient="records")
     
     except AttributeError as err:
         u = uuid.uuid1()
@@ -48,3 +52,13 @@ async def read_service(service: str, verb: str, hostname: str = "",
         logger.warning(f"exceptional exception {verb} for {service_name}: {err} id={u}")
         raise HTTPException(status_code=404, 
                             detail=f"exceptional exception {verb} for {service_name}: {err} id={u}")
+
+@app.get("/api/v1/{service}")
+def missing_verb(service):
+    u = uuid.uuid1()
+    logger.warning(f"{service} service missing a verb id={u}")
+    raise HTTPException(status_code=404,
+                        detail=f"{service} service missing a verb. for example '/api/v1/service/show' id={u}")
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
