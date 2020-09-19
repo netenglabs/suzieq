@@ -604,7 +604,8 @@ class Service(object):
 
                 # We don't expect the output from two different hostnames
                 nodename = output[0]["hostname"]
-
+                self.logger.debug(f"Extracted response from {nodename} for "
+                                  f"{self.name} service")
                 # We can terminate processing if we've no data returned
                 # and we're reading inputs from a file
                 if nodename == '_filedata' and status == HTTPStatus.NO_CONTENT:
