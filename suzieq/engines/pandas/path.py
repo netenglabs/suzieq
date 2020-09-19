@@ -219,7 +219,7 @@ class PathObj(SqEngineObject):
         if macaddr:
             mac_df = self._macsobj.get(namespace=rslt.iloc[0]['namespace'],
                                        hostname=device, macaddr=macaddr,
-                                       vlan=vlan)
+                                       vlan=[str(vlan)])
 
             if mac_df.empty:
                 # On servers there's no bridge and thus no MAC table entry
@@ -329,6 +329,9 @@ class PathObj(SqEngineObject):
         # Convert each OIF into its actual physical list
         is_l2 = False
         for nhip, iface, overlay, is_l2 in nexthop_list:
+            if iface.endswith('-v0'):
+                # Replace Cumulus' VRR entry with actual SVI
+                iface = iface.split('-v0')[0]
             # This first pass is to handle Cumulus symmetric EVPN routes
             arpdf = self._arpnd_df.query(f'hostname=="{device}" and '
                                          f'ipAddress=="{nhip}" and '
