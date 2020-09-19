@@ -87,7 +87,7 @@ def test_namespace_show_filter(setup_nubia, cmd):
     s = _test_command(cmd, 'show', None, {'namespace': 'dual-bgp'})
     assert s == 0
 
- 
+
 @pytest.mark.filter
 @pytest.mark.parametrize("cmd", good_commands)
 def test_view_show_filter(setup_nubia, cmd):
@@ -279,8 +279,6 @@ def _test_sqcmds(testvar, context_config):
                 got_df = pd.read_json(output)
             else:
                 got_df = pd.DataFrame()
-        else:
-            got_df = pd.DataFrame()
         # expected_df.sort_values(by=expected_df.columns[:1].tolist()) \
         #            .reset_index(drop=True)
         # got_df = got_df.sort_values(by=got_df.columns[:1].tolist()) \
@@ -288,8 +286,12 @@ def _test_sqcmds(testvar, context_config):
         # assert(expected_df.shape == got_df.shape)
         rslt_df = pd.merge(got_df.reset_index(drop=True),
                            expected_df.reset_index(drop=True),
-                           left_index=True, right_index=True, indicator=True)
-        assert(rslt_df.query('_merge != "both"').empty)
+                           left_index=True, right_index=True,
+                           indicator=True)
+        assert(got_df.shape == expected_df.shape)
+        if not got_df.empty:
+            assert(not rslt_df.empty and rslt_df.query(
+                '_merge != "both"').empty)
 
     elif not error and 'xfail' in testvar:
         # this was marked to fail, but it succeeded so we must return
