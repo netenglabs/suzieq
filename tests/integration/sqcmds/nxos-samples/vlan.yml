@@ -11,7 +11,8 @@ tests:
 - command: vlan summarize --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: vlan summarize nxos
-  output: '{}'
+  output: '{"vlan": {}, "pvid": {}, "ifname": {}, "hostname": {}, "namespace": {},
+    "timestamp": {}, "active": {}}'
 - command: vlan unique --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: vlan unique nxos

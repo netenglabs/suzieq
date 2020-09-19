@@ -11,7 +11,11 @@ tests:
 - command: ospf summarize --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: ospf summarize eos
-  output: '{}'
+  output: '{"lastDownTime": {}, "area": {}, "nbrPrio": {}, "lastUpTime": {}, "instance":
+    {}, "reason": {}, "areaStub": {}, "state": {}, "peerIP": {}, "bfdStatus": {},
+    "numChanges": {}, "lastChangeTime": {}, "lsaRetxCnt": {}, "ifname": {}, "vrf":
+    {}, "peerRouterId": {}, "hostname": {}, "namespace": {}, "timestamp": {}, "active":
+    {}}'
 - command: ospf unique --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: ospf unique eos

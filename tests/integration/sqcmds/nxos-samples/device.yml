@@ -6,27 +6,27 @@ tests:
   output: '[{"namespace": "nxos", "hostname": "leaf1", "model": "Nexus9000 C9300v
     Chassis", "version": "9.3(4)", "vendor": "Cisco", "architecture": "Intel Core
     Processor (Skylake, IBRS)", "status": "alive", "address": "10.255.2.42", "uptime":
-    23057994, "timestamp": 1597173310994}, {"namespace": "nxos", "hostname": "leaf2",
+    971859988, "timestamp": 1600494961988}, {"namespace": "nxos", "hostname": "leaf2",
     "model": "Nexus9000 C9300v Chassis", "version": "9.3(4)", "vendor": "Cisco", "architecture":
     "Intel Core Processor (Skylake, IBRS)", "status": "alive", "address": "10.255.2.43",
-    "uptime": 23062401, "timestamp": 1597173311401}, {"namespace": "nxos", "hostname":
+    "uptime": 971859395, "timestamp": 1600494961395}, {"namespace": "nxos", "hostname":
     "server1", "model": "vm", "version": "18.04.3 LTS", "vendor": "Ubuntu", "architecture":
-    "x86-64", "status": "alive", "address": "10.255.2.176", "uptime": 26387819, "timestamp":
-    1597173308819}, {"namespace": "nxos", "hostname": "server2", "model": "vm", "version":
+    "x86-64", "status": "alive", "address": "10.255.2.161", "uptime": 972687149, "timestamp":
+    1600494958149}, {"namespace": "nxos", "hostname": "server2", "model": "vm", "version":
     "18.04.3 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
-    "address": "10.255.2.168", "uptime": 26383819, "timestamp": 1597173308819}, {"namespace":
+    "address": "10.255.2.94", "uptime": 972684202, "timestamp": 1600494958202}, {"namespace":
     "nxos", "hostname": "server3", "model": "vm", "version": "18.04.3 LTS", "vendor":
-    "Ubuntu", "architecture": "x86-64", "status": "alive", "address": "10.255.2.100",
-    "uptime": 26385713, "timestamp": 1597173308713}, {"namespace": "nxos", "hostname":
+    "Ubuntu", "architecture": "x86-64", "status": "alive", "address": "10.255.2.206",
+    "uptime": 972683202, "timestamp": 1600494958202}, {"namespace": "nxos", "hostname":
     "server4", "model": "vm", "version": "18.04.3 LTS", "vendor": "Ubuntu", "architecture":
-    "x86-64", "status": "alive", "address": "10.255.2.14", "uptime": 26384820, "timestamp":
-    1597173308820}, {"namespace": "nxos", "hostname": "spine1", "model": "Nexus9000
+    "x86-64", "status": "alive", "address": "10.255.2.8", "uptime": 972681117, "timestamp":
+    1600494958117}, {"namespace": "nxos", "hostname": "spine1", "model": "Nexus9000
     C9300v Chassis", "version": "9.3(4)", "vendor": "Cisco", "architecture": "Intel
     Core Processor (Skylake, IBRS)", "status": "alive", "address": "10.255.2.44",
-    "uptime": 26360401, "timestamp": 1597173311401}, {"namespace": "nxos", "hostname":
+    "uptime": 972626540, "timestamp": 1600494961540}, {"namespace": "nxos", "hostname":
     "spine2", "model": "Nexus9000 C9300v Chassis", "version": "9.3(4)", "vendor":
     "Cisco", "architecture": "Intel Core Processor (Skylake, IBRS)", "status": "alive",
-    "address": "10.255.2.45", "uptime": 26357401, "timestamp": 1597173311401}]'
+    "address": "10.255.2.45", "uptime": 972625518, "timestamp": 1600494961518}]'
 - command: device show --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: device show nxos
@@ -37,9 +37,9 @@ tests:
   data-directory: tests/data/nxos/parquet-out/
   marks: device summarize nxos
   output: '{"nxos": {"deviceCnt": 8, "vendorCnt": {"Cisco": 4, "Ubuntu": 4}, "modelCnt":
-    {"vm": 4, "Nexus9000 C9300v Chassis": 4}, "archCnt": {"x86-64": 4, "Intel Core
-    Processor (Skylake, IBRS)": 4}, "versionCnt": {"18.04.3 LTS": 4, "9.3(4)": 4},
-    "upTimeStat": [23057994, 26387819, 26372110]}}'
+    {"Nexus9000 C9300v Chassis": 4, "vm": 4}, "archCnt": {"Intel Core Processor (Skylake,
+    IBRS)": 4, "x86-64": 4}, "versionCnt": {"9.3(4)": 4, "18.04.3 LTS": 4}, "upTimeStat":
+    [971859395, 972687149, 972653828]}}'
 - command: device summarize --columns="namespace hostname" --format=json
   data-directory: tests/data/nxos/parquet-out/
   error:
@@ -48,10 +48,10 @@ tests:
 - command: device unique --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: device unique nxos
-  output: '[{"hostname": "spine2", "count": 1}, {"hostname": "spine1", "count": 1},
-    {"hostname": "server4", "count": 1}, {"hostname": "server3", "count": 1}, {"hostname":
-    "server2", "count": 1}, {"hostname": "server1", "count": 1}, {"hostname": "leaf2",
-    "count": 1}, {"hostname": "leaf1", "count": 1}]'
+  output: '[{"hostname": "server3", "count": 1}, {"hostname": "server1", "count":
+    1}, {"hostname": "server2", "count": 1}, {"hostname": "spine2", "count": 1}, {"hostname":
+    "server4", "count": 1}, {"hostname": "leaf1", "count": 1}, {"hostname": "spine1",
+    "count": 1}, {"hostname": "leaf2", "count": 1}]'
 - command: device unique --columns="hostname namespace" --format=json
   data-directory: tests/data/nxos/parquet-out/
   error:
