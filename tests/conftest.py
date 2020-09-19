@@ -22,7 +22,7 @@ commands = [('AddressCmd'), ('ArpndCmd'), ('BgpCmd'), ('DeviceCmd'),
             ('MlagCmd'), ('OspfCmd'), ('RouteCmd'),
             ('VlanCmd')]
 
-cli_commands = [('address'), ('bgp'), ('device'), ('evpnVni'),
+cli_commands = [('arpnd'), ('address'), ('bgp'), ('device'), ('evpnVni'),
                 ('interface'), ('lldp'), ('mac'),
                 ('mlag'), ('ospf'), ('path'), ('route'),
                 ('vlan')]
