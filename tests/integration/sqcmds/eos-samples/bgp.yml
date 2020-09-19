@@ -259,20 +259,35 @@ tests:
       65000, "peerAsn": 65202, "state": "Established", "peerHostname": "exit02", "vrfPeer":
       "default", "peerPeer": "10.127.1.10", "asnPeer": 65202, "peerAsnPeer": 65000,
       "assert": "pass", "assertReason": "-", "timestamp": 1594274559686}, {"namespace":
-      "eos", "hostname": "exit01", "vrf": "default", "peer": "169.254.254.2", "asn":
-      65201, "peerAsn": 65530, "state": "NotEstd", "peerHostname": "", "vrfPeer":
+      "eos", "hostname": "edge01", "vrf": "default", "peer": "eth1.2", "asn": 65530,
+      "peerAsn": 0, "state": "NotEstd", "peerHostname": "", "vrfPeer": "", "peerPeer":
+      "", "asnPeer": 0, "peerAsnPeer": 0, "assert": "fail", "assertReason": "Waiting
+      for NHT:", "timestamp": 1594274559622}, {"namespace": "eos", "hostname": "edge01",
+      "vrf": "default", "peer": "eth1.4", "asn": 65530, "peerAsn": 0, "state": "NotEstd",
+      "peerHostname": "", "vrfPeer": "", "peerPeer": "", "asnPeer": 0, "peerAsnPeer":
+      0, "assert": "fail", "assertReason": "Waiting for NHT:", "timestamp": 1594274559622},
+      {"namespace": "eos", "hostname": "edge01", "vrf": "default", "peer": "eth2.2",
+      "asn": 65530, "peerAsn": 0, "state": "NotEstd", "peerHostname": "", "vrfPeer":
       "", "peerPeer": "", "asnPeer": 0, "peerAsnPeer": 0, "assert": "fail", "assertReason":
-      "Matching BGP Peer not found", "timestamp": 1594274559724}, {"namespace": "eos",
-      "hostname": "exit01", "vrf": "internet-vrf", "peer": "169.254.254.10", "asn":
-      65201, "peerAsn": 65530, "state": "NotEstd", "peerHostname": "", "vrfPeer":
-      "", "peerPeer": "", "asnPeer": 0, "peerAsnPeer": 0, "assert": "fail", "assertReason":
-      "Matching BGP Peer not found", "timestamp": 1594274559724}, {"namespace": "eos",
-      "hostname": "exit02", "vrf": "default", "peer": "169.254.253.2", "asn": 65202,
-      "peerAsn": 65530, "state": "NotEstd", "peerHostname": "", "vrfPeer": "", "peerPeer":
-      "", "asnPeer": 0, "peerAsnPeer": 0, "assert": "fail", "assertReason": "Matching
-      BGP Peer not found", "timestamp": 1594274559672}, {"namespace": "eos", "hostname":
-      "exit02", "vrf": "internet-vrf", "peer": "169.254.253.10", "asn": 65202, "peerAsn":
-      65530, "state": "NotEstd", "peerHostname": "", "vrfPeer": "", "peerPeer": "",
-      "asnPeer": 0, "peerAsnPeer": 0, "assert": "fail", "assertReason": "Matching
-      BGP Peer not found", "timestamp": 1594274559672}]'
+      "Waiting for NHT:", "timestamp": 1594274559622}, {"namespace": "eos", "hostname":
+      "edge01", "vrf": "default", "peer": "eth2.4", "asn": 65530, "peerAsn": 0, "state":
+      "NotEstd", "peerHostname": "", "vrfPeer": "", "peerPeer": "", "asnPeer": 0,
+      "peerAsnPeer": 0, "assert": "fail", "assertReason": "Waiting for NHT:", "timestamp":
+      1594274559622}, {"namespace": "eos", "hostname": "exit01", "vrf": "default",
+      "peer": "169.254.254.2", "asn": 65201, "peerAsn": 65530, "state": "NotEstd",
+      "peerHostname": "", "vrfPeer": "", "peerPeer": "", "asnPeer": 0, "peerAsnPeer":
+      0, "assert": "fail", "assertReason": "Matching BGP Peer not found", "timestamp":
+      1594274559724}, {"namespace": "eos", "hostname": "exit01", "vrf": "internet-vrf",
+      "peer": "169.254.254.10", "asn": 65201, "peerAsn": 65530, "state": "NotEstd",
+      "peerHostname": "", "vrfPeer": "", "peerPeer": "", "asnPeer": 0, "peerAsnPeer":
+      0, "assert": "fail", "assertReason": "Matching BGP Peer not found", "timestamp":
+      1594274559724}, {"namespace": "eos", "hostname": "exit02", "vrf": "default",
+      "peer": "169.254.253.2", "asn": 65202, "peerAsn": 65530, "state": "NotEstd",
+      "peerHostname": "", "vrfPeer": "", "peerPeer": "", "asnPeer": 0, "peerAsnPeer":
+      0, "assert": "fail", "assertReason": "Matching BGP Peer not found", "timestamp":
+      1594274559672}, {"namespace": "eos", "hostname": "exit02", "vrf": "internet-vrf",
+      "peer": "169.254.253.10", "asn": 65202, "peerAsn": 65530, "state": "NotEstd",
+      "peerHostname": "", "vrfPeer": "", "peerPeer": "", "asnPeer": 0, "peerAsnPeer":
+      0, "assert": "fail", "assertReason": "Matching BGP Peer not found", "timestamp":
+      1594274559672}]'
   marks: bgp assert eos

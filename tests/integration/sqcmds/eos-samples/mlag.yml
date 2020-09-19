@@ -26,9 +26,8 @@ tests:
   data-directory: tests/data/eos/parquet-out/
   marks: mlag summarize eos
   output: '{"eos": {"deviceCnt": 8, "uniqueSystemIdCnt": 1, "devicesWithfailedStateCnt":
-    8, "devicesWithBackupInactiveCnt": 0, "mlagNumDualPortsStat": [null, null, null],
-    "mlagNumSinglePortStat": [null, null, null], "mlagNumErrorPortStat": [null, null,
-    null]}}'
+    8, "devicesWithBackupInactiveCnt": 0, "mlagNumDualPortsStat": [0, 0, 0], "mlagNumSinglePortStat":
+    [0, 0, 0], "mlagNumErrorPortStat": [0, 0, 0]}}'
 - command: mlag unique --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: mlag unique eos

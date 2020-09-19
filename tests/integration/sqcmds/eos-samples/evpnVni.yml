@@ -11,7 +11,11 @@ tests:
 - command: evpnVni summarize --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: evpnVni summarize eos
-  output: '{}'
+  output: '{"routerMac": {}, "secVtepIp": {}, "vrf": {}, "advGateway": {}, "state":
+    {}, "mcastGroup": {}, "ifname": {}, "vlan": {}, "replicationType": {}, "type":
+    {}, "numArpNd": {}, "remoteVtepList": {}, "vniFilter": {}, "vni": {}, "l2VniList":
+    {}, "numMacs": {}, "priVtepIp": {}, "hostname": {}, "namespace": {}, "timestamp":
+    {}, "active": {}}'
 - command: evpnVni unique --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: evpnVni unique eos

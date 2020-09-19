@@ -3,22 +3,22 @@ tests:
 - command: evpnVni show --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: evpnVni show nxos
-  output: '[{"namespace": "nxos", "hostname": "leaf1", "vni": 100010, "type": "L2",
-    "vlan": 10, "state": "up", "mcastGroup": "224.1.1.192", "remoteVtepCnt": 0, "priVtepIp":
-    "10.0.0.11", "secVtepIp": "", "timestamp": 1597173313687}, {"namespace": "nxos",
+  output: '[{"namespace": "nxos", "hostname": "leaf1", "vni": 100999, "type": "L3",
+    "vlan": 999, "state": "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 1, "priVtepIp":
+    "10.0.0.11", "secVtepIp": "", "timestamp": 1600494963042}, {"namespace": "nxos",
     "hostname": "leaf1", "vni": 100030, "type": "L2", "vlan": 30, "state": "up", "mcastGroup":
     "224.1.1.192", "remoteVtepCnt": 1, "priVtepIp": "10.0.0.11", "secVtepIp": "",
-    "timestamp": 1597173313687}, {"namespace": "nxos", "hostname": "leaf1", "vni":
-    100999, "type": "L3", "vlan": 999, "state": "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt":
-    1, "priVtepIp": "10.0.0.11", "secVtepIp": "", "timestamp": 1597173313687}, {"namespace":
-    "nxos", "hostname": "leaf2", "vni": 100020, "type": "L2", "vlan": 20, "state":
-    "up", "mcastGroup": "224.1.1.192", "remoteVtepCnt": 0, "priVtepIp": "10.0.0.12",
-    "secVtepIp": "", "timestamp": 1597173313886}, {"namespace": "nxos", "hostname":
-    "leaf2", "vni": 100030, "type": "L2", "vlan": 30, "state": "up", "mcastGroup":
+    "timestamp": 1600494963042}, {"namespace": "nxos", "hostname": "leaf1", "vni":
+    100010, "type": "L2", "vlan": 10, "state": "up", "mcastGroup": "224.1.1.192",
+    "remoteVtepCnt": 0, "priVtepIp": "10.0.0.11", "secVtepIp": "", "timestamp": 1600494963042},
+    {"namespace": "nxos", "hostname": "leaf2", "vni": 100999, "type": "L3", "vlan":
+    999, "state": "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 1, "priVtepIp":
+    "10.0.0.12", "secVtepIp": "", "timestamp": 1600494962711}, {"namespace": "nxos",
+    "hostname": "leaf2", "vni": 100030, "type": "L2", "vlan": 30, "state": "up", "mcastGroup":
     "224.1.1.192", "remoteVtepCnt": 1, "priVtepIp": "10.0.0.12", "secVtepIp": "",
-    "timestamp": 1597173313886}, {"namespace": "nxos", "hostname": "leaf2", "vni":
-    100999, "type": "L3", "vlan": 999, "state": "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt":
-    1, "priVtepIp": "10.0.0.12", "secVtepIp": "", "timestamp": 1597173313886}]'
+    "timestamp": 1600494962711}, {"namespace": "nxos", "hostname": "leaf2", "vni":
+    100020, "type": "L2", "vlan": 20, "state": "up", "mcastGroup": "224.1.1.192",
+    "remoteVtepCnt": 0, "priVtepIp": "10.0.0.12", "secVtepIp": "", "timestamp": 1600494962711}]'
 - command: evpnVni show --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: evpnVni show nxos
@@ -38,26 +38,26 @@ tests:
 - command: evpnVni show --columns='hostname vni remoteVtepCnt' --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: evpnVni show filter nxos
-  output: '[{"hostname": "leaf1", "vni": 100010, "remoteVtepCnt": 0}, {"hostname":
-    "leaf1", "vni": 100030, "remoteVtepCnt": 1}, {"hostname": "leaf1", "vni": 100999,
-    "remoteVtepCnt": 1}, {"hostname": "leaf2", "vni": 100020, "remoteVtepCnt": 0},
+  output: '[{"hostname": "leaf1", "vni": 100999, "remoteVtepCnt": 1}, {"hostname":
+    "leaf1", "vni": 100030, "remoteVtepCnt": 1}, {"hostname": "leaf1", "vni": 100010,
+    "remoteVtepCnt": 0}, {"hostname": "leaf2", "vni": 100999, "remoteVtepCnt": 1},
     {"hostname": "leaf2", "vni": 100030, "remoteVtepCnt": 1}, {"hostname": "leaf2",
-    "vni": 100999, "remoteVtepCnt": 1}]'
+    "vni": 100020, "remoteVtepCnt": 0}]'
 - command: evpnVni show --columns='hostname vni remoteVtepList' --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: evpnVni show filter nxos
-  output: '[{"hostname": "leaf1", "vni": 100010, "remoteVtepList": []}, {"hostname":
-    "leaf1", "vni": 100030, "remoteVtepList": ["10.0.0.12"]}, {"hostname": "leaf1",
-    "vni": 100999, "remoteVtepList": ["10.0.0.12"]}, {"hostname": "leaf2", "vni":
-    100020, "remoteVtepList": []}, {"hostname": "leaf2", "vni": 100030, "remoteVtepList":
-    ["10.0.0.11"]}, {"hostname": "leaf2", "vni": 100999, "remoteVtepList": ["10.0.0.11"]}]'
+  output: '[{"hostname": "leaf1", "vni": 100999, "remoteVtepList": ["10.0.0.12"]},
+    {"hostname": "leaf1", "vni": 100030, "remoteVtepList": ["10.0.0.12"]}, {"hostname":
+    "leaf1", "vni": 100010, "remoteVtepList": []}, {"hostname": "leaf2", "vni": 100999,
+    "remoteVtepList": ["10.0.0.11"]}, {"hostname": "leaf2", "vni": 100030, "remoteVtepList":
+    ["10.0.0.11"]}, {"hostname": "leaf2", "vni": 100020, "remoteVtepList": []}]'
 - command: evpnVni show --columns='hostname vni remoteVtepCnt remoteVtepList' --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: evpnVni show filter nxos
-  output: '[{"hostname": "leaf1", "vni": 100010, "remoteVtepCnt": 0, "remoteVtepList":
-    []}, {"hostname": "leaf1", "vni": 100030, "remoteVtepCnt": 1, "remoteVtepList":
-    ["10.0.0.12"]}, {"hostname": "leaf1", "vni": 100999, "remoteVtepCnt": 1, "remoteVtepList":
-    ["10.0.0.12"]}, {"hostname": "leaf2", "vni": 100020, "remoteVtepCnt": 0, "remoteVtepList":
-    []}, {"hostname": "leaf2", "vni": 100030, "remoteVtepCnt": 1, "remoteVtepList":
-    ["10.0.0.11"]}, {"hostname": "leaf2", "vni": 100999, "remoteVtepCnt": 1, "remoteVtepList":
-    ["10.0.0.11"]}]'
+  output: '[{"hostname": "leaf1", "vni": 100999, "remoteVtepCnt": 1, "remoteVtepList":
+    ["10.0.0.12"]}, {"hostname": "leaf1", "vni": 100030, "remoteVtepCnt": 1, "remoteVtepList":
+    ["10.0.0.12"]}, {"hostname": "leaf1", "vni": 100010, "remoteVtepCnt": 0, "remoteVtepList":
+    []}, {"hostname": "leaf2", "vni": 100999, "remoteVtepCnt": 1, "remoteVtepList":
+    ["10.0.0.11"]}, {"hostname": "leaf2", "vni": 100030, "remoteVtepCnt": 1, "remoteVtepList":
+    ["10.0.0.11"]}, {"hostname": "leaf2", "vni": 100020, "remoteVtepCnt": 0, "remoteVtepList":
+    []}]'
