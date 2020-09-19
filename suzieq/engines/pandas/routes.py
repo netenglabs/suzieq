@@ -26,7 +26,9 @@ class RoutesObj(SqEngineObject):
                     query_str = f'prefixlen != {prefixlen[1:]}'
                 else:
                     query_str = f'prefixlen == {prefixlen}'
-                df = df.query(query_str).reset_index()
+
+                # drop in reset_index to not add an additional index col
+                df = df.query(query_str).reset_index(drop=True)
 
             if columns != ['*'] and 'prefixlen' not in columns:
                 df.drop(columns=['prefixlen'], inplace=True, errors='ignore')
@@ -90,6 +92,7 @@ class RoutesObj(SqEngineObject):
 
         addr = kwargs.pop('address')
         kwargs.pop('ipvers', None)
+        df = kwargs.pop('cached_df', pd.DataFrame())
 
         try:
             ipaddr = ip_address(addr)
@@ -109,9 +112,10 @@ class RoutesObj(SqEngineObject):
             if 'prefixlen' not in cols:
                 cols.insert(-1, 'prefixlen')
 
-        rslt = pd.DataFrame(cols)
+        rslt = pd.DataFrame()
 
-        df = self.get(ipvers=str(ipvers), columns=cols, **kwargs)
+        if df.empty:
+            df = self.get(ipvers=str(ipvers), columns=cols, **kwargs)
 
         if df.empty:
             return df
@@ -142,9 +146,10 @@ class RoutesObj(SqEngineObject):
                         max_plens[key] = rtentry.prefixlen
                         selected_entries[key] = row
             if selected_entries:
-                rslt = pd.DataFrame(list(selected_entries.values()))
+                rslt = pd.DataFrame(list(selected_entries.values())) \
+                         .drop(columns=['Index'], errors='ignore')
             else:
-                rslt = pd.DataFrame(cols)
+                rslt = pd.DataFrame()
 
         if 'prefixlen' not in cols:
             return rslt.drop(columns=['prefixlen'], errors='ignore')
