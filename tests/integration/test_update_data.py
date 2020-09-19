@@ -180,7 +180,7 @@ def git_del_dir(dir):
 
 def update_sqcmds(files, data_dir=None, namespace=None):
     for file in files:
-        cmd = ['python3', UPDATE_SQCMDS, '-i', file, '-o']
+        cmd = ['python3', UPDATE_SQCMDS, '-f', file, '-o']
         if data_dir:
             cmd += ['-d', data_dir]
         if namespace:
@@ -225,6 +225,7 @@ class TestUpdate:
 
     @pytest.mark.test_update
     @pytest.mark.update_data
+    @pytest.mark.cumulus
     @pytest.mark.skipif(not os.environ.get('SUZIEQ_POLLER', None),
                         reason='Not updating data')
     def test_update_cumulus_multidc_data(self, tmp_path):
@@ -253,10 +254,12 @@ class TestUpdate:
 
         # update the samples data with updates from the newly collected data
 
-        update_sqcmds(glob.glob(f'{sqcmds_dir}/cumulus-samples/*.yml'))
+        if os.environ.get('SUZIEQ_POLLER', None) != 'data':
+            update_sqcmds(glob.glob(f'{sqcmds_dir}/cumulus-samples/*.yml'))
 
     @pytest.mark.test_update
     @pytest.mark.update_data
+    @pytest.mark.eos
     @pytest.mark.skipif(not os.environ.get('SUZIEQ_POLLER', None),
                         reason='Not updating data')
     def test_update_eos_data(self, tmp_path):
@@ -273,10 +276,12 @@ class TestUpdate:
 
         # update the samples data with updates from the newly collected data
 
-        update_sqcmds(glob.glob(f'{sqcmds_dir}/{nos}-samples/*.yml'))
+        if os.environ.get('SUZIEQ_POLLER', None) != 'data':
+            update_sqcmds(glob.glob(f'{sqcmds_dir}/{nos}-samples/*.yml'))
 
     @pytest.mark.test_update
     @pytest.mark.update_data
+    @pytest.mark.nxos
     @pytest.mark.skipif(not os.environ.get('SUZIEQ_POLLER', None),
                         reason='Not updating data')
     def test_update_nxos_data(self, tmp_path):
@@ -293,10 +298,12 @@ class TestUpdate:
 
         # update the samples data with updates from the newly collected data
 
-        update_sqcmds(glob.glob(f'{sqcmds_dir}/{nos}-samples/*.yml'))
+        if os.environ.get('SUZIEQ_POLLER', None) != 'data':
+            update_sqcmds(glob.glob(f'{sqcmds_dir}/{nos}-samples/*.yml'))
 
     @pytest.mark.test_update
     @pytest.mark.update_data
+    @pytest.mark.junos
     @pytest.mark.skipif(not os.environ.get('SUZIEQ_POLLER', None),
                         reason='Not updating data')
     def test_update_junos_data(self, tmp_path):
@@ -313,7 +320,8 @@ class TestUpdate:
 
         # update the samples data with updates from the newly collected data
 
-        update_sqcmds(glob.glob(f'{sqcmds_dir}/{nos}-samples/*.yml'))
+        if os.environ.get('SUZIEQ_POLLER', None) != 'data':
+            update_sqcmds(glob.glob(f'{sqcmds_dir}/{nos}-samples/*.yml'))
 
 
 tests = [
