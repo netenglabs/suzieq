@@ -88,7 +88,7 @@ class EvpnvniObj(SqEngineObject):
         l3vni_count = self.summary_df.query('type == "L3"').groupby(
             by=['namespace'])['vni'].count()
         for ns in self.ns.keys():
-            if l3vni_count[ns]:
+            if l3vni_count.get(ns, 0):
                 self.ns[ns]['mode'] = 'symmetric'
             else:
                 self.ns[ns]['mode'] = 'asymmetric'
@@ -171,8 +171,12 @@ class EvpnvniObj(SqEngineObject):
         if (not her_df.empty and
                 (her_df.remoteVtepList.str.len() != 0).any()):
             # Check if every VTEP we know is reachable
-            self._routes_df = RoutesObj(context=self.ctxt).get(
+            rdf = RoutesObj(context=self.ctxt).get(
                 namespace=kwargs.get('namespace'), vrf='default')
+            if not rdf.empty:
+                rdf['prefixlen'] = rdf['prefix'].str.split('/') \
+                                                    .str[1].astype('int')
+            self._routes_df = rdf
 
             her_df["assertReason"] += her_df.apply(
                 self._is_vtep_reachable, axis=1)
@@ -265,17 +269,16 @@ class EvpnvniObj(SqEngineObject):
             # data repeatedly. The time for asserting the state of 500 VNIs
             # came down from 194s to 4s with the below piece of code instead
             # of invoking route's lpm to accomplish the task.
-            route = self._routes_df \
-                .query('hostname == "{}" and namespace == "{}"'
-                       .format(row['hostname'], row['namespace'])) \
-                .query("prefix.ipnet.supernet_of('{}')"
-                       .format(vtep))['prefix'] \
-                .max()
+            cached_df = self._routes_df \
+                            .query(f'namespace=="{row.namespace}" and hostname=="{row.hostname}"')
+            route = RoutesObj(context=self.ctxt).lpm(vrf='default',
+                                                     address=vtep,
+                                                     cached_df=cached_df)
 
-            if not route:
+            if route.empty:
                 reason += [f"{vtep} not reachable"]
                 continue
-            if route == defrt:
+            if route.prefix.tolist() == [defrt]:
                 reason += [f"{vtep} reachable via default"]
 
         return reason
