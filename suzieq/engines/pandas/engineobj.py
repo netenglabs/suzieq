@@ -51,6 +51,11 @@ class SqEngineObject(object):
             addnl_fields.append('active')
             drop_cols.append('active')
 
+        for fld in key_fields:
+            if fld not in fields:
+                addnl_fields.insert(0, fld)
+                drop_cols.append(fld)
+
         for f in addnl_fields:
             if f not in fields:
                 # timestamp is always the last field
@@ -123,7 +128,7 @@ class SqEngineObject(object):
            - creates self.summary_df, which is the initial pandas dataframe
              based on the table
            - creates self.nsgrp of data grouped by namespace
-           - self.ns is the dict to add data to which will be turned into a 
+           - self.ns is the dict to add data to which will be turned into a
              dataframe and then returned
 
         if you want to simply take a field and run a pandas functon, then use
@@ -165,10 +170,14 @@ class SqEngineObject(object):
                 func = 'count'
             fld_df = self.summary_df.query(query_str)
             if not fld_df.empty:
-                fld_per_ns = fld_df.groupby(by=['namespace'])[field] \
-                                   .agg(func)
+                fld_per_ns = fld_df.groupby(by=['namespace'],
+                                            observed=True)[field] \
+                    .agg(func)
                 for i in self.ns.keys():
-                    self.ns[i].update({field_name: fld_per_ns[i]})
+                    if i in fld_per_ns:
+                        self.ns[i].update({field_name: fld_per_ns[i]})
+                    else:
+                        self.ns[i].update({field_name: 0})
             else:
                 for i in self.ns.keys():
                     self.ns[i].update({field_name: 0})
@@ -182,9 +191,11 @@ class SqEngineObject(object):
         for field_name, query_str, field in self._summarize_on_add_stat:
             if query_str:
                 statfld = self.summary_df.query(query_str) \
-                                         .groupby(by=['namespace'])[field]
+                                         .groupby(by=['namespace'],
+                                                  observed=True)[field]
             else:
-                statfld = self.summary_df.groupby(by=['namespace'])[field]
+                statfld = self.summary_df.groupby(
+                    by=['namespace'], observed=True)[field]
 
             self._add_stats_to_summary(statfld, field_name)
             self.summary_row_order.append(field_name)
@@ -194,11 +205,11 @@ class SqEngineObject(object):
             if query_str:
                 statfld = self.summary_df \
                               .query(query_str) \
-                              .groupby(by=['namespace', 'hostname'])[field] \
+                              .groupby(by=['namespace', 'hostname'], observed=True)[field] \
                               .agg(func)
             else:
                 statfld = self.summary_df \
-                              .groupby(by=['namespace', 'hostname'])[field] \
+                              .groupby(by=['namespace', 'hostname'], observed=True)[field] \
                               .agg(func)
 
             self._add_stats_to_summary(statfld, field_name, filter_by_ns=True)
@@ -234,22 +245,27 @@ class SqEngineObject(object):
 
         if groupby:
             if type == 'host' and 'hostname' not in groupby:
-                grp = df.groupby(by=groupby.split() + ['hostname', column])
+                grp = df.groupby(by=groupby.split() +
+                                 ['hostname', column], observed=True)
                 grpkeys = list(grp.groups.keys())
                 gdict = {}
                 for i, g in enumerate(groupby.split() + ['hostname', column]):
                     gdict[g] = [x[i] for x in grpkeys]
-                r = pd.DataFrame(gdict).groupby(by=groupby.split())[column] \
+                r = pd.DataFrame(gdict).groupby(by=groupby.split(),
+                                                observed=True)[column] \
                     .value_counts()
                 return (pd.DataFrame({'count': r})
                           .reset_index())
 
             else:
-                r = df.groupby(by=groupby.split())[column].value_counts()
+                r = df.groupby(by=groupby.split(), observed=True)[column] \
+                      .value_counts()
                 return pd.DataFrame({'count': r}).reset_index()
         else:
             if type == 'host' and column != 'hostname':
-                r = df.groupby('hostname').first()[column].value_counts()
+                r = df.groupby('hostname', observed=True) \
+                      .first()[column] \
+                      .value_counts()
             else:
                 r = df[column].value_counts()
 
@@ -373,8 +389,11 @@ class SqEngineObject(object):
             med_field = groupedby.median(numeric_only=False)
 
             {self.ns[i][fieldname].append(min_field[i])
+             if i in min_field else self.ns[i][fieldname].append(0)
              for i in self.ns.keys()}
             {self.ns[i][fieldname].append(max_field[i])
+             if i in max_field else self.ns[i][fieldname].append(0)
              for i in self.ns.keys()}
             {self.ns[i][fieldname].append(med_field[i])
+             if i in med_field else self.ns[i][fieldname].append(0)
              for i in self.ns.keys()}
