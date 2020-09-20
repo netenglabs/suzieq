@@ -11,16 +11,21 @@ The way to update these files is use tests/utilities/update_data.py
 ## update test data for sqcmds
 
 The test data in tests/data is used by all the tests in tests_sqcmds:test_sqcmds.
-It needs to get updated from time to time, especially as we change
-data that the poller collects.
+It needs to get updated from time to time, especially as we change data that the poller collects.
 
-to generate the updated the test data, go to the root suzieq directory
+To generate only the updated the test data, but not the tests themselves, go to the root suzieq directory and type:
 
+```bash
+SUZIEQ_POLLER=data pytest -m update_data -n4
+```
+
+This uses the data that has been gathered in the various input directories under ```tests/integration/sqcmds/*-input/``` to produce parquet data to be analyzed.
+
+If you instead use:
 ```bash
 SUZIEQ_POLLER=true pytest -m update_data -n4
 ```
-
-This uses the data that has been gathered to produce parquet data to be analyzed.
+you can update both the data and the tests (the files under ```tests/integration/sqcmds/*-samples/```.
 
 This both updates the data and is actually a test. When it updates the sqcmds/samples data
 it checks to see that the data returned is the same type as before and if not, will fail. In other words, if what was previously
