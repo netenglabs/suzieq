@@ -39,6 +39,7 @@ class SqEngineObject(object):
         columns = kwargs.pop('columns', ['default'])
         addnl_fields = kwargs.pop('addnl_fields', [])
         view = kwargs.pop('view', self.iobj.view)
+        active_only = kwargs.pop('active_only', True)
 
         fields = sch.get_display_fields(columns)
         key_fields = sch.key_fields()
@@ -47,12 +48,12 @@ class SqEngineObject(object):
         if 'timestamp' not in fields:
             fields.append('timestamp')
 
-        if 'active' not in fields:
+        if 'active' not in fields+addnl_fields:
             addnl_fields.append('active')
             drop_cols.append('active')
 
         for fld in key_fields:
-            if fld not in fields:
+            if fld not in fields+addnl_fields:
                 addnl_fields.insert(0, fld)
                 drop_cols.append(fld)
 
@@ -81,9 +82,14 @@ class SqEngineObject(object):
         )
 
         if not table_df.empty:
-            table_df.drop(columns=drop_cols, inplace=True)
-            table_df['timestamp'] = pd.to_datetime(
-                table_df.timestamp.astype(str), unit="ms")
+            if view == 'latest' and active_only:
+                table_df = table_df.query('active') \
+                                   .drop(columns=drop_cols)
+            else:
+                table_df.drop(columns=drop_cols, inplace=True)
+            if 'timestamp' in table_df.columns:
+                table_df['timestamp'] = pd.to_datetime(
+                    table_df.timestamp.astype(str), unit="ms")
 
         return table_df
 
@@ -191,8 +197,8 @@ class SqEngineObject(object):
         for field_name, query_str, field in self._summarize_on_add_stat:
             if query_str:
                 statfld = self.summary_df.query(query_str) \
-                                         .groupby(by=['namespace'],
-                                                  observed=True)[field]
+                    .groupby(by=['namespace'],
+                             observed=True)[field]
             else:
                 statfld = self.summary_df.groupby(
                     by=['namespace'], observed=True)[field]
@@ -204,13 +210,13 @@ class SqEngineObject(object):
                 self._summarize_on_perdevice_stat:
             if query_str:
                 statfld = self.summary_df \
-                              .query(query_str) \
-                              .groupby(by=['namespace', 'hostname'], observed=True)[field] \
-                              .agg(func)
+                    .query(query_str) \
+                    .groupby(by=['namespace', 'hostname'], observed=True)[field] \
+                    .agg(func)
             else:
                 statfld = self.summary_df \
-                              .groupby(by=['namespace', 'hostname'], observed=True)[field] \
-                              .agg(func)
+                    .groupby(by=['namespace', 'hostname'], observed=True)[field] \
+                    .agg(func)
 
             self._add_stats_to_summary(statfld, field_name, filter_by_ns=True)
             self.summary_row_order.append(field_name)
@@ -259,13 +265,13 @@ class SqEngineObject(object):
 
             else:
                 r = df.groupby(by=groupby.split(), observed=True)[column] \
-                      .value_counts()
+                    .value_counts()
                 return pd.DataFrame({'count': r}).reset_index()
         else:
             if type == 'host' and column != 'hostname':
                 r = df.groupby('hostname', observed=True) \
-                      .first()[column] \
-                      .value_counts()
+                    .first()[column] \
+                    .value_counts()
             else:
                 r = df[column].value_counts()
 

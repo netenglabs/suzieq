@@ -303,11 +303,18 @@ def _test_sqcmds(testvar, context_config):
             assert True
     elif error and 'error' in testvar and 'error' in testvar['error']:
         try:
-            jerror = json.loads(error.decode('utf-8').strip())
+            got_df = pd.DataFrame(json.loads(error.decode('utf-8').strip()))
         except json.JSONDecodeError:
-            jerror = error.decode('utf-8').strip()
-        jterror = json.loads(testvar['error']['error'])
-        assert jerror == jterror
+            got_df = pd.DataFrame(error.decode('utf-8').strip())
+        expected_df = pd.DataFrame(json.loads(testvar['error']['error']))
+        rslt_df = pd.merge(got_df.reset_index(drop=True),
+                           expected_df.reset_index(drop=True),
+                           left_index=True, right_index=True, how='outer',
+                           indicator=True)
+        assert(got_df.shape == expected_df.shape)
+        if not got_df.empty:
+            assert(not rslt_df.empty and rslt_df.query(
+                '_merge != "both"').empty)
     else:
         raise Exception(f"either xfail or output requried {error}")
 

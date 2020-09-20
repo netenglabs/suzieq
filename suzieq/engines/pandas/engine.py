@@ -84,11 +84,8 @@ class SqPandasEngine(SqEngine):
             if (not final_df.empty and (view == 'latest') and
                     all(x in final_df.columns for x in key_fields)):
                 final_df = final_df.set_index(key_fields) \
-                    .query('~index.duplicated(keep="last")') \
-                    .query('active==True') \
-                    .reset_index()
-            elif not final_df.empty:
-                final_df = final_df.query('active == True') \
+                                   .sort_values(by='timestamp') \
+                                   .query('~index.duplicated(keep="last")') \
                                    .reset_index()
         except (pa.lib.ArrowInvalid, OSError):
             return pd.DataFrame(columns=fields)
