@@ -61,7 +61,7 @@ apply:
         ]'
       - command: "show system uptime | display json"
         normalize: 'multi-routing-engine-results/[0]/multi-routing-engine-item/[0]/system-uptime-information/*/[
-        "system-booted-time/[0]/time-length/[0]/data: bootupTimestamp"
+        "system-booted-time/[0]/time-length/[0]/attributes: bootupTimestamp?|0"
         ]'
 
   junos-mx:
@@ -76,6 +76,6 @@ apply:
         ]'
       - command: "show system uptime | display json"
         normalize: 'system-uptime-information/*/[
-        "system-booted-time/[0]/time-length/[0]/data: bootupTimestamp"
+        "system-booted-time/[0]/time-length/[0]/attributes: bootupTimestamp?|0"
         ]'
         
