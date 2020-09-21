@@ -2,6 +2,7 @@
 
 import sys
 import shlex
+import yaml
 
 
 def process_ansible_inventory(filename, namespace='default'):
@@ -62,12 +63,79 @@ def process_ansible_inventory(filename, namespace='default'):
     return hostsdata
 
 
+def convert_ansible_inventory(filename: str, namespace: str = 'default'):
+    """Converts the output of ansible-inventory command for processing.
+
+    Ansible pulls together the inventory information from multiple files. The
+    information relevant to sq-poller maybe present in different files as
+    different vars. ansible-invenoty command luckily handles this for us. This
+    function takes the JSON output of that command and gathers the data needed
+    to start polling.
+
+    Parameters
+    ----------
+    :pararm filename: file containing the output of ansible-inventory output
+    :type filename" string
+
+    :param namespace: namespace associated with this inventory
+    :type namespace: string
+
+    Returns
+    -------
+    :rtype: list
+    :return: List of devices and the related info to connect
+    """
+
+    try:
+        with open(filename, 'r') as f:
+            inventory = yaml.safe_load(f)
+    except Exception as error:
+        print(f':ERROR: Unable to process Ansible inventory: {str(error)}')
+        sys.exit(1)
+
+    if '_meta' not in inventory or "hostvars" not in inventory['_meta']:
+        if isinstance(inventory, list) and 'namespace' in inventory[0]:
+            print("ERROR: Invalid Ansible inventory, found Suzieq inventory, "
+                  "use -D option")
+        else:
+            print("ERROR: Invalid Ansible inventory, "
+                  "missing keys: _meta and / or hostvars")
+        sys.exit(1)
+
+    in_hosts = inventory['_meta']['hostvars']
+    out_hosts = []
+    for host in in_hosts:
+        entry = in_hosts[host]
+        addnl_info = ''
+
+        if entry.get('ansible_network_os', '') == 'eos':
+            transport = 'https://'
+            addnl_info = 'devtype=eos'
+        else:
+            transport = 'ssh://'
+
+        url = (f'{transport}{entry["ansible_user"]}@{entry["ansible_host"]}'
+               f':{entry["ansible_port"]}')
+        keyfile = entry.get('ansible_ssh_private_key_file', '')
+        if keyfile:
+            hostline = f'    - url: {url} keyfile={keyfile} {addnl_info}'
+        else:
+            hostline = f'    -  {url} {addnl_info}'
+
+        out_hosts.append(hostline)
+
+    out_hosts.insert(0, '- namespace: {}'.format(namespace))
+    out_hosts.insert(1, '  hosts:')
+
+    return out_hosts
+
+
 if __name__ == '__main__':
     if len(sys.argv) < 4:
         print('Usage: genhosts <Ansible inventory file> <output file> <DC name>')
         sys.exit(1)
 
-    hostsdata = process_ansible_inventory(sys.argv[1], sys.argv[3])
+    hostsdata = convert_ansible_inventory(sys.argv[1], sys.argv[3])
 
     out = '\n'.join(hostsdata)
 

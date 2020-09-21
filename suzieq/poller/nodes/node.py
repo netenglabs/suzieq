@@ -19,7 +19,7 @@ from asyncio.subprocess import PIPE
 from concurrent.futures._base import TimeoutError
 
 from suzieq.poller.services.service import RsltToken
-from suzieq.poller.genhosts import process_ansible_inventory
+from suzieq.poller.genhosts import convert_ansible_inventory
 from suzieq.utils import get_timestamp_from_junos_time, known_devtypes
 
 logger = logging.getLogger(__name__)
@@ -29,22 +29,40 @@ def get_hostsdata_from_hostsfile(hosts_file) -> dict:
     """Read the suzieq devices file and return the data from the file"""
 
     if not os.path.isfile(hosts_file):
-        logger.error("hosts config must be a file")
-        print("hosts config must be a file")
+        logger.error(f"Suzieq inventory {hosts_file} must be a file")
+        print(f"ERROR: Suzieq inventory {hosts_file} must be a file")
         sys.exit(1)
 
     if not os.access(hosts_file, os.R_OK):
-        logger.error("hosts config file is not readable: {}", hosts_file)
-        print("hosts config file is not readable: {}", hosts_file)
+        logger.error("Suzieq inventory file is not readable: {}", hosts_file)
+        print("ERROR: hosts Suzieq inventory file is not readable: {}",
+              hosts_file)
         sys.exit(1)
 
     with open(hosts_file, "r") as f:
         try:
-            hostsconf = yaml.safe_load(f.read())
+            data = f.read()
+            hostsconf = yaml.safe_load(data)
         except Exception as e:
-            logger.error("Invalid hosts config file:{}", e)
-            print("Invalid hosts config file:{}", e)
+            logger.error("Invalid Suzieq inventory file:{}", e)
+            print("Invalid Suzieq inventory file:{}", e)
             sys.exit(1)
+
+    if not isinstance(hostsconf, list):
+        if '_meta' in hostsconf.keys():
+            logger.error("Invalid Suzieq inventory format, Ansible format??"
+                         " Use -a instead of -D with inventory")
+            print("ERROR: Invalid Suzieq inventory format, Ansible format??"
+                  " Use -a instead of -D with inventory")
+        else:
+            logger.error("Invalid Suzieq inventory file:{}")
+            print("ERROR: Invalid hosts Suzieq inventory file:{}")
+        sys.exit(1)
+
+    if any(x not in hostsconf.keys() for x in ['namespace', 'hosts']):
+        logger.error("Invalid inventory:{}, no namespace/hosts sections")
+        print("ERROR: Invalid inventory:{}, no namespace/hosts sections")
+        sys.exit(1)
 
     return hostsconf
 
@@ -76,11 +94,12 @@ async def init_hosts(**kwargs):
     if inventory:
         hostsconf = get_hostsdata_from_hostsfile(inventory)
     else:
-        hostlines = process_ansible_inventory(ans_inventory, namespace)
-        hostsconf = yaml.safe_load('\n'.join(hostlines))
+        hostsconf = yaml.safe_load('\n'.join(
+            convert_ansible_inventory(ans_inventory, namespace)))
 
     if not hostsconf:
-        print("ERROR: No hosts specified via hosts or ansible inventory file")
+        logger.error("No hosts specified in inventory file")
+        print("ERROR: No hosts specified in inventory file")
         sys.exit(1)
 
     for namespace in hostsconf:
@@ -296,7 +315,7 @@ class Node(object):
             self.__class__ = JunosNode
         elif self.devtype == "nxos":
             self.__class__ = NxosNode
-        elif self.devtype.startswith ("sonic"):
+        elif self.devtype.startswith("sonic"):
             self.__class__ == SonicNode
 
     async def get_device_type_hostname(self):
@@ -888,14 +907,12 @@ class JunosNode(Node):
 
     async def _parse_boottime_hostname(self, output, cb_token) -> None:
         """Parse the uptime command output"""
-
         if output[0]["status"] == 0:
             data = output[0]["data"]
             bootts = re.search(r'\nSystem booted:.*\((.+) ago\)', data)
             if bootts:
                 self.bootupTimestamp = get_timestamp_from_junos_time(
                     bootts.group(1), output[0]['timestamp']/1000)
-
         if output[1]["status"] == 0:
             data = output[0]["data"]
             hmatch = re.search(r'\nHostname:\s+(\S+)\n', data)
@@ -945,5 +962,3 @@ class SonicNode(Node):
                                        - float(upsecs)*1000)
         if output[1]["status"] == 0:
             self.hostname = output[1]["data"].strip()
-
-
