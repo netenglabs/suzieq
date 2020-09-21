@@ -231,5 +231,5 @@ class SqPandasEngine(SqEngine):
                 if not tables:
                     tables = set(tlist)
                 else:
-                    tables.intersection(tlist)
+                    tables.update(tlist)
         return list(tables)

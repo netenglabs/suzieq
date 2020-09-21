@@ -33,7 +33,8 @@ class TablesObj(SqObject):
                 table_obj = eobj(self)
                 info = {'table': table}
                 info.update(table_obj.get_table_info(
-                    table, columns="", **kwargs))
+                    table, columns=['namespace', 'hostname', 'timestamp'],
+                    **kwargs))
                 tables[i] = info
 
             if unknown_tables:
@@ -45,9 +46,12 @@ class TablesObj(SqObject):
             df = pd.DataFrame.from_dict(tables)
             df = df.sort_values(by=['table']).reset_index(drop=True)
             cols = df.columns
-            total = pd.DataFrame([['TOTAL',  df['first_time'].min(), df['latest_time'].max(),
+            total = pd.DataFrame([['TOTAL',  df['first_time'].min(),
+                                   df['latest_time'].max(),
                                    df['intervals'].max(),
-                                   df['all rows'].sum(), df['namespaces'].max(), df['devices'].max()]],
+                                   df['all rows'].sum(),
+                                   df['namespaces'].max(),
+                                   df['devices'].max()]],
                                  columns=cols)
             df = df.append(total, ignore_index=True).dropna()
         return df
@@ -66,7 +70,8 @@ class TablesObj(SqObject):
                 {'error': [f'ERROR: incorrect table name {table}']})
             return df
 
-        entries = [{'name': x['name'], 'type': x['type'], 'key': x.get('key', ''),
+        entries = [{'name': x['name'], 'type': x['type'],
+                    'key': x.get('key', ''),
                     'display': x.get('display', ''),
                     'description': x.get('description', '')}
                    for x in sch.get_raw_schema()]
