@@ -6,6 +6,7 @@ import os
 import argparse
 import asyncio
 import logging
+from logging.handlers import RotatingFileHandler
 from pathlib import Path
 from collections import defaultdict
 import getpass
@@ -51,7 +52,8 @@ def init_logger():
     # this needs to be suzieq.poller, so that it is the root of all the other pollers
     logger = logging.getLogger('suzieq.poller')
     logger.setLevel(cfg.get("logging-level", "WARNING").upper())
-    fh = logging.FileHandler(cfg.get("log-file", "/tmp/sq-poller.log"))
+    fh = RotatingFileHandler(cfg.get("log-file", "/tmp/sq-poller.log"),
+                             maxBytes=10000000, backupCount=2)
     formatter = logging.Formatter(
         "%(asctime)s - %(name)s - %(levelname)s " "- %(message)s"
     )
