@@ -211,11 +211,9 @@ class SqPandasEngine(SqEngine):
         if not getattr(self, 'cfg', None):
             self.cfg = cfg
         dfolder = self.cfg['data-directory']
-        if not dfolder.endswith('/'):
-            dfolder = dfolder+'/'
-
         tables = set()
         if dfolder:
+            dfolder = os.path.abspath(dfolder) + '/'
             p = Path(dfolder)
             namespaces = kwargs.get('namespace', [])
             if not namespaces:
