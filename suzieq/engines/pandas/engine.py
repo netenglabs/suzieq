@@ -218,7 +218,12 @@ class SqPandasEngine(SqEngine):
         if dfolder:
             p = Path(dfolder)
             namespaces = kwargs.get('namespace', [])
-            for dc in namespaces:
+            if not namespaces:
+                ns = set([x.parts[-1].split('=')[1]
+                          for x in p.glob('**/namespace=*')])
+            else:
+                ns = set(namespaces)
+            for dc in ns:
                 dirlist = p.glob(f'**/namespace={dc}')
                 tlist = [str(x).split(z)[1].split('/')[0]
                          for x, z in list(zip_longest(dirlist, [dfolder],
