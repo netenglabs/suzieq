@@ -3,6 +3,7 @@ import logging
 from pathlib import Path
 from importlib import import_module
 import pyarrow.dataset as ds
+from itertools import zip_longest
 
 import pandas as pd
 import pyarrow.parquet as pa
@@ -210,16 +211,20 @@ class SqPandasEngine(SqEngine):
         if not getattr(self, 'cfg', None):
             self.cfg = cfg
         dfolder = self.cfg['data-directory']
+        if not dfolder.endswith('/'):
+            dfolder = dfolder+'/'
 
-        tables = []
+        tables = set()
         if dfolder:
             p = Path(dfolder)
-            tables = [dir.parts[-1] for dir in p.iterdir()
-                      if dir.is_dir() and not dir.parts[-1].startswith('_')]
             namespaces = kwargs.get('namespace', [])
             for dc in namespaces:
-                tables = list(filter(
-                    lambda x: os.path.exists('{}/{}/namespace={}'.format(
-                        dfolder, x, dc)), tables))
-
-        return tables
+                dirlist = p.glob(f'**/namespace={dc}')
+                tlist = [str(x).split(z)[1].split('/')[0]
+                         for x, z in list(zip_longest(dirlist, [dfolder],
+                                                      fillvalue=dfolder))]
+                if not tables:
+                    tables = set(tlist)
+                else:
+                    tables.intersection(tlist)
+        return list(tables)
