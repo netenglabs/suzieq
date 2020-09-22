@@ -379,15 +379,19 @@ class SqEngineObject(object):
             self.ns[n].update({field_name: value})
 
     def _add_stats_to_summary(self, groupedby, fieldname, filter_by_ns=False):
-        """ takes the pandas groupby object and adds min, max, and median to self.ns"""
+        """Takes grouped stats and adds min, max, and median to stats"""
 
         {self.ns[i].update({fieldname: []}) for i in self.ns.keys()}
         if filter_by_ns:
             {self.ns[i][fieldname].append(groupedby[i].min())
+             if i in groupedby else self.ns[i][fieldname].append(0)
              for i in self.ns.keys()}
             {self.ns[i][fieldname].append(groupedby[i].max())
+             if i in groupedby else self.ns[i][fieldname].append(0)
              for i in self.ns.keys()}
-            {self.ns[i][fieldname].append(groupedby[i].median(numeric_only=False))
+            {self.ns[i][fieldname].append(
+                groupedby[i].median(numeric_only=False))
+             if i in groupedby else self.ns[i][fieldname].append(0)
              for i in self.ns.keys()}
         else:
             min_field = groupedby.min()
