@@ -59,10 +59,11 @@ def get_hostsdata_from_hostsfile(hosts_file) -> dict:
             print("ERROR: Invalid hosts Suzieq inventory file:{}")
         sys.exit(1)
 
-    if any(x not in hostsconf.keys() for x in ['namespace', 'hosts']):
-        logger.error("Invalid inventory:{}, no namespace/hosts sections")
-        print("ERROR: Invalid inventory:{}, no namespace/hosts sections")
-        sys.exit(1)
+    for conf in hostsconf:
+        if any(x not in conf.keys() for x in ['namespace', 'hosts']):
+            logger.error("Invalid inventory:{}, no namespace/hosts sections")
+            print("ERROR: Invalid inventory:{}, no namespace/hosts sections")
+            sys.exit(1)
 
     return hostsconf
 
