@@ -16,7 +16,7 @@ bad_verbs = {'address/assert': 404, 'address/lpm': 404,
              'arpnd/assert': 404, 'arpnd/lpm': 404,
              'bgp/lpm': 404,
              'device/assert': 404, 'device/lpm': 404,
-             'evpn/lpm': 404,
+             'evpnVni/lpm': 404,
              'interface/lpm': 404,
              'lldp/assert': 404, 'lldp/lpm': 404,               
              'mac/assert': 404, 'mac/lpm': 404,
@@ -33,7 +33,6 @@ bad_filters = {'lpm?hostname=leaf01':404,
                'path/show?': 404, 'path/show?hostname=leaf01': 404, 'path/show?namespace=dual-bgp': 404,
                'path/show?address=10.0.0.1': 404,
                'route/lpm?': 404, 'route/lpm?hostname=leaf01': 404, 'route/lpm?namespace=dual-bgp': 404,
-               'route/show?': 404,
                }
 
 def get(endpoint, command, verb, args):
