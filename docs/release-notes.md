@@ -1,5 +1,24 @@
 ## Release Notes
 
+## 0.5 (Sep 22, 2020)
+
+This is a release with some major structural changes, and support for SONIC NOS.
+
+* Support for SONIC NOS, thanks largely to Senthil Ganesan from Dell, with some additional assistance from Andrea Florio.
+* Improved performance based on modified partitioning, and improved algorithms:
+  * Read/Write Parquet uses the new dataset API
+  - Improved predicate pushdown support with new dataset API for improved IO efficiency
+  * We use vectorization and itertuples to support full Internet routing table with good performance
+  * Row group size of 100000 and the ZSTD compression for better compression and read/write performance
+* Schema evolution support. Now you won't need to throw away data with newer Suzieq releases. 
+* (Alpha) Migration tool to help with migrating old data to new format
+* Improved SSH security support including support for jumphosts, passphrase with private key, ssh config support. Thanks to Steve Dodd(idahood) for his help with testing and requesting the features.
+* Support for complex Ansible inventory to retrieve username/password etc. via the ansible-inventory command output
+* (Beta) Support for anonymizing data. At this time, it anonymizes hostnames, IP addresses and MAC addresses. It anonymizes the data gathered via --run-once=gather option of sq-poller, not the parquet data itself.
+* Improved support for JunOS timestamps that caused some unnecessary data gathering in various scenarios.
+* Improved and consistent support for filters based on '<, >, <=, >=, !=' including supporting these for filters that weren't supported before such as VLANs and MAC addresses
+* Bug fixes to path show to handle VRR interfaces (in Cumulus) correctly
+
 ## 0.4.1 (August 23, 2020)
 
 This is a hotfix release to fix the following two critical bugs in the 0.4 release:
