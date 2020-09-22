@@ -18,7 +18,7 @@ RUN poetry install --no-dev --no-root
 COPY ./config /suzieq/config
 COPY ./suzieq /root/.local/lib/python3.7/site-packages/suzieq
 COPY ./build/suzieq-cfg.yml /root/.suzieq/suzieq-cfg.yml
-#COPY ./parquet /suzieq/parquet
+# COPY ./parquet /suzieq/parquet
 
 WORKDIR /suzieq
 
@@ -30,5 +30,5 @@ ENTRYPOINT ["/bin/bash"]
 # USER 1001
 
 LABEL name=suzieq
-LABEL version=0.5-prerc
+LABEL version=0.5
 LABEL description="Network Observability Tool"
