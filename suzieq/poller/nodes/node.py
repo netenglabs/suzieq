@@ -903,16 +903,26 @@ class JunosNode(Node):
     async def init_boot_time(self):
         """Fill in the boot time of the node by running requisite cmd"""
         await self.exec_cmd(self._parse_boottime_hostname,
-                            ["show system uptime", "show version"], None)
+                            ["show system uptime|display json",
+                             "show version"], None)
 
     async def _parse_boottime_hostname(self, output, cb_token) -> None:
         """Parse the uptime command output"""
         if output[0]["status"] == 0:
             data = output[0]["data"]
-            bootts = re.search(r'\nSystem booted:.*\((.+) ago\)', data)
-            if bootts:
-                self.bootupTimestamp = get_timestamp_from_junos_time(
-                    bootts.group(1), output[0]['timestamp']/1000)
+            try:
+                jdata = json.loads(data.replace('\n', '').strip())
+                if self.devtype == 'junos-qfx':
+                    jdata = jdata['multi-routing-engine-results'][0]['multi-routing-engine-item'][0]
+
+                timestr = jdata['system-uptime-information'][0]['system-booted-time'][0]['time-length'][0]['attributes']
+            except Exception:
+                self.logger.warning(
+                    f'Unable to parse junos boot time from {data}')
+                timestr = '{"junos:seconds": "0"}'
+            self.bootupTimestamp = (get_timestamp_from_junos_time(
+                timestr, output[0]['timestamp']/1000)/1000)
+
         if output[1]["status"] == 0:
             data = output[0]["data"]
             hmatch = re.search(r'\nHostname:\s+(\S+)\n', data)
