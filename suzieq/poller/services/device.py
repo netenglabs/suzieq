@@ -1,5 +1,4 @@
 from suzieq.poller.services.service import Service
-from datetime import datetime
 from suzieq.utils import get_timestamp_from_junos_time
 
 
@@ -61,11 +60,8 @@ class DeviceService(Service):
     def _clean_junos_data(self, processed_data, raw_data):
 
         for entry in processed_data:
-            secs_col = entry.get('bootupTimestamp', {'junos:seconds': 0})
-            if secs_col:
-                upsecs = int(secs_col['junos:seconds'])
-                entry['bootupTimestamp'] = int(
-                    int(raw_data[0]["timestamp"])/1000 - upsecs)
+            entry['bootupTimestamp'] = get_timestamp_from_junos_time(
+                entry['bootupTimestamp'], int(raw_data[0]["timestamp"])/1000)/1000
 
         return self._common_data_cleaner(processed_data, raw_data)
 

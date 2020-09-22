@@ -264,7 +264,7 @@ apply:
       - command: show bgp summary | display json
         normalize: 'bgp-information/bgp-peer/*/[
         "peer-address/[0]/data: peer",
-        "elapsed-time/[0]/data: estdTime",
+        "elapsed-time/[0]/attributes: estdTime?|",
         "vrf: vrf?|default",
         "entry_type: _entryType?|summary",
         ]'

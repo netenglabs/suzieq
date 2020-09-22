@@ -165,21 +165,9 @@ class InterfaceService(Service):
             if entry['type']:
                 entry['type'] = entry['type'].lower()
 
-            if (entry['statusChangeTimestamp'] == 'Never' or
-                    entry['statusChangeTimestamp'] is None):
-                entry['statusChangeTimestamp'] = 0
-                # artificial field for comparison with previous poll result
-                entry["statusChangeTimestamp1"] = 0
-            else:
-                ts_str = re.match(r'.*\((.+) ago\)$',
-                                  entry['statusChangeTimestamp'])
-                ts1_str = re.match(r'^[^(]*',
-                                   entry['statusChangeTimestamp'])
-                ts = get_timestamp_from_junos_time(
-                    ts_str.group(1), raw_data[0]['timestamp']/1000)
-                entry['statusChangeTimestamp'] = int(ts)
-                # artificial field for comparison with previous poll result
-                entry["statusChangeTimestamp1"] = ts1_str
+            ts = get_timestamp_from_junos_time(
+                entry['statusChangeTimestamp'], raw_data[0]['timestamp']/1000)
+            entry['statusChangeTimestamp'] = int(ts)
 
             if entry['speed']:
                 if entry['speed'].endswith('mbps'):

@@ -34,12 +34,27 @@ def convert_dir(input_dir: str, output_dir: str, svcschema: SchemaForTable):
 
     # convert all dtypes to whatever is desired
     for column in df.columns:
-        df[column] = df[column].astype(arrow_schema.field(column)
-                                       .type.to_pandas_dtype())
+        if column in arrow_schema:
+            df[column] = df[column].astype(arrow_schema.field(column)
+                                           .type.to_pandas_dtype())
+
+    # If there's the original ifname saved up, then eliminate this unnecessary
+    # field as this model is no longer necessary
+
+    if 'origIfname' in df.columns:
+        if 'ifname' in df.columns:
+            df = df.drop(columns=['ifname']) \
+                   .rename(columns={'origIfname': 'ifname'})
+        elif 'oif' in df.columns:
+            df = df.drop(columns=['oif']) \
+                   .rename(columns={'origIfname': 'oif'})
 
     table = pa.Table.from_pandas(df, schema=arrow_schema,
                                  preserve_index=False)
     partition_cols = svcschema.get_partition_columns()
+
+    if 'norifcnReason' in df.columns:
+        df.rename({'notifcnReason': 'notificnReason'}, inplace=True)
 
     pq.write_to_dataset(
         table,

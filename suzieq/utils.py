@@ -433,34 +433,29 @@ def get_timestamp_from_cisco_time(input, timestamp):
     return int((datetime.fromtimestamp(timestamp)-delta).timestamp()*1000)
 
 
-def get_timestamp_from_junos_time(input, timestamp):
+def get_timestamp_from_junos_time(input, timestamp: int):
     """Get timestamp in ms from the Junos-specific timestamp string
-    Examples of Cisco timestamp str are 00:00:23, 1d 09:24:36 etc
+    The expected input looks like: "attributes" : {"junos:seconds" : "0"}.
+    We don't check for format because we're assuming the input would be blank
+    if it wasn't the right format. The input can either be a dictionary or a
+    JSON string.
     """
 
-    days = 0
-    secs = 0
-    timestr = input
-
-    if 'y' in timestr:
-        years, timestr = input.split('w')
-        days += int(years)*365
-
-    if 'w' in timestr:
-        weeks, timestr = timestr.split('w')
-        days += int(weeks)*7
-
-    if 'd' in timestr:
-        d, timestr = timestr.split('d')
-        days += int(d)
-
-    hours, *rest = timestr.strip().split(':')
-    if len(rest) == 2:
-        mins, secs = rest
+    if not input:
+        # Happens for logical interfaces such as gr-0/0/0
+        secs = 0
     else:
-        mins = rest[0]
-    delta = relativedelta(days=days, hours=int(
-        hours), minutes=int(mins), seconds=int(secs))
+        try:
+            if isinstance(input, str):
+                data = json.loads(input)
+            else:
+                data = input
+            secs = int(data.get('junos:seconds', 0))
+        except Exception:
+            logger.warning(f'Unable to convert junos secs from {input}')
+            secs = 0
+
+    delta = relativedelta(seconds=int(secs))
     return int((datetime.fromtimestamp(timestamp)-delta).timestamp()*1000)
 
 
