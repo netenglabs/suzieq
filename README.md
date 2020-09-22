@@ -28,7 +28,7 @@ In this very early release of Suzieq, we've chosen some answers for the framewor
 * All the analysis are exposed either via a CLI or via Python objects. The output can be rendered in various formats from plain text to JSON and CSV.
 * The analysis engine used in this release is pandas.
 
-**We support gathering data from Cumulus, Arista, JunOS and NXOS routers, and Linux servers.** We gather:
+**We support gathering data from Arista EOS, Cisco's NXOS, Cumulus, JunOS, and SONIC routers, and Linux servers.** We gather:
 
 * Basic device info
 * Interfaces
@@ -49,7 +49,7 @@ We're also looking for collaborators to help us make Suzieq a truly useful multi
 
 ## Latest Release
 
-The latest release is 0.4.1 and the official release notes are [here](https://suzieq.readthedocs.io/en/latest/release-notes/).
+The latest release is 0.5.0 and the official release notes are [here](https://suzieq.readthedocs.io/en/latest/release-notes/).
 
 ## Quick Start
 
