@@ -1,9 +1,11 @@
 import pytest
 import os, shlex
-from subprocess import check_output, CalledProcessError
+import uvicorn
+from multiprocessing import Process
 import requests
 
 from tests.conftest import cli_commands, tables, setup_sqcmds
+from suzieq.server.restServer import app
 
 # TODO
 # launch uvicorn for localhost and test against it
@@ -70,9 +72,15 @@ FILTERS = ['', 'hostname=leaf01', 'namespace=dual-bgp',
     (cmd, verb, filter) for cmd in cli_commands \
                          for verb in VERBS for filter in FILTERS
 ])
-def test_rest_commands(setup_nubia, command, verb, arg):
+def test_rest_commands(setup_nubia, start_server, command, verb, arg):
     get(ENDPOINT, command, verb, arg)
             
+@pytest.fixture(scope="session")
+def start_server():
+    Process(target=uvicorn.run, 
+            args=(app,),
+            kwargs={'host': '0.0.0.0', 'port': 8000},
+            daemon=True).start()   
 
 def test_bad_rest():
     pass
