@@ -12,11 +12,34 @@ app = FastAPI()
 logging.FileHandler('/tmp/rest-server.log')
 logger = logging.getLogger(__name__)
 
+@app.get("/api/v1/path/{verb}")
+async def read_path(verb: str, namespace: str = "", start_time: str = "",
+                    end_time: str = "", src: str = "", dest: str = "",
+                    vrf: str  = "", view: str = 'latest'):
+    namespace = namespace.split()
+    if verb == 'show':
+        verb = 'get'
+    service_args = create_service_args('', start_time, end_time, view, namespace)
 
+    verb_args = {'namespace': namespace,
+                 'source': src,
+                 'dest': dest,
+                 'vrf': vrf}
+    svc = get_svc('path')
+    return run_service_verb(svc, verb, 'path', service_args, verb_args)                    
 
-#@app.get("/api/v1/route/lpm")
-#async def read_route_lpm():
+@app.get("/api/v1/route/lpm")
+async def read_route_lpm(address: str = "",
+                          hostname: str= "", start_time: str = "",
+                          end_time: str = "", view: str = "latest",
+                          namespace: str = "", ):
+    service_args = create_service_args(hostname, start_time, end_time, view, namespace)
 
+    verb_args = {'hostname': hostname,
+                 'namespace': namespace,
+                 'address': address}
+    svc = get_svc('route')
+    return run_service_verb(svc, 'lpm', 'route', service_args, verb_args)
 
 @app.get("/api/v1/{service}/{verb}")
 async def read_service(service: str, verb: str, hostname: str = "",
@@ -27,12 +50,8 @@ async def read_service(service: str, verb: str, hostname: str = "",
     if verb == 'assert':
         verb = 'aver'
 
+    service_args = create_service_args(hostname, start_time, end_time, view, namespace)
 
-    service_args = {'hostname': hostname,
-                    'start_time': start_time,
-                    'end_time': end_time,
-                    'view': view,
-                    'namespace': 'namespace'}
     verb_args = {'hostname': hostname,
                 'namespace': namespace}
     if verb == 'summarize':
@@ -41,6 +60,14 @@ async def read_service(service: str, verb: str, hostname: str = "",
     svc = get_svc(service)
 
     return run_service_verb(svc, verb, service, service_args, verb_args)
+
+def create_service_args(hostname, start_time, end_time, view, namespace):
+    service_args = {'hostname': hostname,
+                'start_time': start_time,
+                'end_time': end_time,
+                'view': view,
+                'namespace': namespace}
+    return service_args
 
 def get_svc(service):
     service_name = service
@@ -71,15 +98,17 @@ def run_service_verb(svc, verb, name, service_args, verb_args):
     
     except AttributeError as err:
         u = uuid.uuid1()
-        logger.warning(f"{verb} not supported for {name}: {err} id={u}")
+        msg = f"{verb} not supported for {name} or missing arguement: {err} id={u}"
+        logger.warning(msg)
         raise HTTPException(status_code=404, 
-                            detail=f"{verb} not supported for {name}: {err} id={u}")
+                            detail=msg)
     # TODO: why can't i catch NotImplemented? that's what I want here. 
     except Exception as err:
         u = uuid.uuid1()
-        logger.warning(f"exceptional exception {verb} for {name}: {err} id={u}")
+        msg = f"exceptional exception {verb} for {name}: {err} id={u}"
+        logger.warning(msg)
         raise HTTPException(status_code=404, 
-                            detail=f"exceptional exception {verb} for {name}: {err} id={u}")
+                            detail=msg)
 
 @app.get("/api/v1/{service}")
 def missing_verb(service):
