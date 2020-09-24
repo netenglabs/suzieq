@@ -2,6 +2,7 @@ import pytest
 import uvicorn
 from multiprocessing import Process
 import requests
+import time
 
 from tests.conftest import cli_commands, tables, setup_sqcmds
 from suzieq.server.restServer import app
@@ -76,6 +77,7 @@ def test_rest_commands(setup_nubia, start_server, command, verb, arg):
             
 @pytest.fixture(scope="session")
 def start_server():
+    time.sleep(0.3)
     Process(target=uvicorn.run, 
             args=(app,),
             kwargs={'host': '0.0.0.0', 'port': 8000},
