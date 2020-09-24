@@ -8,7 +8,7 @@ This is a release with some major structural changes, and support for SONIC NOS.
 * Improved performance based on modified partitioning, and improved algorithms:
   * Read/Write Parquet uses the new dataset API
   - Improved predicate pushdown support with new dataset API for improved IO efficiency
-  * We use vectorization and itertuples to support full Internet routing table with good performance
+  * We use vectorization and itertuples to support full Internet routing table with good performance. Thanks to Donald Sharp for this.
   * Row group size of 100000 and the ZSTD compression for better compression and read/write performance
 * Schema evolution support. Now you won't need to throw away data with newer Suzieq releases. 
 * (Alpha) Migration tool to help with migrating old data to new format
