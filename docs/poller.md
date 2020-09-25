@@ -4,14 +4,14 @@ The simplest way to run the poller is via the docker image.  Launch the docker i
 
 - ```docker run -itd -v /home/${USER}/parquet-out:/suzieq/parquet -v /home/${USER}/<ansible-inventory-file>:/suzieq/inventory --name sq-poller ddutt/suzieq:latest```
 - ```docker attach sq-poller```
-- ```sq-poller -i inventory -n <namespace>```
+- ```sq-poller -a inventory -n <namespace>```
 
 In the docker run command above, the two -v options provide host file/directory access to store the parquet output files (the first -v option), and the Ansible inventory file (the second -v option). If you don't use Ansible or don't want to provide that file, don't worry, you can still use the poller to gather data.
 
 The poller needs the list of the devices and their IP address to gather data from. This list can be supplied in one of two ways: 
 
 * via a Suzieq native YAML format file or 
-* via or an Ansible inventory file (supplied via the second -v option above, and available as file /suzieq/inventory inside the docker).
+* via or an Ansible inventory file (supplied via the second -v option above, and available as file /suzieq/inventory inside the docker). This file has to be the output of ```ansible-inventory --list``` command
 
 The Suzieq native inventory file format that contains the IP address, the access method (SSH or REST), the IP address of the node, the user name, the type of OS if using REST and the access token such as a private key file. The format looks as follows, for example:
 ```
@@ -43,9 +43,26 @@ There's a template in the docs directory called hosts-template.yml. You can copy
 Once you have either generated the hosts file or are using the Ansible inventory file, you can launch the poller inside the docker container using **one** of the following two options: 
 
 * If you're using the native YAML hosts file, use the -D option like this: `sq-poller -D eos`  or
-* if you're using the Ansible inventory format, use the -i and -n options like this: via `sq-poller -i /suzieq/inventory -n eos`. 
+* if you're using the Ansible inventory format, use the -a and -n options like this: via `sq-poller -a /suzieq/inventory -n eos`. 
 
 The poller creates a log file called /tmp/sq-poller.log. You can look at the file for errors. The output is stored in the parquet directory specified under /suzieq/parquet and visible in the host, outside the container, via the path specified during docker run above. 
+
+## <a name='ssh-options'></a>SSH Security Options
+
+If you're using SSH to connect to the devices (only Arista EOS uses the REST API), then there maybe various additional options you may want to specify to connect to the device. Here are the options supported by the poller:
+
+* Jumphost use
+  : You can use the -j option to specify connection via a jumphost. The parameter specified with -j has the format: ```//<username>@<jumphost>:<port>```. Jumphost support is via a private key file, with the same characteristics as the private key file to connect to the remote devices. For example, if you need to use a passphrase for the private key file to the device, you'll have to use the same passphrase to connect to the device as well.
+* Ignore host key authentication
+  : This is the equivalent of "StrictHostKeyChecking=no UserKnownHostsFile=/dev/null" ssh options. You can enable this via the -k command line option when starting sq-poller
+* Passphrase with Private Key File
+  : Some operators have a passphrase associated with the private key file, a more secure model. To enable sq-poller to prompt for this passphrase, use the "--passphrase" option. You'll be prompted for the password.
+* SSH Config file
+  : Some operators choose to put everything in the ssh config file and expect the SSH client to honor this configuration. You can specify the ssh config file via the  "--ssh-config-file" option. 
+
+## <a name='rest-security'></a>REST Security
+
+With REST API, the only supported authentication at present is username and password.
 
 ## <a name='gathering-data'></a>Gathering Data
 Two important concepts in the poller are Nodes and Services. Nodes are devices of some kind;
@@ -55,7 +72,7 @@ Service definitions describe how to get output from devices and then how to turn
 Currently Suzieq supports polling [Cumulus Linux](https://cumulusnetworks.com/),
 [Arista](https://www.arista.com/en/),
 [Nexus](https://www.cisco.com/c/en/us/products/switches/data-center-switches/index.html),
-and [Juniper](https://www.juniper.net) devices, as well as native Linux devices such as servers. Suzieq can easily support other device types, we just haven't had access to those and not time to chase them down.
+and [Juniper](https://www.juniper.net) and SONIC devices, as well as native Linux devices such as servers. Suzieq can easily support other device types, and we have third-party contributors working on other NOSes. Please let us know if you're interested in Suzieq supporting other NOSes.
 
 Suzieq started out with least common denominator SSH and REST access to devices.
 It doesn't much care about transport, we will use whatever gets the best data.
