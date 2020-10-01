@@ -3,11 +3,16 @@ from fastapi import FastAPI, HTTPException
 import logging 
 import uuid
 import uvicorn
+import argparse
+import os
+import sys
+import yaml
 
 from suzieq.sqobjects import *
-
+from suzieq.utils import load_sq_config, validate_sq_config
 
 app = FastAPI()
+
 # TODO: logging to this file isn't working
 logging.FileHandler('/tmp/rest-server.log')
 logger = logging.getLogger(__name__)
@@ -25,8 +30,7 @@ async def read_path(verb: str, namespace: str = "", start_time: str = "",
                  'source': src,
                  'dest': dest,
                  'vrf': vrf}
-    svc = get_svc('path')
-    return run_service_verb(svc, verb, 'path', service_args, verb_args)                    
+    return run_service_verb('path', verb,  service_args, verb_args)                    
 
 @app.get("/api/v1/route/lpm")
 async def read_route_lpm(address: str = "",
@@ -38,13 +42,17 @@ async def read_route_lpm(address: str = "",
     verb_args = {'hostname': hostname,
                  'namespace': namespace,
                  'address': address}
-    svc = get_svc('route')
-    return run_service_verb(svc, 'lpm', 'route', service_args, verb_args)
+    return run_service_verb('route', 'lpm',  service_args, verb_args)
 
 @app.get("/api/v1/{service}/{verb}")
 async def read_service(service: str, verb: str, hostname: str = "",
                       start_time: str = "", end_time: str = "",
                       view: str = "latest", namespace: str = ""):
+    """
+    Get data from **service** and **verb**
+    
+    - allows filters of **hostname**, **namespace**, **start_time**, **end_time**, and **view**
+    """
     if verb == 'show':
         verb = 'get'
     if verb == 'assert':
@@ -57,9 +65,7 @@ async def read_service(service: str, verb: str, hostname: str = "",
     if verb == 'summarize':
         verb_args.pop('hostname', None)
     
-    svc = get_svc(service)
-
-    return run_service_verb(svc, verb, service, service_args, verb_args)
+    return run_service_verb(service, verb, service_args, verb_args)
 
 def create_service_args(hostname, start_time, end_time, view, namespace):
     service_args = {'hostname': hostname,
@@ -90,22 +96,23 @@ def get_svc(service):
             svc = getattr(module, f"{service_name.title()}Obj")
     return svc
 
-def run_service_verb(svc, verb, name, service_args, verb_args):
+def run_service_verb(service, verb, service_args, verb_args):
+    svc = get_svc(service)
     try:
-
-        return getattr(svc(**service_args), verb)\
+        print(f'app.cfg_file: {app.cfg_file}')
+        return getattr(svc(**service_args, config_file=app.cfg_file), verb)\
                             (**verb_args).to_json(orient="records")
     
     except AttributeError as err:
         u = uuid.uuid1()
-        msg = f"{verb} not supported for {name} or missing arguement: {err} id={u}"
+        msg = f"{verb} not supported for {service} or missing arguement: {err} id={u}"
         logger.warning(msg)
         raise HTTPException(status_code=404, 
                             detail=msg)
     # TODO: why can't i catch NotImplemented? that's what I want here. 
     except Exception as err:
         u = uuid.uuid1()
-        msg = f"exceptional exception {verb} for {name}: {err} id={u}"
+        msg = f"exceptional exception {verb} for {service}: {err} id={u}"
         logger.warning(msg)
         raise HTTPException(status_code=404, 
                             detail=msg)
@@ -124,6 +131,22 @@ def bad_path():
     logger.warning(msg)
     raise HTTPException(status_code=404, detail=msg)
 
+def check_config_file(cfgfile):
+    if cfgfile:
+        with open(cfgfile, "r") as f:
+            cfg = yaml.safe_load(f.read())
+
+        validate_sq_config(cfg, sys.stderr)
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-c",
+        "--config",
+        type=str, help="alternate config file"
+    )
+    userargs = parser.parse_args()
+    check_config_file(userargs.config)
+    app.cfg_file = userargs.config
+  
     uvicorn.run(app, host="0.0.0.0", port=8000)
