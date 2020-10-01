@@ -3,15 +3,18 @@ import uvicorn
 from multiprocessing import Process
 import requests
 import time
+import random
+import yaml
 
 from tests.conftest import cli_commands, tables, setup_sqcmds
+from tests import conftest
 from suzieq.server.restServer import app
 
 ENDPOINT = "http://localhost:8000/api/v1"
 
 VERBS = ['show', 'summarize', 'assert', 'lpm', 'top']
 FILTERS = ['', 'hostname=leaf01', 'namespace=dual-bgp', 
-            'address=10.0.0.1', 
+           'address=10.0.0.1', 
            'dest=172.16.2.104&src=172.16.1.101&namespace=dual-evpn',
           ]
 
@@ -74,10 +77,25 @@ def get(endpoint, command, verb, args):
 ])
 def test_rest_commands(setup_nubia, start_server, command, verb, arg):
     get(ENDPOINT, command, verb, arg)
-            
+
+def create_config():
+    # We need to create a tempfile to hold the config
+    tmpconfig = conftest._create_context_config()
+
+    tmpconfig['data-directory'] =  './tests/data/multidc/parquet-out'
+    r_int = random.randint(17, 2073)
+    fname = f'/tmp/suzieq-cfg-{r_int}.yml'
+
+    with open(fname, 'w') as f:
+        f.write(yaml.dump(tmpconfig))
+    return fname
+
 @pytest.fixture(scope="session")
 def start_server():
     time.sleep(0.3)
+    
+    app.cfg_file = create_config()
+
     Process(target=uvicorn.run, 
             args=(app,),
             kwargs={'host': '0.0.0.0', 'port': 8000},
