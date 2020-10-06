@@ -24,7 +24,8 @@ commands = [('AddressCmd'), ('ArpndCmd'), ('BgpCmd'), ('DeviceCmd'),
 
 cli_commands = [('arpnd'), ('address'), ('bgp'), ('device'), ('evpnVni'),
                 ('interface'), ('lldp'), ('mac'),
-                ('mlag'), ('ospf'), ('path'), ('route'),
+                ('mlag'), ('ospf'), ('path'), ('route'), #('sqPoller'),
+                ('topology'),
                 ('vlan')]
 
 

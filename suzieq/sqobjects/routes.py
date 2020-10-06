@@ -5,6 +5,9 @@ class RoutesObj(SqObject):
     def __init__(self, **kwargs):
         super().__init__(table='routes', **kwargs)
         self._addnl_filter = 'metric != 4278198272'
+        self._valid_get_args = ['namespace', 'hostname', 'prefix', 
+                                'vrf', 'protocol', 'ipvers', 'prefixlen',
+                                'add_filter']
 
     def lpm(self, **kwargs):
         '''Get the lpm for the given address'''

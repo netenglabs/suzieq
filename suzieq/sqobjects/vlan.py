@@ -4,3 +4,4 @@ from suzieq.sqobjects.basicobj import SqObject
 class VlanObj(SqObject):
     def __init__(self, **kwargs):
         super().__init__(table='vlan', **kwargs)
+        self._valid_get_args = ['namespace', 'hostname', 'vlan']
