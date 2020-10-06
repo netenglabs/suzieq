@@ -108,7 +108,7 @@ class AddressObj(SqEngineObject):
 
     def unique(self, **kwargs) -> pd.DataFrame:
         """Specific here only to rename vrf column to master"""
-        column = kwargs.pop("columns", '')
+        column = kwargs.pop("columns", None)
         if column == ["vrf"]:
             column = ["master"]
         df = super().unique(columns=column, **kwargs)

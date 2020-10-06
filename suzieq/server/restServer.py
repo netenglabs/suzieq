@@ -181,6 +181,12 @@ def run_command_verb(command, verb, command_args, verb_args):
         logger.warning(msg)
         raise HTTPException(status_code=405, detail=msg)
 
+    except ValueError as err:
+        u = uuid.uuid1()
+        msg = f"bad keyword/filter for {command} {verb}: {err} id={u}"
+        logger.warning(msg)
+        raise HTTPException(status_code=405, detail=msg)
+
     except Exception as err:
         u = uuid.uuid1()
         msg = f"exceptional exception {verb} for {command}: {err} id={u}"

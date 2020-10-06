@@ -12,11 +12,11 @@ from suzieq.server.restServer import app
 
 ENDPOINT = "http://localhost:8000/api/v1"
 
-VERBS = ['show', 'summarize', 'assert', 'lpm'] # add 'top' when it's supported
+VERBS = ['show', 'summarize', 'assert', 'lpm', 'unique'] # add 'top' when it's supported
 FILTERS = ['', 'hostname=leaf01', 'namespace=dual-bgp',
            'address=10.127.1.2',
            'dest=172.16.2.104&src=172.16.1.101&namespace=dual-evpn',
-           'columns=namespace%20hostname',
+           'columns=namespace',
            'view=latest',
            'address=10.127.1.2&view=all',
            'ipAddress=10.127.1.2',
@@ -97,18 +97,22 @@ BAD_VERBS = {'address/assert': 404, 'address/lpm': 404,
 
 # these are always bad filters for these verbs no matter the service
 BAD_VERB_FILTERS = {
-                    'assert?columns=namespace%20hostname': 405,
+                    'assert?columns=namespace': 405,
                     'summarize?hostname=leaf01': 405,
-                    'summarize?columns=namespace%20hostname': 405,
+                    'summarize?columns=namespace': 405,
                     'summarize?address=10.0.0.1': 405,
                     'assert?address=10.0.0.1': 405,
                     'assert?dest=172.16.2.104&src=172.16.1.101&namespace=dual-evpn': 405,
+                    'unique?hostname=leaf01': 405,
+                    'unique?': 405,
+                    'unique?view=latest': 405,
+                    'unique?namespace=dual-bgp': 405,
                     }
 
 # these service/verb/filter tuples should return errors
 #  because they are invalid filters for the service/verb combos
 BAD_FILTERS = {
-               'path/show?': 404, 'path/show?columns=namespace%20hostname': 404,
+               'path/show?': 404, 'path/show?columns=namespace': 404,
                'path/show?hostname=leaf01': 404,
                'path/show?namespace=dual-bgp': 404,
                'path/show?address=10.0.0.1': 404,
@@ -116,13 +120,14 @@ BAD_FILTERS = {
                'path/summarize?namespace=dual-bgp': 404,
                'path/summarize?address=10.0.0.1': 404,
                'path/summarize?hostname=leaf01': 404,
-               'path/summarize?columns=namespace%20hostname': 404,
+               'path/summarize?columns=namespace': 404,
                'path/summarize?view=latest': 404,
                'path/show?view=latest': 404,
-               'route/lpm?': 404, 'route/lpm?columns=namespace%20hostname': 404,
+               'path/unique?columns=namespace': 404,
+               'route/lpm?': 404, 'route/lpm?columns=namespace': 404,
                'route/lpm?hostname=leaf01': 404,
                'route/lpm?namespace=dual-bgp': 404,
-               'route/show?columns=namespace%20hostname': 406,
+               'route/show?columns=namespace': 406,
                'route/lpm?view=latest': 404,
                }
 
