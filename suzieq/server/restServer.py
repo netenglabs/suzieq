@@ -17,50 +17,58 @@ logging.FileHandler('/tmp/rest-server.log')
 logger = logging.getLogger(__name__)
 
 
-@app.get("/api/v1/path/{verb}")
-async def read_path(verb: str, namespace: str = "", start_time: str = "",
-                    end_time: str = "", src: str = "", dest: str = "",
-                    vrf: str = "", view: str = 'latest'):
-    namespace = namespace.split()
-    verb = cleanup_verb(verb)
-    service_args = create_service_args('', start_time, end_time, view, namespace)
-
-    verb_args = {'namespace': namespace,
-                 'source': src,
-                 'dest': dest,
-                 'vrf': vrf}
-    return run_service_verb('path', verb,  service_args, verb_args)
-
-
-@app.get("/api/v1/route/lpm")
-async def read_route_lpm(address: str = "",
-                         hostname: str = "", start_time: str = "",
-                         end_time: str = "", view: str = "latest",
-                         namespace: str = "", ):
-    service_args = create_service_args(hostname, start_time, end_time, view, namespace)
-
-    verb_args = {'hostname': hostname,
-                 'namespace': namespace,
-                 'address': address}
-    return run_service_verb('route', 'lpm',  service_args, verb_args)
+# for now we won't support top for REST API
+#  this is because a lot of top logic is currently in commands
+#  and I'm not sure what needs to get abstracted out
+@app.get('/api/v1/{service}/top')
+async def no_top(service: str):
+        u = uuid.uuid1()
+        msg = f"top not supported for {service}: id={u}"
+        logger.warning(msg)
+        raise HTTPException(status_code=404, detail=msg)
 
 
 @app.get("/api/v1/{service}/{verb}")
-async def read_service(service: str, verb: str, hostname: str = "",
+async def read_service(service: str, verb: str, hostname: str = None,
                        start_time: str = "", end_time: str = "",
-                       view: str = "latest", namespace: str = ""):
+                       view: str = "latest", namespace: str = "",
+                       address: str = None,
+                       columns: str = None, vrf: str = None,
+                       src: str = None, dest: str = None,
+                       what: str = None, state: str = None, ifname: str = None,
+                       ):
     """
     Get data from **service** and **verb**
 
     - allows filters of **hostname**, **namespace**, **start_time**, **end_time**, and **view**
     """
     verb = cleanup_verb(verb)
-    service_args = create_service_args(hostname, start_time, end_time, view, namespace)
+    service_args = create_service_args(hostname, start_time, end_time, view, namespace, columns)
+    namespace = namespace.split()
+    verb_args = {'namespace': namespace}
 
-    verb_args = {'hostname': hostname,
-                 'namespace': namespace}
-    if verb == 'summarize':
-        verb_args.pop('hostname', None)
+    if columns:
+        columns = columns.split()
+        verb_args['columns'] = columns
+    if address:
+        verb_args['address'] = address
+    if vrf:
+        verb_args['vrf'] = vrf
+    if hostname:
+        verb_args['hostname'] = hostname
+    if src:
+        verb_args['source'] = src
+    if dest:
+        verb_args['dest'] = dest
+    if vrf:
+        verb_args['vrf'] = vrf
+    if what: 
+        verb_args['what'] = what
+    if state:
+        verb_args['state'] = state
+    if ifname:
+        verb_args['ifname'] = ifname
+
 
     return run_service_verb(service, verb, service_args, verb_args)
 
@@ -73,12 +81,14 @@ def cleanup_verb(verb):
     return verb
 
 
-def create_service_args(hostname, start_time, end_time, view, namespace):
+def create_service_args(hostname='', start_time='', end_time='', view='latest',
+                        namespace='', columns='default'):
     service_args = {'hostname': hostname,
                     'start_time': start_time,
                     'end_time': end_time,
                     'view': view,
-                    'namespace': namespace}
+                    'namespace': namespace,
+                    'columns': columns}
     return service_args
 
 
@@ -107,7 +117,7 @@ def get_svc(service):
 def run_service_verb(service, verb, service_args, verb_args):
     svc = get_svc(service)
     try:
-        return getattr(svc(**service_args, config_file=app.cfg_file), verb)(**verb_args).to_json(orient="records")
+        df = getattr(svc(**service_args, config_file=app.cfg_file), verb)(**verb_args)
 
     except AttributeError as err:
         u = uuid.uuid1()
@@ -115,14 +125,33 @@ def run_service_verb(service, verb, service_args, verb_args):
         logger.warning(msg)
         raise HTTPException(status_code=404,
                             detail=msg)
-    # TODO: why can't i catch NotImplemented? that's what I want here.
+
+    except NotImplementedError as err:
+        u = uuid.uuid1()
+        msg = f"{verb} not supported for {service}: {err} id={u}"
+        logger.warning(msg)
+        raise HTTPException(status_code=404, detail=msg)
+
+    except TypeError as err:
+        u = uuid.uuid1()
+        msg = f"bad keyword/filter for {service} {verb}: {err} id={u}"
+        logger.warning(msg)
+        raise HTTPException(status_code=405, detail=msg)
+
     except Exception as err:
         u = uuid.uuid1()
         msg = f"exceptional exception {verb} for {service}: {err} id={u}"
         logger.warning(msg)
-        raise HTTPException(status_code=405,
+        raise HTTPException(status_code=406,
                             detail=msg)
 
+    if df.columns.to_list() == ['error']:
+        u = uuid.uuid1()
+        msg = f"bad keyword/filter for {service} {verb}: {df['error'][0]} id={u}"
+        logger.warning(msg)
+        raise HTTPException(status_code=405, detail=msg)    
+
+    return df.to_json(orient="records") 
 
 @app.get("/api/v1/{service}")
 def missing_verb(service):
