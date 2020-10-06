@@ -110,9 +110,13 @@ class InterfacesObj(SqEngineObject):
         if_df = self.get(columns=columns, type=type, **kwargs)
         if if_df.empty:
             return pd.DataFrame(columns=columns+["assert"])
-
         lldpobj = LldpObj(context=self.ctxt)
-        lldp_df = lldpobj.get(**kwargs).query('peerIfname != "-"')
+  
+        # can't pass all kwargs, because lldp acceptable arguements are different than interface
+        namespace = kwargs.get('namespace', None)
+        hostname = kwargs.get('hostname', None)
+        lldp_df = lldpobj.get(namespace=namespace,
+                              hostname=hostname).query('peerIfname != "-"')
 
         if lldp_df.empty:
             if_df['assertReason'] = 'No LLDP peering info'

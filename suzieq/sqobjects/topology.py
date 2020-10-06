@@ -13,42 +13,20 @@ from suzieq.sqobjects.basicobj import SqObject
 from suzieq.exceptions import NoLLdpError, EmptyDataframeError, PathLoopError
 
 
-
-
 class TopologyObj(basicobj.SqObject):
-    def __init__(
-        self,
-        engine: str = "",
-        hostname: typing.List[str] = [],
-        start_time: str = "",
-        end_time: str = "",
-        view: str = "latest",
-        namespace: typing.List[str] = [],
-        columns: typing.List[str] = ["default"],
-        context=None,
-    ) -> None:
-        super().__init__(
-            engine,
-            hostname,
-            start_time,
-            end_time,
-            view,
-            namespace,
-            columns,
-            context=context,
-            table='topology',
-        )
+    def __init__(self, **kwargs):
+        super().__init__(table='bgp', **kwargs)
         self._sort_fields = ["namespace", "hostname"]
         self._cat_fields = []
+        self._valid_get_args = ['namespace', 'hostname', 'polled_neighbor']
 
     def get(self, **kwargs):
-    
+        try:
+            self.validate_get_input(**kwargs)
+        except Exception as error:
+            df = pd.DataFrame({'error': [f'{error}']})
+            return df
         if not self.ctxt.engine:
             raise AttributeError('No analysis engine specified')
 
         return self.engine_obj.get(**kwargs)
-    
-    def summarize(self, **kwargs):
-        """Summarize topology info for one or more namespaces"""
-
-        return self.engine_obj.summarize(**kwargs)

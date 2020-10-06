@@ -20,30 +20,37 @@ logger = logging.getLogger(__name__)
 # for now we won't support top for REST API
 #  this is because a lot of top logic is currently in commands
 #  and I'm not sure what needs to get abstracted out
-@app.get('/api/v1/{service}/top')
-async def no_top(service: str):
+@app.get('/api/v1/{command}/top')
+async def no_top(command: str):
         u = uuid.uuid1()
-        msg = f"top not supported for {service}: id={u}"
+        msg = f"top not supported for {command}: id={u}"
         logger.warning(msg)
         raise HTTPException(status_code=404, detail=msg)
 
 
-@app.get("/api/v1/{service}/{verb}")
-async def read_service(service: str, verb: str, hostname: str = None,
+@app.get("/api/v1/{command}/{verb}")
+async def read_command(command: str, verb: str, hostname: str = None,
                        start_time: str = "", end_time: str = "",
                        view: str = "latest", namespace: str = "",
                        address: str = None,
                        columns: str = None, vrf: str = None,
                        src: str = None, dest: str = None,
                        what: str = None, state: str = None, ifname: str = None,
+                       ipAddress: str = None, oif: str = None, macaddr: str = None,
+                       peer: str = None, protocol: str = None,
+                       prefix: str = None, ipvers: str = None, status: str = None,
+                       vni: str = None, mountPoint: str = None, type: str = None,
+                       vlan: str = None, remoteVtepIp: str = None, bd: str = None,
+                       localOnly: bool = None, prefixlen: str = None, service: str = None,
+                       polled_neighbor: bool = None,
                        ):
     """
-    Get data from **service** and **verb**
+    Get data from **command** and **verb**
 
-    - allows filters of **hostname**, **namespace**, **start_time**, **end_time**, and **view**
+    - followed by filters, in which there are many
     """
     verb = cleanup_verb(verb)
-    service_args = create_service_args(hostname, start_time, end_time, view, namespace, columns)
+    command_args = create_command_args(hostname, start_time, end_time, view, namespace, columns)
     namespace = namespace.split()
     verb_args = {'namespace': namespace}
 
@@ -68,9 +75,45 @@ async def read_service(service: str, verb: str, hostname: str = None,
         verb_args['state'] = state
     if ifname:
         verb_args['ifname'] = ifname
+    if ipAddress:
+        verb_args['ipAddress'] = ipAddress
+    if oif:
+        verb_args['oif'] = oif
+    if macaddr:
+        verb_args['macaddr'] = macaddr
+    if peer:
+        verb_args['peer'] = peer
+    if protocol:
+        verb_args['protocol'] = protocol
+    if prefix:
+        verb_args['prefix'] = prefix
+    if ipvers:
+        verb_args['ipvers'] = ipvers
+    if status:
+        verb_args['status'] = status
+    if vni:
+        verb_args['vni'] = vni
+    if mountPoint:
+        verb_args['mountPoint'] = mountPoint
+    if type:
+        verb_args['type'] = type
+    if vlan:
+        verb_args['vlan'] = vlan
+    if remoteVtepIp:
+        verb_args['remoteVtepIp'] = remoteVtepIp
+    if bd:
+        verb_args['bd'] = bd
+    if localOnly:
+        verb_args['localOnly'] = localOnly
+    if prefixlen:
+        verb_args['prefixlen'] = prefixlen
+    if service:
+        verb_args['service'] = service
+    if polled_neighbor:
+        verb_args['polled_neighbor'] = polled_neighbor
 
 
-    return run_service_verb(service, verb, service_args, verb_args)
+    return run_command_verb(command, verb, command_args, verb_args)
 
 
 def cleanup_verb(verb):
@@ -81,82 +124,82 @@ def cleanup_verb(verb):
     return verb
 
 
-def create_service_args(hostname='', start_time='', end_time='', view='latest',
+def create_command_args(hostname='', start_time='', end_time='', view='latest',
                         namespace='', columns='default'):
-    service_args = {'hostname': hostname,
+    command_args = {'hostname': hostname,
                     'start_time': start_time,
                     'end_time': end_time,
                     'view': view,
                     'namespace': namespace,
                     'columns': columns}
-    return service_args
+    return command_args
 
 
-def get_svc(service):
-    service_name = service
+def get_svc(command):
+    command_name = command
 
     # we almost have a consistent naming scheme, but not quite.
     # sometime there are s at the end and sometimes not
     try:
-        module = globals()[service]
+        module = globals()[command]
     except KeyError:
-        service = f"{service}s"
-        module = globals()[service]
+        command = f"{command}s"
+        module = globals()[command]
 
     try:
-        svc = getattr(module, f"{service.title()}Obj")
+        svc = getattr(module, f"{command.title()}Obj")
     except AttributeError:
-        if service == 'interfaces':
+        if command == 'interfaces':
             # interfaces doesn't follow the same pattern as everything else
             svc = getattr(module, 'IfObj')
         else:
-            svc = getattr(module, f"{service_name.title()}Obj")
+            svc = getattr(module, f"{command_name.title()}Obj")
     return svc
 
 
-def run_service_verb(service, verb, service_args, verb_args):
-    svc = get_svc(service)
+def run_command_verb(command, verb, command_args, verb_args):
+    svc = get_svc(command)
     try:
-        df = getattr(svc(**service_args, config_file=app.cfg_file), verb)(**verb_args)
+        df = getattr(svc(**command_args, config_file=app.cfg_file), verb)(**verb_args)
 
     except AttributeError as err:
         u = uuid.uuid1()
-        msg = f"{verb} not supported for {service} or missing arguement: {err} id={u}"
+        msg = f"{verb} not supported for {command} or missing arguement: {err} id={u}"
         logger.warning(msg)
         raise HTTPException(status_code=404,
                             detail=msg)
 
     except NotImplementedError as err:
         u = uuid.uuid1()
-        msg = f"{verb} not supported for {service}: {err} id={u}"
+        msg = f"{verb} not supported for {command}: {err} id={u}"
         logger.warning(msg)
         raise HTTPException(status_code=404, detail=msg)
 
     except TypeError as err:
         u = uuid.uuid1()
-        msg = f"bad keyword/filter for {service} {verb}: {err} id={u}"
+        msg = f"bad keyword/filter for {command} {verb}: {err} id={u}"
         logger.warning(msg)
         raise HTTPException(status_code=405, detail=msg)
 
     except Exception as err:
         u = uuid.uuid1()
-        msg = f"exceptional exception {verb} for {service}: {err} id={u}"
+        msg = f"exceptional exception {verb} for {command}: {err} id={u}"
         logger.warning(msg)
         raise HTTPException(status_code=406,
                             detail=msg)
 
     if df.columns.to_list() == ['error']:
         u = uuid.uuid1()
-        msg = f"bad keyword/filter for {service} {verb}: {df['error'][0]} id={u}"
+        msg = f"bad keyword/filter for {command} {verb}: {df['error'][0]} id={u}"
         logger.warning(msg)
         raise HTTPException(status_code=405, detail=msg)    
 
     return df.to_json(orient="records") 
 
-@app.get("/api/v1/{service}")
-def missing_verb(service):
+@app.get("/api/v1/{command}")
+def missing_verb(command):
     u = uuid.uuid1()
-    msg = f"{service} service missing a verb. for example '/api/v1/{service}/show' id={u}"
+    msg = f"{command} command missing a verb. for example '/api/v1/{command}/show' id={u}"
     logger.warning(msg)
     raise HTTPException(status_code=404, detail=msg)
 
