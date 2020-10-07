@@ -22,10 +22,10 @@ logger = logging.getLogger(__name__)
 #  and I'm not sure what needs to get abstracted out
 @app.get('/api/v1/{command}/top')
 async def no_top(command: str):
-        u = uuid.uuid1()
-        msg = f"top not supported for {command}: id={u}"
-        logger.warning(msg)
-        raise HTTPException(status_code=404, detail=msg)
+    u = uuid.uuid1()
+    msg = f"top not supported for {command}: id={u}"
+    logger.warning(msg)
+    raise HTTPException(status_code=404, detail=msg)
 
 
 @app.get("/api/v1/{command}/{verb}")
@@ -69,7 +69,7 @@ async def read_command(command: str, verb: str, hostname: str = None,
         verb_args['dest'] = dest
     if vrf:
         verb_args['vrf'] = vrf
-    if what: 
+    if what:
         verb_args['what'] = what
     if state:
         verb_args['state'] = state
@@ -111,7 +111,6 @@ async def read_command(command: str, verb: str, hostname: str = None,
         verb_args['service'] = service
     if polled_neighbor:
         verb_args['polled_neighbor'] = polled_neighbor
-
 
     return run_command_verb(command, verb, command_args, verb_args)
 
@@ -198,9 +197,10 @@ def run_command_verb(command, verb, command_args, verb_args):
         u = uuid.uuid1()
         msg = f"bad keyword/filter for {command} {verb}: {df['error'][0]} id={u}"
         logger.warning(msg)
-        raise HTTPException(status_code=405, detail=msg)    
+        raise HTTPException(status_code=405, detail=msg)
 
-    return df.to_json(orient="records") 
+    return df.to_json(orient="records")
+
 
 @app.get("/api/v1/{command}")
 def missing_verb(command):
