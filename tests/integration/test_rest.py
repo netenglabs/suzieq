@@ -10,9 +10,9 @@ from suzieq.server.restServer import app
 ENDPOINT = "http://localhost:8000/api/v1"
 
 VERBS = ['show', 'summarize', 'assert', 'lpm', 'unique']  # add 'top' when it's supported
-FILTERS = ['', 'hostname=leaf01', 'namespace=dual-bgp',
+FILTERS = ['', 'hostname=leaf01', 'namespace=ospf-ibgp',
            'address=10.127.1.2',
-           'dest=172.16.2.104&src=172.16.1.101&namespace=dual-evpn',
+           'dest=172.16.2.104&src=172.16.1.101&namespace=ospf-ibgp',
            'columns=namespace',
            'view=latest',
            'address=10.127.1.2&view=all',
@@ -27,9 +27,9 @@ FILTERS = ['', 'hostname=leaf01', 'namespace=dual-bgp',
            'ifname=swp1',
            'type=ethernet',
            'state=up',
-           'vlan=0',
-           'remoteVtepIp=1.2.3.4',
-           'bd=8',
+           'vlan=13',
+           'remoteVtepIp=10.0.0.101',
+           'bd=',
            'oif=eth1.4',
            'localOnly=True',
            'prefix=10.0.0.101/32',
@@ -44,8 +44,8 @@ GOOD_FILTERS_FOR_SERVICE_VERB = {
 
     'address=10.127.1.2': ['route/lpm'],
     'address=10.127.1.2&view=all': ['route/lpm'],
-    'bd=8': ['mac/show'],
-    'dest=172.16.2.104&src=172.16.1.101&namespace=dual-evpn':
+    'bd=': ['mac/show'],
+    'dest=172.16.2.104&src=172.16.1.101&namespace=ospf-ibgp':
     ['path/show', 'path/summarize'],
     'ifname=swp1': ['interface/show', 'interface/assert',
                     'lldp/show', 'ospf/show', 'ospf/assert'],
@@ -61,11 +61,11 @@ GOOD_FILTERS_FOR_SERVICE_VERB = {
     'prefixlen=24': ['route/show'],
     'protocol=bgp': ['route/show'],
     'service=device': ['sqPoller'],
-    'remoteVtepIp=1.2.3.4': ['mac/show'],
-    'state=up': ['interface/show', 'ospf/show', 'bgp/show'],
+    'remoteVtepIp=10.0.0.101': ['mac/show'],
+    'state=up': ['interface/show', 'ospf/show'],
     'status=all': ['bgp/show'],
     'type=ethernet': ['interface/show'],
-    'vlan=0': ['mac/show', 'vlan/show'],
+    'vlan=13': ['mac/show', 'vlan/show'],
     'vni=13': ['evpnVni/show'],
     'vrf=default': ['address/show', 'bgp/show', 'bgp/assert',
                     'ospf/assert', 'ospf/show',
@@ -99,11 +99,11 @@ BAD_VERB_FILTERS = {
     'summarize?columns=namespace': 405,
     'summarize?address=10.0.0.1': 405,
     'assert?address=10.0.0.1': 405,
-    'assert?dest=172.16.2.104&src=172.16.1.101&namespace=dual-evpn': 405,
+    'assert?dest=172.16.2.104&src=172.16.1.101&namespace=ospf-ibgp': 405,
     'unique?hostname=leaf01': 405,
     'unique?': 405,
     'unique?view=latest': 405,
-    'unique?namespace=dual-bgp': 405,
+    'unique?namespace=ospf-ibgp': 405,
 }
 
 # these service/verb/filter tuples should return errors
@@ -111,10 +111,10 @@ BAD_VERB_FILTERS = {
 BAD_FILTERS = {
     'path/show?': 404, 'path/show?columns=namespace': 404,
     'path/show?hostname=leaf01': 404,
-    'path/show?namespace=dual-bgp': 404,
+    'path/show?namespace=ospf-ibgp': 404,
     'path/show?address=10.0.0.1': 404,
     'path/summarize?': 404,
-    'path/summarize?namespace=dual-bgp': 404,
+    'path/summarize?namespace=ospf-ibgp': 404,
     'path/summarize?address=10.0.0.1': 404,
     'path/summarize?hostname=leaf01': 404,
     'path/summarize?columns=namespace': 404,
@@ -123,7 +123,7 @@ BAD_FILTERS = {
     'path/unique?columns=namespace': 404,
     'route/lpm?': 404, 'route/lpm?columns=namespace': 404,
     'route/lpm?hostname=leaf01': 404,
-    'route/lpm?namespace=dual-bgp': 404,
+    'route/lpm?namespace=ospf-ibgp': 404,
     'route/show?columns=namespace': 406,
     'route/lpm?view=latest': 404,
 }
@@ -147,6 +147,7 @@ def get(endpoint, service, verb, args):
             assert BAD_VERB_FILTERS[v_f] == response.status_code, response.content.decode('utf8')
         elif args in GOOD_FILTERS_FOR_SERVICE_VERB:
             assert c_v not in GOOD_FILTERS_FOR_SERVICE_VERB[args]
+            assert response.status_code == 405 or response.status_code == 404
         else:
             print(f" RESPONSE {response.status_code} {response.content.decode('utf8')}")
             response.raise_for_status()
@@ -157,6 +158,8 @@ def get(endpoint, service, verb, args):
         if args in GOOD_FILTERS_FOR_SERVICE_VERB:
             assert c_v in GOOD_FILTERS_FOR_SERVICE_VERB[args]
 
+        # make sure it's not empty when it shouldn't be    
+        assert len(response.content.decode('utf8')) > 10
     return response.status_code
 
 
