@@ -5,7 +5,7 @@ import pandas as pd
 class BgpObj(SqObject):
     def __init__(self, **kwargs):
         super().__init__(table='bgp', **kwargs)
-        self._valid_get_args = ['namespace', 'hostname',
+        self._valid_get_args = ['namespace', 'hostname', 'state',
                                 'status', 'vrf', 'peer'] 
         self._valid_assert_args = ['namespace', 'hostname', 'start_time',
                                   'end_time', 'vrf', ]
