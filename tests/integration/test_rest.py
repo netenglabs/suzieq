@@ -1,10 +1,7 @@
 import pytest
-import uvicorn
-from multiprocessing import Process
-import requests
-import time
 import random
 import yaml
+from fastapi.testclient import TestClient
 
 from tests.conftest import cli_commands, tables, setup_sqcmds
 from tests import conftest
@@ -135,7 +132,8 @@ BAD_FILTERS = {
 def get(endpoint, service, verb, args):
     url = f"{endpoint}/{service}/{verb}?{args}"
 
-    response = requests.get(url)
+    client = TestClient(app)
+    response = client.get(url)
 
     c_v = f"{service}/{verb}"
     c_v_f = f"{c_v}?{args}"
@@ -186,13 +184,6 @@ def create_config():
 @pytest.fixture(scope="session")
 def start_server():
     app.cfg_file = create_config()
-
-    Process(target=uvicorn.run,
-            args=(app,),
-            kwargs={'host': '0.0.0.0', 'port': 8000},
-            daemon=True).start()
-    time.sleep(0.3)
-
 
 def test_bad_rest():
     pass
