@@ -9,7 +9,7 @@ from suzieq.server.restServer import app
 
 ENDPOINT = "http://localhost:8000/api/v1"
 
-VERBS = ['show', 'summarize', 'assert', 'lpm', 'unique'] # add 'top' when it's supported
+VERBS = ['show', 'summarize', 'assert', 'lpm', 'unique']  # add 'top' when it's supported
 FILTERS = ['', 'hostname=leaf01', 'namespace=dual-bgp',
            'address=10.127.1.2',
            'dest=172.16.2.104&src=172.16.1.101&namespace=dual-evpn',
@@ -41,36 +41,36 @@ FILTERS = ['', 'hostname=leaf01', 'namespace=dual-bgp',
 
 # these should only succeed for the specific service/verb tuples
 GOOD_FILTERS_FOR_SERVICE_VERB = {
-                                 
-                                 'address=10.127.1.2': ['route/lpm'],
-                                 'address=10.127.1.2&view=all': ['route/lpm'] ,
-                                 'bd=8': ['mac/show'],
-                                 'dest=172.16.2.104&src=172.16.1.101&namespace=dual-evpn': 
-                                    ['path/show','path/summarize'],
-                                 'ifname=swp1': ['interface/show', 'interface/assert',
-                                    'lldp/show', 'ospf/show', 'ospf/assert'],
-                                 'ipAddress=10.127.1.2': ['arpnd/show'],
-                                 'ipvers=v4': ['address/show'],
-                                 'localOnly=True': ['mac/show'],
-                                 'macaddr=22:5c:65:2f:98:b6': ['arpnd/show', 'mac/show'],
-                                 'mountPoint=/': ['fs/show'],
-                                 'oif=eth1.4': ['arpnd/show'],
-                                 'peer=eth1.2': ['bgp/show'],
-                                 'polled_neighbor=True': ['topology/show'],
-                                 'prefix=10.0.0.101/32': ['route/show'],
-                                 'prefixlen=24': ['route/show'],
-                                 'protocol=bgp': ['route/show'],
-                                 'service=device': ['sqPoller'],
-                                 'remoteVtepIp=1.2.3.4': ['mac/show'],
-                                 'state=up': ['interface/show', 'ospf/show', 'bgp/show'],
-                                 'status=all': ['bgp/show'],
-                                 'type=ethernet': ['interface/show'],
-                                 'vlan=0': ['mac/show', 'vlan/show'],
-                                 'vni=13': ['evpnVni/show'],
-                                 'vrf=default': ['address/show', 'bgp/show', 'bgp/assert', 
-                                                 'ospf/assert', 'ospf/show',
-                                                 'route/show', 'route/summarize']
-                                }
+
+    'address=10.127.1.2': ['route/lpm'],
+    'address=10.127.1.2&view=all': ['route/lpm'],
+    'bd=8': ['mac/show'],
+    'dest=172.16.2.104&src=172.16.1.101&namespace=dual-evpn':
+    ['path/show', 'path/summarize'],
+    'ifname=swp1': ['interface/show', 'interface/assert',
+                    'lldp/show', 'ospf/show', 'ospf/assert'],
+    'ipAddress=10.127.1.2': ['arpnd/show'],
+    'ipvers=v4': ['address/show'],
+    'localOnly=True': ['mac/show'],
+    'macaddr=22:5c:65:2f:98:b6': ['arpnd/show', 'mac/show'],
+    'mountPoint=/': ['fs/show'],
+    'oif=eth1.4': ['arpnd/show'],
+    'peer=eth1.2': ['bgp/show'],
+    'polled_neighbor=True': ['topology/show'],
+    'prefix=10.0.0.101/32': ['route/show'],
+    'prefixlen=24': ['route/show'],
+    'protocol=bgp': ['route/show'],
+    'service=device': ['sqPoller'],
+    'remoteVtepIp=1.2.3.4': ['mac/show'],
+    'state=up': ['interface/show', 'ospf/show', 'bgp/show'],
+    'status=all': ['bgp/show'],
+    'type=ethernet': ['interface/show'],
+    'vlan=0': ['mac/show', 'vlan/show'],
+    'vni=13': ['evpnVni/show'],
+    'vrf=default': ['address/show', 'bgp/show', 'bgp/assert',
+                    'ospf/assert', 'ospf/show',
+                    'route/show', 'route/summarize']
+}
 
 
 # these service/verb pairs should return errors
@@ -94,39 +94,39 @@ BAD_VERBS = {'address/assert': 404, 'address/lpm': 404,
 
 # these are always bad filters for these verbs no matter the service
 BAD_VERB_FILTERS = {
-                    'assert?columns=namespace': 405,
-                    'summarize?hostname=leaf01': 405,
-                    'summarize?columns=namespace': 405,
-                    'summarize?address=10.0.0.1': 405,
-                    'assert?address=10.0.0.1': 405,
-                    'assert?dest=172.16.2.104&src=172.16.1.101&namespace=dual-evpn': 405,
-                    'unique?hostname=leaf01': 405,
-                    'unique?': 405,
-                    'unique?view=latest': 405,
-                    'unique?namespace=dual-bgp': 405,
-                    }
+    'assert?columns=namespace': 405,
+    'summarize?hostname=leaf01': 405,
+    'summarize?columns=namespace': 405,
+    'summarize?address=10.0.0.1': 405,
+    'assert?address=10.0.0.1': 405,
+    'assert?dest=172.16.2.104&src=172.16.1.101&namespace=dual-evpn': 405,
+    'unique?hostname=leaf01': 405,
+    'unique?': 405,
+    'unique?view=latest': 405,
+    'unique?namespace=dual-bgp': 405,
+}
 
 # these service/verb/filter tuples should return errors
 #  because they are invalid filters for the service/verb combos
 BAD_FILTERS = {
-               'path/show?': 404, 'path/show?columns=namespace': 404,
-               'path/show?hostname=leaf01': 404,
-               'path/show?namespace=dual-bgp': 404,
-               'path/show?address=10.0.0.1': 404,
-               'path/summarize?': 404, 
-               'path/summarize?namespace=dual-bgp': 404,
-               'path/summarize?address=10.0.0.1': 404,
-               'path/summarize?hostname=leaf01': 404,
-               'path/summarize?columns=namespace': 404,
-               'path/summarize?view=latest': 404,
-               'path/show?view=latest': 404,
-               'path/unique?columns=namespace': 404,
-               'route/lpm?': 404, 'route/lpm?columns=namespace': 404,
-               'route/lpm?hostname=leaf01': 404,
-               'route/lpm?namespace=dual-bgp': 404,
-               'route/show?columns=namespace': 406,
-               'route/lpm?view=latest': 404,
-               }
+    'path/show?': 404, 'path/show?columns=namespace': 404,
+    'path/show?hostname=leaf01': 404,
+    'path/show?namespace=dual-bgp': 404,
+    'path/show?address=10.0.0.1': 404,
+    'path/summarize?': 404,
+    'path/summarize?namespace=dual-bgp': 404,
+    'path/summarize?address=10.0.0.1': 404,
+    'path/summarize?hostname=leaf01': 404,
+    'path/summarize?columns=namespace': 404,
+    'path/summarize?view=latest': 404,
+    'path/show?view=latest': 404,
+    'path/unique?columns=namespace': 404,
+    'route/lpm?': 404, 'route/lpm?columns=namespace': 404,
+    'route/lpm?hostname=leaf01': 404,
+    'route/lpm?namespace=dual-bgp': 404,
+    'route/show?columns=namespace': 406,
+    'route/lpm?view=latest': 404,
+}
 
 
 def get(endpoint, service, verb, args):
@@ -146,7 +146,7 @@ def get(endpoint, service, verb, args):
         elif v_f in BAD_VERB_FILTERS:
             assert BAD_VERB_FILTERS[v_f] == response.status_code, response.content.decode('utf8')
         elif args in GOOD_FILTERS_FOR_SERVICE_VERB:
-            assert c_v not in GOOD_FILTERS_FOR_SERVICE_VERB[args] 
+            assert c_v not in GOOD_FILTERS_FOR_SERVICE_VERB[args]
         else:
             print(f" RESPONSE {response.status_code} {response.content.decode('utf8')}")
             response.raise_for_status()
@@ -184,6 +184,7 @@ def create_config():
 @pytest.fixture(scope="session")
 def start_server():
     app.cfg_file = create_config()
+
 
 def test_bad_rest():
     pass
