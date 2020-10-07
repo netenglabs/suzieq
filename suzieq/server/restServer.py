@@ -57,59 +57,59 @@ async def read_command(command: str, verb: str, hostname: str = None,
     if columns:
         columns = columns.split()
         verb_args['columns'] = columns
-    if address:
+    if address is not None:
         verb_args['address'] = address
-    if vrf:
+    if vrf is not None:
         verb_args['vrf'] = vrf
-    if hostname:
+    if hostname is not None:
         verb_args['hostname'] = hostname
-    if src:
+    if src is not None:
         verb_args['source'] = src
-    if dest:
+    if dest is not None:
         verb_args['dest'] = dest
-    if vrf:
+    if vrf is not None:
         verb_args['vrf'] = vrf
-    if what:
+    if what is not None:
         verb_args['what'] = what
-    if state:
+    if state is not None:
         verb_args['state'] = state
-    if ifname:
+    if ifname is not None:
         verb_args['ifname'] = ifname
-    if ipAddress:
+    if ipAddress is not None:
         verb_args['ipAddress'] = ipAddress
-    if oif:
+    if oif is not None:
         verb_args['oif'] = oif
-    if macaddr:
+    if macaddr is not None:
         verb_args['macaddr'] = macaddr
-    if peer:
+    if peer is not None:
         verb_args['peer'] = peer
-    if protocol:
+    if protocol is not None:
         verb_args['protocol'] = protocol
-    if prefix:
+    if prefix is not None:
         verb_args['prefix'] = prefix
-    if ipvers:
+    if ipvers is not None:
         verb_args['ipvers'] = ipvers
-    if status:
+    if status is not None:
         verb_args['status'] = status
-    if vni:
+    if vni is not None:
         verb_args['vni'] = vni
-    if mountPoint:
+    if mountPoint is not None:
         verb_args['mountPoint'] = mountPoint
-    if type:
+    if type is not None:
         verb_args['type'] = type
-    if vlan:
+    if vlan is not None:
         verb_args['vlan'] = vlan
-    if remoteVtepIp:
+    if remoteVtepIp is not None:
         verb_args['remoteVtepIp'] = remoteVtepIp
-    if bd:
+    if bd is not None:
         verb_args['bd'] = bd
-    if localOnly:
+    if localOnly is not None:
         verb_args['localOnly'] = localOnly
-    if prefixlen:
+    if prefixlen is not None:
         verb_args['prefixlen'] = prefixlen
-    if service:
+    if service is not None:
         verb_args['service'] = service
-    if polled_neighbor:
+    if polled_neighbor is not None:
         verb_args['polled_neighbor'] = polled_neighbor
 
     return run_command_verb(command, verb, command_args, verb_args)
@@ -188,7 +188,7 @@ def run_command_verb(command, verb, command_args, verb_args):
 
     except Exception as err:
         u = uuid.uuid1()
-        msg = f"exceptional exception {verb} for {command}: {err} id={u}"
+        msg = f"exceptional exception {verb} for {command} of type {type(err)}: {err} id={u}"
         logger.warning(msg)
         raise HTTPException(status_code=406,
                             detail=msg)
