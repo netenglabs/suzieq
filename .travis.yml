@@ -5,9 +5,9 @@ python:
 # command to install dependencies
 before_install:
   - pip install --upgrade pip
-  - pip install poetry --no-root
+  - pip install poetry
 install:
-  - poetry install
+  - poetry install --no-root
   - cp build/suzieq-cfg-travis.yml suzieq-cfg.yml
 # command to run tests
 script:
