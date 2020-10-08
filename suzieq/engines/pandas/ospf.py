@@ -3,7 +3,7 @@ import pandas as pd
 
 from suzieq.sqobjects.lldp import LldpObj
 from suzieq.engines.pandas.engineobj import SqEngineObject
-from suzieq.utils import SchemaForTable
+from suzieq.utils import SchemaForTable, build_query_str
 
 
 class OspfObj(SqEngineObject):
@@ -168,6 +168,10 @@ class OspfObj(SqEngineObject):
             "nbrCount",
         ]
 
+        # we have to not filter hostname at this point because we need to
+        #   understand neighbor relationships
+        orig_hostname = kwargs.pop('hostname', '')
+
         ospf_df = self.get_valid_df("ospfIf", columns=columns, **kwargs)
         if ospf_df.empty:
             return pd.DataFrame(columns=columns)
@@ -228,6 +232,12 @@ class OspfObj(SqEngineObject):
                                          on=["namespace", "hostname",
                                              "ifname"]) \
             .dropna(how="any")
+      
+        # filter by hostname now
+        if orig_hostname:
+            ospfschema = SchemaForTable('ospf', schema=self.schemas)
+            hq = build_query_str([], ospfschema, hostname=orig_hostname)
+            ospf_df = ospf_df.query(hq)
 
         if int_df.empty:
             # Weed out the loopback and SVI interfaces as they have no LLDP peers
