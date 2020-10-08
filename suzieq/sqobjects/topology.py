@@ -18,7 +18,8 @@ class TopologyObj(basicobj.SqObject):
         super().__init__(table='bgp', **kwargs)
         self._sort_fields = ["namespace", "hostname"]
         self._cat_fields = []
-        self._valid_get_args = ['namespace', 'hostname', 'polled_neighbor']
+        self._valid_get_args = ['namespace', 'hostname', 'polled_neighbor',
+                                'vrf']
 
     def get(self, **kwargs):
         try:
@@ -30,3 +31,10 @@ class TopologyObj(basicobj.SqObject):
             raise AttributeError('No analysis engine specified')
 
         return self.engine_obj.get(**kwargs)
+
+
+    # overriding parent because we want to take more arguments than the standard
+    def summarize(self, namespace='', polled_neighbor=False) -> pd.DataFrame:
+    
+        return self.engine_obj.summarize(namespace=namespace, 
+                                        polled_neighbor=polled_neighbor)
