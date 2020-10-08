@@ -56,7 +56,7 @@ GOOD_FILTERS_FOR_SERVICE_VERB = {
     'mountPoint=/': ['fs/show'],
     'oif=eth1.4': ['arpnd/show'],
     'peer=eth1.2': ['bgp/show'],
-    'polled_neighbor=True': ['topology/show'],
+    'polled_neighbor=True': ['topology/show', 'topology/summarize'],
     'prefix=10.0.0.101/32': ['route/show'],
     'prefixlen=24': ['route/show'],
     'protocol=bgp': ['route/show'],
@@ -69,7 +69,8 @@ GOOD_FILTERS_FOR_SERVICE_VERB = {
     'vni=13': ['evpnVni/show'],
     'vrf=default': ['address/show', 'bgp/show', 'bgp/assert',
                     'ospf/assert', 'ospf/show',
-                    'route/show', 'route/summarize']
+                    'route/show', 'route/summarize', 'topology/show',
+                    ]
 }
 
 
