@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/netenglabs/suzieq.svg?branch=master)](https://travis-ci.org/netenglabs/suzieq)
+[![Build Status](https://travis-ci.com/netenglabs/suzieq.svg?branch=master)](https://travis-ci.com/netenglabs/suzieq)
 
 # Suzieq
 
