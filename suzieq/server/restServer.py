@@ -183,7 +183,7 @@ def run_command_verb(command, verb, command_args, verb_args):
     return df.to_json(orient="records")
 
 
-@app.get("/api/v1/{command}")
+@app.get("/api/v1/{command}", status_code=404)
 def missing_verb(command):
     u = uuid.uuid1()
     msg = f"{command} command missing a verb. for example '/api/v1/{command}/show' id={u}"
@@ -191,7 +191,7 @@ def missing_verb(command):
     raise HTTPException(status_code=404, detail=msg)
 
 
-@app.get("/")
+@app.get("/", status_code=404)
 def bad_path():
     u = uuid.uuid1()
     msg = f"bad path. you want to use something like '/api/v1/device/show' id={u}"
