@@ -124,7 +124,7 @@ BAD_FILTERS = {
     'route/lpm?': 404, 'route/lpm?columns=namespace': 404,
     'route/lpm?hostname=leaf01': 404,
     'route/lpm?namespace=ospf-ibgp': 404,
-    'route/show?columns=namespace': 406,
+    'route/show?columns=namespace': 500,
     'route/lpm?view=latest': 404,
 }
 
