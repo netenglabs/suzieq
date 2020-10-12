@@ -31,13 +31,15 @@ async def no_top(command: str):
 async def read_command_topology(verb: str, hostname: str = None, 
                                 start_time: str = "", end_time: str = "",
                                 view: str = "latest", namespace: str = "",
-                                columns: str = 'default',
+                                columns: str = None,
                                 polled_neighbor: bool = False):
     command = 'topology'
     verb = cleanup_verb(verb)
     command_args = create_command_args(hostname, start_time, end_time, view, 
                                        namespace, columns)
-    verb_args = create_verb_args(namespace=namespace.split(), columns=columns.split(), 
+    if columns:
+        columns=columns.split()
+    verb_args = create_verb_args(namespace=namespace.split(), columns=columns, 
                                  polled_neighbor=polled_neighbor,
                                 )
     return run_command_verb(command, verb, command_args, verb_args)
@@ -67,68 +69,24 @@ async def read_command(command: str, verb: str, hostname: str = None,
     verb = cleanup_verb(verb)
     command_args = create_command_args(hostname, start_time, end_time, view, 
                                        namespace, columns)
-    namespace = namespace.split()
-    verb_args = {'namespace': namespace}
-
-
 
     if columns:
-        columns = columns.split()
-        verb_args['columns'] = columns
-    if address is not None:
-        verb_args['address'] = address
-    if vrf is not None:
-        verb_args['vrf'] = vrf
-    if hostname is not None:
-        verb_args['hostname'] = hostname
-    if source is not None:
-        verb_args['source'] = source
-    if dest is not None:
-        verb_args['dest'] = dest
-    if vrf is not None:
-        verb_args['vrf'] = vrf
-    if what is not None:
-        verb_args['what'] = what
-    if state is not None:
-        verb_args['state'] = state
-    if ifname is not None:
-        verb_args['ifname'] = ifname
-    if ipAddress is not None:
-        verb_args['ipAddress'] = ipAddress
-    if oif is not None:
-        verb_args['oif'] = oif
-    if macaddr is not None:
-        verb_args['macaddr'] = macaddr
-    if peer is not None:
-        verb_args['peer'] = peer
-    if protocol is not None:
-        verb_args['protocol'] = protocol
-    if prefix is not None:
-        verb_args['prefix'] = prefix
-    if ipvers is not None:
-        verb_args['ipvers'] = ipvers
-    if status is not None:
-        verb_args['status'] = status
-    if vni is not None:
-        verb_args['vni'] = vni
-    if mountPoint is not None:
-        verb_args['mountPoint'] = mountPoint
-    if type is not None:
-        verb_args['type'] = type
-    if vlan is not None:
-        verb_args['vlan'] = vlan
-    if remoteVtepIp is not None:
-        verb_args['remoteVtepIp'] = remoteVtepIp
-    if bd is not None:
-        verb_args['bd'] = bd
-    if localOnly is not None:
-        verb_args['localOnly'] = localOnly
-    if prefixlen is not None:
-        verb_args['prefixlen'] = prefixlen
-    if service is not None:
-        verb_args['service'] = service
-    if polled_neighbor is not None:
-        verb_args['polled_neighbor'] = polled_neighbor
+        columns=columns.split()
+    verb_args = create_verb_args(namespace=namespace.split(), 
+                                 columns=columns,
+                                 vrf=vrf, hostname=hostname,
+                                 source=source, dest=dest, what=what,
+                                 state=state, ifname=ifname, 
+                                 address=address,
+                                 ipAddress=ipAddress, oif=oif,
+                                 macaddr=macaddr, peer=peer,
+                                 protocol=protocol, ipvers=ipvers,
+                                 status=status, vni=vni, mountPoint=mountPoint,
+                                 type=type, vlan=vlan, remoteVtepIp=remoteVtepIp,
+                                 bd=bd, localOnly=localOnly, prefixlen=prefixlen,
+                                 service=service, polled_neighbor=polled_neighbor,
+                                 prefix=prefix,
+                                )
 
     return run_command_verb(command, verb, command_args, verb_args)
 
