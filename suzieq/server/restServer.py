@@ -1,5 +1,5 @@
 from typing import Optional
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 import logging
 import uuid
 import uvicorn
@@ -27,6 +27,20 @@ async def no_top(command: str):
     logger.warning(msg)
     raise HTTPException(status_code=404, detail=msg)
 
+#@app.get("/api/v1/topology/{verb}")
+async def read_command_topology(verb: str, hostname: str = None, 
+                                start_time: str = "", end_time: str = "",
+                                view: str = "latest", namespace: str = "",
+                                columns: str = 'default',
+                                polled_neighbor: bool = False):
+    command = 'topology'
+    verb = cleanup_verb(verb)
+    command_args = create_command_args(hostname, start_time, end_time, view, 
+                                       namespace, columns)
+    verb_args = create_verb_args(namespace=namespace.split(), columns=columns.split(), 
+                                 polled_neighbor=polled_neighbor,
+                                )
+    return run_command_verb(command, verb, command_args, verb_args)
 
 @app.get("/api/v1/{command}/{verb}")
 async def read_command(command: str, verb: str, hostname: str = None,
@@ -34,7 +48,8 @@ async def read_command(command: str, verb: str, hostname: str = None,
                        view: str = "latest", namespace: str = "",
                        address: str = None,
                        columns: str = None, vrf: str = None,
-                       src: str = None, dest: str = None,
+                       source: str = Query(None, alias="src"),
+                       dest: str = None,
                        what: str = None, state: str = None, ifname: str = None,
                        ipAddress: str = None, oif: str = None, macaddr: str = None,
                        peer: str = None, protocol: str = None,
@@ -50,9 +65,12 @@ async def read_command(command: str, verb: str, hostname: str = None,
     - followed by filters, in which there are many
     """
     verb = cleanup_verb(verb)
-    command_args = create_command_args(hostname, start_time, end_time, view, namespace, columns)
+    command_args = create_command_args(hostname, start_time, end_time, view, 
+                                       namespace, columns)
     namespace = namespace.split()
     verb_args = {'namespace': namespace}
+
+
 
     if columns:
         columns = columns.split()
@@ -63,8 +81,8 @@ async def read_command(command: str, verb: str, hostname: str = None,
         verb_args['vrf'] = vrf
     if hostname is not None:
         verb_args['hostname'] = hostname
-    if src is not None:
-        verb_args['source'] = src
+    if source is not None:
+        verb_args['source'] = source
     if dest is not None:
         verb_args['dest'] = dest
     if vrf is not None:
@@ -114,6 +132,12 @@ async def read_command(command: str, verb: str, hostname: str = None,
 
     return run_command_verb(command, verb, command_args, verb_args)
 
+def create_verb_args(**kwargs):
+    verb_args = {}
+    for a in kwargs:
+        if kwargs[a]is not None:
+            verb_args[a] = kwargs[a]
+    return verb_args
 
 def cleanup_verb(verb):
     if verb == 'show':
