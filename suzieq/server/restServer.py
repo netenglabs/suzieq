@@ -147,8 +147,7 @@ def run_command_verb(command, verb, command_args, verb_args):
         u = uuid.uuid1()
         msg = f"{verb} not supported for {command} or missing arguement: {err} id={u}"
         logger.warning(msg)
-        raise HTTPException(status_code=404,
-                            detail=msg)
+        raise HTTPException(status_code=404, detail=msg)
 
     except NotImplementedError as err:
         u = uuid.uuid1()
@@ -172,7 +171,7 @@ def run_command_verb(command, verb, command_args, verb_args):
         u = uuid.uuid1()
         msg = f"exceptional exception {verb} for {command} of type {type(err)}: {err} id={u}"
         logger.warning(msg)
-        raise HTTPException(status_code=406,
+        raise HTTPException(status_code=500,
                             detail=msg)
 
     if df.columns.to_list() == ['error']:
