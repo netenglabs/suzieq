@@ -41,7 +41,6 @@ FILTERS = ['', 'hostname=leaf01', 'namespace=ospf-ibgp',
 
 # these should only succeed for the specific service/verb tuples
 GOOD_FILTERS_FOR_SERVICE_VERB = {
-
     'address=10.127.1.2': ['route/lpm'],
     'address=10.127.1.2&view=all': ['route/lpm'],
     'bd=': ['mac/show'],
