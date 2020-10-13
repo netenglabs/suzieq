@@ -35,7 +35,7 @@ version = "1.5"
 [[package]]
 category = "dev"
 description = "Disable App Nap on OS X 10.9"
-marker = "python_version >= \"3.4\" and sys_platform == \"darwin\" or sys_platform == \"darwin\""
+marker = "sys_platform == \"darwin\""
 name = "appnope"
 optional = false
 python-versions = "*"
@@ -387,21 +387,6 @@ version = "1.0.23"
 
 [[package]]
 category = "dev"
-description = "IPython-enabled pdb"
-name = "ipdb"
-optional = false
-python-versions = ">=2.7"
-version = "0.13.3"
-
-[package.dependencies]
-setuptools = "*"
-
-[package.dependencies.ipython]
-python = ">=3.4"
-version = ">=5.1.0"
-
-[[package]]
-category = "dev"
 description = "IPython: Productive Interactive Computing"
 name = "ipython"
 optional = false
@@ -682,7 +667,7 @@ version = "5.4.5"
 [[package]]
 category = "dev"
 description = "Pexpect allows easy control of interactive console applications."
-marker = "python_version >= \"3.4\" and sys_platform != \"win32\" or sys_platform != \"win32\""
+marker = "sys_platform != \"win32\""
 name = "pexpect"
 optional = false
 python-versions = "*"
@@ -761,7 +746,7 @@ wcwidth = "*"
 [[package]]
 category = "dev"
 description = "Run a subprocess in a pseudo terminal"
-marker = "python_version >= \"3.4\" and sys_platform != \"win32\" or sys_platform != \"win32\" or python_version >= \"3.4\" and sys_platform != \"win32\" and (python_version >= \"3.4\" and sys_platform != \"win32\" or sys_platform != \"win32\")"
+marker = "python_version >= \"3.4\" and sys_platform != \"win32\" or sys_platform != \"win32\""
 name = "ptyprocess"
 optional = false
 python-versions = "*"
@@ -1202,7 +1187,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "a9e9a35dcf41c6707eba36d53ccebc31041f676faa389805688bd8126cabc60c"
+content-hash = "ec7ee36f1e95222be4603645aaae6f91d2b8cfe388bee0d674579ab51a75f810"
 lock-version = "1.0"
 python-versions = "^3.7"
 
@@ -1426,9 +1411,6 @@ iniconfig = [
 ipaddress = [
     {file = "ipaddress-1.0.23-py2.py3-none-any.whl", hash = "sha256:6e0f4a39e66cb5bb9a137b00276a2eff74f93b71dcbdad6f10ff7df9d3557fcc"},
     {file = "ipaddress-1.0.23.tar.gz", hash = "sha256:b7f8e0369580bb4a24d5ba1d7cc29660a4a6987763faf1d8a8046830e020e7e2"},
-]
-ipdb = [
-    {file = "ipdb-0.13.3.tar.gz", hash = "sha256:d6f46d261c45a65e65a2f7ec69288a1c511e16206edb2875e7ec6b2f66997e78"},
 ]
 ipython = [
     {file = "ipython-7.15.0-py3-none-any.whl", hash = "sha256:1b85d65632211bf5d3e6f1406f3393c8c429a47d7b947b9a87812aa5bce6595c"},
