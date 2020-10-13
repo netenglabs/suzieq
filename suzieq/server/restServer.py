@@ -56,7 +56,8 @@ async def read_command(command: str, verb: str, hostname: str = None,
                        ipAddress: str = None, oif: str = None, macaddr: str = None,
                        peer: str = None, protocol: str = None,
                        prefix: str = None, ipvers: str = None, status: str = None,
-                       vni: str = None, mountPoint: str = None, type: str = None,
+                       vni: str = None, mountPoint: str = None, 
+                       interface_type: str = Query(None, alias="type"),
                        vlan: str = None, remoteVtepIp: str = None, bd: str = None,
                        localOnly: bool = None, prefixlen: str = None, service: str = None,
                        polled_neighbor: bool = None,
@@ -82,7 +83,7 @@ async def read_command(command: str, verb: str, hostname: str = None,
                                  macaddr=macaddr, peer=peer,
                                  protocol=protocol, ipvers=ipvers,
                                  status=status, vni=vni, mountPoint=mountPoint,
-                                 type=type, vlan=vlan, remoteVtepIp=remoteVtepIp,
+                                 type=interface_type, vlan=vlan, remoteVtepIp=remoteVtepIp,
                                  bd=bd, localOnly=localOnly, prefixlen=prefixlen,
                                  service=service, polled_neighbor=polled_neighbor,
                                  prefix=prefix,
@@ -93,7 +94,7 @@ async def read_command(command: str, verb: str, hostname: str = None,
 def create_verb_args(**kwargs):
     verb_args = {}
     for a in kwargs:
-        if kwargs[a]is not None:
+        if kwargs[a] is not None:
             verb_args[a] = kwargs[a]
     return verb_args
 
