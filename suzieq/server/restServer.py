@@ -27,25 +27,29 @@ async def no_top(command: str):
     logger.warning(msg)
     raise HTTPException(status_code=404, detail=msg)
 
+
 @app.get("/api/v1/device/{verb}", status_code=200)
 async def read_command_device(verb: str, request: Request,
                                 hostname: str = None, 
                                 start_time: str = "", end_time: str = "",
                                 view: str = "latest", namespace: str = "",
                                 columns: str = None,
-                                polled_neighbor: bool = False):
+                                ):
     command = 'device'
     verb = cleanup_verb(verb)
-                             
     command_args, verb_args = get_filters(request.query_params)
-    # compare_params_with_args(verb_args, ['hostname', 'start_time', 'end_time',
-    #                                      'view', 'namespace', 'columns', 
-    #                                      'polled_neighbor'])
-    print(command_args)
-    print(verb_args)
-    return run_command_verb(command, verb, command_args, verb_args)
+
+    res =  run_command_verb(command, verb, command_args, verb_args)
+    find_missing_args(verb_args, ['hostname', 'start_time', 'end_time',
+                                        'view', 'namespace', 'columns'])
+    return res
 
 def get_filters(query_params):
+    """ Rather than use the function arguments for query filters, we directly
+    use the paramers that are sent in the request. This is because otherwise
+    fastapi drops queries not specified as arguments, and we want to return 
+    errors in that case
+    """
     command_args = {}
     extra_args = {}
     possible_args = ['hostname', 'namespace', 'start_time', 'end_time', 'view', 'columns']
@@ -64,13 +68,17 @@ def get_filters(query_params):
     return command_args, extra_args
 
 
-
-def compare_params_with_args(verb_args: dict, args: str):
+def find_missing_args(verb_args: dict, args: str):
     """compares args defined in function with params to make sure we have defined
-    the right arguments, not too many, and not too few"""
+    the right arguments
+    The point is to help figure out if the arguments are correct, since we are only
+    using them for documentation
+
+    args needs to be the list of arguments from the function from the query filter
+    """
     for vb in verb_args:
         if vb not in args:
-            return_error(405, f"incorrect query filter {vb}")
+            return_error(555, f"missing query arg {vb} BAD CODE!")
 
 
 
