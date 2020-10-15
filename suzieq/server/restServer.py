@@ -27,21 +27,85 @@ async def no_top(command: str):
     logger.warning(msg)
     raise HTTPException(status_code=404, detail=msg)
 
-
-@app.get("/api/v1/device/{verb}", status_code=200)
-async def read_command_device(verb: str, request: Request,
+@app.get("/api/v1/address/{verb}")
+async def read_address(verb: str, request: Request,
                                 hostname: str = None, 
                                 start_time: str = "", end_time: str = "",
                                 view: str = "latest", namespace: str = "",
-                                columns: str = None,
+                                columns: str = None, ipvers: str = None,
+                                vrf: str = None
                                 ):
-    command = 'device'
+    command = 'address'
+    arguments = ['hostname', 'start_time', 'end_time','view', 'namespace', 
+                 'columns', 'ipvers', 'vrf']
+    check_arguments(locals(), arguments)
+
     verb = cleanup_verb(verb)
     command_args, verb_args = get_filters(request.query_params)
 
     res =  run_command_verb(command, verb, command_args, verb_args)
-    find_missing_args(verb_args, ['hostname', 'start_time', 'end_time',
-                                        'view', 'namespace', 'columns'])
+    find_missing_args(verb_args, arguments)
+    return res
+
+@app.get("/api/v1/arpnd/{verb}")
+async def read_address(verb: str, request: Request,
+                                hostname: str = None, 
+                                start_time: str = "", end_time: str = "",
+                                view: str = "latest", namespace: str = "",
+                                columns: str = None, vrf: str = None,
+                                macaddr: str = None, ipAddress: str = None,
+                                oif: str = None,
+                                ):
+    command = 'arpnd'
+    arguments = ['hostname', 'start_time', 'end_time','view', 'namespace', 
+                 'columns', 'vrf', 'macaddr', 'ipAddress', 'oif']
+    check_arguments(locals(), arguments)
+
+    verb = cleanup_verb(verb)
+    command_args, verb_args = get_filters(request.query_params)
+
+    res =  run_command_verb(command, verb, command_args, verb_args)
+    find_missing_args(verb_args, arguments)
+    return res
+
+@app.get("/api/v1/bgp/{verb}")
+async def read_address(verb: str, request: Request,
+                                hostname: str = None, 
+                                start_time: str = "", end_time: str = "",
+                                view: str = "latest", namespace: str = "",
+                                columns: str = None, vrf: str = None,
+                                macaddr: str = None, peer: str = None,
+                                status: str = None,
+                                ):
+    command = 'bgp'
+    arguments = ['hostname', 'start_time', 'end_time','view', 'namespace', 
+                 'columns', 'vrf', 'peer', 'status']
+    check_arguments(locals(), arguments)
+
+    verb = cleanup_verb(verb)
+    command_args, verb_args = get_filters(request.query_params)
+
+    res =  run_command_verb(command, verb, command_args, verb_args)
+    find_missing_args(verb_args, arguments)
+    return res
+
+@app.get("/api/v1/device/{verb}", status_code=200)
+async def read_device(verb: str, request: Request,
+                                hostname: str = None, 
+                                start_time: str = "", end_time: str = "",
+                                view: str = "latest", namespace: str = "",
+                                columns: str = None, 
+                                ):
+    command = 'device'
+    arguments = ['hostname', 'start_time', 'end_time',
+                  'view', 'namespace', 'columns']
+    check_arguments(locals(), arguments)
+
+    verb = cleanup_verb(verb)
+    command_args, verb_args = get_filters(request.query_params)
+
+    res =  run_command_verb(command, verb, command_args, verb_args)
+    find_missing_args(verb_args, arguments)
     return res
 
 def get_filters(query_params):
@@ -79,6 +143,12 @@ def find_missing_args(verb_args: dict, args: str):
     for vb in verb_args:
         if vb not in args:
             return_error(555, f"missing query arg {vb} BAD CODE!")
+
+def check_arguments(locals: list , arguments: list):
+    """checks if the arguements to be checked are the arguements of the function"""
+    for a in arguments:
+        if a not in locals: # then this hasn't been defined correctly
+            return_error(505, f"extra argument {a}, needs to be added as function argument")
 
 
 
