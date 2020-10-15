@@ -1,5 +1,5 @@
 from typing import Optional
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, Request
 import logging
 import uuid
 import uvicorn
@@ -27,25 +27,57 @@ async def no_top(command: str):
     logger.warning(msg)
     raise HTTPException(status_code=404, detail=msg)
 
-#@app.get("/api/v1/topology/{verb}")
-async def read_command_topology(verb: str, hostname: str = None, 
+@app.get("/api/v1/device/{verb}", status_code=200)
+async def read_command_device(verb: str, request: Request,
+                                hostname: str = None, 
                                 start_time: str = "", end_time: str = "",
                                 view: str = "latest", namespace: str = "",
                                 columns: str = None,
                                 polled_neighbor: bool = False):
-    command = 'topology'
+    command = 'device'
     verb = cleanup_verb(verb)
-    command_args = create_command_args(hostname, start_time, end_time, view, 
-                                       namespace, columns)
-    if columns:
-        columns=columns.split()
-    verb_args = create_verb_args(namespace=namespace.split(), columns=columns, 
-                                 polled_neighbor=polled_neighbor,
-                                )
+                             
+    command_args, verb_args = get_filters(request.query_params)
+    # compare_params_with_args(verb_args, ['hostname', 'start_time', 'end_time',
+    #                                      'view', 'namespace', 'columns', 
+    #                                      'polled_neighbor'])
+    print(command_args)
+    print(verb_args)
     return run_command_verb(command, verb, command_args, verb_args)
 
+def get_filters(query_params):
+    command_args = {}
+    extra_args = {}
+    possible_args = ['hostname', 'namespace', 'start_time', 'end_time', 'view', 'columns']
+    split_args = ['namespace', 'columns']
+    both_verb_and_command = ['namespace', 'hostname', 'columns']
+    for param in query_params:
+        if param in possible_args:
+            if query_params[param] is not None:
+                command_args[param] = query_params[param]
+                if param in split_args:
+                    command_args[param] = command_args[param].split()
+                if param in both_verb_and_command:
+                    extra_args[param] = command_args[param]
+        else:
+            extra_args[param] = query_params[param]
+    return command_args, extra_args
+
+
+
+def compare_params_with_args(verb_args: dict, args: str):
+    """compares args defined in function with params to make sure we have defined
+    the right arguments, not too many, and not too few"""
+    for vb in verb_args:
+        if vb not in args:
+            return_error(405, f"incorrect query filter {vb}")
+
+
+
+
 @app.get("/api/v1/{command}/{verb}")
-async def read_command(command: str, verb: str, hostname: str = None,
+async def read_command(command: str, verb: str, request: Request,
+                       hostname: str = None,
                        start_time: str = "", end_time: str = "",
                        view: str = "latest", namespace: str = "",
                        address: str = None,
@@ -60,7 +92,7 @@ async def read_command(command: str, verb: str, hostname: str = None,
                        interface_type: str = Query(None, alias="type"),
                        vlan: str = None, remoteVtepIp: str = None, bd: str = None,
                        localOnly: bool = None, prefixlen: str = None, service: str = None,
-                       polled_neighbor: bool = None,
+                       polled_neighbor: bool = None, 
                        ):
     """
     Get data from **command** and **verb**
@@ -91,12 +123,14 @@ async def read_command(command: str, verb: str, hostname: str = None,
 
     return run_command_verb(command, verb, command_args, verb_args)
 
+
 def create_verb_args(**kwargs):
     verb_args = {}
     for a in kwargs:
         if kwargs[a] is not None:
             verb_args[a] = kwargs[a]
     return verb_args
+
 
 def cleanup_verb(verb):
     if verb == 'show':
@@ -140,51 +174,47 @@ def get_svc(command):
 
 
 def run_command_verb(command, verb, command_args, verb_args):
+    """ 
+    Runs the command and verb with the command_args and verb_args as dictionaries
+
+    HTTP Return Codes
+        404 -- Missing command or argument (including missing valid path)
+        405 -- Missing or incorrect query parameters
+        422 -- 
+        500 -- Exceptions
+    """
     svc = get_svc(command)
     try:
         df = getattr(svc(**command_args, config_file=app.cfg_file), verb)(**verb_args)
 
     except AttributeError as err:
-        u = uuid.uuid1()
-        msg = f"{verb} not supported for {command} or missing arguement: {err} id={u}"
-        logger.warning(msg)
-        raise HTTPException(status_code=404, detail=msg)
+        return_error(404, f"{verb} not supported for {command} or missing arguement: {err}")
 
     except NotImplementedError as err:
-        u = uuid.uuid1()
-        msg = f"{verb} not supported for {command}: {err} id={u}"
-        logger.warning(msg)
-        raise HTTPException(status_code=404, detail=msg)
+        return_error(404, f"{verb} not supported for {command}: {err}")
 
     except TypeError as err:
-        u = uuid.uuid1()
-        msg = f"bad keyword/filter for {command} {verb}: {err} id={u}"
-        logger.warning(msg)
-        raise HTTPException(status_code=405, detail=msg)
+        return_error(405, f"bad keyword/filter for {command} {verb}: {err}")
 
     except ValueError as err:
-        u = uuid.uuid1()
-        msg = f"bad keyword/filter for {command} {verb}: {err} id={u}"
-        logger.warning(msg)
-        raise HTTPException(status_code=405, detail=msg)
+        return_error(405, f"bad keyword/filter for {command} {verb}: {err}")
 
     except Exception as err:
-        u = uuid.uuid1()
-        msg = f"exceptional exception {verb} for {command} of type {type(err)}: {err} id={u}"
-        logger.warning(msg)
-        raise HTTPException(status_code=500,
-                            detail=msg)
+        return_error(500, f"exceptional exception {verb} for {command} of type {type(err)}: {err}")
 
     if df.columns.to_list() == ['error']:
-        u = uuid.uuid1()
-        msg = f"bad keyword/filter for {command} {verb}: {df['error'][0]} id={u}"
-        logger.warning(msg)
-        raise HTTPException(status_code=405, detail=msg)
+        return_error(405, f"bad keyword/filter for {command} {verb}: {df['error'][0]}")
 
     return df.to_json(orient="records")
 
+def return_error(code: int, msg: str):
+    u = uuid.uuid1()
+    msg = f"{msg} id={u}"
+    logger.warning(msg)
+    raise HTTPException(status_code=code, detail=msg)
 
-@app.get("/api/v1/{command}", status_code=404)
+
+@app.get("/api/v1/{command}")
 def missing_verb(command):
     u = uuid.uuid1()
     msg = f"{command} command missing a verb. for example '/api/v1/{command}/show' id={u}"
@@ -192,7 +222,7 @@ def missing_verb(command):
     raise HTTPException(status_code=404, detail=msg)
 
 
-@app.get("/", status_code=404)
+@app.get("/")
 def bad_path():
     u = uuid.uuid1()
     msg = f"bad path. you want to use something like '/api/v1/device/show' id={u}"
@@ -219,4 +249,5 @@ if __name__ == "__main__":
     check_config_file(userargs.config)
     app.cfg_file = userargs.config
 
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8000,
+                log_level='info', )
