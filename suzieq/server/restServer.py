@@ -6,6 +6,7 @@ import uvicorn
 import argparse
 import sys
 import yaml
+import inspect
 
 from suzieq.sqobjects import *
 from suzieq.utils import validate_sq_config
@@ -27,130 +28,80 @@ async def no_top(command: str):
     logger.warning(msg)
     raise HTTPException(status_code=404, detail=msg)
 
+
 @app.get("/api/v1/address/{verb}")
-async def read_address(verb: str, request: Request,
-                                hostname: str = None, 
-                                start_time: str = "", end_time: str = "",
-                                view: str = "latest", namespace: str = "",
-                                columns: str = None, ipvers: str = None,
-                                vrf: str = None
-                                ):
+async def read_address(verb: str,
+                       hostname: str = None, 
+                       start_time: str = "", end_time: str = "",
+                       view: str = "latest", namespace: str = None,
+                       columns: str = None, ipvers: str = None,
+                       vrf: str = None
+                       ):
     command = 'address'
-    arguments = ['hostname', 'start_time', 'end_time','view', 'namespace', 
-                 'columns', 'ipvers', 'vrf']
-    check_arguments(locals(), arguments)
+    command_args, verb_args = create_filters(read_address, locals())  
 
     verb = cleanup_verb(verb)
-    command_args, verb_args = get_filters(request.query_params)
 
-    res =  run_command_verb(command, verb, command_args, verb_args)
-    find_missing_args(verb_args, arguments)
-    return res
+    return  run_command_verb(command, verb, command_args, verb_args)
+
 
 @app.get("/api/v1/arpnd/{verb}")
-async def read_address(verb: str, request: Request,
-                                hostname: str = None, 
-                                start_time: str = "", end_time: str = "",
-                                view: str = "latest", namespace: str = "",
-                                columns: str = None, vrf: str = None,
-                                macaddr: str = None, ipAddress: str = None,
-                                oif: str = None,
-                                ):
+async def read_arpnd(verb: str,
+                       hostname: str = None, 
+                       start_time: str = "", end_time: str = "",
+                       view: str = "latest", namespace: str = None,
+                       columns: str = None, oif: str = None,
+                       macaddr: str = None, ipAddress: str = None
+                       ):
     command = 'arpnd'
-    arguments = ['hostname', 'start_time', 'end_time','view', 'namespace', 
-                 'columns', 'vrf', 'macaddr', 'ipAddress', 'oif']
-    check_arguments(locals(), arguments)
+    command_args, verb_args = create_filters(read_arpnd, locals())  
 
     verb = cleanup_verb(verb)
-    command_args, verb_args = get_filters(request.query_params)
 
-    res =  run_command_verb(command, verb, command_args, verb_args)
-    find_missing_args(verb_args, arguments)
-    return res
+    return  run_command_verb(command, verb, command_args, verb_args)
+
 
 @app.get("/api/v1/bgp/{verb}")
-async def read_address(verb: str, request: Request,
-                                hostname: str = None, 
-                                start_time: str = "", end_time: str = "",
-                                view: str = "latest", namespace: str = "",
-                                columns: str = None, vrf: str = None,
-                                macaddr: str = None, peer: str = None,
-                                status: str = None,
-                                ):
+async def read_bgp(verb: str,
+                       hostname: str = None, 
+                       start_time: str = "", end_time: str = "",
+                       view: str = "latest", namespace: str = None,
+                       columns: str = None, status: str = None,
+                       vrf: str = None, peer: str = None,
+                       ):
     command = 'bgp'
-    arguments = ['hostname', 'start_time', 'end_time','view', 'namespace', 
-                 'columns', 'vrf', 'peer', 'status']
-    check_arguments(locals(), arguments)
+    command_args, verb_args = create_filters(read_bgp, locals())  
 
     verb = cleanup_verb(verb)
-    command_args, verb_args = get_filters(request.query_params)
 
-    res =  run_command_verb(command, verb, command_args, verb_args)
-    find_missing_args(verb_args, arguments)
-    return res
+    return  run_command_verb(command, verb, command_args, verb_args)
 
-@app.get("/api/v1/device/{verb}", status_code=200)
-async def read_device(verb: str, request: Request,
-                                hostname: str = None, 
-                                start_time: str = "", end_time: str = "",
-                                view: str = "latest", namespace: str = "",
-                                columns: str = None, 
-                                ):
-    command = 'device'
-    arguments = ['hostname', 'start_time', 'end_time',
-                  'view', 'namespace', 'columns']
-    check_arguments(locals(), arguments)
 
-    verb = cleanup_verb(verb)
-    command_args, verb_args = get_filters(request.query_params)
-
-    res =  run_command_verb(command, verb, command_args, verb_args)
-    find_missing_args(verb_args, arguments)
-    return res
-
-def get_filters(query_params):
-    """ Rather than use the function arguments for query filters, we directly
-    use the paramers that are sent in the request. This is because otherwise
-    fastapi drops queries not specified as arguments, and we want to return 
-    errors in that case
-    """
+def create_filters(function, locals):
     command_args = {}
-    extra_args = {}
+    verb_args = {}
+    remove_args = ['verb']
     possible_args = ['hostname', 'namespace', 'start_time', 'end_time', 'view', 'columns']
     split_args = ['namespace', 'columns']
     both_verb_and_command = ['namespace', 'hostname', 'columns']
-    for param in query_params:
-        if param in possible_args:
-            if query_params[param] is not None:
-                command_args[param] = query_params[param]
-                if param in split_args:
-                    command_args[param] = command_args[param].split()
-                if param in both_verb_and_command:
-                    extra_args[param] = command_args[param]
+
+    arguments = inspect.getfullargspec(function).args
+
+    for arg in arguments:
+        if arg in remove_args:
+            continue
+        if arg in possible_args:
+            if locals[arg] is not None:
+                command_args[arg] = locals[arg]
+                if arg in split_args:
+                    command_args[arg] = command_args[arg].split()
+                if arg in both_verb_and_command:
+                    verb_args[arg] = command_args[arg]
         else:
-            extra_args[param] = query_params[param]
-    return command_args, extra_args
+            if locals[arg] is not None:
+                verb_args[arg] = locals[arg]            
 
-
-def find_missing_args(verb_args: dict, args: str):
-    """compares args defined in function with params to make sure we have defined
-    the right arguments
-    The point is to help figure out if the arguments are correct, since we are only
-    using them for documentation
-
-    args needs to be the list of arguments from the function from the query filter
-    """
-    for vb in verb_args:
-        if vb not in args:
-            return_error(555, f"missing query arg {vb} BAD CODE!")
-
-def check_arguments(locals: list , arguments: list):
-    """checks if the arguements to be checked are the arguements of the function"""
-    for a in arguments:
-        if a not in locals: # then this hasn't been defined correctly
-            return_error(505, f"extra argument {a}, needs to be added as function argument")
-
-
+    return command_args, verb_args
 
 
 @app.get("/api/v1/{command}/{verb}")
@@ -166,11 +117,11 @@ async def read_command(command: str, verb: str, request: Request,
                        ipAddress: str = None, oif: str = None, macaddr: str = None,
                        peer: str = None, protocol: str = None,
                        prefix: str = None, ipvers: str = None, status: str = None,
-                       vni: str = None, mountPoint: str = None, 
+                       vni: str = None, mountPoint: str = None,
                        interface_type: str = Query(None, alias="type"),
                        vlan: str = None, remoteVtepIp: str = None, bd: str = None,
                        localOnly: bool = None, prefixlen: str = None, service: str = None,
-                       polled_neighbor: bool = None, 
+                       polled_neighbor: bool = None, usedPercent: str = None,
                        ):
     """
     Get data from **command** and **verb**
@@ -178,16 +129,16 @@ async def read_command(command: str, verb: str, request: Request,
     - followed by filters, in which there are many
     """
     verb = cleanup_verb(verb)
-    command_args = create_command_args(hostname, start_time, end_time, view, 
+    command_args = create_command_args(hostname, start_time, end_time, view,
                                        namespace, columns)
 
     if columns:
-        columns=columns.split()
-    verb_args = create_verb_args(namespace=namespace.split(), 
+        columns = columns.split()
+    verb_args = create_verb_args(namespace=namespace.split(),
                                  columns=columns,
                                  vrf=vrf, hostname=hostname,
                                  source=source, dest=dest, what=what,
-                                 state=state, ifname=ifname, 
+                                 state=state, ifname=ifname,
                                  address=address,
                                  ipAddress=ipAddress, oif=oif,
                                  macaddr=macaddr, peer=peer,
@@ -196,8 +147,8 @@ async def read_command(command: str, verb: str, request: Request,
                                  type=interface_type, vlan=vlan, remoteVtepIp=remoteVtepIp,
                                  bd=bd, localOnly=localOnly, prefixlen=prefixlen,
                                  service=service, polled_neighbor=polled_neighbor,
-                                 prefix=prefix,
-                                )
+                                 prefix=prefix, usedPercent=usedPercent,
+                                 )
 
     return run_command_verb(command, verb, command_args, verb_args)
 
@@ -284,6 +235,7 @@ def run_command_verb(command, verb, command_args, verb_args):
         return_error(405, f"bad keyword/filter for {command} {verb}: {df['error'][0]}")
 
     return df.to_json(orient="records")
+
 
 def return_error(code: int, msg: str):
     u = uuid.uuid1()
