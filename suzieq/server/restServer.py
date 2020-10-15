@@ -31,53 +31,56 @@ async def no_top(command: str):
 
 @app.get("/api/v1/address/{verb}")
 async def read_address(verb: str,
-                       hostname: str = None, 
+                       hostname: str = None,
                        start_time: str = "", end_time: str = "",
                        view: str = "latest", namespace: str = None,
                        columns: str = None, ipvers: str = None,
                        vrf: str = None
                        ):
-    command = 'address'
-    command_args, verb_args = create_filters(read_address, locals())  
+    function_name = inspect.currentframe().f_code.co_name
+    command = function_name[5:]
+    command_args, verb_args = create_filters(function_name, locals())
 
     verb = cleanup_verb(verb)
 
-    return  run_command_verb(command, verb, command_args, verb_args)
+    return run_command_verb(command, verb, command_args, verb_args)
 
 
 @app.get("/api/v1/arpnd/{verb}")
 async def read_arpnd(verb: str,
-                       hostname: str = None, 
-                       start_time: str = "", end_time: str = "",
-                       view: str = "latest", namespace: str = None,
-                       columns: str = None, oif: str = None,
-                       macaddr: str = None, ipAddress: str = None
-                       ):
-    command = 'arpnd'
-    command_args, verb_args = create_filters(read_arpnd, locals())  
+                     hostname: str = None,
+                     start_time: str = "", end_time: str = "",
+                     view: str = "latest", namespace: str = None,
+                     columns: str = None, oif: str = None,
+                     macaddr: str = None, ipAddress: str = None
+                     ):
+    function_name = inspect.currentframe().f_code.co_name
+    command = function_name[5:]
+    command_args, verb_args = create_filters(function_name, locals())
 
     verb = cleanup_verb(verb)
 
-    return  run_command_verb(command, verb, command_args, verb_args)
+    return run_command_verb(command, verb, command_args, verb_args)
 
 
 @app.get("/api/v1/bgp/{verb}")
 async def read_bgp(verb: str,
-                       hostname: str = None, 
-                       start_time: str = "", end_time: str = "",
-                       view: str = "latest", namespace: str = None,
-                       columns: str = None, status: str = None,
-                       vrf: str = None, peer: str = None,
-                       ):
-    command = 'bgp'
-    command_args, verb_args = create_filters(read_bgp, locals())  
+                   hostname: str = None,
+                   start_time: str = "", end_time: str = "",
+                   view: str = "latest", namespace: str = None,
+                   columns: str = None, status: str = None,
+                   vrf: str = None, peer: str = None,
+                   ):
 
+    function_name = inspect.currentframe().f_code.co_name
+    command = function_name[5:]
+    command_args, verb_args = create_filters(function_name, locals())
     verb = cleanup_verb(verb)
 
-    return  run_command_verb(command, verb, command_args, verb_args)
+    return run_command_verb(command, verb, command_args, verb_args)
 
 
-def create_filters(function, locals):
+def create_filters(function_name, locals):
     command_args = {}
     verb_args = {}
     remove_args = ['verb']
@@ -85,7 +88,7 @@ def create_filters(function, locals):
     split_args = ['namespace', 'columns']
     both_verb_and_command = ['namespace', 'hostname', 'columns']
 
-    arguments = inspect.getfullargspec(function).args
+    arguments = inspect.getfullargspec(globals()[function_name]).args
 
     for arg in arguments:
         if arg in remove_args:
@@ -99,7 +102,7 @@ def create_filters(function, locals):
                     verb_args[arg] = command_args[arg]
         else:
             if locals[arg] is not None:
-                verb_args[arg] = locals[arg]            
+                verb_args[arg] = locals[arg]
 
     return command_args, verb_args
 
