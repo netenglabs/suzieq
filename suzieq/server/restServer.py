@@ -64,6 +64,195 @@ async def read_arpnd(verb: str,
     return read_shared(function_name, verb, locals())
 
 
+@app.get("/api/v1/bgp/{verb}")
+async def read_bgp(verb: str,
+                   hostname: str = None,
+                   start_time: str = "", end_time: str = "",
+                   view: str = "latest", namespace: str = None,
+                   columns: str = None, peer: str = None,
+                   state: str = None, status: str = None,
+                   vrf: str = None,
+                   ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, locals())
+
+
+@app.get("/api/v1/device/{verb}")
+async def read_device(verb: str,
+                      hostname: str = None,
+                      start_time: str = "", end_time: str = "",
+                      view: str = "latest", namespace: str = None,
+                      columns: str = None,
+                      ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, locals())
+
+
+@app.get("/api/v1/evpnVni/{verb}")
+async def read_evpnVni(verb: str,
+                       hostname: str = None,
+                       start_time: str = "", end_time: str = "",
+                       view: str = "latest", namespace: str = None,
+                       columns: str = None, vni: str = None,
+                       ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, locals())
+
+
+@app.get("/api/v1/fs/{verb}")
+async def read_fs(verb: str,
+                  hostname: str = None,
+                  start_time: str = "", end_time: str = "",
+                  view: str = "latest", namespace: str = None,
+                  columns: str = None, mountPoint: str = None,
+                  usedPercent: str = None
+                  ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, locals())
+
+
+@app.get("/api/v1/interface/{verb}")
+async def read_interface(verb: str,
+                         hostname: str = None,
+                         start_time: str = "", end_time: str = "",
+                         view: str = "latest", namespace: str = None,
+                         columns: str = None,
+                         ifname: str = None, state: str = None,
+                         type: str = None, what: str = None,
+                         matchval: int = Query(None, alias="value")
+                         ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, locals())
+
+
+@app.get("/api/v1/lldp/{verb}")
+async def read_lldp(verb: str,
+                    hostname: str = None,
+                    start_time: str = "", end_time: str = "",
+                    view: str = "latest", namespace: str = None,
+                    columns: str = None, ifname: str = None
+                    ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, locals())
+
+
+@app.get("/api/v1/mlag/{verb}")
+async def read_mlag(verb: str,
+                    hostname: str = None,
+                    start_time: str = "", end_time: str = "",
+                    view: str = "latest", namespace: str = None,
+                    columns: str = None,
+                    ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, locals())
+
+
+@app.get("/api/v1/ospf/{verb}")
+async def read_ospf(verb: str,
+                    hostname: str = None,
+                    start_time: str = "", end_time: str = "",
+                    view: str = "latest", namespace: str = None,
+                    columns: str = None,  ifname: str = None,
+                    state: str = None,
+                    vrf: str = None,
+                    ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, locals())
+
+
+@app.get("/api/v1/mac/{verb}")
+async def read_mac(verb: str,
+                   hostname: str = None,
+                   start_time: str = "", end_time: str = "",
+                   view: str = "latest", namespace: str = None,
+                   columns: str = None, bd: str = None,
+                   localOnly: str = None,
+                   macaddr: str = None, remoteVtepIp: str = None,
+                   vlan: str = None,
+                   ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, locals())
+
+
+# path doesn't support unique at all
+@app.get("/api/v1/path/unique")
+async def no_path_unique():
+    return return_error(404, 'Unique not supported for path')
+
+
+@app.get("/api/v1/path/{verb}")
+async def read_path(verb: str,
+                    hostname: str = None,
+                    start_time: str = "", end_time: str = "",
+                    view: str = "latest", namespace: str = None,
+                    columns: str = None,
+                    dest: str = None,
+                    source: str = Query(None, alias="src")
+                    ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, locals())
+
+
+@app.get("/api/v1/route/{verb}")
+async def read_route(verb: str,
+                     hostname: str = None,
+                     start_time: str = "", end_time: str = "",
+                     view: str = "latest", namespace: str = None,
+                     columns: str = None, prefix: str = None,
+                     vrf: str = None, protocol: str = None,
+                     prefixlen: str = None, ipvers: str = None,
+                     add_filter: str = None, address: str = None,
+                     ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, locals())
+
+
+@app.get("/api/v1/sqpoller/{verb}")
+async def read_sqpoller(verb: str,
+                        hostname: str = None,
+                        start_time: str = "", end_time: str = "",
+                        view: str = "latest", namespace: str = None,
+                        columns: str = None, service: str = None,
+                        add_filter: str = None
+                        ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, locals())
+
+
+@app.get("/api/v1/topology/{verb}")
+async def read_topology(verb: str,
+                        hostname: str = None,
+                        start_time: str = "", end_time: str = "",
+                        view: str = "latest", namespace: str = None,
+                        columns: str = None, polled_neighbor: bool = None,
+                        vrf: str = None,
+                        ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, locals())
+
+
+@app.get("/api/v1/vlan/{verb}")
+async def read_vlan(verb: str,
+                    hostname: str = None,
+                    start_time: str = "", end_time: str = "",
+                    view: str = "latest", namespace: str = None,
+                    columns: str = None, vlan: str = None,
+                    ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, locals())
+
+
+@app.get("/api/v1/table/{verb}")
+async def read_table(verb: str,
+                     hostname: str = None,
+                     start_time: str = "", end_time: str = "",
+                     view: str = "latest", namespace: str = None,
+                     columns: str = None,
+                     ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, locals())
+
+
 def read_shared(function_name, verb, local_variables):
     """all the shared code for each of thse read functions"""
 
@@ -150,7 +339,10 @@ def get_svc(command):
     try:
         module = globals()[command]
     except KeyError:
-        command = f"{command}s"
+        if command == 'sqpoller':
+            command = 'sqPoller'
+        else:
+            command = f"{command}s"
         module = globals()[command]
 
     try:
@@ -159,6 +351,8 @@ def get_svc(command):
         if command == 'interfaces':
             # interfaces doesn't follow the same pattern as everything else
             svc = getattr(module, 'IfObj')
+        elif command == 'sqPoller':
+            svc = getattr(module, 'SqPollerObj')
         else:
             svc = getattr(module, f"{command_name.title()}Obj")
     return svc

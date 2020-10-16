@@ -9,10 +9,9 @@ class OspfObj(SqObject):
         super().__init__(table='ospf', **kwargs)
         self._addnl_fields = ['passive', 'area', 'state']
         self._addnl_nbr_fields = ['state']
-        self._valid_get_args = ['namespace', 'hostname', 'vrf', 'ifname',
-                                'state']
-        self._valid_assert_args = ['namespace', 'hostname', 'start_time',
-                                  'end_time', 'vrf', 'ifname']        
+        self._valid_get_args = ['namespace', 'hostname', 'columns',
+                                'vrf', 'ifname', 'state']
+        self._valid_assert_args = ['namespace', 'hostname', 'vrf', 'ifname']        
 
     def aver(self, **kwargs):
         """Assert that the OSPF state is OK"""

@@ -10,7 +10,7 @@ class TablesObj(SqObject):
     def __init__(self, **kwargs):
         # We're passing any table name to get init to work
         super().__init__(table='device', **kwargs)
-        self._valid_get_args = ['namespace', 'hostname',]
+        self._valid_get_args = ['namespace', 'hostname', 'columns',]
         
     def get(self, **kwargs):
         """Show the tables for which we have information"""

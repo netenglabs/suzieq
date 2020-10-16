@@ -78,6 +78,13 @@ GOOD_VERB_FILTERS = {
     'unique': ['columns=namespace']
 }
 
+GOOD_SERVICE_VERB_FILTER = {
+    'path/show': ['dest=172.16.2.104&src=172.16.1.101&namespace=ospf-ibgp'],
+    'path/summarize': ['dest=172.16.2.104&src=172.16.1.101&namespace=ospf-ibgp'],
+    'route/lpm': ['address=10.127.1.2', 'address=10.127.1.2&view=all'],
+
+}
+
 
 # these service/verb pairs should return errors
 BAD_VERBS = {'address/assert': 404, 'address/lpm': 404,
@@ -91,8 +98,9 @@ BAD_VERBS = {'address/assert': 404, 'address/lpm': 404,
              'mac/assert': 404, 'mac/lpm': 404,
              'mlag/assert': 404, 'mlag/lpm': 404,
              'ospf/lpm': 404,
-             'path/assert': 404,
+             'path/assert': 404, 'path/unique': 404,
              'path/lpm': 404,
+             'sqpoller/assert': 404, 'sqpoller/lpm': 404,
              'route/assert': 404,
              'topology/assert': 404,
              'topology/lpm': 404,
@@ -103,7 +111,7 @@ BAD_VERBS = {'address/assert': 404, 'address/lpm': 404,
 BAD_VERB_FILTERS = {
     'assert?address=10.0.0.1': 405,
     'assert?columns=namespace': 405,
-    'assert?dest=172.16.2.104&src=172.16.1.101&namespace=ospf-ibgp': 405,
+    # 'assert?dest=172.16.2.104&src=172.16.1.101&namespace=ospf-ibgp': 405,
     # 'summarize?address=10.127.1.2': 405,
     # 'summarize?address=10.127.1.2&view=all': 405,
     'summarize?columns=namespace': 405,
@@ -130,23 +138,59 @@ BAD_FILTERS = {
     'arpnd/summarize?macaddr=22:5c:65:2f:98:b6': 405,
     'arpnd/summarize?ipAddress=10.127.1.2': 405,
     'arpnd/summarize?oif=eth1.4': 405,
-    'path/show?': 404, 'path/show?columns=namespace': 404,
-    'path/show?hostname=leaf01': 404,
-    'path/show?namespace=ospf-ibgp': 404,
-    'path/show?address=10.0.0.1': 404,
-    'path/summarize?': 404,
-    'path/summarize?namespace=ospf-ibgp': 404,
-    'path/summarize?address=10.0.0.1': 404,
+    'bgp/assert?peer=eth1.2': 405,
+    'bgp/assert?status=all': 405,
+    'bgp/assert?state=up': 405,
+    'bgp/summarize?peer=eth1.2': 405,
+    'bgp/summarize?state=up': 405,
+    'bgp/summarize?status=all': 405,
+    'bgp/summarize?vrf=default': 405,
+    'evpnVni/assert?vni=13': 405,
+    'evpnVni/summarize?vni=13': 405,
+    'fs/summarize?usedPercent=8': 405,
+    'fs/summarize?mountPoint=/': 405,
+    'interface/assert?type=ethernet': 405,
+    'interface/summarize?ifname=swp1': 405,
+    'interface/summarize?state=up': 405,
+    'interface/summarize?type=ethernet': 405,
+    'lldp/summarize?ifname=swp1': 405,
+    'mac/summarize?bd=': 405,
+    'mac/summarize?macaddr=22:5c:65:2f:98:b6': 405,
+    'mac/summarize?localOnly=True': 405,
+    'mac/summarize?remoteVtepIp=10.0.0.101': 405,
+    'mac/summarize?vlan=13': 405,
+    'ospf/assert?state=up': 405,
+    'ospf/summarize?ifname=swp1': 405,
+    'ospf/summarize?state=up': 405,
+    'ospf/summarize?vrf=default': 405,
+    # 'path/show?': 404, 'path/show?columns=namespace': 404,
+    # 'path/show?hostname=leaf01': 404,
+    # 'path/show?namespace=ospf-ibgp': 404,
+    # 'path/show?address=10.0.0.1': 404,
+    # 'path/summarize?': 404,
+    # 'path/summarize?namespace=ospf-ibgp': 404,
+    # 'path/summarize?address=10.0.0.1': 404,
     'path/summarize?hostname=leaf01': 404,
     'path/summarize?columns=namespace': 404,
-    'path/summarize?view=latest': 404,
-    'path/show?view=latest': 404,
-    'path/unique?columns=namespace': 404,
+    # 'path/summarize?view=latest': 404,
+    # 'path/show?view=latest': 404,
+    # 'path/unique?columns=namespace': 404,
     'route/lpm?': 404, 'route/lpm?columns=namespace': 404,
     'route/lpm?hostname=leaf01': 404,
     'route/lpm?namespace=ospf-ibgp': 404,
+    'route/summarize?address=10.127.1.2': 405,
+    'route/summarize?address=10.127.1.2&view=all': 405,
+    'route/summarize?ipvers=v4': 405,
+    'route/summarize?prefix=10.0.0.101/32': 405,
+    'route/summarize?prefixlen=24': 405,
+    'route/summarize?protocol=bgp': 405,
     'route/show?columns=namespace': 500,
+    'route/show?ipvers=v4': 405,
     'route/lpm?view=latest': 404,
+    'sqpoller/summarize?service=device': 405,
+    'topology/summarize?vrf=default': 405,
+
+    'vlan/summarize?vlan=13': 405
 }
 
 
@@ -172,6 +216,8 @@ def get(endpoint, service, verb, args):
         #      assert response.status_code == 405 or response.status_code == 404
         elif verb in GOOD_VERB_FILTERS:
             assert args not in GOOD_VERB_FILTERS[verb]
+        elif c_v in GOOD_SERVICE_VERB_FILTER:
+            assert args not in GOOD_SERVICE_VERB_FILTER[c_v]
         else:
             print(f" RESPONSE {response.status_code} {response.content.decode('utf8')}")
             response.raise_for_status()
@@ -183,13 +229,18 @@ def get(endpoint, service, verb, args):
         #     assert c_v in GOOD_FILTERS_FOR_SERVICE_VERB[args]
         if verb in GOOD_VERB_FILTERS:
             assert args in GOOD_VERB_FILTERS[verb]
+        if c_v in GOOD_SERVICE_VERB_FILTER:
+            assert args in GOOD_SERVICE_VERB_FILTER[c_v]
 
         # make sure it's not empty when it shouldn't be
         assert len(response.content.decode('utf8')) > 10
     return response.status_code
 
 
-cli_commands = ['address',  'arpnd', ]  # 'bgp']
+cli_commands = ['address',  'arpnd', 'bgp', 'device',
+                'evpnVni', 'fs', 'interface', 'lldp',
+                'mac', 'mlag', 'ospf', 'path', 'route',
+                'sqpoller', 'topology', 'vlan']
 
 
 @pytest.mark.parametrize("service, verb, arg", [
