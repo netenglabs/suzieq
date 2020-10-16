@@ -11,6 +11,7 @@ import inspect
 from suzieq.sqobjects import *
 from suzieq.utils import validate_sq_config
 
+
 app = FastAPI()
 
 # TODO: logging to this file isn't working
@@ -29,21 +30,25 @@ async def no_top(command: str):
     raise HTTPException(status_code=404, detail=msg)
 
 
+"""
+each of these read functions behaves the same, it gets the arguments
+puts them into dicts and passes them to sqobjects
+
+assume that all API functions are named read_*
+"""
+
+
 @app.get("/api/v1/address/{verb}")
 async def read_address(verb: str,
                        hostname: str = None,
                        start_time: str = "", end_time: str = "",
                        view: str = "latest", namespace: str = None,
-                       columns: str = None, ipvers: str = None,
-                       vrf: str = None
+                       columns: str = None, address: str = None,
+                       ipvers: str = None,
+                       vrf: str = None,
                        ):
     function_name = inspect.currentframe().f_code.co_name
-    command = function_name[5:]
-    command_args, verb_args = create_filters(function_name, locals())
-
-    verb = cleanup_verb(verb)
-
-    return run_command_verb(command, verb, command_args, verb_args)
+    return read_shared(function_name, verb, locals())
 
 
 @app.get("/api/v1/arpnd/{verb}")
@@ -51,33 +56,42 @@ async def read_arpnd(verb: str,
                      hostname: str = None,
                      start_time: str = "", end_time: str = "",
                      view: str = "latest", namespace: str = None,
-                     columns: str = None, oif: str = None,
-                     macaddr: str = None, ipAddress: str = None
+                     columns: str = None, ipAddress: str = None,
+                     macaddr: str = None,
+                     oif: str = None
                      ):
     function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, locals())
+
+
+def read_shared(function_name, verb, local_variables):
+    """all the shared code for each of thse read functions"""
+
     command = function_name[5:]
-    command_args, verb_args = create_filters(function_name, locals())
+    command_args, verb_args = create_filters(function_name, local_variables)
 
     verb = cleanup_verb(verb)
 
-    return run_command_verb(command, verb, command_args, verb_args)
+    ret, svc_inst = run_command_verb(command, verb, command_args, verb_args)
+    check_args(function_name, svc_inst)
+    return ret
 
 
-@app.get("/api/v1/bgp/{verb}")
-async def read_bgp(verb: str,
-                   hostname: str = None,
-                   start_time: str = "", end_time: str = "",
-                   view: str = "latest", namespace: str = None,
-                   columns: str = None, status: str = None,
-                   vrf: str = None, peer: str = None,
-                   ):
+def check_args(function_name, svc_inst):
+    """make sure that all the args defined in sqobject is defined in this function"""
 
-    function_name = inspect.currentframe().f_code.co_name
-    command = function_name[5:]
-    command_args, verb_args = create_filters(function_name, locals())
-    verb = cleanup_verb(verb)
+    arguments = inspect.getfullargspec(globals()[function_name]).args
+    arguments = [i for i in arguments if i not in ['verb', 'start_time', 'end_time', 'view']]
 
-    return run_command_verb(command, verb, command_args, verb_args)
+    valid_args = set(svc_inst._valid_get_args)
+    if svc_inst._valid_assert_args:
+        valid_args = valid_args.union(svc_inst._valid_assert_args)
+
+    for arg in valid_args:
+        assert arg in arguments, f"{arg} missing from {function_name} arguments"
+
+    for arg in arguments:
+        assert arg in valid_args, f"extra argument {arg} in {function_name}"
 
 
 def create_filters(function_name, locals):
@@ -85,7 +99,7 @@ def create_filters(function_name, locals):
     verb_args = {}
     remove_args = ['verb']
     possible_args = ['hostname', 'namespace', 'start_time', 'end_time', 'view', 'columns']
-    split_args = ['namespace', 'columns']
+    split_args = ['namespace', 'columns', 'address']
     both_verb_and_command = ['namespace', 'hostname', 'columns']
 
     arguments = inspect.getfullargspec(globals()[function_name]).args
@@ -103,65 +117,10 @@ def create_filters(function_name, locals):
         else:
             if locals[arg] is not None:
                 verb_args[arg] = locals[arg]
+                if arg in split_args:
+                    verb_args[arg] = verb_args[arg].split()
 
     return command_args, verb_args
-
-
-@app.get("/api/v1/{command}/{verb}")
-async def read_command(command: str, verb: str, request: Request,
-                       hostname: str = None,
-                       start_time: str = "", end_time: str = "",
-                       view: str = "latest", namespace: str = "",
-                       address: str = None,
-                       columns: str = None, vrf: str = None,
-                       source: str = Query(None, alias="src"),
-                       dest: str = None,
-                       what: str = None, state: str = None, ifname: str = None,
-                       ipAddress: str = None, oif: str = None, macaddr: str = None,
-                       peer: str = None, protocol: str = None,
-                       prefix: str = None, ipvers: str = None, status: str = None,
-                       vni: str = None, mountPoint: str = None,
-                       interface_type: str = Query(None, alias="type"),
-                       vlan: str = None, remoteVtepIp: str = None, bd: str = None,
-                       localOnly: bool = None, prefixlen: str = None, service: str = None,
-                       polled_neighbor: bool = None, usedPercent: str = None,
-                       ):
-    """
-    Get data from **command** and **verb**
-
-    - followed by filters, in which there are many
-    """
-    verb = cleanup_verb(verb)
-    command_args = create_command_args(hostname, start_time, end_time, view,
-                                       namespace, columns)
-
-    if columns:
-        columns = columns.split()
-    verb_args = create_verb_args(namespace=namespace.split(),
-                                 columns=columns,
-                                 vrf=vrf, hostname=hostname,
-                                 source=source, dest=dest, what=what,
-                                 state=state, ifname=ifname,
-                                 address=address,
-                                 ipAddress=ipAddress, oif=oif,
-                                 macaddr=macaddr, peer=peer,
-                                 protocol=protocol, ipvers=ipvers,
-                                 status=status, vni=vni, mountPoint=mountPoint,
-                                 type=interface_type, vlan=vlan, remoteVtepIp=remoteVtepIp,
-                                 bd=bd, localOnly=localOnly, prefixlen=prefixlen,
-                                 service=service, polled_neighbor=polled_neighbor,
-                                 prefix=prefix, usedPercent=usedPercent,
-                                 )
-
-    return run_command_verb(command, verb, command_args, verb_args)
-
-
-def create_verb_args(**kwargs):
-    verb_args = {}
-    for a in kwargs:
-        if kwargs[a] is not None:
-            verb_args[a] = kwargs[a]
-    return verb_args
 
 
 def cleanup_verb(verb):
@@ -212,12 +171,13 @@ def run_command_verb(command, verb, command_args, verb_args):
     HTTP Return Codes
         404 -- Missing command or argument (including missing valid path)
         405 -- Missing or incorrect query parameters
-        422 -- 
+        422 -- FastAPI validation errors
         500 -- Exceptions
     """
     svc = get_svc(command)
     try:
-        df = getattr(svc(**command_args, config_file=app.cfg_file), verb)(**verb_args)
+        svc_inst = svc(**command_args, config_file=app.cfg_file)
+        df = getattr(svc_inst, verb)(**verb_args)
 
     except AttributeError as err:
         return_error(404, f"{verb} not supported for {command} or missing arguement: {err}")
@@ -237,7 +197,7 @@ def run_command_verb(command, verb, command_args, verb_args):
     if df.columns.to_list() == ['error']:
         return_error(405, f"bad keyword/filter for {command} {verb}: {df['error'][0]}")
 
-    return df.to_json(orient="records")
+    return df.to_json(orient="records"), svc_inst
 
 
 def return_error(code: int, msg: str):
