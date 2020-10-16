@@ -6,10 +6,10 @@ from suzieq.sqobjects.basicobj import SqObject
 class IfObj(SqObject):
     def __init__(self, **kwargs):
         super().__init__(table='interfaces', **kwargs)
-        self._valid_get_args = ['namespace', 'hostname', 'ifname',
+        self._valid_get_args = ['namespace', 'hostname', 'ifname', 'columns',
                                 'state', 'type', ]
-        self._valid_assert_args = ['namespace', 'hostname', 'start_time',
-                                  'end_time', 'ifname', 'matchval', 'peerIfname']
+        self._valid_assert_args = ['namespace', 'hostname', 'ifname', 'state', 
+                                    'what', 'matchval']
 
     def summarize(self, namespace=[]):
         """Summarize routing info for one or more namespaces"""

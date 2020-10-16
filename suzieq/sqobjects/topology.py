@@ -16,10 +16,10 @@ from suzieq.exceptions import NoLLdpError, EmptyDataframeError, PathLoopError
 class TopologyObj(basicobj.SqObject):
     def __init__(self, **kwargs):
         super().__init__(table='bgp', **kwargs)
-        self._sort_fields = ["namespace", "hostname"]
+        self._sort_fields = ["namespace", "hostname", 'columns',]
         self._cat_fields = []
-        self._valid_get_args = ['namespace', 'hostname', 'polled_neighbor',
-                                'vrf']
+        self._valid_get_args = ['namespace', 'hostname', 'columns', 
+                                'polled_neighbor', 'vrf']
 
     def get(self, **kwargs):
         try:

@@ -5,7 +5,7 @@ from suzieq.sqobjects.basicobj import SqObject
 class MacsObj(SqObject):
     def __init__(self, **kwargs):
         super().__init__(table='macs', **kwargs)
-        self._valid_get_args = ['namespace', 'hostname', 'macaddr',
+        self._valid_get_args = ['namespace', 'hostname', 'columns', 'macaddr',
                                 'remoteVtepIp', 'vlan', 'localOnly', 'bd']
    
     def validate_get_input(self, **kwargs):
