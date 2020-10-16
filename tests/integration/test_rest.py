@@ -103,25 +103,33 @@ BAD_VERBS = {'address/assert': 404, 'address/lpm': 404,
 BAD_VERB_FILTERS = {
     'assert?address=10.0.0.1': 405,
     'assert?columns=namespace': 405,
-    #'assert?dest=172.16.2.104&src=172.16.1.101&namespace=ospf-ibgp': 405,
-    #'summarize?address=10.127.1.2': 405,
+    'assert?dest=172.16.2.104&src=172.16.1.101&namespace=ospf-ibgp': 405,
+    # 'summarize?address=10.127.1.2': 405,
+    # 'summarize?address=10.127.1.2&view=all': 405,
     'summarize?columns=namespace': 405,
     'summarize?hostname=leaf01': 405,
-    #'summarize?ipAddress=10.0.0.1': 405,
-    #'summarize?ipvers=v4': 405,
-    #'summarize?macaddr=22:5c:65:2f:98:b6': 405,
-    #'summarize?vrf=default': 405,
-    #'summarize?oif=eth1.4': 405,
+    # 'summarize?ipAddress=10.0.0.1': 405,
+    # 'summarize?ipvers=v4': 405,
+    # 'summarize?macaddr=22:5c:65:2f:98:b6': 405,
+    # 'summarize?vrf=default': 405,
+    # 'summarize?oif=eth1.4': 405,
     'unique?': 405,
     'unique?hostname=leaf01': 405,
     'unique?namespace=ospf-ibgp': 405,
     'unique?view=latest': 405,
-    
+
 }
 
 # these service/verb/filter tuples should return errors
 #  because they are invalid filters for the service/verb combos
 BAD_FILTERS = {
+    'address/summarize?address=10.127.1.2': 405,
+    'address/summarize?address=10.127.1.2&view=all': 405,
+    'address/summarize?ipvers=v4': 405,
+    'address/summarize?vrf=default': 405,
+    'arpnd/summarize?macaddr=22:5c:65:2f:98:b6': 405,
+    'arpnd/summarize?ipAddress=10.127.1.2': 405,
+    'arpnd/summarize?oif=eth1.4': 405,
     'path/show?': 404, 'path/show?columns=namespace': 404,
     'path/show?hostname=leaf01': 404,
     'path/show?namespace=ospf-ibgp': 404,
@@ -158,9 +166,10 @@ def get(endpoint, service, verb, args):
             assert BAD_FILTERS[c_v_f] == response.status_code, response.content.decode('utf8')
         elif v_f in BAD_VERB_FILTERS:
             assert BAD_VERB_FILTERS[v_f] == response.status_code, response.content.decode('utf8')
-        elif args in GOOD_FILTERS_FOR_SERVICE_VERB:
-             assert c_v not in GOOD_FILTERS_FOR_SERVICE_VERB[args]
-             assert response.status_code == 405 or response.status_code == 404
+        # elif args in GOOD_FILTERS_FOR_SERVICE_VERB:
+
+        #      assert c_v not in GOOD_FILTERS_FOR_SERVICE_VERB[args]
+        #      assert response.status_code == 405 or response.status_code == 404
         elif verb in GOOD_VERB_FILTERS:
             assert args not in GOOD_VERB_FILTERS[verb]
         else:
@@ -175,11 +184,14 @@ def get(endpoint, service, verb, args):
         if verb in GOOD_VERB_FILTERS:
             assert args in GOOD_VERB_FILTERS[verb]
 
-        # make sure it's not empty when it shouldn't be    
+        # make sure it's not empty when it shouldn't be
         assert len(response.content.decode('utf8')) > 10
     return response.status_code
 
-cli_commands = ['address', 'arpnd', 'bgp']
+
+cli_commands = ['address',  'arpnd', ]  # 'bgp']
+
+
 @pytest.mark.parametrize("service, verb, arg", [
     (cmd, verb, filter) for cmd in cli_commands
     for verb in VERBS for filter in FILTERS
