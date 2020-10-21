@@ -256,7 +256,7 @@ async def read_table(verb: str,
 def read_shared(function_name, verb, local_variables):
     """all the shared code for each of thse read functions"""
 
-    command = function_name[5:]
+    command = function_name[5:] # assumes the name of the function is read_*
     command_args, verb_args = create_filters(function_name, local_variables)
 
     verb = cleanup_verb(verb)
@@ -267,7 +267,7 @@ def read_shared(function_name, verb, local_variables):
 
 
 def check_args(function_name, svc_inst):
-    """make sure that all the args defined in sqobject is defined in this function"""
+    """make sure that all the args defined in sqobject are defined in the function"""
 
     arguments = inspect.getfullargspec(globals()[function_name]).args
     arguments = [i for i in arguments if i not in ['verb', 'start_time', 'end_time', 'view']]
@@ -332,6 +332,9 @@ def create_command_args(hostname='', start_time='', end_time='', view='latest',
 
 
 def get_svc(command):
+    """based on the command, find the module and service that the command is in
+    return the service
+    """
     command_name = command
 
     # we almost have a consistent naming scheme, but not quite.
@@ -403,18 +406,12 @@ def return_error(code: int, msg: str):
 
 @app.get("/api/v1/{command}")
 def missing_verb(command):
-    u = uuid.uuid1()
-    msg = f"{command} command missing a verb. for example '/api/v1/{command}/show' id={u}"
-    logger.warning(msg)
-    raise HTTPException(status_code=404, detail=msg)
+    return_error(404, f"{command} command missing a verb. for example '/api/v1/{command}/show'")
 
 
 @app.get("/")
 def bad_path():
-    u = uuid.uuid1()
-    msg = f"bad path. you want to use something like '/api/v1/device/show' id={u}"
-    logger.warning(msg)
-    raise HTTPException(status_code=404, detail=msg)
+    return error(404, f"bad path. Try something like '/api/v1/device/show'")
 
 
 def check_config_file(cfgfile):
