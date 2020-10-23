@@ -73,7 +73,7 @@ class InterfaceService(Service):
                 if 'virtualIp' in munge_entry:
                     elem = munge_entry['virtualIp']
                     if elem["address"] != "0.0.0.0":
-                        ip = elem["adddress"] + "/" + elem["maskLen"]
+                        ip = f'{elem["address"]}/{elem["maskLen"]}'
                         new_list.append(ip)
                 entry["ipAddressList"] = new_list
 
