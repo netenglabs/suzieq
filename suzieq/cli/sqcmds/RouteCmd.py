@@ -69,47 +69,21 @@ class RouteCmd(SqCommand):
 
         # Get the default display field names
         now = time.time()
-        if self.columns == ['*']:
-            remove_metric = False
-        elif self.columns != ["default"]:
+
+        if self.columns != ["default"]:
             self.ctxt.sort_fields = None
-            if 'metric' not in self.columns:
-                self.columns.append('metric')
-                remove_metric = True
         else:
             self.ctxt.sort_fields = []
-            remove_metric = False
-
-        # /32 routes are stored with the /32 prefix, so if user doesn't specify
-        # prefix as some folks do, assume /32
-        ipvers = self._get_ipvers(prefix)
-
-        if prefix and '/' not in prefix:
-            if ipvers == 4:
-                prefix += '/32'
-            else:
-                prefix += '/128'
-
-        if (self.columns != ['default'] and self.columns != ['*'] and
-                'ipvers' not in self.columns):
-            addnl_fields = ['ipvers']
-        else:
-            addnl_fields = []
 
         df = self.sqobj.get(
             hostname=self.hostname,
             prefix=prefix.split(),
             vrf=vrf.split(),
             protocol=protocol.split(),
-            ipvers=str(ipvers),
             columns=self.columns,
-            addnl_fields=addnl_fields,
             namespace=self.namespace,
             prefixlen=prefixlen,
         )
-        if not df.empty and remove_metric:
-            df.drop(columns=['metric'], inplace=True)
-            self.columns.remove('metric')
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
@@ -125,15 +99,8 @@ class RouteCmd(SqCommand):
             return
 
         now = time.time()
-        drop_cols = []
         if self.columns != ["default"]:
             self.ctxt.sort_fields = None
-            if 'metric' not in self.columns:
-                self.columns.append('metric')
-                drop_cols.append('metric')
-            if 'ipvers' not in self.columns:
-                self.columns.append('ipvers')
-                drop_cols.append('ipvers')
         else:
             self.ctxt.sort_fields = []
 
@@ -149,11 +116,6 @@ class RouteCmd(SqCommand):
             columns=self.columns,
             namespace=self.namespace,
         )
-
-        if not df.empty and drop_cols:
-            df.drop(columns=drop_cols, inplace=True)
-            self.columns = list(filter(lambda x: x not in drop_cols,
-                                       self.columns))
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
