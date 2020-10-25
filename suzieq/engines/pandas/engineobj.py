@@ -28,6 +28,18 @@ class SqEngineObject(object):
     def table(self):
         return self.iobj._table
 
+    def _get_ipvers(self, value: str) -> int:
+        """Return the IP version in use"""
+
+        if ':' in value:
+            ipvers = 6
+        elif '.' in value:
+            ipvers = 4
+        else:
+            ipvers = ''
+
+        return ipvers
+
     def get_valid_df(self, table, **kwargs) -> pd.DataFrame:
         if not self.ctxt.engine:
             print("Specify an analysis engine using set engine command")
