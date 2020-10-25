@@ -6,11 +6,52 @@ from ipaddress import ip_address, ip_network
 
 class RoutesObj(SqEngineObject):
 
+    def _cons_addnl_fields(self, columns: list, addnl_fields: list) -> (list, list):
+        '''get all the additional columns we need'''
+
+        drop_cols = []
+
+        if columns == ['default']:
+            addnl_fields.append('metric')
+            drop_cols += ['metric']
+        elif columns != ['*'] and 'metric' not in columns:
+            addnl_fields.append('metric')
+            drop_cols += ['metric']
+
+            if 'ipvers' not in columns:
+                addnl_fields.append('ipvers')
+                drop_cols += ['ipvers']
+
+        return addnl_fields, drop_cols
+
     def get(self, **kwargs):
 
         prefixlen = kwargs.pop('prefixlen', None)
+        prefix = kwargs.pop('prefix', [])
+        ipvers = kwargs.pop('ipvers', '')
+        addnl_fields = kwargs.pop('addnl_fields', [])
+
         columns = kwargs.get('columns', ['default'])
-        df = super().get(**kwargs)
+        addnl_fields, drop_cols = self._cons_addnl_fields(
+            columns, addnl_fields)
+
+        # /32 routes are stored with the /32 prefix, so if user doesn't specify
+        # prefix as some folks do, assume /32
+        newpfx = []
+        for item in prefix:
+            ipvers = self._get_ipvers(item)
+
+            if item and '/' not in item:
+                if ipvers == 4:
+                    item += '/32'
+                else:
+                    item += '/128'
+
+            newpfx.append(item)
+
+        df = super().get(addnl_fields=addnl_fields, prefix=newpfx,
+                         ipvers=ipvers, **kwargs)
+
         if not df.empty and 'prefix' in df.columns:
             df = df.loc[df['prefix'] != "127.0.0.0/8"]
             df['prefix'].replace('default', '0.0.0.0/0', inplace=True)
@@ -31,7 +72,11 @@ class RoutesObj(SqEngineObject):
                 df = df.query(query_str).reset_index(drop=True)
 
             if columns != ['*'] and 'prefixlen' not in columns:
-                df.drop(columns=['prefixlen'], inplace=True, errors='ignore')
+                drop_cols.append('prefixlen')
+
+        if drop_cols:
+            df.drop(columns=drop_cols, inplace=True, errors='ignore')
+
         return df
 
     def summarize(self, **kwargs):
@@ -90,9 +135,12 @@ class RoutesObj(SqEngineObject):
         if not self.iobj._table:
             raise NotImplementedError
 
+        drop_cols = []
+
         addr = kwargs.pop('address')
         kwargs.pop('ipvers', None)
         df = kwargs.pop('cached_df', pd.DataFrame())
+        addnl_fields = kwargs.pop('addnl_fields', [])
 
         try:
             ipaddr = ip_address(addr)
@@ -100,28 +148,28 @@ class RoutesObj(SqEngineObject):
         except ValueError as e:
             raise ValueError(e)
 
-        cols = kwargs.pop("columns", ["namespace", "hostname", "vrf",
+        cols = kwargs.pop("columns", ["namespace", "hostname", "vrf", "metric",
                                       "prefix", "prefixlen", "nexthopIps",
                                       "oifs", "protocol", "ipvers"])
 
-        if cols != ['default']:
+        if cols != ['default'] and cols != ['*']:
             if 'prefix' not in cols:
-                cols.insert(-1, 'prefix')
-            if 'ipvers' not in cols:
-                cols.insert(-1, 'ipvers')
-            if 'prefixlen' not in cols:
-                cols.insert(-1, 'prefixlen')
+                addnl_fields.insert(-1, 'prefix')
+                drop_cols.append('prefix')
 
         rslt = pd.DataFrame()
 
+        # if not using a pre-populated dataframe
         if df.empty:
-            df = self.get(ipvers=str(ipvers), columns=cols, **kwargs)
+            df = self.get(ipvers=ipvers, columns=cols,
+                          addnl_fields=addnl_fields, **kwargs)
 
         if df.empty:
             return df
 
         if 'prefixlen' not in df.columns and 'prefix' in df.columns:
             df['prefixlen'] = df['prefix'].str.split('/').str[1].astype('int')
+            drop_cols.append('prefixlen')
 
         # Vectorized operation for faster results with IPv4:
         if ipvers == 4:
@@ -151,8 +199,8 @@ class RoutesObj(SqEngineObject):
             else:
                 rslt = pd.DataFrame()
 
-        if 'prefixlen' not in cols:
-            return rslt.drop(columns=['prefixlen'], errors='ignore')
+        if drop_cols:
+            return rslt.drop(columns=drop_cols, errors='ignore')
         else:
             return rslt
 
