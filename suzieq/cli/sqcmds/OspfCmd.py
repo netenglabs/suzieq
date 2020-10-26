@@ -96,17 +96,14 @@ class OspfCmd(SqCommand):
         return self._post_summarize()
 
     @command("assert")
-    @argument("ifname", description="interface name to check OSPF on")
     @argument("vrf", description="VRF to assert OSPF state in")
-    def aver(self, ifname: str = "", vrf: str = "") -> pd.DataFrame:
+    def aver(self, vrf: str = "") -> pd.DataFrame:
         """
         Test OSPF runtime state is good
         """
         now = time.time()
         df = self.sqobj.aver(
-            hostname=self.hostname,
             vrf=vrf.split(),
-            ifname=ifname.split(),
             namespace=self.namespace,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
