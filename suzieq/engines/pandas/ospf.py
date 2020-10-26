@@ -150,6 +150,7 @@ class OspfObj(SqEngineObject):
     def aver(self, **kwargs):
         """Assert that the OSPF state is OK"""
 
+        kwargs.pop('columns', [])
         columns = [
             "namespace",
             "hostname",
