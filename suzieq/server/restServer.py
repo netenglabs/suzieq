@@ -106,8 +106,7 @@ async def read_bgp(verb: str,
                    start_time: str = "", end_time: str = "",
                    view: str = "latest", namespace: str = None,
                    columns: str = None, peer: str = None,
-                   state: str = None, status: str = None,
-                   vrf: str = None,
+                   state: str = None, vrf: str = None,
                    ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, locals())
@@ -428,7 +427,8 @@ def run_command_verb(command, verb, command_args, verb_args):
         df = getattr(svc_inst, verb)(**verb_args)
 
     except AttributeError as err:
-        return_error(404, f"{verb} not supported for {command} or missing arguement: {err}")
+        return_error(
+            404, f"{verb} not supported for {command} or missing arguement: {err}")
 
     except NotImplementedError as err:
         return_error(404, f"{verb} not supported for {command}: {err}")
@@ -440,10 +440,12 @@ def run_command_verb(command, verb, command_args, verb_args):
         return_error(405, f"bad keyword/filter for {command} {verb}: {err}")
 
     except Exception as err:
-        return_error(500, f"exceptional exception {verb} for {command} of type {type(err)}: {err}")
+        return_error(
+            500, f"exceptional exception {verb} for {command} of type {type(err)}: {err}")
 
     if df.columns.to_list() == ['error']:
-        return_error(405, f"bad keyword/filter for {command} {verb}: {df['error'][0]}")
+        return_error(
+            405, f"bad keyword/filter for {command} {verb}: {df['error'][0]}")
 
     return df.to_json(orient="records"), svc_inst
 
@@ -457,7 +459,8 @@ def return_error(code: int, msg: str):
 
 @app.get("/api/v1/{command}")
 def missing_verb(command):
-    return_error(404, f"{command} command missing a verb. for example '/api/v1/{command}/show'")
+    return_error(
+        404, f"{command} command missing a verb. for example '/api/v1/{command}/show'")
 
 
 @app.get("/")
