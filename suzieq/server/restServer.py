@@ -1,5 +1,7 @@
 from typing import Optional
-from fastapi import FastAPI, HTTPException, Query, Request
+from fastapi import FastAPI, HTTPException, Query, Depends, Security
+from fastapi.security.api_key import APIKeyQuery, APIKey
+from starlette import status
 import logging
 import uuid
 import uvicorn
@@ -11,12 +13,28 @@ import inspect
 from suzieq.sqobjects import *
 from suzieq.utils import validate_sq_config
 
+API_KEY = '1234asdfag'
+API_KEY_NAME = 'access_token'
+
+api_key_query = APIKeyQuery(name=API_KEY_NAME, auto_error=False)
+
 
 app = FastAPI()
+
 
 # TODO: logging to this file isn't working
 logging.FileHandler('/tmp/rest-server.log')
 logger = logging.getLogger(__name__)
+
+
+async def get_api_key(api_key_query: str = Security(api_key_query)):
+    if api_key_query == API_KEY:
+        return api_key_query
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid API Key",
+        )
 
 
 # for now we won't support top for REST API
@@ -40,6 +58,7 @@ assume that all API functions are named read_*
 
 @app.get("/api/v1/address/{verb}")
 async def read_address(verb: str,
+                       token: str = Depends(get_api_key),
                        hostname: str = None,
                        start_time: str = "", end_time: str = "",
                        view: str = "latest", namespace: str = None,
@@ -53,12 +72,13 @@ async def read_address(verb: str,
 
 @app.get("/api/v1/arpnd/{verb}")
 async def read_arpnd(verb: str,
+                     token: str = Depends(get_api_key),
                      hostname: str = None,
                      start_time: str = "", end_time: str = "",
                      view: str = "latest", namespace: str = None,
                      columns: str = None, ipAddress: str = None,
                      macaddr: str = None,
-                     oif: str = None
+                     oif: str = None,
                      ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, locals())
@@ -66,6 +86,7 @@ async def read_arpnd(verb: str,
 
 @app.get("/api/v1/bgp/{verb}")
 async def read_bgp(verb: str,
+                   token: str = Depends(get_api_key),
                    hostname: str = None,
                    start_time: str = "", end_time: str = "",
                    view: str = "latest", namespace: str = None,
@@ -79,6 +100,7 @@ async def read_bgp(verb: str,
 
 @app.get("/api/v1/device/{verb}")
 async def read_device(verb: str,
+                      token: str = Depends(get_api_key),
                       hostname: str = None,
                       start_time: str = "", end_time: str = "",
                       view: str = "latest", namespace: str = None,
@@ -90,6 +112,7 @@ async def read_device(verb: str,
 
 @app.get("/api/v1/evpnVni/{verb}")
 async def read_evpnVni(verb: str,
+                       token: str = Depends(get_api_key),
                        hostname: str = None,
                        start_time: str = "", end_time: str = "",
                        view: str = "latest", namespace: str = None,
@@ -101,11 +124,12 @@ async def read_evpnVni(verb: str,
 
 @app.get("/api/v1/fs/{verb}")
 async def read_fs(verb: str,
+                  token: str = Depends(get_api_key),
                   hostname: str = None,
                   start_time: str = "", end_time: str = "",
                   view: str = "latest", namespace: str = None,
                   columns: str = None, mountPoint: str = None,
-                  usedPercent: str = None
+                  usedPercent: str = None,
                   ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, locals())
@@ -113,13 +137,14 @@ async def read_fs(verb: str,
 
 @app.get("/api/v1/interface/{verb}")
 async def read_interface(verb: str,
+                         token: str = Depends(get_api_key),
                          hostname: str = None,
                          start_time: str = "", end_time: str = "",
                          view: str = "latest", namespace: str = None,
                          columns: str = None,
                          ifname: str = None, state: str = None,
                          type: str = None, what: str = None,
-                         matchval: int = Query(None, alias="value")
+                         matchval: int = Query(None, alias="value"),
                          ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, locals())
@@ -127,10 +152,11 @@ async def read_interface(verb: str,
 
 @app.get("/api/v1/lldp/{verb}")
 async def read_lldp(verb: str,
+                    token: str = Depends(get_api_key),
                     hostname: str = None,
                     start_time: str = "", end_time: str = "",
                     view: str = "latest", namespace: str = None,
-                    columns: str = None, ifname: str = None
+                    columns: str = None, ifname: str = None,
                     ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, locals())
@@ -138,6 +164,7 @@ async def read_lldp(verb: str,
 
 @app.get("/api/v1/mlag/{verb}")
 async def read_mlag(verb: str,
+                    token: str = Depends(get_api_key),
                     hostname: str = None,
                     start_time: str = "", end_time: str = "",
                     view: str = "latest", namespace: str = None,
@@ -149,6 +176,7 @@ async def read_mlag(verb: str,
 
 @app.get("/api/v1/ospf/{verb}")
 async def read_ospf(verb: str,
+                    token: str = Depends(get_api_key),
                     hostname: str = None,
                     start_time: str = "", end_time: str = "",
                     view: str = "latest", namespace: str = None,
@@ -162,6 +190,7 @@ async def read_ospf(verb: str,
 
 @app.get("/api/v1/mac/{verb}")
 async def read_mac(verb: str,
+                   token: str = Depends(get_api_key),
                    hostname: str = None,
                    start_time: str = "", end_time: str = "",
                    view: str = "latest", namespace: str = None,
@@ -182,6 +211,7 @@ async def no_path_unique():
 
 @app.get("/api/v1/path/{verb}")
 async def read_path(verb: str,
+                    token: str = Depends(get_api_key),
                     hostname: str = None,
                     start_time: str = "", end_time: str = "",
                     view: str = "latest", namespace: str = None,
@@ -195,6 +225,7 @@ async def read_path(verb: str,
 
 @app.get("/api/v1/route/{verb}")
 async def read_route(verb: str,
+                     token: str = Depends(get_api_key),
                      hostname: str = None,
                      start_time: str = "", end_time: str = "",
                      view: str = "latest", namespace: str = None,
@@ -209,6 +240,7 @@ async def read_route(verb: str,
 
 @app.get("/api/v1/sqpoller/{verb}")
 async def read_sqpoller(verb: str,
+                        token: str = Depends(get_api_key),
                         hostname: str = None,
                         start_time: str = "", end_time: str = "",
                         view: str = "latest", namespace: str = None,
@@ -221,6 +253,7 @@ async def read_sqpoller(verb: str,
 
 @app.get("/api/v1/topology/{verb}")
 async def read_topology(verb: str,
+                        token: str = Depends(get_api_key),
                         hostname: str = None,
                         start_time: str = "", end_time: str = "",
                         view: str = "latest", namespace: str = None,
@@ -233,6 +266,7 @@ async def read_topology(verb: str,
 
 @app.get("/api/v1/vlan/{verb}")
 async def read_vlan(verb: str,
+                    token: str = Depends(get_api_key),
                     hostname: str = None,
                     start_time: str = "", end_time: str = "",
                     view: str = "latest", namespace: str = None,
@@ -244,6 +278,7 @@ async def read_vlan(verb: str,
 
 @app.get("/api/v1/table/{verb}")
 async def read_table(verb: str,
+                     token: str = Depends(get_api_key),
                      hostname: str = None,
                      start_time: str = "", end_time: str = "",
                      view: str = "latest", namespace: str = None,
@@ -256,7 +291,7 @@ async def read_table(verb: str,
 def read_shared(function_name, verb, local_variables):
     """all the shared code for each of thse read functions"""
 
-    command = function_name[5:] # assumes the name of the function is read_*
+    command = function_name[5:]  # assumes the name of the function is read_*
     command_args, verb_args = create_filters(function_name, local_variables)
 
     verb = cleanup_verb(verb)
@@ -270,7 +305,8 @@ def check_args(function_name, svc_inst):
     """make sure that all the args defined in sqobject are defined in the function"""
 
     arguments = inspect.getfullargspec(globals()[function_name]).args
-    arguments = [i for i in arguments if i not in ['verb', 'start_time', 'end_time', 'view']]
+    arguments = [i for i in arguments if i not in
+                 ['verb', 'token', 'start_time', 'end_time', 'view']]
 
     valid_args = set(svc_inst._valid_get_args)
     if svc_inst._valid_assert_args:
@@ -286,7 +322,7 @@ def check_args(function_name, svc_inst):
 def create_filters(function_name, locals):
     command_args = {}
     verb_args = {}
-    remove_args = ['verb']
+    remove_args = ['verb', 'token']
     possible_args = ['hostname', 'namespace', 'start_time', 'end_time', 'view', 'columns']
     split_args = ['namespace', 'columns', 'address']
     both_verb_and_command = ['namespace', 'hostname', 'columns']
@@ -411,7 +447,7 @@ def missing_verb(command):
 
 @app.get("/")
 def bad_path():
-    return error(404, f"bad path. Try something like '/api/v1/device/show'")
+    return_error(404, f"bad path. Try something like '/api/v1/device/show'")
 
 
 def check_config_file(cfgfile):
