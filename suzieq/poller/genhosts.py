@@ -99,7 +99,8 @@ def convert_ansible_inventory(filename: str, namespace: str = 'default'):
                   "use -D option")
         else:
             print("ERROR: Invalid Ansible inventory, "
-                  "missing keys: _meta and / or hostvars")
+                  "missing keys: _meta and / or hostvars\n"
+                  "\tUse 'ansible-inventory --list' to create the correct file" )
         sys.exit(1)
 
     in_hosts = inventory['_meta']['hostvars']
