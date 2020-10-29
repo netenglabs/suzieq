@@ -5,7 +5,7 @@ from fastapi.testclient import TestClient
 
 from tests.conftest import cli_commands, tables, setup_sqcmds
 from tests import conftest
-from suzieq.server.restServer import app
+from suzieq.server.restServer import app, API_KEY
 
 ENDPOINT = "http://localhost:8000/api/v1"
 
@@ -195,7 +195,7 @@ BAD_FILTERS = {
 
 
 def get(endpoint, service, verb, args):
-    url = f"{endpoint}/{service}/{verb}?{args}"
+    url = f"{endpoint}/{service}/{verb}?access_token={API_KEY}&{args}"
 
     client = TestClient(app)
     response = client.get(url)
@@ -235,12 +235,6 @@ def get(endpoint, service, verb, args):
         # make sure it's not empty when it shouldn't be
         assert len(response.content.decode('utf8')) > 10
     return response.status_code
-
-
-cli_commands = ['address',  'arpnd', 'bgp', 'device',
-                'evpnVni', 'fs', 'interface', 'lldp',
-                'mac', 'mlag', 'ospf', 'path', 'route',
-                'sqpoller', 'topology', 'vlan']
 
 
 @pytest.mark.parametrize("service, verb, arg", [
