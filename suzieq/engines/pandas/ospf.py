@@ -41,10 +41,12 @@ class OspfObj(SqEngineObject):
             ifcols = ifschema.get_display_fields(columns)
             nbrcols = nbrschema.get_display_fields(columns)
 
-        if state == "pass":
+        if state == "full":
             query_str = 'adjState == "full" or adjState == "passive"'
-        elif state == "fail":
+        elif state == "other":
             query_str = 'adjState != "full" and adjState != "passive"'
+        elif state == "passive":
+            query_str = 'adjState == "passive"'
         else:
             query_str = ''
 
