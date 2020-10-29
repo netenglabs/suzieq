@@ -1,6 +1,6 @@
 from typing import Optional
 from fastapi import FastAPI, HTTPException, Query, Depends, Security
-from fastapi.security.api_key import APIKeyQuery, APIKey
+from fastapi.security.api_key import APIKeyQuery, APIKeyHeader, APIKey
 from starlette import status
 import logging
 import uuid
@@ -11,13 +11,12 @@ import yaml
 import inspect
 
 from suzieq.sqobjects import *
-from suzieq.utils import validate_sq_config
+from suzieq.utils import validate_sq_config, load_sq_config
 
-API_KEY = '1234asdfag'
 API_KEY_NAME = 'access_token'
 
 api_key_query = APIKeyQuery(name=API_KEY_NAME, auto_error=False)
-
+api_key_header = APIKeyHeader(name=API_KEY_NAME, auto_error=False)
 
 app = FastAPI()
 
@@ -26,11 +25,26 @@ app = FastAPI()
 logging.FileHandler('/tmp/rest-server.log')
 logger = logging.getLogger(__name__)
 
+def get_configured_api_key():
+    cfg = load_sq_config(config_file=app.cfg_file)
+    try:
+        api_key = cfg['API_KEY']
+    except KeyError:
+        print('missing API_KEY in config file')
+        exit(1)
 
-async def get_api_key(api_key_query: str = Security(api_key_query)):
-    if api_key_query == API_KEY:
+    return api_key
+
+async def get_api_key(api_key_query: str = Security(api_key_query),
+                      api_key_header: str = Security(api_key_header)):
+
+    api_key = get_configured_api_key()    
+    if api_key_query == api_key:
         return api_key_query
+    elif api_key_header == api_key:
+        return api_key_header
     else:
+
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid API Key",
@@ -468,6 +482,6 @@ if __name__ == "__main__":
     userargs = parser.parse_args()
     check_config_file(userargs.config)
     app.cfg_file = userargs.config
-
+    get_configured_api_key()
     uvicorn.run(app, host="0.0.0.0", port=8000,
                 log_level='info', )

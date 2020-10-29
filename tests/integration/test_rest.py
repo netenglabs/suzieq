@@ -5,7 +5,7 @@ from fastapi.testclient import TestClient
 
 from tests.conftest import cli_commands, tables, setup_sqcmds
 from tests import conftest
-from suzieq.server.restServer import app, API_KEY
+from suzieq.server.restServer import app, get_configured_api_key, API_KEY_NAME
 
 ENDPOINT = "http://localhost:8000/api/v1"
 
@@ -195,10 +195,12 @@ BAD_FILTERS = {
 
 
 def get(endpoint, service, verb, args):
-    url = f"{endpoint}/{service}/{verb}?access_token={API_KEY}&{args}"
+    api_key = get_configured_api_key()
+    #url = f"{endpoint}/{service}/{verb}?access_token={api_key}&{args}"
+    url = f"{endpoint}/{service}/{verb}?{args}"
 
     client = TestClient(app)
-    response = client.get(url)
+    response = client.get(url, headers={API_KEY_NAME: api_key})
 
     c_v = f"{service}/{verb}"
     c_v_f = f"{c_v}?{args}"
