@@ -447,7 +447,7 @@ def run_command_verb(command, verb, command_args, verb_args):
         return_error(
             405, f"bad keyword/filter for {command} {verb}: {df['error'][0]}")
 
-    return df.to_json(orient="records"), svc_inst
+    return df.to_dict(orient="records"), svc_inst
 
 
 def return_error(code: int, msg: str):
