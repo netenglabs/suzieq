@@ -64,7 +64,9 @@ class RoutesService(Service):
                 vrf = "default"
                 vers = 6
             else:
-                vrf, family, _ = vrf.split('.')
+                words = vrf.split('.')
+                vrf = words[0]
+                family = words[1]
                 if family == "inet":
                     vers = 4
                 elif family == "inet6":
