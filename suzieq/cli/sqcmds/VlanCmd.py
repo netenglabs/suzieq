@@ -34,8 +34,7 @@ class VlanCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.sqobj.get(hostname=self.hostname, vlan=vlan,
+        df = self.sqobj.get(hostname=self.hostname, vlan=vlan.split(),
                             columns=self.columns, namespace=self.namespace)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
-
