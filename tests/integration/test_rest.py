@@ -9,7 +9,8 @@ from suzieq.server.restServer import app, get_configured_api_key, API_KEY_NAME
 
 ENDPOINT = "http://localhost:8000/api/v1"
 
-VERBS = ['show', 'summarize', 'assert', 'lpm', 'unique']  # add 'top' when it's supported
+VERBS = ['show', 'summarize', 'assert', 'lpm',
+         'unique']  # add 'top' when it's supported
 FILTERS = ['', 'hostname=leaf01', 'namespace=ospf-ibgp',
            'address=10.127.1.2',
            'dest=172.16.2.104&src=172.16.1.101&namespace=ospf-ibgp',
@@ -21,15 +22,14 @@ FILTERS = ['', 'hostname=leaf01', 'namespace=ospf-ibgp',
            'ipvers=v4',
            'macaddr=22:5c:65:2f:98:b6',
            'peer=eth1.2',
-           'status=all',
            'vni=13',
            'mountPoint=/',
            'ifname=swp1',
            'type=ethernet',
-           'state=up',
            'vlan=13',
            'remoteVtepIp=10.0.0.101',
            'bd=',
+           'state=pass',
            'oif=eth1.4',
            'localOnly=True',
            'prefix=10.0.0.101/32',
@@ -62,8 +62,12 @@ GOOD_FILTERS_FOR_SERVICE_VERB = {
     'protocol=bgp': ['route/show'],
     'service=device': ['sqPoller'],
     'remoteVtepIp=10.0.0.101': ['mac/show'],
-    'state=up': ['interface/show', 'ospf/show'],
-    'status=all': ['bgp/show'],
+    'state=up': ['interface/show'],
+    'state=Established': ['bgp/show'],
+    'state=NotEstd': ['bgp/show'],
+    'state=all': ['ospf/show'],
+    'state=pass': ['ospf/show'],
+    'state=fail': ['ospf/show'],
     'type=ethernet': ['interface/show'],
     'usedPercent=8': ['fs/show'],
     'vlan=13': ['mac/show', 'vlan/show'],
@@ -138,20 +142,23 @@ BAD_FILTERS = {
     'arpnd/summarize?macaddr=22:5c:65:2f:98:b6': 405,
     'arpnd/summarize?ipAddress=10.127.1.2': 405,
     'arpnd/summarize?oif=eth1.4': 405,
+    'bgp/show?state=pass': 405,
     'bgp/assert?peer=eth1.2': 405,
-    'bgp/assert?status=all': 405,
-    'bgp/assert?state=up': 405,
+    'bgp/assert?state=pass': 405,
     'bgp/summarize?peer=eth1.2': 405,
-    'bgp/summarize?state=up': 405,
-    'bgp/summarize?status=all': 405,
+    'bgp/summarize?state=pass': 405,
+    'bgp/summarize?state=Established': 405,
+    'bgp/summarize?state=NotEstd': 405,
     'bgp/summarize?vrf=default': 405,
     'evpnVni/assert?vni=13': 405,
     'evpnVni/summarize?vni=13': 405,
     'fs/summarize?usedPercent=8': 405,
     'fs/summarize?mountPoint=/': 405,
+    'interface/show?state=pass': 405,
     'interface/assert?type=ethernet': 405,
+    'interface/assert?state=pass': 405,
     'interface/summarize?ifname=swp1': 405,
-    'interface/summarize?state=up': 405,
+    'interface/summarize?state=pass': 405,
     'interface/summarize?type=ethernet': 405,
     'lldp/summarize?ifname=swp1': 405,
     'mac/summarize?bd=': 405,
@@ -159,9 +166,11 @@ BAD_FILTERS = {
     'mac/summarize?localOnly=True': 405,
     'mac/summarize?remoteVtepIp=10.0.0.101': 405,
     'mac/summarize?vlan=13': 405,
-    'ospf/assert?state=up': 405,
+    'ospf/assert?hostname=leaf01': 405,
+    'ospf/assert?state=pass': 405,
+    'ospf/assert?ifname=swp1': 405,
     'ospf/summarize?ifname=swp1': 405,
-    'ospf/summarize?state=up': 405,
+    'ospf/summarize?state=pass': 405,
     'ospf/summarize?vrf=default': 405,
     # 'path/show?': 404, 'path/show?columns=namespace': 404,
     # 'path/show?hostname=leaf01': 404,
@@ -175,7 +184,8 @@ BAD_FILTERS = {
     # 'path/summarize?view=latest': 404,
     # 'path/show?view=latest': 404,
     # 'path/unique?columns=namespace': 404,
-    'route/lpm?': 404, 'route/lpm?columns=namespace': 404,
+    'route/lpm?': 404,
+    'route/lpm?columns=namespace': 404,
     'route/lpm?hostname=leaf01': 404,
     'route/lpm?namespace=ospf-ibgp': 404,
     'route/summarize?address=10.127.1.2': 405,
@@ -207,11 +217,14 @@ def get(endpoint, service, verb, args):
     v_f = f"{verb}?{args}"
     if response.status_code != 200:
         if c_v in BAD_VERBS:
-            assert BAD_VERBS[c_v] == response.status_code, response.content.decode('utf8')
+            assert BAD_VERBS[c_v] == response.status_code, response.content.decode(
+                'utf8')
         elif c_v_f in BAD_FILTERS:
-            assert BAD_FILTERS[c_v_f] == response.status_code, response.content.decode('utf8')
+            assert BAD_FILTERS[c_v_f] == response.status_code, response.content.decode(
+                'utf8')
         elif v_f in BAD_VERB_FILTERS:
-            assert BAD_VERB_FILTERS[v_f] == response.status_code, response.content.decode('utf8')
+            assert BAD_VERB_FILTERS[v_f] == response.status_code, response.content.decode(
+                'utf8')
         # elif args in GOOD_FILTERS_FOR_SERVICE_VERB:
 
         #      assert c_v not in GOOD_FILTERS_FOR_SERVICE_VERB[args]
@@ -221,7 +234,8 @@ def get(endpoint, service, verb, args):
         elif c_v in GOOD_SERVICE_VERB_FILTER:
             assert args not in GOOD_SERVICE_VERB_FILTER[c_v]
         else:
-            print(f" RESPONSE {response.status_code} {response.content.decode('utf8')}")
+            print(
+                f" RESPONSE {response.status_code} {response.content.decode('utf8')}")
             response.raise_for_status()
     else:
         assert c_v not in BAD_VERBS
