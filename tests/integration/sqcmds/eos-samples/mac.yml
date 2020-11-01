@@ -3,36 +3,36 @@ tests:
 - command: mac show --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: mac show eos
-  output: '[{"namespace": "eos", "hostname": "edge01", "vlan": 0, "macaddr": "33:33:00:00:00:01",
-    "oif": "eth1.4", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp":
-    1594274559644}, {"namespace": "eos", "hostname": "edge01", "vlan": 0, "macaddr":
-    "01:00:5e:00:00:01", "oif": "eth1.4", "remoteVtepIp": "", "bd": "", "flags": "permanent",
-    "timestamp": 1594274559644}, {"namespace": "eos", "hostname": "edge01", "vlan":
-    0, "macaddr": "33:33:00:00:00:02", "oif": "eth1.4", "remoteVtepIp": "", "bd":
-    "", "flags": "permanent", "timestamp": 1594274559644}, {"namespace": "eos", "hostname":
-    "leaf01", "vlan": 1, "macaddr": "00:00:00:00:00:00", "oif": "Port-Channel12",
-    "remoteVtepIp": "", "bd": "", "flags": "dynamic", "timestamp": 1594274559726},
-    {"namespace": "eos", "hostname": "leaf02", "vlan": 1, "macaddr": "00:00:00:00:00:00",
-    "oif": "Port-Channel12", "remoteVtepIp": "", "bd": "", "flags": "dynamic", "timestamp":
-    1594274559862}, {"namespace": "eos", "hostname": "leaf03", "vlan": 1, "macaddr":
-    "00:00:00:00:00:00", "oif": "Port-Channel12", "remoteVtepIp": "", "bd": "", "flags":
-    "dynamic", "timestamp": 1594274559712}, {"namespace": "eos", "hostname": "leaf04",
-    "vlan": 1, "macaddr": "00:00:00:00:00:00", "oif": "Port-Channel12", "remoteVtepIp":
-    "", "bd": "", "flags": "dynamic", "timestamp": 1594274560105}]'
+  output: '[{"namespace": "eos", "hostname": "edge01", "macaddr": "33:33:00:00:00:01",
+    "vlan": 0, "oif": "eth1.4", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "timestamp": 1604182715491}, {"namespace": "eos", "hostname": "edge01", "macaddr":
+    "01:00:5e:00:00:01", "vlan": 0, "oif": "eth1.4", "remoteVtepIp": "", "bd": "",
+    "flags": "permanent", "timestamp": 1604182715491}, {"namespace": "eos", "hostname":
+    "edge01", "macaddr": "33:33:00:00:00:02", "vlan": 0, "oif": "eth1.4", "remoteVtepIp":
+    "", "bd": "", "flags": "permanent", "timestamp": 1604182715491}, {"namespace":
+    "eos", "hostname": "leaf04", "macaddr": "00:00:00:00:00:00", "vlan": 10, "oif":
+    "Ethernet5", "remoteVtepIp": "", "bd": "", "flags": "dynamic", "timestamp": 1604182716153},
+    {"namespace": "eos", "hostname": "leaf01", "macaddr": "00:00:00:00:00:00", "vlan":
+    10, "oif": "Ethernet5", "remoteVtepIp": "", "bd": "", "flags": "dynamic", "timestamp":
+    1604182716185}, {"namespace": "eos", "hostname": "leaf02", "macaddr": "00:00:00:00:00:00",
+    "vlan": 10, "oif": "Ethernet5", "remoteVtepIp": "", "bd": "", "flags": "dynamic",
+    "timestamp": 1604182716205}, {"namespace": "eos", "hostname": "leaf03", "macaddr":
+    "00:00:00:00:00:00", "vlan": 10, "oif": "Ethernet5", "remoteVtepIp": "", "bd":
+    "", "flags": "dynamic", "timestamp": 1604182716662}]'
 - command: mac show --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: mac show eos
   output: '[{"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
-    {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname":
-    "leaf04"}]'
+    {"hostname": "leaf04"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf03"}]'
 - command: mac summarize --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: mac summarize eos
   output: '{"eos": {"deviceCnt": 5, "totalMacsinNSCnt": 7, "uniqueMacCnt": 4, "uniqueVlanperHostStat":
-    [0, 1, 1.0]}}'
+    [1, 1, 1.0]}}'
 - command: mac unique --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: mac unique eos
-  output: '[{"hostname": "leaf04", "count": 1}, {"hostname": "leaf03", "count": 1},
-    {"hostname": "leaf02", "count": 1}, {"hostname": "leaf01", "count": 1}, {"hostname":
+  output: '[{"hostname": "leaf02", "count": 1}, {"hostname": "leaf03", "count": 1},
+    {"hostname": "leaf01", "count": 1}, {"hostname": "leaf04", "count": 1}, {"hostname":
     "edge01", "count": 3}]'

@@ -3,7 +3,7 @@ import random
 import yaml
 from fastapi.testclient import TestClient
 
-from tests.conftest import cli_commands, tables, setup_sqcmds
+from tests.conftest import cli_commands
 from tests import conftest
 from suzieq.server.restServer import app, get_configured_api_key, API_KEY_NAME
 
@@ -66,8 +66,9 @@ GOOD_FILTERS_FOR_SERVICE_VERB = {
     'state=Established': ['bgp/show'],
     'state=NotEstd': ['bgp/show'],
     'state=all': ['ospf/show'],
-    'state=pass': ['ospf/show'],
-    'state=fail': ['ospf/show'],
+    'state=full': ['ospf/show'],
+    'state=other': ['ospf/show'],
+    'state=passive': ['ospf/show'],
     'type=ethernet': ['interface/show'],
     'usedPercent=8': ['fs/show'],
     'vlan=13': ['mac/show', 'vlan/show'],
@@ -91,24 +92,24 @@ GOOD_SERVICE_VERB_FILTER = {
 
 
 # these service/verb pairs should return errors
-BAD_VERBS = {'address/assert': 404, 'address/lpm': 404,
-             'arpnd/assert': 404, 'arpnd/lpm': 404,
-             'bgp/lpm': 404,
-             'device/assert': 404, 'device/lpm': 404,
-             'evpnVni/lpm': 404,
-             'fs/assert': 404, 'fs/lpm': 404,
-             'interface/lpm': 404,
-             'lldp/assert': 404, 'lldp/lpm': 404,
-             'mac/assert': 404, 'mac/lpm': 404,
-             'mlag/assert': 404, 'mlag/lpm': 404,
-             'ospf/lpm': 404,
-             'path/assert': 404, 'path/unique': 404,
-             'path/lpm': 404,
-             'sqpoller/assert': 404, 'sqpoller/lpm': 404,
-             'route/assert': 404,
-             'topology/assert': 404,
-             'topology/lpm': 404,
-             'vlan/assert': 404, 'vlan/lpm': 404,
+BAD_VERBS = {'address/assert': 422, 'address/lpm': 422,
+             'arpnd/assert': 422, 'arpnd/lpm': 422,
+             'bgp/lpm': 422,
+             'device/assert': 422, 'device/lpm': 422,
+             'evpnVni/lpm': 422,
+             'fs/assert': 422, 'fs/lpm': 422,
+             'interface/lpm': 422,
+             'lldp/assert': 422, 'lldp/lpm': 422,
+             'mac/assert': 422, 'mac/lpm': 422,
+             'mlag/assert': 422, 'mlag/lpm': 422,
+             'ospf/lpm': 422,
+             'path/assert': 422, 'path/unique': 422,
+             'path/lpm': 422,
+             'sqpoller/assert': 422, 'sqpoller/lpm': 422,
+             'route/assert': 422,
+             'topology/assert': 422,
+             'topology/lpm': 422,
+             'vlan/assert': 422, 'vlan/lpm': 422,
              }
 
 # these are always bad filters for these verbs no matter the service
@@ -172,6 +173,7 @@ BAD_FILTERS = {
     'ospf/summarize?ifname=swp1': 405,
     'ospf/summarize?state=pass': 405,
     'ospf/summarize?vrf=default': 405,
+    'ospf/show?state=pass': 405,
     # 'path/show?': 404, 'path/show?columns=namespace': 404,
     # 'path/show?hostname=leaf01': 404,
     # 'path/show?namespace=ospf-ibgp': 404,
@@ -183,7 +185,7 @@ BAD_FILTERS = {
     'path/summarize?columns=namespace': 404,
     # 'path/summarize?view=latest': 404,
     # 'path/show?view=latest': 404,
-    # 'path/unique?columns=namespace': 404,
+    'path/unique?columns=namespace': 404,
     'route/lpm?': 404,
     'route/lpm?columns=namespace': 404,
     'route/lpm?hostname=leaf01': 404,
@@ -194,13 +196,13 @@ BAD_FILTERS = {
     'route/summarize?prefix=10.0.0.101/32': 405,
     'route/summarize?prefixlen=24': 405,
     'route/summarize?protocol=bgp': 405,
-    'route/show?columns=namespace': 500,
     'route/show?ipvers=v4': 405,
     'route/lpm?view=latest': 404,
     'sqpoller/summarize?service=device': 405,
     'topology/summarize?vrf=default': 405,
-
-    'vlan/summarize?vlan=13': 405
+    'vlan/show?state=pass': 405,
+    'vlan/summarize?vlan=13': 405,
+    'vlan/summarize?state=pass': 405,
 }
 
 
