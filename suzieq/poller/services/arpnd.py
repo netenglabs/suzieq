@@ -24,6 +24,9 @@ class ArpndService(Service):
         for entry in processed_data:
             entry['macaddr'] = convert_macaddr_format_to_colon(
                 entry.get('macaddr', '0000.0000.0000'))
+            # EOS has entries with OIF of type: "Vlan4094, Port-Channel1"
+            # We need only the first part, we pick up the second from the
+            # MAC table
             if ',' in entry['oif']:
                 entry['oif'] = entry['oif'].split(',')[0].strip()
 
@@ -49,8 +52,12 @@ class ArpndService(Service):
                 drop_indices.append(i)
                 continue
 
-            entry['macaddr'] = convert_macaddr_format_to_colon(
-                entry.get('macaddr', '0000.0000.0000'))
+            if entry['macaddr'] is None:
+                entry['state'] = "failed"
+                entry['macaddr'] = '00:00:00:00:00:00'
+            else:
+                entry['macaddr'] = convert_macaddr_format_to_colon(
+                    entry.get('macaddr', '0000.0000.0000'))
 
         processed_data = np.delete(processed_data,
                                    drop_indices).tolist()
