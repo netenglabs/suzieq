@@ -89,7 +89,19 @@ class FileNode(object):
             else:
                 newelem = '[' + newelem + ']'
 
-            jelem = json.loads(newelem)
+            jelem = None
+            try:
+                jelem = json.loads(newelem)
+            except json.decoder.JSONDecodeError:
+                # This is a bug in the output of FRR's show evpn vni when
+                # there's no EVPN
+                if 'show evpn vni detail json' in newelem:
+                    newelem = newelem[:-1]
+                    jelem = json.loads(newelem)
+
+            if jelem is None:
+                self.logger.error(f"Unable to decode JSON in file {file}")
+                continue
 
             if not all(key in required_keys for key in jelem[0].keys()):
                 self.logger.error(
