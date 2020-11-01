@@ -106,22 +106,50 @@ class PathObj(SqEngineObject):
     def _get_vrf(self, hostname: str, ifname: str, addr: str) -> str:
         """Determine the VRF given either the ifname or ipaddr"""
         vrf = ''
+        if addr and ':' in addr:
+            ipvers = 6
+        else:
+            ipvers = 4
         if ifname:
             iifdf = self._if_df[(self._if_df["hostname"] == hostname) &
                                 (self._if_df["ifname"] == ifname)]
         else:
+            # TODO: Add support for IPv6 here
             addr = addr + '/'
-            iifdf = self._if_df.query(f'hostname=="{hostname}" and '
-                                      f'ipAddressList.str.startswith("{addr}")')
+            if ipvers == 6:
+                iifdf = self._if_df.query(
+                    f'hostname=="{hostname}" and '
+                    f'ip6AddressList.str.startswith("{addr}")')
+            else:
+                iifdf = self._if_df.query(
+                    f'hostname=="{hostname}" and '
+                    f'ipAddressList.str.startswith("{addr}")')
         if not iifdf.empty and iifdf.iloc[0].master == "bridge":
             # OK, find the SVI associated with this interface
-            iifdf = self._if_df.query(f'hostname=="{hostname}" and '
-                                      f'ipAddressList.str.startswith("{addr}")')
+            if addr and ipvers == 6:
+                iifdf = self._if_df.query(
+                    f'hostname=="{hostname}" and '
+                    f'ip6AddressList.str.startswith("{addr}")')
+            elif addr and ipvers == 4:
+                iifdf = self._if_df.query(
+                    f'hostname=="{hostname}" and '
+                    f'ipAddressList.str.startswith("{addr}")')
+            else:
+                # No address, but a bridge interface as the master
+                if iifdf.iloc[0]['vlan']:
+                    # Check if there's an SVI, assuming format is vlan*
+                    # TODO: Handle trunk
+                    vlan = iifdf.iloc[0]['vlan']
+                    vdf = self._if_df.query(f'hostname=="{hostname}" and '
+                                            f'(ifname=="vlan{vlan}" or '
+                                            f'ifname=="Vlan{vlan}")')
+                    if not vdf.empty:
+                        vrf = vdf.iloc[0].master.strip()
 
-        if not iifdf.empty:
+        if not iifdf.empty and not vrf:
             vrf = iifdf.iloc[0].master.strip()
             if vrf == "bridge":
-                vrf = "default"
+                vrf = ''
 
         return vrf
 
@@ -196,7 +224,7 @@ class PathObj(SqEngineObject):
     def _get_iface_matching_ip(ip: str) -> pd.DataFrame:
         """Return the interface DF entry with the matching IP"""
 
-    def _get_l2_nexthop(self, device: str, dest: str) -> list:
+    def _get_l2_nexthop(self, device: str, vrf: str, dest: str) -> list:
         """Get the bridged/tunnel nexthops"""
 
         if self._arpnd_df.empty:
@@ -205,6 +233,20 @@ class PathObj(SqEngineObject):
         rslt = self._arpnd_df[(self._arpnd_df['hostname'] == device) &
                               (self._arpnd_df['ipAddress'] == dest)]
         # the end of knowledge
+        if rslt.empty:
+            # Check if we have an EVPN entry as a route (symmetric routing)
+            rslt = self._rdf.query(
+                f'hostname == "{device}" and vrf == "{vrf}"')
+            if not rslt.empty:
+                # Check that we have a host route at this point
+                ipvers = 6 if ':' in dest else 4
+                if ((ipvers == 4 and rslt.iloc[0].prefix == f'{dest}/32') or
+                        (ipvers == 6 and rslt.iloc[0].prefix == f'{dest}/128')):
+                    overlay = rslt.iloc[0].nexthopIps[0]
+                    return self._get_underlay_nexthop(device, [overlay],
+                                                      ['default'])
+            return []
+
         if rslt.empty:
             return []
 
@@ -272,7 +314,7 @@ class PathObj(SqEngineObject):
             if vtep:
                 return self._get_underlay_nexthop(device, [vtep], [vrf])
             else:
-                return self._get_l2_nexthop(device, dest)
+                return self._get_l2_nexthop(device, vrf, dest)
 
         rslt = self._rdf.query(f'hostname == "{device}" and vrf == "{vrf}"')
         if not rslt.empty and (len(rslt.nexthopIps.iloc[0]) != 0 and
@@ -291,9 +333,9 @@ class PathObj(SqEngineObject):
 
         # We've either reached the end of routing or the end of knowledge
         # Look for L2 nexthop
-        return self._get_l2_nexthop(device, dest)
+        return self._get_l2_nexthop(device, vrf, dest)
 
-    @lru_cache(maxsize=256)
+    @ lru_cache(maxsize=256)
     def _get_nh_with_peer(self, device: str, vrf: str, dest: str, is_l2: bool,
                           vtep_ip) -> list:
         """Get the nexthops & peer node for each nexthop for a given device/vrf
@@ -559,11 +601,15 @@ class PathObj(SqEngineObject):
                                          devices_iifs[devkey]['overlay_nhip'])
                     if not ivrf:
                         ivrf = devvrf
-                elif devices_iifs[devkey]['nhip'] != "19.254.0.1":
+                elif not devices_iifs[devkey]['nhip']:
+                    ivrf = self._get_vrf(device, iif, src)
+                elif devices_iifs[devkey]['nhip'] != "169.254.0.1":
                     ivrf = self._get_vrf(device, '',
                                          devices_iifs[devkey]['nhip'])
                     if not ivrf:
                         ivrf = self._get_vrf(device, iif, '')
+                elif devices_iifs[devkey]['nhip'] == "169.254.0.1":
+                    ivrf = self._get_vrf(device, iif, '')
 
                 if not ivrf:
                     ivrf = dvrf
