@@ -10,8 +10,8 @@ class TablesObj(SqObject):
     def __init__(self, **kwargs):
         # We're passing any table name to get init to work
         super().__init__(table='device', **kwargs)
-        self._valid_get_args = ['namespace', 'hostname', 'columns',]
-        
+        self._valid_get_args = ['namespace', 'hostname', 'columns', ]
+
     def get(self, **kwargs):
         """Show the tables for which we have information"""
         if self.columns != ["default"]:
@@ -45,6 +45,9 @@ class TablesObj(SqObject):
                 tables = [x for x in tables if x not in unknown_tables]
 
             df = pd.DataFrame.from_dict(tables)
+            if df.empty:
+                return df
+
             df = df.sort_values(by=['table']).reset_index(drop=True)
             cols = df.columns
             total = pd.DataFrame([['TOTAL',  df['first_time'].min(),
