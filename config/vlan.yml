@@ -5,7 +5,7 @@ keys:
 show-fields:
   - ifname
   - vlan
-  - pvid
+  - interfaces
 
 apply:
   cumulus:
@@ -21,6 +21,30 @@ apply:
 
   eos:
     version: all
-    command: show interfaces vlans
-    format: text
-    textfsm: textfsm_templates/eos_vlan.tfsm
+    command: show vlan brief
+    normalize: 'vlans/*:vlan/[
+    "interfaces/*: interfaces?|[]",
+    "name: ifname",
+    "status: state",
+    ]'
+
+  nxos:
+    version: all
+    command: show vlan brief | json
+    normalize: 'TABLE_vlanbriefxbrief/ROW_vlanbriefxbrief/*/[
+    "vlanshowbr-vlanid: vlan",
+    "vlanshowbr-vlanname: ifname",
+    "vlanshowbr-vlanstate: state",
+    "vlanshowbr-shutstate: adminState",
+    "vlanshowplist-ifidx: interfaces?|",
+    ]'
+
+  junos-qfx:
+    version: all
+    command: show vlans | display json
+    normalize: 'l2ng-l2ald-vlan-instance-information/l2ng-l2ald-vlan-instance-group/*/[
+    "l2ng-l2rtb-vlan-tag/[0]/data: vlan",
+    "l2ng-l2rtb-vlan-member/[*]/l2ng-l2rtb-vlan-member-interface/[0]/data: interfaces?|[]",
+    "l2ng-l2rtb-vlan-name/[0]/data: ifname",
+    "l2ng-l2rtb-instance-state/[0]/data: state",
+    ]'

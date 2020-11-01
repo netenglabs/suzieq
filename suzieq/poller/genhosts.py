@@ -99,7 +99,8 @@ def convert_ansible_inventory(filename: str, namespace: str = 'default'):
                   "use -D option")
         else:
             print("ERROR: Invalid Ansible inventory, "
-                  "missing keys: _meta and / or hostvars")
+                  "missing keys: _meta and / or hostvars\n"
+                  "\tUse 'ansible-inventory --list' to create the correct file" )
         sys.exit(1)
 
     in_hosts = inventory['_meta']['hostvars']
@@ -111,11 +112,13 @@ def convert_ansible_inventory(filename: str, namespace: str = 'default'):
         if entry.get('ansible_network_os', '') == 'eos':
             transport = 'https://'
             addnl_info = 'devtype=eos'
+            port = 443
         else:
             transport = 'ssh://'
+            port = entry["ansible_port"]
 
         url = (f'{transport}{entry["ansible_user"]}@{entry["ansible_host"]}'
-               f':{entry["ansible_port"]}')
+               f':{port}')
         keyfile = entry.get('ansible_ssh_private_key_file', '')
         if keyfile:
             hostline = f'    - url: {url} keyfile={keyfile} {addnl_info}'

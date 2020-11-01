@@ -20,29 +20,29 @@ tests:
   marks: path show eos
   output: '[{"pathid": 1, "hopCount": 0, "namespace": "eos", "hostname": "leaf04",
     "iif": "Loopback0", "oif": "Ethernet1", "vrf": "default", "isL2": false, "overlay":
-    false, "mtuMatch": null, "mtu": 65535, "timestamp": 1594274561043}, {"pathid":
+    false, "mtuMatch": null, "mtu": 65535, "timestamp": 1604182715119}, {"pathid":
     1, "hopCount": 1, "namespace": "eos", "hostname": "spine01", "iif": "Ethernet4",
     "oif": "Ethernet1", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
-    true, "mtu": 1500, "timestamp": 1594274560552}, {"pathid": 1, "hopCount": 2, "namespace":
+    true, "mtu": 1500, "timestamp": 1604182715969}, {"pathid": 1, "hopCount": 2, "namespace":
     "eos", "hostname": "leaf01", "iif": "Loopback0", "oif": "", "vrf": "default",
     "isL2": false, "overlay": false, "mtuMatch": null, "mtu": 65535, "timestamp":
-    1594274560834}]'
+    1604182715197}]'
 - command: path show --src=172.16.1.101 --dest=172.16.253.1 --format=json --namespace=eos
   data-directory: tests/data/eos/parquet-out/
   marks: path show eos
   output: '[{"pathid": 1, "hopCount": 0, "namespace": "eos", "hostname": "server101",
-    "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false,
-    "mtuMatch": null, "mtu": 1500, "timestamp": 1594274559861}, {"pathid": 1, "hopCount":
-    1, "namespace": "eos", "hostname": "leaf01", "iif": "Vlan13", "oif": "", "vrf":
+    "iif": "eth1", "oif": "eth1", "vrf": "default", "isL2": false, "overlay": false,
+    "mtuMatch": null, "mtu": 1500, "timestamp": 1604182715020}, {"pathid": 1, "hopCount":
+    1, "namespace": "eos", "hostname": "leaf01", "iif": "Vlan10", "oif": "", "vrf":
     "default", "isL2": false, "overlay": false, "mtuMatch": true, "mtu": 1500, "timestamp":
-    1594274559790}]'
+    1604182715217}]'
 - command: path summarize --dest=172.16.4.104 --src=172.16.1.101 --format=json --namespace=eos
   data-directory: tests/data/eos/parquet-out/
   marks: path summarize eos
-  output: '[{"eos": 1}, {"eos": [1, 1, 1, 1, 1]}, {"eos": 4}, {"eos": 4.0}, {"eos":
-    5}, {"eos": 1500}, {"eos": false}, {"eos": false}]'
+  output: '[{"e": 1}, {"e": [1, 1, 1, 1, 1]}, {"e": 4}, {"e": 4.0}, {"e": 5}, {"e":
+    1500}, {"e": false}, {"e": false}]'
 - command: path summarize --dest=10.0.0.11 --src=10.0.0.14 --format=json --namespace=eos
   data-directory: tests/data/eos/parquet-out/
   marks: path summarize eos
-  output: '[{"eos": 1}, {"eos": [1, 1, 1]}, {"eos": 2}, {"eos": 2.0}, {"eos": 3},
-    {"eos": 1500}, {"eos": false}, {"eos": false}]'
+  output: '[{"e": 1}, {"e": [1, 1, 1]}, {"e": 2}, {"e": 2.0}, {"e": 3}, {"e": 1500},
+    {"e": false}, {"e": false}]'

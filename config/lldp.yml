@@ -37,7 +37,9 @@ apply:
     textfsm: textfsm_templates/lldpd.tfsm
 
   sonic:
-    copy: linux
+    version: all
+    command: lldpctl
+    textfsm: textfsm_templates/lldpd.tfsm
 
   junos-qfx:
     version: all

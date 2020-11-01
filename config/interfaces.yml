@@ -22,27 +22,36 @@ apply:
 
   eos:
     version: all
-    command: show interfaces
-    # bunch of fields need code fixups. see service file
-    normalize: 'interfaces/*/[
-    "name: ifname",
-    "mtu: mtu?|0",
-    "description: description",
-    "physicalAddress: macaddr",
-    "bandwidth: speed?|0",
-    "srcIpAddr: srcVtepIp",
-    "vlanToVniMap/*:vlan?|0",
-    "vlanToVniMap/*/vni: vni?|0",
-    "lineProtocolStatus: state",
-    "hardware: type",
-    "forwardingModel: forwardingModel",
-    "linkStatusChanges: numChanges?|0",
-    "lastStatusChangeTimeStamp": statusChangeTimestamp",
-    "fallbackEnabled: lacpBypass?|False",
-    "interfaceMembership: master?|",
-    "interfaceAddress: ipAddressList?|[]",
-    "interfaceAddressIP6: ip6AddressList?|[]",
-    ]'
+    command:
+      - command: show interfaces
+        # bunch of fields need code fixups. see service file
+        normalize: 'interfaces/*/[
+        "name: ifname",
+        "mtu: mtu?|0",
+        "description: description",
+        "physicalAddress: macaddr",
+        "bandwidth: speed?|0",
+        "srcIpAddr: srcVtepIp",
+        "vlanToVniMap/*:vlan?|0",
+        "vlanToVniMap/*/vni: vni?|0",
+        "lineProtocolStatus: state",
+        "hardware: type",
+        "forwardingModel: forwardingModel",
+        "linkStatusChanges: numChanges?|0",
+        "lastStatusChangeTimeStamp": statusChangeTimestamp",
+        "fallbackEnabled: lacpBypass?|False",
+        "interfaceMembership: master?|",
+        "interfaceAddress: ipAddressList?|[]",
+        "interfaceAddressIP6: ip6AddressList?|[]",
+        ]'
+
+      - command: show vrf
+        normalize: 'vrfs/*:ifname/[
+        "vrfState: state",
+        "type: type?|vrf",
+        "routeDistinguisher: vlanName",
+        "interfaces: _interfaceList?|[]"
+        ]'
 
   linux:
     version: all
@@ -51,25 +60,35 @@ apply:
   
   junos-qfx:
     version: all
-    command: show interface | display json
-    normalize: 'interface-information/[0]/physical-interface/*/[
-    "oper-status/[0]/data: state",
-    "snmp-index/[0]/data: ifIndex",
-    "admin-status/[0]/data: adminState",
-    "speed/[0]/data: speed?|0",
-    "name/[0]/data: ifname",
-    "description/[0]/data: description",
-    "if-type/[0]/data: type",
-    "link-level-type/[0]/data: type?|type",
-    "mtu/[0]/data: mtu?|0",
-    "current-physical-address/[0]/data: macaddr",
-    "interface-flapped/[0]/attributes: statusChangeTimestamp?|",
-    "logical-interface/[0]/encapsulation/[0]/data: master",
-    "logical-interface/[*]/irb-domain/[0]/irb-bridge/[0]/data: vlanName",
-    "logical-interface/[*]/name/[0]/data: logicalIfname",
-    "logical-interface/[*]/if-config-flags: logicalIfflags",
-    "logical-interface/[*]/address-family: afi",
-    ]'
+    command:
+      - command: show interface | display json
+        normalize: 'interface-information/[0]/physical-interface/*/[
+        "oper-status/[0]/data: state",
+        "snmp-index/[0]/data: ifIndex",
+        "admin-status/[0]/data: adminState",
+        "speed/[0]/data: speed?|0",
+        "name/[0]/data: ifname",
+        "description/[0]/data: description",
+        "if-type/[0]/data: type",
+        "link-level-type/[0]/data: type?|type",
+        "mtu/[0]/data: mtu?|0",
+        "current-physical-address/[0]/data: macaddr",
+        "interface-flapped/[0]/attributes: statusChangeTimestamp?|",
+        "logical-interface/[0]/encapsulation/[0]/data: master",
+        "logical-interface/[*]/irb-domain/[0]/irb-bridge/[0]/data: vlanName",
+        "logical-interface/[*]/name/[0]/data: logicalIfname",
+        "logical-interface/[*]/if-config-flags: logicalIfflags",
+        "logical-interface/[*]/address-family: afi",
+        ]'
+
+      - command: show configuration routing-instances | display json
+        normalize: 'configuration/routing-instances/instance/*/[
+        "name: ifname",
+        "instance-type: type",
+        "route-distinguisher/rd-type: vlanName",
+        "interface/*/name: _interfaceList",
+        "protocols/evpn/ip-prefix-routes/vni: vni?|0",
+        ]'
 
   junos-mx:
     copy: junos-qfx
@@ -120,3 +139,5 @@ apply:
         "interface: ifname",
         "address: macaddr",
         ]'
+
+  

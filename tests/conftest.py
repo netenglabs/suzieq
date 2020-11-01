@@ -22,9 +22,10 @@ commands = [('AddressCmd'), ('ArpndCmd'), ('BgpCmd'), ('DeviceCmd'),
             ('MlagCmd'), ('OspfCmd'), ('RouteCmd'),
             ('VlanCmd')]
 
-cli_commands = [('address'), ('bgp'), ('device'), ('evpnVni'),
-                ('interface'), ('lldp'), ('mac'),
-                ('mlag'), ('ospf'), ('path'), ('route'),
+cli_commands = [('arpnd'), ('address'), ('bgp'), ('device'), ('evpnVni'),
+                ('fs'), ('interface'), ('lldp'), ('mac'),
+                ('mlag'), ('ospf'), ('path'), ('route'), ('sqpoller'),
+                ('topology'),
                 ('vlan')]
 
 
@@ -68,7 +69,8 @@ def _create_context_config():
               'data-directory': './tests/data/basic_dual_bgp/parquet-out',
               'temp-directory': '/tmp/suzieq',
               'logging-level': 'WARNING',
-              'test_set': 'basic_dual_bgp'  # an extra field for testing
+              'test_set': 'basic_dual_bgp',  # an extra field for testing
+              'API_KEY': '68986cfafc9d5a2dc15b20e3e9f289eda2c79f40',
               }
     return config
 

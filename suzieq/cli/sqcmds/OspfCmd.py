@@ -36,10 +36,10 @@ class OspfCmd(SqCommand):
     @argument(
         "ifname", description="Space separated list of interface names to qualify"
     )
-    @argument("status", description="Select view based on status",
-              choices=["all", "pass", "fail"])
+    @argument("state", description="Select view based on status",
+              choices=["full", "other", "passive"])
     @argument("vrf", description="Space separated list of VRFs to qualify")
-    def show(self, ifname: str = "", status: str = "", vrf: str = ""):
+    def show(self, ifname: str = "", state: str = "", vrf: str = ""):
         """
         Show OSPF interface and neighbor info
         """
@@ -57,7 +57,7 @@ class OspfCmd(SqCommand):
             vrf=vrf.split(),
             ifname=ifname.split(),
             columns=self.columns,
-            state=status,
+            state=state,
             namespace=self.namespace,
         )
 
@@ -96,17 +96,14 @@ class OspfCmd(SqCommand):
         return self._post_summarize()
 
     @command("assert")
-    @argument("ifname", description="interface name to check OSPF on")
     @argument("vrf", description="VRF to assert OSPF state in")
-    def aver(self, ifname: str = "", vrf: str = "") -> pd.DataFrame:
+    def aver(self, vrf: str = "") -> pd.DataFrame:
         """
         Test OSPF runtime state is good
         """
         now = time.time()
         df = self.sqobj.aver(
-            hostname=self.hostname,
             vrf=vrf.split(),
-            ifname=ifname.split(),
             namespace=self.namespace,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
