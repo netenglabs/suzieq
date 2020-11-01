@@ -20,6 +20,7 @@ The easiest way is:
 ``` bash
 openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes
 ```
+The output of the command is two files, cert.pem and key.pem, created in the directory where you ran the command.
 
 It's not likely that you'd want to use this in production. This certificate will expire in 365 days.
 
