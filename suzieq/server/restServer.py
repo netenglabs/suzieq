@@ -1,5 +1,7 @@
 from typing import Optional
-from fastapi import FastAPI, HTTPException, Query, Depends, Security
+import json
+from enum import Enum
+from fastapi import FastAPI, HTTPException, Query, Depends, Security, Path
 from fastapi.security.api_key import APIKeyQuery, APIKeyHeader, APIKey
 from starlette import status
 import logging
@@ -26,6 +28,7 @@ app = FastAPI()
 logging.FileHandler('/tmp/rest-server.log')
 logger = logging.getLogger(__name__)
 
+
 def get_configured_api_key():
     cfg = load_sq_config(config_file=app.cfg_file)
     try:
@@ -36,10 +39,11 @@ def get_configured_api_key():
 
     return api_key
 
+
 async def get_api_key(api_key_query: str = Security(api_key_query),
                       api_key_header: str = Security(api_key_header)):
 
-    api_key = get_configured_api_key()    
+    api_key = get_configured_api_key()
     if api_key_query == api_key:
         return api_key_query
     elif api_key_header == api_key:
@@ -52,17 +56,6 @@ async def get_api_key(api_key_query: str = Security(api_key_query),
         )
 
 
-# for now we won't support top for REST API
-#  this is because a lot of top logic is currently in commands
-#  and I'm not sure what needs to get abstracted out
-@app.get('/api/v1/{command}/top')
-async def no_top(command: str):
-    u = uuid.uuid1()
-    msg = f"top not supported for {command}: id={u}"
-    logger.warning(msg)
-    raise HTTPException(status_code=404, detail=msg)
-
-
 """
 each of these read functions behaves the same, it gets the arguments
 puts them into dicts and passes them to sqobjects
@@ -71,227 +64,144 @@ assume that all API functions are named read_*
 """
 
 
+class CommonVerbs(str, Enum):
+    show = "show"
+    summarize = "summarize"
+    unique = "unique"
+
+
+class MoreVerbs(str, Enum):
+    show = "show"
+    summarize = "summarize"
+    unique = "unique"
+    aver = "assert"
+
+
+class RouteVerbs(str, Enum):
+    show = "show"
+    summarize = "summarize"
+    unique = "unique"
+    lpm = "lpm"
+
+
+class PathVerbs(str, Enum):
+    show = "show"
+    summarize = "summarize"
+
+
+class TableVerbs(str, Enum):
+    show = "show"
+    summarize = "summarize"
+    describe = "describe"
+
+
 @app.get("/api/v1/address/{verb}")
-async def read_address(verb: str,
-                       token: str = Depends(get_api_key),
-                       hostname: str = None,
-                       start_time: str = "", end_time: str = "",
-                       view: str = "latest", namespace: str = None,
-                       columns: str = None, address: str = None,
-                       ipvers: str = None,
-                       vrf: str = None,
-                       ):
+async def query_address(verb: CommonVerbs,
+                        token: str = Depends(get_api_key),
+                        hostname: str = None,
+                        start_time: str = "", end_time: str = "",
+                        view: str = "latest", namespace: str = None,
+                        columns: str = None, address: str = None,
+                        ipvers: str = None,
+                        vrf: str = None
+                        ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, locals())
 
 
 @app.get("/api/v1/arpnd/{verb}")
-async def read_arpnd(verb: str,
-                     token: str = Depends(get_api_key),
-                     hostname: str = None,
-                     start_time: str = "", end_time: str = "",
-                     view: str = "latest", namespace: str = None,
-                     columns: str = None, ipAddress: str = None,
-                     macaddr: str = None,
-                     oif: str = None,
-                     ):
-    function_name = inspect.currentframe().f_code.co_name
-    return read_shared(function_name, verb, locals())
-
-
-@app.get("/api/v1/bgp/{verb}")
-async def read_bgp(verb: str,
-                   token: str = Depends(get_api_key),
-                   hostname: str = None,
-                   start_time: str = "", end_time: str = "",
-                   view: str = "latest", namespace: str = None,
-                   columns: str = None, peer: str = None,
-                   state: str = None, vrf: str = None,
-                   ):
-    function_name = inspect.currentframe().f_code.co_name
-    return read_shared(function_name, verb, locals())
-
-
-@app.get("/api/v1/device/{verb}")
-async def read_device(verb: str,
+async def query_arpnd(verb: CommonVerbs,
                       token: str = Depends(get_api_key),
                       hostname: str = None,
                       start_time: str = "", end_time: str = "",
                       view: str = "latest", namespace: str = None,
-                      columns: str = None,
+                      columns: str = None, ipAddress: str = None,
+                      macaddr: str = None,
+                      oif: str = None
                       ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, locals())
 
 
-@app.get("/api/v1/evpnVni/{verb}")
-async def read_evpnVni(verb: str,
+@app.get("/api/v1/bgp/{verb}")
+async def query_bgp(verb: MoreVerbs,
+                    token: str = Depends(get_api_key),
+                    hostname: str = None,
+                    start_time: str = "", end_time: str = "",
+                    view: str = "latest", namespace: str = None,
+                    columns: str = None, peer: str = None,
+                    state: str = None, vrf: str = None
+                    ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, locals())
+
+
+@app.get("/api/v1/device/{verb}")
+async def query_device(verb: CommonVerbs,
                        token: str = Depends(get_api_key),
                        hostname: str = None,
                        start_time: str = "", end_time: str = "",
                        view: str = "latest", namespace: str = None,
-                       columns: str = None, vni: str = None,
+                       columns: str = None
                        ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, locals())
 
 
+@app.get("/api/v1/evpnVni/{verb}")
+async def query_evpnVni(verb: MoreVerbs,
+                        token: str = Depends(get_api_key),
+                        hostname: str = None,
+                        start_time: str = "", end_time: str = "",
+                        view: str = "latest", namespace: str = None,
+                        columns: str = None, vni: str = None
+                        ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, locals())
+
+
 @app.get("/api/v1/fs/{verb}")
-async def read_fs(verb: str,
-                  token: str = Depends(get_api_key),
-                  hostname: str = None,
-                  start_time: str = "", end_time: str = "",
-                  view: str = "latest", namespace: str = None,
-                  columns: str = None, mountPoint: str = None,
-                  usedPercent: str = None,
-                  ):
-    function_name = inspect.currentframe().f_code.co_name
-    return read_shared(function_name, verb, locals())
-
-
-@app.get("/api/v1/interface/{verb}")
-async def read_interface(verb: str,
-                         token: str = Depends(get_api_key),
-                         hostname: str = None,
-                         start_time: str = "", end_time: str = "",
-                         view: str = "latest", namespace: str = None,
-                         columns: str = None,
-                         ifname: str = None, state: str = None,
-                         type: str = None, what: str = None,
-                         matchval: int = Query(None, alias="value"),
-                         ):
-    function_name = inspect.currentframe().f_code.co_name
-    return read_shared(function_name, verb, locals())
-
-
-@app.get("/api/v1/lldp/{verb}")
-async def read_lldp(verb: str,
-                    token: str = Depends(get_api_key),
-                    hostname: str = None,
-                    start_time: str = "", end_time: str = "",
-                    view: str = "latest", namespace: str = None,
-                    columns: str = None, ifname: str = None,
-                    ):
-    function_name = inspect.currentframe().f_code.co_name
-    return read_shared(function_name, verb, locals())
-
-
-@app.get("/api/v1/mlag/{verb}")
-async def read_mlag(verb: str,
-                    token: str = Depends(get_api_key),
-                    hostname: str = None,
-                    start_time: str = "", end_time: str = "",
-                    view: str = "latest", namespace: str = None,
-                    columns: str = None,
-                    ):
-    function_name = inspect.currentframe().f_code.co_name
-    return read_shared(function_name, verb, locals())
-
-
-@app.get("/api/v1/ospf/{verb}")
-async def read_ospf(verb: str,
-                    token: str = Depends(get_api_key),
-                    hostname: str = None,
-                    start_time: str = "", end_time: str = "",
-                    view: str = "latest", namespace: str = None,
-                    columns: str = None,  ifname: str = None,
-                    state: str = None,
-                    vrf: str = None,
-                    ):
-    function_name = inspect.currentframe().f_code.co_name
-    return read_shared(function_name, verb, locals())
-
-
-@app.get("/api/v1/mac/{verb}")
-async def read_mac(verb: str,
+async def query_fs(verb: CommonVerbs,
                    token: str = Depends(get_api_key),
                    hostname: str = None,
                    start_time: str = "", end_time: str = "",
                    view: str = "latest", namespace: str = None,
-                   columns: str = None, bd: str = None,
-                   localOnly: str = None,
-                   macaddr: str = None, remoteVtepIp: str = None,
-                   vlan: str = None,
+                   columns: str = None, mountPoint: str = None,
+                   usedPercent: str = None
                    ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, locals())
 
 
-# path doesn't support unique at all
-@app.get("/api/v1/path/unique")
-async def no_path_unique():
-    return return_error(404, 'Unique not supported for path')
-
-
-@app.get("/api/v1/path/{verb}")
-async def read_path(verb: str,
-                    token: str = Depends(get_api_key),
-                    hostname: str = None,
-                    start_time: str = "", end_time: str = "",
-                    view: str = "latest", namespace: str = None,
-                    columns: str = None,
-                    dest: str = None,
-                    source: str = Query(None, alias="src")
-                    ):
+@app.get("/api/v1/interface/{verb}")
+async def query_interface(verb: MoreVerbs,
+                          token: str = Depends(get_api_key),
+                          hostname: str = None,
+                          start_time: str = "", end_time: str = "",
+                          view: str = "latest", namespace: str = None,
+                          columns: str = None,
+                          ifname: str = None, state: str = None,
+                          type: str = None, what: str = None,
+                          matchval: int = Query(None, alias="value")
+                          ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, locals())
 
 
-@app.get("/api/v1/route/{verb}")
-async def read_route(verb: str,
+@app.get("/api/v1/lldp/{verb}")
+async def query_lldp(verb: CommonVerbs,
                      token: str = Depends(get_api_key),
                      hostname: str = None,
                      start_time: str = "", end_time: str = "",
                      view: str = "latest", namespace: str = None,
-                     columns: str = None, prefix: str = None,
-                     vrf: str = None, protocol: str = None,
-                     prefixlen: str = None, ipvers: str = None,
-                     add_filter: str = None, address: str = None,
+                     columns: str = None, ifname: str = None,
                      ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, locals())
 
 
-@app.get("/api/v1/sqpoller/{verb}")
-async def read_sqpoller(verb: str,
-                        token: str = Depends(get_api_key),
-                        hostname: str = None,
-                        start_time: str = "", end_time: str = "",
-                        view: str = "latest", namespace: str = None,
-                        columns: str = None, service: str = None,
-                        add_filter: str = None
-                        ):
-    function_name = inspect.currentframe().f_code.co_name
-    return read_shared(function_name, verb, locals())
-
-
-@app.get("/api/v1/topology/{verb}")
-async def read_topology(verb: str,
-                        token: str = Depends(get_api_key),
-                        hostname: str = None,
-                        start_time: str = "", end_time: str = "",
-                        view: str = "latest", namespace: str = None,
-                        columns: str = None, polled_neighbor: bool = None,
-                        vrf: str = None,
-                        ):
-    function_name = inspect.currentframe().f_code.co_name
-    return read_shared(function_name, verb, locals())
-
-
-@app.get("/api/v1/vlan/{verb}")
-async def read_vlan(verb: str,
-                    token: str = Depends(get_api_key),
-                    hostname: str = None,
-                    start_time: str = "", end_time: str = "",
-                    view: str = "latest", namespace: str = None,
-                    columns: str = None, vlan: str = None,
-                    ):
-    function_name = inspect.currentframe().f_code.co_name
-    return read_shared(function_name, verb, locals())
-
-
-@app.get("/api/v1/table/{verb}")
-async def read_table(verb: str,
+@app.get("/api/v1/mlag/{verb}")
+async def query_mlag(verb: CommonVerbs,
                      token: str = Depends(get_api_key),
                      hostname: str = None,
                      start_time: str = "", end_time: str = "",
@@ -302,17 +212,126 @@ async def read_table(verb: str,
     return read_shared(function_name, verb, locals())
 
 
-def read_shared(function_name, verb, local_variables):
+@app.get("/api/v1/ospf/{verb}")
+async def query_ospf(verb: MoreVerbs,
+                     token: str = Depends(get_api_key),
+                     hostname: str = None,
+                     start_time: str = "", end_time: str = "",
+                     view: str = "latest", namespace: str = None,
+                     columns: str = None,  ifname: str = None,
+                     state: str = None,
+                     vrf: str = None,
+                     ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, locals())
+
+
+@app.get("/api/v1/mac/{verb}")
+async def query_mac(verb: CommonVerbs,
+                    token: str = Depends(get_api_key),
+                    hostname: str = None,
+                    start_time: str = "", end_time: str = "",
+                    view: str = "latest", namespace: str = None,
+                    columns: str = None, bd: str = None,
+                    localOnly: str = None,
+                    macaddr: str = None, remoteVtepIp: str = None,
+                    vlan: str = None,
+                    ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, locals())
+
+
+@app.get("/api/v1/path/{verb}")
+async def query_path(verb: PathVerbs,
+                     token: str = Depends(get_api_key),
+                     hostname: str = None,
+                     start_time: str = "", end_time: str = "",
+                     view: str = "latest", namespace: str = None,
+                     columns: str = None,
+                     dest: str = None,
+                     source: str = Query(None, alias="src")
+                     ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, locals())
+
+
+@app.get("/api/v1/route/{verb}")
+async def query_route(verb: RouteVerbs,
+                      token: str = Depends(get_api_key),
+                      hostname: str = None,
+                      start_time: str = "", end_time: str = "",
+                      view: str = "latest", namespace: str = None,
+                      columns: str = None, prefix: str = None,
+                      vrf: str = None, protocol: str = None,
+                      prefixlen: str = None, ipvers: str = None,
+                      add_filter: str = None, address: str = None,
+                      ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, locals())
+
+
+@app.get("/api/v1/sqpoller/{verb}")
+async def query_sqpoller(verb: CommonVerbs,
+                         token: str = Depends(get_api_key),
+                         hostname: str = None,
+                         start_time: str = "", end_time: str = "",
+                         view: str = "latest", namespace: str = None,
+                         columns: str = None, service: str = None,
+                         add_filter: str = None
+                         ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, locals())
+
+
+@app.get("/api/v1/topology/{verb}")
+async def query_topology(verb: CommonVerbs,
+                         token: str = Depends(get_api_key),
+                         hostname: str = None,
+                         start_time: str = "", end_time: str = "",
+                         view: str = "latest", namespace: str = None,
+                         columns: str = None, polled_neighbor: bool = None,
+                         vrf: str = None,
+                         ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, locals())
+
+
+@app.get("/api/v1/vlan/{verb}")
+async def query_vlan(verb: CommonVerbs,
+                     token: str = Depends(get_api_key),
+                     hostname: str = None,
+                     start_time: str = "", end_time: str = "",
+                     view: str = "latest", namespace: str = None,
+                     columns: str = None, vlan: str = None,
+                     state: str = None,
+                     ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, locals())
+
+
+@app.get("/api/v1/table/{verb}")
+async def query_table(verb: TableVerbs,
+                      token: str = Depends(get_api_key),
+                      hostname: str = None,
+                      start_time: str = "", end_time: str = "",
+                      view: str = "latest", namespace: str = None,
+                      columns: str = None,
+                      ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, locals())
+
+
+def read_shared(function_name, verb, local_variables=None):
     """all the shared code for each of thse read functions"""
 
-    command = function_name[5:]  # assumes the name of the function is read_*
+    command = function_name.split('_')[1]  # assumes fn name is query_<command>
     command_args, verb_args = create_filters(function_name, local_variables)
 
     verb = cleanup_verb(verb)
 
     ret, svc_inst = run_command_verb(command, verb, command_args, verb_args)
     check_args(function_name, svc_inst)
-    return ret
+    return json.loads(ret)
 
 
 def check_args(function_name, svc_inst):
@@ -337,7 +356,8 @@ def create_filters(function_name, locals):
     command_args = {}
     verb_args = {}
     remove_args = ['verb', 'token']
-    possible_args = ['hostname', 'namespace', 'start_time', 'end_time', 'view', 'columns']
+    possible_args = ['hostname', 'namespace',
+                     'start_time', 'end_time', 'view', 'columns']
     split_args = ['namespace', 'columns', 'address']
     both_verb_and_command = ['namespace', 'hostname', 'columns']
 
@@ -412,7 +432,7 @@ def get_svc(command):
 
 
 def run_command_verb(command, verb, command_args, verb_args):
-    """ 
+    """
     Runs the command and verb with the command_args and verb_args as dictionaries
 
     HTTP Return Codes
@@ -447,7 +467,7 @@ def run_command_verb(command, verb, command_args, verb_args):
         return_error(
             405, f"bad keyword/filter for {command} {verb}: {df['error'][0]}")
 
-    return df.to_dict(orient="records"), svc_inst
+    return df.to_json(orient="records"), svc_inst
 
 
 def return_error(code: int, msg: str):
@@ -457,13 +477,14 @@ def return_error(code: int, msg: str):
     raise HTTPException(status_code=code, detail=msg)
 
 
-@app.get("/api/v1/{command}")
+@app.get("/api/v1/{command}", include_in_schema=False)
 def missing_verb(command):
     return_error(
-        404, f"{command} command missing a verb. for example '/api/v1/{command}/show'")
+        404, f'{command} command missing a verb. for example '
+        f'/api/v1/{command}/show')
 
 
-@app.get("/")
+@app.get("/", include_in_schema=False)
 def bad_path():
     return_error(404, f"bad path. Try something like '/api/v1/device/show'")
 
@@ -478,7 +499,7 @@ def check_config_file(cfgfile):
 
 def check_for_cert_files():
     if not os.path.isfile(os.getenv("HOME") + '/.suzieq/key.pem') or not \
-        os.path.isfile(os.getenv("HOME") + '/.suzieq/cert.pem'):
+            os.path.isfile(os.getenv("HOME") + '/.suzieq/cert.pem'):
         logger.error(f"ERROR: Missing cert files in ~/.suzieq")
         print(f"ERROR: Missing cert files in ~/.suzieq")
         sys.exit(1)
