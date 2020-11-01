@@ -3,38 +3,44 @@ tests:
 - command: vlan show --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: vlan show eos
-  output: '[{"namespace": "eos", "hostname": "exit01", "ifname": "Et3", "vlan": ["-"],
-    "pvid": 1, "timestamp": 1594274558994}, {"namespace": "eos", "hostname": "exit01",
-    "ifname": "Et4", "vlan": ["-"], "pvid": 1, "timestamp": 1594274558994}, {"namespace":
-    "eos", "hostname": "exit02", "ifname": "Et3", "vlan": ["-"], "pvid": 1, "timestamp":
-    1594274558987}, {"namespace": "eos", "hostname": "exit02", "ifname": "Et4", "vlan":
-    ["-"], "pvid": 1, "timestamp": 1594274558987}, {"namespace": "eos", "hostname":
-    "leaf01", "ifname": "Po1", "vlan": ["-"], "pvid": 13, "timestamp": 1594274558990},
-    {"namespace": "eos", "hostname": "leaf01", "ifname": "Po12", "vlan": ["13,24,4094"],
-    "pvid": 1, "timestamp": 1594274558990}, {"namespace": "eos", "hostname": "leaf01",
-    "ifname": "Po2", "vlan": ["-"], "pvid": 24, "timestamp": 1594274558990}, {"namespace":
-    "eos", "hostname": "leaf02", "ifname": "Po12", "vlan": ["13,24,4094"], "pvid":
-    1, "timestamp": 1594274558969}, {"namespace": "eos", "hostname": "leaf03", "ifname":
-    "Po1", "vlan": ["-"], "pvid": 13, "timestamp": 1594274558980}, {"namespace": "eos",
-    "hostname": "leaf03", "ifname": "Po12", "vlan": ["13,24,4094"], "pvid": 1, "timestamp":
-    1594274558980}, {"namespace": "eos", "hostname": "leaf03", "ifname": "Po2", "vlan":
-    ["-"], "pvid": 24, "timestamp": 1594274558980}, {"namespace": "eos", "hostname":
-    "leaf04", "ifname": "Po12", "vlan": ["13,24,4094"], "pvid": 1, "timestamp": 1594274558973}]'
+  output: '[{"namespace": "eos", "hostname": "leaf04", "ifname": "vlan1", "state":
+    "active", "interfaces": ["Ethernet3", "Ethernet4"], "vlan": 1, "timestamp": 1604182714446},
+    {"namespace": "eos", "hostname": "leaf04", "ifname": "vlan10", "state": "active",
+    "interfaces": ["Cpu", "Ethernet5"], "vlan": 10, "timestamp": 1604182714446}, {"namespace":
+    "eos", "hostname": "leaf02", "ifname": "vlan1", "state": "active", "interfaces":
+    ["Ethernet3", "Ethernet4"], "vlan": 1, "timestamp": 1604182714467}, {"namespace":
+    "eos", "hostname": "leaf02", "ifname": "vlan10", "state": "active", "interfaces":
+    ["Cpu", "Ethernet5"], "vlan": 10, "timestamp": 1604182714467}, {"namespace": "eos",
+    "hostname": "exit01", "ifname": "vlan1", "state": "active", "interfaces": ["Ethernet3",
+    "Ethernet4"], "vlan": 1, "timestamp": 1604182714468}, {"namespace": "eos", "hostname":
+    "leaf01", "ifname": "vlan1", "state": "active", "interfaces": ["Ethernet3", "Ethernet4"],
+    "vlan": 1, "timestamp": 1604182714468}, {"namespace": "eos", "hostname": "leaf01",
+    "ifname": "vlan10", "state": "active", "interfaces": ["Cpu", "Ethernet5"], "vlan":
+    10, "timestamp": 1604182714468}, {"namespace": "eos", "hostname": "spine01", "ifname":
+    "vlan1", "state": "active", "interfaces": [], "vlan": 1, "timestamp": 1604182714474},
+    {"namespace": "eos", "hostname": "spine02", "ifname": "vlan1", "state": "active",
+    "interfaces": [], "vlan": 1, "timestamp": 1604182714553}, {"namespace": "eos",
+    "hostname": "exit02", "ifname": "vlan1", "state": "active", "interfaces": ["Ethernet3",
+    "Ethernet4"], "vlan": 1, "timestamp": 1604182714555}, {"namespace": "eos", "hostname":
+    "leaf03", "ifname": "vlan1", "state": "active", "interfaces": ["Ethernet3", "Ethernet4"],
+    "vlan": 1, "timestamp": 1604182715035}, {"namespace": "eos", "hostname": "leaf03",
+    "ifname": "vlan10", "state": "active", "interfaces": ["Cpu", "Ethernet5"], "vlan":
+    10, "timestamp": 1604182715035}]'
 - command: vlan show --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: vlan show eos
-  output: '[{"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
-    {"hostname": "exit02"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
-    "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
-    {"hostname": "leaf03"}, {"hostname": "leaf04"}]'
+  output: '[{"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "exit01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "spine01"}, {"hostname": "spine02"}, {"hostname": "exit02"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}]'
 - command: vlan summarize --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: vlan summarize eos
-  output: '{"eos": {"deviceCnt": 12, "uniquePvidCnt": {"1": 8, "13": 2, "24": 2},
-    "uniqueVlanCnt": {"-": 8, "13,24,4094": 4}}}'
+  output: '{"eos": {"deviceCnt": 12, "uniqueVlanCnt": {"1": 8, "10": 4}}}'
 - command: vlan unique --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: vlan unique eos
-  output: '[{"hostname": "leaf04", "count": 1}, {"hostname": "leaf02", "count": 1},
-    {"hostname": "exit02", "count": 2}, {"hostname": "exit01", "count": 2}, {"hostname":
-    "leaf03", "count": 3}, {"hostname": "leaf01", "count": 3}]'
+  output: '[{"hostname": "exit01", "count": 1}, {"hostname": "exit02", "count": 1},
+    {"hostname": "spine01", "count": 1}, {"hostname": "spine02", "count": 1}, {"hostname":
+    "leaf02", "count": 2}, {"hostname": "leaf04", "count": 2}, {"hostname": "leaf03",
+    "count": 2}, {"hostname": "leaf01", "count": 2}]'
