@@ -62,14 +62,18 @@ class AddressObj(SqEngineObject):
                     a += '/'
                 v6addr.append(a)
 
-        df = self.get_valid_df("address", master=vrf,
+        if vrf == "default":
+            master = ''
+        else:
+            master = vrf
+        df = self.get_valid_df("address", master=master,
                                addnl_fields=addnl_fields, **kwargs)
 
         if df.empty:
             return df
 
-        if not vrf and not any(i in columns for i in ["master", "vrf"]):
-            df.drop(columns=['master'], inplace=True)
+        if vrf == "default":
+            df = df.query('master==""')
 
         if 4 in addr_types:
             df = df.explode('ipAddressList').fillna({'ipAddressList': ''})
