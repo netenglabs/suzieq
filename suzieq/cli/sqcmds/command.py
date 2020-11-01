@@ -156,6 +156,8 @@ class SqCommand:
     def _assert_gen_output(self, df):
         if df.empty:
             result = 0
+        elif df.columns.to_list() == ['error']:
+            result = 1
         elif df.loc[df['assert'] != "pass"].empty:
             result = 0
         else:

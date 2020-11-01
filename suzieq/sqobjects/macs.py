@@ -5,8 +5,10 @@ from suzieq.sqobjects.basicobj import SqObject
 class MacsObj(SqObject):
     def __init__(self, **kwargs):
         super().__init__(table='macs', **kwargs)
-
-    def validate_input(self, **kwargs):
+        self._valid_get_args = ['namespace', 'hostname', 'columns', 'macaddr',
+                                'remoteVtepIp', 'vlan', 'localOnly', 'bd']
+   
+    def validate_get_input(self, **kwargs):
         for key in kwargs:
             if key == 'vlan':
                 for ele in kwargs[key]:
@@ -19,3 +21,4 @@ class MacsObj(SqObject):
                         int(words[-1])
                     except Exception:
                         raise ValueError(f'Invalid VLAN value: {kwargs[key]}')
+        super().validate_get_input(**kwargs)

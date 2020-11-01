@@ -1,5 +1,6 @@
 import re
 from datetime import datetime
+from collections import defaultdict
 from suzieq.poller.services.service import Service
 from suzieq.utils import get_timestamp_from_junos_time
 from suzieq.utils import convert_macaddr_format_to_colon
@@ -18,10 +19,32 @@ class InterfaceService(Service):
         # called statusChangeTimestamp1 to ensure we capture changes
         self.ignore_fields.append("statusChangeTimestamp")
 
+    def _assign_vrf(self, entry, entry_dict):
+        '''Uses the interface List to assign interfaces to VRFs'''
+        if entry['type'] == 'vrf':
+            if entry['ifname'] != 'default':
+                for intf in entry['_interfaceList']:
+                    if intf in entry_dict:
+                        entry_dict[intf]['master'] = entry['ifname']
+                    else:
+                        entry_dict[intf] = {'vrf': entry['ifname']}
+
     def _clean_eos_data(self, processed_data, raw_data):
         """Clean up EOS interfaces output"""
 
+        entry_dict = defaultdict(dict)
         for entry in processed_data:
+
+            if entry['type'] == 'vrf':
+                self._assign_vrf(entry, entry_dict)
+                continue
+
+            if not entry_dict[entry['ifname']]:
+                entry_dict[entry['ifname']] = entry
+            elif 'vrf' in entry_dict[entry['ifname']]:
+                entry['master'] = entry_dict[entry['ifname']]['vrf']
+                entry_dict[entry['ifname']] = entry
+
             entry["speed"] = int(entry["speed"] / 1000000)
             ts = entry["statusChangeTimestamp"]
             if ts:
@@ -73,7 +96,7 @@ class InterfaceService(Service):
                 if 'virtualIp' in munge_entry:
                     elem = munge_entry['virtualIp']
                     if elem["address"] != "0.0.0.0":
-                        ip = elem["adddress"] + "/" + elem["maskLen"]
+                        ip = f'{elem["address"]}/{elem["maskLen"]}'
                         new_list.append(ip)
                 entry["ipAddressList"] = new_list
 
@@ -155,7 +178,19 @@ class InterfaceService(Service):
     def _clean_junos_data(self, processed_data, raw_data):
         """Cleanup IP addresses and such"""
         new_entries = []        # Add new interface entries for logical ifs
+        entry_dict = defaultdict(dict)
+
         for entry in processed_data:
+
+            if entry['type'] == 'vrf':
+                self._assign_vrf(entry, entry_dict)
+                continue
+
+            if not entry_dict[entry['ifname']]:
+                entry_dict[entry['ifname']] = entry
+            elif 'vrf' in entry_dict[entry['ifname']]:
+                entry['master'] = entry_dict[entry['ifname']]['vrf']
+                entry_dict[entry['ifname']] = entry
 
             if entry['mtu'] == 'Unlimited':
                 entry['mtu'] = 65536
@@ -221,12 +256,16 @@ class InterfaceService(Service):
                 else:
                     continue
 
+                if entry_dict[ifname]:
+                    vrf = entry_dict[ifname]['vrf']
+                else:
+                    vrf = ''
                 new_entry = {'ifname': ifname,
                              'mtu': entry['afi'][i][0].get(
                                  'mtu', [{'data': 0}])[0]['data'],
                              'type': 'logical',
                              'speed': entry['speed'],
-                             'master': '',
+                             'master': vrf,
                              'description': entry['description'],
                              'statusChangeTimestamp':
                              entry['statusChangeTimestamp'],
@@ -258,6 +297,7 @@ class InterfaceService(Service):
                 new_entry['ipAddressList'] = v4addresses
 
                 new_entries.append(new_entry)
+                entry_dict[ifname] = new_entry
 
             entry.pop('vlanName')
 
@@ -281,18 +321,18 @@ class InterfaceService(Service):
             entry["statusChangeTimestamp1"] = entry.get(
                 "statusChangeTimestamp", '')
 
-            if ('vrf' in entry and entry['vrf'] != 'default' and
-                    entry['vrf'] not in created_if_list):
-                # Our normalized behavior is to treat VRF as an interface
-                # NXOS doesn't do that. So, create a dummy interface
-                new_entry = {'ifname': entry['vrf'],
-                             'mtu': 65536,
-                             'state': 'up',
-                             'type': 'vrf',
-                             'master': '',
-                             'vlan': 0}
-                new_entries.append(new_entry)
-                created_if_list.add(entry['vrf'])
+            if ('vrf' in entry and entry['vrf'] != 'default'):
+                if entry['vrf'] not in created_if_list:
+                    # Our normalized behavior is to treat VRF as an interface
+                    # NXOS doesn't do that. So, create a dummy interface
+                    new_entry = {'ifname': entry['vrf'],
+                                 'mtu': 65536,
+                                 'state': 'up',
+                                 'type': 'vrf',
+                                 'master': '',
+                                 'vlan': 0}
+                    new_entries.append(new_entry)
+                    created_if_list.add(entry['vrf'])
 
                 entry['master'] = entry['vrf']
             else:

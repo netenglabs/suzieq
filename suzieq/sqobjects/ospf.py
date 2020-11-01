@@ -9,27 +9,22 @@ class OspfObj(SqObject):
         super().__init__(table='ospf', **kwargs)
         self._addnl_fields = ['passive', 'area', 'state']
         self._addnl_nbr_fields = ['state']
-
-    def get(self, **kwargs):
-
-        if not self.ctxt.engine:
-            raise AttributeError('No analysis engine specified')
-
-        return self.engine_obj.get(**kwargs)
-
-    def summarize(self, **kwargs):
-        """Describe the data"""
-
-        if not self.ctxt.engine:
-            raise AttributeError('No analysis engine specified')
-
-        return self.engine_obj.summarize(**kwargs)
+        self._valid_get_args = ['namespace', 'hostname', 'columns',
+                                'vrf', 'ifname', 'state']
+        self._valid_assert_args = ['namespace', 'vrf']
+        self._valid_arg_vals = {'state': ['full', 'other', 'passive', '']}
 
     def aver(self, **kwargs):
         """Assert that the OSPF state is OK"""
 
         if not self.ctxt.engine:
             raise AttributeError('No analysis engine specified')
+
+        try:
+            self.validate_assert_input(**kwargs)
+        except Exception as error:
+            df = pd.DataFrame({'error': [f'{error}']})
+            return df
 
         return self.engine_obj.aver(**kwargs)
 

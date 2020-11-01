@@ -82,6 +82,9 @@ class SqObject(object):
 
         self._addnl_filter = None
         self._addnl_fields = []
+        self._valid_get_args = None
+        self._valid_assert_args = None
+        self._valid_arg_vals = None
 
     @property
     def all_schemas(self):
@@ -99,9 +102,37 @@ class SqObject(object):
     def table(self):
         return self._table
 
-    def validate_input(self, **kwargs):
-        """Dummy validate input"""
-        return
+    def _check_input_for_valid_args(self, good_arg_list, **kwargs,):
+        if not good_arg_list:
+            return
+
+        # add standard args that are always
+        good_arg_list = good_arg_list + (['namespace', 'addnl_fields'])
+
+        for arg in kwargs.keys():
+            if arg not in good_arg_list:
+                raise AttributeError(
+                    f"argument {arg} not supported for this command")
+
+    def _check_input_for_valid_vals(self, good_arg_val_list, **kwargs):
+        '''Check if the input is valid for the arg, if possible'''
+
+        if not good_arg_val_list:
+            return
+
+        for arg in kwargs.keys():
+            if arg in good_arg_val_list:
+                if kwargs[arg] not in good_arg_val_list[arg]:
+                    raise AttributeError(
+                        f"invalid value {kwargs[arg]} for argument {arg}")
+
+    def validate_get_input(self, **kwargs):
+        self._check_input_for_valid_args(
+            self._valid_get_args + ['columns'], **kwargs)
+        self._check_input_for_valid_vals(self._valid_arg_vals, **kwargs)
+
+    def validate_assert_input(self, **kwargs):
+        self._check_input_for_valid_args(self._valid_assert_args, **kwargs)
 
     def get(self, **kwargs) -> pd.DataFrame:
         if not self._table:
@@ -115,7 +146,7 @@ class SqObject(object):
 
         # This raises exceptions if it fails
         try:
-            self.validate_input(**kwargs)
+            self.validate_get_input(**kwargs)
         except Exception as error:
             df = pd.DataFrame({'error': [f'{error}']})
             return df
@@ -155,6 +186,15 @@ class SqObject(object):
             del kwargs["columns"]
         else:
             columns = ["default"]
+
+        # if self._valid_get_args:
+        #     self._valid_get_args += ['what', 'n', 'reverse']
+        # This raises exceptions if it fails
+        try:
+            self.validate_get_input(**kwargs)
+        except Exception as error:
+            df = pd.DataFrame({'error': [f'{error}']})
+            return df
 
         table_schema = SchemaForTable(self._table, self.all_schemas)
         columns = table_schema.get_display_fields(columns)

@@ -50,9 +50,9 @@ class BgpCmd(SqCommand):
     @command("show")
     @argument("vrf", description="vrf name to qualify")
     @argument("peer", description="IP address, in quotes, or the interface name, of peer to qualify output")
-    @argument("status", description="status of the session to match",
-              choices=["all", "pass", "fail"])
-    def show(self, status: str = "all", vrf: str = '', peer: str = ''):
+    @argument("state", description="status of the session to match",
+              choices=["Established", "NotEstd"])
+    def show(self, state: str = "", vrf: str = '', peer: str = ''):
         """
         Show bgp info
         """
@@ -65,13 +65,6 @@ class BgpCmd(SqCommand):
             self.ctxt.sort_fields = None
         else:
             self.ctxt.sort_fields = []
-
-        if status == "pass":
-            state = "Established"
-        elif status == "fail":
-            state = "NotEstd"
-        else:
-            state = ''
 
         if (self.columns != ['default'] and self.columns != ['*'] and
                 'state' not in self.columns):

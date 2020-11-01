@@ -28,7 +28,7 @@ class RoutesObj(SqEngineObject):
 
         prefixlen = kwargs.pop('prefixlen', None)
         prefix = kwargs.pop('prefix', [])
-        ipvers = kwargs.pop('ipvers', 4)
+        ipvers = kwargs.pop('ipvers', '')
         addnl_fields = kwargs.pop('addnl_fields', [])
 
         columns = kwargs.get('columns', ['default'])
@@ -49,7 +49,8 @@ class RoutesObj(SqEngineObject):
 
             newpfx.append(item)
 
-        df = super().get(addnl_fields=addnl_fields, prefix=newpfx, **kwargs)
+        df = super().get(addnl_fields=addnl_fields, prefix=newpfx,
+                         ipvers=ipvers, **kwargs)
 
         if not df.empty and 'prefix' in df.columns:
             df = df.loc[df['prefix'] != "127.0.0.0/8"]
@@ -160,7 +161,7 @@ class RoutesObj(SqEngineObject):
 
         # if not using a pre-populated dataframe
         if df.empty:
-            df = self.get(ipvers=str(ipvers), columns=cols,
+            df = self.get(ipvers=ipvers, columns=cols,
                           addnl_fields=addnl_fields, **kwargs)
 
         if df.empty:

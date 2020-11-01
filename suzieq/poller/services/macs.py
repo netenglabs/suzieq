@@ -93,6 +93,11 @@ class MacsService(Service):
                 entry['remoteVtepIp'] = vtepIP.group(2)
                 entry['oif'] = vtepIP.group(1)
                 entry['flags'] = 'remote'
+            else:
+                if entry['oif'].startswith('Eth'):
+                    entry['oif'] = entry['oif'].replace('Eth', 'Ethernet')
+                elif entry['oif'].startswith('Po'):
+                    entry['oif'] = entry['oif'].replace('Po', 'port-channel')
             self._add_mackey_protocol(entry)
 
         return processed_data

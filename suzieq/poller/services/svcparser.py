@@ -196,8 +196,8 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                 if lval[0] == "*":
                     if isinstance(ele['rest'], dict):
                         if nxtfld:
-                            intres = [{rval: ele['rest'][lval[1]],
-                                       "rest": ele['rest'][nxtfld]}]
+                            intres = [{rval: ele['rest'].get(lval[1], ''),
+                                       "rest": ele['rest'].get(nxtfld, [])}]
                         else:
                             ks = list(ele["rest"].keys())
 
