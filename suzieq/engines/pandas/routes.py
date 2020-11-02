@@ -163,6 +163,8 @@ class RoutesObj(SqEngineObject):
         if df.empty:
             df = self.get(ipvers=ipvers, columns=cols,
                           addnl_fields=addnl_fields, **kwargs)
+        else:
+            df = df.query(f'ipvers=={ipvers}')
 
         if df.empty:
             return df
