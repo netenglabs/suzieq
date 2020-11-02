@@ -30,6 +30,14 @@ def _get_service_def(svc, device_type):
     svcstr = svcdef.get('apply', {}) \
         .get(device_type, {}) \
         .get('normalize', '')
+    
+    # if that didn't work, then maybe it's the new style
+    #  and we want to get just the first entry in the list
+    if not svcstr:
+        svcstr = svcdef.get('apply', {}) \
+            .get(device_type, {}) \
+            .get('command', '')[0] \
+            .get('normalize', '')
     return svcstr
 
 
