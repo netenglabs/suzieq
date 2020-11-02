@@ -101,6 +101,10 @@ class OspfCmd(SqCommand):
         """
         Test OSPF runtime state is good
         """
+        if self.hostname:
+            df = pd.DataFrame(
+                {'error': ['ERROR: You cannot specify hostname with assert']})
+            return self._gen_output(df)
         now = time.time()
         df = self.sqobj.aver(
             vrf=vrf.split(),
