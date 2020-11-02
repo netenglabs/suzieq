@@ -45,7 +45,7 @@ class EvpnvniObj(SqEngineObject):
         iflist = df[df.vlan == 0]['ifname'].to_list()
         if iflist:
             ifdf = IfObj(context=self.ctxt).get(
-                namespace=kwargs.get('namespace'), ifname=iflist,
+                namespace=kwargs.get('namespace', []), ifname=iflist,
                 columns=['namespace', 'hostname', 'ifname', 'state', 'vlan',
                          'vni'])
 
