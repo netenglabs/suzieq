@@ -12,6 +12,8 @@ ENDPOINT = "http://localhost:8000/api/v1"
 VERBS = ['show', 'summarize', 'assert', 'lpm',
          'unique']  # add 'top' when it's supported
 FILTERS = ['', 'hostname=leaf01', 'namespace=ospf-ibgp',
+           'hostname=leaf01%20spine01',
+           'namespace=ospf-ibgp%20ospf-single',
            'address=10.127.1.2',
            'dest=172.16.2.104&src=172.16.1.101&namespace=ospf-ibgp',
            'columns=namespace',
@@ -21,8 +23,10 @@ FILTERS = ['', 'hostname=leaf01', 'namespace=ospf-ibgp',
            'vrf=default',
            'ipvers=v4',
            'macaddr=22:5c:65:2f:98:b6',
+           'macaddr=52:54:00:b0:9c:c9%2052:54:00:f5:3a:a9',
            'peer=eth1.2',
            'vni=13',
+           'vni=13%2024',
            'mountPoint=/',
            'ifname=swp1',
            'type=ethernet',
@@ -59,7 +63,7 @@ GOOD_FILTERS_FOR_SERVICE_VERB = {
     'polled_neighbor=True': ['topology/show', 'topology/summarize'],
     'prefix=10.0.0.101/32': ['route/show'],
     'prefixlen=24': ['route/show'],
-    'protocol=bgp': ['route/show'],
+    'protocol=bgp%20ospf': ['route/show'],
     'service=device': ['sqPoller'],
     'remoteVtepIp=10.0.0.101': ['mac/show'],
     'state=up': ['interface/show'],
@@ -73,6 +77,7 @@ GOOD_FILTERS_FOR_SERVICE_VERB = {
     'usedPercent=8': ['fs/show'],
     'vlan=13': ['mac/show', 'vlan/show'],
     'vni=13': ['evpnVni/show'],
+    'vni=13%2024': ['evpnVni/show'],
     'vrf=default': ['address/show', 'bgp/show', 'bgp/assert',
                     'ospf/assert', 'ospf/show',
                     'route/show', 'route/summarize', 'topology/show',
@@ -80,7 +85,7 @@ GOOD_FILTERS_FOR_SERVICE_VERB = {
 }
 
 GOOD_VERB_FILTERS = {
-    'unique': ['columns=namespace']
+    'unique': ['columns=namespace'],
 }
 
 GOOD_SERVICE_VERB_FILTER = {
@@ -113,25 +118,26 @@ BAD_VERBS = {'address/assert': 422, 'address/lpm': 422,
              }
 
 # these are always bad filters for these verbs no matter the service
-BAD_VERB_FILTERS = {
-    'assert?address=10.0.0.1': 405,
-    'assert?columns=namespace': 405,
-    # 'assert?dest=172.16.2.104&src=172.16.1.101&namespace=ospf-ibgp': 405,
-    # 'summarize?address=10.127.1.2': 405,
-    # 'summarize?address=10.127.1.2&view=all': 405,
-    'summarize?columns=namespace': 405,
-    'summarize?hostname=leaf01': 405,
-    # 'summarize?ipAddress=10.0.0.1': 405,
-    # 'summarize?ipvers=v4': 405,
-    # 'summarize?macaddr=22:5c:65:2f:98:b6': 405,
-    # 'summarize?vrf=default': 405,
-    # 'summarize?oif=eth1.4': 405,
-    'unique?': 405,
-    'unique?hostname=leaf01': 405,
-    'unique?namespace=ospf-ibgp': 405,
-    'unique?view=latest': 405,
+BAD_VERB_FILTERS = {'assert?address=10.0.0.1': 405,
+                    'assert?columns=namespace': 405,
+                    # 'assert?dest=172.16.2.104&src=172.16.1.101&namespace=ospf-ibgp': 405,
+                    # 'summarize?address=10.127.1.2': 405,
+                    # 'summarize?address=10.127.1.2&view=all': 405,
+                    'summarize?columns=namespace': 405,
+                    'summarize?hostname=leaf01': 405,
+                    'summarize?hostname=leaf01%20spine01': 405,
+                    # 'summarize?ipAddress=10.0.0.1': 405,
+                    # 'summarize?ipvers=v4': 405,
+                    # 'summarize?macaddr=22:5c:65:2f:98:b6': 405,
+                    # 'summarize?vrf=default': 405,
+                    # 'summarize?oif=eth1.4': 405,
+                    'unique?': 405,
+                    'unique?hostname=leaf01': 405,
+                    'unique?hostname=leaf01%20spine01': 405,
+                    'unique?namespace=ospf-ibgp': 405,
+                    'unique?view=latest': 405,
 
-}
+                    }
 
 # these service/verb/filter tuples should return errors
 #  because they are invalid filters for the service/verb combos
@@ -141,6 +147,7 @@ BAD_FILTERS = {
     'address/summarize?ipvers=v4': 405,
     'address/summarize?vrf=default': 405,
     'arpnd/summarize?macaddr=22:5c:65:2f:98:b6': 405,
+    'arpnd/summarize?macaddr=52:54:00:b0:9c:c9%2052:54:00:f5:3a:a9': 405,
     'arpnd/summarize?ipAddress=10.127.1.2': 405,
     'arpnd/summarize?oif=eth1.4': 405,
     'bgp/show?state=pass': 405,
@@ -152,7 +159,9 @@ BAD_FILTERS = {
     'bgp/summarize?state=NotEstd': 405,
     'bgp/summarize?vrf=default': 405,
     'evpnVni/assert?vni=13': 405,
+    'evpnVni/assert?vni=13%2024': 405,
     'evpnVni/summarize?vni=13': 405,
+    'evpnVni/summarize?vni=13%2024': 405,
     'fs/summarize?usedPercent=8': 405,
     'fs/summarize?mountPoint=/': 405,
     'interface/show?state=pass': 405,
@@ -164,10 +173,12 @@ BAD_FILTERS = {
     'lldp/summarize?ifname=swp1': 405,
     'mac/summarize?bd=': 405,
     'mac/summarize?macaddr=22:5c:65:2f:98:b6': 405,
+    'mac/summarize?macaddr=52:54:00:b0:9c:c9%2052:54:00:f5:3a:a9': 405,
     'mac/summarize?localOnly=True': 405,
     'mac/summarize?remoteVtepIp=10.0.0.101': 405,
     'mac/summarize?vlan=13': 405,
     'ospf/assert?hostname=leaf01': 405,
+    'ospf/assert?hostname=leaf01%20spine01': 405,
     'ospf/assert?state=pass': 405,
     'ospf/assert?ifname=swp1': 405,
     'ospf/summarize?ifname=swp1': 405,
@@ -182,6 +193,7 @@ BAD_FILTERS = {
     # 'path/summarize?namespace=ospf-ibgp': 404,
     # 'path/summarize?address=10.0.0.1': 404,
     'path/summarize?hostname=leaf01': 404,
+    'path/summarize?hostname=leaf01%20spine01': 404,
     'path/summarize?columns=namespace': 404,
     # 'path/summarize?view=latest': 404,
     # 'path/show?view=latest': 404,
