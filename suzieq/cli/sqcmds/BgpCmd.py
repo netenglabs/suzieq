@@ -99,7 +99,6 @@ class BgpCmd(SqCommand):
         """Assert BGP is functioning properly"""
         now = time.time()
         df = self.sqobj.aver(
-            hostname=self.hostname,
             vrf=vrf.split(),
             namespace=self.namespace,
         )
