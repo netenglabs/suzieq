@@ -325,7 +325,8 @@ def read_shared(function_name, verb, local_variables=None):
     """all the shared code for each of thse read functions"""
 
     command = function_name.split('_')[1]  # assumes fn name is query_<command>
-    command_args, verb_args = create_filters(function_name, local_variables)
+    command_args, verb_args = create_filters(function_name, command,
+                                             local_variables)
 
     verb = cleanup_verb(verb)
 
@@ -352,13 +353,23 @@ def check_args(function_name, svc_inst):
         assert arg in valid_args, f"extra argument {arg} in {function_name}"
 
 
-def create_filters(function_name, locals):
+def create_filters(function_name, command, locals):
     command_args = {}
     verb_args = {}
     remove_args = ['verb', 'token']
     possible_args = ['hostname', 'namespace',
                      'start_time', 'end_time', 'view', 'columns']
-    split_args = ['namespace', 'columns', 'address']
+    split_args = {'all': ['namespace', 'hostname', 'columns', 'ifname', 'vlan', 'macaddr'],
+                  'address': ['address'],
+                  'arpnd': ['address', 'oif', ],
+                  'bgp': ['vrf', 'peer'],
+                  'evpnVni': ['vni'],
+                  'fs': ['mountPoint'],
+                  'interface': ['type'],
+                  'mac': ['remoteVtepIp'],
+                  'ospf': ['vrf'],
+                  'route': ['prefix', 'protocol'],
+                  }
     both_verb_and_command = ['namespace', 'hostname', 'columns']
 
     arguments = inspect.getfullargspec(globals()[function_name]).args
@@ -369,14 +380,16 @@ def create_filters(function_name, locals):
         if arg in possible_args:
             if locals[arg] is not None:
                 command_args[arg] = locals[arg]
-                if arg in split_args:
+                if arg in split_args['all'] or arg in split_args.get(command,
+                                                                     []):
                     command_args[arg] = command_args[arg].split()
                 if arg in both_verb_and_command:
                     verb_args[arg] = command_args[arg]
         else:
             if locals[arg] is not None:
                 verb_args[arg] = locals[arg]
-                if arg in split_args:
+                if arg in split_args['all'] or arg in split_args.get(command,
+                                                                     []):
                     verb_args[arg] = verb_args[arg].split()
 
     return command_args, verb_args
