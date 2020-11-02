@@ -1,14 +1,34 @@
 # Suzieq REST server
 
-It is the same set of commands and verbs the the CLI has. At this time it's only authentication
+Suzieq ships with a REST server. It has the same set of commands, verbs and filters the the CLI has, with the exception of the verb "top". The output is always in JSON format at this time.
+
+## Running the REST Server
+
+The REST server is bundled with the Suzieq Docker image. It already has an API key and a self-signed SSL certificate to get you going without further ado. Real deployment of course involves changing these defaults with something specific to your enterprise. At this time it's only authentication
 is via an API key and all access to the API is via SSL.
 
-It runs on port 8000.
+You must launch the Suzieq docker container as follows:```docker run -itd -p 8000:8000 --name suzieq ddutt/suzieq:0.6-prerc```
+This assumes that you're using port 8000 to connect to the REST server. If you wish to use a different port for the REST server, say 7000, you can launch it as ```docker run -itd -p 7000:8000 --name suzieq ddutt/suzieq:0.6-prerc```.
 
+You then connect to the container with ```docker attach suzieq```, and launch the server with ```restServer.py &```. You can then exit the container using the usual Docker container escape sequence CTRL-p CTRL-q to leave the docker container running. 
 
-The rest server takes a little bit to setup. It requires an SSL cert and an API Key
+The server is now accessible via https://localhost:8000/docs (or whatever port you've mapped the server to on the host). You need to pass the API_KEY in the request to be able to access the server. A simple example using the default API key and certificate is to use curl as follows:```curl --insecure 'https://localhost:8000/api/v1/device/show?&access_token=496157e6e869ef7f3d6ecb24a6f6d847b224ee4f'```
 
-## SSL 
+The Suzieq docker container of course serves the data available under /suzieq/parquet inside the container. You can mount the parquet data you've already gathered via the -v option. So an example of mounting the parquet directory with data would be to launch the container as follows:```docker run -itd -p 8000:8000 -v/home/ddutt/work/suzieq/tests/data/multidc/parquet-out:/suzieq/parquet --name suzieq ddutt/suzieq:0.6-prerc```
+
+The REST server has been implemented using the [fastapi](https://fastapi.tiangolo.com/) server.
+
+## API Documentation
+
+In keeping with the modern REST server design model, the rest server comes bundled with automatic documentation. You can point the browser at https://localhost:8000/docs for the classical Swagger-based documentation. This also allows you to try out the API from within the browser itself. You can also use the fastapi's alternative documentation at https://localhost:8000/redoc.
+
+If you do decide to try out the API from within the browser, you need to authenticate it first using the Authorize button and adding the API Key.
+
+## Creating Your Specific Key and SSL Certificate
+
+If you wish to create your own self-signed certificate and API key, you can do so using the instructions in this section, in case you don't already know how to do so. 
+
+### SSL 
 
 ### Create a self signed cert
 
@@ -24,11 +44,9 @@ The output of the command is two files, cert.pem and key.pem, created in the dir
 
 It's not likely that you'd want to use this in production. This certificate will expire in 365 days.
 
-### Setup Cert
-
 The REST server requires two files in ~/.suzieq, key.pem and cert.pem. Put these files in ~/.suzieq. Without those two files the REST server will not work.
 
-## Setup API KEY
+### Setup API KEY
 
 You do need a entry called API_KEY in your suzieq config file, which is usually in ~/.suzieq/suzieq.cfg.
 It can be anything you want it to be. This will be the same key that you need to use from the client.
@@ -39,41 +57,4 @@ If you want it to be more random, this is a good way of creating a key:
 openssl rand -hex 20
 ```
 
-## Run the rest server
 
-``` bash
-python3 suzieq/server/restServer.py
-```
-
-It can take a config file as an arguement if you would like:
-
-``` bash
-python3 suzieq/server/restServer.py -c config.cfg
-```
-
-## API
-
-The easiest way to understand the what is in the API is point a browser to https://myserver:8000/docs. This does not require an API_KEY but it does require SSL. You can see each of the commands and the arguments that
-command can use.
-
-## How to access the API
-
-First off, if you are using a self signed cert, then clients will likely complain that it isn't secure.
-This is okay, just a little tedius.
-
-If you are using curl, you can use --insecure
-
-Using the API_KEY is a little tricky. You can send the key either in the header or in a query.
-
-In the header:
-
-```bash
-curl --insecure https://localhost:8000/api/v1/device/show -H "access_token: 68986cfafc9d5a2dc15b20e3e9f289eda2c79f40"
-```
-
-In the query:
-
-```bash
-curl --insecure https://localhost:8000/api/v1/device/show?access_token=68986cfafc9d5a2dc15b20e3e9f289eda2c79f40
-
-```
