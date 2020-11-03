@@ -82,7 +82,6 @@ class TopologyObj(SqEngineObject):
 
         self._find_polled_neighbors(polled_neighbor)
         self.lsdb = self.lsdb[~self.lsdb.hostname.isna()].drop_duplicates()
-        self._create_graphs_from_lsdb()
 
         return self.lsdb
 
@@ -95,7 +94,7 @@ class TopologyObj(SqEngineObject):
         self.lsdb = self.lsdb.rename(columns={'_merge': 'polled_neighbor'})
         self.lsdb.polled_neighbor = self.lsdb.polled_neighbor == 'both'
 
-        if polled_neighbor != '':
+        if polled_neighbor != '' and polled_neighbor is not None:
             self.lsdb = self.lsdb[self.lsdb.polled_neighbor == polled_neighbor]
 
     def _create_graphs_from_lsdb(self):
@@ -176,8 +175,10 @@ class TopologyObj(SqEngineObject):
 
     def summarize(self, **kwargs):
         self.get(**kwargs)
+        self._create_graphs_from_lsdb()
+        if self.lsdb.empty:
+            return self.lsdb
         self.ns = {}
-
         for i in self.nses:
             self.ns[i] = {}
         self._analyze_lsdb_graph()

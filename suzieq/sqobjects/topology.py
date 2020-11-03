@@ -15,26 +15,17 @@ from suzieq.exceptions import NoLLdpError, EmptyDataframeError, PathLoopError
 
 class TopologyObj(basicobj.SqObject):
     def __init__(self, **kwargs):
-        super().__init__(table='bgp', **kwargs)
+        super().__init__(table='topology', **kwargs)
         self._sort_fields = ["namespace", "hostname", 'columns',]
         self._cat_fields = []
         self._valid_get_args = ['namespace', 'hostname', 'columns', 
-                                'polled_neighbor', 'vrf']
-
-    def get(self, **kwargs):
-        try:
-            self.validate_get_input(**kwargs)
-        except Exception as error:
-            df = pd.DataFrame({'error': [f'{error}']})
-            return df
-        if not self.ctxt.engine:
-            raise AttributeError('No analysis engine specified')
-
-        return self.engine_obj.get(**kwargs)
-
+                                'polled_neighbor']
 
     # overriding parent because we want to take more arguments than the standard
-    def summarize(self, namespace='', polled_neighbor=False) -> pd.DataFrame:
-    
+    def summarize(self, namespace='', polled_neighbor=None) -> pd.DataFrame:
+        if self.columns != ["default"]:
+            self.summarize_df = pd.DataFrame(
+            {'error': ['ERROR: You cannot specify columns with summarize']})
+            return self.summarize_df
         return self.engine_obj.summarize(namespace=namespace, 
                                         polled_neighbor=polled_neighbor)
