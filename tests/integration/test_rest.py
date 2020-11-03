@@ -40,7 +40,7 @@ FILTERS = ['', 'hostname=leaf01', 'namespace=ospf-ibgp',
            'protocol=bgp',
            'prefixlen=24',
            'service=device',
-           'polled_neighbor=True',
+           'polled-neighbor=True',
            'usedPercent=8'
            ]
 
@@ -114,29 +114,20 @@ BAD_VERBS = {'address/assert': 422, 'address/lpm': 422,
              'route/assert': 422,
              'topology/assert': 422,
              'topology/lpm': 422,
+             'topology/unique': 422,
              'vlan/assert': 422, 'vlan/lpm': 422,
              }
 
 # these are always bad filters for these verbs no matter the service
 BAD_VERB_FILTERS = {'assert?address=10.0.0.1': 405,
-                    'assert?columns=namespace': 405,
-                    # 'assert?dest=172.16.2.104&src=172.16.1.101&namespace=ospf-ibgp': 405,
-                    # 'summarize?address=10.127.1.2': 405,
-                    # 'summarize?address=10.127.1.2&view=all': 405,
                     'summarize?columns=namespace': 405,
                     'summarize?hostname=leaf01': 405,
                     'summarize?hostname=leaf01%20spine01': 405,
-                    # 'summarize?ipAddress=10.0.0.1': 405,
-                    # 'summarize?ipvers=v4': 405,
-                    # 'summarize?macaddr=22:5c:65:2f:98:b6': 405,
-                    # 'summarize?vrf=default': 405,
-                    # 'summarize?oif=eth1.4': 405,
                     'unique?': 405,
                     'unique?hostname=leaf01': 405,
                     'unique?hostname=leaf01%20spine01': 405,
                     'unique?namespace=ospf-ibgp': 405,
                     'unique?view=latest': 405,
-
                     }
 
 # these service/verb/filter tuples should return errors
@@ -185,18 +176,10 @@ BAD_FILTERS = {
     'ospf/summarize?state=pass': 405,
     'ospf/summarize?vrf=default': 405,
     'ospf/show?state=pass': 405,
-    # 'path/show?': 404, 'path/show?columns=namespace': 404,
-    # 'path/show?hostname=leaf01': 404,
-    # 'path/show?namespace=ospf-ibgp': 404,
-    # 'path/show?address=10.0.0.1': 404,
-    # 'path/summarize?': 404,
-    # 'path/summarize?namespace=ospf-ibgp': 404,
-    # 'path/summarize?address=10.0.0.1': 404,
     'path/summarize?hostname=leaf01': 404,
     'path/summarize?hostname=leaf01%20spine01': 404,
     'path/summarize?columns=namespace': 404,
-    # 'path/summarize?view=latest': 404,
-    # 'path/show?view=latest': 404,
+
     'path/unique?columns=namespace': 404,
     'route/lpm?': 404,
     'route/lpm?columns=namespace': 404,
@@ -211,7 +194,6 @@ BAD_FILTERS = {
     'route/show?ipvers=v4': 405,
     'route/lpm?view=latest': 404,
     'sqpoller/summarize?service=device': 405,
-    'topology/summarize?vrf=default': 405,
     'vlan/show?state=pass': 405,
     'vlan/summarize?vlan=13': 405,
     'vlan/summarize?state=pass': 405,
@@ -251,12 +233,10 @@ def get(endpoint, service, verb, args):
             print(
                 f" RESPONSE {response.status_code} {response.content.decode('utf8')}")
             response.raise_for_status()
-    else:
+    else: # you've gotten a 200, need to make sure that's what we expect
         assert c_v not in BAD_VERBS
         assert c_v_f not in BAD_FILTERS
         assert v_f not in BAD_VERB_FILTERS
-        # if args in GOOD_FILTERS_FOR_SERVICE_VERB:
-        #     assert c_v in GOOD_FILTERS_FOR_SERVICE_VERB[args]
         if verb in GOOD_VERB_FILTERS:
             assert args in GOOD_VERB_FILTERS[verb]
         if c_v in GOOD_SERVICE_VERB_FILTER:

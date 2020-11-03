@@ -12,11 +12,6 @@ class IfObj(SqObject):
                                    'what', 'matchval']
         self._valid_arg_vals = {'state': ['up', 'down', '']}
 
-    def summarize(self, namespace=[]):
-        """Summarize routing info for one or more namespaces"""
-
-        return self.engine_obj.summarize(namespace=namespace)
-
     def aver(self, what='mtu-match', **kwargs) -> pd.DataFrame:
         """Assert that interfaces are in good state"""
         try:

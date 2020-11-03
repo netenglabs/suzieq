@@ -135,6 +135,7 @@ class SqObject(object):
         self._check_input_for_valid_args(self._valid_assert_args, **kwargs)
 
     def get(self, **kwargs) -> pd.DataFrame:
+
         if not self._table:
             raise NotImplementedError
 
@@ -154,6 +155,10 @@ class SqObject(object):
         return self.engine_obj.get(**kwargs)
 
     def summarize(self, namespace='') -> pd.DataFrame:
+        if self.columns != ["default"]:
+            self.summarize_df = pd.DataFrame(
+                {'error': ['ERROR: You cannot specify columns with summarize']})
+            return self.summarize_df
         if not self._table:
             raise NotImplementedError
 
@@ -169,7 +174,7 @@ class SqObject(object):
         if not self.ctxt.engine:
             raise AttributeError('No analysis engine specified')
 
-        return self.engine_obj.unique(**kwargs)
+        return self.engine_obj.unique(**kwargs, columns=self.columns)
 
     def analyze(self, **kwargs):
         raise NotImplementedError

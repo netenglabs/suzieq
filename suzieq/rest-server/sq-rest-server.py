@@ -286,13 +286,12 @@ async def query_sqpoller(verb: CommonVerbs,
 
 
 @app.get("/api/v1/topology/{verb}")
-async def query_topology(verb: CommonVerbs,
+async def query_topology(verb: PathVerbs,
                          token: str = Depends(get_api_key),
                          hostname: str = None,
                          start_time: str = "", end_time: str = "",
                          view: str = "latest", namespace: str = None,
-                         columns: str = None, polled_neighbor: bool = None,
-                         vrf: str = None,
+                         columns: str = None, polled_neighbor: str = None,
                          ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, locals())
@@ -332,7 +331,9 @@ def read_shared(function_name, verb, local_variables=None):
 
     verb = cleanup_verb(verb)
 
-    ret, svc_inst = run_command_verb(command, verb, command_args, verb_args)
+    columns = local_variables.get('columns', None)
+
+    ret, svc_inst = run_command_verb(command, verb, command_args, verb_args, columns)
     check_args(function_name, svc_inst)
     return json.loads(ret)
 
@@ -372,7 +373,7 @@ def create_filters(function_name, command, locals):
                   'ospf': ['vrf'],
                   'route': ['prefix', 'protocol'],
                   }
-    both_verb_and_command = ['namespace', 'hostname', 'columns']
+    both_verb_and_command = ['namespace', 'hostname',]
 
     arguments = inspect.getfullargspec(globals()[function_name]).args
 
@@ -446,7 +447,7 @@ def get_svc(command):
     return svc
 
 
-def run_command_verb(command, verb, command_args, verb_args):
+def run_command_verb(command, verb, command_args, verb_args, columns = ['default']):
     """
     Runs the command and verb with the command_args and verb_args as dictionaries
 
@@ -481,6 +482,9 @@ def run_command_verb(command, verb, command_args, verb_args):
     if df.columns.to_list() == ['error']:
         return_error(
             405, f"bad keyword/filter for {command} {verb}: {df['error'][0]}")
+
+    if columns != ['default'] and columns != ['*'] and columns != None:
+        df = df[columns]
 
     return df.to_json(orient="records"), svc_inst
 
