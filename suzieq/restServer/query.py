@@ -479,7 +479,13 @@ def run_command_verb(command, verb, command_args, verb_args, columns = ['default
     if columns != ['default'] and columns != ['*'] and columns != None:
         df = df[columns]
 
-    return df.to_json(orient="records"), svc_inst
+
+
+    if verb == 'summarize':
+        json_orient = 'columns'
+    else:
+        json_orient = 'records'
+    return df.to_json(orient=json_orient), svc_inst
 
 
 def return_error(code: int, msg: str):
