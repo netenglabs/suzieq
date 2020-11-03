@@ -10,7 +10,7 @@ is via an API key and all access to the API is via SSL.
 You must launch the Suzieq docker container as follows:```docker run -itd -p 8000:8000 --name suzieq ddutt/suzieq:0.6-prerc```
 This assumes that you're using port 8000 to connect to the REST server. If you wish to use a different port for the REST server, say 7000, you can launch it as ```docker run -itd -p 7000:8000 --name suzieq ddutt/suzieq:0.6-prerc```.
 
-You then connect to the container with ```docker attach suzieq```, and launch the server with ```restServer.py &```. You can then exit the container using the usual Docker container escape sequence CTRL-p CTRL-q to leave the docker container running. 
+You then connect to the container with ```docker attach suzieq```, and launch the server with ```sq-rest-server.py &```. You can then exit the container using the usual Docker container escape sequence CTRL-p CTRL-q to leave the docker container running. 
 
 The server is now accessible via https://localhost:8000/docs (or whatever port you've mapped the server to on the host). You need to pass the API_KEY in the request to be able to access the server. A simple example using the default API key and certificate is to use curl as follows:```curl --insecure 'https://localhost:8000/api/v1/device/show?&access_token=496157e6e869ef7f3d6ecb24a6f6d847b224ee4f'```
 
