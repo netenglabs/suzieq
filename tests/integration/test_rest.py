@@ -5,7 +5,7 @@ from fastapi.testclient import TestClient
 
 from tests.conftest import cli_commands
 from tests import conftest
-from suzieq.server.restServer import app, get_configured_api_key, API_KEY_NAME
+from suzieq.restServer.query import app, get_configured_api_key, API_KEY_NAME
 
 ENDPOINT = "http://localhost:8000/api/v1"
 
