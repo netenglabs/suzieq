@@ -1,6 +1,7 @@
 import time
 import pandas as pd
 from nubia import command, argument, context
+from tabulate import tabulate
 
 
 @argument(
@@ -27,7 +28,7 @@ from nubia import command, argument, context
 @argument(
     "format",
     description="select the pformat of the output",
-    choices=["text", "json", "csv"],
+    choices=["text", "json", "csv", "markdown"],
 )
 class SqCommand:
     """Base Command Class for use with all verbs"""
@@ -132,6 +133,8 @@ class SqCommand:
                 print(df[cols].to_json(orient=json_orient))
         elif self.format == 'csv':
             print(df[cols].to_csv())
+        elif self.format == 'markdown':
+            print(tabulate(df[cols], tablefmt="simple"))
         else:
             with pd.option_context('precision', 3,
                                    'display.max_colwidth', max_colwidth,
