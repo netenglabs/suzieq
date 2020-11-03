@@ -134,7 +134,7 @@ class SqCommand:
         elif self.format == 'csv':
             print(df[cols].to_csv())
         elif self.format == 'markdown':
-            print(tabulate(df[cols], tablefmt="simple"))
+            print(tabulate(df[cols], headers=cols, tablefmt="simple"))
         else:
             with pd.option_context('precision', 3,
                                    'display.max_colwidth', max_colwidth,
