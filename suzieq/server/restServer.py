@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from typing import Optional
 import json
 from enum import Enum
