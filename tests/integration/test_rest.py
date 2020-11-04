@@ -43,6 +43,7 @@ FILTERS = ['', 'hostname=leaf01', 'namespace=ospf-ibgp',
            'polled-neighbor=True',
            'usedPercent=8',
            'column=prefixlen',
+           'status=pass',
            ]
 
 # these should only succeed for the specific service/verb tuples
@@ -79,6 +80,7 @@ GOOD_FILTERS_FOR_SERVICE_VERB = {
     'vlan=13': ['mac/show', 'vlan/show'],
     'vni=13': ['evpnVni/show'],
     'vni=13%2024': ['evpnVni/show'],
+    'status=pass': ['sqpoller/show'],
     'column=prefixlen': ['route/unique'],
     'vrf=default': ['address/show', 'bgp/show', 'bgp/assert',
                     'ospf/assert', 'ospf/show',
@@ -195,6 +197,8 @@ BAD_FILTERS = {
     'route/summarize?protocol=bgp': 405,
     'route/show?ipvers=v4': 405,
     'route/lpm?view=latest': 404,
+    'sqpoller/summarize?status=pass': 405,
+    'sqpoller/summarize?status=fail': 405,
     'sqpoller/summarize?service=device': 405,
     'vlan/show?state=pass': 405,
     'vlan/summarize?vlan=13': 405,
