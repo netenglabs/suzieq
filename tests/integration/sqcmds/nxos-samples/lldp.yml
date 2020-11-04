@@ -48,3 +48,11 @@ tests:
   marks: lldp unique nxos
   output: '[{"hostname": "spine1", "count": 3}, {"hostname": "spine2", "count": 3},
     {"hostname": "leaf1", "count": 3}, {"hostname": "leaf2", "count": 3}]'
+- command: lldp show --ifname="Ethernet1/2" --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: lldp show nxos
+  output: '[{"namespace": "nxos", "hostname": "spine1", "ifname": "Ethernet1/2", "peerHostname":
+    "leaf2", "peerIfname": "Ethernet1/3", "description": "N9K-C9300v", "mgmtIP": "",
+    "timestamp": 1604218817204}, {"namespace": "nxos", "hostname": "spine2", "ifname":
+    "Ethernet1/2", "peerHostname": "leaf2", "peerIfname": "Ethernet1/4", "description":
+    "N9K-C9300v", "mgmtIP": "", "timestamp": 1604218817205}]'

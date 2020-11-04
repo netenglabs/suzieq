@@ -350,3 +350,9 @@ tests:
     {"namespace": "junos", "hostname": "srv12", "vrf": "default", "prefix": "10.10.0.0/16",
     "nexthopIps": ["10.10.2.254"], "oifs": ["eth1"], "protocol": "", "source": "",
     "ipvers": 4, "action": "forward", "timestamp": 1597189830465}]'
+- command: route unique --columns=prefixlen --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: route unique junos
+  output: '[{"prefixlen": 0, "count": 6}, {"prefixlen": 16, "count": 4}, {"prefixlen":
+    24, "count": 24}, {"prefixlen": 30, "count": 4}, {"prefixlen": 32, "count": 42},
+    {"prefixlen": 128, "count": 4}]'
