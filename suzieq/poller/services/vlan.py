@@ -55,7 +55,7 @@ class VlanService(Service):
 
         for entry in processed_data:
             entry['ifname'] = f'vlan{entry["vlan"]}'
-            entry['interfaces'] = entry['interfaces'].split()
+            entry['interfaces'] = entry['interfaces'][0].split()
 
         return processed_data
 
