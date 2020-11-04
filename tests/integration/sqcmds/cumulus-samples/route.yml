@@ -5233,5 +5233,12 @@ tests:
     "timestamp": 1597564400318}]'
 - command: route lpm --address 2001:db:0:2::102 --format=json
   data-directory: tests/data/basic_dual_bgp/parquet-out/
-  marks: route lpm
+  marks: route lpm cumulus
   output: '[]'
+- command: route unique --columns=prefixlen --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out/
+  marks: route unique cumulus
+  output: '[{"prefixlen": 0, "count": 23}, {"prefixlen": 8, "count": 4}, {"prefixlen":
+    16, "count": 4}, {"prefixlen": 24, "count": 66}, {"prefixlen": 30, "count": 12},
+    {"prefixlen": 31, "count": 4}, {"prefixlen": 32, "count": 119}, {"prefixlen":
+    64, "count": 18}, {"prefixlen": 128, "count": 16}]'

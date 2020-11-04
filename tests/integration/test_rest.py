@@ -41,7 +41,8 @@ FILTERS = ['', 'hostname=leaf01', 'namespace=ospf-ibgp',
            'prefixlen=24',
            'service=device',
            'polled-neighbor=True',
-           'usedPercent=8'
+           'usedPercent=8',
+           'column=prefixlen',
            ]
 
 # these should only succeed for the specific service/verb tuples
@@ -78,6 +79,7 @@ GOOD_FILTERS_FOR_SERVICE_VERB = {
     'vlan=13': ['mac/show', 'vlan/show'],
     'vni=13': ['evpnVni/show'],
     'vni=13%2024': ['evpnVni/show'],
+    'column=prefixlen': ['route/unique'],
     'vrf=default': ['address/show', 'bgp/show', 'bgp/assert',
                     'ospf/assert', 'ospf/show',
                     'route/show', 'route/summarize', 'topology/show',
@@ -233,7 +235,7 @@ def get(endpoint, service, verb, args):
             print(
                 f" RESPONSE {response.status_code} {response.content.decode('utf8')}")
             response.raise_for_status()
-    else: # you've gotten a 200, need to make sure that's what we expect
+    else:  # you've gotten a 200, need to make sure that's what we expect
         assert c_v not in BAD_VERBS
         assert c_v_f not in BAD_FILTERS
         assert v_f not in BAD_VERB_FILTERS

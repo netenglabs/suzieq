@@ -92,3 +92,11 @@ tests:
     2}, {"hostname": "spine1", "count": 3}, {"hostname": "server4", "count": 3}, {"hostname":
     "spine2", "count": 3}, {"hostname": "server2", "count": 4}, {"hostname": "leaf1",
     "count": 5}, {"hostname": "leaf2", "count": 6}]'
+- command: arpnd show --oif="Ethernet1/1" --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: arpnd show nxos
+  output: '[{"namespace": "nxos", "hostname": "spine2", "ipAddress": "10.0.0.11",
+    "oif": "Ethernet1/1", "macaddr": "44:00:00:01:1b:08", "state": "reachable", "remote":
+    false, "timestamp": 1604218825154}, {"namespace": "nxos", "hostname": "spine1",
+    "ipAddress": "10.0.0.11", "oif": "Ethernet1/1", "macaddr": "44:00:00:01:1b:08",
+    "state": "reachable", "remote": false, "timestamp": 1604218825567}]'

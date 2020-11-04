@@ -512,3 +512,7 @@ tests:
     "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "",
     "ipAddressList": ["10.0.2.15/24"], "ip6AddressList": [], "numChanges": 0, "timestamp":
     1597189830521}]'
+- command: interface show --ifname="xe-0/0/1" --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: interface show junos
+  output: '[]'
