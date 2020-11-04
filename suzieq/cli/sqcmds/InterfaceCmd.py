@@ -50,8 +50,6 @@ class InterfaceCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        ifname = ifname.replace('/', '-')
-
         df = self.sqobj.get(
             hostname=self.hostname,
             ifname=ifname.split(),
