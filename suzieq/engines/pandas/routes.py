@@ -49,8 +49,20 @@ class RoutesObj(SqEngineObject):
 
             newpfx.append(item)
 
+        if 'prefixlen' in columns:
+            need_prefixlen = True
+            columns.remove('prefixlen')
+            if 'prefix' not in columns:
+                columns.insert(-1, 'prefix')
+                drop_cols.append('prefix')
+        else:
+            need_prefixlen = False
+
         df = super().get(addnl_fields=addnl_fields, prefix=newpfx,
                          ipvers=ipvers, **kwargs)
+
+        if need_prefixlen:
+            columns.insert(-1, 'prefixlen')
 
         if not df.empty and 'prefix' in df.columns:
             df = df.loc[df['prefix'] != "127.0.0.0/8"]
@@ -234,7 +246,7 @@ class RoutesObj(SqEngineObject):
 
         type = kwargs.pop('type', 'entry')
 
-        df = self.get_valid_df(self.iobj._table, columns=getcols, **kwargs)
+        df = self.get(columns=getcols, **kwargs)
         if df.empty:
             return df
 
