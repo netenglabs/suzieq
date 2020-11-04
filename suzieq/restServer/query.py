@@ -1,27 +1,36 @@
 from typing import Optional
 import json
 from enum import Enum
-from fastapi import FastAPI, HTTPException, Query, Depends, Security, Path
-from fastapi.security.api_key import APIKeyQuery, APIKeyHeader, APIKey
+from fastapi import FastAPI, HTTPException, Query, Depends, Security
+from fastapi.security.api_key import APIKeyQuery, APIKeyHeader
 from starlette import status
-import logging
 import uuid
 import inspect
+import logging
+import uvicorn
 
 from suzieq.sqobjects import *
-from suzieq.utils import validate_sq_config, load_sq_config
+from suzieq.utils import load_sq_config
 
 API_KEY_NAME = 'access_token'
 
 api_key_query = APIKeyQuery(name=API_KEY_NAME, auto_error=False)
 api_key_header = APIKeyHeader(name=API_KEY_NAME, auto_error=False)
 
+
 app = FastAPI()
 
 
-# TODO: logging to this file isn't working
-logging.FileHandler('/tmp/rest-server.log')
-logger = logging.getLogger(__name__)
+def get_configured_log_level():
+    cfg = load_sq_config(config_file=app.cfg_file)
+    log_level = cfg.get('logging-level', 'INFO').lower()
+    return log_level
+
+
+def get_log_file():
+    cfg = load_sq_config(config_file=app.cfg_file)
+    tmp = cfg.get('temp-directory', '/tmp')
+    return f"{tmp}/sq-rest-server.log"
 
 
 def get_configured_api_key():
@@ -477,7 +486,7 @@ def run_command_verb(command, verb, command_args, verb_args, columns=['default']
         return_error(
             405, f"bad keyword/filter for {command} {verb}: {df['error'][0]}")
 
-    if columns != ['default'] and columns != ['*'] and columns != None:
+    if columns != ['default'] and columns != ['*'] and columns is not None:
         df = df[columns]
 
     if verb == 'summarize':
@@ -490,7 +499,8 @@ def run_command_verb(command, verb, command_args, verb_args, columns=['default']
 def return_error(code: int, msg: str):
     u = uuid.uuid1()
     msg = f"{msg} id={u}"
-    logger.warning(msg)
+    logger = logging.getLogger('uvicorn')
+    logger.info(msg)
     raise HTTPException(status_code=code, detail=msg)
 
 
@@ -503,4 +513,4 @@ def missing_verb(command):
 
 @app.get("/", include_in_schema=False)
 def bad_path():
-    return_error(404, f"bad path. Try something like '/api/v1/device/show'")
+    return_error(404, "bad path. Try something like '/api/v1/device/show'")
