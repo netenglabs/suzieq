@@ -48,18 +48,11 @@ class SqPollerCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        if status == "pass":
-            add_filter = 'status == 0 or status == 200'
-        elif status == "fail":
-            add_filter = 'status != 0 and status != 200'
-        else:
-            add_filter = ''
-
         df = self.sqobj.get(
             hostname=self.hostname,
             columns=self.columns,
             service=service,
-            add_filter=add_filter,
+            status=status,
             namespace=self.namespace,
         )
 
