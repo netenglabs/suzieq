@@ -416,6 +416,8 @@ class InterfaceService(Service):
     def _clean_linux_data(self, processed_data, raw_data):
         """Pluck admin state from flags"""
         for entry in processed_data:
+            if entry['type'] == 'ether':
+                entry['type'] = 'ethernet'
             entry['state'] = entry['state'].lower()
             if entry['state'] == 'unknown':
                 entry['state'] = 'up'  # loopback
