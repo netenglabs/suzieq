@@ -1,5 +1,22 @@
 ## Release Notes
 
+## 0.6 (Nov 5, 2020)
+
+The most critical feature in this release is the support for a RESTful API. 
+
+* Support for NXOS VPC and Arista's MLAG features
+* Support for VLAN resource across all NOS: Juniper, Arista, Cisco and Cumulus. Unfortunately, this meant we had to throw away the existing Cumulus support and redo it to bring it in line with the other NOS.
+* Support for prefixlen in route unique
+* Support for Markdown as an output format. This is especially useful for chatbot support.
+* Internal: Added 2K+ automated tests as part of testing REST that actually are tests of the underlying code for consistency and correctness across all resources.
+* Fixed some bugs in path show with EVPN
+* pandas version bumped to 1.1.4
+* Bug fixes in writing ARPND data for NXOS
+* Bug fixes to ensure all interfaces are associated with the right VRF in EOS
+* Security fix: Bump cryptography version from 2.9.2 to 3.2 to fix some security issues as recommended by Github's dependabot.
+* Fixed multiple bugs in underlying code for consistency of values passed and supported filters.
+* UX Change: All protocol state is now flagged with the "state" filter, not the "status" filter. It takes specific values associated with the protocol, and the CLI offers completions for each.
+
 ## 0.5 (Sep 22, 2020)
 
 This is a release with some major structural changes, and support for SONIC NOS.
