@@ -9,17 +9,20 @@ from nubia import command, argument, context
     "start_time", description="Start of time window in YYYY-MM-dd HH:mm:SS format"
 )
 @argument("end_time", description="End of time window in YYYY-MM-dd HH:mm:SS format")
+@argument("pager", description="Enable pagination prompt on longer outputs",
+          choices=['on', 'off'])
 @argument(
     "engine",
     choices=["pandas"],
     description="Use Pandas for non-SQL commands",
 )
 def set_ctxt(
-    hostname: typing.List[str] = [],
-    start_time: str = "",
-    end_time: str = "",
-    namespace: typing.List[str] = [],
-    engine: str = "",
+        pager: str = 'on',
+        hostname: typing.List[str] = [],
+        start_time: str = "",
+        end_time: str = "",
+        namespace: typing.List[str] = [],
+        engine: str = "",
 ):
     """set certain contexts for subsequent commands. Cmd is additive"""
     plugin_ctx = context.get_context()
@@ -39,25 +42,39 @@ def set_ctxt(
     if engine:
         plugin_ctx.change_engine(engine)
 
+    if pager == 'on':
+        plugin_ctx.pager = True
+
 
 @command("clear")
+@argument("namespace", description="namespace to qualify selection")
+@argument("hostname", description="Name of host to qualify selection")
 @argument(
-    "ctxt",
-    description="Name of context you want to clear",
-    choices=["all", "namespace", "hostname", "start-time", "end_time"],
+    "start_time", description="Start of time window in YYYY-MM-dd HH:mm:SS format"
 )
-def clear_ctxt(ctxt: str):
+@argument("end_time", description="End of time window in YYYY-MM-dd HH:mm:SS format")
+@argument("pager", description="End of time window in YYYY-MM-dd HH:mm:SS format")
+def clear_ctxt(
+        pager: str = 'off',
+        hostname: str = "",
+        start_time: str = "",
+        end_time: str = "",
+        namespace: str= "",
+):
     """clear certain contexts for subsequent commands. Cmd is additive"""
     plugin_ctx = context.get_context()
 
-    if ctxt == "namespace" or ctxt == "all":
+    if namespace:
         plugin_ctx.namespace = []
 
-    if ctxt == "hostname" or ctxt == "all":
+    if hostname:
         plugin_ctx.hostname = []
 
-    if ctxt == "start-time" or ctxt == "all":
+    if start_time:
         plugin_ctx.start_time = ""
 
-    if ctxt == "end-time" or ctxt == "all":
+    if end_time:
         plugin_ctx.end_time = ""
+
+    if pager:
+        plugin_ctx.pager = False
