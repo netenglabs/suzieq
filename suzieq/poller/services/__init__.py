@@ -105,6 +105,23 @@ async def init_services(svc_dir, schema_dir, queue, run_once):
                         with open(tfsm_file, "r") as f:
                             tfsm_template = textfsm.TextFSM(f)
                             val["textfsm"] = tfsm_template
+                    elif (isinstance(val['command'], list)):
+                        for subelem in val['command']:
+                            if 'textfsm' in subelem:
+                                if subelem["textfsm"] and isinstance(
+                                    subelem["textfsm"], textfsm.TextFSM
+                                ):
+                                    continue
+                                tfsm_file = svc_dir + "/" + subelem["textfsm"]
+                                if not isfile(tfsm_file):
+                                    logger.error(
+                                        "Textfsm file {} not found. Ignoring"
+                                        " service".format(tfsm_file)
+                                    )
+                                    continue
+                                with open(tfsm_file, "r") as f:
+                                    tfsm_template = textfsm.TextFSM(f)
+                                    subelem["textfsm"] = tfsm_template
                     else:
                         tfsm_template = None
 
