@@ -180,7 +180,7 @@ class SqCommand:
                         else:
                             self._pager_print(df[cols])
                 else:
-                    self,_pager_print(df[cols])
+                    self._pager_print(df[cols])
 
         return retcode
 
