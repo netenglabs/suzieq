@@ -17,6 +17,18 @@ class RoutesService(Service):
 
         return processed_data
 
+    def _clean_eos_data(self, processed_data, raw_data):
+        '''Massage EVPN routes'''
+        for entry in processed_data:
+            if entry['nexthopIps'] and isinstance(entry['nexthopIps'][0],
+                                                  list):
+                nexthop = entry['nexthopIps'][0][0]
+                if 'vtepAddr' in nexthop:
+                    entry['nexthopIps'] = [nexthop['vtepAddr']]
+                    entry['oifs'] = ['_nexthopVrf:default']
+
+        return processed_data
+
     def _clean_linux_data(self, processed_data, raw_data):
         """Clean Linux ip route data"""
         for entry in processed_data:
