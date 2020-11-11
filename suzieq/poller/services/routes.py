@@ -66,8 +66,21 @@ class RoutesService(Service):
         """Clean VRF name in JUNOS data"""
 
         drop_entries_idx = []
+        prefix_entries = {}
 
         for i, entry in enumerate(processed_data):
+
+            if '_vtepAddr' in entry:
+                # Get the entry from the prefix DB. We have the correct NH
+                pentry = prefix_entries.get(entry['prefix'], None)
+                if not pentry:
+                    drop_entries_idx.append(i)
+                    continue
+                pentry['nexthopIps'] = [entry['_vtepAddr']]
+                pentry['oifs'] = ['_nexthopVrf:default']
+                drop_entries_idx.append(i)
+                continue
+
             vrf = entry.pop("vrf")[0]['data']
             if vrf == "inet.0":
                 vrf = "default"
@@ -93,7 +106,9 @@ class RoutesService(Service):
             if entry['_rtlen'] != 0:
                 drop_entries_idx.append(i)
 
-            entry['active'] = entry['_activeTag'] == '*'
+            prefix_entries[entry['prefix']] = entry
+
+            entry['active'] = entry['_activeTag'] in ['*', '@', '#']
 
             entry['metric'] = int(entry['metric'])
             entry.pop('_localif')
