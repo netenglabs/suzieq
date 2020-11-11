@@ -102,7 +102,14 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                 if xstr != "*" and xstr != '*?':
                     # Handle xstr being a specific array index or dict key
                     if xstr.startswith('['):
-                        result[0]["rest"] = result[0]["rest"][eval_expr(xstr)]
+                        if len(result[0]['rest']):
+                            result[0]["rest"] = result[0]["rest"][eval_expr(xstr)]
+                        else:
+                            # Handling the JUNOS EVPN pfx DB entry
+                            logging.error(
+                                f'Unnatural return from svcparser. '
+                                f'xstr is {xstr}. Result is {result}')
+                            return []
 
                     else:
                         tmpval = []
@@ -206,10 +213,11 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                                       for x in ks]
                     else:
                         if nxtfld:
-                            intres = [{rval: x[lval[1]], "rest": x.get(nxtfld, [])}
+                            intres = [{rval: x.get(lval[1], ''),
+                                       "rest": x.get(nxtfld, [])}
                                       for x in ele["rest"]]
                         else:
-                            intres = [{rval: x[lval[1]], "rest": x}
+                            intres = [{rval: x.get(lval[1], ''), "rest": x}
                                       for x in ele["rest"]]
 
                 for oldkey in ele.keys():
