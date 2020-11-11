@@ -141,6 +141,7 @@ async def start_poller(userargs, cfg):
                                 namespace=userargs.namespace,
                                 passphrase=userargs.passphrase,
                                 jump_host=userargs.jump_host,
+                                jump_host_key_file=userargs.jump_host_key_file,
                                 ignore_known_hosts=ignore_known_hosts))
 
     tasks.append(init_services(cfg["service-directory"], schema_dir, queue,
@@ -282,6 +283,14 @@ if __name__ == "__main__":
         default="",
         type=str,
         help="Jump Host via which to access the devices, IP addr or DNS hostname"
+    )
+
+    parser.add_argument(
+        "-K",
+        "--jump-host-key-file",
+        default="",
+        type=str,
+        help="Key file to be used for jump host"
     )
 
     parser.add_argument(

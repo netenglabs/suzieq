@@ -81,11 +81,13 @@ async def init_hosts(**kwargs):
         ans_inventory = kwargs.pop('ans_inventory', None)
     else:
         _ = kwargs.pop('ans_inventory', None)
+        ans_inventory = None
 
     namespace = kwargs.pop('namespace', 'default')
     passphrase = kwargs.pop('passphrase', None)
     ssh_config_file = kwargs.pop('ssh_config_file', None)
     jump_host = kwargs.pop('jump_host', None)
+    jump_host_key_file = kwargs.pop('jump_host_key_file', None)
     ignore_known_hosts = kwargs.pop('ignore_known_hosts', False)
 
     if kwargs:
@@ -102,6 +104,25 @@ async def init_hosts(**kwargs):
         logger.error("No hosts specified in inventory file")
         print("ERROR: No hosts specified in inventory file")
         sys.exit(1)
+
+    if jump_host_key_file:
+        if not jump_host:
+            logger.error("Jump host key file specified without jump host")
+            print("ERROR: Jump host key file specified without jump host")
+            sys.exit(1)
+        else:
+            if not os.access(jump_host_key_file, os.F_OK):
+                logger.error(
+                    f"Jump host key file {jump_host_key_file} does not exist")
+                print(f"ERROR: Jump host key file {jump_host_key_file} "
+                      f"does not exist")
+                sys.exit(1)
+            if not os.access(jump_host_key_file, os.R_OK):
+                logger.error(
+                    f"Jump host key file {jump_host_key_file} not readable")
+                print(f"ERROR: Jump host key file {jump_host_key_file} "
+                      f"not readable")
+                sys.exit(1)
 
     for namespace in hostsconf:
         if "namespace" not in namespace:
@@ -142,6 +163,7 @@ async def init_hosts(**kwargs):
                     ssh_keyfile=keyfile,
                     ssh_config_file=ssh_config_file,
                     jump_host=jump_host,
+                    jump_host_key_file=jump_host_key_file,
                     namespace=nsname,
                     ignore_known_hosts=ignore_known_hosts,
                 )]
@@ -154,7 +176,8 @@ async def init_hosts(**kwargs):
             newnode = await f
             if newnode.devtype is None:
                 logger.error(
-                    "Unable to determine device type for {}".format(host))
+                    "Unable to determine device type for {}"
+                    .format(newnode.address))
             else:
                 logger.info(f"Added node {newnode.hostname}")
 
@@ -218,27 +241,33 @@ class Node(object):
         self.devtype = None
         self.ssh_config_file = kwargs.get("ssh_config_file", None)
 
+        passphrase = kwargs.get("passphrase", None)
         jump_host = kwargs.get("jump_host", "")
         if jump_host:
             jump_result = urlparse(jump_host)
             self.jump_user = jump_result.username or self.username
             self.jump_host = jump_result.hostname
-            self.jump_port = jump_result.port
+            if jump_result.port:
+                self.jump_port = jump_result.port
+            else:
+                self.jump_port = 22
+            pvtkey_file = kwargs.pop('jump_host_key_file')
+            if pvtkey_file:
+                self.jump_host_key_file = self._decrypt_pvtkey(pvtkey_file,
+                                                               passphrase)
+                if not self.jump_host_key_file:
+                    self.logger.error("ERROR: terminating poller")
+                    self.jump_host_key_file = None
+                    sys.exit(1)
         else:
             self.jump_host = None
+            self.jump_host_key_file = None
 
         self.ignore_known_hosts = kwargs.get('ignore_known_hosts', False)
         pvtkey_file = kwargs.get("ssh_keyfile", None)
-        passphrase = kwargs.get("passphrase", None)
         if pvtkey_file:
-            try:
-                self.pvtkey = asyncssh.public_key.read_private_key(
-                    pvtkey_file, passphrase)
-            except Exception as e:
-                self.logger.error("ERROR: Unable to read private key file {} "
-                                  "for {} due to {}".format(pvtkey_file,
-                                                            self.address,
-                                                            str(e)))
+            self.pvtkey = self._decrypt_pvtkey(pvtkey_file, passphrase)
+            if not self.pvtkey:
                 self.logger.error("ERROR: Falling back to password for {}"
                                   .format(self.address))
                 self.pvtkey = None
@@ -270,6 +299,21 @@ class Node(object):
                 (random.randint(0, 1000) / 1000)
             self.init_again_at = time.time() + self.backoff
         return self
+
+    def _decrypt_pvtkey(self, pvtkey_file: str, passphrase: str) -> str:
+        """Decrypt private key file"""
+
+        keydata: str = None
+        if pvtkey_file:
+            try:
+                keydata = asyncssh.public_key.read_private_key(pvtkey_file,
+                                                               passphrase)
+            except Exception as e:
+                self.logger.error(
+                    f"ERROR: Unable to read private key file {pvtkey_file}"
+                    f"for jump host due to {str(e)}")
+
+        return keydata
 
     async def init_node(self):
         devtype = None
@@ -567,6 +611,23 @@ class Node(object):
                     config=self.ssh_config_file,
                 )
 
+            if self.jump_host_key_file:
+                if self.ignore_known_hosts:
+                    jump_host_options = asyncssh.SSHClientConnectionOptions(
+                        client_keys=self.jump_host_key_file,
+                        login_timeout=self.cmd_timeout,
+                        known_hosts=None,
+                        config=self.ssh_config_file,
+                    )
+                else:
+                    jump_host_options = asyncssh.SSHClientConnectionOptions(
+                        client_keys=self.jump_host_key_file,
+                        login_timeout=self.cmd_timeout,
+                        config=self.ssh_config_file,
+                    )
+            else:
+                jump_host_options = options
+
             try:
                 if self.jump_host:
                     self.logger.info(
@@ -575,7 +636,7 @@ class Node(object):
                     )
                     self._tunnel = await asyncssh.connect(
                         self.jump_host, port=self.jump_port,
-                        options=options, username=self.jump_user)
+                        options=jump_host_options, username=self.jump_user)
                     self.logger.info(
                         f'Connection to jump host {self.jump_host} succeeded')
 
