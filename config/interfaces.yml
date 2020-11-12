@@ -49,8 +49,16 @@ apply:
         normalize: 'vrfs/*:ifname/[
         "vrfState: state",
         "type: type?|vrf",
-        "routeDistinguisher: vlanName",
+        "routeDistinguisher: routeDistinguisher",
+        "vni: vni?|0",
         "interfaces: _interfaceList?|[]"
+        ]'
+
+      - command: show ip virtual-router
+        normalize: '/[
+          "ifname: ifname?|varp",
+          "type: type?|varp",
+          "virtualMac: _anycastMac?|",
         ]'
 
   linux:
@@ -85,7 +93,7 @@ apply:
         normalize: 'configuration/routing-instances/instance/*/[
         "name: ifname",
         "instance-type: type",
-        "route-distinguisher/rd-type: vlanName",
+        "route-distinguisher/rd-type: routeDistinguisher",
         "interface/*/name: _interfaceList",
         "protocols/evpn/ip-prefix-routes/vni: vni?|0",
         ]'
@@ -140,4 +148,15 @@ apply:
         "address: macaddr",
         ]'
 
-  
+      - command: show fabric forwarding internal svi-info
+        textfsm: textfsm_templates/nxos_if_fabric.tfsm
+
+      - command: show vrf detail | json
+        normalize: 'TABLE_vrf/ROW_vrf/*/[
+          "vrf_name: ifname?|",
+          "vrf_state: state",
+          "type: type?|vrf",
+          "rd: routeDistinguisher",
+          "mtu: mtu?|65536",
+          "vni: vni"
+        ]'
