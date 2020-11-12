@@ -4,17 +4,29 @@
     "type": "record",
     "fields": [
         {
-	    "name": "sqvers",
-	    "type": "string",
-	    "partition": 0,
-	    "default": "1.0"
-	},
+            "name": "sqvers",
+            "type": "string",
+            "partition": 0,
+            "default": "2.0"
+        },
         {
             "name": "ifindex",
             "type": "long"
         },
         {
+            "name": "reason",
+            "type": "string"
+        },
+        {
+            "name": "routeDistinguisher",
+            "type": "string"
+        },
+        {
             "name": "macaddr",
+            "type": "string"
+        },
+        {
+            "name": "interfaceMac",
             "type": "string"
         },
         {
@@ -37,7 +49,7 @@
         {
             "name": "vlan",
             "type": "int",
-	    "display": 6
+            "display": 6
         },
         {
             "name": "vlanName",
@@ -111,14 +123,14 @@
             "type": "string",
             "key": 1,
             "display": 1,
-	    "partition": 2
+            "partition": 2
         },
         {
             "name": "namespace",
             "type": "string",
             "key": 0,
             "display": 0,
-	    "partition": 1
+            "partition": 1
         },
         {
             "name": "timestamp",
