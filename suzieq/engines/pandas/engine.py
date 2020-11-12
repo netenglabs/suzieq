@@ -124,6 +124,23 @@ class SqPandasEngine(SqEngine):
         eobj = getattr(module, "{}Obj".format(objname.title()))
         return eobj(iobj)
 
+    def _cons_int_filter(self, keyfld: str, filter_str: str) -> ds.Expression:
+        '''Construct Integer filters with arithmetic operations'''
+        if not isinstance(filter_str, str):
+            return (ds.field(keyfld) == int(filter_str))
+
+        # Check if we have logical operator (<, >, = etc.)
+        if filter_str.startswith('<='):
+            return (ds.field(keyfld) <= int(filter_str[2:]))
+        elif filter_str.startswith('>='):
+            return (ds.field(keyfld) >= int(filter_str[2:]))
+        elif filter_str.startswith('<'):
+            return (ds.field(keyfld) < int(filter_str[1:]))
+        elif filter_str.startswith('>'):
+            return (ds.field(keyfld) > int(filter_str[1:]))
+        else:
+            return (ds.field(keyfld) == int(filter_str))
+
     def build_ds_filters(self, start_tm: str, end_tm: str,
                          schema: pa.lib.Schema,
                          **kwargs) -> ds.Expression:
@@ -165,9 +182,11 @@ class SqPandasEngine(SqEngine):
                 continue
 
             ftype = schema.field(k).type
+
             if isinstance(v, list):
                 infld = []
                 notinfld = []
+                or_filters = None
                 for e in v:
                     if isinstance(e, str) and e.startswith("!"):
                         if ftype == 'int64':
@@ -176,7 +195,11 @@ class SqPandasEngine(SqEngine):
                             notinfld.append(e[1:])
                     else:
                         if ftype == 'int64':
-                            infld.append(int(e))
+                            if or_filters:
+                                or_filters = or_filters | \
+                                    self._cons_int_filter(k, e)
+                            else:
+                                or_filters = self._cons_int_filter(k, e)
                         else:
                             infld.append(e)
                 if infld and notinfld:
@@ -186,6 +209,9 @@ class SqPandasEngine(SqEngine):
                     filters = filters & (ds.field(k).isin(infld))
                 elif notinfld:
                     filters = filters & (~ds.field(k).isin(notinfld))
+
+                if or_filters:
+                    filters = filters & (or_filters)
             else:
                 if isinstance(v, str) and v.startswith("!"):
                     if ftype == 'int64':
@@ -194,7 +220,7 @@ class SqPandasEngine(SqEngine):
                         filters = filters & (ds.field(k) != v[1:])
                 else:
                     if ftype == 'int64':
-                        filters = filters & (ds.field(k) == int(v))
+                        filters = filters & self._cons_int_filter(k, v)
                     else:
                         filters = filters & (ds.field(k) == v)
 
