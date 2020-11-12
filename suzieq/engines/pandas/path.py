@@ -221,9 +221,6 @@ class PathObj(SqEngineObject):
 
         return oif_df.iloc[0]["vlan"]
 
-    def _get_iface_matching_ip(ip: str) -> pd.DataFrame:
-        """Return the interface DF entry with the matching IP"""
-
     def _get_l2_nexthop(self, device: str, vrf: str, dest: str) -> list:
         """Get the bridged/tunnel nexthops"""
 
@@ -377,7 +374,8 @@ class PathObj(SqEngineObject):
             # This first pass is to handle Cumulus symmetric EVPN routes
             arpdf = self._arpnd_df.query(f'hostname=="{device}" and '
                                          f'ipAddress=="{nhip}" and '
-                                         f'oif=="{iface}"')
+                                         f'oif=="{iface}" and '
+                                         f'state == "reachable"')
             if not arpdf.empty and arpdf.remote.all():
                 macdf = self._macsobj.get(namespace=self.namespace,
                                           hostname=device,
@@ -393,9 +391,12 @@ class PathObj(SqEngineObject):
 
         for nhip, iface, overlay, is_l2 in new_nexthop_list:
             df = pd.DataFrame()
+            if (not nhip or nhip == 'None') and iface:
+                nhip = dest
             arpdf = self._arpnd_df.query(f'hostname=="{device}" and '
                                          f'ipAddress=="{nhip}" and '
-                                         f'oif=="{iface}"')
+                                         f'oif=="{iface}" and '
+                                         f'state == "reachable"')
             if not arpdf.empty:
                 addr = nhip + '/'
                 df = self._if_df.query(
@@ -620,16 +621,19 @@ class PathObj(SqEngineObject):
                         # This is a loop
                         if ioverlay:
                             raise PathLoopError(
-                                f"Loop detected in underlay on node {device}")
+                                f"Loop detected in underlay on node {device}",
+                                self._path_cons_result(paths))
                         else:
                             raise PathLoopError(
-                                f"L2 Loop detected on node {device}")
+                                f"L2 Loop detected on node {device}",
+                                self._path_cons_result(paths))
                     else:
                         l2_devices_this_round.add(skey)
                 else:
                     if skey in l3_visited_devices:
                         # This is a loop
-                        raise PathLoopError(f"Loop detected on node {device}")
+                        raise PathLoopError(f"Loop detected on node {device}",
+                                            self._path_cons_result(paths))
                     else:
                         l3_devices_this_round.add(skey)
 
@@ -712,6 +716,9 @@ class PathObj(SqEngineObject):
         # Construct the pandas dataframe.
         # Constructing the dataframe in one shot here as that's more efficient
         # for pandas
+        return self._path_cons_result(paths)
+
+    def _path_cons_result(self, paths):
         df_plist = []
         for i, path in enumerate(paths):
             prev_device = None
