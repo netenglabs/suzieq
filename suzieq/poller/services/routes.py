@@ -26,6 +26,8 @@ class RoutesService(Service):
                 if 'vtepAddr' in nexthop:
                     entry['nexthopIps'] = [nexthop['vtepAddr']]
                     entry['oifs'] = ['_nexthopVrf:default']
+            entry['protocol'] = entry['protocol'].lower()
+            self._fix_ipvers(entry)
 
         return processed_data
 
