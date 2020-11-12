@@ -177,12 +177,18 @@ class RoutesObj(SqEngineObject):
         # if not using a pre-populated dataframe
         if df.empty:
             df = self.get(ipvers=ipvers, columns=cols,
+                          add_filter='metric != 4278198272',
                           addnl_fields=addnl_fields, **kwargs)
         else:
             df = df.query(f'ipvers=={ipvers}')
 
         if df.empty:
             return df
+
+        if 'prefixlen' not in df.columns:
+            df['prefixlen'] = df['prefix'].str.split('/')
+            df = df[df.prefixlen.str.len() == 2]
+            df['prefixlen'] = df['prefixlen'].str[1].astype('int')
 
         # Vectorized operation for faster results with IPv4:
         if ipvers == 4:
