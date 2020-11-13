@@ -58,7 +58,8 @@ class PathObj(SqEngineObject):
             right_on=['namespace', 'hostname', 'ifname'], how='left') \
             .drop(columns=['ifname']) \
             .rename(columns={'master': 'vrf'}) \
-            .replace({'vrf': {'': 'default'}})
+            .replace({'vrf': {'': 'default'}}) \
+            .query('state != "failed"')
 
         self._macsobj = macs.MacsObj(context=self.ctxt, namespace=namespace)
 
@@ -170,7 +171,7 @@ class PathObj(SqEngineObject):
             return fhr_df
 
         rslt_df = self._arpnd_df.query(
-            f'ipAddress=="{ip}" and state=="reachable"')
+            f'ipAddress=="{ip}"')
 
         if rslt_df.empty:
             return fhr_df
@@ -374,8 +375,7 @@ class PathObj(SqEngineObject):
             # This first pass is to handle Cumulus symmetric EVPN routes
             arpdf = self._arpnd_df.query(f'hostname=="{device}" and '
                                          f'ipAddress=="{nhip}" and '
-                                         f'oif=="{iface}" and '
-                                         f'state == "reachable"')
+                                         f'oif=="{iface}"')
             if not arpdf.empty and arpdf.remote.all():
                 macdf = self._macsobj.get(namespace=self.namespace,
                                           hostname=device,
@@ -395,8 +395,7 @@ class PathObj(SqEngineObject):
                 nhip = dest
             arpdf = self._arpnd_df.query(f'hostname=="{device}" and '
                                          f'ipAddress=="{nhip}" and '
-                                         f'oif=="{iface}" and '
-                                         f'state == "reachable"')
+                                         f'oif=="{iface}"')
             if not arpdf.empty:
                 addr = nhip + '/'
                 df = self._if_df.query(
