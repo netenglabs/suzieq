@@ -140,7 +140,7 @@ class Service(object):
             pa.float64(): 0.0,
             pa.date64(): 0.0,
             pa.bool_(): False,
-            pa.list_(pa.string()): ['-'],
+            pa.list_(pa.string()): [],
             pa.list_(pa.int64()): [],
         })
 

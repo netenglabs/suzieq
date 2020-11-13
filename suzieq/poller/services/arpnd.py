@@ -13,6 +13,9 @@ class ArpndService(Service):
             entry["state"] = entry["state"].lower()
             if entry["state"] == "stale" or entry["state"] == "delay":
                 entry["state"] = "reachable"
+            elif entry['state'] in ['extern_learn', 'offload']:
+                entry['state'] = 'reachable'
+                entry['remote'] = True
             if not entry.get('macaddr', None):
                 entry['macaddr'] = '00:00:00:00:00:00'
         return processed_data

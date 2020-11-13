@@ -12,6 +12,7 @@ class NubiaSuzieqContext(context.Context):
 
         self.schemas = Schema(self.cfg["schema-directory"])
 
+        self.pager = False
         self.namespace = ""
         self.hostname = ""
         self.start_time = ""
