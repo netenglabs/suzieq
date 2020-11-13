@@ -35,6 +35,7 @@ apply:
         "vlanToVniMap/*:vlan?|0",
         "vlanToVniMap/*/vni: vni?|0",
         "lineProtocolStatus: state",
+        "interfaceStatus: adminState?up|down",
         "hardware: type",
         "forwardingModel: forwardingModel",
         "linkStatusChanges: numChanges?|0",
@@ -138,7 +139,7 @@ apply:
         "vrf-name-out: vrf",
         "intf-name: ifname",
         "admin-state: adminState",
-        "TABLE_addr/ROW_addr/[*]?/addr: ip6AddressList",
+        "TABLE_addr/ROW_addr/[*]?/addr: ip6AddressList?|[]",
         "linklocal-addr: _linklocal"
         ]'
 
@@ -158,5 +159,5 @@ apply:
           "type: type?|vrf",
           "rd: routeDistinguisher",
           "mtu: mtu?|65536",
-          "vni: vni"
+          "vni: vni",
         ]'
