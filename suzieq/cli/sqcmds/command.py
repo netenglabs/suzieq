@@ -2,7 +2,9 @@ import time
 import pandas as pd
 from nubia import command, argument, context
 from tabulate import tabulate
-
+from io import StringIO
+import shutil
+from prompt_toolkit import prompt
 
 @argument(
     "engine",
@@ -105,8 +107,33 @@ class SqCommand:
     def schemas(self):
         return self._schemas
 
+    def _pager_print(self, df: pd.DataFrame) -> None:
+        '''To support paging'''
+
+        if self.ctxt.pager:
+            termsize = shutil.get_terminal_size((80, 20))
+            bufio = StringIO()
+
+            print(df, file=bufio)
+            lines = bufio.getvalue().split('\n')
+            curline = 0
+            total_lines = len(lines)
+            while curline < total_lines:
+                print('\n'.join(lines[curline:curline+termsize.lines]))
+                curline += termsize.lines
+                if curline < total_lines:
+                    try:
+                        _ = prompt('Hit <ENTER> to continue, <CTRL-D> to quit')
+                    except EOFError:
+                        break
+        else:
+            print(df)
+
+        return
+
     def _gen_output(self, df: pd.DataFrame, json_orient: str = "records",
                     dont_strip_cols: bool = False, sort: bool = True):
+
         if df.columns.to_list() == ['error']:
             retcode = 1
             max_colwidth = None
@@ -124,6 +151,7 @@ class SqCommand:
         if dont_strip_cols or not all(item in df.columns for item in cols):
             cols = df.columns
 
+        termsize = shutil.get_terminal_size((80, 20))
         if self.format == 'json':
             if self.json_print_handler:
                 print(df[cols].to_json(
@@ -148,11 +176,11 @@ class SqCommand:
                         sort_fields = [x for x in self.sqobj._sort_fields
                                        if x in df.columns and x in cols]
                         if sort_fields:
-                            print(df[cols].sort_values(by=sort_fields))
+                            self._pager_print(df[cols].sort_values(by=sort_fields))
                         else:
-                            print(df[cols])
+                            self._pager_print(df[cols])
                 else:
-                    print(df[cols])
+                    self._pager_print(df[cols])
 
         return retcode
 

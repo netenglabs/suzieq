@@ -17,6 +17,20 @@ class RoutesService(Service):
 
         return processed_data
 
+    def _clean_eos_data(self, processed_data, raw_data):
+        '''Massage EVPN routes'''
+        for entry in processed_data:
+            if entry['nexthopIps'] and isinstance(entry['nexthopIps'][0],
+                                                  list):
+                nexthop = entry['nexthopIps'][0][0]
+                if 'vtepAddr' in nexthop:
+                    entry['nexthopIps'] = [nexthop['vtepAddr']]
+                    entry['oifs'] = ['_nexthopVrf:default']
+            entry['protocol'] = entry['protocol'].lower()
+            self._fix_ipvers(entry)
+
+        return processed_data
+
     def _clean_linux_data(self, processed_data, raw_data):
         """Clean Linux ip route data"""
         for entry in processed_data:
@@ -54,8 +68,21 @@ class RoutesService(Service):
         """Clean VRF name in JUNOS data"""
 
         drop_entries_idx = []
+        prefix_entries = {}
 
         for i, entry in enumerate(processed_data):
+
+            if '_vtepAddr' in entry:
+                # Get the entry from the prefix DB. We have the correct NH
+                pentry = prefix_entries.get(entry['prefix'], None)
+                if not pentry:
+                    drop_entries_idx.append(i)
+                    continue
+                pentry['nexthopIps'] = [entry['_vtepAddr']]
+                pentry['oifs'] = ['_nexthopVrf:default']
+                drop_entries_idx.append(i)
+                continue
+
             vrf = entry.pop("vrf")[0]['data']
             if vrf == "inet.0":
                 vrf = "default"
@@ -81,7 +108,9 @@ class RoutesService(Service):
             if entry['_rtlen'] != 0:
                 drop_entries_idx.append(i)
 
-            entry['active'] = entry['_activeTag'] == '*'
+            prefix_entries[entry['prefix']] = entry
+
+            entry['active'] = entry['_activeTag'] in ['*', '@', '#']
 
             entry['metric'] = int(entry['metric'])
             entry.pop('_localif')

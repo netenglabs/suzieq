@@ -1,6 +1,7 @@
-import re
 from datetime import datetime
 from collections import defaultdict
+
+import numpy as np
 from suzieq.poller.services.service import Service
 from suzieq.utils import get_timestamp_from_junos_time
 from suzieq.utils import convert_macaddr_format_to_colon
@@ -33,10 +34,28 @@ class InterfaceService(Service):
         """Clean up EOS interfaces output"""
 
         entry_dict = defaultdict(dict)
-        for entry in processed_data:
+        drop_indices = []
+        vlan_entries = {}       # Needed to fix the anycast MAC entries
+
+        for i, entry in enumerate(processed_data):
 
             if entry['type'] == 'vrf':
+                if entry['ifname'] == 'default':
+                    drop_indices.append(i)
+                    continue
+
                 self._assign_vrf(entry, entry_dict)
+                entry['macaddr'] = '00:00:00:00:00:00'
+                entry['master'] = ''
+                entry['state'] = 'up'
+                continue
+
+            if entry['type'] == 'varp':
+                for elem in vlan_entries:
+                    ventry = vlan_entries[elem]
+                    ventry['interfaceMac'] = ventry['macaddr']
+                    ventry['macaddr'] = entry['_anycastMac']
+                drop_indices.append(i)
                 continue
 
             if not entry_dict[entry['ifname']]:
@@ -61,7 +80,7 @@ class InterfaceService(Service):
                 words = words.split()
                 if words[-1].strip().startswith("Port-Channel"):
                     entry["type"] = "bond_slave"
-                entry["master"] = words[-1].strip()
+                    entry["master"] = words[-1].strip()
             entry["lacpBypass"] = (entry["lacpBypass"] == True)
             if entry["forwardingModel"] == "bridged":
                 entry["master"] = "bridge"  # Convert it for Linux model
@@ -76,6 +95,7 @@ class InterfaceService(Service):
 
             if entry['type'] == 'vlan' and entry['ifname'].startswith('Vlan'):
                 entry['vlan'] = int(entry['ifname'].split('Vlan')[1])
+                vlan_entries[entry['ifname']] = entry
 
             tmpent = entry.get("ipAddressList", [[]])
             if not tmpent:
@@ -107,6 +127,9 @@ class InterfaceService(Service):
                 for elem in munge_entry.get("globalUnicastIp6s", []):
                     new_list.append(elem["subnet"])
                 entry["ip6AddressList"] = new_list
+
+        if drop_indices:
+            processed_data = np.delete(processed_data, drop_indices).tolist()
 
         return processed_data
 
@@ -177,13 +200,18 @@ class InterfaceService(Service):
 
     def _clean_junos_data(self, processed_data, raw_data):
         """Cleanup IP addresses and such"""
-        new_entries = []        # Add new interface entries for logical ifs
-        entry_dict = defaultdict(dict)
 
-        for entry in processed_data:
+        entry_dict = defaultdict(dict)
+        drop_indices = []
+
+        for i, entry in enumerate(processed_data):
 
             if entry['type'] == 'vrf':
                 self._assign_vrf(entry, entry_dict)
+                if entry['ifname'] == 'default':
+                    drop_indices.append(i)
+                    continue
+
                 continue
 
             if not entry_dict[entry['ifname']]:
@@ -219,9 +247,9 @@ class InterfaceService(Service):
                     entry['type'] = 'sflowMonitor'
                 else:
                     entry['type'] = 'virtual'
-                entry['master'] = None
+                entry['master'] = ''
             else:
-                entry['master'] = None
+                entry['master'] = ''
 
             if entry['type'] == 'vxlan-tunnel-endpoint':
                 entry['type'] = 'vtep'
@@ -296,19 +324,16 @@ class InterfaceService(Service):
                 new_entry['ip6AddressList'] = v6addresses
                 new_entry['ipAddressList'] = v4addresses
 
-                new_entries.append(new_entry)
-                entry_dict[ifname] = new_entry
-
             entry.pop('vlanName')
 
-        if new_entries:
-            processed_data.extend(new_entries)
+        if drop_indices:
+            processed_data = np.delete(processed_data, drop_indices).tolist()
+
         return processed_data
 
     def _clean_nxos_data(self, processed_data, raw_data):
         """Complex cleanup of NXOS interface data"""
         new_entries = []
-        created_if_list = set()
         unnum_intf = {}
         add_bridge_intf = False
         bridge_intf_state = "down"
@@ -321,22 +346,21 @@ class InterfaceService(Service):
             entry["statusChangeTimestamp1"] = entry.get(
                 "statusChangeTimestamp", '')
 
-            if ('vrf' in entry and entry['vrf'] != 'default'):
-                if entry['vrf'] not in created_if_list:
-                    # Our normalized behavior is to treat VRF as an interface
-                    # NXOS doesn't do that. So, create a dummy interface
-                    new_entry = {'ifname': entry['vrf'],
-                                 'mtu': 65536,
-                                 'state': 'up',
-                                 'type': 'vrf',
-                                 'master': '',
-                                 'vlan': 0}
-                    new_entries.append(new_entry)
-                    created_if_list.add(entry['vrf'])
-
+            if entry.get('vrf', 'default') != 'default':
                 entry['master'] = entry['vrf']
             else:
                 entry['master'] = ''
+
+            if 'routeDistinguisher' in entry:
+                entry['macaddr'] = "00:00:00:00:00:00"
+                entry['adminState'] = entry.get("state", "up")
+                continue
+
+            if 'reason' in entry:
+                if entry['reason'] == '"Administratively down':
+                    entry['adminState'] = 'down'
+                else:
+                    entry['adminState'] = 'up'
 
             portmode = entry.get('_portmode', '')
             if portmode == 'access' or portmode == 'trunk':
@@ -354,10 +378,20 @@ class InterfaceService(Service):
                     if elem:
                         ipaddr.append(f"{elem}/{entry['_secmasklens'][i]}")
                 entry['ipAddressList'] = ipaddr
+            else:
+                entry['ipAddressList'] = []
 
             if 'ip6AddressList' in entry:
                 if '_linklocal' in entry:
                     entry['ip6AddressList'].append(entry['_linklocal'])
+            else:
+                entry['ip6AddressList'] = []
+
+            if entry.get('_anycastMac', ''):
+                entry['interfaceMac'] = entry['macaddr']
+                entry['macaddr'] = entry['_anycastMac']
+                if entry.get('_forwardMode', '') != 'Anycast':
+                    entry['reason'] += ', Fabric forwarding mode not enabled'
 
             entry['macaddr'] = convert_macaddr_format_to_colon(
                 entry.get('macaddr', '0000.0000.0000'))
@@ -398,16 +432,6 @@ class InterfaceService(Service):
             entry = processed_data[idx]
             entry['ipAddressList'] = unnum_intf.get(entry['ifname'], [])
 
-        # Add bridge interface
-        if add_bridge_intf:
-            new_entry = {'ifname': 'bridge',
-                         'mtu': bridge_mtu,
-                         'state': bridge_intf_state,
-                         'type': 'bridge',
-                         'master': '',
-                         'vlan': 0}
-            new_entries.append(new_entry)
-
         if new_entries:
             processed_data.extend(new_entries)
 
@@ -425,6 +449,7 @@ class InterfaceService(Service):
                 entry['adminState'] = 'up'
             else:
                 entry['adminState'] = 'down'
+
             # Linux interface output has no status change timestamp
 
         return processed_data

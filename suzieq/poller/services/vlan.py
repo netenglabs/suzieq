@@ -56,9 +56,9 @@ class VlanService(Service):
         for entry in processed_data:
             entry['ifname'] = f'vlan{entry["vlan"]}'
             if isinstance(entry['interfaces'], str):
-                entry['interfaces'] = entry['interfaces'].split()
+                entry['interfaces'] = entry['interfaces'].split(',')
             else:
-                entry['interfaces'] = entry['interfaces'][0].split()
+                entry['interfaces'] = entry['interfaces'][0].split(',')
         return processed_data
 
     def _clean_junos_data(self, processed_data, raw_data):
@@ -67,7 +67,9 @@ class VlanService(Service):
         for entry in processed_data:
             if entry['ifname'] == 'default':
                 entry['ifname'] = f'vlan{entry["vlan"]}'
-                if entry['interfaces'] == [[None]]:
-                    entry['interfaces'] = []
+            if entry['interfaces'] == [[None]]:
+                entry['interfaces'] = []
+            entry['state'] = entry['state'].lower()
+            entry['ifname'] = entry['ifname'].lower()
 
         return processed_data

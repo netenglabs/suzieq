@@ -36,7 +36,9 @@ class InterfaceCmd(SqCommand):
     @argument("type", description="interface type to qualify")
     @argument("state", description="interface state to qualify show",
               choices=["up", "down"])
-    def show(self, ifname: str = "", state: str = "", type: str = ""):
+    @argument("mtu", description="filter interfaces with MTU")
+    def show(self, ifname: str = "", state: str = "", type: str = "",
+             mtu: str = ""):
         """
         Show interface info
         """
@@ -56,6 +58,7 @@ class InterfaceCmd(SqCommand):
             columns=self.columns,
             namespace=self.namespace,
             state=state,
+            mtu=mtu.split(),
             type=type.split(),
         )
         if 'statusChangeTimestamp' in df.columns:

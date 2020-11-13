@@ -20,10 +20,12 @@ tests:
   marks: path show junos
   output: '[{"pathid": 1, "hopCount": 0, "namespace": "junos", "hostname": "srv22",
     "iif": "eth1", "oif": "eth1", "vrf": "default", "isL2": false, "overlay": false,
-    "mtuMatch": null, "mtu": 1500, "timestamp": 1597189830521}, {"pathid": 1, "hopCount":
-    1, "namespace": "junos", "hostname": "vqfx2", "iif": "xe-0/0/2.0", "oif": "",
+    "mtuMatch": null, "mtu": 1500, "timestamp": 1604149439011}, {"pathid": 1, "hopCount":
+    1, "namespace": "junos", "hostname": "vqfx2", "iif": "xe-0/0/2.0", "oif": "irb.10000",
     "vrf": "default", "isL2": false, "overlay": false, "mtuMatch": false, "mtu": 1514,
-    "timestamp": 1597189830465}]'
+    "timestamp": 1604149439085}, {"pathid": 1, "hopCount": 2, "namespace": "junos",
+    "hostname": "srv11", "iif": "eth1", "oif": "", "vrf": "default", "isL2": false,
+    "overlay": false, "mtuMatch": null, "mtu": 1500, "timestamp": 1604149439091}]'
 - command: path summarize --dest=10.10.2.20 --src=10.10.1.10 --format=json --namespace=junos
   data-directory: tests/data/junos/parquet-out/
   marks: path summarize junos

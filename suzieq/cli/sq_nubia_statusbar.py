@@ -24,12 +24,22 @@ class NubiaSuzieqStatusBar(statusbar.StatusBar):
             is_verbose = (Token.Warn, "ON")
         else:
             is_verbose = (Token.Info, "OFF")
+
+        if context.get_context().pager:
+            is_pager = (Token.Warn, "ON")
+        else:
+            is_pager = (Token.Info, "OFF")
+            
         return [
             (Token.Toolbar, "Suzieq"),
             spacer,
             (Token.Toolbar, "Verbose "),
             spacer,
             is_verbose,
+            spacer,
+            (Token.Toolbar, "Pager "),
+            spacer,
+            is_pager,
             spacer,
             (Token.Toolbar, "Namespace "),
             spacer,

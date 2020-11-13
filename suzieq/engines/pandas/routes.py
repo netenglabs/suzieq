@@ -69,8 +69,11 @@ class RoutesObj(SqEngineObject):
             df['prefix'].replace('default', '0.0.0.0/0', inplace=True)
 
             if prefixlen or ('prefixlen' in columns or columns == ['*']):
-                df['prefixlen'] = df['prefix'].str.split(
-                    '/').str[1].astype('int')
+                # This convoluted logic to handle the issue of invalid entries
+                # for prefix in JUNOS routing table
+                df['prefixlen'] = df['prefix'].str.split('/')
+                df = df[df.prefixlen.str.len() == 2]
+                df['prefixlen'] = df['prefixlen'].str[1].astype('int')
 
             if prefixlen:
                 if any(map(prefixlen.startswith, ['<', '>'])):
@@ -181,22 +184,24 @@ class RoutesObj(SqEngineObject):
         if df.empty:
             return df
 
-        if 'prefixlen' not in df.columns and 'prefix' in df.columns:
-            df['prefixlen'] = df['prefix'].str.split('/').str[1].astype('int')
+        if 'prefixlen' not in df.columns:
+            df['prefixlen'] = df['prefix'].str.split('/')
+            df = df[df.prefixlen.str.len() == 2]
+            df['prefixlen'] = df['prefixlen'].str[1].astype('int')
             drop_cols.append('prefixlen')
 
         # Vectorized operation for faster results with IPv4:
         if ipvers == 4:
             intaddr = df.prefix.str.split('/').str[0] \
-                        .map(lambda y: int(''.join(['%02x' % int(x)
-                                                    for x in y.split('.')]),
-                                           16))
+                .map(lambda y: int(''.join(['%02x' % int(x)
+                                            for x in y.split('.')]),
+                                   16))
             netmask = df.prefixlen \
-                        .map(lambda x: (0xffffffff << (32 - x)) & 0xffffffff)
+                .map(lambda x: (0xffffffff << (32 - x)) & 0xffffffff)
             match = (ipaddr._ip & netmask) == (intaddr & netmask)
             rslt = df.loc[match.loc[match].index] \
-                     .sort_values('prefixlen', ascending=False) \
-                     .drop_duplicates(['namespace', 'hostname', 'vrf'])
+                .sort_values('prefixlen', ascending=False) \
+                .drop_duplicates(['namespace', 'hostname', 'vrf'])
         else:
             selected_entries = {}
             max_plens = defaultdict(int)
@@ -209,7 +214,7 @@ class RoutesObj(SqEngineObject):
                         selected_entries[key] = row
             if selected_entries:
                 rslt = pd.DataFrame(list(selected_entries.values())) \
-                         .drop(columns=['Index'], errors='ignore')
+                    .drop(columns=['Index'], errors='ignore')
             else:
                 rslt = pd.DataFrame()
 
@@ -258,7 +263,7 @@ class RoutesObj(SqEngineObject):
                 for i, g in enumerate(groupby.split() + ['hostname', column]):
                     gdict[g] = [x[i] for x in grpkeys]
                 r = pd.DataFrame(gdict).groupby(by=groupby.split())[column] \
-                                       .value_counts()
+                    .value_counts()
                 return (pd.DataFrame({'count': r})
                           .reset_index())
 
@@ -272,8 +277,8 @@ class RoutesObj(SqEngineObject):
                 r = df[column].value_counts()
 
             df = (pd.DataFrame({column: r})
-                    .reset_index()
-                    .sort_values('index')
+                  .reset_index()
+                  .sort_values('index')
                     .rename(columns={column: 'count',
                                      'index': column}))
             df = df[df['count'] != 0]

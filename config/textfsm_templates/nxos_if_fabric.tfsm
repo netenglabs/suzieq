@@ -1,0 +1,62 @@
+Value Required ifname (\S+)
+Value _forwardMode (\S+)
+Value Filldown _anycastMac (\S+)
+
+Start
+  ^Anycast Gateway mac\s+:\s+${_anycastMac}.*$$
+  ^Svi Intf\s+:\s+${ifname}.*$$
+  ^Forward Mode\s+:\s+${_forwardMode}.*$$ -> Record
+ 
+#HMM Global config information
+#Fabric id                      : 0
+#Conversational Learning        : False
+#Urib/U6rib Conv Aging Timeout  : 1800/1800 (secs)
+#Switch role                    : leaf 
+#Anycast Gateway mac            : 0000.0011.1210
+#Fabric control segment/Notify  : -
+#Migration count                : 0
+#Migration                      : False
+#Forward encap                  : Vxlan
+#Router mac                     : 0000.0000.0000
+#Port tracking                  : -
+#Port l2dci                     : -
+#HMM SVI information
+#AM thread halted/count         : No/0
+##RARP on Mgmt intf             : 0
+##Recvd non Ether pkts          : 0
+##Recvd non RARP pkts           : 0
+##Hosts with same mac-bd        : 0
+##L2FM Mac SDB lookup pass/fail : 0/0
+#
+#Svi Intf                       : Vlan30
+#If_index                       : 0x0901001e(77)
+#State(U|R|GU|GN)               : Up(8|0|32|0)
+#BD ID/Oper State               : 30(Up)
+#L2RIB Topo-id(flags)           : 30
+#Flags                          : Advertise MAC(CLI) (0x000000a9)
+#L2RIB Vtep IP                  : 10.0.0.201
+#Suppress ARP                   : TRUE
+#Mac addr                       : 4401.0201.1b08
+#V4 prefix                      : 172.16.3.254/24
+#V6 prefix                      : 0::/0
+#Vrf name                       : evpn-vrf
+#Forward Mode                   : Anycast Gateway
+#Fabric control seg             : False
+#Migration enabled/refcount     : False/0 (RIB rqst done)
+#AM Adjs add in progress        : No
+#Local Host List                : 172.16.3.102/32
+#
+#Svi Intf                       : Vlan999
+#If_index                       : 0x090103e7(79)
+#State(U|R|GU|GN)               : Up(8|0|32|0)
+#BD ID/Oper State               : 999(Up)
+#Suppress ARP                   : FALSE
+#Mac addr                       : 4401.0201.1b08
+#V4 prefix                      : 0.0.0.0/0
+#V6 prefix                      : 0::/0
+#Vrf name                       : evpn-vrf
+#Forward Mode                   : Anycast Gateway
+#Fabric control seg             : False
+#Migration enabled/refcount     : False/0 (RIB rqst done)
+#AM Adjs add in progress        : No
+#
