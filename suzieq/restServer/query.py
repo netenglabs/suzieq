@@ -186,6 +186,7 @@ async def query_interface(verb: MoreVerbs,
                           columns: str = None,
                           ifname: str = None, state: str = None,
                           type: str = None, what: str = None,
+                          mtu: str = None,
                           matchval: int = Query(None, alias="value")
                           ):
     function_name = inspect.currentframe().f_code.co_name
@@ -251,7 +252,7 @@ async def query_path(verb: PathVerbs,
                      hostname: str = None,
                      start_time: str = "", end_time: str = "",
                      view: str = "latest", namespace: str = None,
-                     columns: str = None,
+                     columns: str = None, vrf: str = None,
                      dest: str = None,
                      source: str = Query(None, alias="src")
                      ):
