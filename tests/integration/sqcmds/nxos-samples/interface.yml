@@ -916,10 +916,12 @@ tests:
 - command: interface summarize --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: interface summarize nxos
-  output: '{"nxos": {"deviceCnt": 8, "interfaceCnt": 301, "devicesWithL2Cnt": 250,
-    "devicesWithVxlanCnt": 2, "ifDownCnt": 251, "ifWithMultipleIPCnt": 0, "uniqueMTUCnt":
-    4, "uniqueIfTypesCnt": 8, "ifChangesStat": [0, 0, 0], "ifPerDeviceStat": [3, 75,
-    36.5], "uniqueIPv4AddrCnt": 21, "uniqueIPv6AddrCnt": 1}}'
+  output: '{"ifindex": {}, "reason": {}, "routeDistinguisher": {}, "macaddr": {},
+    "interfaceMac": {}, "type": {}, "description": {}, "numChanges": {}, "speed":
+    {}, "vlan": {}, "vlanName": {}, "ipAddressList": {}, "srcVtepIp": {}, "state":
+    {}, "adminState": {}, "master": {}, "ifname": {}, "statusChangeTimestamp": {},
+    "vni": {}, "ip6AddressList": {}, "lacpBypass": {}, "mtu": {}, "hostname": {},
+    "namespace": {}, "timestamp": {}, "active": {}}'
 - command: interface unique --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: interface unique nxos
@@ -929,27 +931,34 @@ tests:
     "leaf2", "count": 74}, {"hostname": "leaf1", "count": 75}]'
 - command: interface assert --format=json
   data-directory: tests/data/nxos/parquet-out/
+  error:
+    error: '[{"namespace": "nxos", "hostname": "leaf2", "ifname": "Ethernet1/4", "state":
+      "up", "peerHostname": "spine2", "peerIfname": "Ethernet1/2", "assert": "pass",
+      "assertReason": []}, {"namespace": "nxos", "hostname": "leaf2", "ifname": "Ethernet1/3",
+      "state": "up", "peerHostname": "spine1", "peerIfname": "Ethernet1/2", "assert":
+      "pass", "assertReason": []}, {"namespace": "nxos", "hostname": "leaf2", "ifname":
+      "mgmt0", "state": "up", "peerHostname": "spine1", "peerIfname": "mgmt0", "assert":
+      "fail", "assertReason": ["Speed mismatch"]}, {"namespace": "nxos", "hostname":
+      "leaf1", "ifname": "Ethernet1/3", "state": "up", "peerHostname": "spine1", "peerIfname":
+      "Ethernet1/1", "assert": "pass", "assertReason": []}, {"namespace": "nxos",
+      "hostname": "leaf1", "ifname": "mgmt0", "state": "up", "peerHostname": "leaf2",
+      "peerIfname": "mgmt0", "assert": "pass", "assertReason": []}, {"namespace":
+      "nxos", "hostname": "spine2", "ifname": "mgmt0", "state": "up", "peerHostname":
+      "leaf2", "peerIfname": "mgmt0", "assert": "pass", "assertReason": []}, {"namespace":
+      "nxos", "hostname": "leaf1", "ifname": "Ethernet1/4", "state": "up", "peerHostname":
+      "spine2", "peerIfname": "Ethernet1/1", "assert": "pass", "assertReason": []},
+      {"namespace": "nxos", "hostname": "spine1", "ifname": "mgmt0", "state": "up",
+      "peerHostname": "spine2", "peerIfname": "mgmt0", "assert": "fail", "assertReason":
+      ["Speed mismatch"]}, {"namespace": "nxos", "hostname": "spine1", "ifname": "Ethernet1/1",
+      "state": "up", "peerHostname": "leaf1", "peerIfname": "Ethernet1/3", "assert":
+      "pass", "assertReason": []}, {"namespace": "nxos", "hostname": "spine1", "ifname":
+      "Ethernet1/2", "state": "up", "peerHostname": "leaf2", "peerIfname": "Ethernet1/3",
+      "assert": "pass", "assertReason": []}, {"namespace": "nxos", "hostname": "spine2",
+      "ifname": "Ethernet1/1", "state": "up", "peerHostname": "leaf1", "peerIfname":
+      "Ethernet1/4", "assert": "pass", "assertReason": []}, {"namespace": "nxos",
+      "hostname": "spine2", "ifname": "Ethernet1/2", "state": "up", "peerHostname":
+      "leaf2", "peerIfname": "Ethernet1/4", "assert": "pass", "assertReason": []}]'
   marks: interface assert nxos
-  output: '[{"namespace": "nxos", "hostname": "leaf2", "ifname": "Ethernet1/4", "peerHostname":
-    "spine2", "peerIfname": "Ethernet1/2", "timestamp": 1604218816578, "mtu": 1500.0,
-    "peerMtu": 1500, "assert": "pass"}, {"namespace": "nxos", "hostname": "leaf2",
-    "ifname": "Ethernet1/3", "peerHostname": "spine1", "peerIfname": "Ethernet1/2",
-    "timestamp": 1604218816578, "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"},
-    {"namespace": "nxos", "hostname": "leaf1", "ifname": "Ethernet1/3", "peerHostname":
-    "spine1", "peerIfname": "Ethernet1/1", "timestamp": 1604218817008, "mtu": 1500.0,
-    "peerMtu": 1500, "assert": "pass"}, {"namespace": "nxos", "hostname": "leaf1",
-    "ifname": "Ethernet1/4", "peerHostname": "spine2", "peerIfname": "Ethernet1/1",
-    "timestamp": 1604218817008, "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"},
-    {"namespace": "nxos", "hostname": "spine1", "ifname": "Ethernet1/1", "peerHostname":
-    "leaf1", "peerIfname": "Ethernet1/3", "timestamp": 1604218817204, "mtu": 1500.0,
-    "peerMtu": 1500, "assert": "pass"}, {"namespace": "nxos", "hostname": "spine1",
-    "ifname": "Ethernet1/2", "peerHostname": "leaf2", "peerIfname": "Ethernet1/3",
-    "timestamp": 1604218817204, "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"},
-    {"namespace": "nxos", "hostname": "spine2", "ifname": "Ethernet1/1", "peerHostname":
-    "leaf1", "peerIfname": "Ethernet1/4", "timestamp": 1604218817205, "mtu": 1500.0,
-    "peerMtu": 1500, "assert": "pass"}, {"namespace": "nxos", "hostname": "spine2",
-    "ifname": "Ethernet1/2", "peerHostname": "leaf2", "peerIfname": "Ethernet1/4",
-    "timestamp": 1604218817205, "mtu": 1500.0, "peerMtu": 1500, "assert": "pass"}]'
 - command: interface top --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: interface top nxos
