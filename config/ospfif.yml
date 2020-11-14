@@ -80,7 +80,8 @@ apply:
       - command: show ip ospf interface vrf all | json
         normalize: 'TABLE_ctx/ROW_ctx/*:cname:vrf|TABLE_intf/ROW_intf/*?/[
         "ifname: ifname",
-        "state: state",
+        "proto_status: state",
+        "admin_status: _adminState",
         "addr: ipAddress",
         "masklen: maskLen?|32",
         "area: area",
