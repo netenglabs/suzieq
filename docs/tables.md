@@ -16,11 +16,11 @@ that the bgp service collects from routers. To see what information is collected
 | Interfaces  | yes | yes | yes| yes | yes | yes |
 | LLDP | yes | yes | yes | yes | yes | yes |
 | Macs |yes | yes | yes | yes | yes | yes |
-| MLAG | yes | untested | no | partial | no | no |
+| MLAG | yes | yes | no | yes | no | no |
 | Ospf |yes | yes | yes | yes | yes | yes |
 | Routes | yes | yes | yes | yes | yes | yes |
 | sqPoller | yes | yes | yes | yes | yes | yes |
 | Topcpu | yes | yes | yes | yes | no | yes |
 | Topmem | yes | yes | yes | no | no | yes |
-| VLAN | yes | yes | yes | no | no | yes |
+| VLAN | yes | yes | yes | yes | yes | yes |
 \* - EVPN support for NXOS requires version 9.3.3 or above
