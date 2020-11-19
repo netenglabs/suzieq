@@ -210,20 +210,18 @@ class InterfaceService(Service):
                 self._assign_vrf(entry, entry_dict)
                 if entry['ifname'] == 'default':
                     drop_indices.append(i)
-                    continue
+                continue
 
+            if entry['type'] is None:
                 continue
 
             if not entry_dict[entry['ifname']]:
                 entry_dict[entry['ifname']] = entry
-            elif 'vrf' in entry_dict[entry['ifname']]:
-                entry['master'] = entry_dict[entry['ifname']]['vrf']
-                entry_dict[entry['ifname']] = entry
 
-            if entry['mtu'] == 'Unlimited':
+            if entry.get('mtu', 0) == 'Unlimited':
                 entry['mtu'] = 65536
-            else:
-                entry['mtu'] = int(entry['mtu'])
+
+            entry['mtu'] = int(entry.get('mtu', 0))
 
             if entry['type']:
                 entry['type'] = entry['type'].lower()
