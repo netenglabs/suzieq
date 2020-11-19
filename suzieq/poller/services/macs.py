@@ -12,28 +12,36 @@ class MacsService(Service):
         return ['vlan', 'macaddr', 'oif', 'remoteVtepIp', 'bd']
 
     def _add_mackey_protocol(self, entry):
-        if not entry.get("vlan", 0):
-            # Without a VLAN, make the OIF the key
-            if not entry.get("remoteVtepIp", None):
-                if not entry.get("bd", None):
-                    entry['protocol'] = 'l2'
-                    entry["mackey"] = entry["oif"]
-                else:
-                    entry['protocol'] = 'vpls'
-                    entry["mackey"] = entry["bd"]
+        """Construct a key field that is unique.
+
+        This is because of the following cases:
+        1. Cumulus has all 0 MAC address with different remoteVtepIP, but
+           same VLAM, as ingress replication entries.
+        2. Cumulus has interface MAC entries with the same MAC and VLAN 0
+        3. Juniper's VPLS entries have only BD, no VLAN
+        4. The remaining regular entries where VLAN disambiguates a MAC.
+        """
+        # Make VLAN int first
+        if entry.get('vlan', ''):
+            entry['vlan'] = int(entry['vlan'])
+
+        if entry.get('bd', ""):
+            # VPLS Entry
+            if not entry.get('vlan', 0):
+                entry['mackey'] = entry['bd']
             else:
-                entry['protocol'] = 'vxlan'
-                entry["mackey"] = f'{entry["oif"]}-{entry["remoteVtepIp"]}'
+                entry['mackey'] = f'{entry["bd"]}-{entry["vlan"]}'
         else:
-            if not entry.get("bd", None):
-                if entry.get('remoteVtepIp', ''):
-                    entry['protocol'] = 'vxlan'
+            if not entry.get("remoteVtepIp", ''):
+                if entry['macaddr'] == '00:00:00:00:00:00':
+                    entry['mackey'] = f'{entry["vlan"]}-{entry["remoteVtepIp"]}'
                 else:
-                    entry['protocol'] = 'l2'
-                entry["mackey"] = entry["vlan"]
+                    entry['mackey'] = entry['vlan']
             else:
-                entry['protocol'] = 'vpls'
-                entry["mackey"] = f'{entry["bd"]}-{entry["vlan"]}'
+                if entry.get('vlan', 0):
+                    entry['mackey'] = entry['vlan']
+                else:
+                    entry['mackey'] = f'{entry["vlan"]}-{entry["oif"]}'
 
     def _clean_linux_data(self, processed_data, raw_data):
         drop_indices = []
@@ -98,6 +106,9 @@ class MacsService(Service):
                     entry['oif'] = entry['oif'].replace('Eth', 'Ethernet')
                 elif entry['oif'].startswith('Po'):
                     entry['oif'] = entry['oif'].replace('Po', 'port-channel')
+                entry['remoteVtepIp'] = ''
+            if entry.get('vlan', '-') == '-':
+                entry['vlan'] = 0
             self._add_mackey_protocol(entry)
 
         return processed_data
@@ -112,6 +123,8 @@ class MacsService(Service):
                 entry['remoteVtepIp'] = vtepIP.group(2)
                 entry['oif'] = vtepIP.group(1)
                 entry['flags'] = 'remote'
+            else:
+                entry['remoteVtepIp'] = ''
             self._add_mackey_protocol(entry)
 
         return processed_data
