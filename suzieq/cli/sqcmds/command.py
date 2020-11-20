@@ -110,6 +110,9 @@ class SqCommand:
     def _pager_print(self, df: pd.DataFrame) -> None:
         '''To support paging'''
 
+        if df.index.dtype == 'int64':
+            df.reset_index(drop=True, inplace=True)
+
         if self.ctxt.pager:
             termsize = shutil.get_terminal_size((80, 20))
             bufio = StringIO()
