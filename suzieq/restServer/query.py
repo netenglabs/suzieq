@@ -102,6 +102,7 @@ class TableVerbs(str, Enum):
 @app.get("/api/v1/address/{verb}")
 async def query_address(verb: CommonVerbs,
                         token: str = Depends(get_api_key),
+                        format: str = None,
                         hostname: str = None,
                         start_time: str = "", end_time: str = "",
                         view: str = "latest", namespace: str = None,
@@ -116,6 +117,7 @@ async def query_address(verb: CommonVerbs,
 @app.get("/api/v1/arpnd/{verb}")
 async def query_arpnd(verb: CommonVerbs,
                       token: str = Depends(get_api_key),
+                      format: str = None,
                       hostname: str = None,
                       start_time: str = "", end_time: str = "",
                       view: str = "latest", namespace: str = None,
@@ -130,6 +132,7 @@ async def query_arpnd(verb: CommonVerbs,
 @app.get("/api/v1/bgp/{verb}")
 async def query_bgp(verb: MoreVerbs,
                     token: str = Depends(get_api_key),
+                    format: str = None,
                     hostname: str = None,
                     start_time: str = "", end_time: str = "",
                     view: str = "latest", namespace: str = None,
@@ -143,6 +146,7 @@ async def query_bgp(verb: MoreVerbs,
 @app.get("/api/v1/device/{verb}")
 async def query_device(verb: CommonVerbs,
                        token: str = Depends(get_api_key),
+                       format: str = None,
                        hostname: str = None,
                        start_time: str = "", end_time: str = "",
                        view: str = "latest", namespace: str = None,
@@ -155,6 +159,7 @@ async def query_device(verb: CommonVerbs,
 @app.get("/api/v1/evpnVni/{verb}")
 async def query_evpnVni(verb: MoreVerbs,
                         token: str = Depends(get_api_key),
+                        format: str = None,
                         hostname: str = None,
                         start_time: str = "", end_time: str = "",
                         view: str = "latest", namespace: str = None,
@@ -167,6 +172,7 @@ async def query_evpnVni(verb: MoreVerbs,
 @app.get("/api/v1/fs/{verb}")
 async def query_fs(verb: CommonVerbs,
                    token: str = Depends(get_api_key),
+                   format: str = None,
                    hostname: str = None,
                    start_time: str = "", end_time: str = "",
                    view: str = "latest", namespace: str = None,
@@ -180,6 +186,7 @@ async def query_fs(verb: CommonVerbs,
 @app.get("/api/v1/interface/{verb}")
 async def query_interface(verb: MoreVerbs,
                           token: str = Depends(get_api_key),
+                          format: str = None,
                           hostname: str = None,
                           start_time: str = "", end_time: str = "",
                           view: str = "latest", namespace: str = None,
@@ -196,6 +203,7 @@ async def query_interface(verb: MoreVerbs,
 @app.get("/api/v1/lldp/{verb}")
 async def query_lldp(verb: CommonVerbs,
                      token: str = Depends(get_api_key),
+                     format: str = None,
                      hostname: str = None,
                      start_time: str = "", end_time: str = "",
                      view: str = "latest", namespace: str = None,
@@ -208,6 +216,7 @@ async def query_lldp(verb: CommonVerbs,
 @app.get("/api/v1/mlag/{verb}")
 async def query_mlag(verb: CommonVerbs,
                      token: str = Depends(get_api_key),
+                     format: str = None,
                      hostname: str = None,
                      start_time: str = "", end_time: str = "",
                      view: str = "latest", namespace: str = None,
@@ -220,6 +229,7 @@ async def query_mlag(verb: CommonVerbs,
 @app.get("/api/v1/ospf/{verb}")
 async def query_ospf(verb: MoreVerbs,
                      token: str = Depends(get_api_key),
+                     format: str = None,
                      hostname: str = None,
                      start_time: str = "", end_time: str = "",
                      view: str = "latest", namespace: str = None,
@@ -234,6 +244,7 @@ async def query_ospf(verb: MoreVerbs,
 @app.get("/api/v1/mac/{verb}")
 async def query_mac(verb: CommonVerbs,
                     token: str = Depends(get_api_key),
+                    format: str = None,
                     hostname: str = None,
                     start_time: str = "", end_time: str = "",
                     view: str = "latest", namespace: str = None,
@@ -249,6 +260,7 @@ async def query_mac(verb: CommonVerbs,
 @app.get("/api/v1/path/{verb}")
 async def query_path(verb: PathVerbs,
                      token: str = Depends(get_api_key),
+                     format: str = None,
                      hostname: str = None,
                      start_time: str = "", end_time: str = "",
                      view: str = "latest", namespace: str = None,
@@ -263,6 +275,7 @@ async def query_path(verb: PathVerbs,
 @app.get("/api/v1/route/{verb}")
 async def query_route(verb: RouteVerbs,
                       token: str = Depends(get_api_key),
+                      format: str = None,
                       hostname: str = None,
                       start_time: str = "", end_time: str = "",
                       view: str = "latest", namespace: str = None,
@@ -278,6 +291,7 @@ async def query_route(verb: RouteVerbs,
 @app.get("/api/v1/sqpoller/{verb}")
 async def query_sqpoller(verb: CommonVerbs,
                          token: str = Depends(get_api_key),
+                         format: str = None,
                          hostname: str = None,
                          start_time: str = "", end_time: str = "",
                          view: str = "latest", namespace: str = None,
@@ -291,6 +305,7 @@ async def query_sqpoller(verb: CommonVerbs,
 @app.get("/api/v1/topology/{verb}")
 async def query_topology(verb: PathVerbs,
                          token: str = Depends(get_api_key),
+                         format: str = None,
                          hostname: str = None,
                          start_time: str = "", end_time: str = "",
                          view: str = "latest", namespace: str = None,
@@ -303,6 +318,7 @@ async def query_topology(verb: PathVerbs,
 @app.get("/api/v1/vlan/{verb}")
 async def query_vlan(verb: CommonVerbs,
                      token: str = Depends(get_api_key),
+                     format: str = None,
                      hostname: str = None,
                      start_time: str = "", end_time: str = "",
                      view: str = "latest", namespace: str = None,
@@ -316,6 +332,7 @@ async def query_vlan(verb: CommonVerbs,
 @app.get("/api/v1/table/{verb}")
 async def query_table(verb: TableVerbs,
                       token: str = Depends(get_api_key),
+                      format: str = None,
                       hostname: str = None,
                       start_time: str = "", end_time: str = "",
                       view: str = "latest", namespace: str = None,
@@ -335,11 +352,13 @@ def read_shared(function_name, verb, local_variables=None):
     verb = cleanup_verb(verb)
 
     columns = local_variables.get('columns', None)
-
+    format = local_variables.get('format', None)
     ret, svc_inst = run_command_verb(
-        command, verb, command_args, verb_args, columns)
+        command, verb, command_args, verb_args, columns, format)
     check_args(function_name, svc_inst)
-    return json.loads(ret)
+ 
+
+    return ret
 
 
 def check_args(function_name, svc_inst):
@@ -347,7 +366,7 @@ def check_args(function_name, svc_inst):
 
     arguments = inspect.getfullargspec(globals()[function_name]).args
     arguments = [i for i in arguments if i not in
-                 ['verb', 'token', 'start_time', 'end_time', 'view']]
+                 ['verb', 'token', 'format', 'start_time', 'end_time', 'view']]
 
     valid_args = set(svc_inst._valid_get_args)
     if svc_inst._valid_assert_args:
@@ -363,7 +382,7 @@ def check_args(function_name, svc_inst):
 def create_filters(function_name, command, locals):
     command_args = {}
     verb_args = {}
-    remove_args = ['verb', 'token']
+    remove_args = ['verb', 'token', 'format']
     possible_args = ['hostname', 'namespace',
                      'start_time', 'end_time', 'view', 'columns']
     split_args = {'all': ['namespace', 'hostname', 'columns', 'ifname', 'vlan', 'macaddr'],
@@ -451,7 +470,7 @@ def get_svc(command):
     return svc
 
 
-def run_command_verb(command, verb, command_args, verb_args, columns=['default']):
+def run_command_verb(command, verb, command_args, verb_args, columns=['default'], format=None):
     """
     Runs the command and verb with the command_args and verb_args as dictionaries
 
@@ -490,11 +509,14 @@ def run_command_verb(command, verb, command_args, verb_args, columns=['default']
     if columns != ['default'] and columns != ['*'] and columns is not None:
         df = df[columns]
 
+    if format == 'markdown':
+        return df.to_markdown(), svc_inst
+
     if verb == 'summarize':
         json_orient = 'columns'
     else:
         json_orient = 'records'
-    return df.to_json(orient=json_orient), svc_inst
+    return json.loads(df.to_json(orient=json_orient)), svc_inst
 
 
 def return_error(code: int, msg: str):
