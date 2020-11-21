@@ -154,7 +154,7 @@ class SqObject(object):
 
         return self.engine_obj.get(**kwargs)
 
-    def summarize(self, namespace='') -> pd.DataFrame:
+    def summarize(self, namespace=[], hostname=[]) -> pd.DataFrame:
         if self.columns != ["default"]:
             self.summarize_df = pd.DataFrame(
                 {'error': ['ERROR: You cannot specify columns with summarize']})
@@ -165,7 +165,8 @@ class SqObject(object):
         if not self.ctxt.engine:
             raise AttributeError('No analysis engine specified')
 
-        return self.engine_obj.summarize(namespace=namespace)
+        return self.engine_obj.summarize(namespace=namespace,
+                                         hostname=hostname)
 
     def unique(self, **kwargs) -> pd.DataFrame:
         if not self._table:
