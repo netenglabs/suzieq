@@ -125,11 +125,7 @@ BAD_VERBS = {'address/assert': 422, 'address/lpm': 422,
 # these are always bad filters for these verbs no matter the service
 BAD_VERB_FILTERS = {'assert?address=10.0.0.1': 405,
                     'summarize?columns=namespace': 405,
-                    'summarize?hostname=leaf01': 405,
-                    'summarize?hostname=leaf01%20spine01': 405,
                     'unique?': 405,
-                    'unique?hostname=leaf01': 405,
-                    'unique?hostname=leaf01%20spine01': 405,
                     'unique?namespace=ospf-ibgp': 405,
                     'unique?view=latest': 405,
                     }

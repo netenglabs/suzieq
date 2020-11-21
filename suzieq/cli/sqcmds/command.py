@@ -5,6 +5,7 @@ from io import StringIO
 import shutil
 from prompt_toolkit import prompt
 
+
 @argument(
     "engine",
     description="which analytical engine to use",
@@ -113,7 +114,7 @@ class SqCommand:
             df.reset_index(drop=True, inplace=True)
 
         if self.ctxt.pager:
-            termsize = shutil.get_terminal_size((80, 20))
+            screen_lines = (shutil.get_terminal_size((80, 20)).lines -2)
             bufio = StringIO()
 
             print(df, file=bufio)
@@ -121,8 +122,8 @@ class SqCommand:
             curline = 0
             total_lines = len(lines)
             while curline < total_lines:
-                print('\n'.join(lines[curline:curline+termsize.lines]))
-                curline += termsize.lines
+                print('\n'.join(lines[curline:curline+screen_lines]))
+                curline += screen_lines
                 if curline < total_lines:
                     try:
                         _ = prompt('Hit <ENTER> to continue, <CTRL-D> to quit')
@@ -153,7 +154,6 @@ class SqCommand:
         if dont_strip_cols or not all(item in df.columns for item in cols):
             cols = df.columns
 
-        termsize = shutil.get_terminal_size((80, 20))
         if self.format == 'json':
             if self.json_print_handler:
                 print(df[cols].to_json(
@@ -178,7 +178,8 @@ class SqCommand:
                         sort_fields = [x for x in self.sqobj._sort_fields
                                        if x in df.columns and x in cols]
                         if sort_fields:
-                            self._pager_print(df[cols].sort_values(by=sort_fields))
+                            self._pager_print(
+                                df[cols].sort_values(by=sort_fields))
                         else:
                             self._pager_print(df[cols])
                 else:
@@ -214,7 +215,7 @@ class SqCommand:
         raise NotImplementedError
 
     @ command("summarize", help='produce a summarize of the data')
-    def summarize(self, **kwargs):
+    def summarize(self):
         self._init_summarize()
         return self._post_summarize()
 
@@ -231,7 +232,7 @@ class SqCommand:
             df = self.sqobj.unique(hostname=self.hostname,
                                    namespace=self.namespace,
                                    groupby=groupby, type=type,
-                                  )
+                                   )
         except Exception as e:
             df = pd.DataFrame({'error': ['ERROR: {}'.format(str(e))]})
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
@@ -240,9 +241,8 @@ class SqCommand:
     def _init_summarize(self):
         self.now = time.time()
 
-
         self.summarize_df = self.sqobj.summarize(
-            namespace=self.namespace,
+            namespace=self.namespace, hostname=self.hostname,
         )
 
     def _post_summarize(self):
