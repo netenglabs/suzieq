@@ -114,7 +114,7 @@ def convert_ansible_inventory(filename: str, namespace: str = 'default'):
             addnl_info += f' password={entry["ansible_password"]} '
         if entry.get('ansible_network_os', '') == 'eos':
             transport = 'https://'
-            addnl_info = 'devtype=eos'
+            addnl_info += 'devtype=eos'
             port = 443
         else:
             transport = 'ssh://'
