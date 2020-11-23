@@ -1,9 +1,9 @@
 service: vlan
 keys:
-  - ifname
+  - vlanName
 
 show-fields:
-  - ifname
+  - vlanName
   - vlan
   - interfaces
 
@@ -24,7 +24,7 @@ apply:
     command: show vlan brief
     normalize: 'vlans/*:vlan/[
     "interfaces/*: interfaces?|[]",
-    "name: ifname",
+    "name: vlanName",
     "status: state",
     ]'
 
@@ -33,7 +33,7 @@ apply:
     command: show vlan brief | json
     normalize: 'TABLE_vlanbriefxbrief/ROW_vlanbriefxbrief/*/[
     "vlanshowbr-vlanid: vlan",
-    "vlanshowbr-vlanname: ifname",
+    "vlanshowbr-vlanname: vlanName",
     "vlanshowbr-vlanstate: state",
     "vlanshowbr-shutstate: adminState",
     "vlanshowplist-ifidx: interfaces?|",
@@ -45,6 +45,6 @@ apply:
     normalize: 'l2ng-l2ald-vlan-instance-information/l2ng-l2ald-vlan-instance-group/*/[
     "l2ng-l2rtb-vlan-tag/[0]/data: vlan",
     "l2ng-l2rtb-vlan-member/[*]/l2ng-l2rtb-vlan-member-interface/[0]/data: interfaces?|[]",
-    "l2ng-l2rtb-vlan-name/[0]/data: ifname",
+    "l2ng-l2rtb-vlan-name/[0]/data: vlanName",
     "l2ng-l2rtb-instance-state/[0]/data: state",
     ]'

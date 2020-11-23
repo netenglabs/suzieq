@@ -1,9 +1,9 @@
-Value ifname (\S+)
+Value vlanName (\S+)
 Value List vlan (\d+)
 Value pvid (\d+)
 
 Start
   ^\S+ -> Continue.Record
-  ^${ifname}\s+${vlan}.*$$ -> Continue
-  ^${ifname}\s+${pvid}\s+PVID.*$$
+  ^${vlanName}\s+${vlan}.*$$ -> Continue
+  ^${vlanName}\s+${pvid}\s+PVID.*$$
   ^\s+${vlan}.*$$
