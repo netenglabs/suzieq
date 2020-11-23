@@ -3,34 +3,34 @@ tests:
 - command: device show --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: device show junos
-  output: '[{"namespace": "junos", "hostname": "srv12", "model": "vm", "version":
+  output: '[{"namespace": "junos", "hostname": "srv11", "model": "vm", "version":
     "16.04 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
-    "address": "127.0.0.1", "uptime": 6871826, "timestamp": 1604149438826}, {"namespace":
-    "junos", "hostname": "srv22", "model": "vm", "version": "16.04 LTS", "vendor":
+    "address": "127.0.0.1", "uptime": 756181, "timestamp": 1606017394181}, {"namespace":
+    "junos", "hostname": "srv12", "model": "vm", "version": "16.04 LTS", "vendor":
     "Ubuntu", "architecture": "x86-64", "status": "alive", "address": "127.0.0.1",
-    "uptime": 6610826, "timestamp": 1604149438826}, {"namespace": "junos", "hostname":
+    "uptime": 701181, "timestamp": 1606017394181}, {"namespace": "junos", "hostname":
     "srv21", "model": "vm", "version": "16.04 LTS", "vendor": "Ubuntu", "architecture":
-    "x86-64", "status": "alive", "address": "127.0.0.1", "uptime": 6674827, "timestamp":
-    1604149438827}, {"namespace": "junos", "hostname": "srv11", "model": "vm", "version":
+    "x86-64", "status": "alive", "address": "127.0.0.1", "uptime": 510181, "timestamp":
+    1606017394181}, {"namespace": "junos", "hostname": "srv22", "model": "vm", "version":
     "16.04 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
-    "address": "127.0.0.1", "uptime": 6928846, "timestamp": 1604149438846}, {"namespace":
-    "junos", "hostname": "vqfx2", "model": "vqfx-10000", "version": "19.4R1.10", "vendor":
+    "address": "127.0.0.1", "uptime": 455183, "timestamp": 1606017394183}, {"namespace":
+    "junos", "hostname": "vqfx1", "model": "vqfx-10000", "version": "19.4R1.10", "vendor":
     "Juniper", "architecture": "", "status": "alive", "address": "127.0.0.1", "uptime":
-    6754000, "timestamp": 1604149439310}, {"namespace": "junos", "hostname": "vqfx1",
+    1482000, "timestamp": 1606017395863}, {"namespace": "junos", "hostname": "vqfx2",
     "model": "vqfx-10000", "version": "19.4R1.10", "vendor": "Juniper", "architecture":
-    "", "status": "alive", "address": "127.0.0.1", "uptime": 7011000, "timestamp":
-    1604149439411}]'
+    "", "status": "alive", "address": "127.0.0.1", "uptime": 603000, "timestamp":
+    1606017396684}]'
 - command: device show --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: device show junos
-  output: '[{"hostname": "srv12"}, {"hostname": "srv22"}, {"hostname": "srv21"}, {"hostname":
-    "srv11"}, {"hostname": "vqfx2"}, {"hostname": "vqfx1"}]'
+  output: '[{"hostname": "srv11"}, {"hostname": "srv12"}, {"hostname": "srv21"}, {"hostname":
+    "srv22"}, {"hostname": "vqfx1"}, {"hostname": "vqfx2"}]'
 - command: device summarize --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: device summarize junos
   output: '{"junos": {"deviceCnt": 6, "vendorCnt": {"Ubuntu": 4, "Juniper": 2}, "modelCnt":
     {"vm": 4, "vqfx-10000": 2}, "archCnt": {"x86-64": 4, "": 2}, "versionCnt": {"16.04
-    LTS": 4, "19.4R1.10": 2}, "upTimeStat": [6610826, 7011000, 6812913]}}'
+    LTS": 4, "19.4R1.10": 2}, "upTimeStat": [455183, 1482000, 652090]}}'
 - command: device summarize --columns="namespace hostname" --format=json
   data-directory: tests/data/junos/parquet-out/
   error:
@@ -39,9 +39,9 @@ tests:
 - command: device unique --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: device unique junos
-  output: '[{"hostname": "srv11", "count": 1}, {"hostname": "srv12", "count": 1},
-    {"hostname": "srv22", "count": 1}, {"hostname": "vqfx1", "count": 1}, {"hostname":
-    "vqfx2", "count": 1}, {"hostname": "srv21", "count": 1}]'
+  output: '[{"hostname": "vqfx2", "count": 1}, {"hostname": "srv22", "count": 1},
+    {"hostname": "srv11", "count": 1}, {"hostname": "srv21", "count": 1}, {"hostname":
+    "srv12", "count": 1}, {"hostname": "vqfx1", "count": 1}]'
 - command: device unique --columns="hostname namespace" --format=json
   data-directory: tests/data/junos/parquet-out/
   error:

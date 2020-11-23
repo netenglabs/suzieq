@@ -3,333 +3,399 @@ tests:
 - command: interface show --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: interface show eos
-  output: '[{"namespace": "eos", "hostname": "server104", "ifname": "eth1", "state":
-    "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
-    ["172.16.4.104/24"], "ip6AddressList": [], "timestamp": 1604182714940}, {"namespace":
-    "eos", "hostname": "server104", "ifname": "eth0", "state": "up", "type": "ether",
-    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.255.4.26/24"], "ip6AddressList":
-    [], "timestamp": 1604182714940}, {"namespace": "eos", "hostname": "server104",
-    "ifname": "lo", "state": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master":
-    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1604182714940}, {"namespace":
-    "eos", "hostname": "server101", "ifname": "eth0", "state": "up", "type": "ether",
-    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.255.4.27/24"], "ip6AddressList":
-    [], "timestamp": 1604182715020}, {"namespace": "eos", "hostname": "server101",
-    "ifname": "lo", "state": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master":
-    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1604182715020}, {"namespace":
-    "eos", "hostname": "server101", "ifname": "eth1", "state": "up", "type": "ether",
-    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["172.16.1.101/24"], "ip6AddressList":
-    [], "timestamp": 1604182715020}, {"namespace": "eos", "hostname": "server102",
-    "ifname": "lo", "state": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master":
-    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1604182715020}, {"namespace":
-    "eos", "hostname": "server102", "ifname": "eth0", "state": "up", "type": "ether",
-    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.255.4.103/24"], "ip6AddressList":
-    [], "timestamp": 1604182715020}, {"namespace": "eos", "hostname": "server102",
-    "ifname": "eth1", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
-    "", "ipAddressList": ["172.16.2.102/24"], "ip6AddressList": [], "timestamp": 1604182715020},
+  output: '[{"namespace": "eos", "hostname": "edge01", "ifname": "lo", "state": "up",
+    "type": "loopback", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.100/32"],
+    "ip6AddressList": [], "timestamp": 1606030435349}, {"namespace": "eos", "hostname":
+    "edge01", "ifname": "eth0", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["192.168.121.86/24"], "ip6AddressList": [],
+    "timestamp": 1606030435349}, {"namespace": "eos", "hostname": "edge01", "ifname":
+    "eth1", "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1606030435349}, {"namespace":
+    "eos", "hostname": "edge01", "ifname": "eth2", "state": "up", "type": "ethernet",
+    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1606030435349}, {"namespace": "eos", "hostname": "edge01", "ifname":
+    "eth2.2", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 2, "master": "",
+    "ipAddressList": ["169.254.253.2/30"], "ip6AddressList": [], "timestamp": 1606030435349},
+    {"namespace": "eos", "hostname": "edge01", "ifname": "eth1.2", "state": "up",
+    "type": "vlan", "mtu": 1500, "vlan": 2, "master": "", "ipAddressList": ["169.254.254.2/30"],
+    "ip6AddressList": [], "timestamp": 1606030435349}, {"namespace": "eos", "hostname":
+    "edge01", "ifname": "eth1.4", "state": "up", "type": "vlan", "mtu": 1500, "vlan":
+    4, "master": "", "ipAddressList": ["169.254.254.10/30"], "ip6AddressList": [],
+    "timestamp": 1606030435349}, {"namespace": "eos", "hostname": "edge01", "ifname":
+    "eth2.4", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 4, "master": "",
+    "ipAddressList": ["169.254.253.10/30"], "ip6AddressList": [], "timestamp": 1606030435349},
     {"namespace": "eos", "hostname": "server103", "ifname": "lo", "state": "up", "type":
     "loopback", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1604182715021}, {"namespace": "eos", "hostname": "server103",
-    "ifname": "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
-    "", "ipAddressList": ["10.255.4.115/24"], "ip6AddressList": [], "timestamp": 1604182715021},
-    {"namespace": "eos", "hostname": "server103", "ifname": "eth1", "state": "up",
-    "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["172.16.3.103/24"],
-    "ip6AddressList": [], "timestamp": 1604182715021}, {"namespace": "eos", "hostname":
-    "edge01", "ifname": "lo", "state": "up", "type": "loopback", "mtu": 65536, "vlan":
-    0, "master": "", "ipAddressList": ["10.0.0.100/32"], "ip6AddressList": [], "timestamp":
-    1604182715023}, {"namespace": "eos", "hostname": "edge01", "ifname": "eth2.4",
-    "state": "up", "type": "vlan", "mtu": 1500, "vlan": 4, "master": "", "ipAddressList":
-    ["169.254.253.10/30"], "ip6AddressList": [], "timestamp": 1604182715023}, {"namespace":
-    "eos", "hostname": "edge01", "ifname": "eth2.2", "state": "up", "type": "vlan",
-    "mtu": 1500, "vlan": 2, "master": "", "ipAddressList": ["169.254.253.2/30"], "ip6AddressList":
-    [], "timestamp": 1604182715023}, {"namespace": "eos", "hostname": "edge01", "ifname":
-    "eth1.2", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 2, "master": "",
-    "ipAddressList": ["169.254.254.2/30"], "ip6AddressList": [], "timestamp": 1604182715023},
-    {"namespace": "eos", "hostname": "edge01", "ifname": "eth2", "state": "up", "type":
-    "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1604182715023}, {"namespace": "eos", "hostname": "edge01", "ifname":
-    "eth1", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1604182715023}, {"namespace":
-    "eos", "hostname": "edge01", "ifname": "eth0", "state": "up", "type": "ether",
-    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.255.4.126/24"], "ip6AddressList":
-    [], "timestamp": 1604182715023}, {"namespace": "eos", "hostname": "edge01", "ifname":
-    "eth1.4", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 4, "master": "",
-    "ipAddressList": ["169.254.254.10/30"], "ip6AddressList": [], "timestamp": 1604182715023},
-    {"namespace": "eos", "hostname": "leaf04", "ifname": "Management1", "state": "up",
-    "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.255.4.183/24"],
-    "ip6AddressList": [], "timestamp": 1604182715119}, {"namespace": "eos", "hostname":
-    "leaf04", "ifname": "Vlan10", "state": "up", "type": "vlan", "mtu": 1500, "vlan":
-    10, "master": "", "ipAddressList": ["172.16.4.1/24"], "ip6AddressList": [], "timestamp":
-    1604182715119}, {"namespace": "eos", "hostname": "leaf04", "ifname": "Loopback0",
-    "state": "up", "type": "loopback", "mtu": 65535, "vlan": 0, "master": "", "ipAddressList":
-    ["10.0.0.14/32"], "ip6AddressList": [], "timestamp": 1604182715119}, {"namespace":
-    "eos", "hostname": "leaf04", "ifname": "Ethernet2", "state": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.127.1.7/31"], "ip6AddressList":
-    [], "timestamp": 1604182715119}, {"namespace": "eos", "hostname": "leaf04", "ifname":
-    "Ethernet3", "state": "up", "type": "ethernet", "mtu": 9214, "vlan": 0, "master":
-    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1604182715119},
-    {"namespace": "eos", "hostname": "leaf04", "ifname": "Ethernet4", "state": "up",
-    "type": "ethernet", "mtu": 9214, "vlan": 0, "master": "bridge", "ipAddressList":
-    [], "ip6AddressList": [], "timestamp": 1604182715119}, {"namespace": "eos", "hostname":
-    "leaf04", "ifname": "Ethernet5", "state": "up", "type": "ethernet", "mtu": 9214,
-    "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1604182715119}, {"namespace": "eos", "hostname": "leaf04", "ifname": "default",
+    [], "timestamp": 1606030435355}, {"namespace": "eos", "hostname": "server103",
+    "ifname": "eth0", "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["192.168.121.121/24"], "ip6AddressList": [], "timestamp":
+    1606030435355}, {"namespace": "eos", "hostname": "server103", "ifname": "eth1",
+    "state": "up", "type": "bond_slave", "mtu": 1500, "vlan": 0, "master": "bond0",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1606030435355}, {"namespace":
+    "eos", "hostname": "server103", "ifname": "bond0", "state": "up", "type": "bond",
+    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["172.16.3.103/24"], "ip6AddressList":
+    [], "timestamp": 1606030435355}, {"namespace": "eos", "hostname": "server103",
+    "ifname": "eth2", "state": "up", "type": "bond_slave", "mtu": 1500, "vlan": 0,
+    "master": "bond0", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1606030435355},
+    {"namespace": "eos", "hostname": "server101", "ifname": "eth1", "state": "up",
+    "type": "bond_slave", "mtu": 1500, "vlan": 0, "master": "bond0", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1606030435356}, {"namespace": "eos", "hostname":
+    "server102", "ifname": "eth1", "state": "up", "type": "bond_slave", "mtu": 1500,
+    "vlan": 0, "master": "bond0", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1606030435356}, {"namespace": "eos", "hostname": "server102", "ifname": "eth0",
+    "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    ["192.168.121.26/24"], "ip6AddressList": [], "timestamp": 1606030435356}, {"namespace":
+    "eos", "hostname": "server102", "ifname": "lo", "state": "up", "type": "loopback",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1606030435356}, {"namespace": "eos", "hostname": "server101",
+    "ifname": "bond0", "state": "up", "type": "bond", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["172.16.1.101/24"], "ip6AddressList": [], "timestamp": 1606030435356},
+    {"namespace": "eos", "hostname": "server102", "ifname": "bond0", "state": "up",
+    "type": "bond", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["172.16.2.102/24"],
+    "ip6AddressList": [], "timestamp": 1606030435356}, {"namespace": "eos", "hostname":
+    "server102", "ifname": "eth2", "state": "up", "type": "bond_slave", "mtu": 1500,
+    "vlan": 0, "master": "bond0", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1606030435356}, {"namespace": "eos", "hostname": "server101", "ifname": "eth2",
+    "state": "up", "type": "bond_slave", "mtu": 1500, "vlan": 0, "master": "bond0",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1606030435356}, {"namespace":
+    "eos", "hostname": "server101", "ifname": "lo", "state": "up", "type": "loopback",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1606030435356}, {"namespace": "eos", "hostname": "server101",
+    "ifname": "eth0", "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["192.168.121.82/24"], "ip6AddressList": [], "timestamp":
+    1606030435356}, {"namespace": "eos", "hostname": "server104", "ifname": "eth0",
+    "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    ["192.168.121.210/24"], "ip6AddressList": [], "timestamp": 1606030435428}, {"namespace":
+    "eos", "hostname": "server104", "ifname": "bond0", "state": "up", "type": "bond",
+    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["172.16.4.104/24"], "ip6AddressList":
+    [], "timestamp": 1606030435428}, {"namespace": "eos", "hostname": "server104",
+    "ifname": "eth2", "state": "up", "type": "bond_slave", "mtu": 1500, "vlan": 0,
+    "master": "bond0", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1606030435428},
+    {"namespace": "eos", "hostname": "server104", "ifname": "eth1", "state": "up",
+    "type": "bond_slave", "mtu": 1500, "vlan": 0, "master": "bond0", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1606030435428}, {"namespace": "eos", "hostname":
+    "server104", "ifname": "lo", "state": "up", "type": "loopback", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1606030435428}, {"namespace": "eos", "hostname": "exit02", "ifname": "internet-vrf",
     "state": "up", "type": "vrf", "mtu": 0, "vlan": 0, "master": "", "ipAddressList":
-    ["-"], "ip6AddressList": ["-"], "timestamp": 1604182715119}, {"namespace": "eos",
-    "hostname": "leaf04", "ifname": "Ethernet1", "state": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.127.0.7/31"], "ip6AddressList":
-    [], "timestamp": 1604182715119}, {"namespace": "eos", "hostname": "leaf02", "ifname":
-    "Vlan10", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 10, "master": "",
-    "ipAddressList": ["172.16.2.1/24"], "ip6AddressList": [], "timestamp": 1604182715175},
-    {"namespace": "eos", "hostname": "leaf02", "ifname": "default", "state": "up",
-    "type": "vrf", "mtu": 0, "vlan": 0, "master": "", "ipAddressList": ["-"], "ip6AddressList":
-    ["-"], "timestamp": 1604182715175}, {"namespace": "eos", "hostname": "leaf02",
-    "ifname": "Ethernet5", "state": "up", "type": "ethernet", "mtu": 9214, "vlan":
-    0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1604182715175}, {"namespace": "eos", "hostname": "leaf02", "ifname": "Ethernet4",
-    "state": "up", "type": "ethernet", "mtu": 9214, "vlan": 0, "master": "bridge",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1604182715175}, {"namespace":
-    "eos", "hostname": "leaf02", "ifname": "Ethernet1", "state": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.127.0.3/31"], "ip6AddressList":
-    [], "timestamp": 1604182715175}, {"namespace": "eos", "hostname": "leaf02", "ifname":
-    "Ethernet2", "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master":
-    "", "ipAddressList": ["10.127.1.3/31"], "ip6AddressList": [], "timestamp": 1604182715175},
-    {"namespace": "eos", "hostname": "leaf02", "ifname": "Loopback0", "state": "up",
-    "type": "loopback", "mtu": 65535, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.12/32"],
-    "ip6AddressList": [], "timestamp": 1604182715175}, {"namespace": "eos", "hostname":
-    "leaf02", "ifname": "Management1", "state": "up", "type": "ethernet", "mtu": 1500,
-    "vlan": 0, "master": "", "ipAddressList": ["10.255.4.54/24"], "ip6AddressList":
-    [], "timestamp": 1604182715175}, {"namespace": "eos", "hostname": "leaf02", "ifname":
-    "Ethernet3", "state": "up", "type": "ethernet", "mtu": 9214, "vlan": 0, "master":
-    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1604182715175},
-    {"namespace": "eos", "hostname": "spine01", "ifname": "Ethernet2", "state": "up",
-    "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.127.0.2/31"],
-    "ip6AddressList": [], "timestamp": 1604182715176}, {"namespace": "eos", "hostname":
-    "spine01", "ifname": "Management1", "state": "up", "type": "ethernet", "mtu":
-    1500, "vlan": 0, "master": "", "ipAddressList": ["10.255.4.77/24"], "ip6AddressList":
-    [], "timestamp": 1604182715176}, {"namespace": "eos", "hostname": "spine01", "ifname":
-    "Loopback0", "state": "up", "type": "loopback", "mtu": 65535, "vlan": 0, "master":
-    "", "ipAddressList": ["10.0.0.21/32"], "ip6AddressList": [], "timestamp": 1604182715176},
-    {"namespace": "eos", "hostname": "spine01", "ifname": "Ethernet3", "state": "up",
-    "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.127.0.4/31"],
-    "ip6AddressList": [], "timestamp": 1604182715176}, {"namespace": "eos", "hostname":
-    "spine01", "ifname": "Ethernet1", "state": "up", "type": "ethernet", "mtu": 1500,
-    "vlan": 0, "master": "", "ipAddressList": ["10.127.0.0/31"], "ip6AddressList":
-    [], "timestamp": 1604182715176}, {"namespace": "eos", "hostname": "spine01", "ifname":
-    "Ethernet6", "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master":
-    "", "ipAddressList": ["10.127.0.8/31"], "ip6AddressList": [], "timestamp": 1604182715176},
-    {"namespace": "eos", "hostname": "spine01", "ifname": "Ethernet4", "state": "up",
-    "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.127.0.6/31"],
-    "ip6AddressList": [], "timestamp": 1604182715176}, {"namespace": "eos", "hostname":
-    "spine01", "ifname": "default", "state": "up", "type": "vrf", "mtu": 0, "vlan":
-    0, "master": "", "ipAddressList": ["-"], "ip6AddressList": ["-"], "timestamp":
-    1604182715176}, {"namespace": "eos", "hostname": "spine01", "ifname": "Ethernet5",
-    "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
-    ["10.127.0.10/31"], "ip6AddressList": [], "timestamp": 1604182715176}, {"namespace":
-    "eos", "hostname": "spine02", "ifname": "Ethernet5", "state": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.127.1.10/31"], "ip6AddressList":
-    [], "timestamp": 1604182715188}, {"namespace": "eos", "hostname": "spine02", "ifname":
-    "default", "state": "up", "type": "vrf", "mtu": 0, "vlan": 0, "master": "", "ipAddressList":
-    ["-"], "ip6AddressList": ["-"], "timestamp": 1604182715188}, {"namespace": "eos",
-    "hostname": "spine02", "ifname": "Loopback0", "state": "up", "type": "loopback",
-    "mtu": 65535, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.22/32"], "ip6AddressList":
-    [], "timestamp": 1604182715188}, {"namespace": "eos", "hostname": "spine02", "ifname":
-    "Ethernet2", "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master":
-    "", "ipAddressList": ["10.127.1.2/31"], "ip6AddressList": [], "timestamp": 1604182715188},
-    {"namespace": "eos", "hostname": "spine02", "ifname": "Ethernet3", "state": "up",
-    "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.127.1.4/31"],
-    "ip6AddressList": [], "timestamp": 1604182715188}, {"namespace": "eos", "hostname":
-    "spine02", "ifname": "Ethernet1", "state": "up", "type": "ethernet", "mtu": 1500,
-    "vlan": 0, "master": "", "ipAddressList": ["10.127.1.0/31"], "ip6AddressList":
-    [], "timestamp": 1604182715188}, {"namespace": "eos", "hostname": "spine02", "ifname":
-    "Ethernet6", "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master":
-    "", "ipAddressList": ["10.127.1.8/31"], "ip6AddressList": [], "timestamp": 1604182715188},
-    {"namespace": "eos", "hostname": "spine02", "ifname": "Ethernet4", "state": "up",
-    "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.127.1.6/31"],
-    "ip6AddressList": [], "timestamp": 1604182715188}, {"namespace": "eos", "hostname":
-    "spine02", "ifname": "Management1", "state": "up", "type": "ethernet", "mtu":
-    1500, "vlan": 0, "master": "", "ipAddressList": ["10.255.4.213/24"], "ip6AddressList":
-    [], "timestamp": 1604182715188}, {"namespace": "eos", "hostname": "exit01", "ifname":
-    "Loopback1", "state": "up", "type": "loopback", "mtu": 65535, "vlan": 0, "master":
-    "internet-vrf", "ipAddressList": ["0.0.0.0/0"], "ip6AddressList": [], "timestamp":
-    1604182715196}, {"namespace": "eos", "hostname": "exit01", "ifname": "Loopback0",
-    "state": "up", "type": "loopback", "mtu": 65535, "vlan": 0, "master": "", "ipAddressList":
-    ["10.0.0.101/32"], "ip6AddressList": [], "timestamp": 1604182715196}, {"namespace":
-    "eos", "hostname": "exit01", "ifname": "Ethernet5", "state": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
-    "timestamp": 1604182715196}, {"namespace": "eos", "hostname": "exit01", "ifname":
-    "Ethernet4", "state": "up", "type": "ethernet", "mtu": 9214, "vlan": 0, "master":
-    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1604182715196},
-    {"namespace": "eos", "hostname": "exit01", "ifname": "Ethernet5.2", "state": "up",
-    "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
-    ["169.254.254.1/30"], "ip6AddressList": [], "timestamp": 1604182715196}, {"namespace":
-    "eos", "hostname": "exit01", "ifname": "Ethernet2", "state": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.127.1.9/31"], "ip6AddressList":
-    [], "timestamp": 1604182715196}, {"namespace": "eos", "hostname": "exit01", "ifname":
-    "Ethernet5.4", "state": "up", "type": "subinterface", "mtu": 1500, "vlan": 0,
-    "master": "internet-vrf", "ipAddressList": ["169.254.254.9/30"], "ip6AddressList":
-    [], "timestamp": 1604182715196}, {"namespace": "eos", "hostname": "exit01", "ifname":
-    "Ethernet3", "state": "up", "type": "ethernet", "mtu": 9214, "vlan": 0, "master":
-    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1604182715196},
-    {"namespace": "eos", "hostname": "exit01", "ifname": "Ethernet1", "state": "up",
-    "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.127.0.9/31"],
-    "ip6AddressList": [], "timestamp": 1604182715196}, {"namespace": "eos", "hostname":
-    "exit01", "ifname": "Management1", "state": "up", "type": "ethernet", "mtu": 1500,
-    "vlan": 0, "master": "", "ipAddressList": ["10.255.4.145/24"], "ip6AddressList":
-    [], "timestamp": 1604182715196}, {"namespace": "eos", "hostname": "exit01", "ifname":
-    "default", "state": "up", "type": "vrf", "mtu": 0, "vlan": 0, "master": "", "ipAddressList":
-    ["-"], "ip6AddressList": ["-"], "timestamp": 1604182715196}, {"namespace": "eos",
-    "hostname": "exit01", "ifname": "Ethernet6", "state": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 0, "master": "internet-vrf", "ipAddressList": ["169.254.127.1/31"],
-    "ip6AddressList": [], "timestamp": 1604182715196}, {"namespace": "eos", "hostname":
-    "exit01", "ifname": "internet-vrf", "state": "up", "type": "vrf", "mtu": 0, "vlan":
-    0, "master": "", "ipAddressList": ["-"], "ip6AddressList": ["-"], "timestamp":
-    1604182715196}, {"namespace": "eos", "hostname": "leaf01", "ifname": "Management1",
-    "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
-    ["10.255.4.179/24"], "ip6AddressList": [], "timestamp": 1604182715197}, {"namespace":
-    "eos", "hostname": "leaf01", "ifname": "Vlan10", "state": "up", "type": "vlan",
-    "mtu": 1500, "vlan": 10, "master": "", "ipAddressList": ["172.16.1.1/24"], "ip6AddressList":
-    [], "timestamp": 1604182715197}, {"namespace": "eos", "hostname": "leaf01", "ifname":
-    "Loopback0", "state": "up", "type": "loopback", "mtu": 65535, "vlan": 0, "master":
-    "", "ipAddressList": ["10.0.0.11/32"], "ip6AddressList": [], "timestamp": 1604182715197},
-    {"namespace": "eos", "hostname": "leaf01", "ifname": "Ethernet2", "state": "up",
-    "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.127.1.1/31"],
-    "ip6AddressList": [], "timestamp": 1604182715197}, {"namespace": "eos", "hostname":
-    "leaf01", "ifname": "Ethernet3", "state": "up", "type": "ethernet", "mtu": 9214,
+    [], "ip6AddressList": [], "timestamp": 1606030435494}, {"namespace": "eos", "hostname":
+    "exit02", "ifname": "Loopback1", "state": "up", "type": "loopback", "mtu": 65535,
+    "vlan": 0, "master": "internet-vrf", "ipAddressList": ["0.0.0.0/0"], "ip6AddressList":
+    [], "timestamp": 1606030435494}, {"namespace": "eos", "hostname": "exit02", "ifname":
+    "Ethernet1", "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["10.127.0.11/31"], "ip6AddressList": [], "timestamp": 1606030435494},
+    {"namespace": "eos", "hostname": "exit02", "ifname": "Ethernet5", "state": "up",
+    "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [],
+    "ip6AddressList": [], "timestamp": 1606030435494}, {"namespace": "eos", "hostname":
+    "exit02", "ifname": "Ethernet4", "state": "up", "type": "ethernet", "mtu": 9214,
     "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1604182715197}, {"namespace": "eos", "hostname": "leaf01", "ifname": "Ethernet1",
-    "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
-    ["10.127.0.1/31"], "ip6AddressList": [], "timestamp": 1604182715197}, {"namespace":
-    "eos", "hostname": "leaf01", "ifname": "Ethernet4", "state": "up", "type": "ethernet",
-    "mtu": 9214, "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1604182715197}, {"namespace": "eos", "hostname": "leaf01", "ifname":
-    "Ethernet5", "state": "up", "type": "ethernet", "mtu": 9214, "vlan": 0, "master":
-    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1604182715197},
-    {"namespace": "eos", "hostname": "leaf01", "ifname": "default", "state": "up",
-    "type": "vrf", "mtu": 0, "vlan": 0, "master": "", "ipAddressList": ["-"], "ip6AddressList":
-    ["-"], "timestamp": 1604182715197}, {"namespace": "eos", "hostname": "exit02",
-    "ifname": "Ethernet5", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
-    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1604182715286},
-    {"namespace": "eos", "hostname": "exit02", "ifname": "internet-vrf", "state":
-    "up", "type": "vrf", "mtu": 0, "vlan": 0, "master": "", "ipAddressList": ["-"],
-    "ip6AddressList": ["-"], "timestamp": 1604182715286}, {"namespace": "eos", "hostname":
-    "exit02", "ifname": "default", "state": "up", "type": "vrf", "mtu": 0, "vlan":
-    0, "master": "", "ipAddressList": ["-"], "ip6AddressList": ["-"], "timestamp":
-    1604182715286}, {"namespace": "eos", "hostname": "exit02", "ifname": "Loopback1",
-    "state": "up", "type": "loopback", "mtu": 65535, "vlan": 0, "master": "internet-vrf",
-    "ipAddressList": ["0.0.0.0/0"], "ip6AddressList": [], "timestamp": 1604182715286},
-    {"namespace": "eos", "hostname": "exit02", "ifname": "Loopback0", "state": "up",
-    "type": "loopback", "mtu": 65535, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.102/32"],
-    "ip6AddressList": [], "timestamp": 1604182715286}, {"namespace": "eos", "hostname":
-    "exit02", "ifname": "Ethernet3", "state": "up", "type": "ethernet", "mtu": 9214,
-    "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1604182715286}, {"namespace": "eos", "hostname": "exit02", "ifname": "Ethernet2",
-    "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
-    ["10.127.1.11/31"], "ip6AddressList": [], "timestamp": 1604182715286}, {"namespace":
-    "eos", "hostname": "exit02", "ifname": "Ethernet1", "state": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.127.0.11/31"], "ip6AddressList":
-    [], "timestamp": 1604182715286}, {"namespace": "eos", "hostname": "exit02", "ifname":
-    "Management1", "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master":
-    "", "ipAddressList": ["10.255.4.164/24"], "ip6AddressList": [], "timestamp": 1604182715286},
-    {"namespace": "eos", "hostname": "exit02", "ifname": "Ethernet5.4", "state": "up",
-    "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "internet-vrf", "ipAddressList":
-    ["169.254.253.9/30"], "ip6AddressList": [], "timestamp": 1604182715286}, {"namespace":
+    1606030435494}, {"namespace": "eos", "hostname": "exit02", "ifname": "Ethernet5.2",
+    "state": "up", "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    ["169.254.253.1/30"], "ip6AddressList": [], "timestamp": 1606030435494}, {"namespace":
     "eos", "hostname": "exit02", "ifname": "Ethernet6", "state": "up", "type": "ethernet",
     "mtu": 1500, "vlan": 0, "master": "internet-vrf", "ipAddressList": ["169.254.127.3/31"],
-    "ip6AddressList": [], "timestamp": 1604182715286}, {"namespace": "eos", "hostname":
-    "exit02", "ifname": "Ethernet5.2", "state": "up", "type": "subinterface", "mtu":
-    1500, "vlan": 0, "master": "", "ipAddressList": ["169.254.253.1/30"], "ip6AddressList":
-    [], "timestamp": 1604182715286}, {"namespace": "eos", "hostname": "exit02", "ifname":
-    "Ethernet4", "state": "up", "type": "ethernet", "mtu": 9214, "vlan": 0, "master":
-    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1604182715286},
-    {"namespace": "eos", "hostname": "internet", "ifname": "swp2", "state": "up",
-    "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["169.254.127.2/31"],
-    "ip6AddressList": ["fe80::4638:39ff:fe00:3e/64"], "timestamp": 1604182715303},
-    {"namespace": "eos", "hostname": "internet", "ifname": "eth0", "state": "up",
-    "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.255.4.195/24"],
-    "ip6AddressList": ["fe80::5054:ff:fe46:8bfb/64"], "timestamp": 1604182715303},
-    {"namespace": "eos", "hostname": "internet", "ifname": "lo", "state": "up", "type":
-    "loopback", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.253/32",
-    "172.16.253.1/32"], "ip6AddressList": ["::1/128"], "timestamp": 1604182715303},
-    {"namespace": "eos", "hostname": "internet", "ifname": "swp1", "state": "up",
-    "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["169.254.127.0/31"],
-    "ip6AddressList": ["fe80::4638:39ff:fe00:7/64"], "timestamp": 1604182715303},
-    {"namespace": "eos", "hostname": "leaf03", "ifname": "Management1", "state": "up",
-    "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.255.4.171/24"],
-    "ip6AddressList": [], "timestamp": 1604182716124}, {"namespace": "eos", "hostname":
-    "leaf03", "ifname": "Vlan10", "state": "up", "type": "vlan", "mtu": 1500, "vlan":
-    10, "master": "", "ipAddressList": ["172.16.3.1/24"], "ip6AddressList": [], "timestamp":
-    1604182716124}, {"namespace": "eos", "hostname": "leaf03", "ifname": "Ethernet4",
-    "state": "up", "type": "ethernet", "mtu": 9214, "vlan": 0, "master": "bridge",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1604182716124}, {"namespace":
+    "ip6AddressList": [], "timestamp": 1606030435494}, {"namespace": "eos", "hostname":
+    "exit02", "ifname": "Ethernet5.4", "state": "up", "type": "subinterface", "mtu":
+    1500, "vlan": 0, "master": "internet-vrf", "ipAddressList": ["169.254.253.9/30"],
+    "ip6AddressList": [], "timestamp": 1606030435494}, {"namespace": "eos", "hostname":
+    "exit02", "ifname": "Ethernet3", "state": "up", "type": "ethernet", "mtu": 9214,
+    "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1606030435494}, {"namespace": "eos", "hostname": "exit02", "ifname": "Ethernet2",
+    "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    ["10.127.1.11/31"], "ip6AddressList": [], "timestamp": 1606030435494}, {"namespace":
+    "eos", "hostname": "exit02", "ifname": "Management1", "state": "up", "type": "ethernet",
+    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["192.168.121.46/24"],
+    "ip6AddressList": [], "timestamp": 1606030435494}, {"namespace": "eos", "hostname":
+    "exit02", "ifname": "Loopback0", "state": "up", "type": "loopback", "mtu": 65535,
+    "vlan": 0, "master": "", "ipAddressList": ["10.0.0.102/32"], "ip6AddressList":
+    [], "timestamp": 1606030435494}, {"namespace": "eos", "hostname": "leaf01", "ifname":
+    "Loopback0", "state": "up", "type": "loopback", "mtu": 65535, "vlan": 0, "master":
+    "", "ipAddressList": ["10.0.0.11/32"], "ip6AddressList": [], "timestamp": 1606030435495},
+    {"namespace": "eos", "hostname": "leaf01", "ifname": "Ethernet5", "state": "up",
+    "type": "bond_slave", "mtu": 9214, "vlan": 0, "master": "Port-Channel1", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1606030435495}, {"namespace": "eos", "hostname":
+    "leaf01", "ifname": "Ethernet3", "state": "up", "type": "ethernet", "mtu": 9214,
+    "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1606030435495}, {"namespace": "eos", "hostname": "leaf01", "ifname": "Vlan24",
+    "state": "up", "type": "vlan", "mtu": 1500, "vlan": 24, "master": "", "ipAddressList":
+    ["172.16.2.1/24"], "ip6AddressList": [], "timestamp": 1606030435495}, {"namespace":
+    "eos", "hostname": "leaf01", "ifname": "Ethernet2", "state": "up", "type": "ethernet",
+    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.127.1.1/31"], "ip6AddressList":
+    [], "timestamp": 1606030435495}, {"namespace": "eos", "hostname": "leaf01", "ifname":
+    "Ethernet6", "state": "up", "type": "bond_slave", "mtu": 9214, "vlan": 0, "master":
+    "Port-Channel2", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1606030435495},
+    {"namespace": "eos", "hostname": "leaf01", "ifname": "Ethernet1", "state": "up",
+    "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.127.0.1/31"],
+    "ip6AddressList": [], "timestamp": 1606030435495}, {"namespace": "eos", "hostname":
+    "leaf01", "ifname": "Port-Channel2", "state": "up", "type": "bond", "mtu": 9214,
+    "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1606030435495}, {"namespace": "eos", "hostname": "leaf01", "ifname": "Port-Channel1",
+    "state": "up", "type": "bond", "mtu": 9214, "vlan": 0, "master": "bridge", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1606030435495}, {"namespace": "eos", "hostname":
+    "leaf01", "ifname": "Management1", "state": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 0, "master": "", "ipAddressList": ["192.168.121.5/24"], "ip6AddressList":
+    [], "timestamp": 1606030435495}, {"namespace": "eos", "hostname": "leaf01", "ifname":
+    "Vlan4094", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 4094, "master":
+    "", "ipAddressList": ["169.254.1.0/31"], "ip6AddressList": [], "timestamp": 1606030435495},
+    {"namespace": "eos", "hostname": "leaf01", "ifname": "Vlan13", "state": "up",
+    "type": "vlan", "mtu": 1500, "vlan": 13, "master": "", "ipAddressList": ["172.16.1.1/24"],
+    "ip6AddressList": [], "timestamp": 1606030435495}, {"namespace": "eos", "hostname":
+    "leaf01", "ifname": "Ethernet4", "state": "up", "type": "ethernet", "mtu": 9214,
+    "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1606030435495}, {"namespace": "eos", "hostname": "leaf02", "ifname": "Ethernet5",
+    "state": "up", "type": "bond_slave", "mtu": 9214, "vlan": 0, "master": "Port-Channel1",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1606030435496}, {"namespace":
+    "eos", "hostname": "leaf02", "ifname": "Ethernet3", "state": "up", "type": "ethernet",
+    "mtu": 9214, "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1606030435496}, {"namespace": "eos", "hostname": "leaf02", "ifname":
+    "Loopback0", "state": "up", "type": "loopback", "mtu": 65535, "vlan": 0, "master":
+    "", "ipAddressList": ["10.0.0.12/32"], "ip6AddressList": [], "timestamp": 1606030435496},
+    {"namespace": "eos", "hostname": "leaf02", "ifname": "Ethernet4", "state": "up",
+    "type": "ethernet", "mtu": 9214, "vlan": 0, "master": "bridge", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1606030435496}, {"namespace": "eos", "hostname":
+    "leaf02", "ifname": "Vlan24", "state": "up", "type": "vlan", "mtu": 1500, "vlan":
+    24, "master": "", "ipAddressList": ["172.16.2.1/24"], "ip6AddressList": [], "timestamp":
+    1606030435496}, {"namespace": "eos", "hostname": "leaf02", "ifname": "Ethernet1",
+    "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    ["10.127.0.3/31"], "ip6AddressList": [], "timestamp": 1606030435496}, {"namespace":
+    "eos", "hostname": "leaf02", "ifname": "Port-Channel2", "state": "up", "type":
+    "bond", "mtu": 9214, "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1606030435496}, {"namespace": "eos", "hostname": "leaf02", "ifname":
+    "Port-Channel1", "state": "up", "type": "bond", "mtu": 9214, "vlan": 0, "master":
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1606030435496},
+    {"namespace": "eos", "hostname": "leaf02", "ifname": "Ethernet2", "state": "up",
+    "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.127.1.3/31"],
+    "ip6AddressList": [], "timestamp": 1606030435496}, {"namespace": "eos", "hostname":
+    "leaf02", "ifname": "Vlan13", "state": "up", "type": "vlan", "mtu": 1500, "vlan":
+    13, "master": "", "ipAddressList": ["172.16.1.1/24"], "ip6AddressList": [], "timestamp":
+    1606030435496}, {"namespace": "eos", "hostname": "leaf02", "ifname": "Vlan4094",
+    "state": "up", "type": "vlan", "mtu": 1500, "vlan": 4094, "master": "", "ipAddressList":
+    ["169.254.1.1/31"], "ip6AddressList": [], "timestamp": 1606030435496}, {"namespace":
+    "eos", "hostname": "leaf02", "ifname": "Management1", "state": "up", "type": "ethernet",
+    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["192.168.121.22/24"],
+    "ip6AddressList": [], "timestamp": 1606030435496}, {"namespace": "eos", "hostname":
+    "leaf02", "ifname": "Ethernet6", "state": "up", "type": "bond_slave", "mtu": 9214,
+    "vlan": 0, "master": "Port-Channel2", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1606030435496}, {"namespace": "eos", "hostname": "leaf04", "ifname":
+    "Ethernet1", "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["10.127.0.7/31"], "ip6AddressList": [], "timestamp": 1606030435499},
+    {"namespace": "eos", "hostname": "leaf04", "ifname": "Vlan4094", "state": "up",
+    "type": "vlan", "mtu": 1500, "vlan": 4094, "master": "", "ipAddressList": ["169.254.1.1/31"],
+    "ip6AddressList": [], "timestamp": 1606030435499}, {"namespace": "eos", "hostname":
+    "leaf04", "ifname": "Management1", "state": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 0, "master": "", "ipAddressList": ["192.168.121.235/24"], "ip6AddressList":
+    [], "timestamp": 1606030435499}, {"namespace": "eos", "hostname": "leaf04", "ifname":
+    "Port-Channel1", "state": "up", "type": "bond", "mtu": 9214, "vlan": 0, "master":
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1606030435499},
+    {"namespace": "eos", "hostname": "leaf04", "ifname": "Port-Channel2", "state":
+    "up", "type": "bond", "mtu": 9214, "vlan": 0, "master": "bridge", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1606030435499}, {"namespace": "eos", "hostname":
+    "leaf04", "ifname": "Ethernet6", "state": "up", "type": "bond_slave", "mtu": 9214,
+    "vlan": 0, "master": "Port-Channel2", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1606030435499}, {"namespace": "eos", "hostname": "leaf04", "ifname":
+    "Vlan13", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 13, "master": "",
+    "ipAddressList": ["172.16.3.1/24"], "ip6AddressList": [], "timestamp": 1606030435499},
+    {"namespace": "eos", "hostname": "leaf04", "ifname": "Vlan24", "state": "up",
+    "type": "vlan", "mtu": 1500, "vlan": 24, "master": "", "ipAddressList": ["172.16.4.1/24"],
+    "ip6AddressList": [], "timestamp": 1606030435499}, {"namespace": "eos", "hostname":
+    "leaf04", "ifname": "Port-Channel12", "state": "up", "type": "bond", "mtu": 9214,
+    "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1606030435499}, {"namespace": "eos", "hostname": "leaf04", "ifname": "Loopback0",
+    "state": "up", "type": "loopback", "mtu": 65535, "vlan": 0, "master": "", "ipAddressList":
+    ["10.0.0.14/32"], "ip6AddressList": [], "timestamp": 1606030435499}, {"namespace":
+    "eos", "hostname": "leaf04", "ifname": "Ethernet3", "state": "up", "type": "bond_slave",
+    "mtu": 9214, "vlan": 0, "master": "Port-Channel12", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1606030435499}, {"namespace": "eos", "hostname": "leaf04", "ifname":
+    "Ethernet5", "state": "up", "type": "bond_slave", "mtu": 9214, "vlan": 0, "master":
+    "Port-Channel1", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1606030435499},
+    {"namespace": "eos", "hostname": "leaf04", "ifname": "Ethernet4", "state": "up",
+    "type": "bond_slave", "mtu": 9214, "vlan": 0, "master": "Port-Channel12", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1606030435499}, {"namespace": "eos", "hostname":
+    "leaf04", "ifname": "Ethernet2", "state": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 0, "master": "", "ipAddressList": ["10.127.1.7/31"], "ip6AddressList":
+    [], "timestamp": 1606030435499}, {"namespace": "eos", "hostname": "leaf03", "ifname":
+    "Management1", "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["192.168.121.88/24"], "ip6AddressList": [], "timestamp":
+    1606030435523}, {"namespace": "eos", "hostname": "leaf03", "ifname": "Ethernet3",
+    "state": "up", "type": "bond_slave", "mtu": 9214, "vlan": 0, "master": "Port-Channel12",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1606030435523}, {"namespace":
+    "eos", "hostname": "leaf03", "ifname": "Ethernet5", "state": "up", "type": "bond_slave",
+    "mtu": 9214, "vlan": 0, "master": "Port-Channel1", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1606030435523}, {"namespace": "eos", "hostname": "leaf03", "ifname":
+    "Vlan4094", "state": "up", "type": "vlan", "mtu": 1500, "vlan": 4094, "master":
+    "", "ipAddressList": ["169.254.1.0/31"], "ip6AddressList": [], "timestamp": 1606030435523},
+    {"namespace": "eos", "hostname": "leaf03", "ifname": "Vlan13", "state": "up",
+    "type": "vlan", "mtu": 1500, "vlan": 13, "master": "", "ipAddressList": ["172.16.3.1/24"],
+    "ip6AddressList": [], "timestamp": 1606030435523}, {"namespace": "eos", "hostname":
+    "leaf03", "ifname": "Ethernet2", "state": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 0, "master": "", "ipAddressList": ["10.127.1.5/31"], "ip6AddressList":
+    [], "timestamp": 1606030435523}, {"namespace": "eos", "hostname": "leaf03", "ifname":
+    "Port-Channel2", "state": "up", "type": "bond", "mtu": 9214, "vlan": 0, "master":
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1606030435523},
+    {"namespace": "eos", "hostname": "leaf03", "ifname": "Port-Channel1", "state":
+    "up", "type": "bond", "mtu": 9214, "vlan": 0, "master": "bridge", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1606030435523}, {"namespace": "eos", "hostname":
+    "leaf03", "ifname": "Ethernet6", "state": "up", "type": "bond_slave", "mtu": 9214,
+    "vlan": 0, "master": "Port-Channel2", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1606030435523}, {"namespace": "eos", "hostname": "leaf03", "ifname":
+    "Ethernet4", "state": "up", "type": "bond_slave", "mtu": 9214, "vlan": 0, "master":
+    "Port-Channel12", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1606030435523},
+    {"namespace": "eos", "hostname": "leaf03", "ifname": "Vlan24", "state": "up",
+    "type": "vlan", "mtu": 1500, "vlan": 24, "master": "", "ipAddressList": ["172.16.4.1/24"],
+    "ip6AddressList": [], "timestamp": 1606030435523}, {"namespace": "eos", "hostname":
+    "leaf03", "ifname": "Port-Channel12", "state": "up", "type": "bond", "mtu": 9214,
+    "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1606030435523}, {"namespace": "eos", "hostname": "leaf03", "ifname": "Loopback0",
+    "state": "up", "type": "loopback", "mtu": 65535, "vlan": 0, "master": "", "ipAddressList":
+    ["10.0.0.13/32"], "ip6AddressList": [], "timestamp": 1606030435523}, {"namespace":
     "eos", "hostname": "leaf03", "ifname": "Ethernet1", "state": "up", "type": "ethernet",
     "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.127.0.5/31"], "ip6AddressList":
-    [], "timestamp": 1604182716124}, {"namespace": "eos", "hostname": "leaf03", "ifname":
+    [], "timestamp": 1606030435523}, {"namespace": "eos", "hostname": "spine01", "ifname":
+    "Ethernet6", "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["10.127.0.8/31"], "ip6AddressList": [], "timestamp": 1606030435525},
+    {"namespace": "eos", "hostname": "spine01", "ifname": "Ethernet2", "state": "up",
+    "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.127.0.2/31"],
+    "ip6AddressList": [], "timestamp": 1606030435525}, {"namespace": "eos", "hostname":
+    "spine01", "ifname": "Ethernet3", "state": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 0, "master": "", "ipAddressList": ["10.127.0.4/31"], "ip6AddressList":
+    [], "timestamp": 1606030435525}, {"namespace": "eos", "hostname": "spine01", "ifname":
+    "Ethernet1", "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["10.127.0.0/31"], "ip6AddressList": [], "timestamp": 1606030435525},
+    {"namespace": "eos", "hostname": "spine01", "ifname": "Ethernet4", "state": "up",
+    "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.127.0.6/31"],
+    "ip6AddressList": [], "timestamp": 1606030435525}, {"namespace": "eos", "hostname":
+    "spine01", "ifname": "Management1", "state": "up", "type": "ethernet", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": ["192.168.121.42/24"], "ip6AddressList":
+    [], "timestamp": 1606030435525}, {"namespace": "eos", "hostname": "spine01", "ifname":
+    "Loopback0", "state": "up", "type": "loopback", "mtu": 65535, "vlan": 0, "master":
+    "", "ipAddressList": ["10.0.0.21/32"], "ip6AddressList": [], "timestamp": 1606030435525},
+    {"namespace": "eos", "hostname": "spine01", "ifname": "Ethernet5", "state": "up",
+    "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.127.0.10/31"],
+    "ip6AddressList": [], "timestamp": 1606030435525}, {"namespace": "eos", "hostname":
+    "spine02", "ifname": "Management1", "state": "up", "type": "ethernet", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": ["192.168.121.73/24"], "ip6AddressList":
+    [], "timestamp": 1606030435538}, {"namespace": "eos", "hostname": "spine02", "ifname":
+    "Loopback0", "state": "up", "type": "loopback", "mtu": 65535, "vlan": 0, "master":
+    "", "ipAddressList": ["10.0.0.22/32"], "ip6AddressList": [], "timestamp": 1606030435538},
+    {"namespace": "eos", "hostname": "spine02", "ifname": "Ethernet2", "state": "up",
+    "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.127.1.2/31"],
+    "ip6AddressList": [], "timestamp": 1606030435538}, {"namespace": "eos", "hostname":
+    "spine02", "ifname": "Ethernet3", "state": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 0, "master": "", "ipAddressList": ["10.127.1.4/31"], "ip6AddressList":
+    [], "timestamp": 1606030435538}, {"namespace": "eos", "hostname": "spine02", "ifname":
+    "Ethernet6", "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["10.127.1.8/31"], "ip6AddressList": [], "timestamp": 1606030435538},
+    {"namespace": "eos", "hostname": "spine02", "ifname": "Ethernet1", "state": "up",
+    "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.127.1.0/31"],
+    "ip6AddressList": [], "timestamp": 1606030435538}, {"namespace": "eos", "hostname":
+    "spine02", "ifname": "Ethernet5", "state": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 0, "master": "", "ipAddressList": ["10.127.1.10/31"], "ip6AddressList":
+    [], "timestamp": 1606030435538}, {"namespace": "eos", "hostname": "spine02", "ifname":
+    "Ethernet4", "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["10.127.1.6/31"], "ip6AddressList": [], "timestamp": 1606030435538},
+    {"namespace": "eos", "hostname": "exit01", "ifname": "Management1", "state": "up",
+    "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["192.168.121.104/24"],
+    "ip6AddressList": [], "timestamp": 1606030435635}, {"namespace": "eos", "hostname":
+    "exit01", "ifname": "internet-vrf", "state": "up", "type": "vrf", "mtu": 0, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1606030435635},
+    {"namespace": "eos", "hostname": "exit01", "ifname": "Ethernet1", "state": "up",
+    "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.127.0.9/31"],
+    "ip6AddressList": [], "timestamp": 1606030435635}, {"namespace": "eos", "hostname":
+    "exit01", "ifname": "Loopback0", "state": "up", "type": "loopback", "mtu": 65535,
+    "vlan": 0, "master": "", "ipAddressList": ["10.0.0.101/32"], "ip6AddressList":
+    [], "timestamp": 1606030435635}, {"namespace": "eos", "hostname": "exit01", "ifname":
+    "Ethernet5", "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1606030435635}, {"namespace":
+    "eos", "hostname": "exit01", "ifname": "Loopback1", "state": "up", "type": "loopback",
+    "mtu": 65535, "vlan": 0, "master": "internet-vrf", "ipAddressList": ["0.0.0.0/0"],
+    "ip6AddressList": [], "timestamp": 1606030435635}, {"namespace": "eos", "hostname":
+    "exit01", "ifname": "Ethernet6", "state": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 0, "master": "internet-vrf", "ipAddressList": ["169.254.127.1/31"], "ip6AddressList":
+    [], "timestamp": 1606030435635}, {"namespace": "eos", "hostname": "exit01", "ifname":
+    "Ethernet5.4", "state": "up", "type": "subinterface", "mtu": 1500, "vlan": 0,
+    "master": "internet-vrf", "ipAddressList": ["169.254.254.9/30"], "ip6AddressList":
+    [], "timestamp": 1606030435635}, {"namespace": "eos", "hostname": "exit01", "ifname":
     "Ethernet3", "state": "up", "type": "ethernet", "mtu": 9214, "vlan": 0, "master":
-    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1604182716124},
-    {"namespace": "eos", "hostname": "leaf03", "ifname": "Ethernet2", "state": "up",
-    "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.127.1.5/31"],
-    "ip6AddressList": [], "timestamp": 1604182716124}, {"namespace": "eos", "hostname":
-    "leaf03", "ifname": "Loopback0", "state": "up", "type": "loopback", "mtu": 65535,
-    "vlan": 0, "master": "", "ipAddressList": ["10.0.0.13/32"], "ip6AddressList":
-    [], "timestamp": 1604182716124}, {"namespace": "eos", "hostname": "leaf03", "ifname":
-    "default", "state": "up", "type": "vrf", "mtu": 0, "vlan": 0, "master": "", "ipAddressList":
-    ["-"], "ip6AddressList": ["-"], "timestamp": 1604182716124}, {"namespace": "eos",
-    "hostname": "leaf03", "ifname": "Ethernet5", "state": "up", "type": "ethernet",
-    "mtu": 9214, "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1604182716124}]'
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1606030435635},
+    {"namespace": "eos", "hostname": "exit01", "ifname": "Ethernet2", "state": "up",
+    "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.127.1.9/31"],
+    "ip6AddressList": [], "timestamp": 1606030435635}, {"namespace": "eos", "hostname":
+    "exit01", "ifname": "Ethernet4", "state": "up", "type": "ethernet", "mtu": 9214,
+    "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1606030435635}, {"namespace": "eos", "hostname": "exit01", "ifname": "Ethernet5.2",
+    "state": "up", "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    ["169.254.254.1/30"], "ip6AddressList": [], "timestamp": 1606030435635}, {"namespace":
+    "eos", "hostname": "internet", "ifname": "eth0", "state": "up", "type": "ethernet",
+    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["192.168.121.2/24"], "ip6AddressList":
+    ["fe80::5054:ff:feb1:16c6/64"], "timestamp": 1606030435657}, {"namespace": "eos",
+    "hostname": "internet", "ifname": "lo", "state": "up", "type": "loopback", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.253/32", "172.16.253.1/32"],
+    "ip6AddressList": ["::1/128"], "timestamp": 1606030435657}, {"namespace": "eos",
+    "hostname": "internet", "ifname": "swp1", "state": "up", "type": "ethernet", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": ["169.254.127.0/31"], "ip6AddressList":
+    ["fe80::5054:ff:fe08:42df/64"], "timestamp": 1606030435657}, {"namespace": "eos",
+    "hostname": "internet", "ifname": "swp2", "state": "up", "type": "ethernet", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": ["169.254.127.2/31"], "ip6AddressList":
+    ["fe80::5054:ff:fe3a:bc8b/64"], "timestamp": 1606030435657}]'
 - command: interface show --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: interface show eos
-  output: '[{"hostname": "server104"}, {"hostname": "server104"}, {"hostname": "server104"},
-    {"hostname": "server101"}, {"hostname": "server101"}, {"hostname": "server101"},
-    {"hostname": "server102"}, {"hostname": "server102"}, {"hostname": "server102"},
-    {"hostname": "server103"}, {"hostname": "server103"}, {"hostname": "server103"},
+  output: '[{"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
     {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname":
-    "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
-    {"hostname": "edge01"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
-    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
-    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
-    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
-    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
-    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "spine01"}, {"hostname": "spine01"},
-    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
-    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
-    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
-    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
-    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "exit01"}, {"hostname":
-    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
-    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
-    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
-    {"hostname": "exit01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
-    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
-    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
-    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    "edge01"}, {"hostname": "edge01"}, {"hostname": "server103"}, {"hostname": "server103"},
+    {"hostname": "server103"}, {"hostname": "server103"}, {"hostname": "server103"},
+    {"hostname": "server101"}, {"hostname": "server102"}, {"hostname": "server102"},
+    {"hostname": "server102"}, {"hostname": "server101"}, {"hostname": "server102"},
+    {"hostname": "server102"}, {"hostname": "server101"}, {"hostname": "server101"},
+    {"hostname": "server101"}, {"hostname": "server104"}, {"hostname": "server104"},
+    {"hostname": "server104"}, {"hostname": "server104"}, {"hostname": "server104"},
     {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
     "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
-    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "internet"}, {"hostname":
-    "internet"}, {"hostname": "internet"}, {"hostname": "internet"}, {"hostname":
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
     "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
     {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
-    "leaf03"}, {"hostname": "leaf03"}]'
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "internet"}, {"hostname": "internet"}, {"hostname": "internet"}, {"hostname":
+    "internet"}]'
 - command: interface summarize --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: interface summarize eos
-  output: '{"ifindex": {}, "reason": {}, "routeDistinguisher": {}, "macaddr": {},
-    "interfaceMac": {}, "type": {}, "description": {}, "numChanges": {}, "speed":
-    {}, "vlan": {}, "vlanName": {}, "ipAddressList": {}, "srcVtepIp": {}, "state":
-    {}, "adminState": {}, "master": {}, "ifname": {}, "statusChangeTimestamp": {},
-    "vni": {}, "ip6AddressList": {}, "lacpBypass": {}, "mtu": {}, "hostname": {},
-    "namespace": {}, "timestamp": {}, "active": {}}'
+  output: '{"eos": {"deviceCnt": 14, "interfaceCnt": 126, "devicesWithL2Cnt": 18,
+    "devicesWithVxlanCnt": 0, "ifDownCnt": 0, "ifWithMultipleIPCnt": 1, "uniqueMTUCnt":
+    5, "uniqueIfTypesCnt": 7, "speedCnt": {"0": 115, "1000": 11}, "ifChangesStat":
+    [0, 0, 0], "ifPerDeviceStat": [4, 14, 8.0], "uniqueIPv4AddrCnt": 72, "uniqueIPv6AddrCnt":
+    1}}'
 - command: interface unique --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: interface unique eos
-  output: '[{"hostname": "server102", "count": 3}, {"hostname": "server104", "count":
-    3}, {"hostname": "server103", "count": 3}, {"hostname": "server101", "count":
-    3}, {"hostname": "internet", "count": 4}, {"hostname": "edge01", "count": 8},
-    {"hostname": "spine02", "count": 9}, {"hostname": "leaf01", "count": 9}, {"hostname":
-    "leaf03", "count": 9}, {"hostname": "leaf04", "count": 9}, {"hostname": "leaf02",
-    "count": 9}, {"hostname": "spine01", "count": 9}, {"hostname": "exit02", "count":
-    13}, {"hostname": "exit01", "count": 13}]'
+  output: '[{"hostname": "internet", "count": 4}, {"hostname": "server103", "count":
+    5}, {"hostname": "server101", "count": 5}, {"hostname": "server104", "count":
+    5}, {"hostname": "server102", "count": 5}, {"hostname": "spine02", "count": 8},
+    {"hostname": "edge01", "count": 8}, {"hostname": "spine01", "count": 8}, {"hostname":
+    "exit01", "count": 12}, {"hostname": "exit02", "count": 12}, {"hostname": "leaf01",
+    "count": 13}, {"hostname": "leaf02", "count": 13}, {"hostname": "leaf03", "count":
+    14}, {"hostname": "leaf04", "count": 14}]'
 - command: interface assert --format=json
   data-directory: tests/data/eos/parquet-out/
   error:
@@ -337,121 +403,109 @@ tests:
       "up", "peerHostname": "exit01", "peerIfname": "Ethernet5", "assert": "pass",
       "assertReason": []}, {"namespace": "eos", "hostname": "edge01", "ifname": "eth2",
       "state": "up", "peerHostname": "exit02", "peerIfname": "Ethernet5", "assert":
-      "pass", "assertReason": []}, {"namespace": "eos", "hostname": "internet", "ifname":
-      "swp2", "state": "up", "peerHostname": "exit02", "peerIfname": "Ethernet6",
-      "assert": "fail", "assertReason": ["Speed mismatch"]}, {"namespace": "eos",
-      "hostname": "internet", "ifname": "swp1", "state": "up", "peerHostname": "exit01",
-      "peerIfname": "Ethernet6", "assert": "fail", "assertReason": ["Speed mismatch"]},
-      {"namespace": "eos", "hostname": "spine02", "ifname": "Ethernet6", "state":
-      "up", "peerHostname": "exit01", "peerIfname": "Ethernet2", "assert": "fail",
-      "assertReason": ["Interface down"]}, {"namespace": "eos", "hostname": "spine02",
-      "ifname": "Ethernet1", "state": "up", "peerHostname": "leaf01", "peerIfname":
-      "Ethernet2", "assert": "fail", "assertReason": ["Interface down"]}, {"namespace":
-      "eos", "hostname": "spine02", "ifname": "Ethernet3", "state": "up", "peerHostname":
-      "leaf03", "peerIfname": "Ethernet2", "assert": "fail", "assertReason": ["Interface
-      down"]}, {"namespace": "eos", "hostname": "spine02", "ifname": "Ethernet2",
-      "state": "up", "peerHostname": "leaf02", "peerIfname": "Ethernet2", "assert":
-      "fail", "assertReason": ["Interface down"]}, {"namespace": "eos", "hostname":
-      "spine02", "ifname": "Ethernet4", "state": "up", "peerHostname": "leaf04", "peerIfname":
-      "Ethernet2", "assert": "fail", "assertReason": ["Interface down"]}, {"namespace":
-      "eos", "hostname": "spine02", "ifname": "Ethernet5", "state": "up", "peerHostname":
-      "exit02", "peerIfname": "Ethernet2", "assert": "fail", "assertReason": ["Interface
-      down"]}, {"namespace": "eos", "hostname": "exit01", "ifname": "Ethernet2", "state":
-      "up", "peerHostname": "spine02", "peerIfname": "Ethernet6", "assert": "fail",
-      "assertReason": ["Interface down"]}, {"namespace": "eos", "hostname": "exit01",
-      "ifname": "Ethernet3", "state": "up", "peerHostname": "exit01", "peerIfname":
-      "Ethernet4", "assert": "fail", "assertReason": ["Interface down"]}, {"namespace":
-      "eos", "hostname": "exit01", "ifname": "Ethernet1", "state": "up", "peerHostname":
-      "spine01", "peerIfname": "Ethernet6", "assert": "fail", "assertReason": ["Interface
-      down"]}, {"namespace": "eos", "hostname": "exit01", "ifname": "Ethernet6", "state":
-      "up", "peerHostname": "internet", "peerIfname": "swp1", "assert": "fail", "assertReason":
-      ["Interface down", "Speed mismatch"]}, {"namespace": "eos", "hostname": "exit01",
-      "ifname": "Ethernet5", "state": "up", "peerHostname": "edge01", "peerIfname":
-      "eth1", "assert": "fail", "assertReason": ["Interface down"]}, {"namespace":
-      "eos", "hostname": "exit01", "ifname": "Ethernet4", "state": "up", "peerHostname":
-      "exit01", "peerIfname": "Ethernet3", "assert": "fail", "assertReason": ["Interface
-      down"]}, {"namespace": "eos", "hostname": "spine01", "ifname": "Ethernet6",
-      "state": "up", "peerHostname": "exit01", "peerIfname": "Ethernet1", "assert":
-      "fail", "assertReason": ["Interface down"]}, {"namespace": "eos", "hostname":
-      "spine01", "ifname": "Ethernet1", "state": "up", "peerHostname": "leaf01", "peerIfname":
-      "Ethernet1", "assert": "fail", "assertReason": ["Interface down"]}, {"namespace":
-      "eos", "hostname": "spine01", "ifname": "Ethernet3", "state": "up", "peerHostname":
-      "leaf03", "peerIfname": "Ethernet1", "assert": "fail", "assertReason": ["Interface
-      down"]}, {"namespace": "eos", "hostname": "spine01", "ifname": "Ethernet2",
-      "state": "up", "peerHostname": "leaf02", "peerIfname": "Ethernet1", "assert":
-      "fail", "assertReason": ["Interface down"]}, {"namespace": "eos", "hostname":
-      "spine01", "ifname": "Ethernet5", "state": "up", "peerHostname": "exit02", "peerIfname":
-      "Ethernet1", "assert": "fail", "assertReason": ["Interface down"]}, {"namespace":
-      "eos", "hostname": "spine01", "ifname": "Ethernet4", "state": "up", "peerHostname":
-      "leaf04", "peerIfname": "Ethernet1", "assert": "fail", "assertReason": ["Interface
-      down"]}, {"namespace": "eos", "hostname": "leaf04", "ifname": "Ethernet2", "state":
-      "up", "peerHostname": "spine02", "peerIfname": "Ethernet4", "assert": "fail",
-      "assertReason": ["Interface down"]}, {"namespace": "eos", "hostname": "leaf04",
-      "ifname": "Ethernet1", "state": "up", "peerHostname": "spine01", "peerIfname":
-      "Ethernet4", "assert": "fail", "assertReason": ["Interface down"]}, {"namespace":
-      "eos", "hostname": "leaf04", "ifname": "Ethernet4", "state": "up", "peerHostname":
-      "leaf03", "peerIfname": "Ethernet4", "assert": "fail", "assertReason": ["Interface
-      down"]}, {"namespace": "eos", "hostname": "leaf04", "ifname": "Ethernet3", "state":
-      "up", "peerHostname": "leaf03", "peerIfname": "Ethernet3", "assert": "fail",
-      "assertReason": ["Interface down"]}, {"namespace": "eos", "hostname": "leaf02",
-      "ifname": "Ethernet1", "state": "up", "peerHostname": "spine01", "peerIfname":
-      "Ethernet2", "assert": "fail", "assertReason": ["Interface down"]}, {"namespace":
-      "eos", "hostname": "leaf02", "ifname": "Ethernet4", "state": "up", "peerHostname":
-      "leaf01", "peerIfname": "Ethernet4", "assert": "fail", "assertReason": ["Interface
-      down"]}, {"namespace": "eos", "hostname": "leaf02", "ifname": "Ethernet2", "state":
-      "up", "peerHostname": "spine02", "peerIfname": "Ethernet2", "assert": "fail",
-      "assertReason": ["Interface down"]}, {"namespace": "eos", "hostname": "leaf01",
-      "ifname": "Ethernet4", "state": "up", "peerHostname": "leaf02", "peerIfname":
-      "Ethernet4", "assert": "fail", "assertReason": ["Interface down"]}, {"namespace":
-      "eos", "hostname": "leaf01", "ifname": "Ethernet1", "state": "up", "peerHostname":
-      "spine01", "peerIfname": "Ethernet1", "assert": "fail", "assertReason": ["Interface
-      down"]}, {"namespace": "eos", "hostname": "leaf01", "ifname": "Ethernet3", "state":
-      "up", "peerHostname": "leaf02", "peerIfname": "Ethernet3", "assert": "fail",
-      "assertReason": ["Interface down"]}, {"namespace": "eos", "hostname": "leaf01",
-      "ifname": "Ethernet2", "state": "up", "peerHostname": "spine02", "peerIfname":
-      "Ethernet1", "assert": "fail", "assertReason": ["Interface down"]}, {"namespace":
-      "eos", "hostname": "leaf02", "ifname": "Ethernet3", "state": "up", "peerHostname":
-      "leaf01", "peerIfname": "Ethernet3", "assert": "fail", "assertReason": ["Interface
-      down"]}, {"namespace": "eos", "hostname": "exit02", "ifname": "Ethernet3", "state":
-      "up", "peerHostname": "exit02", "peerIfname": "Ethernet4", "assert": "fail",
-      "assertReason": ["Interface down"]}, {"namespace": "eos", "hostname": "exit02",
-      "ifname": "Ethernet2", "state": "up", "peerHostname": "spine02", "peerIfname":
-      "Ethernet5", "assert": "fail", "assertReason": ["Interface down"]}, {"namespace":
-      "eos", "hostname": "exit02", "ifname": "Ethernet5", "state": "up", "peerHostname":
-      "edge01", "peerIfname": "eth2", "assert": "fail", "assertReason": ["Interface
-      down"]}, {"namespace": "eos", "hostname": "exit02", "ifname": "Ethernet4", "state":
-      "up", "peerHostname": "exit02", "peerIfname": "Ethernet3", "assert": "fail",
-      "assertReason": ["Interface down"]}, {"namespace": "eos", "hostname": "exit02",
-      "ifname": "Ethernet6", "state": "up", "peerHostname": "internet", "peerIfname":
-      "swp2", "assert": "fail", "assertReason": ["Interface down", "Speed mismatch"]},
+      "pass", "assertReason": []}, {"namespace": "eos", "hostname": "exit02", "ifname":
+      "Ethernet5", "state": "up", "peerHostname": "edge01", "peerIfname": "eth2",
+      "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname": "exit02",
+      "ifname": "Ethernet4", "state": "up", "peerHostname": "exit02", "peerIfname":
+      "Ethernet3", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "exit02", "ifname": "Ethernet6", "state": "up", "peerHostname": "internet",
+      "peerIfname": "swp2", "assert": "fail", "assertReason": ["Speed mismatch"]},
       {"namespace": "eos", "hostname": "exit02", "ifname": "Ethernet1", "state": "up",
-      "peerHostname": "spine01", "peerIfname": "Ethernet5", "assert": "fail", "assertReason":
-      ["Interface down"]}, {"namespace": "eos", "hostname": "leaf03", "ifname": "Ethernet4",
-      "state": "up", "peerHostname": "leaf04", "peerIfname": "Ethernet4", "assert":
-      "fail", "assertReason": ["Interface down"]}, {"namespace": "eos", "hostname":
+      "peerHostname": "spine01", "peerIfname": "Ethernet5", "assert": "pass", "assertReason":
+      []}, {"namespace": "eos", "hostname": "exit02", "ifname": "Ethernet3", "state":
+      "up", "peerHostname": "exit02", "peerIfname": "Ethernet4", "assert": "pass",
+      "assertReason": []}, {"namespace": "eos", "hostname": "exit02", "ifname": "Ethernet2",
+      "state": "up", "peerHostname": "spine02", "peerIfname": "Ethernet5", "assert":
+      "pass", "assertReason": []}, {"namespace": "eos", "hostname": "leaf01", "ifname":
+      "Ethernet3", "state": "up", "peerHostname": "leaf02", "peerIfname": "Ethernet3",
+      "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname": "leaf01",
+      "ifname": "Ethernet4", "state": "up", "peerHostname": "leaf02", "peerIfname":
+      "Ethernet4", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "leaf01", "ifname": "Ethernet2", "state": "up", "peerHostname": "spine02", "peerIfname":
+      "Ethernet1", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "leaf01", "ifname": "Ethernet1", "state": "up", "peerHostname": "spine01", "peerIfname":
+      "Ethernet1", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "leaf02", "ifname": "Ethernet2", "state": "up", "peerHostname": "spine02", "peerIfname":
+      "Ethernet2", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "leaf02", "ifname": "Ethernet3", "state": "up", "peerHostname": "leaf01", "peerIfname":
+      "Ethernet3", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "leaf02", "ifname": "Ethernet1", "state": "up", "peerHostname": "spine01", "peerIfname":
+      "Ethernet2", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "leaf02", "ifname": "Ethernet4", "state": "up", "peerHostname": "leaf01", "peerIfname":
+      "Ethernet4", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "leaf04", "ifname": "Ethernet3", "state": "up", "peerHostname": "leaf03", "peerIfname":
+      "Ethernet3", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "leaf04", "ifname": "Ethernet4", "state": "up", "peerHostname": "leaf03", "peerIfname":
+      "Ethernet4", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "leaf04", "ifname": "Ethernet1", "state": "up", "peerHostname": "spine01", "peerIfname":
+      "Ethernet4", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "leaf04", "ifname": "Ethernet2", "state": "up", "peerHostname": "spine02", "peerIfname":
+      "Ethernet4", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "spine02", "ifname": "Ethernet6", "state": "up", "peerHostname": "exit01", "peerIfname":
+      "Ethernet2", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "spine02", "ifname": "Ethernet1", "state": "up", "peerHostname": "leaf01", "peerIfname":
+      "Ethernet2", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "spine02", "ifname": "Ethernet3", "state": "up", "peerHostname": "leaf03", "peerIfname":
+      "Ethernet2", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "spine02", "ifname": "Ethernet2", "state": "up", "peerHostname": "leaf02", "peerIfname":
+      "Ethernet2", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "spine02", "ifname": "Ethernet5", "state": "up", "peerHostname": "exit02", "peerIfname":
+      "Ethernet2", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "spine02", "ifname": "Ethernet4", "state": "up", "peerHostname": "leaf04", "peerIfname":
+      "Ethernet2", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "leaf03", "ifname": "Ethernet4", "state": "up", "peerHostname": "leaf04", "peerIfname":
+      "Ethernet4", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
       "leaf03", "ifname": "Ethernet3", "state": "up", "peerHostname": "leaf04", "peerIfname":
-      "Ethernet3", "assert": "fail", "assertReason": ["Interface down"]}, {"namespace":
-      "eos", "hostname": "leaf03", "ifname": "Ethernet2", "state": "up", "peerHostname":
-      "spine02", "peerIfname": "Ethernet3", "assert": "fail", "assertReason": ["Interface
-      down"]}, {"namespace": "eos", "hostname": "leaf03", "ifname": "Ethernet1", "state":
-      "up", "peerHostname": "spine01", "peerIfname": "Ethernet3", "assert": "fail",
-      "assertReason": ["Interface down"]}]'
+      "Ethernet3", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "leaf03", "ifname": "Ethernet2", "state": "up", "peerHostname": "spine02", "peerIfname":
+      "Ethernet3", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "leaf03", "ifname": "Ethernet1", "state": "up", "peerHostname": "spine01", "peerIfname":
+      "Ethernet3", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "spine01", "ifname": "Ethernet5", "state": "up", "peerHostname": "exit02", "peerIfname":
+      "Ethernet1", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "spine01", "ifname": "Ethernet4", "state": "up", "peerHostname": "leaf04", "peerIfname":
+      "Ethernet1", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "spine01", "ifname": "Ethernet6", "state": "up", "peerHostname": "exit01", "peerIfname":
+      "Ethernet1", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "spine01", "ifname": "Ethernet1", "state": "up", "peerHostname": "leaf01", "peerIfname":
+      "Ethernet1", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "spine01", "ifname": "Ethernet2", "state": "up", "peerHostname": "leaf02", "peerIfname":
+      "Ethernet1", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "spine01", "ifname": "Ethernet3", "state": "up", "peerHostname": "leaf03", "peerIfname":
+      "Ethernet1", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "internet", "ifname": "swp2", "state": "up", "peerHostname": "exit02", "peerIfname":
+      "Ethernet6", "assert": "fail", "assertReason": ["Speed mismatch"]}, {"namespace":
+      "eos", "hostname": "internet", "ifname": "swp1", "state": "up", "peerHostname":
+      "exit01", "peerIfname": "Ethernet6", "assert": "fail", "assertReason": ["Speed
+      mismatch"]}, {"namespace": "eos", "hostname": "exit01", "ifname": "Ethernet2",
+      "state": "up", "peerHostname": "spine02", "peerIfname": "Ethernet6", "assert":
+      "pass", "assertReason": []}, {"namespace": "eos", "hostname": "exit01", "ifname":
+      "Ethernet3", "state": "up", "peerHostname": "exit01", "peerIfname": "Ethernet4",
+      "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname": "exit01",
+      "ifname": "Ethernet1", "state": "up", "peerHostname": "spine01", "peerIfname":
+      "Ethernet6", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "exit01", "ifname": "Ethernet6", "state": "up", "peerHostname": "internet",
+      "peerIfname": "swp1", "assert": "fail", "assertReason": ["Speed mismatch"]},
+      {"namespace": "eos", "hostname": "exit01", "ifname": "Ethernet4", "state": "up",
+      "peerHostname": "exit01", "peerIfname": "Ethernet3", "assert": "pass", "assertReason":
+      []}, {"namespace": "eos", "hostname": "exit01", "ifname": "Ethernet5", "state":
+      "up", "peerHostname": "edge01", "peerIfname": "eth1", "assert": "pass", "assertReason":
+      []}]'
   marks: interface assert eos
 - command: interface top --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: interface top eos
-  output: '[{"namespace": "eos", "hostname": "server104", "ifname": "eth0", "state":
-    "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
-    ["10.255.4.26/24"], "ip6AddressList": [], "numChanges": 0, "timestamp": 1604182714940},
-    {"namespace": "eos", "hostname": "server104", "ifname": "eth1", "state": "up",
-    "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["172.16.4.104/24"],
-    "ip6AddressList": [], "numChanges": 0, "timestamp": 1604182714940}, {"namespace":
-    "eos", "hostname": "server101", "ifname": "eth0", "state": "up", "type": "ether",
-    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.255.4.27/24"], "ip6AddressList":
-    [], "numChanges": 0, "timestamp": 1604182715020}, {"namespace": "eos", "hostname":
-    "server101", "ifname": "eth1", "state": "up", "type": "ether", "mtu": 1500, "vlan":
-    0, "master": "", "ipAddressList": ["172.16.1.101/24"], "ip6AddressList": [], "numChanges":
-    0, "timestamp": 1604182715020}, {"namespace": "eos", "hostname": "server102",
-    "ifname": "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master":
-    "", "ipAddressList": ["10.255.4.103/24"], "ip6AddressList": [], "numChanges":
-    0, "timestamp": 1604182715020}]'
+  output: '[{"namespace": "eos", "hostname": "edge01", "ifname": "eth0", "state":
+    "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    ["192.168.121.86/24"], "ip6AddressList": [], "numChanges": 0, "timestamp": 1606030435349},
+    {"namespace": "eos", "hostname": "edge01", "ifname": "eth1", "state": "up", "type":
+    "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "numChanges": 0, "timestamp": 1606030435349}, {"namespace": "eos", "hostname":
+    "edge01", "ifname": "eth2", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "numChanges": 0, "timestamp":
+    1606030435349}, {"namespace": "eos", "hostname": "server103", "ifname": "eth0",
+    "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    ["192.168.121.121/24"], "ip6AddressList": [], "numChanges": 0, "timestamp": 1606030435355},
+    {"namespace": "eos", "hostname": "server102", "ifname": "eth0", "state": "up",
+    "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["192.168.121.26/24"],
+    "ip6AddressList": [], "numChanges": 0, "timestamp": 1606030435356}]'

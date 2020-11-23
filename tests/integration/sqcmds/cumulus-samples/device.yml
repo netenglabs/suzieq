@@ -3,96 +3,20 @@ tests:
 - command: device show --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: device show
-  output: '[{"namespace": "dual-evpn", "hostname": "exit02", "model": "vm", "version":
+  output: '[{"namespace": "ospf-single", "hostname": "spine02", "model": "vm", "version":
     "3.7.11", "vendor": "Cumulus", "architecture": "x86-64", "status": "alive", "address":
-    "192.168.123.137", "uptime": 408164, "timestamp": 1597536327164}, {"namespace":
-    "dual-evpn", "hostname": "server103", "model": "vm", "version": "16.04.6 LTS",
-    "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive", "address": "192.168.123.169",
-    "uptime": 467164, "timestamp": 1597536327164}, {"namespace": "dual-evpn", "hostname":
-    "exit01", "model": "vm", "version": "3.7.11", "vendor": "Cumulus", "architecture":
-    "x86-64", "status": "alive", "address": "192.168.123.79", "uptime": 407168, "timestamp":
-    1597536327168}, {"namespace": "dual-evpn", "hostname": "internet", "model": "vm",
-    "version": "3.7.11", "vendor": "Cumulus", "architecture": "x86-64", "status":
-    "alive", "address": "192.168.123.231", "uptime": 406168, "timestamp": 1597536327168},
-    {"namespace": "dual-evpn", "hostname": "leaf02", "model": "vm", "version": "3.7.11",
-    "vendor": "Cumulus", "architecture": "x86-64", "status": "alive", "address": "192.168.123.68",
-    "uptime": 408168, "timestamp": 1597536327168}, {"namespace": "dual-evpn", "hostname":
-    "server102", "model": "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture":
-    "x86-64", "status": "alive", "address": "192.168.123.63", "uptime": 467168, "timestamp":
-    1597536327168}, {"namespace": "dual-evpn", "hostname": "spine01", "model": "vm",
-    "version": "3.7.11", "vendor": "Cumulus", "architecture": "x86-64", "status":
-    "alive", "address": "192.168.123.205", "uptime": 408168, "timestamp": 1597536327168},
-    {"namespace": "dual-evpn", "hostname": "leaf04", "model": "vm", "version": "3.7.11",
-    "vendor": "Cumulus", "architecture": "x86-64", "status": "alive", "address": "192.168.123.165",
-    "uptime": 408171, "timestamp": 1597536327171}, {"namespace": "dual-evpn", "hostname":
-    "server101", "model": "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture":
-    "x86-64", "status": "alive", "address": "192.168.123.70", "uptime": 467171, "timestamp":
-    1597536327171}, {"namespace": "dual-evpn", "hostname": "leaf01", "model": "vm",
-    "version": "3.7.11", "vendor": "Cumulus", "architecture": "x86-64", "status":
-    "alive", "address": "192.168.123.179", "uptime": 408174, "timestamp": 1597536327174},
-    {"namespace": "dual-evpn", "hostname": "server104", "model": "vm", "version":
-    "16.04.6 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
-    "address": "192.168.123.27", "uptime": 466183, "timestamp": 1597536327183}, {"namespace":
-    "dual-evpn", "hostname": "leaf03", "model": "vm", "version": "3.7.11", "vendor":
-    "Cumulus", "architecture": "x86-64", "status": "alive", "address": "192.168.123.44",
-    "uptime": 408184, "timestamp": 1597536327184}, {"namespace": "dual-evpn", "hostname":
-    "edge01", "model": "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture":
-    "x86-64", "status": "alive", "address": "192.168.123.34", "uptime": 411185, "timestamp":
-    1597536327185}, {"namespace": "dual-evpn", "hostname": "spine02", "model": "vm",
-    "version": "3.7.11", "vendor": "Cumulus", "architecture": "x86-64", "status":
-    "alive", "address": "192.168.123.81", "uptime": 408204, "timestamp": 1597536327204},
-    {"namespace": "ospf-ibgp", "hostname": "server101", "model": "vm", "version":
-    "16.04.6 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
-    "address": "192.168.123.70", "uptime": 138091, "timestamp": 1597536850091}, {"namespace":
-    "ospf-ibgp", "hostname": "server102", "model": "vm", "version": "16.04.6 LTS",
-    "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive", "address": "192.168.123.63",
-    "uptime": 137123, "timestamp": 1597536850123}, {"namespace": "ospf-ibgp", "hostname":
-    "server103", "model": "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture":
-    "x86-64", "status": "alive", "address": "192.168.123.169", "uptime": 137131, "timestamp":
-    1597536850131}, {"namespace": "ospf-ibgp", "hostname": "server104", "model": "vm",
-    "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status":
-    "alive", "address": "192.168.123.27", "uptime": 138140, "timestamp": 1597536850140},
-    {"namespace": "ospf-ibgp", "hostname": "exit02", "model": "vm", "version": "3.7.11",
-    "vendor": "Cumulus", "architecture": "x86-64", "status": "alive", "address": "192.168.123.137",
-    "uptime": 88141, "timestamp": 1597536850141}, {"namespace": "ospf-ibgp", "hostname":
-    "internet", "model": "vm", "version": "3.7.11", "vendor": "Cumulus", "architecture":
-    "x86-64", "status": "alive", "address": "192.168.123.231", "uptime": 88147, "timestamp":
-    1597536850147}, {"namespace": "ospf-ibgp", "hostname": "spine01", "model": "vm",
-    "version": "3.7.11", "vendor": "Cumulus", "architecture": "x86-64", "status":
-    "alive", "address": "192.168.123.205", "uptime": 88147, "timestamp": 1597536850147},
-    {"namespace": "ospf-ibgp", "hostname": "exit01", "model": "vm", "version": "3.7.11",
-    "vendor": "Cumulus", "architecture": "x86-64", "status": "alive", "address": "192.168.123.79",
-    "uptime": 87217, "timestamp": 1597536850217}, {"namespace": "ospf-ibgp", "hostname":
-    "spine02", "model": "vm", "version": "3.7.11", "vendor": "Cumulus", "architecture":
-    "x86-64", "status": "alive", "address": "192.168.123.81", "uptime": 86217, "timestamp":
-    1597536850217}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "model": "vm",
-    "version": "3.7.11", "vendor": "Cumulus", "architecture": "x86-64", "status":
-    "alive", "address": "192.168.123.165", "uptime": 87217, "timestamp": 1597536850217},
-    {"namespace": "ospf-ibgp", "hostname": "leaf02", "model": "vm", "version": "3.7.11",
-    "vendor": "Cumulus", "architecture": "x86-64", "status": "alive", "address": "192.168.123.68",
-    "uptime": 87220, "timestamp": 1597536850220}, {"namespace": "ospf-ibgp", "hostname":
-    "edge01", "model": "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture":
-    "x86-64", "status": "alive", "address": "192.168.123.34", "uptime": 89227, "timestamp":
-    1597536850227}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "model": "vm",
-    "version": "3.7.11", "vendor": "Cumulus", "architecture": "x86-64", "status":
-    "alive", "address": "192.168.123.179", "uptime": 87244, "timestamp": 1597536850244},
-    {"namespace": "ospf-ibgp", "hostname": "leaf03", "model": "vm", "version": "3.7.11",
-    "vendor": "Cumulus", "architecture": "x86-64", "status": "alive", "address": "192.168.123.44",
-    "uptime": 87463, "timestamp": 1597536850463}, {"namespace": "ospf-single", "hostname":
-    "spine02", "model": "vm", "version": "3.7.11", "vendor": "Cumulus", "architecture":
-    "x86-64", "status": "alive", "address": "192.168.123.210", "uptime": 2510877,
-    "timestamp": 1597553945877}, {"namespace": "ospf-single", "hostname": "leaf03",
-    "model": "vm", "version": "3.7.11", "vendor": "Cumulus", "architecture": "x86-64",
-    "status": "alive", "address": "192.168.123.131", "uptime": 2510879, "timestamp":
-    1597553945879}, {"namespace": "ospf-single", "hostname": "server101", "model":
-    "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture": "x86-64",
-    "status": "alive", "address": "192.168.123.182", "uptime": 2653879, "timestamp":
-    1597553945879}, {"namespace": "ospf-single", "hostname": "server103", "model":
+    "192.168.123.210", "uptime": 2510877, "timestamp": 1597553945877}, {"namespace":
+    "ospf-single", "hostname": "server101", "model": "vm", "version": "16.04.6 LTS",
+    "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive", "address": "192.168.123.182",
+    "uptime": 2653879, "timestamp": 1597553945879}, {"namespace": "ospf-single", "hostname":
+    "leaf03", "model": "vm", "version": "3.7.11", "vendor": "Cumulus", "architecture":
+    "x86-64", "status": "alive", "address": "192.168.123.131", "uptime": 2510879,
+    "timestamp": 1597553945879}, {"namespace": "ospf-single", "hostname": "server104",
+    "model": "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.123.178", "uptime": 2670880, "timestamp":
+    1597553945880}, {"namespace": "ospf-single", "hostname": "server103", "model":
     "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture": "x86-64",
     "status": "alive", "address": "192.168.123.2", "uptime": 2666880, "timestamp":
-    1597553945880}, {"namespace": "ospf-single", "hostname": "server104", "model":
-    "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture": "x86-64",
-    "status": "alive", "address": "192.168.123.178", "uptime": 2670880, "timestamp":
     1597553945880}, {"namespace": "ospf-single", "hostname": "exit01", "model": "vm",
     "version": "3.7.11", "vendor": "Cumulus", "architecture": "x86-64", "status":
     "alive", "address": "192.168.123.119", "uptime": 2508213, "timestamp": 1597553946213},
@@ -102,56 +26,132 @@ tests:
     {"namespace": "ospf-single", "hostname": "exit02", "model": "vm", "version": "3.7.11",
     "vendor": "Cumulus", "architecture": "x86-64", "status": "alive", "address": "192.168.123.224",
     "uptime": 2510223, "timestamp": 1597553946223}, {"namespace": "ospf-single", "hostname":
-    "leaf01", "model": "vm", "version": "3.7.11", "vendor": "Cumulus", "architecture":
-    "x86-64", "status": "alive", "address": "192.168.123.121", "uptime": 2510223,
+    "spine01", "model": "vm", "version": "3.7.11", "vendor": "Cumulus", "architecture":
+    "x86-64", "status": "alive", "address": "192.168.123.225", "uptime": 2510223,
     "timestamp": 1597553946223}, {"namespace": "ospf-single", "hostname": "leaf02",
     "model": "vm", "version": "3.7.11", "vendor": "Cumulus", "architecture": "x86-64",
     "status": "alive", "address": "192.168.123.238", "uptime": 2511223, "timestamp":
     1597553946223}, {"namespace": "ospf-single", "hostname": "leaf04", "model": "vm",
     "version": "3.7.11", "vendor": "Cumulus", "architecture": "x86-64", "status":
     "alive", "address": "192.168.123.139", "uptime": 2510223, "timestamp": 1597553946223},
-    {"namespace": "ospf-single", "hostname": "spine01", "model": "vm", "version":
-    "3.7.11", "vendor": "Cumulus", "architecture": "x86-64", "status": "alive", "address":
-    "192.168.123.225", "uptime": 2510223, "timestamp": 1597553946223}, {"namespace":
-    "ospf-single", "hostname": "internet", "model": "vm", "version": "3.7.11", "vendor":
-    "Cumulus", "architecture": "x86-64", "status": "alive", "address": "192.168.123.134",
-    "uptime": 2512360, "timestamp": 1597553946360}, {"namespace": "ospf-single", "hostname":
-    "edge01", "model": "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture":
-    "x86-64", "status": "alive", "address": "192.168.123.110", "uptime": 2514437,
-    "timestamp": 1597553946437}]'
+    {"namespace": "ospf-single", "hostname": "leaf01", "model": "vm", "version": "3.7.11",
+    "vendor": "Cumulus", "architecture": "x86-64", "status": "alive", "address": "192.168.123.121",
+    "uptime": 2510223, "timestamp": 1597553946223}, {"namespace": "ospf-single", "hostname":
+    "internet", "model": "vm", "version": "3.7.11", "vendor": "Cumulus", "architecture":
+    "x86-64", "status": "alive", "address": "192.168.123.134", "uptime": 2512360,
+    "timestamp": 1597553946360}, {"namespace": "ospf-single", "hostname": "edge01",
+    "model": "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.123.110", "uptime": 2514437, "timestamp":
+    1597553946437}, {"namespace": "ospf-ibgp", "hostname": "server101", "model": "vm",
+    "version": "16.04.7 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status":
+    "alive", "address": "192.168.123.97", "uptime": 6162678, "timestamp": 1606024534678},
+    {"namespace": "ospf-ibgp", "hostname": "server104", "model": "vm", "version":
+    "16.04.7 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
+    "address": "192.168.123.53", "uptime": 6185678, "timestamp": 1606024534678}, {"namespace":
+    "ospf-ibgp", "hostname": "server103", "model": "vm", "version": "16.04.7 LTS",
+    "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive", "address": "192.168.123.63",
+    "uptime": 6178679, "timestamp": 1606024534679}, {"namespace": "ospf-ibgp", "hostname":
+    "edge01", "model": "vm", "version": "16.04.7 LTS", "vendor": "Ubuntu", "architecture":
+    "x86-64", "status": "alive", "address": "192.168.123.80", "uptime": 422682, "timestamp":
+    1606024534682}, {"namespace": "ospf-ibgp", "hostname": "server102", "model": "vm",
+    "version": "16.04.7 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status":
+    "alive", "address": "192.168.123.202", "uptime": 6211682, "timestamp": 1606024534682},
+    {"namespace": "ospf-ibgp", "hostname": "spine02", "model": "vm", "version": "4.2.1",
+    "vendor": "Cumulus", "architecture": "x86-64", "status": "alive", "address": "192.168.123.21",
+    "uptime": 421753, "timestamp": 1606024534753}, {"namespace": "ospf-ibgp", "hostname":
+    "exit01", "model": "vm", "version": "4.2.1", "vendor": "Cumulus", "architecture":
+    "x86-64", "status": "alive", "address": "192.168.123.15", "uptime": 422167, "timestamp":
+    1606024535167}, {"namespace": "ospf-ibgp", "hostname": "spine01", "model": "vm",
+    "version": "4.2.1", "vendor": "Cumulus", "architecture": "x86-64", "status": "alive",
+    "address": "192.168.123.25", "uptime": 423207, "timestamp": 1606024535207}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf04", "model": "vm", "version": "4.2.1", "vendor":
+    "Cumulus", "architecture": "x86-64", "status": "alive", "address": "192.168.123.19",
+    "uptime": 424273, "timestamp": 1606024535273}, {"namespace": "ospf-ibgp", "hostname":
+    "internet", "model": "vm", "version": "4.2.1", "vendor": "Cumulus", "architecture":
+    "x86-64", "status": "alive", "address": "192.168.123.186", "uptime": 423273, "timestamp":
+    1606024535273}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "model": "vm",
+    "version": "4.2.1", "vendor": "Cumulus", "architecture": "x86-64", "status": "alive",
+    "address": "192.168.123.4", "uptime": 421461, "timestamp": 1606024535461}, {"namespace":
+    "ospf-ibgp", "hostname": "exit02", "model": "vm", "version": "4.2.1", "vendor":
+    "Cumulus", "architecture": "x86-64", "status": "alive", "address": "192.168.123.71",
+    "uptime": 422461, "timestamp": 1606024535461}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf02", "model": "vm", "version": "4.2.1", "vendor": "Cumulus", "architecture":
+    "x86-64", "status": "alive", "address": "192.168.123.243", "uptime": 423469, "timestamp":
+    1606024535469}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "model": "vm",
+    "version": "4.2.1", "vendor": "Cumulus", "architecture": "x86-64", "status": "alive",
+    "address": "192.168.123.140", "uptime": 423725, "timestamp": 1606024535725}, {"namespace":
+    "dual-evpn", "hostname": "server101", "model": "vm", "version": "16.04.7 LTS",
+    "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive", "address": "192.168.123.97",
+    "uptime": 985482, "timestamp": 1606025645482}, {"namespace": "dual-evpn", "hostname":
+    "server104", "model": "vm", "version": "16.04.7 LTS", "vendor": "Ubuntu", "architecture":
+    "x86-64", "status": "alive", "address": "192.168.123.53", "uptime": 985588, "timestamp":
+    1606025645588}, {"namespace": "dual-evpn", "hostname": "server103", "model": "vm",
+    "version": "16.04.7 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status":
+    "alive", "address": "192.168.123.63", "uptime": 985782, "timestamp": 1606025645782},
+    {"namespace": "dual-evpn", "hostname": "server102", "model": "vm", "version":
+    "16.04.7 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
+    "address": "192.168.123.202", "uptime": 985782, "timestamp": 1606025645782}, {"namespace":
+    "dual-evpn", "hostname": "internet", "model": "vm", "version": "4.2.1", "vendor":
+    "Cumulus", "architecture": "x86-64", "status": "alive", "address": "192.168.123.186",
+    "uptime": 1532900, "timestamp": 1606025645900}, {"namespace": "dual-evpn", "hostname":
+    "exit02", "model": "vm", "version": "4.2.1", "vendor": "Cumulus", "architecture":
+    "x86-64", "status": "alive", "address": "192.168.123.71", "uptime": 426001, "timestamp":
+    1606025646001}, {"namespace": "dual-evpn", "hostname": "edge01", "model": "vm",
+    "version": "16.04.7 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status":
+    "alive", "address": "192.168.123.80", "uptime": 427005, "timestamp": 1606025646005},
+    {"namespace": "dual-evpn", "hostname": "spine02", "model": "vm", "version": "4.2.1",
+    "vendor": "Cumulus", "architecture": "x86-64", "status": "alive", "address": "192.168.123.21",
+    "uptime": 426155, "timestamp": 1606025646155}, {"namespace": "dual-evpn", "hostname":
+    "leaf01", "model": "vm", "version": "4.2.1", "vendor": "Cumulus", "architecture":
+    "x86-64", "status": "alive", "address": "192.168.123.4", "uptime": 427447, "timestamp":
+    1606025646447}, {"namespace": "dual-evpn", "hostname": "exit01", "model": "vm",
+    "version": "4.2.1", "vendor": "Cumulus", "architecture": "x86-64", "status": "alive",
+    "address": "192.168.123.15", "uptime": 427748, "timestamp": 1606025646748}, {"namespace":
+    "dual-evpn", "hostname": "spine01", "model": "vm", "version": "4.2.1", "vendor":
+    "Cumulus", "architecture": "x86-64", "status": "alive", "address": "192.168.123.25",
+    "uptime": 427848, "timestamp": 1606025646848}, {"namespace": "dual-evpn", "hostname":
+    "leaf02", "model": "vm", "version": "4.2.1", "vendor": "Cumulus", "architecture":
+    "x86-64", "status": "alive", "address": "192.168.123.243", "uptime": 427150, "timestamp":
+    1606025647150}, {"namespace": "dual-evpn", "hostname": "leaf03", "model": "vm",
+    "version": "4.2.1", "vendor": "Cumulus", "architecture": "x86-64", "status": "alive",
+    "address": "192.168.123.140", "uptime": 428167, "timestamp": 1606025647167}, {"namespace":
+    "dual-evpn", "hostname": "leaf04", "model": "vm", "version": "4.2.1", "vendor":
+    "Cumulus", "architecture": "x86-64", "status": "alive", "address": "192.168.123.19",
+    "uptime": 428292, "timestamp": 1606025647292}]'
 - command: device show --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: device show
-  output: '[{"hostname": "exit02"}, {"hostname": "server103"}, {"hostname": "exit01"},
-    {"hostname": "internet"}, {"hostname": "leaf02"}, {"hostname": "server102"}, {"hostname":
-    "spine01"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "leaf01"},
-    {"hostname": "server104"}, {"hostname": "leaf03"}, {"hostname": "edge01"}, {"hostname":
-    "spine02"}, {"hostname": "server101"}, {"hostname": "server102"}, {"hostname":
-    "server103"}, {"hostname": "server104"}, {"hostname": "exit02"}, {"hostname":
-    "internet"}, {"hostname": "spine01"}, {"hostname": "exit01"}, {"hostname": "spine02"},
-    {"hostname": "leaf04"}, {"hostname": "leaf02"}, {"hostname": "edge01"}, {"hostname":
-    "leaf01"}, {"hostname": "leaf03"}, {"hostname": "spine02"}, {"hostname": "leaf03"},
-    {"hostname": "server101"}, {"hostname": "server103"}, {"hostname": "server104"},
-    {"hostname": "exit01"}, {"hostname": "server102"}, {"hostname": "exit02"}, {"hostname":
-    "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf04"}, {"hostname": "spine01"},
-    {"hostname": "internet"}, {"hostname": "edge01"}]'
+  output: '[{"hostname": "spine02"}, {"hostname": "server101"}, {"hostname": "leaf03"},
+    {"hostname": "server104"}, {"hostname": "server103"}, {"hostname": "exit01"},
+    {"hostname": "server102"}, {"hostname": "exit02"}, {"hostname": "spine01"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf04"}, {"hostname": "leaf01"}, {"hostname": "internet"},
+    {"hostname": "edge01"}, {"hostname": "server101"}, {"hostname": "server104"},
+    {"hostname": "server103"}, {"hostname": "edge01"}, {"hostname": "server102"},
+    {"hostname": "spine02"}, {"hostname": "exit01"}, {"hostname": "spine01"}, {"hostname":
+    "leaf04"}, {"hostname": "internet"}, {"hostname": "leaf01"}, {"hostname": "exit02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname": "server101"}, {"hostname":
+    "server104"}, {"hostname": "server103"}, {"hostname": "server102"}, {"hostname":
+    "internet"}, {"hostname": "exit02"}, {"hostname": "edge01"}, {"hostname": "spine02"},
+    {"hostname": "leaf01"}, {"hostname": "exit01"}, {"hostname": "spine01"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf04"}]'
 - command: device summarize --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: device summarize
-  output: '{"dual-evpn": {"deviceCnt": 14, "vendorCnt": {"Cumulus": 9, "Ubuntu": 5},
-    "modelCnt": {"vm": 14}, "archCnt": {"x86-64": 14}, "versionCnt": {"3.7.11": 9,
-    "16.04.6 LTS": 5}, "upTimeStat": [406168, 467171, 408179]}, "ospf-ibgp": {"deviceCnt":
-    14, "vendorCnt": {"Cumulus": 9, "Ubuntu": 5}, "modelCnt": {"vm": 14}, "archCnt":
-    {"x86-64": 14}, "versionCnt": {"3.7.11": 9, "16.04.6 LTS": 5}, "upTimeStat": [86217,
-    138140, 88144]}, "ospf-single": {"deviceCnt": 14, "vendorCnt": {"Cumulus": 9,
-    "Ubuntu": 5}, "modelCnt": {"vm": 14}, "archCnt": {"x86-64": 14}, "versionCnt":
-    {"3.7.11": 9, "16.04.6 LTS": 5}, "upTimeStat": [2508213, 2673214, 2511051]}}'
+  output: '{"ospf-single": {"deviceCnt": 14, "vendorCnt": {"Cumulus": 9, "Ubuntu":
+    5}, "modelCnt": {"vm": 14}, "archCnt": {"x86-64": 14}, "versionCnt": {"3.7.11":
+    9, "16.04.6 LTS": 5}, "upTimeStat": [2508213, 2673214, 2511051]}, "ospf-ibgp":
+    {"deviceCnt": 14, "vendorCnt": {"Cumulus": 9, "Ubuntu": 5}, "modelCnt": {"vm":
+    14}, "archCnt": {"x86-64": 14}, "versionCnt": {"4.2.1": 9, "16.04.7 LTS": 5},
+    "upTimeStat": [421461, 6211682, 423371]}, "dual-evpn": {"deviceCnt": 14, "vendorCnt":
+    {"Cumulus": 9, "Ubuntu": 5}, "modelCnt": {"vm": 14}, "archCnt": {"x86-64": 14},
+    "versionCnt": {"4.2.1": 9, "16.04.7 LTS": 5}, "upTimeStat": [426001, 1532900,
+    428007]}}'
 - command: device summarize --namespace=dual-evpn --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: device summarize
   output: '{"dual-evpn": {"deviceCnt": 14, "vendorCnt": {"Cumulus": 9, "Ubuntu": 5},
-    "modelCnt": {"vm": 14}, "archCnt": {"x86-64": 14}, "versionCnt": {"3.7.11": 9,
-    "16.04.6 LTS": 5}, "upTimeStat": [406168, 467171, 408179]}}'
+    "modelCnt": {"vm": 14}, "archCnt": {"x86-64": 14}, "versionCnt": {"4.2.1": 9,
+    "16.04.7 LTS": 5}, "upTimeStat": [426001, 1532900, 428007]}}'
 - command: device summarize --columns="namespace hostname" --format=json
   data-directory: tests/data/multidc/parquet-out/
   error:
@@ -160,13 +160,13 @@ tests:
 - command: device unique --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: device unique
-  output: '[{"hostname": "exit02", "count": 3}, {"hostname": "exit01", "count": 3},
-    {"hostname": "server104", "count": 3}, {"hostname": "leaf01", "count": 3}, {"hostname":
-    "edge01", "count": 3}, {"hostname": "server102", "count": 3}, {"hostname": "leaf02",
-    "count": 3}, {"hostname": "spine02", "count": 3}, {"hostname": "leaf03", "count":
-    3}, {"hostname": "server101", "count": 3}, {"hostname": "server103", "count":
-    3}, {"hostname": "spine01", "count": 3}, {"hostname": "leaf04", "count": 3}, {"hostname":
-    "internet", "count": 3}]'
+  output: '[{"hostname": "leaf01", "count": 3}, {"hostname": "exit01", "count": 3},
+    {"hostname": "leaf03", "count": 3}, {"hostname": "edge01", "count": 3}, {"hostname":
+    "server104", "count": 3}, {"hostname": "spine01", "count": 3}, {"hostname": "server102",
+    "count": 3}, {"hostname": "internet", "count": 3}, {"hostname": "exit02", "count":
+    3}, {"hostname": "server101", "count": 3}, {"hostname": "leaf02", "count": 3},
+    {"hostname": "server103", "count": 3}, {"hostname": "leaf04", "count": 3}, {"hostname":
+    "spine02", "count": 3}]'
 - command: device unique --columns="hostname namespace" --format=json
   data-directory: tests/data/multidc/parquet-out/
   error:
