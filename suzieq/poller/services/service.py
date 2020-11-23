@@ -390,6 +390,9 @@ class Service(object):
                             val = str(val)
                         keyvals.append(val)
 
+                if entry.get('_entryType', ''):
+                    keyvals.append(entry['_entryType'])
+
                 key = '-'.join(keyvals)
 
                 if key not in int_res:
