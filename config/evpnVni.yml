@@ -41,13 +41,38 @@ apply:
 
   junos-qfx:
     version: all
-    command: show ethernet-switching vxlan-tunnel-end-point remote | display json
-    normalize: 'vxlan-source-vtep-information/[0]/svtep-format/*:source-vtep-address:priVtepIp|vxlan-remote-vtep-information/*/[
-    "remote-vtep-address/[0]/data: remoteVtepList",
-    "remote-vtep-mode: _mode",
-    "vxlan-dynamic-information/[0]/vxlan-format/[*]/vn-id/[0]/data: _vniList",
-    "vxlan-dynamic-information/[0]/vxlan-format/[*]/multicast-address/[0]/data: replicationType",
-    ]'
+    command:
+      - command: show evpn instance extensive | display json
+        normalize: 'evpn-instance-information/[0]/evpn-instance/[
+        "evpn-instance-name/[0]/data: vni?|0",
+        "bridge-domain-status-table/[0]/bridge-domain/[*]/vlan-id/[0]/data: _vlanList",
+        "bridge-domain-status-table/[0]/bridge-domain/[*]/domain-id/[0]/data: _vniList",
+        "bridge-domain-status-table/[0]/bridge-domain/[*]/irb-interface/[0]/data: _irbList",
+        "irb-interface-status-table/[0]/irb-interface/[*]/irb-interface-name/[0]/data: _irbIfList",
+        "irb-interface-status-table/[0]/irb-interface/[*]/irb-interface-l3-context/[0]/data: _vrfList",
+        "bridge-domain-status-table/[0]/bridge-domain/[*]/irb-interface/[0]/data: _irbList",
+        "evpn-neighbor/[0]/evpn-neighbor-route-information/[*]/evpn-neighbor-address/[0]/data: remoteVtepList",
+        "_entryType: _entryType?|instance",
+        ]'
+
+      - command: show evpn l3-context extensive | display json
+        normalize: 'evpn-l3-context-information/[0]/evpn-l3-context/*/[
+        "context-name/[0]/data: vrf",
+        "context-vni/[0]/data: vni?|0",
+        "context-source-vtep/[0]/vtep-address/[0]/data: priVtepIp?|",
+        "context-router-mac/[0]/data: routerMac",
+        "_entryType: _entryType?|l3",
+        ]'
+        
+      - command: show ethernet-switching vxlan-tunnel-end-point remote | display json
+        normalize: 'vxlan-source-vtep-information/[0]/svtep-format/*:source-vtep-address:priVtepIp|vxlan-remote-vtep-information/*/[
+        "remote-vtep-address/[0]/data: _floodVtepList",
+        "remote-vtep-mode: _mode",
+        "remote-vtep-interface-name/[0]/data: vni?|0",
+        "vxlan-dynamic-information/[0]/vxlan-format/[*]/vn-id/[0]/data: _vniList",
+        "vxlan-dynamic-information/[0]/vxlan-format/[*]/multicast-address/[0]/data: replicationType",
+        "_entryType: _entryType?|remote",
+        ]'
 
   nxos:
     version: all
@@ -61,7 +86,7 @@ apply:
         "vlan-bd: vlan?|0",
         "svi-state: _sviState",
         "mcast: replicationType",
-        "rectype: _rectype?|VNI",
+        "_entryType: _entryType?|VNI",
         ]'
 
       - command: show nve interface nve 1 | json-pretty
@@ -70,10 +95,10 @@ apply:
         "encap-type: encapType",
         "source-if: vni",
         "if-name: ifname",
-        "recType: _rectype?|iface",
         "vpc-capability: _vpcCap?|",
         "secondary-ip: secVtepIp?|",
         "local-rmac: routerMac",
+        "_entryType: _entryType?|iface",
         ]'
 
       - command: show nve peers detail | json
@@ -81,5 +106,5 @@ apply:
         "peer-ip: vni",
         "config-vnis: _configVnis",
         "cp-vni: _vniList?|",
-        "rectype: _rectype?|peers",
+        "_entryType: _entryType?|peers",
         ]'
