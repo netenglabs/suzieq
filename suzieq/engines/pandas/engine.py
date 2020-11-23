@@ -7,6 +7,7 @@ from itertools import zip_longest
 
 import pandas as pd
 import pyarrow.parquet as pa
+import numpy as np
 
 from suzieq.engines.base_engine import SqEngine
 
@@ -27,6 +28,7 @@ class SqPandasEngine(SqEngine):
         fields = kwargs.pop("columns")
         addnl_filter = kwargs.pop("add_filter", None)
         key_fields = kwargs.pop("key_fields")
+        merge_fields = kwargs.pop('merge_fields', {})
 
         folder = self._get_table_directory(table)
 
@@ -75,12 +77,23 @@ class SqPandasEngine(SqEngine):
             master_schema = self._build_master_schema(datasets)
 
             filters = self.build_ds_filters(
-                start, end, master_schema, **kwargs)
+                start, end, master_schema, merge_fields=merge_fields, **kwargs)
 
             final_df = ds.dataset(datasets) \
                          .to_table(filter=filters, columns=fields) \
                          .to_pandas(self_destruct=True) \
                          .query(query_str)
+
+            if merge_fields:
+                # These are key fields that need to be set right before we do
+                # the drop duplicates to avoid missing out all the data
+                for field in merge_fields:
+                    newfld = merge_fields[field]
+                    if (field in final_df.columns and
+                            newfld in final_df.columns):
+                        final_df[newfld] = np.where(final_df[newfld],
+                                                    final_df[newfld],
+                                                    final_df[field])
 
             if (not final_df.empty and (view == 'latest') and
                     all(x in final_df.columns for x in key_fields)):
@@ -146,6 +159,7 @@ class SqPandasEngine(SqEngine):
                          **kwargs) -> ds.Expression:
         """The new style of filters using dataset instead of ParquetDataset"""
 
+        merge_fields = kwargs.pop('merge_fields', {})
         # The time filters first
         timeset = []
         if start_tm and not end_tm:
@@ -182,6 +196,8 @@ class SqPandasEngine(SqEngine):
                 continue
 
             ftype = schema.field(k).type
+            if k in merge_fields:
+                k = merge_fields[k]
 
             if isinstance(v, list):
                 infld = []
