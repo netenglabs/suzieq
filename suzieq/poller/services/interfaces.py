@@ -369,6 +369,14 @@ class InterfaceService(Service):
                 if entry.get('mtu', 1500) < bridge_mtu:
                     bridge_mtu = entry.get('mtu', 0)
 
+            portchan = entry.get('_portchannel', '')
+            if portchan:
+                entry['master'] = f'port-channel{portchan}'
+                entry['type'] = 'bond_slave'
+
+            if entry['ifname'].startswith('port-channel'):
+                entry['type'] = 'bond'
+
             if 'ipAddressList' in entry:
                 pri_ipaddr = f"{entry['ipAddressList']}/{entry['_maskLen']}"
                 ipaddr = [pri_ipaddr]
