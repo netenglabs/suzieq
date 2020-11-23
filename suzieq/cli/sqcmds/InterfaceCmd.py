@@ -133,7 +133,7 @@ class InterfaceCmd(SqCommand):
             what=whatfld,
             n=count,
             reverse=reverse == "True" or False,
-            type="ether",        # need this as we only do phy interfaces
+            type="ethernet",        # need this as we only do phy interfaces
             columns=self.columns,
             namespace=self.namespace,
         )
