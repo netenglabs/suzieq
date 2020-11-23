@@ -3,23 +3,23 @@ tests:
 - command: vlan show --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: vlan show junos
-  output: '[{"namespace": "junos", "hostname": "vqfx2", "ifname": "vlan1", "state":
-    "None", "interfaces": [], "vlan": 1, "timestamp": 1604149440098}, {"namespace":
-    "junos", "hostname": "vqfx2", "ifname": "servers100", "state": "None", "interfaces":
-    ["vtep.32769*", "xe-0/0/1.0*"], "vlan": 100, "timestamp": 1604149440098}, {"namespace":
-    "junos", "hostname": "vqfx2", "ifname": "servers200", "state": "None", "interfaces":
-    ["vtep.32769*", "xe-0/0/2.0*"], "vlan": 200, "timestamp": 1604149440098}, {"namespace":
-    "junos", "hostname": "vqfx1", "ifname": "vlan1", "state": "None", "interfaces":
-    [], "vlan": 1, "timestamp": 1604149440398}, {"namespace": "junos", "hostname":
-    "vqfx1", "ifname": "servers100", "state": "None", "interfaces": ["vtep.32769*",
-    "xe-0/0/1.0*"], "vlan": 100, "timestamp": 1604149440398}, {"namespace": "junos",
-    "hostname": "vqfx1", "ifname": "servers200", "state": "None", "interfaces": ["vtep.32769*",
-    "xe-0/0/2.0*"], "vlan": 200, "timestamp": 1604149440398}]'
+  output: '[{"namespace": "junos", "hostname": "vqfx1", "vlanName": "vlan1", "state":
+    "active", "interfaces": [], "vlan": 1, "timestamp": 1606017396299}, {"namespace":
+    "junos", "hostname": "vqfx1", "vlanName": "servers100", "state": "active", "interfaces":
+    ["vtep.32769*", "xe-0/0/1.0*"], "vlan": 100, "timestamp": 1606017396299}, {"namespace":
+    "junos", "hostname": "vqfx1", "vlanName": "servers200", "state": "active", "interfaces":
+    ["vtep.32769*", "xe-0/0/2.0*"], "vlan": 200, "timestamp": 1606017396299}, {"namespace":
+    "junos", "hostname": "vqfx2", "vlanName": "vlan1", "state": "active", "interfaces":
+    [], "vlan": 1, "timestamp": 1606017396422}, {"namespace": "junos", "hostname":
+    "vqfx2", "vlanName": "servers100", "state": "active", "interfaces": ["vtep.32769*",
+    "xe-0/0/1.0*"], "vlan": 100, "timestamp": 1606017396422}, {"namespace": "junos",
+    "hostname": "vqfx2", "vlanName": "servers200", "state": "active", "interfaces":
+    ["vtep.32769*", "xe-0/0/2.0*"], "vlan": 200, "timestamp": 1606017396422}]'
 - command: vlan show --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: vlan show junos
-  output: '[{"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname":
-    "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"}]'
+  output: '[{"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname":
+    "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"}]'
 - command: vlan summarize --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: vlan summarize junos

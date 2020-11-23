@@ -5,20 +5,20 @@ tests:
   marks: evpnVni show nxos
   output: '[{"namespace": "nxos", "hostname": "leaf1", "vni": 100999, "type": "L3",
     "vlan": 999, "state": "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 1, "priVtepIp":
-    "10.0.0.11", "secVtepIp": "", "timestamp": 1600494963042}, {"namespace": "nxos",
+    "10.0.0.11", "secVtepIp": "", "timestamp": 1606018045182}, {"namespace": "nxos",
     "hostname": "leaf1", "vni": 100030, "type": "L2", "vlan": 30, "state": "up", "mcastGroup":
     "224.1.1.192", "remoteVtepCnt": 1, "priVtepIp": "10.0.0.11", "secVtepIp": "",
-    "timestamp": 1600494963042}, {"namespace": "nxos", "hostname": "leaf1", "vni":
+    "timestamp": 1606018045182}, {"namespace": "nxos", "hostname": "leaf1", "vni":
     100010, "type": "L2", "vlan": 10, "state": "up", "mcastGroup": "224.1.1.192",
-    "remoteVtepCnt": 0, "priVtepIp": "10.0.0.11", "secVtepIp": "", "timestamp": 1600494963042},
+    "remoteVtepCnt": 0, "priVtepIp": "10.0.0.11", "secVtepIp": "", "timestamp": 1606018045182},
     {"namespace": "nxos", "hostname": "leaf2", "vni": 100999, "type": "L3", "vlan":
     999, "state": "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 1, "priVtepIp":
-    "10.0.0.12", "secVtepIp": "", "timestamp": 1600494962711}, {"namespace": "nxos",
+    "10.0.0.12", "secVtepIp": "", "timestamp": 1606018045629}, {"namespace": "nxos",
     "hostname": "leaf2", "vni": 100030, "type": "L2", "vlan": 30, "state": "up", "mcastGroup":
     "224.1.1.192", "remoteVtepCnt": 1, "priVtepIp": "10.0.0.12", "secVtepIp": "",
-    "timestamp": 1600494962711}, {"namespace": "nxos", "hostname": "leaf2", "vni":
+    "timestamp": 1606018045629}, {"namespace": "nxos", "hostname": "leaf2", "vni":
     100020, "type": "L2", "vlan": 20, "state": "up", "mcastGroup": "224.1.1.192",
-    "remoteVtepCnt": 0, "priVtepIp": "10.0.0.12", "secVtepIp": "", "timestamp": 1600494962711}]'
+    "remoteVtepCnt": 0, "priVtepIp": "10.0.0.12", "secVtepIp": "", "timestamp": 1606018045629}]'
 - command: evpnVni show --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: evpnVni show nxos
@@ -29,12 +29,11 @@ tests:
   marks: evpnVni summarize nxos
   output: '{"nxos": {"mode": "symmetric", "uniqueVtepCnt": 2, "uniqueVniCnt": 4, "uniqueL3VniCnt":
     1, "uniqueL2VniCnt": 3, "uniqueMulticastGroups": 1, "vnisUsingMulticast": 3, "vnisUsingIngressRepl":
-    0, "uniqueVniTypeValCnt": {"L2": 4, "L3": 2}, "macsInVniStat": [2, 3, 2], "remoteVtepsPerVtepStat":
-    [1, 1, 1.0]}}'
+    0, "remoteVtepsPerVtepStat": [1, 1, 1.0]}}'
 - command: evpnVni unique --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: evpnVni unique nxos
-  output: '[{"hostname": "leaf2", "count": 3}, {"hostname": "leaf1", "count": 3}]'
+  output: '[{"hostname": "leaf1", "count": 3}, {"hostname": "leaf2", "count": 3}]'
 - command: evpnVni show --columns='hostname vni remoteVtepCnt' --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: evpnVni show filter nxos

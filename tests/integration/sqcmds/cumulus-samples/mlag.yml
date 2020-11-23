@@ -3,56 +3,56 @@ tests:
 - command: mlag show --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: mlag show
-  output: '[{"namespace": "dual-evpn", "hostname": "leaf01", "systemId": "44:39:39:ff:40:94",
-    "state": "active", "peerAddress": "169.254.1.2", "role": "primary", "peerLink":
-    "peerlink.4094", "mlagDualPortsCnt": 4, "mlagSinglePortsCnt": 0, "mlagErrorPortsCnt":
-    0, "timestamp": 1597536327733}, {"namespace": "dual-evpn", "hostname": "leaf02",
-    "systemId": "44:39:39:ff:40:94", "state": "active", "peerAddress": "169.254.1.1",
-    "role": "secondary", "peerLink": "peerlink.4094", "mlagDualPortsCnt": 4, "mlagSinglePortsCnt":
-    0, "mlagErrorPortsCnt": 0, "timestamp": 1597536327445}, {"namespace": "dual-evpn",
-    "hostname": "leaf03", "systemId": "44:39:39:ff:40:94", "state": "active", "peerAddress":
-    "169.254.1.2", "role": "primary", "peerLink": "peerlink.4094", "mlagDualPortsCnt":
-    4, "mlagSinglePortsCnt": 0, "mlagErrorPortsCnt": 0, "timestamp": 1597536327680},
-    {"namespace": "dual-evpn", "hostname": "leaf04", "systemId": "44:39:39:ff:40:94",
-    "state": "active", "peerAddress": "169.254.1.1", "role": "secondary", "peerLink":
-    "peerlink.4094", "mlagDualPortsCnt": 4, "mlagSinglePortsCnt": 0, "mlagErrorPortsCnt":
-    0, "timestamp": 1597536327784}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
-    "systemId": "44:39:39:ff:40:94", "state": "active", "peerAddress": "169.254.1.2",
-    "role": "primary", "peerLink": "peerlink.4094", "mlagDualPortsCnt": 5, "mlagSinglePortsCnt":
-    0, "mlagErrorPortsCnt": 0, "timestamp": 1597536850045}, {"namespace": "ospf-ibgp",
-    "hostname": "leaf02", "systemId": "44:39:39:ff:40:94", "state": "active", "peerAddress":
-    "169.254.1.1", "role": "secondary", "peerLink": "peerlink.4094", "mlagDualPortsCnt":
-    5, "mlagSinglePortsCnt": 0, "mlagErrorPortsCnt": 0, "timestamp": 1597536850041},
-    {"namespace": "ospf-ibgp", "hostname": "leaf03", "systemId": "44:39:39:ff:40:95",
+  output: '[{"namespace": "ospf-ibgp", "hostname": "leaf03", "systemId": "44:39:39:ff:40:95",
     "state": "active", "peerAddress": "169.254.1.2", "role": "primary", "peerLink":
     "peerlink.4094", "mlagDualPortsCnt": 5, "mlagSinglePortsCnt": 0, "mlagErrorPortsCnt":
-    0, "timestamp": 1597536850400}, {"namespace": "ospf-ibgp", "hostname": "leaf04",
+    0, "timestamp": 1606024535726}, {"namespace": "ospf-ibgp", "hostname": "leaf04",
     "systemId": "44:39:39:ff:40:95", "state": "active", "peerAddress": "169.254.1.1",
     "role": "secondary", "peerLink": "peerlink.4094", "mlagDualPortsCnt": 5, "mlagSinglePortsCnt":
-    0, "mlagErrorPortsCnt": 0, "timestamp": 1597536850041}]'
+    0, "mlagErrorPortsCnt": 0, "timestamp": 1606024535726}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf02", "systemId": "44:39:39:ff:40:94", "state": "active", "peerAddress":
+    "169.254.1.1", "role": "secondary", "peerLink": "peerlink.4094", "mlagDualPortsCnt":
+    5, "mlagSinglePortsCnt": 0, "mlagErrorPortsCnt": 0, "timestamp": 1606024535926},
+    {"namespace": "ospf-ibgp", "hostname": "leaf01", "systemId": "44:39:39:ff:40:94",
+    "state": "active", "peerAddress": "169.254.1.2", "role": "primary", "peerLink":
+    "peerlink.4094", "mlagDualPortsCnt": 5, "mlagSinglePortsCnt": 0, "mlagErrorPortsCnt":
+    0, "timestamp": 1606024536270}, {"namespace": "dual-evpn", "hostname": "leaf01",
+    "systemId": "44:39:39:ff:40:94", "state": "active", "peerAddress": "169.254.1.2",
+    "role": "primary", "peerLink": "peerlink.4094", "mlagDualPortsCnt": 4, "mlagSinglePortsCnt":
+    0, "mlagErrorPortsCnt": 0, "timestamp": 1606025647522}, {"namespace": "dual-evpn",
+    "hostname": "leaf04", "systemId": "44:39:39:ff:40:94", "state": "active", "peerAddress":
+    "169.254.1.1", "role": "secondary", "peerLink": "peerlink.4094", "mlagDualPortsCnt":
+    4, "mlagSinglePortsCnt": 0, "mlagErrorPortsCnt": 0, "timestamp": 1606025647608},
+    {"namespace": "dual-evpn", "hostname": "leaf02", "systemId": "44:39:39:ff:40:94",
+    "state": "active", "peerAddress": "169.254.1.1", "role": "secondary", "peerLink":
+    "peerlink.4094", "mlagDualPortsCnt": 4, "mlagSinglePortsCnt": 0, "mlagErrorPortsCnt":
+    0, "timestamp": 1606025647683}, {"namespace": "dual-evpn", "hostname": "leaf03",
+    "systemId": "44:39:39:ff:40:94", "state": "active", "peerAddress": "169.254.1.2",
+    "role": "primary", "peerLink": "peerlink.4094", "mlagDualPortsCnt": 4, "mlagSinglePortsCnt":
+    0, "mlagErrorPortsCnt": 0, "timestamp": 1606025647723}]'
 - command: mlag show --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: mlag show
-  output: '[{"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf03"},
-    {"hostname": "leaf04"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
-    "leaf03"}, {"hostname": "leaf04"}]'
+  output: '[{"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname": "leaf02"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf03"}]'
 - command: mlag summarize --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: mlag summarize
-  output: '{"dual-evpn": {"deviceCnt": 4, "uniqueSystemIdCnt": 1, "devicesWithfailedStateCnt":
-    0, "devicesWithBackupInactiveCnt": 4, "mlagNumDualPortsStat": [4, 4, 4], "mlagNumSinglePortStat":
-    [0, 0, 0], "mlagNumErrorPortStat": [0, 0, 0]}, "ospf-ibgp": {"deviceCnt": 4, "uniqueSystemIdCnt":
-    2, "devicesWithfailedStateCnt": 0, "devicesWithBackupInactiveCnt": 4, "mlagNumDualPortsStat":
-    [5, 5, 5], "mlagNumSinglePortStat": [0, 0, 0], "mlagNumErrorPortStat": [0, 0,
+  output: '{"ospf-ibgp": {"deviceCnt": 4, "uniqueSystemIdCnt": 2, "devicesWithfailedStateCnt":
+    0, "devicesWithBackupInactiveCnt": 4, "mlagNumDualPortsStat": [5, 5, 5], "mlagNumSinglePortStat":
+    [0, 0, 0], "mlagNumErrorPortStat": [0, 0, 0]}, "dual-evpn": {"deviceCnt": 4, "uniqueSystemIdCnt":
+    1, "devicesWithfailedStateCnt": 0, "devicesWithBackupInactiveCnt": 4, "mlagNumDualPortsStat":
+    [4, 4, 4], "mlagNumSinglePortStat": [0, 0, 0], "mlagNumErrorPortStat": [0, 0,
     0]}}'
 - command: mlag summarize --namespace=dual-evpn --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: mlag summarize
   output: '{"dual-evpn": {"deviceCnt": 4, "uniqueSystemIdCnt": 1, "devicesWithfailedStateCnt":
-    0, "devicesWithBackupInactiveCnt": 4, "mlagNumDualPortsStat": [4.0, 4.0, 4.0],
-    "mlagNumSinglePortStat": [0.0, 0.0, 0.0], "mlagNumErrorPortStat": [0.0, 0.0, 0.0]}}'
+    0, "devicesWithBackupInactiveCnt": 4, "mlagNumDualPortsStat": [4, 4, 4], "mlagNumSinglePortStat":
+    [0, 0, 0], "mlagNumErrorPortStat": [0, 0, 0]}}'
 - command: mlag unique --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: mlag unique
-  output: '[{"hostname": "leaf04", "count": 2}, {"hostname": "leaf03", "count": 2},
-    {"hostname": "leaf02", "count": 2}, {"hostname": "leaf01", "count": 2}]'
+  output: '[{"hostname": "leaf04", "count": 2}, {"hostname": "leaf01", "count": 2},
+    {"hostname": "leaf02", "count": 2}, {"hostname": "leaf03", "count": 2}]'
