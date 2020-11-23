@@ -26,5 +26,5 @@ class RoutesObj(SqObject):
             self.summarize_df = pd.DataFrame(
                 {'error': ['ERROR: You cannot specify columns with summarize']})
             return self.summarize_df
-        return self.engine_obj.summarize(namespace=namespace,
-                                         hostname=hostname, vrf=vrf)
+        return self.engine_obj.summarize(namespace=namespace, vrf=vrf,
+                                         hostname=hostname)
