@@ -48,7 +48,7 @@ apply:
       - command: show ospf overview | display json
         normalize: 'ospf-overview-information/[0]/ospf-overview/*/[
         "ospf-router-id/[0]/data: routerId",
-        "record-type: _entryType?|overview",
+        "_entryType: _entryType?|overview",
         "ifname: ifname?|_overview",
         ]'
 
@@ -68,7 +68,7 @@ apply:
         "retransmit-interval/[0]/data: retxTime?|0",
         "authentication-type/[0]/data: authType",
         "ospf-stub-type/[0]/data: stub",
-        "record-type: _entryType?|peers",
+        "_entryType: _entryType?|peers",
         ]'
 
   junos-mx:
@@ -93,7 +93,7 @@ apply:
         "cost: cost?|1",
         "passive: passive?|False",
         "unnumbered: isUnnumbered?|False",
-        "entry_type: _entryType?|interfaces",
+        "_entryType: _entryType?|interfaces",
         ]'
 
       - command: show ip ospf vrf all | json
@@ -104,5 +104,5 @@ apply:
         "TABLE_area/ROW_area/[*]?/no_summary: _no_summary",
         "TABLE_area/ROW_area/[*]?/nssa: _nssa",
         "TABLE_area/ROW_area/[*]?/auth_type: authType",
-        "entry_type: _entryType?|areas",
+        "_entryType: _entryType?|areas",
         ]'
