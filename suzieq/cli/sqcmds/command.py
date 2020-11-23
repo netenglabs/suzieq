@@ -1,7 +1,6 @@
 import time
 import pandas as pd
 from nubia import command, argument, context
-from tabulate import tabulate
 from io import StringIO
 import shutil
 from prompt_toolkit import prompt
@@ -110,6 +109,9 @@ class SqCommand:
     def _pager_print(self, df: pd.DataFrame) -> None:
         '''To support paging'''
 
+        if df.index.dtype == 'int64':
+            df.reset_index(drop=True, inplace=True)
+
         if self.ctxt.pager:
             termsize = shutil.get_terminal_size((80, 20))
             bufio = StringIO()
@@ -162,7 +164,7 @@ class SqCommand:
         elif self.format == 'csv':
             print(df[cols].to_csv())
         elif self.format == 'markdown':
-            print(tabulate(df[cols], headers=cols, tablefmt="simple"))
+            print(df[cols].to_markdown())
         else:
             with pd.option_context('precision', 3,
                                    'display.max_colwidth', max_colwidth,
