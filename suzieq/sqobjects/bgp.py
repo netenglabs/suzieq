@@ -7,8 +7,11 @@ class BgpObj(SqObject):
         super().__init__(table='bgp', **kwargs)
         self._valid_get_args = ['namespace', 'hostname', 'columns', 'state',
                                 'vrf', 'peer']
-        self._valid_arg_vals = {'state': ['Established', 'NotEstd', '']}
-        self._valid_assert_args = ['namespace', 'hostname', 'vrf', ]
+        self._valid_arg_vals = {
+            'state': ['Established', 'NotEstd', ''],
+            'status': ['all', 'pass', 'fail'],
+        }
+        self._valid_assert_args = ['namespace', 'hostname', 'vrf', 'status']
 
     def aver(self, **kwargs):
         """Assert that the BGP state is OK"""

@@ -11,8 +11,11 @@ class OspfObj(SqObject):
         self._addnl_nbr_fields = ['state']
         self._valid_get_args = ['namespace', 'hostname', 'columns',
                                 'vrf', 'ifname', 'state']
-        self._valid_assert_args = ['namespace', 'vrf']
-        self._valid_arg_vals = {'state': ['full', 'other', 'passive', '']}
+        self._valid_assert_args = ['namespace', 'vrf', 'status']
+        self._valid_arg_vals = {
+            'state': ['full', 'other', 'passive', ''],
+            'status': ['all', 'pass', 'fail'],
+        }
 
     def aver(self, **kwargs):
         """Assert that the OSPF state is OK"""

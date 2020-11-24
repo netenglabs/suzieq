@@ -56,12 +56,15 @@ class EvpnVniCmd(SqCommand):
         return self._gen_output(df)
 
     @command("assert")
-    def aver(self):
+    @argument("status", description="Show only assert that matches this value",
+              choices=["all", "fail", "pass"])
+    def aver(self, status: str = 'pass'):
         """Assert BGP is functioning properly"""
         now = time.time()
         df = self.sqobj.aver(
             hostname=self.hostname,
             namespace=self.namespace,
+            status=status,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
 

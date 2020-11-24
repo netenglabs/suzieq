@@ -296,3 +296,127 @@ tests:
     {"hostname": "leaf04", "vni": 13, "remoteVtepList": ["10.0.0.112", "10.0.0.102",
     "10.0.0.101"]}, {"hostname": "leaf04", "vni": 104001, "remoteVtepList": []}, {"hostname":
     "leaf04", "vni": 24, "remoteVtepList": ["10.0.0.112", "10.0.0.102", "10.0.0.101"]}]'
+- command: evpnVni assert --status=pass --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: evpnVni assert
+  output: '[{"namespace": "ospf-ibgp", "hostname": "exit02", "vni": 104001, "type":
+    "L3", "assertReason": "-", "assert": "pass", "timestamp": 1606024534311}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf01", "vni": 24, "type": "L2", "assertReason": "-",
+    "assert": "pass", "timestamp": 1606024534465}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf01", "vni": 13, "type": "L2", "assertReason": "-", "assert": "pass", "timestamp":
+    1606024534465}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "vni": 104001,
+    "type": "L3", "assertReason": "-", "assert": "pass", "timestamp": 1606024534465},
+    {"namespace": "ospf-ibgp", "hostname": "leaf02", "vni": 104001, "type": "L3",
+    "assertReason": "-", "assert": "pass", "timestamp": 1606024534468}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf02", "vni": 24, "type": "L2", "assertReason": "-",
+    "assert": "pass", "timestamp": 1606024534468}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf02", "vni": 13, "type": "L2", "assertReason": "-", "assert": "pass", "timestamp":
+    1606024534468}, {"namespace": "ospf-ibgp", "hostname": "exit01", "vni": 104001,
+    "type": "L3", "assertReason": "-", "assert": "pass", "timestamp": 1606024534515},
+    {"namespace": "ospf-ibgp", "hostname": "leaf04", "vni": 104001, "type": "L3",
+    "assertReason": "-", "assert": "pass", "timestamp": 1606024534679}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf04", "vni": 24, "type": "L2", "assertReason": "-",
+    "assert": "pass", "timestamp": 1606024534679}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf04", "vni": 13, "type": "L2", "assertReason": "-", "assert": "pass", "timestamp":
+    1606024534679}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "vni": 24, "type":
+    "L2", "assertReason": "-", "assert": "pass", "timestamp": 1606024534746}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf03", "vni": 13, "type": "L2", "assertReason": "-",
+    "assert": "pass", "timestamp": 1606024534746}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf03", "vni": 104001, "type": "L3", "assertReason": "-", "assert": "pass",
+    "timestamp": 1606024534746}, {"namespace": "dual-evpn", "hostname": "leaf01",
+    "vni": 13, "type": "L2", "assertReason": "-", "assert": "pass", "timestamp": 1606025645591},
+    {"namespace": "dual-evpn", "hostname": "leaf01", "vni": 24, "type": "L2", "assertReason":
+    "-", "assert": "pass", "timestamp": 1606025645591}, {"namespace": "dual-evpn",
+    "hostname": "leaf01", "vni": 104001, "type": "L3", "assertReason": "-", "assert":
+    "pass", "timestamp": 1606025645591}, {"namespace": "dual-evpn", "hostname": "exit01",
+    "vni": 24, "type": "L2", "assertReason": "-", "assert": "pass", "timestamp": 1606025645773},
+    {"namespace": "dual-evpn", "hostname": "exit01", "vni": 104001, "type": "L3",
+    "assertReason": "-", "assert": "pass", "timestamp": 1606025645773}, {"namespace":
+    "dual-evpn", "hostname": "exit01", "vni": 13, "type": "L2", "assertReason": "-",
+    "assert": "pass", "timestamp": 1606025645773}, {"namespace": "dual-evpn", "hostname":
+    "exit02", "vni": 104001, "type": "L3", "assertReason": "-", "assert": "pass",
+    "timestamp": 1606025645924}, {"namespace": "dual-evpn", "hostname": "exit02",
+    "vni": 13, "type": "L2", "assertReason": "-", "assert": "pass", "timestamp": 1606025645924},
+    {"namespace": "dual-evpn", "hostname": "exit02", "vni": 24, "type": "L2", "assertReason":
+    "-", "assert": "pass", "timestamp": 1606025645924}, {"namespace": "dual-evpn",
+    "hostname": "leaf03", "vni": 104001, "type": "L3", "assertReason": "-", "assert":
+    "pass", "timestamp": 1606025646848}, {"namespace": "dual-evpn", "hostname": "leaf03",
+    "vni": 13, "type": "L2", "assertReason": "-", "assert": "pass", "timestamp": 1606025646848},
+    {"namespace": "dual-evpn", "hostname": "leaf03", "vni": 24, "type": "L2", "assertReason":
+    "-", "assert": "pass", "timestamp": 1606025646848}, {"namespace": "dual-evpn",
+    "hostname": "leaf02", "vni": 104001, "type": "L3", "assertReason": "-", "assert":
+    "pass", "timestamp": 1606025647035}, {"namespace": "dual-evpn", "hostname": "leaf02",
+    "vni": 13, "type": "L2", "assertReason": "-", "assert": "pass", "timestamp": 1606025647035},
+    {"namespace": "dual-evpn", "hostname": "leaf02", "vni": 24, "type": "L2", "assertReason":
+    "-", "assert": "pass", "timestamp": 1606025647035}, {"namespace": "dual-evpn",
+    "hostname": "leaf04", "vni": 13, "type": "L2", "assertReason": "-", "assert":
+    "pass", "timestamp": 1606025647112}, {"namespace": "dual-evpn", "hostname": "leaf04",
+    "vni": 104001, "type": "L3", "assertReason": "-", "assert": "pass", "timestamp":
+    1606025647112}, {"namespace": "dual-evpn", "hostname": "leaf04", "vni": 24, "type":
+    "L2", "assertReason": "-", "assert": "pass", "timestamp": 1606025647112}]'
+- command: evpnVni assert --status=fail --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: evpnVni assert
+  output: '[]'
+- command: evpnVni assert --status=all --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: evpnVni assert
+  output: '[{"namespace": "ospf-ibgp", "hostname": "exit02", "vni": 104001, "type":
+    "L3", "assertReason": "-", "assert": "pass", "timestamp": 1606024534311}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf01", "vni": 24, "type": "L2", "assertReason": "-",
+    "assert": "pass", "timestamp": 1606024534465}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf01", "vni": 13, "type": "L2", "assertReason": "-", "assert": "pass", "timestamp":
+    1606024534465}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "vni": 104001,
+    "type": "L3", "assertReason": "-", "assert": "pass", "timestamp": 1606024534465},
+    {"namespace": "ospf-ibgp", "hostname": "leaf02", "vni": 104001, "type": "L3",
+    "assertReason": "-", "assert": "pass", "timestamp": 1606024534468}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf02", "vni": 24, "type": "L2", "assertReason": "-",
+    "assert": "pass", "timestamp": 1606024534468}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf02", "vni": 13, "type": "L2", "assertReason": "-", "assert": "pass", "timestamp":
+    1606024534468}, {"namespace": "ospf-ibgp", "hostname": "exit01", "vni": 104001,
+    "type": "L3", "assertReason": "-", "assert": "pass", "timestamp": 1606024534515},
+    {"namespace": "ospf-ibgp", "hostname": "leaf04", "vni": 104001, "type": "L3",
+    "assertReason": "-", "assert": "pass", "timestamp": 1606024534679}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf04", "vni": 24, "type": "L2", "assertReason": "-",
+    "assert": "pass", "timestamp": 1606024534679}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf04", "vni": 13, "type": "L2", "assertReason": "-", "assert": "pass", "timestamp":
+    1606024534679}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "vni": 24, "type":
+    "L2", "assertReason": "-", "assert": "pass", "timestamp": 1606024534746}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf03", "vni": 13, "type": "L2", "assertReason": "-",
+    "assert": "pass", "timestamp": 1606024534746}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf03", "vni": 104001, "type": "L3", "assertReason": "-", "assert": "pass",
+    "timestamp": 1606024534746}, {"namespace": "dual-evpn", "hostname": "leaf01",
+    "vni": 13, "type": "L2", "assertReason": "-", "assert": "pass", "timestamp": 1606025645591},
+    {"namespace": "dual-evpn", "hostname": "leaf01", "vni": 24, "type": "L2", "assertReason":
+    "-", "assert": "pass", "timestamp": 1606025645591}, {"namespace": "dual-evpn",
+    "hostname": "leaf01", "vni": 104001, "type": "L3", "assertReason": "-", "assert":
+    "pass", "timestamp": 1606025645591}, {"namespace": "dual-evpn", "hostname": "exit01",
+    "vni": 24, "type": "L2", "assertReason": "-", "assert": "pass", "timestamp": 1606025645773},
+    {"namespace": "dual-evpn", "hostname": "exit01", "vni": 104001, "type": "L3",
+    "assertReason": "-", "assert": "pass", "timestamp": 1606025645773}, {"namespace":
+    "dual-evpn", "hostname": "exit01", "vni": 13, "type": "L2", "assertReason": "-",
+    "assert": "pass", "timestamp": 1606025645773}, {"namespace": "dual-evpn", "hostname":
+    "exit02", "vni": 104001, "type": "L3", "assertReason": "-", "assert": "pass",
+    "timestamp": 1606025645924}, {"namespace": "dual-evpn", "hostname": "exit02",
+    "vni": 13, "type": "L2", "assertReason": "-", "assert": "pass", "timestamp": 1606025645924},
+    {"namespace": "dual-evpn", "hostname": "exit02", "vni": 24, "type": "L2", "assertReason":
+    "-", "assert": "pass", "timestamp": 1606025645924}, {"namespace": "dual-evpn",
+    "hostname": "leaf03", "vni": 104001, "type": "L3", "assertReason": "-", "assert":
+    "pass", "timestamp": 1606025646848}, {"namespace": "dual-evpn", "hostname": "leaf03",
+    "vni": 13, "type": "L2", "assertReason": "-", "assert": "pass", "timestamp": 1606025646848},
+    {"namespace": "dual-evpn", "hostname": "leaf03", "vni": 24, "type": "L2", "assertReason":
+    "-", "assert": "pass", "timestamp": 1606025646848}, {"namespace": "dual-evpn",
+    "hostname": "leaf02", "vni": 104001, "type": "L3", "assertReason": "-", "assert":
+    "pass", "timestamp": 1606025647035}, {"namespace": "dual-evpn", "hostname": "leaf02",
+    "vni": 13, "type": "L2", "assertReason": "-", "assert": "pass", "timestamp": 1606025647035},
+    {"namespace": "dual-evpn", "hostname": "leaf02", "vni": 24, "type": "L2", "assertReason":
+    "-", "assert": "pass", "timestamp": 1606025647035}, {"namespace": "dual-evpn",
+    "hostname": "leaf04", "vni": 13, "type": "L2", "assertReason": "-", "assert":
+    "pass", "timestamp": 1606025647112}, {"namespace": "dual-evpn", "hostname": "leaf04",
+    "vni": 104001, "type": "L3", "assertReason": "-", "assert": "pass", "timestamp":
+    1606025647112}, {"namespace": "dual-evpn", "hostname": "leaf04", "vni": 24, "type":
+    "L2", "assertReason": "-", "assert": "pass", "timestamp": 1606025647112}]'
+- command: evpnVni assert --status=whatever --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: evpnVni assert
+  output: '[]'

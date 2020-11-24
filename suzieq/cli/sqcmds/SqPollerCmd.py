@@ -34,7 +34,7 @@ class SqPollerCmd(SqCommand):
     @argument("service", description="name of service to match")
     @argument("status", description="status of service to match",
               choices=["all", "pass", "fail"])
-    def show(self, service: str = "", status: str = ""):
+    def show(self, service: str = "", status: str = "all"):
         """
         Show SqPoller info
         """
