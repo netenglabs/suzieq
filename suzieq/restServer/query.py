@@ -328,7 +328,7 @@ async def query_vlan(verb: CommonVerbs,
                      start_time: str = "", end_time: str = "",
                      view: str = "latest", namespace: str = None,
                      columns: str = None, vlan: str = None,
-                     state: str = None,
+                     state: str = None, vlanName: str = None,
                      ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, locals())
