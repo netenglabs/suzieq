@@ -1,0 +1,108 @@
+
+service: ospfIf
+ignore-fields:
+keys:
+  - vrf
+  - ifname
+show-fields:
+  - vrf
+  - ifname
+  - area
+  - state
+  - passive
+  - nbrCount
+apply:
+  eos:
+    version: all
+    command: show ip ospf interface
+    normalize: 'vrfs/*:vrf/instList/*:instance/interfaces/*:ifname/[
+       "passive: passive?|False",
+       "helloInterval: helloTime?|0",
+       "area: area?|",
+       "retransmitInterval: retxTime?|0",
+       "interfaceType: networkType?|",
+       "deadInterval: deadTime?|0",
+       "neighborCount: nbrCount?|0",
+       "state: state?|",
+       "interfaceAddress: ipAddress?|",
+       "cost: cost?|0",
+       "routerId: routerId?|",
+       "isUnnumbered: False",
+       "interfaceMask: maskLen?|32",
+       ]'
+
+  cumulus:
+    version: all
+    command: sudo vtysh -c 'show ip ospf interface'
+    textfsm: textfsm_templates/frr_ospfif.tfsm
+
+  linux:
+    copy: cumulus
+
+  sonic:
+    copy: cumulus
+
+  junos-qfx:
+    version: all
+    command:
+      - command: show ospf overview | display json
+        normalize: 'ospf-overview-information/[0]/ospf-overview/*/[
+        "ospf-router-id/[0]/data: routerId",
+        "_entryType: _entryType?|overview",
+        "ifname: ifname?|_overview",
+        ]'
+
+      - command: show ospf interface detail | display json
+        normalize: 'ospf-interface-information/[0]/ospf-interface/*/[
+        "interface-name/[0]/data: ifname",
+        "ospf-interface-state/[0]/data: state?Down|Up",
+        "ospf-area/[0]/data: area",
+        "neighbor-count/[0]/data: nbrCount?|0",
+        "interface-type/[0]/data: networkType?|",
+        "interface-address/[0]/data: ipAddress",
+        "address-mask/[0]/data: maskLen?|32",
+        "interface-cost/[0]/data: cost?|0",
+        "passive/[0]/data: passive?Passive|False",
+        "hello-interval/[0]/data: helloTime?|0",
+        "dead-interval/[0]/data: deadTime?|0",
+        "retransmit-interval/[0]/data: retxTime?|0",
+        "authentication-type/[0]/data: authType",
+        "ospf-stub-type/[0]/data: stub",
+        "_entryType: _entryType?|peers",
+        ]'
+
+  junos-mx:
+    copy: junos-qfx
+
+  nxos:
+    version: all
+    command:
+      - command: show ip ospf interface vrf all | json
+        normalize: 'TABLE_ctx/ROW_ctx/*:cname:vrf|TABLE_intf/ROW_intf/*?/[
+        "ifname: ifname",
+        "proto_status: state",
+        "admin_status: _adminState",
+        "addr: ipAddress",
+        "masklen: maskLen?|32",
+        "area: area",
+        "type_str: networkType?|",
+        "nbr_adjs: nbrCount?|0",
+        "hello_interval: helloTime?|10",
+        "dead_interval: deadTime?|40",
+        "rxmt_interval: retxTime?|5",
+        "cost: cost?|1",
+        "passive: passive?|False",
+        "unnumbered: isUnnumbered?|False",
+        "_entryType: _entryType?|interfaces",
+        ]'
+
+      - command: show ip ospf vrf all | json
+        normalize: 'TABLE_ctx/ROW_ctx/*?/[
+        "rid: routerId",
+        "TABLE_area/ROW_area/[*]?/aname: ifname",
+        "TABLE_area/ROW_area/[*]?/stub: _stub",
+        "TABLE_area/ROW_area/[*]?/no_summary: _no_summary",
+        "TABLE_area/ROW_area/[*]?/nssa: _nssa",
+        "TABLE_area/ROW_area/[*]?/auth_type: authType",
+        "_entryType: _entryType?|areas",
+        ]'

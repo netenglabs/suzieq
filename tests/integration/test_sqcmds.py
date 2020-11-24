@@ -260,6 +260,67 @@ def execute_cmd(cmd, verb, arg, filter=None):
         return c()
 
 
+def assert_df_equal(expected_df, got_df, ignore_cols) -> None:
+    '''Compare the dataframes for equality'''
+
+    if ((expected_df.empty and not got_df.empty) or
+            (not expected_df.empty and got_df.empty)):
+        assert(got_df.shape == expected_df.shape)
+        # We assume the asssert failure prevents the code from continuing
+
+    if (expected_df.empty and got_df.empty):
+        return
+
+    # Drop any columns to be ignored
+    if ignore_cols:
+        if not got_df.empty:
+            got_df.drop(columns=ignore_cols, inplace=True, errors='ignore')
+        if not expected_df.empty:
+            expected_df.drop(columns=ignore_cols,
+                             inplace=True, errors='ignore')
+
+    try:
+        expected_df.sort_values(by=expected_df.columns.tolist(),
+                                inplace=True)
+        got_df.sort_values(by=got_df.columns.tolist(), inplace=True)
+    except Exception:
+        pass
+
+    try:
+        rslt_df = expected_df.compare(got_df, keep_equal=True)
+        if not rslt_df.empty:
+            matches = True
+            # If there are lists in the values, their order maybe causing
+            # the failure. Pass if the problem is the order but they're
+            # equal
+            for row in rslt_df.itertuples():
+                if isinstance(row._1, list) and isinstance(row._2, list):
+                    if set(row._1) != set(row._2):
+                        matches = False
+                        break
+                else:
+                    matches = False
+                    break
+            if not matches:
+                print(rslt_df)
+                assert(rslt_df.empty)
+    except ValueError:
+        # This happens when the two dataframes don't have the same shape
+        # such as what happens if the return is an error. So, compare fails
+        # and we have to try a different technique
+        try:
+            rslt_df = pd.merge(got_df,
+                               expected_df,
+                               how='outer',
+                               indicator=True)
+            if not got_df.empty:
+                assert(not rslt_df.empty and rslt_df.query(
+                    '_merge != "both"').empty)
+        except Exception:
+            assert(got_df.shape == expected_df.shape)
+            assert('Unable to compare' == '')
+
+
 def _test_sqcmds(testvar, context_config):
     output, error = setup_sqcmds(testvar, context_config)
 
@@ -269,9 +330,14 @@ def _test_sqcmds(testvar, context_config):
         except json.JSONDecodeError:
             jout = output
 
-    if 'output' in testvar:
+    if 'ignore-columns' in testvar:
+        ignore_cols = testvar['ignore-columns'].split()
+    else:
+        ignore_cols = []
 
+    if 'output' in testvar:
         expected_df = pd.read_json(testvar['output'].strip())
+
         try:
             got_df = pd.read_json(output.decode('utf8').strip())
         except AttributeError:
@@ -279,19 +345,13 @@ def _test_sqcmds(testvar, context_config):
                 got_df = pd.read_json(output)
             else:
                 got_df = pd.DataFrame()
+
         # expected_df.sort_values(by=expected_df.columns[:1].tolist()) \
         #            .reset_index(drop=True)
         # got_df = got_df.sort_values(by=got_df.columns[:1].tolist()) \
         #                .reset_index(drop=True)
         # assert(expected_df.shape == got_df.shape)
-        rslt_df = pd.merge(got_df.reset_index(drop=True),
-                           expected_df.reset_index(drop=True),
-                           left_index=True, right_index=True,
-                           indicator=True)
-        assert(got_df.shape == expected_df.shape)
-        if not got_df.empty:
-            assert(not rslt_df.empty and rslt_df.query(
-                '_merge != "both"').empty)
+        assert_df_equal(expected_df, got_df, ignore_cols)
 
     elif not error and 'xfail' in testvar:
         # this was marked to fail, but it succeeded so we must return
@@ -306,15 +366,10 @@ def _test_sqcmds(testvar, context_config):
             got_df = pd.DataFrame(json.loads(error.decode('utf-8').strip()))
         except json.JSONDecodeError:
             got_df = pd.DataFrame(error.decode('utf-8').strip())
+
         expected_df = pd.DataFrame(json.loads(testvar['error']['error']))
-        rslt_df = pd.merge(got_df.reset_index(drop=True),
-                           expected_df.reset_index(drop=True),
-                           left_index=True, right_index=True, how='outer',
-                           indicator=True)
-        assert(got_df.shape == expected_df.shape)
-        if not got_df.empty:
-            assert(not rslt_df.empty and rslt_df.query(
-                '_merge != "both"').empty)
+
+        assert_df_equal(expected_df, got_df, ignore_cols)
     else:
         raise Exception(f"either xfail or output requried {error}")
 

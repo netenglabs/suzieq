@@ -133,6 +133,21 @@ async def start_poller(userargs, cfg):
 
     ignore_known_hosts = userargs.ignore_known_hosts or None
 
+    if userargs.service_only:
+        svclist = userargs.service_only.split()
+    else:
+        svcs = list(Path(cfg["service-directory"]).glob('*.yml'))
+        svclist = [os.path.basename(x).split('.')[0] for x in svcs]
+
+    if userargs.exclude_services:
+        svclist = list(filter(lambda x: x not in userargs.exclude_services,
+                              svclist))
+
+    if not svclist:
+        print(
+            f"No correct services specified. Should have been one of {[svc.name for svc in svcs]}")
+        sys.exit(1)
+
     if userargs.input_dir:
         tasks.append(init_files(userargs.input_dir))
     else:
@@ -144,7 +159,9 @@ async def start_poller(userargs, cfg):
                                 jump_host_key_file=userargs.jump_host_key_file,
                                 ignore_known_hosts=ignore_known_hosts))
 
+    period = cfg.get('period', 15)
     tasks.append(init_services(cfg["service-directory"], schema_dir, queue,
+                               svclist, period,
                                userargs.run_once or "forever"))
 
     nodes, svcs = await asyncio.gather(*tasks)
@@ -165,22 +182,11 @@ async def start_poller(userargs, cfg):
 
     logger.info("Suzieq Started")
 
-    if userargs.service_only:
-        svclist = userargs.service_only.split(",")
-    else:
-        svclist = [svc.name for svc in svcs]
-
-    working_svcs = [svc for svc in svcs if svc.name in svclist]
-    if len(working_svcs) < 1:
-        print(
-            f"No correct services specified. Should have been one of {[svc.name for svc in svcs]}")
-        sys.exit(1)
-
     try:
         # The logic below of handling the writer worker task separately is to ensure
         # we can terminate properly when all the other tasks have finished as in the
         # case of using file input instead of SSH
-        svc_tasks = [svc.run() for svc in working_svcs]
+        svc_tasks = [svc.run() for svc in svcs]
         tasks = [nodes[node].run() for node in nodes]
         tasks += [run_output_worker(queue, outputs)]
         tasks += svc_tasks
@@ -247,7 +253,14 @@ if __name__ == "__main__":
         "-s",
         "--service-only",
         type=str,
-        help="Only run this comma separated list of services",
+        help="Only run this space separated list of services",
+    )
+
+    parser.add_argument(
+        "-x",
+        "--exclude-services",
+        type=str,
+        help="Exclude running this space separated list of services",
     )
 
     parser.add_argument(

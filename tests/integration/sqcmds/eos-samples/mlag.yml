@@ -3,22 +3,32 @@ tests:
 - command: mlag show --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: mlag show eos
-  output: '[]'
+  output: '[{"namespace": "eos", "hostname": "leaf01", "systemId": "46:38:39:38:92:9d",
+    "state": "active", "peerAddress": "169.254.1.1", "role": "secondary", "peerLink":
+    "Ethernet3", "mlagDualPortsCnt": 2, "mlagSinglePortsCnt": 0, "mlagErrorPortsCnt":
+    0, "timestamp": 1606030435633}, {"namespace": "eos", "hostname": "leaf02", "systemId":
+    "46:38:39:38:92:9d", "state": "active", "peerAddress": "169.254.1.0", "role":
+    "primary", "peerLink": "Ethernet3", "mlagDualPortsCnt": 2, "mlagSinglePortsCnt":
+    0, "mlagErrorPortsCnt": 0, "timestamp": 1606030435731}, {"namespace": "eos", "hostname":
+    "leaf04", "systemId": "46:38:39:2f:ce:22", "state": "active", "peerAddress": "169.254.1.0",
+    "role": "secondary", "peerLink": "Port-Channel12", "mlagDualPortsCnt": 2, "mlagSinglePortsCnt":
+    0, "mlagErrorPortsCnt": 0, "timestamp": 1606030435790}, {"namespace": "eos", "hostname":
+    "leaf03", "systemId": "46:38:39:2f:ce:22", "state": "active", "peerAddress": "169.254.1.1",
+    "role": "primary", "peerLink": "Port-Channel12", "mlagDualPortsCnt": 2, "mlagSinglePortsCnt":
+    0, "mlagErrorPortsCnt": 0, "timestamp": 1606030435823}]'
 - command: mlag show --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: mlag show eos
-  output: '[]'
+  output: '[{"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf04"},
+    {"hostname": "leaf03"}]'
 - command: mlag summarize --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: mlag summarize eos
-  output: '{"portsErrDisabled": {}, "mlagDualPortsList": {}, "mlagSinglePortsList":
-    {}, "mlagErrorPortsList": {}, "vtepIP": {}, "peerRole": {}, "backupActive": {},
-    "mlagSinglePortsCnt": {}, "role": {}, "usesLinkLocal": {}, "mlagDualPortsCnt":
-    {}, "state": {}, "peerMacAddress": {}, "mlagErrorPortsCnt": {}, "peerLink": {},
-    "configSanity": {}, "backupReason": {}, "systemId": {}, "backupIP": {}, "peerAddress":
-    {}, "peerLinkStatus": {}, "domainId": {}, "hostname": {}, "namespace": {}, "timestamp":
-    {}, "active": {}}'
+  output: '{"eos": {"deviceCnt": 4, "uniqueSystemIdCnt": 2, "devicesWithfailedStateCnt":
+    0, "devicesWithBackupInactiveCnt": 4, "mlagNumDualPortsStat": [2, 2, 2], "mlagNumSinglePortStat":
+    [0, 0, 0], "mlagNumErrorPortStat": [0, 0, 0]}}'
 - command: mlag unique --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: mlag unique eos
-  output: '[]'
+  output: '[{"hostname": "leaf04", "count": 1}, {"hostname": "leaf01", "count": 1},
+    {"hostname": "leaf03", "count": 1}, {"hostname": "leaf02", "count": 1}]'

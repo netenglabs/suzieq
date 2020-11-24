@@ -24,7 +24,7 @@ class EvpnVniService(Service):
         for i, entry in enumerate(processed_data):
             if entry['vni'] is None:
                 del_indices.append(i)
-            if entry['mcastGroup']:
+            if entry['mcastGroup'] and entry['mcastGroup'] != "0.0.0.0":
                 entry['replicationType'] = 'multicast'
             elif entry['type'] != 'L3':
                 entry['replicationType'] = 'ingressBGP'
@@ -49,7 +49,7 @@ class EvpnVniService(Service):
                 drop_indices.append(i)
                 continue
 
-            if entry['_rectype'] == 'VNI':
+            if entry['_entryType'] == 'VNI':
                 type, vrf = entry['type'].split()
                 if type == 'L3':
                     entry['vrf'] = vrf[1:-1]  # strip off '[' and ']'
@@ -72,7 +72,7 @@ class EvpnVniService(Service):
                 entry['vlan'] = int(entry['vlan'])
                 vni_dict[entry['vni']] = entry
 
-            elif entry['_rectype'] == 'peers':
+            elif entry['_entryType'] == 'peers':
                 vni_list = convert_rangestring_to_list(
                     entry.get('_vniList', ''))
                 for vni in vni_list:
@@ -81,7 +81,7 @@ class EvpnVniService(Service):
                         vni_entry['remoteVtepList'].append(entry['vni'])
                 drop_indices.append(i)
 
-            elif entry['_rectype'] == 'iface':
+            elif entry['_entryType'] == 'iface':
                 if entry.get('encapType', '') != "VXLAN":
                     continue
 
@@ -106,17 +106,76 @@ class EvpnVniService(Service):
         newntries = {}
 
         for entry in processed_data:
-            priVtepIp = entry['priVtepIp'][0]['data']
-            for i, vni in enumerate(entry['_vniList']):
-                if vni not in newntries:
-                    vni_entry = {'vni': int(vni),
-                                 'remoteVtepList': [],
-                                 'priVtepIp': priVtepIp,
-                                 'type': 'L2',
-                                 'state': 'up',
-                                 'os': 'junos'
-                                 }
+            if entry['_entryType'] == 'instance':
+                for i, vni in enumerate(entry['_vniList']):
+                    irb_iflist = entry.get('_irbIfList', [])
+                    vrflist = entry.get('_vrfList', [])
+                    vlan = entry['_vlanList'][i]
+                    irbif = f'irb.{vlan}'
+                    try:
+                        index = irb_iflist.index(irbif)
+                        vrf = vrflist[index]
+                    except ValueError:
+                        vrf = ''
+                    except IndexError:
+                        vrf = ''
 
+                    if vni not in newntries:
+                        vni_entry = {
+                            'vni': int(vni),
+                            'remoteVtepList': [],
+                            'type': 'L2',
+                            'state': 'up',
+                            'vlan': int(vlan),
+                            'numRemoteVteps': 0,
+                            'numMacs': 0,
+                            'numArpNd': 0,
+                            'vrf': vrf,
+                            'os': 'junos'
+                        }
+                    newntries[vni] = vni_entry
+                    continue
+            elif entry['_entryType'] == 'l3':
+                vni = int(entry.get('vni', '0'))
+                priVtepIp = entry.get('priVtepIp', '[{"data": ""}]')
+                if priVtepIp:
+                    priVtepIp = priVtepIp[0]['data']
+
+                vni_entry = {
+                    'vni': vni,
+                    'remoteVtepList': [],
+                    'priVtepIp': priVtepIp,
+                    'type': 'L3',
+                    'state': 'up',
+                    'numRemoteVteps': 0,
+                    'routerMac': entry['routerMac'],
+                    'numMacs': 0,
+                    'numArpNd': 0,
+                    'mcastGroup': '0.0.0.0',
+                    'vrf': entry['vrf'],
+                    'os': 'junos'
+                }
+                newntries[vni] = vni_entry
+                continue
+            elif entry['_entryType'] == 'remote':
+                priVtepIp = entry.get('priVtepIp', '[{"data": ""}]')[0]['data']
+                for i, vni in enumerate(entry.get('_vniList', [])):
+                    vni_entry = newntries.get(vni, {})
+                    if not vni_entry:
+                        vni_entry = {
+                            'vni': int(vni),
+                            'remoteVtepList': [],
+                            'priVtepIp': priVtepIp,
+                            'type': 'L2',
+                            'state': 'up',
+                            'numRemoteVteps': len(entry['_floodVtepList']),
+                            'numMacs': 0,
+                            'numArpNd': 0,
+                            'os': 'junos'
+                        }
+                        newntries[vni] = vni_entry
+
+                    vni_entry['priVtepIp'] = priVtepIp
                     if entry['replicationType'][i] == '0.0.0.0':
                         vni_entry['replicationType'] = 'ingressBGP'
                         vni_entry['mcastGroup'] = "0.0.0.0"
@@ -124,10 +183,8 @@ class EvpnVniService(Service):
                         vni_entry['replicationType'] = 'multicast'
                         vni_entry['mcastGroup'] = entry['replicationType'][i]
 
-                    newntries[vni] = vni_entry
-
-                vni_entry = newntries[vni]
-                vni_entry['remoteVtepList'].append(entry['remoteVtepList'])
+                    vni_entry['remoteVtepList'].append(
+                        entry.get('_floodVtepList', ''))
 
         processed_data = list(newntries.values())
         return processed_data

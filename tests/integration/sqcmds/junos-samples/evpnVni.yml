@@ -4,29 +4,33 @@ tests:
   data-directory: tests/data/junos/parquet-out/
   marks: evpnVni show junos
   output: '[{"namespace": "junos", "hostname": "vqfx1", "vni": 10000, "type": "L2",
-    "vlan": 0, "state": "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 1, "priVtepIp":
-    "9.9.9.1", "secVtepIp": "", "timestamp": 1597189830824}, {"namespace": "junos",
-    "hostname": "vqfx1", "vni": 20000, "type": "L2", "vlan": 0, "state": "up", "mcastGroup":
+    "vlan": 100, "state": "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 1, "priVtepIp":
+    "9.9.9.1", "secVtepIp": "", "timestamp": 1606017394484}, {"namespace": "junos",
+    "hostname": "vqfx1", "vni": 20000, "type": "L2", "vlan": 200, "state": "up", "mcastGroup":
     "0.0.0.0", "remoteVtepCnt": 1, "priVtepIp": "9.9.9.1", "secVtepIp": "", "timestamp":
-    1597189830824}, {"namespace": "junos", "hostname": "vqfx2", "vni": 10000, "type":
-    "L2", "vlan": 0, "state": "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 1, "priVtepIp":
-    "9.9.9.2", "secVtepIp": "", "timestamp": 1597189830978}, {"namespace": "junos",
-    "hostname": "vqfx2", "vni": 20000, "type": "L2", "vlan": 0, "state": "up", "mcastGroup":
+    1606017394484}, {"namespace": "junos", "hostname": "vqfx1", "vni": 0, "type":
+    "L3", "vlan": 0, "state": "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 0, "priVtepIp":
+    "", "secVtepIp": "", "timestamp": 1606017394484}, {"namespace": "junos", "hostname":
+    "vqfx2", "vni": 10000, "type": "L2", "vlan": 100, "state": "up", "mcastGroup":
     "0.0.0.0", "remoteVtepCnt": 1, "priVtepIp": "9.9.9.2", "secVtepIp": "", "timestamp":
-    1597189830978}]'
+    1606017394890}, {"namespace": "junos", "hostname": "vqfx2", "vni": 20000, "type":
+    "L2", "vlan": 200, "state": "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 1,
+    "priVtepIp": "9.9.9.2", "secVtepIp": "", "timestamp": 1606017394890}, {"namespace":
+    "junos", "hostname": "vqfx2", "vni": 0, "type": "L3", "vlan": 0, "state": "up",
+    "mcastGroup": "0.0.0.0", "remoteVtepCnt": 0, "priVtepIp": "", "secVtepIp": "",
+    "timestamp": 1606017394890}]'
 - command: evpnVni show --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: evpnVni show junos
-  output: '[{"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx2"}, {"hostname":
-    "vqfx2"}]'
+  output: '[{"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname":
+    "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"}]'
 - command: evpnVni summarize --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: evpnVni summarize junos
-  output: '{"junos": {"mode": "asymmetric", "uniqueVtepCnt": 2, "uniqueVniCnt": 2,
+  output: '{"junos": {"mode": "asymmetric", "uniqueVtepCnt": 2, "uniqueVniCnt": 3,
     "uniqueL3VniCnt": 0, "uniqueL2VniCnt": 2, "uniqueMulticastGroups": 0, "vnisUsingMulticast":
-    0, "vnisUsingIngressRepl": 2, "uniqueVniTypeValCnt": {"L2": 4}, "macsInVniStat":
-    [0, 0, 0], "remoteVtepsPerVtepStat": [1, 1, 1.0]}}'
+    0, "vnisUsingIngressRepl": 2, "remoteVtepsPerVtepStat": [1, 1, 1.0]}}'
 - command: evpnVni unique --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: evpnVni unique junos
-  output: '[{"hostname": "vqfx2", "count": 2}, {"hostname": "vqfx1", "count": 2}]'
+  output: '[{"hostname": "vqfx2", "count": 3}, {"hostname": "vqfx1", "count": 3}]'

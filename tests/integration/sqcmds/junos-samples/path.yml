@@ -19,20 +19,15 @@ tests:
   data-directory: tests/data/junos/parquet-out/
   marks: path show junos
   output: '[{"pathid": 1, "hopCount": 0, "namespace": "junos", "hostname": "srv22",
-    "iif": "eth1", "oif": "eth1", "vrf": "default", "isL2": false, "overlay": false,
-    "mtuMatch": null, "mtu": 1500, "timestamp": 1604149439011}, {"pathid": 1, "hopCount":
-    1, "namespace": "junos", "hostname": "vqfx2", "iif": "xe-0/0/2.0", "oif": "irb.10000",
-    "vrf": "default", "isL2": false, "overlay": false, "mtuMatch": false, "mtu": 1514,
-    "timestamp": 1604149439085}, {"pathid": 1, "hopCount": 2, "namespace": "junos",
-    "hostname": "srv11", "iif": "eth1", "oif": "", "vrf": "default", "isL2": false,
-    "overlay": false, "mtuMatch": null, "mtu": 1500, "timestamp": 1604149439091}]'
+    "iif": "eth1", "oif": "", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+    null, "mtu": 1500, "timestamp": 1606017394033}]'
 - command: path summarize --dest=10.10.2.20 --src=10.10.1.10 --format=json --namespace=junos
   data-directory: tests/data/junos/parquet-out/
   marks: path summarize junos
-  output: '[{"junos": 1}, {"junos": [1, 1]}, {"junos": 1}, {"junos": 1.0}, {"junos":
-    2}, {"junos": 1500}, {"junos": false}, {"junos": true}]'
+  output: '[{"j": 1}, {"j": [1]}, {"j": 0}, {"j": 0.0}, {"j": 1}, {"j": 1500}, {"j":
+    false}, {"j": false}]'
 - command: path summarize --dest=10.10.1.20 --src=10.10.1.10 --format=json --namespace=junos
   data-directory: tests/data/junos/parquet-out/
   marks: path summarize junos
-  output: '[{"junos": 1}, {"junos": [1, 1, 1, 1]}, {"junos": 3}, {"junos": 3.0}, {"junos":
-    4}, {"junos": 1500}, {"junos": true}, {"junos": true}]'
+  output: '[{"j": 1}, {"j": [1, 1]}, {"j": 1}, {"j": 1.0}, {"j": 2}, {"j": 1500},
+    {"j": false}, {"j": false}]'

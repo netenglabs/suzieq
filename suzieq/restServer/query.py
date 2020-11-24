@@ -3,6 +3,7 @@ import json
 from enum import Enum
 from fastapi import FastAPI, HTTPException, Query, Depends, Security
 from fastapi.security.api_key import APIKeyQuery, APIKeyHeader
+from fastapi.responses import Response
 from starlette import status
 import uuid
 import inspect
@@ -510,7 +511,8 @@ def run_command_verb(command, verb, command_args, verb_args, columns=['default']
         df = df[columns]
 
     if format == 'markdown':
-        return df.to_markdown(), svc_inst
+        # have to return a Reponse so that it won't turn the markdown into JSON
+        return Response(content=df.to_markdown()), svc_inst
 
     if verb == 'summarize':
         json_orient = 'columns'
