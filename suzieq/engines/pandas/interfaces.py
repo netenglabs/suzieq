@@ -129,9 +129,10 @@ class InterfacesObj(SqEngineObject):
         vlan_df = vlanobj.get(namespace=namespace, hostname=hostname)
         if not vlan_df.empty:
             vlan_df = vlan_df.explode('interfaces') \
-                             .drop(columns=['ifname']) \
+                             .drop(columns=['vlanName'], errors='ignore') \
                              .rename(columns={'interfaces': 'ifname',
                                               'vlan': 'vlanList'})
+
             vlan_df = vlan_df.groupby(by=['namespace', 'hostname', 'ifname'])[
                 'vlanList'].unique().reset_index().query('ifname != ""')
 
