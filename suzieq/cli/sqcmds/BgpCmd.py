@@ -149,4 +149,4 @@ class BgpCmd(SqCommand):
             df.estdTime.astype(str), unit="ms", errors='ignore')
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        return self._gen_output(df)
+        return self._gen_output(df, sort=False)
