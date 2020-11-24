@@ -1935,3 +1935,291 @@ tests:
     "peer": "eth1.2", "asn": 65530, "peerAsn": 65201, "state": "Established", "peerHostname":
     "exit01", "vrfPeer": "default", "peerPeer": "swp5.2", "asnPeer": 65201, "peerAsnPeer":
     65530, "assert": "pass", "assertReason": "-", "timestamp": 1597564401148}]'
+- command: bgp assert --status=pass --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: bgp assert
+  output: '[{"namespace": "dual-bgp", "hostname": "leaf01", "vrf": "default", "peer":
+    "swp2", "asn": 65101, "peerAsn": 65000, "state": "Established", "peerHostname":
+    "spine02", "vrfPeer": "default", "peerPeer": "swp1", "asnPeer": 65000, "peerAsnPeer":
+    65101, "assert": "pass", "assertReason": "-", "timestamp": 1597564400544}, {"namespace":
+    "dual-bgp", "hostname": "leaf01", "vrf": "default", "peer": "swp1", "asn": 65101,
+    "peerAsn": 65000, "state": "Established", "peerHostname": "spine01", "vrfPeer":
+    "default", "peerPeer": "swp1", "asnPeer": 65000, "peerAsnPeer": 65101, "assert":
+    "pass", "assertReason": "-", "timestamp": 1597564400544}, {"namespace": "dual-bgp",
+    "hostname": "spine02", "vrf": "default", "peer": "swp4", "asn": 65000, "peerAsn":
+    65104, "state": "Established", "peerHostname": "leaf04", "vrfPeer": "default",
+    "peerPeer": "swp2", "asnPeer": 65104, "peerAsnPeer": 65000, "assert": "pass",
+    "assertReason": "-", "timestamp": 1597564400630}, {"namespace": "dual-bgp", "hostname":
+    "spine02", "vrf": "default", "peer": "swp3", "asn": 65000, "peerAsn": 65103, "state":
+    "Established", "peerHostname": "leaf03", "vrfPeer": "default", "peerPeer": "swp2",
+    "asnPeer": 65103, "peerAsnPeer": 65000, "assert": "pass", "assertReason": "-",
+    "timestamp": 1597564400630}, {"namespace": "dual-bgp", "hostname": "spine02",
+    "vrf": "default", "peer": "swp2", "asn": 65000, "peerAsn": 65102, "state": "Established",
+    "peerHostname": "leaf02", "vrfPeer": "default", "peerPeer": "swp2", "asnPeer":
+    65102, "peerAsnPeer": 65000, "assert": "pass", "assertReason": "-", "timestamp":
+    1597564400630}, {"namespace": "dual-bgp", "hostname": "spine02", "vrf": "default",
+    "peer": "swp1", "asn": 65000, "peerAsn": 65101, "state": "Established", "peerHostname":
+    "leaf01", "vrfPeer": "default", "peerPeer": "swp2", "asnPeer": 65101, "peerAsnPeer":
+    65000, "assert": "pass", "assertReason": "-", "timestamp": 1597564400630}, {"namespace":
+    "dual-bgp", "hostname": "spine02", "vrf": "default", "peer": "swp5", "asn": 65000,
+    "peerAsn": 65202, "state": "Established", "peerHostname": "exit02", "vrfPeer":
+    "default", "peerPeer": "swp2", "asnPeer": 65202, "peerAsnPeer": 65000, "assert":
+    "pass", "assertReason": "-", "timestamp": 1597564400630}, {"namespace": "dual-bgp",
+    "hostname": "exit01", "vrf": "internet-vrf", "peer": "swp6", "asn": 65201, "peerAsn":
+    25253, "state": "Established", "peerHostname": "internet", "vrfPeer": "default",
+    "peerPeer": "swp1", "asnPeer": 25253, "peerAsnPeer": 65201, "assert": "pass",
+    "assertReason": "-", "timestamp": 1597564400630}, {"namespace": "dual-bgp", "hostname":
+    "spine02", "vrf": "default", "peer": "swp6", "asn": 65000, "peerAsn": 65201, "state":
+    "Established", "peerHostname": "exit01", "vrfPeer": "default", "peerPeer": "swp2",
+    "asnPeer": 65201, "peerAsnPeer": 65000, "assert": "pass", "assertReason": "-",
+    "timestamp": 1597564400630}, {"namespace": "dual-bgp", "hostname": "exit01", "vrf":
+    "default", "peer": "swp1", "asn": 65201, "peerAsn": 65000, "state": "Established",
+    "peerHostname": "spine01", "vrfPeer": "default", "peerPeer": "swp6", "asnPeer":
+    65000, "peerAsnPeer": 65201, "assert": "pass", "assertReason": "-", "timestamp":
+    1597564400630}, {"namespace": "dual-bgp", "hostname": "exit01", "vrf": "internet-vrf",
+    "peer": "swp5.4", "asn": 65201, "peerAsn": 65530, "state": "Established", "peerHostname":
+    "edge01", "vrfPeer": "default", "peerPeer": "eth1.4", "asnPeer": 65530, "peerAsnPeer":
+    65201, "assert": "pass", "assertReason": "-", "timestamp": 1597564400630}, {"namespace":
+    "dual-bgp", "hostname": "exit01", "vrf": "default", "peer": "swp5.2", "asn": 65201,
+    "peerAsn": 65530, "state": "Established", "peerHostname": "edge01", "vrfPeer":
+    "default", "peerPeer": "eth1.2", "asnPeer": 65530, "peerAsnPeer": 65201, "assert":
+    "pass", "assertReason": "-", "timestamp": 1597564400630}, {"namespace": "dual-bgp",
+    "hostname": "exit01", "vrf": "default", "peer": "swp2", "asn": 65201, "peerAsn":
+    65000, "state": "Established", "peerHostname": "spine02", "vrfPeer": "default",
+    "peerPeer": "swp6", "asnPeer": 65000, "peerAsnPeer": 65201, "assert": "pass",
+    "assertReason": "-", "timestamp": 1597564400630}, {"namespace": "dual-bgp", "hostname":
+    "leaf03", "vrf": "default", "peer": "swp2", "asn": 65103, "peerAsn": 65000, "state":
+    "Established", "peerHostname": "spine02", "vrfPeer": "default", "peerPeer": "swp3",
+    "asnPeer": 65000, "peerAsnPeer": 65103, "assert": "pass", "assertReason": "-",
+    "timestamp": 1597564400653}, {"namespace": "dual-bgp", "hostname": "leaf03", "vrf":
+    "default", "peer": "swp1", "asn": 65103, "peerAsn": 65000, "state": "Established",
+    "peerHostname": "spine01", "vrfPeer": "default", "peerPeer": "swp3", "asnPeer":
+    65000, "peerAsnPeer": 65103, "assert": "pass", "assertReason": "-", "timestamp":
+    1597564400653}, {"namespace": "dual-bgp", "hostname": "leaf04", "vrf": "default",
+    "peer": "swp1", "asn": 65104, "peerAsn": 65000, "state": "Established", "peerHostname":
+    "spine01", "vrfPeer": "default", "peerPeer": "swp4", "asnPeer": 65000, "peerAsnPeer":
+    65104, "assert": "pass", "assertReason": "-", "timestamp": 1597564400674}, {"namespace":
+    "dual-bgp", "hostname": "leaf04", "vrf": "default", "peer": "swp2", "asn": 65104,
+    "peerAsn": 65000, "state": "Established", "peerHostname": "spine02", "vrfPeer":
+    "default", "peerPeer": "swp4", "asnPeer": 65000, "peerAsnPeer": 65104, "assert":
+    "pass", "assertReason": "-", "timestamp": 1597564400674}, {"namespace": "dual-bgp",
+    "hostname": "internet", "vrf": "default", "peer": "swp1", "asn": 25253, "peerAsn":
+    65201, "state": "Established", "peerHostname": "exit01", "vrfPeer": "internet-vrf",
+    "peerPeer": "swp6", "asnPeer": 65201, "peerAsnPeer": 25253, "assert": "pass",
+    "assertReason": "-", "timestamp": 1597564400725}, {"namespace": "dual-bgp", "hostname":
+    "internet", "vrf": "default", "peer": "swp2", "asn": 25253, "peerAsn": 65202,
+    "state": "Established", "peerHostname": "exit02", "vrfPeer": "internet-vrf", "peerPeer":
+    "swp6", "asnPeer": 65202, "peerAsnPeer": 25253, "assert": "pass", "assertReason":
+    "-", "timestamp": 1597564400725}, {"namespace": "dual-bgp", "hostname": "exit02",
+    "vrf": "default", "peer": "swp1", "asn": 65202, "peerAsn": 65000, "state": "Established",
+    "peerHostname": "spine01", "vrfPeer": "default", "peerPeer": "swp5", "asnPeer":
+    65000, "peerAsnPeer": 65202, "assert": "pass", "assertReason": "-", "timestamp":
+    1597564400729}, {"namespace": "dual-bgp", "hostname": "exit02", "vrf": "internet-vrf",
+    "peer": "swp6", "asn": 65202, "peerAsn": 25253, "state": "Established", "peerHostname":
+    "internet", "vrfPeer": "default", "peerPeer": "swp2", "asnPeer": 25253, "peerAsnPeer":
+    65202, "assert": "pass", "assertReason": "-", "timestamp": 1597564400729}, {"namespace":
+    "dual-bgp", "hostname": "exit02", "vrf": "internet-vrf", "peer": "swp5.4", "asn":
+    65202, "peerAsn": 65530, "state": "Established", "peerHostname": "edge01", "vrfPeer":
+    "default", "peerPeer": "eth2.4", "asnPeer": 65530, "peerAsnPeer": 65202, "assert":
+    "pass", "assertReason": "-", "timestamp": 1597564400729}, {"namespace": "dual-bgp",
+    "hostname": "exit02", "vrf": "default", "peer": "swp5.2", "asn": 65202, "peerAsn":
+    65530, "state": "Established", "peerHostname": "edge01", "vrfPeer": "default",
+    "peerPeer": "eth2.2", "asnPeer": 65530, "peerAsnPeer": 65202, "assert": "pass",
+    "assertReason": "-", "timestamp": 1597564400729}, {"namespace": "dual-bgp", "hostname":
+    "exit02", "vrf": "default", "peer": "swp2", "asn": 65202, "peerAsn": 65000, "state":
+    "Established", "peerHostname": "spine02", "vrfPeer": "default", "peerPeer": "swp5",
+    "asnPeer": 65000, "peerAsnPeer": 65202, "assert": "pass", "assertReason": "-",
+    "timestamp": 1597564400729}, {"namespace": "dual-bgp", "hostname": "leaf02", "vrf":
+    "default", "peer": "swp1", "asn": 65102, "peerAsn": 65000, "state": "Established",
+    "peerHostname": "spine01", "vrfPeer": "default", "peerPeer": "swp2", "asnPeer":
+    65000, "peerAsnPeer": 65102, "assert": "pass", "assertReason": "-", "timestamp":
+    1597564400809}, {"namespace": "dual-bgp", "hostname": "leaf02", "vrf": "default",
+    "peer": "swp2", "asn": 65102, "peerAsn": 65000, "state": "Established", "peerHostname":
+    "spine02", "vrfPeer": "default", "peerPeer": "swp2", "asnPeer": 65000, "peerAsnPeer":
+    65102, "assert": "pass", "assertReason": "-", "timestamp": 1597564400809}, {"namespace":
+    "dual-bgp", "hostname": "spine01", "vrf": "default", "peer": "swp1", "asn": 65000,
+    "peerAsn": 65101, "state": "Established", "peerHostname": "leaf01", "vrfPeer":
+    "default", "peerPeer": "swp1", "asnPeer": 65101, "peerAsnPeer": 65000, "assert":
+    "pass", "assertReason": "-", "timestamp": 1597564400981}, {"namespace": "dual-bgp",
+    "hostname": "spine01", "vrf": "default", "peer": "swp2", "asn": 65000, "peerAsn":
+    65102, "state": "Established", "peerHostname": "leaf02", "vrfPeer": "default",
+    "peerPeer": "swp1", "asnPeer": 65102, "peerAsnPeer": 65000, "assert": "pass",
+    "assertReason": "-", "timestamp": 1597564400981}, {"namespace": "dual-bgp", "hostname":
+    "spine01", "vrf": "default", "peer": "swp3", "asn": 65000, "peerAsn": 65103, "state":
+    "Established", "peerHostname": "leaf03", "vrfPeer": "default", "peerPeer": "swp1",
+    "asnPeer": 65103, "peerAsnPeer": 65000, "assert": "pass", "assertReason": "-",
+    "timestamp": 1597564400981}, {"namespace": "dual-bgp", "hostname": "spine01",
+    "vrf": "default", "peer": "swp4", "asn": 65000, "peerAsn": 65104, "state": "Established",
+    "peerHostname": "leaf04", "vrfPeer": "default", "peerPeer": "swp1", "asnPeer":
+    65104, "peerAsnPeer": 65000, "assert": "pass", "assertReason": "-", "timestamp":
+    1597564400981}, {"namespace": "dual-bgp", "hostname": "spine01", "vrf": "default",
+    "peer": "swp5", "asn": 65000, "peerAsn": 65202, "state": "Established", "peerHostname":
+    "exit02", "vrfPeer": "default", "peerPeer": "swp1", "asnPeer": 65202, "peerAsnPeer":
+    65000, "assert": "pass", "assertReason": "-", "timestamp": 1597564400981}, {"namespace":
+    "dual-bgp", "hostname": "spine01", "vrf": "default", "peer": "swp6", "asn": 65000,
+    "peerAsn": 65201, "state": "Established", "peerHostname": "exit01", "vrfPeer":
+    "default", "peerPeer": "swp1", "asnPeer": 65201, "peerAsnPeer": 65000, "assert":
+    "pass", "assertReason": "-", "timestamp": 1597564400981}, {"namespace": "dual-bgp",
+    "hostname": "edge01", "vrf": "default", "peer": "eth2.4", "asn": 65530, "peerAsn":
+    65202, "state": "Established", "peerHostname": "exit02", "vrfPeer": "internet-vrf",
+    "peerPeer": "swp5.4", "asnPeer": 65202, "peerAsnPeer": 65530, "assert": "pass",
+    "assertReason": "-", "timestamp": 1597564401148}, {"namespace": "dual-bgp", "hostname":
+    "edge01", "vrf": "default", "peer": "eth2.2", "asn": 65530, "peerAsn": 65202,
+    "state": "Established", "peerHostname": "exit02", "vrfPeer": "default", "peerPeer":
+    "swp5.2", "asnPeer": 65202, "peerAsnPeer": 65530, "assert": "pass", "assertReason":
+    "-", "timestamp": 1597564401148}, {"namespace": "dual-bgp", "hostname": "edge01",
+    "vrf": "default", "peer": "eth1.4", "asn": 65530, "peerAsn": 65201, "state": "Established",
+    "peerHostname": "exit01", "vrfPeer": "internet-vrf", "peerPeer": "swp5.4", "asnPeer":
+    65201, "peerAsnPeer": 65530, "assert": "pass", "assertReason": "-", "timestamp":
+    1597564401148}, {"namespace": "dual-bgp", "hostname": "edge01", "vrf": "default",
+    "peer": "eth1.2", "asn": 65530, "peerAsn": 65201, "state": "Established", "peerHostname":
+    "exit01", "vrfPeer": "default", "peerPeer": "swp5.2", "asnPeer": 65201, "peerAsnPeer":
+    65530, "assert": "pass", "assertReason": "-", "timestamp": 1597564401148}]'
+- command: bgp assert --status=fail --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: bgp assert
+  output: '[]'
+- command: bgp assert --status=all --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: bgp assert
+  output: '[{"namespace": "dual-bgp", "hostname": "leaf01", "vrf": "default", "peer":
+    "swp2", "asn": 65101, "peerAsn": 65000, "state": "Established", "peerHostname":
+    "spine02", "vrfPeer": "default", "peerPeer": "swp1", "asnPeer": 65000, "peerAsnPeer":
+    65101, "assert": "pass", "assertReason": "-", "timestamp": 1597564400544}, {"namespace":
+    "dual-bgp", "hostname": "leaf01", "vrf": "default", "peer": "swp1", "asn": 65101,
+    "peerAsn": 65000, "state": "Established", "peerHostname": "spine01", "vrfPeer":
+    "default", "peerPeer": "swp1", "asnPeer": 65000, "peerAsnPeer": 65101, "assert":
+    "pass", "assertReason": "-", "timestamp": 1597564400544}, {"namespace": "dual-bgp",
+    "hostname": "spine02", "vrf": "default", "peer": "swp4", "asn": 65000, "peerAsn":
+    65104, "state": "Established", "peerHostname": "leaf04", "vrfPeer": "default",
+    "peerPeer": "swp2", "asnPeer": 65104, "peerAsnPeer": 65000, "assert": "pass",
+    "assertReason": "-", "timestamp": 1597564400630}, {"namespace": "dual-bgp", "hostname":
+    "spine02", "vrf": "default", "peer": "swp3", "asn": 65000, "peerAsn": 65103, "state":
+    "Established", "peerHostname": "leaf03", "vrfPeer": "default", "peerPeer": "swp2",
+    "asnPeer": 65103, "peerAsnPeer": 65000, "assert": "pass", "assertReason": "-",
+    "timestamp": 1597564400630}, {"namespace": "dual-bgp", "hostname": "spine02",
+    "vrf": "default", "peer": "swp2", "asn": 65000, "peerAsn": 65102, "state": "Established",
+    "peerHostname": "leaf02", "vrfPeer": "default", "peerPeer": "swp2", "asnPeer":
+    65102, "peerAsnPeer": 65000, "assert": "pass", "assertReason": "-", "timestamp":
+    1597564400630}, {"namespace": "dual-bgp", "hostname": "spine02", "vrf": "default",
+    "peer": "swp1", "asn": 65000, "peerAsn": 65101, "state": "Established", "peerHostname":
+    "leaf01", "vrfPeer": "default", "peerPeer": "swp2", "asnPeer": 65101, "peerAsnPeer":
+    65000, "assert": "pass", "assertReason": "-", "timestamp": 1597564400630}, {"namespace":
+    "dual-bgp", "hostname": "spine02", "vrf": "default", "peer": "swp5", "asn": 65000,
+    "peerAsn": 65202, "state": "Established", "peerHostname": "exit02", "vrfPeer":
+    "default", "peerPeer": "swp2", "asnPeer": 65202, "peerAsnPeer": 65000, "assert":
+    "pass", "assertReason": "-", "timestamp": 1597564400630}, {"namespace": "dual-bgp",
+    "hostname": "exit01", "vrf": "internet-vrf", "peer": "swp6", "asn": 65201, "peerAsn":
+    25253, "state": "Established", "peerHostname": "internet", "vrfPeer": "default",
+    "peerPeer": "swp1", "asnPeer": 25253, "peerAsnPeer": 65201, "assert": "pass",
+    "assertReason": "-", "timestamp": 1597564400630}, {"namespace": "dual-bgp", "hostname":
+    "spine02", "vrf": "default", "peer": "swp6", "asn": 65000, "peerAsn": 65201, "state":
+    "Established", "peerHostname": "exit01", "vrfPeer": "default", "peerPeer": "swp2",
+    "asnPeer": 65201, "peerAsnPeer": 65000, "assert": "pass", "assertReason": "-",
+    "timestamp": 1597564400630}, {"namespace": "dual-bgp", "hostname": "exit01", "vrf":
+    "default", "peer": "swp1", "asn": 65201, "peerAsn": 65000, "state": "Established",
+    "peerHostname": "spine01", "vrfPeer": "default", "peerPeer": "swp6", "asnPeer":
+    65000, "peerAsnPeer": 65201, "assert": "pass", "assertReason": "-", "timestamp":
+    1597564400630}, {"namespace": "dual-bgp", "hostname": "exit01", "vrf": "internet-vrf",
+    "peer": "swp5.4", "asn": 65201, "peerAsn": 65530, "state": "Established", "peerHostname":
+    "edge01", "vrfPeer": "default", "peerPeer": "eth1.4", "asnPeer": 65530, "peerAsnPeer":
+    65201, "assert": "pass", "assertReason": "-", "timestamp": 1597564400630}, {"namespace":
+    "dual-bgp", "hostname": "exit01", "vrf": "default", "peer": "swp5.2", "asn": 65201,
+    "peerAsn": 65530, "state": "Established", "peerHostname": "edge01", "vrfPeer":
+    "default", "peerPeer": "eth1.2", "asnPeer": 65530, "peerAsnPeer": 65201, "assert":
+    "pass", "assertReason": "-", "timestamp": 1597564400630}, {"namespace": "dual-bgp",
+    "hostname": "exit01", "vrf": "default", "peer": "swp2", "asn": 65201, "peerAsn":
+    65000, "state": "Established", "peerHostname": "spine02", "vrfPeer": "default",
+    "peerPeer": "swp6", "asnPeer": 65000, "peerAsnPeer": 65201, "assert": "pass",
+    "assertReason": "-", "timestamp": 1597564400630}, {"namespace": "dual-bgp", "hostname":
+    "leaf03", "vrf": "default", "peer": "swp2", "asn": 65103, "peerAsn": 65000, "state":
+    "Established", "peerHostname": "spine02", "vrfPeer": "default", "peerPeer": "swp3",
+    "asnPeer": 65000, "peerAsnPeer": 65103, "assert": "pass", "assertReason": "-",
+    "timestamp": 1597564400653}, {"namespace": "dual-bgp", "hostname": "leaf03", "vrf":
+    "default", "peer": "swp1", "asn": 65103, "peerAsn": 65000, "state": "Established",
+    "peerHostname": "spine01", "vrfPeer": "default", "peerPeer": "swp3", "asnPeer":
+    65000, "peerAsnPeer": 65103, "assert": "pass", "assertReason": "-", "timestamp":
+    1597564400653}, {"namespace": "dual-bgp", "hostname": "leaf04", "vrf": "default",
+    "peer": "swp1", "asn": 65104, "peerAsn": 65000, "state": "Established", "peerHostname":
+    "spine01", "vrfPeer": "default", "peerPeer": "swp4", "asnPeer": 65000, "peerAsnPeer":
+    65104, "assert": "pass", "assertReason": "-", "timestamp": 1597564400674}, {"namespace":
+    "dual-bgp", "hostname": "leaf04", "vrf": "default", "peer": "swp2", "asn": 65104,
+    "peerAsn": 65000, "state": "Established", "peerHostname": "spine02", "vrfPeer":
+    "default", "peerPeer": "swp4", "asnPeer": 65000, "peerAsnPeer": 65104, "assert":
+    "pass", "assertReason": "-", "timestamp": 1597564400674}, {"namespace": "dual-bgp",
+    "hostname": "internet", "vrf": "default", "peer": "swp1", "asn": 25253, "peerAsn":
+    65201, "state": "Established", "peerHostname": "exit01", "vrfPeer": "internet-vrf",
+    "peerPeer": "swp6", "asnPeer": 65201, "peerAsnPeer": 25253, "assert": "pass",
+    "assertReason": "-", "timestamp": 1597564400725}, {"namespace": "dual-bgp", "hostname":
+    "internet", "vrf": "default", "peer": "swp2", "asn": 25253, "peerAsn": 65202,
+    "state": "Established", "peerHostname": "exit02", "vrfPeer": "internet-vrf", "peerPeer":
+    "swp6", "asnPeer": 65202, "peerAsnPeer": 25253, "assert": "pass", "assertReason":
+    "-", "timestamp": 1597564400725}, {"namespace": "dual-bgp", "hostname": "exit02",
+    "vrf": "default", "peer": "swp1", "asn": 65202, "peerAsn": 65000, "state": "Established",
+    "peerHostname": "spine01", "vrfPeer": "default", "peerPeer": "swp5", "asnPeer":
+    65000, "peerAsnPeer": 65202, "assert": "pass", "assertReason": "-", "timestamp":
+    1597564400729}, {"namespace": "dual-bgp", "hostname": "exit02", "vrf": "internet-vrf",
+    "peer": "swp6", "asn": 65202, "peerAsn": 25253, "state": "Established", "peerHostname":
+    "internet", "vrfPeer": "default", "peerPeer": "swp2", "asnPeer": 25253, "peerAsnPeer":
+    65202, "assert": "pass", "assertReason": "-", "timestamp": 1597564400729}, {"namespace":
+    "dual-bgp", "hostname": "exit02", "vrf": "internet-vrf", "peer": "swp5.4", "asn":
+    65202, "peerAsn": 65530, "state": "Established", "peerHostname": "edge01", "vrfPeer":
+    "default", "peerPeer": "eth2.4", "asnPeer": 65530, "peerAsnPeer": 65202, "assert":
+    "pass", "assertReason": "-", "timestamp": 1597564400729}, {"namespace": "dual-bgp",
+    "hostname": "exit02", "vrf": "default", "peer": "swp5.2", "asn": 65202, "peerAsn":
+    65530, "state": "Established", "peerHostname": "edge01", "vrfPeer": "default",
+    "peerPeer": "eth2.2", "asnPeer": 65530, "peerAsnPeer": 65202, "assert": "pass",
+    "assertReason": "-", "timestamp": 1597564400729}, {"namespace": "dual-bgp", "hostname":
+    "exit02", "vrf": "default", "peer": "swp2", "asn": 65202, "peerAsn": 65000, "state":
+    "Established", "peerHostname": "spine02", "vrfPeer": "default", "peerPeer": "swp5",
+    "asnPeer": 65000, "peerAsnPeer": 65202, "assert": "pass", "assertReason": "-",
+    "timestamp": 1597564400729}, {"namespace": "dual-bgp", "hostname": "leaf02", "vrf":
+    "default", "peer": "swp1", "asn": 65102, "peerAsn": 65000, "state": "Established",
+    "peerHostname": "spine01", "vrfPeer": "default", "peerPeer": "swp2", "asnPeer":
+    65000, "peerAsnPeer": 65102, "assert": "pass", "assertReason": "-", "timestamp":
+    1597564400809}, {"namespace": "dual-bgp", "hostname": "leaf02", "vrf": "default",
+    "peer": "swp2", "asn": 65102, "peerAsn": 65000, "state": "Established", "peerHostname":
+    "spine02", "vrfPeer": "default", "peerPeer": "swp2", "asnPeer": 65000, "peerAsnPeer":
+    65102, "assert": "pass", "assertReason": "-", "timestamp": 1597564400809}, {"namespace":
+    "dual-bgp", "hostname": "spine01", "vrf": "default", "peer": "swp1", "asn": 65000,
+    "peerAsn": 65101, "state": "Established", "peerHostname": "leaf01", "vrfPeer":
+    "default", "peerPeer": "swp1", "asnPeer": 65101, "peerAsnPeer": 65000, "assert":
+    "pass", "assertReason": "-", "timestamp": 1597564400981}, {"namespace": "dual-bgp",
+    "hostname": "spine01", "vrf": "default", "peer": "swp2", "asn": 65000, "peerAsn":
+    65102, "state": "Established", "peerHostname": "leaf02", "vrfPeer": "default",
+    "peerPeer": "swp1", "asnPeer": 65102, "peerAsnPeer": 65000, "assert": "pass",
+    "assertReason": "-", "timestamp": 1597564400981}, {"namespace": "dual-bgp", "hostname":
+    "spine01", "vrf": "default", "peer": "swp3", "asn": 65000, "peerAsn": 65103, "state":
+    "Established", "peerHostname": "leaf03", "vrfPeer": "default", "peerPeer": "swp1",
+    "asnPeer": 65103, "peerAsnPeer": 65000, "assert": "pass", "assertReason": "-",
+    "timestamp": 1597564400981}, {"namespace": "dual-bgp", "hostname": "spine01",
+    "vrf": "default", "peer": "swp4", "asn": 65000, "peerAsn": 65104, "state": "Established",
+    "peerHostname": "leaf04", "vrfPeer": "default", "peerPeer": "swp1", "asnPeer":
+    65104, "peerAsnPeer": 65000, "assert": "pass", "assertReason": "-", "timestamp":
+    1597564400981}, {"namespace": "dual-bgp", "hostname": "spine01", "vrf": "default",
+    "peer": "swp5", "asn": 65000, "peerAsn": 65202, "state": "Established", "peerHostname":
+    "exit02", "vrfPeer": "default", "peerPeer": "swp1", "asnPeer": 65202, "peerAsnPeer":
+    65000, "assert": "pass", "assertReason": "-", "timestamp": 1597564400981}, {"namespace":
+    "dual-bgp", "hostname": "spine01", "vrf": "default", "peer": "swp6", "asn": 65000,
+    "peerAsn": 65201, "state": "Established", "peerHostname": "exit01", "vrfPeer":
+    "default", "peerPeer": "swp1", "asnPeer": 65201, "peerAsnPeer": 65000, "assert":
+    "pass", "assertReason": "-", "timestamp": 1597564400981}, {"namespace": "dual-bgp",
+    "hostname": "edge01", "vrf": "default", "peer": "eth2.4", "asn": 65530, "peerAsn":
+    65202, "state": "Established", "peerHostname": "exit02", "vrfPeer": "internet-vrf",
+    "peerPeer": "swp5.4", "asnPeer": 65202, "peerAsnPeer": 65530, "assert": "pass",
+    "assertReason": "-", "timestamp": 1597564401148}, {"namespace": "dual-bgp", "hostname":
+    "edge01", "vrf": "default", "peer": "eth2.2", "asn": 65530, "peerAsn": 65202,
+    "state": "Established", "peerHostname": "exit02", "vrfPeer": "default", "peerPeer":
+    "swp5.2", "asnPeer": 65202, "peerAsnPeer": 65530, "assert": "pass", "assertReason":
+    "-", "timestamp": 1597564401148}, {"namespace": "dual-bgp", "hostname": "edge01",
+    "vrf": "default", "peer": "eth1.4", "asn": 65530, "peerAsn": 65201, "state": "Established",
+    "peerHostname": "exit01", "vrfPeer": "internet-vrf", "peerPeer": "swp5.4", "asnPeer":
+    65201, "peerAsnPeer": 65530, "assert": "pass", "assertReason": "-", "timestamp":
+    1597564401148}, {"namespace": "dual-bgp", "hostname": "edge01", "vrf": "default",
+    "peer": "eth1.2", "asn": 65530, "peerAsn": 65201, "state": "Established", "peerHostname":
+    "exit01", "vrfPeer": "default", "peerPeer": "swp5.2", "asnPeer": 65201, "peerAsnPeer":
+    65530, "assert": "pass", "assertReason": "-", "timestamp": 1597564401148}]'
+- command: bgp assert --status=whatever --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: bgp assert
+  output: '[]'

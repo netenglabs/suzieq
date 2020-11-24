@@ -191,19 +191,22 @@ class BgpObj(SqEngineObject):
                        "reason", "notificnReason", "peerIP", "updateSource"]
 
         kwargs.pop("columns", None)  # Loose whatever's passed
+        status = kwargs.pop("status", 'all')
 
         df = self.get(columns=assert_cols, state='!dynamic', **kwargs)
         if df.empty:
-            df['assert'] = 'fail'
-            df['assertReason'] = 'No data'
+            if status != "pass":
+                df['assert'] = 'fail'
+                df['assertReason'] = 'No data'
             return df
 
         df = self._get_peer_matched_df(df)
         df = df.rename(columns={'vrf_y': 'vrfPeer', 'peerIP_y': 'peerPeerIP'}) \
                .drop(columns={'state_y', 'reason_y', 'timestamp_y'})
         if df.empty:
-            df['assert'] = 'fail'
-            df['assertReason'] = 'No data'
+            if status != "pass":
+                df['assert'] = 'fail'
+                df['assertReason'] = 'No data'
             return df
 
         df['assertReason'] = [[] for _ in range(len(df))]
@@ -236,14 +239,22 @@ class BgpObj(SqEngineObject):
                                 if not len(x.assertReason) else 'fail',
                                 axis=1)
 
-        return (df[['namespace', 'hostname', 'vrf', 'peer', 'asn',
-                    'peerAsn', 'state', 'peerHostname', 'vrfPeer',
-                    'peer_y', 'asn_y', 'peerAsn_y', 'assert',
-                    'assertReason', 'timestamp']]
-                .rename(columns={'peer_y': 'peerPeer',
-                                 'asn_y': 'asnPeer',
-                                 'peerAsn_y': 'peerAsnPeer'}, copy=False)
-                .astype({'asn': 'Int64', 'peerAsn': 'Int64', 'asnPeer': 'Int64',
-                         'peerAsnPeer': 'Int64'}, copy=False)
-                .explode(column="assertReason")
-                .fillna({'assertReason': '-'}))
+        result = df[['namespace', 'hostname', 'vrf', 'peer', 'asn',
+                     'peerAsn', 'state', 'peerHostname', 'vrfPeer',
+                     'peer_y', 'asn_y', 'peerAsn_y', 'assert',
+                     'assertReason', 'timestamp']] \
+            .rename(columns={'peer_y': 'peerPeer',
+                             'asn_y': 'asnPeer',
+                             'peerAsn_y': 'peerAsnPeer'}, copy=False) \
+            .astype({'asn': 'Int64', 'peerAsn': 'Int64',
+                     'asnPeer': 'Int64',
+                     'peerAsnPeer': 'Int64'}, copy=False) \
+            .explode(column="assertReason") \
+            .fillna({'assertReason': '-'})
+
+        if status == "fail":
+            return result.query('assertReason != "-"')
+        elif status == "pass":
+            return result.query('assertReason == "-"')
+
+        return result

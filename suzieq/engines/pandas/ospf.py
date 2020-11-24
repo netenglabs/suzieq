@@ -172,6 +172,7 @@ class OspfObj(SqEngineObject):
             "nbrCount",
         ]
 
+        status = kwargs.pop('status', 'all')
         # we have to not filter hostname at this point because we need to
         #   understand neighbor relationships
 
@@ -239,10 +240,17 @@ class OspfObj(SqEngineObject):
 
         if int_df.empty:
             # Weed out the loopback and SVI interfaces as they have no LLDP peers
-            ospf_df = ospf_df[~(ospf_df.ifname.str.contains('loopback') |
-                                ospf_df.ifname.str.contains('Vlan'))]
-            ospf_df['assertReason'] = 'No LLDP peering info'
-            ospf_df['assert'] = 'fail'
+            if status == "pass":
+                ospf_df = ospf_df[(ospf_df.ifname.str.contains('loopback') |
+                                   ospf_df.ifname.str.contains('Vlan'))]
+                ospf_df['assertReason'] = []
+                ospf_df['assert'] = 'pass'
+            else:
+                ospf_df = ospf_df[~(ospf_df.ifname.str.contains('loopback') |
+                                    ospf_df.ifname.str.contains('Vlan'))]
+                ospf_df['assertReason'] = 'No LLDP peering info'
+                ospf_df['assert'] = 'fail'
+
             return ospf_df[['namespace', 'hostname', 'vrf', 'ifname',
                             'assertReason', 'assert']]
 
@@ -305,7 +313,7 @@ class OspfObj(SqEngineObject):
                                           if not len(x['assertReason'])
                                           else 'fail', axis=1)
 
-        return (
+        result = (
             ospf_df.rename(
                 index=str,
                 columns={
@@ -317,3 +325,10 @@ class OspfObj(SqEngineObject):
                "assertReason", "timestamp"]].explode(column='assertReason')
             .fillna({'assertReason': '-'})
         )
+
+        if status == "pass":
+            return result.query('assertReason == "-"')
+        elif status == "fail":
+            return result.query('assertReason != "-"')
+
+        return result

@@ -75,8 +75,10 @@ class InterfaceCmd(SqCommand):
         choices=["mtu-match", "mtu-value"],
     )
     @argument("value", description="Value to match against")
+    @argument("status", description="Show only assert that matches this value",
+              choices=["all", "fail", "pass"])
     def aver(self, ifname: str = "", state: str = "", what: str = "mtu-match",
-             value: int = 0):
+             value: int = 0, status: str = 'all'):
         """
         Assert aspects about the interface
         """
@@ -101,6 +103,7 @@ class InterfaceCmd(SqCommand):
                 namespace=self.namespace,
                 what=what,
                 matchval=value,
+                status=status,
             )
         except Exception as e:
             df = pd.DataFrame({'error': ['ERROR: {}'.format(str(e))]})
@@ -139,4 +142,4 @@ class InterfaceCmd(SqCommand):
         )
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        return self._gen_output(df)
+        return self._gen_output(df, sort=False)

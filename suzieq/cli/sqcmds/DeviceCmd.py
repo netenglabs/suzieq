@@ -104,4 +104,4 @@ class DeviceCmd(SqCommand):
             topdf = df
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        self._gen_output(topdf)
+        self._gen_output(topdf, sort=False)

@@ -95,12 +95,15 @@ class BgpCmd(SqCommand):
 
     @command("assert")
     @argument("vrf", description="Only assert BGP state in this VRF")
-    def aver(self, vrf: str = "") -> pd.DataFrame:
+    @argument("status", description="Show only assert that matches this value",
+              choices=["all", "fail", "pass"])
+    def aver(self, vrf: str = "", status: str = "all") -> pd.DataFrame:
         """Assert BGP is functioning properly"""
         now = time.time()
         df = self.sqobj.aver(
             vrf=vrf.split(),
             namespace=self.namespace,
+            status=status,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
 
@@ -146,4 +149,4 @@ class BgpCmd(SqCommand):
             df.estdTime.astype(str), unit="ms", errors='ignore')
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        return self._gen_output(df)
+        return self._gen_output(df, sort=False)

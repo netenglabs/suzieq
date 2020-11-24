@@ -97,7 +97,9 @@ class OspfCmd(SqCommand):
 
     @command("assert")
     @argument("vrf", description="VRF to assert OSPF state in")
-    def aver(self, vrf: str = "") -> pd.DataFrame:
+    @argument("status", description="Show only assert that matches this value",
+              choices=["all", "fail", "pass"])
+    def aver(self, vrf: str = "", status: str = 'all') -> pd.DataFrame:
         """
         Test OSPF runtime state is good
         """
@@ -109,6 +111,7 @@ class OspfCmd(SqCommand):
         df = self.sqobj.aver(
             vrf=vrf.split(),
             namespace=self.namespace,
+            status=status,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
 
@@ -143,4 +146,4 @@ class OspfCmd(SqCommand):
         )
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        return self._gen_output(df)
+        return self._gen_output(df, sort=False)

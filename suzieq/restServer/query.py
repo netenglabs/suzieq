@@ -138,7 +138,8 @@ async def query_bgp(verb: MoreVerbs,
                     start_time: str = "", end_time: str = "",
                     view: str = "latest", namespace: str = None,
                     columns: str = None, peer: str = None,
-                    state: str = None, vrf: str = None
+                    state: str = None, vrf: str = None,
+                    status: str = None,
                     ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, locals())
@@ -164,7 +165,8 @@ async def query_evpnVni(verb: MoreVerbs,
                         hostname: str = None,
                         start_time: str = "", end_time: str = "",
                         view: str = "latest", namespace: str = None,
-                        columns: str = None, vni: str = None
+                        columns: str = None, vni: str = None,
+                        status: str = None,
                         ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, locals())
@@ -195,7 +197,8 @@ async def query_interface(verb: MoreVerbs,
                           ifname: str = None, state: str = None,
                           type: str = None, what: str = None,
                           mtu: str = None,
-                          matchval: int = Query(None, alias="value")
+                          matchval: int = Query(None, alias="value"),
+                          status: str = None,
                           ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, locals())
@@ -237,6 +240,7 @@ async def query_ospf(verb: MoreVerbs,
                      columns: str = None,  ifname: str = None,
                      state: str = None,
                      vrf: str = None,
+                     status: str = None,
                      ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, locals())
@@ -357,7 +361,6 @@ def read_shared(function_name, verb, local_variables=None):
     ret, svc_inst = run_command_verb(
         command, verb, command_args, verb_args, columns, format)
     check_args(function_name, svc_inst)
- 
 
     return ret
 
