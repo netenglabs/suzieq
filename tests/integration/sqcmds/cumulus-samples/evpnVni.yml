@@ -3,300 +3,296 @@ tests:
 - command: evpnVni show --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: evpnVni show
-  output: '[{"namespace": "dual-evpn", "hostname": "exit01", "vni": 104001, "type":
-    "L3", "vlan": null, "state": "Down", "mcastGroup": "0.0.0.0", "remoteVtepCnt":
-    1, "priVtepIp": "0.0.0.0", "secVtepIp": "", "timestamp": 1597536327679}, {"namespace":
-    "dual-evpn", "hostname": "exit01", "vni": 13, "type": "L2", "vlan": 13.0, "state":
-    "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 3, "priVtepIp": "10.0.0.101",
-    "secVtepIp": "", "timestamp": 1597536327679}, {"namespace": "dual-evpn", "hostname":
-    "exit01", "vni": 24, "type": "L2", "vlan": 24.0, "state": "up", "mcastGroup":
-    "0.0.0.0", "remoteVtepCnt": 3, "priVtepIp": "10.0.0.101", "secVtepIp": "", "timestamp":
-    1597536327679}, {"namespace": "dual-evpn", "hostname": "exit02", "vni": 104001,
-    "type": "L3", "vlan": null, "state": "Down", "mcastGroup": "0.0.0.0", "remoteVtepCnt":
-    1, "priVtepIp": "0.0.0.0", "secVtepIp": "", "timestamp": 1597536327877}, {"namespace":
-    "dual-evpn", "hostname": "exit02", "vni": 13, "type": "L2", "vlan": 13.0, "state":
-    "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 3, "priVtepIp": "10.0.0.102",
-    "secVtepIp": "", "timestamp": 1597536327877}, {"namespace": "dual-evpn", "hostname":
-    "exit02", "vni": 24, "type": "L2", "vlan": 24.0, "state": "up", "mcastGroup":
-    "0.0.0.0", "remoteVtepCnt": 3, "priVtepIp": "10.0.0.102", "secVtepIp": "", "timestamp":
-    1597536327877}, {"namespace": "dual-evpn", "hostname": "leaf01", "vni": 104001,
-    "type": "L3", "vlan": null, "state": "Down", "mcastGroup": "0.0.0.0", "remoteVtepCnt":
-    1, "priVtepIp": "0.0.0.0", "secVtepIp": "", "timestamp": 1597536327877}, {"namespace":
-    "dual-evpn", "hostname": "leaf01", "vni": 13, "type": "L2", "vlan": 13.0, "state":
-    "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 3, "priVtepIp": "10.0.0.112",
-    "secVtepIp": "", "timestamp": 1597536327877}, {"namespace": "dual-evpn", "hostname":
-    "leaf01", "vni": 24, "type": "L2", "vlan": 24.0, "state": "up", "mcastGroup":
-    "0.0.0.0", "remoteVtepCnt": 3, "priVtepIp": "10.0.0.112", "secVtepIp": "", "timestamp":
-    1597536327877}, {"namespace": "dual-evpn", "hostname": "leaf02", "vni": 104001,
-    "type": "L3", "vlan": null, "state": "Down", "mcastGroup": "0.0.0.0", "remoteVtepCnt":
-    1, "priVtepIp": "0.0.0.0", "secVtepIp": "", "timestamp": 1597536327679}, {"namespace":
-    "dual-evpn", "hostname": "leaf02", "vni": 13, "type": "L2", "vlan": 13.0, "state":
-    "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 3, "priVtepIp": "10.0.0.112",
-    "secVtepIp": "", "timestamp": 1597536327679}, {"namespace": "dual-evpn", "hostname":
-    "leaf02", "vni": 24, "type": "L2", "vlan": 24.0, "state": "up", "mcastGroup":
-    "0.0.0.0", "remoteVtepCnt": 3, "priVtepIp": "10.0.0.112", "secVtepIp": "", "timestamp":
-    1597536327679}, {"namespace": "dual-evpn", "hostname": "leaf03", "vni": 104001,
-    "type": "L3", "vlan": null, "state": "Down", "mcastGroup": "0.0.0.0", "remoteVtepCnt":
-    1, "priVtepIp": "0.0.0.0", "secVtepIp": "", "timestamp": 1597536327877}, {"namespace":
-    "dual-evpn", "hostname": "leaf03", "vni": 13, "type": "L2", "vlan": 13.0, "state":
-    "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 3, "priVtepIp": "10.0.0.134",
-    "secVtepIp": "", "timestamp": 1597536327877}, {"namespace": "dual-evpn", "hostname":
-    "leaf03", "vni": 24, "type": "L2", "vlan": 24.0, "state": "up", "mcastGroup":
-    "0.0.0.0", "remoteVtepCnt": 3, "priVtepIp": "10.0.0.134", "secVtepIp": "", "timestamp":
-    1597536327877}, {"namespace": "dual-evpn", "hostname": "leaf04", "vni": 104001,
-    "type": "L3", "vlan": null, "state": "Down", "mcastGroup": "0.0.0.0", "remoteVtepCnt":
-    1, "priVtepIp": "0.0.0.0", "secVtepIp": "", "timestamp": 1597536327876}, {"namespace":
-    "dual-evpn", "hostname": "leaf04", "vni": 13, "type": "L2", "vlan": 13.0, "state":
-    "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 3, "priVtepIp": "10.0.0.134",
-    "secVtepIp": "", "timestamp": 1597536327876}, {"namespace": "dual-evpn", "hostname":
-    "leaf04", "vni": 24, "type": "L2", "vlan": 24.0, "state": "up", "mcastGroup":
-    "0.0.0.0", "remoteVtepCnt": 3, "priVtepIp": "10.0.0.134", "secVtepIp": "", "timestamp":
-    1597536327876}, {"namespace": "ospf-ibgp", "hostname": "exit01", "vni": 104001,
-    "type": "L3", "vlan": 4001.0, "state": "Up", "mcastGroup": "0.0.0.0", "remoteVtepCnt":
-    1, "priVtepIp": "10.0.0.101", "secVtepIp": "", "timestamp": 1597536850507}, {"namespace":
-    "ospf-ibgp", "hostname": "exit02", "vni": 104001, "type": "L3", "vlan": 4001.0,
-    "state": "Up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 1, "priVtepIp": "10.0.0.102",
-    "secVtepIp": "", "timestamp": 1597536850312}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf01", "vni": 104001, "type": "L3", "vlan": 4001.0, "state": "Up", "mcastGroup":
-    "0.0.0.0", "remoteVtepCnt": 1, "priVtepIp": "10.0.0.112", "secVtepIp": "", "timestamp":
-    1597536850584}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "vni": 13, "type":
-    "L2", "vlan": 13.0, "state": "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 1,
-    "priVtepIp": "10.0.0.112", "secVtepIp": "", "timestamp": 1597536850584}, {"namespace":
+  output: '[{"namespace": "ospf-ibgp", "hostname": "exit02", "vni": 104001, "type":
+    "L3", "vlan": 4001.0, "state": "Up", "mcastGroup": "0.0.0.0", "remoteVtepCnt":
+    0, "priVtepIp": "10.0.0.102", "secVtepIp": "", "timestamp": 1606024534311}, {"namespace":
     "ospf-ibgp", "hostname": "leaf01", "vni": 24, "type": "L2", "vlan": 24.0, "state":
     "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 1, "priVtepIp": "10.0.0.112",
-    "secVtepIp": "", "timestamp": 1597536850584}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf02", "vni": 104001, "type": "L3", "vlan": 4001.0, "state": "Up", "mcastGroup":
+    "secVtepIp": "", "timestamp": 1606024534465}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf01", "vni": 13, "type": "L2", "vlan": 13.0, "state": "up", "mcastGroup":
     "0.0.0.0", "remoteVtepCnt": 1, "priVtepIp": "10.0.0.112", "secVtepIp": "", "timestamp":
-    1597536850581}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "vni": 13, "type":
+    1606024534465}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "vni": 104001,
+    "type": "L3", "vlan": 4001.0, "state": "Up", "mcastGroup": "0.0.0.0", "remoteVtepCnt":
+    0, "priVtepIp": "10.0.0.112", "secVtepIp": "", "timestamp": 1606024534465}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf02", "vni": 104001, "type": "L3", "vlan": 4001.0,
+    "state": "Up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 0, "priVtepIp": "10.0.0.112",
+    "secVtepIp": "", "timestamp": 1606024534468}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf02", "vni": 24, "type": "L2", "vlan": 24.0, "state": "up", "mcastGroup":
+    "0.0.0.0", "remoteVtepCnt": 1, "priVtepIp": "10.0.0.112", "secVtepIp": "", "timestamp":
+    1606024534468}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "vni": 13, "type":
     "L2", "vlan": 13.0, "state": "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 1,
-    "priVtepIp": "10.0.0.112", "secVtepIp": "", "timestamp": 1597536850581}, {"namespace":
-    "ospf-ibgp", "hostname": "leaf02", "vni": 24, "type": "L2", "vlan": 24.0, "state":
-    "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 1, "priVtepIp": "10.0.0.112",
-    "secVtepIp": "", "timestamp": 1597536850581}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf03", "vni": 104001, "type": "L3", "vlan": 4001.0, "state": "Up", "mcastGroup":
-    "0.0.0.0", "remoteVtepCnt": 1, "priVtepIp": "10.0.0.134", "secVtepIp": "", "timestamp":
-    1597536850590}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "vni": 13, "type":
-    "L2", "vlan": 13.0, "state": "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 1,
-    "priVtepIp": "10.0.0.134", "secVtepIp": "", "timestamp": 1597536850590}, {"namespace":
-    "ospf-ibgp", "hostname": "leaf03", "vni": 24, "type": "L2", "vlan": 24.0, "state":
-    "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 1, "priVtepIp": "10.0.0.134",
-    "secVtepIp": "", "timestamp": 1597536850590}, {"namespace": "ospf-ibgp", "hostname":
+    "priVtepIp": "10.0.0.112", "secVtepIp": "", "timestamp": 1606024534468}, {"namespace":
+    "ospf-ibgp", "hostname": "exit01", "vni": 104001, "type": "L3", "vlan": 4001.0,
+    "state": "Up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 0, "priVtepIp": "10.0.0.101",
+    "secVtepIp": "", "timestamp": 1606024534515}, {"namespace": "ospf-ibgp", "hostname":
     "leaf04", "vni": 104001, "type": "L3", "vlan": 4001.0, "state": "Up", "mcastGroup":
-    "0.0.0.0", "remoteVtepCnt": 1, "priVtepIp": "10.0.0.134", "secVtepIp": "", "timestamp":
-    1597536850590}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "vni": 13, "type":
-    "L2", "vlan": 13.0, "state": "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 1,
-    "priVtepIp": "10.0.0.134", "secVtepIp": "", "timestamp": 1597536850590}, {"namespace":
-    "ospf-ibgp", "hostname": "leaf04", "vni": 24, "type": "L2", "vlan": 24.0, "state":
+    "0.0.0.0", "remoteVtepCnt": 0, "priVtepIp": "10.0.0.134", "secVtepIp": "", "timestamp":
+    1606024534679}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "vni": 24, "type":
+    "L2", "vlan": 24.0, "state": "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 1,
+    "priVtepIp": "10.0.0.134", "secVtepIp": "", "timestamp": 1606024534679}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf04", "vni": 13, "type": "L2", "vlan": 13.0, "state":
     "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 1, "priVtepIp": "10.0.0.134",
-    "secVtepIp": "", "timestamp": 1597536850590}]'
+    "secVtepIp": "", "timestamp": 1606024534679}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf03", "vni": 24, "type": "L2", "vlan": 24.0, "state": "up", "mcastGroup":
+    "0.0.0.0", "remoteVtepCnt": 1, "priVtepIp": "10.0.0.134", "secVtepIp": "", "timestamp":
+    1606024534746}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "vni": 13, "type":
+    "L2", "vlan": 13.0, "state": "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 1,
+    "priVtepIp": "10.0.0.134", "secVtepIp": "", "timestamp": 1606024534746}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf03", "vni": 104001, "type": "L3", "vlan": 4001.0,
+    "state": "Up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 0, "priVtepIp": "10.0.0.134",
+    "secVtepIp": "", "timestamp": 1606024534746}, {"namespace": "dual-evpn", "hostname":
+    "leaf01", "vni": 13, "type": "L2", "vlan": 13.0, "state": "up", "mcastGroup":
+    "0.0.0.0", "remoteVtepCnt": 3, "priVtepIp": "10.0.0.112", "secVtepIp": "", "timestamp":
+    1606025645591}, {"namespace": "dual-evpn", "hostname": "leaf01", "vni": 24, "type":
+    "L2", "vlan": 24.0, "state": "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 3,
+    "priVtepIp": "10.0.0.112", "secVtepIp": "", "timestamp": 1606025645591}, {"namespace":
+    "dual-evpn", "hostname": "leaf01", "vni": 104001, "type": "L3", "vlan": null,
+    "state": "Down", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 0, "priVtepIp": "0.0.0.0",
+    "secVtepIp": "", "timestamp": 1606025645591}, {"namespace": "dual-evpn", "hostname":
+    "exit01", "vni": 24, "type": "L2", "vlan": 24.0, "state": "up", "mcastGroup":
+    "0.0.0.0", "remoteVtepCnt": 3, "priVtepIp": "10.0.0.101", "secVtepIp": "", "timestamp":
+    1606025645773}, {"namespace": "dual-evpn", "hostname": "exit01", "vni": 104001,
+    "type": "L3", "vlan": null, "state": "Down", "mcastGroup": "0.0.0.0", "remoteVtepCnt":
+    0, "priVtepIp": "0.0.0.0", "secVtepIp": "", "timestamp": 1606025645773}, {"namespace":
+    "dual-evpn", "hostname": "exit01", "vni": 13, "type": "L2", "vlan": 13.0, "state":
+    "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 3, "priVtepIp": "10.0.0.101",
+    "secVtepIp": "", "timestamp": 1606025645773}, {"namespace": "dual-evpn", "hostname":
+    "exit02", "vni": 104001, "type": "L3", "vlan": null, "state": "Down", "mcastGroup":
+    "0.0.0.0", "remoteVtepCnt": 0, "priVtepIp": "0.0.0.0", "secVtepIp": "", "timestamp":
+    1606025645924}, {"namespace": "dual-evpn", "hostname": "exit02", "vni": 13, "type":
+    "L2", "vlan": 13.0, "state": "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 3,
+    "priVtepIp": "10.0.0.102", "secVtepIp": "", "timestamp": 1606025645924}, {"namespace":
+    "dual-evpn", "hostname": "exit02", "vni": 24, "type": "L2", "vlan": 24.0, "state":
+    "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 3, "priVtepIp": "10.0.0.102",
+    "secVtepIp": "", "timestamp": 1606025645924}, {"namespace": "dual-evpn", "hostname":
+    "leaf03", "vni": 104001, "type": "L3", "vlan": null, "state": "Down", "mcastGroup":
+    "0.0.0.0", "remoteVtepCnt": 0, "priVtepIp": "0.0.0.0", "secVtepIp": "", "timestamp":
+    1606025646848}, {"namespace": "dual-evpn", "hostname": "leaf03", "vni": 13, "type":
+    "L2", "vlan": 13.0, "state": "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 3,
+    "priVtepIp": "10.0.0.134", "secVtepIp": "", "timestamp": 1606025646848}, {"namespace":
+    "dual-evpn", "hostname": "leaf03", "vni": 24, "type": "L2", "vlan": 24.0, "state":
+    "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 3, "priVtepIp": "10.0.0.134",
+    "secVtepIp": "", "timestamp": 1606025646848}, {"namespace": "dual-evpn", "hostname":
+    "leaf02", "vni": 104001, "type": "L3", "vlan": null, "state": "Down", "mcastGroup":
+    "0.0.0.0", "remoteVtepCnt": 0, "priVtepIp": "0.0.0.0", "secVtepIp": "", "timestamp":
+    1606025647035}, {"namespace": "dual-evpn", "hostname": "leaf02", "vni": 13, "type":
+    "L2", "vlan": 13.0, "state": "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 3,
+    "priVtepIp": "10.0.0.112", "secVtepIp": "", "timestamp": 1606025647035}, {"namespace":
+    "dual-evpn", "hostname": "leaf02", "vni": 24, "type": "L2", "vlan": 24.0, "state":
+    "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 3, "priVtepIp": "10.0.0.112",
+    "secVtepIp": "", "timestamp": 1606025647035}, {"namespace": "dual-evpn", "hostname":
+    "leaf04", "vni": 13, "type": "L2", "vlan": 13.0, "state": "up", "mcastGroup":
+    "0.0.0.0", "remoteVtepCnt": 3, "priVtepIp": "10.0.0.134", "secVtepIp": "", "timestamp":
+    1606025647112}, {"namespace": "dual-evpn", "hostname": "leaf04", "vni": 104001,
+    "type": "L3", "vlan": null, "state": "Down", "mcastGroup": "0.0.0.0", "remoteVtepCnt":
+    0, "priVtepIp": "0.0.0.0", "secVtepIp": "", "timestamp": 1606025647112}, {"namespace":
+    "dual-evpn", "hostname": "leaf04", "vni": 24, "type": "L2", "vlan": 24.0, "state":
+    "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 3, "priVtepIp": "10.0.0.134",
+    "secVtepIp": "", "timestamp": 1606025647112}]'
 - command: evpnVni show --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: evpnVni show
-  output: '[{"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
-    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
-    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"},
-    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname":
-    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
-    {"hostname": "leaf04"}, {"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname":
-    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"},
-    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname":
-    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+  output: '[{"hostname": "exit02"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "exit01"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
     {"hostname": "leaf04"}]'
 - command: evpnVni summarize --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: evpnVni summarize
-  output: '{"dual-evpn": {"mode": "symmetric", "uniqueVtepCnt": 6, "uniqueVniCnt":
-    3, "uniqueL3VniCnt": 2, "uniqueL2VniCnt": 2, "uniqueMulticastGroups": 0, "vnisUsingMulticast":
-    0, "vnisUsingIngressRepl": 2, "uniqueVniTypeValCnt": {"L2": 12, "L3": 6}, "macsInVniStat":
-    [0, 8, 7], "remoteVtepsPerVtepStat": [3, 3, 3.0]}, "ospf-ibgp": {"mode": "symmetric",
-    "uniqueVtepCnt": 6, "uniqueVniCnt": 3, "uniqueL3VniCnt": 1, "uniqueL2VniCnt":
-    2, "uniqueMulticastGroups": 0, "vnisUsingMulticast": 0, "vnisUsingIngressRepl":
-    2, "uniqueVniTypeValCnt": {"L2": 8, "L3": 6}, "macsInVniStat": [1, 6, 6], "remoteVtepsPerVtepStat":
-    [1, 2, 2.0]}}'
+  output: '{"ospf-ibgp": {"mode": "symmetric", "uniqueVtepCnt": 6, "uniqueVniCnt":
+    3, "uniqueL3VniCnt": 1, "uniqueL2VniCnt": 2, "uniqueMulticastGroups": 0, "vnisUsingMulticast":
+    0, "vnisUsingIngressRepl": 2, "remoteVtepsPerVtepStat": [1, 1, 1.0]}, "dual-evpn":
+    {"mode": "symmetric", "uniqueVtepCnt": 6, "uniqueVniCnt": 3, "uniqueL3VniCnt":
+    2, "uniqueL2VniCnt": 2, "uniqueMulticastGroups": 0, "vnisUsingMulticast": 0, "vnisUsingIngressRepl":
+    2, "remoteVtepsPerVtepStat": [3, 3, 3.0]}}'
 - command: evpnVni summarize --namespace=dual-evpn --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: evpnVni summarize
   output: '{"dual-evpn": {"mode": "symmetric", "uniqueVtepCnt": 6, "uniqueVniCnt":
     3, "uniqueL3VniCnt": 2, "uniqueL2VniCnt": 2, "uniqueMulticastGroups": 0, "vnisUsingMulticast":
-    0, "vnisUsingIngressRepl": 2, "uniqueVniTypeValCnt": {"L2": 12, "L3": 6}, "macsInVniStat":
-    [0, 8, 7], "remoteVtepsPerVtepStat": [3, 3, 3.0]}}'
+    0, "vnisUsingIngressRepl": 2, "remoteVtepsPerVtepStat": [3, 3, 3.0]}}'
 - command: evpnVni unique --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: evpnVni unique
-  output: '[{"hostname": "exit02", "count": 4}, {"hostname": "exit01", "count": 4},
-    {"hostname": "leaf04", "count": 6}, {"hostname": "leaf03", "count": 6}, {"hostname":
-    "leaf02", "count": 6}, {"hostname": "leaf01", "count": 6}]'
+  output: '[{"hostname": "exit01", "count": 4}, {"hostname": "exit02", "count": 4},
+    {"hostname": "leaf04", "count": 6}, {"hostname": "leaf02", "count": 6}, {"hostname":
+    "leaf01", "count": 6}, {"hostname": "leaf03", "count": 6}]'
 - command: evpnVni assert --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: evpnVni assert
-  output: '[{"namespace": "dual-evpn", "hostname": "exit01", "vni": 104001, "type":
-    "L3", "assertReason": "-", "assert": "pass", "timestamp": 1597536327679}, {"namespace":
-    "dual-evpn", "hostname": "exit01", "vni": 13, "type": "L2", "assertReason": "-",
-    "assert": "pass", "timestamp": 1597536327679}, {"namespace": "dual-evpn", "hostname":
-    "exit01", "vni": 24, "type": "L2", "assertReason": "-", "assert": "pass", "timestamp":
-    1597536327679}, {"namespace": "dual-evpn", "hostname": "exit02", "vni": 104001,
-    "type": "L3", "assertReason": "-", "assert": "pass", "timestamp": 1597536327877},
-    {"namespace": "dual-evpn", "hostname": "exit02", "vni": 13, "type": "L2", "assertReason":
-    "-", "assert": "pass", "timestamp": 1597536327877}, {"namespace": "dual-evpn",
-    "hostname": "exit02", "vni": 24, "type": "L2", "assertReason": "-", "assert":
-    "pass", "timestamp": 1597536327877}, {"namespace": "dual-evpn", "hostname": "leaf01",
-    "vni": 104001, "type": "L3", "assertReason": "-", "assert": "pass", "timestamp":
-    1597536327877}, {"namespace": "dual-evpn", "hostname": "leaf01", "vni": 13, "type":
-    "L2", "assertReason": "-", "assert": "pass", "timestamp": 1597536327877}, {"namespace":
-    "dual-evpn", "hostname": "leaf01", "vni": 24, "type": "L2", "assertReason": "-",
-    "assert": "pass", "timestamp": 1597536327877}, {"namespace": "dual-evpn", "hostname":
-    "leaf02", "vni": 104001, "type": "L3", "assertReason": "-", "assert": "pass",
-    "timestamp": 1597536327679}, {"namespace": "dual-evpn", "hostname": "leaf02",
-    "vni": 13, "type": "L2", "assertReason": "-", "assert": "pass", "timestamp": 1597536327679},
-    {"namespace": "dual-evpn", "hostname": "leaf02", "vni": 24, "type": "L2", "assertReason":
-    "-", "assert": "pass", "timestamp": 1597536327679}, {"namespace": "dual-evpn",
-    "hostname": "leaf03", "vni": 104001, "type": "L3", "assertReason": "-", "assert":
-    "pass", "timestamp": 1597536327877}, {"namespace": "dual-evpn", "hostname": "leaf03",
-    "vni": 13, "type": "L2", "assertReason": "-", "assert": "pass", "timestamp": 1597536327877},
-    {"namespace": "dual-evpn", "hostname": "leaf03", "vni": 24, "type": "L2", "assertReason":
-    "-", "assert": "pass", "timestamp": 1597536327877}, {"namespace": "dual-evpn",
-    "hostname": "leaf04", "vni": 104001, "type": "L3", "assertReason": "-", "assert":
-    "pass", "timestamp": 1597536327876}, {"namespace": "dual-evpn", "hostname": "leaf04",
-    "vni": 13, "type": "L2", "assertReason": "-", "assert": "pass", "timestamp": 1597536327876},
-    {"namespace": "dual-evpn", "hostname": "leaf04", "vni": 24, "type": "L2", "assertReason":
-    "-", "assert": "pass", "timestamp": 1597536327876}, {"namespace": "ospf-ibgp",
-    "hostname": "exit01", "vni": 104001, "type": "L3", "assertReason": "-", "assert":
-    "pass", "timestamp": 1597536850507}, {"namespace": "ospf-ibgp", "hostname": "exit02",
-    "vni": 104001, "type": "L3", "assertReason": "-", "assert": "pass", "timestamp":
-    1597536850312}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "vni": 104001,
-    "type": "L3", "assertReason": "-", "assert": "pass", "timestamp": 1597536850584},
-    {"namespace": "ospf-ibgp", "hostname": "leaf01", "vni": 13, "type": "L2", "assertReason":
-    "-", "assert": "pass", "timestamp": 1597536850584}, {"namespace": "ospf-ibgp",
-    "hostname": "leaf01", "vni": 24, "type": "L2", "assertReason": "-", "assert":
-    "pass", "timestamp": 1597536850584}, {"namespace": "ospf-ibgp", "hostname": "leaf02",
-    "vni": 104001, "type": "L3", "assertReason": "-", "assert": "pass", "timestamp":
-    1597536850581}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "vni": 13, "type":
-    "L2", "assertReason": "-", "assert": "pass", "timestamp": 1597536850581}, {"namespace":
+  output: '[{"namespace": "ospf-ibgp", "hostname": "exit02", "vni": 104001, "type":
+    "L3", "assertReason": "-", "assert": "pass", "timestamp": 1606024534311}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf01", "vni": 24, "type": "L2", "assertReason": "-",
+    "assert": "pass", "timestamp": 1606024534465}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf01", "vni": 13, "type": "L2", "assertReason": "-", "assert": "pass", "timestamp":
+    1606024534465}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "vni": 104001,
+    "type": "L3", "assertReason": "-", "assert": "pass", "timestamp": 1606024534465},
+    {"namespace": "ospf-ibgp", "hostname": "leaf02", "vni": 104001, "type": "L3",
+    "assertReason": "-", "assert": "pass", "timestamp": 1606024534468}, {"namespace":
     "ospf-ibgp", "hostname": "leaf02", "vni": 24, "type": "L2", "assertReason": "-",
-    "assert": "pass", "timestamp": 1597536850581}, {"namespace": "ospf-ibgp", "hostname":
+    "assert": "pass", "timestamp": 1606024534468}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf02", "vni": 13, "type": "L2", "assertReason": "-", "assert": "pass", "timestamp":
+    1606024534468}, {"namespace": "ospf-ibgp", "hostname": "exit01", "vni": 104001,
+    "type": "L3", "assertReason": "-", "assert": "pass", "timestamp": 1606024534515},
+    {"namespace": "ospf-ibgp", "hostname": "leaf04", "vni": 104001, "type": "L3",
+    "assertReason": "-", "assert": "pass", "timestamp": 1606024534679}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf04", "vni": 24, "type": "L2", "assertReason": "-",
+    "assert": "pass", "timestamp": 1606024534679}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf04", "vni": 13, "type": "L2", "assertReason": "-", "assert": "pass", "timestamp":
+    1606024534679}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "vni": 24, "type":
+    "L2", "assertReason": "-", "assert": "pass", "timestamp": 1606024534746}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf03", "vni": 13, "type": "L2", "assertReason": "-",
+    "assert": "pass", "timestamp": 1606024534746}, {"namespace": "ospf-ibgp", "hostname":
     "leaf03", "vni": 104001, "type": "L3", "assertReason": "-", "assert": "pass",
-    "timestamp": 1597536850590}, {"namespace": "ospf-ibgp", "hostname": "leaf03",
-    "vni": 13, "type": "L2", "assertReason": "-", "assert": "pass", "timestamp": 1597536850590},
-    {"namespace": "ospf-ibgp", "hostname": "leaf03", "vni": 24, "type": "L2", "assertReason":
-    "-", "assert": "pass", "timestamp": 1597536850590}, {"namespace": "ospf-ibgp",
-    "hostname": "leaf04", "vni": 104001, "type": "L3", "assertReason": "-", "assert":
-    "pass", "timestamp": 1597536850590}, {"namespace": "ospf-ibgp", "hostname": "leaf04",
-    "vni": 13, "type": "L2", "assertReason": "-", "assert": "pass", "timestamp": 1597536850590},
-    {"namespace": "ospf-ibgp", "hostname": "leaf04", "vni": 24, "type": "L2", "assertReason":
-    "-", "assert": "pass", "timestamp": 1597536850590}]'
+    "timestamp": 1606024534746}, {"namespace": "dual-evpn", "hostname": "leaf01",
+    "vni": 13, "type": "L2", "assertReason": "-", "assert": "pass", "timestamp": 1606025645591},
+    {"namespace": "dual-evpn", "hostname": "leaf01", "vni": 24, "type": "L2", "assertReason":
+    "-", "assert": "pass", "timestamp": 1606025645591}, {"namespace": "dual-evpn",
+    "hostname": "leaf01", "vni": 104001, "type": "L3", "assertReason": "-", "assert":
+    "pass", "timestamp": 1606025645591}, {"namespace": "dual-evpn", "hostname": "exit01",
+    "vni": 24, "type": "L2", "assertReason": "-", "assert": "pass", "timestamp": 1606025645773},
+    {"namespace": "dual-evpn", "hostname": "exit01", "vni": 104001, "type": "L3",
+    "assertReason": "-", "assert": "pass", "timestamp": 1606025645773}, {"namespace":
+    "dual-evpn", "hostname": "exit01", "vni": 13, "type": "L2", "assertReason": "-",
+    "assert": "pass", "timestamp": 1606025645773}, {"namespace": "dual-evpn", "hostname":
+    "exit02", "vni": 104001, "type": "L3", "assertReason": "-", "assert": "pass",
+    "timestamp": 1606025645924}, {"namespace": "dual-evpn", "hostname": "exit02",
+    "vni": 13, "type": "L2", "assertReason": "-", "assert": "pass", "timestamp": 1606025645924},
+    {"namespace": "dual-evpn", "hostname": "exit02", "vni": 24, "type": "L2", "assertReason":
+    "-", "assert": "pass", "timestamp": 1606025645924}, {"namespace": "dual-evpn",
+    "hostname": "leaf03", "vni": 104001, "type": "L3", "assertReason": "-", "assert":
+    "pass", "timestamp": 1606025646848}, {"namespace": "dual-evpn", "hostname": "leaf03",
+    "vni": 13, "type": "L2", "assertReason": "-", "assert": "pass", "timestamp": 1606025646848},
+    {"namespace": "dual-evpn", "hostname": "leaf03", "vni": 24, "type": "L2", "assertReason":
+    "-", "assert": "pass", "timestamp": 1606025646848}, {"namespace": "dual-evpn",
+    "hostname": "leaf02", "vni": 104001, "type": "L3", "assertReason": "-", "assert":
+    "pass", "timestamp": 1606025647035}, {"namespace": "dual-evpn", "hostname": "leaf02",
+    "vni": 13, "type": "L2", "assertReason": "-", "assert": "pass", "timestamp": 1606025647035},
+    {"namespace": "dual-evpn", "hostname": "leaf02", "vni": 24, "type": "L2", "assertReason":
+    "-", "assert": "pass", "timestamp": 1606025647035}, {"namespace": "dual-evpn",
+    "hostname": "leaf04", "vni": 13, "type": "L2", "assertReason": "-", "assert":
+    "pass", "timestamp": 1606025647112}, {"namespace": "dual-evpn", "hostname": "leaf04",
+    "vni": 104001, "type": "L3", "assertReason": "-", "assert": "pass", "timestamp":
+    1606025647112}, {"namespace": "dual-evpn", "hostname": "leaf04", "vni": 24, "type":
+    "L2", "assertReason": "-", "assert": "pass", "timestamp": 1606025647112}]'
 - command: evpnVni show --columns='hostname vni' --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: evpnVni show filter
-  output: '[{"hostname": "exit01", "vni": 104001}, {"hostname": "exit01", "vni": 13},
-    {"hostname": "exit01", "vni": 24}, {"hostname": "exit02", "vni": 104001}, {"hostname":
-    "exit02", "vni": 13}, {"hostname": "exit02", "vni": 24}, {"hostname": "leaf01",
-    "vni": 104001}, {"hostname": "leaf01", "vni": 13}, {"hostname": "leaf01", "vni":
-    24}, {"hostname": "leaf02", "vni": 104001}, {"hostname": "leaf02", "vni": 13},
-    {"hostname": "leaf02", "vni": 24}, {"hostname": "leaf03", "vni": 104001}, {"hostname":
-    "leaf03", "vni": 13}, {"hostname": "leaf03", "vni": 24}, {"hostname": "leaf04",
-    "vni": 104001}, {"hostname": "leaf04", "vni": 13}, {"hostname": "leaf04", "vni":
-    24}, {"hostname": "exit01", "vni": 104001}, {"hostname": "exit02", "vni": 104001},
-    {"hostname": "leaf01", "vni": 104001}, {"hostname": "leaf01", "vni": 13}, {"hostname":
-    "leaf01", "vni": 24}, {"hostname": "leaf02", "vni": 104001}, {"hostname": "leaf02",
-    "vni": 13}, {"hostname": "leaf02", "vni": 24}, {"hostname": "leaf03", "vni": 104001},
-    {"hostname": "leaf03", "vni": 13}, {"hostname": "leaf03", "vni": 24}, {"hostname":
-    "leaf04", "vni": 104001}, {"hostname": "leaf04", "vni": 13}, {"hostname": "leaf04",
+  output: '[{"hostname": "exit02", "vni": 104001}, {"hostname": "leaf01", "vni": 24},
+    {"hostname": "leaf01", "vni": 13}, {"hostname": "leaf01", "vni": 104001}, {"hostname":
+    "leaf02", "vni": 104001}, {"hostname": "leaf02", "vni": 24}, {"hostname": "leaf02",
+    "vni": 13}, {"hostname": "exit01", "vni": 104001}, {"hostname": "leaf04", "vni":
+    104001}, {"hostname": "leaf04", "vni": 24}, {"hostname": "leaf04", "vni": 13},
+    {"hostname": "leaf03", "vni": 24}, {"hostname": "leaf03", "vni": 13}, {"hostname":
+    "leaf03", "vni": 104001}, {"hostname": "leaf01", "vni": 13}, {"hostname": "leaf01",
+    "vni": 24}, {"hostname": "leaf01", "vni": 104001}, {"hostname": "exit01", "vni":
+    24}, {"hostname": "exit01", "vni": 104001}, {"hostname": "exit01", "vni": 13},
+    {"hostname": "exit02", "vni": 104001}, {"hostname": "exit02", "vni": 13}, {"hostname":
+    "exit02", "vni": 24}, {"hostname": "leaf03", "vni": 104001}, {"hostname": "leaf03",
+    "vni": 13}, {"hostname": "leaf03", "vni": 24}, {"hostname": "leaf02", "vni": 104001},
+    {"hostname": "leaf02", "vni": 13}, {"hostname": "leaf02", "vni": 24}, {"hostname":
+    "leaf04", "vni": 13}, {"hostname": "leaf04", "vni": 104001}, {"hostname": "leaf04",
     "vni": 24}]'
 - command: evpnVni show --columns='hostname vni remoteVtepCnt' --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: evpnVni show filter
-  output: '[{"hostname": "exit01", "vni": 104001, "remoteVtepCnt": 1}, {"hostname":
-    "exit01", "vni": 13, "remoteVtepCnt": 3}, {"hostname": "exit01", "vni": 24, "remoteVtepCnt":
-    3}, {"hostname": "exit02", "vni": 104001, "remoteVtepCnt": 1}, {"hostname": "exit02",
-    "vni": 13, "remoteVtepCnt": 3}, {"hostname": "exit02", "vni": 24, "remoteVtepCnt":
-    3}, {"hostname": "leaf01", "vni": 104001, "remoteVtepCnt": 1}, {"hostname": "leaf01",
-    "vni": 13, "remoteVtepCnt": 3}, {"hostname": "leaf01", "vni": 24, "remoteVtepCnt":
-    3}, {"hostname": "leaf02", "vni": 104001, "remoteVtepCnt": 1}, {"hostname": "leaf02",
-    "vni": 13, "remoteVtepCnt": 3}, {"hostname": "leaf02", "vni": 24, "remoteVtepCnt":
-    3}, {"hostname": "leaf03", "vni": 104001, "remoteVtepCnt": 1}, {"hostname": "leaf03",
-    "vni": 13, "remoteVtepCnt": 3}, {"hostname": "leaf03", "vni": 24, "remoteVtepCnt":
-    3}, {"hostname": "leaf04", "vni": 104001, "remoteVtepCnt": 1}, {"hostname": "leaf04",
-    "vni": 13, "remoteVtepCnt": 3}, {"hostname": "leaf04", "vni": 24, "remoteVtepCnt":
-    3}, {"hostname": "exit01", "vni": 104001, "remoteVtepCnt": 1}, {"hostname": "exit02",
-    "vni": 104001, "remoteVtepCnt": 1}, {"hostname": "leaf01", "vni": 104001, "remoteVtepCnt":
-    1}, {"hostname": "leaf01", "vni": 13, "remoteVtepCnt": 1}, {"hostname": "leaf01",
-    "vni": 24, "remoteVtepCnt": 1}, {"hostname": "leaf02", "vni": 104001, "remoteVtepCnt":
-    1}, {"hostname": "leaf02", "vni": 13, "remoteVtepCnt": 1}, {"hostname": "leaf02",
-    "vni": 24, "remoteVtepCnt": 1}, {"hostname": "leaf03", "vni": 104001, "remoteVtepCnt":
+  output: '[{"hostname": "exit02", "vni": 104001, "remoteVtepCnt": 0}, {"hostname":
+    "leaf01", "vni": 24, "remoteVtepCnt": 1}, {"hostname": "leaf01", "vni": 13, "remoteVtepCnt":
+    1}, {"hostname": "leaf01", "vni": 104001, "remoteVtepCnt": 0}, {"hostname": "leaf02",
+    "vni": 104001, "remoteVtepCnt": 0}, {"hostname": "leaf02", "vni": 24, "remoteVtepCnt":
+    1}, {"hostname": "leaf02", "vni": 13, "remoteVtepCnt": 1}, {"hostname": "exit01",
+    "vni": 104001, "remoteVtepCnt": 0}, {"hostname": "leaf04", "vni": 104001, "remoteVtepCnt":
+    0}, {"hostname": "leaf04", "vni": 24, "remoteVtepCnt": 1}, {"hostname": "leaf04",
+    "vni": 13, "remoteVtepCnt": 1}, {"hostname": "leaf03", "vni": 24, "remoteVtepCnt":
     1}, {"hostname": "leaf03", "vni": 13, "remoteVtepCnt": 1}, {"hostname": "leaf03",
-    "vni": 24, "remoteVtepCnt": 1}, {"hostname": "leaf04", "vni": 104001, "remoteVtepCnt":
-    1}, {"hostname": "leaf04", "vni": 13, "remoteVtepCnt": 1}, {"hostname": "leaf04",
-    "vni": 24, "remoteVtepCnt": 1}]'
+    "vni": 104001, "remoteVtepCnt": 0}, {"hostname": "leaf01", "vni": 13, "remoteVtepCnt":
+    3}, {"hostname": "leaf01", "vni": 24, "remoteVtepCnt": 3}, {"hostname": "leaf01",
+    "vni": 104001, "remoteVtepCnt": 0}, {"hostname": "exit01", "vni": 24, "remoteVtepCnt":
+    3}, {"hostname": "exit01", "vni": 104001, "remoteVtepCnt": 0}, {"hostname": "exit01",
+    "vni": 13, "remoteVtepCnt": 3}, {"hostname": "exit02", "vni": 104001, "remoteVtepCnt":
+    0}, {"hostname": "exit02", "vni": 13, "remoteVtepCnt": 3}, {"hostname": "exit02",
+    "vni": 24, "remoteVtepCnt": 3}, {"hostname": "leaf03", "vni": 104001, "remoteVtepCnt":
+    0}, {"hostname": "leaf03", "vni": 13, "remoteVtepCnt": 3}, {"hostname": "leaf03",
+    "vni": 24, "remoteVtepCnt": 3}, {"hostname": "leaf02", "vni": 104001, "remoteVtepCnt":
+    0}, {"hostname": "leaf02", "vni": 13, "remoteVtepCnt": 3}, {"hostname": "leaf02",
+    "vni": 24, "remoteVtepCnt": 3}, {"hostname": "leaf04", "vni": 13, "remoteVtepCnt":
+    3}, {"hostname": "leaf04", "vni": 104001, "remoteVtepCnt": 0}, {"hostname": "leaf04",
+    "vni": 24, "remoteVtepCnt": 3}]'
 - command: evpnVni show --columns='hostname vni remoteVtepCnt remoteVtepList' --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: evpnVni show filter
-  output: '[{"hostname": "exit01", "vni": 104001, "remoteVtepCnt": 1, "remoteVtepList":
-    ["-"]}, {"hostname": "exit01", "vni": 13, "remoteVtepCnt": 3, "remoteVtepList":
-    ["10.0.0.134", "10.0.0.102", "10.0.0.112"]}, {"hostname": "exit01", "vni": 24,
-    "remoteVtepCnt": 3, "remoteVtepList": ["10.0.0.134", "10.0.0.102", "10.0.0.112"]},
-    {"hostname": "exit02", "vni": 104001, "remoteVtepCnt": 1, "remoteVtepList": ["-"]},
-    {"hostname": "exit02", "vni": 13, "remoteVtepCnt": 3, "remoteVtepList": ["10.0.0.101",
-    "10.0.0.134", "10.0.0.112"]}, {"hostname": "exit02", "vni": 24, "remoteVtepCnt":
-    3, "remoteVtepList": ["10.0.0.101", "10.0.0.134", "10.0.0.112"]}, {"hostname":
-    "leaf01", "vni": 104001, "remoteVtepCnt": 1, "remoteVtepList": ["-"]}, {"hostname":
-    "leaf01", "vni": 13, "remoteVtepCnt": 3, "remoteVtepList": ["10.0.0.102", "10.0.0.101",
-    "10.0.0.134"]}, {"hostname": "leaf01", "vni": 24, "remoteVtepCnt": 3, "remoteVtepList":
-    ["10.0.0.102", "10.0.0.101", "10.0.0.134"]}, {"hostname": "leaf02", "vni": 104001,
-    "remoteVtepCnt": 1, "remoteVtepList": ["-"]}, {"hostname": "leaf02", "vni": 13,
-    "remoteVtepCnt": 3, "remoteVtepList": ["10.0.0.101", "10.0.0.134", "10.0.0.102"]},
-    {"hostname": "leaf02", "vni": 24, "remoteVtepCnt": 3, "remoteVtepList": ["10.0.0.101",
-    "10.0.0.134", "10.0.0.102"]}, {"hostname": "leaf03", "vni": 104001, "remoteVtepCnt":
-    1, "remoteVtepList": ["-"]}, {"hostname": "leaf03", "vni": 13, "remoteVtepCnt":
-    3, "remoteVtepList": ["10.0.0.101", "10.0.0.102", "10.0.0.112"]}, {"hostname":
-    "leaf03", "vni": 24, "remoteVtepCnt": 3, "remoteVtepList": ["10.0.0.101", "10.0.0.102",
-    "10.0.0.112"]}, {"hostname": "leaf04", "vni": 104001, "remoteVtepCnt": 1, "remoteVtepList":
-    ["-"]}, {"hostname": "leaf04", "vni": 13, "remoteVtepCnt": 3, "remoteVtepList":
-    ["10.0.0.102", "10.0.0.101", "10.0.0.112"]}, {"hostname": "leaf04", "vni": 24,
-    "remoteVtepCnt": 3, "remoteVtepList": ["10.0.0.102", "10.0.0.101", "10.0.0.112"]},
-    {"hostname": "exit01", "vni": 104001, "remoteVtepCnt": 1, "remoteVtepList": ["-"]},
-    {"hostname": "exit02", "vni": 104001, "remoteVtepCnt": 1, "remoteVtepList": ["-"]},
-    {"hostname": "leaf01", "vni": 104001, "remoteVtepCnt": 1, "remoteVtepList": ["-"]},
+  output: '[{"hostname": "exit02", "vni": 104001, "remoteVtepCnt": 0, "remoteVtepList":
+    []}, {"hostname": "leaf01", "vni": 24, "remoteVtepCnt": 1, "remoteVtepList": ["10.0.0.134"]},
     {"hostname": "leaf01", "vni": 13, "remoteVtepCnt": 1, "remoteVtepList": ["10.0.0.134"]},
-    {"hostname": "leaf01", "vni": 24, "remoteVtepCnt": 1, "remoteVtepList": ["10.0.0.134"]},
-    {"hostname": "leaf02", "vni": 104001, "remoteVtepCnt": 1, "remoteVtepList": ["-"]},
-    {"hostname": "leaf02", "vni": 13, "remoteVtepCnt": 1, "remoteVtepList": ["10.0.0.134"]},
+    {"hostname": "leaf01", "vni": 104001, "remoteVtepCnt": 0, "remoteVtepList": []},
+    {"hostname": "leaf02", "vni": 104001, "remoteVtepCnt": 0, "remoteVtepList": []},
     {"hostname": "leaf02", "vni": 24, "remoteVtepCnt": 1, "remoteVtepList": ["10.0.0.134"]},
-    {"hostname": "leaf03", "vni": 104001, "remoteVtepCnt": 1, "remoteVtepList": ["-"]},
-    {"hostname": "leaf03", "vni": 13, "remoteVtepCnt": 1, "remoteVtepList": ["10.0.0.112"]},
-    {"hostname": "leaf03", "vni": 24, "remoteVtepCnt": 1, "remoteVtepList": ["10.0.0.112"]},
-    {"hostname": "leaf04", "vni": 104001, "remoteVtepCnt": 1, "remoteVtepList": ["-"]},
+    {"hostname": "leaf02", "vni": 13, "remoteVtepCnt": 1, "remoteVtepList": ["10.0.0.134"]},
+    {"hostname": "exit01", "vni": 104001, "remoteVtepCnt": 0, "remoteVtepList": []},
+    {"hostname": "leaf04", "vni": 104001, "remoteVtepCnt": 0, "remoteVtepList": []},
+    {"hostname": "leaf04", "vni": 24, "remoteVtepCnt": 1, "remoteVtepList": ["10.0.0.112"]},
     {"hostname": "leaf04", "vni": 13, "remoteVtepCnt": 1, "remoteVtepList": ["10.0.0.112"]},
-    {"hostname": "leaf04", "vni": 24, "remoteVtepCnt": 1, "remoteVtepList": ["10.0.0.112"]}]'
+    {"hostname": "leaf03", "vni": 24, "remoteVtepCnt": 1, "remoteVtepList": ["10.0.0.112"]},
+    {"hostname": "leaf03", "vni": 13, "remoteVtepCnt": 1, "remoteVtepList": ["10.0.0.112"]},
+    {"hostname": "leaf03", "vni": 104001, "remoteVtepCnt": 0, "remoteVtepList": []},
+    {"hostname": "leaf01", "vni": 13, "remoteVtepCnt": 3, "remoteVtepList": ["10.0.0.134",
+    "10.0.0.102", "10.0.0.101"]}, {"hostname": "leaf01", "vni": 24, "remoteVtepCnt":
+    3, "remoteVtepList": ["10.0.0.134", "10.0.0.102", "10.0.0.101"]}, {"hostname":
+    "leaf01", "vni": 104001, "remoteVtepCnt": 0, "remoteVtepList": []}, {"hostname":
+    "exit01", "vni": 24, "remoteVtepCnt": 3, "remoteVtepList": ["10.0.0.112", "10.0.0.134",
+    "10.0.0.102"]}, {"hostname": "exit01", "vni": 104001, "remoteVtepCnt": 0, "remoteVtepList":
+    []}, {"hostname": "exit01", "vni": 13, "remoteVtepCnt": 3, "remoteVtepList": ["10.0.0.112",
+    "10.0.0.134", "10.0.0.102"]}, {"hostname": "exit02", "vni": 104001, "remoteVtepCnt":
+    0, "remoteVtepList": []}, {"hostname": "exit02", "vni": 13, "remoteVtepCnt": 3,
+    "remoteVtepList": ["10.0.0.112", "10.0.0.134", "10.0.0.101"]}, {"hostname": "exit02",
+    "vni": 24, "remoteVtepCnt": 3, "remoteVtepList": ["10.0.0.112", "10.0.0.134",
+    "10.0.0.101"]}, {"hostname": "leaf03", "vni": 104001, "remoteVtepCnt": 0, "remoteVtepList":
+    []}, {"hostname": "leaf03", "vni": 13, "remoteVtepCnt": 3, "remoteVtepList": ["10.0.0.112",
+    "10.0.0.102", "10.0.0.101"]}, {"hostname": "leaf03", "vni": 24, "remoteVtepCnt":
+    3, "remoteVtepList": ["10.0.0.112", "10.0.0.102", "10.0.0.101"]}, {"hostname":
+    "leaf02", "vni": 104001, "remoteVtepCnt": 0, "remoteVtepList": []}, {"hostname":
+    "leaf02", "vni": 13, "remoteVtepCnt": 3, "remoteVtepList": ["10.0.0.134", "10.0.0.102",
+    "10.0.0.101"]}, {"hostname": "leaf02", "vni": 24, "remoteVtepCnt": 3, "remoteVtepList":
+    ["10.0.0.134", "10.0.0.102", "10.0.0.101"]}, {"hostname": "leaf04", "vni": 13,
+    "remoteVtepCnt": 3, "remoteVtepList": ["10.0.0.112", "10.0.0.102", "10.0.0.101"]},
+    {"hostname": "leaf04", "vni": 104001, "remoteVtepCnt": 0, "remoteVtepList": []},
+    {"hostname": "leaf04", "vni": 24, "remoteVtepCnt": 3, "remoteVtepList": ["10.0.0.112",
+    "10.0.0.102", "10.0.0.101"]}]'
 - command: evpnVni show --columns='hostname vni remoteVtepList' --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: evpnVni show filter
-  output: '[{"hostname": "exit01", "vni": 104001, "remoteVtepList": ["-"]}, {"hostname":
-    "exit01", "vni": 13, "remoteVtepList": ["10.0.0.134", "10.0.0.102", "10.0.0.112"]},
-    {"hostname": "exit01", "vni": 24, "remoteVtepList": ["10.0.0.134", "10.0.0.102",
-    "10.0.0.112"]}, {"hostname": "exit02", "vni": 104001, "remoteVtepList": ["-"]},
-    {"hostname": "exit02", "vni": 13, "remoteVtepList": ["10.0.0.101", "10.0.0.134",
-    "10.0.0.112"]}, {"hostname": "exit02", "vni": 24, "remoteVtepList": ["10.0.0.101",
-    "10.0.0.134", "10.0.0.112"]}, {"hostname": "leaf01", "vni": 104001, "remoteVtepList":
-    ["-"]}, {"hostname": "leaf01", "vni": 13, "remoteVtepList": ["10.0.0.102", "10.0.0.101",
-    "10.0.0.134"]}, {"hostname": "leaf01", "vni": 24, "remoteVtepList": ["10.0.0.102",
-    "10.0.0.101", "10.0.0.134"]}, {"hostname": "leaf02", "vni": 104001, "remoteVtepList":
-    ["-"]}, {"hostname": "leaf02", "vni": 13, "remoteVtepList": ["10.0.0.101", "10.0.0.134",
-    "10.0.0.102"]}, {"hostname": "leaf02", "vni": 24, "remoteVtepList": ["10.0.0.101",
-    "10.0.0.134", "10.0.0.102"]}, {"hostname": "leaf03", "vni": 104001, "remoteVtepList":
-    ["-"]}, {"hostname": "leaf03", "vni": 13, "remoteVtepList": ["10.0.0.101", "10.0.0.102",
-    "10.0.0.112"]}, {"hostname": "leaf03", "vni": 24, "remoteVtepList": ["10.0.0.101",
-    "10.0.0.102", "10.0.0.112"]}, {"hostname": "leaf04", "vni": 104001, "remoteVtepList":
-    ["-"]}, {"hostname": "leaf04", "vni": 13, "remoteVtepList": ["10.0.0.102", "10.0.0.101",
-    "10.0.0.112"]}, {"hostname": "leaf04", "vni": 24, "remoteVtepList": ["10.0.0.102",
-    "10.0.0.101", "10.0.0.112"]}, {"hostname": "exit01", "vni": 104001, "remoteVtepList":
-    ["-"]}, {"hostname": "exit02", "vni": 104001, "remoteVtepList": ["-"]}, {"hostname":
-    "leaf01", "vni": 104001, "remoteVtepList": ["-"]}, {"hostname": "leaf01", "vni":
-    13, "remoteVtepList": ["10.0.0.134"]}, {"hostname": "leaf01", "vni": 24, "remoteVtepList":
-    ["10.0.0.134"]}, {"hostname": "leaf02", "vni": 104001, "remoteVtepList": ["-"]},
-    {"hostname": "leaf02", "vni": 13, "remoteVtepList": ["10.0.0.134"]}, {"hostname":
-    "leaf02", "vni": 24, "remoteVtepList": ["10.0.0.134"]}, {"hostname": "leaf03",
-    "vni": 104001, "remoteVtepList": ["-"]}, {"hostname": "leaf03", "vni": 13, "remoteVtepList":
-    ["10.0.0.112"]}, {"hostname": "leaf03", "vni": 24, "remoteVtepList": ["10.0.0.112"]},
-    {"hostname": "leaf04", "vni": 104001, "remoteVtepList": ["-"]}, {"hostname": "leaf04",
-    "vni": 13, "remoteVtepList": ["10.0.0.112"]}, {"hostname": "leaf04", "vni": 24,
-    "remoteVtepList": ["10.0.0.112"]}]'
+  output: '[{"hostname": "exit02", "vni": 104001, "remoteVtepList": []}, {"hostname":
+    "leaf01", "vni": 24, "remoteVtepList": ["10.0.0.134"]}, {"hostname": "leaf01",
+    "vni": 13, "remoteVtepList": ["10.0.0.134"]}, {"hostname": "leaf01", "vni": 104001,
+    "remoteVtepList": []}, {"hostname": "leaf02", "vni": 104001, "remoteVtepList":
+    []}, {"hostname": "leaf02", "vni": 24, "remoteVtepList": ["10.0.0.134"]}, {"hostname":
+    "leaf02", "vni": 13, "remoteVtepList": ["10.0.0.134"]}, {"hostname": "exit01",
+    "vni": 104001, "remoteVtepList": []}, {"hostname": "leaf04", "vni": 104001, "remoteVtepList":
+    []}, {"hostname": "leaf04", "vni": 24, "remoteVtepList": ["10.0.0.112"]}, {"hostname":
+    "leaf04", "vni": 13, "remoteVtepList": ["10.0.0.112"]}, {"hostname": "leaf03",
+    "vni": 24, "remoteVtepList": ["10.0.0.112"]}, {"hostname": "leaf03", "vni": 13,
+    "remoteVtepList": ["10.0.0.112"]}, {"hostname": "leaf03", "vni": 104001, "remoteVtepList":
+    []}, {"hostname": "leaf01", "vni": 13, "remoteVtepList": ["10.0.0.134", "10.0.0.102",
+    "10.0.0.101"]}, {"hostname": "leaf01", "vni": 24, "remoteVtepList": ["10.0.0.134",
+    "10.0.0.102", "10.0.0.101"]}, {"hostname": "leaf01", "vni": 104001, "remoteVtepList":
+    []}, {"hostname": "exit01", "vni": 24, "remoteVtepList": ["10.0.0.112", "10.0.0.134",
+    "10.0.0.102"]}, {"hostname": "exit01", "vni": 104001, "remoteVtepList": []}, {"hostname":
+    "exit01", "vni": 13, "remoteVtepList": ["10.0.0.112", "10.0.0.134", "10.0.0.102"]},
+    {"hostname": "exit02", "vni": 104001, "remoteVtepList": []}, {"hostname": "exit02",
+    "vni": 13, "remoteVtepList": ["10.0.0.112", "10.0.0.134", "10.0.0.101"]}, {"hostname":
+    "exit02", "vni": 24, "remoteVtepList": ["10.0.0.112", "10.0.0.134", "10.0.0.101"]},
+    {"hostname": "leaf03", "vni": 104001, "remoteVtepList": []}, {"hostname": "leaf03",
+    "vni": 13, "remoteVtepList": ["10.0.0.112", "10.0.0.102", "10.0.0.101"]}, {"hostname":
+    "leaf03", "vni": 24, "remoteVtepList": ["10.0.0.112", "10.0.0.102", "10.0.0.101"]},
+    {"hostname": "leaf02", "vni": 104001, "remoteVtepList": []}, {"hostname": "leaf02",
+    "vni": 13, "remoteVtepList": ["10.0.0.134", "10.0.0.102", "10.0.0.101"]}, {"hostname":
+    "leaf02", "vni": 24, "remoteVtepList": ["10.0.0.134", "10.0.0.102", "10.0.0.101"]},
+    {"hostname": "leaf04", "vni": 13, "remoteVtepList": ["10.0.0.112", "10.0.0.102",
+    "10.0.0.101"]}, {"hostname": "leaf04", "vni": 104001, "remoteVtepList": []}, {"hostname":
+    "leaf04", "vni": 24, "remoteVtepList": ["10.0.0.112", "10.0.0.102", "10.0.0.101"]}]'

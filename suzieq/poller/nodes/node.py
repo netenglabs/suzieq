@@ -150,6 +150,10 @@ async def init_hosts(**kwargs):
                         keyfile = words[i].split("=")[1]
                     elif words[i].startswith('devtype'):
                         devtype = words[i].split("=")[1]
+                    elif words[i].startswith('username'):
+                        username = words[i].split("=")[1]
+                    elif words[i].startswith('password'):
+                        password = words[i].split("=")[1]
 
                 newnode = Node()
                 tasks += [newnode._init(

@@ -93,7 +93,7 @@ apply:
       - command: show configuration routing-instances | display json
         normalize: 'configuration/routing-instances/instance/*/[
         "name: ifname",
-        "instance-type: type",
+        "instance-type: type?|vrf",
         "route-distinguisher/rd-type: routeDistinguisher",
         "interface/*/name: _interfaceList",
         "protocols/evpn/ip-prefix-routes/vni: vni?|0",
@@ -116,6 +116,7 @@ apply:
         "speed: speed?|0",
         "mtu: mtu?|0",
         "portmode: _portmode?|routed",
+        "portchan: _portchannel?|",
         "type: type?|",
         "vlan: vlan",
         "state_rsn_desc: reason",

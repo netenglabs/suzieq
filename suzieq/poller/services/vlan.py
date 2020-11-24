@@ -8,7 +8,9 @@ class VlanService(Service):
         '''Massage the interface output'''
 
         for entry in processed_data:
-            entry['ifname'] = f'vlan{entry["vlan"]}'
+            if (entry['vlanName'].startswith('VLAN') or
+                    entry['vlanName'] == "default"):
+                entry['vlanName'] = f'vlan{entry["vlan"]}'
 
         return processed_data
 
@@ -24,25 +26,25 @@ class VlanService(Service):
 
             for item in entry['vlan']:
                 vlan = int(item)
-                ifname = f'vlan{vlan}'
+                vlanName = f'vlan{vlan}'
 
-                if entry['ifname'] == 'bridge':
+                if entry['vlanName'] == 'bridge':
                     state = 'suspended'
                 else:
                     state = 'active'
-                if ifname not in entry_dict:
-                    new_entry = {'ifname': ifname,
+                if vlanName not in entry_dict:
+                    new_entry = {'vlanName': vlanName,
                                  'state': state,
                                  'vlan': vlan,
                                  'interfaces': set(),
                                  }
                     new_entries.append(new_entry)
-                    entry_dict[ifname] = new_entry
+                    entry_dict[vlanName] = new_entry
                 else:
-                    new_entry = entry_dict[ifname]
+                    new_entry = entry_dict[vlanName]
 
-                if entry['ifname'] != 'bridge':
-                    new_entry['interfaces'].add(entry['ifname'])
+                if entry['vlanName'] != 'bridge':
+                    new_entry['interfaces'].add(entry['vlanName'])
                     new_entry['state'] = 'active'
 
         for entry in new_entries:
@@ -54,7 +56,9 @@ class VlanService(Service):
         '''Massage the interface output'''
 
         for entry in processed_data:
-            entry['ifname'] = f'vlan{entry["vlan"]}'
+            if (entry['vlanName'].startswith('VLAN') or
+                    entry['vlanName'] == "default"):
+                entry['vlanName'] = f'vlan{entry["vlan"]}'
             if isinstance(entry['interfaces'], str):
                 entry['interfaces'] = entry['interfaces'].split(',')
             else:
@@ -65,11 +69,11 @@ class VlanService(Service):
         '''Massage the default name and interface list'''
 
         for entry in processed_data:
-            if entry['ifname'] == 'default':
-                entry['ifname'] = f'vlan{entry["vlan"]}'
+            if entry['vlanName'] == 'default':
+                entry['vlanName'] = f'vlan{entry["vlan"]}'
             if entry['interfaces'] == [[None]]:
                 entry['interfaces'] = []
             entry['state'] = entry['state'].lower()
-            entry['ifname'] = entry['ifname'].lower()
+            entry['vlanName'] = entry['vlanName'].lower()
 
         return processed_data

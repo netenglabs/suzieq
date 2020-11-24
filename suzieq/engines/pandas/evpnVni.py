@@ -85,8 +85,8 @@ class EvpnvniObj(SqEngineObject):
             ('uniqueVniCnt', 'vni', 'nunique'),
         ]
 
-        l3vni_count = self.summary_df.query('type == "L3"').groupby(
-            by=['namespace'])['vni'].count()
+        l3vni_count = self.summary_df.query('type == "L3" and vni != 0') \
+                                     .groupby(by=['namespace'])['vni'].count()
         for ns in self.ns.keys():
             if l3vni_count.get(ns, 0):
                 self.ns[ns]['mode'] = 'symmetric'
@@ -95,22 +95,16 @@ class EvpnvniObj(SqEngineObject):
         self.summary_row_order.append('mode')
 
         self._summarize_on_add_with_query = [
-            ('uniqueL3VniCnt', 'type == "L3"', 'vrf', 'nunique'),
+            ('uniqueL3VniCnt', 'type == "L3" and vni != 0', 'vrf', 'nunique'),
             ('uniqueL2VniCnt', 'type == "L2"', 'vni', 'nunique'),
             ('uniqueMulticastGroups', 'mcastGroup != "0.0.0.0"', 'mcastGroup',
              'nunique'),
-            ('vnisUsingMulticast', 'type == "L2" and mcastGroup != "0.0.0.0"',
+            ('vnisUsingMulticast',
+             'type == "L2" and replicationType == "multicast"',
              'vni', 'nunique'),
-            ('vnisUsingIngressRepl', 'type == "L2" and mcastGroup == "0.0.0.0"',
+            ('vnisUsingIngressRepl',
+             'type == "L2" and replicationType == "ingressBGP"',
              'vni', 'nunique')
-        ]
-
-        self._summarize_on_add_list_or_count = [
-            ('uniqueVniTypeValCnt', 'type'),
-        ]
-
-        self._summarize_on_add_stat = [
-            ('macsInVniStat', '', 'numMacs'),
         ]
 
         self._gen_summarize_data()

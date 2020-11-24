@@ -4,35 +4,55 @@ tests:
   data-directory: tests/data/eos/parquet-out/
   marks: mac show eos
   output: '[{"namespace": "eos", "hostname": "edge01", "macaddr": "33:33:00:00:00:01",
-    "vlan": 0, "oif": "eth1.4", "remoteVtepIp": "", "bd": "", "flags": "permanent",
-    "timestamp": 1604182715491}, {"namespace": "eos", "hostname": "edge01", "macaddr":
-    "01:00:5e:00:00:01", "vlan": 0, "oif": "eth1.4", "remoteVtepIp": "", "bd": "",
-    "flags": "permanent", "timestamp": 1604182715491}, {"namespace": "eos", "hostname":
-    "edge01", "macaddr": "33:33:00:00:00:02", "vlan": 0, "oif": "eth1.4", "remoteVtepIp":
-    "", "bd": "", "flags": "permanent", "timestamp": 1604182715491}, {"namespace":
-    "eos", "hostname": "leaf04", "macaddr": "00:00:00:00:00:00", "vlan": 10, "oif":
-    "Ethernet5", "remoteVtepIp": "", "bd": "", "flags": "dynamic", "timestamp": 1604182716153},
+    "vlan": 0, "oif": "eth2.4", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "timestamp": 1606030435355}, {"namespace": "eos", "hostname": "edge01", "macaddr":
+    "01:00:5e:00:00:01", "vlan": 0, "oif": "eth2.4", "remoteVtepIp": "", "bd": "",
+    "flags": "permanent", "timestamp": 1606030435355}, {"namespace": "eos", "hostname":
+    "edge01", "macaddr": "33:33:00:00:00:02", "vlan": 0, "oif": "eth2.4", "remoteVtepIp":
+    "", "bd": "", "flags": "permanent", "timestamp": 1606030435355}, {"namespace":
+    "eos", "hostname": "leaf03", "macaddr": "00:00:00:00:00:00", "vlan": 13, "oif":
+    "Port-Channel12", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp":
+    1606030435362}, {"namespace": "eos", "hostname": "leaf03", "macaddr": "00:00:00:00:00:00",
+    "vlan": 24, "oif": "Port-Channel12", "remoteVtepIp": "", "bd": "", "flags": "static",
+    "timestamp": 1606030435362}, {"namespace": "eos", "hostname": "leaf03", "macaddr":
+    "00:00:00:00:00:00", "vlan": 4094, "oif": "Port-Channel12", "remoteVtepIp": "",
+    "bd": "", "flags": "static", "timestamp": 1606030435362}, {"namespace": "eos",
+    "hostname": "leaf01", "macaddr": "00:00:00:00:00:00", "vlan": 13, "oif": "Ethernet3",
+    "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp": 1606030435410},
     {"namespace": "eos", "hostname": "leaf01", "macaddr": "00:00:00:00:00:00", "vlan":
-    10, "oif": "Ethernet5", "remoteVtepIp": "", "bd": "", "flags": "dynamic", "timestamp":
-    1604182716185}, {"namespace": "eos", "hostname": "leaf02", "macaddr": "00:00:00:00:00:00",
-    "vlan": 10, "oif": "Ethernet5", "remoteVtepIp": "", "bd": "", "flags": "dynamic",
-    "timestamp": 1604182716205}, {"namespace": "eos", "hostname": "leaf03", "macaddr":
-    "00:00:00:00:00:00", "vlan": 10, "oif": "Ethernet5", "remoteVtepIp": "", "bd":
-    "", "flags": "dynamic", "timestamp": 1604182716662}]'
+    24, "oif": "Ethernet3", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp":
+    1606030435410}, {"namespace": "eos", "hostname": "leaf01", "macaddr": "00:00:00:00:00:00",
+    "vlan": 4094, "oif": "Ethernet3", "remoteVtepIp": "", "bd": "", "flags": "static",
+    "timestamp": 1606030435410}, {"namespace": "eos", "hostname": "leaf02", "macaddr":
+    "00:00:00:00:00:00", "vlan": 13, "oif": "Ethernet3", "remoteVtepIp": "", "bd":
+    "", "flags": "static", "timestamp": 1606030435410}, {"namespace": "eos", "hostname":
+    "leaf02", "macaddr": "00:00:00:00:00:00", "vlan": 24, "oif": "Ethernet3", "remoteVtepIp":
+    "", "bd": "", "flags": "static", "timestamp": 1606030435410}, {"namespace": "eos",
+    "hostname": "leaf02", "macaddr": "00:00:00:00:00:00", "vlan": 4094, "oif": "Ethernet3",
+    "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp": 1606030435410},
+    {"namespace": "eos", "hostname": "leaf04", "macaddr": "00:00:00:00:00:00", "vlan":
+    13, "oif": "Port-Channel12", "remoteVtepIp": "", "bd": "", "flags": "static",
+    "timestamp": 1606030435413}, {"namespace": "eos", "hostname": "leaf04", "macaddr":
+    "00:00:00:00:00:00", "vlan": 24, "oif": "Port-Channel12", "remoteVtepIp": "",
+    "bd": "", "flags": "static", "timestamp": 1606030435413}, {"namespace": "eos",
+    "hostname": "leaf04", "macaddr": "00:00:00:00:00:00", "vlan": 4094, "oif": "Port-Channel12",
+    "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp": 1606030435413}]'
 - command: mac show --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: mac show eos
   output: '[{"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
-    {"hostname": "leaf04"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
-    "leaf03"}]'
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}]'
 - command: mac summarize --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: mac summarize eos
-  output: '{"eos": {"deviceCnt": 5, "totalMacsinNSCnt": 7, "uniqueMacCnt": 4, "uniqueVlanperHostStat":
-    [1, 1, 1.0]}}'
+  output: '{"eos": {"deviceCnt": 5, "totalMacsinNSCnt": 15, "uniqueMacCnt": 4, "uniqueVlanperHostStat":
+    [3, 3, 3.0]}}'
 - command: mac unique --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: mac unique eos
-  output: '[{"hostname": "leaf02", "count": 1}, {"hostname": "leaf03", "count": 1},
-    {"hostname": "leaf01", "count": 1}, {"hostname": "leaf04", "count": 1}, {"hostname":
+  output: '[{"hostname": "leaf04", "count": 3}, {"hostname": "leaf03", "count": 3},
+    {"hostname": "leaf01", "count": 3}, {"hostname": "leaf02", "count": 3}, {"hostname":
     "edge01", "count": 3}]'

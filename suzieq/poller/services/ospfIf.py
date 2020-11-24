@@ -66,7 +66,7 @@ class OspfIfService(Service):
                 if entry['area'] not in areas:
                     areas[entry['area']] = []
 
-                if entry['_adminState'] == "down":
+                if entry.get('_adminState', '') == "down":
                     entry['state'] = "adminDown"
 
                 areas[entry['area']].append(entry)

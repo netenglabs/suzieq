@@ -15,7 +15,8 @@ from .service import Service
 logger = logging.getLogger(__name__)
 
 
-async def init_services(svc_dir, schema_dir, queue, run_once):
+async def init_services(svc_dir: str, schema_dir: str, queue, svclist: list,
+                        def_interval: int, run_once: str):
     """Process service definitions by reading each file in svc dir"""
 
     svcs_list = []
@@ -46,9 +47,15 @@ async def init_services(svc_dir, schema_dir, queue, run_once):
 
     for root, _, filenames in walk(svc_dir):
         for filename in filenames:
-            if filename.endswith(".yml") or filename.endswith(".yaml"):
+            if filename.endswith(".yml"):
                 with open(root + "/" + filename, "r") as f:
                     svc_def = yaml.safe_load(f.read())
+                if svc_def.get('service') not in svclist:
+                    logger.warning(
+                        f'Ignoring unspecified service {svc_def.get("service")}'
+                    )
+                    continue
+
                 if "service" not in svc_def or "apply" not in svc_def:
                     logger.error(
                         'Ignoring invalid service file definition. \
@@ -58,7 +65,7 @@ async def init_services(svc_dir, schema_dir, queue, run_once):
                     )
                     continue
 
-                period = svc_def.get("period", 15)
+                period = svc_def.get("period", def_interval)
                 for elem, val in svc_def["apply"].items():
                     if "copy" in val:
                         newval = svc_def["apply"].get(val["copy"], None)
@@ -73,13 +80,13 @@ async def init_services(svc_dir, schema_dir, queue, run_once):
                         val = newval
 
                     if (("command" not in val) or
-                                ((isinstance(val['command'], list) and not
+                        ((isinstance(val['command'], list) and not
                                   all('textfsm' in x or 'normalize' in x
                                       for x in val['command'])) or
                                  (not isinstance(val['command'], list) and (
                                      "normalize" not in val
                                      and "textfsm" not in val)))
-                            ):
+                        ):
                         logger.error(
                             "Ignoring invalid service file "
                             'definition. Need both "command" and '

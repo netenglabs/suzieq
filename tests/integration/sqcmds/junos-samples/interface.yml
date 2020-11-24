@@ -3,330 +3,250 @@ tests:
 - command: interface show --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: interface show junos
-  output: '[{"namespace": "junos", "hostname": "srv11", "ifname": "eth0", "state":
-    "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
-    ["10.0.2.15/24"], "ip6AddressList": [], "timestamp": 1597189830521}, {"namespace":
-    "junos", "hostname": "srv11", "ifname": "eth1", "state": "up", "type": "ether",
-    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.10.1.10/24"], "ip6AddressList":
-    [], "timestamp": 1597189830521}, {"namespace": "junos", "hostname": "srv11", "ifname":
-    "lo", "state": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master": "",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1597189830521}, {"namespace":
-    "junos", "hostname": "srv12", "ifname": "eth0", "state": "up", "type": "ether",
+  output: '[{"namespace": "junos", "hostname": "srv21", "ifname": "eth1", "state":
+    "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    ["10.10.1.20/24"], "ip6AddressList": [], "timestamp": 1606017394026}, {"namespace":
+    "junos", "hostname": "srv21", "ifname": "eth0", "state": "up", "type": "ethernet",
     "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.0.2.15/24"], "ip6AddressList":
-    [], "timestamp": 1597189830522}, {"namespace": "junos", "hostname": "srv12", "ifname":
-    "eth1", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "",
-    "ipAddressList": ["10.10.2.10/24"], "ip6AddressList": [], "timestamp": 1597189830522},
-    {"namespace": "junos", "hostname": "srv12", "ifname": "lo", "state": "up", "type":
+    [], "timestamp": 1606017394026}, {"namespace": "junos", "hostname": "srv21", "ifname":
+    "lo", "state": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1606017394026}, {"namespace":
+    "junos", "hostname": "srv11", "ifname": "lo", "state": "up", "type": "loopback",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1606017394033}, {"namespace": "junos", "hostname": "srv22", "ifname":
+    "eth1", "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "",
+    "ipAddressList": ["10.10.2.20/24"], "ip6AddressList": [], "timestamp": 1606017394033},
+    {"namespace": "junos", "hostname": "srv22", "ifname": "lo", "state": "up", "type":
     "loopback", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1597189830522}, {"namespace": "junos", "hostname": "srv21", "ifname":
-    "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "",
-    "ipAddressList": ["10.0.2.15/24"], "ip6AddressList": [], "timestamp": 1597189830521},
-    {"namespace": "junos", "hostname": "srv21", "ifname": "eth1", "state": "up", "type":
-    "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.10.1.20/24"],
-    "ip6AddressList": [], "timestamp": 1597189830521}, {"namespace": "junos", "hostname":
-    "srv21", "ifname": "lo", "state": "up", "type": "loopback", "mtu": 65536, "vlan":
-    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1597189830521},
-    {"namespace": "junos", "hostname": "srv22", "ifname": "eth0", "state": "up", "type":
-    "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.0.2.15/24"],
-    "ip6AddressList": [], "timestamp": 1597189830521}, {"namespace": "junos", "hostname":
-    "srv22", "ifname": "eth1", "state": "up", "type": "ether", "mtu": 1500, "vlan":
-    0, "master": "", "ipAddressList": ["10.10.2.20/24"], "ip6AddressList": [], "timestamp":
-    1597189830521}, {"namespace": "junos", "hostname": "srv22", "ifname": "lo", "state":
-    "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
-    [], "ip6AddressList": [], "timestamp": 1597189830521}, {"namespace": "junos",
-    "hostname": "vqfx1", "ifname": "bme0.0", "state": "up", "type": "logical", "mtu":
-    1986, "vlan": 0, "master": "", "ipAddressList": ["128.0.0.1/2", "128.0.0.4/2",
-    "128.0.0.16/2", "128.0.0.63/2"], "ip6AddressList": [], "timestamp": 1597189831940},
-    {"namespace": "junos", "hostname": "vqfx1", "ifname": "bme0", "state": "up", "type":
-    "ethernet", "mtu": 2000, "vlan": 0, "master": "None", "ipAddressList": ["-"],
-    "ip6AddressList": ["-"], "timestamp": 1597189831940}, {"namespace": "junos", "hostname":
-    "vqfx1", "ifname": "cbp0", "state": "up", "type": "ethernet", "mtu": 9192, "vlan":
-    0, "master": "None", "ipAddressList": ["-"], "ip6AddressList": ["-"], "timestamp":
-    1597189831940}, {"namespace": "junos", "hostname": "vqfx1", "ifname": "dsc", "state":
-    "up", "type": "software-pseudo", "mtu": 65536, "vlan": 0, "master": "None", "ipAddressList":
-    ["-"], "ip6AddressList": ["-"], "timestamp": 1597189831940}, {"namespace": "junos",
-    "hostname": "vqfx1", "ifname": "em0.0", "state": "up", "type": "logical", "mtu":
-    1500, "vlan": 0, "master": "", "ipAddressList": ["10.0.2.15/24"], "ip6AddressList":
-    [], "timestamp": 1597189831940}, {"namespace": "junos", "hostname": "vqfx1", "ifname":
-    "em0", "state": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "None",
-    "ipAddressList": ["-"], "ip6AddressList": ["-"], "timestamp": 1597189831940},
-    {"namespace": "junos", "hostname": "vqfx1", "ifname": "em1.0", "state": "up",
-    "type": "logical", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["169.254.0.2/24"],
-    "ip6AddressList": [], "timestamp": 1597189831940}, {"namespace": "junos", "hostname":
-    "vqfx1", "ifname": "em1", "state": "up", "type": "ethernet", "mtu": 1514, "vlan":
-    0, "master": "None", "ipAddressList": ["-"], "ip6AddressList": ["-"], "timestamp":
-    1597189831940}, {"namespace": "junos", "hostname": "vqfx1", "ifname": "em2.32768",
-    "state": "up", "type": "logical", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
-    ["192.168.1.2/24"], "ip6AddressList": [], "timestamp": 1597189831940}, {"namespace":
-    "junos", "hostname": "vqfx1", "ifname": "em2", "state": "up", "type": "ethernet",
-    "mtu": 1514, "vlan": 0, "master": "None", "ipAddressList": ["-"], "ip6AddressList":
-    ["-"], "timestamp": 1597189831940}, {"namespace": "junos", "hostname": "vqfx1",
-    "ifname": "em3", "state": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master":
-    "None", "ipAddressList": ["-"], "ip6AddressList": ["-"], "timestamp": 1597189831940},
-    {"namespace": "junos", "hostname": "vqfx1", "ifname": "em4.32768", "state": "up",
-    "type": "logical", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["192.0.2.2/24"],
-    "ip6AddressList": [], "timestamp": 1597189831940}, {"namespace": "junos", "hostname":
-    "vqfx1", "ifname": "em4", "state": "up", "type": "ethernet", "mtu": 1514, "vlan":
-    0, "master": "None", "ipAddressList": ["-"], "ip6AddressList": ["-"], "timestamp":
-    1597189831940}, {"namespace": "junos", "hostname": "vqfx1", "ifname": "em5", "state":
-    "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "None", "ipAddressList":
-    ["-"], "ip6AddressList": ["-"], "timestamp": 1597189831940}, {"namespace": "junos",
-    "hostname": "vqfx1", "ifname": "em6", "state": "up", "type": "ethernet", "mtu":
-    1514, "vlan": 0, "master": "None", "ipAddressList": ["-"], "ip6AddressList": ["-"],
-    "timestamp": 1597189831940}, {"namespace": "junos", "hostname": "vqfx1", "ifname":
-    "em7", "state": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "None",
-    "ipAddressList": ["-"], "ip6AddressList": ["-"], "timestamp": 1597189831940},
-    {"namespace": "junos", "hostname": "vqfx1", "ifname": "esi", "state": "up", "type":
-    "vtep", "mtu": 65536, "vlan": 0, "master": "None", "ipAddressList": ["-"], "ip6AddressList":
-    ["-"], "timestamp": 1597189831940}, {"namespace": "junos", "hostname": "vqfx1",
-    "ifname": "fti0", "state": "up", "type": "flexible-tunnel-interface", "mtu": 65536,
-    "vlan": 0, "master": "None", "ipAddressList": ["-"], "ip6AddressList": ["-"],
-    "timestamp": 1597189831940}, {"namespace": "junos", "hostname": "vqfx1", "ifname":
-    "gr-0/0/0", "state": "up", "type": "gre", "mtu": 65536, "vlan": 0, "master": "None",
-    "ipAddressList": ["-"], "ip6AddressList": ["-"], "timestamp": 1597189831940},
-    {"namespace": "junos", "hostname": "vqfx1", "ifname": "gre", "state": "up", "type":
-    "gre", "mtu": 65536, "vlan": 0, "master": "None", "ipAddressList": ["-"], "ip6AddressList":
-    ["-"], "timestamp": 1597189831940}, {"namespace": "junos", "hostname": "vqfx1",
-    "ifname": "ipip", "state": "up", "type": "ip-over-ip", "mtu": 65536, "vlan": 0,
-    "master": "None", "ipAddressList": ["-"], "ip6AddressList": ["-"], "timestamp":
-    1597189831940}, {"namespace": "junos", "hostname": "vqfx1", "ifname": "irb.10000",
-    "state": "up", "type": "logical", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
-    ["10.10.1.251/24", "10.10.1.254/24"], "ip6AddressList": [], "timestamp": 1597189831940},
-    {"namespace": "junos", "hostname": "vqfx1", "ifname": "irb.20000", "state": "up",
-    "type": "logical", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.10.2.251/24",
-    "10.10.2.254/24"], "ip6AddressList": [], "timestamp": 1597189831940}, {"namespace":
-    "junos", "hostname": "vqfx1", "ifname": "irb", "state": "up", "type": "ethernet",
-    "mtu": 1514, "vlan": 0, "master": "None", "ipAddressList": ["-"], "ip6AddressList":
-    ["-"], "timestamp": 1597189831940}, {"namespace": "junos", "hostname": "vqfx1",
-    "ifname": "jsrv.1", "state": "up", "type": "logical", "mtu": 1514, "vlan": 0,
-    "master": "", "ipAddressList": ["128.0.0.127/2"], "ip6AddressList": [], "timestamp":
-    1597189831940}, {"namespace": "junos", "hostname": "vqfx1", "ifname": "jsrv",
-    "state": "up", "type": "virtual", "mtu": 1514, "vlan": 0, "master": "None", "ipAddressList":
-    ["-"], "ip6AddressList": ["-"], "timestamp": 1597189831940}, {"namespace": "junos",
-    "hostname": "vqfx1", "ifname": "lo0.0", "state": "down", "type": "logical", "mtu":
-    65536, "vlan": 0, "master": "", "ipAddressList": ["9.9.9.1/32"], "ip6AddressList":
-    [], "timestamp": 1597189831940}, {"namespace": "junos", "hostname": "vqfx1", "ifname":
-    "lo0", "state": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master": "None",
-    "ipAddressList": ["-"], "ip6AddressList": ["-"], "timestamp": 1597189831940},
-    {"namespace": "junos", "hostname": "vqfx1", "ifname": "lsi", "state": "up", "type":
-    "lsi", "mtu": 65536, "vlan": 0, "master": "None", "ipAddressList": ["-"], "ip6AddressList":
-    ["-"], "timestamp": 1597189831940}, {"namespace": "junos", "hostname": "vqfx1",
-    "ifname": "mtun", "state": "up", "type": "gre", "mtu": 65536, "vlan": 0, "master":
-    "None", "ipAddressList": ["-"], "ip6AddressList": ["-"], "timestamp": 1597189831940},
-    {"namespace": "junos", "hostname": "vqfx1", "ifname": "pfe-0/0/0", "state": "up",
-    "type": "None", "mtu": 0, "vlan": 0, "master": "None", "ipAddressList": ["-"],
-    "ip6AddressList": ["-"], "timestamp": 1597189831940}, {"namespace": "junos", "hostname":
-    "vqfx1", "ifname": "pfh-0/0/0", "state": "up", "type": "None", "mtu": 0, "vlan":
-    0, "master": "None", "ipAddressList": ["-"], "ip6AddressList": ["-"], "timestamp":
-    1597189831940}, {"namespace": "junos", "hostname": "vqfx1", "ifname": "pimd",
-    "state": "up", "type": "pim-decapsulator", "mtu": 65536, "vlan": 0, "master":
-    "None", "ipAddressList": ["-"], "ip6AddressList": ["-"], "timestamp": 1597189831940},
-    {"namespace": "junos", "hostname": "vqfx1", "ifname": "pime", "state": "up", "type":
-    "pim-encapsulator", "mtu": 65536, "vlan": 0, "master": "None", "ipAddressList":
-    ["-"], "ip6AddressList": ["-"], "timestamp": 1597189831940}, {"namespace": "junos",
-    "hostname": "vqfx1", "ifname": "pip0", "state": "up", "type": "ethernet", "mtu":
-    9192, "vlan": 0, "master": "None", "ipAddressList": ["-"], "ip6AddressList": ["-"],
-    "timestamp": 1597189831940}, {"namespace": "junos", "hostname": "vqfx1", "ifname":
-    "tap", "state": "up", "type": "tap", "mtu": 65536, "vlan": 0, "master": "None",
-    "ipAddressList": ["-"], "ip6AddressList": ["-"], "timestamp": 1597189831940},
-    {"namespace": "junos", "hostname": "vqfx1", "ifname": "vme", "state": "down",
-    "type": "mgmt-vlan", "mtu": 1514, "vlan": 0, "master": "None", "ipAddressList":
-    ["-"], "ip6AddressList": ["-"], "timestamp": 1597189831940}, {"namespace": "junos",
-    "hostname": "vqfx1", "ifname": "vtep.32769", "state": "up", "type": "logical",
+    [], "timestamp": 1606017394033}, {"namespace": "junos", "hostname": "srv22", "ifname":
+    "eth0", "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "",
+    "ipAddressList": ["10.0.2.15/24"], "ip6AddressList": [], "timestamp": 1606017394033},
+    {"namespace": "junos", "hostname": "srv11", "ifname": "eth1", "state": "up", "type":
+    "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.10.1.10/24"],
+    "ip6AddressList": [], "timestamp": 1606017394033}, {"namespace": "junos", "hostname":
+    "srv11", "ifname": "eth0", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["10.0.2.15/24"], "ip6AddressList": [], "timestamp":
+    1606017394033}, {"namespace": "junos", "hostname": "srv12", "ifname": "eth0",
+    "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    ["10.0.2.15/24"], "ip6AddressList": [], "timestamp": 1606017394040}, {"namespace":
+    "junos", "hostname": "srv12", "ifname": "lo", "state": "up", "type": "loopback",
     "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1597189831940}, {"namespace": "junos", "hostname": "vqfx1", "ifname":
-    "vtep", "state": "up", "type": "vtep", "mtu": 65536, "vlan": 0, "master": "None",
-    "ipAddressList": ["-"], "ip6AddressList": ["-"], "timestamp": 1597189831940},
-    {"namespace": "junos", "hostname": "vqfx1", "ifname": "xe-0/0/0.0", "state": "up",
-    "type": "logical", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.1/30"],
-    "ip6AddressList": [], "timestamp": 1597189831940}, {"namespace": "junos", "hostname":
-    "vqfx1", "ifname": "xe-0/0/0", "state": "up", "type": "ethernet", "mtu": 1514,
-    "vlan": 0, "master": "None", "ipAddressList": ["-"], "ip6AddressList": ["-"],
-    "timestamp": 1597189831940}, {"namespace": "junos", "hostname": "vqfx1", "ifname":
-    "xe-0/0/1.0", "state": "up", "type": "logical", "mtu": 1514, "vlan": 0, "master":
-    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1597189831940}, {"namespace":
-    "junos", "hostname": "vqfx1", "ifname": "xe-0/0/1", "state": "up", "type": "ethernet",
-    "mtu": 1514, "vlan": 0, "master": "bridge", "ipAddressList": ["-"], "ip6AddressList":
-    ["-"], "timestamp": 1597189831940}, {"namespace": "junos", "hostname": "vqfx1",
-    "ifname": "xe-0/0/10", "state": "up", "type": "ethernet", "mtu": 1514, "vlan":
-    0, "master": "None", "ipAddressList": ["-"], "ip6AddressList": ["-"], "timestamp":
-    1597189831940}, {"namespace": "junos", "hostname": "vqfx1", "ifname": "xe-0/0/11",
-    "state": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "None", "ipAddressList":
-    ["-"], "ip6AddressList": ["-"], "timestamp": 1597189831940}, {"namespace": "junos",
-    "hostname": "vqfx1", "ifname": "xe-0/0/2.0", "state": "up", "type": "logical",
+    [], "timestamp": 1606017394040}, {"namespace": "junos", "hostname": "srv12", "ifname":
+    "eth1", "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "",
+    "ipAddressList": ["10.10.2.10/24"], "ip6AddressList": [], "timestamp": 1606017394040},
+    {"namespace": "junos", "hostname": "vqfx1", "ifname": "ipip", "state": "up", "type":
+    "ip-over-ip", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1606017395992}, {"namespace": "junos", "hostname": "vqfx1", "ifname":
+    "em4", "state": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1606017395992}, {"namespace":
+    "junos", "hostname": "vqfx1", "ifname": "em5", "state": "up", "type": "ethernet",
     "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
-    "timestamp": 1597189831940}, {"namespace": "junos", "hostname": "vqfx1", "ifname":
+    "timestamp": 1606017395992}, {"namespace": "junos", "hostname": "vqfx1", "ifname":
+    "em6", "state": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1606017395992}, {"namespace":
+    "junos", "hostname": "vqfx1", "ifname": "em7", "state": "up", "type": "ethernet",
+    "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1606017395992}, {"namespace": "junos", "hostname": "vqfx1", "ifname":
+    "esi", "state": "up", "type": "vtep", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1606017395992}, {"namespace": "junos",
+    "hostname": "vqfx1", "ifname": "fti0", "state": "up", "type": "flexible-tunnel-interface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1606017395992}, {"namespace": "junos", "hostname": "vqfx1", "ifname":
+    "gre", "state": "up", "type": "gre", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1606017395992}, {"namespace": "junos",
+    "hostname": "vqfx1", "ifname": "irb", "state": "up", "type": "ethernet", "mtu":
+    1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1606017395992}, {"namespace": "junos", "hostname": "vqfx1", "ifname": "pip0",
+    "state": "up", "type": "ethernet", "mtu": 9192, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1606017395992}, {"namespace": "junos",
+    "hostname": "vqfx1", "ifname": "lo0", "state": "up", "type": "loopback", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1606017395992}, {"namespace": "junos", "hostname": "vqfx1", "ifname": "lsi", "state":
+    "up", "type": "lsi", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [],
+    "ip6AddressList": [], "timestamp": 1606017395992}, {"namespace": "junos", "hostname":
+    "vqfx1", "ifname": "pimd", "state": "up", "type": "pim-decapsulator", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1606017395992}, {"namespace": "junos", "hostname": "vqfx1", "ifname": "pime",
+    "state": "up", "type": "pim-encapsulator", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1606017395992}, {"namespace":
+    "junos", "hostname": "vqfx1", "ifname": "em3", "state": "up", "type": "ethernet",
+    "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1606017395992}, {"namespace": "junos", "hostname": "vqfx1", "ifname":
+    "tap", "state": "up", "type": "tap", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1606017395992}, {"namespace": "junos",
+    "hostname": "vqfx1", "ifname": "vme", "state": "down", "type": "mgmt-vlan", "mtu":
+    1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1606017395992}, {"namespace": "junos", "hostname": "vqfx1", "ifname": "vtep",
+    "state": "up", "type": "vtep", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1606017395992}, {"namespace": "junos",
+    "hostname": "vqfx1", "ifname": "jsrv", "state": "up", "type": "virtual", "mtu":
+    1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1606017395992}, {"namespace": "junos", "hostname": "vqfx1", "ifname": "em2", "state":
+    "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1606017395992}, {"namespace": "junos",
+    "hostname": "vqfx1", "ifname": "mtun", "state": "up", "type": "gre", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1606017395992}, {"namespace": "junos", "hostname": "vqfx1", "ifname": "em0", "state":
+    "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1606017395992}, {"namespace": "junos",
+    "hostname": "vqfx1", "ifname": "em1", "state": "up", "type": "ethernet", "mtu":
+    1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1606017395992}, {"namespace": "junos", "hostname": "vqfx1", "ifname": "pfe-0/0/0",
+    "state": "up", "type": "None", "mtu": 0, "vlan": 0, "master": "ENET2", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1606017395992}, {"namespace": "junos",
+    "hostname": "vqfx1", "ifname": "pfh-0/0/0", "state": "up", "type": "None", "mtu":
+    0, "vlan": 0, "master": "ENET2", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1606017395992}, {"namespace": "junos", "hostname": "vqfx1", "ifname": "xe-0/0/0",
+    "state": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1606017395992}, {"namespace": "junos",
+    "hostname": "vqfx1", "ifname": "xe-0/0/1", "state": "up", "type": "ethernet",
+    "mtu": 1514, "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1606017395992}, {"namespace": "junos", "hostname": "vqfx1", "ifname":
     "xe-0/0/2", "state": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master":
-    "bridge", "ipAddressList": ["-"], "ip6AddressList": ["-"], "timestamp": 1597189831940},
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1606017395992},
     {"namespace": "junos", "hostname": "vqfx1", "ifname": "xe-0/0/3", "state": "up",
-    "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "None", "ipAddressList":
-    ["-"], "ip6AddressList": ["-"], "timestamp": 1597189831940}, {"namespace": "junos",
-    "hostname": "vqfx1", "ifname": "xe-0/0/4", "state": "up", "type": "ethernet",
-    "mtu": 1514, "vlan": 0, "master": "None", "ipAddressList": ["-"], "ip6AddressList":
-    ["-"], "timestamp": 1597189831940}, {"namespace": "junos", "hostname": "vqfx1",
-    "ifname": "xe-0/0/5", "state": "up", "type": "ethernet", "mtu": 1514, "vlan":
-    0, "master": "None", "ipAddressList": ["-"], "ip6AddressList": ["-"], "timestamp":
-    1597189831940}, {"namespace": "junos", "hostname": "vqfx1", "ifname": "xe-0/0/6",
-    "state": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "None", "ipAddressList":
-    ["-"], "ip6AddressList": ["-"], "timestamp": 1597189831940}, {"namespace": "junos",
-    "hostname": "vqfx1", "ifname": "xe-0/0/7", "state": "up", "type": "ethernet",
-    "mtu": 1514, "vlan": 0, "master": "None", "ipAddressList": ["-"], "ip6AddressList":
-    ["-"], "timestamp": 1597189831940}, {"namespace": "junos", "hostname": "vqfx1",
-    "ifname": "xe-0/0/8", "state": "up", "type": "ethernet", "mtu": 1514, "vlan":
-    0, "master": "None", "ipAddressList": ["-"], "ip6AddressList": ["-"], "timestamp":
-    1597189831940}, {"namespace": "junos", "hostname": "vqfx1", "ifname": "xe-0/0/9",
-    "state": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "None", "ipAddressList":
-    ["-"], "ip6AddressList": ["-"], "timestamp": 1597189831940}, {"namespace": "junos",
-    "hostname": "vqfx2", "ifname": "bme0.0", "state": "up", "type": "logical", "mtu":
-    1986, "vlan": 0, "master": "", "ipAddressList": ["128.0.0.1/2", "128.0.0.4/2",
-    "128.0.0.16/2", "128.0.0.63/2"], "ip6AddressList": [], "timestamp": 1597189832146},
-    {"namespace": "junos", "hostname": "vqfx2", "ifname": "bme0", "state": "up", "type":
-    "ethernet", "mtu": 2000, "vlan": 0, "master": "None", "ipAddressList": ["-"],
-    "ip6AddressList": ["-"], "timestamp": 1597189832146}, {"namespace": "junos", "hostname":
-    "vqfx2", "ifname": "cbp0", "state": "up", "type": "ethernet", "mtu": 9192, "vlan":
-    0, "master": "None", "ipAddressList": ["-"], "ip6AddressList": ["-"], "timestamp":
-    1597189832146}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "dsc", "state":
-    "up", "type": "software-pseudo", "mtu": 65536, "vlan": 0, "master": "None", "ipAddressList":
-    ["-"], "ip6AddressList": ["-"], "timestamp": 1597189832146}, {"namespace": "junos",
-    "hostname": "vqfx2", "ifname": "em0.0", "state": "up", "type": "logical", "mtu":
-    1500, "vlan": 0, "master": "", "ipAddressList": ["10.0.2.15/24"], "ip6AddressList":
-    [], "timestamp": 1597189832146}, {"namespace": "junos", "hostname": "vqfx2", "ifname":
-    "em0", "state": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "None",
-    "ipAddressList": ["-"], "ip6AddressList": ["-"], "timestamp": 1597189832146},
-    {"namespace": "junos", "hostname": "vqfx2", "ifname": "em1.0", "state": "up",
-    "type": "logical", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["169.254.0.2/24"],
-    "ip6AddressList": [], "timestamp": 1597189832146}, {"namespace": "junos", "hostname":
-    "vqfx2", "ifname": "em1", "state": "up", "type": "ethernet", "mtu": 1514, "vlan":
-    0, "master": "None", "ipAddressList": ["-"], "ip6AddressList": ["-"], "timestamp":
-    1597189832146}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "em2.32768",
-    "state": "up", "type": "logical", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
-    ["192.168.1.2/24"], "ip6AddressList": [], "timestamp": 1597189832146}, {"namespace":
-    "junos", "hostname": "vqfx2", "ifname": "em2", "state": "up", "type": "ethernet",
-    "mtu": 1514, "vlan": 0, "master": "None", "ipAddressList": ["-"], "ip6AddressList":
-    ["-"], "timestamp": 1597189832146}, {"namespace": "junos", "hostname": "vqfx2",
-    "ifname": "em3", "state": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master":
-    "None", "ipAddressList": ["-"], "ip6AddressList": ["-"], "timestamp": 1597189832146},
-    {"namespace": "junos", "hostname": "vqfx2", "ifname": "em4.32768", "state": "up",
-    "type": "logical", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["192.0.2.2/24"],
-    "ip6AddressList": [], "timestamp": 1597189832146}, {"namespace": "junos", "hostname":
-    "vqfx2", "ifname": "em4", "state": "up", "type": "ethernet", "mtu": 1514, "vlan":
-    0, "master": "None", "ipAddressList": ["-"], "ip6AddressList": ["-"], "timestamp":
-    1597189832146}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "em5", "state":
-    "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "None", "ipAddressList":
-    ["-"], "ip6AddressList": ["-"], "timestamp": 1597189832146}, {"namespace": "junos",
-    "hostname": "vqfx2", "ifname": "em6", "state": "up", "type": "ethernet", "mtu":
-    1514, "vlan": 0, "master": "None", "ipAddressList": ["-"], "ip6AddressList": ["-"],
-    "timestamp": 1597189832146}, {"namespace": "junos", "hostname": "vqfx2", "ifname":
-    "em7", "state": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "None",
-    "ipAddressList": ["-"], "ip6AddressList": ["-"], "timestamp": 1597189832146},
-    {"namespace": "junos", "hostname": "vqfx2", "ifname": "esi", "state": "up", "type":
-    "vtep", "mtu": 65536, "vlan": 0, "master": "None", "ipAddressList": ["-"], "ip6AddressList":
-    ["-"], "timestamp": 1597189832146}, {"namespace": "junos", "hostname": "vqfx2",
-    "ifname": "fti0", "state": "up", "type": "flexible-tunnel-interface", "mtu": 65536,
-    "vlan": 0, "master": "None", "ipAddressList": ["-"], "ip6AddressList": ["-"],
-    "timestamp": 1597189832146}, {"namespace": "junos", "hostname": "vqfx2", "ifname":
-    "gr-0/0/0", "state": "up", "type": "gre", "mtu": 65536, "vlan": 0, "master": "None",
-    "ipAddressList": ["-"], "ip6AddressList": ["-"], "timestamp": 1597189832146},
-    {"namespace": "junos", "hostname": "vqfx2", "ifname": "gre", "state": "up", "type":
-    "gre", "mtu": 65536, "vlan": 0, "master": "None", "ipAddressList": ["-"], "ip6AddressList":
-    ["-"], "timestamp": 1597189832146}, {"namespace": "junos", "hostname": "vqfx2",
-    "ifname": "ipip", "state": "up", "type": "ip-over-ip", "mtu": 65536, "vlan": 0,
-    "master": "None", "ipAddressList": ["-"], "ip6AddressList": ["-"], "timestamp":
-    1597189832146}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "irb.10000",
-    "state": "up", "type": "logical", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
-    ["10.10.1.252/24", "10.10.1.254/24"], "ip6AddressList": [], "timestamp": 1597189832146},
-    {"namespace": "junos", "hostname": "vqfx2", "ifname": "irb.20000", "state": "up",
-    "type": "logical", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.10.2.252/24",
-    "10.10.2.254/24"], "ip6AddressList": [], "timestamp": 1597189832146}, {"namespace":
-    "junos", "hostname": "vqfx2", "ifname": "irb", "state": "up", "type": "ethernet",
-    "mtu": 1514, "vlan": 0, "master": "None", "ipAddressList": ["-"], "ip6AddressList":
-    ["-"], "timestamp": 1597189832146}, {"namespace": "junos", "hostname": "vqfx2",
-    "ifname": "jsrv.1", "state": "up", "type": "logical", "mtu": 1514, "vlan": 0,
-    "master": "", "ipAddressList": ["128.0.0.127/2"], "ip6AddressList": [], "timestamp":
-    1597189832146}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "jsrv",
-    "state": "up", "type": "virtual", "mtu": 1514, "vlan": 0, "master": "None", "ipAddressList":
-    ["-"], "ip6AddressList": ["-"], "timestamp": 1597189832146}, {"namespace": "junos",
-    "hostname": "vqfx2", "ifname": "lo0.0", "state": "down", "type": "logical", "mtu":
-    65536, "vlan": 0, "master": "", "ipAddressList": ["9.9.9.2/32"], "ip6AddressList":
-    [], "timestamp": 1597189832146}, {"namespace": "junos", "hostname": "vqfx2", "ifname":
-    "lo0", "state": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master": "None",
-    "ipAddressList": ["-"], "ip6AddressList": ["-"], "timestamp": 1597189832146},
-    {"namespace": "junos", "hostname": "vqfx2", "ifname": "lsi", "state": "up", "type":
-    "lsi", "mtu": 65536, "vlan": 0, "master": "None", "ipAddressList": ["-"], "ip6AddressList":
-    ["-"], "timestamp": 1597189832146}, {"namespace": "junos", "hostname": "vqfx2",
-    "ifname": "mtun", "state": "up", "type": "gre", "mtu": 65536, "vlan": 0, "master":
-    "None", "ipAddressList": ["-"], "ip6AddressList": ["-"], "timestamp": 1597189832146},
-    {"namespace": "junos", "hostname": "vqfx2", "ifname": "pfe-0/0/0", "state": "up",
-    "type": "None", "mtu": 0, "vlan": 0, "master": "None", "ipAddressList": ["-"],
-    "ip6AddressList": ["-"], "timestamp": 1597189832146}, {"namespace": "junos", "hostname":
-    "vqfx2", "ifname": "pfh-0/0/0", "state": "up", "type": "None", "mtu": 0, "vlan":
-    0, "master": "None", "ipAddressList": ["-"], "ip6AddressList": ["-"], "timestamp":
-    1597189832146}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "pimd",
-    "state": "up", "type": "pim-decapsulator", "mtu": 65536, "vlan": 0, "master":
-    "None", "ipAddressList": ["-"], "ip6AddressList": ["-"], "timestamp": 1597189832146},
-    {"namespace": "junos", "hostname": "vqfx2", "ifname": "pime", "state": "up", "type":
-    "pim-encapsulator", "mtu": 65536, "vlan": 0, "master": "None", "ipAddressList":
-    ["-"], "ip6AddressList": ["-"], "timestamp": 1597189832146}, {"namespace": "junos",
-    "hostname": "vqfx2", "ifname": "pip0", "state": "up", "type": "ethernet", "mtu":
-    9192, "vlan": 0, "master": "None", "ipAddressList": ["-"], "ip6AddressList": ["-"],
-    "timestamp": 1597189832146}, {"namespace": "junos", "hostname": "vqfx2", "ifname":
-    "tap", "state": "up", "type": "tap", "mtu": 65536, "vlan": 0, "master": "None",
-    "ipAddressList": ["-"], "ip6AddressList": ["-"], "timestamp": 1597189832146},
-    {"namespace": "junos", "hostname": "vqfx2", "ifname": "vme", "state": "down",
-    "type": "mgmt-vlan", "mtu": 1514, "vlan": 0, "master": "None", "ipAddressList":
-    ["-"], "ip6AddressList": ["-"], "timestamp": 1597189832146}, {"namespace": "junos",
-    "hostname": "vqfx2", "ifname": "vtep.32769", "state": "up", "type": "logical",
-    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1597189832146}, {"namespace": "junos", "hostname": "vqfx2", "ifname":
-    "vtep", "state": "up", "type": "vtep", "mtu": 65536, "vlan": 0, "master": "None",
-    "ipAddressList": ["-"], "ip6AddressList": ["-"], "timestamp": 1597189832146},
-    {"namespace": "junos", "hostname": "vqfx2", "ifname": "xe-0/0/0.0", "state": "up",
-    "type": "logical", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.2/30"],
-    "ip6AddressList": [], "timestamp": 1597189832146}, {"namespace": "junos", "hostname":
-    "vqfx2", "ifname": "xe-0/0/0", "state": "up", "type": "ethernet", "mtu": 1514,
-    "vlan": 0, "master": "None", "ipAddressList": ["-"], "ip6AddressList": ["-"],
-    "timestamp": 1597189832146}, {"namespace": "junos", "hostname": "vqfx2", "ifname":
-    "xe-0/0/1.0", "state": "up", "type": "logical", "mtu": 1514, "vlan": 0, "master":
-    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1597189832146}, {"namespace":
-    "junos", "hostname": "vqfx2", "ifname": "xe-0/0/1", "state": "up", "type": "ethernet",
-    "mtu": 1514, "vlan": 0, "master": "bridge", "ipAddressList": ["-"], "ip6AddressList":
-    ["-"], "timestamp": 1597189832146}, {"namespace": "junos", "hostname": "vqfx2",
-    "ifname": "xe-0/0/10", "state": "up", "type": "ethernet", "mtu": 1514, "vlan":
-    0, "master": "None", "ipAddressList": ["-"], "ip6AddressList": ["-"], "timestamp":
-    1597189832146}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "xe-0/0/11",
-    "state": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "None", "ipAddressList":
-    ["-"], "ip6AddressList": ["-"], "timestamp": 1597189832146}, {"namespace": "junos",
-    "hostname": "vqfx2", "ifname": "xe-0/0/2.0", "state": "up", "type": "logical",
+    "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [],
+    "ip6AddressList": [], "timestamp": 1606017395992}, {"namespace": "junos", "hostname":
+    "vqfx1", "ifname": "xe-0/0/4", "state": "up", "type": "ethernet", "mtu": 1514,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1606017395992}, {"namespace": "junos", "hostname": "vqfx1", "ifname": "xe-0/0/5",
+    "state": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1606017395992}, {"namespace": "junos",
+    "hostname": "vqfx1", "ifname": "gr-0/0/0", "state": "up", "type": "gre", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1606017395992}, {"namespace": "junos", "hostname": "vqfx1", "ifname": "xe-0/0/7",
+    "state": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1606017395992}, {"namespace": "junos",
+    "hostname": "vqfx1", "ifname": "xe-0/0/8", "state": "up", "type": "ethernet",
     "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
-    "timestamp": 1597189832146}, {"namespace": "junos", "hostname": "vqfx2", "ifname":
+    "timestamp": 1606017395992}, {"namespace": "junos", "hostname": "vqfx1", "ifname":
+    "dsc", "state": "up", "type": "software-pseudo", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1606017395992}, {"namespace":
+    "junos", "hostname": "vqfx1", "ifname": "xe-0/0/9", "state": "up", "type": "ethernet",
+    "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1606017395992}, {"namespace": "junos", "hostname": "vqfx1", "ifname":
+    "xe-0/0/10", "state": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1606017395992}, {"namespace":
+    "junos", "hostname": "vqfx1", "ifname": "xe-0/0/11", "state": "up", "type": "ethernet",
+    "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1606017395992}, {"namespace": "junos", "hostname": "vqfx1", "ifname":
+    "bme0", "state": "up", "type": "ethernet", "mtu": 2000, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1606017395992}, {"namespace":
+    "junos", "hostname": "vqfx1", "ifname": "cbp0", "state": "up", "type": "ethernet",
+    "mtu": 9192, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1606017395992}, {"namespace": "junos", "hostname": "vqfx1", "ifname":
+    "xe-0/0/6", "state": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1606017395992}, {"namespace":
+    "junos", "hostname": "vqfx2", "ifname": "fti0", "state": "up", "type": "flexible-tunnel-interface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1606017396039}, {"namespace": "junos", "hostname": "vqfx2", "ifname":
+    "esi", "state": "up", "type": "vtep", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1606017396039}, {"namespace": "junos",
+    "hostname": "vqfx2", "ifname": "em5", "state": "up", "type": "ethernet", "mtu":
+    1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1606017396039}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "em6", "state":
+    "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1606017396039}, {"namespace": "junos",
+    "hostname": "vqfx2", "ifname": "gre", "state": "up", "type": "gre", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1606017396039}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "em4", "state":
+    "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1606017396039}, {"namespace": "junos",
+    "hostname": "vqfx2", "ifname": "em7", "state": "up", "type": "ethernet", "mtu":
+    1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1606017396039}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "ipip",
+    "state": "up", "type": "ip-over-ip", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1606017396039}, {"namespace": "junos",
+    "hostname": "vqfx2", "ifname": "lsi", "state": "up", "type": "lsi", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1606017396039}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "jsrv",
+    "state": "up", "type": "virtual", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1606017396039}, {"namespace": "junos",
+    "hostname": "vqfx2", "ifname": "lo0", "state": "up", "type": "loopback", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1606017396039}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "mtun",
+    "state": "up", "type": "gre", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1606017396039}, {"namespace": "junos",
+    "hostname": "vqfx2", "ifname": "pimd", "state": "up", "type": "pim-decapsulator",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1606017396039}, {"namespace": "junos", "hostname": "vqfx2", "ifname":
+    "pime", "state": "up", "type": "pim-encapsulator", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1606017396039}, {"namespace":
+    "junos", "hostname": "vqfx2", "ifname": "pip0", "state": "up", "type": "ethernet",
+    "mtu": 9192, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1606017396039}, {"namespace": "junos", "hostname": "vqfx2", "ifname":
+    "em3", "state": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1606017396039}, {"namespace":
+    "junos", "hostname": "vqfx2", "ifname": "tap", "state": "up", "type": "tap", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1606017396039}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "irb", "state":
+    "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1606017396039}, {"namespace": "junos",
+    "hostname": "vqfx2", "ifname": "em2", "state": "up", "type": "ethernet", "mtu":
+    1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1606017396039}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "xe-0/0/7",
+    "state": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1606017396039}, {"namespace": "junos",
+    "hostname": "vqfx2", "ifname": "em0", "state": "up", "type": "ethernet", "mtu":
+    1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1606017396039}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "vme", "state":
+    "down", "type": "mgmt-vlan", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1606017396039}, {"namespace": "junos",
+    "hostname": "vqfx2", "ifname": "gr-0/0/0", "state": "up", "type": "gre", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1606017396039}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "pfe-0/0/0",
+    "state": "up", "type": "None", "mtu": 0, "vlan": 0, "master": "ENET2", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1606017396039}, {"namespace": "junos",
+    "hostname": "vqfx2", "ifname": "pfh-0/0/0", "state": "up", "type": "None", "mtu":
+    0, "vlan": 0, "master": "ENET2", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1606017396039}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "xe-0/0/0",
+    "state": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1606017396039}, {"namespace": "junos",
+    "hostname": "vqfx2", "ifname": "xe-0/0/1", "state": "up", "type": "ethernet",
+    "mtu": 1514, "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1606017396039}, {"namespace": "junos", "hostname": "vqfx2", "ifname":
     "xe-0/0/2", "state": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master":
-    "bridge", "ipAddressList": ["-"], "ip6AddressList": ["-"], "timestamp": 1597189832146},
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1606017396039},
     {"namespace": "junos", "hostname": "vqfx2", "ifname": "xe-0/0/3", "state": "up",
-    "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "None", "ipAddressList":
-    ["-"], "ip6AddressList": ["-"], "timestamp": 1597189832146}, {"namespace": "junos",
-    "hostname": "vqfx2", "ifname": "xe-0/0/4", "state": "up", "type": "ethernet",
-    "mtu": 1514, "vlan": 0, "master": "None", "ipAddressList": ["-"], "ip6AddressList":
-    ["-"], "timestamp": 1597189832146}, {"namespace": "junos", "hostname": "vqfx2",
-    "ifname": "xe-0/0/5", "state": "up", "type": "ethernet", "mtu": 1514, "vlan":
-    0, "master": "None", "ipAddressList": ["-"], "ip6AddressList": ["-"], "timestamp":
-    1597189832146}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "xe-0/0/6",
-    "state": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "None", "ipAddressList":
-    ["-"], "ip6AddressList": ["-"], "timestamp": 1597189832146}, {"namespace": "junos",
-    "hostname": "vqfx2", "ifname": "xe-0/0/7", "state": "up", "type": "ethernet",
-    "mtu": 1514, "vlan": 0, "master": "None", "ipAddressList": ["-"], "ip6AddressList":
-    ["-"], "timestamp": 1597189832146}, {"namespace": "junos", "hostname": "vqfx2",
-    "ifname": "xe-0/0/8", "state": "up", "type": "ethernet", "mtu": 1514, "vlan":
-    0, "master": "None", "ipAddressList": ["-"], "ip6AddressList": ["-"], "timestamp":
-    1597189832146}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "xe-0/0/9",
-    "state": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "None", "ipAddressList":
-    ["-"], "ip6AddressList": ["-"], "timestamp": 1597189832146}]'
+    "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [],
+    "ip6AddressList": [], "timestamp": 1606017396039}, {"namespace": "junos", "hostname":
+    "vqfx2", "ifname": "em1", "state": "up", "type": "ethernet", "mtu": 1514, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1606017396039},
+    {"namespace": "junos", "hostname": "vqfx2", "ifname": "xe-0/0/4", "state": "up",
+    "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [],
+    "ip6AddressList": [], "timestamp": 1606017396039}, {"namespace": "junos", "hostname":
+    "vqfx2", "ifname": "xe-0/0/6", "state": "up", "type": "ethernet", "mtu": 1514,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1606017396039}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "xe-0/0/8",
+    "state": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1606017396039}, {"namespace": "junos",
+    "hostname": "vqfx2", "ifname": "xe-0/0/9", "state": "up", "type": "ethernet",
+    "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1606017396039}, {"namespace": "junos", "hostname": "vqfx2", "ifname":
+    "xe-0/0/10", "state": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1606017396039}, {"namespace":
+    "junos", "hostname": "vqfx2", "ifname": "xe-0/0/11", "state": "up", "type": "ethernet",
+    "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1606017396039}, {"namespace": "junos", "hostname": "vqfx2", "ifname":
+    "bme0", "state": "up", "type": "ethernet", "mtu": 2000, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1606017396039}, {"namespace":
+    "junos", "hostname": "vqfx2", "ifname": "cbp0", "state": "up", "type": "ethernet",
+    "mtu": 9192, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1606017396039}, {"namespace": "junos", "hostname": "vqfx2", "ifname":
+    "dsc", "state": "up", "type": "software-pseudo", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1606017396039}, {"namespace":
+    "junos", "hostname": "vqfx2", "ifname": "xe-0/0/5", "state": "up", "type": "ethernet",
+    "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1606017396039}, {"namespace": "junos", "hostname": "vqfx2", "ifname":
+    "vtep", "state": "up", "type": "vtep", "mtu": 65536, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1606017396039}]'
 - command: interface show --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: interface show junos
-  output: '[{"hostname": "srv11"}, {"hostname": "srv11"}, {"hostname": "srv11"}, {"hostname":
-    "srv12"}, {"hostname": "srv12"}, {"hostname": "srv12"}, {"hostname": "srv21"},
-    {"hostname": "srv21"}, {"hostname": "srv21"}, {"hostname": "srv22"}, {"hostname":
-    "srv22"}, {"hostname": "srv22"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"},
+  output: '[{"hostname": "srv21"}, {"hostname": "srv21"}, {"hostname": "srv21"}, {"hostname":
+    "srv11"}, {"hostname": "srv22"}, {"hostname": "srv22"}, {"hostname": "srv22"},
+    {"hostname": "srv11"}, {"hostname": "srv11"}, {"hostname": "srv12"}, {"hostname":
+    "srv12"}, {"hostname": "srv12"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"},
     {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname":
     "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"},
     {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname":
@@ -338,11 +258,7 @@ tests:
     {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname":
     "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"},
     {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname":
-    "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"},
-    {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname":
-    "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"},
-    {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname":
-    "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"},
+    "vqfx1"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"},
     {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname":
     "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"},
     {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname":
@@ -353,558 +269,442 @@ tests:
     "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"},
     {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname":
     "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"},
-    {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname":
-    "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"},
-    {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname":
-    "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"},
-    {"hostname": "vqfx2"}]'
+    {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"}]'
 - command: interface summarize --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: interface summarize junos
-  output: '{"ifindex": {}, "reason": {}, "routeDistinguisher": {}, "macaddr": {},
-    "interfaceMac": {}, "type": {}, "description": {}, "numChanges": {}, "speed":
-    {}, "vlan": {}, "vlanName": {}, "ipAddressList": {}, "srcVtepIp": {}, "state":
-    {}, "adminState": {}, "master": {}, "ifname": {}, "statusChangeTimestamp": {},
-    "vni": {}, "ip6AddressList": {}, "lacpBypass": {}, "mtu": {}, "hostname": {},
-    "namespace": {}, "timestamp": {}, "active": {}}'
+  output: '{"junos": {"deviceCnt": 6, "interfaceCnt": 94, "devicesWithL2Cnt": 4, "devicesWithVxlanCnt":
+    0, "ifDownCnt": 2, "ifWithMultipleIPCnt": 0, "uniqueMTUCnt": 6, "uniqueIfTypesCnt":
+    14, "speedCnt": 4, "ifChangesStat": [0, 0, 0], "ifPerDeviceStat": [3, 41, 3.0],
+    "uniqueIPv4AddrCnt": 5, "uniqueIPv6AddrCnt": 0}}'
 - command: interface unique --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: interface unique junos
-  output: '[{"hostname": "srv22", "count": 3}, {"hostname": "srv21", "count": 3},
-    {"hostname": "srv12", "count": 3}, {"hostname": "srv11", "count": 3}, {"hostname":
-    "vqfx2", "count": 54}, {"hostname": "vqfx1", "count": 54}]'
+  output: '[{"hostname": "srv12", "count": 3}, {"hostname": "srv11", "count": 3},
+    {"hostname": "srv21", "count": 3}, {"hostname": "srv22", "count": 3}, {"hostname":
+    "vqfx1", "count": 41}, {"hostname": "vqfx2", "count": 41}]'
 - command: interface assert --format=json
   data-directory: tests/data/junos/parquet-out/
   error:
-    error: '[{"namespace": "junos", "hostname": "srv22", "ifname": "eth1", "state":
-      "up", "type": "ether", "mtu": 1500.0, "vlan": 0.0, "adminState": "up", "ipAddressList":
-      ["10.10.2.20/24"], "ip6AddressList": [], "speed": 0.0, "master": "", "timestamp":
-      1604149439011, "vlanList": [], "assertReason": "No LLDP peering info", "assert":
-      "fail"}, {"namespace": "junos", "hostname": "srv22", "ifname": "eth0", "state":
-      "up", "type": "ether", "mtu": 1500.0, "vlan": 0.0, "adminState": "up", "ipAddressList":
+    error: '[{"namespace": "junos", "hostname": "srv21", "ifname": "eth1", "state":
+      "up", "type": "ethernet", "mtu": 1500.0, "vlan": 0.0, "adminState": "up", "ipAddressList":
+      ["10.10.1.20/24"], "ip6AddressList": [], "speed": 0.0, "master": "", "timestamp":
+      1606017394026, "vlanList": [], "assertReason": "No LLDP peering info", "assert":
+      "fail"}, {"namespace": "junos", "hostname": "srv21", "ifname": "eth0", "state":
+      "up", "type": "ethernet", "mtu": 1500.0, "vlan": 0.0, "adminState": "up", "ipAddressList":
       ["10.0.2.15/24"], "ip6AddressList": [], "speed": 0.0, "master": "", "timestamp":
-      1604149439011, "vlanList": [], "assertReason": "No LLDP peering info", "assert":
-      "fail"}, {"namespace": "junos", "hostname": "srv22", "ifname": "lo", "state":
+      1606017394026, "vlanList": [], "assertReason": "No LLDP peering info", "assert":
+      "fail"}, {"namespace": "junos", "hostname": "srv21", "ifname": "lo", "state":
       "up", "type": "loopback", "mtu": 65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList":
-      [], "ip6AddressList": [], "speed": 0.0, "master": "", "timestamp": 1604149439011,
-      "vlanList": [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "srv21", "ifname": "lo", "state": "up", "type": "loopback",
-      "mtu": 65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
-      [], "speed": 0.0, "master": "", "timestamp": 1604149439017, "vlanList": [],
-      "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
-      "hostname": "srv21", "ifname": "eth0", "state": "up", "type": "ether", "mtu":
-      1500.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["10.0.2.15/24"],
-      "ip6AddressList": [], "speed": 0.0, "master": "", "timestamp": 1604149439017,
-      "vlanList": [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "srv21", "ifname": "eth1", "state": "up", "type": "ether",
-      "mtu": 1500.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["10.10.1.20/24"],
-      "ip6AddressList": [], "speed": 0.0, "master": "", "timestamp": 1604149439017,
-      "vlanList": [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "srv12", "ifname": "lo", "state": "up", "type": "loopback",
-      "mtu": 65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
-      [], "speed": 0.0, "master": "", "timestamp": 1604149439038, "vlanList": [],
-      "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
-      "hostname": "srv12", "ifname": "eth0", "state": "up", "type": "ether", "mtu":
-      1500.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["10.0.2.15/24"],
-      "ip6AddressList": [], "speed": 0.0, "master": "", "timestamp": 1604149439038,
-      "vlanList": [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "srv12", "ifname": "eth1", "state": "up", "type": "ether",
-      "mtu": 1500.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["10.10.2.10/24"],
-      "ip6AddressList": [], "speed": 0.0, "master": "", "timestamp": 1604149439038,
+      [], "ip6AddressList": [], "speed": 0.0, "master": "", "timestamp": 1606017394026,
       "vlanList": [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
       "junos", "hostname": "srv11", "ifname": "lo", "state": "up", "type": "loopback",
       "mtu": 65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
-      [], "speed": 0.0, "master": "", "timestamp": 1604149439091, "vlanList": [],
+      [], "speed": 0.0, "master": "", "timestamp": 1606017394033, "vlanList": [],
       "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
-      "hostname": "srv11", "ifname": "eth0", "state": "up", "type": "ether", "mtu":
+      "hostname": "srv22", "ifname": "eth1", "state": "up", "type": "ethernet", "mtu":
+      1500.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["10.10.2.20/24"],
+      "ip6AddressList": [], "speed": 0.0, "master": "", "timestamp": 1606017394033,
+      "vlanList": [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
+      "junos", "hostname": "srv22", "ifname": "lo", "state": "up", "type": "loopback",
+      "mtu": 65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 0.0, "master": "", "timestamp": 1606017394033, "vlanList": [],
+      "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
+      "hostname": "srv22", "ifname": "eth0", "state": "up", "type": "ethernet", "mtu":
       1500.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["10.0.2.15/24"],
-      "ip6AddressList": [], "speed": 0.0, "master": "", "timestamp": 1604149439091,
+      "ip6AddressList": [], "speed": 0.0, "master": "", "timestamp": 1606017394033,
       "vlanList": [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "srv11", "ifname": "eth1", "state": "up", "type": "ether",
+      "junos", "hostname": "srv11", "ifname": "eth1", "state": "up", "type": "ethernet",
       "mtu": 1500.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["10.10.1.10/24"],
-      "ip6AddressList": [], "speed": 0.0, "master": "", "timestamp": 1604149439091,
+      "ip6AddressList": [], "speed": 0.0, "master": "", "timestamp": 1606017394033,
       "vlanList": [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx2", "ifname": "bme0", "state": "up", "type": "ethernet",
-      "mtu": 2000.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 0.0, "master": "None", "timestamp": 1604149440995, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx2", "ifname": "em6", "state": "up", "type": "ethernet",
-      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 1000.0, "master": "None", "timestamp": 1604149440995, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx2", "ifname": "em5", "state": "up", "type": "ethernet",
-      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 1000.0, "master": "None", "timestamp": 1604149440995, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx2", "ifname": "em4", "state": "up", "type": "ethernet",
-      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 1000.0, "master": "None", "timestamp": 1604149440995, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx2", "ifname": "em3", "state": "up", "type": "ethernet",
-      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 1000.0, "master": "None", "timestamp": 1604149440995, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx2", "ifname": "em2", "state": "up", "type": "ethernet",
-      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 1000.0, "master": "None", "timestamp": 1604149440995, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx2", "ifname": "em1", "state": "up", "type": "ethernet",
-      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 1000.0, "master": "None", "timestamp": 1604149440995, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx2", "ifname": "em0", "state": "up", "type": "ethernet",
-      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 1000.0, "master": "None", "timestamp": 1604149440995, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx2", "ifname": "dsc", "state": "up", "type": "software-pseudo",
-      "mtu": 65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 0.0, "master": "None", "timestamp": 1604149440995, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx2", "ifname": "cbp0", "state": "up", "type": "ethernet",
-      "mtu": 9192.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 0.0, "master": "None", "timestamp": 1604149440995, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx2", "ifname": "xe-0/0/11", "state": "up", "type":
-      "ethernet", "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList":
-      ["-"], "ip6AddressList": ["-"], "speed": 10000.0, "master": "None", "timestamp":
-      1604149440995, "vlanList": [], "assertReason": "No LLDP peering info", "assert":
-      "fail"}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "xe-0/0/5", "state":
-      "up", "type": "ethernet", "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList":
-      ["-"], "ip6AddressList": ["-"], "speed": 10000.0, "master": "None", "timestamp":
-      1604149440995, "vlanList": [], "assertReason": "No LLDP peering info", "assert":
-      "fail"}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "xe-0/0/9", "state":
-      "up", "type": "ethernet", "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList":
-      ["-"], "ip6AddressList": ["-"], "speed": 10000.0, "master": "None", "timestamp":
-      1604149440995, "vlanList": [], "assertReason": "No LLDP peering info", "assert":
-      "fail"}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "xe-0/0/8", "state":
-      "up", "type": "ethernet", "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList":
-      ["-"], "ip6AddressList": ["-"], "speed": 10000.0, "master": "None", "timestamp":
-      1604149440995, "vlanList": [], "assertReason": "No LLDP peering info", "assert":
-      "fail"}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "xe-0/0/7", "state":
-      "up", "type": "ethernet", "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList":
-      ["-"], "ip6AddressList": ["-"], "speed": 10000.0, "master": "None", "timestamp":
-      1604149440995, "vlanList": [], "assertReason": "No LLDP peering info", "assert":
-      "fail"}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "xe-0/0/6", "state":
-      "up", "type": "ethernet", "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList":
-      ["-"], "ip6AddressList": ["-"], "speed": 10000.0, "master": "None", "timestamp":
-      1604149440995, "vlanList": [], "assertReason": "No LLDP peering info", "assert":
-      "fail"}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "em7", "state":
-      "up", "type": "ethernet", "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList":
-      ["-"], "ip6AddressList": ["-"], "speed": 1000.0, "master": "None", "timestamp":
-      1604149440995, "vlanList": [], "assertReason": "No LLDP peering info", "assert":
-      "fail"}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "xe-0/0/4", "state":
-      "up", "type": "ethernet", "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList":
-      ["-"], "ip6AddressList": ["-"], "speed": 10000.0, "master": "None", "timestamp":
-      1604149440995, "vlanList": [], "assertReason": "No LLDP peering info", "assert":
-      "fail"}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "xe-0/0/3", "state":
-      "up", "type": "ethernet", "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList":
-      ["-"], "ip6AddressList": ["-"], "speed": 10000.0, "master": "None", "timestamp":
-      1604149440995, "vlanList": [], "assertReason": "No LLDP peering info", "assert":
-      "fail"}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "xe-0/0/2", "state":
-      "up", "type": "ethernet", "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList":
-      ["-"], "ip6AddressList": ["-"], "speed": 10000.0, "master": "bridge", "timestamp":
-      1604149440995, "vlanList": [], "assertReason": "No LLDP peering info", "assert":
-      "fail"}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "xe-0/0/1", "state":
-      "up", "type": "ethernet", "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList":
-      ["-"], "ip6AddressList": ["-"], "speed": 10000.0, "master": "bridge", "timestamp":
-      1604149440995, "vlanList": [], "assertReason": "No LLDP peering info", "assert":
-      "fail"}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "xe-0/0/0", "state":
-      "up", "type": "ethernet", "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList":
-      ["-"], "ip6AddressList": ["-"], "speed": 10000.0, "master": "None", "timestamp":
-      1604149440995, "vlanList": [], "assertReason": "No LLDP peering info", "assert":
-      "fail"}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "pfh-0/0/0",
-      "state": "up", "type": "None", "mtu": 0.0, "vlan": 0.0, "adminState": "up",
-      "ipAddressList": ["-"], "ip6AddressList": ["-"], "speed": 800.0, "master": "None",
-      "timestamp": 1604149440995, "vlanList": [], "assertReason": "No LLDP peering
-      info", "assert": "fail"}, {"namespace": "junos", "hostname": "vqfx2", "ifname":
-      "xe-0/0/10", "state": "up", "type": "ethernet", "mtu": 1514.0, "vlan": 0.0,
-      "adminState": "up", "ipAddressList": ["-"], "ip6AddressList": ["-"], "speed":
-      10000.0, "master": "None", "timestamp": 1604149440995, "vlanList": [], "assertReason":
-      "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
-      "vqfx2", "ifname": "esi", "state": "up", "type": "vtep", "mtu": 65536.0, "vlan":
-      0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList": ["-"], "speed":
-      0.0, "master": "None", "timestamp": 1604149440995, "vlanList": [], "assertReason":
-      "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
-      "vqfx2", "ifname": "lo0", "state": "up", "type": "loopback", "mtu": 65536.0,
-      "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList": ["-"],
-      "speed": 0.0, "master": "None", "timestamp": 1604149440995, "vlanList": [],
+      "junos", "hostname": "srv11", "ifname": "eth0", "state": "up", "type": "ethernet",
+      "mtu": 1500.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["10.0.2.15/24"],
+      "ip6AddressList": [], "speed": 0.0, "master": "", "timestamp": 1606017394033,
+      "vlanList": [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
+      "junos", "hostname": "srv12", "ifname": "eth0", "state": "up", "type": "ethernet",
+      "mtu": 1500.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["10.0.2.15/24"],
+      "ip6AddressList": [], "speed": 0.0, "master": "", "timestamp": 1606017394040,
+      "vlanList": [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
+      "junos", "hostname": "srv12", "ifname": "lo", "state": "up", "type": "loopback",
+      "mtu": 65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 0.0, "master": "", "timestamp": 1606017394040, "vlanList": [],
       "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
-      "hostname": "vqfx2", "ifname": "gre", "state": "up", "type": "gre", "mtu": 65536.0,
-      "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList": ["-"],
-      "speed": 0.0, "master": "None", "timestamp": 1604149440995, "vlanList": [],
+      "hostname": "srv12", "ifname": "eth1", "state": "up", "type": "ethernet", "mtu":
+      1500.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["10.10.2.10/24"],
+      "ip6AddressList": [], "speed": 0.0, "master": "", "timestamp": 1606017394040,
+      "vlanList": [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
+      "junos", "hostname": "vqfx1", "ifname": "ipip", "state": "up", "type": "ip-over-ip",
+      "mtu": 65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 0.0, "master": "", "timestamp": 1606017395992, "vlanList": [],
       "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
-      "hostname": "vqfx2", "ifname": "jsrv.1", "state": "up", "type": "logical", "mtu":
-      1514.0, "vlan": 0.0, "adminState": "", "ipAddressList": ["128.0.0.127/2"], "ip6AddressList":
-      [], "speed": 0.0, "master": "", "timestamp": 1604149440995, "vlanList": [],
+      "hostname": "vqfx1", "ifname": "em4", "state": "up", "type": "ethernet", "mtu":
+      1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 1000.0, "master": "", "timestamp": 1606017395992, "vlanList": [],
       "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
-      "hostname": "vqfx2", "ifname": "irb.20000", "state": "up", "type": "logical",
-      "mtu": 1500.0, "vlan": 0.0, "adminState": "", "ipAddressList": ["10.10.2.252/24",
-      "10.10.2.254/24"], "ip6AddressList": [], "speed": 0.0, "master": "", "timestamp":
-      1604149440995, "vlanList": [], "assertReason": "No LLDP peering info", "assert":
-      "fail"}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "irb.10000",
-      "state": "up", "type": "logical", "mtu": 1500.0, "vlan": 0.0, "adminState":
-      "", "ipAddressList": ["10.10.1.252/24", "10.10.1.254/24"], "ip6AddressList":
-      [], "speed": 0.0, "master": "", "timestamp": 1604149440995, "vlanList": [],
+      "hostname": "vqfx1", "ifname": "em5", "state": "up", "type": "ethernet", "mtu":
+      1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 1000.0, "master": "", "timestamp": 1606017395992, "vlanList": [],
       "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
-      "hostname": "vqfx2", "ifname": "em4.32768", "state": "up", "type": "logical",
-      "mtu": 1500.0, "vlan": 0.0, "adminState": "", "ipAddressList": ["192.0.2.2/24"],
-      "ip6AddressList": [], "speed": 1000.0, "master": "", "timestamp": 1604149440995,
-      "vlanList": [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx2", "ifname": "em2.32768", "state": "up", "type":
-      "logical", "mtu": 1500.0, "vlan": 0.0, "adminState": "", "ipAddressList": ["192.168.1.2/24"],
-      "ip6AddressList": [], "speed": 1000.0, "master": "", "timestamp": 1604149440995,
-      "vlanList": [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx2", "ifname": "em1.0", "state": "up", "type": "logical",
-      "mtu": 1500.0, "vlan": 0.0, "adminState": "", "ipAddressList": ["169.254.0.2/24"],
-      "ip6AddressList": [], "speed": 1000.0, "master": "", "timestamp": 1604149440995,
-      "vlanList": [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx2", "ifname": "em0.0", "state": "up", "type": "logical",
-      "mtu": 1500.0, "vlan": 0.0, "adminState": "", "ipAddressList": ["10.0.2.15/24"],
-      "ip6AddressList": [], "speed": 1000.0, "master": "", "timestamp": 1604149440995,
-      "vlanList": [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx2", "ifname": "bme0.0", "state": "up", "type": "logical",
-      "mtu": 1986.0, "vlan": 0.0, "adminState": "", "ipAddressList": ["128.0.0.1/2",
-      "128.0.0.4/2", "128.0.0.16/2", "128.0.0.63/2"], "ip6AddressList": [], "speed":
-      0.0, "master": "", "timestamp": 1604149440995, "vlanList": [], "assertReason":
+      "hostname": "vqfx1", "ifname": "em6", "state": "up", "type": "ethernet", "mtu":
+      1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 1000.0, "master": "", "timestamp": 1606017395992, "vlanList": [],
+      "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
+      "hostname": "vqfx1", "ifname": "em7", "state": "up", "type": "ethernet", "mtu":
+      1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 1000.0, "master": "", "timestamp": 1606017395992, "vlanList": [],
+      "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
+      "hostname": "vqfx1", "ifname": "esi", "state": "up", "type": "vtep", "mtu":
+      65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 0.0, "master": "", "timestamp": 1606017395992, "vlanList": [],
+      "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
+      "hostname": "vqfx1", "ifname": "fti0", "state": "up", "type": "flexible-tunnel-interface",
+      "mtu": 65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 0.0, "master": "", "timestamp": 1606017395992, "vlanList": [],
+      "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
+      "hostname": "vqfx1", "ifname": "gre", "state": "up", "type": "gre", "mtu": 65536.0,
+      "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList": [],
+      "speed": 0.0, "master": "", "timestamp": 1606017395992, "vlanList": [], "assertReason":
       "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
-      "vqfx2", "ifname": "xe-0/0/2.0", "state": "up", "type": "logical", "mtu": 1514.0,
-      "vlan": 0.0, "adminState": "", "ipAddressList": [], "ip6AddressList": [], "speed":
-      10000.0, "master": "", "timestamp": 1604149440995, "vlanList": [], "assertReason":
+      "vqfx1", "ifname": "irb", "state": "up", "type": "ethernet", "mtu": 1514.0,
+      "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList": [],
+      "speed": 0.0, "master": "", "timestamp": 1606017395992, "vlanList": [], "assertReason":
       "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
-      "vqfx2", "ifname": "xe-0/0/1.0", "state": "up", "type": "logical", "mtu": 1514.0,
-      "vlan": 0.0, "adminState": "", "ipAddressList": [], "ip6AddressList": [], "speed":
-      10000.0, "master": "", "timestamp": 1604149440995, "vlanList": [], "assertReason":
+      "vqfx1", "ifname": "pip0", "state": "up", "type": "ethernet", "mtu": 9192.0,
+      "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList": [],
+      "speed": 0.0, "master": "", "timestamp": 1606017395992, "vlanList": [], "assertReason":
       "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
-      "vqfx2", "ifname": "xe-0/0/0.0", "state": "up", "type": "logical", "mtu": 1500.0,
-      "vlan": 0.0, "adminState": "", "ipAddressList": ["10.0.0.2/30"], "ip6AddressList":
-      [], "speed": 10000.0, "master": "", "timestamp": 1604149440995, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx2", "ifname": "vtep", "state": "up", "type": "vtep",
-      "mtu": 65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 0.0, "master": "None", "timestamp": 1604149440995, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx2", "ifname": "vme", "state": "down", "type": "mgmt-vlan",
-      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 0.0, "master": "None", "timestamp": 1604149440995, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx2", "ifname": "tap", "state": "up", "type": "tap",
-      "mtu": 65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 0.0, "master": "None", "timestamp": 1604149440995, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx2", "ifname": "pip0", "state": "up", "type": "ethernet",
-      "mtu": 9192.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 0.0, "master": "None", "timestamp": 1604149440995, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx2", "ifname": "pime", "state": "up", "type": "pim-encapsulator",
-      "mtu": 65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 0.0, "master": "None", "timestamp": 1604149440995, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx2", "ifname": "pimd", "state": "up", "type": "pim-decapsulator",
-      "mtu": 65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 0.0, "master": "None", "timestamp": 1604149440995, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx2", "ifname": "mtun", "state": "up", "type": "gre",
-      "mtu": 65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 0.0, "master": "None", "timestamp": 1604149440995, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx2", "ifname": "lsi", "state": "up", "type": "lsi",
-      "mtu": 65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 0.0, "master": "None", "timestamp": 1604149440995, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx2", "ifname": "pfe-0/0/0", "state": "up", "type":
-      "None", "mtu": 0.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"],
-      "ip6AddressList": ["-"], "speed": 800.0, "master": "None", "timestamp": 1604149440995,
-      "vlanList": [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx2", "ifname": "jsrv", "state": "up", "type": "virtual",
-      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 0.0, "master": "None", "timestamp": 1604149440995, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx2", "ifname": "irb", "state": "up", "type": "ethernet",
-      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 0.0, "master": "None", "timestamp": 1604149440995, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx2", "ifname": "ipip", "state": "up", "type": "ip-over-ip",
-      "mtu": 65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 0.0, "master": "None", "timestamp": 1604149440995, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx2", "ifname": "fti0", "state": "up", "type": "flexible-tunnel-interface",
-      "mtu": 65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 0.0, "master": "None", "timestamp": 1604149440995, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx2", "ifname": "gr-0/0/0", "state": "up", "type": "gre",
-      "mtu": 65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 800.0, "master": "None", "timestamp": 1604149440995, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx2", "ifname": "vtep.32769", "state": "up", "type":
-      "logical", "mtu": 65536.0, "vlan": 0.0, "adminState": "", "ipAddressList": [],
-      "ip6AddressList": [], "speed": 0.0, "master": "", "timestamp": 1604149440995,
-      "vlanList": [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx2", "ifname": "lo0.0", "state": "down", "type": "logical",
-      "mtu": 65536.0, "vlan": 0.0, "adminState": "", "ipAddressList": ["9.9.9.2/32"],
-      "ip6AddressList": [], "speed": 0.0, "master": "", "timestamp": 1604149440995,
-      "vlanList": [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "vtep.32769", "state": "up", "type":
-      "logical", "mtu": 65536.0, "vlan": 0.0, "adminState": "", "ipAddressList": [],
-      "ip6AddressList": [], "speed": 0.0, "master": "", "timestamp": 1604149441286,
-      "vlanList": [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "em4", "state": "up", "type": "ethernet",
-      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 1000.0, "master": "None", "timestamp": 1604149441286, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "em3", "state": "up", "type": "ethernet",
-      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 1000.0, "master": "None", "timestamp": 1604149441286, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "em2", "state": "up", "type": "ethernet",
-      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 1000.0, "master": "None", "timestamp": 1604149441286, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "em1", "state": "up", "type": "ethernet",
-      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 1000.0, "master": "None", "timestamp": 1604149441286, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "em0", "state": "up", "type": "ethernet",
-      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 1000.0, "master": "None", "timestamp": 1604149441286, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "dsc", "state": "up", "type": "software-pseudo",
-      "mtu": 65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 0.0, "master": "None", "timestamp": 1604149441286, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "cbp0", "state": "up", "type": "ethernet",
-      "mtu": 9192.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 0.0, "master": "None", "timestamp": 1604149441286, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "bme0", "state": "up", "type": "ethernet",
-      "mtu": 2000.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 0.0, "master": "None", "timestamp": 1604149441286, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "xe-0/0/11", "state": "up", "type":
-      "ethernet", "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList":
-      ["-"], "ip6AddressList": ["-"], "speed": 10000.0, "master": "None", "timestamp":
-      1604149441286, "vlanList": [], "assertReason": "No LLDP peering info", "assert":
-      "fail"}, {"namespace": "junos", "hostname": "vqfx1", "ifname": "xe-0/0/10",
-      "state": "up", "type": "ethernet", "mtu": 1514.0, "vlan": 0.0, "adminState":
-      "up", "ipAddressList": ["-"], "ip6AddressList": ["-"], "speed": 10000.0, "master":
-      "None", "timestamp": 1604149441286, "vlanList": [], "assertReason": "No LLDP
-      peering info", "assert": "fail"}, {"namespace": "junos", "hostname": "vqfx1",
-      "ifname": "xe-0/0/9", "state": "up", "type": "ethernet", "mtu": 1514.0, "vlan":
-      0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList": ["-"], "speed":
-      10000.0, "master": "None", "timestamp": 1604149441286, "vlanList": [], "assertReason":
+      "vqfx1", "ifname": "lo0", "state": "up", "type": "loopback", "mtu": 65536.0,
+      "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList": [],
+      "speed": 0.0, "master": "", "timestamp": 1606017395992, "vlanList": [], "assertReason":
       "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
-      "vqfx1", "ifname": "xe-0/0/8", "state": "up", "type": "ethernet", "mtu": 1514.0,
-      "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList": ["-"],
-      "speed": 10000.0, "master": "None", "timestamp": 1604149441286, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "xe-0/0/7", "state": "up", "type": "ethernet",
-      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 10000.0, "master": "None", "timestamp": 1604149441286, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "xe-0/0/6", "state": "up", "type": "ethernet",
-      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 10000.0, "master": "None", "timestamp": 1604149441286, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "xe-0/0/5", "state": "up", "type": "ethernet",
-      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 10000.0, "master": "None", "timestamp": 1604149441286, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "xe-0/0/4", "state": "up", "type": "ethernet",
-      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 10000.0, "master": "None", "timestamp": 1604149441286, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "xe-0/0/3", "state": "up", "type": "ethernet",
-      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 10000.0, "master": "None", "timestamp": 1604149441286, "vlanList":
+      "vqfx1", "ifname": "lsi", "state": "up", "type": "lsi", "mtu": 65536.0, "vlan":
+      0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList": [], "speed":
+      0.0, "master": "", "timestamp": 1606017395992, "vlanList": [], "assertReason":
+      "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
+      "vqfx1", "ifname": "pimd", "state": "up", "type": "pim-decapsulator", "mtu":
+      65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 0.0, "master": "", "timestamp": 1606017395992, "vlanList": [],
+      "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
+      "hostname": "vqfx1", "ifname": "pime", "state": "up", "type": "pim-encapsulator",
+      "mtu": 65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 0.0, "master": "", "timestamp": 1606017395992, "vlanList": [],
+      "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
+      "hostname": "vqfx1", "ifname": "em3", "state": "up", "type": "ethernet", "mtu":
+      1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 1000.0, "master": "", "timestamp": 1606017395992, "vlanList": [],
+      "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
+      "hostname": "vqfx1", "ifname": "tap", "state": "up", "type": "tap", "mtu": 65536.0,
+      "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList": [],
+      "speed": 0.0, "master": "", "timestamp": 1606017395992, "vlanList": [], "assertReason":
+      "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
+      "vqfx1", "ifname": "vme", "state": "down", "type": "mgmt-vlan", "mtu": 1514.0,
+      "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList": [],
+      "speed": 0.0, "master": "", "timestamp": 1606017395992, "vlanList": [], "assertReason":
+      "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
+      "vqfx1", "ifname": "vtep", "state": "up", "type": "vtep", "mtu": 65536.0, "vlan":
+      0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList": [], "speed":
+      0.0, "master": "", "timestamp": 1606017395992, "vlanList": [], "assertReason":
+      "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
+      "vqfx1", "ifname": "jsrv", "state": "up", "type": "virtual", "mtu": 1514.0,
+      "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList": [],
+      "speed": 0.0, "master": "", "timestamp": 1606017395992, "vlanList": [], "assertReason":
+      "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
+      "vqfx1", "ifname": "em2", "state": "up", "type": "ethernet", "mtu": 1514.0,
+      "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList": [],
+      "speed": 1000.0, "master": "", "timestamp": 1606017395992, "vlanList": [], "assertReason":
+      "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
+      "vqfx1", "ifname": "mtun", "state": "up", "type": "gre", "mtu": 65536.0, "vlan":
+      0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList": [], "speed":
+      0.0, "master": "", "timestamp": 1606017395992, "vlanList": [], "assertReason":
+      "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
+      "vqfx1", "ifname": "em0", "state": "up", "type": "ethernet", "mtu": 1514.0,
+      "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList": [],
+      "speed": 1000.0, "master": "", "timestamp": 1606017395992, "vlanList": [], "assertReason":
+      "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
+      "vqfx1", "ifname": "em1", "state": "up", "type": "ethernet", "mtu": 1514.0,
+      "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList": [],
+      "speed": 1000.0, "master": "", "timestamp": 1606017395992, "vlanList": [], "assertReason":
+      "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
+      "vqfx1", "ifname": "pfe-0/0/0", "state": "up", "type": "None", "mtu": 0.0, "vlan":
+      0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList": [], "speed":
+      0.0, "master": "ENET2", "timestamp": 1606017395992, "vlanList": [], "assertReason":
+      "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
+      "vqfx1", "ifname": "pfh-0/0/0", "state": "up", "type": "None", "mtu": 0.0, "vlan":
+      0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList": [], "speed":
+      0.0, "master": "ENET2", "timestamp": 1606017395992, "vlanList": [], "assertReason":
+      "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
+      "vqfx1", "ifname": "xe-0/0/0", "state": "up", "type": "ethernet", "mtu": 1514.0,
+      "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList": [],
+      "speed": 10000.0, "master": "", "timestamp": 1606017395992, "vlanList": [],
+      "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
+      "hostname": "vqfx1", "ifname": "xe-0/0/1", "state": "up", "type": "ethernet",
+      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 10000.0, "master": "bridge", "timestamp": 1606017395992, "vlanList":
       [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
       "junos", "hostname": "vqfx1", "ifname": "xe-0/0/2", "state": "up", "type": "ethernet",
-      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 10000.0, "master": "bridge", "timestamp": 1604149441286, "vlanList":
+      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 10000.0, "master": "bridge", "timestamp": 1606017395992, "vlanList":
       [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "xe-0/0/1", "state": "up", "type": "ethernet",
-      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 10000.0, "master": "bridge", "timestamp": 1604149441286, "vlanList":
+      "junos", "hostname": "vqfx1", "ifname": "xe-0/0/3", "state": "up", "type": "ethernet",
+      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 10000.0, "master": "", "timestamp": 1606017395992, "vlanList":
       [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "xe-0/0/0", "state": "up", "type": "ethernet",
-      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 10000.0, "master": "None", "timestamp": 1604149441286, "vlanList":
+      "junos", "hostname": "vqfx1", "ifname": "xe-0/0/4", "state": "up", "type": "ethernet",
+      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 10000.0, "master": "", "timestamp": 1606017395992, "vlanList":
       [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "pfh-0/0/0", "state": "up", "type":
-      "None", "mtu": 0.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"],
-      "ip6AddressList": ["-"], "speed": 800.0, "master": "None", "timestamp": 1604149441286,
-      "vlanList": [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "pfe-0/0/0", "state": "up", "type":
-      "None", "mtu": 0.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"],
-      "ip6AddressList": ["-"], "speed": 800.0, "master": "None", "timestamp": 1604149441286,
-      "vlanList": [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
+      "junos", "hostname": "vqfx1", "ifname": "xe-0/0/5", "state": "up", "type": "ethernet",
+      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 10000.0, "master": "", "timestamp": 1606017395992, "vlanList":
+      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
       "junos", "hostname": "vqfx1", "ifname": "gr-0/0/0", "state": "up", "type": "gre",
-      "mtu": 65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 800.0, "master": "None", "timestamp": 1604149441286, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "em5", "state": "up", "type": "ethernet",
-      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 1000.0, "master": "None", "timestamp": 1604149441286, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "em6", "state": "up", "type": "ethernet",
-      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 1000.0, "master": "None", "timestamp": 1604149441286, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "em7", "state": "up", "type": "ethernet",
-      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 1000.0, "master": "None", "timestamp": 1604149441286, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "esi", "state": "up", "type": "vtep",
-      "mtu": 65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 0.0, "master": "None", "timestamp": 1604149441286, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "jsrv.1", "state": "up", "type": "logical",
-      "mtu": 1514.0, "vlan": 0.0, "adminState": "", "ipAddressList": ["128.0.0.127/2"],
-      "ip6AddressList": [], "speed": 0.0, "master": "", "timestamp": 1604149441286,
-      "vlanList": [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "irb.20000", "state": "up", "type":
-      "logical", "mtu": 1500.0, "vlan": 0.0, "adminState": "", "ipAddressList": ["10.10.2.251/24",
-      "10.10.2.254/24"], "ip6AddressList": [], "speed": 0.0, "master": "", "timestamp":
-      1604149441286, "vlanList": [], "assertReason": "No LLDP peering info", "assert":
-      "fail"}, {"namespace": "junos", "hostname": "vqfx1", "ifname": "irb.10000",
-      "state": "up", "type": "logical", "mtu": 1500.0, "vlan": 0.0, "adminState":
-      "", "ipAddressList": ["10.10.1.251/24", "10.10.1.254/24"], "ip6AddressList":
-      [], "speed": 0.0, "master": "", "timestamp": 1604149441286, "vlanList": [],
+      "mtu": 65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 800.0, "master": "", "timestamp": 1606017395992, "vlanList": [],
       "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
-      "hostname": "vqfx1", "ifname": "em4.32768", "state": "up", "type": "logical",
-      "mtu": 1500.0, "vlan": 0.0, "adminState": "", "ipAddressList": ["192.0.2.2/24"],
-      "ip6AddressList": [], "speed": 1000.0, "master": "", "timestamp": 1604149441286,
+      "hostname": "vqfx1", "ifname": "xe-0/0/7", "state": "up", "type": "ethernet",
+      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 10000.0, "master": "", "timestamp": 1606017395992, "vlanList":
+      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
+      "junos", "hostname": "vqfx1", "ifname": "xe-0/0/8", "state": "up", "type": "ethernet",
+      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 10000.0, "master": "", "timestamp": 1606017395992, "vlanList":
+      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
+      "junos", "hostname": "vqfx1", "ifname": "dsc", "state": "up", "type": "software-pseudo",
+      "mtu": 65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 0.0, "master": "", "timestamp": 1606017395992, "vlanList": [],
+      "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
+      "hostname": "vqfx1", "ifname": "xe-0/0/9", "state": "up", "type": "ethernet",
+      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 10000.0, "master": "", "timestamp": 1606017395992, "vlanList":
+      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
+      "junos", "hostname": "vqfx1", "ifname": "xe-0/0/10", "state": "up", "type":
+      "ethernet", "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList":
+      [], "ip6AddressList": [], "speed": 10000.0, "master": "", "timestamp": 1606017395992,
       "vlanList": [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "em1.0", "state": "up", "type": "logical",
-      "mtu": 1500.0, "vlan": 0.0, "adminState": "", "ipAddressList": ["169.254.0.2/24"],
-      "ip6AddressList": [], "speed": 1000.0, "master": "", "timestamp": 1604149441286,
+      "junos", "hostname": "vqfx1", "ifname": "xe-0/0/11", "state": "up", "type":
+      "ethernet", "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList":
+      [], "ip6AddressList": [], "speed": 10000.0, "master": "", "timestamp": 1606017395992,
       "vlanList": [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "em0.0", "state": "up", "type": "logical",
-      "mtu": 1500.0, "vlan": 0.0, "adminState": "", "ipAddressList": ["10.0.2.15/24"],
-      "ip6AddressList": [], "speed": 1000.0, "master": "", "timestamp": 1604149441286,
-      "vlanList": [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "bme0.0", "state": "up", "type": "logical",
-      "mtu": 1986.0, "vlan": 0.0, "adminState": "", "ipAddressList": ["128.0.0.1/2",
-      "128.0.0.4/2", "128.0.0.16/2", "128.0.0.63/2"], "ip6AddressList": [], "speed":
-      0.0, "master": "", "timestamp": 1604149441286, "vlanList": [], "assertReason":
+      "junos", "hostname": "vqfx1", "ifname": "bme0", "state": "up", "type": "ethernet",
+      "mtu": 2000.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 0.0, "master": "", "timestamp": 1606017395992, "vlanList": [],
+      "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
+      "hostname": "vqfx1", "ifname": "cbp0", "state": "up", "type": "ethernet", "mtu":
+      9192.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 0.0, "master": "", "timestamp": 1606017395992, "vlanList": [],
+      "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
+      "hostname": "vqfx1", "ifname": "xe-0/0/6", "state": "up", "type": "ethernet",
+      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 10000.0, "master": "", "timestamp": 1606017395992, "vlanList":
+      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
+      "junos", "hostname": "vqfx2", "ifname": "fti0", "state": "up", "type": "flexible-tunnel-interface",
+      "mtu": 65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 0.0, "master": "", "timestamp": 1606017396039, "vlanList": [],
+      "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
+      "hostname": "vqfx2", "ifname": "esi", "state": "up", "type": "vtep", "mtu":
+      65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 0.0, "master": "", "timestamp": 1606017396039, "vlanList": [],
+      "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
+      "hostname": "vqfx2", "ifname": "em5", "state": "up", "type": "ethernet", "mtu":
+      1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 1000.0, "master": "", "timestamp": 1606017396039, "vlanList": [],
+      "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
+      "hostname": "vqfx2", "ifname": "em6", "state": "up", "type": "ethernet", "mtu":
+      1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 1000.0, "master": "", "timestamp": 1606017396039, "vlanList": [],
+      "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
+      "hostname": "vqfx2", "ifname": "gre", "state": "up", "type": "gre", "mtu": 65536.0,
+      "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList": [],
+      "speed": 0.0, "master": "", "timestamp": 1606017396039, "vlanList": [], "assertReason":
       "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
-      "vqfx1", "ifname": "xe-0/0/2.0", "state": "up", "type": "logical", "mtu": 1514.0,
-      "vlan": 0.0, "adminState": "", "ipAddressList": [], "ip6AddressList": [], "speed":
-      10000.0, "master": "", "timestamp": 1604149441286, "vlanList": [], "assertReason":
+      "vqfx2", "ifname": "em4", "state": "up", "type": "ethernet", "mtu": 1514.0,
+      "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList": [],
+      "speed": 1000.0, "master": "", "timestamp": 1606017396039, "vlanList": [], "assertReason":
       "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
-      "vqfx1", "ifname": "xe-0/0/1.0", "state": "up", "type": "logical", "mtu": 1514.0,
-      "vlan": 0.0, "adminState": "", "ipAddressList": [], "ip6AddressList": [], "speed":
-      10000.0, "master": "", "timestamp": 1604149441286, "vlanList": [], "assertReason":
+      "vqfx2", "ifname": "em7", "state": "up", "type": "ethernet", "mtu": 1514.0,
+      "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList": [],
+      "speed": 1000.0, "master": "", "timestamp": 1606017396039, "vlanList": [], "assertReason":
       "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
-      "vqfx1", "ifname": "xe-0/0/0.0", "state": "up", "type": "logical", "mtu": 1500.0,
-      "vlan": 0.0, "adminState": "", "ipAddressList": ["10.0.0.1/30"], "ip6AddressList":
-      [], "speed": 10000.0, "master": "", "timestamp": 1604149441286, "vlanList":
+      "vqfx2", "ifname": "ipip", "state": "up", "type": "ip-over-ip", "mtu": 65536.0,
+      "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList": [],
+      "speed": 0.0, "master": "", "timestamp": 1606017396039, "vlanList": [], "assertReason":
+      "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
+      "vqfx2", "ifname": "lsi", "state": "up", "type": "lsi", "mtu": 65536.0, "vlan":
+      0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList": [], "speed":
+      0.0, "master": "", "timestamp": 1606017396039, "vlanList": [], "assertReason":
+      "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
+      "vqfx2", "ifname": "jsrv", "state": "up", "type": "virtual", "mtu": 1514.0,
+      "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList": [],
+      "speed": 0.0, "master": "", "timestamp": 1606017396039, "vlanList": [], "assertReason":
+      "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
+      "vqfx2", "ifname": "lo0", "state": "up", "type": "loopback", "mtu": 65536.0,
+      "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList": [],
+      "speed": 0.0, "master": "", "timestamp": 1606017396039, "vlanList": [], "assertReason":
+      "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
+      "vqfx2", "ifname": "mtun", "state": "up", "type": "gre", "mtu": 65536.0, "vlan":
+      0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList": [], "speed":
+      0.0, "master": "", "timestamp": 1606017396039, "vlanList": [], "assertReason":
+      "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
+      "vqfx2", "ifname": "pimd", "state": "up", "type": "pim-decapsulator", "mtu":
+      65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 0.0, "master": "", "timestamp": 1606017396039, "vlanList": [],
+      "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
+      "hostname": "vqfx2", "ifname": "pime", "state": "up", "type": "pim-encapsulator",
+      "mtu": 65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 0.0, "master": "", "timestamp": 1606017396039, "vlanList": [],
+      "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
+      "hostname": "vqfx2", "ifname": "pip0", "state": "up", "type": "ethernet", "mtu":
+      9192.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 0.0, "master": "", "timestamp": 1606017396039, "vlanList": [],
+      "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
+      "hostname": "vqfx2", "ifname": "em3", "state": "up", "type": "ethernet", "mtu":
+      1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 1000.0, "master": "", "timestamp": 1606017396039, "vlanList": [],
+      "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
+      "hostname": "vqfx2", "ifname": "tap", "state": "up", "type": "tap", "mtu": 65536.0,
+      "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList": [],
+      "speed": 0.0, "master": "", "timestamp": 1606017396039, "vlanList": [], "assertReason":
+      "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
+      "vqfx2", "ifname": "irb", "state": "up", "type": "ethernet", "mtu": 1514.0,
+      "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList": [],
+      "speed": 0.0, "master": "", "timestamp": 1606017396039, "vlanList": [], "assertReason":
+      "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
+      "vqfx2", "ifname": "em2", "state": "up", "type": "ethernet", "mtu": 1514.0,
+      "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList": [],
+      "speed": 1000.0, "master": "", "timestamp": 1606017396039, "vlanList": [], "assertReason":
+      "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
+      "vqfx2", "ifname": "xe-0/0/7", "state": "up", "type": "ethernet", "mtu": 1514.0,
+      "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList": [],
+      "speed": 10000.0, "master": "", "timestamp": 1606017396039, "vlanList": [],
+      "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
+      "hostname": "vqfx2", "ifname": "em0", "state": "up", "type": "ethernet", "mtu":
+      1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 1000.0, "master": "", "timestamp": 1606017396039, "vlanList": [],
+      "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
+      "hostname": "vqfx2", "ifname": "vme", "state": "down", "type": "mgmt-vlan",
+      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 0.0, "master": "", "timestamp": 1606017396039, "vlanList": [],
+      "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
+      "hostname": "vqfx2", "ifname": "gr-0/0/0", "state": "up", "type": "gre", "mtu":
+      65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 800.0, "master": "", "timestamp": 1606017396039, "vlanList": [],
+      "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
+      "hostname": "vqfx2", "ifname": "pfe-0/0/0", "state": "up", "type": "None", "mtu":
+      0.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 0.0, "master": "ENET2", "timestamp": 1606017396039, "vlanList":
       [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "vtep", "state": "up", "type": "vtep",
-      "mtu": 65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 0.0, "master": "None", "timestamp": 1604149441286, "vlanList":
+      "junos", "hostname": "vqfx2", "ifname": "pfh-0/0/0", "state": "up", "type":
+      "None", "mtu": 0.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 0.0, "master": "ENET2", "timestamp": 1606017396039, "vlanList":
       [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "lo0.0", "state": "down", "type": "logical",
-      "mtu": 65536.0, "vlan": 0.0, "adminState": "", "ipAddressList": ["9.9.9.1/32"],
-      "ip6AddressList": [], "speed": 0.0, "master": "", "timestamp": 1604149441286,
+      "junos", "hostname": "vqfx2", "ifname": "xe-0/0/0", "state": "up", "type": "ethernet",
+      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 10000.0, "master": "", "timestamp": 1606017396039, "vlanList":
+      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
+      "junos", "hostname": "vqfx2", "ifname": "xe-0/0/1", "state": "up", "type": "ethernet",
+      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 10000.0, "master": "bridge", "timestamp": 1606017396039, "vlanList":
+      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
+      "junos", "hostname": "vqfx2", "ifname": "xe-0/0/2", "state": "up", "type": "ethernet",
+      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 10000.0, "master": "bridge", "timestamp": 1606017396039, "vlanList":
+      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
+      "junos", "hostname": "vqfx2", "ifname": "xe-0/0/3", "state": "up", "type": "ethernet",
+      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 10000.0, "master": "", "timestamp": 1606017396039, "vlanList":
+      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
+      "junos", "hostname": "vqfx2", "ifname": "em1", "state": "up", "type": "ethernet",
+      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 1000.0, "master": "", "timestamp": 1606017396039, "vlanList": [],
+      "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
+      "hostname": "vqfx2", "ifname": "xe-0/0/4", "state": "up", "type": "ethernet",
+      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 10000.0, "master": "", "timestamp": 1606017396039, "vlanList":
+      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
+      "junos", "hostname": "vqfx2", "ifname": "xe-0/0/6", "state": "up", "type": "ethernet",
+      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 10000.0, "master": "", "timestamp": 1606017396039, "vlanList":
+      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
+      "junos", "hostname": "vqfx2", "ifname": "xe-0/0/8", "state": "up", "type": "ethernet",
+      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 10000.0, "master": "", "timestamp": 1606017396039, "vlanList":
+      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
+      "junos", "hostname": "vqfx2", "ifname": "xe-0/0/9", "state": "up", "type": "ethernet",
+      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 10000.0, "master": "", "timestamp": 1606017396039, "vlanList":
+      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
+      "junos", "hostname": "vqfx2", "ifname": "xe-0/0/10", "state": "up", "type":
+      "ethernet", "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList":
+      [], "ip6AddressList": [], "speed": 10000.0, "master": "", "timestamp": 1606017396039,
       "vlanList": [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "vme", "state": "down", "type": "mgmt-vlan",
-      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 0.0, "master": "None", "timestamp": 1604149441286, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "pip0", "state": "up", "type": "ethernet",
-      "mtu": 9192.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 0.0, "master": "None", "timestamp": 1604149441286, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "pime", "state": "up", "type": "pim-encapsulator",
-      "mtu": 65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 0.0, "master": "None", "timestamp": 1604149441286, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "pimd", "state": "up", "type": "pim-decapsulator",
-      "mtu": 65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 0.0, "master": "None", "timestamp": 1604149441286, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "mtun", "state": "up", "type": "gre",
-      "mtu": 65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 0.0, "master": "None", "timestamp": 1604149441286, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "lsi", "state": "up", "type": "lsi",
-      "mtu": 65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 0.0, "master": "None", "timestamp": 1604149441286, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "lo0", "state": "up", "type": "loopback",
-      "mtu": 65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 0.0, "master": "None", "timestamp": 1604149441286, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "jsrv", "state": "up", "type": "virtual",
-      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 0.0, "master": "None", "timestamp": 1604149441286, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "irb", "state": "up", "type": "ethernet",
-      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 0.0, "master": "None", "timestamp": 1604149441286, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "ipip", "state": "up", "type": "ip-over-ip",
-      "mtu": 65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 0.0, "master": "None", "timestamp": 1604149441286, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "gre", "state": "up", "type": "gre",
-      "mtu": 65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 0.0, "master": "None", "timestamp": 1604149441286, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "fti0", "state": "up", "type": "flexible-tunnel-interface",
-      "mtu": 65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 0.0, "master": "None", "timestamp": 1604149441286, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "tap", "state": "up", "type": "tap",
-      "mtu": 65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": ["-"], "ip6AddressList":
-      ["-"], "speed": 0.0, "master": "None", "timestamp": 1604149441286, "vlanList":
-      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "em2.32768", "state": "up", "type":
-      "logical", "mtu": 1500.0, "vlan": 0.0, "adminState": "", "ipAddressList": ["192.168.1.2/24"],
-      "ip6AddressList": [], "speed": 1000.0, "master": "", "timestamp": 1604149441286,
+      "junos", "hostname": "vqfx2", "ifname": "xe-0/0/11", "state": "up", "type":
+      "ethernet", "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList":
+      [], "ip6AddressList": [], "speed": 10000.0, "master": "", "timestamp": 1606017396039,
       "vlanList": [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "vtep.32769*", "state": null, "type":
-      null, "mtu": null, "vlan": null, "adminState": null, "ipAddressList": null,
-      "ip6AddressList": null, "speed": null, "master": null, "timestamp": null, "vlanList":
-      [100, 200], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "xe-0/0/1.0*", "state": null, "type":
-      null, "mtu": null, "vlan": null, "adminState": null, "ipAddressList": null,
-      "ip6AddressList": null, "speed": null, "master": null, "timestamp": null, "vlanList":
-      [100], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "ifname": "xe-0/0/2.0*", "state": null, "type":
-      null, "mtu": null, "vlan": null, "adminState": null, "ipAddressList": null,
-      "ip6AddressList": null, "speed": null, "master": null, "timestamp": null, "vlanList":
-      [200], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx2", "ifname": "vtep.32769*", "state": null, "type":
-      null, "mtu": null, "vlan": null, "adminState": null, "ipAddressList": null,
-      "ip6AddressList": null, "speed": null, "master": null, "timestamp": null, "vlanList":
-      [100, 200], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx2", "ifname": "xe-0/0/1.0*", "state": null, "type":
-      null, "mtu": null, "vlan": null, "adminState": null, "ipAddressList": null,
-      "ip6AddressList": null, "speed": null, "master": null, "timestamp": null, "vlanList":
-      [100], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx2", "ifname": "xe-0/0/2.0*", "state": null, "type":
-      null, "mtu": null, "vlan": null, "adminState": null, "ipAddressList": null,
-      "ip6AddressList": null, "speed": null, "master": null, "timestamp": null, "vlanList":
-      [200], "assertReason": "No LLDP peering info", "assert": "fail"}]'
+      "junos", "hostname": "vqfx2", "ifname": "bme0", "state": "up", "type": "ethernet",
+      "mtu": 2000.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 0.0, "master": "", "timestamp": 1606017396039, "vlanList": [],
+      "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
+      "hostname": "vqfx2", "ifname": "cbp0", "state": "up", "type": "ethernet", "mtu":
+      9192.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 0.0, "master": "", "timestamp": 1606017396039, "vlanList": [],
+      "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
+      "hostname": "vqfx2", "ifname": "dsc", "state": "up", "type": "software-pseudo",
+      "mtu": 65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 0.0, "master": "", "timestamp": 1606017396039, "vlanList": [],
+      "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
+      "hostname": "vqfx2", "ifname": "xe-0/0/5", "state": "up", "type": "ethernet",
+      "mtu": 1514.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 10000.0, "master": "", "timestamp": 1606017396039, "vlanList":
+      [], "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
+      "junos", "hostname": "vqfx2", "ifname": "vtep", "state": "up", "type": "vtep",
+      "mtu": 65536.0, "vlan": 0.0, "adminState": "up", "ipAddressList": [], "ip6AddressList":
+      [], "speed": 0.0, "master": "", "timestamp": 1606017396039, "vlanList": [],
+      "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
+      "hostname": "vqfx1", "ifname": "vtep.32769*", "state": null, "type": null, "mtu":
+      null, "vlan": null, "adminState": null, "ipAddressList": null, "ip6AddressList":
+      null, "speed": null, "master": null, "timestamp": null, "vlanList": [100, 200],
+      "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
+      "hostname": "vqfx1", "ifname": "xe-0/0/1.0*", "state": null, "type": null, "mtu":
+      null, "vlan": null, "adminState": null, "ipAddressList": null, "ip6AddressList":
+      null, "speed": null, "master": null, "timestamp": null, "vlanList": [100], "assertReason":
+      "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
+      "vqfx1", "ifname": "xe-0/0/2.0*", "state": null, "type": null, "mtu": null,
+      "vlan": null, "adminState": null, "ipAddressList": null, "ip6AddressList": null,
+      "speed": null, "master": null, "timestamp": null, "vlanList": [200], "assertReason":
+      "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
+      "vqfx2", "ifname": "vtep.32769*", "state": null, "type": null, "mtu": null,
+      "vlan": null, "adminState": null, "ipAddressList": null, "ip6AddressList": null,
+      "speed": null, "master": null, "timestamp": null, "vlanList": [100, 200], "assertReason":
+      "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
+      "vqfx2", "ifname": "xe-0/0/1.0*", "state": null, "type": null, "mtu": null,
+      "vlan": null, "adminState": null, "ipAddressList": null, "ip6AddressList": null,
+      "speed": null, "master": null, "timestamp": null, "vlanList": [100], "assertReason":
+      "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
+      "vqfx2", "ifname": "xe-0/0/2.0*", "state": null, "type": null, "mtu": null,
+      "vlan": null, "adminState": null, "ipAddressList": null, "ip6AddressList": null,
+      "speed": null, "master": null, "timestamp": null, "vlanList": [200], "assertReason":
+      "No LLDP peering info", "assert": "fail"}]'
   marks: interface assert junos
 - command: interface top --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: interface top junos
-  output: '[{"namespace": "junos", "hostname": "srv11", "ifname": "eth0", "state":
-    "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
-    ["10.0.2.15/24"], "ip6AddressList": [], "numChanges": 0, "timestamp": 1597189830521},
-    {"namespace": "junos", "hostname": "srv11", "ifname": "eth1", "state": "up", "type":
-    "ether", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.10.1.10/24"],
-    "ip6AddressList": [], "numChanges": 0, "timestamp": 1597189830521}, {"namespace":
-    "junos", "hostname": "srv12", "ifname": "eth0", "state": "up", "type": "ether",
+  output: '[{"namespace": "junos", "hostname": "srv21", "ifname": "eth0", "state":
+    "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    ["10.0.2.15/24"], "ip6AddressList": [], "numChanges": 0, "timestamp": 1606017394026},
+    {"namespace": "junos", "hostname": "srv21", "ifname": "eth1", "state": "up", "type":
+    "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.10.1.20/24"],
+    "ip6AddressList": [], "numChanges": 0, "timestamp": 1606017394026}, {"namespace":
+    "junos", "hostname": "srv11", "ifname": "eth0", "state": "up", "type": "ethernet",
     "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.0.2.15/24"], "ip6AddressList":
-    [], "numChanges": 0, "timestamp": 1597189830522}, {"namespace": "junos", "hostname":
-    "srv12", "ifname": "eth1", "state": "up", "type": "ether", "mtu": 1500, "vlan":
-    0, "master": "", "ipAddressList": ["10.10.2.10/24"], "ip6AddressList": [], "numChanges":
-    0, "timestamp": 1597189830522}, {"namespace": "junos", "hostname": "srv21", "ifname":
-    "eth0", "state": "up", "type": "ether", "mtu": 1500, "vlan": 0, "master": "",
+    [], "numChanges": 0, "timestamp": 1606017394033}, {"namespace": "junos", "hostname":
+    "srv11", "ifname": "eth1", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": ["10.10.1.10/24"], "ip6AddressList": [], "numChanges":
+    0, "timestamp": 1606017394033}, {"namespace": "junos", "hostname": "srv22", "ifname":
+    "eth0", "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "",
     "ipAddressList": ["10.0.2.15/24"], "ip6AddressList": [], "numChanges": 0, "timestamp":
-    1597189830521}]'
+    1606017394033}]'
 - command: interface show --ifname="xe-0/0/1" --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: interface show junos

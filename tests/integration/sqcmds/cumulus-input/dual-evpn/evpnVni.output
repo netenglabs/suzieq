@@ -1,121 +1,121 @@
 [
     {
         "status": 0,
-        "timestamp": 1597536327679,
+        "timestamp": 1606025645591,
+        "cmd": "sudo vtysh -c \"show evpn vni detail json\"",
+        "devtype": "cumulus",
+        "namespace": "dual-evpn",
+        "hostname": "leaf01",
+        "address": "192.168.123.4",
+        "version": "4.2.1",
+        "data": "[\n  {\n    \"vni\":24,\n    \"type\":\"L2\",\n    \"vrf\":\"default\",\n    \"vxlanInterface\":\"vni24\",\n    \"ifindex\":13,\n    \"vtepIp\":\"10.0.0.112\",\n    \"mcastGroup\":\"0.0.0.0\",\n    \"advertiseGatewayMacip\":\"No\",\n    \"numMacs\":9,\n    \"numArpNd\":9,\n    \"numRemoteVteps\":[\n      \"10.0.0.134\",\n      \"10.0.0.102\",\n      \"10.0.0.101\"\n    ]\n  },\n  {\n    \"vni\":13,\n    \"type\":\"L2\",\n    \"vrf\":\"default\",\n    \"vxlanInterface\":\"vni13\",\n    \"ifindex\":12,\n    \"vtepIp\":\"10.0.0.112\",\n    \"mcastGroup\":\"0.0.0.0\",\n    \"advertiseGatewayMacip\":\"No\",\n    \"numMacs\":9,\n    \"numArpNd\":9,\n    \"numRemoteVteps\":[\n      \"10.0.0.134\",\n      \"10.0.0.102\",\n      \"10.0.0.101\"\n    ]\n  },\n  {\n    \"vni\":104001,\n    \"type\":\"L3\",\n    \"localVtepIp\":\"0.0.0.0\",\n    \"vxlanIntf\":\"None\",\n    \"sviIntf\":\"None\",\n    \"state\":\"Down\",\n    \"vrf\":\"Unknown\",\n    \"sysMac\":\"None\",\n    \"routerMac\":\"None\",\n    \"vniFilter\":\"none\",\n    \"l2Vnis\":[\n    ]\n  }\n]\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1606025645773,
+        "cmd": "sudo vtysh -c \"show evpn vni detail json\"",
+        "devtype": "cumulus",
+        "namespace": "dual-evpn",
+        "hostname": "exit01",
+        "address": "192.168.123.15",
+        "version": "4.2.1",
+        "data": "[\n  {\n    \"vni\":24,\n    \"type\":\"L2\",\n    \"vrf\":\"evpn-vrf\",\n    \"vxlanInterface\":\"vni24\",\n    \"ifindex\":11,\n    \"vtepIp\":\"10.0.0.101\",\n    \"mcastGroup\":\"0.0.0.0\",\n    \"advertiseGatewayMacip\":\"No\",\n    \"numMacs\":9,\n    \"numArpNd\":8,\n    \"numRemoteVteps\":[\n      \"10.0.0.112\",\n      \"10.0.0.134\",\n      \"10.0.0.102\"\n    ]\n  },\n  {\n    \"vni\":13,\n    \"type\":\"L2\",\n    \"vrf\":\"evpn-vrf\",\n    \"vxlanInterface\":\"vni13\",\n    \"ifindex\":12,\n    \"vtepIp\":\"10.0.0.101\",\n    \"mcastGroup\":\"0.0.0.0\",\n    \"advertiseGatewayMacip\":\"No\",\n    \"numMacs\":9,\n    \"numArpNd\":8,\n    \"numRemoteVteps\":[\n      \"10.0.0.112\",\n      \"10.0.0.134\",\n      \"10.0.0.102\"\n    ]\n  },\n  {\n    \"vni\":104001,\n    \"type\":\"L3\",\n    \"localVtepIp\":\"0.0.0.0\",\n    \"vxlanIntf\":\"None\",\n    \"sviIntf\":\"None\",\n    \"state\":\"Down\",\n    \"vrf\":\"evpn-vrf\",\n    \"sysMac\":\"None\",\n    \"routerMac\":\"None\",\n    \"vniFilter\":\"none\",\n    \"l2Vnis\":[\n      13,\n      24\n    ]\n  }\n]\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1606025645826,
         "cmd": "sudo vtysh -c \"show evpn vni detail json\"",
         "devtype": "cumulus",
         "namespace": "dual-evpn",
         "hostname": "internet",
-        "address": "192.168.123.231",
-        "version": "3.7.11",
+        "address": "192.168.123.186",
+        "version": "4.2.1",
         "data": ""
     }
 ][
     {
         "status": 0,
-        "timestamp": 1597536327679,
+        "timestamp": 1606025645924,
         "cmd": "sudo vtysh -c \"show evpn vni detail json\"",
         "devtype": "cumulus",
         "namespace": "dual-evpn",
-        "hostname": "exit01",
-        "address": "192.168.123.79",
-        "version": "3.7.11",
-        "data": "{\n  \"vni\":24,\n  \"type\":\"L2\",\n  \"vrf\":\"evpn-vrf\",\n  \"vxlanInterface\":\"vni24\",\n  \"ifindex\":12,\n  \"vtepIp\":\"10.0.0.101\",\n  \"advertiseGatewayMacip\":\"No\",\n  \"numMacs\":9,\n  \"numArpNd\":8,\n  \"numRemoteVteps\":[\n    \"10.0.0.134\",\n    \"10.0.0.102\",\n    \"10.0.0.112\"\n  ]\n}\n\n{\n  \"vni\":13,\n  \"type\":\"L2\",\n  \"vrf\":\"evpn-vrf\",\n  \"vxlanInterface\":\"vni13\",\n  \"ifindex\":11,\n  \"vtepIp\":\"10.0.0.101\",\n  \"advertiseGatewayMacip\":\"No\",\n  \"numMacs\":9,\n  \"numArpNd\":8,\n  \"numRemoteVteps\":[\n    \"10.0.0.134\",\n    \"10.0.0.102\",\n    \"10.0.0.112\"\n  ]\n}\n\n{\n  \"vni\":104001,\n  \"type\":\"L3\",\n  \"localVtepIp\":\"0.0.0.0\",\n  \"vxlanIntf\":\"None\",\n  \"sviIntf\":\"None\",\n  \"state\":\"Down\",\n  \"vrf\":\"evpn-vrf\",\n  \"routerMac\":\"None\",\n  \"vniFilter\":\"none\",\n  \"l2Vnis\":[\n    13,\n    24\n  ]\n}\n\n{\n}\n"
+        "hostname": "exit02",
+        "address": "192.168.123.71",
+        "version": "4.2.1",
+        "data": "[\n  {\n    \"vni\":24,\n    \"type\":\"L2\",\n    \"vrf\":\"evpn-vrf\",\n    \"vxlanInterface\":\"vni24\",\n    \"ifindex\":11,\n    \"vtepIp\":\"10.0.0.102\",\n    \"mcastGroup\":\"0.0.0.0\",\n    \"advertiseGatewayMacip\":\"No\",\n    \"numMacs\":9,\n    \"numArpNd\":8,\n    \"numRemoteVteps\":[\n      \"10.0.0.112\",\n      \"10.0.0.134\",\n      \"10.0.0.101\"\n    ]\n  },\n  {\n    \"vni\":13,\n    \"type\":\"L2\",\n    \"vrf\":\"evpn-vrf\",\n    \"vxlanInterface\":\"vni13\",\n    \"ifindex\":12,\n    \"vtepIp\":\"10.0.0.102\",\n    \"mcastGroup\":\"0.0.0.0\",\n    \"advertiseGatewayMacip\":\"No\",\n    \"numMacs\":9,\n    \"numArpNd\":8,\n    \"numRemoteVteps\":[\n      \"10.0.0.112\",\n      \"10.0.0.134\",\n      \"10.0.0.101\"\n    ]\n  },\n  {\n    \"vni\":104001,\n    \"type\":\"L3\",\n    \"localVtepIp\":\"0.0.0.0\",\n    \"vxlanIntf\":\"None\",\n    \"sviIntf\":\"None\",\n    \"state\":\"Down\",\n    \"vrf\":\"evpn-vrf\",\n    \"sysMac\":\"None\",\n    \"routerMac\":\"None\",\n    \"vniFilter\":\"none\",\n    \"l2Vnis\":[\n      13,\n      24\n    ]\n  }\n]\n"
     }
 ][
     {
         "status": 0,
-        "timestamp": 1597536327679,
+        "timestamp": 1606025645996,
         "cmd": "sudo vtysh -c \"show evpn vni detail json\"",
         "devtype": "cumulus",
         "namespace": "dual-evpn",
-        "hostname": "leaf02",
-        "address": "192.168.123.68",
-        "version": "3.7.11",
-        "data": "{\n  \"vni\":24,\n  \"type\":\"L2\",\n  \"vrf\":\"default\",\n  \"vxlanInterface\":\"vni24\",\n  \"ifindex\":12,\n  \"vtepIp\":\"10.0.0.112\",\n  \"advertiseGatewayMacip\":\"No\",\n  \"numMacs\":9,\n  \"numArpNd\":9,\n  \"numRemoteVteps\":[\n    \"10.0.0.101\",\n    \"10.0.0.134\",\n    \"10.0.0.102\"\n  ]\n}\n\n{\n  \"vni\":13,\n  \"type\":\"L2\",\n  \"vrf\":\"default\",\n  \"vxlanInterface\":\"vni13\",\n  \"ifindex\":13,\n  \"vtepIp\":\"10.0.0.112\",\n  \"advertiseGatewayMacip\":\"No\",\n  \"numMacs\":9,\n  \"numArpNd\":9,\n  \"numRemoteVteps\":[\n    \"10.0.0.101\",\n    \"10.0.0.134\",\n    \"10.0.0.102\"\n  ]\n}\n\n{\n  \"vni\":104001,\n  \"type\":\"L3\",\n  \"localVtepIp\":\"0.0.0.0\",\n  \"vxlanIntf\":\"None\",\n  \"sviIntf\":\"None\",\n  \"state\":\"Down\",\n  \"vrf\":\"n\\/a\",\n  \"routerMac\":\"None\",\n  \"vniFilter\":\"none\",\n  \"l2Vnis\":[\n  ]\n}\n\n{\n}\n"
+        "hostname": "spine02",
+        "address": "192.168.123.21",
+        "version": "4.2.1",
+        "data": ""
     }
 ][
     {
         "status": 0,
-        "timestamp": 1597536327684,
+        "timestamp": 1606025646447,
         "cmd": "sudo vtysh -c \"show evpn vni detail json\"",
         "devtype": "linux",
         "namespace": "dual-evpn",
         "hostname": "edge01",
-        "address": "192.168.123.34",
+        "address": "192.168.123.80",
         "version": "16.04",
         "data": ""
     }
 ][
     {
         "status": 0,
-        "timestamp": 1597536327710,
+        "timestamp": 1606025646707,
         "cmd": "sudo vtysh -c \"show evpn vni detail json\"",
         "devtype": "cumulus",
         "namespace": "dual-evpn",
         "hostname": "spine01",
-        "address": "192.168.123.205",
-        "version": "3.7.11",
+        "address": "192.168.123.25",
+        "version": "4.2.1",
         "data": ""
     }
 ][
     {
         "status": 0,
-        "timestamp": 1597536327876,
-        "cmd": "sudo vtysh -c \"show evpn vni detail json\"",
-        "devtype": "cumulus",
-        "namespace": "dual-evpn",
-        "hostname": "leaf04",
-        "address": "192.168.123.165",
-        "version": "3.7.11",
-        "data": "{\n  \"vni\":24,\n  \"type\":\"L2\",\n  \"vrf\":\"default\",\n  \"vxlanInterface\":\"vni24\",\n  \"ifindex\":12,\n  \"vtepIp\":\"10.0.0.134\",\n  \"advertiseGatewayMacip\":\"No\",\n  \"numMacs\":9,\n  \"numArpNd\":9,\n  \"numRemoteVteps\":[\n    \"10.0.0.102\",\n    \"10.0.0.101\",\n    \"10.0.0.112\"\n  ]\n}\n\n{\n  \"vni\":13,\n  \"type\":\"L2\",\n  \"vrf\":\"default\",\n  \"vxlanInterface\":\"vni13\",\n  \"ifindex\":13,\n  \"vtepIp\":\"10.0.0.134\",\n  \"advertiseGatewayMacip\":\"No\",\n  \"numMacs\":9,\n  \"numArpNd\":9,\n  \"numRemoteVteps\":[\n    \"10.0.0.102\",\n    \"10.0.0.101\",\n    \"10.0.0.112\"\n  ]\n}\n\n{\n  \"vni\":104001,\n  \"type\":\"L3\",\n  \"localVtepIp\":\"0.0.0.0\",\n  \"vxlanIntf\":\"None\",\n  \"sviIntf\":\"None\",\n  \"state\":\"Down\",\n  \"vrf\":\"n\\/a\",\n  \"routerMac\":\"None\",\n  \"vniFilter\":\"none\",\n  \"l2Vnis\":[\n  ]\n}\n\n{\n}\n"
-    }
-][
-    {
-        "status": 0,
-        "timestamp": 1597536327876,
-        "cmd": "sudo vtysh -c \"show evpn vni detail json\"",
-        "devtype": "cumulus",
-        "namespace": "dual-evpn",
-        "hostname": "spine02",
-        "address": "192.168.123.81",
-        "version": "3.7.11",
-        "data": ""
-    }
-][
-    {
-        "status": 0,
-        "timestamp": 1597536327877,
-        "cmd": "sudo vtysh -c \"show evpn vni detail json\"",
-        "devtype": "cumulus",
-        "namespace": "dual-evpn",
-        "hostname": "exit02",
-        "address": "192.168.123.137",
-        "version": "3.7.11",
-        "data": "{\n  \"vni\":24,\n  \"type\":\"L2\",\n  \"vrf\":\"evpn-vrf\",\n  \"vxlanInterface\":\"vni24\",\n  \"ifindex\":12,\n  \"vtepIp\":\"10.0.0.102\",\n  \"advertiseGatewayMacip\":\"No\",\n  \"numMacs\":9,\n  \"numArpNd\":8,\n  \"numRemoteVteps\":[\n    \"10.0.0.101\",\n    \"10.0.0.134\",\n    \"10.0.0.112\"\n  ]\n}\n\n{\n  \"vni\":13,\n  \"type\":\"L2\",\n  \"vrf\":\"evpn-vrf\",\n  \"vxlanInterface\":\"vni13\",\n  \"ifindex\":11,\n  \"vtepIp\":\"10.0.0.102\",\n  \"advertiseGatewayMacip\":\"No\",\n  \"numMacs\":9,\n  \"numArpNd\":8,\n  \"numRemoteVteps\":[\n    \"10.0.0.101\",\n    \"10.0.0.134\",\n    \"10.0.0.112\"\n  ]\n}\n\n{\n  \"vni\":104001,\n  \"type\":\"L3\",\n  \"localVtepIp\":\"0.0.0.0\",\n  \"vxlanIntf\":\"None\",\n  \"sviIntf\":\"None\",\n  \"state\":\"Down\",\n  \"vrf\":\"evpn-vrf\",\n  \"routerMac\":\"None\",\n  \"vniFilter\":\"none\",\n  \"l2Vnis\":[\n    13,\n    24\n  ]\n}\n\n{\n}\n"
-    }
-][
-    {
-        "status": 0,
-        "timestamp": 1597536327877,
+        "timestamp": 1606025646848,
         "cmd": "sudo vtysh -c \"show evpn vni detail json\"",
         "devtype": "cumulus",
         "namespace": "dual-evpn",
         "hostname": "leaf03",
-        "address": "192.168.123.44",
-        "version": "3.7.11",
-        "data": "{\n  \"vni\":24,\n  \"type\":\"L2\",\n  \"vrf\":\"default\",\n  \"vxlanInterface\":\"vni24\",\n  \"ifindex\":12,\n  \"vtepIp\":\"10.0.0.134\",\n  \"advertiseGatewayMacip\":\"No\",\n  \"numMacs\":9,\n  \"numArpNd\":9,\n  \"numRemoteVteps\":[\n    \"10.0.0.101\",\n    \"10.0.0.102\",\n    \"10.0.0.112\"\n  ]\n}\n\n{\n  \"vni\":13,\n  \"type\":\"L2\",\n  \"vrf\":\"default\",\n  \"vxlanInterface\":\"vni13\",\n  \"ifindex\":13,\n  \"vtepIp\":\"10.0.0.134\",\n  \"advertiseGatewayMacip\":\"No\",\n  \"numMacs\":9,\n  \"numArpNd\":9,\n  \"numRemoteVteps\":[\n    \"10.0.0.101\",\n    \"10.0.0.102\",\n    \"10.0.0.112\"\n  ]\n}\n\n{\n  \"vni\":104001,\n  \"type\":\"L3\",\n  \"localVtepIp\":\"0.0.0.0\",\n  \"vxlanIntf\":\"None\",\n  \"sviIntf\":\"None\",\n  \"state\":\"Down\",\n  \"vrf\":\"n\\/a\",\n  \"routerMac\":\"None\",\n  \"vniFilter\":\"none\",\n  \"l2Vnis\":[\n  ]\n}\n\n{\n}\n"
+        "address": "192.168.123.140",
+        "version": "4.2.1",
+        "data": "[\n  {\n    \"vni\":24,\n    \"type\":\"L2\",\n    \"vrf\":\"default\",\n    \"vxlanInterface\":\"vni24\",\n    \"ifindex\":13,\n    \"vtepIp\":\"10.0.0.134\",\n    \"mcastGroup\":\"0.0.0.0\",\n    \"advertiseGatewayMacip\":\"No\",\n    \"numMacs\":9,\n    \"numArpNd\":9,\n    \"numRemoteVteps\":[\n      \"10.0.0.112\",\n      \"10.0.0.102\",\n      \"10.0.0.101\"\n    ]\n  },\n  {\n    \"vni\":13,\n    \"type\":\"L2\",\n    \"vrf\":\"default\",\n    \"vxlanInterface\":\"vni13\",\n    \"ifindex\":12,\n    \"vtepIp\":\"10.0.0.134\",\n    \"mcastGroup\":\"0.0.0.0\",\n    \"advertiseGatewayMacip\":\"No\",\n    \"numMacs\":9,\n    \"numArpNd\":9,\n    \"numRemoteVteps\":[\n      \"10.0.0.112\",\n      \"10.0.0.102\",\n      \"10.0.0.101\"\n    ]\n  },\n  {\n    \"vni\":104001,\n    \"type\":\"L3\",\n    \"localVtepIp\":\"0.0.0.0\",\n    \"vxlanIntf\":\"None\",\n    \"sviIntf\":\"None\",\n    \"state\":\"Down\",\n    \"vrf\":\"Unknown\",\n    \"sysMac\":\"None\",\n    \"routerMac\":\"None\",\n    \"vniFilter\":\"none\",\n    \"l2Vnis\":[\n    ]\n  }\n]\n"
     }
 ][
     {
         "status": 0,
-        "timestamp": 1597536327877,
+        "timestamp": 1606025647035,
         "cmd": "sudo vtysh -c \"show evpn vni detail json\"",
         "devtype": "cumulus",
         "namespace": "dual-evpn",
-        "hostname": "leaf01",
-        "address": "192.168.123.179",
-        "version": "3.7.11",
-        "data": "{\n  \"vni\":24,\n  \"type\":\"L2\",\n  \"vrf\":\"default\",\n  \"vxlanInterface\":\"vni24\",\n  \"ifindex\":12,\n  \"vtepIp\":\"10.0.0.112\",\n  \"advertiseGatewayMacip\":\"No\",\n  \"numMacs\":9,\n  \"numArpNd\":9,\n  \"numRemoteVteps\":[\n    \"10.0.0.102\",\n    \"10.0.0.101\",\n    \"10.0.0.134\"\n  ]\n}\n\n{\n  \"vni\":13,\n  \"type\":\"L2\",\n  \"vrf\":\"default\",\n  \"vxlanInterface\":\"vni13\",\n  \"ifindex\":13,\n  \"vtepIp\":\"10.0.0.112\",\n  \"advertiseGatewayMacip\":\"No\",\n  \"numMacs\":9,\n  \"numArpNd\":9,\n  \"numRemoteVteps\":[\n    \"10.0.0.102\",\n    \"10.0.0.101\",\n    \"10.0.0.134\"\n  ]\n}\n\n{\n  \"vni\":104001,\n  \"type\":\"L3\",\n  \"localVtepIp\":\"0.0.0.0\",\n  \"vxlanIntf\":\"None\",\n  \"sviIntf\":\"None\",\n  \"state\":\"Down\",\n  \"vrf\":\"n\\/a\",\n  \"routerMac\":\"None\",\n  \"vniFilter\":\"none\",\n  \"l2Vnis\":[\n  ]\n}\n\n{\n}\n"
+        "hostname": "leaf02",
+        "address": "192.168.123.243",
+        "version": "4.2.1",
+        "data": "[\n  {\n    \"vni\":24,\n    \"type\":\"L2\",\n    \"vrf\":\"default\",\n    \"vxlanInterface\":\"vni24\",\n    \"ifindex\":13,\n    \"vtepIp\":\"10.0.0.112\",\n    \"mcastGroup\":\"0.0.0.0\",\n    \"advertiseGatewayMacip\":\"No\",\n    \"numMacs\":9,\n    \"numArpNd\":9,\n    \"numRemoteVteps\":[\n      \"10.0.0.134\",\n      \"10.0.0.102\",\n      \"10.0.0.101\"\n    ]\n  },\n  {\n    \"vni\":13,\n    \"type\":\"L2\",\n    \"vrf\":\"default\",\n    \"vxlanInterface\":\"vni13\",\n    \"ifindex\":14,\n    \"vtepIp\":\"10.0.0.112\",\n    \"mcastGroup\":\"0.0.0.0\",\n    \"advertiseGatewayMacip\":\"No\",\n    \"numMacs\":9,\n    \"numArpNd\":9,\n    \"numRemoteVteps\":[\n      \"10.0.0.134\",\n      \"10.0.0.102\",\n      \"10.0.0.101\"\n    ]\n  },\n  {\n    \"vni\":104001,\n    \"type\":\"L3\",\n    \"localVtepIp\":\"0.0.0.0\",\n    \"vxlanIntf\":\"None\",\n    \"sviIntf\":\"None\",\n    \"state\":\"Down\",\n    \"vrf\":\"Unknown\",\n    \"sysMac\":\"None\",\n    \"routerMac\":\"None\",\n    \"vniFilter\":\"none\",\n    \"l2Vnis\":[\n    ]\n  }\n]\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1606025647112,
+        "cmd": "sudo vtysh -c \"show evpn vni detail json\"",
+        "devtype": "cumulus",
+        "namespace": "dual-evpn",
+        "hostname": "leaf04",
+        "address": "192.168.123.19",
+        "version": "4.2.1",
+        "data": "[\n  {\n    \"vni\":24,\n    \"type\":\"L2\",\n    \"vrf\":\"default\",\n    \"vxlanInterface\":\"vni24\",\n    \"ifindex\":13,\n    \"vtepIp\":\"10.0.0.134\",\n    \"mcastGroup\":\"0.0.0.0\",\n    \"advertiseGatewayMacip\":\"No\",\n    \"numMacs\":9,\n    \"numArpNd\":9,\n    \"numRemoteVteps\":[\n      \"10.0.0.112\",\n      \"10.0.0.102\",\n      \"10.0.0.101\"\n    ]\n  },\n  {\n    \"vni\":13,\n    \"type\":\"L2\",\n    \"vrf\":\"default\",\n    \"vxlanInterface\":\"vni13\",\n    \"ifindex\":15,\n    \"vtepIp\":\"10.0.0.134\",\n    \"mcastGroup\":\"0.0.0.0\",\n    \"advertiseGatewayMacip\":\"No\",\n    \"numMacs\":9,\n    \"numArpNd\":9,\n    \"numRemoteVteps\":[\n      \"10.0.0.112\",\n      \"10.0.0.102\",\n      \"10.0.0.101\"\n    ]\n  },\n  {\n    \"vni\":104001,\n    \"type\":\"L3\",\n    \"localVtepIp\":\"0.0.0.0\",\n    \"vxlanIntf\":\"None\",\n    \"sviIntf\":\"None\",\n    \"state\":\"Down\",\n    \"vrf\":\"Unknown\",\n    \"sysMac\":\"None\",\n    \"routerMac\":\"None\",\n    \"vniFilter\":\"none\",\n    \"l2Vnis\":[\n    ]\n  }\n]\n"
     }
 ]
