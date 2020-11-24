@@ -138,12 +138,14 @@ class EvpnvniObj(SqEngineObject):
                        "ifname", "secVtepIp"]
 
         kwargs.pop("columns", None)  # Loose whatever's passed
+        status = kwargs.pop('status', 'all')
 
         df = self.get(columns=assert_cols, **kwargs)
         if df.empty:
             df = pd.DataFrame(columns=assert_cols)
-            df['assertReason'] = 'No data found'
-            df['assert'] = 'fail'
+            if status != 'pass':
+                df['assertReason'] = 'No data found'
+                df['assert'] = 'fail'
             return df
 
         df["assertReason"] = [[] for _ in range(len(df))]
@@ -233,6 +235,11 @@ class EvpnvniObj(SqEngineObject):
         df['assert'] = df.apply(lambda x: 'pass'
                                 if not len(x.assertReason) else 'fail',
                                 axis=1)
+
+        if status == 'fail':
+            df = df.query('assertReason.str.len() != 0')
+        elif status == "pass":
+            df = df.query('assertReason.str.len() == 0')
 
         return df[['namespace', 'hostname', 'vni', 'type',
                    'assertReason', 'assert', 'timestamp']] \

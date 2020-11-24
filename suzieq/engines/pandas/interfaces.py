@@ -104,6 +104,7 @@ class InterfacesObj(SqEngineObject):
     def _assert_interfaces(self, **kwargs) -> pd.DataFrame:
         """Workhorse routine that validates MTU match for specified input"""
         columns = kwargs.pop('columns', [])
+        status = kwargs.pop('status', 'all')
 
         columns = ["namespace", "hostname", "ifname", "state", "type", "mtu",
                    "vlan", "adminState", "ipAddressList", "ip6AddressList",
@@ -111,8 +112,10 @@ class InterfacesObj(SqEngineObject):
 
         if_df = self.get(columns=columns, **kwargs)
         if if_df.empty:
-            if_df['assert'] = 'fail'
-            if_df['assertReason'] = 'No data'
+            if status != 'pass':
+                if_df['assert'] = 'fail'
+                if_df['assertReason'] = 'No data'
+
             return if_df
 
         lldpobj = LldpObj(context=self.ctxt)
@@ -144,8 +147,10 @@ class InterfacesObj(SqEngineObject):
                 .fillna({i: [] for i in if_df.index})
 
         if lldp_df.empty:
-            if_df['assertReason'] = 'No LLDP peering info'
-            if_df['assert'] = 'fail'
+            if status != 'pass':
+                if_df['assertReason'] = 'No LLDP peering info'
+                if_df['assert'] = 'fail'
+
             return if_df
 
         # Now create a single DF where you get the MTU for the lldp
@@ -172,8 +177,10 @@ class InterfacesObj(SqEngineObject):
         )
 
         if combined_df.empty:
-            if_df['assertReason'] = 'No LLDP peering info'
-            if_df['assert'] = 'fail'
+            if status != 'pass':
+                if_df['assertReason'] = 'No LLDP peering info'
+                if_df['assert'] = 'fail'
+
             return if_df
 
         combined_df['assertReason'] = combined_df.apply(
@@ -220,6 +227,11 @@ class InterfacesObj(SqEngineObject):
 
         combined_df['assert'] = combined_df.apply(
             lambda x: 'fail' if len(x.assertReason) else 'pass', axis=1)
+
+        if status == "fail":
+            combined_df = combined_df.query('assertReason.str.len() != 0')
+        elif status == "pass":
+            combined_df = combined_df.query('assertReason.str.len() == 0')
 
         return combined_df[['namespace', 'hostname', 'ifname', 'state',
                             'peerHostname', 'peerIfname', 'assert',

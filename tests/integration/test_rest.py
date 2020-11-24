@@ -44,6 +44,9 @@ FILTERS = ['', 'hostname=leaf01', 'namespace=ospf-ibgp',
            'usedPercent=8',
            'column=prefixlen',
            'status=pass',
+           'status=fail',
+           'status=all',
+           'status=whatever',
            ]
 
 # these should only succeed for the specific service/verb tuples
@@ -80,12 +83,17 @@ GOOD_FILTERS_FOR_SERVICE_VERB = {
     'vlan=13': ['mac/show', 'vlan/show'],
     'vni=13': ['evpnVni/show'],
     'vni=13%2024': ['evpnVni/show'],
-    'status=pass': ['sqpoller/show'],
     'column=prefixlen': ['route/unique'],
     'vrf=default': ['address/show', 'bgp/show', 'bgp/assert',
                     'ospf/assert', 'ospf/show',
                     'route/show', 'route/summarize', 'topology/show',
-                    ]
+                    ],
+    'status=pass': ['bgp/assert', 'evpnVni/assert', 'interfaces/assert',
+                    'ospf/assert', 'sqpoller/show'],
+    'status=fail': ['bgp/assert', 'evpnVni/assert', 'interfaces/assert',
+                    'ospf/assert'],
+    'status=all': ['bgp/assert', 'evpnVni/assert', 'interfaces/assert',
+                   'ospf/assert'],
 }
 
 GOOD_VERB_FILTERS = {
@@ -99,6 +107,11 @@ GOOD_SERVICE_VERB_FILTER = {
 
 }
 
+GOOD_FILTER_EMPTY_RESULT_FILTER = [
+    'sqpoller/show?status=fail',
+    'ospf/assert?status=fail',
+    'evpnVni/assert?status=fail'
+]
 
 # these service/verb pairs should return errors
 BAD_VERBS = {'address/assert': 422, 'address/lpm': 422,
@@ -142,25 +155,50 @@ BAD_FILTERS = {
     'arpnd/summarize?ipAddress=10.127.1.2': 405,
     'arpnd/summarize?oif=eth1.4': 405,
     'bgp/show?state=pass': 405,
+    'bgp/show?status=pass': 405,
+    'bgp/show?status=fail': 405,
+    'bgp/show?status=all': 405,
+    'bgp/show?status=whatever': 405,
     'bgp/assert?peer=eth1.2': 405,
     'bgp/assert?state=pass': 405,
+    'bgp/assert?state=whatever': 405,
     'bgp/summarize?peer=eth1.2': 405,
     'bgp/summarize?state=pass': 405,
     'bgp/summarize?state=Established': 405,
     'bgp/summarize?state=NotEstd': 405,
     'bgp/summarize?vrf=default': 405,
+    'bgp/summarize?status=pass': 405,
+    'bgp/summarize?status=fail': 405,
+    'bgp/summarize?status=all': 405,
+    'bgp/summarize?status=whatever': 405,
+    'evpnVni/show?status=pass': 405,
+    'evpnVni/show?status=fail': 405,
+    'evpnVni/show?status=all': 405,
+    'evpnVni/show?status=whatever': 405,
     'evpnVni/assert?vni=13': 405,
     'evpnVni/assert?vni=13%2024': 405,
     'evpnVni/summarize?vni=13': 405,
     'evpnVni/summarize?vni=13%2024': 405,
+    'evpnVni/summarize?status=pass': 405,
+    'evpnVni/summarize?status=fail': 405,
+    'evpnVni/summarize?status=all': 405,
+    'evpnVni/summarize?status=whatever': 405,
     'fs/summarize?usedPercent=8': 405,
     'fs/summarize?mountPoint=/': 405,
     'interface/show?state=pass': 405,
+    'interface/show?status=pass': 405,
+    'interface/show?status=fail': 405,
+    'interface/show?status=all': 405,
+    'interface/show?status=whatever': 405,
     'interface/assert?type=ethernet': 405,
     'interface/assert?state=pass': 405,
     'interface/summarize?ifname=swp1': 405,
     'interface/summarize?state=pass': 405,
     'interface/summarize?type=ethernet': 405,
+    'interface/summarize?status=pass': 405,
+    'interface/summarize?status=fail': 405,
+    'interface/summarize?status=all': 405,
+    'interface/summarize?status=whatever': 405,
     'lldp/summarize?ifname=swp1': 405,
     'mac/summarize?bd=': 405,
     'mac/summarize?macaddr=c2:6d:17:7a:bd:03': 405,
@@ -168,6 +206,11 @@ BAD_FILTERS = {
     'mac/summarize?localOnly=True': 405,
     'mac/summarize?remoteVtepIp=10.0.0.101': 405,
     'mac/summarize?vlan=13': 405,
+    'ospf/show?state=pass': 405,
+    'ospf/show?status=pass': 405,
+    'ospf/show?status=fail': 405,
+    'ospf/show?status=all': 405,
+    'ospf/show?status=whatever': 405,
     'ospf/assert?hostname=leaf01': 405,
     'ospf/assert?hostname=leaf01%20spine01': 405,
     'ospf/assert?state=pass': 405,
@@ -175,7 +218,12 @@ BAD_FILTERS = {
     'ospf/summarize?ifname=swp1': 405,
     'ospf/summarize?state=pass': 405,
     'ospf/summarize?vrf=default': 405,
-    'ospf/show?state=pass': 405,
+    'ospf/summarize?state=pass': 405,
+    'ospf/summarize?status=pass': 405,
+    'ospf/summarize?status=fail': 405,
+    'ospf/summarize?status=all': 405,
+    'ospf/summarize?status=whatever': 405,
+    'ospf/show?status=all': 405,
     'path/summarize?hostname=leaf01': 404,
     'path/summarize?hostname=leaf01%20spine01': 404,
     'path/summarize?columns=namespace': 404,
@@ -193,8 +241,11 @@ BAD_FILTERS = {
     'route/summarize?protocol=bgp': 405,
     'route/show?ipvers=v4': 405,
     'route/lpm?view=latest': 404,
+    'sqpoller/show?status=whatever': 405,
     'sqpoller/summarize?status=pass': 405,
     'sqpoller/summarize?status=fail': 405,
+    'sqpoller/summarize?status=all': 405,
+    'sqpoller/summarize?status=whatever': 405,
     'sqpoller/summarize?service=device': 405,
     'vlan/show?state=pass': 405,
     'vlan/summarize?vlan=13': 405,
@@ -245,7 +296,10 @@ def get(endpoint, service, verb, args):
             assert args in GOOD_SERVICE_VERB_FILTER[c_v]
 
         # make sure it's not empty when it shouldn't be
-        assert len(response.content.decode('utf8')) > 10
+        if c_v_f not in GOOD_FILTER_EMPTY_RESULT_FILTER:
+            assert len(response.content.decode('utf8')) > 10
+        else:
+            assert len(response.content.decode('utf8')) == 2
     return response.status_code
 
 

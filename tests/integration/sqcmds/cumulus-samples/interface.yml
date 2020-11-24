@@ -1707,3 +1707,496 @@ tests:
     "hostname": "edge01", "ifname": "eth0", "state": "up", "type": "ethernet", "mtu":
     1500, "vlan": 0, "master": "", "ipAddressList": ["192.168.123.110/24"], "ip6AddressList":
     [], "numChanges": 0, "timestamp": 1597553945878}]'
+- command: interface assert --status=pass --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: interface assert cumulus
+  output: '[{"namespace": "ospf-single", "hostname": "spine02", "ifname": "swp6",
+    "state": "up", "peerHostname": "exit01", "peerIfname": "swp2", "assert": "pass",
+    "assertReason": []}, {"namespace": "ospf-single", "hostname": "spine02", "ifname":
+    "swp4", "state": "up", "peerHostname": "leaf04", "peerIfname": "swp2", "assert":
+    "pass", "assertReason": []}, {"namespace": "ospf-single", "hostname": "spine02",
+    "ifname": "swp3", "state": "up", "peerHostname": "leaf03", "peerIfname": "swp2",
+    "assert": "pass", "assertReason": []}, {"namespace": "ospf-single", "hostname":
+    "spine02", "ifname": "swp2", "state": "up", "peerHostname": "leaf02", "peerIfname":
+    "swp2", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single", "hostname":
+    "spine02", "ifname": "swp1", "state": "up", "peerHostname": "leaf01", "peerIfname":
+    "swp2", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single", "hostname":
+    "spine02", "ifname": "swp5", "state": "up", "peerHostname": "exit02", "peerIfname":
+    "swp2", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single", "hostname":
+    "leaf03", "ifname": "swp1", "state": "up", "peerHostname": "spine01", "peerIfname":
+    "swp3", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single", "hostname":
+    "leaf03", "ifname": "swp2", "state": "up", "peerHostname": "spine02", "peerIfname":
+    "swp3", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single", "hostname":
+    "internet", "ifname": "swp2", "state": "up", "peerHostname": "exit02", "peerIfname":
+    "swp6", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single", "hostname":
+    "internet", "ifname": "swp1", "state": "up", "peerHostname": "exit01", "peerIfname":
+    "swp6", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single", "hostname":
+    "exit01", "ifname": "swp3", "state": "up", "peerHostname": "exit01", "peerIfname":
+    "swp4", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single", "hostname":
+    "exit01", "ifname": "swp6", "state": "up", "peerHostname": "internet", "peerIfname":
+    "swp1", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single", "hostname":
+    "exit01", "ifname": "swp2", "state": "up", "peerHostname": "spine02", "peerIfname":
+    "swp6", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single", "hostname":
+    "exit01", "ifname": "swp1", "state": "up", "peerHostname": "spine01", "peerIfname":
+    "swp6", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single", "hostname":
+    "exit01", "ifname": "swp4", "state": "up", "peerHostname": "exit01", "peerIfname":
+    "swp3", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single", "hostname":
+    "exit02", "ifname": "swp1", "state": "up", "peerHostname": "spine01", "peerIfname":
+    "swp5", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single", "hostname":
+    "exit02", "ifname": "swp2", "state": "up", "peerHostname": "spine02", "peerIfname":
+    "swp5", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single", "hostname":
+    "exit02", "ifname": "swp3", "state": "up", "peerHostname": "exit02", "peerIfname":
+    "swp4", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single", "hostname":
+    "exit02", "ifname": "swp4", "state": "up", "peerHostname": "exit02", "peerIfname":
+    "swp3", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single", "hostname":
+    "exit02", "ifname": "swp6", "state": "up", "peerHostname": "internet", "peerIfname":
+    "swp2", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single", "hostname":
+    "spine01", "ifname": "swp3", "state": "up", "peerHostname": "leaf03", "peerIfname":
+    "swp1", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single", "hostname":
+    "leaf01", "ifname": "swp2", "state": "up", "peerHostname": "spine02", "peerIfname":
+    "swp1", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single", "hostname":
+    "leaf02", "ifname": "swp1", "state": "up", "peerHostname": "spine01", "peerIfname":
+    "swp2", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single", "hostname":
+    "leaf02", "ifname": "swp2", "state": "up", "peerHostname": "spine02", "peerIfname":
+    "swp2", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single", "hostname":
+    "leaf04", "ifname": "swp1", "state": "up", "peerHostname": "spine01", "peerIfname":
+    "swp4", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single", "hostname":
+    "leaf04", "ifname": "swp2", "state": "up", "peerHostname": "spine02", "peerIfname":
+    "swp4", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single", "hostname":
+    "spine01", "ifname": "swp1", "state": "up", "peerHostname": "leaf01", "peerIfname":
+    "swp1", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single", "hostname":
+    "spine01", "ifname": "swp2", "state": "up", "peerHostname": "leaf02", "peerIfname":
+    "swp1", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single", "hostname":
+    "spine01", "ifname": "swp6", "state": "up", "peerHostname": "exit01", "peerIfname":
+    "swp1", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single", "hostname":
+    "spine01", "ifname": "swp4", "state": "up", "peerHostname": "leaf04", "peerIfname":
+    "swp1", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single", "hostname":
+    "spine01", "ifname": "swp5", "state": "up", "peerHostname": "exit02", "peerIfname":
+    "swp1", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single", "hostname":
+    "leaf01", "ifname": "swp1", "state": "up", "peerHostname": "spine01", "peerIfname":
+    "swp1", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+    "exit01", "ifname": "swp1", "state": "up", "peerHostname": "spine01", "peerIfname":
+    "swp6", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+    "exit01", "ifname": "swp2", "state": "up", "peerHostname": "spine02", "peerIfname":
+    "swp6", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+    "exit01", "ifname": "swp6", "state": "up", "peerHostname": "internet", "peerIfname":
+    "swp1", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+    "internet", "ifname": "swp1", "state": "up", "peerHostname": "exit01", "peerIfname":
+    "swp6", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+    "internet", "ifname": "swp2", "state": "up", "peerHostname": "exit02", "peerIfname":
+    "swp6", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+    "spine02", "ifname": "swp1", "state": "up", "peerHostname": "leaf01", "peerIfname":
+    "swp2", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+    "spine02", "ifname": "swp6", "state": "up", "peerHostname": "exit01", "peerIfname":
+    "swp2", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+    "spine02", "ifname": "swp3", "state": "up", "peerHostname": "leaf03", "peerIfname":
+    "swp2", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+    "spine02", "ifname": "swp4", "state": "up", "peerHostname": "leaf04", "peerIfname":
+    "swp2", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+    "spine02", "ifname": "swp5", "state": "up", "peerHostname": "exit02", "peerIfname":
+    "swp2", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+    "spine02", "ifname": "swp2", "state": "up", "peerHostname": "leaf02", "peerIfname":
+    "swp2", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+    "exit02", "ifname": "swp1", "state": "up", "peerHostname": "spine01", "peerIfname":
+    "swp5", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+    "spine01", "ifname": "swp2", "state": "up", "peerHostname": "leaf02", "peerIfname":
+    "swp1", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+    "spine01", "ifname": "swp1", "state": "up", "peerHostname": "leaf01", "peerIfname":
+    "swp1", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf03", "ifname": "swp4", "state": "up", "peerHostname": "leaf04", "peerIfname":
+    "swp4", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf03", "ifname": "swp3", "state": "up", "peerHostname": "leaf04", "peerIfname":
+    "swp3", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf03", "ifname": "swp2", "state": "up", "peerHostname": "spine02", "peerIfname":
+    "swp3", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf03", "ifname": "swp1", "state": "up", "peerHostname": "spine01", "peerIfname":
+    "swp3", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+    "spine01", "ifname": "swp5", "state": "up", "peerHostname": "exit02", "peerIfname":
+    "swp1", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+    "spine01", "ifname": "swp6", "state": "up", "peerHostname": "exit01", "peerIfname":
+    "swp1", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+    "exit02", "ifname": "swp6", "state": "up", "peerHostname": "internet", "peerIfname":
+    "swp2", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+    "exit02", "ifname": "swp2", "state": "up", "peerHostname": "spine02", "peerIfname":
+    "swp5", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+    "spine01", "ifname": "swp3", "state": "up", "peerHostname": "leaf03", "peerIfname":
+    "swp1", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+    "spine01", "ifname": "swp4", "state": "up", "peerHostname": "leaf04", "peerIfname":
+    "swp1", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf04", "ifname": "swp1", "state": "up", "peerHostname": "spine01", "peerIfname":
+    "swp4", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf04", "ifname": "swp2", "state": "up", "peerHostname": "spine02", "peerIfname":
+    "swp4", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf04", "ifname": "swp3", "state": "up", "peerHostname": "leaf03", "peerIfname":
+    "swp3", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf04", "ifname": "swp4", "state": "up", "peerHostname": "leaf03", "peerIfname":
+    "swp4", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf01", "ifname": "swp4", "state": "up", "peerHostname": "leaf02", "peerIfname":
+    "swp4", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf01", "ifname": "swp3", "state": "up", "peerHostname": "leaf02", "peerIfname":
+    "swp3", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf01", "ifname": "swp2", "state": "up", "peerHostname": "spine02", "peerIfname":
+    "swp1", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf01", "ifname": "swp1", "state": "up", "peerHostname": "spine01", "peerIfname":
+    "swp1", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf02", "ifname": "swp2", "state": "up", "peerHostname": "spine02", "peerIfname":
+    "swp2", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf02", "ifname": "swp3", "state": "up", "peerHostname": "leaf01", "peerIfname":
+    "swp3", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf02", "ifname": "swp1", "state": "up", "peerHostname": "spine01", "peerIfname":
+    "swp2", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf02", "ifname": "swp4", "state": "up", "peerHostname": "leaf01", "peerIfname":
+    "swp4", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+    "exit02", "ifname": "swp1", "state": "up", "peerHostname": "spine01", "peerIfname":
+    "swp5", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+    "exit02", "ifname": "swp6", "state": "up", "peerHostname": "internet", "peerIfname":
+    "swp2", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+    "exit02", "ifname": "swp2", "state": "up", "peerHostname": "spine02", "peerIfname":
+    "swp5", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+    "internet", "ifname": "swp2", "state": "up", "peerHostname": "exit02", "peerIfname":
+    "swp6", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+    "internet", "ifname": "swp1", "state": "up", "peerHostname": "exit01", "peerIfname":
+    "swp6", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+    "spine02", "ifname": "swp4", "state": "up", "peerHostname": "leaf04", "peerIfname":
+    "swp2", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+    "spine02", "ifname": "swp5", "state": "up", "peerHostname": "exit02", "peerIfname":
+    "swp2", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+    "spine02", "ifname": "swp6", "state": "up", "peerHostname": "exit01", "peerIfname":
+    "swp2", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+    "spine02", "ifname": "swp3", "state": "up", "peerHostname": "leaf03", "peerIfname":
+    "swp2", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+    "spine02", "ifname": "swp1", "state": "up", "peerHostname": "leaf01", "peerIfname":
+    "swp2", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+    "spine02", "ifname": "swp2", "state": "up", "peerHostname": "leaf02", "peerIfname":
+    "swp2", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+    "spine01", "ifname": "swp2", "state": "up", "peerHostname": "leaf02", "peerIfname":
+    "swp1", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+    "spine01", "ifname": "swp3", "state": "up", "peerHostname": "leaf03", "peerIfname":
+    "swp1", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+    "spine01", "ifname": "swp4", "state": "up", "peerHostname": "leaf04", "peerIfname":
+    "swp1", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+    "spine01", "ifname": "swp5", "state": "up", "peerHostname": "exit02", "peerIfname":
+    "swp1", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+    "spine01", "ifname": "swp6", "state": "up", "peerHostname": "exit01", "peerIfname":
+    "swp1", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+    "spine01", "ifname": "swp1", "state": "up", "peerHostname": "leaf01", "peerIfname":
+    "swp1", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+    "leaf01", "ifname": "swp2", "state": "up", "peerHostname": "spine02", "peerIfname":
+    "swp1", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+    "leaf01", "ifname": "swp1", "state": "up", "peerHostname": "spine01", "peerIfname":
+    "swp1", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+    "leaf01", "ifname": "swp3", "state": "up", "peerHostname": "leaf02", "peerIfname":
+    "swp3", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+    "leaf02", "ifname": "swp3", "state": "up", "peerHostname": "leaf01", "peerIfname":
+    "swp3", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+    "leaf02", "ifname": "swp1", "state": "up", "peerHostname": "spine01", "peerIfname":
+    "swp2", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+    "leaf02", "ifname": "swp2", "state": "up", "peerHostname": "spine02", "peerIfname":
+    "swp2", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+    "leaf02", "ifname": "swp4", "state": "up", "peerHostname": "leaf01", "peerIfname":
+    "swp4", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+    "leaf01", "ifname": "swp4", "state": "up", "peerHostname": "leaf02", "peerIfname":
+    "swp4", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+    "leaf04", "ifname": "swp1", "state": "up", "peerHostname": "spine01", "peerIfname":
+    "swp4", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+    "leaf04", "ifname": "swp2", "state": "up", "peerHostname": "spine02", "peerIfname":
+    "swp4", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+    "leaf04", "ifname": "swp3", "state": "up", "peerHostname": "leaf03", "peerIfname":
+    "swp3", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+    "leaf04", "ifname": "swp4", "state": "up", "peerHostname": "leaf03", "peerIfname":
+    "swp4", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+    "exit01", "ifname": "swp6", "state": "up", "peerHostname": "internet", "peerIfname":
+    "swp1", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+    "exit01", "ifname": "swp2", "state": "up", "peerHostname": "spine02", "peerIfname":
+    "swp6", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+    "exit01", "ifname": "swp1", "state": "up", "peerHostname": "spine01", "peerIfname":
+    "swp6", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+    "leaf03", "ifname": "swp2", "state": "up", "peerHostname": "spine02", "peerIfname":
+    "swp3", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+    "leaf03", "ifname": "swp3", "state": "up", "peerHostname": "leaf04", "peerIfname":
+    "swp3", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+    "leaf03", "ifname": "swp4", "state": "up", "peerHostname": "leaf04", "peerIfname":
+    "swp4", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+    "leaf03", "ifname": "swp1", "state": "up", "peerHostname": "spine01", "peerIfname":
+    "swp3", "assert": "pass", "assertReason": []}]'
+- command: interface assert --status=fail --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  error:
+    error: '[{"namespace": "ospf-single", "hostname": "exit01", "ifname": "swp5",
+      "state": "up", "peerHostname": "edge01", "peerIfname": "eth1", "assert": "fail",
+      "assertReason": ["Speed mismatch"]}, {"namespace": "ospf-single", "hostname":
+      "exit02", "ifname": "swp5", "state": "up", "peerHostname": "edge01", "peerIfname":
+      "eth2", "assert": "fail", "assertReason": ["Speed mismatch"]}, {"namespace":
+      "ospf-single", "hostname": "edge01", "ifname": "eth2", "state": "up", "peerHostname":
+      "exit02", "peerIfname": "swp5", "assert": "fail", "assertReason": ["Speed mismatch"]},
+      {"namespace": "ospf-single", "hostname": "edge01", "ifname": "eth1", "state":
+      "up", "peerHostname": "exit01", "peerIfname": "swp5", "assert": "fail", "assertReason":
+      ["Speed mismatch"]}, {"namespace": "ospf-ibgp", "hostname": "edge01", "ifname":
+      "eth2", "state": "up", "peerHostname": "exit02", "peerIfname": "swp5", "assert":
+      "fail", "assertReason": ["MTU mismatch", "Speed mismatch"]}, {"namespace": "ospf-ibgp",
+      "hostname": "edge01", "ifname": "eth1", "state": "up", "peerHostname": "exit01",
+      "peerIfname": "swp5", "assert": "fail", "assertReason": ["MTU mismatch", "Speed
+      mismatch"]}, {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname": "swp5",
+      "state": "up", "peerHostname": "edge01", "peerIfname": "eth1", "assert": "fail",
+      "assertReason": ["MTU mismatch", "Speed mismatch"]}, {"namespace": "ospf-ibgp",
+      "hostname": "exit02", "ifname": "swp5", "state": "up", "peerHostname": "edge01",
+      "peerIfname": "eth2", "assert": "fail", "assertReason": ["MTU mismatch", "Speed
+      mismatch"]}, {"namespace": "dual-evpn", "hostname": "edge01", "ifname": "eth2",
+      "state": "up", "peerHostname": "exit02", "peerIfname": "swp5", "assert": "fail",
+      "assertReason": ["MTU mismatch", "Speed mismatch"]}, {"namespace": "dual-evpn",
+      "hostname": "edge01", "ifname": "eth1", "state": "up", "peerHostname": "exit01",
+      "peerIfname": "swp5", "assert": "fail", "assertReason": ["MTU mismatch", "Speed
+      mismatch"]}, {"namespace": "dual-evpn", "hostname": "exit02", "ifname": "swp5",
+      "state": "up", "peerHostname": "edge01", "peerIfname": "eth2", "assert": "fail",
+      "assertReason": ["MTU mismatch", "Speed mismatch"]}, {"namespace": "dual-evpn",
+      "hostname": "exit01", "ifname": "swp5", "state": "up", "peerHostname": "edge01",
+      "peerIfname": "eth1", "assert": "fail", "assertReason": ["MTU mismatch", "Speed
+      mismatch"]}]'
+  marks: interface assert cumulus
+- command: interface assert --status=all --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  error:
+    error: '[{"namespace": "ospf-single", "hostname": "spine02", "ifname": "swp6",
+      "state": "up", "peerHostname": "exit01", "peerIfname": "swp2", "assert": "pass",
+      "assertReason": []}, {"namespace": "ospf-single", "hostname": "spine02", "ifname":
+      "swp4", "state": "up", "peerHostname": "leaf04", "peerIfname": "swp2", "assert":
+      "pass", "assertReason": []}, {"namespace": "ospf-single", "hostname": "spine02",
+      "ifname": "swp3", "state": "up", "peerHostname": "leaf03", "peerIfname": "swp2",
+      "assert": "pass", "assertReason": []}, {"namespace": "ospf-single", "hostname":
+      "spine02", "ifname": "swp2", "state": "up", "peerHostname": "leaf02", "peerIfname":
+      "swp2", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single",
+      "hostname": "spine02", "ifname": "swp1", "state": "up", "peerHostname": "leaf01",
+      "peerIfname": "swp2", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single",
+      "hostname": "spine02", "ifname": "swp5", "state": "up", "peerHostname": "exit02",
+      "peerIfname": "swp2", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single",
+      "hostname": "leaf03", "ifname": "swp1", "state": "up", "peerHostname": "spine01",
+      "peerIfname": "swp3", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single",
+      "hostname": "leaf03", "ifname": "swp2", "state": "up", "peerHostname": "spine02",
+      "peerIfname": "swp3", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single",
+      "hostname": "internet", "ifname": "swp2", "state": "up", "peerHostname": "exit02",
+      "peerIfname": "swp6", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single",
+      "hostname": "internet", "ifname": "swp1", "state": "up", "peerHostname": "exit01",
+      "peerIfname": "swp6", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single",
+      "hostname": "exit01", "ifname": "swp3", "state": "up", "peerHostname": "exit01",
+      "peerIfname": "swp4", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single",
+      "hostname": "exit01", "ifname": "swp6", "state": "up", "peerHostname": "internet",
+      "peerIfname": "swp1", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single",
+      "hostname": "exit01", "ifname": "swp2", "state": "up", "peerHostname": "spine02",
+      "peerIfname": "swp6", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single",
+      "hostname": "exit01", "ifname": "swp1", "state": "up", "peerHostname": "spine01",
+      "peerIfname": "swp6", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single",
+      "hostname": "exit01", "ifname": "swp4", "state": "up", "peerHostname": "exit01",
+      "peerIfname": "swp3", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single",
+      "hostname": "exit01", "ifname": "swp5", "state": "up", "peerHostname": "edge01",
+      "peerIfname": "eth1", "assert": "fail", "assertReason": ["Speed mismatch"]},
+      {"namespace": "ospf-single", "hostname": "exit02", "ifname": "swp1", "state":
+      "up", "peerHostname": "spine01", "peerIfname": "swp5", "assert": "pass", "assertReason":
+      []}, {"namespace": "ospf-single", "hostname": "exit02", "ifname": "swp2", "state":
+      "up", "peerHostname": "spine02", "peerIfname": "swp5", "assert": "pass", "assertReason":
+      []}, {"namespace": "ospf-single", "hostname": "exit02", "ifname": "swp3", "state":
+      "up", "peerHostname": "exit02", "peerIfname": "swp4", "assert": "pass", "assertReason":
+      []}, {"namespace": "ospf-single", "hostname": "exit02", "ifname": "swp4", "state":
+      "up", "peerHostname": "exit02", "peerIfname": "swp3", "assert": "pass", "assertReason":
+      []}, {"namespace": "ospf-single", "hostname": "exit02", "ifname": "swp6", "state":
+      "up", "peerHostname": "internet", "peerIfname": "swp2", "assert": "pass", "assertReason":
+      []}, {"namespace": "ospf-single", "hostname": "exit02", "ifname": "swp5", "state":
+      "up", "peerHostname": "edge01", "peerIfname": "eth2", "assert": "fail", "assertReason":
+      ["Speed mismatch"]}, {"namespace": "ospf-single", "hostname": "spine01", "ifname":
+      "swp3", "state": "up", "peerHostname": "leaf03", "peerIfname": "swp1", "assert":
+      "pass", "assertReason": []}, {"namespace": "ospf-single", "hostname": "leaf01",
+      "ifname": "swp2", "state": "up", "peerHostname": "spine02", "peerIfname": "swp1",
+      "assert": "pass", "assertReason": []}, {"namespace": "ospf-single", "hostname":
+      "leaf02", "ifname": "swp1", "state": "up", "peerHostname": "spine01", "peerIfname":
+      "swp2", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single",
+      "hostname": "leaf02", "ifname": "swp2", "state": "up", "peerHostname": "spine02",
+      "peerIfname": "swp2", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single",
+      "hostname": "leaf04", "ifname": "swp1", "state": "up", "peerHostname": "spine01",
+      "peerIfname": "swp4", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single",
+      "hostname": "leaf04", "ifname": "swp2", "state": "up", "peerHostname": "spine02",
+      "peerIfname": "swp4", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single",
+      "hostname": "spine01", "ifname": "swp1", "state": "up", "peerHostname": "leaf01",
+      "peerIfname": "swp1", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single",
+      "hostname": "spine01", "ifname": "swp2", "state": "up", "peerHostname": "leaf02",
+      "peerIfname": "swp1", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single",
+      "hostname": "spine01", "ifname": "swp6", "state": "up", "peerHostname": "exit01",
+      "peerIfname": "swp1", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single",
+      "hostname": "spine01", "ifname": "swp4", "state": "up", "peerHostname": "leaf04",
+      "peerIfname": "swp1", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single",
+      "hostname": "spine01", "ifname": "swp5", "state": "up", "peerHostname": "exit02",
+      "peerIfname": "swp1", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single",
+      "hostname": "leaf01", "ifname": "swp1", "state": "up", "peerHostname": "spine01",
+      "peerIfname": "swp1", "assert": "pass", "assertReason": []}, {"namespace": "ospf-single",
+      "hostname": "edge01", "ifname": "eth2", "state": "up", "peerHostname": "exit02",
+      "peerIfname": "swp5", "assert": "fail", "assertReason": ["Speed mismatch"]},
+      {"namespace": "ospf-single", "hostname": "edge01", "ifname": "eth1", "state":
+      "up", "peerHostname": "exit01", "peerIfname": "swp5", "assert": "fail", "assertReason":
+      ["Speed mismatch"]}, {"namespace": "ospf-ibgp", "hostname": "edge01", "ifname":
+      "eth2", "state": "up", "peerHostname": "exit02", "peerIfname": "swp5", "assert":
+      "fail", "assertReason": ["MTU mismatch", "Speed mismatch"]}, {"namespace": "ospf-ibgp",
+      "hostname": "edge01", "ifname": "eth1", "state": "up", "peerHostname": "exit01",
+      "peerIfname": "swp5", "assert": "fail", "assertReason": ["MTU mismatch", "Speed
+      mismatch"]}, {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname": "swp1",
+      "state": "up", "peerHostname": "spine01", "peerIfname": "swp6", "assert": "pass",
+      "assertReason": []}, {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname":
+      "swp2", "state": "up", "peerHostname": "spine02", "peerIfname": "swp6", "assert":
+      "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname": "exit01",
+      "ifname": "swp6", "state": "up", "peerHostname": "internet", "peerIfname": "swp1",
+      "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+      "exit01", "ifname": "swp5", "state": "up", "peerHostname": "edge01", "peerIfname":
+      "eth1", "assert": "fail", "assertReason": ["MTU mismatch", "Speed mismatch"]},
+      {"namespace": "ospf-ibgp", "hostname": "internet", "ifname": "swp1", "state":
+      "up", "peerHostname": "exit01", "peerIfname": "swp6", "assert": "pass", "assertReason":
+      []}, {"namespace": "ospf-ibgp", "hostname": "internet", "ifname": "swp2", "state":
+      "up", "peerHostname": "exit02", "peerIfname": "swp6", "assert": "pass", "assertReason":
+      []}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp1", "state":
+      "up", "peerHostname": "leaf01", "peerIfname": "swp2", "assert": "pass", "assertReason":
+      []}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp6", "state":
+      "up", "peerHostname": "exit01", "peerIfname": "swp2", "assert": "pass", "assertReason":
+      []}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp3", "state":
+      "up", "peerHostname": "leaf03", "peerIfname": "swp2", "assert": "pass", "assertReason":
+      []}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp4", "state":
+      "up", "peerHostname": "leaf04", "peerIfname": "swp2", "assert": "pass", "assertReason":
+      []}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp5", "state":
+      "up", "peerHostname": "exit02", "peerIfname": "swp2", "assert": "pass", "assertReason":
+      []}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp2", "state":
+      "up", "peerHostname": "leaf02", "peerIfname": "swp2", "assert": "pass", "assertReason":
+      []}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "swp1", "state":
+      "up", "peerHostname": "spine01", "peerIfname": "swp5", "assert": "pass", "assertReason":
+      []}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp2", "state":
+      "up", "peerHostname": "leaf02", "peerIfname": "swp1", "assert": "pass", "assertReason":
+      []}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp1", "state":
+      "up", "peerHostname": "leaf01", "peerIfname": "swp1", "assert": "pass", "assertReason":
+      []}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "swp4", "state":
+      "up", "peerHostname": "leaf04", "peerIfname": "swp4", "assert": "pass", "assertReason":
+      []}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "swp3", "state":
+      "up", "peerHostname": "leaf04", "peerIfname": "swp3", "assert": "pass", "assertReason":
+      []}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "swp2", "state":
+      "up", "peerHostname": "spine02", "peerIfname": "swp3", "assert": "pass", "assertReason":
+      []}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "swp1", "state":
+      "up", "peerHostname": "spine01", "peerIfname": "swp3", "assert": "pass", "assertReason":
+      []}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp5", "state":
+      "up", "peerHostname": "exit02", "peerIfname": "swp1", "assert": "pass", "assertReason":
+      []}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp6", "state":
+      "up", "peerHostname": "exit01", "peerIfname": "swp1", "assert": "pass", "assertReason":
+      []}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "swp6", "state":
+      "up", "peerHostname": "internet", "peerIfname": "swp2", "assert": "pass", "assertReason":
+      []}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "swp5", "state":
+      "up", "peerHostname": "edge01", "peerIfname": "eth2", "assert": "fail", "assertReason":
+      ["MTU mismatch", "Speed mismatch"]}, {"namespace": "ospf-ibgp", "hostname":
+      "exit02", "ifname": "swp2", "state": "up", "peerHostname": "spine02", "peerIfname":
+      "swp5", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+      "spine01", "ifname": "swp3", "state": "up", "peerHostname": "leaf03", "peerIfname":
+      "swp1", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+      "spine01", "ifname": "swp4", "state": "up", "peerHostname": "leaf04", "peerIfname":
+      "swp1", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+      "leaf04", "ifname": "swp1", "state": "up", "peerHostname": "spine01", "peerIfname":
+      "swp4", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+      "leaf04", "ifname": "swp2", "state": "up", "peerHostname": "spine02", "peerIfname":
+      "swp4", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+      "leaf04", "ifname": "swp3", "state": "up", "peerHostname": "leaf03", "peerIfname":
+      "swp3", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+      "leaf04", "ifname": "swp4", "state": "up", "peerHostname": "leaf03", "peerIfname":
+      "swp4", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+      "leaf01", "ifname": "swp4", "state": "up", "peerHostname": "leaf02", "peerIfname":
+      "swp4", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+      "leaf01", "ifname": "swp3", "state": "up", "peerHostname": "leaf02", "peerIfname":
+      "swp3", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+      "leaf01", "ifname": "swp2", "state": "up", "peerHostname": "spine02", "peerIfname":
+      "swp1", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+      "leaf01", "ifname": "swp1", "state": "up", "peerHostname": "spine01", "peerIfname":
+      "swp1", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+      "leaf02", "ifname": "swp2", "state": "up", "peerHostname": "spine02", "peerIfname":
+      "swp2", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+      "leaf02", "ifname": "swp3", "state": "up", "peerHostname": "leaf01", "peerIfname":
+      "swp3", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+      "leaf02", "ifname": "swp1", "state": "up", "peerHostname": "spine01", "peerIfname":
+      "swp2", "assert": "pass", "assertReason": []}, {"namespace": "ospf-ibgp", "hostname":
+      "leaf02", "ifname": "swp4", "state": "up", "peerHostname": "leaf01", "peerIfname":
+      "swp4", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+      "edge01", "ifname": "eth2", "state": "up", "peerHostname": "exit02", "peerIfname":
+      "swp5", "assert": "fail", "assertReason": ["MTU mismatch", "Speed mismatch"]},
+      {"namespace": "dual-evpn", "hostname": "edge01", "ifname": "eth1", "state":
+      "up", "peerHostname": "exit01", "peerIfname": "swp5", "assert": "fail", "assertReason":
+      ["MTU mismatch", "Speed mismatch"]}, {"namespace": "dual-evpn", "hostname":
+      "exit02", "ifname": "swp1", "state": "up", "peerHostname": "spine01", "peerIfname":
+      "swp5", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+      "exit02", "ifname": "swp6", "state": "up", "peerHostname": "internet", "peerIfname":
+      "swp2", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+      "exit02", "ifname": "swp5", "state": "up", "peerHostname": "edge01", "peerIfname":
+      "eth2", "assert": "fail", "assertReason": ["MTU mismatch", "Speed mismatch"]},
+      {"namespace": "dual-evpn", "hostname": "exit02", "ifname": "swp2", "state":
+      "up", "peerHostname": "spine02", "peerIfname": "swp5", "assert": "pass", "assertReason":
+      []}, {"namespace": "dual-evpn", "hostname": "internet", "ifname": "swp2", "state":
+      "up", "peerHostname": "exit02", "peerIfname": "swp6", "assert": "pass", "assertReason":
+      []}, {"namespace": "dual-evpn", "hostname": "internet", "ifname": "swp1", "state":
+      "up", "peerHostname": "exit01", "peerIfname": "swp6", "assert": "pass", "assertReason":
+      []}, {"namespace": "dual-evpn", "hostname": "spine02", "ifname": "swp4", "state":
+      "up", "peerHostname": "leaf04", "peerIfname": "swp2", "assert": "pass", "assertReason":
+      []}, {"namespace": "dual-evpn", "hostname": "spine02", "ifname": "swp5", "state":
+      "up", "peerHostname": "exit02", "peerIfname": "swp2", "assert": "pass", "assertReason":
+      []}, {"namespace": "dual-evpn", "hostname": "spine02", "ifname": "swp6", "state":
+      "up", "peerHostname": "exit01", "peerIfname": "swp2", "assert": "pass", "assertReason":
+      []}, {"namespace": "dual-evpn", "hostname": "spine02", "ifname": "swp3", "state":
+      "up", "peerHostname": "leaf03", "peerIfname": "swp2", "assert": "pass", "assertReason":
+      []}, {"namespace": "dual-evpn", "hostname": "spine02", "ifname": "swp1", "state":
+      "up", "peerHostname": "leaf01", "peerIfname": "swp2", "assert": "pass", "assertReason":
+      []}, {"namespace": "dual-evpn", "hostname": "spine02", "ifname": "swp2", "state":
+      "up", "peerHostname": "leaf02", "peerIfname": "swp2", "assert": "pass", "assertReason":
+      []}, {"namespace": "dual-evpn", "hostname": "spine01", "ifname": "swp2", "state":
+      "up", "peerHostname": "leaf02", "peerIfname": "swp1", "assert": "pass", "assertReason":
+      []}, {"namespace": "dual-evpn", "hostname": "spine01", "ifname": "swp3", "state":
+      "up", "peerHostname": "leaf03", "peerIfname": "swp1", "assert": "pass", "assertReason":
+      []}, {"namespace": "dual-evpn", "hostname": "spine01", "ifname": "swp4", "state":
+      "up", "peerHostname": "leaf04", "peerIfname": "swp1", "assert": "pass", "assertReason":
+      []}, {"namespace": "dual-evpn", "hostname": "spine01", "ifname": "swp5", "state":
+      "up", "peerHostname": "exit02", "peerIfname": "swp1", "assert": "pass", "assertReason":
+      []}, {"namespace": "dual-evpn", "hostname": "spine01", "ifname": "swp6", "state":
+      "up", "peerHostname": "exit01", "peerIfname": "swp1", "assert": "pass", "assertReason":
+      []}, {"namespace": "dual-evpn", "hostname": "spine01", "ifname": "swp1", "state":
+      "up", "peerHostname": "leaf01", "peerIfname": "swp1", "assert": "pass", "assertReason":
+      []}, {"namespace": "dual-evpn", "hostname": "leaf01", "ifname": "swp2", "state":
+      "up", "peerHostname": "spine02", "peerIfname": "swp1", "assert": "pass", "assertReason":
+      []}, {"namespace": "dual-evpn", "hostname": "leaf01", "ifname": "swp1", "state":
+      "up", "peerHostname": "spine01", "peerIfname": "swp1", "assert": "pass", "assertReason":
+      []}, {"namespace": "dual-evpn", "hostname": "leaf01", "ifname": "swp3", "state":
+      "up", "peerHostname": "leaf02", "peerIfname": "swp3", "assert": "pass", "assertReason":
+      []}, {"namespace": "dual-evpn", "hostname": "leaf02", "ifname": "swp3", "state":
+      "up", "peerHostname": "leaf01", "peerIfname": "swp3", "assert": "pass", "assertReason":
+      []}, {"namespace": "dual-evpn", "hostname": "leaf02", "ifname": "swp1", "state":
+      "up", "peerHostname": "spine01", "peerIfname": "swp2", "assert": "pass", "assertReason":
+      []}, {"namespace": "dual-evpn", "hostname": "leaf02", "ifname": "swp2", "state":
+      "up", "peerHostname": "spine02", "peerIfname": "swp2", "assert": "pass", "assertReason":
+      []}, {"namespace": "dual-evpn", "hostname": "leaf02", "ifname": "swp4", "state":
+      "up", "peerHostname": "leaf01", "peerIfname": "swp4", "assert": "pass", "assertReason":
+      []}, {"namespace": "dual-evpn", "hostname": "leaf01", "ifname": "swp4", "state":
+      "up", "peerHostname": "leaf02", "peerIfname": "swp4", "assert": "pass", "assertReason":
+      []}, {"namespace": "dual-evpn", "hostname": "leaf04", "ifname": "swp1", "state":
+      "up", "peerHostname": "spine01", "peerIfname": "swp4", "assert": "pass", "assertReason":
+      []}, {"namespace": "dual-evpn", "hostname": "leaf04", "ifname": "swp2", "state":
+      "up", "peerHostname": "spine02", "peerIfname": "swp4", "assert": "pass", "assertReason":
+      []}, {"namespace": "dual-evpn", "hostname": "leaf04", "ifname": "swp3", "state":
+      "up", "peerHostname": "leaf03", "peerIfname": "swp3", "assert": "pass", "assertReason":
+      []}, {"namespace": "dual-evpn", "hostname": "leaf04", "ifname": "swp4", "state":
+      "up", "peerHostname": "leaf03", "peerIfname": "swp4", "assert": "pass", "assertReason":
+      []}, {"namespace": "dual-evpn", "hostname": "exit01", "ifname": "swp6", "state":
+      "up", "peerHostname": "internet", "peerIfname": "swp1", "assert": "pass", "assertReason":
+      []}, {"namespace": "dual-evpn", "hostname": "exit01", "ifname": "swp5", "state":
+      "up", "peerHostname": "edge01", "peerIfname": "eth1", "assert": "fail", "assertReason":
+      ["MTU mismatch", "Speed mismatch"]}, {"namespace": "dual-evpn", "hostname":
+      "exit01", "ifname": "swp2", "state": "up", "peerHostname": "spine02", "peerIfname":
+      "swp6", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+      "exit01", "ifname": "swp1", "state": "up", "peerHostname": "spine01", "peerIfname":
+      "swp6", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+      "leaf03", "ifname": "swp2", "state": "up", "peerHostname": "spine02", "peerIfname":
+      "swp3", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+      "leaf03", "ifname": "swp3", "state": "up", "peerHostname": "leaf04", "peerIfname":
+      "swp3", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+      "leaf03", "ifname": "swp4", "state": "up", "peerHostname": "leaf04", "peerIfname":
+      "swp4", "assert": "pass", "assertReason": []}, {"namespace": "dual-evpn", "hostname":
+      "leaf03", "ifname": "swp1", "state": "up", "peerHostname": "spine01", "peerIfname":
+      "swp3", "assert": "pass", "assertReason": []}]'
+  marks: interface assert cumulus
+- command: interface assert --status=whatever --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: interface assert cumulus
+  output: '[]'
