@@ -9,8 +9,11 @@ class IfObj(SqObject):
         self._valid_get_args = ['namespace', 'hostname', 'ifname', 'columns',
                                 'state', 'type', 'mtu']
         self._valid_assert_args = ['namespace', 'hostname', 'ifname',
-                                   'what', 'matchval']
-        self._valid_arg_vals = {'state': ['up', 'down', '']}
+                                   'what', 'matchval', 'status']
+        self._valid_arg_vals = {
+            'state': ['up', 'down', ''],
+            'status': ['all', 'pass', 'fail'],
+        }
 
     def aver(self, what='mtu-match', **kwargs) -> pd.DataFrame:
         """Assert that interfaces are in good state"""
