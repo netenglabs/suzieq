@@ -159,8 +159,10 @@ async def start_poller(userargs, cfg):
                                 jump_host_key_file=userargs.jump_host_key_file,
                                 ignore_known_hosts=ignore_known_hosts))
 
+    period = cfg.get('period', 15)
     tasks.append(init_services(cfg["service-directory"], schema_dir, queue,
-                               svclist, userargs.run_once or "forever"))
+                               svclist, period,
+                               userargs.run_once or "forever"))
 
     nodes, svcs = await asyncio.gather(*tasks)
 

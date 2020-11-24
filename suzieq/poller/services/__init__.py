@@ -15,7 +15,8 @@ from .service import Service
 logger = logging.getLogger(__name__)
 
 
-async def init_services(svc_dir, schema_dir, queue, svclist, run_once):
+async def init_services(svc_dir: str, schema_dir: str, queue, svclist: list,
+                        def_interval: int, run_once: str):
     """Process service definitions by reading each file in svc dir"""
 
     svcs_list = []
@@ -64,7 +65,7 @@ async def init_services(svc_dir, schema_dir, queue, svclist, run_once):
                     )
                     continue
 
-                period = svc_def.get("period", 15)
+                period = svc_def.get("period", def_interval)
                 for elem, val in svc_def["apply"].items():
                     if "copy" in val:
                         newval = svc_def["apply"].get(val["copy"], None)
