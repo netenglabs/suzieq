@@ -36,12 +36,26 @@ class VlanObj(SqEngineObject):
         if self.summary_df.empty:
             return self.summary_df
 
-        self._add_field_to_summary('hostname', 'count', 'deviceCnt')
+        self._summarize_on_add_field = [
+            ('deviceCnt', 'hostname', 'nunique'),
+            ('uniqueVlanCnt', 'vlan', 'nunique')
+        ]
 
-        if not self.summary_df.empty:
-            for field in ['vlan']:
-                self._add_list_or_count_to_summary(field,
-                                                   field_name='uniqueVlanCnt')
+        self._summarize_on_add_with_query = [
+            ('activeVlanCnt', 'state == "active"', 'vlan', 'nunique'),
+            ('suspendedVlanCnt', 'state == "suspend"', 'vlan', 'nunique')
+        ]
+
+        self._summarize_on_perdevice_stat = [
+            ('vlanPerDeviceStat', '', 'vlan', 'count')
+        ]
+
+        self._gen_summarize_data()
+
+        self._add_stats_to_summary(self.summary_df.groupby(
+            by=['namespace', 'vlan'])['interfaces'].count(), 'ifPerVlanStat',
+            True)
+        self.summary_row_order.append('ifPerVlanStat')
 
         self._post_summarize()
         return self.ns_df.convert_dtypes()
