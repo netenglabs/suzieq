@@ -291,7 +291,7 @@ class SqEngineObject(object):
                     .reset_index()
                     .rename(columns={column: 'count',
                                      'index': column})
-                    .sort_values('count'))
+                    .sort_values(column))
 
     def analyze(self, **kwargs):
         raise NotImplementedError
