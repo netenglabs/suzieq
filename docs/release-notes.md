@@ -1,5 +1,30 @@
 ## Release Notes
 
+## 0.7 (Nov 25, 2020)
+
+There have a been a bunch of improvements in data gathering and making them consistent across NOSes in this release, along with improvements such as better summarizations, improved interface assert etc.
+
+- Pager support within the CLI for longer entries
+- Support for partial command specification. int sh completes to interface show
+- Support for EVPN routes for EOS
+- Improved interface assert: match MTU, VLAN set, PVID, speed, IP address
+- Improved OSPF assert, ignore admin down interfaces
+- Markdown format output in both CLI and REST
+- Allow specification of default poll period in config file. Saves laborious process of adding period to every resource file
+- Filter assert outputs to only show whats failed, only  whats passed or all
+- Improved VLAN summarize
+- Fixed major bug in constructing mac table keys across various NOS
+- Make summarize work with hostname qualifier
+- JunOS route data normalization in the presence of OSPF unnumbered and EVPN routes
+- Improved EVPN VNI info for JunOS
+- SSH authentication improvementss: Support for username/password keywords in inventory to handle values that may use URL reserved chars such as '.'. Eg, usename dinesh.dutt is now supported via this method
+- Anycast gateway MAC fix for SVIs with NXOS and EOS
+- Improved filtering support for numerical fields
+- ARP/ND entry fixes for Cumulus versions greater than 4.0
+- Making interface data consistent across all NOS, support for portchannel interfaces in NXOS
+- Test improvement in making pandas dataframe compare more robust
+- Added 100 more tests
+
 ## 0.6 (Nov 5, 2020)
 
 The most critical feature in this release is the support for a RESTful API. 

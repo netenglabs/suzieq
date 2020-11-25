@@ -56,7 +56,8 @@ tests:
 - command: vlan summarize --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: vlan summarize eos
-  output: '{"eos": {"deviceCnt": 20, "uniqueVlanCnt": 4}}'
+  output: '{"eos": {"deviceCnt": 8, "uniqueVlanCnt": 4, "activeVlanCnt": 4, "suspendedVlanCnt":
+    0, "vlanPerDeviceStat": [1, 4, 2.5], "ifPerVlanStat": [4, 8, 4.0]}}'
 - command: vlan unique --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: vlan unique eos

@@ -76,11 +76,14 @@ class SqPandasEngine(SqEngine):
             # Build the filters for predicate pushdown
             master_schema = self._build_master_schema(datasets)
 
+            avail_fields = list(filter(lambda x: x in master_schema.names,
+                                       fields))
+
             filters = self.build_ds_filters(
                 start, end, master_schema, merge_fields=merge_fields, **kwargs)
 
             final_df = ds.dataset(datasets) \
-                         .to_table(filter=filters, columns=fields) \
+                         .to_table(filter=filters, columns=avail_fields) \
                          .to_pandas(self_destruct=True) \
                          .query(query_str)
 
@@ -94,6 +97,9 @@ class SqPandasEngine(SqEngine):
                         final_df[newfld] = np.where(final_df[newfld],
                                                     final_df[newfld],
                                                     final_df[field])
+                    elif (field in final_df.columns and
+                          newfld not in final_df.columns):
+                        final_df.rename(columns={field: newfld}, inplace=True)
 
             if (not final_df.empty and (view == 'latest') and
                     all(x in final_df.columns for x in key_fields)):
