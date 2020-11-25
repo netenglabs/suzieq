@@ -23,7 +23,8 @@ tests:
 - command: vlan summarize --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: vlan summarize junos
-  output: '{"junos": {"deviceCnt": 6, "uniqueVlanCnt": {"100": 2, "1": 2, "200": 2}}}'
+  output: '{"junos": {"deviceCnt": 2, "uniqueVlanCnt": 3, "activeVlanCnt": 3, "suspendedVlanCnt":
+    0, "vlanPerDeviceStat": [3, 3, 3.0], "ifPerVlanStat": [2, 2, 2.0]}}'
 - command: vlan unique --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: vlan unique junos
