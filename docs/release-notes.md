@@ -5,6 +5,7 @@
 There have a been a bunch of improvements in data gathering and making them consistent across NOSes in this release, along with improvements such as better summarizations, improved interface assert etc.
 
 - Pager support within the CLI for longer entries
+- Support for partial command specification. int sh completes to interface show
 - Support for EVPN routes for EOS
 - Improved interface assert: match MTU, VLAN set, PVID, speed, IP address
 - Improved OSPF assert, ignore admin down interfaces
