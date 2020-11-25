@@ -50,7 +50,8 @@ tests:
 - command: vlan summarize --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: vlan summarize nxos
-  output: '{"nxos": {"deviceCnt": 8, "uniqueVlanCnt": 5}}'
+  output: '{"nxos": {"deviceCnt": 2, "uniqueVlanCnt": 5, "activeVlanCnt": 5, "suspendedVlanCnt":
+    0, "vlanPerDeviceStat": [4, 4, 4.0], "ifPerVlanStat": [1, 2, 2.0]}}'
 - command: vlan unique --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: vlan unique nxos

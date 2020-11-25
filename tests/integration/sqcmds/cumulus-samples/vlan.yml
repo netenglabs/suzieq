@@ -96,17 +96,89 @@ tests:
 - command: vlan summarize --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: vlan summarize
-  output: '{"ospf-single": {"deviceCnt": 4, "uniqueVlanCnt": {"10": 4}}, "ospf-ibgp":
-    {"deviceCnt": 18, "uniqueVlanCnt": 4}, "dual-evpn": {"deviceCnt": 16, "uniqueVlanCnt":
-    {"13": 6, "24": 6, "1": 4}}}'
+  output: '{"ospf-single": {"deviceCnt": 4, "uniqueVlanCnt": 1, "activeVlanCnt": 1,
+    "suspendedVlanCnt": 0, "vlanPerDeviceStat": [1, 1, 1.0], "ifPerVlanStat": [4,
+    4, 4.0]}, "ospf-ibgp": {"deviceCnt": 6, "uniqueVlanCnt": 4, "activeVlanCnt": 4,
+    "suspendedVlanCnt": 0, "vlanPerDeviceStat": [1, 4, 4.0], "ifPerVlanStat": [4,
+    6, 4.0]}, "dual-evpn": {"deviceCnt": 6, "uniqueVlanCnt": 3, "activeVlanCnt": 3,
+    "suspendedVlanCnt": 0, "vlanPerDeviceStat": [2, 3, 3.0], "ifPerVlanStat": [4,
+    6, 6.0]}}'
 - command: vlan summarize --namespace=dual-evpn --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: vlan summarize
-  output: '{"dual-evpn": {"deviceCnt": 16, "uniqueVlanCnt": {"13": 6, "24": 6, "1":
-    4}}}'
+  output: '{"dual-evpn": {"deviceCnt": 6, "uniqueVlanCnt": 3, "activeVlanCnt": 3,
+    "suspendedVlanCnt": 0, "vlanPerDeviceStat": [2, 3, 3.0], "ifPerVlanStat": [4,
+    6, 6.0]}}'
 - command: vlan unique --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: vlan unique
   output: '[{"hostname": "exit02", "count": 3}, {"hostname": "exit01", "count": 3},
     {"hostname": "leaf03", "count": 8}, {"hostname": "leaf02", "count": 8}, {"hostname":
     "leaf04", "count": 8}, {"hostname": "leaf01", "count": 8}]'
+- command: vlan show --vlan='13 4001' --columns=hostname --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: vlan show cumulus
+  output: '[{"hostname": "exit01"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "exit02"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "exit02"}, {"hostname": "leaf01"}, {"hostname": "exit01"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf02"}, {"hostname": "leaf04"}]'
+- command: vlan show --vlan='24' --columns=hostname --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: vlan show cumulus
+  output: '[{"hostname": "leaf04"}, {"hostname": "leaf03"}, {"hostname": "leaf01"},
+    {"hostname": "leaf02"}, {"hostname": "exit02"}, {"hostname": "leaf01"}, {"hostname":
+    "exit01"}, {"hostname": "leaf03"}, {"hostname": "leaf02"}, {"hostname": "leaf04"}]'
+- command: vlan show --vlan='>100' --columns=hostname --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: vlan show cumulus
+  output: '[{"hostname": "exit01"}, {"hostname": "leaf04"}, {"hostname": "exit02"},
+    {"hostname": "leaf03"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}]'
+- command: vlan show --vlan='<=24' --columns=hostname --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: vlan show cumulus
+  output: '[{"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname": "leaf02"},
+    {"hostname": "leaf01"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}]'
+- command: vlan show --vlanName='vlan4001' --columns=hostname --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: vlan show cumulus
+  output: '[{"hostname": "exit01"}, {"hostname": "leaf04"}, {"hostname": "exit02"},
+    {"hostname": "leaf03"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}]'
+- command: vlan show --vlanName='vlan4001 vlan13' --columns=hostname --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: vlan show cumulus
+  output: '[{"hostname": "exit01"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "exit02"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "exit02"}, {"hostname": "leaf01"}, {"hostname": "exit01"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf02"}, {"hostname": "leaf04"}]'
+- command: vlan show --state='suspended' --columns=hostname --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: vlan show cumulus
+  output: '[]'
+- command: vlan show --state='active' --columns=hostname --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: vlan show cumulus
+  output: '[{"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname": "leaf02"},
+    {"hostname": "leaf01"}, {"hostname": "exit01"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf03"},
+    {"hostname": "exit02"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}]'
+- command: vlan show --state='boombah' --columns=hostname --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: vlan show cumulus
+  output: '[]'

@@ -20,9 +20,11 @@ class VlanCmd(SqCommand):
 
     @command('show')
     @argument("vlan", description="Space separated list of vlan IDs to show")
+    @argument('vlanName',
+              description="Space separated list of VLAN names to show")
     @argument("state", description="State of VLAN to query",
               choices=['active', 'suspended'])
-    def show(self, vlan: str = '', state: str = ''):
+    def show(self, vlan: str = '', vlanName: str = '', state: str = ''):
         """
         Show vlan info
         """
@@ -36,7 +38,8 @@ class VlanCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.sqobj.get(hostname=self.hostname, vlan=vlan.split(), state=state,
+        df = self.sqobj.get(hostname=self.hostname, vlan=vlan.split(),
+                            state=state, vlanName=vlanName.split(),
                             columns=self.columns, namespace=self.namespace)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
