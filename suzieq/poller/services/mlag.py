@@ -81,7 +81,7 @@ class MlagService(Service):
                 lambda x: x not in mlagSinglePorts and x not in mlagErrorPorts,
                 mlagDualPorts))
 
-            entry['peerAddress'] = entry['peerAddress'][0]
+            entry['peerAddress'] = entry.get('peerAddress', [])[0]
             entry['mlagDualPortsList'] = mlagDualPorts
             entry['mlagDualPortsCnt'] = len(mlagDualPorts)
             entry['mlagSinglePortsList'] = mlagSinglePorts
