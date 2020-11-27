@@ -7,6 +7,7 @@ There have a been a bunch of improvements in data gathering and making them cons
 - Pager support within the CLI for longer entries
 - Support for partial command specification. int sh completes to interface show
 - Support for EVPN routes for EOS
+- Path enhanced to support tracing from first hop switch and support for trunking ports
 - Improved interface assert: match MTU, VLAN set, PVID, speed, IP address
 - Improved OSPF assert, ignore admin down interfaces
 - Markdown format output in both CLI and REST
