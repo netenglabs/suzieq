@@ -215,6 +215,10 @@ class InterfaceService(Service):
             if entry['type'] is None:
                 continue
 
+            if entry['type'] == 'virtual-switch':
+                # TODO: Handle this properly
+                continue
+
             if not entry_dict[entry['ifname']]:
                 entry_dict[entry['ifname']] = entry
 
@@ -226,11 +230,12 @@ class InterfaceService(Service):
             if entry['type']:
                 entry['type'] = entry['type'].lower()
 
-            ts = get_timestamp_from_junos_time(
-                entry['statusChangeTimestamp'], raw_data[0]['timestamp']/1000)
-            entry['statusChangeTimestamp'] = int(ts)
+            if 'statusChangeTimestamp' in entry:
+                ts = get_timestamp_from_junos_time(
+                    entry['statusChangeTimestamp'], raw_data[0]['timestamp']/1000)
+                entry['statusChangeTimestamp'] = int(ts)
 
-            if entry['speed']:
+            if entry.get('speed', ''):
                 if entry['speed'].endswith('mbps'):
                     entry['speed'] = int(entry['speed'].split('mb')[0])
                 elif entry['speed'].endswith('Gbps'):
