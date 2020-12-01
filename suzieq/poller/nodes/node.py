@@ -392,6 +392,8 @@ class Node(object):
                         devtype = 'junos-mx'
                     elif 'qfx' in model.group(1):
                         devtype = 'junos-qfx'
+                    elif 'ex' in model.group(1):
+                        devtype = 'junos-ex'
                 if not devtype:
                     devtype = "junos"
             elif "NX-OS" in data:
@@ -978,7 +980,7 @@ class JunosNode(Node):
             data = output[0]["data"]
             try:
                 jdata = json.loads(data.replace('\n', '').strip())
-                if self.devtype == 'junos-qfx':
+                if self.devtype == 'junos-qfx' or 'juniper-ex':
                     jdata = jdata['multi-routing-engine-results'][0]['multi-routing-engine-item'][0]
 
                 timestr = jdata['system-uptime-information'][0]['system-booted-time'][0]['time-length'][0]['attributes']

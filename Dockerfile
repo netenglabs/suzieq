@@ -1,4 +1,4 @@
-FROM python:3.7.7-slim-buster AS compiler
+FROM python:3.7.9-slim-buster AS compiler
 
 ENV PATH=/root/.local/bin:$PATH
 ENV PYTHONPATH=/root/.local/lib
@@ -36,5 +36,5 @@ ENTRYPOINT ["/bin/bash"]
 # USER 1001
 
 LABEL name=suzieq
-LABEL version=0.6.0
+LABEL version=0.7.0
 LABEL description="Network Observability Tool"
