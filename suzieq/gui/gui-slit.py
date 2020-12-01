@@ -1,6 +1,9 @@
 from suzieq.sqobjects import *
 import streamlit as st
 import pandas as pd
+from PIL import Image
+import altair as alt
+
 
 # df['prefix'] = df.prefix.astype(str)
 
@@ -11,6 +14,18 @@ def get_df(sqobject, **kwargs):
     df = sqobject(view=view).get(**kwargs)
     if not (columns == ['all'] or columns == ['default']):
         return df[columns]
+    return df
+
+
+def summarize_df(sqobject, **kwargs):
+    view = kwargs.pop('view', 'latest')
+    df = sqobject(view=view).summarize(**kwargs)
+    return df
+
+
+def unique_df(sqobject, **kwargs):
+    view = kwargs.pop('view', 'latest')
+    df = sqobject().unique(**kwargs)
     return df
 
 
@@ -90,10 +105,21 @@ def sidebar(table_values):
 
     return table, view, filter, columns
 
+
 def _main():
 
-    st.title('Suzieq')
+    title_container = st.beta_container()
+    col1, col2 = st.beta_columns([1, 20])
+    image = Image.open('/home/ddutt/Pictures/Suzieq-logo-2.jpg')
+    with title_container:
+        with col1:
+            st.image(image, width=64, use_column_width=False)
+        with col2:
+            st.markdown('<h1 style="color: purple;">Suzieq</h1>',
+                        unsafe_allow_html=True)
+
     _max_width_()
+    summarized = unique = False
 
     sqobj = {
         'address': address.AddressObj,
@@ -104,7 +130,8 @@ def _main():
         'lldp': lldp.LldpObj,
         'macs': macs.MacsObj,
         'ospf': ospf.OspfObj,
-        'routes': routes.RoutesObj
+        'routes': routes.RoutesObj,
+        'vlan': vlan.VlanObj
     }
 
     (table, view, filter, columns) = sidebar(sqobj.keys())
@@ -115,18 +142,52 @@ def _main():
             df1 = df.query(filter)
         else:
             df1 = df
+
+    if not df1.empty:
         st.write(f'<h2>{table} View</h2>', unsafe_allow_html=True)
-        clicked = st.button('Summarize')
-        convert_dict = {x: 'str' for x in df.select_dtypes('category').columns}
-        if table == 'routes':
-            df1['prefix'] = df1.prefix.astype(str)
-        elif table == 'macs':
-            df1.drop(columns=['mackey'], inplace=True)
-        st.dataframe(data=style(df1.astype(convert_dict), table),
-                     height=600, width=2500)
-        st.sidebar.subheader(f'{table} column names')
-        st.sidebar.table(tables.TablesObj().describe(
-            table=table).style.hide_index())
+        if df.shape[0] > 256:
+            st.write(
+                'First 256 rows only, use query to look for more specific info')
+
+        buttons = st.beta_container()
+        col1, col2, col3 = st.beta_columns([2, 6, 10])
+        with buttons:
+            with col1:
+                placeholder1 = st.empty()
+                clicked = placeholder1.button('Summarize')
+            with col2:
+                placeholder3 = st.empty()
+                uniq_clicked = placeholder3.selectbox(
+                    'Unique', options=['-'] + df.columns.tolist())
+
+        if clicked and not summarized:
+            df1 = summarize_df(sqobj[table], view=view)
+            summarized = True
+            clicked = placeholder1.button('Unsummarize')
+        elif clicked == 'Unsummarize' and summarized:
+            summarized = True
+            clicked = placeholder1.button('Summarize')
+
+        if uniq_clicked != '-' and not unique:
+            uniq_df = unique_df(sqobj[table], columns=[uniq_clicked])
+            chart = alt.Chart(uniq_df).mark_bar(color='purple').encode(
+                y=uniq_clicked, x='count')
+            with buttons:
+                st.altair_chart(chart)
+
+        expander = st.beta_expander('Result', expanded=True)
+        with expander:
+            convert_dict = {
+                x: 'str' for x in df.select_dtypes('category').columns}
+            st.dataframe(data=style(df1.head(256).astype(convert_dict), table),
+                         height=600, width=2500)
+            st.sidebar.subheader(f'{table} column names')
+            st.sidebar.table(tables.TablesObj().describe(
+                table=table).style.hide_index())
+    else:
+        expander = st.beta_expander('Result', expanded=True)
+        with expander:
+            st.markdown('<h2>No Data from query</h2>', unsafe_allow_html=True)
 
 
 if __name__ == '__main__':
