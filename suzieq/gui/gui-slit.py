@@ -82,6 +82,8 @@ def _max_width_():
 def sidebar(table_values, prev_table):
     """Configure sidebar"""
 
+    namespace = st.sidebar.text_input('Namespace', value='')
+    hostname = st.sidebar.text_input('Hostname', value='')
     table = st.sidebar.selectbox(
         'Select Table to View', tuple(table_values))
     view = st.sidebar.radio("View of Data", ('latest', 'all'))
@@ -102,7 +104,7 @@ def sidebar(table_values, prev_table):
     if columns == 'all':
         columns = '*'
 
-    return (table, view, query, columns)
+    return (namespace, hostname, table, view, query, columns)
 
 
 def _main():
@@ -137,7 +139,8 @@ def _main():
         'vlan': vlan.VlanObj
     }
 
-    (table, view, query_str, columns) = sidebar(sqobj.keys(), state.prev_table)
+    (namespace, hostname, table,
+     view, query_str, columns) = sidebar(sqobj.keys(), state.prev_table)
 
     if state.prev_table != table:
         state.summarized = False
@@ -146,8 +149,10 @@ def _main():
         state.prev_table = table
         state.clear_query = True
 
-    df = get_df(sqobj[table], view=view, columns=columns) \
+    df = get_df(sqobj[table], namespace=namespace.split(), hostname=hostname.split(),
+                view=view, columns=columns) \
         .reset_index(drop=True)
+
     if not df.empty:
         if query_str:
             df1 = df.query(query_str)
@@ -178,7 +183,8 @@ def _main():
         if clicked:
 
             if not state.summarized:
-                summ_df = summarize_df(sqobj[table], view=view)
+                summ_df = summarize_df(sqobj[table], namespace=namespace.split(),
+                                       hostname=hostname.split(), view=view)
                 state.summarized = True
                 state.summ_key += 1
                 state.summ_button_text = 'Unsummarize'
@@ -190,7 +196,8 @@ def _main():
                 state.summ_button_text = 'Summarize'
                 placeholder1.button(state.summ_button_text, key=state.summ_key)
         elif state.summarized:
-            summ_df = summarize_df(sqobj[table], view=view)
+            summ_df = summarize_df(sqobj[table], namespace=namespace.split(),
+                                   hostname=hostname.split(), view=view)
             state.summarized = True
             state.summ_button_text = 'Unsummarize'
 
@@ -202,7 +209,8 @@ def _main():
         scol1, scol2 = st.beta_columns(2)
 
         if uniq_clicked != '-':
-            uniq_df = unique_df(sqobj[table], columns=[uniq_clicked])
+            uniq_df = unique_df(sqobj[table], namespace=namespace.split(),
+                                hostname=hostname.split(), columns=[uniq_clicked])
         else:
             uniq_df = pd.DataFrame()
 
@@ -217,7 +225,7 @@ def _main():
                                       title=f'{uniq_clicked} Distribution') \
                         .mark_bar(color='purple',
                                   tooltip=True) \
-                        .encode(y=f'{uniq_clicked}:N', x='# commentunt')
+                        .encode(y=f'{uniq_clicked}:N', x='count')
                     st.altair_chart(chart)
 
         expander = st.beta_expander('Result', expanded=True)
