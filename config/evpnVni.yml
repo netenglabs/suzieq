@@ -74,6 +74,9 @@ apply:
         "_entryType: _entryType?|remote",
         ]'
 
+  junos-ex:
+    copy: junos-qfx
+
   nxos:
     version: all
     command:
@@ -89,7 +92,7 @@ apply:
         "_entryType: _entryType?|VNI",
         ]'
 
-      - command: show nve interface nve 1 | json-pretty
+      - command: show nve interface nve 1 | json
         normalize: 'TABLE_nve_if/ROW_nve_if/*?/[
         "primary-ip: priVtepIp",
         "encap-type: encapType",

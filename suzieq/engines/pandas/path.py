@@ -28,7 +28,8 @@ class PathObj(SqEngineObject):
                                     .explode('ipAddressList') \
                                     .fillna({'ipAddressList': ''}) \
                                     .explode('ip6AddressList') \
-                                    .fillna({'ip6AddressList': ''})
+                                    .fillna({'ip6AddressList': ''}) \
+                                    .reset_index(drop=True)
             if self._if_df.empty:
                 raise EmptyDataframeError
         except (EmptyDataframeError, KeyError):
@@ -37,7 +38,8 @@ class PathObj(SqEngineObject):
 
         try:
             self._rdf = routes.RoutesObj(context=self.ctxt) \
-                              .lpm(namespace=namespace, address=dest)
+                              .lpm(namespace=namespace, address=dest) \
+                              .reset_index(drop=True)
             if self._rdf.empty:
                 raise EmptyDataframeError
         except (KeyError, EmptyDataframeError):
@@ -59,7 +61,8 @@ class PathObj(SqEngineObject):
             .drop(columns=['ifname']) \
             .rename(columns={'master': 'vrf'}) \
             .replace({'vrf': {'': 'default'}}) \
-            .query('state != "failed"')
+            .query('state != "failed"') \
+            .reset_index(drop=True)
 
         self._macsobj = macs.MacsObj(context=self.ctxt, namespace=namespace)
 
@@ -197,7 +200,16 @@ class PathObj(SqEngineObject):
                 idf = self._if_df.query(
                     # Row 0 is the index,row 1 contains the real data
                     'hostname=="{}" and ifname=="{}"'.format(
-                        row[1]['hostname'], row[1]['oif']))
+                        row[1]['hostname'], row[1]['oif'])).copy()
+                # We need to replace the VLAN in the if_df with what
+                # is obtained from the MAC because of trunk ports.
+                if idf.empty:
+                    continue
+                idf.at[idf.index, 'vlan'] = row[1].vlan
+                if (idf.master == 'bridge').all():
+                    idf.at[idf.index, 'ipAddressList'] = ip
+                    # Assuming the VRF is identical across multiple entries
+                    idf.at[idf.index, 'master'] = rslt_df.iloc[0].vrf
                 if fhr_df.empty:
                     fhr_df = idf
                 else:
@@ -400,8 +412,9 @@ class PathObj(SqEngineObject):
                 addr = nhip + '/'
                 df = self._if_df.query(
                     f'macaddr=="{arpdf.iloc[0].macaddr}" '
-                    f'and type != "bond_slave" and '
-                    f'ipAddressList.str.startswith("{addr}")')
+                    f'and type != "bond_slave" '
+                    f'and state != "down" '
+                    f'and ipAddressList.str.startswith("{addr}")')
                 if df.empty:
                     # In case of L2 interfaces as the nexthop, there'll be
                     # no IP address on the interface with matching NHIP.
@@ -420,7 +433,7 @@ class PathObj(SqEngineObject):
             # server. If so, find FHR to get the real connected dev
             if device in self.src_device:
                 check_fhr = self.source
-            elif is_l2 and (df.iloc[0].hostname == self.dest_device):
+            elif is_l2 and (df.iloc[0].hostname in self.dest_device):
                 check_fhr = self.dest
             else:
                 check_fhr = None
@@ -429,7 +442,7 @@ class PathObj(SqEngineObject):
                 fhr_df = self._find_fhr_df(check_fhr)
                 if not fhr_df.empty:
                     fhr_hosts = fhr_df['hostname'].tolist()
-                    if check_fhr != self.dest or device not in fhr_hosts:
+                    if check_fhr != self.dest and device not in fhr_hosts:
                         # Avoid looping everytime we hit the dest device
                         # We only need to do it once
                         df = df.query(f'hostname.isin({fhr_hosts})')
@@ -476,9 +489,8 @@ class PathObj(SqEngineObject):
         self.namespace = namespaces[0]
         src = kwargs.get("source", None)
         dest = kwargs.get("dest", None)
-        dvrf = kwargs.get("vrf", "default")
-        if not dvrf:
-            dvrf = 'default'
+        dvrf = kwargs.get("vrf", "")
+
         if not src or not dest:
             raise AttributeError("Must specify trace source and dest")
 
@@ -498,7 +510,7 @@ class PathObj(SqEngineObject):
                 "iif": item["ifname"],
                 "mtu": item["mtu"],
                 "overlay": '',
-                "vrf": dvrf,
+                "vrf": item['master'],
                 "is_l2": self.is_l2,
                 "nhip": self.dest,  # Greased to handle a pure l2 path
                 "overlay_nhip": '',
@@ -506,6 +518,10 @@ class PathObj(SqEngineObject):
                 "timestamp": item["timestamp"],
             }
         src_device_iifs = devices_iifs
+        if not dvrf:
+            dvrf = item['master']
+        if not dvrf:
+            dvrf = "default"
 
         dest_device_iifs = OrderedDict()
         for i in range(len(self._dest_df)):
@@ -596,7 +612,9 @@ class PathObj(SqEngineObject):
                 if not ndst:
                     ndst = dest
 
-                if end_overlay and devices_iifs[devkey]['overlay_nhip']:
+                if not end_overlay:
+                    ivrf = 'default'
+                elif end_overlay and devices_iifs[devkey]['overlay_nhip']:
                     ivrf = self._get_vrf(device, '',
                                          devices_iifs[devkey]['overlay_nhip'])
                     if not ivrf:

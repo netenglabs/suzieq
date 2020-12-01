@@ -49,9 +49,9 @@ There are six major areas that Suzieq development can be broken down into.
 
 Given the categories, here is a rough list of tasks we will be tackling. We welcome assistance with any of these tasks. We intend to work our way roughly down this list and so tasks later down the line will be tend to, in general, be worked on later. Some of these tasks are shorter in time and complexity and some are longer. We expect to add more items.
 
-* Anonymizing data -- almost done, needs tests, docs, and moved to master
-* Junos support for qfx/mx
-* Building a reference topology to test all NOS
+* ~~Anonymizing data -- almost done, needs tests, docs, and moved to master~~
+* ~~Junos support for qfx/mx~~
+* Building a reference topology to test all NOS (75% done)
 * Topology as a first class property
   * draw a map for physical and logical layers, including routing protocols
   * neighbor discovery
@@ -60,8 +60,8 @@ Given the categories, here is a rough list of tasks we will be tackling. We welc
       everything that must be polled by suzieq
 * support augmenting columns (like adding peerHostname in OSPF when all we have is peerIP) 
 * change gen_schema to ignore _ fields
-* make column manipulating at sq_object
-* Schema evolution and versioning to make suzieq less brittle to changes in the schema
+* ~~make column manipulation at higher level than engine.py~~
+* ~~Schema evolution and versioning to make suzieq less brittle to changes in the schema~~
 * Network wide summarize to take advantage of data across all commands
 * Web-based GUI
   * Do you have a framework you'd like the GUI to use? 
@@ -69,7 +69,7 @@ Given the categories, here is a rough list of tasks we will be tackling. We welc
   * caching and performance
 * suzieq as a daemon
   * do we need suzieq as a daemon -- what are the use cases
-* REST API
+* ~~REST API~~
 * Create tags or other ways to group  in a hierarchical way
   * possibly reuse ansible grouping
 * Kubernetes
@@ -89,7 +89,7 @@ Given the categories, here is a rough list of tasks we will be tackling. We welc
   * is this only in the GUI?
 * Great expectations or some other way of better verifying data output <https://docs.greatexpectations.io/en/latest/>
 * Better database abstractions so that we can more easily add new databases
-* Support for SONIC
+* ~~Support for SONIC~~
   * This includes SONIC-specific stuff only. Linux-specific and FRR are already supported.
 * Support for Cisco's CSR1000
 * Support for Cisco's IOS-XR
@@ -100,7 +100,7 @@ Given the categories, here is a rough list of tasks we will be tackling. We welc
 * BMP to collect BGP data for realtime BGP analysis
 * Understand BGP routing policy and route maps / etc
 * ISIS
-* Supporting 1M+ routes per device
+* ~~Supporting 1M+ routes per device~~
 * Make asserts more modular and customizable
   * Asserts are ways to build health checks to assure your network is behaving as expected. We think asserts are a powerful tool in Suzieq's arsenal. 
   * If you have ideas on what asserts you'd like or what problems you'd like asserts to solve, please file an issue so that we can gather more ideas on how to make asserts great.
