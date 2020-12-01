@@ -91,8 +91,10 @@ def sidebar(table_values, prev_table):
     # columns = st.sidebar.text_input(
     #    "Columns to View (default, all or space separated list)",
     #    value='default')
+
     columns = st.sidebar.multiselect('View columns',
-                                     ['default', 'all'] + fields.name.tolist(),
+                                     ['default', 'all'] +
+                                     fields.name.tolist(),
                                      default='default'
                                      )
 
@@ -103,6 +105,12 @@ def sidebar(table_values, prev_table):
 
     if columns == 'all':
         columns = '*'
+
+    col_expander = st.sidebar.beta_expander('Table', expanded=False)
+    with col_expander:
+        st.sidebar.subheader(f'{table} column names')
+        st.sidebar.table(tables.TablesObj().describe(
+            table=table).style.hide_index())
 
     return (namespace, hostname, table, view, query, columns)
 
@@ -228,17 +236,14 @@ def _main():
                         .encode(y=f'{uniq_clicked}:N', x='count')
                     st.altair_chart(chart)
 
-        expander = st.beta_expander('Result', expanded=True)
+        expander = st.beta_expander('Table', expanded=True)
         with expander:
             convert_dict = {
                 x: 'str' for x in df.select_dtypes('category').columns}
             st.dataframe(data=style(df1.head(256).astype(convert_dict), table),
                          height=600, width=2500)
-            st.sidebar.subheader(f'{table} column names')
-            st.sidebar.table(tables.TablesObj().describe(
-                table=table).style.hide_index())
     else:
-        expander = st.beta_expander('Result', expanded=True)
+        expander = st.beta_expander('Table', expanded=True)
         with expander:
             st.markdown('<h2>No Data from query</h2>', unsafe_allow_html=True)
 
