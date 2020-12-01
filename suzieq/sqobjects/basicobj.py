@@ -175,7 +175,8 @@ class SqObject(object):
         if not self.ctxt.engine:
             raise AttributeError('No analysis engine specified')
 
-        return self.engine_obj.unique(**kwargs, columns=self.columns)
+        columns = kwargs.pop('columns', self.columns)
+        return self.engine_obj.unique(**kwargs, columns=columns)
 
     def analyze(self, **kwargs):
         raise NotImplementedError
