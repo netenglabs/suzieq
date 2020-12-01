@@ -3,9 +3,7 @@ import streamlit as st
 import pandas as pd
 from PIL import Image
 import altair as alt
-
-
-# df['prefix'] = df.prefix.astype(str)
+import suzieq.gui.SessionState as SessionState
 
 
 def get_df(sqobject, **kwargs):
@@ -81,7 +79,7 @@ def _max_width_():
     )
 
 
-def sidebar(table_values):
+def sidebar(table_values, prev_table):
     """Configure sidebar"""
 
     table = st.sidebar.selectbox(
@@ -95,31 +93,36 @@ def sidebar(table_values):
                                      ['default', 'all'] + fields.name.tolist(),
                                      default='default'
                                      )
-    filter = st.sidebar.text_input(
-        'Filter results with pandas query', value='')
+
+    query = st.sidebar.text_input(
+        'Filter results with pandas query', value='', key=table)
     st.sidebar.markdown(
         "[query syntax help](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.query.html)")
 
     if columns == 'all':
         columns = '*'
 
-    return table, view, filter, columns
+    return (table, view, query, columns)
 
 
 def _main():
+
+    # Retrieve data from prev session state
+    state = SessionState.get(summarized=False, unique=False,
+                             summ_button_text='Summarize', prev_table='',
+                             clear_query=False, summ_key=0)
 
     title_container = st.beta_container()
     col1, col2 = st.beta_columns([1, 20])
     image = Image.open('/home/ddutt/Pictures/Suzieq-logo-2.jpg')
     with title_container:
         with col1:
-            st.image(image, width=64, use_column_width=False)
+            st.image(image, width=64)
         with col2:
             st.markdown('<h1 style="color: purple;">Suzieq</h1>',
                         unsafe_allow_html=True)
 
     _max_width_()
-    summarized = unique = False
 
     sqobj = {
         'address': address.AddressObj,
@@ -134,17 +137,27 @@ def _main():
         'vlan': vlan.VlanObj
     }
 
-    (table, view, filter, columns) = sidebar(sqobj.keys())
-    df = get_df(sqobj[table], view=view, columns=columns)
+    (table, view, query_str, columns) = sidebar(sqobj.keys(), state.prev_table)
 
+    if state.prev_table != table:
+        state.summarized = False
+        state.unique = False
+        state.summ_button_text = 'Summarize'
+        state.prev_table = table
+        state.clear_query = True
+
+    df = get_df(sqobj[table], view=view, columns=columns) \
+        .reset_index(drop=True)
     if not df.empty:
-        if filter:
-            df1 = df.query(filter)
+        if query_str:
+            df1 = df.query(query_str)
         else:
             df1 = df
 
     if not df1.empty:
-        st.write(f'<h2>{table} View</h2>', unsafe_allow_html=True)
+        st.write(
+            f'<h2 style="color: darkblue; font-weight: bold;">{table} View</h2>',
+            unsafe_allow_html=True)
         if df.shape[0] > 256:
             st.write(
                 'First 256 rows only, use query to look for more specific info')
@@ -154,26 +167,58 @@ def _main():
         with buttons:
             with col1:
                 placeholder1 = st.empty()
-                clicked = placeholder1.button('Summarize')
+                clicked = placeholder1.button(state.summ_button_text,
+                                              key=state.summ_key)
             with col2:
                 placeholder3 = st.empty()
                 uniq_clicked = placeholder3.selectbox(
                     'Unique', options=['-'] + df.columns.tolist())
 
-        if clicked and not summarized:
-            df1 = summarize_df(sqobj[table], view=view)
-            summarized = True
-            clicked = placeholder1.button('Unsummarize')
-        elif clicked == 'Unsummarize' and summarized:
-            summarized = True
-            clicked = placeholder1.button('Summarize')
+        summ_df = pd.DataFrame()
+        if clicked:
 
-        if uniq_clicked != '-' and not unique:
+            if not state.summarized:
+                summ_df = summarize_df(sqobj[table], view=view)
+                state.summarized = True
+                state.summ_key += 1
+                state.summ_button_text = 'Unsummarize'
+                placeholder1.button(state.summ_button_text, key=state.summ_key)
+            else:
+                summ_df = pd.DataFrame()
+                state.summarized = False
+                state.summ_key += 1
+                state.summ_button_text = 'Summarize'
+                placeholder1.button(state.summ_button_text, key=state.summ_key)
+        elif state.summarized:
+            summ_df = summarize_df(sqobj[table], view=view)
+            state.summarized = True
+            state.summ_button_text = 'Unsummarize'
+
+        summary = st.beta_container()
+        dfcols = df.columns.tolist()
+        if table == 'routes':
+            dfcols.append('prefixlen')
+
+        scol1, scol2 = st.beta_columns(2)
+
+        if uniq_clicked != '-':
             uniq_df = unique_df(sqobj[table], columns=[uniq_clicked])
-            chart = alt.Chart(uniq_df).mark_bar(color='purple').encode(
-                y=uniq_clicked, x='count')
-            with buttons:
-                st.altair_chart(chart)
+        else:
+            uniq_df = pd.DataFrame()
+
+        with summary:
+            if not summ_df.empty:
+                with scol1:
+                    st.dataframe(data=summ_df)
+
+            if not uniq_df.empty:
+                with scol2:
+                    chart = alt.Chart(uniq_df,
+                                      title=f'{uniq_clicked} Distribution') \
+                        .mark_bar(color='purple',
+                                  tooltip=True) \
+                        .encode(y=f'{uniq_clicked}:N', x='# commentunt')
+                    st.altair_chart(chart)
 
         expander = st.beta_expander('Result', expanded=True)
         with expander:
