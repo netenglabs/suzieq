@@ -6,6 +6,7 @@ import altair as alt
 import suzieq.gui.SessionState as SessionState
 
 
+@st.cache
 def get_df(sqobject, **kwargs):
     view = kwargs.pop('view', 'latest')
     columns = kwargs.pop('columns', 'default')
@@ -115,6 +116,18 @@ def sidebar(table_values, prev_table):
                                      fields.name.tolist(),
                                      default='default'
                                      )
+    if 'default' in columns or 'all' in columns:
+        col_sel_val = True
+    else:
+        col_sel_val = False
+
+    col_ok = st.sidebar.checkbox('Column Selection Done', value=col_sel_val)
+    if not col_ok:
+        columns = ['default']
+
+    if not columns:
+        columns = ['default']
+
     if ('default' in columns or 'all' in columns) and len(columns) != 1:
         st.error('Cannot select default/all with any other columns')
         st.stop()
@@ -165,12 +178,12 @@ def _main():
         'device': device.DeviceObj,
         'evpnVni': evpnVni.EvpnvniObj,
         'fs': fs.FsObj,
-        'interfaces': interfaces.IfObj,
+        'interface': interfaces.IfObj,
         'lldp': lldp.LldpObj,
-        'macs': macs.MacsObj,
+        'mac': macs.MacsObj,
         'mlag': mlag.MlagObj,
         'ospf': ospf.OspfObj,
-        'routes': routes.RoutesObj,
+        'route': routes.RoutesObj,
         'vlan': vlan.VlanObj
     }
 
@@ -207,7 +220,7 @@ def _main():
             dfcols.append('prefixlen')
 
         buttons = st.beta_container()
-        col1, col2, col3 = st.beta_columns([2, 6, 10])
+        col1, mid1, col2, mid2, col3 = st.beta_columns([2, 1, 6, 1, 10])
         with buttons:
             with col1:
                 placeholder1 = st.empty()
@@ -216,7 +229,7 @@ def _main():
             with col2:
                 placeholder2 = st.empty()
                 uniq_clicked = placeholder2.selectbox(
-                    'Unique', options=['-'] + dfcols)
+                    'Distribution Count', options=['-'] + dfcols)
 
             if table in ['interface', 'ospf', 'bgp', 'evpnVni']:
                 with col3:
