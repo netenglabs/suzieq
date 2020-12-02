@@ -49,10 +49,8 @@ def color_row(row, **kwargs):
 
 def color_element_red(value, **kwargs):
     fieldval = kwargs.pop("fieldval", "down")
-    if value in fieldval:
-        return "color: green"
-    else:
-        return "color: red"
+    if value not in fieldval:
+        return "background-color: red; color: white;"
 
 
 def style(df, table, is_assert=False):
@@ -270,7 +268,7 @@ def _main():
             validate_expander = st.beta_expander('Assert', expanded=True)
             with validate_expander:
                 if not assert_df.empty:
-                    st.dataframe(data=style(assert_df, table, True))
+                    st.dataframe(data=assert_df)
                 elif state.validate or assert_clicked:
                     st.write('Assert passed')
 
