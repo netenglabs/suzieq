@@ -786,7 +786,7 @@ class PathObj(SqEngineObject):
         if path_df.empty:
             return pd.DataFrame()
 
-        namespace = self.namespace[0]  # Its stored as a list
+        namespace = self.namespace
         ns = {}
         ns[namespace] = {}
 
