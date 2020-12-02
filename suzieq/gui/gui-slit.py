@@ -8,9 +8,11 @@ import suzieq.gui.SessionState as SessionState
 
 def get_df(sqobject, **kwargs):
     view = kwargs.pop('view', 'latest')
-    columns = kwargs.get('columns', 'default')
-    df = sqobject(view=view).get(**kwargs)
-    if not (columns == ['all'] or columns == ['default']):
+    columns = kwargs.pop('columns', 'default')
+    if columns == ['all']:
+        columns = ['*']
+    df = sqobject(view=view).get(columns=columns, **kwargs)
+    if not (columns == ['*'] or columns == ['default']):
         return df[columns]
     return df
 
@@ -108,11 +110,17 @@ def sidebar(table_values, prev_table):
     #    "Columns to View (default, all or space separated list)",
     #    value='default')
 
-    columns = st.sidebar.multiselect('View columns',
+    columns = st.sidebar.multiselect('Pick columns',
                                      ['default', 'all'] +
                                      fields.name.tolist(),
                                      default='default'
                                      )
+    if ('default' in columns or 'all' in columns) and len(columns) != 1:
+        st.error('Cannot select default/all with any other columns')
+        st.stop()
+    elif not columns:
+        st.error('Columns cannot be empty')
+        st.stop()
 
     query = st.sidebar.text_input(
         'Filter results with pandas query', value='', key=table)
@@ -122,11 +130,10 @@ def sidebar(table_values, prev_table):
     if columns == 'all':
         columns = '*'
 
-    col_expander = st.sidebar.beta_expander('Table', expanded=False)
+    col_expander = st.sidebar.beta_expander('Column Names', expanded=False)
     with col_expander:
-        st.sidebar.subheader(f'{table} column names')
-        st.sidebar.table(tables.TablesObj().describe(
-            table=table).style.hide_index())
+        st.subheader(f'{table} column names')
+        st.table(tables.TablesObj().describe(table=table).style.hide_index())
 
     return (namespace, hostname, table, view, query, columns)
 
@@ -156,9 +163,12 @@ def _main():
         'arpnd': arpnd.ArpndObj,
         'bgp': bgp.BgpObj,
         'device': device.DeviceObj,
+        'evpnVni': evpnVni.EvpnvniObj,
+        'fs': fs.FsObj,
         'interfaces': interfaces.IfObj,
         'lldp': lldp.LldpObj,
         'macs': macs.MacsObj,
+        'mlag': mlag.MlagObj,
         'ospf': ospf.OspfObj,
         'routes': routes.RoutesObj,
         'vlan': vlan.VlanObj
@@ -192,6 +202,10 @@ def _main():
             st.write(
                 'First 256 rows only, use query to look for more specific info')
 
+        dfcols = df.columns.tolist()
+        if table == 'routes':
+            dfcols.append('prefixlen')
+
         buttons = st.beta_container()
         col1, col2, col3 = st.beta_columns([2, 6, 10])
         with buttons:
@@ -202,7 +216,7 @@ def _main():
             with col2:
                 placeholder2 = st.empty()
                 uniq_clicked = placeholder2.selectbox(
-                    'Unique', options=['-'] + df.columns.tolist())
+                    'Unique', options=['-'] + dfcols)
 
             if table in ['interface', 'ospf', 'bgp', 'evpnVni']:
                 with col3:
@@ -235,8 +249,6 @@ def _main():
 
         summary = st.beta_container()
         dfcols = df.columns.tolist()
-        if table == 'routes':
-            dfcols.append('prefixlen')
 
         scol1, scol2 = st.beta_columns(2)
 
@@ -265,7 +277,12 @@ def _main():
                     st.altair_chart(chart)
 
         if table in ['interface', 'ospf', 'bgp', 'evpnVni']:
-            validate_expander = st.beta_expander('Assert', expanded=True)
+            if assert_df.empty:
+                expand_assert = False
+            else:
+                expand_assert = True
+            validate_expander = st.beta_expander('Assert',
+                                                 expanded=expand_assert)
             with validate_expander:
                 if not assert_df.empty:
                     st.dataframe(data=assert_df)
