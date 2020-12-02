@@ -73,7 +73,7 @@ def style(df, table, is_assert=False):
                                  subset=pd.IndexSlice[:, ['adjState']])
     elif table == "routes" and 'prefix' in df.columns:
         return df.style.apply(color_row, axis=1, fieldval='0.0.0.0/0',
-                              field='prefix', color='yellow')
+                              field='prefix')
     elif table == "interfaces" and 'state' in df.columns:
         return df.style.applymap(color_element_red, fieldval=["up"],
                                  subset=pd.IndexSlice[:, ['state']])
