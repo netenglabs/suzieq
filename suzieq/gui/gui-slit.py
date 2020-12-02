@@ -15,15 +15,23 @@ def get_df(sqobject, **kwargs):
     return df
 
 
-def summarize_df(sqobject, **kwargs):
+def run_summarize(sqobject, **kwargs):
     view = kwargs.pop('view', 'latest')
     df = sqobject(view=view).summarize(**kwargs)
     return df
 
 
-def unique_df(sqobject, **kwargs):
-    view = kwargs.pop('view', 'latest')
+def run_unique(sqobject, **kwargs):
+    kwargs.pop('view', 'latest')
     df = sqobject().unique(**kwargs)
+    return df
+
+
+def run_assert(sqobject, **kwargs):
+    kwargs.pop('view', 'latest')
+    df = sqobject().aver(status="fail", **kwargs)
+    if not df.empty:
+        df.rename(columns={'assert': 'status'}, inplace=True, errors='ignore')
     return df
 
 
@@ -31,9 +39,10 @@ def color_row(row, **kwargs):
     """Color the appropriate column red if the status has failed"""
     fieldval = kwargs.pop("fieldval", "down")
     field = kwargs.pop("field", "state")
-    color = kwargs.pop("color", "red")
+    color = kwargs.pop("color", "black")
+    bgcolor = kwargs.pop("bgcolor", "yellow")
     if row[field] == fieldval:
-        return [f"background-color: {color}"]*len(row)
+        return [f"background-color: {bgcolor}; color: {color}"]*len(row)
     else:
         return [""]*len(row)
 
@@ -46,8 +55,17 @@ def color_element_red(value, **kwargs):
         return "color: red"
 
 
-def style(df, table):
+def style(df, table, is_assert=False):
     """Apply appropriate styling for the dataframe based on the table"""
+
+    if is_assert:
+        if not df.empty:
+            return df.style.apply(color_row, axis=1, field='status',
+                                  fieldval='fail', bgcolor='darkred',
+                                  color='white')
+        else:
+            return df
+
     if table == 'bgp' and 'state' in df.columns:
         return df.style.applymap(color_element_red, fieldval=['Established'],
                                  subset=pd.IndexSlice[:, ['state']])
@@ -120,6 +138,7 @@ def _main():
     # Retrieve data from prev session state
     state = SessionState.get(summarized=False, unique=False,
                              summ_button_text='Summarize', prev_table='',
+                             validate=False,
                              clear_query=False, summ_key=0)
 
     title_container = st.beta_container()
@@ -153,6 +172,7 @@ def _main():
     if state.prev_table != table:
         state.summarized = False
         state.unique = False
+        state.validate = False
         state.summ_button_text = 'Summarize'
         state.prev_table = table
         state.clear_query = True
@@ -161,11 +181,10 @@ def _main():
                 view=view, columns=columns) \
         .reset_index(drop=True)
 
+    df1 = df
     if not df.empty:
         if query_str:
             df1 = df.query(query_str)
-        else:
-            df1 = df
 
     if not df1.empty:
         st.write(
@@ -183,16 +202,23 @@ def _main():
                 clicked = placeholder1.button(state.summ_button_text,
                                               key=state.summ_key)
             with col2:
-                placeholder3 = st.empty()
-                uniq_clicked = placeholder3.selectbox(
+                placeholder2 = st.empty()
+                uniq_clicked = placeholder2.selectbox(
                     'Unique', options=['-'] + df.columns.tolist())
 
-        summ_df = pd.DataFrame()
+            if table in ['interface', 'ospf', 'bgp', 'evpnVni']:
+                with col3:
+                    placeholder3 = st.empty()
+                    assert_clicked = placeholder3.button('Assert')
+            else:
+                assert_clicked = False
+
+        summ_df = assert_df = pd.DataFrame()
         if clicked:
 
             if not state.summarized:
-                summ_df = summarize_df(sqobj[table], namespace=namespace.split(),
-                                       hostname=hostname.split(), view=view)
+                summ_df = run_summarize(sqobj[table], namespace=namespace.split(),
+                                        hostname=hostname.split(), view=view)
                 state.summarized = True
                 state.summ_key += 1
                 state.summ_button_text = 'Unsummarize'
@@ -204,8 +230,8 @@ def _main():
                 state.summ_button_text = 'Summarize'
                 placeholder1.button(state.summ_button_text, key=state.summ_key)
         elif state.summarized:
-            summ_df = summarize_df(sqobj[table], namespace=namespace.split(),
-                                   hostname=hostname.split(), view=view)
+            summ_df = run_summarize(sqobj[table], namespace=namespace.split(),
+                                    hostname=hostname.split(), view=view)
             state.summarized = True
             state.summ_button_text = 'Unsummarize'
 
@@ -217,10 +243,14 @@ def _main():
         scol1, scol2 = st.beta_columns(2)
 
         if uniq_clicked != '-':
-            uniq_df = unique_df(sqobj[table], namespace=namespace.split(),
-                                hostname=hostname.split(), columns=[uniq_clicked])
+            uniq_df = run_unique(sqobj[table], namespace=namespace.split(),
+                                 hostname=hostname.split(), columns=[uniq_clicked])
         else:
             uniq_df = pd.DataFrame()
+
+        if assert_clicked or state.validate:
+            assert_df = run_assert(sqobj[table], namespace=namespace.split())
+            state.validate = True
 
         with summary:
             if not summ_df.empty:
@@ -235,6 +265,14 @@ def _main():
                                   tooltip=True) \
                         .encode(y=f'{uniq_clicked}:N', x='count')
                     st.altair_chart(chart)
+
+        if table in ['interface', 'ospf', 'bgp', 'evpnVni']:
+            validate_expander = st.beta_expander('Assert', expanded=True)
+            with validate_expander:
+                if not assert_df.empty:
+                    st.dataframe(data=style(assert_df, table, True))
+                elif state.validate or assert_clicked:
+                    st.write('Assert passed')
 
         expander = st.beta_expander('Table', expanded=True)
         with expander:
