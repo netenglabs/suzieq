@@ -1,7 +1,7 @@
 # Suzieq
 
 **Suzieq** is both a framework and an application using that framework, that is focused on 
-**improving the observability of your network**.  We define observaility as the ability of a system to 
+**improving the observability of your network**.  We define observability as the ability of a system to 
 answer either trivial or complex questions that you pose as you go about operating your network. How easily 
 you can answer your questions is a measure of how good the system's observability is. A good observable 
 system goes well beyond monitoring and alerting. Suzieq is primarily meant for use by network engineers and designers.
