@@ -402,7 +402,7 @@ class Node(object):
                 devtype = "sonic"
 
             if devtype.startswith("junos"):
-                hmatch = re.search(r'\nHostname:\s+(\S+)\n', data)
+                hmatch = re.search(r'Hostname:\s+(\S+)\n', data)
                 if hmatch:
                     hostname = hmatch.group(1)
             elif devtype == "nxos":
