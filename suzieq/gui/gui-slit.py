@@ -136,6 +136,12 @@ def sidebar(table_values, prev_table):
     if not columns:
         columns = ['default']
 
+    if table in ['interfaces', 'ospf', 'bgp', 'evpnVni']:
+        assert_clicked = st.sidebar.checkbox(
+            'Check Table for Errors', value=False)
+    else:
+        assert_clicked = False
+
     if not col_ok:
         st.stop()
     if ('default' in columns or 'all' in columns) and len(columns) != 1:
@@ -160,7 +166,7 @@ def sidebar(table_values, prev_table):
                  .query('name != "sqvers"')
                  .reset_index(drop=True).style)
 
-    return (namespace, hostname, table, view, query, columns)
+    return (namespace, hostname, table, view, query, assert_clicked, columns)
 
 
 def _hide_index():
@@ -217,12 +223,9 @@ def print_title():
 def _main():
 
     # Retrieve data from prev session state
-    state = SessionState.get(summarized=False, unique=False,
-                             summ_button_text='Summarize', prev_table='',
-                             validate=False,
-                             clear_query=False, summ_key=0)
+    state = SessionState.get(prev_table='', clear_query=False)
 
-    _max_width_()
+    st.set_page_config(layout="wide")
     _hide_index()
     print_title()
 
@@ -244,18 +247,15 @@ def _main():
         'vlan': vlan.VlanObj
     }
 
-    (namespace, hostname, table,
-     view, query_str, columns) = sidebar(sqobj.keys(), state.prev_table)
+    (namespace, hostname, table, view,
+     query_str, assert_clicked, columns) = sidebar(sqobj.keys(), state.prev_table)
 
     if state.prev_table != table:
-        state.summarized = False
-        state.unique = False
-        state.validate = False
-        state.summ_button_text = 'Summarize'
         state.prev_table = table
         state.clear_query = True
 
-    df = get_df(sqobj[table], namespace=namespace.split(), hostname=hostname.split(),
+    df = get_df(sqobj[table], namespace=namespace.split(),
+                hostname=hostname.split(),
                 view=view, columns=columns) \
         .reset_index(drop=True)
 
@@ -279,49 +279,11 @@ def _main():
         dfcols = sorted((filter(lambda x: x not in ['index', 'sqvers'],
                                 dfcols)))
 
-        buttons = st.beta_container()
-        col1, mid1, col2, mid2, col3 = st.beta_columns([2, 1, 6, 1, 10])
-        with buttons:
-            with col1:
-                placeholder1 = st.empty()
-                clicked = placeholder1.button(state.summ_button_text,
-                                              key=state.summ_key)
-            with col2:
-                placeholder2 = st.empty()
-                uniq_clicked = placeholder2.selectbox(
-                    'Distribution Count', options=['-'] + dfcols)
+        uniq_clicked = st.selectbox(
+            'Distribution Count of', options=['-'] + dfcols,
+            index=dfcols.index('hostname')+1)
 
-            if table in ['interfaces', 'ospf', 'bgp', 'evpnVni']:
-                with col3:
-                    placeholder3 = st.empty()
-                    assert_clicked = placeholder3.button('Assert')
-            else:
-                assert_clicked = False
-
-        summ_df = assert_df = pd.DataFrame()
-        if clicked:
-
-            if not state.summarized:
-                summ_df = run_summarize(sqobj[table], namespace=namespace.split(),
-                                        hostname=hostname.split(), view=view)
-                state.summarized = True
-                state.summ_key += 1
-                state.summ_button_text = 'Unsummarize'
-                placeholder1.button(state.summ_button_text, key=state.summ_key)
-            else:
-                summ_df = pd.DataFrame()
-                state.summarized = False
-                state.summ_key += 1
-                state.summ_button_text = 'Summarize'
-                placeholder1.button(state.summ_button_text, key=state.summ_key)
-        elif state.summarized:
-            summ_df = run_summarize(sqobj[table], namespace=namespace.split(),
-                                    hostname=hostname.split(), view=view)
-            state.summarized = True
-            state.summ_button_text = 'Unsummarize'
-
-        # summary = st.beta_container()
-        dfcols = sorted(df.columns.tolist())
+        assert_df = pd.DataFrame()
 
         scol1, scol2 = st.beta_columns(2)
 
@@ -331,27 +293,38 @@ def _main():
         else:
             uniq_df = pd.DataFrame()
 
-        if assert_clicked or state.validate:
+        summ_df = run_summarize(sqobj[table], namespace=namespace.split(),
+                                hostname=hostname.split())
+
+        if assert_clicked:
             assert_df = run_assert(sqobj[table], namespace=namespace.split())
             state.validate = True
 
         # with summary:
         if not summ_df.empty:
             with scol1:
+                st.subheader('Summary Information')
                 st.dataframe(data=summ_df)
 
         if not uniq_df.empty:
             with scol2:
                 if uniq_df.shape[0] > 64:
                     st.warning(
-                        f'{uniq_clicked} has cardinality > 64. Not displaying')
+                        f'{uniq_clicked} has cardinality > 64. Displaying top 64')
+                    chart = alt.Chart(
+                        uniq_df.head(64),
+                        title=f'{uniq_clicked} Distribution') \
+                        .mark_bar(color='purple', tooltip=True) \
+                        .encode(y=alt.Y(f'{uniq_clicked}:N', sort='-x'),
+                                x='count')
                 else:
-                    
+
                     chart = alt.Chart(
                         uniq_df, title=f'{uniq_clicked} Distribution') \
                         .mark_bar(color='purple', tooltip=True) \
-                        .encode(y=f'{uniq_clicked}:N', x='count')
-                    st.altair_chart(chart)
+                        .encode(y=alt.Y(f'{uniq_clicked}:N', sort='-x'),
+                                x='count')
+                st.altair_chart(chart)
 
         if table in ['interfaces', 'ospf', 'bgp', 'evpnVni']:
             if assert_df.empty:
