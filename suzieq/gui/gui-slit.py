@@ -346,7 +346,7 @@ def _main():
                     st.warning(
                         f'{uniq_clicked} has cardinality > 64. Not displaying')
                 else:
-                    breakpoint()
+                    
                     chart = alt.Chart(
                         uniq_df, title=f'{uniq_clicked} Distribution') \
                         .mark_bar(color='purple', tooltip=True) \
