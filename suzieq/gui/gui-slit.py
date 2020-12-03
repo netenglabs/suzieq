@@ -4,7 +4,7 @@ import pandas as pd
 from PIL import Image
 import altair as alt
 import suzieq.gui.SessionState as SessionState
-import base64
+from suzieq.gui.guiutils import horizontal_radio, display_title, hide_st_index
 
 
 @st.cache(ttl=90)
@@ -92,20 +92,6 @@ def style(df, table, is_assert=False):
         return df.style.hide_index()
 
 
-def _max_width_():
-    max_width_str = "max-width: 2000px;"
-    st.markdown(
-        f"""
-    <style>
-    .reportview-container .main .block-container{{
-        {max_width_str}
-    }}
-    </style>
-    """,
-        unsafe_allow_html=True,
-    )
-
-
 def sidebar(table_values, prev_table):
     """Configure sidebar"""
 
@@ -168,65 +154,15 @@ def sidebar(table_values, prev_table):
     return (namespace, hostname, table, view, query, assert_clicked, columns)
 
 
-def _hide_index():
-    '''CSS to hide index'''
-    st.markdown("""
-    <style>
-    table td:nth-child(1) {
-        display: none
-    }
-    table th:nth-child(1) {
-        display: none
-    }
-    </style>
-    """, unsafe_allow_html=True)
-
-
-def print_title():
-    '''Print the logo and the heading'''
-
-    LOGO_IMAGE = 'logo-small.png'
-    st.markdown(
-        """
-        <style>
-        .container {
-            display: flex;
-        }
-        .logo-text {
-            font-weight:700 !important;
-            font-size:24px !important;
-            color: purple !important;
-            padding-top: 40px !important;
-        }
-        .logo-img {
-            width: 10%;
-            height: auto;
-            float:right;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-
-    st.markdown(
-        f"""
-        <div class="container">
-            <img class="logo-img" src="data:image/png;base64,{base64.b64encode(open(LOGO_IMAGE, "rb").read()).decode()}">
-            <h1 style='color:purple;'>Suzieq</h1>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-
 def _main():
 
     # Retrieve data from prev session state
     state = SessionState.get(prev_table='', clear_query=False)
 
     st.set_page_config(layout="wide")
-    _hide_index()
-    print_title()
+    hide_st_index()
+    display_title()
+    horizontal_radio()
 
     # TOODO: Build tables from list rather than manually
     sqobj = {
@@ -264,13 +200,6 @@ def _main():
             df1 = df.query(query_str)
 
     if not df1.empty:
-        st.write(
-            f'<h2 style="color: darkblue; font-weight: bold;">{table} View</h2>',
-            unsafe_allow_html=True)
-        if df.shape[0] > 256:
-            st.write(
-                'First 256 rows only, use query to look for more specific info')
-
         dfcols = df.columns.tolist()
         if table == 'routes':
             dfcols.append('prefixlen')
@@ -278,9 +207,20 @@ def _main():
         dfcols = sorted((filter(lambda x: x not in ['index', 'sqvers'],
                                 dfcols)))
 
-        uniq_clicked = st.selectbox(
-            'Distribution Count of', options=['-'] + dfcols,
-            index=dfcols.index('hostname')+1)
+        grid1 = st.beta_container()
+        titlecol, uniq_col = st.beta_columns(2)
+        with grid1:
+            with titlecol:
+                st.write(
+                    f'<h2 style="color: darkblue; font-weight: bold;">{table} View</h2>',
+                    unsafe_allow_html=True)
+                if df.shape[0] > 256:
+                    st.write(
+                        'First 256 rows only, use query to look for more specific info')
+            with uniq_col:
+                uniq_clicked = st.selectbox(
+                    'Distribution Count of', options=['-'] + dfcols,
+                    index=dfcols.index('hostname')+1)
 
         assert_df = pd.DataFrame()
 

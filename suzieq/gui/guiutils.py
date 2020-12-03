@@ -55,7 +55,7 @@ def display_title():
             padding-top: 40px !important;
         }
         .logo-img {
-            width: 10%;
+            width: 20%;
             height: auto;
             float:right;
         }
@@ -64,12 +64,22 @@ def display_title():
         unsafe_allow_html=True
     )
 
-    st.markdown(
-        f"""
-        <div class="container">
-            <img class="logo-img" src="data:image/png;base64,{base64.b64encode(open(LOGO_IMAGE, "rb").read()).decode()}">
-            <h1 style='color:purple;'>Suzieq</h1>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    title_container = st.beta_container()
+    title_col, mid, page_col = st.beta_columns([2, 1, 2])
+    with title_container:
+        with title_col:
+            st.markdown(
+                f"""
+                <div class="container">
+                    <img class="logo-img" src="data:image/png;base64,{base64.b64encode(open(LOGO_IMAGE, "rb").read()).decode()}">
+                    <h1 style='color:purple;'>Suzieq</h1>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+        with page_col:
+            st.text(' ')
+            st.text(' ')
+            page = st.radio('Page', ['Home', 'XNA', 'Path'])
+
+    return page
