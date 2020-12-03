@@ -137,8 +137,7 @@ def sidebar(table_values, prev_table):
         columns = ['default']
 
     if table in ['interfaces', 'ospf', 'bgp', 'evpnVni']:
-        assert_clicked = st.sidebar.checkbox(
-            'Check Table for Errors', value=False)
+        assert_clicked = st.sidebar.checkbox('Run Assert', value=False)
     else:
         assert_clicked = False
 
