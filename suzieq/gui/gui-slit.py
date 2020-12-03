@@ -4,9 +4,10 @@ import pandas as pd
 from PIL import Image
 import altair as alt
 import suzieq.gui.SessionState as SessionState
+import base64
 
 
-@st.cache
+@st.cache(ttl=90)
 def get_df(sqobject, **kwargs):
     view = kwargs.pop('view', 'latest')
     columns = kwargs.pop('columns', 'default')
@@ -27,6 +28,8 @@ def run_summarize(sqobject, **kwargs):
 def run_unique(sqobject, **kwargs):
     kwargs.pop('view', 'latest')
     df = sqobject().unique(**kwargs)
+    if not df.empty:
+        df.sort_values(by=['count'], inplace=True)
     return df
 
 
@@ -68,20 +71,25 @@ def style(df, table, is_assert=False):
             return df
 
     if table == 'bgp' and 'state' in df.columns:
-        return df.style.applymap(color_element_red, fieldval=['Established'],
-                                 subset=pd.IndexSlice[:, ['state']])
+        return df.style.hide_index() \
+            .applymap(color_element_red, fieldval=['Established'],
+                      subset=pd.IndexSlice[:, ['state']])
     elif table == 'ospf' and 'adjState' in df.columns:
-        return df.style.applymap(color_element_red,
-                                 fieldval=["full", "passive"],
-                                 subset=pd.IndexSlice[:, ['adjState']])
+        return df.style.hide_index() \
+            .applymap(color_element_red,
+                      fieldval=["full", "passive"],
+                      subset=pd.IndexSlice[:, ['adjState']])
+
     elif table == "routes" and 'prefix' in df.columns:
-        return df.style.apply(color_row, axis=1, fieldval='0.0.0.0/0',
-                              field='prefix')
+        return df.style.hide_index() \
+            .apply(color_row, axis=1, fieldval='0.0.0.0/0',
+                   field='prefix')
     elif table == "interfaces" and 'state' in df.columns:
-        return df.style.applymap(color_element_red, fieldval=["up"],
+        return df.style.hide_index() \
+                       .applymap(color_element_red, fieldval=["up"],
                                  subset=pd.IndexSlice[:, ['state']])
     else:
-        return df
+        return df.style.hide_index()
 
 
 def _max_width_():
@@ -111,12 +119,12 @@ def sidebar(table_values, prev_table):
     #    "Columns to View (default, all or space separated list)",
     #    value='default')
 
+    colist = sorted((filter(lambda x: x not in ['index', 'sqvers'],
+                            fields.name.tolist())))
     columns = st.sidebar.multiselect('Pick columns',
-                                     ['default', 'all'] +
-                                     fields.name.tolist(),
-                                     default='default'
-                                     )
-    if 'default' in columns or 'all' in columns:
+                                     ['default', 'all'] + colist,
+                                     default='default')
+    if ('default' in columns or 'all' in columns) and len(columns) == 1:
         col_sel_val = True
     else:
         col_sel_val = False
@@ -128,6 +136,8 @@ def sidebar(table_values, prev_table):
     if not columns:
         columns = ['default']
 
+    if not col_ok:
+        st.stop()
     if ('default' in columns or 'all' in columns) and len(columns) != 1:
         st.error('Cannot select default/all with any other columns')
         st.stop()
@@ -136,7 +146,7 @@ def sidebar(table_values, prev_table):
         st.stop()
 
     query = st.sidebar.text_input(
-        'Filter results with pandas query', value='', key=table)
+        'Filter table show results with pandas query', value='', key=table)
     st.sidebar.markdown(
         "[query syntax help](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.query.html)")
 
@@ -146,9 +156,62 @@ def sidebar(table_values, prev_table):
     col_expander = st.sidebar.beta_expander('Column Names', expanded=False)
     with col_expander:
         st.subheader(f'{table} column names')
-        st.table(tables.TablesObj().describe(table=table).style.hide_index())
+        st.table(tables.TablesObj().describe(table=table)
+                 .query('name != "sqvers"')
+                 .reset_index(drop=True).style)
 
     return (namespace, hostname, table, view, query, columns)
+
+
+def _hide_index():
+    '''CSS to hide index'''
+    st.markdown("""
+    <style>
+    table td:nth-child(1) {
+        display: none
+    }
+    table th:nth-child(1) {
+        display: none
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+
+def print_title():
+    '''Print the logo and the heading'''
+
+    LOGO_IMAGE = 'logo-small.png'
+    st.markdown(
+        """
+        <style>
+        .container {
+            display: flex;
+        }
+        .logo-text {
+            font-weight:700 !important;
+            font-size:24px !important;
+            color: purple !important;
+            padding-top: 40px !important;
+        }
+        .logo-img {
+            width: 10%;
+            height: auto;
+            float:right;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+    st.markdown(
+        f"""
+        <div class="container">
+            <img class="logo-img" src="data:image/png;base64,{base64.b64encode(open(LOGO_IMAGE, "rb").read()).decode()}">
+            <h1 style='color:purple;'>Suzieq</h1>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
 
 def _main():
@@ -159,18 +222,11 @@ def _main():
                              validate=False,
                              clear_query=False, summ_key=0)
 
-    title_container = st.beta_container()
-    col1, col2 = st.beta_columns([1, 20])
-    image = Image.open('suzieq/gui/Suzieq-logo-2.jpg')
-    with title_container:
-        with col1:
-            st.image(image, width=64)
-        with col2:
-            st.markdown('<h1 style="color: purple;">Suzieq</h1>',
-                        unsafe_allow_html=True)
-
     _max_width_()
+    _hide_index()
+    print_title()
 
+    # TOODO: Build tables from list rather than manually
     sqobj = {
         'address': address.AddressObj,
         'arpnd': arpnd.ArpndObj,
@@ -178,12 +234,13 @@ def _main():
         'device': device.DeviceObj,
         'evpnVni': evpnVni.EvpnvniObj,
         'fs': fs.FsObj,
-        'interface': interfaces.IfObj,
+        'interfaces': interfaces.IfObj,
         'lldp': lldp.LldpObj,
-        'mac': macs.MacsObj,
+        'macs': macs.MacsObj,
         'mlag': mlag.MlagObj,
         'ospf': ospf.OspfObj,
-        'route': routes.RoutesObj,
+        'routes': routes.RoutesObj,
+        'sqpoller': sqPoller.SqPollerObj,
         'vlan': vlan.VlanObj
     }
 
@@ -219,6 +276,9 @@ def _main():
         if table == 'routes':
             dfcols.append('prefixlen')
 
+        dfcols = sorted((filter(lambda x: x not in ['index', 'sqvers'],
+                                dfcols)))
+
         buttons = st.beta_container()
         col1, mid1, col2, mid2, col3 = st.beta_columns([2, 1, 6, 1, 10])
         with buttons:
@@ -231,7 +291,7 @@ def _main():
                 uniq_clicked = placeholder2.selectbox(
                     'Distribution Count', options=['-'] + dfcols)
 
-            if table in ['interface', 'ospf', 'bgp', 'evpnVni']:
+            if table in ['interfaces', 'ospf', 'bgp', 'evpnVni']:
                 with col3:
                     placeholder3 = st.empty()
                     assert_clicked = placeholder3.button('Assert')
@@ -260,8 +320,8 @@ def _main():
             state.summarized = True
             state.summ_button_text = 'Unsummarize'
 
-        summary = st.beta_container()
-        dfcols = df.columns.tolist()
+        # summary = st.beta_container()
+        dfcols = sorted(df.columns.tolist())
 
         scol1, scol2 = st.beta_columns(2)
 
@@ -275,21 +335,25 @@ def _main():
             assert_df = run_assert(sqobj[table], namespace=namespace.split())
             state.validate = True
 
-        with summary:
-            if not summ_df.empty:
-                with scol1:
-                    st.dataframe(data=summ_df)
+        # with summary:
+        if not summ_df.empty:
+            with scol1:
+                st.dataframe(data=summ_df)
 
-            if not uniq_df.empty:
-                with scol2:
-                    chart = alt.Chart(uniq_df,
-                                      title=f'{uniq_clicked} Distribution') \
-                        .mark_bar(color='purple',
-                                  tooltip=True) \
+        if not uniq_df.empty:
+            with scol2:
+                if uniq_df.shape[0] > 64:
+                    st.warning(
+                        f'{uniq_clicked} has cardinality > 64. Not displaying')
+                else:
+                    breakpoint()
+                    chart = alt.Chart(
+                        uniq_df, title=f'{uniq_clicked} Distribution') \
+                        .mark_bar(color='purple', tooltip=True) \
                         .encode(y=f'{uniq_clicked}:N', x='count')
                     st.altair_chart(chart)
 
-        if table in ['interface', 'ospf', 'bgp', 'evpnVni']:
+        if table in ['interfaces', 'ospf', 'bgp', 'evpnVni']:
             if assert_df.empty:
                 expand_assert = False
             else:
