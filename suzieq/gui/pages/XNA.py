@@ -14,7 +14,7 @@ def get_title():
     return 'XNA'
 
 
-@st.cache(ttl=90)
+@st.cache(ttl=90, allow_output_mutation=True)
 def xna_get_df(sqobject, **kwargs):
     view = kwargs.pop('view', 'latest')
     columns = kwargs.pop('columns', ['default'])
@@ -51,7 +51,6 @@ def xna_run_assert(sqobject, **kwargs):
     return df
 
 
-@st.cache
 def xna_build_sqobj_table() -> dict:
     '''Build available list of suzieq table objects'''
 
@@ -68,19 +67,33 @@ def xna_build_sqobj_table() -> dict:
     return sqobj_tables
 
 
-def xna_sidebar(state: SessionState, table_vals: list):
+def xna_sidebar(state: SessionState, table_vals: list, page_flip: bool):
     '''Draw appropriate sidebar for the page'''
 
-    state.xna_namespace = st.sidebar.text_input('Namespace',
-                                                value=state.xna_namespace)
-    state.xna_hostname = st.sidebar.text_input('Hostname',
-                                               value=state.xna_hostname)
-    if state.xna_table:
-        tbl_idx = table_vals.index(state.xna_table)
+    if page_flip:
+        nsval = state.xna_namespace
+        hostval = state.xna_hostname
+        if state.xna_table:
+            tblidx = table_vals.index(state.xna_table)
+        else:
+            tblidx = 0
+        assert_val = state.xna_assert_clicked
+        view_idx = 1 if state.xna_view == 'all' else 0
     else:
-        tbl_idx = 0
+        nsval = hostval = ''
+        tblidx = 0
+        assert_val = False
+        view_idx = 0
+
+    state.xna_namespace = st.sidebar.text_input('Namespace',
+                                                value=nsval,
+                                                key='xna_namespace')
+    state.xna_hostname = st.sidebar.text_input('Hostname',
+                                               value=hostval,
+                                               key='hostname')
+
     table = st.sidebar.selectbox(
-        'Select Table to View', tuple(table_vals), index=tbl_idx)
+        'Select Table to View', tuple(table_vals), index=tblidx)
 
     if table != state.xna_table:
         # We need to reset the specific variables
@@ -90,7 +103,6 @@ def xna_sidebar(state: SessionState, table_vals: list):
         state.xna_table = table
 
     view_vals = ('latest', 'all')
-    view_idx = 1 if state.xna_view == 'all' else 0
     state.xna_view = st.sidebar.radio("View of Data", view_vals,
                                       index=view_idx)
     fields = TablesObj().describe(table=state.xna_table)
@@ -115,7 +127,7 @@ def xna_sidebar(state: SessionState, table_vals: list):
     state.xna_columns = columns
     if state.xna_table in ['interfaces', 'ospf', 'bgp', 'evpnVni']:
         state.xna_assert_clicked = st.sidebar.checkbox(
-            'Run Assert', value=state.xna_assert_clicked)
+            'Run Assert', value=assert_val)
     else:
         state.xna_assert_clicked = False
 
@@ -128,8 +140,12 @@ def xna_sidebar(state: SessionState, table_vals: list):
         st.error('Columns cannot be empty')
         st.stop()
 
+    if page_flip:
+        val = state.xna_query
+    else:
+        val = ''
     state.xna_query = st.sidebar.text_input(
-        'Filter table show results with pandas query', value=state.xna_query,
+        'Filter table show results with pandas query', value='',
         key=state.xna_table)
     st.sidebar.markdown(
         "[query syntax help](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.query.html)")
@@ -145,12 +161,12 @@ def xna_sidebar(state: SessionState, table_vals: list):
                  .reset_index(drop=True).style)
 
 
-def xna_run(state: SessionState):
+def xna_run(state: SessionState, page_flip=False):
     '''The main workhorse routine for the XNA page'''
 
     sqobjs = xna_build_sqobj_table()
     # All the user input is preserved in the state vars
-    xna_sidebar(state, sorted(list(sqobjs.keys())))
+    xna_sidebar(state, sorted(list(sqobjs.keys())), page_flip)
 
     df = xna_get_df(sqobjs[state.xna_table],
                     namespace=state.xna_namespace.split(),
