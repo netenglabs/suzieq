@@ -161,7 +161,7 @@ def _main():
 
     st.set_page_config(layout="wide")
     hide_st_index()
-    display_title()
+    display_title(['XNA'])
     horizontal_radio()
 
     # TOODO: Build tables from list rather than manually
