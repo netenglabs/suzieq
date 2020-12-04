@@ -63,11 +63,11 @@ def build_xna_query(state: SessionState, search_text: str):
     disjunction = ''
     for addr in addrs:
         if '::' in addr:
-            query_str = f' {disjunction} ip6AddressList.str.startswith("{addr}/") '
+            query_str += f' {disjunction} ip6AddressList.str.startswith("{addr}/") '
         elif ':' in addr:
-            query_str = f' {disjunction} macaddr == "{addr}" '
+            query_str += f' {disjunction} macaddr == "{addr}" '
         else:
-            query_str = f' {disjunction} ipAddressList.str.startswith("{addr}/") '
+            query_str += f' {disjunction} ipAddressList.str.startswith("{addr}/") '
 
         if not disjunction:
             disjunction = 'or'
