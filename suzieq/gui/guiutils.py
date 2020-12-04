@@ -38,7 +38,7 @@ def hide_st_index():
         """, unsafe_allow_html=True)
 
 
-def display_title():
+def display_title(pagelist):
     '''Render the logo and the app name'''
 
     LOGO_IMAGE = 'logo-small.png'
@@ -78,8 +78,9 @@ def display_title():
                 unsafe_allow_html=True
             )
         with page_col:
+            # The empty writes are for aligning the pages link with the logo
             st.text(' ')
             st.text(' ')
-            page = st.radio('Page', ['Home', 'XNA', 'Path'])
+            page = st.radio('Page', pagelist)
 
     return page
