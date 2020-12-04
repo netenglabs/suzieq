@@ -66,7 +66,7 @@ def display_title(pagelist):
     )
 
     title_container = st.beta_container()
-    title_col, mid, page_col = st.beta_columns([2, 1, 2])
+    title_col, mid, page_col, srch_col = st.beta_columns([2, 1, 2, 2])
     with title_container:
         with title_col:
             st.markdown(
@@ -84,7 +84,11 @@ def display_title(pagelist):
             st.text(' ')
             page = st.radio('Page', pagelist)
 
-    return page
+        with srch_col:
+            st.text(' ')
+            search_text = st.text_input("Address Search", "")
+
+    return page, search_text
 
 
 def color_row(row, **kwargs):
