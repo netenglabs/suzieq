@@ -274,15 +274,14 @@ def xna_run(state: SessionState, page_flip=False):
                 else:
                     st.write('Assert not run')
 
-        expander = st.beta_expander('Table', expanded=True)
-        with expander:
-            if not show_df.empty:
-                convert_dict = {
-                    x: 'str' for x in df.select_dtypes('category').columns}
-                st.dataframe(data=sq_gui_style(show_df.head(256)
-                                               .astype(convert_dict),
-                                               state.xna_table),
-                             height=600, width=2500)
-            else:
-                st.markdown('<h2>No Data from query</h2>',
-                            unsafe_allow_html=True)
+    expander = st.beta_expander('Table', expanded=True)
+    with expander:
+        if not show_df.empty:
+            convert_dict = {
+                x: 'str' for x in df.select_dtypes('category').columns}
+            st.dataframe(data=sq_gui_style(show_df.head(256)
+                                           .astype(convert_dict),
+                                           state.xna_table),
+                         height=600, width=2500)
+        else:
+            st.warning('No Data from query')
