@@ -4,8 +4,12 @@ import graphviz as graphviz
 import suzieq.gui.SessionState as SessionState
 
 
+def get_title():
+    return 'Path'
+
+
 @st.cache
-def get_path(namespace, source, dest, vrf):
+def path_get(namespace, source, dest, vrf):
     '''Run the path and return the dataframes'''
     df = PathObj().get(namespace=[namespace],
                        source=source, dest=dest, vrf=vrf)
@@ -13,10 +17,6 @@ def get_path(namespace, source, dest, vrf):
                                   source=source, dest=dest,
                                   vrf=vrf)
     return df, summ_df
-
-
-def get_title():
-    return 'Path'
 
 
 def path_sidebar(state):
@@ -50,7 +50,7 @@ def path_run(state: SessionState):
     path_sidebar(state)
 
     if state.path_run:
-        df, summ_df = get_path(state.path_namespace, state.path_source,
+        df, summ_df = path_get(state.path_namespace, state.path_source,
                                state.path_dest, state.path_vrf)
 
     if not state.path_run:

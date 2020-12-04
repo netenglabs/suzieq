@@ -48,14 +48,15 @@ def apprun():
                              overview_add_vlans=False, overview_add_macs=False,
                              overview_add_vrfs=False,
                              overview_add_routes=False, main_page='',
-                             xna_prev_table='', xna_clear_query=False,
                              xna_namespace='', xna_hostname='', xna_table='',
-                             xna_view='', xna_columns=['default'], xna_query='',
+                             xna_view='', xna_columns=['default'],
+                             xna_query='', xna_uniq_clicked=0,
                              xna_assert_clicked=False)
 
     st.set_page_config(layout="wide")
     hide_st_index()
     pages = build_pages()
+    # These three are hardcoded to preserve order
     pagelist = ['Overview', 'XNA', 'Path']
     for key in pages:
         if key not in pagelist:
