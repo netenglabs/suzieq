@@ -16,24 +16,31 @@ def get_title():
 
 @st.cache(ttl=90, allow_output_mutation=True)
 def xna_get_df(sqobject, **kwargs):
+    table = kwargs.pop('_table', '')
     view = kwargs.pop('view', 'latest')
     columns = kwargs.pop('columns', ['default'])
     if columns == ['all']:
         columns = ['*']
     df = sqobject(view=view).get(columns=columns, **kwargs)
+    if not df.empty:
+        if table == 'address':
+            if 'ipAddressList' in df.columns:
+                df = df.explode('ipAddressList').fillna('')
+            if 'ip6AddressList' in df.columns:
+                df = df.explode('ip6AddressList').fillna('')
     if not (columns == ['*'] or columns == ['default']):
         return df[columns].reset_index()
     return df.reset_index()
 
 
-@st.cache(ttl=90)
+@ st.cache(ttl=90)
 def xna_run_summarize(sqobject, **kwargs):
     view = kwargs.pop('view', 'latest')
     df = sqobject(view=view).summarize(**kwargs)
     return df
 
 
-@st.cache(ttl=90)
+@ st.cache(ttl=90)
 def xna_run_unique(sqobject, **kwargs):
     kwargs.pop('view', 'latest')
     df = sqobject().unique(**kwargs)
@@ -42,12 +49,13 @@ def xna_run_unique(sqobject, **kwargs):
     return df
 
 
-@st.cache(ttl=90)
+@ st.cache(ttl=90)
 def xna_run_assert(sqobject, **kwargs):
     kwargs.pop('view', 'latest')
     df = sqobject().aver(status="fail", **kwargs)
     if not df.empty:
-        df.rename(columns={'assert': 'status'}, inplace=True, errors='ignore')
+        df.rename(columns={'assert': 'status'},
+                  inplace=True, errors='ignore')
     return df
 
 
@@ -145,7 +153,7 @@ def xna_sidebar(state: SessionState, table_vals: list, page_flip: bool):
     else:
         val = ''
     state.xna_query = st.sidebar.text_input(
-        'Filter table show results with pandas query', value='',
+        'Filter table show results with pandas query', value=val,
         key=state.xna_table)
     st.sidebar.markdown(
         "[query syntax help](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.query.html)")
@@ -168,7 +176,7 @@ def xna_run(state: SessionState, page_flip=False):
     # All the user input is preserved in the state vars
     xna_sidebar(state, sorted(list(sqobjs.keys())), page_flip)
 
-    df = xna_get_df(sqobjs[state.xna_table],
+    df = xna_get_df(sqobjs[state.xna_table], _table=state.xna_table,
                     namespace=state.xna_namespace.split(),
                     hostname=state.xna_hostname.split(),
                     view=state.xna_view, columns=state.xna_columns)

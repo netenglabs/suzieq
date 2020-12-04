@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from typing import List
 from importlib import resources
 from types import ModuleType
+from collections import OrderedDict
 
 import streamlit as st
 
@@ -39,6 +40,43 @@ def build_pages():
     return page_tbl
 
 
+def build_xna_query(state: SessionState, search_text: str):
+    '''Build the appropriate query for the search'''
+
+    addrs = search_text.split()
+    if addrs[0].startswith('mac'):
+        state.xna_table = 'mac'
+        query_str = 'macaddr =='
+        addrs = addrs[1:]
+    elif addrs[0].startswith('route'):
+        state.xna_table = 'routes'
+        query_str = 'prefix =='
+        addrs = addrs[1:]
+    elif addrs[0].startswith('arp'):
+        state.xna_table = 'arpnd'
+        query_str = 'ipAddress =='
+        addrs = addrs[1:]
+    else:
+        state.xna_table = 'address'
+        query_str = ''
+
+    disjunction = ''
+    for addr in addrs:
+        if '::' in addr:
+            query_str = f' {disjunction} ip6AddressList.str.startswith("{addr}/") '
+        elif ':' in addr:
+            query_str = f' {disjunction} macaddr == "{addr}" '
+        else:
+            query_str = f' {disjunction} ipAddressList.str.startswith("{addr}/") '
+
+        if not disjunction:
+            disjunction = 'or'
+
+    state.xna_query = query_str
+    state.prev_page = "Overview"  # Any page we want to set the page_flip marker
+    return
+
+
 def apprun():
     '''The main application routine'''
 
@@ -61,7 +99,11 @@ def apprun():
     for key in pages:
         if key not in pagelist:
             pagelist.append(key)
-    page = display_title(pagelist)
+    page, search_text = display_title(pagelist)
+    if search_text:
+        page = 'XNA'
+        build_xna_query(state, search_text)
+
     if page != state.prev_page:
         page_flip = True
         state.prev_page = page
