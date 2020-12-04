@@ -23,7 +23,6 @@ class SidebarData:
     columns: List[str]
 
 
-@st.cache(allow_output_mutation=True)
 def build_pages():
     '''Build the pages and the corresponding functions to be called'''
 
@@ -43,11 +42,12 @@ def build_pages():
 def apprun():
     '''The main application routine'''
 
-    state = SessionState.get(path_vrf='', path_namespace='',
+    state = SessionState.get(prev_page='', path_vrf='', path_namespace='',
                              path_source='', path_dest='', path_run=False,
                              overview_add_vlans=False, overview_add_macs=False,
                              overview_add_vrfs=False,
                              overview_add_routes=False, main_page='',
+                             xna_sidebar_key=0,
                              xna_namespace='', xna_hostname='', xna_table='',
                              xna_view='', xna_columns=['default'],
                              xna_query='', xna_uniq_clicked=0,
@@ -62,10 +62,15 @@ def apprun():
         if key not in pagelist:
             pagelist.append(key)
     page = display_title(pagelist)
+    if page != state.prev_page:
+        page_flip = True
+        state.prev_page = page
+    else:
+        page_flip = False
     horizontal_radio()
 
     if page in pages:
-        pages[page](state)
+        pages[page](state, page_flip)
 
 
 if __name__ == '__main__':

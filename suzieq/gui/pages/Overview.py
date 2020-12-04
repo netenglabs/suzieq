@@ -19,7 +19,7 @@ def draw_sidebar_overview(state: SessionState):
                                                     value=state.overview_add_routes)
 
 
-def overview_run(state: SessionState):
+def overview_run(state: SessionState, page_flip: bool = False):
     '''The main workhorse routine for the XNA page'''
 
     draw_sidebar_overview(state)

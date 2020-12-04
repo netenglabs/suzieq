@@ -19,12 +19,13 @@ def path_get(namespace, source, dest, vrf):
     return df, summ_df
 
 
-def path_sidebar(state):
+def path_sidebar(state, page_flip: bool):
     """Configure sidebar"""
 
     ok_button = st.sidebar.button('Trace')
+    val = state.path_namespace if page_flip else ''
     state.path_namespace = st.sidebar.text_input('Namespace',
-                                                 value=state.path_namespace,
+                                                 value=val,
                                                  key='namespace')
     state.path_source = st.sidebar.text_input('Source IP',
                                               value=state.path_source,
@@ -44,10 +45,10 @@ def path_sidebar(state):
     return
 
 
-def path_run(state: SessionState):
+def path_run(state: SessionState, page_flip: bool = False):
     '''Main workhorse routine for path'''
 
-    path_sidebar(state)
+    path_sidebar(state, page_flip)
 
     if state.path_run:
         df, summ_df = path_get(state.path_namespace, state.path_source,
