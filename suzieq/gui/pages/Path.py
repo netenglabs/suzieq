@@ -8,14 +8,18 @@ def get_title():
     return 'Path'
 
 
-@st.cache
+@st.cache(ttl=90, allow_output_mutation=True, suppress_st_warning=True)
 def path_get(namespace, source, dest, vrf):
     '''Run the path and return the dataframes'''
-    df = PathObj().get(namespace=[namespace],
-                       source=source, dest=dest, vrf=vrf)
-    summ_df = PathObj().summarize(namespace=[namespace],
-                                  source=source, dest=dest,
-                                  vrf=vrf)
+    try:
+        df = PathObj().get(namespace=[namespace],
+                           source=source, dest=dest, vrf=vrf)
+        summ_df = PathObj().summarize(namespace=[namespace],
+                                      source=source, dest=dest,
+                                      vrf=vrf)
+    except Exception as e:
+        st.error(f'Invalid Input: {str(e)}')
+        st.stop()
     return df, summ_df
 
 
