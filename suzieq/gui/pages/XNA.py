@@ -11,7 +11,7 @@ from suzieq.gui.guiutils import sq_gui_style
 
 
 def get_title():
-    return 'XNA'
+    return 'Xplore'
 
 
 @st.cache(ttl=90, allow_output_mutation=True)
@@ -180,7 +180,7 @@ def xna_sidebar(state: SessionState, table_vals: list, page_flip: bool):
                      .reset_index(drop=True).style)
 
 
-def xna_run(state: SessionState, page_flip=False):
+def page_work(state: SessionState, page_flip=False):
     '''The main workhorse routine for the XNA page'''
 
     sqobjs = xna_build_sqobj_table()

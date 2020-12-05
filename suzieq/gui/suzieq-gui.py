@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import List
 from importlib import resources
 from types import ModuleType
-from collections import OrderedDict
+from collections import defaultdict
 
 import streamlit as st
 
@@ -27,15 +27,19 @@ class SidebarData:
 def build_pages():
     '''Build the pages and the corresponding functions to be called'''
 
-    page_tbl = {}
+    page_tbl = defaultdict(dict)
     module_list = globals()
     for key in module_list:
         if isinstance(module_list[key], ModuleType):
             if module_list[key].__package__ == 'suzieq.gui.pages':
-                objlist = list(filter(lambda x: x.endswith('_run'),
-                                      dir(module_list[key])))
+                objlist = filter(
+                    lambda x: x == "page_work" or x == "get_title",
+                    dir(module_list[key]))
                 for obj in objlist:
-                    page_tbl[key] = getattr(module_list[key], obj)
+                    if obj == 'get_title':
+                        page_name = getattr(module_list[key], obj)()
+                    else:
+                        page_tbl[page_name] = getattr(module_list[key], obj)
 
     return page_tbl
 
@@ -45,29 +49,35 @@ def build_xna_query(state: SessionState, search_text: str):
 
     addrs = search_text.split()
     if addrs[0].startswith('mac'):
-        state.xna_table = 'mac'
-        query_str = 'macaddr =='
+        state.xna_table = 'macs'
         addrs = addrs[1:]
     elif addrs[0].startswith('route'):
         state.xna_table = 'routes'
-        query_str = 'prefix =='
         addrs = addrs[1:]
     elif addrs[0].startswith('arp'):
         state.xna_table = 'arpnd'
-        query_str = 'ipAddress =='
         addrs = addrs[1:]
     else:
         state.xna_table = 'address'
-        query_str = ''
 
-    disjunction = ''
+    query_str = disjunction = ''
     for addr in addrs:
         if '::' in addr:
-            query_str += f' {disjunction} ip6AddressList.str.startswith("{addr}/") '
+            if state.xna_table == 'arpnd':
+                query_str += f' {disjunction} ipAddress == "{addr}" '
+            elif state.xna_table == 'routes':
+                query_str += f'{disjunction} prefix == "{addr}" '
+            else:
+                query_str += f' {disjunction} ip6AddressList.str.startswith("{addr}/") '
         elif ':' in addr:
             query_str += f' {disjunction} macaddr == "{addr}" '
         else:
-            query_str += f' {disjunction} ipAddressList.str.startswith("{addr}/") '
+            if state.xna_table == 'arpnd':
+                query_str += f' {disjunction} ipAddress == "{addr}" '
+            elif state.xna_table == 'routes':
+                query_str += f'{disjunction} prefix == "{addr}" '
+            else:
+                query_str += f' {disjunction} ipAddressList.str.startswith("{addr}/") '
 
         if not disjunction:
             disjunction = 'or'
@@ -80,7 +90,8 @@ def build_xna_query(state: SessionState, search_text: str):
 def apprun():
     '''The main application routine'''
 
-    state = SessionState.get(prev_page='', path_vrf='', path_namespace='',
+    state = SessionState.get(pages={}, prev_page='', path_vrf='',
+                             path_namespace='',
                              path_source='', path_dest='', path_run=False,
                              overview_add_vlans=False, overview_add_macs=False,
                              overview_add_vrfs=False,
@@ -93,12 +104,16 @@ def apprun():
 
     st.set_page_config(layout="wide")
     hide_st_index()
-    pages = build_pages()
-    # These three are hardcoded to preserve order
-    pagelist = ['Overview', 'XNA', 'Path']
-    for key in pages:
-        if key not in pagelist:
-            pagelist.append(key)
+
+    if not state.pages:
+        state.pages = build_pages()
+
+    # Hardcoding the order of these three
+    pagelist = ['Overview', 'Xplore', 'Path']
+    for page in state.pages:
+        if page not in pagelist:
+            pagelist.append(page)
+
     page, search_text = display_title(pagelist)
     if search_text:
         page = 'XNA'
@@ -111,8 +126,7 @@ def apprun():
         page_flip = False
     horizontal_radio()
 
-    if page in pages:
-        pages[page](state, page_flip)
+    state.pages[page](state, page_flip)
 
 
 if __name__ == '__main__':

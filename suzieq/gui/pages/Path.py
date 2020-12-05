@@ -49,7 +49,7 @@ def path_sidebar(state, page_flip: bool):
     return
 
 
-def path_run(state: SessionState, page_flip: bool = False):
+def page_work(state: SessionState, page_flip: bool = False):
     '''Main workhorse routine for path'''
 
     path_sidebar(state, page_flip)

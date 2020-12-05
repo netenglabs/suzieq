@@ -6,6 +6,10 @@ import pandas as pd
 from suzieq.sqobjects import *
 
 
+def get_title():
+    return 'Overview'
+
+
 def draw_sidebar_overview(state: SessionState):
     '''Draw appropriate sidebar for the page'''
 
@@ -19,7 +23,7 @@ def draw_sidebar_overview(state: SessionState):
                                                     value=state.overview_add_routes)
 
 
-def overview_run(state: SessionState, page_flip: bool = False):
+def page_work(state: SessionState, page_flip: bool = False):
     '''The main workhorse routine for the XNA page'''
 
     draw_sidebar_overview(state)
