@@ -35,11 +35,14 @@ def build_pages():
                 objlist = filter(
                     lambda x: x == "page_work" or x == "get_title",
                     dir(module_list[key]))
+                page_name = None
                 for obj in objlist:
                     if obj == 'get_title':
                         page_name = getattr(module_list[key], obj)()
                     else:
-                        page_tbl[page_name] = getattr(module_list[key], obj)
+                        work_fn = getattr(module_list[key], obj)
+                if page_name:
+                    page_tbl[page_name] = work_fn
 
     return page_tbl
 
@@ -90,17 +93,7 @@ def build_xna_query(state: SessionState, search_text: str):
 def apprun():
     '''The main application routine'''
 
-    state = SessionState.get(pages={}, prev_page='', path_vrf='',
-                             path_namespace='',
-                             path_source='', path_dest='', path_run=False,
-                             overview_add_vlans=False, overview_add_macs=False,
-                             overview_add_vrfs=False,
-                             overview_add_routes=False, main_page='',
-                             xna_sidebar_key=0,
-                             xna_namespace='', xna_hostname='', xna_table='',
-                             xna_view='', xna_columns=['default'],
-                             xna_query='', xna_uniq_clicked=0,
-                             xna_assert_clicked=False)
+    state = SessionState.get(pages=None, prev_page='')
 
     st.set_page_config(layout="wide")
     hide_st_index()
@@ -109,7 +102,7 @@ def apprun():
         state.pages = build_pages()
 
     # Hardcoding the order of these three
-    pagelist = ['Overview', 'Xplore', 'Path']
+    pagelist = ['Status', 'Xplore', 'Path']
     for page in state.pages:
         if page not in pagelist:
             pagelist.append(page)

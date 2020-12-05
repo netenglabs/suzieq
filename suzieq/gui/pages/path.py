@@ -1,7 +1,20 @@
+from dataclasses import dataclass
+from typing import Union
+
 import streamlit as st
 from suzieq.sqobjects.path import PathObj
 import graphviz as graphviz
 import suzieq.gui.SessionState as SessionState
+from ipaddress import IPv4Address, IPv6Address
+
+
+@dataclass
+class PathSessionState:
+    run: bool = False
+    namespace: str = ''
+    source: Union[IPv4Address, IPv6Address, None] = None
+    dest: Union[IPv4Address, IPv6Address, None] = None
+    vrf: str = ''
 
 
 def get_title():
@@ -27,38 +40,50 @@ def path_sidebar(state, page_flip: bool):
     """Configure sidebar"""
 
     ok_button = st.sidebar.button('Trace')
-    val = state.path_namespace if page_flip else ''
-    state.path_namespace = st.sidebar.text_input('Namespace',
-                                                 value=val,
-                                                 key='namespace')
-    state.path_source = st.sidebar.text_input('Source IP',
-                                              value=state.path_source,
-                                              key='source')
-    state.path_dest = st.sidebar.text_input('Dest IP', value=state.path_dest,
-                                            key='dest')
-    state.path_vrf = st.sidebar.text_input('VRF', value=state.path_vrf,
-                                           key='vrf')
+    val = state.namespace if page_flip else ''
+    state.namespace = st.sidebar.text_input('Namespace',
+                                            value=val,
+                                            key='namespace')
+    state.source = st.sidebar.text_input('Source IP',
+                                         value=state.source,
+                                         key='source')
+    state.dest = st.sidebar.text_input('Dest IP', value=state.dest,
+                                       key='dest')
+    state.vrf = st.sidebar.text_input('VRF', value=state.vrf,
+                                      key='vrf')
 
-    if all(not x for x in [state.path_namespace,
-                           state.path_source,
-                           state.path_dest]):
-        state.path_run = False
+    if all(not x for x in [state.namespace,
+                           state.source,
+                           state.dest]):
+        state.run = False
     elif ok_button:
-        state.path_run = True
+        state.run = True
 
     return
 
 
-def page_work(state: SessionState, page_flip: bool = False):
+def init_state(state_container: SessionState) -> PathSessionState:
+
+    state_container.pathSessionState = state = PathSessionState()
+
+    return state
+
+
+def page_work(state_container: SessionState, page_flip: bool = False):
     '''Main workhorse routine for path'''
+
+    if hasattr(state_container, 'pathSessionState'):
+        state = getattr(state_container, 'pathSessionState')
+    else:
+        state = init_state(state_container)
 
     path_sidebar(state, page_flip)
 
-    if state.path_run:
-        df, summ_df = path_get(state.path_namespace, state.path_source,
-                               state.path_dest, state.path_vrf)
+    if state.run:
+        df, summ_df = path_get(state.namespace, state.source,
+                               state.dest, state.vrf)
 
-    if not state.path_run:
+    if not state.run:
         st.stop()
 
     g = graphviz.Digraph()
