@@ -139,16 +139,18 @@ class Schema(object):
         # return [f['name'] for f in self._schema[table] if f.get('key', None) is not None]
         return self._sort_fields_for_table(table, 'key')
 
-    def sorted_display_fields_for_table(self, table):
-        return self._sort_fields_for_table(table, 'display')
+    def sorted_display_fields_for_table(self, table, getall=False):
+        return self._sort_fields_for_table(table, 'display', getall)
 
-    def _sort_fields_for_table(self, table, tag):
+    def _sort_fields_for_table(self, table, tag, getall=False):
         fields = self.fields_for_table(table)
         field_weights = {}
         for f_name in fields:
             field = self.field_for_table(table, f_name)
             if field.get(tag, None) is not None:
                 field_weights[f_name] = field.get(tag, 1000)
+            elif getall:
+                field_weights[f_name] = 1000
         return [k for k in sorted(field_weights.keys(),
                                   key=lambda x: field_weights[x])]
 
@@ -251,8 +253,9 @@ class SchemaForTable(object):
     def key_fields(self):
         return self._all_schemas.key_fields_for_table(self._table)
 
-    def sorted_display_fields(self):
-        return self._all_schemas.sorted_display_fields_for_table(self._table)
+    def sorted_display_fields(self, getall=False):
+        return self._all_schemas.sorted_display_fields_for_table(self._table,
+                                                                 getall)
 
     @property
     def array_fields(self):
@@ -269,7 +272,7 @@ class SchemaForTable(object):
             if "namespace" not in fields:
                 fields.insert(0, "namespace")
         elif columns == ["*"]:
-            fields = self.fields
+            fields = self.sorted_display_fields(getall=True)
         else:
             fields = [f for f in columns if f in self.fields]
 
