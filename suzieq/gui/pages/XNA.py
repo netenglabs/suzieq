@@ -21,7 +21,10 @@ def xna_get_df(sqobject, **kwargs):
     columns = kwargs.pop('columns', ['default'])
     if columns == ['all']:
         columns = ['*']
-    df = sqobject(view=view).get(columns=columns, **kwargs)
+    if table != "tables":
+        df = sqobject(view=view).get(columns=columns, **kwargs)
+    else:
+        df = sqobject(view=view).get(**kwargs)
     if not df.empty:
         if table == 'address':
             if 'ipAddressList' in df.columns:
@@ -29,27 +32,27 @@ def xna_get_df(sqobject, **kwargs):
             if 'ip6AddressList' in df.columns:
                 df = df.explode('ip6AddressList').fillna('')
     if not (columns == ['*'] or columns == ['default']):
-        return df[columns].reset_index()
-    return df.reset_index()
+        return df[columns].reset_index(drop=True)
+    return df.reset_index(drop=True)
 
 
-@ st.cache(ttl=90)
+@st.cache(ttl=90)
 def xna_run_summarize(sqobject, **kwargs):
     view = kwargs.pop('view', 'latest')
     df = sqobject(view=view).summarize(**kwargs)
     return df
 
 
-@ st.cache(ttl=90)
+@st.cache(ttl=90)
 def xna_run_unique(sqobject, **kwargs):
     kwargs.pop('view', 'latest')
     df = sqobject().unique(**kwargs)
     if not df.empty:
-        df.sort_values(by=['count'], inplace=True)
+        df.sort_values(by=['count'], ascending=False, inplace=True)
     return df
 
 
-@ st.cache(ttl=90)
+@st.cache(ttl=90)
 def xna_run_assert(sqobject, **kwargs):
     kwargs.pop('view', 'latest')
     df = sqobject().aver(status="fail", **kwargs)
@@ -64,8 +67,12 @@ def xna_build_sqobj_table() -> dict:
 
     sqobj_tables = {}
     module_list = globals()
+    blacklisted_tables = ['path', 'topmem', 'topcpu', 'ifCounters', 'topology',
+                          'time']
     for key in module_list:
         if isinstance(module_list[key], ModuleType):
+            if key in blacklisted_tables:
+                continue
             if module_list[key].__package__ == 'suzieq.sqobjects':
                 objlist = list(filter(lambda x: x.endswith('Obj'),
                                       dir(module_list[key])))
@@ -106,27 +113,31 @@ def xna_sidebar(state: SessionState, table_vals: list, page_flip: bool):
     if table != state.xna_table:
         # We need to reset the specific variables
         state.xna_query = ''
-        state.assert_clicked = False
-        state.uniq_clicked = 0
+        state.xna_assert_clicked = False
+        state.xna_uniq_clicked = 0
         state.xna_table = table
 
     view_vals = ('latest', 'all')
     state.xna_view = st.sidebar.radio("View of Data", view_vals,
                                       index=view_idx)
     fields = TablesObj().describe(table=state.xna_table)
-    colist = sorted((filter(lambda x: x not in ['index', 'sqvers'],
-                            fields.name.tolist())))
-    columns = st.sidebar.multiselect('Pick columns',
-                                     ['default', 'all'] + colist,
-                                     default=state.xna_columns)
-    if ('default' in columns or 'all' in columns) and len(columns) == 1:
-        col_sel_val = True
-    else:
-        col_sel_val = False
+    if state.xna_table != 'tables':
+        colist = sorted((filter(lambda x: x not in ['index', 'sqvers'],
+                                fields.name.tolist())))
+        columns = st.sidebar.multiselect('Pick columns',
+                                         ['default', 'all'] + colist,
+                                         default=state.xna_columns)
+        if ('default' in columns or 'all' in columns) and len(columns) == 1:
+            col_sel_val = True
+        else:
+            col_sel_val = False
 
-    col_ok = st.sidebar.checkbox('Column Selection Done',
-                                 value=col_sel_val)
-    if not col_ok:
+        col_ok = st.sidebar.checkbox('Column Selection Done',
+                                     value=col_sel_val)
+        if not col_ok:
+            columns = ['default']
+    else:
+        col_ok = True
         columns = ['default']
 
     if not columns:
@@ -158,15 +169,15 @@ def xna_sidebar(state: SessionState, table_vals: list, page_flip: bool):
     st.sidebar.markdown(
         "[query syntax help](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.query.html)")
 
-    if columns == 'all':
-        columns = '*'
-
-    col_expander = st.sidebar.beta_expander('Column Names', expanded=False)
-    with col_expander:
-        st.subheader(f'{state.xna_table} column names')
-        st.table(TablesObj().describe(table=state.xna_table)
-                 .query('name != "sqvers"')
-                 .reset_index(drop=True).style)
+    if columns == ['all']:
+        columns = ['*']
+    if state.xna_table != "tables":
+        col_expander = st.sidebar.beta_expander('Column Names', expanded=False)
+        with col_expander:
+            st.subheader(f'{state.xna_table} column names')
+            st.table(TablesObj().describe(table=state.xna_table)
+                     .query('name != "sqvers"')
+                     .reset_index(drop=True).style)
 
 
 def xna_run(state: SessionState, page_flip=False):
@@ -176,14 +187,23 @@ def xna_run(state: SessionState, page_flip=False):
     # All the user input is preserved in the state vars
     xna_sidebar(state, sorted(list(sqobjs.keys())), page_flip)
 
-    df = xna_get_df(sqobjs[state.xna_table], _table=state.xna_table,
-                    namespace=state.xna_namespace.split(),
-                    hostname=state.xna_hostname.split(),
-                    view=state.xna_view, columns=state.xna_columns)
+    if state.xna_table != "tables":
+        df = xna_get_df(sqobjs[state.xna_table], _table=state.xna_table,
+                        namespace=state.xna_namespace.split(),
+                        hostname=state.xna_hostname.split(),
+                        view=state.xna_view, columns=state.xna_columns)
+    else:
+        df = xna_get_df(sqobjs[state.xna_table], _table=state.xna_table,
+                        namespace=state.xna_namespace.split(),
+                        hostname=state.xna_hostname.split(),
+                        view=state.xna_view)
 
-    summ_df = xna_run_summarize(sqobjs[state.xna_table],
-                                namespace=state.xna_namespace.split(),
-                                hostname=state.xna_hostname.split())
+    if state.xna_table != "tables":
+        summ_df = xna_run_summarize(sqobjs[state.xna_table],
+                                    namespace=state.xna_namespace.split(),
+                                    hostname=state.xna_hostname.split())
+    else:
+        summ_df = pd.DataFrame()
 
     if not df.empty:
         if state.xna_query:
@@ -216,17 +236,19 @@ def xna_run(state: SessionState, page_flip=False):
                     st.write(
                         f'Showing first 256 of {show_df.shape[0]} rows, use query to filter')
             with uniq_col:
-                if not state.xna_uniq_clicked:
-                    selindex = dfcols.index('hostname')+1
-                else:
-                    selindex = dfcols.index(state.xna_uniq_clicked)+1
-                state.xna_uniq_clicked = st.selectbox(
-                    'Distribution Count of', options=['-'] + dfcols,
-                    index=selindex)
+                if state.xna_table != "tables":
+                    if not state.xna_uniq_clicked:
+                        selindex = dfcols.index('hostname')+1
+                    else:
+                        selindex = dfcols.index(state.xna_uniq_clicked)+1
+
+                    state.xna_uniq_clicked = st.selectbox(
+                        'Distribution Count of', options=['-'] + dfcols,
+                        index=selindex)
 
         scol1, scol2 = st.beta_columns(2)
 
-        if state.xna_uniq_clicked != '-':
+        if state.xna_table != "tables" and state.xna_uniq_clicked != '-':
             uniq_df = xna_run_unique(sqobjs[state.xna_table],
                                      namespace=state.xna_namespace.split(),
                                      hostname=state.xna_hostname.split(),
@@ -247,11 +269,11 @@ def xna_run(state: SessionState, page_flip=False):
 
         if not uniq_df.empty:
             with scol2:
-                if uniq_df.shape[0] > 64:
+                if uniq_df.shape[0] > 32:
                     st.warning(
-                        f'{state.xna_uniq_clicked} has cardinality > 64. Displaying top 64')
+                        f'{state.xna_uniq_clicked} has cardinality > 32. Displaying top 32')
                     chart = alt.Chart(
-                        uniq_df.head(64),
+                        uniq_df.head(32),
                         title=f'{state.xna_uniq_clicked} Distribution') \
                         .mark_bar(color='purple', tooltip=True) \
                         .encode(y=alt.Y(f'{state.xna_uniq_clicked}:N',
