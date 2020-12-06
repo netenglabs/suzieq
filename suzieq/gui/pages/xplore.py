@@ -22,7 +22,6 @@ class XploreSessionState:
     columns:  List[str] = field(default_factory=list)
     uniq_clicked: int = 0
     assert_clicked: bool = False
-    sqobjs: Dict = field(default_factory=dict)
 
 
 def get_title():
@@ -75,26 +74,6 @@ def xna_run_assert(sqobject, **kwargs):
         df.rename(columns={'assert': 'status'},
                   inplace=True, errors='ignore')
     return df
-
-
-def xna_build_sqobj_table() -> dict:
-    '''Build available list of suzieq table objects'''
-
-    sqobj_tables = {}
-    module_list = globals()
-    blacklisted_tables = ['path', 'topmem', 'topcpu', 'ifCounters', 'topology',
-                          'time']
-    for key in module_list:
-        if isinstance(module_list[key], ModuleType):
-            if key in blacklisted_tables:
-                continue
-            if module_list[key].__package__ == 'suzieq.sqobjects':
-                objlist = list(filter(lambda x: x.endswith('Obj'),
-                                      dir(module_list[key])))
-                for obj in objlist:
-                    sqobj_tables[key] = getattr(module_list[key], obj)
-
-    return sqobj_tables
 
 
 def xna_sidebar(state: SessionState, table_vals: list, page_flip: bool):
@@ -214,7 +193,7 @@ def page_work(state_container: SessionState, page_flip=False):
     else:
         state = init_state(state_container)
 
-    sqobjs = xna_build_sqobj_table()
+    sqobjs = state_container.sqobjs
     # All the user input is preserved in the state vars
     xna_sidebar(state, sorted(list(sqobjs.keys())), page_flip)
 
