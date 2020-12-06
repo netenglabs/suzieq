@@ -3,13 +3,15 @@ from typing import List
 from importlib import resources
 from types import ModuleType
 from collections import defaultdict
+import base64
 
 import streamlit as st
 
 
-from suzieq.gui.guiutils import horizontal_radio, display_title, hide_st_index
+from suzieq.gui.guiutils import horizontal_radio, hide_st_index
 import suzieq.gui.SessionState as SessionState
 from suzieq.gui.pages import *
+from suzieq.sqobjects import *
 
 
 @dataclass
@@ -22,6 +24,61 @@ class SidebarData:
     query: str
     assert_clicked: bool
     columns: List[str]
+
+
+def display_title(pagelist):
+    '''Render the logo and the app name'''
+
+    LOGO_IMAGE = 'logo-small.png'
+    st.markdown(
+        """
+        <style>
+        .container {
+            display: flex;
+        }
+        .logo-text {
+            font-weight:700 !important;
+            font-size:24px !important;
+            color: purple !important;
+            padding-top: 40px !important;
+        }
+        .logo-img {
+            width: 20%;
+            height: auto;
+            float:right;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+    title_container = st.beta_container()
+    title_col, mid, page_col, srch_col = st.beta_columns([2, 1, 2, 2])
+    with title_container:
+        with title_col:
+            st.markdown(
+                f"""
+                <div class="container">
+                    <img class="logo-img" src="data:image/png;base64,{base64.b64encode(open(LOGO_IMAGE, "rb").read()).decode()}">
+                    <h1 style='color:purple;'>Suzieq</h1>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+        with page_col:
+            # The empty writes are for aligning the pages link with the logo
+            st.text(' ')
+            st.text(' ')
+            srch_holder = st.empty()
+            page = srch_holder.radio('Page', pagelist)
+
+        with srch_col:
+            st.text(' ')
+            search_text = st.text_input("Address Search", "")
+
+    if search_text:
+        page = srch_holder.radio('Page', pagelist, index=3)
+    return page, search_text
 
 
 def build_pages():
@@ -47,70 +104,50 @@ def build_pages():
     return page_tbl
 
 
-def build_xna_query(state: SessionState, search_text: str):
-    '''Build the appropriate query for the search'''
+def build_sqobj_table() -> dict:
+    '''Build available list of suzieq table objects'''
 
-    addrs = search_text.split()
-    if addrs[0].startswith('mac'):
-        state.xna_table = 'macs'
-        addrs = addrs[1:]
-    elif addrs[0].startswith('route'):
-        state.xna_table = 'routes'
-        addrs = addrs[1:]
-    elif addrs[0].startswith('arp'):
-        state.xna_table = 'arpnd'
-        addrs = addrs[1:]
-    else:
-        state.xna_table = 'address'
+    sqobj_tables = {}
+    module_list = globals()
+    blacklisted_tables = ['path', 'topmem', 'topcpu', 'ifCounters', 'topology',
+                          'time']
+    for key in module_list:
+        if isinstance(module_list[key], ModuleType):
+            if key in blacklisted_tables:
+                continue
+            if module_list[key].__package__ == 'suzieq.sqobjects':
+                objlist = list(filter(lambda x: x.endswith('Obj'),
+                                      dir(module_list[key])))
+                for obj in objlist:
+                    sqobj_tables[key] = getattr(module_list[key], obj)
 
-    query_str = disjunction = ''
-    for addr in addrs:
-        if '::' in addr:
-            if state.xna_table == 'arpnd':
-                query_str += f' {disjunction} ipAddress == "{addr}" '
-            elif state.xna_table == 'routes':
-                query_str += f'{disjunction} prefix == "{addr}" '
-            else:
-                query_str += f' {disjunction} ip6AddressList.str.startswith("{addr}/") '
-        elif ':' in addr:
-            query_str += f' {disjunction} macaddr == "{addr}" '
-        else:
-            if state.xna_table == 'arpnd':
-                query_str += f' {disjunction} ipAddress == "{addr}" '
-            elif state.xna_table == 'routes':
-                query_str += f'{disjunction} prefix == "{addr}" '
-            else:
-                query_str += f' {disjunction} ipAddressList.str.startswith("{addr}/") '
-
-        if not disjunction:
-            disjunction = 'or'
-
-    state.xna_query = query_str
-    state.prev_page = "Overview"  # Any page we want to set the page_flip marker
-    return
+    return sqobj_tables
 
 
 def apprun():
     '''The main application routine'''
 
-    state = SessionState.get(pages=None, prev_page='')
+    state = SessionState.get(pages=None, prev_page='', search_text='',
+                             sqobjs={})
 
     st.set_page_config(layout="wide")
     hide_st_index()
 
     if not state.pages:
         state.pages = build_pages()
+        state.sqobjs = build_sqobj_table()
 
     # Hardcoding the order of these three
-    pagelist = ['Status', 'Xplore', 'Path']
+    pagelist = ['Status', 'Xplore', 'Path', 'Search']
     for page in state.pages:
         if page not in pagelist:
             pagelist.append(page)
 
     page, search_text = display_title(pagelist)
-    if search_text:
-        page = 'XNA'
-        build_xna_query(state, search_text)
+
+    if search_text != state.search_text:
+        page = 'Search'
+        state.search_text = search_text
 
     if page != state.prev_page:
         page_flip = True
