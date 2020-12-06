@@ -9,7 +9,7 @@ import pandas as pd
 
 from suzieq.sqobjects import *
 from suzieq.sqobjects.tables import TablesObj
-from suzieq.gui.guiutils import sq_gui_style
+from suzieq.gui.guiutils import sq_gui_style, gui_get_df
 
 
 @dataclass
@@ -26,28 +26,6 @@ class XploreSessionState:
 
 def get_title():
     return 'Xplore'
-
-
-@st.cache(ttl=90, allow_output_mutation=True)
-def xna_get_df(sqobject, **kwargs):
-    table = kwargs.pop('_table', '')
-    view = kwargs.pop('view', 'latest')
-    columns = kwargs.pop('columns', ['default'])
-    if columns == ['all']:
-        columns = ['*']
-    if table != "tables":
-        df = sqobject(view=view).get(columns=columns, **kwargs)
-    else:
-        df = sqobject(view=view).get(**kwargs)
-    if not df.empty:
-        if table == 'address':
-            if 'ipAddressList' in df.columns:
-                df = df.explode('ipAddressList').fillna('')
-            if 'ip6AddressList' in df.columns:
-                df = df.explode('ip6AddressList').fillna('')
-    if not (columns == ['*'] or columns == ['default']):
-        return df[columns].reset_index(drop=True)
-    return df.reset_index(drop=True)
 
 
 @st.cache(ttl=90)
@@ -198,12 +176,12 @@ def page_work(state_container: SessionState, page_flip=False):
     xna_sidebar(state, sorted(list(sqobjs.keys())), page_flip)
 
     if state.table != "tables":
-        df = xna_get_df(sqobjs[state.table], _table=state.table,
+        df = gui_get_df(sqobjs[state.table], _table=state.table,
                         namespace=state.namespace.split(),
                         hostname=state.hostname.split(),
                         view=state.view, columns=state.columns)
     else:
-        df = xna_get_df(sqobjs[state.table], _table=state.table,
+        df = gui_get_df(sqobjs[state.table], _table=state.table,
                         namespace=state.namespace.split(),
                         hostname=state.hostname.split(),
                         view=state.view)

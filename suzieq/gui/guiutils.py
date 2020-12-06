@@ -2,6 +2,28 @@ import streamlit as st
 import pandas as pd
 
 
+@st.cache(ttl=90, allow_output_mutation=True)
+def gui_get_df(sqobject, **kwargs):
+    table = kwargs.pop('_table', '')
+    view = kwargs.pop('view', 'latest')
+    columns = kwargs.pop('columns', ['default'])
+    if columns == ['all']:
+        columns = ['*']
+    if table != "tables":
+        df = sqobject(view=view).get(columns=columns, **kwargs)
+    else:
+        df = sqobject(view=view).get(**kwargs)
+    if not df.empty:
+        if table == 'address':
+            if 'ipAddressList' in df.columns:
+                df = df.explode('ipAddressList').fillna('')
+            if 'ip6AddressList' in df.columns:
+                df = df.explode('ip6AddressList').fillna('')
+    if not (columns == ['*'] or columns == ['default']):
+        return df[columns].reset_index(drop=True)
+    return df.reset_index(drop=True)
+
+
 def maximize_browser_window():
     '''Maximize browser window in streamlit'''
 
