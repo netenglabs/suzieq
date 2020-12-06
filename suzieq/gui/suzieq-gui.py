@@ -29,7 +29,7 @@ class SidebarData:
 def display_title(pagelist):
     '''Render the logo and the app name'''
 
-    LOGO_IMAGE = 'logo-small.png'
+    LOGO_IMAGE = 'purple-logo.jpg'
     st.markdown(
         """
         <style>

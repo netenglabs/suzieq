@@ -5,6 +5,7 @@ import pandas as pd
 import streamlit as st
 from suzieq.sqobjects.path import PathObj
 import suzieq.gui.SessionState as SessionState
+from suzieq.gui.guiutils import gui_get_df
 
 
 @dataclass
@@ -18,28 +19,6 @@ class SearchSessionState:
 
 def get_title():
     return 'Search'
-
-
-@st.cache(ttl=90, allow_output_mutation=True)
-def search_get_df(sqobject, **kwargs):
-    table = kwargs.pop('_table', '')
-    view = kwargs.pop('view', 'latest')
-    columns = kwargs.pop('columns', ['default'])
-    if columns == ['all']:
-        columns = ['*']
-    if table != "tables":
-        df = sqobject(view=view).get(columns=columns, **kwargs)
-    else:
-        df = sqobject(view=view).get(**kwargs)
-    if not df.empty:
-        if table == 'address':
-            if 'ipAddressList' in df.columns:
-                df = df.explode('ipAddressList').fillna('')
-            if 'ip6AddressList' in df.columns:
-                df = df.explode('ip6AddressList').fillna('')
-    if not (columns == ['*'] or columns == ['default']):
-        return df[columns].reset_index(drop=True)
-    return df.reset_index(drop=True)
 
 
 def build_query(state: SessionState, search_text: str) -> str:
@@ -122,12 +101,12 @@ def page_work(state_container: SessionState, page_flip: bool):
 
     if query_str:
         if state.table == "address":
-            df = search_get_df(state_container.sqobjs[state.table],
-                               view="latest", columns=['default'],
-                               address=query_str.split())
+            df = gui_get_df(state_container.sqobjs[state.table],
+                            view="latest", columns=['default'],
+                            address=query_str.split())
         else:
-            df = search_get_df(state_container.sqobjs[state.table],
-                               view="latest", columns=['default'])
+            df = gui_get_df(state_container.sqobjs[state.table],
+                            view="latest", columns=['default'])
             if not df.empty:
                 df = df.query(query_str).reset_index(drop=True)
 
