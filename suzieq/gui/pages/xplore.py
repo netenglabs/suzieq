@@ -6,6 +6,7 @@ import streamlit as st
 import suzieq.gui.SessionState as SessionState
 import altair as alt
 import pandas as pd
+import numpy as np
 
 from suzieq.sqobjects import *
 from suzieq.sqobjects.tables import TablesObj
@@ -29,23 +30,31 @@ def get_title():
 
 
 @st.cache(ttl=90)
-def xna_run_summarize(sqobject, **kwargs):
+def xplore_run_summarize(sqobject, **kwargs):
     view = kwargs.pop('view', 'latest')
     df = sqobject(view=view).summarize(**kwargs)
     return df
 
 
-@st.cache(ttl=90)
-def xna_run_unique(sqobject, **kwargs):
-    kwargs.pop('view', 'latest')
-    df = sqobject().unique(**kwargs)
+def xplore_run_unique(df: pd.DataFrame, **kwargs) -> pd.DataFrame:
+    '''Compute the distribution counts for the dataframe provided'''
+    column = kwargs.pop('columns', '')
     if not df.empty:
-        df.sort_values(by=['count'], ascending=False, inplace=True)
-    return df
+        if df.apply(lambda x: isinstance(x[column], np.ndarray), axis=1).all():
+            idf = df.explode(column).dropna(how='any')
+        else:
+            idf = df
+
+        r = idf[column].value_counts()
+        return (pd.DataFrame({column: r})
+                .reset_index()
+                .rename(columns={column: 'count',
+                                 'index': column})
+                .sort_values(by=['count'], ascending=False))
 
 
 @st.cache(ttl=90)
-def xna_run_assert(sqobject, **kwargs):
+def xplore_run_assert(sqobject, **kwargs):
     kwargs.pop('view', 'latest')
     df = sqobject().aver(status="fail", **kwargs)
     if not df.empty:
@@ -54,7 +63,7 @@ def xna_run_assert(sqobject, **kwargs):
     return df
 
 
-def xna_sidebar(state: SessionState, table_vals: list, page_flip: bool):
+def xplore_sidebar(state: SessionState, table_vals: list, page_flip: bool):
     '''Draw appropriate sidebar for the page'''
 
     if page_flip:
@@ -74,7 +83,7 @@ def xna_sidebar(state: SessionState, table_vals: list, page_flip: bool):
 
     state.namespace = st.sidebar.text_input('Namespace',
                                             value=nsval,
-                                            key='xna_namespace')
+                                            key='xplore_namespace')
     state.hostname = st.sidebar.text_input('Hostname',
                                            value=hostval,
                                            key='hostname')
@@ -164,7 +173,7 @@ def init_state(state_container: SessionState) -> XploreSessionState:
 
 
 def page_work(state_container: SessionState, page_flip=False):
-    '''The main workhorse routine for the XNA page'''
+    '''The main workhorse routine for the Xplore page'''
 
     if hasattr(state_container, 'xploreSessionState'):
         state = getattr(state_container, 'xploreSessionState')
@@ -173,7 +182,7 @@ def page_work(state_container: SessionState, page_flip=False):
 
     sqobjs = state_container.sqobjs
     # All the user input is preserved in the state vars
-    xna_sidebar(state, sorted(list(sqobjs.keys())), page_flip)
+    xplore_sidebar(state, sorted(list(sqobjs.keys())), page_flip)
 
     if state.table != "tables":
         df = gui_get_df(sqobjs[state.table], _table=state.table,
@@ -187,9 +196,10 @@ def page_work(state_container: SessionState, page_flip=False):
                         view=state.view)
 
     if state.table != "tables":
-        summ_df = xna_run_summarize(sqobjs[state.table],
-                                    namespace=state.namespace.split(),
-                                    hostname=state.hostname.split())
+        summ_df = xplore_run_summarize(sqobjs[state.table],
+                                       namespace=state.namespace.split(),
+                                       hostname=state.hostname.split(),
+                                       query_str=state.query)
     else:
         summ_df = pd.DataFrame()
 
@@ -237,16 +247,14 @@ def page_work(state_container: SessionState, page_flip=False):
         scol1, scol2 = st.beta_columns(2)
 
         if state.table != "tables" and state.uniq_clicked != '-':
-            uniq_df = xna_run_unique(sqobjs[state.table],
-                                     namespace=state.namespace.split(),
-                                     hostname=state.hostname.split(),
-                                     columns=[state.uniq_clicked])
+            uniq_df = xplore_run_unique(show_df,
+                                        columns=state.uniq_clicked)
         else:
             uniq_df = pd.DataFrame()
 
         if state.assert_clicked:
-            assert_df = xna_run_assert(sqobjs[state.table],
-                                       namespace=state.namespace.split())
+            assert_df = xplore_run_assert(sqobjs[state.table],
+                                          namespace=state.namespace.split())
         else:
             assert_df = pd.DataFrame()
 
