@@ -51,30 +51,25 @@ def display_title(pagelist):
         unsafe_allow_html=True
     )
 
-    title_container = st.beta_container()
     title_col, mid, page_col, srch_col = st.beta_columns([2, 1, 2, 2])
-    with title_container:
-        with title_col:
-            st.markdown(
-                f"""
-                <div class="container">
-                    <img class="logo-img" src="data:image/png;base64,{base64.b64encode(open(LOGO_IMAGE, "rb").read()).decode()}">
-                    <h1 style='color:purple;'>Suzieq</h1>
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
-        with page_col:
-            # The empty writes are for aligning the pages link with the logo
-            st.text(' ')
-            st.text(' ')
-            srch_holder = st.empty()
-            page = srch_holder.radio('Page', pagelist)
-
-        with srch_col:
-            st.text(' ')
-            search_text = st.text_input("Address Search", "")
-
+    with title_col:
+        st.markdown(
+            f"""
+            <div class="container">
+                <img class="logo-img" src="data:image/png;base64,{base64.b64encode(open(LOGO_IMAGE, "rb").read()).decode()}">
+                <h1 style='color:purple;'>Suzieq</h1>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+    with page_col:
+        # The empty writes are for aligning the pages link with the logo
+        st.text(' ')
+        srch_holder = st.empty()
+        page = srch_holder.selectbox('Page', pagelist)
+    with srch_col:
+        st.text(' ')
+        search_text = st.text_input("Address Search", "")
     if search_text:
         page = srch_holder.radio('Page', pagelist, index=3)
     return page, search_text
