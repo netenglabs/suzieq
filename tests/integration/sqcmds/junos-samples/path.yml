@@ -24,10 +24,10 @@ tests:
 - command: path summarize --dest=10.10.2.20 --src=10.10.1.10 --format=json --namespace=junos
   data-directory: tests/data/junos/parquet-out/
   marks: path summarize junos
-  output: '[{"j": 1}, {"j": [1]}, {"j": 0}, {"j": 0.0}, {"j": 1}, {"j": 1500}, {"j":
-    false}, {"j": false}]'
+  output: '[{"junos": 1}, {"junos": [1]}, {"junos": 0}, {"junos": 0.0}, {"junos":
+    1}, {"junos": 1500}, {"junos": false}, {"junos": false}]'
 - command: path summarize --dest=10.10.1.20 --src=10.10.1.10 --format=json --namespace=junos
   data-directory: tests/data/junos/parquet-out/
   marks: path summarize junos
-  output: '[{"j": 1}, {"j": [1, 1]}, {"j": 1}, {"j": 1.0}, {"j": 2}, {"j": 1500},
-    {"j": false}, {"j": false}]'
+  output: '[{"junos": 1}, {"junos": [1, 1]}, {"junos": 1}, {"junos": 1.0}, {"junos":
+    2}, {"junos": 1500}, {"junos": false}, {"junos": false}]'

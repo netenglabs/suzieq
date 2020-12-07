@@ -29,8 +29,8 @@ tests:
 - command: path summarize --dest=172.16.1.101 --src=172.16.3.104 --format=json --namespace=nxos
   data-directory: tests/data/nxos/parquet-out/
   marks: path summarize nxos
-  output: '[{"n": 2}, {"n": [1, 1, 2, 1, 1]}, {"n": 4}, {"n": 4.0}, {"n": 6}, {"n":
-    1500}, {"n": true}, {"n": false}]'
+  output: '[{"nxos": 2}, {"nxos": [1, 1, 2, 1, 1]}, {"nxos": 4}, {"nxos": 4.0}, {"nxos":
+    6}, {"nxos": 1500}, {"nxos": true}, {"nxos": false}]'
 - command: path show --namespace=nxos --src="172.16.1.101" --dest="172.16.3.104" --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: path show nxos
