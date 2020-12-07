@@ -20,7 +20,7 @@ class RoutesObj(SqObject):
             kwargs['address'] = kwargs['address'][0]
         return self.engine_obj.lpm(**kwargs)
 
-    def summarize(self, namespace=[], vrf=[], hostname=[]):
+    def summarize(self, namespace=[], vrf=[], hostname=[], query_str=''):
         """Summarize routing info for one or more namespaces"""
         if self.columns != ["default"]:
             self.summarize_df = pd.DataFrame(
