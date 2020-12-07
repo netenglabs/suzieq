@@ -82,7 +82,7 @@ def search_sidebar(state, page_flip: bool):
 def init_state(state_container: SessionState) -> SearchSessionState:
     '''Initialize the page's session state'''
 
-    state_container.pathSessionState = state = SearchSessionState()
+    state_container.searchSessionState = state = SearchSessionState()
 
     return state
 
