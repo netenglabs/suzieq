@@ -1,19 +1,17 @@
 from dataclasses import dataclass
-from typing import Union
 
 import streamlit as st
 from suzieq.sqobjects.path import PathObj
 import graphviz as graphviz
 import suzieq.gui.SessionState as SessionState
-from ipaddress import IPv4Address, IPv6Address
 
 
 @dataclass
 class PathSessionState:
     run: bool = False
     namespace: str = ''
-    source: Union[IPv4Address, IPv6Address, None] = None
-    dest: Union[IPv4Address, IPv6Address, None] = None
+    source: str = ''
+    dest: str = ''
     vrf: str = ''
 
 
