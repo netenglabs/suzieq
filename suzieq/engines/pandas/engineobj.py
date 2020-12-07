@@ -329,8 +329,16 @@ class SqEngineObject(object):
 
     def _init_summarize(self, table, **kwargs):
         kwargs.pop('columns', None)
+        query_str = kwargs.pop('query_str', '')
         columns = ['*']
+
         df = self.get(columns=columns, **kwargs)
+        if not df.empty:
+            try:
+                df = df.query(query_str)
+            except Exception:
+                pass
+
         self.summary_df = df
         if df.empty:
             return df

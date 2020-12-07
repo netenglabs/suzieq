@@ -154,7 +154,8 @@ class SqObject(object):
 
         return self.engine_obj.get(**kwargs)
 
-    def summarize(self, namespace=[], hostname=[]) -> pd.DataFrame:
+    def summarize(self, namespace=[], hostname=[],
+                  query_str='') -> pd.DataFrame:
         if self.columns != ["default"]:
             self.summarize_df = pd.DataFrame(
                 {'error': ['ERROR: You cannot specify columns with summarize']})
