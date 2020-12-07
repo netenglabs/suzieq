@@ -44,15 +44,12 @@ def path_sidebar(state, page_flip: bool):
     state.namespace = st.sidebar.text_input('Namespace',
                                             value=val,
                                             key='namespace')
-    val = state.namespace if page_flip else ''
     state.source = st.sidebar.text_input('Source IP',
-                                         value=val,
+                                         value=state.source,
                                          key='source')
-    val = state.namespace if page_flip else ''
-    state.dest = st.sidebar.text_input('Dest IP', value=val,
+    state.dest = st.sidebar.text_input('Dest IP', value=state.dest,
                                        key='dest')
-    val = state.namespace if page_flip else ''
-    state.vrf = st.sidebar.text_input('VRF', value=val,
+    state.vrf = st.sidebar.text_input('VRF', value=state.vrf,
                                       key='vrf')
 
     if all(not x for x in [state.namespace,

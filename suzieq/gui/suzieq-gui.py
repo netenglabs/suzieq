@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from typing import List
-from importlib import resources
 from types import ModuleType
 from collections import defaultdict
 import base64
