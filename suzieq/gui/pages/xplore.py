@@ -72,12 +72,12 @@ def xplore_sidebar(state: SessionState, table_vals: list, page_flip: bool):
         if state.table:
             tblidx = table_vals.index(state.table)
         else:
-            tblidx = 0
+            tblidx = table_vals.index('device')  # Default starting table
         assert_val = state.assert_clicked
         view_idx = 1 if state.view == 'all' else 0
     else:
         nsval = hostval = ''
-        tblidx = 0
+        tblidx = table_vals.index('device')  # Default starting table
         assert_val = False
         view_idx = 0
 
