@@ -32,13 +32,6 @@ def draw_sidebar_status(state: SessionState):
                                            value=state.add_routes)
 
 
-@st.cache(ttl=90)
-def get_summarize_df(sqobject, **kwargs):
-    view = kwargs.pop('view', 'latest')
-    df = sqobject(view=view).summarize(**kwargs)
-    return df
-
-
 def init_state(state_container: SessionState) -> StatusSessionState:
 
     state_container.statusSessionState = state = StatusSessionState()
@@ -56,45 +49,17 @@ def page_work(state_container: SessionState, page_flip: bool = False):
 
     draw_sidebar_status(state)
 
+    container_1 = st.beta_container()
+    col1, mid, col2 = st.beta_columns([2, 1, 2])
+
     # Get each of the summarize info
     dev_df = gui_get_df(state_container.sqobjs['device'], columns=['*'])
-    if_df = gui_get_df(state_container.sqobjs['interfaces'], columns=['*'])
-    bgp_df = gui_get_df(state_container.sqobjs['bgp'], columns=['*'])
-    ospf_df = gui_get_df(state_container.sqobjs['ospf'], columns=['*'])
-
-    if not if_df.empty:
-        if_df['state'] = np.where((if_df.state == "down") & (
-            if_df.adminState == "down"), "adminDown", if_df.state)
-    if not ospf_df.empty:
-        ospf_df['state'] = np.where(ospf_df.ifState == "adminDown", "adminDown",
-                                    ospf_df.adjState)
-
     if not dev_df.empty:
         dev_status = dev_df.groupby(by=['namespace', 'status'])['hostname'] \
                            .count() \
                            .reset_index() \
                            .rename({'hostname': 'count'}, axis=1)
-    if not if_df.empty:
-        if_status = if_df.groupby(by=['namespace', 'state'])['hostname'] \
-                         .count() \
-                         .reset_index() \
-                         .rename({'hostname': 'count'}, axis=1)
-    if not bgp_df.empty:
-        bgp_status = bgp_df.groupby(by=['namespace', 'state'])['hostname'] \
-                           .count() \
-                           .reset_index() \
-                           .rename({'hostname': 'count'}, axis=1)
 
-    if not ospf_df.empty:
-        ospf_status = ospf_df.groupby(by=['namespace', 'state'])['hostname'] \
-                             .count() \
-                             .reset_index() \
-                             .rename({'hostname': 'count'}, axis=1)
-
-    container_1 = st.beta_container()
-    col1, mid, col2 = st.beta_columns([2, 1, 2])
-
-    if not dev_df.empty:
         dev_chart = alt.Chart(dev_status, title='Devices') \
                        .mark_bar(tooltip=True) \
                        .encode(y='status', x='count:Q', row='namespace',
@@ -103,8 +68,24 @@ def page_work(state_container: SessionState, page_flip: bool = False):
                                    scale=alt.Scale(domain=['alive', 'dead'],
                                                    range=['green', 'red']))
                                )
+        with container_1:
+            with col1:
+                st.altair_chart(dev_chart)
+    else:
+        with container_1:
+            with col1:
+                st.info('No device info found')
 
+    if_df = gui_get_df(state_container.sqobjs['interfaces'], columns=['*'])
     if not if_df.empty:
+        if_df['state'] = np.where((if_df.state == "down") & (
+            if_df.adminState == "down"), "adminDown", if_df.state)
+
+        if_status = if_df.groupby(by=['namespace', 'state'])['hostname'] \
+                         .count() \
+                         .reset_index() \
+                         .rename({'hostname': 'count'}, axis=1)
+
         if_chart = alt.Chart(if_status, title='Interfaces') \
                       .mark_bar(tooltip=True) \
                       .encode(y='state', x='count:Q', row='namespace',
@@ -115,8 +96,22 @@ def page_work(state_container: SessionState, page_flip: bool = False):
                                                   range=['green', 'orange',
                                                          'red']))
                               )
+        with container_1:
+            with col2:
+                st.altair_chart(if_chart)
+    else:
+        with container_1:
+            with col2:
+                st.info('No Interface info found')
+
+    bgp_df = gui_get_df(state_container.sqobjs['bgp'], columns=['*'])
 
     if not bgp_df.empty:
+        bgp_status = bgp_df.groupby(by=['namespace', 'state'])['hostname'] \
+                           .count() \
+                           .reset_index() \
+                           .rename({'hostname': 'count'}, axis=1)
+
         bgp_chart = alt.Chart(bgp_status, title='BGP') \
                        .mark_bar(tooltip=True) \
                        .encode(y='state', x='count:Q', row='namespace',
@@ -128,7 +123,16 @@ def page_work(state_container: SessionState, page_flip: bool = False):
                                        range=['green', 'red', 'orange']))
                                )
 
+    ospf_df = gui_get_df(state_container.sqobjs['ospf'], columns=['*'])
     if not ospf_df.empty:
+        ospf_df['state'] = np.where(ospf_df.ifState == "adminDown",
+                                    "adminDown", ospf_df.adjState)
+
+        ospf_status = ospf_df.groupby(by=['namespace', 'state'])['hostname'] \
+                             .count() \
+                             .reset_index() \
+                             .rename({'hostname': 'count'}, axis=1)
+
         ospf_chart = alt.Chart(ospf_status, title='OSPF') \
                         .mark_bar(tooltip=True) \
                         .encode(y='state', x='count:Q', row='namespace',
@@ -139,18 +143,6 @@ def page_work(state_container: SessionState, page_flip: bool = False):
                                                 'adminDown', 'passive'],
                                         range=['green', 'red', 'orange', 'peach']))
                                 )
-
-    with container_1:
-        with col1:
-            if not dev_df.empty:
-                st.altair_chart(dev_chart)
-            else:
-                st.info('No device info found')
-        with col2:
-            if not if_df.empty:
-                st.altair_chart(if_chart)
-            else:
-                st.info('No interface info found')
 
     container_2 = st.beta_container()
     col2_1, mid, col2_2 = st.beta_columns([2, 1, 2])
