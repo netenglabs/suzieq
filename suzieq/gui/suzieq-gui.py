@@ -71,7 +71,9 @@ def display_title(pagelist):
         st.text(' ')
         search_text = st.text_input("Address Search", "")
     if search_text:
-        page = srch_holder.radio('Page', pagelist, index=3)
+        # We're assuming here that the page is titled Search
+        srchidx = pagelist.index('Search')
+        page = srch_holder.selectbox('Page', pagelist, index=srchidx)
     return page, search_text
 
 

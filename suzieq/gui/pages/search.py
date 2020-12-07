@@ -18,6 +18,7 @@ class SearchSessionState:
 
 
 def get_title():
+    # suzieq_gui.py has hardcoded this name.
     return 'Search'
 
 
