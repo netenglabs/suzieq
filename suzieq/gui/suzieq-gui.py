@@ -5,24 +5,13 @@ from collections import defaultdict
 import base64
 
 import streamlit as st
-
+from streamlit.report_thread import get_report_ctx
+from streamlit.server.server import Server
 
 from suzieq.gui.guiutils import horizontal_radio, hide_st_index
-import suzieq.gui.SessionState as SessionState
+from suzieq.gui.session_state import get_session_state
 from suzieq.gui.pages import *
 from suzieq.sqobjects import *
-
-
-@dataclass
-class SidebarData:
-    '''Class for returning data from the sidebar'''
-    namespace: str
-    hostname: str
-    table: str
-    view: str
-    query: str
-    assert_clicked: bool
-    columns: List[str]
 
 
 def display_title(pagelist):
@@ -67,6 +56,7 @@ def display_title(pagelist):
         st.text(' ')
         srch_holder = st.empty()
         page = srch_holder.selectbox('Page', pagelist)
+
     with srch_col:
         st.text(' ')
         search_text = st.text_input("Address Search", "")
@@ -123,8 +113,9 @@ def build_sqobj_table() -> dict:
 def apprun():
     '''The main application routine'''
 
-    state = SessionState.get(pages=None, prev_page='', search_text='',
-                             sqobjs={})
+    state = get_session_state()
+    # state = SessionState.get(pages=None, prev_page='', search_text='',
+    #                          sqobjs={})
 
     st.set_page_config(layout="wide")
     hide_st_index()
@@ -140,19 +131,24 @@ def apprun():
             pagelist.append(page)
 
     page, search_text = display_title(pagelist)
+    if state.prev_page != page:
+        page_flip = True
+    else:
+        page_flip = False
+    state.prev_page = page
+
+    if state.search_text is None:
+        state.search_text = ''
 
     if search_text != state.search_text:
         page = 'Search'
         state.search_text = search_text
 
-    if page != state.prev_page:
-        page_flip = True
-        state.prev_page = page
-    else:
-        page_flip = False
     horizontal_radio()
 
     state.pages[page](state, page_flip)
+    if page != 'Search':
+        state.sync()
 
 
 if __name__ == '__main__':

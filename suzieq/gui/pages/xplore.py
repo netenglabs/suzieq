@@ -3,7 +3,6 @@ from typing import List, Dict
 from dataclasses import dataclass, field
 
 import streamlit as st
-import suzieq.gui.SessionState as SessionState
 import altair as alt
 import pandas as pd
 import numpy as np
@@ -19,11 +18,11 @@ class XploreSessionState:
     hostname: str = ''
     start_time: str = ''
     end_time: str = ''
-    table: str = ''
-    view: str = ''
+    table: str = 'device'
+    view: str = 'latest'
     query: str = ''
     columns:  List[str] = field(default_factory=list)
-    uniq_clicked: int = 0
+    uniq_clicked: str = ''
     assert_clicked: bool = False
 
 
@@ -68,26 +67,19 @@ def xplore_run_assert(sqobject, **kwargs):
     return df
 
 
-def xplore_sidebar(state: SessionState, table_vals: list, page_flip: bool):
+def xplore_sidebar(state, table_vals: list):
     '''Draw appropriate sidebar for the page'''
 
-    if page_flip:
-        nsval = state.namespace
-        hostval = state.hostname
-        stime = state.start_time
-        etime = state.end_time
-        if state.table:
-            tblidx = table_vals.index(state.table)
-        else:
-            tblidx = table_vals.index('device')  # Default starting table
-        assert_val = state.assert_clicked
-        view_idx = 1 if state.view == 'all' else 0
+    nsval = state.namespace
+    hostval = state.hostname
+    stime = state.start_time
+    etime = state.end_time
+    if state.table:
+        tblidx = table_vals.index(state.table)
     else:
-        nsval = hostval = ''
-        stime = etime = ''
         tblidx = table_vals.index('device')  # Default starting table
-        assert_val = False
-        view_idx = 0
+    assert_val = state.assert_clicked
+    view_idx = 1 if state.view == 'all' else 0
 
     state.namespace = st.sidebar.text_input('Namespace',
                                             value=nsval,
@@ -157,12 +149,8 @@ def xplore_sidebar(state: SessionState, table_vals: list, page_flip: bool):
         st.error('Columns cannot be empty')
         st.stop()
 
-    if page_flip:
-        val = state.query
-    else:
-        val = ''
     state.query = st.sidebar.text_input(
-        'Filter table show results with pandas query', value=val,
+        'Filter table show results with pandas query', value=state.query,
         key=state.table)
     st.sidebar.markdown(
         "[query syntax help](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.query.html)")
@@ -178,28 +166,19 @@ def xplore_sidebar(state: SessionState, table_vals: list, page_flip: bool):
                      .reset_index(drop=True).style)
 
 
-def init_state(state_container: SessionState) -> XploreSessionState:
-    '''Initialize session state'''
-
-    state_container.xploreSessionState = state = XploreSessionState()
-
-    state.columns = ['default']
-    state.sqobjs = {}
-
-    return state
-
-
-def page_work(state_container: SessionState, page_flip=False):
+def page_work(state_container, page_flip: bool):
     '''The main workhorse routine for the Xplore page'''
 
-    if hasattr(state_container, 'xploreSessionState'):
-        state = getattr(state_container, 'xploreSessionState')
+    if not state_container.xploreSessionState:
+        state_container.xploreSessionState = XploreSessionState()
+        state = state_container.xploreSessionState
+        state.columns = ['default']
     else:
-        state = init_state(state_container)
+        state = state_container.xploreSessionState
 
     sqobjs = state_container.sqobjs
     # All the user input is preserved in the state vars
-    xplore_sidebar(state, sorted(list(sqobjs.keys())), page_flip)
+    xplore_sidebar(state, sorted(list(sqobjs.keys())))
 
     if state.table != "tables":
         df = gui_get_df(sqobjs[state.table], _table=state.table,
@@ -266,7 +245,7 @@ def page_work(state_container: SessionState, page_flip=False):
 
                     state.uniq_clicked = st.selectbox(
                         'Distribution Count of', options=['-'] + dfcols,
-                        index=selindex)
+                        index=selindex, key='distcount')
 
         scol1, scol2 = st.beta_columns(2)
 

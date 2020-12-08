@@ -4,7 +4,6 @@ import streamlit as st
 import pandas as pd
 from suzieq.sqobjects.path import PathObj
 import graphviz as graphviz
-import suzieq.gui.SessionState as SessionState
 
 
 @dataclass
@@ -41,29 +40,25 @@ def path_get(state: PathSessionState) -> (pd.DataFrame, pd.DataFrame):
     return df, summ_df
 
 
-def path_sidebar(state, page_flip: bool):
+def path_sidebar(state):
     """Configure sidebar"""
 
     ok_button = st.sidebar.button('Trace')
-    val = state.namespace if page_flip else ''
     state.namespace = st.sidebar.text_input('Namespace',
-                                            value=val,
+                                            value=state.namespace,
                                             key='namespace')
-    val = state.source if page_flip else ''
     state.source = st.sidebar.text_input('Source IP',
-                                         value=val,
+                                         value=state.source,
                                          key='source')
-    val = state.dest if page_flip else ''
-    state.dest = st.sidebar.text_input('Dest IP', value=val,
+    state.dest = st.sidebar.text_input('Dest IP', value=state.dest,
                                        key='dest')
-    val = state.vrf if page_flip else ''
-    state.vrf = st.sidebar.text_input('VRF', value=val,
+    state.vrf = st.sidebar.text_input('VRF', value=state.vrf,
                                       key='vrf')
-    val = state.start_time if page_flip else ''
-    state.start_time = st.sidebar.text_input('Start Time', value=val,
+    state.start_time = st.sidebar.text_input('Start Time',
+                                             value=state.start_time,
                                              key='start-time')
-    val = state.end_time if page_flip else ''
-    state.start_time = st.sidebar.text_input('End Time', value=val,
+    state.start_time = st.sidebar.text_input('End Time',
+                                             value=state.end_time,
                                              key='end-time')
 
     if all(not x for x in [state.namespace,
@@ -76,22 +71,15 @@ def path_sidebar(state, page_flip: bool):
     return
 
 
-def init_state(state_container: SessionState) -> PathSessionState:
-
-    state_container.pathSessionState = state = PathSessionState()
-
-    return state
-
-
-def page_work(state_container: SessionState, page_flip: bool = False):
+def page_work(state_container, page_flip: bool):
     '''Main workhorse routine for path'''
 
-    if hasattr(state_container, 'pathSessionState'):
-        state = getattr(state_container, 'pathSessionState')
-    else:
-        state = init_state(state_container)
+    if not state_container.pathSessionState:
+        state_container.pathSessionState = PathSessionState()
 
-    path_sidebar(state, page_flip)
+    state = state_container.pathSessionState
+
+    path_sidebar(state)
 
     if state.run:
         df, summ_df = path_get(state)
