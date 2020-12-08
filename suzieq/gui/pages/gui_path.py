@@ -57,9 +57,9 @@ def path_sidebar(state):
     state.start_time = st.sidebar.text_input('Start Time',
                                              value=state.start_time,
                                              key='start-time')
-    state.start_time = st.sidebar.text_input('End Time',
-                                             value=state.end_time,
-                                             key='end-time')
+    state.end_time = st.sidebar.text_input('End Time',
+                                           value=state.end_time,
+                                           key='end-time')
 
     if all(not x for x in [state.namespace,
                            state.source,

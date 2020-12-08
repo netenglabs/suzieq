@@ -220,7 +220,7 @@ def page_work(state_container, page_flip: bool):
 
     if not show_df.empty:
         dfcols = show_df.columns.tolist()
-        if state.table == 'routes':
+        if state.table == 'routes' and 'prefixlen' not in dfcols:
             dfcols.append('prefixlen')
 
         dfcols = sorted((filter(lambda x: x not in ['index', 'sqvers'],
@@ -238,9 +238,10 @@ def page_work(state_container, page_flip: bool):
                         f'Showing first 256 of {show_df.shape[0]} rows, use query to filter')
             with uniq_col:
                 if state.table != "tables":
-                    if not state.uniq_clicked:
+                    if (not state.uniq_clicked or
+                            state.uniq_clicked not in dfcols):
                         selindex = dfcols.index('hostname')+1
-                    else:
+                    elif state.uniq_clicked in dfcols:
                         selindex = dfcols.index(state.uniq_clicked)+1
 
                     state.uniq_clicked = st.selectbox(
