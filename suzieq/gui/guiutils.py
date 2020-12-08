@@ -7,12 +7,16 @@ def gui_get_df(sqobject, **kwargs):
     table = kwargs.pop('_table', '')
     view = kwargs.pop('view', 'latest')
     columns = kwargs.pop('columns', ['default'])
+    stime = kwargs.pop('start_time', '')
+    etime = kwargs.pop('end_time', '')
     if columns == ['all']:
         columns = ['*']
     if table != "tables":
-        df = sqobject(view=view).get(columns=columns, **kwargs)
+        df = sqobject(view=view, start_time=stime, end_time=etime) \
+            .get(columns=columns, **kwargs)
     else:
-        df = sqobject(view=view).get(**kwargs)
+        df = sqobject(view=view, start_time=stime, end_time=etime) \
+            .get(**kwargs)
     if not df.empty:
         if table == 'address':
             if 'ipAddressList' in df.columns:

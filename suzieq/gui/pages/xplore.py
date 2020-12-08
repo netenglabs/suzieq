@@ -17,6 +17,8 @@ from suzieq.gui.guiutils import sq_gui_style, gui_get_df
 class XploreSessionState:
     namespace: str = ''
     hostname: str = ''
+    start_time: str = ''
+    end_time: str = ''
     table: str = ''
     view: str = ''
     query: str = ''
@@ -32,7 +34,10 @@ def get_title():
 @st.cache(ttl=90)
 def xplore_run_summarize(sqobject, **kwargs):
     view = kwargs.pop('view', 'latest')
-    df = sqobject(view=view).summarize(**kwargs)
+    stime = kwargs.pop('start_time', '')
+    etime = kwargs.pop('end_time', '')
+    df = sqobject(view=view, start_time=stime,
+                  end_time=etime).summarize(**kwargs)
     return df
 
 
@@ -69,6 +74,8 @@ def xplore_sidebar(state: SessionState, table_vals: list, page_flip: bool):
     if page_flip:
         nsval = state.namespace
         hostval = state.hostname
+        stime = state.start_time
+        etime = state.end_time
         if state.table:
             tblidx = table_vals.index(state.table)
         else:
@@ -77,6 +84,7 @@ def xplore_sidebar(state: SessionState, table_vals: list, page_flip: bool):
         view_idx = 1 if state.view == 'all' else 0
     else:
         nsval = hostval = ''
+        stime = etime = ''
         tblidx = table_vals.index('device')  # Default starting table
         assert_val = False
         view_idx = 0
@@ -88,6 +96,12 @@ def xplore_sidebar(state: SessionState, table_vals: list, page_flip: bool):
                                            value=hostval,
                                            key='hostname')
 
+    state.start_time = st.sidebar.text_input('Start time',
+                                             value=stime,
+                                             key='stime')
+    state.end_time = st.sidebar.text_input('End time',
+                                           value=etime,
+                                           key='etime')
     table = st.sidebar.selectbox(
         'Select Table to View', tuple(table_vals), index=tblidx)
 
@@ -99,6 +113,9 @@ def xplore_sidebar(state: SessionState, table_vals: list, page_flip: bool):
         state.table = table
 
     view_vals = ('latest', 'all')
+    if state.start_time and state.end_time:
+        # We show everything thats happened when both times are specified
+        view_idx = 1
     state.view = st.sidebar.radio("View of Data", view_vals,
                                   index=view_idx)
     fields = TablesObj().describe(table=state.table)
@@ -188,22 +205,29 @@ def page_work(state_container: SessionState, page_flip=False):
         df = gui_get_df(sqobjs[state.table], _table=state.table,
                         namespace=state.namespace.split(),
                         hostname=state.hostname.split(),
+                        start_time=state.start_time, end_time=state.end_time,
                         view=state.view, columns=state.columns)
     else:
         df = gui_get_df(sqobjs[state.table], _table=state.table,
                         namespace=state.namespace.split(),
                         hostname=state.hostname.split(),
+                        start_time=state.start_time, end_time=state.end_time,
                         view=state.view)
 
     if state.table != "tables":
         summ_df = xplore_run_summarize(sqobjs[state.table],
                                        namespace=state.namespace.split(),
                                        hostname=state.hostname.split(),
+                                       start_time=state.start_time,
+                                       end_time=state.end_time,
                                        query_str=state.query)
     else:
         summ_df = pd.DataFrame()
 
     if not df.empty:
+        if 'error' in df.columns:
+            st.error(df.iloc[0].error)
+            st.stop()
         if state.query:
             try:
                 show_df = df.query(state.query)
@@ -254,6 +278,8 @@ def page_work(state_container: SessionState, page_flip=False):
 
         if state.assert_clicked:
             assert_df = xplore_run_assert(sqobjs[state.table],
+                                          start_time=state.start_time,
+                                          end_time=state.end_time,
                                           namespace=state.namespace.split())
         else:
             assert_df = pd.DataFrame()
