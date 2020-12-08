@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 
 import streamlit as st
+import pandas as pd
 from suzieq.sqobjects.path import PathObj
 import graphviz as graphviz
 import suzieq.gui.SessionState as SessionState
@@ -12,6 +13,8 @@ class PathSessionState:
     namespace: str = ''
     source: str = ''
     dest: str = ''
+    start_time: str = ''
+    end_time: str = ''
     vrf: str = ''
 
 
@@ -20,14 +23,18 @@ def get_title():
 
 
 @st.cache(ttl=90, allow_output_mutation=True, suppress_st_warning=True)
-def path_get(namespace, source, dest, vrf):
+def path_get(state: PathSessionState) -> (pd.DataFrame, pd.DataFrame):
     '''Run the path and return the dataframes'''
     try:
-        df = PathObj().get(namespace=[namespace],
-                           source=source, dest=dest, vrf=vrf)
-        summ_df = PathObj().summarize(namespace=[namespace],
-                                      source=source, dest=dest,
-                                      vrf=vrf)
+        df = PathObj(start_time=state.start_time, end_time=state.end_time) \
+            .get(namespace=[state.namespace],
+                 source=state.source, dest=state.dest, vrf=state.vrf)
+
+        summ_df = PathObj(start_time=state.start_time,
+                          end_time=state.end_time) \
+            .summarize(namespace=[state.namespace],
+                       source=state.source, dest=state.dest,
+                       vrf=state.vrf)
     except Exception as e:
         st.error(f'Invalid Input: {str(e)}')
         st.stop()
@@ -42,13 +49,22 @@ def path_sidebar(state, page_flip: bool):
     state.namespace = st.sidebar.text_input('Namespace',
                                             value=val,
                                             key='namespace')
+    val = state.source if page_flip else ''
     state.source = st.sidebar.text_input('Source IP',
-                                         value=state.source,
+                                         value=val,
                                          key='source')
-    state.dest = st.sidebar.text_input('Dest IP', value=state.dest,
+    val = state.dest if page_flip else ''
+    state.dest = st.sidebar.text_input('Dest IP', value=val,
                                        key='dest')
-    state.vrf = st.sidebar.text_input('VRF', value=state.vrf,
+    val = state.vrf if page_flip else ''
+    state.vrf = st.sidebar.text_input('VRF', value=val,
                                       key='vrf')
+    val = state.start_time if page_flip else ''
+    state.start_time = st.sidebar.text_input('Start Time', value=val,
+                                             key='start-time')
+    val = state.end_time if page_flip else ''
+    state.start_time = st.sidebar.text_input('End Time', value=val,
+                                             key='end-time')
 
     if all(not x for x in [state.namespace,
                            state.source,
@@ -78,8 +94,7 @@ def page_work(state_container: SessionState, page_flip: bool = False):
     path_sidebar(state, page_flip)
 
     if state.run:
-        df, summ_df = path_get(state.namespace, state.source,
-                               state.dest, state.vrf)
+        df, summ_df = path_get(state)
 
     if not state.run:
         st.stop()
