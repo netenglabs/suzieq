@@ -16,10 +16,10 @@ from prompt_toolkit import prompt
 )
 @argument("hostname", description="Space separated list of hostnames to qualify")
 @argument(
-    "start_time", description="Start of time window in YYYY-MM-dd HH:mm:SS pformat"
+    "start_time", description="Start of time window, try natural language spec"
 )
 @argument(
-    "end_time", description="End of time window in YYYY-MM-dd HH:mm:SS pformat"
+    "end_time", description="End of time window, try natural language spec "
 )
 @argument(
     "view",
@@ -114,7 +114,7 @@ class SqCommand:
             df.reset_index(drop=True, inplace=True)
 
         if self.ctxt.pager:
-            screen_lines = (shutil.get_terminal_size((80, 20)).lines -2)
+            screen_lines = (shutil.get_terminal_size((80, 20)).lines - 2)
             bufio = StringIO()
 
             print(df, file=bufio)
