@@ -44,6 +44,10 @@ def xplore_run_unique(df: pd.DataFrame, **kwargs) -> pd.DataFrame:
     '''Compute the distribution counts for the dataframe provided'''
     column = kwargs.pop('columns', '')
     if not df.empty:
+        if column == 'prefixlen' and 'prefixlen' not in df.columns:
+            # Special handling for prefixlen
+            df['prefixlen'] = df['prefix'].str.split('/').str[1]
+
         if df.apply(lambda x: isinstance(x[column], np.ndarray), axis=1).all():
             idf = df.explode(column).dropna(how='any')
         else:
@@ -220,7 +224,8 @@ def page_work(state_container, page_flip: bool):
 
     if not show_df.empty:
         dfcols = show_df.columns.tolist()
-        if state.table == 'routes' and 'prefixlen' not in dfcols:
+        if (state.table == 'routes' and 'prefix' in dfcols and
+                'prefixlen' not in dfcols):
             dfcols.append('prefixlen')
 
         dfcols = sorted((filter(lambda x: x not in ['index', 'sqvers'],
