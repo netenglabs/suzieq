@@ -107,6 +107,7 @@ def xplore_sidebar(state, table_vals: list):
         state.assert_clicked = False
         state.uniq_clicked = 0
         state.table = table
+        state.columns = 'default'
 
     view_vals = ('latest', 'all')
     if state.start_time and state.end_time:
@@ -245,7 +246,10 @@ def page_work(state_container, page_flip: bool):
                 if state.table != "tables":
                     if (not state.uniq_clicked or
                             state.uniq_clicked not in dfcols):
-                        selindex = dfcols.index('hostname')+1
+                        if 'hostname' in dfcols:
+                            selindex = dfcols.index('hostname')+1
+                        else:
+                            selindex = 1
                     elif state.uniq_clicked in dfcols:
                         selindex = dfcols.index(state.uniq_clicked)+1
 
