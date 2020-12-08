@@ -2,7 +2,8 @@ import pandas as pd
 import numpy as np
 import pyarrow as pa
 from suzieq.utils import SchemaForTable
-from dateutil.parser import parse, ParserError
+import dateparser
+from tzlocal import get_localzone
 
 
 class SqEngineObject(object):
@@ -57,6 +58,9 @@ class SqEngineObject(object):
         key_fields = sch.key_fields()
         drop_cols = []
 
+        if columns == ['*']:
+            drop_cols.append('sqvers')
+
         if 'timestamp' not in fields:
             fields.append('timestamp')
 
@@ -74,19 +78,51 @@ class SqEngineObject(object):
                 # timestamp is always the last field
                 fields.insert(-1, f)
 
-        for dt in [self.iobj.start_time, self.iobj.end_time]:
-            if dt:
-                try:
-                    parse(dt)
-                except (ValueError, ParserError) as e:
-                    print(f"invalid time {dt}: {e}")
-                    return pd.DataFrame()
+        if self.iobj.start_time:
+            try:
+                if self.iobj.start_time.endswith('UTC'):
+                    mytz = 'UTC'
+                else:
+                    mytz = get_localzone().zone
+                start_time = dateparser.parse(
+                    self.iobj.start_time.replace('last night', 'yesterday'),
+                    settings={'TIMEZONE': mytz, 'TO_TIMEZONE': 'UTC'})
+            except Exception as e:
+                print(f"ERROR: invalid time {self.iobj.start_time}: {e}")
+                return pd.DataFrame()
+        else:
+            start_time = ''
+
+        if self.iobj.start_time and not start_time:
+            # Something went wrong with our parsing
+            print(f"ERROR: unable to parse {self.iobj.start_time}")
+            return pd.DataFrame()
+
+        if self.iobj.end_time:
+            try:
+                if self.iobj.end_time.endswith('UTC'):
+                    mytz = 'UTC'
+                else:
+                    mytz = get_localzone().zone
+                end_time = dateparser.parse(
+                    self.iobj.end_time.replace('last night', 'yesterday'),
+                    settings={'TIMEZONE': mytz, 'TO_TIMEZONE': 'UTC'})
+            except Exception as e:
+                print(f"ERROR: invalid time {self.iobj.end_time}: {e}")
+                return pd.DataFrame()
+        else:
+            end_time = ''
+
+        if self.iobj.end_time and not end_time:
+            # Something went wrong with our parsing
+            print(f"ERROR: Unable to parse {self.iobj.end_time}")
+            return pd.DataFrame()
 
         table_df = self.ctxt.engine.get_table_df(
             self.cfg,
             table=phy_table,
-            start_time=self.iobj.start_time,
-            end_time=self.iobj.end_time,
+            start_time=start_time,
+            end_time=end_time,
             columns=fields,
             view=view,
             key_fields=key_fields,
