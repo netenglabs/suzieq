@@ -22,14 +22,14 @@ def get_title():
 def draw_sidebar_status(state: SessionState):
     '''Draw appropriate sidebar for the page'''
 
-    state.add_vlans = st.sidebar.checkbox('Add VLAN Count',
-                                          value=state.add_vlans)
-    state.add_vrfs = st.sidebar.checkbox('Add VRF Count',
-                                         value=state.add_vrfs)
-    state.add_macs = st.sidebar.checkbox('Add MACs Count',
-                                         value=state.add_macs)
-    state.add_routes = st.sidebar.checkbox('Add Routes Count',
-                                           value=state.add_routes)
+    st.sidebar.markdown(
+        '''This page provides an overview of the overall network status
+
+Select one of the following pages from the Page menu to investigate further.
+* __Xplore__: Look at all the data, look at summaries, run asserts, queries and more
+* __Path__: Trace the paths between destinations in a given namespace
+* __Search__: Search for addresses in various tables. You can search for more things in the upcoming releases
+''')
 
 
 def init_state(state_container: SessionState) -> StatusSessionState:
