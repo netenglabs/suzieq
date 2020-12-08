@@ -4,7 +4,6 @@ from dataclasses import dataclass
 import pandas as pd
 import streamlit as st
 from suzieq.sqobjects.path import PathObj
-import suzieq.gui.SessionState as SessionState
 from suzieq.gui.guiutils import gui_get_df
 
 
@@ -14,7 +13,7 @@ class SearchSessionState:
     past_df = None
     table: str = ''
     query_str: str = ''
-    prev_results = deque()
+    prev_results = deque(maxlen=5)
 
 
 def get_title():
@@ -22,7 +21,7 @@ def get_title():
     return 'Search'
 
 
-def build_query(state: SessionState, search_text: str) -> str:
+def build_query(state, search_text: str) -> str:
     '''Build the appropriate query for the search'''
 
     if not search_text:
@@ -73,32 +72,27 @@ def build_query(state: SessionState, search_text: str) -> str:
     return query_str
 
 
-def search_sidebar(state, page_flip: bool):
+def search_sidebar(state):
     '''Draw the sidebar'''
 
     st.sidebar.markdown(
         "Displays last 5 search results")
 
 
-def init_state(state_container: SessionState) -> SearchSessionState:
-    '''Initialize the page's session state'''
-
-    state_container.searchSessionState = state = SearchSessionState()
-
-    return state
-
-
-def page_work(state_container: SessionState, page_flip: bool):
+def page_work(state_container, page_flip: bool):
     '''Main page workhorse'''
 
-    if hasattr(state_container, 'searchSessionState'):
-        state = getattr(state_container, 'searchSessionState')
+    if not state_container.searchSessionState:
+        state_container.searchSessionState = SearchSessionState()
+
+    state = state_container.searchSessionState
+
+    search_sidebar(state)
+
+    if page_flip or (state_container.search_text != state.search_str):
+        query_str = build_query(state, state_container.search_text)
     else:
-        state = init_state(state_container)
-
-    search_sidebar(state, page_flip)
-
-    query_str = build_query(state, state_container.search_text)
+        query_str = ''
 
     if query_str:
         if state.table == "address":
@@ -119,8 +113,10 @@ def page_work(state_container: SessionState, page_flip: bool):
             else:
                 st.info('No matching result found')
 
-    for prev_res in state.prev_results:
+    for count, prev_res in enumerate(reversed(state.prev_results)):
         psrch, prev_df = prev_res
+        if psrch == state_container.search_text:
+            continue
         expander = st.beta_expander(f'Search for {psrch}', expanded=True)
         with expander:
             if not prev_df.empty:
@@ -128,5 +124,6 @@ def page_work(state_container: SessionState, page_flip: bool):
             else:
                 st.info('No matching result found')
 
-    if state_container.search_text:
+    if query_str and (state_container.search_text != state.search_str):
         state.prev_results.append((state_container.search_text, df))
+        state.search_str = state_container.search_text

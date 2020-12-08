@@ -1,5 +1,5 @@
 import streamlit as st
-import suzieq.gui.SessionState as SessionState
+
 import pandas as pd
 import altair as alt
 from dataclasses import dataclass
@@ -19,7 +19,7 @@ def get_title():
     return 'Status'
 
 
-def draw_sidebar_status(state: SessionState):
+def draw_sidebar_status(state):
     '''Draw appropriate sidebar for the page'''
 
     st.sidebar.markdown(
@@ -32,20 +32,13 @@ Select one of the following pages from the Page menu to investigate further.
 ''')
 
 
-def init_state(state_container: SessionState) -> StatusSessionState:
-
-    state_container.statusSessionState = state = StatusSessionState()
-
-    return state
-
-
-def page_work(state_container: SessionState, page_flip: bool = False):
+def page_work(state_container, page_flip: bool):
     '''The main workhorse routine for the XNA page'''
 
-    if hasattr(state_container, 'statusSessionState'):
-        state = getattr(state_container, 'statusSessionState')
-    else:
-        state = init_state(state_container)
+    if not state_container.statusSessionState:
+        state_container.statusSessionState = StatusSessionState()
+
+    state = state_container.statusSessionState
 
     draw_sidebar_status(state)
 
