@@ -49,8 +49,26 @@ def page_work(state_container: SessionState, page_flip: bool = False):
 
     draw_sidebar_status(state)
 
+    sqdf = gui_get_df(state_container.sqobjs['sqPoller'],
+                      columns=['namespace', 'hostname', 'timestamp'],
+                      service='device')
+    if not sqdf.empty:
+        hosts = sqdf.groupby(by=['namespace'])['hostname'] \
+                    .nunique() \
+                    .reset_index() \
+                    .rename({'hostname': 'devicePolledCnt'}, axis=1)
+        times = sqdf.groupby(by=['namespace'])['timestamp'] \
+                    .max().reset_index() \
+                          .rename({'timestamp': 'lastPolledTime(UTC)'}, axis=1)
+        pstats = hosts.merge(times, on=['namespace'])
+
+        st.subheader('Poller Status')
+        st.dataframe(pstats)
+
     container_1 = st.beta_container()
-    col1, mid, col2 = st.beta_columns([2, 1, 2])
+    dev_col, mid, if_col = st.beta_columns([2, 1, 2])
+    container_2 = st.beta_container()
+    bgp_col, mid, ospf_col = st.beta_columns([2, 1, 2])
 
     # Get each of the summarize info
     dev_df = gui_get_df(state_container.sqobjs['device'], columns=['*'])
@@ -69,11 +87,11 @@ def page_work(state_container: SessionState, page_flip: bool = False):
                                                    range=['green', 'red']))
                                )
         with container_1:
-            with col1:
+            with dev_col:
                 st.altair_chart(dev_chart)
     else:
         with container_1:
-            with col1:
+            with dev_col:
                 st.info('No device info found')
 
     if_df = gui_get_df(state_container.sqobjs['interfaces'], columns=['*'])
@@ -97,11 +115,11 @@ def page_work(state_container: SessionState, page_flip: bool = False):
                                                          'red']))
                               )
         with container_1:
-            with col2:
+            with if_col:
                 st.altair_chart(if_chart)
     else:
         with container_1:
-            with col2:
+            with if_col:
                 st.info('No Interface info found')
 
     bgp_df = gui_get_df(state_container.sqobjs['bgp'], columns=['*'])
@@ -122,6 +140,10 @@ def page_work(state_container: SessionState, page_flip: bool = False):
                                                'NotEstd', 'dynamic'],
                                        range=['green', 'red', 'orange']))
                                )
+        with container_2:
+            with bgp_col:
+                if not bgp_df.empty:
+                    st.altair_chart(bgp_chart)
 
     ospf_df = gui_get_df(state_container.sqobjs['ospf'], columns=['*'])
     if not ospf_df.empty:
@@ -143,13 +165,7 @@ def page_work(state_container: SessionState, page_flip: bool = False):
                                                 'adminDown', 'passive'],
                                         range=['green', 'red', 'orange', 'peach']))
                                 )
-
-    container_2 = st.beta_container()
-    col2_1, mid, col2_2 = st.beta_columns([2, 1, 2])
-    with container_2:
-        with col2_1:
-            if not bgp_df.empty:
-                st.altair_chart(bgp_chart)
-        with col2_2:
-            if not ospf_df.empty:
-                st.altair_chart(ospf_chart)
+        with container_2:
+            with ospf_col:
+                if not ospf_df.empty:
+                    st.altair_chart(ospf_chart)
