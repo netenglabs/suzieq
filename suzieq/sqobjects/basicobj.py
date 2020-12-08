@@ -167,7 +167,7 @@ class SqObject(object):
             raise AttributeError('No analysis engine specified')
 
         return self.engine_obj.summarize(namespace=namespace,
-                                         hostname=hostname)
+                                         hostname=hostname, query_str=query_str)
 
     def unique(self, **kwargs) -> pd.DataFrame:
         if not self._table:
