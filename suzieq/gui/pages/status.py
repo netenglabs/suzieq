@@ -28,7 +28,7 @@ def draw_sidebar_status(state):
 Select one of the following pages from the Page menu to investigate further.
 * __Xplore__: Look at all the data, look at summaries, run asserts, queries and more
 * __Path__: Trace the paths between destinations in a given namespace
-* __Search__: Search for addresses in various tables. You can search for more things in the upcoming releases
+* __Search__: Search for addresses in various tables. Just type in any address you want to search. You can specify multiple addresses, space separated. See the search page for more help.
 ''')
 
 
