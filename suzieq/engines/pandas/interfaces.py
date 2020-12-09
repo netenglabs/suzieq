@@ -37,7 +37,7 @@ class InterfacesObj(SqEngineObject):
         self._summarize_on_add_with_query = [
             ('devicesWithL2Cnt', 'master == "bridge"', 'hostname'),
             ('devicesWithVxlanCnt', 'type == "vxlan"', 'hostname'),
-            ('ifDownCnt', 'state != "up"', 'ifname'),
+            ('ifDownCnt', 'state != "up" and adminState == "up"', 'ifname'),
             ('ifWithMultipleIPCnt', 'ipAddressList.str.len() > 1', 'ifname'),
         ]
 
@@ -105,6 +105,8 @@ class InterfacesObj(SqEngineObject):
         """Workhorse routine that validates MTU match for specified input"""
         columns = kwargs.pop('columns', [])
         status = kwargs.pop('status', 'all')
+        stime = kwargs.pop('start_time', '')
+        etime = kwargs.pop('end_time', '')
 
         columns = ["namespace", "hostname", "ifname", "state", "type", "mtu",
                    "vlan", "adminState", "ipAddressList", "ip6AddressList",
@@ -118,15 +120,15 @@ class InterfacesObj(SqEngineObject):
 
             return if_df
 
-        lldpobj = LldpObj(context=self.ctxt)
-        vlanobj = VlanObj(context=self.ctxt)
+        lldpobj = LldpObj(context=self.ctxt, start_time=stime, end_time=etime)
+        vlanobj = VlanObj(context=self.ctxt, start_time=stime, end_time=etime)
 
         # can't pass all kwargs, because lldp acceptable arguements are
         # different than interface
         namespace = kwargs.get('namespace', None)
         hostname = kwargs.get('hostname', None)
-        lldp_df = lldpobj.get(namespace=namespace,
-                              hostname=hostname).query('peerIfname != "-"')
+        lldp_df = lldpobj.get(namespace=namespace, hostname=hostname) \
+                         .query('peerIfname != "-"')
 
         # Get the VLAN info to ensure trunking ports are identical on both ends
         vlan_df = vlanobj.get(namespace=namespace, hostname=hostname)
