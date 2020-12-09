@@ -3,7 +3,7 @@ import pandas as pd
 
 from suzieq.sqobjects.lldp import LldpObj
 from suzieq.engines.pandas.engineobj import SqEngineObject
-from suzieq.utils import SchemaForTable, build_query_str
+from suzieq.utils import SchemaForTable, build_query_str, humanize_timestamp
 
 
 class OspfObj(SqEngineObject):
@@ -130,8 +130,9 @@ class OspfObj(SqEngineObject):
             ('networkType', 'networkType'),
         ]
 
-        self.summary_df['lastChangeTime'] = pd.to_datetime(
-            self.summary_df['lastChangeTime'], unit='ms', errors='ignore')
+        self.summary_df['lastChangeTime'] = humanize_timestamp(
+            self.summary_df.lastChangeTime)
+
         self.summary_df['lastChangeTime'] = (
             self.summary_df['timestamp'] - self.summary_df['lastChangeTime'])
         self.summary_df['lastChangeTime'] = self.summary_df['lastChangeTime'] \

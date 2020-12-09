@@ -7,6 +7,7 @@ import json
 import yaml
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
+from tzlocal import get_localzone
 
 import pandas as pd
 import pyarrow as pa
@@ -541,4 +542,14 @@ def build_query_str(skip_fields: list, schema, **kwargs) -> str:
 
 def known_devtypes() -> list:
     """Returns the list of known dev types"""
-    return(['cumulus', 'eos', 'junos-mx', 'junos-qfx', 'junos-ex', 'linux', 'nxos', 'sonic'])
+    return(['cumulus', 'eos', 'junos-mx', 'junos-qfx', 'junos-ex', 'linux',
+            'nxos', 'sonic'])
+
+
+def humanize_timestamp(field: pd.Series) -> pd.Series:
+    '''Convert the UTC timestamp in Dataframe to local time.
+    Use of pd.to_datetime will not work as it converts the timestamp
+    to UTC. If the timestamp is already in UTC format, we get busted time.
+    '''
+    return field.apply(lambda x: datetime.fromtimestamp(x/1000)) \
+                .dt.tz_localize('UTC').dt.tz_convert(get_localzone().zone)

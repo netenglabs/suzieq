@@ -160,35 +160,20 @@ class SqPandasEngine(SqEngine):
         else:
             return (ds.field(keyfld) == int(filter_str))
 
-    def build_ds_filters(self, start_tm: str, end_tm: str,
+    def build_ds_filters(self, start_tm: float, end_tm: float,
                          schema: pa.lib.Schema,
                          **kwargs) -> ds.Expression:
         """The new style of filters using dataset instead of ParquetDataset"""
 
         merge_fields = kwargs.pop('merge_fields', {})
         # The time filters first
-        timeset = []
         if start_tm and not end_tm:
-            timeset = pd.date_range(
-                start=pd.to_datetime(start_tm, utc=True),
-                periods=2,
-                freq="15min",
-            )
-            filters = ds.field("timestamp") >= (timeset[0].timestamp() * 1000)
+            filters = ds.field("timestamp") >= start_tm
         elif end_tm and not start_tm:
-            timeset = pd.date_range(
-                end=pd.to_datetime(end_tm, utc=True),
-                periods=2,
-                freq="15min",
-            )
-            filters = ds.field("timestamp") <= (timeset[-1].timestamp() * 1000)
+            filters = ds.field("timestamp") <= end_tm
         elif start_tm and end_tm:
-            timeset = [
-                pd.to_datetime(start_tm, utc=True),
-                pd.to_datetime(end_tm, utc=True)
-            ]
-            filters = ((ds.field("timestamp") >= (timeset[0].timestamp() * 1000))
-                       & (ds.field("timestamp") <= (timeset[-1].timestamp() * 1000)))
+            filters = ((ds.field("timestamp") >= start_tm)
+                       & (ds.field("timestamp") <= end_tm))
         else:
             filters = (ds.field("timestamp") != 0)
 

@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 
 from .engineobj import SqEngineObject
-from suzieq.utils import build_query_str, SchemaForTable
+from suzieq.utils import build_query_str, SchemaForTable, humanize_timestamp
 
 
 class BgpObj(SqEngineObject):
@@ -100,8 +100,9 @@ class BgpObj(SqEngineObject):
 
         self._gen_summarize_data()
 
-        self.summary_df['estdTime'] = pd.to_datetime(
-            self.summary_df['estdTime'], unit='ms')
+        self.summary_df['estdTime'] = humanize_timestamp(
+            self.summary_df.estdTime)
+
         self.summary_df['estdTime'] = (
             self.summary_df['timestamp'] - self.summary_df['estdTime'])
         self.summary_df['estdTime'] = self.summary_df['estdTime'] \

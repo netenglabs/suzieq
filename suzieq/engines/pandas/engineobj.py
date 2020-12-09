@@ -1,9 +1,9 @@
 import pandas as pd
 import numpy as np
 import pyarrow as pa
-from suzieq.utils import SchemaForTable
+from suzieq.utils import SchemaForTable, humanize_timestamp
 import dateparser
-from tzlocal import get_localzone
+from datetime import datetime
 
 
 class SqEngineObject(object):
@@ -81,13 +81,9 @@ class SqEngineObject(object):
 
         if self.iobj.start_time:
             try:
-                if self.iobj.start_time.endswith('UTC'):
-                    mytz = 'UTC'
-                else:
-                    mytz = get_localzone().zone
-                start_time = dateparser.parse(
-                    self.iobj.start_time.replace('last night', 'yesterday'),
-                    settings={'TIMEZONE': mytz, 'TO_TIMEZONE': 'UTC'})
+                start_time = datetime.utcfromtimestamp(dateparser.parse(
+                    self.iobj.start_time.replace('last night', 'yesterday'))
+                    .timestamp()).timestamp()*1000
             except Exception as e:
                 print(f"ERROR: invalid time {self.iobj.start_time}: {e}")
                 return pd.DataFrame()
@@ -101,13 +97,9 @@ class SqEngineObject(object):
 
         if self.iobj.end_time:
             try:
-                if self.iobj.end_time.endswith('UTC'):
-                    mytz = 'UTC'
-                else:
-                    mytz = get_localzone().zone
-                end_time = dateparser.parse(
-                    self.iobj.end_time.replace('last night', 'yesterday'),
-                    settings={'TIMEZONE': mytz, 'TO_TIMEZONE': 'UTC'})
+                end_time = datetime.utcfromtimestamp(dateparser.parse(
+                    self.iobj.end_time.replace('last night', 'yesterday'))
+                    .timestamp()).timestamp()*1000
             except Exception as e:
                 print(f"ERROR: invalid time {self.iobj.end_time}: {e}")
                 return pd.DataFrame()
@@ -137,8 +129,7 @@ class SqEngineObject(object):
             else:
                 table_df.drop(columns=drop_cols, inplace=True)
             if 'timestamp' in table_df.columns:
-                table_df['timestamp'] = pd.to_datetime(
-                    table_df.timestamp.astype(str), unit="ms")
+                table_df['timestamp'] = humanize_timestamp(table_df.timestamp)
 
         if query_str:
             return table_df.query(query_str)
