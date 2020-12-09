@@ -1,15 +1,12 @@
-from types import ModuleType
-from typing import List, Dict
-from dataclasses import dataclass, field
-
-import streamlit as st
-import altair as alt
-import pandas as pd
-import numpy as np
-
-from suzieq.sqobjects import *
-from suzieq.sqobjects.tables import TablesObj
 from suzieq.gui.guiutils import sq_gui_style, gui_get_df
+from suzieq.sqobjects.tables import TablesObj
+from suzieq.sqobjects import *
+import numpy as np
+import pandas as pd
+import altair as alt
+import streamlit as st
+from dataclasses import dataclass, field
+from typing import List
 
 
 @dataclass
@@ -64,7 +61,10 @@ def xplore_run_unique(df: pd.DataFrame, **kwargs) -> pd.DataFrame:
 @st.cache(ttl=90)
 def xplore_run_assert(sqobject, **kwargs):
     kwargs.pop('view', 'latest')
-    df = sqobject().aver(status="fail", **kwargs)
+    stime = kwargs.pop('start_time', '')
+    etime = kwargs.pop('end_time', '')
+    df = sqobject(start_time=stime, end_time=etime) \
+        .aver(status="fail", **kwargs)
     if not df.empty:
         df.rename(columns={'assert': 'status'},
                   inplace=True, errors='ignore')
@@ -155,10 +155,10 @@ def xplore_sidebar(state, table_vals: list):
         st.stop()
 
     state.query = st.sidebar.text_input(
-        'Filter table show results with pandas query', value=state.query,
+        'Filter results with pandas query', value=state.query,
         key=state.table)
     st.sidebar.markdown(
-        "[query syntax help](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.query.html)")
+        "[query syntax help](https://github.com/netenglabs/suzieq/blob/experiments/docs/pandas-query-examples.md)")
 
     if columns == ['all']:
         columns = ['*']
@@ -269,6 +269,7 @@ def page_work(state_container, page_flip: bool):
             assert_df = xplore_run_assert(sqobjs[state.table],
                                           start_time=state.start_time,
                                           end_time=state.end_time,
+                                          query_str=state.query,
                                           namespace=state.namespace.split())
         else:
             assert_df = pd.DataFrame()
