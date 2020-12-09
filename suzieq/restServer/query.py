@@ -109,7 +109,7 @@ async def query_address(verb: CommonVerbs,
                         view: str = "latest", namespace: str = None,
                         columns: str = None, address: str = None,
                         ipvers: str = None,
-                        vrf: str = None
+                        vrf: str = None, query_str: str = None,
                         ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, locals())
@@ -124,7 +124,7 @@ async def query_arpnd(verb: CommonVerbs,
                       view: str = "latest", namespace: str = None,
                       columns: str = None, ipAddress: str = None,
                       macaddr: str = None,
-                      oif: str = None
+                      oif: str = None, query_str: str = None,
                       ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, locals())
@@ -139,7 +139,7 @@ async def query_bgp(verb: MoreVerbs,
                     view: str = "latest", namespace: str = None,
                     columns: str = None, peer: str = None,
                     state: str = None, vrf: str = None,
-                    status: str = None,
+                    status: str = None, query_str: str = None,
                     ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, locals())
@@ -152,7 +152,7 @@ async def query_device(verb: CommonVerbs,
                        hostname: str = None,
                        start_time: str = "", end_time: str = "",
                        view: str = "latest", namespace: str = None,
-                       columns: str = None
+                       columns: str = None, query_str: str = None,
                        ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, locals())
@@ -166,7 +166,7 @@ async def query_evpnVni(verb: MoreVerbs,
                         start_time: str = "", end_time: str = "",
                         view: str = "latest", namespace: str = None,
                         columns: str = None, vni: str = None,
-                        status: str = None,
+                        status: str = None, query_str: str = None,
                         ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, locals())
@@ -180,7 +180,7 @@ async def query_fs(verb: CommonVerbs,
                    start_time: str = "", end_time: str = "",
                    view: str = "latest", namespace: str = None,
                    columns: str = None, mountPoint: str = None,
-                   usedPercent: str = None
+                   usedPercent: str = None, query_str: str = None,
                    ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, locals())
@@ -198,7 +198,7 @@ async def query_interface(verb: MoreVerbs,
                           type: str = None, what: str = None,
                           mtu: str = None,
                           matchval: int = Query(None, alias="value"),
-                          status: str = None,
+                          status: str = None, query_str: str = None,
                           ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, locals())
@@ -212,6 +212,7 @@ async def query_lldp(verb: CommonVerbs,
                      start_time: str = "", end_time: str = "",
                      view: str = "latest", namespace: str = None,
                      columns: str = None, ifname: str = None,
+                     query_str: str = None,
                      ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, locals())
@@ -224,7 +225,7 @@ async def query_mlag(verb: CommonVerbs,
                      hostname: str = None,
                      start_time: str = "", end_time: str = "",
                      view: str = "latest", namespace: str = None,
-                     columns: str = None,
+                     columns: str = None, query_str: str = None,
                      ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, locals())
@@ -240,7 +241,7 @@ async def query_ospf(verb: MoreVerbs,
                      columns: str = None,  ifname: str = None,
                      state: str = None,
                      vrf: str = None,
-                     status: str = None,
+                     status: str = None, query_str: str = None,
                      ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, locals())
@@ -256,7 +257,7 @@ async def query_mac(verb: CommonVerbs,
                     columns: str = None, bd: str = None,
                     localOnly: str = None,
                     macaddr: str = None, remoteVtepIp: str = None,
-                    vlan: str = None,
+                    vlan: str = None, query_str: str = None,
                     ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, locals())
@@ -288,6 +289,7 @@ async def query_route(verb: RouteVerbs,
                       vrf: str = None, protocol: str = None,
                       prefixlen: str = None, ipvers: str = None,
                       add_filter: str = None, address: str = None,
+                      query_str: str = None,
                       ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, locals())
@@ -301,7 +303,7 @@ async def query_sqpoller(verb: CommonVerbs,
                          start_time: str = "", end_time: str = "",
                          view: str = "latest", namespace: str = None,
                          columns: str = None, service: str = None,
-                         status: str = None,
+                         status: str = None, query_str: str = None,
                          ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, locals())
@@ -315,6 +317,7 @@ async def query_topology(verb: PathVerbs,
                          start_time: str = "", end_time: str = "",
                          view: str = "latest", namespace: str = None,
                          columns: str = None, polled_neighbor: str = None,
+                         query_str: str = None,
                          ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, locals())
@@ -329,6 +332,7 @@ async def query_vlan(verb: CommonVerbs,
                      view: str = "latest", namespace: str = None,
                      columns: str = None, vlan: str = None,
                      state: str = None, vlanName: str = None,
+                     query_str: str = None,
                      ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, locals())

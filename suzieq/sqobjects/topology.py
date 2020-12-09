@@ -19,7 +19,7 @@ class TopologyObj(basicobj.SqObject):
         self._sort_fields = ["namespace", "hostname", 'columns', ]
         self._cat_fields = []
         self._valid_get_args = ['namespace', 'hostname', 'columns',
-                                'polled_neighbor']
+                                'polled_neighbor', 'query_str']
 
     # overriding parent because we want to take more arguments than the standard
     def summarize(self, namespace=[], hostname=[],
