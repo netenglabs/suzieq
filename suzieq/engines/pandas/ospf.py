@@ -147,9 +147,6 @@ class OspfObj(SqEngineObject):
         self._post_summarize()
         return self.ns_df.convert_dtypes()
 
-    def unique(self, **kwargs):
-        return super().unique(**kwargs)
-
     def aver(self, **kwargs):
         """Assert that the OSPF state is OK"""
 
