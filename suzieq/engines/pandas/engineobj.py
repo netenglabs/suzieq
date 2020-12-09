@@ -53,6 +53,7 @@ class SqEngineObject(object):
         addnl_fields = kwargs.pop('addnl_fields', [])
         view = kwargs.pop('view', self.iobj.view)
         active_only = kwargs.pop('active_only', True)
+        query_str = kwargs.pop('query_str', '')
 
         fields = sch.get_display_fields(columns)
         key_fields = sch.key_fields()
@@ -139,7 +140,10 @@ class SqEngineObject(object):
                 table_df['timestamp'] = pd.to_datetime(
                     table_df.timestamp.astype(str), unit="ms")
 
-        return table_df
+        if query_str:
+            return table_df.query(query_str)
+        else:
+            return table_df
 
     def get(self, **kwargs):
         if not self.iobj.table:

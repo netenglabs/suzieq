@@ -10,8 +10,9 @@ class OspfObj(SqObject):
         self._addnl_fields = ['passive', 'area', 'state']
         self._addnl_nbr_fields = ['state']
         self._valid_get_args = ['namespace', 'hostname', 'columns',
-                                'vrf', 'ifname', 'state']
-        self._valid_assert_args = ['namespace', 'vrf', 'status']
+                                'vrf', 'ifname', 'state', 'query_str']
+        self._valid_assert_args = ['namespace', 'vrf', 'status',
+                                   'query_str']
         self._valid_arg_vals = {
             'state': ['full', 'other', 'passive', ''],
             'status': ['all', 'pass', 'fail'],
