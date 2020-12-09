@@ -34,7 +34,8 @@ class EvpnvniObj(SqEngineObject):
             return df
 
         if getVtepCnt:
-            df.insert(len(df.columns)-4, 'remoteVtepCnt',
+            insidx = df.columns.tolist().index('remoteVtepList')
+            df.insert(insidx+1, 'remoteVtepCnt',
                       df.remoteVtepList.str.len())
 
         # See if we can retrieve the info to fill out the rest of the data
