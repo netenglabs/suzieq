@@ -18,6 +18,7 @@ def gui_get_df(sqobject, **kwargs):
         df = sqobject(view=view, start_time=stime, end_time=etime) \
             .get(**kwargs)
     if not df.empty:
+        df = sqobject().humanize_fields(df)
         if table == 'address':
             if 'ipAddressList' in df.columns:
                 df = df.explode('ipAddressList').fillna('')

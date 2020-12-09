@@ -211,3 +211,11 @@ class SqObject(object):
             self._addnl_fields.append(what)
 
         return self.engine_obj.top(what=what, n=n, reverse=reverse, **kwargs)
+
+    def humanize_fields(self, df: pd.DataFrame, subset=None) -> pd.DataFrame:
+        '''Humanize the fields for human consumption.
+
+        Individual classes will implement the right transofmations. This
+        routine is just a placeholder for all those with nothing to modify.
+        '''
+        return df

@@ -1,5 +1,6 @@
 from suzieq.sqobjects.basicobj import SqObject
 import pandas as pd
+from suzieq.utils import humanize_timestamp
 
 
 class BgpObj(SqObject):
@@ -26,3 +27,13 @@ class BgpObj(SqObject):
             return df
 
         return self.engine_obj.aver(**kwargs)
+
+    def humanize_fields(self, df: pd.DataFrame, subset=None) -> pd.DataFrame:
+        '''Humanize the timestamp and boot time fields'''
+        if df.empty:
+            return df
+
+        if 'estdTime' in df.columns:
+            df['estdTime'] = humanize_timestamp(df.estdTime)
+
+        return df

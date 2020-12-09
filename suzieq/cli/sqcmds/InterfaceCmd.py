@@ -4,6 +4,7 @@ import pandas as pd
 
 from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.interfaces import IfObj
+from suzieq.utils import humanize_timestamp
 
 
 @command("interface", help="Act on Interface data")
@@ -62,8 +63,9 @@ class InterfaceCmd(SqCommand):
             type=type.split(),
         )
         if 'statusChangeTimestamp' in df.columns:
-            df['statusChangeTimestamp'] = pd.to_datetime(
-                df['statusChangeTimestamp'], unit='ms')
+            df['statusChangeTimestamp'] = humanize_timestamp(
+                df.StatusSessionState)
+
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
 

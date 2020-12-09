@@ -3,6 +3,7 @@ from datetime import timedelta
 from nubia import command, argument
 import pandas as pd
 
+from suzieq.utils import humanize_timestamp
 from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.bgp import BgpObj
 
@@ -79,8 +80,7 @@ class BgpCmd(SqCommand):
         )
 
         if 'estdTime' in df.columns:
-            df['estdTime'] = pd.to_datetime(df.estdTime.astype(str), unit="ms",
-                                            errors='ignore')
+            df['estdTime'] = humanize_timestamp(df.estdTime)
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
@@ -145,8 +145,7 @@ class BgpCmd(SqCommand):
             columns=self.columns,
             namespace=self.namespace,
         )
-        df['estdTime'] = df['timestamp'] - pd.to_datetime(
-            df.estdTime.astype(str), unit="ms", errors='ignore')
+        df['estdTime'] = df['timestamp'] - humanize_timestamp(df.estdTime)
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df, sort=False)
