@@ -52,7 +52,7 @@ def page_work(state_container, page_flip: bool):
                     .rename({'hostname': 'devicePolledCnt'}, axis=1)
         times = sqdf.groupby(by=['namespace'])['timestamp'] \
                     .max().reset_index() \
-                          .rename({'timestamp': 'lastPolledTime(UTC)'}, axis=1)
+                          .rename({'timestamp': 'lastPolledTime'}, axis=1)
         pstats = hosts.merge(times, on=['namespace'])
 
         st.subheader('Poller Status')
