@@ -1,12 +1,8 @@
-from dataclasses import dataclass
-from typing import List
 from types import ModuleType
 from collections import defaultdict
 import base64
 
 import streamlit as st
-from streamlit.report_thread import get_report_ctx
-from streamlit.server.server import Server
 
 from suzieq.gui.guiutils import horizontal_radio, hide_st_index
 from suzieq.gui.session_state import get_session_state
@@ -147,7 +143,7 @@ def apprun():
     horizontal_radio()
 
     state.pages[page](state, page_flip)
-    if page != 'Search':
+    if page not in ['Search', 'Status']:
         state.sync()
 
 

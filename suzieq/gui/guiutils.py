@@ -78,9 +78,19 @@ def color_row(row, **kwargs):
 
 
 def color_element_red(value, **kwargs):
+    '''Use with applymap to color a cell based on a value'''
     fieldval = kwargs.pop("fieldval", "down")
     if value not in fieldval:
         return "background-color: red; color: white;"
+
+
+def ifstate_red(row):
+    '''Color interface state red if admin state is up, but not oper state'''
+    llen = len(row.index.tolist())
+    if row.adminState == "up" and row.state == "down":
+        return ["background-color: red; color: white;"]*llen
+    else:
+        return ["background-color: white; color: black;"]*llen
 
 
 def sq_gui_style(df, table, is_assert=False):
@@ -109,8 +119,23 @@ def sq_gui_style(df, table, is_assert=False):
             .apply(color_row, axis=1, fieldval='0.0.0.0/0',
                    field='prefix')
     elif table == "interfaces" and 'state' in df.columns:
-        return df.style.hide_index() \
-                       .applymap(color_element_red, fieldval=["up"],
-                                 subset=pd.IndexSlice[:, ['state']])
+        return df.style.hide_index().apply(ifstate_red, axis=1)
     else:
         return df.style.hide_index()
+
+
+def get_color_styles(color: str) -> str:
+    """Compile some hacky CSS to override the theme color."""
+    # fmt: off
+    color_selectors = ["a", "a:hover", "*:not(textarea).st-ex:hover", ".st-en:hover"]
+    bg_selectors = [".st-da", "*:not(button).st-en:hover"]
+    border_selectors = [".st-ft", ".st-fs", ".st-fr", ".st-fq", ".st-ex:hover", ".st-en:hover"]
+    # fmt: on
+    css_root = "#root { --primary: %s }" % color
+    css_color = ", ".join(color_selectors) + "{ color: %s !important }" % color
+    css_bg = ", ".join(bg_selectors) + \
+        "{ background-color: %s !important }" % color
+    css_border = ", ".join(border_selectors) + \
+        "{ border-color: %s !important }" % color
+    other = ".decoration { background: %s !important }" % color
+    return f"<style>{css_root}{css_color}{css_bg}{css_border}{other}</style>"
