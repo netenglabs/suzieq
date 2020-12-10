@@ -237,10 +237,7 @@ BAD_FILTERS = {
     'ospf/summarize?status=whatever': 405,
     'ospf/summarize?state=active': 405,
     'ospf/show?status=all': 405,
-    'path/summarize?hostname=leaf01': 404,
-    'path/summarize?hostname=leaf01%20spine01': 404,
     'path/summarize?columns=namespace': 404,
-
     'path/unique?columns=namespace': 404,
     'route/lpm?': 404,
     'route/lpm?columns=namespace': 404,
