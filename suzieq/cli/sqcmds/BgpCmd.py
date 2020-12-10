@@ -79,7 +79,7 @@ class BgpCmd(SqCommand):
             vrf=vrf.split(), peer=peer.split()
         )
 
-        if 'estdTime' in df.columns:
+        if 'estdTime' in df.columns and not df.empty:
             df['estdTime'] = humanize_timestamp(df.estdTime)
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
@@ -145,7 +145,8 @@ class BgpCmd(SqCommand):
             columns=self.columns,
             namespace=self.namespace,
         )
-        df['estdTime'] = df['timestamp'] - humanize_timestamp(df.estdTime)
+        if not df.empty:
+            df['estdTime'] = df['timestamp'] - humanize_timestamp(df.estdTime)
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df, sort=False)
