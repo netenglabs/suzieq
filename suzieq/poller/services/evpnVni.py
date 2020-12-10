@@ -137,9 +137,7 @@ class EvpnVniService(Service):
                     continue
             elif entry['_entryType'] == 'l3':
                 vni = int(entry.get('vni', '0'))
-                priVtepIp = entry.get('priVtepIp', '[{"data": ""}]')
-                if priVtepIp:
-                    priVtepIp = priVtepIp[0]['data']
+                priVtepIp = entry.get('priVtepIp', '')
 
                 vni_entry = {
                     'vni': vni,
