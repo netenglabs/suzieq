@@ -11,13 +11,13 @@ tests:
 - command: mlag summarize --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: mlag summarize junos
-  output: '{"portsErrDisabled": {}, "mlagDualPortsList": {}, "mlagSinglePortsList":
-    {}, "mlagErrorPortsList": {}, "vtepIP": {}, "peerRole": {}, "backupActive": {},
-    "mlagSinglePortsCnt": {}, "role": {}, "usesLinkLocal": {}, "mlagDualPortsCnt":
-    {}, "state": {}, "peerMacAddress": {}, "mlagErrorPortsCnt": {}, "peerLink": {},
-    "configSanity": {}, "backupReason": {}, "systemId": {}, "backupIP": {}, "peerAddress":
-    {}, "peerLinkStatus": {}, "domainId": {}, "hostname": {}, "namespace": {}, "timestamp":
-    {}, "active": {}}'
+  output: '{"namespace": {}, "hostname": {}, "systemId": {}, "state": {}, "peerAddress":
+    {}, "role": {}, "peerLink": {}, "mlagDualPortsCnt": {}, "mlagSinglePortsCnt":
+    {}, "mlagErrorPortsCnt": {}, "portsErrDisabled": {}, "mlagDualPortsList": {},
+    "mlagSinglePortsList": {}, "mlagErrorPortsList": {}, "vtepIP": {}, "peerRole":
+    {}, "backupActive": {}, "usesLinkLocal": {}, "peerMacAddress": {}, "configSanity":
+    {}, "backupReason": {}, "backupIP": {}, "peerLinkStatus": {}, "domainId": {},
+    "timestamp": {}, "active": {}}'
 - command: mlag unique --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: mlag unique junos

@@ -6,16 +6,16 @@ tests:
   output: '[{"namespace": "eos", "hostname": "leaf01", "systemId": "46:38:39:38:92:9d",
     "state": "active", "peerAddress": "169.254.1.1", "role": "secondary", "peerLink":
     "Ethernet3", "mlagDualPortsCnt": 2, "mlagSinglePortsCnt": 0, "mlagErrorPortsCnt":
-    0, "timestamp": 1606030435633}, {"namespace": "eos", "hostname": "leaf02", "systemId":
+    0, "timestamp": 1606001635633}, {"namespace": "eos", "hostname": "leaf02", "systemId":
     "46:38:39:38:92:9d", "state": "active", "peerAddress": "169.254.1.0", "role":
     "primary", "peerLink": "Ethernet3", "mlagDualPortsCnt": 2, "mlagSinglePortsCnt":
-    0, "mlagErrorPortsCnt": 0, "timestamp": 1606030435731}, {"namespace": "eos", "hostname":
+    0, "mlagErrorPortsCnt": 0, "timestamp": 1606001635731}, {"namespace": "eos", "hostname":
     "leaf04", "systemId": "46:38:39:2f:ce:22", "state": "active", "peerAddress": "169.254.1.0",
     "role": "secondary", "peerLink": "Port-Channel12", "mlagDualPortsCnt": 2, "mlagSinglePortsCnt":
-    0, "mlagErrorPortsCnt": 0, "timestamp": 1606030435790}, {"namespace": "eos", "hostname":
+    0, "mlagErrorPortsCnt": 0, "timestamp": 1606001635790}, {"namespace": "eos", "hostname":
     "leaf03", "systemId": "46:38:39:2f:ce:22", "state": "active", "peerAddress": "169.254.1.1",
     "role": "primary", "peerLink": "Port-Channel12", "mlagDualPortsCnt": 2, "mlagSinglePortsCnt":
-    0, "mlagErrorPortsCnt": 0, "timestamp": 1606030435823}]'
+    0, "mlagErrorPortsCnt": 0, "timestamp": 1606001635823}]'
 - command: mlag show --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: mlag show eos
@@ -30,5 +30,5 @@ tests:
 - command: mlag unique --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: mlag unique eos
-  output: '[{"hostname": "leaf04", "count": 1}, {"hostname": "leaf01", "count": 1},
-    {"hostname": "leaf03", "count": 1}, {"hostname": "leaf02", "count": 1}]'
+  output: '[{"hostname": "leaf01", "count": 1}, {"hostname": "leaf02", "count": 1},
+    {"hostname": "leaf03", "count": 1}, {"hostname": "leaf04", "count": 1}]'

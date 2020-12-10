@@ -40,17 +40,12 @@ class DeviceCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        if 'uptime' in self.columns:
-            self.columns = ['bootupTimestamp' if x == 'uptime' else x
-                            for x in self.columns]
         df = self.sqobj.get(
             hostname=self.hostname, columns=self.columns,
             namespace=self.namespace,
         )
 
-        # Convert the bootup timestamp into a time delta
-        if 'bootupTimestamp' in df.columns:
-            df = self.sqobj.humanize_fields(df)
+        df = self.sqobj.humanize_fields(df)
 
         return df
 
@@ -64,7 +59,12 @@ class DeviceCmd(SqCommand):
 
         now = time.time()
         df = self._get()
+
+        if 'uptime' in df.columns:
+            df.drop(columns=['uptime'], inplace=True)
+
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
+
         return self._gen_output(df)
 
     @command("top")
