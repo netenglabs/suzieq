@@ -5,11 +5,11 @@ tests:
   marks: bgp show junos junos
   output: '[{"namespace": "junos", "hostname": "vqfx1", "vrf": "default", "peer":
     "9.9.9.2", "peerHostname": "vqfx2", "state": "Established", "asn": 64500, "peerAsn":
-    64500, "v4PfxRx": 0, "estdTime": 1606016993538, "numChanges": 0, "timestamp":
-    1606017395538}, {"namespace": "junos", "hostname": "vqfx2", "vrf": "default",
+    64500, "v4PfxRx": 0, "estdTime": 1605988193538, "numChanges": 0, "timestamp":
+    1605988595538}, {"namespace": "junos", "hostname": "vqfx2", "vrf": "default",
     "peer": "9.9.9.1", "peerHostname": "vqfx1", "state": "Established", "asn": 64500,
-    "peerAsn": 64500, "v4PfxRx": 0, "estdTime": 1606016993715, "numChanges": 0, "timestamp":
-    1606017396715}]'
+    "peerAsn": 64500, "v4PfxRx": 0, "estdTime": 1605988193715, "numChanges": 0, "timestamp":
+    1605988596715}]'
 - command: bgp show --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: bgp show junos junos
@@ -29,15 +29,15 @@ tests:
 - command: bgp unique --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: bgp unique junos junos
-  output: '[{"hostname": "vqfx2", "count": 1}, {"hostname": "vqfx1", "count": 1}]'
+  output: '[{"hostname": "vqfx1", "count": 1}, {"hostname": "vqfx2", "count": 1}]'
 - command: bgp assert --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: bgp assert junos junos
   output: '[{"namespace": "junos", "hostname": "vqfx1", "vrf": "default", "peer":
     "9.9.9.2", "asn": 64500, "peerAsn": 64500, "state": "Established", "peerHostname":
     "vqfx2", "vrfPeer": "default", "peerPeer": "9.9.9.1", "asnPeer": 64500, "peerAsnPeer":
-    64500, "assert": "pass", "assertReason": "-", "timestamp": 1606017395538}, {"namespace":
+    64500, "assert": "pass", "assertReason": "-", "timestamp": 1605988595538}, {"namespace":
     "junos", "hostname": "vqfx2", "vrf": "default", "peer": "9.9.9.1", "asn": 64500,
     "peerAsn": 64500, "state": "Established", "peerHostname": "vqfx1", "vrfPeer":
     "default", "peerPeer": "9.9.9.2", "asnPeer": 64500, "peerAsnPeer": 64500, "assert":
-    "pass", "assertReason": "-", "timestamp": 1606017396715}]'
+    "pass", "assertReason": "-", "timestamp": 1605988596715}]'

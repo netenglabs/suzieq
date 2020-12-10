@@ -16,10 +16,10 @@ class DeviceObj(SqObject):
 
         # Convert the bootup timestamp into a time delta
         if 'bootupTimestamp' in df.columns:
-            uptime_cols = (df['timestamp'] -
-                           humanize_timestamp(df['bootupTimestamp']*1000))
+            df['bootupTimestamp'] = humanize_timestamp(
+                df['bootupTimestamp']*1000)
+            uptime_cols = (df['timestamp'] - df['bootupTimestamp'])
             uptime_cols = pd.to_timedelta(uptime_cols, unit='s')
             df.insert(len(df.columns)-1, 'uptime', uptime_cols)
-            df.drop(columns=['bootupTimestamp'], inplace=True)
 
         return df

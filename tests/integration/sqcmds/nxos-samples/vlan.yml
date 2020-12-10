@@ -16,12 +16,12 @@ tests:
     "Ethernet1/49", "Ethernet1/50", "Ethernet1/51", "Ethernet1/52", "Ethernet1/53",
     "Ethernet1/54", "Ethernet1/55", "Ethernet1/56", "Ethernet1/57", "Ethernet1/58",
     "Ethernet1/59", "Ethernet1/60", "Ethernet1/61", "Ethernet1/62", "Ethernet1/63",
-    "Ethernet1/64"], "vlan": 1, "timestamp": 1606018052472}, {"namespace": "nxos",
+    "Ethernet1/64"], "vlan": 1, "timestamp": 1605989252472}, {"namespace": "nxos",
     "hostname": "leaf1", "vlanName": "vlan10", "state": "active", "interfaces": ["Ethernet1/1"],
-    "vlan": 10, "timestamp": 1606018052472}, {"namespace": "nxos", "hostname": "leaf1",
+    "vlan": 10, "timestamp": 1605989252472}, {"namespace": "nxos", "hostname": "leaf1",
     "vlanName": "vlan30", "state": "active", "interfaces": ["Ethernet1/2"], "vlan":
-    30, "timestamp": 1606018052472}, {"namespace": "nxos", "hostname": "leaf1", "vlanName":
-    "vlan999", "state": "active", "interfaces": [""], "vlan": 999, "timestamp": 1606018052472},
+    30, "timestamp": 1605989252472}, {"namespace": "nxos", "hostname": "leaf1", "vlanName":
+    "vlan999", "state": "active", "interfaces": [""], "vlan": 999, "timestamp": 1605989252472},
     {"namespace": "nxos", "hostname": "leaf2", "vlanName": "vlan1", "state": "active",
     "interfaces": ["Ethernet1/5", "Ethernet1/6", "Ethernet1/7", "Ethernet1/8", "Ethernet1/9",
     "Ethernet1/10", "Ethernet1/11", "Ethernet1/12", "Ethernet1/13", "Ethernet1/14",
@@ -35,12 +35,12 @@ tests:
     "Ethernet1/50", "Ethernet1/51", "Ethernet1/52", "Ethernet1/53", "Ethernet1/54",
     "Ethernet1/55", "Ethernet1/56", "Ethernet1/57", "Ethernet1/58", "Ethernet1/59",
     "Ethernet1/60", "Ethernet1/61", "Ethernet1/62", "Ethernet1/63", "Ethernet1/64"],
-    "vlan": 1, "timestamp": 1606018052574}, {"namespace": "nxos", "hostname": "leaf2",
+    "vlan": 1, "timestamp": 1605989252574}, {"namespace": "nxos", "hostname": "leaf2",
     "vlanName": "vlan20", "state": "active", "interfaces": ["Ethernet1/1"], "vlan":
-    20, "timestamp": 1606018052574}, {"namespace": "nxos", "hostname": "leaf2", "vlanName":
+    20, "timestamp": 1605989252574}, {"namespace": "nxos", "hostname": "leaf2", "vlanName":
     "vlan30", "state": "active", "interfaces": ["Ethernet1/2"], "vlan": 30, "timestamp":
-    1606018052574}, {"namespace": "nxos", "hostname": "leaf2", "vlanName": "vlan999",
-    "state": "active", "interfaces": [""], "vlan": 999, "timestamp": 1606018052574}]'
+    1605989252574}, {"namespace": "nxos", "hostname": "leaf2", "vlanName": "vlan999",
+    "state": "active", "interfaces": [""], "vlan": 999, "timestamp": 1605989252574}]'
 - command: vlan show --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: vlan show nxos
@@ -55,4 +55,4 @@ tests:
 - command: vlan unique --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: vlan unique nxos
-  output: '[{"hostname": "leaf2", "count": 4}, {"hostname": "leaf1", "count": 4}]'
+  output: '[{"hostname": "leaf1", "count": 4}, {"hostname": "leaf2", "count": 4}]'

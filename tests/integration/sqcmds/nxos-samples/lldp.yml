@@ -5,32 +5,32 @@ tests:
   marks: lldp show nxos
   output: '[{"namespace": "nxos", "hostname": "spine2", "ifname": "Ethernet1/2", "peerHostname":
     "leaf2", "peerIfname": "Ethernet1/4", "description": "N9K-C9300v", "mgmtIP": "",
-    "timestamp": 1606018047825}, {"namespace": "nxos", "hostname": "spine2", "ifname":
+    "timestamp": 1605989247825}, {"namespace": "nxos", "hostname": "spine2", "ifname":
     "mgmt0", "peerHostname": "leaf2", "peerIfname": "mgmt0", "description": "N9K-C9300v",
-    "mgmtIP": "", "timestamp": 1606018047825}, {"namespace": "nxos", "hostname": "spine2",
+    "mgmtIP": "", "timestamp": 1605989247825}, {"namespace": "nxos", "hostname": "spine2",
     "ifname": "Ethernet1/1", "peerHostname": "leaf1", "peerIfname": "Ethernet1/4",
-    "description": "N9K-C9300v", "mgmtIP": "", "timestamp": 1606018047825}, {"namespace":
+    "description": "N9K-C9300v", "mgmtIP": "", "timestamp": 1605989247825}, {"namespace":
     "nxos", "hostname": "spine1", "ifname": "Ethernet1/2", "peerHostname": "leaf2",
     "peerIfname": "Ethernet1/3", "description": "N9K-C9300v", "mgmtIP": "", "timestamp":
-    1606018048207}, {"namespace": "nxos", "hostname": "spine1", "ifname": "Ethernet1/1",
+    1605989248207}, {"namespace": "nxos", "hostname": "spine1", "ifname": "Ethernet1/1",
     "peerHostname": "leaf1", "peerIfname": "Ethernet1/3", "description": "N9K-C9300v",
-    "mgmtIP": "", "timestamp": 1606018048207}, {"namespace": "nxos", "hostname": "spine1",
+    "mgmtIP": "", "timestamp": 1605989248207}, {"namespace": "nxos", "hostname": "spine1",
     "ifname": "mgmt0", "peerHostname": "leaf2", "peerIfname": "mgmt0", "description":
-    "N9K-C9300v", "mgmtIP": "", "timestamp": 1606018048207}, {"namespace": "nxos",
+    "N9K-C9300v", "mgmtIP": "", "timestamp": 1605989248207}, {"namespace": "nxos",
     "hostname": "leaf1", "ifname": "Ethernet1/4", "peerHostname": "spine2", "peerIfname":
-    "Ethernet1/1", "description": "N9K-C9300v", "mgmtIP": "", "timestamp": 1606018048654},
+    "Ethernet1/1", "description": "N9K-C9300v", "mgmtIP": "", "timestamp": 1605989248654},
     {"namespace": "nxos", "hostname": "leaf1", "ifname": "Ethernet1/3", "peerHostname":
     "spine1", "peerIfname": "Ethernet1/1", "description": "N9K-C9300v", "mgmtIP":
-    "", "timestamp": 1606018048654}, {"namespace": "nxos", "hostname": "leaf1", "ifname":
+    "", "timestamp": 1605989248654}, {"namespace": "nxos", "hostname": "leaf1", "ifname":
     "mgmt0", "peerHostname": "spine2", "peerIfname": "mgmt0", "description": "N9K-C9300v",
-    "mgmtIP": "", "timestamp": 1606018048654}, {"namespace": "nxos", "hostname": "leaf2",
+    "mgmtIP": "", "timestamp": 1605989248654}, {"namespace": "nxos", "hostname": "leaf2",
     "ifname": "mgmt0", "peerHostname": "leaf1", "peerIfname": "mgmt0", "description":
-    "N9K-C9300v", "mgmtIP": "", "timestamp": 1606018048993}, {"namespace": "nxos",
+    "N9K-C9300v", "mgmtIP": "", "timestamp": 1605989248993}, {"namespace": "nxos",
     "hostname": "leaf2", "ifname": "Ethernet1/3", "peerHostname": "spine1", "peerIfname":
-    "Ethernet1/2", "description": "N9K-C9300v", "mgmtIP": "", "timestamp": 1606018048993},
+    "Ethernet1/2", "description": "N9K-C9300v", "mgmtIP": "", "timestamp": 1605989248993},
     {"namespace": "nxos", "hostname": "leaf2", "ifname": "Ethernet1/4", "peerHostname":
     "spine2", "peerIfname": "Ethernet1/2", "description": "N9K-C9300v", "mgmtIP":
-    "", "timestamp": 1606018048993}]'
+    "", "timestamp": 1605989248993}]'
 - command: lldp show --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: lldp show nxos
@@ -47,12 +47,12 @@ tests:
   data-directory: tests/data/nxos/parquet-out/
   marks: lldp unique nxos
   output: '[{"hostname": "leaf1", "count": 3}, {"hostname": "leaf2", "count": 3},
-    {"hostname": "spine2", "count": 3}, {"hostname": "spine1", "count": 3}]'
+    {"hostname": "spine1", "count": 3}, {"hostname": "spine2", "count": 3}]'
 - command: lldp show --ifname="Ethernet1/2" --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: lldp show nxos
   output: '[{"namespace": "nxos", "hostname": "spine2", "ifname": "Ethernet1/2", "peerHostname":
     "leaf2", "peerIfname": "Ethernet1/4", "description": "N9K-C9300v", "mgmtIP": "",
-    "timestamp": 1606018047825}, {"namespace": "nxos", "hostname": "spine1", "ifname":
+    "timestamp": 1605989247825}, {"namespace": "nxos", "hostname": "spine1", "ifname":
     "Ethernet1/2", "peerHostname": "leaf2", "peerIfname": "Ethernet1/3", "description":
-    "N9K-C9300v", "mgmtIP": "", "timestamp": 1606018048207}]'
+    "N9K-C9300v", "mgmtIP": "", "timestamp": 1605989248207}]'
