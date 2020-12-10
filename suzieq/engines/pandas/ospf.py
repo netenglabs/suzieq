@@ -1,5 +1,6 @@
 from ipaddress import IPv4Network
 import pandas as pd
+import numpy as np
 
 from suzieq.sqobjects.lldp import LldpObj
 from suzieq.engines.pandas.engineobj import SqEngineObject
@@ -129,6 +130,10 @@ class OspfObj(SqEngineObject):
             ('retxTime', 'retxTime'),
             ('networkType', 'networkType'),
         ]
+
+        self.summary_df['lastChangeTime'] = np.where(
+            self.summary_df.lastChangeTime.isnull(), 0,
+            self.summary_df.lastChangeTime)
 
         self.summary_df['lastChangeTime'] = humanize_timestamp(
             self.summary_df.lastChangeTime)

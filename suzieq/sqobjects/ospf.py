@@ -58,8 +58,8 @@ class OspfObj(SqObject):
         if 'lastChangeTime' in df.columns:
             df['lastChangeTime'] = humanize_timestamp(df.lastChangeTime)
 
-        if 'adjState' in df.columns:
-            df['lastChangeTime'] = np.where(df.adjState == "passive", "-",
-                                            df.lastChangeTime)
+            if 'adjState' in df.columns:
+                df['lastChangeTime'] = np.where(df.adjState == "passive", "-",
+                                                df.lastChangeTime)
 
         return df
