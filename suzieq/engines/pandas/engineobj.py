@@ -223,10 +223,7 @@ class SqEngineObject(object):
                                             observed=True)[field] \
                     .agg(func)
                 for i in self.ns.keys():
-                    if i in fld_per_ns:
-                        self.ns[i].update({field_name: fld_per_ns[i]})
-                    else:
-                        self.ns[i].update({field_name: 0})
+                    self.ns[i].update({field_name: fld_per_ns.get(i, 0)})
             else:
                 for i in self.ns.keys():
                     self.ns[i].update({field_name: 0})
@@ -405,7 +402,7 @@ class SqEngineObject(object):
         if not field_name:
             field_name = field
         field_per_ns = getattr(self.nsgrp[field], method)()
-        {self.ns[i].update({field_name: field_per_ns[i]})
+        {self.ns[i].update({field_name: field_per_ns.get(i, 0)})
          for i in self.ns.keys()}
 
     def _add_list_or_count_to_summary(self, field, field_name=None):
