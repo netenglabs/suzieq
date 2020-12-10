@@ -4,38 +4,40 @@ tests:
   data-directory: tests/data/multidc/parquet-out/
   marks: interface top flaps
   output: '[{"namespace": "ospf-single", "hostname": "server101", "ifname": "eth0",
-    "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
-    ["192.168.123.182/24"], "ip6AddressList": [], "numChanges": 0, "timestamp": 1597528745684},
-    {"namespace": "ospf-single", "hostname": "server101", "ifname": "eth1", "state":
-    "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
-    ["172.16.1.101/24"], "ip6AddressList": [], "numChanges": 0, "timestamp": 1597528745684},
-    {"namespace": "ospf-single", "hostname": "edge01", "ifname": "eth1", "state":
-    "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
-    [], "ip6AddressList": [], "numChanges": 0, "timestamp": 1597528745878}, {"namespace":
-    "ospf-single", "hostname": "edge01", "ifname": "eth2", "state": "up", "type":
+    "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 0,
+    "master": "", "ipAddressList": ["192.168.123.182/24"], "ip6AddressList": [], "numChanges":
+    0, "timestamp": 1597528745684}, {"namespace": "ospf-single", "hostname": "server101",
+    "ifname": "eth1", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": ["172.16.1.101/24"], "ip6AddressList":
+    [], "numChanges": 0, "timestamp": 1597528745684}, {"namespace": "ospf-single",
+    "hostname": "edge01", "ifname": "eth1", "state": "up", "adminState": "up", "type":
     "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
     [], "numChanges": 0, "timestamp": 1597528745878}, {"namespace": "ospf-single",
-    "hostname": "edge01", "ifname": "eth0", "state": "up", "type": "ethernet", "mtu":
-    1500, "vlan": 0, "master": "", "ipAddressList": ["192.168.123.110/24"], "ip6AddressList":
-    [], "numChanges": 0, "timestamp": 1597528745878}]'
+    "hostname": "edge01", "ifname": "eth2", "state": "up", "adminState": "up", "type":
+    "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "numChanges": 0, "timestamp": 1597528745878}, {"namespace": "ospf-single",
+    "hostname": "edge01", "ifname": "eth0", "state": "up", "adminState": "up", "type":
+    "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["192.168.123.110/24"],
+    "ip6AddressList": [], "numChanges": 0, "timestamp": 1597528745878}]'
 - command: interface top --what="flaps" --namespace=ospf-ibgp --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: interface top flaps
   output: '[{"namespace": "ospf-ibgp", "hostname": "server101", "ifname": "eth0",
-    "state": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
-    ["192.168.123.97/24"], "ip6AddressList": [], "numChanges": 0, "timestamp": 1605995734419},
-    {"namespace": "ospf-ibgp", "hostname": "server104", "ifname": "eth0", "state":
-    "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
-    ["192.168.123.53/24"], "ip6AddressList": [], "numChanges": 0, "timestamp": 1605995734465},
-    {"namespace": "ospf-ibgp", "hostname": "edge01", "ifname": "eth0", "state": "up",
-    "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["192.168.123.80/24"],
+    "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 0,
+    "master": "", "ipAddressList": ["192.168.123.97/24"], "ip6AddressList": [], "numChanges":
+    0, "timestamp": 1605995734419}, {"namespace": "ospf-ibgp", "hostname": "server104",
+    "ifname": "eth0", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": ["192.168.123.53/24"], "ip6AddressList":
+    [], "numChanges": 0, "timestamp": 1605995734465}, {"namespace": "ospf-ibgp", "hostname":
+    "edge01", "ifname": "eth0", "state": "up", "adminState": "up", "type": "ethernet",
+    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["192.168.123.80/24"],
     "ip6AddressList": [], "numChanges": 0, "timestamp": 1605995734466}, {"namespace":
-    "ospf-ibgp", "hostname": "edge01", "ifname": "eth1", "state": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
-    "numChanges": 0, "timestamp": 1605995734466}, {"namespace": "ospf-ibgp", "hostname":
-    "edge01", "ifname": "eth2", "state": "up", "type": "ethernet", "mtu": 1500, "vlan":
-    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "numChanges": 0, "timestamp":
-    1605995734466}]'
+    "ospf-ibgp", "hostname": "edge01", "ifname": "eth1", "state": "up", "adminState":
+    "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "numChanges": 0, "timestamp": 1605995734466}, {"namespace":
+    "ospf-ibgp", "hostname": "edge01", "ifname": "eth2", "state": "up", "adminState":
+    "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "numChanges": 0, "timestamp": 1605995734466}]'
 - command: interface top --what="flaps" --namespace=ospf-ibgp --columns="hostname
     ifname state mtu" --format=json
   data-directory: tests/data/multidc/parquet-out/
