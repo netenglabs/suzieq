@@ -155,8 +155,9 @@ class AddressObj(SqEngineObject):
             v4device = v4df.groupby(by=['namespace'])['hostname'].nunique()
             v4addr = v4df.groupby(by=['namespace'])['ipAddressList'].nunique()
             for i in self.ns.keys():
-                self.ns[i].update({'deviceWithv4AddressCnt': v4device[i]})
-                self.ns[i].update({'uniqueV4AddressCnt': v4addr[i]})
+                self.ns[i].update(
+                    {'deviceWithv4AddressCnt': v4device.get(i, 0)})
+                self.ns[i].update({'uniqueV4AddressCnt': v4addr.get(i, 0)})
 
             v4df['prefixlen'] = v4df.ipAddressList.str.split('/').str[1]
 
@@ -186,7 +187,9 @@ class AddressObj(SqEngineObject):
         else:
             for i in self.ns.keys():
                 self.ns[i].update({'deviceWithv4AddressCnt': 0})
-                self.ns[i].update({'uniqueV6AddressCnt': 0})
+                self.ns[i].update({'uniqueV4AddressCnt': 0})
+                self.ns[i].update({'subnetsUsed': []})
+                self.ns[i].update({'subnetTopCounts': []})
 
         self.summary_row_order = ['deviceCnt', 'addressCnt',
                                   'uniqueV4AddressCnt', 'uniqueV6AddressCnt',
