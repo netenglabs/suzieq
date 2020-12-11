@@ -21,7 +21,10 @@ def get_title():
 def draw_sidebar_status(state, sqobjs):
     '''Draw appropriate sidebar for the page'''
 
-    _ = st.sidebar.button('Refresh')
+    do_refresh = st.sidebar.button('Refresh')
+
+    if do_refresh:
+        st.caching.clear_cache()
 
     st.sidebar.markdown(
         '''This page provides an overview of the overall network status
