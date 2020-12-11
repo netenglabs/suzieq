@@ -113,7 +113,7 @@ def apprun():
     # state = SessionState.get(pages=None, prev_page='', search_text='',
     #                          sqobjs={})
 
-    st.set_page_config(layout="wide")
+    st.set_page_config(layout="wide", page_title="Suzieq")
     hide_st_index()
 
     if not state.pages:
