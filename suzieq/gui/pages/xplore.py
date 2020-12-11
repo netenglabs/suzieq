@@ -34,6 +34,13 @@ def xplore_run_summarize(sqobject, **kwargs):
     etime = kwargs.pop('end_time', '')
     df = sqobject(view=view, start_time=stime,
                   end_time=etime).summarize(**kwargs)
+    # Leaving this commented to avoid future heartburn in case someone
+    # tries to do this. It didn't fix the Timedelta being added to display
+    # if not df.empty:
+    #     if 'upTimeStat' in df.T.columns:
+    #         df.T['upTimeStat'] = df.T.upTimeStat.apply(lambda x: [str(y)
+    #                                                               for y in x])
+
     return df
 
 
@@ -191,6 +198,8 @@ def page_work(state_container, page_flip: bool):
                         hostname=state.hostname.split(),
                         start_time=state.start_time, end_time=state.end_time,
                         view=state.view, columns=state.columns)
+        if state.table == "device" and 'uptime' in df.columns:
+            df.drop(columns=['uptime'], inplace=True)
     else:
         df = gui_get_df(sqobjs[state.table], _table=state.table,
                         namespace=state.namespace.split(),
