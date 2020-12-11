@@ -165,7 +165,7 @@ def xplore_sidebar(state, table_vals: list):
         'Filter results with pandas query', value=state.query,
         key=state.table)
     st.sidebar.markdown(
-        "[query syntax help](https://github.com/netenglabs/suzieq/blob/experiments/docs/pandas-query-examples.md)")
+        "[query syntax help](https://suzieq.readthedocs.io/en/latest/pandas-query-examples/")
 
     if columns == ['all']:
         columns = ['*']
