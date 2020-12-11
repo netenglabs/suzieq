@@ -1,6 +1,5 @@
 import streamlit as st
 
-import pandas as pd
 import altair as alt
 from dataclasses import dataclass
 from suzieq.gui.guiutils import gui_get_df
@@ -19,8 +18,10 @@ def get_title():
     return 'Status'
 
 
-def draw_sidebar_status(state):
+def draw_sidebar_status(state, sqobjs):
     '''Draw appropriate sidebar for the page'''
+
+    _ = st.sidebar.button('Refresh')
 
     st.sidebar.markdown(
         '''This page provides an overview of the overall network status
@@ -40,28 +41,18 @@ def page_work(state_container, page_flip: bool):
 
     state = state_container.statusSessionState
 
-    draw_sidebar_status(state)
+    draw_sidebar_status(state, state_container.sqobjs)
 
-    sqdf = gui_get_df(state_container.sqobjs['sqPoller'],
-                      columns=['namespace', 'hostname', 'timestamp'],
-                      service='device')
-    if not sqdf.empty:
-        hosts = sqdf.groupby(by=['namespace'])['hostname'] \
-                    .nunique() \
-                    .reset_index() \
-                    .rename({'hostname': 'devicePolledCnt'}, axis=1)
-        times = sqdf.groupby(by=['namespace'])['timestamp'] \
-                    .max().reset_index() \
-                          .rename({'timestamp': 'lastPolledTime'}, axis=1)
-        pstats = hosts.merge(times, on=['namespace'])
-
-        st.subheader('Poller Status')
-        st.dataframe(pstats)
-
-    container_1 = st.beta_container()
-    dev_col, mid, if_col = st.beta_columns([2, 1, 2])
-    container_2 = st.beta_container()
-    bgp_col, mid, ospf_col = st.beta_columns([2, 1, 2])
+    col1, mid, col2 = st.beta_columns([2, 1, 2])
+    with col1:
+        dev_gr = st.empty()
+    with col2:
+        if_gr = st.empty()
+    col3, mid, col4 = st.beta_columns([2, 1, 2])
+    with col3:
+        bgp_gr = st.empty()
+    with col4:
+        ospf_gr = st.empty()
 
     # Get each of the summarize info
     dev_df = gui_get_df(state_container.sqobjs['device'], columns=['*'])
@@ -79,13 +70,9 @@ def page_work(state_container, page_flip: bool):
                                    scale=alt.Scale(domain=['alive', 'dead'],
                                                    range=['green', 'red']))
                                )
-        with container_1:
-            with dev_col:
-                st.altair_chart(dev_chart)
+        dev_gr.altair_chart(dev_chart)
     else:
-        with container_1:
-            with dev_col:
-                st.info('No device info found')
+        dev_gr.info('No device info found')
 
     if_df = gui_get_df(state_container.sqobjs['interfaces'], columns=['*'])
     if not if_df.empty:
@@ -107,13 +94,9 @@ def page_work(state_container, page_flip: bool):
                                                   range=['green', 'orange',
                                                          'red']))
                               )
-        with container_1:
-            with if_col:
-                st.altair_chart(if_chart)
+        if_gr.altair_chart(if_chart)
     else:
-        with container_1:
-            with if_col:
-                st.info('No Interface info found')
+        if_gr.info('No Interface info found')
 
     bgp_df = gui_get_df(state_container.sqobjs['bgp'], columns=['*'])
 
@@ -133,10 +116,7 @@ def page_work(state_container, page_flip: bool):
                                                'NotEstd', 'dynamic'],
                                        range=['green', 'red', 'orange']))
                                )
-        with container_2:
-            with bgp_col:
-                if not bgp_df.empty:
-                    st.altair_chart(bgp_chart)
+        bgp_gr.altair_chart(bgp_chart)
 
     ospf_df = gui_get_df(state_container.sqobjs['ospf'], columns=['*'])
     if not ospf_df.empty:
@@ -158,7 +138,20 @@ def page_work(state_container, page_flip: bool):
                                                 'adminDown', 'passive'],
                                         range=['green', 'red', 'orange', 'peach']))
                                 )
-        with container_2:
-            with ospf_col:
-                if not ospf_df.empty:
-                    st.altair_chart(ospf_chart)
+        ospf_gr.altair_chart(ospf_chart)
+
+    sqdf = gui_get_df(state_container.sqobjs['sqPoller'],
+                      columns=['namespace', 'hostname', 'timestamp'],
+                      service='device')
+    if not sqdf.empty:
+        hosts = sqdf.groupby(by=['namespace'])['hostname'] \
+                    .nunique() \
+                    .reset_index() \
+                    .rename({'hostname': '#devices'}, axis=1)
+        times = sqdf.groupby(by=['namespace'])['timestamp'] \
+                    .max().reset_index() \
+                          .rename({'timestamp': 'lastPolledTime'}, axis=1)
+        pstats = times.merge(hosts, on=['namespace'])
+
+        st.subheader('Poller Status')
+        st.dataframe(pstats)
