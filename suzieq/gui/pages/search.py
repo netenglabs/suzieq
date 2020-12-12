@@ -55,14 +55,14 @@ def build_query(state, search_text: str) -> str:
                 query_str += f'{disjunction} prefix == "{addr}" '
             else:
                 query_str += f' {disjunction} ip6AddressList.str.startswith("{addr}/") '
-        elif ':' in addr:
+        elif ':' in addr and state.table in ['macs', 'arpnd', 'address']:
             query_str += f' {disjunction} macaddr == "{addr}" '
         else:
             if state.table == 'arpnd':
                 query_str += f' {disjunction} ipAddress == "{addr}" '
             elif state.table == 'routes':
                 query_str += f'{disjunction} prefix == "{addr}" '
-            else:
+            elif state.table == 'address':
                 query_str += f' {disjunction} ipAddressList.str.startswith("{addr}/") '
 
         if not disjunction:
@@ -76,7 +76,12 @@ def search_sidebar(state):
     '''Draw the sidebar'''
 
     st.sidebar.markdown(
-        "Displays last 5 search results")
+        """Displays last 5 search results.
+
+The search string can start with one of the following keywords: __address, route, mac, arpnd__, to specify which table you want the search to be performed in . If you don't specify a table name, address is assumed. For example, ```arpnd 172.16.1.101``` searches for entries with 172.16.1.101 in the IP address column of the arpnd table. Similarly, ```10.0.0.21``` searches for that IP address in the address table.
+
+__In this initial release, you can only search for an IP address or MAC address__ in one of those tables. You can specify multiple addresses to look for by providing the addresses as a space separated values such as ```172.16.1.101 10.0.0.11``` or ```mac 00:01:02:03:04:05 00:21:22:23:24:25``` and so on. A combination of mac and IP address can also be specified. Obviously the combination doesn't apply to tables such as routes and macs. Support for more sophisticated search will be added in the next few releases.
+""")
 
 
 def page_work(state_container, page_flip: bool):
