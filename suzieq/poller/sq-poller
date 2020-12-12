@@ -157,6 +157,7 @@ async def start_poller(userargs, cfg):
                                 passphrase=userargs.passphrase,
                                 jump_host=userargs.jump_host,
                                 jump_host_key_file=userargs.jump_host_key_file,
+                                password=userargs.ask_pass,
                                 ignore_known_hosts=ignore_known_hosts))
 
     period = cfg.get('period', 15)
@@ -284,6 +285,12 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
+        "--ask-pass",
+        default=False,
+        action='store_true',
+        help="prompt to enter password for login to devices",
+    )
+    parser.add_argument(
         "--passphrase",
         default=False,
         action='store_true',
@@ -328,6 +335,12 @@ if __name__ == "__main__":
             'Passphrase to decode private key file: ')
     else:
         userargs.passphrase = None
+
+    if userargs.ask_pass:
+        userargs.ask_pass = getpass.getpass(
+            'Password to login to device: ')
+    else:
+        userargs.ask_pass = None
 
     uvloop.install()
     cfg = load_sq_config(config_file=userargs.config)

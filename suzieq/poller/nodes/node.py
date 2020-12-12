@@ -89,6 +89,7 @@ async def init_hosts(**kwargs):
     jump_host = kwargs.pop('jump_host', None)
     jump_host_key_file = kwargs.pop('jump_host_key_file', None)
     ignore_known_hosts = kwargs.pop('ignore_known_hosts', False)
+    user_password = kwargs.pop('password', None)
 
     if kwargs:
         logger.error(f'Received unrecognized keywords {kwargs}, aborting')
@@ -139,7 +140,7 @@ async def init_hosts(**kwargs):
                 result = urlparse(words[0])
 
                 username = result.username
-                password = result.password or "vagrant"
+                password = result.password or user_password or "vagrant"
                 port = result.port
                 host = result.hostname
                 devtype = None
