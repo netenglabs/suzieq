@@ -551,5 +551,5 @@ def humanize_timestamp(field: pd.Series) -> pd.Series:
     Use of pd.to_datetime will not work as it converts the timestamp
     to UTC. If the timestamp is already in UTC format, we get busted time.
     '''
-    return field.apply(lambda x: datetime.fromtimestamp(x/1000)) \
+    return field.apply(lambda x: datetime.fromtimestamp((int(x)/1000))) \
                 .dt.tz_localize('UTC').dt.tz_convert(get_localzone().zone)
