@@ -257,59 +257,67 @@ class OspfObj(SqEngineObject):
             return ospf_df[['namespace', 'hostname', 'vrf', 'ifname',
                             'assertReason', 'assert']]
 
-        ospf_df = ospf_df.merge(int_df,
+        peer_df = ospf_df.merge(int_df,
                                 left_on=["namespace", "hostname", "ifname"],
                                 right_on=["namespace", "peerHostname",
                                           "peerIfname"]) \
             .dropna(how="any")
 
-        # Now start comparing the various parameters
-        ospf_df["assertReason"] += ospf_df.apply(
-            lambda x: ["subnet mismatch"]
-            if (
-                (x["isUnnumbered_x"] != x["isUnnumbered_y"])
-                and (
-                    IPv4Network(x["ipAddress_x"], strict=False)
-                    != IPv4Network(x["ipAddress_y"], strict=False)
+        if peer_df.empty:
+            ospf_df = ospf_df[~(ospf_df.ifname.str.contains('loopback') |
+                                ospf_df.ifname.str.contains('Vlan'))]
+            ospf_df['assertReason'] = 'No LLDP peering info'
+            ospf_df['assert'] = 'fail'
+        else:
+            ospf_df = peer_df
+            # Now start comparing the various parameters
+            ospf_df["assertReason"] += ospf_df.apply(
+                lambda x: ["subnet mismatch"]
+                if (
+                    (x["isUnnumbered_x"] != x["isUnnumbered_y"])
+                    and (
+                        IPv4Network(x["ipAddress_x"], strict=False)
+                        != IPv4Network(x["ipAddress_y"], strict=False)
+                    )
                 )
+                else [],
+                axis=1,
             )
-            else [],
-            axis=1,
-        )
-        ospf_df["assertReason"] += ospf_df.apply(
-            lambda x: ["area mismatch"]
-            if (x["area_x"] != x["area_y"] and x["areaStub_x"] != x["areaStub_y"])
-            else [],
-            axis=1,
-        )
-        ospf_df["assertReason"] += ospf_df.apply(
-            lambda x: ["Hello timers mismatch"]
-            if x["helloTime_x"] != x["helloTime_y"]
-            else [],
-            axis=1,
-        )
-        ospf_df["assertReason"] += ospf_df.apply(
-            lambda x: ["Dead timer mismatch"]
-            if x["deadTime_x"] != x["deadTime_y"]
-            else [],
-            axis=1,
-        )
-        ospf_df["assertReason"] += ospf_df.apply(
-            lambda x: ["network type mismatch"]
-            if x["networkType_x"] != x["networkType_y"]
-            else [],
-            axis=1,
-        )
-        ospf_df["assertReason"] += ospf_df.apply(
-            lambda x: ["passive config mismatch"]
-            if x["passive_x"] != x["passive_y"]
-            else [],
-            axis=1,
-        )
-        ospf_df["assertReason"] += ospf_df.apply(
-            lambda x: ["vrf mismatch"] if x["vrf_x"] != x["vrf_y"] else [],
-            axis=1,
-        )
+            ospf_df["assertReason"] += ospf_df.apply(
+                lambda x: ["area mismatch"]
+                if (x["area_x"] != x["area_y"] and
+                    x["areaStub_x"] != x["areaStub_y"])
+                else [],
+                axis=1,
+            )
+            ospf_df["assertReason"] += ospf_df.apply(
+                lambda x: ["Hello timers mismatch"]
+                if x["helloTime_x"] != x["helloTime_y"]
+                else [],
+                axis=1,
+            )
+            ospf_df["assertReason"] += ospf_df.apply(
+                lambda x: ["Dead timer mismatch"]
+                if x["deadTime_x"] != x["deadTime_y"]
+                else [],
+                axis=1,
+            )
+            ospf_df["assertReason"] += ospf_df.apply(
+                lambda x: ["network type mismatch"]
+                if x["networkType_x"] != x["networkType_y"]
+                else [],
+                axis=1,
+            )
+            ospf_df["assertReason"] += ospf_df.apply(
+                lambda x: ["passive config mismatch"]
+                if x["passive_x"] != x["passive_y"]
+                else [],
+                axis=1,
+            )
+            ospf_df["assertReason"] += ospf_df.apply(
+                lambda x: ["vrf mismatch"] if x["vrf_x"] != x["vrf_y"] else [],
+                axis=1,
+            )
 
         # Fill up a single assert column now indicating pass/fail
         ospf_df['assert'] = ospf_df.apply(lambda x: 'pass'

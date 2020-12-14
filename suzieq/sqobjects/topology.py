@@ -22,11 +22,13 @@ class TopologyObj(basicobj.SqObject):
                                 'polled_neighbor', 'query_str']
 
     # overriding parent because we want to take more arguments than the standard
-    def summarize(self, namespace=[], hostname=[],
-                  polled_neighbor=None) -> pd.DataFrame:
+    def summarize(self, namespace: typing.List[str] = [],
+                  hostname: typing.List[str] = [],
+                  polled_neighbor=None, query_str: str = '') -> pd.DataFrame:
         if self.columns != ["default"]:
             self.summarize_df = pd.DataFrame(
                 {'error': ['ERROR: You cannot specify columns with summarize']})
             return self.summarize_df
         return self.engine_obj.summarize(namespace=namespace, hostname=hostname,
+                                         query_str=query_str,
                                          polled_neighbor=polled_neighbor)

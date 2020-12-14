@@ -10,7 +10,7 @@ class IfObj(SqObject):
         self._valid_get_args = ['namespace', 'hostname', 'ifname', 'columns',
                                 'state', 'type', 'mtu', 'query_str']
         self._valid_assert_args = ['namespace', 'hostname', 'ifname',
-                                   'what', 'matchval', 'status', 'query_str']
+                                   'what', 'matchval', 'status']
         self._valid_arg_vals = {
             'state': ['up', 'down', ''],
             'status': ['all', 'pass', 'fail'],

@@ -24,7 +24,9 @@ class RoutesObj(SqObject):
         """Summarize routing info for one or more namespaces"""
         if self.columns != ["default"]:
             self.summarize_df = pd.DataFrame(
-                {'error': ['ERROR: You cannot specify columns with summarize']})
+                {'error':
+                 ['ERROR: You cannot specify columns with summarize']})
             return self.summarize_df
         return self.engine_obj.summarize(namespace=namespace, vrf=vrf,
+                                         query_str=query_str,
                                          hostname=hostname)

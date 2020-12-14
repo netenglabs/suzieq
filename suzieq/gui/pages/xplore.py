@@ -278,7 +278,6 @@ def page_work(state_container, page_flip: bool):
             assert_df = xplore_run_assert(sqobjs[state.table],
                                           start_time=state.start_time,
                                           end_time=state.end_time,
-                                          query_str=state.query,
                                           namespace=state.namespace.split())
         else:
             assert_df = pd.DataFrame()
