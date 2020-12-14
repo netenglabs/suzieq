@@ -55,6 +55,11 @@ class SqEngineObject(object):
         active_only = kwargs.pop('active_only', True)
         query_str = kwargs.pop('query_str', '')
 
+        # The REST API provides the query_str enclosed in ". Strip that
+        if query_str:
+            if query_str.startswith('"') and query_str.endswith('"'):
+                query_str = query_str[1:-1]
+
         fields = sch.get_display_fields(columns)
         key_fields = sch.key_fields()
         drop_cols = []
@@ -357,15 +362,9 @@ class SqEngineObject(object):
 
     def _init_summarize(self, table, **kwargs):
         kwargs.pop('columns', None)
-        query_str = kwargs.pop('query_str', '')
         columns = ['*']
 
         df = self.get(columns=columns, **kwargs)
-        if not df.empty:
-            try:
-                df = df.query(query_str)
-            except Exception:
-                pass
 
         self.summary_df = df
         if df.empty:

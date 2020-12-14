@@ -12,8 +12,7 @@ class BgpObj(SqObject):
             'state': ['Established', 'NotEstd', ''],
             'status': ['all', 'pass', 'fail'],
         }
-        self._valid_assert_args = ['namespace', 'hostname', 'vrf', 'status',
-                                   'query_str']
+        self._valid_assert_args = ['namespace', 'hostname', 'vrf', 'status']
 
     def aver(self, **kwargs):
         """Assert that the BGP state is OK"""
