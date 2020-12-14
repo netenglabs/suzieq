@@ -22,6 +22,8 @@ COPY ./build/suzieq-cfg.yml /root/.suzieq/suzieq-cfg.yml
 # Certificates and such for REST server
 COPY ./build/key.pem /root/.suzieq/
 COPY ./build/cert.pem /root/.suzieq/
+COPY ./build/launch-gui /usr/local/bin/suzieq-gui
+COPY logo-small.jpg /suzieq
 
 # Copy parquet files for demo
 #COPY ./parquet /suzieq/parquet
@@ -30,11 +32,11 @@ WORKDIR /suzieq
 
 ENV PATH=/root/.local/bin:$PATH:/root/.local/lib/python3.7/site-packages/suzieq/cli/:/root/.local/lib/python3.7/site-packages/suzieq/poller/:/root/.local/lib/python3.7/site-packages/suzieq/restServer
 
-ENV PYTHONPATH=/root/.local/lib:/src/cyberpandas:/src/python-nubia
+ENV PYTHONPATH=/src/python-nubia
 ENTRYPOINT ["/bin/bash"]
 
 # USER 1001
 
 LABEL name=suzieq
-LABEL version=0.8.0-nightly
+LABEL version=0.8.0
 LABEL description="Network Observability Tool"
