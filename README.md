@@ -28,7 +28,7 @@ In this very early release of Suzieq, we've chosen some answers for the framewor
 * All the analysis are exposed either via a CLI or via Python objects. The output can be rendered in various formats from plain text to JSON and CSV.
 * The analysis engine used in this release is pandas.
 
-**We support gathering data from Arista EOS, Cisco's NXOS, Cumulus, JunOS, and SONIC routers, and Linux servers.** We gather:
+**We support gathering data from Arista EOS, Cisco's NXOS, Cumulus, JunOS(QFX, MX and EX supported), and SONIC routers, and Linux servers.** We gather:
 
 * Basic device info
 * Interfaces
@@ -49,20 +49,25 @@ We're also looking for collaborators to help us make Suzieq a truly useful multi
 
 ## Latest Release
 
-The latest release is 0.7.0 and the official release notes are [here](https://suzieq.readthedocs.io/en/latest/release-notes/).
+The latest release is 0.8.0 and the official release notes are [here](https://suzieq.readthedocs.io/en/latest/release-notes/).
 
 ## Quick Start
 
 We want to make it as easy as possible for you to start engaging with Suzieq. 
 
-* `docker run -it --name suzieq ddutt/suzieq-demo`
-* `suzieq-cli`
+* `docker run -it -p 8501:8501 --name suzieq ddutt/suzieq-demo`
+* `suzieq-cli` for the CLI OR
+* `suzieq-gui` for the GUI. Connect to http://localhost:8501 via the browser to access the GUI
 
 When you're within the suzieq-cli, you can run ```device unique columns=namespace``` to see the list of different scenarios, we've gathered data for.
 
 Additional information about running the analyzer (suzieq-cli) is available via the official documentation page.
 
-To run the poller to gather data from your network, rather than use the precanned data, you'll need to run sq-poller. This [document](https://suzieq.readthedocs.io/en/latest/poller/) describes how to run sq-poller. 
+To start collecting data for your network, create an inventory file to gather the data from following the instructions [here](https://suzieq.readthedocs.io/en/latest/poller/). Decide the directory where the data will be stored (ensure you have sufficient available space if you're going to be running the poller, say 100 MB at least). Lets call this dbdir. Now launch the suzieq docker container as follows:
+
+* ```docker run -it -vdbdir:/suzieq/parquet --name sq-poller ddutt/suzieq```
+* Connect to the container via ```docker attach sq-poller```
+* Launch the poller with the appropriate options. For example, ```sq-poller -D inventory.yml -k``` where mydatacenter is the name of the namespace where the data associated with the inventory is storedand inventory.yml is the inventory file in Suzieq poller native format (Use -a if you're using Ansible inventory file format).
 
 The official documentation is [here](https://suzieq.readthedocs.io/en/latest/) 
 
