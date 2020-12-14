@@ -1,5 +1,21 @@
 ## Release Notes
 
+## 0.8 (Dec 14, 2020)
+
+The two main features of the 0.8 release are the availability of a GUI, and the simplified experience of time, and Junos EX support. Here are the more detailed release notes:
+
+* GUI support
+* Simplified support of time.  You can specify time in English when querying by time. For example, '10 pm last night', or 'two days ago' or 'Jun 19' or 'two years ago'.
+* Allow the user to provide the password for device login via a prompt rather than storing it in a file (--ask-pass option)
+* Junos EX support. We've tested version 20.3R1.8.
+* Display the admin state of an interface in interface show
+* Fixed some bugs in parsing Junos EVPN information as well as interfaces
+* Support for pandas query string in GUI and REST API. The CLI support for this will be in the next release
+* Removed inconsistencies in storing interface oper state ('up', 'Up' were both present, for example).
+* Updated the dependency libraries to newer versions.
+
+Junos EX support is thanks to Andrea Florio.
+
 ## 0.7 (Nov 25, 2020)
 
 There have a been a bunch of improvements in data gathering and making them consistent across NOSes in this release, along with improvements such as better summarizations, improved interface assert etc.
