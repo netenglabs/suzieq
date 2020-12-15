@@ -14,9 +14,9 @@ Suzieq does multiple things. It collects data from devices and systems across yo
 
 # Analysis
 
-Suzieq supports Analysis using CLI, GUI, REST API, and python objects. 
+Suzieq supports Analysis using CLI, GUI, REST API, and python objects. For the most part they are equivilent, though with the GUI we have combined the output of multiple commands of the CLI into one page.
 
-The GUI has a nice status page to let you know what the status of entitites in your network
+The GUI has a  status page to let you know what the status of entitites in your network.
 ![Suzieq GUI status](images/status.png)
 
 The Xplore page lets you dive into what is in your network. ![Explore device](images/devices-gui.png)
