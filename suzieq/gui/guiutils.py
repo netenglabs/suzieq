@@ -55,11 +55,11 @@ def hide_st_index():
     '''CSS to hide table index rendered via st.table'''
     st.markdown("""
         <style>
-        table td:nth-child(1) {
-            display: none
+        .table td:nth-child(1) {
+            display: none;
         }
-        table th:nth-child(1) {
-            display: none
+        .table th:nth-child(1) {
+            display: none;
         }
         </style>
         """, unsafe_allow_html=True)

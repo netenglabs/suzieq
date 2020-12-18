@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import altair as alt
 import streamlit as st
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, asdict
 from typing import List
 
 
@@ -86,7 +86,10 @@ def xplore_sidebar(state, table_vals: list):
     stime = state.start_time
     etime = state.end_time
     if state.table:
-        tblidx = table_vals.index(state.table)
+        if isinstance(state.table, list):
+            tblidx = table_vals.index(state.table[0])
+        else:
+            tblidx = table_vals.index(state.table)
     else:
         tblidx = table_vals.index('device')  # Default starting table
     assert_val = state.assert_clicked
@@ -153,12 +156,18 @@ def xplore_sidebar(state, table_vals: list):
         state.assert_clicked = False
 
     if not col_ok:
+        breakpoint()
+        st.experimental_set_query_params(**asdict(state))
         st.stop()
     if ('default' in columns or 'all' in columns) and len(columns) != 1:
+        breakpoint()
         st.error('Cannot select default/all with any other columns')
+        st.experimental_set_query_params(**asdict(state))
         st.stop()
     elif not columns:
+        breakpoint()
         st.error('Columns cannot be empty')
+        st.experimental_set_query_params(**asdict(state))
         st.stop()
 
     state.query = st.sidebar.text_input(
@@ -187,6 +196,25 @@ def page_work(state_container, page_flip: bool):
         state.columns = ['default']
     else:
         state = state_container.xploreSessionState
+
+    url_params = st.experimental_get_query_params()
+    page = url_params.pop('page', '')
+    if get_title() in page:
+        if url_params and not all(not x for x in url_params.values()):
+            for key in url_params:
+                if key == 'columns':
+                    # This needs to be a list
+                    continue
+                val = url_params.get(key, '')
+                if isinstance(val, list):
+                    val = val[0]
+                    url_params[key] = val
+                if key == '':
+                    if val == 'True':
+                        url_params[key] = True
+                    else:
+                        url_params[key] = False
+            state.__init__(**url_params)
 
     sqobjs = state_container.sqobjs
     # All the user input is preserved in the state vars
@@ -220,6 +248,7 @@ def page_work(state_container, page_flip: bool):
     if not df.empty:
         if 'error' in df.columns:
             st.error(df.iloc[0].error)
+            st.experimental_set_query_params(**asdict(state))
             st.stop()
         if state.query:
             try:
@@ -335,3 +364,5 @@ def page_work(state_container, page_flip: bool):
                          height=600, width=2500)
         else:
             st.warning('No Data from query')
+
+        st.experimental_set_query_params(**asdict(state))

@@ -1,17 +1,8 @@
 import streamlit as st
 
 import altair as alt
-from dataclasses import dataclass
 from suzieq.gui.guiutils import gui_get_df
 import numpy as np
-
-
-@dataclass
-class StatusSessionState:
-    add_vlans: bool = False
-    add_vrfs: bool = False
-    add_macs: bool = False
-    add_routes: bool = False
 
 
 def get_title():
@@ -41,12 +32,7 @@ __Caching is enabled by default for 90 secs on all pages__. You can clear the ca
 def page_work(state_container, page_flip: bool):
     '''The main workhorse routine for the XNA page'''
 
-    if not state_container.statusSessionState:
-        state_container.statusSessionState = StatusSessionState()
-
-    state = state_container.statusSessionState
-
-    draw_sidebar_status(state, state_container.sqobjs)
+    draw_sidebar_status(None, state_container.sqobjs)
 
     col1, mid, col2 = st.beta_columns([2, 1, 2])
     with col1:
@@ -160,3 +146,5 @@ def page_work(state_container, page_flip: bool):
 
         st.subheader('Poller Status')
         st.dataframe(pstats)
+
+    st.experimental_set_query_params(**{})
