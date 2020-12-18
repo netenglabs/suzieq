@@ -4,13 +4,12 @@ import base64
 
 import streamlit as st
 
-from suzieq.gui.guiutils import horizontal_radio, hide_st_index
 from suzieq.gui.session_state import get_session_state
 from suzieq.gui.pages import *
 from suzieq.sqobjects import *
 
 
-def display_title(pagelist):
+def display_title(page, pagelist):
     '''Render the logo and the app name'''
 
     LOGO_IMAGE = 'logo-small.jpg'
@@ -51,7 +50,8 @@ def display_title(pagelist):
         # The empty writes are for aligning the pages link with the logo
         st.text(' ')
         srch_holder = st.empty()
-        page = srch_holder.selectbox('Page', pagelist)
+        pageidx = 0 if not page else pagelist.index(page)
+        page = srch_holder.selectbox('Page', pagelist, index=pageidx)
 
     with srch_col:
         st.text(' ')
@@ -114,24 +114,26 @@ def apprun():
     #                          sqobjs={})
 
     st.set_page_config(layout="wide", page_title="Suzieq")
-    hide_st_index()
 
     if not state.pages:
         state.pages = build_pages()
         state.sqobjs = build_sqobj_table()
 
+    url_params = st.experimental_get_query_params()
+    if url_params.get('page', ''):
+        page = url_params['page']
+        if isinstance(page, list):
+            page = page[0]
+    else:
+        page = None
+
     # Hardcoding the order of these three
     pagelist = ['Status', 'Xplore', 'Path', 'Search']
-    for page in state.pages:
-        if page not in pagelist:
-            pagelist.append(page)
+    for pg in state.pages:
+        if pg not in pagelist:
+            pagelist.append(pg)
 
-    page, search_text = display_title(pagelist)
-    if state.prev_page != page:
-        page_flip = True
-    else:
-        page_flip = False
-    state.prev_page = page
+    page, search_text = display_title(page, pagelist)
 
     if state.search_text is None:
         state.search_text = ''
@@ -140,7 +142,11 @@ def apprun():
         page = 'Search'
         state.search_text = search_text
 
-    horizontal_radio()
+    if state.prev_page != page:
+        page_flip = True
+    else:
+        page_flip = False
+    state.prev_page = page
 
     state.pages[page](state, page_flip)
     if page not in ['Search', 'Status']:

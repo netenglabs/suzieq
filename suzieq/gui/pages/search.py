@@ -1,24 +1,24 @@
 from collections import deque
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 
 import pandas as pd
 import streamlit as st
-from suzieq.sqobjects.path import PathObj
 from suzieq.gui.guiutils import gui_get_df
-
-
-@dataclass
-class SearchSessionState:
-    search_str: str = ''
-    past_df = None
-    table: str = ''
-    query_str: str = ''
-    prev_results = deque(maxlen=5)
 
 
 def get_title():
     # suzieq_gui.py has hardcoded this name.
     return 'Search'
+
+
+@dataclass
+class SearchSessionState:
+    page: str = get_title()
+    search_text: str = ''
+    past_df = None
+    table: str = ''
+    query_str: str = ''
+    prev_results = deque(maxlen=5)
 
 
 def build_query(state, search_text: str) -> str:
@@ -94,7 +94,12 @@ def page_work(state_container, page_flip: bool):
 
     search_sidebar(state)
 
-    if page_flip or (state_container.search_text != state.search_str):
+    if not page_flip:
+        url_params = st.experimental_get_query_params()
+        if url_params.get('search_text', ''):
+            state_container.search_text = url_params.search_text
+
+    if page_flip or (state_container.search_text != state.search_text):
         query_str = build_query(state, state_container.search_text)
     else:
         query_str = ''
@@ -129,6 +134,8 @@ def page_work(state_container, page_flip: bool):
             else:
                 st.info('No matching result found')
 
-    if query_str and (state_container.search_text != state.search_str):
+    if query_str and (state_container.search_text != state.search_text):
         state.prev_results.append((state_container.search_text, df))
-        state.search_str = state_container.search_text
+        state.search_text = state_container.search_text
+
+    st.experimental_set_query_params(**asdict(state))
