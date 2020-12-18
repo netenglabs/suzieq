@@ -234,7 +234,8 @@ class PathObj(SqEngineObject):
 
         return oif_df.iloc[0]["vlan"]
 
-    def _get_l2_nexthop(self, device: str, vrf: str, dest: str) -> list:
+    def _get_l2_nexthop(self, device: str, vrf: str, dest: str,
+                        macaddr: str) -> list:
         """Get the bridged/tunnel nexthops"""
 
         if self._arpnd_df.empty:
@@ -260,7 +261,8 @@ class PathObj(SqEngineObject):
         if rslt.empty:
             return []
 
-        macaddr = rslt.iloc[0]["macaddr"]
+        if not macaddr:
+            macaddr = rslt.iloc[0]["macaddr"]
         oif = rslt.iloc[0]["oif"]
         # This is to handle the VRR interface on Cumulus Linux machines
         if oif.endswith("-v0"):
@@ -314,7 +316,7 @@ class PathObj(SqEngineObject):
         return result
 
     def _get_nexthops(self, device: str, vrf: str, dest: str, is_l2: bool,
-                      vtep: str) -> list:
+                      vtep: str, macaddr: str) -> list:
         """Get nexthops (oif + IP + overlay) or just oif for given host/vrf.
 
         The overlay is a bit indicating we're getting into overlay or not.
@@ -324,7 +326,7 @@ class PathObj(SqEngineObject):
             if vtep:
                 return self._get_underlay_nexthop(device, [vtep], [vrf])
             else:
-                return self._get_l2_nexthop(device, vrf, dest)
+                return self._get_l2_nexthop(device, vrf, dest, macaddr)
 
         rslt = self._rdf.query(f'hostname == "{device}" and vrf == "{vrf}"')
         if not rslt.empty and (len(rslt.nexthopIps.iloc[0]) != 0 and
@@ -343,11 +345,11 @@ class PathObj(SqEngineObject):
 
         # We've either reached the end of routing or the end of knowledge
         # Look for L2 nexthop
-        return self._get_l2_nexthop(device, vrf, dest)
+        return self._get_l2_nexthop(device, vrf, dest, None)
 
     @ lru_cache(maxsize=256)
     def _get_nh_with_peer(self, device: str, vrf: str, dest: str, is_l2: bool,
-                          vtep_ip) -> list:
+                          vtep_ip: str, macaddr: str) -> list:
         """Get the nexthops & peer node for each nexthop for a given device/vrf
         This uses the cached route lpm DF to get the nexthops. It
         also handles vlan subinterfaces, MLAG and plain bonds to get the
@@ -363,10 +365,13 @@ class PathObj(SqEngineObject):
         :type dest: str
 
         :param is_l2: If this is an L2 lookup
-        :type dest: bool
+        :type is_l2: bool
 
         :param vtep_ip: VTEP IP address, can be empty string if not in underlay
-        :type dest: bool
+        :type vtep_ip: str
+
+        :param macaddr: Look for this MAC addr, not dest, as this is L2hop
+        :type macaddr: str
 
         :rtype: list
         :return:
@@ -376,11 +381,16 @@ class PathObj(SqEngineObject):
         nexthops = []
 
         # TODO: Can we have ECMP nexthops, one with NH IP and one without?
-        nexthop_list = self._get_nexthops(device, vrf, dest, is_l2, vtep_ip)
+        nexthop_list = self._get_nexthops(
+            device, vrf, dest, is_l2, vtep_ip, macaddr)
         new_nexthop_list = []
         # Convert each OIF into its actual physical list
         is_l2 = False
         for nhip, iface, overlay, is_l2 in nexthop_list:
+            if macaddr and is_l2 and not overlay:
+                new_nexthop_list.append((nhip, iface, overlay, is_l2))
+                continue
+
             if iface.endswith('-v0'):
                 # Replace Cumulus' VRR entry with actual SVI
                 iface = iface.split('-v0')[0]
@@ -405,28 +415,43 @@ class PathObj(SqEngineObject):
             df = pd.DataFrame()
             if (not nhip or nhip == 'None') and iface:
                 nhip = dest
-            arpdf = self._arpnd_df.query(f'hostname=="{device}" and '
-                                         f'ipAddress=="{nhip}" and '
-                                         f'oif=="{iface}"')
-            if not arpdf.empty:
+            if is_l2 and macaddr and not overlay:
                 addr = nhip + '/'
                 df = self._if_df.query(
-                    f'macaddr=="{arpdf.iloc[0].macaddr}" '
+                    f'macaddr=="{macaddr}" '
                     f'and type != "bond_slave" '
                     f'and state != "down" '
                     f'and ipAddressList.str.startswith("{addr}")')
                 if df.empty:
-                    # In case of L2 interfaces as the nexthop, there'll be
-                    # no IP address on the interface with matching NHIP.
+                    addr = nhip + '/'
+                    df = self._if_df.query(
+                        f'ipAddressList.str.startswith("{addr}") and '
+                        f'type !="bond_slave"')
+                    if df.empty:
+                        continue
+            else:
+                arpdf = self._arpnd_df.query(f'hostname=="{device}" and '
+                                             f'ipAddress=="{nhip}" and '
+                                             f'oif=="{iface}"')
+                if not arpdf.empty:
+                    addr = nhip + '/'
                     df = self._if_df.query(
                         f'macaddr=="{arpdf.iloc[0].macaddr}" '
-                        f'and type != "bond_slave"')
-            if df.empty:
-                df = self._if_df.query(
-                    f'ipAddressList.str.startswith("{nhip}") and '
-                    f'type !="bond_slave"')
+                        f'and type != "bond_slave" '
+                        f'and state != "down" '
+                        f'and ipAddressList.str.startswith("{addr}")')
+                    if df.empty:
+                        # In case of L2 interfaces as the nexthop, there'll be
+                        # no IP address on the interface with matching NHIP.
+                        df = self._if_df.query(
+                            f'macaddr=="{arpdf.iloc[0].macaddr}" '
+                            f'and type != "bond_slave"')
                 if df.empty:
-                    continue
+                    df = self._if_df.query(
+                        f'ipAddressList.str.startswith("{nhip}") and '
+                        f'type !="bond_slave"')
+                    if df.empty:
+                        continue
 
             # In case of centralized EVPN, its possible to find the NHIP on
             # unconnected devices if this is still the source device i.e.
@@ -438,37 +463,52 @@ class PathObj(SqEngineObject):
             else:
                 check_fhr = None
 
+            diffhosts = []
             if check_fhr:
                 fhr_df = self._find_fhr_df(check_fhr)
                 if not fhr_df.empty:
-                    fhr_hosts = fhr_df['hostname'].tolist()
+                    fhr_hosts = set(fhr_df['hostname'].tolist())
+                    dfhosts = set(df.hostname.tolist())
+                    if fhr_hosts != dfhosts:
+                        # This may not be good, why are we using only one of
+                        # our first hop routers?
+                        diffhosts = fhr_hosts.symmetric_difference(dfhosts)
+
                     if check_fhr != self.dest and device not in fhr_hosts:
                         # Avoid looping everytime we hit the dest device
                         # We only need to do it once
-                        df = df.query(f'hostname.isin({fhr_hosts})')
+                        df = df.query(f'hostname.isin({list(fhr_hosts)})')
                         if df.empty:
                             # The L3 nexthop is not the next L2 hop
                             df = fhr_df
                             is_l2 = True
+                            # But what we're going to be forwarding on when
+                            # we hit the next L2 hop is the MAC addr from the
+                            # ARP entry, and so set the macaddr to that for now
+                            if not arpdf.empty:
+                                macaddr = arpdf.macaddr.unique().tolist()[0]
                         else:
                             # Fix the incoming interface
                             df = df.merge(fhr_df[['namespace', 'hostname',
                                                   'ifname']],
                                           on=['namespace', 'hostname'],
-                                          how='left') \
+                                          how='outer') \
+                                .fillna(method='ffill') \
                                 .drop(columns=['ifname_x']) \
                                 .rename(columns={'ifname_y': 'ifname'})
 
             df.apply(lambda x, nexthops:
                      nexthops.append((iface, x['hostname'],
-                                      x['ifname'],  overlay, is_l2, nhip))
+                                      x['ifname'],  overlay,
+                                      is_l2 or x.hostname in diffhosts, nhip,
+                                      macaddr or x.macaddr))
                      if (x['namespace'] in self.namespace) else None,
                      args=(nexthops,), axis=1)
 
         if not nexthops and is_l2:
-            return [(None, None, None, False, is_l2, None)]
+            return [(None, None, None, False, is_l2, None, None)]
 
-        return nexthops
+        return list(set(nexthops))
 
     def get(self, **kwargs) -> pd.DataFrame:
         """return a pandas dataframe with the paths between src and dest
@@ -510,12 +550,16 @@ class PathObj(SqEngineObject):
                 "iif": item["ifname"],
                 "mtu": item["mtu"],
                 "overlay": '',
+                "macaddr": None,
                 "vrf": item['master'],
+                'mtuMatch': True,  # Its the first node
                 "is_l2": self.is_l2,
                 "nhip": self.dest,  # Greased to handle a pure l2 path
                 "overlay_nhip": '',
                 "oif": item["ifname"],
                 "timestamp": item["timestamp"],
+                "l3_visited_devices": set(),
+                "l2_visited_devices": set()
             }
         src_device_iifs = devices_iifs
         if not dvrf:
@@ -530,6 +574,7 @@ class PathObj(SqEngineObject):
                 "iif": item["ifname"],
                 "vrf": item["master"] or "default",
                 "mtu": item["mtu"],
+                "macaddr": None,
                 "overlay": '',
                 "is_l2": False,
                 "overlay_nhip": '',
@@ -537,12 +582,10 @@ class PathObj(SqEngineObject):
                 "timestamp": item["timestamp"],
             }
 
+        final_paths = []
         paths = []
         for x in src_device_iifs:
             paths.append([OrderedDict({x: devices_iifs[x]})])
-
-        l3_visited_devices = set()
-        l2_visited_devices = set()
 
         # The logic is to loop through the nexthops till you reach the dest
         # device The topmost while is this looping. The next loop within handles
@@ -558,14 +601,15 @@ class PathObj(SqEngineObject):
         while devices_iifs:
             nextdevices_iifs = OrderedDict()
             newpaths = []
-            l3_devices_this_round = set()
-            l2_devices_this_round = set()
 
             for devkey in devices_iifs:
                 device = devkey.split('/')[0]
                 iif = devices_iifs[devkey]["iif"]
                 devvrf = devices_iifs[devkey]["vrf"]
                 ioverlay = devices_iifs[devkey]["overlay"]
+                macaddr = devices_iifs[devkey]['macaddr']
+                l3_visited_devices = devices_iifs[devkey]['l3_visited_devices']
+                l2_visited_devices = devices_iifs[devkey]['l2_visited_devices']
 
                 # We've reached the destination, so stop this loop
                 destdevkey = f'{device}/'
@@ -575,11 +619,17 @@ class PathObj(SqEngineObject):
                         pdev2 = list(x[-1].keys())[0].split('/')[0]
                         if pdev1 != pdev2:
                             continue
-                        dest_device_iifs[destdevkey]['oif'] = devices_iifs[devkey]['oif']
+                        dest_device_iifs[destdevkey]['oif'] = \
+                            devices_iifs[devkey]['oif']
+                        dest_device_iifs[destdevkey]['iif'] = iif
+                        dest_device_iifs[destdevkey]['mtu'] = \
+                            devices_iifs[devkey]['mtu']
+                        dest_device_iifs[destdevkey]['mtuMatch'] = \
+                            devices_iifs[devkey]['mtuMatch']
                         z = x + [OrderedDict(
                             {destdevkey: dest_device_iifs[destdevkey]})]
-                        if z not in newpaths:
-                            newpaths.append(z)
+                        if z not in final_paths:
+                            final_paths.append(z)
                     continue
 
                 newdevices_iifs = {}  # NHs from this NH to add to the next round
@@ -601,10 +651,12 @@ class PathObj(SqEngineObject):
                             nhdf = nhdf.query(
                                 f'ip6AddressList.str.contains("{ndst}")')
                     if not nhdf.empty:
-                        ndst = dest
-                        is_l2 = self.is_l2
-                        ioverlay = ''
-                        l2_visited_devices = set()
+                        ifmac = nhdf.macaddr.unique().tolist()
+                        if (not macaddr) or (macaddr in ifmac):
+                            ndst = dest
+                            is_l2 = self.is_l2
+                            ioverlay = ''
+                            l2_visited_devices = set()
                     elif ioverlay:
                         end_overlay = False
                 else:
@@ -645,14 +697,16 @@ class PathObj(SqEngineObject):
                                 f"L2 Loop detected on node {device}",
                                 self._path_cons_result(paths))
                     else:
-                        l2_devices_this_round.add(skey)
+                        l2_visited_devices.add(skey)
+                elif macaddr and devices_iifs[devkey]['is_l2'] and not is_l2:
+                    l3_visited_devices.add(skey)
                 else:
                     if skey in l3_visited_devices:
                         # This is a loop
                         raise PathLoopError(f"Loop detected on node {device}",
                                             self._path_cons_result(paths))
                     else:
-                        l3_devices_this_round.add(skey)
+                        l3_visited_devices.add(skey)
 
                 devices_iifs[devkey]['vrf'] = ivrf
                 rslt = self._rdf.query('hostname == "{}" and vrf == "{}"'
@@ -661,8 +715,9 @@ class PathObj(SqEngineObject):
                     timestamp = str(rslt["timestamp"].max())
 
                 for i, nexthop in enumerate(self._get_nh_with_peer(
-                        device, ivrf, ndst, is_l2, ioverlay)):
-                    iface, peer_device, peer_if, overlay, is_l2, nhip = nexthop
+                        device, ivrf, ndst, is_l2, ioverlay, macaddr)):
+                    (iface, peer_device, peer_if, overlay, is_l2,
+                     nhip, macaddr) = nexthop
                     if iface is not None:
                         try:
                             mtu_match = self._is_mtu_match(device, iface,
@@ -682,9 +737,14 @@ class PathObj(SqEngineObject):
                             overlay_nhip = devices_iifs[devkey]['overlay_nhip']
                         else:
                             overlay_nhip = ''
+                        if overlay or not is_l2:
+                            # We don't need to track MACaddr if its not a pure
+                            # (non-overlay) L2 hop
+                            macaddr = None
                         newdevices_iifs[f'{peer_device}/{device}'] = {
                             "iif": peer_if,
                             "vrf": vrf,
+                            "macaddr": macaddr,
                             "overlay": overlay,
                             "mtu": self._if_df[
                                 (self._if_df["hostname"] == peer_device) &
@@ -695,9 +755,12 @@ class PathObj(SqEngineObject):
                             "oif": iface,
                             "overlay_nhip": overlay_nhip,
                             "timestamp": timestamp,
+                            'l3_visited_devices': l3_visited_devices.copy(),
+                            'l2_visited_devices': l2_visited_devices.copy()
                         }
 
                 if not on_src_node:
+                    # matching to attach the hop to the appropriate path
                     pdev1 = devkey.split('/')[1]
                     for x in paths:
                         xkey = list(x[-1].keys())[0]
@@ -718,22 +781,13 @@ class PathObj(SqEngineObject):
             if newpaths:
                 paths = newpaths
 
-            l3_visited_devices = l3_visited_devices.union(
-                l3_devices_this_round)
-            l2_visited_devices = l3_visited_devices.union(
-                l2_devices_this_round)
             devices_iifs = nextdevices_iifs
             on_src_node = False
-
-        # Add the final destination to all paths
-        # for x in paths:
-        #    for device in dest_device_iifs:
-        #        x.append(OrderedDict({device: dest_device_iifs[device]}))
 
         # Construct the pandas dataframe.
         # Constructing the dataframe in one shot here as that's more efficient
         # for pandas
-        return self._path_cons_result(paths)
+        return self._path_cons_result(final_paths)
 
     def _path_cons_result(self, paths):
         df_plist = []
@@ -790,7 +844,8 @@ class PathObj(SqEngineObject):
         ns = {}
         ns[namespace] = {}
 
-        perhopEcmp = path_df.groupby(by=['hopCount'])['hostname']
+        perhopEcmp = path_df.query('hopCount != 0') \
+                            .groupby(by=['hopCount'])['hostname']
         ns[namespace]['totalPaths'] = path_df['pathid'].max()
         ns[namespace]['perHopEcmp'] = perhopEcmp.nunique().tolist()
         ns[namespace]['maxPathLength'] = path_df.groupby(by=['pathid'])[
