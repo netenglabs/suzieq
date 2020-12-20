@@ -137,7 +137,7 @@ class SqCommand:
     def _gen_output(self, df: pd.DataFrame, json_orient: str = "records",
                     dont_strip_cols: bool = False, sort: bool = True):
 
-        if df.columns.to_list() == ['error']:
+        if 'error' in df.columns:
             retcode = 1
             max_colwidth = None
             cols = df.columns
