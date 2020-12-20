@@ -5,7 +5,7 @@ import pandas as pd
 from suzieq.sqobjects.path import PathObj
 from suzieq.gui.guiutils import gui_get_df
 import graphviz as graphviz
-from urllib.parse import urlencode
+from urllib.parse import quote
 
 
 def get_title():
@@ -66,9 +66,9 @@ def path_sidebar(state, sqobjs):
     else:
         nsidx = 0
     ok_button = st.sidebar.button('Trace')
-    state.namespace = st.sidebar.selectbox('Namespace',
-                                           namespaces, index=nsidx,
-                                           key='namespace')
+    namespace = st.sidebar.selectbox('Namespace',
+                                     namespaces, index=nsidx,
+                                     key='namespace')
     state.source = st.sidebar.text_input('Source IP',
                                          value=state.source,
                                          key='source')
@@ -91,6 +91,9 @@ def path_sidebar(state, sqobjs):
         state.run = False
     elif ok_button:
         state.run = True
+    elif namespace != state.namespace:
+        state.run = False
+        state.namespace = namespace
 
     return
 
@@ -98,61 +101,93 @@ def path_sidebar(state, sqobjs):
 def build_graphviz_obj(state: PathSessionState, df: pd.DataFrame):
     '''Return a graphviz object'''
 
-    graph_attr = {'layout': 'dot',
-                  'splines': 'polyline'
-                  }
+    # The first order of business is to ensure we can draw the graph properly
+    # Dot layout does the job in all scenarios except in some cases when the
+    # hosts are out of step between multiple paths for only the first one or
+    # two hops. Then, not selecting the layout is better than DOT.
+    layout = 'dot'
+    hostset = set()
+    for i, hostgroup in enumerate(df.groupby(by=['hopCount'])
+                                  .hostname.unique().tolist()):
+        thisset = set(hostgroup)
+        if hostset.intersection(thisset):
+            layout = ''
+        hostset = hostset.union(thisset)
+        if i > 2:
+            break
+
+    graph_attr = {'splines': 'polyline'}
+    if layout:
+        graph_attr.update({'layout': layout})
     if state.show_ifnames:
         graph_attr.update({'nodesep': '1.0'})
 
     g = graphviz.Digraph(graph_attr=graph_attr,
                          node_attr={'URL': 'https://github.com/netenglabs/suzieq'})
 
-    for hostgroup in df.groupby(by=['hopCount']).hostname.unique().tolist():
-        with g.subgraph() as s:
-            s.attr(rank='same')
-            for hostname in hostgroup:
-                s.node(hostname, style='filled')
+    if layout == 'dot':
+        for hostgroup in df.groupby(by=['hopCount']).hostname.unique().tolist():
+            with g.subgraph() as s:
+                s.attr(rank='same')
+                for hostname in hostgroup:
+                    s.node(hostname, style='filled')
+    else:
+        for host in df.hostname.unique().tolist():
+            g.node(host, style='filled')
 
     df['prevhop'] = df.hostname.shift(1)
     df.prevhop = df.prevhop.fillna('')
     pathid = 0
-    prevhop = None
+    prevrow = None
     connected_set = set()
 
     for row in df.itertuples():
         if row.pathid != pathid:
-            prevhop = row.hostname
+            prevrow = row
             pathid = row.pathid
-            oif = row.oif
             continue
-        if row.prevhop:
-            conn = (prevhop, row.hostname)
-            if conn not in connected_set:
-                if row.mtuMatch:
-                    if row.overlay:
-                        color = 'green'
-                    else:
-                        color = 'black'
+        conn = (prevrow.hostname, row.hostname)
+        if conn not in connected_set:
+            if row.mtuMatch:
+                if row.overlay:
+                    # row.overlay is true if incoming packet is encap'ed
+                    color = 'green'
                 else:
-                    color = 'red'
-                hname_str = f'{prevhop}+{row.hostname}'
-                edgeURL = f'http://localhost:8501?page=Xplore&amp;table=interfaces&amp;namespace={state.namespace}&amp;columns=default&amp;hostname={hname_str}'
-                if state.show_ifnames:
-                    g.edge(prevhop, row.hostname, color=color,
-                           label=str(row.hopCount), URL=edgeURL,
-                           tooltip=f'{oif} -> {row.iif}', taillabel=oif,
-                           headlabel=row.iif,
-                           )
-                else:
-                    g.edge(prevhop, row.hostname, color=color,
-                           label=str(row.hopCount), edgeURL=edgeURL,
-                           edgetarget='_graphviz',
-                           tooltip=f'{oif} -> {row.iif}'
-                           )
+                    color = 'black'
+            else:
+                color = 'red'
 
-                connected_set.add(conn)
-            prevhop = row.hostname
-            oif = row.oif
+            tooltip = pd.DataFrame({
+                'protocol': [prevrow.protocol],
+                'lookup': [prevrow.lookup],
+                'vrf': [prevrow.vrf],
+                'mtu': [f'{prevrow.mtu} -> {row.mtu}'],
+                'oif': [prevrow.oif],
+                'iif': [row.iif]}).T.to_string()
+            hname_str = quote(f'{prevrow.hostname} {row.hostname}')
+            if_str = quote(f'ifname.isin(["{prevrow.oif}", "{row.iif}"])')
+            ifURL = '&amp;'.join(['http://localhost:8501?page=Xplore',
+                                  'table=interfaces',
+                                  f'namespace={quote(state.namespace)}',
+                                  'columns=default',
+                                  f'hostname={hname_str}',
+                                  f'query={if_str}',
+                                  ])
+            if state.show_ifnames:
+                g.edge(prevrow.hostname, row.hostname, color=color,
+                       label=str(row.hopCount), URL=ifURL,
+                       tooltip=tooltip, taillabel=prevrow.oif,
+                       headlabel=row.iif,
+                       )
+            else:
+                g.edge(prevrow.hostname, row.hostname, color=color,
+                       label=str(row.hopCount), edgeURL=ifURL,
+                       edgetarget='_graphviz',
+                       tooltip=tooltip
+                       )
+
+            connected_set.add(conn)
+        prevrow = row
     return g
 
 
@@ -183,14 +218,12 @@ def page_work(state_container, page_flip: bool):
             state.__init__(**url_params)
 
     summary = st.beta_container()
-    summcol, mid, pathcol, mid1, revcol = summary.beta_columns([3, 1, 3, 1, 3])
+    summcol, mid, pathcol = summary.beta_columns([3, 1, 10])
     with summary:
         with summcol:
             summ_ph = st.empty()
         with pathcol:
             fw_ph = st.empty()
-        with revcol:
-            rev_ph = st.empty()
 
     path_sidebar(state, state_container.sqobjs)
 
