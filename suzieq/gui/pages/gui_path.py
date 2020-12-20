@@ -1,15 +1,26 @@
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass, asdict, fields, field
 
 import streamlit as st
 import pandas as pd
-from suzieq.sqobjects.path import PathObj
-from suzieq.gui.guiutils import gui_get_df
 import graphviz as graphviz
 from urllib.parse import quote
+
+from suzieq.sqobjects.path import PathObj
+from suzieq.utils import humanize_timestamp
+from suzieq.gui.guiutils import gui_get_df
 
 
 def get_title():
     return 'Path'
+
+
+def make_fields_failed_df():
+    '''return a dictionary as this is the only way dataclassses work'''
+
+    return [{'name': 'interfaces', 'df': pd.DataFrame(), 'state': 'down'},
+            {'name': 'mlag', 'df': pd.DataFrame()},
+            {'name': 'ospf', 'df': pd.DataFrame(), 'state': 'other'},
+            {'name': 'bgp', 'df': pd.DataFrame(), 'state': 'NotEstd'}]
 
 
 @dataclass
@@ -24,7 +35,11 @@ class PathSessionState:
     vrf: str = ''
 
 
-@st.cache(ttl=90, allow_output_mutation=True, suppress_st_warning=True)
+@dataclass
+class FailedDFs:
+    dfs: list = field(default_factory=make_fields_failed_df)
+
+
 def path_get(state: PathSessionState, forward_dir: bool) -> (pd.DataFrame,
                                                              pd.DataFrame):
     '''Run the path and return the dataframes'''
@@ -50,6 +65,28 @@ def path_get(state: PathSessionState, forward_dir: bool) -> (pd.DataFrame,
         st.error(f'Invalid Input: {str(e)}')
         st.stop()
     return df, summ_df
+
+
+def get_failed_data(state: PathSessionState, pgbar, path_df,
+                    sqobjs) -> FailedDFs:
+    '''Get interface/mlag/routing protocol states that are failed'''
+
+    hostlist = path_df.hostname.unique().tolist()
+    faileddfs = FailedDFs()
+
+    progress = 40
+    for i, entry in enumerate(faileddfs.dfs):
+        if 'state' in entry:
+            entry['df'] = gui_get_df(sqobjs[entry['name']],
+                                     namespace=[state.namespace],
+                                     hostname=hostlist, state=entry['state'])
+        else:
+            entry['df'] = gui_get_df(sqobjs[entry['name']],
+                                     namespace=[state.namespace],
+                                     hostname=hostlist)
+            pgbar.progress(progress + i*10)
+
+    return faileddfs
 
 
 def path_sidebar(state, sqobjs):
@@ -98,7 +135,8 @@ def path_sidebar(state, sqobjs):
     return
 
 
-def build_graphviz_obj(state: PathSessionState, df: pd.DataFrame):
+def build_graphviz_obj(state: PathSessionState, df: pd.DataFrame,
+                       faileddfs: FailedDFs):
     '''Return a graphviz object'''
 
     # The first order of business is to ensure we can draw the graph properly
@@ -130,6 +168,7 @@ def build_graphviz_obj(state: PathSessionState, df: pd.DataFrame):
             with g.subgraph() as s:
                 s.attr(rank='same')
                 for hostname in hostgroup:
+
                     s.node(hostname, style='filled')
     else:
         for host in df.hostname.unique().tolist():
@@ -217,6 +256,7 @@ def page_work(state_container, page_flip: bool):
 
             state.__init__(**url_params)
 
+    pgbar = st.empty()
     summary = st.beta_container()
     summcol, mid, pathcol = summary.beta_columns([3, 1, 10])
     with summary:
@@ -228,7 +268,9 @@ def page_work(state_container, page_flip: bool):
     path_sidebar(state, state_container.sqobjs)
 
     if state.run:
+        pgbar.progress(0)
         df, summ_df = path_get(state, forward_dir=True)
+        pgbar.progress(40)
         # rev_df, _ = path_get(state, forward_dir=False)
 
     else:
@@ -236,23 +278,35 @@ def page_work(state_container, page_flip: bool):
         st.stop()
 
     if df.empty:
+        pgbar.progress(100)
         st.info(f'No path to trace between {state.source} and {state.dest}')
         st.experimental_set_query_params(**asdict(state))
         st.stop
 
     if not df.empty:
-        g = build_graphviz_obj(state, df)
-    # if not rev_df.empty:
-    #     rev_g = build_graphviz_obj(state, rev_df)
+        faileddfs = get_failed_data(state, pgbar, df, state_container.sqobjs)
+        g = build_graphviz_obj(state, df, faileddfs)
+        pgbar.progress(100)
+        # if not rev_df.empty:
+        #     rev_g = build_graphviz_obj(state, rev_df)
 
-    if not df.empty:
         summ_ph.dataframe(data=summ_df)
         fw_ph.graphviz_chart(g, use_container_width=True)
         # rev_ph.graphviz_chart(rev_g, use_container_width=True)
 
+        for entry in faileddfs.dfs:
+            mdf = entry['df']
+            if not mdf.empty:
+                if entry['name'] == 'mlag':
+                    mdf = mdf.query('mlagSinglePortsCnt != 0 or '
+                                    ' mlagErrorPortsCnt != 0')
+            table_expander = st.beta_expander(
+                f'Failed {entry["name"]} Table', expanded=True)
+            with table_expander:
+                st.dataframe(mdf)
+
         table_expander = st.beta_expander('Path Table', expanded=True)
         with table_expander:
-            df.drop(columns=['prevhop'], inplace=True)
-            st.dataframe(data=df)
+            st.dataframe(df)
 
     st.experimental_set_query_params(**asdict(state))
