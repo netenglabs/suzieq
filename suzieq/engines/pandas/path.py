@@ -550,6 +550,8 @@ class PathObj(SqEngineObject):
                 "iif": item["ifname"],
                 "mtu": item["mtu"],
                 "overlay": '',
+                "protocol": '',
+                "lookup": dest,
                 "macaddr": None,
                 "vrf": item['master'],
                 'mtuMatch': True,  # Its the first node
@@ -579,6 +581,8 @@ class PathObj(SqEngineObject):
                 "is_l2": False,
                 "overlay_nhip": '',
                 "oif": '',
+                "protocol": '',
+                "lookup": '',
                 "timestamp": item["timestamp"],
             }
 
@@ -709,11 +713,20 @@ class PathObj(SqEngineObject):
                         l3_visited_devices.add(skey)
 
                 devices_iifs[devkey]['vrf'] = ivrf
-                rslt = self._rdf.query('hostname == "{}" and vrf == "{}"'
-                                       .format(device, ivrf))
-                if not rslt.empty:
-                    timestamp = str(rslt["timestamp"].max())
+                if not (is_l2 or ioverlay):
+                    rslt = self._rdf.query('hostname == "{}" and vrf == "{}"'
+                                           .format(device, ivrf))
+                    if not rslt.empty:
+                        devices_iifs[devkey]['timestamp'] = str(rslt.timestamp
+                                                                .iloc[0])
+                        devices_iifs[devkey]['protocol'] = rslt.protocol.iloc[0]
+                        devices_iifs[devkey]['lookup'] = rslt.prefix.iloc[0]
+                elif macaddr:
+                    devices_iifs[devkey]['lookup'] = macaddr
+                else:
+                    devices_iifs[devkey]['lookup'] = ndst
 
+                add_overlay_info = True
                 for i, nexthop in enumerate(self._get_nh_with_peer(
                         device, ivrf, ndst, is_l2, ioverlay, macaddr)):
                     (iface, peer_device, peer_if, overlay, is_l2,
@@ -733,8 +746,12 @@ class PathObj(SqEngineObject):
                             vrf = ivrf
                         if overlay and not ioverlay:
                             overlay_nhip = ndst
+                            if add_overlay_info:
+                                devices_iifs[devkey]['lookup'] += f'|{overlay}'
+                                add_overlay_info = False
                         elif not end_overlay:
                             overlay_nhip = devices_iifs[devkey]['overlay_nhip']
+                            devices_iifs[devkey]['protocol'] = 'underlay'
                         else:
                             overlay_nhip = ''
                         if overlay or not is_l2:
@@ -754,7 +771,6 @@ class PathObj(SqEngineObject):
                             "nhip": nhip,
                             "oif": iface,
                             "overlay_nhip": overlay_nhip,
-                            "timestamp": timestamp,
                             'l3_visited_devices': l3_visited_devices.copy(),
                             'l2_visited_devices': l2_visited_devices.copy()
                         }
@@ -806,6 +822,9 @@ class PathObj(SqEngineObject):
                     overlay = True
                 else:
                     overlay = False
+                protocol = ele[item].get("protocol", "")
+                lookup = ele[item].get("lookup", "")
+
                 df_plist.append(
                     {
                         "pathid": i + 1,
@@ -819,6 +838,8 @@ class PathObj(SqEngineObject):
                         "overlay": overlay,
                         "mtuMatch": ele[item].get("mtuMatch", np.nan),
                         "mtu": ele[item].get("mtu", 0),
+                        "protocol": protocol,
+                        "lookup": lookup,
                         "timestamp": ele[item].get("timestamp", np.nan)
                     }
                 )
