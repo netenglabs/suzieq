@@ -54,7 +54,12 @@ class PathCmd(SqCommand):
                 vrf=vrf
             )
         except Exception as e:
-            df = pd.DataFrame({'error': ['ERROR: {}'.format(str(e))]})
+            if len(e.args) > 1:
+                df = e.args[1]  # The second arg if present is the path so far
+                df['error'] = str(e.args[0])
+            else:
+                df = pd.DataFrame(
+                    {'error': ['ERROR: {}'.format(str(e.args[0]))]})
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         if not df.empty:
