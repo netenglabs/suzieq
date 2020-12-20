@@ -281,7 +281,8 @@ class PathObj(SqEngineObject):
 
             overlay = mac_df.iloc[0].remoteVtepIp or False
             if not overlay:
-                return ([(dest, mac_df.iloc[0].oif, overlay, True)])
+                return ([(dest, mac_df.iloc[0].oif, overlay, True, 'l2',
+                          mac_df.iloc[0].timestamp)])
             else:
                 # We assume the default VRF as the underlay. Can this change?
                 return self._get_underlay_nexthop(device, [overlay], ['default'])
@@ -310,7 +311,10 @@ class PathObj(SqEngineObject):
             if not rslt.empty:
                 intres = zip(rslt.nexthopIps.iloc[0].tolist(),
                              rslt.oifs.iloc[0].tolist(),
-                             repeat(vtep), repeat(True))
+                             repeat(vtep), repeat(True),
+                             repeat(rslt.protocol.iloc[0]),
+                             repeat(rslt.timestamp.iloc[0])
+                             )
                 result.extend(list(intres))
 
         return result
@@ -341,7 +345,9 @@ class PathObj(SqEngineObject):
 
             return zip(rslt.nexthopIps.iloc[0].tolist(),
                        rslt.oifs.iloc[0].tolist(),
-                       repeat(False), repeat(False))
+                       repeat(False), repeat(False),
+                       repeat(rslt.protocol.iloc[0]),
+                       repeat(rslt.timestamp.iloc[0]))
 
         # We've either reached the end of routing or the end of knowledge
         # Look for L2 nexthop
@@ -386,7 +392,7 @@ class PathObj(SqEngineObject):
         new_nexthop_list = []
         # Convert each OIF into its actual physical list
         is_l2 = False
-        for nhip, iface, overlay, is_l2 in nexthop_list:
+        for nhip, iface, overlay, is_l2, protocol, timestamp in nexthop_list:
             if macaddr and is_l2 and not overlay:
                 new_nexthop_list.append((nhip, iface, overlay, is_l2))
                 continue
@@ -409,9 +415,10 @@ class PathObj(SqEngineObject):
                                                          ['default'])
                 new_nexthop_list.extend(underlay_nh)
             else:
-                new_nexthop_list.append((nhip, iface, overlay, is_l2))
+                new_nexthop_list.append((nhip, iface, overlay, is_l2,
+                                         protocol, timestamp))
 
-        for nhip, iface, overlay, is_l2 in new_nexthop_list:
+        for (nhip, iface, overlay, is_l2, protocol, timestamp) in new_nexthop_list:
             df = pd.DataFrame()
             if (not nhip or nhip == 'None') and iface:
                 nhip = dest
@@ -446,6 +453,8 @@ class PathObj(SqEngineObject):
                         df = self._if_df.query(
                             f'macaddr=="{arpdf.iloc[0].macaddr}" '
                             f'and type != "bond_slave"')
+                elif protocol == 'direct':
+                    continue
                 if df.empty:
                     df = self._if_df.query(
                         f'ipAddressList.str.startswith("{nhip}") and '
@@ -501,7 +510,8 @@ class PathObj(SqEngineObject):
                      nexthops.append((iface, x['hostname'],
                                       x['ifname'],  overlay,
                                       is_l2 or x.hostname in diffhosts, nhip,
-                                      macaddr or x.macaddr))
+                                      macaddr or x.macaddr, protocol,
+                                      timestamp))
                      if (x['namespace'] in self.namespace) else None,
                      args=(nexthops,), axis=1)
 
@@ -693,32 +703,39 @@ class PathObj(SqEngineObject):
                     if skey in l2_visited_devices:
                         # This is a loop
                         if ioverlay:
-                            raise PathLoopError(
-                                f"Loop detected in underlay on node {device}",
-                                self._path_cons_result(paths))
+                            devices_iifs[devkey]['error'] = \
+                                "Loop in underlay"
                         else:
-                            raise PathLoopError(
-                                f"L2 Loop detected on node {device}",
-                                self._path_cons_result(paths))
+                            devices_iifs[devkey]['error'] = "L2 Loop detected"
+                        for x in paths:
+                            z = x + [OrderedDict({devkey:
+                                                  devices_iifs[devkey]})]
+                            if z not in final_paths:
+                                final_paths.append(z)
+                        continue
                     else:
                         l2_visited_devices.add(skey)
-                elif macaddr and devices_iifs[devkey]['is_l2'] and not is_l2:
-                    l3_visited_devices.add(skey)
                 else:
                     if skey in l3_visited_devices:
-                        # This is a loop
-                        raise PathLoopError(f"Loop detected on node {device}",
-                                            self._path_cons_result(paths))
+                        devices_iifs[devkey]['error'] = \
+                            "L3 loop"
+                        for x in paths:
+                            z = x + [OrderedDict({devkey:
+                                                  devices_iifs[devkey]})]
+                            if z not in final_paths:
+                                final_paths.append(z)
+                        continue
                     else:
                         l3_visited_devices.add(skey)
 
                 devices_iifs[devkey]['vrf'] = ivrf
+                rt_ts = None
                 if not (is_l2 or ioverlay):
                     rslt = self._rdf.query('hostname == "{}" and vrf == "{}"'
                                            .format(device, ivrf))
                     if not rslt.empty:
-                        devices_iifs[devkey]['timestamp'] = str(rslt.timestamp
-                                                                .iloc[0])
+                        rt_ts = str(rslt.timestamp.iloc[0])
+                        devices_iifs[devkey]['timestamp'] = rt_ts
                         devices_iifs[devkey]['protocol'] = rslt.protocol.iloc[0]
                         devices_iifs[devkey]['lookup'] = rslt.prefix.iloc[0]
                 elif macaddr:
@@ -730,7 +747,10 @@ class PathObj(SqEngineObject):
                 for i, nexthop in enumerate(self._get_nh_with_peer(
                         device, ivrf, ndst, is_l2, ioverlay, macaddr)):
                     (iface, peer_device, peer_if, overlay, is_l2,
-                     nhip, macaddr) = nexthop
+                     nhip, macaddr, protocol, timestamp) = nexthop
+                    devices_iifs[devkey]['protocol'] = protocol
+                    if not rt_ts:
+                        devices_iifs[devkey]['timestamp'] = timestamp
                     if iface is not None:
                         try:
                             mtu_match = self._is_mtu_match(device, iface,
@@ -751,7 +771,6 @@ class PathObj(SqEngineObject):
                                 add_overlay_info = False
                         elif not end_overlay:
                             overlay_nhip = devices_iifs[devkey]['overlay_nhip']
-                            devices_iifs[devkey]['protocol'] = 'underlay'
                         else:
                             overlay_nhip = ''
                         if overlay or not is_l2:
@@ -787,9 +806,6 @@ class PathObj(SqEngineObject):
                         if z not in newpaths:
                             newpaths.append(z)
 
-                if not newdevices_iifs:
-                    break
-
                 for x in newdevices_iifs:
                     if x not in nextdevices_iifs:
                         nextdevices_iifs[x] = newdevices_iifs[x]
@@ -799,6 +815,9 @@ class PathObj(SqEngineObject):
 
             devices_iifs = nextdevices_iifs
             on_src_node = False
+
+            if not nextdevices_iifs:
+                final_paths = paths
 
         # Construct the pandas dataframe.
         # Constructing the dataframe in one shot here as that's more efficient
@@ -840,6 +859,7 @@ class PathObj(SqEngineObject):
                         "mtu": ele[item].get("mtu", 0),
                         "protocol": protocol,
                         "lookup": lookup,
+                        "error": ele[item].get('error', ''),
                         "timestamp": ele[item].get("timestamp", np.nan)
                     }
                 )
@@ -847,6 +867,8 @@ class PathObj(SqEngineObject):
                     df_plist[-2]['oif'] = ele[item]['oif']
             df_plist[-1]['oif'] = ''
         paths_df = pd.DataFrame(df_plist)
+        if not paths_df.empty and not any(paths_df.error):
+            paths_df.drop(columns=['error'], inplace=True)
         return paths_df.drop_duplicates()
 
     def summarize(self, **kwargs):
