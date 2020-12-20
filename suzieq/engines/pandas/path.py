@@ -277,7 +277,7 @@ class PathObj(SqEngineObject):
 
             if mac_df.empty:
                 # On servers there's no bridge and thus no MAC table entry
-                return [(dest, rslt.iloc[0].oif, False, True)]
+                return [(dest, rslt.iloc[0].oif, False, True, 'l2', np.nan)]
 
             overlay = mac_df.iloc[0].remoteVtepIp or False
             if not overlay:
@@ -394,7 +394,8 @@ class PathObj(SqEngineObject):
         is_l2 = False
         for nhip, iface, overlay, is_l2, protocol, timestamp in nexthop_list:
             if macaddr and is_l2 and not overlay:
-                new_nexthop_list.append((nhip, iface, overlay, is_l2))
+                new_nexthop_list.append((nhip, iface, overlay, is_l2,
+                                         protocol, timestamp))
                 continue
 
             if iface.endswith('-v0'):
@@ -516,7 +517,7 @@ class PathObj(SqEngineObject):
                      args=(nexthops,), axis=1)
 
         if not nexthops and is_l2:
-            return [(None, None, None, False, is_l2, None, None)]
+            return [(None, None, None, False, is_l2, None, None, "l2", np.nan)]
 
         return list(set(nexthops))
 
@@ -816,12 +817,13 @@ class PathObj(SqEngineObject):
             devices_iifs = nextdevices_iifs
             on_src_node = False
 
-            if not nextdevices_iifs:
-                final_paths = paths
-
         # Construct the pandas dataframe.
         # Constructing the dataframe in one shot here as that's more efficient
         # for pandas
+        if not final_paths:
+            # This occurs when a path traversal terminates due to an error such
+            # as loop detected
+            final_paths = paths
         return self._path_cons_result(final_paths)
 
     def _path_cons_result(self, paths):
