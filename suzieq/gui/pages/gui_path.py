@@ -40,6 +40,7 @@ class FailedDFs:
     dfs: list = field(default_factory=make_fields_failed_df)
 
 
+@st.cache(ttl=120, allow_output_mutation=True)
 def path_get(state: PathSessionState, forward_dir: bool) -> (pd.DataFrame,
                                                              pd.DataFrame):
     '''Run the path and return the dataframes'''
@@ -54,13 +55,6 @@ def path_get(state: PathSessionState, forward_dir: bool) -> (pd.DataFrame,
                 .summarize(namespace=[state.namespace],
                            source=state.source, dest=state.dest,
                            vrf=state.vrf)
-        else:
-            df = PathObj(start_time=state.start_time, end_time=state.end_time) \
-                .get(namespace=[state.namespace],
-                     source=state.dest, dest=state.source, vrf=state.vrf)
-            # We don't summarize the reverse path, just visually display it
-            summ_df = pd.DataFrame()
-
     except Exception as e:
         st.error(f'Invalid Input: {str(e)}')
         st.stop()
@@ -168,14 +162,11 @@ def build_graphviz_obj(state: PathSessionState, df: pd.DataFrame,
             with g.subgraph() as s:
                 s.attr(rank='same')
                 for hostname in hostgroup:
-
                     s.node(hostname, style='filled')
     else:
         for host in df.hostname.unique().tolist():
             g.node(host, style='filled')
 
-    df['prevhop'] = df.hostname.shift(1)
-    df.prevhop = df.prevhop.fillna('')
     pathid = 0
     prevrow = None
     connected_set = set()
@@ -190,7 +181,9 @@ def build_graphviz_obj(state: PathSessionState, df: pd.DataFrame,
             if row.mtuMatch:
                 if row.overlay:
                     # row.overlay is true if incoming packet is encap'ed
-                    color = 'green'
+                    color = 'purple'
+                elif prevrow.isL2:
+                    color = 'blue'
                 else:
                     color = 'black'
             else:
