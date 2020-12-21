@@ -2,6 +2,7 @@ from ipaddress import ip_network, ip_address
 from collections import OrderedDict
 from itertools import repeat
 from functools import lru_cache
+from copy import copy
 
 import numpy as np
 import pandas as pd
@@ -519,7 +520,7 @@ class PathObj(SqEngineObject):
         if not nexthops and is_l2:
             return [(None, None, None, False, is_l2, None, None, "l2", np.nan)]
 
-        return list(set(nexthops))
+        return sorted(nexthops, key=lambda x: x[1])
 
     def get(self, **kwargs) -> pd.DataFrame:
         """return a pandas dataframe with the paths between src and dest
@@ -574,7 +575,6 @@ class PathObj(SqEngineObject):
                 "l3_visited_devices": set(),
                 "l2_visited_devices": set()
             }
-        src_device_iifs = devices_iifs
         if not dvrf:
             dvrf = item['master']
         if not dvrf:
@@ -599,8 +599,6 @@ class PathObj(SqEngineObject):
 
         final_paths = []
         paths = []
-        for x in src_device_iifs:
-            paths.append([OrderedDict({x: devices_iifs[x]})])
 
         # The logic is to loop through the nexthops till you reach the dest
         # device The topmost while is this looping. The next loop within handles
@@ -612,7 +610,6 @@ class PathObj(SqEngineObject):
         # qualification is required to ensure packets coming back from a
         # firewall or load balancer are not tagged as duplicates.
 
-        on_src_node = True
         while devices_iifs:
             nextdevices_iifs = OrderedDict()
             newpaths = []
@@ -739,17 +736,24 @@ class PathObj(SqEngineObject):
                         devices_iifs[devkey]['timestamp'] = rt_ts
                         devices_iifs[devkey]['protocol'] = rslt.protocol.iloc[0]
                         devices_iifs[devkey]['lookup'] = rslt.prefix.iloc[0]
+                    else:
+                        devices_iifs[devkey]['lookup'] = ''
                 elif macaddr:
                     devices_iifs[devkey]['lookup'] = macaddr
                 else:
                     devices_iifs[devkey]['lookup'] = ndst
 
-                add_overlay_info = True
+                add_overlay_info = True  # Don't dup adding overlay info
                 for i, nexthop in enumerate(self._get_nh_with_peer(
                         device, ivrf, ndst, is_l2, ioverlay, macaddr)):
                     (iface, peer_device, peer_if, overlay, is_l2,
                      nhip, macaddr, protocol, timestamp) = nexthop
                     devices_iifs[devkey]['protocol'] = protocol
+                    devices_iifs[devkey]['is_l2'] = is_l2
+                    if is_l2 and macaddr and not overlay:
+                        if add_overlay_info:
+                            devices_iifs[devkey]['lookup'] += f'|{macaddr}'
+                            add_overlay_info = False
                     if not rt_ts:
                         devices_iifs[devkey]['timestamp'] = timestamp
                     if iface is not None:
@@ -795,17 +799,20 @@ class PathObj(SqEngineObject):
                             'l2_visited_devices': l2_visited_devices.copy()
                         }
 
-                if not on_src_node:
-                    # matching to attach the hop to the appropriate path
-                    pdev1 = devkey.split('/')[1]
-                    for x in paths:
-                        xkey = list(x[-1].keys())[0]
-                        pdev2 = xkey.split('/')[0]
-                        if pdev1 != pdev2:
-                            continue
-                        z = x + [OrderedDict({devkey: devices_iifs[devkey]})]
-                        if z not in newpaths:
-                            newpaths.append(z)
+                if not paths:
+                    newpaths.append(
+                        [OrderedDict({devkey: devices_iifs[devkey]})])
+
+                # matching to attach the hop to the appropriate path
+                pdev1 = devkey.split('/')[1]
+                for x in paths:
+                    xkey = list(x[-1].keys())[0]
+                    pdev2 = xkey.split('/')[0]
+                    if pdev1 != pdev2:
+                        continue
+                    z = x + [OrderedDict({devkey: devices_iifs[devkey]})]
+                    if z not in newpaths:
+                        newpaths.append(z)
 
                 for x in newdevices_iifs:
                     if x not in nextdevices_iifs:
@@ -815,7 +822,6 @@ class PathObj(SqEngineObject):
                 paths = newpaths
 
             devices_iifs = nextdevices_iifs
-            on_src_node = False
 
         # Construct the pandas dataframe.
         # Constructing the dataframe in one shot here as that's more efficient
