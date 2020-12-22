@@ -881,6 +881,8 @@ class PathObj(SqEngineObject):
 
     def summarize(self, **kwargs):
         """return a pandas dataframe summarizing the path info between src/dest
+
+        A copy of this function is in gui_path.py for reasons of efficiency
         :param kwargs:
         :return:
         :rtype: pd.DataFrame
