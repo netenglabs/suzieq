@@ -338,7 +338,6 @@ def page_work(state_container, page_flip: bool):
         fw_ph.graphviz_chart(g, use_container_width=True)
         # rev_ph.graphviz_chart(rev_g, use_container_width=True)
 
-        breakpoint()
         for entry in faileddfs.dfs:
             mdf = entry['df']
             table_expander = st.beta_expander(
