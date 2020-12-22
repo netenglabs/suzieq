@@ -141,8 +141,9 @@ class AddressObj(SqEngineObject):
             v6device = v6df.groupby(by=['namespace'])['hostname'].nunique()
             v6addr = v6df.groupby(by=['namespace'])['ip6AddressList'].nunique()
             for i in self.ns.keys():
-                self.ns[i].update({'deviceWithv6AddressCnt': v6device[i]})
-                self.ns[i].update({'uniqueV6AddressCnt': v6addr[i]})
+                self.ns[i].update(
+                    {'deviceWithv6AddressCnt': v6device.get(i, 0)})
+                self.ns[i].update({'uniqueV6AddressCnt': v6addr.get(i, 0)})
         else:
             for i in self.ns.keys():
                 self.ns[i].update({'deviceWithv6AddressCnt': 0})
