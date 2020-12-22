@@ -51,7 +51,8 @@ def display_title(page, pagelist):
         st.text(' ')
         srch_holder = st.empty()
         pageidx = 0 if not page else pagelist.index(page)
-        page = srch_holder.selectbox('Page', pagelist, index=pageidx)
+        page = srch_holder.selectbox('Page', pagelist, index=pageidx,
+                                     key='page')
 
     with srch_col:
         st.text(' ')
