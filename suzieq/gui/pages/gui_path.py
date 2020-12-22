@@ -40,24 +40,48 @@ class FailedDFs:
     dfs: list = field(default_factory=make_fields_failed_df)
 
 
-@st.cache(ttl=120, allow_output_mutation=True)
+def gui_path_summarize(path_df: pd.DataFrame) -> pd.DataFrame:
+    '''Summarizes the path, a copy of the function in pandas/path.py'''
+
+    if path_df.empty:
+        return pd.DataFrame()
+
+    namespace = path_df.namespace.iloc[0]
+    ns = {}
+    ns[namespace] = {}
+
+    perhopEcmp = path_df.query('hopCount != 0') \
+                        .groupby(by=['hopCount'])['hostname']
+    ns[namespace]['totalPaths'] = path_df['pathid'].max()
+    ns[namespace]['perHopEcmp'] = perhopEcmp.nunique().tolist()
+    ns[namespace]['maxPathLength'] = path_df.groupby(by=['pathid'])[
+        'hopCount'].max().max()
+    ns[namespace]['avgPathLength'] = path_df.groupby(by=['pathid'])[
+        'hopCount'].max().mean()
+    ns[namespace]['uniqueDevices'] = path_df['hostname'].nunique()
+    ns[namespace]['mtuMismatch'] = not all(path_df['mtuMatch'])
+    ns[namespace]['usesOverlay'] = any(path_df['overlay'])
+    ns[namespace]['pathMtu'] = path_df.query('iif != "lo"')['mtu'].min()
+
+    summary_fields = ['totalPaths', 'perHopEcmp', 'maxPathLength',
+                      'avgPathLength', 'uniqueDevices', 'pathMtu',
+                      'usesOverlay', 'mtuMismatch']
+    return pd.DataFrame(ns).reindex(summary_fields, axis=0) \
+                           .convert_dtypes()
+
+
+@st.cache(ttl=120, allow_output_mutation=True, show_spinner=False,
+          max_entries=10)
 def path_get(state: PathSessionState, forward_dir: bool) -> (pd.DataFrame,
                                                              pd.DataFrame):
     '''Run the path and return the dataframes'''
-    try:
-        if forward_dir:
-            df = PathObj(start_time=state.start_time, end_time=state.end_time) \
-                .get(namespace=[state.namespace],
-                     source=state.source, dest=state.dest, vrf=state.vrf)
+    if forward_dir:
+        df = PathObj(start_time=state.start_time, end_time=state.end_time) \
+            .get(namespace=[state.namespace],
+                 source=state.source, dest=state.dest, vrf=state.vrf)
 
-            summ_df = PathObj(start_time=state.start_time,
-                              end_time=state.end_time) \
-                .summarize(namespace=[state.namespace],
-                           source=state.source, dest=state.dest,
-                           vrf=state.vrf)
-    except Exception as e:
-        st.error(f'Invalid Input: {str(e)}')
-        st.stop()
+        summ_df = gui_path_summarize(df)
+
     return df, summ_df
 
 
@@ -78,6 +102,9 @@ def get_failed_data(state: PathSessionState, pgbar, path_df,
             entry['df'] = gui_get_df(sqobjs[entry['name']],
                                      namespace=[state.namespace],
                                      hostname=hostlist)
+            if entry['name'] == 'mlag':
+                entry['df'] = entry['df'].query('mlagErrorPortsCnt != 0 or '
+                                                ' mlagSinglePortsCnt != 0')
             pgbar.progress(progress + i*10)
 
     return faileddfs
@@ -155,17 +182,36 @@ def build_graphviz_obj(state: PathSessionState, df: pd.DataFrame,
         graph_attr.update({'nodesep': '1.0'})
 
     g = graphviz.Digraph(graph_attr=graph_attr,
-                         node_attr={'URL': 'https://github.com/netenglabs/suzieq'})
+                         name='Hover over arrow head for edge info')
 
     if layout == 'dot':
         for hostgroup in df.groupby(by=['hopCount']).hostname.unique().tolist():
             with g.subgraph() as s:
                 s.attr(rank='same')
                 for hostname in hostgroup:
-                    s.node(hostname, style='filled')
+                    ttip = {'title': ['Failed entry count']}
+                    for entry in faileddfs.dfs:
+                        mdf = entry['df']
+                        ttip.update({entry['name']:
+                                     [mdf.loc[mdf.hostname == hostname]
+                                      .hostname.count()]})
+                    tdf = pd.DataFrame(ttip)
+                    tooltip = '\n'.join(tdf.T.to_string(
+                        justify='right').split('\n')[1:])
+                    s.node(hostname, style='filled', tooltip=tooltip)
+
     else:
         for host in df.hostname.unique().tolist():
-            g.node(host, style='filled')
+            ttip = {'title': ['Failed entry count']}
+            for entry in faileddfs.dfs:
+                mdf = entry['df']
+                ttip.update({entry['name']:
+                             [mdf.loc[mdf.hostname == host]
+                              .hostname.count()]})
+            tdf = pd.DataFrame(ttip)
+            tooltip = '\n'.join(tdf.T.to_string(
+                justify='right').split('\n')[1:])
+            g.node(host, style='filled', tooltip=tooltip)
 
     pathid = 0
     prevrow = None
@@ -189,13 +235,14 @@ def build_graphviz_obj(state: PathSessionState, df: pd.DataFrame,
             else:
                 color = 'red'
 
-            tooltip = pd.DataFrame({
+            tdf = pd.DataFrame({
                 'protocol': [prevrow.protocol],
                 'lookup': [prevrow.lookup],
                 'vrf': [prevrow.vrf],
                 'mtu': [f'{prevrow.mtu} -> {row.mtu}'],
                 'oif': [prevrow.oif],
-                'iif': [row.iif]}).T.to_string()
+                'iif': [row.iif]})
+            tooltip = '\n'.join(tdf.T.to_string().split('\n')[1:])
             hname_str = quote(f'{prevrow.hostname} {row.hostname}')
             if_str = quote(f'ifname.isin(["{prevrow.oif}", "{row.iif}"])')
             ifURL = '&amp;'.join(['http://localhost:8501?page=Xplore',
@@ -262,7 +309,11 @@ def page_work(state_container, page_flip: bool):
 
     if state.run:
         pgbar.progress(0)
-        df, summ_df = path_get(state, forward_dir=True)
+        try:
+            df, summ_df = path_get(state, forward_dir=True)
+        except Exception as e:
+            st.error(f'Invalid Input: {str(e)}')
+            st.stop()
         pgbar.progress(40)
         # rev_df, _ = path_get(state, forward_dir=False)
 
@@ -287,14 +338,11 @@ def page_work(state_container, page_flip: bool):
         fw_ph.graphviz_chart(g, use_container_width=True)
         # rev_ph.graphviz_chart(rev_g, use_container_width=True)
 
+        breakpoint()
         for entry in faileddfs.dfs:
             mdf = entry['df']
-            if not mdf.empty:
-                if entry['name'] == 'mlag':
-                    mdf = mdf.query('mlagSinglePortsCnt != 0 or '
-                                    ' mlagErrorPortsCnt != 0')
             table_expander = st.beta_expander(
-                f'Failed {entry["name"]} Table', expanded=True)
+                f'Failed {entry["name"]} Table', expanded=not mdf.empty)
             with table_expander:
                 st.dataframe(mdf)
 
