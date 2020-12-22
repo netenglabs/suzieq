@@ -1,8 +1,11 @@
 import streamlit as st
 import pandas as pd
+from streamlit.server.server import Server
+from streamlit.report_thread import get_report_ctx
 
 
-@st.cache(ttl=90, allow_output_mutation=True)
+@st.cache(ttl=90, allow_output_mutation=True, show_spinner=False,
+          max_entries=20)
 def gui_get_df(sqobject, **kwargs):
     table = kwargs.pop('_table', '')
     view = kwargs.pop('view', 'latest')
@@ -27,6 +30,21 @@ def gui_get_df(sqobject, **kwargs):
     if not (columns == ['*'] or columns == ['default']):
         return df[columns].reset_index(drop=True)
     return df.reset_index(drop=True)
+
+
+def get_base_url():
+    '''Return the base URL of the page.
+    Usually connections are http://localhost:8501. But the port can change
+    or it can be a remote connection. And so, its useful to get the base
+    URL for use with links on various pages.
+    '''
+    session_id = get_report_ctx().session_id
+    session_info = Server.get_current()._get_session_info(session_id)
+
+    if session_info:
+        return f'http://{session_info.ws.request.host}/'
+
+    return 'http://localhost:8501/'
 
 
 def maximize_browser_window():
