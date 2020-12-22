@@ -7,7 +7,7 @@ from urllib.parse import quote
 
 from suzieq.sqobjects.path import PathObj
 from suzieq.utils import humanize_timestamp
-from suzieq.gui.guiutils import gui_get_df
+from suzieq.gui.guiutils import gui_get_df, get_base_url
 
 
 def get_title():
@@ -125,13 +125,21 @@ def path_sidebar(state, sqobjs):
         nsidx = 0
     ok_button = st.sidebar.button('Trace')
     namespace = st.sidebar.selectbox('Namespace',
-                                     namespaces, index=nsidx,
-                                     key='namespace')
-    state.source = st.sidebar.text_input('Source IP',
-                                         value=state.source,
-                                         key='source')
-    state.dest = st.sidebar.text_input('Dest IP', value=state.dest,
-                                       key='dest')
+                                     namespaces, index=nsidx)
+    src_ph = st.sidebar.empty()
+    dst_ph = st.sidebar.empty()
+    state.source = src_ph.text_input('Source IP',
+                                     value=state.source)
+    state.dest = dst_ph.text_input('Dest IP', value=state.dest,
+                                   key='dest')
+    swap_src_dest = st.sidebar.button('Swap Source Dest')
+    if swap_src_dest:
+        source = src_ph.text_input('Source IP',
+                                   value=state.dest)
+        dest = dst_ph.text_input('Dest IP', value=state.source)
+        state.source = source
+        state.dest = dest
+
     state.vrf = st.sidebar.text_input('VRF', value=state.vrf,
                                       key='vrf')
     state.start_time = st.sidebar.text_input('Start Time',
@@ -242,10 +250,11 @@ def build_graphviz_obj(state: PathSessionState, df: pd.DataFrame,
                 'mtu': [f'{prevrow.mtu} -> {row.mtu}'],
                 'oif': [prevrow.oif],
                 'iif': [row.iif]})
-            tooltip = '\n'.join(tdf.T.to_string().split('\n')[1:])
+            tooltip = '\n'.join(tdf.T.to_string(
+                justify='right').split('\n')[1:])
             hname_str = quote(f'{prevrow.hostname} {row.hostname}')
             if_str = quote(f'ifname.isin(["{prevrow.oif}", "{row.iif}"])')
-            ifURL = '&amp;'.join(['http://localhost:8501?page=Xplore',
+            ifURL = '&amp;'.join([f'{get_base_url()}?page=Xplore',
                                   'table=interfaces',
                                   f'namespace={quote(state.namespace)}',
                                   'columns=default',
