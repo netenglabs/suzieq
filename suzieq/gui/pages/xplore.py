@@ -156,16 +156,13 @@ def xplore_sidebar(state, table_vals: list):
         state.assert_clicked = False
 
     if not col_ok:
-        breakpoint()
         st.experimental_set_query_params(**asdict(state))
         st.stop()
     if ('default' in columns or 'all' in columns) and len(columns) != 1:
-        breakpoint()
         st.error('Cannot select default/all with any other columns')
         st.experimental_set_query_params(**asdict(state))
         st.stop()
     elif not columns:
-        breakpoint()
         st.error('Columns cannot be empty')
         st.experimental_set_query_params(**asdict(state))
         st.stop()
