@@ -236,8 +236,12 @@ class PathObj(SqEngineObject):
         return oif_df.iloc[0]["vlan"]
 
     def _get_l2_nexthop(self, device: str, vrf: str, dest: str,
-                        macaddr: str) -> list:
-        """Get the bridged/tunnel nexthops"""
+                        macaddr: str, protocol: str) -> list:
+        """Get the bridged/tunnel nexthops
+        We're passing protocol because we need to keep the return
+        match the other get nexthop function returns. We don't really
+        use protocol or determine it.
+        """
 
         if self._arpnd_df.empty:
             return []
@@ -278,15 +282,18 @@ class PathObj(SqEngineObject):
 
             if mac_df.empty:
                 # On servers there's no bridge and thus no MAC table entry
-                return [(dest, rslt.iloc[0].oif, False, True, 'l2', np.nan)]
+                return [(dest, rslt.iloc[0].oif, False, protocol == "l2",
+                         protocol, np.nan)]
 
             overlay = mac_df.iloc[0].remoteVtepIp or False
             if not overlay:
-                return ([(dest, mac_df.iloc[0].oif, overlay, True, 'l2',
+                return ([(dest, mac_df.iloc[0].oif, overlay, protocol == "l2",
+                          protocol,
                           mac_df.iloc[0].timestamp)])
             else:
                 # We assume the default VRF as the underlay. Can this change?
-                return self._get_underlay_nexthop(device, [overlay], ['default'])
+                return self._get_underlay_nexthop(device, [overlay],
+                                                  ['default'])
         return []
 
     def _get_underlay_nexthop(self, hostname: str,
@@ -331,7 +338,7 @@ class PathObj(SqEngineObject):
             if vtep:
                 return self._get_underlay_nexthop(device, [vtep], [vrf])
             else:
-                return self._get_l2_nexthop(device, vrf, dest, macaddr)
+                return self._get_l2_nexthop(device, vrf, dest, macaddr, 'l2')
 
         rslt = self._rdf.query(f'hostname == "{device}" and vrf == "{vrf}"')
         if not rslt.empty and (len(rslt.nexthopIps.iloc[0]) != 0 and
@@ -352,7 +359,8 @@ class PathObj(SqEngineObject):
 
         # We've either reached the end of routing or the end of knowledge
         # Look for L2 nexthop
-        return self._get_l2_nexthop(device, vrf, dest, None)
+        return self._get_l2_nexthop(device, vrf, dest, None,
+                                    rslt.protocol.iloc[0])
 
     @ lru_cache(maxsize=256)
     def _get_nh_with_peer(self, device: str, vrf: str, dest: str, is_l2: bool,
@@ -420,7 +428,8 @@ class PathObj(SqEngineObject):
                 new_nexthop_list.append((nhip, iface, overlay, is_l2,
                                          protocol, timestamp))
 
-        for (nhip, iface, overlay, is_l2, protocol, timestamp) in new_nexthop_list:
+        for (nhip, iface, overlay, is_l2, protocol,
+             timestamp) in new_nexthop_list:
             df = pd.DataFrame()
             if (not nhip or nhip == 'None') and iface:
                 nhip = dest
@@ -622,6 +631,7 @@ class PathObj(SqEngineObject):
                 macaddr = devices_iifs[devkey]['macaddr']
                 l3_visited_devices = devices_iifs[devkey]['l3_visited_devices']
                 l2_visited_devices = devices_iifs[devkey]['l2_visited_devices']
+                is_l2 = devices_iifs[devkey]['is_l2']
 
                 # We've reached the destination, so stop this loop
                 destdevkey = f'{device}/'
@@ -636,6 +646,9 @@ class PathObj(SqEngineObject):
                         dest_device_iifs[destdevkey]['iif'] = iif
                         dest_device_iifs[destdevkey]['mtu'] = \
                             devices_iifs[devkey]['mtu']
+                        dest_device_iifs[destdevkey]['is_l2'] = is_l2
+                        if not is_l2:
+                            dest_device_iifs[destdevkey]['nhip'] = dest
                         dest_device_iifs[destdevkey]['mtuMatch'] = \
                             devices_iifs[devkey]['mtuMatch']
                         z = x + [OrderedDict(
@@ -645,8 +658,6 @@ class PathObj(SqEngineObject):
                     continue
 
                 newdevices_iifs = {}  # NHs from this NH to add to the next round
-                is_l2 = devices_iifs[devkey]['is_l2']
-
                 end_overlay = True
                 if is_l2 or ioverlay:
                     if ioverlay:
@@ -748,11 +759,13 @@ class PathObj(SqEngineObject):
                         device, ivrf, ndst, is_l2, ioverlay, macaddr)):
                     (iface, peer_device, peer_if, overlay, is_l2,
                      nhip, macaddr, protocol, timestamp) = nexthop
-                    devices_iifs[devkey]['protocol'] = protocol
+                    if not devices_iifs[devkey].get('protocol', ''):
+                        devices_iifs[devkey]['protocol'] = protocol
                     devices_iifs[devkey]['is_l2'] = is_l2
                     if is_l2 and macaddr and not overlay:
                         if add_overlay_info:
                             devices_iifs[devkey]['lookup'] += f'|{macaddr}'
+                            devices_iifs[devkey]['nhip'] = ''
                             add_overlay_info = False
                     if not rt_ts:
                         devices_iifs[devkey]['timestamp'] = timestamp
@@ -773,6 +786,7 @@ class PathObj(SqEngineObject):
                             overlay_nhip = ndst
                             if add_overlay_info:
                                 devices_iifs[devkey]['lookup'] += f'|{overlay}'
+                                devices_iifs[devkey]['vrf'] += f'|default'
                                 add_overlay_info = False
                         elif not end_overlay:
                             overlay_nhip = devices_iifs[devkey]['overlay_nhip']
@@ -867,6 +881,7 @@ class PathObj(SqEngineObject):
                         "mtu": ele[item].get("mtu", 0),
                         "protocol": protocol,
                         "lookup": lookup,
+                        "nexthopIp": ele[item].get('nhip', ''),
                         "error": ele[item].get('error', ''),
                         "timestamp": ele[item].get("timestamp", np.nan)
                     }
