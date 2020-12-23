@@ -232,20 +232,24 @@ def build_graphviz_obj(state: PathSessionState, df: pd.DataFrame,
             continue
         conn = (prevrow.hostname, row.hostname)
         if conn not in connected_set:
-            if row.mtuMatch:
-                if row.overlay:
-                    # row.overlay is true if incoming packet is encap'ed
-                    color = 'purple'
-                elif prevrow.isL2:
-                    color = 'blue'
-                else:
-                    color = 'black'
+            if row.overlay:
+                path_type = 'underlay'
+                color = 'purple'
+            elif prevrow.isL2:
+                path_type = 'l2'
+                color = 'blue'
             else:
+                path_type = 'l3'
+                color = 'black'
+
+            if not row.mtuMatch:
                 color = 'red'
 
             tdf = pd.DataFrame({
+                'pathType': path_type,
                 'protocol': [prevrow.protocol],
                 'lookup': [prevrow.lookup],
+                'nexthopIp': [row.nexthopIp],
                 'vrf': [prevrow.vrf],
                 'mtu': [f'{prevrow.mtu} -> {row.mtu}'],
                 'oif': [prevrow.oif],
