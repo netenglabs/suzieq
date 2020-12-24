@@ -359,8 +359,11 @@ class PathObj(SqEngineObject):
 
         # We've either reached the end of routing or the end of knowledge
         # Look for L2 nexthop
-        return self._get_l2_nexthop(device, vrf, dest, None,
-                                    rslt.protocol.iloc[0])
+        if rslt.empty:
+            protocol = ''
+        else:
+            protocol = rslt.protocol.iloc[0]
+        return self._get_l2_nexthop(device, vrf, dest, None, protocol)
 
     @ lru_cache(maxsize=256)
     def _get_nh_with_peer(self, device: str, vrf: str, dest: str, is_l2: bool,
@@ -517,17 +520,22 @@ class PathObj(SqEngineObject):
                                 .drop(columns=['ifname_x']) \
                                 .rename(columns={'ifname_y': 'ifname'})
 
+            if diffhosts and dfhosts.intersection(fhr_hosts):
+                errormsg = 'Possible anycast IP without anycast MAC'
+            else:
+                errormsg = ''
             df.apply(lambda x, nexthops:
                      nexthops.append((iface, x['hostname'],
                                       x['ifname'],  overlay,
                                       is_l2 or x.hostname in diffhosts, nhip,
-                                      macaddr or x.macaddr, protocol,
+                                      macaddr or x.macaddr, protocol, errormsg,
                                       timestamp))
                      if (x['namespace'] in self.namespace) else None,
                      args=(nexthops,), axis=1)
 
         if not nexthops and is_l2:
-            return [(None, None, None, False, is_l2, None, None, "l2", np.nan)]
+            return [(None, None, None, False, is_l2, None, None, "l2", "",
+                     np.nan)]
 
         return sorted(nexthops, key=lambda x: x[1])
 
@@ -565,6 +573,7 @@ class PathObj(SqEngineObject):
         self._init_dfs(self.namespace, src, dest)
 
         devices_iifs = OrderedDict()
+        mtu = -1
         for i in range(len(self._src_df)):
             item = self._src_df.iloc[i]
             devices_iifs[f'{item.hostname}/'] = {
@@ -584,6 +593,8 @@ class PathObj(SqEngineObject):
                 "l3_visited_devices": set(),
                 "l2_visited_devices": set()
             }
+            if item.get('mtu', 0) < mtu:
+                mtu = item.get('mtu', 0)
         if not dvrf:
             dvrf = item['master']
         if not dvrf:
@@ -592,12 +603,17 @@ class PathObj(SqEngineObject):
         dest_device_iifs = OrderedDict()
         for i in range(len(self._dest_df)):
             item = self._dest_df.iloc[i]
+            if item.get('mtu', 0) != mtu:
+                error = 'Src MTU != dst MTU'
+            else:
+                error = ''
             dest_device_iifs[f'{item.hostname}/'] = {
                 "iif": item["ifname"],
                 "vrf": item["master"] or "default",
                 "mtu": item["mtu"],
                 "macaddr": None,
                 "overlay": '',
+                "error": error,
                 "is_l2": False,
                 "overlay_nhip": '',
                 "oif": '',
@@ -758,7 +774,7 @@ class PathObj(SqEngineObject):
                 for i, nexthop in enumerate(self._get_nh_with_peer(
                         device, ivrf, ndst, is_l2, ioverlay, macaddr)):
                     (iface, peer_device, peer_if, overlay, is_l2,
-                     nhip, macaddr, protocol, timestamp) = nexthop
+                     nhip, macaddr, protocol, errmsg, timestamp) = nexthop
                     if not devices_iifs[devkey].get('protocol', ''):
                         devices_iifs[devkey]['protocol'] = protocol
                     devices_iifs[devkey]['is_l2'] = is_l2
@@ -769,6 +785,8 @@ class PathObj(SqEngineObject):
                             add_overlay_info = False
                     if not rt_ts:
                         devices_iifs[devkey]['timestamp'] = timestamp
+                    if errmsg:
+                        devices_iifs[devkey]['error'] = errmsg
                     if iface is not None:
                         try:
                             mtu_match = self._is_mtu_match(device, iface,
@@ -837,9 +855,6 @@ class PathObj(SqEngineObject):
 
             devices_iifs = nextdevices_iifs
 
-        # Construct the pandas dataframe.
-        # Constructing the dataframe in one shot here as that's more efficient
-        # for pandas
         if not final_paths:
             # This occurs when a path traversal terminates due to an error such
             # as loop detected
