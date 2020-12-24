@@ -8,7 +8,10 @@ Start
   ^.*dev bridge self permanent.*$$ -> Next.Record
   ^${macaddr} dev ${oif} vlan ${vlan} master bridge ${flags}.*$$ -> Next.Record
   ^${macaddr} dev ${oif} vlan ${vlan} master bridge.*$$ -> Next.Record
-  ^${macaddr} dev ${oif} vlan ${vlan} sticky master bridge ${flags}.*$$ -> Next.Record    
+  ^${macaddr} dev ${oif} vlan ${vlan} extern_learn master bridge.*$$ -> Next.Record
+  ^${macaddr} dev ${oif} vlan ${vlan} extern_learn master bridge ${flags}.*$$ -> Next.Record      
+  ^${macaddr} dev ${oif} vlan ${vlan} sticky master bridge ${flags}.*$$ -> Next.Record
+  ^${macaddr} dev ${oif} vlan ${vlan} sticky master bridge.*$$ -> Next.Record      
   ^${macaddr} dev ${oif} dst ${remoteVtepIp} self ${flags}.*$$ -> Next.Record
   ^${macaddr} dev ${oif} master bridge ${flags}.*$$ -> Next.Record
   ^${macaddr} dev ${oif} master bridge.*$$ -> Next.Record
@@ -42,4 +45,5 @@ Start
 #b2:54:8b:46:8b:6e dev vxlan4001 vlan 4001 offload master bridge 
 #ba:df:82:44:9a:ef dev vni13 master bridge permanent
 #44:39:39:ff:00:13 dev vni13 vlan 13 sticky master bridge static
-#
+#52:54:00:49:3a:6f dev vni24 vlan 24 extern_learn master bridge
+#52:54:00:49:3a:6f dev vni24 dst 10.0.0.134 self extern_learn
