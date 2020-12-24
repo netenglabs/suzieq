@@ -17,10 +17,14 @@ def get_title():
 def make_fields_failed_df():
     '''return a dictionary as this is the only way dataclassses work'''
 
-    return [{'name': 'interfaces', 'df': pd.DataFrame(), 'state': 'down'},
-            {'name': 'mlag', 'df': pd.DataFrame()},
-            {'name': 'ospf', 'df': pd.DataFrame(), 'state': 'other'},
-            {'name': 'bgp', 'df': pd.DataFrame(), 'state': 'NotEstd'}]
+    return [
+        {'name': 'device', 'df': pd.DataFrame(), 'query': 'status == "dead"'},
+        {'name': 'interfaces', 'df': pd.DataFrame(), 'query': 'state == "down"'},
+        {'name': 'mlag', 'df': pd.DataFrame(),
+         'query': 'mlagSinglePortsCnt != 0 or mlagErrorPortsCnt != 0'},
+        {'name': 'ospf', 'df': pd.DataFrame(), 'query': 'adjState == "other"'},
+        {'name': 'bgp', 'df': pd.DataFrame(), 'query': 'state == "NotEstd"'}
+    ]
 
 
 @dataclass
@@ -94,18 +98,13 @@ def get_failed_data(state: PathSessionState, pgbar, path_df,
 
     progress = 40
     for i, entry in enumerate(faileddfs.dfs):
-        if 'state' in entry:
-            entry['df'] = gui_get_df(sqobjs[entry['name']],
-                                     namespace=[state.namespace],
-                                     hostname=hostlist, state=entry['state'])
-        else:
-            entry['df'] = gui_get_df(sqobjs[entry['name']],
-                                     namespace=[state.namespace],
-                                     hostname=hostlist)
-            if entry['name'] == 'mlag':
-                entry['df'] = entry['df'].query('mlagErrorPortsCnt != 0 or '
-                                                ' mlagSinglePortsCnt != 0')
-            pgbar.progress(progress + i*10)
+        entry['df'] = gui_get_df(sqobjs[entry['name']],
+                                 namespace=[state.namespace],
+                                 hostname=hostlist)
+        if not entry['df'].empty and (entry.get('query', '')):
+            entry['df'] = entry['df'].query(entry['query'])
+
+        pgbar.progress(progress + i*10)
 
     return faileddfs
 
@@ -132,7 +131,7 @@ def path_sidebar(state, sqobjs):
                                      value=state.source)
     state.dest = dst_ph.text_input('Dest IP', value=state.dest,
                                    key='dest')
-    swap_src_dest = st.sidebar.button('Swap Source Dest')
+    swap_src_dest = st.sidebar.button('Source <-> Dest')
     if swap_src_dest:
         source = src_ph.text_input('Source IP',
                                    value=state.dest)
@@ -162,6 +161,23 @@ def path_sidebar(state, sqobjs):
         state.namespace = namespace
 
     return
+
+
+def get_node_tooltip_color(hostname: str, faileddfs: FailedDFs) -> str:
+    '''Get tooltip and node color for node based on values in various tables'''
+
+    ttip = {'title': ['Failed entry count']}
+    for entry in faileddfs.dfs:
+        mdf = entry['df']
+        ttip.update({entry['name']: [mdf.loc[mdf.hostname == hostname]
+                                     .hostname.count()]})
+    tdf = pd.DataFrame(ttip)
+    if tdf.select_dtypes(include='int64').max().max() > 0:
+        color = 'red'
+    else:
+        color = 'black'
+    return(('\n'.join(tdf.T.to_string(justify='right').split('\n')[1:])),
+           color)
 
 
 def build_graphviz_obj(state: PathSessionState, df: pd.DataFrame,
@@ -197,29 +213,15 @@ def build_graphviz_obj(state: PathSessionState, df: pd.DataFrame,
             with g.subgraph() as s:
                 s.attr(rank='same')
                 for hostname in hostgroup:
-                    ttip = {'title': ['Failed entry count']}
-                    for entry in faileddfs.dfs:
-                        mdf = entry['df']
-                        ttip.update({entry['name']:
-                                     [mdf.loc[mdf.hostname == hostname]
-                                      .hostname.count()]})
-                    tdf = pd.DataFrame(ttip)
-                    tooltip = '\n'.join(tdf.T.to_string(
-                        justify='right').split('\n')[1:])
-                    s.node(hostname, style='filled', tooltip=tooltip)
+                    tooltip, color = get_node_tooltip_color(
+                        hostname, faileddfs)
+                    s.node(hostname, tooltip=tooltip,
+                           color=color, shape='box')
 
     else:
-        for host in df.hostname.unique().tolist():
-            ttip = {'title': ['Failed entry count']}
-            for entry in faileddfs.dfs:
-                mdf = entry['df']
-                ttip.update({entry['name']:
-                             [mdf.loc[mdf.hostname == host]
-                              .hostname.count()]})
-            tdf = pd.DataFrame(ttip)
-            tooltip = '\n'.join(tdf.T.to_string(
-                justify='right').split('\n')[1:])
-            g.node(host, style='filled', tooltip=tooltip)
+        for hostname in df.hostname.unique().tolist():
+            tooltip, color = get_node_tooltip_color(hostname, faileddfs)
+            g.node(hostname, tooltip=tooltip, color=color, shape='box')
 
     pathid = 0
     prevrow = None
@@ -254,6 +256,9 @@ def build_graphviz_obj(state: PathSessionState, df: pd.DataFrame,
                 'mtu': [f'{prevrow.mtu} -> {row.mtu}'],
                 'oif': [prevrow.oif],
                 'iif': [row.iif]})
+            if prevrow.error:
+                tdf['error'] = prevrow.error
+                color = 'red'
             tooltip = '\n'.join(tdf.T.to_string(
                 justify='right').split('\n')[1:])
             hname_str = quote(f'{prevrow.hostname} {row.hostname}')
