@@ -588,7 +588,7 @@ class PathObj(SqEngineObject):
                 "vrf": item['master'],
                 'mtuMatch': True,  # Its the first node
                 "is_l2": self.is_l2,
-                "nhip": self.dest,  # Greased to handle a pure l2 path
+                "nhip": '',
                 "overlay_nhip": '',
                 "oif": item["ifname"],
                 "timestamp": item["timestamp"],
@@ -606,11 +606,11 @@ class PathObj(SqEngineObject):
         for i in range(len(self._dest_df)):
             item = self._dest_df.iloc[i]
             if item.get('mtu', 0) != mtu:
-                error = 'Src MTU != dst MTU'
+                error = 'Src MTU != Dst MTU'
             else:
                 error = ''
             dest_device_iifs[f'{item.hostname}/'] = {
-                "iif": item["ifname"],
+                "iif": '',
                 "vrf": item["master"] or "default",
                 "mtu": item["mtu"],
                 "macaddr": None,
@@ -618,7 +618,7 @@ class PathObj(SqEngineObject):
                 "error": error,
                 "is_l2": False,
                 "overlay_nhip": '',
-                "oif": '',
+                "oif": item["ifname"],
                 "protocol": '',
                 "lookup": '',
                 "timestamp": item["timestamp"],
@@ -659,18 +659,16 @@ class PathObj(SqEngineObject):
                         pdev2 = list(x[-1].keys())[0].split('/')[0]
                         if pdev1 != pdev2:
                             continue
-                        dest_device_iifs[destdevkey]['oif'] = \
-                            devices_iifs[devkey]['oif']
-                        dest_device_iifs[destdevkey]['iif'] = iif
-                        dest_device_iifs[destdevkey]['mtu'] = \
-                            devices_iifs[devkey]['mtu']
-                        dest_device_iifs[destdevkey]['is_l2'] = is_l2
+                        copy_dest = copy(dest_device_iifs[destdevkey])
+                        copy_dest['oif'] = devices_iifs[devkey]['oif']
+                        copy_dest['iif'] = iif
+                        copy_dest['mtu'] = devices_iifs[devkey]['mtu']
+                        copy_dest['is_l2'] = is_l2
                         if not is_l2:
-                            dest_device_iifs[destdevkey]['nhip'] = dest
-                        dest_device_iifs[destdevkey]['mtuMatch'] = \
-                            devices_iifs[devkey]['mtuMatch']
+                            copy_dest['nhip'] = dest
+                        copy_dest['mtuMatch'] = devices_iifs[devkey]['mtuMatch']
                         z = x + [OrderedDict(
-                            {destdevkey: dest_device_iifs[destdevkey]})]
+                            {destdevkey: copy_dest})]
                         if z not in final_paths:
                             final_paths.append(z)
                     continue
@@ -712,15 +710,14 @@ class PathObj(SqEngineObject):
                                          devices_iifs[devkey]['overlay_nhip'])
                     if not ivrf:
                         ivrf = devvrf
-                elif not devices_iifs[devkey]['nhip']:
-                    ivrf = self._get_vrf(device, iif, src)
-                elif devices_iifs[devkey]['nhip'] != "169.254.0.1":
+                elif (not devices_iifs[devkey]['nhip'] or
+                      (devices_iifs[devkey]['nhip'] == "169.254.0.1")):
+                    ivrf = self._get_vrf(device, iif, '')
+                else:
                     ivrf = self._get_vrf(device, '',
                                          devices_iifs[devkey]['nhip'])
                     if not ivrf:
                         ivrf = self._get_vrf(device, iif, '')
-                elif devices_iifs[devkey]['nhip'] == "169.254.0.1":
-                    ivrf = self._get_vrf(device, iif, '')
 
                 if not ivrf:
                     ivrf = dvrf
@@ -730,8 +727,7 @@ class PathObj(SqEngineObject):
                     if skey in l2_visited_devices:
                         # This is a loop
                         if ioverlay:
-                            devices_iifs[devkey]['error'] = \
-                                "Loop in underlay"
+                            devices_iifs[devkey]['error'] = "Loop in underlay"
                         else:
                             devices_iifs[devkey]['error'] = "L2 Loop detected"
                         for x in paths:
@@ -744,8 +740,7 @@ class PathObj(SqEngineObject):
                         l2_visited_devices.add(skey)
                 else:
                     if skey in l3_visited_devices:
-                        devices_iifs[devkey]['error'] = \
-                            "L3 loop"
+                        devices_iifs[devkey]['error'] = "L3 loop"
                         for x in paths:
                             z = x + [OrderedDict({devkey:
                                                   devices_iifs[devkey]})]
@@ -780,10 +775,10 @@ class PathObj(SqEngineObject):
                     if not devices_iifs[devkey].get('protocol', ''):
                         devices_iifs[devkey]['protocol'] = protocol
                     devices_iifs[devkey]['is_l2'] = is_l2
+                    devices_iifs[devkey]['nhip'] = nhip
                     if is_l2 and macaddr and not overlay:
                         if add_overlay_info:
                             devices_iifs[devkey]['lookup'] += f'|{macaddr}'
-                            devices_iifs[devkey]['nhip'] = nhip
                             add_overlay_info = False
                     if not rt_ts:
                         devices_iifs[devkey]['timestamp'] = timestamp
