@@ -13,7 +13,6 @@ def get_title():
 
 @dataclass
 class SearchSessionState:
-    page: str = get_title()
     search_text: str = ''
     past_df = None
     table: str = ''
@@ -93,11 +92,6 @@ def page_work(state_container, page_flip: bool):
     state = state_container.searchSessionState
 
     search_sidebar(state)
-
-    if not page_flip:
-        url_params = st.experimental_get_query_params()
-        if url_params.get('search_text', ''):
-            state_container.search_text = url_params.search_text
 
     if page_flip or (state_container.search_text != state.search_text):
         query_str = build_query(state, state_container.search_text)
