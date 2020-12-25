@@ -37,6 +37,7 @@ class PathSessionState:
     end_time: str = ''
     show_ifnames: bool = False
     vrf: str = ''
+    pathObj: PathObj = None
 
 
 @dataclass
@@ -88,9 +89,8 @@ def path_get(state: PathSessionState, forward_dir: bool) -> (pd.DataFrame,
                                                              pd.DataFrame):
     '''Run the path and return the dataframes'''
     if forward_dir:
-        df = PathObj(start_time=state.start_time, end_time=state.end_time) \
-            .get(namespace=[state.namespace],
-                 source=state.source, dest=state.dest, vrf=state.vrf)
+        df = state.pathObj.get(namespace=[state.namespace], source=state.source,
+                               dest=state.dest, vrf=state.vrf)
 
         summ_df = gui_path_summarize(df)
 
@@ -184,52 +184,30 @@ def get_node_tooltip_color(hostname: str, faileddfs: FailedDFs) -> str:
         color = 'red'
     else:
         color = 'black'
-    return(('\n'.join(tdf.T.to_string(justify='right').split('\n')[1:])),
-           color)
+    return('\n'.join(tdf.T.to_string().split('\n')[1:]), color)
 
 
 def build_graphviz_obj(state: PathSessionState, df: pd.DataFrame,
                        faileddfs: FailedDFs):
     '''Return a graphviz object'''
 
-    # The first order of business is to ensure we can draw the graph properly
-    # Dot layout does the job in all scenarios except in some cases when the
-    # hosts are out of step between multiple paths for only the first one or
-    # two hops. Then, not selecting the layout is better than DOT.
-    layout = 'dot'
-    hostset = set()
-    for i, hostgroup in enumerate(df.groupby(by=['hopCount'])
-                                  .hostname.unique().tolist()):
-        thisset = set(hostgroup)
-        if hostset.intersection(thisset):
-            layout = ''
-        hostset = hostset.union(thisset)
-        if i > 2:
-            break
-
-    graph_attr = {'splines': 'polyline'}
-    if layout:
-        graph_attr.update({'layout': layout})
+    graph_attr = {'splines': 'polyline', 'layout': 'dot'}
     if state.show_ifnames:
         graph_attr.update({'nodesep': '1.0'})
 
     g = graphviz.Digraph(graph_attr=graph_attr,
                          name='Hover over arrow head for edge info')
 
-    if layout == 'dot':
-        for hostgroup in df.groupby(by=['hopCount']).hostname.unique().tolist():
-            with g.subgraph() as s:
-                s.attr(rank='same')
-                for hostname in hostgroup:
-                    tooltip, color = get_node_tooltip_color(
-                        hostname, faileddfs)
-                    s.node(hostname, tooltip=tooltip,
-                           color=color, shape='box')
-
-    else:
-        for hostname in df.hostname.unique().tolist():
-            tooltip, color = get_node_tooltip_color(hostname, faileddfs)
-            g.node(hostname, tooltip=tooltip, color=color, shape='box')
+    hostset = set()
+    for hostgroup in df.groupby(by=['hopCount']).hostname.unique().tolist():
+        with g.subgraph() as s:
+            s.attr(rank='same')
+            for hostname in hostgroup:
+                if hostname in hostset:
+                    continue
+                hostset.add(hostname)
+                tooltip, color = get_node_tooltip_color(hostname, faileddfs)
+                s.node(hostname, tooltip=tooltip, color=color, shape='box')
 
     pathid = 0
     prevrow = None
@@ -270,7 +248,9 @@ def build_graphviz_obj(state: PathSessionState, df: pd.DataFrame,
                 'mtu': [f'{prevrow.mtu} -> {row.mtu}'],
                 'oif': [prevrow.oif],
                 'iif': [row.iif]})
-            error += f"{err_pfx}{getattr(prevrow, 'error', '')}"
+            rowerr = getattr(prevrow, 'error', '')
+            if rowerr:
+                error += f"{err_pfx}{rowerr}"
             if error:
                 err_pfx = ', '
             if row.nextPathid != row.pathid:
@@ -284,25 +264,25 @@ def build_graphviz_obj(state: PathSessionState, df: pd.DataFrame,
                 color = 'red'
             tooltip = '\n'.join(tdf.T.to_string(
                 justify='right').split('\n')[1:])
-            hname_str = quote(f'{prevrow.hostname} {row.hostname}')
-            if_str = quote(f'ifname.isin(["{prevrow.oif}", "{row.iif}"])')
-            ifURL = '&amp;'.join([f'{get_base_url()}?page=Xplore',
-                                  'table=interfaces',
-                                  f'namespace={quote(state.namespace)}',
-                                  'columns=default',
-                                  f'hostname={hname_str}',
-                                  f'query={if_str}',
-                                  ])
+            # hname_str = quote(f'{prevrow.hostname} {row.hostname}')
+            # if_str = quote(f'ifname.isin(["{prevrow.oif}", "{row.iif}"])')
+            # ifURL = '&amp;'.join([f'{get_base_url()}?page=Xplore',
+            #                       'table=interfaces',
+            #                       f'namespace={quote(state.namespace)}',
+            #                       'columns=default',
+            #                       f'hostname={hname_str}',
+            #                       f'query={if_str}',
+            #                       ])
             if state.show_ifnames:
                 g.edge(prevrow.hostname, row.hostname, color=color,
-                       label=str(row.hopCount), URL=ifURL,
+                       label=str(row.hopCount),
                        tooltip=tooltip, taillabel=prevrow.oif,
-                       headlabel=row.iif,
+                       headlabel=row.iif, penwidth='2.0',
                        )
             else:
                 g.edge(prevrow.hostname, row.hostname, color=color,
-                       label=str(row.hopCount), edgeURL=ifURL,
-                       edgetarget='_graphviz',
+                       label=str(row.hopCount),
+                       edgetarget='_graphviz', penwidth='2.0',
                        tooltip=tooltip
                        )
 
@@ -351,6 +331,8 @@ def page_work(state_container, page_flip: bool):
 
     if state.run:
         pgbar.progress(0)
+        state.pathObj = PathObj(start_time=state.start_time,
+                                end_time=state.end_time)
         try:
             df, summ_df = path_get(state, forward_dir=True)
         except Exception as e:
