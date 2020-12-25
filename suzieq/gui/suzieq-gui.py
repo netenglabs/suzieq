@@ -9,7 +9,7 @@ from suzieq.gui.pages import *
 from suzieq.sqobjects import *
 
 
-def display_title(page, pagelist):
+def display_title(page, search_text, pagelist):
     '''Render the logo and the app name'''
 
     LOGO_IMAGE = 'logo-small.jpg'
@@ -46,22 +46,22 @@ def display_title(page, pagelist):
             """,
             unsafe_allow_html=True
         )
+
     with page_col:
         # The empty writes are for aligning the pages link with the logo
         st.text(' ')
         srch_holder = st.empty()
-        pageidx = 0 if not page else pagelist.index(page)
-        page = srch_holder.selectbox('Page', pagelist, index=pageidx,
-                                     key='page')
+        pageidx = pagelist.index(page or 'Status')
+        page = srch_holder.selectbox('Page', pagelist, key='page')
 
     with srch_col:
         st.text(' ')
-        search_text = st.text_input("Address Search", "")
-    if search_text:
-        # We're assuming here that the page is titled Search
+        search_str = st.text_input("Address Search", "")
+    if search_text is not None and (search_str != search_text):
         srchidx = pagelist.index('Search')
+        # We're assuming here that the page is titled Search
         page = srch_holder.selectbox('Page', pagelist, index=srchidx)
-    return page, search_text
+    return page, search_str
 
 
 def build_pages():
@@ -134,13 +134,12 @@ def apprun():
         if pg not in pagelist:
             pagelist.append(pg)
 
-    page, search_text = display_title(page, pagelist)
+    page, search_text = display_title(page, state.search_text, pagelist)
 
     if state.search_text is None:
         state.search_text = ''
 
     if search_text != state.search_text:
-        page = 'Search'
         state.search_text = search_text
 
     if state.prev_page != page:
@@ -150,7 +149,7 @@ def apprun():
     state.prev_page = page
 
     state.pages[page](state, page_flip)
-    if page not in ['Search', 'Status']:
+    if page not in ['Search']:
         state.sync()
 
 
