@@ -74,6 +74,14 @@ def gui_path_summarize(path_df: pd.DataFrame) -> pd.DataFrame:
                            .convert_dtypes()
 
 
+def highlight_erroneous_rows(row):
+    '''Highlight rows with error in them'''
+    if getattr(row, 'error', '') != '':
+        return [f"background-color: red; color: white"]*len(row)
+    else:
+        return [""]*len(row)
+
+
 @st.cache(ttl=120, allow_output_mutation=True, show_spinner=False,
           max_entries=10)
 def path_get(state: PathSessionState, forward_dir: bool) -> (pd.DataFrame,
@@ -227,6 +235,7 @@ def build_graphviz_obj(state: PathSessionState, df: pd.DataFrame,
     prevrow = None
     connected_set = set()
 
+    df['nextPathid'] = df.pathid.shift(-1).fillna('0').astype(int)
     for row in df.itertuples():
         if row.pathid != pathid:
             prevrow = row
@@ -246,19 +255,32 @@ def build_graphviz_obj(state: PathSessionState, df: pd.DataFrame,
 
             if not row.mtuMatch:
                 color = 'red'
+                error = 'MTU mismatch'
+                err_pfx = ', '
+            else:
+                error = ''
+                err_pfx = ''
 
             tdf = pd.DataFrame({
                 'pathType': path_type,
                 'protocol': [prevrow.protocol],
                 'lookup': [prevrow.lookup],
-                'nexthopIp': [row.nexthopIp],
+                'nexthopIp': [prevrow.nexthopIp],
                 'vrf': [prevrow.vrf],
                 'mtu': [f'{prevrow.mtu} -> {row.mtu}'],
                 'oif': [prevrow.oif],
                 'iif': [row.iif]})
-            error = getattr(prevrow, 'error', '')
+            error += f"{err_pfx}{getattr(prevrow, 'error', '')}"
             if error:
-                tdf['error'] = prevrow.error
+                err_pfx = ', '
+            if row.nextPathid != row.pathid:
+                # We need to capture any errors on the dest node as well
+                destnode_error = getattr(row, 'error', '')
+                if destnode_error:
+                    error += f'{err_pfx}{destnode_error}'
+
+            if error:
+                tdf['error'] = error
                 color = 'red'
             tooltip = '\n'.join(tdf.T.to_string(
                 justify='right').split('\n')[1:])
@@ -286,6 +308,7 @@ def build_graphviz_obj(state: PathSessionState, df: pd.DataFrame,
 
             connected_set.add(conn)
         prevrow = row
+    df.drop(columns=['nextPathid'], inplace=True, errors='ignore')
     return g
 
 
@@ -366,6 +389,7 @@ def page_work(state_container, page_flip: bool):
 
         table_expander = st.beta_expander('Path Table', expanded=True)
         with table_expander:
-            st.dataframe(df)
+            st.dataframe(data=df.style.apply(highlight_erroneous_rows, axis=1),
+                         height=600)
 
     st.experimental_set_query_params(**asdict(state))
