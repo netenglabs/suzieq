@@ -256,7 +256,8 @@ def build_graphviz_obj(state: PathSessionState, df: pd.DataFrame,
                 'mtu': [f'{prevrow.mtu} -> {row.mtu}'],
                 'oif': [prevrow.oif],
                 'iif': [row.iif]})
-            if prevrow.error:
+            error = getattr(prevrow, 'error', '')
+            if error:
                 tdf['error'] = prevrow.error
                 color = 'red'
             tooltip = '\n'.join(tdf.T.to_string(
