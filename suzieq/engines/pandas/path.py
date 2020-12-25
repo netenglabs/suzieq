@@ -282,12 +282,12 @@ class PathObj(SqEngineObject):
 
             if mac_df.empty:
                 # On servers there's no bridge and thus no MAC table entry
-                return [(dest, rslt.iloc[0].oif, False, protocol == "l2",
+                return [('', rslt.iloc[0].oif, False, protocol == "l2",
                          protocol, np.nan)]
 
             overlay = mac_df.iloc[0].remoteVtepIp or False
             if not overlay:
-                return ([(dest, mac_df.iloc[0].oif, overlay, protocol == "l2",
+                return ([('', mac_df.iloc[0].oif, overlay, protocol == "l2",
                           protocol,
                           mac_df.iloc[0].timestamp)])
             else:
@@ -434,23 +434,25 @@ class PathObj(SqEngineObject):
         for (nhip, iface, overlay, is_l2, protocol,
              timestamp) in new_nexthop_list:
             df = pd.DataFrame()
-            if (not nhip or nhip == 'None') and iface:
-                nhip = dest
             if is_l2 and macaddr and not overlay:
-                addr = nhip + '/'
+                if (not nhip or nhip == 'None') and iface:
+                    addr = dest + '/'
+                else:
+                    addr = nhip + '/'
                 df = self._if_df.query(
                     f'macaddr=="{macaddr}" '
                     f'and type != "bond_slave" '
                     f'and state != "down" '
                     f'and ipAddressList.str.startswith("{addr}")')
                 if df.empty:
-                    addr = nhip + '/'
                     df = self._if_df.query(
                         f'ipAddressList.str.startswith("{addr}") and '
                         f'type !="bond_slave"')
                     if df.empty:
                         continue
             else:
+                if not nhip:
+                    nhip = dest
                 arpdf = self._arpnd_df.query(f'hostname=="{device}" and '
                                              f'ipAddress=="{nhip}" and '
                                              f'oif=="{iface}"')
@@ -573,7 +575,7 @@ class PathObj(SqEngineObject):
         self._init_dfs(self.namespace, src, dest)
 
         devices_iifs = OrderedDict()
-        mtu = -1
+        mtu = None
         for i in range(len(self._src_df)):
             item = self._src_df.iloc[i]
             devices_iifs[f'{item.hostname}/'] = {
@@ -593,7 +595,7 @@ class PathObj(SqEngineObject):
                 "l3_visited_devices": set(),
                 "l2_visited_devices": set()
             }
-            if item.get('mtu', 0) < mtu:
+            if mtu is None or (item.get('mtu', 0) < mtu):
                 mtu = item.get('mtu', 0)
         if not dvrf:
             dvrf = item['master']
@@ -781,7 +783,7 @@ class PathObj(SqEngineObject):
                     if is_l2 and macaddr and not overlay:
                         if add_overlay_info:
                             devices_iifs[devkey]['lookup'] += f'|{macaddr}'
-                            devices_iifs[devkey]['nhip'] = ''
+                            devices_iifs[devkey]['nhip'] = nhip
                             add_overlay_info = False
                     if not rt_ts:
                         devices_iifs[devkey]['timestamp'] = timestamp
@@ -800,6 +802,8 @@ class PathObj(SqEngineObject):
                             vrf = devvrf
                         else:
                             vrf = ivrf
+                        if not nhip:
+                            nhip = ndst
                         if overlay and not ioverlay:
                             overlay_nhip = ndst
                             if add_overlay_info:
