@@ -763,23 +763,16 @@ class PathObj(SqEngineObject):
                     else:
                         devices_iifs[devkey]['lookup'] = ''
                 elif macaddr:
-                    devices_iifs[devkey]['lookup'] = macaddr
+                    devices_iifs[devkey]['lookup'] = ''
                 else:
                     devices_iifs[devkey]['lookup'] = ndst
 
-                add_overlay_info = True  # Don't dup adding overlay info
                 for i, nexthop in enumerate(self._get_nh_with_peer(
                         device, ivrf, ndst, is_l2, ioverlay, macaddr)):
                     (iface, peer_device, peer_if, overlay, is_l2,
                      nhip, macaddr, protocol, errmsg, timestamp) = nexthop
                     if not devices_iifs[devkey].get('protocol', ''):
                         devices_iifs[devkey]['protocol'] = protocol
-                    devices_iifs[devkey]['is_l2'] = is_l2
-                    devices_iifs[devkey]['nhip'] = nhip
-                    if is_l2 and macaddr and not overlay:
-                        if add_overlay_info:
-                            devices_iifs[devkey]['lookup'] += f'|{macaddr}'
-                            add_overlay_info = False
                     if not rt_ts:
                         devices_iifs[devkey]['timestamp'] = timestamp
                     if errmsg:
@@ -801,10 +794,6 @@ class PathObj(SqEngineObject):
                             nhip = ndst
                         if overlay and not ioverlay:
                             overlay_nhip = ndst
-                            if add_overlay_info:
-                                devices_iifs[devkey]['lookup'] += f'|{overlay}'
-                                devices_iifs[devkey]['vrf'] += f'|default'
-                                add_overlay_info = False
                         elif not end_overlay:
                             overlay_nhip = devices_iifs[devkey]['overlay_nhip']
                         else:
@@ -862,9 +851,17 @@ class PathObj(SqEngineObject):
 
     def _path_cons_result(self, paths):
         df_plist = []
+        prev_hop = hop = None
         for i, path in enumerate(paths):
             prev_device = None
             prev_hopid = 0
+            if prev_hop:
+                # Taking advantage of python's shallow copy, that this
+                # also changes what's in df_plist
+                prev_hop['oif'] = ''
+                prev_hop['isL2'] = False
+                prev_hop['nexthopIp'] = ''
+                prev_hop['vtepLookup'] = ''
             for j, ele in enumerate(path):
                 item = list(ele)[0]
                 if item == prev_device:
@@ -877,32 +874,52 @@ class PathObj(SqEngineObject):
                     overlay = True
                 else:
                     overlay = False
-                protocol = ele[item].get("protocol", "")
                 lookup = ele[item].get("lookup", "")
 
-                df_plist.append(
-                    {
-                        "pathid": i + 1,
-                        "hopCount": hopid,
-                        "namespace": self.namespace,
-                        "hostname": item.split('/')[0],
-                        "iif": ele[item]["iif"],
-                        "oif": ele[item]['oif'],
-                        "vrf": ele[item]["vrf"],
-                        "isL2": ele[item].get("is_l2", False),
-                        "overlay": overlay,
-                        "mtuMatch": ele[item].get("mtuMatch", np.nan),
-                        "mtu": ele[item].get("mtu", 0),
-                        "protocol": protocol,
-                        "lookup": lookup,
-                        "nexthopIp": ele[item].get('nhip', ''),
-                        "error": ele[item].get('error', ''),
-                        "timestamp": ele[item].get("timestamp", np.nan)
-                    }
-                )
-                if j:
-                    df_plist[-2]['oif'] = ele[item]['oif']
-            df_plist[-1]['oif'] = ''
+                hop = {
+                    "pathid": i + 1,
+                    "hopCount": hopid,
+                    "namespace": self.namespace,
+                    "hostname": item.split('/')[0],
+                    "iif": ele[item]["iif"],
+                    "oif": ele[item]['oif'],
+                    "vrf": ele[item]["vrf"],
+                    "isL2": ele[item].get("is_l2", False),
+                    "overlay": overlay,
+                    "mtuMatch": ele[item].get("mtuMatch", np.nan),
+                    "mtu": ele[item].get("mtu", 0),
+                    "protocol": ele[item].get('protocol', ''),
+                    "ipLookup": lookup,
+                    "vtepLookup": "",
+                    "macLookup": "",
+                    "nexthopIp": ele[item].get('nhip', ''),
+                    "error": ele[item].get('error', ''),
+                    "timestamp": ele[item].get("timestamp", np.nan)
+                }
+                df_plist.append(hop)
+                # Update some of the edge info in the prev rowerr
+                # Some path specific info cannot be populated in a hop
+                # because of the algorithm. So, we save the info associated
+                # with each hop of the path in the nexthop and have to do
+                # this logic to populate the prev hop
+                if prev_hop:
+                    # Taking advantage of python's shallow copy, that this
+                    # also changes what's in df_plist
+                    prev_hop['nexthopIp'] = hop['nexthopIp']
+                    if overlay:
+                        prev_hop['vtepLookup'] = ele[item]["overlay"]
+                    elif hop["isL2"]:
+                        prev_hop["macLookup"] = ele[item]["macaddr"]
+                    prev_hop['isL2'] = hop['isL2']
+                    prev_hop['oif'] = hop['oif']
+                prev_hop = hop
+        if prev_hop:
+            # Taking advantage of python's shallow copy, that this
+            # also changes what's in df_plist
+            prev_hop['oif'] = ''
+            prev_hop['isL2'] = False
+            prev_hop['nexthopIp'] = ''
+            prev_hop['vtepLookup'] = ''
         paths_df = pd.DataFrame(df_plist)
         if not paths_df.empty and not any(paths_df.error):
             paths_df.drop(columns=['error'], inplace=True)
