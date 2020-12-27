@@ -61,8 +61,9 @@ class _SessionState:
             self._state["data"], None)
 
 
-def _get_session():
-    session_id = get_report_ctx().session_id
+def _get_session(session_id=None):
+    if not session_id:
+        session_id = get_report_ctx().session_id
     session_info = Server.get_current()._get_session_info(session_id)
 
     if session_info is None:
@@ -71,8 +72,8 @@ def _get_session():
     return session_info.session
 
 
-def get_session_state(hash_funcs=None):
-    session = _get_session()
+def get_session_state(session_id=None, hash_funcs=None):
+    session = _get_session(session_id)
 
     if not hasattr(session, "_custom_session_state"):
         session._custom_session_state = _SessionState(session, hash_funcs)
