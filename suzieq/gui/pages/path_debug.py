@@ -29,11 +29,13 @@ def page_work(state_container, page_flip: bool):
         st.stop()
 
     url_params = st.experimental_get_query_params()
-    hostname = url_params.get('hostname', '')[0]
-    ifhost = url_params.get('ifhost', '')[0]
-    nhip = url_params.get('nhip', '')[0]
-    iif = url_params.get('iif', '')[0]
-    macaddr = url_params.get('macaddr', '')[0]
+    namespace = url_params.get('namespace', [""])[0]
+    hostname = url_params.get('hostname', [""])[0]
+    ifhost = url_params.get('ifhost', [""])[0]
+    nhip = url_params.get('nhip', [""])[0]
+    iif = url_params.get('iif', [""])[0]
+    vrf = url_params.get('vrf', [""])[0]
+    macaddr = url_params.get('macaddr', [""])[0]
     if nhip == '169.254.0.1':
         # 169.254.0.1 is a dummy interface IP used by Cumulus
         nhip = ''
@@ -49,20 +51,27 @@ def page_work(state_container, page_flip: bool):
     st.header(f'Debug Tables for Path from {pathSession.source} to '
               f'{pathSession.dest}')
 
-    with st.beta_expander(f'Route Table for {hostname}', expanded=True):
-        st.dataframe(data=pathobj.engine_obj._rdf.query(
-            f'hostname=="{hostname}"'))
+    if not macaddr:
+        with st.beta_expander(f'Route Table for {hostname}', expanded=True):
+            st.dataframe(data=pathobj.engine_obj._rdf.query(
+                f'hostname=="{hostname}" and vrf=="{vrf}"'))
 
-    with st.beta_expander(f'ARP/ND Table for {hostname}', expanded=True):
-        st.dataframe(data=pathobj.engine_obj._arpnd_df.query(
-            f'hostname=="{hostname}" and ipAddress=="{nhip}"'))
+        if nhip:
+            with st.beta_expander(f'ARP/ND Table for {hostname}',
+                                  expanded=True):
+                st.dataframe(data=pathobj.engine_obj._arpnd_df.query(
+                    f'hostname=="{hostname}" and ipAddress=="{nhip}"'))
 
-    if nhip:
-        with st.beta_expander(f'Interface Table for matching next hop {nhip}',
+            with st.beta_expander('Interface Table for matching next hop '
+                                  f'{nhip}', expanded=True):
+                if_df = pathobj.engine_obj._if_df
+                s = if_df.ipAddressList.explode().str.startswith(f'{nhip}/') \
+                                                     .dropna()
+                s = s.loc[s == True]
+                st.dataframe(data=pathobj.engine_obj._if_df
+                             .iloc[s.loc[s == True].index])
+    else:
+        with st.beta_expander(f'MAC Table for {hostname}, MAC addr {macaddr}',
                               expanded=True):
-            if_df = pathobj.engine_obj._if_df.query(f'hostname=="{ifhost}"')
-            s = if_df.ipAddressList.explode().str.startswith(f'{nhip}/') \
-                                                 .dropna().drop_duplicates()
-            s = s.loc[s == True]
-            st.dataframe(data=pathobj.engine_obj._if_df
-                         .iloc[s.loc[s == True].index])
+            st.dataframe(data=pathobj.engine_obj._macsobj.get(
+                namespace=namespace, hostname=hostname, macaddr=macaddr))
