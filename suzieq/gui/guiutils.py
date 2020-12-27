@@ -47,6 +47,11 @@ def get_base_url():
     return 'http://localhost:8501/'
 
 
+def get_session_id():
+    '''Return Streamlit's session ID'''
+    return get_report_ctx().session_id
+
+
 def maximize_browser_window():
     '''Maximize browser window in streamlit'''
 
