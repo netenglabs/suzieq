@@ -78,13 +78,14 @@ def xplore_run_assert(sqobject, **kwargs):
     return df
 
 
-def xplore_sidebar(state, table_vals: list):
+def xplore_sidebar(state, sqobjs: dict):
     '''Draw appropriate sidebar for the page'''
 
-    nsval = state.namespace
-    hostval = state.hostname
     stime = state.start_time
     etime = state.end_time
+
+    table_vals = sorted(list(sqobjs.keys()))
+
     if state.table:
         if isinstance(state.table, list):
             tblidx = table_vals.index(state.table[0])
@@ -95,12 +96,36 @@ def xplore_sidebar(state, table_vals: list):
     assert_val = state.assert_clicked
     view_idx = 1 if state.view == 'all' else 0
 
-    state.namespace = st.sidebar.text_input('Namespace',
-                                            value=nsval,
-                                            key='xplore_namespace')
-    state.hostname = st.sidebar.text_input('Hostname',
-                                           value=hostval,
-                                           key='hostname')
+    devdf = gui_get_df(sqobjs['device'], columns=['namespace', 'hostname'])
+    if devdf.empty:
+        st.error('Unable to retrieve any namespace info')
+        st.stop()
+
+    namespaces = [""]
+    namespaces.extend(devdf.namespace.unique().tolist())
+    if state.namespace:
+        nsidx = namespaces.index(state.namespace)
+    else:
+        nsidx = 0
+    namespace = st.sidebar.selectbox('Namespace',
+                                     namespaces, index=nsidx)
+
+    if namespace != state.namespace:
+        state.hostname = None
+        state.namespace = namespace
+
+    hostnames = [""]
+    if state.namespace:
+        hostnames.extend(devdf.query(f'namespace=="{state.namespace}"')
+                         .hostname.unique().tolist())
+    else:
+        hostnames.extend(devdf.hostname.unique().tolist())
+    if state.hostname:
+        hostidx = hostnames.index(state.hostname)
+    else:
+        hostidx = 0
+    state.hostname = st.sidebar.selectbox('Hostname',
+                                          hostnames, index=hostidx)
 
     state.start_time = st.sidebar.text_input('Start time',
                                              value=stime,
@@ -215,7 +240,7 @@ def page_work(state_container, page_flip: bool):
 
     sqobjs = state_container.sqobjs
     # All the user input is preserved in the state vars
-    xplore_sidebar(state, sorted(list(sqobjs.keys())))
+    xplore_sidebar(state, sqobjs)
 
     if state.table != "tables":
         df = gui_get_df(sqobjs[state.table], _table=state.table,
