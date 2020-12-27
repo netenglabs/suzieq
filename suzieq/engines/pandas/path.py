@@ -341,8 +341,14 @@ class PathObj(SqEngineObject):
                 return self._get_l2_nexthop(device, vrf, dest, macaddr, 'l2')
 
         rslt = self._rdf.query(f'hostname == "{device}" and vrf == "{vrf}"')
+        # The following condition is checking that we have a pure L3 nexthop or
+        # the start of an underlay route. if its a pure L3 route, the nexthopIp
+        # is not empty OR the protocol is not hmm--NXOS' host mobility
+        # protocol--which also puts a final subnet route with EVPN also as an L3
+        # route.
         if not rslt.empty and (len(rslt.nexthopIps.iloc[0]) != 0 and
-                               rslt.nexthopIps.iloc[0][0] != ''):
+                               rslt.nexthopIps.iloc[0][0] != '') and (
+                                   rslt.protocol.iloc[0] != 'hmm'):
             # Handle overlay routes given how NXOS programs its FIB
             if rslt.oifs.explode().str.startswith('_nexthopVrf:').any():
                 # We need to find the true NHIP
@@ -636,7 +642,6 @@ class PathObj(SqEngineObject):
         # ensuring that no device is visited twice in the same VRF. The VRF
         # qualification is required to ensure packets coming back from a
         # firewall or load balancer are not tagged as duplicates.
-
         while devices_iifs:
             nextdevices_iifs = OrderedDict()
             newpaths = []
@@ -853,23 +858,16 @@ class PathObj(SqEngineObject):
         df_plist = []
         prev_hop = hop = None
         for i, path in enumerate(paths):
-            prev_device = None
-            prev_hopid = 0
             if prev_hop:
                 # Taking advantage of python's shallow copy, that this
                 # also changes what's in df_plist
-                prev_hop['oif'] = ''
+                prev_hop['oif'] = self._dest_df.iloc[0]['ifname']
                 prev_hop['isL2'] = False
                 prev_hop['nexthopIp'] = ''
                 prev_hop['vtepLookup'] = ''
+                prev_hop = None
             for j, ele in enumerate(path):
                 item = list(ele)[0]
-                if item == prev_device:
-                    hopid = prev_hopid
-                else:
-                    hopid = j
-                    prev_device = item
-                    prev_hopid = hopid
                 if ele[item]['overlay']:
                     overlay = True
                 else:
@@ -878,7 +876,7 @@ class PathObj(SqEngineObject):
 
                 hop = {
                     "pathid": i + 1,
-                    "hopCount": hopid,
+                    "hopCount": j,
                     "namespace": self.namespace,
                     "hostname": item.split('/')[0],
                     "iif": ele[item]["iif"],
@@ -916,7 +914,7 @@ class PathObj(SqEngineObject):
         if prev_hop:
             # Taking advantage of python's shallow copy, that this
             # also changes what's in df_plist
-            prev_hop['oif'] = ''
+            prev_hop['oif'] = self._dest_df.iloc[0]['ifname']
             prev_hop['isL2'] = False
             prev_hop['nexthopIp'] = ''
             prev_hop['vtepLookup'] = ''
