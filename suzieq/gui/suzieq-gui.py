@@ -51,7 +51,8 @@ def display_title(page, search_text, pagelist):
         st.text(' ')
         srch_holder = st.empty()
         pageidx = sel_pagelist.index(page or 'Status')
-        page = srch_holder.selectbox('Page', sel_pagelist, key='page')
+        page = srch_holder.selectbox('Page', sel_pagelist, index=pageidx,
+                                     key='page')
 
     with srch_col:
         st.text(' ')
@@ -59,7 +60,8 @@ def display_title(page, search_text, pagelist):
     if search_text is not None and (search_str != search_text):
         srchidx = sel_pagelist.index('Search')
         # We're assuming here that the page is titled Search
-        page = srch_holder.selectbox('Page', sel_pagelist, index=srchidx)
+        page = srch_holder.selectbox('Page', sel_pagelist, index=srchidx,
+                                     key='page')
     return page, search_str
 
 
@@ -140,7 +142,8 @@ def apprun():
         if pg not in pagelist:
             pagelist.append(pg)
 
-    page, search_text = display_title(page, state.search_text, pagelist)
+    page, search_text = display_title(state.prev_page, state.search_text,
+                                      pagelist)
 
     if state.search_text is None:
         state.search_text = ''
