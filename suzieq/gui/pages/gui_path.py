@@ -277,12 +277,13 @@ def build_graphviz_obj(state: PathSessionState, df: pd.DataFrame,
                 justify='right').split('\n')[1:])
             debugURL = '&amp;'.join([
                 f'{get_base_url()}?page={quote("_Path_Debug_")}',
+                f'namespace={quote(row.namespace)}',
                 f'session={quote(get_session_id())}',
                 f'hostname={quote(prevrow.hostname)}',
                 f'vrf={quote(prevrow.vrf)}',
                 f'ifhost={quote(row.hostname)}',
                 f'iif={quote(row.iif)}',
-                f'macaddr={quote(prevrow.macaddr)}',
+                f'macaddr={quote(prevrow.macLookup or "")}',
                 f'nhip={quote(prevrow.nexthopIp)}',
             ])
             # hname_str = quote(f'{prevrow.hostname} {row.hostname}')
@@ -361,8 +362,6 @@ def page_work(state_container, page_flip: bool):
             rdf = getattr(pathobj.engine_obj, '_rdf', pd.DataFrame())
             if not rdf.empty:
                 state.pathobj = pathobj
-            else:
-                breakpoint()
         except Exception as e:
             st.error(f'Invalid Input: {str(e)}')
             st.stop()
