@@ -1,12 +1,10 @@
+from suzieq.sqobjects import *
+from suzieq.gui.pages import *
+from suzieq.gui.session_state import get_session_state
+import streamlit as st
 from types import ModuleType
 from collections import defaultdict
 import base64
-
-import streamlit as st
-
-from suzieq.gui.session_state import get_session_state
-from suzieq.gui.pages import *
-from suzieq.sqobjects import *
 
 
 def display_title(page, search_text, pagelist):
@@ -47,20 +45,21 @@ def display_title(page, search_text, pagelist):
             unsafe_allow_html=True
         )
 
+    sel_pagelist = list(filter(lambda x: not x.startswith('_'), pagelist))
     with page_col:
         # The empty writes are for aligning the pages link with the logo
         st.text(' ')
         srch_holder = st.empty()
-        pageidx = pagelist.index(page or 'Status')
-        page = srch_holder.selectbox('Page', pagelist, key='page')
+        pageidx = sel_pagelist.index(page or 'Status')
+        page = srch_holder.selectbox('Page', sel_pagelist, key='page')
 
     with srch_col:
         st.text(' ')
         search_str = st.text_input("Address Search", "")
     if search_text is not None and (search_str != search_text):
-        srchidx = pagelist.index('Search')
+        srchidx = sel_pagelist.index('Search')
         # We're assuming here that the page is titled Search
-        page = srch_holder.selectbox('Page', pagelist, index=srchidx)
+        page = srch_holder.selectbox('Page', sel_pagelist, index=srchidx)
     return page, search_str
 
 
@@ -110,11 +109,11 @@ def build_sqobj_table() -> dict:
 def apprun():
     '''The main application routine'''
 
+    st.set_page_config(layout="wide", page_title="Suzieq")
+
     state = get_session_state()
     # state = SessionState.get(pages=None, prev_page='', search_text='',
     #                          sqobjs={})
-
-    st.set_page_config(layout="wide", page_title="Suzieq")
 
     if not state.pages:
         state.pages = build_pages()
@@ -123,6 +122,13 @@ def apprun():
     url_params = st.experimental_get_query_params()
     if url_params.get('page', ''):
         page = url_params['page']
+        if isinstance(page, list):
+            page = page[0]
+        if page == "_Path_Debug_":
+            old_session_state = get_session_state(
+                url_params.get('session', None)[0])
+            state.pages[page](old_session_state, True)
+            st.stop()
         if isinstance(page, list):
             page = page[0]
     else:
