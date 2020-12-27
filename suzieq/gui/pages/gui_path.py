@@ -1,13 +1,13 @@
-from dataclasses import dataclass, asdict, fields, field
+from dataclasses import dataclass, asdict, field
 
 import streamlit as st
 import pandas as pd
 import graphviz as graphviz
 from urllib.parse import quote
+from copy import copy
 
 from suzieq.sqobjects.path import PathObj
-from suzieq.utils import humanize_timestamp
-from suzieq.gui.guiutils import gui_get_df, get_base_url
+from suzieq.gui.guiutils import gui_get_df, get_base_url, get_session_id
 
 
 def get_title():
@@ -37,12 +37,22 @@ class PathSessionState:
     end_time: str = ''
     show_ifnames: bool = False
     vrf: str = ''
-    pathObj: PathObj = None
+    pathobj: PathObj = None
+    path_df: pd.DataFrame = None
 
 
 @dataclass
 class FailedDFs:
     dfs: list = field(default_factory=make_fields_failed_df)
+
+
+def get_path_url_params(state: PathSessionState):
+    '''Return the list of valid query params for path URL'''
+    state_dict = copy(asdict(state))
+    del state_dict['pathobj']
+    del state_dict['path_df']
+
+    return state_dict
 
 
 def gui_path_summarize(path_df: pd.DataFrame) -> pd.DataFrame:
@@ -85,15 +95,14 @@ def highlight_erroneous_rows(row):
 
 @st.cache(ttl=120, allow_output_mutation=True, show_spinner=False,
           max_entries=10)
-def path_get(state: PathSessionState, forward_dir: bool) -> (pd.DataFrame,
-                                                             pd.DataFrame):
+def path_get(state: PathSessionState, pathobj: PathObj,
+             forward_dir: bool) -> (pd.DataFrame, pd.DataFrame):
     '''Run the path and return the dataframes'''
     if forward_dir:
-        df = state.pathObj.get(namespace=[state.namespace], source=state.source,
-                               dest=state.dest, vrf=state.vrf)
+        df = pathobj.get(namespace=[state.namespace], source=state.source,
+                         dest=state.dest, vrf=state.vrf)
 
         summ_df = gui_path_summarize(df)
-
     return df, summ_df
 
 
@@ -242,7 +251,9 @@ def build_graphviz_obj(state: PathSessionState, df: pd.DataFrame,
             tdf = pd.DataFrame({
                 'pathType': path_type,
                 'protocol': [prevrow.protocol],
-                'lookup': [prevrow.lookup],
+                'ipLookup': [prevrow.ipLookup],
+                'vtepLookup': [prevrow.vtepLookup],
+                'macLookup': [prevrow.macLookup],
                 'nexthopIp': [prevrow.nexthopIp],
                 'vrf': [prevrow.vrf],
                 'mtu': [f'{prevrow.mtu} -> {row.mtu}'],
@@ -264,6 +275,16 @@ def build_graphviz_obj(state: PathSessionState, df: pd.DataFrame,
                 color = 'red'
             tooltip = '\n'.join(tdf.T.to_string(
                 justify='right').split('\n')[1:])
+            debugURL = '&amp;'.join([
+                f'{get_base_url()}?page={quote("_Path_Debug_")}',
+                f'session={quote(get_session_id())}',
+                f'hostname={quote(prevrow.hostname)}',
+                f'vrf={quote(prevrow.vrf)}',
+                f'ifhost={quote(row.hostname)}',
+                f'iif={quote(row.iif)}',
+                f'macaddr={quote(prevrow.macaddr)}',
+                f'nhip={quote(prevrow.nexthopIp)}',
+            ])
             # hname_str = quote(f'{prevrow.hostname} {row.hostname}')
             # if_str = quote(f'ifname.isin(["{prevrow.oif}", "{row.iif}"])')
             # ifURL = '&amp;'.join([f'{get_base_url()}?page=Xplore',
@@ -275,13 +296,14 @@ def build_graphviz_obj(state: PathSessionState, df: pd.DataFrame,
             #                       ])
             if state.show_ifnames:
                 g.edge(prevrow.hostname, row.hostname, color=color,
-                       label=str(row.hopCount),
-                       tooltip=tooltip, taillabel=prevrow.oif,
-                       headlabel=row.iif, penwidth='2.0',
+                       label=str(row.hopCount), URL=debugURL,
+                       edgetarget='_graphviz', tooltip=tooltip,
+                       taillabel=prevrow.oif, headlabel=row.iif,
+                       penwidth='2.0',
                        )
             else:
                 g.edge(prevrow.hostname, row.hostname, color=color,
-                       label=str(row.hopCount),
+                       label=str(row.hopCount), URL=debugURL,
                        edgetarget='_graphviz', penwidth='2.0',
                        tooltip=tooltip
                        )
@@ -302,7 +324,7 @@ def page_work(state_container, page_flip: bool):
 
     url_params = st.experimental_get_query_params()
     page = url_params.pop('page', '')
-    if get_title() in page:
+    if not state and get_title() in page:
         if url_params and not all(not x for x in url_params.values()):
             url_params.pop('search_text', '')
             for key in url_params:
@@ -317,6 +339,7 @@ def page_work(state_container, page_flip: bool):
                         url_params[key] = False
 
             state.__init__(**url_params)
+    state_container.pathSessionState = state
 
     pgbar = st.empty()
     summary = st.beta_container()
@@ -331,10 +354,15 @@ def page_work(state_container, page_flip: bool):
 
     if state.run:
         pgbar.progress(0)
-        state.pathObj = PathObj(start_time=state.start_time,
-                                end_time=state.end_time)
+        pathobj = PathObj(start_time=state.start_time,
+                          end_time=state.end_time)
         try:
-            df, summ_df = path_get(state, forward_dir=True)
+            df, summ_df = path_get(state, pathobj, forward_dir=True)
+            rdf = getattr(pathobj.engine_obj, '_rdf', pd.DataFrame())
+            if not rdf.empty:
+                state.pathobj = pathobj
+            else:
+                breakpoint()
         except Exception as e:
             st.error(f'Invalid Input: {str(e)}')
             st.stop()
@@ -342,13 +370,13 @@ def page_work(state_container, page_flip: bool):
         # rev_df, _ = path_get(state, forward_dir=False)
 
     else:
-        st.experimental_set_query_params(**asdict(state))
+        st.experimental_set_query_params(**get_path_url_params(state))
         st.stop()
 
     if df.empty:
         pgbar.progress(100)
         st.info(f'No path to trace between {state.source} and {state.dest}')
-        st.experimental_set_query_params(**asdict(state))
+        st.experimental_set_query_params(**get_path_url_params(state))
         st.stop
 
     if not df.empty:
@@ -374,4 +402,4 @@ def page_work(state_container, page_flip: bool):
             st.dataframe(data=df.style.apply(highlight_erroneous_rows, axis=1),
                          height=600)
 
-    st.experimental_set_query_params(**asdict(state))
+    st.experimental_set_query_params(**get_path_url_params(state))
