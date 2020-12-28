@@ -102,7 +102,7 @@ def xplore_sidebar(state, sqobjs: dict):
         st.stop()
 
     namespaces = [""]
-    namespaces.extend(devdf.namespace.unique().tolist())
+    namespaces.extend(sorted(devdf.namespace.unique().tolist()))
     if state.namespace:
         nsidx = namespaces.index(state.namespace)
     else:
@@ -116,10 +116,11 @@ def xplore_sidebar(state, sqobjs: dict):
 
     hostnames = [""]
     if state.namespace:
-        hostnames.extend(devdf.query(f'namespace=="{state.namespace}"')
-                         .hostname.unique().tolist())
+        hostlist = devdf.query(f'namespace=="{state.namespace}"') \
+                        .hostname.unique().tolist()
     else:
-        hostnames.extend(devdf.hostname.unique().tolist())
+        hostlist = devdf.hostname.unique().tolist()
+    hostnames.extend(sorted(hostlist))
     if state.hostname:
         hostidx = hostnames.index(state.hostname)
     else:
