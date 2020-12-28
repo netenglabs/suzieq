@@ -24,6 +24,7 @@ def handle_edge_url(url_params: dict, pathSession):
     namespace = url_params.get('namespace', [""])[0]
     hostname = url_params.get('hostname', [""])[0]
     nhip = url_params.get('nhip', [""])[0]
+    ipLookup = url_params.get('ipLookup', [""])[0]
     vrf = url_params.get('vrf', [""])[0]
     ifhost = url_params.get('ifhost', [""])[0]
     macaddr = url_params.get('macaddr', [""])[0]
@@ -41,7 +42,7 @@ def handle_edge_url(url_params: dict, pathSession):
 
     pathobj = getattr(pathSession, 'pathobj', None)
 
-    if not macaddr:
+    if ipLookup:
         with st.beta_expander(f'Route Table for {hostname}', expanded=True):
             st.dataframe(data=pathobj.engine_obj._rdf.query(
                 f'hostname=="{hostname}" and vrf=="{vrf}"'))
@@ -60,7 +61,7 @@ def handle_edge_url(url_params: dict, pathSession):
                 s = s.loc[s == True]
                 st.dataframe(data=pathobj.engine_obj._if_df
                              .iloc[s.loc[s == True].index])
-    else:
+    if macaddr:
         with st.beta_expander(f'MAC Table for {hostname}, MAC addr {macaddr}',
                               expanded=True):
             st.dataframe(data=pathobj.engine_obj._macsobj.get(
@@ -91,27 +92,56 @@ def handle_hop_url(url_params, pathSession):
     host_dfg = df.query(f'hostname == "{hostname}"') \
                  .groupby(by=['hopCount'])
 
-    df2 = host_dfg.agg({'vrf': ['first'], 'nexthopIp': ['first'],
-                        'macLookup': ['first'],
-                        'vtepLookup': ['first']}).reset_index()
-    df2.columns = ['hopCount', 'vrf', 'nexthopIp', 'macaddr', 'vtepLookup']
-    df2.drop_duplicates(subset=['vrf', 'nexthopIp', 'macaddr', 'vtepLookup'],
+    df2 = host_dfg.agg({'vrf': ['unique'], 'ipLookup': ['unique'],
+                        'nexthopIp': ['unique'], 'macLookup': ['unique'],
+                        'vtepLookup': ['unique']}).reset_index()
+    df2.columns = ['hopCount', 'vrf', 'ipLookup', 'nexthopIp', 'macaddr',
+                   'vtepLookup']
+    df2 = df2.explode('hopCount').explode('vrf').explode('ipLookup') \
+                                                .explode('nexthopIp') \
+                                                .explode('macaddr') \
+                                                .explode('vtepLookup')
+    df2.drop_duplicates(subset=['vrf', 'ipLookup', 'nexthopIp', 'macaddr',
+                                'vtepLookup'],
                         inplace=True)
+    first = True
     for row in df2.itertuples():
         if row.macaddr:
             with st.beta_expander(f'MAC Table on {hostname}, MAC addr '
                                   f'{row.macaddr}', expanded=True):
                 st.dataframe(data=pathobj.engine_obj._macsobj.get(
-                    namespace=namespace, hostname=hostname, macaddr=macaddr))
+                    namespace=namespace, hostname=hostname,
+                    macaddr=row.macaddr))
             continue
 
-        with st.beta_expander(f'Route Lookup on {hostname}', expanded=True):
-            st.dataframe(data=pathobj.engine_obj._rdf.query(
-                f'hostname=="{hostname}" and vrf=="{row.vrf}"'))
+        if (row.ipLookup != row.vtepLookup) and first:
+            with st.beta_expander(f'Route Lookup on {hostname}', expanded=True):
+                st.dataframe(data=pathobj.engine_obj._rdf.query(
+                    f'hostname=="{hostname}" and vrf=="{row.vrf}"'))
+                first = False
+        if row.vtepLookup:
+            with st.beta_expander(f'Underlay Route Lookup on {hostname} for '
+                                  f'{row.vtepLookup}', expanded=True):
+                vtepdf = pathobj.engine_obj._underlay_dfs.get(row.vtepLookup,
+                                                              pd.DataFrame())
+                if not vtepdf.empty:
+                    st.dataframe(data=vtepdf.query(
+                        f'hostname=="{hostname}" and vrf=="default"'))
+
         with st.beta_expander(f'ARPND Lookup on {hostname} for {row.nexthopIp}',
                               expanded=True):
             st.dataframe(data=pathobj.engine_obj._arpnd_df.query(
                 f'hostname=="{hostname}" and ipAddress=="{row.nexthopIp}"'))
+        with st.beta_expander('Interface Table for matching next hop '
+                              f'{row.nexthopIp}', expanded=True):
+            if_df = pathobj.engine_obj._if_df
+            s = if_df.ipAddressList \
+                     .explode() \
+                     .str.startswith(f'{row.nexthopIp}/') \
+                         .dropna()
+            s = s.loc[s == True]
+            st.dataframe(data=pathobj.engine_obj._if_df
+                         .iloc[s.loc[s == True].index])
 
 
 def page_work(state_container, page_flip: bool):
