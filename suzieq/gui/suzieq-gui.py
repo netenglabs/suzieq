@@ -60,8 +60,7 @@ def display_title(page, search_text, pagelist):
     if search_text is not None and (search_str != search_text):
         srchidx = sel_pagelist.index('Search')
         # We're assuming here that the page is titled Search
-        page = srch_holder.selectbox('Page', sel_pagelist, index=srchidx,
-                                     key='page')
+        page = 'Search'
     return page, search_str
 
 
