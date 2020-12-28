@@ -110,14 +110,12 @@ def get_failed_data(state: PathSessionState, pgbar, path_df,
                     sqobjs) -> FailedDFs:
     '''Get interface/mlag/routing protocol states that are failed'''
 
-    hostlist = path_df.hostname.unique().tolist()
     faileddfs = FailedDFs()
 
     progress = 40
     for i, entry in enumerate(faileddfs.dfs):
         entry['df'] = gui_get_df(sqobjs[entry['name']],
-                                 namespace=[state.namespace],
-                                 hostname=hostlist)
+                                 namespace=[state.namespace])
         if not entry['df'].empty and (entry.get('query', '')):
             entry['df'] = entry['df'].query(entry['query'])
 
@@ -134,7 +132,7 @@ def path_sidebar(state, sqobjs):
         st.error('Unable to retrieve any namespace info')
         st.stop()
 
-    namespaces = devdf.namespace.unique().tolist()
+    namespaces = sorted(devdf.namespace.unique().tolist())
     if state.namespace:
         nsidx = namespaces.index(state.namespace)
     else:
@@ -215,8 +213,16 @@ def build_graphviz_obj(state: PathSessionState, df: pd.DataFrame,
                 if hostname in hostset:
                     continue
                 hostset.add(hostname)
+                debugURL = '&amp;'.join([
+                    f'{get_base_url()}?page={quote("_Path_Debug_")}',
+                    'lookupType=hop',
+                    f'namespace={quote(df.namespace.unique().tolist()[0])}',
+                    f'session={quote(get_session_id())}',
+                    f'hostname={quote(hostname)}',
+                ])
                 tooltip, color = get_node_tooltip_color(hostname, faileddfs)
-                s.node(hostname, tooltip=tooltip, color=color, shape='box')
+                s.node(hostname, tooltip=tooltip, color=color, URL=debugURL,
+                       target='_graphviz', shape='box')
 
     pathid = 0
     prevrow = None
@@ -277,6 +283,7 @@ def build_graphviz_obj(state: PathSessionState, df: pd.DataFrame,
                 justify='right').split('\n')[1:])
             debugURL = '&amp;'.join([
                 f'{get_base_url()}?page={quote("_Path_Debug_")}',
+                'lookupType=edge',
                 f'namespace={quote(row.namespace)}',
                 f'session={quote(get_session_id())}',
                 f'hostname={quote(prevrow.hostname)}',
@@ -362,6 +369,7 @@ def page_work(state_container, page_flip: bool):
             rdf = getattr(pathobj.engine_obj, '_rdf', pd.DataFrame())
             if not rdf.empty:
                 state.pathobj = pathobj
+                state.path_df = df
         except Exception as e:
             st.error(f'Invalid Input: {str(e)}')
             st.stop()
