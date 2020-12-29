@@ -1009,6 +1009,7 @@ class NxosNode(Node):
     async def _parse_boottime_hostname(self, output, cb_token) -> None:
         """Parse the uptime command output"""
 
+        hostname = ''
         if output[0]["status"] == 0:
             data = json.loads(output[0]["data"])
             upsecs = (24*3600*int(data.get('kern_uptm_days', 0)) +
@@ -1018,11 +1019,15 @@ class NxosNode(Node):
             if upsecs:
                 self.bootupTimestamp = int(int(time.time()*1000)
                                            - float(upsecs)*1000)
+        if len(output) > 1:
+            if output[1]["status"] == 0:
+                hostname = output[1]["data"].strip()
+        else:
+            if output[0]['hostname'] != output[0]['address']:
+                hostname = output[0]['hostname']
 
-        if output[1]["status"] == 0:
-            hostname = output[1]["data"].strip()
-            if hostname:
-                self.set_hostname(hostname)
+        if hostname:
+            self.set_hostname(hostname)
 
 
 class SonicNode(Node):
