@@ -290,19 +290,10 @@ def build_graphviz_obj(state: PathSessionState, df: pd.DataFrame,
                 f'vrf={quote(prevrow.vrf)}',
                 f'ifhost={quote(row.hostname)}',
                 f'ipLookup={quote(prevrow.ipLookup)}',
-                f'iif={quote(row.iif)}',
+                f'oif={quote(prevrow.oif)}',
                 f'macaddr={quote(prevrow.macLookup or "")}',
                 f'nhip={quote(prevrow.nexthopIp)}',
             ])
-            # hname_str = quote(f'{prevrow.hostname} {row.hostname}')
-            # if_str = quote(f'ifname.isin(["{prevrow.oif}", "{row.iif}"])')
-            # ifURL = '&amp;'.join([f'{get_base_url()}?page=Xplore',
-            #                       'table=interfaces',
-            #                       f'namespace={quote(state.namespace)}',
-            #                       'columns=default',
-            #                       f'hostname={hname_str}',
-            #                       f'query={if_str}',
-            #                       ])
             if state.show_ifnames:
                 g.edge(prevrow.hostname, row.hostname, color=color,
                        label=str(row.hopCount), URL=debugURL,
