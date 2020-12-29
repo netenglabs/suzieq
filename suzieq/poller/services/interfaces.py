@@ -354,16 +354,19 @@ class InterfaceService(Service):
         for entry_idx, entry in enumerate(processed_data):
             # if its the Linux ip link command output, massage the ifname
             # and copy over the values and drop the entry_dict
-            if entry.get('_entryType', '') == 'iplink':
-                ifname = entry['ifname'].replace('-', '/') \
-                                        .replace('Po', 'port-channel') \
-                                        .replace('Eth', 'Ethernet')
-                old_entry = entry_dict[ifname]
+            if entry.get('_entryType', '') == 'mtumac':
+                old_entry = entry_dict[entry['ifname']]
                 if old_entry:
-                    if any(x not in entry for x in ['mtu', 'macaddr']):
-                        breakpoint()
                     old_entry['mtu'] = entry.get('mtu', 0)
-                    old_entry['macaddr'] = entry['macaddr']
+                    old_entry['macaddr'] = convert_macaddr_format_to_colon(
+                        entry.get('macaddr', '0000.0000.0000'))
+                    if old_entry.get('_portchannel'):
+                        pc_entry = entry_dict.get(old_entry['master'], None)
+                        if pc_entry:
+                            # The later ethernet port entries' MAC addr wins
+                            # over the earlier ones
+                            pc_entry['mtu'] = entry.get('mtu', 0)
+                            pc_entry['macaddr'] = entry['macaddr']
                 drop_indices.append(entry_idx)
                 continue
 
