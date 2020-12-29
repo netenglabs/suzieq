@@ -205,7 +205,7 @@ class Service(object):
 
         return adds, dels
 
-    def textfsm_data(self, raw_input, fsm_template, schema, data):
+    def textfsm_data(self, raw_input, fsm_template, entry_type, schema, data):
         """Convert unstructured output to structured output"""
 
         records = []
@@ -214,6 +214,8 @@ class Service(object):
 
         for entry in res:
             metent = dict(zip(fsm_template.header, entry))
+            if entry_type:
+                metent['_entryType'] = entry_type
             records.append(metent)
 
         return records
@@ -324,13 +326,15 @@ class Service(object):
 
                 else:
                     tfsm_template = nfn.get("textfsm", None)
-
+                    entry_type = None
                     if tfsm_template is None and elem_num:
                         # Can happen because we've a list of cmds associated
                         # Pick the normalization function associated with this
                         # output
                         tfsm_template = nfn.get('command', [])[elem_num].get(
                             'textfsm', None)
+                        entry_type = nfn.get('command', [])[elem_num].get(
+                            '_entryType', None)
 
                     if not tfsm_template:
                         return result
@@ -348,7 +352,7 @@ class Service(object):
                     # munge the data and force the types to adhere to the
                     # specified type
                     result = self.textfsm_data(
-                        in_info, tfsm_template, self.schema, data
+                        in_info, tfsm_template, entry_type, self.schema, data
                     )
             else:
                 self.logger.error(
