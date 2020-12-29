@@ -1,9 +1,7 @@
-from collections import deque
-from dataclasses import dataclass, asdict
+from itertools import zip_longest
 
 import pandas as pd
 import streamlit as st
-from suzieq.gui.guiutils import gui_get_df
 
 
 def get_title():
@@ -28,9 +26,7 @@ def handle_edge_url(url_params: dict, pathSession):
     vrf = url_params.get('vrf', [""])[0]
     ifhost = url_params.get('ifhost', [""])[0]
     macaddr = url_params.get('macaddr', [""])[0]
-    if nhip == '169.254.0.1':
-        # 169.254.0.1 is a dummy interface IP used by Cumulus
-        nhip = ''
+    oif = url_params.get('oif', [""])[0]
 
     if not hostname:
         st.error('No hostname found to display information for')
@@ -48,19 +44,22 @@ def handle_edge_url(url_params: dict, pathSession):
                 f'hostname=="{hostname}" and vrf=="{vrf}"'))
 
         if nhip:
-            with st.beta_expander(f'ARP/ND Table for {hostname}',
-                                  expanded=True):
+            with st.beta_expander(f'ARP/ND Table on {hostname} for nexthop'
+                                  f' {nhip}', expanded=True):
                 st.dataframe(data=pathobj.engine_obj._arpnd_df.query(
-                    f'hostname=="{hostname}" and ipAddress=="{nhip}"'))
+                    f'hostname=="{hostname}" and ipAddress=="{nhip}" '
+                    f'and oif=="{oif}"'))
 
-            with st.beta_expander('Interface Table for matching next hop '
-                                  f'{nhip}', expanded=True):
-                if_df = pathobj.engine_obj._if_df
-                s = if_df.ipAddressList.explode().str.startswith(f'{nhip}/') \
+            if nhip != '169.254.0.1':
+                with st.beta_expander('Interface Table for matching next hop '
+                                      f'{nhip}, and oif {oif}', expanded=True):
+                    if_df = pathobj.engine_obj._if_df
+                    s = if_df.ipAddressList.explode().str \
+                                                     .startswith(f'{nhip}/') \
                                                      .dropna()
-                s = s.loc[s == True]
-                st.dataframe(data=pathobj.engine_obj._if_df
-                             .iloc[s.loc[s == True].index])
+                    s = s.loc[s == True]
+                    st.dataframe(data=pathobj.engine_obj._if_df
+                                 .iloc[s.loc[s == True].index])
     if macaddr:
         with st.beta_expander(f'MAC Table for {hostname}, MAC addr {macaddr}',
                               expanded=True):
@@ -80,10 +79,10 @@ def handle_hop_url(url_params, pathSession):
 
     st.header(f'Debug Tables for Path from {pathSession.source} to '
               f'{pathSession.dest}')
-    st.subheader(f'Lookups on {hostname}')
 
     pathobj = getattr(pathSession, 'pathobj', None)
     df = getattr(pathSession, 'path_df', None)
+    engobj = pathobj.engine_obj
 
     if df.empty:
         st.warning('Empty path dataframe')
@@ -93,55 +92,77 @@ def handle_hop_url(url_params, pathSession):
                  .groupby(by=['hopCount'])
 
     df2 = host_dfg.agg({'vrf': ['unique'], 'ipLookup': ['unique'],
-                        'nexthopIp': ['unique'], 'macLookup': ['unique'],
+                        'nexthopIp': ['unique'], 'oif': ['unique'],
+                        'macLookup': ['unique'],
                         'vtepLookup': ['unique']}).reset_index()
-    df2.columns = ['hopCount', 'vrf', 'ipLookup', 'nexthopIp', 'macaddr',
-                   'vtepLookup']
+    df2.columns = ['hopCount', 'vrf', 'ipLookup', 'nexthopIp', 'oif',
+                   'macaddr', 'vtepLookup']
     df2 = df2.explode('hopCount').explode('vrf').explode('ipLookup') \
-                                                .explode('nexthopIp') \
                                                 .explode('macaddr') \
                                                 .explode('vtepLookup')
-    df2.drop_duplicates(subset=['vrf', 'ipLookup', 'nexthopIp', 'macaddr',
-                                'vtepLookup'],
-                        inplace=True)
-    first = True
-    for row in df2.itertuples():
-        if row.macaddr:
-            with st.beta_expander(f'MAC Table on {hostname}, MAC addr '
-                                  f'{row.macaddr}', expanded=True):
-                st.dataframe(data=pathobj.engine_obj._macsobj.get(
-                    namespace=namespace, hostname=hostname,
-                    macaddr=row.macaddr))
-            continue
+    df2.drop_duplicates(subset=['vrf', 'ipLookup'], inplace=True)
 
-        if (row.ipLookup != row.vtepLookup) and first:
-            with st.beta_expander(f'Route Lookup on {hostname}', expanded=True):
-                st.dataframe(data=pathobj.engine_obj._rdf.query(
+    for row in df2.itertuples():
+        with st.beta_expander(f'Lookups on {hostname}, for hopcount: '
+                              f'{row.hopCount}', expanded=True):
+            if row.macaddr:
+                st.info(f'MAC Table on {hostname}, MAC addr {row.macaddr}')
+                st.dataframe(data=engobj._macsobj.get(namespace=namespace,
+                                                      hostname=hostname,
+                                                      macaddr=row.macaddr))
+                continue
+
+            if (row.ipLookup != row.vtepLookup):
+                st.info(f'Route Lookup on {hostname}')
+                st.dataframe(data=engobj._rdf.query(
                     f'hostname=="{hostname}" and vrf=="{row.vrf}"'))
-                first = False
-        if row.vtepLookup:
-            with st.beta_expander(f'Underlay Route Lookup on {hostname} for '
-                                  f'{row.vtepLookup}', expanded=True):
-                vtepdf = pathobj.engine_obj._underlay_dfs.get(row.vtepLookup,
-                                                              pd.DataFrame())
+
+            if row.vtepLookup:
+                st.info(f'Underlay Lookup on {hostname} for {row.vtepLookup}')
+                vtepdf = engobj._underlay_dfs.get(row.vtepLookup,
+                                                  pd.DataFrame())
                 if not vtepdf.empty:
                     st.dataframe(data=vtepdf.query(
                         f'hostname=="{hostname}" and vrf=="default"'))
 
-        with st.beta_expander(f'ARPND Lookup on {hostname} for {row.nexthopIp}',
-                              expanded=True):
-            st.dataframe(data=pathobj.engine_obj._arpnd_df.query(
-                f'hostname=="{hostname}" and ipAddress=="{row.nexthopIp}"'))
-        with st.beta_expander('Interface Table for matching next hop '
-                              f'{row.nexthopIp}', expanded=True):
-            if_df = pathobj.engine_obj._if_df
-            s = if_df.ipAddressList \
-                     .explode() \
-                     .str.startswith(f'{row.nexthopIp}/') \
-                         .dropna()
-            s = s.loc[s == True]
-            st.dataframe(data=pathobj.engine_obj._if_df
-                         .iloc[s.loc[s == True].index])
+            oifs = row.oif.tolist()
+            nhops = row.nexthopIp.tolist()
+            prev_nhop = ''
+            for oif, nhop in zip_longest(oifs, nhops):
+                blank1, arpcol = st.beta_columns([1, 40])
+                blank2, ifcol = st.beta_columns([2, 40])
+                # this logic because I don't know what fn to use with agg above
+                # to not remove non-unique nhop.
+                if not nhop and prev_nhop:
+                    nhop = prev_nhop
+                else:
+                    prev_nhop = nhop
+                arpdf = engobj._arpnd_df.query(f'hostname=="{hostname}" and '
+                                               f'ipAddress=="{nhop}" and '
+                                               f'oif=="{oif}"')
+                with arpcol:
+                    st.info(f'ARPND Lookup on {hostname} for {nhop}')
+                    st.dataframe(data=arpdf, height=100)
+
+                if not arpdf.empty:
+                    macaddr = arpdf.macaddr.iloc[0]
+                    if_df = engobj._if_df.query(f'macaddr=="{macaddr}"') \
+                                         .drop(columns=['ip6AddressList'])
+                    label = f'matching nexthop {nhop}, macaddr {macaddr}'
+                else:
+                    label = f'matching nexthop {nhop}'
+                    if_df = engobj._if_df.drop(columns=['ip6AddressList'])
+                if nhop != '169.254.0.1':
+                    s = if_df.ipAddressList \
+                             .explode() \
+                             .str.startswith(f'{nhop}/').dropna()
+                    s = s.loc[s == True]
+                    if_df = engobj._if_df.iloc[s.loc[s == True].index] \
+                                         .drop(columns=['ip6AddressList'])
+                with ifcol:
+                    st.info(f'Interfaces {label}')
+                    st.dataframe(data=if_df, height=600)
+        st.markdown("<hr>", unsafe_allow_html=True)
 
 
 def page_work(state_container, page_flip: bool):
