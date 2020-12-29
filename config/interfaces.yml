@@ -148,9 +148,9 @@ apply:
         "linklocal-addr: _linklocal"
         ]'
 
-      - command: run bash ip -o link show
-        textfsm: textfsm_templates/nxos_ip_link.tfsm
-        _entryType: iplink
+      - command: show interface ethernet regex [1-32]/*|egrep '^Eth|Hardware|MTU'
+        textfsm: textfsm_templates/nxos_show_int_grep.tfsm
+        _entryType: mtumac
 
       - command: show fabric forwarding internal svi-info
         textfsm: textfsm_templates/nxos_if_fabric.tfsm
