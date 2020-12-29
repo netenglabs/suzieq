@@ -46,13 +46,6 @@ def display_title(page, search_text, pagelist):
         )
 
     sel_pagelist = list(filter(lambda x: not x.startswith('_'), pagelist))
-    with page_col:
-        # The empty writes are for aligning the pages link with the logo
-        st.text(' ')
-        srch_holder = st.empty()
-        pageidx = sel_pagelist.index(page or 'Status')
-        page = srch_holder.selectbox('Page', sel_pagelist, index=pageidx,
-                                     key='page')
 
     with srch_col:
         st.text(' ')
@@ -61,6 +54,15 @@ def display_title(page, search_text, pagelist):
         srchidx = sel_pagelist.index('Search')
         # We're assuming here that the page is titled Search
         page = 'Search'
+
+    with page_col:
+        # The empty writes are for aligning the pages link with the logo
+        st.text(' ')
+        srch_holder = st.empty()
+        pageidx = sel_pagelist.index(page or 'Status')
+        page = srch_holder.selectbox('Page', sel_pagelist, index=pageidx,
+                                     key='page')
+
     return page, search_str
 
 
