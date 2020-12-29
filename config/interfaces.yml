@@ -148,11 +148,9 @@ apply:
         "linklocal-addr: _linklocal"
         ]'
 
-      - command: show interface mac-address  | json
-        normalize: 'TABLE_interface/ROW_interface/*?/[
-        "interface: ifname",
-        "address: macaddr",
-        ]'
+      - command: run bash ip -o link show
+        textfsm: textfsm_templates/nxos_ip_link.tfsm
+        _entryType: iplink
 
       - command: show fabric forwarding internal svi-info
         textfsm: textfsm_templates/nxos_if_fabric.tfsm
