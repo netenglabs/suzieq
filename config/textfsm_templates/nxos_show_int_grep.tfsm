@@ -1,0 +1,18 @@
+Value Required ifname (\S+)
+Value macaddr ([0-9a-f.]*)
+Value mtu (\d+)
+
+Start
+  ^${ifname} is.*$$
+  ^\s+Hardware.*address: ${macaddr}.*$$
+  ^\s+MTU ${mtu} bytes,.*$$ -> Record
+
+#Ethernet1/1 is up
+#  Hardware: 100/1000/10000 Ethernet, address: 4401.0201.1b08 (bia 4401.0201.0101)
+#  MTU 9200 bytes, BW 1000000 Kbit , DLY 10 usec
+#Ethernet1/2 is up
+#  Hardware: 100/1000/10000 Ethernet, address: 4401.0201.1b08 (bia 4401.0201.0102)
+#  MTU 9200 bytes, BW 1000000 Kbit , DLY 10 usec
+#Ethernet1/16 is down (Link not connected)
+#  Hardware: 100/1000/10000 Ethernet, address: 4401.0201.0110 (bia 4401.0201.0110)
+#  MTU 1500 bytes, BW 10000000 Kbit , DLY 10 usec
