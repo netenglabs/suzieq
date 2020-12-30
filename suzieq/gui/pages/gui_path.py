@@ -347,6 +347,7 @@ def page_work(state_container, page_flip: bool):
     with summary:
         with summcol:
             summ_ph = st.empty()
+            legend_ph = st.beta_container()
         with pathcol:
             fw_ph = st.empty()
 
@@ -386,6 +387,15 @@ def page_work(state_container, page_flip: bool):
         #     rev_g = build_graphviz_obj(state, rev_df)
 
         summ_ph.dataframe(data=summ_df)
+        with legend_ph:
+            st.info('''Color Legend''')
+            st.markdown('''
+<b style="color:blue">Blue Lines</b> => L2 Hop(non-tunneled)<br>
+<b>Black Lines</b> => L3 Hop<br>
+<b style="color:purple">Purple lines</b> => Tunneled Hop<br>
+<b style="color:red">Red Lines</b> => Hops with Error<br>
+''', unsafe_allow_html=True)
+
         fw_ph.graphviz_chart(g, use_container_width=True)
         # rev_ph.graphviz_chart(rev_g, use_container_width=True)
 
