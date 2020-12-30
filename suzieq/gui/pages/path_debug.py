@@ -145,20 +145,31 @@ def handle_hop_url(url_params, pathSession):
                     st.dataframe(data=arpdf, height=100)
 
                 if not arpdf.empty:
+                    if ':' in nhop:
+                        dropcol = ['ipAddressList']
+                    else:
+                        dropcol = ['ip6AddressList']
                     macaddr = arpdf.macaddr.iloc[0]
                     if_df = engobj._if_df.query(f'macaddr=="{macaddr}"') \
-                                         .drop(columns=['ip6AddressList'])
+                                         .drop(columns=dropcol)
                     label = f'matching nexthop {nhop}, macaddr {macaddr}'
                 else:
                     label = f'matching nexthop {nhop}'
-                    if_df = engobj._if_df.drop(columns=['ip6AddressList'])
-                if nhop != '169.254.0.1':
+                    if_df = engobj._if_df.drop(columns=dropcol)
+                if ':' in nhop:
+                    s = if_df.ip6AddressList \
+                             .explode() \
+                             .str.startswith(f'{nhop}/').dropna()
+                    s = s.loc[s == True]
+                    if_df = engobj._if_df.iloc[s.loc[s == True].index] \
+                                         .drop(columns=dropcol)
+                elif nhop != '169.254.0.1':
                     s = if_df.ipAddressList \
                              .explode() \
                              .str.startswith(f'{nhop}/').dropna()
                     s = s.loc[s == True]
                     if_df = engobj._if_df.iloc[s.loc[s == True].index] \
-                                         .drop(columns=['ip6AddressList'])
+                                         .drop(columns=dropcol)
                 with ifcol:
                     st.info(f'Interfaces {label}')
                     st.dataframe(data=if_df, height=600)
