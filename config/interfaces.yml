@@ -89,6 +89,7 @@ apply:
         "logical-interface/[*]/name/[0]/data: logicalIfname",
         "logical-interface/[*]/if-config-flags: logicalIfflags",
         "logical-interface/[*]/address-family: afi",
+        "logical-interface/[*]/logical-interface-vgw-v4-mac/[9]/data: _gwMacaddr?|",
         ]'
 
       - command: show configuration routing-instances | display json
