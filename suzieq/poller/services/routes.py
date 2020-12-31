@@ -113,6 +113,8 @@ class RoutesService(Service):
             entry['active'] = entry['_activeTag'] in ['*', '@', '#']
 
             entry['metric'] = int(entry['metric'])
+            if entry.get('nexthopIps', '') == [None]:
+                entry['nexthopIps'] = ['']
             entry.pop('_localif')
             entry.pop('_activeTag')
 
