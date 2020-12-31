@@ -270,9 +270,14 @@ class InterfaceService(Service):
                 continue
 
             # Uninteresting logical interface
+            gwmacs = entry.get('_gwMacaddr', [])
             for i, ifname in enumerate(entry['logicalIfname']):
                 v4addresses = []
                 v6addresses = []
+                if len(gwmacs) >= i:
+                    macaddr = gwmacs[i]
+                else:
+                    macaddr = ''
                 if entry['afi'][i] is None:
                     continue
                 for x in entry['afi'][i]:
@@ -299,6 +304,7 @@ class InterfaceService(Service):
                              'type': 'logical',
                              'speed': entry['speed'],
                              'master': vrf,
+                             'macaddr': macaddr,
                              'adminState': 'up',
                              'description': entry['description'],
                              'statusChangeTimestamp':
