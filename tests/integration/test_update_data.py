@@ -289,7 +289,7 @@ class TestUpdate:
         nos = 'nxos'
 
         update_data(nos, f'{orig_dir}/tests/integration/sqcmds/{nos}-input/',
-                    orig_dir, tmp_path, number_of_devices='8')
+                    orig_dir, tmp_path, number_of_devices='14')
 
         dst_dir = f'{orig_dir}/tests/data/{nos}/parquet-out'
         git_del_dir(dst_dir)
