@@ -416,12 +416,16 @@ class PathObj(SqEngineObject):
                                          protocol, timestamp))
                 continue
 
+            if (not nhip or nhip == 'None') and iface:
+                addr = dest
+            else:
+                addr = nhip
             if iface.endswith('-v0'):
                 # Replace Cumulus' VRR entry with actual SVI
                 iface = iface.split('-v0')[0]
             # This first pass is to handle Cumulus symmetric EVPN routes
             arpdf = self._arpnd_df.query(f'hostname=="{device}" and '
-                                         f'ipAddress=="{nhip}" and '
+                                         f'ipAddress=="{addr}" and '
                                          f'oif=="{iface}"')
             if not arpdf.empty and arpdf.remote.all():
                 macdf = self._macsobj.get(namespace=self.namespace,
