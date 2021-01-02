@@ -3,44 +3,151 @@ tests:
 - command: bgp show --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: bgp show nxos
-  output: '[{"namespace": "nxos", "hostname": "spine1", "vrf": "default", "peer":
-    "10.0.0.11", "peerHostname": "leaf1", "state": "Established", "asn": 64520, "peerAsn":
-    64520, "v4PfxRx": 0, "estdTime": 1605988265384, "numChanges": 3, "timestamp":
-    1605989246384}, {"namespace": "nxos", "hostname": "spine1", "vrf": "default",
-    "peer": "10.0.0.12", "peerHostname": "leaf2", "state": "Established", "asn": 64520,
-    "peerAsn": 64520, "v4PfxRx": 0, "estdTime": 1605988268384, "numChanges": 3, "timestamp":
-    1605989246384}, {"namespace": "nxos", "hostname": "leaf1", "vrf": "default", "peer":
-    "10.0.0.21", "peerHostname": "spine1", "state": "Established", "asn": 64520, "peerAsn":
-    64520, "v4PfxRx": 0, "estdTime": 1605988265609, "numChanges": 1, "timestamp":
-    1605989246609}, {"namespace": "nxos", "hostname": "leaf1", "vrf": "default", "peer":
-    "10.0.0.22", "peerHostname": "spine2", "state": "Established", "asn": 64520, "peerAsn":
-    64520, "v4PfxRx": 0, "estdTime": 1605988265609, "numChanges": 1, "timestamp":
-    1605989246609}, {"namespace": "nxos", "hostname": "spine2", "vrf": "default",
-    "peer": "10.0.0.11", "peerHostname": "leaf1", "state": "Established", "asn": 64520,
-    "peerAsn": 64520, "v4PfxRx": 0, "estdTime": 1605988265661, "numChanges": 3, "timestamp":
-    1605989246661}, {"namespace": "nxos", "hostname": "spine2", "vrf": "default",
-    "peer": "10.0.0.12", "peerHostname": "leaf2", "state": "Established", "asn": 64520,
-    "peerAsn": 64520, "v4PfxRx": 0, "estdTime": 1605988266661, "numChanges": 3, "timestamp":
-    1605989246661}, {"namespace": "nxos", "hostname": "leaf2", "vrf": "default", "peer":
-    "10.0.0.21", "peerHostname": "spine1", "state": "Established", "asn": 64520, "peerAsn":
-    64520, "v4PfxRx": 0, "estdTime": 1605988268249, "numChanges": 1, "timestamp":
-    1605989247249}, {"namespace": "nxos", "hostname": "leaf2", "vrf": "default", "peer":
-    "10.0.0.22", "peerHostname": "spine2", "state": "Established", "asn": 64520, "peerAsn":
-    64520, "v4PfxRx": 0, "estdTime": 1605988267249, "numChanges": 1, "timestamp":
-    1605989247249}]'
+  output: '[{"namespace": "nxos", "hostname": "firewall01", "vrf": "default", "peer":
+    "eth2.4", "peerHostname": "exit02", "state": "Established", "asn": 65533, "peerAsn":
+    64520, "v4PfxRx": 6, "estdTime": 1609146468000, "numChanges": 1, "timestamp":
+    1609267307018}, {"namespace": "nxos", "hostname": "firewall01", "vrf": "default",
+    "peer": "eth2.3", "peerHostname": "exit02", "state": "Established", "asn": 65533,
+    "peerAsn": 64520, "v4PfxRx": 3, "estdTime": 1609146469000, "numChanges": 1, "timestamp":
+    1609267307018}, {"namespace": "nxos", "hostname": "firewall01", "vrf": "default",
+    "peer": "eth2.2", "peerHostname": "exit02", "state": "Established", "asn": 65533,
+    "peerAsn": 64520, "v4PfxRx": 0, "estdTime": 1609146469000, "numChanges": 1, "timestamp":
+    1609267307018}, {"namespace": "nxos", "hostname": "firewall01", "vrf": "default",
+    "peer": "eth1.4", "peerHostname": "exit01", "state": "Established", "asn": 65533,
+    "peerAsn": 64520, "v4PfxRx": 6, "estdTime": 1609146469000, "numChanges": 1, "timestamp":
+    1609267307018}, {"namespace": "nxos", "hostname": "firewall01", "vrf": "default",
+    "peer": "eth1.3", "peerHostname": "exit01", "state": "Established", "asn": 65533,
+    "peerAsn": 64520, "v4PfxRx": 3, "estdTime": 1609146468000, "numChanges": 1, "timestamp":
+    1609267307018}, {"namespace": "nxos", "hostname": "firewall01", "vrf": "default",
+    "peer": "eth1.2", "peerHostname": "exit01", "state": "Established", "asn": 65533,
+    "peerAsn": 64520, "v4PfxRx": 0, "estdTime": 1609146468000, "numChanges": 1, "timestamp":
+    1609267307018}, {"namespace": "nxos", "hostname": "dcedge01", "vrf": "default",
+    "peer": "169.254.127.1", "peerHostname": "exit01", "state": "Established", "asn":
+    65534, "peerAsn": 64520, "v4PfxRx": 3, "estdTime": 1607380483584, "numChanges":
+    0, "timestamp": 1609267308584}, {"namespace": "nxos", "hostname": "dcedge01",
+    "vrf": "default", "peer": "169.254.127.3", "peerHostname": "exit02", "state":
+    "Established", "asn": 65534, "peerAsn": 64520, "v4PfxRx": 3, "estdTime": 1607380485584,
+    "numChanges": 0, "timestamp": 1609267308584}, {"namespace": "nxos", "hostname":
+    "spine02", "vrf": "default", "peer": "10.0.0.32", "peerHostname": "exit02", "state":
+    "Established", "asn": 64520, "peerAsn": 64520, "v4PfxRx": 0, "estdTime": 1607380428219,
+    "numChanges": 1, "timestamp": 1609267312219}, {"namespace": "nxos", "hostname":
+    "spine02", "vrf": "default", "peer": "10.0.0.14", "peerHostname": "leaf04", "state":
+    "Established", "asn": 64520, "peerAsn": 64520, "v4PfxRx": 0, "estdTime": 1607380422219,
+    "numChanges": 1, "timestamp": 1609267312219}, {"namespace": "nxos", "hostname":
+    "spine02", "vrf": "default", "peer": "10.0.0.13", "peerHostname": "leaf03", "state":
+    "Established", "asn": 64520, "peerAsn": 64520, "v4PfxRx": 0, "estdTime": 1607381891219,
+    "numChanges": 3, "timestamp": 1609267312219}, {"namespace": "nxos", "hostname":
+    "spine02", "vrf": "default", "peer": "10.0.0.12", "peerHostname": "leaf02", "state":
+    "Established", "asn": 64520, "peerAsn": 64520, "v4PfxRx": 0, "estdTime": 1607380421219,
+    "numChanges": 1, "timestamp": 1609267312219}, {"namespace": "nxos", "hostname":
+    "spine02", "vrf": "default", "peer": "10.0.0.11", "peerHostname": "leaf01", "state":
+    "Established", "asn": 64520, "peerAsn": 64520, "v4PfxRx": 0, "estdTime": 1607380413219,
+    "numChanges": 1, "timestamp": 1609267312219}, {"namespace": "nxos", "hostname":
+    "spine02", "vrf": "default", "peer": "10.0.0.31", "peerHostname": "exit01", "state":
+    "Established", "asn": 64520, "peerAsn": 64520, "v4PfxRx": 0, "estdTime": 1607380424219,
+    "numChanges": 1, "timestamp": 1609267312219}, {"namespace": "nxos", "hostname":
+    "spine01", "vrf": "default", "peer": "10.0.0.32", "peerHostname": "exit02", "state":
+    "Established", "asn": 64520, "peerAsn": 64520, "v4PfxRx": 0, "estdTime": 1607380428346,
+    "numChanges": 1, "timestamp": 1609267312346}, {"namespace": "nxos", "hostname":
+    "spine01", "vrf": "default", "peer": "10.0.0.31", "peerHostname": "exit01", "state":
+    "Established", "asn": 64520, "peerAsn": 64520, "v4PfxRx": 0, "estdTime": 1607380422346,
+    "numChanges": 1, "timestamp": 1609267312346}, {"namespace": "nxos", "hostname":
+    "spine01", "vrf": "default", "peer": "10.0.0.14", "peerHostname": "leaf04", "state":
+    "Established", "asn": 64520, "peerAsn": 64520, "v4PfxRx": 0, "estdTime": 1607380425346,
+    "numChanges": 1, "timestamp": 1609267312346}, {"namespace": "nxos", "hostname":
+    "spine01", "vrf": "default", "peer": "10.0.0.13", "peerHostname": "leaf03", "state":
+    "Established", "asn": 64520, "peerAsn": 64520, "v4PfxRx": 0, "estdTime": 1607381891346,
+    "numChanges": 3, "timestamp": 1609267312346}, {"namespace": "nxos", "hostname":
+    "spine01", "vrf": "default", "peer": "10.0.0.12", "peerHostname": "leaf02", "state":
+    "Established", "asn": 64520, "peerAsn": 64520, "v4PfxRx": 0, "estdTime": 1607380421346,
+    "numChanges": 1, "timestamp": 1609267312346}, {"namespace": "nxos", "hostname":
+    "spine01", "vrf": "default", "peer": "10.0.0.11", "peerHostname": "leaf01", "state":
+    "Established", "asn": 64520, "peerAsn": 64520, "v4PfxRx": 0, "estdTime": 1607380418346,
+    "numChanges": 1, "timestamp": 1609267312346}, {"namespace": "nxos", "hostname":
+    "leaf02", "vrf": "default", "peer": "10.0.0.21", "peerHostname": "spine01", "state":
+    "Established", "asn": 64520, "peerAsn": 64520, "v4PfxRx": 0, "estdTime": 1607380420997,
+    "numChanges": 1, "timestamp": 1609267312997}, {"namespace": "nxos", "hostname":
+    "leaf02", "vrf": "default", "peer": "10.0.0.22", "peerHostname": "spine02", "state":
+    "Established", "asn": 64520, "peerAsn": 64520, "v4PfxRx": 0, "estdTime": 1607380421997,
+    "numChanges": 1, "timestamp": 1609267312997}, {"namespace": "nxos", "hostname":
+    "leaf04", "vrf": "default", "peer": "10.0.0.21", "peerHostname": "spine01", "state":
+    "Established", "asn": 64520, "peerAsn": 64520, "v4PfxRx": 0, "estdTime": 1607380426198,
+    "numChanges": 1, "timestamp": 1609267313198}, {"namespace": "nxos", "hostname":
+    "leaf04", "vrf": "default", "peer": "10.0.0.22", "peerHostname": "spine02", "state":
+    "Established", "asn": 64520, "peerAsn": 64520, "v4PfxRx": 0, "estdTime": 1607380423198,
+    "numChanges": 1, "timestamp": 1609267313198}, {"namespace": "nxos", "hostname":
+    "leaf01", "vrf": "default", "peer": "10.0.0.21", "peerHostname": "spine01", "state":
+    "Established", "asn": 64520, "peerAsn": 64520, "v4PfxRx": 0, "estdTime": 1607380419272,
+    "numChanges": 1, "timestamp": 1609267313272}, {"namespace": "nxos", "hostname":
+    "leaf01", "vrf": "default", "peer": "10.0.0.22", "peerHostname": "spine02", "state":
+    "Established", "asn": 64520, "peerAsn": 64520, "v4PfxRx": 0, "estdTime": 1607380414272,
+    "numChanges": 1, "timestamp": 1609267313272}, {"namespace": "nxos", "hostname":
+    "exit01", "vrf": "evpn-vrf", "peer": "169.254.254.6", "peerHostname": "firewall01",
+    "state": "Established", "asn": 64520, "peerAsn": 65533, "v4PfxRx": 0, "estdTime":
+    1609175271514, "numChanges": 13, "timestamp": 1609267313514}, {"namespace": "nxos",
+    "hostname": "exit01", "vrf": "default", "peer": "10.0.0.22", "peerHostname": "spine02",
+    "state": "Established", "asn": 64520, "peerAsn": 64520, "v4PfxRx": 0, "estdTime":
+    1607380424514, "numChanges": 1, "timestamp": 1609267313514}, {"namespace": "nxos",
+    "hostname": "exit01", "vrf": "default", "peer": "169.254.254.2", "peerHostname":
+    "firewall01", "state": "Established", "asn": 64520, "peerAsn": 65533, "v4PfxRx":
+    0, "estdTime": 1609175271514, "numChanges": 13, "timestamp": 1609267313514}, {"namespace":
+    "nxos", "hostname": "exit01", "vrf": "internet-vrf", "peer": "169.254.127.0",
+    "peerHostname": "dcedge01", "state": "Established", "asn": 64520, "peerAsn": 65534,
+    "v4PfxRx": 6, "estdTime": 1607380522514, "numChanges": 1, "timestamp": 1609267313514},
+    {"namespace": "nxos", "hostname": "exit01", "vrf": "default", "peer": "10.0.0.21",
+    "peerHostname": "spine01", "state": "Established", "asn": 64520, "peerAsn": 64520,
+    "v4PfxRx": 0, "estdTime": 1607380422514, "numChanges": 1, "timestamp": 1609267313514},
+    {"namespace": "nxos", "hostname": "exit01", "vrf": "internet-vrf", "peer": "169.254.254.10",
+    "peerHostname": "firewall01", "state": "Established", "asn": 64520, "peerAsn":
+    65533, "v4PfxRx": 9, "estdTime": 1609175272514, "numChanges": 13, "timestamp":
+    1609267313514}, {"namespace": "nxos", "hostname": "exit02", "vrf": "internet-vrf",
+    "peer": "169.254.253.10", "peerHostname": "firewall01", "state": "Established",
+    "asn": 64520, "peerAsn": 65533, "v4PfxRx": 9, "estdTime": 1609175272017, "numChanges":
+    13, "timestamp": 1609267314017}, {"namespace": "nxos", "hostname": "exit02", "vrf":
+    "internet-vrf", "peer": "169.254.127.2", "peerHostname": "dcedge01", "state":
+    "Established", "asn": 64520, "peerAsn": 65534, "v4PfxRx": 6, "estdTime": 1607380524017,
+    "numChanges": 1, "timestamp": 1609267314017}, {"namespace": "nxos", "hostname":
+    "exit02", "vrf": "evpn-vrf", "peer": "169.254.253.6", "peerHostname": "firewall01",
+    "state": "Established", "asn": 64520, "peerAsn": 65533, "v4PfxRx": 0, "estdTime":
+    1609175273017, "numChanges": 13, "timestamp": 1609267314017}, {"namespace": "nxos",
+    "hostname": "exit02", "vrf": "default", "peer": "169.254.253.2", "peerHostname":
+    "firewall01", "state": "Established", "asn": 64520, "peerAsn": 65533, "v4PfxRx":
+    0, "estdTime": 1609175273017, "numChanges": 13, "timestamp": 1609267314017}, {"namespace":
+    "nxos", "hostname": "exit02", "vrf": "default", "peer": "10.0.0.22", "peerHostname":
+    "spine02", "state": "Established", "asn": 64520, "peerAsn": 64520, "v4PfxRx":
+    0, "estdTime": 1607380429017, "numChanges": 1, "timestamp": 1609267314017}, {"namespace":
+    "nxos", "hostname": "exit02", "vrf": "default", "peer": "10.0.0.21", "peerHostname":
+    "spine01", "state": "Established", "asn": 64520, "peerAsn": 64520, "v4PfxRx":
+    0, "estdTime": 1607380429017, "numChanges": 1, "timestamp": 1609267314017}, {"namespace":
+    "nxos", "hostname": "leaf03", "vrf": "default", "peer": "10.0.0.22", "peerHostname":
+    "spine02", "state": "Established", "asn": 64520, "peerAsn": 64520, "v4PfxRx":
+    0, "estdTime": 1607381892138, "numChanges": 1, "timestamp": 1609267315138}, {"namespace":
+    "nxos", "hostname": "leaf03", "vrf": "default", "peer": "10.0.0.21", "peerHostname":
+    "spine01", "state": "Established", "asn": 64520, "peerAsn": 64520, "v4PfxRx":
+    0, "estdTime": 1607381892138, "numChanges": 1, "timestamp": 1609267315138}]'
 - command: bgp show --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: bgp show nxos
-  output: '[{"hostname": "spine1"}, {"hostname": "spine1"}, {"hostname": "leaf1"},
-    {"hostname": "leaf1"}, {"hostname": "spine2"}, {"hostname": "spine2"}, {"hostname":
-    "leaf2"}, {"hostname": "leaf2"}]'
+  output: '[{"hostname": "firewall01"}, {"hostname": "firewall01"}, {"hostname": "firewall01"},
+    {"hostname": "firewall01"}, {"hostname": "firewall01"}, {"hostname": "firewall01"},
+    {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}]'
 - command: bgp summarize --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: bgp summarize nxos
-  output: '{"nxos": {"deviceCnt": 4, "totalPeerCnt": 8, "uniqueAsnCnt": 1, "uniqueVrfsCnt":
-    1, "failedPeerCnt": 0, "upTimeStat": [978000, 981000, 980500], "v4PfxRxStat":
-    [0, 0, 0], "v6PfxRxStat": [0, 0, 0], "evpnPfxRxStat": [5, 5, 5], "updatesRxStat":
-    [7, 10, 8.5], "updatesTxStat": [7, 11, 9], "activeAfiSafiList": ["ipv4", "evpn"]}}'
+  output: '{"nxos": {"deviceCnt": 10, "totalPeerCnt": 40, "uniqueAsnCnt": 3, "uniqueVrfsCnt":
+    3, "failedPeerCnt": 0, "upTimeStat": [92041000, 1886899000, 1886854500], "v4PfxRxStat":
+    [0, 9, 0], "v6PfxRxStat": [0, 0, 0], "evpnPfxRxStat": [0, 30, 4.5], "updatesRxStat":
+    [1, 11112, 1406], "updatesTxStat": [4, 11112, 1411], "activeAfiSafiList": ["ipv4",
+    "evpn"]}}'
 - command: bgp unique --format=json
   data-directory: tests/data/nxos/parquet-out/
   error:
@@ -49,39 +156,232 @@ tests:
 - command: bgp unique --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: bgp unique nxos
-  output: '[{"hostname": "leaf1", "count": 2}, {"hostname": "leaf2", "count": 2},
-    {"hostname": "spine1", "count": 2}, {"hostname": "spine2", "count": 2}]'
+  output: '[{"hostname": "dcedge01", "count": 2}, {"hostname": "exit01", "count":
+    6}, {"hostname": "exit02", "count": 6}, {"hostname": "firewall01", "count": 6},
+    {"hostname": "leaf01", "count": 2}, {"hostname": "leaf02", "count": 2}, {"hostname":
+    "leaf03", "count": 2}, {"hostname": "leaf04", "count": 2}, {"hostname": "spine01",
+    "count": 6}, {"hostname": "spine02", "count": 6}]'
 - command: bgp assert --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: bgp assert nxos
-  output: '[{"namespace": "nxos", "hostname": "spine1", "vrf": "default", "peer":
-    "10.0.0.11", "asn": 64520, "peerAsn": 64520, "state": "Established", "peerHostname":
-    "leaf1", "vrfPeer": "default", "peerPeer": "10.0.0.21", "asnPeer": 64520, "peerAsnPeer":
-    64520, "assert": "pass", "assertReason": "-", "timestamp": 1605989246384}, {"namespace":
-    "nxos", "hostname": "spine1", "vrf": "default", "peer": "10.0.0.12", "asn": 64520,
-    "peerAsn": 64520, "state": "Established", "peerHostname": "leaf2", "vrfPeer":
-    "default", "peerPeer": "10.0.0.21", "asnPeer": 64520, "peerAsnPeer": 64520, "assert":
-    "pass", "assertReason": "-", "timestamp": 1605989246384}, {"namespace": "nxos",
-    "hostname": "leaf1", "vrf": "default", "peer": "10.0.0.21", "asn": 64520, "peerAsn":
-    64520, "state": "Established", "peerHostname": "spine1", "vrfPeer": "default",
-    "peerPeer": "10.0.0.11", "asnPeer": 64520, "peerAsnPeer": 64520, "assert": "pass",
-    "assertReason": "-", "timestamp": 1605989246609}, {"namespace": "nxos", "hostname":
-    "leaf1", "vrf": "default", "peer": "10.0.0.22", "asn": 64520, "peerAsn": 64520,
-    "state": "Established", "peerHostname": "spine2", "vrfPeer": "default", "peerPeer":
-    "10.0.0.11", "asnPeer": 64520, "peerAsnPeer": 64520, "assert": "pass", "assertReason":
-    "-", "timestamp": 1605989246609}, {"namespace": "nxos", "hostname": "spine2",
-    "vrf": "default", "peer": "10.0.0.11", "asn": 64520, "peerAsn": 64520, "state":
-    "Established", "peerHostname": "leaf1", "vrfPeer": "default", "peerPeer": "10.0.0.21",
+  output: '[{"namespace": "nxos", "hostname": "firewall01", "vrf": "default", "peer":
+    "eth2.4", "asn": 65533, "peerAsn": 64520, "state": "Established", "peerHostname":
+    "exit02", "vrfPeer": "internet-vrf", "peerPeer": "169.254.253.10", "asnPeer":
+    64520, "peerAsnPeer": 65533, "assert": "pass", "assertReason": "-", "timestamp":
+    1609267307018}, {"namespace": "nxos", "hostname": "firewall01", "vrf": "default",
+    "peer": "eth2.3", "asn": 65533, "peerAsn": 64520, "state": "Established", "peerHostname":
+    "exit02", "vrfPeer": "evpn-vrf", "peerPeer": "169.254.253.6", "asnPeer": 64520,
+    "peerAsnPeer": 65533, "assert": "pass", "assertReason": "-", "timestamp": 1609267307018},
+    {"namespace": "nxos", "hostname": "firewall01", "vrf": "default", "peer": "eth2.2",
+    "asn": 65533, "peerAsn": 64520, "state": "Established", "peerHostname": "exit02",
+    "vrfPeer": "default", "peerPeer": "169.254.253.2", "asnPeer": 64520, "peerAsnPeer":
+    65533, "assert": "pass", "assertReason": "-", "timestamp": 1609267307018}, {"namespace":
+    "nxos", "hostname": "firewall01", "vrf": "default", "peer": "eth1.4", "asn": 65533,
+    "peerAsn": 64520, "state": "Established", "peerHostname": "exit01", "vrfPeer":
+    "internet-vrf", "peerPeer": "169.254.254.10", "asnPeer": 64520, "peerAsnPeer":
+    65533, "assert": "pass", "assertReason": "-", "timestamp": 1609267307018}, {"namespace":
+    "nxos", "hostname": "firewall01", "vrf": "default", "peer": "eth1.3", "asn": 65533,
+    "peerAsn": 64520, "state": "Established", "peerHostname": "exit01", "vrfPeer":
+    "evpn-vrf", "peerPeer": "169.254.254.6", "asnPeer": 64520, "peerAsnPeer": 65533,
+    "assert": "pass", "assertReason": "-", "timestamp": 1609267307018}, {"namespace":
+    "nxos", "hostname": "firewall01", "vrf": "default", "peer": "eth1.2", "asn": 65533,
+    "peerAsn": 64520, "state": "Established", "peerHostname": "exit01", "vrfPeer":
+    "default", "peerPeer": "169.254.254.2", "asnPeer": 64520, "peerAsnPeer": 65533,
+    "assert": "pass", "assertReason": "-", "timestamp": 1609267307018}, {"namespace":
+    "nxos", "hostname": "dcedge01", "vrf": "default", "peer": "169.254.127.1", "asn":
+    65534, "peerAsn": 64520, "state": "Established", "peerHostname": "exit01", "vrfPeer":
+    "internet-vrf", "peerPeer": "169.254.127.0", "asnPeer": 64520, "peerAsnPeer":
+    65534, "assert": "pass", "assertReason": "-", "timestamp": 1609267308584}, {"namespace":
+    "nxos", "hostname": "dcedge01", "vrf": "default", "peer": "169.254.127.3", "asn":
+    65534, "peerAsn": 64520, "state": "Established", "peerHostname": "exit02", "vrfPeer":
+    "internet-vrf", "peerPeer": "169.254.127.2", "asnPeer": 64520, "peerAsnPeer":
+    65534, "assert": "pass", "assertReason": "-", "timestamp": 1609267308584}, {"namespace":
+    "nxos", "hostname": "spine02", "vrf": "default", "peer": "10.0.0.32", "asn": 64520,
+    "peerAsn": 64520, "state": "Established", "peerHostname": "exit02", "vrfPeer":
+    "default", "peerPeer": "10.0.0.22", "asnPeer": 64520, "peerAsnPeer": 64520, "assert":
+    "pass", "assertReason": "-", "timestamp": 1609267312219}, {"namespace": "nxos",
+    "hostname": "spine02", "vrf": "default", "peer": "10.0.0.14", "asn": 64520, "peerAsn":
+    64520, "state": "Established", "peerHostname": "leaf04", "vrfPeer": "default",
+    "peerPeer": "10.0.0.21", "asnPeer": 64520, "peerAsnPeer": 64520, "assert": "pass",
+    "assertReason": "-", "timestamp": 1609267312219}, {"namespace": "nxos", "hostname":
+    "spine02", "vrf": "default", "peer": "10.0.0.13", "asn": 64520, "peerAsn": 64520,
+    "state": "Established", "peerHostname": "leaf03", "vrfPeer": "default", "peerPeer":
+    "10.0.0.22", "asnPeer": 64520, "peerAsnPeer": 64520, "assert": "pass", "assertReason":
+    "-", "timestamp": 1609267312219}, {"namespace": "nxos", "hostname": "spine02",
+    "vrf": "default", "peer": "10.0.0.12", "asn": 64520, "peerAsn": 64520, "state":
+    "Established", "peerHostname": "leaf02", "vrfPeer": "default", "peerPeer": "10.0.0.21",
     "asnPeer": 64520, "peerAsnPeer": 64520, "assert": "pass", "assertReason": "-",
-    "timestamp": 1605989246661}, {"namespace": "nxos", "hostname": "spine2", "vrf":
-    "default", "peer": "10.0.0.12", "asn": 64520, "peerAsn": 64520, "state": "Established",
-    "peerHostname": "leaf2", "vrfPeer": "default", "peerPeer": "10.0.0.21", "asnPeer":
+    "timestamp": 1609267312219}, {"namespace": "nxos", "hostname": "spine02", "vrf":
+    "default", "peer": "10.0.0.11", "asn": 64520, "peerAsn": 64520, "state": "Established",
+    "peerHostname": "leaf01", "vrfPeer": "default", "peerPeer": "10.0.0.21", "asnPeer":
     64520, "peerAsnPeer": 64520, "assert": "pass", "assertReason": "-", "timestamp":
-    1605989246661}, {"namespace": "nxos", "hostname": "leaf2", "vrf": "default", "peer":
-    "10.0.0.21", "asn": 64520, "peerAsn": 64520, "state": "Established", "peerHostname":
-    "spine1", "vrfPeer": "default", "peerPeer": "10.0.0.11", "asnPeer": 64520, "peerAsnPeer":
-    64520, "assert": "pass", "assertReason": "-", "timestamp": 1605989247249}, {"namespace":
-    "nxos", "hostname": "leaf2", "vrf": "default", "peer": "10.0.0.22", "asn": 64520,
-    "peerAsn": 64520, "state": "Established", "peerHostname": "spine2", "vrfPeer":
-    "default", "peerPeer": "10.0.0.11", "asnPeer": 64520, "peerAsnPeer": 64520, "assert":
-    "pass", "assertReason": "-", "timestamp": 1605989247249}]'
+    1609267312219}, {"namespace": "nxos", "hostname": "spine02", "vrf": "default",
+    "peer": "10.0.0.31", "asn": 64520, "peerAsn": 64520, "state": "Established", "peerHostname":
+    "exit01", "vrfPeer": "default", "peerPeer": "10.0.0.22", "asnPeer": 64520, "peerAsnPeer":
+    64520, "assert": "pass", "assertReason": "-", "timestamp": 1609267312219}, {"namespace":
+    "nxos", "hostname": "spine01", "vrf": "default", "peer": "10.0.0.32", "asn": 64520,
+    "peerAsn": 64520, "state": "Established", "peerHostname": "exit02", "vrfPeer":
+    "default", "peerPeer": "10.0.0.22", "asnPeer": 64520, "peerAsnPeer": 64520, "assert":
+    "pass", "assertReason": "-", "timestamp": 1609267312346}, {"namespace": "nxos",
+    "hostname": "spine01", "vrf": "default", "peer": "10.0.0.31", "asn": 64520, "peerAsn":
+    64520, "state": "Established", "peerHostname": "exit01", "vrfPeer": "default",
+    "peerPeer": "10.0.0.22", "asnPeer": 64520, "peerAsnPeer": 64520, "assert": "pass",
+    "assertReason": "-", "timestamp": 1609267312346}, {"namespace": "nxos", "hostname":
+    "spine01", "vrf": "default", "peer": "10.0.0.14", "asn": 64520, "peerAsn": 64520,
+    "state": "Established", "peerHostname": "leaf04", "vrfPeer": "default", "peerPeer":
+    "10.0.0.21", "asnPeer": 64520, "peerAsnPeer": 64520, "assert": "pass", "assertReason":
+    "-", "timestamp": 1609267312346}, {"namespace": "nxos", "hostname": "spine01",
+    "vrf": "default", "peer": "10.0.0.13", "asn": 64520, "peerAsn": 64520, "state":
+    "Established", "peerHostname": "leaf03", "vrfPeer": "default", "peerPeer": "10.0.0.22",
+    "asnPeer": 64520, "peerAsnPeer": 64520, "assert": "pass", "assertReason": "-",
+    "timestamp": 1609267312346}, {"namespace": "nxos", "hostname": "spine01", "vrf":
+    "default", "peer": "10.0.0.12", "asn": 64520, "peerAsn": 64520, "state": "Established",
+    "peerHostname": "leaf02", "vrfPeer": "default", "peerPeer": "10.0.0.21", "asnPeer":
+    64520, "peerAsnPeer": 64520, "assert": "pass", "assertReason": "-", "timestamp":
+    1609267312346}, {"namespace": "nxos", "hostname": "spine01", "vrf": "default",
+    "peer": "10.0.0.11", "asn": 64520, "peerAsn": 64520, "state": "Established", "peerHostname":
+    "leaf01", "vrfPeer": "default", "peerPeer": "10.0.0.21", "asnPeer": 64520, "peerAsnPeer":
+    64520, "assert": "pass", "assertReason": "-", "timestamp": 1609267312346}, {"namespace":
+    "nxos", "hostname": "leaf02", "vrf": "default", "peer": "10.0.0.21", "asn": 64520,
+    "peerAsn": 64520, "state": "Established", "peerHostname": "spine01", "vrfPeer":
+    "default", "peerPeer": "10.0.0.32", "asnPeer": 64520, "peerAsnPeer": 64520, "assert":
+    "pass", "assertReason": "-", "timestamp": 1609267312997}, {"namespace": "nxos",
+    "hostname": "leaf02", "vrf": "default", "peer": "10.0.0.22", "asn": 64520, "peerAsn":
+    64520, "state": "Established", "peerHostname": "spine02", "vrfPeer": "default",
+    "peerPeer": "10.0.0.32", "asnPeer": 64520, "peerAsnPeer": 64520, "assert": "pass",
+    "assertReason": "-", "timestamp": 1609267312997}, {"namespace": "nxos", "hostname":
+    "leaf04", "vrf": "default", "peer": "10.0.0.21", "asn": 64520, "peerAsn": 64520,
+    "state": "Established", "peerHostname": "spine01", "vrfPeer": "default", "peerPeer":
+    "10.0.0.32", "asnPeer": 64520, "peerAsnPeer": 64520, "assert": "pass", "assertReason":
+    "-", "timestamp": 1609267313198}, {"namespace": "nxos", "hostname": "leaf04",
+    "vrf": "default", "peer": "10.0.0.22", "asn": 64520, "peerAsn": 64520, "state":
+    "Established", "peerHostname": "spine02", "vrfPeer": "default", "peerPeer": "10.0.0.32",
+    "asnPeer": 64520, "peerAsnPeer": 64520, "assert": "pass", "assertReason": "-",
+    "timestamp": 1609267313198}, {"namespace": "nxos", "hostname": "leaf01", "vrf":
+    "default", "peer": "10.0.0.21", "asn": 64520, "peerAsn": 64520, "state": "Established",
+    "peerHostname": "spine01", "vrfPeer": "default", "peerPeer": "10.0.0.32", "asnPeer":
+    64520, "peerAsnPeer": 64520, "assert": "pass", "assertReason": "-", "timestamp":
+    1609267313272}, {"namespace": "nxos", "hostname": "leaf01", "vrf": "default",
+    "peer": "10.0.0.22", "asn": 64520, "peerAsn": 64520, "state": "Established", "peerHostname":
+    "spine02", "vrfPeer": "default", "peerPeer": "10.0.0.32", "asnPeer": 64520, "peerAsnPeer":
+    64520, "assert": "pass", "assertReason": "-", "timestamp": 1609267313272}, {"namespace":
+    "nxos", "hostname": "exit01", "vrf": "evpn-vrf", "peer": "169.254.254.6", "asn":
+    64520, "peerAsn": 65533, "state": "Established", "peerHostname": "firewall01",
+    "vrfPeer": "default", "peerPeer": "eth1.3", "asnPeer": 65533, "peerAsnPeer": 64520,
+    "assert": "pass", "assertReason": "-", "timestamp": 1609267313514}, {"namespace":
+    "nxos", "hostname": "exit01", "vrf": "default", "peer": "10.0.0.22", "asn": 64520,
+    "peerAsn": 64520, "state": "Established", "peerHostname": "spine02", "vrfPeer":
+    "default", "peerPeer": "10.0.0.32", "asnPeer": 64520, "peerAsnPeer": 64520, "assert":
+    "pass", "assertReason": "-", "timestamp": 1609267313514}, {"namespace": "nxos",
+    "hostname": "exit01", "vrf": "default", "peer": "169.254.254.2", "asn": 64520,
+    "peerAsn": 65533, "state": "Established", "peerHostname": "firewall01", "vrfPeer":
+    "default", "peerPeer": "eth1.2", "asnPeer": 65533, "peerAsnPeer": 64520, "assert":
+    "pass", "assertReason": "-", "timestamp": 1609267313514}, {"namespace": "nxos",
+    "hostname": "exit01", "vrf": "internet-vrf", "peer": "169.254.127.0", "asn": 64520,
+    "peerAsn": 65534, "state": "Established", "peerHostname": "dcedge01", "vrfPeer":
+    "default", "peerPeer": "169.254.127.1", "asnPeer": 65534, "peerAsnPeer": 64520,
+    "assert": "pass", "assertReason": "-", "timestamp": 1609267313514}, {"namespace":
+    "nxos", "hostname": "exit01", "vrf": "default", "peer": "10.0.0.21", "asn": 64520,
+    "peerAsn": 64520, "state": "Established", "peerHostname": "spine01", "vrfPeer":
+    "default", "peerPeer": "10.0.0.32", "asnPeer": 64520, "peerAsnPeer": 64520, "assert":
+    "pass", "assertReason": "-", "timestamp": 1609267313514}, {"namespace": "nxos",
+    "hostname": "exit01", "vrf": "internet-vrf", "peer": "169.254.254.10", "asn":
+    64520, "peerAsn": 65533, "state": "Established", "peerHostname": "firewall01",
+    "vrfPeer": "default", "peerPeer": "eth1.4", "asnPeer": 65533, "peerAsnPeer": 64520,
+    "assert": "pass", "assertReason": "-", "timestamp": 1609267313514}, {"namespace":
+    "nxos", "hostname": "exit02", "vrf": "internet-vrf", "peer": "169.254.253.10",
+    "asn": 64520, "peerAsn": 65533, "state": "Established", "peerHostname": "firewall01",
+    "vrfPeer": "default", "peerPeer": "eth2.4", "asnPeer": 65533, "peerAsnPeer": 64520,
+    "assert": "pass", "assertReason": "-", "timestamp": 1609267314017}, {"namespace":
+    "nxos", "hostname": "exit02", "vrf": "internet-vrf", "peer": "169.254.127.2",
+    "asn": 64520, "peerAsn": 65534, "state": "Established", "peerHostname": "dcedge01",
+    "vrfPeer": "default", "peerPeer": "169.254.127.3", "asnPeer": 65534, "peerAsnPeer":
+    64520, "assert": "pass", "assertReason": "-", "timestamp": 1609267314017}, {"namespace":
+    "nxos", "hostname": "exit02", "vrf": "evpn-vrf", "peer": "169.254.253.6", "asn":
+    64520, "peerAsn": 65533, "state": "Established", "peerHostname": "firewall01",
+    "vrfPeer": "default", "peerPeer": "eth2.3", "asnPeer": 65533, "peerAsnPeer": 64520,
+    "assert": "pass", "assertReason": "-", "timestamp": 1609267314017}, {"namespace":
+    "nxos", "hostname": "exit02", "vrf": "default", "peer": "169.254.253.2", "asn":
+    64520, "peerAsn": 65533, "state": "Established", "peerHostname": "firewall01",
+    "vrfPeer": "default", "peerPeer": "eth2.2", "asnPeer": 65533, "peerAsnPeer": 64520,
+    "assert": "pass", "assertReason": "-", "timestamp": 1609267314017}, {"namespace":
+    "nxos", "hostname": "exit02", "vrf": "default", "peer": "10.0.0.22", "asn": 64520,
+    "peerAsn": 64520, "state": "Established", "peerHostname": "spine02", "vrfPeer":
+    "default", "peerPeer": "10.0.0.32", "asnPeer": 64520, "peerAsnPeer": 64520, "assert":
+    "pass", "assertReason": "-", "timestamp": 1609267314017}, {"namespace": "nxos",
+    "hostname": "exit02", "vrf": "default", "peer": "10.0.0.21", "asn": 64520, "peerAsn":
+    64520, "state": "Established", "peerHostname": "spine01", "vrfPeer": "default",
+    "peerPeer": "10.0.0.32", "asnPeer": 64520, "peerAsnPeer": 64520, "assert": "pass",
+    "assertReason": "-", "timestamp": 1609267314017}, {"namespace": "nxos", "hostname":
+    "leaf03", "vrf": "default", "peer": "10.0.0.22", "asn": 64520, "peerAsn": 64520,
+    "state": "Established", "peerHostname": "spine02", "vrfPeer": "default", "peerPeer":
+    "10.0.0.32", "asnPeer": 64520, "peerAsnPeer": 64520, "assert": "pass", "assertReason":
+    "-", "timestamp": 1609267315138}, {"namespace": "nxos", "hostname": "leaf03",
+    "vrf": "default", "peer": "10.0.0.21", "asn": 64520, "peerAsn": 64520, "state":
+    "Established", "peerHostname": "spine01", "vrfPeer": "default", "peerPeer": "10.0.0.32",
+    "asnPeer": 64520, "peerAsnPeer": 64520, "assert": "pass", "assertReason": "-",
+    "timestamp": 1609267315138}]'
+- command: bgp show --state=NotEstd --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: bgp show nxos filter
+  output: '[]'
+- command: bgp show --vrf=evpn-vrf --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: bgp show nxos filter
+  output: '[{"namespace": "nxos", "hostname": "exit01", "vrf": "evpn-vrf", "peer":
+    "169.254.254.6", "peerHostname": "firewall01", "state": "Established", "asn":
+    64520, "peerAsn": 65533, "v4PfxRx": 0, "estdTime": 1609175271514, "numChanges":
+    13, "timestamp": 1609267313514}, {"namespace": "nxos", "hostname": "exit02", "vrf":
+    "evpn-vrf", "peer": "169.254.253.6", "peerHostname": "firewall01", "state": "Established",
+    "asn": 64520, "peerAsn": 65533, "v4PfxRx": 0, "estdTime": 1609175273017, "numChanges":
+    13, "timestamp": 1609267314017}]'
+- command: bgp show --peer=10.0.0.14 --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: bgp show nxos filter
+  output: '[{"namespace": "nxos", "hostname": "spine02", "vrf": "default", "peer":
+    "10.0.0.14", "peerHostname": "leaf04", "state": "Established", "asn": 64520, "peerAsn":
+    64520, "v4PfxRx": 0, "estdTime": 1607380422219, "numChanges": 1, "timestamp":
+    1609267312219}, {"namespace": "nxos", "hostname": "spine01", "vrf": "default",
+    "peer": "10.0.0.14", "peerHostname": "leaf04", "state": "Established", "asn":
+    64520, "peerAsn": 64520, "v4PfxRx": 0, "estdTime": 1607380425346, "numChanges":
+    1, "timestamp": 1609267312346}]'
+- command: bgp show --peer='10.0.0.21 10.0.0.22' --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: bgp show nxos filter
+  output: '[{"namespace": "nxos", "hostname": "leaf02", "vrf": "default", "peer":
+    "10.0.0.21", "peerHostname": "spine01", "state": "Established", "asn": 64520,
+    "peerAsn": 64520, "v4PfxRx": 0, "estdTime": 1607380420997, "numChanges": 1, "timestamp":
+    1609267312997}, {"namespace": "nxos", "hostname": "leaf02", "vrf": "default",
+    "peer": "10.0.0.22", "peerHostname": "spine02", "state": "Established", "asn":
+    64520, "peerAsn": 64520, "v4PfxRx": 0, "estdTime": 1607380421997, "numChanges":
+    1, "timestamp": 1609267312997}, {"namespace": "nxos", "hostname": "leaf04", "vrf":
+    "default", "peer": "10.0.0.21", "peerHostname": "spine01", "state": "Established",
+    "asn": 64520, "peerAsn": 64520, "v4PfxRx": 0, "estdTime": 1607380426198, "numChanges":
+    1, "timestamp": 1609267313198}, {"namespace": "nxos", "hostname": "leaf04", "vrf":
+    "default", "peer": "10.0.0.22", "peerHostname": "spine02", "state": "Established",
+    "asn": 64520, "peerAsn": 64520, "v4PfxRx": 0, "estdTime": 1607380423198, "numChanges":
+    1, "timestamp": 1609267313198}, {"namespace": "nxos", "hostname": "leaf01", "vrf":
+    "default", "peer": "10.0.0.21", "peerHostname": "spine01", "state": "Established",
+    "asn": 64520, "peerAsn": 64520, "v4PfxRx": 0, "estdTime": 1607380419272, "numChanges":
+    1, "timestamp": 1609267313272}, {"namespace": "nxos", "hostname": "leaf01", "vrf":
+    "default", "peer": "10.0.0.22", "peerHostname": "spine02", "state": "Established",
+    "asn": 64520, "peerAsn": 64520, "v4PfxRx": 0, "estdTime": 1607380414272, "numChanges":
+    1, "timestamp": 1609267313272}, {"namespace": "nxos", "hostname": "exit01", "vrf":
+    "default", "peer": "10.0.0.22", "peerHostname": "spine02", "state": "Established",
+    "asn": 64520, "peerAsn": 64520, "v4PfxRx": 0, "estdTime": 1607380424514, "numChanges":
+    1, "timestamp": 1609267313514}, {"namespace": "nxos", "hostname": "exit01", "vrf":
+    "default", "peer": "10.0.0.21", "peerHostname": "spine01", "state": "Established",
+    "asn": 64520, "peerAsn": 64520, "v4PfxRx": 0, "estdTime": 1607380422514, "numChanges":
+    1, "timestamp": 1609267313514}, {"namespace": "nxos", "hostname": "exit02", "vrf":
+    "default", "peer": "10.0.0.22", "peerHostname": "spine02", "state": "Established",
+    "asn": 64520, "peerAsn": 64520, "v4PfxRx": 0, "estdTime": 1607380429017, "numChanges":
+    1, "timestamp": 1609267314017}, {"namespace": "nxos", "hostname": "exit02", "vrf":
+    "default", "peer": "10.0.0.21", "peerHostname": "spine01", "state": "Established",
+    "asn": 64520, "peerAsn": 64520, "v4PfxRx": 0, "estdTime": 1607380429017, "numChanges":
+    1, "timestamp": 1609267314017}, {"namespace": "nxos", "hostname": "leaf03", "vrf":
+    "default", "peer": "10.0.0.22", "peerHostname": "spine02", "state": "Established",
+    "asn": 64520, "peerAsn": 64520, "v4PfxRx": 0, "estdTime": 1607381892138, "numChanges":
+    1, "timestamp": 1609267315138}, {"namespace": "nxos", "hostname": "leaf03", "vrf":
+    "default", "peer": "10.0.0.21", "peerHostname": "spine01", "state": "Established",
+    "asn": 64520, "peerAsn": 64520, "v4PfxRx": 0, "estdTime": 1607381892138, "numChanges":
+    1, "timestamp": 1609267315138}]'
