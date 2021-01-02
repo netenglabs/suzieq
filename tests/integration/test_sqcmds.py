@@ -336,7 +336,11 @@ def _test_sqcmds(testvar, context_config):
         ignore_cols = []
 
     if 'output' in testvar:
-        expected_df = pd.read_json(testvar['output'].strip())
+        # pandas uses ujson and needs to escape "/" in any string its trying
+        # to decode. This is true in the case of NXOS' LLDP description which
+        # contains a URL causing read_json to abort with weird error messages.
+        expected_df = pd.read_json(
+            testvar['output'].strip().replace('/', '\/'))
 
         try:
             got_df = pd.read_json(output.decode('utf8').strip())
