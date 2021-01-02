@@ -194,12 +194,14 @@ class OspfObj(SqEngineObject):
 
         # df is a dataframe with each row containing the routerId and the
         # corresponding list of hostnames with that routerId. In a good
-        # configuration, the list must have exactly one entry
-        ospf_df['assertReason'] = (
-            ospf_df.merge(df, on=["routerId"], how="outer")
-            .apply(lambda x: ["duplicate routerId {}".format(
-                x["hostname_y"])]
-                if len(x['hostname_y']) != 1 else [], axis=1))
+        # configuration, the list must have exactly one entry.
+        if not df.empty:
+            # This check is because we don't get routerID with Arista boxes
+            ospf_df['assertReason'] = (
+                ospf_df.merge(df, on=["routerId"], how="outer")
+                .apply(lambda x: ["duplicate routerId {}".format(
+                    x["hostname_y"])]
+                    if len(x['hostname_y']) != 1 else [], axis=1))
 
         # Now  peering match
         lldpobj = LldpObj(context=self.ctxt)
