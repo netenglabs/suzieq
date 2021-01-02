@@ -3,65 +3,97 @@ tests:
 - command: vlan show --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: vlan show eos
-  output: '[{"namespace": "eos", "hostname": "leaf01", "vlanName": "vlan1", "state":
-    "active", "interfaces": ["Ethernet3", "Ethernet4", "PeerEthernet4"], "vlan": 1,
-    "timestamp": 1606001635994}, {"namespace": "eos", "hostname": "leaf01", "vlanName":
-    "vlan24", "state": "active", "interfaces": ["Cpu", "Port-Channel2", "Ethernet3"],
-    "vlan": 24, "timestamp": 1606001635994}, {"namespace": "eos", "hostname": "leaf01",
-    "vlanName": "vlan13", "state": "active", "interfaces": ["Ethernet3", "Port-Channel1",
-    "Cpu"], "vlan": 13, "timestamp": 1606001635994}, {"namespace": "eos", "hostname":
-    "leaf01", "vlanName": "vlan4094", "state": "active", "interfaces": ["Cpu", "Ethernet3"],
-    "vlan": 4094, "timestamp": 1606001635994}, {"namespace": "eos", "hostname": "leaf02",
-    "vlanName": "vlan4094", "state": "active", "interfaces": ["Cpu", "Ethernet3"],
-    "vlan": 4094, "timestamp": 1606001636012}, {"namespace": "eos", "hostname": "leaf02",
-    "vlanName": "vlan24", "state": "active", "interfaces": ["Cpu", "Port-Channel2",
-    "Ethernet3"], "vlan": 24, "timestamp": 1606001636012}, {"namespace": "eos", "hostname":
-    "leaf02", "vlanName": "vlan13", "state": "active", "interfaces": ["Ethernet3",
-    "Port-Channel1", "Cpu"], "vlan": 13, "timestamp": 1606001636012}, {"namespace":
-    "eos", "hostname": "leaf02", "vlanName": "vlan1", "state": "active", "interfaces":
-    ["Ethernet3", "Ethernet4", "PeerEthernet4"], "vlan": 1, "timestamp": 1606001636012},
-    {"namespace": "eos", "hostname": "leaf04", "vlanName": "vlan13", "state": "active",
-    "interfaces": ["Port-Channel12", "Cpu", "Port-Channel1"], "vlan": 13, "timestamp":
-    1606001636074}, {"namespace": "eos", "hostname": "leaf04", "vlanName": "vlan1",
-    "state": "active", "interfaces": ["Port-Channel12"], "vlan": 1, "timestamp": 1606001636074},
-    {"namespace": "eos", "hostname": "leaf04", "vlanName": "vlan24", "state": "active",
-    "interfaces": ["Port-Channel12", "Cpu", "Port-Channel2"], "vlan": 24, "timestamp":
-    1606001636074}, {"namespace": "eos", "hostname": "leaf04", "vlanName": "vlan4094",
-    "state": "active", "interfaces": ["Port-Channel12", "Cpu"], "vlan": 4094, "timestamp":
-    1606001636074}, {"namespace": "eos", "hostname": "spine01", "vlanName": "vlan1",
-    "state": "active", "interfaces": [], "vlan": 1, "timestamp": 1606001636098}, {"namespace":
-    "eos", "hostname": "leaf03", "vlanName": "vlan1", "state": "active", "interfaces":
-    ["Port-Channel12"], "vlan": 1, "timestamp": 1606001636133}, {"namespace": "eos",
-    "hostname": "leaf03", "vlanName": "vlan24", "state": "active", "interfaces": ["Port-Channel12",
-    "Cpu", "Port-Channel2"], "vlan": 24, "timestamp": 1606001636133}, {"namespace":
-    "eos", "hostname": "leaf03", "vlanName": "vlan13", "state": "active", "interfaces":
-    ["Port-Channel12", "Cpu", "Port-Channel1"], "vlan": 13, "timestamp": 1606001636133},
-    {"namespace": "eos", "hostname": "leaf03", "vlanName": "vlan4094", "state": "active",
-    "interfaces": ["Port-Channel12", "Cpu"], "vlan": 4094, "timestamp": 1606001636133},
-    {"namespace": "eos", "hostname": "exit02", "vlanName": "vlan1", "state": "active",
-    "interfaces": ["Ethernet3", "Ethernet4"], "vlan": 1, "timestamp": 1606001636215},
-    {"namespace": "eos", "hostname": "spine02", "vlanName": "vlan1", "state": "active",
-    "interfaces": [], "vlan": 1, "timestamp": 1606001636296}, {"namespace": "eos",
-    "hostname": "exit01", "vlanName": "vlan1", "state": "active", "interfaces": ["Ethernet3",
-    "Ethernet4"], "vlan": 1, "timestamp": 1606001636542}]'
+  output: '[{"namespace": "eos", "hostname": "spine01", "vlanName": "vlan1", "state":
+    "active", "interfaces": [], "vlan": 1, "timestamp": 1605161371264}, {"namespace":
+    "eos", "hostname": "leaf02", "vlanName": "vlan1006", "state": "active", "interfaces":
+    ["Cpu", "Vxlan1", "Port-Channel1"], "vlan": 1006, "timestamp": 1605161371272},
+    {"namespace": "eos", "hostname": "leaf02", "vlanName": "vlan30", "state": "active",
+    "interfaces": ["Vxlan1", "Port-Channel1", "Port-Channel4", "Cpu"], "vlan": 30,
+    "timestamp": 1605161371272}, {"namespace": "eos", "hostname": "leaf02", "vlanName":
+    "vlan4094", "state": "active", "interfaces": ["Cpu", "Port-Channel1"], "vlan":
+    4094, "timestamp": 1605161371272}, {"namespace": "eos", "hostname": "leaf02",
+    "vlanName": "vlan1", "state": "active", "interfaces": ["Port-Channel1"], "vlan":
+    1, "timestamp": 1605161371272}, {"namespace": "eos", "hostname": "leaf02", "vlanName":
+    "vlan10", "state": "active", "interfaces": ["Vxlan1", "Port-Channel1", "Port-Channel3",
+    "Cpu"], "vlan": 10, "timestamp": 1605161371272}, {"namespace": "eos", "hostname":
+    "leaf04", "vlanName": "vlan30", "state": "active", "interfaces": ["Vxlan1", "Port-Channel1",
+    "Port-Channel4", "Cpu"], "vlan": 30, "timestamp": 1605161371473}, {"namespace":
+    "eos", "hostname": "leaf04", "vlanName": "vlan1008", "state": "active", "interfaces":
+    ["Cpu", "Vxlan1", "Port-Channel1"], "vlan": 1008, "timestamp": 1605161371473},
+    {"namespace": "eos", "hostname": "leaf04", "vlanName": "vlan4094", "state": "active",
+    "interfaces": ["Cpu", "Port-Channel1"], "vlan": 4094, "timestamp": 1605161371473},
+    {"namespace": "eos", "hostname": "leaf04", "vlanName": "vlan20", "state": "active",
+    "interfaces": ["Vxlan1", "Port-Channel1", "Port-Channel3", "Cpu"], "vlan": 20,
+    "timestamp": 1605161371473}, {"namespace": "eos", "hostname": "leaf04", "vlanName":
+    "vlan1", "state": "active", "interfaces": ["Port-Channel1"], "vlan": 1, "timestamp":
+    1605161371473}, {"namespace": "eos", "hostname": "exit01", "vlanName": "vlan1",
+    "state": "active", "interfaces": [], "vlan": 1, "timestamp": 1605161371480}, {"namespace":
+    "eos", "hostname": "exit01", "vlanName": "vlan4094", "state": "active", "interfaces":
+    ["Cpu", "Vxlan1"], "vlan": 4094, "timestamp": 1605161371480}, {"namespace": "eos",
+    "hostname": "leaf01", "vlanName": "vlan1006", "state": "active", "interfaces":
+    ["Cpu", "Vxlan1", "Port-Channel1"], "vlan": 1006, "timestamp": 1605161371691},
+    {"namespace": "eos", "hostname": "leaf01", "vlanName": "vlan4094", "state": "active",
+    "interfaces": ["Cpu", "Port-Channel1"], "vlan": 4094, "timestamp": 1605161371691},
+    {"namespace": "eos", "hostname": "leaf01", "vlanName": "vlan10", "state": "active",
+    "interfaces": ["Vxlan1", "Port-Channel1", "Port-Channel3", "Cpu"], "vlan": 10,
+    "timestamp": 1605161371691}, {"namespace": "eos", "hostname": "leaf01", "vlanName":
+    "vlan1", "state": "active", "interfaces": ["Port-Channel1"], "vlan": 1, "timestamp":
+    1605161371691}, {"namespace": "eos", "hostname": "leaf01", "vlanName": "vlan30",
+    "state": "active", "interfaces": ["Vxlan1", "Port-Channel1", "Port-Channel4",
+    "Cpu"], "vlan": 30, "timestamp": 1605161371691}, {"namespace": "eos", "hostname":
+    "leaf03", "vlanName": "vlan1", "state": "active", "interfaces": ["Port-Channel1"],
+    "vlan": 1, "timestamp": 1605161371693}, {"namespace": "eos", "hostname": "leaf03",
+    "vlanName": "vlan20", "state": "active", "interfaces": ["Vxlan1", "Port-Channel1",
+    "Port-Channel3", "Cpu"], "vlan": 20, "timestamp": 1605161371693}, {"namespace":
+    "eos", "hostname": "leaf03", "vlanName": "vlan4094", "state": "active", "interfaces":
+    ["Cpu", "Port-Channel1"], "vlan": 4094, "timestamp": 1605161371693}, {"namespace":
+    "eos", "hostname": "leaf03", "vlanName": "vlan1008", "state": "active", "interfaces":
+    ["Cpu", "Vxlan1", "Port-Channel1"], "vlan": 1008, "timestamp": 1605161371693},
+    {"namespace": "eos", "hostname": "leaf03", "vlanName": "vlan30", "state": "active",
+    "interfaces": ["Vxlan1", "Port-Channel1", "Port-Channel4", "Cpu"], "vlan": 30,
+    "timestamp": 1605161371693}, {"namespace": "eos", "hostname": "spine02", "vlanName":
+    "vlan1", "state": "active", "interfaces": [], "vlan": 1, "timestamp": 1605161371693},
+    {"namespace": "eos", "hostname": "exit02", "vlanName": "vlan4094", "state": "active",
+    "interfaces": ["Cpu", "Vxlan1"], "vlan": 4094, "timestamp": 1605161371694}, {"namespace":
+    "eos", "hostname": "exit02", "vlanName": "vlan1", "state": "active", "interfaces":
+    [], "vlan": 1, "timestamp": 1605161371694}]'
 - command: vlan show --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: vlan show eos
-  output: '[{"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
-    {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
-    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
-    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "spine01"}, {"hostname":
-    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
-    {"hostname": "exit02"}, {"hostname": "spine02"}, {"hostname": "exit01"}]'
+  output: '[{"hostname": "spine01"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "spine02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}]'
 - command: vlan summarize --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: vlan summarize eos
-  output: '{"eos": {"deviceCnt": 8, "uniqueVlanCnt": 4, "activeVlanCnt": 4, "suspendedVlanCnt":
-    0, "vlanPerDeviceStat": [1, 4, 2.5], "ifPerVlanStat": [4, 8, 4.0]}}'
+  output: '{"eos": {"deviceCnt": 8, "uniqueVlanCnt": 7, "activeVlanCnt": 7, "suspendedVlanCnt":
+    0, "vlanPerDeviceStat": [1, 5, 3.5], "ifPerVlanStat": [2, 8, 2.0]}}'
 - command: vlan unique --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: vlan unique eos
-  output: '[{"hostname": "exit01", "count": 1}, {"hostname": "exit02", "count": 1},
-    {"hostname": "leaf01", "count": 4}, {"hostname": "leaf02", "count": 4}, {"hostname":
-    "leaf03", "count": 4}, {"hostname": "leaf04", "count": 4}, {"hostname": "spine01",
+  output: '[{"hostname": "exit01", "count": 2}, {"hostname": "exit02", "count": 2},
+    {"hostname": "leaf01", "count": 5}, {"hostname": "leaf02", "count": 5}, {"hostname":
+    "leaf03", "count": 5}, {"hostname": "leaf04", "count": 5}, {"hostname": "spine01",
     "count": 1}, {"hostname": "spine02", "count": 1}]'
+- command: vlan show --vlan='10 30' --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: vlan show eos filter
+  output: '[{"namespace": "eos", "hostname": "leaf02", "vlanName": "vlan10", "state":
+    "active", "interfaces": ["Vxlan1", "Port-Channel1", "Port-Channel3", "Cpu"], "vlan":
+    10, "timestamp": 1605161371272}, {"namespace": "eos", "hostname": "leaf02", "vlanName":
+    "vlan30", "state": "active", "interfaces": ["Vxlan1", "Port-Channel1", "Port-Channel4",
+    "Cpu"], "vlan": 30, "timestamp": 1605161371272}, {"namespace": "eos", "hostname":
+    "leaf04", "vlanName": "vlan30", "state": "active", "interfaces": ["Vxlan1", "Port-Channel1",
+    "Port-Channel4", "Cpu"], "vlan": 30, "timestamp": 1605161371473}, {"namespace":
+    "eos", "hostname": "leaf01", "vlanName": "vlan10", "state": "active", "interfaces":
+    ["Vxlan1", "Port-Channel1", "Port-Channel3", "Cpu"], "vlan": 10, "timestamp":
+    1605161371691}, {"namespace": "eos", "hostname": "leaf01", "vlanName": "vlan30",
+    "state": "active", "interfaces": ["Vxlan1", "Port-Channel1", "Port-Channel4",
+    "Cpu"], "vlan": 30, "timestamp": 1605161371691}, {"namespace": "eos", "hostname":
+    "leaf03", "vlanName": "vlan30", "state": "active", "interfaces": ["Vxlan1", "Port-Channel1",
+    "Port-Channel4", "Cpu"], "vlan": 30, "timestamp": 1605161371693}]'
