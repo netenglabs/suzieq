@@ -1,93 +1,220 @@
 [
     {
         "status": 0,
-        "timestamp": 1606018045138,
-        "cmd": "show ip ospf interface vrf all | json",
-        "devtype": "nxos",
+        "timestamp": 1609296106612,
+        "cmd": "sudo vtysh -c 'show ip ospf interface'",
+        "devtype": "linux",
         "namespace": "nxos",
-        "hostname": "spine1",
-        "address": "10.255.5.44",
-        "version": 0,
-        "data": "{\"TABLE_ctx\": {\"ROW_ctx\": {\"ptag\": \"UNDERLAY\", \"cname\": \"default\", \"TABLE_intf\": {\"ROW_intf\": [{\"ifname\": \"Ethernet1/1\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"unnumbered\": \"true\", \"addr\": \"10.0.0.21\", \"parent_intf\": \"loopback0\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"P2P\", \"type_str\": \"P2P\", \"cost\": \"40\", \"index\": \"2\", \"transmit_delay\": \"1\", \"nbr_total\": \"1\", \"nbr_flood\": \"1\", \"nbr_adjs\": \"1\", \"hello_interval\": \"10\", \"dead_interval\": \"40\", \"wait_interval\": \"40\", \"rxmt_interval\": \"5\", \"hello_timer\": \"PT3S\", \"auth_type\": \"none\", \"link_lsa_cnt\": \"0\", \"link_lsa_crc\": \"0\"}, {\"ifname\": \"Ethernet1/2\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"unnumbered\": \"true\", \"addr\": \"10.0.0.21\", \"parent_intf\": \"loopback0\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"P2P\", \"type_str\": \"P2P\", \"cost\": \"40\", \"index\": \"3\", \"transmit_delay\": \"1\", \"nbr_total\": \"1\", \"nbr_flood\": \"1\", \"nbr_adjs\": \"1\", \"hello_interval\": \"10\", \"dead_interval\": \"40\", \"wait_interval\": \"40\", \"rxmt_interval\": \"5\", \"hello_timer\": \"PT7S\", \"auth_type\": \"none\", \"link_lsa_cnt\": \"0\", \"link_lsa_crc\": \"0\"}, {\"ifname\": \"loopback0\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"addr\": \"10.0.0.21\", \"masklen\": \"32\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"LOOPBACK\", \"type_str\": \"LOOPBACK\", \"cost\": \"1\", \"index\": \"1\"}, {\"ifname\": \"loopback1\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"addr\": \"10.2.3.4\", \"masklen\": \"32\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"LOOPBACK\", \"type_str\": \"LOOPBACK\", \"cost\": \"1\", \"index\": \"4\"}]}}}}\n"
-    },
-    {
-        "status": 0,
-        "timestamp": 1606018046756,
-        "cmd": "show ip ospf vrf all | json",
-        "devtype": "nxos",
-        "namespace": "nxos",
-        "hostname": "spine1",
-        "address": "10.255.5.44",
-        "version": 0,
-        "data": "{\"TABLE_ctx\": {\"ROW_ctx\": {\"ptag\": \"UNDERLAY\", \"instance_number\": \"1\", \"cname\": \"default\", \"rid\": \"10.0.0.21\", \"stateful_ha\": \"true\", \"gr_ha\": \"true\", \"gr_planned_only\": \"true\", \"gr_grace_period\": \"PT60S\", \"gr_state\": \"inactive\", \"gr_last_status\": \"None\", \"support_tos0_only\": \"true\", \"support_opaque_lsa\": \"true\", \"is_abr\": \"false\", \"is_asbr\": \"false\", \"admin_dist\": \"110\", \"ref_bw\": \"40000\", \"spf_start_time\": \"PT0S\", \"spf_hold_time\": \"PT1S\", \"spf_max_time\": \"PT5S\", \"lsa_start_time\": \"PT0S\", \"lsa_hold_time\": \"PT5S\", \"lsa_max_time\": \"PT5S\", \"min_lsa_arr_time\": \"PT1S\", \"lsa_aging_pace\": \"10\", \"spf_max_paths\": \"8\", \"max_metric_adver\": \"false\", \"asext_lsa_cnt\": \"0\", \"asext_lsa_crc\": \"0\", \"asopaque_lsa_cnt\": \"0\", \"asopaque_lsa_crc\": \"0\", \"area_total\": \"1\", \"area_normal\": \"1\", \"area_stub\": \"0\", \"area_nssa\": \"0\", \"act_area_total\": \"1\", \"act_area_normal\": \"1\", \"act_area_stub\": \"0\", \"act_area_nssa\": \"0\", \"no_discard_rt_ext\": \"false\", \"no_discard_rt_int\": \"false\", \"TABLE_area\": {\"ROW_area\": {\"aname\": \"0.0.0.0\", \"backbone_active\": \"true\", \"age\": \"PT22M13S\", \"total_intf\": \"4\", \"act_intf\": \"4\", \"passive_intf\": \"0\", \"loopback_intf\": \"2\", \"stub\": \"false\", \"nssa\": \"false\", \"no_summary\": \"false\", \"auth_type\": \"none\", \"spf_runs\": \"15\", \"last_spf_run_time\": \"PT0S\", \"lsa_cnt\": \"4\", \"lsa_crc\": \"0x1d732\"}}}}}\n"
+        "hostname": "firewall01",
+        "address": "10.255.2.34",
+        "version": "18.04",
+        "data": ""
     }
 ][
     {
         "status": 0,
-        "timestamp": 1606018045127,
-        "cmd": "show ip ospf interface vrf all | json",
-        "devtype": "nxos",
+        "timestamp": 1609296107095,
+        "cmd": "show ospf overview | display json",
+        "devtype": "junos-qfx",
         "namespace": "nxos",
-        "hostname": "spine2",
-        "address": "10.255.5.45",
+        "hostname": "dcedge01",
+        "address": "10.255.2.250",
         "version": 0,
-        "data": "{\"TABLE_ctx\": {\"ROW_ctx\": {\"ptag\": \"UNDERLAY\", \"cname\": \"default\", \"TABLE_intf\": {\"ROW_intf\": [{\"ifname\": \"Ethernet1/1\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"unnumbered\": \"true\", \"addr\": \"10.0.0.22\", \"parent_intf\": \"loopback0\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"P2P\", \"type_str\": \"P2P\", \"cost\": \"40\", \"index\": \"2\", \"transmit_delay\": \"1\", \"nbr_total\": \"1\", \"nbr_flood\": \"1\", \"nbr_adjs\": \"1\", \"hello_interval\": \"10\", \"dead_interval\": \"40\", \"wait_interval\": \"40\", \"rxmt_interval\": \"5\", \"hello_timer\": \"PT0S\", \"auth_type\": \"none\", \"link_lsa_cnt\": \"0\", \"link_lsa_crc\": \"0\"}, {\"ifname\": \"Ethernet1/2\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"unnumbered\": \"true\", \"addr\": \"10.0.0.22\", \"parent_intf\": \"loopback0\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"P2P\", \"type_str\": \"P2P\", \"cost\": \"40\", \"index\": \"3\", \"transmit_delay\": \"1\", \"nbr_total\": \"1\", \"nbr_flood\": \"1\", \"nbr_adjs\": \"1\", \"hello_interval\": \"10\", \"dead_interval\": \"40\", \"wait_interval\": \"40\", \"rxmt_interval\": \"5\", \"hello_timer\": \"PT5S\", \"auth_type\": \"none\", \"link_lsa_cnt\": \"0\", \"link_lsa_crc\": \"0\"}, {\"ifname\": \"loopback0\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"addr\": \"10.0.0.22\", \"masklen\": \"32\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"LOOPBACK\", \"type_str\": \"LOOPBACK\", \"cost\": \"1\", \"index\": \"1\"}, {\"ifname\": \"loopback1\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"addr\": \"10.2.3.4\", \"masklen\": \"32\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"LOOPBACK\", \"type_str\": \"LOOPBACK\", \"cost\": \"1\", \"index\": \"4\"}]}}}}\n"
+        "data": "{\n    \"output\" : [\n    {\n        \"data\" : \"OSPF instance is not running\"\n    }\n    ]\n}\n"
     },
     {
         "status": 0,
-        "timestamp": 1606018046791,
-        "cmd": "show ip ospf vrf all | json",
-        "devtype": "nxos",
+        "timestamp": 1609296107870,
+        "cmd": "show ospf interface detail | display json",
+        "devtype": "junos-qfx",
         "namespace": "nxos",
-        "hostname": "spine2",
-        "address": "10.255.5.45",
+        "hostname": "dcedge01",
+        "address": "10.255.2.250",
         "version": 0,
-        "data": "{\"TABLE_ctx\": {\"ROW_ctx\": {\"ptag\": \"UNDERLAY\", \"instance_number\": \"1\", \"cname\": \"default\", \"rid\": \"10.0.0.22\", \"stateful_ha\": \"true\", \"gr_ha\": \"true\", \"gr_planned_only\": \"true\", \"gr_grace_period\": \"PT60S\", \"gr_state\": \"inactive\", \"gr_last_status\": \"None\", \"support_tos0_only\": \"true\", \"support_opaque_lsa\": \"true\", \"is_abr\": \"false\", \"is_asbr\": \"false\", \"admin_dist\": \"110\", \"ref_bw\": \"40000\", \"spf_start_time\": \"PT0S\", \"spf_hold_time\": \"PT1S\", \"spf_max_time\": \"PT5S\", \"lsa_start_time\": \"PT0S\", \"lsa_hold_time\": \"PT5S\", \"lsa_max_time\": \"PT5S\", \"min_lsa_arr_time\": \"PT1S\", \"lsa_aging_pace\": \"10\", \"spf_max_paths\": \"8\", \"max_metric_adver\": \"false\", \"asext_lsa_cnt\": \"0\", \"asext_lsa_crc\": \"0\", \"asopaque_lsa_cnt\": \"0\", \"asopaque_lsa_crc\": \"0\", \"area_total\": \"1\", \"area_normal\": \"1\", \"area_stub\": \"0\", \"area_nssa\": \"0\", \"act_area_total\": \"1\", \"act_area_normal\": \"1\", \"act_area_stub\": \"0\", \"act_area_nssa\": \"0\", \"no_discard_rt_ext\": \"false\", \"no_discard_rt_int\": \"false\", \"TABLE_area\": {\"ROW_area\": {\"aname\": \"0.0.0.0\", \"backbone_active\": \"true\", \"age\": \"PT22M13S\", \"total_intf\": \"4\", \"act_intf\": \"4\", \"passive_intf\": \"0\", \"loopback_intf\": \"2\", \"stub\": \"false\", \"nssa\": \"false\", \"no_summary\": \"false\", \"auth_type\": \"none\", \"spf_runs\": \"13\", \"last_spf_run_time\": \"PT0S\", \"lsa_cnt\": \"4\", \"lsa_crc\": \"0x1d732\"}}}}}\n"
+        "data": "{\n    \"output\" : [\n    {\n        \"data\" : \"OSPF instance is not running\"\n    }\n    ]\n}\n"
     }
 ][
     {
         "status": 0,
-        "timestamp": 1606018045205,
+        "timestamp": 1609296107539,
         "cmd": "show ip ospf interface vrf all | json",
         "devtype": "nxos",
         "namespace": "nxos",
-        "hostname": "leaf1",
-        "address": "10.255.5.42",
+        "hostname": "leaf04",
+        "address": "10.255.2.187",
         "version": 0,
-        "data": "{\"TABLE_ctx\": {\"ROW_ctx\": {\"ptag\": \"UNDERLAY\", \"cname\": \"default\", \"TABLE_intf\": {\"ROW_intf\": [{\"ifname\": \"loopback0\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"addr\": \"10.0.0.11\", \"masklen\": \"32\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"LOOPBACK\", \"type_str\": \"LOOPBACK\", \"cost\": \"1\", \"index\": \"1\"}, {\"ifname\": \"Ethernet1/3\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"unnumbered\": \"true\", \"addr\": \"10.0.0.11\", \"parent_intf\": \"loopback0\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"P2P\", \"type_str\": \"P2P\", \"cost\": \"40\", \"index\": \"3\", \"transmit_delay\": \"1\", \"nbr_total\": \"1\", \"nbr_flood\": \"1\", \"nbr_adjs\": \"1\", \"hello_interval\": \"10\", \"dead_interval\": \"40\", \"wait_interval\": \"40\", \"rxmt_interval\": \"5\", \"hello_timer\": \"PT1S\", \"auth_type\": \"none\", \"link_lsa_cnt\": \"0\", \"link_lsa_crc\": \"0\"}, {\"ifname\": \"Ethernet1/4\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"unnumbered\": \"true\", \"addr\": \"10.0.0.11\", \"parent_intf\": \"loopback0\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"P2P\", \"type_str\": \"P2P\", \"cost\": \"40\", \"index\": \"2\", \"transmit_delay\": \"1\", \"nbr_total\": \"1\", \"nbr_flood\": \"1\", \"nbr_adjs\": \"1\", \"hello_interval\": \"10\", \"dead_interval\": \"40\", \"wait_interval\": \"40\", \"rxmt_interval\": \"5\", \"hello_timer\": \"PT0S\", \"auth_type\": \"none\", \"link_lsa_cnt\": \"0\", \"link_lsa_crc\": \"0\"}]}}}}\n"
+        "data": "{\"TABLE_ctx\": {\"ROW_ctx\": {\"ptag\": \"UNDERLAY\", \"cname\": \"default\", \"TABLE_intf\": {\"ROW_intf\": [{\"ifname\": \"Ethernet1/1\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"unnumbered\": \"true\", \"addr\": \"10.0.0.14\", \"parent_intf\": \"loopback0\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"P2P\", \"type_str\": \"P2P\", \"cost\": \"40\", \"index\": \"2\", \"transmit_delay\": \"1\", \"nbr_total\": \"1\", \"nbr_flood\": \"1\", \"nbr_adjs\": \"1\", \"hello_interval\": \"10\", \"dead_interval\": \"40\", \"wait_interval\": \"40\", \"rxmt_interval\": \"5\", \"hello_timer\": \"PT3S\", \"auth_type\": \"none\", \"link_lsa_cnt\": \"0\", \"link_lsa_crc\": \"0\"}, {\"ifname\": \"Ethernet1/2\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"unnumbered\": \"true\", \"addr\": \"10.0.0.14\", \"parent_intf\": \"loopback0\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"P2P\", \"type_str\": \"P2P\", \"cost\": \"40\", \"index\": \"3\", \"transmit_delay\": \"1\", \"nbr_total\": \"1\", \"nbr_flood\": \"1\", \"nbr_adjs\": \"1\", \"hello_interval\": \"10\", \"dead_interval\": \"40\", \"wait_interval\": \"40\", \"rxmt_interval\": \"5\", \"hello_timer\": \"PT6S\", \"auth_type\": \"none\", \"link_lsa_cnt\": \"0\", \"link_lsa_crc\": \"0\"}, {\"ifname\": \"loopback0\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"addr\": \"10.0.0.14\", \"masklen\": \"32\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"LOOPBACK\", \"type_str\": \"LOOPBACK\", \"cost\": \"1\", \"index\": \"1\"}, {\"ifname\": \"loopback1\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"addr\": \"10.0.0.204\", \"masklen\": \"32\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"LOOPBACK\", \"type_str\": \"LOOPBACK\", \"cost\": \"1\", \"index\": \"4\"}]}}}}\n"
     },
     {
         "status": 0,
-        "timestamp": 1606018047145,
+        "timestamp": 1609296109802,
         "cmd": "show ip ospf vrf all | json",
         "devtype": "nxos",
         "namespace": "nxos",
-        "hostname": "leaf1",
-        "address": "10.255.5.42",
+        "hostname": "leaf04",
+        "address": "10.255.2.187",
         "version": 0,
-        "data": "{\"TABLE_ctx\": {\"ROW_ctx\": {\"ptag\": \"UNDERLAY\", \"instance_number\": \"1\", \"cname\": \"default\", \"rid\": \"10.0.0.11\", \"stateful_ha\": \"true\", \"gr_ha\": \"true\", \"gr_planned_only\": \"true\", \"gr_grace_period\": \"PT60S\", \"gr_state\": \"inactive\", \"gr_last_status\": \"None\", \"support_tos0_only\": \"true\", \"support_opaque_lsa\": \"true\", \"is_abr\": \"false\", \"is_asbr\": \"false\", \"admin_dist\": \"110\", \"ref_bw\": \"40000\", \"spf_start_time\": \"PT0S\", \"spf_hold_time\": \"PT1S\", \"spf_max_time\": \"PT5S\", \"lsa_start_time\": \"PT0S\", \"lsa_hold_time\": \"PT5S\", \"lsa_max_time\": \"PT5S\", \"min_lsa_arr_time\": \"PT1S\", \"lsa_aging_pace\": \"10\", \"spf_max_paths\": \"8\", \"max_metric_adver\": \"false\", \"asext_lsa_cnt\": \"0\", \"asext_lsa_crc\": \"0\", \"asopaque_lsa_cnt\": \"0\", \"asopaque_lsa_crc\": \"0\", \"area_total\": \"1\", \"area_normal\": \"1\", \"area_stub\": \"0\", \"area_nssa\": \"0\", \"act_area_total\": \"1\", \"act_area_normal\": \"1\", \"act_area_stub\": \"0\", \"act_area_nssa\": \"0\", \"no_discard_rt_ext\": \"false\", \"no_discard_rt_int\": \"false\", \"TABLE_area\": {\"ROW_area\": {\"aname\": \"0.0.0.0\", \"backbone_active\": \"true\", \"age\": \"PT17M37S\", \"total_intf\": \"3\", \"act_intf\": \"3\", \"passive_intf\": \"0\", \"loopback_intf\": \"1\", \"stub\": \"false\", \"nssa\": \"false\", \"no_summary\": \"false\", \"auth_type\": \"none\", \"spf_runs\": \"7\", \"last_spf_run_time\": \"PT0S\", \"lsa_cnt\": \"4\", \"lsa_crc\": \"0x1d732\"}}}}}\n"
+        "data": "{\"TABLE_ctx\": {\"ROW_ctx\": {\"ptag\": \"UNDERLAY\", \"instance_number\": \"1\", \"cname\": \"default\", \"rid\": \"10.0.0.14\", \"stateful_ha\": \"true\", \"gr_ha\": \"true\", \"gr_planned_only\": \"true\", \"gr_grace_period\": \"PT60S\", \"gr_state\": \"inactive\", \"gr_last_status\": \"None\", \"support_tos0_only\": \"true\", \"support_opaque_lsa\": \"true\", \"is_abr\": \"false\", \"is_asbr\": \"false\", \"admin_dist\": \"110\", \"ref_bw\": \"40000\", \"spf_start_time\": \"PT0S\", \"spf_hold_time\": \"PT1S\", \"spf_max_time\": \"PT5S\", \"lsa_start_time\": \"PT0S\", \"lsa_hold_time\": \"PT5S\", \"lsa_max_time\": \"PT5S\", \"min_lsa_arr_time\": \"PT1S\", \"lsa_aging_pace\": \"10\", \"spf_max_paths\": \"8\", \"max_metric_adver\": \"false\", \"asext_lsa_cnt\": \"0\", \"asext_lsa_crc\": \"0\", \"asopaque_lsa_cnt\": \"0\", \"asopaque_lsa_crc\": \"0\", \"area_total\": \"1\", \"area_normal\": \"1\", \"area_stub\": \"0\", \"area_nssa\": \"0\", \"act_area_total\": \"1\", \"act_area_normal\": \"1\", \"act_area_stub\": \"0\", \"act_area_nssa\": \"0\", \"no_discard_rt_ext\": \"false\", \"no_discard_rt_int\": \"false\", \"TABLE_area\": {\"ROW_area\": {\"aname\": \"0.0.0.0\", \"backbone_active\": \"true\", \"age\": \"P21DT20H11M9S\", \"total_intf\": \"4\", \"act_intf\": \"4\", \"passive_intf\": \"0\", \"loopback_intf\": \"2\", \"stub\": \"false\", \"nssa\": \"false\", \"no_summary\": \"false\", \"auth_type\": \"none\", \"spf_runs\": \"14\", \"last_spf_run_time\": \"PT0S\", \"lsa_cnt\": \"8\", \"lsa_crc\": \"0x239c1\"}}}}}\n"
     }
 ][
     {
         "status": 0,
-        "timestamp": 1606018045972,
+        "timestamp": 1609296107803,
         "cmd": "show ip ospf interface vrf all | json",
         "devtype": "nxos",
         "namespace": "nxos",
-        "hostname": "leaf2",
-        "address": "10.255.5.43",
+        "hostname": "spine01",
+        "address": "10.255.2.117",
         "version": 0,
-        "data": "{\"TABLE_ctx\": {\"ROW_ctx\": {\"ptag\": \"UNDERLAY\", \"cname\": \"default\", \"TABLE_intf\": {\"ROW_intf\": [{\"ifname\": \"loopback0\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"addr\": \"10.0.0.12\", \"masklen\": \"32\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"LOOPBACK\", \"type_str\": \"LOOPBACK\", \"cost\": \"1\", \"index\": \"1\"}, {\"ifname\": \"Ethernet1/3\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"unnumbered\": \"true\", \"addr\": \"10.0.0.12\", \"parent_intf\": \"loopback0\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"P2P\", \"type_str\": \"P2P\", \"cost\": \"40\", \"index\": \"3\", \"transmit_delay\": \"1\", \"nbr_total\": \"1\", \"nbr_flood\": \"1\", \"nbr_adjs\": \"1\", \"hello_interval\": \"10\", \"dead_interval\": \"40\", \"wait_interval\": \"40\", \"rxmt_interval\": \"5\", \"hello_timer\": \"PT1S\", \"auth_type\": \"none\", \"link_lsa_cnt\": \"0\", \"link_lsa_crc\": \"0\"}, {\"ifname\": \"Ethernet1/4\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"unnumbered\": \"true\", \"addr\": \"10.0.0.12\", \"parent_intf\": \"loopback0\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"P2P\", \"type_str\": \"P2P\", \"cost\": \"40\", \"index\": \"2\", \"transmit_delay\": \"1\", \"nbr_total\": \"1\", \"nbr_flood\": \"1\", \"nbr_adjs\": \"1\", \"hello_interval\": \"10\", \"dead_interval\": \"40\", \"wait_interval\": \"40\", \"rxmt_interval\": \"5\", \"hello_timer\": \"PT5S\", \"auth_type\": \"none\", \"link_lsa_cnt\": \"0\", \"link_lsa_crc\": \"0\"}]}}}}\n"
+        "data": "{\"TABLE_ctx\": {\"ROW_ctx\": {\"ptag\": \"UNDERLAY\", \"cname\": \"default\", \"TABLE_intf\": {\"ROW_intf\": [{\"ifname\": \"Ethernet1/1\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"unnumbered\": \"true\", \"addr\": \"10.0.0.21\", \"parent_intf\": \"loopback0\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"P2P\", \"type_str\": \"P2P\", \"cost\": \"40\", \"index\": \"2\", \"transmit_delay\": \"1\", \"nbr_total\": \"1\", \"nbr_flood\": \"1\", \"nbr_adjs\": \"1\", \"hello_interval\": \"10\", \"dead_interval\": \"40\", \"wait_interval\": \"40\", \"rxmt_interval\": \"5\", \"hello_timer\": \"PT2S\", \"auth_type\": \"none\", \"link_lsa_cnt\": \"0\", \"link_lsa_crc\": \"0\"}, {\"ifname\": \"Ethernet1/2\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"unnumbered\": \"true\", \"addr\": \"10.0.0.21\", \"parent_intf\": \"loopback0\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"P2P\", \"type_str\": \"P2P\", \"cost\": \"40\", \"index\": \"3\", \"transmit_delay\": \"1\", \"nbr_total\": \"1\", \"nbr_flood\": \"1\", \"nbr_adjs\": \"1\", \"hello_interval\": \"10\", \"dead_interval\": \"40\", \"wait_interval\": \"40\", \"rxmt_interval\": \"5\", \"hello_timer\": \"PT2S\", \"auth_type\": \"none\", \"link_lsa_cnt\": \"0\", \"link_lsa_crc\": \"0\"}, {\"ifname\": \"Ethernet1/3\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"unnumbered\": \"true\", \"addr\": \"10.0.0.21\", \"parent_intf\": \"loopback0\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"P2P\", \"type_str\": \"P2P\", \"cost\": \"40\", \"index\": \"4\", \"transmit_delay\": \"1\", \"nbr_total\": \"1\", \"nbr_flood\": \"1\", \"nbr_adjs\": \"1\", \"hello_interval\": \"10\", \"dead_interval\": \"40\", \"wait_interval\": \"40\", \"rxmt_interval\": \"5\", \"hello_timer\": \"PT5S\", \"auth_type\": \"none\", \"link_lsa_cnt\": \"0\", \"link_lsa_crc\": \"0\"}, {\"ifname\": \"Ethernet1/4\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"unnumbered\": \"true\", \"addr\": \"10.0.0.21\", \"parent_intf\": \"loopback0\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"P2P\", \"type_str\": \"P2P\", \"cost\": \"40\", \"index\": \"5\", \"transmit_delay\": \"1\", \"nbr_total\": \"1\", \"nbr_flood\": \"1\", \"nbr_adjs\": \"1\", \"hello_interval\": \"10\", \"dead_interval\": \"40\", \"wait_interval\": \"40\", \"rxmt_interval\": \"5\", \"hello_timer\": \"PT6S\", \"auth_type\": \"none\", \"link_lsa_cnt\": \"0\", \"link_lsa_crc\": \"0\"}, {\"ifname\": \"Ethernet1/5\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"unnumbered\": \"true\", \"addr\": \"10.0.0.21\", \"parent_intf\": \"loopback0\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"P2P\", \"type_str\": \"P2P\", \"cost\": \"40\", \"index\": \"6\", \"transmit_delay\": \"1\", \"nbr_total\": \"1\", \"nbr_flood\": \"1\", \"nbr_adjs\": \"1\", \"hello_interval\": \"10\", \"dead_interval\": \"40\", \"wait_interval\": \"40\", \"rxmt_interval\": \"5\", \"hello_timer\": \"PT0S\", \"auth_type\": \"none\", \"link_lsa_cnt\": \"0\", \"link_lsa_crc\": \"0\"}, {\"ifname\": \"Ethernet1/6\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"unnumbered\": \"true\", \"addr\": \"10.0.0.21\", \"parent_intf\": \"loopback0\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"P2P\", \"type_str\": \"P2P\", \"cost\": \"40\", \"index\": \"7\", \"transmit_delay\": \"1\", \"nbr_total\": \"1\", \"nbr_flood\": \"1\", \"nbr_adjs\": \"1\", \"hello_interval\": \"10\", \"dead_interval\": \"40\", \"wait_interval\": \"40\", \"rxmt_interval\": \"5\", \"hello_timer\": \"PT5S\", \"auth_type\": \"none\", \"link_lsa_cnt\": \"0\", \"link_lsa_crc\": \"0\"}, {\"ifname\": \"loopback0\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"addr\": \"10.0.0.21\", \"masklen\": \"32\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"LOOPBACK\", \"type_str\": \"LOOPBACK\", \"cost\": \"1\", \"index\": \"1\"}, {\"ifname\": \"loopback1\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"addr\": \"0.0.0.0\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"DOWN\", \"type_str\": \"LOOPBACK\", \"cost\": \"1\", \"index\": \"8\", \"transmit_delay\": \"1\", \"if_priority\": \"1\", \"nbr_total\": \"0\", \"nbr_flood\": \"0\", \"nbr_adjs\": \"0\", \"hello_interval\": \"10\", \"dead_interval\": \"40\", \"wait_interval\": \"40\", \"rxmt_interval\": \"5\", \"auth_type\": \"none\", \"link_lsa_cnt\": \"0\", \"link_lsa_crc\": \"0\"}]}}}}\n"
     },
     {
         "status": 0,
-        "timestamp": 1606018047540,
+        "timestamp": 1609296109830,
         "cmd": "show ip ospf vrf all | json",
         "devtype": "nxos",
         "namespace": "nxos",
-        "hostname": "leaf2",
-        "address": "10.255.5.43",
+        "hostname": "spine01",
+        "address": "10.255.2.117",
         "version": 0,
-        "data": "{\"TABLE_ctx\": {\"ROW_ctx\": {\"ptag\": \"UNDERLAY\", \"instance_number\": \"1\", \"cname\": \"default\", \"rid\": \"10.0.0.12\", \"stateful_ha\": \"true\", \"gr_ha\": \"true\", \"gr_planned_only\": \"true\", \"gr_grace_period\": \"PT60S\", \"gr_state\": \"inactive\", \"gr_last_status\": \"None\", \"support_tos0_only\": \"true\", \"support_opaque_lsa\": \"true\", \"is_abr\": \"false\", \"is_asbr\": \"false\", \"admin_dist\": \"110\", \"ref_bw\": \"40000\", \"spf_start_time\": \"PT0S\", \"spf_hold_time\": \"PT1S\", \"spf_max_time\": \"PT5S\", \"lsa_start_time\": \"PT0S\", \"lsa_hold_time\": \"PT5S\", \"lsa_max_time\": \"PT5S\", \"min_lsa_arr_time\": \"PT1S\", \"lsa_aging_pace\": \"10\", \"spf_max_paths\": \"8\", \"max_metric_adver\": \"false\", \"asext_lsa_cnt\": \"0\", \"asext_lsa_crc\": \"0\", \"asopaque_lsa_cnt\": \"0\", \"asopaque_lsa_crc\": \"0\", \"area_total\": \"1\", \"area_normal\": \"1\", \"area_stub\": \"0\", \"area_nssa\": \"0\", \"act_area_total\": \"1\", \"act_area_normal\": \"1\", \"act_area_stub\": \"0\", \"act_area_nssa\": \"0\", \"no_discard_rt_ext\": \"false\", \"no_discard_rt_int\": \"false\", \"TABLE_area\": {\"ROW_area\": {\"aname\": \"0.0.0.0\", \"backbone_active\": \"true\", \"age\": \"PT17M36S\", \"total_intf\": \"3\", \"act_intf\": \"3\", \"passive_intf\": \"0\", \"loopback_intf\": \"1\", \"stub\": \"false\", \"nssa\": \"false\", \"no_summary\": \"false\", \"auth_type\": \"none\", \"spf_runs\": \"6\", \"last_spf_run_time\": \"PT0S\", \"lsa_cnt\": \"4\", \"lsa_crc\": \"0x1d732\"}}}}}\n"
+        "data": "{\"TABLE_ctx\": {\"ROW_ctx\": {\"ptag\": \"UNDERLAY\", \"instance_number\": \"1\", \"cname\": \"default\", \"rid\": \"10.0.0.21\", \"stateful_ha\": \"true\", \"gr_ha\": \"true\", \"gr_planned_only\": \"true\", \"gr_grace_period\": \"PT60S\", \"gr_state\": \"inactive\", \"gr_last_status\": \"None\", \"support_tos0_only\": \"true\", \"support_opaque_lsa\": \"true\", \"is_abr\": \"false\", \"is_asbr\": \"false\", \"admin_dist\": \"110\", \"ref_bw\": \"40000\", \"spf_start_time\": \"PT0S\", \"spf_hold_time\": \"PT1S\", \"spf_max_time\": \"PT5S\", \"lsa_start_time\": \"PT0S\", \"lsa_hold_time\": \"PT5S\", \"lsa_max_time\": \"PT5S\", \"min_lsa_arr_time\": \"PT1S\", \"lsa_aging_pace\": \"10\", \"spf_max_paths\": \"8\", \"max_metric_adver\": \"false\", \"asext_lsa_cnt\": \"0\", \"asext_lsa_crc\": \"0\", \"asopaque_lsa_cnt\": \"0\", \"asopaque_lsa_crc\": \"0\", \"area_total\": \"1\", \"area_normal\": \"1\", \"area_stub\": \"0\", \"area_nssa\": \"0\", \"act_area_total\": \"1\", \"act_area_normal\": \"1\", \"act_area_stub\": \"0\", \"act_area_nssa\": \"0\", \"no_discard_rt_ext\": \"false\", \"no_discard_rt_int\": \"false\", \"TABLE_area\": {\"ROW_area\": {\"aname\": \"0.0.0.0\", \"backbone_active\": \"true\", \"age\": \"P21DT20H11M14S\", \"total_intf\": \"8\", \"act_intf\": \"7\", \"passive_intf\": \"0\", \"loopback_intf\": \"1\", \"stub\": \"false\", \"nssa\": \"false\", \"no_summary\": \"false\", \"auth_type\": \"none\", \"spf_runs\": \"15\", \"last_spf_run_time\": \"PT0S\", \"lsa_cnt\": \"8\", \"lsa_crc\": \"0x239c1\"}}}}}\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1609296107970,
+        "cmd": "show ip ospf interface vrf all | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf01",
+        "address": "10.255.2.184",
+        "version": 0,
+        "data": "{\"TABLE_ctx\": {\"ROW_ctx\": {\"ptag\": \"UNDERLAY\", \"cname\": \"default\", \"TABLE_intf\": {\"ROW_intf\": [{\"ifname\": \"Ethernet1/1\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"unnumbered\": \"true\", \"addr\": \"10.0.0.11\", \"parent_intf\": \"loopback0\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"P2P\", \"type_str\": \"P2P\", \"cost\": \"40\", \"index\": \"2\", \"transmit_delay\": \"1\", \"nbr_total\": \"1\", \"nbr_flood\": \"1\", \"nbr_adjs\": \"1\", \"hello_interval\": \"10\", \"dead_interval\": \"40\", \"wait_interval\": \"40\", \"rxmt_interval\": \"5\", \"hello_timer\": \"PT0S\", \"auth_type\": \"none\", \"link_lsa_cnt\": \"0\", \"link_lsa_crc\": \"0\"}, {\"ifname\": \"Ethernet1/2\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"unnumbered\": \"true\", \"addr\": \"10.0.0.11\", \"parent_intf\": \"loopback0\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"P2P\", \"type_str\": \"P2P\", \"cost\": \"40\", \"index\": \"3\", \"transmit_delay\": \"1\", \"nbr_total\": \"1\", \"nbr_flood\": \"1\", \"nbr_adjs\": \"1\", \"hello_interval\": \"10\", \"dead_interval\": \"40\", \"wait_interval\": \"40\", \"rxmt_interval\": \"5\", \"hello_timer\": \"PT8S\", \"auth_type\": \"none\", \"link_lsa_cnt\": \"0\", \"link_lsa_crc\": \"0\"}, {\"ifname\": \"loopback0\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"addr\": \"10.0.0.11\", \"masklen\": \"32\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"LOOPBACK\", \"type_str\": \"LOOPBACK\", \"cost\": \"1\", \"index\": \"1\"}, {\"ifname\": \"loopback1\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"addr\": \"10.0.0.201\", \"masklen\": \"32\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"LOOPBACK\", \"type_str\": \"LOOPBACK\", \"cost\": \"1\", \"index\": \"4\"}]}}}}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1609296109978,
+        "cmd": "show ip ospf vrf all | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf01",
+        "address": "10.255.2.184",
+        "version": 0,
+        "data": "{\"TABLE_ctx\": {\"ROW_ctx\": {\"ptag\": \"UNDERLAY\", \"instance_number\": \"1\", \"cname\": \"default\", \"rid\": \"10.0.0.11\", \"stateful_ha\": \"true\", \"gr_ha\": \"true\", \"gr_planned_only\": \"true\", \"gr_grace_period\": \"PT60S\", \"gr_state\": \"inactive\", \"gr_last_status\": \"None\", \"support_tos0_only\": \"true\", \"support_opaque_lsa\": \"true\", \"is_abr\": \"false\", \"is_asbr\": \"false\", \"admin_dist\": \"110\", \"ref_bw\": \"40000\", \"spf_start_time\": \"PT0S\", \"spf_hold_time\": \"PT1S\", \"spf_max_time\": \"PT5S\", \"lsa_start_time\": \"PT0S\", \"lsa_hold_time\": \"PT5S\", \"lsa_max_time\": \"PT5S\", \"min_lsa_arr_time\": \"PT1S\", \"lsa_aging_pace\": \"10\", \"spf_max_paths\": \"8\", \"max_metric_adver\": \"false\", \"asext_lsa_cnt\": \"0\", \"asext_lsa_crc\": \"0\", \"asopaque_lsa_cnt\": \"0\", \"asopaque_lsa_crc\": \"0\", \"area_total\": \"1\", \"area_normal\": \"1\", \"area_stub\": \"0\", \"area_nssa\": \"0\", \"act_area_total\": \"1\", \"act_area_normal\": \"1\", \"act_area_stub\": \"0\", \"act_area_nssa\": \"0\", \"no_discard_rt_ext\": \"false\", \"no_discard_rt_int\": \"false\", \"TABLE_area\": {\"ROW_area\": {\"aname\": \"0.0.0.0\", \"backbone_active\": \"true\", \"age\": \"P21DT20H11M15S\", \"total_intf\": \"4\", \"act_intf\": \"4\", \"passive_intf\": \"0\", \"loopback_intf\": \"2\", \"stub\": \"false\", \"nssa\": \"false\", \"no_summary\": \"false\", \"auth_type\": \"none\", \"spf_runs\": \"16\", \"last_spf_run_time\": \"PT0S\", \"lsa_cnt\": \"8\", \"lsa_crc\": \"0x239c1\"}}}}}\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1609296108637,
+        "cmd": "show ip ospf interface vrf all | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "spine02",
+        "address": "10.255.2.118",
+        "version": 0,
+        "data": "{\"TABLE_ctx\": {\"ROW_ctx\": {\"ptag\": \"UNDERLAY\", \"cname\": \"default\", \"TABLE_intf\": {\"ROW_intf\": [{\"ifname\": \"Ethernet1/1\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"unnumbered\": \"true\", \"addr\": \"10.0.0.22\", \"parent_intf\": \"loopback0\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"P2P\", \"type_str\": \"P2P\", \"cost\": \"40\", \"index\": \"2\", \"transmit_delay\": \"1\", \"nbr_total\": \"1\", \"nbr_flood\": \"1\", \"nbr_adjs\": \"1\", \"hello_interval\": \"10\", \"dead_interval\": \"40\", \"wait_interval\": \"40\", \"rxmt_interval\": \"5\", \"hello_timer\": \"PT3S\", \"auth_type\": \"none\", \"link_lsa_cnt\": \"0\", \"link_lsa_crc\": \"0\"}, {\"ifname\": \"Ethernet1/2\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"unnumbered\": \"true\", \"addr\": \"10.0.0.22\", \"parent_intf\": \"loopback0\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"P2P\", \"type_str\": \"P2P\", \"cost\": \"40\", \"index\": \"3\", \"transmit_delay\": \"1\", \"nbr_total\": \"1\", \"nbr_flood\": \"1\", \"nbr_adjs\": \"1\", \"hello_interval\": \"10\", \"dead_interval\": \"40\", \"wait_interval\": \"40\", \"rxmt_interval\": \"5\", \"hello_timer\": \"PT1S\", \"auth_type\": \"none\", \"link_lsa_cnt\": \"0\", \"link_lsa_crc\": \"0\"}, {\"ifname\": \"Ethernet1/3\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"unnumbered\": \"true\", \"addr\": \"10.0.0.22\", \"parent_intf\": \"loopback0\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"P2P\", \"type_str\": \"P2P\", \"cost\": \"40\", \"index\": \"4\", \"transmit_delay\": \"1\", \"nbr_total\": \"1\", \"nbr_flood\": \"1\", \"nbr_adjs\": \"1\", \"hello_interval\": \"10\", \"dead_interval\": \"40\", \"wait_interval\": \"40\", \"rxmt_interval\": \"5\", \"hello_timer\": \"PT7S\", \"auth_type\": \"none\", \"link_lsa_cnt\": \"0\", \"link_lsa_crc\": \"0\"}, {\"ifname\": \"Ethernet1/4\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"unnumbered\": \"true\", \"addr\": \"10.0.0.22\", \"parent_intf\": \"loopback0\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"P2P\", \"type_str\": \"P2P\", \"cost\": \"40\", \"index\": \"5\", \"transmit_delay\": \"1\", \"nbr_total\": \"1\", \"nbr_flood\": \"1\", \"nbr_adjs\": \"1\", \"hello_interval\": \"10\", \"dead_interval\": \"40\", \"wait_interval\": \"40\", \"rxmt_interval\": \"5\", \"hello_timer\": \"PT7S\", \"auth_type\": \"none\", \"link_lsa_cnt\": \"0\", \"link_lsa_crc\": \"0\"}, {\"ifname\": \"Ethernet1/5\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"unnumbered\": \"true\", \"addr\": \"10.0.0.22\", \"parent_intf\": \"loopback0\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"P2P\", \"type_str\": \"P2P\", \"cost\": \"40\", \"index\": \"6\", \"transmit_delay\": \"1\", \"nbr_total\": \"1\", \"nbr_flood\": \"1\", \"nbr_adjs\": \"1\", \"hello_interval\": \"10\", \"dead_interval\": \"40\", \"wait_interval\": \"40\", \"rxmt_interval\": \"5\", \"hello_timer\": \"PT8S\", \"auth_type\": \"none\", \"link_lsa_cnt\": \"0\", \"link_lsa_crc\": \"0\"}, {\"ifname\": \"Ethernet1/6\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"unnumbered\": \"true\", \"addr\": \"10.0.0.22\", \"parent_intf\": \"loopback0\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"P2P\", \"type_str\": \"P2P\", \"cost\": \"40\", \"index\": \"7\", \"transmit_delay\": \"1\", \"nbr_total\": \"1\", \"nbr_flood\": \"1\", \"nbr_adjs\": \"1\", \"hello_interval\": \"10\", \"dead_interval\": \"40\", \"wait_interval\": \"40\", \"rxmt_interval\": \"5\", \"hello_timer\": \"PT6S\", \"auth_type\": \"none\", \"link_lsa_cnt\": \"0\", \"link_lsa_crc\": \"0\"}, {\"ifname\": \"loopback0\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"addr\": \"10.0.0.22\", \"masklen\": \"32\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"LOOPBACK\", \"type_str\": \"LOOPBACK\", \"cost\": \"1\", \"index\": \"1\"}, {\"ifname\": \"loopback1\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"addr\": \"0.0.0.0\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"DOWN\", \"type_str\": \"LOOPBACK\", \"cost\": \"1\", \"index\": \"8\", \"transmit_delay\": \"1\", \"if_priority\": \"1\", \"nbr_total\": \"0\", \"nbr_flood\": \"0\", \"nbr_adjs\": \"0\", \"hello_interval\": \"10\", \"dead_interval\": \"40\", \"wait_interval\": \"40\", \"rxmt_interval\": \"5\", \"auth_type\": \"none\", \"link_lsa_cnt\": \"0\", \"link_lsa_crc\": \"0\"}]}}}}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1609296110355,
+        "cmd": "show ip ospf vrf all | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "spine02",
+        "address": "10.255.2.118",
+        "version": 0,
+        "data": "{\"TABLE_ctx\": {\"ROW_ctx\": {\"ptag\": \"UNDERLAY\", \"instance_number\": \"1\", \"cname\": \"default\", \"rid\": \"10.0.0.22\", \"stateful_ha\": \"true\", \"gr_ha\": \"true\", \"gr_planned_only\": \"true\", \"gr_grace_period\": \"PT60S\", \"gr_state\": \"inactive\", \"gr_last_status\": \"None\", \"support_tos0_only\": \"true\", \"support_opaque_lsa\": \"true\", \"is_abr\": \"false\", \"is_asbr\": \"false\", \"admin_dist\": \"110\", \"ref_bw\": \"40000\", \"spf_start_time\": \"PT0S\", \"spf_hold_time\": \"PT1S\", \"spf_max_time\": \"PT5S\", \"lsa_start_time\": \"PT0S\", \"lsa_hold_time\": \"PT5S\", \"lsa_max_time\": \"PT5S\", \"min_lsa_arr_time\": \"PT1S\", \"lsa_aging_pace\": \"10\", \"spf_max_paths\": \"8\", \"max_metric_adver\": \"false\", \"asext_lsa_cnt\": \"0\", \"asext_lsa_crc\": \"0\", \"asopaque_lsa_cnt\": \"0\", \"asopaque_lsa_crc\": \"0\", \"area_total\": \"1\", \"area_normal\": \"1\", \"area_stub\": \"0\", \"area_nssa\": \"0\", \"act_area_total\": \"1\", \"act_area_normal\": \"1\", \"act_area_stub\": \"0\", \"act_area_nssa\": \"0\", \"no_discard_rt_ext\": \"false\", \"no_discard_rt_int\": \"false\", \"TABLE_area\": {\"ROW_area\": {\"aname\": \"0.0.0.0\", \"backbone_active\": \"true\", \"age\": \"P21DT20H11M15S\", \"total_intf\": \"8\", \"act_intf\": \"7\", \"passive_intf\": \"0\", \"loopback_intf\": \"1\", \"stub\": \"false\", \"nssa\": \"false\", \"no_summary\": \"false\", \"auth_type\": \"none\", \"spf_runs\": \"17\", \"last_spf_run_time\": \"PT0S\", \"lsa_cnt\": \"8\", \"lsa_crc\": \"0x239c1\"}}}}}\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1609296108258,
+        "cmd": "show ip ospf interface vrf all | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf02",
+        "address": "10.255.2.185",
+        "version": 0,
+        "data": "{\"TABLE_ctx\": {\"ROW_ctx\": {\"ptag\": \"UNDERLAY\", \"cname\": \"default\", \"TABLE_intf\": {\"ROW_intf\": [{\"ifname\": \"Ethernet1/1\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"unnumbered\": \"true\", \"addr\": \"10.0.0.12\", \"parent_intf\": \"loopback0\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"P2P\", \"type_str\": \"P2P\", \"cost\": \"40\", \"index\": \"2\", \"transmit_delay\": \"1\", \"nbr_total\": \"1\", \"nbr_flood\": \"1\", \"nbr_adjs\": \"1\", \"hello_interval\": \"10\", \"dead_interval\": \"40\", \"wait_interval\": \"40\", \"rxmt_interval\": \"5\", \"hello_timer\": \"PT5S\", \"auth_type\": \"none\", \"link_lsa_cnt\": \"0\", \"link_lsa_crc\": \"0\"}, {\"ifname\": \"Ethernet1/2\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"unnumbered\": \"true\", \"addr\": \"10.0.0.12\", \"parent_intf\": \"loopback0\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"P2P\", \"type_str\": \"P2P\", \"cost\": \"40\", \"index\": \"3\", \"transmit_delay\": \"1\", \"nbr_total\": \"1\", \"nbr_flood\": \"1\", \"nbr_adjs\": \"1\", \"hello_interval\": \"10\", \"dead_interval\": \"40\", \"wait_interval\": \"40\", \"rxmt_interval\": \"5\", \"hello_timer\": \"PT1S\", \"auth_type\": \"none\", \"link_lsa_cnt\": \"0\", \"link_lsa_crc\": \"0\"}, {\"ifname\": \"loopback0\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"addr\": \"10.0.0.12\", \"masklen\": \"32\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"LOOPBACK\", \"type_str\": \"LOOPBACK\", \"cost\": \"1\", \"index\": \"1\"}, {\"ifname\": \"loopback1\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"addr\": \"10.0.0.202\", \"masklen\": \"32\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"LOOPBACK\", \"type_str\": \"LOOPBACK\", \"cost\": \"1\", \"index\": \"4\"}]}}}}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1609296110553,
+        "cmd": "show ip ospf vrf all | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf02",
+        "address": "10.255.2.185",
+        "version": 0,
+        "data": "{\"TABLE_ctx\": {\"ROW_ctx\": {\"ptag\": \"UNDERLAY\", \"instance_number\": \"1\", \"cname\": \"default\", \"rid\": \"10.0.0.12\", \"stateful_ha\": \"true\", \"gr_ha\": \"true\", \"gr_planned_only\": \"true\", \"gr_grace_period\": \"PT60S\", \"gr_state\": \"inactive\", \"gr_last_status\": \"None\", \"support_tos0_only\": \"true\", \"support_opaque_lsa\": \"true\", \"is_abr\": \"false\", \"is_asbr\": \"false\", \"admin_dist\": \"110\", \"ref_bw\": \"40000\", \"spf_start_time\": \"PT0S\", \"spf_hold_time\": \"PT1S\", \"spf_max_time\": \"PT5S\", \"lsa_start_time\": \"PT0S\", \"lsa_hold_time\": \"PT5S\", \"lsa_max_time\": \"PT5S\", \"min_lsa_arr_time\": \"PT1S\", \"lsa_aging_pace\": \"10\", \"spf_max_paths\": \"8\", \"max_metric_adver\": \"false\", \"asext_lsa_cnt\": \"0\", \"asext_lsa_crc\": \"0\", \"asopaque_lsa_cnt\": \"0\", \"asopaque_lsa_crc\": \"0\", \"area_total\": \"1\", \"area_normal\": \"1\", \"area_stub\": \"0\", \"area_nssa\": \"0\", \"act_area_total\": \"1\", \"act_area_normal\": \"1\", \"act_area_stub\": \"0\", \"act_area_nssa\": \"0\", \"no_discard_rt_ext\": \"false\", \"no_discard_rt_int\": \"false\", \"TABLE_area\": {\"ROW_area\": {\"aname\": \"0.0.0.0\", \"backbone_active\": \"true\", \"age\": \"P21DT20H11M16S\", \"total_intf\": \"4\", \"act_intf\": \"4\", \"passive_intf\": \"0\", \"loopback_intf\": \"2\", \"stub\": \"false\", \"nssa\": \"false\", \"no_summary\": \"false\", \"auth_type\": \"none\", \"spf_runs\": \"16\", \"last_spf_run_time\": \"PT0S\", \"lsa_cnt\": \"8\", \"lsa_crc\": \"0x239c1\"}}}}}\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1609296108826,
+        "cmd": "show ip ospf interface vrf all | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf03",
+        "address": "10.255.2.186",
+        "version": 0,
+        "data": "{\"TABLE_ctx\": {\"ROW_ctx\": {\"ptag\": \"UNDERLAY\", \"cname\": \"default\", \"TABLE_intf\": {\"ROW_intf\": [{\"ifname\": \"loopback0\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"addr\": \"10.0.0.13\", \"masklen\": \"32\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"LOOPBACK\", \"type_str\": \"LOOPBACK\", \"cost\": \"1\", \"index\": \"1\"}, {\"ifname\": \"loopback1\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"addr\": \"10.0.0.203\", \"masklen\": \"32\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"LOOPBACK\", \"type_str\": \"LOOPBACK\", \"cost\": \"1\", \"index\": \"2\"}, {\"ifname\": \"Ethernet1/1\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"unnumbered\": \"true\", \"addr\": \"10.0.0.13\", \"parent_intf\": \"loopback0\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"P2P\", \"type_str\": \"P2P\", \"cost\": \"40\", \"index\": \"4\", \"transmit_delay\": \"1\", \"nbr_total\": \"1\", \"nbr_flood\": \"1\", \"nbr_adjs\": \"1\", \"hello_interval\": \"10\", \"dead_interval\": \"40\", \"wait_interval\": \"40\", \"rxmt_interval\": \"5\", \"hello_timer\": \"PT3S\", \"auth_type\": \"none\", \"link_lsa_cnt\": \"0\", \"link_lsa_crc\": \"0\"}, {\"ifname\": \"Ethernet1/2\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"unnumbered\": \"true\", \"addr\": \"10.0.0.13\", \"parent_intf\": \"loopback0\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"P2P\", \"type_str\": \"P2P\", \"cost\": \"40\", \"index\": \"3\", \"transmit_delay\": \"1\", \"nbr_total\": \"1\", \"nbr_flood\": \"1\", \"nbr_adjs\": \"1\", \"hello_interval\": \"10\", \"dead_interval\": \"40\", \"wait_interval\": \"40\", \"rxmt_interval\": \"5\", \"hello_timer\": \"PT2S\", \"auth_type\": \"none\", \"link_lsa_cnt\": \"0\", \"link_lsa_crc\": \"0\"}]}}}}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1609296110781,
+        "cmd": "show ip ospf vrf all | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf03",
+        "address": "10.255.2.186",
+        "version": 0,
+        "data": "{\"TABLE_ctx\": {\"ROW_ctx\": {\"ptag\": \"UNDERLAY\", \"instance_number\": \"1\", \"cname\": \"default\", \"rid\": \"10.0.0.13\", \"stateful_ha\": \"true\", \"gr_ha\": \"true\", \"gr_planned_only\": \"true\", \"gr_grace_period\": \"PT60S\", \"gr_state\": \"inactive\", \"gr_last_status\": \"None\", \"support_tos0_only\": \"true\", \"support_opaque_lsa\": \"true\", \"is_abr\": \"false\", \"is_asbr\": \"false\", \"admin_dist\": \"110\", \"ref_bw\": \"40000\", \"spf_start_time\": \"PT0S\", \"spf_hold_time\": \"PT1S\", \"spf_max_time\": \"PT5S\", \"lsa_start_time\": \"PT0S\", \"lsa_hold_time\": \"PT5S\", \"lsa_max_time\": \"PT5S\", \"min_lsa_arr_time\": \"PT1S\", \"lsa_aging_pace\": \"10\", \"spf_max_paths\": \"8\", \"max_metric_adver\": \"false\", \"asext_lsa_cnt\": \"0\", \"asext_lsa_crc\": \"0\", \"asopaque_lsa_cnt\": \"0\", \"asopaque_lsa_crc\": \"0\", \"area_total\": \"1\", \"area_normal\": \"1\", \"area_stub\": \"0\", \"area_nssa\": \"0\", \"act_area_total\": \"1\", \"act_area_normal\": \"1\", \"act_area_stub\": \"0\", \"act_area_nssa\": \"0\", \"no_discard_rt_ext\": \"false\", \"no_discard_rt_int\": \"false\", \"TABLE_area\": {\"ROW_area\": {\"aname\": \"0.0.0.0\", \"backbone_active\": \"true\", \"age\": \"P21DT19H44M44S\", \"total_intf\": \"4\", \"act_intf\": \"4\", \"passive_intf\": \"0\", \"loopback_intf\": \"2\", \"stub\": \"false\", \"nssa\": \"false\", \"no_summary\": \"false\", \"auth_type\": \"none\", \"spf_runs\": \"4\", \"last_spf_run_time\": \"PT0S\", \"lsa_cnt\": \"8\", \"lsa_crc\": \"0x239c1\"}}}}}\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1609296109050,
+        "cmd": "show ip ospf interface vrf all | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "exit02",
+        "address": "10.255.2.252",
+        "version": 0,
+        "data": "{\"TABLE_ctx\": {\"ROW_ctx\": {\"ptag\": \"UNDERLAY\", \"cname\": \"default\", \"TABLE_intf\": {\"ROW_intf\": [{\"ifname\": \"Ethernet1/1\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"unnumbered\": \"true\", \"addr\": \"10.0.0.32\", \"parent_intf\": \"loopback0\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"P2P\", \"type_str\": \"P2P\", \"cost\": \"40\", \"index\": \"2\", \"transmit_delay\": \"1\", \"nbr_total\": \"1\", \"nbr_flood\": \"1\", \"nbr_adjs\": \"1\", \"hello_interval\": \"10\", \"dead_interval\": \"40\", \"wait_interval\": \"40\", \"rxmt_interval\": \"5\", \"hello_timer\": \"PT0S\", \"auth_type\": \"none\", \"link_lsa_cnt\": \"0\", \"link_lsa_crc\": \"0\"}, {\"ifname\": \"Ethernet1/2\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"unnumbered\": \"true\", \"addr\": \"10.0.0.32\", \"parent_intf\": \"loopback0\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"P2P\", \"type_str\": \"P2P\", \"cost\": \"40\", \"index\": \"3\", \"transmit_delay\": \"1\", \"nbr_total\": \"1\", \"nbr_flood\": \"1\", \"nbr_adjs\": \"1\", \"hello_interval\": \"10\", \"dead_interval\": \"40\", \"wait_interval\": \"40\", \"rxmt_interval\": \"5\", \"hello_timer\": \"PT6S\", \"auth_type\": \"none\", \"link_lsa_cnt\": \"0\", \"link_lsa_crc\": \"0\"}, {\"ifname\": \"loopback0\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"addr\": \"10.0.0.32\", \"masklen\": \"32\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"LOOPBACK\", \"type_str\": \"LOOPBACK\", \"cost\": \"1\", \"index\": \"1\"}, {\"ifname\": \"loopback1\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"addr\": \"10.0.0.222\", \"masklen\": \"32\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"LOOPBACK\", \"type_str\": \"LOOPBACK\", \"cost\": \"1\", \"index\": \"4\"}]}}}}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1609296111005,
+        "cmd": "show ip ospf vrf all | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "exit02",
+        "address": "10.255.2.252",
+        "version": 0,
+        "data": "{\"TABLE_ctx\": {\"ROW_ctx\": {\"ptag\": \"UNDERLAY\", \"instance_number\": \"1\", \"cname\": \"default\", \"rid\": \"10.0.0.32\", \"stateful_ha\": \"true\", \"gr_ha\": \"true\", \"gr_planned_only\": \"true\", \"gr_grace_period\": \"PT60S\", \"gr_state\": \"inactive\", \"gr_last_status\": \"None\", \"support_tos0_only\": \"true\", \"support_opaque_lsa\": \"true\", \"is_abr\": \"false\", \"is_asbr\": \"false\", \"admin_dist\": \"110\", \"ref_bw\": \"40000\", \"spf_start_time\": \"PT0S\", \"spf_hold_time\": \"PT1S\", \"spf_max_time\": \"PT5S\", \"lsa_start_time\": \"PT0S\", \"lsa_hold_time\": \"PT5S\", \"lsa_max_time\": \"PT5S\", \"min_lsa_arr_time\": \"PT1S\", \"lsa_aging_pace\": \"10\", \"spf_max_paths\": \"8\", \"max_metric_adver\": \"false\", \"asext_lsa_cnt\": \"0\", \"asext_lsa_crc\": \"0\", \"asopaque_lsa_cnt\": \"0\", \"asopaque_lsa_crc\": \"0\", \"area_total\": \"1\", \"area_normal\": \"1\", \"area_stub\": \"0\", \"area_nssa\": \"0\", \"act_area_total\": \"1\", \"act_area_normal\": \"1\", \"act_area_stub\": \"0\", \"act_area_nssa\": \"0\", \"no_discard_rt_ext\": \"false\", \"no_discard_rt_int\": \"false\", \"TABLE_area\": {\"ROW_area\": {\"aname\": \"0.0.0.0\", \"backbone_active\": \"true\", \"age\": \"P21DT20H11M11S\", \"total_intf\": \"4\", \"act_intf\": \"4\", \"passive_intf\": \"0\", \"loopback_intf\": \"2\", \"stub\": \"false\", \"nssa\": \"false\", \"no_summary\": \"false\", \"auth_type\": \"none\", \"spf_runs\": \"15\", \"last_spf_run_time\": \"PT0S\", \"lsa_cnt\": \"8\", \"lsa_crc\": \"0x239c1\"}}}}}\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1609296109960,
+        "cmd": "show ip ospf interface vrf all | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "exit01",
+        "address": "10.255.2.251",
+        "version": 0,
+        "data": "{\"TABLE_ctx\": {\"ROW_ctx\": {\"ptag\": \"UNDERLAY\", \"cname\": \"default\", \"TABLE_intf\": {\"ROW_intf\": [{\"ifname\": \"Ethernet1/1\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"unnumbered\": \"true\", \"addr\": \"10.0.0.31\", \"parent_intf\": \"loopback0\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"P2P\", \"type_str\": \"P2P\", \"cost\": \"40\", \"index\": \"2\", \"transmit_delay\": \"1\", \"nbr_total\": \"1\", \"nbr_flood\": \"1\", \"nbr_adjs\": \"1\", \"hello_interval\": \"10\", \"dead_interval\": \"40\", \"wait_interval\": \"40\", \"rxmt_interval\": \"5\", \"hello_timer\": \"PT7S\", \"auth_type\": \"none\", \"link_lsa_cnt\": \"0\", \"link_lsa_crc\": \"0\"}, {\"ifname\": \"Ethernet1/2\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"unnumbered\": \"true\", \"addr\": \"10.0.0.31\", \"parent_intf\": \"loopback0\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"P2P\", \"type_str\": \"P2P\", \"cost\": \"40\", \"index\": \"3\", \"transmit_delay\": \"1\", \"nbr_total\": \"1\", \"nbr_flood\": \"1\", \"nbr_adjs\": \"1\", \"hello_interval\": \"10\", \"dead_interval\": \"40\", \"wait_interval\": \"40\", \"rxmt_interval\": \"5\", \"hello_timer\": \"PT0S\", \"auth_type\": \"none\", \"link_lsa_cnt\": \"0\", \"link_lsa_crc\": \"0\"}, {\"ifname\": \"loopback0\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"addr\": \"10.0.0.31\", \"masklen\": \"32\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"LOOPBACK\", \"type_str\": \"LOOPBACK\", \"cost\": \"1\", \"index\": \"1\"}, {\"ifname\": \"loopback1\", \"admin_status\": \"up\", \"proto_status\": \"up\", \"addr\": \"10.0.0.221\", \"masklen\": \"32\", \"area\": \"0.0.0.0\", \"if_cfg\": \"true\", \"state_str\": \"LOOPBACK\", \"type_str\": \"LOOPBACK\", \"cost\": \"1\", \"index\": \"4\"}]}}}}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1609296111813,
+        "cmd": "show ip ospf vrf all | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "exit01",
+        "address": "10.255.2.251",
+        "version": 0,
+        "data": "{\"TABLE_ctx\": {\"ROW_ctx\": {\"ptag\": \"UNDERLAY\", \"instance_number\": \"1\", \"cname\": \"default\", \"rid\": \"10.0.0.31\", \"stateful_ha\": \"true\", \"gr_ha\": \"true\", \"gr_planned_only\": \"true\", \"gr_grace_period\": \"PT60S\", \"gr_state\": \"inactive\", \"gr_last_status\": \"None\", \"support_tos0_only\": \"true\", \"support_opaque_lsa\": \"true\", \"is_abr\": \"false\", \"is_asbr\": \"false\", \"admin_dist\": \"110\", \"ref_bw\": \"40000\", \"spf_start_time\": \"PT0S\", \"spf_hold_time\": \"PT1S\", \"spf_max_time\": \"PT5S\", \"lsa_start_time\": \"PT0S\", \"lsa_hold_time\": \"PT5S\", \"lsa_max_time\": \"PT5S\", \"min_lsa_arr_time\": \"PT1S\", \"lsa_aging_pace\": \"10\", \"spf_max_paths\": \"8\", \"max_metric_adver\": \"false\", \"asext_lsa_cnt\": \"0\", \"asext_lsa_crc\": \"0\", \"asopaque_lsa_cnt\": \"0\", \"asopaque_lsa_crc\": \"0\", \"area_total\": \"1\", \"area_normal\": \"1\", \"area_stub\": \"0\", \"area_nssa\": \"0\", \"act_area_total\": \"1\", \"act_area_normal\": \"1\", \"act_area_stub\": \"0\", \"act_area_nssa\": \"0\", \"no_discard_rt_ext\": \"false\", \"no_discard_rt_int\": \"false\", \"TABLE_area\": {\"ROW_area\": {\"aname\": \"0.0.0.0\", \"backbone_active\": \"true\", \"age\": \"P21DT20H11M13S\", \"total_intf\": \"4\", \"act_intf\": \"4\", \"passive_intf\": \"0\", \"loopback_intf\": \"2\", \"stub\": \"false\", \"nssa\": \"false\", \"no_summary\": \"false\", \"auth_type\": \"none\", \"spf_runs\": \"15\", \"last_spf_run_time\": \"PT0S\", \"lsa_cnt\": \"8\", \"lsa_crc\": \"0x239c1\"}}}}}\n"
     }
 ]

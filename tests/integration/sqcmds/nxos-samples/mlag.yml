@@ -3,22 +3,33 @@ tests:
 - command: mlag show --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: mlag show nxos
-  output: '[]'
+  output: '[{"namespace": "nxos", "hostname": "leaf01", "systemId": "00:23:04:ee:be:0c",
+    "state": "active", "peerAddress": "10.255.2.185", "role": "primary", "peerLink":
+    "Po1", "mlagDualPortsCnt": 2, "mlagSinglePortsCnt": 0, "mlagErrorPortsCnt": 0,
+    "timestamp": 1609267307584}, {"namespace": "nxos", "hostname": "leaf04", "systemId":
+    "00:23:04:ee:be:22", "state": "active", "peerAddress": "10.255.2.186", "role":
+    "secondary-primary", "peerLink": "Po1", "mlagDualPortsCnt": 2, "mlagSinglePortsCnt":
+    0, "mlagErrorPortsCnt": 0, "timestamp": 1609267307686}, {"namespace": "nxos",
+    "hostname": "leaf03", "systemId": "00:23:04:ee:be:22", "state": "active", "peerAddress":
+    "10.255.2.187", "role": "primary-secondary", "peerLink": "Po1", "mlagDualPortsCnt":
+    2, "mlagSinglePortsCnt": 0, "mlagErrorPortsCnt": 0, "timestamp": 1609267308372},
+    {"namespace": "nxos", "hostname": "leaf02", "systemId": "00:23:04:ee:be:0c", "state":
+    "active", "peerAddress": "10.255.2.184", "role": "secondary", "peerLink": "Po1",
+    "mlagDualPortsCnt": 2, "mlagSinglePortsCnt": 1, "mlagErrorPortsCnt": 1, "timestamp":
+    1609267308573}]'
 - command: mlag show --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: mlag show nxos
-  output: '[]'
+  output: '[{"hostname": "leaf01"}, {"hostname": "leaf04"}, {"hostname": "leaf03"},
+    {"hostname": "leaf02"}]'
 - command: mlag summarize --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: mlag summarize nxos
-  output: '{"namespace": {}, "hostname": {}, "systemId": {}, "state": {}, "peerAddress":
-    {}, "role": {}, "peerLink": {}, "mlagDualPortsCnt": {}, "mlagSinglePortsCnt":
-    {}, "mlagErrorPortsCnt": {}, "portsErrDisabled": {}, "mlagDualPortsList": {},
-    "mlagSinglePortsList": {}, "mlagErrorPortsList": {}, "vtepIP": {}, "peerRole":
-    {}, "backupActive": {}, "usesLinkLocal": {}, "peerMacAddress": {}, "configSanity":
-    {}, "backupReason": {}, "backupIP": {}, "peerLinkStatus": {}, "domainId": {},
-    "timestamp": {}, "active": {}}'
+  output: '{"nxos": {"deviceCnt": 4, "uniqueSystemIdCnt": 2, "devicesWithfailedStateCnt":
+    0, "devicesWithBackupInactiveCnt": 4, "mlagNumDualPortsStat": [2, 2, 2], "mlagNumSinglePortStat":
+    [0, 1, 0], "mlagNumErrorPortStat": [0, 1, 0]}}'
 - command: mlag unique --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: mlag unique nxos
-  output: '[]'
+  output: '[{"hostname": "leaf01", "count": 1}, {"hostname": "leaf02", "count": 1},
+    {"hostname": "leaf03", "count": 1}, {"hostname": "leaf04", "count": 1}]'

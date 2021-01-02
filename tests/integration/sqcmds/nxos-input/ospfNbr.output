@@ -1,49 +1,121 @@
 [
     {
         "status": 0,
-        "timestamp": 1606018052824,
-        "cmd": "show ip ospf neighbor detail vrf all | json",
-        "devtype": "nxos",
+        "timestamp": 1609296107213,
+        "cmd": "sudo vtysh -c 'show ip ospf neighbor detail'",
+        "devtype": "linux",
         "namespace": "nxos",
-        "hostname": "spine1",
-        "address": "10.255.5.44",
-        "version": 0,
-        "data": "{\"TABLE_ctx\": {\"ROW_ctx\": {\"ptag\": \"UNDERLAY\", \"cname\": \"default\", \"TABLE_nbr\": {\"ROW_nbr\": [{\"rid\": \"10.0.0.11\", \"addr\": \"10.0.0.11\", \"area\": \"0.0.0.0\", \"intf\": \"Ethernet1/1\", \"state\": \"FULL\", \"transition\": \"4\", \"lastchange\": \"PT16M39S\", \"helloptions\": \"0x2\", \"dbdoptions\": \"0x42\", \"lastnonhello\": \"PT17M48S\", \"deadtimer\": \"PT36S\"}, {\"rid\": \"10.0.0.12\", \"addr\": \"10.0.0.12\", \"area\": \"0.0.0.0\", \"intf\": \"Ethernet1/2\", \"state\": \"FULL\", \"transition\": \"4\", \"lastchange\": \"PT16M32S\", \"helloptions\": \"0x2\", \"dbdoptions\": \"0x42\", \"lastnonhello\": \"PT17M50S\", \"deadtimer\": \"PT33S\"}]}}}}\n"
+        "hostname": "firewall01",
+        "address": "10.255.2.34",
+        "version": "18.04",
+        "data": ""
     }
 ][
     {
         "status": 0,
-        "timestamp": 1606018053440,
-        "cmd": "show ip ospf neighbor detail vrf all | json",
-        "devtype": "nxos",
+        "timestamp": 1609296110373,
+        "cmd": "show ospf neighbor instance all detail | display json",
+        "devtype": "junos-qfx",
         "namespace": "nxos",
-        "hostname": "leaf1",
-        "address": "10.255.5.42",
+        "hostname": "dcedge01",
+        "address": "10.255.2.250",
         "version": 0,
-        "data": "{\"TABLE_ctx\": {\"ROW_ctx\": {\"ptag\": \"UNDERLAY\", \"cname\": \"default\", \"TABLE_nbr\": {\"ROW_nbr\": [{\"rid\": \"10.0.0.21\", \"addr\": \"10.0.0.21\", \"area\": \"0.0.0.0\", \"intf\": \"Ethernet1/3\", \"state\": \"FULL\", \"transition\": \"4\", \"lastchange\": \"PT16M39S\", \"helloptions\": \"0x2\", \"dbdoptions\": \"0x42\", \"lastnonhello\": \"PT3M13S\", \"deadtimer\": \"PT37S\"}, {\"rid\": \"10.0.0.22\", \"addr\": \"10.0.0.22\", \"area\": \"0.0.0.0\", \"intf\": \"Ethernet1/4\", \"state\": \"FULL\", \"transition\": \"5\", \"lastchange\": \"PT16M34S\", \"helloptions\": \"0x2\", \"dbdoptions\": \"0x42\", \"lastnonhello\": \"PT3M15S\", \"deadtimer\": \"PT35S\"}]}}}}\n"
+        "data": "{\n    \"output\" : [\n    {\n        \"data\" : \"OSPF instance is not running\"\n    }\n    ]\n}\n"
     }
 ][
     {
         "status": 0,
-        "timestamp": 1606018053510,
+        "timestamp": 1609296118289,
         "cmd": "show ip ospf neighbor detail vrf all | json",
         "devtype": "nxos",
         "namespace": "nxos",
-        "hostname": "spine2",
-        "address": "10.255.5.45",
+        "hostname": "exit01",
+        "address": "10.255.2.251",
         "version": 0,
-        "data": "{\"TABLE_ctx\": {\"ROW_ctx\": {\"ptag\": \"UNDERLAY\", \"cname\": \"default\", \"TABLE_nbr\": {\"ROW_nbr\": [{\"rid\": \"10.0.0.11\", \"addr\": \"10.0.0.11\", \"area\": \"0.0.0.0\", \"intf\": \"Ethernet1/1\", \"state\": \"FULL\", \"transition\": \"4\", \"lastchange\": \"PT16M34S\", \"helloptions\": \"0x2\", \"dbdoptions\": \"0x42\", \"lastnonhello\": \"PT17M50S\", \"deadtimer\": \"PT35S\"}, {\"rid\": \"10.0.0.12\", \"addr\": \"10.0.0.12\", \"area\": \"0.0.0.0\", \"intf\": \"Ethernet1/2\", \"state\": \"FULL\", \"transition\": \"4\", \"lastchange\": \"PT16M31S\", \"helloptions\": \"0x2\", \"dbdoptions\": \"0x42\", \"lastnonhello\": \"PT17M50S\", \"deadtimer\": \"PT39S\"}]}}}}\n"
+        "data": "{\"TABLE_ctx\": {\"ROW_ctx\": {\"ptag\": \"UNDERLAY\", \"cname\": \"default\", \"TABLE_nbr\": {\"ROW_nbr\": [{\"rid\": \"10.0.0.21\", \"addr\": \"10.0.0.21\", \"area\": \"0.0.0.0\", \"intf\": \"Ethernet1/1\", \"state\": \"FULL\", \"transition\": \"4\", \"lastchange\": \"P21DT20H11M14S\", \"helloptions\": \"0x2\", \"dbdoptions\": \"0x42\", \"lastnonhello\": \"P1M3DT2H1M48S\", \"deadtimer\": \"PT41S\"}, {\"rid\": \"10.0.0.22\", \"addr\": \"10.0.0.22\", \"area\": \"0.0.0.0\", \"intf\": \"Ethernet1/2\", \"state\": \"FULL\", \"transition\": \"4\", \"lastchange\": \"P21DT20H11M14S\", \"helloptions\": \"0x2\", \"dbdoptions\": \"0x42\", \"lastnonhello\": \"P1M3DT2H1M48S\", \"deadtimer\": \"PT38S\"}]}}}}\n"
     }
 ][
     {
         "status": 0,
-        "timestamp": 1606018053748,
+        "timestamp": 1609296118514,
         "cmd": "show ip ospf neighbor detail vrf all | json",
         "devtype": "nxos",
         "namespace": "nxos",
-        "hostname": "leaf2",
-        "address": "10.255.5.43",
+        "hostname": "spine02",
+        "address": "10.255.2.118",
         "version": 0,
-        "data": "{\"TABLE_ctx\": {\"ROW_ctx\": {\"ptag\": \"UNDERLAY\", \"cname\": \"default\", \"TABLE_nbr\": {\"ROW_nbr\": [{\"rid\": \"10.0.0.21\", \"addr\": \"10.0.0.21\", \"area\": \"0.0.0.0\", \"intf\": \"Ethernet1/3\", \"state\": \"FULL\", \"transition\": \"4\", \"lastchange\": \"PT16M33S\", \"helloptions\": \"0x2\", \"dbdoptions\": \"0x42\", \"lastnonhello\": \"PT3M19S\", \"deadtimer\": \"PT41S\"}, {\"rid\": \"10.0.0.22\", \"addr\": \"10.0.0.22\", \"area\": \"0.0.0.0\", \"intf\": \"Ethernet1/4\", \"state\": \"FULL\", \"transition\": \"5\", \"lastchange\": \"PT16M32S\", \"helloptions\": \"0x2\", \"dbdoptions\": \"0x42\", \"lastnonhello\": \"PT3M15S\", \"deadtimer\": \"PT36S\"}]}}}}\n"
+        "data": "{\"TABLE_ctx\": {\"ROW_ctx\": {\"ptag\": \"UNDERLAY\", \"cname\": \"default\", \"TABLE_nbr\": {\"ROW_nbr\": [{\"rid\": \"10.0.0.11\", \"addr\": \"10.0.0.11\", \"area\": \"0.0.0.0\", \"intf\": \"Ethernet1/1\", \"state\": \"FULL\", \"transition\": \"4\", \"lastchange\": \"P21DT20H11M15S\", \"helloptions\": \"0x2\", \"dbdoptions\": \"0x42\", \"lastnonhello\": \"P1M3DT2H1M45S\", \"deadtimer\": \"PT41S\"}, {\"rid\": \"10.0.0.12\", \"addr\": \"10.0.0.12\", \"area\": \"0.0.0.0\", \"intf\": \"Ethernet1/2\", \"state\": \"FULL\", \"transition\": \"4\", \"lastchange\": \"P21DT20H11M16S\", \"helloptions\": \"0x2\", \"dbdoptions\": \"0x42\", \"lastnonhello\": \"P1M3DT2H1M43S\", \"deadtimer\": \"PT41S\"}, {\"rid\": \"10.0.0.13\", \"addr\": \"10.0.0.13\", \"area\": \"0.0.0.0\", \"intf\": \"Ethernet1/3\", \"state\": \"FULL\", \"transition\": \"4\", \"lastchange\": \"P21DT19H44M\", \"helloptions\": \"0x2\", \"dbdoptions\": \"0x42\", \"lastnonhello\": \"P1M3DT2H1M43S\", \"deadtimer\": \"PT33S\"}, {\"rid\": \"10.0.0.14\", \"addr\": \"10.0.0.14\", \"area\": \"0.0.0.0\", \"intf\": \"Ethernet1/4\", \"state\": \"FULL\", \"transition\": \"4\", \"lastchange\": \"P21DT20H11M13S\", \"helloptions\": \"0x2\", \"dbdoptions\": \"0x42\", \"lastnonhello\": \"P1M3DT2H1M45S\", \"deadtimer\": \"PT38S\"}, {\"rid\": \"10.0.0.31\", \"addr\": \"10.0.0.31\", \"area\": \"0.0.0.0\", \"intf\": \"Ethernet1/5\", \"state\": \"FULL\", \"transition\": \"4\", \"lastchange\": \"P21DT20H11M14S\", \"helloptions\": \"0x2\", \"dbdoptions\": \"0x42\", \"lastnonhello\": \"P1M3DT2H1M45S\", \"deadtimer\": \"PT42S\"}, {\"rid\": \"10.0.0.32\", \"addr\": \"10.0.0.32\", \"area\": \"0.0.0.0\", \"intf\": \"Ethernet1/6\", \"state\": \"FULL\", \"transition\": \"4\", \"lastchange\": \"P21DT20H11M14S\", \"helloptions\": \"0x2\", \"dbdoptions\": \"0x42\", \"lastnonhello\": \"P1M3DT2H1M45S\", \"deadtimer\": \"PT38S\"}]}}}}\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1609296118698,
+        "cmd": "show ip ospf neighbor detail vrf all | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "spine01",
+        "address": "10.255.2.117",
+        "version": 0,
+        "data": "{\"TABLE_ctx\": {\"ROW_ctx\": {\"ptag\": \"UNDERLAY\", \"cname\": \"default\", \"TABLE_nbr\": {\"ROW_nbr\": [{\"rid\": \"10.0.0.11\", \"addr\": \"10.0.0.11\", \"area\": \"0.0.0.0\", \"intf\": \"Ethernet1/1\", \"state\": \"FULL\", \"transition\": \"4\", \"lastchange\": \"P21DT20H11M15S\", \"helloptions\": \"0x2\", \"dbdoptions\": \"0x42\", \"lastnonhello\": \"P1M3DT2H1M42S\", \"deadtimer\": \"PT41S\"}, {\"rid\": \"10.0.0.12\", \"addr\": \"10.0.0.12\", \"area\": \"0.0.0.0\", \"intf\": \"Ethernet1/2\", \"state\": \"FULL\", \"transition\": \"4\", \"lastchange\": \"P21DT20H11M13S\", \"helloptions\": \"0x2\", \"dbdoptions\": \"0x42\", \"lastnonhello\": \"P1M3DT2H1M40S\", \"deadtimer\": \"PT38S\"}, {\"rid\": \"10.0.0.13\", \"addr\": \"10.0.0.13\", \"area\": \"0.0.0.0\", \"intf\": \"Ethernet1/3\", \"state\": \"FULL\", \"transition\": \"4\", \"lastchange\": \"P21DT19H43M55S\", \"helloptions\": \"0x2\", \"dbdoptions\": \"0x42\", \"lastnonhello\": \"P1M3DT2H1M42S\", \"deadtimer\": \"PT33S\"}, {\"rid\": \"10.0.0.14\", \"addr\": \"10.0.0.14\", \"area\": \"0.0.0.0\", \"intf\": \"Ethernet1/4\", \"state\": \"FULL\", \"transition\": \"4\", \"lastchange\": \"P21DT20H11M13S\", \"helloptions\": \"0x2\", \"dbdoptions\": \"0x42\", \"lastnonhello\": \"P1M3DT2H1M42S\", \"deadtimer\": \"PT35S\"}, {\"rid\": \"10.0.0.31\", \"addr\": \"10.0.0.31\", \"area\": \"0.0.0.0\", \"intf\": \"Ethernet1/5\", \"state\": \"FULL\", \"transition\": \"5\", \"lastchange\": \"P21DT20H11M14S\", \"helloptions\": \"0x2\", \"dbdoptions\": \"0x42\", \"lastnonhello\": \"P1M3DT2H1M42S\", \"deadtimer\": \"PT42S\"}, {\"rid\": \"10.0.0.32\", \"addr\": \"10.0.0.32\", \"area\": \"0.0.0.0\", \"intf\": \"Ethernet1/6\", \"state\": \"FULL\", \"transition\": \"5\", \"lastchange\": \"P21DT20H11M13S\", \"helloptions\": \"0x2\", \"dbdoptions\": \"0x42\", \"lastnonhello\": \"P1M3DT2H1M42S\", \"deadtimer\": \"PT40S\"}]}}}}\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1609296119523,
+        "cmd": "show ip ospf neighbor detail vrf all | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "exit02",
+        "address": "10.255.2.252",
+        "version": 0,
+        "data": "{\"TABLE_ctx\": {\"ROW_ctx\": {\"ptag\": \"UNDERLAY\", \"cname\": \"default\", \"TABLE_nbr\": {\"ROW_nbr\": [{\"rid\": \"10.0.0.21\", \"addr\": \"10.0.0.21\", \"area\": \"0.0.0.0\", \"intf\": \"Ethernet1/1\", \"state\": \"FULL\", \"transition\": \"4\", \"lastchange\": \"P21DT20H11M14S\", \"helloptions\": \"0x2\", \"dbdoptions\": \"0x42\", \"lastnonhello\": \"P1M3DT2H1M44S\", \"deadtimer\": \"PT37S\"}, {\"rid\": \"10.0.0.22\", \"addr\": \"10.0.0.22\", \"area\": \"0.0.0.0\", \"intf\": \"Ethernet1/2\", \"state\": \"FULL\", \"transition\": \"4\", \"lastchange\": \"P21DT20H11M14S\", \"helloptions\": \"0x2\", \"dbdoptions\": \"0x42\", \"lastnonhello\": \"P1M3DT2H1M44S\", \"deadtimer\": \"PT38S\"}]}}}}\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1609296120340,
+        "cmd": "show ip ospf neighbor detail vrf all | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf02",
+        "address": "10.255.2.185",
+        "version": 0,
+        "data": "{\"TABLE_ctx\": {\"ROW_ctx\": {\"ptag\": \"UNDERLAY\", \"cname\": \"default\", \"TABLE_nbr\": {\"ROW_nbr\": [{\"rid\": \"10.0.0.21\", \"addr\": \"10.0.0.21\", \"area\": \"0.0.0.0\", \"intf\": \"Ethernet1/1\", \"state\": \"FULL\", \"transition\": \"5\", \"lastchange\": \"P21DT20H11M15S\", \"helloptions\": \"0x2\", \"dbdoptions\": \"0x42\", \"lastnonhello\": \"P1M3DT2H1M31S\", \"deadtimer\": \"PT38S\"}, {\"rid\": \"10.0.0.22\", \"addr\": \"10.0.0.22\", \"area\": \"0.0.0.0\", \"intf\": \"Ethernet1/2\", \"state\": \"FULL\", \"transition\": \"5\", \"lastchange\": \"P21DT20H11M17S\", \"helloptions\": \"0x2\", \"dbdoptions\": \"0x42\", \"lastnonhello\": \"P1M3DT2H1M31S\", \"deadtimer\": \"PT40S\"}]}}}}\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1609296120619,
+        "cmd": "show ip ospf neighbor detail vrf all | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf04",
+        "address": "10.255.2.187",
+        "version": 0,
+        "data": "{\"TABLE_ctx\": {\"ROW_ctx\": {\"ptag\": \"UNDERLAY\", \"cname\": \"default\", \"TABLE_nbr\": {\"ROW_nbr\": [{\"rid\": \"10.0.0.21\", \"addr\": \"10.0.0.21\", \"area\": \"0.0.0.0\", \"intf\": \"Ethernet1/1\", \"state\": \"FULL\", \"transition\": \"4\", \"lastchange\": \"P21DT20H11M16S\", \"helloptions\": \"0x2\", \"dbdoptions\": \"0x42\", \"lastnonhello\": \"P1M3DT2H1M35S\", \"deadtimer\": \"PT33S\"}, {\"rid\": \"10.0.0.22\", \"addr\": \"10.0.0.22\", \"area\": \"0.0.0.0\", \"intf\": \"Ethernet1/2\", \"state\": \"FULL\", \"transition\": \"5\", \"lastchange\": \"P21DT20H11M16S\", \"helloptions\": \"0x2\", \"dbdoptions\": \"0x42\", \"lastnonhello\": \"P1M3DT2H1M35S\", \"deadtimer\": \"PT37S\"}]}}}}\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1609296120717,
+        "cmd": "show ip ospf neighbor detail vrf all | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf01",
+        "address": "10.255.2.184",
+        "version": 0,
+        "data": "{\"TABLE_ctx\": {\"ROW_ctx\": {\"ptag\": \"UNDERLAY\", \"cname\": \"default\", \"TABLE_nbr\": {\"ROW_nbr\": [{\"rid\": \"10.0.0.21\", \"addr\": \"10.0.0.21\", \"area\": \"0.0.0.0\", \"intf\": \"Ethernet1/1\", \"state\": \"FULL\", \"transition\": \"5\", \"lastchange\": \"P21DT20H11M16S\", \"helloptions\": \"0x2\", \"dbdoptions\": \"0x42\", \"lastnonhello\": \"P1M3DT2H1M33S\", \"deadtimer\": \"PT37S\"}, {\"rid\": \"10.0.0.22\", \"addr\": \"10.0.0.22\", \"area\": \"0.0.0.0\", \"intf\": \"Ethernet1/2\", \"state\": \"FULL\", \"transition\": \"5\", \"lastchange\": \"P21DT20H11M17S\", \"helloptions\": \"0x2\", \"dbdoptions\": \"0x42\", \"lastnonhello\": \"P1M3DT2H1M33S\", \"deadtimer\": \"PT41S\"}]}}}}\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1609296120824,
+        "cmd": "show ip ospf neighbor detail vrf all | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf03",
+        "address": "10.255.2.186",
+        "version": 0,
+        "data": "{\"TABLE_ctx\": {\"ROW_ctx\": {\"ptag\": \"UNDERLAY\", \"cname\": \"default\", \"TABLE_nbr\": {\"ROW_nbr\": [{\"rid\": \"10.0.0.21\", \"addr\": \"10.0.0.21\", \"area\": \"0.0.0.0\", \"intf\": \"Ethernet1/1\", \"state\": \"FULL\", \"transition\": \"4\", \"lastchange\": \"P21DT19H43M57S\", \"helloptions\": \"0x2\", \"dbdoptions\": \"0x42\", \"lastnonhello\": \"P21DT19H37M3S\", \"deadtimer\": \"PT35S\"}, {\"rid\": \"10.0.0.22\", \"addr\": \"10.0.0.22\", \"area\": \"0.0.0.0\", \"intf\": \"Ethernet1/2\", \"state\": \"FULL\", \"transition\": \"4\", \"lastchange\": \"P21DT19H44M3S\", \"helloptions\": \"0x2\", \"dbdoptions\": \"0x42\", \"lastnonhello\": \"P21DT19H37M3S\", \"deadtimer\": \"PT38S\"}]}}}}\n"
     }
 ]

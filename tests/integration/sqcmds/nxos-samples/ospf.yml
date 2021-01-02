@@ -3,104 +3,311 @@ tests:
 - command: ospf show --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: ospf show nxos
-  output: '[{"namespace": "nxos", "hostname": "spine2", "vrf": "default", "area":
-    "0.0.0.0", "ifname": "Ethernet1/1", "ifState": "up", "nbrCount": 1, "adjState":
-    "full", "peerIP": "10.0.0.11", "lastChangeTime": 1605988183510, "numChanges":
-    4.0, "timestamp": 1605989245127}, {"namespace": "nxos", "hostname": "spine2",
-    "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/2", "ifState": "up",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.12", "lastChangeTime": 1605988183510,
-    "numChanges": 4.0, "timestamp": 1605989245127}, {"namespace": "nxos", "hostname":
-    "spine2", "vrf": "default", "area": "0.0.0.0", "ifname": "loopback0", "ifState":
-    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime": "-",
-    "numChanges": 0.0, "timestamp": 1605989245127}, {"namespace": "nxos", "hostname":
-    "spine2", "vrf": "default", "area": "0.0.0.0", "ifname": "loopback1", "ifState":
-    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime": "-",
-    "numChanges": 0.0, "timestamp": 1605989245127}, {"namespace": "nxos", "hostname":
-    "spine1", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/1", "ifState":
-    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.11", "lastChangeTime":
-    1605988184824, "numChanges": 4.0, "timestamp": 1605989245138}, {"namespace": "nxos",
-    "hostname": "spine1", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/2",
+  output: '[{"namespace": "nxos", "hostname": "leaf04", "vrf": "default", "area":
+    "0.0.0.0", "ifname": "loopback1", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "-", "lastChangeTime": "-", "numChanges": 0.0, "timestamp":
+    1609267307539}, {"namespace": "nxos", "hostname": "leaf04", "vrf": "default",
+    "area": "0.0.0.0", "ifname": "loopback0", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "-", "lastChangeTime": "-", "numChanges": 0.0, "timestamp":
+    1609267307539}, {"namespace": "nxos", "hostname": "leaf04", "vrf": "default",
+    "area": "0.0.0.0", "ifname": "Ethernet1/2", "ifState": "up", "nbrCount": 1, "adjState":
+    "full", "peerIP": "10.0.0.22", "lastChangeTime": 1606408825619, "numChanges":
+    5.0, "timestamp": 1609267307539}, {"namespace": "nxos", "hostname": "leaf04",
+    "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/1", "ifState": "up",
+    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21", "lastChangeTime": 1606408825619,
+    "numChanges": 4.0, "timestamp": 1609267307539}, {"namespace": "nxos", "hostname":
+    "spine01", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/4", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.14", "lastChangeTime":
+    1606408816698, "numChanges": 4.0, "timestamp": 1609267307803}, {"namespace": "nxos",
+    "hostname": "spine01", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/2",
     "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.12", "lastChangeTime":
-    1605988182824, "numChanges": 4.0, "timestamp": 1605989245138}, {"namespace": "nxos",
-    "hostname": "spine1", "vrf": "default", "area": "0.0.0.0", "ifname": "loopback0",
+    1606408818698, "numChanges": 4.0, "timestamp": 1609267307803}, {"namespace": "nxos",
+    "hostname": "spine01", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/1",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.11", "lastChangeTime":
+    1606408816698, "numChanges": 4.0, "timestamp": 1609267307803}, {"namespace": "nxos",
+    "hostname": "spine01", "vrf": "default", "area": "0.0.0.0", "ifname": "loopback1",
     "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime":
-    "-", "numChanges": 0.0, "timestamp": 1605989245138}, {"namespace": "nxos", "hostname":
-    "spine1", "vrf": "default", "area": "0.0.0.0", "ifname": "loopback1", "ifState":
-    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime": "-",
-    "numChanges": 0.0, "timestamp": 1605989245138}, {"namespace": "nxos", "hostname":
-    "leaf1", "vrf": "default", "area": "0.0.0.0", "ifname": "loopback0", "ifState":
-    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime": "-",
-    "numChanges": 0.0, "timestamp": 1605989245205}, {"namespace": "nxos", "hostname":
-    "leaf1", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/3", "ifState":
-    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21", "lastChangeTime":
-    1605989060440, "numChanges": 4.0, "timestamp": 1605989245205}, {"namespace": "nxos",
-    "hostname": "leaf1", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/4",
-    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "lastChangeTime":
-    1605989058440, "numChanges": 5.0, "timestamp": 1605989245205}, {"namespace": "nxos",
-    "hostname": "leaf2", "vrf": "default", "area": "0.0.0.0", "ifname": "loopback0",
+    "-", "numChanges": 0.0, "timestamp": 1609267307803}, {"namespace": "nxos", "hostname":
+    "spine01", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/5", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.31", "lastChangeTime":
+    1606408816698, "numChanges": 5.0, "timestamp": 1609267307803}, {"namespace": "nxos",
+    "hostname": "spine01", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/3",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.13", "lastChangeTime":
+    1606408816698, "numChanges": 4.0, "timestamp": 1609267307803}, {"namespace": "nxos",
+    "hostname": "spine01", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/6",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.32", "lastChangeTime":
+    1606408816698, "numChanges": 5.0, "timestamp": 1609267307803}, {"namespace": "nxos",
+    "hostname": "spine01", "vrf": "default", "area": "0.0.0.0", "ifname": "loopback0",
     "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime":
-    "-", "numChanges": 0.0, "timestamp": 1605989245972}, {"namespace": "nxos", "hostname":
-    "leaf2", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/3", "ifState":
+    "-", "numChanges": 0.0, "timestamp": 1609267307803}, {"namespace": "nxos", "hostname":
+    "leaf01", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/1", "ifState":
     "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21", "lastChangeTime":
-    1605989054748, "numChanges": 4.0, "timestamp": 1605989245972}, {"namespace": "nxos",
-    "hostname": "leaf2", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/4",
+    1606408827717, "numChanges": 5.0, "timestamp": 1609267307970}, {"namespace": "nxos",
+    "hostname": "leaf01", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/2",
     "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "lastChangeTime":
-    1605989058748, "numChanges": 5.0, "timestamp": 1605989245972}]'
+    1606408827717, "numChanges": 5.0, "timestamp": 1609267307970}, {"namespace": "nxos",
+    "hostname": "leaf01", "vrf": "default", "area": "0.0.0.0", "ifname": "loopback0",
+    "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime":
+    "-", "numChanges": 0.0, "timestamp": 1609267307970}, {"namespace": "nxos", "hostname":
+    "leaf01", "vrf": "default", "area": "0.0.0.0", "ifname": "loopback1", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime": "-",
+    "numChanges": 0.0, "timestamp": 1609267307970}, {"namespace": "nxos", "hostname":
+    "leaf02", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/2", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "lastChangeTime":
+    1606408829340, "numChanges": 5.0, "timestamp": 1609267308258}, {"namespace": "nxos",
+    "hostname": "leaf02", "vrf": "default", "area": "0.0.0.0", "ifname": "loopback0",
+    "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime":
+    "-", "numChanges": 0.0, "timestamp": 1609267308258}, {"namespace": "nxos", "hostname":
+    "leaf02", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/1", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21", "lastChangeTime":
+    1606408829340, "numChanges": 5.0, "timestamp": 1609267308258}, {"namespace": "nxos",
+    "hostname": "leaf02", "vrf": "default", "area": "0.0.0.0", "ifname": "loopback1",
+    "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime":
+    "-", "numChanges": 0.0, "timestamp": 1609267308258}, {"namespace": "nxos", "hostname":
+    "spine02", "vrf": "default", "area": "0.0.0.0", "ifname": "loopback0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime": "-",
+    "numChanges": 0.0, "timestamp": 1609267308637}, {"namespace": "nxos", "hostname":
+    "spine02", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/1", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.11", "lastChangeTime":
+    1606408813514, "numChanges": 4.0, "timestamp": 1609267308637}, {"namespace": "nxos",
+    "hostname": "spine02", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/2",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.12", "lastChangeTime":
+    1606408815514, "numChanges": 4.0, "timestamp": 1609267308637}, {"namespace": "nxos",
+    "hostname": "spine02", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/3",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.13", "lastChangeTime":
+    1606408815514, "numChanges": 4.0, "timestamp": 1609267308637}, {"namespace": "nxos",
+    "hostname": "spine02", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/4",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.14", "lastChangeTime":
+    1606408813514, "numChanges": 4.0, "timestamp": 1609267308637}, {"namespace": "nxos",
+    "hostname": "spine02", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/5",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.31", "lastChangeTime":
+    1606408813514, "numChanges": 4.0, "timestamp": 1609267308637}, {"namespace": "nxos",
+    "hostname": "spine02", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/6",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.32", "lastChangeTime":
+    1606408813514, "numChanges": 4.0, "timestamp": 1609267308637}, {"namespace": "nxos",
+    "hostname": "spine02", "vrf": "default", "area": "0.0.0.0", "ifname": "loopback1",
+    "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime":
+    "-", "numChanges": 0.0, "timestamp": 1609267308637}, {"namespace": "nxos", "hostname":
+    "leaf03", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/2", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "lastChangeTime":
+    1607382297824, "numChanges": 4.0, "timestamp": 1609267308826}, {"namespace": "nxos",
+    "hostname": "leaf03", "vrf": "default", "area": "0.0.0.0", "ifname": "loopback1",
+    "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime":
+    "-", "numChanges": 0.0, "timestamp": 1609267308826}, {"namespace": "nxos", "hostname":
+    "leaf03", "vrf": "default", "area": "0.0.0.0", "ifname": "loopback0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime": "-",
+    "numChanges": 0.0, "timestamp": 1609267308826}, {"namespace": "nxos", "hostname":
+    "leaf03", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/1", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21", "lastChangeTime":
+    1607382297824, "numChanges": 4.0, "timestamp": 1609267308826}, {"namespace": "nxos",
+    "hostname": "exit02", "vrf": "default", "area": "0.0.0.0", "ifname": "loopback1",
+    "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime":
+    "-", "numChanges": 0.0, "timestamp": 1609267309050}, {"namespace": "nxos", "hostname":
+    "exit02", "vrf": "default", "area": "0.0.0.0", "ifname": "loopback0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime": "-",
+    "numChanges": 0.0, "timestamp": 1609267309050}, {"namespace": "nxos", "hostname":
+    "exit02", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/2", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "lastChangeTime":
+    1606408815523, "numChanges": 4.0, "timestamp": 1609267309050}, {"namespace": "nxos",
+    "hostname": "exit02", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/1",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21", "lastChangeTime":
+    1606408815523, "numChanges": 4.0, "timestamp": 1609267309050}, {"namespace": "nxos",
+    "hostname": "exit01", "vrf": "default", "area": "0.0.0.0", "ifname": "loopback1",
+    "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime":
+    "-", "numChanges": 0.0, "timestamp": 1609267309960}, {"namespace": "nxos", "hostname":
+    "exit01", "vrf": "default", "area": "0.0.0.0", "ifname": "loopback0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime": "-",
+    "numChanges": 0.0, "timestamp": 1609267309960}, {"namespace": "nxos", "hostname":
+    "exit01", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/2", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "lastChangeTime":
+    1606408810289, "numChanges": 4.0, "timestamp": 1609267309960}, {"namespace": "nxos",
+    "hostname": "exit01", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/1",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21", "lastChangeTime":
+    1606408810289, "numChanges": 4.0, "timestamp": 1609267309960}]'
 - command: ospf show --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: ospf show nxos
-  output: '[{"hostname": "spine2"}, {"hostname": "spine2"}, {"hostname": "spine2"},
-    {"hostname": "spine2"}, {"hostname": "spine1"}, {"hostname": "spine1"}, {"hostname":
-    "spine1"}, {"hostname": "spine1"}, {"hostname": "leaf1"}, {"hostname": "leaf1"},
-    {"hostname": "leaf1"}, {"hostname": "leaf2"}, {"hostname": "leaf2"}, {"hostname":
-    "leaf2"}]'
+  output: '[{"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}]'
 - command: ospf summarize --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: ospf summarize nxos
-  output: '{"nxos": {"deviceCnt": 4, "peerCnt": 14, "stubbyPeerCnt": 0, "passivePeerCnt":
-    6, "unnumberedPeerCnt": 8, "failedPeerCnt": 0, "area": {"0.0.0.0": 14}, "vrf":
-    {"default": 14}, "helloTime": {"10": 14}, "deadTime": {"40": 14}, "retxTime":
-    {"5": 14}, "networkType": {"p2p": 8, "loopback": 6}, "adjChangesStat": [4.0, 5.0,
-    4.0], "upTimeStat": [185000, 1062000, 625500]}}'
+  output: '{"nxos": {"deviceCnt": 8, "peerCnt": 40, "stubbyPeerCnt": 0, "passivePeerCnt":
+    16, "unnumberedPeerCnt": 24, "failedPeerCnt": 0, "area": {"0.0.0.0": 40}, "vrf":
+    {"default": 40}, "helloTime": {"10": 40}, "deadTime": {"40": 40}, "retxTime":
+    {"5": 40}, "networkType": {"p2p": 24, "loopback": 16}, "adjChangesStat": [4.0,
+    5.0, 4.0], "upTimeStat": [1885011000, 2858500000, 2858491000]}}'
 - command: ospf unique --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: ospf unique nxos
-  output: '[{"hostname": "leaf1", "count": 3}, {"hostname": "leaf2", "count": 3},
-    {"hostname": "spine1", "count": 4}, {"hostname": "spine2", "count": 4}]'
+  output: '[{"hostname": "exit01", "count": 4}, {"hostname": "exit02", "count": 4},
+    {"hostname": "leaf01", "count": 4}, {"hostname": "leaf02", "count": 4}, {"hostname":
+    "leaf03", "count": 4}, {"hostname": "leaf04", "count": 4}, {"hostname": "spine01",
+    "count": 8}, {"hostname": "spine02", "count": 8}]'
 - command: ospf assert --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: ospf assert nxos
-  output: '[{"namespace": "nxos", "hostname": "spine2", "ifname": "Ethernet1/1", "vrf":
-    "default", "assert": "pass", "assertReason": "-", "timestamp": 1605989245127},
-    {"namespace": "nxos", "hostname": "spine2", "ifname": "Ethernet1/2", "vrf": "default",
-    "assert": "pass", "assertReason": "-", "timestamp": 1605989245127}, {"namespace":
-    "nxos", "hostname": "spine1", "ifname": "Ethernet1/1", "vrf": "default", "assert":
-    "pass", "assertReason": "-", "timestamp": 1605989245138}, {"namespace": "nxos",
-    "hostname": "spine1", "ifname": "Ethernet1/2", "vrf": "default", "assert": "pass",
-    "assertReason": "-", "timestamp": 1605989245138}, {"namespace": "nxos", "hostname":
-    "leaf1", "ifname": "Ethernet1/3", "vrf": "default", "assert": "pass", "assertReason":
-    "-", "timestamp": 1605989245205}, {"namespace": "nxos", "hostname": "leaf1", "ifname":
-    "Ethernet1/4", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
-    1605989245205}, {"namespace": "nxos", "hostname": "leaf2", "ifname": "Ethernet1/3",
-    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1605989245972},
-    {"namespace": "nxos", "hostname": "leaf2", "ifname": "Ethernet1/4", "vrf": "default",
-    "assert": "pass", "assertReason": "-", "timestamp": 1605989245972}]'
+  output: '[{"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/2", "vrf":
+    "default", "assert": "pass", "assertReason": "-", "timestamp": 1609267307539},
+    {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/1", "vrf": "default",
+    "assert": "pass", "assertReason": "-", "timestamp": 1609267307539}, {"namespace":
+    "nxos", "hostname": "spine01", "ifname": "Ethernet1/4", "vrf": "default", "assert":
+    "pass", "assertReason": "-", "timestamp": 1609267307803}, {"namespace": "nxos",
+    "hostname": "spine01", "ifname": "Ethernet1/2", "vrf": "default", "assert": "pass",
+    "assertReason": "-", "timestamp": 1609267307803}, {"namespace": "nxos", "hostname":
+    "spine01", "ifname": "Ethernet1/1", "vrf": "default", "assert": "pass", "assertReason":
+    "-", "timestamp": 1609267307803}, {"namespace": "nxos", "hostname": "spine01",
+    "ifname": "Ethernet1/5", "vrf": "default", "assert": "pass", "assertReason": "-",
+    "timestamp": 1609267307803}, {"namespace": "nxos", "hostname": "spine01", "ifname":
+    "Ethernet1/3", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1609267307803}, {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/6",
+    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1609267307803},
+    {"namespace": "nxos", "hostname": "leaf01", "ifname": "Ethernet1/1", "vrf": "default",
+    "assert": "pass", "assertReason": "-", "timestamp": 1609267307970}, {"namespace":
+    "nxos", "hostname": "leaf01", "ifname": "Ethernet1/2", "vrf": "default", "assert":
+    "pass", "assertReason": "-", "timestamp": 1609267307970}, {"namespace": "nxos",
+    "hostname": "leaf02", "ifname": "Ethernet1/2", "vrf": "default", "assert": "pass",
+    "assertReason": "-", "timestamp": 1609267308258}, {"namespace": "nxos", "hostname":
+    "leaf02", "ifname": "Ethernet1/1", "vrf": "default", "assert": "pass", "assertReason":
+    "-", "timestamp": 1609267308258}, {"namespace": "nxos", "hostname": "spine02",
+    "ifname": "Ethernet1/1", "vrf": "default", "assert": "pass", "assertReason": "-",
+    "timestamp": 1609267308637}, {"namespace": "nxos", "hostname": "spine02", "ifname":
+    "Ethernet1/2", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1609267308637}, {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/3",
+    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1609267308637},
+    {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/4", "vrf": "default",
+    "assert": "pass", "assertReason": "-", "timestamp": 1609267308637}, {"namespace":
+    "nxos", "hostname": "spine02", "ifname": "Ethernet1/5", "vrf": "default", "assert":
+    "pass", "assertReason": "-", "timestamp": 1609267308637}, {"namespace": "nxos",
+    "hostname": "spine02", "ifname": "Ethernet1/6", "vrf": "default", "assert": "pass",
+    "assertReason": "-", "timestamp": 1609267308637}, {"namespace": "nxos", "hostname":
+    "leaf03", "ifname": "Ethernet1/2", "vrf": "default", "assert": "pass", "assertReason":
+    "-", "timestamp": 1609267308826}, {"namespace": "nxos", "hostname": "leaf03",
+    "ifname": "Ethernet1/1", "vrf": "default", "assert": "pass", "assertReason": "-",
+    "timestamp": 1609267308826}, {"namespace": "nxos", "hostname": "exit02", "ifname":
+    "Ethernet1/2", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1609267309050}, {"namespace": "nxos", "hostname": "exit02", "ifname": "Ethernet1/1",
+    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1609267309050},
+    {"namespace": "nxos", "hostname": "exit01", "ifname": "Ethernet1/2", "vrf": "default",
+    "assert": "pass", "assertReason": "-", "timestamp": 1609267309960}, {"namespace":
+    "nxos", "hostname": "exit01", "ifname": "Ethernet1/1", "vrf": "default", "assert":
+    "pass", "assertReason": "-", "timestamp": 1609267309960}]'
 - command: ospf top --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: ospf top nxos
-  output: '[{"namespace": "nxos", "hostname": "leaf1", "vrf": "default", "area": "0.0.0.0",
-    "ifname": "Ethernet1/4", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP":
-    "10.0.0.22", "lastChangeTime": 1606017858440.0, "numChanges": 5.0, "timestamp":
-    1605989245205}, {"namespace": "nxos", "hostname": "leaf2", "vrf": "default", "area":
-    "0.0.0.0", "ifname": "Ethernet1/4", "ifState": "up", "nbrCount": 1, "adjState":
-    "full", "peerIP": "10.0.0.22", "lastChangeTime": 1606017858748.0, "numChanges":
-    5.0, "timestamp": 1605989245972}, {"namespace": "nxos", "hostname": "spine2",
-    "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/1", "ifState": "up",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.11", "lastChangeTime": 1606016983510.0,
-    "numChanges": 4.0, "timestamp": 1605989245127}, {"namespace": "nxos", "hostname":
-    "spine2", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/2", "ifState":
-    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.12", "lastChangeTime":
-    1606016983510.0, "numChanges": 4.0, "timestamp": 1605989245127}, {"namespace":
-    "nxos", "hostname": "spine1", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/1",
-    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.11", "lastChangeTime":
-    1606016984824.0, "numChanges": 4.0, "timestamp": 1605989245138}]'
+  output: '[{"namespace": "nxos", "hostname": "leaf04", "vrf": "default", "area":
+    "0.0.0.0", "ifname": "Ethernet1/2", "ifState": "up", "nbrCount": 1, "adjState":
+    "full", "peerIP": "10.0.0.22", "lastChangeTime": 1606437625619.0, "numChanges":
+    5.0, "timestamp": 1609267307539}, {"namespace": "nxos", "hostname": "spine01",
+    "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/5", "ifState": "up",
+    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.31", "lastChangeTime": 1606437616698.0,
+    "numChanges": 5.0, "timestamp": 1609267307803}, {"namespace": "nxos", "hostname":
+    "spine01", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/6", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.32", "lastChangeTime":
+    1606437616698.0, "numChanges": 5.0, "timestamp": 1609267307803}, {"namespace":
+    "nxos", "hostname": "leaf01", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/1",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21", "lastChangeTime":
+    1606437627717.0, "numChanges": 5.0, "timestamp": 1609267307970}, {"namespace":
+    "nxos", "hostname": "leaf01", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/2",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "lastChangeTime":
+    1606437627717.0, "numChanges": 5.0, "timestamp": 1609267307970}]'
+- command: ospf show --ifname=Ethernet1/2 --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: ospf show nxos filter
+  output: '[{"namespace": "nxos", "hostname": "leaf04", "vrf": "default", "area":
+    "0.0.0.0", "ifname": "Ethernet1/2", "ifState": "up", "nbrCount": 1, "adjState":
+    "full", "peerIP": "10.0.0.22", "lastChangeTime": 1606408825619, "numChanges":
+    5, "timestamp": 1609267307539}, {"namespace": "nxos", "hostname": "spine01", "vrf":
+    "default", "area": "0.0.0.0", "ifname": "Ethernet1/2", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.12", "lastChangeTime": 1606408818698,
+    "numChanges": 4, "timestamp": 1609267307803}, {"namespace": "nxos", "hostname":
+    "leaf01", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/2", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "lastChangeTime":
+    1606408827717, "numChanges": 5, "timestamp": 1609267307970}, {"namespace": "nxos",
+    "hostname": "leaf02", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/2",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "lastChangeTime":
+    1606408829340, "numChanges": 5, "timestamp": 1609267308258}, {"namespace": "nxos",
+    "hostname": "spine02", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/2",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.12", "lastChangeTime":
+    1606408815514, "numChanges": 4, "timestamp": 1609267308637}, {"namespace": "nxos",
+    "hostname": "leaf03", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/2",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "lastChangeTime":
+    1607382297824, "numChanges": 4, "timestamp": 1609267308826}, {"namespace": "nxos",
+    "hostname": "exit02", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/2",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "lastChangeTime":
+    1606408815523, "numChanges": 4, "timestamp": 1609267309050}, {"namespace": "nxos",
+    "hostname": "exit01", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1/2",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "lastChangeTime":
+    1606408810289, "numChanges": 4, "timestamp": 1609267309960}]'
+- command: ospf show --ifname=Ethernet1/1 --hostname='leaf01 leaf02' --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: ospf show nxos filter
+  output: '[{"namespace": "nxos", "hostname": "leaf01", "vrf": "default", "area":
+    "0.0.0.0", "ifname": "Ethernet1/1", "ifState": "up", "nbrCount": 1, "adjState":
+    "full", "peerIP": "10.0.0.21", "lastChangeTime": 1606408827717, "numChanges":
+    5, "timestamp": 1609267307970}, {"namespace": "nxos", "hostname": "leaf02", "vrf":
+    "default", "area": "0.0.0.0", "ifname": "Ethernet1/1", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.21", "lastChangeTime": 1606408829340,
+    "numChanges": 5, "timestamp": 1609267308258}]'
+- command: ospf show --state='passive' --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: ospf show nxos filter
+  output: '[{"namespace": "nxos", "hostname": "leaf04", "vrf": "default", "area":
+    "0.0.0.0", "ifname": "loopback1", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "-", "lastChangeTime": "-", "numChanges": 0.0, "timestamp":
+    1609267307539}, {"namespace": "nxos", "hostname": "leaf04", "vrf": "default",
+    "area": "0.0.0.0", "ifname": "loopback0", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "-", "lastChangeTime": "-", "numChanges": 0.0, "timestamp":
+    1609267307539}, {"namespace": "nxos", "hostname": "spine01", "vrf": "default",
+    "area": "0.0.0.0", "ifname": "loopback1", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "-", "lastChangeTime": "-", "numChanges": 0.0, "timestamp":
+    1609267307803}, {"namespace": "nxos", "hostname": "spine01", "vrf": "default",
+    "area": "0.0.0.0", "ifname": "loopback0", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "-", "lastChangeTime": "-", "numChanges": 0.0, "timestamp":
+    1609267307803}, {"namespace": "nxos", "hostname": "leaf01", "vrf": "default",
+    "area": "0.0.0.0", "ifname": "loopback0", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "-", "lastChangeTime": "-", "numChanges": 0.0, "timestamp":
+    1609267307970}, {"namespace": "nxos", "hostname": "leaf01", "vrf": "default",
+    "area": "0.0.0.0", "ifname": "loopback1", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "-", "lastChangeTime": "-", "numChanges": 0.0, "timestamp":
+    1609267307970}, {"namespace": "nxos", "hostname": "leaf02", "vrf": "default",
+    "area": "0.0.0.0", "ifname": "loopback0", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "-", "lastChangeTime": "-", "numChanges": 0.0, "timestamp":
+    1609267308258}, {"namespace": "nxos", "hostname": "leaf02", "vrf": "default",
+    "area": "0.0.0.0", "ifname": "loopback1", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "-", "lastChangeTime": "-", "numChanges": 0.0, "timestamp":
+    1609267308258}, {"namespace": "nxos", "hostname": "spine02", "vrf": "default",
+    "area": "0.0.0.0", "ifname": "loopback0", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "-", "lastChangeTime": "-", "numChanges": 0.0, "timestamp":
+    1609267308637}, {"namespace": "nxos", "hostname": "spine02", "vrf": "default",
+    "area": "0.0.0.0", "ifname": "loopback1", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "-", "lastChangeTime": "-", "numChanges": 0.0, "timestamp":
+    1609267308637}, {"namespace": "nxos", "hostname": "leaf03", "vrf": "default",
+    "area": "0.0.0.0", "ifname": "loopback1", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "-", "lastChangeTime": "-", "numChanges": 0.0, "timestamp":
+    1609267308826}, {"namespace": "nxos", "hostname": "leaf03", "vrf": "default",
+    "area": "0.0.0.0", "ifname": "loopback0", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "-", "lastChangeTime": "-", "numChanges": 0.0, "timestamp":
+    1609267308826}, {"namespace": "nxos", "hostname": "exit02", "vrf": "default",
+    "area": "0.0.0.0", "ifname": "loopback1", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "-", "lastChangeTime": "-", "numChanges": 0.0, "timestamp":
+    1609267309050}, {"namespace": "nxos", "hostname": "exit02", "vrf": "default",
+    "area": "0.0.0.0", "ifname": "loopback0", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "-", "lastChangeTime": "-", "numChanges": 0.0, "timestamp":
+    1609267309050}, {"namespace": "nxos", "hostname": "exit01", "vrf": "default",
+    "area": "0.0.0.0", "ifname": "loopback1", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "-", "lastChangeTime": "-", "numChanges": 0.0, "timestamp":
+    1609267309960}, {"namespace": "nxos", "hostname": "exit01", "vrf": "default",
+    "area": "0.0.0.0", "ifname": "loopback0", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "-", "lastChangeTime": "-", "numChanges": 0.0, "timestamp":
+    1609267309960}]'
