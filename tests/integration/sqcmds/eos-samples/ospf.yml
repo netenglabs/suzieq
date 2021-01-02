@@ -3,28 +3,283 @@ tests:
 - command: ospf show --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: ospf show eos
-  output: '[]'
+  output: '[{"namespace": "eos", "hostname": "exit02", "vrf": "default", "area": "0.0.0.0",
+    "ifname": "Loopback0", "ifState": "dr", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "-", "lastChangeTime": "-", "numChanges": 0.0, "timestamp": 1605161370046},
+    {"namespace": "eos", "hostname": "exit02", "vrf": "default", "area": "0.0.0.0",
+    "ifname": "Ethernet2", "ifState": "p2p", "nbrCount": 1, "adjState": "full", "peerIP":
+    "10.0.0.22", "lastChangeTime": 1604561458590, "numChanges": 6.0, "timestamp":
+    1605161370046}, {"namespace": "eos", "hostname": "exit02", "vrf": "default", "area":
+    "0.0.0.0", "ifname": "Ethernet1", "ifState": "p2p", "nbrCount": 1, "adjState":
+    "full", "peerIP": "10.0.0.21", "lastChangeTime": 1604561458590, "numChanges":
+    6.0, "timestamp": 1605161370046}, {"namespace": "eos", "hostname": "leaf02", "vrf":
+    "default", "area": "0.0.0.0", "ifname": "Loopback0", "ifState": "dr", "nbrCount":
+    0, "adjState": "passive", "peerIP": "-", "lastChangeTime": "-", "numChanges":
+    0.0, "timestamp": 1605161370052}, {"namespace": "eos", "hostname": "leaf02", "vrf":
+    "default", "area": "0.0.0.0", "ifname": "Ethernet1", "ifState": "p2p", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.21", "lastChangeTime": 1604561509350,
+    "numChanges": 7.0, "timestamp": 1605161370052}, {"namespace": "eos", "hostname":
+    "leaf02", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet2", "ifState":
+    "p2p", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "lastChangeTime":
+    1604561521350, "numChanges": 6.0, "timestamp": 1605161370052}, {"namespace": "eos",
+    "hostname": "leaf02", "vrf": "default", "area": "0.0.0.0", "ifname": "Loopback1",
+    "ifState": "dr", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime":
+    "-", "numChanges": 0.0, "timestamp": 1605161370052}, {"namespace": "eos", "hostname":
+    "spine01", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet3", "ifState":
+    "p2p", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.13", "lastChangeTime":
+    1604561511468, "numChanges": 6.0, "timestamp": 1605161370056}, {"namespace": "eos",
+    "hostname": "spine01", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1",
+    "ifState": "p2p", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.11", "lastChangeTime":
+    1604561520468, "numChanges": 6.0, "timestamp": 1605161370056}, {"namespace": "eos",
+    "hostname": "spine01", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet6",
+    "ifState": "p2p", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.32", "lastChangeTime":
+    1604561458467, "numChanges": 7.0, "timestamp": 1605161370056}, {"namespace": "eos",
+    "hostname": "spine01", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet4",
+    "ifState": "p2p", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.14", "lastChangeTime":
+    1604561520469, "numChanges": 7.0, "timestamp": 1605161370056}, {"namespace": "eos",
+    "hostname": "spine01", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet5",
+    "ifState": "p2p", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.31", "lastChangeTime":
+    1604561465467, "numChanges": 7.0, "timestamp": 1605161370056}, {"namespace": "eos",
+    "hostname": "spine01", "vrf": "default", "area": "0.0.0.0", "ifname": "Loopback0",
+    "ifState": "dr", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime":
+    "-", "numChanges": 0.0, "timestamp": 1605161370056}, {"namespace": "eos", "hostname":
+    "spine01", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet2", "ifState":
+    "p2p", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.12", "lastChangeTime":
+    1604561509468, "numChanges": 6.0, "timestamp": 1605161370056}, {"namespace": "eos",
+    "hostname": "exit01", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1",
+    "ifState": "p2p", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21", "lastChangeTime":
+    1604561465936, "numChanges": 6.0, "timestamp": 1605161370250}, {"namespace": "eos",
+    "hostname": "exit01", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet2",
+    "ifState": "p2p", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "lastChangeTime":
+    1604561463937, "numChanges": 6.0, "timestamp": 1605161370250}, {"namespace": "eos",
+    "hostname": "exit01", "vrf": "default", "area": "0.0.0.0", "ifname": "Loopback0",
+    "ifState": "dr", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime":
+    "-", "numChanges": 0.0, "timestamp": 1605161370250}, {"namespace": "eos", "hostname":
+    "spine02", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet2", "ifState":
+    "p2p", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.12", "lastChangeTime":
+    1604561520476, "numChanges": 6.0, "timestamp": 1605161370645}, {"namespace": "eos",
+    "hostname": "spine02", "vrf": "default", "area": "0.0.0.0", "ifname": "Loopback0",
+    "ifState": "dr", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime":
+    "-", "numChanges": 0.0, "timestamp": 1605161370645}, {"namespace": "eos", "hostname":
+    "spine02", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet3", "ifState":
+    "p2p", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.13", "lastChangeTime":
+    1604561519477, "numChanges": 6.0, "timestamp": 1605161370645}, {"namespace": "eos",
+    "hostname": "spine02", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1",
+    "ifState": "p2p", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.11", "lastChangeTime":
+    1604561526477, "numChanges": 6.0, "timestamp": 1605161370645}, {"namespace": "eos",
+    "hostname": "spine02", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet6",
+    "ifState": "p2p", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.32", "lastChangeTime":
+    1604561457475, "numChanges": 7.0, "timestamp": 1605161370645}, {"namespace": "eos",
+    "hostname": "spine02", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet5",
+    "ifState": "p2p", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.31", "lastChangeTime":
+    1604561463476, "numChanges": 7.0, "timestamp": 1605161370645}, {"namespace": "eos",
+    "hostname": "spine02", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet4",
+    "ifState": "p2p", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.14", "lastChangeTime":
+    1604561516477, "numChanges": 6.0, "timestamp": 1605161370645}, {"namespace": "eos",
+    "hostname": "leaf04", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet2",
+    "ifState": "p2p", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "lastChangeTime":
+    1604561516404, "numChanges": 7.0, "timestamp": 1605161370647}, {"namespace": "eos",
+    "hostname": "leaf04", "vrf": "default", "area": "0.0.0.0", "ifname": "Loopback1",
+    "ifState": "dr", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime":
+    "-", "numChanges": 0.0, "timestamp": 1605161370647}, {"namespace": "eos", "hostname":
+    "leaf04", "vrf": "default", "area": "0.0.0.0", "ifname": "Loopback0", "ifState":
+    "dr", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime": "-",
+    "numChanges": 0.0, "timestamp": 1605161370647}, {"namespace": "eos", "hostname":
+    "leaf04", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1", "ifState":
+    "p2p", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21", "lastChangeTime":
+    1604561520408, "numChanges": 7.0, "timestamp": 1605161370647}, {"namespace": "eos",
+    "hostname": "leaf01", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1",
+    "ifState": "p2p", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21", "lastChangeTime":
+    1604561519664, "numChanges": 7.0, "timestamp": 1605161370669}, {"namespace": "eos",
+    "hostname": "leaf01", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet2",
+    "ifState": "p2p", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "lastChangeTime":
+    1604561526667, "numChanges": 6.0, "timestamp": 1605161370669}, {"namespace": "eos",
+    "hostname": "leaf01", "vrf": "default", "area": "0.0.0.0", "ifname": "Loopback1",
+    "ifState": "dr", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime":
+    "-", "numChanges": 0.0, "timestamp": 1605161370669}, {"namespace": "eos", "hostname":
+    "leaf01", "vrf": "default", "area": "0.0.0.0", "ifname": "Loopback0", "ifState":
+    "dr", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime": "-",
+    "numChanges": 0.0, "timestamp": 1605161370669}, {"namespace": "eos", "hostname":
+    "leaf03", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet2", "ifState":
+    "p2p", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "lastChangeTime":
+    1604561520666, "numChanges": 6.0, "timestamp": 1605161371031}, {"namespace": "eos",
+    "hostname": "leaf03", "vrf": "default", "area": "0.0.0.0", "ifname": "Loopback1",
+    "ifState": "dr", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime":
+    "-", "numChanges": 0.0, "timestamp": 1605161371031}, {"namespace": "eos", "hostname":
+    "leaf03", "vrf": "default", "area": "0.0.0.0", "ifname": "Loopback0", "ifState":
+    "dr", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime": "-",
+    "numChanges": 0.0, "timestamp": 1605161371031}, {"namespace": "eos", "hostname":
+    "leaf03", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet1", "ifState":
+    "p2p", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21", "lastChangeTime":
+    1604561511665, "numChanges": 7.0, "timestamp": 1605161371031}]'
 - command: ospf show --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: ospf show eos
-  output: '[]'
+  output: '[{"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}]'
 - command: ospf summarize --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: ospf summarize eos
-  output: '{"namespace": {}, "hostname": {}, "vrf": {}, "ifname": {}, "state": {},
-    "peerIP": {}, "area": {}, "lastChangeTime": {}, "numChanges": {}, "lastDownTime":
-    {}, "nbrPrio": {}, "lastUpTime": {}, "instance": {}, "reason": {}, "areaStub":
-    {}, "bfdStatus": {}, "lsaRetxCnt": {}, "peerRouterId": {}, "timestamp": {}, "active":
-    {}}'
+  output: '{"eos": {"deviceCnt": 8, "peerCnt": 36, "stubbyPeerCnt": 0, "passivePeerCnt":
+    12, "unnumberedPeerCnt": 0, "failedPeerCnt": 0, "area": {"0.0.0.0": 36}, "vrf":
+    {"default": 36}, "helloTime": {"10": 36}, "deadTime": {"40": 36}, "retxTime":
+    {"5": 36}, "networkType": {"p2p": 24, "broadcast": 12}, "adjChangesStat": [6.0,
+    7.0, 6.0], "upTimeStat": [599844000, 599913000, 599856500]}}'
 - command: ospf unique --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: ospf unique eos
-  output: '[]'
+  output: '[{"hostname": "exit01", "count": 3}, {"hostname": "exit02", "count": 3},
+    {"hostname": "leaf01", "count": 4}, {"hostname": "leaf02", "count": 4}, {"hostname":
+    "leaf03", "count": 4}, {"hostname": "leaf04", "count": 4}, {"hostname": "spine01",
+    "count": 7}, {"hostname": "spine02", "count": 7}]'
 - command: ospf assert --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: ospf assert eos
-  output: '[]'
+  output: '[{"namespace": "eos", "hostname": "exit02", "ifname": "Ethernet2", "vrf":
+    "default", "assert": "pass", "assertReason": "-", "timestamp": 1605161370046},
+    {"namespace": "eos", "hostname": "exit02", "ifname": "Ethernet1", "vrf": "default",
+    "assert": "pass", "assertReason": "-", "timestamp": 1605161370046}, {"namespace":
+    "eos", "hostname": "leaf02", "ifname": "Ethernet1", "vrf": "default", "assert":
+    "pass", "assertReason": "-", "timestamp": 1605161370052}, {"namespace": "eos",
+    "hostname": "leaf02", "ifname": "Ethernet2", "vrf": "default", "assert": "pass",
+    "assertReason": "-", "timestamp": 1605161370052}, {"namespace": "eos", "hostname":
+    "spine01", "ifname": "Ethernet3", "vrf": "default", "assert": "pass", "assertReason":
+    "-", "timestamp": 1605161370056}, {"namespace": "eos", "hostname": "spine01",
+    "ifname": "Ethernet1", "vrf": "default", "assert": "pass", "assertReason": "-",
+    "timestamp": 1605161370056}, {"namespace": "eos", "hostname": "spine01", "ifname":
+    "Ethernet6", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1605161370056}, {"namespace": "eos", "hostname": "spine01", "ifname": "Ethernet4",
+    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1605161370056},
+    {"namespace": "eos", "hostname": "spine01", "ifname": "Ethernet5", "vrf": "default",
+    "assert": "pass", "assertReason": "-", "timestamp": 1605161370056}, {"namespace":
+    "eos", "hostname": "spine01", "ifname": "Ethernet2", "vrf": "default", "assert":
+    "pass", "assertReason": "-", "timestamp": 1605161370056}, {"namespace": "eos",
+    "hostname": "exit01", "ifname": "Ethernet1", "vrf": "default", "assert": "pass",
+    "assertReason": "-", "timestamp": 1605161370250}, {"namespace": "eos", "hostname":
+    "exit01", "ifname": "Ethernet2", "vrf": "default", "assert": "pass", "assertReason":
+    "-", "timestamp": 1605161370250}, {"namespace": "eos", "hostname": "spine02",
+    "ifname": "Ethernet2", "vrf": "default", "assert": "pass", "assertReason": "-",
+    "timestamp": 1605161370645}, {"namespace": "eos", "hostname": "spine02", "ifname":
+    "Ethernet3", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1605161370645}, {"namespace": "eos", "hostname": "spine02", "ifname": "Ethernet1",
+    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1605161370645},
+    {"namespace": "eos", "hostname": "spine02", "ifname": "Ethernet6", "vrf": "default",
+    "assert": "pass", "assertReason": "-", "timestamp": 1605161370645}, {"namespace":
+    "eos", "hostname": "spine02", "ifname": "Ethernet5", "vrf": "default", "assert":
+    "pass", "assertReason": "-", "timestamp": 1605161370645}, {"namespace": "eos",
+    "hostname": "spine02", "ifname": "Ethernet4", "vrf": "default", "assert": "pass",
+    "assertReason": "-", "timestamp": 1605161370645}, {"namespace": "eos", "hostname":
+    "leaf04", "ifname": "Ethernet2", "vrf": "default", "assert": "pass", "assertReason":
+    "-", "timestamp": 1605161370647}, {"namespace": "eos", "hostname": "leaf04", "ifname":
+    "Ethernet1", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1605161370647}, {"namespace": "eos", "hostname": "leaf01", "ifname": "Ethernet1",
+    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1605161370669},
+    {"namespace": "eos", "hostname": "leaf01", "ifname": "Ethernet2", "vrf": "default",
+    "assert": "pass", "assertReason": "-", "timestamp": 1605161370669}, {"namespace":
+    "eos", "hostname": "leaf03", "ifname": "Ethernet2", "vrf": "default", "assert":
+    "pass", "assertReason": "-", "timestamp": 1605161371031}, {"namespace": "eos",
+    "hostname": "leaf03", "ifname": "Ethernet1", "vrf": "default", "assert": "pass",
+    "assertReason": "-", "timestamp": 1605161371031}]'
 - command: ospf top --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: ospf top eos
-  output: '[]'
+  output: '[{"namespace": "eos", "hostname": "leaf02", "vrf": "default", "area": "0.0.0.0",
+    "ifname": "Ethernet1", "ifState": "p2p", "nbrCount": 1, "adjState": "full", "peerIP":
+    "10.0.0.21", "lastChangeTime": 1604590309350.0, "numChanges": 7.0, "timestamp":
+    1605161370052}, {"namespace": "eos", "hostname": "spine01", "vrf": "default",
+    "area": "0.0.0.0", "ifname": "Ethernet6", "ifState": "p2p", "nbrCount": 1, "adjState":
+    "full", "peerIP": "10.0.0.32", "lastChangeTime": 1604590258467.0, "numChanges":
+    7.0, "timestamp": 1605161370056}, {"namespace": "eos", "hostname": "spine01",
+    "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet4", "ifState": "p2p",
+    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.14", "lastChangeTime": 1604590320469.0,
+    "numChanges": 7.0, "timestamp": 1605161370056}, {"namespace": "eos", "hostname":
+    "spine01", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet5", "ifState":
+    "p2p", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.31", "lastChangeTime":
+    1604590265467.0, "numChanges": 7.0, "timestamp": 1605161370056}, {"namespace":
+    "eos", "hostname": "spine02", "vrf": "default", "area": "0.0.0.0", "ifname": "Ethernet6",
+    "ifState": "p2p", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.32", "lastChangeTime":
+    1604590257475.0, "numChanges": 7.0, "timestamp": 1605161370645}]'
+- command: ospf show --state='passive' --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: ospf show eos filter
+  output: '[{"namespace": "eos", "hostname": "exit02", "vrf": "default", "area": "0.0.0.0",
+    "ifname": "Loopback0", "ifState": "dr", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "-", "lastChangeTime": "-", "numChanges": 0.0, "timestamp": 1605161370046},
+    {"namespace": "eos", "hostname": "leaf02", "vrf": "default", "area": "0.0.0.0",
+    "ifname": "Loopback0", "ifState": "dr", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "-", "lastChangeTime": "-", "numChanges": 0.0, "timestamp": 1605161370052},
+    {"namespace": "eos", "hostname": "leaf02", "vrf": "default", "area": "0.0.0.0",
+    "ifname": "Loopback1", "ifState": "dr", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "-", "lastChangeTime": "-", "numChanges": 0.0, "timestamp": 1605161370052},
+    {"namespace": "eos", "hostname": "spine01", "vrf": "default", "area": "0.0.0.0",
+    "ifname": "Loopback0", "ifState": "dr", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "-", "lastChangeTime": "-", "numChanges": 0.0, "timestamp": 1605161370056},
+    {"namespace": "eos", "hostname": "exit01", "vrf": "default", "area": "0.0.0.0",
+    "ifname": "Loopback0", "ifState": "dr", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "-", "lastChangeTime": "-", "numChanges": 0.0, "timestamp": 1605161370250},
+    {"namespace": "eos", "hostname": "spine02", "vrf": "default", "area": "0.0.0.0",
+    "ifname": "Loopback0", "ifState": "dr", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "-", "lastChangeTime": "-", "numChanges": 0.0, "timestamp": 1605161370645},
+    {"namespace": "eos", "hostname": "leaf04", "vrf": "default", "area": "0.0.0.0",
+    "ifname": "Loopback1", "ifState": "dr", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "-", "lastChangeTime": "-", "numChanges": 0.0, "timestamp": 1605161370647},
+    {"namespace": "eos", "hostname": "leaf04", "vrf": "default", "area": "0.0.0.0",
+    "ifname": "Loopback0", "ifState": "dr", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "-", "lastChangeTime": "-", "numChanges": 0.0, "timestamp": 1605161370647},
+    {"namespace": "eos", "hostname": "leaf01", "vrf": "default", "area": "0.0.0.0",
+    "ifname": "Loopback1", "ifState": "dr", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "-", "lastChangeTime": "-", "numChanges": 0.0, "timestamp": 1605161370669},
+    {"namespace": "eos", "hostname": "leaf01", "vrf": "default", "area": "0.0.0.0",
+    "ifname": "Loopback0", "ifState": "dr", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "-", "lastChangeTime": "-", "numChanges": 0.0, "timestamp": 1605161370669},
+    {"namespace": "eos", "hostname": "leaf03", "vrf": "default", "area": "0.0.0.0",
+    "ifname": "Loopback1", "ifState": "dr", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "-", "lastChangeTime": "-", "numChanges": 0.0, "timestamp": 1605161371031},
+    {"namespace": "eos", "hostname": "leaf03", "vrf": "default", "area": "0.0.0.0",
+    "ifname": "Loopback0", "ifState": "dr", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "-", "lastChangeTime": "-", "numChanges": 0.0, "timestamp": 1605161371031}]'
+- command: ospf show --ifname=Ethernet2 --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: ospf show eos filter
+  output: '[{"namespace": "eos", "hostname": "exit02", "vrf": "default", "area": "0.0.0.0",
+    "ifname": "Ethernet2", "ifState": "p2p", "nbrCount": 1, "adjState": "full", "peerIP":
+    "10.0.0.22", "lastChangeTime": 1604561458590, "numChanges": 6, "timestamp": 1605161370046},
+    {"namespace": "eos", "hostname": "leaf02", "vrf": "default", "area": "0.0.0.0",
+    "ifname": "Ethernet2", "ifState": "p2p", "nbrCount": 1, "adjState": "full", "peerIP":
+    "10.0.0.22", "lastChangeTime": 1604561521350, "numChanges": 6, "timestamp": 1605161370052},
+    {"namespace": "eos", "hostname": "spine01", "vrf": "default", "area": "0.0.0.0",
+    "ifname": "Ethernet2", "ifState": "p2p", "nbrCount": 1, "adjState": "full", "peerIP":
+    "10.0.0.12", "lastChangeTime": 1604561509468, "numChanges": 6, "timestamp": 1605161370056},
+    {"namespace": "eos", "hostname": "exit01", "vrf": "default", "area": "0.0.0.0",
+    "ifname": "Ethernet2", "ifState": "p2p", "nbrCount": 1, "adjState": "full", "peerIP":
+    "10.0.0.22", "lastChangeTime": 1604561463937, "numChanges": 6, "timestamp": 1605161370250},
+    {"namespace": "eos", "hostname": "spine02", "vrf": "default", "area": "0.0.0.0",
+    "ifname": "Ethernet2", "ifState": "p2p", "nbrCount": 1, "adjState": "full", "peerIP":
+    "10.0.0.12", "lastChangeTime": 1604561520476, "numChanges": 6, "timestamp": 1605161370645},
+    {"namespace": "eos", "hostname": "leaf04", "vrf": "default", "area": "0.0.0.0",
+    "ifname": "Ethernet2", "ifState": "p2p", "nbrCount": 1, "adjState": "full", "peerIP":
+    "10.0.0.22", "lastChangeTime": 1604561516404, "numChanges": 7, "timestamp": 1605161370647},
+    {"namespace": "eos", "hostname": "leaf01", "vrf": "default", "area": "0.0.0.0",
+    "ifname": "Ethernet2", "ifState": "p2p", "nbrCount": 1, "adjState": "full", "peerIP":
+    "10.0.0.22", "lastChangeTime": 1604561526667, "numChanges": 6, "timestamp": 1605161370669},
+    {"namespace": "eos", "hostname": "leaf03", "vrf": "default", "area": "0.0.0.0",
+    "ifname": "Ethernet2", "ifState": "p2p", "nbrCount": 1, "adjState": "full", "peerIP":
+    "10.0.0.22", "lastChangeTime": 1604561520666, "numChanges": 6, "timestamp": 1605161371031}]'
+- command: ospf show --ifname=Ethernet1 --hostname='leaf01 leaf02' --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: ospf show eos filter
+  output: '[{"namespace": "eos", "hostname": "leaf02", "vrf": "default", "area": "0.0.0.0",
+    "ifname": "Ethernet1", "ifState": "p2p", "nbrCount": 1, "adjState": "full", "peerIP":
+    "10.0.0.21", "lastChangeTime": 1604561509350, "numChanges": 7, "timestamp": 1605161370052},
+    {"namespace": "eos", "hostname": "leaf01", "vrf": "default", "area": "0.0.0.0",
+    "ifname": "Ethernet1", "ifState": "p2p", "nbrCount": 1, "adjState": "full", "peerIP":
+    "10.0.0.21", "lastChangeTime": 1604561519664, "numChanges": 7, "timestamp": 1605161370669}]'

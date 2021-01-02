@@ -3,1065 +3,998 @@ tests:
 - command: route show --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: route show eos
-  output: '[{"namespace": "eos", "hostname": "edge01", "vrf": "default", "prefix":
-    "0.0.0.0/0", "nexthopIps": ["192.168.121.1"], "oifs": ["eth0"], "protocol": "",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635267}, {"namespace":
-    "eos", "hostname": "edge01", "vrf": "default", "prefix": "192.168.121.0/24", "nexthopIps":
-    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "192.168.121.86", "ipvers":
-    4, "action": "forward", "timestamp": 1606001635267}, {"namespace": "eos", "hostname":
-    "edge01", "vrf": "default", "prefix": "172.16.253.1/32", "nexthopIps": ["169.254.253.9",
-    "169.254.254.9"], "oifs": ["eth2.4", "eth1.4"], "protocol": "186", "source": "10.0.0.100",
-    "ipvers": 4, "action": "forward", "timestamp": 1606001635267}, {"namespace": "eos",
-    "hostname": "edge01", "vrf": "default", "prefix": "172.16.4.0/24", "nexthopIps":
-    ["169.254.253.1", "169.254.254.1"], "oifs": ["eth2.2", "eth1.2"], "protocol":
-    "186", "source": "10.0.0.100", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635267}, {"namespace": "eos", "hostname": "edge01", "vrf": "default", "prefix":
-    "172.16.3.0/24", "nexthopIps": ["169.254.253.1", "169.254.254.1"], "oifs": ["eth2.2",
-    "eth1.2"], "protocol": "186", "source": "10.0.0.100", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635267}, {"namespace": "eos", "hostname": "edge01", "vrf":
-    "default", "prefix": "172.16.1.0/24", "nexthopIps": ["169.254.253.1", "169.254.254.1"],
-    "oifs": ["eth2.2", "eth1.2"], "protocol": "186", "source": "10.0.0.100", "ipvers":
-    4, "action": "forward", "timestamp": 1606001635267}, {"namespace": "eos", "hostname":
-    "edge01", "vrf": "default", "prefix": "169.254.254.8/30", "nexthopIps": [""],
-    "oifs": ["eth1.4"], "protocol": "kernel", "source": "169.254.254.10", "ipvers":
-    4, "action": "forward", "timestamp": 1606001635267}, {"namespace": "eos", "hostname":
-    "edge01", "vrf": "default", "prefix": "169.254.254.0/30", "nexthopIps": [""],
-    "oifs": ["eth1.2"], "protocol": "kernel", "source": "169.254.254.2", "ipvers":
-    4, "action": "forward", "timestamp": 1606001635267}, {"namespace": "eos", "hostname":
-    "edge01", "vrf": "default", "prefix": "169.254.253.8/30", "nexthopIps": [""],
-    "oifs": ["eth2.4"], "protocol": "kernel", "source": "169.254.253.10", "ipvers":
-    4, "action": "forward", "timestamp": 1606001635267}, {"namespace": "eos", "hostname":
-    "edge01", "vrf": "default", "prefix": "169.254.253.0/30", "nexthopIps": [""],
-    "oifs": ["eth2.2"], "protocol": "kernel", "source": "169.254.253.2", "ipvers":
-    4, "action": "forward", "timestamp": 1606001635267}, {"namespace": "eos", "hostname":
-    "edge01", "vrf": "default", "prefix": "172.16.2.0/24", "nexthopIps": ["169.254.253.1",
-    "169.254.254.1"], "oifs": ["eth2.2", "eth1.2"], "protocol": "186", "source": "10.0.0.100",
-    "ipvers": 4, "action": "forward", "timestamp": 1606001635267}, {"namespace": "eos",
-    "hostname": "edge01", "vrf": "default", "prefix": "10.0.0.102/32", "nexthopIps":
-    ["169.254.253.1"], "oifs": ["eth2.2"], "protocol": "", "source": "", "ipvers":
-    4, "action": "forward", "timestamp": 1606001635267}, {"namespace": "eos", "hostname":
-    "edge01", "vrf": "default", "prefix": "10.0.0.101/32", "nexthopIps": ["169.254.254.1"],
-    "oifs": ["eth1.2"], "protocol": "", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635267}, {"namespace": "eos", "hostname": "edge01", "vrf":
-    "default", "prefix": "10.0.0.22/32", "nexthopIps": ["169.254.253.1", "169.254.254.1"],
-    "oifs": ["eth2.2", "eth1.2"], "protocol": "186", "source": "10.0.0.100", "ipvers":
-    4, "action": "forward", "timestamp": 1606001635267}, {"namespace": "eos", "hostname":
-    "edge01", "vrf": "default", "prefix": "10.0.0.21/32", "nexthopIps": ["169.254.253.1",
-    "169.254.254.1"], "oifs": ["eth2.2", "eth1.2"], "protocol": "186", "source": "10.0.0.100",
-    "ipvers": 4, "action": "forward", "timestamp": 1606001635267}, {"namespace": "eos",
-    "hostname": "edge01", "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps":
-    ["169.254.253.1", "169.254.254.1"], "oifs": ["eth2.2", "eth1.2"], "protocol":
-    "186", "source": "10.0.0.100", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635267}, {"namespace": "eos", "hostname": "edge01", "vrf": "default", "prefix":
-    "10.0.0.13/32", "nexthopIps": ["169.254.253.1", "169.254.254.1"], "oifs": ["eth2.2",
-    "eth1.2"], "protocol": "186", "source": "10.0.0.100", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635267}, {"namespace": "eos", "hostname": "edge01", "vrf":
-    "default", "prefix": "10.0.0.12/32", "nexthopIps": ["169.254.253.1", "169.254.254.1"],
-    "oifs": ["eth2.2", "eth1.2"], "protocol": "186", "source": "10.0.0.100", "ipvers":
-    4, "action": "forward", "timestamp": 1606001635267}, {"namespace": "eos", "hostname":
-    "edge01", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps": ["169.254.253.1",
-    "169.254.254.1"], "oifs": ["eth2.2", "eth1.2"], "protocol": "186", "source": "10.0.0.100",
-    "ipvers": 4, "action": "forward", "timestamp": 1606001635267}, {"namespace": "eos",
-    "hostname": "edge01", "vrf": "default", "prefix": "10.0.0.253/32", "nexthopIps":
-    ["169.254.253.9", "169.254.254.9"], "oifs": ["eth2.4", "eth1.4"], "protocol":
-    "186", "source": "10.0.0.100", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635267}, {"namespace": "eos", "hostname": "leaf02", "vrf": "default", "prefix":
-    "172.16.2.0/24", "nexthopIps": [], "oifs": ["Vlan24"], "protocol": "connected",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635353}, {"namespace":
-    "eos", "hostname": "leaf02", "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps":
-    ["10.127.1.2"], "oifs": ["Ethernet2"], "protocol": "ebgp", "source": "", "ipvers":
-    4, "action": "forward", "timestamp": 1606001635353}, {"namespace": "eos", "hostname":
-    "leaf02", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.127.0.2"],
-    "oifs": ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635353}, {"namespace": "eos", "hostname": "leaf02",
-    "vrf": "default", "prefix": "10.0.0.253/32", "nexthopIps": ["10.127.0.2"], "oifs":
-    ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635353}, {"namespace": "eos", "hostname": "server101", "vrf":
-    "default", "prefix": "172.16.0.0/16", "nexthopIps": ["172.16.1.1"], "oifs": ["bond0"],
-    "protocol": "", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635353},
-    {"namespace": "eos", "hostname": "leaf02", "vrf": "default", "prefix": "172.16.3.0/24",
-    "nexthopIps": ["10.127.0.2"], "oifs": ["Ethernet1"], "protocol": "ebgp", "source":
-    "", "ipvers": 4, "action": "forward", "timestamp": 1606001635353}, {"namespace":
-    "eos", "hostname": "server101", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
-    ["192.168.121.1"], "oifs": ["eth0"], "protocol": "", "source": "", "ipvers": 4,
-    "action": "forward", "timestamp": 1606001635353}, {"namespace": "eos", "hostname":
-    "server101", "vrf": "default", "prefix": "10.0.0.0/8", "nexthopIps": ["172.16.1.1"],
-    "oifs": ["bond0"], "protocol": "", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635353}, {"namespace": "eos", "hostname": "leaf02", "vrf":
-    "default", "prefix": "10.0.0.101/32", "nexthopIps": ["10.127.0.2"], "oifs": ["Ethernet1"],
-    "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635353}, {"namespace": "eos", "hostname": "leaf02", "vrf": "default", "prefix":
-    "10.0.0.11/32", "nexthopIps": ["10.127.0.2"], "oifs": ["Ethernet1"], "protocol":
-    "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635353},
-    {"namespace": "eos", "hostname": "leaf02", "vrf": "default", "prefix": "10.127.0.2/31",
-    "nexthopIps": [], "oifs": ["Ethernet1"], "protocol": "connected", "source": "",
-    "ipvers": 4, "action": "forward", "timestamp": 1606001635353}, {"namespace": "eos",
-    "hostname": "leaf02", "vrf": "default", "prefix": "192.168.121.0/24", "nexthopIps":
-    [], "oifs": ["Management1"], "protocol": "connected", "source": "", "ipvers":
-    4, "action": "forward", "timestamp": 1606001635353}, {"namespace": "eos", "hostname":
-    "leaf02", "vrf": "default", "prefix": "172.16.4.0/24", "nexthopIps": ["10.127.0.2"],
-    "oifs": ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635353}, {"namespace": "eos", "hostname": "leaf02",
-    "vrf": "default", "prefix": "172.16.253.1/32", "nexthopIps": ["10.127.0.2"], "oifs":
-    ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635353}, {"namespace": "eos", "hostname": "leaf02", "vrf":
-    "default", "prefix": "192.168.0.179/32", "nexthopIps": ["192.168.121.1"], "oifs":
-    ["Management1"], "protocol": "static", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635353}, {"namespace": "eos", "hostname": "leaf02", "vrf":
-    "default", "prefix": "10.0.0.12/32", "nexthopIps": [], "oifs": ["Loopback0"],
+  output: '[{"namespace": "eos", "hostname": "leaf04", "vrf": "default", "prefix":
+    "10.0.0.21/32", "nexthopIps": [], "oifs": ["Ethernet1"], "protocol": "ospf", "source":
+    "", "ipvers": 4, "action": "forward", "timestamp": 1605161369225}, {"namespace":
+    "eos", "hostname": "leaf04", "vrf": "default", "prefix": "10.0.0.13/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf",
+    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369225}, {"namespace":
+    "eos", "hostname": "leaf04", "vrf": "default", "prefix": "10.0.0.134/32", "nexthopIps":
+    [], "oifs": ["Loopback1"], "protocol": "connected", "source": "", "ipvers": 4,
+    "action": "forward", "timestamp": 1605161369225}, {"namespace": "eos", "hostname":
+    "leaf04", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.21",
+    "10.0.0.22"], "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf", "source":
+    "", "ipvers": 4, "action": "forward", "timestamp": 1605161369225}, {"namespace":
+    "eos", "hostname": "leaf04", "vrf": "default", "prefix": "192.168.0.179/32", "nexthopIps":
+    ["10.255.2.1"], "oifs": ["Management1"], "protocol": "static", "source": "", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369225}, {"namespace": "eos", "hostname":
+    "leaf04", "vrf": "default", "prefix": "10.0.0.31/32", "nexthopIps": ["10.0.0.21",
+    "10.0.0.22"], "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf", "source":
+    "", "ipvers": 4, "action": "forward", "timestamp": 1605161369225}, {"namespace":
+    "eos", "hostname": "leaf04", "vrf": "default", "prefix": "10.0.0.32/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf",
+    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369225}, {"namespace":
+    "eos", "hostname": "leaf04", "vrf": "default", "prefix": "10.0.0.112/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf",
+    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369225}, {"namespace":
+    "eos", "hostname": "leaf04", "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps":
+    [], "oifs": ["Ethernet2"], "protocol": "ospf", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369225}, {"namespace": "eos", "hostname": "leaf04",
+    "vrf": "default", "prefix": "169.254.1.0/31", "nexthopIps": [], "oifs": ["Vlan4094"],
     "protocol": "connected", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635353}, {"namespace": "eos", "hostname": "leaf02", "vrf": "default", "prefix":
-    "10.0.0.14/32", "nexthopIps": ["10.127.0.2"], "oifs": ["Ethernet1"], "protocol":
-    "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635353},
-    {"namespace": "eos", "hostname": "leaf02", "vrf": "default", "prefix": "172.16.1.0/24",
-    "nexthopIps": [], "oifs": ["Vlan13"], "protocol": "connected", "source": "", "ipvers":
-    4, "action": "forward", "timestamp": 1606001635353}, {"namespace": "eos", "hostname":
-    "leaf02", "vrf": "default", "prefix": "10.0.0.21/32", "nexthopIps": ["10.127.0.2"],
-    "oifs": ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635353}, {"namespace": "eos", "hostname": "leaf02",
-    "vrf": "default", "prefix": "10.0.0.13/32", "nexthopIps": ["10.127.0.2"], "oifs":
-    ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635353}, {"namespace": "eos", "hostname": "server101", "vrf":
+    1605161369225}, {"namespace": "eos", "hostname": "leaf04", "vrf": "default", "prefix":
+    "10.255.2.0/24", "nexthopIps": [], "oifs": ["Management1"], "protocol": "connected",
+    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369225}, {"namespace":
+    "eos", "hostname": "leaf04", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf",
+    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369225}, {"namespace":
+    "eos", "hostname": "leaf04", "vrf": "evpn-vrf", "prefix": "172.16.3.0/24", "nexthopIps":
+    [], "oifs": ["Vlan30"], "protocol": "connected", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369225}, {"namespace": "eos", "hostname": "leaf04",
+    "vrf": "evpn-vrf", "prefix": "172.16.1.0/24", "nexthopIps": ["10.0.0.112"], "oifs":
+    ["_nexthopVrf:default"], "protocol": "ibgp", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369225}, {"namespace": "eos", "hostname": "leaf04",
+    "vrf": "evpn-vrf", "prefix": "172.16.2.0/24", "nexthopIps": [], "oifs": ["Vlan20"],
+    "protocol": "connected", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369225}, {"namespace": "eos", "hostname": "leaf04", "vrf": "evpn-vrf",
+    "prefix": "172.16.1.101/32", "nexthopIps": ["10.0.0.112"], "oifs": ["_nexthopVrf:default"],
+    "protocol": "ibgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369225}, {"namespace": "eos", "hostname": "leaf04", "vrf": "evpn-vrf",
+    "prefix": "172.16.3.102/32", "nexthopIps": ["10.0.0.112"], "oifs": ["_nexthopVrf:default"],
+    "protocol": "ibgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369225}, {"namespace": "eos", "hostname": "leaf04", "vrf": "default", "prefix":
+    "10.0.0.14/32", "nexthopIps": [], "oifs": ["Loopback0"], "protocol": "connected",
+    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369225}, {"namespace":
+    "eos", "hostname": "exit02", "vrf": "default", "prefix": "169.254.127.2/31", "nexthopIps":
+    ["169.254.253.2"], "oifs": ["Ethernet3.2"], "protocol": "ebgp", "source": "",
+    "ipvers": 4, "action": "forward", "timestamp": 1605161369226}, {"namespace": "eos",
+    "hostname": "exit02", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.253.2"],
+    "oifs": ["Ethernet3.2"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369226}, {"namespace": "eos", "hostname": "exit02",
+    "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps": [], "oifs": ["Ethernet2"],
+    "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369226}, {"namespace": "eos", "hostname": "exit02", "vrf": "default", "prefix":
+    "169.254.0.0/24", "nexthopIps": ["169.254.253.2"], "oifs": ["Ethernet3.2"], "protocol":
+    "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369226},
+    {"namespace": "eos", "hostname": "exit02", "vrf": "default", "prefix": "169.254.127.0/31",
+    "nexthopIps": ["169.254.253.2"], "oifs": ["Ethernet3.2"], "protocol": "ebgp",
+    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369226}, {"namespace":
+    "eos", "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.112/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf",
+    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369226}, {"namespace":
+    "eos", "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.32/32", "nexthopIps":
+    [], "oifs": ["Loopback0"], "protocol": "connected", "source": "", "ipvers": 4,
+    "action": "forward", "timestamp": 1605161369226}, {"namespace": "eos", "hostname":
+    "exit02", "vrf": "default", "prefix": "10.0.0.31/32", "nexthopIps": ["10.0.0.21",
+    "10.0.0.22"], "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf", "source":
+    "", "ipvers": 4, "action": "forward", "timestamp": 1605161369226}, {"namespace":
+    "eos", "hostname": "exit02", "vrf": "evpn-vrf", "prefix": "169.254.0.0/24", "nexthopIps":
+    ["169.254.253.6"], "oifs": ["Ethernet3.3"], "protocol": "ebgp", "source": "",
+    "ipvers": 4, "action": "forward", "timestamp": 1605161369226}, {"namespace": "eos",
+    "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf",
+    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369226}, {"namespace":
+    "eos", "hostname": "exit02", "vrf": "default", "prefix": "172.16.2.0/24", "nexthopIps":
+    ["169.254.253.2"], "oifs": ["Ethernet3.2"], "protocol": "ebgp", "source": "",
+    "ipvers": 4, "action": "forward", "timestamp": 1605161369226}, {"namespace": "eos",
+    "hostname": "exit02", "vrf": "default", "prefix": "172.16.1.0/24", "nexthopIps":
+    ["169.254.253.2"], "oifs": ["Ethernet3.2"], "protocol": "ebgp", "source": "",
+    "ipvers": 4, "action": "forward", "timestamp": 1605161369226}, {"namespace": "eos",
+    "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.41/32", "nexthopIps":
+    ["169.254.253.2"], "oifs": ["Ethernet3.2"], "protocol": "ebgp", "source": "",
+    "ipvers": 4, "action": "forward", "timestamp": 1605161369226}, {"namespace": "eos",
+    "hostname": "exit02", "vrf": "default", "prefix": "172.16.3.0/24", "nexthopIps":
+    ["169.254.253.2"], "oifs": ["Ethernet3.2"], "protocol": "ebgp", "source": "",
+    "ipvers": 4, "action": "forward", "timestamp": 1605161369226}, {"namespace": "eos",
+    "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.134/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf",
+    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369226}, {"namespace":
+    "eos", "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.13/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf",
+    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369226}, {"namespace":
+    "eos", "hostname": "exit02", "vrf": "default", "prefix": "169.254.253.0/30", "nexthopIps":
+    [], "oifs": ["Ethernet3.2"], "protocol": "connected", "source": "", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369226}, {"namespace": "eos", "hostname":
+    "exit02", "vrf": "default", "prefix": "192.168.0.179/32", "nexthopIps": ["10.255.2.1"],
+    "oifs": ["Management1"], "protocol": "static", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369226}, {"namespace": "eos", "hostname": "exit02",
+    "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf", "source": "", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369226}, {"namespace": "eos", "hostname":
+    "exit02", "vrf": "internet-vrf", "prefix": "172.16.2.0/24", "nexthopIps": ["169.254.253.10"],
+    "oifs": ["Ethernet3.4"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369226}, {"namespace": "eos", "hostname": "exit02",
+    "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf", "source": "", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369226}, {"namespace": "eos", "hostname":
+    "exit02", "vrf": "evpn-vrf", "prefix": "172.16.2.201/32", "nexthopIps": ["10.0.0.134"],
+    "oifs": ["_nexthopVrf:default"], "protocol": "ibgp", "source": "", "ipvers": 4,
+    "action": "forward", "timestamp": 1605161369226}, {"namespace": "eos", "hostname":
+    "exit02", "vrf": "evpn-vrf", "prefix": "172.16.1.101/32", "nexthopIps": ["10.0.0.112"],
+    "oifs": ["_nexthopVrf:default"], "protocol": "ibgp", "source": "", "ipvers": 4,
+    "action": "forward", "timestamp": 1605161369226}, {"namespace": "eos", "hostname":
+    "exit02", "vrf": "evpn-vrf", "prefix": "172.16.2.0/24", "nexthopIps": [], "oifs":
+    [], "protocol": "bgpaggregate", "source": "", "ipvers": 4, "action": "drop", "timestamp":
+    1605161369226}, {"namespace": "eos", "hostname": "exit02", "vrf": "evpn-vrf",
+    "prefix": "172.16.1.0/24", "nexthopIps": [], "oifs": [], "protocol": "bgpaggregate",
+    "source": "", "ipvers": 4, "action": "drop", "timestamp": 1605161369226}, {"namespace":
+    "eos", "hostname": "exit02", "vrf": "evpn-vrf", "prefix": "10.0.0.41/32", "nexthopIps":
+    ["169.254.253.6"], "oifs": ["Ethernet3.3"], "protocol": "ebgp", "source": "",
+    "ipvers": 4, "action": "forward", "timestamp": 1605161369226}, {"namespace": "eos",
+    "hostname": "exit02", "vrf": "evpn-vrf", "prefix": "172.16.3.0/24", "nexthopIps":
+    [], "oifs": [], "protocol": "bgpaggregate", "source": "", "ipvers": 4, "action":
+    "drop", "timestamp": 1605161369226}, {"namespace": "eos", "hostname": "exit02",
+    "vrf": "evpn-vrf", "prefix": "172.16.3.202/32", "nexthopIps": ["10.0.0.134"],
+    "oifs": ["_nexthopVrf:default"], "protocol": "ibgp", "source": "", "ipvers": 4,
+    "action": "forward", "timestamp": 1605161369226}, {"namespace": "eos", "hostname":
+    "exit02", "vrf": "internet-vrf", "prefix": "10.255.2.0/24", "nexthopIps": ["169.254.127.2"],
+    "oifs": ["Ethernet4"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369226}, {"namespace": "eos", "hostname": "exit02",
+    "vrf": "internet-vrf", "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.127.2"],
+    "oifs": ["Ethernet4"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369226}, {"namespace": "eos", "hostname": "exit02",
+    "vrf": "default", "prefix": "10.0.0.21/32", "nexthopIps": [], "oifs": ["Ethernet1"],
+    "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369226}, {"namespace": "eos", "hostname": "exit02", "vrf": "internet-vrf",
+    "prefix": "169.254.0.0/24", "nexthopIps": ["169.254.127.2"], "oifs": ["Ethernet4"],
+    "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369226}, {"namespace": "eos", "hostname": "exit02", "vrf": "internet-vrf",
+    "prefix": "10.0.0.41/32", "nexthopIps": ["169.254.127.2"], "oifs": ["Ethernet4"],
+    "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369226}, {"namespace": "eos", "hostname": "exit02", "vrf": "internet-vrf",
+    "prefix": "172.16.3.0/24", "nexthopIps": ["169.254.253.10"], "oifs": ["Ethernet3.4"],
+    "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369226}, {"namespace": "eos", "hostname": "exit02", "vrf": "internet-vrf",
+    "prefix": "169.254.127.0/31", "nexthopIps": ["169.254.127.2"], "oifs": ["Ethernet4"],
+    "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369226}, {"namespace": "eos", "hostname": "exit02", "vrf": "internet-vrf",
+    "prefix": "169.254.253.8/30", "nexthopIps": [], "oifs": ["Ethernet3.4"], "protocol":
+    "connected", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369226},
+    {"namespace": "eos", "hostname": "exit02", "vrf": "internet-vrf", "prefix": "169.254.127.2/31",
+    "nexthopIps": [], "oifs": ["Ethernet4"], "protocol": "connected", "source": "",
+    "ipvers": 4, "action": "forward", "timestamp": 1605161369226}, {"namespace": "eos",
+    "hostname": "exit02", "vrf": "internet-vrf", "prefix": "172.16.1.0/24", "nexthopIps":
+    ["169.254.253.10"], "oifs": ["Ethernet3.4"], "protocol": "ebgp", "source": "",
+    "ipvers": 4, "action": "forward", "timestamp": 1605161369226}, {"namespace": "eos",
+    "hostname": "exit02", "vrf": "default", "prefix": "10.255.2.0/24", "nexthopIps":
+    [], "oifs": ["Management1"], "protocol": "connected", "source": "", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369226}, {"namespace": "eos", "hostname":
+    "exit02", "vrf": "evpn-vrf", "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.253.6"],
+    "oifs": ["Ethernet3.3"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369226}, {"namespace": "eos", "hostname": "leaf02",
+    "vrf": "default", "prefix": "10.0.0.31/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf", "source": "", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369226}, {"namespace": "eos", "hostname":
+    "exit02", "vrf": "evpn-vrf", "prefix": "172.16.3.102/32", "nexthopIps": ["10.0.0.112"],
+    "oifs": ["_nexthopVrf:default"], "protocol": "ibgp", "source": "", "ipvers": 4,
+    "action": "forward", "timestamp": 1605161369226}, {"namespace": "eos", "hostname":
+    "leaf03", "vrf": "default", "prefix": "10.0.0.13/32", "nexthopIps": [], "oifs":
+    ["Loopback0"], "protocol": "connected", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369226}, {"namespace": "eos", "hostname": "leaf03", "vrf":
+    "default", "prefix": "10.0.0.134/32", "nexthopIps": [], "oifs": ["Loopback1"],
+    "protocol": "connected", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369226}, {"namespace": "eos", "hostname": "leaf03", "vrf": "default", "prefix":
+    "10.0.0.12/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["Ethernet1",
+    "Ethernet2"], "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369226}, {"namespace": "eos", "hostname": "leaf03", "vrf":
+    "default", "prefix": "192.168.0.179/32", "nexthopIps": ["10.255.2.1"], "oifs":
+    ["Management1"], "protocol": "static", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369226}, {"namespace": "eos", "hostname": "leaf03", "vrf":
+    "default", "prefix": "10.0.0.31/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf", "source": "", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369226}, {"namespace": "eos", "hostname":
+    "leaf03", "vrf": "default", "prefix": "169.254.1.0/31", "nexthopIps": [], "oifs":
+    ["Vlan4094"], "protocol": "connected", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369226}, {"namespace": "eos", "hostname": "leaf03", "vrf":
+    "default", "prefix": "10.0.0.32/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf", "source": "", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369226}, {"namespace": "eos", "hostname":
+    "leaf03", "vrf": "default", "prefix": "10.0.0.112/32", "nexthopIps": ["10.0.0.21",
+    "10.0.0.22"], "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf", "source":
+    "", "ipvers": 4, "action": "forward", "timestamp": 1605161369226}, {"namespace":
+    "eos", "hostname": "leaf03", "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps":
+    [], "oifs": ["Ethernet2"], "protocol": "ospf", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369226}, {"namespace": "eos", "hostname": "leaf03",
+    "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf", "source": "", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369226}, {"namespace": "eos", "hostname":
+    "leaf03", "vrf": "default", "prefix": "10.255.2.0/24", "nexthopIps": [], "oifs":
+    ["Management1"], "protocol": "connected", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369226}, {"namespace": "eos", "hostname": "leaf03",
+    "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf", "source": "", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369226}, {"namespace": "eos", "hostname":
+    "leaf03", "vrf": "evpn-vrf", "prefix": "172.16.3.0/24", "nexthopIps": [], "oifs":
+    ["Vlan30"], "protocol": "connected", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369226}, {"namespace": "eos", "hostname": "leaf03", "vrf":
+    "evpn-vrf", "prefix": "172.16.1.0/24", "nexthopIps": ["10.0.0.112"], "oifs": ["_nexthopVrf:default"],
+    "protocol": "ibgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369226}, {"namespace": "eos", "hostname": "leaf03", "vrf": "evpn-vrf",
+    "prefix": "172.16.2.0/24", "nexthopIps": [], "oifs": ["Vlan20"], "protocol": "connected",
+    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369226}, {"namespace":
+    "eos", "hostname": "leaf03", "vrf": "evpn-vrf", "prefix": "172.16.1.101/32", "nexthopIps":
+    ["10.0.0.112"], "oifs": ["_nexthopVrf:default"], "protocol": "ibgp", "source":
+    "", "ipvers": 4, "action": "forward", "timestamp": 1605161369226}, {"namespace":
+    "eos", "hostname": "leaf03", "vrf": "evpn-vrf", "prefix": "172.16.3.102/32", "nexthopIps":
+    ["10.0.0.112"], "oifs": ["_nexthopVrf:default"], "protocol": "ibgp", "source":
+    "", "ipvers": 4, "action": "forward", "timestamp": 1605161369226}, {"namespace":
+    "eos", "hostname": "leaf03", "vrf": "default", "prefix": "10.0.0.21/32", "nexthopIps":
+    [], "oifs": ["Ethernet1"], "protocol": "ospf", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369226}, {"namespace": "eos", "hostname": "exit02",
+    "vrf": "evpn-vrf", "prefix": "169.254.253.4/30", "nexthopIps": ["0.0.0.0"], "oifs":
+    ["Ethernet3.3"], "protocol": "connected", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369226}, {"namespace": "eos", "hostname": "leaf02",
+    "vrf": "evpn-vrf", "prefix": "172.16.2.201/32", "nexthopIps": ["10.0.0.134"],
+    "oifs": ["_nexthopVrf:default"], "protocol": "ibgp", "source": "", "ipvers": 4,
+    "action": "forward", "timestamp": 1605161369226}, {"namespace": "eos", "hostname":
+    "leaf02", "vrf": "evpn-vrf", "prefix": "172.16.1.0/24", "nexthopIps": [], "oifs":
+    ["Vlan10"], "protocol": "connected", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369226}, {"namespace": "eos", "hostname": "exit02", "vrf":
+    "evpn-vrf", "prefix": "10.255.2.0/24", "nexthopIps": ["169.254.253.6"], "oifs":
+    ["Ethernet3.3"], "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369226}, {"namespace": "eos", "hostname": "leaf02", "vrf":
+    "default", "prefix": "10.0.0.21/32", "nexthopIps": [], "oifs": ["Ethernet1"],
+    "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369226}, {"namespace": "eos", "hostname": "leaf02", "vrf": "default", "prefix":
+    "10.0.0.13/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["Ethernet1",
+    "Ethernet2"], "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369226}, {"namespace": "eos", "hostname": "leaf02", "vrf":
+    "default", "prefix": "10.0.0.134/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf", "source": "", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369226}, {"namespace": "eos", "hostname":
+    "leaf02", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": [], "oifs":
+    ["Loopback0"], "protocol": "connected", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369226}, {"namespace": "eos", "hostname": "leaf02", "vrf":
+    "default", "prefix": "192.168.0.179/32", "nexthopIps": ["10.255.2.1"], "oifs":
+    ["Management1"], "protocol": "static", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369226}, {"namespace": "eos", "hostname": "exit02", "vrf":
+    "evpn-vrf", "prefix": "169.254.127.2/31", "nexthopIps": ["169.254.253.6"], "oifs":
+    ["Ethernet3.3"], "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369226}, {"namespace": "eos", "hostname": "leaf02", "vrf":
+    "evpn-vrf", "prefix": "172.16.2.0/24", "nexthopIps": ["10.0.0.134"], "oifs": ["_nexthopVrf:default"],
+    "protocol": "ibgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369226}, {"namespace": "eos", "hostname": "leaf02", "vrf": "default", "prefix":
+    "169.254.1.0/31", "nexthopIps": [], "oifs": ["Vlan4094"], "protocol": "connected",
+    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369226}, {"namespace":
+    "eos", "hostname": "leaf02", "vrf": "default", "prefix": "10.0.0.112/32", "nexthopIps":
+    [], "oifs": ["Loopback1"], "protocol": "connected", "source": "", "ipvers": 4,
+    "action": "forward", "timestamp": 1605161369226}, {"namespace": "eos", "hostname":
+    "leaf02", "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps": [], "oifs":
+    ["Ethernet2"], "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369226}, {"namespace": "eos", "hostname": "leaf02", "vrf":
+    "default", "prefix": "10.0.0.14/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf", "source": "", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369226}, {"namespace": "eos", "hostname":
+    "leaf02", "vrf": "default", "prefix": "10.255.2.0/24", "nexthopIps": [], "oifs":
+    ["Management1"], "protocol": "connected", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369226}, {"namespace": "eos", "hostname": "leaf02",
+    "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf", "source": "", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369226}, {"namespace": "eos", "hostname":
+    "leaf02", "vrf": "evpn-vrf", "prefix": "172.16.3.202/32", "nexthopIps": ["10.0.0.134"],
+    "oifs": ["_nexthopVrf:default"], "protocol": "ibgp", "source": "", "ipvers": 4,
+    "action": "forward", "timestamp": 1605161369226}, {"namespace": "eos", "hostname":
+    "leaf02", "vrf": "evpn-vrf", "prefix": "172.16.3.0/24", "nexthopIps": [], "oifs":
+    ["Vlan30"], "protocol": "connected", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369226}, {"namespace": "eos", "hostname": "leaf02", "vrf":
+    "default", "prefix": "10.0.0.32/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf", "source": "", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369226}, {"namespace": "eos", "hostname":
+    "exit02", "vrf": "evpn-vrf", "prefix": "169.254.127.0/31", "nexthopIps": ["169.254.253.6"],
+    "oifs": ["Ethernet3.3"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369226}, {"namespace": "eos", "hostname": "spine02",
+    "vrf": "default", "prefix": "10.255.2.0/24", "nexthopIps": [], "oifs": ["Management1"],
+    "protocol": "connected", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369227}, {"namespace": "eos", "hostname": "spine02", "vrf": "default",
+    "prefix": "10.0.0.11/32", "nexthopIps": [], "oifs": ["Ethernet1"], "protocol":
+    "ospf", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369227},
+    {"namespace": "eos", "hostname": "exit01", "vrf": "evpn-vrf", "prefix": "169.254.254.4/30",
+    "nexthopIps": ["0.0.0.0"], "oifs": ["Ethernet3.3"], "protocol": "connected", "source":
+    "", "ipvers": 4, "action": "forward", "timestamp": 1605161369227}, {"namespace":
+    "eos", "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.112/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf",
+    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369227}, {"namespace":
+    "eos", "hostname": "exit01", "vrf": "default", "prefix": "169.254.127.0/31", "nexthopIps":
+    ["169.254.254.2"], "oifs": ["Ethernet3.2"], "protocol": "ebgp", "source": "",
+    "ipvers": 4, "action": "forward", "timestamp": 1605161369227}, {"namespace": "eos",
+    "hostname": "exit01", "vrf": "default", "prefix": "169.254.0.0/24", "nexthopIps":
+    ["169.254.254.2"], "oifs": ["Ethernet3.2"], "protocol": "ebgp", "source": "",
+    "ipvers": 4, "action": "forward", "timestamp": 1605161369227}, {"namespace": "eos",
+    "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps":
+    [], "oifs": ["Ethernet2"], "protocol": "ospf", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369227}, {"namespace": "eos", "hostname": "exit01",
+    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.254.2"], "oifs":
+    ["Ethernet3.2"], "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369227}, {"namespace": "eos", "hostname": "exit01", "vrf":
+    "default", "prefix": "10.0.0.14/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf", "source": "", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369227}, {"namespace": "eos", "hostname":
+    "exit01", "vrf": "default", "prefix": "10.255.2.0/24", "nexthopIps": [], "oifs":
+    ["Management1"], "protocol": "connected", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369227}, {"namespace": "eos", "hostname": "exit01",
+    "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf", "source": "", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369227}, {"namespace": "eos", "hostname":
+    "exit01", "vrf": "default", "prefix": "10.0.0.32/32", "nexthopIps": ["10.0.0.21",
+    "10.0.0.22"], "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf", "source":
+    "", "ipvers": 4, "action": "forward", "timestamp": 1605161369227}, {"namespace":
+    "eos", "hostname": "exit01", "vrf": "internet-vrf", "prefix": "172.16.1.0/24",
+    "nexthopIps": ["169.254.254.10"], "oifs": ["Ethernet3.4"], "protocol": "ebgp",
+    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369227}, {"namespace":
+    "eos", "hostname": "exit01", "vrf": "internet-vrf", "prefix": "169.254.127.0/31",
+    "nexthopIps": [], "oifs": ["Ethernet4"], "protocol": "connected", "source": "",
+    "ipvers": 4, "action": "forward", "timestamp": 1605161369227}, {"namespace": "eos",
+    "hostname": "exit01", "vrf": "internet-vrf", "prefix": "172.16.3.0/24", "nexthopIps":
+    ["169.254.254.10"], "oifs": ["Ethernet3.4"], "protocol": "ebgp", "source": "",
+    "ipvers": 4, "action": "forward", "timestamp": 1605161369227}, {"namespace": "eos",
+    "hostname": "exit01", "vrf": "internet-vrf", "prefix": "10.0.0.41/32", "nexthopIps":
+    ["169.254.127.0"], "oifs": ["Ethernet4"], "protocol": "ebgp", "source": "", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369227}, {"namespace": "eos", "hostname":
+    "exit01", "vrf": "internet-vrf", "prefix": "169.254.0.0/24", "nexthopIps": ["169.254.127.0"],
+    "oifs": ["Ethernet4"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369227}, {"namespace": "eos", "hostname": "exit01",
+    "vrf": "internet-vrf", "prefix": "172.16.2.0/24", "nexthopIps": ["169.254.254.10"],
+    "oifs": ["Ethernet3.4"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369227}, {"namespace": "eos", "hostname": "exit01",
+    "vrf": "internet-vrf", "prefix": "10.255.2.0/24", "nexthopIps": ["169.254.127.0"],
+    "oifs": ["Ethernet4"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369227}, {"namespace": "eos", "hostname": "exit01",
+    "vrf": "internet-vrf", "prefix": "169.254.254.8/30", "nexthopIps": [], "oifs":
+    ["Ethernet3.4"], "protocol": "connected", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369227}, {"namespace": "eos", "hostname": "exit01",
+    "vrf": "evpn-vrf", "prefix": "172.16.3.202/32", "nexthopIps": ["10.0.0.134"],
+    "oifs": ["_nexthopVrf:default"], "protocol": "ibgp", "source": "", "ipvers": 4,
+    "action": "forward", "timestamp": 1605161369227}, {"namespace": "eos", "hostname":
+    "exit01", "vrf": "internet-vrf", "prefix": "169.254.127.2/31", "nexthopIps": ["169.254.127.0"],
+    "oifs": ["Ethernet4"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369227}, {"namespace": "eos", "hostname": "exit01",
+    "vrf": "default", "prefix": "169.254.127.2/31", "nexthopIps": ["169.254.254.2"],
+    "oifs": ["Ethernet3.2"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369227}, {"namespace": "eos", "hostname": "exit01",
+    "vrf": "default", "prefix": "10.0.0.31/32", "nexthopIps": [], "oifs": ["Loopback0"],
+    "protocol": "connected", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369227}, {"namespace": "eos", "hostname": "exit01", "vrf": "default", "prefix":
+    "192.168.0.179/32", "nexthopIps": ["10.255.2.1"], "oifs": ["Management1"], "protocol":
+    "static", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369227},
+    {"namespace": "eos", "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.14/32",
+    "nexthopIps": [], "oifs": ["Ethernet4"], "protocol": "ospf", "source": "", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369227}, {"namespace": "eos", "hostname":
+    "spine02", "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps": [], "oifs":
+    ["Loopback0"], "protocol": "connected", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369227}, {"namespace": "eos", "hostname": "spine02", "vrf":
+    "default", "prefix": "10.0.0.112/32", "nexthopIps": ["10.0.0.11", "10.0.0.12"],
+    "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf", "source": "", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369227}, {"namespace": "eos", "hostname":
+    "spine02", "vrf": "default", "prefix": "10.0.0.32/32", "nexthopIps": [], "oifs":
+    ["Ethernet6"], "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369227}, {"namespace": "eos", "hostname": "spine02", "vrf":
+    "default", "prefix": "10.0.0.31/32", "nexthopIps": [], "oifs": ["Ethernet5"],
+    "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369227}, {"namespace": "eos", "hostname": "spine02", "vrf": "default",
+    "prefix": "192.168.0.179/32", "nexthopIps": ["10.255.2.1"], "oifs": ["Management1"],
+    "protocol": "static", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369227}, {"namespace": "eos", "hostname": "spine02", "vrf": "default",
+    "prefix": "10.0.0.12/32", "nexthopIps": [], "oifs": ["Ethernet2"], "protocol":
+    "ospf", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369227},
+    {"namespace": "eos", "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.134/32",
+    "nexthopIps": ["10.0.0.13", "10.0.0.14"], "oifs": ["Ethernet3", "Ethernet4"],
+    "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369227}, {"namespace": "eos", "hostname": "spine02", "vrf": "default",
+    "prefix": "10.0.0.13/32", "nexthopIps": [], "oifs": ["Ethernet3"], "protocol":
+    "ospf", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369227},
+    {"namespace": "eos", "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.21/32",
+    "nexthopIps": ["10.0.0.11", "10.0.0.12", "10.0.0.13", "10.0.0.14", "10.0.0.31",
+    "10.0.0.32"], "oifs": ["Ethernet1", "Ethernet2", "Ethernet3", "Ethernet4", "Ethernet5",
+    "Ethernet6"], "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369227}, {"namespace": "eos", "hostname": "exit01", "vrf":
+    "default", "prefix": "10.0.0.21/32", "nexthopIps": [], "oifs": ["Ethernet1"],
+    "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369227}, {"namespace": "eos", "hostname": "exit01", "vrf": "default", "prefix":
+    "10.0.0.13/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["Ethernet1",
+    "Ethernet2"], "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369227}, {"namespace": "eos", "hostname": "exit01", "vrf":
+    "default", "prefix": "10.0.0.134/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf", "source": "", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369227}, {"namespace": "eos", "hostname":
+    "exit01", "vrf": "default", "prefix": "169.254.254.0/30", "nexthopIps": [], "oifs":
+    ["Ethernet3.2"], "protocol": "connected", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369227}, {"namespace": "eos", "hostname": "exit01",
+    "vrf": "default", "prefix": "172.16.3.0/24", "nexthopIps": ["169.254.254.2"],
+    "oifs": ["Ethernet3.2"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369227}, {"namespace": "eos", "hostname": "exit01",
+    "vrf": "default", "prefix": "10.0.0.41/32", "nexthopIps": ["169.254.254.2"], "oifs":
+    ["Ethernet3.2"], "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369227}, {"namespace": "eos", "hostname": "exit01", "vrf":
+    "default", "prefix": "172.16.1.0/24", "nexthopIps": ["169.254.254.2"], "oifs":
+    ["Ethernet3.2"], "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369227}, {"namespace": "eos", "hostname": "exit01", "vrf":
+    "default", "prefix": "172.16.2.0/24", "nexthopIps": ["169.254.254.2"], "oifs":
+    ["Ethernet3.2"], "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369227}, {"namespace": "eos", "hostname": "exit01", "vrf":
+    "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf", "source": "", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369227}, {"namespace": "eos", "hostname":
+    "exit01", "vrf": "evpn-vrf", "prefix": "172.16.3.0/24", "nexthopIps": [], "oifs":
+    [], "protocol": "bgpaggregate", "source": "", "ipvers": 4, "action": "drop", "timestamp":
+    1605161369227}, {"namespace": "eos", "hostname": "exit01", "vrf": "evpn-vrf",
+    "prefix": "10.0.0.41/32", "nexthopIps": ["169.254.254.6"], "oifs": ["Ethernet3.3"],
+    "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369227}, {"namespace": "eos", "hostname": "exit01", "vrf": "internet-vrf",
+    "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.127.0"], "oifs": ["Ethernet4"],
+    "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369227}, {"namespace": "eos", "hostname": "exit01", "vrf": "evpn-vrf",
+    "prefix": "172.16.2.0/24", "nexthopIps": [], "oifs": [], "protocol": "bgpaggregate",
+    "source": "", "ipvers": 4, "action": "drop", "timestamp": 1605161369227}, {"namespace":
+    "eos", "hostname": "exit01", "vrf": "evpn-vrf", "prefix": "169.254.0.0/24", "nexthopIps":
+    ["169.254.254.6"], "oifs": ["Ethernet3.3"], "protocol": "ebgp", "source": "",
+    "ipvers": 4, "action": "forward", "timestamp": 1605161369227}, {"namespace": "eos",
+    "hostname": "exit01", "vrf": "evpn-vrf", "prefix": "172.16.1.0/24", "nexthopIps":
+    [], "oifs": [], "protocol": "bgpaggregate", "source": "", "ipvers": 4, "action":
+    "drop", "timestamp": 1605161369227}, {"namespace": "eos", "hostname": "exit01",
+    "vrf": "evpn-vrf", "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.254.6"], "oifs":
+    ["Ethernet3.3"], "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369227}, {"namespace": "eos", "hostname": "exit01", "vrf":
+    "evpn-vrf", "prefix": "172.16.3.102/32", "nexthopIps": ["10.0.0.112"], "oifs":
+    ["_nexthopVrf:default"], "protocol": "ibgp", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369227}, {"namespace": "eos", "hostname": "exit01",
+    "vrf": "evpn-vrf", "prefix": "10.255.2.0/24", "nexthopIps": ["169.254.254.6"],
+    "oifs": ["Ethernet3.3"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369227}, {"namespace": "eos", "hostname": "exit01",
+    "vrf": "evpn-vrf", "prefix": "169.254.127.2/31", "nexthopIps": ["169.254.254.6"],
+    "oifs": ["Ethernet3.3"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369227}, {"namespace": "eos", "hostname": "exit01",
+    "vrf": "evpn-vrf", "prefix": "172.16.2.201/32", "nexthopIps": ["10.0.0.134"],
+    "oifs": ["_nexthopVrf:default"], "protocol": "ibgp", "source": "", "ipvers": 4,
+    "action": "forward", "timestamp": 1605161369227}, {"namespace": "eos", "hostname":
+    "exit01", "vrf": "evpn-vrf", "prefix": "172.16.1.101/32", "nexthopIps": ["10.0.0.112"],
+    "oifs": ["_nexthopVrf:default"], "protocol": "ibgp", "source": "", "ipvers": 4,
+    "action": "forward", "timestamp": 1605161369227}, {"namespace": "eos", "hostname":
+    "exit01", "vrf": "evpn-vrf", "prefix": "169.254.127.0/31", "nexthopIps": ["169.254.254.6"],
+    "oifs": ["Ethernet3.3"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369227}, {"namespace": "eos", "hostname": "spine01",
+    "vrf": "default", "prefix": "10.0.0.13/32", "nexthopIps": [], "oifs": ["Ethernet3"],
+    "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369355}, {"namespace": "eos", "hostname": "spine01", "vrf": "default",
+    "prefix": "10.0.0.11/32", "nexthopIps": [], "oifs": ["Ethernet1"], "protocol":
+    "ospf", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369355},
+    {"namespace": "eos", "hostname": "spine01", "vrf": "default", "prefix": "10.255.2.0/24",
+    "nexthopIps": [], "oifs": ["Management1"], "protocol": "connected", "source":
+    "", "ipvers": 4, "action": "forward", "timestamp": 1605161369355}, {"namespace":
+    "eos", "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.134/32", "nexthopIps":
+    ["10.0.0.13", "10.0.0.14"], "oifs": ["Ethernet3", "Ethernet4"], "protocol": "ospf",
+    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369355}, {"namespace":
+    "eos", "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps":
+    ["10.0.0.11", "10.0.0.12", "10.0.0.13", "10.0.0.14", "10.0.0.31", "10.0.0.32"],
+    "oifs": ["Ethernet1", "Ethernet2", "Ethernet3", "Ethernet4", "Ethernet5", "Ethernet6"],
+    "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369355}, {"namespace": "eos", "hostname": "spine01", "vrf": "default",
+    "prefix": "10.0.0.21/32", "nexthopIps": [], "oifs": ["Loopback0"], "protocol":
+    "connected", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369355},
+    {"namespace": "eos", "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.31/32",
+    "nexthopIps": [], "oifs": ["Ethernet5"], "protocol": "ospf", "source": "", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369355}, {"namespace": "eos", "hostname":
+    "spine01", "vrf": "default", "prefix": "10.0.0.32/32", "nexthopIps": [], "oifs":
+    ["Ethernet6"], "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369355}, {"namespace": "eos", "hostname": "spine01", "vrf":
+    "default", "prefix": "10.0.0.112/32", "nexthopIps": ["10.0.0.11", "10.0.0.12"],
+    "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf", "source": "", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369355}, {"namespace": "eos", "hostname":
+    "spine01", "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps": [], "oifs":
+    ["Ethernet4"], "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369355}, {"namespace": "eos", "hostname": "spine01", "vrf":
+    "default", "prefix": "192.168.0.179/32", "nexthopIps": ["10.255.2.1"], "oifs":
+    ["Management1"], "protocol": "static", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369355}, {"namespace": "eos", "hostname": "spine01", "vrf":
+    "default", "prefix": "10.0.0.12/32", "nexthopIps": [], "oifs": ["Ethernet2"],
+    "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369355}, {"namespace": "eos", "hostname": "leaf01", "vrf": "default", "prefix":
+    "10.0.0.134/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["Ethernet1",
+    "Ethernet2"], "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369357}, {"namespace": "eos", "hostname": "leaf01", "vrf":
+    "evpn-vrf", "prefix": "172.16.2.201/32", "nexthopIps": ["10.0.0.134"], "oifs":
+    ["_nexthopVrf:default"], "protocol": "ibgp", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369357}, {"namespace": "eos", "hostname": "leaf01",
+    "vrf": "evpn-vrf", "prefix": "172.16.2.0/24", "nexthopIps": ["10.0.0.134"], "oifs":
+    ["_nexthopVrf:default"], "protocol": "ibgp", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369357}, {"namespace": "eos", "hostname": "leaf01",
+    "vrf": "evpn-vrf", "prefix": "172.16.1.0/24", "nexthopIps": [], "oifs": ["Vlan10"],
+    "protocol": "connected", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369357}, {"namespace": "eos", "hostname": "leaf01", "vrf": "evpn-vrf",
+    "prefix": "172.16.3.0/24", "nexthopIps": [], "oifs": ["Vlan30"], "protocol": "connected",
+    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369357}, {"namespace":
+    "eos", "hostname": "leaf01", "vrf": "evpn-vrf", "prefix": "172.16.3.202/32", "nexthopIps":
+    ["10.0.0.134"], "oifs": ["_nexthopVrf:default"], "protocol": "ibgp", "source":
+    "", "ipvers": 4, "action": "forward", "timestamp": 1605161369357}, {"namespace":
+    "eos", "hostname": "leaf01", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps":
+    [], "oifs": ["Loopback0"], "protocol": "connected", "source": "", "ipvers": 4,
+    "action": "forward", "timestamp": 1605161369357}, {"namespace": "eos", "hostname":
+    "leaf01", "vrf": "default", "prefix": "10.255.2.0/24", "nexthopIps": [], "oifs":
+    ["Management1"], "protocol": "connected", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369357}, {"namespace": "eos", "hostname": "leaf01",
+    "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf", "source": "", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369357}, {"namespace": "eos", "hostname":
+    "leaf01", "vrf": "default", "prefix": "10.0.0.112/32", "nexthopIps": [], "oifs":
+    ["Loopback1"], "protocol": "connected", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369357}, {"namespace": "eos", "hostname": "leaf01", "vrf":
+    "default", "prefix": "10.0.0.32/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf", "source": "", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369357}, {"namespace": "eos", "hostname":
+    "leaf01", "vrf": "default", "prefix": "169.254.1.0/31", "nexthopIps": [], "oifs":
+    ["Vlan4094"], "protocol": "connected", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369357}, {"namespace": "eos", "hostname": "leaf01", "vrf":
+    "default", "prefix": "10.0.0.31/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf", "source": "", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369357}, {"namespace": "eos", "hostname":
+    "leaf01", "vrf": "default", "prefix": "192.168.0.179/32", "nexthopIps": ["10.255.2.1"],
+    "oifs": ["Management1"], "protocol": "static", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369357}, {"namespace": "eos", "hostname": "leaf01",
+    "vrf": "default", "prefix": "10.0.0.21/32", "nexthopIps": [], "oifs": ["Ethernet1"],
+    "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369357}, {"namespace": "eos", "hostname": "leaf01", "vrf": "default", "prefix":
+    "10.0.0.13/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["Ethernet1",
+    "Ethernet2"], "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369357}, {"namespace": "eos", "hostname": "leaf01", "vrf":
+    "default", "prefix": "10.0.0.22/32", "nexthopIps": [], "oifs": ["Ethernet2"],
+    "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369357}, {"namespace": "eos", "hostname": "leaf01", "vrf": "default", "prefix":
+    "10.0.0.12/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["Ethernet1",
+    "Ethernet2"], "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369357}, {"namespace": "eos", "hostname": "server102", "vrf":
+    "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"],
+    "protocol": "", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369410},
+    {"namespace": "eos", "hostname": "server102", "vrf": "default", "prefix": "10.255.2.1/32",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "dhcp", "source": "10.255.2.50",
+    "ipvers": 4, "action": "forward", "timestamp": 1605161369410}, {"namespace": "eos",
+    "hostname": "server102", "vrf": "default", "prefix": "172.16.3.0/24", "nexthopIps":
+    [""], "oifs": ["bond0"], "protocol": "kernel", "source": "172.16.3.102", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369410}, {"namespace": "eos", "hostname":
+    "server102", "vrf": "default", "prefix": "172.16.0.0/16", "nexthopIps": ["172.16.3.254"],
+    "oifs": ["bond0"], "protocol": "", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369410}, {"namespace": "eos", "hostname": "server102", "vrf":
+    "default", "prefix": "10.255.2.0/24", "nexthopIps": [""], "oifs": ["eth0"], "protocol":
+    "kernel", "source": "10.255.2.50", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369410}, {"namespace": "eos", "hostname": "server301", "vrf": "default",
+    "prefix": "172.16.0.0/16", "nexthopIps": ["172.16.2.254"], "oifs": ["bond0"],
+    "protocol": "", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369414},
+    {"namespace": "eos", "hostname": "server301", "vrf": "default", "prefix": "10.255.2.1/32",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "dhcp", "source": "10.255.2.192",
+    "ipvers": 4, "action": "forward", "timestamp": 1605161369414}, {"namespace": "eos",
+    "hostname": "server301", "vrf": "default", "prefix": "10.255.2.0/24", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.192", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369414}, {"namespace": "eos", "hostname":
+    "server301", "vrf": "default", "prefix": "172.16.2.0/24", "nexthopIps": [""],
+    "oifs": ["bond0"], "protocol": "kernel", "source": "172.16.2.201", "ipvers": 4,
+    "action": "forward", "timestamp": 1605161369414}, {"namespace": "eos", "hostname":
+    "server301", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"],
+    "oifs": ["eth0"], "protocol": "", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369414}, {"namespace": "eos", "hostname": "server101", "vrf":
+    "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"],
+    "protocol": "", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369415},
+    {"namespace": "eos", "hostname": "server101", "vrf": "default", "prefix": "10.255.2.0/24",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.44",
+    "ipvers": 4, "action": "forward", "timestamp": 1605161369415}, {"namespace": "eos",
+    "hostname": "server101", "vrf": "default", "prefix": "10.255.2.1/32", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "dhcp", "source": "10.255.2.44", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369415}, {"namespace": "eos", "hostname":
+    "server101", "vrf": "default", "prefix": "172.16.0.0/16", "nexthopIps": ["172.16.1.254"],
+    "oifs": ["bond0"], "protocol": "", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369415}, {"namespace": "eos", "hostname": "server101", "vrf":
     "default", "prefix": "172.16.1.0/24", "nexthopIps": [""], "oifs": ["bond0"], "protocol":
     "kernel", "source": "172.16.1.101", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635353}, {"namespace": "eos", "hostname": "leaf02", "vrf": "default", "prefix":
-    "10.0.0.102/32", "nexthopIps": ["10.127.0.2"], "oifs": ["Ethernet1"], "protocol":
-    "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635353},
-    {"namespace": "eos", "hostname": "leaf02", "vrf": "default", "prefix": "10.127.1.2/31",
-    "nexthopIps": [], "oifs": ["Ethernet2"], "protocol": "connected", "source": "",
-    "ipvers": 4, "action": "forward", "timestamp": 1606001635353}, {"namespace": "eos",
-    "hostname": "leaf02", "vrf": "default", "prefix": "169.254.1.0/31", "nexthopIps":
-    [], "oifs": ["Vlan4094"], "protocol": "connected", "source": "", "ipvers": 4,
-    "action": "forward", "timestamp": 1606001635353}, {"namespace": "eos", "hostname":
-    "server101", "vrf": "default", "prefix": "192.168.121.0/24", "nexthopIps": [""],
-    "oifs": ["eth0"], "protocol": "kernel", "source": "192.168.121.82", "ipvers":
-    4, "action": "forward", "timestamp": 1606001635353}, {"namespace": "eos", "hostname":
-    "leaf02", "vrf": "default", "prefix": "10.0.0.100/32", "nexthopIps": ["10.127.0.2"],
-    "oifs": ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635353}, {"namespace": "eos", "hostname": "leaf03",
-    "vrf": "default", "prefix": "192.168.0.179/32", "nexthopIps": ["192.168.121.1"],
-    "oifs": ["Management1"], "protocol": "static", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635356}, {"namespace": "eos", "hostname": "leaf03",
-    "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps": ["10.127.0.4"], "oifs":
-    ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635356}, {"namespace": "eos", "hostname": "leaf03", "vrf":
-    "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.127.0.4"], "oifs": ["Ethernet1"],
-    "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635356}, {"namespace": "eos", "hostname": "leaf03", "vrf": "default", "prefix":
-    "10.127.0.4/31", "nexthopIps": [], "oifs": ["Ethernet1"], "protocol": "connected",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635356}, {"namespace":
-    "eos", "hostname": "leaf03", "vrf": "default", "prefix": "172.16.253.1/32", "nexthopIps":
-    ["10.127.0.4"], "oifs": ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers":
-    4, "action": "forward", "timestamp": 1606001635356}, {"namespace": "eos", "hostname":
-    "leaf03", "vrf": "default", "prefix": "172.16.4.0/24", "nexthopIps": [], "oifs":
-    ["Vlan24"], "protocol": "connected", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635356}, {"namespace": "eos", "hostname": "leaf03", "vrf":
-    "default", "prefix": "169.254.1.0/31", "nexthopIps": [], "oifs": ["Vlan4094"],
-    "protocol": "connected", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635356}, {"namespace": "eos", "hostname": "leaf03", "vrf": "default", "prefix":
-    "172.16.1.0/24", "nexthopIps": ["10.127.0.4"], "oifs": ["Ethernet1"], "protocol":
-    "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635356},
-    {"namespace": "eos", "hostname": "leaf03", "vrf": "default", "prefix": "10.127.1.4/31",
-    "nexthopIps": [], "oifs": ["Ethernet2"], "protocol": "connected", "source": "",
-    "ipvers": 4, "action": "forward", "timestamp": 1606001635356}, {"namespace": "eos",
-    "hostname": "leaf03", "vrf": "default", "prefix": "172.16.2.0/24", "nexthopIps":
-    ["10.127.0.4"], "oifs": ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers":
-    4, "action": "forward", "timestamp": 1606001635356}, {"namespace": "eos", "hostname":
-    "leaf03", "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps": ["10.127.1.4"],
-    "oifs": ["Ethernet2"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635356}, {"namespace": "eos", "hostname": "leaf03",
-    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.127.0.4"], "oifs":
-    ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635356}, {"namespace": "eos", "hostname": "leaf03", "vrf":
-    "default", "prefix": "10.0.0.253/32", "nexthopIps": ["10.127.0.4"], "oifs": ["Ethernet1"],
-    "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635356}, {"namespace": "eos", "hostname": "leaf03", "vrf": "default", "prefix":
-    "10.0.0.11/32", "nexthopIps": ["10.127.0.4"], "oifs": ["Ethernet1"], "protocol":
-    "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635356},
-    {"namespace": "eos", "hostname": "leaf03", "vrf": "default", "prefix": "10.0.0.102/32",
-    "nexthopIps": ["10.127.0.4"], "oifs": ["Ethernet1"], "protocol": "ebgp", "source":
-    "", "ipvers": 4, "action": "forward", "timestamp": 1606001635356}, {"namespace":
-    "eos", "hostname": "leaf03", "vrf": "default", "prefix": "10.0.0.101/32", "nexthopIps":
-    ["10.127.0.4"], "oifs": ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers":
-    4, "action": "forward", "timestamp": 1606001635356}, {"namespace": "eos", "hostname":
-    "leaf03", "vrf": "default", "prefix": "192.168.121.0/24", "nexthopIps": [], "oifs":
-    ["Management1"], "protocol": "connected", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635356}, {"namespace": "eos", "hostname": "internet",
-    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["192.168.121.1"], "oifs":
+    1605161369415}, {"namespace": "eos", "hostname": "firewall01", "vrf": "default",
+    "prefix": "172.16.1.0/24", "nexthopIps": ["169.254.253.5", "169.254.254.5"], "oifs":
+    ["eth2.3", "eth1.3"], "protocol": "bgp", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369416}, {"namespace": "eos", "hostname": "firewall01",
+    "vrf": "default", "prefix": "172.16.2.0/24", "nexthopIps": ["169.254.253.5", "169.254.254.5"],
+    "oifs": ["eth2.3", "eth1.3"], "protocol": "bgp", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369416}, {"namespace": "eos", "hostname": "firewall01",
+    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs":
     ["eth0"], "protocol": "", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635356}, {"namespace": "eos", "hostname": "internet", "vrf": "default",
-    "prefix": "10.0.0.12/32", "nexthopIps": ["169.254.127.1", "169.254.127.3"], "oifs":
-    ["swp1", "swp2"], "protocol": "bgp", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635356}, {"namespace": "eos", "hostname": "internet", "vrf":
-    "default", "prefix": "192.168.121.0/24", "nexthopIps": [""], "oifs": ["eth0"],
-    "protocol": "kernel", "source": "192.168.121.2", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635356}, {"namespace": "eos", "hostname": "internet", "vrf":
-    "default", "prefix": "172.16.4.0/24", "nexthopIps": ["169.254.127.1", "169.254.127.3"],
-    "oifs": ["swp1", "swp2"], "protocol": "bgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635356}, {"namespace": "eos", "hostname": "internet",
-    "vrf": "default", "prefix": "172.16.3.0/24", "nexthopIps": ["169.254.127.1", "169.254.127.3"],
-    "oifs": ["swp1", "swp2"], "protocol": "bgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635356}, {"namespace": "eos", "hostname": "internet",
-    "vrf": "default", "prefix": "172.16.2.0/24", "nexthopIps": ["169.254.127.1", "169.254.127.3"],
-    "oifs": ["swp1", "swp2"], "protocol": "bgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635356}, {"namespace": "eos", "hostname": "internet",
-    "vrf": "default", "prefix": "172.16.1.0/24", "nexthopIps": ["169.254.127.1", "169.254.127.3"],
-    "oifs": ["swp1", "swp2"], "protocol": "bgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635356}, {"namespace": "eos", "hostname": "internet",
-    "vrf": "default", "prefix": "169.254.127.2/31", "nexthopIps": [""], "oifs": ["swp2"],
-    "protocol": "kernel", "source": "169.254.127.2", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635356}, {"namespace": "eos", "hostname": "internet", "vrf":
-    "default", "prefix": "10.0.0.11/32", "nexthopIps": ["169.254.127.1", "169.254.127.3"],
-    "oifs": ["swp1", "swp2"], "protocol": "bgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635356}, {"namespace": "eos", "hostname": "internet",
-    "vrf": "default", "prefix": "169.254.127.0/31", "nexthopIps": [""], "oifs": ["swp1"],
-    "protocol": "kernel", "source": "169.254.127.0", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635356}, {"namespace": "eos", "hostname": "internet", "vrf":
-    "default", "prefix": "10.0.0.101/32", "nexthopIps": ["169.254.127.1", "169.254.127.3"],
-    "oifs": ["swp1", "swp2"], "protocol": "bgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635356}, {"namespace": "eos", "hostname": "internet",
-    "vrf": "default", "prefix": "10.0.0.100/32", "nexthopIps": ["169.254.127.1", "169.254.127.3"],
-    "oifs": ["swp1", "swp2"], "protocol": "bgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635356}, {"namespace": "eos", "hostname": "internet",
-    "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps": ["169.254.127.1", "169.254.127.3"],
-    "oifs": ["swp1", "swp2"], "protocol": "bgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635356}, {"namespace": "eos", "hostname": "internet",
-    "vrf": "default", "prefix": "10.0.0.21/32", "nexthopIps": ["169.254.127.1", "169.254.127.3"],
-    "oifs": ["swp1", "swp2"], "protocol": "bgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635356}, {"namespace": "eos", "hostname": "internet",
-    "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps": ["169.254.127.1", "169.254.127.3"],
-    "oifs": ["swp1", "swp2"], "protocol": "bgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635356}, {"namespace": "eos", "hostname": "internet",
-    "vrf": "default", "prefix": "10.0.0.13/32", "nexthopIps": ["169.254.127.1", "169.254.127.3"],
-    "oifs": ["swp1", "swp2"], "protocol": "bgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635356}, {"namespace": "eos", "hostname": "internet",
-    "vrf": "default", "prefix": "10.0.0.102/32", "nexthopIps": ["169.254.127.1", "169.254.127.3"],
-    "oifs": ["swp1", "swp2"], "protocol": "bgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635356}, {"namespace": "eos", "hostname": "leaf03",
-    "vrf": "default", "prefix": "10.0.0.100/32", "nexthopIps": ["10.127.0.4"], "oifs":
-    ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635356}, {"namespace": "eos", "hostname": "leaf03", "vrf":
-    "default", "prefix": "10.0.0.13/32", "nexthopIps": [], "oifs": ["Loopback0"],
-    "protocol": "connected", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635356}, {"namespace": "eos", "hostname": "leaf03", "vrf": "default", "prefix":
-    "172.16.3.0/24", "nexthopIps": [], "oifs": ["Vlan13"], "protocol": "connected",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635356}, {"namespace":
-    "eos", "hostname": "server102", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
-    ["192.168.121.1"], "oifs": ["eth0"], "protocol": "", "source": "", "ipvers": 4,
-    "action": "forward", "timestamp": 1606001635356}, {"namespace": "eos", "hostname":
-    "server102", "vrf": "default", "prefix": "10.0.0.0/8", "nexthopIps": ["172.16.2.1"],
-    "oifs": ["bond0"], "protocol": "", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635356}, {"namespace": "eos", "hostname": "server102", "vrf":
-    "default", "prefix": "172.16.0.0/16", "nexthopIps": ["172.16.2.1"], "oifs": ["bond0"],
-    "protocol": "", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635356},
-    {"namespace": "eos", "hostname": "server102", "vrf": "default", "prefix": "192.168.121.0/24",
-    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel", "source": "192.168.121.26",
-    "ipvers": 4, "action": "forward", "timestamp": 1606001635356}, {"namespace": "eos",
-    "hostname": "server103", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
-    ["192.168.121.1"], "oifs": ["eth0"], "protocol": "", "source": "", "ipvers": 4,
-    "action": "forward", "timestamp": 1606001635356}, {"namespace": "eos", "hostname":
-    "server102", "vrf": "default", "prefix": "172.16.2.0/24", "nexthopIps": [""],
-    "oifs": ["bond0"], "protocol": "kernel", "source": "172.16.2.102", "ipvers": 4,
-    "action": "forward", "timestamp": 1606001635356}, {"namespace": "eos", "hostname":
-    "server103", "vrf": "default", "prefix": "172.16.0.0/16", "nexthopIps": ["172.16.3.1"],
-    "oifs": ["bond0"], "protocol": "", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635356}, {"namespace": "eos", "hostname": "server103", "vrf":
-    "default", "prefix": "172.16.3.0/24", "nexthopIps": [""], "oifs": ["bond0"], "protocol":
-    "kernel", "source": "172.16.3.103", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635356}, {"namespace": "eos", "hostname": "server103", "vrf": "default",
-    "prefix": "192.168.121.0/24", "nexthopIps": [""], "oifs": ["eth0"], "protocol":
-    "kernel", "source": "192.168.121.121", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635356}, {"namespace": "eos", "hostname": "server103", "vrf": "default",
-    "prefix": "10.0.0.0/8", "nexthopIps": ["172.16.3.1"], "oifs": ["bond0"], "protocol":
-    "", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635356},
-    {"namespace": "eos", "hostname": "leaf03", "vrf": "default", "prefix": "10.0.0.21/32",
-    "nexthopIps": ["10.127.0.4"], "oifs": ["Ethernet1"], "protocol": "ebgp", "source":
-    "", "ipvers": 4, "action": "forward", "timestamp": 1606001635356}, {"namespace":
-    "eos", "hostname": "spine01", "vrf": "default", "prefix": "10.127.0.4/31", "nexthopIps":
-    [], "oifs": ["Ethernet3"], "protocol": "connected", "source": "", "ipvers": 4,
-    "action": "forward", "timestamp": 1606001635357}, {"namespace": "eos", "hostname":
-    "spine01", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps": ["10.127.0.1"],
-    "oifs": ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635357}, {"namespace": "eos", "hostname": "spine01",
-    "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps": ["10.127.0.7"], "oifs":
-    ["Ethernet4"], "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635357}, {"namespace": "eos", "hostname": "spine01", "vrf":
-    "default", "prefix": "10.0.0.101/32", "nexthopIps": ["10.127.0.9"], "oifs": ["Ethernet6"],
-    "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635357}, {"namespace": "eos", "hostname": "spine01", "vrf": "default",
-    "prefix": "10.0.0.21/32", "nexthopIps": [], "oifs": ["Loopback0"], "protocol":
-    "connected", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635357},
-    {"namespace": "eos", "hostname": "spine01", "vrf": "default", "prefix": "172.16.253.1/32",
-    "nexthopIps": ["10.127.0.9"], "oifs": ["Ethernet6"], "protocol": "ebgp", "source":
-    "", "ipvers": 4, "action": "forward", "timestamp": 1606001635357}, {"namespace":
-    "eos", "hostname": "spine01", "vrf": "default", "prefix": "10.127.0.0/31", "nexthopIps":
-    [], "oifs": ["Ethernet1"], "protocol": "connected", "source": "", "ipvers": 4,
-    "action": "forward", "timestamp": 1606001635357}, {"namespace": "eos", "hostname":
-    "spine01", "vrf": "default", "prefix": "172.16.4.0/24", "nexthopIps": ["10.127.0.5"],
-    "oifs": ["Ethernet3"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635357}, {"namespace": "eos", "hostname": "spine01",
-    "vrf": "default", "prefix": "10.127.0.10/31", "nexthopIps": [], "oifs": ["Ethernet5"],
-    "protocol": "connected", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635357}, {"namespace": "eos", "hostname": "spine01", "vrf": "default",
-    "prefix": "10.127.0.2/31", "nexthopIps": [], "oifs": ["Ethernet2"], "protocol":
-    "connected", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635357},
-    {"namespace": "eos", "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.100/32",
-    "nexthopIps": ["10.127.0.9"], "oifs": ["Ethernet6"], "protocol": "ebgp", "source":
-    "", "ipvers": 4, "action": "forward", "timestamp": 1606001635357}, {"namespace":
-    "eos", "hostname": "spine01", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
-    ["10.127.0.9"], "oifs": ["Ethernet6"], "protocol": "ebgp", "source": "", "ipvers":
-    4, "action": "forward", "timestamp": 1606001635357}, {"namespace": "eos", "hostname":
-    "spine01", "vrf": "default", "prefix": "10.0.0.253/32", "nexthopIps": ["10.127.0.9"],
-    "oifs": ["Ethernet6"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635357}, {"namespace": "eos", "hostname": "spine01",
-    "vrf": "default", "prefix": "10.127.0.8/31", "nexthopIps": [], "oifs": ["Ethernet6"],
-    "protocol": "connected", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635357}, {"namespace": "eos", "hostname": "spine01", "vrf": "default",
-    "prefix": "10.0.0.13/32", "nexthopIps": ["10.127.0.5"], "oifs": ["Ethernet3"],
-    "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635357}, {"namespace": "eos", "hostname": "spine01", "vrf": "default",
-    "prefix": "10.0.0.102/32", "nexthopIps": ["10.127.0.11"], "oifs": ["Ethernet5"],
-    "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635357}, {"namespace": "eos", "hostname": "spine01", "vrf": "default",
-    "prefix": "172.16.3.0/24", "nexthopIps": ["10.127.0.5"], "oifs": ["Ethernet3"],
-    "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635357}, {"namespace": "eos", "hostname": "spine01", "vrf": "default",
-    "prefix": "10.127.0.6/31", "nexthopIps": [], "oifs": ["Ethernet4"], "protocol":
-    "connected", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635357},
-    {"namespace": "eos", "hostname": "spine01", "vrf": "default", "prefix": "172.16.1.0/24",
-    "nexthopIps": ["10.127.0.1"], "oifs": ["Ethernet1"], "protocol": "ebgp", "source":
-    "", "ipvers": 4, "action": "forward", "timestamp": 1606001635357}, {"namespace":
-    "eos", "hostname": "spine01", "vrf": "default", "prefix": "172.16.2.0/24", "nexthopIps":
-    ["10.127.0.1"], "oifs": ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers":
-    4, "action": "forward", "timestamp": 1606001635357}, {"namespace": "eos", "hostname":
-    "spine01", "vrf": "default", "prefix": "192.168.0.179/32", "nexthopIps": ["192.168.121.1"],
-    "oifs": ["Management1"], "protocol": "static", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635357}, {"namespace": "eos", "hostname": "spine01",
-    "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.127.0.3"], "oifs":
-    ["Ethernet2"], "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635357}, {"namespace": "eos", "hostname": "spine01", "vrf":
-    "default", "prefix": "192.168.121.0/24", "nexthopIps": [], "oifs": ["Management1"],
-    "protocol": "connected", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635357}, {"namespace": "eos", "hostname": "server104", "vrf": "default",
-    "prefix": "10.0.0.0/8", "nexthopIps": ["172.16.4.1"], "oifs": ["bond0"], "protocol":
-    "", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635359},
-    {"namespace": "eos", "hostname": "leaf04", "vrf": "default", "prefix": "10.0.0.21/32",
-    "nexthopIps": ["10.127.0.6"], "oifs": ["Ethernet1"], "protocol": "ebgp", "source":
-    "", "ipvers": 4, "action": "forward", "timestamp": 1606001635359}, {"namespace":
-    "eos", "hostname": "server104", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
-    ["192.168.121.1"], "oifs": ["eth0"], "protocol": "", "source": "", "ipvers": 4,
-    "action": "forward", "timestamp": 1606001635359}, {"namespace": "eos", "hostname":
-    "server104", "vrf": "default", "prefix": "172.16.4.0/24", "nexthopIps": [""],
-    "oifs": ["bond0"], "protocol": "kernel", "source": "172.16.4.104", "ipvers": 4,
-    "action": "forward", "timestamp": 1606001635359}, {"namespace": "eos", "hostname":
-    "server104", "vrf": "default", "prefix": "192.168.121.0/24", "nexthopIps": [""],
-    "oifs": ["eth0"], "protocol": "kernel", "source": "192.168.121.210", "ipvers":
-    4, "action": "forward", "timestamp": 1606001635359}, {"namespace": "eos", "hostname":
-    "leaf04", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps": ["10.127.0.6"],
-    "oifs": ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635359}, {"namespace": "eos", "hostname": "leaf04",
-    "vrf": "default", "prefix": "10.0.0.253/32", "nexthopIps": ["10.127.0.6"], "oifs":
-    ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635359}, {"namespace": "eos", "hostname": "leaf04", "vrf":
-    "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.127.0.6"], "oifs": ["Ethernet1"],
-    "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635359}, {"namespace": "eos", "hostname": "leaf04", "vrf": "default", "prefix":
-    "10.0.0.22/32", "nexthopIps": ["10.127.1.6"], "oifs": ["Ethernet2"], "protocol":
-    "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635359},
-    {"namespace": "eos", "hostname": "leaf04", "vrf": "default", "prefix": "172.16.2.0/24",
-    "nexthopIps": ["10.127.0.6"], "oifs": ["Ethernet1"], "protocol": "ebgp", "source":
-    "", "ipvers": 4, "action": "forward", "timestamp": 1606001635359}, {"namespace":
-    "eos", "hostname": "leaf04", "vrf": "default", "prefix": "10.0.0.101/32", "nexthopIps":
-    ["10.127.0.6"], "oifs": ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers":
-    4, "action": "forward", "timestamp": 1606001635359}, {"namespace": "eos", "hostname":
-    "leaf04", "vrf": "default", "prefix": "169.254.1.0/31", "nexthopIps": [], "oifs":
-    ["Vlan4094"], "protocol": "connected", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635359}, {"namespace": "eos", "hostname": "server104", "vrf":
-    "default", "prefix": "172.16.0.0/16", "nexthopIps": ["172.16.4.1"], "oifs": ["bond0"],
-    "protocol": "", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635359},
-    {"namespace": "eos", "hostname": "leaf04", "vrf": "default", "prefix": "10.127.1.6/31",
-    "nexthopIps": [], "oifs": ["Ethernet2"], "protocol": "connected", "source": "",
-    "ipvers": 4, "action": "forward", "timestamp": 1606001635359}, {"namespace": "eos",
-    "hostname": "leaf04", "vrf": "default", "prefix": "192.168.0.179/32", "nexthopIps":
-    ["192.168.121.1"], "oifs": ["Management1"], "protocol": "static", "source": "",
-    "ipvers": 4, "action": "forward", "timestamp": 1606001635359}, {"namespace": "eos",
-    "hostname": "leaf04", "vrf": "default", "prefix": "10.127.0.6/31", "nexthopIps":
-    [], "oifs": ["Ethernet1"], "protocol": "connected", "source": "", "ipvers": 4,
-    "action": "forward", "timestamp": 1606001635359}, {"namespace": "eos", "hostname":
-    "leaf04", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.127.0.6"],
-    "oifs": ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635359}, {"namespace": "eos", "hostname": "leaf04",
-    "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps": [], "oifs": ["Loopback0"],
-    "protocol": "connected", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635359}, {"namespace": "eos", "hostname": "leaf04", "vrf": "default", "prefix":
-    "172.16.1.0/24", "nexthopIps": ["10.127.0.6"], "oifs": ["Ethernet1"], "protocol":
-    "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635359},
-    {"namespace": "eos", "hostname": "leaf04", "vrf": "default", "prefix": "10.0.0.100/32",
-    "nexthopIps": ["10.127.0.6"], "oifs": ["Ethernet1"], "protocol": "ebgp", "source":
-    "", "ipvers": 4, "action": "forward", "timestamp": 1606001635359}, {"namespace":
-    "eos", "hostname": "leaf04", "vrf": "default", "prefix": "172.16.3.0/24", "nexthopIps":
-    [], "oifs": ["Vlan13"], "protocol": "connected", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635359}, {"namespace": "eos", "hostname": "leaf04",
-    "vrf": "default", "prefix": "10.0.0.102/32", "nexthopIps": ["10.127.0.6"], "oifs":
-    ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635359}, {"namespace": "eos", "hostname": "leaf04", "vrf":
-    "default", "prefix": "192.168.121.0/24", "nexthopIps": [], "oifs": ["Management1"],
-    "protocol": "connected", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635359}, {"namespace": "eos", "hostname": "leaf04", "vrf": "default", "prefix":
-    "10.0.0.13/32", "nexthopIps": ["10.127.0.6"], "oifs": ["Ethernet1"], "protocol":
-    "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635359},
-    {"namespace": "eos", "hostname": "leaf04", "vrf": "default", "prefix": "172.16.253.1/32",
-    "nexthopIps": ["10.127.0.6"], "oifs": ["Ethernet1"], "protocol": "ebgp", "source":
-    "", "ipvers": 4, "action": "forward", "timestamp": 1606001635359}, {"namespace":
-    "eos", "hostname": "leaf04", "vrf": "default", "prefix": "172.16.4.0/24", "nexthopIps":
-    [], "oifs": ["Vlan24"], "protocol": "connected", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635359}, {"namespace": "eos", "hostname": "leaf01",
-    "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps": ["10.127.1.0"], "oifs":
-    ["Ethernet2"], "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635359}, {"namespace": "eos", "hostname": "leaf01", "vrf":
-    "default", "prefix": "10.0.0.253/32", "nexthopIps": ["10.127.0.0"], "oifs": ["Ethernet1"],
-    "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635359}, {"namespace": "eos", "hostname": "leaf01", "vrf": "default", "prefix":
-    "10.0.0.13/32", "nexthopIps": ["10.127.0.0"], "oifs": ["Ethernet1"], "protocol":
-    "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635359},
-    {"namespace": "eos", "hostname": "leaf01", "vrf": "default", "prefix": "192.168.121.0/24",
-    "nexthopIps": [], "oifs": ["Management1"], "protocol": "connected", "source":
-    "", "ipvers": 4, "action": "forward", "timestamp": 1606001635359}, {"namespace":
-    "eos", "hostname": "leaf01", "vrf": "default", "prefix": "10.0.0.102/32", "nexthopIps":
-    ["10.127.0.0"], "oifs": ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers":
-    4, "action": "forward", "timestamp": 1606001635359}, {"namespace": "eos", "hostname":
-    "leaf01", "vrf": "default", "prefix": "172.16.253.1/32", "nexthopIps": ["10.127.0.0"],
-    "oifs": ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635359}, {"namespace": "eos", "hostname": "leaf01",
-    "vrf": "default", "prefix": "172.16.3.0/24", "nexthopIps": ["10.127.0.0"], "oifs":
-    ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635359}, {"namespace": "eos", "hostname": "leaf01", "vrf":
-    "default", "prefix": "10.127.1.0/31", "nexthopIps": [], "oifs": ["Ethernet2"],
-    "protocol": "connected", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635359}, {"namespace": "eos", "hostname": "leaf01", "vrf": "default", "prefix":
-    "10.0.0.100/32", "nexthopIps": ["10.127.0.0"], "oifs": ["Ethernet1"], "protocol":
-    "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635359},
-    {"namespace": "eos", "hostname": "leaf01", "vrf": "default", "prefix": "172.16.1.0/24",
-    "nexthopIps": [], "oifs": ["Vlan13"], "protocol": "connected", "source": "", "ipvers":
-    4, "action": "forward", "timestamp": 1606001635359}, {"namespace": "eos", "hostname":
-    "leaf01", "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps": ["10.127.0.0"],
-    "oifs": ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635359}, {"namespace": "eos", "hostname": "leaf01",
-    "vrf": "default", "prefix": "10.0.0.21/32", "nexthopIps": ["10.127.0.0"], "oifs":
-    ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635359}, {"namespace": "eos", "hostname": "leaf01", "vrf":
-    "default", "prefix": "192.168.0.179/32", "nexthopIps": ["192.168.121.1"], "oifs":
-    ["Management1"], "protocol": "static", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635359}, {"namespace": "eos", "hostname": "leaf01", "vrf":
-    "default", "prefix": "10.127.0.0/31", "nexthopIps": [], "oifs": ["Ethernet1"],
-    "protocol": "connected", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635359}, {"namespace": "eos", "hostname": "leaf01", "vrf": "default", "prefix":
-    "172.16.4.0/24", "nexthopIps": ["10.127.0.0"], "oifs": ["Ethernet1"], "protocol":
-    "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635359},
-    {"namespace": "eos", "hostname": "leaf01", "vrf": "default", "prefix": "169.254.1.0/31",
-    "nexthopIps": [], "oifs": ["Vlan4094"], "protocol": "connected", "source": "",
-    "ipvers": 4, "action": "forward", "timestamp": 1606001635359}, {"namespace": "eos",
-    "hostname": "leaf01", "vrf": "default", "prefix": "10.0.0.101/32", "nexthopIps":
-    ["10.127.0.0"], "oifs": ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers":
-    4, "action": "forward", "timestamp": 1606001635359}, {"namespace": "eos", "hostname":
-    "leaf01", "vrf": "default", "prefix": "172.16.2.0/24", "nexthopIps": [], "oifs":
-    ["Vlan24"], "protocol": "connected", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635359}, {"namespace": "eos", "hostname": "leaf01", "vrf":
-    "default", "prefix": "10.0.0.11/32", "nexthopIps": [], "oifs": ["Loopback0"],
-    "protocol": "connected", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635359}, {"namespace": "eos", "hostname": "leaf01", "vrf": "default", "prefix":
-    "0.0.0.0/0", "nexthopIps": ["10.127.0.0"], "oifs": ["Ethernet1"], "protocol":
-    "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635359},
-    {"namespace": "eos", "hostname": "leaf01", "vrf": "default", "prefix": "10.0.0.12/32",
-    "nexthopIps": ["10.127.0.0"], "oifs": ["Ethernet1"], "protocol": "ebgp", "source":
-    "", "ipvers": 4, "action": "forward", "timestamp": 1606001635359}, {"namespace":
-    "eos", "hostname": "exit02", "vrf": "default", "prefix": "192.168.0.179/32", "nexthopIps":
-    ["192.168.121.1"], "oifs": ["Management1"], "protocol": "static", "source": "",
-    "ipvers": 4, "action": "forward", "timestamp": 1606001635368}, {"namespace": "eos",
-    "hostname": "exit02", "vrf": "default", "prefix": "172.16.4.0/24", "nexthopIps":
-    ["10.127.0.10"], "oifs": ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers":
-    4, "action": "forward", "timestamp": 1606001635368}, {"namespace": "eos", "hostname":
-    "exit02", "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps": ["10.127.1.10"],
-    "oifs": ["Ethernet2"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635368}, {"namespace": "eos", "hostname": "exit02",
-    "vrf": "default", "prefix": "10.0.0.101/32", "nexthopIps": ["10.127.0.10"], "oifs":
-    ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635368}, {"namespace": "eos", "hostname": "exit02", "vrf":
-    "default", "prefix": "172.16.2.0/24", "nexthopIps": ["10.127.0.10"], "oifs": ["Ethernet1"],
-    "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635368}, {"namespace": "eos", "hostname": "exit02", "vrf": "default", "prefix":
-    "172.16.253.1/32", "nexthopIps": ["169.254.253.2"], "oifs": ["Ethernet5.2"], "protocol":
-    "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635368},
-    {"namespace": "eos", "hostname": "exit02", "vrf": "default", "prefix": "10.127.0.10/31",
-    "nexthopIps": [], "oifs": ["Ethernet1"], "protocol": "connected", "source": "",
-    "ipvers": 4, "action": "forward", "timestamp": 1606001635368}, {"namespace": "eos",
-    "hostname": "exit02", "vrf": "default", "prefix": "10.127.1.10/31", "nexthopIps":
-    [], "oifs": ["Ethernet2"], "protocol": "connected", "source": "", "ipvers": 4,
-    "action": "forward", "timestamp": 1606001635368}, {"namespace": "eos", "hostname":
-    "exit02", "vrf": "default", "prefix": "172.16.3.0/24", "nexthopIps": ["10.127.0.10"],
-    "oifs": ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635368}, {"namespace": "eos", "hostname": "exit02",
-    "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps": ["10.127.0.10"], "oifs":
-    ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635368}, {"namespace": "eos", "hostname": "exit02", "vrf":
-    "default", "prefix": "172.16.1.0/24", "nexthopIps": ["10.127.0.10"], "oifs": ["Ethernet1"],
-    "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635368}, {"namespace": "eos", "hostname": "exit02", "vrf": "default", "prefix":
-    "10.0.0.100/32", "nexthopIps": ["169.254.253.2"], "oifs": ["Ethernet5.2"], "protocol":
-    "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635368},
-    {"namespace": "eos", "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.102/32",
-    "nexthopIps": [], "oifs": ["Loopback0"], "protocol": "connected", "source": "",
-    "ipvers": 4, "action": "forward", "timestamp": 1606001635368}, {"namespace": "eos",
-    "hostname": "exit02", "vrf": "default", "prefix": "192.168.121.0/24", "nexthopIps":
-    [], "oifs": ["Management1"], "protocol": "connected", "source": "", "ipvers":
-    4, "action": "forward", "timestamp": 1606001635368}, {"namespace": "eos", "hostname":
-    "exit02", "vrf": "default", "prefix": "10.0.0.13/32", "nexthopIps": ["10.127.0.10"],
-    "oifs": ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635368}, {"namespace": "eos", "hostname": "exit02",
-    "vrf": "default", "prefix": "10.0.0.21/32", "nexthopIps": ["10.127.0.10"], "oifs":
-    ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635368}, {"namespace": "eos", "hostname": "exit02", "vrf":
-    "default", "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.253.2"], "oifs": ["Ethernet5.2"],
-    "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635368}, {"namespace": "eos", "hostname": "exit02", "vrf": "default", "prefix":
-    "10.0.0.12/32", "nexthopIps": ["10.127.0.10"], "oifs": ["Ethernet1"], "protocol":
-    "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635368},
-    {"namespace": "eos", "hostname": "exit02", "vrf": "default", "prefix": "169.254.253.0/30",
-    "nexthopIps": [], "oifs": ["Ethernet5.2"], "protocol": "connected", "source":
-    "", "ipvers": 4, "action": "forward", "timestamp": 1606001635368}, {"namespace":
-    "eos", "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.253/32", "nexthopIps":
-    ["169.254.253.2"], "oifs": ["Ethernet5.2"], "protocol": "ebgp", "source": "",
-    "ipvers": 4, "action": "forward", "timestamp": 1606001635368}, {"namespace": "eos",
-    "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps":
-    ["10.127.0.10"], "oifs": ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers":
-    4, "action": "forward", "timestamp": 1606001635368}, {"namespace": "eos", "hostname":
-    "exit02", "vrf": "internet-vrf", "prefix": "10.0.0.11/32", "nexthopIps": ["169.254.253.10"],
-    "oifs": ["Ethernet5.4"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635368}, {"namespace": "eos", "hostname": "exit02",
-    "vrf": "internet-vrf", "prefix": "10.0.0.253/32", "nexthopIps": ["169.254.127.2"],
-    "oifs": ["Ethernet6"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635368}, {"namespace": "eos", "hostname": "exit02",
-    "vrf": "internet-vrf", "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.127.2"],
-    "oifs": ["Ethernet6"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635368}, {"namespace": "eos", "hostname": "exit02",
-    "vrf": "internet-vrf", "prefix": "10.0.0.22/32", "nexthopIps": ["169.254.253.10"],
-    "oifs": ["Ethernet5.4"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635368}, {"namespace": "eos", "hostname": "exit02",
-    "vrf": "internet-vrf", "prefix": "172.16.2.0/24", "nexthopIps": ["169.254.253.10"],
-    "oifs": ["Ethernet5.4"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635368}, {"namespace": "eos", "hostname": "exit02",
-    "vrf": "internet-vrf", "prefix": "169.254.253.8/30", "nexthopIps": [], "oifs":
-    ["Ethernet5.4"], "protocol": "connected", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635368}, {"namespace": "eos", "hostname": "exit02",
-    "vrf": "internet-vrf", "prefix": "169.254.127.2/31", "nexthopIps": [], "oifs":
-    ["Ethernet6"], "protocol": "connected", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635368}, {"namespace": "eos", "hostname": "exit02", "vrf":
-    "internet-vrf", "prefix": "172.16.4.0/24", "nexthopIps": ["169.254.253.10"], "oifs":
-    ["Ethernet5.4"], "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635368}, {"namespace": "eos", "hostname": "exit02", "vrf":
-    "internet-vrf", "prefix": "10.0.0.101/32", "nexthopIps": ["169.254.253.10"], "oifs":
-    ["Ethernet5.4"], "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635368}, {"namespace": "eos", "hostname": "exit02", "vrf":
-    "internet-vrf", "prefix": "10.0.0.12/32", "nexthopIps": ["169.254.253.10"], "oifs":
-    ["Ethernet5.4"], "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635368}, {"namespace": "eos", "hostname": "exit02", "vrf":
-    "internet-vrf", "prefix": "172.16.253.1/32", "nexthopIps": ["169.254.127.2"],
-    "oifs": ["Ethernet6"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635368}, {"namespace": "eos", "hostname": "exit02",
-    "vrf": "internet-vrf", "prefix": "10.0.0.13/32", "nexthopIps": ["169.254.253.10"],
-    "oifs": ["Ethernet5.4"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635368}, {"namespace": "eos", "hostname": "exit02",
-    "vrf": "internet-vrf", "prefix": "10.0.0.102/32", "nexthopIps": ["169.254.253.10"],
-    "oifs": ["Ethernet5.4"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635368}, {"namespace": "eos", "hostname": "exit02",
-    "vrf": "internet-vrf", "prefix": "172.16.3.0/24", "nexthopIps": ["169.254.253.10"],
-    "oifs": ["Ethernet5.4"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635368}, {"namespace": "eos", "hostname": "exit02",
-    "vrf": "internet-vrf", "prefix": "10.0.0.21/32", "nexthopIps": ["169.254.253.10"],
-    "oifs": ["Ethernet5.4"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635368}, {"namespace": "eos", "hostname": "exit02",
-    "vrf": "internet-vrf", "prefix": "172.16.1.0/24", "nexthopIps": ["169.254.253.10"],
-    "oifs": ["Ethernet5.4"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635368}, {"namespace": "eos", "hostname": "exit02",
-    "vrf": "internet-vrf", "prefix": "10.0.0.14/32", "nexthopIps": ["169.254.253.10"],
-    "oifs": ["Ethernet5.4"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635368}, {"namespace": "eos", "hostname": "exit02",
-    "vrf": "internet-vrf", "prefix": "10.0.0.100/32", "nexthopIps": ["169.254.253.10"],
-    "oifs": ["Ethernet5.4"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635368}, {"namespace": "eos", "hostname": "spine02",
-    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.127.1.9"], "oifs":
-    ["Ethernet6"], "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635369}, {"namespace": "eos", "hostname": "spine02", "vrf":
-    "default", "prefix": "192.168.121.0/24", "nexthopIps": [], "oifs": ["Management1"],
-    "protocol": "connected", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635369}, {"namespace": "eos", "hostname": "spine02", "vrf": "default",
-    "prefix": "192.168.0.179/32", "nexthopIps": ["192.168.121.1"], "oifs": ["Management1"],
-    "protocol": "static", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635369}, {"namespace": "eos", "hostname": "spine02", "vrf": "default",
-    "prefix": "10.0.0.12/32", "nexthopIps": ["10.127.1.3"], "oifs": ["Ethernet2"],
-    "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635369}, {"namespace": "eos", "hostname": "spine02", "vrf": "default",
-    "prefix": "172.16.253.1/32", "nexthopIps": ["10.127.1.9"], "oifs": ["Ethernet6"],
-    "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635369}, {"namespace": "eos", "hostname": "spine02", "vrf": "default",
-    "prefix": "172.16.4.0/24", "nexthopIps": ["10.127.1.5"], "oifs": ["Ethernet3"],
-    "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635369}, {"namespace": "eos", "hostname": "spine02", "vrf": "default",
-    "prefix": "10.127.1.6/31", "nexthopIps": [], "oifs": ["Ethernet4"], "protocol":
-    "connected", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635369},
-    {"namespace": "eos", "hostname": "spine02", "vrf": "default", "prefix": "10.127.1.4/31",
-    "nexthopIps": [], "oifs": ["Ethernet3"], "protocol": "connected", "source": "",
-    "ipvers": 4, "action": "forward", "timestamp": 1606001635369}, {"namespace": "eos",
-    "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.253/32", "nexthopIps":
-    ["10.127.1.9"], "oifs": ["Ethernet6"], "protocol": "ebgp", "source": "", "ipvers":
-    4, "action": "forward", "timestamp": 1606001635369}, {"namespace": "eos", "hostname":
-    "spine02", "vrf": "default", "prefix": "10.0.0.101/32", "nexthopIps": ["10.127.1.9"],
-    "oifs": ["Ethernet6"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635369}, {"namespace": "eos", "hostname": "spine02",
-    "vrf": "default", "prefix": "10.0.0.13/32", "nexthopIps": ["10.127.1.5"], "oifs":
-    ["Ethernet3"], "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635369}, {"namespace": "eos", "hostname": "spine02", "vrf":
-    "default", "prefix": "10.0.0.102/32", "nexthopIps": ["10.127.1.11"], "oifs": ["Ethernet5"],
-    "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635369}, {"namespace": "eos", "hostname": "spine02", "vrf": "default",
-    "prefix": "10.127.1.0/31", "nexthopIps": [], "oifs": ["Ethernet1"], "protocol":
-    "connected", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635369},
-    {"namespace": "eos", "hostname": "spine02", "vrf": "default", "prefix": "172.16.3.0/24",
-    "nexthopIps": ["10.127.1.5"], "oifs": ["Ethernet3"], "protocol": "ebgp", "source":
-    "", "ipvers": 4, "action": "forward", "timestamp": 1606001635369}, {"namespace":
-    "eos", "hostname": "spine02", "vrf": "default", "prefix": "172.16.1.0/24", "nexthopIps":
-    ["10.127.1.1"], "oifs": ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers":
-    4, "action": "forward", "timestamp": 1606001635369}, {"namespace": "eos", "hostname":
-    "spine02", "vrf": "default", "prefix": "172.16.2.0/24", "nexthopIps": ["10.127.1.1"],
-    "oifs": ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635369}, {"namespace": "eos", "hostname": "spine02",
-    "vrf": "default", "prefix": "10.127.1.10/31", "nexthopIps": [], "oifs": ["Ethernet5"],
-    "protocol": "connected", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635369}, {"namespace": "eos", "hostname": "spine02", "vrf": "default",
-    "prefix": "10.0.0.22/32", "nexthopIps": [], "oifs": ["Loopback0"], "protocol":
-    "connected", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635369},
-    {"namespace": "eos", "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.100/32",
-    "nexthopIps": ["10.127.1.9"], "oifs": ["Ethernet6"], "protocol": "ebgp", "source":
-    "", "ipvers": 4, "action": "forward", "timestamp": 1606001635369}, {"namespace":
-    "eos", "hostname": "spine02", "vrf": "default", "prefix": "10.127.1.8/31", "nexthopIps":
-    [], "oifs": ["Ethernet6"], "protocol": "connected", "source": "", "ipvers": 4,
-    "action": "forward", "timestamp": 1606001635369}, {"namespace": "eos", "hostname":
-    "spine02", "vrf": "default", "prefix": "10.127.1.2/31", "nexthopIps": [], "oifs":
-    ["Ethernet2"], "protocol": "connected", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635369}, {"namespace": "eos", "hostname": "spine02", "vrf":
-    "default", "prefix": "10.0.0.11/32", "nexthopIps": ["10.127.1.1"], "oifs": ["Ethernet1"],
-    "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635369}, {"namespace": "eos", "hostname": "spine02", "vrf": "default",
-    "prefix": "10.0.0.14/32", "nexthopIps": ["10.127.1.7"], "oifs": ["Ethernet4"],
-    "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635369}, {"namespace": "eos", "hostname": "exit01", "vrf": "default", "prefix":
-    "0.0.0.0/0", "nexthopIps": ["169.254.254.2"], "oifs": ["Ethernet5.2"], "protocol":
-    "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635408},
-    {"namespace": "eos", "hostname": "exit01", "vrf": "internet-vrf", "prefix": "10.0.0.102/32",
-    "nexthopIps": ["169.254.254.10"], "oifs": ["Ethernet5.4"], "protocol": "ebgp",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635408}, {"namespace":
-    "eos", "hostname": "exit01", "vrf": "internet-vrf", "prefix": "172.16.3.0/24",
-    "nexthopIps": ["169.254.254.10"], "oifs": ["Ethernet5.4"], "protocol": "ebgp",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635408}, {"namespace":
-    "eos", "hostname": "exit01", "vrf": "internet-vrf", "prefix": "10.0.0.100/32",
-    "nexthopIps": ["169.254.254.10"], "oifs": ["Ethernet5.4"], "protocol": "ebgp",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635408}, {"namespace":
-    "eos", "hostname": "exit01", "vrf": "internet-vrf", "prefix": "172.16.1.0/24",
-    "nexthopIps": ["169.254.254.10"], "oifs": ["Ethernet5.4"], "protocol": "ebgp",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635408}, {"namespace":
-    "eos", "hostname": "exit01", "vrf": "internet-vrf", "prefix": "10.0.0.14/32",
-    "nexthopIps": ["169.254.254.10"], "oifs": ["Ethernet5.4"], "protocol": "ebgp",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635408}, {"namespace":
-    "eos", "hostname": "exit01", "vrf": "internet-vrf", "prefix": "10.0.0.12/32",
-    "nexthopIps": ["169.254.254.10"], "oifs": ["Ethernet5.4"], "protocol": "ebgp",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635408}, {"namespace":
-    "eos", "hostname": "exit01", "vrf": "internet-vrf", "prefix": "172.16.253.1/32",
-    "nexthopIps": ["169.254.127.0"], "oifs": ["Ethernet6"], "protocol": "ebgp", "source":
-    "", "ipvers": 4, "action": "forward", "timestamp": 1606001635408}, {"namespace":
-    "eos", "hostname": "exit01", "vrf": "internet-vrf", "prefix": "172.16.4.0/24",
-    "nexthopIps": ["169.254.254.10"], "oifs": ["Ethernet5.4"], "protocol": "ebgp",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635408}, {"namespace":
-    "eos", "hostname": "exit01", "vrf": "internet-vrf", "prefix": "169.254.254.8/30",
-    "nexthopIps": [], "oifs": ["Ethernet5.4"], "protocol": "connected", "source":
-    "", "ipvers": 4, "action": "forward", "timestamp": 1606001635408}, {"namespace":
-    "eos", "hostname": "exit01", "vrf": "internet-vrf", "prefix": "169.254.127.0/31",
-    "nexthopIps": [], "oifs": ["Ethernet6"], "protocol": "connected", "source": "",
-    "ipvers": 4, "action": "forward", "timestamp": 1606001635408}, {"namespace": "eos",
-    "hostname": "exit01", "vrf": "internet-vrf", "prefix": "10.0.0.101/32", "nexthopIps":
-    ["169.254.254.10"], "oifs": ["Ethernet5.4"], "protocol": "ebgp", "source": "",
-    "ipvers": 4, "action": "forward", "timestamp": 1606001635408}, {"namespace": "eos",
-    "hostname": "exit01", "vrf": "internet-vrf", "prefix": "172.16.2.0/24", "nexthopIps":
-    ["169.254.254.10"], "oifs": ["Ethernet5.4"], "protocol": "ebgp", "source": "",
-    "ipvers": 4, "action": "forward", "timestamp": 1606001635408}, {"namespace": "eos",
-    "hostname": "exit01", "vrf": "internet-vrf", "prefix": "10.0.0.22/32", "nexthopIps":
-    ["169.254.254.10"], "oifs": ["Ethernet5.4"], "protocol": "ebgp", "source": "",
-    "ipvers": 4, "action": "forward", "timestamp": 1606001635408}, {"namespace": "eos",
-    "hostname": "exit01", "vrf": "internet-vrf", "prefix": "0.0.0.0/0", "nexthopIps":
-    ["169.254.127.0"], "oifs": ["Ethernet6"], "protocol": "ebgp", "source": "", "ipvers":
-    4, "action": "forward", "timestamp": 1606001635408}, {"namespace": "eos", "hostname":
-    "exit01", "vrf": "internet-vrf", "prefix": "10.0.0.11/32", "nexthopIps": ["169.254.254.10"],
-    "oifs": ["Ethernet5.4"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635408}, {"namespace": "eos", "hostname": "exit01",
-    "vrf": "internet-vrf", "prefix": "10.0.0.13/32", "nexthopIps": ["169.254.254.10"],
-    "oifs": ["Ethernet5.4"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635408}, {"namespace": "eos", "hostname": "exit01",
-    "vrf": "internet-vrf", "prefix": "10.0.0.21/32", "nexthopIps": ["169.254.254.10"],
-    "oifs": ["Ethernet5.4"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635408}, {"namespace": "eos", "hostname": "exit01",
-    "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps": ["10.127.0.8"], "oifs":
-    ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635408}, {"namespace": "eos", "hostname": "exit01", "vrf":
-    "default", "prefix": "10.127.1.8/31", "nexthopIps": [], "oifs": ["Ethernet2"],
-    "protocol": "connected", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635408}, {"namespace": "eos", "hostname": "exit01", "vrf": "default", "prefix":
-    "10.0.0.22/32", "nexthopIps": ["10.127.1.8"], "oifs": ["Ethernet2"], "protocol":
-    "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635408},
-    {"namespace": "eos", "hostname": "exit01", "vrf": "default", "prefix": "172.16.2.0/24",
-    "nexthopIps": ["10.127.0.8"], "oifs": ["Ethernet1"], "protocol": "ebgp", "source":
-    "", "ipvers": 4, "action": "forward", "timestamp": 1606001635408}, {"namespace":
-    "eos", "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.101/32", "nexthopIps":
-    [], "oifs": ["Loopback0"], "protocol": "connected", "source": "", "ipvers": 4,
-    "action": "forward", "timestamp": 1606001635408}, {"namespace": "eos", "hostname":
-    "exit01", "vrf": "default", "prefix": "10.127.0.8/31", "nexthopIps": [], "oifs":
-    ["Ethernet1"], "protocol": "connected", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635408}, {"namespace": "eos", "hostname": "exit01", "vrf":
-    "default", "prefix": "192.168.121.0/24", "nexthopIps": [], "oifs": ["Management1"],
-    "protocol": "connected", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635408}, {"namespace": "eos", "hostname": "exit01", "vrf": "default", "prefix":
-    "172.16.4.0/24", "nexthopIps": ["10.127.0.8"], "oifs": ["Ethernet1"], "protocol":
-    "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635408},
-    {"namespace": "eos", "hostname": "exit01", "vrf": "default", "prefix": "172.16.253.1/32",
-    "nexthopIps": ["169.254.254.2"], "oifs": ["Ethernet5.2"], "protocol": "ebgp",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635408}, {"namespace":
-    "eos", "hostname": "exit01", "vrf": "default", "prefix": "192.168.0.179/32", "nexthopIps":
-    ["192.168.121.1"], "oifs": ["Management1"], "protocol": "static", "source": "",
-    "ipvers": 4, "action": "forward", "timestamp": 1606001635408}, {"namespace": "eos",
-    "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps":
-    ["10.127.0.8"], "oifs": ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers":
-    4, "action": "forward", "timestamp": 1606001635408}, {"namespace": "eos", "hostname":
-    "exit01", "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps": ["10.127.0.8"],
-    "oifs": ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635408}, {"namespace": "eos", "hostname": "exit01",
-    "vrf": "default", "prefix": "172.16.1.0/24", "nexthopIps": ["10.127.0.8"], "oifs":
-    ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635408}, {"namespace": "eos", "hostname": "exit01", "vrf":
-    "default", "prefix": "10.0.0.100/32", "nexthopIps": ["169.254.254.2"], "oifs":
-    ["Ethernet5.2"], "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635408}, {"namespace": "eos", "hostname": "exit01", "vrf":
-    "default", "prefix": "172.16.3.0/24", "nexthopIps": ["10.127.0.8"], "oifs": ["Ethernet1"],
-    "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635408}, {"namespace": "eos", "hostname": "exit01", "vrf": "default", "prefix":
-    "10.0.0.102/32", "nexthopIps": ["10.127.0.8"], "oifs": ["Ethernet1"], "protocol":
-    "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635408},
-    {"namespace": "eos", "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.13/32",
-    "nexthopIps": ["10.127.0.8"], "oifs": ["Ethernet1"], "protocol": "ebgp", "source":
-    "", "ipvers": 4, "action": "forward", "timestamp": 1606001635408}, {"namespace":
-    "eos", "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.21/32", "nexthopIps":
-    ["10.127.0.8"], "oifs": ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers":
-    4, "action": "forward", "timestamp": 1606001635408}, {"namespace": "eos", "hostname":
-    "exit01", "vrf": "default", "prefix": "169.254.254.0/30", "nexthopIps": [], "oifs":
-    ["Ethernet5.2"], "protocol": "connected", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635408}, {"namespace": "eos", "hostname": "exit01",
-    "vrf": "default", "prefix": "10.0.0.253/32", "nexthopIps": ["169.254.254.2"],
-    "oifs": ["Ethernet5.2"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635408}, {"namespace": "eos", "hostname": "exit01",
-    "vrf": "internet-vrf", "prefix": "10.0.0.253/32", "nexthopIps": ["169.254.127.0"],
-    "oifs": ["Ethernet6"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635408}]'
+    1605161369416}, {"namespace": "eos", "hostname": "firewall01", "vrf": "default",
+    "prefix": "172.16.3.0/24", "nexthopIps": ["169.254.253.5", "169.254.254.5"], "oifs":
+    ["eth2.3", "eth1.3"], "protocol": "bgp", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369416}, {"namespace": "eos", "hostname": "firewall01",
+    "vrf": "default", "prefix": "10.255.2.0/24", "nexthopIps": [""], "oifs": ["eth0"],
+    "protocol": "kernel", "source": "10.255.2.149", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369416}, {"namespace": "eos", "hostname": "firewall01", "vrf":
+    "default", "prefix": "10.255.2.1/32", "nexthopIps": [""], "oifs": ["eth0"], "protocol":
+    "dhcp", "source": "10.255.2.149", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369416}, {"namespace": "eos", "hostname": "firewall01", "vrf": "default",
+    "prefix": "169.254.0.0/24", "nexthopIps": ["169.254.253.9", "169.254.254.9"],
+    "oifs": ["eth2.4", "eth1.4"], "protocol": "bgp", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369416}, {"namespace": "eos", "hostname": "firewall01",
+    "vrf": "default", "prefix": "169.254.127.0/31", "nexthopIps": ["169.254.253.9",
+    "169.254.254.9"], "oifs": ["eth2.4", "eth1.4"], "protocol": "bgp", "source": "",
+    "ipvers": 4, "action": "forward", "timestamp": 1605161369416}, {"namespace": "eos",
+    "hostname": "firewall01", "vrf": "default", "prefix": "169.254.127.2/31", "nexthopIps":
+    ["169.254.253.9", "169.254.254.9"], "oifs": ["eth2.4", "eth1.4"], "protocol":
+    "bgp", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369416},
+    {"namespace": "eos", "hostname": "firewall01", "vrf": "default", "prefix": "169.254.253.0/30",
+    "nexthopIps": [""], "oifs": ["eth2.2"], "protocol": "kernel", "source": "169.254.253.2",
+    "ipvers": 4, "action": "forward", "timestamp": 1605161369416}, {"namespace": "eos",
+    "hostname": "firewall01", "vrf": "default", "prefix": "10.0.0.41/32", "nexthopIps":
+    ["169.254.253.9", "169.254.254.9"], "oifs": ["eth2.4", "eth1.4"], "protocol":
+    "bgp", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369416},
+    {"namespace": "eos", "hostname": "firewall01", "vrf": "default", "prefix": "169.254.253.4/30",
+    "nexthopIps": [""], "oifs": ["eth2.3"], "protocol": "kernel", "source": "169.254.253.6",
+    "ipvers": 4, "action": "forward", "timestamp": 1605161369416}, {"namespace": "eos",
+    "hostname": "firewall01", "vrf": "default", "prefix": "169.254.253.8/30", "nexthopIps":
+    [""], "oifs": ["eth2.4"], "protocol": "kernel", "source": "169.254.253.10", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369416}, {"namespace": "eos", "hostname":
+    "firewall01", "vrf": "default", "prefix": "169.254.254.0/30", "nexthopIps": [""],
+    "oifs": ["eth1.2"], "protocol": "kernel", "source": "169.254.254.2", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369416}, {"namespace": "eos", "hostname":
+    "firewall01", "vrf": "default", "prefix": "169.254.254.4/30", "nexthopIps": [""],
+    "oifs": ["eth1.3"], "protocol": "kernel", "source": "169.254.254.6", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369416}, {"namespace": "eos", "hostname":
+    "firewall01", "vrf": "default", "prefix": "169.254.254.8/30", "nexthopIps": [""],
+    "oifs": ["eth1.4"], "protocol": "kernel", "source": "169.254.254.10", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369416}, {"namespace": "eos", "hostname":
+    "server302", "vrf": "default", "prefix": "172.16.3.0/24", "nexthopIps": [""],
+    "oifs": ["bond0"], "protocol": "kernel", "source": "172.16.3.202", "ipvers": 4,
+    "action": "forward", "timestamp": 1605161369419}, {"namespace": "eos", "hostname":
+    "server302", "vrf": "default", "prefix": "10.255.2.1/32", "nexthopIps": [""],
+    "oifs": ["eth0"], "protocol": "dhcp", "source": "10.255.2.221", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369419}, {"namespace": "eos", "hostname": "server302",
+    "vrf": "default", "prefix": "10.255.2.0/24", "nexthopIps": [""], "oifs": ["eth0"],
+    "protocol": "kernel", "source": "10.255.2.221", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369419}, {"namespace": "eos", "hostname": "server302", "vrf":
+    "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"],
+    "protocol": "", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369419},
+    {"namespace": "eos", "hostname": "server302", "vrf": "default", "prefix": "172.16.0.0/16",
+    "nexthopIps": ["172.16.3.254"], "oifs": ["bond0"], "protocol": "", "source": "",
+    "ipvers": 4, "action": "forward", "timestamp": 1605161369419}, {"namespace": "eos",
+    "hostname": "dcedge01", "vrf": "default", "prefix": "10.0.0.41/32", "nexthopIps":
+    [""], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369638}, {"namespace": "eos", "hostname": "dcedge01",
+    "vrf": "default", "prefix": "10.255.2.0/24", "nexthopIps": [""], "oifs": ["em0.0"],
+    "protocol": "direct", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369638}, {"namespace": "eos", "hostname": "dcedge01", "vrf": "default",
+    "prefix": "10.255.2.250/32", "nexthopIps": [""], "oifs": ["em0.0"], "protocol":
+    "local", "source": "", "ipvers": 4, "action": "Local", "timestamp": 1605161369638},
+    {"namespace": "eos", "hostname": "dcedge01", "vrf": "default", "prefix": "169.254.0.0/24",
+    "nexthopIps": [""], "oifs": ["em1.0"], "protocol": "direct", "source": "", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369638}, {"namespace": "eos", "hostname":
+    "dcedge01", "vrf": "default", "prefix": "169.254.0.2/32", "nexthopIps": [""],
+    "oifs": ["em1.0"], "protocol": "local", "source": "", "ipvers": 4, "action": "Local",
+    "timestamp": 1605161369638}, {"namespace": "eos", "hostname": "dcedge01", "vrf":
+    "default", "prefix": "169.254.127.0/31", "nexthopIps": [""], "oifs": ["xe-0/0/0.0"],
+    "protocol": "direct", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369638}, {"namespace": "eos", "hostname": "dcedge01", "vrf": "default",
+    "prefix": "172.16.2.0/24", "nexthopIps": ["169.254.127.3"], "oifs": ["xe-0/0/1.0"],
+    "protocol": "bgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369638}, {"namespace": "eos", "hostname": "dcedge01", "vrf": "default",
+    "prefix": "169.254.127.2/31", "nexthopIps": [""], "oifs": ["xe-0/0/1.0"], "protocol":
+    "direct", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369638},
+    {"namespace": "eos", "hostname": "dcedge01", "vrf": "default", "prefix": "169.254.127.2/32",
+    "nexthopIps": [""], "oifs": ["xe-0/0/1.0"], "protocol": "local", "source": "",
+    "ipvers": 4, "action": "Local", "timestamp": 1605161369638}, {"namespace": "eos",
+    "hostname": "dcedge01", "vrf": "default", "prefix": "172.16.1.0/24", "nexthopIps":
+    ["169.254.127.3"], "oifs": ["xe-0/0/1.0"], "protocol": "bgp", "source": "", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369638}, {"namespace": "eos", "hostname":
+    "dcedge01", "vrf": "default", "prefix": "172.16.3.0/24", "nexthopIps": ["169.254.127.3"],
+    "oifs": ["xe-0/0/1.0"], "protocol": "bgp", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369638}, {"namespace": "eos", "hostname": "dcedge01",
+    "vrf": "default", "prefix": "fe80::205:860f:fc71:9000/128", "nexthopIps": [""],
+    "oifs": ["lo0.0"], "protocol": "direct", "source": "", "ipvers": 6, "action":
+    "forward", "timestamp": 1605161369638}, {"namespace": "eos", "hostname": "dcedge01",
+    "vrf": "default", "prefix": "ff02::2/128", "nexthopIps": [], "oifs": [], "protocol":
+    "inet6", "source": "", "ipvers": 6, "action": "MultiRecv", "timestamp": 1605161369638},
+    {"namespace": "eos", "hostname": "dcedge01", "vrf": "default", "prefix": "169.254.127.0/32",
+    "nexthopIps": [""], "oifs": ["xe-0/0/0.0"], "protocol": "local", "source": "",
+    "ipvers": 4, "action": "Local", "timestamp": 1605161369638}, {"namespace": "eos",
+    "hostname": "dcedge01", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["10.255.2.1"], "oifs": ["em0.0"], "protocol": "access-internal", "source": "",
+    "ipvers": 4, "action": "forward", "timestamp": 1605161369638}]'
 - command: route show --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: route show eos
-  output: '[{"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
-    {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname":
-    "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
-    {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname":
-    "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
-    {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname":
-    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
-    {"hostname": "server101"}, {"hostname": "leaf02"}, {"hostname": "server101"},
-    {"hostname": "server101"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
-    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
-    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
-    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "server101"},
-    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
-    "server101"}, {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
-    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
-    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
-    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
-    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
-    {"hostname": "leaf03"}, {"hostname": "internet"}, {"hostname": "internet"}, {"hostname":
-    "internet"}, {"hostname": "internet"}, {"hostname": "internet"}, {"hostname":
-    "internet"}, {"hostname": "internet"}, {"hostname": "internet"}, {"hostname":
-    "internet"}, {"hostname": "internet"}, {"hostname": "internet"}, {"hostname":
-    "internet"}, {"hostname": "internet"}, {"hostname": "internet"}, {"hostname":
-    "internet"}, {"hostname": "internet"}, {"hostname": "internet"}, {"hostname":
-    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "server102"},
-    {"hostname": "server102"}, {"hostname": "server102"}, {"hostname": "server102"},
-    {"hostname": "server103"}, {"hostname": "server102"}, {"hostname": "server103"},
-    {"hostname": "server103"}, {"hostname": "server103"}, {"hostname": "server103"},
-    {"hostname": "leaf03"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
-    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
-    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
-    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
-    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
-    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
-    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
-    "server104"}, {"hostname": "leaf04"}, {"hostname": "server104"}, {"hostname":
-    "server104"}, {"hostname": "server104"}, {"hostname": "leaf04"}, {"hostname":
-    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
-    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "server104"}, {"hostname":
+  output: '[{"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
     "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
     {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
     "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
-    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf01"}, {"hostname":
-    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf04"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "leaf02"},
+    {"hostname": "exit02"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "exit02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "exit02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "exit02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "exit02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
     {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
     "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
     {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
     "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
-    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "exit02"}, {"hostname":
-    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
-    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
-    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
-    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
-    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
-    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
-    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
-    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
-    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
-    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
-    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "spine02"},
-    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
-    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
-    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
-    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
-    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
-    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
-    {"hostname": "spine02"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
-    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
-    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
-    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
-    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
-    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
-    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
-    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
-    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
-    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
-    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
-    "exit01"}, {"hostname": "exit01"}]'
+    {"hostname": "leaf01"}, {"hostname": "server102"}, {"hostname": "server102"},
+    {"hostname": "server102"}, {"hostname": "server102"}, {"hostname": "server102"},
+    {"hostname": "server301"}, {"hostname": "server301"}, {"hostname": "server301"},
+    {"hostname": "server301"}, {"hostname": "server301"}, {"hostname": "server101"},
+    {"hostname": "server101"}, {"hostname": "server101"}, {"hostname": "server101"},
+    {"hostname": "server101"}, {"hostname": "firewall01"}, {"hostname": "firewall01"},
+    {"hostname": "firewall01"}, {"hostname": "firewall01"}, {"hostname": "firewall01"},
+    {"hostname": "firewall01"}, {"hostname": "firewall01"}, {"hostname": "firewall01"},
+    {"hostname": "firewall01"}, {"hostname": "firewall01"}, {"hostname": "firewall01"},
+    {"hostname": "firewall01"}, {"hostname": "firewall01"}, {"hostname": "firewall01"},
+    {"hostname": "firewall01"}, {"hostname": "firewall01"}, {"hostname": "server302"},
+    {"hostname": "server302"}, {"hostname": "server302"}, {"hostname": "server302"},
+    {"hostname": "server302"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"},
+    {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"},
+    {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"},
+    {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"},
+    {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"},
+    {"hostname": "dcedge01"}]'
 - command: route summarize --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: route summarize eos
-  output: '{"eos": {"deviceCnt": 14, "uniquePrefixCnt": 39, "uniqueVrfsCnt": 2, "ifRoutesCnt":
-    40, "hostRoutesCnt": 135, "totalV4RoutesinNs": 265, "totalV6RoutesinNs": 0, "routingProtocolCnt":
-    7, "routesPerHostStat": [5, 39, 21.0], "routesperVrfStat": [36, 229, 132.5], "deviceWithNoDefRoute":
+  output: '{"eos": {"deviceCnt": 14, "uniquePrefixCnt": 39, "uniqueVrfsCnt": 3, "ifRoutesCnt":
+    32, "hostRoutesCnt": 121, "totalV4RoutesinNs": 235, "totalV6RoutesinNs": 2, "routingProtocolCnt":
+    14, "routesPerHostStat": [5, 45, 15.5], "routesperVrfStat": [20, 169, 48], "deviceWithNoDefRoute":
     true}}'
 - command: route unique --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: route unique eos
-  output: '[{"hostname": "edge01", "count": 20}, {"hostname": "exit01", "count": 39},
-    {"hostname": "exit02", "count": 39}, {"hostname": "internet", "count": 17}, {"hostname":
-    "leaf01", "count": 21}, {"hostname": "leaf02", "count": 21}, {"hostname": "leaf03",
-    "count": 21}, {"hostname": "leaf04", "count": 21}, {"hostname": "server101", "count":
-    5}, {"hostname": "server102", "count": 5}, {"hostname": "server103", "count":
-    5}, {"hostname": "server104", "count": 5}, {"hostname": "spine01", "count": 23},
-    {"hostname": "spine02", "count": 23}]'
+  output: '[{"hostname": "dcedge01", "count": 15}, {"hostname": "exit01", "count":
+    45}, {"hostname": "exit02", "count": 45}, {"hostname": "firewall01", "count":
+    16}, {"hostname": "leaf01", "count": 18}, {"hostname": "leaf02", "count": 18},
+    {"hostname": "leaf03", "count": 18}, {"hostname": "leaf04", "count": 18}, {"hostname":
+    "server101", "count": 5}, {"hostname": "server102", "count": 5}, {"hostname":
+    "server301", "count": 5}, {"hostname": "server302", "count": 5}, {"hostname":
+    "spine01", "count": 12}, {"hostname": "spine02", "count": 12}]'
 - command: route lpm --address=10.0.0.1 --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: route lpm eos
-  output: '[{"namespace": "eos", "hostname": "server101", "vrf": "default", "prefix":
-    "10.0.0.0/8", "nexthopIps": ["172.16.1.1"], "oifs": ["bond0"], "protocol": "",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635353}, {"namespace":
-    "eos", "hostname": "server102", "vrf": "default", "prefix": "10.0.0.0/8", "nexthopIps":
-    ["172.16.2.1"], "oifs": ["bond0"], "protocol": "", "source": "", "ipvers": 4,
-    "action": "forward", "timestamp": 1606001635356}, {"namespace": "eos", "hostname":
-    "server103", "vrf": "default", "prefix": "10.0.0.0/8", "nexthopIps": ["172.16.3.1"],
-    "oifs": ["bond0"], "protocol": "", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635356}, {"namespace": "eos", "hostname": "server104", "vrf":
-    "default", "prefix": "10.0.0.0/8", "nexthopIps": ["172.16.4.1"], "oifs": ["bond0"],
-    "protocol": "", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635359},
-    {"namespace": "eos", "hostname": "edge01", "vrf": "default", "prefix": "0.0.0.0/0",
-    "nexthopIps": ["192.168.121.1"], "oifs": ["eth0"], "protocol": "", "source": "",
-    "ipvers": 4, "action": "forward", "timestamp": 1606001635267}, {"namespace": "eos",
+  output: '[{"namespace": "eos", "hostname": "exit02", "vrf": "default", "prefix":
+    "0.0.0.0/0", "nexthopIps": ["169.254.253.2"], "oifs": ["Ethernet3.2"], "protocol":
+    "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369226},
+    {"namespace": "eos", "hostname": "exit02", "vrf": "internet-vrf", "prefix": "0.0.0.0/0",
+    "nexthopIps": ["169.254.127.2"], "oifs": ["Ethernet4"], "protocol": "ebgp", "source":
+    "", "ipvers": 4, "action": "forward", "timestamp": 1605161369226}, {"namespace":
+    "eos", "hostname": "exit02", "vrf": "evpn-vrf", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["169.254.253.6"], "oifs": ["Ethernet3.3"], "protocol": "ebgp", "source": "",
+    "ipvers": 4, "action": "forward", "timestamp": 1605161369226}, {"namespace": "eos",
     "hostname": "exit01", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.254.2"],
-    "oifs": ["Ethernet5.2"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635408}, {"namespace": "eos", "hostname": "spine02",
-    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.127.1.9"], "oifs":
-    ["Ethernet6"], "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635369}, {"namespace": "eos", "hostname": "exit02", "vrf":
-    "internet-vrf", "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.127.2"], "oifs":
-    ["Ethernet6"], "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635368}, {"namespace": "eos", "hostname": "exit02", "vrf":
-    "default", "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.253.2"], "oifs": ["Ethernet5.2"],
-    "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635368}, {"namespace": "eos", "hostname": "leaf01", "vrf": "default", "prefix":
-    "0.0.0.0/0", "nexthopIps": ["10.127.0.0"], "oifs": ["Ethernet1"], "protocol":
-    "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635359},
-    {"namespace": "eos", "hostname": "leaf04", "vrf": "default", "prefix": "0.0.0.0/0",
-    "nexthopIps": ["10.127.0.6"], "oifs": ["Ethernet1"], "protocol": "ebgp", "source":
-    "", "ipvers": 4, "action": "forward", "timestamp": 1606001635359}, {"namespace":
-    "eos", "hostname": "spine01", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
-    ["10.127.0.9"], "oifs": ["Ethernet6"], "protocol": "ebgp", "source": "", "ipvers":
-    4, "action": "forward", "timestamp": 1606001635357}, {"namespace": "eos", "hostname":
-    "leaf02", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.127.0.2"],
-    "oifs": ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635353}, {"namespace": "eos", "hostname": "internet",
-    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["192.168.121.1"], "oifs":
+    "oifs": ["Ethernet3.2"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369227}, {"namespace": "eos", "hostname": "exit01",
+    "vrf": "internet-vrf", "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.127.0"],
+    "oifs": ["Ethernet4"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369227}, {"namespace": "eos", "hostname": "exit01",
+    "vrf": "evpn-vrf", "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.254.6"], "oifs":
+    ["Ethernet3.3"], "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369227}, {"namespace": "eos", "hostname": "server102", "vrf":
+    "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"],
+    "protocol": "", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369410},
+    {"namespace": "eos", "hostname": "server301", "vrf": "default", "prefix": "0.0.0.0/0",
+    "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"], "protocol": "", "source": "",
+    "ipvers": 4, "action": "forward", "timestamp": 1605161369414}, {"namespace": "eos",
+    "hostname": "server101", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["10.255.2.1"], "oifs": ["eth0"], "protocol": "", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369415}, {"namespace": "eos", "hostname": "firewall01",
+    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs":
     ["eth0"], "protocol": "", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635356}, {"namespace": "eos", "hostname": "leaf03", "vrf": "default", "prefix":
-    "0.0.0.0/0", "nexthopIps": ["10.127.0.4"], "oifs": ["Ethernet1"], "protocol":
-    "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635356},
-    {"namespace": "eos", "hostname": "exit01", "vrf": "internet-vrf", "prefix": "0.0.0.0/0",
-    "nexthopIps": ["169.254.127.0"], "oifs": ["Ethernet6"], "protocol": "ebgp", "source":
-    "", "ipvers": 4, "action": "forward", "timestamp": 1606001635408}]'
+    1605161369416}, {"namespace": "eos", "hostname": "server302", "vrf": "default",
+    "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"], "protocol":
+    "", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369419},
+    {"namespace": "eos", "hostname": "dcedge01", "vrf": "default", "prefix": "0.0.0.0/0",
+    "nexthopIps": ["10.255.2.1"], "oifs": ["em0.0"], "protocol": "access-internal",
+    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369638}]'
 - command: route lpm --address="10.0.0.12" --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: route lpm eos
-  output: '[{"namespace": "eos", "hostname": "exit01", "vrf": "default", "prefix":
-    "10.0.0.12/32", "nexthopIps": ["10.127.0.8"], "oifs": ["Ethernet1"], "protocol":
-    "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635408},
-    {"namespace": "eos", "hostname": "exit01", "vrf": "internet-vrf", "prefix": "10.0.0.12/32",
-    "nexthopIps": ["169.254.254.10"], "oifs": ["Ethernet5.4"], "protocol": "ebgp",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635408}, {"namespace":
-    "eos", "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps":
-    ["10.127.1.3"], "oifs": ["Ethernet2"], "protocol": "ebgp", "source": "", "ipvers":
-    4, "action": "forward", "timestamp": 1606001635369}, {"namespace": "eos", "hostname":
-    "exit02", "vrf": "internet-vrf", "prefix": "10.0.0.12/32", "nexthopIps": ["169.254.253.10"],
-    "oifs": ["Ethernet5.4"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635368}, {"namespace": "eos", "hostname": "leaf02",
-    "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": [], "oifs": ["Loopback0"],
-    "protocol": "connected", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635353}, {"namespace": "eos", "hostname": "leaf03", "vrf": "default", "prefix":
-    "10.0.0.12/32", "nexthopIps": ["10.127.0.4"], "oifs": ["Ethernet1"], "protocol":
-    "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635356},
-    {"namespace": "eos", "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.12/32",
-    "nexthopIps": ["10.127.0.10"], "oifs": ["Ethernet1"], "protocol": "ebgp", "source":
-    "", "ipvers": 4, "action": "forward", "timestamp": 1606001635368}, {"namespace":
-    "eos", "hostname": "leaf01", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps":
-    ["10.127.0.0"], "oifs": ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers":
-    4, "action": "forward", "timestamp": 1606001635359}, {"namespace": "eos", "hostname":
-    "internet", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": ["169.254.127.1",
-    "169.254.127.3"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source": "", "ipvers":
-    4, "action": "forward", "timestamp": 1606001635356}, {"namespace": "eos", "hostname":
-    "leaf04", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.127.0.6"],
-    "oifs": ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635359}, {"namespace": "eos", "hostname": "edge01",
-    "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": ["169.254.253.1", "169.254.254.1"],
-    "oifs": ["eth2.2", "eth1.2"], "protocol": "186", "source": "10.0.0.100", "ipvers":
-    4, "action": "forward", "timestamp": 1606001635267}, {"namespace": "eos", "hostname":
-    "spine01", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.127.0.3"],
-    "oifs": ["Ethernet2"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635357}, {"namespace": "eos", "hostname": "server103",
-    "vrf": "default", "prefix": "10.0.0.0/8", "nexthopIps": ["172.16.3.1"], "oifs":
-    ["bond0"], "protocol": "", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635356}, {"namespace": "eos", "hostname": "server104", "vrf": "default",
-    "prefix": "10.0.0.0/8", "nexthopIps": ["172.16.4.1"], "oifs": ["bond0"], "protocol":
-    "", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635359},
-    {"namespace": "eos", "hostname": "server102", "vrf": "default", "prefix": "10.0.0.0/8",
-    "nexthopIps": ["172.16.2.1"], "oifs": ["bond0"], "protocol": "", "source": "",
-    "ipvers": 4, "action": "forward", "timestamp": 1606001635356}, {"namespace": "eos",
-    "hostname": "server101", "vrf": "default", "prefix": "10.0.0.0/8", "nexthopIps":
-    ["172.16.1.1"], "oifs": ["bond0"], "protocol": "", "source": "", "ipvers": 4,
-    "action": "forward", "timestamp": 1606001635353}]'
+  output: '[{"namespace": "eos", "hostname": "leaf04", "vrf": "default", "prefix":
+    "10.0.0.12/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["Ethernet1",
+    "Ethernet2"], "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369225}, {"namespace": "eos", "hostname": "leaf01", "vrf":
+    "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf", "source": "", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369357}, {"namespace": "eos", "hostname":
+    "exit02", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.21",
+    "10.0.0.22"], "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf", "source":
+    "", "ipvers": 4, "action": "forward", "timestamp": 1605161369226}, {"namespace":
+    "eos", "hostname": "leaf03", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf",
+    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369226}, {"namespace":
+    "eos", "hostname": "leaf02", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps":
+    [], "oifs": ["Loopback0"], "protocol": "connected", "source": "", "ipvers": 4,
+    "action": "forward", "timestamp": 1605161369226}, {"namespace": "eos", "hostname":
+    "spine02", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": [], "oifs":
+    ["Ethernet2"], "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369227}, {"namespace": "eos", "hostname": "exit01", "vrf":
+    "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf", "source": "", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369227}, {"namespace": "eos", "hostname":
+    "spine01", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": [], "oifs":
+    ["Ethernet2"], "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369355}, {"namespace": "eos", "hostname": "server302", "vrf":
+    "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"],
+    "protocol": "", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369419},
+    {"namespace": "eos", "hostname": "firewall01", "vrf": "default", "prefix": "0.0.0.0/0",
+    "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"], "protocol": "", "source": "",
+    "ipvers": 4, "action": "forward", "timestamp": 1605161369416}, {"namespace": "eos",
+    "hostname": "server101", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["10.255.2.1"], "oifs": ["eth0"], "protocol": "", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369415}, {"namespace": "eos", "hostname": "server301",
+    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs":
+    ["eth0"], "protocol": "", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369414}, {"namespace": "eos", "hostname": "server102", "vrf": "default",
+    "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"], "protocol":
+    "", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369410},
+    {"namespace": "eos", "hostname": "exit01", "vrf": "internet-vrf", "prefix": "0.0.0.0/0",
+    "nexthopIps": ["169.254.127.0"], "oifs": ["Ethernet4"], "protocol": "ebgp", "source":
+    "", "ipvers": 4, "action": "forward", "timestamp": 1605161369227}, {"namespace":
+    "eos", "hostname": "exit01", "vrf": "evpn-vrf", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["169.254.254.6"], "oifs": ["Ethernet3.3"], "protocol": "ebgp", "source": "",
+    "ipvers": 4, "action": "forward", "timestamp": 1605161369227}, {"namespace": "eos",
+    "hostname": "exit02", "vrf": "evpn-vrf", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["169.254.253.6"], "oifs": ["Ethernet3.3"], "protocol": "ebgp", "source": "",
+    "ipvers": 4, "action": "forward", "timestamp": 1605161369226}, {"namespace": "eos",
+    "hostname": "exit02", "vrf": "internet-vrf", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["169.254.127.2"], "oifs": ["Ethernet4"], "protocol": "ebgp", "source": "", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369226}, {"namespace": "eos", "hostname":
+    "dcedge01", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"],
+    "oifs": ["em0.0"], "protocol": "access-internal", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369638}]'
 - command: route lpm --address="10.0.0.12" --hostname="server101 server103" --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: route lpm eos
   output: '[{"namespace": "eos", "hostname": "server101", "vrf": "default", "prefix":
-    "10.0.0.0/8", "nexthopIps": ["172.16.1.1"], "oifs": ["bond0"], "protocol": "",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635353}, {"namespace":
-    "eos", "hostname": "server103", "vrf": "default", "prefix": "10.0.0.0/8", "nexthopIps":
-    ["172.16.3.1"], "oifs": ["bond0"], "protocol": "", "source": "", "ipvers": 4,
-    "action": "forward", "timestamp": 1606001635356}]'
+    "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"], "protocol": "", "source":
+    "", "ipvers": 4, "action": "forward", "timestamp": 1605161369415}]'
 - command: route lpm --address="10.0.0.12" --vrf=default --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: route lpm eos
-  output: '[{"namespace": "eos", "hostname": "internet", "vrf": "default", "prefix":
-    "10.0.0.12/32", "nexthopIps": ["169.254.127.1", "169.254.127.3"], "oifs": ["swp1",
-    "swp2"], "protocol": "bgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635356}, {"namespace": "eos", "hostname": "leaf02", "vrf": "default", "prefix":
-    "10.0.0.12/32", "nexthopIps": [], "oifs": ["Loopback0"], "protocol": "connected",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635353}, {"namespace":
-    "eos", "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps":
-    ["10.127.0.8"], "oifs": ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers":
-    4, "action": "forward", "timestamp": 1606001635408}, {"namespace": "eos", "hostname":
-    "spine02", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.127.1.3"],
-    "oifs": ["Ethernet2"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635369}, {"namespace": "eos", "hostname": "leaf01",
-    "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.127.0.0"], "oifs":
-    ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635359}, {"namespace": "eos", "hostname": "leaf04", "vrf":
-    "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.127.0.6"], "oifs": ["Ethernet1"],
-    "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635359}, {"namespace": "eos", "hostname": "spine01", "vrf": "default",
-    "prefix": "10.0.0.12/32", "nexthopIps": ["10.127.0.3"], "oifs": ["Ethernet2"],
-    "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635357}, {"namespace": "eos", "hostname": "leaf03", "vrf": "default", "prefix":
-    "10.0.0.12/32", "nexthopIps": ["10.127.0.4"], "oifs": ["Ethernet1"], "protocol":
-    "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635356},
-    {"namespace": "eos", "hostname": "edge01", "vrf": "default", "prefix": "10.0.0.12/32",
-    "nexthopIps": ["169.254.253.1", "169.254.254.1"], "oifs": ["eth2.2", "eth1.2"],
-    "protocol": "186", "source": "10.0.0.100", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635267}, {"namespace": "eos", "hostname": "exit02", "vrf": "default", "prefix":
-    "10.0.0.12/32", "nexthopIps": ["10.127.0.10"], "oifs": ["Ethernet1"], "protocol":
-    "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635368},
-    {"namespace": "eos", "hostname": "server102", "vrf": "default", "prefix": "10.0.0.0/8",
-    "nexthopIps": ["172.16.2.1"], "oifs": ["bond0"], "protocol": "", "source": "",
-    "ipvers": 4, "action": "forward", "timestamp": 1606001635356}, {"namespace": "eos",
-    "hostname": "server104", "vrf": "default", "prefix": "10.0.0.0/8", "nexthopIps":
-    ["172.16.4.1"], "oifs": ["bond0"], "protocol": "", "source": "", "ipvers": 4,
-    "action": "forward", "timestamp": 1606001635359}, {"namespace": "eos", "hostname":
-    "server103", "vrf": "default", "prefix": "10.0.0.0/8", "nexthopIps": ["172.16.3.1"],
-    "oifs": ["bond0"], "protocol": "", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635356}, {"namespace": "eos", "hostname": "server101", "vrf":
-    "default", "prefix": "10.0.0.0/8", "nexthopIps": ["172.16.1.1"], "oifs": ["bond0"],
-    "protocol": "", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635353}]'
+  output: '[{"namespace": "eos", "hostname": "leaf04", "vrf": "default", "prefix":
+    "10.0.0.12/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["Ethernet1",
+    "Ethernet2"], "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369225}, {"namespace": "eos", "hostname": "leaf03", "vrf":
+    "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf", "source": "", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369226}, {"namespace": "eos", "hostname":
+    "leaf02", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": [], "oifs":
+    ["Loopback0"], "protocol": "connected", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369226}, {"namespace": "eos", "hostname": "exit02", "vrf":
+    "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf", "source": "", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369226}, {"namespace": "eos", "hostname":
+    "spine02", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": [], "oifs":
+    ["Ethernet2"], "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369227}, {"namespace": "eos", "hostname": "exit01", "vrf":
+    "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf", "source": "", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369227}, {"namespace": "eos", "hostname":
+    "spine01", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": [], "oifs":
+    ["Ethernet2"], "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369355}, {"namespace": "eos", "hostname": "leaf01", "vrf":
+    "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf", "source": "", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369357}, {"namespace": "eos", "hostname":
+    "server102", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"],
+    "oifs": ["eth0"], "protocol": "", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369410}, {"namespace": "eos", "hostname": "server301", "vrf":
+    "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"],
+    "protocol": "", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369414},
+    {"namespace": "eos", "hostname": "server101", "vrf": "default", "prefix": "0.0.0.0/0",
+    "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"], "protocol": "", "source": "",
+    "ipvers": 4, "action": "forward", "timestamp": 1605161369415}, {"namespace": "eos",
+    "hostname": "firewall01", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["10.255.2.1"], "oifs": ["eth0"], "protocol": "", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369416}, {"namespace": "eos", "hostname": "server302",
+    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs":
+    ["eth0"], "protocol": "", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369419}, {"namespace": "eos", "hostname": "dcedge01", "vrf": "default",
+    "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs": ["em0.0"], "protocol":
+    "access-internal", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369638}]'
 - command: route lpm --address="10.0.0.11" --vrf=default --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: route lpm eos
-  output: '[{"namespace": "eos", "hostname": "edge01", "vrf": "default", "prefix":
-    "10.0.0.11/32", "nexthopIps": ["169.254.253.1", "169.254.254.1"], "oifs": ["eth2.2",
-    "eth1.2"], "protocol": "186", "source": "10.0.0.100", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635267}, {"namespace": "eos", "hostname": "exit01", "vrf":
-    "default", "prefix": "10.0.0.11/32", "nexthopIps": ["10.127.0.8"], "oifs": ["Ethernet1"],
-    "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635408}, {"namespace": "eos", "hostname": "leaf02", "vrf": "default", "prefix":
-    "10.0.0.11/32", "nexthopIps": ["10.127.0.2"], "oifs": ["Ethernet1"], "protocol":
-    "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635353},
-    {"namespace": "eos", "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.11/32",
-    "nexthopIps": ["10.127.1.1"], "oifs": ["Ethernet1"], "protocol": "ebgp", "source":
-    "", "ipvers": 4, "action": "forward", "timestamp": 1606001635369}, {"namespace":
-    "eos", "hostname": "leaf01", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps":
-    [], "oifs": ["Loopback0"], "protocol": "connected", "source": "", "ipvers": 4,
-    "action": "forward", "timestamp": 1606001635359}, {"namespace": "eos", "hostname":
-    "leaf04", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps": ["10.127.0.6"],
-    "oifs": ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1606001635359}, {"namespace": "eos", "hostname": "leaf03",
-    "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps": ["10.127.0.4"], "oifs":
-    ["Ethernet1"], "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635356}, {"namespace": "eos", "hostname": "exit02", "vrf":
-    "default", "prefix": "10.0.0.11/32", "nexthopIps": ["10.127.0.10"], "oifs": ["Ethernet1"],
-    "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635368}, {"namespace": "eos", "hostname": "spine01", "vrf": "default",
-    "prefix": "10.0.0.11/32", "nexthopIps": ["10.127.0.1"], "oifs": ["Ethernet1"],
-    "protocol": "ebgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1606001635357}, {"namespace": "eos", "hostname": "internet", "vrf": "default",
-    "prefix": "10.0.0.11/32", "nexthopIps": ["169.254.127.1", "169.254.127.3"], "oifs":
-    ["swp1", "swp2"], "protocol": "bgp", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635356}, {"namespace": "eos", "hostname": "server104", "vrf":
-    "default", "prefix": "10.0.0.0/8", "nexthopIps": ["172.16.4.1"], "oifs": ["bond0"],
-    "protocol": "", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1606001635359},
-    {"namespace": "eos", "hostname": "server101", "vrf": "default", "prefix": "10.0.0.0/8",
-    "nexthopIps": ["172.16.1.1"], "oifs": ["bond0"], "protocol": "", "source": "",
-    "ipvers": 4, "action": "forward", "timestamp": 1606001635353}, {"namespace": "eos",
-    "hostname": "server103", "vrf": "default", "prefix": "10.0.0.0/8", "nexthopIps":
-    ["172.16.3.1"], "oifs": ["bond0"], "protocol": "", "source": "", "ipvers": 4,
-    "action": "forward", "timestamp": 1606001635356}, {"namespace": "eos", "hostname":
-    "server102", "vrf": "default", "prefix": "10.0.0.0/8", "nexthopIps": ["172.16.2.1"],
-    "oifs": ["bond0"], "protocol": "", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1606001635356}]'
+  output: '[{"namespace": "eos", "hostname": "leaf04", "vrf": "default", "prefix":
+    "10.0.0.11/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["Ethernet1",
+    "Ethernet2"], "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward",
+    "timestamp": 1605161369225}, {"namespace": "eos", "hostname": "exit02", "vrf":
+    "default", "prefix": "10.0.0.11/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf", "source": "", "ipvers":
+    4, "action": "forward", "timestamp": 1605161369226}, {"namespace": "eos", "hostname":
+    "leaf03", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps": ["10.0.0.21",
+    "10.0.0.22"], "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf", "source":
+    "", "ipvers": 4, "action": "forward", "timestamp": 1605161369226}, {"namespace":
+    "eos", "hostname": "leaf02", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf",
+    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369226}, {"namespace":
+    "eos", "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["Ethernet1", "Ethernet2"], "protocol": "ospf",
+    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369227}, {"namespace":
+    "eos", "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps":
+    [], "oifs": ["Ethernet1"], "protocol": "ospf", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369227}, {"namespace": "eos", "hostname": "spine01",
+    "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps": [], "oifs": ["Ethernet1"],
+    "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369355}, {"namespace": "eos", "hostname": "leaf01", "vrf": "default", "prefix":
+    "10.0.0.11/32", "nexthopIps": [], "oifs": ["Loopback0"], "protocol": "connected",
+    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369357}, {"namespace":
+    "eos", "hostname": "server102", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["10.255.2.1"], "oifs": ["eth0"], "protocol": "", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369410}, {"namespace": "eos", "hostname": "server301",
+    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs":
+    ["eth0"], "protocol": "", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369414}, {"namespace": "eos", "hostname": "server101", "vrf": "default",
+    "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"], "protocol":
+    "", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1605161369415},
+    {"namespace": "eos", "hostname": "firewall01", "vrf": "default", "prefix": "0.0.0.0/0",
+    "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"], "protocol": "", "source": "",
+    "ipvers": 4, "action": "forward", "timestamp": 1605161369416}, {"namespace": "eos",
+    "hostname": "server302", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["10.255.2.1"], "oifs": ["eth0"], "protocol": "", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369419}, {"namespace": "eos", "hostname": "dcedge01",
+    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs":
+    ["em0.0"], "protocol": "access-internal", "source": "", "ipvers": 4, "action":
+    "forward", "timestamp": 1605161369638}]'
 - command: route unique --columns=prefixlen --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: route unique eos
-  output: '[{"prefixlen": 0, "count": 16}, {"prefixlen": 8, "count": 4}, {"prefixlen":
-    16, "count": 4}, {"prefixlen": 24, "count": 66}, {"prefixlen": 30, "count": 8},
-    {"prefixlen": 31, "count": 32}, {"prefixlen": 32, "count": 135}]'
+  output: '[{"prefixlen": 0, "count": 12}, {"prefixlen": 16, "count": 4}, {"prefixlen":
+    24, "count": 66}, {"prefixlen": 30, "count": 12}, {"prefixlen": 31, "count": 20},
+    {"prefixlen": 32, "count": 121}, {"prefixlen": 128, "count": 2}]'
+- command: route show --prefix='172.16.1.101' --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: route unique eos
+  output: '[{"namespace": "eos", "hostname": "leaf04", "vrf": "evpn-vrf", "prefix":
+    "172.16.1.101/32", "nexthopIps": ["10.0.0.112"], "oifs": ["_nexthopVrf:default"],
+    "protocol": "ibgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369225}, {"namespace": "eos", "hostname": "exit02", "vrf": "evpn-vrf",
+    "prefix": "172.16.1.101/32", "nexthopIps": ["10.0.0.112"], "oifs": ["_nexthopVrf:default"],
+    "protocol": "ibgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369226}, {"namespace": "eos", "hostname": "leaf03", "vrf": "evpn-vrf",
+    "prefix": "172.16.1.101/32", "nexthopIps": ["10.0.0.112"], "oifs": ["_nexthopVrf:default"],
+    "protocol": "ibgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369226}, {"namespace": "eos", "hostname": "exit01", "vrf": "evpn-vrf",
+    "prefix": "172.16.1.101/32", "nexthopIps": ["10.0.0.112"], "oifs": ["_nexthopVrf:default"],
+    "protocol": "ibgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    1605161369227}]'
