@@ -1,5 +1,9 @@
 ## Release Notes
 
+## 0.85 (Jan 4, 2020)
+
+This is mainly a bug fix release with improvements to path tracing. Visually, thw way you can use path trace is far more interactive to troubleshoot than the first version. In the process of doing this, the release also found a bunch of data gathering issues with different NOS and fixed them, including capturing MTU on NXOS switched ports, fixing the mac table entries for Linux bridge so that the VLAN was properly derived for remote macs, getting the MAC address for Junos IRB interfaces and so on.
+
 ## 0.8 (Dec 14, 2020)
 
 The three main features of the 0.8 release are the availability of a GUI, and the simplified experience of time, and Junos EX support. Here are the more detailed release notes:
