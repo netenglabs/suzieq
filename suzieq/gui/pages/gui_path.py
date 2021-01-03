@@ -106,8 +106,10 @@ def path_get(state: PathSessionState, pathobj: PathObj,
     return df, summ_df
 
 
-def get_failed_data(state: PathSessionState, pgbar, path_df,
-                    sqobjs) -> FailedDFs:
+@st.cache(ttl=120, allow_output_mutation=True, show_spinner=False,
+          hash_funcs={"streamlit.delta_generator.DeltaGenerator": lambda x: 1},
+          max_entries=10)
+def get_failed_data(namespace: str, pgbar, sqobjs) -> FailedDFs:
     '''Get interface/mlag/routing protocol states that are failed'''
 
     faileddfs = FailedDFs()
@@ -115,7 +117,7 @@ def get_failed_data(state: PathSessionState, pgbar, path_df,
     progress = 40
     for i, entry in enumerate(faileddfs.dfs):
         entry['df'] = gui_get_df(sqobjs[entry['name']],
-                                 namespace=[state.namespace])
+                                 namespace=[namespace])
         if not entry['df'].empty and (entry.get('query', '')):
             entry['df'] = entry['df'].query(entry['query'])
 
@@ -194,12 +196,13 @@ def get_node_tooltip_color(hostname: str, faileddfs: FailedDFs) -> str:
     return('\n'.join(tdf.T.to_string().split('\n')[1:]), color)
 
 
-def build_graphviz_obj(state: PathSessionState, df: pd.DataFrame,
+@st.cache(max_entries=10, allow_output_mutation=True)
+def build_graphviz_obj(show_ifnames: bool, df: pd.DataFrame,
                        faileddfs: FailedDFs):
     '''Return a graphviz object'''
 
     graph_attr = {'splines': 'polyline', 'layout': 'dot'}
-    if state.show_ifnames:
+    if show_ifnames:
         graph_attr.update({'nodesep': '1.0'})
 
     g = graphviz.Digraph(graph_attr=graph_attr,
@@ -288,13 +291,14 @@ def build_graphviz_obj(state: PathSessionState, df: pd.DataFrame,
                 f'session={quote(get_session_id())}',
                 f'hostname={quote(prevrow.hostname)}',
                 f'vrf={quote(prevrow.vrf)}',
+                f'vtepLookup-{prevrow.vtepLookup}',
                 f'ifhost={quote(row.hostname)}',
                 f'ipLookup={quote(prevrow.ipLookup)}',
                 f'oif={quote(prevrow.oif)}',
                 f'macaddr={quote(prevrow.macLookup or "")}',
                 f'nhip={quote(prevrow.nexthopIp)}',
             ])
-            if state.show_ifnames:
+            if show_ifnames:
                 g.edge(prevrow.hostname, row.hostname, color=color,
                        label=str(row.hopCount), URL=debugURL,
                        edgetarget='_graphviz', tooltip=tooltip,
@@ -380,8 +384,9 @@ def page_work(state_container, page_flip: bool):
         st.stop
 
     if not df.empty:
-        faileddfs = get_failed_data(state, pgbar, df, state_container.sqobjs)
-        g = build_graphviz_obj(state, df, faileddfs)
+        faileddfs = get_failed_data(state.namespace, pgbar,
+                                    state_container.sqobjs)
+        g = build_graphviz_obj(state.show_ifnames, df, faileddfs)
         pgbar.progress(100)
         # if not rev_df.empty:
         #     rev_g = build_graphviz_obj(state, rev_df)

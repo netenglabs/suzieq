@@ -63,11 +63,11 @@ Given the categories, here is a rough list of tasks we will be tackling. We welc
 * ~~make column manipulation at higher level than engine.py~~
 * ~~Schema evolution and versioning to make suzieq less brittle to changes in the schema~~
 * Network wide summarize to take advantage of data across all commands
-* Web-based GUI
+~~* Web-based GUI
   * Do you have a framework you'd like the GUI to use? 
   * For what functions would you use a GUI?
   * caching and performance
-* suzieq as a daemon
+~~* suzieq as a daemon
   * do we need suzieq as a daemon -- what are the use cases
 * ~~REST API~~
 * Create tags or other ways to group  in a hierarchical way
@@ -114,6 +114,3 @@ Given the categories, here is a rough list of tasks we will be tackling. We welc
 * Writing some tests and/or documentation
 * Funding us to do the work :)
 
-## We believe users are moving away from: (If you disagree, let us know)
-
-* SNMP access to data

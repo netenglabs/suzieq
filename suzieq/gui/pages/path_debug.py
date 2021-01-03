@@ -23,6 +23,7 @@ def handle_edge_url(url_params: dict, pathSession):
     hostname = url_params.get('hostname', [""])[0]
     nhip = url_params.get('nhip', [""])[0]
     ipLookup = url_params.get('ipLookup', [""])[0]
+    vtepLookup = url_params.get('vtepLookup', [""])[0]
     vrf = url_params.get('vrf', [""])[0]
     ifhost = url_params.get('ifhost', [""])[0]
     macaddr = url_params.get('macaddr', [""])[0]
@@ -34,32 +35,61 @@ def handle_edge_url(url_params: dict, pathSession):
 
     st.header(f'Debug Tables for Path from {pathSession.source} to '
               f'{pathSession.dest}')
-    st.subheader(f'Hop between {hostname} and {ifhost}')
+    hoptype = 'Bridged' if macaddr else 'Routed'
+    st.subheader(f'{hoptype} hop between {hostname} and {ifhost}')
 
     pathobj = getattr(pathSession, 'pathobj', None)
+    engobj = pathobj.engine_obj
 
     if ipLookup:
-        with st.beta_expander(f'Route Table for {hostname}', expanded=True):
-            st.dataframe(data=pathobj.engine_obj._rdf.query(
+        if not vtepLookup or (ipLookup != vtepLookup):
+            st.info(f'Route Lookup on {hostname}')
+            st.dataframe(data=engobj._rdf.query(
                 f'hostname=="{hostname}" and vrf=="{vrf}"'))
 
+        if vtepLookup:
+            st.info(f'Underlay Lookup on {hostname} for {vtepLookup}')
+            vtepdf = engobj._underlay_dfs.get(vtepLookup,
+                                              pd.DataFrame())
+            if not vtepdf.empty:
+                st.dataframe(data=vtepdf.query(
+                    f'hostname=="{hostname}" and vrf=="default"'))
         if nhip:
-            with st.beta_expander(f'ARP/ND Table on {hostname} for nexthop'
-                                  f' {nhip}', expanded=True):
-                st.dataframe(data=pathobj.engine_obj._arpnd_df.query(
-                    f'hostname=="{hostname}" and ipAddress=="{nhip}" '
-                    f'and oif=="{oif}"'))
+            st.info(
+                f'ARP/ND Table on {hostname} for nexthop {nhip}, oif={oif}')
+            arpdf = engobj._arpnd_df.query(f'hostname=="{hostname}" and '
+                                           f'ipAddress=="{nhip}" and '
+                                           f'oif=="{oif}"')
+            st.dataframe(data=arpdf)
+
+            if not arpdf.empty:
+                if ':' in nhip:
+                    dropcol = ['ipAddressList']
+                else:
+                    dropcol = ['ip6AddressList']
+
+                nhmac = arpdf.macaddr.iloc[0]
+                if nhmac:
+                    if_df = engobj._if_df.query(f'macaddr=="{nhmac}" and '
+                                                f'hostname=="{ifhost}"') \
+                                         .drop(columns=dropcol)
+                    label = (f'matching nexthop {nhip}, macaddr {nhmac} on '
+                             f'host {ifhost}')
+                else:
+                    label = f'matching nexthop {nhip} on host {ifhost}'
+                    if_df = engobj._if_df.query(f'hostname=="{ifhost}"') \
+                                         .drop(columns=dropcol)
 
             if nhip != '169.254.0.1':
-                with st.beta_expander('Interface Table for matching next hop '
-                                      f'{nhip}, and oif {oif}', expanded=True):
-                    if_df = pathobj.engine_obj._if_df
-                    s = if_df.ipAddressList.explode().str \
-                                                     .startswith(f'{nhip}/') \
-                                                     .dropna()
-                    s = s.loc[s == True]
-                    st.dataframe(data=pathobj.engine_obj._if_df
-                                 .iloc[s.loc[s == True].index])
+                st.info(f'Interfaces {label}')
+                s = if_df.ipAddressList.str \
+                                       .startswith(f'{nhip}/') \
+                                       .dropna()
+                s = s.loc[s == True]
+                st.dataframe(data=engobj._if_df.iloc[s.loc[s == True].index])
+            else:
+                st.info(f'Interfaces {label}')
+                st.dataframe(data=if_df)
     if macaddr:
         with st.beta_expander(f'MAC Table for {hostname}, MAC addr {macaddr}',
                               expanded=True):
@@ -141,7 +171,7 @@ def handle_hop_url(url_params, pathSession):
                                                f'ipAddress=="{nhop}" and '
                                                f'oif=="{oif}"')
                 with arpcol:
-                    st.info(f'ARPND Lookup on {hostname} for {nhop}')
+                    st.info(f'ARP/ND Lookup on {hostname} for {nhop}')
                     st.dataframe(data=arpdf, height=100)
 
                 if not arpdf.empty:
@@ -149,10 +179,14 @@ def handle_hop_url(url_params, pathSession):
                         dropcol = ['ipAddressList']
                     else:
                         dropcol = ['ip6AddressList']
-                    macaddr = arpdf.macaddr.iloc[0]
-                    if_df = engobj._if_df.query(f'macaddr=="{macaddr}"') \
-                                         .drop(columns=dropcol)
-                    label = f'matching nexthop {nhop}, macaddr {macaddr}'
+                    if nhop == '169.254.0.1':
+                        macaddr = arpdf.macaddr.iloc[0]
+                        if_df = engobj._if_df.query(f'macaddr=="{macaddr}"') \
+                                             .drop(columns=dropcol)
+                        label = f'matching nexthop {nhop}, macaddr {macaddr}'
+                    else:
+                        if_df = engobj._if_df.drop(columns=dropcol)
+                        label = f'matching nexthop {nhop}'
                 else:
                     label = f'matching nexthop {nhop}'
                     if_df = engobj._if_df.drop(columns=dropcol)
