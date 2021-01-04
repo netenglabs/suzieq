@@ -15,7 +15,7 @@ You can hover the nodes and links of the graph to get additional help.
 Path is Suzieq simulates an idealized packet flow through the network that Suzieq has data about. It supports:
 * L2 hops
 * L3 hops
-* EVPN/VXLAM hops
+* EVPN/VXLAN hops
 
 Besides this, it supports:
 * ECMP

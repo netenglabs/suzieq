@@ -1,5 +1,6 @@
 from suzieq.sqobjects import *
 from suzieq.gui.pages import *
+from suzieq.gui.guiutils import get_image_dir
 from suzieq.gui.session_state import get_session_state
 import streamlit as st
 from types import ModuleType
@@ -10,7 +11,7 @@ import base64
 def display_title(page, search_text, pagelist):
     '''Render the logo and the app name'''
 
-    LOGO_IMAGE = 'logo-small.jpg'
+    LOGO_IMAGE = f'{get_image_dir()}/logo-small.jpg'
     st.markdown(
         """
         <style>

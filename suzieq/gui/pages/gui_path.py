@@ -5,10 +5,10 @@ import pandas as pd
 import graphviz as graphviz
 from urllib.parse import quote
 from copy import copy
-import webbrowser
 
 from suzieq.sqobjects.path import PathObj
 from suzieq.gui.guiutils import gui_get_df, get_base_url, get_session_id
+from suzieq.gui.guiutils import display_help_icon
 
 
 def get_title():
@@ -140,7 +140,13 @@ def path_sidebar(state, sqobjs):
         nsidx = namespaces.index(state.namespace)
     else:
         nsidx = 0
-    help_button = st.sidebar.button('Help')
+
+    url = '&amp;'.join([
+        f'{get_base_url()}?page=_Help_',
+        'help=yes',
+        'help_on=Path',
+    ])
+    display_help_icon(url)
     ok_button = st.sidebar.button('Trace')
     namespace = st.sidebar.selectbox('Namespace',
                                      namespaces, index=nsidx)
@@ -179,7 +185,7 @@ def path_sidebar(state, sqobjs):
         state.run = False
         state.namespace = namespace
 
-    return help_button
+    return
 
 
 def get_node_tooltip_color(hostname: str, faileddfs: FailedDFs) -> str:
@@ -358,15 +364,7 @@ def page_work(state_container, page_flip: bool):
         with pathcol:
             fw_ph = st.empty()
 
-    get_help = path_sidebar(state, state_container.sqobjs)
-    if get_help:
-        url = '&amp;'.join([
-            f'{get_base_url()}?page=_Help_',
-            'help=yes',
-            'help_on=Path',
-        ])
-        webbrowser.open(url)
-        st.stop()
+    path_sidebar(state, state_container.sqobjs)
 
     if state.run:
         pgbar.progress(0)

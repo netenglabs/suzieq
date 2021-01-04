@@ -1,3 +1,7 @@
+from importlib.util import find_spec
+import os
+import base64
+
 import streamlit as st
 import pandas as pd
 from streamlit.server.server import Server
@@ -50,6 +54,19 @@ def get_base_url():
 def get_session_id():
     '''Return Streamlit's session ID'''
     return get_report_ctx().session_id
+
+
+def get_image_dir():
+    '''Get directory where images are stored'''
+    return(os.path.dirname(find_spec('suzieq.gui')
+                           .loader.path) + '/images')
+
+
+def display_help_icon(url: str):
+    '''Display Help Icon with click to take you to appropriate page'''
+    help_img = f'{get_image_dir()}/helps.png'
+    st.sidebar.markdown(f'<a target="_help" href="{url}"><img class="help-img" src="data:image/png;base64,{base64.b64encode(open(help_img, "rb").read()).decode()}"></a>',
+                        unsafe_allow_html=True)
 
 
 def maximize_browser_window():
