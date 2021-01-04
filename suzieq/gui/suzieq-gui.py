@@ -127,10 +127,13 @@ def apprun():
         page = url_params['page']
         if isinstance(page, list):
             page = page[0]
+        old_session_state = get_session_state(
+            url_params.get('session', [''])[0])
         if page == "_Path_Debug_":
-            old_session_state = get_session_state(
-                url_params.get('session', None)[0])
             state.pages[page](old_session_state, True)
+            st.stop()
+        elif page == "_Help_":
+            state.pages[page](old_session_state, None)
             st.stop()
         if isinstance(page, list):
             page = page[0]
