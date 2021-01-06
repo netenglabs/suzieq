@@ -9,10 +9,10 @@ import pandas as pd
 import pyarrow.parquet as pa
 import numpy as np
 
-from suzieq.engines.base_engine import SqEngine
+from suzieq.db.base_db import SqDB
 
 
-class SqPandasEngine(SqEngine):
+class SqParquetDB(SqDB):
     def __init__(self):
         self.logger = logging.getLogger()
 
