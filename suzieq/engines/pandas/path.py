@@ -11,10 +11,11 @@ import pandas as pd
 from suzieq.sqobjects import interfaces, routes, arpnd, macs, mlag
 from suzieq.exceptions import EmptyDataframeError, PathLoopError
 from suzieq.engines.pandas.engineobj import SqEngineObject
-from suzieq.utils import expand_nxos_ifname
-
+from suzieq.utils import expand_nxos_ifname, MAX_MTU
 
 # TODO: What timestamp to use (arpND, mac, interface, route..)
+
+
 class PathObj(SqEngineObject):
 
     def _init_dfs(self, namespace, source, dest):
@@ -695,10 +696,7 @@ class PathObj(SqEngineObject):
         dest_device_iifs = OrderedDict()
         for i in range(len(self._dest_df)):
             item = self._dest_df.iloc[i]
-            if item.get('mtu', 0) != src_mtu:
-                error = ['Dst MTU != Src MTU']
-            else:
-                error = []
+            error = []
             dest_device_iifs[f'{item.hostname}/'] = {
                 "iif": '',
                 "vrf": item["master"] or "default",
@@ -763,6 +761,9 @@ class PathObj(SqEngineObject):
                         copy_dest['oif'] = devices_iifs[devkey]['oif']
                         copy_dest['iif'] = iif
                         copy_dest['mtu'] = devices_iifs[devkey]['mtu']
+                        if copy_dest.get('mtu', 0) != src_mtu:
+                            if 'Dst MTU != Src MTU' not in copy_dest['error']:
+                                copy_dest['error'].append('Dst MTU != Src MTU')
                         # This is weird because we have no room to store the
                         # prev hop's outgoing IIF MTU on the last hop
                         copy_dest['outMtu'] = \
@@ -910,6 +911,8 @@ class PathObj(SqEngineObject):
                             (self._if_df["hostname"] == device) &
                             (self._if_df["ifname"] == iface)
                         ].iloc[-1].mtu
+                        if on_src_node and src_mtu > MAX_MTU:
+                            src_mtu = out_mtu
                         mtu_match = in_mtu == out_mtu
                         if (in_mtu < src_mtu) or (out_mtu < src_mtu):
                             error.append('Hop MTU < Src Mtu')
