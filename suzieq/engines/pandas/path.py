@@ -11,6 +11,7 @@ import pandas as pd
 from suzieq.sqobjects import interfaces, routes, arpnd, macs, mlag
 from suzieq.exceptions import EmptyDataframeError, PathLoopError
 from suzieq.engines.pandas.engineobj import SqEngineObject
+from suzieq.utils import expand_nxos_ifname
 
 
 # TODO: What timestamp to use (arpND, mac, interface, route..)
@@ -41,6 +42,7 @@ class PathObj(SqEngineObject):
         # Need this in determining L2 peer
         mlag_df = mlag.MlagObj(context=self.ctxt).get(namespace=namespace)
         mlag_peers = defaultdict(str)
+        mlag_peerlink = defaultdict(str)
         if not mlag_df.empty:
             peerlist = [x.tolist()
                         for x in mlag_df.groupby(by=['systemId'])['hostname']
@@ -48,7 +50,10 @@ class PathObj(SqEngineObject):
             for peers in peerlist:
                 mlag_peers[peers[0]] = peers[1]
                 mlag_peers[peers[1]] = peers[0]
+            for row in mlag_df.itertuples():
+                mlag_peerlink[row.hostname] = expand_nxos_ifname(row.peerLink)
         self._mlag_peers = mlag_peers
+        self._mlag_peerlink = mlag_peerlink
 
         try:
             # access-internal is an internal Junos route we want to
@@ -866,12 +871,8 @@ class PathObj(SqEngineObject):
                         rev_df = self._rpf_df.query(
                             f'hostname == "{device}" and vrf == "{ivrf}"')
                         if rev_df.empty and not on_src_node:
-                            if devices_iifs[devkey].get('error', ''):
-                                devices_iifs[devkey]['error'] += \
-                                    ', no reverse path'
-                            else:
-                                devices_iifs[devkey]['error'] = \
-                                    'no reverse path'
+                            devices_iifs[devkey]['error'] \
+                                .append('no reverse path')
                     else:
                         devices_iifs[devkey]['lookup'] = ''
 
@@ -889,10 +890,18 @@ class PathObj(SqEngineObject):
                         devices_iifs[devkey]['protocol'] = protocol
                     if not rt_ts:
                         devices_iifs[devkey]['timestamp'] = timestamp
-                    if errmsg:
-                        devices_iifs[devkey]['error'] = errmsg
-                    if iface is not None:
+                    if errmsg and errmsg not in devices_iifs[devkey]['error']:
+                        devices_iifs[devkey]['error'].append(errmsg)
 
+                    if iface is not None:
+                        if iface.startswith('vPC Peer'):
+                            iface = self._mlag_peerlink[device]
+                        elif iface.startswith('sup-eth1'):
+                            iface = 'loopback0'
+                        if peer_if.startswith('vPC Peer'):
+                            peer_if = self._mlag_peerlink[peer_device]
+                        elif peer_if.startswith('sup-eth1'):
+                            peer_if = 'loopback0'
                         in_mtu = self._if_df[
                             (self._if_df["hostname"] == peer_device) &
                             (self._if_df["ifname"] == peer_if)
@@ -903,7 +912,7 @@ class PathObj(SqEngineObject):
                         ].iloc[-1].mtu
                         mtu_match = in_mtu == out_mtu
                         if (in_mtu < src_mtu) or (out_mtu < src_mtu):
-                            error = ['Hop MTU < Src Mtu']
+                            error.append('Hop MTU < Src Mtu')
                         if not end_overlay:
                             overlay = ioverlay
                             vrf = devvrf
@@ -978,7 +987,7 @@ class PathObj(SqEngineObject):
                 # Taking advantage of python's shallow copy, that this
                 # also changes what's in df_plist
                 prev_hop['oif'] = self._dest_df.iloc[0]['ifname']
-                if '/' in prev_hop['outMtu']:
+                if isinstance(prev_hop['outMtu'], str) and '/' in prev_hop['outMtu']:
                     prev_hop['outMtu'] = int(prev_hop['outMtu'].split('/')[1])
                 prev_hop['isL2'] = False
                 prev_hop['nexthopIp'] = ''
@@ -1010,7 +1019,7 @@ class PathObj(SqEngineObject):
                     "vtepLookup": "",
                     "macLookup": "",
                     "nexthopIp": ele[item].get('nhip', ''),
-                    "error": ', '.join(ele[item].get('error', '')),
+                    "error": ', '.join(ele[item].get('error', [])),
                     "timestamp": ele[item].get("timestamp", np.nan)
                 }
                 df_plist.append(hop)
