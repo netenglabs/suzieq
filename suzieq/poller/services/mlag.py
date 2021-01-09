@@ -1,4 +1,5 @@
 from suzieq.poller.services.service import Service
+from suzieq.utils import expand_nxos_ifname
 
 
 class MlagService(Service):
@@ -81,6 +82,7 @@ class MlagService(Service):
                 lambda x: x not in mlagSinglePorts and x not in mlagErrorPorts,
                 mlagDualPorts))
 
+            entry['peerLink'] = expand_nxos_ifname(entry['peerLink'])
             entry['peerAddress'] = entry.get('peerAddress', [])[0]
             entry['mlagDualPortsList'] = mlagDualPorts
             entry['mlagDualPortsCnt'] = len(mlagDualPorts)

@@ -1,6 +1,7 @@
 from suzieq.poller.services.service import Service
 import re
 from suzieq.utils import convert_macaddr_format_to_colon
+from suzieq.utils import expand_nxos_ifname, expand_eos_ifname
 import numpy as np
 
 
@@ -102,10 +103,7 @@ class MacsService(Service):
                 entry['oif'] = vtepIP.group(1)
                 entry['flags'] = 'remote'
             else:
-                if entry['oif'].startswith('Eth'):
-                    entry['oif'] = entry['oif'].replace('Eth', 'Ethernet')
-                elif entry['oif'].startswith('Po'):
-                    entry['oif'] = entry['oif'].replace('Po', 'port-channel')
+                entry['oif'] = expand_nxos_ifname(entry['oif'])
                 entry['remoteVtepIp'] = ''
             if entry.get('vlan', '-') == '-':
                 entry['vlan'] = 0
@@ -125,6 +123,7 @@ class MacsService(Service):
                 entry['oif'] = vtepIP.group(1)
                 entry['flags'] = 'remote'
             else:
+                entry['oif'] = expand_eos_ifname(entry['oif'])
                 entry['remoteVtepIp'] = ''
             self._add_mackey_protocol(entry)
 
