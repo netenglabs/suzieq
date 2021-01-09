@@ -311,6 +311,7 @@ class InterfaceService(Service):
                              entry['statusChangeTimestamp'],
                              }
                 new_entries.append(new_entry)
+                entry_dict[new_entry['ifname']] = new_entry
                 if (entry['logicalIfflags'][i][0].get('iff-up') or
                         entry.get('type') == 'loopback'):
                     new_entry['state'] = 'up'
