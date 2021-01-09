@@ -16,6 +16,9 @@ import pyarrow as pa
 logger = logging.getLogger(__name__)
 
 
+MAX_MTU = 9216
+
+
 def validate_sq_config(cfg, fh):
     """Validate Suzieq config file
 
