@@ -386,37 +386,33 @@ tests:
     "vtepLookup": "", "macLookup": "", "nexthopIp": "", "timestamp": 1605161369414}]'
 - command: path show --dest=10.0.0.11 --src=10.0.0.14 --format=json --namespace=eos
   data-directory: tests/data/eos/parquet-out/
-  error:
-    error: '[{"pathid": 1, "hopCount": 0, "namespace": "eos", "hostname": "leaf04",
-      "iif": "Loopback0", "oif": "Ethernet1", "vrf": "default", "isL2": false, "overlay":
-      false, "mtuMatch": true, "inMtu": 65535, "outMtu": 9200, "protocol": "ospf",
-      "ipLookup": "10.0.0.11/32", "vtepLookup": "", "macLookup": "", "nexthopIp":
-      "10.0.0.21", "error": "", "timestamp": "2020-11-11 22:09:29.225000-08:00"},
-      {"pathid": 1, "hopCount": 1, "namespace": "eos", "hostname": "spine01", "iif":
-      "Ethernet4", "oif": "Ethernet1", "vrf": "default", "isL2": false, "overlay":
-      false, "mtuMatch": true, "inMtu": 9200, "outMtu": 9200, "protocol": "ospf",
-      "ipLookup": "10.0.0.11/32", "vtepLookup": "", "macLookup": "", "nexthopIp":
-      "10.0.0.11", "error": "Hop MTU < Src Mtu", "timestamp": "2020-11-11 22:09:29.355000-08:00"},
-      {"pathid": 1, "hopCount": 2, "namespace": "eos", "hostname": "leaf01", "iif":
-      "Ethernet1", "oif": "Loopback0", "vrf": "default", "isL2": false, "overlay":
-      false, "mtuMatch": true, "inMtu": 9200, "outMtu": 65535, "protocol": "", "ipLookup":
-      "", "vtepLookup": "", "macLookup": "", "nexthopIp": "", "error": "", "timestamp":
-      1605161369636}, {"pathid": 2, "hopCount": 0, "namespace": "eos", "hostname":
-      "leaf04", "iif": "Loopback0", "oif": "Ethernet2", "vrf": "default", "isL2":
-      false, "overlay": false, "mtuMatch": true, "inMtu": 65535, "outMtu": 9200, "protocol":
-      "ospf", "ipLookup": "10.0.0.11/32", "vtepLookup": "", "macLookup": "", "nexthopIp":
-      "10.0.0.22", "error": "", "timestamp": "2020-11-11 22:09:29.225000-08:00"},
-      {"pathid": 2, "hopCount": 1, "namespace": "eos", "hostname": "spine02", "iif":
-      "Ethernet4", "oif": "Ethernet1", "vrf": "default", "isL2": false, "overlay":
-      false, "mtuMatch": true, "inMtu": 9200, "outMtu": 9200, "protocol": "ospf",
-      "ipLookup": "10.0.0.11/32", "vtepLookup": "", "macLookup": "", "nexthopIp":
-      "10.0.0.11", "error": "Hop MTU < Src Mtu", "timestamp": "2020-11-11 22:09:29.227000-08:00"},
-      {"pathid": 2, "hopCount": 2, "namespace": "eos", "hostname": "leaf01", "iif":
-      "Ethernet2", "oif": "Loopback0", "vrf": "default", "isL2": false, "overlay":
-      false, "mtuMatch": true, "inMtu": 9200, "outMtu": 65535, "protocol": "", "ipLookup":
-      "", "vtepLookup": "", "macLookup": "", "nexthopIp": "", "error": "", "timestamp":
-      1605161369636}]'
   marks: path show eos
+  output: '[{"pathid": 1, "hopCount": 0, "namespace": "eos", "hostname": "leaf04",
+    "iif": "Loopback0", "oif": "Ethernet1", "vrf": "default", "isL2": false, "overlay":
+    false, "mtuMatch": true, "inMtu": 65535, "outMtu": 9200, "protocol": "ospf", "ipLookup":
+    "10.0.0.11/32", "vtepLookup": "", "macLookup": "", "nexthopIp": "10.0.0.21", "timestamp":
+    "2020-11-11 22:09:29.225000-08:00"}, {"pathid": 1, "hopCount": 1, "namespace":
+    "eos", "hostname": "spine01", "iif": "Ethernet4", "oif": "Ethernet1", "vrf": "default",
+    "isL2": false, "overlay": false, "mtuMatch": true, "inMtu": 9200, "outMtu": 9200,
+    "protocol": "ospf", "ipLookup": "10.0.0.11/32", "vtepLookup": "", "macLookup":
+    "", "nexthopIp": "10.0.0.11", "timestamp": "2020-11-11 22:09:29.355000-08:00"},
+    {"pathid": 1, "hopCount": 2, "namespace": "eos", "hostname": "leaf01", "iif":
+    "Ethernet1", "oif": "Loopback0", "vrf": "default", "isL2": false, "overlay": false,
+    "mtuMatch": true, "inMtu": 9200, "outMtu": 65535, "protocol": "", "ipLookup":
+    "", "vtepLookup": "", "macLookup": "", "nexthopIp": "", "timestamp": 1605161369636},
+    {"pathid": 2, "hopCount": 0, "namespace": "eos", "hostname": "leaf04", "iif":
+    "Loopback0", "oif": "Ethernet2", "vrf": "default", "isL2": false, "overlay": false,
+    "mtuMatch": true, "inMtu": 65535, "outMtu": 9200, "protocol": "ospf", "ipLookup":
+    "10.0.0.11/32", "vtepLookup": "", "macLookup": "", "nexthopIp": "10.0.0.22", "timestamp":
+    "2020-11-11 22:09:29.225000-08:00"}, {"pathid": 2, "hopCount": 1, "namespace":
+    "eos", "hostname": "spine02", "iif": "Ethernet4", "oif": "Ethernet1", "vrf": "default",
+    "isL2": false, "overlay": false, "mtuMatch": true, "inMtu": 9200, "outMtu": 9200,
+    "protocol": "ospf", "ipLookup": "10.0.0.11/32", "vtepLookup": "", "macLookup":
+    "", "nexthopIp": "10.0.0.11", "timestamp": "2020-11-11 22:09:29.227000-08:00"},
+    {"pathid": 2, "hopCount": 2, "namespace": "eos", "hostname": "leaf01", "iif":
+    "Ethernet2", "oif": "Loopback0", "vrf": "default", "isL2": false, "overlay": false,
+    "mtuMatch": true, "inMtu": 9200, "outMtu": 65535, "protocol": "", "ipLookup":
+    "", "vtepLookup": "", "macLookup": "", "nexthopIp": "", "timestamp": 1605161369636}]'
 - command: path show --src=10.0.0.31 --dest=10.0.0.41 --format=json --namespace=eos
   data-directory: tests/data/eos/parquet-out/
   error:
@@ -429,37 +425,36 @@ tests:
       "eth1.2", "oif": "eth1.4", "vrf": "default", "isL2": false, "overlay": false,
       "mtuMatch": true, "inMtu": 1500, "outMtu": 1500, "protocol": "bgp", "ipLookup":
       "10.0.0.41/32", "vtepLookup": "", "macLookup": "", "nexthopIp": "169.254.254.9",
-      "error": "Hop MTU < Src Mtu", "timestamp": "2020-11-11 22:09:29.416000-08:00"},
-      {"pathid": 1, "hopCount": 2, "namespace": "eos", "hostname": "exit01", "iif":
-      "Ethernet3.4", "oif": "Ethernet4", "vrf": "internet-vrf", "isL2": false, "overlay":
-      false, "mtuMatch": true, "inMtu": 1500, "outMtu": 1500, "protocol": "ebgp",
-      "ipLookup": "10.0.0.41/32", "vtepLookup": "", "macLookup": "", "nexthopIp":
-      "10.0.0.41", "error": "Hop MTU < Src Mtu", "timestamp": "2020-11-11 22:09:29.227000-08:00"},
-      {"pathid": 1, "hopCount": 3, "namespace": "eos", "hostname": "dcedge01", "iif":
-      "xe-0/0/0", "oif": "lo0.0", "vrf": "default", "isL2": false, "overlay": false,
-      "mtuMatch": false, "inMtu": 1514, "outMtu": 65536, "protocol": "", "ipLookup":
-      "", "vtepLookup": "", "macLookup": "", "nexthopIp": "", "error": "Dst MTU !=
-      Src MTU, no reverse path", "timestamp": 1605161371695}, {"pathid": 2, "hopCount":
-      0, "namespace": "eos", "hostname": "exit01", "iif": "Loopback0", "oif": "Ethernet3.2",
-      "vrf": "default", "isL2": false, "overlay": false, "mtuMatch": true, "inMtu":
-      65535, "outMtu": 1500, "protocol": "ebgp", "ipLookup": "10.0.0.41/32", "vtepLookup":
+      "error": "", "timestamp": "2020-11-11 22:09:29.416000-08:00"}, {"pathid": 1,
+      "hopCount": 2, "namespace": "eos", "hostname": "exit01", "iif": "Ethernet3.4",
+      "oif": "Ethernet4", "vrf": "internet-vrf", "isL2": false, "overlay": false,
+      "mtuMatch": true, "inMtu": 1500, "outMtu": 1500, "protocol": "ebgp", "ipLookup":
+      "10.0.0.41/32", "vtepLookup": "", "macLookup": "", "nexthopIp": "10.0.0.41",
+      "error": "", "timestamp": "2020-11-11 22:09:29.227000-08:00"}, {"pathid": 1,
+      "hopCount": 3, "namespace": "eos", "hostname": "dcedge01", "iif": "xe-0/0/0",
+      "oif": "lo0.0", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+      false, "inMtu": 1514, "outMtu": 65536, "protocol": "", "ipLookup": "", "vtepLookup":
+      "", "macLookup": "", "nexthopIp": "", "error": "no reverse path, Dst MTU !=
+      Src MTU", "timestamp": 1605161371695}, {"pathid": 2, "hopCount": 0, "namespace":
+      "eos", "hostname": "exit01", "iif": "Loopback0", "oif": "Ethernet3.2", "vrf":
+      "default", "isL2": false, "overlay": false, "mtuMatch": true, "inMtu": 65535,
+      "outMtu": 1500, "protocol": "ebgp", "ipLookup": "10.0.0.41/32", "vtepLookup":
       "", "macLookup": "", "nexthopIp": "169.254.254.2", "error": "", "timestamp":
       "2020-11-11 22:09:29.227000-08:00"}, {"pathid": 2, "hopCount": 1, "namespace":
       "eos", "hostname": "firewall01", "iif": "eth1.2", "oif": "eth2.4", "vrf": "default",
       "isL2": false, "overlay": false, "mtuMatch": true, "inMtu": 1500, "outMtu":
       1500, "protocol": "bgp", "ipLookup": "10.0.0.41/32", "vtepLookup": "", "macLookup":
-      "", "nexthopIp": "169.254.253.9", "error": "Hop MTU < Src Mtu", "timestamp":
-      "2020-11-11 22:09:29.416000-08:00"}, {"pathid": 2, "hopCount": 2, "namespace":
-      "eos", "hostname": "exit02", "iif": "Ethernet3.4", "oif": "Ethernet4", "vrf":
-      "internet-vrf", "isL2": false, "overlay": false, "mtuMatch": true, "inMtu":
-      1500, "outMtu": 1500, "protocol": "ebgp", "ipLookup": "10.0.0.41/32", "vtepLookup":
-      "", "macLookup": "", "nexthopIp": "10.0.0.41", "error": "Hop MTU < Src Mtu",
-      "timestamp": "2020-11-11 22:09:29.226000-08:00"}, {"pathid": 2, "hopCount":
-      3, "namespace": "eos", "hostname": "dcedge01", "iif": "xe-0/0/1", "oif": "lo0.0",
-      "vrf": "default", "isL2": false, "overlay": false, "mtuMatch": false, "inMtu":
-      1514, "outMtu": 65536, "protocol": "", "ipLookup": "", "vtepLookup": "", "macLookup":
-      "", "nexthopIp": "", "error": "Dst MTU != Src MTU, no reverse path", "timestamp":
-      1605161371695}]'
+      "", "nexthopIp": "169.254.253.9", "error": "", "timestamp": "2020-11-11 22:09:29.416000-08:00"},
+      {"pathid": 2, "hopCount": 2, "namespace": "eos", "hostname": "exit02", "iif":
+      "Ethernet3.4", "oif": "Ethernet4", "vrf": "internet-vrf", "isL2": false, "overlay":
+      false, "mtuMatch": true, "inMtu": 1500, "outMtu": 1500, "protocol": "ebgp",
+      "ipLookup": "10.0.0.41/32", "vtepLookup": "", "macLookup": "", "nexthopIp":
+      "10.0.0.41", "error": "", "timestamp": "2020-11-11 22:09:29.226000-08:00"},
+      {"pathid": 2, "hopCount": 3, "namespace": "eos", "hostname": "dcedge01", "iif":
+      "xe-0/0/1", "oif": "lo0.0", "vrf": "default", "isL2": false, "overlay": false,
+      "mtuMatch": false, "inMtu": 1514, "outMtu": 65536, "protocol": "", "ipLookup":
+      "", "vtepLookup": "", "macLookup": "", "nexthopIp": "", "error": "no reverse
+      path, Dst MTU != Src MTU", "timestamp": 1605161371695}]'
   marks: path show eos
 - command: path summarize --dest=172.16.3.202 --src=172.16.1.101 --format=json --namespace=eos
   data-directory: tests/data/eos/parquet-out/
