@@ -5,16 +5,16 @@ tests:
   marks: mlag show nxos
   output: '[{"namespace": "nxos", "hostname": "leaf01", "systemId": "00:23:04:ee:be:0c",
     "state": "active", "peerAddress": "10.255.2.185", "role": "primary", "peerLink":
-    "Po1", "mlagDualPortsCnt": 2, "mlagSinglePortsCnt": 0, "mlagErrorPortsCnt": 0,
-    "timestamp": 1609267307584}, {"namespace": "nxos", "hostname": "leaf04", "systemId":
+    "port-channel1", "mlagDualPortsCnt": 2, "mlagSinglePortsCnt": 0, "mlagErrorPortsCnt":
+    0, "timestamp": 1609267307584}, {"namespace": "nxos", "hostname": "leaf04", "systemId":
     "00:23:04:ee:be:22", "state": "active", "peerAddress": "10.255.2.186", "role":
-    "secondary-primary", "peerLink": "Po1", "mlagDualPortsCnt": 2, "mlagSinglePortsCnt":
+    "secondary-primary", "peerLink": "port-channel1", "mlagDualPortsCnt": 2, "mlagSinglePortsCnt":
     0, "mlagErrorPortsCnt": 0, "timestamp": 1609267307686}, {"namespace": "nxos",
     "hostname": "leaf03", "systemId": "00:23:04:ee:be:22", "state": "active", "peerAddress":
-    "10.255.2.187", "role": "primary-secondary", "peerLink": "Po1", "mlagDualPortsCnt":
+    "10.255.2.187", "role": "primary-secondary", "peerLink": "port-channel1", "mlagDualPortsCnt":
     2, "mlagSinglePortsCnt": 0, "mlagErrorPortsCnt": 0, "timestamp": 1609267308372},
     {"namespace": "nxos", "hostname": "leaf02", "systemId": "00:23:04:ee:be:0c", "state":
-    "active", "peerAddress": "10.255.2.184", "role": "secondary", "peerLink": "Po1",
+    "active", "peerAddress": "10.255.2.184", "role": "secondary", "peerLink": "port-channel1",
     "mlagDualPortsCnt": 2, "mlagSinglePortsCnt": 1, "mlagErrorPortsCnt": 1, "timestamp":
     1609267308573}]'
 - command: mlag show --columns=hostname --format=json
