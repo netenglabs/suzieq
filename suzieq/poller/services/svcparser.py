@@ -103,7 +103,8 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                     # Handle xstr being a specific array index or dict key
                     if xstr.startswith('['):
                         if len(result[0]['rest']):
-                            result[0]["rest"] = result[0]["rest"][eval_expr(xstr)]
+                            result[0]["rest"] = result[0]["rest"][eval_expr(
+                                xstr)]
                         else:
                             # Handling the JUNOS EVPN pfx DB entry
                             logging.error(
@@ -409,8 +410,17 @@ def cons_recs_from_json_template(tmplt_str, in_data):
             if op:
                 if exp_val and value != exp_val:
                     value = loopdef_val
-                elif not exp_val and not value:
-                    value = loopdef_val
+                elif not exp_val:
+                    if isinstance(value, list) and not any(x for x in value):
+                        if not isinstance(loopdef_val, list) and maybe_list:
+                            if loopdef_val == '':
+                                value = []
+                            else:
+                                value = [loopdef_val]
+                        else:
+                            value = loopdef_val
+                    elif not value:
+                        value = loopdef_val
 
             # Handle any operation on string
             rval = rval.strip()
