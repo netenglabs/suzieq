@@ -274,10 +274,12 @@ class InterfaceService(Service):
             for i, ifname in enumerate(entry['logicalIfname']):
                 v4addresses = []
                 v6addresses = []
-                if len(gwmacs) >= i:
+                macaddr = None
+                if len(gwmacs) > i:
                     macaddr = gwmacs[i]
-                else:
-                    macaddr = ''
+                if not macaddr:
+                    macaddr = entry.get('macaddr', '')
+
                 if entry['afi'][i] is None:
                     continue
                 for x in entry['afi'][i]:
