@@ -14,37 +14,37 @@ tests:
     "ospf-ibgp", "hostname": "exit01", "vlanName": "vlan4001", "state": "active",
     "interfaces": ["vxlan4001"], "vlan": 4001, "timestamp": 1605995734680}, {"namespace":
     "ospf-ibgp", "hostname": "leaf04", "vlanName": "vlan13", "state": "active", "interfaces":
-    ["bond01", "peerlink", "vni13"], "vlan": 13, "timestamp": 1605995734883}, {"namespace":
+    ["peerlink", "vni13", "bond01"], "vlan": 13, "timestamp": 1605995734883}, {"namespace":
     "ospf-ibgp", "hostname": "leaf04", "vlanName": "vlan1", "state": "active", "interfaces":
     ["peerlink"], "vlan": 1, "timestamp": 1605995734883}, {"namespace": "ospf-ibgp",
     "hostname": "leaf04", "vlanName": "vlan4001", "state": "active", "interfaces":
     ["vxlan4001"], "vlan": 4001, "timestamp": 1605995734883}, {"namespace": "ospf-ibgp",
     "hostname": "leaf04", "vlanName": "vlan24", "state": "active", "interfaces": ["peerlink",
-    "bond02", "vni24"], "vlan": 24, "timestamp": 1605995734883}, {"namespace": "ospf-ibgp",
+    "vni24", "bond02"], "vlan": 24, "timestamp": 1605995734883}, {"namespace": "ospf-ibgp",
     "hostname": "leaf03", "vlanName": "vlan4001", "state": "active", "interfaces":
     ["vxlan4001"], "vlan": 4001, "timestamp": 1605995735212}, {"namespace": "ospf-ibgp",
     "hostname": "exit02", "vlanName": "vlan4001", "state": "active", "interfaces":
     ["vxlan4001"], "vlan": 4001, "timestamp": 1605995735212}, {"namespace": "ospf-ibgp",
-    "hostname": "leaf03", "vlanName": "vlan13", "state": "active", "interfaces": ["bond01",
-    "peerlink", "vni13"], "vlan": 13, "timestamp": 1605995735212}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf03", "vlanName": "vlan13", "state": "active", "interfaces": ["peerlink",
+    "vni13", "bond01"], "vlan": 13, "timestamp": 1605995735212}, {"namespace": "ospf-ibgp",
     "hostname": "leaf03", "vlanName": "vlan1", "state": "active", "interfaces": ["peerlink"],
     "vlan": 1, "timestamp": 1605995735212}, {"namespace": "ospf-ibgp", "hostname":
     "leaf03", "vlanName": "vlan24", "state": "active", "interfaces": ["peerlink",
-    "bond02", "vni24"], "vlan": 24, "timestamp": 1605995735212}, {"namespace": "ospf-ibgp",
+    "vni24", "bond02"], "vlan": 24, "timestamp": 1605995735212}, {"namespace": "ospf-ibgp",
     "hostname": "leaf01", "vlanName": "vlan4001", "state": "active", "interfaces":
     ["vxlan4001"], "vlan": 4001, "timestamp": 1605995735364}, {"namespace": "ospf-ibgp",
     "hostname": "leaf01", "vlanName": "vlan24", "state": "active", "interfaces": ["peerlink",
     "bond02", "vni24"], "vlan": 24, "timestamp": 1605995735364}, {"namespace": "ospf-ibgp",
-    "hostname": "leaf01", "vlanName": "vlan13", "state": "active", "interfaces": ["bond01",
-    "peerlink", "vni13"], "vlan": 13, "timestamp": 1605995735364}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf01", "vlanName": "vlan13", "state": "active", "interfaces": ["peerlink",
+    "bond01", "vni13"], "vlan": 13, "timestamp": 1605995735364}, {"namespace": "ospf-ibgp",
     "hostname": "leaf01", "vlanName": "vlan1", "state": "active", "interfaces": ["peerlink"],
     "vlan": 1, "timestamp": 1605995735364}, {"namespace": "ospf-ibgp", "hostname":
     "leaf02", "vlanName": "vlan1", "state": "active", "interfaces": ["peerlink"],
     "vlan": 1, "timestamp": 1605995735461}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf02", "vlanName": "vlan13", "state": "active", "interfaces": ["bond01", "peerlink",
-    "vni13"], "vlan": 13, "timestamp": 1605995735461}, {"namespace": "ospf-ibgp",
+    "leaf02", "vlanName": "vlan13", "state": "active", "interfaces": ["peerlink",
+    "vni13", "bond01"], "vlan": 13, "timestamp": 1605995735461}, {"namespace": "ospf-ibgp",
     "hostname": "leaf02", "vlanName": "vlan24", "state": "active", "interfaces": ["peerlink",
-    "bond02", "vni24"], "vlan": 24, "timestamp": 1605995735461}, {"namespace": "ospf-ibgp",
+    "vni24", "bond02"], "vlan": 24, "timestamp": 1605995735461}, {"namespace": "ospf-ibgp",
     "hostname": "leaf02", "vlanName": "vlan4001", "state": "active", "interfaces":
     ["vxlan4001"], "vlan": 4001, "timestamp": 1605995735461}, {"namespace": "dual-evpn",
     "hostname": "exit02", "vlanName": "vlan24", "state": "active", "interfaces": ["vni24"],
@@ -53,7 +53,7 @@ tests:
     13, "timestamp": 1605996845944}, {"namespace": "dual-evpn", "hostname": "leaf01",
     "vlanName": "vlan1", "state": "active", "interfaces": ["peerlink"], "vlan": 1,
     "timestamp": 1605996846234}, {"namespace": "dual-evpn", "hostname": "leaf01",
-    "vlanName": "vlan24", "state": "active", "interfaces": ["vni24", "peerlink", "bond02"],
+    "vlanName": "vlan24", "state": "active", "interfaces": ["peerlink", "vni24", "bond02"],
     "vlan": 24, "timestamp": 1605996846234}, {"namespace": "dual-evpn", "hostname":
     "leaf01", "vlanName": "vlan13", "state": "active", "interfaces": ["peerlink",
     "bond01", "vni13"], "vlan": 13, "timestamp": 1605996846234}, {"namespace": "dual-evpn",
@@ -61,20 +61,20 @@ tests:
     "vlan": 24, "timestamp": 1605996846622}, {"namespace": "dual-evpn", "hostname":
     "exit01", "vlanName": "vlan13", "state": "active", "interfaces": ["vni13"], "vlan":
     13, "timestamp": 1605996846622}, {"namespace": "dual-evpn", "hostname": "leaf03",
-    "vlanName": "vlan24", "state": "active", "interfaces": ["vni24", "peerlink", "bond02"],
+    "vlanName": "vlan24", "state": "active", "interfaces": ["peerlink", "vni24", "bond02"],
     "vlan": 24, "timestamp": 1605996846901}, {"namespace": "dual-evpn", "hostname":
     "leaf03", "vlanName": "vlan13", "state": "active", "interfaces": ["peerlink",
     "bond01", "vni13"], "vlan": 13, "timestamp": 1605996846901}, {"namespace": "dual-evpn",
     "hostname": "leaf03", "vlanName": "vlan1", "state": "active", "interfaces": ["peerlink"],
     "vlan": 1, "timestamp": 1605996846901}, {"namespace": "dual-evpn", "hostname":
-    "leaf02", "vlanName": "vlan24", "state": "active", "interfaces": ["bond02", "peerlink",
-    "vni24"], "vlan": 24, "timestamp": 1605996847077}, {"namespace": "dual-evpn",
+    "leaf02", "vlanName": "vlan24", "state": "active", "interfaces": ["peerlink",
+    "vni24", "bond02"], "vlan": 24, "timestamp": 1605996847077}, {"namespace": "dual-evpn",
     "hostname": "leaf02", "vlanName": "vlan13", "state": "active", "interfaces": ["peerlink",
     "bond01", "vni13"], "vlan": 13, "timestamp": 1605996847077}, {"namespace": "dual-evpn",
     "hostname": "leaf02", "vlanName": "vlan1", "state": "active", "interfaces": ["peerlink"],
     "vlan": 1, "timestamp": 1605996847077}, {"namespace": "dual-evpn", "hostname":
-    "leaf04", "vlanName": "vlan24", "state": "active", "interfaces": ["vni24", "peerlink",
-    "bond02"], "vlan": 24, "timestamp": 1605996847140}, {"namespace": "dual-evpn",
+    "leaf04", "vlanName": "vlan24", "state": "active", "interfaces": ["peerlink",
+    "vni24", "bond02"], "vlan": 24, "timestamp": 1605996847140}, {"namespace": "dual-evpn",
     "hostname": "leaf04", "vlanName": "vlan1", "state": "active", "interfaces": ["peerlink"],
     "vlan": 1, "timestamp": 1605996847140}, {"namespace": "dual-evpn", "hostname":
     "leaf04", "vlanName": "vlan13", "state": "active", "interfaces": ["peerlink",
