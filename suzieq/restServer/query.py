@@ -22,18 +22,6 @@ api_key_header = APIKeyHeader(name=API_KEY_NAME, auto_error=False)
 app = FastAPI()
 
 
-def get_configured_log_level():
-    cfg = load_sq_config(config_file=app.cfg_file)
-    log_level = cfg.get('logging-level', 'INFO').lower()
-    return log_level
-
-
-def get_log_file():
-    cfg = load_sq_config(config_file=app.cfg_file)
-    tmp = cfg.get('temp-directory', '/tmp')
-    return f"{tmp}/sq-rest-server.log"
-
-
 def get_configured_api_key():
     cfg = load_sq_config(config_file=app.cfg_file)
     try:
