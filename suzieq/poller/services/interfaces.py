@@ -98,6 +98,9 @@ class InterfaceService(Service):
                 entry['vlan'] = int(entry['ifname'].split('Vlan')[1])
                 vlan_entries[entry['ifname']] = entry
 
+            if entry.get('adminState', 'disabled') != 'disabled':
+                entry['adminState'] = 'up'
+
             tmpent = entry.get("ipAddressList", [[]])
             if not tmpent:
                 continue
