@@ -7,7 +7,7 @@ import yaml
 import os
 from suzieq.utils import load_sq_config
 
-from suzieq.restServer.query import app
+from suzieq.restServer.query import app_init
 
 
 def get_cert_files(cfg):
@@ -54,9 +54,10 @@ if __name__ == "__main__":
         "-c",
         "--config",
         type=str, help="alternate config file",
-        default=f'{os.getenv("HOME")}/.suzieq/'
+        default=f'{os.getenv("HOME")}/.suzieq/suzieq-cfg.yml'
     )
     userargs = parser.parse_args()
+    app = app_init(userargs.config)
     cfg = load_sq_config(userargs.config)
     try:
         api_key = cfg['API_KEY']
