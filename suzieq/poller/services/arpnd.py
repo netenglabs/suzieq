@@ -31,7 +31,10 @@ class ArpndService(Service):
             # We need only the first part, we pick up the second from the
             # MAC table
             if ',' in entry['oif']:
-                entry['oif'] = entry['oif'].split(',')[0].strip()
+                ports = entry['oif'].split(',')
+                entry['oif'] = ports[0].strip()
+                if ports[1].strip() == 'Vxlan1':
+                    entry['remote'] = True
 
         return processed_data
 
