@@ -57,10 +57,21 @@ apply:
     ]'
 
   eos:
-    command: show mac-address-table unicast
-    normalize: 'unicastTable/tableEntries/*/[
-    "macAddress: macaddr",
-    "vlanId: vlan?|0",
-    "entryType: flags",
-    "interface: oif",
-    ]'
+    command:
+      - command: show mac-address-table unicast
+        normalize: 'unicastTable/tableEntries/*/[
+        "macAddress: macaddr",
+        "vlanId: vlan?|0",
+        "entryType: flags",
+        "interface: oif",
+        ]'
+
+      - command: show vxlan address-table
+        normalize: 'addresses/*/[
+        "macAddress: macaddr",
+        "addrtype: flags",
+        "interface: oif",
+        "vtep: remoteVtepIp?|",
+        "vlanId: vlan",
+        "flags: flags?|remote",
+        ]'
