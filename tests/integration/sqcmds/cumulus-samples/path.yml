@@ -803,15 +803,15 @@ tests:
   data-directory: tests/data/basic_dual_bgp/parquet-out/
   error:
     error: '[{"pathid": 1, "hopCount": 0, "namespace": "dual-bgp", "hostname": "server101",
-      "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": false, "overlay":
-      false, "mtuMatch": true, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup":
-      "172.16.0.0/16", "vtepLookup": "", "macLookup": "", "nexthopIp": "172.16.1.1",
-      "error": "Possible anycast IP without anycast MAC", "timestamp": "2020-08-15
-      17:53:20.187000-07:00"}, {"pathid": 1, "hopCount": 1, "namespace": "dual-bgp",
-      "hostname": "leaf02", "iif": "bond01", "oif": "swp1", "vrf": "default", "isL2":
-      false, "overlay": false, "mtuMatch": true, "inMtu": 1500, "outMtu": 1500, "protocol":
-      "bgp", "ipLookup": "172.16.4.0/24", "vtepLookup": "", "macLookup": "", "nexthopIp":
-      "169.254.0.1", "error": "", "timestamp": "2020-08-15 17:53:20.242000-07:00"},
+      "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": true, "overlay": false,
+      "mtuMatch": true, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup":
+      "172.16.0.0/16", "vtepLookup": "", "macLookup": "52:54:00:fa:ba:df", "nexthopIp":
+      "172.16.1.1", "error": "Possible anycast IP without anycast MAC", "timestamp":
+      "2020-08-15 17:53:20.187000-07:00"}, {"pathid": 1, "hopCount": 1, "namespace":
+      "dual-bgp", "hostname": "leaf02", "iif": "bond01", "oif": "swp1", "vrf": "default",
+      "isL2": false, "overlay": false, "mtuMatch": true, "inMtu": 1500, "outMtu":
+      1500, "protocol": "bgp", "ipLookup": "172.16.4.0/24", "vtepLookup": "", "macLookup":
+      "", "nexthopIp": "169.254.0.1", "error": "", "timestamp": "2020-08-15 17:53:20.242000-07:00"},
       {"pathid": 1, "hopCount": 2, "namespace": "dual-bgp", "hostname": "spine01",
       "iif": "swp2", "oif": "swp3", "vrf": "default", "isL2": false, "overlay": false,
       "mtuMatch": true, "inMtu": 1500, "outMtu": 1500, "protocol": "bgp", "ipLookup":
@@ -827,15 +827,15 @@ tests:
       "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup": "", "vtepLookup":
       "", "macLookup": "", "nexthopIp": "", "error": "", "timestamp": 1597539200383},
       {"pathid": 2, "hopCount": 0, "namespace": "dual-bgp", "hostname": "server101",
-      "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": false, "overlay":
-      false, "mtuMatch": true, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup":
-      "172.16.0.0/16", "vtepLookup": "", "macLookup": "", "nexthopIp": "172.16.1.1",
-      "error": "Possible anycast IP without anycast MAC", "timestamp": "2020-08-15
-      17:53:20.187000-07:00"}, {"pathid": 2, "hopCount": 1, "namespace": "dual-bgp",
-      "hostname": "leaf02", "iif": "bond01", "oif": "swp2", "vrf": "default", "isL2":
-      false, "overlay": false, "mtuMatch": true, "inMtu": 1500, "outMtu": 1500, "protocol":
-      "bgp", "ipLookup": "172.16.4.0/24", "vtepLookup": "", "macLookup": "", "nexthopIp":
-      "169.254.0.1", "error": "", "timestamp": "2020-08-15 17:53:20.242000-07:00"},
+      "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": true, "overlay": false,
+      "mtuMatch": true, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup":
+      "172.16.0.0/16", "vtepLookup": "", "macLookup": "52:54:00:fa:ba:df", "nexthopIp":
+      "172.16.1.1", "error": "Possible anycast IP without anycast MAC", "timestamp":
+      "2020-08-15 17:53:20.187000-07:00"}, {"pathid": 2, "hopCount": 1, "namespace":
+      "dual-bgp", "hostname": "leaf02", "iif": "bond01", "oif": "swp2", "vrf": "default",
+      "isL2": false, "overlay": false, "mtuMatch": true, "inMtu": 1500, "outMtu":
+      1500, "protocol": "bgp", "ipLookup": "172.16.4.0/24", "vtepLookup": "", "macLookup":
+      "", "nexthopIp": "169.254.0.1", "error": "", "timestamp": "2020-08-15 17:53:20.242000-07:00"},
       {"pathid": 2, "hopCount": 2, "namespace": "dual-bgp", "hostname": "spine02",
       "iif": "swp2", "oif": "swp3", "vrf": "default", "isL2": false, "overlay": false,
       "mtuMatch": true, "inMtu": 1500, "outMtu": 1500, "protocol": "bgp", "ipLookup":
@@ -851,15 +851,15 @@ tests:
       "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup": "", "vtepLookup":
       "", "macLookup": "", "nexthopIp": "", "error": "", "timestamp": 1597539200383},
       {"pathid": 3, "hopCount": 0, "namespace": "dual-bgp", "hostname": "server101",
-      "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": false, "overlay":
-      false, "mtuMatch": true, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup":
-      "172.16.0.0/16", "vtepLookup": "", "macLookup": "", "nexthopIp": "172.16.1.1",
-      "error": "Possible anycast IP without anycast MAC", "timestamp": "2020-08-15
-      17:53:20.187000-07:00"}, {"pathid": 3, "hopCount": 1, "namespace": "dual-bgp",
-      "hostname": "leaf02", "iif": "bond01", "oif": "swp1", "vrf": "default", "isL2":
-      false, "overlay": false, "mtuMatch": true, "inMtu": 1500, "outMtu": 1500, "protocol":
-      "bgp", "ipLookup": "172.16.4.0/24", "vtepLookup": "", "macLookup": "", "nexthopIp":
-      "169.254.0.1", "error": "", "timestamp": "2020-08-15 17:53:20.242000-07:00"},
+      "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": true, "overlay": false,
+      "mtuMatch": true, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup":
+      "172.16.0.0/16", "vtepLookup": "", "macLookup": "52:54:00:fa:ba:df", "nexthopIp":
+      "172.16.1.1", "error": "Possible anycast IP without anycast MAC", "timestamp":
+      "2020-08-15 17:53:20.187000-07:00"}, {"pathid": 3, "hopCount": 1, "namespace":
+      "dual-bgp", "hostname": "leaf02", "iif": "bond01", "oif": "swp1", "vrf": "default",
+      "isL2": false, "overlay": false, "mtuMatch": true, "inMtu": 1500, "outMtu":
+      1500, "protocol": "bgp", "ipLookup": "172.16.4.0/24", "vtepLookup": "", "macLookup":
+      "", "nexthopIp": "169.254.0.1", "error": "", "timestamp": "2020-08-15 17:53:20.242000-07:00"},
       {"pathid": 3, "hopCount": 2, "namespace": "dual-bgp", "hostname": "spine01",
       "iif": "swp2", "oif": "swp4", "vrf": "default", "isL2": false, "overlay": false,
       "mtuMatch": true, "inMtu": 1500, "outMtu": 1500, "protocol": "bgp", "ipLookup":
@@ -875,15 +875,15 @@ tests:
       "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup": "", "vtepLookup":
       "", "macLookup": "", "nexthopIp": "", "error": "", "timestamp": 1597539200383},
       {"pathid": 4, "hopCount": 0, "namespace": "dual-bgp", "hostname": "server101",
-      "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": false, "overlay":
-      false, "mtuMatch": true, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup":
-      "172.16.0.0/16", "vtepLookup": "", "macLookup": "", "nexthopIp": "172.16.1.1",
-      "error": "Possible anycast IP without anycast MAC", "timestamp": "2020-08-15
-      17:53:20.187000-07:00"}, {"pathid": 4, "hopCount": 1, "namespace": "dual-bgp",
-      "hostname": "leaf02", "iif": "bond01", "oif": "swp2", "vrf": "default", "isL2":
-      false, "overlay": false, "mtuMatch": true, "inMtu": 1500, "outMtu": 1500, "protocol":
-      "bgp", "ipLookup": "172.16.4.0/24", "vtepLookup": "", "macLookup": "", "nexthopIp":
-      "169.254.0.1", "error": "", "timestamp": "2020-08-15 17:53:20.242000-07:00"},
+      "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": true, "overlay": false,
+      "mtuMatch": true, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup":
+      "172.16.0.0/16", "vtepLookup": "", "macLookup": "52:54:00:fa:ba:df", "nexthopIp":
+      "172.16.1.1", "error": "Possible anycast IP without anycast MAC", "timestamp":
+      "2020-08-15 17:53:20.187000-07:00"}, {"pathid": 4, "hopCount": 1, "namespace":
+      "dual-bgp", "hostname": "leaf02", "iif": "bond01", "oif": "swp2", "vrf": "default",
+      "isL2": false, "overlay": false, "mtuMatch": true, "inMtu": 1500, "outMtu":
+      1500, "protocol": "bgp", "ipLookup": "172.16.4.0/24", "vtepLookup": "", "macLookup":
+      "", "nexthopIp": "169.254.0.1", "error": "", "timestamp": "2020-08-15 17:53:20.242000-07:00"},
       {"pathid": 4, "hopCount": 2, "namespace": "dual-bgp", "hostname": "spine02",
       "iif": "swp2", "oif": "swp4", "vrf": "default", "isL2": false, "overlay": false,
       "mtuMatch": true, "inMtu": 1500, "outMtu": 1500, "protocol": "bgp", "ipLookup":
@@ -1653,21 +1653,21 @@ tests:
       "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": false, "overlay":
       false, "mtuMatch": true, "inMtu": 9000, "outMtu": 9000, "protocol": "", "ipLookup":
       "172.16.0.0/16", "vtepLookup": "", "macLookup": "", "nexthopIp": "172.16.1.1",
-      "error": "Possible anycast IP without anycast MAC", "timestamp": "2020-11-21
-      13:55:34.419000-08:00"}, {"pathid": 1, "hopCount": 1, "namespace": "ospf-ibgp",
-      "hostname": "leaf01", "iif": "bond01", "oif": "swp1", "vrf": "evpn-vrf", "isL2":
-      true, "overlay": false, "mtuMatch": true, "inMtu": 9000, "outMtu": 9216, "protocol":
-      "bgp", "ipLookup": "172.16.253.1/32", "vtepLookup": "10.0.0.102", "macLookup":
-      "", "nexthopIp": "10.0.0.22", "error": "", "timestamp": "2020-11-21 13:55:35.207000-08:00"},
-      {"pathid": 1, "hopCount": 2, "namespace": "ospf-ibgp", "hostname": "spine01",
-      "iif": "swp1", "oif": "swp5", "vrf": "default", "isL2": true, "overlay": true,
-      "mtuMatch": true, "inMtu": 9216, "outMtu": 9216, "protocol": "ospf", "ipLookup":
-      "10.0.0.102", "vtepLookup": "10.0.0.102", "macLookup": "", "nexthopIp": "10.0.0.102",
-      "error": "", "timestamp": 1605995734466}, {"pathid": 1, "hopCount": 3, "namespace":
-      "ospf-ibgp", "hostname": "exit02", "iif": "swp1", "oif": "swp5.3", "vrf": "evpn-vrf",
-      "isL2": false, "overlay": true, "mtuMatch": true, "inMtu": 9216, "outMtu": 9216,
-      "protocol": "bgp", "ipLookup": "172.16.253.1/32", "vtepLookup": "", "macLookup":
-      "", "nexthopIp": "169.254.253.6", "error": "", "timestamp": "2020-11-21 13:55:34.679000-08:00"},
+      "error": "", "timestamp": "2020-11-21 13:55:34.419000-08:00"}, {"pathid": 1,
+      "hopCount": 1, "namespace": "ospf-ibgp", "hostname": "leaf01", "iif": "bond01",
+      "oif": "swp1", "vrf": "evpn-vrf", "isL2": true, "overlay": false, "mtuMatch":
+      true, "inMtu": 9000, "outMtu": 9216, "protocol": "bgp", "ipLookup": "172.16.253.1/32",
+      "vtepLookup": "10.0.0.102", "macLookup": "", "nexthopIp": "10.0.0.22", "error":
+      "", "timestamp": "2020-11-21 13:55:35.207000-08:00"}, {"pathid": 1, "hopCount":
+      2, "namespace": "ospf-ibgp", "hostname": "spine01", "iif": "swp1", "oif": "swp5",
+      "vrf": "default", "isL2": true, "overlay": true, "mtuMatch": true, "inMtu":
+      9216, "outMtu": 9216, "protocol": "ospf", "ipLookup": "10.0.0.102", "vtepLookup":
+      "10.0.0.102", "macLookup": "", "nexthopIp": "10.0.0.102", "error": "", "timestamp":
+      1605995734466}, {"pathid": 1, "hopCount": 3, "namespace": "ospf-ibgp", "hostname":
+      "exit02", "iif": "swp1", "oif": "swp5.3", "vrf": "evpn-vrf", "isL2": false,
+      "overlay": true, "mtuMatch": true, "inMtu": 9216, "outMtu": 9216, "protocol":
+      "bgp", "ipLookup": "172.16.253.1/32", "vtepLookup": "", "macLookup": "", "nexthopIp":
+      "169.254.253.6", "error": "", "timestamp": "2020-11-21 13:55:34.679000-08:00"},
       {"pathid": 1, "hopCount": 4, "namespace": "ospf-ibgp", "hostname": "edge01",
       "iif": "eth2.3", "oif": "eth1.4", "vrf": "default", "isL2": false, "overlay":
       false, "mtuMatch": false, "inMtu": 1500, "outMtu": 1500, "protocol": "186",
@@ -1686,22 +1686,21 @@ tests:
       "ospf-ibgp", "hostname": "server101", "iif": "bond0", "oif": "bond0", "vrf":
       "default", "isL2": false, "overlay": false, "mtuMatch": true, "inMtu": 9000,
       "outMtu": 9000, "protocol": "", "ipLookup": "172.16.0.0/16", "vtepLookup": "",
-      "macLookup": "", "nexthopIp": "172.16.1.1", "error": "Possible anycast IP without
-      anycast MAC", "timestamp": "2020-11-21 13:55:34.419000-08:00"}, {"pathid": 2,
-      "hopCount": 1, "namespace": "ospf-ibgp", "hostname": "leaf02", "iif": "bond01",
-      "oif": "swp1", "vrf": "evpn-vrf", "isL2": true, "overlay": false, "mtuMatch":
-      true, "inMtu": 9000, "outMtu": 9216, "protocol": "bgp", "ipLookup": "172.16.253.1/32",
-      "vtepLookup": "10.0.0.102", "macLookup": "", "nexthopIp": "10.0.0.22", "error":
-      "", "timestamp": "2020-11-21 13:55:35.207000-08:00"}, {"pathid": 2, "hopCount":
-      2, "namespace": "ospf-ibgp", "hostname": "spine01", "iif": "swp2", "oif": "swp5",
-      "vrf": "default", "isL2": true, "overlay": true, "mtuMatch": true, "inMtu":
-      9216, "outMtu": 9216, "protocol": "ospf", "ipLookup": "10.0.0.102", "vtepLookup":
-      "10.0.0.102", "macLookup": "", "nexthopIp": "10.0.0.102", "error": "", "timestamp":
-      1605995734466}, {"pathid": 2, "hopCount": 3, "namespace": "ospf-ibgp", "hostname":
-      "exit02", "iif": "swp1", "oif": "swp5.3", "vrf": "evpn-vrf", "isL2": false,
-      "overlay": true, "mtuMatch": true, "inMtu": 9216, "outMtu": 9216, "protocol":
-      "bgp", "ipLookup": "172.16.253.1/32", "vtepLookup": "", "macLookup": "", "nexthopIp":
-      "169.254.253.6", "error": "", "timestamp": "2020-11-21 13:55:34.679000-08:00"},
+      "macLookup": "", "nexthopIp": "172.16.1.1", "error": "", "timestamp": "2020-11-21
+      13:55:34.419000-08:00"}, {"pathid": 2, "hopCount": 1, "namespace": "ospf-ibgp",
+      "hostname": "leaf02", "iif": "bond01", "oif": "swp1", "vrf": "evpn-vrf", "isL2":
+      true, "overlay": false, "mtuMatch": true, "inMtu": 9000, "outMtu": 9216, "protocol":
+      "bgp", "ipLookup": "172.16.253.1/32", "vtepLookup": "10.0.0.102", "macLookup":
+      "", "nexthopIp": "10.0.0.22", "error": "", "timestamp": "2020-11-21 13:55:35.207000-08:00"},
+      {"pathid": 2, "hopCount": 2, "namespace": "ospf-ibgp", "hostname": "spine01",
+      "iif": "swp2", "oif": "swp5", "vrf": "default", "isL2": true, "overlay": true,
+      "mtuMatch": true, "inMtu": 9216, "outMtu": 9216, "protocol": "ospf", "ipLookup":
+      "10.0.0.102", "vtepLookup": "10.0.0.102", "macLookup": "", "nexthopIp": "10.0.0.102",
+      "error": "", "timestamp": 1605995734466}, {"pathid": 2, "hopCount": 3, "namespace":
+      "ospf-ibgp", "hostname": "exit02", "iif": "swp1", "oif": "swp5.3", "vrf": "evpn-vrf",
+      "isL2": false, "overlay": true, "mtuMatch": true, "inMtu": 9216, "outMtu": 9216,
+      "protocol": "bgp", "ipLookup": "172.16.253.1/32", "vtepLookup": "", "macLookup":
+      "", "nexthopIp": "169.254.253.6", "error": "", "timestamp": "2020-11-21 13:55:34.679000-08:00"},
       {"pathid": 2, "hopCount": 4, "namespace": "ospf-ibgp", "hostname": "edge01",
       "iif": "eth2.3", "oif": "eth1.4", "vrf": "default", "isL2": false, "overlay":
       false, "mtuMatch": false, "inMtu": 1500, "outMtu": 1500, "protocol": "186",
@@ -1720,22 +1719,21 @@ tests:
       "ospf-ibgp", "hostname": "server101", "iif": "bond0", "oif": "bond0", "vrf":
       "default", "isL2": false, "overlay": false, "mtuMatch": true, "inMtu": 9000,
       "outMtu": 9000, "protocol": "", "ipLookup": "172.16.0.0/16", "vtepLookup": "",
-      "macLookup": "", "nexthopIp": "172.16.1.1", "error": "Possible anycast IP without
-      anycast MAC", "timestamp": "2020-11-21 13:55:34.419000-08:00"}, {"pathid": 3,
-      "hopCount": 1, "namespace": "ospf-ibgp", "hostname": "leaf01", "iif": "bond01",
-      "oif": "swp2", "vrf": "evpn-vrf", "isL2": true, "overlay": false, "mtuMatch":
-      true, "inMtu": 9000, "outMtu": 9216, "protocol": "bgp", "ipLookup": "172.16.253.1/32",
-      "vtepLookup": "10.0.0.102", "macLookup": "", "nexthopIp": "10.0.0.21", "error":
-      "", "timestamp": "2020-11-21 13:55:35.207000-08:00"}, {"pathid": 3, "hopCount":
-      2, "namespace": "ospf-ibgp", "hostname": "spine02", "iif": "swp1", "oif": "swp5",
-      "vrf": "default", "isL2": true, "overlay": true, "mtuMatch": true, "inMtu":
-      9216, "outMtu": 9216, "protocol": "ospf", "ipLookup": "10.0.0.102", "vtepLookup":
-      "10.0.0.102", "macLookup": "", "nexthopIp": "10.0.0.102", "error": "", "timestamp":
-      1605995734468}, {"pathid": 3, "hopCount": 3, "namespace": "ospf-ibgp", "hostname":
-      "exit02", "iif": "swp2", "oif": "swp5.3", "vrf": "evpn-vrf", "isL2": false,
-      "overlay": true, "mtuMatch": true, "inMtu": 9216, "outMtu": 9216, "protocol":
-      "bgp", "ipLookup": "172.16.253.1/32", "vtepLookup": "", "macLookup": "", "nexthopIp":
-      "169.254.253.6", "error": "", "timestamp": "2020-11-21 13:55:34.679000-08:00"},
+      "macLookup": "", "nexthopIp": "172.16.1.1", "error": "", "timestamp": "2020-11-21
+      13:55:34.419000-08:00"}, {"pathid": 3, "hopCount": 1, "namespace": "ospf-ibgp",
+      "hostname": "leaf01", "iif": "bond01", "oif": "swp2", "vrf": "evpn-vrf", "isL2":
+      true, "overlay": false, "mtuMatch": true, "inMtu": 9000, "outMtu": 9216, "protocol":
+      "bgp", "ipLookup": "172.16.253.1/32", "vtepLookup": "10.0.0.102", "macLookup":
+      "", "nexthopIp": "10.0.0.21", "error": "", "timestamp": "2020-11-21 13:55:35.207000-08:00"},
+      {"pathid": 3, "hopCount": 2, "namespace": "ospf-ibgp", "hostname": "spine02",
+      "iif": "swp1", "oif": "swp5", "vrf": "default", "isL2": true, "overlay": true,
+      "mtuMatch": true, "inMtu": 9216, "outMtu": 9216, "protocol": "ospf", "ipLookup":
+      "10.0.0.102", "vtepLookup": "10.0.0.102", "macLookup": "", "nexthopIp": "10.0.0.102",
+      "error": "", "timestamp": 1605995734468}, {"pathid": 3, "hopCount": 3, "namespace":
+      "ospf-ibgp", "hostname": "exit02", "iif": "swp2", "oif": "swp5.3", "vrf": "evpn-vrf",
+      "isL2": false, "overlay": true, "mtuMatch": true, "inMtu": 9216, "outMtu": 9216,
+      "protocol": "bgp", "ipLookup": "172.16.253.1/32", "vtepLookup": "", "macLookup":
+      "", "nexthopIp": "169.254.253.6", "error": "", "timestamp": "2020-11-21 13:55:34.679000-08:00"},
       {"pathid": 3, "hopCount": 4, "namespace": "ospf-ibgp", "hostname": "edge01",
       "iif": "eth2.3", "oif": "eth1.4", "vrf": "default", "isL2": false, "overlay":
       false, "mtuMatch": false, "inMtu": 1500, "outMtu": 1500, "protocol": "186",
@@ -1754,22 +1752,21 @@ tests:
       "ospf-ibgp", "hostname": "server101", "iif": "bond0", "oif": "bond0", "vrf":
       "default", "isL2": false, "overlay": false, "mtuMatch": true, "inMtu": 9000,
       "outMtu": 9000, "protocol": "", "ipLookup": "172.16.0.0/16", "vtepLookup": "",
-      "macLookup": "", "nexthopIp": "172.16.1.1", "error": "Possible anycast IP without
-      anycast MAC", "timestamp": "2020-11-21 13:55:34.419000-08:00"}, {"pathid": 4,
-      "hopCount": 1, "namespace": "ospf-ibgp", "hostname": "leaf02", "iif": "bond01",
-      "oif": "swp2", "vrf": "evpn-vrf", "isL2": true, "overlay": false, "mtuMatch":
-      true, "inMtu": 9000, "outMtu": 9216, "protocol": "bgp", "ipLookup": "172.16.253.1/32",
-      "vtepLookup": "10.0.0.102", "macLookup": "", "nexthopIp": "10.0.0.21", "error":
-      "", "timestamp": "2020-11-21 13:55:35.207000-08:00"}, {"pathid": 4, "hopCount":
-      2, "namespace": "ospf-ibgp", "hostname": "spine02", "iif": "swp2", "oif": "swp5",
-      "vrf": "default", "isL2": true, "overlay": true, "mtuMatch": true, "inMtu":
-      9216, "outMtu": 9216, "protocol": "ospf", "ipLookup": "10.0.0.102", "vtepLookup":
-      "10.0.0.102", "macLookup": "", "nexthopIp": "10.0.0.102", "error": "", "timestamp":
-      1605995734468}, {"pathid": 4, "hopCount": 3, "namespace": "ospf-ibgp", "hostname":
-      "exit02", "iif": "swp2", "oif": "swp5.3", "vrf": "evpn-vrf", "isL2": false,
-      "overlay": true, "mtuMatch": true, "inMtu": 9216, "outMtu": 9216, "protocol":
-      "bgp", "ipLookup": "172.16.253.1/32", "vtepLookup": "", "macLookup": "", "nexthopIp":
-      "169.254.253.6", "error": "", "timestamp": "2020-11-21 13:55:34.679000-08:00"},
+      "macLookup": "", "nexthopIp": "172.16.1.1", "error": "", "timestamp": "2020-11-21
+      13:55:34.419000-08:00"}, {"pathid": 4, "hopCount": 1, "namespace": "ospf-ibgp",
+      "hostname": "leaf02", "iif": "bond01", "oif": "swp2", "vrf": "evpn-vrf", "isL2":
+      true, "overlay": false, "mtuMatch": true, "inMtu": 9000, "outMtu": 9216, "protocol":
+      "bgp", "ipLookup": "172.16.253.1/32", "vtepLookup": "10.0.0.102", "macLookup":
+      "", "nexthopIp": "10.0.0.21", "error": "", "timestamp": "2020-11-21 13:55:35.207000-08:00"},
+      {"pathid": 4, "hopCount": 2, "namespace": "ospf-ibgp", "hostname": "spine02",
+      "iif": "swp2", "oif": "swp5", "vrf": "default", "isL2": true, "overlay": true,
+      "mtuMatch": true, "inMtu": 9216, "outMtu": 9216, "protocol": "ospf", "ipLookup":
+      "10.0.0.102", "vtepLookup": "10.0.0.102", "macLookup": "", "nexthopIp": "10.0.0.102",
+      "error": "", "timestamp": 1605995734468}, {"pathid": 4, "hopCount": 3, "namespace":
+      "ospf-ibgp", "hostname": "exit02", "iif": "swp2", "oif": "swp5.3", "vrf": "evpn-vrf",
+      "isL2": false, "overlay": true, "mtuMatch": true, "inMtu": 9216, "outMtu": 9216,
+      "protocol": "bgp", "ipLookup": "172.16.253.1/32", "vtepLookup": "", "macLookup":
+      "", "nexthopIp": "169.254.253.6", "error": "", "timestamp": "2020-11-21 13:55:34.679000-08:00"},
       {"pathid": 4, "hopCount": 4, "namespace": "ospf-ibgp", "hostname": "edge01",
       "iif": "eth2.3", "oif": "eth1.4", "vrf": "default", "isL2": false, "overlay":
       false, "mtuMatch": false, "inMtu": 1500, "outMtu": 1500, "protocol": "186",
@@ -1788,22 +1785,21 @@ tests:
       "ospf-ibgp", "hostname": "server101", "iif": "bond0", "oif": "bond0", "vrf":
       "default", "isL2": false, "overlay": false, "mtuMatch": true, "inMtu": 9000,
       "outMtu": 9000, "protocol": "", "ipLookup": "172.16.0.0/16", "vtepLookup": "",
-      "macLookup": "", "nexthopIp": "172.16.1.1", "error": "Possible anycast IP without
-      anycast MAC", "timestamp": "2020-11-21 13:55:34.419000-08:00"}, {"pathid": 5,
-      "hopCount": 1, "namespace": "ospf-ibgp", "hostname": "leaf01", "iif": "bond01",
-      "oif": "swp1", "vrf": "evpn-vrf", "isL2": true, "overlay": false, "mtuMatch":
-      true, "inMtu": 9000, "outMtu": 9216, "protocol": "bgp", "ipLookup": "172.16.253.1/32",
-      "vtepLookup": "10.0.0.102", "macLookup": "", "nexthopIp": "10.0.0.22", "error":
-      "", "timestamp": "2020-11-21 13:55:35.207000-08:00"}, {"pathid": 5, "hopCount":
-      2, "namespace": "ospf-ibgp", "hostname": "spine01", "iif": "swp1", "oif": "swp5",
-      "vrf": "default", "isL2": true, "overlay": true, "mtuMatch": true, "inMtu":
-      9216, "outMtu": 9216, "protocol": "ospf", "ipLookup": "10.0.0.102", "vtepLookup":
-      "10.0.0.102", "macLookup": "", "nexthopIp": "10.0.0.102", "error": "", "timestamp":
-      1605995734466}, {"pathid": 5, "hopCount": 3, "namespace": "ospf-ibgp", "hostname":
-      "exit02", "iif": "swp1", "oif": "swp5.3", "vrf": "evpn-vrf", "isL2": false,
-      "overlay": true, "mtuMatch": true, "inMtu": 9216, "outMtu": 9216, "protocol":
-      "bgp", "ipLookup": "172.16.253.1/32", "vtepLookup": "", "macLookup": "", "nexthopIp":
-      "169.254.253.6", "error": "", "timestamp": "2020-11-21 13:55:34.679000-08:00"},
+      "macLookup": "", "nexthopIp": "172.16.1.1", "error": "", "timestamp": "2020-11-21
+      13:55:34.419000-08:00"}, {"pathid": 5, "hopCount": 1, "namespace": "ospf-ibgp",
+      "hostname": "leaf01", "iif": "bond01", "oif": "swp1", "vrf": "evpn-vrf", "isL2":
+      true, "overlay": false, "mtuMatch": true, "inMtu": 9000, "outMtu": 9216, "protocol":
+      "bgp", "ipLookup": "172.16.253.1/32", "vtepLookup": "10.0.0.102", "macLookup":
+      "", "nexthopIp": "10.0.0.22", "error": "", "timestamp": "2020-11-21 13:55:35.207000-08:00"},
+      {"pathid": 5, "hopCount": 2, "namespace": "ospf-ibgp", "hostname": "spine01",
+      "iif": "swp1", "oif": "swp5", "vrf": "default", "isL2": true, "overlay": true,
+      "mtuMatch": true, "inMtu": 9216, "outMtu": 9216, "protocol": "ospf", "ipLookup":
+      "10.0.0.102", "vtepLookup": "10.0.0.102", "macLookup": "", "nexthopIp": "10.0.0.102",
+      "error": "", "timestamp": 1605995734466}, {"pathid": 5, "hopCount": 3, "namespace":
+      "ospf-ibgp", "hostname": "exit02", "iif": "swp1", "oif": "swp5.3", "vrf": "evpn-vrf",
+      "isL2": false, "overlay": true, "mtuMatch": true, "inMtu": 9216, "outMtu": 9216,
+      "protocol": "bgp", "ipLookup": "172.16.253.1/32", "vtepLookup": "", "macLookup":
+      "", "nexthopIp": "169.254.253.6", "error": "", "timestamp": "2020-11-21 13:55:34.679000-08:00"},
       {"pathid": 5, "hopCount": 4, "namespace": "ospf-ibgp", "hostname": "edge01",
       "iif": "eth2.3", "oif": "eth2.4", "vrf": "default", "isL2": false, "overlay":
       false, "mtuMatch": false, "inMtu": 1500, "outMtu": 1500, "protocol": "186",
@@ -1822,22 +1818,21 @@ tests:
       "ospf-ibgp", "hostname": "server101", "iif": "bond0", "oif": "bond0", "vrf":
       "default", "isL2": false, "overlay": false, "mtuMatch": true, "inMtu": 9000,
       "outMtu": 9000, "protocol": "", "ipLookup": "172.16.0.0/16", "vtepLookup": "",
-      "macLookup": "", "nexthopIp": "172.16.1.1", "error": "Possible anycast IP without
-      anycast MAC", "timestamp": "2020-11-21 13:55:34.419000-08:00"}, {"pathid": 6,
-      "hopCount": 1, "namespace": "ospf-ibgp", "hostname": "leaf02", "iif": "bond01",
-      "oif": "swp1", "vrf": "evpn-vrf", "isL2": true, "overlay": false, "mtuMatch":
-      true, "inMtu": 9000, "outMtu": 9216, "protocol": "bgp", "ipLookup": "172.16.253.1/32",
-      "vtepLookup": "10.0.0.102", "macLookup": "", "nexthopIp": "10.0.0.22", "error":
-      "", "timestamp": "2020-11-21 13:55:35.207000-08:00"}, {"pathid": 6, "hopCount":
-      2, "namespace": "ospf-ibgp", "hostname": "spine01", "iif": "swp2", "oif": "swp5",
-      "vrf": "default", "isL2": true, "overlay": true, "mtuMatch": true, "inMtu":
-      9216, "outMtu": 9216, "protocol": "ospf", "ipLookup": "10.0.0.102", "vtepLookup":
-      "10.0.0.102", "macLookup": "", "nexthopIp": "10.0.0.102", "error": "", "timestamp":
-      1605995734466}, {"pathid": 6, "hopCount": 3, "namespace": "ospf-ibgp", "hostname":
-      "exit02", "iif": "swp1", "oif": "swp5.3", "vrf": "evpn-vrf", "isL2": false,
-      "overlay": true, "mtuMatch": true, "inMtu": 9216, "outMtu": 9216, "protocol":
-      "bgp", "ipLookup": "172.16.253.1/32", "vtepLookup": "", "macLookup": "", "nexthopIp":
-      "169.254.253.6", "error": "", "timestamp": "2020-11-21 13:55:34.679000-08:00"},
+      "macLookup": "", "nexthopIp": "172.16.1.1", "error": "", "timestamp": "2020-11-21
+      13:55:34.419000-08:00"}, {"pathid": 6, "hopCount": 1, "namespace": "ospf-ibgp",
+      "hostname": "leaf02", "iif": "bond01", "oif": "swp1", "vrf": "evpn-vrf", "isL2":
+      true, "overlay": false, "mtuMatch": true, "inMtu": 9000, "outMtu": 9216, "protocol":
+      "bgp", "ipLookup": "172.16.253.1/32", "vtepLookup": "10.0.0.102", "macLookup":
+      "", "nexthopIp": "10.0.0.22", "error": "", "timestamp": "2020-11-21 13:55:35.207000-08:00"},
+      {"pathid": 6, "hopCount": 2, "namespace": "ospf-ibgp", "hostname": "spine01",
+      "iif": "swp2", "oif": "swp5", "vrf": "default", "isL2": true, "overlay": true,
+      "mtuMatch": true, "inMtu": 9216, "outMtu": 9216, "protocol": "ospf", "ipLookup":
+      "10.0.0.102", "vtepLookup": "10.0.0.102", "macLookup": "", "nexthopIp": "10.0.0.102",
+      "error": "", "timestamp": 1605995734466}, {"pathid": 6, "hopCount": 3, "namespace":
+      "ospf-ibgp", "hostname": "exit02", "iif": "swp1", "oif": "swp5.3", "vrf": "evpn-vrf",
+      "isL2": false, "overlay": true, "mtuMatch": true, "inMtu": 9216, "outMtu": 9216,
+      "protocol": "bgp", "ipLookup": "172.16.253.1/32", "vtepLookup": "", "macLookup":
+      "", "nexthopIp": "169.254.253.6", "error": "", "timestamp": "2020-11-21 13:55:34.679000-08:00"},
       {"pathid": 6, "hopCount": 4, "namespace": "ospf-ibgp", "hostname": "edge01",
       "iif": "eth2.3", "oif": "eth2.4", "vrf": "default", "isL2": false, "overlay":
       false, "mtuMatch": false, "inMtu": 1500, "outMtu": 1500, "protocol": "186",
@@ -1856,22 +1851,21 @@ tests:
       "ospf-ibgp", "hostname": "server101", "iif": "bond0", "oif": "bond0", "vrf":
       "default", "isL2": false, "overlay": false, "mtuMatch": true, "inMtu": 9000,
       "outMtu": 9000, "protocol": "", "ipLookup": "172.16.0.0/16", "vtepLookup": "",
-      "macLookup": "", "nexthopIp": "172.16.1.1", "error": "Possible anycast IP without
-      anycast MAC", "timestamp": "2020-11-21 13:55:34.419000-08:00"}, {"pathid": 7,
-      "hopCount": 1, "namespace": "ospf-ibgp", "hostname": "leaf01", "iif": "bond01",
-      "oif": "swp2", "vrf": "evpn-vrf", "isL2": true, "overlay": false, "mtuMatch":
-      true, "inMtu": 9000, "outMtu": 9216, "protocol": "bgp", "ipLookup": "172.16.253.1/32",
-      "vtepLookup": "10.0.0.102", "macLookup": "", "nexthopIp": "10.0.0.21", "error":
-      "", "timestamp": "2020-11-21 13:55:35.207000-08:00"}, {"pathid": 7, "hopCount":
-      2, "namespace": "ospf-ibgp", "hostname": "spine02", "iif": "swp1", "oif": "swp5",
-      "vrf": "default", "isL2": true, "overlay": true, "mtuMatch": true, "inMtu":
-      9216, "outMtu": 9216, "protocol": "ospf", "ipLookup": "10.0.0.102", "vtepLookup":
-      "10.0.0.102", "macLookup": "", "nexthopIp": "10.0.0.102", "error": "", "timestamp":
-      1605995734468}, {"pathid": 7, "hopCount": 3, "namespace": "ospf-ibgp", "hostname":
-      "exit02", "iif": "swp2", "oif": "swp5.3", "vrf": "evpn-vrf", "isL2": false,
-      "overlay": true, "mtuMatch": true, "inMtu": 9216, "outMtu": 9216, "protocol":
-      "bgp", "ipLookup": "172.16.253.1/32", "vtepLookup": "", "macLookup": "", "nexthopIp":
-      "169.254.253.6", "error": "", "timestamp": "2020-11-21 13:55:34.679000-08:00"},
+      "macLookup": "", "nexthopIp": "172.16.1.1", "error": "", "timestamp": "2020-11-21
+      13:55:34.419000-08:00"}, {"pathid": 7, "hopCount": 1, "namespace": "ospf-ibgp",
+      "hostname": "leaf01", "iif": "bond01", "oif": "swp2", "vrf": "evpn-vrf", "isL2":
+      true, "overlay": false, "mtuMatch": true, "inMtu": 9000, "outMtu": 9216, "protocol":
+      "bgp", "ipLookup": "172.16.253.1/32", "vtepLookup": "10.0.0.102", "macLookup":
+      "", "nexthopIp": "10.0.0.21", "error": "", "timestamp": "2020-11-21 13:55:35.207000-08:00"},
+      {"pathid": 7, "hopCount": 2, "namespace": "ospf-ibgp", "hostname": "spine02",
+      "iif": "swp1", "oif": "swp5", "vrf": "default", "isL2": true, "overlay": true,
+      "mtuMatch": true, "inMtu": 9216, "outMtu": 9216, "protocol": "ospf", "ipLookup":
+      "10.0.0.102", "vtepLookup": "10.0.0.102", "macLookup": "", "nexthopIp": "10.0.0.102",
+      "error": "", "timestamp": 1605995734468}, {"pathid": 7, "hopCount": 3, "namespace":
+      "ospf-ibgp", "hostname": "exit02", "iif": "swp2", "oif": "swp5.3", "vrf": "evpn-vrf",
+      "isL2": false, "overlay": true, "mtuMatch": true, "inMtu": 9216, "outMtu": 9216,
+      "protocol": "bgp", "ipLookup": "172.16.253.1/32", "vtepLookup": "", "macLookup":
+      "", "nexthopIp": "169.254.253.6", "error": "", "timestamp": "2020-11-21 13:55:34.679000-08:00"},
       {"pathid": 7, "hopCount": 4, "namespace": "ospf-ibgp", "hostname": "edge01",
       "iif": "eth2.3", "oif": "eth2.4", "vrf": "default", "isL2": false, "overlay":
       false, "mtuMatch": false, "inMtu": 1500, "outMtu": 1500, "protocol": "186",
@@ -1890,22 +1884,21 @@ tests:
       "ospf-ibgp", "hostname": "server101", "iif": "bond0", "oif": "bond0", "vrf":
       "default", "isL2": false, "overlay": false, "mtuMatch": true, "inMtu": 9000,
       "outMtu": 9000, "protocol": "", "ipLookup": "172.16.0.0/16", "vtepLookup": "",
-      "macLookup": "", "nexthopIp": "172.16.1.1", "error": "Possible anycast IP without
-      anycast MAC", "timestamp": "2020-11-21 13:55:34.419000-08:00"}, {"pathid": 8,
-      "hopCount": 1, "namespace": "ospf-ibgp", "hostname": "leaf02", "iif": "bond01",
-      "oif": "swp2", "vrf": "evpn-vrf", "isL2": true, "overlay": false, "mtuMatch":
-      true, "inMtu": 9000, "outMtu": 9216, "protocol": "bgp", "ipLookup": "172.16.253.1/32",
-      "vtepLookup": "10.0.0.102", "macLookup": "", "nexthopIp": "10.0.0.21", "error":
-      "", "timestamp": "2020-11-21 13:55:35.207000-08:00"}, {"pathid": 8, "hopCount":
-      2, "namespace": "ospf-ibgp", "hostname": "spine02", "iif": "swp2", "oif": "swp5",
-      "vrf": "default", "isL2": true, "overlay": true, "mtuMatch": true, "inMtu":
-      9216, "outMtu": 9216, "protocol": "ospf", "ipLookup": "10.0.0.102", "vtepLookup":
-      "10.0.0.102", "macLookup": "", "nexthopIp": "10.0.0.102", "error": "", "timestamp":
-      1605995734468}, {"pathid": 8, "hopCount": 3, "namespace": "ospf-ibgp", "hostname":
-      "exit02", "iif": "swp2", "oif": "swp5.3", "vrf": "evpn-vrf", "isL2": false,
-      "overlay": true, "mtuMatch": true, "inMtu": 9216, "outMtu": 9216, "protocol":
-      "bgp", "ipLookup": "172.16.253.1/32", "vtepLookup": "", "macLookup": "", "nexthopIp":
-      "169.254.253.6", "error": "", "timestamp": "2020-11-21 13:55:34.679000-08:00"},
+      "macLookup": "", "nexthopIp": "172.16.1.1", "error": "", "timestamp": "2020-11-21
+      13:55:34.419000-08:00"}, {"pathid": 8, "hopCount": 1, "namespace": "ospf-ibgp",
+      "hostname": "leaf02", "iif": "bond01", "oif": "swp2", "vrf": "evpn-vrf", "isL2":
+      true, "overlay": false, "mtuMatch": true, "inMtu": 9000, "outMtu": 9216, "protocol":
+      "bgp", "ipLookup": "172.16.253.1/32", "vtepLookup": "10.0.0.102", "macLookup":
+      "", "nexthopIp": "10.0.0.21", "error": "", "timestamp": "2020-11-21 13:55:35.207000-08:00"},
+      {"pathid": 8, "hopCount": 2, "namespace": "ospf-ibgp", "hostname": "spine02",
+      "iif": "swp2", "oif": "swp5", "vrf": "default", "isL2": true, "overlay": true,
+      "mtuMatch": true, "inMtu": 9216, "outMtu": 9216, "protocol": "ospf", "ipLookup":
+      "10.0.0.102", "vtepLookup": "10.0.0.102", "macLookup": "", "nexthopIp": "10.0.0.102",
+      "error": "", "timestamp": 1605995734468}, {"pathid": 8, "hopCount": 3, "namespace":
+      "ospf-ibgp", "hostname": "exit02", "iif": "swp2", "oif": "swp5.3", "vrf": "evpn-vrf",
+      "isL2": false, "overlay": true, "mtuMatch": true, "inMtu": 9216, "outMtu": 9216,
+      "protocol": "bgp", "ipLookup": "172.16.253.1/32", "vtepLookup": "", "macLookup":
+      "", "nexthopIp": "169.254.253.6", "error": "", "timestamp": "2020-11-21 13:55:34.679000-08:00"},
       {"pathid": 8, "hopCount": 4, "namespace": "ospf-ibgp", "hostname": "edge01",
       "iif": "eth2.3", "oif": "eth2.4", "vrf": "default", "isL2": false, "overlay":
       false, "mtuMatch": false, "inMtu": 1500, "outMtu": 1500, "protocol": "186",
