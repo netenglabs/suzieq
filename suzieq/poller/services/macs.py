@@ -113,18 +113,12 @@ class MacsService(Service):
 
     def _clean_eos_data(self, processed_data, raw_data):
 
+        foo = 0
         for entry in processed_data:
             if '.' in entry['macaddr']:
                 entry['macaddr'] = convert_macaddr_format_to_colon(
                     entry.get('macaddr', '0000.0000.0000'))
-            vtepIP = re.match(r'(\S+)\(([0-9.]+)\)', entry['oif'])
-            if vtepIP:
-                entry['remoteVtepIp'] = vtepIP.group(2)
-                entry['oif'] = vtepIP.group(1)
-                entry['flags'] = 'remote'
-            else:
-                entry['oif'] = expand_eos_ifname(entry['oif'])
-                entry['remoteVtepIp'] = ''
+            entry['oif'] = expand_eos_ifname(entry['oif'])
             self._add_mackey_protocol(entry)
 
         return processed_data
