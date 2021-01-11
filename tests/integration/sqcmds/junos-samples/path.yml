@@ -17,24 +17,28 @@ tests:
   marks: path show junos
 - command: path show --dest=10.10.1.10 --src=10.10.2.20 --format=json --namespace=junos
   data-directory: tests/data/junos/parquet-out/
+  error:
+    error: '[{"pathid": 1, "hopCount": 0, "namespace": "junos", "hostname": "srv22",
+      "iif": "eth1", "oif": "eth1", "vrf": "default", "isL2": true, "overlay": false,
+      "mtuMatch": true, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup":
+      "10.10.0.0/16", "vtepLookup": "", "macLookup": "00:01:95:00:01:02", "nexthopIp":
+      "10.10.2.254", "error": "Possible anycast IP without anycast MAC", "timestamp":
+      "2020-11-21 11:56:34.161000-08:00"}, {"pathid": 1, "hopCount": 1, "namespace":
+      "junos", "hostname": "vqfx2", "iif": "xe-0/0/2.0", "oif": "xe-0/0/0.0", "vrf":
+      "default", "isL2": true, "overlay": false, "mtuMatch": false, "inMtu": 1514,
+      "outMtu": 1500, "protocol": "direct", "ipLookup": "10.10.1.0/24", "vtepLookup":
+      "9.9.9.1", "macLookup": "", "nexthopIp": "10.0.0.1", "error": "", "timestamp":
+      "2020-11-21 11:56:36.813000-08:00"}, {"pathid": 1, "hopCount": 2, "namespace":
+      "junos", "hostname": "vqfx1", "iif": "xe-0/0/0.0", "oif": "irb.10000", "vrf":
+      "default", "isL2": false, "overlay": true, "mtuMatch": true, "inMtu": 1500,
+      "outMtu": 1500, "protocol": "evpn", "ipLookup": "10.10.1.10/32", "vtepLookup":
+      "", "macLookup": "", "nexthopIp": "10.10.1.10", "error": "", "timestamp": "2020-11-21
+      11:56:35.643000-08:00"}, {"pathid": 1, "hopCount": 3, "namespace": "junos",
+      "hostname": "srv11", "iif": "eth1", "oif": "eth1", "vrf": "default", "isL2":
+      false, "overlay": false, "mtuMatch": true, "inMtu": 1500, "outMtu": 1500, "protocol":
+      "", "ipLookup": "", "vtepLookup": "", "macLookup": "", "nexthopIp": "", "error":
+      "", "timestamp": 1605988594033}]'
   marks: path show junos
-  output: '[{"pathid": 1, "hopCount": 0, "namespace": "junos", "hostname": "srv22",
-    "iif": "eth1", "oif": "eth1", "vrf": "default", "isL2": false, "overlay": false,
-    "mtuMatch": true, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup": "10.10.0.0/16",
-    "vtepLookup": "", "macLookup": "", "nexthopIp": "10.10.2.254", "timestamp": "2020-11-21
-    11:56:34.161000-08:00"}, {"pathid": 1, "hopCount": 1, "namespace": "junos", "hostname":
-    "vqfx2", "iif": "xe-0/0/2.0", "oif": "xe-0/0/0.0", "vrf": "default", "isL2": true,
-    "overlay": false, "mtuMatch": false, "inMtu": 1514, "outMtu": 1500, "protocol":
-    "direct", "ipLookup": "10.10.1.0/24", "vtepLookup": "9.9.9.1", "macLookup": "",
-    "nexthopIp": "10.0.0.1", "timestamp": "2020-11-21 11:56:36.813000-08:00"}, {"pathid":
-    1, "hopCount": 2, "namespace": "junos", "hostname": "vqfx1", "iif": "xe-0/0/0.0",
-    "oif": "irb.10000", "vrf": "default", "isL2": false, "overlay": true, "mtuMatch":
-    true, "inMtu": 1500, "outMtu": 1500, "protocol": "evpn", "ipLookup": "10.10.1.10/32",
-    "vtepLookup": "", "macLookup": "", "nexthopIp": "10.10.1.10", "timestamp": "2020-11-21
-    11:56:35.643000-08:00"}, {"pathid": 1, "hopCount": 3, "namespace": "junos", "hostname":
-    "srv11", "iif": "eth1", "oif": "eth1", "vrf": "default", "isL2": false, "overlay":
-    false, "mtuMatch": true, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup":
-    "", "vtepLookup": "", "macLookup": "", "nexthopIp": "", "timestamp": 1605988594033}]'
 - command: path summarize --dest=10.10.2.20 --src=10.10.1.10 --format=json --namespace=junos
   data-directory: tests/data/junos/parquet-out/
   marks: path summarize junos

@@ -1,19 +1,41 @@
 [
     {
         "status": 0,
-        "timestamp": 1605190171070,
+        "timestamp": 1610377086556,
         "cmd": "sudo vtysh -c \"show evpn vni detail json\"",
         "devtype": "linux",
         "namespace": "eos",
         "hostname": "firewall01",
-        "address": "10.255.2.149",
+        "address": "10.255.2.169",
         "version": "18.04",
         "data": ""
     }
 ][
     {
         "status": 0,
-        "timestamp": 1605190172693,
+        "timestamp": 1610377087794,
+        "cmd": "show evpn instance extensive | display json",
+        "devtype": "junos-qfx",
+        "namespace": "eos",
+        "hostname": "dcedge01",
+        "address": "10.255.2.250",
+        "version": 0,
+        "data": "{\n    \"evpn-instance-information\" : [\n    {\n        \"attributes\" : {\"xmlns\" : \"http://xml.juniper.net/junos/19.4R0/junos-routing\"}\n    }\n    ]\n}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1610377089225,
+        "cmd": "show evpn l3-context extensive | display json",
+        "devtype": "junos-qfx",
+        "namespace": "eos",
+        "hostname": "dcedge01",
+        "address": "10.255.2.250",
+        "version": 0,
+        "data": "{\n    \"evpn-l3-context-information\" : [\n    {\n        \"attributes\" : {\"xmlns\" : \"http://xml.juniper.net/junos/19.4R0/junos-routing\"}\n    }\n    ]\n}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1610377090856,
         "cmd": "show ethernet-switching vxlan-tunnel-end-point remote | display json",
         "devtype": "junos-qfx",
         "namespace": "eos",
