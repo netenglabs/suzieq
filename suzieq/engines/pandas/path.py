@@ -220,17 +220,9 @@ class PathObj(SqEngineObject):
             return fhr_df
 
         rslt_df = self._arpnd_df.query(
-            f'ipAddress=="{ip}"')
+            f'ipAddress=="{ip}" and not remote')
 
         if rslt_df.empty:
-            return fhr_df
-
-        if len(rslt_df) == 1:
-            # If a single result avoid more queries
-            fhr_df = self._if_df.query(
-                'hostname=="{}" and ifname=="{}"'.format(
-                    rslt_df["hostname"].unique().tolist()[0],
-                    rslt_df["oif"].unique().tolist()[0]))
             return fhr_df
 
         # If we have more than one MAC addr, its hard to know which one
@@ -249,24 +241,33 @@ class PathObj(SqEngineObject):
             else:
                 macdf = macdf.query(f'vlan != 0 and not oif.isin({ign_ifs})')
 
-            for row in macdf.iterrows():
+        for row in rslt_df.itertuples():
+            mac_entry = macdf.query(f'hostname == "{row.hostname}"')
+            if not mac_entry.empty:
+                # for row in macdf.iterrows():
                 idf = self._if_df.query(
-                    # Row 0 is the index,row 1 contains the real data
-                    'hostname=="{}" and ifname=="{}"'.format(
-                        row[1]['hostname'], row[1]['oif'])).copy()
+                    f'hostname=="{row.hostname}" and '
+                    f'ifname=="{mac_entry.oif.iloc[0]}"').copy()
+
                 # We need to replace the VLAN in the if_df with what
                 # is obtained from the MAC because of trunk ports.
                 if idf.empty:
                     continue
-                idf.at[idf.index, 'vlan'] = row[1].vlan
+                idf.at[idf.index, 'vlan'] = mac_entry.vlan.iloc[0]
                 if (idf.master == 'bridge').all():
-                    idf.at[idf.index, 'ipAddressList'] = ip
+                    idf.at[idf.index, 'ipAddressList'] = f'{ip}/32'
                     # Assuming the VRF is identical across multiple entries
                     idf.at[idf.index, 'master'] = rslt_df.iloc[0].vrf
-                if fhr_df.empty:
-                    fhr_df = idf
-                else:
-                    fhr_df = pd.concat([fhr_df, idf])
+            else:
+                idf = self._if_df.query(f'hostname=="{row.hostname}" and '
+                                        f'ifname=="{row.oif}" and '
+                                        f'type=="vlan"').copy()
+                if idf.empty:
+                    continue
+            if fhr_df.empty:
+                fhr_df = idf
+            else:
+                fhr_df = pd.concat([fhr_df, idf])
         return fhr_df
 
     def _get_if_vlan(self, device: str, ifname: str) -> int:
@@ -502,9 +503,11 @@ class PathObj(SqEngineObject):
                 new_nexthop_list.append((nhip, iface, overlay, is_l2,
                                          protocol, timestamp))
 
+        on_src_node = device in self.src_device
         for (nhip, iface, overlay, is_l2, protocol,
              timestamp) in new_nexthop_list:
             df = pd.DataFrame()
+            errormsg = ''
             if is_l2 and macaddr and not overlay:
                 if (not nhip or nhip == 'None') and iface:
                     addr = dest + '/'
@@ -542,12 +545,21 @@ class PathObj(SqEngineObject):
                             f'and type != "bond_slave"')
                 elif protocol == 'direct':
                     continue
+                nhip_df = self._if_df.query(
+                    f'ipAddressList.str.startswith("{nhip}/") and '
+                    f'type != "bond_slave" and hostname != "{device}"')
+                if df.empty and not nhip_df.empty:
+                    df = nhip_df
+                elif on_src_node and not df.empty and not nhip_df.empty:
+                    if ((df.hostname.unique().tolist() !=
+                         nhip_df.hostname.unique().tolist()) and
+                        (df.macaddr.unique().tolist() !=
+                         nhip_df.macaddr.unique().tolist())):
+                        errormsg = 'Possible anycast IP without anycast MAC'
+                        is_l2 = True
+
                 if df.empty:
-                    df = self._if_df.query(
-                        f'ipAddressList.str.startswith("{nhip}") and '
-                        f'type !="bond_slave"')
-                    if df.empty:
-                        continue
+                    continue
 
             # In case of centralized EVPN, its possible to find the NHIP on
             # unconnected devices if this is still the source device i.e.
@@ -559,16 +571,10 @@ class PathObj(SqEngineObject):
             else:
                 check_fhr = None
 
-            diffhosts = []
             if check_fhr:
                 fhr_df = self._find_fhr_df(device, check_fhr)
                 if not fhr_df.empty:
                     fhr_hosts = set(fhr_df['hostname'].tolist())
-                    dfhosts = set(df.hostname.tolist())
-                    if fhr_hosts != dfhosts:
-                        # This may not be good, why are we using only one of
-                        # our first hop routers?
-                        diffhosts = fhr_hosts.symmetric_difference(dfhosts)
 
                     if check_fhr != self.dest and device not in fhr_hosts:
                         # Avoid looping everytime we hit the dest device
@@ -593,11 +599,6 @@ class PathObj(SqEngineObject):
                                 .drop(columns=['ifname_x']) \
                                 .rename(columns={'ifname_y': 'ifname'})
 
-            if diffhosts and dfhosts.intersection(fhr_hosts):
-                errormsg = 'Possible anycast IP without anycast MAC'
-            else:
-                errormsg = ''
-
             # In case of some NOS such as NXOS with OSPF unnumbered, multiple
             # interfaces from the same device have the same IP and MAC. This
             # needs to be filtered to the precise interface. We do this by
@@ -618,7 +619,7 @@ class PathObj(SqEngineObject):
             df.apply(lambda x, nexthops:
                      nexthops.append((iface, x['hostname'],
                                       x['ifname'],  overlay,
-                                      is_l2 or x.hostname in diffhosts, nhip,
+                                      is_l2, nhip,
                                       macaddr or x.macaddr, protocol, errormsg,
                                       timestamp))
                      if (x['namespace'] in self.namespace) else None,
