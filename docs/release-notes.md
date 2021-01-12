@@ -1,12 +1,16 @@
 ## Release Notes
 
-## 0.86 (Jan 11, 2020)
+## 0.8.7 (Jan 11, 2020)
+
+A hotfix release to ensure REST server works. 0.8.6. broke the REST interface. 
+
+## 0.8.6 (Jan 11, 2020)
 
 This is another quick release to make path work well in more conditions including support for VXLAN L2 trace with EOS, reverse path check, handling NXOS vagaries like having interface names such as "vPC Peer Link" instead of the real peerlink interface name. We also added both in and out MTU to the output so that users can spot the issue in the path output itself.
 
 The one additional feature we added was to allow users to specify the location and name of the SSL ceriticate and key files needed for the REST server. This feature was added thanks to Dennis Fanshaw working at a hyposcaler hyperbolic.
 
-## 0.85 (Jan 4, 2020)
+## 0.8.5 (Jan 4, 2020)
 
 This is mainly improvements to path tracing, focused on debuging any issues with forwarding along the path. Visually, the way you can use path trace is far more interactive to troubleshoot than the first version. In the process of doing this, the release also found a bunch of data gathering issues with different NOS and fixed them, including capturing MTU on NXOS switched ports, fixing the mac table entries for Linux bridge so that the VLAN was properly derived for remote macs, getting the MAC address for Junos IRB interfaces and so on.
 
