@@ -15,6 +15,7 @@ from urllib.parse import urlparse
 import asyncio
 import asyncssh
 import aiohttp
+from dateparser import parse
 from asyncio.subprocess import PIPE
 from concurrent.futures._base import TimeoutError
 
@@ -361,6 +362,8 @@ class Node(object):
             self.__class__ = CumulusNode
         elif self.devtype == "eos":
             self.__class__ = EosNode
+        elif self.devtype == "iosxr":
+            self.__class__ = IosXRNode
         elif self.devtype.startswith("junos"):
             self.__class__ = JunosNode
         elif self.devtype == "nxos":
@@ -376,7 +379,8 @@ class Node(object):
         # hostnamectl on Linux systems. That's all we support today.
         await self.exec_cmd(self._parse_device_type_hostname,
                             ["show version", "hostnamectl",
-                             "cat /etc/os-release", "show hostname"], None)
+                             "cat /etc/os-release",
+                             "show hostname", "show run hostname"], None)
 
     async def _parse_device_type_hostname(self, output, cb_token) -> None:
         devtype = ""
@@ -401,6 +405,8 @@ class Node(object):
                 devtype = "nxos"
             elif "SONiC" in data:
                 devtype = "sonic"
+            elif "Cisco IOS XR" in data:
+                devtype = "iosxr"
 
             if devtype.startswith("junos"):
                 hmatch = re.search(r'Hostname:\s+(\S+)\n', data)
@@ -409,6 +415,12 @@ class Node(object):
             elif devtype == "nxos":
                 data = output[3]["data"]
                 hostname = data.strip()
+            elif devtype == "iosxr":
+                if output[4]['status'] == 0:
+                    data = output[4]['data']
+                    hostname = re.match(r'^hostname (\S+)', data)
+                    if hostname:
+                        hostname = hostname.strip()
             elif output[3]["status"] == 0:
                 hostname = output[3]["data"].strip()
 
@@ -965,6 +977,32 @@ class CumulusNode(Node):
                               "{} due to {}".format(self.address, str(e)))
 
         await service_callback(result, cb_token)
+
+
+class IosXRNode(Node):
+
+    async def init_boot_time(self):
+        """Fill in the boot time of the node by running requisite cmd"""
+        await self.exec_cmd(self._parse_boottime_hostname,
+                            ["show version", "show run hostname"], None)
+
+    async def _parse_boottime_hostname(self, output, cb_token) -> None:
+        '''Parse the version for uptime and hostname'''
+        if output[0]["status"] == 0:
+            data = output[0]['data']
+            timestr = re.search(r'uptime is (.*)\n', data)
+            if timestr:
+                self.bootupTimestamp = int(datetime.utcfromtimestamp(
+                    parse(timestr.group(1)).timestamp()).timestamp()*1000)
+            else:
+                self.logger.error(f'Cannot parse uptime from {self.address}')
+                self.bootupTimestamp = -1
+
+        if output[1]["status"] == 0:
+            data = output[1]['data']
+            hostname = re.search(r'hostname (\S+)$', data)
+            if hostname:
+                self.hostname = hostname.group(1)
 
 
 class JunosNode(Node):

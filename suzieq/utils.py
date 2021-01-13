@@ -545,7 +545,7 @@ def build_query_str(skip_fields: list, schema, **kwargs) -> str:
 
 def known_devtypes() -> list:
     """Returns the list of known dev types"""
-    return(['cumulus', 'eos', 'junos-mx', 'junos-qfx', 'junos-ex', 'linux',
+    return(['cumulus', 'eos', 'iosxr', 'junos-mx', 'junos-qfx', 'junos-ex', 'linux',
             'nxos', 'sonic'])
 
 
