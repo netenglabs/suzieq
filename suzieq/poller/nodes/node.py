@@ -445,6 +445,7 @@ class Node(object):
                                            .strip().replace('"', '')
                         break
 
+        self.logger.info(f'Detected {devtype} for {self.address}, {hostname}')
         self.set_devtype(devtype)
         self.set_hostname(hostname)
 
