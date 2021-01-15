@@ -33,6 +33,8 @@ class BgpObj(SqObject):
             return df
 
         if 'estdTime' in df.columns:
-            df['estdTime'] = humanize_timestamp(df.estdTime)
+            df['estdTime'] = humanize_timestamp(df.estdTime,
+                                                self.cfg.get('analyzer', {})
+                                                .get('timezone', None))
 
         return df
