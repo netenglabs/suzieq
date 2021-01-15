@@ -8,7 +8,7 @@ from suzieq.engines import get_sqengine
 
 class NubiaSuzieqContext(context.Context):
     def __init__(self, engine="pandas"):
-        self.cfg = load_sq_config(validate=False)
+        self.cfg = load_sq_config(validate=True)
 
         self.schemas = Schema(self.cfg["schema-directory"])
 
@@ -25,7 +25,7 @@ class NubiaSuzieqContext(context.Context):
 
     def on_connected(self, *args, **kwargs):
         if self._args.config:
-            self.cfg = load_sq_config(validate=False,
+            self.cfg = load_sq_config(validate=True,
                                       config_file=self._args.config)
             self.schemas = Schema(self.cfg["schema-directory"])
 

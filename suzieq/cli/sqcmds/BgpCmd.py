@@ -80,7 +80,9 @@ class BgpCmd(SqCommand):
         )
 
         if 'estdTime' in df.columns and not df.empty:
-            df['estdTime'] = humanize_timestamp(df.estdTime)
+            df['estdTime'] = humanize_timestamp(df.estdTime,
+                                                self.cfg.get('analyzer', {})
+                                                .get('timezone', None))
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)

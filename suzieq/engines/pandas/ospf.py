@@ -136,7 +136,8 @@ class OspfObj(SqEngineObject):
             self.summary_df.lastChangeTime)
 
         self.summary_df['lastChangeTime'] = humanize_timestamp(
-            self.summary_df.lastChangeTime)
+            self.summary_df.lastChangeTime, self.cfg.get('analyzer', {})
+            .get('timezone', None))
 
         self.summary_df['lastChangeTime'] = (
             self.summary_df['timestamp'] - self.summary_df['lastChangeTime'])
