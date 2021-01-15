@@ -70,9 +70,9 @@ class InterfaceCmd(SqCommand):
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
 
-    @ command("assert")
-    @ argument("ifname", description="interface name to qualify")
-    @ argument(
+    @command("assert")
+    @argument("ifname", description="interface name to qualify")
+    @argument(
         "what",
         description="What do you want to assert",
         choices=["mtu-match", "mtu-value"],
