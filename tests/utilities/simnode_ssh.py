@@ -11,6 +11,8 @@ class MySSHServerSession(asyncssh.SSHServerSession):
         self._input = ''
         self._data = None
         self.devtype = 'iosxr'
+        self.run_as_shell = False
+        self.prompt = '#'
         self.vendor = 'cisco'
         self.sample_data_dir = self.get_testinput_dir()
         self.cmd_data = {
@@ -18,6 +20,8 @@ class MySSHServerSession(asyncssh.SSHServerSession):
             f'{self.sample_data_dir}/cisco/iosxr/show_version.txt',
             'show run hostname':
             f'{self.sample_data_dir}/cisco/iosxr/show_run_hostname.txt',
+            'show interfaces':
+            f'{self.sample_data_dir}/cisco/iosxr/show_interfaces.txt',
         }
 
     def get_testinput_dir(self):
@@ -29,27 +33,45 @@ class MySSHServerSession(asyncssh.SSHServerSession):
         self._chan = chan
 
     def shell_requested(self):
+        self.run_as_shell = True
         return True
+
+    def _exec_cmd(self, command):
+        '''The routine to execute command and return data'''
+        data = 'Command not found\n'
+        if command in ['exit', 'quit']:
+            self.eof_received()
+            return ''
+        if command in self.cmd_data:
+            with open(self.cmd_data[command], 'r') as f:
+                data = f.read()
+
+        return data
 
     def exec_requested(self, command):
         '''Return the data for the specified command is possible'''
 
+        self.run_as_shell = False
         command = command.rstrip('\n')
-        if command in self.cmd_data:
-            with open(self.cmd_data[command], 'r') as f:
-                data = f.read()
-            self._data = data
-
-        else:
-            self._data = ''
+        self._data = self._exec_cmd(command)
         return True
+
+    def data_received(self, input, datatype):
+        '''Shell handler'''
+
+        command = input.rstrip('\n')
+        data = self._exec_cmd(command)
+        self._chan.write(data)
+        self._chan.write(self.prompt)
 
     def session_started(self):
         if self._data:
             self._chan.write(self._data)
             self._chan.exit(0)
-        else:
+        elif not self.run_as_shell:
             self._chan.exit(1)
+        elif self.run_as_shell:
+            self._chan.write(f'{self.prompt}')
 
 
 class MySSHServer(asyncssh.SSHServer):
