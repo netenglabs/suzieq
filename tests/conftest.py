@@ -71,6 +71,7 @@ def _create_context_config():
               'logging-level': 'WARNING',
               'test_set': 'basic_dual_bgp',  # an extra field for testing
               'API_KEY': '68986cfafc9d5a2dc15b20e3e9f289eda2c79f40',
+              'analyzer': {'timezone': 'GMT'},
               }
     return config
 
