@@ -5,16 +5,16 @@ tests:
   marks: ospf show junos
   output: '[{"namespace": "junos", "hostname": "vqfx1", "vrf": "default", "area":
     "0.0.0.0", "ifname": "lo0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive",
-    "peerIP": "-", "lastChangeTime": "-", "numChanges": 0.0, "timestamp": 1605988594481},
+    "peerIP": "-", "lastChangeTime": "-", "numChanges": 0.0, "timestamp": 1606017394481},
     {"namespace": "junos", "hostname": "vqfx1", "vrf": "default", "area": "0.0.0.0",
     "ifname": "xe-0/0/0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP":
-    "10.0.0.2", "lastChangeTime": 1605988183466, "numChanges": 0.0, "timestamp": 1605988594481},
+    "10.0.0.2", "lastChangeTime": 1606016983466, "numChanges": 0.0, "timestamp": 1606017394481},
     {"namespace": "junos", "hostname": "vqfx2", "vrf": "default", "area": "0.0.0.0",
     "ifname": "lo0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP":
-    "-", "lastChangeTime": "-", "numChanges": 0.0, "timestamp": 1605988594709}, {"namespace":
+    "-", "lastChangeTime": "-", "numChanges": 0.0, "timestamp": 1606017394709}, {"namespace":
     "junos", "hostname": "vqfx2", "vrf": "default", "area": "0.0.0.0", "ifname": "xe-0/0/0.0",
     "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.1", "lastChangeTime":
-    1605988183750, "numChanges": 0.0, "timestamp": 1605988594709}]'
+    1606016983750, "numChanges": 0.0, "timestamp": 1606017394709}]'
 - command: ospf show --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: ospf show junos
@@ -49,14 +49,14 @@ tests:
   marks: ospf top junos
   output: '[{"namespace": "junos", "hostname": "vqfx1", "vrf": "default", "area":
     "0.0.0.0", "ifname": "lo0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive",
-    "peerIP": "-", "lastChangeTime": 0.0, "numChanges": 0.0, "timestamp": 1605988594481},
+    "peerIP": "-", "lastChangeTime": 0.0, "numChanges": 0.0, "timestamp": 1606017394481},
     {"namespace": "junos", "hostname": "vqfx1", "vrf": "default", "area": "0.0.0.0",
     "ifname": "xe-0/0/0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP":
     "10.0.0.2", "lastChangeTime": 1606016983466.0, "numChanges": 0.0, "timestamp":
-    1605988594481}, {"namespace": "junos", "hostname": "vqfx2", "vrf": "default",
+    1606017394481}, {"namespace": "junos", "hostname": "vqfx2", "vrf": "default",
     "area": "0.0.0.0", "ifname": "lo0.0", "ifState": "up", "nbrCount": 0, "adjState":
     "passive", "peerIP": "-", "lastChangeTime": 0.0, "numChanges": 0.0, "timestamp":
-    1605988594709}, {"namespace": "junos", "hostname": "vqfx2", "vrf": "default",
+    1606017394709}, {"namespace": "junos", "hostname": "vqfx2", "vrf": "default",
     "area": "0.0.0.0", "ifname": "xe-0/0/0.0", "ifState": "up", "nbrCount": 1, "adjState":
     "full", "peerIP": "10.0.0.1", "lastChangeTime": 1606016983750.0, "numChanges":
-    0.0, "timestamp": 1605988594709}]'
+    0.0, "timestamp": 1606017394709}]'
