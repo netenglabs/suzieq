@@ -304,6 +304,8 @@ def assert_df_equal(expected_df, got_df, ignore_cols) -> None:
                     matches = False
                     break
             if not matches:
+                print(expected_df.head(10))
+                print(got_df.head(10))
                 print(rslt_df)
                 assert(rslt_df.empty)
     except ValueError:
