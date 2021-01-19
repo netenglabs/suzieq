@@ -285,11 +285,11 @@ def assert_df_equal(expected_df, got_df, ignore_cols) -> None:
         got_df.sort_values(by=got_df.columns.tolist(), inplace=True)
     except Exception:
         if 'namespace' in expected_df.columns and 'timestamp' in expected_df.columns:
-            expected_df = expected_df.sort_values(by=['namespace', 'hostname', 'timestamp']).reindex()
-            got_df = got_df.sort_values(by=['namespace', 'hostname', 'timestamp']).reindex()
+            expected_df.sort_values(by=['namespace', 'hostname', 'timestamp']).reset_index(drop=True, inplace=True)
+            got_df.sort_values(by=['namespace', 'hostname', 'timestamp']).reset_index(drop=True, inplace=True)
     assert(expected_df.shape == got_df.shape)
-    assert(expected_df.columns.all() == got_df.columns.all())
-    assert(expected_df.index.all() == got_df.index.all())
+    assert(all(expected_df.columns == got_df.columns))
+    assert(all(expected_df.index == got_df.index))
     try:
         rslt_df = expected_df.compare(got_df, keep_equal=True)
         if not rslt_df.empty:
