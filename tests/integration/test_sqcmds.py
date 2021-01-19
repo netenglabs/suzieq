@@ -311,8 +311,8 @@ def assert_df_equal(expected_df, got_df, ignore_cols) -> None:
         # such as what happens if the return is an error. So, compare fails
         # and we have to try a different technique
         assert(expected_df.shape == got_df.shape)
-        assert(expected_df.columns == got_df.columns)
-        assert(expected_df.index == got_df.index)
+        assert(expected_df.columns.all() == got_df.columns.all())
+        assert(expected_df.index.all() == got_df.index.all())
         try:
             rslt_df = pd.merge(got_df,
                                expected_df,
