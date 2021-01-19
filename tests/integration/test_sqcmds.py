@@ -310,6 +310,10 @@ def assert_df_equal(expected_df, got_df, ignore_cols) -> None:
         # This happens when the two dataframes don't have the same shape
         # such as what happens if the return is an error. So, compare fails
         # and we have to try a different technique
+        print(f"shapes:  {expected_df.shape}, {got_df.shape}")
+        print(f"columns {expected_df.columns}, {got_df.columns}")
+        print(f" index {len(expected_df.index)}, {len(got_df.index)}")
+        assert(expected_df.shape == got_df.shape)
         try:
             rslt_df = pd.merge(got_df,
                                expected_df,
