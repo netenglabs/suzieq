@@ -16,7 +16,7 @@ import asyncio
 import asyncssh
 import aiohttp
 from dateparser import parse
-from asyncio.subprocess import PIPE
+from asyncio.subprocess import PIPE, DEVNULL
 from concurrent.futures._base import TimeoutError
 
 from suzieq.poller.services.service import RsltToken
@@ -339,11 +339,10 @@ class Node(object):
                 self._status = "init"
                 return
             else:
-                self._status = "good"
                 self.set_devtype(devtype)
+                self._status = "good"
 
-                if hostname:
-                    self.set_hostname(hostname)
+                self.set_hostname(hostname)
 
             await self.init_boot_time()
 
@@ -380,7 +379,7 @@ class Node(object):
         await self.exec_cmd(self._parse_device_type_hostname,
                             ["show version", "hostnamectl",
                              "cat /etc/os-release",
-                             "show hostname", "show run hostname"], None)
+                             "show hostname"], None)
 
     async def _parse_device_type_hostname(self, output, cb_token) -> None:
         devtype = ""
@@ -415,13 +414,7 @@ class Node(object):
             elif devtype == "nxos":
                 data = output[3]["data"]
                 hostname = data.strip()
-            elif devtype == "iosxr":
-                if output[4]['status'] == 0:
-                    data = output[4]['data']
-                    hostname = re.match(r'^hostname (\S+)', data)
-                    if hostname:
-                        hostname = hostname.strip()
-            elif output[3]["status"] == 0:
+            elif devtype != "iosxr" and output[3]["status"] == 0:
                 hostname = output[3]["data"].strip()
 
         elif output[1]["status"] == 0:
@@ -611,7 +604,7 @@ class Node(object):
         if not self._service_queue:
             self._service_queue = asyncio.Queue()
 
-    async def _init_ssh(self, init_boot_time=True) -> None:
+    async def _init_ssh(self, init_boot_time=True, rel_lock=True) -> None:
         await self.ssh_ready.wait()
         if not self._conn:
             self.ssh_ready.clear()
@@ -670,22 +663,23 @@ class Node(object):
                 self.last_exception = e
                 self._conn = None
                 self._tunnel = None
-                self.ssh_ready.set()
+                if rel_lock:
+                    self.ssh_ready.set()
                 return
 
             try:
                 self._conn = await asyncssh.connect(
                     self.address,
-                    tunnel=self._tunnel,
                     username=self.username,
                     port=self.port,
                     options=options)
 
                 self.logger.info(
                     f"Connected to {self.address} at {time.time()}")
-                self.ssh_ready.set()
                 if init_boot_time:
                     await self.init_boot_time()
+                elif rel_lock:
+                    self.ssh_ready.set()
             except Exception as e:
                 if self.sigend:
                     self._terminate()
@@ -694,7 +688,8 @@ class Node(object):
                 self.last_exception = e
                 self._conn = None
                 self._tunnel = None
-                self.ssh_ready.set()
+                if rel_lock:
+                    self.ssh_ready.set()
         return
 
     def _create_error(self, cmd) -> dict:
@@ -982,6 +977,43 @@ class CumulusNode(Node):
 
 class IosXRNode(Node):
 
+    async def _init_ssh(self, init_boot_time=True) -> None:
+        '''Need to start a neverending process to keep persistent ssh
+
+        IOS XR's ssh is fragile and archaic. It doesn't support sending 
+        multiple commands over a single SSH connection as most other devices
+        do. I suspect this may not be the only one. The bug is mentioned in
+        https://github.com/ronf/asyncssh/issues/241. To overcome this issue,
+        we wait in a loop for things to succeed. There's no point in continuing
+        if this doesn't succeed. Maybe better to abort after a fixed number
+        of retries to enable things like run-once=gather to work.
+        '''
+        backoff_period = 1
+        while True:
+            await super()._init_ssh(init_boot_time=False, rel_lock=False)
+            if self._conn:
+                break
+            else:
+                await asyncio.sleep(backoff_period)
+                backoff_period *= 2
+                if backoff_period > 120:
+                    backoff_period = 120
+                self.ssh_ready.set()
+        if self._conn:
+            try:
+                self._long_proc = await self._conn.create_process(
+                    'run tail -s 3600 -f /etc/version', stdout=DEVNULL,
+                    stderr=DEVNULL)
+                self.logger.info(
+                    f'Persistent SSH present for {self.hostname}')
+            except Exception:
+                self._conn = None
+                return
+
+        if not self.hostname:
+            await self.init_boot_time()
+        self.ssh_ready.set()
+
     async def init_boot_time(self):
         """Fill in the boot time of the node by running requisite cmd"""
         await self.exec_cmd(self._parse_boottime_hostname,
@@ -1001,9 +1033,12 @@ class IosXRNode(Node):
 
         if output[1]["status"] == 0:
             data = output[1]['data']
-            hostname = re.search(r'hostname (\S+)$', data)
+            hostname = re.search(r'hostname (\S+)', data.strip())
             if hostname:
                 self.hostname = hostname.group(1)
+                self.logger.error(f'set hostname of {self.address} to '
+                                  f'{hostname.group(1)}')
+        self.ssh_ready.set()
 
 
 class JunosNode(Node):
