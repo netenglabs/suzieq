@@ -314,6 +314,8 @@ def assert_df_equal(expected_df, got_df, ignore_cols) -> None:
         print(f"columns {expected_df.columns}, {got_df.columns}")
         print(f" index {len(expected_df.index)}, {len(got_df.index)}")
         assert(expected_df.shape == got_df.shape)
+        assert(expected_df.colums == got_df.columns)
+        assert(expected_df.index == got_df.index)
         try:
             rslt_df = pd.merge(got_df,
                                expected_df,
