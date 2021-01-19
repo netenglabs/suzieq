@@ -287,9 +287,7 @@ def assert_df_equal(expected_df, got_df, ignore_cols) -> None:
         if 'namespace' in expected_df.columns and 'timestamp' in expected_df.columns:
             expected_df.sort_values(by=['namespace', 'hostname', 'timestamp']).reset_index(drop=True, inplace=True)
             got_df.sort_values(by=['namespace', 'hostname', 'timestamp']).reset_index(drop=True, inplace=True)
-    assert(expected_df.shape == got_df.shape)
-    assert(all(expected_df.columns == got_df.columns))
-    assert(all(expected_df.index == got_df.index))
+
     try:
         rslt_df = expected_df.compare(got_df, keep_equal=True)
         if not rslt_df.empty:
