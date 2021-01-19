@@ -304,15 +304,12 @@ def assert_df_equal(expected_df, got_df, ignore_cols) -> None:
                     matches = False
                     break
             if not matches:
-                print(expected_df.head(10))
-                print(got_df.head(10))
                 print(rslt_df)
                 assert(rslt_df.empty)
     except ValueError:
         # This happens when the two dataframes don't have the same shape
         # such as what happens if the return is an error. So, compare fails
         # and we have to try a different technique
-
         try:
             rslt_df = pd.merge(got_df,
                                expected_df,
@@ -323,8 +320,6 @@ def assert_df_equal(expected_df, got_df, ignore_cols) -> None:
                     '_merge != "both"').empty)
         except Exception:
             assert(got_df.shape == expected_df.shape)
-            print(expected_df)
-            print(got_df)
             assert('Unable to compare' == '')
 
 
