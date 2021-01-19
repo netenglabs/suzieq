@@ -287,7 +287,9 @@ def assert_df_equal(expected_df, got_df, ignore_cols) -> None:
         if 'namespace' in expected_df.columns and 'timestamp' in expected_df.columns:
             expected_df = expected_df.sort_values(by=['namespace', 'hostname', 'timestamp']).reindex()
             got_df = got_df.sort_values(by=['namespace', 'hostname', 'timestamp']).reindex()
-
+    assert(expected_df.shape == got_df.shape)
+    assert(expected_df.columns.all() == got_df.columns.all())
+    assert(expected_df.index.all() == got_df.index.all())
     try:
         rslt_df = expected_df.compare(got_df, keep_equal=True)
         if not rslt_df.empty:
@@ -310,9 +312,7 @@ def assert_df_equal(expected_df, got_df, ignore_cols) -> None:
         # This happens when the two dataframes don't have the same shape
         # such as what happens if the return is an error. So, compare fails
         # and we have to try a different technique
-        assert(expected_df.shape == got_df.shape)
-        assert(expected_df.columns.all() == got_df.columns.all())
-        assert(expected_df.index.all() == got_df.index.all())
+
         try:
             rslt_df = pd.merge(got_df,
                                expected_df,
@@ -323,6 +323,8 @@ def assert_df_equal(expected_df, got_df, ignore_cols) -> None:
                     '_merge != "both"').empty)
         except Exception:
             assert(got_df.shape == expected_df.shape)
+            print(expected_df)
+            print(got_df)
             assert('Unable to compare' == '')
 
 
