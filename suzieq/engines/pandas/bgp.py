@@ -100,7 +100,8 @@ class BgpObj(SqEngineObject):
         self._gen_summarize_data()
 
         self.summary_df['estdTime'] = humanize_timestamp(
-            self.summary_df.estdTime)
+            self.summary_df.estdTime,
+            self.cfg.get('analyzer', {}).get('timezone', None))
 
         self.summary_df['estdTime'] = (
             self.summary_df['timestamp'] - self.summary_df['estdTime'])
@@ -157,8 +158,8 @@ class BgpObj(SqEngineObject):
                                      right_on=['namespace', 'updateSource'],
                                      how='left',
                                      suffixes=('', '_y')) \
-                .drop_duplicates(subset=['namespace', 'hostname', 'vrf',
-                                         'peer']) \
+                .drop_duplicates(subset=['namespace', 'hostname',
+                                         'vrf', 'peer']) \
                 .rename(columns={'hostname_y': 'peerHost'})
             # I've not seen the diff between ignore_index and not and so
             # deliberately ignoring

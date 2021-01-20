@@ -8,7 +8,7 @@ from suzieq.engines import get_sqengine
 class SqContext(object):
 
     def __init__(self, engine, config_file=None):
-        self.cfg = load_sq_config(validate=False, config_file=config_file)
+        self.cfg = load_sq_config(config_file=config_file)
 
         self.schemas = Schema(self.cfg['schema-directory'])
 
