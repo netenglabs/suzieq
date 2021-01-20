@@ -1,5 +1,7 @@
 from suzieq.poller.services.service import Service
 from suzieq.utils import get_timestamp_from_junos_time
+from dateparser import parse
+from datetime import datetime
 
 
 class DeviceService(Service):
@@ -56,6 +58,18 @@ class DeviceService(Service):
 
     def _clean_sonic_data(self, processed_data, raw_data):
         return self._clean_linux_data(processed_data, raw_data)
+
+    def _clean_iosxr_data(self, processed_data, raw_data):
+        for entry in processed_data:
+            if entry.get('bootupTimestamp', ''):
+                entry['bootupTimestamp'] = int(datetime.utcfromtimestamp(
+                    parse(entry['bootupTimestamp']).timestamp()).timestamp())
+            entry['vendor'] = 'Cisco'
+            entry['os'] = 'IOS-XR'
+            if 'IOS-XRv' in entry.get('model', ''):
+                entry['architecture'] = "x86-64"
+
+        return self._common_data_cleaner(processed_data, raw_data)
 
     def _clean_junos_data(self, processed_data, raw_data):
 

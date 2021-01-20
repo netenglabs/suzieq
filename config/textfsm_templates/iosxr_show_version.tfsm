@@ -1,0 +1,28 @@
+Value version (\S+)
+Value bootupTimestamp (.+)
+Value model (.+)
+Value architecture (.+)
+Value memory (\d+\S\S)
+
+Start
+  ^\s+Version\s+:\s+${version}$$
+  ^cisco\s[^(]*(${architecture})\s+processor with ${memory}.*$$
+  ^cisco\s+${model}\s+\(\)\s+processor$$
+  ^.*uptime is\s+${bootupTimestamp}$$
+  ^Cisco\s+${model}\s+System.*$$
+
+#Tue Jan 19 15:21:49.866 UTC
+#Cisco IOS XR Software, Version 6.6.2
+#Copyright (c) 2013-2019 by Cisco Systems, Inc.
+#
+#Build Information:
+# Built By     : ahoang
+# Built On     : Fri Apr 26 15:47:48 PDT 2019
+# Built Host   : iox-ucs-033
+# Workspace    : /auto/srcarchive16/prod/6.6.2/xrv9k/ws
+# Version      : 6.6.2
+# Location     : /opt/cisco/XR/packages/
+#
+#cisco IOS-XRv 9000 () processor
+#System uptime is 1 hour 
+#
