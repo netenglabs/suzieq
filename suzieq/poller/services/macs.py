@@ -1,6 +1,7 @@
 from suzieq.poller.services.service import Service
 import re
 from suzieq.utils import convert_macaddr_format_to_colon
+from suzieq.utils import expand_nxos_ifname, expand_eos_ifname
 import numpy as np
 
 
@@ -102,10 +103,7 @@ class MacsService(Service):
                 entry['oif'] = vtepIP.group(1)
                 entry['flags'] = 'remote'
             else:
-                if entry['oif'].startswith('Eth'):
-                    entry['oif'] = entry['oif'].replace('Eth', 'Ethernet')
-                elif entry['oif'].startswith('Po'):
-                    entry['oif'] = entry['oif'].replace('Po', 'port-channel')
+                entry['oif'] = expand_nxos_ifname(entry['oif'])
                 entry['remoteVtepIp'] = ''
             if entry.get('vlan', '-') == '-':
                 entry['vlan'] = 0
@@ -115,17 +113,12 @@ class MacsService(Service):
 
     def _clean_eos_data(self, processed_data, raw_data):
 
+        foo = 0
         for entry in processed_data:
             if '.' in entry['macaddr']:
                 entry['macaddr'] = convert_macaddr_format_to_colon(
                     entry.get('macaddr', '0000.0000.0000'))
-            vtepIP = re.match(r'(\S+)\(([0-9.]+)\)', entry['oif'])
-            if vtepIP:
-                entry['remoteVtepIp'] = vtepIP.group(2)
-                entry['oif'] = vtepIP.group(1)
-                entry['flags'] = 'remote'
-            else:
-                entry['remoteVtepIp'] = ''
+            entry['oif'] = expand_eos_ifname(entry['oif'])
             self._add_mackey_protocol(entry)
 
         return processed_data

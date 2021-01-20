@@ -189,21 +189,19 @@ def handle_hop_url(url_params, pathSession):
                         label = f'matching nexthop {nhop}'
                 else:
                     label = f'matching nexthop {nhop}'
-                    if_df = engobj._if_df.drop(columns=dropcol)
+                    if_df = engobj._if_df
                 if ':' in nhop:
                     s = if_df.ip6AddressList \
                              .explode() \
                              .str.startswith(f'{nhop}/').dropna()
                     s = s.loc[s == True]
-                    if_df = engobj._if_df.iloc[s.loc[s == True].index] \
-                                         .drop(columns=dropcol)
+                    if_df = if_df.iloc[s.loc[s == True].index]
                 elif nhop != '169.254.0.1':
                     s = if_df.ipAddressList \
                              .explode() \
                              .str.startswith(f'{nhop}/').dropna()
                     s = s.loc[s == True]
-                    if_df = engobj._if_df.iloc[s.loc[s == True].index] \
-                                         .drop(columns=dropcol)
+                    if_df = if_df.iloc[s.loc[s == True].index]
                 with ifcol:
                     st.info(f'Interfaces {label}')
                     st.dataframe(data=if_df, height=600)

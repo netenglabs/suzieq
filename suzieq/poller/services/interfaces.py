@@ -98,6 +98,9 @@ class InterfaceService(Service):
                 entry['vlan'] = int(entry['ifname'].split('Vlan')[1])
                 vlan_entries[entry['ifname']] = entry
 
+            if entry.get('adminState', 'disabled') != 'disabled':
+                entry['adminState'] = 'up'
+
             tmpent = entry.get("ipAddressList", [[]])
             if not tmpent:
                 continue
@@ -274,10 +277,12 @@ class InterfaceService(Service):
             for i, ifname in enumerate(entry['logicalIfname']):
                 v4addresses = []
                 v6addresses = []
-                if len(gwmacs) >= i:
+                macaddr = None
+                if len(gwmacs) > i:
                     macaddr = gwmacs[i]
-                else:
-                    macaddr = ''
+                if not macaddr:
+                    macaddr = entry.get('macaddr', '')
+
                 if entry['afi'][i] is None:
                     continue
                 for x in entry['afi'][i]:
@@ -311,6 +316,7 @@ class InterfaceService(Service):
                              entry['statusChangeTimestamp'],
                              }
                 new_entries.append(new_entry)
+                entry_dict[new_entry['ifname']] = new_entry
                 if (entry['logicalIfflags'][i][0].get('iff-up') or
                         entry.get('type') == 'loopback'):
                     new_entry['state'] = 'up'
