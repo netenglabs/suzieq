@@ -5,27 +5,33 @@ import argparse
 import sys
 import yaml
 import os
-from suzieq.utils import validate_sq_config
+from suzieq.utils import load_sq_config
 
-from suzieq.restServer.query import app, get_configured_api_key, get_configured_log_level, get_log_file
-
-
-def check_config_file(cfgfile):
-    if cfgfile:
-        with open(cfgfile, "r") as f:
-            cfg = yaml.safe_load(f.read())
-
-        validate_sq_config(cfg, sys.stderr)
+from suzieq.restServer.query import app_init
 
 
-def check_for_cert_files():
-    if not os.path.isfile(os.getenv("HOME") + '/.suzieq/key.pem') or not \
-            os.path.isfile(os.getenv("HOME") + '/.suzieq/cert.pem'):
-        print("ERROR: Missing cert files in ~/.suzieq")
+def get_cert_files(cfg):
+    ssl_certfile = cfg.get('rest_certfile',
+                           os.getenv("HOME") + '/.suzieq/cert.pem')
+    ssl_keyfile = cfg.get('rest_keyfile',
+                          os.getenv("HOME") + '/.suzieq/key.pem')
+    if not os.path.isfile(ssl_certfile):
+        print(f"ERROR: Missing certificate file: {ssl_certfile}")
         sys.exit(1)
 
+    if not os.path.isfile(ssl_keyfile):
+        print(f"ERROR: Missing certificate file: {ssl_keyfile}")
+        sys.exit(1)
 
-def get_log_config():
+    return ssl_keyfile,  ssl_certfile
+
+
+def get_log_file(cfg):
+    tmp = cfg.get('temp-directory', '/tmp')
+    return f"{tmp}/sq-rest-server.log"
+
+
+def get_log_config(cfg):
     log_config = uvicorn.config.LOGGING_CONFIG
     log_config['handlers']['access']['class'] = 'logging.handlers.RotatingFileHandler'
     log_config['handlers']['access']['maxBytes'] = 10000000
@@ -34,9 +40,9 @@ def get_log_config():
     log_config['handlers']['default']['maxBytes'] = 10_000_000
     log_config['handlers']['default']['backupCount'] = 2
 
-    log_config['handlers']['access']['filename'] = get_log_file()
+    log_config['handlers']['access']['filename'] = get_log_file(cfg)
     del(log_config['handlers']['access']['stream'])
-    log_config['handlers']['default']['filename'] = get_log_file()
+    log_config['handlers']['default']['filename'] = get_log_file(cfg)
     del(log_config['handlers']['default']['stream'])
 
     return log_config
@@ -47,16 +53,22 @@ if __name__ == "__main__":
     parser.add_argument(
         "-c",
         "--config",
-        type=str, help="alternate config file"
+        type=str, help="alternate config file",
+        default=f'{os.getenv("HOME")}/.suzieq/suzieq-cfg.yml'
     )
     userargs = parser.parse_args()
-    check_config_file(userargs.config)
-    app.cfg_file = userargs.config
-    get_configured_api_key()
-    check_for_cert_files()
+    app = app_init(userargs.config)
+    cfg = load_sq_config(userargs.config)
+    try:
+        api_key = cfg['API_KEY']
+    except KeyError:
+        print('missing API_KEY in config file')
+        exit(1)
+    log_level = cfg.get('logging-level', 'INFO').lower()
+    ssl_keyfile, ssl_certfile = get_cert_files(cfg)
 
     uvicorn.run(app, host="0.0.0.0", port=8000,
-                log_level=get_configured_log_level(),
-                log_config=get_log_config(),
-                ssl_keyfile=os.getenv("HOME") + '/.suzieq/key.pem',
-                ssl_certfile=os.getenv("HOME") + '/.suzieq/cert.pem')
+                log_level=log_level,
+                log_config=get_log_config(cfg),
+                ssl_keyfile=ssl_keyfile,
+                ssl_certfile=ssl_certfile)

@@ -1,4 +1,5 @@
 from suzieq.poller.services.service import Service
+from suzieq.utils import expand_nxos_ifname
 import numpy as np
 
 
@@ -139,8 +140,7 @@ class RoutesService(Service):
             oiflist = []
             for oif in entry['oifs']:
                 if oif:
-                    if 'Eth' in oif:
-                        oif = oif.replace('Eth', 'Ethernet')
+                    oif = expand_nxos_ifname(oif)
                     oiflist.append(oif)
             entry['oifs'] = oiflist
 

@@ -57,4 +57,19 @@ If you want it to be more random, this is a good way of creating a key:
 openssl rand -hex 20
 ```
 
+### Changing the Location And Name of the Key/Cert Files
 
+The default location for the key and certificate files needed for REST is ~/.suzieq, and the file names are key,pem and cert.pem. If you wish these to be different, you can specify the full path of each of the files (or any one) via the ```rest_keyfile``` and ```rest)_certfile``` variables in the suzieq config file, typically at ~/.suzieq/suzieq-cfg.yml. Here is an example of a config file with these two parameters defined:
+```
+
+data-directory: /suzieq/parquet
+service-directory: /suzieq/config
+schema-directory: /suzieq/config/schema
+temp-directory: /tmp/
+# kafka-servers: localhost:9093
+logging-level: WARNING
+period: 15
+API_KEY: 496157e6e869ef7f3d6ecb24a6f6d847b224ee4f
+rest_certfile: /suzieq/cert.pem
+rest_keyfile: /suzieq/cert.pem
+```

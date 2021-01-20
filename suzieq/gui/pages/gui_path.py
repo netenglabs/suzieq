@@ -1,14 +1,12 @@
-from dataclasses import dataclass, asdict, field
-
-import streamlit as st
-import pandas as pd
-import graphviz as graphviz
-from urllib.parse import quote
-from copy import copy
-
-from suzieq.sqobjects.path import PathObj
-from suzieq.gui.guiutils import gui_get_df, get_base_url, get_session_id
 from suzieq.gui.guiutils import display_help_icon
+from suzieq.gui.guiutils import gui_get_df, get_base_url, get_session_id
+from suzieq.sqobjects.path import PathObj
+from copy import copy
+from urllib.parse import quote
+import graphviz as graphviz
+import pandas as pd
+import streamlit as st
+from dataclasses import dataclass, asdict, field
 
 
 def get_title():
@@ -77,7 +75,8 @@ def gui_path_summarize(path_df: pd.DataFrame) -> pd.DataFrame:
     ns[namespace]['uniqueDevices'] = path_df['hostname'].nunique()
     ns[namespace]['mtuMismatch'] = not all(path_df['mtuMatch'])
     ns[namespace]['usesOverlay'] = any(path_df['overlay'])
-    ns[namespace]['pathMtu'] = path_df.query('iif != "lo"')['mtu'].min()
+    ns[namespace]['pathMtu'] = min(path_df.query('iif != "lo"')['inMtu'].min(),
+                                   path_df.query('iif != "lo"')['outMtu'].min())
 
     summary_fields = ['totalPaths', 'perHopEcmp', 'maxPathLength',
                       'avgPathLength', 'uniqueDevices', 'pathMtu',
@@ -273,7 +272,7 @@ def build_graphviz_obj(show_ifnames: bool, df: pd.DataFrame,
                 'macLookup': [prevrow.macLookup],
                 'nexthopIp': [prevrow.nexthopIp],
                 'vrf': [prevrow.vrf],
-                'mtu': [f'{prevrow.mtu} -> {row.mtu}'],
+                'mtu': [f'{prevrow.outMtu} -> {row.inMtu}'],
                 'oif': [prevrow.oif],
                 'iif': [row.iif]})
             rowerr = getattr(prevrow, 'error', '')

@@ -3,173 +3,263 @@ tests:
 - command: mac show --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: mac show eos
-  output: '[{"namespace": "eos", "hostname": "exit02", "macaddr": "00:00:00:00:00:00",
-    "vlan": 4094, "oif": "Vxlan1", "remoteVtepIp": "", "bd": "", "flags": "dynamic",
-    "timestamp": 1605161369227}, {"namespace": "eos", "hostname": "leaf02", "macaddr":
-    "00:00:00:00:00:00", "vlan": 4094, "oif": "Port-Channel1", "remoteVtepIp": "",
-    "bd": "", "flags": "static", "timestamp": 1605161369360}, {"namespace": "eos",
-    "hostname": "leaf02", "macaddr": "00:00:00:00:00:00", "vlan": 1006, "oif": "Vxlan1",
-    "remoteVtepIp": "", "bd": "", "flags": "dynamic", "timestamp": 1605161369360},
-    {"namespace": "eos", "hostname": "leaf02", "macaddr": "00:00:00:00:00:00", "vlan":
-    10, "oif": "Port-Channel3", "remoteVtepIp": "", "bd": "", "flags": "dynamic",
-    "timestamp": 1605161369360}, {"namespace": "eos", "hostname": "leaf02", "macaddr":
-    "00:00:00:00:00:00", "vlan": 30, "oif": "Port-Channel1", "remoteVtepIp": "", "bd":
-    "", "flags": "static", "timestamp": 1605161369360}, {"namespace": "eos", "hostname":
-    "server102", "macaddr": "01:80:c2:00:00:02", "vlan": 0, "oif": "eth1", "remoteVtepIp":
-    "", "bd": "", "flags": "permanent", "timestamp": 1605161369413}, {"namespace":
-    "eos", "hostname": "server102", "macaddr": "01:80:c2:00:00:00", "vlan": 0, "oif":
-    "eth0", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1605161369413},
-    {"namespace": "eos", "hostname": "server102", "macaddr": "33:33:ff:a0:67:fc",
+  output: '[{"namespace": "eos", "hostname": "server301", "macaddr": "33:33:ff:6d:10:7e",
+    "vlan": 0, "oif": "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "timestamp": 1610348286397}, {"namespace": "eos", "hostname": "server301", "macaddr":
+    "01:80:c2:00:00:02", "vlan": 0, "oif": "eth1", "remoteVtepIp": "", "bd": "", "flags":
+    "permanent", "timestamp": 1610348286397}, {"namespace": "eos", "hostname": "server301",
+    "macaddr": "01:80:c2:00:00:03", "vlan": 0, "oif": "eth0", "remoteVtepIp": "",
+    "bd": "", "flags": "permanent", "timestamp": 1610348286397}, {"namespace": "eos",
+    "hostname": "server301", "macaddr": "01:80:c2:00:00:00", "vlan": 0, "oif": "eth0",
+    "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1610348286397},
+    {"namespace": "eos", "hostname": "server301", "macaddr": "33:33:ff:f0:b3:7a",
     "vlan": 0, "oif": "eth0", "remoteVtepIp": "", "bd": "", "flags": "permanent",
-    "timestamp": 1605161369413}, {"namespace": "eos", "hostname": "server102", "macaddr":
+    "timestamp": 1610348286397}, {"namespace": "eos", "hostname": "server301", "macaddr":
     "33:33:00:00:00:01", "vlan": 0, "oif": "eth0", "remoteVtepIp": "", "bd": "", "flags":
-    "permanent", "timestamp": 1605161369413}, {"namespace": "eos", "hostname": "server102",
+    "permanent", "timestamp": 1610348286397}, {"namespace": "eos", "hostname": "server301",
     "macaddr": "01:00:5e:00:00:01", "vlan": 0, "oif": "eth0", "remoteVtepIp": "",
-    "bd": "", "flags": "permanent", "timestamp": 1605161369413}, {"namespace": "eos",
-    "hostname": "server102", "macaddr": "01:80:c2:00:00:03", "vlan": 0, "oif": "bond0",
-    "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1605161369413},
-    {"namespace": "eos", "hostname": "server102", "macaddr": "33:33:ff:58:08:f9",
-    "vlan": 0, "oif": "bond0", "remoteVtepIp": "", "bd": "", "flags": "permanent",
-    "timestamp": 1605161369413}, {"namespace": "eos", "hostname": "server102", "macaddr":
-    "01:80:c2:00:00:0e", "vlan": 0, "oif": "bond0", "remoteVtepIp": "", "bd": "",
-    "flags": "permanent", "timestamp": 1605161369413}, {"namespace": "eos", "hostname":
-    "firewall01", "macaddr": "01:80:c2:00:00:21", "vlan": 0, "oif": "eth1", "remoteVtepIp":
-    "", "bd": "", "flags": "permanent", "timestamp": 1605161369414}, {"namespace":
-    "eos", "hostname": "firewall01", "macaddr": "01:80:c2:00:00:03", "vlan": 0, "oif":
-    "eth0", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1605161369414},
-    {"namespace": "eos", "hostname": "firewall01", "macaddr": "01:80:c2:00:00:00",
-    "vlan": 0, "oif": "eth0", "remoteVtepIp": "", "bd": "", "flags": "permanent",
-    "timestamp": 1605161369414}, {"namespace": "eos", "hostname": "firewall01", "macaddr":
-    "33:33:ff:92:78:70", "vlan": 0, "oif": "eth0", "remoteVtepIp": "", "bd": "", "flags":
-    "permanent", "timestamp": 1605161369414}, {"namespace": "eos", "hostname": "exit01",
-    "macaddr": "00:00:00:00:00:00", "vlan": 4094, "oif": "Vxlan1", "remoteVtepIp":
-    "", "bd": "", "flags": "dynamic", "timestamp": 1605161369414}, {"namespace": "eos",
-    "hostname": "firewall01", "macaddr": "01:80:c2:00:00:0e", "vlan": 0, "oif": "eth0",
-    "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1605161369414},
-    {"namespace": "eos", "hostname": "firewall01", "macaddr": "33:33:00:00:00:02",
-    "vlan": 0, "oif": "eth1.3", "remoteVtepIp": "", "bd": "", "flags": "permanent",
-    "timestamp": 1605161369414}, {"namespace": "eos", "hostname": "firewall01", "macaddr":
-    "01:00:5e:00:00:01", "vlan": 0, "oif": "eth1.3", "remoteVtepIp": "", "bd": "",
-    "flags": "permanent", "timestamp": 1605161369414}, {"namespace": "eos", "hostname":
-    "firewall01", "macaddr": "33:33:00:00:00:01", "vlan": 0, "oif": "eth2.2", "remoteVtepIp":
-    "", "bd": "", "flags": "permanent", "timestamp": 1605161369414}, {"namespace":
-    "eos", "hostname": "server101", "macaddr": "33:33:ff:5d:5b:06", "vlan": 0, "oif":
-    "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1605161369415},
-    {"namespace": "eos", "hostname": "server101", "macaddr": "01:00:5e:00:00:01",
-    "vlan": 0, "oif": "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent",
-    "timestamp": 1605161369415}, {"namespace": "eos", "hostname": "server101", "macaddr":
-    "33:33:ff:74:de:6d", "vlan": 0, "oif": "eth0", "remoteVtepIp": "", "bd": "", "flags":
-    "permanent", "timestamp": 1605161369415}, {"namespace": "eos", "hostname": "server101",
-    "macaddr": "01:80:c2:00:00:02", "vlan": 0, "oif": "eth1", "remoteVtepIp": "",
-    "bd": "", "flags": "permanent", "timestamp": 1605161369415}, {"namespace": "eos",
-    "hostname": "server101", "macaddr": "01:80:c2:00:00:00", "vlan": 0, "oif": "eth1",
-    "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1605161369415},
-    {"namespace": "eos", "hostname": "server101", "macaddr": "01:80:c2:00:00:03",
-    "vlan": 0, "oif": "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent",
-    "timestamp": 1605161369415}, {"namespace": "eos", "hostname": "server101", "macaddr":
-    "01:80:c2:00:00:0e", "vlan": 0, "oif": "eth1", "remoteVtepIp": "", "bd": "", "flags":
-    "permanent", "timestamp": 1605161369415}, {"namespace": "eos", "hostname": "server101",
-    "macaddr": "33:33:00:00:00:01", "vlan": 0, "oif": "eth1", "remoteVtepIp": "",
-    "bd": "", "flags": "permanent", "timestamp": 1605161369415}, {"namespace": "eos",
-    "hostname": "server301", "macaddr": "33:33:ff:14:d9:e8", "vlan": 0, "oif": "eth0",
-    "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1605161369416},
-    {"namespace": "eos", "hostname": "server301", "macaddr": "01:80:c2:00:00:02",
-    "vlan": 0, "oif": "eth2", "remoteVtepIp": "", "bd": "", "flags": "permanent",
-    "timestamp": 1605161369416}, {"namespace": "eos", "hostname": "server301", "macaddr":
-    "33:33:00:00:00:01", "vlan": 0, "oif": "bond0", "remoteVtepIp": "", "bd": "",
-    "flags": "permanent", "timestamp": 1605161369416}, {"namespace": "eos", "hostname":
-    "server301", "macaddr": "01:80:c2:00:00:00", "vlan": 0, "oif": "bond0", "remoteVtepIp":
-    "", "bd": "", "flags": "permanent", "timestamp": 1605161369416}, {"namespace":
-    "eos", "hostname": "server301", "macaddr": "01:00:5e:00:00:01", "vlan": 0, "oif":
-    "eth0", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1605161369416},
-    {"namespace": "eos", "hostname": "server301", "macaddr": "01:80:c2:00:00:0e",
-    "vlan": 0, "oif": "bond0", "remoteVtepIp": "", "bd": "", "flags": "permanent",
-    "timestamp": 1605161369416}, {"namespace": "eos", "hostname": "server301", "macaddr":
-    "33:33:ff:4f:37:5f", "vlan": 0, "oif": "bond0", "remoteVtepIp": "", "bd": "",
-    "flags": "permanent", "timestamp": 1605161369416}, {"namespace": "eos", "hostname":
-    "server301", "macaddr": "01:80:c2:00:00:03", "vlan": 0, "oif": "bond0", "remoteVtepIp":
-    "", "bd": "", "flags": "permanent", "timestamp": 1605161369416}, {"namespace":
-    "eos", "hostname": "server302", "macaddr": "33:33:ff:6b:f1:9a", "vlan": 0, "oif":
-    "eth0", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1605161369419},
+    "bd": "", "flags": "permanent", "timestamp": 1610348286397}, {"namespace": "eos",
+    "hostname": "server301", "macaddr": "01:80:c2:00:00:0e", "vlan": 0, "oif": "eth1",
+    "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1610348286397},
     {"namespace": "eos", "hostname": "server302", "macaddr": "01:80:c2:00:00:02",
+    "vlan": 0, "oif": "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "timestamp": 1610348286401}, {"namespace": "eos", "hostname": "server302", "macaddr":
+    "33:33:ff:09:34:c5", "vlan": 0, "oif": "eth0", "remoteVtepIp": "", "bd": "", "flags":
+    "permanent", "timestamp": 1610348286401}, {"namespace": "eos", "hostname": "server302",
+    "macaddr": "33:33:00:00:00:01", "vlan": 0, "oif": "eth0", "remoteVtepIp": "",
+    "bd": "", "flags": "permanent", "timestamp": 1610348286401}, {"namespace": "eos",
+    "hostname": "server302", "macaddr": "01:00:5e:00:00:01", "vlan": 0, "oif": "eth0",
+    "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1610348286401},
+    {"namespace": "eos", "hostname": "server302", "macaddr": "01:80:c2:00:00:0e",
+    "vlan": 0, "oif": "bond0", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "timestamp": 1610348286401}, {"namespace": "eos", "hostname": "server302", "macaddr":
+    "01:80:c2:00:00:00", "vlan": 0, "oif": "bond0", "remoteVtepIp": "", "bd": "",
+    "flags": "permanent", "timestamp": 1610348286401}, {"namespace": "eos", "hostname":
+    "server302", "macaddr": "01:80:c2:00:00:03", "vlan": 0, "oif": "bond0", "remoteVtepIp":
+    "", "bd": "", "flags": "permanent", "timestamp": 1610348286401}, {"namespace":
+    "eos", "hostname": "server302", "macaddr": "33:33:ff:3a:3a:08", "vlan": 0, "oif":
+    "bond0", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1610348286401},
+    {"namespace": "eos", "hostname": "server102", "macaddr": "33:33:ff:8b:98:32",
+    "vlan": 0, "oif": "eth0", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "timestamp": 1610348286435}, {"namespace": "eos", "hostname": "server102", "macaddr":
+    "33:33:00:00:00:01", "vlan": 0, "oif": "eth1", "remoteVtepIp": "", "bd": "", "flags":
+    "permanent", "timestamp": 1610348286435}, {"namespace": "eos", "hostname": "server102",
+    "macaddr": "01:80:c2:00:00:02", "vlan": 0, "oif": "eth1", "remoteVtepIp": "",
+    "bd": "", "flags": "permanent", "timestamp": 1610348286435}, {"namespace": "eos",
+    "hostname": "server102", "macaddr": "01:80:c2:00:00:00", "vlan": 0, "oif": "eth1",
+    "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1610348286435},
+    {"namespace": "eos", "hostname": "server102", "macaddr": "01:80:c2:00:00:03",
+    "vlan": 0, "oif": "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "timestamp": 1610348286435}, {"namespace": "eos", "hostname": "server102", "macaddr":
+    "01:00:5e:00:00:01", "vlan": 0, "oif": "eth0", "remoteVtepIp": "", "bd": "", "flags":
+    "permanent", "timestamp": 1610348286435}, {"namespace": "eos", "hostname": "server102",
+    "macaddr": "33:33:ff:1f:b5:de", "vlan": 0, "oif": "eth1", "remoteVtepIp": "",
+    "bd": "", "flags": "permanent", "timestamp": 1610348286435}, {"namespace": "eos",
+    "hostname": "server102", "macaddr": "01:80:c2:00:00:0e", "vlan": 0, "oif": "eth1",
+    "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1610348286435},
+    {"namespace": "eos", "hostname": "server101", "macaddr": "01:80:c2:00:00:02",
+    "vlan": 0, "oif": "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "timestamp": 1610348286557}, {"namespace": "eos", "hostname": "server101", "macaddr":
+    "33:33:ff:12:8d:5e", "vlan": 0, "oif": "eth0", "remoteVtepIp": "", "bd": "", "flags":
+    "permanent", "timestamp": 1610348286557}, {"namespace": "eos", "hostname": "server101",
+    "macaddr": "01:00:5e:00:00:01", "vlan": 0, "oif": "bond0", "remoteVtepIp": "",
+    "bd": "", "flags": "permanent", "timestamp": 1610348286557}, {"namespace": "eos",
+    "hostname": "server101", "macaddr": "01:80:c2:00:00:00", "vlan": 0, "oif": "bond0",
+    "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1610348286557},
+    {"namespace": "eos", "hostname": "server101", "macaddr": "01:80:c2:00:00:03",
+    "vlan": 0, "oif": "bond0", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "timestamp": 1610348286557}, {"namespace": "eos", "hostname": "server101", "macaddr":
+    "01:80:c2:00:00:0e", "vlan": 0, "oif": "bond0", "remoteVtepIp": "", "bd": "",
+    "flags": "permanent", "timestamp": 1610348286557}, {"namespace": "eos", "hostname":
+    "server101", "macaddr": "33:33:ff:25:62:11", "vlan": 0, "oif": "bond0", "remoteVtepIp":
+    "", "bd": "", "flags": "permanent", "timestamp": 1610348286557}, {"namespace":
+    "eos", "hostname": "server101", "macaddr": "33:33:00:00:00:01", "vlan": 0, "oif":
+    "eth0", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1610348286557},
+    {"namespace": "eos", "hostname": "firewall01", "macaddr": "01:80:c2:00:00:0e",
+    "vlan": 0, "oif": "eth0", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "timestamp": 1610348286619}, {"namespace": "eos", "hostname": "firewall01", "macaddr":
+    "01:80:c2:00:00:03", "vlan": 0, "oif": "eth0", "remoteVtepIp": "", "bd": "", "flags":
+    "permanent", "timestamp": 1610348286619}, {"namespace": "eos", "hostname": "firewall01",
+    "macaddr": "01:80:c2:00:00:00", "vlan": 0, "oif": "eth0", "remoteVtepIp": "",
+    "bd": "", "flags": "permanent", "timestamp": 1610348286619}, {"namespace": "eos",
+    "hostname": "firewall01", "macaddr": "33:33:ff:fd:3d:c8", "vlan": 0, "oif": "eth0",
+    "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1610348286619},
+    {"namespace": "eos", "hostname": "firewall01", "macaddr": "01:80:c2:00:00:21",
     "vlan": 0, "oif": "eth2", "remoteVtepIp": "", "bd": "", "flags": "permanent",
-    "timestamp": 1605161369419}, {"namespace": "eos", "hostname": "server302", "macaddr":
-    "33:33:00:00:00:01", "vlan": 0, "oif": "bond0", "remoteVtepIp": "", "bd": "",
-    "flags": "permanent", "timestamp": 1605161369419}, {"namespace": "eos", "hostname":
-    "server302", "macaddr": "01:00:5e:00:00:01", "vlan": 0, "oif": "bond0", "remoteVtepIp":
-    "", "bd": "", "flags": "permanent", "timestamp": 1605161369419}, {"namespace":
-    "eos", "hostname": "server302", "macaddr": "01:80:c2:00:00:00", "vlan": 0, "oif":
-    "bond0", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1605161369419},
-    {"namespace": "eos", "hostname": "server302", "macaddr": "01:80:c2:00:00:03",
-    "vlan": 0, "oif": "eth2", "remoteVtepIp": "", "bd": "", "flags": "permanent",
-    "timestamp": 1605161369419}, {"namespace": "eos", "hostname": "server302", "macaddr":
-    "33:33:ff:ff:ed:72", "vlan": 0, "oif": "bond0", "remoteVtepIp": "", "bd": "",
-    "flags": "permanent", "timestamp": 1605161369419}, {"namespace": "eos", "hostname":
-    "server302", "macaddr": "01:80:c2:00:00:0e", "vlan": 0, "oif": "bond0", "remoteVtepIp":
-    "", "bd": "", "flags": "permanent", "timestamp": 1605161369419}, {"namespace":
-    "eos", "hostname": "leaf04", "macaddr": "00:00:00:00:00:00", "vlan": 4094, "oif":
-    "Port-Channel1", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp":
-    1605161369635}, {"namespace": "eos", "hostname": "leaf04", "macaddr": "00:00:00:00:00:00",
-    "vlan": 1008, "oif": "Port-Channel1", "remoteVtepIp": "", "bd": "", "flags": "static",
-    "timestamp": 1605161369635}, {"namespace": "eos", "hostname": "leaf04", "macaddr":
-    "00:00:00:00:00:00", "vlan": 30, "oif": "Vxlan1", "remoteVtepIp": "", "bd": "",
-    "flags": "dynamic", "timestamp": 1605161369635}, {"namespace": "eos", "hostname":
-    "leaf04", "macaddr": "00:00:00:00:00:00", "vlan": 20, "oif": "Port-Channel1",
-    "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp": 1605161369635},
-    {"namespace": "eos", "hostname": "leaf01", "macaddr": "00:00:00:00:00:00", "vlan":
-    10, "oif": "Port-Channel3", "remoteVtepIp": "", "bd": "", "flags": "dynamic",
-    "timestamp": 1605161369637}, {"namespace": "eos", "hostname": "leaf01", "macaddr":
-    "00:00:00:00:00:00", "vlan": 1006, "oif": "Port-Channel1", "remoteVtepIp": "",
-    "bd": "", "flags": "static", "timestamp": 1605161369637}, {"namespace": "eos",
-    "hostname": "leaf01", "macaddr": "00:00:00:00:00:00", "vlan": 30, "oif": "Port-Channel1",
-    "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp": 1605161369637},
-    {"namespace": "eos", "hostname": "leaf01", "macaddr": "00:00:00:00:00:00", "vlan":
+    "timestamp": 1610348286619}, {"namespace": "eos", "hostname": "firewall01", "macaddr":
+    "01:00:5e:00:00:01", "vlan": 0, "oif": "eth1.2", "remoteVtepIp": "", "bd": "",
+    "flags": "permanent", "timestamp": 1610348286619}, {"namespace": "eos", "hostname":
+    "firewall01", "macaddr": "33:33:00:00:00:01", "vlan": 0, "oif": "eth2", "remoteVtepIp":
+    "", "bd": "", "flags": "permanent", "timestamp": 1610348286619}, {"namespace":
+    "eos", "hostname": "firewall01", "macaddr": "33:33:00:00:00:02", "vlan": 0, "oif":
+    "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1610348286619},
+    {"namespace": "eos", "hostname": "exit02", "macaddr": "44:38:39:e3:19:2e", "vlan":
+    4094, "oif": "Vxlan1", "remoteVtepIp": "", "bd": "", "flags": "dynamic", "timestamp":
+    1610348286964}, {"namespace": "eos", "hostname": "exit02", "macaddr": "44:38:39:81:30:22",
+    "vlan": 4094, "oif": "Vxlan1", "remoteVtepIp": "", "bd": "", "flags": "dynamic",
+    "timestamp": 1610348286964}, {"namespace": "eos", "hostname": "exit02", "macaddr":
+    "44:38:39:33:d8:43", "vlan": 4094, "oif": "Vxlan1", "remoteVtepIp": "", "bd":
+    "", "flags": "dynamic", "timestamp": 1610348286964}, {"namespace": "eos", "hostname":
+    "exit02", "macaddr": "44:38:39:24:3f:16", "vlan": 4094, "oif": "Vxlan1", "remoteVtepIp":
+    "", "bd": "", "flags": "dynamic", "timestamp": 1610348286964}, {"namespace": "eos",
+    "hostname": "exit02", "macaddr": "44:38:39:99:c7:9e", "vlan": 4094, "oif": "Vxlan1",
+    "remoteVtepIp": "", "bd": "", "flags": "dynamic", "timestamp": 1610348286964},
+    {"namespace": "eos", "hostname": "exit01", "macaddr": "44:38:39:24:3f:16", "vlan":
+    4094, "oif": "Vxlan1", "remoteVtepIp": "", "bd": "", "flags": "dynamic", "timestamp":
+    1610348287027}, {"namespace": "eos", "hostname": "exit01", "macaddr": "44:38:39:e3:19:2e",
+    "vlan": 4094, "oif": "Vxlan1", "remoteVtepIp": "", "bd": "", "flags": "dynamic",
+    "timestamp": 1610348287027}, {"namespace": "eos", "hostname": "exit01", "macaddr":
+    "44:38:39:c3:55:cb", "vlan": 4094, "oif": "Vxlan1", "remoteVtepIp": "", "bd":
+    "", "flags": "dynamic", "timestamp": 1610348287027}, {"namespace": "eos", "hostname":
+    "exit01", "macaddr": "44:38:39:81:30:22", "vlan": 4094, "oif": "Vxlan1", "remoteVtepIp":
+    "", "bd": "", "flags": "dynamic", "timestamp": 1610348287027}, {"namespace": "eos",
+    "hostname": "exit01", "macaddr": "44:38:39:99:c7:9e", "vlan": 4094, "oif": "Vxlan1",
+    "remoteVtepIp": "10.0.0.112", "bd": "", "flags": "remote", "timestamp": 1610348287027},
+    {"namespace": "eos", "hostname": "leaf04", "macaddr": "44:38:39:e3:19:2e", "vlan":
+    1006, "oif": "Vxlan1", "remoteVtepIp": "10.0.0.112", "bd": "", "flags": "remote",
+    "timestamp": 1610348287140}, {"namespace": "eos", "hostname": "leaf04", "macaddr":
+    "1e:87:9f:6d:10:7e", "vlan": 20, "oif": "Port-Channel3", "remoteVtepIp": "", "bd":
+    "", "flags": "dynamic", "timestamp": 1610348287140}, {"namespace": "eos", "hostname":
+    "leaf04", "macaddr": "44:38:39:24:3f:16", "vlan": 20, "oif": "Port-Channel1",
+    "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp": 1610348287140},
+    {"namespace": "eos", "hostname": "leaf04", "macaddr": "44:38:39:24:3f:16", "vlan":
+    30, "oif": "Port-Channel1", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp":
+    1610348287140}, {"namespace": "eos", "hostname": "leaf04", "macaddr": "44:38:39:24:3f:16",
+    "vlan": 1006, "oif": "Port-Channel1", "remoteVtepIp": "", "bd": "", "flags": "static",
+    "timestamp": 1610348287140}, {"namespace": "eos", "hostname": "leaf04", "macaddr":
+    "72:ff:44:3a:3a:08", "vlan": 30, "oif": "Port-Channel4", "remoteVtepIp": "", "bd":
+    "", "flags": "dynamic", "timestamp": 1610348287140}, {"namespace": "eos", "hostname":
+    "leaf04", "macaddr": "44:38:39:c3:55:cb", "vlan": 1006, "oif": "Vxlan1", "remoteVtepIp":
+    "", "bd": "", "flags": "dynamic", "timestamp": 1610348287140}, {"namespace": "eos",
+    "hostname": "leaf04", "macaddr": "44:38:39:24:3f:16", "vlan": 4094, "oif": "Port-Channel1",
+    "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp": 1610348287140},
+    {"namespace": "eos", "hostname": "leaf04", "macaddr": "fa:ba:1e:1f:b5:de", "vlan":
+    30, "oif": "Vxlan1", "remoteVtepIp": "10.0.0.112", "bd": "", "flags": "remote",
+    "timestamp": 1610348287140}, {"namespace": "eos", "hostname": "leaf04", "macaddr":
+    "44:38:39:99:c7:9e", "vlan": 1006, "oif": "Vxlan1", "remoteVtepIp": "10.0.0.112",
+    "bd": "", "flags": "remote", "timestamp": 1610348287140}, {"namespace": "eos",
+    "hostname": "leaf04", "macaddr": "44:38:39:33:d8:43", "vlan": 1006, "oif": "Vxlan1",
+    "remoteVtepIp": "", "bd": "", "flags": "dynamic", "timestamp": 1610348287140},
+    {"namespace": "eos", "hostname": "leaf01", "macaddr": "44:38:39:99:c7:9e", "vlan":
     4094, "oif": "Port-Channel1", "remoteVtepIp": "", "bd": "", "flags": "static",
-    "timestamp": 1605161369637}, {"namespace": "eos", "hostname": "leaf03", "macaddr":
-    "00:00:00:00:00:00", "vlan": 30, "oif": "Port-Channel4", "remoteVtepIp": "", "bd":
-    "", "flags": "dynamic", "timestamp": 1605161370055}, {"namespace": "eos", "hostname":
-    "leaf03", "macaddr": "00:00:00:00:00:00", "vlan": 1008, "oif": "Port-Channel1",
-    "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp": 1605161370055},
-    {"namespace": "eos", "hostname": "leaf03", "macaddr": "00:00:00:00:00:00", "vlan":
+    "timestamp": 1610348287189}, {"namespace": "eos", "hostname": "leaf01", "macaddr":
+    "44:38:39:c3:55:cb", "vlan": 1006, "oif": "Vxlan1", "remoteVtepIp": "", "bd":
+    "", "flags": "dynamic", "timestamp": 1610348287189}, {"namespace": "eos", "hostname":
+    "leaf01", "macaddr": "fa:ba:1e:1f:b5:de", "vlan": 30, "oif": "Port-Channel4",
+    "remoteVtepIp": "", "bd": "", "flags": "dynamic", "timestamp": 1610348287189},
+    {"namespace": "eos", "hostname": "leaf01", "macaddr": "44:38:39:81:30:22", "vlan":
+    1006, "oif": "Vxlan1", "remoteVtepIp": "", "bd": "", "flags": "dynamic", "timestamp":
+    1610348287189}, {"namespace": "eos", "hostname": "leaf01", "macaddr": "44:38:39:33:d8:43",
+    "vlan": 1006, "oif": "Vxlan1", "remoteVtepIp": "", "bd": "", "flags": "dynamic",
+    "timestamp": 1610348287189}, {"namespace": "eos", "hostname": "leaf01", "macaddr":
+    "44:38:39:24:3f:16", "vlan": 1006, "oif": "Vxlan1", "remoteVtepIp": "", "bd":
+    "", "flags": "dynamic", "timestamp": 1610348287189}, {"namespace": "eos", "hostname":
+    "leaf01", "macaddr": "72:ff:44:3a:3a:08", "vlan": 30, "oif": "Vxlan1", "remoteVtepIp":
+    "", "bd": "", "flags": "dynamic", "timestamp": 1610348287189}, {"namespace": "eos",
+    "hostname": "leaf01", "macaddr": "44:38:39:99:c7:9e", "vlan": 30, "oif": "Port-Channel1",
+    "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp": 1610348287189},
+    {"namespace": "eos", "hostname": "leaf01", "macaddr": "44:38:39:99:c7:9e", "vlan":
+    10, "oif": "Port-Channel1", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp":
+    1610348287189}, {"namespace": "eos", "hostname": "leaf01", "macaddr": "16:76:ce:25:62:11",
+    "vlan": 10, "oif": "Port-Channel3", "remoteVtepIp": "", "bd": "", "flags": "dynamic",
+    "timestamp": 1610348287189}, {"namespace": "eos", "hostname": "leaf01", "macaddr":
+    "44:38:39:99:c7:9e", "vlan": 1006, "oif": "Port-Channel1", "remoteVtepIp": "",
+    "bd": "", "flags": "static", "timestamp": 1610348287189}, {"namespace": "eos",
+    "hostname": "leaf02", "macaddr": "16:76:ce:25:62:11", "vlan": 10, "oif": "Port-Channel3",
+    "remoteVtepIp": "", "bd": "", "flags": "dynamic", "timestamp": 1610348287214},
+    {"namespace": "eos", "hostname": "leaf02", "macaddr": "44:38:39:e3:19:2e", "vlan":
+    10, "oif": "Port-Channel1", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp":
+    1610348287214}, {"namespace": "eos", "hostname": "leaf02", "macaddr": "44:38:39:e3:19:2e",
+    "vlan": 30, "oif": "Port-Channel1", "remoteVtepIp": "", "bd": "", "flags": "static",
+    "timestamp": 1610348287214}, {"namespace": "eos", "hostname": "leaf02", "macaddr":
+    "fa:ba:1e:1f:b5:de", "vlan": 30, "oif": "Port-Channel4", "remoteVtepIp": "", "bd":
+    "", "flags": "dynamic", "timestamp": 1610348287214}, {"namespace": "eos", "hostname":
+    "leaf02", "macaddr": "44:38:39:e3:19:2e", "vlan": 1006, "oif": "Port-Channel1",
+    "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp": 1610348287214},
+    {"namespace": "eos", "hostname": "leaf02", "macaddr": "44:38:39:e3:19:2e", "vlan":
     4094, "oif": "Port-Channel1", "remoteVtepIp": "", "bd": "", "flags": "static",
-    "timestamp": 1605161370055}, {"namespace": "eos", "hostname": "leaf03", "macaddr":
-    "00:00:00:00:00:00", "vlan": 20, "oif": "Port-Channel1", "remoteVtepIp": "", "bd":
-    "", "flags": "static", "timestamp": 1605161370055}, {"namespace": "eos", "hostname":
-    "dcedge01", "macaddr": "None", "vlan": 0, "oif": "None", "remoteVtepIp": "", "bd":
-    "", "flags": "", "timestamp": 1605161370859}]'
+    "timestamp": 1610348287214}, {"namespace": "eos", "hostname": "leaf02", "macaddr":
+    "72:ff:44:3a:3a:08", "vlan": 30, "oif": "Vxlan1", "remoteVtepIp": "10.0.0.134",
+    "bd": "", "flags": "remote", "timestamp": 1610348287214}, {"namespace": "eos",
+    "hostname": "leaf02", "macaddr": "44:38:39:24:3f:16", "vlan": 1006, "oif": "Vxlan1",
+    "remoteVtepIp": "10.0.0.134", "bd": "", "flags": "remote", "timestamp": 1610348287214},
+    {"namespace": "eos", "hostname": "leaf02", "macaddr": "44:38:39:33:d8:43", "vlan":
+    1006, "oif": "Vxlan1", "remoteVtepIp": "10.0.0.31", "bd": "", "flags": "remote",
+    "timestamp": 1610348287214}, {"namespace": "eos", "hostname": "leaf02", "macaddr":
+    "44:38:39:c3:55:cb", "vlan": 1006, "oif": "Vxlan1", "remoteVtepIp": "10.0.0.32",
+    "bd": "", "flags": "remote", "timestamp": 1610348287214}, {"namespace": "eos",
+    "hostname": "leaf02", "macaddr": "44:38:39:81:30:22", "vlan": 1006, "oif": "Vxlan1",
+    "remoteVtepIp": "", "bd": "", "flags": "dynamic", "timestamp": 1610348287214},
+    {"namespace": "eos", "hostname": "leaf03", "macaddr": "44:38:39:81:30:22", "vlan":
+    4094, "oif": "Port-Channel1", "remoteVtepIp": "", "bd": "", "flags": "static",
+    "timestamp": 1610348287268}, {"namespace": "eos", "hostname": "leaf03", "macaddr":
+    "44:38:39:e3:19:2e", "vlan": 1006, "oif": "Vxlan1", "remoteVtepIp": "", "bd":
+    "", "flags": "dynamic", "timestamp": 1610348287268}, {"namespace": "eos", "hostname":
+    "leaf03", "macaddr": "44:38:39:33:d8:43", "vlan": 1006, "oif": "Vxlan1", "remoteVtepIp":
+    "", "bd": "", "flags": "dynamic", "timestamp": 1610348287268}, {"namespace": "eos",
+    "hostname": "leaf03", "macaddr": "44:38:39:99:c7:9e", "vlan": 1006, "oif": "Vxlan1",
+    "remoteVtepIp": "", "bd": "", "flags": "dynamic", "timestamp": 1610348287268},
+    {"namespace": "eos", "hostname": "leaf03", "macaddr": "44:38:39:81:30:22", "vlan":
+    1006, "oif": "Port-Channel1", "remoteVtepIp": "", "bd": "", "flags": "static",
+    "timestamp": 1610348287268}, {"namespace": "eos", "hostname": "leaf03", "macaddr":
+    "fa:ba:1e:1f:b5:de", "vlan": 30, "oif": "Vxlan1", "remoteVtepIp": "", "bd": "",
+    "flags": "dynamic", "timestamp": 1610348287268}, {"namespace": "eos", "hostname":
+    "leaf03", "macaddr": "72:ff:44:3a:3a:08", "vlan": 30, "oif": "Port-Channel4",
+    "remoteVtepIp": "", "bd": "", "flags": "dynamic", "timestamp": 1610348287268},
+    {"namespace": "eos", "hostname": "leaf03", "macaddr": "44:38:39:81:30:22", "vlan":
+    30, "oif": "Port-Channel1", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp":
+    1610348287268}, {"namespace": "eos", "hostname": "leaf03", "macaddr": "44:38:39:81:30:22",
+    "vlan": 20, "oif": "Port-Channel1", "remoteVtepIp": "", "bd": "", "flags": "static",
+    "timestamp": 1610348287268}, {"namespace": "eos", "hostname": "leaf03", "macaddr":
+    "1e:87:9f:6d:10:7e", "vlan": 20, "oif": "Port-Channel3", "remoteVtepIp": "", "bd":
+    "", "flags": "dynamic", "timestamp": 1610348287268}, {"namespace": "eos", "hostname":
+    "leaf03", "macaddr": "44:38:39:c3:55:cb", "vlan": 1006, "oif": "Vxlan1", "remoteVtepIp":
+    "", "bd": "", "flags": "dynamic", "timestamp": 1610348287268}, {"namespace": "eos",
+    "hostname": "dcedge01", "macaddr": "None", "vlan": 0, "oif": "None", "remoteVtepIp":
+    "", "bd": "", "flags": "", "timestamp": 1610348290712}]'
 - command: mac show --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: mac show eos
-  output: '[{"hostname": "exit02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
-    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "server102"}, {"hostname":
-    "server102"}, {"hostname": "server102"}, {"hostname": "server102"}, {"hostname":
-    "server102"}, {"hostname": "server102"}, {"hostname": "server102"}, {"hostname":
-    "server102"}, {"hostname": "firewall01"}, {"hostname": "firewall01"}, {"hostname":
-    "firewall01"}, {"hostname": "firewall01"}, {"hostname": "exit01"}, {"hostname":
-    "firewall01"}, {"hostname": "firewall01"}, {"hostname": "firewall01"}, {"hostname":
-    "firewall01"}, {"hostname": "server101"}, {"hostname": "server101"}, {"hostname":
-    "server101"}, {"hostname": "server101"}, {"hostname": "server101"}, {"hostname":
-    "server101"}, {"hostname": "server101"}, {"hostname": "server101"}, {"hostname":
-    "server301"}, {"hostname": "server301"}, {"hostname": "server301"}, {"hostname":
-    "server301"}, {"hostname": "server301"}, {"hostname": "server301"}, {"hostname":
-    "server301"}, {"hostname": "server301"}, {"hostname": "server302"}, {"hostname":
-    "server302"}, {"hostname": "server302"}, {"hostname": "server302"}, {"hostname":
-    "server302"}, {"hostname": "server302"}, {"hostname": "server302"}, {"hostname":
-    "server302"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+  output: '[{"hostname": "server301"}, {"hostname": "server301"}, {"hostname": "server301"},
+    {"hostname": "server301"}, {"hostname": "server301"}, {"hostname": "server301"},
+    {"hostname": "server301"}, {"hostname": "server301"}, {"hostname": "server302"},
+    {"hostname": "server302"}, {"hostname": "server302"}, {"hostname": "server302"},
+    {"hostname": "server302"}, {"hostname": "server302"}, {"hostname": "server302"},
+    {"hostname": "server302"}, {"hostname": "server102"}, {"hostname": "server102"},
+    {"hostname": "server102"}, {"hostname": "server102"}, {"hostname": "server102"},
+    {"hostname": "server102"}, {"hostname": "server102"}, {"hostname": "server102"},
+    {"hostname": "server101"}, {"hostname": "server101"}, {"hostname": "server101"},
+    {"hostname": "server101"}, {"hostname": "server101"}, {"hostname": "server101"},
+    {"hostname": "server101"}, {"hostname": "server101"}, {"hostname": "firewall01"},
+    {"hostname": "firewall01"}, {"hostname": "firewall01"}, {"hostname": "firewall01"},
+    {"hostname": "firewall01"}, {"hostname": "firewall01"}, {"hostname": "firewall01"},
+    {"hostname": "firewall01"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
     {"hostname": "leaf04"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
-    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
-    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "dcedge01"}]'
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "dcedge01"}]'
 - command: mac summarize --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: mac summarize eos
-  output: '{"eos": {"deviceCnt": 12, "totalMacsinNSCnt": 59, "uniqueMacCnt": 19, "uniqueVlanperHostStat":
+  output: '{"eos": {"deviceCnt": 12, "totalMacsinNSCnt": 95, "uniqueMacCnt": 28, "uniqueVlanperHostStat":
     [1, 4, 4.0]}}'
 - command: mac unique --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: mac unique eos
   output: '[{"hostname": "dcedge01", "count": 1}, {"hostname": "exit01", "count":
-    1}, {"hostname": "exit02", "count": 1}, {"hostname": "firewall01", "count": 8},
-    {"hostname": "leaf01", "count": 4}, {"hostname": "leaf02", "count": 4}, {"hostname":
-    "leaf03", "count": 4}, {"hostname": "leaf04", "count": 4}, {"hostname": "server101",
+    5}, {"hostname": "exit02", "count": 5}, {"hostname": "firewall01", "count": 8},
+    {"hostname": "leaf01", "count": 11}, {"hostname": "leaf02", "count": 11}, {"hostname":
+    "leaf03", "count": 11}, {"hostname": "leaf04", "count": 11}, {"hostname": "server101",
     "count": 8}, {"hostname": "server102", "count": 8}, {"hostname": "server301",
     "count": 8}, {"hostname": "server302", "count": 8}]'

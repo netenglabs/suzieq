@@ -1,5 +1,6 @@
 from typing import Optional
 import json
+import sys
 from enum import Enum
 from fastapi import FastAPI, HTTPException, Query, Depends, Security
 from fastapi.security.api_key import APIKeyQuery, APIKeyHeader
@@ -19,19 +20,22 @@ api_key_query = APIKeyQuery(name=API_KEY_NAME, auto_error=False)
 api_key_header = APIKeyHeader(name=API_KEY_NAME, auto_error=False)
 
 
-app = FastAPI()
+def check_config_file():
+    if not getattr(app, 'cfg_file', None):
+        print('missing config file')
+        sys.exit(1)
 
 
-def get_configured_log_level():
-    cfg = load_sq_config(config_file=app.cfg_file)
-    log_level = cfg.get('logging-level', 'INFO').lower()
-    return log_level
+app = FastAPI(on_startup=[check_config_file])
 
 
-def get_log_file():
-    cfg = load_sq_config(config_file=app.cfg_file)
-    tmp = cfg.get('temp-directory', '/tmp')
-    return f"{tmp}/sq-rest-server.log"
+def app_init(cfg_file):
+    '''This is the actual API initilaizer'''
+    global app
+
+    app.cfg_file = cfg_file
+
+    return app
 
 
 def get_configured_api_key():
@@ -40,7 +44,7 @@ def get_configured_api_key():
         api_key = cfg['API_KEY']
     except KeyError:
         print('missing API_KEY in config file')
-        exit(1)
+        sys.exit(1)
 
     return api_key
 

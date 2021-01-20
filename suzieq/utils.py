@@ -16,6 +16,9 @@ import pyarrow as pa
 logger = logging.getLogger(__name__)
 
 
+MAX_MTU = 9216
+
+
 def validate_sq_config(cfg, fh):
     """Validate Suzieq config file
 
@@ -553,3 +556,23 @@ def humanize_timestamp(field: pd.Series) -> pd.Series:
     '''
     return field.apply(lambda x: datetime.fromtimestamp((int(x)/1000))) \
                 .dt.tz_localize('UTC').dt.tz_convert(get_localzone().zone)
+
+
+def expand_nxos_ifname(ifname: str) -> str:
+    '''Expand shortned ifnames in NXOS to their full values, if required'''
+    if ifname.startswith('Eth') and 'Ether' not in ifname:
+        return ifname.replace('Eth', 'Ethernet')
+    elif ifname.startswith('Po') and 'port' not in ifname:
+        return ifname.replace('Po', 'port-channel')
+    return ifname
+
+
+def expand_eos_ifname(ifname: str) -> str:
+    '''Expand shortned ifnames in EOS to their full values, if required'''
+    if ifname.startswith('Eth') and 'Ether' not in ifname:
+        return ifname.replace('Eth', 'Ethernet')
+    elif ifname.startswith('Po') and 'Port' not in ifname:
+        return ifname.replace('Po', 'Port-Channel')
+    elif ifname.startswith('Vx') and 'Vxlan' not in ifname:
+        return ifname.replace('Vx', 'Vxlan')
+    return ifname

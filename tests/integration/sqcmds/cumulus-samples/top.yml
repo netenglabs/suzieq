@@ -248,53 +248,58 @@ tests:
   marks: device top uptime
   output: '[{"namespace": "ospf-ibgp", "hostname": "server102", "model": "vm", "version":
     "16.04.7 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
-    "address": "192.168.123.202", "uptime": 6211682, "timestamp": 1605995734682},
-    {"namespace": "ospf-ibgp", "hostname": "server104", "model": "vm", "version":
-    "16.04.7 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
-    "address": "192.168.123.53", "uptime": 6185678, "timestamp": 1605995734678}, {"namespace":
-    "ospf-ibgp", "hostname": "server103", "model": "vm", "version": "16.04.7 LTS",
-    "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive", "address": "192.168.123.63",
+    "address": "192.168.123.202", "bootupTimestamp": 1605989523000, "uptime": 6211682,
+    "timestamp": 1605995734682}, {"namespace": "ospf-ibgp", "hostname": "server104",
+    "model": "vm", "version": "16.04.7 LTS", "vendor": "Ubuntu", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.123.53", "bootupTimestamp": 1605989549000,
+    "uptime": 6185678, "timestamp": 1605995734678}, {"namespace": "ospf-ibgp", "hostname":
+    "server103", "model": "vm", "version": "16.04.7 LTS", "vendor": "Ubuntu", "architecture":
+    "x86-64", "status": "alive", "address": "192.168.123.63", "bootupTimestamp": 1605989556000,
     "uptime": 6178679, "timestamp": 1605995734679}, {"namespace": "ospf-ibgp", "hostname":
     "server101", "model": "vm", "version": "16.04.7 LTS", "vendor": "Ubuntu", "architecture":
-    "x86-64", "status": "alive", "address": "192.168.123.97", "uptime": 6162678, "timestamp":
-    1605995734678}, {"namespace": "ospf-single", "hostname": "server102", "model":
-    "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture": "x86-64",
-    "status": "alive", "address": "192.168.123.138", "uptime": 2673214, "timestamp":
-    1597528746214}]'
+    "x86-64", "status": "alive", "address": "192.168.123.97", "bootupTimestamp": 1605989572000,
+    "uptime": 6162678, "timestamp": 1605995734678}, {"namespace": "ospf-single", "hostname":
+    "server102", "model": "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture":
+    "x86-64", "status": "alive", "address": "192.168.123.138", "bootupTimestamp":
+    1597526073000, "uptime": 2673214, "timestamp": 1597528746214}]'
 - command: device top --what="uptime" --reverse=True --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: device top uptime
   output: '[{"namespace": "ospf-ibgp", "hostname": "leaf01", "model": "vm", "version":
     "4.2.1", "vendor": "Cumulus", "architecture": "x86-64", "status": "alive", "address":
-    "192.168.123.4", "uptime": 421461, "timestamp": 1605995735461}, {"namespace":
-    "ospf-ibgp", "hostname": "spine02", "model": "vm", "version": "4.2.1", "vendor":
-    "Cumulus", "architecture": "x86-64", "status": "alive", "address": "192.168.123.21",
-    "uptime": 421753, "timestamp": 1605995734753}, {"namespace": "ospf-ibgp", "hostname":
-    "exit01", "model": "vm", "version": "4.2.1", "vendor": "Cumulus", "architecture":
-    "x86-64", "status": "alive", "address": "192.168.123.15", "uptime": 422167, "timestamp":
-    1605995735167}, {"namespace": "ospf-ibgp", "hostname": "exit02", "model": "vm",
+    "192.168.123.4", "bootupTimestamp": 1605995314000, "uptime": 421461, "timestamp":
+    1605995735461}, {"namespace": "ospf-ibgp", "hostname": "spine02", "model": "vm",
     "version": "4.2.1", "vendor": "Cumulus", "architecture": "x86-64", "status": "alive",
-    "address": "192.168.123.71", "uptime": 422461, "timestamp": 1605995735461}, {"namespace":
-    "ospf-ibgp", "hostname": "edge01", "model": "vm", "version": "16.04.7 LTS", "vendor":
-    "Ubuntu", "architecture": "x86-64", "status": "alive", "address": "192.168.123.80",
+    "address": "192.168.123.21", "bootupTimestamp": 1605995313000, "uptime": 421753,
+    "timestamp": 1605995734753}, {"namespace": "ospf-ibgp", "hostname": "exit01",
+    "model": "vm", "version": "4.2.1", "vendor": "Cumulus", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.123.15", "bootupTimestamp": 1605995313000,
+    "uptime": 422167, "timestamp": 1605995735167}, {"namespace": "ospf-ibgp", "hostname":
+    "exit02", "model": "vm", "version": "4.2.1", "vendor": "Cumulus", "architecture":
+    "x86-64", "status": "alive", "address": "192.168.123.71", "bootupTimestamp": 1605995313000,
+    "uptime": 422461, "timestamp": 1605995735461}, {"namespace": "ospf-ibgp", "hostname":
+    "edge01", "model": "vm", "version": "16.04.7 LTS", "vendor": "Ubuntu", "architecture":
+    "x86-64", "status": "alive", "address": "192.168.123.80", "bootupTimestamp": 1605995312000,
     "uptime": 422682, "timestamp": 1605995734682}]'
 - command: device top --what="uptime" --namespace=ospf-ibgp --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: device top uptime
   output: '[{"namespace": "ospf-ibgp", "hostname": "server102", "model": "vm", "version":
     "16.04.7 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
-    "address": "192.168.123.202", "uptime": 6211682, "timestamp": 1605995734682},
-    {"namespace": "ospf-ibgp", "hostname": "server104", "model": "vm", "version":
-    "16.04.7 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
-    "address": "192.168.123.53", "uptime": 6185678, "timestamp": 1605995734678}, {"namespace":
-    "ospf-ibgp", "hostname": "server103", "model": "vm", "version": "16.04.7 LTS",
-    "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive", "address": "192.168.123.63",
+    "address": "192.168.123.202", "bootupTimestamp": 1605989523000, "uptime": 6211682,
+    "timestamp": 1605995734682}, {"namespace": "ospf-ibgp", "hostname": "server104",
+    "model": "vm", "version": "16.04.7 LTS", "vendor": "Ubuntu", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.123.53", "bootupTimestamp": 1605989549000,
+    "uptime": 6185678, "timestamp": 1605995734678}, {"namespace": "ospf-ibgp", "hostname":
+    "server103", "model": "vm", "version": "16.04.7 LTS", "vendor": "Ubuntu", "architecture":
+    "x86-64", "status": "alive", "address": "192.168.123.63", "bootupTimestamp": 1605989556000,
     "uptime": 6178679, "timestamp": 1605995734679}, {"namespace": "ospf-ibgp", "hostname":
     "server101", "model": "vm", "version": "16.04.7 LTS", "vendor": "Ubuntu", "architecture":
-    "x86-64", "status": "alive", "address": "192.168.123.97", "uptime": 6162678, "timestamp":
-    1605995734678}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "model": "vm",
-    "version": "4.2.1", "vendor": "Cumulus", "architecture": "x86-64", "status": "alive",
-    "address": "192.168.123.19", "uptime": 424273, "timestamp": 1605995735273}]'
+    "x86-64", "status": "alive", "address": "192.168.123.97", "bootupTimestamp": 1605989572000,
+    "uptime": 6162678, "timestamp": 1605995734678}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf04", "model": "vm", "version": "4.2.1", "vendor": "Cumulus", "architecture":
+    "x86-64", "status": "alive", "address": "192.168.123.19", "bootupTimestamp": 1605995311000,
+    "uptime": 424273, "timestamp": 1605995735273}]'
 - command: device top --what="uptime" --namespace=ospf-ibgp --reverse=True --columns='hostname
     vendor version' --format=json
   data-directory: tests/data/multidc/parquet-out/
@@ -309,19 +314,19 @@ tests:
   marks: ospf top
   output: '[{"namespace": "ospf-single", "hostname": "exit02", "vrf": "default", "area":
     "0.0.0.0", "ifname": "swp1", "ifState": "up", "nbrCount": 1, "adjState": "full",
-    "peerIP": "10.127.0.10", "lastChangeTime": 1606128768150.0, "numChanges": 5.0,
+    "peerIP": "10.127.0.10", "lastChangeTime": 1610329527239.0, "numChanges": 5.0,
     "timestamp": 1597528746603}, {"namespace": "ospf-single", "hostname": "spine02",
     "vrf": "default", "area": "0.0.0.0", "ifname": "swp4", "ifState": "up", "nbrCount":
-    1, "adjState": "full", "peerIP": "10.127.1.7", "lastChangeTime": 1606128763149.0,
+    1, "adjState": "full", "peerIP": "10.127.1.7", "lastChangeTime": 1610329522237.0,
     "numChanges": 5.0, "timestamp": 1597528746721}, {"namespace": "ospf-single", "hostname":
     "spine02", "vrf": "default", "area": "0.0.0.0", "ifname": "swp3", "ifState": "up",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.127.1.5", "lastChangeTime": 1606128763149.0,
+    "nbrCount": 1, "adjState": "full", "peerIP": "10.127.1.5", "lastChangeTime": 1610329522237.0,
     "numChanges": 5.0, "timestamp": 1597528746721}, {"namespace": "ospf-single", "hostname":
     "spine02", "vrf": "default", "area": "0.0.0.0", "ifname": "swp2", "ifState": "up",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.127.1.3", "lastChangeTime": 1606128763149.0,
+    "nbrCount": 1, "adjState": "full", "peerIP": "10.127.1.3", "lastChangeTime": 1610329522237.0,
     "numChanges": 5.0, "timestamp": 1597528746721}, {"namespace": "ospf-single", "hostname":
     "spine02", "vrf": "default", "area": "0.0.0.0", "ifname": "swp1", "ifState": "up",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.127.1.1", "lastChangeTime": 1606128762149.0,
+    "nbrCount": 1, "adjState": "full", "peerIP": "10.127.1.1", "lastChangeTime": 1610329521237.0,
     "numChanges": 5.0, "timestamp": 1597528746721}]'
 - command: ospf top --what="flaps" --namespace="ospf-single" --format=json
   data-directory: tests/data/multidc/parquet-out/
@@ -329,19 +334,19 @@ tests:
   marks: ospf top
   output: '[{"namespace": "ospf-single", "hostname": "exit02", "vrf": "default", "area":
     "0.0.0.0", "ifname": "swp1", "ifState": "up", "nbrCount": 1, "adjState": "full",
-    "peerIP": "10.127.0.10", "lastChangeTime": 1606128768150.0, "numChanges": 5.0,
+    "peerIP": "10.127.0.10", "lastChangeTime": 1610329527239.0, "numChanges": 5.0,
     "timestamp": 1597528746603}, {"namespace": "ospf-single", "hostname": "spine02",
     "vrf": "default", "area": "0.0.0.0", "ifname": "swp4", "ifState": "up", "nbrCount":
-    1, "adjState": "full", "peerIP": "10.127.1.7", "lastChangeTime": 1606128763149.0,
+    1, "adjState": "full", "peerIP": "10.127.1.7", "lastChangeTime": 1610329522237.0,
     "numChanges": 5.0, "timestamp": 1597528746721}, {"namespace": "ospf-single", "hostname":
     "spine02", "vrf": "default", "area": "0.0.0.0", "ifname": "swp3", "ifState": "up",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.127.1.5", "lastChangeTime": 1606128763149.0,
+    "nbrCount": 1, "adjState": "full", "peerIP": "10.127.1.5", "lastChangeTime": 1610329522237.0,
     "numChanges": 5.0, "timestamp": 1597528746721}, {"namespace": "ospf-single", "hostname":
     "spine02", "vrf": "default", "area": "0.0.0.0", "ifname": "swp2", "ifState": "up",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.127.1.3", "lastChangeTime": 1606128763149.0,
+    "nbrCount": 1, "adjState": "full", "peerIP": "10.127.1.3", "lastChangeTime": 1610329522237.0,
     "numChanges": 5.0, "timestamp": 1597528746721}, {"namespace": "ospf-single", "hostname":
     "spine02", "vrf": "default", "area": "0.0.0.0", "ifname": "swp1", "ifState": "up",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.127.1.1", "lastChangeTime": 1606128762149.0,
+    "nbrCount": 1, "adjState": "full", "peerIP": "10.127.1.1", "lastChangeTime": 1610329521237.0,
     "numChanges": 5.0, "timestamp": 1597528746721}]'
 - command: ospf top --what="flaps" --columns="hostname ifname adjState" --format=json
   data-directory: tests/data/multidc/parquet-out/

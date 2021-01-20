@@ -373,7 +373,10 @@ def create_config():
 
 @pytest.fixture(scope="session")
 def start_server():
-    app.cfg_file = create_config()
+
+    from suzieq.restServer.query import app_init
+
+    app_init(create_config())
 
 
 def test_bad_rest():
