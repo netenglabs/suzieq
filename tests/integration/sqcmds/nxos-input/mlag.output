@@ -1,0 +1,225 @@
+[
+    {
+        "status": 0,
+        "timestamp": 1609296107584,
+        "cmd": "show vpc | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf01",
+        "address": "10.255.2.184",
+        "version": 0,
+        "data": "{\"vpc-domain-id\": \"12\", \"vpc-peer-status\": \"peer-ok\", \"vpc-peer-status-reason\": \"SUCCESS\", \"vpc-peer-keepalive-status\": \"peer-alive\", \"vpc-peer-consistency\": \"consistent\", \"vpc-per-vlan-peer-consistency\": \"consistent\", \"vpc-peer-consistency-status\": \"SUCCESS\", \"vpc-type-2-consistency\": \"consistent\", \"vpc-type-2-consistency-status\": \"SUCCESS\", \"vpc-role\": \"primary\", \"num-of-vpcs\": \"2\", \"peer-gateway\": \"1\", \"dual-active-excluded-vlans\": \"-\", \"vpc-graceful-consistency-check-status\": \"enabled\", \"vpc-auto-recovery-status\": \"Enabled, timer is off.(timeout = 240s)\", \"vpc-delay-restore-status\": \"Timer is off.(timeout = 30s)\", \"vpc-delay-restore-svi-status\": \"Timer is off.(timeout = 10s)\", \"operational-l3-peer\": \"Enabled\", \"virtual-peerlink\": \"Disabled\", \"vpc-peer-link-hdr\": \"Start of VPC peer-link table\", \"TABLE_peerlink\": {\"ROW_peerlink\": {\"peer-link-id\": \"1\", \"peerlink-ifindex\": \"Po1\", \"peer-link-port-state\": \"1\", \"peer-up-vlan-bitset\": \"1,10,30,999\"}}, \"vpc-end\": [\"End of table\", \"End of table\"], \"vpc-hdr\": \"Start of vPC table\", \"vpc-not-es\": \"vPC complex\", \"TABLE_vpc\": {\"ROW_vpc\": [{\"vpc-id\": \"3\", \"vpc-ifindex\": \"Po3\", \"vpc-port-state\": \"1\", \"phy-port-if-removed\": \"disabled\", \"vpc-thru-peerlink\": \"0\", \"vpc-consistency\": \"consistent\", \"vpc-consistency-status\": \"SUCCESS\", \"up-vlan-bitset\": \"10\", \"es-attr\": \"DF: Invalid\"}, {\"vpc-id\": \"4\", \"vpc-ifindex\": \"Po4\", \"vpc-port-state\": \"1\", \"phy-port-if-removed\": \"disabled\", \"vpc-thru-peerlink\": \"0\", \"vpc-consistency\": \"consistent\", \"vpc-consistency-status\": \"SUCCESS\", \"up-vlan-bitset\": \"30\", \"es-attr\": \"DF: Invalid\"}]}}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1609296109517,
+        "cmd": "show vpc peer-keepalive | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf01",
+        "address": "10.255.2.184",
+        "version": 0,
+        "data": "{\"vpc-peer-keepalive-status\": \"peer-alive\", \"vpc-keepalive-dest\": [\"10.255.2.185\", \"10.255.2.185\"], \"vpc-keepalive-send-interface\": \"mgmt0\", \"vpc-keepalive-receive-interface\": \"mgmt0\", \"vpc-keepalive-send-tstamp\": \"2020.12.29 16:56:37 621 ms\", \"vpc-keepalive-receive-tstamp\": \"2020.12.29 16:56:37 657 ms\", \"vpc-peer-keepalive-up-time\": \"(1883065) seconds, (503) msec\", \"vpc-keepalive-send-status\": \"Success\", \"vpc-keepalive-receive-status\": \"Success\", \"vpc-keepalive-lastupdate\": \"(0) seconds, (324) msec\", \"vpc-keepalive-interval\": \"1000\", \"vpc-keepalive-timeout\": \"5\", \"vpc-keepalive-hold-timeout\": \"3\", \"vpc-keepalive-vrf\": \"management\", \"vpc-keepalive-udp-port\": \"3200\", \"vpc-keepalive-tos\": \"192\"}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1609296110982,
+        "cmd": "show vpc role | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf01",
+        "address": "10.255.2.184",
+        "version": 0,
+        "data": "{\"vpc-peer-status\": \"peer-ok\", \"vpc-peer-status-reason\": \"SUCCESS\", \"vpc-current-role\": \"primary\", \"dual-active-detected\": \"0\", \"vpc-system-mac\": \"00:23:04:ee:be:0c\", \"vpc-system-prio\": \"32667\", \"vpc-local-system-mac\": \"44:01:02:01:1b:08\", \"vpc-local-system-prio\": \"32667\", \"vpc-local-role-prio\": \"32667\", \"vpc-peer-system-mac\": \"44:01:02:02:1b:08\", \"vpc-peer-system-prio\": \"32667\", \"vpc-peer-role-prio\": \"32667\"}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1609296112635,
+        "cmd": "show nve interface nve 1 | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf01",
+        "address": "10.255.2.184",
+        "version": 0,
+        "data": "{\"TABLE_nve_if\": {\"ROW_nve_if\": {\"if-name\": \"nve1\", \"if-state\": \"Up\", \"encap-type\": \"VXLAN\", \"vpc-capability\": \"VPC-VIP-Only [notified]\", \"local-rmac\": \"4401.0201.1b08\", \"host-reach-mode\": \"Control-Plane\", \"source-if\": \"loopback1\", \"primary-ip\": \"10.0.0.201\", \"secondary-ip\": \"10.0.0.112\"}}}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1609296114224,
+        "cmd": "show vpc orphan-ports | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf01",
+        "address": "10.255.2.184",
+        "version": 0,
+        "data": "Note: \n--------::Going through port database. Please be patient.::--------\n\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1609296107686,
+        "cmd": "show vpc | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf04",
+        "address": "10.255.2.187",
+        "version": 0,
+        "data": "{\"vpc-domain-id\": \"34\", \"vpc-peer-status\": \"peer-ok\", \"vpc-peer-status-reason\": \"SUCCESS\", \"vpc-peer-keepalive-status\": \"peer-alive\", \"vpc-peer-consistency\": \"consistent\", \"vpc-per-vlan-peer-consistency\": \"consistent\", \"vpc-peer-consistency-status\": \"SUCCESS\", \"vpc-type-2-consistency\": \"consistent\", \"vpc-type-2-consistency-status\": \"SUCCESS\", \"vpc-role\": \"secondary-primary\", \"num-of-vpcs\": \"2\", \"peer-gateway\": \"1\", \"dual-active-excluded-vlans\": \"-\", \"vpc-graceful-consistency-check-status\": \"enabled\", \"vpc-auto-recovery-status\": \"Enabled, timer is off.(timeout = 240s)\", \"vpc-delay-restore-status\": \"Timer is off.(timeout = 30s)\", \"vpc-delay-restore-svi-status\": \"Timer is off.(timeout = 10s)\", \"operational-l3-peer\": \"Enabled\", \"virtual-peerlink\": \"Disabled\", \"vpc-peer-link-hdr\": \"Start of VPC peer-link table\", \"TABLE_peerlink\": {\"ROW_peerlink\": {\"peer-link-id\": \"1\", \"peerlink-ifindex\": \"Po1\", \"peer-link-port-state\": \"1\", \"peer-up-vlan-bitset\": \"1,20,30,999\"}}, \"vpc-end\": [\"End of table\", \"End of table\"], \"vpc-hdr\": \"Start of vPC table\", \"vpc-not-es\": \"vPC complex\", \"TABLE_vpc\": {\"ROW_vpc\": [{\"vpc-id\": \"3\", \"vpc-ifindex\": \"Po3\", \"vpc-port-state\": \"1\", \"phy-port-if-removed\": \"disabled\", \"vpc-thru-peerlink\": \"0\", \"vpc-consistency\": \"consistent\", \"vpc-consistency-status\": \"SUCCESS\", \"up-vlan-bitset\": \"20\", \"es-attr\": \"DF: Invalid\"}, {\"vpc-id\": \"4\", \"vpc-ifindex\": \"Po4\", \"vpc-port-state\": \"1\", \"phy-port-if-removed\": \"disabled\", \"vpc-thru-peerlink\": \"0\", \"vpc-consistency\": \"consistent\", \"vpc-consistency-status\": \"SUCCESS\", \"up-vlan-bitset\": \"30\", \"es-attr\": \"DF: Invalid\"}]}}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1609296110060,
+        "cmd": "show vpc peer-keepalive | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf04",
+        "address": "10.255.2.187",
+        "version": 0,
+        "data": "{\"vpc-peer-keepalive-status\": \"peer-alive\", \"vpc-keepalive-dest\": [\"10.255.2.186\", \"10.255.2.186\"], \"vpc-keepalive-send-interface\": \"mgmt0\", \"vpc-keepalive-receive-interface\": \"mgmt0\", \"vpc-keepalive-send-tstamp\": \"2020.12.29 16:55:04 0 ms\", \"vpc-keepalive-receive-tstamp\": \"2020.12.29 16:55:04 1 ms\", \"vpc-peer-keepalive-up-time\": \"(1881426) seconds, (305) msec\", \"vpc-keepalive-send-status\": \"Success\", \"vpc-keepalive-receive-status\": \"Success\", \"vpc-keepalive-lastupdate\": \"(0) seconds, (831) msec\", \"vpc-keepalive-interval\": \"1000\", \"vpc-keepalive-timeout\": \"5\", \"vpc-keepalive-hold-timeout\": \"3\", \"vpc-keepalive-vrf\": \"management\", \"vpc-keepalive-udp-port\": \"3200\", \"vpc-keepalive-tos\": \"192\"}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1609296111849,
+        "cmd": "show vpc role | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf04",
+        "address": "10.255.2.187",
+        "version": 0,
+        "data": "{\"vpc-peer-status\": \"peer-ok\", \"vpc-peer-status-reason\": \"SUCCESS\", \"vpc-current-role\": \"secondary-primary\", \"dual-active-detected\": \"0\", \"vpc-system-mac\": \"00:23:04:ee:be:22\", \"vpc-system-prio\": \"32667\", \"vpc-local-system-mac\": \"44:01:02:04:1b:08\", \"vpc-local-system-prio\": \"32667\", \"vpc-local-role-prio\": \"32667\", \"vpc-peer-system-mac\": \"44:01:02:03:1b:08\", \"vpc-peer-system-prio\": \"32667\", \"vpc-peer-role-prio\": \"32667\"}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1609296113604,
+        "cmd": "show nve interface nve 1 | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf04",
+        "address": "10.255.2.187",
+        "version": 0,
+        "data": "{\"TABLE_nve_if\": {\"ROW_nve_if\": {\"if-name\": \"nve1\", \"if-state\": \"Up\", \"encap-type\": \"VXLAN\", \"vpc-capability\": \"VPC-VIP-Only [notified]\", \"local-rmac\": \"4401.0204.1b08\", \"host-reach-mode\": \"Control-Plane\", \"source-if\": \"loopback1\", \"primary-ip\": \"10.0.0.204\", \"secondary-ip\": \"10.0.0.134\"}}}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1609296116838,
+        "cmd": "show vpc orphan-ports | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf04",
+        "address": "10.255.2.187",
+        "version": 0,
+        "data": "Note: \n--------::Going through port database. Please be patient.::--------\n\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1609296108573,
+        "cmd": "show vpc | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf02",
+        "address": "10.255.2.185",
+        "version": 0,
+        "data": "{\"vpc-domain-id\": \"12\", \"vpc-peer-status\": \"peer-ok\", \"vpc-peer-status-reason\": \"SUCCESS\", \"vpc-peer-keepalive-status\": \"peer-alive\", \"vpc-peer-consistency\": \"consistent\", \"vpc-per-vlan-peer-consistency\": \"consistent\", \"vpc-peer-consistency-status\": \"SUCCESS\", \"vpc-type-2-consistency\": \"consistent\", \"vpc-type-2-consistency-status\": \"SUCCESS\", \"vpc-role\": \"secondary\", \"num-of-vpcs\": \"2\", \"peer-gateway\": \"1\", \"dual-active-excluded-vlans\": \"-\", \"vpc-graceful-consistency-check-status\": \"enabled\", \"vpc-auto-recovery-status\": \"Enabled, timer is off.(timeout = 240s)\", \"vpc-delay-restore-status\": \"Timer is off.(timeout = 30s)\", \"vpc-delay-restore-svi-status\": \"Timer is off.(timeout = 10s)\", \"operational-l3-peer\": \"Enabled\", \"virtual-peerlink\": \"Disabled\", \"vpc-peer-link-hdr\": \"Start of VPC peer-link table\", \"TABLE_peerlink\": {\"ROW_peerlink\": {\"peer-link-id\": \"1\", \"peerlink-ifindex\": \"Po1\", \"peer-link-port-state\": \"1\", \"peer-up-vlan-bitset\": \"1,10,30,999\"}}, \"vpc-end\": [\"End of table\", \"End of table\"], \"vpc-hdr\": \"Start of vPC table\", \"vpc-not-es\": \"vPC complex\", \"TABLE_vpc\": {\"ROW_vpc\": [{\"vpc-id\": \"3\", \"vpc-ifindex\": \"Po3\", \"vpc-port-state\": \"0\", \"phy-port-if-removed\": \"disabled\", \"vpc-thru-peerlink\": \"1\", \"vpc-consistency\": \"inconsistent\", \"vpc-consistency-status\": \"INVALID\", \"up-vlan-bitset\": \"-\", \"es-attr\": \"DF: Invalid\"}, {\"vpc-id\": \"4\", \"vpc-ifindex\": \"Po4\", \"vpc-port-state\": \"1\", \"phy-port-if-removed\": \"disabled\", \"vpc-thru-peerlink\": \"0\", \"vpc-consistency\": \"consistent\", \"vpc-consistency-status\": \"SUCCESS\", \"up-vlan-bitset\": \"30\", \"es-attr\": \"DF: Invalid\"}]}}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1609296110867,
+        "cmd": "show vpc peer-keepalive | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf02",
+        "address": "10.255.2.185",
+        "version": 0,
+        "data": "{\"vpc-peer-keepalive-status\": \"peer-alive\", \"vpc-keepalive-dest\": [\"10.255.2.184\", \"10.255.2.184\"], \"vpc-keepalive-send-interface\": \"mgmt0\", \"vpc-keepalive-receive-interface\": \"mgmt0\", \"vpc-keepalive-send-tstamp\": \"2020.12.29 16:57:21 551 ms\", \"vpc-keepalive-receive-tstamp\": \"2020.12.29 16:57:21 553 ms\", \"vpc-peer-keepalive-up-time\": \"(1883094) seconds, (778) msec\", \"vpc-keepalive-send-status\": \"Success\", \"vpc-keepalive-receive-status\": \"Success\", \"vpc-keepalive-lastupdate\": \"(0) seconds, (386) msec\", \"vpc-keepalive-interval\": \"1000\", \"vpc-keepalive-timeout\": \"5\", \"vpc-keepalive-hold-timeout\": \"3\", \"vpc-keepalive-vrf\": \"management\", \"vpc-keepalive-udp-port\": \"3200\", \"vpc-keepalive-tos\": \"192\"}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1609296112124,
+        "cmd": "show vpc role | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf02",
+        "address": "10.255.2.185",
+        "version": 0,
+        "data": "{\"vpc-peer-status\": \"peer-ok\", \"vpc-peer-status-reason\": \"SUCCESS\", \"vpc-current-role\": \"secondary\", \"dual-active-detected\": \"0\", \"vpc-system-mac\": \"00:23:04:ee:be:0c\", \"vpc-system-prio\": \"32667\", \"vpc-local-system-mac\": \"44:01:02:02:1b:08\", \"vpc-local-system-prio\": \"32667\", \"vpc-local-role-prio\": \"32667\", \"vpc-peer-system-mac\": \"44:01:02:01:1b:08\", \"vpc-peer-system-prio\": \"32667\", \"vpc-peer-role-prio\": \"32667\"}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1609296114364,
+        "cmd": "show nve interface nve 1 | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf02",
+        "address": "10.255.2.185",
+        "version": 0,
+        "data": "{\"TABLE_nve_if\": {\"ROW_nve_if\": {\"if-name\": \"nve1\", \"if-state\": \"Up\", \"encap-type\": \"VXLAN\", \"vpc-capability\": \"VPC-VIP-Only [notified]\", \"local-rmac\": \"4401.0202.1b08\", \"host-reach-mode\": \"Control-Plane\", \"source-if\": \"loopback1\", \"primary-ip\": \"10.0.0.202\", \"secondary-ip\": \"10.0.0.112\"}}}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1609296117042,
+        "cmd": "show vpc orphan-ports | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf02",
+        "address": "10.255.2.185",
+        "version": 0,
+        "data": "Note: \n--------::Going through port database. Please be patient.::--------\n\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1609296108372,
+        "cmd": "show vpc | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf03",
+        "address": "10.255.2.186",
+        "version": 0,
+        "data": "{\"vpc-domain-id\": \"34\", \"vpc-peer-status\": \"peer-ok\", \"vpc-peer-status-reason\": \"SUCCESS\", \"vpc-peer-keepalive-status\": \"peer-alive\", \"vpc-peer-consistency\": \"consistent\", \"vpc-per-vlan-peer-consistency\": \"consistent\", \"vpc-peer-consistency-status\": \"SUCCESS\", \"vpc-type-2-consistency\": \"consistent\", \"vpc-type-2-consistency-status\": \"SUCCESS\", \"vpc-role\": \"primary-secondary\", \"num-of-vpcs\": \"2\", \"peer-gateway\": \"1\", \"dual-active-excluded-vlans\": \"-\", \"vpc-graceful-consistency-check-status\": \"enabled\", \"vpc-auto-recovery-status\": \"Enabled, timer is off.(timeout = 240s)\", \"vpc-delay-restore-status\": \"Timer is off.(timeout = 30s)\", \"vpc-delay-restore-svi-status\": \"Timer is off.(timeout = 10s)\", \"operational-l3-peer\": \"Enabled\", \"virtual-peerlink\": \"Disabled\", \"vpc-peer-link-hdr\": \"Start of VPC peer-link table\", \"TABLE_peerlink\": {\"ROW_peerlink\": {\"peer-link-id\": \"1\", \"peerlink-ifindex\": \"Po1\", \"peer-link-port-state\": \"1\", \"peer-up-vlan-bitset\": \"1,20,30,999\"}}, \"vpc-end\": [\"End of table\", \"End of table\"], \"vpc-hdr\": \"Start of vPC table\", \"vpc-not-es\": \"vPC complex\", \"TABLE_vpc\": {\"ROW_vpc\": [{\"vpc-id\": \"3\", \"vpc-ifindex\": \"Po3\", \"vpc-port-state\": \"1\", \"phy-port-if-removed\": \"disabled\", \"vpc-thru-peerlink\": \"0\", \"vpc-consistency\": \"consistent\", \"vpc-consistency-status\": \"SUCCESS\", \"up-vlan-bitset\": \"20\", \"es-attr\": \"DF: Invalid\"}, {\"vpc-id\": \"4\", \"vpc-ifindex\": \"Po4\", \"vpc-port-state\": \"1\", \"phy-port-if-removed\": \"disabled\", \"vpc-thru-peerlink\": \"0\", \"vpc-consistency\": \"consistent\", \"vpc-consistency-status\": \"SUCCESS\", \"up-vlan-bitset\": \"30\", \"es-attr\": \"DF: Invalid\"}]}}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1609296110507,
+        "cmd": "show vpc peer-keepalive | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf03",
+        "address": "10.255.2.186",
+        "version": 0,
+        "data": "{\"vpc-peer-keepalive-status\": \"peer-alive\", \"vpc-keepalive-dest\": [\"10.255.2.187\", \"10.255.2.187\"], \"vpc-keepalive-send-interface\": \"mgmt0\", \"vpc-keepalive-receive-interface\": \"mgmt0\", \"vpc-keepalive-send-tstamp\": \"2020.12.29 17:00:31 756 ms\", \"vpc-keepalive-receive-tstamp\": \"2020.12.29 17:00:31 785 ms\", \"vpc-peer-keepalive-up-time\": \"(1881609) seconds, (676) msec\", \"vpc-keepalive-send-status\": \"Success\", \"vpc-keepalive-receive-status\": \"Success\", \"vpc-keepalive-lastupdate\": \"(0) seconds, (201) msec\", \"vpc-keepalive-interval\": \"1000\", \"vpc-keepalive-timeout\": \"5\", \"vpc-keepalive-hold-timeout\": \"3\", \"vpc-keepalive-vrf\": \"management\", \"vpc-keepalive-udp-port\": \"3200\", \"vpc-keepalive-tos\": \"192\"}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1609296113210,
+        "cmd": "show vpc role | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf03",
+        "address": "10.255.2.186",
+        "version": 0,
+        "data": "{\"vpc-peer-status\": \"peer-ok\", \"vpc-peer-status-reason\": \"SUCCESS\", \"vpc-current-role\": \"primary-secondary\", \"dual-active-detected\": \"0\", \"vpc-system-mac\": \"00:23:04:ee:be:22\", \"vpc-system-prio\": \"32667\", \"vpc-local-system-mac\": \"44:01:02:03:1b:08\", \"vpc-local-system-prio\": \"32667\", \"vpc-local-role-prio\": \"32667\", \"vpc-peer-system-mac\": \"44:01:02:04:1b:08\", \"vpc-peer-system-prio\": \"32667\", \"vpc-peer-role-prio\": \"32667\"}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1609296115801,
+        "cmd": "show nve interface nve 1 | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf03",
+        "address": "10.255.2.186",
+        "version": 0,
+        "data": "{\"TABLE_nve_if\": {\"ROW_nve_if\": {\"if-name\": \"nve1\", \"if-state\": \"Up\", \"encap-type\": \"VXLAN\", \"vpc-capability\": \"VPC-VIP-Only [notified]\", \"local-rmac\": \"4401.0203.1b08\", \"host-reach-mode\": \"Control-Plane\", \"source-if\": \"loopback1\", \"primary-ip\": \"10.0.0.203\", \"secondary-ip\": \"10.0.0.134\"}}}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1609296117671,
+        "cmd": "show vpc orphan-ports | json",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf03",
+        "address": "10.255.2.186",
+        "version": 0,
+        "data": "Note: \n--------::Going through port database. Please be patient.::--------\n\n"
+    }
+]

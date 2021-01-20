@@ -6,38 +6,38 @@ tests:
   output: '[{"namespace": "ospf-single", "hostname": "server101", "ifname": "eth0",
     "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 0,
     "master": "", "ipAddressList": ["192.168.123.182/24"], "ip6AddressList": [], "numChanges":
-    0, "timestamp": 1597528745684}, {"namespace": "ospf-single", "hostname": "server101",
+    0, "timestamp": 1597553945684}, {"namespace": "ospf-single", "hostname": "server101",
     "ifname": "eth1", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
     1500, "vlan": 0, "master": "", "ipAddressList": ["172.16.1.101/24"], "ip6AddressList":
-    [], "numChanges": 0, "timestamp": 1597528745684}, {"namespace": "ospf-single",
+    [], "numChanges": 0, "timestamp": 1597553945684}, {"namespace": "ospf-single",
     "hostname": "edge01", "ifname": "eth1", "state": "up", "adminState": "up", "type":
     "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
-    [], "numChanges": 0, "timestamp": 1597528745878}, {"namespace": "ospf-single",
+    [], "numChanges": 0, "timestamp": 1597553945878}, {"namespace": "ospf-single",
     "hostname": "edge01", "ifname": "eth2", "state": "up", "adminState": "up", "type":
     "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
-    [], "numChanges": 0, "timestamp": 1597528745878}, {"namespace": "ospf-single",
+    [], "numChanges": 0, "timestamp": 1597553945878}, {"namespace": "ospf-single",
     "hostname": "edge01", "ifname": "eth0", "state": "up", "adminState": "up", "type":
     "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["192.168.123.110/24"],
-    "ip6AddressList": [], "numChanges": 0, "timestamp": 1597528745878}]'
+    "ip6AddressList": [], "numChanges": 0, "timestamp": 1597553945878}]'
 - command: interface top --what="flaps" --namespace=ospf-ibgp --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: interface top flaps
   output: '[{"namespace": "ospf-ibgp", "hostname": "server101", "ifname": "eth0",
     "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 0,
     "master": "", "ipAddressList": ["192.168.123.97/24"], "ip6AddressList": [], "numChanges":
-    0, "timestamp": 1605995734419}, {"namespace": "ospf-ibgp", "hostname": "server104",
+    0, "timestamp": 1606024534419}, {"namespace": "ospf-ibgp", "hostname": "server104",
     "ifname": "eth0", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
     1500, "vlan": 0, "master": "", "ipAddressList": ["192.168.123.53/24"], "ip6AddressList":
-    [], "numChanges": 0, "timestamp": 1605995734465}, {"namespace": "ospf-ibgp", "hostname":
+    [], "numChanges": 0, "timestamp": 1606024534465}, {"namespace": "ospf-ibgp", "hostname":
     "edge01", "ifname": "eth0", "state": "up", "adminState": "up", "type": "ethernet",
     "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["192.168.123.80/24"],
-    "ip6AddressList": [], "numChanges": 0, "timestamp": 1605995734466}, {"namespace":
+    "ip6AddressList": [], "numChanges": 0, "timestamp": 1606024534466}, {"namespace":
     "ospf-ibgp", "hostname": "edge01", "ifname": "eth1", "state": "up", "adminState":
     "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
-    [], "ip6AddressList": [], "numChanges": 0, "timestamp": 1605995734466}, {"namespace":
+    [], "ip6AddressList": [], "numChanges": 0, "timestamp": 1606024534466}, {"namespace":
     "ospf-ibgp", "hostname": "edge01", "ifname": "eth2", "state": "up", "adminState":
     "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
-    [], "ip6AddressList": [], "numChanges": 0, "timestamp": 1605995734466}]'
+    [], "ip6AddressList": [], "numChanges": 0, "timestamp": 1606024534466}]'
 - command: interface top --what="flaps" --namespace=ospf-ibgp --columns="hostname
     ifname state mtu" --format=json
   data-directory: tests/data/multidc/parquet-out/
@@ -52,38 +52,39 @@ tests:
   marks: bgp top flaps
   output: '[{"namespace": "ospf-ibgp", "hostname": "edge01", "vrf": "default", "peer":
     "eth2.3", "peerHostname": "exit02", "state": "Established", "asn": 65530, "peerAsn":
-    65000, "v4PfxRx": 2, "estdTime": 29190679, "numChanges": 1, "timestamp": 1605995734679},
-    {"namespace": "ospf-ibgp", "hostname": "edge01", "vrf": "default", "peer": "eth2.2",
-    "peerHostname": "exit02", "state": "Established", "asn": 65530, "peerAsn": 65000,
-    "v4PfxRx": 10, "estdTime": 29190679, "numChanges": 1, "timestamp": 1605995734679},
-    {"namespace": "ospf-ibgp", "hostname": "edge01", "vrf": "default", "peer": "eth1.4",
-    "peerHostname": "exit01", "state": "Established", "asn": 65530, "peerAsn": 65001,
-    "v4PfxRx": 3, "estdTime": 29190679, "numChanges": 1, "timestamp": 1605995734679},
-    {"namespace": "ospf-ibgp", "hostname": "edge01", "vrf": "default", "peer": "eth1.3",
-    "peerHostname": "exit01", "state": "Established", "asn": 65530, "peerAsn": 65000,
-    "v4PfxRx": 2, "estdTime": 29190679, "numChanges": 1, "timestamp": 1605995734679},
-    {"namespace": "ospf-ibgp", "hostname": "edge01", "vrf": "default", "peer": "eth1.2",
-    "peerHostname": "exit01", "state": "Established", "asn": 65530, "peerAsn": 65000,
-    "v4PfxRx": 10, "estdTime": 29190679, "numChanges": 1, "timestamp": 1605995734679}]'
+    65000, "v4PfxRx": 2, "estdTime": 1605995344000, "numChanges": 1, "timestamp":
+    1606024534679}, {"namespace": "ospf-ibgp", "hostname": "edge01", "vrf": "default",
+    "peer": "eth2.2", "peerHostname": "exit02", "state": "Established", "asn": 65530,
+    "peerAsn": 65000, "v4PfxRx": 10, "estdTime": 1605995344000, "numChanges": 1, "timestamp":
+    1606024534679}, {"namespace": "ospf-ibgp", "hostname": "edge01", "vrf": "default",
+    "peer": "eth1.4", "peerHostname": "exit01", "state": "Established", "asn": 65530,
+    "peerAsn": 65001, "v4PfxRx": 3, "estdTime": 1605995344000, "numChanges": 1, "timestamp":
+    1606024534679}, {"namespace": "ospf-ibgp", "hostname": "edge01", "vrf": "default",
+    "peer": "eth1.3", "peerHostname": "exit01", "state": "Established", "asn": 65530,
+    "peerAsn": 65000, "v4PfxRx": 2, "estdTime": 1605995344000, "numChanges": 1, "timestamp":
+    1606024534679}, {"namespace": "ospf-ibgp", "hostname": "edge01", "vrf": "default",
+    "peer": "eth1.2", "peerHostname": "exit01", "state": "Established", "asn": 65530,
+    "peerAsn": 65000, "v4PfxRx": 10, "estdTime": 1605995344000, "numChanges": 1, "timestamp":
+    1606024534679}]'
 - command: bgp top --what="flaps" --namespace="dual-evpn" --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: bgp top flaps
   output: '[{"namespace": "dual-evpn", "hostname": "exit02", "vrf": "internet-vrf",
     "peer": "swp6", "peerHostname": "internet", "state": "Established", "asn": 65202,
-    "peerAsn": 25253, "v4PfxRx": 4, "estdTime": 28849181, "numChanges": 1, "timestamp":
-    1605996846181}, {"namespace": "dual-evpn", "hostname": "exit02", "vrf": "internet-vrf",
+    "peerAsn": 25253, "v4PfxRx": 4, "estdTime": 1605996797000, "numChanges": 1, "timestamp":
+    1606025646181}, {"namespace": "dual-evpn", "hostname": "exit02", "vrf": "internet-vrf",
     "peer": "swp5.4", "peerHostname": "edge01", "state": "Established", "asn": 65202,
-    "peerAsn": 65530, "v4PfxRx": 16, "estdTime": 29206181, "numChanges": 1, "timestamp":
-    1605996846181}, {"namespace": "dual-evpn", "hostname": "exit02", "vrf": "evpn-vrf",
+    "peerAsn": 65530, "v4PfxRx": 16, "estdTime": 1605996440000, "numChanges": 1, "timestamp":
+    1606025646181}, {"namespace": "dual-evpn", "hostname": "exit02", "vrf": "evpn-vrf",
     "peer": "swp5.3", "peerHostname": "edge01", "state": "Established", "asn": 65202,
-    "peerAsn": 65530, "v4PfxRx": 16, "estdTime": 29206181, "numChanges": 1, "timestamp":
-    1605996846181}, {"namespace": "dual-evpn", "hostname": "exit02", "vrf": "default",
+    "peerAsn": 65530, "v4PfxRx": 16, "estdTime": 1605996440000, "numChanges": 1, "timestamp":
+    1606025646181}, {"namespace": "dual-evpn", "hostname": "exit02", "vrf": "default",
     "peer": "swp5.2", "peerHostname": "edge01", "state": "Established", "asn": 65202,
-    "peerAsn": 65530, "v4PfxRx": 16, "estdTime": 29206181, "numChanges": 1, "timestamp":
-    1605996846181}, {"namespace": "dual-evpn", "hostname": "exit02", "vrf": "default",
+    "peerAsn": 65530, "v4PfxRx": 16, "estdTime": 1605996440000, "numChanges": 1, "timestamp":
+    1606025646181}, {"namespace": "dual-evpn", "hostname": "exit02", "vrf": "default",
     "peer": "swp2", "peerHostname": "spine02", "state": "Established", "asn": 65202,
-    "peerAsn": 65000, "v4PfxRx": 14, "estdTime": 29207181, "numChanges": 1, "timestamp":
-    1605996846181}]'
+    "peerAsn": 65000, "v4PfxRx": 14, "estdTime": 1605996439000, "numChanges": 1, "timestamp":
+    1606025646181}]'
 - command: bgp top --what="flaps" --namespace="dual-evpn" --columns="hostname peer"
     --format=json
   data-directory: tests/data/multidc/parquet-out/
@@ -96,210 +97,212 @@ tests:
   marks: bgp top
   output: '[{"namespace": "dual-evpn", "hostname": "exit02", "vrf": "internet-vrf",
     "peer": "swp5.4", "peerHostname": "edge01", "state": "Established", "asn": 65202,
-    "peerAsn": 65530, "v4PfxRx": 16, "estdTime": 29206181, "numChanges": 1, "timestamp":
-    1605996846181}, {"namespace": "dual-evpn", "hostname": "exit02", "vrf": "evpn-vrf",
+    "peerAsn": 65530, "v4PfxRx": 16, "estdTime": 1605996440000, "numChanges": 1, "timestamp":
+    1606025646181}, {"namespace": "dual-evpn", "hostname": "exit02", "vrf": "evpn-vrf",
     "peer": "swp5.3", "peerHostname": "edge01", "state": "Established", "asn": 65202,
-    "peerAsn": 65530, "v4PfxRx": 16, "estdTime": 29206181, "numChanges": 1, "timestamp":
-    1605996846181}, {"namespace": "dual-evpn", "hostname": "exit02", "vrf": "default",
+    "peerAsn": 65530, "v4PfxRx": 16, "estdTime": 1605996440000, "numChanges": 1, "timestamp":
+    1606025646181}, {"namespace": "dual-evpn", "hostname": "exit02", "vrf": "default",
     "peer": "swp5.2", "peerHostname": "edge01", "state": "Established", "asn": 65202,
-    "peerAsn": 65530, "v4PfxRx": 16, "estdTime": 29206181, "numChanges": 1, "timestamp":
-    1605996846181}, {"namespace": "dual-evpn", "hostname": "exit01", "vrf": "evpn-vrf",
+    "peerAsn": 65530, "v4PfxRx": 16, "estdTime": 1605996440000, "numChanges": 1, "timestamp":
+    1606025646181}, {"namespace": "dual-evpn", "hostname": "exit01", "vrf": "evpn-vrf",
     "peer": "swp5.3", "peerHostname": "edge01", "state": "Established", "asn": 65201,
-    "peerAsn": 65530, "v4PfxRx": 16, "estdTime": 29209316, "numChanges": 1, "timestamp":
-    1605996847316}, {"namespace": "dual-evpn", "hostname": "exit01", "vrf": "default",
+    "peerAsn": 65530, "v4PfxRx": 16, "estdTime": 1605996438000, "numChanges": 1, "timestamp":
+    1606025647316}, {"namespace": "dual-evpn", "hostname": "exit01", "vrf": "default",
     "peer": "swp5.2", "peerHostname": "edge01", "state": "Established", "asn": 65201,
-    "peerAsn": 65530, "v4PfxRx": 16, "estdTime": 29209316, "numChanges": 1, "timestamp":
-    1605996847316}]'
+    "peerAsn": 65530, "v4PfxRx": 16, "estdTime": 1605996438000, "numChanges": 1, "timestamp":
+    1606025647316}]'
 - command: bgp top --what="v4PrefixRx" --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: bgp top
   output: '[{"namespace": "dual-evpn", "hostname": "exit02", "vrf": "internet-vrf",
     "peer": "swp5.4", "peerHostname": "edge01", "state": "Established", "asn": 65202,
-    "peerAsn": 65530, "v4PfxRx": 16, "estdTime": 29206181, "numChanges": 1, "timestamp":
-    1605996846181}, {"namespace": "dual-evpn", "hostname": "exit02", "vrf": "evpn-vrf",
+    "peerAsn": 65530, "v4PfxRx": 16, "estdTime": 1605996440000, "numChanges": 1, "timestamp":
+    1606025646181}, {"namespace": "dual-evpn", "hostname": "exit02", "vrf": "evpn-vrf",
     "peer": "swp5.3", "peerHostname": "edge01", "state": "Established", "asn": 65202,
-    "peerAsn": 65530, "v4PfxRx": 16, "estdTime": 29206181, "numChanges": 1, "timestamp":
-    1605996846181}, {"namespace": "dual-evpn", "hostname": "exit02", "vrf": "default",
+    "peerAsn": 65530, "v4PfxRx": 16, "estdTime": 1605996440000, "numChanges": 1, "timestamp":
+    1606025646181}, {"namespace": "dual-evpn", "hostname": "exit02", "vrf": "default",
     "peer": "swp5.2", "peerHostname": "edge01", "state": "Established", "asn": 65202,
-    "peerAsn": 65530, "v4PfxRx": 16, "estdTime": 29206181, "numChanges": 1, "timestamp":
-    1605996846181}, {"namespace": "dual-evpn", "hostname": "exit01", "vrf": "evpn-vrf",
+    "peerAsn": 65530, "v4PfxRx": 16, "estdTime": 1605996440000, "numChanges": 1, "timestamp":
+    1606025646181}, {"namespace": "dual-evpn", "hostname": "exit01", "vrf": "evpn-vrf",
     "peer": "swp5.3", "peerHostname": "edge01", "state": "Established", "asn": 65201,
-    "peerAsn": 65530, "v4PfxRx": 16, "estdTime": 29209316, "numChanges": 1, "timestamp":
-    1605996847316}, {"namespace": "dual-evpn", "hostname": "exit01", "vrf": "default",
+    "peerAsn": 65530, "v4PfxRx": 16, "estdTime": 1605996438000, "numChanges": 1, "timestamp":
+    1606025647316}, {"namespace": "dual-evpn", "hostname": "exit01", "vrf": "default",
     "peer": "swp5.2", "peerHostname": "edge01", "state": "Established", "asn": 65201,
-    "peerAsn": 65530, "v4PfxRx": 16, "estdTime": 29209316, "numChanges": 1, "timestamp":
-    1605996847316}]'
+    "peerAsn": 65530, "v4PfxRx": 16, "estdTime": 1605996438000, "numChanges": 1, "timestamp":
+    1606025647316}]'
 - command: bgp top --what="v6PrefixRx" --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: bgp top
   output: '[{"namespace": "ospf-ibgp", "hostname": "edge01", "vrf": "default", "peer":
     "eth2.3", "peerHostname": "exit02", "state": "Established", "asn": 65530, "peerAsn":
-    65000, "v4PfxRx": 2, "estdTime": 29190679, "numChanges": 1, "v6PfxRx": 0, "timestamp":
-    1605995734679}, {"namespace": "ospf-ibgp", "hostname": "edge01", "vrf": "default",
-    "peer": "eth2.2", "peerHostname": "exit02", "state": "Established", "asn": 65530,
-    "peerAsn": 65000, "v4PfxRx": 10, "estdTime": 29190679, "numChanges": 1, "v6PfxRx":
-    0, "timestamp": 1605995734679}, {"namespace": "ospf-ibgp", "hostname": "edge01",
-    "vrf": "default", "peer": "eth1.4", "peerHostname": "exit01", "state": "Established",
-    "asn": 65530, "peerAsn": 65001, "v4PfxRx": 3, "estdTime": 29190679, "numChanges":
-    1, "v6PfxRx": 0, "timestamp": 1605995734679}, {"namespace": "ospf-ibgp", "hostname":
-    "edge01", "vrf": "default", "peer": "eth1.3", "peerHostname": "exit01", "state":
-    "Established", "asn": 65530, "peerAsn": 65000, "v4PfxRx": 2, "estdTime": 29190679,
-    "numChanges": 1, "v6PfxRx": 0, "timestamp": 1605995734679}, {"namespace": "ospf-ibgp",
-    "hostname": "edge01", "vrf": "default", "peer": "eth1.2", "peerHostname": "exit01",
-    "state": "Established", "asn": 65530, "peerAsn": 65000, "v4PfxRx": 10, "estdTime":
-    29190679, "numChanges": 1, "v6PfxRx": 0, "timestamp": 1605995734679}]'
+    65000, "v4PfxRx": 2, "estdTime": 1605995344000, "numChanges": 1, "v6PfxRx": 0,
+    "timestamp": 1606024534679}, {"namespace": "ospf-ibgp", "hostname": "edge01",
+    "vrf": "default", "peer": "eth2.2", "peerHostname": "exit02", "state": "Established",
+    "asn": 65530, "peerAsn": 65000, "v4PfxRx": 10, "estdTime": 1605995344000, "numChanges":
+    1, "v6PfxRx": 0, "timestamp": 1606024534679}, {"namespace": "ospf-ibgp", "hostname":
+    "edge01", "vrf": "default", "peer": "eth1.4", "peerHostname": "exit01", "state":
+    "Established", "asn": 65530, "peerAsn": 65001, "v4PfxRx": 3, "estdTime": 1605995344000,
+    "numChanges": 1, "v6PfxRx": 0, "timestamp": 1606024534679}, {"namespace": "ospf-ibgp",
+    "hostname": "edge01", "vrf": "default", "peer": "eth1.3", "peerHostname": "exit01",
+    "state": "Established", "asn": 65530, "peerAsn": 65000, "v4PfxRx": 2, "estdTime":
+    1605995344000, "numChanges": 1, "v6PfxRx": 0, "timestamp": 1606024534679}, {"namespace":
+    "ospf-ibgp", "hostname": "edge01", "vrf": "default", "peer": "eth1.2", "peerHostname":
+    "exit01", "state": "Established", "asn": 65530, "peerAsn": 65000, "v4PfxRx": 10,
+    "estdTime": 1605995344000, "numChanges": 1, "v6PfxRx": 0, "timestamp": 1606024534679}]'
 - command: bgp top --what="evpnPrefixRx" --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: bgp top
   output: '[{"namespace": "ospf-ibgp", "hostname": "edge01", "vrf": "default", "peer":
     "eth2.3", "peerHostname": "exit02", "state": "Established", "asn": 65530, "peerAsn":
-    65000, "v4PfxRx": 2, "estdTime": 29190679, "numChanges": 1, "evpnPfxRx": 0, "timestamp":
-    1605995734679}, {"namespace": "ospf-ibgp", "hostname": "edge01", "vrf": "default",
-    "peer": "eth2.2", "peerHostname": "exit02", "state": "Established", "asn": 65530,
-    "peerAsn": 65000, "v4PfxRx": 10, "estdTime": 29190679, "numChanges": 1, "evpnPfxRx":
-    0, "timestamp": 1605995734679}, {"namespace": "ospf-ibgp", "hostname": "edge01",
-    "vrf": "default", "peer": "eth1.4", "peerHostname": "exit01", "state": "Established",
-    "asn": 65530, "peerAsn": 65001, "v4PfxRx": 3, "estdTime": 29190679, "numChanges":
-    1, "evpnPfxRx": 0, "timestamp": 1605995734679}, {"namespace": "ospf-ibgp", "hostname":
-    "edge01", "vrf": "default", "peer": "eth1.3", "peerHostname": "exit01", "state":
-    "Established", "asn": 65530, "peerAsn": 65000, "v4PfxRx": 2, "estdTime": 29190679,
-    "numChanges": 1, "evpnPfxRx": 0, "timestamp": 1605995734679}, {"namespace": "ospf-ibgp",
-    "hostname": "edge01", "vrf": "default", "peer": "eth1.2", "peerHostname": "exit01",
-    "state": "Established", "asn": 65530, "peerAsn": 65000, "v4PfxRx": 10, "estdTime":
-    29190679, "numChanges": 1, "evpnPfxRx": 0, "timestamp": 1605995734679}]'
+    65000, "v4PfxRx": 2, "estdTime": 1605995344000, "numChanges": 1, "evpnPfxRx":
+    0, "timestamp": 1606024534679}, {"namespace": "ospf-ibgp", "hostname": "edge01",
+    "vrf": "default", "peer": "eth2.2", "peerHostname": "exit02", "state": "Established",
+    "asn": 65530, "peerAsn": 65000, "v4PfxRx": 10, "estdTime": 1605995344000, "numChanges":
+    1, "evpnPfxRx": 0, "timestamp": 1606024534679}, {"namespace": "ospf-ibgp", "hostname":
+    "edge01", "vrf": "default", "peer": "eth1.4", "peerHostname": "exit01", "state":
+    "Established", "asn": 65530, "peerAsn": 65001, "v4PfxRx": 3, "estdTime": 1605995344000,
+    "numChanges": 1, "evpnPfxRx": 0, "timestamp": 1606024534679}, {"namespace": "ospf-ibgp",
+    "hostname": "edge01", "vrf": "default", "peer": "eth1.3", "peerHostname": "exit01",
+    "state": "Established", "asn": 65530, "peerAsn": 65000, "v4PfxRx": 2, "estdTime":
+    1605995344000, "numChanges": 1, "evpnPfxRx": 0, "timestamp": 1606024534679}, {"namespace":
+    "ospf-ibgp", "hostname": "edge01", "vrf": "default", "peer": "eth1.2", "peerHostname":
+    "exit01", "state": "Established", "asn": 65530, "peerAsn": 65000, "v4PfxRx": 10,
+    "estdTime": 1605995344000, "numChanges": 1, "evpnPfxRx": 0, "timestamp": 1606024534679}]'
 - command: bgp top --what="updatesRx" --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: bgp top
   output: '[{"namespace": "dual-evpn", "hostname": "exit02", "vrf": "default", "peer":
     "swp1", "peerHostname": "spine01", "state": "Established", "asn": 65202, "peerAsn":
-    65000, "v4PfxRx": 14, "estdTime": 29207181, "numChanges": 1, "updatesRx": 59,
-    "timestamp": 1605996846181}, {"namespace": "dual-evpn", "hostname": "exit02",
+    65000, "v4PfxRx": 14, "estdTime": 1605996439000, "numChanges": 1, "updatesRx":
+    59, "timestamp": 1606025646181}, {"namespace": "dual-evpn", "hostname": "exit02",
     "vrf": "default", "peer": "swp2", "peerHostname": "spine02", "state": "Established",
-    "asn": 65202, "peerAsn": 65000, "v4PfxRx": 14, "estdTime": 29207181, "numChanges":
-    1, "updatesRx": 59, "timestamp": 1605996846181}, {"namespace": "dual-evpn", "hostname":
+    "asn": 65202, "peerAsn": 65000, "v4PfxRx": 14, "estdTime": 1605996439000, "numChanges":
+    1, "updatesRx": 59, "timestamp": 1606025646181}, {"namespace": "dual-evpn", "hostname":
     "leaf01", "vrf": "default", "peer": "swp2", "peerHostname": "spine02", "state":
-    "Established", "asn": 65101, "peerAsn": 65000, "v4PfxRx": 13, "estdTime": 29208049,
-    "numChanges": 1, "updatesRx": 59, "timestamp": 1605996847049}, {"namespace": "dual-evpn",
+    "Established", "asn": 65101, "peerAsn": 65000, "v4PfxRx": 13, "estdTime": 1605996439000,
+    "numChanges": 1, "updatesRx": 59, "timestamp": 1606025647049}, {"namespace": "dual-evpn",
     "hostname": "leaf01", "vrf": "default", "peer": "swp1", "peerHostname": "spine01",
     "state": "Established", "asn": 65101, "peerAsn": 65000, "v4PfxRx": 13, "estdTime":
-    29209049, "numChanges": 1, "updatesRx": 59, "timestamp": 1605996847049}, {"namespace":
-    "dual-evpn", "hostname": "leaf02", "vrf": "default", "peer": "swp1", "peerHostname":
-    "spine01", "state": "Established", "asn": 65102, "peerAsn": 65000, "v4PfxRx":
-    14, "estdTime": 29209180, "numChanges": 1, "updatesRx": 59, "timestamp": 1605996847180}]'
+    1605996438000, "numChanges": 1, "updatesRx": 59, "timestamp": 1606025647049},
+    {"namespace": "dual-evpn", "hostname": "leaf02", "vrf": "default", "peer": "swp1",
+    "peerHostname": "spine01", "state": "Established", "asn": 65102, "peerAsn": 65000,
+    "v4PfxRx": 14, "estdTime": 1605996438000, "numChanges": 1, "updatesRx": 59, "timestamp":
+    1606025647180}]'
 - command: bgp top --what="updatesTx" --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: bgp top
   output: '[{"namespace": "dual-evpn", "hostname": "spine02", "vrf": "default", "peer":
     "swp4", "peerHostname": "leaf04", "state": "Established", "asn": 65000, "peerAsn":
-    65104, "v4PfxRx": 2, "estdTime": 29207341, "numChanges": 1, "updatesTx": 59, "timestamp":
-    1605996846341}, {"namespace": "dual-evpn", "hostname": "spine02", "vrf": "default",
-    "peer": "swp5", "peerHostname": "exit02", "state": "Established", "asn": 65000,
-    "peerAsn": 65202, "v4PfxRx": 8, "estdTime": 29207341, "numChanges": 1, "updatesTx":
-    59, "timestamp": 1605996846341}, {"namespace": "dual-evpn", "hostname": "spine02",
-    "vrf": "default", "peer": "swp6", "peerHostname": "exit01", "state": "Established",
-    "asn": 65000, "peerAsn": 65201, "v4PfxRx": 7, "estdTime": 29209341, "numChanges":
-    1, "updatesTx": 59, "timestamp": 1605996846341}, {"namespace": "dual-evpn", "hostname":
-    "spine02", "vrf": "default", "peer": "swp3", "peerHostname": "leaf03", "state":
-    "Established", "asn": 65000, "peerAsn": 65103, "v4PfxRx": 2, "estdTime": 29208341,
-    "numChanges": 1, "updatesTx": 59, "timestamp": 1605996846341}, {"namespace": "dual-evpn",
-    "hostname": "spine02", "vrf": "default", "peer": "swp2", "peerHostname": "leaf02",
-    "state": "Established", "asn": 65000, "peerAsn": 65102, "v4PfxRx": 2, "estdTime":
-    29207341, "numChanges": 1, "updatesTx": 59, "timestamp": 1605996846341}]'
+    65104, "v4PfxRx": 2, "estdTime": 1605996439000, "numChanges": 1, "updatesTx":
+    59, "timestamp": 1606025646341}, {"namespace": "dual-evpn", "hostname": "spine02",
+    "vrf": "default", "peer": "swp5", "peerHostname": "exit02", "state": "Established",
+    "asn": 65000, "peerAsn": 65202, "v4PfxRx": 8, "estdTime": 1605996439000, "numChanges":
+    1, "updatesTx": 59, "timestamp": 1606025646341}, {"namespace": "dual-evpn", "hostname":
+    "spine02", "vrf": "default", "peer": "swp6", "peerHostname": "exit01", "state":
+    "Established", "asn": 65000, "peerAsn": 65201, "v4PfxRx": 7, "estdTime": 1605996437000,
+    "numChanges": 1, "updatesTx": 59, "timestamp": 1606025646341}, {"namespace": "dual-evpn",
+    "hostname": "spine02", "vrf": "default", "peer": "swp3", "peerHostname": "leaf03",
+    "state": "Established", "asn": 65000, "peerAsn": 65103, "v4PfxRx": 2, "estdTime":
+    1605996438000, "numChanges": 1, "updatesTx": 59, "timestamp": 1606025646341},
+    {"namespace": "dual-evpn", "hostname": "spine02", "vrf": "default", "peer": "swp2",
+    "peerHostname": "leaf02", "state": "Established", "asn": 65000, "peerAsn": 65102,
+    "v4PfxRx": 2, "estdTime": 1605996439000, "numChanges": 1, "updatesTx": 59, "timestamp":
+    1606025646341}]'
 - command: bgp top --what="v4PrefixRx" --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: bgp top
   output: '[{"namespace": "dual-evpn", "hostname": "exit02", "vrf": "internet-vrf",
     "peer": "swp5.4", "peerHostname": "edge01", "state": "Established", "asn": 65202,
-    "peerAsn": 65530, "v4PfxRx": 16, "estdTime": 29206181, "numChanges": 1, "timestamp":
-    1605996846181}, {"namespace": "dual-evpn", "hostname": "exit02", "vrf": "evpn-vrf",
+    "peerAsn": 65530, "v4PfxRx": 16, "estdTime": 1605996440000, "numChanges": 1, "timestamp":
+    1606025646181}, {"namespace": "dual-evpn", "hostname": "exit02", "vrf": "evpn-vrf",
     "peer": "swp5.3", "peerHostname": "edge01", "state": "Established", "asn": 65202,
-    "peerAsn": 65530, "v4PfxRx": 16, "estdTime": 29206181, "numChanges": 1, "timestamp":
-    1605996846181}, {"namespace": "dual-evpn", "hostname": "exit02", "vrf": "default",
+    "peerAsn": 65530, "v4PfxRx": 16, "estdTime": 1605996440000, "numChanges": 1, "timestamp":
+    1606025646181}, {"namespace": "dual-evpn", "hostname": "exit02", "vrf": "default",
     "peer": "swp5.2", "peerHostname": "edge01", "state": "Established", "asn": 65202,
-    "peerAsn": 65530, "v4PfxRx": 16, "estdTime": 29206181, "numChanges": 1, "timestamp":
-    1605996846181}, {"namespace": "dual-evpn", "hostname": "exit01", "vrf": "evpn-vrf",
+    "peerAsn": 65530, "v4PfxRx": 16, "estdTime": 1605996440000, "numChanges": 1, "timestamp":
+    1606025646181}, {"namespace": "dual-evpn", "hostname": "exit01", "vrf": "evpn-vrf",
     "peer": "swp5.3", "peerHostname": "edge01", "state": "Established", "asn": 65201,
-    "peerAsn": 65530, "v4PfxRx": 16, "estdTime": 29209316, "numChanges": 1, "timestamp":
-    1605996847316}, {"namespace": "dual-evpn", "hostname": "exit01", "vrf": "default",
+    "peerAsn": 65530, "v4PfxRx": 16, "estdTime": 1605996438000, "numChanges": 1, "timestamp":
+    1606025647316}, {"namespace": "dual-evpn", "hostname": "exit01", "vrf": "default",
     "peer": "swp5.2", "peerHostname": "edge01", "state": "Established", "asn": 65201,
-    "peerAsn": 65530, "v4PfxRx": 16, "estdTime": 29209316, "numChanges": 1, "timestamp":
-    1605996847316}]'
+    "peerAsn": 65530, "v4PfxRx": 16, "estdTime": 1605996438000, "numChanges": 1, "timestamp":
+    1606025647316}]'
 - command: bgp top --what="uptime" --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: bgp top uptime
   output: '[{"namespace": "dual-evpn", "hostname": "exit02", "vrf": "internet-vrf",
     "peer": "swp6", "peerHostname": "internet", "state": "Established", "asn": 65202,
-    "peerAsn": 25253, "v4PfxRx": 4, "estdTime": 28849181, "numChanges": 1, "timestamp":
-    1605996846181}, {"namespace": "dual-evpn", "hostname": "internet", "vrf": "default",
+    "peerAsn": 25253, "v4PfxRx": 4, "estdTime": 1605996797000, "numChanges": 1, "timestamp":
+    1606025646181}, {"namespace": "dual-evpn", "hostname": "internet", "vrf": "default",
     "peer": "swp2", "peerHostname": "exit02", "state": "Established", "asn": 25253,
-    "peerAsn": 65202, "v4PfxRx": 13, "estdTime": 28849209, "numChanges": 1, "timestamp":
-    1605996846209}, {"namespace": "dual-evpn", "hostname": "internet", "vrf": "default",
+    "peerAsn": 65202, "v4PfxRx": 13, "estdTime": 1605996797000, "numChanges": 1, "timestamp":
+    1606025646209}, {"namespace": "dual-evpn", "hostname": "internet", "vrf": "default",
     "peer": "swp1", "peerHostname": "exit01", "state": "Established", "asn": 25253,
-    "peerAsn": 65201, "v4PfxRx": 13, "estdTime": 28849209, "numChanges": 1, "timestamp":
-    1605996846209}, {"namespace": "dual-evpn", "hostname": "exit01", "vrf": "internet-vrf",
+    "peerAsn": 65201, "v4PfxRx": 13, "estdTime": 1605996797000, "numChanges": 1, "timestamp":
+    1606025646209}, {"namespace": "dual-evpn", "hostname": "exit01", "vrf": "internet-vrf",
     "peer": "swp6", "peerHostname": "internet", "state": "Established", "asn": 65201,
-    "peerAsn": 25253, "v4PfxRx": 5, "estdTime": 28850316, "numChanges": 1, "timestamp":
-    1605996847316}, {"namespace": "dual-evpn", "hostname": "exit02", "vrf": "internet-vrf",
+    "peerAsn": 25253, "v4PfxRx": 5, "estdTime": 1605996797000, "numChanges": 1, "timestamp":
+    1606025647316}, {"namespace": "dual-evpn", "hostname": "exit02", "vrf": "internet-vrf",
     "peer": "swp5.4", "peerHostname": "edge01", "state": "Established", "asn": 65202,
-    "peerAsn": 65530, "v4PfxRx": 16, "estdTime": 29206181, "numChanges": 1, "timestamp":
-    1605996846181}]'
+    "peerAsn": 65530, "v4PfxRx": 16, "estdTime": 1605996440000, "numChanges": 1, "timestamp":
+    1606025646181}]'
 - command: device top --what="uptime" --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: device top uptime
   output: '[{"namespace": "ospf-ibgp", "hostname": "server102", "model": "vm", "version":
     "16.04.7 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
-    "address": "192.168.123.202", "bootupTimestamp": 1605989523000, "uptime": 6211682,
-    "timestamp": 1605995734682}, {"namespace": "ospf-ibgp", "hostname": "server104",
+    "address": "192.168.123.202", "bootupTimestamp": 1606018323000, "uptime": 6211682,
+    "timestamp": 1606024534682}, {"namespace": "ospf-ibgp", "hostname": "server104",
     "model": "vm", "version": "16.04.7 LTS", "vendor": "Ubuntu", "architecture": "x86-64",
-    "status": "alive", "address": "192.168.123.53", "bootupTimestamp": 1605989549000,
-    "uptime": 6185678, "timestamp": 1605995734678}, {"namespace": "ospf-ibgp", "hostname":
+    "status": "alive", "address": "192.168.123.53", "bootupTimestamp": 1606018349000,
+    "uptime": 6185678, "timestamp": 1606024534678}, {"namespace": "ospf-ibgp", "hostname":
     "server103", "model": "vm", "version": "16.04.7 LTS", "vendor": "Ubuntu", "architecture":
-    "x86-64", "status": "alive", "address": "192.168.123.63", "bootupTimestamp": 1605989556000,
-    "uptime": 6178679, "timestamp": 1605995734679}, {"namespace": "ospf-ibgp", "hostname":
+    "x86-64", "status": "alive", "address": "192.168.123.63", "bootupTimestamp": 1606018356000,
+    "uptime": 6178679, "timestamp": 1606024534679}, {"namespace": "ospf-ibgp", "hostname":
     "server101", "model": "vm", "version": "16.04.7 LTS", "vendor": "Ubuntu", "architecture":
-    "x86-64", "status": "alive", "address": "192.168.123.97", "bootupTimestamp": 1605989572000,
-    "uptime": 6162678, "timestamp": 1605995734678}, {"namespace": "ospf-single", "hostname":
+    "x86-64", "status": "alive", "address": "192.168.123.97", "bootupTimestamp": 1606018372000,
+    "uptime": 6162678, "timestamp": 1606024534678}, {"namespace": "ospf-single", "hostname":
     "server102", "model": "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture":
     "x86-64", "status": "alive", "address": "192.168.123.138", "bootupTimestamp":
-    1597526073000, "uptime": 2673214, "timestamp": 1597528746214}]'
+    1597551273000, "uptime": 2673214, "timestamp": 1597553946214}]'
 - command: device top --what="uptime" --reverse=True --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: device top uptime
   output: '[{"namespace": "ospf-ibgp", "hostname": "leaf01", "model": "vm", "version":
     "4.2.1", "vendor": "Cumulus", "architecture": "x86-64", "status": "alive", "address":
-    "192.168.123.4", "bootupTimestamp": 1605995314000, "uptime": 421461, "timestamp":
-    1605995735461}, {"namespace": "ospf-ibgp", "hostname": "spine02", "model": "vm",
+    "192.168.123.4", "bootupTimestamp": 1606024114000, "uptime": 421461, "timestamp":
+    1606024535461}, {"namespace": "ospf-ibgp", "hostname": "spine02", "model": "vm",
     "version": "4.2.1", "vendor": "Cumulus", "architecture": "x86-64", "status": "alive",
-    "address": "192.168.123.21", "bootupTimestamp": 1605995313000, "uptime": 421753,
-    "timestamp": 1605995734753}, {"namespace": "ospf-ibgp", "hostname": "exit01",
+    "address": "192.168.123.21", "bootupTimestamp": 1606024113000, "uptime": 421753,
+    "timestamp": 1606024534753}, {"namespace": "ospf-ibgp", "hostname": "exit01",
     "model": "vm", "version": "4.2.1", "vendor": "Cumulus", "architecture": "x86-64",
-    "status": "alive", "address": "192.168.123.15", "bootupTimestamp": 1605995313000,
-    "uptime": 422167, "timestamp": 1605995735167}, {"namespace": "ospf-ibgp", "hostname":
+    "status": "alive", "address": "192.168.123.15", "bootupTimestamp": 1606024113000,
+    "uptime": 422167, "timestamp": 1606024535167}, {"namespace": "ospf-ibgp", "hostname":
     "exit02", "model": "vm", "version": "4.2.1", "vendor": "Cumulus", "architecture":
-    "x86-64", "status": "alive", "address": "192.168.123.71", "bootupTimestamp": 1605995313000,
-    "uptime": 422461, "timestamp": 1605995735461}, {"namespace": "ospf-ibgp", "hostname":
+    "x86-64", "status": "alive", "address": "192.168.123.71", "bootupTimestamp": 1606024113000,
+    "uptime": 422461, "timestamp": 1606024535461}, {"namespace": "ospf-ibgp", "hostname":
     "edge01", "model": "vm", "version": "16.04.7 LTS", "vendor": "Ubuntu", "architecture":
-    "x86-64", "status": "alive", "address": "192.168.123.80", "bootupTimestamp": 1605995312000,
-    "uptime": 422682, "timestamp": 1605995734682}]'
+    "x86-64", "status": "alive", "address": "192.168.123.80", "bootupTimestamp": 1606024112000,
+    "uptime": 422682, "timestamp": 1606024534682}]'
 - command: device top --what="uptime" --namespace=ospf-ibgp --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: device top uptime
   output: '[{"namespace": "ospf-ibgp", "hostname": "server102", "model": "vm", "version":
     "16.04.7 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
-    "address": "192.168.123.202", "bootupTimestamp": 1605989523000, "uptime": 6211682,
-    "timestamp": 1605995734682}, {"namespace": "ospf-ibgp", "hostname": "server104",
+    "address": "192.168.123.202", "bootupTimestamp": 1606018323000, "uptime": 6211682,
+    "timestamp": 1606024534682}, {"namespace": "ospf-ibgp", "hostname": "server104",
     "model": "vm", "version": "16.04.7 LTS", "vendor": "Ubuntu", "architecture": "x86-64",
-    "status": "alive", "address": "192.168.123.53", "bootupTimestamp": 1605989549000,
-    "uptime": 6185678, "timestamp": 1605995734678}, {"namespace": "ospf-ibgp", "hostname":
+    "status": "alive", "address": "192.168.123.53", "bootupTimestamp": 1606018349000,
+    "uptime": 6185678, "timestamp": 1606024534678}, {"namespace": "ospf-ibgp", "hostname":
     "server103", "model": "vm", "version": "16.04.7 LTS", "vendor": "Ubuntu", "architecture":
-    "x86-64", "status": "alive", "address": "192.168.123.63", "bootupTimestamp": 1605989556000,
-    "uptime": 6178679, "timestamp": 1605995734679}, {"namespace": "ospf-ibgp", "hostname":
+    "x86-64", "status": "alive", "address": "192.168.123.63", "bootupTimestamp": 1606018356000,
+    "uptime": 6178679, "timestamp": 1606024534679}, {"namespace": "ospf-ibgp", "hostname":
     "server101", "model": "vm", "version": "16.04.7 LTS", "vendor": "Ubuntu", "architecture":
-    "x86-64", "status": "alive", "address": "192.168.123.97", "bootupTimestamp": 1605989572000,
-    "uptime": 6162678, "timestamp": 1605995734678}, {"namespace": "ospf-ibgp", "hostname":
+    "x86-64", "status": "alive", "address": "192.168.123.97", "bootupTimestamp": 1606018372000,
+    "uptime": 6162678, "timestamp": 1606024534678}, {"namespace": "ospf-ibgp", "hostname":
     "leaf04", "model": "vm", "version": "4.2.1", "vendor": "Cumulus", "architecture":
-    "x86-64", "status": "alive", "address": "192.168.123.19", "bootupTimestamp": 1605995311000,
-    "uptime": 424273, "timestamp": 1605995735273}]'
+    "x86-64", "status": "alive", "address": "192.168.123.19", "bootupTimestamp": 1606024111000,
+    "uptime": 424273, "timestamp": 1606024535273}]'
 - command: device top --what="uptime" --namespace=ospf-ibgp --reverse=True --columns='hostname
     vendor version' --format=json
   data-directory: tests/data/multidc/parquet-out/
@@ -315,19 +318,19 @@ tests:
   output: '[{"namespace": "ospf-single", "hostname": "exit02", "vrf": "default", "area":
     "0.0.0.0", "ifname": "swp1", "ifState": "up", "nbrCount": 1, "adjState": "full",
     "peerIP": "10.127.0.10", "lastChangeTime": 1610329527239.0, "numChanges": 5.0,
-    "timestamp": 1597528746603}, {"namespace": "ospf-single", "hostname": "spine02",
+    "timestamp": 1597553946603}, {"namespace": "ospf-single", "hostname": "spine02",
     "vrf": "default", "area": "0.0.0.0", "ifname": "swp4", "ifState": "up", "nbrCount":
     1, "adjState": "full", "peerIP": "10.127.1.7", "lastChangeTime": 1610329522237.0,
-    "numChanges": 5.0, "timestamp": 1597528746721}, {"namespace": "ospf-single", "hostname":
+    "numChanges": 5.0, "timestamp": 1597553946721}, {"namespace": "ospf-single", "hostname":
     "spine02", "vrf": "default", "area": "0.0.0.0", "ifname": "swp3", "ifState": "up",
     "nbrCount": 1, "adjState": "full", "peerIP": "10.127.1.5", "lastChangeTime": 1610329522237.0,
-    "numChanges": 5.0, "timestamp": 1597528746721}, {"namespace": "ospf-single", "hostname":
+    "numChanges": 5.0, "timestamp": 1597553946721}, {"namespace": "ospf-single", "hostname":
     "spine02", "vrf": "default", "area": "0.0.0.0", "ifname": "swp2", "ifState": "up",
     "nbrCount": 1, "adjState": "full", "peerIP": "10.127.1.3", "lastChangeTime": 1610329522237.0,
-    "numChanges": 5.0, "timestamp": 1597528746721}, {"namespace": "ospf-single", "hostname":
+    "numChanges": 5.0, "timestamp": 1597553946721}, {"namespace": "ospf-single", "hostname":
     "spine02", "vrf": "default", "area": "0.0.0.0", "ifname": "swp1", "ifState": "up",
     "nbrCount": 1, "adjState": "full", "peerIP": "10.127.1.1", "lastChangeTime": 1610329521237.0,
-    "numChanges": 5.0, "timestamp": 1597528746721}]'
+    "numChanges": 5.0, "timestamp": 1597553946721}]'
 - command: ospf top --what="flaps" --namespace="ospf-single" --format=json
   data-directory: tests/data/multidc/parquet-out/
   ignore-columns: lastChangeTime timestamp
@@ -335,19 +338,19 @@ tests:
   output: '[{"namespace": "ospf-single", "hostname": "exit02", "vrf": "default", "area":
     "0.0.0.0", "ifname": "swp1", "ifState": "up", "nbrCount": 1, "adjState": "full",
     "peerIP": "10.127.0.10", "lastChangeTime": 1610329527239.0, "numChanges": 5.0,
-    "timestamp": 1597528746603}, {"namespace": "ospf-single", "hostname": "spine02",
+    "timestamp": 1597553946603}, {"namespace": "ospf-single", "hostname": "spine02",
     "vrf": "default", "area": "0.0.0.0", "ifname": "swp4", "ifState": "up", "nbrCount":
     1, "adjState": "full", "peerIP": "10.127.1.7", "lastChangeTime": 1610329522237.0,
-    "numChanges": 5.0, "timestamp": 1597528746721}, {"namespace": "ospf-single", "hostname":
+    "numChanges": 5.0, "timestamp": 1597553946721}, {"namespace": "ospf-single", "hostname":
     "spine02", "vrf": "default", "area": "0.0.0.0", "ifname": "swp3", "ifState": "up",
     "nbrCount": 1, "adjState": "full", "peerIP": "10.127.1.5", "lastChangeTime": 1610329522237.0,
-    "numChanges": 5.0, "timestamp": 1597528746721}, {"namespace": "ospf-single", "hostname":
+    "numChanges": 5.0, "timestamp": 1597553946721}, {"namespace": "ospf-single", "hostname":
     "spine02", "vrf": "default", "area": "0.0.0.0", "ifname": "swp2", "ifState": "up",
     "nbrCount": 1, "adjState": "full", "peerIP": "10.127.1.3", "lastChangeTime": 1610329522237.0,
-    "numChanges": 5.0, "timestamp": 1597528746721}, {"namespace": "ospf-single", "hostname":
+    "numChanges": 5.0, "timestamp": 1597553946721}, {"namespace": "ospf-single", "hostname":
     "spine02", "vrf": "default", "area": "0.0.0.0", "ifname": "swp1", "ifState": "up",
     "nbrCount": 1, "adjState": "full", "peerIP": "10.127.1.1", "lastChangeTime": 1610329521237.0,
-    "numChanges": 5.0, "timestamp": 1597528746721}]'
+    "numChanges": 5.0, "timestamp": 1597553946721}]'
 - command: ospf top --what="flaps" --columns="hostname ifname adjState" --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: ospf top

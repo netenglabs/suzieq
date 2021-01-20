@@ -134,7 +134,9 @@ class SqEngineObject(object):
             else:
                 table_df.drop(columns=drop_cols, inplace=True)
             if 'timestamp' in table_df.columns:
-                table_df['timestamp'] = humanize_timestamp(table_df.timestamp)
+                table_df['timestamp'] = humanize_timestamp(
+                    table_df.timestamp, self.cfg.get('analyzer', {})
+                    .get('timezone', None))
 
         if query_str:
             return table_df.query(query_str)

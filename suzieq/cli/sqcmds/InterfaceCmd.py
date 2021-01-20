@@ -64,7 +64,8 @@ class InterfaceCmd(SqCommand):
         )
         if 'statusChangeTimestamp' in df.columns:
             df['statusChangeTimestamp'] = humanize_timestamp(
-                df.statusChangeTimestamp)
+                df.statusChangeTimestamp,
+                self.cfg.get('analyzer', {}).get('timezone', None))
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)

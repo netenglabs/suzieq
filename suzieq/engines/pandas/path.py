@@ -865,8 +865,7 @@ class PathObj(SqEngineObject):
                     rslt = self._rdf.query('hostname == "{}" and vrf == "{}"'
                                            .format(device, ivrf))
                     if not rslt.empty:
-                        rt_ts = str(rslt.timestamp.iloc[0])
-                        devices_iifs[devkey]['timestamp'] = rt_ts
+                        devices_iifs[devkey]['timestamp'] = rslt.timestamp.iloc[0]
                         devices_iifs[devkey]['protocol'] = rslt.protocol.iloc[0]
                         devices_iifs[devkey]['lookup'] = rslt.prefix.iloc[0]
 
