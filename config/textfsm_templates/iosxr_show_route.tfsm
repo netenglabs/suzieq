@@ -1,0 +1,76 @@
+Value Filldown vrf (\S+)
+Value Filldown protocol (\S+|\S+\s\S+)
+Value Filldown prefix (\d+\.\d+\.\d+\.\d+)
+Value Filldown prefixlen (\d+)
+Value distance (\d+|is)
+Value metric (\d+)
+Value type (directly|via)
+Value Required nexthopIps (connected|\d+\.\d+\.\d+\.\d+)
+Value oifs (\S+|vrf\s\S+)
+Value uptime (\S+)
+
+
+Start
+  ^VRF?:\s${vrf}
+  ^IP.*Unicast:.*$$
+  ^-*$$
+  ^Codes:
+  ^\s+(\S+\s+-\s+.+[,]*)+
+  ^\s+Gateway\s+of\s+last\s+resort.*$$
+  ^${protocol}\*?\s+${prefix}/${prefixlen}\s+(?:\[${distance}/${metric}\]|is)\s+${type}\s+${nexthopIps},\s+${uptime},\s+${oifs} -> Record
+  ^\s+(?:\[${distance}/${metric}\]|is)\s+${type}\s+${nexthopIps},\s+${uptime},\s+${oifs} -> Record
+  ^${protocol}\*?\s+${prefix}/${prefixlen}\s+(?:\[${distance}/${metric}\]|is)\s+${type}\s+${nexthopIps},\s+${uptime} -> Record
+  ^${protocol}\*?\s+${prefix}/${prefixlen}\s+(?:\[${distance}/${metric}\]|is)\s+${type}\s+${nexthopIps}\s+\(nexthop\sin\s${oifs}\),\s+${uptime} -> Record
+  ^\s+(?:\[${distance}/${metric}\]|is)\s+${type}\s+${nexthopIps},\s+${uptime} -> Record
+  ^\s*$$
+  ^\S+\s+\S+\s+\d+\s+\d+:\d+:\d+
+
+#
+#IPv4 Unicast:
+#--------------
+#
+#Codes: C - connected, S - static, R - RIP, B - BGP
+#       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+#       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+#       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+#       i - ISIS, L1 - IS-IS level-1, L2 - IS-IS level-2
+#       ia - IS-IS inter area, su - IS-IS summary null, * - candidate default
+#       U - per-user static route, o - ODR, L - local, G  - DAGR
+#       A - access/subscriber, (!) - FRR Backup path
+#  
+#Gateway of last resort is 1.0.0.1 to network 0.0.0.0
+#
+#S*   0.0.0.0/0 [1/0] via 1.0.0.1, 13:14:59
+#C    1.0.0.0/16 is directly connected, 13:14:59, MgmtEth0/5/CPU0/0
+#L    1.0.14.15/32 is directly connected, 13:14:59, MgmtEth0/5/CPU0/0
+#C    3.2.3.0/24 is directly connected, 00:04:39, GigabitEthernet0/3/0/0
+#L    3.2.3.2/32 is directly connected, 00:04:39, GigabitEthernet0/3/0/0
+#O E2 5.2.5.0/24 [110/20] via 3.3.3.1, 00:04:20, GigabitEthernet0/3/0/0
+#             [110/20] via 7.2.7.2, 6w0d, GigabitEthernet0/3/0/7
+#             [110/20] via 10.3.0.15, 6w0d, GigabitEthernet0/0/0/0
+#O E2 6.2.6.0/24 [110/20] via 3.3.3.1, 00:04:20, GigabitEthernet0/3/0/0
+#C    7.2.7.0/24 is directly connected, 00:04:20, GigabitEthernet0/3/0/7
+#L    7.2.7.2/32 is directly connected, 00:04:20, GigabitEthernet0/3/0/7
+#O E2 8.2.8.0/24 [110/20] via 3.3.3.1, 00:04:20, GigabitEthernet0/3/0/0
+#C    10.3.0.0/16 is directly connected, 13:14:59, GigabitEthernet0/0/0/0
+#L    10.3.0.2/32 is directly connected, 13:14:59, GigabitEthernet0/0/0/0
+#
+#VRF: myvrf
+#
+#
+#IPv4 Unicast:
+#-------------
+#Codes: C - connected, S - static, R - RIP, B - BGP
+#       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+#       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+#       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+#       i - ISIS, L1 - IS-IS level-1, L2 - IS-IS level-2
+#       ia - IS-IS inter area, su - IS-IS summary null, * - candidate default
+#       U - per-user static route, o - ODR, L - local, G  - DAGR
+#       A - access/subscriber, (!) - FRR Backup path
+#  
+#  Gateway of last resort is not set
+#
+#B    12.40.19.8/30 [200/0] via 3.2.3.254 (nexthop in vrf default), 6w0d
+
+  

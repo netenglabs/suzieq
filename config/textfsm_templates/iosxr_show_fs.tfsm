@@ -1,0 +1,37 @@
+Value device ([/.\w]+)
+Value fstype (\w+)
+Value totalSize ([^ \t]+)
+Value usedSize ([^ \t]+)
+Value availSize ([^ \t]+)
+Value usedPercent (\d+)
+Value mountPoint ([^ ]*)
+
+Start
+  ^Filesystem\s+Type.*$$
+  ^Filesystem\s+Size.*$$
+  ^${device}\s+${fstype}\s+${totalSize}\s+${usedSize}\s+${availSize}\s+${usedPercent}%\s+${mountPoint}$$ -> Record
+  ^${device}\s+${totalSize}\s+${usedSize}\s+${availSize}\s+${usedPercent}%\s+${mountPoint}$$ -> Record
+
+#Thu Jan 21 07:08:13.357 UTC
+#
+# node:  node0_RP0_CPU0
+#------------------------------------------------------------------
+#File Systems:
+#
+#     Size(b)     Free(b)        Type  Flags  Prefixes
+#  1514586112  1509724160    harddisk     rw  harddisk:
+#  1036963840  1034371072  flash-disk     rw  disk0:
+#   497318912   494469120       flash     rw  /misc/config
+#           0           0     network     rw  ftp:
+#           0           0     network     rw  tftp:
+#  4156227584  4045635584  flash-disk     rw  apphost:
+#
+# node:  node0_0_CPU0
+#------------------------------------------------------------------
+#File Systems:
+#
+#     Size(b)     Free(b)        Type  Flags  Prefixes
+#  4156227584  4045635584  flash-disk     rw  apphost:
+#  1036963840  1035055104  flash-disk     rw  disk0:
+#   497318912   494945280       flash     rw  /misc/config
+#

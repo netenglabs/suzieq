@@ -7,6 +7,11 @@ apply:
   cumulus:
     copy: linux
 
+  iosxr:
+    version: all
+    command: show ntp status
+    textfsm: textfsm_templates/iosxr_show_ntp.tfsm
+
   linux:
     version: all
     command: timedatectl

@@ -17,6 +17,11 @@ apply:
     command: top -bn 1 -o '%MEM' | head -17
     textfsm: textfsm_templates/cl_top.tfsm
 
+  iosxr:
+    version: all
+    command: show processes memory
+    textfsm: textfsm_templates/cl_top.tfsm
+
   linux:
     version: all
     command: top -bn 1 -o '%MEM' | head -17

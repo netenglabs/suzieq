@@ -1,0 +1,21 @@
+Value Required peerHostname (\S+)
+Value Required ifname (\S+)
+Value Required peerIfname (\S+)
+
+Start
+  ^Device.*ID -> LLDP
+
+LLDP
+  ^${peerHostname}\s+${ifname}\s+\d+\s+(.+?)\s+${peerIfname}$$ -> Record
+  ^${peerHostname}
+  ^\s+${ifname}\s+\d+\s+(.*?)\s+${peerIfname} -> Record
+  ^Total entries
+  ^\s+$$
+  ^$$
+  ^.* -> Error "LINE NOT FOUND"
+#Capability codes:
+#    (R) Router, (B) Bridge, (T) Telephone, (C) DOCSIS Cable Device
+#    (W) WLAN Access Point, (P) Repeater, (S) Station, (O) Other
+#
+#Device ID           Local Intf     Hold-time  Capability      Port ID
+#R1                  Et1/0          150        R               Et1/0

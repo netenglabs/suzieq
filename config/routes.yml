@@ -36,6 +36,14 @@ apply:
         "hardwareProgrammed: inHardware?|False",
         "vias/*/nexthopAddr: nexthopIps?|[]",
         "vias/*/interface": oifs"]'
+
+  iosxr:
+    version: all
+    command:
+      - command: show route afi-all unicast
+        textfsm: textfsm_templates/iosxr_show_route.tfsm
+      - command: show route vrf all afi-all unicast
+        textfsm: textfsm_templates/iosxr_show_route.tfsm
   
   junos-qfx:
     version: all

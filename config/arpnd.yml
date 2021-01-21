@@ -16,6 +16,16 @@ apply:
     command: ip neigh show
     textfsm: textfsm_templates/linux_ipneigh.tfsm
 
+  iosxr:
+    version: all
+    command:
+      - command: show arp
+        textfsm: textfsm_templates/iosxr_show_arp.tfsm
+      - command: show arp vrf all
+        textfsm: textfsm_templates/iosxr_show_arp.tfsm
+      - command: show ipv6 neigh
+        textfsm: textfsm_templates/iosxr_show_ipv6_neigh.tfsm
+
   linux:
     copy: cumulus
 
