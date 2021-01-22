@@ -262,7 +262,6 @@ BAD_FILTERS = {
     'ospf/summarize?state=active': 405,
     'ospf/show?status=all': 405,
     'path/show?query_str="hostname == \"leaf01\" and 1000 < mtu < 2000"': 404,
-    'path/summarize?columns=namespace': 404,
     'path/summarize?query_str="hostname == \"leaf01\" and 1000 < mtu < 2000"': 404,
     'path/unique?columns=namespace': 404,
     'route/show?query_str="hostname == \"leaf01\" and 1000 < mtu < 2000"': 500,

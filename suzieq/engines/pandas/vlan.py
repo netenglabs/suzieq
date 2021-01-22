@@ -5,6 +5,10 @@ from .engineobj import SqPandasEngine
 
 class VlanObj(SqPandasEngine):
 
+    @staticmethod
+    def table_name():
+        return 'vlan'
+
     def get(self, **kwargs):
         """Get VLAN info based on specified keywords"""
 

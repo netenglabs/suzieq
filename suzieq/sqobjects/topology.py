@@ -29,6 +29,6 @@ class TopologyObj(basicobj.SqObject):
             self.summarize_df = pd.DataFrame(
                 {'error': ['ERROR: You cannot specify columns with summarize']})
             return self.summarize_df
-        return self.engine_obj.summarize(namespace=namespace, hostname=hostname,
-                                         query_str=query_str,
-                                         polled_neighbor=polled_neighbor)
+        return self.engine.summarize(namespace=namespace, hostname=hostname,
+                                     query_str=query_str,
+                                     polled_neighbor=polled_neighbor)

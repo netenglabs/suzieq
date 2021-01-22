@@ -2,4 +2,7 @@ from .engineobj import SqPandasEngine
 
 
 class IfcountersObj(SqPandasEngine):
-    pass
+
+    @staticmethod
+    def table_name():
+        return 'ifCounters'

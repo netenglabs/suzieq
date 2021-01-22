@@ -27,6 +27,11 @@ graph_output_dir = '/tmp/suzieq-graphs'
 
 
 class TopologyObj(SqPandasEngine):
+
+    @staticmethod
+    def table_name():
+        return 'topology'
+
     def _init_dfs(self, namespaces):
         """Initialize the dataframes used"""
 
