@@ -1,5 +1,5 @@
-from suzieq.engines.pandas.engineobj import SqEngineObject
+from .engineobj import SqPandasEngine
 
 
-class IfcountersObj(SqEngineObject):
+class IfcountersObj(SqPandasEngine):
     pass

@@ -1,9 +1,8 @@
-import pandas as pd
 import numpy as np
-from suzieq.engines.pandas.engineobj import SqEngineObject
+from .engineobj import SqPandasEngine
 
 
-class DeviceObj(SqEngineObject):
+class DeviceObj(SqPandasEngine):
 
     def get(self, **kwargs):
         """Get the information requested"""

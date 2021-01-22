@@ -1,5 +1,5 @@
-from suzieq.engines.pandas.engineobj import SqEngineObject
+from suzieq.engines.pandas.engineobj import SqPandasEngine
 
 
-class TableObj(SqEngineObject):
+class TableObj(SqPandasEngine):
     pass

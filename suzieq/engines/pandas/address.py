@@ -1,11 +1,11 @@
 import pandas as pd
 from ipaddress import ip_interface
 
-from .engineobj import SqEngineObject
+from .engineobj import SqPandasEngine
 from suzieq.utils import build_query_str
 
 
-class AddressObj(SqEngineObject):
+class AddressObj(SqPandasEngine):
 
     def addr_type(self, addr: list) -> list:
 

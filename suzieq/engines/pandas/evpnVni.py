@@ -2,13 +2,13 @@ import numpy as np
 import pandas as pd
 import ipaddress
 
-from .engineobj import SqEngineObject
+from .engineobj import SqPandasEngine
 from suzieq.sqobjects.macs import MacsObj
 from suzieq.sqobjects.interfaces import IfObj
 from suzieq.sqobjects.routes import RoutesObj
 
 
-class EvpnvniObj(SqEngineObject):
+class EvpnvniObj(SqPandasEngine):
 
     def get(self, **kwargs) -> pd.DataFrame:
         """Class-specific to extract info from addnl tables"""

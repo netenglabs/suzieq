@@ -1,7 +1,7 @@
-from .engineobj import SqEngineObject
+from .engineobj import SqPandasEngine
 
 
-class MacsObj(SqEngineObject):
+class MacsObj(SqPandasEngine):
 
     def get(self, **kwargs):
         if not self.iobj._table:

@@ -3,11 +3,11 @@ from suzieq.sqobjects.address import AddressObj
 import pandas as pd
 import numpy as np
 
-from .engineobj import SqEngineObject
+from .engineobj import SqPandasEngine
 from suzieq.utils import build_query_str, SchemaForTable, humanize_timestamp
 
 
-class BgpObj(SqEngineObject):
+class BgpObj(SqPandasEngine):
 
     def get(self, **kwargs):
         """Replacing the original interface name in returned result"""
