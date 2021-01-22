@@ -9,6 +9,10 @@ from suzieq.utils import build_query_str, SchemaForTable, humanize_timestamp
 
 class BgpObj(SqPandasEngine):
 
+    @staticmethod
+    def table_name():
+        return 'bgp'
+
     def get(self, **kwargs):
         """Replacing the original interface name in returned result"""
 

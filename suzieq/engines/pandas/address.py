@@ -7,6 +7,10 @@ from suzieq.utils import build_query_str
 
 class AddressObj(SqPandasEngine):
 
+    @staticmethod
+    def table_name():
+        return 'address'
+
     def addr_type(self, addr: list) -> list:
 
         rslt = []

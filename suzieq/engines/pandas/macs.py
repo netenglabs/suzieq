@@ -3,6 +3,10 @@ from .engineobj import SqPandasEngine
 
 class MacsObj(SqPandasEngine):
 
+    @staticmethod
+    def table_name():
+        return 'macs'
+
     def get(self, **kwargs):
         if not self.iobj._table:
             raise NotImplementedError

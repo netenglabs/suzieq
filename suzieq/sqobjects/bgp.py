@@ -25,7 +25,7 @@ class BgpObj(SqObject):
             df = pd.DataFrame({'error': [f'{error}']})
             return df
 
-        return self.engine_obj.aver(**kwargs)
+        return self.engine.aver(**kwargs)
 
     def humanize_fields(self, df: pd.DataFrame, subset=None) -> pd.DataFrame:
         '''Humanize the timestamp and boot time fields'''

@@ -2,7 +2,10 @@ from .engineobj import SqPandasEngine
 
 
 class LldpObj(SqPandasEngine):
-    pass
+
+    @staticmethod
+    def table_name():
+        return 'lldp'
 
     def summarize(self, **kwargs):
         self._summarize_on_add_field = [

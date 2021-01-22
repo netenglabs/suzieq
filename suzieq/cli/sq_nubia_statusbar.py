@@ -29,7 +29,7 @@ class NubiaSuzieqStatusBar(statusbar.StatusBar):
             is_pager = (Token.Warn, "ON")
         else:
             is_pager = (Token.Info, "OFF")
-            
+
         return [
             (Token.Toolbar, "Suzieq"),
             spacer,
@@ -59,7 +59,7 @@ class NubiaSuzieqStatusBar(statusbar.StatusBar):
             spacer,
             (Token.Toolbar, "Engine "),
             spacer,
-            (Token.Info, self.ctx.engine_name),
+            (Token.Info, self.ctx.engine),
             spacer,
             (Token.Toolbar, "Query Time "),
             spacer,

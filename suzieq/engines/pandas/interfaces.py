@@ -9,6 +9,10 @@ from .engineobj import SqPandasEngine
 
 class InterfacesObj(SqPandasEngine):
 
+    @staticmethod
+    def table_name():
+        return 'interfaces'
+
     def aver(self, what="mtu-match", **kwargs) -> pd.DataFrame:
         """Assert that interfaces are in good state"""
 

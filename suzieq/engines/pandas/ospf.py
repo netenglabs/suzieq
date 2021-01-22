@@ -9,6 +9,10 @@ from suzieq.utils import SchemaForTable, build_query_str, humanize_timestamp
 
 class OspfObj(SqPandasEngine):
 
+    @staticmethod
+    def table_name():
+        return 'ospf'
+
     def _get_combined_df(self, **kwargs):
         """OSPF has info divided across multiple tables. Get a single one"""
 

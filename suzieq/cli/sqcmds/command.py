@@ -37,7 +37,7 @@ class SqCommand:
 
     def __init__(
             self,
-            engine: str = "",
+            engine: str = "pandas",
             hostname: str = "",
             start_time: str = "",
             end_time: str = "",

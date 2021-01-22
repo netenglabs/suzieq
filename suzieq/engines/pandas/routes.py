@@ -6,6 +6,10 @@ from ipaddress import ip_address, ip_network
 
 class RoutesObj(SqPandasEngine):
 
+    @staticmethod
+    def table_name():
+        return 'routes'
+
     def _cons_addnl_fields(self, columns: list, addnl_fields: list) -> (list, list):
         '''get all the additional columns we need'''
 

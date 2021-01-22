@@ -2,4 +2,7 @@ from .engineobj import SqPandasEngine
 
 
 class TimeObj(SqPandasEngine):
-    pass
+
+    @staticmethod
+    def table_name():
+        return 'time'

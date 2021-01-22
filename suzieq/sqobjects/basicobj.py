@@ -17,13 +17,13 @@ class SqContext(object):
         self.start_time = ''
         self.end_time = ''
         self.exec_time = ''
-        self.engine_name = 'pandas'
+        self.engine = engine
         self.sort_fields = []
 
 
 class SqObject(object):
 
-    def __init__(self, engine_name: str = '', hostname: typing.List[str] = [],
+    def __init__(self, engine_name: str = 'pandas', hostname: typing.List[str] = [],
                  start_time: str = '', end_time: str = '',
                  view: str = 'latest', namespace: typing.List[str] = [],
                  columns: typing.List[str] = ['default'],
@@ -67,9 +67,11 @@ class SqObject(object):
         self.columns = columns
 
         if engine_name and engine_name != '':
-            self.engine = get_sqengine(engine_name)(self)
-        elif self.ctxt.engine_name:
-            self.engine = get_sqengine(self.ctxt.engine_name)(self)
+            self.engine = get_sqengine(engine_name,
+                                       self._table)(self._table, self)
+        elif self.ctxt.engine:
+            self.engine = get_sqengine(self.ctxt.engine,
+                                       self._table)(self._table, self)
 
         if not self.engine:
             raise ValueError('Unknown analysis engine')

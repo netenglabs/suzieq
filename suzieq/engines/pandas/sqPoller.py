@@ -2,7 +2,10 @@ from .engineobj import SqPandasEngine
 
 
 class SqpollerObj(SqPandasEngine):
-    pass
+
+    @staticmethod
+    def table_name():
+        return 'sqPoller'
 
     def get(self, **kwargs):
 

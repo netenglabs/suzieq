@@ -7,21 +7,17 @@ import inspect
 name = "sqengines"
 
 
-def get_sqengine(name: str = "pandas"):
+def get_sqengine(engine_name: str, table_name: str):
 
     # Lets load the available engines
-    engines = {}
-    for ent in Path(os.path.dirname(find_spec('suzieq.engines')
-                                    .loader.path)).iterdir():
-        if ent.is_dir() and not ent.name.startswith('_'):
-            engine = os.path.basename(os.path.basename(ent))
-            eng_mod = import_module(f'suzieq.engines.{engine}')
-            for mbr in inspect.getmembers(eng_mod):
-                if inspect.isclass(mbr[1]):
-                    engines[engine] = mbr[1]
+    try:
+        eng_mod = import_module(f'suzieq.engines.{engine_name}')
+    except ModuleNotFoundError:
+        return None
 
-    if name in engines:
-        return engines[name]
+    for mbr in inspect.getmembers(eng_mod):
+        if mbr[0] == 'get_engine_object' and inspect.isfunction(mbr[1]):
+            return mbr[1]
 
     return None
 

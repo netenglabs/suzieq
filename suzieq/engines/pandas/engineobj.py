@@ -150,10 +150,7 @@ class SqPandasEngine(SqEngineObj):
         if not self.iobj.table:
             raise NotImplementedError
 
-        try:
-            df = self.get_valid_df(self.iobj.table, **kwargs)
-        except Exception:
-            return pd.DataFrame(columns=['namespace', 'hostname'])
+        df = self.get_valid_df(self.iobj.table, **kwargs)
 
         return df
 

@@ -18,6 +18,10 @@ from suzieq.utils import expand_nxos_ifname, MAX_MTU
 
 class PathObj(SqPandasEngine):
 
+    @staticmethod
+    def table_name():
+        return 'path'
+
     def _init_dfs(self, namespace, source, dest):
         """Initialize the dataframes used in this path hunt"""
 

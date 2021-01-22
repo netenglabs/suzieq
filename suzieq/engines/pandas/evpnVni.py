@@ -10,6 +10,10 @@ from suzieq.sqobjects.routes import RoutesObj
 
 class EvpnvniObj(SqPandasEngine):
 
+    @staticmethod
+    def table_name():
+        return 'evpnVni'
+
     def get(self, **kwargs) -> pd.DataFrame:
         """Class-specific to extract info from addnl tables"""
 
