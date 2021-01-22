@@ -1,7 +1,7 @@
-from .engineobj import SqEngineObject
+from .engineobj import SqPandasEngine
 
 
-class MlagObj(SqEngineObject):
+class MlagObj(SqPandasEngine):
 
     def summarize(self, **kwargs):
         """Summarize MLAG info"""

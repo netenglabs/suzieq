@@ -1,7 +1,7 @@
-from .engineobj import SqEngineObject
+from .engineobj import SqPandasEngine
 
 
-class ArpndObj(SqEngineObject):
+class ArpndObj(SqPandasEngine):
     pass
 
     def summarize(self, **kwargs):

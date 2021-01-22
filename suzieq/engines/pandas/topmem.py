@@ -1,5 +1,5 @@
-from .engineobj import SqEngineObject
+from .engineobj import SqPandasEngine
 
 
-class TopmemObj(SqEngineObject):
+class TopmemObj(SqPandasEngine):
     pass

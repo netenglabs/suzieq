@@ -1,12 +1,14 @@
 import pandas as pd
 import numpy as np
-import pyarrow as pa
 from suzieq.utils import SchemaForTable, humanize_timestamp
+from suzieq.engines.base_engine import SqEngineObj
+from suzieq.db import get_sqdb_engine
+from suzieq.exceptions import DBReadError
 import dateparser
 from datetime import datetime
 
 
-class SqEngineObject(object):
+class SqPandasEngine(SqEngineObj):
     def __init__(self, baseobj):
         self.ctxt = baseobj.ctxt
         self.iobj = baseobj
@@ -16,6 +18,7 @@ class SqEngineObject(object):
         self._summarize_on_add_list_or_count = []
         self._summarize_on_add_stat = []
         self._summarize_on_perdevice_stat = []
+        self._dbeng = get_sqdb_engine(baseobj.ctxt.cfg, baseobj.table)
 
     @property
     def schemas(self):
@@ -116,7 +119,7 @@ class SqEngineObject(object):
             print(f"ERROR: Unable to parse {self.iobj.end_time}")
             return pd.DataFrame()
 
-        table_df = self.ctxt.engine.get_table_df(
+        table_df = self._dbeng.get_table_df(
             self.cfg,
             table=phy_table,
             start_time=start_time,
@@ -149,7 +152,7 @@ class SqEngineObject(object):
 
         try:
             df = self.get_valid_df(self.iobj.table, **kwargs)
-        except pa.lib.ArrowInvalid:
+        except Exception:
             return pd.DataFrame(columns=['namespace', 'hostname'])
 
         return df
@@ -244,8 +247,8 @@ class SqEngineObject(object):
         for field_name, query_str, field in self._summarize_on_add_stat:
             if query_str:
                 statfld = self.summary_df.query(query_str) \
-                    .groupby(by=['namespace'],
-                             observed=True)[field]
+                                         .groupby(by=['namespace'],
+                                                  observed=True)[field]
             else:
                 statfld = self.summary_df.groupby(
                     by=['namespace'], observed=True)[field]
@@ -258,12 +261,12 @@ class SqEngineObject(object):
             if query_str:
                 statfld = self.summary_df \
                     .query(query_str) \
-                    .groupby(by=['namespace', 'hostname'], observed=True)[field] \
-                    .agg(func)
+                    .groupby(by=['namespace', 'hostname'],
+                             observed=True)[field].agg(func)
             else:
                 statfld = self.summary_df \
-                    .groupby(by=['namespace', 'hostname'], observed=True)[field] \
-                    .agg(func)
+                    .groupby(by=['namespace', 'hostname'],
+                             observed=True)[field].agg(func)
 
             self._add_stats_to_summary(statfld, field_name, filter_by_ns=True)
             self.summary_row_order.append(field_name)

@@ -1,7 +1,5 @@
 import os
-import logging
 from pathlib import Path
-from importlib import import_module
 import pyarrow.dataset as ds
 from itertools import zip_longest
 
@@ -13,11 +11,17 @@ from suzieq.db.base_db import SqDB
 
 
 class SqParquetDB(SqDB):
-    def __init__(self):
-        self.logger = logging.getLogger()
-
     def get_table_df(self, cfg, **kwargs) -> pd.DataFrame:
-        """Use Pandas instead of Spark to retrieve the data"""
+        """Read the data specified from parquet files and return
+
+        This function also implements predicate pushdown to filter the data
+        as specified by the provided filters.
+
+        :param cfg: dict, Suzieq config loaded
+        :returns: pandas dataframe of the data specified
+        :rtype: pd.DataFrame
+
+        """
 
         self.cfg = cfg
 
@@ -137,11 +141,6 @@ class SqParquetDB(SqDB):
                     msch.insert(index, fld)
 
         return msch
-
-    def get_object(self, objname: str, iobj):
-        module = import_module("suzieq.engines.pandas." + objname)
-        eobj = getattr(module, "{}Obj".format(objname.title()))
-        return eobj(iobj)
 
     def _cons_int_filter(self, keyfld: str, filter_str: str) -> ds.Expression:
         '''Construct Integer filters with arithmetic operations'''

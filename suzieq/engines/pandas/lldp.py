@@ -1,7 +1,7 @@
-from .engineobj import SqEngineObject
+from .engineobj import SqPandasEngine
 
 
-class LldpObj(SqEngineObject):
+class LldpObj(SqPandasEngine):
     pass
 
     def summarize(self, **kwargs):
