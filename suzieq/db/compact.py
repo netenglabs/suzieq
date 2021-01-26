@@ -6,12 +6,13 @@ from datetime import datetime, timedelta
 import logging
 from typing import List
 import pyarrow.parquet as pq
+import tarfile
 
 from suzieq.utils import load_sq_config, Schema, SchemaForTable
 
 
 class SqCompactState(object):
-    '''Class to store state and provide support for compacting parwuet'''
+    '''Class that compacts parquet files'''
 
     def __init__(self):
         self.time = None
@@ -19,7 +20,9 @@ class SqCompactState(object):
         self.keys = None
         self.type = None
         self.schema = None
-        self.prefix = 'sqc-h'        # sqc == suzieq compacter, h - hourly compact
+        self.period = timedelta(hours=1)       # 1 hour is the default
+        self.prefix = 'sqc-h-'   # sqc == suzieq compacter, h - hourly compact
+        self.ign_pfx = ['.', '_', 'sqc-']  # Prefixes to ignore for compacting
         self.wrfile_count = 0
         self.wrrec_count = 0
         self.poller_periods = set()
@@ -33,7 +36,27 @@ class SqCompactState(object):
 
         """
         # Using timestamp rather than date/time string to simplify reads
-        return f'{self.prefix}-{self.time}.parquet'
+        return f'{self.prefix}{self.time}.parquet'
+
+
+def archive_compacted_files(filelist: List[str], outfolder: str,
+                            state: SqCompactState, dodel: bool) -> None:
+    """Tars and removes the already compacted files
+
+    :param filelist: List{str], list of files to be tarred and archived
+    :param outfolder: str, folder name where the archive is to be stored
+    :param state: SqCompactState, state of compacter
+    :param dodel: bool, True if the compacted files must be deleted
+    :returns: Nothing
+    """
+    if filelist:
+        with tarfile.open(f'{outfolder}/_archive-{state.prefix}-{state.time}.tar.bz2',
+                          'w:bz2') as f:
+            for file in filelist:
+                f.add(file)
+    if dodel:
+        for file in filelist:
+            os.remove(file)
 
 
 def write_files(filelist: List[str], in_basedir: str,
@@ -134,23 +157,27 @@ def get_file_timestamps(filelist: List[str]) -> pd.DataFrame:
     return pd.DataFrame(['file', 'timestamp'])
 
 
-def get_last_update_df(outfolder: str, keys: List[str]) -> pd.DataFrame:
+def get_last_update_df(outfolder: str, state: SqCompactState) -> pd.DataFrame:
     """Return a dataframe with the last known values for all keys
     The dataframe is sorted by timestamp and the index set to the keys.
 
+    This is used when the compacter starts up and doesn't have any state
+    about a table.
+
     :param outfolder: str, folder from where to gather the files
-    :param keys: List[str], list of key fields
+    :param state: SqCompactState, compacter state
     :returns: dataframe with the last known data for all hosts in namespace
     :rtype: pandas.DataFrame
 
     """
     dataset = ds.dataset(outfolder, partitioning='hive', format='parquet')
-    files = sorted([x for x in dataset.files if x.startswith('sfc-')])
+    files = sorted([x for x in dataset.files if x.startswith(state.prefix)])
     if not files:
         return pd.DataFrame()
     latest_filedict = {(x.split('namespace=')[1].split('/')[0],
                         x.split('namespace=')[1].split('/')[1]
-                        .split('hostname=')[1].split('/')[0]): x for x in files}
+                        .split('hostname=')[1].split('/')[0]): x
+                       for x in files}
 
     latest_files = list(latest_filedict.values())
     current_df = ds.dataset(source=latest_files, partitioning='hive',
@@ -160,14 +187,14 @@ def get_last_update_df(outfolder: str, keys: List[str]) -> pd.DataFrame:
     if not current_df.empty:
         current_df.timestamp = pd.to_datetime(current_df.timestamp, unit='ms')
         current_df.sort_values(by=['timetamp'], inplace=True)
-        current_df.set_index(keys, inplace=True)
+        current_df.set_index(state.keys, inplace=True)
 
     return current_df
 
 
-def compact_resource_table(infolder: str, outfolder: str,
+def compact_resource_table(infolder: str, outfolder: str, archive_folder: str,
                            table: str, schema: SchemaForTable,
-                           state: SqCompactState) -> SqCompactState:
+                           state: SqCompactState) -> None:
     """This routine compacts all the parquet data in the folder provided
 
     This function MUST be called with sqPoller as the table the first time to
@@ -181,15 +208,16 @@ def compact_resource_table(infolder: str, outfolder: str,
 
     :param infolder: str, folder to read data in from
     :param outfolder: str, folder to write data to
+    :param archive_folder: str, folder to store the archived files in
     :param table: str, name of table we're compacting
     :param tbl_schema: SchemaForTable, schema of table we're compacting
-    :param state: SqCompactState, None or state returned from prev table
-    :returns: state of compaction needed for non-sqPollers, has stats etc.
+    :param state: SqCompactState, state about this compaction run
+    :returns: Nothing
     """
 
-    if not state:
-        state = SqCompactState()  # save the timestamp for use as the filename
+    if table == "sqPoller":
         wr_polling_period = True
+        state.poller_periods = set()
     else:
         wr_polling_period = False
     state.wrfile_count = 0
@@ -197,18 +225,18 @@ def compact_resource_table(infolder: str, outfolder: str,
 
     if schema.type == "record":
         state.keys = schema.key_fields()
-        state.current_df = get_last_update_df(outfolder, state.keys)
+        state.current_df = get_last_update_df(outfolder, state)
         state.type = schema.type
         state.schema = schema.get_arrow_schema()
 
     # Ignore reading the compressed files
     dataset = ds.dataset(infolder, partitioning='hive', format='parquet',
-                         ignore_prefixes=['.', '_', 'sfc-'])
+                         ignore_prefixes=state.ign_pfx)
 
     print(f'Files to compact: {len(dataset.files)}')
     fdf = get_file_timestamps(dataset.files)
     if fdf.empty and table == 'sqPoller':
-        return None
+        return
 
     assert(len(dataset.files) == fdf.shape[0])
     start = fdf.timestamp.iloc[0]
@@ -222,24 +250,24 @@ def compact_resource_table(infolder: str, outfolder: str,
         return
 
     # NOTE: You need the parentheses around the date comparison for some reason
-    if (utcnow.date() != start.date()):
-        hr_start = start.hour
-    elif utcnow.hour == start.hour:
-        hr_start = None
-    else:
-        hr_start = start.hour
-
-    if not hr_start:
-        # If we've been woken up before the current hour is up, don't do
-        # anything. We'll be woken up again
-        return state
+    if start + state.period > utcnow:
+        return
 
     # We write data in fixed size 1 hour time blocks. Data from 10-11 is
     # written out as one block, data from 11-12 as another and so on.
     # Specifically, we write out 11:00:00 to 11:59:59 in the block
-    block_start = datetime(year=start.year, month=start.month,
-                           day=start.day, hour=hr_start)
-    block_end = block_start + timedelta(hours=1)
+    if state.period.total_seconds() < 24*3600:
+        block_start = datetime(year=start.year, month=start.month,
+                               day=start.day, hour=start.hour)
+    elif 24*3600 <= state.period.total_seconds() < 24*3600*30:
+        block_start = datetime(year=start.year, month=start.month,
+                               day=start.day)
+    elif 24*3600*30 <= state.period.total_seconds() < 24*3600*365:
+        block_start = datetime(year=start.year, month=start.month)
+    else:
+        block_start = datetime(year=start.year)
+
+    block_end = block_start + state.period
 
     readblock = []
     wrfile_count = 0
@@ -248,17 +276,23 @@ def compact_resource_table(infolder: str, outfolder: str,
             readblock.append(row.file)
             continue
 
-        if readblock or (not wr_polling_period and (state.type == "record")
-                         and block_start in state.poller_periods):
+        # Write data if either there's data to be written (readblock isn't
+        # empty) OR this table is a record type and poller was alive during
+        # this period (state's poller period for this window isn't blank
+        if readblock or ((state.type == "record") and
+                         block_start in state.poller_periods):
             state.time = int(block_start.timestamp())
             write_files(readblock, infolder, outfolder,
                         ['sqvers', 'namespace', 'hostname'], state)
             wrfile_count += len(readblock)
         if wr_polling_period and readblock:
             state.poller_periods.add(block_start)
+        # Archive the saved files
+        if readblock:
+            archive_compacted_files(readblock, archive_folder, state, True)
         readblock = [row.file]
         block_start = block_end
-        block_end = block_start + timedelta(hours=1)
+        block_end = block_start + state.period
         if block_end > utcnow:
             break
 
@@ -268,23 +302,77 @@ def compact_resource_table(infolder: str, outfolder: str,
         write_files(readblock, infolder, outfolder,
                     ['sqvers', 'namespace', 'hostname'], state)
         wrfile_count += len(readblock)
+        archive_compacted_files(readblock, archive_folder, state, True)
 
     assert(wrfile_count == len(dataset.files))
     state.wrfile_count = wrfile_count
-    return state
+    return
 
 
-def compact_resource_tables(infolder: str, outfolder: str,
-                            schemas: dict, table: str = None) -> None:
-    """Compact all the resource tables necessary
+def compact_resource_tables(cfg_file: str, table: str = None) -> None:
+    """Compact all the resource parquet files in specified folder.
+
 
     :param infolder: str, root folder to check for resources
     :param outfolder: str, root folder for compacted record writes
     :param schemas: Schema, schemas used by the various resources
+    :param period: str, period of compaction, 1h, 2h, 1w, 1d, 1m, 1y etc.
+                   format is a number followed by one of [h, d, w]
+                   for hour, day, week, month and year.
     :param table: str, optional, name of single table to compact
     :returns: Nothing
     """
 
+    if not cfg_file:
+        raise AttributeError('Suzieq config file must be specified')
+
+    cfg = load_sq_config(cfg_file)
+    if not cfg:
+        raise AttributeError(f'Invalid Suzieq config file {cfg_file}')
+
+    infolder = cfg['data-directory']
+    outfolder = cfg.get('compact-directory', f'{infolder}/compacted')
+    archive_folder = cfg.get('archive-directory', f'{infolder}/_archived')
+    period = cfg.get('compacter', {'period': '1h'}).get('period', '1h')
+    schemas = Schema(cfg.get('schema-directory'))
+
+    state = SqCompactState()
+    # Trying to be complete here. the ignore prefixes assumes you have compacters
+    # across multiple time periods running, and so we need to ignore the files
+    # created by the longer time period compactions. In other words, weekly
+    # compacter should ignore monthly and yearly compacted files, monthly
+    # compacter should ignore yearly compacter and so on.
+    try:
+        timeint = int(period[:-1])
+        time_unit = period[-1]
+        if time_unit == 'h':
+            run_int = timedelta(hours=timeint)
+            state.prefix = 'sqc-h-'
+            state.ign_pfx = ['.', '_', 'sqc-']
+        elif time_unit == 'd':
+            run_int = timedelta(days=timeint)
+            if timeint > 364:
+                state.prefix = 'sqc-y-'
+                state.ign_pfx = ['.', '_', 'sqc-y-']
+            elif timeint > 29:
+                state.prefix = 'sqc-m-'
+                state.ign_pfx = ['.', '_', 'sqc-m-', 'sqc-y-']
+            else:
+                state.prefix = 'sqc-d-'
+                state.ign_pfx = ['.', '_', 'sqc-d-', 'sqc-w-', 'sqc-m-',
+                                 'sqc-y-']
+        elif time_unit == 'w':
+            run_int = timedelta(weeks=timeint)
+            state.prefix = 'sqc-w-'
+            state.ign_pfx = ['.', '_', 'sqc-w-', 'sqc-m-', 'sqc-y-']
+        else:
+            logging.error(f'Invalid unit for period, {time_unit}, '
+                          'must be one of h/d/w')
+    except ValueError:
+        logging.error(f'Invalid time, {period}')
+        return
+
+    state.period = run_int
     # Create list of tables to compact
     tables = [x for x in schemas.tables()
               if schemas.type_for_table(x) != "derivedRecord"]
@@ -293,37 +381,33 @@ def compact_resource_tables(infolder: str, outfolder: str,
         # among other things.
         print('No sqPoller data, cannot compute discontinuities')
         return
+    else:
+        tables.remove('sqPoller')
+        tables.insert(0, 'sqPoller')
     if table not in tables:
         print('No info about table {table} to compact')
         return
     elif table:
-        tables = [table]
+        tables = ['sqPoller', table]
 
-    # Need to compute the polling period
-    table_outfolder = f'{outfolder}//sqPoller'
-    table_infolder = f'{infolder}//sqPoller'
-    if not os.path.isdir(table_infolder):
-        print('No sqpoller info. Aborting')
-        return
-    if not os.path.isdir(table_outfolder):
-        os.mkdir(table_outfolder)
-    state = compact_resource_table(table_infolder, table_outfolder, 'sqPoller',
-                                   SchemaForTable('sqPoller', schemas, None),
-                                   None)
-
+    # We've forced the sqPoller to be always the first table to be compacted
     for entry in tables:
-        table_outfolder = f'{outfolder}/{table}'
-        table_infolder = f'{infolder}//{table}'
+        table_outfolder = f'{outfolder}/{entry}'
+        table_infolder = f'{infolder}//{entry}'
+        table_archive_folder = f'{archive_folder}/{entry}'
         if not os.path.isdir(table_infolder):
-            print(f'No input records to compact for {table}')
+            print(f'No input records to compact for {entry}')
             continue
         if not os.path.isdir(table_outfolder):
-            os.mkdir(table_outfolder)
-        state = compact_resource_table(table_infolder, table_outfolder, entry,
-                                       SchemaForTable(entry, schemas, None),
-                                       state)
+            os.makedirs(table_outfolder)
+        if not os.path.isdir(table_archive_folder):
+            os.makedirs(table_archive_folder, exist_ok=True)
+        compact_resource_table(table_infolder, table_outfolder,
+                               table_archive_folder, entry,
+                               SchemaForTable(entry, schemas, None),
+                               state)
         print(f'compacted {state.wrfile_count} files/{state.wrrec_count} '
-              f'of {table}')
+              f'of {entry}')
     return
 
 
@@ -331,35 +415,20 @@ if __name__ == '__main__':
     import sys
     import time
 
-    if len(sys.argv) < 3:
-        print(
-            'USAGE: compact.py <in_folder> <out_folder> [[table] [cfg-file]]')
-        sys.exit(1)
+    print('USAGE: compact.py [table] [cfg-file]')
 
-    if len(sys.argv) == 4:
-        table = sys.argv[3]
+    if len(sys.argv) == 2:
+        table = sys.argv[1]
     else:
         table = None
 
-    if not os.path.isdir(sys.argv[1]):
-        print(f'ERROR: Input folder {sys.argv[1]} not a directory')
-        sys.exit(1)
-    if not os.path.isdir(sys.argv[2]):
-        print(f'ERROR: Output folder {sys.argv[2]} not a directory')
-        sys.exit(1)
-
-    if len(sys.argv) > 4:
-        cfg_file = sys.argv[4]
+    if len(sys.argv) == 3:
+        cfg_file = sys.argv[2]
     else:
         cfg_file = '~/.suzieq/suzieq-cfg.yml'
 
-    cfg = load_sq_config(cfg_file)
-    if cfg:
-        schemas = Schema(cfg['schema-directory'])
-
     exec_start = time.time()
-    compact_resource_tables(
-        sys.argv[1], sys.argv[2], schemas, table)
+    compact_resource_tables(cfg_file, table)
     exec_end = time.time()
     print(
         f'Compacted records in {timedelta(seconds=exec_end-exec_start)}')
