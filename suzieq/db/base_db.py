@@ -1,8 +1,9 @@
 import pandas as pd
 import logging
+from abc import ABC, abstractmethod
 
 
-class SqDB(object):
+class SqDB(ABC):
     def __init__(self):
         """Initialize the database
 
@@ -13,6 +14,7 @@ class SqDB(object):
         self.cfg = None
         self.logger = logging.getLogger()
 
+    @abstractmethod
     def get_table_df(self, cfg, schemas, **kwargs) -> pd.DataFrame:
         """This is the routine that reads the DB and returns a pandas DF
 
