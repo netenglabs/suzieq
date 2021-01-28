@@ -2,13 +2,14 @@ import os
 import pandas as pd
 import pyarrow.dataset as ds    # put this later due to some numpy dependency
 import pyarrow as pa
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import logging
 from typing import List
 import pyarrow.parquet as pq
 import tarfile
 
 from suzieq.utils import load_sq_config, Schema, SchemaForTable
+from suzieq.utils import humanize_timestamp
 
 
 class SqCompactState(object):
@@ -98,8 +99,9 @@ def write_files(filelist: List[str], in_basedir: str,
             wrtbl = pa.Table.from_pandas(this_df, schema=state.schema,
                                          preserve_index=False)
     elif not state.current_df.empty:
-        assert(state.type != "record")
-        wrtbl = pa.Table.from_pandas(state.current_df, schema=state.schema,
+        assert(state.type == "record")
+        wrtbl = pa.Table.from_pandas(state.current_df.reset_index(),
+                                     schema=state.schema,
                                      preserve_index=False)
     else:
         return
@@ -142,16 +144,18 @@ def get_file_timestamps(filelist: List[str]) -> pd.DataFrame:
     # and it didn't dramatically alter the results. Given that we might've
     # too many threads running with the poller and everything, we skipped
     # doing it.
-    fdata = {}
+    fname_list = []
+    fts_list = []
     for file in filelist:
         ts = pd.read_parquet(file, columns=['timestamp'])
         if not ts.empty:
-            fdata[file] = ts.timestamp.min()
+            fname_list.append(file)
+            fts_list.append(ts.timestamp.min())
 
     # Construct file dataframe as its simpler to deal with
-    if fdata:
-        fdf = pd.DataFrame({'file': fdata.keys(), 'timestamp': fdata.values()})
-        fdf['timestamp'] = pd.to_datetime(fdf.timestamp, unit='ms')
+    if fname_list:
+        fdf = pd.DataFrame({'file': fname_list, 'timestamp': fts_list})
+        fdf['timestamp'] = humanize_timestamp(fdf.timestamp, 'UTC')
         return fdf.sort_values(by=['timestamp'])
 
     return pd.DataFrame(['file', 'timestamp'])
@@ -174,9 +178,7 @@ def get_last_update_df(outfolder: str, state: SqCompactState) -> pd.DataFrame:
     files = sorted([x for x in dataset.files if x.startswith(state.prefix)])
     if not files:
         return pd.DataFrame()
-    latest_filedict = {(x.split('namespace=')[1].split('/')[0],
-                        x.split('namespace=')[1].split('/')[1]
-                        .split('hostname=')[1].split('/')[0]): x
+    latest_filedict = {x.split('namespace=')[1].split('/')[0]: x
                        for x in files}
 
     latest_files = list(latest_filedict.values())
@@ -185,7 +187,7 @@ def get_last_update_df(outfolder: str, state: SqCompactState) -> pd.DataFrame:
         .to_table() \
         .to_pandas(self_destruct=True)
     if not current_df.empty:
-        current_df.timestamp = pd.to_datetime(current_df.timestamp, unit='ms')
+        current_df.timestamp = humanize_timestamp(current_df.timestamp)
         current_df.sort_values(by=['timetamp'], inplace=True)
         current_df.set_index(state.keys, inplace=True)
 
@@ -215,6 +217,24 @@ def compact_resource_table(infolder: str, outfolder: str, archive_folder: str,
     :returns: Nothing
     """
 
+    def compute_block_start(start):
+        if state.period.total_seconds() < 24*3600:
+            block_start = datetime(year=start.year, month=start.month,
+                                   day=start.day, hour=start.hour,
+                                   tzinfo=timezone.utc)
+        elif 24*3600 <= state.period.total_seconds() < 24*3600*30:
+            block_start = datetime(year=start.year, month=start.month,
+                                   day=start.day, tzinfo=timezone.utc)
+        elif 24*3600*30 <= state.period.total_seconds() < 24*3600*365:
+            block_start = datetime(year=start.year, month=start.month,
+                                   tzinfo=timezone.utc)
+        else:
+            block_start = datetime(year=start.year, tzinfo=timezone.utc)
+        return block_start
+
+    partition_cols = ['sqvers', 'namespace']
+    dodel = False
+
     if table == "sqPoller":
         wr_polling_period = True
         state.poller_periods = set()
@@ -240,7 +260,7 @@ def compact_resource_table(infolder: str, outfolder: str, archive_folder: str,
 
     assert(len(dataset.files) == fdf.shape[0])
     start = fdf.timestamp.iloc[0]
-    utcnow = datetime.utcnow()     # All times we store are UTC based
+    utcnow = datetime.now(timezone.utc)
 
     # We now need to determine if we're compacting a lot of data, at the start
     # or if we're only compacting for the last interval.
@@ -256,17 +276,7 @@ def compact_resource_table(infolder: str, outfolder: str, archive_folder: str,
     # We write data in fixed size 1 hour time blocks. Data from 10-11 is
     # written out as one block, data from 11-12 as another and so on.
     # Specifically, we write out 11:00:00 to 11:59:59 in the block
-    if state.period.total_seconds() < 24*3600:
-        block_start = datetime(year=start.year, month=start.month,
-                               day=start.day, hour=start.hour)
-    elif 24*3600 <= state.period.total_seconds() < 24*3600*30:
-        block_start = datetime(year=start.year, month=start.month,
-                               day=start.day)
-    elif 24*3600*30 <= state.period.total_seconds() < 24*3600*365:
-        block_start = datetime(year=start.year, month=start.month)
-    else:
-        block_start = datetime(year=start.year)
-
+    block_start = compute_block_start(start)
     block_end = block_start + state.period
 
     readblock = []
@@ -282,27 +292,46 @@ def compact_resource_table(infolder: str, outfolder: str, archive_folder: str,
         if readblock or ((state.type == "record") and
                          block_start in state.poller_periods):
             state.time = int(block_start.timestamp())
-            write_files(readblock, infolder, outfolder,
-                        ['sqvers', 'namespace', 'hostname'], state)
+            write_files(readblock, infolder, outfolder, partition_cols, state)
             wrfile_count += len(readblock)
         if wr_polling_period and readblock:
             state.poller_periods.add(block_start)
         # Archive the saved files
         if readblock:
-            archive_compacted_files(readblock, archive_folder, state, True)
-        readblock = [row.file]
+            archive_compacted_files(readblock, archive_folder, state, dodel)
+
+        # We have to find the timeslot where this record fits
         block_start = block_end
         block_end = block_start + state.period
+        if state.type != "record":
+            # We can jump directly to the timestamp corresonding to this
+            # row's timestamp
+            if row.timestamp > block_end:
+                block_start = compute_block_start(row.timestamp)
+                block_end = block_start + state.period
+                readblock = [row.file]
+                continue
+
+        readblock = []
+        while row.timestamp > block_end:
+            if block_start in state.poller_periods:
+                state.time = int(block_start.timestamp())
+                write_files(readblock, infolder, outfolder, partition_cols,
+                            state)
+            block_start = block_end
+            block_end = block_start + state.period
+        readblock = [row.file]
         if block_end > utcnow:
             break
 
     # The last batch that ended before the block end
     if readblock:
         state.time = int(block_start.timestamp())
-        write_files(readblock, infolder, outfolder,
-                    ['sqvers', 'namespace', 'hostname'], state)
+        write_files(readblock, infolder, outfolder, partition_cols, state)
         wrfile_count += len(readblock)
-        archive_compacted_files(readblock, archive_folder, state, True)
+        if wr_polling_period:
+            state.poller_periods.add(block_start)
+        archive_compacted_files(readblock, archive_folder, state, dodel)
 
     assert(wrfile_count == len(dataset.files))
     state.wrfile_count = wrfile_count
@@ -384,11 +413,11 @@ def compact_resource_tables(cfg_file: str, table: str = None) -> None:
     else:
         tables.remove('sqPoller')
         tables.insert(0, 'sqPoller')
-    if table not in tables:
+    if table and table not in tables:
         print('No info about table {table} to compact')
         return
     elif table:
-        tables = ['sqPoller', table]
+        tables = ["sqPoller", table]
 
     # We've forced the sqPoller to be always the first table to be compacted
     for entry in tables:
