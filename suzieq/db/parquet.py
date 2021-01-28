@@ -1,4 +1,5 @@
 import os
+import sys
 from pathlib import Path
 import pyarrow.dataset as ds
 from itertools import zip_longest
@@ -11,6 +12,89 @@ from suzieq.db.base_db import SqDB
 
 
 class SqParquetDB(SqDB):
+
+    def _get_cp_dataset(self, folder: str, need_sqvers: bool, sqvers: str,
+                        start_time: float, end_time: float) -> ds.dataset:
+        """Get the list of files to read in
+
+        This iterates over the files that need to be read and comes up with
+        a list of files that corresponds to the timeslot the user has specified.
+
+        :param folder: str, the top level folder to parse looking for files
+        :param need_sqvers: bool, True if the user has requested that we return the
+                            sqvers
+        :param sqvers: str, if we're looking only for files of a specific version
+        :param start_time: float, the starting time window for which data is sought
+        : param end_time: float, the ending time window for which data is sought
+        :returns: pyarrow dataset for the files to be read
+        :rtype: pyarrow.dataset.dataset
+
+        """
+
+        filelist = []
+        max_vers = 0
+
+        if start_time and end_time:
+            # Enforcing the logic we have: if both start_time & end_time
+            # are given, return all files since the model is that the user is
+            # expecting to see all changes in the time window. Otherwise, the user
+            # is expecting to see only the latest before an end_time OR after a
+            # start_time.
+            all_files = True
+        else:
+            all_files = False
+
+        # We need to iterate otherwise the differing schema from different dirs
+        # causes the read to abort.
+        dirs = Path(folder)
+        if not dirs.exists() or not dirs.is_dir():
+            return
+
+        for elem in dirs.iterdir():
+            # Additional processing around sqvers filtering and data
+            if 'sqvers=' not in str(elem):
+                continue
+            if sqvers and f'sqvers={sqvers}' != elem:
+                continue
+            elif need_sqvers:
+                vers = float(str(elem).split('=')[-1])
+                if vers > max_vers:
+                    max_vers = vers
+
+            dataset = ds.dataset(elem, format='parquet', partitioning='hive')
+            if not start_time and not end_time:
+                files = dataset.files
+            else:
+                files = []
+                latest_filedict = {}
+                prev_time = 0
+                for file in sorted(dataset.files):
+                    thistime = int(os.path.basename(file).split('.')[0]
+                                   .split('-')[-1])*1000
+                    if not start_time or (thistime >= start_time):
+                        if not end_time:
+                            files.append(file)
+                        elif thistime < end_time:
+                            files.append(file)
+                        elif prev_time < end_time < thistime:
+                            key = file.split('namespace=')[1].split('/')[0]
+                            if key not in latest_filedict:
+                                latest_filedict[key] = file
+                    prev_time = thistime
+                if latest_filedict:
+                    filelist.extend(list(latest_filedict.values()))
+            if not all_files and files:
+                latest_filedict = {x.split('namespace=')[1].split('/')[0]: x
+                                   for x in sorted(files)}
+                filelist.extend(list(latest_filedict.values()))
+            elif files:
+                filelist.extend(sorted(files))
+
+        if filelist:
+            return ds.dataset(filelist, format='parquet', partitioning='hive')
+        else:
+            return None
+
     def get_table_df(self, cfg, **kwargs) -> pd.DataFrame:
         """Read the data specified from parquet files and return
 
@@ -34,7 +118,10 @@ class SqParquetDB(SqDB):
         key_fields = kwargs.pop("key_fields")
         merge_fields = kwargs.pop('merge_fields', {})
 
-        folder = self._get_table_directory(table)
+        folder = f'{cfg.get("data-directory")}/{table}'
+        cp_folder = '{}/{}'.format(
+            cfg.get("compact-directory",
+                    cfg.get("data-directory") + "/compacted"), table)
 
         if addnl_filter:
             # This is for special cases that are specific to an object
@@ -56,22 +143,33 @@ class SqParquetDB(SqDB):
 
         # If requesting a specific version of the data, handle that diff too
         sqvers = kwargs.pop('sqvers', None)
+        datasets = []
         try:
             dirs = Path(folder)
-            datasets = []
-            for elem in dirs.iterdir():
-                # Additional processing around sqvers filtering and data
-                if 'sqvers=' not in str(elem):
-                    continue
-                if sqvers and f'sqvers={sqvers}' != elem:
-                    continue
-                elif need_sqvers:
-                    vers = float(str(elem).split('=')[-1])
-                    if vers > max_vers:
-                        max_vers = vers
+            try:
+                for elem in dirs.iterdir():
+                    # Additional processing around sqvers filtering and data
+                    if 'sqvers=' not in str(elem):
+                        continue
+                    if sqvers and f'sqvers={sqvers}' != elem:
+                        continue
+                    elif need_sqvers:
+                        vers = float(str(elem).split('=')[-1])
+                        if vers > max_vers:
+                            max_vers = vers
 
-                datasets.append(ds.dataset(elem, format='parquet',
-                                           partitioning='hive'))
+                    datasets.append(ds.dataset(elem, format='parquet',
+                                               partitioning='hive'))
+            except FileNotFoundError:
+                pass
+            except Exception as e:
+                raise e
+
+            # Now find the exact set of files we need to go over
+            cp_dataset = self._get_cp_dataset(cp_folder, need_sqvers,
+                                              sqvers, start, end)
+            if cp_dataset:
+                datasets.append(cp_dataset)
 
             if not datasets:
                 datasets = [ds.dataset(folder, format='parquet',
@@ -87,9 +185,9 @@ class SqParquetDB(SqDB):
                 start, end, master_schema, merge_fields=merge_fields, **kwargs)
 
             final_df = ds.dataset(datasets) \
-                         .to_table(filter=filters, columns=avail_fields) \
-                         .to_pandas(self_destruct=True) \
-                         .query(query_str)
+                .to_table(filter=filters, columns=avail_fields) \
+                .to_pandas(self_destruct=True) \
+                .query(query_str)
 
             if merge_fields:
                 # These are key fields that need to be set right before we do
@@ -105,16 +203,23 @@ class SqParquetDB(SqDB):
                           newfld not in final_df.columns):
                         final_df.rename(columns={field: newfld}, inplace=True)
 
+            # Because of how compacting works, we can have multiple duplicated
+            # entries with same timestamp. Remove them
+            dupts_keys = key_fields
+            dupts_keys.append('timestamp')
+            final_df.set_index(dupts_keys, inplace=True)
+            final_df = final_df[~final_df.index.duplicated(keep="last")] \
+                .reset_index()
             if (not final_df.empty and (view == 'latest') and
                     all(x in final_df.columns for x in key_fields)):
-                final_df = final_df.set_index(key_fields) \
-                                   .sort_values(by='timestamp') \
-                                   .query('~index.duplicated(keep="last")') \
-                                   .reset_index()
+                final_df.set_index(key_fields, inplace=True)
+                final_df.sort_values(by='timestamp', inplace=True)
+                final_df = final_df[~final_df.index.duplicated(keep="last")] \
+                    .reset_index()
         except (pa.lib.ArrowInvalid, OSError):
             return pd.DataFrame(columns=fields)
 
-        fields = [x for x in final_df.columns if x in fields]
+        fields = [x for x in fields if x in final_df.columns]
         if need_sqvers:
             final_df['sqvers'] = max_vers
             fields.insert(0, 'sqvers')
@@ -232,7 +337,6 @@ class SqParquetDB(SqDB):
         return filters
 
     def _get_table_directory(self, table):
-        assert table
         folder = "{}/{}".format(self.cfg.get("data-directory"), table)
         # print(f"FOLDER: {folder}", file=sys.stderr)
         return folder
