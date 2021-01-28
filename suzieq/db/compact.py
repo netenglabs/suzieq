@@ -355,7 +355,7 @@ def compact_resource_tables(cfg_file: str, table: str = None) -> None:
     if not cfg_file:
         raise AttributeError('Suzieq config file must be specified')
 
-    cfg = load_sq_config(cfg_file)
+    cfg = load_sq_config(config_file = cfg_file)
     if not cfg:
         raise AttributeError(f'Invalid Suzieq config file {cfg_file}')
 
