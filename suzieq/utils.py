@@ -3,6 +3,7 @@ import re
 import sys
 from pathlib import Path
 import logging
+from logging.handlers import RotatingFileHandler
 import json
 import yaml
 from dateutil.relativedelta import relativedelta
@@ -557,6 +558,37 @@ def build_query_str(skip_fields: list, schema, **kwargs) -> str:
             prefix = "and"
 
     return query_str
+
+
+def init_logger(logname: str, logfile: str, loglevel: str = 'WARNING',
+                use_stdout: bool = False) -> logging.Logger:
+    """Initialize the logger
+
+    :param logname: str, the name of the app that's logging
+    :param logfile: str, the log file to use
+    :param loglevel: str, the default log level to set the logger to
+    :param use_stdout: str, log to stdout instead of or in addition to file
+
+    """
+
+    # this needs to be suzieq.poller, so that it is the root of all the other pollers
+    logger = logging.getLogger(logname)
+    logger.setLevel(loglevel.upper())
+    fh = RotatingFileHandler(logfile, maxBytes=10000000, backupCount=2)
+    formatter = logging.Formatter(
+        "%(asctime)s - %(name)s - %(levelname)s " "- %(message)s"
+    )
+    fh.setFormatter(formatter)
+
+    # set root logger level, so that we set asyncssh log level
+    #  asynchssh sets it's level to the root level
+    root = logging.getLogger()
+    root.setLevel(loglevel.upper())
+    root.addHandler(fh)
+
+    logger.warning(f"log level {logging.getLevelName(logger.level)}")
+
+    return logger
 
 
 def known_devtypes() -> list:

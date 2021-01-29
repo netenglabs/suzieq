@@ -18,7 +18,8 @@ class SqPandasEngine(SqEngineObj):
         self._summarize_on_add_list_or_count = []
         self._summarize_on_add_stat = []
         self._summarize_on_perdevice_stat = []
-        self._dbeng = get_sqdb_engine(baseobj.ctxt.cfg, baseobj.table)
+        self._dbeng = get_sqdb_engine(baseobj.ctxt.cfg, baseobj.table, '',
+                                      None)
 
     @property
     def schemas(self):
@@ -119,9 +120,9 @@ class SqPandasEngine(SqEngineObj):
             print(f"ERROR: Unable to parse {self.iobj.end_time}")
             return pd.DataFrame()
 
-        table_df = self._dbeng.get_table_df(
-            self.cfg,
-            table=phy_table,
+        table_df = self._dbeng.read(
+            phy_table,
+            'pandas',
             start_time=start_time,
             end_time=end_time,
             columns=fields,
