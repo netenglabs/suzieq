@@ -6,7 +6,6 @@ import os
 import argparse
 import asyncio
 import logging
-from logging.handlers import RotatingFileHandler
 from pathlib import Path
 from collections import defaultdict
 import getpass
@@ -17,7 +16,7 @@ from suzieq.poller.nodes import init_hosts, init_files
 from suzieq.poller.services import init_services
 
 from suzieq.poller.writer import init_output_workers, run_output_worker
-from suzieq.utils import load_sq_config
+from suzieq.utils import load_sq_config, init_logger
 
 
 def validate_parquet_args(cfg, output_args, logger):
@@ -46,30 +45,6 @@ def validate_parquet_args(cfg, output_args, logger):
     return
 
 
-def init_logger():
-    """Initialize the logger"""
-
-    # this needs to be suzieq.poller, so that it is the root of all the other pollers
-    logger = logging.getLogger('suzieq.poller')
-    logger.setLevel(cfg.get("logging-level", "WARNING").upper())
-    fh = RotatingFileHandler(cfg.get("log-file", "/tmp/sq-poller.log"),
-                             maxBytes=10000000, backupCount=2)
-    formatter = logging.Formatter(
-        "%(asctime)s - %(name)s - %(levelname)s " "- %(message)s"
-    )
-    fh.setFormatter(formatter)
-
-    # set root logger level, so that we set asyncssh log level
-    #  asynchssh sets it's level to the root level
-    root = logging.getLogger()
-    root.setLevel(cfg.get("logging-level", "WARNING").upper())
-    root.addHandler(fh)
-
-    logger.warning(f"log level {logging.getLevelName(logger.level)}")
-
-    return logger
-
-
 def send_terminate_to_threads(nodes: list, svcs: list, writers: list):
     """Set the terminate flag in all child threads"""
     for elem in nodes:
@@ -82,7 +57,9 @@ def send_terminate_to_threads(nodes: list, svcs: list, writers: list):
 
 async def start_poller(userargs, cfg):
 
-    logger = init_logger()
+    logfile = cfg.get('poller-log-file', '/tmp/sq-poller.log')
+    loglevel = cfg.get("logging-level", "WARNING")
+    logger = init_logger('suzieq.poller', logfile, loglevel, False)
 
     if userargs.devices_file and userargs.namespace:
         logger.error("Cannot specify both -D and -n options")
