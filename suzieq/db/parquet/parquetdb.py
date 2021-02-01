@@ -153,22 +153,21 @@ class SqParquetDB(SqDB):
             # entries with same timestamp. Remove them
             dupts_keys = key_fields + ['timestamp']
             final_df = final_df.set_index(dupts_keys) \
-                               .query('~index.duplicated(keep="last")') \
-                               .reset_index()
+                               .query('~index.duplicated(keep="last")')
             if (not final_df.empty and (view == 'latest') and
                     all(x in final_df.columns for x in key_fields)):
                 final_df = final_df.set_index(key_fields) \
-                                   .query('~index.duplicated(keep="last")') \
-                                   .reset_index()
+                                   .query('~index.duplicated(keep="last")')
         except (pa.lib.ArrowInvalid, OSError):
             return pd.DataFrame(columns=fields)
 
-        fields = [x for x in fields if x in final_df.columns]
         if need_sqvers:
             final_df['sqvers'] = max_vers
             fields.insert(0, 'sqvers')
 
-        return final_df[fields]
+        cols = set(final_df.columns.tolist() + final_df.index.names)
+        fields = [x for x in fields if x in cols]
+        return final_df.reset_index()[fields]
 
     def write(self, table_name: str, data_format: str,
               data, coalesced: bool, schema: pa.lib.Schema,
