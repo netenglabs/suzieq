@@ -33,16 +33,19 @@ class MacsService(Service):
             else:
                 entry['mackey'] = f'{entry["bd"]}-{entry["vlan"]}'
         else:
-            if not entry.get("remoteVtepIp", ''):
+            if entry.get("remoteVtepIp", ''):
                 if entry['macaddr'] == '00:00:00:00:00:00':
-                    entry['mackey'] = f'{entry["vlan"]}-{entry["remoteVtepIp"]}'
+                    entry['mackey'] = f'{entry["oif"]}-{entry["remoteVtepIp"]}'
                 else:
                     entry['mackey'] = entry['vlan']
             else:
                 if entry.get('vlan', 0):
                     entry['mackey'] = entry['vlan']
                 else:
-                    entry['mackey'] = f'{entry["vlan"]}-{entry["oif"]}'
+                    if entry['flags'] in ['static', 'permanent']:
+                        entry['mackey'] = f'{entry["oif"]}'
+                    else:
+                        entry['mackey'] = '0'
 
     def _clean_linux_data(self, processed_data, raw_data):
         drop_indices = []
@@ -113,12 +116,17 @@ class MacsService(Service):
 
     def _clean_eos_data(self, processed_data, raw_data):
 
-        foo = 0
-        for entry in processed_data:
+        drop_indices = []
+
+        for i, entry in enumerate(processed_data):
+            entry['oif'] = expand_eos_ifname(entry['oif'])
+            if entry['oif'].startswith('Vxlan') and 'remoteVtepIp' not in entry:
+                drop_indices.append(i)
+                continue
             if '.' in entry['macaddr']:
                 entry['macaddr'] = convert_macaddr_format_to_colon(
                     entry.get('macaddr', '0000.0000.0000'))
-            entry['oif'] = expand_eos_ifname(entry['oif'])
             self._add_mackey_protocol(entry)
 
+        processed_data = np.delete(processed_data, drop_indices).tolist()
         return processed_data
