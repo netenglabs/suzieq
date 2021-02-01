@@ -87,8 +87,16 @@ def load_sq_config(validate=True, config_file=None):
         cfgfile = os.getenv("HOME") + "/.suzieq/suzieq-cfg.yml"
 
     if cfgfile:
-        with open(cfgfile, "r") as f:
-            cfg = yaml.safe_load(f.read())
+        try:
+            with open(cfgfile, "r") as f:
+                cfg = yaml.safe_load(f.read())
+        except Exception as e:
+            print(f'ERROR: Unable to open config file {cfgfile}: {e.args[1]}')
+            sys.exit(1)
+
+        if not cfg:
+            print(f'ERROR: Empty config file {cfgfile}')
+            sys.exit(1)
 
         if validate:
             error_str = validate_sq_config(cfg)
@@ -603,7 +611,7 @@ def humanize_timestamp(field: pd.Series, tz=None) -> pd.Series:
     to UTC. If the timestamp is already in UTC format, we get busted time.
     '''
     tz = tz or get_localzone().zone
-    return field.apply(lambda x: datetime.utcfromtimestamp((int(x)/1000))) \
+    return field.apply(lambda x: datetime.fromtimestamp((int(x)/1000))) \
                 .dt.tz_localize('UTC').dt.tz_convert(tz)
 
 
