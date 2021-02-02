@@ -52,7 +52,7 @@ def _setup_nubia():
 
 
 def create_context():
-    config = _create_context_config()
+    config = get_dummy_config()
     context = NubiaSuzieqContext()
     context.cfg = config
     return context
@@ -60,10 +60,10 @@ def create_context():
 
 @pytest.fixture()
 def create_context_config():
-    return _create_context_config()
+    return get_dummy_config()
 
 
-def _create_context_config():
+def get_dummy_config():
     config = {'schema-directory': './config/schema',
               'service-directory': './config',
               'data-directory': './tests/data/basic_dual_bgp/parquet-out',
@@ -166,4 +166,3 @@ def setup_sqcmds(testvar, context_config):
         os.remove(tmpfname)
 
     return output, error
-
