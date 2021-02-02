@@ -359,7 +359,7 @@ def test_rest_services(setup_nubia, start_server, service, verb, arg):
 
 def create_config():
     # We need to create a tempfile to hold the config
-    tmpconfig = conftest._create_context_config()
+    tmpconfig = conftest.get_dummy_config()
 
     tmpconfig['data-directory'] = './tests/data/multidc/parquet-out'
     r_int = random.randint(17, 2073)
