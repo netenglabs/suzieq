@@ -8,7 +8,7 @@ import aiofiles
 from pathlib import Path
 from http import HTTPStatus
 from suzieq.poller.services.service import RsltToken
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 async def init_files(gather_datadir: str):
@@ -135,7 +135,7 @@ class FileNode(object):
     def _create_result(self, cmd, status, data) -> dict:
         result = {
             "status": status,
-            "timestamp": int(datetime.utcnow().timestamp() * 1000),
+            "timestamp": int(datetime.now(tz=timezone.utc).timestamp() * 1000),
             "cmd": cmd,
             "devtype": 'Unknown',
             "namespace": 'Unknown',

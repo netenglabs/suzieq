@@ -2,7 +2,7 @@ import sys
 from collections import defaultdict
 import os
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 import logging
 import random
 from http import HTTPStatus
@@ -699,7 +699,7 @@ class Node(object):
     def _create_result(self, cmd, status, data) -> dict:
         result = {
             "status": status,
-            "timestamp": int(datetime.utcnow().timestamp() * 1000),
+            "timestamp": int(datetime.now(tz=timezone.utc).timestamp() * 1000),
             "cmd": cmd,
             "devtype": self.devtype,
             "namespace": self.nsname,
@@ -839,7 +839,7 @@ class EosNode(Node):
 
         timeout = timeout or self.cmd_timeout
 
-        now = int(datetime.utcnow().timestamp() * 1000)
+        now = int(datetime.now(tz=timezone.utc).timestamp() * 1000)
         auth = aiohttp.BasicAuth(self.username, password=self.password)
         data = {
             "jsonrpc": "2.0",
@@ -946,7 +946,7 @@ class CumulusNode(Node):
                         result.append(
                             {
                                 "status": response.status,
-                                "timestamp": int(datetime.utcnow().timestamp() * 1000),
+                                "timestamp": int(datetime.now(tz=timezone.utc).timestamp() * 1000),
                                 "cmd": cmd,
                                 "devtype": self.devtype,
                                 "namespace": self.nsname,
