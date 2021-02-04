@@ -253,7 +253,7 @@ def _process_transform_set(action, mod_df, changed_fields):
 
 
 def _write_verify_transform(mod_df, table, dbeng, schema, config_file,
-                            changed_fields):
+                            query_str_list, changed_fields):
     """Write and verify that the written data is present
 
     :param mod_df: pd.DataFrame, the modified dataframe to write
@@ -261,6 +261,8 @@ def _write_verify_transform(mod_df, table, dbeng, schema, config_file,
     :param dbeng: SqParquetDB, pointer to DB class to write/read
     :param schema: SchemaForTable, Schema of data to be written
     :param config_file: str, Filename where suzieq config is stored
+    :param query_str_list: List[str], query string if any to apply to data for
+                           verification check
     :param changed_fields: set, list of changed fields to verify
     :returns: Nothing
     :rtype:
@@ -278,9 +280,27 @@ def _write_verify_transform(mod_df, table, dbeng, schema, config_file,
 
     tblobj = get_sqobject(table)
     post_read_df = tblobj(config_file=config_file).get(
-        columns=schema.fields) \
-        .set_index(schema.key_fields()) \
-        .sort_index()
+        columns=schema.fields)
+
+    assert(not post_read_df.empty)
+    # If the data was built up as a series of queries, we have to
+    # apply the queries to verify that we have what we wrote
+    dfconcat = None
+    if query_str_list:
+        for qstr in query_str_list:
+            qdf = post_read_df.query(qstr).reset_index(drop=True)
+            assert(not qdf.empty)
+            if dfconcat is not None:
+                dfconcat = pd.concat([dfconcat, qdf])
+            else:
+                dfconcat = qdf
+
+    if dfconcat is not None:
+        qdf = dfconcat.set_index(schema.key_fields()) \
+                      .sort_index()
+    else:
+        qdf = post_read_df.set_index(schema.key_fields()) \
+                          .sort_index()
 
     mod_df = mod_df.set_index(schema.key_fields()) \
                    .query('~index.duplicated(keep="last")') \
@@ -292,15 +312,15 @@ def _write_verify_transform(mod_df, table, dbeng, schema, config_file,
     # We can't call assert_df_equal directly and so we
     # compare this way. The catch is if we accidentally
     # change some of the unchanged fields
-    assert(mod_df.shape == post_read_df.shape)
+    assert(mod_df.shape == qdf.shape)
 
     assert(not [x for x in mod_df.columns.tolist()
-                if x not in post_read_df.columns.tolist()])
+                if x not in qdf.columns.tolist()])
 
-    assert((mod_df.index == post_read_df.index).all())
+    assert((mod_df.index == qdf.index).all())
 
     assert_df_equal(mod_df[changed_fields].reset_index(),
-                    post_read_df[changed_fields].reset_index(),
+                    qdf[changed_fields].reset_index(),
                     None)
 
 
@@ -325,6 +345,7 @@ def test_transform(input_file):
     schemas = Schema(cfg['schema-directory'])
 
     for ele in to_transform.transform.transform:
+        query_str_list = []
         # Each transformation has a record => write's happen per record
         for record in ele.record:
             changed_fields = set()
@@ -347,6 +368,7 @@ def test_transform(input_file):
                                            .reset_index(drop=True)
                         except Exception as ex:
                             assert(not ex)
+                        query_str_list.append(query_str)
                     else:
                         chg_df = mod_df
 
@@ -362,17 +384,44 @@ def test_transform(input_file):
                 # Write the records now
                 _write_verify_transform(new_df, table, pq_db,
                                         SchemaForTable(table, schemas),
-                                        tmpfile.name,
+                                        tmpfile.name, query_str_list,
                                         changed_fields)
 
-        # Now we coalesce and verify it works
-        from suzieq.sqobjects.tables import TablesObj
+    # Now we coalesce and verify it works
+    from suzieq.sqobjects.tables import TablesObj
 
-        pre_table_df = TablesObj(config_file=tmpfile.name).get()
-        do_coalesce(cfg, None, run_once=True)
-        _verify_coalescing(temp_dir)
+    pre_table_df = TablesObj(config_file=tmpfile.name).get()
+    do_coalesce(cfg, None, run_once=True)
+    _verify_coalescing(temp_dir)
 
-        post_table_df = TablesObj(config_file=tmpfile.name).get()
-        assert_df_equal(pre_table_df, post_table_df, None)
+    post_table_df = TablesObj(config_file=tmpfile.name).get()
+    assert_df_equal(pre_table_df, post_table_df, None)
+
+    # Run additional tests on the coalesced data
+    for ele in to_transform.transform.verify:
+        table = [x for x in dir(ele) if not x.startswith('_')][0]
+        tblobj = get_sqobject(table)
+
+        for tst in getattr(ele, table):
+            start_time = tst.test.get('start-time', '')
+            end_time = tst.test.get('end-time', '')
+
+            columns = tst.test.get('columns', ['default'])
+            df = tblobj(config_file=tmpfile.name, start_time=start_time,
+                        end_time=end_time).get(columns=columns)
+            if not df.empty and 'query' in tst.test:
+                query_str = tst.test['query']
+                df = df.query(query_str).reset_index(drop=True)
+
+            if 'assertempty' in tst.test:
+                assert(df.empty)
+            elif 'shape' in tst.test:
+                shape = tst.test['shape'].split()
+                if shape[0] != '*':
+                    assert(int(shape[0]) == df.shape[0])
+                if shape[1] != '*':
+                    assert(int(shape[1]) == df.shape[1])
+            else:
+                assert(not df.empty)
 
     _coalescer_cleanup(temp_dir, tmpfile)
