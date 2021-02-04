@@ -1,6 +1,6 @@
 import os
 import asyncio
-from datetime import datetime
+from datetime import datetime, timezone
 import time
 import copy
 import logging
@@ -513,7 +513,7 @@ class Service(object):
                         entry.update({"active": False})
                         entry.update(
                             {"timestamp":
-                             int(datetime.utcnow().timestamp() * 1000)}
+                             int(datetime.now(tz=timezone.utc).timestamp() * 1000)}
                         )
                         records.append(entry)
 
@@ -699,7 +699,7 @@ class Service(object):
                      "pollExcdPeriodCount": stats.time_excd_count,
                      "gatherTime": stats.gather_time,
                      "totalTime": stats.total_time,
-                     "timestamp": int(datetime.utcnow().timestamp() * 1000)}]
+                     "timestamp": int(datetime.now(tz=timezone.utc).timestamp() * 1000)}]
 
             if write_poller_stat:
                 self.writer_queue.put_nowait(
