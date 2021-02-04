@@ -2,52 +2,11 @@
 
 import sys
 import os
-import time
 import argparse
-from typing import List
-from dateparser import parse
-from datetime import datetime
 import fcntl
 
 from suzieq.utils import load_sq_config, Schema, init_logger
-from suzieq.db import get_sqdb_engine
-
-
-def do_coalesce(cfg: dict, tables: List[str], period: str,
-                run_once: bool, no_sqpoller: bool) -> None:
-    """The main coalescer routine.
-    It calls the DB-specific coalescer periodically
-
-    :param cfg: dict, the SUzieq config dictionary
-    :param tables: List[str], the list of tables to coalesce
-    :param period: str, the interval at which the coalescer runs
-    :param run_once: bool, If true, run once and exit
-    :param no_sqpoller: bool, ignore sqpoller
-    :returns: Nothing
-    :rtype: None
-
-    """
-    logfile = cfg.get('coalescer', {}).get('logfile',
-                                           '/tmp/sq-coalescer.log')
-    loglevel = cfg.get('coalescer', {}).get('logging-level', 'WARNING')
-    logger = init_logger('suzieq.coalescer', logfile, loglevel, False)
-
-    if not run_once:
-        now = datetime.now()
-        nextrun = parse(period, settings={'PREFER_DATES_FROM': 'future'})
-        sleep_time = (nextrun-now).seconds
-        logger.info(f'Got sleep time of {sleep_time} secs')
-
-    dbeng = get_sqdb_engine(cfg, None, 'parquet', logger)
-    if not dbeng:
-        logger.error('Unable to get DB object for DB parquet')
-        sys.exit(1)
-
-    while True:
-        dbeng.coalesce(tables, period, no_sqpoller)
-        if run_once:
-            break
-        time.sleep(sleep_time)
+from suzieq.db import do_coalesce
 
 
 def ensure_single_instance() -> int:
@@ -120,16 +79,23 @@ if __name__ == '__main__':
         help=argparse.SUPPRESS
     )
 
-    # Ensure we're the only compacter
-    pid_other = ensure_single_instance()
-    if pid_other:
-        print(f'ERROR: Another coalescer process with PID {pid_other} present')
-        sys.exit(1)
     userargs = parser.parse_args()
 
     cfg = load_sq_config(config_file=userargs.config)
     if not cfg:
         print(f'Invalid Suzieq config file {userargs.config}')
+        sys.exit(1)
+
+    logfile = cfg.get('coalescer', {}).get('logfile',
+                                           '/tmp/sq-coalescer.log')
+    loglevel = cfg.get('coalescer', {}).get('logging-level', 'DEBUG')
+    logger = init_logger('suzieq.coalescer', logfile, loglevel, False)
+
+    # Ensure we're the only compacter
+    pid_other = ensure_single_instance()
+    if pid_other:
+        print(f'ERROR: Another coalescer process with PID {pid_other} present')
+        logger.error(f'Another coalescer process with PID {pid_other} present')
         sys.exit(1)
 
     if userargs.run_once:
@@ -152,4 +118,5 @@ if __name__ == '__main__':
         tables = []
 
     do_coalesce(cfg, tables, timestr, userargs.run_once,
-                userargs.no_sqpoller or False)
+                userargs.no_sqpoller or False, logger)
+    sys.exit(0)
