@@ -15,3 +15,7 @@ class PathLoopError(Exception):
 
 class DBReadError(Exception):
     pass
+
+
+class DBNotFoundError(Exception):
+    pass
