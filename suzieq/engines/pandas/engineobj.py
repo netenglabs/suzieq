@@ -90,9 +90,9 @@ class SqPandasEngine(SqEngineObj):
 
         if self.iobj.start_time:
             try:
-                start_time = datetime.utcfromtimestamp(dateparser.parse(
-                    self.iobj.start_time.replace('last night', 'yesterday'))
-                    .timestamp()).timestamp()*1000
+                start_time = dateparser.parse(
+                    self.iobj.start_time.replace('last night', 'yesterday')) \
+                    .timestamp()*1000
             except Exception as e:
                 print(f"ERROR: invalid time {self.iobj.start_time}: {e}")
                 return pd.DataFrame()
@@ -106,9 +106,9 @@ class SqPandasEngine(SqEngineObj):
 
         if self.iobj.end_time:
             try:
-                end_time = datetime.utcfromtimestamp(dateparser.parse(
-                    self.iobj.end_time.replace('last night', 'yesterday'))
-                    .timestamp()).timestamp()*1000
+                end_time = dateparser.parse(
+                    self.iobj.end_time.replace('last night', 'yesterday')) \
+                    .timestamp()*1000
             except Exception as e:
                 print(f"ERROR: invalid time {self.iobj.end_time}: {e}")
                 return pd.DataFrame()
