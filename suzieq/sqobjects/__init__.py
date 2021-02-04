@@ -31,6 +31,6 @@ def get_sqobject(table_name: str):
         return None
 
 
-__all__ = _get_tables() + [get_sqobject]
+__all__ = _get_tables() + ['get_sqobject']
 
 sqobjs_all = __all__
