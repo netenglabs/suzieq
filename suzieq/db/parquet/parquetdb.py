@@ -9,7 +9,7 @@ from contextlib import suppress
 
 import pandas as pd
 import numpy as np
-import pyarrow.parquet as pa
+import pyarrow as pa
 import pyarrow.parquet as pq
 
 from suzieq.db.base_db import SqDB
@@ -112,7 +112,7 @@ class SqParquetDB(SqDB):
 
             # Now find the exact set of files we need to go over
             cp_dataset = self._get_cp_dataset(table_name, need_sqvers, sqvers,
-                                              start, end)
+                                              view, start, end)
             if cp_dataset:
                 datasets.append(cp_dataset)
 
@@ -153,7 +153,8 @@ class SqParquetDB(SqDB):
             # entries with same timestamp. Remove them
             dupts_keys = key_fields + ['timestamp']
             final_df = final_df.set_index(dupts_keys) \
-                               .query('~index.duplicated(keep="last")')
+                               .query('~index.duplicated(keep="last")') \
+                               .reset_index()
             if (not final_df.empty and (view == 'latest') and
                     all(x in final_df.columns for x in key_fields)):
                 final_df = final_df.set_index(key_fields) \
@@ -193,12 +194,12 @@ class SqParquetDB(SqDB):
         else:
             partition_cols = ['sqvers', 'namespace', 'hostname']
         if data_format == "pandas":
-            if (isinstance(data) == pd.DataFrame):
+            if isinstance(data, pd.DataFrame):
                 table = pa.Table.from_pandas(data, schema=schema,
                                              preserve_index=False)
-            elif (isinstance(data) == pa.Table):
+            elif isinstance(data, pa.Table):
                 table = data
-            elif (isinstance(data) == dict):
+            elif isinstance(data, dict):
                 df = pd.DataFrame.from_dict(data["records"])
                 table = pa.Table.from_pandas(df, schema=schema,
                                              preserve_index=False)
@@ -323,7 +324,7 @@ class SqParquetDB(SqDB):
         return
 
     def _get_cp_dataset(self, table_name: str, need_sqvers: bool,
-                        sqvers: str, start_time: float,
+                        sqvers: str, view: str, start_time: float,
                         end_time: float) -> ds.dataset:
         """Get the list of files to read in
 
@@ -335,6 +336,7 @@ class SqParquetDB(SqDB):
         :param need_sqvers: bool, True if the user has requested that we return the
                             sqvers
         :param sqvers: str, if we're looking only for files of a specific version
+        :param view: str, whether to return the latest only OR all
         :param start_time: float, the starting time window for which data is sought
         : param end_time: float, the ending time window for which data is sought
         :returns: pyarrow dataset for the files to be read
@@ -347,7 +349,7 @@ class SqParquetDB(SqDB):
 
         folder = self._get_table_directory(table_name, True)
 
-        if start_time and end_time:
+        if start_time and end_time or (view == "all"):
             # Enforcing the logic we have: if both start_time & end_time
             # are given, return all files since the model is that the user is
             # expecting to see all changes in the time window. Otherwise, the user
