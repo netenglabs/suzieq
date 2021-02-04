@@ -1,0 +1,20 @@
+data-directory: tests/data/multidc/parquet-out/
+transform:
+  - record:
+      - interfaces:
+          - match:
+              all
+            set:
+              timestamp: 30 Dec 2020, 11:01 am UTC
+          - match: namespace=="dual-evpn" and hostname=="leaf01" and ifname=="swp1"
+            set:
+              state: down
+              timestamp: +30min
+
+              
+
+
+
+
+            
+            
