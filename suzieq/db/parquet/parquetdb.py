@@ -383,20 +383,42 @@ class SqParquetDB(SqDB):
                 files = []
                 latest_filedict = {}
                 prev_time = 0
+                prev_namespace = ''
+                file_in_this_ns = False
+                prev_file = None
                 for file in sorted(dataset.files):
+                    namespace = os.path.dirname(file).split('namespace=')[1] \
+                                                     .split('/')[0]
+                    if (prev_namespace and (namespace != prev_namespace) and
+                            not file_in_this_ns):
+                        if ((start_time and thistime[1] >= start_time) or
+                                (end_time and thistime[1] >= end_time)):
+                            files.append(prev_file)
+                            prev_namespace = ''
                     thistime = os.path.basename(file).split('.')[0] \
                                                      .split('-')[-2:]
                     thistime = [int(x)*1000 for x in thistime]  # time in ms
                     if not start_time or (thistime[0] >= start_time):
                         if not end_time:
                             files.append(file)
+                            file_in_this_ns = True
                         elif thistime[0] < end_time:
                             files.append(file)
+                            file_in_this_ns = True
                         elif prev_time < end_time < thistime[0]:
                             key = file.split('namespace=')[1].split('/')[0]
                             if key not in latest_filedict:
                                 latest_filedict[key] = file
+                                file_in_this_ns = True
+
                     prev_time = thistime[0]
+                    prev_file = file
+                    prev_namespace = namespace
+                if not file_in_this_ns:
+                    if ((start_time and thistime[1] >= start_time) or
+                            (end_time and thistime[1] >= end_time)):
+                        files.append(file)
+
                 if latest_filedict:
                     filelist.extend(list(latest_filedict.values()))
             if not all_files and files:
