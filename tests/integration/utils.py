@@ -1,4 +1,29 @@
 import pandas as pd
+import yaml
+
+
+class Dict2Class(object):
+    def __init__(self, dvar, def_topvar):
+        if not isinstance(dvar, dict) or not dvar:
+            setattr(self, def_topvar, None)
+            return
+
+        for key in dvar:
+            if isinstance(dvar[key], list):
+                nested_dclass = []
+                for ele in dvar[key]:
+                    newele = Dict2Class(ele, def_topvar=ele)
+                    nested_dclass.append(newele)
+                    setattr(self, key.replace('-', '_'), nested_dclass)
+            else:
+                setattr(self, key.replace('-', '_'), dvar[key])
+
+
+class Yaml2Class(object):
+    def __init__(self, yaml_file, def_topvar='transform'):
+        with open(yaml_file, 'r') as f:
+            dvar = yaml.safe_load(f.read())
+            self.transform = Dict2Class(dvar, def_topvar)
 
 
 def assert_df_equal(expected_df, got_df, ignore_cols) -> None:
