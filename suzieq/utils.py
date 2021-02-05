@@ -10,6 +10,7 @@ from dateutil.relativedelta import relativedelta
 from datetime import datetime
 from tzlocal import get_localzone
 from pytz import all_timezones
+import fcntl
 
 import pandas as pd
 import pyarrow as pa
@@ -633,3 +634,30 @@ def expand_eos_ifname(ifname: str) -> str:
     elif ifname.startswith('Vx') and 'Vxlan' not in ifname:
         return ifname.replace('Vx', 'Vxlan')
     return ifname
+
+
+def ensure_single_instance(filename: str, block: bool = False) -> int:
+    """Check there's only a single active instance of a process using lockfile
+
+    It optionally can block waiting for the resource the become available.
+
+    Use a pid file with advisory file locking to assure this.
+
+    :returns: fd if lock was successful or 0
+    :rtype: int
+
+    """
+    fd = os.open(filename, os.O_RDWR | os.O_CREAT, 0o600)
+    if fd:
+        try:
+            if block:
+                fcntl.flock(fd, fcntl.LOCK_EX)
+            else:
+                fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            os.truncate(fd, 0)
+            os.write(fd, bytes(str(os.getpid()), 'utf-8'))
+        except OSError:
+            os.close(fd)
+            fd = 0
+
+    return fd

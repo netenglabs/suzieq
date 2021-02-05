@@ -5,37 +5,9 @@ import os
 import argparse
 import fcntl
 
-from suzieq.utils import load_sq_config, Schema, init_logger
+from suzieq.utils import (load_sq_config, Schema, init_logger,
+                          ensure_single_instance)
 from suzieq.db import do_coalesce
-
-
-def ensure_single_instance() -> int:
-    """Ensure there's only a single instance of a coalescer running
-
-    Use a pid file with advisory file locking to assure this.
-
-    :returns: 0 if True or pid of the other instance
-    :rtype: int
-
-    """
-    fd = os.open('/tmp/sq-coalescer.pid', os.O_RDWR | os.O_CREAT, 0o600)
-    pid = 0
-    if fd:
-        try:
-            fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
-            os.truncate(fd, 0)
-            os.write(fd, bytes(str(os.getpid()), 'utf-8'))
-        except IOError:
-            # Looks like another process is running. Get its pid
-            pid = os.read(fd, 12)
-
-    if pid:
-        try:
-            pid = int(pid)
-        except ValueError:
-            pass
-
-    return pid
 
 
 if __name__ == '__main__':
@@ -92,10 +64,10 @@ if __name__ == '__main__':
     logger = init_logger('suzieq.coalescer', logfile, loglevel, False)
 
     # Ensure we're the only compacter
-    pid_other = ensure_single_instance()
-    if pid_other:
-        print(f'ERROR: Another coalescer process with PID {pid_other} present')
-        logger.error(f'Another coalescer process with PID {pid_other} present')
+    fd = ensure_single_instance('/tmp/sq-coalescer.pid')
+    if not fd:
+        print(f'ERROR: Another coalescer process present')
+        logger.error(f'Another coalescer process present')
         sys.exit(1)
 
     if userargs.run_once:
@@ -119,4 +91,11 @@ if __name__ == '__main__':
 
     do_coalesce(cfg, tables, timestr, userargs.run_once,
                 userargs.no_sqpoller or False, logger)
+    os.truncate(fd, 0)
+    try:
+        fcntl.flock(fd, fcntl.LOCK_UN)
+        os.close(fd)
+    except OSError:
+        pass
+
     sys.exit(0)
