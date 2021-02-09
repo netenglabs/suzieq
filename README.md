@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/netenglabs/suzieq.svg?branch=master)](https://travis-ci.com/netenglabs/suzieq)
+![integration-tests](https://github.com/netenglabs/suzieq/workflows/integration-tests/badge.svg)
 
 # Suzieq -- Network Understanding
 
