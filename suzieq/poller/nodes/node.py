@@ -677,7 +677,8 @@ class Node(object):
                 if self.sigend:
                     self._terminate()
                     return
-                self.logger.error(f"ERROR: Unable to connect, {str(e)}")
+                self.logger.error(f"ERROR: Unable to connect to {self.address},"
+                                  f"{str(e)}")
                 self.last_exception = e
                 self._conn = None
                 self._tunnel = None
