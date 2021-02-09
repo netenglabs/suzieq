@@ -1,7 +1,4 @@
-from datetime import datetime
-import time
 import logging
-from dateparser import parse
 from typing import List
 from importlib import import_module
 import inspect
@@ -52,23 +49,21 @@ def get_sqdb_engine(cfg: dict, table_name: str, dbname: str,
 
 
 def do_coalesce(cfg: dict, tables: List[str], period: str = '1h',
-                run_once: bool = False, no_sqpoller: bool = False,
-                logger: logging.Logger = None) -> None:
+                logger: logging.Logger = None,
+                no_sqpoller: bool = False) -> None:
     """The main coalescer routine, can run once or periodically.
 
-    It calls the DB-specific coalescer. If invoked with a period,
-    it runs forever. If you want it to run just once, set run_once
-    to True. The period is necessary to pass to the DB coalescer even
-    in case of run_once. By default the period is '1h'.
+    It calls the DB-specific coalescer. The period is necessary to pass to the
+    DB coalescer even in case of run_once. By default the period is '1h'.
 
     :param cfg: dict, the SUzieq config dictionary
     :param tables: List[str], the list of tables to coalesce
     :param period: str, the string of how periodically the poller runs,
                    Examples are '1h', '1d' etc.
     :param run_once: bool, If true, run once and exit
-    :param no_sqpoller: bool, ignore sqpoller
     :param logger, logging.Logger, logger to use
-    :returns: Nothing
+    :param no_sqpoller: bool, ignore sqpoller
+    :returns: dictionary of stats about coalescing
     :rtype: None
 
     """
@@ -76,19 +71,9 @@ def do_coalesce(cfg: dict, tables: List[str], period: str = '1h',
     if not logger:
         logger = logging.getLogger()
 
-    if not run_once:
-        now = datetime.now()
-        nextrun = parse(period, settings={'PREFER_DATES_FROM': 'future'})
-        sleep_time = (nextrun-now).seconds
-        logger.info(f'Got sleep time of {sleep_time} secs')
-
     dbeng = get_sqdb_engine(cfg, None, 'parquet', logger)
     if not dbeng:
         logger.error('Unable to get DB object for DB parquet')
         raise DBNotFoundError
 
-    while True:
-        dbeng.coalesce(tables, period, no_sqpoller)
-        if run_once:
-            break
-        time.sleep(sleep_time)
+    return dbeng.coalesce(tables, period, no_sqpoller)

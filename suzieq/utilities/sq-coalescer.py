@@ -1,13 +1,73 @@
 #!/usr/bin/env python
 
+from typing import List
 import sys
 import os
 import argparse
 import fcntl
+from logging import Logger
+from datetime import datetime
+from time import sleep
+from dataclasses import asdict
+from dateparser import parse
+
+import pandas as pd
 
 from suzieq.utils import (load_sq_config, Schema, init_logger,
-                          ensure_single_instance)
-from suzieq.db import do_coalesce
+                          SchemaForTable, ensure_single_instance)
+from suzieq.db import do_coalesce, get_sqdb_engine
+from suzieq.version import SUZIEQ_VERSION
+
+
+def run_coalescer(cfg: dict, tables: List[str], period: str, run_once: bool,
+                  logger: Logger, no_sqpoller: bool = False) -> None:
+    """Run the coalescer.
+
+    Runs it once and returns or periodically depending on the
+    value of run_once. It also writes out the coalescer records
+    as a parquet file.
+
+    :param cfg: dict, the Suzieq config file read in
+    :param tables: List[str], list of table names to coalesce
+    :param period: str, the string of how periodically the poller runs,
+                   Examples are '1h', '1d' etc.
+    :param run_once: bool, True if you want the poller to run just once
+    :param logger: logging.Logger, the logger to write logs to
+    :param no_sqpoller: bool, write records even when there's no sqpoller rec
+    :returns: Nothing
+    :rtype: none
+
+    """
+
+    try:
+        schemas = Schema(cfg['schema-directory'])
+    except Exception as ex:
+        logger.error(f'Aborting. Unable to load schema: {str(ex)}')
+        print(f'ERROR: Aborting. Unable to load schema: {str(ex)}')
+        sys.exit(1)
+
+    coalescer_schema = SchemaForTable('sqCoalescer', schemas)
+    pqdb = get_sqdb_engine(cfg, 'sqCoalescer', None, logger)
+    if not run_once:
+        now = datetime.now()
+        nextrun = parse(period, settings={'PREFER_DATES_FROM': 'future'})
+        sleep_time = (nextrun-now).seconds
+        logger.info(f'Got sleep time of {sleep_time} secs')
+
+    while True:
+        stats = do_coalesce(cfg, tables, period, logger, no_sqpoller)
+        # Write the stats
+        df = pd.DataFrame([asdict(x) for x in stats])
+        df['sqvers'] = coalescer_schema.version
+        df['version'] = SUZIEQ_VERSION
+        df['active'] = True
+        df['namespace'] = ''
+        pqdb.write('sqCoalescer', 'pandas', df, True,
+                   coalescer_schema.get_arrow_schema(), None)
+
+        if run_once:
+            break
+        sleep(sleep_time)
 
 
 if __name__ == '__main__':
@@ -89,8 +149,8 @@ if __name__ == '__main__':
     else:
         tables = []
 
-    do_coalesce(cfg, tables, timestr, userargs.run_once,
-                userargs.no_sqpoller or False, logger)
+    run_coalescer(cfg, tables, timestr, userargs.run_once,
+                  logger, userargs.no_sqpoller or False)
     os.truncate(fd, 0)
     try:
         fcntl.flock(fd, fcntl.LOCK_UN)

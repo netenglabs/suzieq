@@ -1,10 +1,11 @@
 import os
+from time import time
 from typing import List
 import logging
 from pathlib import Path
 import pyarrow.dataset as ds
 from itertools import zip_longest
-from datetime import timedelta
+from datetime import datetime, timedelta, timezone
 from contextlib import suppress
 
 import pandas as pd
@@ -12,7 +13,7 @@ import numpy as np
 import pyarrow as pa
 import pyarrow.parquet as pq
 
-from suzieq.db.base_db import SqDB
+from suzieq.db.base_db import SqDB, SqCoalesceStats
 from suzieq.utils import Schema, SchemaForTable
 
 from .pq_coalesce import SqCoalesceState, coalesce_resource_table
@@ -228,7 +229,8 @@ class SqParquetDB(SqDB):
         :param period: str, coalescing period, needed for various internal stuff
         :param ign_sqpoller: True if its OK to ignore the absence of sqpoller to
                              coalesce
-        :returns: Nothing
+        :returns: coalesce statistics list, one per table
+        :rtype: SqCoalesceStats
         """
 
         infolder = self.cfg['data-directory']
@@ -289,7 +291,7 @@ class SqParquetDB(SqDB):
             tables = [x for x in schemas.tables()
                       if schemas.type_for_table(x) != "derivedRecord"]
         if 'sqPoller' not in tables and not ign_sqpoller:
-            # This is an error. sqPoller is how we keep track of discontinuities
+            # This is an error. sqPoller keeps track of discontinuities
             # among other things.
             self.logger.error(
                 'No sqPoller data, cannot compute discontinuities')
@@ -301,11 +303,13 @@ class SqParquetDB(SqDB):
             if not ign_sqpoller:
                 tables.insert(0, 'sqPoller')
 
-        # We've forced the sqPoller to be always the first table to be coalesced
+        # We've forced the sqPoller to be always the first table to coalesce
+        stats = []
         for entry in tables:
             table_outfolder = f'{outfolder}/{entry}'
             table_infolder = f'{infolder}//{entry}'
             table_archive_folder = f'{archive_folder}/{entry}'
+            state.current_df = pd.DataFrame()
             if not os.path.isdir(table_infolder):
                 self.logger.info(
                     f'No input records to coalesce for {entry}')
@@ -314,14 +318,21 @@ class SqParquetDB(SqDB):
                 os.makedirs(table_outfolder)
             if not os.path.isdir(table_archive_folder):
                 os.makedirs(table_archive_folder, exist_ok=True)
+            start = time()
             coalesce_resource_table(table_infolder, table_outfolder,
                                     table_archive_folder, entry,
                                     SchemaForTable(entry, schemas, None),
                                     state)
+            end = time()
             self.logger.info(
                 f'coalesced {state.wrfile_count} files/{state.wrrec_count} '
                 f'of {entry}')
-        return
+            stats.append(SqCoalesceStats(entry, period, int(end-start),
+                                         state.wrfile_count,
+                                         state.wrrec_count,
+                                         int(datetime.now(tz=timezone.utc)
+                                             .timestamp() * 1000)))
+        return stats
 
     def _get_cp_dataset(self, table_name: str, need_sqvers: bool,
                         sqvers: str, view: str, start_time: float,
@@ -333,12 +344,12 @@ class SqParquetDB(SqDB):
         specified
 
         :param table_name: str, Table for which coalesced info is requested
-        :param need_sqvers: bool, True if the user has requested that we return the
-                            sqvers
-        :param sqvers: str, if we're looking only for files of a specific version
+        :param need_sqvers: bool, True if the user has requested that we
+                            return the sqvers
+        :param sqvers: str, if we're looking only for files of a specific vers
         :param view: str, whether to return the latest only OR all
-        :param start_time: float, the starting time window for which data is sought
-        : param end_time: float, the ending time window for which data is sought
+        :param start_time: float, the starting time window of data needed
+        : param end_time: float, the ending time window of data needed
         :returns: pyarrow dataset for the files to be read
         :rtype: pyarrow.dataset.dataset
 
@@ -388,7 +399,7 @@ class SqParquetDB(SqDB):
                 prev_file = None
                 for file in sorted(dataset.files):
                     namespace = os.path.dirname(file).split('namespace=')[1] \
-                                                     .split('/')[0]
+                        .split('/')[0]
                     if (prev_namespace and (namespace != prev_namespace) and
                             not file_in_this_ns):
                         if ((start_time and thistime[1] >= start_time) or
@@ -396,7 +407,7 @@ class SqParquetDB(SqDB):
                             files.append(prev_file)
                             prev_namespace = ''
                     thistime = os.path.basename(file).split('.')[0] \
-                                                     .split('-')[-2:]
+                        .split('-')[-2:]
                     thistime = [int(x)*1000 for x in thistime]  # time in ms
                     if not start_time or (thistime[0] >= start_time):
                         if not end_time:
@@ -555,8 +566,8 @@ class SqParquetDB(SqDB):
         """
         if coalesced:
             dir = self.cfg.get('coalescer', {})\
-                          .get('coalesce-directory',
-                               f'{self.cfg.get("data-directory")}/coalesced')
+                .get('coalesce-directory',
+                     f'{self.cfg.get("data-directory")}/coalesced')
         else:
             dir = f'{self.cfg.get("data-directory")}'
 

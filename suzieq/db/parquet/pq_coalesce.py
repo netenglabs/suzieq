@@ -7,6 +7,7 @@ import logging
 from typing import List
 import pyarrow.parquet as pq
 import tarfile
+from itertools import repeat
 
 from suzieq.utils import SchemaForTable
 from suzieq.utils import humanize_timestamp
@@ -122,8 +123,6 @@ def write_files(filelist: List[str], in_basedir: str,
         partition_filename_cb=state.pq_file_name,
         row_group_size=100000,
     )
-    if filelist:
-        state.wrrec_count += wrtbl.num_rows
 
     if state.type == "record" and filelist:
         # Now replace the old dataframe with this new set for "record" types
@@ -182,7 +181,9 @@ def get_last_update_df(outfolder: str, state: SqCoalesceState) -> pd.DataFrame:
 
     """
     dataset = ds.dataset(outfolder, partitioning='hive', format='parquet')
-    files = sorted([x for x in dataset.files if x.startswith(state.prefix)])
+    files = sorted([x for x, y in zip(dataset.files, repeat(state.prefix))
+                    if os.path.basename(x).startswith(y)])
+
     if not files:
         return pd.DataFrame()
     latest_filedict = {x.split('namespace=')[1].split('/')[0]: x
@@ -194,9 +195,8 @@ def get_last_update_df(outfolder: str, state: SqCoalesceState) -> pd.DataFrame:
         .to_table() \
         .to_pandas(self_destruct=True)
     if not current_df.empty:
-        current_df.timestamp = humanize_timestamp(current_df.timestamp)
-        current_df.sort_values(by=['timetamp']) \
-                  .set_index(state.keys)
+        current_df = current_df.sort_values(by=['timestamp']) \
+                               .set_index(state.keys)
 
     return current_df
 
@@ -252,7 +252,8 @@ def coalesce_resource_table(infolder: str, outfolder: str, archive_folder: str,
 
     if schema.type == "record":
         state.keys = schema.key_fields()
-        state.current_df = get_last_update_df(outfolder, state)
+        if state.current_df.empty:
+            state.current_df = get_last_update_df(outfolder, state)
         state.type = schema.type
         state.schema = schema.get_arrow_schema()
 
@@ -260,17 +261,19 @@ def coalesce_resource_table(infolder: str, outfolder: str, archive_folder: str,
     dataset = ds.dataset(infolder, partitioning='hive', format='parquet',
                          ignore_prefixes=state.ign_pfx)
 
-    state.logger.info(f'Files to coalesce: {len(dataset.files)}')
+    state.logger.info(f'Examining {len(dataset.files)} for coalescing')
     fdf = get_file_timestamps(dataset.files)
-    if fdf.empty and table == 'sqPoller':
-        return
+    if fdf.empty:
+        if (table == 'sqPoller') or (not state.poller_periods):
+            return
 
     assert(len(dataset.files) == fdf.shape[0])
+    polled_periods = sorted(state.poller_periods)
     if fdf.empty:
-        state.logger.info(f'No data to write for {table}')
-        return
-
-    start = fdf.timestamp.iloc[0]
+        state.logger.info(f'No updates for {table} to coalesce')
+        start = polled_periods[0]
+    else:
+        start = fdf.timestamp.iloc[0]
     utcnow = datetime.now(timezone.utc)
 
     # We now need to determine if we're coalesceing a lot of data, at the start
@@ -280,18 +283,30 @@ def coalesce_resource_table(infolder: str, outfolder: str, archive_folder: str,
             'ERROR: Something is off, now is earlier than dates on files')
         return
 
-    # NOTE: You need the parentheses around the date comparison for some reason
-    if start + state.period > utcnow:
-        return
-
     # We write data in fixed size 1 hour time blocks. Data from 10-11 is
     # written out as one block, data from 11-12 as another and so on.
     # Specifically, we write out 11:00:00 to 11:59:59 in the block
     block_start = compute_block_start(start)
     block_end = block_start + state.period
 
+    # NOTE: You need the parentheses around the date comparison for some reason
+    if (block_end > utcnow):
+        return
+
     readblock = []
     wrfile_count = 0
+
+    # We may start coalescing when nothing has changed for some initial period.
+    # We have to write out records for that period.
+    if state.type == "record":
+        for interval in polled_periods:
+            if not fdf.empty and (block_end < interval):
+                break
+            pre_block_start = compute_block_start(interval)
+            pre_block_end = pre_block_start + state.period
+            write_files(readblock, infolder, outfolder, partition_cols,
+                        state, pre_block_start, pre_block_end)
+
     for row in fdf.itertuples():
         if block_start <= row.timestamp < block_end:
             readblock.append(row.file)
@@ -315,16 +330,17 @@ def coalesce_resource_table(infolder: str, outfolder: str, archive_folder: str,
         # We have to find the timeslot where this record fits
         block_start = block_end
         block_end = block_start + state.period
+        readblock = []
         if state.type != "record":
             # We can jump directly to the timestamp corresonding to this
             # row's timestamp
-            if row.timestamp > block_end:
-                block_start = compute_block_start(row.timestamp)
-                block_end = block_start + state.period
-                readblock = [row.file]
-                continue
+            block_start = compute_block_start(row.timestamp)
+            block_end = block_start + state.period
+            if (row.timestamp > block_end) or (block_end > utcnow):
+                break
+            readblock = [row.file]
+            continue
 
-        readblock = []
         while row.timestamp > block_end:
             if block_start in state.poller_periods:
                 write_files(readblock, infolder, outfolder, partition_cols,
@@ -333,12 +349,13 @@ def coalesce_resource_table(infolder: str, outfolder: str, archive_folder: str,
                 # records since these are duplicates
             block_start = block_end
             block_end = block_start + state.period
-        readblock = [row.file]
         if block_end > utcnow:
             break
+        readblock = [row.file]
 
     # The last batch that ended before the block end
-    if readblock:
+    if readblock or (fdf.empty and (state.type == "record") and
+                     block_start in state.poller_periods):
         write_files(readblock, infolder, outfolder, partition_cols, state,
                     block_start, block_end)
         wrfile_count += len(readblock)
@@ -346,6 +363,5 @@ def coalesce_resource_table(infolder: str, outfolder: str, archive_folder: str,
             state.poller_periods.add(block_start)
         archive_coalesced_files(readblock, archive_folder, state, dodel)
 
-    assert(wrfile_count == len(dataset.files))
     state.wrfile_count = wrfile_count
     return

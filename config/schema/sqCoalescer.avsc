@@ -1,0 +1,65 @@
+{
+    "namespace": "suzieq",
+    "name": "sqCoalescer",
+    "type": "counter",
+    "fields": [
+        {
+            "name": "sqvers",
+            "type": "string",
+            "partition": 0,
+            "default": "1.0"
+        },
+        {
+            "name": "namespace",
+            "type": "string",
+            "key": 0,
+            "display": 0,
+            "partition": 1
+        },
+        {
+            "name": "service",
+            "type": "string",
+            "key": 2,
+            "display": 2,
+            "description": "name of table"
+        },
+        {
+            "name": "period",
+            "type": "string",
+            "key": 3,
+            "display": 3,
+            "description": "coelescer period as user specified string"
+        },
+        {
+            "name": "execTime",
+            "type": "long",
+            "display": 4,
+            "description": "time to coalesce table in seconds"
+        },
+        {
+            "name": "fileCount",
+            "type": "long",
+            "display": 5,
+            "description": "number of files coalesced"
+        },
+        {
+            "name": "recCount",
+            "type": "long",
+            "display": 6,
+            "description": "number of records coalesced"
+        },
+        {
+            "name": "timestamp",
+            "type": "timestamp"
+        },
+        {
+            "name": "version",
+            "type": "string"
+        },
+        {
+            "name": "active",
+            "type": "boolean"
+        }
+    ],
+    "recordType": "counters"
+}
