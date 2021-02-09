@@ -3,6 +3,7 @@
 import sys
 import shlex
 import yaml
+from os.path import exists
 
 
 def process_ansible_inventory(filename, namespace='default'):
@@ -50,6 +51,8 @@ def process_ansible_inventory(filename, namespace='default'):
 
             if elem.startswith('ansible_ssh_private_key_file'):
                 k, v = elem.split('=')
+                if not exists(v.strip()):
+                    continue
                 if hostline:
                     hostline += ' keyfile={}'.format(v.strip())
                 else:
@@ -124,9 +127,12 @@ def convert_ansible_inventory(filename: str, namespace: str = 'default'):
                f':{port}')
         keyfile = entry.get('ansible_ssh_private_key_file', '')
         if keyfile:
-            hostline = f'    - url: {url} keyfile={keyfile} {addnl_info}'
+            if exists(keyfile.strip()):
+                hostline = f'    - url: {url} keyfile={keyfile} {addnl_info}'
+            else:
+                hostline = f'    - url: {url} {addnl_info}'
         else:
-            hostline = f'    -  {url} {addnl_info}'
+            hostline = f'    - url: {url} {addnl_info}'
 
         out_hosts.append(hostline)
 
