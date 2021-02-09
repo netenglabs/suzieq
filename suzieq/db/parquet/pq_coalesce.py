@@ -97,15 +97,15 @@ def write_files(filelist: List[str], in_basedir: str,
                 this_df = this_df.set_index(state.keys)
                 sett = set(this_df.index)
                 setc = set(state.current_df.index)
-                missing_df = state.current_df.loc[setc.difference(sett)]
-                if not missing_df.empty:
-                    this_df = pd.concat(
-                        [this_df.reset_index(), missing_df.reset_index()])
+                missing_set = setc.difference(sett)
+                if missing_set:
+                    missing_df = state.current_df.loc[missing_set]
+                    this_df = pd.concat([this_df.reset_index(),
+                                         missing_df.reset_index()])
+                    wrtbl = pa.Table.from_pandas(this_df, schema=state.schema,
+                                                 preserve_index=False)
                 else:
                     this_df = this_df.reset_index()
-
-            wrtbl = pa.Table.from_pandas(this_df, schema=state.schema,
-                                         preserve_index=False)
     elif not state.current_df.empty:
         assert(state.type == "record")
         wrtbl = pa.Table.from_pandas(state.current_df.reset_index(),
@@ -261,7 +261,8 @@ def coalesce_resource_table(infolder: str, outfolder: str, archive_folder: str,
     dataset = ds.dataset(infolder, partitioning='hive', format='parquet',
                          ignore_prefixes=state.ign_pfx)
 
-    state.logger.info(f'Examining {len(dataset.files)} for coalescing')
+    state.logger.info(f'Examining {len(dataset.files)} {table} files '
+                      f'for coalescing')
     fdf = get_file_timestamps(dataset.files)
     if fdf.empty:
         if (table == 'sqPoller') or (not state.poller_periods):
