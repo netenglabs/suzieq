@@ -1,6 +1,7 @@
 import logging
 from abc import ABC, abstractmethod
 from typing import List
+from dataclasses import dataclass
 
 import pandas as pd
 
@@ -58,3 +59,13 @@ class SqDB(ABC):
 
         """
         raise NotImplementedError
+
+
+@dataclass
+class SqCoalesceStats:
+    service: str
+    period: str                 # Coalescing period
+    execTime: float            # execution time in secs
+    fileCount: int          # number of files written
+    recCount: int           # number of written records
+    timestamp: int              # when this record was created
