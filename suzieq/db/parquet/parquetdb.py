@@ -326,7 +326,7 @@ class SqParquetDB(SqDB):
             end = time()
             self.logger.info(
                 f'coalesced {state.wrfile_count} files/{state.wrrec_count} '
-                f'of {entry}')
+                f'records of {entry}')
             stats.append(SqCoalesceStats(entry, period, int(end-start),
                                          state.wrfile_count,
                                          state.wrrec_count,
