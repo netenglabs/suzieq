@@ -52,15 +52,14 @@ def archive_coalesced_files(filelist: List[str], outfolder: str,
     :param dodel: bool, True if the coalesced files must be deleted
     :returns: Nothing
     """
-    if filelist:
+    if filelist and outfolder:
         with tarfile.open(f'{outfolder}/_archive-{state.prefix}-'
                           f'{state.block_start}-{state.block_end}.tar.bz2',
                           'w:bz2') as f:
             for file in filelist:
                 f.add(file)
     if dodel:
-        for file in filelist:
-            os.remove(file)
+        [os.remove(x) for x in filelist]
 
 
 def write_files(filelist: List[str], in_basedir: str,
