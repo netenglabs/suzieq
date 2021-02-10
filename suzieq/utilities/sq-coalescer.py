@@ -58,12 +58,13 @@ def run_coalescer(cfg: dict, tables: List[str], period: str, run_once: bool,
         stats = do_coalesce(cfg, tables, period, logger, no_sqpoller)
         # Write the stats
         df = pd.DataFrame([asdict(x) for x in stats])
-        df['sqvers'] = coalescer_schema.version
-        df['version'] = SUZIEQ_VERSION
-        df['active'] = True
-        df['namespace'] = ''
-        pqdb.write('sqCoalescer', 'pandas', df, True,
-                   coalescer_schema.get_arrow_schema(), None)
+        if not df.empty:
+            df['sqvers'] = coalescer_schema.version
+            df['version'] = SUZIEQ_VERSION
+            df['active'] = True
+            df['namespace'] = ''
+            pqdb.write('sqCoalescer', 'pandas', df, True,
+                       coalescer_schema.get_arrow_schema(), None)
 
         if run_once:
             break

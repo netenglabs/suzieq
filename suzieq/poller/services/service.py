@@ -697,7 +697,7 @@ class Service(object):
             if write_poller_stat:
                 poller_stat = [
                     {"hostname": output[0]["hostname"] or output[0]['address'],
-                     "sqvers": self.poller_schema.version,
+                     "sqvers": self.poller_schema_version,
                      "namespace": output[0]["namespace"],
                      "active": True,
                      "service": self.name,
