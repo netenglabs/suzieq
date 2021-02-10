@@ -238,6 +238,7 @@ class SqParquetDB(SqDB):
         archive_folder = self.cfg.get('coalescer', {}) \
                                  .get('archive-directory',
                                       f'{infolder}/_archived')
+
         if not period:
             period = self.cfg.get(
                 'coalesceer', {'period': '1h'}).get('period', '1h')
@@ -308,7 +309,10 @@ class SqParquetDB(SqDB):
         for entry in tables:
             table_outfolder = f'{outfolder}/{entry}'
             table_infolder = f'{infolder}//{entry}'
-            table_archive_folder = f'{archive_folder}/{entry}'
+            if archive_folder:
+                table_archive_folder = f'{archive_folder}/{entry}'
+            else:
+                table_archive_folder = None
             state.current_df = pd.DataFrame()
             if not os.path.isdir(table_infolder):
                 self.logger.info(
@@ -316,7 +320,8 @@ class SqParquetDB(SqDB):
                 continue
             if not os.path.isdir(table_outfolder):
                 os.makedirs(table_outfolder)
-            if not os.path.isdir(table_archive_folder):
+            if (table_archive_folder and
+                    not os.path.isdir(table_archive_folder)):
                 os.makedirs(table_archive_folder, exist_ok=True)
             start = time()
             coalesce_resource_table(table_infolder, table_outfolder,
