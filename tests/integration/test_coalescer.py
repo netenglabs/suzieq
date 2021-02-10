@@ -137,7 +137,7 @@ def _coalescer_basic_test(pq_dir, namespace, path_src, path_dest):
 
     cfg = load_sq_config(config_file=tmpfile.name)
 
-    do_coalesce(cfg, None, run_once=True)
+    do_coalesce(cfg, None)
     _verify_coalescing(temp_dir)
 
     post_tables_df = tablesobj.get()
@@ -391,7 +391,7 @@ def test_transform(input_file):
     from suzieq.sqobjects.tables import TablesObj
 
     pre_table_df = TablesObj(config_file=tmpfile.name).get()
-    do_coalesce(cfg, None, run_once=True)
+    do_coalesce(cfg, None)
     _verify_coalescing(temp_dir)
 
     post_table_df = TablesObj(config_file=tmpfile.name).get()
