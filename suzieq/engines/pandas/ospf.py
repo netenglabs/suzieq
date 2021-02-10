@@ -202,7 +202,7 @@ class OspfObj(SqEngineObject):
                 ospf_df.merge(df, on=["routerId"], how="outer")
                 .apply(lambda x: ["duplicate routerId {}".format(
                     x["hostname_y"])]
-                    if len(x['hostname_y']) != 1 else [], axis=1))
+                    if x["hostname_y"] is not np.nan and len(x['hostname_y']) != 1 else [], axis=1))
 
         # Now  peering match
         lldpobj = LldpObj(context=self.ctxt)
