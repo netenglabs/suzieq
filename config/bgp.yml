@@ -261,7 +261,7 @@ apply:
   junos-qfx:
     version: all
     command:
-      - command: show bgp summary | display json
+      - command: show bgp summary | display json | no-more
         normalize: 'bgp-information/bgp-peer/*/[
         "peer-address/[0]/data: peer",
         "elapsed-time/[0]/attributes: estdTime?|",

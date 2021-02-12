@@ -71,7 +71,7 @@ apply:
   junos-qfx:
     version: all
     command:
-      - command: show interface | display json
+      - command: show interface | display json | no-more
         normalize: 'interface-information/[0]/physical-interface/*/[
         "oper-status/[0]/data: state",
         "snmp-index/[0]/data: ifIndex",
@@ -93,7 +93,7 @@ apply:
         "logical-interface/[*]/logical-interface-mac/[0]/data: _gwMacaddr?|_gwMacaddr",
         ]'
 
-      - command: show configuration routing-instances | display json
+      - command: show configuration routing-instances | display json | no-more
         normalize: 'configuration/routing-instances/instance/*/[
         "name: ifname",
         "instance-type: type?|vrf",

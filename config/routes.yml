@@ -40,7 +40,7 @@ apply:
   junos-qfx:
     version: all
     command:
-      - command: show route | display json
+      - command: show route | display json | no-more
         normalize: 'route-information/[0]/route-table/*:table-name:vrf/rt/*/[
         "rt-destination/[0]/data: prefix",
         "rt-prefix-length/[0]/data: _rtlen?|0",
@@ -55,7 +55,7 @@ apply:
         "rt-entry/[0]/nh-type/[0]/data: action?|forward",
         ]'
 
-      - command: show evpn ip-prefix-database | display json
+      - command: show evpn ip-prefix-database | display json | no-more
         normalize: 'evpn-ip-prefix-database-information/evpn-pfxdb-l3-context/*:context-name:vrf|evpn-pfxdb-evpn-ip-table/[0]/evpn-pfxdb-evpn-ip-entry/*/[
         "entry-prefix/[0]/data: prefix",
         "evpn-pfxdb-evpn-ip-adv/[0]/adv-bgp-nexthop/[0]/data: _vtepAddr"
