@@ -45,7 +45,7 @@ apply:
 
   junos-qfx:
     version: all
-    command: show ospf neighbor instance all detail | display json
+    command: show ospf neighbor instance all detail | display json | no-more
     normalize: 'ospf-neighbor-information-all/[0]/ospf-instance-neighbor/*:ospf-instance-name:vrf|ospf-neighbor/*/[
     "neighbor-address/[0]/data: peerIP",
     "interface-name/[0]/data: ifname",

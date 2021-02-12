@@ -42,7 +42,7 @@ apply:
   junos-qfx:
     version: all
     command:
-      - command: show evpn instance extensive | display json
+      - command: show evpn instance extensive | display json | no-more
         normalize: 'evpn-instance-information/[0]/evpn-instance/[
         "evpn-instance-name/[0]/data: vni?|0",
         "bridge-domain-status-table/[0]/bridge-domain/[*]/vlan-id/[0]/data: _vlanList",
@@ -55,7 +55,7 @@ apply:
         "_entryType: _entryType?|instance",
         ]'
 
-      - command: show evpn l3-context extensive | display json
+      - command: show evpn l3-context extensive | display json | no-more
         normalize: 'evpn-l3-context-information/[0]/evpn-l3-context/*/[
         "context-name/[0]/data: vrf",
         "context-vni/[0]/data: vni?|0",
@@ -64,7 +64,7 @@ apply:
         "_entryType: _entryType?|l3",
         ]'
         
-      - command: show ethernet-switching vxlan-tunnel-end-point remote | display json
+      - command: show ethernet-switching vxlan-tunnel-end-point remote | display json | no-more
         normalize: 'vxlan-source-vtep-information/[0]/svtep-format/*:source-vtep-address:priVtepIp|vxlan-remote-vtep-information/*/[
         "remote-vtep-address/[0]/data: _floodVtepList",
         "remote-vtep-mode: _mode",

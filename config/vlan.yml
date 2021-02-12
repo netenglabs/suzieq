@@ -41,7 +41,7 @@ apply:
 
   junos-qfx:
     version: all
-    command: show vlans detail | display json
+    command: show vlans detail | display json |no-more
     normalize: 'l2ng-l2ald-vlan-instance-information/l2ng-l2ald-vlan-instance-group/*/[
     "l2ng-l2rtb-vlan-tag/[0]/data: vlan",
     "l2ng-l2rtb-vlan-member/[*]/l2ng-l2rtb-vlan-member-interface/[0]/data: interfaces?|[]",

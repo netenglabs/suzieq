@@ -27,7 +27,7 @@ apply:
 
   junos-qfx:
     version: all
-    command: show ethernet-switching table detail | display json
+    command: show ethernet-switching table detail | display json | no-more
     normalize: 'l2ng-l2ald-rtb-macdb/[0]/l2ng-l2ald-mac-entry-vlan/*/[
     "l2ng-l2-mac-address/[0]/data: macaddr",
     "l2ng-l2-vlan-id/[0]/data: vlan?|0",
@@ -42,7 +42,7 @@ apply:
 
   junos-mx:
     version: all
-    command: show vpls mac-table
+    command: show vpls mac-table | no-more
     textfsm: textfsm_templates/junos_vpls_mac.tfsm
 
   nxos:
