@@ -595,8 +595,9 @@ class Service(object):
         pernode_stats = defaultdict(lambda: ServiceStats())
 
         while True:
-            token, output = await self.result_queue.get()
-            if self.sigend:
+            try:
+                token, output = await self.result_queue.get()
+            except asyncio.CancelledError:
                 self.logger.warning(
                     f'Service: {self.name}: Received signal to terminate')
                 return
@@ -687,6 +688,8 @@ class Service(object):
 
             if output:
                 statskey = output[0]["namespace"] + '/' + output[0]["hostname"]
+            else:
+                statskey = 'sqPoller/sqPoller'
 
             stats = pernode_stats[statskey]
             write_poller_stat = (self.update_stats(
