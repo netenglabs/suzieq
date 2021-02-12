@@ -510,10 +510,12 @@ class Node(object):
                 return
 
             while (len(tasks) < self.batch_size):
-                request = await self._service_queue.get()
-                if self.sigend:
+                try:
+                    request = await self._service_queue.get()
+                except asyncio.CancelledError:
                     await self._terminate()
                     return
+
                 if request:
                     tasks.append(self.exec_service(
                         request[0], request[1], request[2]))

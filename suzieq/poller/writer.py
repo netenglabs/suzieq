@@ -1,6 +1,6 @@
 import os
 import logging
-import json
+import asyncio
 
 import pandas as pd
 import pyarrow as pa
@@ -12,7 +12,6 @@ class OutputWorker(object):
     def __init__(self, **kwargs):
         self.type = kwargs.get("type", None)
         self.logger = logging.getLogger(__name__)
-        self.sigend = False
 
         output_dir = kwargs.get("output_dir", None)
         if output_dir:
@@ -75,17 +74,16 @@ class GatherOutputWorker(OutputWorker):
             f.write(data['records'])
 
 
-async def run_output_worker(queue, output_workers):
+async def run_output_worker(queue, output_workers, logger):
 
     while True:
-        data = await queue.get()
-
-        if not output_workers:
+        try:
+            data = await queue.get()
+        except asyncio.CancelledError:
+            logger.error(f"Writer thread received task cancel")
             return
 
-        if output_workers[0].sigend:
-            output_workers[0].logger.warning(
-                "Writer: Received terminate signal")
+        if not output_workers:
             return
 
         for worker in output_workers:
