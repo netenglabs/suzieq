@@ -647,6 +647,11 @@ def ensure_single_instance(filename: str, block: bool = False) -> int:
     :rtype: int
 
     """
+    basedir = os.path.dirname(filename)
+    if not os.path.exists(filename):
+        # Permission error or any other error will abort
+        os.makedirs(basedir)
+
     fd = os.open(filename, os.O_RDWR | os.O_CREAT, 0o600)
     if fd:
         try:
