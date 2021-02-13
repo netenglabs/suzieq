@@ -3,15 +3,15 @@ from _pytest.mark.structures import Mark, MarkDecorator
 
 import os
 import sys
+import asyncio
 from suzieq.cli.sq_nubia_context import NubiaSuzieqContext
 from suzieq.poller.services import init_services
 from unittest.mock import Mock
 import yaml
-import json
-import pandas as pd
 from tempfile import mkstemp
 import shlex
 from subprocess import check_output, CalledProcessError
+from filelock import FileLock
 
 
 suzieq_cli_path = './suzieq/cli/suzieq-cli'
@@ -52,7 +52,7 @@ def _setup_nubia():
 
 
 def create_context():
-    config = _create_context_config()
+    config = get_dummy_config()
     context = NubiaSuzieqContext()
     context.cfg = config
     return context
@@ -60,10 +60,10 @@ def create_context():
 
 @pytest.fixture()
 def create_context_config():
-    return _create_context_config()
+    return get_dummy_config()
 
 
-def _create_context_config():
+def get_dummy_config():
     config = {'schema-directory': './config/schema',
               'service-directory': './config',
               'data-directory': './tests/data/basic_dual_bgp/parquet-out',
@@ -85,6 +85,15 @@ def init_services_default(event_loop):
     services = event_loop.run_until_complete(
         init_services(configs, schema, mock_queue, True))
     return services
+
+
+@pytest.fixture
+def run_sequential(tmpdir):
+    """Uses a file lock to run tests using this fixture, sequentially
+
+    """
+    with FileLock('test.lock', timeout=15):
+        yield()
 
 
 def load_up_the_tests(dir):
@@ -166,4 +175,3 @@ def setup_sqcmds(testvar, context_config):
         os.remove(tmpfname)
 
     return output, error
-

@@ -3,11 +3,15 @@ import pandas as pd
 import numpy as np
 
 from suzieq.sqobjects.lldp import LldpObj
-from suzieq.engines.pandas.engineobj import SqEngineObject
+from .engineobj import SqPandasEngine
 from suzieq.utils import SchemaForTable, build_query_str, humanize_timestamp
 
 
-class OspfObj(SqEngineObject):
+class OspfObj(SqPandasEngine):
+
+    @staticmethod
+    def table_name():
+        return 'ospf'
 
     def _get_combined_df(self, **kwargs):
         """OSPF has info divided across multiple tables. Get a single one"""

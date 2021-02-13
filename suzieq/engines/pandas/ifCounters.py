@@ -1,5 +1,8 @@
-from suzieq.engines.pandas.engineobj import SqEngineObject
+from .engineobj import SqPandasEngine
 
 
-class IfcountersObj(SqEngineObject):
-    pass
+class IfcountersObj(SqPandasEngine):
+
+    @staticmethod
+    def table_name():
+        return 'ifCounters'

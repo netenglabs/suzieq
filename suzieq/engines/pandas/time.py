@@ -1,5 +1,8 @@
-from suzieq.engines.pandas.engineobj import SqEngineObject
+from .engineobj import SqPandasEngine
 
 
-class TimeObj(SqEngineObject):
-    pass
+class TimeObj(SqPandasEngine):
+
+    @staticmethod
+    def table_name():
+        return 'time'

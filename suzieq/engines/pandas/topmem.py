@@ -1,5 +1,8 @@
-from .engineobj import SqEngineObject
+from .engineobj import SqPandasEngine
 
 
-class TopmemObj(SqEngineObject):
-    pass
+class TopmemObj(SqPandasEngine):
+
+    @staticmethod
+    def table_name():
+        return 'topmem'

@@ -39,7 +39,7 @@ def handle_edge_url(url_params: dict, pathSession):
     st.subheader(f'{hoptype} hop between {hostname} and {ifhost}')
 
     pathobj = getattr(pathSession, 'pathobj', None)
-    engobj = pathobj.engine_obj
+    engobj = pathobj.engine
 
     if ipLookup:
         if not vtepLookup or (ipLookup != vtepLookup):
@@ -93,7 +93,7 @@ def handle_edge_url(url_params: dict, pathSession):
     if macaddr:
         with st.beta_expander(f'MAC Table for {hostname}, MAC addr {macaddr}',
                               expanded=True):
-            st.dataframe(data=pathobj.engine_obj._macsobj.get(
+            st.dataframe(data=pathobj.engine._macsobj.get(
                 namespace=namespace, hostname=hostname, macaddr=macaddr))
 
 
@@ -112,7 +112,7 @@ def handle_hop_url(url_params, pathSession):
 
     pathobj = getattr(pathSession, 'pathobj', None)
     df = getattr(pathSession, 'path_df', None)
-    engobj = pathobj.engine_obj
+    engobj = pathobj.engine
 
     if df.empty:
         st.warning('Empty path dataframe')

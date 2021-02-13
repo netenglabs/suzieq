@@ -83,9 +83,8 @@ class PathCmd(SqCommand):
 
         try:
             df = self.sqobj.summarize(
-                hostname=self.hostname, columns=self.columns,
-                namespace=self.namespace, source=src, dest=dest,
-                vrf=vrf
+                hostname=self.hostname, namespace=self.namespace,
+                source=src, dest=dest, vrf=vrf
             )
         except Exception as e:
             df = pd.DataFrame({'error': ['ERROR: {}'.format(str(e))]})

@@ -18,9 +18,8 @@ class NubiaSuzieqContext(context.Context):
         self.start_time = ""
         self.end_time = ""
         self.exec_time = ""
-        self.engine_name = engine
+        self.engine = engine
         self.sort_fields = []
-        self.engine = get_sqengine(engine)
         super().__init__()
 
     def on_connected(self, *args, **kwargs):
@@ -43,8 +42,8 @@ class NubiaSuzieqContext(context.Context):
         self.registry.dispatch_message(eventbus.Message.CONNECTED)
 
     def change_engine(self, engine: str):
-        if engine == self.engine_name:
+        '''This doesn't work at this time'''
+        if engine == self.engine:
             return
 
-        self.engine_name = engine
-        self.engine = get_sqengine(engine)
+        self.engine = engine

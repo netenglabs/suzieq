@@ -17,17 +17,13 @@ class SqContext(object):
         self.start_time = ''
         self.end_time = ''
         self.exec_time = ''
-        self.engine = 'pandas'
+        self.engine = engine
         self.sort_fields = []
-        self.engine = get_sqengine(self.engine)
-        if not self.engine:
-            # We really should define our own error
-            raise ValueError
 
 
 class SqObject(object):
 
-    def __init__(self, engine_name: str = '', hostname: typing.List[str] = [],
+    def __init__(self, engine_name: str = 'pandas', hostname: typing.List[str] = [],
                  start_time: str = '', end_time: str = '',
                  view: str = 'latest', namespace: typing.List[str] = [],
                  columns: typing.List[str] = ['default'],
@@ -71,14 +67,14 @@ class SqObject(object):
         self.columns = columns
 
         if engine_name and engine_name != '':
-            self.engine = get_sqengine(engine_name)
-        else:
-            self.engine = self.ctxt.engine
+            self.engine = get_sqengine(engine_name,
+                                       self._table)(self._table, self)
+        elif self.ctxt.engine:
+            self.engine = get_sqengine(self.ctxt.engine,
+                                       self._table)(self._table, self)
 
-        if self._table:
-            self.engine_obj = self.engine.get_object(self._table, self)
-        else:
-            self.engine_obj = None
+        if not self.engine:
+            raise ValueError('Unknown analysis engine')
 
         self._addnl_filter = None
         self._addnl_fields = []
@@ -152,7 +148,7 @@ class SqObject(object):
             df = pd.DataFrame({'error': [f'{error}']})
             return df
 
-        return self.engine_obj.get(**kwargs)
+        return self.engine.get(**kwargs)
 
     def summarize(self, namespace=[], hostname=[],
                   query_str='') -> pd.DataFrame:
@@ -166,8 +162,8 @@ class SqObject(object):
         if not self.ctxt.engine:
             raise AttributeError('No analysis engine specified')
 
-        return self.engine_obj.summarize(namespace=namespace,
-                                         hostname=hostname, query_str=query_str)
+        return self.engine.summarize(namespace=namespace,
+                                     hostname=hostname, query_str=query_str)
 
     def unique(self, **kwargs) -> pd.DataFrame:
         if not self._table:
@@ -177,7 +173,7 @@ class SqObject(object):
             raise AttributeError('No analysis engine specified')
 
         columns = kwargs.pop('columns', self.columns)
-        return self.engine_obj.unique(**kwargs, columns=columns)
+        return self.engine.unique(**kwargs, columns=columns)
 
     def analyze(self, **kwargs):
         raise NotImplementedError
@@ -210,7 +206,7 @@ class SqObject(object):
         if what not in columns:
             self._addnl_fields.append(what)
 
-        return self.engine_obj.top(what=what, n=n, reverse=reverse, **kwargs)
+        return self.engine.top(what=what, n=n, reverse=reverse, **kwargs)
 
     def humanize_fields(self, df: pd.DataFrame, subset=None) -> pd.DataFrame:
         '''Humanize the fields for human consumption.

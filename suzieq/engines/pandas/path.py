@@ -10,13 +10,17 @@ import pandas as pd
 
 from suzieq.sqobjects import interfaces, routes, arpnd, macs, mlag
 from suzieq.exceptions import EmptyDataframeError, PathLoopError
-from suzieq.engines.pandas.engineobj import SqEngineObject
+from .engineobj import SqPandasEngine
 from suzieq.utils import expand_nxos_ifname, MAX_MTU
 
 # TODO: What timestamp to use (arpND, mac, interface, route..)
 
 
-class PathObj(SqEngineObject):
+class PathObj(SqPandasEngine):
+
+    @staticmethod
+    def table_name():
+        return 'path'
 
     def _init_dfs(self, namespace, source, dest):
         """Initialize the dataframes used in this path hunt"""

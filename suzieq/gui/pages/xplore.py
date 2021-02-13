@@ -258,16 +258,7 @@ def page_work(state_container, page_flip: bool):
                         start_time=state.start_time, end_time=state.end_time,
                         view=state.view)
 
-    if state.table != "tables":
-        summ_df = xplore_run_summarize(sqobjs[state.table],
-                                       namespace=state.namespace.split(),
-                                       hostname=state.hostname.split(),
-                                       start_time=state.start_time,
-                                       end_time=state.end_time,
-                                       query_str=state.query)
-    else:
-        summ_df = pd.DataFrame()
-
+    query_str = ''
     if not df.empty:
         if 'error' in df.columns:
             st.error(df.iloc[0].error)
@@ -276,13 +267,25 @@ def page_work(state_container, page_flip: bool):
         if state.query:
             try:
                 show_df = df.query(state.query)
+                query_str = state.query
             except Exception:
                 st.warning('Query string throws an exception, ignoring')
                 show_df = df
+                query_str = ''
         else:
             show_df = df
     else:
         show_df = df
+
+    if state.table != "tables":
+        summ_df = xplore_run_summarize(sqobjs[state.table],
+                                       namespace=state.namespace.split(),
+                                       hostname=state.hostname.split(),
+                                       start_time=state.start_time,
+                                       end_time=state.end_time,
+                                       query_str=query_str)
+    else:
+        summ_df = pd.DataFrame()
 
     if not show_df.empty:
         dfcols = show_df.columns.tolist()

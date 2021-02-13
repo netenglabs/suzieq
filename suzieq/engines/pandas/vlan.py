@@ -1,9 +1,13 @@
 import numpy as np
 
-from .engineobj import SqEngineObject
+from .engineobj import SqPandasEngine
 
 
-class VlanObj(SqEngineObject):
+class VlanObj(SqPandasEngine):
+
+    @staticmethod
+    def table_name():
+        return 'vlan'
 
     def get(self, **kwargs):
         """Get VLAN info based on specified keywords"""

@@ -2,7 +2,7 @@ import sys
 from collections import defaultdict
 import os
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 import logging
 import random
 from http import HTTPStatus
@@ -510,10 +510,12 @@ class Node(object):
                 return
 
             while (len(tasks) < self.batch_size):
-                request = await self._service_queue.get()
-                if self.sigend:
+                try:
+                    request = await self._service_queue.get()
+                except asyncio.CancelledError:
                     await self._terminate()
                     return
+
                 if request:
                     tasks.append(self.exec_service(
                         request[0], request[1], request[2]))
@@ -677,7 +679,8 @@ class Node(object):
                 if self.sigend:
                     self._terminate()
                     return
-                self.logger.error(f"ERROR: Unable to connect, {str(e)}")
+                self.logger.error(f"ERROR: Unable to connect to {self.address},"
+                                  f"{str(e)}")
                 self.last_exception = e
                 self._conn = None
                 self._tunnel = None
@@ -699,7 +702,7 @@ class Node(object):
     def _create_result(self, cmd, status, data) -> dict:
         result = {
             "status": status,
-            "timestamp": int(datetime.utcnow().timestamp() * 1000),
+            "timestamp": int(datetime.now(tz=timezone.utc).timestamp() * 1000),
             "cmd": cmd,
             "devtype": self.devtype,
             "namespace": self.nsname,
@@ -839,7 +842,7 @@ class EosNode(Node):
 
         timeout = timeout or self.cmd_timeout
 
-        now = int(datetime.utcnow().timestamp() * 1000)
+        now = int(datetime.now(tz=timezone.utc).timestamp() * 1000)
         auth = aiohttp.BasicAuth(self.username, password=self.password)
         data = {
             "jsonrpc": "2.0",
@@ -946,7 +949,7 @@ class CumulusNode(Node):
                         result.append(
                             {
                                 "status": response.status,
-                                "timestamp": int(datetime.utcnow().timestamp() * 1000),
+                                "timestamp": int(datetime.now(tz=timezone.utc).timestamp() * 1000),
                                 "cmd": cmd,
                                 "devtype": self.devtype,
                                 "namespace": self.nsname,

@@ -11,3 +11,11 @@ class EmptyDataframeError(Exception):
 
 class PathLoopError(Exception):
     pass
+
+
+class DBReadError(Exception):
+    pass
+
+
+class DBNotFoundError(Exception):
+    pass

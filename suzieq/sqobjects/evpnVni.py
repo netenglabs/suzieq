@@ -23,4 +23,4 @@ class EvpnvniObj(SqObject):
             df = pd.DataFrame({'error': [f'{error}']})
             return df
 
-        return self.engine_obj.aver(**kwargs)
+        return self.engine.aver(**kwargs)

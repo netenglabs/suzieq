@@ -1,8 +1,11 @@
-from suzieq.engines.pandas.engineobj import SqEngineObject
+from .engineobj import SqPandasEngine
 
 
-class SqpollerObj(SqEngineObject):
-    pass
+class SqpollerObj(SqPandasEngine):
+
+    @staticmethod
+    def table_name():
+        return 'sqPoller'
 
     def get(self, **kwargs):
 
