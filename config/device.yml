@@ -1,4 +1,6 @@
 service: device
+ignore-fields:
+  - bootupTimestamp
 show-fields:
   - model
   - version
@@ -25,7 +27,7 @@ apply:
     normalize: '[
     "os-version: version",
     "vendor: vendor?|Cumulus",
-    "uptime: uptime",
+    "uptime: _uptime",
     "os: os?|cumulus",
     "platform/model_name: _modelName",
     "platform/model: model",
