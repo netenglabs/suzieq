@@ -125,7 +125,12 @@ if __name__ == '__main__':
     logger = init_logger('suzieq.coalescer', logfile, loglevel, False)
 
     # Ensure we're the only compacter
-    fd = ensure_single_instance('/tmp/sq-coalescer.pid')
+    coalesce_dir = cfg.get('coalescer', {})\
+                      .get('coalesce-directory',
+                           f'{cfg.get("data-directory")}/coalesced')
+
+    fd = ensure_single_instance(f'{coalesce_dir}/.sq-coalescer.pid',
+                                False)
     if not fd:
         print(f'ERROR: Another coalescer process present')
         logger.error(f'Another coalescer process present')

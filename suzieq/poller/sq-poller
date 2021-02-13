@@ -12,9 +12,7 @@ from collections import defaultdict
 import getpass
 from importlib.util import find_spec
 import fcntl
-from threading import Thread, Event
 import signal
-import inspect
 
 import uvloop
 
@@ -57,13 +55,6 @@ def validate_parquet_args(cfg, output_args, logger):
     output_args.update({"output_dir": output_dir})
 
     return
-
-
-def send_terminate_to_threads(tasks: list):
-    """Set the terminate flag in all child threads"""
-    breakpoint()
-    for elem in tasks:
-        elem.cancel()
 
 
 async def start_and_monitor_coalescer(config_file: str, cfg: dict,
@@ -246,15 +237,18 @@ async def start_poller(userargs, cfg):
             s, lambda s=s: asyncio.create_task(process_signal(s, loop)))
 
     try:
-        # The logic below of handling the writer worker task separately is to ensure
-        # we can terminate properly when all the other tasks have finished as in the
-        # case of using file input instead of SSH
+        # The logic below of handling the writer worker task separately is to
+        # ensure we can terminate properly when all the other tasks have
+        # finished as in the case of using file input instead of SSH
         svc_tasks = [svc.run() for svc in svcs]
         tasks = [nodes[node].run() for node in nodes]
         tasks += [run_output_worker(queue, outputs, logger)]
         tasks += svc_tasks
 
-        tasks += [start_and_monitor_coalescer(userargs.config, cfg, logger)]
+        if not userargs.no_coalescer:
+            breakpoint()
+            tasks += [start_and_monitor_coalescer(userargs.config, cfg,
+                                                  logger)]
         do_terminate = False
 
         while tasks:
@@ -394,6 +388,13 @@ if __name__ == "__main__":
         type=str,
         default=None,
         help="Path to ssh config file to use. If not set, config file is not used"
+    )
+
+    parser.add_argument(
+        "--no-coalescer",
+        default=False,
+        action='store_true',
+        help=argparse.SUPPRESS,
     )
 
     userargs = parser.parse_args()
