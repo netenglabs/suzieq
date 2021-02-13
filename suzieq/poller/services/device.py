@@ -58,7 +58,7 @@ class DeviceService(Service):
             model = entry.get('_modelName', '')
             if model:
                 entry['model'] = model
-            uptime = entry.get('uptime', '').split()
+            uptime = entry.get('_uptime', '').split()
             if uptime:
                 hr, mins, secs = uptime[-1].split(':')
                 if len(uptime) > 1:
