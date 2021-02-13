@@ -30,7 +30,7 @@ class OspfObj(SqObject):
             df = pd.DataFrame({'error': [f'{error}']})
             return df
 
-        return self.engine_obj.aver(**kwargs)
+        return self.engine.aver(**kwargs)
 
     def top(self, what='', n=5, reverse=False, **kwargs) -> pd.DataFrame:
         """Get the list of top/bottom entries of "what" field"""
@@ -47,7 +47,7 @@ class OspfObj(SqObject):
         if what == "numChanges" and what not in columns:
             self._addnl_nbr_fields.append(what)
 
-        return self.engine_obj.top(what=what, n=n, reverse=reverse, **kwargs)
+        return self.engine.top(what=what, n=n, reverse=reverse, **kwargs)
 
     def humanize_fields(self, df: pd.DataFrame, subset=None) -> pd.DataFrame:
         '''Humanize the timestamp and boot time fields'''

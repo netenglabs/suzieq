@@ -45,14 +45,14 @@ apply:
   junos-qfx:
     version: all
     command:
-      - command: show ospf overview | display json
+      - command: show ospf overview | display json | no-more
         normalize: 'ospf-overview-information/[0]/ospf-overview/*/[
         "ospf-router-id/[0]/data: routerId",
         "_entryType: _entryType?|overview",
         "ifname: ifname?|_overview",
         ]'
 
-      - command: show ospf interface detail | display json
+      - command: show ospf interface detail | display json | no-more
         normalize: 'ospf-interface-information/[0]/ospf-interface/*/[
         "interface-name/[0]/data: ifname",
         "ospf-interface-state/[0]/data: state?Down|Up",

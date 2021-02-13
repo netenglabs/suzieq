@@ -1,5 +1,5 @@
-from suzieq.engines.pandas.engineobj import SqEngineObject
+from .engineobj import SqPandasEngine
 
 
-class OspfifObj(SqEngineObject):
+class OspfifObj(SqPandasEngine):
     pass

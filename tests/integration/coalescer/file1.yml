@@ -1,0 +1,43 @@
+# Basic coalescer test adds testing for checking coalescer
+# in the presence of multiple time windows. All of the data
+# in the parquet files used for testing have a single time window
+data-directory: tests/data/multidc/parquet-out/
+transform:
+  - record:
+      - interfaces:
+          - match:
+              all
+            set:
+              timestamp: 30 Dec 2020, 11:01 am UTC
+  - record:
+      - interfaces:
+          - match: namespace=="dual-evpn" and hostname=="leaf01" and ifname=="swp1"
+            set:
+              state: down
+              timestamp: +30min
+
+verify:
+  - interfaces:
+      - test:
+          start-time: 30 Dec 2020, 11:01 am UTC
+          query: namespace=="dual-evpn" and hostname=="leaf01" and ifname=="swp1" and state=="down"
+      - test:
+          end-time: 30 Dec 2020, 11:01 am UTC
+          query: namespace=="dual-evpn" and hostname=="leaf01" and ifname=="swp1" and state=="up"
+      - test:
+          start-time: 30 Dec 2020, 11:01 am UTC 
+          end-time: 30 Dec 2020, 11:21 am UTC
+          query: namespace=="dual-evpn" and hostname=="leaf01" and ifname=="swp1" and state=="up"
+      - test:
+          start-time: 31 Dec 2020, 11:01 am UTC
+          assertempty:
+      - test:
+          start-time: 30 Dec 2020, 3:01 am PST
+          query: namespace=="dual-evpn" and hostname=="leaf01" and ifname=="swp1" and state=="down"
+          shape: 1 *
+
+
+
+
+            
+            

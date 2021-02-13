@@ -18,7 +18,7 @@ class RoutesObj(SqObject):
             if len(kwargs['address']) > 1:
                 raise AttributeError('Just one address at a time')
             kwargs['address'] = kwargs['address'][0]
-        return self.engine_obj.lpm(**kwargs)
+        return self.engine.lpm(**kwargs)
 
     def summarize(self, namespace=[], vrf=[], hostname=[], query_str=''):
         """Summarize routing info for one or more namespaces"""
@@ -27,6 +27,6 @@ class RoutesObj(SqObject):
                 {'error':
                  ['ERROR: You cannot specify columns with summarize']})
             return self.summarize_df
-        return self.engine_obj.summarize(namespace=namespace, vrf=vrf,
-                                         query_str=query_str,
-                                         hostname=hostname)
+        return self.engine.summarize(namespace=namespace, vrf=vrf,
+                                     query_str=query_str,
+                                     hostname=hostname)

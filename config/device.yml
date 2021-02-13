@@ -1,4 +1,6 @@
 service: device
+ignore-fields:
+  - bootupTimestamp
 show-fields:
   - model
   - version
@@ -21,8 +23,16 @@ apply:
 
   cumulus:
     version: all
-    command: cat /proc/uptime; hostnamectl
-    textfsm: textfsm_templates/cl_showsys.tfsm
+    command: net show system json
+    normalize: '[
+    "os-version: version",
+    "vendor: vendor?|Cumulus",
+    "uptime: _uptime",
+    "os: os?|cumulus",
+    "platform/model_name: _modelName",
+    "platform/model: model",
+    "platform/info/cpu/summary: architecture?|x86_64",
+    ]'
 
   linux:
     version: all
@@ -52,10 +62,10 @@ apply:
   junos-qfx:
     version: all
     command:
-      - command: "show system information | display json"
+      - command: "show system information | display json | no-more"
         normalize: 'system-information/*/[
         "hardware-model/[0]/data: model",
-        "os-name/[0]/data: os",
+        "os-name/[0]/data: os?|junos",
         "os-version/[0]/data: version",
         "vendor: vendor?|Juniper"
         ]'
@@ -70,10 +80,10 @@ apply:
   junos-mx:
     version: all
     command:
-      - command: "show system information | display json"
+      - command: "show system information | display json | no-more"
         normalize: 'system-information/*/[
         "hardware-model/[0]/data: model",
-        "os-name/[0]/data: os",
+        "os-name/[0]/data: os?|junos",
         "os-version/[0]/data: version",
         "vendor: vendor?|Juniper"
         ]'

@@ -1,5 +1,8 @@
-from suzieq.engines.pandas.engineobj import SqEngineObject
+from .engineobj import SqPandasEngine
 
 
-class FsObj(SqEngineObject):
-    pass
+class FsObj(SqPandasEngine):
+
+    @staticmethod
+    def table_name():
+        return 'fs'

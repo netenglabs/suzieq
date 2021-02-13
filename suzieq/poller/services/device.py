@@ -1,3 +1,5 @@
+from datetime import timedelta, datetime, timezone
+
 from suzieq.poller.services.service import Service
 from suzieq.utils import get_timestamp_from_junos_time
 
@@ -52,7 +54,24 @@ class DeviceService(Service):
         return self._common_data_cleaner(processed_data, raw_data)
 
     def _clean_cumulus_data(self, processed_data, raw_data):
-        return self._clean_linux_data(processed_data, raw_data)
+        for entry in processed_data:
+            model = entry.get('_modelName', '')
+            if model:
+                entry['model'] = model
+            uptime = entry.get('_uptime', '').split()
+            if uptime:
+                hr, mins, secs = uptime[-1].split(':')
+                if len(uptime) > 1:
+                    days = int(uptime[0])
+                else:
+                    days = 0
+                uptime_delta = timedelta(days=days, hours=int(hr),
+                                         minutes=int(mins),
+                                         seconds=int(secs.split('.')[0]))
+                entry['bootupTimestamp'] = int((datetime.now(tz=timezone.utc) -
+                                                uptime_delta).timestamp())
+
+        return self._common_data_cleaner(processed_data, raw_data)
 
     def _clean_sonic_data(self, processed_data, raw_data):
         return self._clean_linux_data(processed_data, raw_data)

@@ -1,5 +1,8 @@
-from .engineobj import SqEngineObject
+from .engineobj import SqPandasEngine
 
 
-class TopcpuObj(SqEngineObject):
-    pass
+class TopcpuObj(SqPandasEngine):
+
+    @staticmethod
+    def table_name():
+        return 'topcpu'

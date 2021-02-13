@@ -1,8 +1,11 @@
-from .engineobj import SqEngineObject
+from .engineobj import SqPandasEngine
 
 
-class LldpObj(SqEngineObject):
-    pass
+class LldpObj(SqPandasEngine):
+
+    @staticmethod
+    def table_name():
+        return 'lldp'
 
     def summarize(self, **kwargs):
         self._summarize_on_add_field = [

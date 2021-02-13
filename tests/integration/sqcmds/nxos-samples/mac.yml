@@ -3,269 +3,477 @@ tests:
 - command: mac show --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: mac show nxos
-  output: '[{"namespace": "nxos", "hostname": "server102", "macaddr": "01:80:c2:00:00:00",
-    "vlan": 0, "oif": "bond0", "remoteVtepIp": "", "bd": "", "flags": "permanent",
-    "timestamp": 1609296106167}, {"namespace": "nxos", "hostname": "server102", "macaddr":
-    "33:33:ff:c4:f6:03", "vlan": 0, "oif": "bond0", "remoteVtepIp": "", "bd": "",
+  output: '[{"namespace": "nxos", "hostname": "server102", "vlan": 0, "macaddr": "01:80:c2:00:00:00",
+    "oif": "eth0", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp":
+    1609296106167}, {"namespace": "nxos", "hostname": "server102", "vlan": 0, "macaddr":
+    "01:00:5e:00:00:01", "oif": "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "timestamp": 1609296106167}, {"namespace": "nxos", "hostname": "server102", "vlan":
+    0, "macaddr": "33:33:00:00:00:01", "oif": "eth1", "remoteVtepIp": "", "bd": "",
     "flags": "permanent", "timestamp": 1609296106167}, {"namespace": "nxos", "hostname":
-    "server102", "macaddr": "01:80:c2:00:00:0e", "vlan": 0, "oif": "eth0", "remoteVtepIp":
+    "server102", "vlan": 0, "macaddr": "01:80:c2:00:00:00", "oif": "eth1", "remoteVtepIp":
     "", "bd": "", "flags": "permanent", "timestamp": 1609296106167}, {"namespace":
-    "nxos", "hostname": "server102", "macaddr": "01:80:c2:00:00:03", "vlan": 0, "oif":
+    "nxos", "hostname": "server102", "vlan": 0, "macaddr": "01:80:c2:00:00:03", "oif":
+    "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1609296106167},
+    {"namespace": "nxos", "hostname": "server102", "vlan": 0, "macaddr": "01:80:c2:00:00:0e",
+    "oif": "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp":
+    1609296106167}, {"namespace": "nxos", "hostname": "server102", "vlan": 0, "macaddr":
+    "33:33:ff:c4:f6:03", "oif": "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "timestamp": 1609296106167}, {"namespace": "nxos", "hostname": "server102", "vlan":
+    0, "macaddr": "01:00:5e:00:00:01", "oif": "eth2", "remoteVtepIp": "", "bd": "",
+    "flags": "permanent", "timestamp": 1609296106167}, {"namespace": "nxos", "hostname":
+    "server102", "vlan": 0, "macaddr": "33:33:00:00:00:01", "oif": "eth2", "remoteVtepIp":
+    "", "bd": "", "flags": "permanent", "timestamp": 1609296106167}, {"namespace":
+    "nxos", "hostname": "server102", "vlan": 0, "macaddr": "01:80:c2:00:00:02", "oif":
+    "eth2", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1609296106167},
+    {"namespace": "nxos", "hostname": "server102", "vlan": 0, "macaddr": "01:80:c2:00:00:00",
+    "oif": "eth2", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp":
+    1609296106167}, {"namespace": "nxos", "hostname": "server102", "vlan": 0, "macaddr":
+    "01:80:c2:00:00:03", "oif": "eth2", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "timestamp": 1609296106167}, {"namespace": "nxos", "hostname": "server102", "vlan":
+    0, "macaddr": "01:80:c2:00:00:0e", "oif": "eth2", "remoteVtepIp": "", "bd": "",
+    "flags": "permanent", "timestamp": 1609296106167}, {"namespace": "nxos", "hostname":
+    "server102", "vlan": 0, "macaddr": "33:33:ff:c4:f6:03", "oif": "eth2", "remoteVtepIp":
+    "", "bd": "", "flags": "permanent", "timestamp": 1609296106167}, {"namespace":
+    "nxos", "hostname": "server102", "vlan": 0, "macaddr": "33:33:00:00:00:01", "oif":
+    "bond0", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1609296106167},
+    {"namespace": "nxos", "hostname": "server102", "vlan": 0, "macaddr": "01:00:5e:00:00:01",
+    "oif": "bond0", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp":
+    1609296106167}, {"namespace": "nxos", "hostname": "server102", "vlan": 0, "macaddr":
+    "01:80:c2:00:00:00", "oif": "bond0", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "timestamp": 1609296106167}, {"namespace": "nxos", "hostname": "server102", "vlan":
+    0, "macaddr": "01:80:c2:00:00:03", "oif": "bond0", "remoteVtepIp": "", "bd": "",
+    "flags": "permanent", "timestamp": 1609296106167}, {"namespace": "nxos", "hostname":
+    "server102", "vlan": 0, "macaddr": "01:80:c2:00:00:0e", "oif": "bond0", "remoteVtepIp":
+    "", "bd": "", "flags": "permanent", "timestamp": 1609296106167}, {"namespace":
+    "nxos", "hostname": "server102", "vlan": 0, "macaddr": "33:33:ff:c4:f6:03", "oif":
+    "bond0", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1609296106167},
+    {"namespace": "nxos", "hostname": "server102", "vlan": 0, "macaddr": "01:80:c2:00:00:0e",
+    "oif": "eth0", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp":
+    1609296106167}, {"namespace": "nxos", "hostname": "server102", "vlan": 0, "macaddr":
+    "01:80:c2:00:00:03", "oif": "eth0", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "timestamp": 1609296106167}, {"namespace": "nxos", "hostname": "server102", "vlan":
+    0, "macaddr": "01:80:c2:00:00:02", "oif": "eth1", "remoteVtepIp": "", "bd": "",
+    "flags": "permanent", "timestamp": 1609296106167}, {"namespace": "nxos", "hostname":
+    "server102", "vlan": 0, "macaddr": "33:33:ff:ac:5c:bc", "oif": "eth0", "remoteVtepIp":
+    "", "bd": "", "flags": "permanent", "timestamp": 1609296106167}, {"namespace":
+    "nxos", "hostname": "server102", "vlan": 0, "macaddr": "33:33:00:00:00:01", "oif":
     "eth0", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1609296106167},
-    {"namespace": "nxos", "hostname": "server102", "macaddr": "01:80:c2:00:00:02",
-    "vlan": 0, "oif": "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent",
-    "timestamp": 1609296106167}, {"namespace": "nxos", "hostname": "server102", "macaddr":
-    "33:33:ff:ac:5c:bc", "vlan": 0, "oif": "eth0", "remoteVtepIp": "", "bd": "", "flags":
-    "permanent", "timestamp": 1609296106167}, {"namespace": "nxos", "hostname": "server102",
-    "macaddr": "33:33:00:00:00:01", "vlan": 0, "oif": "eth0", "remoteVtepIp": "",
-    "bd": "", "flags": "permanent", "timestamp": 1609296106167}, {"namespace": "nxos",
-    "hostname": "server102", "macaddr": "01:00:5e:00:00:01", "vlan": 0, "oif": "eth0",
-    "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1609296106167},
-    {"namespace": "nxos", "hostname": "server101", "macaddr": "33:33:ff:3e:85:36",
-    "vlan": 0, "oif": "eth0", "remoteVtepIp": "", "bd": "", "flags": "permanent",
-    "timestamp": 1609296106205}, {"namespace": "nxos", "hostname": "server101", "macaddr":
-    "01:00:5e:00:00:01", "vlan": 0, "oif": "eth0", "remoteVtepIp": "", "bd": "", "flags":
-    "permanent", "timestamp": 1609296106205}, {"namespace": "nxos", "hostname": "server101",
-    "macaddr": "01:80:c2:00:00:02", "vlan": 0, "oif": "eth1", "remoteVtepIp": "",
-    "bd": "", "flags": "permanent", "timestamp": 1609296106205}, {"namespace": "nxos",
-    "hostname": "server101", "macaddr": "01:80:c2:00:00:00", "vlan": 0, "oif": "eth1",
-    "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1609296106205},
-    {"namespace": "nxos", "hostname": "server101", "macaddr": "01:80:c2:00:00:03",
-    "vlan": 0, "oif": "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent",
-    "timestamp": 1609296106205}, {"namespace": "nxos", "hostname": "server101", "macaddr":
-    "01:80:c2:00:00:0e", "vlan": 0, "oif": "eth1", "remoteVtepIp": "", "bd": "", "flags":
-    "permanent", "timestamp": 1609296106205}, {"namespace": "nxos", "hostname": "server101",
-    "macaddr": "33:33:ff:88:ee:6a", "vlan": 0, "oif": "eth1", "remoteVtepIp": "",
-    "bd": "", "flags": "permanent", "timestamp": 1609296106205}, {"namespace": "nxos",
-    "hostname": "server101", "macaddr": "33:33:00:00:00:01", "vlan": 0, "oif": "eth1",
-    "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1609296106205},
-    {"namespace": "nxos", "hostname": "server301", "macaddr": "33:33:ff:ce:86:f7",
-    "vlan": 0, "oif": "eth0", "remoteVtepIp": "", "bd": "", "flags": "permanent",
-    "timestamp": 1609296106279}, {"namespace": "nxos", "hostname": "server301", "macaddr":
-    "01:80:c2:00:00:02", "vlan": 0, "oif": "eth2", "remoteVtepIp": "", "bd": "", "flags":
-    "permanent", "timestamp": 1609296106279}, {"namespace": "nxos", "hostname": "server302",
-    "macaddr": "33:33:ff:28:13:d5", "vlan": 0, "oif": "eth1", "remoteVtepIp": "",
-    "bd": "", "flags": "permanent", "timestamp": 1609296106279}, {"namespace": "nxos",
-    "hostname": "server302", "macaddr": "01:80:c2:00:00:02", "vlan": 0, "oif": "eth1",
-    "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1609296106279},
-    {"namespace": "nxos", "hostname": "server301", "macaddr": "33:33:00:00:00:01",
-    "vlan": 0, "oif": "bond0", "remoteVtepIp": "", "bd": "", "flags": "permanent",
-    "timestamp": 1609296106279}, {"namespace": "nxos", "hostname": "server301", "macaddr":
-    "01:00:5e:00:00:01", "vlan": 0, "oif": "bond0", "remoteVtepIp": "", "bd": "",
+    {"namespace": "nxos", "hostname": "server102", "vlan": 0, "macaddr": "01:00:5e:00:00:01",
+    "oif": "eth0", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp":
+    1609296106167}, {"namespace": "nxos", "hostname": "server101", "vlan": 0, "macaddr":
+    "33:33:ff:88:ee:6a", "oif": "bond0", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "timestamp": 1609296106205}, {"namespace": "nxos", "hostname": "server101", "vlan":
+    0, "macaddr": "01:80:c2:00:00:0e", "oif": "bond0", "remoteVtepIp": "", "bd": "",
+    "flags": "permanent", "timestamp": 1609296106205}, {"namespace": "nxos", "hostname":
+    "server101", "vlan": 0, "macaddr": "01:80:c2:00:00:03", "oif": "bond0", "remoteVtepIp":
+    "", "bd": "", "flags": "permanent", "timestamp": 1609296106205}, {"namespace":
+    "nxos", "hostname": "server101", "vlan": 0, "macaddr": "01:00:5e:00:00:01", "oif":
+    "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1609296106205},
+    {"namespace": "nxos", "hostname": "server101", "vlan": 0, "macaddr": "01:00:5e:00:00:01",
+    "oif": "bond0", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp":
+    1609296106205}, {"namespace": "nxos", "hostname": "server101", "vlan": 0, "macaddr":
+    "33:33:00:00:00:01", "oif": "bond0", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "timestamp": 1609296106205}, {"namespace": "nxos", "hostname": "server101", "vlan":
+    0, "macaddr": "33:33:ff:88:ee:6a", "oif": "eth2", "remoteVtepIp": "", "bd": "",
+    "flags": "permanent", "timestamp": 1609296106205}, {"namespace": "nxos", "hostname":
+    "server101", "vlan": 0, "macaddr": "01:80:c2:00:00:0e", "oif": "eth2", "remoteVtepIp":
+    "", "bd": "", "flags": "permanent", "timestamp": 1609296106205}, {"namespace":
+    "nxos", "hostname": "server101", "vlan": 0, "macaddr": "01:80:c2:00:00:03", "oif":
+    "eth2", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1609296106205},
+    {"namespace": "nxos", "hostname": "server101", "vlan": 0, "macaddr": "01:80:c2:00:00:00",
+    "oif": "eth2", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp":
+    1609296106205}, {"namespace": "nxos", "hostname": "server101", "vlan": 0, "macaddr":
+    "01:80:c2:00:00:02", "oif": "eth2", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "timestamp": 1609296106205}, {"namespace": "nxos", "hostname": "server101", "vlan":
+    0, "macaddr": "01:80:c2:00:00:0e", "oif": "eth0", "remoteVtepIp": "", "bd": "",
+    "flags": "permanent", "timestamp": 1609296106205}, {"namespace": "nxos", "hostname":
+    "server101", "vlan": 0, "macaddr": "01:00:5e:00:00:01", "oif": "eth2", "remoteVtepIp":
+    "", "bd": "", "flags": "permanent", "timestamp": 1609296106205}, {"namespace":
+    "nxos", "hostname": "server101", "vlan": 0, "macaddr": "33:33:00:00:00:01", "oif":
+    "eth2", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1609296106205},
+    {"namespace": "nxos", "hostname": "server101", "vlan": 0, "macaddr": "01:80:c2:00:00:03",
+    "oif": "eth0", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp":
+    1609296106205}, {"namespace": "nxos", "hostname": "server101", "vlan": 0, "macaddr":
+    "01:80:c2:00:00:00", "oif": "eth0", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "timestamp": 1609296106205}, {"namespace": "nxos", "hostname": "server101", "vlan":
+    0, "macaddr": "33:33:ff:3e:85:36", "oif": "eth0", "remoteVtepIp": "", "bd": "",
+    "flags": "permanent", "timestamp": 1609296106205}, {"namespace": "nxos", "hostname":
+    "server101", "vlan": 0, "macaddr": "33:33:00:00:00:01", "oif": "eth0", "remoteVtepIp":
+    "", "bd": "", "flags": "permanent", "timestamp": 1609296106205}, {"namespace":
+    "nxos", "hostname": "server101", "vlan": 0, "macaddr": "01:00:5e:00:00:01", "oif":
+    "eth0", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1609296106205},
+    {"namespace": "nxos", "hostname": "server101", "vlan": 0, "macaddr": "01:80:c2:00:00:00",
+    "oif": "bond0", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp":
+    1609296106205}, {"namespace": "nxos", "hostname": "server101", "vlan": 0, "macaddr":
+    "01:80:c2:00:00:02", "oif": "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "timestamp": 1609296106205}, {"namespace": "nxos", "hostname": "server101", "vlan":
+    0, "macaddr": "01:80:c2:00:00:00", "oif": "eth1", "remoteVtepIp": "", "bd": "",
+    "flags": "permanent", "timestamp": 1609296106205}, {"namespace": "nxos", "hostname":
+    "server101", "vlan": 0, "macaddr": "01:80:c2:00:00:03", "oif": "eth1", "remoteVtepIp":
+    "", "bd": "", "flags": "permanent", "timestamp": 1609296106205}, {"namespace":
+    "nxos", "hostname": "server101", "vlan": 0, "macaddr": "01:80:c2:00:00:0e", "oif":
+    "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1609296106205},
+    {"namespace": "nxos", "hostname": "server101", "vlan": 0, "macaddr": "33:33:ff:88:ee:6a",
+    "oif": "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp":
+    1609296106205}, {"namespace": "nxos", "hostname": "server101", "vlan": 0, "macaddr":
+    "33:33:00:00:00:01", "oif": "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "timestamp": 1609296106205}, {"namespace": "nxos", "hostname": "server301", "vlan":
+    0, "macaddr": "33:33:00:00:00:01", "oif": "eth2", "remoteVtepIp": "", "bd": "",
     "flags": "permanent", "timestamp": 1609296106279}, {"namespace": "nxos", "hostname":
-    "server301", "macaddr": "01:80:c2:00:00:00", "vlan": 0, "oif": "bond0", "remoteVtepIp":
+    "server301", "vlan": 0, "macaddr": "01:00:5e:00:00:01", "oif": "eth2", "remoteVtepIp":
     "", "bd": "", "flags": "permanent", "timestamp": 1609296106279}, {"namespace":
-    "nxos", "hostname": "server301", "macaddr": "01:80:c2:00:00:0e", "vlan": 0, "oif":
-    "bond0", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1609296106279},
-    {"namespace": "nxos", "hostname": "server301", "macaddr": "33:33:ff:7e:34:c0",
-    "vlan": 0, "oif": "bond0", "remoteVtepIp": "", "bd": "", "flags": "permanent",
-    "timestamp": 1609296106279}, {"namespace": "nxos", "hostname": "server301", "macaddr":
-    "01:80:c2:00:00:03", "vlan": 0, "oif": "bond0", "remoteVtepIp": "", "bd": "",
+    "nxos", "hostname": "server301", "vlan": 0, "macaddr": "33:33:ff:7e:34:c0", "oif":
+    "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1609296106279},
+    {"namespace": "nxos", "hostname": "server301", "vlan": 0, "macaddr": "01:80:c2:00:00:0e",
+    "oif": "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp":
+    1609296106279}, {"namespace": "nxos", "hostname": "server301", "vlan": 0, "macaddr":
+    "01:80:c2:00:00:03", "oif": "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "timestamp": 1609296106279}, {"namespace": "nxos", "hostname": "server301", "vlan":
+    0, "macaddr": "01:80:c2:00:00:00", "oif": "eth1", "remoteVtepIp": "", "bd": "",
     "flags": "permanent", "timestamp": 1609296106279}, {"namespace": "nxos", "hostname":
-    "server302", "macaddr": "33:33:ff:97:36:2e", "vlan": 0, "oif": "eth0", "remoteVtepIp":
+    "server301", "vlan": 0, "macaddr": "01:80:c2:00:00:02", "oif": "eth1", "remoteVtepIp":
     "", "bd": "", "flags": "permanent", "timestamp": 1609296106279}, {"namespace":
-    "nxos", "hostname": "server302", "macaddr": "01:80:c2:00:00:00", "vlan": 0, "oif":
+    "nxos", "hostname": "server301", "vlan": 0, "macaddr": "01:80:c2:00:00:0e", "oif":
     "eth0", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1609296106279},
-    {"namespace": "nxos", "hostname": "server302", "macaddr": "01:80:c2:00:00:03",
-    "vlan": 0, "oif": "eth0", "remoteVtepIp": "", "bd": "", "flags": "permanent",
-    "timestamp": 1609296106279}, {"namespace": "nxos", "hostname": "server302", "macaddr":
-    "01:80:c2:00:00:0e", "vlan": 0, "oif": "eth0", "remoteVtepIp": "", "bd": "", "flags":
-    "permanent", "timestamp": 1609296106279}, {"namespace": "nxos", "hostname": "server302",
-    "macaddr": "01:00:5e:00:00:01", "vlan": 0, "oif": "eth1", "remoteVtepIp": "",
-    "bd": "", "flags": "permanent", "timestamp": 1609296106279}, {"namespace": "nxos",
-    "hostname": "server302", "macaddr": "33:33:00:00:00:01", "vlan": 0, "oif": "eth0",
-    "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1609296106279},
-    {"namespace": "nxos", "hostname": "firewall01", "macaddr": "33:33:ff:e7:73:6f",
-    "vlan": 0, "oif": "eth0", "remoteVtepIp": "", "bd": "", "flags": "permanent",
-    "timestamp": 1609296106736}, {"namespace": "nxos", "hostname": "firewall01", "macaddr":
-    "01:80:c2:00:00:00", "vlan": 0, "oif": "eth0", "remoteVtepIp": "", "bd": "", "flags":
-    "permanent", "timestamp": 1609296106736}, {"namespace": "nxos", "hostname": "firewall01",
-    "macaddr": "01:80:c2:00:00:03", "vlan": 0, "oif": "eth0", "remoteVtepIp": "",
-    "bd": "", "flags": "permanent", "timestamp": 1609296106736}, {"namespace": "nxos",
-    "hostname": "firewall01", "macaddr": "01:80:c2:00:00:0e", "vlan": 0, "oif": "eth0",
-    "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1609296106736},
-    {"namespace": "nxos", "hostname": "firewall01", "macaddr": "33:33:00:00:00:02",
-    "vlan": 0, "oif": "eth2", "remoteVtepIp": "", "bd": "", "flags": "permanent",
-    "timestamp": 1609296106736}, {"namespace": "nxos", "hostname": "firewall01", "macaddr":
-    "01:80:c2:00:00:21", "vlan": 0, "oif": "eth2", "remoteVtepIp": "", "bd": "", "flags":
-    "permanent", "timestamp": 1609296106736}, {"namespace": "nxos", "hostname": "firewall01",
-    "macaddr": "01:00:5e:00:00:01", "vlan": 0, "oif": "eth2", "remoteVtepIp": "",
-    "bd": "", "flags": "permanent", "timestamp": 1609296106736}, {"namespace": "nxos",
-    "hostname": "firewall01", "macaddr": "33:33:00:00:00:01", "vlan": 0, "oif": "eth1",
-    "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1609296106736},
-    {"namespace": "nxos", "hostname": "dcedge01", "macaddr": "None", "vlan": 0, "oif":
-    "None", "remoteVtepIp": "", "bd": "", "flags": "", "timestamp": 1609296109313},
-    {"namespace": "nxos", "hostname": "spine02", "macaddr": "44:01:01:02:1b:08", "vlan":
-    0, "oif": "sup-eth1(R)", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp":
-    1609296114455}, {"namespace": "nxos", "hostname": "spine01", "macaddr": "44:01:01:01:1b:08",
-    "vlan": 0, "oif": "sup-eth1(R)", "remoteVtepIp": "", "bd": "", "flags": "static",
-    "timestamp": 1609296114558}, {"namespace": "nxos", "hostname": "exit01", "macaddr":
-    "44:01:02:01:1b:08", "vlan": 999, "oif": "nve1", "remoteVtepIp": "10.0.0.112",
-    "bd": "", "flags": "remote", "timestamp": 1609296115600}, {"namespace": "nxos",
-    "hostname": "exit01", "macaddr": "44:01:02:04:1b:08", "vlan": 999, "oif": "nve1",
-    "remoteVtepIp": "10.0.0.134", "bd": "", "flags": "remote", "timestamp": 1609296115600},
-    {"namespace": "nxos", "hostname": "exit01", "macaddr": "44:01:03:02:1b:08", "vlan":
-    999, "oif": "nve1", "remoteVtepIp": "10.0.0.222", "bd": "", "flags": "remote",
-    "timestamp": 1609296115600}, {"namespace": "nxos", "hostname": "exit01", "macaddr":
-    "00:00:00:11:12:10", "vlan": 0, "oif": "sup-eth1(R)", "remoteVtepIp": "", "bd":
-    "", "flags": "static", "timestamp": 1609296115600}, {"namespace": "nxos", "hostname":
-    "exit01", "macaddr": "44:01:03:01:1b:08", "vlan": 0, "oif": "sup-eth1(R)", "remoteVtepIp":
+    {"namespace": "nxos", "hostname": "server301", "vlan": 0, "macaddr": "01:00:5e:00:00:01",
+    "oif": "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp":
+    1609296106279}, {"namespace": "nxos", "hostname": "server301", "vlan": 0, "macaddr":
+    "01:80:c2:00:00:03", "oif": "eth0", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "timestamp": 1609296106279}, {"namespace": "nxos", "hostname": "server301", "vlan":
+    0, "macaddr": "01:80:c2:00:00:00", "oif": "eth0", "remoteVtepIp": "", "bd": "",
+    "flags": "permanent", "timestamp": 1609296106279}, {"namespace": "nxos", "hostname":
+    "server301", "vlan": 0, "macaddr": "33:33:ff:ce:86:f7", "oif": "eth0", "remoteVtepIp":
+    "", "bd": "", "flags": "permanent", "timestamp": 1609296106279}, {"namespace":
+    "nxos", "hostname": "server301", "vlan": 0, "macaddr": "01:00:5e:00:00:01", "oif":
+    "eth0", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1609296106279},
+    {"namespace": "nxos", "hostname": "server301", "vlan": 0, "macaddr": "01:80:c2:00:00:02",
+    "oif": "eth2", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp":
+    1609296106279}, {"namespace": "nxos", "hostname": "server301", "vlan": 0, "macaddr":
+    "33:33:00:00:00:01", "oif": "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "timestamp": 1609296106279}, {"namespace": "nxos", "hostname": "server301", "vlan":
+    0, "macaddr": "33:33:00:00:00:01", "oif": "eth0", "remoteVtepIp": "", "bd": "",
+    "flags": "permanent", "timestamp": 1609296106279}, {"namespace": "nxos", "hostname":
+    "server301", "vlan": 0, "macaddr": "01:80:c2:00:00:00", "oif": "eth2", "remoteVtepIp":
+    "", "bd": "", "flags": "permanent", "timestamp": 1609296106279}, {"namespace":
+    "nxos", "hostname": "server301", "vlan": 0, "macaddr": "01:80:c2:00:00:0e", "oif":
+    "eth2", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1609296106279},
+    {"namespace": "nxos", "hostname": "server302", "vlan": 0, "macaddr": "33:33:ff:28:13:d5",
+    "oif": "bond0", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp":
+    1609296106279}, {"namespace": "nxos", "hostname": "server302", "vlan": 0, "macaddr":
+    "01:80:c2:00:00:03", "oif": "bond0", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "timestamp": 1609296106279}, {"namespace": "nxos", "hostname": "server302", "vlan":
+    0, "macaddr": "01:80:c2:00:00:00", "oif": "bond0", "remoteVtepIp": "", "bd": "",
+    "flags": "permanent", "timestamp": 1609296106279}, {"namespace": "nxos", "hostname":
+    "server302", "vlan": 0, "macaddr": "01:00:5e:00:00:01", "oif": "bond0", "remoteVtepIp":
+    "", "bd": "", "flags": "permanent", "timestamp": 1609296106279}, {"namespace":
+    "nxos", "hostname": "server302", "vlan": 0, "macaddr": "33:33:00:00:00:01", "oif":
+    "bond0", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1609296106279},
+    {"namespace": "nxos", "hostname": "server302", "vlan": 0, "macaddr": "33:33:ff:28:13:d5",
+    "oif": "eth2", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp":
+    1609296106279}, {"namespace": "nxos", "hostname": "server302", "vlan": 0, "macaddr":
+    "01:80:c2:00:00:0e", "oif": "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "timestamp": 1609296106279}, {"namespace": "nxos", "hostname": "server302", "vlan":
+    0, "macaddr": "01:80:c2:00:00:0e", "oif": "eth2", "remoteVtepIp": "", "bd": "",
+    "flags": "permanent", "timestamp": 1609296106279}, {"namespace": "nxos", "hostname":
+    "server302", "vlan": 0, "macaddr": "01:80:c2:00:00:00", "oif": "eth2", "remoteVtepIp":
+    "", "bd": "", "flags": "permanent", "timestamp": 1609296106279}, {"namespace":
+    "nxos", "hostname": "server302", "vlan": 0, "macaddr": "01:80:c2:00:00:02", "oif":
+    "eth2", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1609296106279},
+    {"namespace": "nxos", "hostname": "server302", "vlan": 0, "macaddr": "33:33:00:00:00:01",
+    "oif": "eth2", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp":
+    1609296106279}, {"namespace": "nxos", "hostname": "server302", "vlan": 0, "macaddr":
+    "01:00:5e:00:00:01", "oif": "eth2", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "timestamp": 1609296106279}, {"namespace": "nxos", "hostname": "server301", "vlan":
+    0, "macaddr": "01:80:c2:00:00:03", "oif": "eth2", "remoteVtepIp": "", "bd": "",
+    "flags": "permanent", "timestamp": 1609296106279}, {"namespace": "nxos", "hostname":
+    "server302", "vlan": 0, "macaddr": "33:33:ff:28:13:d5", "oif": "eth1", "remoteVtepIp":
+    "", "bd": "", "flags": "permanent", "timestamp": 1609296106279}, {"namespace":
+    "nxos", "hostname": "server302", "vlan": 0, "macaddr": "01:80:c2:00:00:03", "oif":
+    "eth2", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1609296106279},
+    {"namespace": "nxos", "hostname": "server302", "vlan": 0, "macaddr": "01:80:c2:00:00:03",
+    "oif": "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp":
+    1609296106279}, {"namespace": "nxos", "hostname": "server302", "vlan": 0, "macaddr":
+    "01:80:c2:00:00:0e", "oif": "bond0", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "timestamp": 1609296106279}, {"namespace": "nxos", "hostname": "server302", "vlan":
+    0, "macaddr": "01:80:c2:00:00:02", "oif": "eth1", "remoteVtepIp": "", "bd": "",
+    "flags": "permanent", "timestamp": 1609296106279}, {"namespace": "nxos", "hostname":
+    "server301", "vlan": 0, "macaddr": "33:33:ff:7e:34:c0", "oif": "eth2", "remoteVtepIp":
+    "", "bd": "", "flags": "permanent", "timestamp": 1609296106279}, {"namespace":
+    "nxos", "hostname": "server301", "vlan": 0, "macaddr": "33:33:00:00:00:01", "oif":
+    "bond0", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1609296106279},
+    {"namespace": "nxos", "hostname": "server301", "vlan": 0, "macaddr": "01:00:5e:00:00:01",
+    "oif": "bond0", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp":
+    1609296106279}, {"namespace": "nxos", "hostname": "server301", "vlan": 0, "macaddr":
+    "01:80:c2:00:00:00", "oif": "bond0", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "timestamp": 1609296106279}, {"namespace": "nxos", "hostname": "server302", "vlan":
+    0, "macaddr": "01:80:c2:00:00:00", "oif": "eth1", "remoteVtepIp": "", "bd": "",
+    "flags": "permanent", "timestamp": 1609296106279}, {"namespace": "nxos", "hostname":
+    "server301", "vlan": 0, "macaddr": "01:80:c2:00:00:0e", "oif": "bond0", "remoteVtepIp":
+    "", "bd": "", "flags": "permanent", "timestamp": 1609296106279}, {"namespace":
+    "nxos", "hostname": "server301", "vlan": 0, "macaddr": "33:33:ff:7e:34:c0", "oif":
+    "bond0", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1609296106279},
+    {"namespace": "nxos", "hostname": "server302", "vlan": 0, "macaddr": "01:00:5e:00:00:01",
+    "oif": "eth0", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp":
+    1609296106279}, {"namespace": "nxos", "hostname": "server301", "vlan": 0, "macaddr":
+    "01:80:c2:00:00:03", "oif": "bond0", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "timestamp": 1609296106279}, {"namespace": "nxos", "hostname": "server302", "vlan":
+    0, "macaddr": "33:33:ff:97:36:2e", "oif": "eth0", "remoteVtepIp": "", "bd": "",
+    "flags": "permanent", "timestamp": 1609296106279}, {"namespace": "nxos", "hostname":
+    "server302", "vlan": 0, "macaddr": "01:80:c2:00:00:00", "oif": "eth0", "remoteVtepIp":
+    "", "bd": "", "flags": "permanent", "timestamp": 1609296106279}, {"namespace":
+    "nxos", "hostname": "server302", "vlan": 0, "macaddr": "01:80:c2:00:00:03", "oif":
+    "eth0", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1609296106279},
+    {"namespace": "nxos", "hostname": "server302", "vlan": 0, "macaddr": "01:80:c2:00:00:0e",
+    "oif": "eth0", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp":
+    1609296106279}, {"namespace": "nxos", "hostname": "server302", "vlan": 0, "macaddr":
+    "01:00:5e:00:00:01", "oif": "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "timestamp": 1609296106279}, {"namespace": "nxos", "hostname": "server302", "vlan":
+    0, "macaddr": "33:33:00:00:00:01", "oif": "eth1", "remoteVtepIp": "", "bd": "",
+    "flags": "permanent", "timestamp": 1609296106279}, {"namespace": "nxos", "hostname":
+    "server302", "vlan": 0, "macaddr": "33:33:00:00:00:01", "oif": "eth0", "remoteVtepIp":
+    "", "bd": "", "flags": "permanent", "timestamp": 1609296106279}, {"namespace":
+    "nxos", "hostname": "firewall01", "vlan": 0, "macaddr": "01:00:5e:00:00:01", "oif":
+    "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1609296106736},
+    {"namespace": "nxos", "hostname": "firewall01", "vlan": 0, "macaddr": "01:00:5e:00:00:01",
+    "oif": "eth0", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp":
+    1609296106736}, {"namespace": "nxos", "hostname": "firewall01", "vlan": 0, "macaddr":
+    "33:33:00:00:00:01", "oif": "eth0", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "timestamp": 1609296106736}, {"namespace": "nxos", "hostname": "firewall01", "vlan":
+    0, "macaddr": "33:33:ff:e7:73:6f", "oif": "eth0", "remoteVtepIp": "", "bd": "",
+    "flags": "permanent", "timestamp": 1609296106736}, {"namespace": "nxos", "hostname":
+    "firewall01", "vlan": 0, "macaddr": "01:80:c2:00:00:00", "oif": "eth0", "remoteVtepIp":
+    "", "bd": "", "flags": "permanent", "timestamp": 1609296106736}, {"namespace":
+    "nxos", "hostname": "firewall01", "vlan": 0, "macaddr": "01:80:c2:00:00:03", "oif":
+    "eth0", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1609296106736},
+    {"namespace": "nxos", "hostname": "firewall01", "vlan": 0, "macaddr": "01:80:c2:00:00:0e",
+    "oif": "eth0", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp":
+    1609296106736}, {"namespace": "nxos", "hostname": "firewall01", "vlan": 0, "macaddr":
+    "01:80:c2:00:00:21", "oif": "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "timestamp": 1609296106736}, {"namespace": "nxos", "hostname": "firewall01", "vlan":
+    0, "macaddr": "01:00:5e:00:00:01", "oif": "eth1.3", "remoteVtepIp": "", "bd":
+    "", "flags": "permanent", "timestamp": 1609296106736}, {"namespace": "nxos", "hostname":
+    "firewall01", "vlan": 0, "macaddr": "33:33:00:00:00:02", "oif": "eth1", "remoteVtepIp":
+    "", "bd": "", "flags": "permanent", "timestamp": 1609296106736}, {"namespace":
+    "nxos", "hostname": "firewall01", "vlan": 0, "macaddr": "33:33:00:00:00:02", "oif":
+    "eth2.4", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1609296106736},
+    {"namespace": "nxos", "hostname": "firewall01", "vlan": 0, "macaddr": "01:00:5e:00:00:01",
+    "oif": "eth2.4", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp":
+    1609296106736}, {"namespace": "nxos", "hostname": "firewall01", "vlan": 0, "macaddr":
+    "33:33:00:00:00:01", "oif": "eth2.4", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "timestamp": 1609296106736}, {"namespace": "nxos", "hostname": "firewall01", "vlan":
+    0, "macaddr": "33:33:00:00:00:02", "oif": "eth2.3", "remoteVtepIp": "", "bd":
+    "", "flags": "permanent", "timestamp": 1609296106736}, {"namespace": "nxos", "hostname":
+    "firewall01", "vlan": 0, "macaddr": "01:00:5e:00:00:01", "oif": "eth2.3", "remoteVtepIp":
+    "", "bd": "", "flags": "permanent", "timestamp": 1609296106736}, {"namespace":
+    "nxos", "hostname": "firewall01", "vlan": 0, "macaddr": "33:33:00:00:00:01", "oif":
+    "eth2.3", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1609296106736},
+    {"namespace": "nxos", "hostname": "firewall01", "vlan": 0, "macaddr": "33:33:00:00:00:02",
+    "oif": "eth2.2", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp":
+    1609296106736}, {"namespace": "nxos", "hostname": "firewall01", "vlan": 0, "macaddr":
+    "01:00:5e:00:00:01", "oif": "eth2.2", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "timestamp": 1609296106736}, {"namespace": "nxos", "hostname": "firewall01", "vlan":
+    0, "macaddr": "33:33:00:00:00:01", "oif": "eth2.2", "remoteVtepIp": "", "bd":
+    "", "flags": "permanent", "timestamp": 1609296106736}, {"namespace": "nxos", "hostname":
+    "firewall01", "vlan": 0, "macaddr": "33:33:00:00:00:02", "oif": "eth1.4", "remoteVtepIp":
+    "", "bd": "", "flags": "permanent", "timestamp": 1609296106736}, {"namespace":
+    "nxos", "hostname": "firewall01", "vlan": 0, "macaddr": "01:00:5e:00:00:01", "oif":
+    "eth1.4", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1609296106736},
+    {"namespace": "nxos", "hostname": "firewall01", "vlan": 0, "macaddr": "33:33:00:00:00:01",
+    "oif": "eth1.4", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp":
+    1609296106736}, {"namespace": "nxos", "hostname": "firewall01", "vlan": 0, "macaddr":
+    "33:33:00:00:00:02", "oif": "eth1.3", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "timestamp": 1609296106736}, {"namespace": "nxos", "hostname": "firewall01", "vlan":
+    0, "macaddr": "33:33:00:00:00:01", "oif": "eth1.3", "remoteVtepIp": "", "bd":
+    "", "flags": "permanent", "timestamp": 1609296106736}, {"namespace": "nxos", "hostname":
+    "firewall01", "vlan": 0, "macaddr": "33:33:00:00:00:02", "oif": "eth1.2", "remoteVtepIp":
+    "", "bd": "", "flags": "permanent", "timestamp": 1609296106736}, {"namespace":
+    "nxos", "hostname": "firewall01", "vlan": 0, "macaddr": "01:00:5e:00:00:01", "oif":
+    "eth1.2", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1609296106736},
+    {"namespace": "nxos", "hostname": "firewall01", "vlan": 0, "macaddr": "33:33:00:00:00:01",
+    "oif": "eth1.2", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp":
+    1609296106736}, {"namespace": "nxos", "hostname": "firewall01", "vlan": 0, "macaddr":
+    "33:33:00:00:00:02", "oif": "eth2", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "timestamp": 1609296106736}, {"namespace": "nxos", "hostname": "firewall01", "vlan":
+    0, "macaddr": "33:33:00:00:00:01", "oif": "eth2", "remoteVtepIp": "", "bd": "",
+    "flags": "permanent", "timestamp": 1609296106736}, {"namespace": "nxos", "hostname":
+    "firewall01", "vlan": 0, "macaddr": "01:80:c2:00:00:21", "oif": "eth2", "remoteVtepIp":
+    "", "bd": "", "flags": "permanent", "timestamp": 1609296106736}, {"namespace":
+    "nxos", "hostname": "firewall01", "vlan": 0, "macaddr": "01:00:5e:00:00:01", "oif":
+    "eth2", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp": 1609296106736},
+    {"namespace": "nxos", "hostname": "firewall01", "vlan": 0, "macaddr": "33:33:00:00:00:01",
+    "oif": "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp":
+    1609296106736}, {"namespace": "nxos", "hostname": "dcedge01", "vlan": 0, "macaddr":
+    "None", "oif": "None", "remoteVtepIp": "", "bd": "", "flags": "", "timestamp":
+    1609296109313}, {"namespace": "nxos", "hostname": "spine02", "vlan": 0, "macaddr":
+    "44:01:01:02:1b:08", "oif": "sup-eth1(R)", "remoteVtepIp": "", "bd": "", "flags":
+    "static", "timestamp": 1609296114455}, {"namespace": "nxos", "hostname": "spine01",
+    "vlan": 0, "macaddr": "44:01:01:01:1b:08", "oif": "sup-eth1(R)", "remoteVtepIp":
+    "", "bd": "", "flags": "static", "timestamp": 1609296114558}, {"namespace": "nxos",
+    "hostname": "exit01", "vlan": 999, "macaddr": "44:01:02:01:1b:08", "oif": "nve1",
+    "remoteVtepIp": "10.0.0.112", "bd": "", "flags": "remote", "timestamp": 1609296115600},
+    {"namespace": "nxos", "hostname": "exit01", "vlan": 999, "macaddr": "44:01:02:04:1b:08",
+    "oif": "nve1", "remoteVtepIp": "10.0.0.134", "bd": "", "flags": "remote", "timestamp":
+    1609296115600}, {"namespace": "nxos", "hostname": "exit01", "vlan": 999, "macaddr":
+    "44:01:03:02:1b:08", "oif": "nve1", "remoteVtepIp": "10.0.0.222", "bd": "", "flags":
+    "remote", "timestamp": 1609296115600}, {"namespace": "nxos", "hostname": "exit01",
+    "vlan": 0, "macaddr": "00:00:00:11:12:10", "oif": "sup-eth1(R)", "remoteVtepIp":
     "", "bd": "", "flags": "static", "timestamp": 1609296115600}, {"namespace": "nxos",
-    "hostname": "exit01", "macaddr": "44:01:03:01:1b:08", "vlan": 999, "oif": "sup-eth1(R)",
+    "hostname": "exit01", "vlan": 0, "macaddr": "44:01:03:01:1b:08", "oif": "sup-eth1(R)",
     "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp": 1609296115600},
-    {"namespace": "nxos", "hostname": "exit02", "macaddr": "44:01:03:02:1b:08", "vlan":
-    0, "oif": "sup-eth1(R)", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp":
-    1609296117257}, {"namespace": "nxos", "hostname": "exit02", "macaddr": "00:00:00:11:12:10",
-    "vlan": 0, "oif": "sup-eth1(R)", "remoteVtepIp": "", "bd": "", "flags": "static",
-    "timestamp": 1609296117257}, {"namespace": "nxos", "hostname": "exit02", "macaddr":
-    "44:01:03:02:1b:08", "vlan": 999, "oif": "sup-eth1(R)", "remoteVtepIp": "", "bd":
-    "", "flags": "static", "timestamp": 1609296117257}, {"namespace": "nxos", "hostname":
-    "exit02", "macaddr": "44:01:02:04:1b:08", "vlan": 999, "oif": "nve1", "remoteVtepIp":
-    "10.0.0.134", "bd": "", "flags": "remote", "timestamp": 1609296117257}, {"namespace":
-    "nxos", "hostname": "exit02", "macaddr": "44:01:02:01:1b:08", "vlan": 999, "oif":
-    "nve1", "remoteVtepIp": "10.0.0.112", "bd": "", "flags": "remote", "timestamp":
-    1609296117257}, {"namespace": "nxos", "hostname": "exit02", "macaddr": "44:01:03:01:1b:08",
-    "vlan": 999, "oif": "nve1", "remoteVtepIp": "10.0.0.221", "bd": "", "flags": "remote",
-    "timestamp": 1609296117257}, {"namespace": "nxos", "hostname": "leaf02", "macaddr":
-    "44:01:02:02:1b:08", "vlan": 10, "oif": "sup-eth1(R)", "remoteVtepIp": "", "bd":
-    "", "flags": "static", "timestamp": 1609296117492}, {"namespace": "nxos", "hostname":
-    "leaf02", "macaddr": "44:01:02:02:1b:08", "vlan": 0, "oif": "sup-eth1(R)", "remoteVtepIp":
-    "", "bd": "", "flags": "static", "timestamp": 1609296117492}, {"namespace": "nxos",
-    "hostname": "leaf02", "macaddr": "44:01:02:01:1b:08", "vlan": 999, "oif": "vPC
-    Peer-Link(R)", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp": 1609296117492},
-    {"namespace": "nxos", "hostname": "leaf02", "macaddr": "44:01:02:01:1b:08", "vlan":
-    30, "oif": "vPC Peer-Link(R)", "remoteVtepIp": "", "bd": "", "flags": "static",
-    "timestamp": 1609296117492}, {"namespace": "nxos", "hostname": "leaf02", "macaddr":
-    "44:01:02:01:1b:08", "vlan": 10, "oif": "vPC Peer-Link(R)", "remoteVtepIp": "",
-    "bd": "", "flags": "static", "timestamp": 1609296117492}, {"namespace": "nxos",
-    "hostname": "leaf02", "macaddr": "00:00:00:11:12:10", "vlan": 0, "oif": "sup-eth1(R)",
+    {"namespace": "nxos", "hostname": "exit01", "vlan": 999, "macaddr": "44:01:03:01:1b:08",
+    "oif": "sup-eth1(R)", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp":
+    1609296115600}, {"namespace": "nxos", "hostname": "exit02", "vlan": 0, "macaddr":
+    "44:01:03:02:1b:08", "oif": "sup-eth1(R)", "remoteVtepIp": "", "bd": "", "flags":
+    "static", "timestamp": 1609296117257}, {"namespace": "nxos", "hostname": "exit02",
+    "vlan": 0, "macaddr": "00:00:00:11:12:10", "oif": "sup-eth1(R)", "remoteVtepIp":
+    "", "bd": "", "flags": "static", "timestamp": 1609296117257}, {"namespace": "nxos",
+    "hostname": "exit02", "vlan": 999, "macaddr": "44:01:03:02:1b:08", "oif": "sup-eth1(R)",
+    "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp": 1609296117257},
+    {"namespace": "nxos", "hostname": "exit02", "vlan": 999, "macaddr": "44:01:02:04:1b:08",
+    "oif": "nve1", "remoteVtepIp": "10.0.0.134", "bd": "", "flags": "remote", "timestamp":
+    1609296117257}, {"namespace": "nxos", "hostname": "exit02", "vlan": 999, "macaddr":
+    "44:01:02:01:1b:08", "oif": "nve1", "remoteVtepIp": "10.0.0.112", "bd": "", "flags":
+    "remote", "timestamp": 1609296117257}, {"namespace": "nxos", "hostname": "exit02",
+    "vlan": 999, "macaddr": "44:01:03:01:1b:08", "oif": "nve1", "remoteVtepIp": "10.0.0.221",
+    "bd": "", "flags": "remote", "timestamp": 1609296117257}, {"namespace": "nxos",
+    "hostname": "leaf02", "vlan": 10, "macaddr": "44:01:02:02:1b:08", "oif": "sup-eth1(R)",
     "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp": 1609296117492},
-    {"namespace": "nxos", "hostname": "leaf02", "macaddr": "44:01:03:02:1b:08", "vlan":
-    999, "oif": "nve1", "remoteVtepIp": "10.0.0.222", "bd": "", "flags": "remote",
-    "timestamp": 1609296117492}, {"namespace": "nxos", "hostname": "leaf02", "macaddr":
-    "44:01:02:04:1b:08", "vlan": 999, "oif": "nve1", "remoteVtepIp": "10.0.0.134",
+    {"namespace": "nxos", "hostname": "leaf02", "vlan": 0, "macaddr": "44:01:02:02:1b:08",
+    "oif": "sup-eth1(R)", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp":
+    1609296117492}, {"namespace": "nxos", "hostname": "leaf02", "vlan": 999, "macaddr":
+    "44:01:02:01:1b:08", "oif": "vPC Peer-Link(R)", "remoteVtepIp": "", "bd": "",
+    "flags": "static", "timestamp": 1609296117492}, {"namespace": "nxos", "hostname":
+    "leaf02", "vlan": 30, "macaddr": "44:01:02:01:1b:08", "oif": "vPC Peer-Link(R)",
+    "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp": 1609296117492},
+    {"namespace": "nxos", "hostname": "leaf02", "vlan": 10, "macaddr": "44:01:02:01:1b:08",
+    "oif": "vPC Peer-Link(R)", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp":
+    1609296117492}, {"namespace": "nxos", "hostname": "leaf02", "vlan": 0, "macaddr":
+    "00:00:00:11:12:10", "oif": "sup-eth1(R)", "remoteVtepIp": "", "bd": "", "flags":
+    "static", "timestamp": 1609296117492}, {"namespace": "nxos", "hostname": "leaf02",
+    "vlan": 999, "macaddr": "44:01:03:02:1b:08", "oif": "nve1", "remoteVtepIp": "10.0.0.222",
     "bd": "", "flags": "remote", "timestamp": 1609296117492}, {"namespace": "nxos",
-    "hostname": "leaf02", "macaddr": "de:c7:5a:c4:f6:03", "vlan": 30, "oif": "port-channel4",
-    "remoteVtepIp": "", "bd": "", "flags": "dynamic", "timestamp": 1609296117492},
-    {"namespace": "nxos", "hostname": "leaf02", "macaddr": "96:b3:47:28:13:d5", "vlan":
-    30, "oif": "nve1", "remoteVtepIp": "10.0.0.134", "bd": "", "flags": "remote",
-    "timestamp": 1609296117492}, {"namespace": "nxos", "hostname": "leaf02", "macaddr":
-    "86:52:0e:88:ee:6a", "vlan": 10, "oif": "vPC Peer-Link", "remoteVtepIp": "", "bd":
-    "", "flags": "dynamic", "timestamp": 1609296117492}, {"namespace": "nxos", "hostname":
-    "leaf02", "macaddr": "44:01:02:02:1b:08", "vlan": 30, "oif": "sup-eth1(R)", "remoteVtepIp":
-    "", "bd": "", "flags": "static", "timestamp": 1609296117492}, {"namespace": "nxos",
-    "hostname": "leaf02", "macaddr": "44:01:03:01:1b:08", "vlan": 999, "oif": "nve1",
-    "remoteVtepIp": "10.0.0.221", "bd": "", "flags": "remote", "timestamp": 1609296117492},
-    {"namespace": "nxos", "hostname": "leaf02", "macaddr": "44:01:02:02:1b:08", "vlan":
-    999, "oif": "sup-eth1(R)", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp":
-    1609296117492}, {"namespace": "nxos", "hostname": "leaf04", "macaddr": "44:01:02:04:1b:08",
-    "vlan": 30, "oif": "sup-eth1(R)", "remoteVtepIp": "", "bd": "", "flags": "static",
-    "timestamp": 1609296118102}, {"namespace": "nxos", "hostname": "leaf04", "macaddr":
-    "ca:f2:c7:7e:34:c0", "vlan": 20, "oif": "port-channel3", "remoteVtepIp": "", "bd":
-    "", "flags": "dynamic", "timestamp": 1609296118102}, {"namespace": "nxos", "hostname":
-    "leaf04", "macaddr": "96:b3:47:28:13:d5", "vlan": 30, "oif": "port-channel4",
+    "hostname": "leaf02", "vlan": 999, "macaddr": "44:01:02:04:1b:08", "oif": "nve1",
+    "remoteVtepIp": "10.0.0.134", "bd": "", "flags": "remote", "timestamp": 1609296117492},
+    {"namespace": "nxos", "hostname": "leaf02", "vlan": 30, "macaddr": "de:c7:5a:c4:f6:03",
+    "oif": "port-channel4", "remoteVtepIp": "", "bd": "", "flags": "dynamic", "timestamp":
+    1609296117492}, {"namespace": "nxos", "hostname": "leaf02", "vlan": 30, "macaddr":
+    "96:b3:47:28:13:d5", "oif": "nve1", "remoteVtepIp": "10.0.0.134", "bd": "", "flags":
+    "remote", "timestamp": 1609296117492}, {"namespace": "nxos", "hostname": "leaf02",
+    "vlan": 10, "macaddr": "86:52:0e:88:ee:6a", "oif": "vPC Peer-Link", "remoteVtepIp":
+    "", "bd": "", "flags": "dynamic", "timestamp": 1609296117492}, {"namespace": "nxos",
+    "hostname": "leaf02", "vlan": 30, "macaddr": "44:01:02:02:1b:08", "oif": "sup-eth1(R)",
+    "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp": 1609296117492},
+    {"namespace": "nxos", "hostname": "leaf02", "vlan": 999, "macaddr": "44:01:03:01:1b:08",
+    "oif": "nve1", "remoteVtepIp": "10.0.0.221", "bd": "", "flags": "remote", "timestamp":
+    1609296117492}, {"namespace": "nxos", "hostname": "leaf02", "vlan": 999, "macaddr":
+    "44:01:02:02:1b:08", "oif": "sup-eth1(R)", "remoteVtepIp": "", "bd": "", "flags":
+    "static", "timestamp": 1609296117492}, {"namespace": "nxos", "hostname": "leaf04",
+    "vlan": 30, "macaddr": "44:01:02:04:1b:08", "oif": "sup-eth1(R)", "remoteVtepIp":
+    "", "bd": "", "flags": "static", "timestamp": 1609296118102}, {"namespace": "nxos",
+    "hostname": "leaf04", "vlan": 20, "macaddr": "ca:f2:c7:7e:34:c0", "oif": "port-channel3",
     "remoteVtepIp": "", "bd": "", "flags": "dynamic", "timestamp": 1609296118102},
-    {"namespace": "nxos", "hostname": "leaf04", "macaddr": "de:c7:5a:c4:f6:03", "vlan":
-    30, "oif": "nve1", "remoteVtepIp": "10.0.0.112", "bd": "", "flags": "remote",
-    "timestamp": 1609296118102}, {"namespace": "nxos", "hostname": "leaf04", "macaddr":
-    "44:01:02:01:1b:08", "vlan": 999, "oif": "nve1", "remoteVtepIp": "10.0.0.112",
+    {"namespace": "nxos", "hostname": "leaf04", "vlan": 30, "macaddr": "96:b3:47:28:13:d5",
+    "oif": "port-channel4", "remoteVtepIp": "", "bd": "", "flags": "dynamic", "timestamp":
+    1609296118102}, {"namespace": "nxos", "hostname": "leaf04", "vlan": 30, "macaddr":
+    "de:c7:5a:c4:f6:03", "oif": "nve1", "remoteVtepIp": "10.0.0.112", "bd": "", "flags":
+    "remote", "timestamp": 1609296118102}, {"namespace": "nxos", "hostname": "leaf04",
+    "vlan": 999, "macaddr": "44:01:02:01:1b:08", "oif": "nve1", "remoteVtepIp": "10.0.0.112",
     "bd": "", "flags": "remote", "timestamp": 1609296118102}, {"namespace": "nxos",
-    "hostname": "leaf04", "macaddr": "44:01:03:01:1b:08", "vlan": 999, "oif": "nve1",
+    "hostname": "leaf04", "vlan": 999, "macaddr": "44:01:03:01:1b:08", "oif": "nve1",
     "remoteVtepIp": "10.0.0.221", "bd": "", "flags": "remote", "timestamp": 1609296118102},
-    {"namespace": "nxos", "hostname": "leaf04", "macaddr": "44:01:03:02:1b:08", "vlan":
-    999, "oif": "nve1", "remoteVtepIp": "10.0.0.222", "bd": "", "flags": "remote",
-    "timestamp": 1609296118102}, {"namespace": "nxos", "hostname": "leaf04", "macaddr":
-    "44:01:02:04:1b:08", "vlan": 999, "oif": "Vlan999", "remoteVtepIp": "", "bd":
-    "", "flags": "static", "timestamp": 1609296118102}, {"namespace": "nxos", "hostname":
-    "leaf04", "macaddr": "44:01:02:03:1b:08", "vlan": 20, "oif": "vPC Peer-Link(R)",
+    {"namespace": "nxos", "hostname": "leaf04", "vlan": 999, "macaddr": "44:01:03:02:1b:08",
+    "oif": "nve1", "remoteVtepIp": "10.0.0.222", "bd": "", "flags": "remote", "timestamp":
+    1609296118102}, {"namespace": "nxos", "hostname": "leaf04", "vlan": 999, "macaddr":
+    "44:01:02:04:1b:08", "oif": "Vlan999", "remoteVtepIp": "", "bd": "", "flags":
+    "static", "timestamp": 1609296118102}, {"namespace": "nxos", "hostname": "leaf04",
+    "vlan": 20, "macaddr": "44:01:02:03:1b:08", "oif": "vPC Peer-Link(R)", "remoteVtepIp":
+    "", "bd": "", "flags": "static", "timestamp": 1609296118102}, {"namespace": "nxos",
+    "hostname": "leaf04", "vlan": 30, "macaddr": "44:01:02:03:1b:08", "oif": "vPC
+    Peer-Link(R)", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp": 1609296118102},
+    {"namespace": "nxos", "hostname": "leaf04", "vlan": 999, "macaddr": "44:01:02:03:1b:08",
+    "oif": "vPC Peer-Link(R)", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp":
+    1609296118102}, {"namespace": "nxos", "hostname": "leaf04", "vlan": 0, "macaddr":
+    "44:01:02:04:1b:08", "oif": "sup-eth1(R)", "remoteVtepIp": "", "bd": "", "flags":
+    "static", "timestamp": 1609296118102}, {"namespace": "nxos", "hostname": "leaf04",
+    "vlan": 20, "macaddr": "44:01:02:04:1b:08", "oif": "sup-eth1(R)", "remoteVtepIp":
+    "", "bd": "", "flags": "static", "timestamp": 1609296118102}, {"namespace": "nxos",
+    "hostname": "leaf04", "vlan": 0, "macaddr": "00:00:00:11:12:10", "oif": "sup-eth1(R)",
     "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp": 1609296118102},
-    {"namespace": "nxos", "hostname": "leaf04", "macaddr": "44:01:02:03:1b:08", "vlan":
-    30, "oif": "vPC Peer-Link(R)", "remoteVtepIp": "", "bd": "", "flags": "static",
-    "timestamp": 1609296118102}, {"namespace": "nxos", "hostname": "leaf04", "macaddr":
-    "44:01:02:03:1b:08", "vlan": 999, "oif": "vPC Peer-Link(R)", "remoteVtepIp": "",
-    "bd": "", "flags": "static", "timestamp": 1609296118102}, {"namespace": "nxos",
-    "hostname": "leaf04", "macaddr": "44:01:02:04:1b:08", "vlan": 0, "oif": "sup-eth1(R)",
-    "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp": 1609296118102},
-    {"namespace": "nxos", "hostname": "leaf04", "macaddr": "44:01:02:04:1b:08", "vlan":
-    20, "oif": "sup-eth1(R)", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp":
-    1609296118102}, {"namespace": "nxos", "hostname": "leaf04", "macaddr": "00:00:00:11:12:10",
-    "vlan": 0, "oif": "sup-eth1(R)", "remoteVtepIp": "", "bd": "", "flags": "static",
-    "timestamp": 1609296118102}, {"namespace": "nxos", "hostname": "leaf01", "macaddr":
-    "44:01:02:04:1b:08", "vlan": 999, "oif": "nve1", "remoteVtepIp": "10.0.0.134",
+    {"namespace": "nxos", "hostname": "leaf01", "vlan": 999, "macaddr": "44:01:02:04:1b:08",
+    "oif": "nve1", "remoteVtepIp": "10.0.0.134", "bd": "", "flags": "remote", "timestamp":
+    1609296118290}, {"namespace": "nxos", "hostname": "leaf01", "vlan": 10, "macaddr":
+    "86:52:0e:88:ee:6a", "oif": "port-channel3", "remoteVtepIp": "", "bd": "", "flags":
+    "dynamic", "timestamp": 1609296118290}, {"namespace": "nxos", "hostname": "leaf01",
+    "vlan": 30, "macaddr": "96:b3:47:28:13:d5", "oif": "nve1", "remoteVtepIp": "10.0.0.134",
     "bd": "", "flags": "remote", "timestamp": 1609296118290}, {"namespace": "nxos",
-    "hostname": "leaf01", "macaddr": "86:52:0e:88:ee:6a", "vlan": 10, "oif": "port-channel3",
+    "hostname": "leaf01", "vlan": 30, "macaddr": "de:c7:5a:c4:f6:03", "oif": "port-channel4",
     "remoteVtepIp": "", "bd": "", "flags": "dynamic", "timestamp": 1609296118290},
-    {"namespace": "nxos", "hostname": "leaf01", "macaddr": "96:b3:47:28:13:d5", "vlan":
-    30, "oif": "nve1", "remoteVtepIp": "10.0.0.134", "bd": "", "flags": "remote",
-    "timestamp": 1609296118290}, {"namespace": "nxos", "hostname": "leaf01", "macaddr":
-    "de:c7:5a:c4:f6:03", "vlan": 30, "oif": "port-channel4", "remoteVtepIp": "", "bd":
-    "", "flags": "dynamic", "timestamp": 1609296118290}, {"namespace": "nxos", "hostname":
-    "leaf01", "macaddr": "44:01:03:01:1b:08", "vlan": 999, "oif": "nve1", "remoteVtepIp":
-    "10.0.0.221", "bd": "", "flags": "remote", "timestamp": 1609296118290}, {"namespace":
-    "nxos", "hostname": "leaf01", "macaddr": "44:01:03:02:1b:08", "vlan": 999, "oif":
-    "nve1", "remoteVtepIp": "10.0.0.222", "bd": "", "flags": "remote", "timestamp":
-    1609296118290}, {"namespace": "nxos", "hostname": "leaf01", "macaddr": "44:01:02:01:1b:08",
-    "vlan": 0, "oif": "sup-eth1(R)", "remoteVtepIp": "", "bd": "", "flags": "static",
-    "timestamp": 1609296118290}, {"namespace": "nxos", "hostname": "leaf01", "macaddr":
-    "44:01:02:01:1b:08", "vlan": 10, "oif": "sup-eth1(R)", "remoteVtepIp": "", "bd":
-    "", "flags": "static", "timestamp": 1609296118290}, {"namespace": "nxos", "hostname":
-    "leaf01", "macaddr": "44:01:02:01:1b:08", "vlan": 30, "oif": "sup-eth1(R)", "remoteVtepIp":
+    {"namespace": "nxos", "hostname": "leaf01", "vlan": 999, "macaddr": "44:01:03:01:1b:08",
+    "oif": "nve1", "remoteVtepIp": "10.0.0.221", "bd": "", "flags": "remote", "timestamp":
+    1609296118290}, {"namespace": "nxos", "hostname": "leaf01", "vlan": 999, "macaddr":
+    "44:01:03:02:1b:08", "oif": "nve1", "remoteVtepIp": "10.0.0.222", "bd": "", "flags":
+    "remote", "timestamp": 1609296118290}, {"namespace": "nxos", "hostname": "leaf01",
+    "vlan": 0, "macaddr": "44:01:02:01:1b:08", "oif": "sup-eth1(R)", "remoteVtepIp":
     "", "bd": "", "flags": "static", "timestamp": 1609296118290}, {"namespace": "nxos",
-    "hostname": "leaf01", "macaddr": "44:01:02:01:1b:08", "vlan": 999, "oif": "sup-eth1(R)",
+    "hostname": "leaf01", "vlan": 10, "macaddr": "44:01:02:01:1b:08", "oif": "sup-eth1(R)",
     "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp": 1609296118290},
-    {"namespace": "nxos", "hostname": "leaf01", "macaddr": "44:01:02:02:1b:08", "vlan":
-    10, "oif": "vPC Peer-Link(R)", "remoteVtepIp": "", "bd": "", "flags": "static",
-    "timestamp": 1609296118290}, {"namespace": "nxos", "hostname": "leaf01", "macaddr":
-    "44:01:02:02:1b:08", "vlan": 30, "oif": "vPC Peer-Link(R)", "remoteVtepIp": "",
-    "bd": "", "flags": "static", "timestamp": 1609296118290}, {"namespace": "nxos",
-    "hostname": "leaf01", "macaddr": "44:01:02:02:1b:08", "vlan": 999, "oif": "vPC
+    {"namespace": "nxos", "hostname": "leaf01", "vlan": 30, "macaddr": "44:01:02:01:1b:08",
+    "oif": "sup-eth1(R)", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp":
+    1609296118290}, {"namespace": "nxos", "hostname": "leaf01", "vlan": 999, "macaddr":
+    "44:01:02:01:1b:08", "oif": "sup-eth1(R)", "remoteVtepIp": "", "bd": "", "flags":
+    "static", "timestamp": 1609296118290}, {"namespace": "nxos", "hostname": "leaf01",
+    "vlan": 10, "macaddr": "44:01:02:02:1b:08", "oif": "vPC Peer-Link(R)", "remoteVtepIp":
+    "", "bd": "", "flags": "static", "timestamp": 1609296118290}, {"namespace": "nxos",
+    "hostname": "leaf01", "vlan": 30, "macaddr": "44:01:02:02:1b:08", "oif": "vPC
     Peer-Link(R)", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp": 1609296118290},
-    {"namespace": "nxos", "hostname": "leaf01", "macaddr": "00:00:00:11:12:10", "vlan":
-    0, "oif": "sup-eth1(R)", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp":
-    1609296118290}, {"namespace": "nxos", "hostname": "leaf03", "macaddr": "ca:f2:c7:7e:34:c0",
-    "vlan": 20, "oif": "port-channel3", "remoteVtepIp": "", "bd": "", "flags": "dynamic",
-    "timestamp": 1609296118698}, {"namespace": "nxos", "hostname": "leaf03", "macaddr":
-    "de:c7:5a:c4:f6:03", "vlan": 30, "oif": "nve1", "remoteVtepIp": "10.0.0.112",
-    "bd": "", "flags": "remote", "timestamp": 1609296118698}, {"namespace": "nxos",
-    "hostname": "leaf03", "macaddr": "44:01:02:01:1b:08", "vlan": 999, "oif": "nve1",
+    {"namespace": "nxos", "hostname": "leaf01", "vlan": 999, "macaddr": "44:01:02:02:1b:08",
+    "oif": "vPC Peer-Link(R)", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp":
+    1609296118290}, {"namespace": "nxos", "hostname": "leaf01", "vlan": 0, "macaddr":
+    "00:00:00:11:12:10", "oif": "sup-eth1(R)", "remoteVtepIp": "", "bd": "", "flags":
+    "static", "timestamp": 1609296118290}, {"namespace": "nxos", "hostname": "leaf03",
+    "vlan": 20, "macaddr": "ca:f2:c7:7e:34:c0", "oif": "port-channel3", "remoteVtepIp":
+    "", "bd": "", "flags": "dynamic", "timestamp": 1609296118698}, {"namespace": "nxos",
+    "hostname": "leaf03", "vlan": 30, "macaddr": "de:c7:5a:c4:f6:03", "oif": "nve1",
     "remoteVtepIp": "10.0.0.112", "bd": "", "flags": "remote", "timestamp": 1609296118698},
-    {"namespace": "nxos", "hostname": "leaf03", "macaddr": "44:01:03:01:1b:08", "vlan":
-    999, "oif": "nve1", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp":
-    1609296118698}, {"namespace": "nxos", "hostname": "leaf03", "macaddr": "44:01:03:02:1b:08",
-    "vlan": 999, "oif": "nve1", "remoteVtepIp": "10.0.0.221", "bd": "", "flags": "remote",
-    "timestamp": 1609296118698}, {"namespace": "nxos", "hostname": "leaf03", "macaddr":
-    "00:00:00:11:12:10", "vlan": 0, "oif": "sup-eth1(R)", "remoteVtepIp": "", "bd":
-    "", "flags": "static", "timestamp": 1609296118698}, {"namespace": "nxos", "hostname":
-    "leaf03", "macaddr": "44:01:02:03:1b:08", "vlan": 999, "oif": "sup-eth1(R)", "remoteVtepIp":
-    "", "bd": "", "flags": "static", "timestamp": 1609296118698}, {"namespace": "nxos",
-    "hostname": "leaf03", "macaddr": "44:01:02:03:1b:08", "vlan": 20, "oif": "sup-eth1(R)",
+    {"namespace": "nxos", "hostname": "leaf03", "vlan": 999, "macaddr": "44:01:02:01:1b:08",
+    "oif": "nve1", "remoteVtepIp": "10.0.0.112", "bd": "", "flags": "remote", "timestamp":
+    1609296118698}, {"namespace": "nxos", "hostname": "leaf03", "vlan": 999, "macaddr":
+    "44:01:03:01:1b:08", "oif": "nve1", "remoteVtepIp": "", "bd": "", "flags": "static",
+    "timestamp": 1609296118698}, {"namespace": "nxos", "hostname": "leaf03", "vlan":
+    999, "macaddr": "44:01:03:02:1b:08", "oif": "nve1", "remoteVtepIp": "10.0.0.221",
+    "bd": "", "flags": "remote", "timestamp": 1609296118698}, {"namespace": "nxos",
+    "hostname": "leaf03", "vlan": 0, "macaddr": "00:00:00:11:12:10", "oif": "sup-eth1(R)",
     "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp": 1609296118698},
-    {"namespace": "nxos", "hostname": "leaf03", "macaddr": "44:01:02:03:1b:08", "vlan":
-    30, "oif": "sup-eth1(R)", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp":
-    1609296118698}, {"namespace": "nxos", "hostname": "leaf03", "macaddr": "44:01:02:04:1b:08",
-    "vlan": 20, "oif": "vPC Peer-Link(R)", "remoteVtepIp": "", "bd": "", "flags":
+    {"namespace": "nxos", "hostname": "leaf03", "vlan": 999, "macaddr": "44:01:02:03:1b:08",
+    "oif": "sup-eth1(R)", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp":
+    1609296118698}, {"namespace": "nxos", "hostname": "leaf03", "vlan": 20, "macaddr":
+    "44:01:02:03:1b:08", "oif": "sup-eth1(R)", "remoteVtepIp": "", "bd": "", "flags":
     "static", "timestamp": 1609296118698}, {"namespace": "nxos", "hostname": "leaf03",
-    "macaddr": "44:01:02:04:1b:08", "vlan": 30, "oif": "vPC Peer-Link(R)", "remoteVtepIp":
+    "vlan": 30, "macaddr": "44:01:02:03:1b:08", "oif": "sup-eth1(R)", "remoteVtepIp":
     "", "bd": "", "flags": "static", "timestamp": 1609296118698}, {"namespace": "nxos",
-    "hostname": "leaf03", "macaddr": "44:01:02:04:1b:08", "vlan": 999, "oif": "vPC
+    "hostname": "leaf03", "vlan": 20, "macaddr": "44:01:02:04:1b:08", "oif": "vPC
     Peer-Link(R)", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp": 1609296118698},
-    {"namespace": "nxos", "hostname": "leaf03", "macaddr": "44:01:02:03:1b:08", "vlan":
-    0, "oif": "sup-eth1(R)", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp":
-    1609296118698}, {"namespace": "nxos", "hostname": "leaf03", "macaddr": "96:b3:47:28:13:d5",
-    "vlan": 30, "oif": "port-channel4", "remoteVtepIp": "", "bd": "", "flags": "dynamic",
-    "timestamp": 1609296118698}]'
+    {"namespace": "nxos", "hostname": "leaf03", "vlan": 30, "macaddr": "44:01:02:04:1b:08",
+    "oif": "vPC Peer-Link(R)", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp":
+    1609296118698}, {"namespace": "nxos", "hostname": "leaf03", "vlan": 999, "macaddr":
+    "44:01:02:04:1b:08", "oif": "vPC Peer-Link(R)", "remoteVtepIp": "", "bd": "",
+    "flags": "static", "timestamp": 1609296118698}, {"namespace": "nxos", "hostname":
+    "leaf03", "vlan": 0, "macaddr": "44:01:02:03:1b:08", "oif": "sup-eth1(R)", "remoteVtepIp":
+    "", "bd": "", "flags": "static", "timestamp": 1609296118698}, {"namespace": "nxos",
+    "hostname": "leaf03", "vlan": 30, "macaddr": "96:b3:47:28:13:d5", "oif": "port-channel4",
+    "remoteVtepIp": "", "bd": "", "flags": "dynamic", "timestamp": 1609296118698}]'
 - command: mac summarize --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: mac summarize nxos
-  output: '{"nxos": {"deviceCnt": 14, "totalMacsinNSCnt": 111, "uniqueMacCnt": 31,
+  output: '{"nxos": {"deviceCnt": 14, "totalMacsinNSCnt": 207, "uniqueMacCnt": 31,
     "uniqueVlanperHostStat": [1, 3, 3.0]}}'
 - command: mac unique --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: mac unique nxos
   output: '[{"hostname": "dcedge01", "count": 1}, {"hostname": "exit01", "count":
-    6}, {"hostname": "exit02", "count": 6}, {"hostname": "firewall01", "count": 8},
+    6}, {"hostname": "exit02", "count": 6}, {"hostname": "firewall01", "count": 32},
     {"hostname": "leaf01", "count": 14}, {"hostname": "leaf02", "count": 14}, {"hostname":
     "leaf03", "count": 14}, {"hostname": "leaf04", "count": 14}, {"hostname": "server101",
-    "count": 8}, {"hostname": "server102", "count": 8}, {"hostname": "server301",
-    "count": 8}, {"hostname": "server302", "count": 8}, {"hostname": "spine01", "count":
-    1}, {"hostname": "spine02", "count": 1}]'
+    "count": 26}, {"hostname": "server102", "count": 26}, {"hostname": "server301",
+    "count": 26}, {"hostname": "server302", "count": 26}, {"hostname": "spine01",
+    "count": 1}, {"hostname": "spine02", "count": 1}]'

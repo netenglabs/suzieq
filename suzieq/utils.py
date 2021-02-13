@@ -3,12 +3,14 @@ import re
 import sys
 from pathlib import Path
 import logging
+from logging.handlers import RotatingFileHandler
 import json
 import yaml
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
 from tzlocal import get_localzone
 from pytz import all_timezones
+import fcntl
 
 import pandas as pd
 import pyarrow as pa
@@ -86,8 +88,16 @@ def load_sq_config(validate=True, config_file=None):
         cfgfile = os.getenv("HOME") + "/.suzieq/suzieq-cfg.yml"
 
     if cfgfile:
-        with open(cfgfile, "r") as f:
-            cfg = yaml.safe_load(f.read())
+        try:
+            with open(cfgfile, "r") as f:
+                cfg = yaml.safe_load(f.read())
+        except Exception as e:
+            print(f'ERROR: Unable to open config file {cfgfile}: {e.args[1]}')
+            sys.exit(1)
+
+        if not cfg:
+            print(f'ERROR: Empty config file {cfgfile}')
+            sys.exit(1)
 
         if validate:
             error_str = validate_sq_config(cfg)
@@ -559,6 +569,37 @@ def build_query_str(skip_fields: list, schema, **kwargs) -> str:
     return query_str
 
 
+def init_logger(logname: str, logfile: str, loglevel: str = 'WARNING',
+                use_stdout: bool = False) -> logging.Logger:
+    """Initialize the logger
+
+    :param logname: str, the name of the app that's logging
+    :param logfile: str, the log file to use
+    :param loglevel: str, the default log level to set the logger to
+    :param use_stdout: str, log to stdout instead of or in addition to file
+
+    """
+
+    # this needs to be suzieq.poller, so that it is the root of all the other pollers
+    logger = logging.getLogger(logname)
+    logger.setLevel(loglevel.upper())
+    fh = RotatingFileHandler(logfile, maxBytes=10000000, backupCount=2)
+    formatter = logging.Formatter(
+        "%(asctime)s - %(name)s - %(levelname)s " "- %(message)s"
+    )
+    fh.setFormatter(formatter)
+
+    # set root logger level, so that we set asyncssh log level
+    #  asynchssh sets it's level to the root level
+    root = logging.getLogger()
+    root.setLevel(loglevel.upper())
+    root.addHandler(fh)
+
+    logger.warning(f"log level {logging.getLevelName(logger.level)}")
+
+    return logger
+
+
 def known_devtypes() -> list:
     """Returns the list of known dev types"""
     return(['cumulus', 'eos', 'junos-mx', 'junos-qfx', 'junos-ex', 'linux',
@@ -593,3 +634,30 @@ def expand_eos_ifname(ifname: str) -> str:
     elif ifname.startswith('Vx') and 'Vxlan' not in ifname:
         return ifname.replace('Vx', 'Vxlan')
     return ifname
+
+
+def ensure_single_instance(filename: str, block: bool = False) -> int:
+    """Check there's only a single active instance of a process using lockfile
+
+    It optionally can block waiting for the resource the become available.
+
+    Use a pid file with advisory file locking to assure this.
+
+    :returns: fd if lock was successful or 0
+    :rtype: int
+
+    """
+    fd = os.open(filename, os.O_RDWR | os.O_CREAT, 0o600)
+    if fd:
+        try:
+            if block:
+                fcntl.flock(fd, fcntl.LOCK_EX)
+            else:
+                fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            os.truncate(fd, 0)
+            os.write(fd, bytes(str(os.getpid()), 'utf-8'))
+        except OSError:
+            os.close(fd)
+            fd = 0
+
+    return fd

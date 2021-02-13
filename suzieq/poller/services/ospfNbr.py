@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from suzieq.poller.services.service import Service
 from suzieq.utils import get_timestamp_from_cisco_time
 from suzieq.utils import get_timestamp_from_junos_time
@@ -26,7 +26,7 @@ class OspfNbrService(Service):
                 secs += int(v[0]) * mul
             s = v[-1]
 
-        return int((datetime.utcnow().timestamp() - secs) * 1000)
+        return int((datetime.now(tz=timezone.utc).timestamp() - secs) * 1000)
 
     def _clean_linux_data(self, processed_data, raw_data):
         for entry in processed_data:

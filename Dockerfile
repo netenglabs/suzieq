@@ -9,7 +9,7 @@ RUN apt-get update && \
 RUN mkdir -p /suzieq/
 WORKDIR /suzieq
 
-RUN pip install "poetry==1.0.9"
+RUN pip install "poetry==1.1.4"
 COPY pyproject.toml /suzieq/
 RUN poetry config virtualenvs.create false
 RUN poetry install --no-dev --no-root
@@ -37,5 +37,5 @@ ENTRYPOINT ["/bin/bash"]
 # USER 1001
 
 LABEL name=suzieq
-LABEL version=0.8.7
+LABEL version=0.9
 LABEL description="Network Observability Tool"

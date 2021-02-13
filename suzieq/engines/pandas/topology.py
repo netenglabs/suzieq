@@ -1,4 +1,4 @@
-from suzieq.engines.pandas.engineobj import SqEngineObject
+from .engineobj import SqPandasEngine
 import typing
 from dataclasses import dataclass
 import os
@@ -26,11 +26,17 @@ from suzieq.exceptions import EmptyDataframeError
 graph_output_dir = '/tmp/suzieq-graphs'
 
 
-class TopologyObj(SqEngineObject):
+class TopologyObj(SqPandasEngine):
+
+    @staticmethod
+    def table_name():
+        return 'topology'
+
     def _init_dfs(self, namespaces):
         """Initialize the dataframes used"""
 
-        self._if_df = interfaces.IfObj(context=self.ctxt).get(namespace=namespaces)
+        self._if_df = interfaces.IfObj(
+            context=self.ctxt).get(namespace=namespaces)
 
         if self._if_df.empty:
             raise EmptyDataframeError(f"No interface found for {namespaces}")
@@ -88,7 +94,8 @@ class TopologyObj(SqEngineObject):
     def _find_polled_neighbors(self, polled_neighbor):
         devices = device.DeviceObj(context=self.ctxt).get(namespace=self._namespaces,
                                                           columns=['namespace', 'hostname'])
-        devices = devices[['namespace', 'hostname']].rename(columns={'hostname': 'peerHostname'})
+        devices = devices[['namespace', 'hostname']].rename(
+            columns={'hostname': 'peerHostname'})
         self.lsdb = self.lsdb.merge(devices, how='outer',
                                     indicator=True)
         self.lsdb = self.lsdb.rename(columns={'_merge': 'polled_neighbor'})
@@ -101,7 +108,8 @@ class TopologyObj(SqEngineObject):
         self.graphs = {}
         for ns, df in self.lsdb.groupby(by=['namespace']):
             attrs = [srv.name for srv in self.services if srv.name in df.columns]
-            self.graphs[ns] = nx.from_pandas_edgelist(df, 'hostname', 'peerHostname', attrs, nx.MultiGraph)
+            self.graphs[ns] = nx.from_pandas_edgelist(
+                df, 'hostname', 'peerHostname', attrs, nx.MultiGraph)
 
     # TODO: eventually this needs to move to ospf after we figure out the
     #   schema augmentation story
@@ -121,7 +129,8 @@ class TopologyObj(SqEngineObject):
         if not df.empty:
             pass
             df['ifname'] = df['ifname'].str.replace('None', '', regex=False)
-            df['ifname'] = df['ifname'].str.replace('loopback\d*', '', regex=True)
+            df['ifname'] = df['ifname'].str.replace(
+                'loopback\d*', '', regex=True)
             df = df.rename(columns={'ifname': 'direct If'})
         return df
 
@@ -157,7 +166,8 @@ class TopologyObj(SqEngineObject):
     @property
     def address_df(self):
         if self._a_df.empty:
-            self._a_df = address.AddressObj(context=self.ctxt).get(namespace=self._namespaces)
+            self._a_df = address.AddressObj(
+                context=self.ctxt).get(namespace=self._namespaces)
         return self._a_df
 
     @property
@@ -165,11 +175,14 @@ class TopologyObj(SqEngineObject):
         if self._ip_table.empty:
             addr = self.address_df
             if not addr.empty:
-                self._ip_table = addr[['namespace', 'hostname', 'ipAddressList']]
-                self._ip_table = self._ip_table.explode('ipAddressList').dropna(how='any')
+                self._ip_table = addr[['namespace',
+                                       'hostname', 'ipAddressList']]
+                self._ip_table = self._ip_table.explode(
+                    'ipAddressList').dropna(how='any')
                 self._ip_table = self._ip_table.rename(columns={'ipAddressList': 'peerIP',
                                                                 'hostname': 'peerHostname'})
-                self._ip_table['peerIP'] = self._ip_table['peerIP'].str.replace("/.+", "")
+                self._ip_table['peerIP'] = self._ip_table['peerIP'].str.replace(
+                    "/.+", "")
                 self._ip_table = self._ip_table[self._ip_table['peerIP'] != '-']
         return self._ip_table
 
@@ -203,11 +216,14 @@ class TopologyObj(SqEngineObject):
                         self.ns[ns][f'{name}_is_fully_connected'] = True
                         self.ns[ns][f'{name}_center'] = nx.barycenter(G)
 
-                    self.ns[ns][f'{name}_self_loops'] = list(nx.nodes_with_selfloops(G))
+                    self.ns[ns][f'{name}_self_loops'] = list(
+                        nx.nodes_with_selfloops(G))
 
-                    self.ns[ns][f'{name}_number_of_disjoint_sets'] = len(list(nx.connected_components(G)))
+                    self.ns[ns][f'{name}_number_of_disjoint_sets'] = len(
+                        list(nx.connected_components(G)))
 
-                    self.ns[ns][f'{name}_degree_histogram'] = nx.degree_histogram(G)
+                    self.ns[ns][f'{name}_degree_histogram'] = nx.degree_histogram(
+                        G)
 
                     # if there are too many degrees than the column gets too big
                     if len(self.ns[ns][f'{name}_degree_histogram']) > 6:
@@ -231,11 +247,14 @@ class TopologyObj(SqEngineObject):
                          d[name] == True]
                 if len(edges) > 1:
 
-                    nx.draw_networkx_nodes(self.graphs[ns], pos=pos, node_size=25)
+                    nx.draw_networkx_nodes(
+                        self.graphs[ns], pos=pos, node_size=25)
                     if len(self.graphs[ns].nodes) < 20:
-                        nx.draw_networkx_labels(self.graphs[ns], pos=pos, font_size=8)
+                        nx.draw_networkx_labels(
+                            self.graphs[ns], pos=pos, font_size=8)
 
-                    nx.draw_networkx_edges(self.graphs[ns], edgelist=edges, pos=pos)
+                    nx.draw_networkx_edges(
+                        self.graphs[ns], edgelist=edges, pos=pos)
                     plt.savefig(f"{graph_output_dir}/{ns}_{name}.png")
                     print(f"created {graph_output_dir}/{ns}_{name}.png")
                     plt.close()

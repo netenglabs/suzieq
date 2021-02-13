@@ -4,6 +4,8 @@ from nubia import context
 from nubia import statusbar
 from pandas import DataFrame
 
+from suzieq.version import SUZIEQ_VERSION
+
 
 class NubiaSuzieqStatusBar(statusbar.StatusBar):
     def __init__(self, ctx):
@@ -20,22 +22,18 @@ class NubiaSuzieqStatusBar(statusbar.StatusBar):
 
     def get_tokens(self):
         spacer = (Token.Spacer, "  ")
-        if context.get_context().verbose:
-            is_verbose = (Token.Warn, "ON")
-        else:
-            is_verbose = (Token.Info, "OFF")
 
         if context.get_context().pager:
             is_pager = (Token.Warn, "ON")
         else:
             is_pager = (Token.Info, "OFF")
-            
+
         return [
             (Token.Toolbar, "Suzieq"),
             spacer,
-            (Token.Toolbar, "Verbose "),
+            (Token.Toolbar, "Version "),
             spacer,
-            is_verbose,
+            (Token.Info, SUZIEQ_VERSION),
             spacer,
             (Token.Toolbar, "Pager "),
             spacer,
@@ -59,7 +57,7 @@ class NubiaSuzieqStatusBar(statusbar.StatusBar):
             spacer,
             (Token.Toolbar, "Engine "),
             spacer,
-            (Token.Info, self.ctx.engine_name),
+            (Token.Info, self.ctx.engine),
             spacer,
             (Token.Toolbar, "Query Time "),
             spacer,
