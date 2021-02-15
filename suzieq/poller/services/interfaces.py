@@ -145,6 +145,9 @@ class InterfaceService(Service):
             if entry.get('hardware', '') == 'ether':
                 entry['type'] = 'ethernet'
 
+            if entry['adminState'] == "down":
+                entry['state'] = "down"
+
             if entry['type'] == 'ether':
                 entry['type'] = 'ethernet'
             if ifname not in new_data_dict:
