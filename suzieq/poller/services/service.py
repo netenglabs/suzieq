@@ -688,42 +688,40 @@ class Service(object):
 
             if output:
                 statskey = output[0]["namespace"] + '/' + output[0]["hostname"]
-            else:
-                statskey = 'sqPoller/sqPoller'
 
-            stats = pernode_stats[statskey]
-            write_poller_stat = (self.update_stats(
-                stats, total_time, gather_time, qsize,
-                self.writer_queue.qsize(), token.nodeQsize) or
-                write_poller_stat)
-            pernode_stats[statskey] = stats
-            if write_poller_stat:
-                poller_stat = [
-                    {"hostname": output[0]["hostname"] or output[0]['address'],
-                     "sqvers": self.poller_schema_version,
-                     "namespace": output[0]["namespace"],
-                     "active": True,
-                     "service": self.name,
-                     "status": status,
-                     "svcQsize": stats.svcQsize,
-                     "wrQsize": stats.wrQsize,
-                     "nodeQsize": stats.nodeQsize,
-                     "pollExcdPeriodCount": stats.time_excd_count,
-                     "gatherTime": stats.gather_time,
-                     "totalTime": stats.total_time,
-                     "version": SUZIEQ_VERSION,
-                     "nodesPolledCnt": len(self.node_postcall_list),
-                     "nodesFailedCnt": len(self._failed_node_set),
-                     "timestamp": int(datetime.now(tz=timezone.utc)
-                                      .timestamp() * 1000)}]
+                stats = pernode_stats[statskey]
+                write_poller_stat = (self.update_stats(
+                    stats, total_time, gather_time, qsize,
+                    self.writer_queue.qsize(), token.nodeQsize) or
+                    write_poller_stat)
+                pernode_stats[statskey] = stats
+                if write_poller_stat:
+                    poller_stat = [
+                        {"hostname": output[0]["hostname"] or output[0]['address'],
+                         "sqvers": self.poller_schema_version,
+                         "namespace": output[0]["namespace"],
+                         "active": True,
+                         "service": self.name,
+                         "status": status,
+                         "svcQsize": stats.svcQsize,
+                         "wrQsize": stats.wrQsize,
+                         "nodeQsize": stats.nodeQsize,
+                         "pollExcdPeriodCount": stats.time_excd_count,
+                         "gatherTime": stats.gather_time,
+                         "totalTime": stats.total_time,
+                         "version": SUZIEQ_VERSION,
+                         "nodesPolledCnt": len(self.node_postcall_list),
+                         "nodesFailedCnt": len(self._failed_node_set),
+                         "timestamp": int(datetime.now(tz=timezone.utc)
+                                          .timestamp() * 1000)}]
 
-                self.writer_queue.put_nowait(
-                    {
-                        "records": poller_stat,
-                        "topic": "sqPoller",
-                        "schema": self.poller_schema,
-                        "partition_cols": self.partition_cols
-                    })
+                    self.writer_queue.put_nowait(
+                        {
+                            "records": poller_stat,
+                            "topic": "sqPoller",
+                            "schema": self.poller_schema,
+                            "partition_cols": self.partition_cols
+                        })
 
             # Post a cmd to fire up the next poll after the specified period
             self.logger.debug(

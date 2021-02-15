@@ -246,7 +246,6 @@ async def start_poller(userargs, cfg):
         tasks += svc_tasks
 
         if not userargs.no_coalescer:
-            breakpoint()
             tasks += [start_and_monitor_coalescer(userargs.config, cfg,
                                                   logger)]
         do_terminate = False
