@@ -197,7 +197,7 @@ def xplore_sidebar(state, sqobjs: dict):
         'Filter results with pandas query', value=state.query,
         key=state.table)
     st.sidebar.markdown(
-        "[query syntax help](https://suzieq.readthedocs.io/en/latest/pandas-query-examples/")
+        "[query syntax help](https://suzieq.readthedocs.io/en/latest/pandas-query-examples/)")
 
     if columns == ['all']:
         columns = ['*']
