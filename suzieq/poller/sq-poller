@@ -13,6 +13,7 @@ import getpass
 from importlib.util import find_spec
 import fcntl
 import signal
+import errno
 
 import uvloop
 
@@ -87,9 +88,13 @@ async def start_and_monitor_coalescer(config_file: str, cfg: dict,
         return process
 
     fd = 0
+    process = None
     # Check to see file lock is possible
     while not fd:
-        logger.warning('Starting Coalescer')
+        if not process:
+            logger.warning('Starting Coalescer')
+        elif process.returncode == errno.EBUSY:
+            logger.warning('Trying to start coalescer')
         process = await start_coalescer()
 
         # Initial sleep to ensure that the coalescer starts up
@@ -100,7 +105,7 @@ async def start_and_monitor_coalescer(config_file: str, cfg: dict,
 
         fd = ensure_single_instance(f'{coalesce_dir}/.sq-coalescer.pid',
                                     False)
-        if fd:
+        if fd > 0:
             # unlock and try to start process
             try:
                 fcntl.flock(fd, fcntl.F_UNLCK)
@@ -116,10 +121,14 @@ async def start_and_monitor_coalescer(config_file: str, cfg: dict,
             process.terminate()
             return
 
-        if process.returncode != 0:
+        if process.returncode and (process.returncode != errno.EBUSY):
             logger.error(f'coalescer stdout: {stdout}, stderr: {stderr}')
         else:
-            logger.error(f'coalescer ended stdout: {stdout}, stderr: {stderr}')
+            if process.returncode == errno.EBUSY:
+                asyncio.sleep(10*60)
+            else:
+                logger.info(
+                    f'coalescer ended stdout: {stdout}, stderr: {stderr}')
 
         fd = 0
 

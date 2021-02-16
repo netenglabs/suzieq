@@ -3,6 +3,7 @@
 from typing import List
 import sys
 import os
+import errno
 import argparse
 import fcntl
 from logging import Logger
@@ -134,7 +135,7 @@ if __name__ == '__main__':
     if not fd:
         print(f'ERROR: Another coalescer process present')
         logger.error(f'Another coalescer process present')
-        sys.exit(1)
+        sys.exit(errno.EBUSY)
 
     if userargs.run_once:
         timestr = ''
