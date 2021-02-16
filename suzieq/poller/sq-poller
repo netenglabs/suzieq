@@ -425,5 +425,8 @@ if __name__ == "__main__":
         print("Could not load config file, aborting")
         sys.exit(1)
 
-    asyncio.run(start_poller(userargs, cfg))
+    try:
+        asyncio.run(start_poller(userargs, cfg))
+    except Exception:
+        pass
     sys.exit(0)
