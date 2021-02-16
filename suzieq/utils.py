@@ -11,6 +11,7 @@ from datetime import datetime
 from tzlocal import get_localzone
 from pytz import all_timezones
 import fcntl
+import errno
 
 import pandas as pd
 import pyarrow as pa
@@ -648,9 +649,9 @@ def ensure_single_instance(filename: str, block: bool = False) -> int:
 
     """
     basedir = os.path.dirname(filename)
-    if not os.path.exists(filename):
+    if not os.path.exists(basedir):
         # Permission error or any other error will abort
-        os.makedirs(basedir)
+        os.makedirs(basedir, exist_ok=True)
 
     fd = os.open(filename, os.O_RDWR | os.O_CREAT, 0o600)
     if fd:
@@ -662,7 +663,16 @@ def ensure_single_instance(filename: str, block: bool = False) -> int:
             os.truncate(fd, 0)
             os.write(fd, bytes(str(os.getpid()), 'utf-8'))
         except OSError:
-            os.close(fd)
-            fd = 0
+            if OSError.errno == errno.EBUSY:
+                # Return the PID of the process thats locked the file
+                bpid = os.read(fd, 10)
+                os.close(fd)
+                try:
+                    fd = -int(bpid)
+                except ValueError:
+                    fd = 0
+            else:
+                os.close(fd)
+                fd = 0
 
     return fd
