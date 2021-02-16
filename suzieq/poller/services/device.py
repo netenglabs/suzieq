@@ -50,6 +50,7 @@ class DeviceService(Service):
                         if not entry.get("version", ""):
                             entry["version"] = ' '.join(osstr[1:])
                     del entry["os"]
+            entry['os'] = 'linux'
 
         return self._common_data_cleaner(processed_data, raw_data)
 
