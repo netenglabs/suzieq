@@ -1,5 +1,14 @@
 ## Release Notes
 
+## 0.9 (Feb 17, 2021)
+
+The main feature of this release is the support for more efficient storage and providing fast, almost constant query times independent of the time window you're searching for (5 mins ago OR 5 mins a year back). There are a few other minor bug fixes. There's a new process called sq-coalescer that's running in the background. Its launched automatically by sq-poller. 
+
+* Juniper commands now have "no-more" added to the end to prevent some older machines from blocking (Issue #314)
+* device now has serial number and OS name (nxos, eos, cumulus etc.). This is in preparation for support of IOS-XR and IOS-XE.
+* bgp show view=all was broken (Issue #318)
+* Graceful termination of sq-poller on Ctrl-C or SIGINT (Issue #321)
+
 ## 0.8.7 (Jan 11, 2020)
 
 A hotfix release to ensure REST server works. 0.8.6. broke the REST interface. 
