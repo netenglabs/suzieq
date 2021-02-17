@@ -4,12 +4,16 @@
 import sys
 import os
 import argparse
+from time import sleep
 import asyncio
 import logging
-from logging.handlers import RotatingFileHandler
 from pathlib import Path
 from collections import defaultdict
 import getpass
+from importlib.util import find_spec
+import fcntl
+import signal
+import errno
 
 import uvloop
 
@@ -17,7 +21,15 @@ from suzieq.poller.nodes import init_hosts, init_files
 from suzieq.poller.services import init_services
 
 from suzieq.poller.writer import init_output_workers, run_output_worker
-from suzieq.utils import load_sq_config
+from suzieq.utils import load_sq_config, init_logger, ensure_single_instance
+
+
+async def process_signal(signum, loop):
+    tasks = [t for t in asyncio.all_tasks() if t is not
+             asyncio.current_task()]
+
+    for task in tasks:
+        task.cancel()
 
 
 def validate_parquet_args(cfg, output_args, logger):
@@ -46,43 +58,86 @@ def validate_parquet_args(cfg, output_args, logger):
     return
 
 
-def init_logger():
-    """Initialize the logger"""
+async def start_and_monitor_coalescer(config_file: str, cfg: dict,
+                                      logger: logging.Logger,
+                                      coalescer_bin: str = None) -> None:
+    '''Start and monitor the coalescer
 
-    # this needs to be suzieq.poller, so that it is the root of all the other pollers
-    logger = logging.getLogger('suzieq.poller')
-    logger.setLevel(cfg.get("logging-level", "WARNING").upper())
-    fh = RotatingFileHandler(cfg.get("log-file", "/tmp/sq-poller.log"),
-                             maxBytes=10000000, backupCount=2)
-    formatter = logging.Formatter(
-        "%(asctime)s - %(name)s - %(levelname)s " "- %(message)s"
-    )
-    fh.setFormatter(formatter)
+    :param config_file: str, the path to suzieq config file, to be passed
+    :param cfg: dict, the Suzieq config dictionary
+    :param logger: logging.Logger, pointer to logger to use
+    :param coalescer_bin: str, optional path to coalescer binary
 
-    # set root logger level, so that we set asyncssh log level
-    #  asynchssh sets it's level to the root level
-    root = logging.getLogger()
-    root.setLevel(cfg.get("logging-level", "WARNING").upper())
-    root.addHandler(fh)
+    :return: nothing
 
-    logger.warning(f"log level {logging.getLevelName(logger.level)}")
+    '''
 
-    return logger
+    async def start_coalescer():
+        sq_path = os.path.dirname(find_spec('suzieq').loader.path)
+        coalescer_bin = f'{sq_path}/utilities/sq-coalescer.py'
+        if config_file:
+            coalescer_args = f'-c {config_file}'
+        else:
+            coalescer_args = ''
+        coalescer_cmd_args = f'{coalescer_bin} {coalescer_args}'.strip()
 
+        process = await asyncio.create_subprocess_exec(
+            coalescer_cmd_args, stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE)
 
-def send_terminate_to_threads(nodes: list, svcs: list, writers: list):
-    """Set the terminate flag in all child threads"""
-    for elem in nodes:
-        elem.signend = True
-    for elem in svcs:
-        elem.sigend = True
-    for elem in writers:
-        elem.sigend = True
+        return process
+
+    fd = 0
+    process = None
+    # Check to see file lock is possible
+    while not fd:
+        if not process:
+            logger.warning('Starting Coalescer')
+        elif process.returncode == errno.EBUSY:
+            logger.warning('Trying to start coalescer')
+        process = await start_coalescer()
+
+        # Initial sleep to ensure that the coalescer starts up
+        await asyncio.sleep(10)
+        coalesce_dir = cfg.get('coalescer', {})\
+            .get('coalesce-directory',
+                 f'{cfg.get("data-directory")}/coalesced')
+
+        fd = ensure_single_instance(f'{coalesce_dir}/.sq-coalescer.pid',
+                                    False)
+        if fd > 0:
+            # unlock and try to start process
+            try:
+                fcntl.flock(fd, fcntl.F_UNLCK)
+                os.close(fd)
+            except OSError:
+                pass
+            continue
+
+        # Check if we have something from the stdout we need to log
+        try:
+            stdout, stderr = await process.communicate()
+        except asyncio.CancelledError:
+            process.terminate()
+            return
+
+        if process.returncode and (process.returncode != errno.EBUSY):
+            logger.error(f'coalescer stdout: {stdout}, stderr: {stderr}')
+        else:
+            if process.returncode == errno.EBUSY:
+                await asyncio.sleep(10*60)
+            else:
+                logger.info(
+                    f'coalescer ended stdout: {stdout}, stderr: {stderr}')
+
+        fd = 0
 
 
 async def start_poller(userargs, cfg):
 
-    logger = init_logger()
+    logfile = cfg.get('poller-log-file', '/tmp/sq-poller.log')
+    loglevel = cfg.get("logging-level", "WARNING")
+    logger = init_logger('suzieq.poller', logfile, loglevel, False)
 
     if userargs.devices_file and userargs.namespace:
         logger.error("Cannot specify both -D and -n options")
@@ -181,32 +236,42 @@ async def start_poller(userargs, cfg):
     for svc in svcs:
         svc.set_nodes(node_callq)
 
+    logger.setLevel(logging.INFO)
     logger.info("Suzieq Started")
+    logger.setLevel(loglevel.upper())
+
+    loop = asyncio.get_event_loop()
+    for s in [signal.SIGTERM, signal.SIGINT]:
+        loop.add_signal_handler(
+            s, lambda s=s: asyncio.create_task(process_signal(s, loop)))
 
     try:
-        # The logic below of handling the writer worker task separately is to ensure
-        # we can terminate properly when all the other tasks have finished as in the
-        # case of using file input instead of SSH
+        # The logic below of handling the writer worker task separately is to
+        # ensure we can terminate properly when all the other tasks have
+        # finished as in the case of using file input instead of SSH
         svc_tasks = [svc.run() for svc in svcs]
         tasks = [nodes[node].run() for node in nodes]
-        tasks += [run_output_worker(queue, outputs)]
+        tasks += [run_output_worker(queue, outputs, logger)]
         tasks += svc_tasks
 
+        if not userargs.no_coalescer:
+            tasks += [start_and_monitor_coalescer(userargs.config, cfg,
+                                                  logger)]
         while tasks:
-            done, pending = await asyncio.wait(
-                tasks, return_when=asyncio.FIRST_COMPLETED)
-            tasks = list(pending)
-            if tasks and any(i._coro in svc_tasks for i in tasks):
-                continue
-            else:
+            try:
+                done, pending = await asyncio.wait(
+                    tasks, return_when=asyncio.FIRST_COMPLETED)
+                tasks = list(pending)
+                if tasks and any(i._coro in svc_tasks for i in tasks):
+                    continue
+                else:
+                    break
+            except asyncio.CancelledError:
                 break
-        return
-
-    except KeyboardInterrupt:
+    finally:
         logger.warning("sq-poller: Received terminate signal. Terminating")
-        send_terminate_to_threads(nodes, svcs, outputs)
-        await asyncio.gather(*tasks)
-        raise
+        loop.stop()
+        return
 
 if __name__ == "__main__":
 
@@ -328,6 +393,13 @@ if __name__ == "__main__":
         help="Path to ssh config file to use. If not set, config file is not used"
     )
 
+    parser.add_argument(
+        "--no-coalescer",
+        default=False,
+        action='store_true',
+        help=argparse.SUPPRESS,
+    )
+
     userargs = parser.parse_args()
 
     if userargs.passphrase:
@@ -350,5 +422,6 @@ if __name__ == "__main__":
 
     try:
         asyncio.run(start_poller(userargs, cfg))
-    except KeyboardInterrupt:
+    except (Exception, KeyboardInterrupt):
         pass
+    sys.exit(0)

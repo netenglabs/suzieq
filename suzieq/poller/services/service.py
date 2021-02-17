@@ -1,13 +1,14 @@
 import os
+from typing import List
 import asyncio
-from datetime import datetime
+from datetime import datetime, timezone
 import time
 import copy
 import logging
 import json
 import yaml
 from tempfile import mkstemp
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from http import HTTPStatus
 from collections import defaultdict
 
@@ -15,6 +16,7 @@ import pyarrow as pa
 
 from suzieq.poller.services.svcparser import cons_recs_from_json_template
 from suzieq.utils import known_devtypes
+from suzieq.version import SUZIEQ_VERSION
 
 HOLD_TIME_IN_MSECS = 60000  # How long b4 declaring node dead
 
@@ -31,11 +33,11 @@ class RsltToken:
 
 @dataclass
 class ServiceStats:
-    total_time = list()
-    gather_time = list()
-    svcQsize = list()
-    nodeQsize = list()
-    wrQsize = list()
+    total_time: List[float] = field(default_factory=list)
+    gather_time: List[float] = field(default_factory=list)
+    svcQsize: List[float] = field(default_factory=list)
+    nodeQsize: List[float] = field(default_factory=list)
+    wrQsize: List[float] = field(default_factory=list)
     empty_count: int = 0
     time_excd_count: int = 0    # Number of times total_time > poll period
     next_update_time: int = 0   # When results will be logged
@@ -513,7 +515,7 @@ class Service(object):
                         entry.update({"active": False})
                         entry.update(
                             {"timestamp":
-                             int(datetime.utcnow().timestamp() * 1000)}
+                             int(datetime.now(tz=timezone.utc).timestamp() * 1000)}
                         )
                         records.append(entry)
 
@@ -542,13 +544,17 @@ class Service(object):
         """
         if not statsList:
             statsList = [newval, newval, newval]
-            return
+            return statsList
 
         if newval < statsList[0]:
             statsList[0] = newval
         if newval > statsList[1]:
             statsList[1] = newval
         statsList[2] = (statsList[2]+newval)/2
+        if statsList[2] < 0.001:
+            statsList[2] = 0
+
+        return statsList
 
     def update_stats(self, stats: ServiceStats, gather_time: int,
                      total_time: int, qsize: int, wrQsize: int,
@@ -557,11 +563,13 @@ class Service(object):
         write_stat = False
         now = int(time.time()*1000)
 
-        self.compute_basic_stats(stats.total_time, total_time)
-        self.compute_basic_stats(stats.gather_time, gather_time)
-        self.compute_basic_stats(stats.svcQsize, qsize)
-        self.compute_basic_stats(stats.wrQsize, wrQsize)
-        self.compute_basic_stats(stats.nodeQsize, nodeQsize)
+        stats.total_time = self.compute_basic_stats(stats.total_time,
+                                                    total_time)
+        stats.gather_time = self.compute_basic_stats(stats.gather_time,
+                                                     gather_time)
+        stats.svcQsize = self.compute_basic_stats(stats.svcQsize, qsize)
+        stats.wrQsize = self.compute_basic_stats(stats.wrQsize, wrQsize)
+        stats.nodeQsize = self.compute_basic_stats(stats.nodeQsize, nodeQsize)
 
         if total_time > self.period*1000:
             stats.time_excd_count += 1
@@ -587,8 +595,9 @@ class Service(object):
         pernode_stats = defaultdict(lambda: ServiceStats())
 
         while True:
-            token, output = await self.result_queue.get()
-            if self.sigend:
+            try:
+                token, output = await self.result_queue.get()
+            except asyncio.CancelledError:
                 self.logger.warning(
                     f'Service: {self.name}: Received signal to terminate')
                 return
@@ -677,38 +686,42 @@ class Service(object):
 
             total_time = int(time.time()*1000) - token.start_time
 
-            if not empty_count:
+            if output:
                 statskey = output[0]["namespace"] + '/' + output[0]["hostname"]
-                write_poller_stat = (write_poller_stat or
-                                     self.update_stats(
-                                         pernode_stats[statskey], total_time,
-                                         gather_time, qsize,
-                                         self.writer_queue.qsize(),
-                                         token.nodeQsize))
-                stats = pernode_stats[statskey]
-                poller_stat = [
-                    {"hostname": output[0]["hostname"],
-                     "sqvers": self.version,
-                     "namespace": output[0]["namespace"],
-                     "active": True,
-                     "service": self.name,
-                     "status": status,
-                     "svcQsize": stats.svcQsize,
-                     "wrQsize": stats.wrQsize,
-                     "nodeQsize": stats.nodeQsize,
-                     "pollExcdPeriodCount": stats.time_excd_count,
-                     "gatherTime": stats.gather_time,
-                     "totalTime": stats.total_time,
-                     "timestamp": int(datetime.utcnow().timestamp() * 1000)}]
 
-            if write_poller_stat:
-                self.writer_queue.put_nowait(
-                    {
-                        "records": poller_stat,
-                        "topic": "sqPoller",
-                        "schema": self.poller_schema,
-                        "partition_cols": self.partition_cols
-                    })
+                stats = pernode_stats[statskey]
+                write_poller_stat = (self.update_stats(
+                    stats, total_time, gather_time, qsize,
+                    self.writer_queue.qsize(), token.nodeQsize) or
+                    write_poller_stat)
+                pernode_stats[statskey] = stats
+                if write_poller_stat:
+                    poller_stat = [
+                        {"hostname": output[0]["hostname"] or output[0]['address'],
+                         "sqvers": self.poller_schema_version,
+                         "namespace": output[0]["namespace"],
+                         "active": True,
+                         "service": self.name,
+                         "status": status,
+                         "svcQsize": stats.svcQsize,
+                         "wrQsize": stats.wrQsize,
+                         "nodeQsize": stats.nodeQsize,
+                         "pollExcdPeriodCount": stats.time_excd_count,
+                         "gatherTime": stats.gather_time,
+                         "totalTime": stats.total_time,
+                         "version": SUZIEQ_VERSION,
+                         "nodesPolledCnt": len(self.node_postcall_list),
+                         "nodesFailedCnt": len(self._failed_node_set),
+                         "timestamp": int(datetime.now(tz=timezone.utc)
+                                          .timestamp() * 1000)}]
+
+                    self.writer_queue.put_nowait(
+                        {
+                            "records": poller_stat,
+                            "topic": "sqPoller",
+                            "schema": self.poller_schema,
+                            "partition_cols": self.partition_cols
+                        })
 
             # Post a cmd to fire up the next poll after the specified period
             self.logger.debug(

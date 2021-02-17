@@ -1,44 +1,39 @@
-# Running the Poller
+# Gathering Data: Poller
 
-The simplest way to run the poller is via the docker image.  Launch the docker image and attach to it via the following steps:
+To gather data from your network, you need to run the poller. Launch the docker container, ddutt/suzieq:latest and attach to it via the following steps:
 
-- ```docker run -itd -v /home/${USER}/parquet-out:/suzieq/parquet -v /home/${USER}/<ansible-inventory-file>:/suzieq/inventory --name sq-poller ddutt/suzieq:latest```
+- ```docker run -itd -v /home/${USER}/parquet-out:/suzieq/parquet -v /home/${USER}/<inventory-file>:/suzieq/inventory --name sq-poller ddutt/suzieq:latest```
 - ```docker attach sq-poller```
-- ```sq-poller -a inventory -n <namespace>```
 
-In the docker run command above, the two -v options provide host file/directory access to store the parquet output files (the first -v option), and the Ansible inventory file (the second -v option). If you don't use Ansible or don't want to provide that file, don't worry, you can still use the poller to gather data.
+In the docker run command above, the two -v options provide host file/directory access to (i) store the parquet output files (the first -v option), and (ii) the inventory file (the second -v option). We describe the inventory file below. The inventory file is the list of devices and their IP address that you wish to gather data from. 
 
-The poller needs the list of the devices and their IP address to gather data from. This list can be supplied in one of two ways: 
+You then launch the poller via the command line:
 
-* via a Suzieq native YAML format file or 
-* via or an Ansible inventory file (supplied via the second -v option above, and available as file /suzieq/inventory inside the docker). This file has to be the output of ```ansible-inventory --list``` command
+- ```sq-poller -D inventory```
 
-The Suzieq native inventory file format that contains the IP address, the access method (SSH or REST), the IP address of the node, the user name, the type of OS if using REST and the access token such as a private key file. The format looks as follows, for example:
+To monitor the status of the poller, you can look at /tmp/sq-poller.log file.
+
+The inventory file that the poller uses can be supplied either:
+
+* via a Suzieq native YAML format file (use the -D option as above) or 
+* via or an Ansible inventory file (instead of -D, use -a option along with -n). This file has to be the output of ```ansible-inventory --list``` command
+
+The Suzieq native inventory file format that contains the IP address, the access method (SSH or REST), the IP address of the node, the user name, the type of OS if using REST and the access token such as a private key file. The format looks as follows, for example (all possible combinations are shown for illustration):
 ```
 - namespace: eos
   hosts:
     - url: https://vagrant@192.168.123.252 devtype=eos
-    - url: https://vagrant@192.168.123.213 devtype=eos
-    - url: https://vagrant@192.168.123.141 devtype=eos
     - url: ssh://vagrant@192.168.123.232  keyfile=/home/ddutt/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/internet/libvirt/private_key
     - url: https://vagrant@192.168.123.164 devtype=eos
-    - url: ssh://vagrant@192.168.123.70  keyfile=/home/ddutt/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/server103/libvirt/private_key
-    - url: https://vagrant@192.168.123.78 devtype=eos
+    - url: ssh://192.168.123.70 username=admin password=admin
     - url: ssh://vagrant@192.168.123.230  keyfile=/home/ddutt/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/server101/libvirt/private_key
-    - url: ssh://vagrant@192.168.123.54  keyfile=/home/ddutt/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/server104/libvirt/private_key
-    - url: ssh://vagrant@192.168.123.111  keyfile=/home/ddutt/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/server102/libvirt/private_key
-    - url: https://vagrant@192.168.123.163 devtype=eos
-    - url: https://vagrant@192.168.123.185 devtype=eos
-    - url: ssh://vagrant@192.168.123.7  keyfile=/home/ddutt/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/edge01/libvirt/private_key
-    - url: https://vagrant@192.168.123.123 devtype=eos
+    - url: ssh://vagrant@192.168.123.54:2023  keyfile=/home/ddutt/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/server104/libvirt/private_key
+    - url: https://vagrant@192.168.123.123 password=vagrant
 ```
 
-**This file can be hand-crafted or generated from an Ansible inventory file** via the following python program shipped in the docker image: `/root/.local/lib/python3.7/site-packages/suzieq/genhosts.py`. You invoke the program as follows: 
-`python /root/.local/lib/python3.7/site-packages/suzieq/genhosts.py /suzieq/inventory eos.yml eos`.
-
-In the command above, we're assuming the output file is called eos.yml and the *namespace* is called *eos*. `genhosts.py` is somewhat simplistic right now. It assumes we're using REST API for Arista nodes and SSH for everybody else. The Ansible inventory file is the file we mounted during `docker run`.
-
 There's a template in the docs directory called hosts-template.yml. You can copy that file as the template and fill out the values for namespace and url (remember to delete the empty URLs and to not use TABS, some editors add them automatically if the filename extension isn't right). The URL is the standard URL format: <transport>://[username:password]@<hostname or IP>:<port>. For example, ssh://dinesh:dinesh@myvx or ssh://dinesh:dinesh@172.1.1.23. 
+
+If you're using Ansible to configure the devices, an alternate to the native Suzieq inventory format is to use an Ansible inventory format. The file to be used is the output of the ```ansible-inventory --list``` command. 
 
 Once you have either generated the hosts file or are using the Ansible inventory file, you can launch the poller inside the docker container using **one** of the following two options: 
 
@@ -81,7 +76,7 @@ have production versions of that code.
 
 ## Debugging poller issues
 There are two places to look if you want to know what the poller is up to. The first is the poller
-log file in /tmp/sq-poller. The second is in Suzieq in the sq-poller table. We keep data about how
+log file in /tmp/sq-poller.log. The second is in Suzieq in the sq-poller table. We keep data about how
 polling is going in that table. If you do  suzieq-cli sqpoller show --status=fail you should see any failures.
 
 ```

@@ -1,4 +1,6 @@
 service: device
+ignore-fields:
+  - bootupTimestamp
 show-fields:
   - model
   - version
@@ -17,12 +19,22 @@ apply:
     "vendor: vendor?|Arista",
     "os: os?|EOS",
     "architecture: architecture",
+    "serialNumber: serialNumber",
     "bootupTimestamp: bootupTimestamp"]'
 
   cumulus:
     version: all
-    command: cat /proc/uptime; hostnamectl
-    textfsm: textfsm_templates/cl_showsys.tfsm
+    command: net show system json
+    normalize: '[
+    "os-version: version",
+    "vendor: vendor?|Cumulus",
+    "uptime: _uptime",
+    "os: os?|cumulus",
+    "platform/model_name: _modelName",
+    "platform/model: model",
+    "eeprom/Serial Number/value: serialNumber",
+    "platform/info/cpu/summary: architecture?|x86_64",
+    ]'
 
   iosxr:
     version: all
@@ -51,18 +63,20 @@ apply:
     "kern_uptm_hrs: kern_uptm_hrs?|0",
     "kern_uptm_mins: kern_uptm_mins?|0",
     "kern_uptm_secs: kern_uptm_secs?|0",
+    "proc_board_id: serialNumber",
     "cpu_name: architecture"
     ]'
 
   junos-qfx:
     version: all
     command:
-      - command: "show system information | display json"
+      - command: "show system information | display json | no-more"
         normalize: 'system-information/*/[
         "hardware-model/[0]/data: model",
-        "os-name/[0]/data: os",
+        "os-name/[0]/data: os?|junos",
         "os-version/[0]/data: version",
-        "vendor: vendor?|Juniper"
+        "vendor: vendor?|Juniper",
+        "serial-number/[0]/data: serialNumber",
         ]'
       - command: "show system uptime | display json"
         normalize: 'multi-routing-engine-results/[0]/multi-routing-engine-item/[0]/system-uptime-information/*/[
@@ -75,10 +89,10 @@ apply:
   junos-mx:
     version: all
     command:
-      - command: "show system information | display json"
+      - command: "show system information | display json | no-more"
         normalize: 'system-information/*/[
         "hardware-model/[0]/data: model",
-        "os-name/[0]/data: os",
+        "os-name/[0]/data: os?|junos",
         "os-version/[0]/data: version",
         "vendor: vendor?|Juniper"
         ]'

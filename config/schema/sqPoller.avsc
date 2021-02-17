@@ -1,13 +1,13 @@
 {
     "namespace": "suzieq",
     "name": "sqPoller",
-    "type": "record",
+    "type": "counter",
     "fields": [
         {
 	    "name": "sqvers",
 	    "type": "string",
 	    "partition": 0,
-	    "default": "1.0"
+	    "default": "2.0"
 	},
         {
             "name": "gatherTime",
@@ -65,6 +65,10 @@
             "display": 8
         },
         {
+            "name": "version",
+            "type": "string"
+        },
+        {
             "name": "pollExcdPeriodCount",
             "type": "long",
 	    "display": 9
@@ -73,6 +77,14 @@
             "name": "status",
             "type": "long",
             "display": 3
+        },
+        {
+            "name": "nodesPolledCnt",
+            "type": "long"
+        },
+        {
+            "name": "nodesFailedCnt",
+            "type": "long"
         },
         {
             "name": "service",

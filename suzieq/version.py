@@ -1,0 +1,1 @@
+SUZIEQ_VERSION = "0.9"

@@ -1,7 +1,11 @@
-from .engineobj import SqEngineObject
+from .engineobj import SqPandasEngine
 
 
-class MlagObj(SqEngineObject):
+class MlagObj(SqPandasEngine):
+
+    @staticmethod
+    def table_name():
+        return 'mlag'
 
     def summarize(self, **kwargs):
         """Summarize MLAG info"""

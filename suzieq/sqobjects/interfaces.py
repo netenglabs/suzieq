@@ -24,7 +24,7 @@ class IfObj(SqObject):
             df = pd.DataFrame({'error': [f'{error}']})
             return df
 
-        return self.engine_obj.aver(what=what, **kwargs)
+        return self.engine.aver(what=what, **kwargs)
 
     def humanize_fields(self, df: pd.DataFrame, subset=None) -> pd.DataFrame:
         '''Humanize the timestamp and boot time fields'''
@@ -33,6 +33,7 @@ class IfObj(SqObject):
 
         if 'statusChangeTimestamp' in df.columns:
             df['statusChangeTimestamp'] = humanize_timestamp(
-                df.statusChangeTimestamp)
+                df.statusChangeTimestamp,
+                self.cfg.get('analyzer', {}).get('timezone', None))
 
         return df

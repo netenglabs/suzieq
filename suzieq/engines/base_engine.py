@@ -1,18 +1,28 @@
-class SqEngine(object):
+from abc import ABC, abstractmethod
+
+
+class SqEngineObj(ABC):
+    '''Interface class for adding analyzer engine to Suzieq'''
+
     def __init__(self):
         pass
 
-    def get_table_df(self, cfg, schemas, **kwargs):
+    @abstractmethod
+    def get(self, **kwargs):
         raise NotImplementedError
 
-    def get_object(self, objname: str):
+    @abstractmethod
+    def summarize(self, **kwargs):
         raise NotImplementedError
 
+    @abstractmethod
+    def unique(self, **kwargs):
+        raise NotImplementedError
 
-def get_sqengine(name: str = "pandas"):
-    if name == 'pandas':
-        from .pandas.engine import SqPandasEngine
+    @abstractmethod
+    def aver(self, **kwargs):
+        raise NotImplementedError
 
-        return SqPandasEngine()
-
-    return None
+    @abstractmethod
+    def top(self, **kwargs):
+        raise NotImplementedError

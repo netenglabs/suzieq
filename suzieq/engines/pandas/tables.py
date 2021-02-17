@@ -1,5 +1,8 @@
-from suzieq.engines.pandas.engineobj import SqEngineObject
+from suzieq.engines.pandas.engineobj import SqPandasEngine
 
 
-class TableObj(SqEngineObject):
-    pass
+class TableObj(SqPandasEngine):
+
+    @staticmethod
+    def table_name():
+        return 'tables'

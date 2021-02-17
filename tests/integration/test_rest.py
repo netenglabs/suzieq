@@ -262,7 +262,6 @@ BAD_FILTERS = {
     'ospf/summarize?state=active': 405,
     'ospf/show?status=all': 405,
     'path/show?query_str="hostname == \"leaf01\" and 1000 < mtu < 2000"': 404,
-    'path/summarize?columns=namespace': 404,
     'path/summarize?query_str="hostname == \"leaf01\" and 1000 < mtu < 2000"': 404,
     'path/unique?columns=namespace': 404,
     'route/show?query_str="hostname == \"leaf01\" and 1000 < mtu < 2000"': 500,
@@ -360,7 +359,7 @@ def test_rest_services(setup_nubia, start_server, service, verb, arg):
 
 def create_config():
     # We need to create a tempfile to hold the config
-    tmpconfig = conftest._create_context_config()
+    tmpconfig = conftest.get_dummy_config()
 
     tmpconfig['data-directory'] = './tests/data/multidc/parquet-out'
     r_int = random.randint(17, 2073)

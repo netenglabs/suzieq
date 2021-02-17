@@ -2,9 +2,13 @@ data-directory: /suzieq/parquet
 service-directory: /suzieq/config
 schema-directory: /suzieq/config/schema
 temp-directory: /tmp/
-# kafka-servers: localhost:9093
 logging-level: WARNING
-period: 15
+period: 60
 API_KEY: 496157e6e869ef7f3d6ecb24a6f6d847b224ee4f
 rest_certfile: /suzieq/cert.pem
 rest_keyfile: /suzieq/key.pem
+coalescer:
+   period: 1h
+#   archive-directory:
+#   logging-level: DEBUG
+

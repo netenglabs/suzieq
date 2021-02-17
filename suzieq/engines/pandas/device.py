@@ -1,9 +1,12 @@
-import pandas as pd
 import numpy as np
-from suzieq.engines.pandas.engineobj import SqEngineObject
+from .engineobj import SqPandasEngine
 
 
-class DeviceObj(SqEngineObject):
+class DeviceObj(SqPandasEngine):
+
+    @staticmethod
+    def table_name():
+        return 'device'
 
     def get(self, **kwargs):
         """Get the information requested"""
@@ -25,7 +28,7 @@ class DeviceObj(SqEngineObject):
     def summarize(self, **kwargs):
         """Summarize device information across namespace"""
 
-        self._init_summarize(self.iobj._table, **kwargs)
+        self._init_summarize(self.iobj.table, **kwargs)
         if self.summary_df.empty:
             return self.summary_df
 

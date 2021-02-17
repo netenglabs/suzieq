@@ -3,11 +3,15 @@ import pandas as pd
 import numpy as np
 
 from suzieq.sqobjects.lldp import LldpObj
-from suzieq.engines.pandas.engineobj import SqEngineObject
+from .engineobj import SqPandasEngine
 from suzieq.utils import SchemaForTable, build_query_str, humanize_timestamp
 
 
-class OspfObj(SqEngineObject):
+class OspfObj(SqPandasEngine):
+
+    @staticmethod
+    def table_name():
+        return 'ospf'
 
     def _get_combined_df(self, **kwargs):
         """OSPF has info divided across multiple tables. Get a single one"""
@@ -136,7 +140,8 @@ class OspfObj(SqEngineObject):
             self.summary_df.lastChangeTime)
 
         self.summary_df['lastChangeTime'] = humanize_timestamp(
-            self.summary_df.lastChangeTime)
+            self.summary_df.lastChangeTime, self.cfg.get('analyzer', {})
+            .get('timezone', None))
 
         self.summary_df['lastChangeTime'] = (
             self.summary_df['timestamp'] - self.summary_df['lastChangeTime'])
@@ -201,7 +206,7 @@ class OspfObj(SqEngineObject):
                 ospf_df.merge(df, on=["routerId"], how="outer")
                 .apply(lambda x: ["duplicate routerId {}".format(
                     x["hostname_y"])]
-                    if len(x['hostname_y']) != 1 else [], axis=1))
+                    if x["hostname_y"] is not np.nan and len(x['hostname_y']) != 1 else [], axis=1))
 
         # Now  peering match
         lldpobj = LldpObj(context=self.ctxt)

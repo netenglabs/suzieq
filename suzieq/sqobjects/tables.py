@@ -3,13 +3,15 @@ from importlib import import_module
 
 from suzieq.sqobjects.basicobj import SqObject
 from suzieq.utils import SchemaForTable
+from suzieq.db import get_sqdb_engine
 
 
 class TablesObj(SqObject):
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs) -> None:
         # We're passing any table name to get init to work
         super().__init__(table='device', **kwargs)
+        self.engine = get_sqdb_engine(self._cfg, None, None, None)
         self._valid_get_args = ['namespace', 'hostname', 'columns', ]
 
     def get(self, **kwargs):
@@ -19,7 +21,7 @@ class TablesObj(SqObject):
                 {'error': ['ERROR: You cannot specify columns with table']})
             return df
 
-        tables = self.engine.get_tables(self.ctxt.cfg, **kwargs)
+        tables = self.engine.get_tables(**kwargs)
         df = pd.DataFrame()
         unknown_tables = []
         if tables:

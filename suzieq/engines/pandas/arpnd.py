@@ -1,8 +1,11 @@
-from .engineobj import SqEngineObject
+from .engineobj import SqPandasEngine
 
 
-class ArpndObj(SqEngineObject):
-    pass
+class ArpndObj(SqPandasEngine):
+
+    @staticmethod
+    def table_name():
+        return 'arpnd'
 
     def summarize(self, **kwargs):
         """Summarize ARPND info across namespace"""

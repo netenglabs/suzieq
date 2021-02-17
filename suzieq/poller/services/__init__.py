@@ -44,6 +44,7 @@ async def init_services(svc_dir: str, schema_dir: str, queue, svclist: list,
 
     if schemas:
         poller_schema = schemas.get_arrow_schema("sqPoller")
+        poller_schema_version = SchemaForTable('sqPoller', schemas).version
 
     for root, _, filenames in walk(svc_dir):
         for filename in filenames:
@@ -171,6 +172,7 @@ async def init_services(svc_dir: str, schema_dir: str, queue, svclist: list,
                     )
 
                 service.poller_schema = poller_schema
+                service.poller_schema_version = poller_schema_version
                 logger.info("Service {} added".format(service.name))
                 svcs_list.append(service)
 

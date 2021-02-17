@@ -371,7 +371,7 @@ def page_work(state_container, page_flip: bool):
                           end_time=state.end_time)
         try:
             df, summ_df = path_get(state, pathobj, forward_dir=True)
-            rdf = getattr(pathobj.engine_obj, '_rdf', pd.DataFrame())
+            rdf = getattr(pathobj.engine, '_rdf', pd.DataFrame())
             if not rdf.empty:
                 state.pathobj = pathobj
                 state.path_df = df

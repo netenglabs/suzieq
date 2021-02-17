@@ -14,7 +14,7 @@ import tempfile
 def create_config(testvar):
     if 'data-directory' in testvar:
         # We need to create a tempfile to hold the config
-        tmpconfig = conftest._create_context_config()
+        tmpconfig = conftest.get_dummy_config()
         tmpconfig['data-directory'] = testvar['data-directory']
 
         tf = tempfile.NamedTemporaryFile(delete=False)
