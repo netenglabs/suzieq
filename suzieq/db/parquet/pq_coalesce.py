@@ -20,8 +20,8 @@ class SqCoalesceState(object):
         self.current_df = pd.DataFrame()
         self.logger = logger if logger else logging.getLogger()
         self.keys = None        # filled as we tackle each table
-        self.type = None        # filled as we tackle each table
         self.schema = None      # filled as we tackle each table
+        self.dbeng = None       # filled as we tackle each table
         self.period = period
         self.prefix = 'sqc-h-'   # sqc == suzieq coalesceer, h: hourly coalesce
         self.ign_pfx = ['.', '_', 'sqc-']  # Prefixes to ignore for coalesceing
@@ -78,20 +78,19 @@ def write_files(filelist: List[str], in_basedir: str,
     :param block_end: dateime, ending time window of this coalescing block
     :returns: Nothing
     """
-    if not filelist and not state.type == "record":
+    if not filelist and not state.schema.type == "record":
         return
 
     state.block_start = int(block_start.timestamp())
     state.block_end = int(block_end.timestamp())
     if filelist:
-        wrtbl = ds.dataset(source=filelist, partitioning='hive',
-                           partition_base_dir=in_basedir) \
-            .to_table()
-        state.wrrec_count += wrtbl.num_rows
+        this_df = ds.dataset(source=filelist, partitioning='hive',
+                             partition_base_dir=in_basedir) \
+            .to_table() \
+            .to_pandas()
+        state.wrrec_count += this_df.shape[0]
 
-        if state.type == "record":
-            this_df = wrtbl.to_pandas()
-
+        if state.schema.type == "record":
             if not state.current_df.empty:
                 this_df = this_df.set_index(state.keys)
                 sett = set(this_df.index)
@@ -101,29 +100,20 @@ def write_files(filelist: List[str], in_basedir: str,
                     missing_df = state.current_df.loc[missing_set]
                     this_df = pd.concat([this_df.reset_index(),
                                          missing_df.reset_index()])
-                    wrtbl = pa.Table.from_pandas(this_df, schema=state.schema,
-                                                 preserve_index=False)
                 else:
                     this_df = this_df.reset_index()
     elif not state.current_df.empty:
-        assert(state.type == "record")
-        wrtbl = pa.Table.from_pandas(state.current_df.reset_index(),
-                                     schema=state.schema,
-                                     preserve_index=False)
+        assert(state.schema.type == "record")
+        this_df = state.current_df
     else:
         return
 
-    pq.write_to_dataset(
-        wrtbl,
-        root_path=outfolder,
-        partition_cols=partition_cols,
-        version="2.0",
-        compression='ZSTD',
-        partition_filename_cb=state.pq_file_name,
-        row_group_size=100000,
-    )
+    this_df.sqvers = state.schema.version  # Updating the schema version
+    state.dbeng.write(state.table_name, "pandas", this_df, True,
+                      state.schema.get_arrow_schema(),
+                      state.pq_file_name)
 
-    if state.type == "record" and filelist:
+    if state.schema.type == "record" and filelist:
         # Now replace the old dataframe with this new set for "record" types
         # Non-record types should never have current_df non-empty
         state.current_df = this_df.set_index(state.keys) \
@@ -201,8 +191,7 @@ def get_last_update_df(outfolder: str, state: SqCoalesceState) -> pd.DataFrame:
 
 
 def coalesce_resource_table(infolder: str, outfolder: str, archive_folder: str,
-                            table: str, schema: SchemaForTable,
-                            state: SqCoalesceState) -> None:
+                            table: str, state: SqCoalesceState) -> None:
     """This routine coalesces all the parquet data in the folder provided
 
     This function MUST be called with sqPoller as the table the first time to
@@ -218,7 +207,6 @@ def coalesce_resource_table(infolder: str, outfolder: str, archive_folder: str,
     :param outfolder: str, folder to write data to
     :param archive_folder: str, folder to store the archived files in
     :param table: str, name of table we're coalesceing
-    :param tbl_schema: SchemaForTable, schema of table we're coalesceing
     :param state: SqCoalesceState, state about this coalesceion run
     :returns: Nothing
     """
@@ -248,13 +236,13 @@ def coalesce_resource_table(infolder: str, outfolder: str, archive_folder: str,
         wr_polling_period = False
     state.wrfile_count = 0
     state.wrrec_count = 0
+    state.table_name = table
+    schema = state.schema
 
-    if schema.type == "record":
+    if state.schema.type == "record":
         state.keys = schema.key_fields()
         if state.current_df.empty:
             state.current_df = get_last_update_df(outfolder, state)
-        state.type = schema.type
-        state.schema = schema.get_arrow_schema()
 
     # Ignore reading the compressed files
     dataset = ds.dataset(infolder, partitioning='hive', format='parquet',
@@ -298,7 +286,7 @@ def coalesce_resource_table(infolder: str, outfolder: str, archive_folder: str,
 
     # We may start coalescing when nothing has changed for some initial period.
     # We have to write out records for that period.
-    if state.type == "record":
+    if schema.type == "record":
         for interval in polled_periods:
             if not fdf.empty and (block_end < interval):
                 break
@@ -315,7 +303,7 @@ def coalesce_resource_table(infolder: str, outfolder: str, archive_folder: str,
         # Write data if either there's data to be written (readblock isn't
         # empty) OR this table is a record type and poller was alive during
         # this period (state's poller period for this window isn't blank
-        if readblock or ((state.type == "record") and
+        if readblock or ((schema.type == "record") and
                          block_start in state.poller_periods):
 
             write_files(readblock, infolder, outfolder, partition_cols, state,
@@ -331,7 +319,7 @@ def coalesce_resource_table(infolder: str, outfolder: str, archive_folder: str,
         block_start = block_end
         block_end = block_start + state.period
         readblock = []
-        if state.type != "record":
+        if schema.type != "record":
             # We can jump directly to the timestamp corresonding to this
             # row's timestamp
             block_start = compute_block_start(row.timestamp)
@@ -354,7 +342,7 @@ def coalesce_resource_table(infolder: str, outfolder: str, archive_folder: str,
         readblock = [row.file]
 
     # The last batch that ended before the block end
-    if readblock or (fdf.empty and (state.type == "record") and
+    if readblock or (fdf.empty and (schema.type == "record") and
                      block_start in state.poller_periods):
         write_files(readblock, infolder, outfolder, partition_cols, state,
                     block_start, block_end)

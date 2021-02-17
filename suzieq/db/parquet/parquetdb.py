@@ -194,8 +194,19 @@ class SqParquetDB(SqDB):
             partition_cols = ['sqvers', 'namespace']
         else:
             partition_cols = ['sqvers', 'namespace', 'hostname']
+
+        schema_def = dict(zip(schema.names, schema.types))
+        defvals = self._get_default_vals()
+
         if data_format == "pandas":
             if isinstance(data, pd.DataFrame):
+                cols = data.columns
+
+                # Ensure all fields are present
+                for field in schema_def:
+                    if field not in cols:
+                        data[field] = defvals.get(schema_def[field], '')
+
                 table = pa.Table.from_pandas(data, schema=schema,
                                              preserve_index=False)
             elif isinstance(data, pa.Table):
@@ -209,12 +220,12 @@ class SqParquetDB(SqDB):
                 pq.write_to_dataset(table, root_path=folder,
                                     partition_cols=partition_cols,
                                     version="2.0", compression="ZSTD",
+                                    partition_filename_cb=filename_cb,
                                     row_group_size=100000)
             else:
                 pq.write_to_dataset(table, root_path=folder,
                                     partition_cols=partition_cols,
                                     version="2.0", compression="ZSTD",
-                                    partition_filename_cb=filename_cb,
                                     row_group_size=100000)
 
         return 0
@@ -314,6 +325,8 @@ class SqParquetDB(SqDB):
             else:
                 table_archive_folder = None
             state.current_df = pd.DataFrame()
+            state.dbeng = self
+            state.schema = SchemaForTable(entry, schemas, None)
             if not os.path.isdir(table_infolder):
                 self.logger.info(
                     f'No input records to coalesce for {entry}')
@@ -326,7 +339,6 @@ class SqParquetDB(SqDB):
             start = time()
             coalesce_resource_table(table_infolder, table_outfolder,
                                     table_archive_folder, entry,
-                                    SchemaForTable(entry, schemas, None),
                                     state)
             end = time()
             self.logger.info(
@@ -580,6 +592,19 @@ class SqParquetDB(SqDB):
             return f'{dir}/{table_name}'
         else:
             return dir
+
+    def _get_default_vals(self) -> dict:
+        return({
+            pa.string(): "",
+            pa.int32(): 0,
+            pa.int64(): 0,
+            pa.float32(): 0.0,
+            pa.float64(): 0.0,
+            pa.date64(): 0.0,
+            pa.bool_(): False,
+            pa.list_(pa.string()): [],
+            pa.list_(pa.int64()): [],
+        })
 
     def get_tables(self, **kwargs):
         """finds the tables that are available"""
