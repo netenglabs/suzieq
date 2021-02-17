@@ -13,7 +13,7 @@ Lets see this in practice.
 
 ## Examples of Using Time in Suzieq
 
-We use the suzieq-demo docker container for all the commands. You can run this with the command: `docker run -it ddutt/suzieq-demo`. Inside the container, type `suzieq-cli` to get into the CLI.
+We use the suzieq-demo docker container for all the commands. You can run this with the command: `docker run -it netenglabs/suzieq-demo`. Inside the container, type `suzieq-cli` to get into the CLI.
 
 Lets start with a listing of the interfaces in the ibgp-evpn namespace. The output of `interface show namespace=ibgp-evpn hostname=leaf02` looks as shown in Figure 1. The output in this figure and the remaining figures have been snipped to focus on the fields that matter. 
 

@@ -7,14 +7,14 @@ Suzieq ships with a REST server. It has the same set of commands, verbs and filt
 The REST server is bundled with the Suzieq Docker image. It already has an API key and a self-signed SSL certificate to get you going without further ado. Real deployment of course involves changing these defaults with something specific to your enterprise. At this time it's only authentication
 is via an API key and all access to the API is via SSL.
 
-You must launch the Suzieq docker container as follows:```docker run -itd -p 8000:8000 --name suzieq ddutt/suzieq:0.6-prerc```
-This assumes that you're using port 8000 to connect to the REST server. If you wish to use a different port for the REST server, say 7000, you can launch it as ```docker run -itd -p 7000:8000 --name suzieq ddutt/suzieq:0.6-prerc```.
+You must launch the Suzieq docker container as follows:```docker run -itd -p 8000:8000 --name suzieq netenglabs/suzieq:latest```
+This assumes that you're using port 8000 to connect to the REST server. If you wish to use a different port for the REST server, say 7000, you can launch it as ```docker run -itd -p 7000:8000 --name suzieq netenglabs/suzieq:latest```.
 
 You then connect to the container with ```docker attach suzieq```, and launch the server with ```sq-rest-server.py &```. You can then exit the container using the usual Docker container escape sequence CTRL-p CTRL-q to leave the docker container running. 
 
 The server is now accessible via https://localhost:8000/docs (or whatever port you've mapped the server to on the host). You need to pass the API_KEY in the request to be able to access the server. A simple example using the default API key and certificate is to use curl as follows:```curl --insecure 'https://localhost:8000/api/v1/device/show?&access_token=496157e6e869ef7f3d6ecb24a6f6d847b224ee4f'```
 
-The Suzieq docker container of course serves the data available under /suzieq/parquet inside the container. You can mount the parquet data you've already gathered via the -v option. So an example of mounting the parquet directory with data would be to launch the container as follows:```docker run -itd -p 8000:8000 -v/home/ddutt/work/suzieq/tests/data/multidc/parquet-out:/suzieq/parquet --name suzieq ddutt/suzieq:0.6-prerc```
+The Suzieq docker container of course serves the data available under /suzieq/parquet inside the container. You can mount the parquet data you've already gathered via the -v option. So an example of mounting the parquet directory with data would be to launch the container as follows:```docker run -itd -p 8000:8000 -v/home/netenglabs/work/suzieq/tests/data/multidc/parquet-out:/suzieq/parquet --name suzieq netenglabs/suzieq:latest```
 
 The REST server has been implemented using the [fastapi](https://fastapi.tiangolo.com/) server.
 

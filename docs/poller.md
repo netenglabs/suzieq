@@ -1,8 +1,8 @@
 # Gathering Data: Poller
 
-To gather data from your network, you need to run the poller. Launch the docker container, ddutt/suzieq:latest and attach to it via the following steps:
+To gather data from your network, you need to run the poller. Launch the docker container, netenglabs/suzieq:latest and attach to it via the following steps:
 
-- ```docker run -itd -v /home/${USER}/parquet-out:/suzieq/parquet -v /home/${USER}/<inventory-file>:/suzieq/inventory --name sq-poller ddutt/suzieq:latest```
+- ```docker run -itd -v /home/${USER}/parquet-out:/suzieq/parquet -v /home/${USER}/<inventory-file>:/suzieq/inventory --name sq-poller netenglabs/suzieq:latest```
 - ```docker attach sq-poller```
 
 In the docker run command above, the two -v options provide host file/directory access to (i) store the parquet output files (the first -v option), and (ii) the inventory file (the second -v option). We describe the inventory file below. The inventory file is the list of devices and their IP address that you wish to gather data from. 
@@ -23,11 +23,11 @@ The Suzieq native inventory file format that contains the IP address, the access
 - namespace: eos
   hosts:
     - url: https://vagrant@192.168.123.252 devtype=eos
-    - url: ssh://vagrant@192.168.123.232  keyfile=/home/ddutt/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/internet/libvirt/private_key
+    - url: ssh://vagrant@192.168.123.232  keyfile=/home/netenglabs/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/internet/libvirt/private_key
     - url: https://vagrant@192.168.123.164 devtype=eos
     - url: ssh://192.168.123.70 username=admin password=admin
-    - url: ssh://vagrant@192.168.123.230  keyfile=/home/ddutt/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/server101/libvirt/private_key
-    - url: ssh://vagrant@192.168.123.54:2023  keyfile=/home/ddutt/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/server104/libvirt/private_key
+    - url: ssh://vagrant@192.168.123.230  keyfile=/home/netenglabs/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/server101/libvirt/private_key
+    - url: ssh://vagrant@192.168.123.54:2023  keyfile=/home/netenglabs/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/server104/libvirt/private_key
     - url: https://vagrant@192.168.123.123 password=vagrant
 ```
 
