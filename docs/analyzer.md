@@ -25,7 +25,7 @@ Let's jump into what you can do with Suzieq now.
 
 We focus on the use of the analyzer via the CLI, suzieq-cli. You launch the CLI inside the docker image. You startup the docker image as described before, via the command:
 ```
-docker run -itd -v /home/ddutt/suzieq-data/cloud-native-data-center-networking/parquet-out:/suzieq/parquet --name suzieq ddutt/suzieq:latest
+docker run -itd -v /home/netenglabs/suzieq-data/cloud-native-data-center-networking/parquet-out:/suzieq/parquet --name suzieq netenglabs/suzieq:latest
 ```
 
 You then attach to it via ```docker attach suzieq```.
@@ -241,7 +241,7 @@ and end-time and don't specify view=all, then you will see only the changes duri
 
 ###  2.2. <a name='installation-with-pipenv'></a>Installation with Pipenv
 The complicated non-docker way to install Suzieq is to get the code from github
-1. git clone: `git clone git@github.com:ddutt/suzieq.git`
+1. git clone: `git clone git@github.com:netenglabs/suzieq.git`
 2. Suzieq assumes the use of python3.7 which may not be installed on your computer by default. 
 Ubuntu 18.04 ships with 3.6 as default, for example. Check your python version with python3 --version. 
 If that is different from 3.7, you’ll need to add the python3.7 and 3.7 dev package. 
