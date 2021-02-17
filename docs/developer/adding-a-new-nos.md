@@ -119,9 +119,9 @@ It is recommended that you first check that the NOS can be recognized, if you're
 You can debug the SSH or HTTP process by setting the log level to DEBUG or INFO in the default suzieq config file, stored at ~/.suzieq/suzieq-cfg.yml. An example of the contents of this file is:
 
 ```
-data-directory: /home/ddutt/work/suzieq/tests/data/multidc/parquet-out
-service-directory: /home/ddutt/work/suzieq/config
-schema-directory: /home/ddutt/work/suzieq/config/schema
+data-directory: /home/netenglabs/work/suzieq/tests/data/multidc/parquet-out
+service-directory: /home/netenglabs/work/suzieq/config
+schema-directory: /home/netenglabs/work/suzieq/config/schema
 temp-directory: /tmp/suzieq
 # kafka-servers: localhost:9093
 logging-level: WARNING

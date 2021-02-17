@@ -5,7 +5,7 @@ this blog I will be going over some of the things you can do with Suzieq to help
 and understand your network. We have [suzieq-data ](https://github.com/netenglabs/suzieq-data) 
 that you can use to investigate Suzieq. This databases has data from all the 
 different scenarios available in 
-[https://github.com/ddutt/cloud-native-data-center-networking](https://github.com/ddutt/cloud-native-data-center-networking)
+[https://github.com/netenglabs/cloud-native-data-center-networking](https://github.com/netenglabs/cloud-native-data-center-networking)
 
 We are going to go through specific things you can do with Suzieq, to give 
 you good ideas of how you can start using it in your network. We will cover 
