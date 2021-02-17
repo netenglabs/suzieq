@@ -163,7 +163,7 @@ class BgpObj(SqPandasEngine):
                                      how='left',
                                      suffixes=('', '_y')) \
                 .drop_duplicates(subset=['namespace', 'hostname',
-                                         'vrf', 'peer']) \
+                                         'vrf', 'peer', 'timestamp']) \
                 .rename(columns={'hostname_y': 'peerHost'})
             # I've not seen the diff between ignore_index and not and so
             # deliberately ignoring
