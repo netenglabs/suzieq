@@ -125,7 +125,7 @@ async def start_and_monitor_coalescer(config_file: str, cfg: dict,
             logger.error(f'coalescer stdout: {stdout}, stderr: {stderr}')
         else:
             if process.returncode == errno.EBUSY:
-                asyncio.sleep(10*60)
+                await asyncio.sleep(10*60)
             else:
                 logger.info(
                     f'coalescer ended stdout: {stdout}, stderr: {stderr}')
@@ -427,6 +427,6 @@ if __name__ == "__main__":
 
     try:
         asyncio.run(start_poller(userargs, cfg))
-    except Exception:
+    except (Exception, KeyboardInterrupt):
         pass
     sys.exit(0)
