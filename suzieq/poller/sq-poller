@@ -257,22 +257,17 @@ async def start_poller(userargs, cfg):
         if not userargs.no_coalescer:
             tasks += [start_and_monitor_coalescer(userargs.config, cfg,
                                                   logger)]
-        do_terminate = False
-
         while tasks:
             try:
                 done, pending = await asyncio.wait(
                     tasks, return_when=asyncio.FIRST_COMPLETED)
                 tasks = list(pending)
-                if do_terminate:
-                    #  Just giving a sec for bits to be twiddled
-                    sleep(1)
                 if tasks and any(i._coro in svc_tasks for i in tasks):
                     continue
                 else:
                     break
             except asyncio.CancelledError:
-                do_terminate = True
+                break
     finally:
         logger.warning("sq-poller: Received terminate signal. Terminating")
         loop.stop()
