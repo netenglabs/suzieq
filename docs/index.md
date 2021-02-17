@@ -7,6 +7,7 @@ you can answer your questions is a measure of how good the system's observabilit
 system goes well beyond what is normally considered monitoring and alerting. Suzieq is primarily meant for use by network engineers and designers.
 
 Suzieq does multiple things:
+
 * We [gather data](https://suzieq.readthedocs.io/en/latest/poller/) using an agentless model using either SSH or REST API as the transport. We gather data from routers, bridges and Linux servers.
 * We normalize the data into a vendor-agnostic format.
 * We store all data in files using the popular big data format, ]Parquet](https://parquet.apache.org/). 
