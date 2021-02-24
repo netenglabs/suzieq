@@ -219,6 +219,15 @@ class BgpService(Service):
     def _clean_iosxr_data(self, processed_data, raw_data):
 
         drop_indices = []
+        vrf_rtrid = {}
+
+        # The last two entries are routerIds. Extract them first
+        for i, entry in enumerate(reversed(processed_data)):
+            if not entry.get('_entryType', ''):
+                break
+
+            vrf_rtrid.update({entry.get('vrf', 'default') or 'default':
+                              entry.get('routerId', '')})
 
         for i, entry in enumerate(processed_data):
             if not entry.get('afi', ''):
@@ -240,6 +249,7 @@ class BgpService(Service):
                               (raw_data[0]['timestamp'])/1000), })
             if estdTime:
                 entry['estdTime'] = int(estdTime.timestamp()*1000)
+            entry['routerId'] = vrf_rtrid.get(entry['vrf'], '')
 
         processed_data = np.delete(processed_data, drop_indices).tolist()
         return processed_data

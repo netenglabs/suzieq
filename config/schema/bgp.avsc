@@ -61,13 +61,13 @@
         {
             "name": "pfxRx",
             "type": "long",
-            "display": 8,
+            "display": 10,
 	    "description": "Count of prefixes rcvd for this AFI/SAFI from peer"
         },
         {
             "name": "pfxTx",
             "type": "long",
-            "display": 9,
+            "display": 11,
 	    "description": "Count of prefixes advertised for this AFI/SAFI from peer"
         },
         {
@@ -101,11 +101,6 @@
 	    "description": "Maximum #hops this peer can be"
         },
         {
-            "name": "evpnPfxRx",
-            "type": "long",
-	    "description": "(deprecated)Count of EVPN prefixes rcvd"
-        },
-        {
             "name": "advertiseAllVnis",
             "type": "boolean",
 	    "description": "True if FRR has advertiseAllVnis configured"
@@ -137,44 +132,9 @@
 	    "description": "list of types of communities advertised for AFI/SAFI to peer"
 	},
         {
-            "name": "v6EgressRmap",
-            "type": "string",
-	    "description": "route map name associated with IPv6 outbound advt"
-        },
-        {
-            "name": "v6Enabled",
-            "type": "boolean",
-	    "description": "True is IPv6 Unicast AFI/SAFI is exchanged"
-        },
-        {
-            "name": "v6Advertised",
-            "type": "boolean",
-	    "description": "True if IPv4 Unicast AFI/SAFI is being exchanged"
-        },
-        {
             "name": "defOriginate",
             "type": "boolean",
 	    "description": "True if advertising default route for this AFI/SAFI to peer"
-        },
-        {
-            "name": "v6IngressRmap",
-            "type": "string",
-	    "description": "route map name applied on IPv6 inbound advt"
-        },
-        {
-            "name": "v4EgressRmap",
-            "type": "string",
-	    "description": "route map name applied on IPv4 outbound advt"
-        },
-        {
-            "name": "v6PfxRx",
-            "type": "long",
-	    "description": "Count of IPv6 unicast prefixes rcvd"
-        },
-        {
-            "name": "v4DefaultSent",
-            "type": "boolean",
-	    "description": "True if advertising IPv6 default route"
         },
         {
             "name": "keepaliveTime",
@@ -184,23 +144,13 @@
         {
             "name": "estdTime",
             "type": "timedelta64[s]",
-            "display": 10,
+            "display": 13,
 	    "description": "Session uptime"
-        },
-        {
-            "name": "updatesTx",
-            "type": "long",
-	    "description": "count of BGP update messages tx"
         },
         {
             "name": "updateSource",
             "type": "string",
 	    "description": "Interface whose IP is used as source IP of BGP peering"
-        },
-        {
-            "name": "v4Enabled",
-            "type": "boolean",
-	    "description": "True if IPv4 unicast AFI/SAFI is being exchanged"
         },
         {
             "name": "holdTime",
@@ -210,7 +160,7 @@
         {
             "name": "peerHostname",
             "type": "string",
-            "display": 4,
+            "display": 9,
 	    "description": "Hostname of BGP peer"
         },
         {
@@ -223,7 +173,7 @@
         {
             "name": "numChanges",
             "type": "long",
-            "display": 11,
+            "display": 12,
 	    "description": "count of changes in BGP session state"
         },
         {
@@ -243,11 +193,6 @@
 	    "description": "BFD status"
         },
         {
-            "name": "v4IngressRmap",
-            "type": "string",
-	    "description": "route map name applied on IPv4 unicast inbound advt"
-        },
-        {
             "name": "nhUnchanged",
             "type": "boolean",
 	    "description":  "True if set nexthop unchanged is configured for eBGP peer"
@@ -258,40 +203,15 @@
 	    "description":  "True if set nexthop self is configured for iBGP peer"
         },
         {
-            "name": "v4PfxTx",
-            "type": "long",
-	    "description": "IPv4 unicast prefixes sent"
-        },
-        {
             "name": "rrclient",
             "type": "string",
 	    "description": "True is peer is Route Reflector client"
         },
         {
-            "name": "evpnDefaultSent",
-            "type": "boolean",
-	    "description": "True if default route is advt with EVPN Type-5"
-        },
-        {
             "name": "asn",
             "type": "long",
-            "display": 6,
+            "display": 7,
 	    "description": "This devices' ASN"
-        },
-        {
-            "name": "evpnIngressRmap",
-            "type": "string",
-	    "description": "route map name applied on EVPN inbound advt"
-        },
-        {
-            "name": "v6Received",
-            "type": "boolean",
-	    "description": "IPv6 Unicast AFI/SAFI capability rcvd"
-        },
-        {
-            "name": "v6DefaultSent",
-            "type": "boolean",
-	    "description": "IPv6 unicast AFI/SAFI capability sent"
         },
         {
             "name": "notificnReason",
@@ -316,23 +236,13 @@
         {
             "name": "peerAsn",
             "type": "long",
-            "display": 7,
+            "display": 8,
 	    "description": "Peer device's ASN"
         },
         {
             "name": "peerIP",
             "type": "string",
 	    "description": "Peering IP address, if any"
-        },
-        {
-            "name": "evpnEgressRmap",
-            "type": "string",
-	    "description": "route map name applied to EVPN outbound advt"
-        },
-        {
-            "name": "evpnAdvertised",
-            "type": "boolean",
-	    "description": "True if EVPN NLRI capability is advertised"
         },
         {
             "name": "mrai",
@@ -342,13 +252,8 @@
         {
             "name": "state",
             "type": "string",
-            "display": 5,
+            "display": 6,
 	    "description": "State of BGP session, Established or NotEstd"
-        },
-        {
-            "name": "evpnEnabled",
-            "type": "boolean",
-	    "description": "True if EVPN NLRI are being exchanged"
         },
         {
             "name": "reason",
@@ -356,54 +261,14 @@
 	    "description": "Reason for BGP session being down"
         },
         {
-            "name": "evpnSendCommunity",
-            "type": "string",
-	    "description": "True if Send Community is enabled for EVPN"
-        },
-        {
-            "name": "v4Advertised",
-            "type": "boolean",
-	    "description": "True if IPv4 Unicast NLRI capavility is adv"
-        },
-        {
-            "name": "v6PfxTx",
-            "type": "long",
-	    "description": "Count of IPv6 Unicast prefixes sent"
-        },
-        {
             "name": "lastDownTime",
             "type": "timestamp",
 	    "description": "Unix epoch indicating when session was last down"
         },
         {
-            "name": "evpnPfxTx",
-            "type": "long",
-	    "description": "Count of EVPN prefixes sent"
-        },
-        {
             "name": "ifname",
             "type": "string",
 	    "description": "interface name associated with session"
-        },
-        {
-            "name": "v4PfxRx",
-            "type": "long",
-	    "description": "Count of IPv4 Unicast prefixes rcvd"
-        },
-        {
-            "name": "v4Received",
-            "type": "boolean",
-	    "description": "True if IPv4 NLRI capability was rcvd"
-        },
-        {
-            "name": "updatesRx",
-            "type": "long",
-	    "description": "Count of BGP Update messages rcvd"
-        },
-        {
-            "name": "evpnReceived",
-            "type": "boolean",
-	    "description": "True if EVPN NLRI capability rcvd"
         },
         {
             "name": "hostname",
