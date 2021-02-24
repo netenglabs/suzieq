@@ -477,8 +477,7 @@ class SqParquetDB(SqDB):
                 msch = sch
             else:
                 for fld in sch_set-msch_set:
-                    index = sch.get_field_index(fld.name)
-                    msch.insert(index, fld)
+                    msch.append(fld)
 
         return msch
 
