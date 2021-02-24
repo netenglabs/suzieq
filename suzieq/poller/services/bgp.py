@@ -1,4 +1,6 @@
 import numpy as np
+from dateparser import parse
+from datetime import datetime
 
 from suzieq.poller.services.service import Service
 from suzieq.utils import get_timestamp_from_cisco_time
@@ -210,6 +212,34 @@ class BgpService(Service):
                 entries_by_vrf[entry['vrf']] = []
 
             entries_by_vrf[entry['vrf']].append(entry)
+
+        processed_data = np.delete(processed_data, drop_indices).tolist()
+        return processed_data
+
+    def _clean_iosxr_data(self, processed_data, raw_data):
+
+        drop_indices = []
+
+        for i, entry in enumerate(processed_data):
+            if not entry.get('afi', ''):
+                drop_indices.append(i)
+                continue
+
+            entry['numChanges'] = (int(entry.get('_numConnEstd', 0) or 0) +
+                                   int(entry.get('_numConnDropped', 0) or 0))
+            if not entry.get('vrf', ''):
+                entry['vrf'] = 'default'
+            if entry.get('afi', ''):
+                entry['afi'] = entry['afi'].lower()
+            if entry.get('safi', ''):
+                entry['safi'] = entry['safi'].lower()
+            estdTime = parse(
+                entry.get('estdTime', ''),
+                settings={'RELATIVE_BASE':
+                          datetime.fromtimestamp(
+                              (raw_data[0]['timestamp'])/1000), })
+            if estdTime:
+                entry['estdTime'] = int(estdTime.timestamp()*1000)
 
         processed_data = np.delete(processed_data, drop_indices).tolist()
         return processed_data

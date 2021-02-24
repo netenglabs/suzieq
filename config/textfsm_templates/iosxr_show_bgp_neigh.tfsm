@@ -1,68 +1,80 @@
-Value NEIGHBOR (\S+)
-Value REMOTE_AS (\d+)
-Value LOCAL_AS (\d+)
-Value TYPE (\w+)
-Value DESCRIPTION (.+?)
-Value REMOTE_ROUTER_ID (\S+)
-Value CLUSTER_ID (\S+)
-Value STATE (.+?)
-Value UPTIME (.+?)
-Value NSR_STATE (.+?)
-Value HOLDTIME (\d+)
-Value KEEPALIVE (\d+)
-Value NSR (.+?)
+Value Filldown peer (\S+)
+Value Filldown peerAsn (\d+)
+Value Filldown asn (\d+)
+Value Filldown vrf (\w+)
+Value Filldown description (.+?)
+Value Filldown peerRouterId (\S+)
+Value Filldown clusterId (\S+)
+Value Filldown state (.+?)
+Value Filldown estdTime (.+?)
+Value Filldown holdTime (\d+)
+Value Filldown keepaliveTime (\d+)
+Value Filldown bfdStatus (\w+)
+Value Filldown rrClient (\S+)
 Value GR (.+?)
-Value List AFI (.+?)
-Value List VERSION (\d+)
-Value List ROUTE_REFLECTOR_ROLE (\S+)
-Value List POLICY_INCOMING (\S+)
-Value List POLICY_OUTGOING (\S+)
-Value List PREFIXES_IN (\d+)
-Value List PREFIXES_IN_BEST (\d+)
-Value List PREFIXES_OUT (\d+)
-Value List PREFIXES_OUT_SUPPRESSED (\d+)
-Value List PREFIXES_OUT_WITHDRAWN (\d+)
-Value List MAX_PREFIXES (\d+)
-Value List MAX_PREFIXES_WARN_PERCENT (\d+)
-Value List DEFAULT_ORIGINATE (.+?)
+Value afi (\w+)
+Value safi (\w+)
+Value List afisAdvOnly ([^:]+)
+Value List afisRcvOnly ([^:]+)
+Value Filldown mrai (\d+)
+Value VERSION (\d+)
+Value TYPE (\w+)
+Value nsrState (.+?)
+Value _nsr (.+?)
+Value ingressRmap (\S+)
+Value egressRmap (\S+)
+Value pfxRx (\d+)
+Value pfxBestRx (\d+)
+Value pfxTx (\d+)
+Value pfxSuppressTx (\d+)
+Value pfxWithdrawnTx (\d+)
+Value pfxMaxRx (\d+)
+Value pfxWarnPercent (\d+)
+Value defOriginate (.+?)
+Value nextHopSelf (\w+)
+Value List communityTypes (Community|\w+)
+Value passive (passive)
+Value extnhEnabled (\w+)
+Value _numConnEstd (\d+)
+Value _numConnDropped (\d+)
+Value Fillup peerIP (.*)
+Value Fillup updateSource (.*)
+Value Fillup lastDownTime (.+?)
+Value softReconfig (\w+)
+Value reason (.+?)
 Value List LAST_ACK_VERSION (\d+)
 Value List LAST_SYNCED_ACK_VERSION (\d+)
-Value CONNECTIONS_ESTABLISHED (\d+)
-Value CONNECTIONS_DROPPED (\d+)
-Value LOCAL_ADDRESS (.*)
+Value Fillup notificnReason (.+?)
+Value Fillup notificnReasonRx (.+?)
+Value Fillup hopsMax (\d+)
 Value LOCAL_PORT (\d+)
-Value REMOTE_ADDRESS (.*)
 Value REMOTE_PORT (\d+)
-Value LAST_RESET (.+?)
-Value LAST_RESET_REASON (.+?)
 Value LAST_NOTIFICATION_SENT (\S+)
-Value ERROR_CODE (.+?)
-Value LAST_NOTIFICATION_RECEIVED (\S+)
-Value PEER_ERROR_CODE (.+?)
-Value PEER_RESET_REASON (.+?)
-Value MAX_HOPS (\d+)
-
 
 Start
+  ^VRF:
+  ^-+.*$$
   ^\S+\s+\S+\s+\d+\s+\d+:\d+:\d+\.\d+\s+\S+\s*$$
   ^BGP\s+neighbor -> Continue.Record
-  ^BGP\s+neighbor\s+is\s+${NEIGHBOR}\s*$$
-  ^\s+Remote\s+AS\s+${REMOTE_AS}\,\s+local\s+AS\s+${LOCAL_AS}\,\s+(?:no\-prepend,\s+)?(?:replace\-as\,\s+)?${TYPE}\s+link
+  ^BGP\s+neighbor -> Continue.Clearall  
+  ^BGP\s+neighbor\s+is\s+${peer},\s+vrf\s+${vrf}.*$$
+  ^BGP\s+neighbor\s+is\s+${peer}.*$$
+  ^\s+Remote\s+AS\s+${peerAsn}\,\s+local\s+AS\s+${asn}\,\s+(?:no\-prepend,\s+)?(?:replace\-as\,\s+)?${TYPE}\s+link
   ^\s+Administratively\s+shut\s+down
-  ^\s+Description:\s+${DESCRIPTION}\s*$$
-  ^\s+Remote\s+router\s+ID\s+${REMOTE_ROUTER_ID}
-  ^\s+Cluster\s+ID\s+${CLUSTER_ID}\s*$$
-  ^\s+BGP\s+[Ss]tate\s+=\s+${STATE}(?:,\s+up\s+for\s+${UPTIME})?\s*$$
-  ^\s+NSR\s+[Ss]tate:\s+(?:NSR\s+)?${NSR_STATE}\s*$$
-  ^\s+BFD\s+[Ee]nabled
+  ^\s+Description:\s+${description}\s*$$
+  ^\s+Remote\s+router\s+ID\s+${peerRouterId}
+  ^\s+Cluster\s+ID\s+${clusterId}\s*$$
+  ^\s+BGP\s+[Ss]tate\s+=\s+${state}(?:,\s+up\s+for\s+${estdTime})?\s*$$
+  ^\s+NSR\s+[Ss]tate:\s+(?:NSR\s+)?${nsrState}\s*$$
+  ^\s+BFD\s+${bfdStatus}
   ^\s+Last\s+[Rr]ead
-  ^\s+Hold\s+time\s+is\s+${HOLDTIME},\s+keepalive\s+interval\s+is\s+${KEEPALIVE}
+  ^\s+Hold\s+time\s+is\s+${holdTime},\s+keepalive\s+interval\s+is\s+${keepaliveTime}
   ^\s+Configured hold time\:\s+\d+\,\s+keepalive\:
   ^\s+(?:Second\s+)?[Ll]ast\s+write
   ^\s+Socket\s+(?:not\s+)?armed
   ^\s+Last\s+KA
   ^\s+Precedence:
-  ^\s+Non-stop\s+routing\s+is\s+${NSR}\s*$$
+  ^\s+Non-stop\s+routing\s+is\s+${_nsr}\s*$$
   ^\s+Graceful\s+restart\s+is\s+${GR}\s*$$
   ^\s+Restart\s+time\s+is
   ^\s+Stale\s+path\s+timeout\s+time\s+is
@@ -72,122 +84,92 @@ Start
   ^\s+Graceful\s+Restart\s+\(GR\s+Awareness\)\:
   ^\s+Route\s+refresh:
   ^\s+4-byte\s+AS:
-  ^\s+Address\s+family
+  ^\s+TCP open mode: ${passive}.*$$
+  ^\s+Configured TCP Maximum Segment Size
+  ^\s+DMZ-link bandwidth.*$$
   ^\s+Received\s+\d+\s+
+  ^\s+Address family\s+${afisAdvOnly}:\s+advertised\s*$$
+  ^\s+Address family\s+${afisRcvOnly}:\s+received\s*$$
+  ^\s+Address family.*:\s+advertised\s+and\s+received
   ^\s+Sent\s+\d+\s+messages
   ^\s+Inbound\s+message\s+logging
   ^\s+Outbound\s+message\s+logging
-  ^\s+Minimum\s+time\s+between\s+advertisement
-  ^\s+For\s+Address\s+Family:\s+${AFI}\s*$$ -> AFI
-  ^\s+Connections\s+established\s+${CONNECTIONS_ESTABLISHED};\s+dropped\s+${CONNECTIONS_DROPPED}\s*$$ -> Connection
+  ^\s+Minimum\s+time\s+between\s+advertisement\s+runs\s+is\s+${mrai}\s+.*$$
+  ^\s+For\s+Address\s+Family: ${afi}\s+${safi} -> AFI
+  ^\s+Connections\s+established\s+${_numConnEstd};\s+dropped\s+${_numConnDropped}\s*$$ -> Connection
   ^\s*$$
   ^. -> Error
 
 AFI
-  ^\s+For\s+Address\s+Family:\s+${AFI}\s*$$
+  ^\s+For\s+Address\s+Family: -> Continue.Record
+  ^\s+For\s+Address\s+Family:\s+${afi}\s+${safi}.*$$
   ^\s+BGP\s+neighbor\s+version\s+${VERSION}\s*$$
+  ^\s+Inbound soft reconfiguration ${softReconfig}.*$$
   ^\s+Update\s+group:
-  ^\s+Route-Reflector\s+${ROUTE_REFLECTOR_ROLE}\s*$$
-  ^\s+Default\s+information\s+originate\:\s+${DEFAULT_ORIGINATE}\s*$$
+  ^\s+Extended Nexthop.*$$
+  ^\s+Target version
+  ^\s+Route-Reflector\s+${rrClient}\s*$$
+  ^\s+Default\s+information\s+originate\:\s+${defOriginate}\s*$$
   ^\s+AF-dependent capabilities
+  ^\s+Additional-paths
+  ^\s+Extended Nexthop encoding: ${extnhEnabled}
   ^\s+Graceful\s+Restart\s+capability
   ^\s+Local\s+restart\s+time\s+is
   ^\s+Maximum\s+stalepath\s+time\s+is
   ^\s+Remote\s+Restart\s+time\s+is
-  ^\s+NEXT_HOP
+  ^\s+NEXT_HOP\s+is\s+${nextHopSelf}.*$$
   ^\s+Route\s+refresh\s+request:
-  ^\s+Policy\s+for\s+incoming\s+advertisements\s+is\s+${POLICY_INCOMING}\s*$$
-  ^\s+Policy\s+for\s+outgoing\s+advertisements\s+is\s+${POLICY_OUTGOING}\s*$$
-  ^\s+${PREFIXES_IN}\s+accepted\s+prefixes,\s+${PREFIXES_IN_BEST}\s+are\s+bestpaths
+  ^\s+Policy\s+for\s+incoming\s+advertisements\s+is\s+${ingressRmap}\s*$$
+  ^\s+Policy\s+for\s+outgoing\s+advertisements\s+is\s+${egressRmap}\s*$$
+  ^\s+eBGP neighbor with no outbound policy; defaults to ${egressRmap}
+  ^\s+Outbound Route Filter.*$$
+  ^\s+Send-mode:.*$$
+  ^\s+Receive-mode:.*$$
+  ^\s+${pfxRx}\s+accepted\s+prefixes,\s+${pfxBestRx}\s+are\s+bestpaths
   ^\s+Cumulative\s+no\.\s+of\s+prefixes\s+denied:
+  ^\s+Exact\s+no\.\s+of\s+prefixes\s+denied
   ^\s+No\s+policy:
   ^\s+By\s+ORF\s+policy:
-  ^\s+Prefix\s+advertised\s+${PREFIXES_OUT},\s+suppressed\s+${PREFIXES_OUT_SUPPRESSED},\s+withdrawn\s+${PREFIXES_OUT_WITHDRAWN}
-  ^\s+Maximum\s+prefixes\s+allowed\s+${MAX_PREFIXES}
-  ^\s+Threshold\s+for\s+warning\s+message\s+${MAX_PREFIXES_WARN_PERCENT}
+  ^\s+Prefix\s+advertised\s+${pfxTx},\s+suppressed\s+${pfxSuppressTx},\s+withdrawn\s+${pfxWithdrawnTx}
+  ^\s+Maximum\s+prefixes\s+allowed\s+${pfxMaxRx}
+  ^\s+Threshold\s+for\s+warning\s+message\s+${pfxWarnPercent}
   ^\s+AIGP
   ^\s+An\s+EoR
   ^\s+Private\s+AS\s+number\s+removed
-  ^\s+Community\s+attribute
   ^\s+Advertise\s+VPNv[46]\s+routes\s+(is\s)?enabled\s+with
   ^\s+Last\s+ack\s+version\s+${LAST_ACK_VERSION},\s+Last\s+synced\s+ack\s+version\s+${LAST_SYNCED_ACK_VERSION}
   ^\s+Outstanding\s+version\s+objects:
   ^\s+Additional-paths\s+operation:
   ^\s+AS\s+[oO]verride\s+is
   ^\s+Send\s+Multicast\s+Attributes
-  ^\s+Connections\s+established\s+${CONNECTIONS_ESTABLISHED};\s+dropped\s+${CONNECTIONS_DROPPED}\s*$$ -> Connection
-  ^BGP\s+neighbor -> Continue.Record
-  ^BGP\s+neighbor\s+is\s+${NEIGHBOR}\s*$$ -> Start
-  ^\s*$$
+  ^\s+Advertise routes with
+  ^\s+GSHUT Community
+  ^\s+${communityTypes} attribute sent.*$$
+  ^\s+${communityTypes} community attribute sent.*$$
+  ^\s+Connections\s+established\s+${_numConnEstd};\s+dropped\s+${_numConnDropped}\s*$$ -> Connection
+  ^\s+$$
   ^. -> Error
 
 Connection
-  ^\s+Local\s+host\:\s+${LOCAL_ADDRESS}\,\s+Local\s+port\:\s+${LOCAL_PORT}
-  ^\s+Foreign\s+host\:\s+${REMOTE_ADDRESS}\,\s+Foreign\s+port\:\s+${REMOTE_PORT}
-  ^\s+Last\s+reset\s+${LAST_RESET}(?:\,\s+due\s+to\s+${LAST_RESET_REASON})?\s*$$
+  ^\s+Local\s+host\:\s+${updateSource}\,\s+Local\s+port\:\s+${LOCAL_PORT}
+  ^\s+Foreign\s+host\:\s+${peerIP}\,\s+Foreign\s+port\:\s+${REMOTE_PORT}
+  ^\s+Last\s+reset\s+${lastDownTime}(?:\,\s+due\s+to\s+${reason})?\s*$$
   ^\s+External\s+BGP\s+neighbor\s+not\s+directly
   ^\s+Time\s+since\s+last\s+notification\s+sent\s+to\s+neighbor:\s+${LAST_NOTIFICATION_SENT}
-  ^\s+Error\s+Code:\s+${ERROR_CODE}\s*$$
+  ^\s+Error\s+Code:\s+${notificnReason}\s*$$
   ^\s+Notification\s+data\s+(?:sent|received):
   ^\s+(?:[0-9A-F]{8}|None)\s*$$
-  ^\s+Time\s+since\s+last\s+notification\s+received\s+from\s+neighbor:\s+${LAST_NOTIFICATION_RECEIVED} -> PeerError
-  ^\s+Peer\s+reset\s+reason:\s+${PEER_RESET_REASON}\s*$$
-  ^\s+.+up\s+to\s+${MAX_HOPS}\s+hops\s+away
+  ^\s+Time\s+since\s+last\s+notification\s+received\s+from\s+neighbor:\s -> PeerError
+  ^\s+Peer\s+reset\s+reason:\s+${notificnReason}\s*$$
+  ^\s+.+up\s+to\s+${hopsMax}\s+hops\s+away
   ^BGP\s+neighbor -> Continue.Record
-  ^BGP\s+neighbor\s+is\s+${NEIGHBOR}\s*$$ -> Start
-  ^\s+For\s+Address\s+Family:\s+${AFI}\s*$$ -> AFI
+  ^BGP\s+neighbor\s+is\s+${peer}\s*$$ -> Start
+  ^VRF: -> Start
+  ^\s+For\s+Address\s+Family: -> AFI
   ^\s*$$
   ^. -> Error
 
 PeerError
-  ^\s+Error\s+Code:\s+${PEER_ERROR_CODE}\s*$$ -> Connection
+  ^\s+Error\s+Code:\s+${notificnReasonRx}\s*$$ -> Connection
   ^. -> Error
 
-
-#BGP neighbor is 10.0.101.1, remote AS 2, local AS 1, external link
-# Description: routem neighbor
-# Remote router ID 10.0.101.1
-#  BGP state = Established, up for 00:00:56
-#  TCP open mode: passive only
-#  BFD enabled (session initializing)
-#  Last read 00:00:55, hold time is 180, keepalive interval is 60 seconds
-#  DMZ-link bandwidth is 1000 Mb/s
-#  Neighbor capabilities:
-#    Route refresh: advertised
-#    4-byte AS: advertised and received
-#    Address family IPv4 Unicast: advertised and received
-#    Address family IPv4 Multicast: advertised and received
-#  Received 119 messages, 0 notifications, 0 in queue
-#  Sent 119 messages, 22 notifications, 0 in queue
-#  Minimum time between advertisement runs is 60 seconds
-# For Address Family: IPv4 Unicast
-#  BGP neighbor version 137
-#  Update group: 1.3
-#  Community attribute sent to this neighbor
-#  AF-dependent capabilities:
-#    Outbound Route Filter (ORF) type (128) Prefix-list:
-#      Send-mode: advertised
-#      Receive-mode: advertised
-#  Route refresh request: received 0, sent 0
-#  Policy for incoming advertisements is pass-all
-#  Policy for outgoing advertisements is pass-all
-#  5 accepted prefixes, 5 are bestpaths
-#  Prefix advertised 3, suppressed 0, withdrawn 0, maximum limit 1000000
-#  Threshold for warning message 75%
-# For Address Family: IPv4 Multicast
-#  BGP neighbor version 23
-#  Update group: 1.2
-#  Route refresh request: received 0, sent 0
-#  Policy for incoming advertisements is pass-all
-#  Policy for outgoing advertisements is pass-all
-#  2 accepted prefixes, 2 are bestpaths
-#  Prefix advertised 0, suppressed 0, withdrawn 0, maximum limit 131072
-#  Threshold for warning message 75%
-#  Connections established 9; dropped 8
-#  Last reset 00:02:10, due to User clear requested (CEASE notification sent - 
-#administrative reset)
-#  Time since last notification sent to neighbor: 00:02:10
-#  Error Code: administrative reset
-#  Notification data sent:
-#    None
-#

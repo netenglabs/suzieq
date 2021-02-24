@@ -1,29 +1,26 @@
 Value Filldown vrf (\S+)
-Value Filldown protocol (\S+|\S+\s\S+)
-Value Filldown prefix (\d+\.\d+\.\d+\.\d+)
-Value Filldown prefixlen (\d+)
+Value protocol ([A-Z]\*?|[A-Z]\s+[A-Z][1-2]|i ia|i su)
+Value Required prefix ([0-9./]*|[0-9a-f:/]*)
 Value distance (\d+|is)
 Value metric (\d+)
-Value type (directly|via)
-Value Required nexthopIps (connected|\d+\.\d+\.\d+\.\d+)
-Value oifs (\S+|vrf\s\S+)
+Value List nexthopIps ([0-9.]+|[0-9a-f:]+)
+Value List oifs (\S+)
 Value uptime (\S+)
+Value nexthopvrf (\S+)
 
 
 Start
-  ^VRF?:\s${vrf}
-  ^IP.*Unicast:.*$$
+  ^[A-Z]\s -> Continue.Record
+  ^$$ -> Record
+  ^VRF:\s${vrf}
+  ^Codes:.*$$
   ^-*$$
-  ^Codes:
-  ^\s+(\S+\s+-\s+.+[,]*)+
-  ^\s+Gateway\s+of\s+last\s+resort.*$$
-  ^${protocol}\*?\s+${prefix}/${prefixlen}\s+(?:\[${distance}/${metric}\]|is)\s+${type}\s+${nexthopIps},\s+${uptime},\s+${oifs} -> Record
-  ^\s+(?:\[${distance}/${metric}\]|is)\s+${type}\s+${nexthopIps},\s+${uptime},\s+${oifs} -> Record
-  ^${protocol}\*?\s+${prefix}/${prefixlen}\s+(?:\[${distance}/${metric}\]|is)\s+${type}\s+${nexthopIps},\s+${uptime} -> Record
-  ^${protocol}\*?\s+${prefix}/${prefixlen}\s+(?:\[${distance}/${metric}\]|is)\s+${type}\s+${nexthopIps}\s+\(nexthop\sin\s${oifs}\),\s+${uptime} -> Record
-  ^\s+(?:\[${distance}/${metric}\]|is)\s+${type}\s+${nexthopIps},\s+${uptime} -> Record
-  ^\s*$$
-  ^\S+\s+\S+\s+\d+\s+\d+:\d+:\d+
+  ^Gateway\s+of\s+last\s+resort.*$$
+  ^${protocol}\s+${prefix} is directly connected, ${uptime}, ${oifs}.*$$
+  ^${protocol}\*?\s+${prefix}\s+\[${distance}/${metric}\]\s+via\s+${nexthopIps}, ${uptime}, ${oifs}.*$$
+  ^${protocol}\s+${prefix}\s+\[${distance}/${metric}\]\s+via\s+${nexthopIps}, ${uptime}.*$$
+  ^${protocol}\s+${prefix}\s+\[${distance}/${metric}\]\s+via\s+${nexthopIps}\s+\(nexthop in vrf ${nexthopvrf}\), ${uptime}.*$$    
+  ^\s+\[${distance}/${metric}\]\s+via\s+${nexthopIps}, ${uptime}, ${oifs}.*$$
 
 #
 #IPv4 Unicast:
@@ -41,6 +38,7 @@ Start
 #Gateway of last resort is 1.0.0.1 to network 0.0.0.0
 #
 #S*   0.0.0.0/0 [1/0] via 1.0.0.1, 13:14:59
+#C    172.16.0.2/31 is directly connected, 1w6d, FourHundredGigE0/0/0/2.11
 #C    1.0.0.0/16 is directly connected, 13:14:59, MgmtEth0/5/CPU0/0
 #L    1.0.14.15/32 is directly connected, 13:14:59, MgmtEth0/5/CPU0/0
 #C    3.2.3.0/24 is directly connected, 00:04:39, GigabitEthernet0/3/0/0
@@ -69,8 +67,9 @@ Start
 #       U - per-user static route, o - ODR, L - local, G  - DAGR
 #       A - access/subscriber, (!) - FRR Backup path
 #  
-#  Gateway of last resort is not set
+#Gateway of last resort is not set
 #
 #B    12.40.19.8/30 [200/0] via 3.2.3.254 (nexthop in vrf default), 6w0d
+
 
   

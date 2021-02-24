@@ -7,7 +7,7 @@
 	    "name": "sqvers",
 	    "type": "string",
 	    "partition": 0,
-	    "default": "1.0",
+	    "default": "2.0",
 	    "suppress": true	    
 	},
         {
@@ -22,16 +22,120 @@
             "type": "string",
 	    "suppress": true
         },
+	{
+	    "name": "afi",
+	    "type": "string",
+	    "key": 4,
+	    "display": 4,
+	    "description": "The AFI exchanged in this session"
+	},
+	{
+	    "name": "safi",
+	    "type": "string",
+	    "key": 5,
+	    "display": 5,
+	    "description": "The SAFI exchanged in this session"
+	},
+	{
+	    "name": "afisAdvOnly",
+            "type": {
+                "type": "array",
+                "items": {
+                    "name": "weight",
+                    "type": "string"
+                }
+            },
+	    "description": "The list of AFIs only we advertised"
+	},
+	{
+	    "name": "afisRcvOnly",
+            "type": {
+                "type": "array",
+                "items": {
+                    "name": "weight",
+                    "type": "string"
+                }
+            },
+	    "description": "The list of AFIs only our peer advertised"
+	},
+        {
+            "name": "pfxRx",
+            "type": "long",
+            "display": 8,
+	    "description": "Count of prefixes rcvd for this AFI/SAFI from peer"
+        },
+        {
+            "name": "pfxTx",
+            "type": "long",
+            "display": 9,
+	    "description": "Count of prefixes advertised for this AFI/SAFI from peer"
+        },
+        {
+            "name": "pfxBestRx",
+            "type": "long",
+	    "description": "Count of prefixes rcvd that are bestpath for this AFI/SAFI from peer"
+        },
+        {
+            "name": "pfxWithdrawnRx",
+            "type": "long",
+	    "description": "Count of prefixes withdrawn for this AFI/SAFI from peer"
+        },
+        {
+            "name": "pfxSuppressRx",
+            "type": "long",
+	    "description": "Count of prefixes suppressed for this AFI/SAFI from peer"
+        },
+        {
+            "name": "pfxMaxRx",
+            "type": "long",
+	    "description": "Max prefixes accepted for this AFI/SAFI from peer"
+        },
+        {
+            "name": "pfxWarnPercent",
+            "type": "long",
+	    "description": "% of max prefixes rcvd to trigger alert for this AFI/SAFI from peer"
+        },
+        {
+            "name": "hopsMax",
+            "type": "long",
+	    "description": "Maximum #hops this peer can be"
+        },
         {
             "name": "evpnPfxRx",
             "type": "long",
-	    "description": "Count of EVPN prefixes rcvd"
+	    "description": "(deprecated)Count of EVPN prefixes rcvd"
         },
         {
             "name": "advertiseAllVnis",
             "type": "boolean",
 	    "description": "True if FRR has advertiseAllVnis configured"
         },
+        {
+            "name": "egressRmap",
+            "type": "string",
+	    "description": "route map name associated with egress for AFI/SAFI"
+        },
+        {
+            "name": "ingressRmap",
+            "type": "string",
+	    "description": "route map name associated with ingress for AFI/SAFI"
+        },
+        {
+            "name": "softReconfig",
+            "type": "boolean",
+	    "description": "True if soft reconfig inbound is enabled"
+        },
+	{
+            "name": "communityTypes",
+            "type": {
+                "type": "array",
+                "items": {
+                    "name": "weight",
+                    "type": "string"
+                }
+            },
+	    "description": "list of types of communities advertised for AFI/SAFI to peer"
+	},
         {
             "name": "v6EgressRmap",
             "type": "string",
@@ -46,6 +150,11 @@
             "name": "v6Advertised",
             "type": "boolean",
 	    "description": "True if IPv4 Unicast AFI/SAFI is being exchanged"
+        },
+        {
+            "name": "defOriginate",
+            "type": "boolean",
+	    "description": "True if advertising default route for this AFI/SAFI to peer"
         },
         {
             "name": "v6IngressRmap",
@@ -75,7 +184,7 @@
         {
             "name": "estdTime",
             "type": "timedelta64[s]",
-            "display": 9,
+            "display": 10,
 	    "description": "Session uptime"
         },
         {
@@ -114,7 +223,7 @@
         {
             "name": "numChanges",
             "type": "long",
-            "display": 10,
+            "display": 11,
 	    "description": "count of changes in BGP session state"
         },
         {
@@ -141,7 +250,12 @@
         {
             "name": "nhUnchanged",
             "type": "boolean",
-	    "description":  "True if set nexthop unchanged is configured"
+	    "description":  "True if set nexthop unchanged is configured for eBGP peer"
+        },
+        {
+            "name": "nhSelf",
+            "type": "boolean",
+	    "description":  "True if set nexthop self is configured for iBGP peer"
         },
         {
             "name": "v4PfxTx",
@@ -274,7 +388,6 @@
         {
             "name": "v4PfxRx",
             "type": "long",
-            "display": 8,
 	    "description": "Count of IPv4 Unicast prefixes rcvd"
         },
         {

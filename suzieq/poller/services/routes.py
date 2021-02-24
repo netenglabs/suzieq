@@ -157,3 +157,33 @@ class RoutesService(Service):
 
         processed_data = np.delete(processed_data, drop_indices).tolist()
         return processed_data
+
+    def _clean_iosxr_data(self, processed_data, raw_data):
+
+        proto_map = {'C': ['connected', ''], 'S': ['static', ''],
+                     'R': ['rip', ''], 'B': ['bgp', ''],
+                     'D': ['eigrp', ''], 'EX': ['eigrp', 'external'],
+                     'O': ['ospf' ''], 'O IA': ['ospf', 'interarea'],
+                     'O N1': ['ospf', 'nssa-ext1'],
+                     'O N2': ['ospf', 'nssa-ext2'],
+                     'O E1': ['ospf', 'external-1'],
+                     'O E2': ['ospf', 'external-2'], 'E': ['igp', ''],
+                     'i': ['isis', ''], 'i L1': ['isis', 'level-1'],
+                     'i L2': ['isis', 'level-2'],
+                     'i ia': ['isis', 'interarea'],
+                     'i su': ['isis', 'summary-null'], 'U': ['static', 'user'],
+                     'o': ['odr', ''], 'L': ['local', ''], 'G': ['dagr', ''],
+                     'l': ['lisp', ''], 'M': ['mobile', ''],
+                     'a': ['application', ''], 'r': ['rpl', ''],
+                     't': ['te', ''],
+                     'A': ['access', ''], '!': ['backup', '']}
+
+        for entry in processed_data:
+            entry['protocol'] = proto_map.get(entry['protocol'], [''])[0]
+            if not entry['vrf']:
+                entry['vrf'] = 'default'
+            if entry.get('nexthopvrf', ''):
+                entry['oifs'] = [f'_nexthopVrf:{entry["nexthopvrf"]}']
+            self._fix_ipvers(entry)
+
+        return processed_data

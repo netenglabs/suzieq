@@ -43,6 +43,8 @@ class BgpObj(SqPandasEngine):
         if 'peer' in df.columns:
             df['peer'] = np.where(df['origPeer'] != "",
                                   df['origPeer'], df['peer'])
+
+        # Convert old data into new 2.0 data format
         if 'peerHostname' in df.columns:
             mdf = self._get_peer_matched_df(df)
             drop_cols = [x for x in drop_cols if x in mdf.columns]
@@ -163,7 +165,7 @@ class BgpObj(SqPandasEngine):
                                      how='left',
                                      suffixes=('', '_y')) \
                 .drop_duplicates(subset=['namespace', 'hostname',
-                                         'vrf', 'peer', 'timestamp']) \
+                                         'vrf', 'peer', 'afi', 'safi', 'timestamp']) \
                 .rename(columns={'hostname_y': 'peerHost'})
             # I've not seen the diff between ignore_index and not and so
             # deliberately ignoring

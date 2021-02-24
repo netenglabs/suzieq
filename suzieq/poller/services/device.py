@@ -85,7 +85,7 @@ class DeviceService(Service):
                 entry['bootupTimestamp'] = int(datetime.utcfromtimestamp(
                     parse(entry['bootupTimestamp']).timestamp()).timestamp())
             entry['vendor'] = 'Cisco'
-            entry['os'] = 'IOS-XR'
+            entry['os'] = 'iosxr'
             if 'IOS-XRv' in entry.get('model', ''):
                 entry['architecture'] = "x86-64"
 

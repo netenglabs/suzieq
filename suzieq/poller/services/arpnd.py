@@ -68,3 +68,16 @@ class ArpndService(Service):
         processed_data = np.delete(processed_data,
                                    drop_indices).tolist()
         return processed_data
+
+    def _clean_iosxr_data(self, processed_data, raw_data):
+
+        for entry in processed_data:
+            if entry['macaddr'] is None:
+                entry['state'] = "failed"
+                entry['macaddr'] = '00:00:00:00:00:00'
+            else:
+                entry['macaddr'] = convert_macaddr_format_to_colon(
+                    entry.get('macaddr', '0000.0000.0000'))
+                entry['state'] = "reachable"
+
+        return processed_data

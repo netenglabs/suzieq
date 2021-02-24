@@ -1,0 +1,41 @@
+Value Required vrf (\w+)
+Value routeDistinguisher ([0-9.:]+)
+
+Start
+ ^VRF mode:
+ ^VRF\s+ -> Continue.Record
+ ^VRF\s+${vrf};\s+RD\s+${routeDistinguisher};.*$$
+ ^VRF\s+${vrf};\s+RD\s+not\s+set;.*$$ 
+ 
+#VRF vrf_test; RD not set; VPN ID not set
+#VRF mode: Regular
+#Description not set
+#Address family IPV4 Unicast
+#  Import VPN route-target communities:
+#    RT:64000:63
+#  Export VPN route-target communities:
+#    RT:64000:63
+#  No import route policy
+#  No export route policy
+#Address family IPV6 Unicast
+#  Import VPN route-target communities:
+#    RT:64000:63
+#  Export VPN route-target communities:
+#    RT:64000:63
+#  No import route policy
+#  No export route policy
+#
+#VRF cloudVrf; RD 12000:2200; VPN ID not set
+#VRF mode: Regular
+#Description not set
+#Address family IPV4 Unicast
+#  No import VPN route-target communities
+#  No export VPN route-target communities
+#  No import route policy
+#  No export route policy
+#Address family IPV6 Unicast
+#  No import VPN route-target communities
+#  No export VPN route-target communities
+#  No import route policy
+#  No export route policy
+#
