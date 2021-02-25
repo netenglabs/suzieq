@@ -1,5 +1,6 @@
 from datetime import datetime
 from collections import defaultdict
+from dateparser import parse
 
 import numpy as np
 from suzieq.poller.services.service import Service
@@ -513,6 +514,71 @@ class InterfaceService(Service):
 
             # Linux interface output has no status change timestamp
 
+        return processed_data
+
+    def _clean_iosxr_data(self, processed_data, raw_data):
+
+        entry_dict = {}
+
+        for i, entry in enumerate(processed_data):
+            if entry.get('_entryType', '') == 'vrf':
+                entry['ifname'] = entry['vrf']
+                entry['master'] = ''
+                entry['type'] = 'vrf'
+                entry['state'] = entry['adminState'] = 'up'
+
+                continue
+
+            type = entry.get('type', 'ethernet').lower()
+            if 'aggregated ethernet' in type:
+                type = 'bond'
+            elif 'ethernet' in type:
+                type = 'ethernet'
+            entry['type'] = type
+
+            bondMbrs = entry.get('_bondMbrs', []) or []
+            if type == 'bond' and bondMbrs:
+                for mbr in bondMbrs:
+                    if mbr in entry_dict:
+                        mbr_entry = entry_dict[mbr]
+                        mbr_entry['type'] = 'bond_slave'
+                        mbr_entry['master'] = entry['ifname']
+                    else:
+                        entry_dict[mbr] = {'master': entry['ifname'],
+                                           'type': 'bond_slave'}
+
+            if entry['state'] == 'administratively down':
+                entry['state'] = 'down'
+                entry['adminState'] = 'down'
+
+            entry['macaddr'] = convert_macaddr_format_to_colon(
+                entry.get('macaddr', '0000.0000.0000'))
+            entry['interfaceMac'] = convert_macaddr_format_to_colon(
+                entry.get('interfaceMac', '0000.0000.0000'))
+
+            lastChange = parse(
+                entry.get('statusChangeTimestamp', ''),
+                settings={'RELATIVE_BASE':
+                          datetime.fromtimestamp(
+                              (raw_data[0]['timestamp'])/1000), })
+            if lastChange:
+                entry['statusChangeTimestamp'] = int(lastChange.timestamp()
+                                                     * 1000)
+            if 'ipAddressList' not in entry:
+                entry['ipAddressList'] = []
+
+            if 'ip6AddressList' not in entry:
+                entry['ip6AddressList'] = []
+
+            if entry['ipAddressList'] or entry['ip6AddressList']:
+                entry['master'] = entry.get('vrf', '')
+
+            if entry['ifname'] in entry_dict:
+                add_info = entry_dict[entry['ifname']]
+                entry['master'] = add_info.get('master', '')
+                entry['type'] = add_info.get('type', '')
+            else:
+                entry_dict[entry['ifname']] = entry
         return processed_data
 
     def _common_data_cleaner(self, processed_data, raw_data):

@@ -1,23 +1,57 @@
-Value Required INTERFACE (\S+)
-Value LINK_STATUS (.+?)
-Value ADMIN_STATE (.+?)
-Value HARDWARE_TYPE (\S+?(?:\s+Ethernet|))
-Value ADDRESS ((?:\w{4}\.){2}\w{4})
-Value BIA ((?:\w{4}\.){2}\w{4})
-Value DESCRIPTION (.*?)
-Value IP_ADDRESS (.*?)
-Value MTU (\d+)
-Value DUPLEX (.+?)
-Value SPEED (.+?b/s)
-Value BANDWIDTH (\d+\s+\w+)
-Value ENCAPSULATION (\w+)
+Value Required ifname (\S+)
+Value state (.+?)
+Value adminState (.+?)
+Value vrf (\w+)
+Value unnumbered (\w+)
+Value List ipAddressList ([0-9./]+)
+Value mtu (\d+)
 
 Start
   ^\S+\s+is -> Continue.Record
-  ^${INTERFACE}\sis\s+${LINK_STATUS},\s+line\sprotocol\sis\s+${ADMIN_STATE}\s*$$
-  ^\s+Hardware\s+is\s+${HARDWARE_TYPE}(?:\s+interface\(s\)|)(?:,\s+address\s+is\s+${ADDRESS}(?:\s+\(bia\s+${BIA}\)\s*)*$$|\s.+|\s*$$)
-  ^\s+Description:\s+${DESCRIPTION}\s*$$
-  ^\s+[Ii]nternet\s+[Aa]ddress\s+is\s+${IP_ADDRESS}\s*$$
-  ^\s+MTU\s+${MTU}.*BW\s+${BANDWIDTH}
-  ^\s+Encapsulation\s+${ENCAPSULATION}
-  ^\s+(?:[Dd]uplex\s+|)${DUPLEX}(?:-[Dd]uplex|),\s+${SPEED}
+  ^${ifname}\sis\s+${state},\s+ipv4\sprotocol\sis\s+${adminState}\s*$$
+  ^\s+Vrf\s+is\s+${vrf}\s+.*$$
+  ^\s+Interface\s+is\s+${unnumbered}\.\s+Using\s+address\s+of\s+.*\(${ipAddressList}\)
+  ^\s+MTU\s+is\s+\d+\s+ (${mtu} is available to IP)
+  ^\s+Internet\s+address\s+is\s+${ipAddressList}.*$$
+
+#Fri Jan 22 15:22:21.209 UTC
+#Loopback0 is Up, ipv4 protocol is Up 
+#  Vrf is default (vrfid 0x60000000)
+#  Internet address is 10.35.1.131/32
+#  MTU is 1500 (1500 is available to IP)
+#  Helper address is not set
+#  Directed broadcast forwarding is disabled
+#  Outgoing access list is not set
+#  Inbound  common access list is not set, access list is not set
+#  Proxy ARP is disabled
+#  ICMP redirects are never sent
+#  ICMP unreachables are always sent
+#  ICMP mask replies are never sent
+#  Table Id is 0xe0000000
+#GigabitEthernet0/0/0/1.4079 is Up, ipv4 protocol is Up 
+#  Vrf is default (vrfid 0x60000000)
+#  Internet address is 10.35.16.121/31
+#  MTU is 9188 (9170 is available to IP)
+#  Helper address is not set
+#  Directed broadcast forwarding is disabled
+#  Outgoing access list is not set
+#  Inbound  common access list is not set, access list is not set
+#  Proxy ARP is disabled
+#  ICMP redirects are never sent
+#  ICMP unreachables are always sent
+#  ICMP mask replies are never sent
+#  Table Id is 0xe0000000
+#te-tunnel1 is Down, ipv4 protocol is Down 
+#  Vrf is foobar (vrfid 0x60000000)
+#  Interface is unnumbered.  Using address of Loopback0 (10.35.1.131/32)
+#  MTU is 1500 (1500 is available to IP)
+#  Helper address is not set
+#  Directed broadcast forwarding is disabled
+#  Outgoing access list is not set
+#  Inbound  common access list is not set, access list is not set
+#  Proxy ARP is disabled
+#  ICMP redirects are never sent
+#  ICMP unreachables are always sent
+#  ICMP mask replies are never sent
+#  Table Id is 0xe0000000
+#
