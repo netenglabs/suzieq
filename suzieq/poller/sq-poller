@@ -422,6 +422,10 @@ if __name__ == "__main__":
 
     try:
         asyncio.run(start_poller(userargs, cfg))
-    except (Exception, KeyboardInterrupt):
+    except KeyboardInterrupt:
         pass
+    except Exception:
+        import traceback
+        traceback.print_exc()
+
     sys.exit(0)
