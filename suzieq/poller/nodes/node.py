@@ -147,15 +147,20 @@ async def init_hosts(**kwargs):
                 devtype = None
                 keyfile = None
 
-                for i in range(1, len(words[1:])+1):
-                    if words[i].startswith('keyfile'):
-                        keyfile = words[i].split("=")[1]
-                    elif words[i].startswith('devtype'):
-                        devtype = words[i].split("=")[1]
-                    elif words[i].startswith('username'):
-                        username = words[i].split("=")[1]
-                    elif words[i].startswith('password'):
-                        password = words[i].split("=")[1]
+                try:
+                    for i in range(1, len(words[1:])+1):
+                        if words[i].startswith('keyfile'):
+                            keyfile = words[i].split("=")[1]
+                        elif words[i].startswith('devtype'):
+                            devtype = words[i].split("=")[1]
+                        elif words[i].startswith('username'):
+                            username = words[i].split("=")[1]
+                        elif words[i].startswith('password'):
+                            password = words[i].split("=")[1]
+                except IndexError:
+                    logger.error(f'Invalid key/value {words}, missing "="')
+                    logger.error(f'Ignoring node {host}')
+                    continue
 
                 newnode = Node()
                 tasks += [newnode._init(
