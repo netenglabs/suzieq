@@ -556,6 +556,9 @@ class InterfaceService(Service):
             entry['interfaceMac'] = convert_macaddr_format_to_colon(
                 entry.get('interfaceMac', '0000.0000.0000'))
 
+            if entry.get('vlan', '') and entry.get('innerVlan', ''):
+                entry['type'] = "qinq"
+
             lastChange = parse(
                 entry.get('statusChangeTimestamp', ''),
                 settings={'RELATIVE_BASE':
