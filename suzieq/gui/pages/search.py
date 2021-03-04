@@ -17,7 +17,7 @@ class SearchSessionState:
     search_text: str = ''
     past_df = None
     table: str = ''
-    namespace: List[str] = field(default_factory=list)
+    nsidx: int = -1
     query_str: str = ''
     unique_query: dict = field(default_factory=dict)
     prev_results = deque(maxlen=5)
@@ -52,6 +52,8 @@ def build_query(state, search_text: str) -> str:
         state.table = 'bgp'
     elif addrs[0].startswith('vlan'):
         state.table = 'vlan'
+    elif addrs[0].startswith('mtus'):
+        state.table = 'interface'
     else:
         state.table = 'address'
 
@@ -74,6 +76,9 @@ def build_query(state, search_text: str) -> str:
         elif addr.lower() == 'vlans':
             unique_query = {'table': 'vlan', 'column': ['vlan'],
                             'colname': 'vlans'}
+        elif addr.lower() == 'mtus':
+            unique_query = {'table': 'interfaces', 'column': ['mtu'],
+                            'colname': 'mtus'}
 
         elif '::' in addr:
             if state.table == 'arpnd':
@@ -105,6 +110,19 @@ def build_query(state, search_text: str) -> str:
 def search_sidebar(state, sqobjs):
     '''Draw the sidebar'''
 
+    devdf = gui_get_df(sqobjs['device'], columns=['namespace', 'hostname'])
+    if devdf.empty:
+        st.error('Unable to retrieve any namespace info')
+        st.stop()
+
+    namespaces = [''] + sorted(devdf.namespace.unique().tolist())
+    if state.nsidx == -1:
+        nsidx = 0
+    else:
+        nsidx = state.nsidx
+    namespace = st.sidebar.selectbox('Namespace',
+                                     namespaces, index=nsidx)
+
     st.sidebar.markdown(
         """Displays last 5 search results.
 
@@ -112,6 +130,12 @@ The search string can start with one of the following keywords: __address, route
 
 __In this initial release, you can only search for an IP address or MAC address__ in one of those tables. You can specify multiple addresses to look for by providing the addresses as a space separated values such as ```172.16.1.101 10.0.0.11``` or ```mac 00:01:02:03:04:05 00:21:22:23:24:25``` and so on. A combination of mac and IP address can also be specified. Obviously the combination doesn't apply to tables such as routes and macs. Support for more sophisticated search will be added in the next few releases.
 """)
+
+    nsidx = namespaces.index(namespace)
+    if nsidx != state.nsidx:
+        state.nsidx = nsidx
+
+    return namespace
 
 
 def page_work(state_container, page_flip: bool):
@@ -122,27 +146,23 @@ def page_work(state_container, page_flip: bool):
 
     state = state_container.searchSessionState
 
-    search_sidebar(state, state_container.sqobjs)
+    namespace = search_sidebar(state, state_container.sqobjs)
 
-    if state_container.search_text != state.search_text:
-        do_search = True
-
-    if page_flip or do_search:
-        query_str, uniq_dict = build_query(state,
-                                           state_container.search_text)
+    query_str, uniq_dict = build_query(state,
+                                       state_container.search_text)
+    if namespace:
+        query_ns = [namespace]
     else:
-        query_str = ''
-        uniq_dict = {}
-
+        query_ns = []
     if query_str:
         if state.table == "address":
             df = gui_get_df(state_container.sqobjs[state.table],
-                            namespace=state.namespace,
+                            namespace=query_ns,
                             view="latest", columns=['default'],
                             address=query_str.split())
         else:
             df = gui_get_df(state_container.sqobjs[state.table],
-                            namespace=state.namespace,
+                            namespace=query_ns,
                             view="latest", columns=['default'])
             if not df.empty:
                 df = df.query(query_str).reset_index(drop=True)
@@ -155,16 +175,11 @@ def page_work(state_container, page_flip: bool):
             else:
                 st.info('No matching result found')
     elif uniq_dict:
+        columns = ['namespace'] + uniq_dict['column']
         df = gui_get_df(state_container.sqobjs[uniq_dict['table']],
-                        namespace=state.namespace,
-                        view='latest', columns=uniq_dict['column'])
+                        namespace=query_ns, view='latest', columns=columns)
         if not df.empty:
-            uniqlist = []
-            for col in uniq_dict['column']:
-                uniqlist += df[col].unique().tolist()
-
-            uniqlist = [x for x in uniqlist]
-            df = pd.DataFrame({uniq_dict['colname']: sorted(uniqlist)})
+            df = df.groupby(by=columns).first().reset_index()
 
         expander = st.beta_expander(f'Search for {state_container.search_text}',
                                     expanded=True)
