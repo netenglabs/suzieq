@@ -141,7 +141,7 @@ class Schema(object):
                     data = json.loads(f.read())
                     table = data["name"]
                     schemas[table] = data["fields"]
-                    types[table] = data['type']
+                    types[table] = data.get('recordType', 'record')
                     phy_tables[data["name"]] = data.get("physicalTable", table)
             break
 
