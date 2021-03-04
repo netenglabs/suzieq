@@ -1,5 +1,6 @@
 from collections import deque
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass, asdict, field
+from typing import List
 
 import pandas as pd
 import streamlit as st
@@ -16,7 +17,9 @@ class SearchSessionState:
     search_text: str = ''
     past_df = None
     table: str = ''
+    namespace: List[str] = field(default_factory=list)
     query_str: str = ''
+    unique_query: dict = field(default_factory=dict)
     prev_results = deque(maxlen=5)
 
 
@@ -25,6 +28,8 @@ def build_query(state, search_text: str) -> str:
 
     if not search_text:
         return ''
+
+    unique_query = {}
 
     addrs = search_text.split()
     if addrs[0].startswith('mac'):
@@ -39,21 +44,45 @@ def build_query(state, search_text: str) -> str:
     elif addrs[0].startswith('address'):
         state.table = 'address'
         search_text = ' '.join(addrs[1:])
+    elif addrs[0].startswith('vtep'):
+        state.table = 'evpnVni'
+    elif addrs[0].startswith('vni'):
+        state.table = 'evpnVni'
+    elif addrs[0].startswith('asn'):
+        state.table = 'bgp'
+    elif addrs[0].startswith('vlan'):
+        state.table = 'vlan'
     else:
         state.table = 'address'
 
     if state.table == 'address':
-        return search_text
+        return search_text, unique_query
 
     query_str = disjunction = ''
+
     for addr in addrs:
-        if '::' in addr:
+        if addr.lower() == 'vteps':
+            unique_query = {'table': 'evpnVni',
+                            'column': ['priVtepIp', 'secVtepIp'],
+                            'colname': 'vteps'}
+        elif addr.lower() == 'vnis':
+            unique_query = {'table': 'evpnVni',
+                            'column': ['vni'], 'colname': 'vnis'}
+        elif addr.lower() == 'asns':
+            unique_query = {'table': 'bgp', 'column': ['asn', 'peerAsn'],
+                            'colname': 'asns'}
+        elif addr.lower() == 'vlans':
+            unique_query = {'table': 'vlan', 'column': ['vlan'],
+                            'colname': 'vlans'}
+
+        elif '::' in addr:
             if state.table == 'arpnd':
                 query_str += f' {disjunction} ipAddress == "{addr}" '
             elif state.table == 'routes':
                 query_str += f'{disjunction} prefix == "{addr}" '
             else:
-                query_str += f' {disjunction} ip6AddressList.str.startswith("{addr}/") '
+                query_str += \
+                    f' {disjunction} ip6AddressList.str.startswith("{addr}/") '
         elif ':' in addr and state.table in ['macs', 'arpnd', 'address']:
             query_str += f' {disjunction} macaddr == "{addr}" '
         else:
@@ -62,16 +91,18 @@ def build_query(state, search_text: str) -> str:
             elif state.table == 'routes':
                 query_str += f'{disjunction} prefix == "{addr}" '
             elif state.table == 'address':
-                query_str += f' {disjunction} ipAddressList.str.startswith("{addr}/") '
+                query_str += \
+                    f' {disjunction} ipAddressList.str.startswith("{addr}/") '
 
         if not disjunction:
             disjunction = 'or'
 
     state.query_str = query_str
-    return query_str
+    state.unique_query = unique_query
+    return query_str, unique_query
 
 
-def search_sidebar(state):
+def search_sidebar(state, sqobjs):
     '''Draw the sidebar'''
 
     st.sidebar.markdown(
@@ -91,23 +122,49 @@ def page_work(state_container, page_flip: bool):
 
     state = state_container.searchSessionState
 
-    search_sidebar(state)
+    search_sidebar(state, state_container.sqobjs)
 
-    if page_flip or (state_container.search_text != state.search_text):
-        query_str = build_query(state, state_container.search_text)
+    if state_container.search_text != state.search_text:
+        do_search = True
+
+    if page_flip or do_search:
+        query_str, uniq_dict = build_query(state,
+                                           state_container.search_text)
     else:
         query_str = ''
+        uniq_dict = {}
 
     if query_str:
         if state.table == "address":
             df = gui_get_df(state_container.sqobjs[state.table],
+                            namespace=state.namespace,
                             view="latest", columns=['default'],
                             address=query_str.split())
         else:
             df = gui_get_df(state_container.sqobjs[state.table],
+                            namespace=state.namespace,
                             view="latest", columns=['default'])
             if not df.empty:
                 df = df.query(query_str).reset_index(drop=True)
+
+        expander = st.beta_expander(f'Search for {state_container.search_text}',
+                                    expanded=True)
+        with expander:
+            if not df.empty:
+                st.dataframe(df)
+            else:
+                st.info('No matching result found')
+    elif uniq_dict:
+        df = gui_get_df(state_container.sqobjs[uniq_dict['table']],
+                        namespace=state.namespace,
+                        view='latest', columns=uniq_dict['column'])
+        if not df.empty:
+            uniqlist = []
+            for col in uniq_dict['column']:
+                uniqlist += df[col].unique().tolist()
+
+            uniqlist = [x for x in uniqlist]
+            df = pd.DataFrame({uniq_dict['colname']: sorted(uniqlist)})
 
         expander = st.beta_expander(f'Search for {state_container.search_text}',
                                     expanded=True)
@@ -128,7 +185,8 @@ def page_work(state_container, page_flip: bool):
             else:
                 st.info('No matching result found')
 
-    if query_str and (state_container.search_text != state.search_text):
+    if ((query_str or uniq_dict) and
+            (state_container.search_text != state.search_text)):
         state.prev_results.append((state_container.search_text, df))
         state.search_text = state_container.search_text
 
