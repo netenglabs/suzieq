@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 import streamlit as st
 
 import altair as alt
@@ -9,10 +10,28 @@ def get_title():
     return 'Status'
 
 
+@dataclass
+class StatusSessionState:
+    namespace: str = ''
+
+
 def draw_sidebar_status(state, sqobjs):
     '''Draw appropriate sidebar for the page'''
 
     do_refresh = st.sidebar.button('Refresh')
+
+    devdf = gui_get_df(sqobjs['device'], columns=['namespace', 'hostname'])
+    if devdf.empty:
+        st.error('Unable to retrieve any namespace info')
+        st.stop()
+
+    namespaces = [''] + sorted(devdf.namespace.unique().tolist())
+    if state.namespace:
+        nsidx = namespaces.index(state.namespace)
+    else:
+        nsidx = 0
+    namespace = st.sidebar.selectbox('Namespace',
+                                     namespaces, index=nsidx)
 
     if do_refresh:
         st.caching.clear_cache()
@@ -28,11 +47,18 @@ Select one of the following pages from the Page menu to investigate further.
 __Caching is enabled by default for 90 secs on all pages__. You can clear the cache by hitting the refresh button on this page or selecting "Clear Cache" option from the drop down menu on the top right hand corner
 ''')
 
+    if namespace != state.namespace:
+        state.namespace = namespace
+
 
 def page_work(state_container, page_flip: bool):
     '''The main workhorse routine for the XNA page'''
 
-    draw_sidebar_status(None, state_container.sqobjs)
+    if not state_container.statusSessionState:
+        state_container.statusSessionState = StatusSessionState()
+
+    state = state_container.statusSessionState
+    draw_sidebar_status(state, state_container.sqobjs)
 
     col1, mid, col2 = st.beta_columns([2, 1, 2])
     with col1:
@@ -46,7 +72,12 @@ def page_work(state_container, page_flip: bool):
         ospf_gr = st.empty()
 
     # Get each of the summarize info
-    dev_df = gui_get_df(state_container.sqobjs['device'], columns=['*'])
+    if state.namespace:
+        ns = [state.namespace]
+    else:
+        ns = []
+    dev_df = gui_get_df(state_container.sqobjs['device'], namespace=ns,
+                        columns=['*'])
     if not dev_df.empty:
         dev_status = dev_df.groupby(by=['namespace', 'status'])['hostname'] \
                            .count() \
@@ -65,7 +96,8 @@ def page_work(state_container, page_flip: bool):
     else:
         dev_gr.info('No device info found')
 
-    if_df = gui_get_df(state_container.sqobjs['interfaces'], columns=['*'])
+    if_df = gui_get_df(state_container.sqobjs['interfaces'],
+                       namespace=ns, columns=['*'])
     if not if_df.empty:
         if_df['state'] = np.where((if_df.state == "down") & (
             if_df.adminState == "down"), "adminDown", if_df.state)
@@ -89,7 +121,8 @@ def page_work(state_container, page_flip: bool):
     else:
         if_gr.info('No Interface info found')
 
-    bgp_df = gui_get_df(state_container.sqobjs['bgp'], columns=['*'])
+    bgp_df = gui_get_df(state_container.sqobjs['bgp'], namespace=ns,
+                        columns=['*'])
 
     if not bgp_df.empty:
         bgp_status = bgp_df.groupby(by=['namespace', 'state'])['hostname'] \
@@ -109,7 +142,8 @@ def page_work(state_container, page_flip: bool):
                                )
         bgp_gr.altair_chart(bgp_chart)
 
-    ospf_df = gui_get_df(state_container.sqobjs['ospf'], columns=['*'])
+    ospf_df = gui_get_df(state_container.sqobjs['ospf'],
+                         namespace=ns, columns=['*'])
     if not ospf_df.empty:
         ospf_df['state'] = np.where(ospf_df.ifState == "adminDown",
                                     "adminDown", ospf_df.adjState)
@@ -133,7 +167,7 @@ def page_work(state_container, page_flip: bool):
 
     sqdf = gui_get_df(state_container.sqobjs['sqPoller'],
                       columns=['namespace', 'hostname', 'timestamp'],
-                      service='device')
+                      service='device', namespace=ns)
     if not sqdf.empty:
         hosts = sqdf.groupby(by=['namespace'])['hostname'] \
                     .nunique() \

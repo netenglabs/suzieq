@@ -163,8 +163,7 @@ def apprun():
     state.prev_page = page
 
     state.pages[page](state, page_flip)
-    if page not in ['Search']:
-        state.sync()
+    state.sync()
 
 
 if __name__ == '__main__':
