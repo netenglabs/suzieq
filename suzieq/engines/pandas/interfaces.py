@@ -13,6 +13,17 @@ class InterfacesObj(SqPandasEngine):
     def table_name():
         return 'interfaces'
 
+    def get(self, **kwargs):
+        """Handling state outside of regular filters"""
+        state = kwargs.pop('state', '')
+
+        df = super().get(**kwargs)
+
+        if df.empty or not state:
+            return df
+
+        return df.query(f'state=="{state}"').reset_index()
+
     def aver(self, what="mtu-match", **kwargs) -> pd.DataFrame:
         """Assert that interfaces are in good state"""
 
