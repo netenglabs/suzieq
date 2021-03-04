@@ -60,9 +60,9 @@ def xplore_run_unique(df: pd.DataFrame, **kwargs) -> pd.DataFrame:
         r = idf[column].value_counts()
         return (pd.DataFrame({column: r})
                 .reset_index()
-                .rename(columns={column: 'count',
+                .rename(columns={column: 'numRows',
                                  'index': column})
-                .sort_values(by=['count'], ascending=False))
+                .sort_values(by=['numRows'], ascending=False))
 
 
 @st.cache(ttl=90)
@@ -353,15 +353,14 @@ def page_work(state_container, page_flip: bool):
                         .mark_bar(color='purple', tooltip=True) \
                         .encode(y=alt.Y(f'{state.uniq_clicked}:N',
                                         sort='-x'),
-                                x='count')
+                                x='numRows')
                 else:
-
                     chart = alt.Chart(
                         uniq_df, title=f'{state.uniq_clicked} Distribution') \
                         .mark_bar(color='purple', tooltip=True) \
                         .encode(y=alt.Y(f'{state.uniq_clicked}:N',
                                         sort='-x'),
-                                x='count')
+                                x='numRows')
                 st.altair_chart(chart)
 
         if state.table in ['interfaces', 'ospf', 'bgp', 'evpnVni']:

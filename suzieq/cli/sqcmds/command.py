@@ -223,20 +223,25 @@ class SqCommand:
         raise NotImplementedError
 
     @command("unique", help="find the list of unique items in a column")
-    @argument("groupby", description="List of columns to group by")
-    @argument("type", description="Unique per host or table entry",
-              choices=['entry', 'host'])
-    def unique(self, groupby='', type='entry', **kwargs):
+    @argument("count", description="include count of times a value is seen",
+              choices=['True'])
+    def unique(self, count='', **kwargs):
         now = time.time()
         try:
             df = self.sqobj.unique(hostname=self.hostname,
                                    namespace=self.namespace,
-                                   groupby=groupby, type=type,
+                                   count=count,
                                    )
         except Exception as e:
             df = pd.DataFrame({'error': ['ERROR: {}'.format(str(e))]})
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        return self._gen_output(df, dont_strip_cols=True)
+        if not count:
+            return self._gen_output(df.sort_values(by=[self.columns[0]]),
+                                    dont_strip_cols=True)
+        else:
+            return self._gen_output(
+                df.sort_values(by=['numRows', self.columns[0]]),
+                dont_strip_cols=True)
 
     def _init_summarize(self):
         self.now = time.time()
