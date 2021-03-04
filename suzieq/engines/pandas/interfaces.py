@@ -39,7 +39,7 @@ class InterfacesObj(SqPandasEngine):
         ]
 
         self._summarize_on_add_with_query = [
-            ('devicesWithL2Cnt', 'master == "bridge"', 'hostname'),
+            ('devicesWithL2Cnt', 'master == "bridge"', 'hostname', 'nunique'),
             ('devicesWithVxlanCnt', 'type == "vxlan"', 'hostname'),
             ('ifDownCnt', 'state != "up" and adminState == "up"', 'ifname'),
             ('ifWithMultipleIPCnt', 'ipAddressList.str.len() > 1', 'ifname'),
