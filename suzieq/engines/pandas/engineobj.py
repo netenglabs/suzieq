@@ -273,6 +273,7 @@ class SqPandasEngine(SqEngineObj):
     def unique(self, **kwargs) -> pd.DataFrame:
         """Return the unique elements as per user specification"""
         groupby = kwargs.pop("groupby", None)
+        count = kwargs.pop("count", 0)
 
         columns = kwargs.pop("columns", None)
         if columns is None or columns == ['default']:
@@ -298,35 +299,13 @@ class SqPandasEngine(SqEngineObj):
         if df.apply(lambda x: isinstance(x[column], np.ndarray), axis=1).all():
             df = df.explode(column).dropna(how='any')
 
-        if groupby:
-            if type == 'host' and 'hostname' not in groupby:
-                grp = df.groupby(by=groupby.split() +
-                                 ['hostname', column], observed=True)
-                grpkeys = list(grp.groups.keys())
-                gdict = {}
-                for i, g in enumerate(groupby.split() + ['hostname', column]):
-                    gdict[g] = [x[i] for x in grpkeys]
-                r = pd.DataFrame(gdict).groupby(by=groupby.split(),
-                                                observed=True)[column] \
-                    .value_counts()
-                return (pd.DataFrame({'count': r})
-                          .reset_index())
-
-            else:
-                r = df.groupby(by=groupby.split(), observed=True)[column] \
-                    .value_counts()
-                return pd.DataFrame({'count': r}).reset_index()
+        if not count:
+            return (pd.DataFrame({f'{column}': df[column].unique()}))
         else:
-            if type == 'host' and column != 'hostname':
-                r = df.groupby('hostname', observed=True) \
-                    .first()[column] \
-                    .value_counts()
-            else:
-                r = df[column].value_counts()
-
+            r = df[column].value_counts()
             return (pd.DataFrame({column: r})
                     .reset_index()
-                    .rename(columns={column: 'count',
+                    .rename(columns={column: 'numRows',
                                      'index': column})
                     .sort_values(column))
 
