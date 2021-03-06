@@ -1,16 +1,14 @@
 import os
 import pandas as pd
 import pyarrow.dataset as ds    # put this later due to some numpy dependency
-import pyarrow as pa
 from datetime import datetime, timedelta, timezone
 import logging
 from typing import List
-import pyarrow.parquet as pq
 import tarfile
 from itertools import repeat
 
-from suzieq.utils import SchemaForTable
 from suzieq.utils import humanize_timestamp
+from .migratedb import get_migrate_fn
 
 
 class SqCoalesceState(object):
@@ -99,7 +97,7 @@ def write_files(filelist: List[str], in_basedir: str,
                 if missing_set:
                     missing_df = state.current_df.loc[missing_set]
                     this_df = pd.concat([this_df.reset_index(),
-                                         missing_df.reset_index()])
+                                         missing_df])
                 else:
                     this_df = this_df.reset_index()
     elif not state.current_df.empty:
@@ -156,13 +154,15 @@ def get_file_timestamps(filelist: List[str]) -> pd.DataFrame:
     return pd.DataFrame(['file', 'timestamp'])
 
 
-def get_last_update_df(outfolder: str, state: SqCoalesceState) -> pd.DataFrame:
+def get_last_update_df(table_name: str, outfolder: str,
+                       state: SqCoalesceState) -> pd.DataFrame:
     """Return a dataframe with the last known values for all keys
     The dataframe is sorted by timestamp and the index set to the keys.
 
     This is used when the coalesceer starts up and doesn't have any state
     about a table.
 
+    :param table_name: str, name of the table we're getting data for
     :param outfolder: str, folder from where to gather the files
     :param state: SqCoalesceState, coalesceer state
     :returns: dataframe with the last known data for all hosts in namespace
@@ -184,6 +184,15 @@ def get_last_update_df(outfolder: str, state: SqCoalesceState) -> pd.DataFrame:
         .to_table() \
         .to_pandas(self_destruct=True)
     if not current_df.empty:
+        # The data here could be old, so we need to migrate it first.
+        sqvers_list = current_df.sqvers.unique().tolist()
+        for sqvers in sqvers_list:
+            if sqvers != state.schema.version:
+                migrate_fn = get_migrate_fn(table_name, sqvers,
+                                            state.schema.version)
+                if migrate_fn:
+                    current_df = migrate_fn(current_df)
+
         current_df = current_df.sort_values(by=['timestamp']) \
                                .set_index(state.keys)
 
@@ -242,7 +251,7 @@ def coalesce_resource_table(infolder: str, outfolder: str, archive_folder: str,
     if state.schema.type == "record":
         state.keys = schema.key_fields()
         if state.current_df.empty:
-            state.current_df = get_last_update_df(outfolder, state)
+            state.current_df = get_last_update_df(table, outfolder, state)
 
     # Ignore reading the compressed files
     dataset = ds.dataset(infolder, partitioning='hive', format='parquet',
