@@ -354,7 +354,7 @@ class Node(object):
             return
         if devtype not in known_devtypes():
             self.logger.error(f'An unknown devtype {devtype} is being added.'
-                              ' This will cause problems. Node {self.address}')
+                              f' This will cause problems. Node {self.address}')
             raise ValueError
 
         if self.devtype == "cumulus":
@@ -376,7 +376,8 @@ class Node(object):
         # hostnamectl on Linux systems. That's all we support today.
         await self.exec_cmd(self._parse_device_type_hostname,
                             ["show version", "hostnamectl",
-                             "cat /etc/os-release", "show hostname"], None)
+                             "cat /etc/os-release", "show hostname"], None,
+                            'text')
 
     async def _parse_device_type_hostname(self, output, cb_token) -> None:
         devtype = ""
@@ -401,6 +402,8 @@ class Node(object):
                 devtype = "nxos"
             elif "SONiC" in data:
                 devtype = "sonic"
+            elif any(x in data for x in ['vEOS', 'Arista']):
+                devtype = "eos"
 
             if devtype.startswith("junos"):
                 hmatch = re.search(r'Hostname:\s+(\S+)\n', data)
@@ -409,6 +412,10 @@ class Node(object):
             elif devtype == "nxos":
                 data = output[3]["data"]
                 hostname = data.strip()
+            elif devtype == "eos":
+                data = output[3]['data']
+                lines = data.split('\n')
+                hostname = lines[1].split('FQDN:')[1].strip()
             elif output[3]["status"] == 0:
                 hostname = output[3]["data"].strip()
 
@@ -433,8 +440,13 @@ class Node(object):
                                            .strip().replace('"', '')
                         break
 
-        self.set_devtype(devtype)
-        self.set_hostname(hostname)
+        if not devtype:
+            self.logger.warning(
+                f'Unable to determine devtype for {self.address}')
+            self._status = 'init'
+        else:
+            self.set_devtype(devtype)
+            self.set_hostname(hostname)
 
     async def _parse_boottime_hostname(self, output, cb_token) -> None:
         """Parse the uptime command output"""
@@ -462,7 +474,8 @@ class Node(object):
         if hostname:
             self.hostname = hostname
 
-    async def local_gather(self, service_callback, cmd_list, cb_token) -> None:
+    async def local_gather(self, service_callback, cmd_list, oformat,
+                           cb_token) -> None:
         """Given a dictionary of commands, run locally and return outputs"""
 
         result = []
@@ -493,8 +506,8 @@ class Node(object):
 
     async def init_boot_time(self):
         """Fill in the boot time of the node by running the appropriate command"""
-        await self.exec_cmd(self._parse_boottime_hostname, ["cat /proc/uptime",
-                                                            "hostname"], None)
+        await self.exec_cmd(self._parse_boottime_hostname,
+                            ["cat /proc/uptime", "hostname"], None, 'text')
 
     def post_commands(self, service_callback, svc_defn: dict,
                       cb_token: RsltToken):
@@ -530,8 +543,9 @@ class Node(object):
 
                 tasks = list(pending)
 
-    async def ssh_gather(self, service_callback, cmd_list, cb_token, timeout):
-        """Given a dictionary of commands, run ssh and place output on service callback"""
+    async def ssh_gather(self, service_callback, cmd_list, cb_token, oformat,
+                         timeout):
+        """Run ssh for cmd in cmdlist and place output on service callback"""
 
         result = []
 
@@ -720,13 +734,14 @@ class Node(object):
                        oformat='json', timeout=None):
 
         if self.transport == "ssh":
-            await self.ssh_gather(service_callback, cmd_list, cb_token, timeout)
+            await self.ssh_gather(service_callback, cmd_list, cb_token, oformat,
+                                  timeout)
         elif self.transport == "https":
             await self.rest_gather(service_callback, cmd_list,
                                    cb_token, oformat, timeout)
         elif self.transport == "local":
             await self.local_gather(service_callback, cmd_list,
-                                    cb_token, timeout)
+                                    cb_token, oformat, timeout)
         else:
             self.logger.error(
                 "Unsupported transport {} for node {}".format(
@@ -782,14 +797,16 @@ class Node(object):
             else:
                 cmd = use.get("command", None)
 
-        oformat = svc_defn.get(self.devtype, {}).get("format", "json")
-
         if not cmd:
             return result
 
+        oformat = use.get('format', 'json')
         if type(cmd) is not list:
+            if use.get('textfsm'):
+                oformat = 'text'
             cmdlist = [cmd]
         else:
+            # TODO: Handling format for the multiple cmd case
             cmdlist = [x.get('command', '') for x in cmd]
 
         await self.exec_cmd(service_callback, cmdlist, cb_token,
@@ -798,7 +815,7 @@ class Node(object):
 
 class EosNode(Node):
     def _init(self, **kwargs):
-        super()._init(kwargs)
+        super()._init(**kwargs)
         self.devtype = "eos"
 
     async def init_node(self):
@@ -809,9 +826,6 @@ class EosNode(Node):
                 self._terminate()
                 return
             self.last_exception = e
-
-    async def get_device_type_hostname(self):
-        raise NotImplementedError
 
     async def get_device_boottime_hostname(self):
         """Determine the type of device we are talking to"""
@@ -830,8 +844,24 @@ class EosNode(Node):
 
         if output[1]["status"] == 0 or output[1]["status"] == 200:
             data = output[1]["data"]
-            self.hostname = data["hostname"]
+            self.hostname = data["fqdn"]
             self._status = "good"
+
+    async def ssh_gather(self, service_callback, cmd_list, cb_token, oformat,
+                         timeout):
+        """Run ssh and place output on service callback for dict of cmds"""
+
+        # We need to add the JSON option for all commands that support JSON
+        # output since the command provided assumes REST API
+        newcmd_list = []
+        for cmd in cmd_list:
+            if (oformat == "json") and not cmd.endswith('json'):
+                cmd += '| json'
+
+            newcmd_list.append(cmd)
+
+        return await super().ssh_gather(service_callback, newcmd_list,
+                                        cb_token, oformat, timeout)
 
     async def rest_gather(self, service_callback, cmd_list, cb_token,
                           oformat="json", timeout=None):
@@ -921,7 +951,7 @@ class CumulusNode(Node):
         if "password" not in kwargs:
             kwargs["password"] = "CumulusLinux!"
 
-        super()._init(kwargs)
+        super()._init(**kwargs)
         self.devtype = "cumulus"
 
     async def rest_gather(self, service_callback, cmd_list, cb_token,
@@ -976,7 +1006,7 @@ class JunosNode(Node):
         """Fill in the boot time of the node by running requisite cmd"""
         await self.exec_cmd(self._parse_boottime_hostname,
                             ["show system uptime|display json",
-                             "show version"], None)
+                             "show version"], None, 'mixed')
 
     async def _parse_boottime_hostname(self, output, cb_token) -> None:
         """Parse the uptime command output"""
@@ -1007,7 +1037,8 @@ class NxosNode(Node):
     async def init_boot_time(self):
         """Fill in the boot time of the node by running requisite cmd"""
         await self.exec_cmd(self._parse_boottime_hostname,
-                            ["show version|json", "show hostname"], None)
+                            ["show version|json", "show hostname"], None,
+                            'mixed')
 
     async def _parse_boottime_hostname(self, output, cb_token) -> None:
         """Parse the uptime command output"""
@@ -1037,8 +1068,8 @@ class SonicNode(Node):
 
     async def init_boot_time(self):
         """Fill in the boot time of the node by running requisite cmd"""
-        await self.exec_cmd(self._parse_boottime_hostname, ["cat /proc/uptime",
-                                                            "hostname"], None)
+        await self.exec_cmd(self._parse_boottime_hostname,
+                            ["cat /proc/uptime", "hostname"], None, 'text')
 
     async def _parse_boottime_hostname(self, output, cb_token) -> None:
         """Parse the uptime command output"""
