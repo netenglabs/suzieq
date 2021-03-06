@@ -676,3 +676,36 @@ def ensure_single_instance(filename: str, block: bool = False) -> int:
                 fd = 0
 
     return fd
+
+
+def iosxr_get_full_ifname(ifname: str) -> str:
+    """Get expanded interface name for IOSXR given its short form
+
+    :param ifname: str, short form of IOSXR interface name
+    :returns: Expanded version of short form interface name
+    :rtype: str
+    """
+
+    ifmap = {'BE': 'Bundle-Ether',
+             'BV': 'BVI',
+             'Fi': 'FiftyGigE',
+             'Fo': 'FortyGigE',
+             'FH': 'FourHundredGigE',
+             'Gi': 'GigabitEthernet',
+             'Hu': 'HundredGigE',
+             'Lo': 'Loopback',
+             'Mg': 'MgmtEth',
+             'Nu': 'Null',
+             'TE': 'TenGigE',
+             'TF': 'TwentyFiveGigE',
+             'TH': 'TwoHundredGigE',
+             'tsec': 'tunnel-ipsec',
+             'tmte': 'tunnel-mte',
+             'tt': 'tunnel-te',
+             'tp': 'tunnel-tp'
+             }
+    pfx = re.match(r'[a-zA-Z]+', ifname)
+    if pfx:
+        pfxstr = pfx.group(0)
+        if pfxstr in ifmap:
+            return ifname.replace(pfxstr, ifmap[pfxstr])
