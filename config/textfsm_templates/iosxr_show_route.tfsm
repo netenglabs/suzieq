@@ -1,6 +1,6 @@
 Value Filldown vrf (\S+)
-Value protocol ([A-Z]\*?|[A-Z]\s+[A-Z][1-2]|i ia|i su)
-Value Required prefix ([0-9./]*|[0-9a-f:/]*)
+Value protocol ([A-Zi]\*?|[A-Zio]\s+[A-Z][1-2]|i ia|i su)
+Value Required prefix ([0-9./]+|[0-9a-f:./]+)
 Value distance (\d+|is)
 Value metric (\d+)
 Value List nexthopIps ([0-9.]+|[0-9a-f:]+)
@@ -10,17 +10,23 @@ Value nexthopvrf (\S+)
 
 
 Start
-  ^[A-Z]\s -> Continue.Record
-  ^$$ -> Record
-  ^VRF:\s${vrf}
+  ^Gateway\s+of\s+last\s+resort.*$$
+  ^[A-Zio]\s -> Continue.Record
+  ^VRF: -> Continue.Record
+  ^VRF:\s+${vrf}
+  ^IPv4 Unicast:
+  ^IPv6 Unicast:
   ^Codes:.*$$
   ^-*$$
-  ^Gateway\s+of\s+last\s+resort.*$$
   ^${protocol}\s+${prefix} is directly connected, ${uptime}, ${oifs}.*$$
+  ^${protocol}\s+${prefix} is directly connected,\s*$$
   ^${protocol}\*?\s+${prefix}\s+\[${distance}/${metric}\]\s+via\s+${nexthopIps}, ${uptime}, ${oifs}.*$$
   ^${protocol}\s+${prefix}\s+\[${distance}/${metric}\]\s+via\s+${nexthopIps}, ${uptime}.*$$
-  ^${protocol}\s+${prefix}\s+\[${distance}/${metric}\]\s+via\s+${nexthopIps}\s+\(nexthop in vrf ${nexthopvrf}\), ${uptime}.*$$    
+  ^${protocol}\s+${prefix}\s+\[${distance}/${metric}\]\s+via\s+${nexthopIps}\s+\(nexthop in vrf ${nexthopvrf}\), ${uptime}.*$$
+  ^${protocol}\s+${prefix}\s*$$
   ^\s+\[${distance}/${metric}\]\s+via\s+${nexthopIps}, ${uptime}, ${oifs}.*$$
+  ^\s+\[${distance}/${metric}\]\s+via\s+${nexthopIps}, ${uptime}\s*$$  
+  ^\s+${uptime},\s+${oifs}.*$$
 
 #
 #IPv4 Unicast:
@@ -53,6 +59,32 @@ Start
 #C    10.3.0.0/16 is directly connected, 13:14:59, GigabitEthernet0/0/0/0
 #L    10.3.0.2/32 is directly connected, 13:14:59, GigabitEthernet0/0/0/0
 #
+#IPv6 Unicast:
+#-------------
+#
+#Codes: C - connected, S - static, R - RIP, B - BGP, (>) - Diversion path
+#       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+#       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+#       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+#       i - ISIS, L1 - IS-IS level-1, L2 - IS-IS level-2
+#       ia - IS-IS inter area, su - IS-IS summary null, * - candidate default
+#       U - per-user static route, o - ODR, L - local, G  - DAGR, l - LISP
+#       A - access/subscriber, a - Application route
+#       M - mobile route, r - RPL, t - Traffic Engineering, (!) - FRR Backup path
+#
+#Gateway of last resort is not set
+#
+#L    ::ffff:127.0.0.0/104 
+#      [0/0] via ::, 9w6d
+#L    2001:db8:26e1:7003::4:96/128 is directly connected,
+#      9w1d, Loopback0
+#i L1 2001:db8:26e1:9003::4:113/128 
+#      [115/10] via fe80::453:56ab:feb2:e85a, 6w3d, GigabitEthernet0/0/0/4.4079
+#C    2001:db8:26c0:8404::26:0/127 is directly connected,
+#      9w6d, GigabitEthernet0/0/0/4.4079
+#L    2001:db8:26c9:8404::26:1/128 is directly connected,
+#      9w6d, GigabitEthernet0/0/0/4.4079
+#
 #VRF: myvrf
 #
 #
@@ -70,6 +102,11 @@ Start
 #Gateway of last resort is not set
 #
 #B    12.40.19.8/30 [200/0] via 3.2.3.254 (nexthop in vrf default), 6w0d
-
-
-  
+#
+#VRF: myvrf
+#
+#IPv6 Unicast:
+#-------------
+#
+#% No matching routes found
+#
