@@ -19,12 +19,18 @@ apply:
   iosxr:
     version: all
     command:
-      - command: show arp
+      - command: show arp vrf default
         textfsm: textfsm_templates/iosxr_show_arp.tfsm
       - command: show arp vrf all
         textfsm: textfsm_templates/iosxr_show_arp.tfsm
-      - command: show ipv6 neigh
+      - command: show ipv6 neigh vrf default
         textfsm: textfsm_templates/iosxr_show_ipv6_neigh.tfsm
+      - command: show ipv6 neigh vrf all
+        textfsm: textfsm_templates/iosxr_show_ipv6_neigh.tfsm
+        _entryType: ipv6
+      - command: show ipv6 neigh vrf default
+        textfsm: textfsm_templates/iosxr_show_ipv6_neigh.tfsm
+        _entryType: ipv6
 
   linux:
     copy: cumulus
