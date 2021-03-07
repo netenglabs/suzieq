@@ -454,6 +454,8 @@ class Node(object):
                 f'Unable to determine devtype for {self.address}')
             self._status = 'init'
         else:
+            self.logger.info(
+                f'Detected {devtype} for {self.address}, {hostname}')
             self.set_devtype(devtype)
             self.set_hostname(hostname)
 
