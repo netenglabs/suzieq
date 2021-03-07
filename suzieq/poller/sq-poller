@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-
 import sys
 import os
 import argparse
@@ -118,7 +117,10 @@ async def start_and_monitor_coalescer(config_file: str, cfg: dict,
         try:
             stdout, stderr = await process.communicate()
         except asyncio.CancelledError:
-            process.terminate()
+            if process:
+                process.terminate()
+                sleep(5)
+                process.kill()
             return
 
         if process.returncode and (process.returncode != errno.EBUSY):
@@ -422,7 +424,7 @@ if __name__ == "__main__":
 
     try:
         asyncio.run(start_poller(userargs, cfg))
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, RuntimeError):
         pass
     except Exception:
         import traceback

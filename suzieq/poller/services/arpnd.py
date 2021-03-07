@@ -1,7 +1,8 @@
 from suzieq.poller.services.service import Service
 import re
 import numpy as np
-from suzieq.utils import convert_macaddr_format_to_colon
+from suzieq.utils import (convert_macaddr_format_to_colon,
+                          iosxr_get_full_ifname)
 
 
 class ArpndService(Service):
@@ -79,5 +80,8 @@ class ArpndService(Service):
                 entry['macaddr'] = convert_macaddr_format_to_colon(
                     entry.get('macaddr', '0000.0000.0000'))
                 entry['state'] = "reachable"
+            if ':' in entry['ipAddress']:
+                # We need to fix up the interface name for IPv6 ND entriie
+                entry['oif'] = iosxr_get_full_ifname(entry.get('oif', ''))
 
         return processed_data

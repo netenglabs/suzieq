@@ -293,7 +293,7 @@ def cons_recs_from_json_template(tmplt_str, in_data):
             # dealing with trailing "."
             continue
 
-        lval, rval = selem.split(":")
+        lval, rval = selem.split(": ")
 
         # Process default value processing of the form <key>?|<def_val> or
         # <key>?<expected_val>|<def_val>
@@ -341,7 +341,8 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                 subflds = lval.split("/")
                 tmpval = x["rest"]
                 value = None
-                if any(x in subflds for x in ["*", "*?", "[*]?", "[*]"]):
+                if any(x in subflds for x in ["*", "*?", "[*]?", "[*]",
+                                              '*:_sqstore']):
                     # Returning a list is the only supported option for now
                     value = []
                     maybe_list = True
@@ -350,9 +351,16 @@ def cons_recs_from_json_template(tmplt_str, in_data):
 
                 while subflds:
                     subfld = subflds.pop(0).strip()
+                    if ':_sqstore' in subfld:
+                        storekey = True
+                        subfld = '*'
+                    else:
+                        storekey = False
                     if subfld == "*":
                         tmp = tmpval
                         for subele in tmp:
+                            if storekey:
+                                storeval = subele
                             for ele in subflds:
                                 if isinstance(tmp, list):
                                     subele = subele.get(ele, None)
@@ -362,7 +370,10 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                                     tmpval = None
                                     break
                             if subele:
-                                value.append(subele)
+                                if storekey:
+                                    value.append(storeval)
+                                else:
+                                    value.append(subele)
                         subflds = []
                     elif subfld.startswith('['):
                         # handle specific array index or dict key
