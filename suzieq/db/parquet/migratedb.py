@@ -61,11 +61,11 @@ def _convert_bgp_vers_1_to_2(df: pd.DataFrame) -> pd.DataFrame:
                     newdf['afi'] = 'ipv6'
 
             newdf = newdf.rename(columns={
-                'v4PfxRx': 'pfxRx',
-                'v4PfxTx': 'pfxTx',
-                'v4IngressRmap': 'ingressRmap',
-                'v4EgressRmap': 'egressRmap',
-                'v4defaultsent': 'defOriginate',
+                f'{pfx}PfxRx': 'pfxRx',
+                f'{pfx}PfxTx': 'pfxTx',
+                f'{pfx}IngressRmap': 'ingressRmap',
+                f'{pfx}EgressRmap': 'egressRmap',
+                f'{pfx}defaultsent': 'defOriginate',
             })
 
             newdf['afisAdvOnly'] = [[] for _ in range(len(newdf))]

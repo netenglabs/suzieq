@@ -7,6 +7,7 @@ import pyarrow.dataset as ds
 from itertools import zip_longest
 from datetime import datetime, timedelta, timezone
 from contextlib import suppress
+from shutil import rmtree
 
 import pandas as pd
 import numpy as np
@@ -17,6 +18,7 @@ from suzieq.db.base_db import SqDB, SqCoalesceStats
 from suzieq.utils import Schema, SchemaForTable
 
 from .pq_coalesce import SqCoalesceState, coalesce_resource_table
+from .migratedb import get_migrate_fn
 
 
 class SqParquetDB(SqDB):
@@ -331,30 +333,128 @@ class SqParquetDB(SqDB):
                 self.logger.info(
                     f'No input records to coalesce for {entry}')
                 continue
-            if not os.path.isdir(table_outfolder):
-                os.makedirs(table_outfolder)
-            if (table_archive_folder and
-                    not os.path.isdir(table_archive_folder)):
-                os.makedirs(table_archive_folder, exist_ok=True)
-            start = time()
-            coalesce_resource_table(table_infolder, table_outfolder,
-                                    table_archive_folder, entry,
-                                    state)
-            end = time()
-            self.logger.info(
-                f'coalesced {state.wrfile_count} files/{state.wrrec_count} '
-                f'records of {entry}')
-            stats.append(SqCoalesceStats(entry, period, int(end-start),
-                                         state.wrfile_count,
-                                         state.wrrec_count,
-                                         int(datetime.now(tz=timezone.utc)
-                                             .timestamp() * 1000)))
+            try:
+                if not os.path.isdir(table_outfolder):
+                    os.makedirs(table_outfolder)
+                if (table_archive_folder and
+                        not os.path.isdir(table_archive_folder)):
+                    os.makedirs(table_archive_folder, exist_ok=True)
+                # Migrate the data if needed
+                self.logger.debug(f'Migrating data for {entry}')
+                self.migrate(entry, state.schema)
+                self.logger.debug(f'Migrating data for {entry}')
+                start = time()
+                coalesce_resource_table(table_infolder, table_outfolder,
+                                        table_archive_folder, entry,
+                                        state)
+                end = time()
+                self.logger.info(
+                    f'coalesced {state.wrfile_count} files/{state.wrrec_count} '
+                    f'records of {entry}')
+                stats.append(SqCoalesceStats(entry, period, int(end-start),
+                                             state.wrfile_count,
+                                             state.wrrec_count,
+                                             int(datetime.now(tz=timezone.utc)
+                                                 .timestamp() * 1000)))
+            except Exception:
+                self.logger.exception(f'Unable to coalesce table {entry}')
+                stats.append(SqCoalesceStats(entry, period, int(end-start),
+                                             0, 0,
+                                             int(datetime.now(tz=timezone.utc)
+                                                 .timestamp() * 1000)))
+
         return stats
+
+    def migrate(self, table_name: str, schema: SchemaForTable) -> None:
+        """Migrates the data for the table specified to latest version
+
+        :param table_name: str, The name of the table to migrate
+        :param schema: SchemaForTable, the current schema
+        :returns: None
+        :rtype:
+        """
+
+        current_vers = schema.version
+        defvals = self._get_default_vals()
+        arrow_schema = schema.get_arrow_schema()
+        schema_def = dict(zip(arrow_schema.names, arrow_schema.types))
+
+        for sqvers in self._get_avail_sqvers(table_name, True):
+            if sqvers != current_vers:
+                migrate_rtn = get_migrate_fn(table_name, sqvers, current_vers)
+                if migrate_rtn:
+                    dataset = self._get_cp_dataset(table_name, True, sqvers,
+                                                   'all', '', '')
+                    for item in dataset.files:
+                        try:
+                            namespace = item.split('namespace=')[1] \
+                                            .split('/')[0]
+                        except IndexError:
+                            # Don't convert data not in our template
+                            continue
+
+                        df = pd.read_parquet(item)
+                        df['sqvers'] = sqvers
+                        df['namespace'] = namespace
+                        newdf = migrate_rtn(df)
+
+                        cols = newdf.columns
+                        # Ensure all fields are present
+                        for field in schema_def:
+                            if field not in cols:
+                                newdf[field] = defvals.get(schema_def[field],
+                                                           '')
+
+                        newdf.drop(columns=['namespace', 'sqvers'])
+
+                        newitem = item.replace(f'sqvers={sqvers}',
+                                               f'sqvers={current_vers}')
+                        newdir = os.path.dirname(newitem)
+                        if not os.path.exists(newdir):
+                            os.makedirs(newdir, exist_ok=True)
+
+                        table = pa.Table.from_pandas(
+                            newdf, schema=schema.get_arrow_schema(),
+                            preserve_index=False)
+                        pq.write_to_dataset(table, newitem,
+                                            version="2.0", compression="ZSTD",
+                                            row_group_size=100000)
+                        self.logger.debug(
+                            f'Migrated {item} version {sqvers}->{current_vers}')
+                        os.remove(item)
+
+                    rmtree(f'{self._get_table_directory(table_name, True)}/sqvers={sqvers}',
+                           ignore_errors=True)
+        return
+
+    def _get_avail_sqvers(self, table_name: str, coalesced: bool) -> List[str]:
+        """Get list of DB versions for a given table.
+
+        At this time it does not check if the DB is empty of not of these
+        versions.
+
+        :param table_name: str, name of table for which you want the versions
+        :param coalesced: boolean, True if you want to look in coalesced dir
+        :returns: list of DB versions
+        :rtype: List[str]
+
+        """
+
+        folder = self._get_table_directory(table_name, coalesced)
+        dirs = Path(folder)
+        sqvers_list = []
+        for folder in dirs.glob('sqvers=*'):
+            with suppress(IndexError):
+                sqvers = folder.name.split('sqvers=')[1]
+                if sqvers:
+                    sqvers_list.append(sqvers)
+
+        return sqvers_list
 
     def _get_cp_dataset(self, table_name: str, need_sqvers: bool,
                         sqvers: str, view: str, start_time: float,
                         end_time: float) -> ds.dataset:
-        """Get the list of files to read in
+        """Get the list of files to read in coalesced dir
 
         This iterates over the coalesced files that need to be read and comes
         up with a list of files that corresponds to the timeslot the user has
@@ -397,7 +497,7 @@ class SqParquetDB(SqDB):
             # Additional processing around sqvers filtering and data
             if 'sqvers=' not in str(elem):
                 continue
-            if sqvers and f'sqvers={sqvers}' != elem:
+            if sqvers and f'sqvers={sqvers}' != elem.name:
                 continue
             elif need_sqvers:
                 vers = float(str(elem).split('=')[-1])
@@ -414,11 +514,12 @@ class SqParquetDB(SqDB):
                 prev_namespace = ''
                 file_in_this_ns = False
                 prev_file = None
+                thistime = []
                 for file in sorted(dataset.files):
                     namespace = os.path.dirname(file).split('namespace=')[1] \
                         .split('/')[0]
                     if (prev_namespace and (namespace != prev_namespace) and
-                            not file_in_this_ns):
+                            thistime and not file_in_this_ns):
                         if ((start_time and thistime[1] >= start_time) or
                                 (end_time and thistime[1] >= end_time)):
                             files.append(prev_file)
@@ -459,7 +560,7 @@ class SqParquetDB(SqDB):
         if filelist:
             return ds.dataset(filelist, format='parquet', partitioning='hive')
         else:
-            return None
+            return []
 
     def _build_master_schema(self, datasets: list) -> pa.lib.Schema:
         """Build the master schema from the list of diff versions

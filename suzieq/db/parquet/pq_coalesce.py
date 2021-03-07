@@ -7,7 +7,7 @@ from typing import List
 import tarfile
 from itertools import repeat
 
-from suzieq.utils import humanize_timestamp
+from suzieq.utils import humanize_timestamp, SchemaForTable
 from .migratedb import get_migrate_fn
 
 
@@ -60,12 +60,13 @@ def archive_coalesced_files(filelist: List[str], outfolder: str,
         [os.remove(x) for x in filelist]
 
 
-def write_files(filelist: List[str], in_basedir: str,
+def write_files(table: str, filelist: List[str], in_basedir: str,
                 outfolder: str, partition_cols: List[str],
                 state: SqCoalesceState, block_start, block_end) -> None:
     """Write the data from the list of files out as a single coalesced block
 
     We're fixing the compression in this function
+    :param table: str, Name of the table for which we're writing the files
     :param filelist: List[str], list of files to write the data to
     :param in_basedir: str, base directory of the read files,
                        to get partition date
@@ -87,6 +88,9 @@ def write_files(filelist: List[str], in_basedir: str,
             .to_table() \
             .to_pandas()
         state.wrrec_count += this_df.shape[0]
+
+        if not this_df.empty:
+            this_df = migrate_df(table, this_df, state.schema)
 
         if state.schema.type == "record":
             if not state.current_df.empty:
@@ -154,6 +158,27 @@ def get_file_timestamps(filelist: List[str]) -> pd.DataFrame:
     return pd.DataFrame(['file', 'timestamp'])
 
 
+def migrate_df(table_name: str, df: pd.DataFrame,
+               schema: SchemaForTable) -> pd.DataFrame:
+    """Migrate the dataframe if necessary
+
+    :param table_name: str, Name of the table
+    :param df: pd.DataFrame, the dataframe to be migrated
+    :param schema: SchemaForTable, the schema we're migrating to
+    :returns: the migrated dataframe
+    :rtype: pd.DataFrame
+    """
+    sqvers_list = df.sqvers.unique().tolist()
+    for sqvers in sqvers_list:
+        if sqvers != schema.version:
+            migrate_fn = get_migrate_fn(table_name, sqvers,
+                                        schema.version)
+            if migrate_fn:
+                df = migrate_fn(df)
+
+    return df
+
+
 def get_last_update_df(table_name: str, outfolder: str,
                        state: SqCoalesceState) -> pd.DataFrame:
     """Return a dataframe with the last known values for all keys
@@ -185,14 +210,7 @@ def get_last_update_df(table_name: str, outfolder: str,
         .to_pandas(self_destruct=True)
     if not current_df.empty:
         # The data here could be old, so we need to migrate it first.
-        sqvers_list = current_df.sqvers.unique().tolist()
-        for sqvers in sqvers_list:
-            if sqvers != state.schema.version:
-                migrate_fn = get_migrate_fn(table_name, sqvers,
-                                            state.schema.version)
-                if migrate_fn:
-                    current_df = migrate_fn(current_df)
-
+        current_df = migrate_df(table_name, current_df, state.schema)
         current_df = current_df.sort_values(by=['timestamp']) \
                                .set_index(state.keys)
 
@@ -301,7 +319,7 @@ def coalesce_resource_table(infolder: str, outfolder: str, archive_folder: str,
                 break
             pre_block_start = compute_block_start(interval)
             pre_block_end = pre_block_start + state.period
-            write_files(readblock, infolder, outfolder, partition_cols,
+            write_files(table, readblock, infolder, outfolder, partition_cols,
                         state, pre_block_start, pre_block_end)
 
     for row in fdf.itertuples():
@@ -315,8 +333,8 @@ def coalesce_resource_table(infolder: str, outfolder: str, archive_folder: str,
         if readblock or ((schema.type == "record") and
                          block_start in state.poller_periods):
 
-            write_files(readblock, infolder, outfolder, partition_cols, state,
-                        block_start, block_end)
+            write_files(table, readblock, infolder, outfolder, partition_cols,
+                        state, block_start, block_end)
             wrfile_count += len(readblock)
         if wr_polling_period and readblock:
             state.poller_periods.add(block_start)
@@ -340,8 +358,8 @@ def coalesce_resource_table(infolder: str, outfolder: str, archive_folder: str,
 
         while row.timestamp > block_end:
             if block_start in state.poller_periods:
-                write_files(readblock, infolder, outfolder, partition_cols,
-                            state, block_start, block_end)
+                write_files(table, readblock, infolder, outfolder,
+                            partition_cols, state, block_start, block_end)
                 # Nothing to archive here, and we're not counting coalesced
                 # records since these are duplicates
             block_start = block_end
@@ -353,8 +371,8 @@ def coalesce_resource_table(infolder: str, outfolder: str, archive_folder: str,
     # The last batch that ended before the block end
     if readblock or (fdf.empty and (schema.type == "record") and
                      block_start in state.poller_periods):
-        write_files(readblock, infolder, outfolder, partition_cols, state,
-                    block_start, block_end)
+        write_files(table, readblock, infolder, outfolder, partition_cols,
+                    state, block_start, block_end)
         wrfile_count += len(readblock)
         if wr_polling_period:
             state.poller_periods.add(block_start)
