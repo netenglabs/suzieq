@@ -449,15 +449,17 @@ class Node(object):
                                            .strip().replace('"', '')
                         break
 
-        if not devtype:
+        if not devtype and not self.last_exception:
             self.logger.warning(
                 f'Unable to determine devtype for {self.address}')
             self._status = 'init'
+            self.last_exception = 'No devtype'
         else:
             self.logger.info(
                 f'Detected {devtype} for {self.address}, {hostname}')
             self.set_devtype(devtype)
             self.set_hostname(hostname)
+            self.last_exception = ''
 
     async def _parse_boottime_hostname(self, output, cb_token) -> None:
         """Parse the uptime command output"""
