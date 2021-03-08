@@ -53,7 +53,7 @@ apply:
 
   nxos:
     version: all
-    command: "show version | json"
+    command: show version | json native
     normalize: '[
     "kickstart_ver_str: version",
     "manufacturer: vendor?Cisco|Cisco",

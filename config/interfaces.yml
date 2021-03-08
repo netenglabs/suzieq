@@ -33,7 +33,7 @@ apply:
         "physicalAddress: macaddr",
         "bandwidth: speed?|0",
         "srcIpAddr: srcVtepIp",
-        "vlanToVniMap/*:vlan?|0",
+        "vlanToVniMap/*: vlan?|0",
         "vlanToVniMap/*/vni: vni?|0",
         "lineProtocolStatus: state",
         "interfaceStatus: adminState",
@@ -98,12 +98,12 @@ apply:
         "current-physical-address/[0]/data: macaddr",
         "interface-flapped/[0]/attributes: statusChangeTimestamp?|",
         "logical-interface/[0]/encapsulation/[0]/data: master",
-        "logical-interface/[*]/irb-domain/[0]/irb-bridge/[0]/data: vlanName",
-        "logical-interface/[*]/name/[0]/data: logicalIfname",
-        "logical-interface/[*]/if-config-flags: logicalIfflags",
+        "logical-interface/[*]/irb-domain/[0]/irb-bridge/[0]/data: vlanName,
+        "logical-interface/[*]/name/[0]/data: logicalIfname?|",
+        "logical-interface/[*]/if-config-flags: logicalIfflags?|",
         "logical-interface/[*]/address-family: afi",
         "logical-interface/[*]/logical-interface-vgw-v4-mac/[0]/data: _gwMacaddr?|",
-        "logical-interface/[*]/logical-interface-mac/[0]/data: _gwMacaddr?|_gwMacaddr",
+        "logical-interface/[*]/logical-interface-mac/[0]/data: _gwMacaddr?|",
         ]'
 
       - command: show configuration routing-instances | display json | no-more
@@ -111,7 +111,7 @@ apply:
         "name: ifname",
         "instance-type: type?|vrf",
         "route-distinguisher/rd-type: routeDistinguisher",
-        "interface/*/name: _interfaceList",
+        "interface/*/name: _interfaceList?|",
         "protocols/evpn/ip-prefix-routes/vni: vni?|0",
         ]'
 
@@ -124,7 +124,7 @@ apply:
   nxos:
     version: all
     command:
-      - command: show interface brief | json
+      - command: show interface brief | json native
         normalize: 'TABLE_interface/ROW_interface/*?/[
         "interface: ifname",
         "state: state",
@@ -139,7 +139,7 @@ apply:
         "svi_reason_desc: reason?|reason",
         ]'
 
-      - command: show ip interface vrf all | json
+      - command: show ip interface vrf all | json native
         normalize: 'TABLE_intf/ROW_intf/*?/[
         "vrf-name-out: vrf",
         "intf-name: ifname",
@@ -149,12 +149,12 @@ apply:
         "admin-state: adminState",
         "mtu: mtu",
         "unnum-intf: _unnum_intf?|",
-        "TABLE_unnuminf/ROW_unnuminf/unnum-child-inf: _child_intf?|[]",
+        "TABLE_unnuminf/ROW_unnuminf/[*]?/unnum-child-inf: _child_intf?|[]",
         "TABLE_secondary_address/ROW_secondary_address/[*]?/prefix1: _secIPs",
         "TABLE_secondary_address/ROW_secondary_address/[*]?/masklen1: _secmasklens",
         ]'
 
-      - command: show ipv6 interface vrf all | json
+      - command: show ipv6 interface vrf all | json native
         normalize: 'TABLE_intf/ROW_intf/*?/[
         "vrf-name-out: vrf",
         "intf-name: ifname",
@@ -170,7 +170,7 @@ apply:
       - command: show fabric forwarding internal svi-info
         textfsm: textfsm_templates/nxos_if_fabric.tfsm
 
-      - command: show vrf detail | json
+      - command: show vrf detail | json native
         normalize: 'TABLE_vrf/ROW_vrf/*/[
           "vrf_name: ifname?|",
           "vrf_state: state",

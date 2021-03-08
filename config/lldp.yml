@@ -72,7 +72,7 @@ apply:
   nxos:
     version: all
     command:
-      - command: show cdp neighbors | json
+      - command: show cdp neighbors | json native
         normalize: 'TABLE_cdp_neighbor_brief_info/ROW_cdp_neighbor_brief_info/*?/[
         "intf_id: ifname",
         "device_id: peerHostname",
@@ -80,7 +80,7 @@ apply:
         "port_id: peerIfname"
         ]'
 
-      - command: show lldp neighbors | json
+      - command: show lldp neighbors | json native
         normalize: 'TABLE_nbor/ROW_nbor/*?/[
         "chassis_id: peerHostname",
         "l_port_id: ifname",

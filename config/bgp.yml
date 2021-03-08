@@ -23,54 +23,9 @@ apply:
   eos:
     version: all
     command: show bgp neighbors vrf all
-    normalize: 'vrfs/*/peerList/*/[
-        "asn: peerAsn?|0", 
-        "localAsn: asn?|0", 
-        "updateSource: source",
-        "peerHostname: peerHostname?|",
-        "peerAddress: peer",
-        "peerAddress: origPeer",
-        "peerAddress: peerIP?|",
-        "vrf: vrf",
-        "maintenance: maintenance", 
-        "establishFailHint: reason",
-        "notificnReason: notificnReason?|",
-        "lastErrorTimeInfo/time: lastDownTime?|0",
-        "prefixesReceived: v4PfxRx?|0",
-        "prefixesSent: v4PfxTx?|0",
-        "v6PrefixesReceived: v6PfxRx?|0",
-        "v6PrefixesSent: v6PfxTx?|0",
-        "receivedUpdates: updatesRx?|0",
-        "bgpSoftReconfigInbound: softConfigIn?|",
-        "routeMapInfo/outboundIpv4Uni: v4EgressRmap",
-        "routeMapInfo/outboundIpv6Uni: v6EgressRmap",
-        "routeMapInfo/outboundEvpn: evpnEgressRmap",
-        "routeMapInfo/inboundIpv4Uni: v4IngressRmap",
-        "routeMapInfo/inboundIpv6Uni: v6IngressRmap",
-        "routeMapInfo/inboundEvpn: evpnIngressRmap",
-        "sentUpdates: updatesTx?|0",
-        "routerId: peerRouterId",
-        "localRouterId: routerId",
-        "holdTime": "holdTime?|0",
-        "keepaliveTime": "keepaliveTime?|0",
-        "establishedTime: estdTime?|0",
-        "establishedTransitions: numChanges?|0",
-        "updateSource: updateSource?|",
-        "v4Enabled: v4Enabled?|True",
-        "v6Enabled: v6Enabled?|False",
-        "evpnEnabled: evpnEnabled?|False",
-        "v4Advertised: v4Advertised?|False",
-        "v6Advertised: v6Advertised?|False",
-        "evpnAdvertised: evpnAdvertised?|False",
-        "v4Received: v4Received?|False",
-        "v6Received: v6Received?|False",
-        "evpnReceived: evpnPfxRx?|0,
-        "evpnSent: evpnPfxTx?|0,
-        "bfdState: bfdStatus?|disabled",
-        "v6BestEcmpPaths: v6EcmpEnabled?|0",
-        "v4BestEcmpPaths: v4EcmpEnabled?|0",
-        "state: state?Established|NotEstd"]'
-
+    format: text
+    textfsm: textfsm_templates/eos_show_bgp_nbr.tfsm
+      
   cumulus:
     version: all
     command: net show bgp vrf all neighbor json
@@ -148,8 +103,9 @@ apply:
   nxos:
     version: all
     command:
-      - command: show bgp all neighbors vrf all | json
+      - command: show bgp all neighbors vrf all | json native
         normalize: 'TABLE_neighbor/ROW_neighbor/*?/[
+        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/pfxtreataswithdrawn: pfxWithdrawn?|0",
         "neighbor: peer",
         "neighbor: origPeer",
         "ipv4prefixneighbor: _dynPeer",
@@ -166,9 +122,9 @@ apply:
         "elapsedtime: estdTime?|",
         "resetreason: reason",
         "peerresetreason: "notificnReason?|",
-        "TABLE_af/ROW_af/[*]?/TABLE_saf/ROW_saf/af-name: afiSafi",
-        "TABLE_af/ROW_af/[*]?/TABLE_saf/ROW_saf/af-recvd: afRcvd",
-        "TABLE_af/ROW_af/[*]?/TABLE_saf/ROW_saf/af-advertised: afAdvertised",
+        "TABLE_af/ROW_af/[*]?/TABLE_saf/ROW_saf/[*]/af-name: afiSafi",
+        "TABLE_af/ROW_af/[*]?/TABLE_saf/ROW_saf/[*]/af-recvd: afRcvd",
+        "TABLE_af/ROW_af/[*]?/TABLE_saf/ROW_saf/[*]/af-advertised: afAdvertised",
         "capextendednhadvertised: extnhAdvertised",
         "capextendednhrecvd: extnhReceived",
         "updatessent: updatesTx?|0",
@@ -176,24 +132,23 @@ apply:
         "TABLE_peer/ROW_peer/[*]?/peer: _dynamicPeers",
         "activepeers: _activePeers",
         "maxconcurrentpeers: _maxconcurrentpeers",
-        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/per-af-name: afiPrefix",
-        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/pfxrecvd: pfxRcvd",
-        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/pfxsent: pfxSent",
-        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/pfxtreataswithdrawn: pfxWithdrawn?|",
-        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/sendextcommunity: extendComm",
-        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/sendextcommunity: sendComm",
-        "TABLE_peraf/ROW_peraf/[0]?/TABLE_persaf/ROW_persaf/rrconfigured: rrclient?|False",
-        "TABLE_peraf/ROW_peraf/[0]?/TABLE_persaf/ROW_persaf/firstconvgtime: _firstconvgtime",
-        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/defaultoriginate: defaultOrig?|",
-        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/insoftreconfigallowed: softReconfig?|",
-        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/TABLE_inpolicy/ROW_inpolicy/inpolicyname: ingressRmap?|",        
-        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/TABLE_outpolicy/ROW_outpolicy/outpolicyname: egressRmap?|",        
+        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/per-af-name: afiPrefix?|",
+        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/pfxrecvd: pfxRcvd?|0",
+        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/pfxsent: pfxSent?|0",
+        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/sendextcommunity: extendComm?|",
+        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/sendextcommunity: sendComm?|",
+        "TABLE_peraf/ROW_peraf/[0]?/TABLE_persaf/ROW_persaf/[*]/rrconfigured: rrclient?|False",
+        "TABLE_peraf/ROW_peraf/[0]?/TABLE_persaf/ROW_persaf/[*]/firstconvgtime: _firstconvgtime",
+        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/defaultoriginate: defaultOrig",
+        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/insoftreconfigallowed: softReconfig",
+        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/TABLE_inpolicy/ROW_inpolicy/[*]/inpolicyname: ingressRmap",        
+        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/TABLE_outpolicy/ROW_outpolicy/[*]/outpolicyname: egressRmap?|",        
         "localaddr: updateSource?|",
         "remoteaddr: peerIP?|",
         "entry-type: _entryType?|neighbors",
         ]'
 
-      - command: show bgp all summary vrf all | json
+      - command: show bgp all summary vrf all | json native
         normalize: 'TABLE_vrf/ROW_vrf/*?/[
         "vrf-name-out: vrf",
         "vrf-name-out: peer",

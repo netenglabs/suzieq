@@ -77,7 +77,7 @@ apply:
   nxos:
     version: all
     command:
-      - command: show ip arp detail vrf all | json
+      - command: show ip arp detail vrf all | json native
         normalize: 'TABLE_vrf/ROW_vrf/*:vrf-name-out:vrf|TABLE_adj/ROW_adj/*?/[
         "intf-out: oif",
         "ip-addr-out: ipAddress",
@@ -86,7 +86,7 @@ apply:
         "mac: macaddr"
         ]'
 
-      - command: show ipv6 neighbor detail | json
+      - command: show ipv6 neighbor detail | json native
         normalize: 'TABLE_vrf/ROW_vrf/*:vrf-name-out:vrf|TABLE_afi/ROW_afi/*?/[
         "intf-out: oif",
         "ip-addr-out: ipAddress",

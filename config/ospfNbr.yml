@@ -64,7 +64,7 @@ apply:
 
   nxos:
     version: all
-    command: show ip ospf neighbor detail vrf all | json
+    command: show ip ospf neighbor detail vrf all | json native
     normalize: 'TABLE_ctx/ROW_ctx/*:cname:vrf|TABLE_nbr/ROW_nbr/*?/[
     "rid: peerRouterId",
     "addr: peerIP",

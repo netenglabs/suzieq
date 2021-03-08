@@ -80,7 +80,7 @@ apply:
   nxos:
     version: all
     command:
-      - command: show nve vni all detail | json
+      - command: show nve vni all detail | json native
         normalize: 'TABLE_nve_vni/ROW_nve_vni/*?/[
         "if-name: ifname",
         "vni: vni",
@@ -92,7 +92,7 @@ apply:
         "_entryType: _entryType?|VNI",
         ]'
 
-      - command: show nve interface nve 1 | json
+      - command: show nve interface nve 1 | json native
         normalize: 'TABLE_nve_if/ROW_nve_if/*?/[
         "primary-ip: priVtepIp",
         "encap-type: encapType",
@@ -104,7 +104,7 @@ apply:
         "_entryType: _entryType?|iface",
         ]'
 
-      - command: show nve peers detail | json
+      - command: show nve peers detail | json native
         normalize: 'TABLE_nve_peers/ROW_nve_peers/*?/[
         "peer-ip: vni",
         "config-vnis: _configVnis",
