@@ -90,7 +90,7 @@ class InterfaceService(Service):
 
             # Vlan is gathered as a list for VXLAN interfaces. Fix that
             if entry["type"] == "vxlan":
-                entry["vlan"] = entry.get("vlan", [""])[0]
+                entry["vlan"] = entry.get("vlan", 0)
 
             if entry['type']:
                 entry['type'] = entry['type'].lower()
@@ -279,6 +279,9 @@ class InterfaceService(Service):
             # Uninteresting logical interface
             gwmacs = entry.get('_gwMacaddr', [])
             for i, ifname in enumerate(entry['logicalIfname']):
+                if entry['afi'] is None:
+                    continue
+
                 v4addresses = []
                 v6addresses = []
                 macaddr = None
@@ -287,18 +290,19 @@ class InterfaceService(Service):
                 if not macaddr:
                     macaddr = entry.get('macaddr', '')
 
-                if entry['afi'][i] is None:
+                if (i+1 > len(entry['afi'])) or (entry['afi'][i] is None):
                     continue
-                for x in entry['afi'][i]:
+                thisafi = entry['afi'][i]
+                for x in thisafi:
                     if isinstance(x, list):
-                        afi = x[0].get('interface-address', None)
+                        addrlist = x[0].get('interface-address', None)
                     else:
-                        afi = x.get('interface-address', None)
-                    if afi and afi is not None:
+                        addrlist = thisafi.get('interface-address', None)
+                    if addrlist and addrlist is not None:
                         break
-                    foo = x.get('address-family-name', None)
-                    if foo and (foo[0].get('data', None) == "eth-switch"):
-                        afi = []
+                    v_afi = thisafi.get('address-family-name', None)
+                    if v_afi and (v_afi[0].get('data', None) == "eth-switch"):
+                        addrlist = []
                         break
                 else:
                     continue
@@ -308,8 +312,8 @@ class InterfaceService(Service):
                 else:
                     vrf = ''
                 new_entry = {'ifname': ifname,
-                             'mtu': entry['afi'][i][0].get(
-                                 'mtu', [{'data': 0}])[0]['data'],
+                             'mtu': thisafi.get(
+                                 'mtu', [{'data': -1}])[0]['data'],
                              'type': 'logical',
                              'speed': entry['speed'],
                              'master': vrf,
@@ -321,7 +325,7 @@ class InterfaceService(Service):
                              }
                 new_entries.append(new_entry)
                 entry_dict[new_entry['ifname']] = new_entry
-                if (entry['logicalIfflags'][i][0].get('iff-up') or
+                if (entry['logicalIfflags'][i].get('iff-up') or
                         entry.get('type') == 'loopback'):
                     new_entry['state'] = 'up'
                 else:
@@ -332,7 +336,7 @@ class InterfaceService(Service):
                 else:
                     new_entry['mtu'] = int(new_entry['mtu'])
 
-                for x in afi:
+                for x in addrlist:
                     address = (x.get("ifa-local")[0]["data"] + '/' +
                                x.get("ifa-destination", [{"data": "0/32"}])[0]
                                ["data"].split("/")[1])
@@ -340,7 +344,10 @@ class InterfaceService(Service):
                         v6addresses.append(address)
                     else:
                         v4addresses.append(address)
-                vlanName = entry['vlanName'][i]
+                if entry['vlanName']:
+                    vlanName = entry['vlanName'][i]
+                else:
+                    vlanName = None
                 if vlanName is not None:
                     new_entry['vlanName'] = vlanName
                 else:
