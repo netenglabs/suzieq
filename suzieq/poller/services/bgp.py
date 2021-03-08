@@ -13,17 +13,56 @@ class BgpService(Service):
 
     def _clean_eos_data(self, processed_data, raw_data):
 
-        for entry in processed_data:
-            if entry["bfdStatus"] == 3:
-                entry["bfdStatus"] = "up"
-            elif entry["bfdStatus"] != "disabled":
-                entry["bfdStatus"] = "down"
-            entry["asn"] = int(entry["asn"])
-            entry["peerAsn"] = int(entry["peerAsn"])
-            entry['estdTime'] = raw_data[0]['timestamp'] - \
-                (entry['estdTime']*1000)
-            entry['origPeer'] = entry['peer']
+        new_entries = []
+        drop_indices = []
 
+        for j, entry in enumerate(processed_data):
+
+            if 'EVPN' in entry.get('afi', []):
+                afidx = entry['afi'].index('EVPN')
+                entry['safi'].insert(afidx, 'evpn')
+                entry['afi'] = ['l2vpn' if x == "EVPN" else x.lower()
+                                for x in entry.get('afi', [])]
+                entry['safi'] = ['flowspec' if x == "Flow Specification"
+                                 else x.lower() for x in entry.get('safi', [])]
+
+            if entry.get('state', '') != 'Established':
+                entry['state'] = 'NotEstd'
+                continue
+
+            for i, afi in enumerate(entry['afi']):
+                new_entry = deepcopy(entry)
+                new_entry['afi'] = afi
+                new_entry['safi'] = entry['safi'][i]
+                new_entry['pfxTx'] = entry['pfxTx'][i]
+                new_entry['pfxRx'] = entry['pfxRx'][i]
+                new_entry['rrclient'] = entry['rrclient'] or False
+                new_entry['defOriginate'] = False
+                if 'safi' == 'evpn':
+                    if ('Sending extended community not configured' in
+                            entry.get('errorMsg', '')):
+                        new_entry['communityTypes'] = []
+                    else:
+                        new_entry['communityTypes'] = ['standard', 'extended']
+                else:
+                    new_entry['communityTypes'] = ['standard']
+                new_entry['hopsMax'] = int(entry.get('hopsMax', 255))-255
+                try:
+                    afidx = entry.get('iMapafisafi', []).index(afi)
+                    new_entry['ingressRmap'] = entry.get('ingressRmap')[afidx]
+                except (ValueError, AttributeError):
+                    new_entry['ingressRmap'] = ''
+                try:
+                    afidx = entry.get('oMapafisafi', []).index(afi)
+                    new_entry['egressRmap'] = entry.get('egressRmap')[afidx]
+                except (ValueError, AttributeError):
+                    new_entry['egressRmap'] = ''
+
+                new_entries.append(new_entry)
+                drop_indices.append(j)
+
+        processed_data += new_entries
+        processed_data = np.delete(processed_data, drop_indices).tolist()
         return processed_data
 
     def _clean_junos_data(self, processed_data, raw_data):
@@ -79,12 +118,6 @@ class BgpService(Service):
                 entry['vrf'] = 'default'
 
             if entry['state'] != 'Established':
-                entry.pop('afiPrefix')
-                entry.pop('pfxRcvd')
-                entry.pop('pfxSent')
-                entry.pop('sendComm')
-                entry.pop('extendComm')
-                entry.pop('defaultOrig')
                 continue
 
             # Build the mapping between pfx counts with the AFI/SAFI
@@ -141,12 +174,12 @@ class BgpService(Service):
         drop_indices = []
         new_entries = []        # To add the AFI/SAFI-based entries
 
-        for i, entry in enumerate(processed_data):
+        for j, entry in enumerate(processed_data):
             if entry['_entryType'] == 'summary':
                 for ventry in entries_by_vrf.get(entry['vrf'], []):
                     ventry['asn'] = entry['asn']
                     ventry['routerId'] = entry['routerId']
-                drop_indices.append(i)
+                drop_indices.append(j)
                 continue
 
             if (entry.get('extnhAdvertised', False) == "true" and
@@ -234,7 +267,7 @@ class BgpService(Service):
 
                 new_entries.append(new_entry)
                 entries_by_vrf[new_entry['vrf']].append(new_entry)
-                drop_indices.append(i)
+            drop_indices.append(j)
 
         processed_data += new_entries
         processed_data = np.delete(processed_data, drop_indices).tolist()
@@ -290,6 +323,9 @@ class BgpService(Service):
             if entry['state'] != 'Established':
                 continue
             for afi in entry.get('_afiInfo', {}):
+                if afi in (entry.get('afisAdvOnly', []) or []):
+                    continue
+
                 new_entry = deepcopy(entry)
                 if 'evpn' in afi.lower():
                     new_entry['afi'] = 'l2vpn'
@@ -305,7 +341,7 @@ class BgpService(Service):
                             new_entry['safi'] = 'unicast'
                         else:
                             new_entry['afi'] = 'ipv4'
-                            new_entry['safi'] = afi.split('ipv6')[1].lower()
+                            new_entry['safi'] = afi.split('ipv4')[1].lower()
                     elif afi.startswith('ipv6'):
                         if 'Vpn' in afi:
                             new_entry['afi'] = 'vpnv6'
