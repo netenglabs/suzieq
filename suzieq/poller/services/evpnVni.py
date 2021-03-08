@@ -107,6 +107,8 @@ class EvpnVniService(Service):
 
         for entry in processed_data:
             if entry['_entryType'] == 'instance':
+                if entry['_vniList'] is None:
+                    continue
                 for i, vni in enumerate(entry['_vniList']):
                     irb_iflist = entry.get('_irbIfList', [])
                     vrflist = entry.get('_vrfList', [])
