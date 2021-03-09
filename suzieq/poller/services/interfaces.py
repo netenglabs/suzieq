@@ -252,9 +252,9 @@ class InterfaceService(Service):
                 elif entry['speed'] == 'Unlimited':
                     entry['speed'] = 0
 
-            if entry['master'] == 'Ethernet-Bridge':
+            if entry.get('master', '') == 'Ethernet-Bridge':
                 entry['master'] = 'bridge'
-            elif entry['master'] == 'unknown':
+            elif entry.get('master', '') == 'unknown':
                 if entry['ifname'].startswith('jsv'):
                     entry['type'] = 'sflowMonitor'
                 else:
