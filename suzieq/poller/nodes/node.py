@@ -134,7 +134,12 @@ async def init_hosts(**kwargs):
             nsname = namespace["namespace"]
 
         tasks = []
-        for host in namespace.get("hosts", []):
+        hostlist = namespace.get("hosts", [])
+        if not hostlist:
+            logger.error(f'No hosts in namespace {nsname}')
+            continue
+
+        for host in hostlist:
             entry = host.get("url", None)
             if entry:
                 words = entry.split()
