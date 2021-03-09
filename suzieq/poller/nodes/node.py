@@ -1097,7 +1097,7 @@ class JunosNode(Node):
             data = output[0]["data"]
             try:
                 jdata = json.loads(data.replace('\n', '').strip())
-                if self.devtype == 'junos-qfx' or 'juniper-ex':
+                if self.devtype != "junos-mx":
                     jdata = jdata['multi-routing-engine-results'][0]['multi-routing-engine-item'][0]
 
                 timestr = jdata['system-uptime-information'][0]['system-booted-time'][0]['time-length'][0]['attributes']

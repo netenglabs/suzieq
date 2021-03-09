@@ -603,8 +603,8 @@ def init_logger(logname: str, logfile: str, loglevel: str = 'WARNING',
 
 def known_devtypes() -> list:
     """Returns the list of known dev types"""
-    return(['cumulus', 'eos', 'iosxr', 'junos-mx', 'junos-qfx', 'junos-ex', 'linux',
-            'nxos', 'sonic'])
+    return(['cumulus', 'eos', 'iosxr', 'junos-mx', 'junos-qfx', 'junos-ex',
+            'junos-es', 'linux', 'nxos', 'sonic'])
 
 
 def humanize_timestamp(field: pd.Series, tz=None) -> pd.Series:
