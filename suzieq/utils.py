@@ -619,6 +619,8 @@ def humanize_timestamp(field: pd.Series, tz=None) -> pd.Series:
 
 def expand_nxos_ifname(ifname: str) -> str:
     '''Expand shortned ifnames in NXOS to their full values, if required'''
+    if not ifname:
+        return ''
     if ifname.startswith('Eth') and 'Ether' not in ifname:
         return ifname.replace('Eth', 'Ethernet')
     elif ifname.startswith('Po') and 'port' not in ifname:
@@ -628,6 +630,8 @@ def expand_nxos_ifname(ifname: str) -> str:
 
 def expand_eos_ifname(ifname: str) -> str:
     '''Expand shortned ifnames in EOS to their full values, if required'''
+    if not ifname:
+        return ''
     if ifname.startswith('Eth') and 'Ether' not in ifname:
         return ifname.replace('Eth', 'Ethernet')
     elif ifname.startswith('Po') and 'Port' not in ifname:
