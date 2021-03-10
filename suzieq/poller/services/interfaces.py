@@ -463,10 +463,17 @@ class InterfaceService(Service):
 
             speed = entry.get('speed', '')
             if isinstance(speed, str):
-                if speed.startswith("unknown enum"):
-                    entry['speed'] = 0
+                if speed.startswith("unknown enum") or (speed == "auto"):
+                    speed = '0'
                 elif speed.startswith('a-'):
-                    entry['speed'] = int(speed[2:])
+                    speed = speed[2:]
+
+                if speed.endswith('G'):
+                    speed = int(speed[:-1])*1000
+                else:
+                    speed = int(speed)
+
+            entry['speed'] = speed
 
             entry['type'] = entry.get('type', '').lower()
             if entry['type'] == 'eth':
