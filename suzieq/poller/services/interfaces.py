@@ -116,7 +116,7 @@ class InterfaceService(Service):
                 )
                 new_list.append(primary_ip)
                 for elem in munge_entry["secondaryIpsOrderedList"]:
-                    ip = elem["adddress"] + "/" + elem["maskLen"]
+                    ip = elem["address"] + "/" + elem["maskLen"]
                     new_list.append(ip)
                 if 'virtualIp' in munge_entry:
                     elem = munge_entry['virtualIp']
@@ -270,15 +270,13 @@ class InterfaceService(Service):
 
             # Process the logical interfaces which are too deep to be parsed
             # efficiently by the parser right now
-            if entry['logicalIfname'] == [] or entry['afi'] == [None]:
-                entry.pop('logicalIfname')
-                entry.pop('afi')
-                entry.pop('vlanName')
+            if ((entry.get('logicalIfname', []) == []) or
+                    (entry.get('afi', [None]) == [None])):
                 continue
 
             # Uninteresting logical interface
             gwmacs = entry.get('_gwMacaddr', [])
-            for i, ifname in enumerate(entry['logicalIfname']):
+            for i, ifname in enumerate(entry.get('logicalIfname', [])):
                 if entry['afi'] is None:
                     continue
 
@@ -325,7 +323,8 @@ class InterfaceService(Service):
                              }
                 new_entries.append(new_entry)
                 entry_dict[new_entry['ifname']] = new_entry
-                if (entry['logicalIfflags'][i].get('iff-up') or
+
+                if (entry.get('logicalIfflags', ['']*(i+1))[i].get('iff-up') or
                         entry.get('type') == 'loopback'):
                     new_entry['state'] = 'up'
                 else:
@@ -344,7 +343,7 @@ class InterfaceService(Service):
                         v6addresses.append(address)
                     else:
                         v4addresses.append(address)
-                if entry['vlanName']:
+                if entry.get('vlanName', ''):
                     vlanName = entry['vlanName'][i]
                 else:
                     vlanName = None
