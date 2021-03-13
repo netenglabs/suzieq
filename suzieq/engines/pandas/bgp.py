@@ -58,33 +58,6 @@ class BgpObj(SqPandasEngine):
         else:
             return mdf.drop(columns=drop_cols, errors='ignore')
 
-    def _check_afi_safi(self, row) -> list:
-        """Checks that AFI/SAFI is compatible across the peers"""
-
-        reasons = ""
-        if not row['peer_y']:
-            return []
-
-        if row["v4Enabled"] != row["v4Enabled_y"]:
-            if row["v4Advertised"] and not row["v4Received"]:
-                reasons += " peer not advertising ipv4/unicast"
-            elif row["v4Received"] and not row["v4Advertised"]:
-                reasons += " not advertising ipv4/unicast"
-        if row["v6Enabled"] != row["v6Enabled_y"]:
-            if row["v6Advertised"] and not row["v6Received"]:
-                reasons += " peer not advertising ipv6/unicast"
-            elif row["v6Received"] and not row["v6Advertised"]:
-                reasons += " not advertising ipv6/unicast"
-        if row["evpnEnabled"] != row["evpnEnabled_y"]:
-            if row["evpnAdvertised"] and not row["evpnReceived"]:
-                reasons += " peer not advertising evpn"
-            elif row["evpnReceived"] and not row["evpnAdvertised"]:
-                reasons += " not advertising evpn"
-
-        if reasons:
-            return [reasons]
-        return []
-
     def summarize(self, **kwargs) -> pd.DataFrame:
         """Summarize key information about BGP"""
 
@@ -92,10 +65,25 @@ class BgpObj(SqPandasEngine):
         if self.summary_df.empty:
             return self.summary_df
 
+        self.summary_df['afiSafi'] = (
+            self.summary_df['afi'] + ' ' + self.summary_df['safi'])
+
+        afi_safi_count = self.summary_df.groupby(by=['namespace'])['afiSafi'] \
+                                        .nunique()
+
+        self.summary_df = self.summary_df \
+                              .set_index(['namespace', 'hostname', 'vrf',
+                                          'peer']) \
+                              .query('~index.duplicated(keep="last")') \
+                              .reset_index()
+        self.ns = {i: {} for i in self.summary_df['namespace'].unique()}
+        self.nsgrp = self.summary_df.groupby(by=["namespace"],
+                                             observed=True)
+
         self._summarize_on_add_field = [
             ('deviceCnt', 'hostname', 'nunique'),
-            ('totalPeerCnt', 'hostname', 'count'),
-            ('uniqueAsnCnt', 'peerAsn', 'nunique'),
+            ('totalPeerCnt', 'peer', 'count'),
+            ('uniqueAsnCnt', 'asn', 'nunique'),
             ('uniqueVrfsCnt', 'vrf', 'nunique')
         ]
 
@@ -103,10 +91,14 @@ class BgpObj(SqPandasEngine):
             ('failedPeerCnt', 'state == "NotEstd"', 'peer'),
             ('iBGPPeerCnt', 'asn == peerAsn', 'peer'),
             ('eBGPPeerCnt', 'asn != peerAsn', 'peer'),
-            ('rrClientPeerCnt', 'rrclient == "true"', 'peer'),
+            ('rrClientPeerCnt', 'rrclient == "True"', 'peer', 'count'),
         ]
 
         self._gen_summarize_data()
+
+        {self.ns[i].update({'activeAfiSafiCnt': afi_safi_count[i]})
+         for i in self.ns.keys()}
+        self.summary_row_order.append('activeAfiSafiCnt')
 
         self.summary_df['estdTime'] = humanize_timestamp(
             self.summary_df.estdTime,
@@ -121,38 +113,10 @@ class BgpObj(SqPandasEngine):
             .groupby(by=['namespace'])
 
         uptime = established["estdTime"]
-        v4_updates = established["v4PfxRx"]
-        v6_updates = established["v6PfxRx"]
-        evpn_updates = established["evpnPfxRx"]
-        rx_updates = established["updatesRx"]
-        tx_updates = established["updatesTx"]
-
         self._add_stats_to_summary(uptime, 'upTimeStat')
-        self._add_stats_to_summary(v4_updates, 'v4PfxRxStat')
-        self._add_stats_to_summary(v6_updates, 'v6PfxRxStat')
-        self._add_stats_to_summary(evpn_updates, 'evpnPfxRxStat')
-        self._add_stats_to_summary(rx_updates, 'updatesRxStat')
-        self._add_stats_to_summary(tx_updates, 'updatesTxStat')
 
-        self.summary_row_order.extend(['upTimeStat', 'v4PfxRxStat',
-                                       'v6PfxRxStat', 'evpnPfxRxStat',
-                                       'updatesRxStat', 'updatesTxStat'])
+        self.summary_row_order.extend(['upTimeStat'])
 
-        ipv4_enabled = self.summary_df.query("v4Enabled")["namespace"].unique()
-        ipv6_enabled = self.summary_df.query("v6Enabled")["namespace"].unique()
-        evpn_enabled = self.summary_df.query(
-            "evpnEnabled")["namespace"].unique()
-
-        for i in self.ns.keys():
-            self.ns[i].update({'activeAfiSafiList': []})
-            if i in ipv4_enabled:
-                self.ns[i]['activeAfiSafiList'].append("ipv4")
-            if i in ipv6_enabled:
-                self.ns[i]['activeAfiSafiList'].append("ipv6")
-            if i in evpn_enabled:
-                self.ns[i]['activeAfiSafiList'].append('evpn')
-
-        self.summary_row_order.append('activeAfiSafiList')
         self._post_summarize()
         return self.ns_df.convert_dtypes()
 
@@ -194,11 +158,10 @@ class BgpObj(SqPandasEngine):
     def aver(self, **kwargs) -> pd.DataFrame:
         """BGP Assert"""
 
-        assert_cols = ["namespace", "hostname", "vrf", "peer", "asn", "state",
-                       "peerAsn", "v4Enabled", "v6Enabled", "evpnEnabled",
-                       "v4Advertised", "v6Advertised", "evpnAdvertised",
-                       "v4Received", "v6Received", "evpnReceived", "bfdStatus",
-                       "reason", "notificnReason", "peerIP", "updateSource"]
+        assert_cols = ["namespace", "hostname", "vrf", "peer", "afi", "safi",
+                       "asn", "state", "peerAsn", "bfdStatus", "reason",
+                       "notificnReason", "afisAdvOnly", "afisRcvOnly",
+                       "peerIP", "updateSource"]
 
         kwargs.pop("columns", None)  # Loose whatever's passed
         status = kwargs.pop("status", 'all')
@@ -219,9 +182,11 @@ class BgpObj(SqPandasEngine):
                 df['assertReason'] = 'No data'
             return df
 
+        # We can get rid of sessions with duplicate peer info since we're
+        # interested only in session info here
+        df = df.drop_duplicates(
+            subset=['namespace', 'hostname', 'vrf', 'peer'])
         df['assertReason'] = [[] for _ in range(len(df))]
-
-        df['assertReason'] += df.apply(self._check_afi_safi, axis=1)
 
         df['assertReason'] += df.apply(lambda x: ["asn mismatch"]
                                        if x['state'] != "Established" and
@@ -244,6 +209,11 @@ class BgpObj(SqPandasEngine):
             lambda x: ['Matching BGP Peer not found']
             if x['state'] == 'NotEstd' and not x['assertReason']
             else [],  axis=1)
+
+        df['assertReason'] += df.apply(
+            lambda x: ['Not all Afi/Safis enabled']
+            if x['afisAdvOnly'] or x['afisRcvOnly'] else [],
+            axis=1)
 
         df['assert'] = df.apply(lambda x: 'pass'
                                 if not len(x.assertReason) else 'fail',
