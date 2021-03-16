@@ -21,10 +21,11 @@ class BgpService(Service):
             if 'EVPN' in entry.get('afi', []):
                 afidx = entry['afi'].index('EVPN')
                 entry['safi'].insert(afidx, 'evpn')
-                entry['afi'] = ['l2vpn' if x == "EVPN" else x.lower()
-                                for x in entry.get('afi', [])]
-                entry['safi'] = ['flowspec' if x == "Flow Specification"
-                                 else x.lower() for x in entry.get('safi', [])]
+
+            entry['afi'] = ['l2vpn' if x == "EVPN" else x.lower()
+                            for x in entry.get('afi', [])]
+            entry['safi'] = ['flowspec' if x == "Flow Specification"
+                             else x.lower() for x in entry.get('safi', [])]
 
             if entry.get('state', '') != 'Established':
                 entry['state'] = 'NotEstd'
@@ -200,8 +201,9 @@ class BgpService(Service):
                 entry['peer'] = entry['_dynPeer'].replace('/', '-')
                 entry['origPeer'] = entry['_dynPeer']
                 entry['state'] = 'dynamic'
-                entry['v4PfxRx'] = entry['_activePeers']
-                entry['v4PfxTx'] = entry['_maxconcurrentpeers']
+                entry['pfxRx'] = entry['_activePeers']
+                entry['pfxTx'] = entry['_maxconcurrentpeers']
+                entry['afi'] = entry['safi'] = 'dynamic'
                 entry['estdTime'] = entry['_firstconvgtime']
 
             entry['afisAdvOnly'] = []
