@@ -68,6 +68,23 @@ class BgpService(Service):
 
     def _clean_junos_data(self, processed_data, raw_data):
 
+        def _rename_afi_safi(afistr: str) -> str:
+            if afistr == "l2vpn":
+                afistr = "l2vpn-vpls"
+            elif afistr == "l2vpn-signaling":
+                afistr = "l2vpn-vpws"
+
+            afistr = (afistr
+                      .replace('inet-vpn', 'vpnv4')
+                      .replace('inet6-vpn', 'vpnv6')
+                      .replace('-', ' ')
+                      .replace('inet6', 'ipv6')
+                      .replace('inet', 'ipv4')
+                      .replace('flow', 'flowspec')
+                      .replace('evpn', 'l2vpn evpn'))
+
+            return afistr
+
         peer_uptimes = {}
         drop_indices = []
         new_entries = []
@@ -100,16 +117,10 @@ class BgpService(Service):
 
             entry['afisAdvOnly'] = list(advafis.difference(rcvafis))
             entry['afisRcvOnly'] = list(rcvafis.difference(advafis))
-            entry['afisAdvOnly'] = [x.replace('-', ' ')
-                                     .replace('inet', 'ipv4')
-                                     .replace('inet6', 'ipv6')
-                                     .replace('evpn', 'l2vpn evpn')
-                                    for x in entry['afisAdvOnly']]
-            entry['afisRcvOnly'] = [x.replace('-', ' ')
-                                     .replace('inet', 'ipv4')
-                                     .replace('inet6', 'ipv6')
-                                     .replace('evpn', 'l2vpn evpn')
-                                    for x in entry['afisRcvOnly']]
+            entry['afisAdvOnly'] = list(map(_rename_afi_safi,
+                                            entry['afisAdvOnly']))
+            entry['afisRcvOnly'] = list(map(_rename_afi_safi,
+                                            entry['afisRcvOnly']))
 
             # Junos doesn't provide this data in neighbor, only in summary
             entry['estdTime'] = get_timestamp_from_junos_time(
@@ -134,19 +145,20 @@ class BgpService(Service):
             pfxbest_list = dict(
                 zip(entry['_pfxType'], entry['_pfxBestRxList']))
 
-            for elem in table_afi_map:
+            for orig_elem in table_afi_map:
                 new_entry = deepcopy(entry)
-                afi, safi = (elem.replace('-', ' ')
-                             .replace('inet', 'ipv4')
-                             .replace('inet6', 'ipv6')
-                             .replace('evpn', 'l2vpn evpn')).split()
+                elem = _rename_afi_safi(orig_elem)
+                try:
+                    afi, safi = elem.split()
+                except ValueError:
+                    breakpoint()
                 new_entry['afi'] = afi
                 new_entry['safi'] = safi
                 new_entry['pfxRx'] = 0
                 new_entry['pfxTx'] = 0
                 new_entry['pfxBestRx'] = 0
                 new_entry['pfxSuppressRx'] = 0
-                for table in table_afi_map[elem]:
+                for table in table_afi_map[orig_elem]:
                     new_entry['pfxRx'] += int(pfxrx_list.get(table, 0) or 0)
                     new_entry['pfxTx'] += int(pfxtx_list.get(table, 0) or 0)
                     new_entry['pfxSuppressRx'] += int(pfxsupp_list.get(table, 0)
