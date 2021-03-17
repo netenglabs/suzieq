@@ -52,6 +52,7 @@ Value REMOTE_PORT (\d+)
 Value LAST_NOTIFICATION_SENT (\S+)
 
 Start
+  ^%.*$$
   ^VRF:
   ^-+.*$$
   ^\S+\s+\S+\s+\d+\s+\d+:\d+:\d+\.\d+\s+\S+\s*$$
@@ -162,8 +163,7 @@ Connection
   ^\s+Time\s+since\s+last\s+notification\s+received\s+from\s+neighbor:\s -> PeerError
   ^\s+Peer\s+reset\s+reason:\s+${notificnReason}\s*$$
   ^\s+.+up\s+to\s+${hopsMax}\s+hops\s+away
-  ^BGP\s+neighbor -> Continue.Record
-  ^BGP\s+neighbor\s+is\s+${peer}\s*$$ -> Start
+  ^BGP\s+neighbor\s+is.*$$ -> Start
   ^VRF: -> Start
   ^\s+For\s+Address\s+Family: -> AFI
   ^\s*$$
