@@ -38,6 +38,8 @@ class BgpObj(SqPandasEngine):
         if df.empty:
             return df
 
+        if 'afiSafi' in columns or (columns == ['*']):
+            df['afiSafi'] = df['afi'] + ' ' + df['safi']
         query_str = build_query_str([], sch, vrf=vrf, peer=peer,
                                     hostname=hostname)
         if 'peer' in df.columns:
