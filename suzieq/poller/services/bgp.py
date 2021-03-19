@@ -148,10 +148,7 @@ class BgpService(Service):
             for orig_elem in table_afi_map:
                 new_entry = deepcopy(entry)
                 elem = _rename_afi_safi(orig_elem)
-                try:
-                    afi, safi = elem.split()
-                except ValueError:
-                    breakpoint()
+                afi, safi = elem.split()
                 new_entry['afi'] = afi
                 new_entry['safi'] = safi
                 new_entry['pfxRx'] = 0

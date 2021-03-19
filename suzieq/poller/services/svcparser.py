@@ -158,7 +158,7 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                     if not data or not data.get(xstr, None):
                         # Some outputs contain just the main key with a null
                         # body such as ospfNbr from EOS: {'vrfs': {}}.
-                        logging.error(
+                        logging.info(
                             f"Unnatural return from svcparser. xstr is {xstr}. \
                             Result is {result}")
                         return cleanup_and_return(result)
@@ -179,7 +179,7 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                                 xstr)]
                         else:
                             # Handling the JUNOS EVPN pfx DB entry
-                            logging.error(
+                            logging.info(
                                 f'Unnatural return from svcparser. '
                                 f'xstr is {xstr}. Result is {result}')
                             return []
@@ -368,7 +368,8 @@ def cons_recs_from_json_template(tmplt_str, in_data):
         try:
             lval, rval = selem.split(": ")
         except ValueError:
-            breakpoint()
+            logging.error(f"Unable to parse JSON field entry {selem}")
+            continue
 
         # Process default value processing of the form <key>?|<def_val> or
         # <key>?<expected_val>|<def_val>
