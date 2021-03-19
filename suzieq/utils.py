@@ -170,6 +170,10 @@ class Schema(object):
         # return [f['name'] for f in self._schema[table] if f.get('key', None) is not None]
         return self._sort_fields_for_table(table, 'key')
 
+    def augmented_fields_for_table(self, table):
+        return [x['name'] for x in self._schema.get(table, [])
+                if 'depends' in x]
+
     def sorted_display_fields_for_table(self, table, getall=False):
         return self._sort_fields_for_table(table, 'display', getall)
 
@@ -231,6 +235,9 @@ class Schema(object):
         }
 
         for fld in avro_sch:
+            if "depends" in fld:
+                # These are augmented fields, not in arrow"
+                continue
             if isinstance(fld["type"], dict):
                 if fld["type"]["type"] == "array":
                     if fld["type"]["items"]["type"] == "record":
@@ -247,6 +254,19 @@ class Schema(object):
             arsc_fields.append(pa.field(fld["name"], map_type[avtype]))
 
         return pa.schema(arsc_fields)
+
+    def get_parent_fields(self, table, field):
+        avro_sch = self._schema.get(table, None)
+        if not avro_sch:
+            raise AttributeError(f"No schema found for {table}")
+
+        for fld in avro_sch:
+            if fld['name'] == field:
+                if "depends" in fld:
+                    return fld['depends'].split()
+                else:
+                    return []
+        return []
 
 
 class SchemaForTable(object):
@@ -284,6 +304,9 @@ class SchemaForTable(object):
     def key_fields(self):
         return self._all_schemas.key_fields_for_table(self._table)
 
+    def get_augmented_fields(self):
+        return self._all_schemas.augmented_fields_for_table(self._table)
+
     def sorted_display_fields(self, getall=False):
         return self._all_schemas.sorted_display_fields_for_table(self._table,
                                                                  getall)
@@ -318,6 +341,9 @@ class SchemaForTable(object):
 
     def get_arrow_schema(self):
         return self._all_schemas.get_arrow_schema(self._table)
+
+    def get_parent_fields(self, field):
+        return self._all_schemas.get_parent_fields(self._table, field)
 
 
 def get_latest_files(folder, start="", end="", view="latest") -> list:

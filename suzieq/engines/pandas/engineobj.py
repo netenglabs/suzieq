@@ -71,12 +71,19 @@ class SqPandasEngine(SqEngineObj):
         if columns == ['*']:
             drop_cols.append('sqvers')
 
+        aug_fields = sch.get_augmented_fields()
+
         if 'timestamp' not in fields:
             fields.append('timestamp')
 
         if 'active' not in fields+addnl_fields:
             addnl_fields.append('active')
             drop_cols.append('active')
+
+        # Order matters. Don't put this before the missing key fields insert
+        for f in aug_fields:
+            dep_fields = sch.get_parent_fields(f)
+            addnl_fields += dep_fields
 
         for fld in key_fields:
             if fld not in fields+addnl_fields:
@@ -138,7 +145,7 @@ class SqPandasEngine(SqEngineObj):
             else:
                 table_df.drop(columns=drop_cols, inplace=True)
             if 'timestamp' in table_df.columns and not table_df.empty:
- 
+
                 table_df['timestamp'] = humanize_timestamp(
                     table_df.timestamp, self.cfg.get('analyzer', {})
                     .get('timezone', None))
