@@ -60,16 +60,26 @@ class OspfObj(SqPandasEngine):
         nbr_df = self.get_valid_df('ospfNbr', addnl_fields=addnl_nbr_fields,
                                    columns=nbrcols, **kwargs)
         if nbr_df.empty:
-            return nbr_df
+            return df
 
         merge_cols = [x for x in ['namespace', 'hostname', 'ifname']
                       if x in nbr_df.columns]
         # Merge the two tables
         df = df.merge(nbr_df, on=merge_cols, how='left')
 
+        # This is because some NOS have the ipAddress in nbr table and some in
+        # interface table. Nbr table wins over interface table if present
+        if 'ipAddress_y' in df:
+            df['ipAddress'] = np.where(
+                df['ipAddress_y'] == "",
+                df['ipAddress_x'], df['ipAddress_y'])
+            df['ipAddress'] = np.where(df['ipAddress'], df['ipAddress'],
+                                       df['ipAddress_x'])
+
         if columns == ['*']:
             df = df.drop(columns=['area_y', 'instance_y', 'vrf_y',
-                                  'areaStub_y', 'timestamp_y']) \
+                                  'ipAddress_x', 'ipAddress_y', 'areaStub_y',
+                                  'timestamp_y'], errors='ignore') \
                 .rename(columns={
                     'instance_x': 'instance', 'areaStub_x': 'areaStub',
                     'area_x': 'area', 'vrf_x': 'vrf',
@@ -82,8 +92,9 @@ class OspfObj(SqPandasEngine):
                                     'state_y': 'adjState',
                                     'timestamp_x': 'timestamp'})
             df = df.drop(list(df.filter(regex='_y$')), axis=1) \
-                .fillna({'peerIP': '-', 'numChanges': 0,
-                         'lastChangeTime': 0})
+                   .drop('ipAddress_x', axis=1, errors='ignore') \
+                   .fillna({'peerIP': '-', 'numChanges': 0,
+                            'lastChangeTime': 0})
 
         # Fill the adjState column with passive if passive
         if 'passive' in df.columns:
@@ -94,10 +105,34 @@ class OspfObj(SqPandasEngine):
 
         df.bfill(axis=0, inplace=True)
 
+        if 'peerHostname' in columns or (columns in [['*'], ['default']]):
+            nfdf = df.query('adjState != "full"').reset_index()
+            nfdf['peerHostname'] = ''
+            newdf = df.query('adjState == "full"').reset_index() \
+                .drop('peerHostname', axis=1, errors='ignore')
+            if not newdf.empty:
+                newdf['matchIP'] = newdf.ipAddress.str.split('/').str[0]
+                newdf = newdf.merge(newdf[['namespace', 'hostname', 'vrf',
+                                           'matchIP']],
+                                    left_on=['namespace', 'vrf', 'peerIP'],
+                                    right_on=['namespace', 'vrf', 'matchIP'],
+                                    suffixes=["", "_y"]) \
+                    .rename(columns={'hostname_y': 'peerHostname'}) \
+                    .drop_duplicates(subset=['namespace', 'hostname',
+                                             'vrf', 'ifname']) \
+                    .drop(columns=['matchIP', 'matchIP_y'], errors='ignore')
+
+                if newdf.empty:
+                    newdf = df.query('adjState == "full"').reset_index()
+                    newdf['peerHostname'] = ''
+                final_df = pd.concat([nfdf, newdf])
+            else:
+                final_df = df
+
         # Move the timestamp column to the end
         if query_str:
-            return df.query(query_str)[cols]
-        return df[cols]
+            return final_df.query(query_str)[cols]
+        return final_df[cols]
 
     def get(self, **kwargs):
         return self._get_combined_df(**kwargs)
@@ -146,7 +181,7 @@ class OspfObj(SqPandasEngine):
         self.summary_df['lastChangeTime'] = (
             self.summary_df['timestamp'] - self.summary_df['lastChangeTime'])
         self.summary_df['lastChangeTime'] = self.summary_df['lastChangeTime'] \
-                                                .apply(lambda x: x.round('s'))
+            .apply(lambda x: x.round('s'))
 
         self._summarize_on_add_stat = [
             ('adjChangesStat', '', 'numChanges'),

@@ -7,7 +7,7 @@
 	    "name": "sqvers",
 	    "type": "string",
 	    "partition": 0,
-	    "default": "1.0"
+	    "default": "2.0"
 	},
         {
             "name": "lastDownTime",
@@ -49,6 +49,11 @@
             "display": 5
         },
         {
+            "name": "ipAddress",
+            "type": "string",
+            "display": 5
+        },
+        {
             "name": "bfdStatus",
             "type": "string"
         },
@@ -61,6 +66,12 @@
             "name": "lastChangeTime",
             "type": "timestamp",
             "display": 7
+        },
+	{
+	    "name": "peerHostname",
+	    "type": "string",
+	    "display": 9,
+	    "depends": "hostname vrf peerIP ipAddress"
         },
         {
             "name": "lsaRetxCnt",
