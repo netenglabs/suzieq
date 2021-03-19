@@ -14,7 +14,7 @@ show-fields:
 apply:
   eos:
     version: all
-    command: show ip ospf interface
+    command: show ip ospf interface vrf all
     normalize: 'vrfs/*:vrf/instList/*:instance/interfaces/*:ifname/[
        "passive: passive?|False",
        "helloInterval: helloTime?|0",
@@ -33,7 +33,7 @@ apply:
 
   cumulus:
     version: all
-    command: sudo vtysh -c 'show ip ospf interface'
+    command: sudo vtysh -c 'show ip ospf vrf all interface'
     textfsm: textfsm_templates/frr_ospfif.tfsm
 
   linux:

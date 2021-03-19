@@ -14,6 +14,7 @@ Value bfdStatus (\S+)
 Value reason (\S+)
 
 Start
+  ^VRF -> Continue.Record
   ^VRF Name: ${vrf}.*$$
   ^\s*$$ -> Record
   ^\s?Neighbor ${peerRouterId}, interface address ${peerIP}.*$$
@@ -24,3 +25,37 @@ Start
   ^\s+Link State Retransmission List ${lsaRetxCnt}.*$$
   ^\s+BFD: .*$$
   ^\s+Status: ${bfdStatus},.*$$
+
+#VRF Name: default
+# Neighbor 10.0.0.21, interface address 10.0.0.21
+#    In the area 0.0.0.0 via interface swp1
+#    Neighbor priority is 1, State is Full, 5 state changes
+#    Most recent state change statistics:
+#      Progressive change 2h41m12s ago
+#    DR is 0.0.0.0, BDR is 0.0.0.0
+#    Options 2 *|-|-|-|-|-|E|-
+#    Dead timer due in 37.552s
+#    Database Summary List 0
+#    Link State Request List 0
+#    Link State Retransmission List 0
+#    Thread Inactivity Timer on
+#    Thread Database Description Retransmision off
+#    Thread Link State Request Retransmission on
+#    Thread Link State Update Retransmission on
+#
+# Neighbor 10.0.0.22, interface address 10.0.0.22
+#    In the area 0.0.0.0 via interface swp2
+#    Neighbor priority is 1, State is Full, 5 state changes
+#    Most recent state change statistics:
+#      Progressive change 2h41m16s ago
+#    DR is 0.0.0.0, BDR is 0.0.0.0
+#    Options 2 *|-|-|-|-|-|E|-
+#    Dead timer due in 37.812s
+#    Database Summary List 0
+#    Link State Request List 0
+#    Link State Retransmission List 0
+#    Thread Inactivity Timer on
+#    Thread Database Description Retransmision off
+#    Thread Link State Request Retransmission on
+#    Thread Link State Update Retransmission on
+#
