@@ -1,6 +1,6 @@
 ![integration-tests](https://github.com/netenglabs/suzieq/workflows/integration-tests/badge.svg)
 
-# Suzieq -- Network Understanding
+# Suzieq -- Healthier Networks Through Network Observability
 
 Would you like to be able to easily answer trivial questions such as how many unique prefixes are there in your routing table, or how many MAC addresses are there in the MAC tables across the network? How about more difficult questions, such as what changes did your routing table see between 10 pm and midnight last night, or which of your nodes have been up the longest, or which BGP sessions have had the most routing updates? How about being able to answer if your OSPF (or BGP) sessions are working correctly, or is all well with your EVPN? How about a quick way to determine the amount of ECMP at every hop between two endpoints? Do you wish you could easily validate the configuration you deployed across your network?
 
@@ -11,6 +11,26 @@ If you answered yes to one or more of these questions, then Suzieq is a tool tha
 **Suzieq** is both a framework and an application using that framework, that is focused on **improving the observability of your network**.  We define observability as the ability of a system to answer either trivial or complex questions that you pose as you go about operating your network. How easily you can answer your questions is a measure of how good the system's observability is. A good observable system goes well beyond monitoring and alerting. Suzieq is primarily meant for use by network engineers and designers.
 
 Suzieq does multiple things. It [collects](https://suzieq.readthedocs.io/en/latest/poller/) data from devices and systems across your network. It normalizes the data and then stores it in a vendor independent way. Then it allows analysis of that data. With the applications that we build on top of the framework we want to demonstrate a different and more systematic approach to thinking about networks. We want to show how useful it is to think of your network holistically.
+
+## Quick Start
+
+We want to make it as easy as possible for you to start engaging with Suzieq, so we have a demo that has data in including the the iamge.
+
+* `docker run -it -p 8501:8501 --name suzieq netenglabs/suzieq-demo`
+* `suzieq-cli` for the CLI OR
+* `suzieq-gui` for the GUI. Connect to http://localhost:8501 via the browser to access the GUI
+
+When you're within the suzieq-cli, you can run ```device unique columns=namespace``` to see the list of different scenarios, we've gathered data for.
+
+Additional information about running the analyzer (suzieq-cli) is available via the official documentation page.
+
+To start collecting data for your network, create an inventory file to gather the data from following the instructions [here](https://suzieq.readthedocs.io/en/latest/poller/). Decide the directory where the data will be stored (ensure you have sufficient available space if you're going to be running the poller, say 100 MB at least). Lets call this dbdir. Now launch the suzieq docker container as follows:
+
+* ```docker run -it -vdbdir:/suzieq/parquet --name sq-poller netenglabs/suzieq```
+* Connect to the container via ```docker attach sq-poller```
+* Launch the poller with the appropriate options. For example, ```sq-poller -D inventory.yml -k``` where mydatacenter is the name of the namespace where the data associated with the inventory is storedand inventory.yml is the inventory file in Suzieq poller native format (Use -a if you're using Ansible inventory file format).
+
+[The official documentation is](https://suzieq.readthedocs.io/en/latest/) You can join the conversation via [slack](https://join.slack.com/t/netenglabs/shared_invite/zt-g64xa6lc-SeP2OAj~3uLbgOWJniLslA). Send email to Dinesh or Justin with the email address to send the Slack invitation to.
 
 # Analysis
 
@@ -48,33 +68,13 @@ One of Suzieqs powerful capabilities are asserts, which are statements that shou
 * BGP (v4 unicast, v6 unicast and evpn AFI/SAFI)
 * EVPN VNI info (not for EOS at this time)
 
-We're addding support for more platforms and features with every release. You can join the conversation via [slack](https://join.slack.com/t/netenglabs/shared_invite/zt-g64xa6lc-SeP2OAj~3uLbgOWJniLslA). Send email to Dinesh or Justin with the email address to send the Slack invitation to.
+We're addding support for more platforms and features with every release. 
 
 We're also looking for collaborators to help us make Suzieq a truly useful multi-vendor, open source platform for observing all aspects of networking. Please read the [collaboration document](./CONTRIBUTING.md) for ideas on how you can help.
 
 ## Latest Release
 
 The latest release is 0.9 and the official release notes are [here](https://suzieq.readthedocs.io/en/latest/release-notes/).
-
-## Quick Start
-
-We want to make it as easy as possible for you to start engaging with Suzieq, so we have a demo that has data in including the the iamge.
-
-* `docker run -it -p 8501:8501 --name suzieq netenglabs/suzieq-demo`
-* `suzieq-cli` for the CLI OR
-* `suzieq-gui` for the GUI. Connect to http://localhost:8501 via the browser to access the GUI
-
-When you're within the suzieq-cli, you can run ```device unique columns=namespace``` to see the list of different scenarios, we've gathered data for.
-
-Additional information about running the analyzer (suzieq-cli) is available via the official documentation page.
-
-To start collecting data for your network, create an inventory file to gather the data from following the instructions [here](https://suzieq.readthedocs.io/en/latest/poller/). Decide the directory where the data will be stored (ensure you have sufficient available space if you're going to be running the poller, say 100 MB at least). Lets call this dbdir. Now launch the suzieq docker container as follows:
-
-* ```docker run -it -vdbdir:/suzieq/parquet --name sq-poller netenglabs/suzieq```
-* Connect to the container via ```docker attach sq-poller```
-* Launch the poller with the appropriate options. For example, ```sq-poller -D inventory.yml -k``` where mydatacenter is the name of the namespace where the data associated with the inventory is storedand inventory.yml is the inventory file in Suzieq poller native format (Use -a if you're using Ansible inventory file format).
-
-[The official documentation is](https://suzieq.readthedocs.io/en/latest/)
 
 We've done some blogging about Suzieq:
 
