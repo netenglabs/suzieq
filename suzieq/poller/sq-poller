@@ -181,6 +181,11 @@ async def start_poller(userargs, cfg):
         userargs.outputs = ["gather"]
         output_args['output_dir'] = userargs.output_dir
 
+    # Disable coalescer in specific, unusual cases
+    # in case of input_dir, we also seem to leave a coalescer instance running
+    if userargs.run_once or userargs.input_dir:
+        userargs.no_coalescer = True
+
     outputs = init_output_workers(userargs.outputs, output_args)
 
     queue = asyncio.Queue()
