@@ -128,6 +128,8 @@ class OspfObj(SqPandasEngine):
                 final_df = pd.concat([nfdf, newdf])
             else:
                 final_df = df
+        else:
+            final_df = df
 
         # Move the timestamp column to the end
         if query_str:
