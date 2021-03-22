@@ -17,6 +17,43 @@ class EvpnVniService(Service):
                                         data['data']) + ']'
             return data['data']
 
+    def _clean_eos_data(self, processed_data, raw_data):
+        new_entries = []
+
+        if not processed_data:
+            return processed_data
+
+        for entry in processed_data:
+            vni2vrfmap = {}
+            for vrf in entry['_vrf2VniMap']:
+                vni2vrfmap[entry['_vrf2VniMap'][vrf]] = vrf
+
+            vtepMap = entry.get('_vlan2VtepMap', {})
+            for vlan in entry['_vlan2VniMap']:
+                new_entry = {}
+                vni = entry['_vlan2VniMap'][vlan].get('vni', 0)
+                new_entry['vni'] = vni
+                new_entry['vrf'] = vni2vrfmap.get(vni, '')
+                new_entry['state'] = entry['state']
+                new_entry['ifname'] = entry['ifname']
+                new_entry['vlan'] = vlan
+                new_entry['priVtepIp'] = entry['priVtepIp']
+                vteplist = vtepMap.get(vlan, {})
+                vteplist = (vteplist.get('remoteVtepAddr', []) +
+                            vteplist.get('remoteVtepAddr6', []))
+                new_entry['remoteVtepList'] = vteplist
+                new_entry['replicationType'] = entry['replicationType']
+                new_entry['mcastGroup'] = entry['mcastGroup']
+                if new_entry['vrf']:
+                    new_entry['type'] = 'L3'
+                else:
+                    new_entry['type'] = 'L2'
+
+                new_entries.append(new_entry)
+
+        processed_data = new_entries
+        return processed_data
+
     def _clean_cumulus_data(self, processed_data, raw_data):
         """Clean out null entries among other cleanup"""
 
@@ -140,6 +177,9 @@ class EvpnVniService(Service):
             elif entry['_entryType'] == 'l3':
                 vni = int(entry.get('vni', '0'))
                 priVtepIp = entry.get('priVtepIp', '')
+
+                if not priVtepIp and not vni:
+                    continue
 
                 vni_entry = {
                     'vni': vni,

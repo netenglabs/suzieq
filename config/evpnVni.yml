@@ -33,6 +33,20 @@ apply:
     "vxlanIntf: ifname?|ifname",
     ]'
 
+  eos:
+    version: all
+    command: show interfaces Vxlan $
+    normalize: 'interfaces/*/[
+    "vlanToVniMap: _vlan2VniMap",
+    "vlanToVtepList: _vlan2VtepMap?|{}",
+    "srcIpAddr: priVtepIp",
+    "name: ifname?|",
+    "vrfToVniMap: _vrf2VniMap",
+    "lineProtocolStatus: state",
+    "replicationMode: replicationType",
+    "floodMcastGrp: mcastGroup?|",
+    ]'
+
   linux:
     copy: cumulus
 
