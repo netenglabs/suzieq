@@ -21,10 +21,11 @@ class RoutesService(Service):
     def _clean_eos_data(self, processed_data, raw_data):
         '''Massage EVPN routes'''
         for entry in processed_data:
-            if entry['nexthopIps'] and isinstance(entry['nexthopIps'][0],
-                                                  list):
-                nexthop = entry['nexthopIps'][0][0]
-                if 'vtepAddr' in nexthop:
+            if entry['nexthopIps']:
+                if isinstance(entry['nexthopIps'][0], list):
+                    nexthop = entry['nexthopIps'][0][0]
+                elif 'vtepAddr' in entry['nexthopIps'][0]:
+                    nexthop = entry['nexthopIps'][0]
                     entry['nexthopIps'] = [nexthop['vtepAddr']]
                     entry['oifs'] = ['_nexthopVrf:default']
             entry['protocol'] = entry['protocol'].lower()
