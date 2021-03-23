@@ -10,7 +10,7 @@ Suzieq does multiple things:
 
 * We [gather data](https://suzieq.readthedocs.io/en/latest/poller/) using an agentless model using either SSH or REST API as the transport. We gather data from routers, bridges and Linux servers.
 * We normalize the data into a vendor-agnostic format.
-* We store all data in files using the popular big data format, ]Parquet](https://parquet.apache.org/). 
+* We store all data in files using the popular big data format, [Parquet](https://parquet.apache.org/). 
 * All the analysis are exposed either via a CLI, [GUI](https://suzieq.readthedocs.io/en/latest/gui/), a [REST API](https://suzieq.readthedocs.io/en/latest/rest-server/), or via Python. The output can be rendered in various formats from plain text to JSON and CSV.
 * The analysis engine used in this release is pandas, though we have prototyped with other analysis engines.
 
