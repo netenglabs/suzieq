@@ -1,46 +1,544 @@
 [
     {
+        "status": 200,
+        "timestamp": 1616447825109,
+        "cmd": "show interfaces Vxlan $",
+        "devtype": "eos",
+        "namespace": "eos",
+        "hostname": "spine01",
+        "address": "10.255.4.117",
+        "data": "data"
+    }
+][
+    {
+        "status": 200,
+        "timestamp": 1616447825092,
+        "cmd": "show interfaces Vxlan $",
+        "devtype": "eos",
+        "namespace": "eos",
+        "hostname": "exit02",
+        "address": "10.255.4.252",
+        "data": {
+            "interfaces": {
+                "Vxlan1": {
+                    "decapFilterIntf": [],
+                    "vniInDottedNotation": false,
+                    "decapFilterMode": "filterEnabled",
+                    "controllerClientMode": false,
+                    "description": "",
+                    "portDot1qVniMapping": false,
+                    "mcastRouting": false,
+                    "controllerControlPlane": false,
+                    "srcIpIntf": "Loopback0",
+                    "hardware": "vxlan",
+                    "mcastGrpDecap": "",
+                    "bandwidth": 0,
+                    "use32BitVni": false,
+                    "floodMcastGrp": "0.0.0.0",
+                    "vlanToVniMap": {
+                        "4094": {
+                            "source": "evpn",
+                            "vni": 999
+                        }
+                    },
+                    "vlanToVtepList": {},
+                    "arpReplyRelayMode": false,
+                    "srcIpAddr": "10.0.0.32",
+                    "dataPathLearningMode": false,
+                    "interfaceAddress": [],
+                    "vtepSourcePruningAll": false,
+                    "mlagSharedRouterMacAddr": "00:00:00:00:00:00",
+                    "staticFloodlists": false,
+                    "name": "Vxlan1",
+                    "vccImportVlan": "4094",
+                    "replicationMode": "headendNonVcs",
+                    "vtepSetForSourcePruning": [],
+                    "mtu": 0,
+                    "interfaceStatus": "connected",
+                    "vtepToVtepBridging": false,
+                    "l3MtuConfigured": false,
+                    "vrfToVniMap": {
+                        "evpn-vrf": 999
+                    },
+                    "arpLocalAddress": false,
+                    "vlanToLearnRestrict": {
+                        "4094": {
+                            "prefixList": [],
+                            "learnFrom": "learnFromAny"
+                        }
+                    },
+                    "lineProtocolStatus": "up",
+                    "forwardingModel": "bridged"
+                }
+            }
+        }
+    }
+][
+    {
         "status": 0,
-        "timestamp": 1610377086556,
+        "timestamp": 1616447825412,
         "cmd": "sudo vtysh -c \"show evpn vni detail json\"",
         "devtype": "linux",
         "namespace": "eos",
         "hostname": "firewall01",
-        "address": "10.255.2.169",
+        "address": "10.255.4.108",
         "version": "18.04",
         "data": ""
     }
 ][
     {
+        "status": 200,
+        "timestamp": 1616447825167,
+        "cmd": "show interfaces Vxlan $",
+        "devtype": "eos",
+        "namespace": "eos",
+        "hostname": "leaf04",
+        "address": "10.255.4.187",
+        "data": {
+            "interfaces": {
+                "Vxlan1": {
+                    "decapFilterIntf": [],
+                    "vniInDottedNotation": false,
+                    "decapFilterMode": "filterEnabled",
+                    "controllerClientMode": false,
+                    "description": "",
+                    "portDot1qVniMapping": false,
+                    "mcastRouting": false,
+                    "controllerControlPlane": true,
+                    "srcIpIntf": "Loopback1",
+                    "hardware": "vxlan",
+                    "mcastGrpDecap": "",
+                    "bandwidth": 0,
+                    "use32BitVni": false,
+                    "floodMcastGrp": "0.0.0.0",
+                    "vlanToVniMap": {
+                        "20": {
+                            "source": "",
+                            "vni": 20
+                        },
+                        "1006": {
+                            "source": "evpn",
+                            "vni": 999
+                        },
+                        "30": {
+                            "source": "",
+                            "vni": 30
+                        }
+                    },
+                    "vlanToVtepList": {
+                        "30": {
+                            "remoteVtepAddr": [
+                                "10.0.0.112"
+                            ],
+                            "remoteVtepAddr6": []
+                        }
+                    },
+                    "arpReplyRelayMode": false,
+                    "srcIpAddr": "10.0.0.134",
+                    "dataPathLearningMode": false,
+                    "interfaceAddress": [],
+                    "vtepSourcePruningAll": false,
+                    "mlagSharedRouterMacAddr": "00:00:00:00:00:00",
+                    "staticFloodlists": false,
+                    "name": "Vxlan1",
+                    "vccImportVlan": "20,30,1006",
+                    "replicationMode": "headendVcs",
+                    "vtepSetForSourcePruning": [],
+                    "mtu": 0,
+                    "interfaceStatus": "connected",
+                    "vtepToVtepBridging": false,
+                    "l3MtuConfigured": false,
+                    "vrfToVniMap": {
+                        "evpn-vrf": 999
+                    },
+                    "arpLocalAddress": false,
+                    "vlanToLearnRestrict": {
+                        "20": {
+                            "prefixList": [],
+                            "learnFrom": "learnFromAny"
+                        },
+                        "1006": {
+                            "prefixList": [],
+                            "learnFrom": "learnFromAny"
+                        },
+                        "30": {
+                            "prefixList": [],
+                            "learnFrom": "learnFromAny"
+                        }
+                    },
+                    "lineProtocolStatus": "up",
+                    "forwardingModel": "bridged"
+                }
+            }
+        }
+    }
+][
+    {
+        "status": 200,
+        "timestamp": 1616447825189,
+        "cmd": "show interfaces Vxlan $",
+        "devtype": "eos",
+        "namespace": "eos",
+        "hostname": "leaf03",
+        "address": "10.255.4.186",
+        "data": {
+            "interfaces": {
+                "Vxlan1": {
+                    "decapFilterIntf": [],
+                    "vniInDottedNotation": false,
+                    "decapFilterMode": "filterEnabled",
+                    "controllerClientMode": false,
+                    "description": "",
+                    "portDot1qVniMapping": false,
+                    "mcastRouting": false,
+                    "controllerControlPlane": true,
+                    "srcIpIntf": "Loopback1",
+                    "hardware": "vxlan",
+                    "mcastGrpDecap": "",
+                    "bandwidth": 0,
+                    "use32BitVni": false,
+                    "floodMcastGrp": "0.0.0.0",
+                    "vlanToVniMap": {
+                        "20": {
+                            "source": "",
+                            "vni": 20
+                        },
+                        "1006": {
+                            "source": "evpn",
+                            "vni": 999
+                        },
+                        "30": {
+                            "source": "",
+                            "vni": 30
+                        }
+                    },
+                    "vlanToVtepList": {
+                        "30": {
+                            "remoteVtepAddr": [
+                                "10.0.0.112"
+                            ],
+                            "remoteVtepAddr6": []
+                        }
+                    },
+                    "arpReplyRelayMode": false,
+                    "srcIpAddr": "10.0.0.134",
+                    "dataPathLearningMode": false,
+                    "interfaceAddress": [],
+                    "vtepSourcePruningAll": false,
+                    "mlagSharedRouterMacAddr": "00:00:00:00:00:00",
+                    "staticFloodlists": false,
+                    "name": "Vxlan1",
+                    "vccImportVlan": "20,30,1006",
+                    "replicationMode": "headendVcs",
+                    "vtepSetForSourcePruning": [],
+                    "mtu": 0,
+                    "interfaceStatus": "connected",
+                    "vtepToVtepBridging": false,
+                    "l3MtuConfigured": false,
+                    "vrfToVniMap": {
+                        "evpn-vrf": 999
+                    },
+                    "arpLocalAddress": false,
+                    "vlanToLearnRestrict": {
+                        "20": {
+                            "prefixList": [],
+                            "learnFrom": "learnFromAny"
+                        },
+                        "1006": {
+                            "prefixList": [],
+                            "learnFrom": "learnFromAny"
+                        },
+                        "30": {
+                            "prefixList": [],
+                            "learnFrom": "learnFromAny"
+                        }
+                    },
+                    "lineProtocolStatus": "up",
+                    "forwardingModel": "bridged"
+                }
+            }
+        }
+    }
+][
+    {
+        "status": 200,
+        "timestamp": 1616447825411,
+        "cmd": "show interfaces Vxlan $",
+        "devtype": "eos",
+        "namespace": "eos",
+        "hostname": "leaf01",
+        "address": "10.255.4.184",
+        "data": {
+            "interfaces": {
+                "Vxlan1": {
+                    "decapFilterIntf": [],
+                    "vniInDottedNotation": false,
+                    "decapFilterMode": "filterEnabled",
+                    "controllerClientMode": false,
+                    "description": "",
+                    "portDot1qVniMapping": false,
+                    "mcastRouting": false,
+                    "controllerControlPlane": true,
+                    "srcIpIntf": "Loopback1",
+                    "hardware": "vxlan",
+                    "mcastGrpDecap": "",
+                    "bandwidth": 0,
+                    "use32BitVni": false,
+                    "floodMcastGrp": "0.0.0.0",
+                    "vlanToVniMap": {
+                        "10": {
+                            "source": "",
+                            "vni": 10
+                        },
+                        "1006": {
+                            "source": "evpn",
+                            "vni": 999
+                        },
+                        "30": {
+                            "source": "",
+                            "vni": 30
+                        }
+                    },
+                    "vlanToVtepList": {
+                        "30": {
+                            "remoteVtepAddr": [
+                                "10.0.0.134"
+                            ],
+                            "remoteVtepAddr6": []
+                        }
+                    },
+                    "arpReplyRelayMode": false,
+                    "srcIpAddr": "10.0.0.112",
+                    "dataPathLearningMode": false,
+                    "interfaceAddress": [],
+                    "vtepSourcePruningAll": false,
+                    "mlagSharedRouterMacAddr": "00:00:00:00:00:00",
+                    "staticFloodlists": false,
+                    "name": "Vxlan1",
+                    "vccImportVlan": "10,30,1006",
+                    "replicationMode": "headendVcs",
+                    "vtepSetForSourcePruning": [],
+                    "mtu": 0,
+                    "interfaceStatus": "connected",
+                    "vtepToVtepBridging": false,
+                    "l3MtuConfigured": false,
+                    "vrfToVniMap": {
+                        "evpn-vrf": 999
+                    },
+                    "arpLocalAddress": false,
+                    "vlanToLearnRestrict": {
+                        "10": {
+                            "prefixList": [],
+                            "learnFrom": "learnFromAny"
+                        },
+                        "1006": {
+                            "prefixList": [],
+                            "learnFrom": "learnFromAny"
+                        },
+                        "30": {
+                            "prefixList": [],
+                            "learnFrom": "learnFromAny"
+                        }
+                    },
+                    "lineProtocolStatus": "up",
+                    "forwardingModel": "bridged"
+                }
+            }
+        }
+    }
+][
+    {
+        "status": 200,
+        "timestamp": 1616447825399,
+        "cmd": "show interfaces Vxlan $",
+        "devtype": "eos",
+        "namespace": "eos",
+        "hostname": "exit01",
+        "address": "10.255.4.251",
+        "data": {
+            "interfaces": {
+                "Vxlan1": {
+                    "decapFilterIntf": [],
+                    "vniInDottedNotation": false,
+                    "decapFilterMode": "filterEnabled",
+                    "controllerClientMode": false,
+                    "description": "",
+                    "portDot1qVniMapping": false,
+                    "mcastRouting": false,
+                    "controllerControlPlane": false,
+                    "srcIpIntf": "Loopback0",
+                    "hardware": "vxlan",
+                    "mcastGrpDecap": "",
+                    "bandwidth": 0,
+                    "use32BitVni": false,
+                    "floodMcastGrp": "0.0.0.0",
+                    "vlanToVniMap": {
+                        "4094": {
+                            "source": "evpn",
+                            "vni": 999
+                        }
+                    },
+                    "vlanToVtepList": {},
+                    "arpReplyRelayMode": false,
+                    "srcIpAddr": "10.0.0.31",
+                    "dataPathLearningMode": false,
+                    "interfaceAddress": [],
+                    "vtepSourcePruningAll": false,
+                    "mlagSharedRouterMacAddr": "00:00:00:00:00:00",
+                    "staticFloodlists": false,
+                    "name": "Vxlan1",
+                    "vccImportVlan": "4094",
+                    "replicationMode": "headendNonVcs",
+                    "vtepSetForSourcePruning": [],
+                    "mtu": 0,
+                    "interfaceStatus": "connected",
+                    "vtepToVtepBridging": false,
+                    "l3MtuConfigured": false,
+                    "vrfToVniMap": {
+                        "evpn-vrf": 999
+                    },
+                    "arpLocalAddress": false,
+                    "vlanToLearnRestrict": {
+                        "4094": {
+                            "prefixList": [],
+                            "learnFrom": "learnFromAny"
+                        }
+                    },
+                    "lineProtocolStatus": "up",
+                    "forwardingModel": "bridged"
+                }
+            }
+        }
+    }
+][
+    {
+        "status": 200,
+        "timestamp": 1616447825408,
+        "cmd": "show interfaces Vxlan $",
+        "devtype": "eos",
+        "namespace": "eos",
+        "hostname": "spine02",
+        "address": "10.255.4.118",
+        "data": "data"
+    }
+][
+    {
+        "status": 200,
+        "timestamp": 1616447825415,
+        "cmd": "show interfaces Vxlan $",
+        "devtype": "eos",
+        "namespace": "eos",
+        "hostname": "leaf02",
+        "address": "10.255.4.185",
+        "data": {
+            "interfaces": {
+                "Vxlan1": {
+                    "decapFilterIntf": [],
+                    "vniInDottedNotation": false,
+                    "decapFilterMode": "filterEnabled",
+                    "controllerClientMode": false,
+                    "description": "",
+                    "portDot1qVniMapping": false,
+                    "mcastRouting": false,
+                    "controllerControlPlane": true,
+                    "srcIpIntf": "Loopback1",
+                    "hardware": "vxlan",
+                    "mcastGrpDecap": "",
+                    "bandwidth": 0,
+                    "use32BitVni": false,
+                    "floodMcastGrp": "0.0.0.0",
+                    "vlanToVniMap": {
+                        "10": {
+                            "source": "",
+                            "vni": 10
+                        },
+                        "1006": {
+                            "source": "evpn",
+                            "vni": 999
+                        },
+                        "30": {
+                            "source": "",
+                            "vni": 30
+                        }
+                    },
+                    "vlanToVtepList": {
+                        "30": {
+                            "remoteVtepAddr": [
+                                "10.0.0.134"
+                            ],
+                            "remoteVtepAddr6": []
+                        }
+                    },
+                    "arpReplyRelayMode": false,
+                    "srcIpAddr": "10.0.0.112",
+                    "dataPathLearningMode": false,
+                    "interfaceAddress": [],
+                    "vtepSourcePruningAll": false,
+                    "mlagSharedRouterMacAddr": "00:00:00:00:00:00",
+                    "staticFloodlists": false,
+                    "name": "Vxlan1",
+                    "vccImportVlan": "10,30,1006",
+                    "replicationMode": "headendVcs",
+                    "vtepSetForSourcePruning": [],
+                    "mtu": 0,
+                    "interfaceStatus": "connected",
+                    "vtepToVtepBridging": false,
+                    "l3MtuConfigured": false,
+                    "vrfToVniMap": {
+                        "evpn-vrf": 999
+                    },
+                    "arpLocalAddress": false,
+                    "vlanToLearnRestrict": {
+                        "10": {
+                            "prefixList": [],
+                            "learnFrom": "learnFromAny"
+                        },
+                        "1006": {
+                            "prefixList": [],
+                            "learnFrom": "learnFromAny"
+                        },
+                        "30": {
+                            "prefixList": [],
+                            "learnFrom": "learnFromAny"
+                        }
+                    },
+                    "lineProtocolStatus": "up",
+                    "forwardingModel": "bridged"
+                }
+            }
+        }
+    }
+][
+    {
         "status": 0,
-        "timestamp": 1610377087794,
-        "cmd": "show evpn instance extensive | display json",
+        "timestamp": 1616447826447,
+        "cmd": "show evpn instance extensive | display json | no-more",
         "devtype": "junos-qfx",
         "namespace": "eos",
         "hostname": "dcedge01",
-        "address": "10.255.2.250",
+        "address": "10.255.4.250",
         "version": 0,
         "data": "{\n    \"evpn-instance-information\" : [\n    {\n        \"attributes\" : {\"xmlns\" : \"http://xml.juniper.net/junos/19.4R0/junos-routing\"}\n    }\n    ]\n}\n"
     },
     {
         "status": 0,
-        "timestamp": 1610377089225,
-        "cmd": "show evpn l3-context extensive | display json",
+        "timestamp": 1616447827674,
+        "cmd": "show evpn l3-context extensive | display json | no-more",
         "devtype": "junos-qfx",
         "namespace": "eos",
         "hostname": "dcedge01",
-        "address": "10.255.2.250",
+        "address": "10.255.4.250",
         "version": 0,
         "data": "{\n    \"evpn-l3-context-information\" : [\n    {\n        \"attributes\" : {\"xmlns\" : \"http://xml.juniper.net/junos/19.4R0/junos-routing\"}\n    }\n    ]\n}\n"
     },
     {
         "status": 0,
-        "timestamp": 1610377090856,
-        "cmd": "show ethernet-switching vxlan-tunnel-end-point remote | display json",
+        "timestamp": 1616447829088,
+        "cmd": "show ethernet-switching vxlan-tunnel-end-point remote | display json | no-more",
         "devtype": "junos-qfx",
         "namespace": "eos",
         "hostname": "dcedge01",
-        "address": "10.255.2.250",
+        "address": "10.255.4.250",
         "version": 0,
         "data": "{\n    \"vxlan-source-vtep-information\" : [\n    {\n        \"attributes\" : {\"xmlns\" : \"http://xml.juniper.net/junos/19.4R0/junos-l2al\"}\n    }\n    ]\n}\n"
     }
