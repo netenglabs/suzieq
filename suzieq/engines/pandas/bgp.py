@@ -115,9 +115,14 @@ class BgpObj(SqPandasEngine):
             .groupby(by=['namespace'])
 
         uptime = established["estdTime"]
+        rx_updates = established["updatesRx"]
+        tx_updates = established["updatesTx"]
         self._add_stats_to_summary(uptime, 'upTimeStat')
+        self._add_stats_to_summary(rx_updates, 'updatesRxStat')
+        self._add_stats_to_summary(tx_updates, 'updatesTxStat')
 
-        self.summary_row_order.extend(['upTimeStat'])
+        self.summary_row_order.extend(['upTimeStat', 'updatesRxStat',
+                                       'updatesTxStat'])
 
         self._post_summarize()
         return self.ns_df.convert_dtypes()
