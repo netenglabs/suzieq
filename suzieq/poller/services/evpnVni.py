@@ -113,7 +113,7 @@ class EvpnVniService(Service):
                 vni_list = convert_rangestring_to_list(
                     entry.get('_vniList', ''))
                 for vni in vni_list:
-                    vni_entry = vni_dict.get(str(vni), None)
+                    vni_entry = vni_dict.get(vni, None)
                     if vni_entry:
                         vni_entry['remoteVtepList'].append(entry['vni'])
                 drop_indices.append(i)
