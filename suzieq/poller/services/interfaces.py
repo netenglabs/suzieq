@@ -88,12 +88,13 @@ class InterfaceService(Service):
                 entry["master"] = "bridge"  # Convert it for Linux model
                 del entry["forwardingModel"]
 
-            # Vlan is gathered as a list for VXLAN interfaces. Fix that
-            if entry["type"] == "vxlan":
-                entry["vlan"] = entry.get("vlan", 0)
-
             if entry['type']:
                 entry['type'] = entry['type'].lower()
+
+            # Vlan is gathered as a list for VXLAN interfaces. Fix that
+            if entry["type"] == "vxlan":
+                # We capture the glory in evpnVni of this interface
+                entry["vlan"] = 0
 
             if entry['type'] == 'vlan' and entry['ifname'].startswith('Vlan'):
                 entry['vlan'] = int(entry['ifname'].split('Vlan')[1])
@@ -379,6 +380,8 @@ class InterfaceService(Service):
             if entry.get('_entryType', '') == 'mtumac':
                 old_entry = entry_dict[entry['ifname']]
                 if old_entry:
+                    if entry['adminState']:
+                        old_entry['adminState'] = entry['adminState']
                     old_entry['mtu'] = entry.get('mtu', 0)
                     old_entry['macaddr'] = convert_macaddr_format_to_colon(
                         entry.get('macaddr', '0000.0000.0000'))
@@ -458,15 +461,16 @@ class InterfaceService(Service):
             entry['macaddr'] = convert_macaddr_format_to_colon(
                 entry.get('macaddr', '0000.0000.0000'))
 
-            if entry.get('_unnum_intf', ''):
-                if entry['ifname'] in unnum_intf:
+            unnum_if_parent = entry.get('_unnum_intf', '')
+            if unnum_if_parent:
+                if unnum_if_parent in unnum_intf:
                     # IPv6 has link local, so unnumbered is a v4 construct
-                    entry['ipAddressList'] = [unnum_intf[entry['ifname']]]
+                    entry['ipAddressList'] = [unnum_intf[unnum_if_parent]]
                 else:
                     unnum_intf_entry_idx.append(entry_idx)
 
-            for elem in entry.get('_child_intf', []):
-                unnum_intf[elem] = [pri_ipaddr]
+            if entry.get('_child_intf', []):
+                unnum_intf[entry['ifname']] = [pri_ipaddr]
 
             speed = entry.get('speed', '')
             if isinstance(speed, str):
@@ -502,7 +506,7 @@ class InterfaceService(Service):
         # Fix unnumbered interface references
         for idx in unnum_intf_entry_idx:
             entry = processed_data[idx]
-            entry['ipAddressList'] = unnum_intf.get(entry['ifname'], [])
+            entry['ipAddressList'] = unnum_intf.get(entry['_unnum_intf'], [])
 
         if drop_indices:
             processed_data = np.delete(processed_data, drop_indices).tolist()
