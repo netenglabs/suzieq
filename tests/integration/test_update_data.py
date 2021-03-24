@@ -44,7 +44,7 @@ def copytree(src, dst, symlinks=False, ignore=None):
 
 def create_config(t_dir, suzieq_dir):
     # We need to create a tempfile to hold the config
-    tmpconfig = conftest._create_context_config()
+    tmpconfig = conftest.get_dummy_config()
     tmpconfig['data-directory'] = f"{t_dir}/parquet-out"
     tmpconfig['service-directory'] = f"{suzieq_dir}/{tmpconfig['service-directory']}"
     tmpconfig['schema-directory'] = f"{suzieq_dir}/{tmpconfig['schema-directory']}"
@@ -110,7 +110,7 @@ def run_scenario(scenario):
 def check_suzieq_data(suzieq_dir, name, cfg_file, threshold='14'):
     sqcmd_path = [sys.executable, f"{suzieq_dir}/{conftest.suzieq_cli_path}"]
     sqcmd = sqcmd_path + ['device', 'unique', '--columns=namespace',
-                          f'--namespace={name}', '-c', cfg_file]
+                          f'--namespace={name}', '--count=True', '-c', cfg_file]
     out, ret, err = run_cmd(sqcmd)
     # there should be 14 different hosts collected
     assert threshold in out, f'failed {out}, {err}'
@@ -311,7 +311,7 @@ class TestUpdate:
         nos = 'junos'
 
         update_data(nos, f'{orig_dir}/tests/integration/sqcmds/{nos}-input/',
-                    orig_dir, tmp_path, number_of_devices='6')
+                    orig_dir, tmp_path, number_of_devices='12')
 
         dst_dir = f'{orig_dir}/tests/data/{nos}/parquet-out'
         git_del_dir(dst_dir)
@@ -337,7 +337,7 @@ tests = [
 ]
 
 
-def _test_sqcmds(testvar, context_config):
+def _test_sqcmds(context_config, testvar):
     output, error = conftest.setup_sqcmds(testvar, context_config)
 
     jout = []
@@ -410,7 +410,7 @@ def _update_cndcn_data(topology, proto, scenario, tmp_path):
 def _test_data(topology, proto, scenario, testvar):
     name = f'{topology}_{proto}_{scenario}'
     testvar['data-directory'] = f"{parquet_dir}/{name}/parquet-out"
-    _test_sqcmds(testvar, conftest._create_context_config())
+    _test_sqcmds(conftest.get_dummy_config(), testvar)
 
 
 # these are grouped as classes so that we will only do one a time
