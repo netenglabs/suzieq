@@ -166,7 +166,7 @@ apply:
         "linklocal-addr: _linklocal"
         ]'
 
-      - command: show interface ethernet regex [1-32]/*|egrep '^Eth|Hardware|MTU'
+      - command: show interface ethernet regex [1-32]/*|egrep '^Eth|admin state|Hardware|MTU'
         textfsm: textfsm_templates/nxos_show_int_grep.tfsm
         _entryType: mtumac
 
