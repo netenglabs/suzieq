@@ -22,9 +22,8 @@ class RoutesService(Service):
         '''Massage EVPN routes'''
         for entry in processed_data:
             if entry['nexthopIps']:
-                if isinstance(entry['nexthopIps'][0], list):
-                    nexthop = entry['nexthopIps'][0][0]
-                elif 'vtepAddr' in entry['nexthopIps'][0]:
+                nexthop = entry['nexthopIps'][0]
+                if 'vtepAddr' in nexthop:
                     nexthop = entry['nexthopIps'][0]
                     entry['nexthopIps'] = [nexthop['vtepAddr']]
                     entry['oifs'] = ['_nexthopVrf:default']
