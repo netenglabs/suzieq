@@ -234,6 +234,8 @@ class SqCommand:
                                    )
         except Exception as e:
             df = pd.DataFrame({'error': ['ERROR: {}'.format(str(e))]})
+            return self._gen_output(df, dont_strip_cols=True)
+
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         if not count:
             return self._gen_output(df.sort_values(by=[self.columns[0]]),
