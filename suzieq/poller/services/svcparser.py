@@ -190,9 +190,18 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                             # EOS routes case: vrfs/*:vrf/routes/*:prefix
                             # Otherwise there's usually one element here
                             if isinstance(ele["rest"], list):
-                                for subele in ele["rest"]:
+                                for subidx, subele in enumerate(ele["rest"]):
                                     if xstr in subele:
-                                        tmpval.append({"rest": subele[xstr]})
+                                        if nokeys:
+                                            tmpval.append(
+                                                {"rest": subele[xstr]})
+                                        else:
+                                            ele['rest'][subidx] = subele[xstr]
+                                if not nokeys:
+                                    if len(ele['rest']) == 1:
+                                        ele['rest'] = ele['rest'][0]
+
+                                    tmpval.append(ele)
                             else:
                                 if xstr in ele['rest']:
                                     ele["rest"] = ele["rest"][xstr]
@@ -321,10 +330,11 @@ def cons_recs_from_json_template(tmplt_str, in_data):
         if not result:
             result = [{"rest": data}]
         elif len(result) == 1:
-            tmpval = []
-            for x in result[0]["rest"]:
-                tmpval.append({"rest": x})
-            result = tmpval
+            if isinstance(result[0], list):
+                tmpval = []
+                for x in result[0]["rest"]:
+                    tmpval.append({"rest": x})
+                result = tmpval
 
     # In some cases such as FRR's BGP, you need to eliminate elements which
     # have no useful 'rest' field, for example the elements with vrfId and
