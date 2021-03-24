@@ -38,8 +38,9 @@ class MacCmd(SqCommand):
     @argument("remoteVtepIp", description="only with this remoteVtepIp; use any for all")
     @argument("bd", description="filter entries with this bridging domain")
     @argument("local", description="filter entries with no remoteVtep")
+    @argument("moveCount", description="num of times this MAC has moved")
     def show(self, vlan: str = '', macaddr: str = '', remoteVtepIp: str = '',
-             bd: str = '', local: bool = False):
+             bd: str = '', local: bool = False, moveCount: str = ''):
         """Show MAC table info
 
         The remoteVtepInfo is set to "-" to allow to fetch local entries only
@@ -73,6 +74,7 @@ class MacCmd(SqCommand):
             bd=bd,
             columns=self.columns,
             namespace=self.namespace,
+            moveCount=moveCount,
         )
         if not df.empty and "mackey" in df.columns:
             drop_cols.append('mackey')
