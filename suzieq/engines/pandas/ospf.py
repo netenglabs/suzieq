@@ -20,6 +20,7 @@ class OspfObj(SqPandasEngine):
         state = kwargs.pop('state', '')
         addnl_fields = kwargs.pop('addnl_fields', self.iobj._addnl_fields)
         addnl_nbr_fields = self.iobj._addnl_nbr_fields
+        user_query = kwargs.pop('query_str', '')
 
         cols = SchemaForTable('ospf', schema=self.schemas) \
             .get_display_fields(columns)
@@ -131,9 +132,12 @@ class OspfObj(SqPandasEngine):
         else:
             final_df = df
 
-        # Move the timestamp column to the end
         if query_str:
-            return final_df.query(query_str)[cols]
+            final_df = final_df.query(query_str).reset_index(drop=True)
+
+        # Move the timestamp column to the end
+        if user_query:
+            return final_df.query(user_query)[cols]
         return final_df[cols]
 
     def get(self, **kwargs):
