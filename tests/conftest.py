@@ -64,10 +64,9 @@ def create_context_config():
 
 
 def get_dummy_config():
-    pathpfx = os.getenv('PYTHONPATH', '.')
-    config = {'schema-directory': f'${pathpfx}/config/schema',
-              'service-directory': f'${pathpfx}/config',
-              'data-directory': f'${pathpfx}/tests/data/basic_dual_bgp/parquet-out',
+    config = {'schema-directory': f'./config/schema',
+              'service-directory': f'./config',
+              'data-directory': f'./tests/data/basic_dual_bgp/parquet-out',
               'temp-directory': '/tmp/suzieq',
               'logging-level': 'WARNING',
               'test_set': 'basic_dual_bgp',  # an extra field for testing
