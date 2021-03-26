@@ -3,60 +3,165 @@ tests:
 - command: ospf show --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: ospf show junos
-  output: '[{"namespace": "junos", "hostname": "vqfx1", "vrf": "default", "area":
-    "0.0.0.0", "ifname": "lo0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive",
-    "peerIP": "-", "lastChangeTime": "-", "numChanges": 0.0, "timestamp": 1606017394481},
-    {"namespace": "junos", "hostname": "vqfx1", "vrf": "default", "area": "0.0.0.0",
-    "ifname": "xe-0/0/0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP":
-    "10.0.0.2", "lastChangeTime": 1606016983466, "numChanges": 0.0, "timestamp": 1606017394481},
-    {"namespace": "junos", "hostname": "vqfx2", "vrf": "default", "area": "0.0.0.0",
-    "ifname": "lo0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP":
-    "-", "lastChangeTime": "-", "numChanges": 0.0, "timestamp": 1606017394709}, {"namespace":
-    "junos", "hostname": "vqfx2", "vrf": "default", "area": "0.0.0.0", "ifname": "xe-0/0/0.0",
-    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.1", "lastChangeTime":
-    1606016983750, "numChanges": 0.0, "timestamp": 1606017394709}]'
+  output: '[{"namespace": "junos", "hostname": "exit02", "vrf": "default", "ifname":
+    "lo0.0", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0,
+    "adjState": "passive", "peerIP": "-", "numChanges": 0.0, "lastChangeTime": "-",
+    "timestamp": 1616357371694}, {"namespace": "junos", "hostname": "spine01", "vrf":
+    "default", "ifname": "lo0.0", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "numChanges": 0.0,
+    "lastChangeTime": "-", "timestamp": 1616357371777}, {"namespace": "junos", "hostname":
+    "leaf01", "vrf": "default", "ifname": "lo0.0", "peerHostname": "", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "numChanges":
+    0.0, "lastChangeTime": "-", "timestamp": 1616357372002}, {"namespace": "junos",
+    "hostname": "spine02", "vrf": "default", "ifname": "lo0.0", "peerHostname": "",
+    "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP":
+    "-", "numChanges": 0.0, "lastChangeTime": "-", "timestamp": 1616357372007}, {"namespace":
+    "junos", "hostname": "exit01", "vrf": "default", "ifname": "lo0.0", "peerHostname":
+    "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "-", "numChanges": 0.0, "lastChangeTime": "-", "timestamp": 1616357372099},
+    {"namespace": "junos", "hostname": "leaf02", "vrf": "default", "ifname": "lo0.0",
+    "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "-", "numChanges": 0.0, "lastChangeTime": "-", "timestamp":
+    1616357372680}, {"namespace": "junos", "hostname": "exit02", "vrf": "default",
+    "ifname": "xe-0/0/0.0", "peerHostname": "spine01", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21", "numChanges":
+    0.0, "lastChangeTime": 1616222283641, "timestamp": 1616357371694}, {"namespace":
+    "junos", "hostname": "leaf01", "vrf": "default", "ifname": "xe-0/0/0.0", "peerHostname":
+    "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.21", "numChanges": 0.0, "lastChangeTime": 1616222276430, "timestamp":
+    1616357372002}, {"namespace": "junos", "hostname": "exit01", "vrf": "default",
+    "ifname": "xe-0/0/0.0", "peerHostname": "spine01", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21", "numChanges":
+    0.0, "lastChangeTime": 1616222577265, "timestamp": 1616357372099}, {"namespace":
+    "junos", "hostname": "leaf02", "vrf": "default", "ifname": "xe-0/0/0.0", "peerHostname":
+    "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.21", "numChanges": 0.0, "lastChangeTime": 1616222568664, "timestamp":
+    1616357372680}, {"namespace": "junos", "hostname": "exit02", "vrf": "default",
+    "ifname": "xe-0/0/1.0", "peerHostname": "spine02", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "numChanges":
+    0.0, "lastChangeTime": 1616222313641, "timestamp": 1616357371694}, {"namespace":
+    "junos", "hostname": "leaf01", "vrf": "default", "ifname": "xe-0/0/1.0", "peerHostname":
+    "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.22", "numChanges": 0.0, "lastChangeTime": 1616222313430, "timestamp":
+    1616357372002}, {"namespace": "junos", "hostname": "exit01", "vrf": "default",
+    "ifname": "xe-0/0/1.0", "peerHostname": "spine02", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "numChanges":
+    0.0, "lastChangeTime": 1616222313265, "timestamp": 1616357372099}, {"namespace":
+    "junos", "hostname": "leaf02", "vrf": "default", "ifname": "xe-0/0/1.0", "peerHostname":
+    "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.22", "numChanges": 0.0, "lastChangeTime": 1616222313664, "timestamp":
+    1616357372680}, {"namespace": "junos", "hostname": "spine01", "vrf": "default",
+    "ifname": "xe-0/0/3.0", "peerHostname": "exit02", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.32", "numChanges":
+    0.0, "lastChangeTime": 1616222283007, "timestamp": 1616357371777}, {"namespace":
+    "junos", "hostname": "spine02", "vrf": "default", "ifname": "xe-0/0/3.0", "peerHostname":
+    "exit02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.32", "numChanges": 0.0, "lastChangeTime": 1616222314061, "timestamp":
+    1616357372007}, {"namespace": "junos", "hostname": "spine01", "vrf": "default",
+    "ifname": "xe-0/0/0.0", "peerHostname": "leaf01", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.11", "numChanges":
+    0.0, "lastChangeTime": 1616222276007, "timestamp": 1616357371777}, {"namespace":
+    "junos", "hostname": "spine02", "vrf": "default", "ifname": "xe-0/0/0.0", "peerHostname":
+    "leaf01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.11", "numChanges": 0.0, "lastChangeTime": 1616222313061, "timestamp":
+    1616357372007}, {"namespace": "junos", "hostname": "spine01", "vrf": "default",
+    "ifname": "xe-0/0/1.0", "peerHostname": "leaf02", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.12", "numChanges":
+    0.0, "lastChangeTime": 1616222569007, "timestamp": 1616357371777}, {"namespace":
+    "junos", "hostname": "spine02", "vrf": "default", "ifname": "xe-0/0/1.0", "peerHostname":
+    "leaf02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.12", "numChanges": 0.0, "lastChangeTime": 1616222313061, "timestamp":
+    1616357372007}, {"namespace": "junos", "hostname": "spine01", "vrf": "default",
+    "ifname": "xe-0/0/2.0", "peerHostname": "exit01", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.31", "numChanges":
+    0.0, "lastChangeTime": 1616222577007, "timestamp": 1616357371777}, {"namespace":
+    "junos", "hostname": "spine02", "vrf": "default", "ifname": "xe-0/0/2.0", "peerHostname":
+    "exit01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.31", "numChanges": 0.0, "lastChangeTime": 1616222314061, "timestamp":
+    1616357372007}]'
 - command: ospf show --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: ospf show junos
-  output: '[{"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx2"}, {"hostname":
-    "vqfx2"}]'
+  output: '[{"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}]'
 - command: ospf summarize --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: ospf summarize junos
-  output: '{"junos": {"deviceCnt": 2, "peerCnt": 4, "stubbyPeerCnt": 0, "passivePeerCnt":
-    2, "unnumberedPeerCnt": 0, "failedPeerCnt": 0, "area": {"0.0.0.0": 4}, "vrf":
-    {"default": 4}, "helloTime": {"10": 4}, "deadTime": {"40": 4}, "retxTime": {"5":
-    4}, "networkType": {"broadcast": 4}, "adjChangesStat": [0.0, 0.0, 0.0], "upTimeStat":
-    [411000, 411000, 411000]}}'
+  output: '{"junos": {"deviceCnt": 6, "peerCnt": 22, "stubbyPeerCnt": 0, "passivePeerCnt":
+    6, "unnumberedPeerCnt": 0, "failedPeerCnt": 0, "area": {"0.0.0.0": 22}, "vrf":
+    {"default": 22}, "helloTime": {"10": 22}, "deadTime": {"40": 22}, "retxTime":
+    {"5": 22}, "networkType": {"P2P": 16, "broadcast": 6}, "adjChangesStat": [0.0,
+    0.0, 0.0], "upTimeStat": [134795000, 135096000, 135059000]}}'
 - command: ospf unique --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: ospf unique junos
-  output: '[{"hostname": "vqfx1", "count": 2}, {"hostname": "vqfx2", "count": 2}]'
+  output: '[{"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname": "leaf01"},
+    {"hostname": "leaf02"}, {"hostname": "spine01"}, {"hostname": "spine02"}]'
 - command: ospf assert --format=json
   data-directory: tests/data/junos/parquet-out/
   error:
-    error: '[{"namespace": "junos", "hostname": "vqfx1", "vrf": "default", "ifname":
+    error: '[{"namespace": "junos", "hostname": "exit02", "vrf": "default", "ifname":
       "lo0.0", "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "vqfx1", "vrf": "default", "ifname": "xe-0/0/0.0", "assertReason":
+      "junos", "hostname": "exit02", "vrf": "default", "ifname": "xe-0/0/0.0", "assertReason":
       "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
-      "vqfx2", "vrf": "default", "ifname": "lo0.0", "assertReason": "No LLDP peering
-      info", "assert": "fail"}, {"namespace": "junos", "hostname": "vqfx2", "vrf":
-      "default", "ifname": "xe-0/0/0.0", "assertReason": "No LLDP peering info", "assert":
-      "fail"}]'
+      "exit02", "vrf": "default", "ifname": "xe-0/0/1.0", "assertReason": "No LLDP
+      peering info", "assert": "fail"}, {"namespace": "junos", "hostname": "spine01",
+      "vrf": "default", "ifname": "xe-0/0/3.0", "assertReason": "No LLDP peering info",
+      "assert": "fail"}, {"namespace": "junos", "hostname": "spine01", "vrf": "default",
+      "ifname": "lo0.0", "assertReason": "No LLDP peering info", "assert": "fail"},
+      {"namespace": "junos", "hostname": "spine01", "vrf": "default", "ifname": "xe-0/0/0.0",
+      "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
+      "hostname": "spine01", "vrf": "default", "ifname": "xe-0/0/1.0", "assertReason":
+      "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
+      "spine01", "vrf": "default", "ifname": "xe-0/0/2.0", "assertReason": "No LLDP
+      peering info", "assert": "fail"}, {"namespace": "junos", "hostname": "leaf01",
+      "vrf": "default", "ifname": "lo0.0", "assertReason": "No LLDP peering info",
+      "assert": "fail"}, {"namespace": "junos", "hostname": "leaf01", "vrf": "default",
+      "ifname": "xe-0/0/0.0", "assertReason": "No LLDP peering info", "assert": "fail"},
+      {"namespace": "junos", "hostname": "leaf01", "vrf": "default", "ifname": "xe-0/0/1.0",
+      "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
+      "hostname": "spine02", "vrf": "default", "ifname": "xe-0/0/3.0", "assertReason":
+      "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
+      "spine02", "vrf": "default", "ifname": "xe-0/0/1.0", "assertReason": "No LLDP
+      peering info", "assert": "fail"}, {"namespace": "junos", "hostname": "spine02",
+      "vrf": "default", "ifname": "xe-0/0/0.0", "assertReason": "No LLDP peering info",
+      "assert": "fail"}, {"namespace": "junos", "hostname": "spine02", "vrf": "default",
+      "ifname": "lo0.0", "assertReason": "No LLDP peering info", "assert": "fail"},
+      {"namespace": "junos", "hostname": "spine02", "vrf": "default", "ifname": "xe-0/0/2.0",
+      "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
+      "hostname": "exit01", "vrf": "default", "ifname": "lo0.0", "assertReason": "No
+      LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname": "exit01",
+      "vrf": "default", "ifname": "xe-0/0/1.0", "assertReason": "No LLDP peering info",
+      "assert": "fail"}, {"namespace": "junos", "hostname": "exit01", "vrf": "default",
+      "ifname": "xe-0/0/0.0", "assertReason": "No LLDP peering info", "assert": "fail"},
+      {"namespace": "junos", "hostname": "leaf02", "vrf": "default", "ifname": "lo0.0",
+      "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
+      "hostname": "leaf02", "vrf": "default", "ifname": "xe-0/0/1.0", "assertReason":
+      "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
+      "leaf02", "vrf": "default", "ifname": "xe-0/0/0.0", "assertReason": "No LLDP
+      peering info", "assert": "fail"}]'
   marks: ospf assert junos
 - command: ospf top --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: ospf top junos
-  output: '[{"namespace": "junos", "hostname": "vqfx1", "vrf": "default", "area":
-    "0.0.0.0", "ifname": "lo0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive",
-    "peerIP": "-", "lastChangeTime": 0.0, "numChanges": 0.0, "timestamp": 1606017394481},
-    {"namespace": "junos", "hostname": "vqfx1", "vrf": "default", "area": "0.0.0.0",
-    "ifname": "xe-0/0/0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP":
-    "10.0.0.2", "lastChangeTime": 1606016983466.0, "numChanges": 0.0, "timestamp":
-    1606017394481}, {"namespace": "junos", "hostname": "vqfx2", "vrf": "default",
-    "area": "0.0.0.0", "ifname": "lo0.0", "ifState": "up", "nbrCount": 0, "adjState":
-    "passive", "peerIP": "-", "lastChangeTime": 0.0, "numChanges": 0.0, "timestamp":
-    1606017394709}, {"namespace": "junos", "hostname": "vqfx2", "vrf": "default",
-    "area": "0.0.0.0", "ifname": "xe-0/0/0.0", "ifState": "up", "nbrCount": 1, "adjState":
-    "full", "peerIP": "10.0.0.1", "lastChangeTime": 1606016983750.0, "numChanges":
-    0.0, "timestamp": 1606017394709}]'
+  output: '[{"namespace": "junos", "hostname": "exit02", "vrf": "default", "ifname":
+    "lo0.0", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0,
+    "adjState": "passive", "peerIP": "-", "numChanges": 0.0, "lastChangeTime": 0.0,
+    "timestamp": 1616357371694}, {"namespace": "junos", "hostname": "spine01", "vrf":
+    "default", "ifname": "lo0.0", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "numChanges": 0.0,
+    "lastChangeTime": 0.0, "timestamp": 1616357371777}, {"namespace": "junos", "hostname":
+    "leaf01", "vrf": "default", "ifname": "lo0.0", "peerHostname": "", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "numChanges":
+    0.0, "lastChangeTime": 0.0, "timestamp": 1616357372002}, {"namespace": "junos",
+    "hostname": "spine02", "vrf": "default", "ifname": "lo0.0", "peerHostname": "",
+    "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP":
+    "-", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp": 1616357372007}, {"namespace":
+    "junos", "hostname": "exit01", "vrf": "default", "ifname": "lo0.0", "peerHostname":
+    "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "-", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp": 1616357372099}]'

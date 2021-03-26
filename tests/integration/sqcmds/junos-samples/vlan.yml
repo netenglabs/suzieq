@@ -3,29 +3,41 @@ tests:
 - command: vlan show --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: vlan show junos
-  output: '[{"namespace": "junos", "hostname": "vqfx1", "vlanName": "vlan1", "state":
-    "active", "interfaces": [], "vlan": 1, "timestamp": 1606017396299}, {"namespace":
-    "junos", "hostname": "vqfx1", "vlanName": "servers100", "state": "active", "interfaces":
-    ["vtep.32769*", "xe-0/0/1.0*"], "vlan": 100, "timestamp": 1606017396299}, {"namespace":
-    "junos", "hostname": "vqfx1", "vlanName": "servers200", "state": "active", "interfaces":
-    ["vtep.32769*", "xe-0/0/2.0*"], "vlan": 200, "timestamp": 1606017396299}, {"namespace":
-    "junos", "hostname": "vqfx2", "vlanName": "vlan1", "state": "active", "interfaces":
-    [], "vlan": 1, "timestamp": 1606017396422}, {"namespace": "junos", "hostname":
-    "vqfx2", "vlanName": "servers100", "state": "active", "interfaces": ["vtep.32769*",
-    "xe-0/0/1.0*"], "vlan": 100, "timestamp": 1606017396422}, {"namespace": "junos",
-    "hostname": "vqfx2", "vlanName": "servers200", "state": "active", "interfaces":
-    ["vtep.32769*", "xe-0/0/2.0*"], "vlan": 200, "timestamp": 1606017396422}]'
+  output: '[{"namespace": "junos", "hostname": "leaf01", "vlanName": "vlan10", "state":
+    "active", "interfaces": ["xe-0/0/2.0*"], "vlan": 10, "timestamp": 1616357377303},
+    {"namespace": "junos", "hostname": "leaf01", "vlanName": "vlan30", "state": "active",
+    "interfaces": ["vtep.32769*", "xe-0/0/3.0*"], "vlan": 30, "timestamp": 1616357377303},
+    {"namespace": "junos", "hostname": "leaf01", "vlanName": "vlan1", "state": "active",
+    "interfaces": [], "vlan": 1, "timestamp": 1616357377303}, {"namespace": "junos",
+    "hostname": "spine01", "vlanName": "vlan1", "state": "active", "interfaces": [],
+    "vlan": 1, "timestamp": 1616357377303}, {"namespace": "junos", "hostname": "spine02",
+    "vlanName": "vlan1", "state": "active", "interfaces": [], "vlan": 1, "timestamp":
+    1616357377477}, {"namespace": "junos", "hostname": "exit02", "vlanName": "vlan1",
+    "state": "active", "interfaces": [], "vlan": 1, "timestamp": 1616357377680}, {"namespace":
+    "junos", "hostname": "dcedge01", "vlanName": "vlan1", "state": "active", "interfaces":
+    [], "vlan": 1, "timestamp": 1616357377684}, {"namespace": "junos", "hostname":
+    "exit01", "vlanName": "vlan1", "state": "active", "interfaces": [], "vlan": 1,
+    "timestamp": 1616357377940}, {"namespace": "junos", "hostname": "leaf02", "vlanName":
+    "vlan20", "state": "active", "interfaces": ["xe-0/0/2.0*"], "vlan": 20, "timestamp":
+    1616357378119}, {"namespace": "junos", "hostname": "leaf02", "vlanName": "vlan30",
+    "state": "active", "interfaces": ["vtep.32769*", "xe-0/0/3.0*"], "vlan": 30, "timestamp":
+    1616357378119}, {"namespace": "junos", "hostname": "leaf02", "vlanName": "vlan1",
+    "state": "active", "interfaces": [], "vlan": 1, "timestamp": 1616357378119}]'
 - command: vlan show --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: vlan show junos
-  output: '[{"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname":
-    "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"}]'
+  output: '[{"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "spine01"}, {"hostname": "spine02"}, {"hostname": "exit02"}, {"hostname":
+    "dcedge01"}, {"hostname": "exit01"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}]'
 - command: vlan summarize --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: vlan summarize junos
-  output: '{"junos": {"deviceCnt": 2, "uniqueVlanCnt": 3, "activeVlanCnt": 3, "suspendedVlanCnt":
-    0, "vlanPerDeviceStat": [3, 3, 3.0], "ifPerVlanStat": [2, 2, 2.0]}}'
+  output: '{"junos": {"deviceCnt": 7, "uniqueVlanCnt": 4, "activeVlanCnt": 4, "suspendedVlanCnt":
+    0, "vlanPerDeviceStat": [1, 3, 1.0], "ifPerVlanStat": [1, 7, 1.5]}}'
 - command: vlan unique --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: vlan unique junos
-  output: '[{"hostname": "vqfx1", "count": 3}, {"hostname": "vqfx2", "count": 3}]'
+  output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
+    {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "spine01"}, {"hostname":
+    "spine02"}]'

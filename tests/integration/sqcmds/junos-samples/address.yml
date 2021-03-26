@@ -3,339 +3,1101 @@ tests:
 - command: address show --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: address show junos
-  output: '[{"namespace": "junos", "hostname": "srv21", "ifname": "eth1", "ipAddressList":
-    ["10.10.1.20/24"], "macaddr": "08:00:27:f0:3a:5f", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1606017394026}, {"namespace": "junos", "hostname":
-    "srv21", "ifname": "eth0", "ipAddressList": ["10.0.2.15/24"], "macaddr": "08:00:27:55:12:9d",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1606017394026},
-    {"namespace": "junos", "hostname": "srv21", "ifname": "lo", "ipAddressList": [],
-    "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1606017394026}, {"namespace": "junos", "hostname": "srv11", "ifname":
-    "lo", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [],
-    "state": "up", "master": "", "timestamp": 1606017394033}, {"namespace": "junos",
-    "hostname": "srv22", "ifname": "eth0", "ipAddressList": ["10.0.2.15/24"], "macaddr":
-    "08:00:27:55:12:9d", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
-    1606017394033}, {"namespace": "junos", "hostname": "srv22", "ifname": "lo", "ipAddressList":
+  output: '[{"namespace": "junos", "hostname": "server201", "ifname": "eth1", "ipAddressList":
+    ["172.16.2.201/24"], "macaddr": "28:b7:ad:db:79:23", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616357370669}, {"namespace": "junos", "hostname":
+    "server201", "ifname": "eth0", "ipAddressList": ["10.255.3.51/24"], "macaddr":
+    "52:54:00:b5:c9:54", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616357370669}, {"namespace": "junos", "hostname": "server201", "ifname": "lo",
+    "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616357370669}, {"namespace": "junos", "hostname":
+    "server202", "ifname": "eth1", "ipAddressList": ["172.16.3.202/24"], "macaddr":
+    "28:b7:ad:a7:c2:f7", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616357370676}, {"namespace": "junos", "hostname": "server202", "ifname": "lo",
+    "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616357370676}, {"namespace": "junos", "hostname":
+    "server202", "ifname": "eth0", "ipAddressList": ["10.255.3.198/24"], "macaddr":
+    "52:54:00:a2:29:b4", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616357370676}, {"namespace": "junos", "hostname": "server102", "ifname": "eth1",
+    "ipAddressList": ["172.16.3.102/24"], "macaddr": "28:b7:ad:d7:ac:94", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357370695}, {"namespace": "junos",
+    "hostname": "server102", "ifname": "eth0", "ipAddressList": ["10.255.3.114/24"],
+    "macaddr": "52:54:00:c1:b2:52", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357370695}, {"namespace": "junos", "hostname": "server102",
+    "ifname": "lo", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357370695}, {"namespace": "junos",
+    "hostname": "server101", "ifname": "eth1", "ipAddressList": ["172.16.1.101/24"],
+    "macaddr": "28:b7:ad:ee:a7:96", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357370695}, {"namespace": "junos", "hostname": "server101",
+    "ifname": "eth0", "ipAddressList": ["10.255.3.107/24"], "macaddr": "52:54:00:c9:9e:af",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357370695},
+    {"namespace": "junos", "hostname": "server101", "ifname": "lo", "ipAddressList":
     [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1606017394033}, {"namespace": "junos", "hostname": "srv22", "ifname":
-    "eth1", "ipAddressList": ["10.10.2.20/24"], "macaddr": "08:00:27:88:95:c6", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1606017394033}, {"namespace": "junos",
-    "hostname": "srv11", "ifname": "eth1", "ipAddressList": ["10.10.1.10/24"], "macaddr":
-    "08:00:27:1c:79:40", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
-    1606017394033}, {"namespace": "junos", "hostname": "srv11", "ifname": "eth0",
-    "ipAddressList": ["10.0.2.15/24"], "macaddr": "08:00:27:55:12:9d", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1606017394033}, {"namespace": "junos",
-    "hostname": "srv12", "ifname": "eth0", "ipAddressList": ["10.0.2.15/24"], "macaddr":
-    "08:00:27:55:12:9d", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
-    1606017394040}, {"namespace": "junos", "hostname": "srv12", "ifname": "lo", "ipAddressList":
+    "", "timestamp": 1616357370695}, {"namespace": "junos", "hostname": "firewall01",
+    "ifname": "eth1.2", "ipAddressList": ["169.254.254.2/30"], "macaddr": "28:b7:ad:36:e9:fc",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357370777},
+    {"namespace": "junos", "hostname": "firewall01", "ifname": "lo", "ipAddressList":
     [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1606017394040}, {"namespace": "junos", "hostname": "srv12", "ifname":
-    "eth1", "ipAddressList": ["10.10.2.10/24"], "macaddr": "08:00:27:e6:1b:e4", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1606017394040}, {"namespace": "junos",
-    "hostname": "vqfx1", "ifname": "tap", "ipAddressList": [], "macaddr": "None",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1606017395992},
-    {"namespace": "junos", "hostname": "vqfx1", "ifname": "pip0", "ipAddressList":
-    [], "macaddr": "02:05:86:71:f3:df", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1606017395992}, {"namespace": "junos", "hostname": "vqfx1", "ifname":
-    "pime", "ipAddressList": [], "macaddr": "None", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1606017395992}, {"namespace": "junos", "hostname":
-    "vqfx1", "ifname": "pimd", "ipAddressList": [], "macaddr": "None", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1606017395992}, {"namespace": "junos",
-    "hostname": "vqfx1", "ifname": "mtun", "ipAddressList": [], "macaddr": "None",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1606017395992},
-    {"namespace": "junos", "hostname": "vqfx1", "ifname": "lo0", "ipAddressList":
+    "", "timestamp": 1616357370777}, {"namespace": "junos", "hostname": "firewall01",
+    "ifname": "eth0", "ipAddressList": ["10.255.3.152/24"], "macaddr": "52:54:00:7e:96:bd",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357370777},
+    {"namespace": "junos", "hostname": "firewall01", "ifname": "eth1", "ipAddressList":
+    [], "macaddr": "28:b7:ad:36:e9:fc", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357370777}, {"namespace": "junos", "hostname": "firewall01",
+    "ifname": "eth2", "ipAddressList": [], "macaddr": "28:b7:ad:b1:35:68", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357370777}, {"namespace": "junos",
+    "hostname": "firewall01", "ifname": "eth2.4", "ipAddressList": ["169.254.253.10/30"],
+    "macaddr": "28:b7:ad:b1:35:68", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357370777}, {"namespace": "junos", "hostname": "firewall01",
+    "ifname": "eth2.3", "ipAddressList": ["169.254.253.6/30"], "macaddr": "28:b7:ad:b1:35:68",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357370777},
+    {"namespace": "junos", "hostname": "firewall01", "ifname": "eth2.2", "ipAddressList":
+    ["169.254.253.2/30"], "macaddr": "28:b7:ad:b1:35:68", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616357370777}, {"namespace": "junos", "hostname":
+    "firewall01", "ifname": "eth1.4", "ipAddressList": ["169.254.254.10/30"], "macaddr":
+    "28:b7:ad:36:e9:fc", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616357370777}, {"namespace": "junos", "hostname": "firewall01", "ifname": "eth1.3",
+    "ipAddressList": ["169.254.254.6/30"], "macaddr": "28:b7:ad:36:e9:fc", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357370777}, {"namespace": "junos",
+    "hostname": "leaf02", "ifname": "bme0.0", "ipAddressList": ["128.0.0.1/2", "128.0.0.4/2",
+    "128.0.0.16/2", "128.0.0.63/2"], "macaddr": "02:00:00:00:00:0a", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357376479}, {"namespace": "junos",
+    "hostname": "leaf02", "ifname": "em4", "ipAddressList": [], "macaddr": "28:b7:ad:ce:ef:93",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376479},
+    {"namespace": "junos", "hostname": "leaf02", "ifname": "em3", "ipAddressList":
+    [], "macaddr": "28:b7:ad:be:b8:ea", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376479}, {"namespace": "junos", "hostname": "leaf02",
+    "ifname": "em2", "ipAddressList": [], "macaddr": "28:b7:ad:20:3d:a3", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357376479}, {"namespace": "junos",
+    "hostname": "leaf02", "ifname": "em1", "ipAddressList": [], "macaddr": "28:b7:ad:46:3b:bd",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376479},
+    {"namespace": "junos", "hostname": "leaf02", "ifname": "em0", "ipAddressList":
+    [], "macaddr": "44:38:39:01:02:02", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376479}, {"namespace": "junos", "hostname": "leaf02",
+    "ifname": "dsc", "ipAddressList": [], "macaddr": "None", "ip6AddressList": [],
+    "state": "up", "master": "", "timestamp": 1616357376479}, {"namespace": "junos",
+    "hostname": "leaf02", "ifname": "cbp0", "ipAddressList": [], "macaddr": "02:05:86:71:76:14",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376479},
+    {"namespace": "junos", "hostname": "leaf02", "ifname": "bme0", "ipAddressList":
+    [], "macaddr": "02:00:00:00:00:0a", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376479}, {"namespace": "junos", "hostname": "leaf02",
+    "ifname": "em5", "ipAddressList": [], "macaddr": "28:b7:ad:e2:f2:71", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357376479}, {"namespace": "junos",
+    "hostname": "leaf02", "ifname": "xe-0/0/11", "ipAddressList": [], "macaddr": "02:05:86:71:76:2f",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376479},
+    {"namespace": "junos", "hostname": "leaf02", "ifname": "xe-0/0/9", "ipAddressList":
+    [], "macaddr": "02:05:86:71:76:27", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376479}, {"namespace": "junos", "hostname": "leaf02",
+    "ifname": "lo0.16385", "ipAddressList": ["10.0.0.102/32"], "macaddr": "None",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376479},
+    {"namespace": "junos", "hostname": "leaf02", "ifname": "lo0.999", "ipAddressList":
+    [], "macaddr": "None", "ip6AddressList": ["fe80::205:860f:fc71:7600/32"], "state":
+    "up", "master": "evpn-vrf", "timestamp": 1616357376479}, {"namespace": "junos",
+    "hostname": "leaf02", "ifname": "lo0.0", "ipAddressList": ["10.0.0.12/32"], "macaddr":
+    "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376479},
+    {"namespace": "junos", "hostname": "leaf02", "ifname": "jsrv.1", "ipAddressList":
+    ["128.0.0.127/2"], "macaddr": "02:05:86:71:76:00", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616357376479}, {"namespace": "junos", "hostname":
+    "leaf02", "ifname": "irb.30", "ipAddressList": ["172.16.3.254/24"], "macaddr":
+    "00:00:00:11:12:30", "ip6AddressList": [], "state": "up", "master": "evpn-vrf",
+    "timestamp": 1616357376479}, {"namespace": "junos", "hostname": "leaf02", "ifname":
+    "irb.20", "ipAddressList": ["172.16.2.254/24"], "macaddr": "00:00:00:11:12:20",
+    "ip6AddressList": [], "state": "up", "master": "evpn-vrf", "timestamp": 1616357376479},
+    {"namespace": "junos", "hostname": "leaf02", "ifname": "em4.32768", "ipAddressList":
+    ["192.0.2.2/24"], "macaddr": "28:b7:ad:ce:ef:93", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616357376479}, {"namespace": "junos", "hostname":
+    "leaf02", "ifname": "xe-0/0/10", "ipAddressList": [], "macaddr": "02:05:86:71:76:2b",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376479},
+    {"namespace": "junos", "hostname": "leaf02", "ifname": "em0.0", "ipAddressList":
+    ["10.255.3.185/24"], "macaddr": "44:38:39:01:02:02", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616357376479}, {"namespace": "junos", "hostname":
+    "leaf02", "ifname": "em6", "ipAddressList": [], "macaddr": "28:b7:ad:e4:cd:f0",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376479},
+    {"namespace": "junos", "hostname": "leaf02", "ifname": "fti0", "ipAddressList":
     [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
-    1606017395992}, {"namespace": "junos", "hostname": "vqfx1", "ifname": "jsrv",
-    "ipAddressList": [], "macaddr": "02:05:86:71:f8:00", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1606017395992}, {"namespace": "junos", "hostname":
-    "vqfx1", "ifname": "irb", "ipAddressList": [], "macaddr": "02:05:86:71:f8:00",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1606017395992},
-    {"namespace": "junos", "hostname": "vqfx1", "ifname": "ipip", "ipAddressList":
+    1616357376479}, {"namespace": "junos", "hostname": "leaf02", "ifname": "xe-0/0/3.0",
+    "ipAddressList": [], "macaddr": "02:05:86:71:76:0f", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616357376479}, {"namespace": "junos", "hostname":
+    "leaf02", "ifname": "xe-0/0/2.0", "ipAddressList": [], "macaddr": "02:05:86:71:76:0b",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376479},
+    {"namespace": "junos", "hostname": "leaf02", "ifname": "xe-0/0/1.0", "ipAddressList":
+    ["10.0.0.12/32"], "macaddr": "02:05:86:71:76:07", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616357376479}, {"namespace": "junos", "hostname":
+    "leaf02", "ifname": "xe-0/0/0.0", "ipAddressList": ["10.0.0.12/32"], "macaddr":
+    "02:05:86:71:76:03", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616357376479}, {"namespace": "junos", "hostname": "leaf02", "ifname": "evpn-vrf",
+    "ipAddressList": [], "macaddr": "", "ip6AddressList": [], "state": "", "master":
+    "", "timestamp": 1616357376479}, {"namespace": "junos", "hostname": "leaf02",
+    "ifname": "vtep", "ipAddressList": [], "macaddr": "None", "ip6AddressList": [],
+    "state": "up", "master": "", "timestamp": 1616357376479}, {"namespace": "junos",
+    "hostname": "leaf02", "ifname": "vme", "ipAddressList": [], "macaddr": "02:05:86:71:76:01",
+    "ip6AddressList": [], "state": "down", "master": "", "timestamp": 1616357376479},
+    {"namespace": "junos", "hostname": "leaf02", "ifname": "tap", "ipAddressList":
     [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
-    1606017395992}, {"namespace": "junos", "hostname": "vqfx1", "ifname": "vme", "ipAddressList":
-    [], "macaddr": "02:05:86:71:f8:01", "ip6AddressList": [], "state": "down", "master":
-    "", "timestamp": 1606017395992}, {"namespace": "junos", "hostname": "vqfx1", "ifname":
-    "lsi", "ipAddressList": [], "macaddr": "None", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1606017395992}, {"namespace": "junos", "hostname":
-    "vqfx1", "ifname": "vtep", "ipAddressList": [], "macaddr": "None", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1606017395992}, {"namespace": "junos",
-    "hostname": "vqfx1", "ifname": "em1.0", "ipAddressList": ["169.254.0.2/24"], "macaddr":
-    "08:00:27:78:65:3b", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
-    1606017395992}, {"namespace": "junos", "hostname": "vqfx1", "ifname": "xe-0/0/1.0",
-    "ipAddressList": [], "macaddr": "02:05:86:71:f8:07", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1606017395992}, {"namespace": "junos", "hostname":
-    "vqfx1", "ifname": "xe-0/0/2.0", "ipAddressList": [], "macaddr": "02:05:86:71:f8:0b",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1606017395992},
-    {"namespace": "junos", "hostname": "vqfx1", "ifname": "bme0.0", "ipAddressList":
+    1616357376479}, {"namespace": "junos", "hostname": "leaf02", "ifname": "esi",
+    "ipAddressList": [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376479}, {"namespace": "junos", "hostname": "leaf02",
+    "ifname": "pip0", "ipAddressList": [], "macaddr": "02:05:86:71:71:df", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357376479}, {"namespace": "junos",
+    "hostname": "leaf02", "ifname": "pimd", "ipAddressList": [], "macaddr": "None",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376479},
+    {"namespace": "junos", "hostname": "leaf02", "ifname": "mtun", "ipAddressList":
+    [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616357376479}, {"namespace": "junos", "hostname": "leaf02", "ifname": "lsi",
+    "ipAddressList": [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376479}, {"namespace": "junos", "hostname": "leaf02",
+    "ifname": "lo0", "ipAddressList": [], "macaddr": "None", "ip6AddressList": [],
+    "state": "up", "master": "", "timestamp": 1616357376479}, {"namespace": "junos",
+    "hostname": "leaf02", "ifname": "jsrv", "ipAddressList": [], "macaddr": "02:05:86:71:76:00",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376479},
+    {"namespace": "junos", "hostname": "leaf02", "ifname": "irb", "ipAddressList":
+    [], "macaddr": "02:05:86:71:76:00", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376479}, {"namespace": "junos", "hostname": "leaf02",
+    "ifname": "ipip", "ipAddressList": [], "macaddr": "None", "ip6AddressList": [],
+    "state": "up", "master": "", "timestamp": 1616357376479}, {"namespace": "junos",
+    "hostname": "leaf02", "ifname": "gre", "ipAddressList": [], "macaddr": "None",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376479},
+    {"namespace": "junos", "hostname": "leaf02", "ifname": "vtep.32768", "ipAddressList":
+    [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616357376479}, {"namespace": "junos", "hostname": "leaf02", "ifname": "pime",
+    "ipAddressList": [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376479}, {"namespace": "junos", "hostname": "leaf02",
+    "ifname": "em1.0", "ipAddressList": ["169.254.0.2/24"], "macaddr": "28:b7:ad:46:3b:bd",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376479},
+    {"namespace": "junos", "hostname": "leaf02", "ifname": "xe-0/0/8", "ipAddressList":
+    [], "macaddr": "02:05:86:71:76:23", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376479}, {"namespace": "junos", "hostname": "leaf02",
+    "ifname": "em2.32768", "ipAddressList": ["192.168.1.2/24"], "macaddr": "28:b7:ad:20:3d:a3",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376479},
+    {"namespace": "junos", "hostname": "leaf02", "ifname": "pfe-0/0/0", "ipAddressList":
+    [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "ENET2",
+    "timestamp": 1616357376479}, {"namespace": "junos", "hostname": "leaf02", "ifname":
+    "pfh-0/0/0", "ipAddressList": [], "macaddr": "None", "ip6AddressList": [], "state":
+    "up", "master": "ENET2", "timestamp": 1616357376479}, {"namespace": "junos", "hostname":
+    "leaf02", "ifname": "xe-0/0/0", "ipAddressList": [], "macaddr": "02:05:86:71:76:03",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376479},
+    {"namespace": "junos", "hostname": "leaf02", "ifname": "xe-0/0/1", "ipAddressList":
+    [], "macaddr": "02:05:86:71:76:07", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376479}, {"namespace": "junos", "hostname": "leaf02",
+    "ifname": "gr-0/0/0", "ipAddressList": [], "macaddr": "None", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357376479}, {"namespace": "junos",
+    "hostname": "leaf02", "ifname": "xe-0/0/3", "ipAddressList": [], "macaddr": "02:05:86:71:76:0f",
+    "ip6AddressList": [], "state": "up", "master": "bridge", "timestamp": 1616357376479},
+    {"namespace": "junos", "hostname": "leaf02", "ifname": "xe-0/0/4", "ipAddressList":
+    [], "macaddr": "02:05:86:71:76:13", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376479}, {"namespace": "junos", "hostname": "leaf02",
+    "ifname": "xe-0/0/5", "ipAddressList": [], "macaddr": "02:05:86:71:76:17", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357376479}, {"namespace": "junos",
+    "hostname": "leaf02", "ifname": "xe-0/0/6", "ipAddressList": [], "macaddr": "02:05:86:71:76:1b",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376479},
+    {"namespace": "junos", "hostname": "leaf02", "ifname": "xe-0/0/7", "ipAddressList":
+    [], "macaddr": "02:05:86:71:76:1f", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376479}, {"namespace": "junos", "hostname": "leaf02",
+    "ifname": "xe-0/0/2", "ipAddressList": [], "macaddr": "02:05:86:71:76:0b", "ip6AddressList":
+    [], "state": "up", "master": "bridge", "timestamp": 1616357376479}, {"namespace":
+    "junos", "hostname": "dcedge01", "ifname": "xe-0/0/10", "ipAddressList": [], "macaddr":
+    "02:05:86:71:b5:2b", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616357376664}, {"namespace": "junos", "hostname": "dcedge01", "ifname": "em3",
+    "ipAddressList": [], "macaddr": "28:b7:ad:ba:16:c5", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616357376664}, {"namespace": "junos", "hostname":
+    "dcedge01", "ifname": "em2", "ipAddressList": [], "macaddr": "28:b7:ad:bb:d9:e5",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376664},
+    {"namespace": "junos", "hostname": "dcedge01", "ifname": "em1", "ipAddressList":
+    [], "macaddr": "28:b7:ad:43:4c:be", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376664}, {"namespace": "junos", "hostname": "dcedge01",
+    "ifname": "em0", "ipAddressList": [], "macaddr": "44:38:39:01:03:fe", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357376664}, {"namespace": "junos",
+    "hostname": "dcedge01", "ifname": "dsc", "ipAddressList": [], "macaddr": "None",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376664},
+    {"namespace": "junos", "hostname": "dcedge01", "ifname": "cbp0", "ipAddressList":
+    [], "macaddr": "02:05:86:71:b5:14", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376664}, {"namespace": "junos", "hostname": "dcedge01",
+    "ifname": "bme0", "ipAddressList": [], "macaddr": "02:00:00:00:00:0a", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357376664}, {"namespace": "junos",
+    "hostname": "dcedge01", "ifname": "xe-0/0/11", "ipAddressList": [], "macaddr":
+    "02:05:86:71:b5:2f", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616357376664}, {"namespace": "junos", "hostname": "dcedge01", "ifname": "xe-0/0/9",
+    "ipAddressList": [], "macaddr": "02:05:86:71:b5:27", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616357376664}, {"namespace": "junos", "hostname":
+    "dcedge01", "ifname": "xe-0/0/3", "ipAddressList": [], "macaddr": "02:05:86:71:b5:0f",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376664},
+    {"namespace": "junos", "hostname": "dcedge01", "ifname": "xe-0/0/7", "ipAddressList":
+    [], "macaddr": "02:05:86:71:b5:1f", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376664}, {"namespace": "junos", "hostname": "dcedge01",
+    "ifname": "xe-0/0/6", "ipAddressList": [], "macaddr": "02:05:86:71:b5:1b", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357376664}, {"namespace": "junos",
+    "hostname": "dcedge01", "ifname": "xe-0/0/5", "ipAddressList": [], "macaddr":
+    "02:05:86:71:b5:17", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616357376664}, {"namespace": "junos", "hostname": "dcedge01", "ifname": "xe-0/0/4",
+    "ipAddressList": [], "macaddr": "02:05:86:71:b5:13", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616357376664}, {"namespace": "junos", "hostname":
+    "dcedge01", "ifname": "em4", "ipAddressList": [], "macaddr": "28:b7:ad:ff:94:da",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376664},
+    {"namespace": "junos", "hostname": "dcedge01", "ifname": "xe-0/0/2", "ipAddressList":
+    [], "macaddr": "02:05:86:71:b5:0b", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376664}, {"namespace": "junos", "hostname": "dcedge01",
+    "ifname": "xe-0/0/1", "ipAddressList": [], "macaddr": "02:05:86:71:b5:07", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357376664}, {"namespace": "junos",
+    "hostname": "dcedge01", "ifname": "xe-0/0/0", "ipAddressList": [], "macaddr":
+    "02:05:86:71:b5:03", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616357376664}, {"namespace": "junos", "hostname": "dcedge01", "ifname": "pfh-0/0/0",
+    "ipAddressList": [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master":
+    "ENET2", "timestamp": 1616357376664}, {"namespace": "junos", "hostname": "dcedge01",
+    "ifname": "pfe-0/0/0", "ipAddressList": [], "macaddr": "None", "ip6AddressList":
+    [], "state": "up", "master": "ENET2", "timestamp": 1616357376664}, {"namespace":
+    "junos", "hostname": "dcedge01", "ifname": "xe-0/0/8", "ipAddressList": [], "macaddr":
+    "02:05:86:71:b5:23", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616357376664}, {"namespace": "junos", "hostname": "dcedge01", "ifname": "esi",
+    "ipAddressList": [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376664}, {"namespace": "junos", "hostname": "dcedge01",
+    "ifname": "lo0", "ipAddressList": [], "macaddr": "None", "ip6AddressList": [],
+    "state": "up", "master": "", "timestamp": 1616357376664}, {"namespace": "junos",
+    "hostname": "dcedge01", "ifname": "gre", "ipAddressList": [], "macaddr": "None",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376664},
+    {"namespace": "junos", "hostname": "dcedge01", "ifname": "lo0.16385", "ipAddressList":
+    [], "macaddr": "None", "ip6AddressList": ["fe80::205:860f:fc71:b500/32"], "state":
+    "up", "master": "", "timestamp": 1616357376664}, {"namespace": "junos", "hostname":
+    "dcedge01", "ifname": "lo0.0", "ipAddressList": ["10.0.0.41/32"], "macaddr": "None",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376664},
+    {"namespace": "junos", "hostname": "dcedge01", "ifname": "jsrv.1", "ipAddressList":
+    ["128.0.0.127/2"], "macaddr": "02:05:86:71:b5:00", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616357376664}, {"namespace": "junos", "hostname":
+    "dcedge01", "ifname": "em4.32768", "ipAddressList": ["192.0.2.2/24"], "macaddr":
+    "28:b7:ad:ff:94:da", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616357376664}, {"namespace": "junos", "hostname": "dcedge01", "ifname": "em2.32768",
+    "ipAddressList": ["192.168.1.2/24"], "macaddr": "28:b7:ad:bb:d9:e5", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357376664}, {"namespace": "junos",
+    "hostname": "dcedge01", "ifname": "em1.0", "ipAddressList": ["169.254.0.2/24"],
+    "macaddr": "28:b7:ad:43:4c:be", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376664}, {"namespace": "junos", "hostname": "dcedge01",
+    "ifname": "em0.0", "ipAddressList": ["10.255.3.250/24"], "macaddr": "44:38:39:01:03:fe",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376664},
+    {"namespace": "junos", "hostname": "dcedge01", "ifname": "bme0.0", "ipAddressList":
     ["128.0.0.1/2", "128.0.0.4/2", "128.0.0.16/2", "128.0.0.63/2"], "macaddr": "02:00:00:00:00:0a",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1606017395992},
-    {"namespace": "junos", "hostname": "vqfx1", "ifname": "em0.0", "ipAddressList":
-    ["10.0.2.15/24"], "macaddr": "08:00:27:65:98:2d", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1606017395992}, {"namespace": "junos", "hostname":
-    "vqfx1", "ifname": "gre", "ipAddressList": [], "macaddr": "None", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1606017395992}, {"namespace": "junos",
-    "hostname": "vqfx1", "ifname": "em4.32768", "ipAddressList": ["192.0.2.2/24"],
-    "macaddr": "08:00:27:76:72:ae", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1606017395992}, {"namespace": "junos", "hostname": "vqfx1", "ifname":
-    "irb.10000", "ipAddressList": ["10.10.1.251/24", "10.10.1.254/24"], "macaddr":
-    "00:01:94:00:01:01", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
-    1606017395992}, {"namespace": "junos", "hostname": "vqfx1", "ifname": "irb.20000",
-    "ipAddressList": ["10.10.2.251/24", "10.10.2.254/24"], "macaddr": "00:01:94:00:01:02",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1606017395992},
-    {"namespace": "junos", "hostname": "vqfx1", "ifname": "jsrv.1", "ipAddressList":
-    ["128.0.0.127/2"], "macaddr": "02:05:86:71:f8:00", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1606017395992}, {"namespace": "junos", "hostname":
-    "vqfx1", "ifname": "lo0.0", "ipAddressList": ["9.9.9.1/32"], "macaddr": "None",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1606017395992},
-    {"namespace": "junos", "hostname": "vqfx1", "ifname": "vtep.32769", "ipAddressList":
-    [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
-    1606017395992}, {"namespace": "junos", "hostname": "vqfx1", "ifname": "xe-0/0/0.0",
-    "ipAddressList": ["10.0.0.1/30"], "macaddr": "02:05:86:71:f8:03", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1606017395992}, {"namespace": "junos",
-    "hostname": "vqfx1", "ifname": "fti0", "ipAddressList": [], "macaddr": "None",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1606017395992},
-    {"namespace": "junos", "hostname": "vqfx1", "ifname": "em2.32768", "ipAddressList":
-    ["192.168.1.2/24"], "macaddr": "08:00:27:0d:b7:a5", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1606017395992}, {"namespace": "junos", "hostname":
-    "vqfx1", "ifname": "em7", "ipAddressList": [], "macaddr": "08:00:27:c9:7e:5f",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1606017395992},
-    {"namespace": "junos", "hostname": "vqfx1", "ifname": "esi", "ipAddressList":
-    [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
-    1606017395992}, {"namespace": "junos", "hostname": "vqfx1", "ifname": "pfe-0/0/0",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376664},
+    {"namespace": "junos", "hostname": "dcedge01", "ifname": "xe-0/0/1.0", "ipAddressList":
+    ["169.254.127.2/31"], "macaddr": "02:05:86:71:b5:07", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616357376664}, {"namespace": "junos", "hostname":
+    "dcedge01", "ifname": "xe-0/0/0.0", "ipAddressList": ["169.254.127.0/31"], "macaddr":
+    "02:05:86:71:b5:03", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616357376664}, {"namespace": "junos", "hostname": "dcedge01", "ifname": "vtep",
     "ipAddressList": [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master":
-    "ENET2", "timestamp": 1606017395992}, {"namespace": "junos", "hostname": "vqfx1",
+    "", "timestamp": 1616357376664}, {"namespace": "junos", "hostname": "dcedge01",
+    "ifname": "vme", "ipAddressList": [], "macaddr": "02:05:86:71:b5:01", "ip6AddressList":
+    [], "state": "down", "master": "", "timestamp": 1616357376664}, {"namespace":
+    "junos", "hostname": "dcedge01", "ifname": "tap", "ipAddressList": [], "macaddr":
+    "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376664},
+    {"namespace": "junos", "hostname": "dcedge01", "ifname": "pip0", "ipAddressList":
+    [], "macaddr": "02:05:86:71:b0:df", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376664}, {"namespace": "junos", "hostname": "dcedge01",
+    "ifname": "pime", "ipAddressList": [], "macaddr": "None", "ip6AddressList": [],
+    "state": "up", "master": "", "timestamp": 1616357376664}, {"namespace": "junos",
+    "hostname": "dcedge01", "ifname": "pimd", "ipAddressList": [], "macaddr": "None",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376664},
+    {"namespace": "junos", "hostname": "dcedge01", "ifname": "mtun", "ipAddressList":
+    [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616357376664}, {"namespace": "junos", "hostname": "dcedge01", "ifname": "lsi",
+    "ipAddressList": [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376664}, {"namespace": "junos", "hostname": "dcedge01",
+    "ifname": "jsrv", "ipAddressList": [], "macaddr": "02:05:86:71:b5:00", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357376664}, {"namespace": "junos",
+    "hostname": "dcedge01", "ifname": "irb", "ipAddressList": [], "macaddr": "02:05:86:71:b5:00",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376664},
+    {"namespace": "junos", "hostname": "dcedge01", "ifname": "ipip", "ipAddressList":
+    [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616357376664}, {"namespace": "junos", "hostname": "dcedge01", "ifname": "fti0",
+    "ipAddressList": [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376664}, {"namespace": "junos", "hostname": "dcedge01",
+    "ifname": "gr-0/0/0", "ipAddressList": [], "macaddr": "None", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357376664}, {"namespace": "junos",
+    "hostname": "exit01", "ifname": "lo0.0", "ipAddressList": ["10.0.0.31/32"], "macaddr":
+    "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376666},
+    {"namespace": "junos", "hostname": "exit01", "ifname": "lo0.999", "ipAddressList":
+    [], "macaddr": "None", "ip6AddressList": ["fe80::205:860f:fc71:4c00/32"], "state":
+    "up", "master": "evpn-vrf", "timestamp": 1616357376666}, {"namespace": "junos",
+    "hostname": "exit01", "ifname": "em6", "ipAddressList": [], "macaddr": "28:b7:ad:47:c9:e1",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376666},
+    {"namespace": "junos", "hostname": "exit01", "ifname": "em5", "ipAddressList":
+    [], "macaddr": "28:b7:ad:0d:80:05", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376666}, {"namespace": "junos", "hostname": "exit01",
+    "ifname": "em4", "ipAddressList": [], "macaddr": "28:b7:ad:40:92:b3", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357376666}, {"namespace": "junos",
+    "hostname": "exit01", "ifname": "em3", "ipAddressList": [], "macaddr": "28:b7:ad:59:1d:81",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376666},
+    {"namespace": "junos", "hostname": "exit01", "ifname": "em2", "ipAddressList":
+    [], "macaddr": "28:b7:ad:32:ae:e2", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376666}, {"namespace": "junos", "hostname": "exit01",
+    "ifname": "em1", "ipAddressList": [], "macaddr": "28:b7:ad:68:de:91", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357376666}, {"namespace": "junos",
+    "hostname": "exit01", "ifname": "em0", "ipAddressList": [], "macaddr": "44:38:39:01:03:01",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376666},
+    {"namespace": "junos", "hostname": "exit01", "ifname": "lo0.16385", "ipAddressList":
+    ["10.0.0.121/32"], "macaddr": "None", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376666}, {"namespace": "junos", "hostname": "exit01",
+    "ifname": "cbp0", "ipAddressList": [], "macaddr": "02:05:86:71:4c:14", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357376666}, {"namespace": "junos",
+    "hostname": "exit01", "ifname": "bme0", "ipAddressList": [], "macaddr": "02:00:00:00:00:0a",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376666},
+    {"namespace": "junos", "hostname": "exit01", "ifname": "xe-0/0/11", "ipAddressList":
+    [], "macaddr": "02:05:86:71:4c:2f", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376666}, {"namespace": "junos", "hostname": "exit01",
+    "ifname": "xe-0/0/10", "ipAddressList": [], "macaddr": "02:05:86:71:4c:2b", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357376666}, {"namespace": "junos",
+    "hostname": "exit01", "ifname": "xe-0/0/9", "ipAddressList": [], "macaddr": "02:05:86:71:4c:27",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376666},
+    {"namespace": "junos", "hostname": "exit01", "ifname": "xe-0/0/8", "ipAddressList":
+    [], "macaddr": "02:05:86:71:4c:23", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376666}, {"namespace": "junos", "hostname": "exit01",
+    "ifname": "xe-0/0/7", "ipAddressList": [], "macaddr": "02:05:86:71:4c:1f", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357376666}, {"namespace": "junos",
+    "hostname": "exit01", "ifname": "xe-0/0/6", "ipAddressList": [], "macaddr": "02:05:86:71:4c:1b",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376666},
+    {"namespace": "junos", "hostname": "exit01", "ifname": "xe-0/0/5", "ipAddressList":
+    [], "macaddr": "02:05:86:71:4c:17", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376666}, {"namespace": "junos", "hostname": "exit01",
+    "ifname": "xe-0/0/4", "ipAddressList": [], "macaddr": "02:05:86:71:4c:13", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357376666}, {"namespace": "junos",
+    "hostname": "exit01", "ifname": "xe-0/0/3", "ipAddressList": [], "macaddr": "02:05:86:71:4c:0f",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376666},
+    {"namespace": "junos", "hostname": "exit01", "ifname": "xe-0/0/2", "ipAddressList":
+    [], "macaddr": "02:05:86:71:4c:0b", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376666}, {"namespace": "junos", "hostname": "exit01",
+    "ifname": "xe-0/0/1", "ipAddressList": [], "macaddr": "02:05:86:71:4c:07", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357376666}, {"namespace": "junos",
+    "hostname": "exit01", "ifname": "xe-0/0/0", "ipAddressList": [], "macaddr": "02:05:86:71:4c:03",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376666},
+    {"namespace": "junos", "hostname": "exit01", "ifname": "pfh-0/0/0", "ipAddressList":
+    [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "ENET2",
+    "timestamp": 1616357376666}, {"namespace": "junos", "hostname": "exit01", "ifname":
+    "pfe-0/0/0", "ipAddressList": [], "macaddr": "None", "ip6AddressList": [], "state":
+    "up", "master": "ENET2", "timestamp": 1616357376666}, {"namespace": "junos", "hostname":
+    "exit01", "ifname": "gr-0/0/0", "ipAddressList": [], "macaddr": "None", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357376666}, {"namespace": "junos",
+    "hostname": "exit01", "ifname": "esi", "ipAddressList": [], "macaddr": "None",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376666},
+    {"namespace": "junos", "hostname": "exit01", "ifname": "fti0", "ipAddressList":
+    [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616357376666}, {"namespace": "junos", "hostname": "exit01", "ifname": "dsc",
+    "ipAddressList": [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376666}, {"namespace": "junos", "hostname": "exit01",
+    "ifname": "ipip", "ipAddressList": [], "macaddr": "None", "ip6AddressList": [],
+    "state": "up", "master": "", "timestamp": 1616357376666}, {"namespace": "junos",
+    "hostname": "exit01", "ifname": "jsrv.1", "ipAddressList": ["128.0.0.127/2"],
+    "macaddr": "02:05:86:71:4c:00", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376666}, {"namespace": "junos", "hostname": "exit01",
+    "ifname": "gre", "ipAddressList": [], "macaddr": "None", "ip6AddressList": [],
+    "state": "up", "master": "", "timestamp": 1616357376666}, {"namespace": "junos",
+    "hostname": "exit01", "ifname": "em2.32768", "ipAddressList": ["192.168.1.2/24"],
+    "macaddr": "28:b7:ad:32:ae:e2", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376666}, {"namespace": "junos", "hostname": "exit01",
+    "ifname": "em1.0", "ipAddressList": ["169.254.0.2/24"], "macaddr": "28:b7:ad:68:de:91",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376666},
+    {"namespace": "junos", "hostname": "exit01", "ifname": "em0.0", "ipAddressList":
+    ["10.255.3.251/24"], "macaddr": "44:38:39:01:03:01", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616357376666}, {"namespace": "junos", "hostname":
+    "exit01", "ifname": "bme0.0", "ipAddressList": ["128.0.0.1/2", "128.0.0.4/2",
+    "128.0.0.16/2", "128.0.0.63/2"], "macaddr": "02:00:00:00:00:0a", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357376666}, {"namespace": "junos",
+    "hostname": "exit01", "ifname": "xe-0/0/3.0", "ipAddressList": ["169.254.127.1/31"],
+    "macaddr": "02:05:86:71:4c:0f", "ip6AddressList": [], "state": "up", "master":
+    "internet-vrf", "timestamp": 1616357376666}, {"namespace": "junos", "hostname":
+    "exit01", "ifname": "xe-0/0/2.4", "ipAddressList": ["169.254.254.9/30"], "macaddr":
+    "02:05:86:71:4c:0b", "ip6AddressList": [], "state": "up", "master": "internet-vrf",
+    "timestamp": 1616357376666}, {"namespace": "junos", "hostname": "exit01", "ifname":
+    "xe-0/0/2.3", "ipAddressList": ["169.254.254.5/30"], "macaddr": "02:05:86:71:4c:0b",
+    "ip6AddressList": [], "state": "up", "master": "evpn-vrf", "timestamp": 1616357376666},
+    {"namespace": "junos", "hostname": "exit01", "ifname": "xe-0/0/2.2", "ipAddressList":
+    ["169.254.254.1/30"], "macaddr": "02:05:86:71:4c:0b", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616357376666}, {"namespace": "junos", "hostname":
+    "exit01", "ifname": "xe-0/0/1.0", "ipAddressList": ["10.0.0.31/32"], "macaddr":
+    "02:05:86:71:4c:07", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616357376666}, {"namespace": "junos", "hostname": "exit01", "ifname": "xe-0/0/0.0",
+    "ipAddressList": ["10.0.0.31/32"], "macaddr": "02:05:86:71:4c:03", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357376666}, {"namespace": "junos",
+    "hostname": "exit01", "ifname": "em4.32768", "ipAddressList": ["192.0.2.2/24"],
+    "macaddr": "28:b7:ad:40:92:b3", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376666}, {"namespace": "junos", "hostname": "exit01",
+    "ifname": "evpn-vrf", "ipAddressList": [], "macaddr": "", "ip6AddressList": [],
+    "state": "", "master": "", "timestamp": 1616357376666}, {"namespace": "junos",
+    "hostname": "exit01", "ifname": "internet-vrf", "ipAddressList": [], "macaddr":
+    "", "ip6AddressList": [], "state": "", "master": "", "timestamp": 1616357376666},
+    {"namespace": "junos", "hostname": "exit01", "ifname": "jsrv", "ipAddressList":
+    [], "macaddr": "02:05:86:71:4c:00", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376666}, {"namespace": "junos", "hostname": "exit01",
+    "ifname": "lo0", "ipAddressList": [], "macaddr": "None", "ip6AddressList": [],
+    "state": "up", "master": "", "timestamp": 1616357376666}, {"namespace": "junos",
+    "hostname": "exit01", "ifname": "lsi", "ipAddressList": [], "macaddr": "None",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376666},
+    {"namespace": "junos", "hostname": "exit01", "ifname": "mtun", "ipAddressList":
+    [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616357376666}, {"namespace": "junos", "hostname": "exit01", "ifname": "irb",
+    "ipAddressList": [], "macaddr": "02:05:86:71:4c:00", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616357376666}, {"namespace": "junos", "hostname":
+    "exit01", "ifname": "pime", "ipAddressList": [], "macaddr": "None", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357376666}, {"namespace": "junos",
+    "hostname": "exit01", "ifname": "pip0", "ipAddressList": [], "macaddr": "02:05:86:71:47:df",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376666},
+    {"namespace": "junos", "hostname": "exit01", "ifname": "tap", "ipAddressList":
+    [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616357376666}, {"namespace": "junos", "hostname": "exit01", "ifname": "vme",
+    "ipAddressList": [], "macaddr": "02:05:86:71:4c:01", "ip6AddressList": [], "state":
+    "down", "master": "", "timestamp": 1616357376666}, {"namespace": "junos", "hostname":
+    "exit01", "ifname": "vtep", "ipAddressList": [], "macaddr": "None", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357376666}, {"namespace": "junos",
+    "hostname": "exit01", "ifname": "pimd", "ipAddressList": [], "macaddr": "None",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376666},
+    {"namespace": "junos", "hostname": "leaf01", "ifname": "bme0.0", "ipAddressList":
+    ["128.0.0.1/2", "128.0.0.4/2", "128.0.0.16/2", "128.0.0.63/2"], "macaddr": "02:00:00:00:00:0a",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376891},
+    {"namespace": "junos", "hostname": "leaf01", "ifname": "tap", "ipAddressList":
+    [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616357376891}, {"namespace": "junos", "hostname": "leaf01", "ifname": "vme",
+    "ipAddressList": [], "macaddr": "02:05:86:71:5c:01", "ip6AddressList": [], "state":
+    "down", "master": "", "timestamp": 1616357376891}, {"namespace": "junos", "hostname":
+    "leaf01", "ifname": "vtep", "ipAddressList": [], "macaddr": "None", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357376891}, {"namespace": "junos",
+    "hostname": "leaf01", "ifname": "evpn-vrf", "ipAddressList": [], "macaddr": "",
+    "ip6AddressList": [], "state": "", "master": "", "timestamp": 1616357376891},
+    {"namespace": "junos", "hostname": "leaf01", "ifname": "xe-0/0/0.0", "ipAddressList":
+    ["10.0.0.11/32"], "macaddr": "02:05:86:71:5c:03", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616357376891}, {"namespace": "junos", "hostname":
+    "leaf01", "ifname": "xe-0/0/1.0", "ipAddressList": ["10.0.0.11/32"], "macaddr":
+    "02:05:86:71:5c:07", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616357376891}, {"namespace": "junos", "hostname": "leaf01", "ifname": "xe-0/0/2.0",
+    "ipAddressList": [], "macaddr": "02:05:86:71:5c:0b", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616357376891}, {"namespace": "junos", "hostname":
+    "leaf01", "ifname": "xe-0/0/3.0", "ipAddressList": [], "macaddr": "02:05:86:71:5c:0f",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376891},
+    {"namespace": "junos", "hostname": "leaf01", "ifname": "em0.0", "ipAddressList":
+    ["10.255.3.184/24"], "macaddr": "44:38:39:01:02:01", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616357376891}, {"namespace": "junos", "hostname":
+    "leaf01", "ifname": "jsrv.1", "ipAddressList": ["128.0.0.127/2"], "macaddr": "02:05:86:71:5c:00",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376891},
+    {"namespace": "junos", "hostname": "leaf01", "ifname": "em2.32768", "ipAddressList":
+    ["192.168.1.2/24"], "macaddr": "28:b7:ad:20:98:82", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616357376891}, {"namespace": "junos", "hostname":
+    "leaf01", "ifname": "em4.32768", "ipAddressList": ["192.0.2.2/24"], "macaddr":
+    "28:b7:ad:a8:b3:c2", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616357376891}, {"namespace": "junos", "hostname": "leaf01", "ifname": "irb.10",
+    "ipAddressList": ["172.16.1.254/24"], "macaddr": "00:00:00:11:12:10", "ip6AddressList":
+    [], "state": "up", "master": "evpn-vrf", "timestamp": 1616357376891}, {"namespace":
+    "junos", "hostname": "leaf01", "ifname": "irb.30", "ipAddressList": ["172.16.3.254/24"],
+    "macaddr": "00:00:00:11:12:30", "ip6AddressList": [], "state": "up", "master":
+    "evpn-vrf", "timestamp": 1616357376891}, {"namespace": "junos", "hostname": "leaf01",
+    "ifname": "lo0.0", "ipAddressList": ["10.0.0.11/32"], "macaddr": "None", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357376891}, {"namespace": "junos",
+    "hostname": "leaf01", "ifname": "lo0.999", "ipAddressList": [], "macaddr": "None",
+    "ip6AddressList": ["fe80::205:860f:fc71:5c00/32"], "state": "up", "master": "evpn-vrf",
+    "timestamp": 1616357376891}, {"namespace": "junos", "hostname": "leaf01", "ifname":
+    "lo0.16385", "ipAddressList": ["10.0.0.101/32"], "macaddr": "None", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357376891}, {"namespace": "junos",
+    "hostname": "leaf01", "ifname": "vtep.32768", "ipAddressList": [], "macaddr":
+    "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376891},
+    {"namespace": "junos", "hostname": "leaf01", "ifname": "pip0", "ipAddressList":
+    [], "macaddr": "02:05:86:71:57:df", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376891}, {"namespace": "junos", "hostname": "leaf01",
+    "ifname": "em1.0", "ipAddressList": ["169.254.0.2/24"], "macaddr": "28:b7:ad:83:c3:38",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376891},
+    {"namespace": "junos", "hostname": "leaf01", "ifname": "pime", "ipAddressList":
+    [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616357376891}, {"namespace": "junos", "hostname": "leaf01", "ifname": "ipip",
+    "ipAddressList": [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376891}, {"namespace": "junos", "hostname": "leaf01",
+    "ifname": "mtun", "ipAddressList": [], "macaddr": "None", "ip6AddressList": [],
+    "state": "up", "master": "", "timestamp": 1616357376891}, {"namespace": "junos",
+    "hostname": "leaf01", "ifname": "xe-0/0/10", "ipAddressList": [], "macaddr": "02:05:86:71:5c:2b",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376891},
+    {"namespace": "junos", "hostname": "leaf01", "ifname": "xe-0/0/9", "ipAddressList":
+    [], "macaddr": "02:05:86:71:5c:27", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376891}, {"namespace": "junos", "hostname": "leaf01",
+    "ifname": "xe-0/0/8", "ipAddressList": [], "macaddr": "02:05:86:71:5c:23", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357376891}, {"namespace": "junos",
+    "hostname": "leaf01", "ifname": "xe-0/0/7", "ipAddressList": [], "macaddr": "02:05:86:71:5c:1f",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376891},
+    {"namespace": "junos", "hostname": "leaf01", "ifname": "xe-0/0/6", "ipAddressList":
+    [], "macaddr": "02:05:86:71:5c:1b", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376891}, {"namespace": "junos", "hostname": "leaf01",
+    "ifname": "xe-0/0/5", "ipAddressList": [], "macaddr": "02:05:86:71:5c:17", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357376891}, {"namespace": "junos",
+    "hostname": "leaf01", "ifname": "xe-0/0/11", "ipAddressList": [], "macaddr": "02:05:86:71:5c:2f",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376891},
+    {"namespace": "junos", "hostname": "leaf01", "ifname": "xe-0/0/4", "ipAddressList":
+    [], "macaddr": "02:05:86:71:5c:13", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376891}, {"namespace": "junos", "hostname": "leaf01",
+    "ifname": "xe-0/0/1", "ipAddressList": [], "macaddr": "02:05:86:71:5c:07", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357376891}, {"namespace": "junos",
+    "hostname": "leaf01", "ifname": "xe-0/0/0", "ipAddressList": [], "macaddr": "02:05:86:71:5c:03",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376891},
+    {"namespace": "junos", "hostname": "leaf01", "ifname": "pfh-0/0/0", "ipAddressList":
+    [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "ENET2",
+    "timestamp": 1616357376891}, {"namespace": "junos", "hostname": "leaf01", "ifname":
+    "pfe-0/0/0", "ipAddressList": [], "macaddr": "None", "ip6AddressList": [], "state":
+    "up", "master": "ENET2", "timestamp": 1616357376891}, {"namespace": "junos", "hostname":
+    "leaf01", "ifname": "gr-0/0/0", "ipAddressList": [], "macaddr": "None", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357376891}, {"namespace": "junos",
+    "hostname": "leaf01", "ifname": "pimd", "ipAddressList": [], "macaddr": "None",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376891},
+    {"namespace": "junos", "hostname": "leaf01", "ifname": "xe-0/0/3", "ipAddressList":
+    [], "macaddr": "02:05:86:71:5c:0f", "ip6AddressList": [], "state": "up", "master":
+    "bridge", "timestamp": 1616357376891}, {"namespace": "junos", "hostname": "leaf01",
+    "ifname": "bme0", "ipAddressList": [], "macaddr": "02:00:00:00:00:0a", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357376891}, {"namespace": "junos",
+    "hostname": "leaf01", "ifname": "xe-0/0/2", "ipAddressList": [], "macaddr": "02:05:86:71:5c:0b",
+    "ip6AddressList": [], "state": "up", "master": "bridge", "timestamp": 1616357376891},
+    {"namespace": "junos", "hostname": "leaf01", "ifname": "dsc", "ipAddressList":
+    [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616357376891}, {"namespace": "junos", "hostname": "leaf01", "ifname": "cbp0",
+    "ipAddressList": [], "macaddr": "02:05:86:71:5c:14", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616357376891}, {"namespace": "junos", "hostname":
+    "leaf01", "ifname": "lo0", "ipAddressList": [], "macaddr": "None", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357376891}, {"namespace": "junos",
+    "hostname": "leaf01", "ifname": "jsrv", "ipAddressList": [], "macaddr": "02:05:86:71:5c:00",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376891},
+    {"namespace": "junos", "hostname": "leaf01", "ifname": "irb", "ipAddressList":
+    [], "macaddr": "02:05:86:71:5c:00", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376891}, {"namespace": "junos", "hostname": "leaf01",
+    "ifname": "gre", "ipAddressList": [], "macaddr": "None", "ip6AddressList": [],
+    "state": "up", "master": "", "timestamp": 1616357376891}, {"namespace": "junos",
+    "hostname": "leaf01", "ifname": "fti0", "ipAddressList": [], "macaddr": "None",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376891},
+    {"namespace": "junos", "hostname": "leaf01", "ifname": "esi", "ipAddressList":
+    [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616357376891}, {"namespace": "junos", "hostname": "leaf01", "ifname": "lsi",
+    "ipAddressList": [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376891}, {"namespace": "junos", "hostname": "leaf01",
+    "ifname": "em5", "ipAddressList": [], "macaddr": "28:b7:ad:2c:e7:d9", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357376891}, {"namespace": "junos",
+    "hostname": "leaf01", "ifname": "em6", "ipAddressList": [], "macaddr": "28:b7:ad:6f:13:5a",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376891},
+    {"namespace": "junos", "hostname": "leaf01", "ifname": "em4", "ipAddressList":
+    [], "macaddr": "28:b7:ad:a8:b3:c2", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376891}, {"namespace": "junos", "hostname": "leaf01",
+    "ifname": "em3", "ipAddressList": [], "macaddr": "28:b7:ad:cd:f4:e2", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357376891}, {"namespace": "junos",
+    "hostname": "leaf01", "ifname": "em2", "ipAddressList": [], "macaddr": "28:b7:ad:20:98:82",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357376891},
+    {"namespace": "junos", "hostname": "leaf01", "ifname": "em1", "ipAddressList":
+    [], "macaddr": "28:b7:ad:83:c3:38", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357376891}, {"namespace": "junos", "hostname": "leaf01",
+    "ifname": "em0", "ipAddressList": [], "macaddr": "44:38:39:01:02:01", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357376891}, {"namespace": "junos",
+    "hostname": "spine01", "ifname": "cbp0", "ipAddressList": [], "macaddr": "02:05:86:71:f6:14",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377097},
+    {"namespace": "junos", "hostname": "spine01", "ifname": "dsc", "ipAddressList":
+    [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616357377097}, {"namespace": "junos", "hostname": "spine01", "ifname": "em0",
+    "ipAddressList": [], "macaddr": "44:38:39:01:01:01", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616357377097}, {"namespace": "junos", "hostname":
+    "spine01", "ifname": "em1", "ipAddressList": [], "macaddr": "28:b7:ad:89:54:b4",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377097},
+    {"namespace": "junos", "hostname": "spine01", "ifname": "em3", "ipAddressList":
+    [], "macaddr": "28:b7:ad:4c:20:aa", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357377097}, {"namespace": "junos", "hostname": "spine01",
+    "ifname": "bme0", "ipAddressList": [], "macaddr": "02:00:00:00:00:0a", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357377097}, {"namespace": "junos",
+    "hostname": "spine01", "ifname": "em4", "ipAddressList": [], "macaddr": "28:b7:ad:5a:4a:0d",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377097},
+    {"namespace": "junos", "hostname": "spine01", "ifname": "em5", "ipAddressList":
+    [], "macaddr": "28:b7:ad:5b:8a:ce", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357377097}, {"namespace": "junos", "hostname": "spine01",
+    "ifname": "em6", "ipAddressList": [], "macaddr": "28:b7:ad:e9:5c:06", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357377097}, {"namespace": "junos",
+    "hostname": "spine01", "ifname": "em2", "ipAddressList": [], "macaddr": "28:b7:ad:e3:29:78",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377097},
+    {"namespace": "junos", "hostname": "spine01", "ifname": "xe-0/0/11", "ipAddressList":
+    [], "macaddr": "02:05:86:71:f6:2f", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357377097}, {"namespace": "junos", "hostname": "spine01",
+    "ifname": "xe-0/0/8", "ipAddressList": [], "macaddr": "02:05:86:71:f6:23", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357377097}, {"namespace": "junos",
+    "hostname": "spine01", "ifname": "xe-0/0/9", "ipAddressList": [], "macaddr": "02:05:86:71:f6:27",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377097},
+    {"namespace": "junos", "hostname": "spine01", "ifname": "xe-0/0/7", "ipAddressList":
+    [], "macaddr": "02:05:86:71:f6:1f", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357377097}, {"namespace": "junos", "hostname": "spine01",
+    "ifname": "xe-0/0/6", "ipAddressList": [], "macaddr": "02:05:86:71:f6:1b", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357377097}, {"namespace": "junos",
+    "hostname": "spine01", "ifname": "xe-0/0/5", "ipAddressList": [], "macaddr": "02:05:86:71:f6:17",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377097},
+    {"namespace": "junos", "hostname": "spine01", "ifname": "xe-0/0/4", "ipAddressList":
+    [], "macaddr": "02:05:86:71:f6:13", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357377097}, {"namespace": "junos", "hostname": "spine01",
+    "ifname": "xe-0/0/2", "ipAddressList": [], "macaddr": "02:05:86:71:f6:0b", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357377097}, {"namespace": "junos",
+    "hostname": "spine01", "ifname": "xe-0/0/1", "ipAddressList": [], "macaddr": "02:05:86:71:f6:07",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377097},
+    {"namespace": "junos", "hostname": "spine01", "ifname": "xe-0/0/0", "ipAddressList":
+    [], "macaddr": "02:05:86:71:f6:03", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357377097}, {"namespace": "junos", "hostname": "spine01",
     "ifname": "pfh-0/0/0", "ipAddressList": [], "macaddr": "None", "ip6AddressList":
-    [], "state": "up", "master": "ENET2", "timestamp": 1606017395992}, {"namespace":
-    "junos", "hostname": "vqfx1", "ifname": "xe-0/0/0", "ipAddressList": [], "macaddr":
-    "02:05:86:71:f8:03", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
-    1606017395992}, {"namespace": "junos", "hostname": "vqfx1", "ifname": "xe-0/0/1",
-    "ipAddressList": [], "macaddr": "02:05:86:71:f8:07", "ip6AddressList": [], "state":
-    "up", "master": "bridge", "timestamp": 1606017395992}, {"namespace": "junos",
-    "hostname": "vqfx1", "ifname": "xe-0/0/2", "ipAddressList": [], "macaddr": "02:05:86:71:f8:0b",
-    "ip6AddressList": [], "state": "up", "master": "bridge", "timestamp": 1606017395992},
-    {"namespace": "junos", "hostname": "vqfx1", "ifname": "xe-0/0/3", "ipAddressList":
-    [], "macaddr": "02:05:86:71:f8:0f", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1606017395992}, {"namespace": "junos", "hostname": "vqfx1", "ifname":
-    "xe-0/0/4", "ipAddressList": [], "macaddr": "02:05:86:71:f8:13", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1606017395992}, {"namespace": "junos",
-    "hostname": "vqfx1", "ifname": "xe-0/0/5", "ipAddressList": [], "macaddr": "02:05:86:71:f8:17",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1606017395992},
-    {"namespace": "junos", "hostname": "vqfx1", "ifname": "xe-0/0/6", "ipAddressList":
-    [], "macaddr": "02:05:86:71:f8:1b", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1606017395992}, {"namespace": "junos", "hostname": "vqfx1", "ifname":
-    "xe-0/0/7", "ipAddressList": [], "macaddr": "02:05:86:71:f8:1f", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1606017395992}, {"namespace": "junos",
-    "hostname": "vqfx1", "ifname": "xe-0/0/8", "ipAddressList": [], "macaddr": "02:05:86:71:f8:23",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1606017395992},
-    {"namespace": "junos", "hostname": "vqfx1", "ifname": "gr-0/0/0", "ipAddressList":
+    [], "state": "up", "master": "ENET2", "timestamp": 1616357377097}, {"namespace":
+    "junos", "hostname": "spine01", "ifname": "esi", "ipAddressList": [], "macaddr":
+    "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377097},
+    {"namespace": "junos", "hostname": "spine01", "ifname": "xe-0/0/10", "ipAddressList":
+    [], "macaddr": "02:05:86:71:f6:2b", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357377097}, {"namespace": "junos", "hostname": "spine01",
+    "ifname": "fti0", "ipAddressList": [], "macaddr": "None", "ip6AddressList": [],
+    "state": "up", "master": "", "timestamp": 1616357377097}, {"namespace": "junos",
+    "hostname": "spine01", "ifname": "xe-0/0/2.0", "ipAddressList": ["10.0.0.21/32"],
+    "macaddr": "02:05:86:71:f6:0b", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357377097}, {"namespace": "junos", "hostname": "spine01",
+    "ifname": "ipip", "ipAddressList": [], "macaddr": "None", "ip6AddressList": [],
+    "state": "up", "master": "", "timestamp": 1616357377097}, {"namespace": "junos",
+    "hostname": "spine01", "ifname": "lo0.16385", "ipAddressList": [], "macaddr":
+    "None", "ip6AddressList": ["fe80::205:860f:fc71:f600/32"], "state": "up", "master":
+    "", "timestamp": 1616357377097}, {"namespace": "junos", "hostname": "spine01",
+    "ifname": "lo0.0", "ipAddressList": ["10.0.0.21/32"], "macaddr": "None", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357377097}, {"namespace": "junos",
+    "hostname": "spine01", "ifname": "jsrv.1", "ipAddressList": ["128.0.0.127/2"],
+    "macaddr": "02:05:86:71:f6:00", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357377097}, {"namespace": "junos", "hostname": "spine01",
+    "ifname": "em4.32768", "ipAddressList": ["192.0.2.2/24"], "macaddr": "28:b7:ad:5a:4a:0d",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377097},
+    {"namespace": "junos", "hostname": "spine01", "ifname": "em2.32768", "ipAddressList":
+    ["192.168.1.2/24"], "macaddr": "28:b7:ad:e3:29:78", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616357377097}, {"namespace": "junos", "hostname":
+    "spine01", "ifname": "em1.0", "ipAddressList": ["169.254.0.2/24"], "macaddr":
+    "28:b7:ad:89:54:b4", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616357377097}, {"namespace": "junos", "hostname": "spine01", "ifname": "em0.0",
+    "ipAddressList": ["10.255.3.117/24"], "macaddr": "44:38:39:01:01:01", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357377097}, {"namespace": "junos",
+    "hostname": "spine01", "ifname": "bme0.0", "ipAddressList": ["128.0.0.1/2", "128.0.0.4/2",
+    "128.0.0.16/2", "128.0.0.63/2"], "macaddr": "02:00:00:00:00:0a", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357377097}, {"namespace": "junos",
+    "hostname": "spine01", "ifname": "xe-0/0/3.0", "ipAddressList": ["10.0.0.21/32"],
+    "macaddr": "02:05:86:71:f6:0f", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357377097}, {"namespace": "junos", "hostname": "spine01",
+    "ifname": "pfe-0/0/0", "ipAddressList": [], "macaddr": "None", "ip6AddressList":
+    [], "state": "up", "master": "ENET2", "timestamp": 1616357377097}, {"namespace":
+    "junos", "hostname": "spine01", "ifname": "xe-0/0/1.0", "ipAddressList": ["10.0.0.21/32"],
+    "macaddr": "02:05:86:71:f6:07", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357377097}, {"namespace": "junos", "hostname": "spine01",
+    "ifname": "xe-0/0/0.0", "ipAddressList": ["10.0.0.21/32"], "macaddr": "02:05:86:71:f6:03",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377097},
+    {"namespace": "junos", "hostname": "spine01", "ifname": "vtep", "ipAddressList":
     [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
-    1606017395992}, {"namespace": "junos", "hostname": "vqfx1", "ifname": "xe-0/0/10",
-    "ipAddressList": [], "macaddr": "02:05:86:71:f8:2b", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1606017395992}, {"namespace": "junos", "hostname":
-    "vqfx1", "ifname": "xe-0/0/9", "ipAddressList": [], "macaddr": "02:05:86:71:f8:27",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1606017395992},
-    {"namespace": "junos", "hostname": "vqfx1", "ifname": "em6", "ipAddressList":
-    [], "macaddr": "08:00:27:f4:a8:60", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1606017395992}, {"namespace": "junos", "hostname": "vqfx1", "ifname":
-    "em4", "ipAddressList": [], "macaddr": "08:00:27:76:72:ae", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1606017395992}, {"namespace": "junos",
-    "hostname": "vqfx1", "ifname": "em3", "ipAddressList": [], "macaddr": "08:00:27:ac:45:48",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1606017395992},
-    {"namespace": "junos", "hostname": "vqfx1", "ifname": "em2", "ipAddressList":
-    [], "macaddr": "08:00:27:0d:b7:a5", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1606017395992}, {"namespace": "junos", "hostname": "vqfx1", "ifname":
-    "em1", "ipAddressList": [], "macaddr": "08:00:27:78:65:3b", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1606017395992}, {"namespace": "junos",
-    "hostname": "vqfx1", "ifname": "em5", "ipAddressList": [], "macaddr": "08:00:27:39:ed:14",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1606017395992},
-    {"namespace": "junos", "hostname": "vqfx1", "ifname": "em0", "ipAddressList":
-    [], "macaddr": "08:00:27:65:98:2d", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1606017395992}, {"namespace": "junos", "hostname": "vqfx1", "ifname":
-    "dsc", "ipAddressList": [], "macaddr": "None", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1606017395992}, {"namespace": "junos", "hostname":
-    "vqfx1", "ifname": "cbp0", "ipAddressList": [], "macaddr": "02:05:86:71:f8:14",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1606017395992},
-    {"namespace": "junos", "hostname": "vqfx1", "ifname": "bme0", "ipAddressList":
-    [], "macaddr": "02:00:00:00:00:0a", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1606017395992}, {"namespace": "junos", "hostname": "vqfx1", "ifname":
-    "xe-0/0/11", "ipAddressList": [], "macaddr": "02:05:86:71:f8:2f", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1606017395992}, {"namespace": "junos",
-    "hostname": "vqfx2", "ifname": "ipip", "ipAddressList": [], "macaddr": "None",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1606017396039},
-    {"namespace": "junos", "hostname": "vqfx2", "ifname": "irb", "ipAddressList":
-    [], "macaddr": "02:05:86:71:af:00", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1606017396039}, {"namespace": "junos", "hostname": "vqfx2", "ifname":
-    "jsrv", "ipAddressList": [], "macaddr": "02:05:86:71:af:00", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1606017396039}, {"namespace": "junos",
-    "hostname": "vqfx2", "ifname": "lo0", "ipAddressList": [], "macaddr": "None",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1606017396039},
-    {"namespace": "junos", "hostname": "vqfx2", "ifname": "lsi", "ipAddressList":
+    1616357377097}, {"namespace": "junos", "hostname": "spine01", "ifname": "vme",
+    "ipAddressList": [], "macaddr": "02:05:86:71:f6:01", "ip6AddressList": [], "state":
+    "down", "master": "", "timestamp": 1616357377097}, {"namespace": "junos", "hostname":
+    "spine01", "ifname": "tap", "ipAddressList": [], "macaddr": "None", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357377097}, {"namespace": "junos",
+    "hostname": "spine01", "ifname": "pip0", "ipAddressList": [], "macaddr": "02:05:86:71:f1:df",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377097},
+    {"namespace": "junos", "hostname": "spine01", "ifname": "pime", "ipAddressList":
     [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
-    1606017396039}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "mtun",
+    1616357377097}, {"namespace": "junos", "hostname": "spine01", "ifname": "pimd",
     "ipAddressList": [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1606017396039}, {"namespace": "junos", "hostname": "vqfx2", "ifname":
-    "pimd", "ipAddressList": [], "macaddr": "None", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1606017396039}, {"namespace": "junos", "hostname":
-    "vqfx2", "ifname": "pime", "ipAddressList": [], "macaddr": "None", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1606017396039}, {"namespace": "junos",
-    "hostname": "vqfx2", "ifname": "pip0", "ipAddressList": [], "macaddr": "02:05:86:71:aa:df",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1606017396039},
-    {"namespace": "junos", "hostname": "vqfx2", "ifname": "gre", "ipAddressList":
+    "", "timestamp": 1616357377097}, {"namespace": "junos", "hostname": "spine01",
+    "ifname": "mtun", "ipAddressList": [], "macaddr": "None", "ip6AddressList": [],
+    "state": "up", "master": "", "timestamp": 1616357377097}, {"namespace": "junos",
+    "hostname": "spine01", "ifname": "lsi", "ipAddressList": [], "macaddr": "None",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377097},
+    {"namespace": "junos", "hostname": "spine01", "ifname": "lo0", "ipAddressList":
     [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
-    1606017396039}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "tap", "ipAddressList":
+    1616357377097}, {"namespace": "junos", "hostname": "spine01", "ifname": "jsrv",
+    "ipAddressList": [], "macaddr": "02:05:86:71:f6:00", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616357377097}, {"namespace": "junos", "hostname":
+    "spine01", "ifname": "irb", "ipAddressList": [], "macaddr": "02:05:86:71:f6:00",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377097},
+    {"namespace": "junos", "hostname": "spine01", "ifname": "gre", "ipAddressList":
     [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
-    1606017396039}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "bme0.0",
-    "ipAddressList": ["128.0.0.1/2", "128.0.0.4/2", "128.0.0.16/2", "128.0.0.63/2"],
-    "macaddr": "02:00:00:00:00:0a", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1606017396039}, {"namespace": "junos", "hostname": "vqfx2", "ifname":
-    "vtep", "ipAddressList": [], "macaddr": "None", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1606017396039}, {"namespace": "junos", "hostname":
-    "vqfx2", "ifname": "xe-0/0/0.0", "ipAddressList": ["10.0.0.2/30"], "macaddr":
-    "02:05:86:71:af:03", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
-    1606017396039}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "xe-0/0/1.0",
-    "ipAddressList": [], "macaddr": "02:05:86:71:af:07", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1606017396039}, {"namespace": "junos", "hostname":
-    "vqfx2", "ifname": "xe-0/0/2.0", "ipAddressList": [], "macaddr": "02:05:86:71:af:0b",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1606017396039},
-    {"namespace": "junos", "hostname": "vqfx2", "ifname": "em0.0", "ipAddressList":
-    ["10.0.2.15/24"], "macaddr": "08:00:27:65:98:2d", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1606017396039}, {"namespace": "junos", "hostname":
-    "vqfx2", "ifname": "em1.0", "ipAddressList": ["169.254.0.2/24"], "macaddr": "08:00:27:c4:65:c1",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1606017396039},
-    {"namespace": "junos", "hostname": "vqfx2", "ifname": "em2.32768", "ipAddressList":
-    ["192.168.1.2/24"], "macaddr": "08:00:27:a3:95:07", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1606017396039}, {"namespace": "junos", "hostname":
-    "vqfx2", "ifname": "em4.32768", "ipAddressList": ["192.0.2.2/24"], "macaddr":
-    "08:00:27:d8:7e:ad", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
-    1606017396039}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "irb.10000",
-    "ipAddressList": ["10.10.1.252/24", "10.10.1.254/24"], "macaddr": "00:01:95:00:01:01",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1606017396039},
-    {"namespace": "junos", "hostname": "vqfx2", "ifname": "irb.20000", "ipAddressList":
-    ["10.10.2.252/24", "10.10.2.254/24"], "macaddr": "00:01:95:00:01:02", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1606017396039}, {"namespace": "junos",
-    "hostname": "vqfx2", "ifname": "fti0", "ipAddressList": [], "macaddr": "None",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1606017396039},
-    {"namespace": "junos", "hostname": "vqfx2", "ifname": "jsrv.1", "ipAddressList":
-    ["128.0.0.127/2"], "macaddr": "02:05:86:71:af:00", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1606017396039}, {"namespace": "junos", "hostname":
-    "vqfx2", "ifname": "vme", "ipAddressList": [], "macaddr": "02:05:86:71:af:01",
-    "ip6AddressList": [], "state": "down", "master": "", "timestamp": 1606017396039},
-    {"namespace": "junos", "hostname": "vqfx2", "ifname": "esi", "ipAddressList":
+    1616357377097}, {"namespace": "junos", "hostname": "spine01", "ifname": "gr-0/0/0",
+    "ipAddressList": [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357377097}, {"namespace": "junos", "hostname": "spine01",
+    "ifname": "xe-0/0/3", "ipAddressList": [], "macaddr": "02:05:86:71:f6:0f", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357377097}, {"namespace": "junos",
+    "hostname": "exit02", "ifname": "xe-0/0/1", "ipAddressList": [], "macaddr": "02:05:86:71:64:07",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377099},
+    {"namespace": "junos", "hostname": "exit02", "ifname": "lsi", "ipAddressList":
     [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
-    1606017396039}, {"namespace": "junos", "hostname": "vqfx2", "ifname": "xe-0/0/10",
-    "ipAddressList": [], "macaddr": "02:05:86:71:af:2b", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1606017396039}, {"namespace": "junos", "hostname":
-    "vqfx2", "ifname": "em6", "ipAddressList": [], "macaddr": "08:00:27:df:40:e0",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1606017396039},
-    {"namespace": "junos", "hostname": "vqfx2", "ifname": "lo0.0", "ipAddressList":
-    ["9.9.9.2/32"], "macaddr": "None", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1606017396039}, {"namespace": "junos", "hostname": "vqfx2", "ifname":
+    1616357377099}, {"namespace": "junos", "hostname": "exit02", "ifname": "mtun",
+    "ipAddressList": [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357377099}, {"namespace": "junos", "hostname": "exit02",
+    "ifname": "pimd", "ipAddressList": [], "macaddr": "None", "ip6AddressList": [],
+    "state": "up", "master": "", "timestamp": 1616357377099}, {"namespace": "junos",
+    "hostname": "exit02", "ifname": "pime", "ipAddressList": [], "macaddr": "None",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377099},
+    {"namespace": "junos", "hostname": "exit02", "ifname": "pip0", "ipAddressList":
+    [], "macaddr": "02:05:86:71:5f:df", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357377099}, {"namespace": "junos", "hostname": "exit02",
+    "ifname": "tap", "ipAddressList": [], "macaddr": "None", "ip6AddressList": [],
+    "state": "up", "master": "", "timestamp": 1616357377099}, {"namespace": "junos",
+    "hostname": "exit02", "ifname": "vme", "ipAddressList": [], "macaddr": "02:05:86:71:64:01",
+    "ip6AddressList": [], "state": "down", "master": "", "timestamp": 1616357377099},
+    {"namespace": "junos", "hostname": "exit02", "ifname": "vtep", "ipAddressList":
+    [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616357377099}, {"namespace": "junos", "hostname": "exit02", "ifname": "evpn-vrf",
+    "ipAddressList": [], "macaddr": "", "ip6AddressList": [], "state": "", "master":
+    "", "timestamp": 1616357377099}, {"namespace": "junos", "hostname": "exit02",
+    "ifname": "internet-vrf", "ipAddressList": [], "macaddr": "", "ip6AddressList":
+    [], "state": "", "master": "", "timestamp": 1616357377099}, {"namespace": "junos",
+    "hostname": "exit02", "ifname": "xe-0/0/0.0", "ipAddressList": ["10.0.0.32/32"],
+    "macaddr": "02:05:86:71:64:03", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357377099}, {"namespace": "junos", "hostname": "exit02",
+    "ifname": "xe-0/0/1.0", "ipAddressList": ["10.0.0.32/32"], "macaddr": "02:05:86:71:64:07",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377099},
+    {"namespace": "junos", "hostname": "exit02", "ifname": "xe-0/0/2.2", "ipAddressList":
+    ["169.254.253.1/30"], "macaddr": "02:05:86:71:64:0b", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616357377099}, {"namespace": "junos", "hostname":
+    "exit02", "ifname": "xe-0/0/2.3", "ipAddressList": ["169.254.253.5/30"], "macaddr":
+    "02:05:86:71:64:0b", "ip6AddressList": [], "state": "up", "master": "evpn-vrf",
+    "timestamp": 1616357377099}, {"namespace": "junos", "hostname": "exit02", "ifname":
+    "xe-0/0/2.4", "ipAddressList": ["169.254.253.9/30"], "macaddr": "02:05:86:71:64:0b",
+    "ip6AddressList": [], "state": "up", "master": "internet-vrf", "timestamp": 1616357377099},
+    {"namespace": "junos", "hostname": "exit02", "ifname": "xe-0/0/3.0", "ipAddressList":
+    ["169.254.127.3/31"], "macaddr": "02:05:86:71:64:0f", "ip6AddressList": [], "state":
+    "up", "master": "internet-vrf", "timestamp": 1616357377099}, {"namespace": "junos",
+    "hostname": "exit02", "ifname": "bme0.0", "ipAddressList": ["128.0.0.1/2", "128.0.0.4/2",
+    "128.0.0.16/2", "128.0.0.63/2"], "macaddr": "02:00:00:00:00:0a", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357377099}, {"namespace": "junos",
+    "hostname": "exit02", "ifname": "em0.0", "ipAddressList": ["10.255.3.252/24"],
+    "macaddr": "44:38:39:01:03:02", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357377099}, {"namespace": "junos", "hostname": "exit02",
+    "ifname": "em1.0", "ipAddressList": ["169.254.0.2/24"], "macaddr": "28:b7:ad:53:77:b2",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377099},
+    {"namespace": "junos", "hostname": "exit02", "ifname": "em2.32768", "ipAddressList":
+    ["192.168.1.2/24"], "macaddr": "28:b7:ad:7a:ca:24", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616357377099}, {"namespace": "junos", "hostname":
+    "exit02", "ifname": "em4.32768", "ipAddressList": ["192.0.2.2/24"], "macaddr":
+    "28:b7:ad:20:0a:b2", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616357377099}, {"namespace": "junos", "hostname": "exit02", "ifname": "jsrv.1",
+    "ipAddressList": ["128.0.0.127/2"], "macaddr": "02:05:86:71:64:00", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357377099}, {"namespace": "junos",
+    "hostname": "exit02", "ifname": "lo0.0", "ipAddressList": ["10.0.0.32/32"], "macaddr":
+    "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377099},
+    {"namespace": "junos", "hostname": "exit02", "ifname": "xe-0/0/2", "ipAddressList":
+    [], "macaddr": "02:05:86:71:64:0b", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357377099}, {"namespace": "junos", "hostname": "exit02",
+    "ifname": "lo0.16385", "ipAddressList": ["10.0.0.122/32"], "macaddr": "None",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377099},
+    {"namespace": "junos", "hostname": "exit02", "ifname": "lo0", "ipAddressList":
+    [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616357377099}, {"namespace": "junos", "hostname": "exit02", "ifname": "jsrv",
+    "ipAddressList": [], "macaddr": "02:05:86:71:64:00", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616357377099}, {"namespace": "junos", "hostname":
+    "exit02", "ifname": "lo0.999", "ipAddressList": [], "macaddr": "None", "ip6AddressList":
+    ["fe80::205:860f:fc71:6400/32"], "state": "up", "master": "evpn-vrf", "timestamp":
+    1616357377099}, {"namespace": "junos", "hostname": "exit02", "ifname": "ipip",
+    "ipAddressList": [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357377099}, {"namespace": "junos", "hostname": "exit02",
+    "ifname": "irb", "ipAddressList": [], "macaddr": "02:05:86:71:64:00", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357377099}, {"namespace": "junos",
+    "hostname": "exit02", "ifname": "pfh-0/0/0", "ipAddressList": [], "macaddr": "None",
+    "ip6AddressList": [], "state": "up", "master": "ENET2", "timestamp": 1616357377099},
+    {"namespace": "junos", "hostname": "exit02", "ifname": "pfe-0/0/0", "ipAddressList":
+    [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "ENET2",
+    "timestamp": 1616357377099}, {"namespace": "junos", "hostname": "exit02", "ifname":
     "gr-0/0/0", "ipAddressList": [], "macaddr": "None", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1606017396039}, {"namespace": "junos", "hostname":
-    "vqfx2", "ifname": "pfe-0/0/0", "ipAddressList": [], "macaddr": "None", "ip6AddressList":
-    [], "state": "up", "master": "ENET2", "timestamp": 1606017396039}, {"namespace":
-    "junos", "hostname": "vqfx2", "ifname": "pfh-0/0/0", "ipAddressList": [], "macaddr":
-    "None", "ip6AddressList": [], "state": "up", "master": "ENET2", "timestamp": 1606017396039},
-    {"namespace": "junos", "hostname": "vqfx2", "ifname": "xe-0/0/0", "ipAddressList":
-    [], "macaddr": "02:05:86:71:af:03", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1606017396039}, {"namespace": "junos", "hostname": "vqfx2", "ifname":
-    "xe-0/0/1", "ipAddressList": [], "macaddr": "02:05:86:71:af:07", "ip6AddressList":
-    [], "state": "up", "master": "bridge", "timestamp": 1606017396039}, {"namespace":
-    "junos", "hostname": "vqfx2", "ifname": "xe-0/0/2", "ipAddressList": [], "macaddr":
-    "02:05:86:71:af:0b", "ip6AddressList": [], "state": "up", "master": "bridge",
-    "timestamp": 1606017396039}, {"namespace": "junos", "hostname": "vqfx2", "ifname":
-    "xe-0/0/3", "ipAddressList": [], "macaddr": "02:05:86:71:af:0f", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1606017396039}, {"namespace": "junos",
-    "hostname": "vqfx2", "ifname": "xe-0/0/4", "ipAddressList": [], "macaddr": "02:05:86:71:af:13",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1606017396039},
-    {"namespace": "junos", "hostname": "vqfx2", "ifname": "xe-0/0/5", "ipAddressList":
-    [], "macaddr": "02:05:86:71:af:17", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1606017396039}, {"namespace": "junos", "hostname": "vqfx2", "ifname":
-    "xe-0/0/6", "ipAddressList": [], "macaddr": "02:05:86:71:af:1b", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1606017396039}, {"namespace": "junos",
-    "hostname": "vqfx2", "ifname": "em7", "ipAddressList": [], "macaddr": "08:00:27:db:d9:d7",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1606017396039},
-    {"namespace": "junos", "hostname": "vqfx2", "ifname": "xe-0/0/7", "ipAddressList":
-    [], "macaddr": "02:05:86:71:af:1f", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1606017396039}, {"namespace": "junos", "hostname": "vqfx2", "ifname":
-    "xe-0/0/9", "ipAddressList": [], "macaddr": "02:05:86:71:af:27", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1606017396039}, {"namespace": "junos",
-    "hostname": "vqfx2", "ifname": "xe-0/0/11", "ipAddressList": [], "macaddr": "02:05:86:71:af:2f",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1606017396039},
-    {"namespace": "junos", "hostname": "vqfx2", "ifname": "bme0", "ipAddressList":
-    [], "macaddr": "02:00:00:00:00:0a", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1606017396039}, {"namespace": "junos", "hostname": "vqfx2", "ifname":
-    "cbp0", "ipAddressList": [], "macaddr": "02:05:86:71:af:14", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1606017396039}, {"namespace": "junos",
-    "hostname": "vqfx2", "ifname": "dsc", "ipAddressList": [], "macaddr": "None",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1606017396039},
-    {"namespace": "junos", "hostname": "vqfx2", "ifname": "em0", "ipAddressList":
-    [], "macaddr": "08:00:27:65:98:2d", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1606017396039}, {"namespace": "junos", "hostname": "vqfx2", "ifname":
-    "em1", "ipAddressList": [], "macaddr": "08:00:27:c4:65:c1", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1606017396039}, {"namespace": "junos",
-    "hostname": "vqfx2", "ifname": "em2", "ipAddressList": [], "macaddr": "08:00:27:a3:95:07",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1606017396039},
-    {"namespace": "junos", "hostname": "vqfx2", "ifname": "em3", "ipAddressList":
-    [], "macaddr": "08:00:27:f8:47:cc", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1606017396039}, {"namespace": "junos", "hostname": "vqfx2", "ifname":
-    "em4", "ipAddressList": [], "macaddr": "08:00:27:d8:7e:ad", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1606017396039}, {"namespace": "junos",
-    "hostname": "vqfx2", "ifname": "em5", "ipAddressList": [], "macaddr": "08:00:27:85:6b:2c",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1606017396039},
-    {"namespace": "junos", "hostname": "vqfx2", "ifname": "xe-0/0/8", "ipAddressList":
-    [], "macaddr": "02:05:86:71:af:23", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1606017396039}, {"namespace": "junos", "hostname": "vqfx2", "ifname":
-    "vtep.32769", "ipAddressList": [], "macaddr": "None", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1606017396039}]'
+    "up", "master": "", "timestamp": 1616357377099}, {"namespace": "junos", "hostname":
+    "exit02", "ifname": "xe-0/0/3", "ipAddressList": [], "macaddr": "02:05:86:71:64:0f",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377099},
+    {"namespace": "junos", "hostname": "exit02", "ifname": "xe-0/0/4", "ipAddressList":
+    [], "macaddr": "02:05:86:71:64:13", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357377099}, {"namespace": "junos", "hostname": "exit02",
+    "ifname": "xe-0/0/5", "ipAddressList": [], "macaddr": "02:05:86:71:64:17", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357377099}, {"namespace": "junos",
+    "hostname": "exit02", "ifname": "xe-0/0/6", "ipAddressList": [], "macaddr": "02:05:86:71:64:1b",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377099},
+    {"namespace": "junos", "hostname": "exit02", "ifname": "xe-0/0/7", "ipAddressList":
+    [], "macaddr": "02:05:86:71:64:1f", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357377099}, {"namespace": "junos", "hostname": "exit02",
+    "ifname": "xe-0/0/8", "ipAddressList": [], "macaddr": "02:05:86:71:64:23", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357377099}, {"namespace": "junos",
+    "hostname": "exit02", "ifname": "xe-0/0/9", "ipAddressList": [], "macaddr": "02:05:86:71:64:27",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377099},
+    {"namespace": "junos", "hostname": "exit02", "ifname": "xe-0/0/10", "ipAddressList":
+    [], "macaddr": "02:05:86:71:64:2b", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357377099}, {"namespace": "junos", "hostname": "exit02",
+    "ifname": "xe-0/0/11", "ipAddressList": [], "macaddr": "02:05:86:71:64:2f", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357377099}, {"namespace": "junos",
+    "hostname": "exit02", "ifname": "xe-0/0/0", "ipAddressList": [], "macaddr": "02:05:86:71:64:03",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377099},
+    {"namespace": "junos", "hostname": "exit02", "ifname": "cbp0", "ipAddressList":
+    [], "macaddr": "02:05:86:71:64:14", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357377099}, {"namespace": "junos", "hostname": "exit02",
+    "ifname": "bme0", "ipAddressList": [], "macaddr": "02:00:00:00:00:0a", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357377099}, {"namespace": "junos",
+    "hostname": "exit02", "ifname": "fti0", "ipAddressList": [], "macaddr": "None",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377099},
+    {"namespace": "junos", "hostname": "exit02", "ifname": "esi", "ipAddressList":
+    [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616357377099}, {"namespace": "junos", "hostname": "exit02", "ifname": "em6",
+    "ipAddressList": [], "macaddr": "28:b7:ad:61:de:30", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616357377099}, {"namespace": "junos", "hostname":
+    "exit02", "ifname": "em5", "ipAddressList": [], "macaddr": "28:b7:ad:c1:a2:ac",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377099},
+    {"namespace": "junos", "hostname": "exit02", "ifname": "gre", "ipAddressList":
+    [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616357377099}, {"namespace": "junos", "hostname": "exit02", "ifname": "em3",
+    "ipAddressList": [], "macaddr": "28:b7:ad:09:a5:e4", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616357377099}, {"namespace": "junos", "hostname":
+    "exit02", "ifname": "em2", "ipAddressList": [], "macaddr": "28:b7:ad:7a:ca:24",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377099},
+    {"namespace": "junos", "hostname": "exit02", "ifname": "em1", "ipAddressList":
+    [], "macaddr": "28:b7:ad:53:77:b2", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357377099}, {"namespace": "junos", "hostname": "exit02",
+    "ifname": "em0", "ipAddressList": [], "macaddr": "44:38:39:01:03:02", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357377099}, {"namespace": "junos",
+    "hostname": "exit02", "ifname": "dsc", "ipAddressList": [], "macaddr": "None",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377099},
+    {"namespace": "junos", "hostname": "exit02", "ifname": "em4", "ipAddressList":
+    [], "macaddr": "28:b7:ad:20:0a:b2", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357377099}, {"namespace": "junos", "hostname": "spine02",
+    "ifname": "pip0", "ipAddressList": [], "macaddr": "02:05:86:71:76:df", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357377303}, {"namespace": "junos",
+    "hostname": "spine02", "ifname": "pime", "ipAddressList": [], "macaddr": "None",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377303},
+    {"namespace": "junos", "hostname": "spine02", "ifname": "pimd", "ipAddressList":
+    [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616357377303}, {"namespace": "junos", "hostname": "spine02", "ifname": "mtun",
+    "ipAddressList": [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357377303}, {"namespace": "junos", "hostname": "spine02",
+    "ifname": "lo0", "ipAddressList": [], "macaddr": "None", "ip6AddressList": [],
+    "state": "up", "master": "", "timestamp": 1616357377303}, {"namespace": "junos",
+    "hostname": "spine02", "ifname": "jsrv", "ipAddressList": [], "macaddr": "02:05:86:71:7b:00",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377303},
+    {"namespace": "junos", "hostname": "spine02", "ifname": "irb", "ipAddressList":
+    [], "macaddr": "02:05:86:71:7b:00", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357377303}, {"namespace": "junos", "hostname": "spine02",
+    "ifname": "ipip", "ipAddressList": [], "macaddr": "None", "ip6AddressList": [],
+    "state": "up", "master": "", "timestamp": 1616357377303}, {"namespace": "junos",
+    "hostname": "spine02", "ifname": "tap", "ipAddressList": [], "macaddr": "None",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377303},
+    {"namespace": "junos", "hostname": "spine02", "ifname": "lsi", "ipAddressList":
+    [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616357377303}, {"namespace": "junos", "hostname": "spine02", "ifname": "gre",
+    "ipAddressList": [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357377303}, {"namespace": "junos", "hostname": "spine02",
+    "ifname": "xe-0/0/3.0", "ipAddressList": ["10.0.0.22/32"], "macaddr": "02:05:86:71:7b:0f",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377303},
+    {"namespace": "junos", "hostname": "spine02", "ifname": "vtep", "ipAddressList":
+    [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616357377303}, {"namespace": "junos", "hostname": "spine02", "ifname": "xe-0/0/0.0",
+    "ipAddressList": ["10.0.0.22/32"], "macaddr": "02:05:86:71:7b:03", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357377303}, {"namespace": "junos",
+    "hostname": "spine02", "ifname": "xe-0/0/1.0", "ipAddressList": ["10.0.0.22/32"],
+    "macaddr": "02:05:86:71:7b:07", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357377303}, {"namespace": "junos", "hostname": "spine02",
+    "ifname": "xe-0/0/2.0", "ipAddressList": ["10.0.0.22/32"], "macaddr": "02:05:86:71:7b:0b",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377303},
+    {"namespace": "junos", "hostname": "spine02", "ifname": "bme0.0", "ipAddressList":
+    ["128.0.0.1/2", "128.0.0.4/2", "128.0.0.16/2", "128.0.0.63/2"], "macaddr": "02:00:00:00:00:0a",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377303},
+    {"namespace": "junos", "hostname": "spine02", "ifname": "em0.0", "ipAddressList":
+    ["10.255.3.118/24"], "macaddr": "44:38:39:01:01:02", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616357377303}, {"namespace": "junos", "hostname":
+    "spine02", "ifname": "em1.0", "ipAddressList": ["169.254.0.2/24"], "macaddr":
+    "28:b7:ad:04:52:c9", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616357377303}, {"namespace": "junos", "hostname": "spine02", "ifname": "em2.32768",
+    "ipAddressList": ["192.168.1.2/24"], "macaddr": "28:b7:ad:4d:93:f5", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357377303}, {"namespace": "junos",
+    "hostname": "spine02", "ifname": "em4.32768", "ipAddressList": ["192.0.2.2/24"],
+    "macaddr": "28:b7:ad:a7:cd:12", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357377303}, {"namespace": "junos", "hostname": "spine02",
+    "ifname": "jsrv.1", "ipAddressList": ["128.0.0.127/2"], "macaddr": "02:05:86:71:7b:00",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377303},
+    {"namespace": "junos", "hostname": "spine02", "ifname": "fti0", "ipAddressList":
+    [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616357377303}, {"namespace": "junos", "hostname": "spine02", "ifname": "vme",
+    "ipAddressList": [], "macaddr": "02:05:86:71:7b:01", "ip6AddressList": [], "state":
+    "down", "master": "", "timestamp": 1616357377303}, {"namespace": "junos", "hostname":
+    "spine02", "ifname": "esi", "ipAddressList": [], "macaddr": "None", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357377303}, {"namespace": "junos",
+    "hostname": "spine02", "ifname": "xe-0/0/8", "ipAddressList": [], "macaddr": "02:05:86:71:7b:23",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377303},
+    {"namespace": "junos", "hostname": "spine02", "ifname": "em5", "ipAddressList":
+    [], "macaddr": "28:b7:ad:e8:90:89", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357377303}, {"namespace": "junos", "hostname": "spine02",
+    "ifname": "lo0.0", "ipAddressList": ["10.0.0.22/32"], "macaddr": "None", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357377303}, {"namespace": "junos",
+    "hostname": "spine02", "ifname": "gr-0/0/0", "ipAddressList": [], "macaddr": "None",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377303},
+    {"namespace": "junos", "hostname": "spine02", "ifname": "pfe-0/0/0", "ipAddressList":
+    [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "ENET2",
+    "timestamp": 1616357377303}, {"namespace": "junos", "hostname": "spine02", "ifname":
+    "pfh-0/0/0", "ipAddressList": [], "macaddr": "None", "ip6AddressList": [], "state":
+    "up", "master": "ENET2", "timestamp": 1616357377303}, {"namespace": "junos", "hostname":
+    "spine02", "ifname": "xe-0/0/0", "ipAddressList": [], "macaddr": "02:05:86:71:7b:03",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377303},
+    {"namespace": "junos", "hostname": "spine02", "ifname": "xe-0/0/1", "ipAddressList":
+    [], "macaddr": "02:05:86:71:7b:07", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357377303}, {"namespace": "junos", "hostname": "spine02",
+    "ifname": "xe-0/0/2", "ipAddressList": [], "macaddr": "02:05:86:71:7b:0b", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357377303}, {"namespace": "junos",
+    "hostname": "spine02", "ifname": "xe-0/0/3", "ipAddressList": [], "macaddr": "02:05:86:71:7b:0f",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377303},
+    {"namespace": "junos", "hostname": "spine02", "ifname": "xe-0/0/4", "ipAddressList":
+    [], "macaddr": "02:05:86:71:7b:13", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357377303}, {"namespace": "junos", "hostname": "spine02",
+    "ifname": "xe-0/0/5", "ipAddressList": [], "macaddr": "02:05:86:71:7b:17", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357377303}, {"namespace": "junos",
+    "hostname": "spine02", "ifname": "xe-0/0/6", "ipAddressList": [], "macaddr": "02:05:86:71:7b:1b",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377303},
+    {"namespace": "junos", "hostname": "spine02", "ifname": "xe-0/0/7", "ipAddressList":
+    [], "macaddr": "02:05:86:71:7b:1f", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357377303}, {"namespace": "junos", "hostname": "spine02",
+    "ifname": "xe-0/0/9", "ipAddressList": [], "macaddr": "02:05:86:71:7b:27", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357377303}, {"namespace": "junos",
+    "hostname": "spine02", "ifname": "xe-0/0/10", "ipAddressList": [], "macaddr":
+    "02:05:86:71:7b:2b", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616357377303}, {"namespace": "junos", "hostname": "spine02", "ifname": "xe-0/0/11",
+    "ipAddressList": [], "macaddr": "02:05:86:71:7b:2f", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616357377303}, {"namespace": "junos", "hostname":
+    "spine02", "ifname": "bme0", "ipAddressList": [], "macaddr": "02:00:00:00:00:0a",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377303},
+    {"namespace": "junos", "hostname": "spine02", "ifname": "cbp0", "ipAddressList":
+    [], "macaddr": "02:05:86:71:7b:14", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357377303}, {"namespace": "junos", "hostname": "spine02",
+    "ifname": "dsc", "ipAddressList": [], "macaddr": "None", "ip6AddressList": [],
+    "state": "up", "master": "", "timestamp": 1616357377303}, {"namespace": "junos",
+    "hostname": "spine02", "ifname": "em0", "ipAddressList": [], "macaddr": "44:38:39:01:01:02",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377303},
+    {"namespace": "junos", "hostname": "spine02", "ifname": "em1", "ipAddressList":
+    [], "macaddr": "28:b7:ad:04:52:c9", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357377303}, {"namespace": "junos", "hostname": "spine02",
+    "ifname": "em2", "ipAddressList": [], "macaddr": "28:b7:ad:4d:93:f5", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357377303}, {"namespace": "junos",
+    "hostname": "spine02", "ifname": "em3", "ipAddressList": [], "macaddr": "28:b7:ad:fd:cf:d8",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616357377303},
+    {"namespace": "junos", "hostname": "spine02", "ifname": "em4", "ipAddressList":
+    [], "macaddr": "28:b7:ad:a7:cd:12", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616357377303}, {"namespace": "junos", "hostname": "spine02",
+    "ifname": "em6", "ipAddressList": [], "macaddr": "28:b7:ad:ab:c8:5d", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616357377303}, {"namespace": "junos",
+    "hostname": "spine02", "ifname": "lo0.16385", "ipAddressList": [], "macaddr":
+    "None", "ip6AddressList": ["fe80::205:860f:fc71:7b00/32"], "state": "up", "master":
+    "", "timestamp": 1616357377303}]'
 - command: address show --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: address show junos
-  output: '[{"hostname": "srv21"}, {"hostname": "srv21"}, {"hostname": "srv21"}, {"hostname":
-    "srv11"}, {"hostname": "srv22"}, {"hostname": "srv22"}, {"hostname": "srv22"},
-    {"hostname": "srv11"}, {"hostname": "srv11"}, {"hostname": "srv12"}, {"hostname":
-    "srv12"}, {"hostname": "srv12"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"},
-    {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname":
-    "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"},
-    {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname":
-    "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"},
-    {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname":
-    "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"},
-    {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname":
-    "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"},
-    {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname":
-    "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"},
-    {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname":
-    "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"},
-    {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname":
-    "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"},
-    {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname": "vqfx1"}, {"hostname":
-    "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"},
-    {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname":
-    "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"},
-    {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname":
-    "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"},
-    {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname":
-    "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"},
-    {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname":
-    "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"},
-    {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname":
-    "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"},
-    {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname":
-    "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"},
-    {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname":
-    "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"}, {"hostname": "vqfx2"},
-    {"hostname": "vqfx2"}]'
+  output: '[{"hostname": "server201"}, {"hostname": "server201"}, {"hostname": "server201"},
+    {"hostname": "server202"}, {"hostname": "server202"}, {"hostname": "server202"},
+    {"hostname": "server102"}, {"hostname": "server102"}, {"hostname": "server102"},
+    {"hostname": "server101"}, {"hostname": "server101"}, {"hostname": "server101"},
+    {"hostname": "firewall01"}, {"hostname": "firewall01"}, {"hostname": "firewall01"},
+    {"hostname": "firewall01"}, {"hostname": "firewall01"}, {"hostname": "firewall01"},
+    {"hostname": "firewall01"}, {"hostname": "firewall01"}, {"hostname": "firewall01"},
+    {"hostname": "firewall01"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "dcedge01"}, {"hostname":
+    "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname":
+    "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname":
+    "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname":
+    "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname":
+    "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname":
+    "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname":
+    "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname":
+    "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname":
+    "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname":
+    "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname":
+    "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname":
+    "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname":
+    "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname":
+    "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname":
+    "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname":
+    "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}]'
 - command: address summarize --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: address summarize junos
-  output: '{"junos": {"deviceCnt": 6, "addressCnt": 120, "uniqueV4AddressCnt": 23,
-    "uniqueV6AddressCnt": 0, "uniqueIfMacCnt": 59, "deviceWithv4AddressCnt": 6, "deviceWithv6AddressCnt":
-    0, "subnetsUsed": ["24", "2", "30", "32"], "subnetTopCounts": [{"24": 24}, {"2":
-    10}, {"30": 2}]}}'
+  output: '{"junos": {"deviceCnt": 12, "addressCnt": 402, "uniqueV4AddressCnt": 54,
+    "uniqueV6AddressCnt": 0, "uniqueIfMacCnt": 177, "deviceWithv4AddressCnt": 12,
+    "deviceWithv6AddressCnt": 0, "subnetsUsed": ["24", "2", "32", "30", "31"], "subnetTopCounts":
+    [{"24": 41}, {"2": 35}, {"32": 27}]}}'
 - command: address unique --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: address unique junos
-  output: '[{"hostname": "srv11", "count": 3}, {"hostname": "srv12", "count": 3},
-    {"hostname": "srv21", "count": 3}, {"hostname": "srv22", "count": 3}, {"hostname":
-    "vqfx1", "count": 54}, {"hostname": "vqfx2", "count": 54}]'
+  output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
+    {"hostname": "firewall01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
+    "server101"}, {"hostname": "server102"}, {"hostname": "server201"}, {"hostname":
+    "server202"}, {"hostname": "spine01"}, {"hostname": "spine02"}]'
