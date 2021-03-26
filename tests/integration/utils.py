@@ -80,11 +80,14 @@ def assert_df_equal(expected_df, got_df, ignore_cols) -> None:
             got_df = got_df.sort_values(by=got_df.columns.tolist())
 
     except Exception:
-        if 'namespace' in expected_df.columns and 'timestamp' in expected_df.columns:
-            expected_df = expected_df.sort_values(
-                by=['namespace', 'hostname']).reset_index(drop=True)
-            got_df = got_df.sort_values(
-                by=['namespace', 'hostname']).reset_index(drop=True)
+        sortcols = [x
+                    for x in ['namespace', 'hostname', 'ifname', 'vrf',
+                              'peer', 'prefix', 'ipAddress', 'vlan', 'macaddr']
+                    if x in expected_df.columns]
+        if sortcols:
+            expected_df = expected_df.sort_values(by=sortcols) \
+                                     .reset_index(drop=True)
+            got_df = got_df.sort_values(by=sortcols).reset_index(drop=True)
 
     if got_df.shape != expected_df.shape:
         if 'count' in expected_df.columns and (
@@ -92,9 +95,21 @@ def assert_df_equal(expected_df, got_df, ignore_cols) -> None:
             # This is the old unique issue
             assert got_df.shape == expected_df.shape, 'old unique'
         else:
-            assert got_df.shape == expected_df.shape, f'{got_df.shape} != {expected_df.shape}'
+            if 'namespace' in expected_df.columns:
+
+                assert got_df.shape == expected_df.shape, \
+                    f'expected/{expected_df.shape} != got/{got_df.shape}\n' \
+                    f'{expected_df.namespace.value_counts()} \nVS\n{got_df.namespace.value_counts()}'
+            elif 'hostname' in expected_df.columns:
+                assert got_df.shape == expected_df.shape, \
+                    f'expected/{expected_df.shape} != got/{got_df.shape}\n' \
+                    f'{expected_df.hostname.value_counts()} \nVS\n{got_df.hostname.value_counts()}'
+            else:
+                assert got_df.shape == expected_df.shape, \
+                    f'expected/{expected_df.shape} != got/{got_df.shape}'
+
     assert (got_df.columns == expected_df.columns).all(
-    ), 'column names/order do not match'
+    ), 'shapes match, column names/order do not'
     # We assume the asssert failure prevents the code from continuing
 
     try:
