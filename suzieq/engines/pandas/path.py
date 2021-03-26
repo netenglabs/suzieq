@@ -53,8 +53,9 @@ class PathObj(SqPandasEngine):
                         for x in mlag_df.groupby(by=['systemId'])['hostname']
                         .unique().tolist()]
             for peers in peerlist:
-                mlag_peers[peers[0]] = peers[1]
-                mlag_peers[peers[1]] = peers[0]
+                if len(peers) > 1:
+                    mlag_peers[peers[0]] = peers[1]
+                    mlag_peers[peers[1]] = peers[0]
             for row in mlag_df.itertuples():
                 mlag_peerlink[row.hostname] = expand_nxos_ifname(row.peerLink)
         self._mlag_peers = mlag_peers
