@@ -368,17 +368,17 @@ class BgpService(Service):
                 elif comm == 'standard':
                     new_entry['communityTypes'] = ['standard']
 
-                new_entry['rrclient'] = 'routeReflectorClient' in subent
+                new_entry['rrclient'] = 'routeReflectorClient' in subent or False
                 new_entry['pfxRx'] = subent.get('acceptedPrefixCounter', 0)
                 new_entry['pfxTx'] = subent.get('sentPrefixCounter', 0)
                 new_entry['ingressRmap'] = \
                     subent.get('routeMapForIncomingAdvertisements', '')
                 new_entry['egressRmap'] = \
                     subent.get('routeMapForOutgoingAdvertisements', '')
-                new_entry['defOriginate'] = 'defaultSent' in subent
-                new_entry['advertiseAllVni'] = 'advertiseAllVnis' in subent
+                new_entry['defOriginate'] = 'defaultSent' in subent or False
+                new_entry['advertiseAllVnis'] = 'advertiseAllVnis' in subent or False
                 new_entry['nhUnchanged'] = \
-                    'unchangedNextHopPropogatedToNbr' in subent
+                    'unchangedNextHopPropogatedToNbr' in subent or False
 
                 new_entries.append(new_entry)
 
