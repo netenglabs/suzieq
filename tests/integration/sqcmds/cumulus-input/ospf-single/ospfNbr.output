@@ -1,109 +1,231 @@
 [
     {
         "status": 0,
-        "timestamp": 1597553946548,
-        "cmd": "sudo vtysh -c 'show ip ospf neighbor detail'",
-        "devtype": "cumulus",
+        "timestamp": 1616352403216,
+        "cmd": "sudo vtysh -c 'show ip ospf vrf all neighbor detail'",
+        "devtype": "linux",
         "namespace": "ospf-single",
-        "hostname": "exit02",
-        "address": "192.168.123.224",
-        "version": "3.7.11",
-        "data": " Neighbor 10.0.0.21, interface address 10.127.0.10\n    In the area 0.0.0.0 via interface swp1\n    Neighbor priority is 1, State is Full, 5 state changes\n    Most recent state change statistics:\n      Progressive change 41m26s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 39.626s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n Neighbor 10.0.0.22, interface address 10.127.1.10\n    In the area 0.0.0.0 via interface swp2\n    Neighbor priority is 1, State is Full, 5 state changes\n    Most recent state change statistics:\n      Progressive change 41m31s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 38.674s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n\n"
+        "hostname": "edge01",
+        "address": "10.255.2.109",
+        "version": "16.04",
+        "data": ""
+    },
+    {
+        "status": 0,
+        "timestamp": 1616352403439,
+        "cmd": "sudo vtysh -c 'show ip ospf vrf all neighbor'",
+        "devtype": "linux",
+        "namespace": "ospf-single",
+        "hostname": "edge01",
+        "address": "10.255.2.109",
+        "version": "16.04",
+        "data": ""
     }
 ][
     {
         "status": 0,
-        "timestamp": 1597553946608,
-        "cmd": "sudo vtysh -c 'show ip ospf neighbor detail'",
-        "devtype": "cumulus",
-        "namespace": "ospf-single",
-        "hostname": "exit01",
-        "address": "192.168.123.119",
-        "version": "3.7.11",
-        "data": " Neighbor 10.0.0.21, interface address 10.127.0.8\n    In the area 0.0.0.0 via interface swp1\n    Neighbor priority is 1, State is Full, 5 state changes\n    Most recent state change statistics:\n      Progressive change 41m26s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 39.573s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n Neighbor 10.0.0.22, interface address 10.127.1.8\n    In the area 0.0.0.0 via interface swp2\n    Neighbor priority is 1, State is Full, 5 state changes\n    Most recent state change statistics:\n      Progressive change 41m31s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 38.621s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n\n"
-    }
-][
-    {
-        "status": 0,
-        "timestamp": 1597553946718,
-        "cmd": "sudo vtysh -c 'show ip ospf neighbor detail'",
-        "devtype": "cumulus",
-        "namespace": "ospf-single",
-        "hostname": "spine02",
-        "address": "192.168.123.210",
-        "version": "3.7.11",
-        "data": " Neighbor 10.0.0.11, interface address 10.127.1.1\n    In the area 0.0.0.0 via interface swp1\n    Neighbor priority is 1, State is Full, 5 state changes\n    Most recent state change statistics:\n      Progressive change 41m32s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 37.869s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n    BFD: Type: single hop\n      Detect Multiplier: 3, Min Rx interval: 300, Min Tx interval: 300\n      Status: Up, Last update: 0:00:41:30\n\n Neighbor 10.0.0.12, interface address 10.127.1.3\n    In the area 0.0.0.0 via interface swp2\n    Neighbor priority is 1, State is Full, 5 state changes\n    Most recent state change statistics:\n      Progressive change 41m31s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 38.733s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n Neighbor 10.0.0.13, interface address 10.127.1.5\n    In the area 0.0.0.0 via interface swp3\n    Neighbor priority is 1, State is Full, 5 state changes\n    Most recent state change statistics:\n      Progressive change 41m31s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 38.960s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n Neighbor 10.0.0.14, interface address 10.127.1.7\n    In the area 0.0.0.0 via interface swp4\n    Neighbor priority is 1, State is Full, 5 state changes\n    Most recent state change statistics:\n      Progressive change 41m31s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 38.717s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n Neighbor 10.0.0.102, interface address 10.127.1.11\n    In the area 0.0.0.0 via interface swp5\n    Neighbor priority is 1, State is Full, 5 state changes\n    Most recent state change statistics:\n      Progressive change 41m31s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 39.002s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n Neighbor 10.0.0.101, interface address 10.127.1.9\n    In the area 0.0.0.0 via interface swp6\n    Neighbor priority is 1, State is Full, 5 state changes\n    Most recent state change statistics:\n      Progressive change 41m31s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 30.764s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n\n"
-    }
-][
-    {
-        "status": 0,
-        "timestamp": 1597553946718,
-        "cmd": "sudo vtysh -c 'show ip ospf neighbor detail'",
+        "timestamp": 1616352403840,
+        "cmd": "sudo vtysh -c 'show ip ospf vrf all neighbor detail'",
         "devtype": "cumulus",
         "namespace": "ospf-single",
         "hostname": "leaf01",
-        "address": "192.168.123.121",
-        "version": "3.7.11",
-        "data": " Neighbor 10.0.0.21, interface address 10.127.0.0\n    In the area 0.0.0.0 via interface swp1\n    Neighbor priority is 1, State is Full, 5 state changes\n    Most recent state change statistics:\n      Progressive change 41m32s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 39.512s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n    BFD: Type: single hop\n      Detect Multiplier: 3, Min Rx interval: 300, Min Tx interval: 300\n      Status: Up, Last update: 0:00:41:29\n\n Neighbor 10.0.0.22, interface address 10.127.1.0\n    In the area 0.0.0.0 via interface swp2\n    Neighbor priority is 1, State is Full, 5 state changes\n    Most recent state change statistics:\n      Progressive change 41m32s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 38.560s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n    BFD: Type: single hop\n      Detect Multiplier: 3, Min Rx interval: 300, Min Tx interval: 300\n      Status: Up, Last update: 0:00:41:29\n\n\n"
-    }
-][
+        "address": "10.255.2.23",
+        "version": "4.3.0",
+        "data": "VRF Name: default\n Neighbor 10.0.0.21, interface address 10.0.0.21\n    In the area 0.0.0.0 via interface swp1\n    Neighbor priority is 1, State is Full, 5 state changes\n    Most recent state change statistics:\n      Progressive change 6m13s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 35.497s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n Neighbor 10.0.0.22, interface address 10.0.0.22\n    In the area 0.0.0.0 via interface swp2\n    Neighbor priority is 1, State is Full, 5 state changes\n    Most recent state change statistics:\n      Progressive change 6m13s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 35.512s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n\n"
+    },
     {
         "status": 0,
-        "timestamp": 1597553946724,
-        "cmd": "sudo vtysh -c 'show ip ospf neighbor detail'",
+        "timestamp": 1616352404431,
+        "cmd": "sudo vtysh -c 'show ip ospf vrf all neighbor'",
         "devtype": "cumulus",
         "namespace": "ospf-single",
-        "hostname": "leaf03",
-        "address": "192.168.123.131",
-        "version": "3.7.11",
-        "data": " Neighbor 10.0.0.21, interface address 10.127.0.4\n    In the area 0.0.0.0 via interface swp1\n    Neighbor priority is 1, State is Full, 5 state changes\n    Most recent state change statistics:\n      Progressive change 41m26s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 39.450s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n Neighbor 10.0.0.22, interface address 10.127.1.4\n    In the area 0.0.0.0 via interface swp2\n    Neighbor priority is 1, State is Full, 5 state changes\n    Most recent state change statistics:\n      Progressive change 41m31s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 38.497s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n\n"
+        "hostname": "leaf01",
+        "address": "10.255.2.23",
+        "version": "4.3.0",
+        "data": "VRF Name: default\n\nNeighbor ID     Pri State           Dead Time Address         Interface                        RXmtL RqstL DBsmL\n10.0.0.21         1 Full/DROther      34.913s 10.0.0.21       swp1:10.0.0.11                       0     0     0\n10.0.0.22         1 Full/DROther      34.928s 10.0.0.22       swp2:10.0.0.11                       0     0     0\n\nOSPF instance not found\n"
     }
 ][
     {
         "status": 0,
-        "timestamp": 1597553946724,
-        "cmd": "sudo vtysh -c 'show ip ospf neighbor detail'",
+        "timestamp": 1616352403841,
+        "cmd": "sudo vtysh -c 'show ip ospf vrf all neighbor detail'",
         "devtype": "cumulus",
         "namespace": "ospf-single",
-        "hostname": "internet",
-        "address": "192.168.123.134",
-        "version": "3.7.11",
-        "data": " Neighbor 10.0.0.101, interface address 169.254.127.1\n    In the area 0.0.0.0 via interface swp1\n    Neighbor priority is 1, State is Full, 4 state changes\n    Most recent state change statistics:\n      Progressive change 41m33s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 30.683s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n Neighbor 10.0.0.101, interface address 169.254.127.3\n    In the area 0.0.0.0 via interface swp2\n    Neighbor priority is 1, State is Full, 5 state changes\n    Most recent state change statistics:\n      Progressive change 41m33s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 38.922s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n\n"
+        "hostname": "exit01",
+        "address": "10.255.2.88",
+        "version": "4.3.0",
+        "data": "VRF Name: default\n Neighbor 10.0.0.21, interface address 10.0.0.21\n    In the area 0.0.0.0 via interface swp1\n    Neighbor priority is 1, State is Full, 4 state changes\n    Most recent state change statistics:\n      Progressive change 6m13s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 35.458s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n Neighbor 10.0.0.22, interface address 10.0.0.22\n    In the area 0.0.0.0 via interface swp2\n    Neighbor priority is 1, State is Full, 4 state changes\n    Most recent state change statistics:\n      Progressive change 6m13s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 35.473s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1616352404640,
+        "cmd": "sudo vtysh -c 'show ip ospf vrf all neighbor'",
+        "devtype": "cumulus",
+        "namespace": "ospf-single",
+        "hostname": "exit01",
+        "address": "10.255.2.88",
+        "version": "4.3.0",
+        "data": "VRF Name: default\n\nNeighbor ID     Pri State           Dead Time Address         Interface                        RXmtL RqstL DBsmL\n10.0.0.21         1 Full/DROther      34.805s 10.0.0.21       swp1:10.0.0.101                      0     0     0\n10.0.0.22         1 Full/DROther      34.820s 10.0.0.22       swp2:10.0.0.101                      0     0     0\n\nOSPF instance not found\n"
     }
 ][
     {
         "status": 0,
-        "timestamp": 1597553946764,
-        "cmd": "sudo vtysh -c 'show ip ospf neighbor detail'",
+        "timestamp": 1616352403841,
+        "cmd": "sudo vtysh -c 'show ip ospf vrf all neighbor detail'",
+        "devtype": "cumulus",
+        "namespace": "ospf-single",
+        "hostname": "exit02",
+        "address": "10.255.2.41",
+        "version": "4.3.0",
+        "data": "VRF Name: default\n Neighbor 10.0.0.21, interface address 10.0.0.21\n    In the area 0.0.0.0 via interface swp1\n    Neighbor priority is 1, State is Full, 5 state changes\n    Most recent state change statistics:\n      Progressive change 6m13s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 35.499s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n Neighbor 10.0.0.22, interface address 10.0.0.22\n    In the area 0.0.0.0 via interface swp2\n    Neighbor priority is 1, State is Full, 4 state changes\n    Most recent state change statistics:\n      Progressive change 6m13s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 35.514s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1616352404640,
+        "cmd": "sudo vtysh -c 'show ip ospf vrf all neighbor'",
+        "devtype": "cumulus",
+        "namespace": "ospf-single",
+        "hostname": "exit02",
+        "address": "10.255.2.41",
+        "version": "4.3.0",
+        "data": "VRF Name: default\n\nNeighbor ID     Pri State           Dead Time Address         Interface                        RXmtL RqstL DBsmL\n10.0.0.21         1 Full/DROther      34.903s 10.0.0.21       swp1:10.0.0.102                      0     0     0\n10.0.0.22         1 Full/DROther      34.917s 10.0.0.22       swp2:10.0.0.102                      0     0     0\n\nOSPF instance not found\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1616352403996,
+        "cmd": "sudo vtysh -c 'show ip ospf vrf all neighbor detail'",
         "devtype": "cumulus",
         "namespace": "ospf-single",
         "hostname": "leaf04",
-        "address": "192.168.123.139",
-        "version": "3.7.11",
-        "data": " Neighbor 10.0.0.21, interface address 10.127.0.6\n    In the area 0.0.0.0 via interface swp1\n    Neighbor priority is 1, State is Full, 5 state changes\n    Most recent state change statistics:\n      Progressive change 41m31s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 39.411s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n Neighbor 10.0.0.22, interface address 10.127.1.6\n    In the area 0.0.0.0 via interface swp2\n    Neighbor priority is 1, State is Full, 5 state changes\n    Most recent state change statistics:\n      Progressive change 41m31s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 38.459s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n\n"
+        "address": "10.255.2.10",
+        "version": "4.3.0",
+        "data": "VRF Name: default\n Neighbor 10.0.0.21, interface address 10.0.0.21\n    In the area 0.0.0.0 via interface swp1\n    Neighbor priority is 1, State is Full, 5 state changes\n    Most recent state change statistics:\n      Progressive change 6m13s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 35.302s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n Neighbor 10.0.0.22, interface address 10.0.0.22\n    In the area 0.0.0.0 via interface swp2\n    Neighbor priority is 1, State is Full, 5 state changes\n    Most recent state change statistics:\n      Progressive change 6m14s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 35.317s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1616352404640,
+        "cmd": "sudo vtysh -c 'show ip ospf vrf all neighbor'",
+        "devtype": "cumulus",
+        "namespace": "ospf-single",
+        "hostname": "leaf04",
+        "address": "10.255.2.10",
+        "version": "4.3.0",
+        "data": "VRF Name: default\n\nNeighbor ID     Pri State           Dead Time Address         Interface                        RXmtL RqstL DBsmL\n10.0.0.21         1 Full/DROther      34.756s 10.0.0.21       swp1:10.0.0.14                       0     0     0\n10.0.0.22         1 Full/DROther      34.771s 10.0.0.22       swp2:10.0.0.14                       0     0     0\n\nOSPF instance not found\n"
     }
 ][
     {
         "status": 0,
-        "timestamp": 1597553946795,
-        "cmd": "sudo vtysh -c 'show ip ospf neighbor detail'",
+        "timestamp": 1616352403841,
+        "cmd": "sudo vtysh -c 'show ip ospf vrf all neighbor detail'",
+        "devtype": "cumulus",
+        "namespace": "ospf-single",
+        "hostname": "spine02",
+        "address": "10.255.2.60",
+        "version": "4.3.0",
+        "data": "VRF Name: default\n Neighbor 10.0.0.11, interface address 10.0.0.11\n    In the area 0.0.0.0 via interface swp1\n    Neighbor priority is 1, State is Full, 4 state changes\n    Most recent state change statistics:\n      Progressive change 6m13s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 35.460s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n Neighbor 10.0.0.12, interface address 10.0.0.12\n    In the area 0.0.0.0 via interface swp2\n    Neighbor priority is 1, State is Full, 4 state changes\n    Most recent state change statistics:\n      Progressive change 6m13s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 35.507s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n Neighbor 10.0.0.13, interface address 10.0.0.13\n    In the area 0.0.0.0 via interface swp3\n    Neighbor priority is 1, State is Full, 4 state changes\n    Most recent state change statistics:\n      Progressive change 6m13s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 35.536s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n Neighbor 10.0.0.14, interface address 10.0.0.14\n    In the area 0.0.0.0 via interface swp4\n    Neighbor priority is 1, State is Full, 4 state changes\n    Most recent state change statistics:\n      Progressive change 6m13s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 35.593s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n Neighbor 10.0.0.102, interface address 10.0.0.102\n    In the area 0.0.0.0 via interface swp5\n    Neighbor priority is 1, State is Full, 5 state changes\n    Most recent state change statistics:\n      Progressive change 6m13s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 35.559s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n Neighbor 10.0.0.101, interface address 10.0.0.101\n    In the area 0.0.0.0 via interface swp6\n    Neighbor priority is 1, State is Full, 5 state changes\n    Most recent state change statistics:\n      Progressive change 6m13s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 35.496s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1616352404640,
+        "cmd": "sudo vtysh -c 'show ip ospf vrf all neighbor'",
+        "devtype": "cumulus",
+        "namespace": "ospf-single",
+        "hostname": "spine02",
+        "address": "10.255.2.60",
+        "version": "4.3.0",
+        "data": "VRF Name: default\n\nNeighbor ID     Pri State           Dead Time Address         Interface                        RXmtL RqstL DBsmL\n10.0.0.11         1 Full/DROther      34.831s 10.0.0.11       swp1:10.0.0.22                       0     0     0\n10.0.0.12         1 Full/DROther      34.878s 10.0.0.12       swp2:10.0.0.22                       0     0     0\n10.0.0.13         1 Full/DROther      34.907s 10.0.0.13       swp3:10.0.0.22                       0     0     0\n10.0.0.14         1 Full/DROther      34.964s 10.0.0.14       swp4:10.0.0.22                       0     0     0\n10.0.0.102        1 Full/DROther      34.930s 10.0.0.102      swp5:10.0.0.22                       0     0     0\n10.0.0.101        1 Full/DROther      34.867s 10.0.0.101      swp6:10.0.0.22                       0     0     0\n\nOSPF instance not found\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1616352403841,
+        "cmd": "sudo vtysh -c 'show ip ospf vrf all neighbor detail'",
         "devtype": "cumulus",
         "namespace": "ospf-single",
         "hostname": "spine01",
-        "address": "192.168.123.225",
-        "version": "3.7.11",
-        "data": " Neighbor 10.0.0.11, interface address 10.127.0.1\n    In the area 0.0.0.0 via interface swp1\n    Neighbor priority is 1, State is Full, 5 state changes\n    Most recent state change statistics:\n      Progressive change 41m32s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 37.710s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n    BFD: Type: single hop\n      Detect Multiplier: 3, Min Rx interval: 300, Min Tx interval: 300\n      Status: Up, Last update: 0:00:41:30\n\n Neighbor 10.0.0.12, interface address 10.127.0.3\n    In the area 0.0.0.0 via interface swp2\n    Neighbor priority is 1, State is Full, 5 state changes\n    Most recent state change statistics:\n      Progressive change 41m26s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 38.576s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n Neighbor 10.0.0.13, interface address 10.127.0.5\n    In the area 0.0.0.0 via interface swp3\n    Neighbor priority is 1, State is Full, 5 state changes\n    Most recent state change statistics:\n      Progressive change 41m26s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 38.801s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n Neighbor 10.0.0.14, interface address 10.127.0.7\n    In the area 0.0.0.0 via interface swp4\n    Neighbor priority is 1, State is Full, 5 state changes\n    Most recent state change statistics:\n      Progressive change 41m26s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 38.560s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n Neighbor 10.0.0.102, interface address 10.127.0.11\n    In the area 0.0.0.0 via interface swp5\n    Neighbor priority is 1, State is Full, 5 state changes\n    Most recent state change statistics:\n      Progressive change 41m26s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 38.842s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n Neighbor 10.0.0.101, interface address 10.127.0.9\n    In the area 0.0.0.0 via interface swp6\n    Neighbor priority is 1, State is Full, 5 state changes\n    Most recent state change statistics:\n      Progressive change 41m26s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 30.604s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n\n"
+        "address": "10.255.2.217",
+        "version": "4.3.0",
+        "data": "VRF Name: default\n Neighbor 10.0.0.11, interface address 10.0.0.11\n    In the area 0.0.0.0 via interface swp1\n    Neighbor priority is 1, State is Full, 4 state changes\n    Most recent state change statistics:\n      Progressive change 6m13s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 35.451s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n Neighbor 10.0.0.12, interface address 10.0.0.12\n    In the area 0.0.0.0 via interface swp2\n    Neighbor priority is 1, State is Full, 4 state changes\n    Most recent state change statistics:\n      Progressive change 6m13s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 35.498s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n Neighbor 10.0.0.13, interface address 10.0.0.13\n    In the area 0.0.0.0 via interface swp3\n    Neighbor priority is 1, State is Full, 4 state changes\n    Most recent state change statistics:\n      Progressive change 6m13s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 35.528s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n Neighbor 10.0.0.14, interface address 10.0.0.14\n    In the area 0.0.0.0 via interface swp4\n    Neighbor priority is 1, State is Full, 4 state changes\n    Most recent state change statistics:\n      Progressive change 6m13s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 35.584s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n Neighbor 10.0.0.102, interface address 10.0.0.102\n    In the area 0.0.0.0 via interface swp5\n    Neighbor priority is 1, State is Full, 4 state changes\n    Most recent state change statistics:\n      Progressive change 6m13s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 35.551s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n Neighbor 10.0.0.101, interface address 10.0.0.101\n    In the area 0.0.0.0 via interface swp6\n    Neighbor priority is 1, State is Full, 4 state changes\n    Most recent state change statistics:\n      Progressive change 6m13s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 35.488s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1616352404640,
+        "cmd": "sudo vtysh -c 'show ip ospf vrf all neighbor'",
+        "devtype": "cumulus",
+        "namespace": "ospf-single",
+        "hostname": "spine01",
+        "address": "10.255.2.217",
+        "version": "4.3.0",
+        "data": "VRF Name: default\n\nNeighbor ID     Pri State           Dead Time Address         Interface                        RXmtL RqstL DBsmL\n10.0.0.11         1 Full/DROther      34.754s 10.0.0.11       swp1:10.0.0.21                       0     0     0\n10.0.0.12         1 Full/DROther      34.801s 10.0.0.12       swp2:10.0.0.21                       0     0     0\n10.0.0.13         1 Full/DROther      34.830s 10.0.0.13       swp3:10.0.0.21                       0     0     0\n10.0.0.14         1 Full/DROther      34.887s 10.0.0.14       swp4:10.0.0.21                       0     0     0\n10.0.0.102        1 Full/DROther      34.853s 10.0.0.102      swp5:10.0.0.21                       0     0     0\n10.0.0.101        1 Full/DROther      34.790s 10.0.0.101      swp6:10.0.0.21                       0     0     0\n\nOSPF instance not found\n"
     }
 ][
     {
         "status": 0,
-        "timestamp": 1597553946900,
-        "cmd": "sudo vtysh -c 'show ip ospf neighbor detail'",
+        "timestamp": 1616352403848,
+        "cmd": "sudo vtysh -c 'show ip ospf vrf all neighbor detail'",
         "devtype": "cumulus",
         "namespace": "ospf-single",
         "hostname": "leaf02",
-        "address": "192.168.123.238",
-        "version": "3.7.11",
-        "data": " Neighbor 10.0.0.21, interface address 10.127.0.2\n    In the area 0.0.0.0 via interface swp1\n    Neighbor priority is 1, State is Full, 5 state changes\n    Most recent state change statistics:\n      Progressive change 41m26s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 39.289s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n Neighbor 10.0.0.22, interface address 10.127.1.2\n    In the area 0.0.0.0 via interface swp2\n    Neighbor priority is 1, State is Full, 5 state changes\n    Most recent state change statistics:\n      Progressive change 41m31s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 38.337s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n\n"
+        "address": "10.255.2.203",
+        "version": "4.3.0",
+        "data": "VRF Name: default\n Neighbor 10.0.0.21, interface address 10.0.0.21\n    In the area 0.0.0.0 via interface swp1\n    Neighbor priority is 1, State is Full, 4 state changes\n    Most recent state change statistics:\n      Progressive change 6m13s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 35.442s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n Neighbor 10.0.0.22, interface address 10.0.0.22\n    In the area 0.0.0.0 via interface swp2\n    Neighbor priority is 1, State is Full, 5 state changes\n    Most recent state change statistics:\n      Progressive change 6m13s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 35.457s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1616352404640,
+        "cmd": "sudo vtysh -c 'show ip ospf vrf all neighbor'",
+        "devtype": "cumulus",
+        "namespace": "ospf-single",
+        "hostname": "leaf02",
+        "address": "10.255.2.203",
+        "version": "4.3.0",
+        "data": "VRF Name: default\n\nNeighbor ID     Pri State           Dead Time Address         Interface                        RXmtL RqstL DBsmL\n10.0.0.21         1 Full/DROther      34.816s 10.0.0.21       swp1:10.0.0.12                       0     0     0\n10.0.0.22         1 Full/DROther      34.831s 10.0.0.22       swp2:10.0.0.12                       0     0     0\n\nOSPF instance not found\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1616352403841,
+        "cmd": "sudo vtysh -c 'show ip ospf vrf all neighbor detail'",
+        "devtype": "cumulus",
+        "namespace": "ospf-single",
+        "hostname": "internet",
+        "address": "10.255.2.239",
+        "version": "4.3.0",
+        "data": ""
+    },
+    {
+        "status": 0,
+        "timestamp": 1616352404640,
+        "cmd": "sudo vtysh -c 'show ip ospf vrf all neighbor'",
+        "devtype": "cumulus",
+        "namespace": "ospf-single",
+        "hostname": "internet",
+        "address": "10.255.2.239",
+        "version": "4.3.0",
+        "data": ""
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1616352403893,
+        "cmd": "sudo vtysh -c 'show ip ospf vrf all neighbor detail'",
+        "devtype": "cumulus",
+        "namespace": "ospf-single",
+        "hostname": "leaf03",
+        "address": "10.255.2.254",
+        "version": "4.3.0",
+        "data": "VRF Name: default\n Neighbor 10.0.0.21, interface address 10.0.0.21\n    In the area 0.0.0.0 via interface swp1\n    Neighbor priority is 1, State is Full, 5 state changes\n    Most recent state change statistics:\n      Progressive change 6m13s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 35.407s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n Neighbor 10.0.0.22, interface address 10.0.0.22\n    In the area 0.0.0.0 via interface swp2\n    Neighbor priority is 1, State is Full, 5 state changes\n    Most recent state change statistics:\n      Progressive change 6m13s ago\n    DR is 0.0.0.0, BDR is 0.0.0.0\n    Options 2 *|-|-|-|-|-|E|-\n    Dead timer due in 35.422s\n    Database Summary List 0\n    Link State Request List 0\n    Link State Retransmission List 0\n    Thread Inactivity Timer on\n    Thread Database Description Retransmision off\n    Thread Link State Request Retransmission on\n    Thread Link State Update Retransmission on\n\n\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1616352404640,
+        "cmd": "sudo vtysh -c 'show ip ospf vrf all neighbor'",
+        "devtype": "cumulus",
+        "namespace": "ospf-single",
+        "hostname": "leaf03",
+        "address": "10.255.2.254",
+        "version": "4.3.0",
+        "data": "VRF Name: default\n\nNeighbor ID     Pri State           Dead Time Address         Interface                        RXmtL RqstL DBsmL\n10.0.0.21         1 Full/DROther      34.759s 10.0.0.21       swp1:10.0.0.13                       0     0     0\n10.0.0.22         1 Full/DROther      34.774s 10.0.0.22       swp2:10.0.0.13                       0     0     0\n\nOSPF instance not found\n"
     }
 ]

@@ -2019,8 +2019,8 @@ tests:
   data-directory: tests/data/nxos/parquet-out/
   marks: bgp show nxos all
   output: '[{"namespace": "nxos", "hostname": "firewall01", "vrf": "default", "peer":
-    "eth2.4", "afi": "ipv4", "safi": "unicast", "state": "Established", "asn": 65533,
-    "peerAsn": 64520, "peerHostname": "exit02", "pfxRx": 6, "pfxTx": 10, "numChanges":
+    "eth2.4", "peerHostname": "exit02", "state": "Established", "afi": "ipv4", "safi":
+    "unicast", "asn": 65533, "peerAsn": 64520, "pfxRx": 6, "pfxTx": 10, "numChanges":
     1, "estdTime": 1616416132000, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
     0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent": 0,
     "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
@@ -2032,125 +2032,112 @@ tests:
     true, "peerIP": "169.254.253.9", "mrai": 0, "reason": "No AFI/SAFI activated for
     peer", "lastDownTime": 39191000, "ifname": "", "timestamp": 1616541713967, "active":
     true, "afiSafi": "ipv4 unicast"}, {"namespace": "nxos", "hostname": "firewall01",
-    "vrf": "default", "peer": "eth2.3", "afi": "ipv4", "safi": "unicast", "state":
-    "Established", "asn": 65533, "peerAsn": 64520, "peerHostname": "exit02", "pfxRx":
-    3, "pfxTx": 10, "numChanges": 1, "estdTime": 1616416132000, "afisAdvOnly": [],
-    "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx":
-    0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard", "extended"],
-    "defOriginate": false, "keepaliveTime": 3, "updateSource": "169.254.253.6", "holdTime":
-    9, "updatesRx": 2, "updatesTx": 5, "peerRouterId": "169.254.253.5", "routerId":
-    "10.0.0.100", "bfdStatus": "Unknown", "nhUnchanged": false, "nhSelf": false, "rrclient":
-    "False", "notificnReason": "", "extnhAdvertised": false, "extnhReceived": false,
-    "extnhEnabled": true, "peerIP": "169.254.253.5", "mrai": 0, "reason": "No AFI/SAFI
-    activated for peer", "lastDownTime": 39191000, "ifname": "", "timestamp": 1616541713967,
-    "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "nxos", "hostname":
-    "firewall01", "vrf": "default", "peer": "eth2.2", "afi": "ipv4", "safi": "unicast",
-    "state": "Established", "asn": 65533, "peerAsn": 64520, "peerHostname": "exit02",
-    "pfxRx": 0, "pfxTx": 10, "numChanges": 1, "estdTime": 1616416133000, "afisAdvOnly":
-    [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0,
-    "pfxMaxRx": 0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard", "extended"],
-    "defOriginate": false, "keepaliveTime": 3, "updateSource": "169.254.253.2", "holdTime":
-    9, "updatesRx": 1, "updatesTx": 4, "peerRouterId": "10.0.0.32", "routerId": "10.0.0.100",
+    "vrf": "default", "peer": "eth2.3", "peerHostname": "exit02", "state": "Established",
+    "afi": "ipv4", "safi": "unicast", "asn": 65533, "peerAsn": 64520, "pfxRx": 3,
+    "pfxTx": 10, "numChanges": 1, "estdTime": 1616416132000, "afisAdvOnly": [], "afisRcvOnly":
+    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": false, "communityTypes": ["standard", "extended"], "defOriginate":
+    false, "keepaliveTime": 3, "updateSource": "169.254.253.6", "holdTime": 9, "updatesRx":
+    2, "updatesTx": 5, "peerRouterId": "169.254.253.5", "routerId": "10.0.0.100",
     "bfdStatus": "Unknown", "nhUnchanged": false, "nhSelf": false, "rrclient": "False",
     "notificnReason": "", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled":
-    true, "peerIP": "169.254.253.1", "mrai": 0, "reason": "Waiting for peer OPEN",
+    true, "peerIP": "169.254.253.5", "mrai": 0, "reason": "No AFI/SAFI activated for
+    peer", "lastDownTime": 39191000, "ifname": "", "timestamp": 1616541713967, "active":
+    true, "afiSafi": "ipv4 unicast"}, {"namespace": "nxos", "hostname": "firewall01",
+    "vrf": "default", "peer": "eth2.2", "peerHostname": "exit02", "state": "Established",
+    "afi": "ipv4", "safi": "unicast", "asn": 65533, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 10, "numChanges": 1, "estdTime": 1616416133000, "afisAdvOnly": [], "afisRcvOnly":
+    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": false, "communityTypes": ["standard", "extended"], "defOriginate":
+    false, "keepaliveTime": 3, "updateSource": "169.254.253.2", "holdTime": 9, "updatesRx":
+    1, "updatesTx": 4, "peerRouterId": "10.0.0.32", "routerId": "10.0.0.100", "bfdStatus":
+    "Unknown", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
+    "", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled": true, "peerIP":
+    "169.254.253.1", "mrai": 0, "reason": "Waiting for peer OPEN", "lastDownTime":
+    39191000, "ifname": "", "timestamp": 1616541713967, "active": true, "afiSafi":
+    "ipv4 unicast"}, {"namespace": "nxos", "hostname": "firewall01", "vrf": "default",
+    "peer": "eth1.4", "peerHostname": "exit01", "state": "Established", "afi": "ipv4",
+    "safi": "unicast", "asn": 65533, "peerAsn": 64520, "pfxRx": 6, "pfxTx": 10, "numChanges":
+    1, "estdTime": 1616416132000, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
+    0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent": 0,
+    "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": false, "communityTypes": ["standard", "extended"], "defOriginate":
+    false, "keepaliveTime": 3, "updateSource": "169.254.254.10", "holdTime": 9, "updatesRx":
+    4, "updatesTx": 5, "peerRouterId": "169.254.254.9", "routerId": "10.0.0.100",
+    "bfdStatus": "Unknown", "nhUnchanged": false, "nhSelf": false, "rrclient": "False",
+    "notificnReason": "", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled":
+    true, "peerIP": "169.254.254.9", "mrai": 0, "reason": "No AFI/SAFI activated for
+    peer", "lastDownTime": 39191000, "ifname": "", "timestamp": 1616541713967, "active":
+    true, "afiSafi": "ipv4 unicast"}, {"namespace": "nxos", "hostname": "firewall01",
+    "vrf": "default", "peer": "eth1.3", "peerHostname": "exit01", "state": "Established",
+    "afi": "ipv4", "safi": "unicast", "asn": 65533, "peerAsn": 64520, "pfxRx": 3,
+    "pfxTx": 10, "numChanges": 1, "estdTime": 1616416134000, "afisAdvOnly": [], "afisRcvOnly":
+    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": false, "communityTypes": ["standard", "extended"], "defOriginate":
+    false, "keepaliveTime": 3, "updateSource": "169.254.254.6", "holdTime": 9, "updatesRx":
+    4, "updatesTx": 7, "peerRouterId": "169.254.254.5", "routerId": "10.0.0.100",
+    "bfdStatus": "Unknown", "nhUnchanged": false, "nhSelf": false, "rrclient": "False",
+    "notificnReason": "", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled":
+    true, "peerIP": "169.254.254.5", "mrai": 0, "reason": "Waiting for peer OPEN",
     "lastDownTime": 39191000, "ifname": "", "timestamp": 1616541713967, "active":
     true, "afiSafi": "ipv4 unicast"}, {"namespace": "nxos", "hostname": "firewall01",
-    "vrf": "default", "peer": "eth1.4", "afi": "ipv4", "safi": "unicast", "state":
-    "Established", "asn": 65533, "peerAsn": 64520, "peerHostname": "exit01", "pfxRx":
-    6, "pfxTx": 10, "numChanges": 1, "estdTime": 1616416132000, "afisAdvOnly": [],
-    "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx":
+    "vrf": "default", "peer": "eth1.2", "peerHostname": "exit01", "state": "Established",
+    "afi": "ipv4", "safi": "unicast", "asn": 65533, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 10, "numChanges": 1, "estdTime": 1616416133000, "afisAdvOnly": [], "afisRcvOnly":
+    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": false, "communityTypes": ["standard", "extended"], "defOriginate":
+    false, "keepaliveTime": 3, "updateSource": "169.254.254.2", "holdTime": 9, "updatesRx":
+    1, "updatesTx": 5, "peerRouterId": "10.0.0.31", "routerId": "10.0.0.100", "bfdStatus":
+    "Unknown", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
+    "", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled": true, "peerIP":
+    "169.254.254.1", "mrai": 0, "reason": "No AFI/SAFI activated for peer", "lastDownTime":
+    39191000, "ifname": "", "timestamp": 1616541713967, "active": true, "afiSafi":
+    "ipv4 unicast"}, {"namespace": "nxos", "hostname": "dcedge01", "vrf": "default",
+    "peer": "169.254.127.1", "peerHostname": "exit01", "state": "Established", "afi":
+    "ipv4", "safi": "unicast", "asn": 65534, "peerAsn": 64520, "pfxRx": 4, "pfxTx":
+    6, "numChanges": 0, "estdTime": 1616222032445, "afisAdvOnly": [], "afisRcvOnly":
+    ["ipv4 unicast"], "pfxBestRx": 4, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx":
     0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
     "", "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard", "extended"],
-    "defOriginate": false, "keepaliveTime": 3, "updateSource": "169.254.254.10", "holdTime":
-    9, "updatesRx": 4, "updatesTx": 5, "peerRouterId": "169.254.254.9", "routerId":
-    "10.0.0.100", "bfdStatus": "Unknown", "nhUnchanged": false, "nhSelf": false, "rrclient":
-    "False", "notificnReason": "", "extnhAdvertised": false, "extnhReceived": false,
-    "extnhEnabled": true, "peerIP": "169.254.254.9", "mrai": 0, "reason": "No AFI/SAFI
-    activated for peer", "lastDownTime": 39191000, "ifname": "", "timestamp": 1616541713967,
-    "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "nxos", "hostname":
-    "firewall01", "vrf": "default", "peer": "eth1.3", "afi": "ipv4", "safi": "unicast",
-    "state": "Established", "asn": 65533, "peerAsn": 64520, "peerHostname": "exit01",
-    "pfxRx": 3, "pfxTx": 10, "numChanges": 1, "estdTime": 1616416134000, "afisAdvOnly":
-    [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0,
-    "pfxMaxRx": 0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
+    "defOriginate": false, "keepaliveTime": 30, "updateSource": "169.254.127.0", "holdTime":
+    90, "updatesRx": 3, "updatesTx": 2, "peerRouterId": "169.254.254.9", "routerId":
+    "10.0.0.41", "bfdStatus": "down", "nhUnchanged": false, "nhSelf": false, "rrclient":
+    "", "notificnReason": "", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled":
+    false, "peerIP": "169.254.127.1", "mrai": 0, "reason": "None", "lastDownTime":
+    0, "ifname": "xe-0/0/0.0", "timestamp": 1616541716445, "active": true, "afiSafi":
+    "ipv4 unicast"}, {"namespace": "nxos", "hostname": "dcedge01", "vrf": "default",
+    "peer": "169.254.127.3", "peerHostname": "exit02", "state": "Established", "afi":
+    "ipv4", "safi": "unicast", "asn": 65534, "peerAsn": 64520, "pfxRx": 4, "pfxTx":
+    6, "numChanges": 0, "estdTime": 1616222036445, "afisAdvOnly": [], "afisRcvOnly":
+    ["ipv4 unicast"], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx":
+    0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
     "", "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard", "extended"],
-    "defOriginate": false, "keepaliveTime": 3, "updateSource": "169.254.254.6", "holdTime":
-    9, "updatesRx": 4, "updatesTx": 7, "peerRouterId": "169.254.254.5", "routerId":
-    "10.0.0.100", "bfdStatus": "Unknown", "nhUnchanged": false, "nhSelf": false, "rrclient":
-    "False", "notificnReason": "", "extnhAdvertised": false, "extnhReceived": false,
-    "extnhEnabled": true, "peerIP": "169.254.254.5", "mrai": 0, "reason": "Waiting
-    for peer OPEN", "lastDownTime": 39191000, "ifname": "", "timestamp": 1616541713967,
-    "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "nxos", "hostname":
-    "firewall01", "vrf": "default", "peer": "eth1.2", "afi": "ipv4", "safi": "unicast",
-    "state": "Established", "asn": 65533, "peerAsn": 64520, "peerHostname": "exit01",
-    "pfxRx": 0, "pfxTx": 10, "numChanges": 1, "estdTime": 1616416133000, "afisAdvOnly":
-    [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0,
-    "pfxMaxRx": 0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard", "extended"],
-    "defOriginate": false, "keepaliveTime": 3, "updateSource": "169.254.254.2", "holdTime":
-    9, "updatesRx": 1, "updatesTx": 5, "peerRouterId": "10.0.0.31", "routerId": "10.0.0.100",
-    "bfdStatus": "Unknown", "nhUnchanged": false, "nhSelf": false, "rrclient": "False",
-    "notificnReason": "", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled":
-    true, "peerIP": "169.254.254.1", "mrai": 0, "reason": "No AFI/SAFI activated for
-    peer", "lastDownTime": 39191000, "ifname": "", "timestamp": 1616541713967, "active":
-    true, "afiSafi": "ipv4 unicast"}, {"namespace": "nxos", "hostname": "dcedge01",
-    "vrf": "default", "peer": "169.254.127.1", "afi": "ipv4", "safi": "unicast", "state":
-    "Established", "asn": 65534, "peerAsn": 64520, "peerHostname": "exit01", "pfxRx":
-    4, "pfxTx": 6, "numChanges": 0, "estdTime": 1616222032445, "afisAdvOnly": [],
-    "afisRcvOnly": ["ipv4 unicast"], "pfxBestRx": 4, "pfxWithdrawnRx": 0, "pfxSuppressRx":
-    0, "pfxMaxRx": 0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false,
-    "egressRmap": "", "ingressRmap": "", "softReconfig": false, "communityTypes":
-    ["standard", "extended"], "defOriginate": false, "keepaliveTime": 30, "updateSource":
-    "169.254.127.0", "holdTime": 90, "updatesRx": 3, "updatesTx": 2, "peerRouterId":
-    "169.254.254.9", "routerId": "10.0.0.41", "bfdStatus": "down", "nhUnchanged":
-    false, "nhSelf": false, "rrclient": "", "notificnReason": "", "extnhAdvertised":
-    false, "extnhReceived": false, "extnhEnabled": false, "peerIP": "169.254.127.1",
-    "mrai": 0, "reason": "None", "lastDownTime": 0, "ifname": "xe-0/0/0.0", "timestamp":
-    1616541716445, "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "nxos",
-    "hostname": "dcedge01", "vrf": "default", "peer": "169.254.127.3", "afi": "ipv4",
-    "safi": "unicast", "state": "Established", "asn": 65534, "peerAsn": 64520, "peerHostname":
-    "exit02", "pfxRx": 4, "pfxTx": 6, "numChanges": 0, "estdTime": 1616222036445,
-    "afisAdvOnly": [], "afisRcvOnly": ["ipv4 unicast"], "pfxBestRx": 0, "pfxWithdrawnRx":
-    0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis":
-    false, "egressRmap": "", "ingressRmap": "", "softReconfig": false, "communityTypes":
-    ["standard", "extended"], "defOriginate": false, "keepaliveTime": 30, "updateSource":
-    "169.254.127.2", "holdTime": 90, "updatesRx": 3, "updatesTx": 2, "peerRouterId":
-    "169.254.253.9", "routerId": "10.0.0.41", "bfdStatus": "down", "nhUnchanged":
-    false, "nhSelf": false, "rrclient": "", "notificnReason": "", "extnhAdvertised":
-    false, "extnhReceived": false, "extnhEnabled": false, "peerIP": "169.254.127.3",
-    "mrai": 0, "reason": "None", "lastDownTime": 0, "ifname": "xe-0/0/1.0", "timestamp":
-    1616541716445, "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "nxos",
-    "hostname": "spine01", "vrf": "default", "peer": "10.0.0.11", "afi": "l2vpn",
-    "safi": "evpn", "state": "Established", "asn": 64520, "peerAsn": 64520, "peerHostname":
-    "leaf01", "pfxRx": 8, "pfxTx": 32, "numChanges": 1, "estdTime": 1616221943819,
-    "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx":
-    0, "pfxMaxRx": 0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false,
-    "egressRmap": "", "ingressRmap": "", "softReconfig": true, "communityTypes": ["standard",
-    "extended"], "defOriginate": true, "keepaliveTime": 0, "updateSource": "10.0.0.21",
-    "holdTime": 180, "updatesRx": 548, "updatesTx": 1617, "peerRouterId": "10.0.0.11",
-    "routerId": "10.0.0.21", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false,
-    "rrclient": "False", "notificnReason": "No error", "extnhAdvertised": true, "extnhReceived":
-    true, "extnhEnabled": true, "peerIP": "10.0.0.11", "mrai": 0, "reason": "No error",
-    "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541719819, "active":
-    true, "afiSafi": "l2vpn evpn"}, {"namespace": "nxos", "hostname": "spine01", "vrf":
-    "default", "peer": "10.0.0.12", "afi": "ipv4", "safi": "unicast", "state": "Established",
-    "asn": 64520, "peerAsn": 64520, "peerHostname": "leaf02", "pfxRx": 0, "pfxTx":
-    0, "numChanges": 1, "estdTime": 1616221946819, "afisAdvOnly": [], "afisRcvOnly":
+    "defOriginate": false, "keepaliveTime": 30, "updateSource": "169.254.127.2", "holdTime":
+    90, "updatesRx": 3, "updatesTx": 2, "peerRouterId": "169.254.253.9", "routerId":
+    "10.0.0.41", "bfdStatus": "down", "nhUnchanged": false, "nhSelf": false, "rrclient":
+    "", "notificnReason": "", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled":
+    false, "peerIP": "169.254.127.3", "mrai": 0, "reason": "None", "lastDownTime":
+    0, "ifname": "xe-0/0/1.0", "timestamp": 1616541716445, "active": true, "afiSafi":
+    "ipv4 unicast"}, {"namespace": "nxos", "hostname": "spine01", "vrf": "default",
+    "peer": "10.0.0.11", "peerHostname": "leaf01", "state": "Established", "afi":
+    "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 8, "pfxTx":
+    32, "numChanges": 1, "estdTime": 1616221943819, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent":
     0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
     "softReconfig": true, "communityTypes": ["standard", "extended"], "defOriginate":
     true, "keepaliveTime": 0, "updateSource": "10.0.0.21", "holdTime": 180, "updatesRx":
-    543, "updatesTx": 1611, "peerRouterId": "10.0.0.12", "routerId": "10.0.0.21",
+    548, "updatesTx": 1617, "peerRouterId": "10.0.0.11", "routerId": "10.0.0.21",
     "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
     "No error", "extnhAdvertised": true, "extnhReceived": true, "extnhEnabled": true,
-    "peerIP": "10.0.0.12", "mrai": 0, "reason": "No error", "lastDownTime": 0, "ifname":
-    "loopback0", "timestamp": 1616541719819, "active": true, "afiSafi": "ipv4 unicast"},
+    "peerIP": "10.0.0.11", "mrai": 0, "reason": "No error", "lastDownTime": 0, "ifname":
+    "loopback0", "timestamp": 1616541719819, "active": true, "afiSafi": "l2vpn evpn"},
     {"namespace": "nxos", "hostname": "spine01", "vrf": "default", "peer": "10.0.0.12",
-    "afi": "l2vpn", "safi": "evpn", "state": "Established", "asn": 64520, "peerAsn":
-    64520, "peerHostname": "leaf02", "pfxRx": 8, "pfxTx": 32, "numChanges": 1, "estdTime":
+    "peerHostname": "leaf02", "state": "Established", "afi": "ipv4", "safi": "unicast",
+    "asn": 64520, "peerAsn": 64520, "pfxRx": 0, "pfxTx": 0, "numChanges": 1, "estdTime":
     1616221946819, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx":
     0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis":
     false, "egressRmap": "", "ingressRmap": "", "softReconfig": true, "communityTypes":
@@ -2160,36 +2147,48 @@ tests:
     false, "rrclient": "False", "notificnReason": "No error", "extnhAdvertised": true,
     "extnhReceived": true, "extnhEnabled": true, "peerIP": "10.0.0.12", "mrai": 0,
     "reason": "No error", "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541719819,
-    "active": true, "afiSafi": "l2vpn evpn"}, {"namespace": "nxos", "hostname": "spine01",
-    "vrf": "default", "peer": "10.0.0.13", "afi": "ipv4", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "leaf03", "pfxRx":
-    0, "pfxTx": 0, "numChanges": 1, "estdTime": 1616221946819, "afisAdvOnly": [],
-    "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx":
-    0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
+    "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "nxos", "hostname":
+    "spine01", "vrf": "default", "peer": "10.0.0.12", "peerHostname": "leaf02", "state":
+    "Established", "afi": "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn": 64520,
+    "pfxRx": 8, "pfxTx": 32, "numChanges": 1, "estdTime": 1616221946819, "afisAdvOnly":
+    [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0,
+    "pfxMaxRx": 0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
     "", "ingressRmap": "", "softReconfig": true, "communityTypes": ["standard", "extended"],
     "defOriginate": true, "keepaliveTime": 0, "updateSource": "10.0.0.21", "holdTime":
-    180, "updatesRx": 545, "updatesTx": 1624, "peerRouterId": "10.0.0.13", "routerId":
+    180, "updatesRx": 543, "updatesTx": 1611, "peerRouterId": "10.0.0.12", "routerId":
     "10.0.0.21", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient":
     "False", "notificnReason": "No error", "extnhAdvertised": true, "extnhReceived":
-    true, "extnhEnabled": true, "peerIP": "10.0.0.13", "mrai": 0, "reason": "No error",
-    "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541719819, "active":
-    true, "afiSafi": "ipv4 unicast"}, {"namespace": "nxos", "hostname": "spine01",
-    "vrf": "default", "peer": "10.0.0.13", "afi": "l2vpn", "safi": "evpn", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "leaf03", "pfxRx":
-    8, "pfxTx": 32, "numChanges": 1, "estdTime": 1616221946819, "afisAdvOnly": [],
-    "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx":
-    0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": true, "communityTypes": ["standard", "extended"],
-    "defOriginate": true, "keepaliveTime": 0, "updateSource": "10.0.0.21", "holdTime":
-    180, "updatesRx": 545, "updatesTx": 1624, "peerRouterId": "10.0.0.13", "routerId":
-    "10.0.0.21", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient":
-    "False", "notificnReason": "No error", "extnhAdvertised": true, "extnhReceived":
-    true, "extnhEnabled": true, "peerIP": "10.0.0.13", "mrai": 0, "reason": "No error",
+    true, "extnhEnabled": true, "peerIP": "10.0.0.12", "mrai": 0, "reason": "No error",
     "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541719819, "active":
     true, "afiSafi": "l2vpn evpn"}, {"namespace": "nxos", "hostname": "spine01", "vrf":
-    "default", "peer": "10.0.0.14", "afi": "ipv4", "safi": "unicast", "state": "Established",
-    "asn": 64520, "peerAsn": 64520, "peerHostname": "leaf04", "pfxRx": 0, "pfxTx":
-    0, "numChanges": 1, "estdTime": 1616221947819, "afisAdvOnly": [], "afisRcvOnly":
+    "default", "peer": "10.0.0.13", "peerHostname": "leaf03", "state": "Established",
+    "afi": "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 0, "numChanges": 1, "estdTime": 1616221946819, "afisAdvOnly": [], "afisRcvOnly":
+    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": true, "communityTypes": ["standard", "extended"], "defOriginate":
+    true, "keepaliveTime": 0, "updateSource": "10.0.0.21", "holdTime": 180, "updatesRx":
+    545, "updatesTx": 1624, "peerRouterId": "10.0.0.13", "routerId": "10.0.0.21",
+    "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
+    "No error", "extnhAdvertised": true, "extnhReceived": true, "extnhEnabled": true,
+    "peerIP": "10.0.0.13", "mrai": 0, "reason": "No error", "lastDownTime": 0, "ifname":
+    "loopback0", "timestamp": 1616541719819, "active": true, "afiSafi": "ipv4 unicast"},
+    {"namespace": "nxos", "hostname": "spine01", "vrf": "default", "peer": "10.0.0.13",
+    "peerHostname": "leaf03", "state": "Established", "afi": "l2vpn", "safi": "evpn",
+    "asn": 64520, "peerAsn": 64520, "pfxRx": 8, "pfxTx": 32, "numChanges": 1, "estdTime":
+    1616221946819, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx":
+    0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis":
+    false, "egressRmap": "", "ingressRmap": "", "softReconfig": true, "communityTypes":
+    ["standard", "extended"], "defOriginate": true, "keepaliveTime": 0, "updateSource":
+    "10.0.0.21", "holdTime": 180, "updatesRx": 545, "updatesTx": 1624, "peerRouterId":
+    "10.0.0.13", "routerId": "10.0.0.21", "bfdStatus": "", "nhUnchanged": false, "nhSelf":
+    false, "rrclient": "False", "notificnReason": "No error", "extnhAdvertised": true,
+    "extnhReceived": true, "extnhEnabled": true, "peerIP": "10.0.0.13", "mrai": 0,
+    "reason": "No error", "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541719819,
+    "active": true, "afiSafi": "l2vpn evpn"}, {"namespace": "nxos", "hostname": "spine01",
+    "vrf": "default", "peer": "10.0.0.14", "peerHostname": "leaf04", "state": "Established",
+    "afi": "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 0, "numChanges": 1, "estdTime": 1616221947819, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent":
     0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
     "softReconfig": true, "communityTypes": ["standard", "extended"], "defOriginate":
@@ -2200,8 +2199,8 @@ tests:
     "peerIP": "10.0.0.14", "mrai": 0, "reason": "No error", "lastDownTime": 0, "ifname":
     "loopback0", "timestamp": 1616541719819, "active": true, "afiSafi": "ipv4 unicast"},
     {"namespace": "nxos", "hostname": "spine01", "vrf": "default", "peer": "10.0.0.14",
-    "afi": "l2vpn", "safi": "evpn", "state": "Established", "asn": 64520, "peerAsn":
-    64520, "peerHostname": "leaf04", "pfxRx": 8, "pfxTx": 32, "numChanges": 1, "estdTime":
+    "peerHostname": "leaf04", "state": "Established", "afi": "l2vpn", "safi": "evpn",
+    "asn": 64520, "peerAsn": 64520, "pfxRx": 8, "pfxTx": 32, "numChanges": 1, "estdTime":
     1616221947819, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx":
     0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis":
     false, "egressRmap": "", "ingressRmap": "", "softReconfig": true, "communityTypes":
@@ -2212,61 +2211,60 @@ tests:
     "extnhReceived": true, "extnhEnabled": true, "peerIP": "10.0.0.14", "mrai": 0,
     "reason": "No error", "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541719819,
     "active": true, "afiSafi": "l2vpn evpn"}, {"namespace": "nxos", "hostname": "spine01",
-    "vrf": "default", "peer": "10.0.0.31", "afi": "ipv4", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "exit01", "pfxRx":
-    1, "pfxTx": 0, "numChanges": 9, "estdTime": 1616421060819, "afisAdvOnly": [],
-    "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx":
-    0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": true, "communityTypes": ["standard", "extended"],
-    "defOriginate": true, "keepaliveTime": 0, "updateSource": "10.0.0.21", "holdTime":
-    180, "updatesRx": 33, "updatesTx": 2199, "peerRouterId": "10.0.0.31", "routerId":
-    "10.0.0.21", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient":
-    "False", "notificnReason": "No error", "extnhAdvertised": true, "extnhReceived":
-    true, "extnhEnabled": true, "peerIP": "10.0.0.31", "mrai": 0, "reason": "session
-    cleared", "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541719819,
-    "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "nxos", "hostname":
-    "spine01", "vrf": "default", "peer": "10.0.0.31", "afi": "l2vpn", "safi": "evpn",
-    "state": "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "exit01",
-    "pfxRx": 4, "pfxTx": 36, "numChanges": 9, "estdTime": 1616421060819, "afisAdvOnly":
-    [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0,
-    "pfxMaxRx": 0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": true, "communityTypes": ["standard", "extended"],
-    "defOriginate": true, "keepaliveTime": 0, "updateSource": "10.0.0.21", "holdTime":
-    180, "updatesRx": 33, "updatesTx": 2199, "peerRouterId": "10.0.0.31", "routerId":
-    "10.0.0.21", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient":
-    "False", "notificnReason": "No error", "extnhAdvertised": true, "extnhReceived":
-    true, "extnhEnabled": true, "peerIP": "10.0.0.31", "mrai": 0, "reason": "session
-    cleared", "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541719819,
+    "vrf": "default", "peer": "10.0.0.31", "peerHostname": "exit01", "state": "Established",
+    "afi": "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 1,
+    "pfxTx": 0, "numChanges": 9, "estdTime": 1616421060819, "afisAdvOnly": [], "afisRcvOnly":
+    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": true, "communityTypes": ["standard", "extended"], "defOriginate":
+    true, "keepaliveTime": 0, "updateSource": "10.0.0.21", "holdTime": 180, "updatesRx":
+    33, "updatesTx": 2199, "peerRouterId": "10.0.0.31", "routerId": "10.0.0.21", "bfdStatus":
+    "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
+    "No error", "extnhAdvertised": true, "extnhReceived": true, "extnhEnabled": true,
+    "peerIP": "10.0.0.31", "mrai": 0, "reason": "session cleared", "lastDownTime":
+    0, "ifname": "loopback0", "timestamp": 1616541719819, "active": true, "afiSafi":
+    "ipv4 unicast"}, {"namespace": "nxos", "hostname": "spine01", "vrf": "default",
+    "peer": "10.0.0.31", "peerHostname": "exit01", "state": "Established", "afi":
+    "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 4, "pfxTx":
+    36, "numChanges": 9, "estdTime": 1616421060819, "afisAdvOnly": [], "afisRcvOnly":
+    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": true, "communityTypes": ["standard", "extended"], "defOriginate":
+    true, "keepaliveTime": 0, "updateSource": "10.0.0.21", "holdTime": 180, "updatesRx":
+    33, "updatesTx": 2199, "peerRouterId": "10.0.0.31", "routerId": "10.0.0.21", "bfdStatus":
+    "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
+    "No error", "extnhAdvertised": true, "extnhReceived": true, "extnhEnabled": true,
+    "peerIP": "10.0.0.31", "mrai": 0, "reason": "session cleared", "lastDownTime":
+    0, "ifname": "loopback0", "timestamp": 1616541719819, "active": true, "afiSafi":
+    "l2vpn evpn"}, {"namespace": "nxos", "hostname": "spine01", "vrf": "default",
+    "peer": "10.0.0.32", "peerHostname": "exit02", "state": "Established", "afi":
+    "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 1, "pfxTx":
+    0, "numChanges": 1, "estdTime": 1616221954819, "afisAdvOnly": [], "afisRcvOnly":
+    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": true, "communityTypes": ["standard", "extended"], "defOriginate":
+    true, "keepaliveTime": 0, "updateSource": "10.0.0.21", "holdTime": 180, "updatesRx":
+    6, "updatesTx": 2117, "peerRouterId": "10.0.0.32", "routerId": "10.0.0.21", "bfdStatus":
+    "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
+    "No error", "extnhAdvertised": true, "extnhReceived": true, "extnhEnabled": true,
+    "peerIP": "10.0.0.32", "mrai": 0, "reason": "No error", "lastDownTime": 0, "ifname":
+    "loopback0", "timestamp": 1616541719819, "active": true, "afiSafi": "ipv4 unicast"},
+    {"namespace": "nxos", "hostname": "spine01", "vrf": "default", "peer": "10.0.0.32",
+    "peerHostname": "exit02", "state": "Established", "afi": "l2vpn", "safi": "evpn",
+    "asn": 64520, "peerAsn": 64520, "pfxRx": 4, "pfxTx": 36, "numChanges": 1, "estdTime":
+    1616221954819, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx":
+    0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis":
+    false, "egressRmap": "", "ingressRmap": "", "softReconfig": true, "communityTypes":
+    ["standard", "extended"], "defOriginate": true, "keepaliveTime": 0, "updateSource":
+    "10.0.0.21", "holdTime": 180, "updatesRx": 6, "updatesTx": 2117, "peerRouterId":
+    "10.0.0.32", "routerId": "10.0.0.21", "bfdStatus": "", "nhUnchanged": false, "nhSelf":
+    false, "rrclient": "False", "notificnReason": "No error", "extnhAdvertised": true,
+    "extnhReceived": true, "extnhEnabled": true, "peerIP": "10.0.0.32", "mrai": 0,
+    "reason": "No error", "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541719819,
     "active": true, "afiSafi": "l2vpn evpn"}, {"namespace": "nxos", "hostname": "spine01",
-    "vrf": "default", "peer": "10.0.0.32", "afi": "ipv4", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "exit02", "pfxRx":
-    1, "pfxTx": 0, "numChanges": 1, "estdTime": 1616221954819, "afisAdvOnly": [],
-    "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx":
-    0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": true, "communityTypes": ["standard", "extended"],
-    "defOriginate": true, "keepaliveTime": 0, "updateSource": "10.0.0.21", "holdTime":
-    180, "updatesRx": 6, "updatesTx": 2117, "peerRouterId": "10.0.0.32", "routerId":
-    "10.0.0.21", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient":
-    "False", "notificnReason": "No error", "extnhAdvertised": true, "extnhReceived":
-    true, "extnhEnabled": true, "peerIP": "10.0.0.32", "mrai": 0, "reason": "No error",
-    "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541719819, "active":
-    true, "afiSafi": "ipv4 unicast"}, {"namespace": "nxos", "hostname": "spine01",
-    "vrf": "default", "peer": "10.0.0.32", "afi": "l2vpn", "safi": "evpn", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "exit02", "pfxRx":
-    4, "pfxTx": 36, "numChanges": 1, "estdTime": 1616221954819, "afisAdvOnly": [],
-    "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx":
-    0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": true, "communityTypes": ["standard", "extended"],
-    "defOriginate": true, "keepaliveTime": 0, "updateSource": "10.0.0.21", "holdTime":
-    180, "updatesRx": 6, "updatesTx": 2117, "peerRouterId": "10.0.0.32", "routerId":
-    "10.0.0.21", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient":
-    "False", "notificnReason": "No error", "extnhAdvertised": true, "extnhReceived":
-    true, "extnhEnabled": true, "peerIP": "10.0.0.32", "mrai": 0, "reason": "No error",
-    "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541719819, "active":
-    true, "afiSafi": "l2vpn evpn"}, {"namespace": "nxos", "hostname": "spine01", "vrf":
-    "default", "peer": "10.0.0.11", "afi": "ipv4", "safi": "unicast", "state": "Established",
-    "asn": 64520, "peerAsn": 64520, "peerHostname": "leaf01", "pfxRx": 0, "pfxTx":
-    0, "numChanges": 1, "estdTime": 1616221943819, "afisAdvOnly": [], "afisRcvOnly":
+    "vrf": "default", "peer": "10.0.0.11", "peerHostname": "leaf01", "state": "Established",
+    "afi": "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 0, "numChanges": 1, "estdTime": 1616221943819, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent":
     0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
     "softReconfig": true, "communityTypes": ["standard", "extended"], "defOriginate":
@@ -2277,8 +2275,8 @@ tests:
     "peerIP": "10.0.0.11", "mrai": 0, "reason": "No error", "lastDownTime": 0, "ifname":
     "loopback0", "timestamp": 1616541719819, "active": true, "afiSafi": "ipv4 unicast"},
     {"namespace": "nxos", "hostname": "spine02", "vrf": "default", "peer": "10.0.0.11",
-    "afi": "ipv4", "safi": "unicast", "state": "Established", "asn": 64520, "peerAsn":
-    64520, "peerHostname": "leaf01", "pfxRx": 0, "pfxTx": 0, "numChanges": 1, "estdTime":
+    "peerHostname": "leaf01", "state": "Established", "afi": "ipv4", "safi": "unicast",
+    "asn": 64520, "peerAsn": 64520, "pfxRx": 0, "pfxTx": 0, "numChanges": 1, "estdTime":
     1616221944916, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx":
     0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis":
     false, "egressRmap": "", "ingressRmap": "", "softReconfig": true, "communityTypes":
@@ -2289,8 +2287,8 @@ tests:
     "extnhReceived": true, "extnhEnabled": true, "peerIP": "10.0.0.11", "mrai": 0,
     "reason": "No error", "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541719916,
     "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "nxos", "hostname":
-    "spine02", "vrf": "default", "peer": "10.0.0.11", "afi": "l2vpn", "safi": "evpn",
-    "state": "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "leaf01",
+    "spine02", "vrf": "default", "peer": "10.0.0.11", "peerHostname": "leaf01", "state":
+    "Established", "afi": "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn": 64520,
     "pfxRx": 8, "pfxTx": 32, "numChanges": 1, "estdTime": 1616221944916, "afisAdvOnly":
     [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0,
     "pfxMaxRx": 0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
@@ -2302,9 +2300,9 @@ tests:
     true, "extnhEnabled": true, "peerIP": "10.0.0.11", "mrai": 0, "reason": "No error",
     "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541719916, "active":
     true, "afiSafi": "l2vpn evpn"}, {"namespace": "nxos", "hostname": "spine02", "vrf":
-    "default", "peer": "10.0.0.12", "afi": "ipv4", "safi": "unicast", "state": "Established",
-    "asn": 64520, "peerAsn": 64520, "peerHostname": "leaf02", "pfxRx": 0, "pfxTx":
-    0, "numChanges": 1, "estdTime": 1616221945916, "afisAdvOnly": [], "afisRcvOnly":
+    "default", "peer": "10.0.0.12", "peerHostname": "leaf02", "state": "Established",
+    "afi": "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 0, "numChanges": 1, "estdTime": 1616221945916, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent":
     0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
     "softReconfig": true, "communityTypes": ["standard", "extended"], "defOriginate":
@@ -2315,8 +2313,8 @@ tests:
     "peerIP": "10.0.0.12", "mrai": 0, "reason": "No error", "lastDownTime": 0, "ifname":
     "loopback0", "timestamp": 1616541719916, "active": true, "afiSafi": "ipv4 unicast"},
     {"namespace": "nxos", "hostname": "spine02", "vrf": "default", "peer": "10.0.0.12",
-    "afi": "l2vpn", "safi": "evpn", "state": "Established", "asn": 64520, "peerAsn":
-    64520, "peerHostname": "leaf02", "pfxRx": 8, "pfxTx": 32, "numChanges": 1, "estdTime":
+    "peerHostname": "leaf02", "state": "Established", "afi": "l2vpn", "safi": "evpn",
+    "asn": 64520, "peerAsn": 64520, "pfxRx": 8, "pfxTx": 32, "numChanges": 1, "estdTime":
     1616221945916, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx":
     0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis":
     false, "egressRmap": "", "ingressRmap": "", "softReconfig": true, "communityTypes":
@@ -2327,35 +2325,34 @@ tests:
     "extnhReceived": true, "extnhEnabled": true, "peerIP": "10.0.0.12", "mrai": 0,
     "reason": "No error", "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541719916,
     "active": true, "afiSafi": "l2vpn evpn"}, {"namespace": "nxos", "hostname": "spine02",
-    "vrf": "default", "peer": "10.0.0.13", "afi": "ipv4", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "leaf03", "pfxRx":
-    0, "pfxTx": 0, "numChanges": 1, "estdTime": 1616221947916, "afisAdvOnly": [],
-    "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx":
-    0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": true, "communityTypes": ["standard", "extended"],
-    "defOriginate": true, "keepaliveTime": 0, "updateSource": "10.0.0.22", "holdTime":
-    180, "updatesRx": 545, "updatesTx": 1616, "peerRouterId": "10.0.0.13", "routerId":
-    "10.0.0.22", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient":
-    "False", "notificnReason": "No error", "extnhAdvertised": true, "extnhReceived":
-    true, "extnhEnabled": true, "peerIP": "10.0.0.13", "mrai": 0, "reason": "No error",
-    "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541719916, "active":
-    true, "afiSafi": "ipv4 unicast"}, {"namespace": "nxos", "hostname": "spine02",
-    "vrf": "default", "peer": "10.0.0.13", "afi": "l2vpn", "safi": "evpn", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "leaf03", "pfxRx":
-    8, "pfxTx": 32, "numChanges": 1, "estdTime": 1616221947916, "afisAdvOnly": [],
-    "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx":
-    0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": true, "communityTypes": ["standard", "extended"],
-    "defOriginate": true, "keepaliveTime": 0, "updateSource": "10.0.0.22", "holdTime":
-    180, "updatesRx": 545, "updatesTx": 1616, "peerRouterId": "10.0.0.13", "routerId":
-    "10.0.0.22", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient":
-    "False", "notificnReason": "No error", "extnhAdvertised": true, "extnhReceived":
-    true, "extnhEnabled": true, "peerIP": "10.0.0.13", "mrai": 0, "reason": "No error",
-    "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541719916, "active":
-    true, "afiSafi": "l2vpn evpn"}, {"namespace": "nxos", "hostname": "spine02", "vrf":
-    "default", "peer": "10.0.0.14", "afi": "ipv4", "safi": "unicast", "state": "Established",
-    "asn": 64520, "peerAsn": 64520, "peerHostname": "leaf04", "pfxRx": 0, "pfxTx":
-    0, "numChanges": 1, "estdTime": 1616221947916, "afisAdvOnly": [], "afisRcvOnly":
+    "vrf": "default", "peer": "10.0.0.13", "peerHostname": "leaf03", "state": "Established",
+    "afi": "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 0, "numChanges": 1, "estdTime": 1616221947916, "afisAdvOnly": [], "afisRcvOnly":
+    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": true, "communityTypes": ["standard", "extended"], "defOriginate":
+    true, "keepaliveTime": 0, "updateSource": "10.0.0.22", "holdTime": 180, "updatesRx":
+    545, "updatesTx": 1616, "peerRouterId": "10.0.0.13", "routerId": "10.0.0.22",
+    "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
+    "No error", "extnhAdvertised": true, "extnhReceived": true, "extnhEnabled": true,
+    "peerIP": "10.0.0.13", "mrai": 0, "reason": "No error", "lastDownTime": 0, "ifname":
+    "loopback0", "timestamp": 1616541719916, "active": true, "afiSafi": "ipv4 unicast"},
+    {"namespace": "nxos", "hostname": "spine02", "vrf": "default", "peer": "10.0.0.13",
+    "peerHostname": "leaf03", "state": "Established", "afi": "l2vpn", "safi": "evpn",
+    "asn": 64520, "peerAsn": 64520, "pfxRx": 8, "pfxTx": 32, "numChanges": 1, "estdTime":
+    1616221947916, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx":
+    0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis":
+    false, "egressRmap": "", "ingressRmap": "", "softReconfig": true, "communityTypes":
+    ["standard", "extended"], "defOriginate": true, "keepaliveTime": 0, "updateSource":
+    "10.0.0.22", "holdTime": 180, "updatesRx": 545, "updatesTx": 1616, "peerRouterId":
+    "10.0.0.13", "routerId": "10.0.0.22", "bfdStatus": "", "nhUnchanged": false, "nhSelf":
+    false, "rrclient": "False", "notificnReason": "No error", "extnhAdvertised": true,
+    "extnhReceived": true, "extnhEnabled": true, "peerIP": "10.0.0.13", "mrai": 0,
+    "reason": "No error", "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541719916,
+    "active": true, "afiSafi": "l2vpn evpn"}, {"namespace": "nxos", "hostname": "spine02",
+    "vrf": "default", "peer": "10.0.0.14", "peerHostname": "leaf04", "state": "Established",
+    "afi": "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 0, "numChanges": 1, "estdTime": 1616221947916, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent":
     0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
     "softReconfig": true, "communityTypes": ["standard", "extended"], "defOriginate":
@@ -2366,8 +2363,8 @@ tests:
     "peerIP": "10.0.0.14", "mrai": 0, "reason": "No error", "lastDownTime": 0, "ifname":
     "loopback0", "timestamp": 1616541719916, "active": true, "afiSafi": "ipv4 unicast"},
     {"namespace": "nxos", "hostname": "spine02", "vrf": "default", "peer": "10.0.0.14",
-    "afi": "l2vpn", "safi": "evpn", "state": "Established", "asn": 64520, "peerAsn":
-    64520, "peerHostname": "leaf04", "pfxRx": 8, "pfxTx": 32, "numChanges": 1, "estdTime":
+    "peerHostname": "leaf04", "state": "Established", "afi": "l2vpn", "safi": "evpn",
+    "asn": 64520, "peerAsn": 64520, "pfxRx": 8, "pfxTx": 32, "numChanges": 1, "estdTime":
     1616221947916, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx":
     0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis":
     false, "egressRmap": "", "ingressRmap": "", "softReconfig": true, "communityTypes":
@@ -2378,35 +2375,34 @@ tests:
     "extnhReceived": true, "extnhEnabled": true, "peerIP": "10.0.0.14", "mrai": 0,
     "reason": "No error", "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541719916,
     "active": true, "afiSafi": "l2vpn evpn"}, {"namespace": "nxos", "hostname": "spine02",
-    "vrf": "default", "peer": "10.0.0.31", "afi": "ipv4", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "exit01", "pfxRx":
-    1, "pfxTx": 0, "numChanges": 1, "estdTime": 1616221952916, "afisAdvOnly": [],
-    "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx":
-    0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": true, "communityTypes": ["standard", "extended"],
-    "defOriginate": true, "keepaliveTime": 0, "updateSource": "10.0.0.22", "holdTime":
-    180, "updatesRx": 9, "updatesTx": 2102, "peerRouterId": "10.0.0.31", "routerId":
-    "10.0.0.22", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient":
-    "False", "notificnReason": "No error", "extnhAdvertised": true, "extnhReceived":
-    true, "extnhEnabled": true, "peerIP": "10.0.0.31", "mrai": 0, "reason": "No error",
-    "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541719916, "active":
-    true, "afiSafi": "ipv4 unicast"}, {"namespace": "nxos", "hostname": "spine02",
-    "vrf": "default", "peer": "10.0.0.31", "afi": "l2vpn", "safi": "evpn", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "exit01", "pfxRx":
-    4, "pfxTx": 36, "numChanges": 1, "estdTime": 1616221952916, "afisAdvOnly": [],
-    "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx":
-    0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": true, "communityTypes": ["standard", "extended"],
-    "defOriginate": true, "keepaliveTime": 0, "updateSource": "10.0.0.22", "holdTime":
-    180, "updatesRx": 9, "updatesTx": 2102, "peerRouterId": "10.0.0.31", "routerId":
-    "10.0.0.22", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient":
-    "False", "notificnReason": "No error", "extnhAdvertised": true, "extnhReceived":
-    true, "extnhEnabled": true, "peerIP": "10.0.0.31", "mrai": 0, "reason": "No error",
-    "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541719916, "active":
-    true, "afiSafi": "l2vpn evpn"}, {"namespace": "nxos", "hostname": "spine02", "vrf":
-    "default", "peer": "10.0.0.32", "afi": "ipv4", "safi": "unicast", "state": "Established",
-    "asn": 64520, "peerAsn": 64520, "peerHostname": "exit02", "pfxRx": 1, "pfxTx":
-    0, "numChanges": 1, "estdTime": 1616221952916, "afisAdvOnly": [], "afisRcvOnly":
+    "vrf": "default", "peer": "10.0.0.31", "peerHostname": "exit01", "state": "Established",
+    "afi": "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 1,
+    "pfxTx": 0, "numChanges": 1, "estdTime": 1616221952916, "afisAdvOnly": [], "afisRcvOnly":
+    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": true, "communityTypes": ["standard", "extended"], "defOriginate":
+    true, "keepaliveTime": 0, "updateSource": "10.0.0.22", "holdTime": 180, "updatesRx":
+    9, "updatesTx": 2102, "peerRouterId": "10.0.0.31", "routerId": "10.0.0.22", "bfdStatus":
+    "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
+    "No error", "extnhAdvertised": true, "extnhReceived": true, "extnhEnabled": true,
+    "peerIP": "10.0.0.31", "mrai": 0, "reason": "No error", "lastDownTime": 0, "ifname":
+    "loopback0", "timestamp": 1616541719916, "active": true, "afiSafi": "ipv4 unicast"},
+    {"namespace": "nxos", "hostname": "spine02", "vrf": "default", "peer": "10.0.0.31",
+    "peerHostname": "exit01", "state": "Established", "afi": "l2vpn", "safi": "evpn",
+    "asn": 64520, "peerAsn": 64520, "pfxRx": 4, "pfxTx": 36, "numChanges": 1, "estdTime":
+    1616221952916, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx":
+    0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis":
+    false, "egressRmap": "", "ingressRmap": "", "softReconfig": true, "communityTypes":
+    ["standard", "extended"], "defOriginate": true, "keepaliveTime": 0, "updateSource":
+    "10.0.0.22", "holdTime": 180, "updatesRx": 9, "updatesTx": 2102, "peerRouterId":
+    "10.0.0.31", "routerId": "10.0.0.22", "bfdStatus": "", "nhUnchanged": false, "nhSelf":
+    false, "rrclient": "False", "notificnReason": "No error", "extnhAdvertised": true,
+    "extnhReceived": true, "extnhEnabled": true, "peerIP": "10.0.0.31", "mrai": 0,
+    "reason": "No error", "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541719916,
+    "active": true, "afiSafi": "l2vpn evpn"}, {"namespace": "nxos", "hostname": "spine02",
+    "vrf": "default", "peer": "10.0.0.32", "peerHostname": "exit02", "state": "Established",
+    "afi": "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 1,
+    "pfxTx": 0, "numChanges": 1, "estdTime": 1616221952916, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent":
     0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
     "softReconfig": true, "communityTypes": ["standard", "extended"], "defOriginate":
@@ -2417,8 +2413,8 @@ tests:
     "peerIP": "10.0.0.32", "mrai": 0, "reason": "No error", "lastDownTime": 0, "ifname":
     "loopback0", "timestamp": 1616541719916, "active": true, "afiSafi": "ipv4 unicast"},
     {"namespace": "nxos", "hostname": "spine02", "vrf": "default", "peer": "10.0.0.32",
-    "afi": "l2vpn", "safi": "evpn", "state": "Established", "asn": 64520, "peerAsn":
-    64520, "peerHostname": "exit02", "pfxRx": 4, "pfxTx": 36, "numChanges": 1, "estdTime":
+    "peerHostname": "exit02", "state": "Established", "afi": "l2vpn", "safi": "evpn",
+    "asn": 64520, "peerAsn": 64520, "pfxRx": 4, "pfxTx": 36, "numChanges": 1, "estdTime":
     1616221952916, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx":
     0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis":
     false, "egressRmap": "", "ingressRmap": "", "softReconfig": true, "communityTypes":
@@ -2429,152 +2425,151 @@ tests:
     "extnhReceived": true, "extnhEnabled": true, "peerIP": "10.0.0.32", "mrai": 0,
     "reason": "No error", "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541719916,
     "active": true, "afiSafi": "l2vpn evpn"}, {"namespace": "nxos", "hostname": "leaf02",
-    "vrf": "default", "peer": "10.0.0.22", "afi": "l2vpn", "safi": "evpn", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "spine02", "pfxRx":
-    24, "pfxTx": 8, "numChanges": 1, "estdTime": 1616221946234, "afisAdvOnly": [],
-    "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx":
-    0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": true, "communityTypes": ["standard", "extended"],
-    "defOriginate": true, "keepaliveTime": 0, "updateSource": "10.0.0.12", "holdTime":
-    180, "updatesRx": 1593, "updatesTx": 543, "peerRouterId": "10.0.0.22", "routerId":
-    "10.0.0.12", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient":
-    "False", "notificnReason": "No error", "extnhAdvertised": true, "extnhReceived":
-    true, "extnhEnabled": true, "peerIP": "10.0.0.22", "mrai": 0, "reason": "session
-    closed", "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541720234,
-    "active": true, "afiSafi": "l2vpn evpn"}, {"namespace": "nxos", "hostname": "leaf02",
-    "vrf": "default", "peer": "10.0.0.21", "afi": "l2vpn", "safi": "evpn", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "spine01", "pfxRx":
-    24, "pfxTx": 8, "numChanges": 1, "estdTime": 1616221947234, "afisAdvOnly": [],
-    "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx":
-    0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": true, "communityTypes": ["standard", "extended"],
-    "defOriginate": true, "keepaliveTime": 0, "updateSource": "10.0.0.12", "holdTime":
-    180, "updatesRx": 1611, "updatesTx": 543, "peerRouterId": "10.0.0.21", "routerId":
-    "10.0.0.12", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient":
-    "False", "notificnReason": "No error", "extnhAdvertised": true, "extnhReceived":
-    true, "extnhEnabled": true, "peerIP": "10.0.0.21", "mrai": 0, "reason": "session
-    closed", "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541720234,
-    "active": true, "afiSafi": "l2vpn evpn"}, {"namespace": "nxos", "hostname": "leaf02",
-    "vrf": "default", "peer": "10.0.0.21", "afi": "ipv4", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "spine01", "pfxRx":
-    0, "pfxTx": 0, "numChanges": 1, "estdTime": 1616221947234, "afisAdvOnly": [],
-    "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx":
-    0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": true, "communityTypes": ["standard", "extended"],
-    "defOriginate": true, "keepaliveTime": 0, "updateSource": "10.0.0.12", "holdTime":
-    180, "updatesRx": 1611, "updatesTx": 543, "peerRouterId": "10.0.0.21", "routerId":
-    "10.0.0.12", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient":
-    "False", "notificnReason": "No error", "extnhAdvertised": true, "extnhReceived":
-    true, "extnhEnabled": true, "peerIP": "10.0.0.21", "mrai": 0, "reason": "session
-    closed", "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541720234,
-    "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "nxos", "hostname":
-    "leaf02", "vrf": "default", "peer": "10.0.0.22", "afi": "ipv4", "safi": "unicast",
-    "state": "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "spine02",
-    "pfxRx": 0, "pfxTx": 0, "numChanges": 1, "estdTime": 1616221946234, "afisAdvOnly":
-    [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0,
-    "pfxMaxRx": 0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": true, "communityTypes": ["standard", "extended"],
-    "defOriginate": true, "keepaliveTime": 0, "updateSource": "10.0.0.12", "holdTime":
-    180, "updatesRx": 1593, "updatesTx": 543, "peerRouterId": "10.0.0.22", "routerId":
-    "10.0.0.12", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient":
-    "False", "notificnReason": "No error", "extnhAdvertised": true, "extnhReceived":
-    true, "extnhEnabled": true, "peerIP": "10.0.0.22", "mrai": 0, "reason": "session
-    closed", "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541720234,
-    "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "nxos", "hostname":
-    "exit01", "vrf": "default", "peer": "10.0.0.21", "afi": "ipv4", "safi": "unicast",
-    "state": "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "spine01",
-    "pfxRx": 0, "pfxTx": 1, "numChanges": 9, "estdTime": 1616421060254, "afisAdvOnly":
-    [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0,
-    "pfxMaxRx": 0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": true, "communityTypes": ["standard", "extended"],
-    "defOriginate": true, "keepaliveTime": 0, "updateSource": "10.0.0.31", "holdTime":
-    180, "updatesRx": 2199, "updatesTx": 33, "peerRouterId": "10.0.0.21", "routerId":
-    "10.0.0.31", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient":
-    "False", "notificnReason": "session cleared", "extnhAdvertised": true, "extnhReceived":
-    true, "extnhEnabled": true, "peerIP": "10.0.0.21", "mrai": 0, "reason": "session
-    closed", "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541720254,
-    "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "nxos", "hostname":
-    "exit01", "vrf": "default", "peer": "10.0.0.21", "afi": "l2vpn", "safi": "evpn",
-    "state": "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "spine01",
-    "pfxRx": 36, "pfxTx": 10, "numChanges": 9, "estdTime": 1616421060254, "afisAdvOnly":
-    [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0,
-    "pfxMaxRx": 0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": true, "communityTypes": ["standard", "extended"],
-    "defOriginate": true, "keepaliveTime": 0, "updateSource": "10.0.0.31", "holdTime":
-    180, "updatesRx": 2199, "updatesTx": 33, "peerRouterId": "10.0.0.21", "routerId":
-    "10.0.0.31", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient":
-    "False", "notificnReason": "session cleared", "extnhAdvertised": true, "extnhReceived":
-    true, "extnhEnabled": true, "peerIP": "10.0.0.21", "mrai": 0, "reason": "session
-    closed", "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541720254,
-    "active": true, "afiSafi": "l2vpn evpn"}, {"namespace": "nxos", "hostname": "exit01",
-    "vrf": "default", "peer": "10.0.0.22", "afi": "ipv4", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "spine02", "pfxRx":
-    0, "pfxTx": 1, "numChanges": 1, "estdTime": 1616221953254, "afisAdvOnly": [],
-    "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx":
-    0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": true, "communityTypes": ["standard", "extended"],
-    "defOriginate": true, "keepaliveTime": 0, "updateSource": "10.0.0.31", "holdTime":
-    180, "updatesRx": 2102, "updatesTx": 9, "peerRouterId": "10.0.0.22", "routerId":
-    "10.0.0.31", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient":
-    "False", "notificnReason": "No error", "extnhAdvertised": true, "extnhReceived":
-    true, "extnhEnabled": true, "peerIP": "10.0.0.22", "mrai": 0, "reason": "session
-    closed", "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541720254,
-    "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "nxos", "hostname":
-    "exit01", "vrf": "default", "peer": "10.0.0.22", "afi": "l2vpn", "safi": "evpn",
-    "state": "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "spine02",
-    "pfxRx": 36, "pfxTx": 10, "numChanges": 1, "estdTime": 1616221953254, "afisAdvOnly":
-    [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0,
-    "pfxMaxRx": 0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": true, "communityTypes": ["standard", "extended"],
-    "defOriginate": true, "keepaliveTime": 0, "updateSource": "10.0.0.31", "holdTime":
-    180, "updatesRx": 2102, "updatesTx": 9, "peerRouterId": "10.0.0.22", "routerId":
-    "10.0.0.31", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient":
-    "False", "notificnReason": "No error", "extnhAdvertised": true, "extnhReceived":
-    true, "extnhEnabled": true, "peerIP": "10.0.0.22", "mrai": 0, "reason": "session
-    closed", "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541720254,
-    "active": true, "afiSafi": "l2vpn evpn"}, {"namespace": "nxos", "hostname": "exit01",
-    "vrf": "default", "peer": "169.254.254.2", "afi": "ipv4", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 65533, "peerHostname": "firewall01", "pfxRx":
-    1, "pfxTx": 0, "numChanges": 5, "estdTime": 1616416138254, "afisAdvOnly": [],
-    "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx":
-    0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": true, "communityTypes": [], "defOriginate":
-    true, "keepaliveTime": 0, "updateSource": "169.254.254.1", "holdTime": 9, "updatesRx":
-    7, "updatesTx": 3, "peerRouterId": "10.0.0.100", "routerId": "10.0.0.31", "bfdStatus":
+    "vrf": "default", "peer": "10.0.0.22", "peerHostname": "spine02", "state": "Established",
+    "afi": "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 24, "pfxTx":
+    8, "numChanges": 1, "estdTime": 1616221946234, "afisAdvOnly": [], "afisRcvOnly":
+    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": true, "communityTypes": ["standard", "extended"], "defOriginate":
+    true, "keepaliveTime": 0, "updateSource": "10.0.0.12", "holdTime": 180, "updatesRx":
+    1593, "updatesTx": 543, "peerRouterId": "10.0.0.22", "routerId": "10.0.0.12",
+    "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
+    "No error", "extnhAdvertised": true, "extnhReceived": true, "extnhEnabled": true,
+    "peerIP": "10.0.0.22", "mrai": 0, "reason": "session closed", "lastDownTime":
+    0, "ifname": "loopback0", "timestamp": 1616541720234, "active": true, "afiSafi":
+    "l2vpn evpn"}, {"namespace": "nxos", "hostname": "leaf02", "vrf": "default", "peer":
+    "10.0.0.21", "peerHostname": "spine01", "state": "Established", "afi": "l2vpn",
+    "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 24, "pfxTx": 8, "numChanges":
+    1, "estdTime": 1616221947234, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
+    0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent": 0,
+    "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": true, "communityTypes": ["standard", "extended"], "defOriginate":
+    true, "keepaliveTime": 0, "updateSource": "10.0.0.12", "holdTime": 180, "updatesRx":
+    1611, "updatesTx": 543, "peerRouterId": "10.0.0.21", "routerId": "10.0.0.12",
+    "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
+    "No error", "extnhAdvertised": true, "extnhReceived": true, "extnhEnabled": true,
+    "peerIP": "10.0.0.21", "mrai": 0, "reason": "session closed", "lastDownTime":
+    0, "ifname": "loopback0", "timestamp": 1616541720234, "active": true, "afiSafi":
+    "l2vpn evpn"}, {"namespace": "nxos", "hostname": "leaf02", "vrf": "default", "peer":
+    "10.0.0.21", "peerHostname": "spine01", "state": "Established", "afi": "ipv4",
+    "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0, "pfxTx": 0, "numChanges":
+    1, "estdTime": 1616221947234, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
+    0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent": 0,
+    "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": true, "communityTypes": ["standard", "extended"], "defOriginate":
+    true, "keepaliveTime": 0, "updateSource": "10.0.0.12", "holdTime": 180, "updatesRx":
+    1611, "updatesTx": 543, "peerRouterId": "10.0.0.21", "routerId": "10.0.0.12",
+    "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
+    "No error", "extnhAdvertised": true, "extnhReceived": true, "extnhEnabled": true,
+    "peerIP": "10.0.0.21", "mrai": 0, "reason": "session closed", "lastDownTime":
+    0, "ifname": "loopback0", "timestamp": 1616541720234, "active": true, "afiSafi":
+    "ipv4 unicast"}, {"namespace": "nxos", "hostname": "leaf02", "vrf": "default",
+    "peer": "10.0.0.22", "peerHostname": "spine02", "state": "Established", "afi":
+    "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0, "pfxTx":
+    0, "numChanges": 1, "estdTime": 1616221946234, "afisAdvOnly": [], "afisRcvOnly":
+    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": true, "communityTypes": ["standard", "extended"], "defOriginate":
+    true, "keepaliveTime": 0, "updateSource": "10.0.0.12", "holdTime": 180, "updatesRx":
+    1593, "updatesTx": 543, "peerRouterId": "10.0.0.22", "routerId": "10.0.0.12",
+    "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
+    "No error", "extnhAdvertised": true, "extnhReceived": true, "extnhEnabled": true,
+    "peerIP": "10.0.0.22", "mrai": 0, "reason": "session closed", "lastDownTime":
+    0, "ifname": "loopback0", "timestamp": 1616541720234, "active": true, "afiSafi":
+    "ipv4 unicast"}, {"namespace": "nxos", "hostname": "exit01", "vrf": "default",
+    "peer": "10.0.0.21", "peerHostname": "spine01", "state": "Established", "afi":
+    "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0, "pfxTx":
+    1, "numChanges": 9, "estdTime": 1616421060254, "afisAdvOnly": [], "afisRcvOnly":
+    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": true, "communityTypes": ["standard", "extended"], "defOriginate":
+    true, "keepaliveTime": 0, "updateSource": "10.0.0.31", "holdTime": 180, "updatesRx":
+    2199, "updatesTx": 33, "peerRouterId": "10.0.0.21", "routerId": "10.0.0.31", "bfdStatus":
     "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
-    "peer deconfigured", "extnhAdvertised": true, "extnhReceived": true, "extnhEnabled":
-    false, "peerIP": "169.254.254.2", "mrai": 0, "reason": "No error", "lastDownTime":
-    0, "ifname": "None", "timestamp": 1616541720254, "active": true, "afiSafi": "ipv4
-    unicast"}, {"namespace": "nxos", "hostname": "exit01", "vrf": "evpn-vrf", "peer":
-    "169.254.254.6", "afi": "ipv4", "safi": "unicast", "state": "Established", "asn":
-    64520, "peerAsn": 65533, "peerHostname": "firewall01", "pfxRx": 10, "pfxTx": 3,
-    "numChanges": 5, "estdTime": 1616416139254, "afisAdvOnly": [], "afisRcvOnly":
+    "session cleared", "extnhAdvertised": true, "extnhReceived": true, "extnhEnabled":
+    true, "peerIP": "10.0.0.21", "mrai": 0, "reason": "session closed", "lastDownTime":
+    0, "ifname": "loopback0", "timestamp": 1616541720254, "active": true, "afiSafi":
+    "ipv4 unicast"}, {"namespace": "nxos", "hostname": "exit01", "vrf": "default",
+    "peer": "10.0.0.21", "peerHostname": "spine01", "state": "Established", "afi":
+    "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 36, "pfxTx":
+    10, "numChanges": 9, "estdTime": 1616421060254, "afisAdvOnly": [], "afisRcvOnly":
+    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": true, "communityTypes": ["standard", "extended"], "defOriginate":
+    true, "keepaliveTime": 0, "updateSource": "10.0.0.31", "holdTime": 180, "updatesRx":
+    2199, "updatesTx": 33, "peerRouterId": "10.0.0.21", "routerId": "10.0.0.31", "bfdStatus":
+    "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
+    "session cleared", "extnhAdvertised": true, "extnhReceived": true, "extnhEnabled":
+    true, "peerIP": "10.0.0.21", "mrai": 0, "reason": "session closed", "lastDownTime":
+    0, "ifname": "loopback0", "timestamp": 1616541720254, "active": true, "afiSafi":
+    "l2vpn evpn"}, {"namespace": "nxos", "hostname": "exit01", "vrf": "default", "peer":
+    "10.0.0.22", "peerHostname": "spine02", "state": "Established", "afi": "ipv4",
+    "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0, "pfxTx": 1, "numChanges":
+    1, "estdTime": 1616221953254, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
+    0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent": 0,
+    "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": true, "communityTypes": ["standard", "extended"], "defOriginate":
+    true, "keepaliveTime": 0, "updateSource": "10.0.0.31", "holdTime": 180, "updatesRx":
+    2102, "updatesTx": 9, "peerRouterId": "10.0.0.22", "routerId": "10.0.0.31", "bfdStatus":
+    "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
+    "No error", "extnhAdvertised": true, "extnhReceived": true, "extnhEnabled": true,
+    "peerIP": "10.0.0.22", "mrai": 0, "reason": "session closed", "lastDownTime":
+    0, "ifname": "loopback0", "timestamp": 1616541720254, "active": true, "afiSafi":
+    "ipv4 unicast"}, {"namespace": "nxos", "hostname": "exit01", "vrf": "default",
+    "peer": "10.0.0.22", "peerHostname": "spine02", "state": "Established", "afi":
+    "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 36, "pfxTx":
+    10, "numChanges": 1, "estdTime": 1616221953254, "afisAdvOnly": [], "afisRcvOnly":
+    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": true, "communityTypes": ["standard", "extended"], "defOriginate":
+    true, "keepaliveTime": 0, "updateSource": "10.0.0.31", "holdTime": 180, "updatesRx":
+    2102, "updatesTx": 9, "peerRouterId": "10.0.0.22", "routerId": "10.0.0.31", "bfdStatus":
+    "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
+    "No error", "extnhAdvertised": true, "extnhReceived": true, "extnhEnabled": true,
+    "peerIP": "10.0.0.22", "mrai": 0, "reason": "session closed", "lastDownTime":
+    0, "ifname": "loopback0", "timestamp": 1616541720254, "active": true, "afiSafi":
+    "l2vpn evpn"}, {"namespace": "nxos", "hostname": "exit01", "vrf": "default", "peer":
+    "169.254.254.2", "peerHostname": "firewall01", "state": "Established", "afi":
+    "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 65533, "pfxRx": 1, "pfxTx":
+    0, "numChanges": 5, "estdTime": 1616416138254, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent":
     0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
     "softReconfig": true, "communityTypes": [], "defOriginate": true, "keepaliveTime":
-    0, "updateSource": "169.254.254.5", "holdTime": 9, "updatesRx": 9, "updatesTx":
-    15, "peerRouterId": "10.0.0.100", "routerId": "169.254.254.5", "bfdStatus": "",
-    "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
-    "peer deconfigured", "extnhAdvertised": true, "extnhReceived": true, "extnhEnabled":
-    false, "peerIP": "169.254.254.6", "mrai": 0, "reason": "No error", "lastDownTime":
-    0, "ifname": "None", "timestamp": 1616541720254, "active": true, "afiSafi": "ipv4
-    unicast"}, {"namespace": "nxos", "hostname": "exit01", "vrf": "internet-vrf",
-    "peer": "169.254.127.0", "afi": "ipv4", "safi": "unicast", "state": "Established",
-    "asn": 64520, "peerAsn": 65534, "peerHostname": "dcedge01", "pfxRx": 6, "pfxTx":
-    4, "numChanges": 1, "estdTime": 1616222042254, "afisAdvOnly": [], "afisRcvOnly":
-    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent":
-    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
-    "softReconfig": true, "communityTypes": [], "defOriginate": true, "keepaliveTime":
-    0, "updateSource": "169.254.127.1", "holdTime": 90, "updatesRx": 3, "updatesTx":
-    3, "peerRouterId": "10.0.0.41", "routerId": "169.254.254.9", "bfdStatus": "",
-    "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
+    0, "updateSource": "169.254.254.1", "holdTime": 9, "updatesRx": 7, "updatesTx":
+    3, "peerRouterId": "10.0.0.100", "routerId": "10.0.0.31", "bfdStatus": "", "nhUnchanged":
+    false, "nhSelf": false, "rrclient": "False", "notificnReason": "peer deconfigured",
+    "extnhAdvertised": true, "extnhReceived": true, "extnhEnabled": false, "peerIP":
+    "169.254.254.2", "mrai": 0, "reason": "No error", "lastDownTime": 0, "ifname":
+    "None", "timestamp": 1616541720254, "active": true, "afiSafi": "ipv4 unicast"},
+    {"namespace": "nxos", "hostname": "exit01", "vrf": "evpn-vrf", "peer": "169.254.254.6",
+    "peerHostname": "firewall01", "state": "Established", "afi": "ipv4", "safi": "unicast",
+    "asn": 64520, "peerAsn": 65533, "pfxRx": 10, "pfxTx": 3, "numChanges": 5, "estdTime":
+    1616416139254, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx":
+    0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis":
+    false, "egressRmap": "", "ingressRmap": "", "softReconfig": true, "communityTypes":
+    [], "defOriginate": true, "keepaliveTime": 0, "updateSource": "169.254.254.5",
+    "holdTime": 9, "updatesRx": 9, "updatesTx": 15, "peerRouterId": "10.0.0.100",
+    "routerId": "169.254.254.5", "bfdStatus": "", "nhUnchanged": false, "nhSelf":
+    false, "rrclient": "False", "notificnReason": "peer deconfigured", "extnhAdvertised":
+    true, "extnhReceived": true, "extnhEnabled": false, "peerIP": "169.254.254.6",
+    "mrai": 0, "reason": "No error", "lastDownTime": 0, "ifname": "None", "timestamp":
+    1616541720254, "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "nxos",
+    "hostname": "exit01", "vrf": "internet-vrf", "peer": "169.254.127.0", "peerHostname":
+    "dcedge01", "state": "Established", "afi": "ipv4", "safi": "unicast", "asn": 64520,
+    "peerAsn": 65534, "pfxRx": 6, "pfxTx": 4, "numChanges": 1, "estdTime": 1616222042254,
+    "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx":
+    0, "pfxMaxRx": 0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false,
+    "egressRmap": "", "ingressRmap": "", "softReconfig": true, "communityTypes": [],
+    "defOriginate": true, "keepaliveTime": 0, "updateSource": "169.254.127.1", "holdTime":
+    90, "updatesRx": 3, "updatesTx": 3, "peerRouterId": "10.0.0.41", "routerId": "169.254.254.9",
+    "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
     "No error", "extnhAdvertised": true, "extnhReceived": true, "extnhEnabled": false,
     "peerIP": "169.254.127.0", "mrai": 0, "reason": "No error", "lastDownTime": 0,
     "ifname": "None", "timestamp": 1616541720254, "active": true, "afiSafi": "ipv4
     unicast"}, {"namespace": "nxos", "hostname": "exit01", "vrf": "internet-vrf",
-    "peer": "169.254.254.10", "afi": "ipv4", "safi": "unicast", "state": "Established",
-    "asn": 64520, "peerAsn": 65533, "peerHostname": "firewall01", "pfxRx": 10, "pfxTx":
-    6, "numChanges": 5, "estdTime": 1616416137254, "afisAdvOnly": [], "afisRcvOnly":
+    "peer": "169.254.254.10", "peerHostname": "firewall01", "state": "Established",
+    "afi": "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 65533, "pfxRx": 10,
+    "pfxTx": 6, "numChanges": 5, "estdTime": 1616416137254, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent":
     0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
     "softReconfig": true, "communityTypes": [], "defOriginate": true, "keepaliveTime":
@@ -2585,8 +2580,8 @@ tests:
     false, "peerIP": "169.254.254.10", "mrai": 0, "reason": "No error", "lastDownTime":
     0, "ifname": "None", "timestamp": 1616541720254, "active": true, "afiSafi": "ipv4
     unicast"}, {"namespace": "nxos", "hostname": "leaf03", "vrf": "default", "peer":
-    "10.0.0.21", "afi": "ipv4", "safi": "unicast", "state": "Established", "asn":
-    64520, "peerAsn": 64520, "peerHostname": "spine01", "pfxRx": 0, "pfxTx": 0, "numChanges":
+    "10.0.0.21", "peerHostname": "spine01", "state": "Established", "afi": "ipv4",
+    "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0, "pfxTx": 0, "numChanges":
     1, "estdTime": 1616221946354, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
     0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent": 0,
     "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
@@ -2598,11 +2593,11 @@ tests:
     "peerIP": "10.0.0.21", "mrai": 0, "reason": "session closed", "lastDownTime":
     0, "ifname": "loopback0", "timestamp": 1616541720354, "active": true, "afiSafi":
     "ipv4 unicast"}, {"namespace": "nxos", "hostname": "leaf03", "vrf": "default",
-    "peer": "10.0.0.21", "afi": "l2vpn", "safi": "evpn", "state": "Established", "asn":
-    64520, "peerAsn": 64520, "peerHostname": "spine01", "pfxRx": 24, "pfxTx": 8, "numChanges":
-    1, "estdTime": 1616221946354, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
-    0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent": 0,
-    "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "peer": "10.0.0.21", "peerHostname": "spine01", "state": "Established", "afi":
+    "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 24, "pfxTx":
+    8, "numChanges": 1, "estdTime": 1616221946354, "afisAdvOnly": [], "afisRcvOnly":
+    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
     "softReconfig": true, "communityTypes": ["standard", "extended"], "defOriginate":
     true, "keepaliveTime": 0, "updateSource": "10.0.0.13", "holdTime": 180, "updatesRx":
     1624, "updatesTx": 545, "peerRouterId": "10.0.0.21", "routerId": "10.0.0.13",
@@ -2611,8 +2606,8 @@ tests:
     "peerIP": "10.0.0.21", "mrai": 0, "reason": "session closed", "lastDownTime":
     0, "ifname": "loopback0", "timestamp": 1616541720354, "active": true, "afiSafi":
     "l2vpn evpn"}, {"namespace": "nxos", "hostname": "leaf03", "vrf": "default", "peer":
-    "10.0.0.22", "afi": "ipv4", "safi": "unicast", "state": "Established", "asn":
-    64520, "peerAsn": 64520, "peerHostname": "spine02", "pfxRx": 0, "pfxTx": 0, "numChanges":
+    "10.0.0.22", "peerHostname": "spine02", "state": "Established", "afi": "ipv4",
+    "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0, "pfxTx": 0, "numChanges":
     1, "estdTime": 1616221948354, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
     0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent": 0,
     "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
@@ -2624,11 +2619,11 @@ tests:
     "peerIP": "10.0.0.22", "mrai": 0, "reason": "session closed", "lastDownTime":
     0, "ifname": "loopback0", "timestamp": 1616541720354, "active": true, "afiSafi":
     "ipv4 unicast"}, {"namespace": "nxos", "hostname": "leaf03", "vrf": "default",
-    "peer": "10.0.0.22", "afi": "l2vpn", "safi": "evpn", "state": "Established", "asn":
-    64520, "peerAsn": 64520, "peerHostname": "spine02", "pfxRx": 24, "pfxTx": 8, "numChanges":
-    1, "estdTime": 1616221948354, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
-    0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent": 0,
-    "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "peer": "10.0.0.22", "peerHostname": "spine02", "state": "Established", "afi":
+    "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 24, "pfxTx":
+    8, "numChanges": 1, "estdTime": 1616221948354, "afisAdvOnly": [], "afisRcvOnly":
+    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
     "softReconfig": true, "communityTypes": ["standard", "extended"], "defOriginate":
     true, "keepaliveTime": 0, "updateSource": "10.0.0.13", "holdTime": 180, "updatesRx":
     1616, "updatesTx": 545, "peerRouterId": "10.0.0.22", "routerId": "10.0.0.13",
@@ -2637,8 +2632,8 @@ tests:
     "peerIP": "10.0.0.22", "mrai": 0, "reason": "session closed", "lastDownTime":
     0, "ifname": "loopback0", "timestamp": 1616541720354, "active": true, "afiSafi":
     "l2vpn evpn"}, {"namespace": "nxos", "hostname": "exit02", "vrf": "internet-vrf",
-    "peer": "169.254.127.2", "afi": "ipv4", "safi": "unicast", "state": "Established",
-    "asn": 64520, "peerAsn": 65534, "peerHostname": "dcedge01", "pfxRx": 6, "pfxTx":
+    "peer": "169.254.127.2", "peerHostname": "dcedge01", "state": "Established", "afi":
+    "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 65534, "pfxRx": 6, "pfxTx":
     4, "numChanges": 1, "estdTime": 1616222045567, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent":
     0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
@@ -2650,9 +2645,9 @@ tests:
     "peerIP": "169.254.127.2", "mrai": 0, "reason": "No error", "lastDownTime": 0,
     "ifname": "None", "timestamp": 1616541720567, "active": true, "afiSafi": "ipv4
     unicast"}, {"namespace": "nxos", "hostname": "exit02", "vrf": "internet-vrf",
-    "peer": "169.254.253.10", "afi": "ipv4", "safi": "unicast", "state": "Established",
-    "asn": 64520, "peerAsn": 65533, "peerHostname": "firewall01", "pfxRx": 10, "pfxTx":
-    6, "numChanges": 5, "estdTime": 1616416137567, "afisAdvOnly": [], "afisRcvOnly":
+    "peer": "169.254.253.10", "peerHostname": "firewall01", "state": "Established",
+    "afi": "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 65533, "pfxRx": 10,
+    "pfxTx": 6, "numChanges": 5, "estdTime": 1616416137567, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent":
     0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
     "softReconfig": true, "communityTypes": [], "defOriginate": true, "keepaliveTime":
@@ -2663,9 +2658,9 @@ tests:
     false, "peerIP": "169.254.253.10", "mrai": 0, "reason": "No error", "lastDownTime":
     0, "ifname": "None", "timestamp": 1616541720567, "active": true, "afiSafi": "ipv4
     unicast"}, {"namespace": "nxos", "hostname": "exit02", "vrf": "evpn-vrf", "peer":
-    "169.254.253.6", "afi": "ipv4", "safi": "unicast", "state": "Established", "asn":
-    64520, "peerAsn": 65533, "peerHostname": "firewall01", "pfxRx": 1, "pfxTx": 3,
-    "numChanges": 5, "estdTime": 1616416137567, "afisAdvOnly": [], "afisRcvOnly":
+    "169.254.253.6", "peerHostname": "firewall01", "state": "Established", "afi":
+    "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 65533, "pfxRx": 1, "pfxTx":
+    3, "numChanges": 5, "estdTime": 1616416137567, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent":
     0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
     "softReconfig": true, "communityTypes": [], "defOriginate": true, "keepaliveTime":
@@ -2676,9 +2671,9 @@ tests:
     false, "peerIP": "169.254.253.6", "mrai": 0, "reason": "No error", "lastDownTime":
     0, "ifname": "None", "timestamp": 1616541720567, "active": true, "afiSafi": "ipv4
     unicast"}, {"namespace": "nxos", "hostname": "exit02", "vrf": "default", "peer":
-    "169.254.253.2", "afi": "ipv4", "safi": "unicast", "state": "Established", "asn":
-    64520, "peerAsn": 65533, "peerHostname": "firewall01", "pfxRx": 1, "pfxTx": 0,
-    "numChanges": 5, "estdTime": 1616416138567, "afisAdvOnly": [], "afisRcvOnly":
+    "169.254.253.2", "peerHostname": "firewall01", "state": "Established", "afi":
+    "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 65533, "pfxRx": 1, "pfxTx":
+    0, "numChanges": 5, "estdTime": 1616416138567, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent":
     0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
     "softReconfig": true, "communityTypes": [], "defOriginate": true, "keepaliveTime":
@@ -2689,8 +2684,8 @@ tests:
     "169.254.253.2", "mrai": 0, "reason": "No error", "lastDownTime": 0, "ifname":
     "None", "timestamp": 1616541720567, "active": true, "afiSafi": "ipv4 unicast"},
     {"namespace": "nxos", "hostname": "exit02", "vrf": "default", "peer": "10.0.0.22",
-    "afi": "l2vpn", "safi": "evpn", "state": "Established", "asn": 64520, "peerAsn":
-    64520, "peerHostname": "spine02", "pfxRx": 36, "pfxTx": 4, "numChanges": 1, "estdTime":
+    "peerHostname": "spine02", "state": "Established", "afi": "l2vpn", "safi": "evpn",
+    "asn": 64520, "peerAsn": 64520, "pfxRx": 36, "pfxTx": 4, "numChanges": 1, "estdTime":
     1616221952567, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx":
     0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis":
     false, "egressRmap": "", "ingressRmap": "", "softReconfig": true, "communityTypes":
@@ -2701,21 +2696,21 @@ tests:
     "extnhReceived": true, "extnhEnabled": true, "peerIP": "10.0.0.22", "mrai": 0,
     "reason": "session closed", "lastDownTime": 0, "ifname": "loopback0", "timestamp":
     1616541720567, "active": true, "afiSafi": "l2vpn evpn"}, {"namespace": "nxos",
-    "hostname": "exit02", "vrf": "default", "peer": "10.0.0.22", "afi": "ipv4", "safi":
-    "unicast", "state": "Established", "asn": 64520, "peerAsn": 64520, "peerHostname":
-    "spine02", "pfxRx": 0, "pfxTx": 1, "numChanges": 1, "estdTime": 1616221952567,
-    "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx":
-    0, "pfxMaxRx": 0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false,
-    "egressRmap": "", "ingressRmap": "", "softReconfig": true, "communityTypes": ["standard",
-    "extended"], "defOriginate": true, "keepaliveTime": 0, "updateSource": "10.0.0.32",
-    "holdTime": 180, "updatesRx": 2104, "updatesTx": 6, "peerRouterId": "10.0.0.22",
-    "routerId": "10.0.0.32", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false,
-    "rrclient": "False", "notificnReason": "No error", "extnhAdvertised": true, "extnhReceived":
+    "hostname": "exit02", "vrf": "default", "peer": "10.0.0.22", "peerHostname": "spine02",
+    "state": "Established", "afi": "ipv4", "safi": "unicast", "asn": 64520, "peerAsn":
+    64520, "pfxRx": 0, "pfxTx": 1, "numChanges": 1, "estdTime": 1616221952567, "afisAdvOnly":
+    [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0,
+    "pfxMaxRx": 0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
+    "", "ingressRmap": "", "softReconfig": true, "communityTypes": ["standard", "extended"],
+    "defOriginate": true, "keepaliveTime": 0, "updateSource": "10.0.0.32", "holdTime":
+    180, "updatesRx": 2104, "updatesTx": 6, "peerRouterId": "10.0.0.22", "routerId":
+    "10.0.0.32", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient":
+    "False", "notificnReason": "No error", "extnhAdvertised": true, "extnhReceived":
     true, "extnhEnabled": true, "peerIP": "10.0.0.22", "mrai": 0, "reason": "session
     closed", "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541720567,
     "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "nxos", "hostname":
-    "exit02", "vrf": "default", "peer": "10.0.0.21", "afi": "l2vpn", "safi": "evpn",
-    "state": "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "spine01",
+    "exit02", "vrf": "default", "peer": "10.0.0.21", "peerHostname": "spine01", "state":
+    "Established", "afi": "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn": 64520,
     "pfxRx": 36, "pfxTx": 4, "numChanges": 1, "estdTime": 1616221954567, "afisAdvOnly":
     [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0,
     "pfxMaxRx": 0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
@@ -2727,123 +2722,123 @@ tests:
     true, "extnhEnabled": true, "peerIP": "10.0.0.21", "mrai": 0, "reason": "session
     closed", "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541720567,
     "active": true, "afiSafi": "l2vpn evpn"}, {"namespace": "nxos", "hostname": "exit02",
-    "vrf": "default", "peer": "10.0.0.21", "afi": "ipv4", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "spine01", "pfxRx":
-    0, "pfxTx": 1, "numChanges": 1, "estdTime": 1616221954567, "afisAdvOnly": [],
-    "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx":
-    0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": true, "communityTypes": ["standard", "extended"],
-    "defOriginate": true, "keepaliveTime": 0, "updateSource": "10.0.0.32", "holdTime":
-    180, "updatesRx": 2117, "updatesTx": 6, "peerRouterId": "10.0.0.21", "routerId":
-    "10.0.0.32", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient":
-    "False", "notificnReason": "No error", "extnhAdvertised": true, "extnhReceived":
-    true, "extnhEnabled": true, "peerIP": "10.0.0.21", "mrai": 0, "reason": "session
-    closed", "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541720567,
-    "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "nxos", "hostname":
-    "leaf04", "vrf": "default", "peer": "10.0.0.22", "afi": "l2vpn", "safi": "evpn",
-    "state": "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "spine02",
-    "pfxRx": 24, "pfxTx": 8, "numChanges": 1, "estdTime": 1616221948013, "afisAdvOnly":
-    [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0,
-    "pfxMaxRx": 0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": true, "communityTypes": ["standard", "extended"],
-    "defOriginate": true, "keepaliveTime": 0, "updateSource": "10.0.0.14", "holdTime":
-    180, "updatesRx": 1607, "updatesTx": 545, "peerRouterId": "10.0.0.22", "routerId":
-    "10.0.0.14", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient":
-    "False", "notificnReason": "No error", "extnhAdvertised": true, "extnhReceived":
-    true, "extnhEnabled": true, "peerIP": "10.0.0.22", "mrai": 0, "reason": "session
-    closed", "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541721013,
-    "active": true, "afiSafi": "l2vpn evpn"}, {"namespace": "nxos", "hostname": "leaf04",
-    "vrf": "default", "peer": "10.0.0.22", "afi": "ipv4", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "spine02", "pfxRx":
-    0, "pfxTx": 0, "numChanges": 1, "estdTime": 1616221948013, "afisAdvOnly": [],
-    "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx":
-    0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": true, "communityTypes": ["standard", "extended"],
-    "defOriginate": true, "keepaliveTime": 0, "updateSource": "10.0.0.14", "holdTime":
-    180, "updatesRx": 1607, "updatesTx": 545, "peerRouterId": "10.0.0.22", "routerId":
-    "10.0.0.14", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient":
-    "False", "notificnReason": "No error", "extnhAdvertised": true, "extnhReceived":
-    true, "extnhEnabled": true, "peerIP": "10.0.0.22", "mrai": 0, "reason": "session
-    closed", "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541721013,
-    "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "nxos", "hostname":
-    "leaf04", "vrf": "default", "peer": "10.0.0.21", "afi": "l2vpn", "safi": "evpn",
-    "state": "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "spine01",
-    "pfxRx": 24, "pfxTx": 8, "numChanges": 1, "estdTime": 1616221948013, "afisAdvOnly":
-    [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0,
-    "pfxMaxRx": 0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": true, "communityTypes": ["standard", "extended"],
-    "defOriginate": true, "keepaliveTime": 0, "updateSource": "10.0.0.14", "holdTime":
-    180, "updatesRx": 1615, "updatesTx": 545, "peerRouterId": "10.0.0.21", "routerId":
-    "10.0.0.14", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient":
-    "False", "notificnReason": "No error", "extnhAdvertised": true, "extnhReceived":
-    true, "extnhEnabled": true, "peerIP": "10.0.0.21", "mrai": 0, "reason": "session
-    closed", "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541721013,
-    "active": true, "afiSafi": "l2vpn evpn"}, {"namespace": "nxos", "hostname": "leaf04",
-    "vrf": "default", "peer": "10.0.0.21", "afi": "ipv4", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "spine01", "pfxRx":
-    0, "pfxTx": 0, "numChanges": 1, "estdTime": 1616221948013, "afisAdvOnly": [],
-    "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx":
-    0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": true, "communityTypes": ["standard", "extended"],
-    "defOriginate": true, "keepaliveTime": 0, "updateSource": "10.0.0.14", "holdTime":
-    180, "updatesRx": 1615, "updatesTx": 545, "peerRouterId": "10.0.0.21", "routerId":
-    "10.0.0.14", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient":
-    "False", "notificnReason": "No error", "extnhAdvertised": true, "extnhReceived":
-    true, "extnhEnabled": true, "peerIP": "10.0.0.21", "mrai": 0, "reason": "session
-    closed", "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541721013,
-    "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "nxos", "hostname":
-    "leaf01", "vrf": "default", "peer": "10.0.0.21", "afi": "ipv4", "safi": "unicast",
-    "state": "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "spine01",
-    "pfxRx": 0, "pfxTx": 0, "numChanges": 1, "estdTime": 1616221944251, "afisAdvOnly":
-    [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0,
-    "pfxMaxRx": 0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": true, "communityTypes": ["standard", "extended"],
-    "defOriginate": true, "keepaliveTime": 0, "updateSource": "10.0.0.11", "holdTime":
-    180, "updatesRx": 1617, "updatesTx": 548, "peerRouterId": "10.0.0.21", "routerId":
-    "10.0.0.11", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient":
-    "False", "notificnReason": "No error", "extnhAdvertised": true, "extnhReceived":
-    true, "extnhEnabled": true, "peerIP": "10.0.0.21", "mrai": 0, "reason": "session
-    closed", "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541721251,
-    "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "nxos", "hostname":
-    "leaf01", "vrf": "default", "peer": "10.0.0.22", "afi": "ipv4", "safi": "unicast",
-    "state": "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "spine02",
-    "pfxRx": 0, "pfxTx": 0, "numChanges": 1, "estdTime": 1616221945251, "afisAdvOnly":
-    [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0,
-    "pfxMaxRx": 0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": true, "communityTypes": ["standard", "extended"],
-    "defOriginate": true, "keepaliveTime": 0, "updateSource": "10.0.0.11", "holdTime":
-    180, "updatesRx": 1600, "updatesTx": 548, "peerRouterId": "10.0.0.22", "routerId":
-    "10.0.0.11", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient":
-    "False", "notificnReason": "No error", "extnhAdvertised": true, "extnhReceived":
-    true, "extnhEnabled": true, "peerIP": "10.0.0.22", "mrai": 0, "reason": "session
-    closed", "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541721251,
-    "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "nxos", "hostname":
-    "leaf01", "vrf": "default", "peer": "10.0.0.21", "afi": "l2vpn", "safi": "evpn",
-    "state": "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "spine01",
-    "pfxRx": 24, "pfxTx": 8, "numChanges": 1, "estdTime": 1616221944251, "afisAdvOnly":
-    [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0,
-    "pfxMaxRx": 0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": true, "communityTypes": ["standard", "extended"],
-    "defOriginate": true, "keepaliveTime": 0, "updateSource": "10.0.0.11", "holdTime":
-    180, "updatesRx": 1617, "updatesTx": 548, "peerRouterId": "10.0.0.21", "routerId":
-    "10.0.0.11", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient":
-    "False", "notificnReason": "No error", "extnhAdvertised": true, "extnhReceived":
-    true, "extnhEnabled": true, "peerIP": "10.0.0.21", "mrai": 0, "reason": "session
-    closed", "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541721251,
-    "active": true, "afiSafi": "l2vpn evpn"}, {"namespace": "nxos", "hostname": "leaf01",
-    "vrf": "default", "peer": "10.0.0.22", "afi": "l2vpn", "safi": "evpn", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "spine02", "pfxRx":
-    24, "pfxTx": 8, "numChanges": 1, "estdTime": 1616221945251, "afisAdvOnly": [],
-    "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx":
-    0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": true, "communityTypes": ["standard", "extended"],
-    "defOriginate": true, "keepaliveTime": 0, "updateSource": "10.0.0.11", "holdTime":
-    180, "updatesRx": 1600, "updatesTx": 548, "peerRouterId": "10.0.0.22", "routerId":
-    "10.0.0.11", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient":
-    "False", "notificnReason": "No error", "extnhAdvertised": true, "extnhReceived":
-    true, "extnhEnabled": true, "peerIP": "10.0.0.22", "mrai": 0, "reason": "session
-    closed", "lastDownTime": 0, "ifname": "loopback0", "timestamp": 1616541721251,
-    "active": true, "afiSafi": "l2vpn evpn"}]'
+    "vrf": "default", "peer": "10.0.0.21", "peerHostname": "spine01", "state": "Established",
+    "afi": "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 1, "numChanges": 1, "estdTime": 1616221954567, "afisAdvOnly": [], "afisRcvOnly":
+    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": true, "communityTypes": ["standard", "extended"], "defOriginate":
+    true, "keepaliveTime": 0, "updateSource": "10.0.0.32", "holdTime": 180, "updatesRx":
+    2117, "updatesTx": 6, "peerRouterId": "10.0.0.21", "routerId": "10.0.0.32", "bfdStatus":
+    "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
+    "No error", "extnhAdvertised": true, "extnhReceived": true, "extnhEnabled": true,
+    "peerIP": "10.0.0.21", "mrai": 0, "reason": "session closed", "lastDownTime":
+    0, "ifname": "loopback0", "timestamp": 1616541720567, "active": true, "afiSafi":
+    "ipv4 unicast"}, {"namespace": "nxos", "hostname": "leaf04", "vrf": "default",
+    "peer": "10.0.0.22", "peerHostname": "spine02", "state": "Established", "afi":
+    "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 24, "pfxTx":
+    8, "numChanges": 1, "estdTime": 1616221948013, "afisAdvOnly": [], "afisRcvOnly":
+    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": true, "communityTypes": ["standard", "extended"], "defOriginate":
+    true, "keepaliveTime": 0, "updateSource": "10.0.0.14", "holdTime": 180, "updatesRx":
+    1607, "updatesTx": 545, "peerRouterId": "10.0.0.22", "routerId": "10.0.0.14",
+    "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
+    "No error", "extnhAdvertised": true, "extnhReceived": true, "extnhEnabled": true,
+    "peerIP": "10.0.0.22", "mrai": 0, "reason": "session closed", "lastDownTime":
+    0, "ifname": "loopback0", "timestamp": 1616541721013, "active": true, "afiSafi":
+    "l2vpn evpn"}, {"namespace": "nxos", "hostname": "leaf04", "vrf": "default", "peer":
+    "10.0.0.22", "peerHostname": "spine02", "state": "Established", "afi": "ipv4",
+    "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0, "pfxTx": 0, "numChanges":
+    1, "estdTime": 1616221948013, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
+    0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent": 0,
+    "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": true, "communityTypes": ["standard", "extended"], "defOriginate":
+    true, "keepaliveTime": 0, "updateSource": "10.0.0.14", "holdTime": 180, "updatesRx":
+    1607, "updatesTx": 545, "peerRouterId": "10.0.0.22", "routerId": "10.0.0.14",
+    "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
+    "No error", "extnhAdvertised": true, "extnhReceived": true, "extnhEnabled": true,
+    "peerIP": "10.0.0.22", "mrai": 0, "reason": "session closed", "lastDownTime":
+    0, "ifname": "loopback0", "timestamp": 1616541721013, "active": true, "afiSafi":
+    "ipv4 unicast"}, {"namespace": "nxos", "hostname": "leaf04", "vrf": "default",
+    "peer": "10.0.0.21", "peerHostname": "spine01", "state": "Established", "afi":
+    "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 24, "pfxTx":
+    8, "numChanges": 1, "estdTime": 1616221948013, "afisAdvOnly": [], "afisRcvOnly":
+    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": true, "communityTypes": ["standard", "extended"], "defOriginate":
+    true, "keepaliveTime": 0, "updateSource": "10.0.0.14", "holdTime": 180, "updatesRx":
+    1615, "updatesTx": 545, "peerRouterId": "10.0.0.21", "routerId": "10.0.0.14",
+    "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
+    "No error", "extnhAdvertised": true, "extnhReceived": true, "extnhEnabled": true,
+    "peerIP": "10.0.0.21", "mrai": 0, "reason": "session closed", "lastDownTime":
+    0, "ifname": "loopback0", "timestamp": 1616541721013, "active": true, "afiSafi":
+    "l2vpn evpn"}, {"namespace": "nxos", "hostname": "leaf04", "vrf": "default", "peer":
+    "10.0.0.21", "peerHostname": "spine01", "state": "Established", "afi": "ipv4",
+    "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0, "pfxTx": 0, "numChanges":
+    1, "estdTime": 1616221948013, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
+    0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent": 0,
+    "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": true, "communityTypes": ["standard", "extended"], "defOriginate":
+    true, "keepaliveTime": 0, "updateSource": "10.0.0.14", "holdTime": 180, "updatesRx":
+    1615, "updatesTx": 545, "peerRouterId": "10.0.0.21", "routerId": "10.0.0.14",
+    "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
+    "No error", "extnhAdvertised": true, "extnhReceived": true, "extnhEnabled": true,
+    "peerIP": "10.0.0.21", "mrai": 0, "reason": "session closed", "lastDownTime":
+    0, "ifname": "loopback0", "timestamp": 1616541721013, "active": true, "afiSafi":
+    "ipv4 unicast"}, {"namespace": "nxos", "hostname": "leaf01", "vrf": "default",
+    "peer": "10.0.0.21", "peerHostname": "spine01", "state": "Established", "afi":
+    "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0, "pfxTx":
+    0, "numChanges": 1, "estdTime": 1616221944251, "afisAdvOnly": [], "afisRcvOnly":
+    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": true, "communityTypes": ["standard", "extended"], "defOriginate":
+    true, "keepaliveTime": 0, "updateSource": "10.0.0.11", "holdTime": 180, "updatesRx":
+    1617, "updatesTx": 548, "peerRouterId": "10.0.0.21", "routerId": "10.0.0.11",
+    "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
+    "No error", "extnhAdvertised": true, "extnhReceived": true, "extnhEnabled": true,
+    "peerIP": "10.0.0.21", "mrai": 0, "reason": "session closed", "lastDownTime":
+    0, "ifname": "loopback0", "timestamp": 1616541721251, "active": true, "afiSafi":
+    "ipv4 unicast"}, {"namespace": "nxos", "hostname": "leaf01", "vrf": "default",
+    "peer": "10.0.0.22", "peerHostname": "spine02", "state": "Established", "afi":
+    "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0, "pfxTx":
+    0, "numChanges": 1, "estdTime": 1616221945251, "afisAdvOnly": [], "afisRcvOnly":
+    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": true, "communityTypes": ["standard", "extended"], "defOriginate":
+    true, "keepaliveTime": 0, "updateSource": "10.0.0.11", "holdTime": 180, "updatesRx":
+    1600, "updatesTx": 548, "peerRouterId": "10.0.0.22", "routerId": "10.0.0.11",
+    "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
+    "No error", "extnhAdvertised": true, "extnhReceived": true, "extnhEnabled": true,
+    "peerIP": "10.0.0.22", "mrai": 0, "reason": "session closed", "lastDownTime":
+    0, "ifname": "loopback0", "timestamp": 1616541721251, "active": true, "afiSafi":
+    "ipv4 unicast"}, {"namespace": "nxos", "hostname": "leaf01", "vrf": "default",
+    "peer": "10.0.0.21", "peerHostname": "spine01", "state": "Established", "afi":
+    "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 24, "pfxTx":
+    8, "numChanges": 1, "estdTime": 1616221944251, "afisAdvOnly": [], "afisRcvOnly":
+    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": true, "communityTypes": ["standard", "extended"], "defOriginate":
+    true, "keepaliveTime": 0, "updateSource": "10.0.0.11", "holdTime": 180, "updatesRx":
+    1617, "updatesTx": 548, "peerRouterId": "10.0.0.21", "routerId": "10.0.0.11",
+    "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
+    "No error", "extnhAdvertised": true, "extnhReceived": true, "extnhEnabled": true,
+    "peerIP": "10.0.0.21", "mrai": 0, "reason": "session closed", "lastDownTime":
+    0, "ifname": "loopback0", "timestamp": 1616541721251, "active": true, "afiSafi":
+    "l2vpn evpn"}, {"namespace": "nxos", "hostname": "leaf01", "vrf": "default", "peer":
+    "10.0.0.22", "peerHostname": "spine02", "state": "Established", "afi": "l2vpn",
+    "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 24, "pfxTx": 8, "numChanges":
+    1, "estdTime": 1616221945251, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
+    0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent": 0,
+    "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": true, "communityTypes": ["standard", "extended"], "defOriginate":
+    true, "keepaliveTime": 0, "updateSource": "10.0.0.11", "holdTime": 180, "updatesRx":
+    1600, "updatesTx": 548, "peerRouterId": "10.0.0.22", "routerId": "10.0.0.11",
+    "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
+    "No error", "extnhAdvertised": true, "extnhReceived": true, "extnhEnabled": true,
+    "peerIP": "10.0.0.22", "mrai": 0, "reason": "session closed", "lastDownTime":
+    0, "ifname": "loopback0", "timestamp": 1616541721251, "active": true, "afiSafi":
+    "l2vpn evpn"}]'
 - command: device show --columns='*' --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: device show nxos all
@@ -5953,11 +5948,11 @@ tests:
     1500, "vlan": 0, "master": "management", "ipAddressList": ["10.255.7.187/24"],
     "ip6AddressList": [], "ifindex": 0, "reason": "", "routeDistinguisher": "", "macaddr":
     "00:00:00:00:00:00", "interfaceMac": "", "description": "", "numChanges": 0, "speed":
-    0, "innerVlan": 0, "vlanName": "", "srcVtepIp": "", "statusChangeTimestamp": 0,
-    "vni": 0, "lacpBypass": false, "timestamp": 1616541721387, "active": true}, {"namespace":
-    "nxos", "hostname": "leaf04", "ifname": "management", "state": "up", "adminState":
-    "up", "type": "vrf", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [],
-    "ip6AddressList": [], "ifindex": 0, "reason": "", "routeDistinguisher": "0:0",
+    1000, "innerVlan": 0, "vlanName": "", "srcVtepIp": "", "statusChangeTimestamp":
+    0, "vni": 0, "lacpBypass": false, "timestamp": 1616541721387, "active": true},
+    {"namespace": "nxos", "hostname": "leaf04", "ifname": "management", "state": "up",
+    "adminState": "up", "type": "vrf", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "ifindex": 0, "reason": "", "routeDistinguisher": "0:0",
     "macaddr": "00:00:00:00:00:00", "interfaceMac": "", "description": "", "numChanges":
     0, "speed": 0, "innerVlan": 0, "vlanName": "", "srcVtepIp": "", "statusChangeTimestamp":
     0, "vni": 0, "lacpBypass": false, "timestamp": 1616541721387, "active": true},
@@ -6811,31 +6806,32 @@ tests:
     1500, "vlan": 0, "master": "management", "ipAddressList": ["10.255.7.184/24"],
     "ip6AddressList": [], "ifindex": 0, "reason": "", "routeDistinguisher": "", "macaddr":
     "00:00:00:00:00:00", "interfaceMac": "", "description": "", "numChanges": 0, "speed":
-    0, "innerVlan": 0, "vlanName": "", "srcVtepIp": "", "statusChangeTimestamp": 0,
-    "vni": 0, "lacpBypass": false, "timestamp": 1616541722174, "active": true}, {"namespace":
-    "nxos", "hostname": "leaf01", "ifname": "Ethernet1/1", "state": "up", "adminState":
-    "up", "type": "ethernet", "mtu": 9200, "vlan": 0, "master": "", "ipAddressList":
-    ["10.0.0.11/32"], "ip6AddressList": [], "ifindex": 0, "reason": "", "routeDistinguisher":
-    "", "macaddr": "44:01:02:01:1b:08", "interfaceMac": "", "description": "", "numChanges":
-    0, "speed": 1000, "innerVlan": 0, "vlanName": "", "srcVtepIp": "", "statusChangeTimestamp":
+    1000, "innerVlan": 0, "vlanName": "", "srcVtepIp": "", "statusChangeTimestamp":
     0, "vni": 0, "lacpBypass": false, "timestamp": 1616541722174, "active": true},
-    {"namespace": "nxos", "hostname": "leaf01", "ifname": "Ethernet1/3", "state":
-    "up", "adminState": "up", "type": "bond_slave", "mtu": 9200, "vlan": 10, "master":
-    "port-channel3", "ipAddressList": [], "ip6AddressList": [], "ifindex": 0, "reason":
-    "", "routeDistinguisher": "", "macaddr": "44:01:02:01:01:03", "interfaceMac":
+    {"namespace": "nxos", "hostname": "leaf01", "ifname": "Ethernet1/1", "state":
+    "up", "adminState": "up", "type": "ethernet", "mtu": 9200, "vlan": 0, "master":
+    "", "ipAddressList": ["10.0.0.11/32"], "ip6AddressList": [], "ifindex": 0, "reason":
+    "", "routeDistinguisher": "", "macaddr": "44:01:02:01:1b:08", "interfaceMac":
     "", "description": "", "numChanges": 0, "speed": 1000, "innerVlan": 0, "vlanName":
     "", "srcVtepIp": "", "statusChangeTimestamp": 0, "vni": 0, "lacpBypass": false,
     "timestamp": 1616541722174, "active": true}, {"namespace": "nxos", "hostname":
-    "leaf01", "ifname": "Ethernet1/27", "state": "down", "adminState": "up", "type":
-    "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "ifindex": 0, "reason": "link not connected", "routeDistinguisher": "", "macaddr":
-    "44:01:02:01:01:1b", "interfaceMac": "", "description": "", "numChanges": 0, "speed":
-    0, "innerVlan": 0, "vlanName": "", "srcVtepIp": "", "statusChangeTimestamp": 0,
-    "vni": 0, "lacpBypass": false, "timestamp": 1616541722174, "active": true}, {"namespace":
-    "nxos", "hostname": "leaf01", "ifname": "Ethernet1/5", "state": "up", "adminState":
-    "up", "type": "bond_slave", "mtu": 9216, "vlan": 1, "master": "port-channel1",
-    "ipAddressList": [], "ip6AddressList": [], "ifindex": 0, "reason": "", "routeDistinguisher":
-    "", "macaddr": "44:01:02:01:01:05", "interfaceMac": "", "description": "", "numChanges":
+    "leaf01", "ifname": "Ethernet1/3", "state": "up", "adminState": "up", "type":
+    "bond_slave", "mtu": 9200, "vlan": 10, "master": "port-channel3", "ipAddressList":
+    [], "ip6AddressList": [], "ifindex": 0, "reason": "", "routeDistinguisher": "",
+    "macaddr": "44:01:02:01:01:03", "interfaceMac": "", "description": "", "numChanges":
+    0, "speed": 1000, "innerVlan": 0, "vlanName": "", "srcVtepIp": "", "statusChangeTimestamp":
+    0, "vni": 0, "lacpBypass": false, "timestamp": 1616541722174, "active": true},
+    {"namespace": "nxos", "hostname": "leaf01", "ifname": "Ethernet1/27", "state":
+    "down", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1, "master":
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "ifindex": 0, "reason": "link
+    not connected", "routeDistinguisher": "", "macaddr": "44:01:02:01:01:1b", "interfaceMac":
+    "", "description": "", "numChanges": 0, "speed": 0, "innerVlan": 0, "vlanName":
+    "", "srcVtepIp": "", "statusChangeTimestamp": 0, "vni": 0, "lacpBypass": false,
+    "timestamp": 1616541722174, "active": true}, {"namespace": "nxos", "hostname":
+    "leaf01", "ifname": "Ethernet1/5", "state": "up", "adminState": "up", "type":
+    "bond_slave", "mtu": 9216, "vlan": 1, "master": "port-channel1", "ipAddressList":
+    [], "ip6AddressList": [], "ifindex": 0, "reason": "", "routeDistinguisher": "",
+    "macaddr": "44:01:02:01:01:05", "interfaceMac": "", "description": "", "numChanges":
     0, "speed": 1000, "innerVlan": 0, "vlanName": "", "srcVtepIp": "", "statusChangeTimestamp":
     0, "vni": 0, "lacpBypass": false, "timestamp": 1616541722174, "active": true},
     {"namespace": "nxos", "hostname": "leaf01", "ifname": "Ethernet1/58", "state":
@@ -8040,34 +8036,36 @@ tests:
   data-directory: tests/data/nxos/parquet-out/
   marks: mlag show nxos all
   output: '[{"namespace": "nxos", "hostname": "leaf03", "systemId": "00:23:04:ee:be:22",
-    "state": "active", "peerAddress": "1", "role": "primary", "peerLink": "port-channel1",
-    "mlagDualPortsCnt": 2, "mlagSinglePortsCnt": 0, "mlagErrorPortsCnt": 0, "portsErrDisabled":
-    "", "mlagDualPortsList": ["Po3", "Po4"], "mlagSinglePortsList": [], "mlagErrorPortsList":
-    [], "vtepIP": "10.0.0.134", "peerRole": "", "backupActive": false, "usesLinkLocal":
-    false, "peerMacAddress": "44:01:02:04:1b:08", "configSanity": "consistent", "backupReason":
-    "", "backupIP": "", "peerLinkStatus": "1", "domainId": "34", "timestamp": 1616541718814,
-    "active": true}, {"namespace": "nxos", "hostname": "leaf01", "systemId": "00:23:04:ee:be:0c",
-    "state": "active", "peerAddress": "1", "role": "primary", "peerLink": "port-channel1",
-    "mlagDualPortsCnt": 2, "mlagSinglePortsCnt": 0, "mlagErrorPortsCnt": 0, "portsErrDisabled":
-    "", "mlagDualPortsList": ["Po3", "Po4"], "mlagSinglePortsList": [], "mlagErrorPortsList":
-    [], "vtepIP": "10.0.0.112", "peerRole": "", "backupActive": false, "usesLinkLocal":
-    false, "peerMacAddress": "44:01:02:02:1b:08", "configSanity": "consistent", "backupReason":
-    "", "backupIP": "", "peerLinkStatus": "1", "domainId": "12", "timestamp": 1616541719268,
-    "active": true}, {"namespace": "nxos", "hostname": "leaf02", "systemId": "00:23:04:ee:be:0c",
-    "state": "active", "peerAddress": "1", "role": "secondary", "peerLink": "port-channel1",
-    "mlagDualPortsCnt": 2, "mlagSinglePortsCnt": 0, "mlagErrorPortsCnt": 0, "portsErrDisabled":
-    "", "mlagDualPortsList": ["Po3", "Po4"], "mlagSinglePortsList": [], "mlagErrorPortsList":
-    [], "vtepIP": "10.0.0.112", "peerRole": "", "backupActive": false, "usesLinkLocal":
-    false, "peerMacAddress": "44:01:02:01:1b:08", "configSanity": "consistent", "backupReason":
-    "", "backupIP": "", "peerLinkStatus": "1", "domainId": "12", "timestamp": 1616541719450,
-    "active": true}, {"namespace": "nxos", "hostname": "leaf04", "systemId": "00:23:04:ee:be:22",
-    "state": "active", "peerAddress": "1", "role": "secondary", "peerLink": "port-channel1",
-    "mlagDualPortsCnt": 2, "mlagSinglePortsCnt": 0, "mlagErrorPortsCnt": 0, "portsErrDisabled":
-    "", "mlagDualPortsList": ["Po3", "Po4"], "mlagSinglePortsList": [], "mlagErrorPortsList":
-    [], "vtepIP": "10.0.0.134", "peerRole": "", "backupActive": false, "usesLinkLocal":
-    false, "peerMacAddress": "44:01:02:03:1b:08", "configSanity": "consistent", "backupReason":
-    "", "backupIP": "", "peerLinkStatus": "1", "domainId": "34", "timestamp": 1616541719764,
-    "active": true}]'
+    "state": "active", "peerAddress": "10.255.7.187", "role": "primary", "peerLink":
+    "port-channel1", "mlagDualPortsCnt": 2, "mlagSinglePortsCnt": 0, "mlagErrorPortsCnt":
+    0, "portsErrDisabled": "", "mlagDualPortsList": ["Po3", "Po4"], "mlagSinglePortsList":
+    [], "mlagErrorPortsList": [], "vtepIP": "10.0.0.134", "peerRole": "", "backupActive":
+    false, "usesLinkLocal": false, "peerMacAddress": "44:01:02:04:1b:08", "configSanity":
+    "consistent", "backupReason": "", "backupIP": "", "peerLinkStatus": "1", "domainId":
+    "34", "timestamp": 1616541718814, "active": true}, {"namespace": "nxos", "hostname":
+    "leaf01", "systemId": "00:23:04:ee:be:0c", "state": "active", "peerAddress": "10.255.7.185",
+    "role": "primary", "peerLink": "port-channel1", "mlagDualPortsCnt": 2, "mlagSinglePortsCnt":
+    0, "mlagErrorPortsCnt": 0, "portsErrDisabled": "", "mlagDualPortsList": ["Po3",
+    "Po4"], "mlagSinglePortsList": [], "mlagErrorPortsList": [], "vtepIP": "10.0.0.112",
+    "peerRole": "", "backupActive": false, "usesLinkLocal": false, "peerMacAddress":
+    "44:01:02:02:1b:08", "configSanity": "consistent", "backupReason": "", "backupIP":
+    "", "peerLinkStatus": "1", "domainId": "12", "timestamp": 1616541719268, "active":
+    true}, {"namespace": "nxos", "hostname": "leaf02", "systemId": "00:23:04:ee:be:0c",
+    "state": "active", "peerAddress": "10.255.7.184", "role": "secondary", "peerLink":
+    "port-channel1", "mlagDualPortsCnt": 2, "mlagSinglePortsCnt": 0, "mlagErrorPortsCnt":
+    0, "portsErrDisabled": "", "mlagDualPortsList": ["Po3", "Po4"], "mlagSinglePortsList":
+    [], "mlagErrorPortsList": [], "vtepIP": "10.0.0.112", "peerRole": "", "backupActive":
+    false, "usesLinkLocal": false, "peerMacAddress": "44:01:02:01:1b:08", "configSanity":
+    "consistent", "backupReason": "", "backupIP": "", "peerLinkStatus": "1", "domainId":
+    "12", "timestamp": 1616541719450, "active": true}, {"namespace": "nxos", "hostname":
+    "leaf04", "systemId": "00:23:04:ee:be:22", "state": "active", "peerAddress": "10.255.7.186",
+    "role": "secondary", "peerLink": "port-channel1", "mlagDualPortsCnt": 2, "mlagSinglePortsCnt":
+    0, "mlagErrorPortsCnt": 0, "portsErrDisabled": "", "mlagDualPortsList": ["Po3",
+    "Po4"], "mlagSinglePortsList": [], "mlagErrorPortsList": [], "vtepIP": "10.0.0.134",
+    "peerRole": "", "backupActive": false, "usesLinkLocal": false, "peerMacAddress":
+    "44:01:02:03:1b:08", "configSanity": "consistent", "backupReason": "", "backupIP":
+    "", "peerLinkStatus": "1", "domainId": "34", "timestamp": 1616541719764, "active":
+    true}]'
 - command: ospf show --columns='*' --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: ospf show nxos all

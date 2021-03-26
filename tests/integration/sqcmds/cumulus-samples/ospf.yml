@@ -4,378 +4,408 @@ tests:
   data-directory: tests/data/multidc/parquet-out/
   ignore-columns: lastChangeTime timestamp
   marks: ospf show
-  output: '[{"namespace": "ospf-single", "hostname": "exit02", "vrf": "default", "area":
-    "0.0.0.0", "ifname": "lo", "ifState": "up", "nbrCount": 0, "adjState": "passive",
-    "peerIP": "-", "lastChangeTime": "-", "numChanges": 0.0, "timestamp": 1597553946603},
-    {"namespace": "ospf-single", "hostname": "exit02", "vrf": "default", "area": "0.0.0.0",
-    "ifname": "swp5.2", "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP":
-    "-", "lastChangeTime": "-", "numChanges": 0.0, "timestamp": 1597553946603}, {"namespace":
-    "ospf-single", "hostname": "exit02", "vrf": "default", "area": "0.0.0.0", "ifname":
-    "swp1", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.127.0.10",
-    "lastChangeTime": 1612482964560, "numChanges": 5.0, "timestamp": 1597553946603},
-    {"namespace": "ospf-single", "hostname": "spine02", "vrf": "default", "area":
-    "0.0.0.0", "ifname": "swp4", "ifState": "up", "nbrCount": 1, "adjState": "full",
-    "peerIP": "10.127.1.7", "lastChangeTime": 1612482959559, "numChanges": 5.0, "timestamp":
-    1597553946721}, {"namespace": "ospf-single", "hostname": "spine02", "vrf": "default",
-    "area": "0.0.0.0", "ifname": "swp3", "ifState": "up", "nbrCount": 1, "adjState":
-    "full", "peerIP": "10.127.1.5", "lastChangeTime": 1612482959559, "numChanges":
-    5.0, "timestamp": 1597553946721}, {"namespace": "ospf-single", "hostname": "spine02",
-    "vrf": "default", "area": "0.0.0.0", "ifname": "swp2", "ifState": "up", "nbrCount":
-    1, "adjState": "full", "peerIP": "10.127.1.3", "lastChangeTime": 1612482959559,
-    "numChanges": 5.0, "timestamp": 1597553946721}, {"namespace": "ospf-single", "hostname":
-    "spine02", "vrf": "default", "area": "0.0.0.0", "ifname": "swp1", "ifState": "up",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.127.1.1", "lastChangeTime": 1612482958559,
-    "numChanges": 5.0, "timestamp": 1597553946721}, {"namespace": "ospf-single", "hostname":
-    "spine02", "vrf": "default", "area": "0.0.0.0", "ifname": "lo", "ifState": "up",
-    "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime": "-", "numChanges":
-    0.0, "timestamp": 1597553946721}, {"namespace": "ospf-single", "hostname": "leaf01",
-    "vrf": "default", "area": "0.0.0.0", "ifname": "vlan10", "ifState": "up", "nbrCount":
-    0, "adjState": "passive", "peerIP": "-", "lastChangeTime": "-", "numChanges":
-    0.0, "timestamp": 1597553946721}, {"namespace": "ospf-single", "hostname": "leaf01",
-    "vrf": "default", "area": "0.0.0.0", "ifname": "swp2", "ifState": "up", "nbrCount":
-    1, "adjState": "full", "peerIP": "10.127.1.0", "lastChangeTime": 1612482958558,
-    "numChanges": 5.0, "timestamp": 1597553946721}, {"namespace": "ospf-single", "hostname":
-    "leaf01", "vrf": "default", "area": "0.0.0.0", "ifname": "swp1", "ifState": "up",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.127.0.0", "lastChangeTime": 1612482958558,
-    "numChanges": 5.0, "timestamp": 1597553946721}, {"namespace": "ospf-single", "hostname":
-    "leaf01", "vrf": "default", "area": "0.0.0.0", "ifname": "lo", "ifState": "up",
-    "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime": "-", "numChanges":
-    0.0, "timestamp": 1597553946721}, {"namespace": "ospf-single", "hostname": "spine02",
-    "vrf": "default", "area": "0.0.0.0", "ifname": "swp5", "ifState": "up", "nbrCount":
-    1, "adjState": "full", "peerIP": "10.127.1.11", "lastChangeTime": 1612482959559,
-    "numChanges": 5.0, "timestamp": 1597553946721}, {"namespace": "ospf-single", "hostname":
-    "exit01", "vrf": "default", "area": "0.0.0.0", "ifname": "swp5.2", "ifState":
-    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime": "-",
-    "numChanges": 0.0, "timestamp": 1597553946721}, {"namespace": "ospf-single", "hostname":
-    "exit01", "vrf": "default", "area": "0.0.0.0", "ifname": "swp1", "ifState": "up",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.127.0.8", "lastChangeTime": 1612482964559,
-    "numChanges": 5.0, "timestamp": 1597553946721}, {"namespace": "ospf-single", "hostname":
-    "exit01", "vrf": "default", "area": "0.0.0.0", "ifname": "lo", "ifState": "up",
-    "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime": "-", "numChanges":
-    0.0, "timestamp": 1597553946721}, {"namespace": "ospf-single", "hostname": "spine02",
-    "vrf": "default", "area": "0.0.0.0", "ifname": "swp6", "ifState": "up", "nbrCount":
-    1, "adjState": "full", "peerIP": "10.127.1.9", "lastChangeTime": 1612482959559,
-    "numChanges": 5.0, "timestamp": 1597553946721}, {"namespace": "ospf-single", "hostname":
-    "internet", "vrf": "default", "area": "0.0.0.0", "ifname": "lo", "ifState": "up",
-    "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime": "-", "numChanges":
-    0.0, "timestamp": 1597553946723}, {"namespace": "ospf-single", "hostname": "internet",
-    "vrf": "default", "area": "0.0.0.0", "ifname": "swp1", "ifState": "up", "nbrCount":
-    1, "adjState": "full", "peerIP": "169.254.127.1", "lastChangeTime": 1612482957557,
-    "numChanges": 4.0, "timestamp": 1597553946723}, {"namespace": "ospf-single", "hostname":
-    "internet", "vrf": "default", "area": "0.0.0.0", "ifname": "swp2", "ifState":
-    "up", "nbrCount": 1, "adjState": "full", "peerIP": "169.254.127.3", "lastChangeTime":
-    1612482957557, "numChanges": 5.0, "timestamp": 1597553946723}, {"namespace": "ospf-single",
-    "hostname": "leaf03", "vrf": "default", "area": "0.0.0.0", "ifname": "vlan10",
-    "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime":
-    "-", "numChanges": 0.0, "timestamp": 1597553946724}, {"namespace": "ospf-single",
-    "hostname": "leaf03", "vrf": "default", "area": "0.0.0.0", "ifname": "swp2", "ifState":
-    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.127.1.4", "lastChangeTime":
-    1612482959558, "numChanges": 5.0, "timestamp": 1597553946724}, {"namespace": "ospf-single",
-    "hostname": "leaf03", "vrf": "default", "area": "0.0.0.0", "ifname": "swp1", "ifState":
-    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.127.0.4", "lastChangeTime":
-    1612482964558, "numChanges": 5.0, "timestamp": 1597553946724}, {"namespace": "ospf-single",
-    "hostname": "leaf03", "vrf": "default", "area": "0.0.0.0", "ifname": "lo", "ifState":
-    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime": "-",
-    "numChanges": 0.0, "timestamp": 1597553946724}, {"namespace": "ospf-single", "hostname":
-    "leaf04", "vrf": "default", "area": "0.0.0.0", "ifname": "vlan10", "ifState":
-    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime": "-",
-    "numChanges": 0.0, "timestamp": 1597553946816}, {"namespace": "ospf-single", "hostname":
-    "leaf04", "vrf": "default", "area": "0.0.0.0", "ifname": "swp2", "ifState": "up",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.127.1.6", "lastChangeTime": 1612482959557,
-    "numChanges": 5.0, "timestamp": 1597553946816}, {"namespace": "ospf-single", "hostname":
-    "leaf04", "vrf": "default", "area": "0.0.0.0", "ifname": "swp1", "ifState": "up",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.127.0.6", "lastChangeTime": 1612482959557,
-    "numChanges": 5.0, "timestamp": 1597553946816}, {"namespace": "ospf-single", "hostname":
-    "leaf04", "vrf": "default", "area": "0.0.0.0", "ifname": "lo", "ifState": "up",
-    "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime": "-", "numChanges":
-    0.0, "timestamp": 1597553946816}, {"namespace": "ospf-single", "hostname": "spine01",
-    "vrf": "default", "area": "0.0.0.0", "ifname": "swp5", "ifState": "up", "nbrCount":
-    1, "adjState": "full", "peerIP": "10.127.0.11", "lastChangeTime": 1612482964556,
-    "numChanges": 5.0, "timestamp": 1597553946900}, {"namespace": "ospf-single", "hostname":
-    "spine01", "vrf": "default", "area": "0.0.0.0", "ifname": "swp4", "ifState": "up",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.127.0.7", "lastChangeTime": 1612482964556,
-    "numChanges": 5.0, "timestamp": 1597553946900}, {"namespace": "ospf-single", "hostname":
-    "spine01", "vrf": "default", "area": "0.0.0.0", "ifname": "swp3", "ifState": "up",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.127.0.5", "lastChangeTime": 1612482964556,
-    "numChanges": 5.0, "timestamp": 1597553946900}, {"namespace": "ospf-single", "hostname":
-    "spine01", "vrf": "default", "area": "0.0.0.0", "ifname": "swp6", "ifState": "up",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.127.0.9", "lastChangeTime": 1612482964556,
-    "numChanges": 5.0, "timestamp": 1597553946900}, {"namespace": "ospf-single", "hostname":
-    "leaf02", "vrf": "default", "area": "0.0.0.0", "ifname": "lo", "ifState": "up",
-    "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime": "-", "numChanges":
-    0.0, "timestamp": 1597553946900}, {"namespace": "ospf-single", "hostname": "leaf02",
-    "vrf": "default", "area": "0.0.0.0", "ifname": "swp1", "ifState": "up", "nbrCount":
-    1, "adjState": "full", "peerIP": "10.127.0.2", "lastChangeTime": 1612482964556,
-    "numChanges": 5.0, "timestamp": 1597553946900}, {"namespace": "ospf-single", "hostname":
-    "leaf02", "vrf": "default", "area": "0.0.0.0", "ifname": "swp2", "ifState": "up",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.127.1.2", "lastChangeTime": 1612482959556,
-    "numChanges": 5.0, "timestamp": 1597553946900}, {"namespace": "ospf-single", "hostname":
-    "spine01", "vrf": "default", "area": "0.0.0.0", "ifname": "swp2", "ifState": "up",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.127.0.3", "lastChangeTime": 1612482964556,
-    "numChanges": 5.0, "timestamp": 1597553946900}, {"namespace": "ospf-single", "hostname":
-    "leaf02", "vrf": "default", "area": "0.0.0.0", "ifname": "vlan10", "ifState":
-    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime": "-",
-    "numChanges": 0.0, "timestamp": 1597553946900}, {"namespace": "ospf-single", "hostname":
-    "spine01", "vrf": "default", "area": "0.0.0.0", "ifname": "swp1", "ifState": "up",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.127.0.1", "lastChangeTime": 1612482958556,
-    "numChanges": 5.0, "timestamp": 1597553946900}, {"namespace": "ospf-single", "hostname":
-    "spine01", "vrf": "default", "area": "0.0.0.0", "ifname": "lo", "ifState": "up",
-    "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime": "-", "numChanges":
-    0.0, "timestamp": 1597553946900}, {"namespace": "ospf-ibgp", "hostname": "exit02",
-    "vrf": "default", "area": "0.0.0.0", "ifname": "swp2", "ifState": "up", "nbrCount":
-    1, "adjState": "full", "peerIP": "10.0.0.21", "lastChangeTime": 1612485054848,
-    "numChanges": 4.0, "timestamp": 1606024535925}, {"namespace": "ospf-ibgp", "hostname":
-    "spine01", "vrf": "default", "area": "0.0.0.0", "ifname": "lo", "ifState": "up",
-    "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime": "-", "numChanges":
-    0.0, "timestamp": 1606024535925}, {"namespace": "ospf-ibgp", "hostname": "spine01",
-    "vrf": "default", "area": "0.0.0.0", "ifname": "swp1", "ifState": "up", "nbrCount":
-    1, "adjState": "full", "peerIP": "10.0.0.11", "lastChangeTime": 1612485055849,
-    "numChanges": 4.0, "timestamp": 1606024535925}, {"namespace": "ospf-ibgp", "hostname":
-    "spine01", "vrf": "default", "area": "0.0.0.0", "ifname": "swp2", "ifState": "up",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.12", "lastChangeTime": 1612485055849,
-    "numChanges": 4.0, "timestamp": 1606024535925}, {"namespace": "ospf-ibgp", "hostname":
-    "spine01", "vrf": "default", "area": "0.0.0.0", "ifname": "swp3", "ifState": "up",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.13", "lastChangeTime": 1612485055849,
-    "numChanges": 4.0, "timestamp": 1606024535925}, {"namespace": "ospf-ibgp", "hostname":
-    "spine01", "vrf": "default", "area": "0.0.0.0", "ifname": "swp4", "ifState": "up",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.14", "lastChangeTime": 1612485060849,
-    "numChanges": 5.0, "timestamp": 1606024535925}, {"namespace": "ospf-ibgp", "hostname":
-    "spine01", "vrf": "default", "area": "0.0.0.0", "ifname": "swp5", "ifState": "up",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.102", "lastChangeTime": 1612485054849,
-    "numChanges": 5.0, "timestamp": 1606024535925}, {"namespace": "ospf-ibgp", "hostname":
-    "spine01", "vrf": "default", "area": "0.0.0.0", "ifname": "swp6", "ifState": "up",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.101", "lastChangeTime": 1612485055849,
-    "numChanges": 5.0, "timestamp": 1606024535925}, {"namespace": "ospf-ibgp", "hostname":
-    "spine02", "vrf": "default", "area": "0.0.0.0", "ifname": "lo", "ifState": "up",
-    "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime": "-", "numChanges":
-    0.0, "timestamp": 1606024535925}, {"namespace": "ospf-ibgp", "hostname": "spine02",
-    "vrf": "default", "area": "0.0.0.0", "ifname": "swp1", "ifState": "up", "nbrCount":
-    1, "adjState": "full", "peerIP": "10.0.0.11", "lastChangeTime": 1612485055847,
-    "numChanges": 4.0, "timestamp": 1606024535925}, {"namespace": "ospf-ibgp", "hostname":
-    "spine02", "vrf": "default", "area": "0.0.0.0", "ifname": "swp3", "ifState": "up",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.13", "lastChangeTime": 1612485055847,
-    "numChanges": 4.0, "timestamp": 1606024535925}, {"namespace": "ospf-ibgp", "hostname":
-    "spine02", "vrf": "default", "area": "0.0.0.0", "ifname": "swp4", "ifState": "up",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.14", "lastChangeTime": 1612485054847,
-    "numChanges": 4.0, "timestamp": 1606024535925}, {"namespace": "ospf-ibgp", "hostname":
-    "spine02", "vrf": "default", "area": "0.0.0.0", "ifname": "swp5", "ifState": "up",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.102", "lastChangeTime": 1612485054847,
-    "numChanges": 5.0, "timestamp": 1606024535925}, {"namespace": "ospf-ibgp", "hostname":
-    "spine02", "vrf": "default", "area": "0.0.0.0", "ifname": "swp6", "ifState": "up",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.101", "lastChangeTime": 1612485059847,
-    "numChanges": 5.0, "timestamp": 1606024535925}, {"namespace": "ospf-ibgp", "hostname":
-    "exit01", "vrf": "default", "area": "0.0.0.0", "ifname": "swp1", "ifState": "up",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "lastChangeTime": 1612485054848,
-    "numChanges": 4.0, "timestamp": 1606024535925}, {"namespace": "ospf-ibgp", "hostname":
-    "exit01", "vrf": "default", "area": "0.0.0.0", "ifname": "swp2", "ifState": "up",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21", "lastChangeTime": 1612485055848,
-    "numChanges": 4.0, "timestamp": 1606024535925}, {"namespace": "ospf-ibgp", "hostname":
-    "exit02", "vrf": "default", "area": "0.0.0.0", "ifname": "lo", "ifState": "up",
-    "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime": "-", "numChanges":
-    0.0, "timestamp": 1606024535925}, {"namespace": "ospf-ibgp", "hostname": "exit02",
-    "vrf": "default", "area": "0.0.0.0", "ifname": "swp1", "ifState": "up", "nbrCount":
-    1, "adjState": "full", "peerIP": "10.0.0.22", "lastChangeTime": 1612485054848,
-    "numChanges": 5.0, "timestamp": 1606024535925}, {"namespace": "ospf-ibgp", "hostname":
-    "spine02", "vrf": "default", "area": "0.0.0.0", "ifname": "swp2", "ifState": "up",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.12", "lastChangeTime": 1612485055847,
-    "numChanges": 4.0, "timestamp": 1606024535925}, {"namespace": "ospf-ibgp", "hostname":
-    "exit01", "vrf": "default", "area": "0.0.0.0", "ifname": "lo", "ifState": "up",
-    "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime": "-", "numChanges":
-    0.0, "timestamp": 1606024535925}, {"namespace": "ospf-ibgp", "hostname": "leaf04",
-    "vrf": "default", "area": "0.0.0.0", "ifname": "swp2", "ifState": "up", "nbrCount":
-    1, "adjState": "full", "peerIP": "10.0.0.21", "lastChangeTime": 1612485054847,
-    "numChanges": 5.0, "timestamp": 1606024536270}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf04", "vrf": "default", "area": "0.0.0.0", "ifname": "swp1", "ifState": "up",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "lastChangeTime": 1612485065847,
-    "numChanges": 5.0, "timestamp": 1606024536270}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf03", "vrf": "default", "area": "0.0.0.0", "ifname": "lo", "ifState": "up",
-    "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime": "-", "numChanges":
-    0.0, "timestamp": 1606024536270}, {"namespace": "ospf-ibgp", "hostname": "leaf03",
-    "vrf": "default", "area": "0.0.0.0", "ifname": "swp1", "ifState": "up", "nbrCount":
-    1, "adjState": "full", "peerIP": "10.0.0.22", "lastChangeTime": 1612485064846,
-    "numChanges": 5.0, "timestamp": 1606024536270}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf03", "vrf": "default", "area": "0.0.0.0", "ifname": "swp2", "ifState": "up",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21", "lastChangeTime": 1612485054846,
-    "numChanges": 5.0, "timestamp": 1606024536270}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf04", "vrf": "default", "area": "0.0.0.0", "ifname": "lo", "ifState": "up",
-    "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime": "-", "numChanges":
-    0.0, "timestamp": 1606024536270}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
-    "vrf": "default", "area": "0.0.0.0", "ifname": "swp2", "ifState": "up", "nbrCount":
-    1, "adjState": "full", "peerIP": "10.0.0.21", "lastChangeTime": 1612485054845,
-    "numChanges": 5.0, "timestamp": 1606024536466}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf02", "vrf": "default", "area": "0.0.0.0", "ifname": "lo", "ifState": "up",
-    "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime": "-", "numChanges":
-    0.0, "timestamp": 1606024536466}, {"namespace": "ospf-ibgp", "hostname": "leaf02",
-    "vrf": "default", "area": "0.0.0.0", "ifname": "swp1", "ifState": "up", "nbrCount":
-    1, "adjState": "full", "peerIP": "10.0.0.22", "lastChangeTime": 1612485064846,
-    "numChanges": 5.0, "timestamp": 1606024536466}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf02", "vrf": "default", "area": "0.0.0.0", "ifname": "swp2", "ifState": "up",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21", "lastChangeTime": 1612485054846,
-    "numChanges": 5.0, "timestamp": 1606024536466}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf01", "vrf": "default", "area": "0.0.0.0", "ifname": "lo", "ifState": "up",
-    "nbrCount": 0, "adjState": "passive", "peerIP": "-", "lastChangeTime": "-", "numChanges":
-    0.0, "timestamp": 1606024536466}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
-    "vrf": "default", "area": "0.0.0.0", "ifname": "swp1", "ifState": "up", "nbrCount":
-    1, "adjState": "full", "peerIP": "10.0.0.22", "lastChangeTime": 1612485064845,
-    "numChanges": 5.0, "timestamp": 1606024536466}]'
+  output: '[{"namespace": "ospf-single", "hostname": "spine02", "vrf": "default",
+    "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    0, "adjState": "fail", "peerIP": "-", "numChanges": 0.0, "lastChangeTime": 0,
+    "timestamp": 1616352403216}, {"namespace": "ospf-single", "hostname": "leaf01",
+    "vrf": "default", "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "numChanges": 0.0,
+    "lastChangeTime": "-", "timestamp": 1616352403216}, {"namespace": "ospf-single",
+    "hostname": "leaf01", "vrf": "default", "ifname": "vlan10", "peerHostname": "",
+    "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP":
+    "-", "numChanges": 0.0, "lastChangeTime": "-", "timestamp": 1616352403216}, {"namespace":
+    "ospf-single", "hostname": "leaf03", "vrf": "default", "ifname": "vlan10", "peerHostname":
+    "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "-", "numChanges": 0.0, "lastChangeTime": "-", "timestamp": 1616352403217},
+    {"namespace": "ospf-single", "hostname": "leaf03", "vrf": "default", "ifname":
+    "lo", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "-", "numChanges": 0.0, "lastChangeTime": "-", "timestamp":
+    1616352403217}, {"namespace": "ospf-single", "hostname": "exit01", "vrf": "default",
+    "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    0, "adjState": "passive", "peerIP": "-", "numChanges": 0.0, "lastChangeTime":
+    "-", "timestamp": 1616352403217}, {"namespace": "ospf-single", "hostname": "exit02",
+    "vrf": "default", "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "numChanges": 0.0,
+    "lastChangeTime": "-", "timestamp": 1616352403219}, {"namespace": "ospf-single",
+    "hostname": "spine01", "vrf": "default", "ifname": "lo", "peerHostname": "", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "fail", "peerIP": "-",
+    "numChanges": 0.0, "lastChangeTime": 0, "timestamp": 1616352403219}, {"namespace":
+    "ospf-single", "hostname": "leaf02", "vrf": "default", "ifname": "lo", "peerHostname":
+    "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "-", "numChanges": 0.0, "lastChangeTime": "-", "timestamp": 1616352403251},
+    {"namespace": "ospf-single", "hostname": "leaf02", "vrf": "default", "ifname":
+    "vlan10", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    0, "adjState": "passive", "peerIP": "-", "numChanges": 0.0, "lastChangeTime":
+    "-", "timestamp": 1616352403251}, {"namespace": "ospf-single", "hostname": "leaf04",
+    "vrf": "default", "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "numChanges": 0.0,
+    "lastChangeTime": "-", "timestamp": 1616352403440}, {"namespace": "ospf-single",
+    "hostname": "leaf04", "vrf": "default", "ifname": "vlan10", "peerHostname": "",
+    "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP":
+    "-", "numChanges": 0.0, "lastChangeTime": "-", "timestamp": 1616352403440}, {"namespace":
+    "ospf-ibgp", "hostname": "exit02", "vrf": "default", "ifname": "lo", "peerHostname":
+    "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "-", "numChanges": 0.0, "lastChangeTime": "-", "timestamp": 1616681581440},
+    {"namespace": "ospf-ibgp", "hostname": "leaf01", "vrf": "default", "ifname": "lo",
+    "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "-", "numChanges": 0.0, "lastChangeTime": "-", "timestamp":
+    1616681581440}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "vrf": "default",
+    "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    0, "adjState": "passive", "peerIP": "-", "numChanges": 0.0, "lastChangeTime":
+    "-", "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname": "spine01",
+    "vrf": "default", "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "-", "numChanges": 0.0,
+    "lastChangeTime": "-", "timestamp": 1616681581440}, {"namespace": "ospf-ibgp",
+    "hostname": "exit01", "vrf": "default", "ifname": "lo", "peerHostname": "", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP": "-",
+    "numChanges": 0.0, "lastChangeTime": "-", "timestamp": 1616681581440}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf03", "vrf": "default", "ifname": "lo", "peerHostname":
+    "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "-", "numChanges": 0.0, "lastChangeTime": "-", "timestamp": 1616681581440},
+    {"namespace": "ospf-ibgp", "hostname": "spine02", "vrf": "default", "ifname":
+    "lo", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "-", "numChanges": 0.0, "lastChangeTime": "-", "timestamp":
+    1616681581441}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "vrf": "default",
+    "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    0, "adjState": "passive", "peerIP": "-", "numChanges": 0.0, "lastChangeTime":
+    "-", "timestamp": 1616681582523}, {"namespace": "ospf-single", "hostname": "spine02",
+    "vrf": "default", "ifname": "swp6", "peerHostname": "exit01", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.101", "numChanges":
+    5.0, "lastChangeTime": 1616688966092, "timestamp": 1616352403216}, {"namespace":
+    "ospf-single", "hostname": "spine01", "vrf": "default", "ifname": "swp6", "peerHostname":
+    "exit01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.101", "numChanges": 4.0, "lastChangeTime": 1616688966088, "timestamp":
+    1616352403219}, {"namespace": "ospf-single", "hostname": "spine02", "vrf": "default",
+    "ifname": "swp4", "peerHostname": "leaf04", "area": "0.0.0.0", "ifState": "up",
+    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.14", "numChanges": 4.0, "lastChangeTime":
+    1616688966092, "timestamp": 1616352403216}, {"namespace": "ospf-single", "hostname":
+    "spine01", "vrf": "default", "ifname": "swp4", "peerHostname": "leaf04", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.14",
+    "numChanges": 4.0, "lastChangeTime": 1616688966088, "timestamp": 1616352403219},
+    {"namespace": "ospf-single", "hostname": "spine02", "vrf": "default", "ifname":
+    "swp3", "peerHostname": "leaf03", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.13", "numChanges": 4.0, "lastChangeTime":
+    1616688966092, "timestamp": 1616352403216}, {"namespace": "ospf-single", "hostname":
+    "spine01", "vrf": "default", "ifname": "swp3", "peerHostname": "leaf03", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.13",
+    "numChanges": 4.0, "lastChangeTime": 1616688966088, "timestamp": 1616352403219},
+    {"namespace": "ospf-single", "hostname": "spine02", "vrf": "default", "ifname":
+    "swp2", "peerHostname": "leaf02", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.12", "numChanges": 4.0, "lastChangeTime":
+    1616688966092, "timestamp": 1616352403216}, {"namespace": "ospf-single", "hostname":
+    "spine01", "vrf": "default", "ifname": "swp2", "peerHostname": "leaf02", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.12",
+    "numChanges": 4.0, "lastChangeTime": 1616688966088, "timestamp": 1616352403219},
+    {"namespace": "ospf-single", "hostname": "spine02", "vrf": "default", "ifname":
+    "swp1", "peerHostname": "leaf01", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.11", "numChanges": 4.0, "lastChangeTime":
+    1616688966092, "timestamp": 1616352403216}, {"namespace": "ospf-single", "hostname":
+    "spine01", "vrf": "default", "ifname": "swp1", "peerHostname": "leaf01", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.11",
+    "numChanges": 4.0, "lastChangeTime": 1616688966088, "timestamp": 1616352403219},
+    {"namespace": "ospf-single", "hostname": "spine02", "vrf": "default", "ifname":
+    "swp5", "peerHostname": "exit02", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.102", "numChanges": 5.0, "lastChangeTime":
+    1616688966092, "timestamp": 1616352403216}, {"namespace": "ospf-single", "hostname":
+    "spine01", "vrf": "default", "ifname": "swp5", "peerHostname": "exit02", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.102",
+    "numChanges": 4.0, "lastChangeTime": 1616688966088, "timestamp": 1616352403219},
+    {"namespace": "ospf-single", "hostname": "leaf01", "vrf": "default", "ifname":
+    "swp1", "peerHostname": "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.21", "numChanges": 5.0, "lastChangeTime":
+    1616688966098, "timestamp": 1616352403216}, {"namespace": "ospf-single", "hostname":
+    "leaf03", "vrf": "default", "ifname": "swp1", "peerHostname": "spine01", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21",
+    "numChanges": 5.0, "lastChangeTime": 1616688966083, "timestamp": 1616352403217},
+    {"namespace": "ospf-single", "hostname": "exit01", "vrf": "default", "ifname":
+    "swp1", "peerHostname": "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.21", "numChanges": 4.0, "lastChangeTime":
+    1616688966096, "timestamp": 1616352403217}, {"namespace": "ospf-single", "hostname":
+    "exit02", "vrf": "default", "ifname": "swp1", "peerHostname": "spine01", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21",
+    "numChanges": 5.0, "lastChangeTime": 1616688966095, "timestamp": 1616352403219},
+    {"namespace": "ospf-single", "hostname": "leaf02", "vrf": "default", "ifname":
+    "swp1", "peerHostname": "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.21", "numChanges": 4.0, "lastChangeTime":
+    1616688966085, "timestamp": 1616352403251}, {"namespace": "ospf-single", "hostname":
+    "leaf04", "vrf": "default", "ifname": "swp1", "peerHostname": "spine01", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21",
+    "numChanges": 5.0, "lastChangeTime": 1616688966093, "timestamp": 1616352403440},
+    {"namespace": "ospf-single", "hostname": "leaf01", "vrf": "default", "ifname":
+    "swp2", "peerHostname": "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.22", "numChanges": 5.0, "lastChangeTime":
+    1616688966098, "timestamp": 1616352403216}, {"namespace": "ospf-single", "hostname":
+    "exit01", "vrf": "default", "ifname": "swp2", "peerHostname": "spine02", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22",
+    "numChanges": 4.0, "lastChangeTime": 1616688966096, "timestamp": 1616352403217},
+    {"namespace": "ospf-single", "hostname": "leaf03", "vrf": "default", "ifname":
+    "swp2", "peerHostname": "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.22", "numChanges": 5.0, "lastChangeTime":
+    1616688966083, "timestamp": 1616352403217}, {"namespace": "ospf-single", "hostname":
+    "exit02", "vrf": "default", "ifname": "swp2", "peerHostname": "spine02", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22",
+    "numChanges": 4.0, "lastChangeTime": 1616688966095, "timestamp": 1616352403219},
+    {"namespace": "ospf-single", "hostname": "leaf02", "vrf": "default", "ifname":
+    "swp2", "peerHostname": "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.22", "numChanges": 5.0, "lastChangeTime":
+    1616688966085, "timestamp": 1616352403251}, {"namespace": "ospf-single", "hostname":
+    "leaf04", "vrf": "default", "ifname": "swp2", "peerHostname": "spine02", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22",
+    "numChanges": 5.0, "lastChangeTime": 1616688965093, "timestamp": 1616352403440},
+    {"namespace": "ospf-ibgp", "hostname": "exit02", "vrf": "default", "ifname": "swp1",
+    "peerHostname": "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
+    "adjState": "full", "peerIP": "10.0.0.22", "numChanges": 4.0, "lastChangeTime":
+    1616688676910, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf01", "vrf": "default", "ifname": "swp1", "peerHostname": "spine01", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22",
+    "numChanges": 5.0, "lastChangeTime": 1616688676903, "timestamp": 1616681581440},
+    {"namespace": "ospf-ibgp", "hostname": "exit01", "vrf": "default", "ifname": "swp1",
+    "peerHostname": "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
+    "adjState": "full", "peerIP": "10.0.0.22", "numChanges": 5.0, "lastChangeTime":
+    1616688676913, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf02", "vrf": "default", "ifname": "swp1", "peerHostname": "spine01", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22",
+    "numChanges": 5.0, "lastChangeTime": 1616688676912, "timestamp": 1616681581440},
+    {"namespace": "ospf-ibgp", "hostname": "leaf03", "vrf": "default", "ifname": "swp1",
+    "peerHostname": "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
+    "adjState": "full", "peerIP": "10.0.0.22", "numChanges": 5.0, "lastChangeTime":
+    1616688676909, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf04", "vrf": "default", "ifname": "swp1", "peerHostname": "spine01", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22",
+    "numChanges": 5.0, "lastChangeTime": 1616688675898, "timestamp": 1616681582523},
+    {"namespace": "ospf-ibgp", "hostname": "exit01", "vrf": "default", "ifname": "swp2",
+    "peerHostname": "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
+    "adjState": "full", "peerIP": "10.0.0.21", "numChanges": 5.0, "lastChangeTime":
+    1616688682913, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf01", "vrf": "default", "ifname": "swp2", "peerHostname": "spine02", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21",
+    "numChanges": 5.0, "lastChangeTime": 1616688681903, "timestamp": 1616681581440},
+    {"namespace": "ospf-ibgp", "hostname": "exit02", "vrf": "default", "ifname": "swp2",
+    "peerHostname": "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
+    "adjState": "full", "peerIP": "10.0.0.21", "numChanges": 4.0, "lastChangeTime":
+    1616688676910, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf03", "vrf": "default", "ifname": "swp2", "peerHostname": "spine02", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21",
+    "numChanges": 5.0, "lastChangeTime": 1616688682909, "timestamp": 1616681581440},
+    {"namespace": "ospf-ibgp", "hostname": "leaf02", "vrf": "default", "ifname": "swp2",
+    "peerHostname": "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
+    "adjState": "full", "peerIP": "10.0.0.21", "numChanges": 5.0, "lastChangeTime":
+    1616688682912, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf04", "vrf": "default", "ifname": "swp2", "peerHostname": "spine02", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21",
+    "numChanges": 5.0, "lastChangeTime": 1616688681898, "timestamp": 1616681582523},
+    {"namespace": "ospf-ibgp", "hostname": "spine01", "vrf": "default", "ifname":
+    "swp1", "peerHostname": "leaf01", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.11", "numChanges": 4.0, "lastChangeTime":
+    1616688676907, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
+    "spine02", "vrf": "default", "ifname": "swp1", "peerHostname": "leaf01", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.11",
+    "numChanges": 5.0, "lastChangeTime": 1616688682901, "timestamp": 1616681581441},
+    {"namespace": "ospf-ibgp", "hostname": "spine01", "vrf": "default", "ifname":
+    "swp2", "peerHostname": "leaf02", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.12", "numChanges": 4.0, "lastChangeTime":
+    1616688676907, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
+    "spine02", "vrf": "default", "ifname": "swp2", "peerHostname": "leaf02", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.12",
+    "numChanges": 5.0, "lastChangeTime": 1616688682901, "timestamp": 1616681581441},
+    {"namespace": "ospf-ibgp", "hostname": "spine01", "vrf": "default", "ifname":
+    "swp3", "peerHostname": "leaf03", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.13", "numChanges": 4.0, "lastChangeTime":
+    1616688676907, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
+    "spine02", "vrf": "default", "ifname": "swp3", "peerHostname": "leaf03", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.13",
+    "numChanges": 5.0, "lastChangeTime": 1616688682901, "timestamp": 1616681581441},
+    {"namespace": "ospf-ibgp", "hostname": "spine01", "vrf": "default", "ifname":
+    "swp4", "peerHostname": "leaf04", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.14", "numChanges": 4.0, "lastChangeTime":
+    1616688676907, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
+    "spine02", "vrf": "default", "ifname": "swp4", "peerHostname": "leaf04", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.14",
+    "numChanges": 5.0, "lastChangeTime": 1616688682901, "timestamp": 1616681581441},
+    {"namespace": "ospf-ibgp", "hostname": "spine01", "vrf": "default", "ifname":
+    "swp5", "peerHostname": "exit02", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.102", "numChanges": 5.0, "lastChangeTime":
+    1616688676907, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
+    "spine02", "vrf": "default", "ifname": "swp5", "peerHostname": "exit02", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.102",
+    "numChanges": 5.0, "lastChangeTime": 1616688676901, "timestamp": 1616681581441},
+    {"namespace": "ospf-ibgp", "hostname": "spine01", "vrf": "default", "ifname":
+    "swp6", "peerHostname": "exit01", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.101", "numChanges": 5.0, "lastChangeTime":
+    1616688676907, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
+    "spine02", "vrf": "default", "ifname": "swp6", "peerHostname": "exit01", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.101",
+    "numChanges": 5.0, "lastChangeTime": 1616688682901, "timestamp": 1616681581441}]'
 - command: ospf show --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: ospf show
-  output: '[{"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+  output: '[{"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
     {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
-    "spine02"}, {"hostname": "spine02"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
-    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "spine02"}, {"hostname":
-    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "spine02"},
-    {"hostname": "internet"}, {"hostname": "internet"}, {"hostname": "internet"},
-    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
-    "leaf03"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
-    {"hostname": "leaf04"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
-    "spine01"}, {"hostname": "spine01"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
-    {"hostname": "leaf02"}, {"hostname": "spine01"}, {"hostname": "leaf02"}, {"hostname":
-    "spine01"}, {"hostname": "spine01"}, {"hostname": "exit02"}, {"hostname": "spine01"},
+    "leaf01"}, {"hostname": "spine02"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "exit01"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
     {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
-    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine02"},
+    "spine01"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf02"}, {"hostname": "exit01"}, {"hostname": "exit02"},
+    {"hostname": "spine01"}, {"hostname": "leaf02"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "exit01"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf02"}, {"hostname": "spine02"},
     {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
-    "spine02"}, {"hostname": "spine02"}, {"hostname": "exit01"}, {"hostname": "exit01"},
-    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "spine02"}, {"hostname":
-    "exit01"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf03"},
-    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname":
-    "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
-    {"hostname": "leaf01"}, {"hostname": "leaf01"}]'
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}]'
 - command: ospf unique --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: ospf unique
-  output: '[{"hostname": "exit01", "count": 6}, {"hostname": "exit02", "count": 6},
-    {"hostname": "internet", "count": 3}, {"hostname": "leaf01", "count": 7}, {"hostname":
-    "leaf02", "count": 7}, {"hostname": "leaf03", "count": 7}, {"hostname": "leaf04",
-    "count": 7}, {"hostname": "spine01", "count": 14}, {"hostname": "spine02", "count":
-    14}]'
+  output: '[{"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname": "leaf01"},
+    {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname":
+    "spine01"}, {"hostname": "spine02"}]'
 - command: ospf assert --format=json
   data-directory: tests/data/multidc/parquet-out/
   ignore-columns: lastChangeTime timestamp
   marks: ospf assert
-  output: '[{"namespace": "ospf-single", "hostname": "exit02", "ifname": "swp1", "vrf":
-    "default", "assert": "pass", "assertReason": "-", "timestamp": 1597553946603},
+  output: '[{"namespace": "ospf-single", "hostname": "spine02", "ifname": "swp6",
+    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1616352403216},
     {"namespace": "ospf-single", "hostname": "spine02", "ifname": "swp4", "vrf": "default",
-    "assert": "pass", "assertReason": "-", "timestamp": 1597553946721}, {"namespace":
+    "assert": "pass", "assertReason": "-", "timestamp": 1616352403216}, {"namespace":
     "ospf-single", "hostname": "spine02", "ifname": "swp3", "vrf": "default", "assert":
-    "pass", "assertReason": "-", "timestamp": 1597553946721}, {"namespace": "ospf-single",
+    "pass", "assertReason": "-", "timestamp": 1616352403216}, {"namespace": "ospf-single",
     "hostname": "spine02", "ifname": "swp2", "vrf": "default", "assert": "pass", "assertReason":
-    "-", "timestamp": 1597553946721}, {"namespace": "ospf-single", "hostname": "spine02",
+    "-", "timestamp": 1616352403216}, {"namespace": "ospf-single", "hostname": "spine02",
     "ifname": "swp1", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
-    1597553946721}, {"namespace": "ospf-single", "hostname": "leaf01", "ifname": "swp2",
-    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1597553946721},
-    {"namespace": "ospf-single", "hostname": "leaf01", "ifname": "swp1", "vrf": "default",
-    "assert": "pass", "assertReason": "-", "timestamp": 1597553946721}, {"namespace":
-    "ospf-single", "hostname": "exit01", "ifname": "swp1", "vrf": "default", "assert":
-    "pass", "assertReason": "-", "timestamp": 1597553946721}, {"namespace": "ospf-single",
-    "hostname": "leaf03", "ifname": "swp2", "vrf": "default", "assert": "pass", "assertReason":
-    "-", "timestamp": 1597553946724}, {"namespace": "ospf-single", "hostname": "leaf03",
-    "ifname": "swp1", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
-    1597553946724}, {"namespace": "ospf-single", "hostname": "leaf04", "ifname": "swp2",
-    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1597553946816},
-    {"namespace": "ospf-single", "hostname": "leaf04", "ifname": "swp1", "vrf": "default",
-    "assert": "pass", "assertReason": "-", "timestamp": 1597553946816}, {"namespace":
-    "ospf-single", "hostname": "spine01", "ifname": "swp5", "vrf": "default", "assert":
-    "pass", "assertReason": "-", "timestamp": 1597553946900}, {"namespace": "ospf-single",
-    "hostname": "spine01", "ifname": "swp4", "vrf": "default", "assert": "pass", "assertReason":
-    "-", "timestamp": 1597553946900}, {"namespace": "ospf-single", "hostname": "spine01",
-    "ifname": "swp3", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
-    1597553946900}, {"namespace": "ospf-single", "hostname": "spine01", "ifname":
-    "swp6", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
-    1597553946900}, {"namespace": "ospf-single", "hostname": "leaf02", "ifname": "swp1",
-    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1597553946900},
+    1616352403216}, {"namespace": "ospf-single", "hostname": "spine02", "ifname":
+    "swp5", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1616352403216}, {"namespace": "ospf-single", "hostname": "leaf01", "ifname": "swp1",
+    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1616352403216},
+    {"namespace": "ospf-single", "hostname": "leaf01", "ifname": "swp2", "vrf": "default",
+    "assert": "pass", "assertReason": "-", "timestamp": 1616352403216}, {"namespace":
+    "ospf-single", "hostname": "exit01", "ifname": "swp2", "vrf": "default", "assert":
+    "pass", "assertReason": "-", "timestamp": 1616352403217}, {"namespace": "ospf-single",
+    "hostname": "leaf03", "ifname": "swp1", "vrf": "default", "assert": "pass", "assertReason":
+    "-", "timestamp": 1616352403217}, {"namespace": "ospf-single", "hostname": "leaf03",
+    "ifname": "swp2", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1616352403217}, {"namespace": "ospf-single", "hostname": "exit01", "ifname": "swp1",
+    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1616352403217},
+    {"namespace": "ospf-single", "hostname": "exit02", "ifname": "swp2", "vrf": "default",
+    "assert": "pass", "assertReason": "-", "timestamp": 1616352403219}, {"namespace":
+    "ospf-single", "hostname": "exit02", "ifname": "swp1", "vrf": "default", "assert":
+    "pass", "assertReason": "-", "timestamp": 1616352403219}, {"namespace": "ospf-single",
+    "hostname": "spine01", "ifname": "swp6", "vrf": "default", "assert": "pass", "assertReason":
+    "-", "timestamp": 1616352403219}, {"namespace": "ospf-single", "hostname": "spine01",
+    "ifname": "swp5", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1616352403219}, {"namespace": "ospf-single", "hostname": "spine01", "ifname":
+    "swp4", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1616352403219}, {"namespace": "ospf-single", "hostname": "spine01", "ifname":
+    "swp3", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1616352403219}, {"namespace": "ospf-single", "hostname": "spine01", "ifname":
+    "swp2", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1616352403219}, {"namespace": "ospf-single", "hostname": "spine01", "ifname":
+    "swp1", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1616352403219}, {"namespace": "ospf-single", "hostname": "leaf02", "ifname": "swp1",
+    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1616352403251},
     {"namespace": "ospf-single", "hostname": "leaf02", "ifname": "swp2", "vrf": "default",
-    "assert": "pass", "assertReason": "-", "timestamp": 1597553946900}, {"namespace":
-    "ospf-single", "hostname": "spine01", "ifname": "swp2", "vrf": "default", "assert":
-    "pass", "assertReason": "-", "timestamp": 1597553946900}, {"namespace": "ospf-single",
-    "hostname": "spine01", "ifname": "swp1", "vrf": "default", "assert": "pass", "assertReason":
-    "-", "timestamp": 1597553946900}, {"namespace": "ospf-ibgp", "hostname": "exit02",
+    "assert": "pass", "assertReason": "-", "timestamp": 1616352403251}, {"namespace":
+    "ospf-single", "hostname": "leaf04", "ifname": "swp2", "vrf": "default", "assert":
+    "pass", "assertReason": "-", "timestamp": 1616352403440}, {"namespace": "ospf-single",
+    "hostname": "leaf04", "ifname": "swp1", "vrf": "default", "assert": "pass", "assertReason":
+    "-", "timestamp": 1616352403440}, {"namespace": "ospf-ibgp", "hostname": "exit02",
+    "ifname": "swp1", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1616681581440}, {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname": "swp2",
+    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1616681581440},
+    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "swp1", "vrf": "default",
+    "assert": "pass", "assertReason": "-", "timestamp": 1616681581440}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf01", "ifname": "swp2", "vrf": "default", "assert":
+    "pass", "assertReason": "-", "timestamp": 1616681581440}, {"namespace": "ospf-ibgp",
+    "hostname": "exit01", "ifname": "swp1", "vrf": "default", "assert": "pass", "assertReason":
+    "-", "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname": "exit02",
     "ifname": "swp2", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
-    1606024535925}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp1",
-    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1606024535925},
-    {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp2", "vrf": "default",
-    "assert": "pass", "assertReason": "-", "timestamp": 1606024535925}, {"namespace":
-    "ospf-ibgp", "hostname": "spine01", "ifname": "swp3", "vrf": "default", "assert":
-    "pass", "assertReason": "-", "timestamp": 1606024535925}, {"namespace": "ospf-ibgp",
-    "hostname": "spine01", "ifname": "swp4", "vrf": "default", "assert": "pass", "assertReason":
-    "-", "timestamp": 1606024535925}, {"namespace": "ospf-ibgp", "hostname": "spine01",
-    "ifname": "swp5", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
-    1606024535925}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp6",
-    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1606024535925},
-    {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp1", "vrf": "default",
-    "assert": "pass", "assertReason": "-", "timestamp": 1606024535925}, {"namespace":
-    "ospf-ibgp", "hostname": "spine02", "ifname": "swp3", "vrf": "default", "assert":
-    "pass", "assertReason": "-", "timestamp": 1606024535925}, {"namespace": "ospf-ibgp",
-    "hostname": "spine02", "ifname": "swp4", "vrf": "default", "assert": "pass", "assertReason":
-    "-", "timestamp": 1606024535925}, {"namespace": "ospf-ibgp", "hostname": "spine02",
-    "ifname": "swp5", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
-    1606024535925}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp6",
-    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1606024535925},
-    {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname": "swp1", "vrf": "default",
-    "assert": "pass", "assertReason": "-", "timestamp": 1606024535925}, {"namespace":
-    "ospf-ibgp", "hostname": "exit01", "ifname": "swp2", "vrf": "default", "assert":
-    "pass", "assertReason": "-", "timestamp": 1606024535925}, {"namespace": "ospf-ibgp",
-    "hostname": "exit02", "ifname": "swp1", "vrf": "default", "assert": "pass", "assertReason":
-    "-", "timestamp": 1606024535925}, {"namespace": "ospf-ibgp", "hostname": "spine02",
+    1616681581440}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "swp1",
+    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1616681581440},
+    {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp1", "vrf": "default",
+    "assert": "pass", "assertReason": "-", "timestamp": 1616681581440}, {"namespace":
+    "ospf-ibgp", "hostname": "spine01", "ifname": "swp2", "vrf": "default", "assert":
+    "pass", "assertReason": "-", "timestamp": 1616681581440}, {"namespace": "ospf-ibgp",
+    "hostname": "spine01", "ifname": "swp3", "vrf": "default", "assert": "pass", "assertReason":
+    "-", "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname": "spine01",
+    "ifname": "swp4", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1616681581440}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp5",
+    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1616681581440},
+    {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp6", "vrf": "default",
+    "assert": "pass", "assertReason": "-", "timestamp": 1616681581440}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf03", "ifname": "swp2", "vrf": "default", "assert":
+    "pass", "assertReason": "-", "timestamp": 1616681581440}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf03", "ifname": "swp1", "vrf": "default", "assert": "pass", "assertReason":
+    "-", "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname": "leaf02",
     "ifname": "swp2", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
-    1606024535925}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "swp2",
-    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1606024536270},
-    {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "swp1", "vrf": "default",
-    "assert": "pass", "assertReason": "-", "timestamp": 1606024536270}, {"namespace":
-    "ospf-ibgp", "hostname": "leaf03", "ifname": "swp1", "vrf": "default", "assert":
-    "pass", "assertReason": "-", "timestamp": 1606024536270}, {"namespace": "ospf-ibgp",
-    "hostname": "leaf03", "ifname": "swp2", "vrf": "default", "assert": "pass", "assertReason":
-    "-", "timestamp": 1606024536270}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
-    "ifname": "swp2", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
-    1606024536466}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "swp1",
-    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1606024536466},
-    {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "swp2", "vrf": "default",
-    "assert": "pass", "assertReason": "-", "timestamp": 1606024536466}, {"namespace":
-    "ospf-ibgp", "hostname": "leaf01", "ifname": "swp1", "vrf": "default", "assert":
-    "pass", "assertReason": "-", "timestamp": 1606024536466}]'
+    1616681581440}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp5",
+    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1616681581441},
+    {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp4", "vrf": "default",
+    "assert": "pass", "assertReason": "-", "timestamp": 1616681581441}, {"namespace":
+    "ospf-ibgp", "hostname": "spine02", "ifname": "swp2", "vrf": "default", "assert":
+    "pass", "assertReason": "-", "timestamp": 1616681581441}, {"namespace": "ospf-ibgp",
+    "hostname": "spine02", "ifname": "swp1", "vrf": "default", "assert": "pass", "assertReason":
+    "-", "timestamp": 1616681581441}, {"namespace": "ospf-ibgp", "hostname": "spine02",
+    "ifname": "swp6", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1616681581441}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp3",
+    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1616681581441},
+    {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "swp2", "vrf": "default",
+    "assert": "pass", "assertReason": "-", "timestamp": 1616681582523}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf04", "ifname": "swp1", "vrf": "default", "assert":
+    "pass", "assertReason": "-", "timestamp": 1616681582523}]'
 - command: ospf assert --namespace=ospf-single --format=json
   data-directory: tests/data/multidc/parquet-out
   ignore-columns: lastChangeTime timestamp
   marks: ospf assert
-  output: '[{"namespace": "ospf-single", "hostname": "exit02", "ifname": "swp1", "vrf":
-    "default", "assert": "pass", "assertReason": "-", "timestamp": 1597553946603},
+  output: '[{"namespace": "ospf-single", "hostname": "spine02", "ifname": "swp6",
+    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1616352403216},
     {"namespace": "ospf-single", "hostname": "spine02", "ifname": "swp4", "vrf": "default",
-    "assert": "pass", "assertReason": "-", "timestamp": 1597553946721}, {"namespace":
+    "assert": "pass", "assertReason": "-", "timestamp": 1616352403216}, {"namespace":
     "ospf-single", "hostname": "spine02", "ifname": "swp3", "vrf": "default", "assert":
-    "pass", "assertReason": "-", "timestamp": 1597553946721}, {"namespace": "ospf-single",
+    "pass", "assertReason": "-", "timestamp": 1616352403216}, {"namespace": "ospf-single",
     "hostname": "spine02", "ifname": "swp2", "vrf": "default", "assert": "pass", "assertReason":
-    "-", "timestamp": 1597553946721}, {"namespace": "ospf-single", "hostname": "spine02",
+    "-", "timestamp": 1616352403216}, {"namespace": "ospf-single", "hostname": "spine02",
     "ifname": "swp1", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
-    1597553946721}, {"namespace": "ospf-single", "hostname": "leaf01", "ifname": "swp1",
-    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1597553946721},
-    {"namespace": "ospf-single", "hostname": "exit01", "ifname": "swp1", "vrf": "default",
-    "assert": "pass", "assertReason": "-", "timestamp": 1597553946721}, {"namespace":
-    "ospf-single", "hostname": "leaf01", "ifname": "swp2", "vrf": "default", "assert":
-    "pass", "assertReason": "-", "timestamp": 1597553946721}, {"namespace": "ospf-single",
+    1616352403216}, {"namespace": "ospf-single", "hostname": "leaf01", "ifname": "swp1",
+    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1616352403216},
+    {"namespace": "ospf-single", "hostname": "leaf01", "ifname": "swp2", "vrf": "default",
+    "assert": "pass", "assertReason": "-", "timestamp": 1616352403216}, {"namespace":
+    "ospf-single", "hostname": "spine02", "ifname": "swp5", "vrf": "default", "assert":
+    "pass", "assertReason": "-", "timestamp": 1616352403216}, {"namespace": "ospf-single",
     "hostname": "leaf03", "ifname": "swp2", "vrf": "default", "assert": "pass", "assertReason":
-    "-", "timestamp": 1597553946724}, {"namespace": "ospf-single", "hostname": "leaf03",
+    "-", "timestamp": 1616352403217}, {"namespace": "ospf-single", "hostname": "leaf03",
     "ifname": "swp1", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
-    1597553946724}, {"namespace": "ospf-single", "hostname": "leaf04", "ifname": "swp1",
-    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1597553946816},
-    {"namespace": "ospf-single", "hostname": "leaf04", "ifname": "swp2", "vrf": "default",
-    "assert": "pass", "assertReason": "-", "timestamp": 1597553946816}, {"namespace":
-    "ospf-single", "hostname": "leaf02", "ifname": "swp1", "vrf": "default", "assert":
-    "pass", "assertReason": "-", "timestamp": 1597553946900}, {"namespace": "ospf-single",
-    "hostname": "leaf02", "ifname": "swp2", "vrf": "default", "assert": "pass", "assertReason":
-    "-", "timestamp": 1597553946900}, {"namespace": "ospf-single", "hostname": "spine01",
-    "ifname": "swp4", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
-    1597553946900}, {"namespace": "ospf-single", "hostname": "spine01", "ifname":
+    1616352403217}, {"namespace": "ospf-single", "hostname": "exit01", "ifname": "swp1",
+    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1616352403217},
+    {"namespace": "ospf-single", "hostname": "exit01", "ifname": "swp2", "vrf": "default",
+    "assert": "pass", "assertReason": "-", "timestamp": 1616352403217}, {"namespace":
+    "ospf-single", "hostname": "exit02", "ifname": "swp1", "vrf": "default", "assert":
+    "pass", "assertReason": "-", "timestamp": 1616352403219}, {"namespace": "ospf-single",
+    "hostname": "exit02", "ifname": "swp2", "vrf": "default", "assert": "pass", "assertReason":
+    "-", "timestamp": 1616352403219}, {"namespace": "ospf-single", "hostname": "spine01",
+    "ifname": "swp6", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1616352403219}, {"namespace": "ospf-single", "hostname": "spine01", "ifname":
     "swp5", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
-    1597553946900}, {"namespace": "ospf-single", "hostname": "spine01", "ifname":
+    1616352403219}, {"namespace": "ospf-single", "hostname": "spine01", "ifname":
+    "swp4", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1616352403219}, {"namespace": "ospf-single", "hostname": "spine01", "ifname":
     "swp3", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
-    1597553946900}, {"namespace": "ospf-single", "hostname": "spine01", "ifname":
-    "swp2", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
-    1597553946900}, {"namespace": "ospf-single", "hostname": "spine01", "ifname":
+    1616352403219}, {"namespace": "ospf-single", "hostname": "spine01", "ifname":
     "swp1", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
-    1597553946900}, {"namespace": "ospf-single", "hostname": "spine01", "ifname":
-    "swp6", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
-    1597553946900}]'
+    1616352403219}, {"namespace": "ospf-single", "hostname": "spine01", "ifname":
+    "swp2", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1616352403219}, {"namespace": "ospf-single", "hostname": "leaf02", "ifname": "swp1",
+    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1616352403251},
+    {"namespace": "ospf-single", "hostname": "leaf02", "ifname": "swp2", "vrf": "default",
+    "assert": "pass", "assertReason": "-", "timestamp": 1616352403251}, {"namespace":
+    "ospf-single", "hostname": "leaf04", "ifname": "swp2", "vrf": "default", "assert":
+    "pass", "assertReason": "-", "timestamp": 1616352403440}, {"namespace": "ospf-single",
+    "hostname": "leaf04", "ifname": "swp1", "vrf": "default", "assert": "pass", "assertReason":
+    "-", "timestamp": 1616352403440}]'
 - command: ospf assert --status=fail --format=json
   data-directory: tests/data/multidc/parquet-out/
   ignore-columns: lastChangeTime timestamp
@@ -385,170 +415,186 @@ tests:
   data-directory: tests/data/multidc/parquet-out/
   ignore-columns: lastChangeTime timestamp
   marks: ospf assert cumulus
-  output: '[{"namespace": "ospf-single", "hostname": "exit02", "ifname": "swp1", "vrf":
-    "default", "assert": "pass", "assertReason": "-", "timestamp": 1597553946603},
+  output: '[{"namespace": "ospf-single", "hostname": "spine02", "ifname": "swp6",
+    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1616352403216},
     {"namespace": "ospf-single", "hostname": "spine02", "ifname": "swp4", "vrf": "default",
-    "assert": "pass", "assertReason": "-", "timestamp": 1597553946721}, {"namespace":
+    "assert": "pass", "assertReason": "-", "timestamp": 1616352403216}, {"namespace":
     "ospf-single", "hostname": "spine02", "ifname": "swp3", "vrf": "default", "assert":
-    "pass", "assertReason": "-", "timestamp": 1597553946721}, {"namespace": "ospf-single",
+    "pass", "assertReason": "-", "timestamp": 1616352403216}, {"namespace": "ospf-single",
     "hostname": "spine02", "ifname": "swp2", "vrf": "default", "assert": "pass", "assertReason":
-    "-", "timestamp": 1597553946721}, {"namespace": "ospf-single", "hostname": "spine02",
+    "-", "timestamp": 1616352403216}, {"namespace": "ospf-single", "hostname": "spine02",
     "ifname": "swp1", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
-    1597553946721}, {"namespace": "ospf-single", "hostname": "leaf01", "ifname": "swp2",
-    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1597553946721},
-    {"namespace": "ospf-single", "hostname": "leaf01", "ifname": "swp1", "vrf": "default",
-    "assert": "pass", "assertReason": "-", "timestamp": 1597553946721}, {"namespace":
-    "ospf-single", "hostname": "exit01", "ifname": "swp1", "vrf": "default", "assert":
-    "pass", "assertReason": "-", "timestamp": 1597553946721}, {"namespace": "ospf-single",
-    "hostname": "leaf03", "ifname": "swp2", "vrf": "default", "assert": "pass", "assertReason":
-    "-", "timestamp": 1597553946724}, {"namespace": "ospf-single", "hostname": "leaf03",
-    "ifname": "swp1", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
-    1597553946724}, {"namespace": "ospf-single", "hostname": "leaf04", "ifname": "swp2",
-    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1597553946816},
-    {"namespace": "ospf-single", "hostname": "leaf04", "ifname": "swp1", "vrf": "default",
-    "assert": "pass", "assertReason": "-", "timestamp": 1597553946816}, {"namespace":
-    "ospf-single", "hostname": "spine01", "ifname": "swp5", "vrf": "default", "assert":
-    "pass", "assertReason": "-", "timestamp": 1597553946900}, {"namespace": "ospf-single",
-    "hostname": "spine01", "ifname": "swp4", "vrf": "default", "assert": "pass", "assertReason":
-    "-", "timestamp": 1597553946900}, {"namespace": "ospf-single", "hostname": "spine01",
-    "ifname": "swp3", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
-    1597553946900}, {"namespace": "ospf-single", "hostname": "spine01", "ifname":
-    "swp6", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
-    1597553946900}, {"namespace": "ospf-single", "hostname": "leaf02", "ifname": "swp1",
-    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1597553946900},
+    1616352403216}, {"namespace": "ospf-single", "hostname": "spine02", "ifname":
+    "swp5", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1616352403216}, {"namespace": "ospf-single", "hostname": "leaf01", "ifname": "swp1",
+    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1616352403216},
+    {"namespace": "ospf-single", "hostname": "leaf01", "ifname": "swp2", "vrf": "default",
+    "assert": "pass", "assertReason": "-", "timestamp": 1616352403216}, {"namespace":
+    "ospf-single", "hostname": "exit01", "ifname": "swp2", "vrf": "default", "assert":
+    "pass", "assertReason": "-", "timestamp": 1616352403217}, {"namespace": "ospf-single",
+    "hostname": "leaf03", "ifname": "swp1", "vrf": "default", "assert": "pass", "assertReason":
+    "-", "timestamp": 1616352403217}, {"namespace": "ospf-single", "hostname": "leaf03",
+    "ifname": "swp2", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1616352403217}, {"namespace": "ospf-single", "hostname": "exit01", "ifname": "swp1",
+    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1616352403217},
+    {"namespace": "ospf-single", "hostname": "exit02", "ifname": "swp2", "vrf": "default",
+    "assert": "pass", "assertReason": "-", "timestamp": 1616352403219}, {"namespace":
+    "ospf-single", "hostname": "exit02", "ifname": "swp1", "vrf": "default", "assert":
+    "pass", "assertReason": "-", "timestamp": 1616352403219}, {"namespace": "ospf-single",
+    "hostname": "spine01", "ifname": "swp6", "vrf": "default", "assert": "pass", "assertReason":
+    "-", "timestamp": 1616352403219}, {"namespace": "ospf-single", "hostname": "spine01",
+    "ifname": "swp5", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1616352403219}, {"namespace": "ospf-single", "hostname": "spine01", "ifname":
+    "swp4", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1616352403219}, {"namespace": "ospf-single", "hostname": "spine01", "ifname":
+    "swp3", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1616352403219}, {"namespace": "ospf-single", "hostname": "spine01", "ifname":
+    "swp2", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1616352403219}, {"namespace": "ospf-single", "hostname": "spine01", "ifname":
+    "swp1", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1616352403219}, {"namespace": "ospf-single", "hostname": "leaf02", "ifname": "swp1",
+    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1616352403251},
     {"namespace": "ospf-single", "hostname": "leaf02", "ifname": "swp2", "vrf": "default",
-    "assert": "pass", "assertReason": "-", "timestamp": 1597553946900}, {"namespace":
-    "ospf-single", "hostname": "spine01", "ifname": "swp2", "vrf": "default", "assert":
-    "pass", "assertReason": "-", "timestamp": 1597553946900}, {"namespace": "ospf-single",
-    "hostname": "spine01", "ifname": "swp1", "vrf": "default", "assert": "pass", "assertReason":
-    "-", "timestamp": 1597553946900}, {"namespace": "ospf-ibgp", "hostname": "exit02",
+    "assert": "pass", "assertReason": "-", "timestamp": 1616352403251}, {"namespace":
+    "ospf-single", "hostname": "leaf04", "ifname": "swp2", "vrf": "default", "assert":
+    "pass", "assertReason": "-", "timestamp": 1616352403440}, {"namespace": "ospf-single",
+    "hostname": "leaf04", "ifname": "swp1", "vrf": "default", "assert": "pass", "assertReason":
+    "-", "timestamp": 1616352403440}, {"namespace": "ospf-ibgp", "hostname": "exit02",
+    "ifname": "swp1", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1616681581440}, {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname": "swp2",
+    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1616681581440},
+    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "swp1", "vrf": "default",
+    "assert": "pass", "assertReason": "-", "timestamp": 1616681581440}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf01", "ifname": "swp2", "vrf": "default", "assert":
+    "pass", "assertReason": "-", "timestamp": 1616681581440}, {"namespace": "ospf-ibgp",
+    "hostname": "exit01", "ifname": "swp1", "vrf": "default", "assert": "pass", "assertReason":
+    "-", "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname": "exit02",
     "ifname": "swp2", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
-    1606024535925}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp1",
-    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1606024535925},
-    {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp2", "vrf": "default",
-    "assert": "pass", "assertReason": "-", "timestamp": 1606024535925}, {"namespace":
-    "ospf-ibgp", "hostname": "spine01", "ifname": "swp3", "vrf": "default", "assert":
-    "pass", "assertReason": "-", "timestamp": 1606024535925}, {"namespace": "ospf-ibgp",
-    "hostname": "spine01", "ifname": "swp4", "vrf": "default", "assert": "pass", "assertReason":
-    "-", "timestamp": 1606024535925}, {"namespace": "ospf-ibgp", "hostname": "spine01",
-    "ifname": "swp5", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
-    1606024535925}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp6",
-    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1606024535925},
-    {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp1", "vrf": "default",
-    "assert": "pass", "assertReason": "-", "timestamp": 1606024535925}, {"namespace":
-    "ospf-ibgp", "hostname": "spine02", "ifname": "swp3", "vrf": "default", "assert":
-    "pass", "assertReason": "-", "timestamp": 1606024535925}, {"namespace": "ospf-ibgp",
-    "hostname": "spine02", "ifname": "swp4", "vrf": "default", "assert": "pass", "assertReason":
-    "-", "timestamp": 1606024535925}, {"namespace": "ospf-ibgp", "hostname": "spine02",
-    "ifname": "swp5", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
-    1606024535925}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp6",
-    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1606024535925},
-    {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname": "swp1", "vrf": "default",
-    "assert": "pass", "assertReason": "-", "timestamp": 1606024535925}, {"namespace":
-    "ospf-ibgp", "hostname": "exit01", "ifname": "swp2", "vrf": "default", "assert":
-    "pass", "assertReason": "-", "timestamp": 1606024535925}, {"namespace": "ospf-ibgp",
-    "hostname": "exit02", "ifname": "swp1", "vrf": "default", "assert": "pass", "assertReason":
-    "-", "timestamp": 1606024535925}, {"namespace": "ospf-ibgp", "hostname": "spine02",
+    1616681581440}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "swp1",
+    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1616681581440},
+    {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp1", "vrf": "default",
+    "assert": "pass", "assertReason": "-", "timestamp": 1616681581440}, {"namespace":
+    "ospf-ibgp", "hostname": "spine01", "ifname": "swp2", "vrf": "default", "assert":
+    "pass", "assertReason": "-", "timestamp": 1616681581440}, {"namespace": "ospf-ibgp",
+    "hostname": "spine01", "ifname": "swp3", "vrf": "default", "assert": "pass", "assertReason":
+    "-", "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname": "spine01",
+    "ifname": "swp4", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1616681581440}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp5",
+    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1616681581440},
+    {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp6", "vrf": "default",
+    "assert": "pass", "assertReason": "-", "timestamp": 1616681581440}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf03", "ifname": "swp2", "vrf": "default", "assert":
+    "pass", "assertReason": "-", "timestamp": 1616681581440}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf03", "ifname": "swp1", "vrf": "default", "assert": "pass", "assertReason":
+    "-", "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname": "leaf02",
     "ifname": "swp2", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
-    1606024535925}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "swp2",
-    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1606024536270},
-    {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "swp1", "vrf": "default",
-    "assert": "pass", "assertReason": "-", "timestamp": 1606024536270}, {"namespace":
-    "ospf-ibgp", "hostname": "leaf03", "ifname": "swp1", "vrf": "default", "assert":
-    "pass", "assertReason": "-", "timestamp": 1606024536270}, {"namespace": "ospf-ibgp",
-    "hostname": "leaf03", "ifname": "swp2", "vrf": "default", "assert": "pass", "assertReason":
-    "-", "timestamp": 1606024536270}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
-    "ifname": "swp2", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
-    1606024536466}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "swp1",
-    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1606024536466},
-    {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "swp2", "vrf": "default",
-    "assert": "pass", "assertReason": "-", "timestamp": 1606024536466}, {"namespace":
-    "ospf-ibgp", "hostname": "leaf01", "ifname": "swp1", "vrf": "default", "assert":
-    "pass", "assertReason": "-", "timestamp": 1606024536466}]'
+    1616681581440}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp5",
+    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1616681581441},
+    {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp4", "vrf": "default",
+    "assert": "pass", "assertReason": "-", "timestamp": 1616681581441}, {"namespace":
+    "ospf-ibgp", "hostname": "spine02", "ifname": "swp2", "vrf": "default", "assert":
+    "pass", "assertReason": "-", "timestamp": 1616681581441}, {"namespace": "ospf-ibgp",
+    "hostname": "spine02", "ifname": "swp1", "vrf": "default", "assert": "pass", "assertReason":
+    "-", "timestamp": 1616681581441}, {"namespace": "ospf-ibgp", "hostname": "spine02",
+    "ifname": "swp6", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1616681581441}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp3",
+    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1616681581441},
+    {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "swp2", "vrf": "default",
+    "assert": "pass", "assertReason": "-", "timestamp": 1616681582523}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf04", "ifname": "swp1", "vrf": "default", "assert":
+    "pass", "assertReason": "-", "timestamp": 1616681582523}]'
 - command: ospf assert --status=all --format=json
   data-directory: tests/data/multidc/parquet-out/
   ignore-columns: lastChangeTime timestamp
   marks: ospf assert cumulus
-  output: '[{"namespace": "ospf-single", "hostname": "exit02", "ifname": "swp1", "vrf":
-    "default", "assert": "pass", "assertReason": "-", "timestamp": 1597553946603},
+  output: '[{"namespace": "ospf-single", "hostname": "spine02", "ifname": "swp6",
+    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1616352403216},
     {"namespace": "ospf-single", "hostname": "spine02", "ifname": "swp4", "vrf": "default",
-    "assert": "pass", "assertReason": "-", "timestamp": 1597553946721}, {"namespace":
+    "assert": "pass", "assertReason": "-", "timestamp": 1616352403216}, {"namespace":
     "ospf-single", "hostname": "spine02", "ifname": "swp3", "vrf": "default", "assert":
-    "pass", "assertReason": "-", "timestamp": 1597553946721}, {"namespace": "ospf-single",
+    "pass", "assertReason": "-", "timestamp": 1616352403216}, {"namespace": "ospf-single",
     "hostname": "spine02", "ifname": "swp2", "vrf": "default", "assert": "pass", "assertReason":
-    "-", "timestamp": 1597553946721}, {"namespace": "ospf-single", "hostname": "spine02",
+    "-", "timestamp": 1616352403216}, {"namespace": "ospf-single", "hostname": "spine02",
     "ifname": "swp1", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
-    1597553946721}, {"namespace": "ospf-single", "hostname": "leaf01", "ifname": "swp2",
-    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1597553946721},
-    {"namespace": "ospf-single", "hostname": "leaf01", "ifname": "swp1", "vrf": "default",
-    "assert": "pass", "assertReason": "-", "timestamp": 1597553946721}, {"namespace":
-    "ospf-single", "hostname": "exit01", "ifname": "swp1", "vrf": "default", "assert":
-    "pass", "assertReason": "-", "timestamp": 1597553946721}, {"namespace": "ospf-single",
-    "hostname": "leaf03", "ifname": "swp2", "vrf": "default", "assert": "pass", "assertReason":
-    "-", "timestamp": 1597553946724}, {"namespace": "ospf-single", "hostname": "leaf03",
-    "ifname": "swp1", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
-    1597553946724}, {"namespace": "ospf-single", "hostname": "leaf04", "ifname": "swp2",
-    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1597553946816},
-    {"namespace": "ospf-single", "hostname": "leaf04", "ifname": "swp1", "vrf": "default",
-    "assert": "pass", "assertReason": "-", "timestamp": 1597553946816}, {"namespace":
-    "ospf-single", "hostname": "spine01", "ifname": "swp5", "vrf": "default", "assert":
-    "pass", "assertReason": "-", "timestamp": 1597553946900}, {"namespace": "ospf-single",
-    "hostname": "spine01", "ifname": "swp4", "vrf": "default", "assert": "pass", "assertReason":
-    "-", "timestamp": 1597553946900}, {"namespace": "ospf-single", "hostname": "spine01",
-    "ifname": "swp3", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
-    1597553946900}, {"namespace": "ospf-single", "hostname": "spine01", "ifname":
-    "swp6", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
-    1597553946900}, {"namespace": "ospf-single", "hostname": "leaf02", "ifname": "swp1",
-    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1597553946900},
+    1616352403216}, {"namespace": "ospf-single", "hostname": "spine02", "ifname":
+    "swp5", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1616352403216}, {"namespace": "ospf-single", "hostname": "leaf01", "ifname": "swp1",
+    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1616352403216},
+    {"namespace": "ospf-single", "hostname": "leaf01", "ifname": "swp2", "vrf": "default",
+    "assert": "pass", "assertReason": "-", "timestamp": 1616352403216}, {"namespace":
+    "ospf-single", "hostname": "exit01", "ifname": "swp2", "vrf": "default", "assert":
+    "pass", "assertReason": "-", "timestamp": 1616352403217}, {"namespace": "ospf-single",
+    "hostname": "leaf03", "ifname": "swp1", "vrf": "default", "assert": "pass", "assertReason":
+    "-", "timestamp": 1616352403217}, {"namespace": "ospf-single", "hostname": "leaf03",
+    "ifname": "swp2", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1616352403217}, {"namespace": "ospf-single", "hostname": "exit01", "ifname": "swp1",
+    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1616352403217},
+    {"namespace": "ospf-single", "hostname": "exit02", "ifname": "swp2", "vrf": "default",
+    "assert": "pass", "assertReason": "-", "timestamp": 1616352403219}, {"namespace":
+    "ospf-single", "hostname": "exit02", "ifname": "swp1", "vrf": "default", "assert":
+    "pass", "assertReason": "-", "timestamp": 1616352403219}, {"namespace": "ospf-single",
+    "hostname": "spine01", "ifname": "swp6", "vrf": "default", "assert": "pass", "assertReason":
+    "-", "timestamp": 1616352403219}, {"namespace": "ospf-single", "hostname": "spine01",
+    "ifname": "swp5", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1616352403219}, {"namespace": "ospf-single", "hostname": "spine01", "ifname":
+    "swp4", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1616352403219}, {"namespace": "ospf-single", "hostname": "spine01", "ifname":
+    "swp3", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1616352403219}, {"namespace": "ospf-single", "hostname": "spine01", "ifname":
+    "swp2", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1616352403219}, {"namespace": "ospf-single", "hostname": "spine01", "ifname":
+    "swp1", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1616352403219}, {"namespace": "ospf-single", "hostname": "leaf02", "ifname": "swp1",
+    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1616352403251},
     {"namespace": "ospf-single", "hostname": "leaf02", "ifname": "swp2", "vrf": "default",
-    "assert": "pass", "assertReason": "-", "timestamp": 1597553946900}, {"namespace":
-    "ospf-single", "hostname": "spine01", "ifname": "swp2", "vrf": "default", "assert":
-    "pass", "assertReason": "-", "timestamp": 1597553946900}, {"namespace": "ospf-single",
-    "hostname": "spine01", "ifname": "swp1", "vrf": "default", "assert": "pass", "assertReason":
-    "-", "timestamp": 1597553946900}, {"namespace": "ospf-ibgp", "hostname": "exit02",
+    "assert": "pass", "assertReason": "-", "timestamp": 1616352403251}, {"namespace":
+    "ospf-single", "hostname": "leaf04", "ifname": "swp2", "vrf": "default", "assert":
+    "pass", "assertReason": "-", "timestamp": 1616352403440}, {"namespace": "ospf-single",
+    "hostname": "leaf04", "ifname": "swp1", "vrf": "default", "assert": "pass", "assertReason":
+    "-", "timestamp": 1616352403440}, {"namespace": "ospf-ibgp", "hostname": "exit02",
+    "ifname": "swp1", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1616681581440}, {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname": "swp2",
+    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1616681581440},
+    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "swp1", "vrf": "default",
+    "assert": "pass", "assertReason": "-", "timestamp": 1616681581440}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf01", "ifname": "swp2", "vrf": "default", "assert":
+    "pass", "assertReason": "-", "timestamp": 1616681581440}, {"namespace": "ospf-ibgp",
+    "hostname": "exit01", "ifname": "swp1", "vrf": "default", "assert": "pass", "assertReason":
+    "-", "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname": "exit02",
     "ifname": "swp2", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
-    1606024535925}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp1",
-    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1606024535925},
-    {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp2", "vrf": "default",
-    "assert": "pass", "assertReason": "-", "timestamp": 1606024535925}, {"namespace":
-    "ospf-ibgp", "hostname": "spine01", "ifname": "swp3", "vrf": "default", "assert":
-    "pass", "assertReason": "-", "timestamp": 1606024535925}, {"namespace": "ospf-ibgp",
-    "hostname": "spine01", "ifname": "swp4", "vrf": "default", "assert": "pass", "assertReason":
-    "-", "timestamp": 1606024535925}, {"namespace": "ospf-ibgp", "hostname": "spine01",
-    "ifname": "swp5", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
-    1606024535925}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp6",
-    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1606024535925},
-    {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp1", "vrf": "default",
-    "assert": "pass", "assertReason": "-", "timestamp": 1606024535925}, {"namespace":
-    "ospf-ibgp", "hostname": "spine02", "ifname": "swp3", "vrf": "default", "assert":
-    "pass", "assertReason": "-", "timestamp": 1606024535925}, {"namespace": "ospf-ibgp",
-    "hostname": "spine02", "ifname": "swp4", "vrf": "default", "assert": "pass", "assertReason":
-    "-", "timestamp": 1606024535925}, {"namespace": "ospf-ibgp", "hostname": "spine02",
-    "ifname": "swp5", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
-    1606024535925}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp6",
-    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1606024535925},
-    {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname": "swp1", "vrf": "default",
-    "assert": "pass", "assertReason": "-", "timestamp": 1606024535925}, {"namespace":
-    "ospf-ibgp", "hostname": "exit01", "ifname": "swp2", "vrf": "default", "assert":
-    "pass", "assertReason": "-", "timestamp": 1606024535925}, {"namespace": "ospf-ibgp",
-    "hostname": "exit02", "ifname": "swp1", "vrf": "default", "assert": "pass", "assertReason":
-    "-", "timestamp": 1606024535925}, {"namespace": "ospf-ibgp", "hostname": "spine02",
+    1616681581440}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "swp1",
+    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1616681581440},
+    {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp1", "vrf": "default",
+    "assert": "pass", "assertReason": "-", "timestamp": 1616681581440}, {"namespace":
+    "ospf-ibgp", "hostname": "spine01", "ifname": "swp2", "vrf": "default", "assert":
+    "pass", "assertReason": "-", "timestamp": 1616681581440}, {"namespace": "ospf-ibgp",
+    "hostname": "spine01", "ifname": "swp3", "vrf": "default", "assert": "pass", "assertReason":
+    "-", "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname": "spine01",
+    "ifname": "swp4", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1616681581440}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp5",
+    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1616681581440},
+    {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp6", "vrf": "default",
+    "assert": "pass", "assertReason": "-", "timestamp": 1616681581440}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf03", "ifname": "swp2", "vrf": "default", "assert":
+    "pass", "assertReason": "-", "timestamp": 1616681581440}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf03", "ifname": "swp1", "vrf": "default", "assert": "pass", "assertReason":
+    "-", "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname": "leaf02",
     "ifname": "swp2", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
-    1606024535925}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "swp2",
-    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1606024536270},
-    {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "swp1", "vrf": "default",
-    "assert": "pass", "assertReason": "-", "timestamp": 1606024536270}, {"namespace":
-    "ospf-ibgp", "hostname": "leaf03", "ifname": "swp1", "vrf": "default", "assert":
-    "pass", "assertReason": "-", "timestamp": 1606024536270}, {"namespace": "ospf-ibgp",
-    "hostname": "leaf03", "ifname": "swp2", "vrf": "default", "assert": "pass", "assertReason":
-    "-", "timestamp": 1606024536270}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
-    "ifname": "swp2", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
-    1606024536466}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "swp1",
-    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1606024536466},
-    {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "swp2", "vrf": "default",
-    "assert": "pass", "assertReason": "-", "timestamp": 1606024536466}, {"namespace":
-    "ospf-ibgp", "hostname": "leaf01", "ifname": "swp1", "vrf": "default", "assert":
-    "pass", "assertReason": "-", "timestamp": 1606024536466}]'
+    1616681581440}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp5",
+    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1616681581441},
+    {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp4", "vrf": "default",
+    "assert": "pass", "assertReason": "-", "timestamp": 1616681581441}, {"namespace":
+    "ospf-ibgp", "hostname": "spine02", "ifname": "swp2", "vrf": "default", "assert":
+    "pass", "assertReason": "-", "timestamp": 1616681581441}, {"namespace": "ospf-ibgp",
+    "hostname": "spine02", "ifname": "swp1", "vrf": "default", "assert": "pass", "assertReason":
+    "-", "timestamp": 1616681581441}, {"namespace": "ospf-ibgp", "hostname": "spine02",
+    "ifname": "swp6", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1616681581441}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp3",
+    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1616681581441},
+    {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "swp2", "vrf": "default",
+    "assert": "pass", "assertReason": "-", "timestamp": 1616681582523}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf04", "ifname": "swp1", "vrf": "default", "assert":
+    "pass", "assertReason": "-", "timestamp": 1616681582523}]'
 - command: ospf assert --status=whatever --format=json
   data-directory: tests/data/multidc/parquet-out/
   ignore-columns: lastChangeTime timestamp

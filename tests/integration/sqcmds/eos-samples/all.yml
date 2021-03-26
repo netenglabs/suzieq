@@ -714,8 +714,8 @@ tests:
   data-directory: tests/data/eos/parquet-out/
   marks: bgp show eos all
   output: '[{"namespace": "eos", "hostname": "firewall01", "vrf": "default", "peer":
-    "eth1.2", "afi": "ipv4", "safi": "unicast", "state": "Established", "asn": 65533,
-    "peerAsn": 64520, "peerHostname": "exit01", "pfxRx": 0, "pfxTx": 10, "numChanges":
+    "eth1.2", "peerHostname": "exit01", "state": "Established", "afi": "ipv4", "safi":
+    "unicast", "asn": 65533, "peerAsn": 64520, "pfxRx": 0, "pfxTx": 10, "numChanges":
     1, "estdTime": 1616394448000, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
     0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent": 0,
     "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
@@ -727,8 +727,8 @@ tests:
     "169.254.254.1", "mrai": 0, "reason": "Waiting for peer OPEN", "lastDownTime":
     53380000, "ifname": "", "timestamp": 1616447826024, "active": true, "afiSafi":
     "ipv4 unicast"}, {"namespace": "eos", "hostname": "firewall01", "vrf": "default",
-    "peer": "eth1.3", "afi": "ipv4", "safi": "unicast", "state": "Established", "asn":
-    65533, "peerAsn": 64520, "peerHostname": "exit01", "pfxRx": 3, "pfxTx": 10, "numChanges":
+    "peer": "eth1.3", "peerHostname": "exit01", "state": "Established", "afi": "ipv4",
+    "safi": "unicast", "asn": 65533, "peerAsn": 64520, "pfxRx": 3, "pfxTx": 10, "numChanges":
     1, "estdTime": 1616394449000, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
     0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent": 0,
     "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
@@ -740,9 +740,9 @@ tests:
     false, "extnhReceived": false, "extnhEnabled": false, "peerIP": "169.254.254.5",
     "mrai": 0, "reason": "BGP Notification send", "lastDownTime": 53380000, "ifname":
     "", "timestamp": 1616447826024, "active": true, "afiSafi": "ipv4 unicast"}, {"namespace":
-    "eos", "hostname": "firewall01", "vrf": "default", "peer": "eth1.4", "afi": "ipv4",
-    "safi": "unicast", "state": "Established", "asn": 65533, "peerAsn": 64520, "peerHostname":
-    "exit01", "pfxRx": 6, "pfxTx": 10, "numChanges": 1, "estdTime": 1616394449000,
+    "eos", "hostname": "firewall01", "vrf": "default", "peer": "eth1.4", "peerHostname":
+    "exit01", "state": "Established", "afi": "ipv4", "safi": "unicast", "asn": 65533,
+    "peerAsn": 64520, "pfxRx": 6, "pfxTx": 10, "numChanges": 1, "estdTime": 1616394449000,
     "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx":
     0, "pfxMaxRx": 0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false,
     "egressRmap": "", "ingressRmap": "", "softReconfig": false, "communityTypes":
@@ -754,35 +754,35 @@ tests:
     false, "peerIP": "169.254.254.9", "mrai": 0, "reason": "BGP Notification send",
     "lastDownTime": 53380000, "ifname": "", "timestamp": 1616447826024, "active":
     true, "afiSafi": "ipv4 unicast"}, {"namespace": "eos", "hostname": "firewall01",
-    "vrf": "default", "peer": "eth2.2", "afi": "ipv4", "safi": "unicast", "state":
-    "Established", "asn": 65533, "peerAsn": 64520, "peerHostname": "exit02", "pfxRx":
-    0, "pfxTx": 10, "numChanges": 1, "estdTime": 1616394448000, "afisAdvOnly": [],
-    "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx":
-    0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard", "extended"],
-    "defOriginate": false, "keepaliveTime": 3, "updateSource": "169.254.253.2", "holdTime":
-    9, "updatesRx": 1, "updatesTx": 149, "peerRouterId": "10.0.0.32", "routerId":
-    "10.0.0.200", "bfdStatus": "Unknown", "nhUnchanged": false, "nhSelf": false, "rrclient":
-    "False", "notificnReason": "", "extnhAdvertised": false, "extnhReceived": false,
-    "extnhEnabled": false, "peerIP": "169.254.253.1", "mrai": 0, "reason": "Waiting
-    for peer OPEN", "lastDownTime": 53380000, "ifname": "", "timestamp": 1616447826024,
-    "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "eos", "hostname": "firewall01",
-    "vrf": "default", "peer": "eth2.3", "afi": "ipv4", "safi": "unicast", "state":
-    "Established", "asn": 65533, "peerAsn": 64520, "peerHostname": "exit02", "pfxRx":
-    3, "pfxTx": 10, "numChanges": 1, "estdTime": 1616394449000, "afisAdvOnly": [],
-    "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx":
-    0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard", "extended"],
-    "defOriginate": false, "keepaliveTime": 3, "updateSource": "169.254.253.6", "holdTime":
-    9, "updatesRx": 148, "updatesTx": 149, "peerRouterId": "169.254.253.5", "routerId":
-    "10.0.0.200", "bfdStatus": "Unknown", "nhUnchanged": false, "nhSelf": false, "rrclient":
-    "False", "notificnReason": "Cease/Connection collision resolution", "extnhAdvertised":
+    "vrf": "default", "peer": "eth2.2", "peerHostname": "exit02", "state": "Established",
+    "afi": "ipv4", "safi": "unicast", "asn": 65533, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 10, "numChanges": 1, "estdTime": 1616394448000, "afisAdvOnly": [], "afisRcvOnly":
+    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": false, "communityTypes": ["standard", "extended"], "defOriginate":
+    false, "keepaliveTime": 3, "updateSource": "169.254.253.2", "holdTime": 9, "updatesRx":
+    1, "updatesTx": 149, "peerRouterId": "10.0.0.32", "routerId": "10.0.0.200", "bfdStatus":
+    "Unknown", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
+    "", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled": false, "peerIP":
+    "169.254.253.1", "mrai": 0, "reason": "Waiting for peer OPEN", "lastDownTime":
+    53380000, "ifname": "", "timestamp": 1616447826024, "active": true, "afiSafi":
+    "ipv4 unicast"}, {"namespace": "eos", "hostname": "firewall01", "vrf": "default",
+    "peer": "eth2.3", "peerHostname": "exit02", "state": "Established", "afi": "ipv4",
+    "safi": "unicast", "asn": 65533, "peerAsn": 64520, "pfxRx": 3, "pfxTx": 10, "numChanges":
+    1, "estdTime": 1616394449000, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
+    0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent": 0,
+    "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": false, "communityTypes": ["standard", "extended"], "defOriginate":
+    false, "keepaliveTime": 3, "updateSource": "169.254.253.6", "holdTime": 9, "updatesRx":
+    148, "updatesTx": 149, "peerRouterId": "169.254.253.5", "routerId": "10.0.0.200",
+    "bfdStatus": "Unknown", "nhUnchanged": false, "nhSelf": false, "rrclient": "False",
+    "notificnReason": "Cease/Connection collision resolution", "extnhAdvertised":
     false, "extnhReceived": false, "extnhEnabled": false, "peerIP": "169.254.253.5",
     "mrai": 0, "reason": "BGP Notification send", "lastDownTime": 53380000, "ifname":
     "", "timestamp": 1616447826024, "active": true, "afiSafi": "ipv4 unicast"}, {"namespace":
-    "eos", "hostname": "firewall01", "vrf": "default", "peer": "eth2.4", "afi": "ipv4",
-    "safi": "unicast", "state": "Established", "asn": 65533, "peerAsn": 64520, "peerHostname":
-    "exit02", "pfxRx": 6, "pfxTx": 10, "numChanges": 1, "estdTime": 1616394449000,
+    "eos", "hostname": "firewall01", "vrf": "default", "peer": "eth2.4", "peerHostname":
+    "exit02", "state": "Established", "afi": "ipv4", "safi": "unicast", "asn": 65533,
+    "peerAsn": 64520, "pfxRx": 6, "pfxTx": 10, "numChanges": 1, "estdTime": 1616394449000,
     "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx":
     0, "pfxMaxRx": 0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false,
     "egressRmap": "", "ingressRmap": "", "softReconfig": false, "communityTypes":
@@ -794,22 +794,22 @@ tests:
     false, "peerIP": "169.254.253.9", "mrai": 0, "reason": "BGP Notification send",
     "lastDownTime": 53380000, "ifname": "", "timestamp": 1616447826024, "active":
     true, "afiSafi": "ipv4 unicast"}, {"namespace": "eos", "hostname": "spine01",
-    "vrf": "default", "peer": "10.0.0.32", "afi": "l2vpn", "safi": "evpn", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "exit02", "pfxRx":
-    4, "pfxTx": 36, "numChanges": 2, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
-    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
-    "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
-    "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
-    false, "keepaliveTime": 60, "updateSource": "10.0.0.21", "holdTime": 180, "updatesRx":
+    "vrf": "default", "peer": "10.0.0.32", "peerHostname": "exit02", "state": "Established",
+    "afi": "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 4, "pfxTx":
+    36, "numChanges": 2, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
+    0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": false, "communityTypes": ["standard"], "defOriginate": false,
+    "keepaliveTime": 60, "updateSource": "10.0.0.21", "holdTime": 180, "updatesRx":
     522, "updatesTx": 1897, "peerRouterId": "10.0.0.32", "routerId": "10.0.0.21",
     "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "route reflector
     client", "notificnReason": "", "extnhAdvertised": false, "extnhReceived": false,
     "extnhEnabled": false, "peerIP": "10.0.0.32", "mrai": 0, "reason": "socket-error:Connect
     (Invalid argument)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447826654,
     "active": true, "afiSafi": "l2vpn evpn"}, {"namespace": "eos", "hostname": "spine01",
-    "vrf": "default", "peer": "10.0.0.32", "afi": "ipv6", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "exit02", "pfxRx":
-    0, "pfxTx": 0, "numChanges": 2, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
+    "vrf": "default", "peer": "10.0.0.32", "peerHostname": "exit02", "state": "Established",
+    "afi": "ipv6", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 0, "numChanges": 2, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
     "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
     "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
@@ -820,9 +820,9 @@ tests:
     "extnhEnabled": false, "peerIP": "10.0.0.32", "mrai": 0, "reason": "socket-error:Connect
     (Invalid argument)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447826654,
     "active": true, "afiSafi": "ipv6 unicast"}, {"namespace": "eos", "hostname": "spine01",
-    "vrf": "default", "peer": "10.0.0.11", "afi": "ipv4", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "leaf01", "pfxRx":
-    0, "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
+    "vrf": "default", "peer": "10.0.0.11", "peerHostname": "leaf01", "state": "Established",
+    "afi": "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
     "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
     "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
@@ -833,9 +833,9 @@ tests:
     "extnhEnabled": false, "peerIP": "10.0.0.11", "mrai": 0, "reason": "socket-error:Connect
     (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447826654,
     "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "eos", "hostname": "spine01",
-    "vrf": "default", "peer": "10.0.0.11", "afi": "ipv6", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "leaf01", "pfxRx":
-    0, "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
+    "vrf": "default", "peer": "10.0.0.11", "peerHostname": "leaf01", "state": "Established",
+    "afi": "ipv6", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
     "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
     "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
@@ -846,22 +846,22 @@ tests:
     "extnhEnabled": false, "peerIP": "10.0.0.11", "mrai": 0, "reason": "socket-error:Connect
     (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447826654,
     "active": true, "afiSafi": "ipv6 unicast"}, {"namespace": "eos", "hostname": "spine01",
-    "vrf": "default", "peer": "10.0.0.11", "afi": "l2vpn", "safi": "evpn", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "leaf01", "pfxRx":
-    8, "pfxTx": 32, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
-    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
-    "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
-    "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
-    false, "keepaliveTime": 60, "updateSource": "10.0.0.21", "holdTime": 180, "updatesRx":
+    "vrf": "default", "peer": "10.0.0.11", "peerHostname": "leaf01", "state": "Established",
+    "afi": "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 8, "pfxTx":
+    32, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
+    0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": false, "communityTypes": ["standard"], "defOriginate": false,
+    "keepaliveTime": 60, "updateSource": "10.0.0.21", "holdTime": 180, "updatesRx":
     354, "updatesTx": 2002, "peerRouterId": "10.0.0.11", "routerId": "10.0.0.21",
     "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "route reflector
     client", "notificnReason": "", "extnhAdvertised": false, "extnhReceived": false,
     "extnhEnabled": false, "peerIP": "10.0.0.11", "mrai": 0, "reason": "socket-error:Connect
     (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447826654,
     "active": true, "afiSafi": "l2vpn evpn"}, {"namespace": "eos", "hostname": "spine01",
-    "vrf": "default", "peer": "10.0.0.12", "afi": "ipv6", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "leaf02", "pfxRx":
-    0, "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
+    "vrf": "default", "peer": "10.0.0.12", "peerHostname": "leaf02", "state": "Established",
+    "afi": "ipv6", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
     "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
     "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
@@ -872,9 +872,9 @@ tests:
     "extnhEnabled": false, "peerIP": "10.0.0.12", "mrai": 0, "reason": "socket-error:Connect
     (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447826654,
     "active": true, "afiSafi": "ipv6 unicast"}, {"namespace": "eos", "hostname": "spine01",
-    "vrf": "default", "peer": "10.0.0.12", "afi": "ipv4", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "leaf02", "pfxRx":
-    0, "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
+    "vrf": "default", "peer": "10.0.0.12", "peerHostname": "leaf02", "state": "Established",
+    "afi": "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
     "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
     "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
@@ -885,9 +885,9 @@ tests:
     "extnhEnabled": false, "peerIP": "10.0.0.12", "mrai": 0, "reason": "socket-error:Connect
     (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447826654,
     "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "eos", "hostname": "spine01",
-    "vrf": "default", "peer": "10.0.0.13", "afi": "ipv4", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "leaf03", "pfxRx":
-    0, "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
+    "vrf": "default", "peer": "10.0.0.13", "peerHostname": "leaf03", "state": "Established",
+    "afi": "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
     "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
     "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
@@ -898,9 +898,9 @@ tests:
     "extnhEnabled": false, "peerIP": "10.0.0.13", "mrai": 0, "reason": "socket-error:Connect
     (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447826654,
     "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "eos", "hostname": "spine01",
-    "vrf": "default", "peer": "10.0.0.13", "afi": "ipv6", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "leaf03", "pfxRx":
-    0, "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
+    "vrf": "default", "peer": "10.0.0.13", "peerHostname": "leaf03", "state": "Established",
+    "afi": "ipv6", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
     "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
     "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
@@ -911,22 +911,22 @@ tests:
     "extnhEnabled": false, "peerIP": "10.0.0.13", "mrai": 0, "reason": "socket-error:Connect
     (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447826654,
     "active": true, "afiSafi": "ipv6 unicast"}, {"namespace": "eos", "hostname": "spine01",
-    "vrf": "default", "peer": "10.0.0.13", "afi": "l2vpn", "safi": "evpn", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "leaf03", "pfxRx":
-    8, "pfxTx": 32, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
-    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
-    "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
-    "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
-    false, "keepaliveTime": 60, "updateSource": "10.0.0.21", "holdTime": 180, "updatesRx":
+    "vrf": "default", "peer": "10.0.0.13", "peerHostname": "leaf03", "state": "Established",
+    "afi": "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 8, "pfxTx":
+    32, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
+    0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": false, "communityTypes": ["standard"], "defOriginate": false,
+    "keepaliveTime": 60, "updateSource": "10.0.0.21", "holdTime": 180, "updatesRx":
     395, "updatesTx": 1963, "peerRouterId": "10.0.0.13", "routerId": "10.0.0.21",
     "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "route reflector
     client", "notificnReason": "", "extnhAdvertised": false, "extnhReceived": false,
     "extnhEnabled": false, "peerIP": "10.0.0.13", "mrai": 0, "reason": "socket-error:Connect
     (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447826654,
     "active": true, "afiSafi": "l2vpn evpn"}, {"namespace": "eos", "hostname": "spine01",
-    "vrf": "default", "peer": "10.0.0.14", "afi": "ipv4", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "leaf04", "pfxRx":
-    0, "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
+    "vrf": "default", "peer": "10.0.0.14", "peerHostname": "leaf04", "state": "Established",
+    "afi": "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
     "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
     "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
@@ -937,9 +937,9 @@ tests:
     "extnhEnabled": false, "peerIP": "10.0.0.14", "mrai": 0, "reason": "socket-error:Connect
     (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447826654,
     "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "eos", "hostname": "spine01",
-    "vrf": "default", "peer": "10.0.0.14", "afi": "ipv6", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "leaf04", "pfxRx":
-    0, "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
+    "vrf": "default", "peer": "10.0.0.14", "peerHostname": "leaf04", "state": "Established",
+    "afi": "ipv6", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
     "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
     "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
@@ -950,22 +950,22 @@ tests:
     "extnhEnabled": false, "peerIP": "10.0.0.14", "mrai": 0, "reason": "socket-error:Connect
     (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447826654,
     "active": true, "afiSafi": "ipv6 unicast"}, {"namespace": "eos", "hostname": "spine01",
-    "vrf": "default", "peer": "10.0.0.14", "afi": "l2vpn", "safi": "evpn", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "leaf04", "pfxRx":
-    8, "pfxTx": 32, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
-    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
-    "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
-    "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
-    false, "keepaliveTime": 60, "updateSource": "10.0.0.21", "holdTime": 180, "updatesRx":
+    "vrf": "default", "peer": "10.0.0.14", "peerHostname": "leaf04", "state": "Established",
+    "afi": "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 8, "pfxTx":
+    32, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
+    0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": false, "communityTypes": ["standard"], "defOriginate": false,
+    "keepaliveTime": 60, "updateSource": "10.0.0.21", "holdTime": 180, "updatesRx":
     395, "updatesTx": 1963, "peerRouterId": "10.0.0.14", "routerId": "10.0.0.21",
     "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "route reflector
     client", "notificnReason": "", "extnhAdvertised": false, "extnhReceived": false,
     "extnhEnabled": false, "peerIP": "10.0.0.14", "mrai": 0, "reason": "socket-error:Connect
     (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447826654,
     "active": true, "afiSafi": "l2vpn evpn"}, {"namespace": "eos", "hostname": "spine01",
-    "vrf": "default", "peer": "10.0.0.31", "afi": "ipv4", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "exit01", "pfxRx":
-    0, "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
+    "vrf": "default", "peer": "10.0.0.31", "peerHostname": "exit01", "state": "Established",
+    "afi": "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
     "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
     "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
@@ -976,9 +976,9 @@ tests:
     "extnhEnabled": false, "peerIP": "10.0.0.31", "mrai": 0, "reason": "socket-error:Connect
     (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447826654,
     "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "eos", "hostname": "spine01",
-    "vrf": "default", "peer": "10.0.0.31", "afi": "ipv6", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "exit01", "pfxRx":
-    0, "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
+    "vrf": "default", "peer": "10.0.0.31", "peerHostname": "exit01", "state": "Established",
+    "afi": "ipv6", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
     "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
     "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
@@ -989,22 +989,22 @@ tests:
     "extnhEnabled": false, "peerIP": "10.0.0.31", "mrai": 0, "reason": "socket-error:Connect
     (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447826654,
     "active": true, "afiSafi": "ipv6 unicast"}, {"namespace": "eos", "hostname": "spine01",
-    "vrf": "default", "peer": "10.0.0.31", "afi": "l2vpn", "safi": "evpn", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "exit01", "pfxRx":
-    4, "pfxTx": 36, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
-    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
-    "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
-    "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
-    false, "keepaliveTime": 60, "updateSource": "10.0.0.21", "holdTime": 180, "updatesRx":
+    "vrf": "default", "peer": "10.0.0.31", "peerHostname": "exit01", "state": "Established",
+    "afi": "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 4, "pfxTx":
+    36, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
+    0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": false, "communityTypes": ["standard"], "defOriginate": false,
+    "keepaliveTime": 60, "updateSource": "10.0.0.21", "holdTime": 180, "updatesRx":
     533, "updatesTx": 1921, "peerRouterId": "10.0.0.31", "routerId": "10.0.0.21",
     "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "route reflector
     client", "notificnReason": "", "extnhAdvertised": false, "extnhReceived": false,
     "extnhEnabled": false, "peerIP": "10.0.0.31", "mrai": 0, "reason": "socket-error:Connect
     (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447826654,
     "active": true, "afiSafi": "l2vpn evpn"}, {"namespace": "eos", "hostname": "spine01",
-    "vrf": "default", "peer": "10.0.0.32", "afi": "ipv4", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "exit02", "pfxRx":
-    0, "pfxTx": 0, "numChanges": 2, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
+    "vrf": "default", "peer": "10.0.0.32", "peerHostname": "exit02", "state": "Established",
+    "afi": "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 0, "numChanges": 2, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
     "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
     "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
@@ -1015,125 +1015,61 @@ tests:
     "extnhEnabled": false, "peerIP": "10.0.0.32", "mrai": 0, "reason": "socket-error:Connect
     (Invalid argument)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447826654,
     "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "eos", "hostname": "spine01",
-    "vrf": "default", "peer": "10.0.0.12", "afi": "l2vpn", "safi": "evpn", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "leaf02", "pfxRx":
-    8, "pfxTx": 32, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
-    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
-    "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
-    "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
-    false, "keepaliveTime": 60, "updateSource": "10.0.0.21", "holdTime": 180, "updatesRx":
+    "vrf": "default", "peer": "10.0.0.12", "peerHostname": "leaf02", "state": "Established",
+    "afi": "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 8, "pfxTx":
+    32, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
+    0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": false, "communityTypes": ["standard"], "defOriginate": false,
+    "keepaliveTime": 60, "updateSource": "10.0.0.21", "holdTime": 180, "updatesRx":
     354, "updatesTx": 2004, "peerRouterId": "10.0.0.12", "routerId": "10.0.0.21",
     "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "route reflector
     client", "notificnReason": "", "extnhAdvertised": false, "extnhReceived": false,
     "extnhEnabled": false, "peerIP": "10.0.0.12", "mrai": 0, "reason": "socket-error:Connect
     (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447826654,
     "active": true, "afiSafi": "l2vpn evpn"}, {"namespace": "eos", "hostname": "exit02",
-    "vrf": "internet-vrf", "peer": "169.254.253.10", "afi": "ipv4", "safi": "unicast",
-    "state": "Established", "asn": 64520, "peerAsn": 65533, "peerHostname": "firewall01",
-    "pfxRx": 10, "pfxTx": 6, "numChanges": 5, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
-    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
-    "pfxWarnPercent": 0, "hopsMax": -254, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"],
-    "defOriginate": false, "keepaliveTime": 3, "updateSource": "169.254.253.9", "holdTime":
-    9, "updatesRx": 193, "updatesTx": 10, "peerRouterId": "10.0.0.200", "routerId":
-    "169.254.253.9", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient":
-    "False", "notificnReason": "", "extnhAdvertised": false, "extnhReceived": false,
-    "extnhEnabled": false, "peerIP": "169.254.253.10", "mrai": 0, "reason": "notification:Cease/connection
-    collision resolution", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827046,
-    "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "eos", "hostname": "exit02",
-    "vrf": "internet-vrf", "peer": "169.254.253.10", "afi": "ipv6", "safi": "unicast",
-    "state": "Established", "asn": 64520, "peerAsn": 65533, "peerHostname": "firewall01",
-    "pfxRx": 0, "pfxTx": 0, "numChanges": 5, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
-    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
-    "pfxWarnPercent": 0, "hopsMax": -254, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"],
-    "defOriginate": false, "keepaliveTime": 3, "updateSource": "169.254.253.9", "holdTime":
-    9, "updatesRx": 193, "updatesTx": 10, "peerRouterId": "10.0.0.200", "routerId":
-    "169.254.253.9", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient":
-    "False", "notificnReason": "", "extnhAdvertised": false, "extnhReceived": false,
-    "extnhEnabled": false, "peerIP": "169.254.253.10", "mrai": 0, "reason": "notification:Cease/connection
-    collision resolution", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827046,
-    "active": true, "afiSafi": "ipv6 unicast"}, {"namespace": "eos", "hostname": "exit02",
-    "vrf": "internet-vrf", "peer": "169.254.127.2", "afi": "ipv6", "safi": "unicast",
-    "state": "Established", "asn": 64520, "peerAsn": 65534, "peerHostname": "dcedge01",
-    "pfxRx": 0, "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
-    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
-    "pfxWarnPercent": 0, "hopsMax": -254, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"],
-    "defOriginate": false, "keepaliveTime": 30, "updateSource": "169.254.127.3", "holdTime":
-    90, "updatesRx": 3, "updatesTx": 185, "peerRouterId": "10.0.0.41", "routerId":
-    "169.254.253.9", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient":
-    "False", "notificnReason": "", "extnhAdvertised": false, "extnhReceived": false,
-    "extnhEnabled": false, "peerIP": "169.254.127.2", "mrai": 0, "reason": "", "lastDownTime":
-    0, "ifname": "", "timestamp": 1616447827046, "active": true, "afiSafi": "ipv6
-    unicast"}, {"namespace": "eos", "hostname": "exit02", "vrf": "default", "peer":
-    "10.0.0.22", "afi": "ipv4", "safi": "unicast", "state": "Established", "asn":
-    64520, "peerAsn": 64520, "peerHostname": "spine02", "pfxRx": 0, "pfxTx": 0, "numChanges":
-    2, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx":
-    0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis":
+    "vrf": "internet-vrf", "peer": "169.254.253.10", "peerHostname": "firewall01",
+    "state": "Established", "afi": "ipv4", "safi": "unicast", "asn": 64520, "peerAsn":
+    65533, "pfxRx": 10, "pfxTx": 6, "numChanges": 5, "estdTime": 0, "afisAdvOnly":
+    [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0,
+    "pfxMaxRx": 12000, "pfxWarnPercent": 0, "hopsMax": -254, "advertiseAllVnis": false,
+    "egressRmap": "", "ingressRmap": "", "softReconfig": false, "communityTypes":
+    ["standard"], "defOriginate": false, "keepaliveTime": 3, "updateSource": "169.254.253.9",
+    "holdTime": 9, "updatesRx": 193, "updatesTx": 10, "peerRouterId": "10.0.0.200",
+    "routerId": "169.254.253.9", "bfdStatus": "", "nhUnchanged": false, "nhSelf":
+    false, "rrclient": "False", "notificnReason": "", "extnhAdvertised": false, "extnhReceived":
+    false, "extnhEnabled": false, "peerIP": "169.254.253.10", "mrai": 0, "reason":
+    "notification:Cease/connection collision resolution", "lastDownTime": 0, "ifname":
+    "", "timestamp": 1616447827046, "active": true, "afiSafi": "ipv4 unicast"}, {"namespace":
+    "eos", "hostname": "exit02", "vrf": "internet-vrf", "peer": "169.254.253.10",
+    "peerHostname": "firewall01", "state": "Established", "afi": "ipv6", "safi": "unicast",
+    "asn": 64520, "peerAsn": 65533, "pfxRx": 0, "pfxTx": 0, "numChanges": 5, "estdTime":
+    0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0,
+    "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent": 0, "hopsMax": -254, "advertiseAllVnis":
     false, "egressRmap": "", "ingressRmap": "", "softReconfig": false, "communityTypes":
-    ["standard"], "defOriginate": false, "keepaliveTime": 60, "updateSource": "10.0.0.32",
-    "holdTime": 180, "updatesRx": 1897, "updatesTx": 520, "peerRouterId": "10.0.0.22",
-    "routerId": "10.0.0.32", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false,
-    "rrclient": "False", "notificnReason": "", "extnhAdvertised": false, "extnhReceived":
-    false, "extnhEnabled": false, "peerIP": "10.0.0.22", "mrai": 0, "reason": "socket-error:Connect
-    (Invalid argument)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827046,
-    "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "eos", "hostname": "exit02",
-    "vrf": "evpn-vrf", "peer": "169.254.253.6", "afi": "ipv6", "safi": "unicast",
-    "state": "Established", "asn": 64520, "peerAsn": 65533, "peerHostname": "firewall01",
-    "pfxRx": 0, "pfxTx": 0, "numChanges": 5, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
-    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
-    "pfxWarnPercent": 0, "hopsMax": -254, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"],
-    "defOriginate": false, "keepaliveTime": 3, "updateSource": "169.254.253.5", "holdTime":
-    9, "updatesRx": 193, "updatesTx": 438, "peerRouterId": "10.0.0.200", "routerId":
-    "169.254.253.5", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient":
-    "False", "notificnReason": "", "extnhAdvertised": false, "extnhReceived": false,
-    "extnhEnabled": false, "peerIP": "169.254.253.6", "mrai": 0, "reason": "notification:Cease/connection
-    collision resolution", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827046,
-    "active": true, "afiSafi": "ipv6 unicast"}, {"namespace": "eos", "hostname": "exit02",
-    "vrf": "evpn-vrf", "peer": "169.254.253.6", "afi": "ipv4", "safi": "unicast",
-    "state": "Established", "asn": 64520, "peerAsn": 65533, "peerHostname": "firewall01",
-    "pfxRx": 10, "pfxTx": 3, "numChanges": 5, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
-    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
-    "pfxWarnPercent": 0, "hopsMax": -254, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"],
-    "defOriginate": false, "keepaliveTime": 3, "updateSource": "169.254.253.5", "holdTime":
-    9, "updatesRx": 193, "updatesTx": 438, "peerRouterId": "10.0.0.200", "routerId":
-    "169.254.253.5", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient":
-    "False", "notificnReason": "", "extnhAdvertised": false, "extnhReceived": false,
-    "extnhEnabled": false, "peerIP": "169.254.253.6", "mrai": 0, "reason": "notification:Cease/connection
-    collision resolution", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827046,
-    "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "eos", "hostname": "exit02",
-    "vrf": "default", "peer": "169.254.253.2", "afi": "ipv6", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 65533, "peerHostname": "firewall01", "pfxRx":
-    0, "pfxTx": 0, "numChanges": 5, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
-    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
-    "pfxWarnPercent": 0, "hopsMax": -254, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"],
-    "defOriginate": false, "keepaliveTime": 3, "updateSource": "169.254.253.1", "holdTime":
-    9, "updatesRx": 195, "updatesTx": 5, "peerRouterId": "10.0.0.200", "routerId":
-    "10.0.0.32", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient":
-    "False", "notificnReason": "", "extnhAdvertised": false, "extnhReceived": false,
-    "extnhEnabled": false, "peerIP": "169.254.253.2", "mrai": 0, "reason": "notification:Cease/connection
-    collision resolution", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827046,
-    "active": true, "afiSafi": "ipv6 unicast"}, {"namespace": "eos", "hostname": "exit02",
-    "vrf": "default", "peer": "169.254.253.2", "afi": "ipv4", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 65533, "peerHostname": "firewall01", "pfxRx":
-    10, "pfxTx": 0, "numChanges": 5, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
-    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
-    "pfxWarnPercent": 0, "hopsMax": -254, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"],
-    "defOriginate": false, "keepaliveTime": 3, "updateSource": "169.254.253.1", "holdTime":
-    9, "updatesRx": 195, "updatesTx": 5, "peerRouterId": "10.0.0.200", "routerId":
-    "10.0.0.32", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient":
-    "False", "notificnReason": "", "extnhAdvertised": false, "extnhReceived": false,
-    "extnhEnabled": false, "peerIP": "169.254.253.2", "mrai": 0, "reason": "notification:Cease/connection
-    collision resolution", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827046,
-    "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "eos", "hostname": "exit02",
-    "vrf": "default", "peer": "10.0.0.22", "afi": "l2vpn", "safi": "evpn", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "spine02", "pfxRx":
-    36, "pfxTx": 10, "numChanges": 2, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
+    ["standard"], "defOriginate": false, "keepaliveTime": 3, "updateSource": "169.254.253.9",
+    "holdTime": 9, "updatesRx": 193, "updatesTx": 10, "peerRouterId": "10.0.0.200",
+    "routerId": "169.254.253.9", "bfdStatus": "", "nhUnchanged": false, "nhSelf":
+    false, "rrclient": "False", "notificnReason": "", "extnhAdvertised": false, "extnhReceived":
+    false, "extnhEnabled": false, "peerIP": "169.254.253.10", "mrai": 0, "reason":
+    "notification:Cease/connection collision resolution", "lastDownTime": 0, "ifname":
+    "", "timestamp": 1616447827046, "active": true, "afiSafi": "ipv6 unicast"}, {"namespace":
+    "eos", "hostname": "exit02", "vrf": "internet-vrf", "peer": "169.254.127.2", "peerHostname":
+    "dcedge01", "state": "Established", "afi": "ipv6", "safi": "unicast", "asn": 64520,
+    "peerAsn": 65534, "pfxRx": 0, "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly":
+    [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0,
+    "pfxMaxRx": 12000, "pfxWarnPercent": 0, "hopsMax": -254, "advertiseAllVnis": false,
+    "egressRmap": "", "ingressRmap": "", "softReconfig": false, "communityTypes":
+    ["standard"], "defOriginate": false, "keepaliveTime": 30, "updateSource": "169.254.127.3",
+    "holdTime": 90, "updatesRx": 3, "updatesTx": 185, "peerRouterId": "10.0.0.41",
+    "routerId": "169.254.253.9", "bfdStatus": "", "nhUnchanged": false, "nhSelf":
+    false, "rrclient": "False", "notificnReason": "", "extnhAdvertised": false, "extnhReceived":
+    false, "extnhEnabled": false, "peerIP": "169.254.127.2", "mrai": 0, "reason":
+    "", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827046, "active": true,
+    "afiSafi": "ipv6 unicast"}, {"namespace": "eos", "hostname": "exit02", "vrf":
+    "default", "peer": "10.0.0.22", "peerHostname": "spine02", "state": "Established",
+    "afi": "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 0, "numChanges": 2, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
     "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
     "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
@@ -1142,10 +1078,75 @@ tests:
     "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
     "", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled": false, "peerIP":
     "10.0.0.22", "mrai": 0, "reason": "socket-error:Connect (Invalid argument)", "lastDownTime":
+    0, "ifname": "", "timestamp": 1616447827046, "active": true, "afiSafi": "ipv4
+    unicast"}, {"namespace": "eos", "hostname": "exit02", "vrf": "evpn-vrf", "peer":
+    "169.254.253.6", "peerHostname": "firewall01", "state": "Established", "afi":
+    "ipv6", "safi": "unicast", "asn": 64520, "peerAsn": 65533, "pfxRx": 0, "pfxTx":
+    0, "numChanges": 5, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
+    0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent":
+    0, "hopsMax": -254, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap":
+    "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate": false,
+    "keepaliveTime": 3, "updateSource": "169.254.253.5", "holdTime": 9, "updatesRx":
+    193, "updatesTx": 438, "peerRouterId": "10.0.0.200", "routerId": "169.254.253.5",
+    "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
+    "", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled": false, "peerIP":
+    "169.254.253.6", "mrai": 0, "reason": "notification:Cease/connection collision
+    resolution", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827046, "active":
+    true, "afiSafi": "ipv6 unicast"}, {"namespace": "eos", "hostname": "exit02", "vrf":
+    "evpn-vrf", "peer": "169.254.253.6", "peerHostname": "firewall01", "state": "Established",
+    "afi": "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 65533, "pfxRx": 10,
+    "pfxTx": 3, "numChanges": 5, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
+    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
+    "pfxWarnPercent": 0, "hopsMax": -254, "advertiseAllVnis": false, "egressRmap":
+    "", "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"],
+    "defOriginate": false, "keepaliveTime": 3, "updateSource": "169.254.253.5", "holdTime":
+    9, "updatesRx": 193, "updatesTx": 438, "peerRouterId": "10.0.0.200", "routerId":
+    "169.254.253.5", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient":
+    "False", "notificnReason": "", "extnhAdvertised": false, "extnhReceived": false,
+    "extnhEnabled": false, "peerIP": "169.254.253.6", "mrai": 0, "reason": "notification:Cease/connection
+    collision resolution", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827046,
+    "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "eos", "hostname": "exit02",
+    "vrf": "default", "peer": "169.254.253.2", "peerHostname": "firewall01", "state":
+    "Established", "afi": "ipv6", "safi": "unicast", "asn": 64520, "peerAsn": 65533,
+    "pfxRx": 0, "pfxTx": 0, "numChanges": 5, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
+    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
+    "pfxWarnPercent": 0, "hopsMax": -254, "advertiseAllVnis": false, "egressRmap":
+    "", "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"],
+    "defOriginate": false, "keepaliveTime": 3, "updateSource": "169.254.253.1", "holdTime":
+    9, "updatesRx": 195, "updatesTx": 5, "peerRouterId": "10.0.0.200", "routerId":
+    "10.0.0.32", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient":
+    "False", "notificnReason": "", "extnhAdvertised": false, "extnhReceived": false,
+    "extnhEnabled": false, "peerIP": "169.254.253.2", "mrai": 0, "reason": "notification:Cease/connection
+    collision resolution", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827046,
+    "active": true, "afiSafi": "ipv6 unicast"}, {"namespace": "eos", "hostname": "exit02",
+    "vrf": "default", "peer": "169.254.253.2", "peerHostname": "firewall01", "state":
+    "Established", "afi": "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 65533,
+    "pfxRx": 10, "pfxTx": 0, "numChanges": 5, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
+    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
+    "pfxWarnPercent": 0, "hopsMax": -254, "advertiseAllVnis": false, "egressRmap":
+    "", "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"],
+    "defOriginate": false, "keepaliveTime": 3, "updateSource": "169.254.253.1", "holdTime":
+    9, "updatesRx": 195, "updatesTx": 5, "peerRouterId": "10.0.0.200", "routerId":
+    "10.0.0.32", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient":
+    "False", "notificnReason": "", "extnhAdvertised": false, "extnhReceived": false,
+    "extnhEnabled": false, "peerIP": "169.254.253.2", "mrai": 0, "reason": "notification:Cease/connection
+    collision resolution", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827046,
+    "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "eos", "hostname": "exit02",
+    "vrf": "default", "peer": "10.0.0.22", "peerHostname": "spine02", "state": "Established",
+    "afi": "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 36, "pfxTx":
+    10, "numChanges": 2, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
+    0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": false, "communityTypes": ["standard"], "defOriginate": false,
+    "keepaliveTime": 60, "updateSource": "10.0.0.32", "holdTime": 180, "updatesRx":
+    1897, "updatesTx": 520, "peerRouterId": "10.0.0.22", "routerId": "10.0.0.32",
+    "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
+    "", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled": false, "peerIP":
+    "10.0.0.22", "mrai": 0, "reason": "socket-error:Connect (Invalid argument)", "lastDownTime":
     0, "ifname": "", "timestamp": 1616447827046, "active": true, "afiSafi": "l2vpn
     evpn"}, {"namespace": "eos", "hostname": "exit02", "vrf": "default", "peer": "10.0.0.22",
-    "afi": "ipv6", "safi": "unicast", "state": "Established", "asn": 64520, "peerAsn":
-    64520, "peerHostname": "spine02", "pfxRx": 0, "pfxTx": 0, "numChanges": 2, "estdTime":
+    "peerHostname": "spine02", "state": "Established", "afi": "ipv6", "safi": "unicast",
+    "asn": 64520, "peerAsn": 64520, "pfxRx": 0, "pfxTx": 0, "numChanges": 2, "estdTime":
     0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0,
     "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis":
     false, "egressRmap": "", "ingressRmap": "", "softReconfig": false, "communityTypes":
@@ -1156,21 +1157,21 @@ tests:
     false, "extnhEnabled": false, "peerIP": "10.0.0.22", "mrai": 0, "reason": "socket-error:Connect
     (Invalid argument)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827046,
     "active": true, "afiSafi": "ipv6 unicast"}, {"namespace": "eos", "hostname": "exit02",
-    "vrf": "default", "peer": "10.0.0.21", "afi": "l2vpn", "safi": "evpn", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "spine01", "pfxRx":
-    36, "pfxTx": 10, "numChanges": 2, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
-    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
-    "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
-    "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
-    false, "keepaliveTime": 60, "updateSource": "10.0.0.32", "holdTime": 180, "updatesRx":
+    "vrf": "default", "peer": "10.0.0.21", "peerHostname": "spine01", "state": "Established",
+    "afi": "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 36, "pfxTx":
+    10, "numChanges": 2, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
+    0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": false, "communityTypes": ["standard"], "defOriginate": false,
+    "keepaliveTime": 60, "updateSource": "10.0.0.32", "holdTime": 180, "updatesRx":
     1897, "updatesTx": 522, "peerRouterId": "10.0.0.21", "routerId": "10.0.0.32",
     "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
     "", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled": false, "peerIP":
     "10.0.0.21", "mrai": 0, "reason": "socket-error:Connect (Network is unreachable)",
     "lastDownTime": 0, "ifname": "", "timestamp": 1616447827046, "active": true, "afiSafi":
     "l2vpn evpn"}, {"namespace": "eos", "hostname": "exit02", "vrf": "default", "peer":
-    "10.0.0.21", "afi": "ipv6", "safi": "unicast", "state": "Established", "asn":
-    64520, "peerAsn": 64520, "peerHostname": "spine01", "pfxRx": 0, "pfxTx": 0, "numChanges":
+    "10.0.0.21", "peerHostname": "spine01", "state": "Established", "afi": "ipv6",
+    "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0, "pfxTx": 0, "numChanges":
     2, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx":
     0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis":
     false, "egressRmap": "", "ingressRmap": "", "softReconfig": false, "communityTypes":
@@ -1181,9 +1182,9 @@ tests:
     false, "extnhEnabled": false, "peerIP": "10.0.0.21", "mrai": 0, "reason": "socket-error:Connect
     (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827046,
     "active": true, "afiSafi": "ipv6 unicast"}, {"namespace": "eos", "hostname": "exit02",
-    "vrf": "default", "peer": "10.0.0.21", "afi": "ipv4", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "spine01", "pfxRx":
-    0, "pfxTx": 0, "numChanges": 2, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
+    "vrf": "default", "peer": "10.0.0.21", "peerHostname": "spine01", "state": "Established",
+    "afi": "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 0, "numChanges": 2, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
     "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
     "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
@@ -1194,8 +1195,8 @@ tests:
     "10.0.0.21", "mrai": 0, "reason": "socket-error:Connect (Network is unreachable)",
     "lastDownTime": 0, "ifname": "", "timestamp": 1616447827046, "active": true, "afiSafi":
     "ipv4 unicast"}, {"namespace": "eos", "hostname": "exit02", "vrf": "internet-vrf",
-    "peer": "169.254.127.2", "afi": "ipv4", "safi": "unicast", "state": "Established",
-    "asn": 64520, "peerAsn": 65534, "peerHostname": "dcedge01", "pfxRx": 6, "pfxTx":
+    "peer": "169.254.127.2", "peerHostname": "dcedge01", "state": "Established", "afi":
+    "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 65534, "pfxRx": 6, "pfxTx":
     4, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
     0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent":
     0, "hopsMax": -254, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap":
@@ -1206,9 +1207,9 @@ tests:
     "", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled": false, "peerIP":
     "169.254.127.2", "mrai": 0, "reason": "", "lastDownTime": 0, "ifname": "", "timestamp":
     1616447827046, "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "eos",
-    "hostname": "leaf01", "vrf": "default", "peer": "10.0.0.22", "afi": "l2vpn", "safi":
-    "evpn", "state": "Established", "asn": 64520, "peerAsn": 64520, "peerHostname":
-    "spine02", "pfxRx": 32, "pfxTx": 8, "numChanges": 1, "estdTime": 0, "afisAdvOnly":
+    "hostname": "leaf01", "vrf": "default", "peer": "10.0.0.22", "peerHostname": "spine02",
+    "state": "Established", "afi": "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn":
+    64520, "pfxRx": 32, "pfxTx": 8, "numChanges": 1, "estdTime": 0, "afisAdvOnly":
     [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0,
     "pfxMaxRx": 12000, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false,
     "egressRmap": "", "ingressRmap": "", "softReconfig": false, "communityTypes":
@@ -1219,9 +1220,9 @@ tests:
     false, "extnhEnabled": false, "peerIP": "10.0.0.22", "mrai": 0, "reason": "socket-error:Connect
     (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827276,
     "active": true, "afiSafi": "l2vpn evpn"}, {"namespace": "eos", "hostname": "leaf01",
-    "vrf": "default", "peer": "10.0.0.22", "afi": "ipv6", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "spine02", "pfxRx":
-    0, "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
+    "vrf": "default", "peer": "10.0.0.22", "peerHostname": "spine02", "state": "Established",
+    "afi": "ipv6", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
     "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
     "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
@@ -1232,34 +1233,9 @@ tests:
     "10.0.0.22", "mrai": 0, "reason": "socket-error:Connect (Network is unreachable)",
     "lastDownTime": 0, "ifname": "", "timestamp": 1616447827276, "active": true, "afiSafi":
     "ipv6 unicast"}, {"namespace": "eos", "hostname": "leaf01", "vrf": "default",
-    "peer": "10.0.0.21", "afi": "l2vpn", "safi": "evpn", "state": "Established", "asn":
-    64520, "peerAsn": 64520, "peerHostname": "spine01", "pfxRx": 32, "pfxTx": 8, "numChanges":
-    1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx":
-    0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis":
-    false, "egressRmap": "", "ingressRmap": "", "softReconfig": false, "communityTypes":
-    ["standard"], "defOriginate": false, "keepaliveTime": 60, "updateSource": "10.0.0.11",
-    "holdTime": 180, "updatesRx": 2002, "updatesTx": 354, "peerRouterId": "10.0.0.21",
-    "routerId": "10.0.0.11", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false,
-    "rrclient": "False", "notificnReason": "", "extnhAdvertised": false, "extnhReceived":
-    false, "extnhEnabled": false, "peerIP": "10.0.0.21", "mrai": 0, "reason": "socket-error:Connect
-    (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827276,
-    "active": true, "afiSafi": "l2vpn evpn"}, {"namespace": "eos", "hostname": "leaf01",
-    "vrf": "default", "peer": "10.0.0.21", "afi": "ipv6", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "spine01", "pfxRx":
-    0, "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
-    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
-    "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
-    "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
-    false, "keepaliveTime": 60, "updateSource": "10.0.0.11", "holdTime": 180, "updatesRx":
-    2002, "updatesTx": 354, "peerRouterId": "10.0.0.21", "routerId": "10.0.0.11",
-    "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
-    "", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled": false, "peerIP":
-    "10.0.0.21", "mrai": 0, "reason": "socket-error:Connect (Network is unreachable)",
-    "lastDownTime": 0, "ifname": "", "timestamp": 1616447827276, "active": true, "afiSafi":
-    "ipv6 unicast"}, {"namespace": "eos", "hostname": "leaf01", "vrf": "default",
-    "peer": "10.0.0.21", "afi": "ipv4", "safi": "unicast", "state": "Established",
-    "asn": 64520, "peerAsn": 64520, "peerHostname": "spine01", "pfxRx": 0, "pfxTx":
-    0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
+    "peer": "10.0.0.21", "peerHostname": "spine01", "state": "Established", "afi":
+    "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 32, "pfxTx":
+    8, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
     0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent":
     0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
     "softReconfig": false, "communityTypes": ["standard"], "defOriginate": false,
@@ -1269,9 +1245,34 @@ tests:
     "", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled": false, "peerIP":
     "10.0.0.21", "mrai": 0, "reason": "socket-error:Connect (Network is unreachable)",
     "lastDownTime": 0, "ifname": "", "timestamp": 1616447827276, "active": true, "afiSafi":
+    "l2vpn evpn"}, {"namespace": "eos", "hostname": "leaf01", "vrf": "default", "peer":
+    "10.0.0.21", "peerHostname": "spine01", "state": "Established", "afi": "ipv6",
+    "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0, "pfxTx": 0, "numChanges":
+    1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx":
+    0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis":
+    false, "egressRmap": "", "ingressRmap": "", "softReconfig": false, "communityTypes":
+    ["standard"], "defOriginate": false, "keepaliveTime": 60, "updateSource": "10.0.0.11",
+    "holdTime": 180, "updatesRx": 2002, "updatesTx": 354, "peerRouterId": "10.0.0.21",
+    "routerId": "10.0.0.11", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false,
+    "rrclient": "False", "notificnReason": "", "extnhAdvertised": false, "extnhReceived":
+    false, "extnhEnabled": false, "peerIP": "10.0.0.21", "mrai": 0, "reason": "socket-error:Connect
+    (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827276,
+    "active": true, "afiSafi": "ipv6 unicast"}, {"namespace": "eos", "hostname": "leaf01",
+    "vrf": "default", "peer": "10.0.0.21", "peerHostname": "spine01", "state": "Established",
+    "afi": "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
+    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
+    "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
+    "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
+    false, "keepaliveTime": 60, "updateSource": "10.0.0.11", "holdTime": 180, "updatesRx":
+    2002, "updatesTx": 354, "peerRouterId": "10.0.0.21", "routerId": "10.0.0.11",
+    "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
+    "", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled": false, "peerIP":
+    "10.0.0.21", "mrai": 0, "reason": "socket-error:Connect (Network is unreachable)",
+    "lastDownTime": 0, "ifname": "", "timestamp": 1616447827276, "active": true, "afiSafi":
     "ipv4 unicast"}, {"namespace": "eos", "hostname": "leaf01", "vrf": "default",
-    "peer": "10.0.0.22", "afi": "ipv4", "safi": "unicast", "state": "Established",
-    "asn": 64520, "peerAsn": 64520, "peerHostname": "spine02", "pfxRx": 0, "pfxTx":
+    "peer": "10.0.0.22", "peerHostname": "spine02", "state": "Established", "afi":
+    "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0, "pfxTx":
     0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
     0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent":
     0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
@@ -1283,8 +1284,8 @@ tests:
     "10.0.0.22", "mrai": 0, "reason": "socket-error:Connect (Network is unreachable)",
     "lastDownTime": 0, "ifname": "", "timestamp": 1616447827276, "active": true, "afiSafi":
     "ipv4 unicast"}, {"namespace": "eos", "hostname": "leaf02", "vrf": "default",
-    "peer": "10.0.0.22", "afi": "ipv6", "safi": "unicast", "state": "Established",
-    "asn": 64520, "peerAsn": 64520, "peerHostname": "spine02", "pfxRx": 0, "pfxTx":
+    "peer": "10.0.0.22", "peerHostname": "spine02", "state": "Established", "afi":
+    "ipv6", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0, "pfxTx":
     0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
     0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent":
     0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
@@ -1296,58 +1297,59 @@ tests:
     "10.0.0.22", "mrai": 0, "reason": "socket-error:Connect (Network is unreachable)",
     "lastDownTime": 0, "ifname": "", "timestamp": 1616447827277, "active": true, "afiSafi":
     "ipv6 unicast"}, {"namespace": "eos", "hostname": "leaf02", "vrf": "default",
-    "peer": "10.0.0.22", "afi": "l2vpn", "safi": "evpn", "state": "Established", "asn":
-    64520, "peerAsn": 64520, "peerHostname": "spine02", "pfxRx": 32, "pfxTx": 8, "numChanges":
-    1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx":
-    0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis":
-    false, "egressRmap": "", "ingressRmap": "", "softReconfig": false, "communityTypes":
-    ["standard"], "defOriginate": false, "keepaliveTime": 60, "updateSource": "10.0.0.12",
-    "holdTime": 180, "updatesRx": 2003, "updatesTx": 354, "peerRouterId": "10.0.0.22",
-    "routerId": "10.0.0.12", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false,
-    "rrclient": "False", "notificnReason": "", "extnhAdvertised": false, "extnhReceived":
-    false, "extnhEnabled": false, "peerIP": "10.0.0.22", "mrai": 0, "reason": "socket-error:Connect
-    (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827277,
-    "active": true, "afiSafi": "l2vpn evpn"}, {"namespace": "eos", "hostname": "leaf02",
-    "vrf": "default", "peer": "10.0.0.21", "afi": "l2vpn", "safi": "evpn", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "spine01", "pfxRx":
-    32, "pfxTx": 8, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
-    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
-    "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
-    "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
-    false, "keepaliveTime": 60, "updateSource": "10.0.0.12", "holdTime": 180, "updatesRx":
-    2004, "updatesTx": 354, "peerRouterId": "10.0.0.21", "routerId": "10.0.0.12",
+    "peer": "10.0.0.22", "peerHostname": "spine02", "state": "Established", "afi":
+    "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 32, "pfxTx":
+    8, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
+    0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": false, "communityTypes": ["standard"], "defOriginate": false,
+    "keepaliveTime": 60, "updateSource": "10.0.0.12", "holdTime": 180, "updatesRx":
+    2003, "updatesTx": 354, "peerRouterId": "10.0.0.22", "routerId": "10.0.0.12",
     "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
     "", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled": false, "peerIP":
-    "10.0.0.21", "mrai": 0, "reason": "socket-error:Connect (Network is unreachable)",
+    "10.0.0.22", "mrai": 0, "reason": "socket-error:Connect (Network is unreachable)",
     "lastDownTime": 0, "ifname": "", "timestamp": 1616447827277, "active": true, "afiSafi":
     "l2vpn evpn"}, {"namespace": "eos", "hostname": "leaf02", "vrf": "default", "peer":
-    "10.0.0.22", "afi": "ipv4", "safi": "unicast", "state": "Established", "asn":
-    64520, "peerAsn": 64520, "peerHostname": "spine02", "pfxRx": 0, "pfxTx": 0, "numChanges":
+    "10.0.0.21", "peerHostname": "spine01", "state": "Established", "afi": "l2vpn",
+    "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 32, "pfxTx": 8, "numChanges":
     1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx":
     0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis":
     false, "egressRmap": "", "ingressRmap": "", "softReconfig": false, "communityTypes":
     ["standard"], "defOriginate": false, "keepaliveTime": 60, "updateSource": "10.0.0.12",
-    "holdTime": 180, "updatesRx": 2003, "updatesTx": 354, "peerRouterId": "10.0.0.22",
+    "holdTime": 180, "updatesRx": 2004, "updatesTx": 354, "peerRouterId": "10.0.0.21",
     "routerId": "10.0.0.12", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false,
     "rrclient": "False", "notificnReason": "", "extnhAdvertised": false, "extnhReceived":
-    false, "extnhEnabled": false, "peerIP": "10.0.0.22", "mrai": 0, "reason": "socket-error:Connect
+    false, "extnhEnabled": false, "peerIP": "10.0.0.21", "mrai": 0, "reason": "socket-error:Connect
     (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827277,
-    "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "eos", "hostname": "leaf02",
-    "vrf": "default", "peer": "10.0.0.21", "afi": "ipv4", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "spine01", "pfxRx":
-    0, "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
+    "active": true, "afiSafi": "l2vpn evpn"}, {"namespace": "eos", "hostname": "leaf02",
+    "vrf": "default", "peer": "10.0.0.22", "peerHostname": "spine02", "state": "Established",
+    "afi": "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
     "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
     "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
     false, "keepaliveTime": 60, "updateSource": "10.0.0.12", "holdTime": 180, "updatesRx":
+    2003, "updatesTx": 354, "peerRouterId": "10.0.0.22", "routerId": "10.0.0.12",
+    "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
+    "", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled": false, "peerIP":
+    "10.0.0.22", "mrai": 0, "reason": "socket-error:Connect (Network is unreachable)",
+    "lastDownTime": 0, "ifname": "", "timestamp": 1616447827277, "active": true, "afiSafi":
+    "ipv4 unicast"}, {"namespace": "eos", "hostname": "leaf02", "vrf": "default",
+    "peer": "10.0.0.21", "peerHostname": "spine01", "state": "Established", "afi":
+    "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0, "pfxTx":
+    0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
+    0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": false, "communityTypes": ["standard"], "defOriginate": false,
+    "keepaliveTime": 60, "updateSource": "10.0.0.12", "holdTime": 180, "updatesRx":
     2004, "updatesTx": 354, "peerRouterId": "10.0.0.21", "routerId": "10.0.0.12",
     "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
     "", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled": false, "peerIP":
     "10.0.0.21", "mrai": 0, "reason": "socket-error:Connect (Network is unreachable)",
     "lastDownTime": 0, "ifname": "", "timestamp": 1616447827277, "active": true, "afiSafi":
     "ipv4 unicast"}, {"namespace": "eos", "hostname": "leaf02", "vrf": "default",
-    "peer": "10.0.0.21", "afi": "ipv6", "safi": "unicast", "state": "Established",
-    "asn": 64520, "peerAsn": 64520, "peerHostname": "spine01", "pfxRx": 0, "pfxTx":
+    "peer": "10.0.0.21", "peerHostname": "spine01", "state": "Established", "afi":
+    "ipv6", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0, "pfxTx":
     0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
     0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent":
     0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
@@ -1359,8 +1361,8 @@ tests:
     "10.0.0.21", "mrai": 0, "reason": "socket-error:Connect (Network is unreachable)",
     "lastDownTime": 0, "ifname": "", "timestamp": 1616447827277, "active": true, "afiSafi":
     "ipv6 unicast"}, {"namespace": "eos", "hostname": "leaf03", "vrf": "default",
-    "peer": "10.0.0.21", "afi": "ipv4", "safi": "unicast", "state": "Established",
-    "asn": 64520, "peerAsn": 64520, "peerHostname": "spine01", "pfxRx": 0, "pfxTx":
+    "peer": "10.0.0.21", "peerHostname": "spine01", "state": "Established", "afi":
+    "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0, "pfxTx":
     0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
     0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent":
     0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
@@ -1372,8 +1374,8 @@ tests:
     "10.0.0.21", "mrai": 0, "reason": "socket-error:Connect (Network is unreachable)",
     "lastDownTime": 0, "ifname": "", "timestamp": 1616447827279, "active": true, "afiSafi":
     "ipv4 unicast"}, {"namespace": "eos", "hostname": "leaf03", "vrf": "default",
-    "peer": "10.0.0.21", "afi": "ipv6", "safi": "unicast", "state": "Established",
-    "asn": 64520, "peerAsn": 64520, "peerHostname": "spine01", "pfxRx": 0, "pfxTx":
+    "peer": "10.0.0.21", "peerHostname": "spine01", "state": "Established", "afi":
+    "ipv6", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0, "pfxTx":
     0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
     0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent":
     0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
@@ -1385,21 +1387,34 @@ tests:
     "10.0.0.21", "mrai": 0, "reason": "socket-error:Connect (Network is unreachable)",
     "lastDownTime": 0, "ifname": "", "timestamp": 1616447827279, "active": true, "afiSafi":
     "ipv6 unicast"}, {"namespace": "eos", "hostname": "leaf03", "vrf": "default",
-    "peer": "10.0.0.21", "afi": "l2vpn", "safi": "evpn", "state": "Established", "asn":
-    64520, "peerAsn": 64520, "peerHostname": "spine01", "pfxRx": 32, "pfxTx": 8, "numChanges":
+    "peer": "10.0.0.21", "peerHostname": "spine01", "state": "Established", "afi":
+    "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 32, "pfxTx":
+    8, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
+    0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": false, "communityTypes": ["standard"], "defOriginate": false,
+    "keepaliveTime": 60, "updateSource": "10.0.0.13", "holdTime": 180, "updatesRx":
+    1963, "updatesTx": 395, "peerRouterId": "10.0.0.21", "routerId": "10.0.0.13",
+    "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
+    "", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled": false, "peerIP":
+    "10.0.0.21", "mrai": 0, "reason": "socket-error:Connect (Network is unreachable)",
+    "lastDownTime": 0, "ifname": "", "timestamp": 1616447827279, "active": true, "afiSafi":
+    "l2vpn evpn"}, {"namespace": "eos", "hostname": "leaf03", "vrf": "default", "peer":
+    "10.0.0.22", "peerHostname": "spine02", "state": "Established", "afi": "ipv4",
+    "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0, "pfxTx": 0, "numChanges":
     1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx":
     0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis":
     false, "egressRmap": "", "ingressRmap": "", "softReconfig": false, "communityTypes":
     ["standard"], "defOriginate": false, "keepaliveTime": 60, "updateSource": "10.0.0.13",
-    "holdTime": 180, "updatesRx": 1963, "updatesTx": 395, "peerRouterId": "10.0.0.21",
+    "holdTime": 180, "updatesRx": 1962, "updatesTx": 395, "peerRouterId": "10.0.0.22",
     "routerId": "10.0.0.13", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false,
     "rrclient": "False", "notificnReason": "", "extnhAdvertised": false, "extnhReceived":
-    false, "extnhEnabled": false, "peerIP": "10.0.0.21", "mrai": 0, "reason": "socket-error:Connect
+    false, "extnhEnabled": false, "peerIP": "10.0.0.22", "mrai": 0, "reason": "socket-error:Connect
     (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827279,
-    "active": true, "afiSafi": "l2vpn evpn"}, {"namespace": "eos", "hostname": "leaf03",
-    "vrf": "default", "peer": "10.0.0.22", "afi": "ipv4", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "spine02", "pfxRx":
-    0, "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
+    "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "eos", "hostname": "leaf03",
+    "vrf": "default", "peer": "10.0.0.22", "peerHostname": "spine02", "state": "Established",
+    "afi": "ipv6", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
     "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
     "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
@@ -1409,10 +1424,10 @@ tests:
     "", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled": false, "peerIP":
     "10.0.0.22", "mrai": 0, "reason": "socket-error:Connect (Network is unreachable)",
     "lastDownTime": 0, "ifname": "", "timestamp": 1616447827279, "active": true, "afiSafi":
-    "ipv4 unicast"}, {"namespace": "eos", "hostname": "leaf03", "vrf": "default",
-    "peer": "10.0.0.22", "afi": "ipv6", "safi": "unicast", "state": "Established",
-    "asn": 64520, "peerAsn": 64520, "peerHostname": "spine02", "pfxRx": 0, "pfxTx":
-    0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
+    "ipv6 unicast"}, {"namespace": "eos", "hostname": "leaf03", "vrf": "default",
+    "peer": "10.0.0.22", "peerHostname": "spine02", "state": "Established", "afi":
+    "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 32, "pfxTx":
+    8, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
     0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent":
     0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
     "softReconfig": false, "communityTypes": ["standard"], "defOriginate": false,
@@ -1422,34 +1437,9 @@ tests:
     "", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled": false, "peerIP":
     "10.0.0.22", "mrai": 0, "reason": "socket-error:Connect (Network is unreachable)",
     "lastDownTime": 0, "ifname": "", "timestamp": 1616447827279, "active": true, "afiSafi":
-    "ipv6 unicast"}, {"namespace": "eos", "hostname": "leaf03", "vrf": "default",
-    "peer": "10.0.0.22", "afi": "l2vpn", "safi": "evpn", "state": "Established", "asn":
-    64520, "peerAsn": 64520, "peerHostname": "spine02", "pfxRx": 32, "pfxTx": 8, "numChanges":
-    1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx":
-    0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis":
-    false, "egressRmap": "", "ingressRmap": "", "softReconfig": false, "communityTypes":
-    ["standard"], "defOriginate": false, "keepaliveTime": 60, "updateSource": "10.0.0.13",
-    "holdTime": 180, "updatesRx": 1962, "updatesTx": 395, "peerRouterId": "10.0.0.22",
-    "routerId": "10.0.0.13", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false,
-    "rrclient": "False", "notificnReason": "", "extnhAdvertised": false, "extnhReceived":
-    false, "extnhEnabled": false, "peerIP": "10.0.0.22", "mrai": 0, "reason": "socket-error:Connect
-    (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827279,
-    "active": true, "afiSafi": "l2vpn evpn"}, {"namespace": "eos", "hostname": "leaf04",
-    "vrf": "default", "peer": "10.0.0.22", "afi": "ipv6", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "spine02", "pfxRx":
-    0, "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
-    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
-    "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
-    "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
-    false, "keepaliveTime": 60, "updateSource": "10.0.0.14", "holdTime": 180, "updatesRx":
-    1962, "updatesTx": 395, "peerRouterId": "10.0.0.22", "routerId": "10.0.0.14",
-    "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
-    "", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled": false, "peerIP":
-    "10.0.0.22", "mrai": 0, "reason": "socket-error:Connect (Network is unreachable)",
-    "lastDownTime": 0, "ifname": "", "timestamp": 1616447827281, "active": true, "afiSafi":
-    "ipv6 unicast"}, {"namespace": "eos", "hostname": "leaf04", "vrf": "default",
-    "peer": "10.0.0.22", "afi": "l2vpn", "safi": "evpn", "state": "Established", "asn":
-    64520, "peerAsn": 64520, "peerHostname": "spine02", "pfxRx": 32, "pfxTx": 8, "numChanges":
+    "l2vpn evpn"}, {"namespace": "eos", "hostname": "leaf04", "vrf": "default", "peer":
+    "10.0.0.22", "peerHostname": "spine02", "state": "Established", "afi": "ipv6",
+    "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0, "pfxTx": 0, "numChanges":
     1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx":
     0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis":
     false, "egressRmap": "", "ingressRmap": "", "softReconfig": false, "communityTypes":
@@ -1459,22 +1449,22 @@ tests:
     "rrclient": "False", "notificnReason": "", "extnhAdvertised": false, "extnhReceived":
     false, "extnhEnabled": false, "peerIP": "10.0.0.22", "mrai": 0, "reason": "socket-error:Connect
     (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827281,
-    "active": true, "afiSafi": "l2vpn evpn"}, {"namespace": "eos", "hostname": "leaf04",
-    "vrf": "default", "peer": "10.0.0.21", "afi": "l2vpn", "safi": "evpn", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "spine01", "pfxRx":
-    32, "pfxTx": 8, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
-    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
-    "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
-    "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
-    false, "keepaliveTime": 60, "updateSource": "10.0.0.14", "holdTime": 180, "updatesRx":
-    1963, "updatesTx": 395, "peerRouterId": "10.0.0.21", "routerId": "10.0.0.14",
+    "active": true, "afiSafi": "ipv6 unicast"}, {"namespace": "eos", "hostname": "leaf04",
+    "vrf": "default", "peer": "10.0.0.22", "peerHostname": "spine02", "state": "Established",
+    "afi": "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 32, "pfxTx":
+    8, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
+    0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": false, "communityTypes": ["standard"], "defOriginate": false,
+    "keepaliveTime": 60, "updateSource": "10.0.0.14", "holdTime": 180, "updatesRx":
+    1962, "updatesTx": 395, "peerRouterId": "10.0.0.22", "routerId": "10.0.0.14",
     "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
     "", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled": false, "peerIP":
-    "10.0.0.21", "mrai": 0, "reason": "socket-error:Connect (Network is unreachable)",
+    "10.0.0.22", "mrai": 0, "reason": "socket-error:Connect (Network is unreachable)",
     "lastDownTime": 0, "ifname": "", "timestamp": 1616447827281, "active": true, "afiSafi":
     "l2vpn evpn"}, {"namespace": "eos", "hostname": "leaf04", "vrf": "default", "peer":
-    "10.0.0.21", "afi": "ipv6", "safi": "unicast", "state": "Established", "asn":
-    64520, "peerAsn": 64520, "peerHostname": "spine01", "pfxRx": 0, "pfxTx": 0, "numChanges":
+    "10.0.0.21", "peerHostname": "spine01", "state": "Established", "afi": "l2vpn",
+    "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 32, "pfxTx": 8, "numChanges":
     1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx":
     0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis":
     false, "egressRmap": "", "ingressRmap": "", "softReconfig": false, "communityTypes":
@@ -1484,10 +1474,10 @@ tests:
     "rrclient": "False", "notificnReason": "", "extnhAdvertised": false, "extnhReceived":
     false, "extnhEnabled": false, "peerIP": "10.0.0.21", "mrai": 0, "reason": "socket-error:Connect
     (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827281,
-    "active": true, "afiSafi": "ipv6 unicast"}, {"namespace": "eos", "hostname": "leaf04",
-    "vrf": "default", "peer": "10.0.0.21", "afi": "ipv4", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "spine01", "pfxRx":
-    0, "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
+    "active": true, "afiSafi": "l2vpn evpn"}, {"namespace": "eos", "hostname": "leaf04",
+    "vrf": "default", "peer": "10.0.0.21", "peerHostname": "spine01", "state": "Established",
+    "afi": "ipv6", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
     "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
     "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
@@ -1497,9 +1487,22 @@ tests:
     "", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled": false, "peerIP":
     "10.0.0.21", "mrai": 0, "reason": "socket-error:Connect (Network is unreachable)",
     "lastDownTime": 0, "ifname": "", "timestamp": 1616447827281, "active": true, "afiSafi":
+    "ipv6 unicast"}, {"namespace": "eos", "hostname": "leaf04", "vrf": "default",
+    "peer": "10.0.0.21", "peerHostname": "spine01", "state": "Established", "afi":
+    "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0, "pfxTx":
+    0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
+    0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": false, "communityTypes": ["standard"], "defOriginate": false,
+    "keepaliveTime": 60, "updateSource": "10.0.0.14", "holdTime": 180, "updatesRx":
+    1963, "updatesTx": 395, "peerRouterId": "10.0.0.21", "routerId": "10.0.0.14",
+    "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
+    "", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled": false, "peerIP":
+    "10.0.0.21", "mrai": 0, "reason": "socket-error:Connect (Network is unreachable)",
+    "lastDownTime": 0, "ifname": "", "timestamp": 1616447827281, "active": true, "afiSafi":
     "ipv4 unicast"}, {"namespace": "eos", "hostname": "leaf04", "vrf": "default",
-    "peer": "10.0.0.22", "afi": "ipv4", "safi": "unicast", "state": "Established",
-    "asn": 64520, "peerAsn": 64520, "peerHostname": "spine02", "pfxRx": 0, "pfxTx":
+    "peer": "10.0.0.22", "peerHostname": "spine02", "state": "Established", "afi":
+    "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0, "pfxTx":
     0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
     0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent":
     0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
@@ -1511,8 +1514,8 @@ tests:
     "10.0.0.22", "mrai": 0, "reason": "socket-error:Connect (Network is unreachable)",
     "lastDownTime": 0, "ifname": "", "timestamp": 1616447827281, "active": true, "afiSafi":
     "ipv4 unicast"}, {"namespace": "eos", "hostname": "spine02", "vrf": "default",
-    "peer": "10.0.0.32", "afi": "ipv4", "safi": "unicast", "state": "Established",
-    "asn": 64520, "peerAsn": 64520, "peerHostname": "exit02", "pfxRx": 0, "pfxTx":
+    "peer": "10.0.0.32", "peerHostname": "exit02", "state": "Established", "afi":
+    "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0, "pfxTx":
     0, "numChanges": 2, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
     0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent":
     0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
@@ -1524,22 +1527,22 @@ tests:
     "extnhEnabled": false, "peerIP": "10.0.0.32", "mrai": 0, "reason": "socket-error:Connect
     (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827288,
     "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "eos", "hostname": "spine02",
-    "vrf": "default", "peer": "10.0.0.31", "afi": "l2vpn", "safi": "evpn", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "exit01", "pfxRx":
-    4, "pfxTx": 36, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
-    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
-    "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
-    "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
-    false, "keepaliveTime": 60, "updateSource": "10.0.0.22", "holdTime": 180, "updatesRx":
+    "vrf": "default", "peer": "10.0.0.31", "peerHostname": "exit01", "state": "Established",
+    "afi": "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 4, "pfxTx":
+    36, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
+    0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": false, "communityTypes": ["standard"], "defOriginate": false,
+    "keepaliveTime": 60, "updateSource": "10.0.0.22", "holdTime": 180, "updatesRx":
     533, "updatesTx": 1920, "peerRouterId": "10.0.0.31", "routerId": "10.0.0.22",
     "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "route reflector
     client", "notificnReason": "", "extnhAdvertised": false, "extnhReceived": false,
     "extnhEnabled": false, "peerIP": "10.0.0.31", "mrai": 0, "reason": "socket-error:Connect
     (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827288,
     "active": true, "afiSafi": "l2vpn evpn"}, {"namespace": "eos", "hostname": "spine02",
-    "vrf": "default", "peer": "10.0.0.31", "afi": "ipv6", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "exit01", "pfxRx":
-    0, "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
+    "vrf": "default", "peer": "10.0.0.31", "peerHostname": "exit01", "state": "Established",
+    "afi": "ipv6", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
     "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
     "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
@@ -1550,9 +1553,9 @@ tests:
     "extnhEnabled": false, "peerIP": "10.0.0.31", "mrai": 0, "reason": "socket-error:Connect
     (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827288,
     "active": true, "afiSafi": "ipv6 unicast"}, {"namespace": "eos", "hostname": "spine02",
-    "vrf": "default", "peer": "10.0.0.31", "afi": "ipv4", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "exit01", "pfxRx":
-    0, "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
+    "vrf": "default", "peer": "10.0.0.31", "peerHostname": "exit01", "state": "Established",
+    "afi": "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
     "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
     "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
@@ -1563,22 +1566,22 @@ tests:
     "extnhEnabled": false, "peerIP": "10.0.0.31", "mrai": 0, "reason": "socket-error:Connect
     (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827288,
     "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "eos", "hostname": "spine02",
-    "vrf": "default", "peer": "10.0.0.14", "afi": "l2vpn", "safi": "evpn", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "leaf04", "pfxRx":
-    8, "pfxTx": 32, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
-    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
-    "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
-    "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
-    false, "keepaliveTime": 60, "updateSource": "10.0.0.22", "holdTime": 180, "updatesRx":
+    "vrf": "default", "peer": "10.0.0.14", "peerHostname": "leaf04", "state": "Established",
+    "afi": "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 8, "pfxTx":
+    32, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
+    0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": false, "communityTypes": ["standard"], "defOriginate": false,
+    "keepaliveTime": 60, "updateSource": "10.0.0.22", "holdTime": 180, "updatesRx":
     395, "updatesTx": 1962, "peerRouterId": "10.0.0.14", "routerId": "10.0.0.22",
     "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "route reflector
     client", "notificnReason": "", "extnhAdvertised": false, "extnhReceived": false,
     "extnhEnabled": false, "peerIP": "10.0.0.14", "mrai": 0, "reason": "socket-error:Connect
     (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827288,
     "active": true, "afiSafi": "l2vpn evpn"}, {"namespace": "eos", "hostname": "spine02",
-    "vrf": "default", "peer": "10.0.0.14", "afi": "ipv6", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "leaf04", "pfxRx":
-    0, "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
+    "vrf": "default", "peer": "10.0.0.14", "peerHostname": "leaf04", "state": "Established",
+    "afi": "ipv6", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
     "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
     "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
@@ -1589,9 +1592,9 @@ tests:
     "extnhEnabled": false, "peerIP": "10.0.0.14", "mrai": 0, "reason": "socket-error:Connect
     (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827288,
     "active": true, "afiSafi": "ipv6 unicast"}, {"namespace": "eos", "hostname": "spine02",
-    "vrf": "default", "peer": "10.0.0.14", "afi": "ipv4", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "leaf04", "pfxRx":
-    0, "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
+    "vrf": "default", "peer": "10.0.0.14", "peerHostname": "leaf04", "state": "Established",
+    "afi": "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
     "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
     "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
@@ -1602,9 +1605,9 @@ tests:
     "extnhEnabled": false, "peerIP": "10.0.0.14", "mrai": 0, "reason": "socket-error:Connect
     (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827288,
     "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "eos", "hostname": "spine02",
-    "vrf": "default", "peer": "10.0.0.13", "afi": "ipv6", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "leaf03", "pfxRx":
-    0, "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
+    "vrf": "default", "peer": "10.0.0.13", "peerHostname": "leaf03", "state": "Established",
+    "afi": "ipv6", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
     "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
     "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
@@ -1615,9 +1618,9 @@ tests:
     "extnhEnabled": false, "peerIP": "10.0.0.13", "mrai": 0, "reason": "socket-error:Connect
     (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827288,
     "active": true, "afiSafi": "ipv6 unicast"}, {"namespace": "eos", "hostname": "spine02",
-    "vrf": "default", "peer": "10.0.0.13", "afi": "ipv4", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "leaf03", "pfxRx":
-    0, "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
+    "vrf": "default", "peer": "10.0.0.13", "peerHostname": "leaf03", "state": "Established",
+    "afi": "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
     "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
     "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
@@ -1628,22 +1631,22 @@ tests:
     "extnhEnabled": false, "peerIP": "10.0.0.13", "mrai": 0, "reason": "socket-error:Connect
     (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827288,
     "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "eos", "hostname": "spine02",
-    "vrf": "default", "peer": "10.0.0.12", "afi": "l2vpn", "safi": "evpn", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "leaf02", "pfxRx":
-    8, "pfxTx": 32, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
-    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
-    "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
-    "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
-    false, "keepaliveTime": 60, "updateSource": "10.0.0.22", "holdTime": 180, "updatesRx":
+    "vrf": "default", "peer": "10.0.0.12", "peerHostname": "leaf02", "state": "Established",
+    "afi": "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 8, "pfxTx":
+    32, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
+    0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": false, "communityTypes": ["standard"], "defOriginate": false,
+    "keepaliveTime": 60, "updateSource": "10.0.0.22", "holdTime": 180, "updatesRx":
     354, "updatesTx": 2003, "peerRouterId": "10.0.0.12", "routerId": "10.0.0.22",
     "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "route reflector
     client", "notificnReason": "", "extnhAdvertised": false, "extnhReceived": false,
     "extnhEnabled": false, "peerIP": "10.0.0.12", "mrai": 0, "reason": "socket-error:Connect
     (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827288,
     "active": true, "afiSafi": "l2vpn evpn"}, {"namespace": "eos", "hostname": "spine02",
-    "vrf": "default", "peer": "10.0.0.12", "afi": "ipv6", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "leaf02", "pfxRx":
-    0, "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
+    "vrf": "default", "peer": "10.0.0.12", "peerHostname": "leaf02", "state": "Established",
+    "afi": "ipv6", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
     "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
     "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
@@ -1654,9 +1657,9 @@ tests:
     "extnhEnabled": false, "peerIP": "10.0.0.12", "mrai": 0, "reason": "socket-error:Connect
     (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827288,
     "active": true, "afiSafi": "ipv6 unicast"}, {"namespace": "eos", "hostname": "spine02",
-    "vrf": "default", "peer": "10.0.0.12", "afi": "ipv4", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "leaf02", "pfxRx":
-    0, "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
+    "vrf": "default", "peer": "10.0.0.12", "peerHostname": "leaf02", "state": "Established",
+    "afi": "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
     "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
     "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
@@ -1667,22 +1670,22 @@ tests:
     "extnhEnabled": false, "peerIP": "10.0.0.12", "mrai": 0, "reason": "socket-error:Connect
     (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827288,
     "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "eos", "hostname": "spine02",
-    "vrf": "default", "peer": "10.0.0.11", "afi": "l2vpn", "safi": "evpn", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "leaf01", "pfxRx":
-    8, "pfxTx": 32, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
-    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
-    "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
-    "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
-    false, "keepaliveTime": 60, "updateSource": "10.0.0.22", "holdTime": 180, "updatesRx":
+    "vrf": "default", "peer": "10.0.0.11", "peerHostname": "leaf01", "state": "Established",
+    "afi": "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 8, "pfxTx":
+    32, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
+    0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": false, "communityTypes": ["standard"], "defOriginate": false,
+    "keepaliveTime": 60, "updateSource": "10.0.0.22", "holdTime": 180, "updatesRx":
     354, "updatesTx": 2001, "peerRouterId": "10.0.0.11", "routerId": "10.0.0.22",
     "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "route reflector
     client", "notificnReason": "", "extnhAdvertised": false, "extnhReceived": false,
     "extnhEnabled": false, "peerIP": "10.0.0.11", "mrai": 0, "reason": "socket-error:Connect
     (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827288,
     "active": true, "afiSafi": "l2vpn evpn"}, {"namespace": "eos", "hostname": "spine02",
-    "vrf": "default", "peer": "10.0.0.11", "afi": "ipv4", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "leaf01", "pfxRx":
-    0, "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
+    "vrf": "default", "peer": "10.0.0.11", "peerHostname": "leaf01", "state": "Established",
+    "afi": "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
     "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
     "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
@@ -1693,22 +1696,22 @@ tests:
     "extnhEnabled": false, "peerIP": "10.0.0.11", "mrai": 0, "reason": "socket-error:Connect
     (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827288,
     "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "eos", "hostname": "spine02",
-    "vrf": "default", "peer": "10.0.0.13", "afi": "l2vpn", "safi": "evpn", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "leaf03", "pfxRx":
-    8, "pfxTx": 32, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
-    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
-    "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
-    "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
-    false, "keepaliveTime": 60, "updateSource": "10.0.0.22", "holdTime": 180, "updatesRx":
+    "vrf": "default", "peer": "10.0.0.13", "peerHostname": "leaf03", "state": "Established",
+    "afi": "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 8, "pfxTx":
+    32, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
+    0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": false, "communityTypes": ["standard"], "defOriginate": false,
+    "keepaliveTime": 60, "updateSource": "10.0.0.22", "holdTime": 180, "updatesRx":
     395, "updatesTx": 1962, "peerRouterId": "10.0.0.13", "routerId": "10.0.0.22",
     "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "route reflector
     client", "notificnReason": "", "extnhAdvertised": false, "extnhReceived": false,
     "extnhEnabled": false, "peerIP": "10.0.0.13", "mrai": 0, "reason": "socket-error:Connect
     (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827288,
     "active": true, "afiSafi": "l2vpn evpn"}, {"namespace": "eos", "hostname": "spine02",
-    "vrf": "default", "peer": "10.0.0.11", "afi": "ipv6", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "leaf01", "pfxRx":
-    0, "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
+    "vrf": "default", "peer": "10.0.0.11", "peerHostname": "leaf01", "state": "Established",
+    "afi": "ipv6", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
     "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
     "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
@@ -1719,22 +1722,22 @@ tests:
     "extnhEnabled": false, "peerIP": "10.0.0.11", "mrai": 0, "reason": "socket-error:Connect
     (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827288,
     "active": true, "afiSafi": "ipv6 unicast"}, {"namespace": "eos", "hostname": "spine02",
-    "vrf": "default", "peer": "10.0.0.32", "afi": "l2vpn", "safi": "evpn", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "exit02", "pfxRx":
-    4, "pfxTx": 36, "numChanges": 2, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
-    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
-    "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
-    "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
-    false, "keepaliveTime": 60, "updateSource": "10.0.0.22", "holdTime": 180, "updatesRx":
+    "vrf": "default", "peer": "10.0.0.32", "peerHostname": "exit02", "state": "Established",
+    "afi": "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 4, "pfxTx":
+    36, "numChanges": 2, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
+    0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": false, "communityTypes": ["standard"], "defOriginate": false,
+    "keepaliveTime": 60, "updateSource": "10.0.0.22", "holdTime": 180, "updatesRx":
     520, "updatesTx": 1897, "peerRouterId": "10.0.0.32", "routerId": "10.0.0.22",
     "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "route reflector
     client", "notificnReason": "", "extnhAdvertised": false, "extnhReceived": false,
     "extnhEnabled": false, "peerIP": "10.0.0.32", "mrai": 0, "reason": "socket-error:Connect
     (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827288,
     "active": true, "afiSafi": "l2vpn evpn"}, {"namespace": "eos", "hostname": "spine02",
-    "vrf": "default", "peer": "10.0.0.32", "afi": "ipv6", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "exit02", "pfxRx":
-    0, "pfxTx": 0, "numChanges": 2, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
+    "vrf": "default", "peer": "10.0.0.32", "peerHostname": "exit02", "state": "Established",
+    "afi": "ipv6", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 0, "numChanges": 2, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
     "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
     "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
@@ -1745,22 +1748,35 @@ tests:
     "extnhEnabled": false, "peerIP": "10.0.0.32", "mrai": 0, "reason": "socket-error:Connect
     (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827288,
     "active": true, "afiSafi": "ipv6 unicast"}, {"namespace": "eos", "hostname": "exit01",
-    "vrf": "internet-vrf", "peer": "169.254.254.10", "afi": "ipv6", "safi": "unicast",
-    "state": "Established", "asn": 64520, "peerAsn": 65533, "peerHostname": "firewall01",
-    "pfxRx": 0, "pfxTx": 0, "numChanges": 5, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
-    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
-    "pfxWarnPercent": 0, "hopsMax": -254, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"],
-    "defOriginate": false, "keepaliveTime": 3, "updateSource": "169.254.254.9", "holdTime":
-    9, "updatesRx": 194, "updatesTx": 10, "peerRouterId": "10.0.0.200", "routerId":
-    "169.254.254.9", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient":
-    "False", "notificnReason": "", "extnhAdvertised": false, "extnhReceived": false,
-    "extnhEnabled": false, "peerIP": "169.254.254.10", "mrai": 0, "reason": "notification:Cease/connection
-    collision resolution", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827289,
-    "active": true, "afiSafi": "ipv6 unicast"}, {"namespace": "eos", "hostname": "exit01",
-    "vrf": "default", "peer": "10.0.0.21", "afi": "ipv4", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "spine01", "pfxRx":
-    0, "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
+    "vrf": "internet-vrf", "peer": "169.254.254.10", "peerHostname": "firewall01",
+    "state": "Established", "afi": "ipv6", "safi": "unicast", "asn": 64520, "peerAsn":
+    65533, "pfxRx": 0, "pfxTx": 0, "numChanges": 5, "estdTime": 0, "afisAdvOnly":
+    [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0,
+    "pfxMaxRx": 12000, "pfxWarnPercent": 0, "hopsMax": -254, "advertiseAllVnis": false,
+    "egressRmap": "", "ingressRmap": "", "softReconfig": false, "communityTypes":
+    ["standard"], "defOriginate": false, "keepaliveTime": 3, "updateSource": "169.254.254.9",
+    "holdTime": 9, "updatesRx": 194, "updatesTx": 10, "peerRouterId": "10.0.0.200",
+    "routerId": "169.254.254.9", "bfdStatus": "", "nhUnchanged": false, "nhSelf":
+    false, "rrclient": "False", "notificnReason": "", "extnhAdvertised": false, "extnhReceived":
+    false, "extnhEnabled": false, "peerIP": "169.254.254.10", "mrai": 0, "reason":
+    "notification:Cease/connection collision resolution", "lastDownTime": 0, "ifname":
+    "", "timestamp": 1616447827289, "active": true, "afiSafi": "ipv6 unicast"}, {"namespace":
+    "eos", "hostname": "exit01", "vrf": "default", "peer": "10.0.0.21", "peerHostname":
+    "spine01", "state": "Established", "afi": "ipv4", "safi": "unicast", "asn": 64520,
+    "peerAsn": 64520, "pfxRx": 0, "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly":
+    [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0,
+    "pfxMaxRx": 12000, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false,
+    "egressRmap": "", "ingressRmap": "", "softReconfig": false, "communityTypes":
+    ["standard"], "defOriginate": false, "keepaliveTime": 60, "updateSource": "10.0.0.31",
+    "holdTime": 180, "updatesRx": 1921, "updatesTx": 533, "peerRouterId": "10.0.0.21",
+    "routerId": "10.0.0.31", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false,
+    "rrclient": "False", "notificnReason": "", "extnhAdvertised": false, "extnhReceived":
+    false, "extnhEnabled": false, "peerIP": "10.0.0.21", "mrai": 0, "reason": "socket-error:Connect
+    (Invalid argument)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827289,
+    "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "eos", "hostname": "exit01",
+    "vrf": "default", "peer": "10.0.0.21", "peerHostname": "spine01", "state": "Established",
+    "afi": "ipv6", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
     "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
     "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
@@ -1769,10 +1785,10 @@ tests:
     "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
     "", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled": false, "peerIP":
     "10.0.0.21", "mrai": 0, "reason": "socket-error:Connect (Invalid argument)", "lastDownTime":
-    0, "ifname": "", "timestamp": 1616447827289, "active": true, "afiSafi": "ipv4
+    0, "ifname": "", "timestamp": 1616447827289, "active": true, "afiSafi": "ipv6
     unicast"}, {"namespace": "eos", "hostname": "exit01", "vrf": "default", "peer":
-    "10.0.0.21", "afi": "ipv6", "safi": "unicast", "state": "Established", "asn":
-    64520, "peerAsn": 64520, "peerHostname": "spine01", "pfxRx": 0, "pfxTx": 0, "numChanges":
+    "10.0.0.21", "peerHostname": "spine01", "state": "Established", "afi": "l2vpn",
+    "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 36, "pfxTx": 10, "numChanges":
     1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx":
     0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis":
     false, "egressRmap": "", "ingressRmap": "", "softReconfig": false, "communityTypes":
@@ -1782,35 +1798,10 @@ tests:
     "rrclient": "False", "notificnReason": "", "extnhAdvertised": false, "extnhReceived":
     false, "extnhEnabled": false, "peerIP": "10.0.0.21", "mrai": 0, "reason": "socket-error:Connect
     (Invalid argument)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827289,
-    "active": true, "afiSafi": "ipv6 unicast"}, {"namespace": "eos", "hostname": "exit01",
-    "vrf": "default", "peer": "10.0.0.21", "afi": "l2vpn", "safi": "evpn", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "spine01", "pfxRx":
-    36, "pfxTx": 10, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
-    [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
-    "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
-    "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
-    false, "keepaliveTime": 60, "updateSource": "10.0.0.31", "holdTime": 180, "updatesRx":
-    1921, "updatesTx": 533, "peerRouterId": "10.0.0.21", "routerId": "10.0.0.31",
-    "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
-    "", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled": false, "peerIP":
-    "10.0.0.21", "mrai": 0, "reason": "socket-error:Connect (Invalid argument)", "lastDownTime":
-    0, "ifname": "", "timestamp": 1616447827289, "active": true, "afiSafi": "l2vpn
-    evpn"}, {"namespace": "eos", "hostname": "exit01", "vrf": "default", "peer": "10.0.0.22",
-    "afi": "ipv4", "safi": "unicast", "state": "Established", "asn": 64520, "peerAsn":
-    64520, "peerHostname": "spine02", "pfxRx": 0, "pfxTx": 0, "numChanges": 1, "estdTime":
-    0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0,
-    "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis":
-    false, "egressRmap": "", "ingressRmap": "", "softReconfig": false, "communityTypes":
-    ["standard"], "defOriginate": false, "keepaliveTime": 60, "updateSource": "10.0.0.31",
-    "holdTime": 180, "updatesRx": 1920, "updatesTx": 533, "peerRouterId": "10.0.0.22",
-    "routerId": "10.0.0.31", "bfdStatus": "", "nhUnchanged": false, "nhSelf": false,
-    "rrclient": "False", "notificnReason": "", "extnhAdvertised": false, "extnhReceived":
-    false, "extnhEnabled": false, "peerIP": "10.0.0.22", "mrai": 0, "reason": "socket-error:Connect
-    (Network is unreachable)", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827289,
-    "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "eos", "hostname": "exit01",
-    "vrf": "default", "peer": "10.0.0.22", "afi": "ipv6", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 64520, "peerHostname": "spine02", "pfxRx":
-    0, "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
+    "active": true, "afiSafi": "l2vpn evpn"}, {"namespace": "eos", "hostname": "exit01",
+    "vrf": "default", "peer": "10.0.0.22", "peerHostname": "spine02", "state": "Established",
+    "afi": "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0,
+    "pfxTx": 0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
     "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "",
     "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate":
@@ -1820,10 +1811,23 @@ tests:
     "", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled": false, "peerIP":
     "10.0.0.22", "mrai": 0, "reason": "socket-error:Connect (Network is unreachable)",
     "lastDownTime": 0, "ifname": "", "timestamp": 1616447827289, "active": true, "afiSafi":
+    "ipv4 unicast"}, {"namespace": "eos", "hostname": "exit01", "vrf": "default",
+    "peer": "10.0.0.22", "peerHostname": "spine02", "state": "Established", "afi":
+    "ipv6", "safi": "unicast", "asn": 64520, "peerAsn": 64520, "pfxRx": 0, "pfxTx":
+    0, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
+    0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent":
+    0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
+    "softReconfig": false, "communityTypes": ["standard"], "defOriginate": false,
+    "keepaliveTime": 60, "updateSource": "10.0.0.31", "holdTime": 180, "updatesRx":
+    1920, "updatesTx": 533, "peerRouterId": "10.0.0.22", "routerId": "10.0.0.31",
+    "bfdStatus": "", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
+    "", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled": false, "peerIP":
+    "10.0.0.22", "mrai": 0, "reason": "socket-error:Connect (Network is unreachable)",
+    "lastDownTime": 0, "ifname": "", "timestamp": 1616447827289, "active": true, "afiSafi":
     "ipv6 unicast"}, {"namespace": "eos", "hostname": "exit01", "vrf": "default",
-    "peer": "10.0.0.22", "afi": "l2vpn", "safi": "evpn", "state": "Established", "asn":
-    64520, "peerAsn": 64520, "peerHostname": "spine02", "pfxRx": 36, "pfxTx": 10,
-    "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
+    "peer": "10.0.0.22", "peerHostname": "spine02", "state": "Established", "afi":
+    "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 36, "pfxTx":
+    10, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
     0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent":
     0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
     "softReconfig": false, "communityTypes": ["standard"], "defOriginate": false,
@@ -1834,9 +1838,9 @@ tests:
     "10.0.0.22", "mrai": 0, "reason": "socket-error:Connect (Network is unreachable)",
     "lastDownTime": 0, "ifname": "", "timestamp": 1616447827289, "active": true, "afiSafi":
     "l2vpn evpn"}, {"namespace": "eos", "hostname": "exit01", "vrf": "default", "peer":
-    "169.254.254.2", "afi": "ipv6", "safi": "unicast", "state": "Established", "asn":
-    64520, "peerAsn": 65533, "peerHostname": "firewall01", "pfxRx": 0, "pfxTx": 0,
-    "numChanges": 5, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
+    "169.254.254.2", "peerHostname": "firewall01", "state": "Established", "afi":
+    "ipv6", "safi": "unicast", "asn": 64520, "peerAsn": 65533, "pfxRx": 0, "pfxTx":
+    0, "numChanges": 5, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx":
     0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent":
     0, "hopsMax": -254, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap":
     "", "softReconfig": false, "communityTypes": ["standard"], "defOriginate": false,
@@ -1847,9 +1851,9 @@ tests:
     "169.254.254.2", "mrai": 0, "reason": "notification:Cease/connection collision
     resolution", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827289, "active":
     true, "afiSafi": "ipv6 unicast"}, {"namespace": "eos", "hostname": "exit01", "vrf":
-    "evpn-vrf", "peer": "169.254.254.6", "afi": "ipv4", "safi": "unicast", "state":
-    "Established", "asn": 64520, "peerAsn": 65533, "peerHostname": "firewall01", "pfxRx":
-    10, "pfxTx": 3, "numChanges": 5, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
+    "evpn-vrf", "peer": "169.254.254.6", "peerHostname": "firewall01", "state": "Established",
+    "afi": "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 65533, "pfxRx": 10,
+    "pfxTx": 3, "numChanges": 5, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
     "pfxWarnPercent": 0, "hopsMax": -254, "advertiseAllVnis": false, "egressRmap":
     "", "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard"],
@@ -1860,8 +1864,8 @@ tests:
     "extnhEnabled": false, "peerIP": "169.254.254.6", "mrai": 0, "reason": "notification:Cease/connection
     collision resolution", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827289,
     "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "eos", "hostname": "exit01",
-    "vrf": "evpn-vrf", "peer": "169.254.254.6", "afi": "ipv6", "safi": "unicast",
-    "state": "Established", "asn": 64520, "peerAsn": 65533, "peerHostname": "firewall01",
+    "vrf": "evpn-vrf", "peer": "169.254.254.6", "peerHostname": "firewall01", "state":
+    "Established", "afi": "ipv6", "safi": "unicast", "asn": 64520, "peerAsn": 65533,
     "pfxRx": 0, "pfxTx": 0, "numChanges": 5, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
     "pfxWarnPercent": 0, "hopsMax": -254, "advertiseAllVnis": false, "egressRmap":
@@ -1873,8 +1877,8 @@ tests:
     "extnhEnabled": false, "peerIP": "169.254.254.6", "mrai": 0, "reason": "notification:Cease/connection
     collision resolution", "lastDownTime": 0, "ifname": "", "timestamp": 1616447827289,
     "active": true, "afiSafi": "ipv6 unicast"}, {"namespace": "eos", "hostname": "exit01",
-    "vrf": "internet-vrf", "peer": "169.254.127.0", "afi": "ipv4", "safi": "unicast",
-    "state": "Established", "asn": 64520, "peerAsn": 65534, "peerHostname": "dcedge01",
+    "vrf": "internet-vrf", "peer": "169.254.127.0", "peerHostname": "dcedge01", "state":
+    "Established", "afi": "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 65534,
     "pfxRx": 6, "pfxTx": 4, "numChanges": 1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly":
     [], "pfxBestRx": 0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 12000,
     "pfxWarnPercent": 0, "hopsMax": -254, "advertiseAllVnis": false, "egressRmap":
@@ -1886,8 +1890,8 @@ tests:
     "extnhEnabled": false, "peerIP": "169.254.127.0", "mrai": 0, "reason": "", "lastDownTime":
     0, "ifname": "", "timestamp": 1616447827289, "active": true, "afiSafi": "ipv4
     unicast"}, {"namespace": "eos", "hostname": "exit01", "vrf": "internet-vrf", "peer":
-    "169.254.127.0", "afi": "ipv6", "safi": "unicast", "state": "Established", "asn":
-    64520, "peerAsn": 65534, "peerHostname": "dcedge01", "pfxRx": 0, "pfxTx": 0, "numChanges":
+    "169.254.127.0", "peerHostname": "dcedge01", "state": "Established", "afi": "ipv6",
+    "safi": "unicast", "asn": 64520, "peerAsn": 65534, "pfxRx": 0, "pfxTx": 0, "numChanges":
     1, "estdTime": 0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx":
     0, "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent": 0, "hopsMax": -254,
     "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "", "softReconfig":
@@ -1898,9 +1902,9 @@ tests:
     "", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled": false, "peerIP":
     "169.254.127.0", "mrai": 0, "reason": "", "lastDownTime": 0, "ifname": "", "timestamp":
     1616447827289, "active": true, "afiSafi": "ipv6 unicast"}, {"namespace": "eos",
-    "hostname": "exit01", "vrf": "internet-vrf", "peer": "169.254.254.10", "afi":
-    "ipv4", "safi": "unicast", "state": "Established", "asn": 64520, "peerAsn": 65533,
-    "peerHostname": "firewall01", "pfxRx": 10, "pfxTx": 6, "numChanges": 5, "estdTime":
+    "hostname": "exit01", "vrf": "internet-vrf", "peer": "169.254.254.10", "peerHostname":
+    "firewall01", "state": "Established", "afi": "ipv4", "safi": "unicast", "asn":
+    64520, "peerAsn": 65533, "pfxRx": 10, "pfxTx": 6, "numChanges": 5, "estdTime":
     0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0,
     "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent": 0, "hopsMax": -254, "advertiseAllVnis":
     false, "egressRmap": "", "ingressRmap": "", "softReconfig": false, "communityTypes":
@@ -1911,9 +1915,9 @@ tests:
     false, "extnhEnabled": false, "peerIP": "169.254.254.10", "mrai": 0, "reason":
     "notification:Cease/connection collision resolution", "lastDownTime": 0, "ifname":
     "", "timestamp": 1616447827289, "active": true, "afiSafi": "ipv4 unicast"}, {"namespace":
-    "eos", "hostname": "exit01", "vrf": "default", "peer": "169.254.254.2", "afi":
-    "ipv4", "safi": "unicast", "state": "Established", "asn": 64520, "peerAsn": 65533,
-    "peerHostname": "firewall01", "pfxRx": 10, "pfxTx": 0, "numChanges": 5, "estdTime":
+    "eos", "hostname": "exit01", "vrf": "default", "peer": "169.254.254.2", "peerHostname":
+    "firewall01", "state": "Established", "afi": "ipv4", "safi": "unicast", "asn":
+    64520, "peerAsn": 65533, "pfxRx": 10, "pfxTx": 0, "numChanges": 5, "estdTime":
     0, "afisAdvOnly": [], "afisRcvOnly": [], "pfxBestRx": 0, "pfxWithdrawnRx": 0,
     "pfxSuppressRx": 0, "pfxMaxRx": 12000, "pfxWarnPercent": 0, "hopsMax": -254, "advertiseAllVnis":
     false, "egressRmap": "", "ingressRmap": "", "softReconfig": false, "communityTypes":
@@ -1924,34 +1928,33 @@ tests:
     false, "extnhEnabled": false, "peerIP": "169.254.254.2", "mrai": 0, "reason":
     "notification:Cease/connection collision resolution", "lastDownTime": 0, "ifname":
     "", "timestamp": 1616447827289, "active": true, "afiSafi": "ipv4 unicast"}, {"namespace":
-    "eos", "hostname": "dcedge01", "vrf": "default", "peer": "169.254.127.3", "afi":
-    "ipv4", "safi": "unicast", "state": "Established", "asn": 65534, "peerAsn": 64520,
-    "peerHostname": "exit02", "pfxRx": 4, "pfxTx": 6, "numChanges": 1, "estdTime":
-    1616275139345, "afisAdvOnly": [], "afisRcvOnly": ["ipv4 unicast"], "pfxBestRx":
-    0, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent": 0,
-    "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
-    "softReconfig": false, "communityTypes": ["standard", "extended"], "defOriginate":
-    false, "keepaliveTime": 30, "updateSource": "169.254.127.2", "holdTime": 90, "updatesRx":
-    185, "updatesTx": 2, "peerRouterId": "169.254.253.9", "routerId": "10.0.0.41",
-    "bfdStatus": "down", "nhUnchanged": false, "nhSelf": false, "rrclient": "", "notificnReason":
-    "Hold Timer Expired Error", "extnhAdvertised": false, "extnhReceived": false,
-    "extnhEnabled": false, "peerIP": "169.254.127.3", "mrai": 0, "reason": "Hold Timer
-    Expired Error", "lastDownTime": 0, "ifname": "xe-0/0/1.0", "timestamp": 1616447830345,
-    "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "eos", "hostname": "dcedge01",
-    "vrf": "default", "peer": "169.254.127.1", "afi": "ipv4", "safi": "unicast", "state":
-    "Established", "asn": 65534, "peerAsn": 64520, "peerHostname": "exit01", "pfxRx":
-    4, "pfxTx": 6, "numChanges": 1, "estdTime": 1616275137345, "afisAdvOnly": [],
-    "afisRcvOnly": ["ipv4 unicast"], "pfxBestRx": 4, "pfxWithdrawnRx": 0, "pfxSuppressRx":
-    0, "pfxMaxRx": 0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false,
-    "egressRmap": "", "ingressRmap": "", "softReconfig": false, "communityTypes":
+    "eos", "hostname": "dcedge01", "vrf": "default", "peer": "169.254.127.3", "peerHostname":
+    "exit02", "state": "Established", "afi": "ipv4", "safi": "unicast", "asn": 65534,
+    "peerAsn": 64520, "pfxRx": 4, "pfxTx": 6, "numChanges": 1, "estdTime": 1616275139345,
+    "afisAdvOnly": [], "afisRcvOnly": ["ipv4 unicast"], "pfxBestRx": 0, "pfxWithdrawnRx":
+    0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis":
+    false, "egressRmap": "", "ingressRmap": "", "softReconfig": false, "communityTypes":
     ["standard", "extended"], "defOriginate": false, "keepaliveTime": 30, "updateSource":
-    "169.254.127.0", "holdTime": 90, "updatesRx": 185, "updatesTx": 2, "peerRouterId":
-    "169.254.254.9", "routerId": "10.0.0.41", "bfdStatus": "down", "nhUnchanged":
+    "169.254.127.2", "holdTime": 90, "updatesRx": 185, "updatesTx": 2, "peerRouterId":
+    "169.254.253.9", "routerId": "10.0.0.41", "bfdStatus": "down", "nhUnchanged":
     false, "nhSelf": false, "rrclient": "", "notificnReason": "Hold Timer Expired
     Error", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled": false,
-    "peerIP": "169.254.127.1", "mrai": 0, "reason": "Hold Timer Expired Error", "lastDownTime":
-    0, "ifname": "xe-0/0/0.0", "timestamp": 1616447830345, "active": true, "afiSafi":
-    "ipv4 unicast"}]'
+    "peerIP": "169.254.127.3", "mrai": 0, "reason": "Hold Timer Expired Error", "lastDownTime":
+    0, "ifname": "xe-0/0/1.0", "timestamp": 1616447830345, "active": true, "afiSafi":
+    "ipv4 unicast"}, {"namespace": "eos", "hostname": "dcedge01", "vrf": "default",
+    "peer": "169.254.127.1", "peerHostname": "exit01", "state": "Established", "afi":
+    "ipv4", "safi": "unicast", "asn": 65534, "peerAsn": 64520, "pfxRx": 4, "pfxTx":
+    6, "numChanges": 1, "estdTime": 1616275137345, "afisAdvOnly": [], "afisRcvOnly":
+    ["ipv4 unicast"], "pfxBestRx": 4, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx":
+    0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
+    "", "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard", "extended"],
+    "defOriginate": false, "keepaliveTime": 30, "updateSource": "169.254.127.0", "holdTime":
+    90, "updatesRx": 185, "updatesTx": 2, "peerRouterId": "169.254.254.9", "routerId":
+    "10.0.0.41", "bfdStatus": "down", "nhUnchanged": false, "nhSelf": false, "rrclient":
+    "", "notificnReason": "Hold Timer Expired Error", "extnhAdvertised": false, "extnhReceived":
+    false, "extnhEnabled": false, "peerIP": "169.254.127.1", "mrai": 0, "reason":
+    "Hold Timer Expired Error", "lastDownTime": 0, "ifname": "xe-0/0/0.0", "timestamp":
+    1616447830345, "active": true, "afiSafi": "ipv4 unicast"}]'
 - command: device show --columns='*' --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: device show eos all
