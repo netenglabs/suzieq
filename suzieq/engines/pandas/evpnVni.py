@@ -47,7 +47,8 @@ class EvpnvniObj(SqPandasEngine):
         if 'vlan' not in df.columns:
             return df.drop(columns=drop_cols, errors='ignore')
 
-        iflist = df[df.vlan == 0]['ifname'].to_list()
+        iflist = list(set([x for x in df[df.vlan == 0]['ifname'].to_list()
+                           if x and x != 'None']))
         if iflist:
             ifdf = IfObj(context=self.ctxt).get(
                 namespace=kwargs.get('namespace', []), ifname=iflist,
@@ -55,13 +56,14 @@ class EvpnvniObj(SqPandasEngine):
                          'vni'])
 
             if not ifdf.empty:
-                df = df.merge(ifdf, on=['namespace', 'hostname', 'ifname',
-                                        'vni'], how='left',
-                              suffixes=('', '_y')) \
-                    .drop(columns=['timestamp_y', 'state_y'])
+                df = df.merge(ifdf, on=['namespace', 'hostname', 'ifname'],
+                              how='left', suffixes=('', '_y')) \
+                    .drop(columns=['timestamp_y', 'state_y', 'vni_y'])
 
                 df['vlan'] = np.where(df['vlan_y'], df['vlan_y'], df['vlan'])
-                df.drop(columns=['vlan_y'], inplace=True)
+                df = df.drop(columns=['vlan_y']) \
+                       .fillna({'vlan': 0}) \
+                       .astype({'vlan': int})
 
         # Fill out the numMacs and numArps columns if we can
         if 'numMacs' in df.columns:
