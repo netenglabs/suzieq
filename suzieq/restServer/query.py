@@ -262,6 +262,7 @@ async def query_mac(verb: CommonVerbs,
                     localOnly: str = None,
                     macaddr: str = None, remoteVtepIp: str = None,
                     vlan: str = None, query_str: str = None,
+                    moveCount: str = None,
                     ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, locals())
