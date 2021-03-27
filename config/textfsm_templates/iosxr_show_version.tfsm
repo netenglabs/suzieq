@@ -1,0 +1,13 @@
+Value version (\S+)
+Value bootupTimestamp (.+)
+Value model (.+)
+Value architecture (.+)
+Value memory (\d+\S\S)
+
+Start
+  ^\s+Version\s+:\s+${version}$$
+  ^cisco\s[^(]*(${architecture})\s+processor with ${memory}.*$$
+  ^cisco\s+${model}\s+\(\)\s+processor$$
+  ^.*uptime is\s+${bootupTimestamp}$$
+  ^Cisco\s+${model}\s+System.*$$
+

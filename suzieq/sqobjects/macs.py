@@ -7,7 +7,7 @@ class MacsObj(SqObject):
         super().__init__(table='macs', **kwargs)
         self._valid_get_args = ['namespace', 'hostname', 'columns', 'macaddr',
                                 'remoteVtepIp', 'vlan', 'localOnly', 'bd',
-                                'query_str']
+                                'moveCount', 'query_str']
 
     def validate_get_input(self, **kwargs):
         for key in kwargs:

@@ -1,5 +1,6 @@
 from datetime import datetime
 from collections import defaultdict
+from dateparser import parse
 
 import numpy as np
 from suzieq.poller.services.service import Service
@@ -87,12 +88,13 @@ class InterfaceService(Service):
                 entry["master"] = "bridge"  # Convert it for Linux model
                 del entry["forwardingModel"]
 
-            # Vlan is gathered as a list for VXLAN interfaces. Fix that
-            if entry["type"] == "vxlan":
-                entry["vlan"] = entry.get("vlan", [""])[0]
-
             if entry['type']:
                 entry['type'] = entry['type'].lower()
+
+            # Vlan is gathered as a list for VXLAN interfaces. Fix that
+            if entry["type"] == "vxlan":
+                # We capture the glory in evpnVni of this interface
+                entry["vlan"] = 0
 
             if entry['type'] == 'vlan' and entry['ifname'].startswith('Vlan'):
                 entry['vlan'] = int(entry['ifname'].split('Vlan')[1])
@@ -115,7 +117,7 @@ class InterfaceService(Service):
                 )
                 new_list.append(primary_ip)
                 for elem in munge_entry["secondaryIpsOrderedList"]:
-                    ip = elem["adddress"] + "/" + elem["maskLen"]
+                    ip = elem["address"] + "/" + elem["maskLen"]
                     new_list.append(ip)
                 if 'virtualIp' in munge_entry:
                     elem = munge_entry['virtualIp']
@@ -251,9 +253,9 @@ class InterfaceService(Service):
                 elif entry['speed'] == 'Unlimited':
                     entry['speed'] = 0
 
-            if entry['master'] == 'Ethernet-Bridge':
+            if entry.get('master', '') == 'Ethernet-Bridge':
                 entry['master'] = 'bridge'
-            elif entry['master'] == 'unknown':
+            elif entry.get('master', '') == 'unknown':
                 if entry['ifname'].startswith('jsv'):
                     entry['type'] = 'sflowMonitor'
                 else:
@@ -269,15 +271,16 @@ class InterfaceService(Service):
 
             # Process the logical interfaces which are too deep to be parsed
             # efficiently by the parser right now
-            if entry['logicalIfname'] == [] or entry['afi'] == [None]:
-                entry.pop('logicalIfname')
-                entry.pop('afi')
-                entry.pop('vlanName')
+            if ((entry.get('logicalIfname', []) == []) or
+                    (entry.get('afi', [None]) == [None])):
                 continue
 
             # Uninteresting logical interface
             gwmacs = entry.get('_gwMacaddr', [])
-            for i, ifname in enumerate(entry['logicalIfname']):
+            for i, ifname in enumerate(entry.get('logicalIfname', [])):
+                if entry['afi'] is None:
+                    continue
+
                 v4addresses = []
                 v6addresses = []
                 macaddr = None
@@ -286,18 +289,19 @@ class InterfaceService(Service):
                 if not macaddr:
                     macaddr = entry.get('macaddr', '')
 
-                if entry['afi'][i] is None:
+                if (i+1 > len(entry['afi'])) or (entry['afi'][i] is None):
                     continue
-                for x in entry['afi'][i]:
+                thisafi = entry['afi'][i]
+                for x in thisafi:
                     if isinstance(x, list):
-                        afi = x[0].get('interface-address', None)
+                        addrlist = x[0].get('interface-address', None)
                     else:
-                        afi = x.get('interface-address', None)
-                    if afi and afi is not None:
+                        addrlist = thisafi.get('interface-address', None)
+                    if addrlist and addrlist is not None:
                         break
-                    foo = x.get('address-family-name', None)
-                    if foo and (foo[0].get('data', None) == "eth-switch"):
-                        afi = []
+                    v_afi = thisafi.get('address-family-name', None)
+                    if v_afi and (v_afi[0].get('data', None) == "eth-switch"):
+                        addrlist = []
                         break
                 else:
                     continue
@@ -307,8 +311,8 @@ class InterfaceService(Service):
                 else:
                     vrf = ''
                 new_entry = {'ifname': ifname,
-                             'mtu': entry['afi'][i][0].get(
-                                 'mtu', [{'data': 0}])[0]['data'],
+                             'mtu': thisafi.get(
+                                 'mtu', [{'data': -1}])[0]['data'],
                              'type': 'logical',
                              'speed': entry['speed'],
                              'master': vrf,
@@ -320,7 +324,8 @@ class InterfaceService(Service):
                              }
                 new_entries.append(new_entry)
                 entry_dict[new_entry['ifname']] = new_entry
-                if (entry['logicalIfflags'][i][0].get('iff-up') or
+
+                if (entry.get('logicalIfflags', ['']*(i+1))[i].get('iff-up') or
                         entry.get('type') == 'loopback'):
                     new_entry['state'] = 'up'
                 else:
@@ -331,7 +336,7 @@ class InterfaceService(Service):
                 else:
                     new_entry['mtu'] = int(new_entry['mtu'])
 
-                for x in afi:
+                for x in addrlist:
                     address = (x.get("ifa-local")[0]["data"] + '/' +
                                x.get("ifa-destination", [{"data": "0/32"}])[0]
                                ["data"].split("/")[1])
@@ -339,7 +344,10 @@ class InterfaceService(Service):
                         v6addresses.append(address)
                     else:
                         v4addresses.append(address)
-                vlanName = entry['vlanName'][i]
+                if entry.get('vlanName', ''):
+                    vlanName = entry['vlanName'][i]
+                else:
+                    vlanName = None
                 if vlanName is not None:
                     new_entry['vlanName'] = vlanName
                 else:
@@ -372,6 +380,8 @@ class InterfaceService(Service):
             if entry.get('_entryType', '') == 'mtumac':
                 old_entry = entry_dict[entry['ifname']]
                 if old_entry:
+                    if entry['adminState']:
+                        old_entry['adminState'] = entry['adminState']
                     old_entry['mtu'] = entry.get('mtu', 0)
                     old_entry['macaddr'] = convert_macaddr_format_to_colon(
                         entry.get('macaddr', '0000.0000.0000'))
@@ -451,15 +461,16 @@ class InterfaceService(Service):
             entry['macaddr'] = convert_macaddr_format_to_colon(
                 entry.get('macaddr', '0000.0000.0000'))
 
-            if entry.get('_unnum_intf', ''):
-                if entry['ifname'] in unnum_intf:
+            unnum_if_parent = entry.get('_unnum_intf', '')
+            if unnum_if_parent:
+                if unnum_if_parent in unnum_intf:
                     # IPv6 has link local, so unnumbered is a v4 construct
-                    entry['ipAddressList'] = [unnum_intf[entry['ifname']]]
+                    entry['ipAddressList'] = [unnum_intf[unnum_if_parent]]
                 else:
                     unnum_intf_entry_idx.append(entry_idx)
 
-            for elem in entry.get('_child_intf', []):
-                unnum_intf[elem] = [pri_ipaddr]
+            if entry.get('_child_intf', []):
+                unnum_intf[entry['ifname']] = [pri_ipaddr]
 
             speed = entry.get('speed', '')
             if isinstance(speed, str):
@@ -495,7 +506,7 @@ class InterfaceService(Service):
         # Fix unnumbered interface references
         for idx in unnum_intf_entry_idx:
             entry = processed_data[idx]
-            entry['ipAddressList'] = unnum_intf.get(entry['ifname'], [])
+            entry['ipAddressList'] = unnum_intf.get(entry['_unnum_intf'], [])
 
         if drop_indices:
             processed_data = np.delete(processed_data, drop_indices).tolist()
@@ -520,6 +531,74 @@ class InterfaceService(Service):
 
             # Linux interface output has no status change timestamp
 
+        return processed_data
+
+    def _clean_iosxr_data(self, processed_data, raw_data):
+
+        entry_dict = {}
+
+        for i, entry in enumerate(processed_data):
+            if entry.get('_entryType', '') == 'vrf':
+                entry['ifname'] = entry['vrf']
+                entry['master'] = ''
+                entry['type'] = 'vrf'
+                entry['state'] = entry['adminState'] = 'up'
+
+                continue
+
+            type = entry.get('type', 'ethernet').lower()
+            if 'aggregated ethernet' in type:
+                type = 'bond'
+            elif 'ethernet' in type:
+                type = 'ethernet'
+            entry['type'] = type
+
+            bondMbrs = entry.get('_bondMbrs', []) or []
+            if type == 'bond' and bondMbrs:
+                for mbr in bondMbrs:
+                    if mbr in entry_dict:
+                        mbr_entry = entry_dict[mbr]
+                        mbr_entry['type'] = 'bond_slave'
+                        mbr_entry['master'] = entry['ifname']
+                    else:
+                        entry_dict[mbr] = {'master': entry['ifname'],
+                                           'type': 'bond_slave'}
+
+            if entry['state'] == 'administratively down':
+                entry['state'] = 'down'
+                entry['adminState'] = 'down'
+
+            entry['macaddr'] = convert_macaddr_format_to_colon(
+                entry.get('macaddr', '0000.0000.0000'))
+            entry['interfaceMac'] = convert_macaddr_format_to_colon(
+                entry.get('interfaceMac', '0000.0000.0000'))
+
+            if entry.get('vlan', '') and entry.get('innerVlan', ''):
+                entry['type'] = "qinq"
+
+            lastChange = parse(
+                entry.get('statusChangeTimestamp', ''),
+                settings={'RELATIVE_BASE':
+                          datetime.fromtimestamp(
+                              (raw_data[0]['timestamp'])/1000), })
+            if lastChange:
+                entry['statusChangeTimestamp'] = int(lastChange.timestamp()
+                                                     * 1000)
+            if 'ipAddressList' not in entry:
+                entry['ipAddressList'] = []
+
+            if 'ip6AddressList' not in entry:
+                entry['ip6AddressList'] = []
+
+            if entry['ipAddressList'] or entry['ip6AddressList']:
+                entry['master'] = entry.get('vrf', '')
+
+            if entry['ifname'] in entry_dict:
+                add_info = entry_dict[entry['ifname']]
+                entry['master'] = add_info.get('master', '')
+                entry['type'] = add_info.get('type', '')
+            else:
+                entry_dict[entry['ifname']] = entry
         return processed_data
 
     def _common_data_cleaner(self, processed_data, raw_data):

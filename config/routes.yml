@@ -36,6 +36,14 @@ apply:
         "hardwareProgrammed: inHardware?|False",
         "vias/*/nexthopAddr: nexthopIps?|[]",
         "vias/*/interface": oifs"]'
+
+  iosxr:
+    version: all
+    command:
+      - command: show route vrf default afi-all unicast
+        textfsm: textfsm_templates/iosxr_show_route.tfsm
+      - command: show route vrf all afi-all unicast
+        textfsm: textfsm_templates/iosxr_show_route.tfsm
   
   junos-qfx:
     version: all
@@ -72,14 +80,14 @@ apply:
 
   nxos: 
     version: all
-    command: show ip route vrf all | json
+    command: show ip route vrf all | json native
     normalize: 'TABLE_vrf/ROW_vrf/*:vrf-name-out:vrf|TABLE_addrf/ROW_addrf/TABLE_prefix/ROW_prefix/*?/[
     "ipprefix: prefix",
-    "TABLE_path/ROW_path/[0]?/clientname: protocol",
-    "TABLE_path/ROW_path/[*]?/metric: weights",
-    "TABLE_path/ROW_path/[*]?/ifname: oifs",
-    "TABLE_path/ROW_path/[*]?/ipnexthop: nexthopIps",
-    "TABLE_path/ROW_path/[*]?/nexthop-vrf-name: _nexthopVrf",
+    "TABLE_path/ROW_path/[0]?/clientname: protocol?|",
+    "TABLE_path/ROW_path/[*]?/metric: weights?|0",
+    "TABLE_path/ROW_path/[*]?/ifname: oifs?|",
+    "TABLE_path/ROW_path/[*]?/ipnexthop: nexthopIps?|",
+    "TABLE_path/ROW_path/[*]?/nexthop-vrf-name: _nexthopVrf?|",
     "hardwareProgrammed: hardwareProgrammed?|True",
     "TABLE_path/ROW_path/[*]?/type: routeAction?|forward",
     "TABLE_path/ROW_path/[*]?/tag: asPathList?|[]",

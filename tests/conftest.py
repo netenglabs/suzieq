@@ -64,9 +64,9 @@ def create_context_config():
 
 
 def get_dummy_config():
-    config = {'schema-directory': './config/schema',
-              'service-directory': './config',
-              'data-directory': './tests/data/basic_dual_bgp/parquet-out',
+    config = {'schema-directory': f'./config/schema',
+              'service-directory': f'./config',
+              'data-directory': f'./tests/data/basic_dual_bgp/parquet-out',
               'temp-directory': '/tmp/suzieq',
               'logging-level': 'WARNING',
               'test_set': 'basic_dual_bgp',  # an extra field for testing

@@ -329,7 +329,8 @@ class Service(object):
                 else:
                     tfsm_template = nfn.get("textfsm", None)
                     entry_type = None
-                    if tfsm_template is None and elem_num:
+                    if tfsm_template is None and isinstance(
+                            nfn.get('command', None), list):
                         # Can happen because we've a list of cmds associated
                         # Pick the normalization function associated with this
                         # output

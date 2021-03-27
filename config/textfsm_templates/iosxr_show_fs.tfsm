@@ -1,0 +1,14 @@
+Value device ([/.\w]+)
+Value fstype (\w+)
+Value totalSize ([^ \t]+)
+Value usedSize ([^ \t]+)
+Value availSize ([^ \t]+)
+Value usedPercent (\d+)
+Value mountPoint ([^ ]*)
+
+Start
+  ^Filesystem\s+Type.*$$
+  ^Filesystem\s+Size.*$$
+  ^${device}\s+${fstype}\s+${totalSize}\s+${usedSize}\s+${availSize}\s+${usedPercent}%\s+${mountPoint}$$ -> Record
+  ^${device}\s+${totalSize}\s+${usedSize}\s+${availSize}\s+${usedPercent}%\s+${mountPoint}$$ -> Record
+

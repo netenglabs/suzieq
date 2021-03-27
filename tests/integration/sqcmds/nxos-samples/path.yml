@@ -17,119 +17,518 @@ tests:
   marks: path show nxoss
 - command: path show --dest=172.16.3.202 --src=172.16.1.101 --format=json --namespace=nxos
   data-directory: tests/data/nxos/parquet-out/
-  error:
-    error: '[{"pathid": 1, "hopCount": 0, "namespace": "nxos", "hostname": "server101",
-      "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": false, "overlay":
-      false, "mtuMatch": true, "inMtu": 2000, "outMtu": 2000, "protocol": "", "ipLookup":
-      "172.16.0.0/16", "vtepLookup": "", "macLookup": "", "nexthopIp": "172.16.1.254",
-      "error": "", "timestamp": 1609296106167}, {"pathid": 1, "hopCount": 1, "namespace":
-      "nxos", "hostname": "leaf01", "iif": "port-channel3", "oif": "bond0", "vrf":
-      "evpn-vrf", "isL2": false, "overlay": false, "mtuMatch": false, "inMtu": 1500,
-      "outMtu": 2000, "protocol": "direct", "ipLookup": "172.16.3.0/24", "vtepLookup":
-      "", "macLookup": "", "nexthopIp": "", "error": "Hop MTU < Src Mtu", "timestamp":
-      1609296117463}]'
   marks: path show nxos
+  output: '[{"pathid": 1, "hopCount": 0, "namespace": "nxos", "hostname": "server101",
+    "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false,
+    "mtuMatch": true, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup": "172.16.0.0/16",
+    "vtepLookup": "", "macLookup": "", "nexthopIp": "172.16.1.254", "timestamp": 1616541713004},
+    {"pathid": 1, "hopCount": 1, "namespace": "nxos", "hostname": "leaf01", "iif":
+    "port-channel3", "oif": "Ethernet1/1", "vrf": "evpn-vrf", "isL2": true, "overlay":
+    false, "mtuMatch": false, "inMtu": 9200, "outMtu": 9200, "protocol": "bgp", "ipLookup":
+    "172.16.3.202/32", "vtepLookup": "10.0.0.134", "macLookup": "", "nexthopIp": "10.0.0.21",
+    "timestamp": 1616541720104}, {"pathid": 1, "hopCount": 2, "namespace": "nxos",
+    "hostname": "spine01", "iif": "Ethernet1/1", "oif": "Ethernet1/3", "vrf": "default",
+    "isL2": true, "overlay": true, "mtuMatch": true, "inMtu": 9200, "outMtu": 9200,
+    "protocol": "ospf", "ipLookup": "10.0.0.134", "vtepLookup": "10.0.0.134", "macLookup":
+    "", "nexthopIp": "10.0.0.13", "timestamp": 1616541718279}, {"pathid": 1, "hopCount":
+    3, "namespace": "nxos", "hostname": "leaf03", "iif": "Ethernet1/1", "oif": "port-channel4",
+    "vrf": "evpn-vrf", "isL2": false, "overlay": true, "mtuMatch": true, "inMtu":
+    9200, "outMtu": 9200, "protocol": "hmm", "ipLookup": "172.16.3.202/32", "vtepLookup":
+    "", "macLookup": "", "nexthopIp": "172.16.3.202", "timestamp": 1616541719815},
+    {"pathid": 1, "hopCount": 4, "namespace": "nxos", "hostname": "server302", "iif":
+    "bond0", "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+    false, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup": "", "vtepLookup":
+    "", "macLookup": "", "nexthopIp": "", "timestamp": 1616541713111}, {"pathid":
+    2, "hopCount": 0, "namespace": "nxos", "hostname": "server101", "iif": "bond0",
+    "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+    true, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup": "172.16.0.0/16",
+    "vtepLookup": "", "macLookup": "", "nexthopIp": "172.16.1.254", "timestamp": 1616541713004},
+    {"pathid": 2, "hopCount": 1, "namespace": "nxos", "hostname": "leaf02", "iif":
+    "port-channel3", "oif": "Ethernet1/1", "vrf": "evpn-vrf", "isL2": true, "overlay":
+    false, "mtuMatch": false, "inMtu": 9200, "outMtu": 9200, "protocol": "bgp", "ipLookup":
+    "172.16.3.202/32", "vtepLookup": "10.0.0.134", "macLookup": "", "nexthopIp": "10.0.0.21",
+    "timestamp": 1616541719590}, {"pathid": 2, "hopCount": 2, "namespace": "nxos",
+    "hostname": "spine01", "iif": "Ethernet1/2", "oif": "Ethernet1/3", "vrf": "default",
+    "isL2": true, "overlay": true, "mtuMatch": true, "inMtu": 9200, "outMtu": 9200,
+    "protocol": "ospf", "ipLookup": "10.0.0.134", "vtepLookup": "10.0.0.134", "macLookup":
+    "", "nexthopIp": "10.0.0.13", "timestamp": 1616541718279}, {"pathid": 2, "hopCount":
+    3, "namespace": "nxos", "hostname": "leaf03", "iif": "Ethernet1/1", "oif": "port-channel4",
+    "vrf": "evpn-vrf", "isL2": false, "overlay": true, "mtuMatch": true, "inMtu":
+    9200, "outMtu": 9200, "protocol": "hmm", "ipLookup": "172.16.3.202/32", "vtepLookup":
+    "", "macLookup": "", "nexthopIp": "172.16.3.202", "timestamp": 1616541719815},
+    {"pathid": 2, "hopCount": 4, "namespace": "nxos", "hostname": "server302", "iif":
+    "bond0", "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+    false, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup": "", "vtepLookup":
+    "", "macLookup": "", "nexthopIp": "", "timestamp": 1616541713111}, {"pathid":
+    3, "hopCount": 0, "namespace": "nxos", "hostname": "server101", "iif": "bond0",
+    "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+    true, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup": "172.16.0.0/16",
+    "vtepLookup": "", "macLookup": "", "nexthopIp": "172.16.1.254", "timestamp": 1616541713004},
+    {"pathid": 3, "hopCount": 1, "namespace": "nxos", "hostname": "leaf01", "iif":
+    "port-channel3", "oif": "Ethernet1/2", "vrf": "evpn-vrf", "isL2": true, "overlay":
+    false, "mtuMatch": false, "inMtu": 9200, "outMtu": 9200, "protocol": "bgp", "ipLookup":
+    "172.16.3.202/32", "vtepLookup": "10.0.0.134", "macLookup": "", "nexthopIp": "10.0.0.22",
+    "timestamp": 1616541720104}, {"pathid": 3, "hopCount": 2, "namespace": "nxos",
+    "hostname": "spine02", "iif": "Ethernet1/1", "oif": "Ethernet1/3", "vrf": "default",
+    "isL2": true, "overlay": true, "mtuMatch": true, "inMtu": 9200, "outMtu": 9200,
+    "protocol": "ospf", "ipLookup": "10.0.0.134", "vtepLookup": "10.0.0.134", "macLookup":
+    "", "nexthopIp": "10.0.0.13", "timestamp": 1616541718531}, {"pathid": 3, "hopCount":
+    3, "namespace": "nxos", "hostname": "leaf03", "iif": "Ethernet1/2", "oif": "port-channel4",
+    "vrf": "evpn-vrf", "isL2": false, "overlay": true, "mtuMatch": true, "inMtu":
+    9200, "outMtu": 9200, "protocol": "hmm", "ipLookup": "172.16.3.202/32", "vtepLookup":
+    "", "macLookup": "", "nexthopIp": "172.16.3.202", "timestamp": 1616541719815},
+    {"pathid": 3, "hopCount": 4, "namespace": "nxos", "hostname": "server302", "iif":
+    "bond0", "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+    false, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup": "", "vtepLookup":
+    "", "macLookup": "", "nexthopIp": "", "timestamp": 1616541713111}, {"pathid":
+    4, "hopCount": 0, "namespace": "nxos", "hostname": "server101", "iif": "bond0",
+    "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+    true, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup": "172.16.0.0/16",
+    "vtepLookup": "", "macLookup": "", "nexthopIp": "172.16.1.254", "timestamp": 1616541713004},
+    {"pathid": 4, "hopCount": 1, "namespace": "nxos", "hostname": "leaf02", "iif":
+    "port-channel3", "oif": "Ethernet1/2", "vrf": "evpn-vrf", "isL2": true, "overlay":
+    false, "mtuMatch": false, "inMtu": 9200, "outMtu": 9200, "protocol": "bgp", "ipLookup":
+    "172.16.3.202/32", "vtepLookup": "10.0.0.134", "macLookup": "", "nexthopIp": "10.0.0.22",
+    "timestamp": 1616541719590}, {"pathid": 4, "hopCount": 2, "namespace": "nxos",
+    "hostname": "spine02", "iif": "Ethernet1/2", "oif": "Ethernet1/3", "vrf": "default",
+    "isL2": true, "overlay": true, "mtuMatch": true, "inMtu": 9200, "outMtu": 9200,
+    "protocol": "ospf", "ipLookup": "10.0.0.134", "vtepLookup": "10.0.0.134", "macLookup":
+    "", "nexthopIp": "10.0.0.13", "timestamp": 1616541718531}, {"pathid": 4, "hopCount":
+    3, "namespace": "nxos", "hostname": "leaf03", "iif": "Ethernet1/2", "oif": "port-channel4",
+    "vrf": "evpn-vrf", "isL2": false, "overlay": true, "mtuMatch": true, "inMtu":
+    9200, "outMtu": 9200, "protocol": "hmm", "ipLookup": "172.16.3.202/32", "vtepLookup":
+    "", "macLookup": "", "nexthopIp": "172.16.3.202", "timestamp": 1616541719815},
+    {"pathid": 4, "hopCount": 4, "namespace": "nxos", "hostname": "server302", "iif":
+    "bond0", "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+    false, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup": "", "vtepLookup":
+    "", "macLookup": "", "nexthopIp": "", "timestamp": 1616541713111}, {"pathid":
+    5, "hopCount": 0, "namespace": "nxos", "hostname": "server101", "iif": "bond0",
+    "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+    true, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup": "172.16.0.0/16",
+    "vtepLookup": "", "macLookup": "", "nexthopIp": "172.16.1.254", "timestamp": 1616541713004},
+    {"pathid": 5, "hopCount": 1, "namespace": "nxos", "hostname": "leaf01", "iif":
+    "port-channel3", "oif": "Ethernet1/1", "vrf": "evpn-vrf", "isL2": true, "overlay":
+    false, "mtuMatch": false, "inMtu": 9200, "outMtu": 9200, "protocol": "bgp", "ipLookup":
+    "172.16.3.202/32", "vtepLookup": "10.0.0.134", "macLookup": "", "nexthopIp": "10.0.0.21",
+    "timestamp": 1616541720104}, {"pathid": 5, "hopCount": 2, "namespace": "nxos",
+    "hostname": "spine01", "iif": "Ethernet1/1", "oif": "Ethernet1/4", "vrf": "default",
+    "isL2": true, "overlay": true, "mtuMatch": true, "inMtu": 9200, "outMtu": 9200,
+    "protocol": "ospf", "ipLookup": "10.0.0.134", "vtepLookup": "10.0.0.134", "macLookup":
+    "", "nexthopIp": "10.0.0.14", "timestamp": 1616541718279}, {"pathid": 5, "hopCount":
+    3, "namespace": "nxos", "hostname": "leaf04", "iif": "Ethernet1/1", "oif": "port-channel4",
+    "vrf": "evpn-vrf", "isL2": false, "overlay": true, "mtuMatch": true, "inMtu":
+    9200, "outMtu": 9200, "protocol": "hmm", "ipLookup": "172.16.3.202/32", "vtepLookup":
+    "", "macLookup": "", "nexthopIp": "172.16.3.202", "timestamp": 1616541720429},
+    {"pathid": 5, "hopCount": 4, "namespace": "nxos", "hostname": "server302", "iif":
+    "bond0", "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+    false, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup": "", "vtepLookup":
+    "", "macLookup": "", "nexthopIp": "", "timestamp": 1616541713111}, {"pathid":
+    6, "hopCount": 0, "namespace": "nxos", "hostname": "server101", "iif": "bond0",
+    "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+    true, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup": "172.16.0.0/16",
+    "vtepLookup": "", "macLookup": "", "nexthopIp": "172.16.1.254", "timestamp": 1616541713004},
+    {"pathid": 6, "hopCount": 1, "namespace": "nxos", "hostname": "leaf02", "iif":
+    "port-channel3", "oif": "Ethernet1/1", "vrf": "evpn-vrf", "isL2": true, "overlay":
+    false, "mtuMatch": false, "inMtu": 9200, "outMtu": 9200, "protocol": "bgp", "ipLookup":
+    "172.16.3.202/32", "vtepLookup": "10.0.0.134", "macLookup": "", "nexthopIp": "10.0.0.21",
+    "timestamp": 1616541719590}, {"pathid": 6, "hopCount": 2, "namespace": "nxos",
+    "hostname": "spine01", "iif": "Ethernet1/2", "oif": "Ethernet1/4", "vrf": "default",
+    "isL2": true, "overlay": true, "mtuMatch": true, "inMtu": 9200, "outMtu": 9200,
+    "protocol": "ospf", "ipLookup": "10.0.0.134", "vtepLookup": "10.0.0.134", "macLookup":
+    "", "nexthopIp": "10.0.0.14", "timestamp": 1616541718279}, {"pathid": 6, "hopCount":
+    3, "namespace": "nxos", "hostname": "leaf04", "iif": "Ethernet1/1", "oif": "port-channel4",
+    "vrf": "evpn-vrf", "isL2": false, "overlay": true, "mtuMatch": true, "inMtu":
+    9200, "outMtu": 9200, "protocol": "hmm", "ipLookup": "172.16.3.202/32", "vtepLookup":
+    "", "macLookup": "", "nexthopIp": "172.16.3.202", "timestamp": 1616541720429},
+    {"pathid": 6, "hopCount": 4, "namespace": "nxos", "hostname": "server302", "iif":
+    "bond0", "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+    false, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup": "", "vtepLookup":
+    "", "macLookup": "", "nexthopIp": "", "timestamp": 1616541713111}, {"pathid":
+    7, "hopCount": 0, "namespace": "nxos", "hostname": "server101", "iif": "bond0",
+    "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+    true, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup": "172.16.0.0/16",
+    "vtepLookup": "", "macLookup": "", "nexthopIp": "172.16.1.254", "timestamp": 1616541713004},
+    {"pathid": 7, "hopCount": 1, "namespace": "nxos", "hostname": "leaf01", "iif":
+    "port-channel3", "oif": "Ethernet1/2", "vrf": "evpn-vrf", "isL2": true, "overlay":
+    false, "mtuMatch": false, "inMtu": 9200, "outMtu": 9200, "protocol": "bgp", "ipLookup":
+    "172.16.3.202/32", "vtepLookup": "10.0.0.134", "macLookup": "", "nexthopIp": "10.0.0.22",
+    "timestamp": 1616541720104}, {"pathid": 7, "hopCount": 2, "namespace": "nxos",
+    "hostname": "spine02", "iif": "Ethernet1/1", "oif": "Ethernet1/4", "vrf": "default",
+    "isL2": true, "overlay": true, "mtuMatch": true, "inMtu": 9200, "outMtu": 9200,
+    "protocol": "ospf", "ipLookup": "10.0.0.134", "vtepLookup": "10.0.0.134", "macLookup":
+    "", "nexthopIp": "10.0.0.14", "timestamp": 1616541718531}, {"pathid": 7, "hopCount":
+    3, "namespace": "nxos", "hostname": "leaf04", "iif": "Ethernet1/2", "oif": "port-channel4",
+    "vrf": "evpn-vrf", "isL2": false, "overlay": true, "mtuMatch": true, "inMtu":
+    9200, "outMtu": 9200, "protocol": "hmm", "ipLookup": "172.16.3.202/32", "vtepLookup":
+    "", "macLookup": "", "nexthopIp": "172.16.3.202", "timestamp": 1616541720429},
+    {"pathid": 7, "hopCount": 4, "namespace": "nxos", "hostname": "server302", "iif":
+    "bond0", "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+    false, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup": "", "vtepLookup":
+    "", "macLookup": "", "nexthopIp": "", "timestamp": 1616541713111}, {"pathid":
+    8, "hopCount": 0, "namespace": "nxos", "hostname": "server101", "iif": "bond0",
+    "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+    true, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup": "172.16.0.0/16",
+    "vtepLookup": "", "macLookup": "", "nexthopIp": "172.16.1.254", "timestamp": 1616541713004},
+    {"pathid": 8, "hopCount": 1, "namespace": "nxos", "hostname": "leaf02", "iif":
+    "port-channel3", "oif": "Ethernet1/2", "vrf": "evpn-vrf", "isL2": true, "overlay":
+    false, "mtuMatch": false, "inMtu": 9200, "outMtu": 9200, "protocol": "bgp", "ipLookup":
+    "172.16.3.202/32", "vtepLookup": "10.0.0.134", "macLookup": "", "nexthopIp": "10.0.0.22",
+    "timestamp": 1616541719590}, {"pathid": 8, "hopCount": 2, "namespace": "nxos",
+    "hostname": "spine02", "iif": "Ethernet1/2", "oif": "Ethernet1/4", "vrf": "default",
+    "isL2": true, "overlay": true, "mtuMatch": true, "inMtu": 9200, "outMtu": 9200,
+    "protocol": "ospf", "ipLookup": "10.0.0.134", "vtepLookup": "10.0.0.134", "macLookup":
+    "", "nexthopIp": "10.0.0.14", "timestamp": 1616541718531}, {"pathid": 8, "hopCount":
+    3, "namespace": "nxos", "hostname": "leaf04", "iif": "Ethernet1/2", "oif": "port-channel4",
+    "vrf": "evpn-vrf", "isL2": false, "overlay": true, "mtuMatch": true, "inMtu":
+    9200, "outMtu": 9200, "protocol": "hmm", "ipLookup": "172.16.3.202/32", "vtepLookup":
+    "", "macLookup": "", "nexthopIp": "172.16.3.202", "timestamp": 1616541720429},
+    {"pathid": 8, "hopCount": 4, "namespace": "nxos", "hostname": "server302", "iif":
+    "bond0", "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+    false, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup": "", "vtepLookup":
+    "", "macLookup": "", "nexthopIp": "", "timestamp": 1616541713111}]'
 - command: path show --dest=172.16.2.201 --src=172.16.1.101 --format=json --namespace=nxos
   data-directory: tests/data/nxos/parquet-out/
-  error:
-    error: '[{"pathid": 1, "hopCount": 0, "namespace": "nxos", "hostname": "server101",
-      "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": false, "overlay":
-      false, "mtuMatch": true, "inMtu": 2000, "outMtu": 2000, "protocol": "", "ipLookup":
-      "172.16.0.0/16", "vtepLookup": "", "macLookup": "", "nexthopIp": "172.16.1.254",
-      "error": "", "timestamp": 1609296106167}, {"pathid": 1, "hopCount": 1, "namespace":
-      "nxos", "hostname": "leaf01", "iif": "port-channel3", "oif": "Ethernet1/1",
-      "vrf": "evpn-vrf", "isL2": true, "overlay": false, "mtuMatch": false, "inMtu":
-      1500, "outMtu": 9200, "protocol": "bgp", "ipLookup": "172.16.2.201/32", "vtepLookup":
-      "10.0.0.134", "macLookup": "", "nexthopIp": "10.0.0.21", "error": "Hop MTU <
-      Src Mtu", "timestamp": 1609296117463}, {"pathid": 1, "hopCount": 2, "namespace":
-      "nxos", "hostname": "spine01", "iif": "Ethernet1/1", "oif": "Ethernet1/3", "vrf":
-      "default", "isL2": true, "overlay": true, "mtuMatch": true, "inMtu": 9200, "outMtu":
-      9200, "protocol": "ospf", "ipLookup": "10.0.0.134", "vtepLookup": "10.0.0.134",
-      "macLookup": "", "nexthopIp": "10.0.0.13", "error": "", "timestamp": 1609296113094},
-      {"pathid": 1, "hopCount": 3, "namespace": "nxos", "hostname": "leaf03", "iif":
-      "Ethernet1/1", "oif": "port-channel3", "vrf": "evpn-vrf", "isL2": false, "overlay":
-      true, "mtuMatch": true, "inMtu": 9200, "outMtu": 9200, "protocol": "hmm", "ipLookup":
-      "172.16.2.201/32", "vtepLookup": "", "macLookup": "", "nexthopIp": "172.16.2.201",
-      "error": "", "timestamp": 1609296118698}, {"pathid": 1, "hopCount": 4, "namespace":
-      "nxos", "hostname": "server301", "iif": "bond0", "oif": "bond0", "vrf": "default",
-      "isL2": false, "overlay": false, "mtuMatch": false, "inMtu": 2000, "outMtu":
-      2000, "protocol": "", "ipLookup": "", "vtepLookup": "", "macLookup": "", "nexthopIp":
-      "", "error": "", "timestamp": 1609296106280}, {"pathid": 2, "hopCount": 0, "namespace":
-      "nxos", "hostname": "server101", "iif": "bond0", "oif": "bond0", "vrf": "default",
-      "isL2": false, "overlay": false, "mtuMatch": true, "inMtu": 2000, "outMtu":
-      2000, "protocol": "", "ipLookup": "172.16.0.0/16", "vtepLookup": "", "macLookup":
-      "", "nexthopIp": "172.16.1.254", "error": "", "timestamp": 1609296106167}, {"pathid":
-      2, "hopCount": 1, "namespace": "nxos", "hostname": "leaf01", "iif": "port-channel3",
-      "oif": "Ethernet1/2", "vrf": "evpn-vrf", "isL2": true, "overlay": false, "mtuMatch":
-      false, "inMtu": 1500, "outMtu": 9200, "protocol": "bgp", "ipLookup": "172.16.2.201/32",
-      "vtepLookup": "10.0.0.134", "macLookup": "", "nexthopIp": "10.0.0.22", "error":
-      "Hop MTU < Src Mtu", "timestamp": 1609296117463}, {"pathid": 2, "hopCount":
-      2, "namespace": "nxos", "hostname": "spine02", "iif": "Ethernet1/1", "oif":
-      "Ethernet1/3", "vrf": "default", "isL2": true, "overlay": true, "mtuMatch":
-      true, "inMtu": 9200, "outMtu": 9200, "protocol": "ospf", "ipLookup": "10.0.0.134",
-      "vtepLookup": "10.0.0.134", "macLookup": "", "nexthopIp": "10.0.0.13", "error":
-      "", "timestamp": 1609296112981}, {"pathid": 2, "hopCount": 3, "namespace": "nxos",
-      "hostname": "leaf03", "iif": "Ethernet1/2", "oif": "port-channel3", "vrf": "evpn-vrf",
-      "isL2": false, "overlay": true, "mtuMatch": true, "inMtu": 9200, "outMtu": 9200,
-      "protocol": "hmm", "ipLookup": "172.16.2.201/32", "vtepLookup": "", "macLookup":
-      "", "nexthopIp": "172.16.2.201", "error": "", "timestamp": 1609296118698}, {"pathid":
-      2, "hopCount": 4, "namespace": "nxos", "hostname": "server301", "iif": "bond0",
-      "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
-      false, "inMtu": 2000, "outMtu": 2000, "protocol": "", "ipLookup": "", "vtepLookup":
-      "", "macLookup": "", "nexthopIp": "", "error": "", "timestamp": 1609296106280},
-      {"pathid": 3, "hopCount": 0, "namespace": "nxos", "hostname": "server101", "iif":
-      "bond0", "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false,
-      "mtuMatch": true, "inMtu": 2000, "outMtu": 2000, "protocol": "", "ipLookup":
-      "172.16.0.0/16", "vtepLookup": "", "macLookup": "", "nexthopIp": "172.16.1.254",
-      "error": "", "timestamp": 1609296106167}, {"pathid": 3, "hopCount": 1, "namespace":
-      "nxos", "hostname": "leaf01", "iif": "port-channel3", "oif": "Ethernet1/1",
-      "vrf": "evpn-vrf", "isL2": true, "overlay": false, "mtuMatch": false, "inMtu":
-      1500, "outMtu": 9200, "protocol": "bgp", "ipLookup": "172.16.2.201/32", "vtepLookup":
-      "10.0.0.134", "macLookup": "", "nexthopIp": "10.0.0.21", "error": "Hop MTU <
-      Src Mtu", "timestamp": 1609296117463}, {"pathid": 3, "hopCount": 2, "namespace":
-      "nxos", "hostname": "spine01", "iif": "Ethernet1/1", "oif": "Ethernet1/4", "vrf":
-      "default", "isL2": true, "overlay": true, "mtuMatch": true, "inMtu": 9200, "outMtu":
-      9200, "protocol": "ospf", "ipLookup": "10.0.0.134", "vtepLookup": "10.0.0.134",
-      "macLookup": "", "nexthopIp": "10.0.0.14", "error": "", "timestamp": 1609296113094},
-      {"pathid": 3, "hopCount": 3, "namespace": "nxos", "hostname": "leaf04", "iif":
-      "Ethernet1/1", "oif": "port-channel3", "vrf": "evpn-vrf", "isL2": false, "overlay":
-      true, "mtuMatch": true, "inMtu": 9200, "outMtu": 9200, "protocol": "hmm", "ipLookup":
-      "172.16.2.201/32", "vtepLookup": "", "macLookup": "", "nexthopIp": "172.16.2.201",
-      "error": "", "timestamp": 1609296118102}, {"pathid": 3, "hopCount": 4, "namespace":
-      "nxos", "hostname": "server301", "iif": "bond0", "oif": "bond0", "vrf": "default",
-      "isL2": false, "overlay": false, "mtuMatch": false, "inMtu": 2000, "outMtu":
-      2000, "protocol": "", "ipLookup": "", "vtepLookup": "", "macLookup": "", "nexthopIp":
-      "", "error": "", "timestamp": 1609296106280}, {"pathid": 4, "hopCount": 0, "namespace":
-      "nxos", "hostname": "server101", "iif": "bond0", "oif": "bond0", "vrf": "default",
-      "isL2": false, "overlay": false, "mtuMatch": true, "inMtu": 2000, "outMtu":
-      2000, "protocol": "", "ipLookup": "172.16.0.0/16", "vtepLookup": "", "macLookup":
-      "", "nexthopIp": "172.16.1.254", "error": "", "timestamp": 1609296106167}, {"pathid":
-      4, "hopCount": 1, "namespace": "nxos", "hostname": "leaf01", "iif": "port-channel3",
-      "oif": "Ethernet1/2", "vrf": "evpn-vrf", "isL2": true, "overlay": false, "mtuMatch":
-      false, "inMtu": 1500, "outMtu": 9200, "protocol": "bgp", "ipLookup": "172.16.2.201/32",
-      "vtepLookup": "10.0.0.134", "macLookup": "", "nexthopIp": "10.0.0.22", "error":
-      "Hop MTU < Src Mtu", "timestamp": 1609296117463}, {"pathid": 4, "hopCount":
-      2, "namespace": "nxos", "hostname": "spine02", "iif": "Ethernet1/1", "oif":
-      "Ethernet1/4", "vrf": "default", "isL2": true, "overlay": true, "mtuMatch":
-      true, "inMtu": 9200, "outMtu": 9200, "protocol": "ospf", "ipLookup": "10.0.0.134",
-      "vtepLookup": "10.0.0.134", "macLookup": "", "nexthopIp": "10.0.0.14", "error":
-      "", "timestamp": 1609296112981}, {"pathid": 4, "hopCount": 3, "namespace": "nxos",
-      "hostname": "leaf04", "iif": "Ethernet1/2", "oif": "port-channel3", "vrf": "evpn-vrf",
-      "isL2": false, "overlay": true, "mtuMatch": true, "inMtu": 9200, "outMtu": 9200,
-      "protocol": "hmm", "ipLookup": "172.16.2.201/32", "vtepLookup": "", "macLookup":
-      "", "nexthopIp": "172.16.2.201", "error": "", "timestamp": 1609296118102}, {"pathid":
-      4, "hopCount": 4, "namespace": "nxos", "hostname": "server301", "iif": "bond0",
-      "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
-      false, "inMtu": 2000, "outMtu": 2000, "protocol": "", "ipLookup": "", "vtepLookup":
-      "", "macLookup": "", "nexthopIp": "", "error": "", "timestamp": 1609296106280}]'
   marks: path show nxos
+  output: '[{"pathid": 1, "hopCount": 0, "namespace": "nxos", "hostname": "server101",
+    "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false,
+    "mtuMatch": true, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup": "172.16.0.0/16",
+    "vtepLookup": "", "macLookup": "", "nexthopIp": "172.16.1.254", "timestamp": 1616541713004},
+    {"pathid": 1, "hopCount": 1, "namespace": "nxos", "hostname": "leaf01", "iif":
+    "port-channel3", "oif": "Ethernet1/1", "vrf": "evpn-vrf", "isL2": true, "overlay":
+    false, "mtuMatch": false, "inMtu": 9200, "outMtu": 9200, "protocol": "bgp", "ipLookup":
+    "172.16.2.201/32", "vtepLookup": "10.0.0.134", "macLookup": "", "nexthopIp": "10.0.0.21",
+    "timestamp": 1616541720104}, {"pathid": 1, "hopCount": 2, "namespace": "nxos",
+    "hostname": "spine01", "iif": "Ethernet1/1", "oif": "Ethernet1/3", "vrf": "default",
+    "isL2": true, "overlay": true, "mtuMatch": true, "inMtu": 9200, "outMtu": 9200,
+    "protocol": "ospf", "ipLookup": "10.0.0.134", "vtepLookup": "10.0.0.134", "macLookup":
+    "", "nexthopIp": "10.0.0.13", "timestamp": 1616541718279}, {"pathid": 1, "hopCount":
+    3, "namespace": "nxos", "hostname": "leaf03", "iif": "Ethernet1/1", "oif": "port-channel3",
+    "vrf": "evpn-vrf", "isL2": false, "overlay": true, "mtuMatch": true, "inMtu":
+    9200, "outMtu": 9200, "protocol": "hmm", "ipLookup": "172.16.2.201/32", "vtepLookup":
+    "", "macLookup": "", "nexthopIp": "172.16.2.201", "timestamp": 1616541719815},
+    {"pathid": 1, "hopCount": 4, "namespace": "nxos", "hostname": "server301", "iif":
+    "bond0", "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+    false, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup": "", "vtepLookup":
+    "", "macLookup": "", "nexthopIp": "", "timestamp": 1616541713144}, {"pathid":
+    2, "hopCount": 0, "namespace": "nxos", "hostname": "server101", "iif": "bond0",
+    "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+    true, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup": "172.16.0.0/16",
+    "vtepLookup": "", "macLookup": "", "nexthopIp": "172.16.1.254", "timestamp": 1616541713004},
+    {"pathid": 2, "hopCount": 1, "namespace": "nxos", "hostname": "leaf02", "iif":
+    "port-channel3", "oif": "Ethernet1/1", "vrf": "evpn-vrf", "isL2": true, "overlay":
+    false, "mtuMatch": false, "inMtu": 9200, "outMtu": 9200, "protocol": "bgp", "ipLookup":
+    "172.16.2.201/32", "vtepLookup": "10.0.0.134", "macLookup": "", "nexthopIp": "10.0.0.21",
+    "timestamp": 1616541719590}, {"pathid": 2, "hopCount": 2, "namespace": "nxos",
+    "hostname": "spine01", "iif": "Ethernet1/2", "oif": "Ethernet1/3", "vrf": "default",
+    "isL2": true, "overlay": true, "mtuMatch": true, "inMtu": 9200, "outMtu": 9200,
+    "protocol": "ospf", "ipLookup": "10.0.0.134", "vtepLookup": "10.0.0.134", "macLookup":
+    "", "nexthopIp": "10.0.0.13", "timestamp": 1616541718279}, {"pathid": 2, "hopCount":
+    3, "namespace": "nxos", "hostname": "leaf03", "iif": "Ethernet1/1", "oif": "port-channel3",
+    "vrf": "evpn-vrf", "isL2": false, "overlay": true, "mtuMatch": true, "inMtu":
+    9200, "outMtu": 9200, "protocol": "hmm", "ipLookup": "172.16.2.201/32", "vtepLookup":
+    "", "macLookup": "", "nexthopIp": "172.16.2.201", "timestamp": 1616541719815},
+    {"pathid": 2, "hopCount": 4, "namespace": "nxos", "hostname": "server301", "iif":
+    "bond0", "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+    false, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup": "", "vtepLookup":
+    "", "macLookup": "", "nexthopIp": "", "timestamp": 1616541713144}, {"pathid":
+    3, "hopCount": 0, "namespace": "nxos", "hostname": "server101", "iif": "bond0",
+    "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+    true, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup": "172.16.0.0/16",
+    "vtepLookup": "", "macLookup": "", "nexthopIp": "172.16.1.254", "timestamp": 1616541713004},
+    {"pathid": 3, "hopCount": 1, "namespace": "nxos", "hostname": "leaf01", "iif":
+    "port-channel3", "oif": "Ethernet1/2", "vrf": "evpn-vrf", "isL2": true, "overlay":
+    false, "mtuMatch": false, "inMtu": 9200, "outMtu": 9200, "protocol": "bgp", "ipLookup":
+    "172.16.2.201/32", "vtepLookup": "10.0.0.134", "macLookup": "", "nexthopIp": "10.0.0.22",
+    "timestamp": 1616541720104}, {"pathid": 3, "hopCount": 2, "namespace": "nxos",
+    "hostname": "spine02", "iif": "Ethernet1/1", "oif": "Ethernet1/3", "vrf": "default",
+    "isL2": true, "overlay": true, "mtuMatch": true, "inMtu": 9200, "outMtu": 9200,
+    "protocol": "ospf", "ipLookup": "10.0.0.134", "vtepLookup": "10.0.0.134", "macLookup":
+    "", "nexthopIp": "10.0.0.13", "timestamp": 1616541718531}, {"pathid": 3, "hopCount":
+    3, "namespace": "nxos", "hostname": "leaf03", "iif": "Ethernet1/2", "oif": "port-channel3",
+    "vrf": "evpn-vrf", "isL2": false, "overlay": true, "mtuMatch": true, "inMtu":
+    9200, "outMtu": 9200, "protocol": "hmm", "ipLookup": "172.16.2.201/32", "vtepLookup":
+    "", "macLookup": "", "nexthopIp": "172.16.2.201", "timestamp": 1616541719815},
+    {"pathid": 3, "hopCount": 4, "namespace": "nxos", "hostname": "server301", "iif":
+    "bond0", "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+    false, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup": "", "vtepLookup":
+    "", "macLookup": "", "nexthopIp": "", "timestamp": 1616541713144}, {"pathid":
+    4, "hopCount": 0, "namespace": "nxos", "hostname": "server101", "iif": "bond0",
+    "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+    true, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup": "172.16.0.0/16",
+    "vtepLookup": "", "macLookup": "", "nexthopIp": "172.16.1.254", "timestamp": 1616541713004},
+    {"pathid": 4, "hopCount": 1, "namespace": "nxos", "hostname": "leaf02", "iif":
+    "port-channel3", "oif": "Ethernet1/2", "vrf": "evpn-vrf", "isL2": true, "overlay":
+    false, "mtuMatch": false, "inMtu": 9200, "outMtu": 9200, "protocol": "bgp", "ipLookup":
+    "172.16.2.201/32", "vtepLookup": "10.0.0.134", "macLookup": "", "nexthopIp": "10.0.0.22",
+    "timestamp": 1616541719590}, {"pathid": 4, "hopCount": 2, "namespace": "nxos",
+    "hostname": "spine02", "iif": "Ethernet1/2", "oif": "Ethernet1/3", "vrf": "default",
+    "isL2": true, "overlay": true, "mtuMatch": true, "inMtu": 9200, "outMtu": 9200,
+    "protocol": "ospf", "ipLookup": "10.0.0.134", "vtepLookup": "10.0.0.134", "macLookup":
+    "", "nexthopIp": "10.0.0.13", "timestamp": 1616541718531}, {"pathid": 4, "hopCount":
+    3, "namespace": "nxos", "hostname": "leaf03", "iif": "Ethernet1/2", "oif": "port-channel3",
+    "vrf": "evpn-vrf", "isL2": false, "overlay": true, "mtuMatch": true, "inMtu":
+    9200, "outMtu": 9200, "protocol": "hmm", "ipLookup": "172.16.2.201/32", "vtepLookup":
+    "", "macLookup": "", "nexthopIp": "172.16.2.201", "timestamp": 1616541719815},
+    {"pathid": 4, "hopCount": 4, "namespace": "nxos", "hostname": "server301", "iif":
+    "bond0", "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+    false, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup": "", "vtepLookup":
+    "", "macLookup": "", "nexthopIp": "", "timestamp": 1616541713144}, {"pathid":
+    5, "hopCount": 0, "namespace": "nxos", "hostname": "server101", "iif": "bond0",
+    "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+    true, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup": "172.16.0.0/16",
+    "vtepLookup": "", "macLookup": "", "nexthopIp": "172.16.1.254", "timestamp": 1616541713004},
+    {"pathid": 5, "hopCount": 1, "namespace": "nxos", "hostname": "leaf01", "iif":
+    "port-channel3", "oif": "Ethernet1/1", "vrf": "evpn-vrf", "isL2": true, "overlay":
+    false, "mtuMatch": false, "inMtu": 9200, "outMtu": 9200, "protocol": "bgp", "ipLookup":
+    "172.16.2.201/32", "vtepLookup": "10.0.0.134", "macLookup": "", "nexthopIp": "10.0.0.21",
+    "timestamp": 1616541720104}, {"pathid": 5, "hopCount": 2, "namespace": "nxos",
+    "hostname": "spine01", "iif": "Ethernet1/1", "oif": "Ethernet1/4", "vrf": "default",
+    "isL2": true, "overlay": true, "mtuMatch": true, "inMtu": 9200, "outMtu": 9200,
+    "protocol": "ospf", "ipLookup": "10.0.0.134", "vtepLookup": "10.0.0.134", "macLookup":
+    "", "nexthopIp": "10.0.0.14", "timestamp": 1616541718279}, {"pathid": 5, "hopCount":
+    3, "namespace": "nxos", "hostname": "leaf04", "iif": "Ethernet1/1", "oif": "port-channel3",
+    "vrf": "evpn-vrf", "isL2": false, "overlay": true, "mtuMatch": true, "inMtu":
+    9200, "outMtu": 9200, "protocol": "hmm", "ipLookup": "172.16.2.201/32", "vtepLookup":
+    "", "macLookup": "", "nexthopIp": "172.16.2.201", "timestamp": 1616541720429},
+    {"pathid": 5, "hopCount": 4, "namespace": "nxos", "hostname": "server301", "iif":
+    "bond0", "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+    false, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup": "", "vtepLookup":
+    "", "macLookup": "", "nexthopIp": "", "timestamp": 1616541713144}, {"pathid":
+    6, "hopCount": 0, "namespace": "nxos", "hostname": "server101", "iif": "bond0",
+    "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+    true, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup": "172.16.0.0/16",
+    "vtepLookup": "", "macLookup": "", "nexthopIp": "172.16.1.254", "timestamp": 1616541713004},
+    {"pathid": 6, "hopCount": 1, "namespace": "nxos", "hostname": "leaf02", "iif":
+    "port-channel3", "oif": "Ethernet1/1", "vrf": "evpn-vrf", "isL2": true, "overlay":
+    false, "mtuMatch": false, "inMtu": 9200, "outMtu": 9200, "protocol": "bgp", "ipLookup":
+    "172.16.2.201/32", "vtepLookup": "10.0.0.134", "macLookup": "", "nexthopIp": "10.0.0.21",
+    "timestamp": 1616541719590}, {"pathid": 6, "hopCount": 2, "namespace": "nxos",
+    "hostname": "spine01", "iif": "Ethernet1/2", "oif": "Ethernet1/4", "vrf": "default",
+    "isL2": true, "overlay": true, "mtuMatch": true, "inMtu": 9200, "outMtu": 9200,
+    "protocol": "ospf", "ipLookup": "10.0.0.134", "vtepLookup": "10.0.0.134", "macLookup":
+    "", "nexthopIp": "10.0.0.14", "timestamp": 1616541718279}, {"pathid": 6, "hopCount":
+    3, "namespace": "nxos", "hostname": "leaf04", "iif": "Ethernet1/1", "oif": "port-channel3",
+    "vrf": "evpn-vrf", "isL2": false, "overlay": true, "mtuMatch": true, "inMtu":
+    9200, "outMtu": 9200, "protocol": "hmm", "ipLookup": "172.16.2.201/32", "vtepLookup":
+    "", "macLookup": "", "nexthopIp": "172.16.2.201", "timestamp": 1616541720429},
+    {"pathid": 6, "hopCount": 4, "namespace": "nxos", "hostname": "server301", "iif":
+    "bond0", "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+    false, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup": "", "vtepLookup":
+    "", "macLookup": "", "nexthopIp": "", "timestamp": 1616541713144}, {"pathid":
+    7, "hopCount": 0, "namespace": "nxos", "hostname": "server101", "iif": "bond0",
+    "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+    true, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup": "172.16.0.0/16",
+    "vtepLookup": "", "macLookup": "", "nexthopIp": "172.16.1.254", "timestamp": 1616541713004},
+    {"pathid": 7, "hopCount": 1, "namespace": "nxos", "hostname": "leaf01", "iif":
+    "port-channel3", "oif": "Ethernet1/2", "vrf": "evpn-vrf", "isL2": true, "overlay":
+    false, "mtuMatch": false, "inMtu": 9200, "outMtu": 9200, "protocol": "bgp", "ipLookup":
+    "172.16.2.201/32", "vtepLookup": "10.0.0.134", "macLookup": "", "nexthopIp": "10.0.0.22",
+    "timestamp": 1616541720104}, {"pathid": 7, "hopCount": 2, "namespace": "nxos",
+    "hostname": "spine02", "iif": "Ethernet1/1", "oif": "Ethernet1/4", "vrf": "default",
+    "isL2": true, "overlay": true, "mtuMatch": true, "inMtu": 9200, "outMtu": 9200,
+    "protocol": "ospf", "ipLookup": "10.0.0.134", "vtepLookup": "10.0.0.134", "macLookup":
+    "", "nexthopIp": "10.0.0.14", "timestamp": 1616541718531}, {"pathid": 7, "hopCount":
+    3, "namespace": "nxos", "hostname": "leaf04", "iif": "Ethernet1/2", "oif": "port-channel3",
+    "vrf": "evpn-vrf", "isL2": false, "overlay": true, "mtuMatch": true, "inMtu":
+    9200, "outMtu": 9200, "protocol": "hmm", "ipLookup": "172.16.2.201/32", "vtepLookup":
+    "", "macLookup": "", "nexthopIp": "172.16.2.201", "timestamp": 1616541720429},
+    {"pathid": 7, "hopCount": 4, "namespace": "nxos", "hostname": "server301", "iif":
+    "bond0", "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+    false, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup": "", "vtepLookup":
+    "", "macLookup": "", "nexthopIp": "", "timestamp": 1616541713144}, {"pathid":
+    8, "hopCount": 0, "namespace": "nxos", "hostname": "server101", "iif": "bond0",
+    "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+    true, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup": "172.16.0.0/16",
+    "vtepLookup": "", "macLookup": "", "nexthopIp": "172.16.1.254", "timestamp": 1616541713004},
+    {"pathid": 8, "hopCount": 1, "namespace": "nxos", "hostname": "leaf02", "iif":
+    "port-channel3", "oif": "Ethernet1/2", "vrf": "evpn-vrf", "isL2": true, "overlay":
+    false, "mtuMatch": false, "inMtu": 9200, "outMtu": 9200, "protocol": "bgp", "ipLookup":
+    "172.16.2.201/32", "vtepLookup": "10.0.0.134", "macLookup": "", "nexthopIp": "10.0.0.22",
+    "timestamp": 1616541719590}, {"pathid": 8, "hopCount": 2, "namespace": "nxos",
+    "hostname": "spine02", "iif": "Ethernet1/2", "oif": "Ethernet1/4", "vrf": "default",
+    "isL2": true, "overlay": true, "mtuMatch": true, "inMtu": 9200, "outMtu": 9200,
+    "protocol": "ospf", "ipLookup": "10.0.0.134", "vtepLookup": "10.0.0.134", "macLookup":
+    "", "nexthopIp": "10.0.0.14", "timestamp": 1616541718531}, {"pathid": 8, "hopCount":
+    3, "namespace": "nxos", "hostname": "leaf04", "iif": "Ethernet1/2", "oif": "port-channel3",
+    "vrf": "evpn-vrf", "isL2": false, "overlay": true, "mtuMatch": true, "inMtu":
+    9200, "outMtu": 9200, "protocol": "hmm", "ipLookup": "172.16.2.201/32", "vtepLookup":
+    "", "macLookup": "", "nexthopIp": "172.16.2.201", "timestamp": 1616541720429},
+    {"pathid": 8, "hopCount": 4, "namespace": "nxos", "hostname": "server301", "iif":
+    "bond0", "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+    false, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup": "", "vtepLookup":
+    "", "macLookup": "", "nexthopIp": "", "timestamp": 1616541713144}]'
 - command: path show --src=172.16.3.202 --dest=172.16.3.102 --format=json --namespace=nxos
   data-directory: tests/data/nxos/parquet-out/
   marks: path show nxos
   output: '[{"pathid": 1, "hopCount": 0, "namespace": "nxos", "hostname": "server302",
-    "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false,
-    "mtuMatch": true, "inMtu": 1500, "outMtu": 1500, "protocol": "", "ipLookup": "172.16.3.102",
-    "vtepLookup": "", "macLookup": "", "nexthopIp": "", "timestamp": 1609296106334}]'
+    "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": true, "overlay": false,
+    "mtuMatch": true, "inMtu": 1500, "outMtu": 1500, "protocol": "l2", "ipLookup":
+    "172.16.3.102", "vtepLookup": "", "macLookup": "46:64:8a:7a:48:08", "nexthopIp":
+    "172.16.3.102", "timestamp": null}, {"pathid": 1, "hopCount": 1, "namespace":
+    "nxos", "hostname": "leaf03", "iif": "port-channel4", "oif": "Ethernet1/1", "vrf":
+    "evpn-vrf", "isL2": true, "overlay": false, "mtuMatch": false, "inMtu": 9200,
+    "outMtu": 9200, "protocol": "ospf", "ipLookup": "", "vtepLookup": "10.0.0.112",
+    "macLookup": "", "nexthopIp": "10.0.0.21", "timestamp": 1616541719036}, {"pathid":
+    1, "hopCount": 2, "namespace": "nxos", "hostname": "spine01", "iif": "Ethernet1/3",
+    "oif": "Ethernet1/1", "vrf": "default", "isL2": true, "overlay": true, "mtuMatch":
+    true, "inMtu": 9200, "outMtu": 9200, "protocol": "ospf", "ipLookup": "10.0.0.112",
+    "vtepLookup": "10.0.0.112", "macLookup": "", "nexthopIp": "10.0.0.11", "timestamp":
+    1616541718279}, {"pathid": 1, "hopCount": 3, "namespace": "nxos", "hostname":
+    "leaf01", "iif": "Ethernet1/1", "oif": "port-channel4", "vrf": "evpn-vrf", "isL2":
+    true, "overlay": true, "mtuMatch": true, "inMtu": 9200, "outMtu": 9200, "protocol":
+    "l2", "ipLookup": "172.16.3.102", "vtepLookup": "", "macLookup": null, "nexthopIp":
+    "", "timestamp": 1616541720667}, {"pathid": 1, "hopCount": 4, "namespace": "nxos",
+    "hostname": "server102", "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2":
+    false, "overlay": false, "mtuMatch": false, "inMtu": 1500, "outMtu": 1500, "protocol":
+    "", "ipLookup": "", "vtepLookup": "", "macLookup": "", "nexthopIp": "", "timestamp":
+    1616541713149}, {"pathid": 2, "hopCount": 0, "namespace": "nxos", "hostname":
+    "server302", "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": true, "overlay":
+    false, "mtuMatch": true, "inMtu": 1500, "outMtu": 1500, "protocol": "l2", "ipLookup":
+    "172.16.3.102", "vtepLookup": "", "macLookup": "46:64:8a:7a:48:08", "nexthopIp":
+    "172.16.3.102", "timestamp": null}, {"pathid": 2, "hopCount": 1, "namespace":
+    "nxos", "hostname": "leaf04", "iif": "port-channel4", "oif": "Ethernet1/1", "vrf":
+    "evpn-vrf", "isL2": true, "overlay": false, "mtuMatch": false, "inMtu": 9200,
+    "outMtu": 9200, "protocol": "ospf", "ipLookup": "", "vtepLookup": "10.0.0.112",
+    "macLookup": "", "nexthopIp": "10.0.0.21", "timestamp": 1616541719295}, {"pathid":
+    2, "hopCount": 2, "namespace": "nxos", "hostname": "spine01", "iif": "Ethernet1/4",
+    "oif": "Ethernet1/1", "vrf": "default", "isL2": true, "overlay": true, "mtuMatch":
+    true, "inMtu": 9200, "outMtu": 9200, "protocol": "ospf", "ipLookup": "10.0.0.112",
+    "vtepLookup": "10.0.0.112", "macLookup": "", "nexthopIp": "10.0.0.11", "timestamp":
+    1616541718279}, {"pathid": 2, "hopCount": 3, "namespace": "nxos", "hostname":
+    "leaf01", "iif": "Ethernet1/1", "oif": "port-channel4", "vrf": "evpn-vrf", "isL2":
+    true, "overlay": true, "mtuMatch": true, "inMtu": 9200, "outMtu": 9200, "protocol":
+    "l2", "ipLookup": "172.16.3.102", "vtepLookup": "", "macLookup": null, "nexthopIp":
+    "", "timestamp": 1616541720667}, {"pathid": 2, "hopCount": 4, "namespace": "nxos",
+    "hostname": "server102", "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2":
+    false, "overlay": false, "mtuMatch": false, "inMtu": 1500, "outMtu": 1500, "protocol":
+    "", "ipLookup": "", "vtepLookup": "", "macLookup": "", "nexthopIp": "", "timestamp":
+    1616541713149}, {"pathid": 3, "hopCount": 0, "namespace": "nxos", "hostname":
+    "server302", "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": true, "overlay":
+    false, "mtuMatch": true, "inMtu": 1500, "outMtu": 1500, "protocol": "l2", "ipLookup":
+    "172.16.3.102", "vtepLookup": "", "macLookup": "46:64:8a:7a:48:08", "nexthopIp":
+    "172.16.3.102", "timestamp": null}, {"pathid": 3, "hopCount": 1, "namespace":
+    "nxos", "hostname": "leaf03", "iif": "port-channel4", "oif": "Ethernet1/2", "vrf":
+    "evpn-vrf", "isL2": true, "overlay": false, "mtuMatch": false, "inMtu": 9200,
+    "outMtu": 9200, "protocol": "ospf", "ipLookup": "", "vtepLookup": "10.0.0.112",
+    "macLookup": "", "nexthopIp": "10.0.0.22", "timestamp": 1616541719036}, {"pathid":
+    3, "hopCount": 2, "namespace": "nxos", "hostname": "spine02", "iif": "Ethernet1/3",
+    "oif": "Ethernet1/1", "vrf": "default", "isL2": true, "overlay": true, "mtuMatch":
+    true, "inMtu": 9200, "outMtu": 9200, "protocol": "ospf", "ipLookup": "10.0.0.112",
+    "vtepLookup": "10.0.0.112", "macLookup": "", "nexthopIp": "10.0.0.11", "timestamp":
+    1616541718531}, {"pathid": 3, "hopCount": 3, "namespace": "nxos", "hostname":
+    "leaf01", "iif": "Ethernet1/2", "oif": "port-channel4", "vrf": "evpn-vrf", "isL2":
+    true, "overlay": true, "mtuMatch": true, "inMtu": 9200, "outMtu": 9200, "protocol":
+    "l2", "ipLookup": "172.16.3.102", "vtepLookup": "", "macLookup": null, "nexthopIp":
+    "", "timestamp": 1616541720667}, {"pathid": 3, "hopCount": 4, "namespace": "nxos",
+    "hostname": "server102", "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2":
+    false, "overlay": false, "mtuMatch": false, "inMtu": 1500, "outMtu": 1500, "protocol":
+    "", "ipLookup": "", "vtepLookup": "", "macLookup": "", "nexthopIp": "", "timestamp":
+    1616541713149}, {"pathid": 4, "hopCount": 0, "namespace": "nxos", "hostname":
+    "server302", "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": true, "overlay":
+    false, "mtuMatch": true, "inMtu": 1500, "outMtu": 1500, "protocol": "l2", "ipLookup":
+    "172.16.3.102", "vtepLookup": "", "macLookup": "46:64:8a:7a:48:08", "nexthopIp":
+    "172.16.3.102", "timestamp": null}, {"pathid": 4, "hopCount": 1, "namespace":
+    "nxos", "hostname": "leaf04", "iif": "port-channel4", "oif": "Ethernet1/2", "vrf":
+    "evpn-vrf", "isL2": true, "overlay": false, "mtuMatch": false, "inMtu": 9200,
+    "outMtu": 9200, "protocol": "ospf", "ipLookup": "", "vtepLookup": "10.0.0.112",
+    "macLookup": "", "nexthopIp": "10.0.0.22", "timestamp": 1616541719295}, {"pathid":
+    4, "hopCount": 2, "namespace": "nxos", "hostname": "spine02", "iif": "Ethernet1/4",
+    "oif": "Ethernet1/1", "vrf": "default", "isL2": true, "overlay": true, "mtuMatch":
+    true, "inMtu": 9200, "outMtu": 9200, "protocol": "ospf", "ipLookup": "10.0.0.112",
+    "vtepLookup": "10.0.0.112", "macLookup": "", "nexthopIp": "10.0.0.11", "timestamp":
+    1616541718531}, {"pathid": 4, "hopCount": 3, "namespace": "nxos", "hostname":
+    "leaf01", "iif": "Ethernet1/2", "oif": "port-channel4", "vrf": "evpn-vrf", "isL2":
+    true, "overlay": true, "mtuMatch": true, "inMtu": 9200, "outMtu": 9200, "protocol":
+    "l2", "ipLookup": "172.16.3.102", "vtepLookup": "", "macLookup": null, "nexthopIp":
+    "", "timestamp": 1616541720667}, {"pathid": 4, "hopCount": 4, "namespace": "nxos",
+    "hostname": "server102", "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2":
+    false, "overlay": false, "mtuMatch": false, "inMtu": 1500, "outMtu": 1500, "protocol":
+    "", "ipLookup": "", "vtepLookup": "", "macLookup": "", "nexthopIp": "", "timestamp":
+    1616541713149}, {"pathid": 5, "hopCount": 0, "namespace": "nxos", "hostname":
+    "server302", "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": true, "overlay":
+    false, "mtuMatch": true, "inMtu": 1500, "outMtu": 1500, "protocol": "l2", "ipLookup":
+    "172.16.3.102", "vtepLookup": "", "macLookup": "46:64:8a:7a:48:08", "nexthopIp":
+    "172.16.3.102", "timestamp": null}, {"pathid": 5, "hopCount": 1, "namespace":
+    "nxos", "hostname": "leaf03", "iif": "port-channel4", "oif": "Ethernet1/1", "vrf":
+    "evpn-vrf", "isL2": true, "overlay": false, "mtuMatch": false, "inMtu": 9200,
+    "outMtu": 9200, "protocol": "ospf", "ipLookup": "", "vtepLookup": "10.0.0.112",
+    "macLookup": "", "nexthopIp": "10.0.0.21", "timestamp": 1616541719036}, {"pathid":
+    5, "hopCount": 2, "namespace": "nxos", "hostname": "spine01", "iif": "Ethernet1/3",
+    "oif": "Ethernet1/2", "vrf": "default", "isL2": true, "overlay": true, "mtuMatch":
+    true, "inMtu": 9200, "outMtu": 9200, "protocol": "ospf", "ipLookup": "10.0.0.112",
+    "vtepLookup": "10.0.0.112", "macLookup": "", "nexthopIp": "10.0.0.12", "timestamp":
+    1616541718279}, {"pathid": 5, "hopCount": 3, "namespace": "nxos", "hostname":
+    "leaf02", "iif": "Ethernet1/1", "oif": "port-channel4", "vrf": "evpn-vrf", "isL2":
+    true, "overlay": true, "mtuMatch": true, "inMtu": 9200, "outMtu": 9200, "protocol":
+    "l2", "ipLookup": "172.16.3.102", "vtepLookup": "", "macLookup": null, "nexthopIp":
+    "", "timestamp": 1616541719609}, {"pathid": 5, "hopCount": 4, "namespace": "nxos",
+    "hostname": "server102", "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2":
+    false, "overlay": false, "mtuMatch": false, "inMtu": 1500, "outMtu": 1500, "protocol":
+    "", "ipLookup": "", "vtepLookup": "", "macLookup": "", "nexthopIp": "", "timestamp":
+    1616541713149}, {"pathid": 6, "hopCount": 0, "namespace": "nxos", "hostname":
+    "server302", "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": true, "overlay":
+    false, "mtuMatch": true, "inMtu": 1500, "outMtu": 1500, "protocol": "l2", "ipLookup":
+    "172.16.3.102", "vtepLookup": "", "macLookup": "46:64:8a:7a:48:08", "nexthopIp":
+    "172.16.3.102", "timestamp": null}, {"pathid": 6, "hopCount": 1, "namespace":
+    "nxos", "hostname": "leaf04", "iif": "port-channel4", "oif": "Ethernet1/1", "vrf":
+    "evpn-vrf", "isL2": true, "overlay": false, "mtuMatch": false, "inMtu": 9200,
+    "outMtu": 9200, "protocol": "ospf", "ipLookup": "", "vtepLookup": "10.0.0.112",
+    "macLookup": "", "nexthopIp": "10.0.0.21", "timestamp": 1616541719295}, {"pathid":
+    6, "hopCount": 2, "namespace": "nxos", "hostname": "spine01", "iif": "Ethernet1/4",
+    "oif": "Ethernet1/2", "vrf": "default", "isL2": true, "overlay": true, "mtuMatch":
+    true, "inMtu": 9200, "outMtu": 9200, "protocol": "ospf", "ipLookup": "10.0.0.112",
+    "vtepLookup": "10.0.0.112", "macLookup": "", "nexthopIp": "10.0.0.12", "timestamp":
+    1616541718279}, {"pathid": 6, "hopCount": 3, "namespace": "nxos", "hostname":
+    "leaf02", "iif": "Ethernet1/1", "oif": "port-channel4", "vrf": "evpn-vrf", "isL2":
+    true, "overlay": true, "mtuMatch": true, "inMtu": 9200, "outMtu": 9200, "protocol":
+    "l2", "ipLookup": "172.16.3.102", "vtepLookup": "", "macLookup": null, "nexthopIp":
+    "", "timestamp": 1616541719609}, {"pathid": 6, "hopCount": 4, "namespace": "nxos",
+    "hostname": "server102", "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2":
+    false, "overlay": false, "mtuMatch": false, "inMtu": 1500, "outMtu": 1500, "protocol":
+    "", "ipLookup": "", "vtepLookup": "", "macLookup": "", "nexthopIp": "", "timestamp":
+    1616541713149}, {"pathid": 7, "hopCount": 0, "namespace": "nxos", "hostname":
+    "server302", "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": true, "overlay":
+    false, "mtuMatch": true, "inMtu": 1500, "outMtu": 1500, "protocol": "l2", "ipLookup":
+    "172.16.3.102", "vtepLookup": "", "macLookup": "46:64:8a:7a:48:08", "nexthopIp":
+    "172.16.3.102", "timestamp": null}, {"pathid": 7, "hopCount": 1, "namespace":
+    "nxos", "hostname": "leaf03", "iif": "port-channel4", "oif": "Ethernet1/2", "vrf":
+    "evpn-vrf", "isL2": true, "overlay": false, "mtuMatch": false, "inMtu": 9200,
+    "outMtu": 9200, "protocol": "ospf", "ipLookup": "", "vtepLookup": "10.0.0.112",
+    "macLookup": "", "nexthopIp": "10.0.0.22", "timestamp": 1616541719036}, {"pathid":
+    7, "hopCount": 2, "namespace": "nxos", "hostname": "spine02", "iif": "Ethernet1/3",
+    "oif": "Ethernet1/2", "vrf": "default", "isL2": true, "overlay": true, "mtuMatch":
+    true, "inMtu": 9200, "outMtu": 9200, "protocol": "ospf", "ipLookup": "10.0.0.112",
+    "vtepLookup": "10.0.0.112", "macLookup": "", "nexthopIp": "10.0.0.12", "timestamp":
+    1616541718531}, {"pathid": 7, "hopCount": 3, "namespace": "nxos", "hostname":
+    "leaf02", "iif": "Ethernet1/2", "oif": "port-channel4", "vrf": "evpn-vrf", "isL2":
+    true, "overlay": true, "mtuMatch": true, "inMtu": 9200, "outMtu": 9200, "protocol":
+    "l2", "ipLookup": "172.16.3.102", "vtepLookup": "", "macLookup": null, "nexthopIp":
+    "", "timestamp": 1616541719609}, {"pathid": 7, "hopCount": 4, "namespace": "nxos",
+    "hostname": "server102", "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2":
+    false, "overlay": false, "mtuMatch": false, "inMtu": 1500, "outMtu": 1500, "protocol":
+    "", "ipLookup": "", "vtepLookup": "", "macLookup": "", "nexthopIp": "", "timestamp":
+    1616541713149}, {"pathid": 8, "hopCount": 0, "namespace": "nxos", "hostname":
+    "server302", "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": true, "overlay":
+    false, "mtuMatch": true, "inMtu": 1500, "outMtu": 1500, "protocol": "l2", "ipLookup":
+    "172.16.3.102", "vtepLookup": "", "macLookup": "46:64:8a:7a:48:08", "nexthopIp":
+    "172.16.3.102", "timestamp": null}, {"pathid": 8, "hopCount": 1, "namespace":
+    "nxos", "hostname": "leaf04", "iif": "port-channel4", "oif": "Ethernet1/2", "vrf":
+    "evpn-vrf", "isL2": true, "overlay": false, "mtuMatch": false, "inMtu": 9200,
+    "outMtu": 9200, "protocol": "ospf", "ipLookup": "", "vtepLookup": "10.0.0.112",
+    "macLookup": "", "nexthopIp": "10.0.0.22", "timestamp": 1616541719295}, {"pathid":
+    8, "hopCount": 2, "namespace": "nxos", "hostname": "spine02", "iif": "Ethernet1/4",
+    "oif": "Ethernet1/2", "vrf": "default", "isL2": true, "overlay": true, "mtuMatch":
+    true, "inMtu": 9200, "outMtu": 9200, "protocol": "ospf", "ipLookup": "10.0.0.112",
+    "vtepLookup": "10.0.0.112", "macLookup": "", "nexthopIp": "10.0.0.12", "timestamp":
+    1616541718531}, {"pathid": 8, "hopCount": 3, "namespace": "nxos", "hostname":
+    "leaf02", "iif": "Ethernet1/2", "oif": "port-channel4", "vrf": "evpn-vrf", "isL2":
+    true, "overlay": true, "mtuMatch": true, "inMtu": 9200, "outMtu": 9200, "protocol":
+    "l2", "ipLookup": "172.16.3.102", "vtepLookup": "", "macLookup": null, "nexthopIp":
+    "", "timestamp": 1616541719609}, {"pathid": 8, "hopCount": 4, "namespace": "nxos",
+    "hostname": "server102", "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2":
+    false, "overlay": false, "mtuMatch": false, "inMtu": 1500, "outMtu": 1500, "protocol":
+    "", "ipLookup": "", "vtepLookup": "", "macLookup": "", "nexthopIp": "", "timestamp":
+    1616541713149}]'
 - command: path show --dest=10.0.0.11 --src=10.0.0.14 --format=json --namespace=nxos
   data-directory: tests/data/nxos/parquet-out/
   error:
@@ -137,35 +536,35 @@ tests:
       "iif": "loopback0", "oif": "Ethernet1/1", "vrf": "default", "isL2": false, "overlay":
       false, "mtuMatch": true, "inMtu": 1500, "outMtu": 9200, "protocol": "ospf",
       "ipLookup": "10.0.0.11/32", "vtepLookup": "", "macLookup": "", "nexthopIp":
-      "10.0.0.21", "error": "", "timestamp": 1609296116838}, {"pathid": 1, "hopCount":
+      "10.0.0.21", "error": "", "timestamp": 1616541719295}, {"pathid": 1, "hopCount":
       1, "namespace": "nxos", "hostname": "spine01", "iif": "Ethernet1/4", "oif":
       "Ethernet1/1", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
       true, "inMtu": 9200, "outMtu": 9200, "protocol": "ospf", "ipLookup": "10.0.0.11/32",
       "vtepLookup": "", "macLookup": "", "nexthopIp": "10.0.0.11", "error": "", "timestamp":
-      1609296113094}, {"pathid": 1, "hopCount": 2, "namespace": "nxos", "hostname":
+      1616541718279}, {"pathid": 1, "hopCount": 2, "namespace": "nxos", "hostname":
       "leaf01", "iif": "Ethernet1/1", "oif": "loopback0", "vrf": "default", "isL2":
       false, "overlay": false, "mtuMatch": true, "inMtu": 9200, "outMtu": 1500, "protocol":
       "", "ipLookup": "", "vtepLookup": "", "macLookup": "", "nexthopIp": "", "error":
-      "Dst MTU != Src MTU", "timestamp": 1609296118901}, {"pathid": 2, "hopCount":
+      "Dst MTU != Src MTU", "timestamp": 1616541722174}, {"pathid": 2, "hopCount":
       0, "namespace": "nxos", "hostname": "leaf04", "iif": "loopback0", "oif": "Ethernet1/2",
       "vrf": "default", "isL2": false, "overlay": false, "mtuMatch": true, "inMtu":
       1500, "outMtu": 9200, "protocol": "ospf", "ipLookup": "10.0.0.11/32", "vtepLookup":
-      "", "macLookup": "", "nexthopIp": "10.0.0.22", "error": "", "timestamp": 1609296116838},
+      "", "macLookup": "", "nexthopIp": "10.0.0.22", "error": "", "timestamp": 1616541719295},
       {"pathid": 2, "hopCount": 1, "namespace": "nxos", "hostname": "spine02", "iif":
       "Ethernet1/4", "oif": "Ethernet1/1", "vrf": "default", "isL2": false, "overlay":
       false, "mtuMatch": true, "inMtu": 9200, "outMtu": 9200, "protocol": "ospf",
       "ipLookup": "10.0.0.11/32", "vtepLookup": "", "macLookup": "", "nexthopIp":
-      "10.0.0.11", "error": "", "timestamp": 1609296112981}, {"pathid": 2, "hopCount":
+      "10.0.0.11", "error": "", "timestamp": 1616541718531}, {"pathid": 2, "hopCount":
       2, "namespace": "nxos", "hostname": "leaf01", "iif": "Ethernet1/2", "oif": "loopback0",
       "vrf": "default", "isL2": false, "overlay": false, "mtuMatch": true, "inMtu":
       9200, "outMtu": 1500, "protocol": "", "ipLookup": "", "vtepLookup": "", "macLookup":
-      "", "nexthopIp": "", "error": "Dst MTU != Src MTU", "timestamp": 1609296118901}]'
+      "", "nexthopIp": "", "error": "Dst MTU != Src MTU", "timestamp": 1616541722174}]'
   marks: path show nxos
 - command: path summarize --dest=172.16.3.202 --src=172.16.1.101 --format=json --namespace=nxos
   data-directory: tests/data/nxos/parquet-out/
   marks: path summarize nxos
-  output: '[{"nxos": 1}, {"nxos": [1]}, {"nxos": 1}, {"nxos": 1.0}, {"nxos": 2}, {"nxos":
-    1500}, {"nxos": false}, {"nxos": true}]'
+  output: '[{"nxos": 8}, {"nxos": [2, 2, 2, 1]}, {"nxos": 4}, {"nxos": 4.0}, {"nxos":
+    8}, {"nxos": 1500}, {"nxos": true}, {"nxos": true}]'
 - command: path summarize --dest=10.0.0.11 --src=10.0.0.14 --format=json --namespace=nxos
   data-directory: tests/data/nxos/parquet-out/
   marks: path summarize nxos

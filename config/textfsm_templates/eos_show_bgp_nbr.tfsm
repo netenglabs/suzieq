@@ -1,0 +1,170 @@
+Value peer (\S+)
+Value peerAsn (\d+)
+Value asn (\d+)
+Value vrf (\S+)
+Value description (.+?)
+Value peerRouterId ([0-9.]+)
+Value routerId ([0-9.]+)
+Value clusterId (\S+)
+Value state (.+?)
+Value estdTime (.+?)
+Value holdTime (\d+)
+Value keepaliveTime (\d+)
+Value bfdStatus (\w+)
+Value rrclient (route reflector client)
+Value List afi (\w+|EVPN)
+Value List safi ([^:]+)
+Value List afisAdvOnly ([^:]+)
+Value List afisRcvOnly ([^:]+)
+Value TYPE (\w+)
+Value List iMapafisafi (\w+ \w+)
+Value List oMapafisafi (\w+ \w+)
+Value List ingressRmap (\S+)
+Value List egressRmap (\S+)
+Value List pfxRx (\d+)
+Value pfxBestRx (\d+)
+Value List pfxTx (\d+)
+Value pfxSuppressTx (\d+)
+Value pfxWithdrawnTx (\d+)
+Value updatesTx (\d+)
+Value updatesRx (\d+)
+Value pfxMaxRx (\d+)
+Value defOriginate (.+?)
+Value nextHopSelf (\w+)
+Value List communityTypes (extended community)
+Value passive (passive)
+Value numChanges (\d+)
+Value peerIP (.*)
+Value updateSource (.*)
+Value lastDownTime (.+?)
+Value softReconfig (\w+)
+Value reason ([^,]+)
+Value errorMsg (.*)
+Value notificnReason (.+?)
+Value notificnReasonRx ([^,]+)
+Value hopsMax (\d+)
+
+Start
+  ^BGP\s+neighbor -> Continue.Record
+  ^BGP\s+neighbor\s+is\s+${peer},\s+remote\s+AS\s+${peerAsn},.*$$
+  ^\s+BGP\s+version\s+4, remote\s+router\s+ID\s+${peerRouterId},\s+VRF\s+${vrf}
+  ^\s+Description:\s+${description}\s*$$
+  ^\s+BGP\s+state\s+is\s+${state}(?:,\s+up\s+for\s+${estdTime})?\s*$$
+  ^\s+Hold\s+time\s+is\s+${holdTime},\s+keepalive\s+interval\s+is\s+${keepaliveTime}
+  ^\s+Number\s+of\s+transitions.*${numChanges}$$
+  ^\s+BFD\s+is\s+enabled\s+and\s+state\s+is\s+${bfdStatus}
+  ^\s+Neighbor\s+capabilities:
+  ^\s+Multiprotocol ${afisAdvOnly}:\s+advertised\s*$$
+  ^\s+Multiprotocol ${afisRcvOnly}:\s+received\s*$$  
+  ^\s+Last\s+rcvd\s+notification:${notificnReasonRx},
+  ^\s+Last\s+sent\s+${reason},
+  ^\s+Neighbor\s+is\s+a\s+${rrclient}
+  ^\s+Updates:\s+${updatesTx}\s+${updatesRx}.*$$
+  ^\s+Prefix\s+Statistics: -> PrefixStats
+
+PrefixStats
+  ^\s+${afi}\s+${safi}:\s+${pfxTx}\s+${pfxRx}\s*$$
+  ^\s+${afi}:\s+${pfxTx}\s+${pfxRx}\s*$$
+  ^\s+Configured\s+maximum\s+total\s+number\s+of\s+routes\s+is\s+${pfxMaxRx}\s*$$
+  ^\s+Inbound\s+route\s+map\s+for\s+${iMapafisafi}\s+is\s+${ingressRmap}\s*$$
+  ^\s+Outbound\s+route\s+map\s+for\s+${oMapafisafi}\s+is\s+${egressRmap}\s*$$  
+  ^Local\s+AS\s+is\s+${asn},\s+local\s+router\s+ID\s+${routerId}
+  ^TTL\s+is\s+${hopsMax}\s*$$
+  ^Local\s+TCP\s+address\s+is\s+${updateSource},.*$$
+  ^Remote\s+TCP\s+address\s+is\s+${peerIP},.*$$
+  ^Bfd\s+is\s+enabled\s+and\s+state\s+is\s+${bfdStatus}
+  ^!\s+${errorMsg}
+  ^BGP -> Start
+  ^$$ -> Start
+
+#BGP neighbor is 10.0.0.21, remote AS 64520, internal link
+#  BGP version 4, remote router ID 10.0.0.21, VRF default
+#  Inherits configuration from and member of peer-group RR
+#  Last read 00:00:20, last write 00:00:28
+#  Hold time is 180, keepalive interval is 60 seconds
+#  Configured hold time is 180, keepalive interval is 60 seconds
+#  Hold timer is active, time left: 00:01:13
+#  Keepalive timer is active, time left: 00:00:16
+#  Connect timer is inactive
+#  Idle-restart timer is inactive
+#  BGP state is Established, up for 1d02h
+#  Number of transitions to established: 5
+#  Last state was OpenConfirm
+#  Last event was RecvKeepAlive
+#  Last rcvd notification:Cease/other configuration change, Last time 1d02h, First time 7d06h, Repeats 3
+#  Last sent socket-error:Connect (Network is unreachable), Last time 7d06h, First time 7d06h, Repeats 4
+#  Neighbor is a route reflector client
+#  Neighbor Capabilities:
+#    Multiprotocol L2VPN EVPN: advertised and received and negotiated
+#    Four Octet ASN: advertised and received and negotiated
+#    Route Refresh: advertised and received and negotiated
+#    Send End-of-RIB messages: advertised and received and negotiated
+#    Additional-paths recv capability:
+#      L2VPN EVPN: advertised
+#    Additional-paths send capability:
+#      L2VPN EVPN: received
+#  Restart timer is inactive
+#  End of rib timer is inactive
+#    L2VPN EVPN End-of-RIB received: Yes
+#  Message Statistics:
+#                         Sent      Rcvd
+#    Opens:                  5         5
+#    Notifications:          0         4
+#    Updates:             1569      6716
+#    Keepalives:         11525     11445
+#    Route Refresh:          0         0
+#    Total messages:     13099     18170
+#  Prefix Statistics:
+#                                   Sent      Rcvd
+#    IPv4 Unicast:                     0         1
+#    IPv6 Unicast:                     0         0
+#    EVPN:                             1        21
+#  Configured maximum total number of routes is 12000
+#  Inbound updates dropped by reason:
+#    AS path loop detection: 0
+#    Enforced First AS: 0
+#    Malformed MPBGP routes: 0
+#    Originator ID matches local router ID: 0
+#    Nexthop matches local IP address: 0
+#   Unexpected IPv6 nexthop for IPv4 routes: 0
+#  Inbound updates with attribute errors:
+#    Resulting in removal of all paths in update (treat as withdraw): 0
+#    Resulting in AFI/SAFI disable: 0
+#    Resulting in attribute ignore: 0
+#    Disabled AFI/SAFIs: None
+#  Inbound paths dropped by reason:
+#    IPv4 labeled-unicast NLRIs dropped due to excessive labels: 0
+#    IPv6 labeled-unicast NLRIs dropped due to excessive labels: 0
+#  Outbound paths dropped by reason:
+#    IPv4 local address not available: 0
+#    IPv6 local address not available: 0
+#  Inbound route map for L2VPN EVPN is PRMTALL
+#  Soft reconfiguration inbound is "All"
+#Local AS is 64520, local router ID 10.0.0.31
+#TTL is 255
+#Local TCP address is 10.0.0.31, local port is 179
+#Remote TCP address is 10.0.0.21, remote port is 55202
+#Bfd is enabled and state is Down
+#TCP Socket Information:
+#  TCP state is ESTABLISHED
+#  Recv-Q: 0/32768
+#  Send-Q: 0/32768
+#  Outgoing Maximum Segment Size (MSS): 9148
+#  Total Number of TCP retransmissions: 0
+#  Options:
+#    Timestamps enabled: yes
+#    Selective Acknowledgments enabled: yes
+#    Window Scale enabled: yes
+#    Explicit Congestion Notification (ECN) enabled: no
+#  Socket Statistics:
+#    Window Scale (wscale): 7,7
+#    Retransmission Timeout (rto): 216.0ms
+#    Round-trip Time (rtt/rtvar): 12.9ms/9.1ms
+#    Delayed Ack Timeout (ato): 44.0ms
+#    Congestion Window (cwnd): 10
+#    TCP Throughput: 56.63 Mbps
+#    Recv Round-trip Time (rcv_rtt): 20.0ms
+#    Advertised Recv Window (rcv_space): 27444
+#
+#BGP neighbor is 10.0.0.22, remote AS 64520, internal link
+#

@@ -30,11 +30,16 @@ apply:
     "vendor: vendor?|Cumulus",
     "uptime: _uptime",
     "os: os?|cumulus",
-    "platform/model_name: _modelName",
+    "platform/info/model_name: _modelName",
     "platform/model: model",
     "eeprom/Serial Number/value: serialNumber",
     "platform/info/cpu/summary: architecture?|x86_64",
     ]'
+
+  iosxr:
+    version: all
+    command: show version
+    textfsm: textfsm_templates/iosxr_show_version.tfsm
 
   linux:
     version: all
@@ -48,7 +53,7 @@ apply:
 
   nxos:
     version: all
-    command: "show version | json"
+    command: show version | json native
     normalize: '[
     "kickstart_ver_str: version",
     "manufacturer: vendor?Cisco|Cisco",

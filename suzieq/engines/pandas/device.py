@@ -10,7 +10,7 @@ class DeviceObj(SqPandasEngine):
 
     def get(self, **kwargs):
         """Get the information requested"""
-        view = kwargs.get('view', 'latest')
+        view = kwargs.get('view', self.iobj.view)
         columns = kwargs.get('columns', ['default'])
         addnl_fields = kwargs.pop('addnl_fields', [])
         drop_cols = []

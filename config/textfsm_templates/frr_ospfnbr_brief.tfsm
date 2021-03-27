@@ -1,0 +1,23 @@
+Value Required peerRouterId ([0-9.]+)
+Value Required peerIP ([0-9.]+)
+Value ipAddress ([0-9.]+)
+Value Filldown vrf (\S+)
+Value ifname (\S+)
+
+
+Start
+  ^VRF\s+ -> Continue.Record
+  ^VRF\s+Name:\s+${vrf}.*$$
+  ^Neighbor.*$$
+  ^${peerRouterId}.*\d+.*\d+.\d+.*\s${peerIP}\s.*\s${ifname}:${ipAddress}.*$$ -> Record
+
+#
+#VRF Name: default
+#
+#Neighbor ID     Pri State           Dead Time Address         Interface                        RXmtL RqstL DBsmL
+#10.0.0.21         1 Full/DROther      33.447s 10.0.0.21       swp1:10.0.0.11                       0     0     0
+#10.0.0.22         1 Full/DROther      33.705s 10.0.0.22       swp2:10.0.0.11                       0     0     0
+#
+#OSPF instance not found
+
+

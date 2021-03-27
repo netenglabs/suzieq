@@ -3,24 +3,103 @@ tests:
 - command: lldp show --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: lldp show junos
-  output: '[{"namespace": "junos", "hostname": "vqfx1", "ifname": "xe-0/0/0", "peerHostname":
-    "vqfx2", "peerIfname": "-", "description": "Juniper Networks, Inc. vqfx-10000
+  output: '[{"namespace": "junos", "hostname": "dcedge01", "ifname": "xe-0/0/0", "peerHostname":
+    "exit01", "peerIfname": "-", "description": "Juniper Networks, Inc. vqfx-10000
     Ethernet Switch, kernel JUNOS 19.4R1.10, Build date: 2019-12-19 03:14:17 UTC Copyright
-    (c) 1996-2019 Juniper Networks, Inc.", "mgmtIP": "", "timestamp": 1606017395169},
-    {"namespace": "junos", "hostname": "vqfx2", "ifname": "xe-0/0/0", "peerHostname":
-    "vqfx1", "peerIfname": "-", "description": "Juniper Networks, Inc. vqfx-10000
+    (c) 1996-2019 Juniper Networks, Inc.", "mgmtIP": "", "timestamp": 1616357373362},
+    {"namespace": "junos", "hostname": "dcedge01", "ifname": "xe-0/0/1", "peerHostname":
+    "exit02", "peerIfname": "-", "description": "Juniper Networks, Inc. vqfx-10000
     Ethernet Switch, kernel JUNOS 19.4R1.10, Build date: 2019-12-19 03:14:17 UTC Copyright
-    (c) 1996-2019 Juniper Networks, Inc.", "mgmtIP": "", "timestamp": 1606017395823}]'
+    (c) 1996-2019 Juniper Networks, Inc.", "mgmtIP": "", "timestamp": 1616357373362},
+    {"namespace": "junos", "hostname": "spine01", "ifname": "xe-0/0/1", "peerHostname":
+    "leaf02", "peerIfname": "-", "description": "Juniper Networks, Inc. vqfx-10000
+    Ethernet Switch, kernel JUNOS 19.4R1.10, Build date: 2019-12-19 03:14:17 UTC Copyright
+    (c) 1996-2019 Juniper Networks, Inc.", "mgmtIP": "", "timestamp": 1616357373567},
+    {"namespace": "junos", "hostname": "spine01", "ifname": "xe-0/0/3", "peerHostname":
+    "exit02", "peerIfname": "-", "description": "Juniper Networks, Inc. vqfx-10000
+    Ethernet Switch, kernel JUNOS 19.4R1.10, Build date: 2019-12-19 03:14:17 UTC Copyright
+    (c) 1996-2019 Juniper Networks, Inc.", "mgmtIP": "", "timestamp": 1616357373567},
+    {"namespace": "junos", "hostname": "spine01", "ifname": "xe-0/0/0", "peerHostname":
+    "leaf01", "peerIfname": "-", "description": "Juniper Networks, Inc. vqfx-10000
+    Ethernet Switch, kernel JUNOS 19.4R1.10, Build date: 2019-12-19 03:14:17 UTC Copyright
+    (c) 1996-2019 Juniper Networks, Inc.", "mgmtIP": "", "timestamp": 1616357373567},
+    {"namespace": "junos", "hostname": "spine01", "ifname": "xe-0/0/2", "peerHostname":
+    "exit01", "peerIfname": "-", "description": "Juniper Networks, Inc. vqfx-10000
+    Ethernet Switch, kernel JUNOS 19.4R1.10, Build date: 2019-12-19 03:14:17 UTC Copyright
+    (c) 1996-2019 Juniper Networks, Inc.", "mgmtIP": "", "timestamp": 1616357373567},
+    {"namespace": "junos", "hostname": "leaf01", "ifname": "xe-0/0/1", "peerHostname":
+    "spine02", "peerIfname": "-", "description": "Juniper Networks, Inc. vqfx-10000
+    Ethernet Switch, kernel JUNOS 19.4R1.10, Build date: 2019-12-19 03:14:17 UTC Copyright
+    (c) 1996-2019 Juniper Networks, Inc.", "mgmtIP": "", "timestamp": 1616357373782},
+    {"namespace": "junos", "hostname": "leaf01", "ifname": "xe-0/0/0", "peerHostname":
+    "spine01", "peerIfname": "-", "description": "Juniper Networks, Inc. vqfx-10000
+    Ethernet Switch, kernel JUNOS 19.4R1.10, Build date: 2019-12-19 03:14:17 UTC Copyright
+    (c) 1996-2019 Juniper Networks, Inc.", "mgmtIP": "", "timestamp": 1616357373782},
+    {"namespace": "junos", "hostname": "spine02", "ifname": "xe-0/0/3", "peerHostname":
+    "exit02", "peerIfname": "-", "description": "Juniper Networks, Inc. vqfx-10000
+    Ethernet Switch, kernel JUNOS 19.4R1.10, Build date: 2019-12-19 03:14:17 UTC Copyright
+    (c) 1996-2019 Juniper Networks, Inc.", "mgmtIP": "", "timestamp": 1616357374004},
+    {"namespace": "junos", "hostname": "leaf02", "ifname": "xe-0/0/1", "peerHostname":
+    "spine02", "peerIfname": "-", "description": "Juniper Networks, Inc. vqfx-10000
+    Ethernet Switch, kernel JUNOS 19.4R1.10, Build date: 2019-12-19 03:14:17 UTC Copyright
+    (c) 1996-2019 Juniper Networks, Inc.", "mgmtIP": "", "timestamp": 1616357374004},
+    {"namespace": "junos", "hostname": "leaf02", "ifname": "xe-0/0/0", "peerHostname":
+    "spine01", "peerIfname": "-", "description": "Juniper Networks, Inc. vqfx-10000
+    Ethernet Switch, kernel JUNOS 19.4R1.10, Build date: 2019-12-19 03:14:17 UTC Copyright
+    (c) 1996-2019 Juniper Networks, Inc.", "mgmtIP": "", "timestamp": 1616357374004},
+    {"namespace": "junos", "hostname": "spine02", "ifname": "xe-0/0/2", "peerHostname":
+    "exit01", "peerIfname": "-", "description": "Juniper Networks, Inc. vqfx-10000
+    Ethernet Switch, kernel JUNOS 19.4R1.10, Build date: 2019-12-19 03:14:17 UTC Copyright
+    (c) 1996-2019 Juniper Networks, Inc.", "mgmtIP": "", "timestamp": 1616357374004},
+    {"namespace": "junos", "hostname": "spine02", "ifname": "xe-0/0/0", "peerHostname":
+    "leaf01", "peerIfname": "-", "description": "Juniper Networks, Inc. vqfx-10000
+    Ethernet Switch, kernel JUNOS 19.4R1.10, Build date: 2019-12-19 03:14:17 UTC Copyright
+    (c) 1996-2019 Juniper Networks, Inc.", "mgmtIP": "", "timestamp": 1616357374004},
+    {"namespace": "junos", "hostname": "spine02", "ifname": "xe-0/0/1", "peerHostname":
+    "leaf02", "peerIfname": "-", "description": "Juniper Networks, Inc. vqfx-10000
+    Ethernet Switch, kernel JUNOS 19.4R1.10, Build date: 2019-12-19 03:14:17 UTC Copyright
+    (c) 1996-2019 Juniper Networks, Inc.", "mgmtIP": "", "timestamp": 1616357374004},
+    {"namespace": "junos", "hostname": "exit02", "ifname": "xe-0/0/3", "peerHostname":
+    "dcedge01", "peerIfname": "-", "description": "Juniper Networks, Inc. vqfx-10000
+    Ethernet Switch, kernel JUNOS 19.4R1.10, Build date: 2019-12-19 03:14:17 UTC Copyright
+    (c) 1996-2019 Juniper Networks, Inc.", "mgmtIP": "", "timestamp": 1616357374207},
+    {"namespace": "junos", "hostname": "exit02", "ifname": "xe-0/0/1", "peerHostname":
+    "spine02", "peerIfname": "-", "description": "Juniper Networks, Inc. vqfx-10000
+    Ethernet Switch, kernel JUNOS 19.4R1.10, Build date: 2019-12-19 03:14:17 UTC Copyright
+    (c) 1996-2019 Juniper Networks, Inc.", "mgmtIP": "", "timestamp": 1616357374207},
+    {"namespace": "junos", "hostname": "exit02", "ifname": "xe-0/0/0", "peerHostname":
+    "spine01", "peerIfname": "-", "description": "Juniper Networks, Inc. vqfx-10000
+    Ethernet Switch, kernel JUNOS 19.4R1.10, Build date: 2019-12-19 03:14:17 UTC Copyright
+    (c) 1996-2019 Juniper Networks, Inc.", "mgmtIP": "", "timestamp": 1616357374207},
+    {"namespace": "junos", "hostname": "exit01", "ifname": "xe-0/0/0", "peerHostname":
+    "spine01", "peerIfname": "-", "description": "Juniper Networks, Inc. vqfx-10000
+    Ethernet Switch, kernel JUNOS 19.4R1.10, Build date: 2019-12-19 03:14:17 UTC Copyright
+    (c) 1996-2019 Juniper Networks, Inc.", "mgmtIP": "", "timestamp": 1616357375214},
+    {"namespace": "junos", "hostname": "exit01", "ifname": "xe-0/0/3", "peerHostname":
+    "dcedge01", "peerIfname": "-", "description": "Juniper Networks, Inc. vqfx-10000
+    Ethernet Switch, kernel JUNOS 19.4R1.10, Build date: 2019-12-19 03:14:17 UTC Copyright
+    (c) 1996-2019 Juniper Networks, Inc.", "mgmtIP": "", "timestamp": 1616357375214},
+    {"namespace": "junos", "hostname": "exit01", "ifname": "xe-0/0/1", "peerHostname":
+    "spine02", "peerIfname": "-", "description": "Juniper Networks, Inc. vqfx-10000
+    Ethernet Switch, kernel JUNOS 19.4R1.10, Build date: 2019-12-19 03:14:17 UTC Copyright
+    (c) 1996-2019 Juniper Networks, Inc.", "mgmtIP": "", "timestamp": 1616357375214}]'
 - command: lldp show --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: lldp show junos
-  output: '[{"hostname": "vqfx1"}, {"hostname": "vqfx2"}]'
+  output: '[{"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "spine02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}]'
 - command: lldp summarize --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: lldp summarize junos
-  output: '{"junos": {"deviceCnt": 2, "nbrCnt": 2, "peerHostnameCnt": 2, "uniquePeerMgmtIPCnt":
-    1, "missingPeerInfoCnt": 2}}'
+  output: '{"junos": {"deviceCnt": 7, "nbrCnt": 20, "peerHostnameCnt": 20, "uniquePeerMgmtIPCnt":
+    1, "missingPeerInfoCnt": 20}}'
 - command: lldp unique --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: lldp unique junos
-  output: '[{"hostname": "vqfx1", "count": 1}, {"hostname": "vqfx2", "count": 1}]'
+  output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
+    {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "spine01"}, {"hostname":
+    "spine02"}]'

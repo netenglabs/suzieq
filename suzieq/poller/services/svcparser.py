@@ -23,6 +23,78 @@ def _stepdown_rest(entry) -> list:
     return entry
 
 
+def parse_subtree(subflds, tmpval, maybe_list, defval):
+
+    value = []
+    useval = False
+
+    for i, subfld in enumerate(subflds):
+        subfld = subfld.strip()
+        if ':_sqstore' in subfld:
+            storekey = True
+            subfld = '*'
+        else:
+            storekey = False
+        if subfld == "*":
+            tmp = tmpval
+            for subele in tmp:
+                if storekey:
+                    storeval = subele
+                for ele in subflds[i+1:]:
+                    if isinstance(tmp, list):
+                        subele = subele.get(ele, None)
+                    else:
+                        subele = tmp[subele].get(ele, None)
+                    if subele is None:
+                        tmpval = None
+                        break
+                if subele:
+                    if storekey:
+                        value.append(storeval)
+                    else:
+                        value.append(subele)
+                    useval = True
+            break
+        elif subfld.startswith('['):
+            # handle specific array index or dict key
+            # This additional handling of * is because of JUNOS
+            # interface address which is many levels deep and mixes
+            # IPv4/v6 address in a way that we can't entirely fix
+            # Post processing cleanup has to handle that part
+            if subfld.endswith('?'):
+                # This was added thanks to NXOS which provides
+                # nexthops as a list if ECMP, else a dictionary
+                if type(tmpval) != list:
+                    continue
+                subfld = subfld[:-1]  # lose the final "?" char
+            if subfld == '[*]':
+                for item in tmpval:
+                    newval = parse_subtree(subflds[i+1:], item, maybe_list,
+                                           defval)
+                    if newval is not None:
+                        if isinstance(newval, list):
+                            value += newval
+                        else:
+                            value.append(newval)
+                useval = True
+                break
+            elif tmpval:
+                tmpval = tmpval[eval_expr(subfld)]
+        else:
+            tmpval = tmpval.get(subfld, None)
+
+        if not tmpval:
+            break
+
+    if useval:
+        if value:
+            return value
+        else:
+            return defval
+    else:
+        return tmpval
+
+
 def cons_recs_from_json_template(tmplt_str, in_data):
     ''' Return an array of records given the template and input data.
 
@@ -86,7 +158,7 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                     if not data or not data.get(xstr, None):
                         # Some outputs contain just the main key with a null
                         # body such as ospfNbr from EOS: {'vrfs': {}}.
-                        logging.error(
+                        logging.info(
                             f"Unnatural return from svcparser. xstr is {xstr}. \
                             Result is {result}")
                         return cleanup_and_return(result)
@@ -107,7 +179,7 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                                 xstr)]
                         else:
                             # Handling the JUNOS EVPN pfx DB entry
-                            logging.error(
+                            logging.info(
                                 f'Unnatural return from svcparser. '
                                 f'xstr is {xstr}. Result is {result}')
                             return []
@@ -118,9 +190,18 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                             # EOS routes case: vrfs/*:vrf/routes/*:prefix
                             # Otherwise there's usually one element here
                             if isinstance(ele["rest"], list):
-                                for subele in ele["rest"]:
+                                for subidx, subele in enumerate(ele["rest"]):
                                     if xstr in subele:
-                                        tmpval.append({"rest": subele[xstr]})
+                                        if nokeys:
+                                            tmpval.append(
+                                                {"rest": subele[xstr]})
+                                        else:
+                                            ele['rest'][subidx] = subele[xstr]
+                                if not nokeys:
+                                    if len(ele['rest']) == 1:
+                                        ele['rest'] = ele['rest'][0]
+
+                                    tmpval.append(ele)
                             else:
                                 if xstr in ele['rest']:
                                     ele["rest"] = ele["rest"][xstr]
@@ -249,10 +330,11 @@ def cons_recs_from_json_template(tmplt_str, in_data):
         if not result:
             result = [{"rest": data}]
         elif len(result) == 1:
-            tmpval = []
-            for x in result[0]["rest"]:
-                tmpval.append({"rest": x})
-            result = tmpval
+            if isinstance(result[0], list):
+                tmpval = []
+                for x in result[0]["rest"]:
+                    tmpval.append({"rest": x})
+                result = tmpval
 
     # In some cases such as FRR's BGP, you need to eliminate elements which
     # have no useful 'rest' field, for example the elements with vrfId and
@@ -293,7 +375,11 @@ def cons_recs_from_json_template(tmplt_str, in_data):
             # dealing with trailing "."
             continue
 
-        lval, rval = selem.split(":")
+        try:
+            lval, rval = selem.split(": ")
+        except ValueError:
+            logging.error(f"Unable to parse JSON field entry {selem}")
+            continue
 
         # Process default value processing of the form <key>?|<def_val> or
         # <key>?<expected_val>|<def_val>
@@ -341,69 +427,17 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                 subflds = lval.split("/")
                 tmpval = x["rest"]
                 value = None
-                if any(x in subflds for x in ["*", "*?", "[*]?", "[*]"]):
+                if any(x in subflds for x in ["*", "*?", "[*]?", "[*]",
+                                              '*:_sqstore']):
                     # Returning a list is the only supported option for now
                     value = []
                     maybe_list = True
                 else:
                     maybe_list = False
 
-                while subflds:
-                    subfld = subflds.pop(0).strip()
-                    if subfld == "*":
-                        tmp = tmpval
-                        for subele in tmp:
-                            for ele in subflds:
-                                if isinstance(tmp, list):
-                                    subele = subele.get(ele, None)
-                                else:
-                                    subele = tmp[subele].get(ele, None)
-                                if subele is None:
-                                    tmpval = None
-                                    break
-                            if subele:
-                                value.append(subele)
-                        subflds = []
-                    elif subfld.startswith('['):
-                        # handle specific array index or dict key
-                        # This additional handling of * is because of JUNOS
-                        # interface address which is many levels deep and mixes
-                        # IPv4/v6 address in a way that we can't entirely fix
-                        # Post processing cleanup has to handle that part
-                        if subfld.endswith('?'):
-                            # This was added thanks to NXOS which provides
-                            # nexthops as a list if ECMP, else a dictionary
-                            if type(tmpval) != list:
-                                continue
-                            subfld = subfld[:-1]  # lose the final "?" char
-                        if subfld == '[*]':
-                            tmp = tmpval
-                            for subele in tmp:
-                                for subfld in subflds:
-                                    if not subele:
-                                        break
-                                    if subfld == '*' or subfld == '[*]':
-                                        # We stop the recursive madness here
-                                        value.append(subele)
-                                        break
-                                    if subfld.startswith('['):
-                                        subele = subele[eval_expr(subfld)]
-                                    else:
-                                        subele = subele.get(subfld)
-                                value.append(subele)
-                            subflds = []
-                        elif tmpval:
-                            tmpval = tmpval[eval_expr(subfld)]
-                    else:
-                        tmpval = tmpval.get(subfld, None)
-                    if not tmpval:
-                        break
-
-                if value is None:
-                    value = tmpval
-                elif maybe_list and value == []:
-                    if tmpval:
-                        value = [tmpval]
+                value = parse_subtree(
+                    subflds, tmpval, maybe_list, loopdef_val)
+                subflds = []
             else:
                 value = x["rest"].get(lval.strip(), None)
 
@@ -411,7 +445,8 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                 if exp_val and value != exp_val:
                     value = loopdef_val
                 elif not exp_val:
-                    if isinstance(value, list) and not any(x for x in value):
+                    if (isinstance(value, list) and not
+                            any(x or (x == loopdef_val) for x in value)):
                         if not isinstance(loopdef_val, list) and maybe_list:
                             if loopdef_val == '':
                                 value = []

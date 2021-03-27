@@ -83,7 +83,7 @@ class MlagService(Service):
                 mlagDualPorts))
 
             entry['peerLink'] = expand_nxos_ifname(entry['peerLink'])
-            entry['peerAddress'] = entry.get('peerAddress', [])[0]
+            entry['peerAddress'] = entry.get('peerAddress', [])
             entry['mlagDualPortsList'] = mlagDualPorts
             entry['mlagDualPortsCnt'] = len(mlagDualPorts)
             entry['mlagSinglePortsList'] = mlagSinglePorts

@@ -3,35 +3,56 @@ tests:
 - command: device show --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: device show junos
-  output: '[{"namespace": "junos", "hostname": "srv11", "model": "vm", "version":
-    "16.04 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
-    "address": "127.0.0.1", "bootupTimestamp": 1606016638000, "timestamp": 1606017394181},
-    {"namespace": "junos", "hostname": "srv12", "model": "vm", "version": "16.04 LTS",
-    "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive", "address": "127.0.0.1",
-    "bootupTimestamp": 1606016693000, "timestamp": 1606017394181}, {"namespace": "junos",
-    "hostname": "srv21", "model": "vm", "version": "16.04 LTS", "vendor": "Ubuntu",
-    "architecture": "x86-64", "status": "alive", "address": "127.0.0.1", "bootupTimestamp":
-    1606016884000, "timestamp": 1606017394181}, {"namespace": "junos", "hostname":
-    "srv22", "model": "vm", "version": "16.04 LTS", "vendor": "Ubuntu", "architecture":
-    "x86-64", "status": "alive", "address": "127.0.0.1", "bootupTimestamp": 1606016939000,
-    "timestamp": 1606017394183}, {"namespace": "junos", "hostname": "vqfx1", "model":
-    "vqfx-10000", "version": "19.4R1.10", "vendor": "Juniper", "architecture": "",
-    "status": "alive", "address": "127.0.0.1", "bootupTimestamp": 1606015913863, "timestamp":
-    1606017395863}, {"namespace": "junos", "hostname": "vqfx2", "model": "vqfx-10000",
-    "version": "19.4R1.10", "vendor": "Juniper", "architecture": "", "status": "alive",
-    "address": "127.0.0.1", "bootupTimestamp": 1606016793684, "timestamp": 1606017396684}]'
+  output: '[{"namespace": "junos", "hostname": "firewall01", "model": "vm", "version":
+    "18.04.3 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
+    "address": "10.255.3.152", "bootupTimestamp": 1616221704000, "timestamp": 1616357370584},
+    {"namespace": "junos", "hostname": "server101", "model": "vm", "version": "18.04.3
+    LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive", "address":
+    "10.255.3.107", "bootupTimestamp": 1616221738000, "timestamp": 1616357370584},
+    {"namespace": "junos", "hostname": "server102", "model": "vm", "version": "18.04.3
+    LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive", "address":
+    "10.255.3.114", "bootupTimestamp": 1616221706000, "timestamp": 1616357370584},
+    {"namespace": "junos", "hostname": "server201", "model": "vm", "version": "18.04.3
+    LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive", "address":
+    "10.255.3.51", "bootupTimestamp": 1616221699000, "timestamp": 1616357370584},
+    {"namespace": "junos", "hostname": "server202", "model": "vm", "version": "18.04.3
+    LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive", "address":
+    "10.255.3.198", "bootupTimestamp": 1616221702000, "timestamp": 1616357370584},
+    {"namespace": "junos", "hostname": "leaf02", "model": "vqfx-10000", "version":
+    "19.4R1.10", "vendor": "Juniper", "architecture": "", "status": "alive", "address":
+    "10.255.3.185", "bootupTimestamp": 1616221757819, "timestamp": 1616357370819},
+    {"namespace": "junos", "hostname": "leaf01", "model": "vqfx-10000", "version":
+    "19.4R1.10", "vendor": "Juniper", "architecture": "", "status": "alive", "address":
+    "10.255.3.184", "bootupTimestamp": 1616221738887, "timestamp": 1616357371887},
+    {"namespace": "junos", "hostname": "spine02", "model": "vqfx-10000", "version":
+    "19.4R1.10", "vendor": "Juniper", "architecture": "", "status": "alive", "address":
+    "10.255.3.118", "bootupTimestamp": 1616221771002, "timestamp": 1616357372002},
+    {"namespace": "junos", "hostname": "exit01", "model": "vqfx-10000", "version":
+    "19.4R1.10", "vendor": "Juniper", "architecture": "", "status": "alive", "address":
+    "10.255.3.251", "bootupTimestamp": 1616221751004, "timestamp": 1616357372004},
+    {"namespace": "junos", "hostname": "spine01", "model": "vqfx-10000", "version":
+    "19.4R1.10", "vendor": "Juniper", "architecture": "", "status": "alive", "address":
+    "10.255.3.117", "bootupTimestamp": 1616221765004, "timestamp": 1616357372004},
+    {"namespace": "junos", "hostname": "dcedge01", "model": "vqfx-10000", "version":
+    "19.4R1.10", "vendor": "Juniper", "architecture": "", "status": "alive", "address":
+    "10.255.3.250", "bootupTimestamp": 1616221748100, "timestamp": 1616357372100},
+    {"namespace": "junos", "hostname": "exit02", "model": "vqfx-10000", "version":
+    "19.4R1.10", "vendor": "Juniper", "architecture": "", "status": "alive", "address":
+    "10.255.3.252", "bootupTimestamp": 1616221776422, "timestamp": 1616357372422}]'
 - command: device show --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: device show junos
-  output: '[{"hostname": "srv11"}, {"hostname": "srv12"}, {"hostname": "srv21"}, {"hostname":
-    "srv22"}, {"hostname": "vqfx1"}, {"hostname": "vqfx2"}]'
+  output: '[{"hostname": "firewall01"}, {"hostname": "server101"}, {"hostname": "server102"},
+    {"hostname": "server201"}, {"hostname": "server202"}, {"hostname": "leaf02"},
+    {"hostname": "leaf01"}, {"hostname": "spine02"}, {"hostname": "exit01"}, {"hostname":
+    "spine01"}, {"hostname": "dcedge01"}, {"hostname": "exit02"}]'
 - command: device summarize --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: device summarize junos
-  output: '{"junos": {"deviceCnt": 6, "downDeviceCnt": 0, "vendorCnt": {"Ubuntu":
-    4, "Juniper": 2}, "modelCnt": {"vm": 4, "vqfx-10000": 2}, "archCnt": {"x86-64":
-    4, "": 2}, "versionCnt": {"16.04 LTS": 4, "19.4R1.10": 2}, "upTimeStat": [455183,
-    1482000, 652090]}}'
+  output: '{"junos": {"deviceCnt": 12, "downDeviceCnt": 0, "vendorCnt": {"Juniper":
+    7, "Ubuntu": 5}, "modelCnt": {"vqfx-10000": 7, "vm": 5}, "archCnt": {"": 7, "x86-64":
+    5}, "versionCnt": {"19.4R1.10": 7, "18.04.3 LTS": 5}, "upTimeStat": [135596000,
+    135671584, 135628292]}}'
 - command: device summarize --columns="namespace hostname" --format=json
   data-directory: tests/data/junos/parquet-out/
   error:
@@ -40,9 +61,10 @@ tests:
 - command: device unique --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: device unique junos
-  output: '[{"hostname": "srv11", "count": 1}, {"hostname": "srv12", "count": 1},
-    {"hostname": "srv21", "count": 1}, {"hostname": "srv22", "count": 1}, {"hostname":
-    "vqfx1", "count": 1}, {"hostname": "vqfx2", "count": 1}]'
+  output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
+    {"hostname": "firewall01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
+    "server101"}, {"hostname": "server102"}, {"hostname": "server201"}, {"hostname":
+    "server202"}, {"hostname": "spine01"}, {"hostname": "spine02"}]'
 - command: device unique --columns="hostname namespace" --format=json
   data-directory: tests/data/junos/parquet-out/
   error:

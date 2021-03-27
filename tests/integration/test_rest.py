@@ -14,16 +14,16 @@ VERBS = ['show', 'summarize', 'assert', 'lpm',
 FILTERS = ['', 'hostname=leaf01', 'namespace=ospf-ibgp',
            'hostname=leaf01%20spine01',
            'namespace=ospf-ibgp%20ospf-single',
-           'address=10.127.1.2',
+           'address=10.0.0.11',
            'dest=172.16.2.104&src=172.16.1.101&namespace=ospf-ibgp',
            'columns=namespace',
            'view=latest',
-           'address=10.127.1.2&view=all',
-           'ipAddress=10.127.1.2',
+           'address=10.0.0.11&view=all',
+           'ipAddress=10.0.0.11',
            'vrf=default',
            'ipvers=v4',
-           'macaddr=c2:6d:17:7a:bd:03',
-           'macaddr=8a:92:4b:c1:ea:03%20c2:6d:17:7a:bd:03',
+           'macaddr=44:39:39:ff:40:95',
+           'macaddr=44:39:39:ff:00:13%2044:39:39:ff:00:24',
            'peer=eth1.2',
            'vni=13',
            'vni=13%2024',
@@ -55,17 +55,17 @@ FILTERS = ['', 'hostname=leaf01', 'namespace=ospf-ibgp',
 
 # these should only succeed for the specific service/verb tuples
 GOOD_FILTERS_FOR_SERVICE_VERB = {
-    'address=10.127.1.2': ['route/lpm'],
-    'address=10.127.1.2&view=all': ['route/lpm'],
+    'address=10.0.0.11': ['route/lpm'],
+    'address=10.0.0.11&view=all': ['route/lpm'],
     'bd=': ['mac/show'],
     'dest=172.16.2.104&src=172.16.1.101&namespace=ospf-ibgp':
     ['path/show', 'path/summarize'],
     'ifname=swp1': ['interface/show', 'interface/assert',
                     'lldp/show', 'ospf/show', 'ospf/assert'],
-    'ipAddress=10.127.1.2': ['arpnd/show'],
+    'ipAddress=10.0.0.11': ['arpnd/show'],
     'ipvers=v4': ['address/show'],
     'localOnly=True': ['mac/show'],
-    'macaddr=48:47:00:e9:d5:41': ['arpnd/show', 'mac/show'],
+    'macaddr=44:39:39:ff:00:13': ['arpnd/show', 'mac/show'],
     'mountPoint=/': ['fs/show'],
     'oif=eth1.4': ['arpnd/show'],
     'peer=eth1.2': ['bgp/show'],
@@ -109,7 +109,7 @@ GOOD_VERB_FILTERS = {
 GOOD_SERVICE_VERB_FILTER = {
     'path/show': ['dest=172.16.2.104&src=172.16.1.101&namespace=ospf-ibgp'],
     'path/summarize': ['dest=172.16.2.104&src=172.16.1.101&namespace=ospf-ibgp'],
-    'route/lpm': ['address=10.127.1.2', 'address=10.127.1.2&view=all'],
+    'route/lpm': ['address=10.0.0.11', 'address=10.0.0.11&view=all'],
 
 }
 
@@ -154,15 +154,15 @@ BAD_VERB_FILTERS = {'assert?address=10.0.0.1': 405,
 # these service/verb/filter tuples should return errors
 #  because they are invalid filters for the service/verb combos
 BAD_FILTERS = {
-    'address/summarize?address=10.127.1.2': 405,
-    'address/summarize?address=10.127.1.2&view=all': 405,
+    'address/summarize?address=10.0.0.11': 405,
+    'address/summarize?address=10.0.0.11&view=all': 405,
     'address/summarize?ipvers=v4': 405,
     'address/summarize?vrf=default': 405,
     'address/show?query_str="hostname == \"leaf01\" and 1000 < mtu < 2000"': 500,
     'address/summarize?query_str="hostname == \"leaf01\" and 1000 < mtu < 2000"': 500,
-    'arpnd/summarize?macaddr=c2:6d:17:7a:bd:03': 405,
-    'arpnd/summarize?macaddr=8a:92:4b:c1:ea:03%20c2:6d:17:7a:bd:03': 405,
-    'arpnd/summarize?ipAddress=10.127.1.2': 405,
+    'arpnd/summarize?macaddr=44:39:39:ff:40:95': 405,
+    'arpnd/summarize?macaddr=44:39:39:ff:00:13%2044:39:39:ff:00:24': 405,
+    'arpnd/summarize?ipAddress=10.0.0.11': 405,
     'arpnd/summarize?oif=eth1.4': 405,
     'arpnd/show?query_str="hostname == \"leaf01\" and 1000 < mtu < 2000"': 500,
     'arpnd/summarize?query_str="hostname == \"leaf01\" and 1000 < mtu < 2000"': 500,
@@ -231,8 +231,8 @@ BAD_FILTERS = {
     'mac/show?query_str="hostname == \"leaf01\" and 1000 < mtu < 2000"': 500,
     'mac/summarize?query_str="hostname == \"leaf01\" and 1000 < mtu < 2000"': 500,
     'mac/summarize?bd=': 405,
-    'mac/summarize?macaddr=c2:6d:17:7a:bd:03': 405,
-    'mac/summarize?macaddr=8a:92:4b:c1:ea:03%20c2:6d:17:7a:bd:03': 405,
+    'mac/summarize?macaddr=44:39:39:ff:40:95': 405,
+    'mac/summarize?macaddr=44:39:39:ff:00:13%2044:39:39:ff:00:24': 405,
     'mac/summarize?localOnly=True': 405,
     'mac/summarize?remoteVtepIp=10.0.0.101': 405,
     'mac/summarize?vlan=13': 405,
@@ -271,8 +271,8 @@ BAD_FILTERS = {
     'route/lpm?hostname=leaf01': 404,
     'route/lpm?namespace=ospf-ibgp': 404,
     'route/summarize?query_str="hostname == \"leaf01\" and 1000 < mtu < 2000"': 500,
-    'route/summarize?address=10.127.1.2': 405,
-    'route/summarize?address=10.127.1.2&view=all': 405,
+    'route/summarize?address=10.0.0.11': 405,
+    'route/summarize?address=10.0.0.11&view=all': 405,
     'route/summarize?ipvers=v4': 405,
     'route/summarize?prefix=10.0.0.101/32': 405,
     'route/summarize?prefixlen=24': 405,
@@ -353,7 +353,7 @@ def get(endpoint, service, verb, args):
     (cmd, verb, filter) for cmd in cli_commands
     for verb in VERBS for filter in FILTERS
 ])
-def test_rest_services(setup_nubia, start_server, service, verb, arg):
+def test_rest_services(start_server, service, verb, arg):
     get(ENDPOINT, service, verb, arg)
 
 

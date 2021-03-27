@@ -56,8 +56,11 @@ def run_coalescer(cfg: dict, tables: List[str], period: str, run_once: bool,
         logger.info(f'Got sleep time of {sleep_time} secs')
 
     while True:
-        stats = do_coalesce(cfg, tables, period, logger, no_sqpoller)
-        # Write the stats
+        try:
+            stats = do_coalesce(cfg, tables, period, logger, no_sqpoller)
+        except Exception:
+            logger.exception('Coalescer aborted. Continuing')
+        # Write the selftats
         df = pd.DataFrame([asdict(x) for x in stats])
         if not df.empty:
             df['sqvers'] = coalescer_schema.version

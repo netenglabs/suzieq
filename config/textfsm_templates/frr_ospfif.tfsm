@@ -1,8 +1,8 @@
-Value ifname (\S+)
+Value Required ifname (\S+)
 Value routerId ([0-9./]+)
 Value state (\w+)
 Value ipAddress ([0-9./]+)
-Value vrf (\S+)
+Value Filldown vrf (\S+)
 Value area ([0-9.]+)
 Value areaStub ((\[Stub\])?)
 Value isUnnumbered (UNNUMBERED)
@@ -15,6 +15,8 @@ Value nbrCount (\d+)
 Value passive (\w+)
 
 Start
+  ^VRF -> Continue.Record
+  ^VRF\s+Name:\s+${vrf}.*$$
   ^\w+ is.*$$ -> Continue.Record
   ^${ifname} is ${state}.*$$
   ^\s+Internet Address ${ipAddress},.*Area ${area}\s?${areaStub}.*$$
@@ -23,3 +25,48 @@ Start
   ^\s+Timer intervals configured, Hello ${helloTime}.*, Dead ${deadTime}.*, Retransmit ${retxTime}.*$$
   ^\s+No Hellos \(${passive} interface\).*$$
   ^\s+Neighbor Count.*, Adjacent neighbor count is ${nbrCount}.*$$
+
+#VRF Name: default
+#lo is up
+#  ifindex 1, MTU 65536 bytes, BW 0 Mbit <UP,LOOPBACK,RUNNING>
+#  Internet Address 10.0.0.11/32, Broadcast 10.0.0.11, Area 0.0.0.0
+#  MTU mismatch detection: enabled
+#  Router ID 10.0.0.11, Network Type LOOPBACK, Cost: 10
+#  Transmit Delay is 1 sec, State Loopback, Priority 1
+#  No backup designated router on this network
+#  Multicast group memberships: <None>
+#  Timer intervals configured, Hello 10s, Dead 40s, Wait 40s, Retransmit 5
+#    No Hellos (Passive interface)
+#  Neighbor Count is 0, Adjacent neighbor count is 0
+#  Internet Address 10.0.0.112/32, Broadcast 10.0.0.112, Area 0.0.0.0
+#  MTU mismatch detection: enabled
+#  Router ID 10.0.0.11, Network Type LOOPBACK, Cost: 10
+#  Transmit Delay is 1 sec, State Loopback, Priority 1
+#  No backup designated router on this network
+#  Multicast group memberships: <None>
+#  Timer intervals configured, Hello 10s, Dead 40s, Wait 40s, Retransmit 5
+#    No Hellos (Passive interface)
+#  Neighbor Count is 0, Adjacent neighbor count is 0
+#swp1 is up
+#  ifindex 3, MTU 9200 bytes, BW 1000 Mbit <UP,BROADCAST,RUNNING,MULTICAST>
+#  This interface is UNNUMBERED, Area 0.0.0.0
+#  MTU mismatch detection: enabled
+#  Router ID 10.0.0.11, Network Type POINTOPOINT, Cost: 100
+#  Transmit Delay is 1 sec, State Point-To-Point, Priority 1
+#  No backup designated router on this network
+#  Multicast group memberships: OSPFAllRouters
+#  Timer intervals configured, Hello 10s, Dead 40s, Wait 40s, Retransmit 5
+#    Hello due in 9.645s
+#  Neighbor Count is 1, Adjacent neighbor count is 1
+#swp2 is up
+#  ifindex 4, MTU 9200 bytes, BW 1000 Mbit <UP,BROADCAST,RUNNING,MULTICAST>
+#  This interface is UNNUMBERED, Area 0.0.0.0
+#  MTU mismatch detection: enabled
+#  Router ID 10.0.0.11, Network Type POINTOPOINT, Cost: 100
+#  Transmit Delay is 1 sec, State Point-To-Point, Priority 1
+#  No backup designated router on this network
+#  Multicast group memberships: OSPFAllRouters
+#  Timer intervals configured, Hello 10s, Dead 40s, Wait 40s, Retransmit 5
+#    Hello due in 9.647s
+#  Neighbor Count is 1, Adjacent neighbor count is 1
+#

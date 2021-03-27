@@ -6,6 +6,8 @@ ignore-fields:
 keys:
   - vrf
   - peer
+  - afi
+  - safi
 show-fields:
   - vrf
   - peer
@@ -13,94 +15,29 @@ show-fields:
   - state
   - asn
   - peerAsn
-  - v4PfxRx
+  - pfxRx
   - estdTime
   - numChanges
 
 apply:
   eos:
     version: all
-    command: show ip bgp neighbors vrf all
-    normalize: 'vrfs/*/peerList/*/[
-        "asn: peerAsn?|0", 
-        "localAsn: asn?|0", 
-        "updateSource: source",
-        "peerHostname: peerHostname?|",
-        "peerAddress: peer",
-        "peerAddress: origPeer",
-        "peerAddress: peerIP?|",
-        "vrf: vrf",
-        "maintenance: maintenance", 
-        "establishFailHint: reason",
-        "notificnReason: notificnReason?|",
-        "lastErrorTimeInfo/time: lastDownTime?|0",
-        "prefixesReceived: v4PfxRx?|0",
-        "prefixesSent: v4PfxTx?|0",
-        "v6PrefixesReceived: v6PfxRx?|0",
-        "v6PrefixesSent: v6PfxTx?|0",
-        "receivedUpdates: updatesRx?|0",
-        "bgpSoftReconfigInbound: softConfigIn?|",
-        "routeMapInfo/outboundIpv4Uni: v4EgressRmap",
-        "routeMapInfo/outboundIpv6Uni: v6EgressRmap",
-        "routeMapInfo/outboundEvpn: evpnEgressRmap",
-        "routeMapInfo/inboundIpv4Uni: v4IngressRmap",
-        "routeMapInfo/inboundIpv6Uni: v6IngressRmap",
-        "routeMapInfo/inboundEvpn: evpnIngressRmap",
-        "sentUpdates: updatesTx?|0",
-        "routerId: peerRouterId",
-        "localRouterId: routerId",
-        "holdTime": "holdTime?|0",
-        "keepaliveTime": "keepaliveTime?|0",
-        "establishedTime: estdTime?|0",
-        "establishedTransitions: numChanges?|0",
-        "updateSource: updateSource?|",
-        "v4Enabled: v4Enabled?|True",
-        "v6Enabled: v6Enabled?|False",
-        "evpnEnabled: evpnEnabled?|False",
-        "v4Advertised: v4Advertised?|False",
-        "v6Advertised: v6Advertised?|False",
-        "evpnAdvertised: evpnAdvertised?|False",
-        "v4Received: v4Received?|False",
-        "v6Received: v6Received?|False",
-        "evpnReceived: evpnReceived?|False",
-        "bfdState: bfdStatus?|disabled",
-        "v6BestEcmpPaths: v6EcmpEnabled?|0",
-        "v4BestEcmpPaths: v4EcmpEnabled?|0",
-        "state: state?Established|NotEstd"]'
+    command: show bgp neighbors vrf all
+    format: text
+    textfsm: textfsm_templates/eos_show_bgp_nbr.tfsm
+      
   cumulus:
     version: all
     command: net show bgp vrf all neighbor json
     normalize: '*:vrf/*:peer/[
+        "neighborCapabilities/multiprotocolExtensions/*:_sqstore/received: afisRcvOnly",
+        "neighborCapabilities/multiprotocolExtensions/*:_sqstore/advertised: afisAdvOnly",
+        "addressFamilyInfo: _afiInfo",
         "remoteAs: peerAsn",
         "localAs: asn",
         "lastResetDueTo: reason?|",
         "lastNotificationReason: notificnReason?|",
         "lastResetTimerMsecs: lastDownTime?|0",
-        "addressFamilyInfo/IPv4 Unicast/acceptedPrefixCounter: v4PfxRx?|0",
-        "addressFamilyInfo/IPv6 Unicast/acceptedPrefixCounter: v6PfxRx?|0",
-        "addressFamilyInfo/L2VPN EVPN/acceptedPrefixCounter: evpnPfxRx?|0",
-        "addressFamilyInfo/L2VPN EVPN/advertiseAllVnis: advertiseAllVnis?|False",
-        "addressFamilyInfo/L2VPN EVPN/commAttriSentToNbr: evpnSendCommunity?|",
-        "addressFamilyInfo/L2VPN EVPN/unchangedNextHopPropogatedToNbr: nhUnchanged?|False",
-        "addressFamilyInfo/l2VpnEvpn/advertiseAllVnis: advertiseAllVnis?|advertiseAllVnis",
-        "addressFamilyInfo/l2VpnEvpn/unchangedNextHopPropogatedToNbr: nhUnchanged?|nhUnchanged",
-        "addressFamilyInfo/l2VpnEvpn/commAttriSentToNbr: evpnSendCommunity?|",
-        "addressFamilyInfo/ipv4Unicast/acceptedPrefixCounter: v4PfxRx?|v4PfxRx",
-        "addressFamilyInfo/ipv6Unicast/acceptedPrefixCounter: v6PfxRx?|v6PfxRx",
-        "addressFamilyInfo/l2VpnEvpn/acceptedPrefixCounter: evpnPfxRx?|evpnPfxRx",
-        "addressFamilyInfo/ipv4Unicast/sentPrefixCounter: v4PfxTx?|0",
-        "addressFamilyInfo/ipv6Unicast/sentPrefixCounter: v6PfxTx?|0",
-        "addressFamilyInfo/l2VpnEvpn/sentPrefixCounter: evpnPfxTx?|0",
-        "addressFamilyInfo/ipv4Unicast/routeReflectorClient: rrclient?|False",
-        "addressFamilyInfo/ipv4Unicast/defaultSent: v4DefaultSent?|False",
-        "addressFamilyInfo/ipv6Unicast/defaultSent: v6DefaultSent?|False",
-        "addressFamilyInfo/l2VpnEvpn/defaultSent: evpnDefaultSent?|False",
-        "addressFamilyInfo/ipv4Unicast/routeMapForIncomingAdvertisements: v4IngressRmap?|",
-        "addressFamilyInfo/ipv4Unicast/routeMapForOutgoingAdvertisements: v4EgressRmap?|",
-        "addressFamilyInfo/ipv6Unicast/routeMapForIncomingAdvertisements: v6IngressRmap?|",
-        "addressFamilyInfo/ipv6Unicast/routeMapForOutgoingAdvertisements: v6EgressRmap?|",
-        "addressFamilyInfo/l2VpnEvpn/routeMapForIncomingAdvertisements: evpnIngressRmap?|",
-        "addressFamilyInfo/l2VpnEvpn/routeMapForOutgoingAdvertisements: evpnEgressRmap?|",
         "messageStats/updatesSent: updatesTx",
         "messageStats/updatesRecv: updatesRx",
         "remoteRouterId: peerRouterId",
@@ -115,60 +52,37 @@ apply:
         "peerBfdInfo/status: bfdStatus?|disabled",
         "neighborCapabilities/extendedNexthop": extnhEnabled",
         "neighborCapabilities/hostName/rcvHostName: peerHostname?|",
-        "neighborCapabilities/multiprotocolExtensions/ipv4Unicast/advertisedAndReceived: v4Enabled?|False",
-        "neighborCapabilities/multiprotocolExtensions/l2VpnEvpn/advertisedAndReceived: evpnEnabled?|False",
-        "neighborCapabilities/multiprotocolExtensions/ipv6Unicast/advertisedAndReceived: v6Enabled?|False",
-        "neighborCapabilities/multiprotocolExtensions/ipv4Unicast/advertised: v4Advertised?|False",
-        "neighborCapabilities/multiprotocolExtensions/l2VpnEvpn/advertised: evpnAdvertised?|False",
-        "neighborCapabilities/multiprotocolExtensions/ipv6Unicast/advertised: v6Advertised?|False",
-        "neighborCapabilities/multiprotocolExtensions/ipv4Unicast/received: v4Received?|False",
-        "neighborCapabilities/multiprotocolExtensions/l2VpnEvpn/received: evpnReceived?|False",
-        "neighborCapabilities/multiprotocolExtensions/ipv6Unicast/received: v6Received?|False",
-        "neighborCapabilities/multiprotocolExtensions/IPv4 Unicast/advertisedAndReceived: v4Enabled?|v4Enabled",
-        "neighborCapabilities/multiprotocolExtensions/L2VPN EVPN/advertisedAndReceived: evpnEnabled?|evpnEnabled",
-        "neighborCapabilities/multiprotocolExtensions/IPv6 Unicast/advertisedAndReceived: v6Enabled?|v6Enabled",
-        "neighborCapabilities/multiprotocolExtensions/IPv4 Unicast/advertised: v4Advertised?|v4Advertised",
-        "neighborCapabilities/multiprotocolExtensions/L2VPN EVPN/advertised: evpnAdvertised?|evpnAdvertised",
-        "neighborCapabilities/multiprotocolExtensions/IPv6 Unicast/advertised: v6Advertised?|v6Advertised",
-        "neighborCapabilities/multiprotocolExtensions/IPv4 Unicast/received: v4Received?|v4Received",
-        "neighborCapabilities/multiprotocolExtensions/L2VPN EVPN/received: evpnReceived?|evpnReceived",
-        "neighborCapabilities/multiprotocolExtensions/IPv6 Unicast/received: v6Received?|v6Received",
+        "messageStats/updatesSent: updatesTx",
+        "messageStats/updatesRecv: updatesRx",
         "hostLocal: updateSource?|",
         "hostForeign: peerIP?|"]'
+
+  iosxr:
+    version: all
+    command:
+      - command: show bgp vrf default neighbors
+        textfsm: textfsm_templates/iosxr_show_bgp_neigh.tfsm
+      - command: show bgp vrf all neighbors
+        textfsm: textfsm_templates/iosxr_show_bgp_neigh.tfsm
+      - command: show bgp vrf default summary
+        textfsm: textfsm_templates/iosxr_show_bgp_summ.tfsm
+        _entryType: summary
+      - command: show bgp vrf all summary
+        textfsm: textfsm_templates/iosxr_show_bgp_summ.tfsm
+        _entryType: summary
+
   linux:
       version: all
       command: sudo vtysh -c "show bgp vrf all neighbors json"
       normalize: '*:vrf/*:peer/[
+        "neighborCapabilities/multiprotocolExtensions/*:_sqstore/received: afisRcvOnly",
+        "neighborCapabilities/multiprotocolExtensions/*:_sqstore/advertised: afisAdvOnly",
+        "addressFamilyInfo: _afiInfo",
         "remoteAs: peerAsn",
         "localAs: asn",
         "lastResetDueTo: reason?|",
         "lastNotificationReason: notificnReason?|",
         "lastResetTimerMsecs: lastDownTime?|0",
-        "addressFamilyInfo/IPv4 Unicast/acceptedPrefixCounter: v4PfxRx?|0",
-        "addressFamilyInfo/IPv6 Unicast/acceptedPrefixCounter: v6PfxRx?|0",
-        "addressFamilyInfo/L2VPN EVPN/acceptedPrefixCounter: evpnPfxRx?|0",
-        "addressFamilyInfo/L2VPN EVPN/advertiseAllVnis: advertiseAllVnis?|False",
-        "addressFamilyInfo/L2VPN EVPN/commAttriSentToNbr: evpnSendCommunity?|",
-        "addressFamilyInfo/L2VPN EVPN/unchangedNextHopPropogatedToNbr: nhUnchanged?|False",
-        "addressFamilyInfo/l2VpnEvpn/advertiseAllVnis: advertiseAllVnis?|advertiseAllVnis",
-        "addressFamilyInfo/l2VpnEvpn/unchangedNextHopPropogatedToNbr: nhUnchanged?|nhUnchanged",
-        "addressFamilyInfo/l2VpnEvpn/commAttriSentToNbr: evpnSendCommunity?|",
-        "addressFamilyInfo/ipv4Unicast/acceptedPrefixCounter: v4PfxRx?|v4PfxRx",
-        "addressFamilyInfo/ipv6Unicast/acceptedPrefixCounter: v6PfxRx?|v6PfxRx",
-        "addressFamilyInfo/l2VpnEvpn/acceptedPrefixCounter: evpnPfxRx?|evpnPfxRx",
-        "addressFamilyInfo/ipv4Unicast/routeReflectorClient: rrclient?|False",
-        "addressFamilyInfo/ipv4Unicast/defaultSent: v4DefaultSent?|False",
-        "addressFamilyInfo/ipv6Unicast/defaultSent: v6DefaultSent?|False",
-        "addressFamilyInfo/l2VpnEvpn/defaultSent: evpnDefaultSent?|False",
-        "addressFamilyInfo/ipv4Unicast/sentPrefixCounter: v4PfxTx?|0",
-        "addressFamilyInfo/ipv6Unicast/sentPrefixCounter: v6PfxTx?|0",
-        "addressFamilyInfo/l2VpnEvpn/sentPrefixCounter: evpnPfxTx?|0",
-        "addressFamilyInfo/ipv4Unicast/routeMapForIncomingAdvertisements: v4IngressRmap?|",
-        "addressFamilyInfo/ipv4Unicast/routeMapForOutgoingAdvertisements: v4EgressRmap?|",
-        "addressFamilyInfo/ipv6Unicast/routeMapForIncomingAdvertisements: v6IngressRmap?|",
-        "addressFamilyInfo/ipv6Unicast/routeMapForOutgoingAdvertisements: v6EgressRmap?|",
-        "addressFamilyInfo/l2VpnEvpn/routeMapForIncomingAdvertisements: evpnIngressRmap?|",
-        "addressFamilyInfo/l2VpnEvpn/routeMapForOutgoingAdvertisements: evpnEgressRmap?|",
         "messageStats/updatesSent: updatesTx",
         "messageStats/updatesRecv: updatesRx",
         "remoteRouterId: peerRouterId",
@@ -181,25 +95,10 @@ apply:
         "bgpTimerKeepAliveIntervalMsecs: keepaliveTime/1000",
         "minBtwnAdvertisementRunsTimerMsecs: mrai/1000",
         "peerBfdInfo/status: bfdStatus?|disabled",
+        "neighborCapabilities/extendedNexthop": extnhEnabled",
         "neighborCapabilities/hostName/rcvHostName: peerHostname?|",
-        "neighborCapabilities/multiprotocolExtensions/ipv4Unicast/advertisedAndReceived: v4Enabled?|False",
-        "neighborCapabilities/multiprotocolExtensions/l2VpnEvpn/advertisedAndReceived: evpnEnabled?|False",
-        "neighborCapabilities/multiprotocolExtensions/ipv6Unicast/advertisedAndReceived: v6Enabled?|False",
-        "neighborCapabilities/multiprotocolExtensions/ipv4Unicast/advertised: v4Advertised?|False",
-        "neighborCapabilities/multiprotocolExtensions/l2VpnEvpn/advertised: evpnAdvertised?|False",
-        "neighborCapabilities/multiprotocolExtensions/ipv6Unicast/advertised: v6Advertised?|False",
-        "neighborCapabilities/multiprotocolExtensions/ipv4Unicast/received: v4Received?|False",
-        "neighborCapabilities/multiprotocolExtensions/l2VpnEvpn/received: evpnReceived?|False",
-        "neighborCapabilities/multiprotocolExtensions/ipv6Unicast/received: v6Received?|False",
-        "neighborCapabilities/multiprotocolExtensions/IPv4 Unicast/advertisedAndReceived: v4Enabled?|v4Enabled",
-        "neighborCapabilities/multiprotocolExtensions/L2VPN EVPN/advertisedAndReceived: evpnEnabled?|evpnEnabled",
-        "neighborCapabilities/multiprotocolExtensions/IPv6 Unicast/advertisedAndReceived: v6Enabled?|v6Enabled",
-        "neighborCapabilities/multiprotocolExtensions/IPv4 Unicast/advertised: v4Advertised?|v4Advertised",
-        "neighborCapabilities/multiprotocolExtensions/L2VPN EVPN/advertised: evpnAdvertised?|evpnAdvertised",
-        "neighborCapabilities/multiprotocolExtensions/IPv6 Unicast/advertised: v6Advertised?|v6Advertised",
-        "neighborCapabilities/multiprotocolExtensions/IPv4 Unicast/received: v4Received?|v4Received",
-        "neighborCapabilities/multiprotocolExtensions/L2VPN EVPN/received: evpnReceived?|evpnReceived",
-        "neighborCapabilities/multiprotocolExtensions/IPv6 Unicast/received: v6Received?|v6Received",
+        "messageStats/updatesSent: updatesTx",
+        "messageStats/updatesRecv: updatesRx",
         "hostLocal: updateSource?|",
         "hostForeign: peerIP?|"]'
   sonic:
@@ -208,8 +107,9 @@ apply:
   nxos:
     version: all
     command:
-      - command: show bgp all neighbors vrf all | json
+      - command: show bgp all neighbors vrf all | json native
         normalize: 'TABLE_neighbor/ROW_neighbor/*?/[
+        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/pfxtreataswithdrawn: pfxWithdrawn?|0",
         "neighbor: peer",
         "neighbor: origPeer",
         "ipv4prefixneighbor: _dynPeer",
@@ -226,9 +126,9 @@ apply:
         "elapsedtime: estdTime?|",
         "resetreason: reason",
         "peerresetreason: "notificnReason?|",
-        "TABLE_af/ROW_af/[*]?/TABLE_saf/ROW_saf/af-name: afiSafi",
-        "TABLE_af/ROW_af/[*]?/TABLE_saf/ROW_saf/af-recvd: afRcvd",
-        "TABLE_af/ROW_af/[*]?/TABLE_saf/ROW_saf/af-advertised: afAdvertised",
+        "TABLE_af/ROW_af/[*]?/TABLE_saf/ROW_saf/[*]/af-name: afiSafi",
+        "TABLE_af/ROW_af/[*]?/TABLE_saf/ROW_saf/[*]/af-recvd: afRcvd",
+        "TABLE_af/ROW_af/[*]?/TABLE_saf/ROW_saf/[*]/af-advertised: afAdvertised",
         "capextendednhadvertised: extnhAdvertised",
         "capextendednhrecvd: extnhReceived",
         "updatessent: updatesTx?|0",
@@ -236,20 +136,23 @@ apply:
         "TABLE_peer/ROW_peer/[*]?/peer: _dynamicPeers",
         "activepeers: _activePeers",
         "maxconcurrentpeers: _maxconcurrentpeers",
-        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/per-af-name: afiPrefix",
-        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/pfxrecvd: pfxRcvd",
-        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/pfxsent: pfxSent",
-        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/sendextcommunity: extendComm",
-        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/sendextcommunity: sendComm",
-        "TABLE_peraf/ROW_peraf/[0]?/TABLE_persaf/ROW_persaf/rrconfigured: rrclient?|False",
-        "TABLE_peraf/ROW_peraf/[0]?/TABLE_persaf/ROW_persaf/firstconvgtime: _firstconvgtime",
-        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/defaultoriginate: defaultOrig?|",
+        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/per-af-name: afiPrefix?|",
+        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/pfxrecvd: pfxRcvd?|0",
+        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/pfxsent: pfxSent?|0",
+        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/sendextcommunity: extendComm?|",
+        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/sendextcommunity: sendComm?|",
+        "TABLE_peraf/ROW_peraf/[0]?/TABLE_persaf/ROW_persaf/[*]/rrconfigured: rrclient?|False",
+        "TABLE_peraf/ROW_peraf/[0]?/TABLE_persaf/ROW_persaf/[*]/firstconvgtime: _firstconvgtime",
+        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/defaultoriginate: defaultOrig",
+        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/insoftreconfigallowed: softReconfig",
+        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/TABLE_inpolicy/ROW_inpolicy/[*]/inpolicyname: ingressRmap",        
+        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/TABLE_outpolicy/ROW_outpolicy/[*]/outpolicyname: egressRmap?|",        
         "localaddr: updateSource?|",
         "remoteaddr: peerIP?|",
         "entry-type: _entryType?|neighbors",
         ]'
 
-      - command: show bgp all summary vrf all | json
+      - command: show bgp all summary vrf all | json native
         normalize: 'TABLE_vrf/ROW_vrf/*?/[
         "vrf-name-out: vrf",
         "vrf-name-out: peer",
@@ -271,7 +174,6 @@ apply:
 
       - command: "show bgp neighbor | display json"
         normalize: 'bgp-information/[0]/bgp-peer/*/[
-        "bgp-rib/[*]/advertised-prefix-count/[0]/data: pfxTxList",
         "peer-address/[0]/data: peerIP",
         "peer-address/[0]/data: peer",
         "peer-as/[0]/data: peerAsn?|0",
@@ -292,10 +194,15 @@ apply:
         "keepalive-interval/[0]/data: keepaliveTime?|0",
         "bgp-bfd/[0]/bfd-operational-state/[0]/data: bfdStatus",
         "local-interface-name/[0]/data: ifname",
-        "bgp-rib/[*]/received-prefix-count/[0]/data: pfxRxList?|",
-        "bgp-rib/[*]/name/[0]/data: pfxType",
+        "bgp-rib/[*]/advertised-prefix-count/[0]/data: _pfxTxList",
+        "bgp-rib/[*]/received-prefix-count/[0]/data: _pfxRxList?|",
+        "bgp-rib/[*]/suppressed-prefix-count/[0]/data: _pfxSuppressList?|",
+        "bgp-rib/[*]/active-prefix-count/[0]/data: _pfxBestRxList",
+        "bgp-rib/[*]/name/[0]/data: _pfxType",
         "bgp-traffic/[0]/input-updates/[0]/data: updatesRx?|0",
         "output-updates/[0]/data: updatesTx?|0",
+        "bgp-output-queue/[*]/table-name/[0]/data: _tableNameList",
+        "bgp-output-queue/[*]/rib-adv-nlri/[0]/data: _tableAfiList",
         "vrf: vrf?|default",
         "entry_type: _entryType?|neighbors",
         ]'

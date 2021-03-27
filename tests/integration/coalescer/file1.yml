@@ -8,7 +8,7 @@ transform:
           - match:
               all
             set:
-              timestamp: 30 Dec 2020, 11:01 am UTC
+              timestamp: 26 Mar 2021, 11:01 am UTC
   - record:
       - interfaces:
           - match: namespace=="dual-evpn" and hostname=="leaf01" and ifname=="swp1"
@@ -19,20 +19,20 @@ transform:
 verify:
   - interfaces:
       - test:
-          start-time: 30 Dec 2020, 11:01 am UTC
+          start-time: 26 Mar 2021, 11:01 am UTC
           query: namespace=="dual-evpn" and hostname=="leaf01" and ifname=="swp1" and state=="down"
       - test:
-          end-time: 30 Dec 2020, 11:01 am UTC
+          end-time: 26 Mar 2021, 11:01 am UTC
           query: namespace=="dual-evpn" and hostname=="leaf01" and ifname=="swp1" and state=="up"
       - test:
-          start-time: 30 Dec 2020, 11:01 am UTC 
-          end-time: 30 Dec 2020, 11:21 am UTC
+          start-time: 26 Mar 2021, 11:01 am UTC 
+          end-time: 26 Mar 2021, 11:21 am UTC
           query: namespace=="dual-evpn" and hostname=="leaf01" and ifname=="swp1" and state=="up"
       - test:
-          start-time: 31 Dec 2020, 11:01 am UTC
+          start-time: 26 Mar 2021, 12:00 pm UTC
           assertempty:
       - test:
-          start-time: 30 Dec 2020, 3:01 am PST
+          start-time: 26 Mar 2021, 3:01 am PST
           query: namespace=="dual-evpn" and hostname=="leaf01" and ifname=="swp1" and state=="down"
           shape: 1 *
 

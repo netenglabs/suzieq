@@ -82,12 +82,13 @@ class FileNode(object):
 
         for i, elem in enumerate(entries):
             newelem = elem.replace('\n', '').strip()
-            if i == 0:
-                newelem = newelem + ']'
-            elif i == entlen-1:
-                newelem = '[' + newelem
-            else:
-                newelem = '[' + newelem + ']'
+            if entlen > 1:
+                if i == 0:
+                    newelem = newelem + ']'
+                elif i == entlen-1:
+                    newelem = '[' + newelem
+                else:
+                    newelem = '[' + newelem + ']'
 
             jelem = None
             try:

@@ -18,7 +18,7 @@ show-fields:
 apply:
   eos:
     version: all
-    command: show ip ospf neighbor detail
+    command: show ip ospf neighbor detail vrf all
     normalize: 'vrfs/*:vrf/instList/*:instance/ospfNeighborEntries/*/[
       "routerId: peerRouterId",
       "priority: nbrPrio",
@@ -34,8 +34,11 @@ apply:
 
   cumulus:
       version: all
-      command: sudo vtysh -c 'show ip ospf neighbor detail'
-      textfsm: textfsm_templates/frr_ospfnbr.tfsm
+      command:
+        - command: sudo vtysh -c 'show ip ospf vrf all neighbor detail'
+          textfsm: textfsm_templates/frr_ospfnbr.tfsm
+        - command: sudo vtysh -c 'show ip ospf vrf all neighbor'
+          textfsm: textfsm_templates/frr_ospfnbr_brief.tfsm
 
   linux:
     copy: cumulus
@@ -67,7 +70,7 @@ apply:
 
   nxos:
     version: all
-    command: show ip ospf neighbor detail vrf all | json
+    command: show ip ospf neighbor detail vrf all | json native
     normalize: 'TABLE_ctx/ROW_ctx/*:cname:vrf|TABLE_nbr/ROW_nbr/*?/[
     "rid: peerRouterId",
     "addr: peerIP",

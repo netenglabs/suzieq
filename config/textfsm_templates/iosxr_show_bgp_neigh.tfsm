@@ -1,0 +1,175 @@
+Value Filldown peer (\S+)
+Value Filldown peerAsn (\d+)
+Value Filldown asn (\d+)
+Value Filldown vrf (\w+)
+Value Filldown description (.+?)
+Value Filldown peerRouterId (\S+)
+Value Filldown clusterId (\S+)
+Value Filldown state (.+?)
+Value Filldown estdTime (.+?)
+Value Filldown holdTime (\d+)
+Value Filldown keepaliveTime (\d+)
+Value Filldown bfdStatus (\w+)
+Value Filldown rrClient (\S+)
+Value GR (.+?)
+Value afi (\w+)
+Value safi (\w+)
+Value List afisAdvOnly ([^:]+)
+Value List afisRcvOnly ([^:]+)
+Value Filldown mrai (\d+)
+Value VERSION (\d+)
+Value TYPE (\w+)
+Value nsrState (.+?)
+Value _nsr (.+?)
+Value ingressRmap (\S+)
+Value egressRmap (\S+)
+Value pfxRx (\d+)
+Value pfxBestRx (\d+)
+Value pfxTx (\d+)
+Value pfxSuppressTx (\d+)
+Value pfxWithdrawnTx (\d+)
+Value pfxMaxRx (\d+)
+Value pfxWarnPercent (\d+)
+Value defOriginate (.+?)
+Value nextHopSelf (\w+)
+Value List communityTypes (Community|\w+)
+Value passive (passive)
+Value extnhEnabled (\w+)
+Value _numConnEstd (\d+)
+Value _numConnDropped (\d+)
+Value Fillup peerIP (.*)
+Value Fillup updateSource (.*)
+Value Fillup lastDownTime (.+?)
+Value softReconfig (\w+)
+Value reason (.+?)
+Value List LAST_ACK_VERSION (\d+)
+Value List LAST_SYNCED_ACK_VERSION (\d+)
+Value Fillup notificnReason (.+?)
+Value Fillup notificnReasonRx (.+?)
+Value Fillup hopsMax (\d+)
+Value LOCAL_PORT (\d+)
+Value REMOTE_PORT (\d+)
+Value LAST_NOTIFICATION_SENT (\S+)
+
+Start
+  ^%.*$$
+  ^VRF:
+  ^-+.*$$
+  ^\S+\s+\S+\s+\d+\s+\d+:\d+:\d+\.\d+\s+\S+\s*$$
+  ^BGP\s+neighbor -> Continue.Record
+  ^BGP\s+neighbor -> Continue.Clearall  
+  ^BGP\s+neighbor\s+is\s+${peer},\s+vrf\s+${vrf}.*$$
+  ^BGP\s+neighbor\s+is\s+${peer}.*$$
+  ^\s+Remote\s+AS\s+${peerAsn}\,\s+local\s+AS\s+${asn}\,\s+(?:no\-prepend,\s+)?(?:replace\-as\,\s+)?${TYPE}\s+link
+  ^\s+Administratively\s+shut\s+down
+  ^\s+Description:\s+${description}\s*$$
+  ^\s+Remote\s+router\s+ID\s+${peerRouterId}
+  ^\s+Cluster\s+ID\s+${clusterId}\s*$$
+  ^\s+BGP\s+[Ss]tate\s+=\s+${state}(?:,\s+up\s+for\s+${estdTime})?\s*$$
+  ^\s+NSR\s+[Ss]tate:\s+(?:NSR\s+)?${nsrState}\s*$$
+  ^\s+BFD\s+${bfdStatus}
+  ^\s+Last\s+[Rr]ead
+  ^\s+Hold\s+time\s+is\s+${holdTime},\s+keepalive\s+interval\s+is\s+${keepaliveTime}
+  ^\s+Configured hold time\:\s+\d+\,\s+keepalive\:
+  ^\s+(?:Second\s+)?[Ll]ast\s+write
+  ^\s+Socket\s+(?:not\s+)?armed
+  ^\s+Last\s+KA
+  ^\s+Precedence:
+  ^\s+Non-stop\s+routing\s+is\s+${_nsr}\s*$$
+  ^\s+Graceful\s+restart\s+is\s+${GR}\s*$$
+  ^\s+Restart\s+time\s+is
+  ^\s+Stale\s+path\s+timeout\s+time\s+is
+  ^\s+Enforcing\s+first\s+AS
+  ^\s+Multi-protocol\s+capability
+  ^\s+Neighbor\s+capabilities:
+  ^\s+Graceful\s+Restart\s+\(GR\s+Awareness\)\:
+  ^\s+Route\s+refresh:
+  ^\s+4-byte\s+AS:
+  ^\s+TCP open mode: ${passive}.*$$
+  ^\s+Configured TCP Maximum Segment Size
+  ^\s+DMZ-link bandwidth.*$$
+  ^\s+Received\s+\d+\s+
+  ^\s+Address family\s+${afisAdvOnly}:\s+advertised\s*$$
+  ^\s+Address family\s+${afisRcvOnly}:\s+received\s*$$
+  ^\s+Address family.*:\s+advertised\s+and\s+received
+  ^\s+Sent\s+\d+\s+messages
+  ^\s+Inbound\s+message\s+logging
+  ^\s+Outbound\s+message\s+logging
+  ^\s+Minimum\s+time\s+between\s+advertisement\s+runs\s+is\s+${mrai}\s+.*$$
+  ^\s+For\s+Address\s+Family: ${afi}\s+${safi} -> AFI
+  ^\s+Connections\s+established\s+${_numConnEstd};\s+dropped\s+${_numConnDropped}\s*$$ -> Connection
+  ^\s*$$
+  ^. -> Error
+
+AFI
+  ^\s+For\s+Address\s+Family: -> Continue.Record
+  ^\s+For\s+Address\s+Family:\s+${afi}\s+${safi}.*$$
+  ^\s+BGP\s+neighbor\s+version\s+${VERSION}\s*$$
+  ^\s+Inbound soft reconfiguration ${softReconfig}.*$$
+  ^\s+Update\s+group:
+  ^\s+Extended Nexthop.*$$
+  ^\s+Target version
+  ^\s+Route-Reflector\s+${rrClient}\s*$$
+  ^\s+Default\s+information\s+originate\:\s+${defOriginate}\s*$$
+  ^\s+AF-dependent capabilities
+  ^\s+Additional-paths
+  ^\s+Extended Nexthop encoding: ${extnhEnabled}
+  ^\s+Graceful\s+Restart\s+capability
+  ^\s+Local\s+restart\s+time\s+is
+  ^\s+Maximum\s+stalepath\s+time\s+is
+  ^\s+Remote\s+Restart\s+time\s+is
+  ^\s+NEXT_HOP\s+is\s+${nextHopSelf}.*$$
+  ^\s+Route\s+refresh\s+request:
+  ^\s+Policy\s+for\s+incoming\s+advertisements\s+is\s+${ingressRmap}\s*$$
+  ^\s+Policy\s+for\s+outgoing\s+advertisements\s+is\s+${egressRmap}\s*$$
+  ^\s+eBGP neighbor with no outbound policy; defaults to ${egressRmap}
+  ^\s+Outbound Route Filter.*$$
+  ^\s+Send-mode:.*$$
+  ^\s+Receive-mode:.*$$
+  ^\s+${pfxRx}\s+accepted\s+prefixes,\s+${pfxBestRx}\s+are\s+bestpaths
+  ^\s+Cumulative\s+no\.\s+of\s+prefixes\s+denied:
+  ^\s+Exact\s+no\.\s+of\s+prefixes\s+denied
+  ^\s+No\s+policy:
+  ^\s+By\s+ORF\s+policy:
+  ^\s+Prefix\s+advertised\s+${pfxTx},\s+suppressed\s+${pfxSuppressTx},\s+withdrawn\s+${pfxWithdrawnTx}
+  ^\s+Maximum\s+prefixes\s+allowed\s+${pfxMaxRx}
+  ^\s+Threshold\s+for\s+warning\s+message\s+${pfxWarnPercent}
+  ^\s+AIGP
+  ^\s+An\s+EoR
+  ^\s+Private\s+AS\s+number\s+removed
+  ^\s+Advertise\s+VPNv[46]\s+routes\s+(is\s)?enabled\s+with
+  ^\s+Last\s+ack\s+version\s+${LAST_ACK_VERSION},\s+Last\s+synced\s+ack\s+version\s+${LAST_SYNCED_ACK_VERSION}
+  ^\s+Outstanding\s+version\s+objects:
+  ^\s+Additional-paths\s+operation:
+  ^\s+AS\s+[oO]verride\s+is
+  ^\s+Send\s+Multicast\s+Attributes
+  ^\s+Advertise routes with
+  ^\s+GSHUT Community
+  ^\s+${communityTypes} attribute sent.*$$
+  ^\s+${communityTypes} community attribute sent.*$$
+  ^\s+Connections\s+established\s+${_numConnEstd};\s+dropped\s+${_numConnDropped}\s*$$ -> Connection
+  ^\s+$$
+  ^. -> Error
+
+Connection
+  ^\s+Local\s+host\:\s+${updateSource}\,\s+Local\s+port\:\s+${LOCAL_PORT}
+  ^\s+Foreign\s+host\:\s+${peerIP}\,\s+Foreign\s+port\:\s+${REMOTE_PORT}
+  ^\s+Last\s+reset\s+${lastDownTime}(?:\,\s+due\s+to\s+${reason})?\s*$$
+  ^\s+External\s+BGP\s+neighbor\s+not\s+directly
+  ^\s+Time\s+since\s+last\s+notification\s+sent\s+to\s+neighbor:\s+${LAST_NOTIFICATION_SENT}
+  ^\s+Error\s+Code:\s+${notificnReason}\s*$$
+  ^\s+Notification\s+data\s+(?:sent|received):
+  ^\s+(?:[0-9A-F]{8}|None)\s*$$
+  ^\s+Time\s+since\s+last\s+notification\s+received\s+from\s+neighbor:\s -> PeerError
+  ^\s+Peer\s+reset\s+reason:\s+${notificnReason}\s*$$
+  ^\s+.+up\s+to\s+${hopsMax}\s+hops\s+away
+  ^BGP\s+neighbor\s+is.*$$ -> Start
+  ^VRF: -> Start
+  ^\s+For\s+Address\s+Family: -> AFI
+  ^\s*$$
+  ^. -> Error
+
+PeerError
+  ^\s+Error\s+Code:\s+${notificnReasonRx}\s*$$ -> Connection
+  ^. -> Error
+

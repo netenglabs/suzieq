@@ -1,0 +1,21 @@
+Value ntpSync (\w+)
+Value ntpServer (\S+)
+Value stratum (\d+)
+Value offset (.+)
+
+Start
+  ^Clock\s+is\s+${ntpSync},\s+stratum\s+${stratum},\s+reference\s+is\s+${ntpServer}
+  ^Clock\s+is\s+${ntpSync},\s+stratum\s+${stratum},\s+no\s+reference\s+clock
+  ^clock\s+offset\s+is\s+${offset},
+
+#Fri Jan 22 15:22:22.623 UTC
+#
+#Clock is unsynchronized, stratum 16, no reference clock
+#nominal freq is 1000000000.0000 Hz, actual freq is 12240315.8176 Hz, precision is 2**24
+#reference time is E3B56AC8.34170B24 (15:16:24.203 UTC Fri Jan 22 2021)
+#clock offset is -1.975 msec, root delay is 154.338 msec
+#root dispersion is 58.76 msec, peer dispersion is 15.20 msec
+#loopfilter state is 'CTRL' (Normal Controlled Loop), drift is 0.0000806972 s/s
+#system poll interval is 1024, last update was 358 sec ago
+#authenticate is disabled
+#

@@ -14,7 +14,7 @@ show-fields:
 apply:
   eos:
     version: all
-    command: show ip ospf interface
+    command: show ip ospf interface vrf all
     normalize: 'vrfs/*:vrf/instList/*:instance/interfaces/*:ifname/[
        "passive: passive?|False",
        "helloInterval: helloTime?|0",
@@ -33,7 +33,7 @@ apply:
 
   cumulus:
     version: all
-    command: sudo vtysh -c 'show ip ospf interface'
+    command: sudo vtysh -c 'show ip ospf vrf all interface'
     textfsm: textfsm_templates/frr_ospfif.tfsm
 
   linux:
@@ -83,7 +83,7 @@ apply:
   nxos:
     version: all
     command:
-      - command: show ip ospf interface vrf all | json
+      - command: show ip ospf interface vrf all | json native
         normalize: 'TABLE_ctx/ROW_ctx/*:cname:vrf|TABLE_intf/ROW_intf/*?/[
         "ifname: ifname",
         "proto_status: state",
@@ -102,7 +102,7 @@ apply:
         "_entryType: _entryType?|interfaces",
         ]'
 
-      - command: show ip ospf vrf all | json
+      - command: show ip ospf vrf all | json native
         normalize: 'TABLE_ctx/ROW_ctx/*?/[
         "rid: routerId",
         "TABLE_area/ROW_area/[*]?/aname: ifname",

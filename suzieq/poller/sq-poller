@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-
 import sys
 import os
 import argparse
@@ -118,7 +117,10 @@ async def start_and_monitor_coalescer(config_file: str, cfg: dict,
         try:
             stdout, stderr = await process.communicate()
         except asyncio.CancelledError:
-            process.terminate()
+            if process:
+                process.terminate()
+                sleep(5)
+                process.kill()
             return
 
         if process.returncode and (process.returncode != errno.EBUSY):
@@ -178,6 +180,11 @@ async def start_poller(userargs, cfg):
     if userargs.run_once:
         userargs.outputs = ["gather"]
         output_args['output_dir'] = userargs.output_dir
+
+    # Disable coalescer in specific, unusual cases
+    # in case of input_dir, we also seem to leave a coalescer instance running
+    if userargs.run_once or userargs.input_dir:
+        userargs.no_coalescer = True
 
     outputs = init_output_workers(userargs.outputs, output_args)
 
@@ -422,6 +429,10 @@ if __name__ == "__main__":
 
     try:
         asyncio.run(start_poller(userargs, cfg))
-    except (Exception, KeyboardInterrupt):
+    except (KeyboardInterrupt, RuntimeError):
         pass
+    except Exception:
+        import traceback
+        traceback.print_exc()
+
     sys.exit(0)

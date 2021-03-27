@@ -15,7 +15,8 @@ from urllib.parse import urlparse
 import asyncio
 import asyncssh
 import aiohttp
-from asyncio.subprocess import PIPE
+from dateparser import parse
+from asyncio.subprocess import PIPE, DEVNULL
 from concurrent.futures._base import TimeoutError
 
 from suzieq.poller.services.service import RsltToken
@@ -133,7 +134,12 @@ async def init_hosts(**kwargs):
             nsname = namespace["namespace"]
 
         tasks = []
-        for host in namespace.get("hosts", []):
+        hostlist = namespace.get("hosts", [])
+        if not hostlist:
+            logger.error(f'No hosts in namespace {nsname}')
+            continue
+
+        for host in hostlist:
             entry = host.get("url", None)
             if entry:
                 words = entry.split()
@@ -146,15 +152,20 @@ async def init_hosts(**kwargs):
                 devtype = None
                 keyfile = None
 
-                for i in range(1, len(words[1:])+1):
-                    if words[i].startswith('keyfile'):
-                        keyfile = words[i].split("=")[1]
-                    elif words[i].startswith('devtype'):
-                        devtype = words[i].split("=")[1]
-                    elif words[i].startswith('username'):
-                        username = words[i].split("=")[1]
-                    elif words[i].startswith('password'):
-                        password = words[i].split("=")[1]
+                try:
+                    for i in range(1, len(words[1:])+1):
+                        if words[i].startswith('keyfile'):
+                            keyfile = words[i].split("=")[1]
+                        elif words[i].startswith('devtype'):
+                            devtype = words[i].split("=")[1]
+                        elif words[i].startswith('username'):
+                            username = words[i].split("=")[1]
+                        elif words[i].startswith('password'):
+                            password = words[i].split("=")[1]
+                except IndexError:
+                    logger.error(f'Invalid key/value {words}, missing "="')
+                    logger.error(f'Ignoring node {host}')
+                    continue
 
                 newnode = Node()
                 tasks += [newnode._init(
@@ -338,11 +349,10 @@ class Node(object):
                 self._status = "init"
                 return
             else:
-                self._status = "good"
                 self.set_devtype(devtype)
+                self._status = "good"
 
-                if hostname:
-                    self.set_hostname(hostname)
+                self.set_hostname(hostname)
 
             await self.init_boot_time()
 
@@ -361,6 +371,8 @@ class Node(object):
             self.__class__ = CumulusNode
         elif self.devtype == "eos":
             self.__class__ = EosNode
+        elif self.devtype == "iosxr":
+            self.__class__ = IosXRNode
         elif self.devtype.startswith("junos"):
             self.__class__ = JunosNode
         elif self.devtype == "nxos":
@@ -404,6 +416,8 @@ class Node(object):
                 devtype = "nxos"
             elif "SONiC" in data:
                 devtype = "sonic"
+            elif "Cisco IOS XR" in data:
+                devtype = "iosxr"
             elif any(x in data for x in ['vEOS', 'Arista']):
                 devtype = "eos"
 
@@ -418,7 +432,7 @@ class Node(object):
                 data = output[3]['data']
                 lines = data.split('\n')
                 hostname = lines[1].split('FQDN:')[1].strip()
-            elif output[3]["status"] == 0:
+            elif devtype != "iosxr" and output[3]["status"] == 0:
                 hostname = output[3]["data"].strip()
 
         elif output[1]["status"] == 0:
@@ -442,13 +456,17 @@ class Node(object):
                                            .strip().replace('"', '')
                         break
 
-        if not devtype:
+        if not devtype and not self.last_exception:
             self.logger.warning(
                 f'Unable to determine devtype for {self.address}')
             self._status = 'init'
+            self.last_exception = 'No devtype'
         else:
+            self.logger.info(
+                f'Detected {devtype} for {self.address}, {hostname}')
             self.set_devtype(devtype)
             self.set_hostname(hostname)
+            self.last_exception = ''
 
     async def _parse_boottime_hostname(self, output, cb_token) -> None:
         """Parse the uptime command output"""
@@ -616,7 +634,7 @@ class Node(object):
         if not self._service_queue:
             self._service_queue = asyncio.Queue()
 
-    async def _init_ssh(self, init_boot_time=True) -> None:
+    async def _init_ssh(self, init_boot_time=True, rel_lock=True) -> None:
         await self.ssh_ready.wait()
         if not self._conn:
             self.ssh_ready.clear()
@@ -675,22 +693,23 @@ class Node(object):
                 self.last_exception = e
                 self._conn = None
                 self._tunnel = None
-                self.ssh_ready.set()
+                if rel_lock:
+                    self.ssh_ready.set()
                 return
 
             try:
                 self._conn = await asyncssh.connect(
                     self.address,
-                    tunnel=self._tunnel,
                     username=self.username,
                     port=self.port,
                     options=options)
 
                 self.logger.info(
                     f"Connected to {self.address} at {time.time()}")
-                self.ssh_ready.set()
                 if init_boot_time:
                     await self.init_boot_time()
+                elif rel_lock:
+                    self.ssh_ready.set()
             except Exception as e:
                 if self.sigend:
                     self._terminate()
@@ -700,7 +719,8 @@ class Node(object):
                 self.last_exception = e
                 self._conn = None
                 self._tunnel = None
-                self.ssh_ready.set()
+                if rel_lock:
+                    self.ssh_ready.set()
         return
 
     def _create_error(self, cmd) -> dict:
@@ -1002,6 +1022,72 @@ class CumulusNode(Node):
         await service_callback(result, cb_token)
 
 
+class IosXRNode(Node):
+
+    async def _init_ssh(self, init_boot_time=True) -> None:
+        '''Need to start a neverending process to keep persistent ssh
+
+        IOS XR's ssh is fragile and archaic. It doesn't support sending 
+        multiple commands over a single SSH connection as most other devices
+        do. I suspect this may not be the only one. The bug is mentioned in
+        https://github.com/ronf/asyncssh/issues/241. To overcome this issue,
+        we wait in a loop for things to succeed. There's no point in continuing
+        if this doesn't succeed. Maybe better to abort after a fixed number
+        of retries to enable things like run-once=gather to work.
+        '''
+        backoff_period = 1
+        while True:
+            await super()._init_ssh(init_boot_time=False, rel_lock=False)
+            if self._conn:
+                break
+            else:
+                await asyncio.sleep(backoff_period)
+                backoff_period *= 2
+                if backoff_period > 120:
+                    backoff_period = 120
+                self.ssh_ready.set()
+        if self._conn:
+            try:
+                self._long_proc = await self._conn.create_process(
+                    'run tail -s 3600 -f /etc/version', stdout=DEVNULL,
+                    stderr=DEVNULL)
+                self.logger.info(
+                    f'Persistent SSH present for {self.hostname}')
+            except Exception:
+                self._conn = None
+                return
+
+        if not self.hostname:
+            await self.init_boot_time()
+        self.ssh_ready.set()
+
+    async def init_boot_time(self):
+        """Fill in the boot time of the node by running requisite cmd"""
+        await self.exec_cmd(self._parse_boottime_hostname,
+                            ["show version", "show run hostname"], None)
+
+    async def _parse_boottime_hostname(self, output, cb_token) -> None:
+        '''Parse the version for uptime and hostname'''
+        if output[0]["status"] == 0:
+            data = output[0]['data']
+            timestr = re.search(r'uptime is (.*)\n', data)
+            if timestr:
+                self.bootupTimestamp = int(datetime.utcfromtimestamp(
+                    parse(timestr.group(1)).timestamp()).timestamp()*1000)
+            else:
+                self.logger.error(f'Cannot parse uptime from {self.address}')
+                self.bootupTimestamp = -1
+
+        if output[1]["status"] == 0:
+            data = output[1]['data']
+            hostname = re.search(r'hostname (\S+)', data.strip())
+            if hostname:
+                self.hostname = hostname.group(1)
+                self.logger.error(f'set hostname of {self.address} to '
+                                  f'{hostname.group(1)}')
+        self.ssh_ready.set()
+
+
 class JunosNode(Node):
 
     async def init_boot_time(self):
@@ -1016,7 +1102,7 @@ class JunosNode(Node):
             data = output[0]["data"]
             try:
                 jdata = json.loads(data.replace('\n', '').strip())
-                if self.devtype == 'junos-qfx' or 'juniper-ex':
+                if self.devtype != "junos-mx":
                     jdata = jdata['multi-routing-engine-results'][0]['multi-routing-engine-item'][0]
 
                 timestr = jdata['system-uptime-information'][0]['system-booted-time'][0]['time-length'][0]['attributes']

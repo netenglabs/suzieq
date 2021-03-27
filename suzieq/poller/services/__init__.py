@@ -81,13 +81,13 @@ async def init_services(svc_dir: str, schema_dir: str, queue, svclist: list,
                         val = newval
 
                     if (("command" not in val) or
-                        ((isinstance(val['command'], list) and not
-                                  all('textfsm' in x or 'normalize' in x
-                                      for x in val['command'])) or
-                                 (not isinstance(val['command'], list) and (
-                                     "normalize" not in val
-                                     and "textfsm" not in val)))
-                        ):
+                            ((isinstance(val['command'], list) and not
+                              all('textfsm' in x or 'normalize' in x
+                                          for x in val['command'])) or
+                             (not isinstance(val['command'], list) and (
+                                         "normalize" not in val
+                                         and "textfsm" not in val)))
+                            ):
                         logger.error(
                             "Ignoring invalid service file "
                             'definition. Need both "command" and '
@@ -128,8 +128,15 @@ async def init_services(svc_dir: str, schema_dir: str, queue, svclist: list,
                                     )
                                     continue
                                 with open(tfsm_file, "r") as f:
-                                    tfsm_template = textfsm.TextFSM(f)
-                                    subelem["textfsm"] = tfsm_template
+                                    try:
+                                        tfsm_template = textfsm.TextFSM(f)
+                                        subelem["textfsm"] = tfsm_template
+                                    except Exception:
+                                        logger.exception(
+                                            'Unable to load TextFSM file '
+                                            f'{tfsm_file} for service '
+                                            f'{svc_def["service"]}')
+                                        continue
                     else:
                         tfsm_template = None
 

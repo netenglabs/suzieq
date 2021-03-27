@@ -72,6 +72,10 @@ class OspfIfService(Service):
                 areas[entry['area']].append(entry)
             else:
                 # ifname is really the area name
+                if not entry.get('ifname', []):
+                    drop_indices.append(i)
+                    continue
+
                 for j, area in enumerate(entry['ifname']):
                     for ifentry in areas.get(area, []):
                         ifentry['routerId'] = entry['routerId']

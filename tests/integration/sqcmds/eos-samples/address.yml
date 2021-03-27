@@ -3,528 +3,530 @@ tests:
 - command: address show --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: address show eos
-  output: '[{"namespace": "eos", "hostname": "server302", "ifname": "lo", "ipAddressList":
-    [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1610377086367}, {"namespace": "eos", "hostname": "server301",
-    "ifname": "lo", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1610377086367}, {"namespace": "eos",
-    "hostname": "server301", "ifname": "eth0", "ipAddressList": ["10.255.2.140/24"],
-    "macaddr": "52:54:00:f0:b3:7a", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1610377086367}, {"namespace": "eos", "hostname": "server301",
-    "ifname": "eth1", "ipAddressList": [], "macaddr": "1e:87:9f:6d:10:7e", "ip6AddressList":
-    [], "state": "up", "master": "bond0", "timestamp": 1610377086367}, {"namespace":
-    "eos", "hostname": "server302", "ifname": "bond0", "ipAddressList": ["172.16.3.202/24"],
-    "macaddr": "72:ff:44:3a:3a:08", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1610377086367}, {"namespace": "eos", "hostname": "server302",
-    "ifname": "eth2", "ipAddressList": [], "macaddr": "72:ff:44:3a:3a:08", "ip6AddressList":
-    [], "state": "up", "master": "bond0", "timestamp": 1610377086367}, {"namespace":
-    "eos", "hostname": "server302", "ifname": "eth1", "ipAddressList": [], "macaddr":
-    "72:ff:44:3a:3a:08", "ip6AddressList": [], "state": "up", "master": "bond0", "timestamp":
-    1610377086367}, {"namespace": "eos", "hostname": "server302", "ifname": "eth0",
-    "ipAddressList": ["10.255.2.97/24"], "macaddr": "52:54:00:09:34:c5", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1610377086367}, {"namespace": "eos",
-    "hostname": "server301", "ifname": "eth2", "ipAddressList": [], "macaddr": "1e:87:9f:6d:10:7e",
-    "ip6AddressList": [], "state": "up", "master": "bond0", "timestamp": 1610377086367},
-    {"namespace": "eos", "hostname": "server301", "ifname": "bond0", "ipAddressList":
-    ["172.16.2.201/24"], "macaddr": "1e:87:9f:6d:10:7e", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1610377086367}, {"namespace": "eos", "hostname":
-    "server102", "ifname": "eth0", "ipAddressList": ["10.255.2.130/24"], "macaddr":
-    "52:54:00:8b:98:32", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
-    1610377086387}, {"namespace": "eos", "hostname": "server102", "ifname": "eth2",
-    "ipAddressList": [], "macaddr": "fa:ba:1e:1f:b5:de", "ip6AddressList": [], "state":
-    "up", "master": "bond0", "timestamp": 1610377086387}, {"namespace": "eos", "hostname":
-    "server102", "ifname": "bond0", "ipAddressList": ["172.16.3.102/24"], "macaddr":
-    "fa:ba:1e:1f:b5:de", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
-    1610377086387}, {"namespace": "eos", "hostname": "server102", "ifname": "eth1",
-    "ipAddressList": [], "macaddr": "fa:ba:1e:1f:b5:de", "ip6AddressList": [], "state":
-    "up", "master": "bond0", "timestamp": 1610377086387}, {"namespace": "eos", "hostname":
+  output: '[{"namespace": "eos", "hostname": "server102", "ifname": "bond0", "ipAddressList":
+    ["172.16.3.102/24"], "macaddr": "92:bb:a0:09:6c:e5", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616447825809}, {"namespace": "eos", "hostname":
     "server102", "ifname": "lo", "ipAddressList": [], "macaddr": "00:00:00:00:00:00",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1610377086387},
-    {"namespace": "eos", "hostname": "server101", "ifname": "eth1", "ipAddressList":
-    [], "macaddr": "16:76:ce:25:62:11", "ip6AddressList": [], "state": "up", "master":
-    "bond0", "timestamp": 1610377086515}, {"namespace": "eos", "hostname": "server101",
-    "ifname": "eth0", "ipAddressList": ["10.255.2.240/24"], "macaddr": "52:54:00:12:8d:5e",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1610377086515},
-    {"namespace": "eos", "hostname": "server101", "ifname": "lo", "ipAddressList":
-    [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1610377086515}, {"namespace": "eos", "hostname": "server101",
-    "ifname": "eth2", "ipAddressList": [], "macaddr": "16:76:ce:25:62:11", "ip6AddressList":
-    [], "state": "up", "master": "bond0", "timestamp": 1610377086515}, {"namespace":
-    "eos", "hostname": "server101", "ifname": "bond0", "ipAddressList": ["172.16.1.101/24"],
-    "macaddr": "16:76:ce:25:62:11", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1610377086515}, {"namespace": "eos", "hostname": "firewall01",
-    "ifname": "eth1", "ipAddressList": [], "macaddr": "52:54:00:d2:47:3d", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1610377086605}, {"namespace": "eos",
-    "hostname": "firewall01", "ifname": "eth0", "ipAddressList": ["10.255.2.169/24"],
-    "macaddr": "52:54:00:fd:3d:c8", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1610377086605}, {"namespace": "eos", "hostname": "firewall01",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616447825809},
+    {"namespace": "eos", "hostname": "server102", "ifname": "eth0", "ipAddressList":
+    ["10.255.4.215/24"], "macaddr": "52:54:00:7e:34:d6", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616447825809}, {"namespace": "eos", "hostname":
+    "server102", "ifname": "eth1", "ipAddressList": [], "macaddr": "92:bb:a0:09:6c:e5",
+    "ip6AddressList": [], "state": "up", "master": "bond0", "timestamp": 1616447825809},
+    {"namespace": "eos", "hostname": "server102", "ifname": "eth2", "ipAddressList":
+    [], "macaddr": "92:bb:a0:09:6c:e5", "ip6AddressList": [], "state": "up", "master":
+    "bond0", "timestamp": 1616447825809}, {"namespace": "eos", "hostname": "server302",
+    "ifname": "eth2", "ipAddressList": [], "macaddr": "22:db:25:70:58:2a", "ip6AddressList":
+    [], "state": "up", "master": "bond0", "timestamp": 1616447825811}, {"namespace":
+    "eos", "hostname": "server302", "ifname": "bond0", "ipAddressList": ["172.16.3.202/24"],
+    "macaddr": "22:db:25:70:58:2a", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616447825811}, {"namespace": "eos", "hostname": "server302",
     "ifname": "lo", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1610377086605}, {"namespace": "eos",
-    "hostname": "firewall01", "ifname": "eth2", "ipAddressList": [], "macaddr": "52:54:00:75:05:18",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1610377086605},
-    {"namespace": "eos", "hostname": "firewall01", "ifname": "eth1.2", "ipAddressList":
-    ["169.254.254.2/30"], "macaddr": "52:54:00:d2:47:3d", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1610377086605}, {"namespace": "eos", "hostname":
-    "firewall01", "ifname": "eth1.3", "ipAddressList": ["169.254.254.6/30"], "macaddr":
-    "52:54:00:d2:47:3d", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
-    1610377086605}, {"namespace": "eos", "hostname": "firewall01", "ifname": "eth1.4",
-    "ipAddressList": ["169.254.254.10/30"], "macaddr": "52:54:00:d2:47:3d", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1610377086605}, {"namespace": "eos",
-    "hostname": "firewall01", "ifname": "eth2.2", "ipAddressList": ["169.254.253.2/30"],
-    "macaddr": "52:54:00:75:05:18", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1610377086605}, {"namespace": "eos", "hostname": "firewall01",
-    "ifname": "eth2.3", "ipAddressList": ["169.254.253.6/30"], "macaddr": "52:54:00:75:05:18",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1610377086605},
-    {"namespace": "eos", "hostname": "firewall01", "ifname": "eth2.4", "ipAddressList":
-    ["169.254.253.10/30"], "macaddr": "52:54:00:75:05:18", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1610377086605}, {"namespace": "eos", "hostname":
-    "exit01", "ifname": "Ethernet4", "ipAddressList": ["169.254.127.1/31"], "macaddr":
-    "44:38:39:33:d8:43", "ip6AddressList": [], "state": "up", "master": "internet-vrf",
-    "timestamp": 1610377086626}, {"namespace": "eos", "hostname": "exit01", "ifname":
-    "Ethernet1", "ipAddressList": ["10.0.0.31/32"], "macaddr": "44:38:39:33:d8:43",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1610377086626},
-    {"namespace": "eos", "hostname": "exit01", "ifname": "Ethernet3", "ipAddressList":
-    [], "macaddr": "44:38:39:33:d8:43", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1610377086626}, {"namespace": "eos", "hostname": "exit01", "ifname":
-    "Ethernet2", "ipAddressList": ["10.0.0.31/32"], "macaddr": "44:38:39:33:d8:43",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1610377086626},
-    {"namespace": "eos", "hostname": "exit01", "ifname": "Vxlan1", "ipAddressList":
-    [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "bridge",
-    "timestamp": 1610377086626}, {"namespace": "eos", "hostname": "exit01", "ifname":
-    "Vlan4094", "ipAddressList": ["0.0.0.0/0"], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "master": "evpn-vrf", "timestamp": 1610377086626}, {"namespace":
-    "eos", "hostname": "exit01", "ifname": "Management1", "ipAddressList": ["10.255.2.251/24"],
-    "macaddr": "44:38:39:01:03:01", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1610377086626}, {"namespace": "eos", "hostname": "exit01", "ifname":
-    "Loopback0", "ipAddressList": ["10.0.0.31/32"], "macaddr": "None", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1610377086626}, {"namespace": "eos",
-    "hostname": "exit01", "ifname": "internet-vrf", "ipAddressList": [], "macaddr":
+    [], "state": "up", "master": "", "timestamp": 1616447825811}, {"namespace": "eos",
+    "hostname": "server302", "ifname": "eth1", "ipAddressList": [], "macaddr": "22:db:25:70:58:2a",
+    "ip6AddressList": [], "state": "up", "master": "bond0", "timestamp": 1616447825811},
+    {"namespace": "eos", "hostname": "server302", "ifname": "eth0", "ipAddressList":
+    ["10.255.4.37/24"], "macaddr": "52:54:00:57:9e:f9", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616447825811}, {"namespace": "eos", "hostname":
+    "server301", "ifname": "lo", "ipAddressList": [], "macaddr": "00:00:00:00:00:00",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616447826024},
+    {"namespace": "eos", "hostname": "server301", "ifname": "eth1", "ipAddressList":
+    [], "macaddr": "d6:7b:3c:5a:b6:94", "ip6AddressList": [], "state": "up", "master":
+    "bond0", "timestamp": 1616447826024}, {"namespace": "eos", "hostname": "server301",
+    "ifname": "eth2", "ipAddressList": [], "macaddr": "d6:7b:3c:5a:b6:94", "ip6AddressList":
+    [], "state": "up", "master": "bond0", "timestamp": 1616447826024}, {"namespace":
+    "eos", "hostname": "server301", "ifname": "bond0", "ipAddressList": ["172.16.2.201/24"],
+    "macaddr": "d6:7b:3c:5a:b6:94", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616447826024}, {"namespace": "eos", "hostname": "server301",
+    "ifname": "eth0", "ipAddressList": ["10.255.4.65/24"], "macaddr": "52:54:00:26:23:6f",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616447826024},
+    {"namespace": "eos", "hostname": "server101", "ifname": "eth2", "ipAddressList":
+    [], "macaddr": "1e:13:47:40:ad:f7", "ip6AddressList": [], "state": "up", "master":
+    "bond0", "timestamp": 1616447826254}, {"namespace": "eos", "hostname": "server101",
+    "ifname": "eth1", "ipAddressList": [], "macaddr": "1e:13:47:40:ad:f7", "ip6AddressList":
+    [], "state": "up", "master": "bond0", "timestamp": 1616447826254}, {"namespace":
+    "eos", "hostname": "server101", "ifname": "lo", "ipAddressList": [], "macaddr":
     "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
-    1610377086626}, {"namespace": "eos", "hostname": "exit01", "ifname": "evpn-vrf",
-    "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1610377086626}, {"namespace": "eos", "hostname":
-    "exit01", "ifname": "Ethernet3.4", "ipAddressList": ["169.254.254.9/30"], "macaddr":
-    "44:38:39:33:d8:43", "ip6AddressList": [], "state": "up", "master": "internet-vrf",
-    "timestamp": 1610377086626}, {"namespace": "eos", "hostname": "exit01", "ifname":
-    "Ethernet3.3", "ipAddressList": ["169.254.254.5/30"], "macaddr": "44:38:39:33:d8:43",
-    "ip6AddressList": [], "state": "up", "master": "evpn-vrf", "timestamp": 1610377086626},
-    {"namespace": "eos", "hostname": "exit01", "ifname": "Ethernet3.2", "ipAddressList":
-    ["169.254.254.1/30"], "macaddr": "44:38:39:33:d8:43", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1610377086626}, {"namespace": "eos", "hostname":
-    "exit02", "ifname": "Vxlan1", "ipAddressList": [], "macaddr": "None", "ip6AddressList":
-    [], "state": "up", "master": "bridge", "timestamp": 1610377086637}, {"namespace":
-    "eos", "hostname": "exit02", "ifname": "Vlan4094", "ipAddressList": ["0.0.0.0/0"],
-    "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "master":
-    "evpn-vrf", "timestamp": 1610377086637}, {"namespace": "eos", "hostname": "exit02",
-    "ifname": "Management1", "ipAddressList": ["10.255.2.254/24"], "macaddr": "44:38:39:01:03:02",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1610377086637},
-    {"namespace": "eos", "hostname": "exit02", "ifname": "Ethernet3", "ipAddressList":
-    [], "macaddr": "44:38:39:c3:55:cb", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1610377086637}, {"namespace": "eos", "hostname": "exit02", "ifname":
-    "Ethernet1", "ipAddressList": ["10.0.0.32/32"], "macaddr": "44:38:39:c3:55:cb",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1610377086637},
-    {"namespace": "eos", "hostname": "exit02", "ifname": "Ethernet4", "ipAddressList":
-    ["169.254.127.3/31"], "macaddr": "44:38:39:c3:55:cb", "ip6AddressList": [], "state":
-    "up", "master": "internet-vrf", "timestamp": 1610377086637}, {"namespace": "eos",
-    "hostname": "exit02", "ifname": "Ethernet3.3", "ipAddressList": ["169.254.253.5/30"],
-    "macaddr": "44:38:39:c3:55:cb", "ip6AddressList": [], "state": "up", "master":
-    "evpn-vrf", "timestamp": 1610377086637}, {"namespace": "eos", "hostname": "exit02",
-    "ifname": "Ethernet3.2", "ipAddressList": ["169.254.253.1/30"], "macaddr": "44:38:39:c3:55:cb",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1610377086637},
-    {"namespace": "eos", "hostname": "exit02", "ifname": "Loopback0", "ipAddressList":
-    ["10.0.0.32/32"], "macaddr": "None", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1610377086637}, {"namespace": "eos", "hostname": "exit02", "ifname":
-    "Ethernet3.4", "ipAddressList": ["169.254.253.9/30"], "macaddr": "44:38:39:c3:55:cb",
-    "ip6AddressList": [], "state": "up", "master": "internet-vrf", "timestamp": 1610377086637},
-    {"namespace": "eos", "hostname": "exit02", "ifname": "internet-vrf", "ipAddressList":
-    [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1610377086637}, {"namespace": "eos", "hostname": "exit02", "ifname":
-    "evpn-vrf", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1610377086637}, {"namespace": "eos",
-    "hostname": "exit02", "ifname": "Ethernet2", "ipAddressList": ["10.0.0.32/32"],
-    "macaddr": "44:38:39:c3:55:cb", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1610377086637}, {"namespace": "eos", "hostname": "leaf04", "ifname":
-    "Ethernet1", "ipAddressList": ["10.0.0.14/32"], "macaddr": "44:38:39:81:30:22",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1610377086662},
-    {"namespace": "eos", "hostname": "leaf04", "ifname": "Loopback1", "ipAddressList":
-    ["10.0.0.134/32"], "macaddr": "None", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1610377086662}, {"namespace": "eos", "hostname": "leaf04", "ifname":
-    "evpn-vrf", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1610377086662}, {"namespace": "eos",
-    "hostname": "leaf04", "ifname": "Port-Channel4", "ipAddressList": [], "macaddr":
-    "52:54:00:22:61:62", "ip6AddressList": [], "state": "up", "master": "bridge",
-    "timestamp": 1610377086662}, {"namespace": "eos", "hostname": "leaf04", "ifname":
-    "Port-Channel1", "ipAddressList": [], "macaddr": "48:47:00:2d:0e:d6", "ip6AddressList":
-    [], "state": "up", "master": "bridge", "timestamp": 1610377086662}, {"namespace":
-    "eos", "hostname": "leaf04", "ifname": "Ethernet6", "ipAddressList": [], "macaddr":
-    "48:47:00:9e:0c:e4", "ip6AddressList": [], "state": "up", "master": "Port-Channel1",
-    "timestamp": 1610377086662}, {"namespace": "eos", "hostname": "leaf04", "ifname":
-    "Loopback0", "ipAddressList": ["10.0.0.14/32"], "macaddr": "None", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1610377086662}, {"namespace": "eos",
-    "hostname": "leaf04", "ifname": "Port-Channel3", "ipAddressList": [], "macaddr":
-    "52:54:00:7a:c2:c9", "ip6AddressList": [], "state": "up", "master": "bridge",
-    "timestamp": 1610377086662}, {"namespace": "eos", "hostname": "leaf04", "ifname":
-    "Ethernet5", "ipAddressList": [], "macaddr": "48:47:00:2d:0e:d6", "ip6AddressList":
-    [], "state": "up", "master": "Port-Channel1", "timestamp": 1610377086662}, {"namespace":
-    "eos", "hostname": "leaf04", "ifname": "Vlan30", "ipAddressList": ["0.0.0.0/0",
-    "172.16.3.254/24"], "macaddr": "44:39:39:ff:40:96", "ip6AddressList": [], "state":
-    "up", "master": "evpn-vrf", "timestamp": 1610377086662}, {"namespace": "eos",
-    "hostname": "leaf04", "ifname": "Ethernet4", "ipAddressList": [], "macaddr": "52:54:00:22:61:62",
-    "ip6AddressList": [], "state": "up", "master": "Port-Channel4", "timestamp": 1610377086662},
-    {"namespace": "eos", "hostname": "leaf04", "ifname": "Vlan1006", "ipAddressList":
-    ["0.0.0.0/0"], "macaddr": "44:39:39:ff:40:96", "ip6AddressList": [], "state":
-    "up", "master": "evpn-vrf", "timestamp": 1610377086662}, {"namespace": "eos",
-    "hostname": "leaf04", "ifname": "Ethernet3", "ipAddressList": [], "macaddr": "52:54:00:7a:c2:c9",
-    "ip6AddressList": [], "state": "up", "master": "Port-Channel3", "timestamp": 1610377086662},
-    {"namespace": "eos", "hostname": "leaf04", "ifname": "Ethernet2", "ipAddressList":
-    ["10.0.0.14/32"], "macaddr": "44:38:39:81:30:22", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1610377086662}, {"namespace": "eos", "hostname":
-    "leaf04", "ifname": "Vxlan1", "ipAddressList": [], "macaddr": "None", "ip6AddressList":
-    [], "state": "up", "master": "bridge", "timestamp": 1610377086662}, {"namespace":
-    "eos", "hostname": "leaf04", "ifname": "Vlan4094", "ipAddressList": ["169.254.1.1/31"],
-    "macaddr": "44:39:39:ff:40:96", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1610377086662}, {"namespace": "eos", "hostname": "leaf04", "ifname":
-    "Management1", "ipAddressList": ["10.255.2.188/24"], "macaddr": "44:38:39:01:02:04",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1610377086662},
-    {"namespace": "eos", "hostname": "leaf04", "ifname": "Vlan20", "ipAddressList":
-    ["0.0.0.0/0", "172.16.2.254/24"], "macaddr": "44:39:39:ff:40:96", "ip6AddressList":
-    [], "state": "up", "master": "evpn-vrf", "timestamp": 1610377086662}, {"namespace":
-    "eos", "hostname": "leaf02", "ifname": "Ethernet5", "ipAddressList": [], "macaddr":
-    "48:47:00:eb:af:cf", "ip6AddressList": [], "state": "up", "master": "Port-Channel1",
-    "timestamp": 1610377086672}, {"namespace": "eos", "hostname": "leaf02", "ifname":
-    "Vlan4094", "ipAddressList": ["169.254.1.1/31"], "macaddr": "44:39:39:ff:40:95",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1610377086672},
-    {"namespace": "eos", "hostname": "leaf02", "ifname": "Port-Channel3", "ipAddressList":
-    [], "macaddr": "52:54:00:04:7e:43", "ip6AddressList": [], "state": "up", "master":
-    "bridge", "timestamp": 1610377086672}, {"namespace": "eos", "hostname": "leaf02",
-    "ifname": "Vlan10", "ipAddressList": ["0.0.0.0/0", "172.16.1.254/24"], "macaddr":
-    "44:39:39:ff:40:95", "ip6AddressList": [], "state": "up", "master": "evpn-vrf",
-    "timestamp": 1610377086672}, {"namespace": "eos", "hostname": "leaf02", "ifname":
-    "Loopback0", "ipAddressList": ["10.0.0.12/32"], "macaddr": "None", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1610377086672}, {"namespace": "eos",
-    "hostname": "leaf02", "ifname": "Ethernet4", "ipAddressList": [], "macaddr": "52:54:00:ee:62:3d",
-    "ip6AddressList": [], "state": "up", "master": "Port-Channel4", "timestamp": 1610377086672},
-    {"namespace": "eos", "hostname": "leaf02", "ifname": "Vxlan1", "ipAddressList":
-    [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "bridge",
-    "timestamp": 1610377086672}, {"namespace": "eos", "hostname": "leaf02", "ifname":
-    "Ethernet1", "ipAddressList": ["10.0.0.12/32"], "macaddr": "44:38:39:99:c7:9e",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1610377086672},
-    {"namespace": "eos", "hostname": "leaf02", "ifname": "Vlan1006", "ipAddressList":
-    ["0.0.0.0/0"], "macaddr": "44:39:39:ff:40:95", "ip6AddressList": [], "state":
-    "up", "master": "evpn-vrf", "timestamp": 1610377086672}, {"namespace": "eos",
-    "hostname": "leaf02", "ifname": "Ethernet2", "ipAddressList": ["10.0.0.12/32"],
-    "macaddr": "44:38:39:99:c7:9e", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1610377086672}, {"namespace": "eos", "hostname": "leaf02", "ifname":
-    "Management1", "ipAddressList": ["10.255.2.191/24"], "macaddr": "44:38:39:01:02:02",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1610377086672},
-    {"namespace": "eos", "hostname": "leaf02", "ifname": "Ethernet3", "ipAddressList":
-    [], "macaddr": "52:54:00:04:7e:43", "ip6AddressList": [], "state": "up", "master":
-    "Port-Channel3", "timestamp": 1610377086672}, {"namespace": "eos", "hostname":
-    "leaf02", "ifname": "Vlan30", "ipAddressList": ["0.0.0.0/0", "172.16.3.254/24"],
-    "macaddr": "44:39:39:ff:40:95", "ip6AddressList": [], "state": "up", "master":
-    "evpn-vrf", "timestamp": 1610377086672}, {"namespace": "eos", "hostname": "leaf02",
-    "ifname": "Port-Channel1", "ipAddressList": [], "macaddr": "48:47:00:a6:bf:a7",
-    "ip6AddressList": [], "state": "up", "master": "bridge", "timestamp": 1610377086672},
-    {"namespace": "eos", "hostname": "leaf02", "ifname": "Ethernet6", "ipAddressList":
-    [], "macaddr": "48:47:00:a6:bf:a7", "ip6AddressList": [], "state": "up", "master":
-    "Port-Channel1", "timestamp": 1610377086672}, {"namespace": "eos", "hostname":
-    "leaf02", "ifname": "evpn-vrf", "ipAddressList": [], "macaddr": "00:00:00:00:00:00",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1610377086672},
-    {"namespace": "eos", "hostname": "leaf02", "ifname": "Port-Channel4", "ipAddressList":
-    [], "macaddr": "52:54:00:ee:62:3d", "ip6AddressList": [], "state": "up", "master":
-    "bridge", "timestamp": 1610377086672}, {"namespace": "eos", "hostname": "leaf02",
-    "ifname": "Loopback1", "ipAddressList": ["10.0.0.112/32"], "macaddr": "None",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1610377086672},
-    {"namespace": "eos", "hostname": "leaf01", "ifname": "Ethernet3", "ipAddressList":
-    [], "macaddr": "52:54:00:fe:12:3c", "ip6AddressList": [], "state": "up", "master":
-    "Port-Channel3", "timestamp": 1610377086686}, {"namespace": "eos", "hostname":
-    "leaf01", "ifname": "Management1", "ipAddressList": ["10.255.2.189/24"], "macaddr":
-    "44:38:39:01:02:01", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
-    1610377086686}, {"namespace": "eos", "hostname": "leaf01", "ifname": "Vlan10",
-    "ipAddressList": ["0.0.0.0/0", "172.16.1.254/24"], "macaddr": "44:39:39:ff:40:90",
-    "ip6AddressList": [], "state": "up", "master": "evpn-vrf", "timestamp": 1610377086686},
-    {"namespace": "eos", "hostname": "leaf01", "ifname": "Ethernet2", "ipAddressList":
-    ["10.0.0.11/32"], "macaddr": "44:38:39:e3:19:2e", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1610377086686}, {"namespace": "eos", "hostname":
-    "leaf01", "ifname": "Vlan4094", "ipAddressList": ["169.254.1.0/31"], "macaddr":
-    "44:39:39:ff:40:90", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
-    1610377086686}, {"namespace": "eos", "hostname": "leaf01", "ifname": "evpn-vrf",
-    "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1610377086686}, {"namespace": "eos", "hostname":
-    "leaf01", "ifname": "Port-Channel4", "ipAddressList": [], "macaddr": "52:54:00:62:84:9a",
-    "ip6AddressList": [], "state": "up", "master": "bridge", "timestamp": 1610377086686},
-    {"namespace": "eos", "hostname": "leaf01", "ifname": "Port-Channel3", "ipAddressList":
-    [], "macaddr": "52:54:00:fe:12:3c", "ip6AddressList": [], "state": "up", "master":
-    "bridge", "timestamp": 1610377086686}, {"namespace": "eos", "hostname": "leaf01",
-    "ifname": "Ethernet6", "ipAddressList": [], "macaddr": "48:47:00:d2:7f:7c", "ip6AddressList":
-    [], "state": "up", "master": "Port-Channel1", "timestamp": 1610377086686}, {"namespace":
-    "eos", "hostname": "leaf01", "ifname": "Loopback1", "ipAddressList": ["10.0.0.112/32"],
-    "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
-    1610377086686}, {"namespace": "eos", "hostname": "leaf01", "ifname": "Vxlan1",
-    "ipAddressList": [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master":
-    "bridge", "timestamp": 1610377086686}, {"namespace": "eos", "hostname": "leaf01",
-    "ifname": "Ethernet5", "ipAddressList": [], "macaddr": "48:47:00:a5:72:58", "ip6AddressList":
-    [], "state": "up", "master": "Port-Channel1", "timestamp": 1610377086686}, {"namespace":
-    "eos", "hostname": "leaf01", "ifname": "Ethernet4", "ipAddressList": [], "macaddr":
-    "52:54:00:62:84:9a", "ip6AddressList": [], "state": "up", "master": "Port-Channel4",
-    "timestamp": 1610377086686}, {"namespace": "eos", "hostname": "leaf01", "ifname":
-    "Vlan30", "ipAddressList": ["0.0.0.0/0", "172.16.3.254/24"], "macaddr": "44:39:39:ff:40:90",
-    "ip6AddressList": [], "state": "up", "master": "evpn-vrf", "timestamp": 1610377086686},
-    {"namespace": "eos", "hostname": "leaf01", "ifname": "Ethernet1", "ipAddressList":
-    ["10.0.0.11/32"], "macaddr": "44:38:39:e3:19:2e", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1610377086686}, {"namespace": "eos", "hostname":
-    "leaf01", "ifname": "Vlan1006", "ipAddressList": ["0.0.0.0/0"], "macaddr": "44:39:39:ff:40:90",
-    "ip6AddressList": [], "state": "up", "master": "evpn-vrf", "timestamp": 1610377086686},
-    {"namespace": "eos", "hostname": "leaf01", "ifname": "Port-Channel1", "ipAddressList":
-    [], "macaddr": "48:47:00:a5:72:58", "ip6AddressList": [], "state": "up", "master":
-    "bridge", "timestamp": 1610377086686}, {"namespace": "eos", "hostname": "leaf01",
-    "ifname": "Loopback0", "ipAddressList": ["10.0.0.11/32"], "macaddr": "None", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1610377086686}, {"namespace": "eos",
-    "hostname": "spine02", "ifname": "Management1", "ipAddressList": ["10.255.2.119/24"],
-    "macaddr": "44:38:39:01:01:02", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1610377086696}, {"namespace": "eos", "hostname": "spine02", "ifname":
-    "Loopback0", "ipAddressList": ["10.0.0.22/32"], "macaddr": "None", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1610377086696}, {"namespace": "eos",
-    "hostname": "spine02", "ifname": "Ethernet2", "ipAddressList": ["10.0.0.22/32"],
-    "macaddr": "44:38:39:fa:78:46", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1610377086696}, {"namespace": "eos", "hostname": "spine02", "ifname":
-    "Ethernet3", "ipAddressList": ["10.0.0.22/32"], "macaddr": "44:38:39:fa:78:46",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1610377086696},
-    {"namespace": "eos", "hostname": "spine02", "ifname": "Ethernet1", "ipAddressList":
-    ["10.0.0.22/32"], "macaddr": "44:38:39:fa:78:46", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1610377086696}, {"namespace": "eos", "hostname":
-    "spine02", "ifname": "Ethernet6", "ipAddressList": ["10.0.0.22/32"], "macaddr":
-    "44:38:39:fa:78:46", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
-    1610377086696}, {"namespace": "eos", "hostname": "spine02", "ifname": "Ethernet5",
-    "ipAddressList": ["10.0.0.22/32"], "macaddr": "44:38:39:fa:78:46", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1610377086696}, {"namespace": "eos",
-    "hostname": "spine02", "ifname": "Ethernet4", "ipAddressList": ["10.0.0.22/32"],
-    "macaddr": "44:38:39:fa:78:46", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1610377086696}, {"namespace": "eos", "hostname": "leaf03", "ifname":
-    "evpn-vrf", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1610377086764}, {"namespace": "eos",
-    "hostname": "leaf03", "ifname": "Port-Channel4", "ipAddressList": [], "macaddr":
-    "52:54:00:f5:a6:57", "ip6AddressList": [], "state": "up", "master": "bridge",
-    "timestamp": 1610377086764}, {"namespace": "eos", "hostname": "leaf03", "ifname":
-    "Ethernet6", "ipAddressList": [], "macaddr": "48:47:00:81:d4:4c", "ip6AddressList":
-    [], "state": "up", "master": "Port-Channel1", "timestamp": 1610377086764}, {"namespace":
-    "eos", "hostname": "leaf03", "ifname": "Loopback1", "ipAddressList": ["10.0.0.134/32"],
-    "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
-    1610377086764}, {"namespace": "eos", "hostname": "leaf03", "ifname": "Loopback0",
-    "ipAddressList": ["10.0.0.13/32"], "macaddr": "None", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1610377086764}, {"namespace": "eos", "hostname":
-    "leaf03", "ifname": "Port-Channel3", "ipAddressList": [], "macaddr": "52:54:00:d4:79:c4",
-    "ip6AddressList": [], "state": "up", "master": "bridge", "timestamp": 1610377086764},
-    {"namespace": "eos", "hostname": "leaf03", "ifname": "Ethernet5", "ipAddressList":
-    [], "macaddr": "48:47:00:90:fa:26", "ip6AddressList": [], "state": "up", "master":
-    "Port-Channel1", "timestamp": 1610377086764}, {"namespace": "eos", "hostname":
-    "leaf03", "ifname": "Ethernet4", "ipAddressList": [], "macaddr": "52:54:00:f5:a6:57",
-    "ip6AddressList": [], "state": "up", "master": "Port-Channel4", "timestamp": 1610377086764},
-    {"namespace": "eos", "hostname": "leaf03", "ifname": "Vlan30", "ipAddressList":
-    ["0.0.0.0/0", "172.16.3.254/24"], "macaddr": "44:39:39:ff:40:96", "ip6AddressList":
-    [], "state": "up", "master": "evpn-vrf", "timestamp": 1610377086764}, {"namespace":
-    "eos", "hostname": "leaf03", "ifname": "Port-Channel1", "ipAddressList": [], "macaddr":
-    "48:47:00:81:d4:4c", "ip6AddressList": [], "state": "up", "master": "bridge",
-    "timestamp": 1610377086764}, {"namespace": "eos", "hostname": "leaf03", "ifname":
-    "Vlan1006", "ipAddressList": ["0.0.0.0/0"], "macaddr": "44:39:39:ff:40:96", "ip6AddressList":
-    [], "state": "up", "master": "evpn-vrf", "timestamp": 1610377086764}, {"namespace":
-    "eos", "hostname": "leaf03", "ifname": "Ethernet3", "ipAddressList": [], "macaddr":
-    "52:54:00:d4:79:c4", "ip6AddressList": [], "state": "up", "master": "Port-Channel3",
-    "timestamp": 1610377086764}, {"namespace": "eos", "hostname": "leaf03", "ifname":
-    "Ethernet2", "ipAddressList": ["10.0.0.13/32"], "macaddr": "44:38:39:24:3f:16",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1610377086764},
-    {"namespace": "eos", "hostname": "leaf03", "ifname": "Vxlan1", "ipAddressList":
-    [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "bridge",
-    "timestamp": 1610377086764}, {"namespace": "eos", "hostname": "leaf03", "ifname":
-    "Vlan4094", "ipAddressList": ["169.254.1.0/31"], "macaddr": "44:39:39:ff:40:96",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1610377086764},
-    {"namespace": "eos", "hostname": "leaf03", "ifname": "Ethernet1", "ipAddressList":
-    ["10.0.0.13/32"], "macaddr": "44:38:39:24:3f:16", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1610377086764}, {"namespace": "eos", "hostname":
-    "leaf03", "ifname": "Management1", "ipAddressList": ["10.255.2.190/24"], "macaddr":
-    "44:38:39:01:02:03", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
-    1610377086764}, {"namespace": "eos", "hostname": "leaf03", "ifname": "Vlan20",
-    "ipAddressList": ["0.0.0.0/0", "172.16.2.254/24"], "macaddr": "44:39:39:ff:40:96",
-    "ip6AddressList": [], "state": "up", "master": "evpn-vrf", "timestamp": 1610377086764},
+    1616447826254}, {"namespace": "eos", "hostname": "server101", "ifname": "bond0",
+    "ipAddressList": ["172.16.1.101/24"], "macaddr": "1e:13:47:40:ad:f7", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616447826254}, {"namespace": "eos",
+    "hostname": "server101", "ifname": "eth0", "ipAddressList": ["10.255.4.68/24"],
+    "macaddr": "52:54:00:97:87:1d", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616447826254}, {"namespace": "eos", "hostname": "firewall01",
+    "ifname": "eth2.2", "ipAddressList": ["169.254.253.2/30"], "macaddr": "52:54:00:c9:25:00",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616447826449},
+    {"namespace": "eos", "hostname": "firewall01", "ifname": "eth2.4", "ipAddressList":
+    ["169.254.253.10/30"], "macaddr": "52:54:00:c9:25:00", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616447826449}, {"namespace": "eos", "hostname":
+    "firewall01", "ifname": "eth1.4", "ipAddressList": ["169.254.254.10/30"], "macaddr":
+    "52:54:00:12:31:60", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616447826449}, {"namespace": "eos", "hostname": "firewall01", "ifname": "eth2.3",
+    "ipAddressList": ["169.254.253.6/30"], "macaddr": "52:54:00:c9:25:00", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616447826449}, {"namespace": "eos",
+    "hostname": "firewall01", "ifname": "eth1.3", "ipAddressList": ["169.254.254.6/30"],
+    "macaddr": "52:54:00:12:31:60", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616447826449}, {"namespace": "eos", "hostname": "firewall01",
+    "ifname": "eth1.2", "ipAddressList": ["169.254.254.2/30"], "macaddr": "52:54:00:12:31:60",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616447826449},
+    {"namespace": "eos", "hostname": "firewall01", "ifname": "eth2", "ipAddressList":
+    [], "macaddr": "52:54:00:c9:25:00", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616447826449}, {"namespace": "eos", "hostname": "firewall01",
+    "ifname": "eth1", "ipAddressList": [], "macaddr": "52:54:00:12:31:60", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616447826449}, {"namespace": "eos",
+    "hostname": "firewall01", "ifname": "eth0", "ipAddressList": ["10.255.4.108/24"],
+    "macaddr": "52:54:00:ab:a0:78", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616447826449}, {"namespace": "eos", "hostname": "firewall01",
+    "ifname": "lo", "ipAddressList": ["10.0.0.100/32"], "macaddr": "00:00:00:00:00:00",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616447826449},
     {"namespace": "eos", "hostname": "spine01", "ifname": "Management1", "ipAddressList":
-    ["10.255.2.120/24"], "macaddr": "44:38:39:01:01:01", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1610377086803}, {"namespace": "eos", "hostname":
+    ["10.255.4.117/24"], "macaddr": "44:38:39:01:01:01", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616447827041}, {"namespace": "eos", "hostname":
     "spine01", "ifname": "Loopback0", "ipAddressList": ["10.0.0.21/32"], "macaddr":
-    "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1610377086803},
+    "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616447827041},
+    {"namespace": "eos", "hostname": "spine01", "ifname": "Ethernet5", "ipAddressList":
+    ["10.0.0.21/32"], "macaddr": "44:38:39:ba:d2:34", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616447827041}, {"namespace": "eos", "hostname":
+    "spine01", "ifname": "Ethernet4", "ipAddressList": ["10.0.0.21/32"], "macaddr":
+    "44:38:39:ba:d2:34", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616447827041}, {"namespace": "eos", "hostname": "spine01", "ifname": "Ethernet6",
+    "ipAddressList": ["10.0.0.21/32"], "macaddr": "44:38:39:ba:d2:34", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616447827041}, {"namespace": "eos",
+    "hostname": "spine01", "ifname": "Ethernet1", "ipAddressList": ["10.0.0.21/32"],
+    "macaddr": "44:38:39:ba:d2:34", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616447827041}, {"namespace": "eos", "hostname": "spine01", "ifname":
+    "Ethernet3", "ipAddressList": ["10.0.0.21/32"], "macaddr": "44:38:39:ba:d2:34",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616447827041},
     {"namespace": "eos", "hostname": "spine01", "ifname": "Ethernet2", "ipAddressList":
     ["10.0.0.21/32"], "macaddr": "44:38:39:ba:d2:34", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1610377086803}, {"namespace": "eos", "hostname":
-    "spine01", "ifname": "Ethernet3", "ipAddressList": ["10.0.0.21/32"], "macaddr":
-    "44:38:39:ba:d2:34", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
-    1610377086803}, {"namespace": "eos", "hostname": "spine01", "ifname": "Ethernet1",
-    "ipAddressList": ["10.0.0.21/32"], "macaddr": "44:38:39:ba:d2:34", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1610377086803}, {"namespace": "eos",
-    "hostname": "spine01", "ifname": "Ethernet6", "ipAddressList": ["10.0.0.21/32"],
-    "macaddr": "44:38:39:ba:d2:34", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1610377086803}, {"namespace": "eos", "hostname": "spine01", "ifname":
-    "Ethernet5", "ipAddressList": ["10.0.0.21/32"], "macaddr": "44:38:39:ba:d2:34",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1610377086803},
-    {"namespace": "eos", "hostname": "spine01", "ifname": "Ethernet4", "ipAddressList":
-    ["10.0.0.21/32"], "macaddr": "44:38:39:ba:d2:34", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1610377086803}, {"namespace": "eos", "hostname":
-    "dcedge01", "ifname": "xe-0/0/10", "ipAddressList": [], "macaddr": "02:05:86:71:d0:2b",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1610377092019},
-    {"namespace": "eos", "hostname": "dcedge01", "ifname": "xe-0/0/9", "ipAddressList":
-    [], "macaddr": "02:05:86:71:d0:27", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1610377092019}, {"namespace": "eos", "hostname": "dcedge01",
-    "ifname": "xe-0/0/11", "ipAddressList": [], "macaddr": "02:05:86:71:d0:2f", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1610377092019}, {"namespace": "eos",
-    "hostname": "dcedge01", "ifname": "bme0", "ipAddressList": [], "macaddr": "02:00:00:00:00:0a",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1610377092019},
-    {"namespace": "eos", "hostname": "dcedge01", "ifname": "cbp0", "ipAddressList":
-    [], "macaddr": "02:05:86:71:d0:14", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1610377092019}, {"namespace": "eos", "hostname": "dcedge01",
-    "ifname": "xe-0/0/7", "ipAddressList": [], "macaddr": "02:05:86:71:d0:1f", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1610377092019}, {"namespace": "eos",
-    "hostname": "dcedge01", "ifname": "xe-0/0/8", "ipAddressList": [], "macaddr":
-    "02:05:86:71:d0:23", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
-    1610377092019}, {"namespace": "eos", "hostname": "dcedge01", "ifname": "lo0.0",
-    "ipAddressList": ["10.0.0.41/32"], "macaddr": "None", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1610377092019}, {"namespace": "eos", "hostname":
-    "dcedge01", "ifname": "xe-0/0/1", "ipAddressList": [], "macaddr": "02:05:86:71:d0:07",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1610377092019},
-    {"namespace": "eos", "hostname": "dcedge01", "ifname": "xe-0/0/5", "ipAddressList":
-    [], "macaddr": "02:05:86:71:d0:17", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1610377092019}, {"namespace": "eos", "hostname": "dcedge01",
-    "ifname": "xe-0/0/4", "ipAddressList": [], "macaddr": "02:05:86:71:d0:13", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1610377092019}, {"namespace": "eos",
-    "hostname": "dcedge01", "ifname": "xe-0/0/3", "ipAddressList": [], "macaddr":
-    "02:05:86:71:d0:0f", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
-    1610377092019}, {"namespace": "eos", "hostname": "dcedge01", "ifname": "xe-0/0/2",
-    "ipAddressList": [], "macaddr": "02:05:86:71:d0:0b", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1610377092019}, {"namespace": "eos", "hostname":
-    "dcedge01", "ifname": "dsc", "ipAddressList": [], "macaddr": "None", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1610377092019}, {"namespace": "eos",
-    "hostname": "dcedge01", "ifname": "xe-0/0/0", "ipAddressList": [], "macaddr":
-    "02:05:86:71:d0:03", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
-    1610377092019}, {"namespace": "eos", "hostname": "dcedge01", "ifname": "pfh-0/0/0",
+    "up", "master": "", "timestamp": 1616447827041}, {"namespace": "eos", "hostname":
+    "exit02", "ifname": "Vxlan1", "ipAddressList": [], "macaddr": "None", "ip6AddressList":
+    [], "state": "up", "master": "bridge", "timestamp": 1616447827284}, {"namespace":
+    "eos", "hostname": "exit02", "ifname": "Management1", "ipAddressList": ["10.255.4.252/24"],
+    "macaddr": "44:38:39:01:03:02", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616447827284}, {"namespace": "eos", "hostname": "exit02", "ifname":
+    "Ethernet2", "ipAddressList": ["10.0.0.32/32"], "macaddr": "44:38:39:c3:55:cb",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616447827284},
+    {"namespace": "eos", "hostname": "exit02", "ifname": "Ethernet3.4", "ipAddressList":
+    ["169.254.253.9/30"], "macaddr": "44:38:39:c3:55:cb", "ip6AddressList": [], "state":
+    "up", "master": "internet-vrf", "timestamp": 1616447827284}, {"namespace": "eos",
+    "hostname": "exit02", "ifname": "internet-vrf", "ipAddressList": [], "macaddr":
+    "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616447827284}, {"namespace": "eos", "hostname": "exit02", "ifname": "evpn-vrf",
+    "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616447827284}, {"namespace": "eos", "hostname":
+    "exit02", "ifname": "Ethernet3.3", "ipAddressList": ["169.254.253.5/30"], "macaddr":
+    "44:38:39:c3:55:cb", "ip6AddressList": [], "state": "up", "master": "evpn-vrf",
+    "timestamp": 1616447827284}, {"namespace": "eos", "hostname": "exit02", "ifname":
+    "Ethernet3.2", "ipAddressList": ["169.254.253.1/30"], "macaddr": "44:38:39:c3:55:cb",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616447827284},
+    {"namespace": "eos", "hostname": "exit02", "ifname": "Ethernet4", "ipAddressList":
+    ["169.254.127.3/31"], "macaddr": "44:38:39:c3:55:cb", "ip6AddressList": [], "state":
+    "up", "master": "internet-vrf", "timestamp": 1616447827284}, {"namespace": "eos",
+    "hostname": "exit02", "ifname": "Loopback0", "ipAddressList": ["10.0.0.32/32"],
+    "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616447827284}, {"namespace": "eos", "hostname": "exit02", "ifname": "Vlan4094",
+    "ipAddressList": ["0.0.0.0/0"], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
+    [], "state": "up", "master": "evpn-vrf", "timestamp": 1616447827284}, {"namespace":
+    "eos", "hostname": "exit02", "ifname": "Ethernet1", "ipAddressList": ["10.0.0.32/32"],
+    "macaddr": "44:38:39:c3:55:cb", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616447827284}, {"namespace": "eos", "hostname": "exit02", "ifname":
+    "Ethernet3", "ipAddressList": [], "macaddr": "44:38:39:c3:55:cb", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616447827284}, {"namespace": "eos",
+    "hostname": "leaf03", "ifname": "Vxlan1", "ipAddressList": [], "macaddr": "None",
+    "ip6AddressList": [], "state": "up", "master": "bridge", "timestamp": 1616447827290},
+    {"namespace": "eos", "hostname": "leaf03", "ifname": "Vlan4094", "ipAddressList":
+    ["169.254.1.0/31"], "macaddr": "44:39:39:ff:40:96", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616447827290}, {"namespace": "eos", "hostname":
+    "leaf03", "ifname": "Ethernet1", "ipAddressList": ["10.0.0.13/32"], "macaddr":
+    "44:38:39:24:3f:16", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616447827290}, {"namespace": "eos", "hostname": "leaf03", "ifname": "Management1",
+    "ipAddressList": ["10.255.4.186/24"], "macaddr": "44:38:39:01:02:03", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616447827290}, {"namespace": "eos",
+    "hostname": "leaf03", "ifname": "Vlan1006", "ipAddressList": ["0.0.0.0/0"], "macaddr":
+    "44:39:39:ff:40:96", "ip6AddressList": [], "state": "up", "master": "evpn-vrf",
+    "timestamp": 1616447827290}, {"namespace": "eos", "hostname": "leaf03", "ifname":
+    "Vlan20", "ipAddressList": ["0.0.0.0/0", "172.16.2.254/24"], "macaddr": "44:39:39:ff:40:96",
+    "ip6AddressList": [], "state": "up", "master": "evpn-vrf", "timestamp": 1616447827290},
+    {"namespace": "eos", "hostname": "leaf03", "ifname": "Port-Channel4", "ipAddressList":
+    [], "macaddr": "52:54:00:3a:c0:42", "ip6AddressList": [], "state": "up", "master":
+    "bridge", "timestamp": 1616447827290}, {"namespace": "eos", "hostname": "leaf03",
+    "ifname": "Ethernet4", "ipAddressList": [], "macaddr": "52:54:00:3a:c0:42", "ip6AddressList":
+    [], "state": "up", "master": "Port-Channel4", "timestamp": 1616447827290}, {"namespace":
+    "eos", "hostname": "leaf03", "ifname": "Ethernet5", "ipAddressList": [], "macaddr":
+    "48:47:00:23:a0:3b", "ip6AddressList": [], "state": "up", "master": "Port-Channel1",
+    "timestamp": 1616447827290}, {"namespace": "eos", "hostname": "leaf03", "ifname":
+    "Port-Channel3", "ipAddressList": [], "macaddr": "52:54:00:eb:33:aa", "ip6AddressList":
+    [], "state": "up", "master": "bridge", "timestamp": 1616447827290}, {"namespace":
+    "eos", "hostname": "leaf03", "ifname": "Loopback0", "ipAddressList": ["10.0.0.13/32"],
+    "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616447827290}, {"namespace": "eos", "hostname": "leaf03", "ifname": "Loopback1",
+    "ipAddressList": ["10.0.0.134/32"], "macaddr": "None", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616447827290}, {"namespace": "eos", "hostname":
+    "leaf03", "ifname": "Ethernet6", "ipAddressList": [], "macaddr": "48:47:00:76:f4:d1",
+    "ip6AddressList": [], "state": "up", "master": "Port-Channel1", "timestamp": 1616447827290},
+    {"namespace": "eos", "hostname": "leaf03", "ifname": "Port-Channel1", "ipAddressList":
+    [], "macaddr": "48:47:00:23:a0:3b", "ip6AddressList": [], "state": "up", "master":
+    "bridge", "timestamp": 1616447827290}, {"namespace": "eos", "hostname": "leaf03",
+    "ifname": "evpn-vrf", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616447827290}, {"namespace": "eos",
+    "hostname": "leaf03", "ifname": "Vlan30", "ipAddressList": ["0.0.0.0/0", "172.16.3.254/24"],
+    "macaddr": "44:39:39:ff:40:96", "ip6AddressList": [], "state": "up", "master":
+    "evpn-vrf", "timestamp": 1616447827290}, {"namespace": "eos", "hostname": "leaf03",
+    "ifname": "Ethernet3", "ipAddressList": [], "macaddr": "52:54:00:eb:33:aa", "ip6AddressList":
+    [], "state": "up", "master": "Port-Channel3", "timestamp": 1616447827290}, {"namespace":
+    "eos", "hostname": "leaf03", "ifname": "Ethernet2", "ipAddressList": ["10.0.0.13/32"],
+    "macaddr": "44:38:39:24:3f:16", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616447827290}, {"namespace": "eos", "hostname": "exit01", "ifname":
+    "evpn-vrf", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616447827440}, {"namespace": "eos",
+    "hostname": "exit01", "ifname": "Management1", "ipAddressList": ["10.255.4.251/24"],
+    "macaddr": "44:38:39:01:03:01", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616447827440}, {"namespace": "eos", "hostname": "exit01", "ifname":
+    "Vlan4094", "ipAddressList": ["0.0.0.0/0"], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
+    [], "state": "up", "master": "evpn-vrf", "timestamp": 1616447827440}, {"namespace":
+    "eos", "hostname": "exit01", "ifname": "Ethernet2", "ipAddressList": ["10.0.0.31/32"],
+    "macaddr": "44:38:39:33:d8:43", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616447827440}, {"namespace": "eos", "hostname": "exit01", "ifname":
+    "Ethernet3", "ipAddressList": [], "macaddr": "44:38:39:33:d8:43", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616447827440}, {"namespace": "eos",
+    "hostname": "exit01", "ifname": "Ethernet1", "ipAddressList": ["10.0.0.31/32"],
+    "macaddr": "44:38:39:33:d8:43", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616447827440}, {"namespace": "eos", "hostname": "exit01", "ifname":
+    "Vxlan1", "ipAddressList": [], "macaddr": "None", "ip6AddressList": [], "state":
+    "up", "master": "bridge", "timestamp": 1616447827440}, {"namespace": "eos", "hostname":
+    "exit01", "ifname": "Ethernet3.3", "ipAddressList": ["169.254.254.5/30"], "macaddr":
+    "44:38:39:33:d8:43", "ip6AddressList": [], "state": "up", "master": "evpn-vrf",
+    "timestamp": 1616447827440}, {"namespace": "eos", "hostname": "exit01", "ifname":
+    "Ethernet3.2", "ipAddressList": ["169.254.254.1/30"], "macaddr": "44:38:39:33:d8:43",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616447827440},
+    {"namespace": "eos", "hostname": "exit01", "ifname": "Loopback0", "ipAddressList":
+    ["10.0.0.31/32"], "macaddr": "None", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616447827440}, {"namespace": "eos", "hostname": "exit01", "ifname":
+    "Ethernet3.4", "ipAddressList": ["169.254.254.9/30"], "macaddr": "44:38:39:33:d8:43",
+    "ip6AddressList": [], "state": "up", "master": "internet-vrf", "timestamp": 1616447827440},
+    {"namespace": "eos", "hostname": "exit01", "ifname": "internet-vrf", "ipAddressList":
+    [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616447827440}, {"namespace": "eos", "hostname": "exit01", "ifname":
+    "Ethernet4", "ipAddressList": ["169.254.127.1/31"], "macaddr": "44:38:39:33:d8:43",
+    "ip6AddressList": [], "state": "up", "master": "internet-vrf", "timestamp": 1616447827440},
+    {"namespace": "eos", "hostname": "leaf04", "ifname": "Ethernet5", "ipAddressList":
+    [], "macaddr": "48:47:00:dc:78:8a", "ip6AddressList": [], "state": "up", "master":
+    "Port-Channel1", "timestamp": 1616447827442}, {"namespace": "eos", "hostname":
+    "leaf04", "ifname": "evpn-vrf", "ipAddressList": [], "macaddr": "00:00:00:00:00:00",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616447827442},
+    {"namespace": "eos", "hostname": "leaf04", "ifname": "Port-Channel4", "ipAddressList":
+    [], "macaddr": "52:54:00:61:ed:38", "ip6AddressList": [], "state": "up", "master":
+    "bridge", "timestamp": 1616447827442}, {"namespace": "eos", "hostname": "leaf04",
+    "ifname": "Port-Channel1", "ipAddressList": [], "macaddr": "48:47:00:25:2a:8b",
+    "ip6AddressList": [], "state": "up", "master": "bridge", "timestamp": 1616447827442},
+    {"namespace": "eos", "hostname": "leaf04", "ifname": "Loopback1", "ipAddressList":
+    ["10.0.0.134/32"], "macaddr": "None", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616447827442}, {"namespace": "eos", "hostname": "leaf04", "ifname":
+    "Loopback0", "ipAddressList": ["10.0.0.14/32"], "macaddr": "None", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616447827442}, {"namespace": "eos",
+    "hostname": "leaf04", "ifname": "Port-Channel3", "ipAddressList": [], "macaddr":
+    "52:54:00:37:ad:67", "ip6AddressList": [], "state": "up", "master": "bridge",
+    "timestamp": 1616447827442}, {"namespace": "eos", "hostname": "leaf04", "ifname":
+    "Ethernet4", "ipAddressList": [], "macaddr": "52:54:00:61:ed:38", "ip6AddressList":
+    [], "state": "up", "master": "Port-Channel4", "timestamp": 1616447827442}, {"namespace":
+    "eos", "hostname": "leaf04", "ifname": "Ethernet6", "ipAddressList": [], "macaddr":
+    "48:47:00:25:2a:8b", "ip6AddressList": [], "state": "up", "master": "Port-Channel1",
+    "timestamp": 1616447827442}, {"namespace": "eos", "hostname": "leaf04", "ifname":
+    "Management1", "ipAddressList": ["10.255.4.187/24"], "macaddr": "44:38:39:01:02:04",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616447827442},
+    {"namespace": "eos", "hostname": "leaf04", "ifname": "Ethernet1", "ipAddressList":
+    ["10.0.0.14/32"], "macaddr": "44:38:39:81:30:22", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616447827442}, {"namespace": "eos", "hostname":
+    "leaf04", "ifname": "Vlan4094", "ipAddressList": ["169.254.1.1/31"], "macaddr":
+    "44:39:39:ff:40:96", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616447827442}, {"namespace": "eos", "hostname": "leaf04", "ifname": "Vxlan1",
     "ipAddressList": [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master":
-    "ENET2", "timestamp": 1610377092019}, {"namespace": "eos", "hostname": "dcedge01",
-    "ifname": "pfe-0/0/0", "ipAddressList": [], "macaddr": "None", "ip6AddressList":
-    [], "state": "up", "master": "ENET2", "timestamp": 1610377092019}, {"namespace":
-    "eos", "hostname": "dcedge01", "ifname": "xe-0/0/6", "ipAddressList": [], "macaddr":
-    "02:05:86:71:d0:1b", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
-    1610377092019}, {"namespace": "eos", "hostname": "dcedge01", "ifname": "em0",
-    "ipAddressList": [], "macaddr": "44:38:39:01:03:fe", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1610377092019}, {"namespace": "eos", "hostname":
-    "dcedge01", "ifname": "jsrv", "ipAddressList": [], "macaddr": "02:05:86:71:d0:00",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1610377092019},
+    "bridge", "timestamp": 1616447827442}, {"namespace": "eos", "hostname": "leaf04",
+    "ifname": "Ethernet2", "ipAddressList": ["10.0.0.14/32"], "macaddr": "44:38:39:81:30:22",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616447827442},
+    {"namespace": "eos", "hostname": "leaf04", "ifname": "Vlan20", "ipAddressList":
+    ["0.0.0.0/0", "172.16.2.254/24"], "macaddr": "44:39:39:ff:40:96", "ip6AddressList":
+    [], "state": "up", "master": "evpn-vrf", "timestamp": 1616447827442}, {"namespace":
+    "eos", "hostname": "leaf04", "ifname": "Vlan1006", "ipAddressList": ["0.0.0.0/0"],
+    "macaddr": "44:39:39:ff:40:96", "ip6AddressList": [], "state": "up", "master":
+    "evpn-vrf", "timestamp": 1616447827442}, {"namespace": "eos", "hostname": "leaf04",
+    "ifname": "Ethernet3", "ipAddressList": [], "macaddr": "52:54:00:37:ad:67", "ip6AddressList":
+    [], "state": "up", "master": "Port-Channel3", "timestamp": 1616447827442}, {"namespace":
+    "eos", "hostname": "leaf04", "ifname": "Vlan30", "ipAddressList": ["0.0.0.0/0",
+    "172.16.3.254/24"], "macaddr": "44:39:39:ff:40:96", "ip6AddressList": [], "state":
+    "up", "master": "evpn-vrf", "timestamp": 1616447827442}, {"namespace": "eos",
+    "hostname": "spine02", "ifname": "Ethernet6", "ipAddressList": ["10.0.0.22/32"],
+    "macaddr": "44:38:39:fa:78:46", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616447827673}, {"namespace": "eos", "hostname": "spine02", "ifname":
+    "Ethernet1", "ipAddressList": ["10.0.0.22/32"], "macaddr": "44:38:39:fa:78:46",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616447827673},
+    {"namespace": "eos", "hostname": "spine02", "ifname": "Ethernet3", "ipAddressList":
+    ["10.0.0.22/32"], "macaddr": "44:38:39:fa:78:46", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616447827673}, {"namespace": "eos", "hostname":
+    "spine02", "ifname": "Ethernet2", "ipAddressList": ["10.0.0.22/32"], "macaddr":
+    "44:38:39:fa:78:46", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616447827673}, {"namespace": "eos", "hostname": "spine02", "ifname": "Ethernet5",
+    "ipAddressList": ["10.0.0.22/32"], "macaddr": "44:38:39:fa:78:46", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616447827673}, {"namespace": "eos",
+    "hostname": "spine02", "ifname": "Ethernet4", "ipAddressList": ["10.0.0.22/32"],
+    "macaddr": "44:38:39:fa:78:46", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616447827673}, {"namespace": "eos", "hostname": "spine02", "ifname":
+    "Management1", "ipAddressList": ["10.255.4.118/24"], "macaddr": "44:38:39:01:01:02",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616447827673},
+    {"namespace": "eos", "hostname": "spine02", "ifname": "Loopback0", "ipAddressList":
+    ["10.0.0.22/32"], "macaddr": "None", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616447827673}, {"namespace": "eos", "hostname": "leaf02", "ifname":
+    "Vlan4094", "ipAddressList": ["169.254.1.1/31"], "macaddr": "44:39:39:ff:40:95",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616447827675},
+    {"namespace": "eos", "hostname": "leaf02", "ifname": "Management1", "ipAddressList":
+    ["10.255.4.185/24"], "macaddr": "44:38:39:01:02:02", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616447827675}, {"namespace": "eos", "hostname":
+    "leaf02", "ifname": "evpn-vrf", "ipAddressList": [], "macaddr": "00:00:00:00:00:00",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616447827675},
+    {"namespace": "eos", "hostname": "leaf02", "ifname": "Port-Channel4", "ipAddressList":
+    [], "macaddr": "52:54:00:03:75:8a", "ip6AddressList": [], "state": "up", "master":
+    "bridge", "timestamp": 1616447827675}, {"namespace": "eos", "hostname": "leaf02",
+    "ifname": "Port-Channel1", "ipAddressList": [], "macaddr": "48:47:00:25:34:4f",
+    "ip6AddressList": [], "state": "up", "master": "bridge", "timestamp": 1616447827675},
+    {"namespace": "eos", "hostname": "leaf02", "ifname": "Ethernet6", "ipAddressList":
+    [], "macaddr": "48:47:00:5d:9c:a5", "ip6AddressList": [], "state": "up", "master":
+    "Port-Channel1", "timestamp": 1616447827675}, {"namespace": "eos", "hostname":
+    "leaf02", "ifname": "Port-Channel3", "ipAddressList": [], "macaddr": "52:54:00:c9:74:24",
+    "ip6AddressList": [], "state": "up", "master": "bridge", "timestamp": 1616447827675},
+    {"namespace": "eos", "hostname": "leaf02", "ifname": "Loopback1", "ipAddressList":
+    ["10.0.0.112/32"], "macaddr": "None", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616447827675}, {"namespace": "eos", "hostname": "leaf02", "ifname":
+    "Ethernet5", "ipAddressList": [], "macaddr": "48:47:00:25:34:4f", "ip6AddressList":
+    [], "state": "up", "master": "Port-Channel1", "timestamp": 1616447827675}, {"namespace":
+    "eos", "hostname": "leaf02", "ifname": "Ethernet4", "ipAddressList": [], "macaddr":
+    "52:54:00:03:75:8a", "ip6AddressList": [], "state": "up", "master": "Port-Channel4",
+    "timestamp": 1616447827675}, {"namespace": "eos", "hostname": "leaf02", "ifname":
+    "Vlan30", "ipAddressList": ["0.0.0.0/0", "172.16.3.254/24"], "macaddr": "44:39:39:ff:40:95",
+    "ip6AddressList": [], "state": "up", "master": "evpn-vrf", "timestamp": 1616447827675},
+    {"namespace": "eos", "hostname": "leaf02", "ifname": "Ethernet1", "ipAddressList":
+    ["10.0.0.12/32"], "macaddr": "44:38:39:99:c7:9e", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616447827675}, {"namespace": "eos", "hostname":
+    "leaf02", "ifname": "Vlan1006", "ipAddressList": ["0.0.0.0/0"], "macaddr": "44:39:39:ff:40:95",
+    "ip6AddressList": [], "state": "up", "master": "evpn-vrf", "timestamp": 1616447827675},
+    {"namespace": "eos", "hostname": "leaf02", "ifname": "Vlan10", "ipAddressList":
+    ["0.0.0.0/0", "172.16.1.254/24"], "macaddr": "44:39:39:ff:40:95", "ip6AddressList":
+    [], "state": "up", "master": "evpn-vrf", "timestamp": 1616447827675}, {"namespace":
+    "eos", "hostname": "leaf02", "ifname": "Ethernet2", "ipAddressList": ["10.0.0.12/32"],
+    "macaddr": "44:38:39:99:c7:9e", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616447827675}, {"namespace": "eos", "hostname": "leaf02", "ifname":
+    "Vxlan1", "ipAddressList": [], "macaddr": "None", "ip6AddressList": [], "state":
+    "up", "master": "bridge", "timestamp": 1616447827675}, {"namespace": "eos", "hostname":
+    "leaf02", "ifname": "Loopback0", "ipAddressList": ["10.0.0.12/32"], "macaddr":
+    "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616447827675},
+    {"namespace": "eos", "hostname": "leaf02", "ifname": "Ethernet3", "ipAddressList":
+    [], "macaddr": "52:54:00:c9:74:24", "ip6AddressList": [], "state": "up", "master":
+    "Port-Channel3", "timestamp": 1616447827675}, {"namespace": "eos", "hostname":
+    "leaf01", "ifname": "Ethernet5", "ipAddressList": [], "macaddr": "48:47:00:bb:cb:1c",
+    "ip6AddressList": [], "state": "up", "master": "Port-Channel1", "timestamp": 1616447827676},
+    {"namespace": "eos", "hostname": "leaf01", "ifname": "Port-Channel4", "ipAddressList":
+    [], "macaddr": "52:54:00:1f:21:cb", "ip6AddressList": [], "state": "up", "master":
+    "bridge", "timestamp": 1616447827676}, {"namespace": "eos", "hostname": "leaf01",
+    "ifname": "evpn-vrf", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616447827676}, {"namespace": "eos",
+    "hostname": "leaf01", "ifname": "Management1", "ipAddressList": ["10.255.4.184/24"],
+    "macaddr": "44:38:39:01:02:01", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616447827676}, {"namespace": "eos", "hostname": "leaf01", "ifname":
+    "Vlan10", "ipAddressList": ["0.0.0.0/0", "172.16.1.254/24"], "macaddr": "44:39:39:ff:40:95",
+    "ip6AddressList": [], "state": "up", "master": "evpn-vrf", "timestamp": 1616447827676},
+    {"namespace": "eos", "hostname": "leaf01", "ifname": "Vlan4094", "ipAddressList":
+    ["169.254.1.0/31"], "macaddr": "44:39:39:ff:40:95", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616447827676}, {"namespace": "eos", "hostname":
+    "leaf01", "ifname": "Vxlan1", "ipAddressList": [], "macaddr": "None", "ip6AddressList":
+    [], "state": "up", "master": "bridge", "timestamp": 1616447827676}, {"namespace":
+    "eos", "hostname": "leaf01", "ifname": "Ethernet2", "ipAddressList": ["10.0.0.11/32"],
+    "macaddr": "44:38:39:e3:19:2e", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616447827676}, {"namespace": "eos", "hostname": "leaf01", "ifname":
+    "Ethernet3", "ipAddressList": [], "macaddr": "52:54:00:79:5a:5e", "ip6AddressList":
+    [], "state": "up", "master": "Port-Channel3", "timestamp": 1616447827676}, {"namespace":
+    "eos", "hostname": "leaf01", "ifname": "Port-Channel3", "ipAddressList": [], "macaddr":
+    "52:54:00:79:5a:5e", "ip6AddressList": [], "state": "up", "master": "bridge",
+    "timestamp": 1616447827676}, {"namespace": "eos", "hostname": "leaf01", "ifname":
+    "Ethernet1", "ipAddressList": ["10.0.0.11/32"], "macaddr": "44:38:39:e3:19:2e",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616447827676},
+    {"namespace": "eos", "hostname": "leaf01", "ifname": "Vlan30", "ipAddressList":
+    ["0.0.0.0/0", "172.16.3.254/24"], "macaddr": "44:39:39:ff:40:95", "ip6AddressList":
+    [], "state": "up", "master": "evpn-vrf", "timestamp": 1616447827676}, {"namespace":
+    "eos", "hostname": "leaf01", "ifname": "Ethernet4", "ipAddressList": [], "macaddr":
+    "52:54:00:1f:21:cb", "ip6AddressList": [], "state": "up", "master": "Port-Channel4",
+    "timestamp": 1616447827676}, {"namespace": "eos", "hostname": "leaf01", "ifname":
+    "Loopback0", "ipAddressList": ["10.0.0.11/32"], "macaddr": "None", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616447827676}, {"namespace": "eos",
+    "hostname": "leaf01", "ifname": "Loopback1", "ipAddressList": ["10.0.0.112/32"],
+    "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616447827676}, {"namespace": "eos", "hostname": "leaf01", "ifname": "Ethernet6",
+    "ipAddressList": [], "macaddr": "48:47:00:50:21:dd", "ip6AddressList": [], "state":
+    "up", "master": "Port-Channel1", "timestamp": 1616447827676}, {"namespace": "eos",
+    "hostname": "leaf01", "ifname": "Vlan1006", "ipAddressList": ["0.0.0.0/0"], "macaddr":
+    "44:39:39:ff:40:95", "ip6AddressList": [], "state": "up", "master": "evpn-vrf",
+    "timestamp": 1616447827676}, {"namespace": "eos", "hostname": "leaf01", "ifname":
+    "Port-Channel1", "ipAddressList": [], "macaddr": "48:47:00:50:21:dd", "ip6AddressList":
+    [], "state": "up", "master": "bridge", "timestamp": 1616447827676}, {"namespace":
+    "eos", "hostname": "dcedge01", "ifname": "xe-0/0/11", "ipAddressList": [], "macaddr":
+    "02:05:86:71:d8:2f", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616447831691}, {"namespace": "eos", "hostname": "dcedge01", "ifname": "bme0",
+    "ipAddressList": [], "macaddr": "02:00:00:00:00:0a", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616447831691}, {"namespace": "eos", "hostname":
+    "dcedge01", "ifname": "cbp0", "ipAddressList": [], "macaddr": "02:05:86:71:d8:14",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616447831691},
     {"namespace": "eos", "hostname": "dcedge01", "ifname": "em2", "ipAddressList":
-    [], "macaddr": "52:54:00:04:b5:a3", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1610377092019}, {"namespace": "eos", "hostname": "dcedge01",
-    "ifname": "jsrv.1", "ipAddressList": ["128.0.0.127/2"], "macaddr": "02:05:86:71:d0:00",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1610377092019},
-    {"namespace": "eos", "hostname": "dcedge01", "ifname": "em4.32768", "ipAddressList":
-    ["192.0.2.2/24"], "macaddr": "52:54:00:95:2f:66", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1610377092019}, {"namespace": "eos", "hostname":
-    "dcedge01", "ifname": "em2.32768", "ipAddressList": ["192.168.1.2/24"], "macaddr":
-    "52:54:00:04:b5:a3", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
-    1610377092019}, {"namespace": "eos", "hostname": "dcedge01", "ifname": "em1.0",
-    "ipAddressList": ["169.254.0.2/24"], "macaddr": "52:54:00:02:ef:a3", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1610377092019}, {"namespace": "eos",
-    "hostname": "dcedge01", "ifname": "em0.0", "ipAddressList": ["10.255.2.250/24"],
-    "macaddr": "44:38:39:01:03:fe", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1610377092019}, {"namespace": "eos", "hostname": "dcedge01",
-    "ifname": "bme0.0", "ipAddressList": ["128.0.0.1/2", "128.0.0.4/2", "128.0.0.16/2",
-    "128.0.0.63/2"], "macaddr": "02:00:00:00:00:0a", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1610377092019}, {"namespace": "eos", "hostname":
-    "dcedge01", "ifname": "xe-0/0/1.0", "ipAddressList": ["169.254.127.2/31"], "macaddr":
-    "02:05:86:71:d0:07", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
-    1610377092019}, {"namespace": "eos", "hostname": "dcedge01", "ifname": "xe-0/0/0.0",
-    "ipAddressList": ["169.254.127.0/31"], "macaddr": "02:05:86:71:d0:03", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1610377092019}, {"namespace": "eos",
-    "hostname": "dcedge01", "ifname": "vtep", "ipAddressList": [], "macaddr": "None",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1610377092019},
-    {"namespace": "eos", "hostname": "dcedge01", "ifname": "vme", "ipAddressList":
-    [], "macaddr": "02:05:86:71:d0:01", "ip6AddressList": [], "state": "down", "master":
-    "", "timestamp": 1610377092019}, {"namespace": "eos", "hostname": "dcedge01",
-    "ifname": "tap", "ipAddressList": [], "macaddr": "None", "ip6AddressList": [],
-    "state": "up", "master": "", "timestamp": 1610377092019}, {"namespace": "eos",
-    "hostname": "dcedge01", "ifname": "em1", "ipAddressList": [], "macaddr": "52:54:00:02:ef:a3",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1610377092019},
-    {"namespace": "eos", "hostname": "dcedge01", "ifname": "pip0", "ipAddressList":
-    [], "macaddr": "02:05:86:71:cb:df", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1610377092019}, {"namespace": "eos", "hostname": "dcedge01",
-    "ifname": "pimd", "ipAddressList": [], "macaddr": "None", "ip6AddressList": [],
-    "state": "up", "master": "", "timestamp": 1610377092019}, {"namespace": "eos",
-    "hostname": "dcedge01", "ifname": "mtun", "ipAddressList": [], "macaddr": "None",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1610377092019},
-    {"namespace": "eos", "hostname": "dcedge01", "ifname": "lsi", "ipAddressList":
-    [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
-    1610377092019}, {"namespace": "eos", "hostname": "dcedge01", "ifname": "lo0",
-    "ipAddressList": [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1610377092019}, {"namespace": "eos", "hostname": "dcedge01",
-    "ifname": "irb", "ipAddressList": [], "macaddr": "02:05:86:71:d0:00", "ip6AddressList":
-    [], "state": "up", "master": "", "timestamp": 1610377092019}, {"namespace": "eos",
-    "hostname": "dcedge01", "ifname": "ipip", "ipAddressList": [], "macaddr": "None",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1610377092019},
-    {"namespace": "eos", "hostname": "dcedge01", "ifname": "gre", "ipAddressList":
-    [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
-    1610377092019}, {"namespace": "eos", "hostname": "dcedge01", "ifname": "fti0",
-    "ipAddressList": [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1610377092019}, {"namespace": "eos", "hostname": "dcedge01",
-    "ifname": "esi", "ipAddressList": [], "macaddr": "None", "ip6AddressList": [],
-    "state": "up", "master": "", "timestamp": 1610377092019}, {"namespace": "eos",
-    "hostname": "dcedge01", "ifname": "em4", "ipAddressList": [], "macaddr": "52:54:00:95:2f:66",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1610377092019},
+    [], "macaddr": "52:54:00:1f:8f:8c", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616447831691}, {"namespace": "eos", "hostname": "dcedge01",
+    "ifname": "em0", "ipAddressList": [], "macaddr": "44:38:39:01:03:fe", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616447831691}, {"namespace": "eos",
+    "hostname": "dcedge01", "ifname": "em1", "ipAddressList": [], "macaddr": "52:54:00:ee:ed:ef",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616447831691},
     {"namespace": "eos", "hostname": "dcedge01", "ifname": "em3", "ipAddressList":
-    [], "macaddr": "52:54:00:9a:0d:8c", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1610377092019}, {"namespace": "eos", "hostname": "dcedge01",
-    "ifname": "pime", "ipAddressList": [], "macaddr": "None", "ip6AddressList": [],
-    "state": "up", "master": "", "timestamp": 1610377092019}, {"namespace": "eos",
-    "hostname": "dcedge01", "ifname": "gr-0/0/0", "ipAddressList": [], "macaddr":
-    "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1610377092019}]'
+    [], "macaddr": "52:54:00:75:e6:93", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616447831691}, {"namespace": "eos", "hostname": "dcedge01",
+    "ifname": "xe-0/0/10", "ipAddressList": [], "macaddr": "02:05:86:71:d8:2b", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616447831691}, {"namespace": "eos",
+    "hostname": "dcedge01", "ifname": "dsc", "ipAddressList": [], "macaddr": "None",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616447831691},
+    {"namespace": "eos", "hostname": "dcedge01", "ifname": "xe-0/0/9", "ipAddressList":
+    [], "macaddr": "02:05:86:71:d8:27", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616447831691}, {"namespace": "eos", "hostname": "dcedge01",
+    "ifname": "xe-0/0/1", "ipAddressList": [], "macaddr": "02:05:86:71:d8:07", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616447831691}, {"namespace": "eos",
+    "hostname": "dcedge01", "ifname": "xe-0/0/7", "ipAddressList": [], "macaddr":
+    "02:05:86:71:d8:1f", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616447831691}, {"namespace": "eos", "hostname": "dcedge01", "ifname": "xe-0/0/6",
+    "ipAddressList": [], "macaddr": "02:05:86:71:d8:1b", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616447831691}, {"namespace": "eos", "hostname":
+    "dcedge01", "ifname": "xe-0/0/5", "ipAddressList": [], "macaddr": "02:05:86:71:d8:17",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616447831691},
+    {"namespace": "eos", "hostname": "dcedge01", "ifname": "xe-0/0/4", "ipAddressList":
+    [], "macaddr": "02:05:86:71:d8:13", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616447831691}, {"namespace": "eos", "hostname": "dcedge01",
+    "ifname": "xe-0/0/3", "ipAddressList": [], "macaddr": "02:05:86:71:d8:0f", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616447831691}, {"namespace": "eos",
+    "hostname": "dcedge01", "ifname": "xe-0/0/2", "ipAddressList": [], "macaddr":
+    "02:05:86:71:d8:0b", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616447831691}, {"namespace": "eos", "hostname": "dcedge01", "ifname": "em4",
+    "ipAddressList": [], "macaddr": "52:54:00:be:92:73", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616447831691}, {"namespace": "eos", "hostname":
+    "dcedge01", "ifname": "xe-0/0/0", "ipAddressList": [], "macaddr": "02:05:86:71:d8:03",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616447831691},
+    {"namespace": "eos", "hostname": "dcedge01", "ifname": "pfh-0/0/0", "ipAddressList":
+    [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "ENET2",
+    "timestamp": 1616447831691}, {"namespace": "eos", "hostname": "dcedge01", "ifname":
+    "pfe-0/0/0", "ipAddressList": [], "macaddr": "None", "ip6AddressList": [], "state":
+    "up", "master": "ENET2", "timestamp": 1616447831691}, {"namespace": "eos", "hostname":
+    "dcedge01", "ifname": "xe-0/0/8", "ipAddressList": [], "macaddr": "02:05:86:71:d8:23",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616447831691},
+    {"namespace": "eos", "hostname": "dcedge01", "ifname": "esi", "ipAddressList":
+    [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616447831691}, {"namespace": "eos", "hostname": "dcedge01", "ifname": "mtun",
+    "ipAddressList": [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616447831691}, {"namespace": "eos", "hostname": "dcedge01",
+    "ifname": "gre", "ipAddressList": [], "macaddr": "None", "ip6AddressList": [],
+    "state": "up", "master": "", "timestamp": 1616447831691}, {"namespace": "eos",
+    "hostname": "dcedge01", "ifname": "lo0.16385", "ipAddressList": [], "macaddr":
+    "None", "ip6AddressList": ["fe80::205:860f:fc71:d800/32"], "state": "up", "master":
+    "", "timestamp": 1616447831691}, {"namespace": "eos", "hostname": "dcedge01",
+    "ifname": "lo0.0", "ipAddressList": ["10.0.0.41/32"], "macaddr": "None", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616447831691}, {"namespace": "eos",
+    "hostname": "dcedge01", "ifname": "jsrv.1", "ipAddressList": ["128.0.0.127/2"],
+    "macaddr": "02:05:86:71:d8:00", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616447831691}, {"namespace": "eos", "hostname": "dcedge01",
+    "ifname": "em4.32768", "ipAddressList": ["192.0.2.2/24"], "macaddr": "52:54:00:be:92:73",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616447831691},
+    {"namespace": "eos", "hostname": "dcedge01", "ifname": "em2.32768", "ipAddressList":
+    ["192.168.1.2/24"], "macaddr": "52:54:00:1f:8f:8c", "ip6AddressList": [], "state":
+    "up", "master": "", "timestamp": 1616447831691}, {"namespace": "eos", "hostname":
+    "dcedge01", "ifname": "em1.0", "ipAddressList": ["169.254.0.2/24"], "macaddr":
+    "52:54:00:ee:ed:ef", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616447831691}, {"namespace": "eos", "hostname": "dcedge01", "ifname": "em0.0",
+    "ipAddressList": ["10.255.4.250/24"], "macaddr": "44:38:39:01:03:fe", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616447831691}, {"namespace": "eos",
+    "hostname": "dcedge01", "ifname": "bme0.0", "ipAddressList": ["128.0.0.1/2", "128.0.0.4/2",
+    "128.0.0.16/2", "128.0.0.63/2"], "macaddr": "02:00:00:00:00:0a", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616447831691}, {"namespace": "eos",
+    "hostname": "dcedge01", "ifname": "xe-0/0/1.0", "ipAddressList": ["169.254.127.2/31"],
+    "macaddr": "02:05:86:71:d8:07", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616447831691}, {"namespace": "eos", "hostname": "dcedge01",
+    "ifname": "xe-0/0/0.0", "ipAddressList": ["169.254.127.0/31"], "macaddr": "02:05:86:71:d8:03",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616447831691},
+    {"namespace": "eos", "hostname": "dcedge01", "ifname": "vtep", "ipAddressList":
+    [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616447831691}, {"namespace": "eos", "hostname": "dcedge01", "ifname": "vme",
+    "ipAddressList": [], "macaddr": "02:05:86:71:d8:01", "ip6AddressList": [], "state":
+    "down", "master": "", "timestamp": 1616447831691}, {"namespace": "eos", "hostname":
+    "dcedge01", "ifname": "tap", "ipAddressList": [], "macaddr": "None", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616447831691}, {"namespace": "eos",
+    "hostname": "dcedge01", "ifname": "pip0", "ipAddressList": [], "macaddr": "02:05:86:71:d3:df",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616447831691},
+    {"namespace": "eos", "hostname": "dcedge01", "ifname": "pime", "ipAddressList":
+    [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616447831691}, {"namespace": "eos", "hostname": "dcedge01", "ifname": "pimd",
+    "ipAddressList": [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616447831691}, {"namespace": "eos", "hostname": "dcedge01",
+    "ifname": "lsi", "ipAddressList": [], "macaddr": "None", "ip6AddressList": [],
+    "state": "up", "master": "", "timestamp": 1616447831691}, {"namespace": "eos",
+    "hostname": "dcedge01", "ifname": "lo0", "ipAddressList": [], "macaddr": "None",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616447831691},
+    {"namespace": "eos", "hostname": "dcedge01", "ifname": "jsrv", "ipAddressList":
+    [], "macaddr": "02:05:86:71:d8:00", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616447831691}, {"namespace": "eos", "hostname": "dcedge01",
+    "ifname": "irb", "ipAddressList": [], "macaddr": "02:05:86:71:d8:00", "ip6AddressList":
+    [], "state": "up", "master": "", "timestamp": 1616447831691}, {"namespace": "eos",
+    "hostname": "dcedge01", "ifname": "ipip", "ipAddressList": [], "macaddr": "None",
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616447831691},
+    {"namespace": "eos", "hostname": "dcedge01", "ifname": "fti0", "ipAddressList":
+    [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
+    1616447831691}, {"namespace": "eos", "hostname": "dcedge01", "ifname": "gr-0/0/0",
+    "ipAddressList": [], "macaddr": "None", "ip6AddressList": [], "state": "up", "master":
+    "", "timestamp": 1616447831691}]'
 - command: address show --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: address show eos
-  output: '[{"hostname": "server302"}, {"hostname": "server301"}, {"hostname": "server301"},
-    {"hostname": "server301"}, {"hostname": "server302"}, {"hostname": "server302"},
-    {"hostname": "server302"}, {"hostname": "server302"}, {"hostname": "server301"},
-    {"hostname": "server301"}, {"hostname": "server102"}, {"hostname": "server102"},
-    {"hostname": "server102"}, {"hostname": "server102"}, {"hostname": "server102"},
+  output: '[{"hostname": "server102"}, {"hostname": "server102"}, {"hostname": "server102"},
+    {"hostname": "server102"}, {"hostname": "server102"}, {"hostname": "server302"},
+    {"hostname": "server302"}, {"hostname": "server302"}, {"hostname": "server302"},
+    {"hostname": "server302"}, {"hostname": "server301"}, {"hostname": "server301"},
+    {"hostname": "server301"}, {"hostname": "server301"}, {"hostname": "server301"},
     {"hostname": "server101"}, {"hostname": "server101"}, {"hostname": "server101"},
     {"hostname": "server101"}, {"hostname": "server101"}, {"hostname": "firewall01"},
     {"hostname": "firewall01"}, {"hostname": "firewall01"}, {"hostname": "firewall01"},
     {"hostname": "firewall01"}, {"hostname": "firewall01"}, {"hostname": "firewall01"},
     {"hostname": "firewall01"}, {"hostname": "firewall01"}, {"hostname": "firewall01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
     {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
     "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
     {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
-    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
-    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
-    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
-    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
-    "exit02"}, {"hostname": "exit02"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
     {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
     "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
     {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
     "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
-    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf02"}, {"hostname":
-    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
-    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
-    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
-    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
-    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf01"},
-    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
-    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
-    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
-    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
-    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
-    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
     {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
-    "spine02"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
-    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
-    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
-    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
-    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
-    {"hostname": "leaf03"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
-    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
-    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "dcedge01"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "dcedge01"}, {"hostname":
     "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname":
     "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname":
     "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname":
@@ -540,48 +542,57 @@ tests:
     "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname":
     "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname":
     "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname":
-    "dcedge01"}]'
+    "dcedge01"}, {"hostname": "dcedge01"}]'
 - command: address summarize --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: address summarize eos
-  output: '{"eos": {"deviceCnt": 14, "addressCnt": 191, "uniqueV4AddressCnt": 59,
-    "uniqueV6AddressCnt": 0, "uniqueIfMacCnt": 70, "deviceWithv4AddressCnt": 14, "deviceWithv6AddressCnt":
+  output: '{"eos": {"deviceCnt": 14, "addressCnt": 192, "uniqueV4AddressCnt": 60,
+    "uniqueV6AddressCnt": 0, "uniqueIfMacCnt": 69, "deviceWithv4AddressCnt": 14, "deviceWithv6AddressCnt":
     0, "subnetsUsed": ["32", "24", "0", "30", "31", "2"], "subnetTopCounts": [{"32":
-    37}, {"24": 29}, {"0": 14}]}}'
+    38}, {"24": 29}, {"0": 14}]}}'
 - command: address unique --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: address unique eos
-  output: '[{"hostname": "dcedge01", "count": 47}, {"hostname": "exit01", "count":
-    13}, {"hostname": "exit02", "count": 13}, {"hostname": "firewall01", "count":
-    10}, {"hostname": "leaf01", "count": 18}, {"hostname": "leaf02", "count": 18},
-    {"hostname": "leaf03", "count": 18}, {"hostname": "leaf04", "count": 18}, {"hostname":
-    "server101", "count": 5}, {"hostname": "server102", "count": 5}, {"hostname":
-    "server301", "count": 5}, {"hostname": "server302", "count": 5}, {"hostname":
-    "spine01", "count": 8}, {"hostname": "spine02", "count": 8}]'
+  output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
+    {"hostname": "firewall01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server102"},
+    {"hostname": "server301"}, {"hostname": "server302"}, {"hostname": "spine01"},
+    {"hostname": "spine02"}]'
 - command: address show --address=10.0.0.11 --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: address show filter
   output: '[{"namespace": "eos", "hostname": "leaf01", "ifname": "Ethernet2", "ipAddressList":
     "10.0.0.11/32", "macaddr": "44:38:39:e3:19:2e", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1610377086686}, {"namespace": "eos", "hostname":
+    "up", "master": "", "timestamp": 1616447827676}, {"namespace": "eos", "hostname":
     "leaf01", "ifname": "Ethernet1", "ipAddressList": "10.0.0.11/32", "macaddr": "44:38:39:e3:19:2e",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1610377086686},
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616447827676},
     {"namespace": "eos", "hostname": "leaf01", "ifname": "Loopback0", "ipAddressList":
     "10.0.0.11/32", "macaddr": "None", "ip6AddressList": [], "state": "up", "master":
-    "", "timestamp": 1610377086686}]'
+    "", "timestamp": 1616447827676}]'
 - command: address show --address='10.0.0.11 172.16.1.254' --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: address show filter
   output: '[{"namespace": "eos", "hostname": "leaf02", "ifname": "Vlan10", "ipAddressList":
     "172.16.1.254/24", "macaddr": "44:39:39:ff:40:95", "ip6AddressList": [], "state":
-    "up", "master": "evpn-vrf", "timestamp": 1610377086672}, {"namespace": "eos",
+    "up", "master": "evpn-vrf", "timestamp": 1616447827675}, {"namespace": "eos",
     "hostname": "leaf01", "ifname": "Vlan10", "ipAddressList": "172.16.1.254/24",
-    "macaddr": "44:39:39:ff:40:90", "ip6AddressList": [], "state": "up", "master":
-    "evpn-vrf", "timestamp": 1610377086686}, {"namespace": "eos", "hostname": "leaf01",
+    "macaddr": "44:39:39:ff:40:95", "ip6AddressList": [], "state": "up", "master":
+    "evpn-vrf", "timestamp": 1616447827676}, {"namespace": "eos", "hostname": "leaf01",
     "ifname": "Ethernet2", "ipAddressList": "10.0.0.11/32", "macaddr": "44:38:39:e3:19:2e",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1610377086686},
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616447827676},
     {"namespace": "eos", "hostname": "leaf01", "ifname": "Ethernet1", "ipAddressList":
     "10.0.0.11/32", "macaddr": "44:38:39:e3:19:2e", "ip6AddressList": [], "state":
-    "up", "master": "", "timestamp": 1610377086686}, {"namespace": "eos", "hostname":
+    "up", "master": "", "timestamp": 1616447827676}, {"namespace": "eos", "hostname":
     "leaf01", "ifname": "Loopback0", "ipAddressList": "10.0.0.11/32", "macaddr": "None",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1610377086686}]'
+    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616447827676}]'
+- command: address unique --columns=hostname --format=json --count=True
+  data-directory: tests/data/eos/parquet-out/
+  marks: address unique eos
+  output: '[{"hostname": "server101", "numRows": 5}, {"hostname": "server102", "numRows":
+    5}, {"hostname": "server301", "numRows": 5}, {"hostname": "server302", "numRows":
+    5}, {"hostname": "spine01", "numRows": 8}, {"hostname": "spine02", "numRows":
+    8}, {"hostname": "firewall01", "numRows": 10}, {"hostname": "exit01", "numRows":
+    13}, {"hostname": "exit02", "numRows": 13}, {"hostname": "leaf01", "numRows":
+    18}, {"hostname": "leaf02", "numRows": 18}, {"hostname": "leaf03", "numRows":
+    18}, {"hostname": "leaf04", "numRows": 18}, {"hostname": "dcedge01", "numRows":
+    48}]'

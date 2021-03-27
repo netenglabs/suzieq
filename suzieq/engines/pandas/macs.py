@@ -11,6 +11,9 @@ class MacsObj(SqPandasEngine):
         if not self.iobj._table:
             raise NotImplementedError
 
+        columns = kwargs.get('columns', ['default'])
+        moveCount = kwargs.pop('moveCount', None)
+        view = kwargs.pop('view', self.iobj.view)
         remoteOnly = False
         localOnly = kwargs.pop('localOnly', False)
         vtep = kwargs.get('remoteVtepIp', [])
@@ -19,7 +22,44 @@ class MacsObj(SqPandasEngine):
                 del kwargs['remoteVtepIp']
                 remoteOnly = True
 
-        df = self.get_valid_df(self.iobj._table, **kwargs)
+        if 'moveCount' in columns or (columns == ['*']) or moveCount:
+            if view == 'latest':
+                view = 'hour'   # compute mac moves only for the last hour
+            compute_moves = True
+        else:
+            compute_moves = False
+
+        df = self.get_valid_df(self.iobj._table, view=view, **kwargs)
+
+        if compute_moves and not df.empty:
+            df = df.set_index('namespace hostname mackey macaddr'.split()) \
+                   .sort_values(by=['timestamp'])
+
+            drop_cols = 'eoif neoif moved'.split()
+
+            # enhanced OIF, capturing both OIF and remoteVtep to capture moves
+            # across local and remote
+            df['eoif'] = df['oif'] + '-' + df['remoteVtepIp']
+            # Check if eoif has changed in the next row. Since we're grouping
+            # by the unique entries, OIF + nexthopIP should be only for the
+            # provided index
+            df['neoif'] = df.groupby(level=[0, 1, 2, 3])[
+                'eoif'].shift(1).fillna(value=df['eoif'])
+            df['moved'] = df.apply(
+                lambda x: 1 if x.neoif != x.eoif else 0, axis=1)
+            df['moveCount'] = df.groupby(level=[0, 1, 2, 3])['moved'].cumsum()
+            df = df.drop(columns=drop_cols).reset_index()
+
+            if 'moveCount' in columns:
+                df = df[columns]
+
+            if moveCount:
+                try:
+                    moveCount = int(moveCount)
+                    df = df.query(f'moveCount == {moveCount}').reset_index()
+                except ValueError:
+                    df = df.query(f'moveCount {moveCount}').reset_index()
+
         if remoteOnly:
             return df.query("remoteVtepIp != ''")
         elif localOnly:

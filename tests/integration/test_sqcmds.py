@@ -309,7 +309,7 @@ def _test_sqcmds(testvar, context_config):
         try:
             got_df = pd.DataFrame(json.loads(error.decode('utf-8').strip()))
         except json.JSONDecodeError:
-            got_df = pd.DataFrame(error.decode('utf-8').strip())
+            got_df = pd.DataFrame({'error': [error.decode('utf-8').strip()]})
 
         expected_df = pd.DataFrame(json.loads(testvar['error']['error']))
 

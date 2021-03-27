@@ -6,21 +6,21 @@ tests:
   output: '[{"namespace": "eos", "hostname": "leaf04", "systemId": "46:38:39:24:3f:16",
     "state": "active", "peerAddress": "169.254.1.0", "role": "secondary", "peerLink":
     "Port-Channel1", "mlagDualPortsCnt": 2, "mlagSinglePortsCnt": 0, "mlagErrorPortsCnt":
-    0, "timestamp": 1610377086517}, {"namespace": "eos", "hostname": "leaf02", "systemId":
-    "46:38:39:99:c7:9e", "state": "active", "peerAddress": "169.254.1.0", "role":
+    0, "timestamp": 1616447825613}, {"namespace": "eos", "hostname": "leaf03", "systemId":
+    "46:38:39:24:3f:16", "state": "active", "peerAddress": "169.254.1.1", "role":
     "primary", "peerLink": "Port-Channel1", "mlagDualPortsCnt": 2, "mlagSinglePortsCnt":
-    0, "mlagErrorPortsCnt": 0, "timestamp": 1610377086542}, {"namespace": "eos", "hostname":
+    0, "mlagErrorPortsCnt": 0, "timestamp": 1616447825776}, {"namespace": "eos", "hostname":
     "leaf01", "systemId": "46:38:39:99:c7:9e", "state": "active", "peerAddress": "169.254.1.1",
     "role": "secondary", "peerLink": "Port-Channel1", "mlagDualPortsCnt": 2, "mlagSinglePortsCnt":
-    0, "mlagErrorPortsCnt": 0, "timestamp": 1610377086555}, {"namespace": "eos", "hostname":
-    "leaf03", "systemId": "46:38:39:24:3f:16", "state": "active", "peerAddress": "169.254.1.1",
+    0, "mlagErrorPortsCnt": 0, "timestamp": 1616447825778}, {"namespace": "eos", "hostname":
+    "leaf02", "systemId": "46:38:39:99:c7:9e", "state": "active", "peerAddress": "169.254.1.0",
     "role": "primary", "peerLink": "Port-Channel1", "mlagDualPortsCnt": 2, "mlagSinglePortsCnt":
-    0, "mlagErrorPortsCnt": 0, "timestamp": 1610377086626}]'
+    0, "mlagErrorPortsCnt": 0, "timestamp": 1616447825779}]'
 - command: mlag show --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: mlag show eos
-  output: '[{"hostname": "leaf04"}, {"hostname": "leaf02"}, {"hostname": "leaf01"},
-    {"hostname": "leaf03"}]'
+  output: '[{"hostname": "leaf04"}, {"hostname": "leaf03"}, {"hostname": "leaf01"},
+    {"hostname": "leaf02"}]'
 - command: mlag summarize --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: mlag summarize eos
@@ -30,5 +30,5 @@ tests:
 - command: mlag unique --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: mlag unique eos
-  output: '[{"hostname": "leaf01", "count": 1}, {"hostname": "leaf02", "count": 1},
-    {"hostname": "leaf03", "count": 1}, {"hostname": "leaf04", "count": 1}]'
+  output: '[{"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf03"},
+    {"hostname": "leaf04"}]'

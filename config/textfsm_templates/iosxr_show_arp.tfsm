@@ -1,0 +1,17 @@
+Value Required ipAddress (\d+\.\d+\.\d+\.\d+)
+Value Required age (\S+)
+Value Required macaddr (\S+)
+Value Required state (\S+)
+Value Required type (\S+)
+Value Required oif (\S+)
+Value Filldown cpu (\d+/[RP]*\d+/CPU\d+$)
+
+Start
+  # Match the timestamp at beginning of command output
+  ^\S+\s+\S+\s+\d+\s+\d+:\d+:\d+\.\d+\s+\S+\s*$$
+  ^Address\s+Age\s+Hardware\s+Addr\s+State\s+Type\s+Interface$$
+  ^-+$$
+  ^${cpu}.*$$
+  ^\s*$$
+  ^${ipAddress}\s+${age}\s+${macaddr}\s+${state}\s+${type}\s+${oif}\s*$$ -> Record
+  ^. -> Error

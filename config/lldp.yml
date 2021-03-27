@@ -31,6 +31,11 @@ apply:
     "lldpNeighborInfo/[0]/managementAddresses/[0]/address: mgmtIP?|",
     ]'
 
+  iosxr:
+    version: all
+    command: show lldp neighbors
+    textfsm: textfsm_templates/iosxr_show_lldp_neigh.tfsm
+
   linux:
     version: all
     command: if systemctl status lldpd > /dev/null 2>&1; then sudo lldpctl; fi
@@ -70,7 +75,7 @@ apply:
   nxos:
     version: all
     command:
-      - command: show cdp neighbors | json
+      - command: show cdp neighbors | json native
         normalize: 'TABLE_cdp_neighbor_brief_info/ROW_cdp_neighbor_brief_info/*?/[
         "intf_id: ifname",
         "device_id: peerHostname",
@@ -78,7 +83,7 @@ apply:
         "port_id: peerIfname"
         ]'
 
-      - command: show lldp neighbors | json
+      - command: show lldp neighbors | json native
         normalize: 'TABLE_nbor/ROW_nbor/*?/[
         "chassis_id: peerHostname",
         "l_port_id: ifname",

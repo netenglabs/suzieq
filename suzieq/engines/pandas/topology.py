@@ -114,9 +114,9 @@ class TopologyObj(SqPandasEngine):
     # TODO: eventually this needs to move to ospf after we figure out the
     #   schema augmentation story
     def _augment_ospf_show(self, df):
-        if not df.empty:
-            df = df.merge(self.ip_table, on=['namespace', 'peerIP'],
-                          how='left').dropna(how='any')
+        # if not df.empty:
+        #    df = df.merge(self.ip_table, on=['namespace', 'peerIP'],
+        #                  how='left').dropna(how='any')
 
         return df
 

@@ -1,0 +1,85 @@
+Value Required routerId (\S+)
+Value asn (\S+)
+Value vrf (\w+)
+
+Start
+  ^BGP router identifier ${routerId}, local AS.*${asn}.*$$ -> Record
+
+#Address Family: IPv4 Unicast
+#  ============================
+#  
+#  BGP router identifier 10.0.0.1, local AS number 1
+#  BGP generic scan interval 60 secs
+#  BGP main routing table version 41
+#  BGP scan interval 60 secs
+#  BGP is operating in STANDALONE mode.
+#  
+#  Process         RecvTblVer    bRIB/RIB  SendTblVer
+#  Speaker                 41          41          41
+#  
+#  Neighbor        Spk    AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  St/PfxRcd
+#  10.0.101.1        0     1     919     925       41    0    0 15:15:08       10
+#  10.0.101.2        0     2       0       0        0    0    0 00:00:00 Idle
+#  
+#
+#  Address Family: IPv4 Multicast
+#  ==============================
+#  
+#  BGP router identifier 10.0.0.1, local AS number 1
+#  BGP generic scan interval 60 secs
+#  BGP main routing table version 1
+#  BGP scan interval 60 secs
+#  BGP is operating in STANDALONE mode.
+#  
+#  Process         RecvTblVer    bRIB/RIB  SendTblVer
+#  Speaker                  1           1           1
+#  
+#  Some configured eBGP neighbors do not have both inbound and
+#  outbound policies configured for IPv4 Multicast address family.
+#  These neighbors will default to sending and/or receiving no
+#  routes and are marked with ’!’ in the output below. Use the
+#  ’show bgp neighbor <nbr_address>’ command for details.
+#  
+#  Neighbor        Spk    AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  St/PfxRcd
+#  10.0.101.2        0     2       0       0        0    0    0 00:00:00 Idle!
+#  
+#  
+#  Address Family: IPv6 Unicast
+#  ============================
+#  
+#  BGP router identifier 10.0.0.1, local AS number 1
+#  BGP generic scan interval 60 secs
+#  BGP main routing table version 2
+#  BGP scan interval 60 secs
+#  BGP is operating in STANDALONE mode.
+#  
+#  Process         RecvTblVer    bRIB/RIB  SendTblVer
+#  Speaker                  2           2           2
+#  
+#  Neighbor        Spk    AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  St/PfxRcd
+#  2222::2           0     2     920     918        2    0    0 15:15:11        1
+#  2222::4           0     3       0       0        0    0    0 00:00:00 Idle
+#  
+#  
+#  Address Family: IPv6 Multicast
+#  ==============================
+#  
+#  BGP router identifier 10.0.0.1, local AS number 1
+#  BGP generic scan interval 60 secs
+#  BGP main routing table version 1
+#  BGP scan interval 60 secs
+#  BGP is operating in STANDALONE mode.
+#  
+#  Process         RecvTblVer    bRIB/RIB  SendTblVer
+#  Speaker                  1           1           1
+#  
+#  Some configured eBGP neighbors do not have both inbound and
+#  outbound policies configured for IPv6 Multicast address family.
+#  These neighbors will default to sending and/or receiving no
+#  routes and are marked with ’!’ in the output below. Use the
+#  ’show bgp neighbor <nbr_address>’ command for details.
+#  
+#  Neighbor        Spk    AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  St/PfxRcd
+#  2222::2           0     2     920     918        0    0    0 15:15:11        0
+#  2222::4           0     3       0       0        0    0    0 00:00:00 Idle!  
+#

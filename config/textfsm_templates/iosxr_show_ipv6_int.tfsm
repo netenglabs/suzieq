@@ -1,0 +1,14 @@
+Value Required ifname (\S+)
+Value state (.+?)
+Value adminState (.+?)
+Value vrf (\w+)
+Value List ip6AddressList ([0-9a-f:/]+)
+Value mtu (\d+)
+
+Start
+  ^\S+\s+is -> Continue.Record
+  ^${ifname}\sis\s+${state},\s+ipv6\sprotocol\sis\s+${adminState},\s+Vrfid is ${vrf}.*$$
+  ^\s+IPv6\s+is\s+enabled,\s+link-local\s+address\s+is\s+${ip6AddressList}.*$$
+  ^\s+.*,\s+subnet\s+is\s+${ip6AddressList}.*$$
+  ^\s+MTU\s+is\s+\d+\s+ \(${mtu} is available to IPv6\)
+

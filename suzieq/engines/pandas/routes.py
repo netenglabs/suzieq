@@ -30,7 +30,7 @@ class RoutesObj(SqPandasEngine):
 
     def get(self, **kwargs):
 
-        prefixlen = kwargs.pop('prefixlen', None)
+        prefixlen = kwargs.pop('prefixlen', '')
         prefix = kwargs.pop('prefix', [])
         ipvers = kwargs.pop('ipvers', '')
         addnl_fields = kwargs.pop('addnl_fields', [])
@@ -38,6 +38,10 @@ class RoutesObj(SqPandasEngine):
         columns = kwargs.get('columns', ['default'])
         addnl_fields, drop_cols = self._cons_addnl_fields(
             columns, addnl_fields)
+
+        if prefixlen and ('prefixlen' not in columns or columns != ['*']):
+            addnl_fields.append('prefixlen')
+            drop_cols.append('prefixlen')
 
         # /32 routes are stored with the /32 prefix, so if user doesn't specify
         # prefix as some folks do, assume /32
@@ -53,26 +57,14 @@ class RoutesObj(SqPandasEngine):
 
             newpfx.append(item)
 
-        if 'prefixlen' in columns:
-            need_prefixlen = True
-            columns.remove('prefixlen')
-            if 'prefix' not in columns:
-                columns.insert(-1, 'prefix')
-                drop_cols.append('prefix')
-        else:
-            need_prefixlen = False
-
         df = super().get(addnl_fields=addnl_fields, prefix=newpfx,
                          ipvers=ipvers, **kwargs)
-
-        if need_prefixlen:
-            columns.insert(-1, 'prefixlen')
 
         if not df.empty and 'prefix' in df.columns:
             df = df.loc[df['prefix'] != "127.0.0.0/8"]
             df['prefix'].replace('default', '0.0.0.0/0', inplace=True)
 
-            if prefixlen or ('prefixlen' in columns or columns == ['*']):
+            if prefixlen or 'prefixlen' in columns or (columns == ['*']):
                 # This convoluted logic to handle the issue of invalid entries
                 # for prefix in JUNOS routing table
                 df['prefixlen'] = df['prefix'].str.split('/')
