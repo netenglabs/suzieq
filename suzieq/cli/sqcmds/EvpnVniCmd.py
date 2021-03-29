@@ -16,6 +16,7 @@ class EvpnVniCmd(SqCommand):
         view: str = "latest",
         namespace: str = "",
         format: str = "",
+        query_str: str = " ",
         columns: str = "default",
     ) -> None:
         super().__init__(
@@ -27,6 +28,7 @@ class EvpnVniCmd(SqCommand):
             namespace=namespace,
             columns=columns,
             format=format,
+            query_str=query_str,
             sqobj=EvpnvniObj,
         )
 
@@ -46,12 +48,13 @@ class EvpnVniCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.sqobj.get(
-            hostname=self.hostname,
-            vni=vni.split(),
-            columns=self.columns,
-            namespace=self.namespace,
-        )
+        df = self._invoke_sqobj(self.sqobj.get,
+                                hostname=self.hostname,
+                                vni=vni.split(),
+                                columns=self.columns,
+                                query_str=self.query_str,
+                                namespace=self.namespace,
+                                )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
 
@@ -60,12 +63,14 @@ class EvpnVniCmd(SqCommand):
               choices=["all", "fail", "pass"])
     def aver(self, status: str = 'pass'):
         """Assert BGP is functioning properly"""
+
         now = time.time()
-        df = self.sqobj.aver(
-            hostname=self.hostname,
-            namespace=self.namespace,
-            status=status,
-        )
+
+        df = self._invoke_sqobj(sqobj.aver,
+                                hostname=self.hostname,
+                                namespace=self.namespace,
+                                status=status,
+                                )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
 
         return self._assert_gen_output(df)

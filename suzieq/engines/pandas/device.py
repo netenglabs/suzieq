@@ -13,6 +13,8 @@ class DeviceObj(SqPandasEngine):
         view = kwargs.get('view', self.iobj.view)
         columns = kwargs.get('columns', ['default'])
         addnl_fields = kwargs.pop('addnl_fields', [])
+        user_query = kwargs.pop('query_str', '')
+
         drop_cols = []
 
         if 'active' not in addnl_fields+columns and columns != ['*']:
@@ -23,6 +25,8 @@ class DeviceObj(SqPandasEngine):
                          **kwargs)
         if view == 'latest' and 'status' in df.columns:
             df['status'] = np.where(df.active, df['status'], 'dead')
+
+        df = self._handle_user_query_str(df, user_query)
         return df.drop(columns=drop_cols)
 
     def summarize(self, **kwargs):

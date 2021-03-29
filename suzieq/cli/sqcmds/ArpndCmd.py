@@ -17,6 +17,7 @@ class ArpndCmd(SqCommand):
         namespace: str = "",
         format: str = "",
         columns: str = "default",
+        query_str: str = ' ',
     ) -> None:
         super().__init__(
             engine=engine,
@@ -27,6 +28,7 @@ class ArpndCmd(SqCommand):
             namespace=namespace,
             columns=columns,
             format=format,
+            query_str=query_str,
             sqobj=ArpndObj,
         )
 
@@ -48,13 +50,14 @@ class ArpndCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.sqobj.get(
-            hostname=self.hostname,
-            ipAddress=address.split(),
-            oif=oif.split(),
-            columns=self.columns,
-            namespace=self.namespace,
-            macaddr=macaddr.split()
-        )
+        df = self._invoke_sqobj(self.sqobj.get,
+                                hostname=self.hostname,
+                                ipAddress=address.split(),
+                                oif=oif.split(),
+                                columns=self.columns,
+                                namespace=self.namespace,
+                                query_str=self.query_str,
+                                macaddr=macaddr.split()
+                                )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)

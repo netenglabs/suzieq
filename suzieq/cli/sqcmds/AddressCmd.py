@@ -1,6 +1,7 @@
 import time
 
 from nubia import command, argument
+import pandas as pd
 
 from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.address import AddressObj
@@ -18,6 +19,7 @@ class AddressCmd(SqCommand):
         namespace: str = "",
         format: str = "",
         columns: str = "default",
+        query_str: str = ' ',
     ) -> None:
         super().__init__(
             engine=engine,
@@ -28,6 +30,7 @@ class AddressCmd(SqCommand):
             namespace=namespace,
             format=format,
             columns=columns,
+            query_str=query_str,
             sqobj=AddressObj,
         )
 
@@ -47,13 +50,14 @@ class AddressCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.sqobj.get(
-            hostname=self.hostname,
-            columns=self.columns,
-            address=address.split(),
-            ipvers=ipvers,
-            vrf=vrf,
-            namespace=self.namespace,
-        )
+        df = self._invoke_sqobj(self.sqobj.get,
+                                hostname=self.hostname,
+                                columns=self.columns,
+                                address=address.split(),
+                                ipvers=ipvers,
+                                vrf=vrf,
+                                query_str=self.query_str,
+                                namespace=self.namespace,
+                                )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)

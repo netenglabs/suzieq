@@ -18,6 +18,7 @@ class RouteCmd(SqCommand):
         view: str = "latest",
         namespace: str = "",
         format: str = "",
+        query_str: str = ' ',
         columns: str = "default",
     ) -> None:
         super().__init__(
@@ -29,6 +30,7 @@ class RouteCmd(SqCommand):
             namespace=namespace,
             columns=columns,
             format=format,
+            query_str=query_str,
             sqobj=RoutesObj,
         )
         self.json_print_handler = self._json_print_handler
@@ -75,15 +77,16 @@ class RouteCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.sqobj.get(
-            hostname=self.hostname,
-            prefix=prefix.split(),
-            vrf=vrf.split(),
-            protocol=protocol.split(),
-            columns=self.columns,
-            namespace=self.namespace,
-            prefixlen=prefixlen,
-        )
+        df = self._invoke_sqobj(self.sqobj.get,
+                                hostname=self.hostname,
+                                prefix=prefix.split(),
+                                vrf=vrf.split(),
+                                protocol=protocol.split(),
+                                columns=self.columns,
+                                namespace=self.namespace,
+                                prefixlen=prefixlen,
+                                query_str=self.query_str,
+                                )
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
@@ -97,11 +100,12 @@ class RouteCmd(SqCommand):
         # Get the default display field names
         now = time.time()
 
-        df = self.sqobj.summarize(
-            hostname=self.hostname,
-            vrf=vrf.split(),
-            namespace=self.namespace,
-        )
+        df = self._invoke_sqobj(self.sqobj.summarize,
+                                hostname=self.hostname,
+                                vrf=vrf.split(),
+                                namespace=self.namespace,
+                                query_str=self.query_str,
+                                )
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df, json_orient='columns')
@@ -126,14 +130,15 @@ class RouteCmd(SqCommand):
             print('address is mandatory parameter')
             return
 
-        df = self.sqobj.lpm(
-            hostname=self.hostname,
-            address=address,
-            vrf=vrf.split(),
-            ipvers=self._get_ipvers(address),
-            columns=self.columns,
-            namespace=self.namespace,
-        )
+        df = self._invoke_sqobj(self.sqobj.lpm,
+                                hostname=self.hostname,
+                                address=address,
+                                vrf=vrf.split(),
+                                ipvers=self._get_ipvers(address),
+                                columns=self.columns,
+                                namespace=self.namespace,
+                                query_str=self.query_str,
+                                )
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)

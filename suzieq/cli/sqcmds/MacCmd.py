@@ -1,5 +1,4 @@
 import time
-import pandas as pd
 from nubia import command, argument
 
 from suzieq.cli.sqcmds.command import SqCommand
@@ -17,6 +16,7 @@ class MacCmd(SqCommand):
         view: str = "latest",
         namespace: str = "",
         format: str = "",
+        query_str: str = ' ',
         columns: str = "default",
     ) -> None:
         super().__init__(
@@ -28,6 +28,7 @@ class MacCmd(SqCommand):
             namespace=namespace,
             columns=columns,
             format=format,
+            query_str=query_str,
             sqobj=MacsObj,
         )
 
@@ -64,18 +65,19 @@ class MacCmd(SqCommand):
         else:
             addnl_fields = []
 
-        df = self.sqobj.get(
-            hostname=self.hostname,
-            macaddr=macaddr.split(),
-            addnl_fields=addnl_fields,
-            remoteVtepIp=remoteVtepIp.split(),
-            vlan=vlan.split(),
-            localOnly=local,
-            bd=bd,
-            columns=self.columns,
-            namespace=self.namespace,
-            moveCount=moveCount,
-        )
+        df = self._invoke_sqobj(self.sqobj.get,
+                                hostname=self.hostname,
+                                macaddr=macaddr.split(),
+                                addnl_fields=addnl_fields,
+                                remoteVtepIp=remoteVtepIp.split(),
+                                vlan=vlan.split(),
+                                localOnly=local,
+                                bd=bd,
+                                columns=self.columns,
+                                namespace=self.namespace,
+                                moveCount=moveCount,
+                                query_str=self.query_str,
+                                )
         if not df.empty and "mackey" in df.columns:
             drop_cols.append('mackey')
 

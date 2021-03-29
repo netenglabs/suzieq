@@ -18,6 +18,7 @@ class OspfCmd(SqCommand):
         view: str = "latest",
         namespace: str = "",
         format: str = "",
+        query_str: str = ' ',
         columns: str = "default",
     ) -> None:
         super().__init__(
@@ -29,6 +30,7 @@ class OspfCmd(SqCommand):
             namespace=namespace,
             columns=columns,
             format=format,
+            query_str=query_str,
             sqobj=OspfObj,
         )
 
@@ -52,14 +54,15 @@ class OspfCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.sqobj.get(
-            hostname=self.hostname,
-            vrf=vrf.split(),
-            ifname=ifname.split(),
-            columns=self.columns,
-            state=state,
-            namespace=self.namespace,
-        )
+        df = self._invoke_sqobj(self.sqobj.get,
+                                hostname=self.hostname,
+                                vrf=vrf.split(),
+                                ifname=ifname.split(),
+                                columns=self.columns,
+                                state=state,
+                                query_str=self.query_str,
+                                namespace=self.namespace,
+                                )
 
         df = self.sqobj.humanize_fields(df)
 
@@ -134,14 +137,15 @@ class OspfCmd(SqCommand):
             "flaps": "numChanges",
         }
 
-        df = self.sqobj.top(
-            hostname=self.hostname,
-            what=what_map[what],
-            n=count,
-            reverse=reverse == "True" or False,
-            columns=self.columns,
-            namespace=self.namespace,
-        )
+        df = self._invoke_sqobj(sqobj.top,
+                                hostname=self.hostname,
+                                what=what_map[what],
+                                n=count,
+                                reverse=reverse == "True" or False,
+                                columns=self.columns,
+                                query_str=self.query_str,
+                                namespace=self.namespace,
+                                )
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df, sort=False)

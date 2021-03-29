@@ -16,7 +16,9 @@ class MacsObj(SqPandasEngine):
         view = kwargs.pop('view', self.iobj.view)
         remoteOnly = False
         localOnly = kwargs.pop('localOnly', False)
+        user_query = kwargs.pop('query_str', '')
         vtep = kwargs.get('remoteVtepIp', [])
+
         if vtep:
             if kwargs['remoteVtepIp'] == ['any']:
                 del kwargs['remoteVtepIp']
@@ -60,6 +62,7 @@ class MacsObj(SqPandasEngine):
                 except ValueError:
                     df = df.query(f'moveCount {moveCount}').reset_index()
 
+        df = self._handle_user_query_str(df, user_query)
         if remoteOnly:
             return df.query("remoteVtepIp != ''")
         elif localOnly:

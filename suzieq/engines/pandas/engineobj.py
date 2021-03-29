@@ -3,7 +3,7 @@ import numpy as np
 from suzieq.utils import SchemaForTable, humanize_timestamp
 from suzieq.engines.base_engine import SqEngineObj
 from suzieq.db import get_sqdb_engine
-from suzieq.exceptions import DBReadError
+from suzieq.exceptions import DBReadError, UserQueryError
 import dateparser
 from datetime import datetime
 
@@ -45,6 +45,20 @@ class SqPandasEngine(SqEngineObj):
 
         return ipvers
 
+    def _handle_user_query_str(self, df: pd.DataFrame,
+                               query_str: str) -> pd.DataFrame:
+
+        if query_str:
+            if query_str.startswith('"') and query_str.endswith('"'):
+                query_str = query_str[1:-1]
+
+            try:
+                df = df.query(query_str).reset_index(drop=True)
+            except Exception as ex:
+                raise UserQueryError(ex)
+
+        return df
+
     def get_valid_df(self, table, **kwargs) -> pd.DataFrame:
         if not self.ctxt.engine:
             print("Specify an analysis engine using set engine command")
@@ -57,12 +71,6 @@ class SqPandasEngine(SqEngineObj):
         addnl_fields = kwargs.pop('addnl_fields', [])
         view = kwargs.pop('view', self.iobj.view)
         active_only = kwargs.pop('active_only', True)
-        query_str = kwargs.pop('query_str', '')
-
-        # The REST API provides the query_str enclosed in ". Strip that
-        if query_str:
-            if query_str.startswith('"') and query_str.endswith('"'):
-                query_str = query_str[1:-1]
 
         fields = sch.get_display_fields(columns)
         key_fields = sch.key_fields()
@@ -149,16 +157,17 @@ class SqPandasEngine(SqEngineObj):
                     table_df.timestamp, self.cfg.get('analyzer', {})
                     .get('timezone', None))
 
-        if query_str:
-            return table_df.query(query_str)
-        else:
-            return table_df
+        return table_df
 
     def get(self, **kwargs):
         if not self.iobj.table:
             raise NotImplementedError
 
+        user_query = kwargs.pop('query_str', '')
+
         df = self.get_valid_df(self.iobj.table, **kwargs)
+
+        df = self._handle_user_query_str(df, user_query)
 
         return df
 
@@ -278,8 +287,8 @@ class SqPandasEngine(SqEngineObj):
 
     def unique(self, **kwargs) -> pd.DataFrame:
         """Return the unique elements as per user specification"""
-        groupby = kwargs.pop("groupby", None)
         count = kwargs.pop("count", 0)
+        query_str = kwargs.get('query_str', '')
 
         columns = kwargs.pop("columns", None)
         if columns is None or columns == ['default']:
@@ -288,14 +297,12 @@ class SqPandasEngine(SqEngineObj):
         if len(columns) > 1:
             raise ValueError('Specify a single column with unique')
 
-        if groupby:
-            getcols = columns + groupby.split()
+        if query_str:
+            getcols = ['*']
         else:
             getcols = columns
 
         column = columns[0]
-
-        type = kwargs.pop('type', 'entry')
 
         df = self.get(columns=getcols, **kwargs)
         if df.empty:

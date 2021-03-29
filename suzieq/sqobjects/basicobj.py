@@ -1,3 +1,4 @@
+import logging
 import typing
 import pandas as pd
 
@@ -23,7 +24,8 @@ class SqContext(object):
 
 class SqObject(object):
 
-    def __init__(self, engine_name: str = 'pandas', hostname: typing.List[str] = [],
+    def __init__(self, engine_name: str = 'pandas',
+                 hostname: typing.List[str] = [],
                  start_time: str = '', end_time: str = '',
                  view: str = 'latest', namespace: typing.List[str] = [],
                  columns: typing.List[str] = ['default'],
@@ -162,8 +164,8 @@ class SqObject(object):
         if not self.ctxt.engine:
             raise AttributeError('No analysis engine specified')
 
-        return self.engine.summarize(namespace=namespace,
-                                     hostname=hostname, query_str=query_str)
+        return self.engine.summarize(namespace=namespace, hostname=hostname,
+                                     query_str=query_str)
 
     def unique(self, **kwargs) -> pd.DataFrame:
         if not self._table:

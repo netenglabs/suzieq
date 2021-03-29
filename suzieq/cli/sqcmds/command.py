@@ -1,9 +1,11 @@
+
 import time
 import pandas as pd
 from nubia import command, argument, context
 from io import StringIO
 import shutil
 from prompt_toolkit import prompt
+from suzieq.exceptions import UserQueryError
 
 
 @argument(
@@ -32,6 +34,10 @@ from prompt_toolkit import prompt
     description="select the pformat of the output",
     choices=["text", "json", "csv", "markdown"],
 )
+@argument(
+    "query_str",
+    description="Trailing blank terminated pandas query format to further filter the output.",
+)
 class SqCommand:
     """Base Command Class for use with all verbs"""
 
@@ -45,11 +51,21 @@ class SqCommand:
             namespace: str = "",
             format: str = "",
             columns: str = "default",
+            query_str: str = " ",
             sqobj=None,
     ) -> None:
         self.ctxt = context.get_context()
         self._cfg = self.ctxt.cfg
         self._schemas = self.ctxt.schemas
+        self.format = format or "text"
+        self.columns = columns.split()
+        self.json_print_handler = None
+
+        if query_str.count('"') % 2 != 0:
+            # This happens because nubia strips off the trailing quote
+            # if not followed by a blank
+            query_str += '"'
+        self.query_str = query_str.strip()
 
         if not isinstance(namespace, str):
             print('namespace must be a space separated list of strings')
@@ -84,9 +100,6 @@ class SqCommand:
             self.view = "all"
         else:
             self.view = view
-        self.columns = columns.split()
-        self.format = format or "text"
-        self.json_print_handler = None
 
         if not sqobj:
             raise AttributeError('mandatory parameter sqobj missing')
@@ -205,6 +218,18 @@ class SqCommand:
                 print("Assert failed")
         return result
 
+    def _invoke_sqobj(self, fn, **kwargs) -> pd.DataFrame:
+
+        try:
+            df = fn(**kwargs)
+        except Exception as ex:
+            if isinstance(ex, UserQueryError):
+                df = pd.DataFrame({'error': [f'ERROR: UserQueryError: {ex}']})
+            else:
+                df = pd.DataFrame({'error': [f'ERROR: {ex}']})
+
+        return df
+
     def show(self, **kwargs):
         raise NotImplementedError
 
@@ -214,9 +239,11 @@ class SqCommand:
     def aver(self, **kwargs):
         raise NotImplementedError
 
-    @ command("summarize", help='produce a summarize of the data')
+    @command("summarize", help='produce a summarize of the data')
     def summarize(self):
-        self._init_summarize()
+        if not self._init_summarize():
+            return self._gen_output(self.summarize_df)
+
         return self._post_summarize()
 
     def top(self, **kwargs):
@@ -227,16 +254,18 @@ class SqCommand:
               choices=['True'])
     def unique(self, count='', **kwargs):
         now = time.time()
-        try:
-            df = self.sqobj.unique(hostname=self.hostname,
-                                   namespace=self.namespace,
-                                   count=count,
-                                   )
-        except Exception as e:
-            df = pd.DataFrame({'error': ['ERROR: {}'.format(str(e))]})
-            return self._gen_output(df, dont_strip_cols=True)
+
+        df = self._invoke_sqobj(self.sqobj.unique,
+                                hostname=self.hostname,
+                                namespace=self.namespace,
+                                query_str=self.query_str,
+                                count=count,
+                                )
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
+        if 'error' in df.columns:
+            return self._gen_output(df)
+
         if not count:
             return self._gen_output(df.sort_values(by=[self.columns[0]]),
                                     dont_strip_cols=True)
@@ -248,9 +277,11 @@ class SqCommand:
     def _init_summarize(self):
         self.now = time.time()
 
-        self.summarize_df = self.sqobj.summarize(
-            namespace=self.namespace, hostname=self.hostname,
+        self.summarize_df = self._invoke_sqobj(
+            self.sqobj.summarize, namespace=self.namespace,
+            hostname=self.hostname, query_str=self.query_str
         )
+        return 'error' not in self.summarize_df
 
     def _post_summarize(self):
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - self.now)

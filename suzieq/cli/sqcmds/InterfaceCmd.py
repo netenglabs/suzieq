@@ -19,6 +19,7 @@ class InterfaceCmd(SqCommand):
         namespace: str = "",
         format: str = "",
         columns: str = "default",
+        query_str: str = ' ',
     ) -> None:
         super().__init__(
             engine=engine,
@@ -29,6 +30,7 @@ class InterfaceCmd(SqCommand):
             namespace=namespace,
             columns=columns,
             format=format,
+            query_str=query_str,
             sqobj=IfObj
         )
 
@@ -53,15 +55,16 @@ class InterfaceCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.sqobj.get(
-            hostname=self.hostname,
-            ifname=ifname.split(),
-            columns=self.columns,
-            namespace=self.namespace,
-            state=state,
-            mtu=mtu.split(),
-            type=type.split(),
-        )
+        df = self._invoke_sqobj(self.sqobj.get,
+                                hostname=self.hostname,
+                                ifname=ifname.split(),
+                                columns=self.columns,
+                                namespace=self.namespace,
+                                state=state,
+                                mtu=mtu.split(),
+                                query_str=self.query_str,
+                                type=type.split(),
+                                )
         if 'statusChangeTimestamp' in df.columns:
             df['statusChangeTimestamp'] = humanize_timestamp(
                 df.statusChangeTimestamp,
@@ -100,14 +103,14 @@ class InterfaceCmd(SqCommand):
             value = 0
 
         try:
-            df = self.sqobj.aver(
-                hostname=self.hostname,
-                ifname=ifname.split(),
-                namespace=self.namespace,
-                what=what,
-                matchval=value,
-                status=status,
-            )
+            df = self._invoke_sqobj(self.sqobj.aver,
+                                    hostname=self.hostname,
+                                    ifname=ifname.split(),
+                                    namespace=self.namespace,
+                                    what=what,
+                                    matchval=value.split(),
+                                    status=status,
+                                    )
         except Exception as e:
             df = pd.DataFrame({'error': ['ERROR: {}'.format(str(e))]})
             return self._gen_output(df)
@@ -134,15 +137,16 @@ class InterfaceCmd(SqCommand):
         if what == "flaps":
             whatfld = "numChanges"
 
-        df = self.sqobj.top(
-            hostname=self.hostname,
-            what=whatfld,
-            n=count,
-            reverse=reverse == "True" or False,
-            type="ethernet",        # need this as we only do phy interfaces
-            columns=self.columns,
-            namespace=self.namespace,
-        )
+        df = self._invoke_sqobj(self.sqobj.top,
+                                hostname=self.hostname,
+                                what=whatfld,
+                                n=count,
+                                reverse=reverse == "True" or False,
+                                type="ethernet",        # phy interfaces only
+                                columns=self.columns,
+                                query_str=self.query_str,
+                                namespace=self.namespace,
+                                )
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df, sort=False)

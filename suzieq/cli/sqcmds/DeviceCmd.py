@@ -19,6 +19,7 @@ class DeviceCmd(SqCommand):
             view: str = "latest",
             namespace: str = "",
             format: str = "",
+            query_str: str = " ",
             columns: str = "default",
     ) -> None:
         super().__init__(
@@ -30,6 +31,7 @@ class DeviceCmd(SqCommand):
             namespace=namespace,
             columns=columns,
             format=format,
+            query_str=query_str,
             sqobj=DeviceObj,
         )
 
@@ -40,10 +42,11 @@ class DeviceCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.sqobj.get(
-            hostname=self.hostname, columns=self.columns,
-            namespace=self.namespace,
-        )
+        df = self._invoke_sqobj(self.sqobj.get,
+                                hostname=self.hostname, columns=self.columns,
+                                namespace=self.namespace,
+                                query_str=self.query_str,
+                                )
 
         df = self.sqobj.humanize_fields(df)
 

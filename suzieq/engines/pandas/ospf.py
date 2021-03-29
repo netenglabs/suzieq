@@ -4,7 +4,7 @@ import numpy as np
 
 from suzieq.sqobjects.lldp import LldpObj
 from .engineobj import SqPandasEngine
-from suzieq.utils import SchemaForTable, build_query_str, humanize_timestamp
+from suzieq.utils import SchemaForTable, humanize_timestamp
 
 
 class OspfObj(SqPandasEngine):
@@ -20,6 +20,7 @@ class OspfObj(SqPandasEngine):
         state = kwargs.pop('state', '')
         addnl_fields = kwargs.pop('addnl_fields', self.iobj._addnl_fields)
         addnl_nbr_fields = self.iobj._addnl_nbr_fields
+        user_query = kwargs.pop('query_str', '')
 
         cols = SchemaForTable('ospf', schema=self.schemas) \
             .get_display_fields(columns)
@@ -134,6 +135,8 @@ class OspfObj(SqPandasEngine):
         if query_str:
             final_df = final_df.query(query_str).reset_index(drop=True)
 
+        if user_query and not final_df.empty:
+            final_df = self._handle_user_query_str(final_df, user_query)
         # Move the timestamp column to the end
         return final_df[cols]
 

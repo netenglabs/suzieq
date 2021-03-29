@@ -16,6 +16,7 @@ class LldpCmd(SqCommand):
         view: str = "latest",
         namespace: str = "",
         format: str = "",
+        query_str: str = ' ',
         columns: str = "default",
     ) -> None:
         super().__init__(
@@ -27,6 +28,7 @@ class LldpCmd(SqCommand):
             namespace=namespace,
             columns=columns,
             format=format,
+            query_str=query_str,
             sqobj=LldpObj,
         )
 
@@ -46,11 +48,12 @@ class LldpCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.sqobj.get(
-            hostname=self.hostname,
-            ifname=ifname.split(),
-            columns=self.columns,
-            namespace=self.namespace,
-        )
+        df = self._invoke_sqobj(self.sqobj.get,
+                                hostname=self.hostname,
+                                ifname=ifname.split(),
+                                columns=self.columns,
+                                query_str=self.query_str,
+                                namespace=self.namespace,
+                                )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)

@@ -28,6 +28,11 @@ class AddressObj(SqPandasEngine):
         addr = kwargs.pop("address", [])
         columns = kwargs.get("columns", [])
         ipvers = kwargs.pop("ipvers", "")
+        user_query = kwargs.pop('query_str', '')
+        if user_query:
+            if user_query.startswith('"') and user_query.endswith('"'):
+                user_query = user_query[1:-1]
+
         vrf = kwargs.pop("vrf", "")
         addnl_fields = ['master']
         drop_cols = []
@@ -110,9 +115,10 @@ class AddressObj(SqPandasEngine):
                 query_str == 'macaddr.str.len() != 0'
 
         if query_str:
-            return df.query(query_str).drop(columns=drop_cols)
-        else:
-            return df.drop(columns=drop_cols)
+            df = df.query(query_str)
+
+        df = self._handle_user_query_str(df, user_query)
+        return df.drop(columns=drop_cols)
 
     def unique(self, **kwargs) -> pd.DataFrame:
         """Specific here only to rename vrf column to master"""

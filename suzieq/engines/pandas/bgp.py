@@ -21,6 +21,7 @@ class BgpObj(SqPandasEngine):
         vrf = kwargs.pop('vrf', None)
         peer = kwargs.pop('peer', None)
         hostname = kwargs.pop('hostname', None)
+        user_query = kwargs.pop('query_str', None)
 
         drop_cols = ['origPeer', 'peerHost']
         addnl_fields.extend(['origPeer'])
@@ -53,6 +54,8 @@ class BgpObj(SqPandasEngine):
             drop_cols.extend(list(mdf.filter(regex='_y')))
         else:
             mdf = df
+
+        mdf = self._handle_user_query_str(mdf, user_query)
 
         if query_str:
             return mdf.query(query_str).drop(columns=drop_cols,

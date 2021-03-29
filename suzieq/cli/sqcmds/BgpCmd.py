@@ -20,6 +20,7 @@ class BgpCmd(SqCommand):
         namespace: str = "",
         format: str = "",
         columns: str = "default",
+        query_str: str = ' ',
     ) -> None:
         super().__init__(
             engine=engine,
@@ -30,6 +31,7 @@ class BgpCmd(SqCommand):
             namespace=namespace,
             columns=columns,
             format=format,
+            query_str=query_str,
             sqobj=BgpObj,
         )
 
@@ -73,11 +75,13 @@ class BgpCmd(SqCommand):
         else:
             addnl_fields = []
 
-        df = self.sqobj.get(
-            hostname=self.hostname, columns=self.columns,
-            namespace=self.namespace, state=state, addnl_fields=addnl_fields,
-            vrf=vrf.split(), peer=peer.split()
-        )
+        df = self._invoke_sqobj(self.sqobj.get,
+                                hostname=self.hostname, columns=self.columns,
+                                namespace=self.namespace, state=state,
+                                addnl_fields=addnl_fields,
+                                query_str=self.query_str,
+                                vrf=vrf.split(), peer=peer.split()
+                                )
 
         if 'estdTime' in df.columns and not df.empty:
             df['estdTime'] = humanize_timestamp(df.estdTime,
@@ -101,12 +105,13 @@ class BgpCmd(SqCommand):
               choices=["all", "fail", "pass"])
     def aver(self, vrf: str = "", status: str = "all") -> pd.DataFrame:
         """Assert BGP is functioning properly"""
+
         now = time.time()
-        df = self.sqobj.aver(
-            vrf=vrf.split(),
-            namespace=self.namespace,
-            status=status,
-        )
+        df = self._invoke_sqobj(self.sqobj.aver,
+                                vrf=vrf.split(),
+                                namespace=self.namespace,
+                                status=status,
+                                )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
 
         return self._assert_gen_output(df)
@@ -131,22 +136,20 @@ class BgpCmd(SqCommand):
 
         what_map = {
             "flaps": "numChanges",
-            "v4PrefixRx": "v4PfxRx",
-            "evpnPrefixRx": "evpnPfxRx",
-            "v6PrefixRx": "v6PfxRx",
             "updatesTx": "updatesTx",
             "updatesRx": "updatesRx",
             "uptime": "estdTime",
         }
 
-        df = self.sqobj.top(
-            hostname=self.hostname,
-            what=what_map[what],
-            n=count,
-            reverse=reverse == "True" or False,
-            columns=self.columns,
-            namespace=self.namespace,
-        )
+        df = self._invoke_sqobj(self.sqobj.top,
+                                hostname=self.hostname,
+                                what=what_map[what],
+                                n=count,
+                                reverse=reverse == "True" or False,
+                                columns=self.columns,
+                                query_str=self.query_str,
+                                namespace=self.namespace,
+                                )
         if not df.empty:
             df['estdTime'] = humanize_timestamp(df.estdTime,
                                                 self.cfg.get('analyzer', {})

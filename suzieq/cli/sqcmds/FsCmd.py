@@ -17,6 +17,7 @@ class FsCmd(SqCommand):
         view: str = "latest",
         namespace: str = "",
         format: str = "",
+        query_str: str = " ",
         columns: str = "default",
     ) -> None:
         super().__init__(
@@ -28,6 +29,7 @@ class FsCmd(SqCommand):
             namespace=namespace,
             columns=columns,
             format=format,
+            query_str=query_str,
             sqobj=FsObj,
         )
 
@@ -64,6 +66,7 @@ class FsCmd(SqCommand):
             namespace=self.namespace,
             mountPoint=mountPoint.split(),
             usedPercent=used_percent,
+            query_str=self.query_str,
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)

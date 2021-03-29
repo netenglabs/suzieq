@@ -19,3 +19,7 @@ class DBReadError(Exception):
 
 class DBNotFoundError(Exception):
     pass
+
+
+class UserQueryError(Exception):
+    pass
