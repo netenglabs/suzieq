@@ -24,7 +24,7 @@ class InterfacesObj(SqPandasEngine):
 
         return df.query(f'state=="{state}"').reset_index()
 
-    def aver(self, what="mtu-match", **kwargs) -> pd.DataFrame:
+    def aver(self, what="", **kwargs) -> pd.DataFrame:
         """Assert that interfaces are in good state"""
 
         if what == "mtu-value":
@@ -107,12 +107,20 @@ class InterfacesObj(SqPandasEngine):
         columns = ["namespace", "hostname", "ifname", "state", "mtu",
                    "timestamp"]
 
+        matchval = kwargs.pop('value', 0)
+        status = kwargs.pop('status', '')
+
         result_df = self.get(columns=columns, **kwargs) \
                         .query('ifname != "lo"')
 
         if not result_df.empty:
             result_df['assert'] = result_df.apply(
-                lambda x: x['mtu'] == kwargs['matchval'])
+                lambda x: 'pass' if x['mtu'] == matchval else 'fail', axis=1)
+
+        if status == "fail":
+            result_df = result_df.query('assert == "fail"')
+        elif status == "pass":
+            result_df = result_df.query('assert == "pass"')
 
         return result_df
 
