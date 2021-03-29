@@ -370,6 +370,13 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
+        "--envpass",
+        default="",
+        type=str,
+        help="Use named environment variable to retrieve password",
+    )
+
+    parser.add_argument(
         "-j",
         "--jump-host",
         default="",
@@ -420,6 +427,14 @@ if __name__ == "__main__":
             'Password to login to device: ')
     else:
         userargs.ask_pass = None
+
+    if userargs.envpass:
+        passwd = os.getenv(userargs.envpass, '')
+        if not passwd:
+            print(
+                f'ERROR: No password in environment variable {userargs.envpass}')
+            sys.exit(1)
+        userargs.ask_pass = passwd
 
     uvloop.install()
     cfg = load_sq_config(config_file=userargs.config)
