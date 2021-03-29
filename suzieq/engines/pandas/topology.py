@@ -116,6 +116,8 @@ class TopologyObj(SqPandasEngine):
         # if not df.empty:
         #    df = df.merge(self.ip_table, on=['namespace', 'peerIP'],
         #                  how='left').dropna(how='any')
+        if not df.empty:
+            df = df.query('adjState != "passive"').reset_index(drop=True)
 
         return df
 
