@@ -107,22 +107,28 @@ class InterfacesObj(SqPandasEngine):
         columns = ["namespace", "hostname", "ifname", "state", "mtu",
                    "timestamp"]
 
-        matchval = kwargs.pop('value', 0)
+        matchval = kwargs.pop('matchval', [])
         status = kwargs.pop('status', '')
+
+        matchval = [int(x) for x in matchval]
 
         result_df = self.get(columns=columns, **kwargs) \
                         .query('ifname != "lo"')
 
         if not result_df.empty:
-            result_df['assert'] = result_df.apply(
-                lambda x: 'pass' if x['mtu'] == matchval else 'fail', axis=1)
+            result_df['status'] = result_df.apply(
+                lambda x, matchval: 'pass' if x['mtu'] in matchval else 'fail',
+                axis=1, args=(matchval,))
 
         if status == "fail":
-            result_df = result_df.query('assert == "fail"')
+            result_df = result_df.query('status == "fail"')
         elif status == "pass":
-            result_df = result_df.query('assert == "pass"')
+            result_df = result_df.query('status == "pass"')
 
-        return result_df
+        if not result_df.empty:
+            return result_df.rename(columns={'status': 'assert'})
+        else:
+            return result_df
 
     def _assert_interfaces(self, **kwargs) -> pd.DataFrame:
         """Workhorse routine that validates MTU match for specified input"""

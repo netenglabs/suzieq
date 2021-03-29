@@ -78,13 +78,13 @@ class InterfaceCmd(SqCommand):
     @argument(
         "what",
         description="What do you want to assert",
-        choices=["mtu-match", "mtu-value"],
+        choices=["mtu-value"],
     )
     @argument("value", description="Value to match against")
     @argument("status", description="Show only assert that matches this value",
               choices=["all", "fail", "pass"])
-    def aver(self, ifname: str = "", state: str = "", what: str = "mtu-match",
-             value: int = 0, status: str = 'all'):
+    def aver(self, ifname: str = "", state: str = "", what: str = "",
+             value: str = '', status: str = 'all'):
         """
         Assert aspects about the interface
         """
@@ -95,25 +95,20 @@ class InterfaceCmd(SqCommand):
 
         now = time.time()
 
-        if what == "mtu-value" and value == 0:
+        if what == "mtu-value" and value == '':
             print("Provide value to match MTU against")
             return
+        elif not what:
+            value = ''
 
-        if what == "mtu-match":
-            value = 0
-
-        try:
-            df = self._invoke_sqobj(self.sqobj.aver,
-                                    hostname=self.hostname,
-                                    ifname=ifname.split(),
-                                    namespace=self.namespace,
-                                    what=what,
-                                    matchval=value.split(),
-                                    status=status,
-                                    )
-        except Exception as e:
-            df = pd.DataFrame({'error': ['ERROR: {}'.format(str(e))]})
-            return self._gen_output(df)
+        df = self._invoke_sqobj(self.sqobj.aver,
+                                hostname=self.hostname,
+                                ifname=ifname.split(),
+                                namespace=self.namespace,
+                                what=what,
+                                matchval=value.split(),
+                                status=status,
+                                )
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
 

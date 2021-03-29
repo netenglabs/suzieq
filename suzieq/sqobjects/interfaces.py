@@ -16,7 +16,7 @@ class IfObj(SqObject):
             'status': ['all', 'pass', 'fail'],
         }
 
-    def aver(self, what='mtu-match', **kwargs) -> pd.DataFrame:
+    def aver(self, what='', **kwargs) -> pd.DataFrame:
         """Assert that interfaces are in good state"""
         try:
             self.validate_assert_input(**kwargs)
