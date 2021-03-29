@@ -861,11 +861,29 @@ class EosNode(Node):
     async def _parse_boottime_hostname(self, output, cb_token) -> None:
 
         if output[0]["status"] == 0 or output[0]["status"] == 200:
-            data = output[0]["data"]
+            if self.transport == 'ssh':
+                try:
+                    data = json.loads(output[0]["data"])
+                except json.JSONDecodeError:
+                    self.logger.error(
+                        f'nodeinit: Error decoding JSON for {self.address}')
+                    self._status = 'init'
+                    return
+            else:
+                data = output[0]["data"]
             self.bootupTimestamp = data["bootupTimestamp"]
 
         if output[1]["status"] == 0 or output[1]["status"] == 200:
-            data = output[1]["data"]
+            if self.transport == 'ssh':
+                try:
+                    data = json.loads(output[1]["data"])
+                except json.JSONDecodeError:
+                    self.logger.error(
+                        f'nodeinit: Error decoding JSON for {self.address}')
+                    self._status = 'init'
+                    return
+            else:
+                data = output[1]["data"]
             self.hostname = data["fqdn"]
             self._status = "good"
 
