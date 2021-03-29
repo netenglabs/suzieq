@@ -1,5 +1,4 @@
 from .engineobj import SqPandasEngine
-import typing
 from dataclasses import dataclass
 import os
 
@@ -52,7 +51,7 @@ class TopologyObj(SqPandasEngine):
         polled_neighbor = kwargs.pop('polled_neighbor', None)
 
         self.services = [
-            Services('aprnd', arpnd.ArpndObj, {}, ['ifname'],
+            Services('arpnd', arpnd.ArpndObj, {}, ['ifname'],
                      self._augment_arpnd_show),
             Services('bgp', bgp.BgpObj, {'state': 'Established',
                                          'columns': ['*']},
@@ -179,18 +178,20 @@ class TopologyObj(SqPandasEngine):
                                        'hostname', 'ipAddressList']]
                 self._ip_table = self._ip_table.explode(
                     'ipAddressList').dropna(how='any')
-                self._ip_table = self._ip_table.rename(columns={'ipAddressList': 'peerIP',
-                                                                'hostname': 'peerHostname'})
-                self._ip_table['peerIP'] = self._ip_table['peerIP'].str.replace(
-                    "/.+", "")
+                self._ip_table = self._ip_table \
+                                     .rename(
+                                         columns={'ipAddressList': 'peerIP',
+                                                  'hostname': 'peerHostname'})
+                self._ip_table['peerIP'] = self._ip_table['peerIP'] \
+                                               .str.replace("/.+", "")
                 self._ip_table = self._ip_table[self._ip_table['peerIP'] != '-']
         return self._ip_table
 
     def summarize(self, **kwargs):
         self.get(**kwargs)
-        self._create_graphs_from_lsdb()
         if self.lsdb.empty:
             return self.lsdb
+        self._create_graphs_from_lsdb()
         self.ns = {}
         for i in self.nses:
             self.ns[i] = {}
