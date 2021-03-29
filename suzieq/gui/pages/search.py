@@ -27,11 +27,14 @@ def build_query(state, search_text: str) -> str:
     '''Build the appropriate query for the search'''
 
     if not search_text:
-        return ''
+        return '', ''
 
     unique_query = {}
 
     addrs = search_text.split()
+    if not addrs:
+        return '', ''
+
     if addrs[0].startswith('mac'):
         state.table = 'macs'
         addrs = addrs[1:]
