@@ -144,11 +144,14 @@ def get_file_timestamps(filelist: List[str]) -> pd.DataFrame:
     fname_list = []
     fts_list = []
     for file in filelist:
-        ts = pd.read_parquet(file, columns=['timestamp'])
-        if not ts.empty:
-            fname_list.append(file)
+        try:
+            ts = pd.read_parquet(file, columns=['timestamp'])
             fts_list.append(ts.timestamp.min())
-
+            fname_list.append(file)
+        except OSError:
+            # skip this file because it can't be read, is probably 0 bytes
+            logging.debug(f"skipping file {file}")
+        
     # Construct file dataframe as its simpler to deal with
     if fname_list:
         fdf = pd.DataFrame({'file': fname_list, 'timestamp': fts_list})
@@ -282,7 +285,8 @@ def coalesce_resource_table(infolder: str, outfolder: str, archive_folder: str,
         if (table == 'sqPoller') or (not state.poller_periods):
             return
 
-    assert(len(dataset.files) == fdf.shape[0])
+    # this is no longer true if we are skipping files that aren't readable
+    #assert(len(dataset.files) == fdf.shape[0])
     polled_periods = sorted(state.poller_periods)
     if fdf.empty:
         state.logger.info(f'No updates for {table} to coalesce')
