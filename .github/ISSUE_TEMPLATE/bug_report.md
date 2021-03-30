@@ -17,7 +17,10 @@ Steps to reproduce the behavior:
 3. Scroll down to '....'
 4. See error
 
-**Expected behavior**
+**Attach**
+/tmp/sq-poller.log for poller errors. /tmp/sq-poller.log and /tmp/sq-coalescer.log for coalescer errors.
+
+ **Expected behavior**
 A clear and concise description of what you expected to happen.
 
 **Screenshots**
