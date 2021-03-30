@@ -124,7 +124,7 @@ def page_work(state_container, page_flip: bool):
     bgp_df = gui_get_df(state_container.sqobjs['bgp'], namespace=ns,
                         columns=['*'])
 
-    if not bgp_df.empty:
+    if not bgp_df.empty and ('error' not in bgp_df):
         bgp_status = bgp_df.groupby(by=['namespace', 'state'])['hostname'] \
                            .count() \
                            .reset_index() \

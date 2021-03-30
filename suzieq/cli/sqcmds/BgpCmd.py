@@ -119,8 +119,7 @@ class BgpCmd(SqCommand):
     @command("top")
     @argument(
         "what", description="Field you want to see top for",
-        choices=["flaps", "v4PrefixRx", "evpnPrefixRx", "v6PrefixRx",
-                 "updatesRx", "updatesTx", "uptime"]
+        choices=["flaps", "updatesRx", "updatesTx", "uptime"]
     )
     @argument("count", description="How many top entries")
     @argument("reverse", description="True see Bottom n",
@@ -150,7 +149,7 @@ class BgpCmd(SqCommand):
                                 query_str=self.query_str,
                                 namespace=self.namespace,
                                 )
-        if not df.empty:
+        if not df.empty and ('estdTime' in df.columns):
             df['estdTime'] = humanize_timestamp(df.estdTime,
                                                 self.cfg.get('analyzer', {})
                                                 .get('timezone', None))

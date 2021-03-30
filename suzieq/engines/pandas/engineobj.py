@@ -346,8 +346,8 @@ class SqPandasEngine(SqEngineObj):
             return pd.DataFrame()
 
         df = self.get(addnl_fields=self.iobj._addnl_fields, **kwargs)
-        if df.empty:
-            return pd.DataFrame()
+        if df.empty or ('error' in df.columns):
+            return df
 
         if reverse:
             return df.nsmallest(sqTopCount, columns=what, keep="all") \
@@ -361,6 +361,9 @@ class SqPandasEngine(SqEngineObj):
         columns = ['*']
 
         df = self.get(columns=columns, **kwargs)
+        if 'error' in df.columns:
+            self.summary_df = df
+            return df
 
         self.summary_df = df
         if df.empty:

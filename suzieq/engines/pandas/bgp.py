@@ -40,6 +40,7 @@ class BgpObj(SqPandasEngine):
             if ('afi' in str(ex)) or ('safi' in str(ex)):
                 df = pd.DataFrame(
                     {'error': [f'ERROR: Migrate BGP data first using sq-coalescer']})
+                return df
 
         if df.empty:
             return df
@@ -72,7 +73,7 @@ class BgpObj(SqPandasEngine):
         """Summarize key information about BGP"""
 
         self._init_summarize(self.iobj._table, **kwargs)
-        if self.summary_df.empty:
+        if self.summary_df.empty or ('error' in self.summary_df.columns):
             return self.summary_df
 
         self.summary_df['afiSafi'] = (
@@ -182,6 +183,9 @@ class BgpObj(SqPandasEngine):
         status = kwargs.pop("status", 'all')
 
         df = self.get(columns=assert_cols, state='!dynamic', **kwargs)
+        if 'error' in df:
+            return df
+
         if df.empty:
             if status != "pass":
                 df['assert'] = 'fail'
