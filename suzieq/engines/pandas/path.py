@@ -308,6 +308,8 @@ class PathObj(SqPandasEngine):
                 if ((ipvers == 4 and rslt.iloc[0].prefix == f'{dest}/32') or
                         (ipvers == 6 and rslt.iloc[0].prefix == f'{dest}/128')):
                     overlay = rslt.iloc[0].nexthopIps[0]
+                    if not overlay:
+                        raise AttributeError('missing overlay')
                     return self._get_underlay_nexthop(device, [overlay],
                                                       ['default'], True)
             return []
@@ -359,6 +361,8 @@ class PathObj(SqPandasEngine):
         vrf = vrf_list[0].split(':')[-1]
         for vtep in vtep_list:
             if vtep not in self._underlay_dfs:
+                if not vtep:
+                    raise AttributeError(f'false vtep {vtep_list}: vrf {vrf_list}')
                 self._underlay_dfs[vtep] = routes.RoutesObj(
                     context=self.ctxt).lpm(namespace=self.namespace,
                                            address=vtep, vrf=vrf)
@@ -414,6 +418,8 @@ class PathObj(SqPandasEngine):
             # Handle overlay routes given how NXOS programs its FIB
             if rslt.oifs.explode().str.startswith('_nexthopVrf:').any():
                 # We need to find the true NHIP
+                if rslt.oifs.iloc[0].tolist() == [False]:
+                    raise AttributeError('mising vtep')
                 return self._get_underlay_nexthop(
                     device,
                     rslt.nexthopIps.iloc[0].tolist(),
@@ -422,6 +428,8 @@ class PathObj(SqPandasEngine):
                                      rslt.nexthopIps.iloc[0][0] != '') and (
                                          not rslt.oifs.iloc[0].tolist()):
                 # NXOS and recursive route handling
+                if rslt.ofs.iloc[0].tolist() == [False]:
+                    raise AttributeError('mising vtep recursive route')
                 return self._get_underlay_nexthop(
                     device, rslt.nexthopIps.iloc[0].tolist(), [vrf], False)
             return zip(rslt.nexthopIps.iloc[0].tolist(),
@@ -500,10 +508,12 @@ class PathObj(SqPandasEngine):
                                           macaddr=arpdf.iloc[0].macaddr)
                 if not macdf.empty and macdf.remoteVtepIp.all():
                     overlay = macdf.iloc[0].remoteVtepIp
-
-                underlay_nh = self._get_underlay_nexthop(device, [overlay],
-                                                         ['default'], True)
-                new_nexthop_list.extend(underlay_nh)
+                    
+                # you don't always have an overlay if the network is transitioning
+                if overlay:
+                    underlay_nh = self._get_underlay_nexthop(device, [overlay],
+                                                            ['default'], True)
+                    new_nexthop_list.extend(underlay_nh)
             else:
                 new_nexthop_list.append((nhip, iface, overlay, is_l2,
                                          protocol, timestamp))
