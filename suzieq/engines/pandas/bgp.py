@@ -34,7 +34,12 @@ class BgpObj(SqPandasEngine):
                 addnl_fields.append(col)
                 drop_cols.append(col)
 
-        df = super().get(addnl_fields=addnl_fields, **kwargs)
+        try:
+            df = super().get(addnl_fields=addnl_fields, **kwargs)
+        except KeyError as ex:
+            if ('afi' in str(ex)) or ('safi' in str(ex)):
+                df = pd.DataFrame(
+                    {'error': [f'ERROR: Migrate BGP data first using sq-coalescer']})
 
         if df.empty:
             return df
