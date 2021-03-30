@@ -66,7 +66,7 @@ class EvpnVniCmd(SqCommand):
 
         now = time.time()
 
-        df = self._invoke_sqobj(sqobj.aver,
+        df = self._invoke_sqobj(self.sqobj.aver,
                                 hostname=self.hostname,
                                 namespace=self.namespace,
                                 status=status,

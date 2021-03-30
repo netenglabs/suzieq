@@ -137,7 +137,7 @@ class OspfCmd(SqCommand):
             "flaps": "numChanges",
         }
 
-        df = self._invoke_sqobj(sqobj.top,
+        df = self._invoke_sqobj(self.sqobj.top,
                                 hostname=self.hostname,
                                 what=what_map[what],
                                 n=count,
