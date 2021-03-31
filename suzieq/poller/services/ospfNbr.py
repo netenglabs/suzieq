@@ -7,7 +7,7 @@ from suzieq.utils import get_timestamp_from_junos_time
 class OspfNbrService(Service):
     """OSPF Neighbor service. Output needs to be munged"""
 
-    def frr_convert_reltime_to_epoch(self, reltime):
+    def frr_convert_reltime_to_epoch(self, reltime, timestamp):
         """Convert string of type 1d12h3m23s into absolute epoch"""
         secs = 0
         s = reltime
@@ -26,17 +26,27 @@ class OspfNbrService(Service):
                 secs += int(v[0]) * mul
             s = v[-1]
 
-        return int((datetime.now(tz=timezone.utc).timestamp() - secs) * 1000)
+        return int((timestamp/1000) - secs) * 1000
 
     def _clean_linux_data(self, processed_data, raw_data):
+
+        if not raw_data:
+            return processed_data
+
+        if isinstance(raw_data, list):
+            read_from = raw_data[0]
+        else:
+            read_from = raw_data
+        timestamp = read_from["timestamp"]
+
         for entry in processed_data:
             entry["vrf"] = "default"
             entry["state"] = entry["state"].lower()
             entry["lastUpTime"] = self.frr_convert_reltime_to_epoch(
-                entry["lastUpTime"]
+                entry["lastUpTime"], timestamp
             )
             entry["lastDownTime"] = self.frr_convert_reltime_to_epoch(
-                entry["lastDownTime"]
+                entry["lastDownTime"], timestamp
             )
             if entry["lastUpTime"] > entry["lastDownTime"]:
                 entry["lastChangeTime"] = entry["lastUpTime"]
