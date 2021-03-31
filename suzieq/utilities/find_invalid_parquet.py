@@ -24,7 +24,7 @@ if __name__ == '__main__':
     all_files = []
     broken_files = []
     for root, dirs, files in os.walk(f"{userargs.parquet_dir}"):
-        if not '_archived' in root and not '.sq-coalescer.pid' in files:
+        if not '_archived' in root and not '_broken' in root and not '.sq-coalescer.pid' in files:
             all_files.extend(list(map(lambda x: f"{root}/{x}", files)))
     print(f"{len(all_files)} files")
 
