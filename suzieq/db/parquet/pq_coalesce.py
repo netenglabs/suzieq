@@ -101,7 +101,7 @@ def write_files(table: str, filelist: List[str], in_basedir: str,
                 if missing_set:
                     missing_df = state.current_df.loc[missing_set]
                     this_df = pd.concat([this_df.reset_index(),
-                                         missing_df])
+                                         missing_df.reset_index()])
                 else:
                     this_df = this_df.reset_index()
     elif not state.current_df.empty:
