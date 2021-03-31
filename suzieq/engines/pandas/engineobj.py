@@ -147,11 +147,11 @@ class SqPandasEngine(SqEngineObj):
         )
 
         if not table_df.empty:
-            if view != 'all' or active_only:
+            if view == "all" or not active_only:
+                table_df.drop(columns=drop_cols, inplace=True)
+            else:
                 table_df = table_df.query('active') \
                                    .drop(columns=drop_cols)
-            else:
-                table_df.drop(columns=drop_cols, inplace=True)
             if 'timestamp' in table_df.columns and not table_df.empty:
                 table_df['timestamp'] = humanize_timestamp(
                     table_df.timestamp, self.cfg.get('analyzer', {})
