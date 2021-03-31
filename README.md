@@ -30,7 +30,7 @@ To start collecting data for your network, create an inventory file to gather th
 * Connect to the container via ```docker attach sq-poller```
 * Launch the poller with the appropriate options. For example, ```sq-poller -D inventory.yml -k``` where mydatacenter is the name of the namespace where the data associated with the inventory is storedand inventory.yml is the inventory file in Suzieq poller native format (Use -a if you're using Ansible inventory file format).
 
-[The official documentation is](https://suzieq.readthedocs.io/en/latest/) 
+[The official documentation is at suzieq.readthedocs.io](https://suzieq.readthedocs.io/en/latest/) 
 
 # Analysis
 
