@@ -69,7 +69,8 @@ class MlagService(Service):
 
         for entry in processed_data:
             # systemID is a mandatory parameter
-            if not entry.get('domainId', ''):
+            domainid = entry.get('domainId', '')
+            if not domainid or (domainid == 'not configured'):
                 processed_data = []
                 return processed_data
 
