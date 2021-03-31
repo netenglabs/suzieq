@@ -1,4 +1,5 @@
 from itertools import zip_longest
+from typing import Collection
 
 import pandas as pd
 import streamlit as st
@@ -62,12 +63,11 @@ def handle_edge_url(url_params: dict, pathSession):
                                            f'oif=="{oif}"')
             st.dataframe(data=arpdf)
 
+            if ':' in nhip:
+                dropcol = ['ipAddressList']
+            else:
+                dropcol = ['ip6AddressList']
             if not arpdf.empty:
-                if ':' in nhip:
-                    dropcol = ['ipAddressList']
-                else:
-                    dropcol = ['ip6AddressList']
-
                 nhmac = arpdf.macaddr.iloc[0]
                 if nhmac:
                     if_df = engobj._if_df.query(f'macaddr=="{nhmac}" and '
@@ -79,7 +79,10 @@ def handle_edge_url(url_params: dict, pathSession):
                     label = f'matching nexthop {nhip} on host {ifhost}'
                     if_df = engobj._if_df.query(f'hostname=="{ifhost}"') \
                                          .drop(columns=dropcol)
-
+            else:
+                if_df = engobj._if_df.query(f'hostname=="{ifhost}"')\
+                                          .drop(columns=dropcol)
+                label = f'matching host {ifhost}'
             if nhip != '169.254.0.1':
                 st.info(f'Interfaces {label}')
                 s = if_df.ipAddressList.str \
