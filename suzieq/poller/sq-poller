@@ -78,11 +78,15 @@ async def start_and_monitor_coalescer(config_file: str, cfg: dict,
             coalescer_args = f'-c {config_file}'
         else:
             coalescer_args = ''
-        coalescer_cmd_args = f'{coalescer_bin} {coalescer_args}'.strip()
+        coalescer_args = f'{coalescer_bin} {coalescer_args}'.strip().split()
 
-        process = await asyncio.create_subprocess_exec(
-            coalescer_cmd_args, stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.PIPE)
+        try:
+            process = await asyncio.create_subprocess_exec(
+                *coalescer_args, stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE)
+        except Exception as ex:
+            logger.error(f'ABORTING. Unable to start coalescer: {ex}')
+            process = None
 
         return process
 
@@ -95,6 +99,10 @@ async def start_and_monitor_coalescer(config_file: str, cfg: dict,
         elif process.returncode == errno.EBUSY:
             logger.warning('Trying to start coalescer')
         process = await start_coalescer()
+
+        if not process:
+            os.kill(os.getpid(), signal.SIGTERM)
+            return
 
         # Initial sleep to ensure that the coalescer starts up
         await asyncio.sleep(10)
