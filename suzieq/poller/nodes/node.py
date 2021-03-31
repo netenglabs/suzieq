@@ -49,6 +49,11 @@ def get_hostsdata_from_hostsfile(hosts_file) -> dict:
             print("Invalid Suzieq inventory file:{}", e)
             sys.exit(1)
 
+    if not hostsconf or isinstance(hostsconf, str):
+        logger.error(f"Invalid Suzieq inventory file:{hosts_file}")
+        print(f"ERROR: Invalid hosts Suzieq inventory file:{hosts_file}")
+        sys.exit(1)
+
     if not isinstance(hostsconf, list):
         if '_meta' in hostsconf.keys():
             logger.error("Invalid Suzieq inventory format, Ansible format??"
@@ -56,8 +61,8 @@ def get_hostsdata_from_hostsfile(hosts_file) -> dict:
             print("ERROR: Invalid Suzieq inventory format, Ansible format??"
                   " Use -a instead of -D with inventory")
         else:
-            logger.error("Invalid Suzieq inventory file:{}")
-            print("ERROR: Invalid hosts Suzieq inventory file:{}")
+            logger.error(f"Invalid Suzieq inventory file:{hosts_file}")
+            print(f"ERROR: Invalid hosts Suzieq inventory file:{hosts_file}")
         sys.exit(1)
 
     for conf in hostsconf:
@@ -127,11 +132,7 @@ async def init_hosts(**kwargs):
                 sys.exit(1)
 
     for namespace in hostsconf:
-        if "namespace" not in namespace:
-            logger.warning('No namespace specified, assuming "default"')
-            nsname = "default"
-        else:
-            nsname = namespace["namespace"]
+        nsname = namespace["namespace"]
 
         tasks = []
         hostlist = namespace.get("hosts", [])
@@ -140,6 +141,9 @@ async def init_hosts(**kwargs):
             continue
 
         for host in hostlist:
+            if not isinstance(host, dict):
+                logger.error(f'Ignoring invalid host specification: {host}')
+                continue
             entry = host.get("url", None)
             if entry:
                 words = entry.split()
@@ -183,6 +187,8 @@ async def init_hosts(**kwargs):
                     namespace=nsname,
                     ignore_known_hosts=ignore_known_hosts,
                 )]
+            else:
+                logger.error(f'Ignoring invalid host specification: {entry}')
 
         if not tasks:
             logger.error("No hosts detected in provided inventory file")
