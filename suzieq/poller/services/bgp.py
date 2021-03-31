@@ -215,6 +215,17 @@ class BgpService(Service):
                 entry['afi'] = entry['safi'] = 'dynamic'
                 entry['estdTime'] = entry['_firstconvgtime']
 
+            if entry['state'] != 'Established':
+                entry.pop('afiPrefix')
+                entry.pop('pfxRcvd')
+                entry.pop('pfxSent')
+                entry.pop('sendComm')
+                entry.pop('extendComm')
+                entry.pop('defaultOrig')
+                entry.pop('afiSafi')
+                entries_by_vrf[entry['vrf']].append(entry)
+                continue
+
             entry['afisAdvOnly'] = []
             entry['afisRcvOnly'] = []
             for i, item in enumerate(entry['afiSafi']):
@@ -227,16 +238,6 @@ class BgpService(Service):
             entry.pop('afiSafi')
             entry.pop('afAdvertised')
             entry.pop('afRcvd')
-
-            if entry['state'] != 'Established':
-                entry.pop('afiPrefix')
-                entry.pop('pfxRcvd')
-                entry.pop('pfxSent')
-                entry.pop('sendComm')
-                entry.pop('extendComm')
-                entry.pop('defaultOrig')
-                entries_by_vrf[entry['vrf']].append(entry)
-                continue
 
             entry['rrclient'] = entry.get('rrclient', False) == "true"
 
