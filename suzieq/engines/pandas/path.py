@@ -155,7 +155,7 @@ class PathObj(SqPandasEngine):
         self.src_device = self._src_df["hostname"].unique()
 
         # Start with the source host and find its route to the destination
-        if self._rdf[self._rdf["hostname"].isin(self.src_device)].empty:
+        if self._rdf.query(f"hostname.isin({self.src_device.tolist()})").empty:
             raise EmptyDataframeError(f"No routes found for {self.src_device}")
 
     def _get_vrf(self, hostname: str, ifname: str, addr: str) -> str:
@@ -362,7 +362,8 @@ class PathObj(SqPandasEngine):
         for vtep in vtep_list:
             if vtep not in self._underlay_dfs:
                 if not vtep:
-                    raise AttributeError(f'false vtep {vtep_list}: vrf {vrf_list}')
+                    raise AttributeError(
+                        f'false vtep {vtep_list}: vrf {vrf_list}')
                 self._underlay_dfs[vtep] = routes.RoutesObj(
                     context=self.ctxt).lpm(namespace=self.namespace,
                                            address=vtep, vrf=vrf)
@@ -508,11 +509,11 @@ class PathObj(SqPandasEngine):
                                           macaddr=arpdf.iloc[0].macaddr)
                 if not macdf.empty and macdf.remoteVtepIp.all():
                     overlay = macdf.iloc[0].remoteVtepIp
-                    
+
                 # you don't always have an overlay if the network is transitioning
                 if overlay:
                     underlay_nh = self._get_underlay_nexthop(device, [overlay],
-                                                            ['default'], True)
+                                                             ['default'], True)
                     new_nexthop_list.extend(underlay_nh)
             else:
                 new_nexthop_list.append((nhip, iface, overlay, is_l2,
@@ -771,13 +772,17 @@ class PathObj(SqPandasEngine):
                     pdev1 = devkey.split('/')[1]
                     for x in paths:
                         pdev2 = list(x[-1].keys())[0].split('/')[0]
-                        if pdev1 != pdev2:
+                        if (pdev1 != pdev2) and not on_src_node:
                             continue
                         copy_dest = copy(dest_device_iifs[destdevkey])
-                        copy_dest['oif'] = devices_iifs[devkey]['oif']
+                        if not on_src_node:
+                            copy_dest['oif'] = devices_iifs[devkey]['oif']
                         copy_dest['iif'] = iif
                         copy_dest['mtu'] = devices_iifs[devkey]['mtu']
-                        if copy_dest.get('mtu', 0) != src_mtu:
+                        dst_mtu = copy_dest.get('outMtu', 0)
+                        if dst_mtu > MAX_MTU:
+                            dst_mtu = copy_dest.get('mtu', 0)
+                        if dst_mtu != src_mtu:
                             if 'Dst MTU != Src MTU' not in copy_dest['error']:
                                 copy_dest['error'].append('Dst MTU != Src MTU')
                         # This is weird because we have no room to store the
@@ -793,6 +798,30 @@ class PathObj(SqPandasEngine):
                             {destdevkey: copy_dest})]
                         if z not in final_paths:
                             final_paths.append(z)
+
+                    if not paths:
+                        copy_dest = copy(dest_device_iifs[destdevkey])
+                        # This is because the src and dst nodes are the same
+                        # So ignore the OIF coming out of devices_iifs
+                        copy_dest['iif'] = iif
+                        copy_dest['mtu'] = devices_iifs[devkey]['mtu']
+                        dst_mtu = copy_dest.get('outMtu', 0)
+                        if dst_mtu > MAX_MTU:
+                            dst_mtu = copy_dest.get('mtu', 0)
+                        if dst_mtu != src_mtu:
+                            if 'Dst MTU != Src MTU' not in copy_dest['error']:
+                                copy_dest['error'].append('Dst MTU != Src MTU')
+                        # This is weird because we have no room to store the
+                        # prev hop's outgoing IIF MTU on the last hop
+                        copy_dest['outMtu'] = \
+                            f'{devices_iifs[devkey]["outMtu"]}/' \
+                            f'{dest_device_iifs[destdevkey]["outMtu"]}'
+                        copy_dest['is_l2'] = is_l2
+                        if not is_l2:
+                            copy_dest['nhip'] = dest
+                        copy_dest['mtuMatch'] = devices_iifs[devkey]['mtuMatch']
+
+                        paths = [[OrderedDict({destdevkey: copy_dest})]]
                     continue
 
                 newdevices_iifs = {}  # NHs from this NH to add to the next round
