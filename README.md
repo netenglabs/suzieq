@@ -55,32 +55,32 @@ One of Suzieqs powerful capabilities are asserts, which are statements that shou
 
 # Suzieq Data
 
-**Suzieq supports gathering data from Arista EOS, Cisco's NXOS, Cumulus, JunOS(QFX, MX and EX supported), and SONIC routers, and Linux servers.** Suzieq gathers:
+**Suzieq supports gathering data from Cumulus, EOS, IOSXR, JunOS(QFX, MX, EX, SRX supported), NXOS and SONIC routers, and Linux servers.** Suzieq gathers:
 
-* Basic device info
+* Basic device info including serial number, model, version, platform etc.
 * Interfaces
 * LLDP
 * MAC address table (VPLS MAC table for Junos MX)
-* MLAG (only for Cumulus and EOS at this time)
+* MLAG
 * Routing table
 * ARP/ND table
 * OSPFv2
-* BGP (v4 unicast, v6 unicast and evpn AFI/SAFI)
-* EVPN VNI info (not for EOS at this time)
+* BGP
+* EVPN VNI info
 
 We're addding support for more platforms and features with every release. 
 
 We're also looking for collaborators to help us make Suzieq a truly useful multi-vendor, open source platform for observing all aspects of networking. Please read the [collaboration document](./CONTRIBUTING.md) for ideas on how you can help.
 
-## Latest Release
+# Latest Release
 
-The latest release is 0.9 and the official release notes are [here](https://suzieq.readthedocs.io/en/latest/release-notes/).
+The latest release is 0.10 and the official release notes are [here](https://suzieq.readthedocs.io/en/latest/release-notes/).
 
-## Engage
+# Engage
 
 You can join the conversation via [slack](https://join.slack.com/t/netenglabs/shared_invite/zt-g64xa6lc-SeP2OAj~3uLbgOWJniLslA). Send email to Dinesh or Justin with the email address to send the Slack invitation to.
 
-## Additional Documentation
+# Additional Documentation
 
 We've done some blogging about Suzieq:
 
@@ -89,6 +89,6 @@ We've done some blogging about Suzieq:
 * [Questions to Suzieq](https://elegantnetwork.github.io/posts/10qa-suzieq/)
 * [Time in Suzieq](https://elegantnetwork.github.io/posts/time-suzieq/)
 
-## Suzieq Priorities
+# Suzieq Priorities
 
-We don't have a roadmap, but we do have a list of the our priorities: [2020 Priorities](https://github.com/netenglabs/suzieq/blob/master/docs/2020-priority.md). We mix this with the [issues reported](https://github.com/netenglabs/suzieq/issues).
+We don't have a roadmap, but we do have a list of the our [priorities](https://github.com/netenglabs/suzieq/blob/master/docs/2020-priority.md). We mix this with the [issues reported](https://github.com/netenglabs/suzieq/issues).
