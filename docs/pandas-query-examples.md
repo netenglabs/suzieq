@@ -16,6 +16,18 @@ What follows are examples of using Pandas queries in the filter.
     ```hostname == "leaf01" or hostname == "spine01"```
 
     More efficient: ```hostname == ["leaf01", "spine01"]``` especially as the number of OR entries to match grows.
+	
+* Filter entries based on regular expression, matching all hostnames starting with spine:
+
+	```hostname.str.contains("spine*")```
+
+* Filter entries based on regular expression, matching interfaces Ethernet1/1-Ethernet1/9
+
+	```ifname.str.contains("1/[1-9]$")``` OR ```ifname.str.contains("1/\d$")```
+
+* Filter entries based on regular expression, matching interfaces Ethernet1/51-Ethernet1/59
+
+	```ifname.str.contains("1/[1-9]$")``` OR ```ifname.str.contains("1/5\d$")```
 
 * Filter entries not matching a hostname:
 
@@ -37,4 +49,6 @@ What follows are examples of using Pandas queries in the filter.
 
 	```type == "bond_slave"```
 	
-If a column contains a list such as the nexthopIps or oifs (as in the routes table), checking if one of the entries in the list is not possible via this query method at this time.
+* Filter routes only if one of the nexthops is Ethernet1/1
+
+	```oifs.str.join(" ").str.contains("Ethernet1/5")```
