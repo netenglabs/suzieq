@@ -91,4 +91,4 @@ We've done some blogging about Suzieq:
 
 # Suzieq Priorities
 
-We don't have a roadmap, but we do have a list of the our [priorities](https://github.com/netenglabs/suzieq/blob/master/docs/2020-priority.md). We mix this with the [issues reported](https://github.com/netenglabs/suzieq/issues).
+We don't have a roadmap, but we do have a list of our [priorities](https://github.com/netenglabs/suzieq/blob/master/docs/2020-priority.md). We mix this with the [issues reported](https://github.com/netenglabs/suzieq/issues).
