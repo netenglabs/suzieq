@@ -198,10 +198,10 @@ async def init_hosts(**kwargs):
             newnode = await f
             if newnode.devtype is None:
                 logger.error(
-                    "Unable to determine device type for {}"
-                    .format(newnode.address))
+                    "Unable to determine device type for {}:{}"
+                    .format(newnode.address, newnode.port))
             else:
-                logger.info(f"Added node {newnode.hostname}")
+                logger.info(f"Added node {newnode.hostname}:{newnode.port}")
 
             nodes.update(
                 {"{}.{}".format(nsname, newnode.hostname): newnode})
@@ -290,8 +290,8 @@ class Node(object):
         if pvtkey_file:
             self.pvtkey = self._decrypt_pvtkey(pvtkey_file, passphrase)
             if not self.pvtkey:
-                self.logger.error("ERROR: Falling back to password for {}"
-                                  .format(self.address))
+                self.logger.error("ERROR: Falling back to password for "
+                                  f"{self.address}:{self.port}")
                 self.pvtkey = None
         else:
             self.pvtkey = None
@@ -370,7 +370,8 @@ class Node(object):
             return
         if devtype not in known_devtypes():
             self.logger.error(f'An unknown devtype {devtype} is being added.'
-                              f' This will cause problems. Node {self.address}')
+                              f' This will cause problems. '
+                              f'Node {self.address}:{self.port}')
             raise ValueError
 
         if self.devtype == "cumulus":
@@ -464,12 +465,12 @@ class Node(object):
 
         if not devtype and not self.last_exception:
             self.logger.warning(
-                f'Unable to determine devtype for {self.address}')
+                f'Unable to determine devtype for {self.address}:{self.port}')
             self._status = 'init'
             self.last_exception = 'No devtype'
         else:
             self.logger.info(
-                f'Detected {devtype} for {self.address}, {hostname}')
+                f'Detected {devtype} for {self.address}:{self.port}, {hostname}')
             self.set_devtype(devtype)
             self.set_hostname(hostname)
             self.last_exception = ''
@@ -711,7 +712,7 @@ class Node(object):
                     options=options)
 
                 self.logger.info(
-                    f"Connected to {self.address} at {time.time()}")
+                    f"Connected to {self.address}:{self.port} at {time.time()}")
                 if init_boot_time:
                     await self.init_boot_time()
                 elif rel_lock:
@@ -720,8 +721,8 @@ class Node(object):
                 if self.sigend:
                     self._terminate()
                     return
-                self.logger.error(f"ERROR: Unable to connect to {self.address},"
-                                  f"{str(e)}")
+                self.logger.error("ERROR: Unable to connect to "
+                                  f"{self.address}:{self.port}, {str(e)}")
                 self.last_exception = e
                 self._conn = None
                 self._tunnel = None
@@ -872,7 +873,7 @@ class EosNode(Node):
                     data = json.loads(output[0]["data"])
                 except json.JSONDecodeError:
                     self.logger.error(
-                        f'nodeinit: Error decoding JSON for {self.address}')
+                        f'nodeinit: Error decoding JSON for {self.address}:{self.port}')
                     self._status = 'init'
                     return
             else:
@@ -885,7 +886,7 @@ class EosNode(Node):
                     data = json.loads(output[1]["data"])
                 except json.JSONDecodeError:
                     self.logger.error(
-                        f'nodeinit: Error decoding JSON for {self.address}')
+                        f'nodeinit: Error decoding JSON for {self.address}:{self.port}')
                     self._status = 'init'
                     return
             else:
@@ -971,7 +972,8 @@ class EosNode(Node):
                 result.append(self._create_error(cmd))
             self._status = "init"  # Recheck everything
             self.logger.error("ERROR: (REST) Unable to communicate with node "
-                              "{} due to {}".format(self.address, str(e)))
+                              "{}:{} due to {}".format(
+                                  self.address, self.port, str(e)))
 
         await service_callback(result, cb_token)
 
@@ -1041,7 +1043,8 @@ class CumulusNode(Node):
             self.last_exception = e
             result.append(self._create_error(cmd))
             self.logger.error("ERROR: (REST) Unable to communicate with node "
-                              "{} due to {}".format(self.address, str(e)))
+                              "{}:{} due to {}".format(
+                                  self.address, self.port, str(e)))
 
         await service_callback(result, cb_token)
 
@@ -1099,7 +1102,8 @@ class IosXRNode(Node):
                 self.bootupTimestamp = int(datetime.utcfromtimestamp(
                     parse(timestr.group(1)).timestamp()).timestamp()*1000)
             else:
-                self.logger.error(f'Cannot parse uptime from {self.address}')
+                self.logger.error(
+                    f'Cannot parse uptime from {self.address}:{self.port}')
                 self.bootupTimestamp = -1
 
         if output[1]["status"] == 0:
@@ -1107,7 +1111,7 @@ class IosXRNode(Node):
             hostname = re.search(r'hostname (\S+)', data.strip())
             if hostname:
                 self.hostname = hostname.group(1)
-                self.logger.error(f'set hostname of {self.address} to '
+                self.logger.error(f'set hostname of {self.address}:{self.port} to '
                                   f'{hostname.group(1)}')
         self.ssh_ready.set()
 

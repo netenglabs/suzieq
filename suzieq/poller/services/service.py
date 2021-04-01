@@ -679,7 +679,7 @@ class Service(object):
                 if self.run_once == "gather" or self.run_once == "process":
                     total_nodes -= 1
                     if total_nodes <= 0:
-                        self.logger.warning(
+                        self.logger.info(
                             f'Service: {self.name}: Finished gathering data')
                         return
                     continue
