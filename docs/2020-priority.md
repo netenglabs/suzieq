@@ -47,7 +47,7 @@ There are six major areas that Suzieq development can be broken down into.
 
 ## Rough List of Tasks
 
-Given the categories, here is a rough list of tasks we will be tackling. We welcome assistance with any of these tasks. We intend to work our way roughly down this list and so tasks later down the line will be tend to, in general, be worked on later. Some of these tasks are shorter in time and complexity and some are longer. We expect to add more items.
+Given the categories, here is a rough list of tasks we will be tackling. We welcome assistance with any of these tasks. We intend to work our way roughly down this list and so tasks later down the line will be tend to, in general, be worked on later. Some of these tasks are shorter in time and complexity and some are longer. We expect to add more items. Striked out tasks are those that have been done already.
 
 * ~~Anonymizing data -- almost done, needs tests, docs, and moved to master~~
 * ~~Junos support for qfx/mx~~
@@ -58,7 +58,7 @@ Given the categories, here is a rough list of tasks we will be tackling. We welc
     * show neighbors that we know about but aren't polling
     * maybe be able to just start with one IP address and then discover 
       everything that must be polled by suzieq
-* ~~support augmenting columns (like adding peerHostname in OSPF when all we have is peerIP) ~~
+* ~~support augmenting columns (like adding peerHostname in OSPF when all we have is peerIP)~~
 * change gen_schema to ignore _ fields
 * ~~make column manipulation at higher level than engine.py~~
 * ~~Schema evolution and versioning to make suzieq less brittle to changes in the schema~~
@@ -84,7 +84,7 @@ Given the categories, here is a rough list of tasks we will be tackling. We welc
 * Integration with systems for notification of events
   * slack   * ???
 * Be sure that we can scale to at least 500 nodes per poller instance
-* ~~Users can do their own queries
+* ~~Users can do their own queries~~
   * ~~pandas or pandas sql query~~
 * Great expectations or some other way of better verifying data output <https://docs.greatexpectations.io/en/latest/>
 * Better database abstractions so that we can more easily add new databases
