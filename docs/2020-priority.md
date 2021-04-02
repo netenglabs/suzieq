@@ -58,7 +58,7 @@ Given the categories, here is a rough list of tasks we will be tackling. We welc
     * show neighbors that we know about but aren't polling
     * maybe be able to just start with one IP address and then discover 
       everything that must be polled by suzieq
-* support augmenting columns (like adding peerHostname in OSPF when all we have is peerIP) 
+* ~~support augmenting columns (like adding peerHostname in OSPF when all we have is peerIP) ~~
 * change gen_schema to ignore _ fields
 * ~~make column manipulation at higher level than engine.py~~
 * ~~Schema evolution and versioning to make suzieq less brittle to changes in the schema~~
@@ -80,19 +80,18 @@ Given the categories, here is a rough list of tasks we will be tackling. We welc
 * Integration with performance analysis
   * integration with promethius and influxdb
   * what do we want to be able to do with this?
-* Arista EVPN
+* ~~Arista EVPN~~
 * Integration with systems for notification of events
   * slack   * ???
 * Be sure that we can scale to at least 500 nodes per poller instance
-* Users can do their own queries
-  * pandas or pandas sql query
-  * is this only in the GUI?
+* ~~Users can do their own queries
+  * ~~pandas or pandas sql query~~
 * Great expectations or some other way of better verifying data output <https://docs.greatexpectations.io/en/latest/>
 * Better database abstractions so that we can more easily add new databases
 * ~~Support for SONIC~~
   * This includes SONIC-specific stuff only. Linux-specific and FRR are already supported.
 * Support for Cisco's CSR1000
-* Support for Cisco's IOS-XR
+* ~~Support for Cisco's IOS-XR~~
 * Temperature and power collection 
 * Cloud integration such as VPC from cloud providers
 * Kafka integraion for streaming telemetry
