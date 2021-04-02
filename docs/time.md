@@ -43,7 +43,7 @@ The next thing you can do in Suzieq w.r.t. time is to provide a time at which yo
 |:--:|
 | Figure 4: Interface Listing, Snapshot with Specific Time |
 
-Suzieq only accepts time in the format of "YYYY-MM-DD hh:mm:ss" today. We'll be adding support for time expressed in more human terms such as "10 min ago" or "10 pm last night" in the next release.
+Suzieq accepts time in the format of "YYYY-MM-DD hh:mm:ss" or in more human terms such as "10 min ago" or "10 pm last night".
 
 As before, for the same snapshot, using view=all shows all the changes upto the point specified by end-time. This output is shown in Fig 5.
 
