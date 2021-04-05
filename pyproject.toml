@@ -1,8 +1,24 @@
 [tool.poetry]
 name = "suzieq"
-version = "0.10"
-description = ""
-authors = ["Dinesh G Dutt", "Justin Pietsch"]
+version = "0.10.0"
+description = "A framework and application for network observability"
+readme = 'README.md'
+repository = 'https://github.com/netenglabs/suzieq'
+documentation = 'https://suzieq.readthedocs.io'
+authors = ["Dinesh G Dutt <dinesh@stardustsystems.net>", "Justin Pietsch <justin@stardustsystems.net>"]
+keywords = ['network', 'Cisco', 'Arista', 'Junos', 'observability', 'Cumulus']
+license = 'Apache-2.0'
+homepage = 'https://www.stardustsystems.net/suzieq/'
+include = [
+	"LICENSE.md",
+	"config/*.yml",
+	"config/schema/*.avsc",
+	"config/textfsm_templates",
+	"build/key.pem",
+	"build/cert.pem",
+	"build/suzieq-cfg.yml"
+]
+
 
 [tool.poetry.dependencies]
 python = "^3.7"
@@ -52,6 +68,14 @@ ipython = "~=7.15.0"
 requests = "^2.24.0"
 sphinx-autodoc-typehints = "^1.11.1"
 filelock = "^3.0.12"
+
+[tool.poetry.scripts]
+sq-poller = 'suzieq.poller.sq_poller:poller_main'
+sq-rest-server = 'suzieq.restServer.sq_rest_server:rest_main'
+sq-coalescer = 'suzieq.utilities.sq_coalescer:coalescer_main'
+sq-anonymizer = 'suzieq.utilities.sq_anonymizer:anonymizer_main'
+suzieq-cli = 'suzieq.cli.sq_cli:cli_main'
+suzieq-gui = 'suzieq.gui.sq_gui:gui_main'
 
 [build-system]
 requires = ["poetry>=0.12"]

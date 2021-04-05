@@ -354,53 +354,58 @@ class SqAnonymizer(object):
             self.anonv6.dump_to_file(f)
 
 
+def anonymizer_main()
+
+
+parser = argparse.ArgumentParser(
+    description="Anonymize suzieq run-once data files")
+parser.add_argument(
+    "-i",
+    "--input",
+    type=str, required=True,
+    help="Directory of files or single File to anonymize",
+)
+parser.add_argument(
+    "-s",
+    "--seed",
+    type=str,
+    help="Value to seed the randomizer with"
+)
+parser.add_argument(
+    "-ph",
+    "--host-prefix",
+    nargs="+", action='append',
+    help="Keywords preceding hostname to anonymize hostname (non-JSON output)",
+)
+parser.add_argument(
+    "-PH",
+    "--host-jpath",
+    nargs="+", action='append',
+    help=("JSON path to get to hostname in JSON output (use option "
+          "multiple times to provide multiple values)")
+)
+parser.add_argument(
+    "-PM",
+    "--mac-jpath",
+    nargs="+", action='append',
+    help=("JSON path to get to NXOS/EOS Macaddr in JSON output"
+          "Use option multiple times to provide multiple values")
+)
+parser.add_argument(
+    "-ip",
+    "--preserve-v4-prefixes",
+    nargs="+", action='append',
+    help=("IP address prefix to NOT anonymize (default is always incl)"
+          "Use option multiple times to provide multiple values")
+)
+userargs = parser.parse_args()
+
+anonymizer = SqAnonymizer(userargs.seed)
+anonymizer.anonymize(userargs.input, host_prefixes=userargs.host_prefix,
+                     host_jpath=userargs.host_jpath,
+                     mac_jpath=userargs.mac_jpath)
+anonymizer.dump_mappings(userargs.input)
+
+
 if __name__ == '__main__':
-
-    parser = argparse.ArgumentParser(
-        description="Anonymize suzieq run-once data files")
-    parser.add_argument(
-        "-i",
-        "--input",
-        type=str, required=True,
-        help="Directory of files or single File to anonymize",
-    )
-    parser.add_argument(
-        "-s",
-        "--seed",
-        type=str,
-        help="Value to seed the randomizer with"
-    )
-    parser.add_argument(
-        "-ph",
-        "--host-prefix",
-        nargs="+", action='append',
-        help="Keywords preceding hostname to anonymize hostname (non-JSON output)",
-    )
-    parser.add_argument(
-        "-PH",
-        "--host-jpath",
-        nargs="+", action='append',
-        help=("JSON path to get to hostname in JSON output (use option "
-              "multiple times to provide multiple values)")
-    )
-    parser.add_argument(
-        "-PM",
-        "--mac-jpath",
-        nargs="+", action='append',
-        help=("JSON path to get to NXOS/EOS Macaddr in JSON output"
-              "Use option multiple times to provide multiple values")
-    )
-    parser.add_argument(
-        "-ip",
-        "--preserve-v4-prefixes",
-        nargs="+", action='append',
-        help=("IP address prefix to NOT anonymize (default is always incl)"
-              "Use option multiple times to provide multiple values")
-    )
-    userargs = parser.parse_args()
-
-    anonymizer = SqAnonymizer(userargs.seed)
-    anonymizer.anonymize(userargs.input, host_prefixes=userargs.host_prefix,
-                         host_jpath=userargs.host_jpath,
-                         mac_jpath=userargs.mac_jpath)
-    anonymizer.dump_mappings(userargs.input)
+    anonymizer_main()

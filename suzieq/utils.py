@@ -11,6 +11,7 @@ from datetime import datetime
 from tzlocal import get_localzone
 from pytz import all_timezones
 import fcntl
+from importlib.util import find_spec
 import errno
 
 import pandas as pd
@@ -37,24 +38,44 @@ def validate_sq_config(cfg):
 
     ddir = cfg.get("data-directory", None)
     if not ddir:
-        return "No data directory for output files specified"
+        return "FATAL: No data directory for output files specified"
 
-    sdir = cfg.get("service-directory", None)
-    if not sdir:
-        return "No service config directory specified"
+    if not os.path.isdir(ddir):
+        return f'FATAL: Data directory {ddir} is not a directory'
 
-    p = Path(sdir)
-    if not p.is_dir():
-        return "Service directory {} is not a directory".format(sdir)
+    if not (os.access(ddir, os.R_OK | os.W_OK | os.EX_OK)):
+        return f'FATAL: Data directory {ddir} has wrong permissions'
 
-    scdir = cfg.get("service-directory", None)
-    if not scdir:
-        scdir = sdir + "/schema"
-        cfg["schema-directory"] = scdir
+    # Locate the service and schema directories
+    svcdir = cfg.get('service-directory', None)
+    if (not (svcdir and os.path.isdir(ddir) and
+             os.access(svcdir, os.R_OK | os.W_OK | os.EX_OK))):
+        if svcdir:
+            print(
+                f'WARNING: Inaccessible service directory {svcdir}. Ignoring')
+        sqdir = get_sq_install_dir()
+        svcdir = f'{sqdir}/config'
+        if os.access(svcdir, os.R_OK | os.EX_OK):
+            cfg['service-directory'] = svcdir
+        else:
+            svcdir = None
 
-    p = Path(scdir)
-    if not p.is_dir():
-        return "Invalid schema directory specified"
+    if not svcdir:
+        return 'FATAL: No service directory found'
+
+    schemadir = cfg.get('schema-directory', None)
+    if not (schemadir and os.access(schemadir, os.R_OK | os.EX_OK)):
+        if schemadir:
+            print(f'WARNING: Inaccessible schema directory {schemadir}. '
+                  'Ignoring')
+        schemadir = f'{svcdir}/schema'
+        if os.access(schemadir, os.R_OK | os.EX_OK):
+            cfg['schema-directory'] = schemadir
+        else:
+            schemadir = None
+
+    if not schemadir:
+        return 'FATAL: No service directory found'
 
     # Verify timezone if present is valid
     def_tz = get_localzone().zone
@@ -739,3 +760,12 @@ def iosxr_get_full_ifname(ifname: str) -> str:
         pfxstr = pfx.group(0)
         if pfxstr in ifmap:
             return ifname.replace(pfxstr, ifmap[pfxstr])
+
+
+def get_sq_install_dir() -> str:
+    '''Return the absolute path of the suzieq installation dir'''
+    spec = find_spec('suzieq')
+    if spec:
+        return(os.path.dirname(spec.loader.path))
+    else:
+        return(os.path.abspath('./'))

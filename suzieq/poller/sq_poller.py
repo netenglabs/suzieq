@@ -20,7 +20,8 @@ from suzieq.poller.nodes import init_hosts, init_files
 from suzieq.poller.services import init_services
 
 from suzieq.poller.writer import init_output_workers, run_output_worker
-from suzieq.utils import load_sq_config, init_logger, ensure_single_instance
+from suzieq.utils import (load_sq_config, init_logger, ensure_single_instance,
+                          get_sq_install_dir)
 
 
 async def process_signal(signum, loop):
@@ -72,8 +73,8 @@ async def start_and_monitor_coalescer(config_file: str, cfg: dict,
     '''
 
     async def start_coalescer():
-        sq_path = os.path.dirname(find_spec('suzieq').loader.path)
-        coalescer_bin = f'{sq_path}/utilities/sq-coalescer.py'
+        sq_path = get_sq_install_dir()
+        coalescer_bin = f'{sq_path}/utilities/sq_coalescer.py'
         if config_file:
             coalescer_args = f'-c {config_file}'
         else:
@@ -288,9 +289,9 @@ async def start_poller(userargs, cfg):
         loop.stop()
         return
 
-if __name__ == "__main__":
 
-    homedir = str(Path.home())
+def poller_main() -> None:
+
     supported_outputs = ["parquet"]
 
     parser = argparse.ArgumentParser()
@@ -459,3 +460,7 @@ if __name__ == "__main__":
         traceback.print_exc()
 
     sys.exit(0)
+
+
+if __name__ == '__main__':
+    poller_main()

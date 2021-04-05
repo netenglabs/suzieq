@@ -5,6 +5,7 @@ import os
 import sys
 import asyncio
 from suzieq.cli.sq_nubia_context import NubiaSuzieqContext
+from suzieq.utils import load_sq_config, Schema
 from suzieq.poller.services import init_services
 from unittest.mock import Mock
 import yaml
@@ -14,7 +15,7 @@ from subprocess import check_output, CalledProcessError
 from filelock import FileLock
 
 
-suzieq_cli_path = './suzieq/cli/suzieq-cli'
+suzieq_cli_path = './suzieq/cli/sq_cli.py'
 
 
 commands = [('AddressCmd'), ('ArpndCmd'), ('BgpCmd'), ('DeviceCmd'),
@@ -52,28 +53,32 @@ def _setup_nubia():
 
 
 def create_context():
-    config = get_dummy_config()
+    config = load_sq_config(config_file=create_dummy_config_file())
     context = NubiaSuzieqContext()
     context.cfg = config
+    context.schemas = Schema(config["schema-directory"])
     return context
 
 
 @pytest.fixture()
 def create_context_config():
-    return get_dummy_config()
+    return load_sq_config(config_file=create_dummy_config_file())
 
 
-def get_dummy_config():
-    config = {'schema-directory': f'./config/schema',
-              'service-directory': f'./config',
-              'data-directory': f'./tests/data/basic_dual_bgp/parquet-out',
+def create_dummy_config_file():
+    config = {'data-directory': f'./tests/data/basic_dual_bgp/parquet-out',
               'temp-directory': '/tmp/suzieq',
               'logging-level': 'WARNING',
               'test_set': 'basic_dual_bgp',  # an extra field for testing
-              'API_KEY': '68986cfafc9d5a2dc15b20e3e9f289eda2c79f40',
+              'rest': {'API_KEY': '68986cfafc9d5a2dc15b20e3e9f289eda2c79f40'},
               'analyzer': {'timezone': 'GMT'},
               }
-    return config
+    fd, tmpfname = mkstemp(suffix='yml')
+    f = os.fdopen(fd, 'w')
+    f.write(yaml.dump(config))
+    f.close()
+
+    return tmpfname
 
 
 @pytest.fixture

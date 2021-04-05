@@ -5,16 +5,19 @@ import argparse
 import sys
 import yaml
 import os
-from suzieq.utils import load_sq_config
+from suzieq.utils import load_sq_config, get_sq_install_dir
 
 from suzieq.restServer.query import app_init
 
 
 def get_cert_files(cfg):
-    ssl_certfile = cfg.get('rest_certfile',
-                           os.getenv("HOME") + '/.suzieq/cert.pem')
-    ssl_keyfile = cfg.get('rest_keyfile',
-                          os.getenv("HOME") + '/.suzieq/key.pem')
+    sqdir = get_sq_install_dir()
+    ssl_certfile = cfg.get('rest', {}) \
+                      .get('rest_certfile', f'{sqdir}/config/etc/cert.pem')
+
+    ssl_keyfile = cfg.get('rest', {}) \
+                     .get('rest_keyfile', f'{sqdir}/config/etc/key.pem')
+
     if not os.path.isfile(ssl_certfile):
         print(f"ERROR: Missing certificate file: {ssl_certfile}")
         sys.exit(1)
@@ -48,7 +51,7 @@ def get_log_config(cfg):
     return log_config
 
 
-if __name__ == "__main__":
+def rest_main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "-c",
@@ -58,17 +61,25 @@ if __name__ == "__main__":
     )
     userargs = parser.parse_args()
     app = app_init(userargs.config)
-    cfg = load_sq_config(userargs.config)
+    cfg = load_sq_config(config_file=userargs.config)
     try:
-        api_key = cfg['API_KEY']
+        api_key = cfg['rest']['API_KEY']
     except KeyError:
         print('missing API_KEY in config file')
         exit(1)
-    log_level = cfg.get('logging-level', 'INFO').lower()
+
+    log_level = cfg.get('rest', {}).get('logging-level', 'INFO').lower()
     ssl_keyfile, ssl_certfile = get_cert_files(cfg)
 
-    uvicorn.run(app, host="0.0.0.0", port=8000,
+    srvr_addr = cfg.get('rest', {}).get('address', '127.0.0.1')
+    srvr_port = cfg.get('rest', {}).get('port': 8000)
+
+    uvicorn.run(app, host=srvr_addr, port=srvr_port,
                 log_level=log_level,
                 log_config=get_log_config(cfg),
                 ssl_keyfile=ssl_keyfile,
                 ssl_certfile=ssl_certfile)
+
+
+if __name__ == "__main__":
+    rest_main()

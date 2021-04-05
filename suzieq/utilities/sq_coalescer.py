@@ -75,7 +75,7 @@ def run_coalescer(cfg: dict, tables: List[str], period: str, run_once: bool,
         sleep(sleep_time)
 
 
-if __name__ == '__main__':
+def coalescer_main():
 
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -169,3 +169,7 @@ if __name__ == '__main__':
         pass
 
     sys.exit(0)
+
+
+if __name__ == '__main__':
+    coalescer_main()

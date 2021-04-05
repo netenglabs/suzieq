@@ -3,8 +3,9 @@ import random
 import yaml
 from fastapi.testclient import TestClient
 
-from tests.conftest import cli_commands
+from tests.conftest import cli_commands, create_dummy_config_file
 from tests import conftest
+from suzieq.utils import load_sq_config
 from suzieq.restServer.query import app, get_configured_api_key, API_KEY_NAME
 
 ENDPOINT = "http://localhost:8000/api/v1"
@@ -359,7 +360,7 @@ def test_rest_services(start_server, service, verb, arg):
 
 def create_config():
     # We need to create a tempfile to hold the config
-    tmpconfig = conftest.get_dummy_config()
+    tmpconfig = load_sq_config(conftest.create_dummy_config_file())
 
     tmpconfig['data-directory'] = './tests/data/multidc/parquet-out'
     r_int = random.randint(17, 2073)

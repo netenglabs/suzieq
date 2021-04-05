@@ -1,7 +1,7 @@
 import pytest
 import asyncio
 import os
-from tests.conftest import get_dummy_config
+from tests.conftest import create_dummy_config_file
 import yaml
 from tempfile import TemporaryDirectory, NamedTemporaryFile
 from distutils.dir_util import copy_tree
@@ -72,7 +72,7 @@ def _coalescer_init(pq_dir: str) -> (TemporaryDirectory, NamedTemporaryFile):
     # Copy the directory we want to copy
     copy_tree(pq_dir, temp_dir.name)
 
-    config = get_dummy_config()
+    config = load_sq_config(config_file=create_dummy_config_file())
     config['data-directory'] = f'{temp_dir.name}/'
 
     tmpfile = NamedTemporaryFile(suffix='.yml', delete=False)
@@ -176,7 +176,7 @@ def test_coalescer_bin(run_sequential):
         'tests/data/basic_dual_bgp/parquet-out')
 
     sq_path = os.path.dirname(find_spec('suzieq').loader.path)
-    coalescer_bin = f'{sq_path}/utilities/sq-coalescer.py'
+    coalescer_bin = f'{sq_path}/utilities/sq_coalescer.py'
     coalescer_args = f'-c {tmpfile.name} --run-once'.split()
     coalescer_cmd_args = [coalescer_bin] + coalescer_args
 
@@ -217,7 +217,7 @@ async def test_single_instance_run(run_sequential):
         'tests/data/basic_dual_bgp/parquet-out')
 
     sq_path = os.path.dirname(find_spec('suzieq').loader.path)
-    coalescer_bin = f'{sq_path}/utilities/sq-coalescer.py'
+    coalescer_bin = f'{sq_path}/utilities/sq_coalescer.py'
     coalescer_args = f'-c {tmpfile.name} --run-once'
     coalescer_cmd_args = f'{coalescer_bin} {coalescer_args}'
 
