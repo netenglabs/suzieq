@@ -3,6 +3,7 @@ import os
 import re
 import textfsm
 import yaml
+from suzieq.utils import get_sq_install_dir
 
 template_dir = '/config/textfsm_templates/'
 input_dir = '/tests/integration/texttfsm/input/'
@@ -11,7 +12,7 @@ processed_dir = '/tests/integration/texttfsm/processed/'
 
 def _get_textfsm_templates():
     file_names = []
-    for file in os.scandir(os.path.abspath(os.curdir) + template_dir):
+    for file in os.scandir(os.path.abspath(get_sq_install_dir()) + template_dir):
         if not file.path.endswith('.tfsm'):
             continue
         t_name = re.match('(.*).tfsm', file.name).groups()[0]
@@ -29,7 +30,7 @@ def _get_textfsm_templates():
 
 
 def _get_template(t_name):
-    with open(os.path.abspath(os.curdir) + template_dir + t_name + '.tfsm', 'r') as f:
+    with open(os.path.abspath(get_sq_install_dir()) + template_dir + t_name + '.tfsm', 'r') as f:
         re_table = textfsm.TextFSM(f)
     return re_table
 
@@ -76,4 +77,3 @@ def test_texttfsm(template_name, tmp_path):
 
     processed_records = _get_processed_data(template_name)
     assert processed_records == created_records
-
