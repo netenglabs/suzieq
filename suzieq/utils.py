@@ -50,9 +50,6 @@ def validate_sq_config(cfg):
     svcdir = cfg.get('service-directory', None)
     if (not (svcdir and os.path.isdir(ddir) and
              os.access(svcdir, os.R_OK | os.W_OK | os.EX_OK))):
-        if svcdir:
-            print(
-                f'WARNING: Inaccessible service directory {svcdir}. Ignoring')
         sqdir = get_sq_install_dir()
         svcdir = f'{sqdir}/config'
         if os.access(svcdir, os.R_OK | os.EX_OK):
@@ -65,9 +62,6 @@ def validate_sq_config(cfg):
 
     schemadir = cfg.get('schema-directory', None)
     if not (schemadir and os.access(schemadir, os.R_OK | os.EX_OK)):
-        if schemadir:
-            print(f'WARNING: Inaccessible schema directory {schemadir}. '
-                  'Ignoring')
         schemadir = f'{svcdir}/schema'
         if os.access(schemadir, os.R_OK | os.EX_OK):
             cfg['schema-directory'] = schemadir
@@ -75,7 +69,22 @@ def validate_sq_config(cfg):
             schemadir = None
 
     if not schemadir:
-        return 'FATAL: No service directory found'
+        return 'FATAL: No schema directory found'
+
+    # Move older format logging level and period to appropriate new location
+    if 'poller' not in cfg:
+        cfg['poller'] = {}
+
+    for knob in ['logging-level', 'period']:
+        if knob in cfg:
+            cfg['poller'][knob] = cfg[knob]
+
+    if 'rest' not in cfg:
+        cfg['rest'] = {}
+
+    for knob in ['API_KEY', 'rest_certfile', 'rest_keyfile']:
+        if knob in cfg:
+            cfg['rest'][knob] = cfg[knob]
 
     # Verify timezone if present is valid
     def_tz = get_localzone().zone
