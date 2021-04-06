@@ -360,7 +360,7 @@ def test_rest_services(start_server, service, verb, arg):
 
 def create_config():
     # We need to create a tempfile to hold the config
-    tmpconfig = load_sq_config(conftest.create_dummy_config_file())
+    tmpconfig = load_sq_config(config_file=conftest.create_dummy_config_file())
 
     tmpconfig['data-directory'] = './tests/data/multidc/parquet-out'
     r_int = random.randint(17, 2073)
