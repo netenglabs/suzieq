@@ -83,7 +83,7 @@ def get_cndcn(path):
 
 
 def run_sqpoller_gather(name, ansible_dir, suzieq_dir, input_path):
-    sqcmd_path = [sys.executable, f"{suzieq_dir}/suzieq/poller/sq-poller"]
+    sqcmd_path = [sys.executable, f"{suzieq_dir}/suzieq/poller/sq_poller.py"]
     sqcmd = sqcmd_path + ['-a', ansible_dir + ansible_file, '-n', name,
                           '--run-once', 'gather', '--output-dir', f'{input_path}/suzieq-input']
     out, code, _ = run_cmd(sqcmd)
@@ -91,7 +91,7 @@ def run_sqpoller_gather(name, ansible_dir, suzieq_dir, input_path):
 
 
 def run_sqpoller_process(files_dir, suzieq_dir, cfg_file):
-    sqcmd_path = [sys.executable, f"{suzieq_dir}/suzieq/poller/sq-poller"]
+    sqcmd_path = [sys.executable, f"{suzieq_dir}/suzieq/poller/sq_poller.py"]
     sqcmd = sqcmd_path + ['-i', files_dir, '-c', cfg_file]
     out, code, _ = run_cmd(sqcmd)
     assert code is 0 or code is None
