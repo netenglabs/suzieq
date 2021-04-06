@@ -41,7 +41,7 @@ def app_init(cfg_file):
 def get_configured_api_key():
     cfg = load_sq_config(config_file=app.cfg_file)
     try:
-        api_key = cfg['API_KEY']
+        api_key = cfg['rest']['API_KEY']
     except KeyError:
         print('missing API_KEY in config file')
         sys.exit(1)
