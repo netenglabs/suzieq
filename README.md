@@ -14,6 +14,7 @@ Suzieq does multiple things. It [collects](https://suzieq.readthedocs.io/en/late
 
 ## Quick Start
 
+### Using Docker Container
 We want to make it as easy as possible for you to start engaging with Suzieq, so we have a demo that has data in including the the iamge.
 
 * `docker run -it -p 8501:8501 --name suzieq netenglabs/suzieq-demo`
@@ -29,6 +30,30 @@ To start collecting data for your network, create an inventory file to gather th
 * ```docker run -it -vdbdir:/suzieq/parquet --name sq-poller netenglabs/suzieq```
 * Connect to the container via ```docker attach sq-poller```
 * Launch the poller with the appropriate options. For example, ```sq-poller -D inventory.yml -k``` where mydatacenter is the name of the namespace where the data associated with the inventory is storedand inventory.yml is the inventory file in Suzieq poller native format (Use -a if you're using Ansible inventory file format).
+
+### Using Python Packaging
+
+If you don't want to use docker container or cannot use a docker container, an alternative approach is to install Suzieq as a python package. It is **strongly** recommended to install suzieq inside a virtual environment. If you already use a tool to create and manage virtual environments, you can skip the step of creating a virtual envirobment below.
+
+Suzieq requires python version 3.7.1 at least, and has been tested with python versions 3.7 and 3.8. It has not been tested to work on Windows. Use Linux (recommended) or macOS. To create a virtual environment, in case you haven't got a tool to create one, type:
+```
+python -m venv suzieq
+```
+This creates a directory called suzieq and all suzieq related info is stored there. Switch to that directory and activate the virtual environment with:
+```
+source activate
+```
+Now the virtual environment is alive and you can install suzieq. To install suzieq, execute:
+```
+pip install suzieq
+```
+
+Once the command completes, you have the main programs of suzieq available for use:
+
+* sq-poller: For polling the devices and gathering the data
+* suzieq-gui: For launching the GUI
+* suzieq-cli: For running the CLI
+* sq-rest-server: For running the REST API server
 
 [The official documentation is at suzieq.readthedocs.io](https://suzieq.readthedocs.io/en/latest/) 
 
@@ -74,7 +99,7 @@ We're also looking for collaborators to help us make Suzieq a truly useful multi
 
 # Latest Release
 
-The latest release is 0.10 and the official release notes are [here](https://suzieq.readthedocs.io/en/latest/release-notes/).
+The latest release is 0.11.0 and the official release notes are [here](https://suzieq.readthedocs.io/en/latest/release-notes/).
 
 # Engage
 
