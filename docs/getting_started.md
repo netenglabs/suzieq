@@ -30,6 +30,7 @@ To install suzieq via pip run:
 ```
 
 To setup a virtual environment if you don't know how to, is as simple as:
+
 * Running ```python -m venv suzieq-env``` (Assuming suzieq-env is a directory in the current folder you want to create the virtual environment in. The directory name can be anything you want it to be).
 * Activating the virtual environment by changing directory to suzieq-env, and running ```source bin/activate```
 
