@@ -1,4 +1,8 @@
-## Release Notes
+# Release Notes
+
+## 0.11 (Apr 6, 2021)
+
+This is a mostly a repackaged 0.10 release, but now shippable as a python package as well. You can use pip install to install Suzieq. As a consequence, some of the directory structures (for config) have changed, and the suzieq config file format has been streamlined and made consistent so the variables appropriate to each component is present in the right hierarchy. The older config file will be subsumed and converted internally.
 
 ## 0.10 (Apr 1, 2021)
 
