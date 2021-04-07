@@ -9,19 +9,11 @@ RUN apt-get update && \
 RUN mkdir -p /suzieq/
 WORKDIR /suzieq
 
-RUN pip install "poetry==1.1.4"
-COPY pyproject.toml /suzieq/
-RUN poetry config virtualenvs.create false
-RUN poetry install --no-dev --no-root
-
-COPY ./config /suzieq/config
-COPY ./suzieq /root/.local/lib/python3.7/site-packages/suzieq
-COPY ./build/suzieq-cfg.yml /root/.suzieq/suzieq-cfg.yml
+COPY dist/suzieq-0.11.0-py3-none-any.whl  /tmp/
+RUN pip install /tmp//suzieq-0.11.0-py3-none-any.whl
+COPY suzieq/config/etc/suzieq-cfg.yml /root/.suzieq/suzieq-cfg.yml
 
 # Certificates and such for REST server
-COPY ./build/key.pem /root/.suzieq/
-COPY ./build/cert.pem /root/.suzieq/
-COPY ./build/launch-gui /usr/local/bin/suzieq-gui
 #COPY logo-small.jpg /suzieq
 
 # Copy parquet files for demo
@@ -36,6 +28,6 @@ ENTRYPOINT ["/bin/bash"]
 
 # USER 1001
 
-LABEL name=suzieq
-LABEL version=0.10
+LABEL name=suzieq-demo
+LABEL version=0.11.0
 LABEL description="Network Observability Tool"
