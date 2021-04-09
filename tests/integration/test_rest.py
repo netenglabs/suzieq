@@ -2,8 +2,11 @@ import pytest
 import random
 import yaml
 from fastapi.testclient import TestClient
+import subprocess
+import requests
 
-from tests.conftest import cli_commands, create_dummy_config_file
+from tests.conftest import (cli_commands, create_dummy_config_file,
+                            suzieq_rest_server_path)
 from tests import conftest
 from suzieq.utils import load_sq_config
 from suzieq.restServer.query import app, get_configured_api_key, API_KEY_NAME
@@ -377,6 +380,22 @@ def start_server():
     from suzieq.restServer.query import app_init
 
     app_init(create_config())
+
+
+@pytest.mark.rest
+def test_server_exec():
+    '''We fire up the rest server and see if we can get a valid response'''
+
+    cfgfile = create_dummy_config_file()
+    server_cmd_args = f'{suzieq_rest_server_path} -c {cfgfile}'.split()
+    proc = subprocess.Popen(server_cmd_args)
+
+    # Try a request from the server
+    resp = requests.get(
+        'https://localhost:8000/api/v1/device/show?view=latest&access_token=68986cfafc9d5a2dc15b20e3e9f289eda2c79f40', verify=False)
+
+    proc.kill()
+    assert(resp.status_code == 200)
 
 
 def test_bad_rest():

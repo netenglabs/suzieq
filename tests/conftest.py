@@ -16,6 +16,7 @@ from filelock import FileLock
 
 
 suzieq_cli_path = './suzieq/cli/sq_cli.py'
+suzieq_rest_server_path = './suzieq/restServer/sq_rest_server.py'
 
 
 commands = [('AddressCmd'), ('ArpndCmd'), ('BgpCmd'), ('DeviceCmd'),
