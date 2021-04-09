@@ -1,4 +1,5 @@
 import pytest
+from time import sleep
 import random
 import yaml
 from fastapi.testclient import TestClient
@@ -391,6 +392,7 @@ def test_server_exec():
     proc = subprocess.Popen(server_cmd_args)
 
     # Try a request from the server
+    sleep(1)
     resp = requests.get(f'https://localhost:8000/docs', verify=False)
 
     proc.kill()
