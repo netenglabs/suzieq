@@ -6,7 +6,7 @@ import subprocess
 import requests
 
 from tests.conftest import (cli_commands, create_dummy_config_file,
-                            suzieq_rest_server_path)
+                            suzieq_rest_server_path, API_KEY)
 from tests import conftest
 from suzieq.utils import load_sq_config
 from suzieq.restServer.query import app, get_configured_api_key, API_KEY_NAME
@@ -391,8 +391,7 @@ def test_server_exec():
     proc = subprocess.Popen(server_cmd_args)
 
     # Try a request from the server
-    resp = requests.get(
-        'https://localhost:8000/api/v1/device/show?view=latest&access_token=68986cfafc9d5a2dc15b20e3e9f289eda2c79f40', verify=False)
+    resp = requests.get(f'https://localhost:8000/docs', verify=False)
 
     proc.kill()
     assert(resp.status_code == 200)
