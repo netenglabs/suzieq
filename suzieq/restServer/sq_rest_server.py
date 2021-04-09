@@ -72,7 +72,7 @@ def rest_main():
     ssl_keyfile, ssl_certfile = get_cert_files(cfg)
 
     srvr_addr = cfg.get('rest', {}).get('address', '127.0.0.1')
-    srvr_port = cfg.get('rest', {}).get('port': 8000)
+    srvr_port = cfg.get('rest', {}).get('port', 8000)
 
     uvicorn.run(app, host=srvr_addr, port=srvr_port,
                 log_level=log_level,
