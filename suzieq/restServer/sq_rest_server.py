@@ -30,8 +30,11 @@ def get_cert_files(cfg):
 
 
 def get_log_file(cfg):
-    tmp = cfg.get('temp-directory', '/tmp')
-    return f"{tmp}/sq-rest-server.log"
+    tempdir = cfg.get('temp-directory', '/tmp')
+    if not os.path.exists(tempdir):
+        os.makedirs(tempdir, exist_ok=True)
+
+    return f"{tempdir}/sq-rest-server.log"
 
 
 def get_log_config(cfg):
