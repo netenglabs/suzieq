@@ -362,37 +362,35 @@ def test_rest_services(start_server, service, verb, arg):
     get(ENDPOINT, service, verb, arg)
 
 
-def create_config():
+def create_config(create_cfg_file):
     # We need to create a tempfile to hold the config
-    tmpconfig = load_sq_config(config_file=conftest.create_dummy_config_file())
+    tmpconfig = load_sq_config(config_file=create_cfg_file)
 
     tmpconfig['data-directory'] = './tests/data/multidc/parquet-out'
-    r_int = random.randint(17, 2073)
-    fname = f'/tmp/suzieq-cfg-{r_int}.yml'
 
-    with open(fname, 'w') as f:
+    with open(create_cfg_file, 'w') as f:
         f.write(yaml.dump(tmpconfig))
-    return fname
+
+    return create_cfg_file
 
 
 @pytest.fixture(scope="session")
-def start_server():
+def start_server(create_cfg_file):
 
     from suzieq.restServer.query import app_init
 
-    app_init(create_config())
+    app_init(create_config(create_cfg_file))
 
 
 @pytest.mark.rest
-def test_server_exec():
+def test_server_exec(create_cfg_file):
     '''We fire up the rest server and see if we can get a valid response'''
 
-    cfgfile = create_dummy_config_file()
-    server_cmd_args = f'{suzieq_rest_server_path} -c {cfgfile}'.split()
+    server_cmd_args = f'{suzieq_rest_server_path} -c {create_cfg_file}'.split()
     proc = subprocess.Popen(server_cmd_args)
 
     # Try a request from the server
-    sleep(1)
+    sleep(5)
     resp = requests.get(f'https://localhost:8000/docs', verify=False)
 
     proc.kill()
