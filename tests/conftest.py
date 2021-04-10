@@ -4,7 +4,6 @@ from _pytest.mark.structures import Mark, MarkDecorator
 import os
 import sys
 import asyncio
-import shutil
 from suzieq.cli.sq_nubia_context import NubiaSuzieqContext
 from suzieq.utils import load_sq_config, Schema
 from suzieq.poller.services import init_services
@@ -18,6 +17,7 @@ from filelock import FileLock
 
 suzieq_cli_path = './suzieq/cli/sq_cli.py'
 suzieq_rest_server_path = './suzieq/restServer/sq_rest_server.py'
+
 
 commands = [('AddressCmd'), ('ArpndCmd'), ('BgpCmd'), ('DeviceCmd'),
             ('EvpnVniCmd'), ('InterfaceCmd'), ('LldpCmd'), ('MacCmd'),
@@ -54,7 +54,7 @@ def _setup_nubia():
 
 
 def create_context():
-    config = load_sq_config(create_cfg_file)
+    config = load_sq_config(config_file=create_dummy_config_file())
     context = NubiaSuzieqContext()
     context.cfg = config
     context.schemas = Schema(config["schema-directory"])
@@ -62,15 +62,8 @@ def create_context():
 
 
 @pytest.fixture()
-def create_context_config(create_cfg_file):
-    return load_sq_config(config_file=create_cfg_file)
-
-
-@pytest.fixture(scope='session')
-def create_cfg_file():
-    cfgfile = create_dummy_config_file()
-    yield cfgfile
-    os.remove(cfgfile)
+def create_context_config():
+    return load_sq_config(config_file=create_dummy_config_file())
 
 
 def create_dummy_config_file():
@@ -81,7 +74,7 @@ def create_dummy_config_file():
               'rest': {'API_KEY': '68986cfafc9d5a2dc15b20e3e9f289eda2c79f40'},
               'analyzer': {'timezone': 'GMT'},
               }
-    fd, tmpfname = mkstemp(suffix='.yml')
+    fd, tmpfname = mkstemp(suffix='yml')
     f = os.fdopen(fd, 'w')
     f.write(yaml.dump(config))
     f.close()
@@ -161,18 +154,19 @@ def load_up_the_tests(dir):
     return tests
 
 
-def setup_sqcmds(testvar, context_config, cfgfile):
+def setup_sqcmds(testvar, context_config):
     sqcmd_path = [sys.executable, suzieq_cli_path]
-
+    tmpfname = None
     if 'data-directory' in testvar:
         # We need to create a tempfile to hold the config
         tmpconfig = context_config
         tmpconfig['data-directory'] = testvar['data-directory']
 
-        with open(cfgfile, 'w') as f:
-            f.write(yaml.dump(tmpconfig))
-
-        sqcmd_path += ['--config={}'.format(cfgfile)]
+        fd, tmpfname = mkstemp(suffix='yml')
+        f = os.fdopen(fd, 'w')
+        f.write(yaml.dump(tmpconfig))
+        f.close()
+        sqcmd_path += ['--config={}'.format(tmpfname)]
 
     exec_cmd = sqcmd_path + shlex.split(testvar['command'])
 
@@ -182,5 +176,8 @@ def setup_sqcmds(testvar, context_config, cfgfile):
         output = check_output(exec_cmd)
     except CalledProcessError as e:
         error = e.output
+
+    if tmpfname:
+        os.remove(tmpfname)
 
     return output, error

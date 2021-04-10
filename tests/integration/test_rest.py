@@ -1,5 +1,4 @@
 import pytest
-from time import sleep
 import random
 import yaml
 from fastapi.testclient import TestClient
@@ -7,7 +6,7 @@ import subprocess
 import requests
 
 from tests.conftest import (cli_commands, create_dummy_config_file,
-                            suzieq_rest_server_path)
+                            suzieq_rest_server_path, API_KEY)
 from tests import conftest
 from suzieq.utils import load_sq_config
 from suzieq.restServer.query import app, get_configured_api_key, API_KEY_NAME
@@ -362,35 +361,36 @@ def test_rest_services(start_server, service, verb, arg):
     get(ENDPOINT, service, verb, arg)
 
 
-def create_config(create_cfg_file):
+def create_config():
     # We need to create a tempfile to hold the config
-    tmpconfig = load_sq_config(config_file=create_cfg_file)
+    tmpconfig = load_sq_config(config_file=conftest.create_dummy_config_file())
 
     tmpconfig['data-directory'] = './tests/data/multidc/parquet-out'
+    r_int = random.randint(17, 2073)
+    fname = f'/tmp/suzieq-cfg-{r_int}.yml'
 
-    with open(create_cfg_file, 'w') as f:
+    with open(fname, 'w') as f:
         f.write(yaml.dump(tmpconfig))
-
-    return create_cfg_file
+    return fname
 
 
 @pytest.fixture(scope="session")
-def start_server(create_cfg_file):
+def start_server():
 
     from suzieq.restServer.query import app_init
 
-    app_init(create_config(create_cfg_file))
+    app_init(create_config())
 
 
 @pytest.mark.rest
-def test_server_exec(create_cfg_file):
+def test_server_exec():
     '''We fire up the rest server and see if we can get a valid response'''
 
-    server_cmd_args = f'{suzieq_rest_server_path} -c {create_cfg_file}'.split()
+    cfgfile = create_dummy_config_file()
+    server_cmd_args = f'{suzieq_rest_server_path} -c {cfgfile}'.split()
     proc = subprocess.Popen(server_cmd_args)
 
     # Try a request from the server
-    sleep(5)
     resp = requests.get(f'https://localhost:8000/docs', verify=False)
 
     proc.kill()

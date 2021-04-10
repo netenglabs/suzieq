@@ -261,8 +261,8 @@ def execute_cmd(cmd, verb, arg, filter=None):
         return c()
 
 
-def _test_sqcmds(testvar, context_config, cfgfile):
-    output, error = setup_sqcmds(testvar, context_config, cfgfile)
+def _test_sqcmds(testvar, context_config):
+    output, error = setup_sqcmds(testvar, context_config)
 
     if output:
         try:
@@ -322,29 +322,29 @@ def _test_sqcmds(testvar, context_config, cfgfile):
 @ pytest.mark.sqcmds
 @ pytest.mark.parametrize("testvar", load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
                                                                   '/tests/integration/sqcmds/cumulus-samples')))
-def test_cumulus_sqcmds(testvar, create_context_config, create_cfg_file):
-    _test_sqcmds(testvar, create_context_config, create_cfg_file)
+def test_cumulus_sqcmds(testvar, create_context_config):
+    _test_sqcmds(testvar, create_context_config)
 
 
 @ pytest.mark.smoke
 @ pytest.mark.sqcmds
 @ pytest.mark.parametrize("testvar", load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
                                                                   '/tests/integration/sqcmds/nxos-samples')))
-def test_nxos_sqcmds(testvar, create_context_config, create_cfg_file):
-    _test_sqcmds(testvar, create_context_config, create_cfg_file)
+def test_nxos_sqcmds(testvar, create_context_config):
+    _test_sqcmds(testvar, create_context_config)
 
 
 @ pytest.mark.smoke
 @ pytest.mark.sqcmds
 @ pytest.mark.parametrize("testvar", load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
                                                                   '/tests/integration/sqcmds/junos-samples')))
-def test_junos_sqcmds(testvar, create_context_config, create_cfg_file):
-    _test_sqcmds(testvar, create_context_config, create_cfg_file)
+def test_junos_sqcmds(testvar, create_context_config):
+    _test_sqcmds(testvar, create_context_config)
 
 
 @ pytest.mark.smoke
 @ pytest.mark.sqcmds
 @ pytest.mark.parametrize("testvar", load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
                                                                   '/tests/integration/sqcmds/eos-samples')))
-def test_eos_sqcmds(testvar, create_context_config, create_cfg_file):
-    _test_sqcmds(testvar, create_context_config, create_cfg_file)
+def test_eos_sqcmds(testvar, create_context_config):
+    _test_sqcmds(testvar, create_context_config)

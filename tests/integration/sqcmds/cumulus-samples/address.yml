@@ -1752,59 +1752,17 @@ tests:
     [], "macaddr": "52:54:00:44:8d:bb", "ip6AddressList": [], "state": "up", "master":
     "bridge", "timestamp": 1616638471859}]'
 - command: address show --address="44:38:39:00:00:34 44:39:39:ff:00:13"  --format=json
-  data-directory: tests/data/multidc/parquet-out
+  data-directory: tests/data/ospf-ibgp/parquet-out
   marks: address show cumulus filter
-  output: '[{"namespace": "dual-evpn", "hostname": "exit01", "ifname": "vlan13-v0",
-    "ipAddressList": ["172.16.1.1/24"], "macaddr": "44:39:39:ff:00:13", "ip6AddressList":
-    ["fe80::4639:39ff:feff:13/64"], "state": "up", "master": "evpn-vrf", "timestamp":
-    1616644822941}, {"namespace": "dual-evpn", "hostname": "exit02", "ifname": "vlan13-v0",
-    "ipAddressList": ["172.16.1.1/24"], "macaddr": "44:39:39:ff:00:13", "ip6AddressList":
-    ["fe80::4639:39ff:feff:13/64"], "state": "up", "master": "evpn-vrf", "timestamp":
-    1616644822983}, {"namespace": "dual-evpn", "hostname": "leaf04", "ifname": "bond02",
-    "ipAddressList": [], "macaddr": "44:38:39:00:00:34", "ip6AddressList": [], "state":
-    "up", "master": "bridge", "timestamp": 1616644822983}, {"namespace": "dual-evpn",
-    "hostname": "leaf04", "ifname": "swp6", "ipAddressList": [], "macaddr": "44:38:39:00:00:34",
-    "ip6AddressList": [], "state": "up", "master": "bond02", "timestamp": 1616644822983},
-    {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "vlan13-v0", "ipAddressList":
-    ["172.16.1.1/24"], "macaddr": "44:39:39:ff:00:13", "ip6AddressList": ["fe80::4639:39ff:feff:13/64"],
-    "state": "up", "master": "evpn-vrf", "timestamp": 1616681582325}, {"namespace":
-    "ospf-ibgp", "hostname": "leaf03", "ifname": "vlan13-v0", "ipAddressList": ["172.16.1.1/24"],
-    "macaddr": "44:39:39:ff:00:13", "ip6AddressList": ["fe80::4639:39ff:feff:13/64"],
-    "state": "up", "master": "evpn-vrf", "timestamp": 1616681582391}, {"namespace":
-    "ospf-ibgp", "hostname": "leaf04", "ifname": "vlan13-v0", "ipAddressList": ["172.16.1.1/24"],
-    "macaddr": "44:39:39:ff:00:13", "ip6AddressList": ["fe80::4639:39ff:feff:13/64"],
-    "state": "up", "master": "evpn-vrf", "timestamp": 1616681582523}, {"namespace":
-    "ospf-ibgp", "hostname": "leaf01", "ifname": "vlan13-v0", "ipAddressList": ["172.16.1.1/24"],
-    "macaddr": "44:39:39:ff:00:13", "ip6AddressList": ["fe80::4639:39ff:feff:13/64"],
-    "state": "up", "master": "evpn-vrf", "timestamp": 1616681582844}]'
+  output: '[]'
 - command: address show --address="172.16.1.1/32 172.16.2.104 44:38:39:00:00:1d"  --format=json
-  data-directory: tests/data/multidc/parquet-out
+  data-directory: tests/data/ospf-ibgp/parquet-out
   marks: address show cumulus filter
-  output: '[{"namespace": "ospf-single", "hostname": "leaf01", "ifname": "swp3", "ipAddressList":
-    "", "macaddr": "44:38:39:00:00:1d", "ip6AddressList": [], "state": "down", "master":
-    "", "timestamp": 1616352404640}, {"namespace": "dual-evpn", "hostname": "server104",
-    "ifname": "bond0", "ipAddressList": "172.16.2.104/24", "macaddr": "52:54:00:40:cd:95",
-    "ip6AddressList": [], "state": "up", "master": "", "timestamp": 1616644822255},
-    {"namespace": "dual-evpn", "hostname": "leaf01", "ifname": "swp4", "ipAddressList":
-    "", "macaddr": "44:38:39:00:00:1d", "ip6AddressList": [], "state": "up", "master":
-    "peerlink", "timestamp": 1616644823051}, {"namespace": "dual-evpn", "hostname":
-    "leaf01", "ifname": "swp3", "ipAddressList": "", "macaddr": "44:38:39:00:00:1d",
-    "ip6AddressList": [], "state": "up", "master": "peerlink", "timestamp": 1616644823051},
-    {"namespace": "dual-evpn", "hostname": "leaf01", "ifname": "peerlink", "ipAddressList":
-    "", "macaddr": "44:38:39:00:00:1d", "ip6AddressList": [], "state": "up", "master":
-    "bridge", "timestamp": 1616644823051}, {"namespace": "dual-evpn", "hostname":
-    "leaf01", "ifname": "peerlink.4094", "ipAddressList": "169.254.1.1/30", "macaddr":
-    "44:38:39:00:00:1d", "ip6AddressList": ["fe80::4638:39ff:fe00:1d/64"], "state":
-    "up", "master": "", "timestamp": 1616644823051}, {"namespace": "ospf-ibgp", "hostname":
-    "server104", "ifname": "bond0", "ipAddressList": "172.16.2.104/24", "macaddr":
-    "52:54:00:0d:8c:4f", "ip6AddressList": [], "state": "up", "master": "", "timestamp":
-    1616681581517}]'
+  output: '[]'
 - command: address show --address="44:38:39:00:00:23"  --format=json
-  data-directory: tests/data/multidc/parquet-out
+  data-directory: tests/data/ospf-ibgp/parquet-out
   marks: address show cumulus filter
-  output: '[{"namespace": "dual-evpn", "hostname": "leaf03", "ifname": "swp1", "ipAddressList":
-    [], "macaddr": "44:38:39:00:00:23", "ip6AddressList": ["fe80::4638:39ff:fe00:23/64"],
-    "state": "up", "master": "", "timestamp": 1616644822941}]'
+  output: '[]'
 - command: address show --address="2001:db8::21/128"  --format=json
   data-directory: tests/data/basic_dual_bgp/parquet-out
   marks: address show cumulus filter

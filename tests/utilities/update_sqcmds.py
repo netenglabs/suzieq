@@ -7,15 +7,14 @@ import shlex
 import argparse
 from subprocess import check_output, CalledProcessError
 import logging
-from tests.conftest import suzieq_cli_path, create_dummy_config_file
+from tests import conftest
 import tempfile
-from suzieq.utils import load_sq_config
 
 
 def create_config(testvar):
     if 'data-directory' in testvar:
         # We need to create a tempfile to hold the config
-        tmpconfig = load_sq_config(config_file=create_dummy_config_file())
+        tmpconfig = conftest.get_dummy_config()
         tmpconfig['data-directory'] = testvar['data-directory']
 
         tf = tempfile.NamedTemporaryFile(delete=False)
@@ -70,7 +69,7 @@ def reset_test(test):
 
 if __name__ == '__main__':
 
-    sqcmd_path = [sys.executable, suzieq_cli_path]
+    sqcmd_path = [sys.executable, conftest.suzieq_cli_path]
     parser = argparse.ArgumentParser()
 
     parser.add_argument('--filename', '-f', type=str, required=True)
