@@ -9,12 +9,13 @@ from subprocess import check_output, CalledProcessError
 import logging
 from tests import conftest
 import tempfile
+from suzieq.utils import load_sq_config
 
 
 def create_config(testvar):
     if 'data-directory' in testvar:
         # We need to create a tempfile to hold the config
-        tmpconfig = conftest.get_dummy_config()
+        tmpconfig = load_sq_config(conftest.create_dummy_config_file())
         tmpconfig['data-directory'] = testvar['data-directory']
 
         tf = tempfile.NamedTemporaryFile(delete=False)

@@ -1,20 +1,16 @@
 import os
-import shlex
 import glob
 import shutil
-import signal
 import sys
 import yaml
 import json
-from subprocess import check_output, check_call, CalledProcessError, Popen, PIPE, STDOUT
-from collections import Counter
+from subprocess import check_output, check_call, CalledProcessError, STDOUT
 import time
 import pytest
-from _pytest.mark.structures import Mark, MarkDecorator
 from suzieq.cli.sqcmds import *
+from suzieq.utils import load_sq_config
 from tests import conftest
 import logging
-import random
 
 # This is not just a set of tests, it will also update
 #  the data collected for other test_sqcmds tests
@@ -44,7 +40,7 @@ def copytree(src, dst, symlinks=False, ignore=None):
 
 def create_config(t_dir, suzieq_dir):
     # We need to create a tempfile to hold the config
-    tmpconfig = conftest.get_dummy_config()
+    tmpconfig = load_sq_config(conftest.create_dummy_config_file())
     tmpconfig['data-directory'] = f"{t_dir}/parquet-out"
     tmpconfig['service-directory'] = f"{suzieq_dir}/{tmpconfig['service-directory']}"
     tmpconfig['schema-directory'] = f"{suzieq_dir}/{tmpconfig['schema-directory']}"
