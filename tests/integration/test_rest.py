@@ -4,9 +4,10 @@ import yaml
 from fastapi.testclient import TestClient
 import subprocess
 import requests
+from time import sleep
 
 from tests.conftest import (cli_commands, create_dummy_config_file,
-                            suzieq_rest_server_path, API_KEY)
+                            suzieq_rest_server_path)
 from tests import conftest
 from suzieq.utils import load_sq_config
 from suzieq.restServer.query import app, get_configured_api_key, API_KEY_NAME
@@ -391,6 +392,7 @@ def test_server_exec():
     proc = subprocess.Popen(server_cmd_args)
 
     # Try a request from the server
+    sleep(5)
     resp = requests.get(f'https://localhost:8000/docs', verify=False)
 
     proc.kill()
