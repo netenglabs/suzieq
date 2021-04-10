@@ -55,7 +55,7 @@ Once the command completes, you have the main programs of suzieq available for u
 * suzieq-cli: For running the CLI
 * sq-rest-server: For running the REST API server
 
-[The official documentation is at suzieq.readthedocs.io](https://suzieq.readthedocs.io/en/latest/) 
+[The official documentation is at suzieq.readthedocs.io](https://suzieq.readthedocs.io/en/latest/), and you can watch the screencasts about Suzieq on (Youtube)[https://www.youtube.com/results?search_query=netenglabs].
 
 # Analysis
 
@@ -99,13 +99,13 @@ We're also looking for collaborators to help us make Suzieq a truly useful multi
 
 # Latest Release
 
-The latest release is 0.11.0 and the official release notes are [here](https://suzieq.readthedocs.io/en/latest/release-notes/).
+The latest release is 0.11.1 and the official release notes are [here](https://suzieq.readthedocs.io/en/latest/release-notes/).
 
 # Engage
 
 You can join the conversation via [slack](https://join.slack.com/t/netenglabs/shared_invite/zt-g64xa6lc-SeP2OAj~3uLbgOWJniLslA). Send email to Dinesh or Justin with the email address to send the Slack invitation to.
 
-# Additional Documentation
+# Additional Documentation & Screencasts
 
 We've done some blogging about Suzieq:
 
@@ -113,6 +113,8 @@ We've done some blogging about Suzieq:
 * [10ish ways to explore your network with Suzieq](https://elegantnetwork.github.io/posts/10ish_ways_to_explore_your_network_with_Suzieq/)
 * [Questions to Suzieq](https://elegantnetwork.github.io/posts/10qa-suzieq/)
 * [Time in Suzieq](https://elegantnetwork.github.io/posts/time-suzieq/)
+
+We've also been adding screencasts on (Youtube)[https://www.youtube.com/results?search_query=netenglabs].
 
 # Suzieq Priorities
 

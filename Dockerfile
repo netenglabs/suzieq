@@ -10,14 +10,14 @@ RUN mkdir -p /suzieq/
 WORKDIR /suzieq
 
 COPY dist/suzieq-0.11.0-py3-none-any.whl  /tmp/
-RUN pip install /tmp//suzieq-0.11.0-py3-none-any.whl
+RUN pip install /tmp//suzieq-0.11.1-py3-none-any.whl
 COPY suzieq/config/etc/suzieq-cfg.yml /root/.suzieq/suzieq-cfg.yml
 
 # Certificates and such for REST server
 #COPY logo-small.jpg /suzieq
 
 # Copy parquet files for demo
-#COPY ./parquet /suzieq/parquet
+# COPY ./parquet /suzieq/parquet
 
 WORKDIR /suzieq
 
@@ -29,5 +29,5 @@ ENTRYPOINT ["/bin/bash"]
 # USER 1001
 
 LABEL name=suzieq-demo
-LABEL version=0.11.0
+LABEL version=0.11.1
 LABEL description="Network Observability Tool"
