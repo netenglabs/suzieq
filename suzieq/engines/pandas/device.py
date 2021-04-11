@@ -39,9 +39,10 @@ class DeviceObj(SqPandasEngine):
             columns='namespace hostname status'.split())
 
         if not poller_df.empty:
-            df = df.merge(poller_df, left_on=['namespace', 'hostname'],
-                          right_on=['namespace', 'hostname'],
-                          how='outer', suffixes=['', '_y'])  \
+            # Merge with poller_df as left DF so that we always end up with
+            # namespace and hostname as the leftmost columns
+            df = poller_df.merge(df, on=['namespace', 'hostname'],
+                                 how='outer', suffixes=['_y', ''])  \
                 .fillna({'bootupTimestamp': 0, 'timestamp': 0,
                          'active': True}) \
                 .fillna('N/A')
