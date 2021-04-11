@@ -46,7 +46,7 @@ class DeviceObj(SqPandasEngine):
                          'active': True}) \
                 .fillna('N/A')
 
-            df.status = np.where(df['status_y'] != 0, 'pollfail',
+            df.status = np.where(df['status_y'] != 0, 'neverpoll',
                                  df['status'])
             df.timestamp = np.where(df['timestamp'] == 0,
                                     df['timestamp_y'], df['timestamp'])
@@ -71,7 +71,8 @@ class DeviceObj(SqPandasEngine):
 
         self._summarize_on_add_with_query = [
             ('downDeviceCnt', 'status == "dead"', 'hostname', 'nunique'),
-            ('pollerFailDeviceCnt', 'status == "pollfail"', 'hostname', 'nunique'),
+            ('unpolledDeviceCnt', 'status == "neverpoll"', 'hostname',
+             'nunique'),
         ]
 
         self._summarize_on_add_list_or_count = [
@@ -84,7 +85,7 @@ class DeviceObj(SqPandasEngine):
         self.summary_df = self.iobj.humanize_fields(self.summary_df)
 
         self._summarize_on_add_stat = [
-            ('upTimeStat', 'status != "pollfail"', 'uptime')
+            ('upTimeStat', 'status != "neverpoll"', 'uptime')
         ]
 
         self._gen_summarize_data()
