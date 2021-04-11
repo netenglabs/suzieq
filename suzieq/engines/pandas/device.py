@@ -22,10 +22,11 @@ class DeviceObj(SqPandasEngine):
             addnl_fields.append('active')
             drop_cols.append('active')
 
-        if (not ((columns == ['default']) or (columns == ['*'])) and
-                'address' not in columns):
-            addnl_fields.append('address')
-            drop_cols.append('address')
+        for col in ['namespace', 'hostname', 'status']:
+            if (not ((columns == ['default']) or (columns == ['*'])) and
+                    col not in columns):
+                addnl_fields.append(col)
+                drop_cols.append(col)
 
         df = super().get(active_only=False, addnl_fields=addnl_fields,
                          **kwargs)
@@ -47,12 +48,14 @@ class DeviceObj(SqPandasEngine):
                          'active': True}) \
                 .fillna('N/A')
 
-            df.status = np.where(df['status_y'] != 0, 'neverpoll',
-                                 df['status'])
+            df.status = np.where(
+                (df['status_y'] != 0) & (df['status_y'] != 200),
+                'neverpoll', df['status'])
             df.timestamp = np.where(df['timestamp'] == 0,
                                     df['timestamp_y'], df['timestamp'])
-            df.address = np.where(df['address'] == 'N/A', df['hostname'],
-                                  df['address'])
+            if 'address' in df.columns:
+                df.address = np.where(df['address'] == 'N/A', df['hostname'],
+                                      df['address'])
 
             drop_cols.extend(['status_y', 'timestamp_y'])
 
