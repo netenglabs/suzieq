@@ -626,6 +626,31 @@ def build_query_str(skip_fields: list, schema, **kwargs) -> str:
     return query_str
 
 
+def get_log_file_level(prog: str, cfg: dict, def_logfile: str) -> (str, str):
+    """Get the log file and level for the given program in the config dict
+
+    The logfile is supposed to be defined by a variable called logfile
+    within the hierarchy of the config dictionary. Thus, the poller log file
+    will be {'poller': {'logfile': '/tmp/sq-poller.log'}}, for example.
+
+    :param prog: str, The name of the program. Valid values are poller, 
+                      coaelscer, and rest.
+    :param cfg: dict, The config dictionary
+    :param def_logfile: str, The default log file to return
+    :returns: log file name and log level
+    :rtype: str and str
+
+    """
+    if cfg:
+        logfile = cfg.get(prog, {}).get('logfile', def_logfile)
+        loglevel = cfg.get(prog, {}).get('logging-level', 'WARNING')
+    else:
+        logfile = def_logfile
+        loglevel = 'WARNING'
+
+    return logfile, loglevel
+
+
 def init_logger(logname: str, logfile: str, loglevel: str = 'WARNING',
                 use_stdout: bool = False) -> logging.Logger:
     """Initialize the logger

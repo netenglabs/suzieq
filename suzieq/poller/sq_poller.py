@@ -21,7 +21,7 @@ from suzieq.poller.services import init_services
 
 from suzieq.poller.writer import init_output_workers, run_output_worker
 from suzieq.utils import (load_sq_config, init_logger, ensure_single_instance,
-                          get_sq_install_dir)
+                          get_sq_install_dir, get_log_file_level)
 
 
 async def process_signal(signum, loop):
@@ -146,8 +146,7 @@ async def start_and_monitor_coalescer(config_file: str, cfg: dict,
 
 async def start_poller(userargs, cfg):
 
-    logfile = cfg.get('poller-log-file', '/tmp/sq-poller.log')
-    loglevel = cfg.get("logging-level", "WARNING")
+    logfile, loglevel = get_log_file_level('poller', cfg, '/tmp/sq-poller.log')
     logger = init_logger('suzieq.poller', logfile, loglevel, False)
 
     if userargs.devices_file and userargs.namespace:

@@ -15,7 +15,8 @@ from dateparser import parse
 import pandas as pd
 
 from suzieq.utils import (load_sq_config, Schema, init_logger,
-                          SchemaForTable, ensure_single_instance)
+                          SchemaForTable, ensure_single_instance,
+                          get_log_file_level)
 from suzieq.db import do_coalesce, get_sqdb_engine
 from suzieq.version import SUZIEQ_VERSION
 
@@ -123,9 +124,8 @@ def coalescer_main():
         print(f'Invalid Suzieq config file {userargs.config}')
         sys.exit(1)
 
-    logfile = cfg.get('coalescer', {}).get('logfile',
+    logfile, loglevel = get_log_file_level('coalescer', cfg,
                                            '/tmp/sq-coalescer.log')
-    loglevel = cfg.get('coalescer', {}).get('logging-level', 'DEBUG')
     logger = init_logger('suzieq.coalescer', logfile, loglevel, False)
 
     # Ensure we're the only compacter

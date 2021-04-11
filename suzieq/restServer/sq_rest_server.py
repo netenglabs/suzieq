@@ -5,7 +5,7 @@ import argparse
 import sys
 import yaml
 import os
-from suzieq.utils import load_sq_config, get_sq_install_dir
+from suzieq.utils import load_sq_config, get_sq_install_dir, get_log_file_level
 
 from suzieq.restServer.query import app_init
 
@@ -29,15 +29,7 @@ def get_cert_files(cfg):
     return ssl_keyfile,  ssl_certfile
 
 
-def get_log_file(cfg):
-    tempdir = cfg.get('temp-directory', '/tmp')
-    if not os.path.exists(tempdir):
-        os.makedirs(tempdir, exist_ok=True)
-
-    return f"{tempdir}/sq-rest-server.log"
-
-
-def get_log_config(cfg):
+def get_log_config_level(cfg):
     log_config = uvicorn.config.LOGGING_CONFIG
     log_config['handlers']['access']['class'] = 'logging.handlers.RotatingFileHandler'
     log_config['handlers']['access']['maxBytes'] = 10000000
@@ -46,16 +38,21 @@ def get_log_config(cfg):
     log_config['handlers']['default']['maxBytes'] = 10_000_000
     log_config['handlers']['default']['backupCount'] = 2
 
-    log_config['handlers']['access']['filename'] = get_log_file(cfg)
+    logfile, loglevel = get_log_file_level(
+        'rest', cfg, '/tmp/sq-rest-server.log')
+    log_config['handlers']['access']['filename'] = logfile
     del(log_config['handlers']['access']['stream'])
-    log_config['handlers']['default']['filename'] = get_log_file(cfg)
+    log_config['handlers']['default']['filename'] = logfile
     del(log_config['handlers']['default']['stream'])
 
-    return log_config
+    return log_config, loglevel
 
 
-def rest_main():
-    parser = argparse.ArgumentParser()
+def rest_main(args=None):
+
+    if args is None:
+        args = sys.argv
+    parser = argparse.ArgumentParser(args)
     parser.add_argument(
         "-c",
         "--config",
@@ -71,15 +68,15 @@ def rest_main():
         print('missing API_KEY in config file')
         exit(1)
 
-    log_level = cfg.get('rest', {}).get('logging-level', 'INFO').lower()
+    logcfg, loglevel = get_log_config_level(cfg)
     ssl_keyfile, ssl_certfile = get_cert_files(cfg)
 
     srvr_addr = cfg.get('rest', {}).get('address', '127.0.0.1')
     srvr_port = cfg.get('rest', {}).get('port', 8000)
 
     uvicorn.run(app, host=srvr_addr, port=srvr_port,
-                log_level=log_level,
-                log_config=get_log_config(cfg),
+                log_level=loglevel.lower(),
+                log_config=logcfg,
                 ssl_keyfile=ssl_keyfile,
                 ssl_certfile=ssl_certfile)
 
