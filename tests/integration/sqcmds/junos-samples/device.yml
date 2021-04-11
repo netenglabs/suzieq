@@ -49,10 +49,10 @@ tests:
 - command: device summarize --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: device summarize junos
-  output: '{"junos": {"deviceCnt": 12, "downDeviceCnt": 0, "vendorCnt": {"Juniper":
-    7, "Ubuntu": 5}, "modelCnt": {"vqfx-10000": 7, "vm": 5}, "archCnt": {"": 7, "x86-64":
-    5}, "versionCnt": {"19.4R1.10": 7, "18.04.3 LTS": 5}, "upTimeStat": [135596000,
-    135671584, 135628292]}}'
+  output: '{"junos": {"deviceCnt": 12, "downDeviceCnt": 0, "unpolledDeviceCnt": 0,
+    "vendorCnt": {"Juniper": 7, "Ubuntu": 5}, "modelCnt": {"vqfx-10000": 7, "vm":
+    5}, "archCnt": {"": 7, "x86-64": 5}, "versionCnt": {"19.4R1.10": 7, "18.04.3 LTS":
+    5}, "upTimeStat": [135596000, 135671584, 135628292]}}'
 - command: device summarize --columns="namespace hostname" --format=json
   data-directory: tests/data/junos/parquet-out/
   error:

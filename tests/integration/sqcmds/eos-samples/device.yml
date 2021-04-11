@@ -55,10 +55,10 @@ tests:
 - command: device summarize --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: device summarize eos
-  output: '{"eos": {"deviceCnt": 14, "downDeviceCnt": 0, "vendorCnt": {"Arista": 8,
-    "Ubuntu": 5, "Juniper": 1}, "modelCnt": {"vEOS": 8, "vm": 5, "vqfx-10000": 1},
-    "archCnt": {"x86_64": 8, "x86-64": 5, "": 1}, "versionCnt": {"4.23.5M": 8, "18.04.3
-    LTS": 5, "19.4R1.10": 1}, "upTimeStat": [172855707, 173648000, 172865212]}}'
+  output: '{"eos": {"deviceCnt": 14, "downDeviceCnt": 0, "unpolledDeviceCnt": 0, "vendorCnt":
+    {"Arista": 8, "Ubuntu": 5, "Juniper": 1}, "modelCnt": {"vEOS": 8, "vm": 5, "vqfx-10000":
+    1}, "archCnt": {"x86_64": 8, "x86-64": 5, "": 1}, "versionCnt": {"4.23.5M": 8,
+    "18.04.3 LTS": 5, "19.4R1.10": 1}, "upTimeStat": [172855707, 173648000, 172865212]}}'
 - command: device summarize --columns="namespace hostname" --format=json
   data-directory: tests/data/eos/parquet-out/
   error:

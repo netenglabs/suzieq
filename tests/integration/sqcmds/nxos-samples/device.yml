@@ -60,11 +60,11 @@ tests:
 - command: device summarize --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: device summarize nxos
-  output: '{"nxos": {"deviceCnt": 14, "downDeviceCnt": 0, "vendorCnt": {"Cisco": 8,
-    "Ubuntu": 5, "Juniper": 1}, "modelCnt": {"Nexus9000 C9300v Chassis": 8, "vm":
-    5, "vqfx-10000": 1}, "archCnt": {"Intel Core Processor (Skylake, IBRS)": 8, "x86-64":
-    5, "": 1}, "versionCnt": {"9.3(4)": 8, "18.04.3 LTS": 5, "19.4R1.10": 1}, "upTimeStat":
-    [319677828, 323141828, 323092560]}}'
+  output: '{"nxos": {"deviceCnt": 14, "downDeviceCnt": 0, "unpolledDeviceCnt": 0,
+    "vendorCnt": {"Cisco": 8, "Ubuntu": 5, "Juniper": 1}, "modelCnt": {"Nexus9000
+    C9300v Chassis": 8, "vm": 5, "vqfx-10000": 1}, "archCnt": {"Intel Core Processor
+    (Skylake, IBRS)": 8, "x86-64": 5, "": 1}, "versionCnt": {"9.3(4)": 8, "18.04.3
+    LTS": 5, "19.4R1.10": 1}, "upTimeStat": [319677828, 323141828, 323092560]}}'
 - command: device summarize --columns="namespace hostname" --format=json
   data-directory: tests/data/nxos/parquet-out/
   error:
