@@ -3,6 +3,7 @@ from dataclasses import dataclass
 import os
 
 import pandas as pd
+import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
 
@@ -35,34 +36,54 @@ class TopologyObj(SqPandasEngine):
         """Initialize the dataframes used"""
 
         self._if_df = interfaces.IfObj(
-            context=self.ctxt).get(namespace=namespaces)
+            context=self.ctxt).get(
+                namespace=namespaces, state="up",
+                columns=['namespace', 'hostname', 'ifname', 'ipAddressList',
+                         'ip6AddressList', 'state', 'type', 'master', 'macaddr'])
 
         if self._if_df.empty:
             raise EmptyDataframeError(f"No interface found for {namespaces}")
+        self._if_df['vrf'] = self._if_df.apply(
+            lambda x: x['master'] if x['type'] not in ['bridge', 'bond_slave']
+            else 'default', axis=1)
+        self._if_df['vrf'] = np.where(self._if_df['vrf'] == '', 'default',
+                                      self._if_df['vrf'])
+        self._if_df = self._if_df.explode('ipAddressList') \
+                                 .explode('ip6AddressList') \
+                                 .fillna({'ipAddressList': '0.0.0.0/0',
+                                          'ip6AddressList': '::0/0'})
+        self._if_df['plen'] = self._if_df.ipAddressList.str.split('/').str[1]
+        self._if_df['ipAddress'] = self._if_df.ipAddressList.str.split(
+            '/').str[0]
+        self._if_df = self._if_df.drop(
+            columns=['ipAddressList', 'ip6AddressList'])
+
         self.nses = self._if_df['namespace'].unique()
 
     def get(self, **kwargs):
         self._namespaces = kwargs.get("namespace", self.ctxt.namespace)
+        hostname = kwargs.pop('hostname', [])
+        user_query = kwargs.pop('query_str', '')
+        polled = kwargs.pop('polled', None)
 
         self._init_dfs(self._namespaces)
         self.lsdb = pd.DataFrame()
         self._a_df = pd.DataFrame()
         self._ip_table = pd.DataFrame()
-        polled_neighbor = kwargs.pop('polled_neighbor', None)
 
         self.services = [
-            Services('arpnd', arpnd.ArpndObj, {}, ['ifname'],
+            Services('arpnd', arpnd.ArpndObj, {}, ['ifname', 'vrf'],
                      self._augment_arpnd_show),
+            Services('lldp', lldp.LldpObj, {}, ['ifname', 'vrf'],
+                     self._augment_lldp_show),
             Services('bgp', bgp.BgpObj, {'state': 'Established',
                                          'columns': ['*']},
                      ['vrf'],
                      self._augment_bgp_show),
             # Services('evpnVni', evpnVni.EvpnvniObj, {}, 'peerHostname',
             #    'vni', self._augment_evpnvni_show),
-            Services('lldp', lldp.LldpObj, {}, ['ifname'],
-                     self._agument_lldp_show),
-            Services('ospf', ospf.OspfObj, {}, ['ifname', 'vrf'],
-                     self._augment_ospf_show),
+            Services('ospf', ospf.OspfObj, {'state': 'full'},
+                     ['ifname', 'vrf'], self._augment_ospf_show),
         ]
 
         key = 'peerHostname'
@@ -85,23 +106,49 @@ class TopologyObj(SqPandasEngine):
                 else:
                     self.lsdb = self.lsdb.merge(df, how='outer')
 
-        self._find_polled_neighbors(polled_neighbor)
-        self.lsdb = self.lsdb[~self.lsdb.hostname.isna()].drop_duplicates()
+        self._find_polled_neighbors(polled)
+        if self.lsdb.empty:
+            return self.lsdb
 
-        return self.lsdb
+        self.lsdb = self.lsdb[~self.lsdb.hostname.isna()] \
+                        .drop_duplicates() \
+                        .fillna({'peerHostname': 'unknown',
+                                 'ifname': 'unknown', 'arpnd': False,
+                                 'bgp': False, 'ospf': False,
+                                 'lldp': False, 'vrf': 'N/A'})
 
-    def _find_polled_neighbors(self, polled_neighbor):
+        # Apply the appropriate filters
+        if not self.lsdb.empty:
+            if hostname:
+                self.lsdb = self.lsdb.query(f'hostname.isin({hostname})') \
+                                     .reset_index()
+
+        if user_query and not self.lsdb.empty:
+            self.lsdb = self.lsdb.query(user_query).reset_index(drop=True)
+
+        if not self.lsdb.empty:
+            self.lsdb = self.lsdb.query('peerHostname != "unknown"') \
+                                 .reset_index(drop=True)
+
+        cols = self.lsdb.columns.tolist()
+        if 'timestamp' in self.lsdb.columns:
+            cols.remove('timestamp')
+            cols.append('timestamp')
+
+        return self.lsdb[cols]
+
+    def _find_polled_neighbors(self, polled):
         devices = device.DeviceObj(context=self.ctxt).get(namespace=self._namespaces,
                                                           columns=['namespace', 'hostname'])
-        devices = devices[['namespace', 'hostname']].rename(
-            columns={'hostname': 'peerHostname'})
-        self.lsdb = self.lsdb.merge(devices, how='outer',
-                                    indicator=True)
-        self.lsdb = self.lsdb.rename(columns={'_merge': 'polled_neighbor'})
-        self.lsdb.polled_neighbor = self.lsdb.polled_neighbor == 'both'
+        self.lsdb = devices.merge(self.lsdb, how='outer',
+                                  indicator=True)
+        self.lsdb = self.lsdb.rename(columns={'_merge': 'polled'})
+        self.lsdb.polled = self.lsdb.polled == 'both'
 
-        if polled_neighbor != '' and polled_neighbor is not None:
-            self.lsdb = self.lsdb[self.lsdb.polled_neighbor == polled_neighbor]
+        if polled != '' and polled is not None:
+            self.lsdb = self.lsdb[self.lsdb.polled == polled]
+            if self.lsdb.empty:
+                self.lsdb = pd.DataFrame()
 
     def _create_graphs_from_lsdb(self):
         self.graphs = {}
@@ -113,26 +160,20 @@ class TopologyObj(SqPandasEngine):
     # TODO: eventually this needs to move to ospf after we figure out the
     #   schema augmentation story
     def _augment_ospf_show(self, df):
-        # if not df.empty:
-        #    df = df.merge(self.ip_table, on=['namespace', 'peerIP'],
-        #                  how='left').dropna(how='any')
         if not df.empty:
             df = df.query('adjState != "passive"').reset_index(drop=True)
 
         return df
 
-    def _agument_lldp_show(self, df):
+    def _augment_lldp_show(self, df):
         if not df.empty:
             df = df[df.peerHostname != '']
+            df = df.merge(
+                self._if_df[['namespace', 'hostname', 'ifname', 'vrf']],
+                on=['namespace', 'hostname', 'ifname'])
         return df
 
     def _augment_bgp_show(self, df):
-        if not df.empty:
-            pass
-            df['ifname'] = df['ifname'].str.replace('None', '', regex=False)
-            df['ifname'] = df['ifname'].str.replace(
-                'loopback\d*', '', regex=True)
-            df = df.rename(columns={'ifname': 'direct If'})
         return df
 
     def _augment_evpnvni_show(self, df):
@@ -146,20 +187,41 @@ class TopologyObj(SqPandasEngine):
     def _augment_arpnd_show(self, df):
 
         if not df.empty:
+            # weed out entries that are not reachable
+            df = df.query('state != "failed"').reset_index(drop=True)
+            # Get the VRF
+            df = df.merge(
+                self._if_df[['namespace', 'hostname', 'ifname', 'master']],
+                left_on=['namespace', 'hostname', 'oif'],
+                right_on=['namespace', 'hostname', 'ifname'],
+                suffixes=['', '_y'], how='outer') \
+                .rename(columns={'master': 'vrf'}) \
+                .dropna(subset=['ipAddress'])
+
+            df['vrf'] = np.where(df['vrf'] == '', 'default', df['vrf'])
+            df = df.drop(columns=['vlan', 'oif', 'mackey', 'remoteVtepIp',
+                                  'timestamp_y'], errors='ignore')
+
             # address are where I find the neighbor, these own the mac
             addr = self.address_df[['namespace', 'hostname', 'macaddr']] \
                 .drop_duplicates() \
                 .rename(columns={'hostname': 'peerHostname'})
-            df = df.merge(addr, on=['namespace', 'macaddr'], how='left').dropna(how='any') \
-                .rename(columns={'oif': 'ifname'}) \
-                .drop_duplicates()
+            df = df.merge(addr, on=['namespace', 'macaddr'], how='left') \
+                   .dropna(how='any') \
+                   .rename(columns={'oif': 'ifname'}) \
+                   .drop_duplicates()
 
-            # these are the macs we that are learned via EVPN so we don't want
-            evpn_macs = macs.MacsObj(context=self.ctxt).get(namespace=self._namespaces) \
-                .query('remoteVtepIp != ""')[['namespace', 'hostname', 'macaddr']]
-            df = df.merge(evpn_macs, on=['namespace', 'hostname', 'macaddr'], how='outer', indicator=True) \
-                   .query('_merge=="left_only"') \
-                   .drop(columns=['_merge'])
+            # Use MAC table entries to find the local port for a MAC on an SVI
+            mac_df = macs.MacsObj(context=self.ctxt) \
+                         .get(namespace=self._namespaces, localOnly=True,
+                              columns=['namespace', 'hostname', 'vlan',
+                                       'macaddr', 'oif'])
+            df = df.merge(mac_df,
+                          on=['namespace', 'hostname', 'macaddr'],
+                          how='outer') \
+                .dropna(subset=['ipAddress'])
+            df['ifname'] = np.where(
+                df['oif'].isnull(), df['ifname'], df['oif'])
 
         self._arpnd_df = df
         return self._arpnd_df
@@ -167,8 +229,7 @@ class TopologyObj(SqPandasEngine):
     @property
     def address_df(self):
         if self._a_df.empty:
-            self._a_df = address.AddressObj(
-                context=self.ctxt).get(namespace=self._namespaces)
+            self._a_df = self._if_df
         return self._a_df
 
     @property
@@ -193,12 +254,12 @@ class TopologyObj(SqPandasEngine):
         self.get(**kwargs)
         if self.lsdb.empty:
             return self.lsdb
-        self._create_graphs_from_lsdb()
+
         self.ns = {}
         for i in self.nses:
             self.ns[i] = {}
+        self._create_graphs_from_lsdb()
         self._analyze_lsdb_graph()
-        self._make_images()
 
         return pd.DataFrame(self.ns)
 

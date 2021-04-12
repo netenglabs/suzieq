@@ -321,7 +321,7 @@ async def query_topology(verb: PathVerbs,
                          hostname: str = None,
                          start_time: str = "", end_time: str = "",
                          view: str = "latest", namespace: str = None,
-                         columns: str = None, polled_neighbor: str = None,
+                         columns: str = None, polled: bool = None,
                          query_str: str = None,
                          ):
     function_name = inspect.currentframe().f_code.co_name

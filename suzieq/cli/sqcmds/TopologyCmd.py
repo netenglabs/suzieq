@@ -32,8 +32,8 @@ class TopologyCmd(SqCommand):
         )
 
     @command("show")
-    @argument("polled_neighbor", description="Is the neighbor a device Suzieq polls")
-    def show(self, polled_neighbor: bool = ''):
+    @argument("polled", description="Is the device polled by Suzieq")
+    def show(self, polled: bool = ''):
         """show table of topology information"""
         # Get the default display field names
         if self.columns is None:
@@ -47,21 +47,19 @@ class TopologyCmd(SqCommand):
 
         try:
             df = self.sqobj.get(
-                namespace=self.namespace, 
-                polled_neighbor=polled_neighbor,
+                namespace=self.namespace,
+                polled=polled,
                 hostname=self.hostname,
             )
         except Exception as e:
             df = pd.DataFrame({'error': ['ERROR: {}'.format(str(e))]})
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        if not df.empty:
-            return self._gen_output(df)
+        return self._gen_output(df)
 
     @command("summarize")
-    @argument("polled_neighbor", description="Is the neighbor a device Suzieq polls")
-    def summarize(self, src: str = "", dest: str = "", 
-                    polled_neighbor: bool = ''):
+    @argument("polled", description="Is the device polled by Suzieq")
+    def summarize(self, src: str = "", dest: str = "", polled: bool = ''):
         """Summarize topologys topology information"""
         # Get the default display field names
         if self.columns is None:
@@ -75,8 +73,8 @@ class TopologyCmd(SqCommand):
 
         try:
             df = self.sqobj.summarize(
-                namespace=self.namespace, 
-                polled_neighbor=polled_neighbor
+                namespace=self.namespace,
+                polled=polled
             )
         except Exception as e:
             df = pd.DataFrame({'error': ['ERROR: {}'.format(str(e))]})
@@ -84,7 +82,7 @@ class TopologyCmd(SqCommand):
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         if not df.empty:
             return self._gen_output(df)
-        
+
     @command("unique", help="find the list of unique items in a column")
     def unique(self, **kwargs):
 
