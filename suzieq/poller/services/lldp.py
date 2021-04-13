@@ -1,5 +1,6 @@
 from suzieq.poller.services.service import Service
 import re
+import numpy as np
 
 
 class LldpService(Service):
@@ -13,8 +14,12 @@ class LldpService(Service):
 
         devtype = self._get_devtype_from_input(raw_data)
 
-        for entry in processed_data:
+        drop_indices = []
+        for i, entry in enumerate(processed_data):
             if not entry:
+                continue
+            if entry.get('_chassisType', '') == 'Mac Address':
+                drop_indices.append(i)
                 continue
             if 'peerIfname' in entry:
                 entry['subtype'] = 'ifname'
@@ -35,4 +40,6 @@ class LldpService(Service):
                 entry['ifname'] = re.sub(
                     r'^Eth?(\d)', 'Ethernet\g<1>', entry['ifname'])
 
+        if processed_data:
+            processed_data = np.delete(processed_data, drop_indices).tolist()
         return processed_data

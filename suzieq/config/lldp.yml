@@ -86,6 +86,7 @@ apply:
       - command: show lldp neighbors | json native
         normalize: 'TABLE_nbor/ROW_nbor/*?/[
         "chassis_id: peerHostname",
+        "chassis_type: _chassisType",
         "l_port_id: ifname",
         "port_type: subtype",
         "port_id: peerIfname",
