@@ -367,6 +367,26 @@ class InterfaceService(Service):
 
     def _clean_nxos_data(self, processed_data, raw_data):
         """Complex cleanup of NXOS interface data"""
+
+        def fix_nxos_speed(speed: str):
+            if isinstance(speed, str):
+                speed = speed.strip()
+                if speed.startswith("unknown enum") or (speed == "auto"):
+                    speed = '0'
+                elif speed.startswith('a-'):
+                    speed = speed[2:]
+
+                if speed.endswith('G'):
+                    speed = int(speed[:-1])*1000
+                elif speed.endswith('Kbit'):
+                    speed = int(speed.split()[0])/1000
+                elif speed:
+                    speed = int(speed)
+                else:
+                    speed = 0
+
+            return speed
+
         new_entries = []
         unnum_intf = {}
         drop_indices = []
@@ -382,42 +402,48 @@ class InterfaceService(Service):
                 if old_entry:
                     if entry['adminState']:
                         old_entry['adminState'] = entry['adminState']
-                    old_entry['mtu'] = entry.get('mtu', 0)
+                    old_entry['mtu'] = entry.get('mtu', 0) or old_entry['mtu']
                     old_entry['macaddr'] = convert_macaddr_format_to_colon(
                         entry.get('macaddr', '0000.0000.0000'))
-                    if old_entry.get('_portchannel'):
-                        pc_entry = entry_dict.get(old_entry['master'], None)
-                        if pc_entry:
-                            # The later ethernet port entries' MAC addr wins
-                            # over the earlier ones
-                            pc_entry['mtu'] = entry.get('mtu', 0)
-                            pc_entry['macaddr'] = entry['macaddr']
+                    old_entry['numChanges'] = entry['numChanges'] or 0
+                    if entry.get('speed', ''):
+                        old_entry['speed'] = fix_nxos_speed(entry.get('speed'))
+
+                    lastChange = entry.get('statusChangeTimestamp', '')
+                    if lastChange:
+                        if any(x in lastChange for x in 'dwmy'):
+                            lastChange = f'{lastChange} hours ago'
+
+                        lastChange = parse(
+                            lastChange,
+                            settings={'RELATIVE_BASE': datetime.fromtimestamp(
+                                (raw_data[0]['timestamp'])/1000),
+                                'TIMEZONE': 'UTC'})
+                    if lastChange:
+                        old_entry['statusChangeTimestamp'] = int(
+                            lastChange.timestamp() * 1000)
+                else:
+                    entry['statusChangeTimestamp'] = 0
+
                 drop_indices.append(entry_idx)
                 continue
 
             entry_dict[entry['ifname']] = entry
 
-            # artificial field for comparison with previous poll result
             entry["statusChangeTimestamp1"] = entry.get(
                 "statusChangeTimestamp", '')
 
-            entry['state'] = entry.get('state', 'unknown').lower()
-            if entry.get('vrf', 'default') != 'default':
+            if entry.get('vrf', ''):
                 entry['master'] = entry['vrf']
-            else:
-                entry['master'] = ''
 
             if 'routeDistinguisher' in entry:
+                # This is a VRF entry
                 entry['macaddr'] = "00:00:00:00:00:00"
                 entry['adminState'] = entry.get("state", "up").lower()
+                entry['state'] = entry.get('state', 'down').lower()
                 continue
 
             if 'reason' in entry:
-                if entry['reason'] == '"Administratively down':
-                    entry['adminState'] = 'down'
-                else:
-                    entry['adminState'] = 'up'
-
                 if entry['reason'] is not None:
                     entry['reason'] = entry['reason'].lower()
 
@@ -428,7 +454,7 @@ class InterfaceService(Service):
             if portmode == 'access' or portmode == 'trunk':
                 entry['master'] = 'bridge'
 
-            portchan = entry.get('_portchannel', '')
+            portchan = entry.get('_portchannel', 0)
             if portchan:
                 entry['master'] = f'port-channel{portchan}'
                 entry['type'] = 'bond_slave'
@@ -436,7 +462,10 @@ class InterfaceService(Service):
             if entry['ifname'].startswith('port-channel'):
                 entry['type'] = 'bond'
 
-            if 'ipAddressList' in entry:
+            if not entry.get('macaddr', ''):
+                entry['macaddr'] = "00:00:00:00:00:00"
+
+            if entry.get('ipAddressList', None):
                 pri_ipaddr = f"{entry['ipAddressList']}/{entry['_maskLen']}"
                 ipaddr = [pri_ipaddr]
                 for i, elem in enumerate(entry.get('_secIPs', [])):
@@ -446,7 +475,7 @@ class InterfaceService(Service):
             else:
                 entry['ipAddressList'] = []
 
-            if 'ip6AddressList' in entry:
+            if entry.get('ip6AddressList', None):
                 if '_linklocal' in entry:
                     entry['ip6AddressList'].append(entry['_linklocal'])
             else:
@@ -473,21 +502,14 @@ class InterfaceService(Service):
                 unnum_intf[entry['ifname']] = [pri_ipaddr]
 
             speed = entry.get('speed', '')
-            if isinstance(speed, str):
-                if speed.startswith("unknown enum") or (speed == "auto"):
-                    speed = '0'
-                elif speed.startswith('a-'):
-                    speed = speed[2:]
-
-                if speed.endswith('G'):
-                    speed = int(speed[:-1])*1000
-                else:
-                    speed = int(speed)
-
-            entry['speed'] = speed
+            if speed:
+                entry['speed'] = fix_nxos_speed(speed)
 
             entry['type'] = entry.get('type', '').lower()
             if entry['type'] == 'eth':
+                entry['type'] = 'ethernet'
+
+            if 'ethernet' in entry.get('type', ''):
                 entry['type'] = 'ethernet'
 
             if entry['ifname'].startswith('Vlan'):
@@ -507,6 +529,11 @@ class InterfaceService(Service):
         for idx in unnum_intf_entry_idx:
             entry = processed_data[idx]
             entry['ipAddressList'] = unnum_intf.get(entry['_unnum_intf'], [])
+
+        # Fix type of mgmt0
+        entry = entry_dict['mgmt0']
+        if entry:
+            entry['type'] = 'ethernet'
 
         if drop_indices:
             processed_data = np.delete(processed_data, drop_indices).tolist()

@@ -2,23 +2,62 @@ Value Required ifname (\S+)
 Value macaddr ([0-9a-f.]*)
 Value mtu (\d+)
 Value adminState (\w+)
+Value state (\w+)
+Value numChanges (\d+)
+Value statusChangeTimestamp (.*)
+Value speed ([^,]+)
 
 Start
-  ^${ifname} is.*$$
+  ^\S+ is -> Continue.Record
+  ^${ifname} is ${adminState}.*,\s+line\s+protocol\s+is\s+${state}.*$$
+  ^${ifname} is ${state}.*$$
   ^admin\s+state\s+is\s+${adminState},.*$$
   ^\s+Hardware.*address: ${macaddr}.*$$
-  ^\s+MTU ${mtu} bytes,.*$$ -> Record
+  ^\s+MTU ${mtu} bytes,\s+BW\s+${speed},.*$$
+  ^\s+Last\s+link\s+flapped\s+${statusChangeTimestamp}.*$$
+  ^\s+${numChanges}\s+interface\s+resets
 
+# command is : show interface | egrep '^\w|Hardware|MTU|reset'
+#mgmt0 is up
+#admin state is up,
+#  Hardware: Ethernet, address: 4438.3901.0201 (bia 4438.3901.0201)
+#  Internet Address is 10.255.2.184/24
+#  MTU 1500 bytes, BW 1000000 Kbit , DLY 10 usec
+#  Encapsulation ARPA, medium is broadcast
+#  Auto-Negotiation is turned on
+#  Auto-mdix is turned off
+#  EtherType is 0x0000 
 #Ethernet1/1 is up
 #admin state is up, Dedicated Interface
 #  Hardware: 100/1000/10000 Ethernet, address: 4401.0201.1b08 (bia 4401.0201.0101)
 #  MTU 9200 bytes, BW 1000000 Kbit , DLY 10 usec
+#  Last link flapped 21:47:58
+#  5 interface resets
 #Ethernet1/2 is up
 #admin state is up, Dedicated Interface
 #  Hardware: 100/1000/10000 Ethernet, address: 4401.0201.1b08 (bia 4401.0201.0102)
 #  MTU 9200 bytes, BW 1000000 Kbit , DLY 10 usec
+#  Last link flapped 2week(s) 4day(s)
+#  2 interface resets
 #Ethernet1/20 is down (Administratively down)
 #admin state is down, Dedicated Interface
 #  Hardware: 100/1000/10000 Ethernet, address: 4401.0201.0114 (bia 4401.0201.0114)
 #  MTU 1500 bytes, BW 10000000 Kbit , DLY 10 usec
-#
+#  Last link flapped never
+#  0 interface resets
+#port-channel1 is up
+#admin state is up,
+#  Hardware: Port-Channel, address: 4401.0201.0105 (bia 4401.0201.0105)
+#  MTU 9216 bytes, BW 2000000 Kbit , DLY 10 usec
+#  1 interface resets
+#port-channel2 is down (No operational members)
+#admin state is up,
+#  Hardware: Port-Channel, address: 0000.0000.0000 (bia 0000.0000.0000)
+#  MTU 9216 bytes, BW 100000 Kbit , DLY 10 usec
+#  0 interface resets
+#loopback0 is up
+#admin state is up,
+#  Hardware: Loopback
+#  MTU 1500 bytes, BW 8000000 Kbit , DLY 5000 usec
+#Vlan1 is down (Administratively down), line protocol is down, autostate enabled
+#  Hardware is EtherSVI, address is  4401.0201.1b08

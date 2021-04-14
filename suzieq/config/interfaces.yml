@@ -132,12 +132,12 @@ apply:
         "interface: ifname",
         "state: state",
         "svi_admin_state: state?|state",
-        "speed: speed?|0",
+        "speed: speed?|",
         "mtu: mtu?|0",
         "portmode: _portmode?|routed",
-        "portchan: _portchannel?|",
+        "portchan: _portchannel?|0",
         "type: type?|",
-        "vlan: vlan",
+        "vlan: vlan?|0",
         "state_rsn_desc: reason",
         "svi_reason_desc: reason?|reason",
         ]'
@@ -150,11 +150,11 @@ apply:
         "prefix: ipAddressList",
         "masklen: _maskLen",
         "admin-state: adminState",
-        "mtu: mtu",
+        "mtu: mtu?|0",
         "unnum-intf: _unnum_intf?|",
         "TABLE_unnuminf/ROW_unnuminf/[*]?/unnum-child-inf: _child_intf?|[]",
-        "TABLE_secondary_address/ROW_secondary_address/[*]?/prefix1: _secIPs",
-        "TABLE_secondary_address/ROW_secondary_address/[*]?/masklen1: _secmasklens",
+        "TABLE_secondary_address/ROW_secondary_address/[*]?/prefix1: _secIPs?|[]",
+        "TABLE_secondary_address/ROW_secondary_address/[*]?/masklen1: _secmasklens?|[]",
         ]'
 
       - command: show ipv6 interface vrf all | json native
@@ -166,7 +166,7 @@ apply:
         "linklocal-addr: _linklocal"
         ]'
 
-      - command: show interface ethernet regex [1-32]/*|egrep '^Eth|admin state|Hardware|MTU'
+      - command: show interface | egrep '^\w|Hardware|MTU|reset'
         textfsm: textfsm_templates/nxos_show_int_grep.tfsm
         _entryType: mtumac
 
@@ -179,6 +179,6 @@ apply:
           "vrf_state: state",
           "type: type?|vrf",
           "rd: routeDistinguisher",
-          "mtu: mtu?|65536",
-          "vni: vni",
+          "mtu: mtu?|1500",
+          "vni: vni?|0",
         ]'
