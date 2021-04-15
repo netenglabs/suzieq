@@ -1,16 +1,18 @@
-FROM python:3.7.9-slim-buster AS compiler
+FROM python:3.7.10-slim-buster AS compiler
 
 ENV PATH=/root/.local/bin:$PATH
 ENV PYTHONPATH=/root/.local/lib
 
 RUN apt-get update && \
-    pip3 install --upgrade pip
+    pip install --upgrade pip
 
 RUN mkdir -p /suzieq/
 WORKDIR /suzieq
 
-COPY dist/suzieq-0.11.0-py3-none-any.whl  /tmp/
-RUN pip install /tmp//suzieq-0.11.1-py3-none-any.whl
+ARG version
+
+COPY dist/suzieq-$version-py3-none-any.whl  /tmp/
+RUN pip install /tmp//suzieq-$version-py3-none-any.whl
 COPY suzieq/config/etc/suzieq-cfg.yml /root/.suzieq/suzieq-cfg.yml
 
 # Certificates and such for REST server
@@ -28,6 +30,6 @@ ENTRYPOINT ["/bin/bash"]
 
 # USER 1001
 
-LABEL name=suzieq-demo
-LABEL version=0.11.1
+LABEL name=suzieq
+LABEL version=$version
 LABEL description="Network Observability Tool"
