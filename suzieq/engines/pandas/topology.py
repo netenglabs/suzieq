@@ -72,10 +72,11 @@ class TopologyObj(SqPandasEngine):
         self._ip_table = pd.DataFrame()
 
         self.services = [
-            Services('arpnd', arpnd.ArpndObj, {}, ['ifname', 'vrf'],
-                     self._augment_arpnd_show),
             Services('lldp', lldp.LldpObj, {}, ['ifname', 'vrf'],
                      self._augment_lldp_show),
+            Services('arpnd', arpnd.ArpndObj, {},
+                     ['ifname', 'vrf', 'arpndBidir'],
+                     self._augment_arpnd_show),
             Services('bgp', bgp.BgpObj, {'state': 'Established',
                                          'columns': ['*']},
                      ['vrf'],
@@ -116,6 +117,9 @@ class TopologyObj(SqPandasEngine):
                                  'ifname': 'unknown', 'arpnd': False,
                                  'bgp': False, 'ospf': False,
                                  'lldp': False, 'vrf': 'N/A'})
+
+        self.lsdb['vrf'] = np.where(self.lsdb.vrf == "bridge", "-",
+                                    self.lsdb.vrf)
 
         # Apply the appropriate filters
         if not self.lsdb.empty:
@@ -222,6 +226,13 @@ class TopologyObj(SqPandasEngine):
                 .dropna(subset=['ipAddress'])
             df['ifname'] = np.where(
                 df['oif'].isnull(), df['ifname'], df['oif'])
+
+            df['arpndBidir'] = df.apply(
+                lambda x, y: True
+                if not y.query(f'namespace=="{x.namespace}" and '
+                               f'hostname=="{x.peerHostname}" and '
+                               f'peerHostname=="{x.hostname}"').empty
+                else False, args=(df,), axis=1)
 
         self._arpnd_df = df
         return self._arpnd_df
