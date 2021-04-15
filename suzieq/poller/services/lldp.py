@@ -1,6 +1,6 @@
 from suzieq.poller.services.service import Service
+from suzieq.utils import convert_macaddr_format_to_colon
 import re
-import numpy as np
 
 
 class LldpService(Service):
@@ -14,25 +14,28 @@ class LldpService(Service):
 
         devtype = self._get_devtype_from_input(raw_data)
 
-        drop_indices = []
         for i, entry in enumerate(processed_data):
             if not entry:
                 continue
             if entry.get('_chassisType', '') == 'Mac Address':
-                drop_indices.append(i)
-                continue
+                entry['peerHostname'] = convert_macaddr_format_to_colon(
+                    entry.get('peerHostname', '0000.0000.0000'))
             if 'peerIfname' in entry:
-                entry['subtype'] = 'ifname'
-                entry['peerMacaddr'] = '00:00:00:00:00:00'
-                entry['peerIfindex'] = 0
-            elif 'peerMacaddr' in entry:
-                entry['subtype'] = 'macddress'
-                entry['peerIfname'] = '-'
-                entry['peerIfindex'] = 0
-            elif 'peerIfindex' in entry:
-                entry['subtype'] = 'ifindex'
-                entry['peerIfname'] = '-'
-                entry['peerMacaddr'] = '00:00:00:00:00:00'
+                subtype = entry.get('subtype', '')
+                if subtype == 'Mac Address':
+                    entry['subtype'] = 'macddress'
+                    entry['peerMacaddr'] = convert_macaddr_format_to_colon(
+                        entry.get('peerIfname', '0000.0000.0000'))
+                    entry['peerIfname'] = '-'
+                    entry['peerIfindex'] = 0
+                elif subtype == 'ifindex':
+                    entry['subtype'] = 'ifindex'
+                    entry['peerIfname'] = '-'
+                    entry['peerMacaddr'] = '00:00:00:00:00:00'
+                else:
+                    entry['subtype'] = 'ifname'
+                    entry['peerMacaddr'] = '00:00:00:00:00:00'
+                    entry['peerIfindex'] = 0
 
             if devtype == 'nxos':
                 entry['peerHostname'] = re.sub(r'\(.*\)', '',
@@ -40,6 +43,4 @@ class LldpService(Service):
                 entry['ifname'] = re.sub(
                     r'^Eth?(\d)', 'Ethernet\g<1>', entry['ifname'])
 
-        if processed_data:
-            processed_data = np.delete(processed_data, drop_indices).tolist()
         return processed_data
