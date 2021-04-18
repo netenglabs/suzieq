@@ -89,8 +89,8 @@ def page_work(state_container, page_flip: bool):
                        .encode(y='status', x='count:Q', row='namespace',
                                color=alt.Color(
                                    'status',
-                                   scale=alt.Scale(domain=['alive', 'dead'],
-                                                   range=['green', 'red']))
+                                   scale=alt.Scale(domain=['alive', 'dead', 'neverpoll'],
+                                                   range=['green', 'red', 'darkred']))
                                )
         dev_gr.altair_chart(dev_chart)
     else:

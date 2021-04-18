@@ -111,7 +111,8 @@ def color_row(row, **kwargs):
     field = kwargs.pop("field", "state")
     color = kwargs.pop("color", "black")
     bgcolor = kwargs.pop("bgcolor", "yellow")
-    if row[field] == fieldval:
+
+    if row[field] in fieldval:
         return [f"background-color: {bgcolor}; color: {color}"]*len(row)
     else:
         return [""]*len(row)
@@ -139,7 +140,7 @@ def sq_gui_style(df, table, is_assert=False):
     if is_assert:
         if not df.empty:
             return df.style.apply(color_row, axis=1, field='status',
-                                  fieldval='fail', bgcolor='darkred',
+                                  fieldval=['fail'], bgcolor='darkred',
                                   color='white')
         else:
             return df
@@ -156,10 +157,14 @@ def sq_gui_style(df, table, is_assert=False):
 
     elif table == "routes" and 'prefix' in df.columns:
         return df.style.hide_index() \
-            .apply(color_row, axis=1, fieldval='0.0.0.0/0',
+            .apply(color_row, axis=1, fieldval=['0.0.0.0/0'],
                    field='prefix')
     elif table == "interfaces" and 'state' in df.columns:
         return df.style.hide_index().apply(ifstate_red, axis=1)
+    elif table == "device":
+        return df.style.hide_index() \
+            .apply(color_row, axis=1, fieldval=['dead', 'neverpoll'],
+                   field='status', bgcolor='red', color='white')
     else:
         return df.style.hide_index()
 
