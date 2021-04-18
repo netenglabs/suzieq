@@ -38,6 +38,7 @@ class ServiceStats:
     svcQsize: List[float] = field(default_factory=list)
     nodeQsize: List[float] = field(default_factory=list)
     wrQsize: List[float] = field(default_factory=list)
+    rxBytes: List[float] = field(default_factory=list)
     empty_count: int = 0
     time_excd_count: int = 0    # Number of times total_time > poll period
     next_update_time: int = 0   # When results will be logged
@@ -557,9 +558,9 @@ class Service(object):
 
         return statsList
 
-    def update_stats(self, stats: ServiceStats, gather_time: int,
-                     total_time: int, qsize: int, wrQsize: int,
-                     nodeQsize: int) -> bool:
+    def update_stats(self, stats: ServiceStats, total_time: int,
+                     gather_time: int, qsize: int, wrQsize: int,
+                     nodeQsize: int, rxBytes) -> bool:
         """Update per-node stats"""
         write_stat = False
         now = int(time.time()*1000)
@@ -571,6 +572,7 @@ class Service(object):
         stats.svcQsize = self.compute_basic_stats(stats.svcQsize, qsize)
         stats.wrQsize = self.compute_basic_stats(stats.wrQsize, wrQsize)
         stats.nodeQsize = self.compute_basic_stats(stats.nodeQsize, nodeQsize)
+        stats.rxBytes = self.compute_basic_stats(stats.rxBytes, rxBytes)
 
         if total_time > self.period*1000:
             stats.time_excd_count += 1
@@ -611,6 +613,7 @@ class Service(object):
 
             status = HTTPStatus.NO_CONTENT        # Empty content
             write_poller_stat = False
+            rxBytes = 0
 
             if output:
                 ostatus = [x.get('status', -1) for x in output]
@@ -618,6 +621,8 @@ class Service(object):
                 write_poller_stat = not all([Service.is_status_ok(x)
                                              for x in ostatus])
                 status = ostatus[0]
+                if (status in [0, 200]):
+                    rxBytes = len(output.__str__())
 
                 # We don't expect the output from two different hostnames
                 nodename = output[0]["hostname"]
@@ -674,7 +679,6 @@ class Service(object):
                     self.previous_results[hostname] = []
                 await self.commit_data(result, output[0]["namespace"],
                                        hostname)
-                empty_count = False
             else:
                 if self.run_once == "gather" or self.run_once == "process":
                     total_nodes -= 1
@@ -683,7 +687,6 @@ class Service(object):
                             f'Service: {self.name}: Finished gathering data')
                         return
                     continue
-                empty_count = True
 
             total_time = int(time.time()*1000) - token.start_time
 
@@ -693,7 +696,7 @@ class Service(object):
                 stats = pernode_stats[statskey]
                 write_poller_stat = (self.update_stats(
                     stats, total_time, gather_time, qsize,
-                    self.writer_queue.qsize(), token.nodeQsize) or
+                    self.writer_queue.qsize(), token.nodeQsize, rxBytes) or
                     write_poller_stat)
                 pernode_stats[statskey] = stats
                 if write_poller_stat:
@@ -707,6 +710,7 @@ class Service(object):
                          "svcQsize": stats.svcQsize,
                          "wrQsize": stats.wrQsize,
                          "nodeQsize": stats.nodeQsize,
+                         "rxBytes": stats.rxBytes,
                          "pollExcdPeriodCount": stats.time_excd_count,
                          "gatherTime": stats.gather_time,
                          "totalTime": stats.total_time,
