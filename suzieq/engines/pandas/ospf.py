@@ -333,11 +333,12 @@ class OspfObj(SqPandasEngine):
             )
             ospf_df["assertReason"] += ospf_df.apply(
                 lambda x: ["area mismatch"]
-                if (x["area_x"] != x["area_y"] and
-                    x["areaStub_x"] != x["areaStub_y"])
-                else [],
-                axis=1,
-            )
+                if (x["area_x"] != x["area_y"]) else [], axis=1)
+
+            ospf_df["assertReason"] += ospf_df.apply(
+                lambda x: ["area stub mismatch"]
+                if (x["areaStub_x"] != x["areaStub_y"]) else [], axis=1)
+
             ospf_df["assertReason"] += ospf_df.apply(
                 lambda x: ["Hello timers mismatch"]
                 if x["helloTime_x"] != x["helloTime_y"]
