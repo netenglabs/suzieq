@@ -550,7 +550,7 @@ def get_timestamp_from_junos_time(input, timestamp: int):
 
 
 def convert_macaddr_format_to_colon(macaddr: str) -> str:
-    """Convert NXOS/EOS . macaddr form to standard : format
+    """Convert NXOS/EOS . macaddr form to standard : format, lowecase
 
     :param macaddr: str, the macaddr string to convert
     :returns: the converted macaddr string or all 0s string if arg not str
@@ -559,9 +559,10 @@ def convert_macaddr_format_to_colon(macaddr: str) -> str:
     """
     if isinstance(macaddr, str):
         if re.match(r'[0-9a-z]{4}.[0-9a-z]{4}.[0-9a-z]{4}', macaddr):
-            return ':'.join([f'{x[:2]}:{x[2:]}' for x in macaddr.split('.')])
+            return (':'.join([f'{x[:2]}:{x[2:]}'
+                              for x in macaddr.split('.')])).lower()
         else:
-            return macaddr
+            return macaddr.lower()
 
     return('00:00:00:00:00:00')
 
