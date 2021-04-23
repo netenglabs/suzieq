@@ -1,4 +1,5 @@
 import typing
+import os
 from nubia import command, argument, context
 
 
@@ -16,6 +17,10 @@ from nubia import command, argument, context
     choices=["pandas"],
     description="Use Pandas for non-SQL commands",
 )
+@argument(
+    "datadir",
+    description="Set the data directory for the command"
+)
 def set_ctxt(
         pager: str = 'on',
         hostname: typing.List[str] = [],
@@ -23,6 +28,7 @@ def set_ctxt(
         end_time: str = "",
         namespace: typing.List[str] = [],
         engine: str = "",
+        datadir: str = "",
 ):
     """set certain contexts for subsequent commands. Cmd is additive"""
     plugin_ctx = context.get_context()
@@ -42,6 +48,12 @@ def set_ctxt(
     if engine:
         plugin_ctx.change_engine(engine)
 
+    if datadir:
+        if os.path.isdir(datadir):
+            plugin_ctx.cfg['data-directory'] = datadir
+        else:
+            print(f'{datadir} is not a valid directory')
+
     if pager == 'on':
         plugin_ctx.pager = True
 
@@ -59,7 +71,7 @@ def clear_ctxt(
         hostname: str = "",
         start_time: str = "",
         end_time: str = "",
-        namespace: str= "",
+        namespace: str = "",
 ):
     """clear certain contexts for subsequent commands. Cmd is additive"""
     plugin_ctx = context.get_context()
