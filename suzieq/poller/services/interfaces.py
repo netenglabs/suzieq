@@ -403,8 +403,12 @@ class InterfaceService(Service):
                     if entry['adminState']:
                         old_entry['adminState'] = entry['adminState']
                     old_entry['mtu'] = entry.get('mtu', 0) or old_entry['mtu']
-                    old_entry['macaddr'] = convert_macaddr_format_to_colon(
-                        entry.get('macaddr', '0000.0000.0000'))
+                    macaddr = entry.get('macaddr', '')
+                    if macaddr and not old_entry.get('_anycastMac', ''):
+                        # VLAN MAC addr MUST not be replaced due to fabric SVI
+                        old_entry['macaddr'] = convert_macaddr_format_to_colon(
+                            macaddr)
+
                     old_entry['numChanges'] = entry['numChanges'] or 0
                     if entry.get('speed', ''):
                         old_entry['speed'] = fix_nxos_speed(entry.get('speed'))
