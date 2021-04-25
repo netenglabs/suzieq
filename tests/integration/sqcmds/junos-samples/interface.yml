@@ -2967,8 +2967,25 @@ tests:
     "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.255.3.107/24"], "ip6AddressList":
     [], "numChanges": 0, "timestamp": 1616357370695}]'
 - command: interface show --ifname="xe-0/0/1" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+  data-directory: tests/data/junos/parquet-out/
   marks: interface show junos
-  output: '[{"namespace": "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/1", "state":
-    "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master":
-    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1616541718027}]'
+  output: '[{"namespace": "junos", "hostname": "leaf02", "ifname": "xe-0/0/1", "state":
+    "up", "adminState": "up", "type": "ethernet", "mtu": 9214, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1616357376479}, {"namespace":
+    "junos", "hostname": "dcedge01", "ifname": "xe-0/0/1", "state": "up", "adminState":
+    "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1616357376664}, {"namespace": "junos",
+    "hostname": "exit01", "ifname": "xe-0/0/1", "state": "up", "adminState": "up",
+    "type": "ethernet", "mtu": 9214, "vlan": 0, "master": "", "ipAddressList": [],
+    "ip6AddressList": [], "timestamp": 1616357376666}, {"namespace": "junos", "hostname":
+    "leaf01", "ifname": "xe-0/0/1", "state": "up", "adminState": "up", "type": "ethernet",
+    "mtu": 9214, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1616357376891}, {"namespace": "junos", "hostname": "spine01", "ifname":
+    "xe-0/0/1", "state": "up", "adminState": "up", "type": "ethernet", "mtu": 9214,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1616357377097}, {"namespace": "junos", "hostname": "exit02", "ifname": "xe-0/0/1",
+    "state": "up", "adminState": "up", "type": "ethernet", "mtu": 9214, "vlan": 0,
+    "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1616357377099},
+    {"namespace": "junos", "hostname": "spine02", "ifname": "xe-0/0/1", "state": "up",
+    "adminState": "up", "type": "ethernet", "mtu": 9214, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1616357377303}]'

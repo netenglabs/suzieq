@@ -1,0 +1,79 @@
+description: Testing unique values for interfaces
+tests:
+- command: interface unique --count=True --format=json --columns=hostname
+  data-directory: tests/data/nxos/parquet-out/
+  marks: interface unique nxos
+  output: '[{"hostname": "server101", "numRows": 5}, {"hostname": "server102", "numRows":
+    5}, {"hostname": "server301", "numRows": 5}, {"hostname": "server302", "numRows":
+    5}, {"hostname": "firewall01", "numRows": 10}, {"hostname": "dcedge01", "numRows":
+    48}, {"hostname": "spine01", "numRows": 70}, {"hostname": "spine02", "numRows":
+    70}, {"hostname": "exit01", "numRows": 77}, {"hostname": "exit02", "numRows":
+    77}, {"hostname": "leaf01", "numRows": 78}, {"hostname": "leaf02", "numRows":
+    78}, {"hostname": "leaf03", "numRows": 78}, {"hostname": "leaf04", "numRows":
+    78}]'
+- command: interface unique --count=True --format=json --columns=type
+  data-directory: tests/data/nxos/parquet-out/
+  marks: interface unique nxos
+  output: '[{"type": "flexible-tunnel-interface", "numRows": 1}, {"type": "ip-over-ip",
+    "numRows": 1}, {"type": "lsi", "numRows": 1}, {"type": "mgmt-vlan", "numRows":
+    1}, {"type": "pim-decapsulator", "numRows": 1}, {"type": "pim-encapsulator", "numRows":
+    1}, {"type": "software-pseudo", "numRows": 1}, {"type": "tap", "numRows": 1},
+    {"type": "virtual", "numRows": 1}, {"type": "None", "numRows": 2}, {"type": "vtep",
+    "numRows": 2}, {"type": "gre", "numRows": 3}, {"type": "vxlan", "numRows": 6},
+    {"type": "logical", "numRows": 10}, {"type": "bond", "numRows": 16}, {"type":
+    "loopback", "numRows": 22}, {"type": "bond_slave", "numRows": 24}, {"type": "vrf",
+    "numRows": 24}, {"type": "vlan", "numRows": 28}, {"type": "ethernet", "numRows":
+    538}]'
+- command: interface unique --count=True --format=json --columns=mtu
+  data-directory: tests/data/nxos/parquet-out/
+  marks: interface unique nxos
+  output: '[{"mtu": 1986, "numRows": 1}, {"mtu": 2000, "numRows": 1}, {"mtu": 0, "numRows":
+    2}, {"mtu": 9192, "numRows": 2}, {"mtu": 9000, "numRows": 14}, {"mtu": 65536,
+    "numRows": 20}, {"mtu": 1514, "numRows": 21}, {"mtu": 9216, "numRows": 70}, {"mtu":
+    1500, "numRows": 553}]'
+- command: interface unique --count=True --format=json --columns=state
+  data-directory: tests/data/nxos/parquet-out/
+  marks: interface unique nxos
+  output: '[{"state": "up", "numRows": 207}, {"state": "down", "numRows": 477}]'
+- command: interface unique --count=True --format=json --columns=adminState
+  data-directory: tests/data/nxos/parquet-out/
+  marks: interface unique nxos
+  output: '[{"adminState": "down", "numRows": 8}, {"adminState": "up", "numRows":
+    676}]'
+- command: interface unique --count=True --format=json --columns=vlan
+  data-directory: tests/data/nxos/parquet-out/
+  marks: interface unique nxos
+  output: '[{"vlan": 2, "numRows": 4}, {"vlan": 3, "numRows": 4}, {"vlan": 4, "numRows":
+    4}, {"vlan": 10, "numRows": 6}, {"vlan": 20, "numRows": 6}, {"vlan": 999, "numRows":
+    6}, {"vlan": 30, "numRows": 12}, {"vlan": 0, "numRows": 154}, {"vlan": 1, "numRows":
+    488}]'
+- command: interface unique --count=True --format=json --columns=speed
+  data-directory: tests/data/nxos/parquet-out/
+  marks: interface unique nxos
+  output: '[{"speed": 800, "numRows": 1}, {"speed": 65535, "numRows": 1}, {"speed":
+    2000, "numRows": 4}, {"speed": 8000, "numRows": 16}, {"speed": 0, "numRows": 84},
+    {"speed": 1000, "numRows": 96}, {"speed": 10000, "numRows": 482}]'
+- command: interface unique --count=True --format=json --columns=master
+  data-directory: tests/data/nxos/parquet-out/
+  marks: interface unique nxos
+  output: '[{"master": "ENET2", "numRows": 2}, {"master": "internet-vrf", "numRows":
+    4}, {"master": "port-channel3", "numRows": 4}, {"master": "port-channel4", "numRows":
+    4}, {"master": "bond0", "numRows": 8}, {"master": "management", "numRows": 8},
+    {"master": "port-channel1", "numRows": 8}, {"master": "evpn-vrf", "numRows": 16},
+    {"master": "default", "numRows": 40}, {"master": "", "numRows": 104}, {"master":
+    "bridge", "numRows": 486}]'
+- command: interface unique --count=True --format=json --columns=reason
+  data-directory: tests/data/nxos/parquet-out/
+  marks: interface unique nxos
+  output: '[{"reason": "", "numRows": 216}, {"reason": "link not connected", "numRows":
+    468}]'
+- command: interface unique --count=True --format=json --query-str='macaddr == ""
+    ' --columns=macaddr
+  data-directory: tests/data/nxos/parquet-out/
+  marks: interface unique nxos
+  output: '[{"macaddr": "", "numRows": 17}]'
+- command: interface unique --count=True --format=json --query-str='macaddr == "None"
+    ' --columns=macaddr
+  data-directory: tests/data/nxos/parquet-out/
+  marks: interface unique nxos
+  output: '[]'

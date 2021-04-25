@@ -1,251 +1,251 @@
 [
     {
         "status": 0,
-        "timestamp": 1616541713305,
+        "timestamp": 1619275257018,
         "cmd": "sudo vtysh -c \"show evpn vni detail json\"",
         "devtype": "linux",
         "namespace": "nxos",
         "hostname": "firewall01",
-        "address": "10.255.7.94",
+        "address": "10.255.2.249",
         "version": "18.04",
         "data": ""
     }
 ][
     {
         "status": 0,
-        "timestamp": 1616541714082,
-        "cmd": "show nve vni all detail | json native",
-        "devtype": "nxos",
-        "namespace": "nxos",
-        "hostname": "exit01",
-        "address": "10.255.7.251",
-        "version": 0,
-        "data": "{\"TABLE_nve_vni\":{\"ROW_nve_vni\":[{\"if-name\":\"nve1\",\"vni\":999,\"mcast\":\"n/a\",\"vni-state\":\"Up\",\"mode\":\"control-plane\",\"type\":\"L3 [evpn-vrf]\",\"flags\":\"\",\"prvsn-state\":\"vni-add-complete\",\"vlan-bd\":999,\"svi-state\":\"UP [vrf-id: 3]\",\"vpc-compat-check\":1}]}}\n"
-    },
-    {
-        "status": 0,
-        "timestamp": 1616541714742,
-        "cmd": "show nve interface nve 1 | json native",
-        "devtype": "nxos",
-        "namespace": "nxos",
-        "hostname": "exit01",
-        "address": "10.255.7.251",
-        "version": 0,
-        "data": "{\"TABLE_nve_if\":{\"ROW_nve_if\":[{\"if-name\":\"nve1\",\"if-state\":\"Up\",\"encap-type\":\"VXLAN\",\"vpc-capability\":\"VPC-VIP-Only [not-notified]\",\"local-rmac\":\"4401.0301.1b08\",\"host-reach-mode\":\"Control-Plane\",\"source-if\":\"loopback1\",\"primary-ip\":\"10.0.0.221\",\"secondary-ip\":\"0.0.0.0\"}]}}\n"
-    },
-    {
-        "status": 0,
-        "timestamp": 1616541715500,
-        "cmd": "show nve peers detail | json native",
-        "devtype": "nxos",
-        "namespace": "nxos",
-        "hostname": "exit01",
-        "address": "10.255.7.251",
-        "version": 0,
-        "data": "{\"TABLE_nve_peers\":{\"ROW_nve_peers\":[{\"detail\":1,\"if-name\":\"nve1\",\"peer-ip\":\"10.0.0.112\",\"peer-state\":\"Up\",\"learn-type\":\"CP\",\"uptime\":\"3d16h\",\"router-mac\":\"4401.0201.1b08\",\"first-vni\":999,\"create-ts\":\"3d16h\",\"config-vnis\":\"999\",\"provision-state\":\"peer-add-complete\",\"cp-vni\":\"999\",\"vni-assignment-mode\":\"SYMMETRIC\",\"dci-fabric-location\":\"N/A\"},{\"if-name\":\"nve1\",\"peer-ip\":\"10.0.0.134\",\"peer-state\":\"Up\",\"learn-type\":\"CP\",\"uptime\":\"3d16h\",\"router-mac\":\"4401.0204.1b08\",\"first-vni\":999,\"create-ts\":\"3d16h\",\"config-vnis\":\"999\",\"provision-state\":\"peer-add-complete\",\"cp-vni\":\"999\",\"vni-assignment-mode\":\"SYMMETRIC\",\"dci-fabric-location\":\"N/A\"},{\"if-name\":\"nve1\",\"peer-ip\":\"10.0.0.222\",\"peer-state\":\"Up\",\"learn-type\":\"CP\",\"uptime\":\"3d16h\",\"router-mac\":\"4401.0302.1b08\",\"first-vni\":999,\"create-ts\":\"3d16h\",\"config-vnis\":\"999\",\"provision-state\":\"peer-add-complete\",\"cp-vni\":\"999\",\"vni-assignment-mode\":\"SYMMETRIC\",\"dci-fabric-location\":\"N/A\"}]}}\n"
-    }
-][
-    {
-        "status": 0,
-        "timestamp": 1616541713764,
-        "cmd": "show nve vni all detail | json native",
-        "devtype": "nxos",
-        "namespace": "nxos",
-        "hostname": "exit02",
-        "address": "10.255.7.252",
-        "version": 0,
-        "data": "{\"TABLE_nve_vni\":{\"ROW_nve_vni\":[{\"if-name\":\"nve1\",\"vni\":999,\"mcast\":\"n/a\",\"vni-state\":\"Up\",\"mode\":\"control-plane\",\"type\":\"L3 [evpn-vrf]\",\"flags\":\"\",\"prvsn-state\":\"vni-add-complete\",\"vlan-bd\":999,\"svi-state\":\"UP [vrf-id: 3]\",\"vpc-compat-check\":1}]}}\n"
-    },
-    {
-        "status": 0,
-        "timestamp": 1616541714511,
-        "cmd": "show nve interface nve 1 | json native",
-        "devtype": "nxos",
-        "namespace": "nxos",
-        "hostname": "exit02",
-        "address": "10.255.7.252",
-        "version": 0,
-        "data": "{\"TABLE_nve_if\":{\"ROW_nve_if\":[{\"if-name\":\"nve1\",\"if-state\":\"Up\",\"encap-type\":\"VXLAN\",\"vpc-capability\":\"VPC-VIP-Only [not-notified]\",\"local-rmac\":\"4401.0302.1b08\",\"host-reach-mode\":\"Control-Plane\",\"source-if\":\"loopback1\",\"primary-ip\":\"10.0.0.222\",\"secondary-ip\":\"0.0.0.0\"}]}}\n"
-    },
-    {
-        "status": 0,
-        "timestamp": 1616541715625,
-        "cmd": "show nve peers detail | json native",
-        "devtype": "nxos",
-        "namespace": "nxos",
-        "hostname": "exit02",
-        "address": "10.255.7.252",
-        "version": 0,
-        "data": "{\"TABLE_nve_peers\":{\"ROW_nve_peers\":[{\"detail\":1,\"if-name\":\"nve1\",\"peer-ip\":\"10.0.0.112\",\"peer-state\":\"Up\",\"learn-type\":\"CP\",\"uptime\":\"3d16h\",\"router-mac\":\"4401.0201.1b08\",\"first-vni\":999,\"create-ts\":\"3d16h\",\"config-vnis\":\"999\",\"provision-state\":\"peer-add-complete\",\"cp-vni\":\"999\",\"vni-assignment-mode\":\"SYMMETRIC\",\"dci-fabric-location\":\"N/A\"},{\"if-name\":\"nve1\",\"peer-ip\":\"10.0.0.134\",\"peer-state\":\"Up\",\"learn-type\":\"CP\",\"uptime\":\"3d16h\",\"router-mac\":\"4401.0204.1b08\",\"first-vni\":999,\"create-ts\":\"3d16h\",\"config-vnis\":\"999\",\"provision-state\":\"peer-add-complete\",\"cp-vni\":\"999\",\"vni-assignment-mode\":\"SYMMETRIC\",\"dci-fabric-location\":\"N/A\"},{\"if-name\":\"nve1\",\"peer-ip\":\"10.0.0.221\",\"peer-state\":\"Up\",\"learn-type\":\"CP\",\"uptime\":\"3d16h\",\"router-mac\":\"4401.0301.1b08\",\"first-vni\":999,\"create-ts\":\"3d16h\",\"config-vnis\":\"999\",\"provision-state\":\"peer-add-complete\",\"cp-vni\":\"999\",\"vni-assignment-mode\":\"SYMMETRIC\",\"dci-fabric-location\":\"N/A\"}]}}\n"
-    }
-][
-    {
-        "status": 0,
-        "timestamp": 1616541713846,
+        "timestamp": 1619275259974,
         "cmd": "show evpn instance extensive | display json | no-more",
         "devtype": "junos-qfx",
         "namespace": "nxos",
         "hostname": "dcedge01",
-        "address": "10.255.7.250",
+        "address": "10.255.2.250",
         "version": 0,
         "data": "{\n    \"evpn-instance-information\" : [\n    {\n        \"attributes\" : {\"xmlns\" : \"http://xml.juniper.net/junos/19.4R0/junos-routing\"}\n    }\n    ]\n}\n"
     },
     {
         "status": 0,
-        "timestamp": 1616541714731,
+        "timestamp": 1619275260808,
         "cmd": "show evpn l3-context extensive | display json | no-more",
         "devtype": "junos-qfx",
         "namespace": "nxos",
         "hostname": "dcedge01",
-        "address": "10.255.7.250",
+        "address": "10.255.2.250",
         "version": 0,
         "data": "{\n    \"evpn-l3-context-information\" : [\n    {\n        \"attributes\" : {\"xmlns\" : \"http://xml.juniper.net/junos/19.4R0/junos-routing\"}\n    }\n    ]\n}\n"
     },
     {
         "status": 0,
-        "timestamp": 1616541715848,
+        "timestamp": 1619275261439,
         "cmd": "show ethernet-switching vxlan-tunnel-end-point remote | display json | no-more",
         "devtype": "junos-qfx",
         "namespace": "nxos",
         "hostname": "dcedge01",
-        "address": "10.255.7.250",
+        "address": "10.255.2.250",
         "version": 0,
         "data": "{\n    \"vxlan-source-vtep-information\" : [\n    {\n        \"attributes\" : {\"xmlns\" : \"http://xml.juniper.net/junos/19.4R0/junos-l2al\"}\n    }\n    ]\n}\n"
     }
 ][
     {
         "status": 0,
-        "timestamp": 1616541713939,
-        "cmd": "show nve vni all detail | json native",
-        "devtype": "nxos",
-        "namespace": "nxos",
-        "hostname": "leaf02",
-        "address": "10.255.7.185",
-        "version": 0,
-        "data": "{\"TABLE_nve_vni\":{\"ROW_nve_vni\":[{\"if-name\":\"nve1\",\"vni\":999,\"mcast\":\"n/a\",\"vni-state\":\"Up\",\"mode\":\"control-plane\",\"type\":\"L3 [evpn-vrf]\",\"flags\":\"\",\"prvsn-state\":\"vni-add-complete\",\"vlan-bd\":999,\"svi-state\":\"UP [vrf-id: 3]\",\"vpc-compat-check\":0},{\"if-name\":\"nve1\",\"vni\":30,\"mcast\":\"UnicastBGP\",\"vni-state\":\"Up\",\"mode\":\"control-plane\",\"type\":\"L2 [30]\",\"flags\":\"SA \",\"prvsn-state\":\"vni-add-complete\",\"vlan-bd\":30,\"svi-state\":\"n/a\",\"vpc-compat-check\":0},{\"if-name\":\"nve1\",\"vni\":10,\"mcast\":\"UnicastBGP\",\"vni-state\":\"Up\",\"mode\":\"control-plane\",\"type\":\"L2 [10]\",\"flags\":\"SA \",\"prvsn-state\":\"vni-add-complete\",\"vlan-bd\":10,\"svi-state\":\"n/a\",\"vpc-compat-check\":0}]}}\n"
-    },
-    {
-        "status": 0,
-        "timestamp": 1616541715236,
-        "cmd": "show nve interface nve 1 | json native",
-        "devtype": "nxos",
-        "namespace": "nxos",
-        "hostname": "leaf02",
-        "address": "10.255.7.185",
-        "version": 0,
-        "data": "{\"TABLE_nve_if\":{\"ROW_nve_if\":[{\"if-name\":\"nve1\",\"if-state\":\"Up\",\"encap-type\":\"VXLAN\",\"vpc-capability\":\"VPC-VIP-Only [notified]\",\"local-rmac\":\"4401.0202.1b08\",\"host-reach-mode\":\"Control-Plane\",\"source-if\":\"loopback1\",\"primary-ip\":\"10.0.0.202\",\"secondary-ip\":\"10.0.0.112\"}]}}\n"
-    },
-    {
-        "status": 0,
-        "timestamp": 1616541715938,
-        "cmd": "show nve peers detail | json native",
-        "devtype": "nxos",
-        "namespace": "nxos",
-        "hostname": "leaf02",
-        "address": "10.255.7.185",
-        "version": 0,
-        "data": "{\"TABLE_nve_peers\":{\"ROW_nve_peers\":[{\"detail\":1,\"if-name\":\"nve1\",\"peer-ip\":\"10.0.0.134\",\"peer-state\":\"Up\",\"learn-type\":\"CP\",\"uptime\":\"3d16h\",\"router-mac\":\"4401.0204.1b08\",\"first-vni\":999,\"create-ts\":\"3d16h\",\"config-vnis\":\"10,30,999\",\"provision-state\":\"peer-add-complete\",\"cp-vni\":\"30,999\",\"vni-assignment-mode\":\"SYMMETRIC\",\"dci-fabric-location\":\"N/A\"},{\"if-name\":\"nve1\",\"peer-ip\":\"10.0.0.221\",\"peer-state\":\"Up\",\"learn-type\":\"CP\",\"uptime\":\"3d16h\",\"router-mac\":\"4401.0301.1b08\",\"first-vni\":999,\"create-ts\":\"3d16h\",\"config-vnis\":\"10,30,999\",\"provision-state\":\"peer-add-complete\",\"cp-vni\":\"999\",\"vni-assignment-mode\":\"SYMMETRIC\",\"dci-fabric-location\":\"N/A\"},{\"if-name\":\"nve1\",\"peer-ip\":\"10.0.0.222\",\"peer-state\":\"Up\",\"learn-type\":\"CP\",\"uptime\":\"3d16h\",\"router-mac\":\"4401.0302.1b08\",\"first-vni\":999,\"create-ts\":\"3d16h\",\"config-vnis\":\"10,30,999\",\"provision-state\":\"peer-add-complete\",\"cp-vni\":\"999\",\"vni-assignment-mode\":\"SYMMETRIC\",\"dci-fabric-location\":\"N/A\"}]}}\n"
-    }
-][
-    {
-        "status": 0,
-        "timestamp": 1616541714122,
+        "timestamp": 1619275259574,
         "cmd": "show nve vni all detail | json native",
         "devtype": "nxos",
         "namespace": "nxos",
         "hostname": "leaf03",
-        "address": "10.255.7.186",
+        "address": "10.255.2.190",
         "version": 0,
         "data": "{\"TABLE_nve_vni\":{\"ROW_nve_vni\":[{\"if-name\":\"nve1\",\"vni\":999,\"mcast\":\"n/a\",\"vni-state\":\"Up\",\"mode\":\"control-plane\",\"type\":\"L3 [evpn-vrf]\",\"flags\":\"\",\"prvsn-state\":\"vni-add-complete\",\"vlan-bd\":999,\"svi-state\":\"UP [vrf-id: 3]\",\"vpc-compat-check\":0},{\"if-name\":\"nve1\",\"vni\":30,\"mcast\":\"UnicastBGP\",\"vni-state\":\"Up\",\"mode\":\"control-plane\",\"type\":\"L2 [30]\",\"flags\":\"SA \",\"prvsn-state\":\"vni-add-complete\",\"vlan-bd\":30,\"svi-state\":\"n/a\",\"vpc-compat-check\":0},{\"if-name\":\"nve1\",\"vni\":20,\"mcast\":\"UnicastBGP\",\"vni-state\":\"Up\",\"mode\":\"control-plane\",\"type\":\"L2 [20]\",\"flags\":\"SA \",\"prvsn-state\":\"vni-add-complete\",\"vlan-bd\":20,\"svi-state\":\"n/a\",\"vpc-compat-check\":0}]}}\n"
     },
     {
         "status": 0,
-        "timestamp": 1616541715356,
+        "timestamp": 1619275260625,
         "cmd": "show nve interface nve 1 | json native",
         "devtype": "nxos",
         "namespace": "nxos",
         "hostname": "leaf03",
-        "address": "10.255.7.186",
+        "address": "10.255.2.190",
         "version": 0,
         "data": "{\"TABLE_nve_if\":{\"ROW_nve_if\":[{\"if-name\":\"nve1\",\"if-state\":\"Up\",\"encap-type\":\"VXLAN\",\"vpc-capability\":\"VPC-VIP-Only [notified]\",\"local-rmac\":\"4401.0203.1b08\",\"host-reach-mode\":\"Control-Plane\",\"source-if\":\"loopback1\",\"primary-ip\":\"10.0.0.203\",\"secondary-ip\":\"10.0.0.134\"}]}}\n"
     },
     {
         "status": 0,
-        "timestamp": 1616541716231,
+        "timestamp": 1619275262652,
         "cmd": "show nve peers detail | json native",
         "devtype": "nxos",
         "namespace": "nxos",
         "hostname": "leaf03",
-        "address": "10.255.7.186",
+        "address": "10.255.2.190",
         "version": 0,
-        "data": "{\"TABLE_nve_peers\":{\"ROW_nve_peers\":[{\"detail\":1,\"if-name\":\"nve1\",\"peer-ip\":\"10.0.0.112\",\"peer-state\":\"Up\",\"learn-type\":\"CP\",\"uptime\":\"3d16h\",\"router-mac\":\"4401.0201.1b08\",\"first-vni\":999,\"create-ts\":\"3d16h\",\"config-vnis\":\"20,30,999\",\"provision-state\":\"peer-add-complete\",\"cp-vni\":\"30,999\",\"vni-assignment-mode\":\"SYMMETRIC\",\"dci-fabric-location\":\"N/A\"},{\"if-name\":\"nve1\",\"peer-ip\":\"10.0.0.221\",\"peer-state\":\"Up\",\"learn-type\":\"CP\",\"uptime\":\"3d16h\",\"router-mac\":\"4401.0301.1b08\",\"first-vni\":999,\"create-ts\":\"3d16h\",\"config-vnis\":\"20,30,999\",\"provision-state\":\"peer-add-complete\",\"cp-vni\":\"999\",\"vni-assignment-mode\":\"SYMMETRIC\",\"dci-fabric-location\":\"N/A\"},{\"if-name\":\"nve1\",\"peer-ip\":\"10.0.0.222\",\"peer-state\":\"Up\",\"learn-type\":\"CP\",\"uptime\":\"3d16h\",\"router-mac\":\"4401.0302.1b08\",\"first-vni\":999,\"create-ts\":\"3d16h\",\"config-vnis\":\"20,30,999\",\"provision-state\":\"peer-add-complete\",\"cp-vni\":\"999\",\"vni-assignment-mode\":\"SYMMETRIC\",\"dci-fabric-location\":\"N/A\"}]}}\n"
+        "data": "{\"TABLE_nve_peers\":{\"ROW_nve_peers\":[{\"detail\":1,\"if-name\":\"nve1\",\"peer-ip\":\"10.0.0.112\",\"peer-state\":\"Up\",\"learn-type\":\"CP\",\"uptime\":\"2d15h\",\"router-mac\":\"4401.0202.1b08\",\"first-vni\":999,\"create-ts\":\"2d15h\",\"config-vnis\":\"20,30,999\",\"provision-state\":\"peer-add-complete\",\"cp-vni\":\"30,999\",\"vni-assignment-mode\":\"SYMMETRIC\",\"dci-fabric-location\":\"N/A\"},{\"if-name\":\"nve1\",\"peer-ip\":\"10.0.0.221\",\"peer-state\":\"Up\",\"learn-type\":\"CP\",\"uptime\":\"1d21h\",\"router-mac\":\"4401.0301.1b08\",\"first-vni\":999,\"create-ts\":\"1d21h\",\"config-vnis\":\"20,30,999\",\"provision-state\":\"peer-add-complete\",\"cp-vni\":\"999\",\"vni-assignment-mode\":\"SYMMETRIC\",\"dci-fabric-location\":\"N/A\"},{\"if-name\":\"nve1\",\"peer-ip\":\"10.0.0.222\",\"peer-state\":\"Up\",\"learn-type\":\"CP\",\"uptime\":\"1d21h\",\"router-mac\":\"4401.0302.1b08\",\"first-vni\":999,\"create-ts\":\"1d21h\",\"config-vnis\":\"20,30,999\",\"provision-state\":\"peer-add-complete\",\"cp-vni\":\"999\",\"vni-assignment-mode\":\"SYMMETRIC\",\"dci-fabric-location\":\"N/A\"}]}}\n"
     }
 ][
     {
         "status": 0,
-        "timestamp": 1616541715052,
+        "timestamp": 1619275259574,
         "cmd": "show nve vni all detail | json native",
         "devtype": "nxos",
         "namespace": "nxos",
-        "hostname": "leaf04",
-        "address": "10.255.7.187",
-        "version": 0,
-        "data": "{\"TABLE_nve_vni\":{\"ROW_nve_vni\":[{\"if-name\":\"nve1\",\"vni\":999,\"mcast\":\"n/a\",\"vni-state\":\"Up\",\"mode\":\"control-plane\",\"type\":\"L3 [evpn-vrf]\",\"flags\":\"\",\"prvsn-state\":\"vni-add-complete\",\"vlan-bd\":999,\"svi-state\":\"UP [vrf-id: 3]\",\"vpc-compat-check\":0},{\"if-name\":\"nve1\",\"vni\":30,\"mcast\":\"UnicastBGP\",\"vni-state\":\"Up\",\"mode\":\"control-plane\",\"type\":\"L2 [30]\",\"flags\":\"SA \",\"prvsn-state\":\"vni-add-complete\",\"vlan-bd\":30,\"svi-state\":\"n/a\",\"vpc-compat-check\":0},{\"if-name\":\"nve1\",\"vni\":20,\"mcast\":\"UnicastBGP\",\"vni-state\":\"Up\",\"mode\":\"control-plane\",\"type\":\"L2 [20]\",\"flags\":\"SA \",\"prvsn-state\":\"vni-add-complete\",\"vlan-bd\":20,\"svi-state\":\"n/a\",\"vpc-compat-check\":0}]}}\n"
-    },
-    {
-        "status": 0,
-        "timestamp": 1616541715991,
-        "cmd": "show nve interface nve 1 | json native",
-        "devtype": "nxos",
-        "namespace": "nxos",
-        "hostname": "leaf04",
-        "address": "10.255.7.187",
-        "version": 0,
-        "data": "{\"TABLE_nve_if\":{\"ROW_nve_if\":[{\"if-name\":\"nve1\",\"if-state\":\"Up\",\"encap-type\":\"VXLAN\",\"vpc-capability\":\"VPC-VIP-Only [notified]\",\"local-rmac\":\"4401.0204.1b08\",\"host-reach-mode\":\"Control-Plane\",\"source-if\":\"loopback1\",\"primary-ip\":\"10.0.0.204\",\"secondary-ip\":\"10.0.0.134\"}]}}\n"
-    },
-    {
-        "status": 0,
-        "timestamp": 1616541717533,
-        "cmd": "show nve peers detail | json native",
-        "devtype": "nxos",
-        "namespace": "nxos",
-        "hostname": "leaf04",
-        "address": "10.255.7.187",
-        "version": 0,
-        "data": "{\"TABLE_nve_peers\":{\"ROW_nve_peers\":[{\"detail\":1,\"if-name\":\"nve1\",\"peer-ip\":\"10.0.0.112\",\"peer-state\":\"Up\",\"learn-type\":\"CP\",\"uptime\":\"3d16h\",\"router-mac\":\"4401.0201.1b08\",\"first-vni\":999,\"create-ts\":\"3d16h\",\"config-vnis\":\"20,30,999\",\"provision-state\":\"peer-add-complete\",\"cp-vni\":\"30,999\",\"vni-assignment-mode\":\"SYMMETRIC\",\"dci-fabric-location\":\"N/A\"},{\"if-name\":\"nve1\",\"peer-ip\":\"10.0.0.221\",\"peer-state\":\"Up\",\"learn-type\":\"CP\",\"uptime\":\"3d16h\",\"router-mac\":\"4401.0301.1b08\",\"first-vni\":999,\"create-ts\":\"3d16h\",\"config-vnis\":\"20,30,999\",\"provision-state\":\"peer-add-complete\",\"cp-vni\":\"999\",\"vni-assignment-mode\":\"SYMMETRIC\",\"dci-fabric-location\":\"N/A\"},{\"if-name\":\"nve1\",\"peer-ip\":\"10.0.0.222\",\"peer-state\":\"Up\",\"learn-type\":\"CP\",\"uptime\":\"3d16h\",\"router-mac\":\"4401.0302.1b08\",\"first-vni\":999,\"create-ts\":\"3d16h\",\"config-vnis\":\"20,30,999\",\"provision-state\":\"peer-add-complete\",\"cp-vni\":\"999\",\"vni-assignment-mode\":\"SYMMETRIC\",\"dci-fabric-location\":\"N/A\"}]}}\n"
-    }
-][
-    {
-        "status": 0,
-        "timestamp": 1616541716011,
-        "cmd": "show nve vni all detail | json native",
-        "devtype": "nxos",
-        "namespace": "nxos",
-        "hostname": "leaf01",
-        "address": "10.255.7.184",
+        "hostname": "leaf02",
+        "address": "10.255.2.188",
         "version": 0,
         "data": "{\"TABLE_nve_vni\":{\"ROW_nve_vni\":[{\"if-name\":\"nve1\",\"vni\":999,\"mcast\":\"n/a\",\"vni-state\":\"Up\",\"mode\":\"control-plane\",\"type\":\"L3 [evpn-vrf]\",\"flags\":\"\",\"prvsn-state\":\"vni-add-complete\",\"vlan-bd\":999,\"svi-state\":\"UP [vrf-id: 3]\",\"vpc-compat-check\":0},{\"if-name\":\"nve1\",\"vni\":30,\"mcast\":\"UnicastBGP\",\"vni-state\":\"Up\",\"mode\":\"control-plane\",\"type\":\"L2 [30]\",\"flags\":\"SA \",\"prvsn-state\":\"vni-add-complete\",\"vlan-bd\":30,\"svi-state\":\"n/a\",\"vpc-compat-check\":0},{\"if-name\":\"nve1\",\"vni\":10,\"mcast\":\"UnicastBGP\",\"vni-state\":\"Up\",\"mode\":\"control-plane\",\"type\":\"L2 [10]\",\"flags\":\"SA \",\"prvsn-state\":\"vni-add-complete\",\"vlan-bd\":10,\"svi-state\":\"n/a\",\"vpc-compat-check\":0}]}}\n"
     },
     {
         "status": 0,
-        "timestamp": 1616541716959,
+        "timestamp": 1619275260808,
+        "cmd": "show nve interface nve 1 | json native",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf02",
+        "address": "10.255.2.188",
+        "version": 0,
+        "data": "{\"TABLE_nve_if\":{\"ROW_nve_if\":[{\"if-name\":\"nve1\",\"if-state\":\"Up\",\"encap-type\":\"VXLAN\",\"vpc-capability\":\"VPC-VIP-Only [notified]\",\"local-rmac\":\"4401.0202.1b08\",\"host-reach-mode\":\"Control-Plane\",\"source-if\":\"loopback1\",\"primary-ip\":\"10.0.0.202\",\"secondary-ip\":\"10.0.0.112\"}]}}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1619275262668,
+        "cmd": "show nve peers detail | json native",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf02",
+        "address": "10.255.2.188",
+        "version": 0,
+        "data": "{\"TABLE_nve_peers\":{\"ROW_nve_peers\":[{\"detail\":1,\"if-name\":\"nve1\",\"peer-ip\":\"10.0.0.134\",\"peer-state\":\"Up\",\"learn-type\":\"CP\",\"uptime\":\"2d15h\",\"router-mac\":\"4401.0203.1b08\",\"first-vni\":999,\"create-ts\":\"2d15h\",\"config-vnis\":\"10,30,999\",\"provision-state\":\"peer-add-complete\",\"cp-vni\":\"30,999\",\"vni-assignment-mode\":\"SYMMETRIC\",\"dci-fabric-location\":\"N/A\"},{\"if-name\":\"nve1\",\"peer-ip\":\"10.0.0.221\",\"peer-state\":\"Up\",\"learn-type\":\"CP\",\"uptime\":\"1d21h\",\"router-mac\":\"4401.0301.1b08\",\"first-vni\":999,\"create-ts\":\"1d21h\",\"config-vnis\":\"10,30,999\",\"provision-state\":\"peer-add-complete\",\"cp-vni\":\"999\",\"vni-assignment-mode\":\"SYMMETRIC\",\"dci-fabric-location\":\"N/A\"},{\"if-name\":\"nve1\",\"peer-ip\":\"10.0.0.222\",\"peer-state\":\"Up\",\"learn-type\":\"CP\",\"uptime\":\"1d21h\",\"router-mac\":\"4401.0302.1b08\",\"first-vni\":999,\"create-ts\":\"1d21h\",\"config-vnis\":\"10,30,999\",\"provision-state\":\"peer-add-complete\",\"cp-vni\":\"999\",\"vni-assignment-mode\":\"SYMMETRIC\",\"dci-fabric-location\":\"N/A\"}]}}\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1619275260396,
+        "cmd": "show nve vni all detail | json native",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "exit02",
+        "address": "10.255.2.254",
+        "version": 0,
+        "data": "{\"TABLE_nve_vni\":{\"ROW_nve_vni\":[{\"if-name\":\"nve1\",\"vni\":999,\"mcast\":\"n/a\",\"vni-state\":\"Up\",\"mode\":\"control-plane\",\"type\":\"L3 [evpn-vrf]\",\"flags\":\"\",\"prvsn-state\":\"vni-add-complete\",\"vlan-bd\":999,\"svi-state\":\"UP [vrf-id: 3]\",\"vpc-compat-check\":1}]}}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1619275262039,
+        "cmd": "show nve interface nve 1 | json native",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "exit02",
+        "address": "10.255.2.254",
+        "version": 0,
+        "data": "{\"TABLE_nve_if\":{\"ROW_nve_if\":[{\"if-name\":\"nve1\",\"if-state\":\"Up\",\"encap-type\":\"VXLAN\",\"vpc-capability\":\"VPC-VIP-Only [not-notified]\",\"local-rmac\":\"4401.0302.1b08\",\"host-reach-mode\":\"Control-Plane\",\"source-if\":\"loopback1\",\"primary-ip\":\"10.0.0.222\",\"secondary-ip\":\"0.0.0.0\"}]}}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1619275263282,
+        "cmd": "show nve peers detail | json native",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "exit02",
+        "address": "10.255.2.254",
+        "version": 0,
+        "data": "{\"TABLE_nve_peers\":{\"ROW_nve_peers\":[{\"detail\":1,\"if-name\":\"nve1\",\"peer-ip\":\"10.0.0.112\",\"peer-state\":\"Up\",\"learn-type\":\"CP\",\"uptime\":\"2d15h\",\"router-mac\":\"4401.0202.1b08\",\"first-vni\":999,\"create-ts\":\"2d15h\",\"config-vnis\":\"999\",\"provision-state\":\"peer-add-complete\",\"cp-vni\":\"999\",\"vni-assignment-mode\":\"SYMMETRIC\",\"dci-fabric-location\":\"N/A\"},{\"if-name\":\"nve1\",\"peer-ip\":\"10.0.0.134\",\"peer-state\":\"Up\",\"learn-type\":\"CP\",\"uptime\":\"2d15h\",\"router-mac\":\"4401.0203.1b08\",\"first-vni\":999,\"create-ts\":\"2d15h\",\"config-vnis\":\"999\",\"provision-state\":\"peer-add-complete\",\"cp-vni\":\"999\",\"vni-assignment-mode\":\"SYMMETRIC\",\"dci-fabric-location\":\"N/A\"},{\"if-name\":\"nve1\",\"peer-ip\":\"10.0.0.221\",\"peer-state\":\"Up\",\"learn-type\":\"CP\",\"uptime\":\"1d21h\",\"router-mac\":\"4401.0301.1b08\",\"first-vni\":999,\"create-ts\":\"1d21h\",\"config-vnis\":\"999\",\"provision-state\":\"peer-add-complete\",\"cp-vni\":\"999\",\"vni-assignment-mode\":\"SYMMETRIC\",\"dci-fabric-location\":\"N/A\"}]}}\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1619275260177,
+        "cmd": "show nve vni all detail | json native",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf04",
+        "address": "10.255.2.191",
+        "version": 0,
+        "data": "{\"TABLE_nve_vni\":{\"ROW_nve_vni\":[{\"if-name\":\"nve1\",\"vni\":999,\"mcast\":\"n/a\",\"vni-state\":\"Up\",\"mode\":\"control-plane\",\"type\":\"L3 [evpn-vrf]\",\"flags\":\"\",\"prvsn-state\":\"vni-add-complete\",\"vlan-bd\":999,\"svi-state\":\"UP [vrf-id: 3]\",\"vpc-compat-check\":0},{\"if-name\":\"nve1\",\"vni\":30,\"mcast\":\"UnicastBGP\",\"vni-state\":\"Up\",\"mode\":\"control-plane\",\"type\":\"L2 [30]\",\"flags\":\"SA \",\"prvsn-state\":\"vni-add-complete\",\"vlan-bd\":30,\"svi-state\":\"n/a\",\"vpc-compat-check\":0},{\"if-name\":\"nve1\",\"vni\":20,\"mcast\":\"UnicastBGP\",\"vni-state\":\"Up\",\"mode\":\"control-plane\",\"type\":\"L2 [20]\",\"flags\":\"SA \",\"prvsn-state\":\"vni-add-complete\",\"vlan-bd\":20,\"svi-state\":\"n/a\",\"vpc-compat-check\":0}]}}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1619275261643,
+        "cmd": "show nve interface nve 1 | json native",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf04",
+        "address": "10.255.2.191",
+        "version": 0,
+        "data": "{\"TABLE_nve_if\":{\"ROW_nve_if\":[{\"if-name\":\"nve1\",\"if-state\":\"Up\",\"encap-type\":\"VXLAN\",\"vpc-capability\":\"VPC-VIP-Only [notified]\",\"local-rmac\":\"4401.0204.1b08\",\"host-reach-mode\":\"Control-Plane\",\"source-if\":\"loopback1\",\"primary-ip\":\"10.0.0.204\",\"secondary-ip\":\"10.0.0.134\"}]}}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1619275263356,
+        "cmd": "show nve peers detail | json native",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf04",
+        "address": "10.255.2.191",
+        "version": 0,
+        "data": "{\"TABLE_nve_peers\":{\"ROW_nve_peers\":[{\"detail\":1,\"if-name\":\"nve1\",\"peer-ip\":\"10.0.0.112\",\"peer-state\":\"Up\",\"learn-type\":\"CP\",\"uptime\":\"2d15h\",\"router-mac\":\"4401.0202.1b08\",\"first-vni\":999,\"create-ts\":\"2d15h\",\"config-vnis\":\"20,30,999\",\"provision-state\":\"peer-add-complete\",\"cp-vni\":\"30,999\",\"vni-assignment-mode\":\"SYMMETRIC\",\"dci-fabric-location\":\"N/A\"},{\"if-name\":\"nve1\",\"peer-ip\":\"10.0.0.221\",\"peer-state\":\"Up\",\"learn-type\":\"CP\",\"uptime\":\"1d21h\",\"router-mac\":\"4401.0301.1b08\",\"first-vni\":999,\"create-ts\":\"1d21h\",\"config-vnis\":\"20,30,999\",\"provision-state\":\"peer-add-complete\",\"cp-vni\":\"999\",\"vni-assignment-mode\":\"SYMMETRIC\",\"dci-fabric-location\":\"N/A\"},{\"if-name\":\"nve1\",\"peer-ip\":\"10.0.0.222\",\"peer-state\":\"Up\",\"learn-type\":\"CP\",\"uptime\":\"1d21h\",\"router-mac\":\"4401.0302.1b08\",\"first-vni\":999,\"create-ts\":\"1d21h\",\"config-vnis\":\"20,30,999\",\"provision-state\":\"peer-add-complete\",\"cp-vni\":\"999\",\"vni-assignment-mode\":\"SYMMETRIC\",\"dci-fabric-location\":\"N/A\"}]}}\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1619275260613,
+        "cmd": "show nve vni all detail | json native",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "leaf01",
+        "address": "10.255.2.189",
+        "version": 0,
+        "data": "{\"TABLE_nve_vni\":{\"ROW_nve_vni\":[{\"if-name\":\"nve1\",\"vni\":999,\"mcast\":\"n/a\",\"vni-state\":\"Up\",\"mode\":\"control-plane\",\"type\":\"L3 [evpn-vrf]\",\"flags\":\"\",\"prvsn-state\":\"vni-add-complete\",\"vlan-bd\":999,\"svi-state\":\"UP [vrf-id: 3]\",\"vpc-compat-check\":0},{\"if-name\":\"nve1\",\"vni\":30,\"mcast\":\"UnicastBGP\",\"vni-state\":\"Up\",\"mode\":\"control-plane\",\"type\":\"L2 [30]\",\"flags\":\"SA \",\"prvsn-state\":\"vni-add-complete\",\"vlan-bd\":30,\"svi-state\":\"n/a\",\"vpc-compat-check\":0},{\"if-name\":\"nve1\",\"vni\":10,\"mcast\":\"UnicastBGP\",\"vni-state\":\"Up\",\"mode\":\"control-plane\",\"type\":\"L2 [10]\",\"flags\":\"SA \",\"prvsn-state\":\"vni-add-complete\",\"vlan-bd\":10,\"svi-state\":\"n/a\",\"vpc-compat-check\":0}]}}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1619275262040,
         "cmd": "show nve interface nve 1 | json native",
         "devtype": "nxos",
         "namespace": "nxos",
         "hostname": "leaf01",
-        "address": "10.255.7.184",
+        "address": "10.255.2.189",
         "version": 0,
         "data": "{\"TABLE_nve_if\":{\"ROW_nve_if\":[{\"if-name\":\"nve1\",\"if-state\":\"Up\",\"encap-type\":\"VXLAN\",\"vpc-capability\":\"VPC-VIP-Only [notified]\",\"local-rmac\":\"4401.0201.1b08\",\"host-reach-mode\":\"Control-Plane\",\"source-if\":\"loopback1\",\"primary-ip\":\"10.0.0.201\",\"secondary-ip\":\"10.0.0.112\"}]}}\n"
     },
     {
         "status": 0,
-        "timestamp": 1616541718976,
+        "timestamp": 1619275263556,
         "cmd": "show nve peers detail | json native",
         "devtype": "nxos",
         "namespace": "nxos",
         "hostname": "leaf01",
-        "address": "10.255.7.184",
+        "address": "10.255.2.189",
         "version": 0,
-        "data": "{\"TABLE_nve_peers\":{\"ROW_nve_peers\":[{\"detail\":1,\"if-name\":\"nve1\",\"peer-ip\":\"10.0.0.134\",\"peer-state\":\"Up\",\"learn-type\":\"CP\",\"uptime\":\"3d16h\",\"router-mac\":\"4401.0204.1b08\",\"first-vni\":999,\"create-ts\":\"3d16h\",\"config-vnis\":\"10,30,999\",\"provision-state\":\"peer-add-complete\",\"cp-vni\":\"30,999\",\"vni-assignment-mode\":\"SYMMETRIC\",\"dci-fabric-location\":\"N/A\"},{\"if-name\":\"nve1\",\"peer-ip\":\"10.0.0.221\",\"peer-state\":\"Up\",\"learn-type\":\"CP\",\"uptime\":\"3d16h\",\"router-mac\":\"4401.0301.1b08\",\"first-vni\":999,\"create-ts\":\"3d16h\",\"config-vnis\":\"10,30,999\",\"provision-state\":\"peer-add-complete\",\"cp-vni\":\"999\",\"vni-assignment-mode\":\"SYMMETRIC\",\"dci-fabric-location\":\"N/A\"},{\"if-name\":\"nve1\",\"peer-ip\":\"10.0.0.222\",\"peer-state\":\"Up\",\"learn-type\":\"CP\",\"uptime\":\"3d16h\",\"router-mac\":\"4401.0302.1b08\",\"first-vni\":999,\"create-ts\":\"3d16h\",\"config-vnis\":\"10,30,999\",\"provision-state\":\"peer-add-complete\",\"cp-vni\":\"999\",\"vni-assignment-mode\":\"SYMMETRIC\",\"dci-fabric-location\":\"N/A\"}]}}\n"
+        "data": "{\"TABLE_nve_peers\":{\"ROW_nve_peers\":[{\"detail\":1,\"if-name\":\"nve1\",\"peer-ip\":\"10.0.0.134\",\"peer-state\":\"Up\",\"learn-type\":\"CP\",\"uptime\":\"2d15h\",\"router-mac\":\"4401.0203.1b08\",\"first-vni\":999,\"create-ts\":\"2d15h\",\"config-vnis\":\"10,30,999\",\"provision-state\":\"peer-add-complete\",\"cp-vni\":\"30,999\",\"vni-assignment-mode\":\"SYMMETRIC\",\"dci-fabric-location\":\"N/A\"},{\"if-name\":\"nve1\",\"peer-ip\":\"10.0.0.221\",\"peer-state\":\"Up\",\"learn-type\":\"CP\",\"uptime\":\"1d21h\",\"router-mac\":\"4401.0301.1b08\",\"first-vni\":999,\"create-ts\":\"1d21h\",\"config-vnis\":\"10,30,999\",\"provision-state\":\"peer-add-complete\",\"cp-vni\":\"999\",\"vni-assignment-mode\":\"SYMMETRIC\",\"dci-fabric-location\":\"N/A\"},{\"if-name\":\"nve1\",\"peer-ip\":\"10.0.0.222\",\"peer-state\":\"Up\",\"learn-type\":\"CP\",\"uptime\":\"1d21h\",\"router-mac\":\"4401.0302.1b08\",\"first-vni\":999,\"create-ts\":\"1d21h\",\"config-vnis\":\"10,30,999\",\"provision-state\":\"peer-add-complete\",\"cp-vni\":\"999\",\"vni-assignment-mode\":\"SYMMETRIC\",\"dci-fabric-location\":\"N/A\"}]}}\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1619275260620,
+        "cmd": "show nve vni all detail | json native",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "exit01",
+        "address": "10.255.2.253",
+        "version": 0,
+        "data": "{\"TABLE_nve_vni\":{\"ROW_nve_vni\":[{\"if-name\":\"nve1\",\"vni\":999,\"mcast\":\"n/a\",\"vni-state\":\"Up\",\"mode\":\"control-plane\",\"type\":\"L3 [evpn-vrf]\",\"flags\":\"\",\"prvsn-state\":\"vni-add-complete\",\"vlan-bd\":999,\"svi-state\":\"UP [vrf-id: 3]\",\"vpc-compat-check\":1}]}}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1619275262445,
+        "cmd": "show nve interface nve 1 | json native",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "exit01",
+        "address": "10.255.2.253",
+        "version": 0,
+        "data": "{\"TABLE_nve_if\":{\"ROW_nve_if\":[{\"if-name\":\"nve1\",\"if-state\":\"Up\",\"encap-type\":\"VXLAN\",\"vpc-capability\":\"VPC-VIP-Only [not-notified]\",\"local-rmac\":\"4401.0301.1b08\",\"host-reach-mode\":\"Control-Plane\",\"source-if\":\"loopback1\",\"primary-ip\":\"10.0.0.221\",\"secondary-ip\":\"0.0.0.0\"}]}}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1619275263724,
+        "cmd": "show nve peers detail | json native",
+        "devtype": "nxos",
+        "namespace": "nxos",
+        "hostname": "exit01",
+        "address": "10.255.2.253",
+        "version": 0,
+        "data": "{\"TABLE_nve_peers\":{\"ROW_nve_peers\":[{\"detail\":1,\"if-name\":\"nve1\",\"peer-ip\":\"10.0.0.112\",\"peer-state\":\"Up\",\"learn-type\":\"CP\",\"uptime\":\"2d15h\",\"router-mac\":\"4401.0202.1b08\",\"first-vni\":999,\"create-ts\":\"2d15h\",\"config-vnis\":\"999\",\"provision-state\":\"peer-add-complete\",\"cp-vni\":\"999\",\"vni-assignment-mode\":\"SYMMETRIC\",\"dci-fabric-location\":\"N/A\"},{\"if-name\":\"nve1\",\"peer-ip\":\"10.0.0.134\",\"peer-state\":\"Up\",\"learn-type\":\"CP\",\"uptime\":\"2d15h\",\"router-mac\":\"4401.0203.1b08\",\"first-vni\":999,\"create-ts\":\"2d15h\",\"config-vnis\":\"999\",\"provision-state\":\"peer-add-complete\",\"cp-vni\":\"999\",\"vni-assignment-mode\":\"SYMMETRIC\",\"dci-fabric-location\":\"N/A\"},{\"if-name\":\"nve1\",\"peer-ip\":\"10.0.0.222\",\"peer-state\":\"Up\",\"learn-type\":\"CP\",\"uptime\":\"2d15h\",\"router-mac\":\"4401.0302.1b08\",\"first-vni\":999,\"create-ts\":\"2d15h\",\"config-vnis\":\"999\",\"provision-state\":\"peer-add-complete\",\"cp-vni\":\"999\",\"vni-assignment-mode\":\"SYMMETRIC\",\"dci-fabric-location\":\"N/A\"}]}}\n"
     }
 ]
