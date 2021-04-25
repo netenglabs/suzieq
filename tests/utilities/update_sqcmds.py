@@ -15,13 +15,13 @@ from suzieq.utils import load_sq_config
 def create_config(testvar):
     if 'data-directory' in testvar:
         # We need to create a tempfile to hold the config
-        tmpconfig = load_sq_config(conftest.create_dummy_config_file())
+        tf = conftest.create_dummy_config_file()
+        tmpconfig = load_sq_config(tf)
         tmpconfig['data-directory'] = testvar['data-directory']
 
-        tf = tempfile.NamedTemporaryFile(delete=False)
-        with open(tf.name, 'w') as f:
+        with open(tf, 'w') as f:
             f.write(yaml.dump(tmpconfig))
-        return tf.name
+        return tf
 
 
 def run_cmd(cmd_path, testvar, logger):
