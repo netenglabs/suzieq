@@ -22,7 +22,7 @@ Value List oMapafisafi (\w+ \w+)
 Value List ingressRmap (\S+)
 Value List egressRmap (\S+)
 Value List pfxRx (\d+)
-Value pfxBestRx (\d+)
+Value List pfxBestRx (\d+)
 Value List pfxTx (\d+)
 Value pfxSuppressTx (\d+)
 Value pfxWithdrawnTx (\d+)
@@ -63,7 +63,8 @@ Start
   ^\s+Prefix\s+Statistics: -> PrefixStats
 
 PrefixStats
-  ^\s+${afi}\s+${safi}:\s+${pfxTx}\s+${pfxRx}\s*$$
+  ^\s+${afi}\s+${safi}:\s+${pfxTx}\s+${pfxRx}\s+${pfxBestRx}.*$$
+  ^\s+${afi}\s+${safi}:\s+${pfxTx}\s+${pfxRx}\s*$$  
   ^\s+${afi}:\s+${pfxTx}\s+${pfxRx}\s*$$
   ^\s+Configured\s+maximum\s+total\s+number\s+of\s+routes\s+is\s+${pfxMaxRx}\s*$$
   ^\s+Inbound\s+route\s+map\s+for\s+${iMapafisafi}\s+is\s+${ingressRmap}\s*$$
@@ -107,18 +108,22 @@ PrefixStats
 #  End of rib timer is inactive
 #    L2VPN EVPN End-of-RIB received: Yes
 #  Message Statistics:
+#    InQ depth is 0
+#    OutQ depth is 0
 #                         Sent      Rcvd
-#    Opens:                  5         5
-#    Notifications:          0         4
-#    Updates:             1569      6716
-#    Keepalives:         11525     11445
-#    Route Refresh:          0         0
-#    Total messages:     13099     18170
+#    Opens:                  1         1
+#    Notifications:          0         0
+#    Updates:               13        12
+#    Keepalives:           149       149
+#    Route-Refresh:          0         0
+#    Total messages:       163       162
 #  Prefix Statistics:
-#                                   Sent      Rcvd
-#    IPv4 Unicast:                     0         1
-#    IPv6 Unicast:                     0         0
-#    EVPN:                             1        21
+#                         Sent      Rcvd     Best Paths     Best ECMP Paths
+#    IPv4 Unicast:           4        12             12                   0
+#    IPv6 Unicast:           0         0              0                   0
+#    IPv4 SR-TE:             0         0              0                   0
+#    IPv6 SR-TE:             0         0              0                   0
+#
 #  Configured maximum total number of routes is 12000
 #  Inbound updates dropped by reason:
 #    AS path loop detection: 0

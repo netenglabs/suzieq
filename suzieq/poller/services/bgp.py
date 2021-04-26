@@ -32,11 +32,19 @@ class BgpService(Service):
                 continue
 
             for i, afi in enumerate(entry['afi']):
+                if 'sr-te' in entry['safi'][i]:
+                    # SR-TE is not really an AFI/SAFI, and we don't do SR-TE
+                    # at this point. Full investigation of SR-TE is for later
+                    continue
                 new_entry = deepcopy(entry)
                 new_entry['afi'] = afi
                 new_entry['safi'] = entry['safi'][i]
                 new_entry['pfxTx'] = entry['pfxTx'][i]
                 new_entry['pfxRx'] = entry['pfxRx'][i]
+                if entry['pfxBestRx']:
+                    # Depending on the moodiness of the output, this field
+                    # may not be present. So, ignore it.
+                    new_entry['pfxBestRx'] = entry['pfxBestRx'][i]
                 new_entry['rrclient'] = entry['rrclient'] or False
                 new_entry['defOriginate'] = False
                 if 'safi' == 'evpn':

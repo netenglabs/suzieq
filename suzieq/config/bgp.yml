@@ -22,10 +22,10 @@ show-fields:
 apply:
   eos:
     version: all
-    command: show bgp neighbors vrf all
+    command: show ip bgp neighbors vrf all
     format: text
     textfsm: textfsm_templates/eos_show_bgp_nbr.tfsm
-      
+
   cumulus:
     version: all
     command: net show bgp vrf all neighbor json
