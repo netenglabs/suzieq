@@ -44,7 +44,16 @@ The poller creates a log file called /tmp/sq-poller.log. You can look at the fil
 
 ## <a name='ssh-options'></a>SSH Security Options
 
-If you're using SSH to connect to the devices (only Arista EOS uses the REST API), then there maybe various additional options you may want to specify to connect to the device. Here are the options supported by the poller:
+If you're using SSH to connect to the devices (only Arista EOS uses the REST API), the supported models for specifying login credentials are:
+
+* Put the password in the inventory file and ensure no one can read it
+* Use --ask-pass to then be prompted for a password
+* Use an environment var to store the password and pass the name of the env var via --envpass
+* Use keyfile
+* Use passphrase protected keyfile  (use --passphrase)
+* Use ssh-config (not well-tested)
+
+In addition, there maybe various additional options you may want to specify to connect to the device:
 
 * Jumphost use
   : You can use the -j option to specify connection via a jumphost. The parameter specified with -j has the format: ```//<username>@<jumphost>:<port>```. Jumphost support is via a private key file, with the same characteristics as the private key file to connect to the remote devices. For example, if you need to use a passphrase for the private key file to the device, you'll have to use the same passphrase to connect to the device as well.
