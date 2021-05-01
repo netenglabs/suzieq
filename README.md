@@ -55,7 +55,7 @@ Once the command completes, you have the main programs of suzieq available for u
 * suzieq-cli: For running the CLI
 * sq-rest-server: For running the REST API server
 
-[The official documentation is at suzieq.readthedocs.io](https://suzieq.readthedocs.io/en/latest/), and you can watch the screencasts about Suzieq on (Youtube)[https://www.youtube.com/results?search_query=netenglabs].
+[The official documentation is at suzieq.readthedocs.io](https://suzieq.readthedocs.io/en/latest/), and you can watch the screencasts about Suzieq on [Youtube](https://www.youtube.com/results?search_query=netenglabs).
 
 # Analysis
 
@@ -114,7 +114,7 @@ We've done some blogging about Suzieq:
 * [Questions to Suzieq](https://elegantnetwork.github.io/posts/10qa-suzieq/)
 * [Time in Suzieq](https://elegantnetwork.github.io/posts/time-suzieq/)
 
-We've also been adding screencasts on (Youtube)[https://www.youtube.com/results?search_query=netenglabs].
+We've also been adding screencasts on [Youtube](https://www.youtube.com/results?search_query=netenglabs).
 
 # Suzieq Priorities
 
