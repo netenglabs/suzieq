@@ -58,8 +58,7 @@ class TopologyCmd(SqCommand):
         return self._gen_output(df)
 
     @command("summarize")
-    @argument("polled", description="Is the device polled by Suzieq")
-    def summarize(self, src: str = "", dest: str = "", polled: bool = ''):
+    def summarize(self, src: str = "", dest: str = ""):
         """Summarize topologys topology information"""
         # Get the default display field names
         if self.columns is None:
@@ -74,7 +73,6 @@ class TopologyCmd(SqCommand):
         try:
             df = self.sqobj.summarize(
                 namespace=self.namespace,
-                polled=polled
             )
         except Exception as e:
             df = pd.DataFrame({'error': ['ERROR: {}'.format(str(e))]})

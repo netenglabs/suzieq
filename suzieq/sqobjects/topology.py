@@ -11,15 +11,4 @@ class TopologyObj(SqObject):
         self._cat_fields = []
         self._valid_get_args = ['namespace', 'hostname', 'columns',
                                 'polled', 'query_str']
-
-    # overriding parent because we want to take more arguments than the standard
-    def summarize(self, namespace: typing.List[str] = [],
-                  hostname: typing.List[str] = [],
-                  polled=None, query_str: str = '') -> pd.DataFrame:
-        if self.columns != ["default"]:
-            self.summarize_df = pd.DataFrame(
-                {'error': ['ERROR: You cannot specify columns with summarize']})
-            return self.summarize_df
-
-        return self.engine.summarize(namespace=namespace, hostname=hostname,
-                                     query_str=query_str, polled=polled)
+        self._valid_summarize_args = ['namespace', 'query_str']

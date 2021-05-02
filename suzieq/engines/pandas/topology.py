@@ -115,6 +115,7 @@ class TopologyObj(SqPandasEngine):
                         .drop_duplicates() \
                         .fillna({'peerHostname': 'unknown',
                                  'ifname': 'unknown', 'arpnd': False,
+                                 'arpndBidir': False,
                                  'bgp': False, 'ospf': False,
                                  'lldp': False, 'vrf': 'N/A'})
 
