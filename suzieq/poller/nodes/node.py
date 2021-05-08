@@ -415,7 +415,7 @@ class Node(object):
                         devtype = 'junos-qfx'
                     elif 'ex' in model.group(1):
                         devtype = 'junos-ex'
-                    elif 'srx' in model.group(1):
+                    elif model.group(1) in ['srx', 'vSRX']:
                         devtype = 'junos-es'
                 if not devtype:
                     devtype = "junos"
