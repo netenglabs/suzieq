@@ -27,6 +27,10 @@ class RoutesService(Service):
                     nexthop = entry['nexthopIps'][0]
                     entry['nexthopIps'] = [nexthop['vtepAddr']]
                     entry['oifs'] = ['_nexthopVrf:default']
+            elif '_vtepAddr' in entry:
+                entry['nexthopIps'] = entry['_vtepAddr']
+                entry['oifs'] = len(entry['nexthopIps']) * \
+                    ['_nexthopVrf:default']
             entry['protocol'] = entry['protocol'].lower()
             self._fix_ipvers(entry)
 
