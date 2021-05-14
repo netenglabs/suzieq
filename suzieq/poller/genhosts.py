@@ -121,7 +121,7 @@ def convert_ansible_inventory(filename: str, namespace: str = 'default'):
             port = 443
         else:
             transport = 'ssh://'
-            port = entry["ansible_port"]
+            port = entry.get("ansible_port", 22)
 
         url = (f'{transport}{entry["ansible_host"]}'
                f':{port}')
