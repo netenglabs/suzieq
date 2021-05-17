@@ -1,6 +1,6 @@
 # Tags for Suzieq and Mfn
 
-Both Suzieq and Mfn need to be able to have these tags to group things together and they should probably be the same groups. When we build configuration management we will need also need groupsgroups.
+Both Suzieq and Mfn need to be able to have these tags to group things together and they should be the same groups.
 
 When we first think of tags, we think of device tags, but really lots of things need tags. We will want to be able to group interfaces as well. Maybe there are other attributes that need tags.
 
@@ -78,13 +78,15 @@ for MfN it needs tags at the time of recording the data
 
 ### Dynamic desription for Suzieq
 
-For Suzieq, we want to get the tags at analysis time, rather than at write time, so suzieq-cli will need to use the above library to read the database.
+For Suzieq, we want to get the tags at analysis time, rather than at write time, so suzieq-cli will need to use the above library to read the database. (why did I say this, doesn't it need to be recorded over time just like MfN?)
 
 ### Questions
 
 * do we need to store how roles are related to each other?
 * how do we get different tags related to different hosts for telegraf/MfN?
 * do we want to have role_group, or be more like ansible and just decribe children.
+* we need to represent operational state like: inservice, OOS, provisioning, decommission. Are these just role tags?
+* even for suzieq, we'll probably want to know what groups something was when it was recorded won't we
 
 ## Interface roles
 
