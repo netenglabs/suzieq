@@ -544,8 +544,9 @@ class SqParquetDB(SqDB):
                     prev_file = file
                     prev_namespace = namespace
                 if not file_in_this_ns:
-                    if ((start_time and thistime[1] >= start_time) or
-                            (end_time and thistime[1] >= end_time)):
+                    if (thistime and
+                        ((start_time and thistime[1] >= start_time) or
+                         (end_time and thistime[1] >= end_time))):
                         files.append(file)
 
                 if latest_filedict:
