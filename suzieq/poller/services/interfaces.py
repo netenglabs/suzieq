@@ -100,7 +100,16 @@ class InterfaceService(Service):
                 entry['vlan'] = int(entry['ifname'].split('Vlan')[1])
                 vlan_entries[entry['ifname']] = entry
 
-            if entry.get('adminState', 'disabled') != 'disabled':
+            adm_state = entry.get('adminState', 'down')
+            if adm_state == 'notconnect':
+                entry['reason'] = 'notconnect'
+                entry['adminState'] = 'down'
+                entry['state'] = 'notConnected'
+            elif adm_state == 'errdisabled':
+                entry['reason'] = 'errdisabled'
+                entry['adminState'] = 'down'
+                entry['state'] = 'errDisabled'
+            elif adm_state == 'connected':
                 entry['adminState'] = 'up'
 
             tmpent = entry.get("ipAddressList", [[]])
@@ -453,6 +462,10 @@ class InterfaceService(Service):
 
                 if entry['reason'] == 'none' or not entry['reason']:
                     entry['reason'] = ''
+
+                if entry['reason'] in ["link not connected",
+                                       "xcvr not inserted"]:
+                    entry['state'] = 'notConnected'
 
             portmode = entry.get('_portmode', '')
             if portmode == 'access' or portmode == 'trunk':
