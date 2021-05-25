@@ -20,19 +20,18 @@ suzieq_rest_server_path = './suzieq/restServer/sq_rest_server.py'
 
 
 commands = [('AddressCmd'), ('ArpndCmd'), ('BgpCmd'), ('DeviceCmd'),
-            ('EvpnVniCmd'), ('InterfaceCmd'), ('LldpCmd'), ('MacCmd'),
-            ('MlagCmd'), ('OspfCmd'), ('RouteCmd'),
-            ('VlanCmd')]
+            ('DevconfigCmd'), ('EvpnVniCmd'), ('InterfaceCmd'), ('LldpCmd'),
+            ('MacCmd'), ('MlagCmd'), ('OspfCmd'), ('RouteCmd'),
+            ('TopologyCmd'), ('VlanCmd')]
 
-cli_commands = [('arpnd'), ('address'), ('bgp'), ('device'), ('evpnVni'),
-                ('fs'), ('interface'), ('lldp'), ('mac'),
+cli_commands = [('arpnd'), ('address'), ('bgp'), ('device'), ('devconfig'),
+                ('evpnVni'), ('fs'), ('interface'), ('lldp'), ('mac'),
                 ('mlag'), ('ospf'), ('path'), ('route'), ('sqpoller'),
-                ('topology'),
-                ('vlan')]
+                ('topology'), ('vlan')]
 
 
-tables = [('arpnd'), ('bgp'), ('evpnVni'), ('device'), ('fs'), ('ifCounters'),
-          ('interfaces'), ('lldp'), ('macs'), ('mlag'),
+tables = [('arpnd'), ('bgp'), ('evpnVni'), ('device'), ('devconfig'), ('fs'),
+          ('ifCounters'), ('interfaces'), ('lldp'), ('macs'), ('mlag'),
           ('ospfIf'), ('ospfNbr'), ('path'), ('routes'), ('time'),
           ('topcpu'), ('topmem'), ('topology'), ('vlan')]
 

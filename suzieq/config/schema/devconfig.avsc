@@ -1,0 +1,46 @@
+{
+    "namespace": "suzieq",
+    "name": "devconfig",
+    "type": "record",
+    "fields": [
+        {
+	    "name": "sqvers",
+	    "type": "string",
+	    "partition": 0,
+	    "default": "1.0",
+	    "suppress": true
+	},
+        {
+            "name": "config",
+            "type": "string",
+            "display": 1,
+	    "description": "The running config"
+        },
+        {
+            "name": "hostname",
+            "type": "string",
+            "key": 1,
+            "display": 1,
+	    "partition": 2,
+	    "description": "hostname associated with this hop"
+        },
+        {
+            "name": "namespace",
+            "type": "string",
+            "key": 0,
+            "display": 0,
+	    "partition": 1,
+	    "description": "namespace within which path analysis is run"
+        },
+        {
+            "name": "timestamp",
+            "type": "timestamp",
+	    "description": "Unix epach When this record was created, in ms"
+        },
+        {
+            "name": "active",
+            "type": "boolean",
+	    "description": "If this entry is active or deleted"
+        }
+    ]
+}

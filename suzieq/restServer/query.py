@@ -162,6 +162,19 @@ async def query_device(verb: CommonVerbs,
     return read_shared(function_name, verb, locals())
 
 
+@app.get("/api/v1/devconfig/{verb}")
+async def query_devconfig(verb: CommonVerbs,
+                          token: str = Depends(get_api_key),
+                          format: str = None,
+                          hostname: str = None,
+                          start_time: str = "", end_time: str = "",
+                          view: str = "latest", namespace: str = None,
+                          columns: str = None, query_str: str = None,
+                          ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, locals())
+
+
 @app.get("/api/v1/evpnVni/{verb}")
 async def query_evpnVni(verb: MoreVerbs,
                         token: str = Depends(get_api_key),

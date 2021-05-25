@@ -28,6 +28,8 @@ basic_verbs = ['show', 'summarize']
     ('OspfCmd', basic_verbs + ['aver'], [None, None, None, None]),
     ('RouteCmd', basic_verbs + ['lpm'],
      [None, None, {'address': '10.0.0.1'}]),
+    ('DevconfigCmd', basic_verbs, [None, None]),
+    ('TopologyCmd', basic_verbs, [None, None]),
     ('TableCmd', ['show', 'describe'], [None, {'table': 'device'}]),
     #    ('TopcpuCmd', basic_verbs, [None, None]),
     #    ('TopmemCmd', basic_verbs, [None, None]),
@@ -195,7 +197,10 @@ good_filters = [{'hostname': 'leaf01'}]
 def test_context_filtering(setup_nubia, cmd):
     for filter in good_filters:
         s = _test_context_filtering(cmd, filter)
-        assert s == 0
+        if cmd == 'TopologyCmd':
+            assert s == 1
+        else:
+            assert s == 0
 
 
 context_namespace_commands = commands[:]
@@ -238,7 +243,10 @@ def _test_context_filtering(cmd, filter):
     v = filter[k]
     setattr(ctx, k, v)
     s = _test_command(cmd, 'show', None)
-    assert s == 0
+    if cmd == 'TopologyCmd':
+        assert s == 1
+    else:
+        assert s == 0
     setattr(ctx, k, "")  # reset ctx back to no filtering
     return s
 

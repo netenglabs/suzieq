@@ -178,6 +178,9 @@ class SqCommand:
             print(df[cols].to_csv())
         elif self.format == 'markdown':
             print(df[cols].to_markdown())
+        elif self.format == 'devconfig' and self.sqobj.table == "devconfig":
+            for row in df.itertuples():
+                self._pager_print(row.config)
         else:
             with pd.option_context('precision', 3,
                                    'display.max_colwidth', max_colwidth,
