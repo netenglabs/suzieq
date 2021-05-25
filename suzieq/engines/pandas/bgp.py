@@ -231,7 +231,7 @@ class BgpObj(SqPandasEngine):
 
         df['assertReason'] += df.apply(
             lambda x: ['Not all Afi/Safis enabled']
-            if x['afisAdvOnly'] or x['afisRcvOnly'] else [],
+            if x['afisAdvOnly'].any() or x['afisRcvOnly'].any() else [],
             axis=1)
 
         df['assert'] = df.apply(lambda x: 'pass'
