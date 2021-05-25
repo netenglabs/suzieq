@@ -101,7 +101,7 @@ async def init_services(svc_dir: str, schema_dir: str, queue, svclist: list,
                 # the textfsm file. Check for this
                 if val["textfsm"] and isinstance(
                     val["textfsm"], textfsm.TextFSM
-                ):
+                ) or (val["textfsm"] is None):
                     continue
                 tfsm_file = svc_dir + "/" + val["textfsm"]
                 if not isfile(tfsm_file):
