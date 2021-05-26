@@ -1,6 +1,7 @@
 from collections import defaultdict
 from .engineobj import SqPandasEngine
 import pandas as pd
+import numpy as np
 from ipaddress import ip_address, ip_network
 
 
@@ -34,6 +35,7 @@ class RoutesObj(SqPandasEngine):
         prefix = kwargs.pop('prefix', [])
         ipvers = kwargs.pop('ipvers', '')
         addnl_fields = kwargs.pop('addnl_fields', [])
+        user_query = kwargs.pop('query_str', '')
 
         columns = kwargs.get('columns', ['default'])
         addnl_fields, drop_cols = self._cons_addnl_fields(
@@ -85,6 +87,15 @@ class RoutesObj(SqPandasEngine):
             if columns != ['*'] and 'prefixlen' not in columns:
                 drop_cols.append('prefixlen')
 
+        if not df.empty and ('numNexthops' in columns or (columns == ['*'])):
+            srs_oif = df['oifs'].str.len()
+            srs_hops = df['nexthopIps'].str.len()
+            srs = np.array(list(zip(srs_oif, srs_hops)))
+            srs_max = np.amax(srs, 1)
+            df.insert(len(df.columns)-1, 'numNexthops', srs_max)
+
+        if user_query:
+            df = df.query(user_query).reset_index(drop=True)
         if drop_cols:
             df.drop(columns=drop_cols, inplace=True, errors='ignore')
 
