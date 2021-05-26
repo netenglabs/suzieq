@@ -123,7 +123,7 @@ class SqCommand:
     def _pager_print(self, df: pd.DataFrame) -> None:
         '''To support paging'''
 
-        if df.index.dtype == 'int64':
+        if isinstance(df, pd.DataFrame) and df.index.dtype == 'int64':
             df.reset_index(drop=True, inplace=True)
 
         if self.ctxt.pager:
