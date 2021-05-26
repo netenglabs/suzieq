@@ -176,13 +176,20 @@ bad_namespace_commands = bad_hostname_commands[:]
 @pytest.mark.parametrize("cmd", bad_namespace_commands)
 def test_bad_show_namespace_filter(setup_nubia, cmd):
     filter = {'namespace': 'unknown'}
-    _ = _test_bad_show_filter(cmd, filter)
+    if cmd == 'TopologyCmd':
+        # TopologyCmd returns an error with error column
+        _ = _test_bad_show_filter(cmd, filter, True)
+    else:
+        _ = _test_bad_show_filter(cmd, filter)
 
 
-def _test_bad_show_filter(cmd, filter):
+def _test_bad_show_filter(cmd, filter, assert_error=False):
     assert len(filter) == 1
     s = _test_command(cmd, 'show', None, filter=filter)
-    assert s == 0
+    if assert_error:
+        assert s == 1
+    else:
+        assert s == 0
     return s
 
 
@@ -243,10 +250,6 @@ def _test_context_filtering(cmd, filter):
     v = filter[k]
     setattr(ctx, k, v)
     s = _test_command(cmd, 'show', None)
-    if cmd == 'TopologyCmd':
-        assert s == 1
-    else:
-        assert s == 0
     setattr(ctx, k, "")  # reset ctx back to no filtering
     return s
 
