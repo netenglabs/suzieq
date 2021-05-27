@@ -97,9 +97,9 @@ We're addding support for more platforms and features with every release.
 
 We're also looking for collaborators to help us make Suzieq a truly useful multi-vendor, open source platform for observing all aspects of networking. Please read the [collaboration document](./CONTRIBUTING.md) for ideas on how you can help.
 
-# Latest Release
+# Release Notes
 
-The latest release is 0.11.1 and the official release notes are [here](https://suzieq.readthedocs.io/en/latest/release-notes/).
+The official release notes are [here](https://suzieq.readthedocs.io/en/latest/release-notes/).
 
 # Engage
 
