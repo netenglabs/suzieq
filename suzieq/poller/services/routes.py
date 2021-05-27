@@ -113,6 +113,9 @@ class RoutesService(Service):
             if entry['_rtlen'] != 0:
                 drop_entries_idx.append(i)
 
+            if entry.get('asPathList', []):
+                entry['asPathList'] = entry['asPathList'].split()
+
             prefix_entries[entry['prefix']] = entry
 
             entry['active'] = entry['_activeTag'] in ['*', '@', '#']
