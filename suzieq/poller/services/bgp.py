@@ -18,6 +18,11 @@ class BgpService(Service):
 
         for j, entry in enumerate(processed_data):
 
+            if entry.get('state', '') != 'Established':
+                entry['state'] = 'NotEstd'
+                entry['afi'] = entry['safi'] = ''
+                continue
+
             if 'EVPN' in entry.get('afi', []):
                 afidx = entry['afi'].index('EVPN')
                 entry['safi'].insert(afidx, 'evpn')
@@ -26,10 +31,6 @@ class BgpService(Service):
                             for x in entry.get('afi', [])]
             entry['safi'] = ['flowspec' if x == "Flow Specification"
                              else x.lower() for x in entry.get('safi', [])]
-
-            if entry.get('state', '') != 'Established':
-                entry['state'] = 'NotEstd'
-                continue
 
             for i, afi in enumerate(entry['afi']):
                 if 'sr-te' in entry['safi'][i]:
@@ -41,11 +42,12 @@ class BgpService(Service):
                 new_entry['safi'] = entry['safi'][i]
                 new_entry['pfxTx'] = entry['pfxTx'][i]
                 new_entry['pfxRx'] = entry['pfxRx'][i]
+                new_entry['rrclient'] = entry['rrclient'] or False
                 if entry['pfxBestRx']:
                     # Depending on the moodiness of the output, this field
                     # may not be present. So, ignore it.
                     new_entry['pfxBestRx'] = entry['pfxBestRx'][i]
-                new_entry['rrclient'] = entry['rrclient'] or False
+
                 new_entry['defOriginate'] = False
                 if 'safi' == 'evpn':
                     if ('Sending extended community not configured' in
@@ -68,7 +70,7 @@ class BgpService(Service):
                     new_entry['egressRmap'] = ''
 
                 new_entries.append(new_entry)
-                drop_indices.append(j)
+            drop_indices.append(j)
 
         processed_data += new_entries
         processed_data = np.delete(processed_data, drop_indices).tolist()
@@ -138,6 +140,7 @@ class BgpService(Service):
                 entry['vrf'] = 'default'
 
             if entry['state'] != 'Established':
+                entry['afi'] = entry['safi'] = ''
                 continue
 
             # Build the mapping between pfx counts with the AFI/SAFI
@@ -231,6 +234,7 @@ class BgpService(Service):
                 entry.pop('extendComm')
                 entry.pop('defaultOrig')
                 entry.pop('afiSafi')
+                entry['afi'] = entry['safi'] = ''
                 entries_by_vrf[entry['vrf']].append(entry)
                 continue
 
