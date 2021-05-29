@@ -228,6 +228,7 @@ async def start_poller(userargs, cfg):
                                 jump_host=userargs.jump_host,
                                 jump_host_key_file=userargs.jump_host_key_file,
                                 password=userargs.ask_pass,
+                                ssh_config_file=userargs.ssh_config_file,
                                 ignore_known_hosts=ignore_known_hosts))
 
     period = cfg.get('period', 15)
