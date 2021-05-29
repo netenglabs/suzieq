@@ -1,5 +1,21 @@
 # Release Notes
 
+## 0.12.0 (May 28, 2021)
+
+This list of features and bug fixes for this release include:
+
+
+* Support for saving the running config of a device. We poll a device every hour for this, and save the existing running config if it has changed. The config is sanitized to exclude sensitive information like password (show running-config sanitized and equivalent commands). SoNIC is not supported for this in this release, will be adding it shortly.
+* Support for topology. Topology is a virtaul table, like path, that is used to construct the topology of the network, as seen from different perspectives. For example, you can see the BGP topology of the network, or the LLDP topology of the network etc. In other words, topology is the graph of the network where the edges (peers) are based on different fields such as routing protocol, LLDP and ARPND. We don't support topologies for virtual networks such as VRFs or VXLAN VNIs in this release.
+* Support for numNexthops as an augmented column in routes. With this new column, you can look for routes with various ways to filter via query_str. 'numNexthops == 4' or 'numNexthops > 2' etc. (full command example: route show namespace=nxos columns = 'hostname vrf prefix nexthopIps numNexthops' query-str='numNexthops > 2' )
+* Ports that are free i.e.have nothing connected to them are marked as notConnected for EOS, NXOS. Cumulus and JunOS to follow soon. This enables users to check for that specific state.* Support for getting NXOS L2 interface speed and MTU independent of the number of interfaces on the device. The command used thus far had a bug that caused the command the fail if there were more than 64 interfaces on the device (NXOS bug). The new version addresses that issue.
+* device summary now lists the count of devices that are down.
+* Various minor bug fixes for parsing info from EOS, especially BGP.
+* Support for changing the directory where parquet files are stored via CLI. If you're in the CLI, you can use set datadir='<datadir>', where <datadir> is the directory you want to change to. Previously, you could do this only by quitting suzieq-cli and supplying a different config file on input.
+* Additional stats in sqPoller table to help understand poller behavior.
+* Support for Junos vSRX. This was just a device NOS string check (Issue #373)
+* Updated python library pydantic to fix minor security alert reported by Github's dependabot
+
 ## 0.11 (Apr 6, 2021)
 
 This is a mostly a repackaged 0.10 release, but now shippable as a python package as well. You can use pip install to install Suzieq. As a consequence, some of the directory structures (for config) have changed, and the suzieq config file format has been streamlined and made consistent so the variables appropriate to each component is present in the right hierarchy. The older config file will be subsumed and converted internally.
