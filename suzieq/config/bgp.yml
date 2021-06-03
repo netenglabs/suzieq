@@ -120,7 +120,7 @@ apply:
         "passiveonly: passive?|False",
         "state: state?Established|NotEstd",
         "holdtime: holdTime?|0",
-        "keepalivetime: keepalivetime?|0",
+        "keepalivetime: keepaliveTime?|0",
         "connsestablished: numChanges?|0",
         "connsdropped: numChanges+numChanges",
         "elapsedtime: estdTime?|",
@@ -141,7 +141,7 @@ apply:
         "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/pfxsent: pfxSent?|0",
         "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/sendextcommunity: extendComm?|",
         "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/sendextcommunity: sendComm?|",
-        "TABLE_peraf/ROW_peraf/[0]?/TABLE_persaf/ROW_persaf/[*]/rrconfigured: rrclient?|False",
+        "TABLE_peraf/ROW_peraf/[0]?/TABLE_persaf/ROW_persaf/[*]/rrconfigured: rrclient?|",
         "TABLE_peraf/ROW_peraf/[0]?/TABLE_persaf/ROW_persaf/[*]/firstconvgtime: _firstconvgtime",
         "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/defaultoriginate: defaultOrig",
         "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/insoftreconfigallowed: softReconfig",
@@ -174,6 +174,7 @@ apply:
 
       - command: "show bgp neighbor | display json"
         normalize: 'bgp-information/[0]/bgp-peer/*/[
+        "route-reflector-client/[0]/data: rrclient",
         "peer-address/[0]/data: peerIP",
         "peer-address/[0]/data: peer",
         "peer-as/[0]/data: peerAsn?|0",
@@ -185,6 +186,8 @@ apply:
         "bgp-option-information/[0]/import-policy/[0]/data: v4IngressRmap",
         "bgp-option-information/[0]/holdtime/[0]/data: holdTime?|0",
         "bgp-option-information/[0]/address-families/[0]/data: afiSafiAdvList?|",
+        "bgp-bfd/[0]/bfd-operational-state/[0]/data: bfdStatus?|disabled",
+        "bgp-bfd/[0]/bfd-configuration-state/[0]/data: _bfdAdmin?|disabled",
         "nlri-type-session/[0]/data: afiSafiEnabledList?|",
         "nlri-type-peer/[0]/data: afiSafiRcvList?|",
         "bgp-error/[0]/name/[0]/data: notificnReason?|",

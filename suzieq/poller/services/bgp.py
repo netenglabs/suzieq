@@ -21,7 +21,15 @@ class BgpService(Service):
             if entry.get('state', '') != 'Established':
                 entry['state'] = 'NotEstd'
                 entry['afi'] = entry['safi'] = ''
+                if not entry.get('bfdStatus', ''):
+                    entry['bfdStatus'] = ''
                 continue
+
+            estdTime = parse(
+                entry.get('estdTime', ''),
+                settings={'RELATIVE_BASE':
+                          datetime.fromtimestamp(
+                              (raw_data[0]['timestamp'])/1000), })
 
             if 'EVPN' in entry.get('afi', []):
                 afidx = entry['afi'].index('EVPN')
@@ -31,6 +39,11 @@ class BgpService(Service):
                             for x in entry.get('afi', [])]
             entry['safi'] = ['flowspec' if x == "Flow Specification"
                              else x.lower() for x in entry.get('safi', [])]
+
+            bfd_status = entry.get('bfdStatus', 'disabled').lower()
+            if not bfd_status or (bfd_status == "unknown"):
+                bfd_status = "disabled"
+            entry['bfdStatus'] = bfd_status
 
             for i, afi in enumerate(entry['afi']):
                 if 'sr-te' in entry['safi'][i]:
@@ -42,7 +55,11 @@ class BgpService(Service):
                 new_entry['safi'] = entry['safi'][i]
                 new_entry['pfxTx'] = entry['pfxTx'][i]
                 new_entry['pfxRx'] = entry['pfxRx'][i]
-                new_entry['rrclient'] = entry['rrclient'] or False
+                if entry.get('rrclient', ''):
+                    new_entry['rrclient'] = True
+                else:
+                    new_entry['rrclient'] = False
+                new_entry['estdTime'] = int(estdTime.timestamp()*1000)
                 if entry['pfxBestRx']:
                     # Depending on the moodiness of the output, this field
                     # may not be present. So, ignore it.
@@ -105,6 +122,14 @@ class BgpService(Service):
                 drop_indices.append(i)
                 continue
 
+            bfd_status = entry.get('bfdStatus', 'disabled').lower()
+            if not bfd_status or (bfd_status == "unknown"):
+                bfd_status = "disabled"
+            elif entry.get('_bfdAdmin', '') != 'enabled':
+                bfd_status = 'disabled'
+                bfd_status = "disabled"
+            entry['bfdStatus'] = bfd_status
+
             # JunOS adds entries which includes the port as IP+Port
             entry['peerIP'] = entry['peerIP'].split('+')[0]
             entry['peer'] = entry['peer'].split('+')[0]
@@ -122,6 +147,10 @@ class BgpService(Service):
             else:
                 entry['estdTime'] = '0d 00:00:00'
 
+            if entry.get('rrclient', ''):
+                entry['rrclient'] = True
+            else:
+                entry['rrclient'] = False
             advafis = set(entry['afiSafiAdvList'].split())
             rcvafis = set(entry['afiSafiRcvList'].split())
 
@@ -203,6 +232,11 @@ class BgpService(Service):
                 drop_indices.append(j)
                 continue
 
+            bfd_status = entry.get('bfdStatus', 'disabled').lower()
+            if not bfd_status or (bfd_status == "unknown"):
+                bfd_status = "disabled"
+            entry['bfdStatus'] = bfd_status
+
             if (entry.get('extnhAdvertised', False) == "true" and
                     entry.get('extnhReceived', False) == "true"):
                 entry['extnhEnabled'] = True
@@ -251,7 +285,10 @@ class BgpService(Service):
             entry.pop('afAdvertised')
             entry.pop('afRcvd')
 
-            entry['rrclient'] = entry.get('rrclient', False) == "true"
+            if entry.get('rrclient', ''):
+                entry['rrclient'] = 'True'
+            else:
+                entry['rrclient'] = 'False'
 
             defint_list = [0]*len(entry.get('afiPrefix', []))
             defbool_list = [False]*len(entry.get('afiPrefix', []))
@@ -315,9 +352,21 @@ class BgpService(Service):
                 drop_indices.append(i)
                 continue
 
+            bfd_status = entry.get('bfdStatus', 'disabled').lower()
+            if not bfd_status or (bfd_status == "unknown"):
+                bfd_status = "disabled"
+            entry['bfdStatus'] = bfd_status
+
             if entry.get('state', '') != 'Established':
                 entry['state'] = 'NotEstd'
 
+            communities = []
+            for comm in entry.get('communityTypes', []):
+                if comm == "Community":
+                    communities.append('standard')
+                elif comm == 'Extended':
+                    communities.append('extended')
+            entry['communityTypes'] = communities
             entry['numChanges'] = (int(entry.get('_numConnEstd', 0) or 0) +
                                    int(entry.get('_numConnDropped', 0) or 0))
             if not entry.get('vrf', ''):
@@ -334,6 +383,10 @@ class BgpService(Service):
             if estdTime:
                 entry['estdTime'] = int(estdTime.timestamp()*1000)
             entry['routerId'] = vrf_rtrid.get(entry['vrf'], '')
+            if entry.get('rrclient', '') == '':
+                entry['rrclient'] = 'False'
+            else:
+                entry['rrclient'] = 'True'
 
         processed_data = np.delete(processed_data, drop_indices).tolist()
         return processed_data
@@ -346,6 +399,12 @@ class BgpService(Service):
         for i, entry in enumerate(processed_data):
             if entry['state'] != 'Established':
                 continue
+
+            bfd_status = entry.get('bfdStatus', 'disabled').lower()
+            if not bfd_status or (bfd_status == "unknown"):
+                bfd_status = "disabled"
+            entry['bfdStatus'] = bfd_status
+
             for afi in entry.get('_afiInfo', {}):
                 if afi in (entry.get('afisAdvOnly', []) or []):
                     continue
@@ -381,7 +440,10 @@ class BgpService(Service):
                 elif comm == 'standard':
                     new_entry['communityTypes'] = ['standard']
 
-                new_entry['rrclient'] = 'routeReflectorClient' in subent or False
+                if 'routeReflectorClient' in subent:
+                    new_entry['rrclient'] = 'True'
+                else:
+                    new_entry['rrclient'] = 'False'
                 new_entry['pfxRx'] = subent.get('acceptedPrefixCounter', 0)
                 new_entry['pfxTx'] = subent.get('sentPrefixCounter', 0)
                 new_entry['ingressRmap'] = \
