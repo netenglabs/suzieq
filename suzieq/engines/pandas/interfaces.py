@@ -53,7 +53,8 @@ class InterfacesObj(SqPandasEngine):
         # Loopback interfaces on Linux have "unknown" as state
         self.summary_df["state"] = self.summary_df['state'] \
                                        .map({"unknown": "up",
-                                             "up": "up", "down": "down"})
+                                             "up": "up", "down": "down",
+                                             "notConnected": "notConnected"})
 
         self._summarize_on_add_field = [
             ('deviceCnt', 'hostname', 'nunique'),
@@ -64,6 +65,7 @@ class InterfacesObj(SqPandasEngine):
             ('devicesWithL2Cnt', 'master == "bridge"', 'hostname', 'nunique'),
             ('devicesWithVxlanCnt', 'type == "vxlan"', 'hostname'),
             ('ifDownCnt', 'state != "up" and adminState == "up"', 'ifname'),
+            ('ifAdminDownCnt', 'adminState != "up"', 'ifname'),
             ('ifWithMultipleIPCnt', 'ipAddressList.str.len() > 1', 'ifname'),
         ]
 
