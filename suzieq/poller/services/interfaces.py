@@ -50,6 +50,7 @@ class InterfaceService(Service):
                 entry['master'] = ''
                 entry['state'] = 'up'
                 entry['adminState'] = 'up'
+                entry['mtu'] = 1500
                 continue
 
             if entry['type'] == 'varp':
@@ -95,6 +96,8 @@ class InterfaceService(Service):
             if entry["type"] == "vxlan":
                 # We capture the glory in evpnVni of this interface
                 entry["vlan"] = 0
+                entry['mtu'] = -1
+                entry['macaddr'] = '00:00:00:00:00:00'
 
             if entry['type'] == 'vlan' and entry['ifname'].startswith('Vlan'):
                 entry['vlan'] = int(entry['ifname'].split('Vlan')[1])
@@ -115,6 +118,9 @@ class InterfaceService(Service):
             tmpent = entry.get("ipAddressList", [[]])
             if not tmpent:
                 continue
+
+            if entry['type'] == "loopback":
+                entry['macaddr'] = '00:00:00:00:00:00'
 
             munge_entry = tmpent[0]
             if munge_entry:
@@ -150,7 +156,9 @@ class InterfaceService(Service):
 
     def _clean_cumulus_data(self, processed_data, raw_data):
         """We have to merge the appropriate outputs of two separate commands"""
+
         new_data_dict = {}
+
         for entry in processed_data:
             ifname = entry["ifname"]
             if entry.get('hardware', '') == 'ether':
@@ -210,6 +218,9 @@ class InterfaceService(Service):
                 first_entry.update({"type": entry["type"]})
                 first_entry.update({"master": entry["master"]})
 
+            if entry.get('type', '') == "vxlan":
+                entry['speed'] = 0
+
         processed_data = []
         for _, v in new_data_dict.items():
             processed_data.append(v)
@@ -225,29 +236,56 @@ class InterfaceService(Service):
 
         for i, entry in enumerate(processed_data):
 
+            ifname = entry.get('ifname', '')
+            if not entry.get('macaddr', ''):
+                entry['macaddr'] = '00:00:00:00:00:00'
+
             if entry['type'] == 'vrf':
                 self._assign_vrf(entry, entry_dict)
-                if entry['ifname'] == 'default':
+                entry['state'] = entry['adminState'] = 'up'
+                entry['mtu'] = 1500
+                if ifname == 'default':
                     drop_indices.append(i)
                 continue
 
+            if entry['type']:
+                entry['type'] = entry['type'].lower()
+
+            if entry['description'] == 'None':
+                entry['description'] = ''
+
+            if ifname.startswith(('gre', 'ipip', 'lc-', 'lsi', 'pc-', 'bme',
+                                  'cbp', 'pimd', 'pime', 'pip', 'pd',
+                                  'pd', 'fxp', 'mtun', 'tap', 'bcm', 'jsrv',
+                                  'mo-', 'ixgbe')):
+                entry['type'] = 'internal'
+
+            if ifname.startswith('irb.'):
+                entry['type'] = 'vlan'
+            elif ifname == 'irb':
+                entry['type'] = 'internal'
+            elif ifname == 'dsc':
+                entry['type'] = 'null'
+
             if entry['type'] is None:
+                entry['type'] = 'internal'
+                entry['mtu'] = 65536
                 continue
 
             if entry['type'] == 'virtual-switch':
                 # TODO: Handle this properly
                 continue
 
-            if not entry_dict[entry['ifname']]:
-                entry_dict[entry['ifname']] = entry
+            if entry['type'] == 'vxlan-tunnel-endpoint':
+                entry['type'] = 'vtep'
+
+            if not entry_dict[ifname]:
+                entry_dict[ifname] = entry
 
             if entry.get('mtu', 0) == 'Unlimited':
                 entry['mtu'] = 65536
 
             entry['mtu'] = int(entry.get('mtu', 0))
-
-            if entry['type']:
-                entry['type'] = entry['type'].lower()
 
             if 'statusChangeTimestamp' in entry:
                 ts = get_timestamp_from_junos_time(
@@ -264,19 +302,8 @@ class InterfaceService(Service):
 
             if entry.get('master', '') == 'Ethernet-Bridge':
                 entry['master'] = 'bridge'
-            elif entry.get('master', '') == 'unknown':
-                if entry['ifname'].startswith('jsv'):
-                    entry['type'] = 'sflowMonitor'
-                else:
-                    entry['type'] = 'virtual'
-                entry['master'] = ''
             else:
                 entry['master'] = ''
-
-            if entry['type'] == 'vxlan-tunnel-endpoint':
-                entry['type'] = 'vtep'
-            elif entry['type'] == 'interface-specific':
-                entry['type'] = 'tap'
 
             # Process the logical interfaces which are too deep to be parsed
             # efficiently by the parser right now
@@ -286,9 +313,18 @@ class InterfaceService(Service):
 
             # Uninteresting logical interface
             gwmacs = entry.get('_gwMacaddr', [])
+            pifname = ifname
             for i, ifname in enumerate(entry.get('logicalIfname', [])):
                 if entry['afi'] is None:
                     continue
+
+                if pifname == 'irb' and '.' in ifname:
+                    _, vlan = ifname.split('.')
+                    iftype = 'vlan'
+                    vlan = int(vlan)
+                else:
+                    vlan = 0
+                    iftype = entry['type']
 
                 v4addresses = []
                 v6addresses = []
@@ -322,12 +358,15 @@ class InterfaceService(Service):
                 new_entry = {'ifname': ifname,
                              'mtu': thisafi.get(
                                  'mtu', [{'data': -1}])[0]['data'],
-                             'type': 'logical',
+                             'type': iftype,
                              'speed': entry['speed'],
+                             'vlan': vlan,
                              'master': vrf,
                              'macaddr': macaddr,
                              'adminState': 'up',
                              'description': entry['description'],
+                             'state': 'up',
+                             'adminState': 'up',
                              'statusChangeTimestamp':
                              entry['statusChangeTimestamp'],
                              }
@@ -586,16 +625,24 @@ class InterfaceService(Service):
                 entry['ifname'] = entry['vrf']
                 entry['master'] = ''
                 entry['type'] = 'vrf'
+                entry['mtu'] = -1
                 entry['state'] = entry['adminState'] = 'up'
-
+                entry['macaddr'] = "00:00:00:00:00:00"
                 continue
 
-            type = entry.get('type', 'ethernet').lower()
-            if 'aggregated ethernet' in type:
-                type = 'bond'
-            elif 'ethernet' in type:
-                type = 'ethernet'
-            entry['type'] = type
+            speed = entry['speed']
+            if speed == '':
+                speed = 0
+            entry['speed'] = int(speed)/1000  # is in Kbps
+
+            iftype = entry.get('type', 'ethernet').lower()
+            if 'aggregated ethernet' in iftype:
+                iftype = 'bond'
+            elif 'ethernet' in iftype:
+                iftype = 'ethernet'
+            elif iftype.endswith('gige'):
+                iftype = 'ethernet'
+            entry['type'] = iftype
 
             bondMbrs = entry.get('_bondMbrs', []) or []
             if type == 'bond' and bondMbrs:
@@ -614,11 +661,15 @@ class InterfaceService(Service):
 
             entry['macaddr'] = convert_macaddr_format_to_colon(
                 entry.get('macaddr', '0000.0000.0000'))
+            if entry['type'] == 'null':
+                entry['macaddr'] = "00:00:00:00:00:00"
             entry['interfaceMac'] = convert_macaddr_format_to_colon(
                 entry.get('interfaceMac', '0000.0000.0000'))
 
             if entry.get('vlan', '') and entry.get('innerVlan', ''):
                 entry['type'] = "qinq"
+            if entry['ifname'].endswith('.0'):
+                entry['vlan'] = -1
 
             lastChange = parse(
                 entry.get('statusChangeTimestamp', ''),
@@ -630,12 +681,21 @@ class InterfaceService(Service):
                                                      * 1000)
             if 'ipAddressList' not in entry:
                 entry['ipAddressList'] = []
+                entry['ip6AddressList'] = []
+            elif ':' in entry['ipAddressList']:
+                entry['ip6AddressList'] = entry['ipAddressList']
+                entry['ipAddressList'] = []
+            else:
+                entry['ip6AddressList'] = []
 
-            if 'ip6AddressList' not in entry:
+            if entry['ipAddressList'] == 'Unknown':
+                entry['ipAddressList'] = []
                 entry['ip6AddressList'] = []
 
             if entry['ipAddressList'] or entry['ip6AddressList']:
                 entry['master'] = entry.get('vrf', '')
+            elif entry['type'] == 'vlan':
+                entry['type'] = 'vlan-l2'  # Layer 2 transport mode port
 
             if entry['ifname'] in entry_dict:
                 add_info = entry_dict[entry['ifname']]

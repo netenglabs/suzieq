@@ -87,11 +87,11 @@ apply:
       - command: show interface | display json | no-more
         normalize: 'interface-information/[0]/physical-interface/*/[
         "oper-status/[0]/data: state",
-        "snmp-index/[0]/data: ifIndex",
+        "snmp-index/[0]/data: ifindex",
         "admin-status/[0]/data: adminState",
         "speed/[0]/data: speed?|0",
         "name/[0]/data: ifname",
-        "description/[0]/data: description",
+        "description/[0]/data: description?|",
         "if-type/[0]/data: type",
         "link-level-type/[0]/data: type?|type",
         "mtu/[0]/data: mtu?|0",
@@ -166,7 +166,7 @@ apply:
         "linklocal-addr: _linklocal"
         ]'
 
-      - command: show interface | egrep '^\w|Hardware|MTU|reset'
+      - command: show interface | egrep '^\w|Hardware|MTU|reset|Description'
         textfsm: textfsm_templates/nxos_show_int_grep.tfsm
         _entryType: mtumac
 

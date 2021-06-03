@@ -2989,3 +2989,12 @@ tests:
     {"namespace": "junos", "hostname": "spine02", "ifname": "xe-0/0/1", "state": "up",
     "adminState": "up", "type": "ethernet", "mtu": 9214, "vlan": 0, "master": "",
     "ipAddressList": [], "ip6AddressList": [], "timestamp": 1616357377303}]'
+- command: interface show --ifname="jsrv" --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: interface show junos
+- command: interface show --type=all  --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: interface show junos
+- command: interface show --type=internal  --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: interface show junos

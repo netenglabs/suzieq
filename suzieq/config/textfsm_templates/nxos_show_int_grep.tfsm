@@ -1,5 +1,6 @@
 Value Required ifname (\S+)
 Value macaddr ([0-9a-f.]*)
+Value description (.*)
 Value mtu (\d+)
 Value adminState (\w+)
 Value state (\w+)
@@ -13,6 +14,7 @@ Start
   ^${ifname} is ${state}.*$$
   ^admin\s+state\s+is\s+${adminState},.*$$
   ^\s+Hardware.*address: ${macaddr}.*$$
+  ^\s+Description:\s+${description}.*$$
   ^\s+MTU ${mtu} bytes,\s+BW\s+${speed},.*$$
   ^\s+Last\s+link\s+flapped\s+${statusChangeTimestamp}.*$$
   ^\s+${numChanges}\s+interface\s+resets

@@ -5,10 +5,10 @@ Value type (\S+?(?:\s+Ethernet|))
 Value macaddr ((?:\w{4}\.){2}\w{4})
 Value interfaceMac ((?:\w{4}\.){2}\w{4})
 Value description (.*?)
-Value IP_ADDRESS (.*?)
+Value List ipAddressList (.*)
 Value mtu (\d+)
 Value duplex (.+?)
-Value speed (.+?b/s)
+Value speed (\d+)
 Value bandwidth (\d+\s+\w+)
 Value ENCAPSULATION ([^,]+)
 Value statusChangeTimestamp (\S+)
@@ -17,20 +17,24 @@ Value List _bondMbrs (\S+)
 Value vlan (\d+)
 Value innerVlan (\d+)
 Value _bondMbrCnt (\d+)
+Value _switchport (Layer 2)
 
 Start
   ^\S+\s+is -> Continue.Record
-  ^${ifname}\s+is\s+${state},\s+line\sprotocol\sis\s+${adminState}\s*$$
+  ^${ifname}\s+is\s+${adminState},\s+line\sprotocol\sis\s+${state}\s*$$
   ^\s+Interface\s+state\s+transitions:\s+${numChanges}
+  ^\s+Hardware is ${type}\s+sub-interface\(s\),\s+address\s+is\s+${macaddr}
   ^\s+Hardware\s+is\s+${type}(?:\s+interface\(s\)|)(?:,\s+address\s+is\s+${macaddr}(?:\s+\(bia\s+${interfaceMac}\)\s*)*$$|\s.+|\s*$$)
   ^\s+Description:\s+${description}\s*$$
-  ^\s+[Ii]nternet\s+[Aa]ddress\s+is\s+${IP_ADDRESS}\s*$$
-  ^\s+MTU\s+${mtu}.*BW\s+${bandwidth}
+  ^\s+[Ii]nternet\s+[Aa]ddress\s+is\s+${ipAddressList}\s*$$
+  ^\s+${_switchport} Transport Mode
+  ^\s+MTU\s+${mtu}.*BW\s+${speed}.*$$
   ^\s+Encapsulation\s+${ENCAPSULATION},\s+VLAN\s+Id\s+${vlan},\s+2nd\s+VLAN\s+Id\s+${innerVlan}
   ^\s+Encapsulation\s+${ENCAPSULATION},\s+VLAN\s+Id\s+${vlan},\s+loopback
   ^\s+Encapsulation\s+${ENCAPSULATION},
+  ^\s+Outer Match:\s+Dot1Q VLAN\s+${vlan}.*$$
   ^\s+loopback\s+not\s+set,
-  ^\s+(?:[Dd]uplex\s+|)${duplex}(?:-[Dd]uplex|),\s+${speed}
+  ^\s+(?:[Dd]uplex\s+|)${duplex}(?:-[Dd]uplex|),.*$$
   ^\s+Last\s+link\s+flapped\s+${statusChangeTimestamp}
   ^\s+No.\s+of\s+members\s+in\s+this\s+bundle: ${_bondMbrCnt}
   ^\s+${_bondMbrs}\s+Full-duplex\s+
@@ -176,31 +180,49 @@ Start
 #     0 packets output, 0 bytes, 0 total output drops
 #     Output Unknown broadcast packets, Unknown multicast packets
 #
-#Bundle-Ether1 is down, line protocol is down 
-#  Interface state transitions: 2
-#  Hardware is Aggregated Ethernet interface(s), address is 0052.5246.9221
-#  Description: "1x1G portchannel"
+#Bundle-Ether1 is up, line protocol is up 
+#  Interface state transitions: 1
+#  Hardware is Aggregated Ethernet interface(s), address is 001e.f721.5d01
+#  Description: 1x1G LACP to rtsw.tuls:ae0
 #  Internet address is Unknown
-#  MTU 9184 bytes, BW 0 Kbit
-#     reliability 255/255, txload Unknown, rxload Unknown
+#  MTU 9184 bytes, BW 10000000 Kbit (Max: 10000000 Kbit)
+#     reliability 255/255, txload 0/255, rxload 0/255
 #  Encapsulation ARPA,
-#  Full-duplex, 0Kb/s
+#  Full-duplex, 10000Mb/s
 #  loopback not set,
-#  Last link flapped 1w0d
+#  Last link flapped 1d21h
 #    No. of members in this bundle: 1
-#      GigabitEthernet0/0/0/3       Full-duplex  10000Mb/s    Configured      
+#      GigabitEthernet0/0/0/3       Full-duplex  10000Mb/s    Active          
 #  Last input 00:00:00, output 00:00:00
 #  Last clearing of "show interface" counters never
-#  5 minute input rate 0 bits/sec, 0 packets/sec
-#  5 minute output rate 1000 bits/sec, 1 packets/sec
-#     24564 packets input, 7647474 bytes, 0 total input drops
+#  5 minute input rate 1000 bits/sec, 0 packets/sec
+#  5 minute output rate 9000 bits/sec, 1 packets/sec
+#     124688 packets input, 39568225 bytes, 1 total input drops
 #     0 drops for unrecognized upper-level protocol
 #     Received 0 broadcast packets, 0 multicast packets
 #              0 runts, 0 giants, 0 throttles, 0 parity
 #     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored, 0 abort
-#     703520 packets output, 87967518 bytes, 0 total output drops
+#     284126 packets output, 198425641 bytes, 0 total output drops
 #     Output 0 broadcast packets, 0 multicast packets
 #     0 output errors, 0 underruns, 0 applique, 0 resets
 #     0 output buffer failures, 0 output buffers swapped out
 #     0 carrier transitions
+#TenGigE0/0/0/30/0.410 is up, line protocol is up 
+#  Interface state transitions: 1
+#  Hardware is VLAN sub-interface(s), address is 4c71.0ddd.18d8
+#  Description: TenGigE-subinterface -- 0/0/0/30/0.410
+#  Layer 2 Transport Mode
+#  MTU 9148 bytes, BW 10000000 Kbit (Max: 10000000 Kbit)
+#     reliability Unknown, txload Unknown, rxload Unknown
+#  Encapsulation 802.1Q Virtual LAN,
+#    Outer Match: Dot1Q VLAN 410
+#    Ethertype Any, MAC Match src any, dest any
+#  loopback not set,
+#  Last link flapped 1d22h
+#  Last input never, output never
+#  Last clearing of "show interface" counters never
+#     0 packets input, 0 bytes
+#     0 input drops, 0 queue drops, 0 input errors
+#     0 packets output, 0 bytes
+#     0 output drops, 0 queue drops, 0 output errors
 #
