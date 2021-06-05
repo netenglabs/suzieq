@@ -16,13 +16,24 @@ class InterfacesObj(SqPandasEngine):
     def get(self, **kwargs):
         """Handling state outside of regular filters"""
         state = kwargs.pop('state', '')
+        iftype = kwargs.pop('type', '')
+        ifname = kwargs.get('ifname', '')
 
-        df = super().get(**kwargs)
+        if iftype and iftype != ["all"]:
+            df = super().get(type=iftype, **kwargs)
+        else:
+            df = super().get(**kwargs)
 
-        if df.empty or not state:
+        if df.empty:
             return df
 
-        return df.query(f'state=="{state}"').reset_index()
+        if state:
+            df = df.query(f'state=="{state}"')
+
+        if not (iftype or ifname) and 'type' in df.columns:
+            return df.query('type != "internal"').reset_index()
+        else:
+            return df.reset_index()
 
     def aver(self, what="", **kwargs) -> pd.DataFrame:
         """Assert that interfaces are in good state"""
