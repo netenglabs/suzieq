@@ -1,12 +1,35 @@
 Value Required routerId (\S+)
 Value asn (\S+)
-Value vrf (\w+)
+Value Filldown vrf (\w+)
 
 Start
+  ^BGP VRF ${vrf},.*$$
   ^BGP router identifier ${routerId}, local AS.*${asn}.*$$ -> Record
 
-#Address Family: IPv4 Unicast
-#  ============================
+#VRF: FOOBAR
+#-------
+#BGP VRF FOOBAR, state: Active
+#BGP Route Distinguisher: 10.0.0.1:1
+#VRF ID: 0x60000001
+#BGP router identifier 10.0.0.1, local AS number 64001
+#Non-stop routing is enabled
+#BGP table state: Active
+#Table ID: 0xe0000001   RD version: 12672
+#BGP main routing table version 12672
+#BGP NSR Initial initsync version 551 (Reached)
+#BGP NSR/ISSU Sync-Group versions 0/0
+#
+#BGP is operating in STANDALONE mode.
+#
+#
+#Process       RcvTblVer   bRIB/RIB   LabelVer  ImportVer  SendTblVer  StandbyVer
+#Speaker           12672      12672      12672      12672       12672           0
+#
+#Neighbor        Spk    AS MsgRcvd MsgSent   TblVer  InQ OutQ  Up/Down  St/PfxRcd
+#10.0.127.2        0 64002   13078    7222        0    0    0 00:00:00 Idle
+#
+# Address Family: IPv4 Unicast
+# ============================
 #  
 #  BGP router identifier 10.0.0.1, local AS number 1
 #  BGP generic scan interval 60 secs
