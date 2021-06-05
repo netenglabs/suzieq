@@ -1,4 +1,7 @@
 from datetime import datetime, timedelta, timezone
+
+import numpy as np
+
 from suzieq.poller.services.service import Service
 from suzieq.utils import get_timestamp_from_cisco_time
 from suzieq.utils import get_timestamp_from_junos_time
@@ -55,6 +58,8 @@ class OspfNbrService(Service):
             entry["areaStub"] = entry["areaStub"] == "[Stub]"
             if not entry["bfdStatus"]:
                 entry["bfdStatus"] = "disabled"
+            else:
+                entry["bfdStatus"] = entry['bfdStatus'].lower()
 
         return processed_data
 
@@ -68,10 +73,29 @@ class OspfNbrService(Service):
             # What is provided is the opposite of stub and so we not it
             entry["areaStub"] = not entry["areaStub"]
 
+            bfd_status = entry.get("bfdStatus", '')
+            if not bfd_status or (bfd_status == 'adminDown'):
+                entry["bfdStatus"] = "disabled"
+            else:
+                entry["bfdStatus"] = bfd_status.lower()
+
         return processed_data
 
     def _clean_junos_data(self, processed_data, raw_data):
-        for entry in processed_data:
+
+        ifentries = {}
+        drop_indices = []
+
+        for i, entry in enumerate(processed_data):
+            if entry.get('_entryType', '') == '_bfdType':
+                ifname = entry.get('ifname', '')
+                if ifentries.get(ifname, {}):
+                    if any('OSPF' in x for x in entry['_client']):
+                        ifentry = ifentries[ifname]
+                        ifentry['bfdStatus'] = entry['bfdStatus'].lower()
+                drop_indices.append(i)
+                continue
+
             vrf = entry['vrf'][0]['data']
             if vrf == "master":
                 entry['vrf'] = "default"
@@ -81,7 +105,10 @@ class OspfNbrService(Service):
             entry['lastChangeTime'] = get_timestamp_from_junos_time(
                 entry['lastChangeTime'], raw_data[0]['timestamp']/1000)
             entry['state'] = entry['state'].lower()
+            entry['bfdStatus'] = 'disabled'
+            ifentries[entry['ifname']] = entry
 
+        processed_data = np.delete(processed_data, drop_indices).tolist()
         return processed_data
 
     def _clean_nxos_data(self, processed_data, raw_data):
@@ -92,4 +119,8 @@ class OspfNbrService(Service):
             entry['lastChangeTime'] = get_timestamp_from_cisco_time(
                 entry['lastChangeTime'], raw_data[0]['timestamp']/1000)
 
+            if not entry.get("bfdStatus", ''):
+                entry["bfdStatus"] = "disabled"
+            else:
+                entry["bfdStatus"] = entry['bfdStatus'].lower()
         return processed_data

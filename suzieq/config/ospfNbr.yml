@@ -27,7 +27,7 @@ apply:
       "interfaceAddress: peerIP",
       "details/areaId: area",
       "details/stateTime: lastChangeTime",
-      "details/bfdState: bfdStatus?|",
+      "details/bfdState: bfdStatus?|disabled",
       "details/numberOfStateChanges: numChanges",
       "options/externalRoutingCapability: areaStub?|False",
       "details/retransmissionCount: lsaRetxCnt"]'
@@ -48,16 +48,26 @@ apply:
 
   junos-qfx:
     version: all
-    command: show ospf neighbor instance all detail | display json | no-more
-    normalize: 'ospf-neighbor-information-all/[0]/ospf-instance-neighbor/*:ospf-instance-name:vrf|ospf-neighbor/*/[
-    "neighbor-address/[0]/data: peerIP",
-    "interface-name/[0]/data: ifname",
-    "ospf-neighbor-state/[0]/data: state",
-    "neighbor-id/[0]/data: peerRouterId",
-    "neighbor-priority/[0]/data: nbrPrio",
-    "ospf-area/[0]/data: area",
-    "neighbor-up-time/[0]/attributes: lastChangeTime?|"
-    ]'
+    command:
+      - command: show ospf neighbor instance all detail | display json | no-more
+        normalize: 'ospf-neighbor-information-all/[0]/ospf-instance-neighbor/*:ospf-instance-name:vrf|ospf-neighbor/*/[
+        "neighbor-address/[0]/data: peerIP",
+        "interface-name/[0]/data: ifname",
+        "ospf-neighbor-state/[0]/data: state",
+        "neighbor-id/[0]/data: peerRouterId",
+        "neighbor-priority/[0]/data: nbrPrio",
+        "ospf-area/[0]/data: area",
+        "neighbor-up-time/[0]/attributes: lastChangeTime?|"
+        ]'
+
+      - command: show bfd session detail | display json | no-more
+        normalize: 'bfd-session-information/[0]/bfd-session/*/[
+        "session-neighbor/[0]/data: _bfdIP?|",
+        "session-state/[0]/data: bfdStatus?|",
+        "session-interface/[0]/data: ifname",
+        "bfd-client/[*]/client-name/[0]/data: _client?|",
+        "_entryType: _entryType?|_bfdType",
+        ]'
 
   junos-ex:
     copy: junos-qfx

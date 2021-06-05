@@ -11,7 +11,7 @@ class OspfIfService(Service):
         for entry in processed_data:
             entry["vrf"] = "default"
             entry["networkType"] = entry["networkType"].lower()
-            if entry['networkType'] == 'point2point':
+            if entry['networkType'] == 'pointopoint':
                 entry['networkType'] = 'p2p'
             entry["passive"] = entry["passive"] == "Passive"
             entry["isUnnumbered"] = entry["isUnnumbered"] == "UNNUMBERED"
@@ -22,11 +22,38 @@ class OspfIfService(Service):
         return self._clean_linux_data(processed_data, raw_data)
 
     def _clean_eos_data(self, processed_data, raw_data):
-        for entry in processed_data:
+
+        vrf_loip = {}
+        vrf_rtrid = {}
+        drop_indices = []
+        for i, entry in enumerate(processed_data):
+            if '_entryType' in entry:
+                # Retrieve the VRF and routerID
+                vrf_rtrid[entry.get('vrf', 'default')] = \
+                    entry.get('routerId', '')
+                drop_indices.append(i)
+                continue
+
+            vrf = entry.get('vrf', '')
+            if entry['ifname'].startswith("Loopback"):
+                if vrf not in vrf_loip or not vrf_loip[vrf]:
+                    vrf_loip[vrf] = entry.get('ipAddress', '')
+            if entry.get('passive', False):
+                entry['bfdStatus'] = "invalid"
             entry["networkType"] = entry["networkType"].lower()
             entry["isUnnumbered"] = False
-            # Rewrite '/' in interface names
+            if entry.get('state', '') in ['dr', 'p2p']:
+                entry['state'] = 'up'
 
+        for i, entry in enumerate(processed_data):
+            if entry.get('ipAddress', '') == vrf_loip.get(
+                    entry.get('vrf', ''), ''):
+                if not entry.get('type', '') == "loopback":
+                    entry['isUnnumbered'] = True
+            if entry['vrf'] in vrf_rtrid:
+                entry['routerId'] = vrf_rtrid[entry['vrf']]
+
+        processed_data = np.delete(processed_data, drop_indices).tolist()
         return processed_data
 
     def _clean_junos_data(self, processed_data, raw_data):
@@ -48,6 +75,7 @@ class OspfIfService(Service):
             entry['maskLen'] = int(entry['ipAddress'].split('/')[1])
             entry['vrf'] = 'default'  # Juniper doesn't provide this info
             entry['authType'] = entry['authType'].lower()
+            entry['networkType'] = entry['networkType'].lower()
 
         # Skip the original record as we don't need the overview record
         return processed_data[1:]

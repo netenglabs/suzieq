@@ -93,7 +93,7 @@ class OspfObj(SqPandasEngine):
                                     'state_y': 'adjState',
                                     'timestamp_x': 'timestamp'})
             df = df.drop(list(df.filter(regex='_y$')), axis=1) \
-                   .drop('ipAddress_x', axis=1, errors='ignore') \
+                   .drop(['ipAddress_x'], axis=1, errors='ignore') \
                    .fillna({'peerIP': '-', 'numChanges': 0,
                             'lastChangeTime': 0})
 
@@ -102,6 +102,9 @@ class OspfObj(SqPandasEngine):
             df.loc[df['adjState'].isnull(), 'adjState'] = df['passive']
             df.loc[df['adjState'].eq(True), 'adjState'] = 'passive'
             df.loc[df['adjState'].eq(False), 'adjState'] = 'fail'
+            df.loc[df['adjState'] == 'passive', 'peerIP'] = ''
+            df.loc[df['adjState'] == 'passive', 'peerRouterId'] = ''
+
             df.drop(columns=['passive'], inplace=True)
 
         df.bfill(axis=0, inplace=True)
@@ -121,7 +124,8 @@ class OspfObj(SqPandasEngine):
                     .rename(columns={'hostname_y': 'peerHostname'}) \
                     .drop_duplicates(subset=['namespace', 'hostname',
                                              'vrf', 'ifname']) \
-                    .drop(columns=['matchIP', 'matchIP_y'], errors='ignore')
+                    .drop(columns=['matchIP', 'matchIP_y', 'timestamp_y'],
+                          errors='ignore')
 
                 if newdf.empty:
                     newdf = df.query('adjState == "full"').reset_index()
@@ -130,7 +134,8 @@ class OspfObj(SqPandasEngine):
             else:
                 final_df = df
         else:
-            final_df = df
+            final_df = df.drop(list(df.filter(regex='_y$')), axis=1) \
+                         .rename({'timestamp_x': 'timestamp'})
 
         if query_str:
             final_df = final_df.query(query_str).reset_index(drop=True)
