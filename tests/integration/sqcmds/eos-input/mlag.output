@@ -1,79 +1,12 @@
 [
     {
         "status": 200,
-        "timestamp": 1616447825417,
-        "cmd": "show mlag detail",
-        "devtype": "eos",
-        "namespace": "eos",
-        "hostname": "exit02",
-        "address": "10.255.4.252",
-        "data": {
-            "localInterface": "",
-            "state": "disabled",
-            "reloadDelay": 300,
-            "peerLink": "",
-            "dualPrimaryDetectionState": "disabled",
-            "reloadDelayNonMlag": 300,
-            "mlagPorts": {
-                "Disabled": 0,
-                "Active-partial": 0,
-                "Inactive": 0,
-                "Configured": 0,
-                "Active-full": 0
-            },
-            "portsErrdisabled": false,
-            "dualPrimaryPortsErrdisabled": false,
-            "detail": {
-                "failoverCauseList": [
-                    "Unknown"
-                ],
-                "udpHeartbeatsSent": 0,
-                "lacpStandby": false,
-                "mlagState": "disabled",
-                "heartbeatInterval": 4000,
-                "effectiveHeartbeatInterval": 0,
-                "heartbeatTimeout": 0,
-                "stateChanges": 0,
-                "fastMacRedirectionEnabled": false,
-                "peerPortsErrdisabled": false,
-                "mlagHwReady": true,
-                "udpHeartbeatAlive": false,
-                "failoverInitiated": false,
-                "peerMlagState": "unknown",
-                "secondaryFromFailover": false,
-                "primaryPriority": 32767,
-                "failover": false,
-                "enabled": false,
-                "peerMacRoutingSupported": false,
-                "peerPrimaryPriority": 0,
-                "udpHeartbeatsReceived": 0,
-                "peerMacAddress": "00:00:00:00:00:00",
-                "mountChanges": 0,
-                "heartbeatTimeoutsSinceReboot": 0
-            }
-        }
-    },
-    {
-        "status": 200,
-        "timestamp": 1616447825417,
-        "cmd": "show mlag interfaces",
-        "devtype": "eos",
-        "namespace": "eos",
-        "hostname": "exit02",
-        "address": "10.255.4.252",
-        "data": {
-            "interfaces": {}
-        }
-    }
-][
-    {
-        "status": 200,
-        "timestamp": 1616447825410,
+        "timestamp": 1620879036285,
         "cmd": "show mlag detail",
         "devtype": "eos",
         "namespace": "eos",
         "hostname": "spine01",
-        "address": "10.255.4.117",
+        "address": "10.255.2.117",
         "data": {
             "localInterface": "",
             "state": "disabled",
@@ -122,12 +55,12 @@
     },
     {
         "status": 200,
-        "timestamp": 1616447825410,
+        "timestamp": 1620879036285,
         "cmd": "show mlag interfaces",
         "devtype": "eos",
         "namespace": "eos",
         "hostname": "spine01",
-        "address": "10.255.4.117",
+        "address": "10.255.2.117",
         "data": {
             "interfaces": {}
         }
@@ -135,12 +68,12 @@
 ][
     {
         "status": 200,
-        "timestamp": 1616447825778,
+        "timestamp": 1620879036290,
         "cmd": "show mlag detail",
         "devtype": "eos",
         "namespace": "eos",
-        "hostname": "spine02",
-        "address": "10.255.4.118",
+        "hostname": "exit02",
+        "address": "10.255.2.253",
         "data": {
             "localInterface": "",
             "state": "disabled",
@@ -189,12 +122,12 @@
     },
     {
         "status": 200,
-        "timestamp": 1616447825778,
+        "timestamp": 1620879036290,
         "cmd": "show mlag interfaces",
         "devtype": "eos",
         "namespace": "eos",
-        "hostname": "spine02",
-        "address": "10.255.4.118",
+        "hostname": "exit02",
+        "address": "10.255.2.253",
         "data": {
             "interfaces": {}
         }
@@ -202,103 +135,12 @@
 ][
     {
         "status": 200,
-        "timestamp": 1616447825778,
-        "cmd": "show mlag detail",
-        "devtype": "eos",
-        "namespace": "eos",
-        "hostname": "leaf01",
-        "address": "10.255.4.184",
-        "data": {
-            "localInterface": "Vlan4094",
-            "systemId": "46:38:39:99:c7:9e",
-            "domainId": "mlag_leaf12",
-            "peerLink": "Port-Channel1",
-            "dualPrimaryDetectionState": "disabled",
-            "peerAddress": "169.254.1.1",
-            "peerLinkStatus": "up",
-            "localIntfStatus": "up",
-            "configSanity": "consistent",
-            "portsErrdisabled": false,
-            "dualPrimaryPortsErrdisabled": false,
-            "detail": {
-                "failoverCauseList": [
-                    "Unknown"
-                ],
-                "udpHeartbeatsSent": 69038,
-                "lacpStandby": false,
-                "mlagState": "secondary",
-                "heartbeatInterval": 2500,
-                "effectiveHeartbeatInterval": 2500,
-                "heartbeatTimeout": 37500,
-                "stateChanges": 2,
-                "peerMonotonicClockOffset": -0.9420026520171623,
-                "peerPortsErrdisabled": false,
-                "mlagHwReady": true,
-                "udpHeartbeatAlive": true,
-                "failoverInitiated": false,
-                "peerMlagState": "primary",
-                "secondaryFromFailover": false,
-                "primaryPriority": 32767,
-                "failover": false,
-                "enabled": true,
-                "peerMacRoutingSupported": false,
-                "peerPrimaryPriority": 32767,
-                "udpHeartbeatsReceived": 69034,
-                "fastMacRedirectionEnabled": false,
-                "lastStateChangeTime": 160.388706225,
-                "peerMacAddress": "44:38:39:99:c7:9e",
-                "mountChanges": 1,
-                "heartbeatTimeoutsSinceReboot": 0
-            },
-            "state": "active",
-            "reloadDelay": 150,
-            "reloadDelayNonMlag": 150,
-            "negStatus": "connected",
-            "mlagPorts": {
-                "Disabled": 0,
-                "Active-partial": 0,
-                "Inactive": 0,
-                "Configured": 0,
-                "Active-full": 2
-            }
-        }
-    },
-    {
-        "status": 200,
-        "timestamp": 1616447825778,
-        "cmd": "show mlag interfaces",
-        "devtype": "eos",
-        "namespace": "eos",
-        "hostname": "leaf01",
-        "address": "10.255.4.184",
-        "data": {
-            "interfaces": {
-                "4": {
-                    "localInterface": "Port-Channel4",
-                    "peerInterface": "Port-Channel4",
-                    "peerInterfaceStatus": "up",
-                    "localInterfaceStatus": "up",
-                    "status": "active-full"
-                },
-                "3": {
-                    "localInterface": "Port-Channel3",
-                    "peerInterface": "Port-Channel3",
-                    "peerInterfaceStatus": "up",
-                    "localInterfaceStatus": "up",
-                    "status": "active-full"
-                }
-            }
-        }
-    }
-][
-    {
-        "status": 200,
-        "timestamp": 1616447825783,
+        "timestamp": 1620879036431,
         "cmd": "show mlag detail",
         "devtype": "eos",
         "namespace": "eos",
         "hostname": "exit01",
-        "address": "10.255.4.251",
+        "address": "10.255.2.251",
         "data": {
             "localInterface": "",
             "state": "disabled",
@@ -347,12 +189,12 @@
     },
     {
         "status": 200,
-        "timestamp": 1616447825783,
+        "timestamp": 1620879036431,
         "cmd": "show mlag interfaces",
         "devtype": "eos",
         "namespace": "eos",
         "hostname": "exit01",
-        "address": "10.255.4.251",
+        "address": "10.255.2.251",
         "data": {
             "interfaces": {}
         }
@@ -360,12 +202,79 @@
 ][
     {
         "status": 200,
-        "timestamp": 1616447825779,
+        "timestamp": 1620879036398,
+        "cmd": "show mlag detail",
+        "devtype": "eos",
+        "namespace": "eos",
+        "hostname": "spine02",
+        "address": "10.255.2.118",
+        "data": {
+            "localInterface": "",
+            "state": "disabled",
+            "reloadDelay": 300,
+            "peerLink": "",
+            "dualPrimaryDetectionState": "disabled",
+            "reloadDelayNonMlag": 300,
+            "mlagPorts": {
+                "Disabled": 0,
+                "Active-partial": 0,
+                "Inactive": 0,
+                "Configured": 0,
+                "Active-full": 0
+            },
+            "portsErrdisabled": false,
+            "dualPrimaryPortsErrdisabled": false,
+            "detail": {
+                "failoverCauseList": [
+                    "Unknown"
+                ],
+                "udpHeartbeatsSent": 0,
+                "lacpStandby": false,
+                "mlagState": "disabled",
+                "heartbeatInterval": 4000,
+                "effectiveHeartbeatInterval": 0,
+                "heartbeatTimeout": 0,
+                "stateChanges": 0,
+                "fastMacRedirectionEnabled": false,
+                "peerPortsErrdisabled": false,
+                "mlagHwReady": true,
+                "udpHeartbeatAlive": false,
+                "failoverInitiated": false,
+                "peerMlagState": "unknown",
+                "secondaryFromFailover": false,
+                "primaryPriority": 32767,
+                "failover": false,
+                "enabled": false,
+                "peerMacRoutingSupported": false,
+                "peerPrimaryPriority": 0,
+                "udpHeartbeatsReceived": 0,
+                "peerMacAddress": "00:00:00:00:00:00",
+                "mountChanges": 0,
+                "heartbeatTimeoutsSinceReboot": 0
+            }
+        }
+    },
+    {
+        "status": 200,
+        "timestamp": 1620879036398,
+        "cmd": "show mlag interfaces",
+        "devtype": "eos",
+        "namespace": "eos",
+        "hostname": "spine02",
+        "address": "10.255.2.118",
+        "data": {
+            "interfaces": {}
+        }
+    }
+][
+    {
+        "status": 200,
+        "timestamp": 1620879036459,
         "cmd": "show mlag detail",
         "devtype": "eos",
         "namespace": "eos",
         "hostname": "leaf02",
-        "address": "10.255.4.185",
+        "address": "10.255.2.185",
         "data": {
             "localInterface": "Vlan4094",
             "systemId": "46:38:39:99:c7:9e",
@@ -382,14 +291,14 @@
                 "failoverCauseList": [
                     "Unknown"
                 ],
-                "udpHeartbeatsSent": 69041,
+                "udpHeartbeatsSent": 80767,
                 "lacpStandby": false,
                 "mlagState": "primary",
                 "heartbeatInterval": 2500,
                 "effectiveHeartbeatInterval": 2500,
                 "heartbeatTimeout": 37500,
                 "stateChanges": 2,
-                "peerMonotonicClockOffset": 0.9418235539057357,
+                "peerMonotonicClockOffset": -0.01212610078880561,
                 "peerPortsErrdisabled": false,
                 "mlagHwReady": true,
                 "udpHeartbeatAlive": true,
@@ -401,9 +310,9 @@
                 "enabled": true,
                 "peerMacRoutingSupported": false,
                 "peerPrimaryPriority": 32767,
-                "udpHeartbeatsReceived": 69037,
+                "udpHeartbeatsReceived": 80764,
                 "fastMacRedirectionEnabled": false,
-                "lastStateChangeTime": 161.576308373,
+                "lastStateChangeTime": 155.294313593,
                 "peerMacAddress": "44:38:39:e3:19:2e",
                 "mountChanges": 1,
                 "heartbeatTimeoutsSinceReboot": 0
@@ -423,12 +332,12 @@
     },
     {
         "status": 200,
-        "timestamp": 1616447825779,
+        "timestamp": 1620879036459,
         "cmd": "show mlag interfaces",
         "devtype": "eos",
         "namespace": "eos",
         "hostname": "leaf02",
-        "address": "10.255.4.185",
+        "address": "10.255.2.185",
         "data": {
             "interfaces": {
                 "4": {
@@ -451,12 +360,12 @@
 ][
     {
         "status": 200,
-        "timestamp": 1616447825776,
+        "timestamp": 1620879036481,
         "cmd": "show mlag detail",
         "devtype": "eos",
         "namespace": "eos",
         "hostname": "leaf03",
-        "address": "10.255.4.186",
+        "address": "10.255.2.186",
         "data": {
             "localInterface": "Vlan4094",
             "systemId": "46:38:39:24:3f:16",
@@ -473,14 +382,14 @@
                 "failoverCauseList": [
                     "Unknown"
                 ],
-                "udpHeartbeatsSent": 69036,
+                "udpHeartbeatsSent": 80764,
                 "lacpStandby": false,
                 "mlagState": "primary",
                 "heartbeatInterval": 2500,
                 "effectiveHeartbeatInterval": 2500,
                 "heartbeatTimeout": 37500,
                 "stateChanges": 2,
-                "peerMonotonicClockOffset": -3.4786320711143515,
+                "peerMonotonicClockOffset": -5.026174378254628,
                 "peerPortsErrdisabled": false,
                 "mlagHwReady": true,
                 "udpHeartbeatAlive": true,
@@ -492,9 +401,9 @@
                 "enabled": true,
                 "peerMacRoutingSupported": false,
                 "peerPrimaryPriority": 32767,
-                "udpHeartbeatsReceived": 69033,
+                "udpHeartbeatsReceived": 80760,
                 "fastMacRedirectionEnabled": false,
-                "lastStateChangeTime": 163.44785707,
+                "lastStateChangeTime": 160.491553128,
                 "peerMacAddress": "44:38:39:81:30:22",
                 "mountChanges": 1,
                 "heartbeatTimeoutsSinceReboot": 0
@@ -514,12 +423,12 @@
     },
     {
         "status": 200,
-        "timestamp": 1616447825776,
+        "timestamp": 1620879036481,
         "cmd": "show mlag interfaces",
         "devtype": "eos",
         "namespace": "eos",
         "hostname": "leaf03",
-        "address": "10.255.4.186",
+        "address": "10.255.2.186",
         "data": {
             "interfaces": {
                 "4": {
@@ -542,12 +451,12 @@
 ][
     {
         "status": 200,
-        "timestamp": 1616447825613,
+        "timestamp": 1620879036493,
         "cmd": "show mlag detail",
         "devtype": "eos",
         "namespace": "eos",
         "hostname": "leaf04",
-        "address": "10.255.4.187",
+        "address": "10.255.2.187",
         "data": {
             "localInterface": "Vlan4094",
             "systemId": "46:38:39:24:3f:16",
@@ -564,14 +473,14 @@
                 "failoverCauseList": [
                     "Unknown"
                 ],
-                "udpHeartbeatsSent": 69036,
+                "udpHeartbeatsSent": 80763,
                 "lacpStandby": false,
                 "mlagState": "secondary",
                 "heartbeatInterval": 2500,
                 "effectiveHeartbeatInterval": 2500,
                 "heartbeatTimeout": 37500,
                 "stateChanges": 2,
-                "peerMonotonicClockOffset": 3.478680664858064,
+                "peerMonotonicClockOffset": 5.0259354153930405,
                 "peerPortsErrdisabled": false,
                 "mlagHwReady": true,
                 "udpHeartbeatAlive": true,
@@ -583,9 +492,9 @@
                 "enabled": true,
                 "peerMacRoutingSupported": false,
                 "peerPrimaryPriority": 32767,
-                "udpHeartbeatsReceived": 69034,
+                "udpHeartbeatsReceived": 80762,
                 "fastMacRedirectionEnabled": false,
-                "lastStateChangeTime": 158.571756726,
+                "lastStateChangeTime": 156.857263958,
                 "peerMacAddress": "44:38:39:24:3f:16",
                 "mountChanges": 1,
                 "heartbeatTimeoutsSinceReboot": 0
@@ -605,12 +514,103 @@
     },
     {
         "status": 200,
-        "timestamp": 1616447825613,
+        "timestamp": 1620879036493,
         "cmd": "show mlag interfaces",
         "devtype": "eos",
         "namespace": "eos",
         "hostname": "leaf04",
-        "address": "10.255.4.187",
+        "address": "10.255.2.187",
+        "data": {
+            "interfaces": {
+                "4": {
+                    "localInterface": "Port-Channel4",
+                    "peerInterface": "Port-Channel4",
+                    "peerInterfaceStatus": "up",
+                    "localInterfaceStatus": "up",
+                    "status": "active-full"
+                },
+                "3": {
+                    "localInterface": "Port-Channel3",
+                    "peerInterface": "Port-Channel3",
+                    "peerInterfaceStatus": "up",
+                    "localInterfaceStatus": "up",
+                    "status": "active-full"
+                }
+            }
+        }
+    }
+][
+    {
+        "status": 200,
+        "timestamp": 1620879036468,
+        "cmd": "show mlag detail",
+        "devtype": "eos",
+        "namespace": "eos",
+        "hostname": "leaf01",
+        "address": "10.255.2.184",
+        "data": {
+            "localInterface": "Vlan4094",
+            "systemId": "46:38:39:99:c7:9e",
+            "domainId": "mlag_leaf12",
+            "peerLink": "Port-Channel1",
+            "dualPrimaryDetectionState": "disabled",
+            "peerAddress": "169.254.1.1",
+            "peerLinkStatus": "up",
+            "localIntfStatus": "up",
+            "configSanity": "consistent",
+            "portsErrdisabled": false,
+            "dualPrimaryPortsErrdisabled": false,
+            "detail": {
+                "failoverCauseList": [
+                    "Unknown"
+                ],
+                "udpHeartbeatsSent": 80767,
+                "lacpStandby": false,
+                "mlagState": "secondary",
+                "heartbeatInterval": 2500,
+                "effectiveHeartbeatInterval": 2500,
+                "heartbeatTimeout": 37500,
+                "stateChanges": 2,
+                "peerMonotonicClockOffset": 0.012140572076367194,
+                "peerPortsErrdisabled": false,
+                "mlagHwReady": true,
+                "udpHeartbeatAlive": true,
+                "failoverInitiated": false,
+                "peerMlagState": "primary",
+                "secondaryFromFailover": false,
+                "primaryPriority": 32767,
+                "failover": false,
+                "enabled": true,
+                "peerMacRoutingSupported": false,
+                "peerPrimaryPriority": 32767,
+                "udpHeartbeatsReceived": 80764,
+                "fastMacRedirectionEnabled": false,
+                "lastStateChangeTime": 153.689512152,
+                "peerMacAddress": "44:38:39:99:c7:9e",
+                "mountChanges": 1,
+                "heartbeatTimeoutsSinceReboot": 0
+            },
+            "state": "active",
+            "reloadDelay": 150,
+            "reloadDelayNonMlag": 150,
+            "negStatus": "connected",
+            "mlagPorts": {
+                "Disabled": 0,
+                "Active-partial": 0,
+                "Inactive": 0,
+                "Configured": 0,
+                "Active-full": 2
+            }
+        }
+    },
+    {
+        "status": 200,
+        "timestamp": 1620879036468,
+        "cmd": "show mlag interfaces",
+        "devtype": "eos",
+        "namespace": "eos",
+        "hostname": "leaf01",
+        "address": "10.255.2.184",
         "data": {
             "interfaces": {
                 "4": {
