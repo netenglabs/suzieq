@@ -41,7 +41,10 @@ def validate_sq_config(cfg):
         return "FATAL: No data directory for output files specified"
 
     if not os.path.isdir(ddir):
-        return f'FATAL: Data directory {ddir} is not a directory'
+        if not ddir.startswith('s3'):
+            os.makedirs(ddir, exist_ok=True)
+        else:
+            return f'FATAL: Data directory {ddir} is not a directory'
 
     if not (os.access(ddir, os.R_OK | os.W_OK | os.EX_OK)):
         return f'FATAL: Data directory {ddir} has wrong permissions'
