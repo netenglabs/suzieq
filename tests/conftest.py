@@ -61,12 +61,13 @@ def create_context():
 
 
 @pytest.fixture()
-def create_context_config():
-    return load_sq_config(config_file=create_dummy_config_file())
+def create_context_config(datadir: str = './tests/data/basic_dual_bgp/parquet-out'):
+    return load_sq_config(config_file=create_dummy_config_file(datadir))
 
 
-def create_dummy_config_file():
-    config = {'data-directory': f'./tests/data/basic_dual_bgp/parquet-out',
+def create_dummy_config_file(
+        datadir: str = './tests/data/basic_dual_bgp/parquet-out'):
+    config = {'data-directory': datadir,
               'temp-directory': '/tmp/suzieq',
               'logging-level': 'WARNING',
               'test_set': 'basic_dual_bgp',  # an extra field for testing
