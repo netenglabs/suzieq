@@ -3,24 +3,24 @@ tests:
 - command: mlag show --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: mlag show eos
-  output: '[{"namespace": "eos", "hostname": "leaf04", "systemId": "46:38:39:24:3f:16",
-    "state": "active", "peerAddress": "169.254.1.0", "role": "secondary", "peerLink":
+  output: '[{"namespace": "eos", "hostname": "leaf02", "systemId": "46:38:39:99:c7:9e",
+    "state": "active", "peerAddress": "169.254.1.0", "role": "primary", "peerLink":
     "Port-Channel1", "mlagDualPortsCnt": 2, "mlagSinglePortsCnt": 0, "mlagErrorPortsCnt":
-    0, "timestamp": 1616447825613}, {"namespace": "eos", "hostname": "leaf03", "systemId":
+    0, "timestamp": 1623025177425}, {"namespace": "eos", "hostname": "leaf03", "systemId":
     "46:38:39:24:3f:16", "state": "active", "peerAddress": "169.254.1.1", "role":
     "primary", "peerLink": "Port-Channel1", "mlagDualPortsCnt": 2, "mlagSinglePortsCnt":
-    0, "mlagErrorPortsCnt": 0, "timestamp": 1616447825776}, {"namespace": "eos", "hostname":
+    0, "mlagErrorPortsCnt": 0, "timestamp": 1623025177523}, {"namespace": "eos", "hostname":
+    "leaf04", "systemId": "46:38:39:24:3f:16", "state": "active", "peerAddress": "169.254.1.0",
+    "role": "secondary", "peerLink": "Port-Channel1", "mlagDualPortsCnt": 2, "mlagSinglePortsCnt":
+    0, "mlagErrorPortsCnt": 0, "timestamp": 1623025177892}, {"namespace": "eos", "hostname":
     "leaf01", "systemId": "46:38:39:99:c7:9e", "state": "active", "peerAddress": "169.254.1.1",
     "role": "secondary", "peerLink": "Port-Channel1", "mlagDualPortsCnt": 2, "mlagSinglePortsCnt":
-    0, "mlagErrorPortsCnt": 0, "timestamp": 1616447825778}, {"namespace": "eos", "hostname":
-    "leaf02", "systemId": "46:38:39:99:c7:9e", "state": "active", "peerAddress": "169.254.1.0",
-    "role": "primary", "peerLink": "Port-Channel1", "mlagDualPortsCnt": 2, "mlagSinglePortsCnt":
-    0, "mlagErrorPortsCnt": 0, "timestamp": 1616447825779}]'
+    0, "mlagErrorPortsCnt": 0, "timestamp": 1623025177894}]'
 - command: mlag show --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: mlag show eos
-  output: '[{"hostname": "leaf04"}, {"hostname": "leaf03"}, {"hostname": "leaf01"},
-    {"hostname": "leaf02"}]'
+  output: '[{"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf04"},
+    {"hostname": "leaf01"}]'
 - command: mlag summarize --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: mlag summarize eos

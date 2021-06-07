@@ -3,174 +3,194 @@ tests:
 - command: arpnd show --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: arpnd show junos
-  output: '[{"namespace": "junos", "hostname": "server102", "ipAddress": "10.255.3.1",
-    "oif": "eth0", "macaddr": "52:54:00:c8:b7:0e", "state": "reachable", "remote":
-    false, "timestamp": 1616357370624}, {"namespace": "junos", "hostname": "firewall01",
-    "ipAddress": "169.254.254.9", "oif": "eth1.4", "macaddr": "02:05:86:71:4c:0b",
-    "state": "reachable", "remote": false, "timestamp": 1616357370624}, {"namespace":
-    "junos", "hostname": "firewall01", "ipAddress": "169.254.253.1", "oif": "eth2.2",
-    "macaddr": "02:05:86:71:64:0b", "state": "reachable", "remote": false, "timestamp":
-    1616357370624}, {"namespace": "junos", "hostname": "server101", "ipAddress": "10.255.3.1",
-    "oif": "eth0", "macaddr": "52:54:00:c8:b7:0e", "state": "reachable", "remote":
-    false, "timestamp": 1616357370624}, {"namespace": "junos", "hostname": "server101",
-    "ipAddress": "172.16.1.254", "oif": "eth1", "macaddr": "00:00:00:11:12:10", "state":
-    "reachable", "remote": false, "timestamp": 1616357370624}, {"namespace": "junos",
-    "hostname": "firewall01", "ipAddress": "169.254.253.9", "oif": "eth2.4", "macaddr":
-    "02:05:86:71:64:0b", "state": "reachable", "remote": false, "timestamp": 1616357370624},
-    {"namespace": "junos", "hostname": "server102", "ipAddress": "172.16.3.202", "oif":
-    "eth1", "macaddr": "28:b7:ad:a7:c2:f7", "state": "reachable", "remote": false,
-    "timestamp": 1616357370624}, {"namespace": "junos", "hostname": "server102", "ipAddress":
-    "172.16.3.254", "oif": "eth1", "macaddr": "00:00:00:11:12:30", "state": "reachable",
-    "remote": false, "timestamp": 1616357370624}, {"namespace": "junos", "hostname":
-    "firewall01", "ipAddress": "169.254.254.5", "oif": "eth1.3", "macaddr": "02:05:86:71:4c:0b",
-    "state": "reachable", "remote": false, "timestamp": 1616357370624}, {"namespace":
-    "junos", "hostname": "server201", "ipAddress": "10.255.3.1", "oif": "eth0", "macaddr":
-    "52:54:00:c8:b7:0e", "state": "reachable", "remote": false, "timestamp": 1616357370624},
-    {"namespace": "junos", "hostname": "server202", "ipAddress": "172.16.3.102", "oif":
-    "eth1", "macaddr": "28:b7:ad:d7:ac:94", "state": "reachable", "remote": false,
-    "timestamp": 1616357370624}, {"namespace": "junos", "hostname": "server202", "ipAddress":
-    "172.16.3.254", "oif": "eth1", "macaddr": "00:00:00:11:12:30", "state": "reachable",
-    "remote": false, "timestamp": 1616357370624}, {"namespace": "junos", "hostname":
-    "server202", "ipAddress": "10.255.3.1", "oif": "eth0", "macaddr": "52:54:00:c8:b7:0e",
-    "state": "reachable", "remote": false, "timestamp": 1616357370624}, {"namespace":
+  output: '[{"namespace": "junos", "hostname": "server102", "ipAddress": "172.16.3.202",
+    "oif": "eth1", "macaddr": "28:b7:ad:88:ae:71", "state": "reachable", "remote":
+    false, "timestamp": 1623025795112}, {"namespace": "junos", "hostname": "server102",
+    "ipAddress": "172.16.3.254", "oif": "eth1", "macaddr": "00:00:00:11:12:30", "state":
+    "reachable", "remote": false, "timestamp": 1623025795112}, {"namespace": "junos",
+    "hostname": "server102", "ipAddress": "10.255.5.1", "oif": "eth0", "macaddr":
+    "52:54:00:52:09:f3", "state": "reachable", "remote": false, "timestamp": 1623025795112},
+    {"namespace": "junos", "hostname": "server201", "ipAddress": "10.255.5.1", "oif":
+    "eth0", "macaddr": "52:54:00:52:09:f3", "state": "reachable", "remote": false,
+    "timestamp": 1623025795112}, {"namespace": "junos", "hostname": "server201", "ipAddress":
+    "172.16.2.254", "oif": "eth1", "macaddr": "00:00:00:11:12:20", "state": "reachable",
+    "remote": false, "timestamp": 1623025795112}, {"namespace": "junos", "hostname":
+    "firewall01", "ipAddress": "169.254.253.5", "oif": "eth2.3", "macaddr": "02:05:86:71:27:0b",
+    "state": "reachable", "remote": false, "timestamp": 1623025795113}, {"namespace":
+    "junos", "hostname": "firewall01", "ipAddress": "169.254.253.9", "oif": "eth2.4",
+    "macaddr": "02:05:86:71:27:0b", "state": "reachable", "remote": false, "timestamp":
+    1623025795113}, {"namespace": "junos", "hostname": "server101", "ipAddress": "172.16.1.254",
+    "oif": "eth1", "macaddr": "00:00:00:11:12:10", "state": "reachable", "remote":
+    false, "timestamp": 1623025795113}, {"namespace": "junos", "hostname": "firewall01",
+    "ipAddress": "169.254.254.5", "oif": "eth1.3", "macaddr": "02:05:86:71:74:0b",
+    "state": "reachable", "remote": false, "timestamp": 1623025795113}, {"namespace":
     "junos", "hostname": "firewall01", "ipAddress": "169.254.254.1", "oif": "eth1.2",
-    "macaddr": "02:05:86:71:4c:0b", "state": "reachable", "remote": false, "timestamp":
-    1616357370624}, {"namespace": "junos", "hostname": "firewall01", "ipAddress":
-    "10.255.3.1", "oif": "eth0", "macaddr": "52:54:00:c8:b7:0e", "state": "reachable",
-    "remote": false, "timestamp": 1616357370624}, {"namespace": "junos", "hostname":
-    "firewall01", "ipAddress": "169.254.253.5", "oif": "eth2.3", "macaddr": "02:05:86:71:64:0b",
-    "state": "reachable", "remote": false, "timestamp": 1616357370624}, {"namespace":
-    "junos", "hostname": "server201", "ipAddress": "172.16.2.254", "oif": "eth1",
-    "macaddr": "00:00:00:11:12:20", "state": "reachable", "remote": false, "timestamp":
-    1616357370624}, {"namespace": "junos", "hostname": "leaf02", "ipAddress": "172.16.2.201",
-    "oif": "irb.20", "macaddr": "28:b7:ad:db:79:23", "state": "reachable", "remote":
-    false, "timestamp": 1616357372910}, {"namespace": "junos", "hostname": "leaf02",
-    "ipAddress": "169.254.0.1", "oif": "em1.0", "macaddr": "28:b7:ad:24:7c:81", "state":
-    "reachable", "remote": false, "timestamp": 1616357372910}, {"namespace": "junos",
-    "hostname": "leaf02", "ipAddress": "10.255.3.1", "oif": "em0.0", "macaddr": "52:54:00:c8:b7:0e",
-    "state": "reachable", "remote": false, "timestamp": 1616357372910}, {"namespace":
-    "junos", "hostname": "leaf02", "ipAddress": "10.0.0.22", "oif": "xe-0/0/1.0",
-    "macaddr": "02:05:86:71:7b:07", "state": "reachable", "remote": false, "timestamp":
-    1616357372910}, {"namespace": "junos", "hostname": "leaf02", "ipAddress": "10.0.0.21",
-    "oif": "xe-0/0/0.0", "macaddr": "02:05:86:71:f6:07", "state": "reachable", "remote":
-    false, "timestamp": 1616357372910}, {"namespace": "junos", "hostname": "leaf02",
-    "ipAddress": "172.16.3.202", "oif": "irb.30", "macaddr": "28:b7:ad:a7:c2:f7",
-    "state": "reachable", "remote": false, "timestamp": 1616357372910}, {"namespace":
-    "junos", "hostname": "dcedge01", "ipAddress": "10.255.3.1", "oif": "em0.0", "macaddr":
-    "52:54:00:c8:b7:0e", "state": "reachable", "remote": false, "timestamp": 1616357373022},
-    {"namespace": "junos", "hostname": "dcedge01", "ipAddress": "169.254.127.3", "oif":
-    "xe-0/0/1.0", "macaddr": "02:05:86:71:64:0f", "state": "reachable", "remote":
-    false, "timestamp": 1616357373022}, {"namespace": "junos", "hostname": "dcedge01",
-    "ipAddress": "169.254.127.1", "oif": "xe-0/0/0.0", "macaddr": "02:05:86:71:4c:0f",
-    "state": "reachable", "remote": false, "timestamp": 1616357373022}, {"namespace":
-    "junos", "hostname": "dcedge01", "ipAddress": "169.254.0.1", "oif": "em1.0", "macaddr":
-    "28:b7:ad:d6:7e:82", "state": "reachable", "remote": false, "timestamp": 1616357373022},
-    {"namespace": "junos", "hostname": "leaf01", "ipAddress": "172.16.3.102", "oif":
-    "irb.30", "macaddr": "28:b7:ad:d7:ac:94", "state": "reachable", "remote": false,
-    "timestamp": 1616357373782}, {"namespace": "junos", "hostname": "leaf01", "ipAddress":
-    "172.16.1.101", "oif": "irb.10", "macaddr": "28:b7:ad:ee:a7:96", "state": "reachable",
-    "remote": false, "timestamp": 1616357373782}, {"namespace": "junos", "hostname":
-    "leaf01", "ipAddress": "169.254.0.1", "oif": "em1.0", "macaddr": "28:b7:ad:67:08:4f",
-    "state": "reachable", "remote": false, "timestamp": 1616357373782}, {"namespace":
-    "junos", "hostname": "leaf01", "ipAddress": "10.0.0.22", "oif": "xe-0/0/1.0",
-    "macaddr": "02:05:86:71:7b:03", "state": "reachable", "remote": false, "timestamp":
-    1616357373782}, {"namespace": "junos", "hostname": "leaf01", "ipAddress": "10.0.0.21",
-    "oif": "xe-0/0/0.0", "macaddr": "02:05:86:71:f6:03", "state": "reachable", "remote":
-    false, "timestamp": 1616357373782}, {"namespace": "junos", "hostname": "leaf01",
-    "ipAddress": "10.255.3.1", "oif": "em0.0", "macaddr": "52:54:00:c8:b7:0e", "state":
-    "reachable", "remote": false, "timestamp": 1616357373782}, {"namespace": "junos",
-    "hostname": "spine02", "ipAddress": "10.255.3.1", "oif": "em0.0", "macaddr": "52:54:00:c8:b7:0e",
-    "state": "reachable", "remote": false, "timestamp": 1616357374004}, {"namespace":
-    "junos", "hostname": "spine02", "ipAddress": "10.0.0.32", "oif": "xe-0/0/3.0",
-    "macaddr": "02:05:86:71:64:07", "state": "reachable", "remote": false, "timestamp":
-    1616357374004}, {"namespace": "junos", "hostname": "spine02", "ipAddress": "10.0.0.31",
-    "oif": "xe-0/0/2.0", "macaddr": "02:05:86:71:4c:07", "state": "reachable", "remote":
-    false, "timestamp": 1616357374004}, {"namespace": "junos", "hostname": "spine02",
-    "ipAddress": "10.0.0.12", "oif": "xe-0/0/1.0", "macaddr": "02:05:86:71:76:07",
-    "state": "reachable", "remote": false, "timestamp": 1616357374004}, {"namespace":
+    "macaddr": "02:05:86:71:74:0b", "state": "reachable", "remote": false, "timestamp":
+    1623025795113}, {"namespace": "junos", "hostname": "firewall01", "ipAddress":
+    "fe80::5054:ff:fe48:101c", "oif": "eth0", "macaddr": "52:54:00:48:10:1c", "state":
+    "reachable", "remote": false, "timestamp": 1623025795113}, {"namespace": "junos",
+    "hostname": "firewall01", "ipAddress": "fe80::5054:ff:fe1a:3deb", "oif": "eth0",
+    "macaddr": "52:54:00:1a:3d:eb", "state": "reachable", "remote": false, "timestamp":
+    1623025795113}, {"namespace": "junos", "hostname": "firewall01", "ipAddress":
+    "fe80::fc54:ff:fef9:71ff", "oif": "eth0", "macaddr": "fe:54:00:f9:71:ff", "state":
+    "reachable", "remote": false, "timestamp": 1623025795113}, {"namespace": "junos",
+    "hostname": "firewall01", "ipAddress": "10.255.5.1", "oif": "eth0", "macaddr":
+    "52:54:00:52:09:f3", "state": "reachable", "remote": false, "timestamp": 1623025795113},
+    {"namespace": "junos", "hostname": "firewall01", "ipAddress": "fe80::5054:ff:fead:2241",
+    "oif": "eth0", "macaddr": "52:54:00:ad:22:41", "state": "reachable", "remote":
+    false, "timestamp": 1623025795113}, {"namespace": "junos", "hostname": "server202",
+    "ipAddress": "10.255.5.1", "oif": "eth0", "macaddr": "52:54:00:52:09:f3", "state":
+    "reachable", "remote": false, "timestamp": 1623025795113}, {"namespace": "junos",
+    "hostname": "server202", "ipAddress": "172.16.3.102", "oif": "eth1", "macaddr":
+    "28:b7:ad:82:67:e5", "state": "reachable", "remote": false, "timestamp": 1623025795113},
+    {"namespace": "junos", "hostname": "server101", "ipAddress": "10.255.5.1", "oif":
+    "eth0", "macaddr": "52:54:00:52:09:f3", "state": "reachable", "remote": false,
+    "timestamp": 1623025795113}, {"namespace": "junos", "hostname": "firewall01",
+    "ipAddress": "fe80::5054:ff:fe1f:790c", "oif": "eth0", "macaddr": "52:54:00:1f:79:0c",
+    "state": "reachable", "remote": false, "timestamp": 1623025795113}, {"namespace":
+    "junos", "hostname": "firewall01", "ipAddress": "169.254.254.9", "oif": "eth1.4",
+    "macaddr": "02:05:86:71:74:0b", "state": "reachable", "remote": false, "timestamp":
+    1623025795113}, {"namespace": "junos", "hostname": "firewall01", "ipAddress":
+    "169.254.253.1", "oif": "eth2.2", "macaddr": "02:05:86:71:27:0b", "state": "reachable",
+    "remote": false, "timestamp": 1623025795113}, {"namespace": "junos", "hostname":
+    "server202", "ipAddress": "172.16.3.254", "oif": "eth1", "macaddr": "00:00:00:11:12:30",
+    "state": "reachable", "remote": false, "timestamp": 1623025795113}, {"namespace":
+    "junos", "hostname": "leaf02", "ipAddress": "172.16.3.202", "oif": "irb.30", "macaddr":
+    "28:b7:ad:88:ae:71", "state": "reachable", "remote": false, "timestamp": 1623025796778},
+    {"namespace": "junos", "hostname": "leaf02", "ipAddress": "172.16.3.102", "oif":
+    "irb.30", "macaddr": "28:b7:ad:82:67:e5", "state": "reachable", "remote": true,
+    "timestamp": 1623025796778}, {"namespace": "junos", "hostname": "leaf02", "ipAddress":
+    "172.16.2.201", "oif": "irb.20", "macaddr": "28:b7:ad:41:1f:16", "state": "reachable",
+    "remote": false, "timestamp": 1623025796778}, {"namespace": "junos", "hostname":
+    "leaf02", "ipAddress": "169.254.0.1", "oif": "em1.0", "macaddr": "28:b7:ad:b2:e2:e9",
+    "state": "reachable", "remote": false, "timestamp": 1623025796778}, {"namespace":
+    "junos", "hostname": "leaf02", "ipAddress": "10.255.5.1", "oif": "em0.0", "macaddr":
+    "52:54:00:52:09:f3", "state": "reachable", "remote": false, "timestamp": 1623025796778},
+    {"namespace": "junos", "hostname": "leaf02", "ipAddress": "10.0.0.22", "oif":
+    "xe-0/0/1.0", "macaddr": "02:05:86:71:c6:07", "state": "reachable", "remote":
+    false, "timestamp": 1623025796778}, {"namespace": "junos", "hostname": "leaf02",
+    "ipAddress": "10.0.0.21", "oif": "xe-0/0/0.0", "macaddr": "02:05:86:71:2e:07",
+    "state": "reachable", "remote": false, "timestamp": 1623025796778}, {"namespace":
+    "junos", "hostname": "spine01", "ipAddress": "10.0.0.11", "oif": "xe-0/0/0.0",
+    "macaddr": "02:05:86:71:ad:03", "state": "reachable", "remote": false, "timestamp":
+    1623025796956}, {"namespace": "junos", "hostname": "spine02", "ipAddress": "10.0.0.32",
+    "oif": "xe-0/0/3.0", "macaddr": "02:05:86:71:27:07", "state": "reachable", "remote":
+    false, "timestamp": 1623025796956}, {"namespace": "junos", "hostname": "spine02",
+    "ipAddress": "10.0.0.31", "oif": "xe-0/0/2.0", "macaddr": "02:05:86:71:74:07",
+    "state": "reachable", "remote": false, "timestamp": 1623025796956}, {"namespace":
+    "junos", "hostname": "spine02", "ipAddress": "10.0.0.12", "oif": "xe-0/0/1.0",
+    "macaddr": "02:05:86:71:55:07", "state": "reachable", "remote": false, "timestamp":
+    1623025796956}, {"namespace": "junos", "hostname": "exit01", "ipAddress": "10.0.0.21",
+    "oif": "xe-0/0/0.0", "macaddr": "02:05:86:71:2e:0b", "state": "reachable", "remote":
+    false, "timestamp": 1623025796956}, {"namespace": "junos", "hostname": "exit01",
+    "ipAddress": "10.0.0.22", "oif": "xe-0/0/1.0", "macaddr": "02:05:86:71:c6:0b",
+    "state": "reachable", "remote": false, "timestamp": 1623025796956}, {"namespace":
+    "junos", "hostname": "exit01", "ipAddress": "10.255.5.1", "oif": "em0.0", "macaddr":
+    "52:54:00:52:09:f3", "state": "reachable", "remote": false, "timestamp": 1623025796956},
+    {"namespace": "junos", "hostname": "exit01", "ipAddress": "169.254.0.1", "oif":
+    "em1.0", "macaddr": "28:b7:ad:54:93:52", "state": "reachable", "remote": false,
+    "timestamp": 1623025796956}, {"namespace": "junos", "hostname": "exit01", "ipAddress":
+    "169.254.127.0", "oif": "xe-0/0/3.0", "macaddr": "02:05:86:71:c2:03", "state":
+    "reachable", "remote": false, "timestamp": 1623025796956}, {"namespace": "junos",
+    "hostname": "exit01", "ipAddress": "169.254.254.2", "oif": "xe-0/0/2.2", "macaddr":
+    "28:b7:ad:43:2f:ae", "state": "reachable", "remote": false, "timestamp": 1623025796956},
+    {"namespace": "junos", "hostname": "exit01", "ipAddress": "169.254.254.6", "oif":
+    "xe-0/0/2.3", "macaddr": "28:b7:ad:43:2f:ae", "state": "reachable", "remote":
+    false, "timestamp": 1623025796956}, {"namespace": "junos", "hostname": "exit01",
+    "ipAddress": "169.254.254.10", "oif": "xe-0/0/2.4", "macaddr": "28:b7:ad:43:2f:ae",
+    "state": "reachable", "remote": false, "timestamp": 1623025796956}, {"namespace":
     "junos", "hostname": "spine02", "ipAddress": "10.0.0.11", "oif": "xe-0/0/0.0",
-    "macaddr": "02:05:86:71:5c:07", "state": "reachable", "remote": false, "timestamp":
-    1616357374004}, {"namespace": "junos", "hostname": "exit01", "ipAddress": "10.0.0.21",
-    "oif": "xe-0/0/0.0", "macaddr": "02:05:86:71:f6:0b", "state": "reachable", "remote":
-    false, "timestamp": 1616357374004}, {"namespace": "junos", "hostname": "exit01",
-    "ipAddress": "10.0.0.22", "oif": "xe-0/0/1.0", "macaddr": "02:05:86:71:7b:0b",
-    "state": "reachable", "remote": false, "timestamp": 1616357374004}, {"namespace":
-    "junos", "hostname": "exit01", "ipAddress": "10.255.3.1", "oif": "em0.0", "macaddr":
-    "52:54:00:c8:b7:0e", "state": "reachable", "remote": false, "timestamp": 1616357374004},
-    {"namespace": "junos", "hostname": "exit01", "ipAddress": "169.254.127.0", "oif":
-    "xe-0/0/3.0", "macaddr": "02:05:86:71:b5:03", "state": "reachable", "remote":
-    false, "timestamp": 1616357374004}, {"namespace": "junos", "hostname": "exit01",
-    "ipAddress": "169.254.254.2", "oif": "xe-0/0/2.2", "macaddr": "28:b7:ad:36:e9:fc",
-    "state": "reachable", "remote": false, "timestamp": 1616357374004}, {"namespace":
-    "junos", "hostname": "exit01", "ipAddress": "169.254.0.1", "oif": "em1.0", "macaddr":
-    "28:b7:ad:b4:26:04", "state": "reachable", "remote": false, "timestamp": 1616357374004},
-    {"namespace": "junos", "hostname": "exit01", "ipAddress": "169.254.254.10", "oif":
-    "xe-0/0/2.4", "macaddr": "28:b7:ad:36:e9:fc", "state": "reachable", "remote":
-    false, "timestamp": 1616357374004}, {"namespace": "junos", "hostname": "exit01",
-    "ipAddress": "169.254.254.6", "oif": "xe-0/0/2.3", "macaddr": "28:b7:ad:36:e9:fc",
-    "state": "reachable", "remote": false, "timestamp": 1616357374004}, {"namespace":
-    "junos", "hostname": "spine02", "ipAddress": "169.254.0.1", "oif": "em1.0", "macaddr":
-    "28:b7:ad:2f:39:ea", "state": "reachable", "remote": false, "timestamp": 1616357374004},
-    {"namespace": "junos", "hostname": "spine01", "ipAddress": "10.0.0.11", "oif":
-    "xe-0/0/0.0", "macaddr": "02:05:86:71:5c:03", "state": "reachable", "remote":
-    false, "timestamp": 1616357374005}, {"namespace": "junos", "hostname": "spine01",
-    "ipAddress": "10.0.0.12", "oif": "xe-0/0/1.0", "macaddr": "02:05:86:71:76:03",
-    "state": "reachable", "remote": false, "timestamp": 1616357374005}, {"namespace":
-    "junos", "hostname": "spine01", "ipAddress": "10.0.0.31", "oif": "xe-0/0/2.0",
-    "macaddr": "02:05:86:71:4c:03", "state": "reachable", "remote": false, "timestamp":
-    1616357374005}, {"namespace": "junos", "hostname": "spine01", "ipAddress": "10.255.3.1",
-    "oif": "em0.0", "macaddr": "52:54:00:c8:b7:0e", "state": "reachable", "remote":
-    false, "timestamp": 1616357374005}, {"namespace": "junos", "hostname": "spine01",
-    "ipAddress": "169.254.0.1", "oif": "em1.0", "macaddr": "28:b7:ad:59:26:e1", "state":
-    "reachable", "remote": false, "timestamp": 1616357374005}, {"namespace": "junos",
+    "macaddr": "02:05:86:71:ad:07", "state": "reachable", "remote": false, "timestamp":
+    1623025796956}, {"namespace": "junos", "hostname": "spine01", "ipAddress": "169.254.0.1",
+    "oif": "em1.0", "macaddr": "28:b7:ad:a7:25:07", "state": "reachable", "remote":
+    false, "timestamp": 1623025796956}, {"namespace": "junos", "hostname": "spine01",
+    "ipAddress": "10.255.5.1", "oif": "em0.0", "macaddr": "52:54:00:52:09:f3", "state":
+    "reachable", "remote": false, "timestamp": 1623025796956}, {"namespace": "junos",
     "hostname": "spine01", "ipAddress": "10.0.0.32", "oif": "xe-0/0/3.0", "macaddr":
-    "02:05:86:71:64:03", "state": "reachable", "remote": false, "timestamp": 1616357374005},
-    {"namespace": "junos", "hostname": "exit02", "ipAddress": "10.255.3.1", "oif":
-    "em0.0", "macaddr": "52:54:00:c8:b7:0e", "state": "reachable", "remote": false,
-    "timestamp": 1616357374403}, {"namespace": "junos", "hostname": "exit02", "ipAddress":
-    "169.254.0.1", "oif": "em1.0", "macaddr": "28:b7:ad:fd:1c:4f", "state": "reachable",
-    "remote": false, "timestamp": 1616357374403}, {"namespace": "junos", "hostname":
-    "exit02", "ipAddress": "10.0.0.21", "oif": "xe-0/0/0.0", "macaddr": "02:05:86:71:f6:0f",
-    "state": "reachable", "remote": false, "timestamp": 1616357374403}, {"namespace":
+    "02:05:86:71:27:03", "state": "reachable", "remote": false, "timestamp": 1623025796956},
+    {"namespace": "junos", "hostname": "spine01", "ipAddress": "10.0.0.31", "oif":
+    "xe-0/0/2.0", "macaddr": "02:05:86:71:74:03", "state": "reachable", "remote":
+    false, "timestamp": 1623025796956}, {"namespace": "junos", "hostname": "spine01",
+    "ipAddress": "10.0.0.12", "oif": "xe-0/0/1.0", "macaddr": "02:05:86:71:55:03",
+    "state": "reachable", "remote": false, "timestamp": 1623025796956}, {"namespace":
+    "junos", "hostname": "spine02", "ipAddress": "10.255.5.1", "oif": "em0.0", "macaddr":
+    "52:54:00:52:09:f3", "state": "reachable", "remote": false, "timestamp": 1623025796956},
+    {"namespace": "junos", "hostname": "spine02", "ipAddress": "169.254.0.1", "oif":
+    "em1.0", "macaddr": "28:b7:ad:6d:6e:5f", "state": "reachable", "remote": false,
+    "timestamp": 1623025796956}, {"namespace": "junos", "hostname": "dcedge01", "ipAddress":
+    "10.255.5.1", "oif": "em0.0", "macaddr": "52:54:00:52:09:f3", "state": "reachable",
+    "remote": false, "timestamp": 1623025797193}, {"namespace": "junos", "hostname":
+    "leaf01", "ipAddress": "172.16.3.102", "oif": "irb.30", "macaddr": "28:b7:ad:82:67:e5",
+    "state": "reachable", "remote": false, "timestamp": 1623025797193}, {"namespace":
+    "junos", "hostname": "dcedge01", "ipAddress": "169.254.0.1", "oif": "em1.0", "macaddr":
+    "28:b7:ad:ec:ee:fa", "state": "reachable", "remote": false, "timestamp": 1623025797193},
+    {"namespace": "junos", "hostname": "dcedge01", "ipAddress": "169.254.127.1", "oif":
+    "xe-0/0/0.0", "macaddr": "02:05:86:71:74:0f", "state": "reachable", "remote":
+    false, "timestamp": 1623025797193}, {"namespace": "junos", "hostname": "dcedge01",
+    "ipAddress": "169.254.127.3", "oif": "xe-0/0/1.0", "macaddr": "02:05:86:71:27:0f",
+    "state": "reachable", "remote": false, "timestamp": 1623025797193}, {"namespace":
+    "junos", "hostname": "leaf01", "ipAddress": "172.16.3.202", "oif": "irb.30", "macaddr":
+    "28:b7:ad:88:ae:71", "state": "reachable", "remote": true, "timestamp": 1623025797193},
+    {"namespace": "junos", "hostname": "leaf01", "ipAddress": "10.0.0.22", "oif":
+    "xe-0/0/1.0", "macaddr": "02:05:86:71:c6:03", "state": "reachable", "remote":
+    false, "timestamp": 1623025797193}, {"namespace": "junos", "hostname": "leaf01",
+    "ipAddress": "10.0.0.21", "oif": "xe-0/0/0.0", "macaddr": "02:05:86:71:2e:03",
+    "state": "reachable", "remote": false, "timestamp": 1623025797193}, {"namespace":
+    "junos", "hostname": "leaf01", "ipAddress": "10.255.5.1", "oif": "em0.0", "macaddr":
+    "52:54:00:52:09:f3", "state": "reachable", "remote": false, "timestamp": 1623025797193},
+    {"namespace": "junos", "hostname": "leaf01", "ipAddress": "169.254.0.1", "oif":
+    "em1.0", "macaddr": "28:b7:ad:c3:79:67", "state": "reachable", "remote": false,
+    "timestamp": 1623025797193}, {"namespace": "junos", "hostname": "leaf01", "ipAddress":
+    "172.16.1.101", "oif": "irb.10", "macaddr": "28:b7:ad:3c:81:d0", "state": "reachable",
+    "remote": false, "timestamp": 1623025797193}, {"namespace": "junos", "hostname":
+    "exit02", "ipAddress": "169.254.253.6", "oif": "xe-0/0/2.3", "macaddr": "28:b7:ad:21:bd:53",
+    "state": "reachable", "remote": false, "timestamp": 1623025797433}, {"namespace":
+    "junos", "hostname": "exit02", "ipAddress": "169.254.253.2", "oif": "xe-0/0/2.2",
+    "macaddr": "28:b7:ad:21:bd:53", "state": "reachable", "remote": false, "timestamp":
+    1623025797433}, {"namespace": "junos", "hostname": "exit02", "ipAddress": "169.254.0.1",
+    "oif": "em1.0", "macaddr": "28:b7:ad:3b:11:1c", "state": "reachable", "remote":
+    false, "timestamp": 1623025797433}, {"namespace": "junos", "hostname": "exit02",
+    "ipAddress": "10.255.5.1", "oif": "em0.0", "macaddr": "52:54:00:52:09:f3", "state":
+    "reachable", "remote": false, "timestamp": 1623025797433}, {"namespace": "junos",
+    "hostname": "exit02", "ipAddress": "10.0.0.22", "oif": "xe-0/0/1.0", "macaddr":
+    "02:05:86:71:c6:0f", "state": "reachable", "remote": false, "timestamp": 1623025797433},
+    {"namespace": "junos", "hostname": "exit02", "ipAddress": "10.0.0.21", "oif":
+    "xe-0/0/0.0", "macaddr": "02:05:86:71:2e:0f", "state": "reachable", "remote":
+    false, "timestamp": 1623025797433}, {"namespace": "junos", "hostname": "exit02",
+    "ipAddress": "169.254.253.10", "oif": "xe-0/0/2.4", "macaddr": "28:b7:ad:21:bd:53",
+    "state": "reachable", "remote": false, "timestamp": 1623025797433}, {"namespace":
     "junos", "hostname": "exit02", "ipAddress": "169.254.127.2", "oif": "xe-0/0/3.0",
-    "macaddr": "02:05:86:71:b5:07", "state": "reachable", "remote": false, "timestamp":
-    1616357374403}, {"namespace": "junos", "hostname": "exit02", "ipAddress": "169.254.253.2",
-    "oif": "xe-0/0/2.2", "macaddr": "28:b7:ad:b1:35:68", "state": "reachable", "remote":
-    false, "timestamp": 1616357374403}, {"namespace": "junos", "hostname": "exit02",
-    "ipAddress": "169.254.253.6", "oif": "xe-0/0/2.3", "macaddr": "28:b7:ad:b1:35:68",
-    "state": "reachable", "remote": false, "timestamp": 1616357374403}, {"namespace":
-    "junos", "hostname": "exit02", "ipAddress": "169.254.253.10", "oif": "xe-0/0/2.4",
-    "macaddr": "28:b7:ad:b1:35:68", "state": "reachable", "remote": false, "timestamp":
-    1616357374403}, {"namespace": "junos", "hostname": "exit02", "ipAddress": "10.0.0.22",
-    "oif": "xe-0/0/1.0", "macaddr": "02:05:86:71:7b:0f", "state": "reachable", "remote":
-    false, "timestamp": 1616357374403}]'
+    "macaddr": "02:05:86:71:c2:07", "state": "reachable", "remote": false, "timestamp":
+    1623025797433}]'
 - command: arpnd show --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: arpnd show junos
-  output: '[{"hostname": "server102"}, {"hostname": "firewall01"}, {"hostname": "firewall01"},
-    {"hostname": "server101"}, {"hostname": "server101"}, {"hostname": "firewall01"},
-    {"hostname": "server102"}, {"hostname": "server102"}, {"hostname": "firewall01"},
-    {"hostname": "server201"}, {"hostname": "server202"}, {"hostname": "server202"},
-    {"hostname": "server202"}, {"hostname": "firewall01"}, {"hostname": "firewall01"},
-    {"hostname": "firewall01"}, {"hostname": "server201"}, {"hostname": "leaf02"},
-    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
-    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"},
-    {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "leaf01"}, {"hostname":
-    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
-    {"hostname": "leaf01"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
-    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "exit01"},
+  output: '[{"hostname": "server102"}, {"hostname": "server102"}, {"hostname": "server102"},
+    {"hostname": "server201"}, {"hostname": "server201"}, {"hostname": "firewall01"},
+    {"hostname": "firewall01"}, {"hostname": "server101"}, {"hostname": "firewall01"},
+    {"hostname": "firewall01"}, {"hostname": "firewall01"}, {"hostname": "firewall01"},
+    {"hostname": "firewall01"}, {"hostname": "firewall01"}, {"hostname": "firewall01"},
+    {"hostname": "server202"}, {"hostname": "server202"}, {"hostname": "server101"},
+    {"hostname": "firewall01"}, {"hostname": "firewall01"}, {"hostname": "firewall01"},
+    {"hostname": "server202"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "spine01"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "exit01"}, {"hostname": "exit01"},
     {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
-    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
-    {"hostname": "spine02"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
-    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "spine02"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "dcedge01"}, {"hostname": "leaf01"}, {"hostname": "dcedge01"}, {"hostname":
+    "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
     {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
-    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
-    {"hostname": "exit02"}]'
+    "exit02"}, {"hostname": "exit02"}]'
 - command: arpnd summarize --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: arpnd summarize junos
-  output: '{"junos": {"deviceCnt": 12, "arpNdEntriesCnt": 61, "macaddrCnt": 61, "oifCnt":
-    61, "uniqueOifCnt": 20, "remoteEntriesCnt": 0, "staticEntriesCnt": 0, "failedEntryCnt":
+  output: '{"junos": {"deviceCnt": 12, "arpNdEntriesCnt": 68, "macaddrCnt": 68, "oifCnt":
+    68, "uniqueOifCnt": 20, "remoteEntriesCnt": 0, "staticEntriesCnt": 0, "failedEntryCnt":
     0}}'
 - command: arpnd unique --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/

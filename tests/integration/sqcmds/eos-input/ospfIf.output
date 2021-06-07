@@ -1,7 +1,7 @@
 [
     {
         "status": 0,
-        "timestamp": 1620879035950,
+        "timestamp": 1623025176627,
         "cmd": "sudo vtysh -c 'show ip ospf vrf all interface'",
         "devtype": "linux",
         "namespace": "eos",
@@ -13,7 +13,115 @@
 ][
     {
         "status": 200,
-        "timestamp": 1620879035990,
+        "timestamp": 1623025177058,
+        "cmd": "show ip ospf vrf all",
+        "devtype": "eos",
+        "namespace": "eos",
+        "hostname": "spine01",
+        "address": "10.255.2.117",
+        "data": {
+            "vrfs": {
+                "default": {
+                    "instList": {
+                        "1": {
+                            "asbr": false,
+                            "lsaInformation": {
+                                "numLsa": 8,
+                                "lsaStartInterval": 1000,
+                                "lsaMaxWaitInterval": 5000,
+                                "lsaHoldInterval": 5000,
+                                "lsaArrivalInterval": 1000
+                            },
+                            "gracefulRestartInfo": {
+                                "gracefulRestart": false,
+                                "plannedOnly": false,
+                                "helperLooseLsaCheck": true,
+                                "gracePeriod": 120.0,
+                                "lastExitReason": "lastExitNone",
+                                "lastExitTime": null,
+                                "state": "none",
+                                "restartExpirationTime": null,
+                                "lastRestartReason": "Unknown",
+                                "restartDuration": null,
+                                "helperMode": true
+                            },
+                            "externalLsaInformation": {
+                                "asExternalCksum": 0,
+                                "treeSize": 0
+                            },
+                            "instanceId": 1,
+                            "spfInformation": {
+                                "spfStartInterval": 0,
+                                "spfMaxWaitInterval": 5000,
+                                "spfCurrHoldInterval": 5000,
+                                "spfHoldInterval": 5000,
+                                "spfInterval": 5,
+                                "lastSpf": 702,
+                                "nextSpf": 0
+                            },
+                            "referenceBandwidth": 0,
+                            "opaqueLsaInformation": {
+                                "opaqueTreeSize": 0,
+                                "opaqueCksum": 0,
+                                "opaque": true
+                            },
+                            "tunnelRoutesEnabled": false,
+                            "numNormalAreas": 1,
+                            "maxLsaInformation": {
+                                "maxLsaCurrentIgnoreCount": 0,
+                                "maxLsaThreshold": 75,
+                                "maxLsaIgnoring": false,
+                                "maxLsaAllowedIgnoreCount": 5,
+                                "maxLsaWarningOnly": false,
+                                "maxLsa": 12000,
+                                "maxLsaResetTime": 5,
+                                "maxLsaIgnoreTime": 5
+                            },
+                            "ecmpMaximumNexthops": 128,
+                            "numBackboneNeighbors": 6,
+                            "adjacencyExchangeStartThreshold": 20,
+                            "areaList": {
+                                "0.0.0.0": {
+                                    "normalArea": true,
+                                    "lsaInformation": {
+                                        "asExternalCksum": 267145,
+                                        "treeSize": 8
+                                    },
+                                    "areaId": "0.0.0.0",
+                                    "teEnabled": false,
+                                    "spfCount": 18,
+                                    "opaqueLsaInformation": {
+                                        "opaqueTreeSize": 0,
+                                        "opaqueCksum": 0
+                                    },
+                                    "numIntf": 7,
+                                    "rangeList": {},
+                                    "stubArea": false,
+                                    "opaqueAreaLsaInformation": {
+                                        "opaqueTreeSize": 0,
+                                        "opaqueCksumSum": 0
+                                    },
+                                    "areaFiltersConfigured": false
+                                }
+                            },
+                            "numAreas": 1,
+                            "abr": false,
+                            "routerId": "10.0.0.21",
+                            "numStubAreas": 0,
+                            "shutDown": false,
+                            "numNssaAreas": 0,
+                            "lsaRetransmissionThreshold": 10,
+                            "floodPacing": 0,
+                            "vrf": "default"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    {
+        "status": 200,
+        "timestamp": 1623025177058,
         "cmd": "show ip ospf interface vrf all",
         "devtype": "eos",
         "namespace": "eos",
@@ -133,7 +241,7 @@
                                 },
                                 "Ethernet6": {
                                     "interfaceMask": 32,
-                                    "bfdState": "default",
+                                    "bfdState": "enabled",
                                     "helloInterval": 10,
                                     "area": "0.0.0.0",
                                     "transmitDelay": 1,
@@ -185,7 +293,7 @@
                                 },
                                 "Ethernet5": {
                                     "interfaceMask": 32,
-                                    "bfdState": "default",
+                                    "bfdState": "enabled",
                                     "helloInterval": 10,
                                     "area": "0.0.0.0",
                                     "transmitDelay": 1,
@@ -219,417 +327,115 @@
 ][
     {
         "status": 200,
-        "timestamp": 1620879035995,
-        "cmd": "show ip ospf interface vrf all",
+        "timestamp": 1623025177152,
+        "cmd": "show ip ospf vrf all",
         "devtype": "eos",
         "namespace": "eos",
-        "hostname": "exit02",
-        "address": "10.255.2.253",
+        "hostname": "leaf02",
+        "address": "10.255.2.185",
         "data": {
             "vrfs": {
                 "default": {
                     "instList": {
                         "1": {
-                            "interfaces": {
-                                "Loopback0": {
-                                    "interfaceMask": 32,
-                                    "passive": true,
-                                    "bfdState": "default",
-                                    "helloInterval": 10,
-                                    "area": "0.0.0.0",
-                                    "transmitDelay": 1,
+                            "asbr": false,
+                            "lsaInformation": {
+                                "numLsa": 8,
+                                "lsaStartInterval": 1000,
+                                "lsaMaxWaitInterval": 5000,
+                                "lsaHoldInterval": 5000,
+                                "lsaArrivalInterval": 1000
+                            },
+                            "gracefulRestartInfo": {
+                                "gracefulRestart": false,
+                                "plannedOnly": false,
+                                "helperLooseLsaCheck": true,
+                                "gracePeriod": 120.0,
+                                "lastExitReason": "lastExitNone",
+                                "lastExitTime": null,
+                                "state": "none",
+                                "restartExpirationTime": null,
+                                "lastRestartReason": "Unknown",
+                                "restartDuration": null,
+                                "helperMode": true
+                            },
+                            "externalLsaInformation": {
+                                "asExternalCksum": 0,
+                                "treeSize": 0
+                            },
+                            "instanceId": 1,
+                            "spfInformation": {
+                                "spfStartInterval": 0,
+                                "spfMaxWaitInterval": 5000,
+                                "spfCurrHoldInterval": 5000,
+                                "spfHoldInterval": 5000,
+                                "spfInterval": 5,
+                                "lastSpf": 813,
+                                "nextSpf": 0
+                            },
+                            "referenceBandwidth": 0,
+                            "opaqueLsaInformation": {
+                                "opaqueTreeSize": 0,
+                                "opaqueCksum": 0,
+                                "opaque": true
+                            },
+                            "tunnelRoutesEnabled": false,
+                            "numNormalAreas": 1,
+                            "maxLsaInformation": {
+                                "maxLsaCurrentIgnoreCount": 0,
+                                "maxLsaThreshold": 75,
+                                "maxLsaIgnoring": false,
+                                "maxLsaAllowedIgnoreCount": 5,
+                                "maxLsaWarningOnly": false,
+                                "maxLsa": 12000,
+                                "maxLsaResetTime": 5,
+                                "maxLsaIgnoreTime": 5
+                            },
+                            "ecmpMaximumNexthops": 128,
+                            "numBackboneNeighbors": 2,
+                            "adjacencyExchangeStartThreshold": 20,
+                            "areaList": {
+                                "0.0.0.0": {
+                                    "normalArea": true,
+                                    "lsaInformation": {
+                                        "asExternalCksum": 267145,
+                                        "treeSize": 8
+                                    },
+                                    "areaId": "0.0.0.0",
                                     "teEnabled": false,
-                                    "retransmitInterval": 5,
-                                    "priority": 1,
-                                    "designatedRouter": "10.0.0.32",
-                                    "state": "dr",
-                                    "cost": 10,
-                                    "interfaceType": "broadcast",
-                                    "deadInterval": 40,
-                                    "neighborCount": 0,
-                                    "interfaceAddress": "10.0.0.32",
-                                    "options": {
-                                        "multitopologyCapability": false,
-                                        "doNotUseInRouteCalc": false,
-                                        "demandCircuitsSupport": false,
-                                        "nssaCapability": false,
-                                        "externalRoutingCapability": false,
-                                        "opaqueLsaSupport": false,
-                                        "linkLocalSignaling": false,
-                                        "multicastCapability": false
-                                    }
-                                },
-                                "Ethernet2": {
-                                    "interfaceMask": 32,
-                                    "bfdState": "default",
-                                    "helloInterval": 10,
-                                    "area": "0.0.0.0",
-                                    "transmitDelay": 1,
-                                    "teEnabled": false,
-                                    "retransmitInterval": 5,
-                                    "passive": false,
-                                    "state": "p2p",
-                                    "cost": 10,
-                                    "interfaceType": "p2p",
-                                    "deadInterval": 40,
-                                    "neighborCount": 1,
-                                    "interfaceAddress": "10.0.0.32",
-                                    "options": {
-                                        "multitopologyCapability": false,
-                                        "doNotUseInRouteCalc": false,
-                                        "demandCircuitsSupport": false,
-                                        "nssaCapability": false,
-                                        "externalRoutingCapability": false,
-                                        "opaqueLsaSupport": false,
-                                        "linkLocalSignaling": false,
-                                        "multicastCapability": false
-                                    }
-                                },
-                                "Ethernet1": {
-                                    "interfaceMask": 32,
-                                    "bfdState": "default",
-                                    "helloInterval": 10,
-                                    "area": "0.0.0.0",
-                                    "transmitDelay": 1,
-                                    "teEnabled": false,
-                                    "retransmitInterval": 5,
-                                    "passive": false,
-                                    "state": "p2p",
-                                    "cost": 10,
-                                    "interfaceType": "p2p",
-                                    "deadInterval": 40,
-                                    "neighborCount": 1,
-                                    "interfaceAddress": "10.0.0.32",
-                                    "options": {
-                                        "multitopologyCapability": false,
-                                        "doNotUseInRouteCalc": false,
-                                        "demandCircuitsSupport": false,
-                                        "nssaCapability": false,
-                                        "externalRoutingCapability": false,
-                                        "opaqueLsaSupport": false,
-                                        "linkLocalSignaling": false,
-                                        "multicastCapability": false
-                                    }
+                                    "spfCount": 11,
+                                    "opaqueLsaInformation": {
+                                        "opaqueTreeSize": 0,
+                                        "opaqueCksum": 0
+                                    },
+                                    "numIntf": 4,
+                                    "rangeList": {},
+                                    "stubArea": false,
+                                    "opaqueAreaLsaInformation": {
+                                        "opaqueTreeSize": 0,
+                                        "opaqueCksumSum": 0
+                                    },
+                                    "areaFiltersConfigured": false
                                 }
-                            }
+                            },
+                            "numAreas": 1,
+                            "abr": false,
+                            "routerId": "10.0.0.12",
+                            "numStubAreas": 0,
+                            "shutDown": false,
+                            "numNssaAreas": 0,
+                            "lsaRetransmissionThreshold": 10,
+                            "floodPacing": 0,
+                            "vrf": "default"
                         }
                     }
                 }
             }
         }
-    }
-][
+    },
     {
         "status": 200,
-        "timestamp": 1620879036071,
-        "cmd": "show ip ospf interface vrf all",
-        "devtype": "eos",
-        "namespace": "eos",
-        "hostname": "spine02",
-        "address": "10.255.2.118",
-        "data": {
-            "vrfs": {
-                "default": {
-                    "instList": {
-                        "1": {
-                            "interfaces": {
-                                "Loopback0": {
-                                    "interfaceMask": 32,
-                                    "passive": true,
-                                    "bfdState": "default",
-                                    "helloInterval": 10,
-                                    "area": "0.0.0.0",
-                                    "transmitDelay": 1,
-                                    "teEnabled": false,
-                                    "retransmitInterval": 5,
-                                    "priority": 1,
-                                    "designatedRouter": "10.0.0.22",
-                                    "state": "dr",
-                                    "cost": 10,
-                                    "interfaceType": "broadcast",
-                                    "deadInterval": 40,
-                                    "neighborCount": 0,
-                                    "interfaceAddress": "10.0.0.22",
-                                    "options": {
-                                        "multitopologyCapability": false,
-                                        "doNotUseInRouteCalc": false,
-                                        "demandCircuitsSupport": false,
-                                        "nssaCapability": false,
-                                        "externalRoutingCapability": false,
-                                        "opaqueLsaSupport": false,
-                                        "linkLocalSignaling": false,
-                                        "multicastCapability": false
-                                    }
-                                },
-                                "Ethernet2": {
-                                    "interfaceMask": 32,
-                                    "bfdState": "default",
-                                    "helloInterval": 10,
-                                    "area": "0.0.0.0",
-                                    "transmitDelay": 1,
-                                    "teEnabled": false,
-                                    "retransmitInterval": 5,
-                                    "passive": false,
-                                    "state": "p2p",
-                                    "cost": 10,
-                                    "interfaceType": "p2p",
-                                    "deadInterval": 40,
-                                    "neighborCount": 1,
-                                    "interfaceAddress": "10.0.0.22",
-                                    "options": {
-                                        "multitopologyCapability": false,
-                                        "doNotUseInRouteCalc": false,
-                                        "demandCircuitsSupport": false,
-                                        "nssaCapability": false,
-                                        "externalRoutingCapability": false,
-                                        "opaqueLsaSupport": false,
-                                        "linkLocalSignaling": false,
-                                        "multicastCapability": false
-                                    }
-                                },
-                                "Ethernet3": {
-                                    "interfaceMask": 32,
-                                    "bfdState": "default",
-                                    "helloInterval": 10,
-                                    "area": "0.0.0.0",
-                                    "transmitDelay": 1,
-                                    "teEnabled": false,
-                                    "retransmitInterval": 5,
-                                    "passive": false,
-                                    "state": "p2p",
-                                    "cost": 10,
-                                    "interfaceType": "p2p",
-                                    "deadInterval": 40,
-                                    "neighborCount": 1,
-                                    "interfaceAddress": "10.0.0.22",
-                                    "options": {
-                                        "multitopologyCapability": false,
-                                        "doNotUseInRouteCalc": false,
-                                        "demandCircuitsSupport": false,
-                                        "nssaCapability": false,
-                                        "externalRoutingCapability": false,
-                                        "opaqueLsaSupport": false,
-                                        "linkLocalSignaling": false,
-                                        "multicastCapability": false
-                                    }
-                                },
-                                "Ethernet1": {
-                                    "interfaceMask": 32,
-                                    "bfdState": "default",
-                                    "helloInterval": 10,
-                                    "area": "0.0.0.0",
-                                    "transmitDelay": 1,
-                                    "teEnabled": false,
-                                    "retransmitInterval": 5,
-                                    "passive": false,
-                                    "state": "p2p",
-                                    "cost": 10,
-                                    "interfaceType": "p2p",
-                                    "deadInterval": 40,
-                                    "neighborCount": 1,
-                                    "interfaceAddress": "10.0.0.22",
-                                    "options": {
-                                        "multitopologyCapability": false,
-                                        "doNotUseInRouteCalc": false,
-                                        "demandCircuitsSupport": false,
-                                        "nssaCapability": false,
-                                        "externalRoutingCapability": false,
-                                        "opaqueLsaSupport": false,
-                                        "linkLocalSignaling": false,
-                                        "multicastCapability": false
-                                    }
-                                },
-                                "Ethernet6": {
-                                    "interfaceMask": 32,
-                                    "bfdState": "default",
-                                    "helloInterval": 10,
-                                    "area": "0.0.0.0",
-                                    "transmitDelay": 1,
-                                    "teEnabled": false,
-                                    "retransmitInterval": 5,
-                                    "passive": false,
-                                    "state": "p2p",
-                                    "cost": 10,
-                                    "interfaceType": "p2p",
-                                    "deadInterval": 40,
-                                    "neighborCount": 1,
-                                    "interfaceAddress": "10.0.0.22",
-                                    "options": {
-                                        "multitopologyCapability": false,
-                                        "doNotUseInRouteCalc": false,
-                                        "demandCircuitsSupport": false,
-                                        "nssaCapability": false,
-                                        "externalRoutingCapability": false,
-                                        "opaqueLsaSupport": false,
-                                        "linkLocalSignaling": false,
-                                        "multicastCapability": false
-                                    }
-                                },
-                                "Ethernet4": {
-                                    "interfaceMask": 32,
-                                    "bfdState": "default",
-                                    "helloInterval": 10,
-                                    "area": "0.0.0.0",
-                                    "transmitDelay": 1,
-                                    "teEnabled": false,
-                                    "retransmitInterval": 5,
-                                    "passive": false,
-                                    "state": "p2p",
-                                    "cost": 10,
-                                    "interfaceType": "p2p",
-                                    "deadInterval": 40,
-                                    "neighborCount": 1,
-                                    "interfaceAddress": "10.0.0.22",
-                                    "options": {
-                                        "multitopologyCapability": false,
-                                        "doNotUseInRouteCalc": false,
-                                        "demandCircuitsSupport": false,
-                                        "nssaCapability": false,
-                                        "externalRoutingCapability": false,
-                                        "opaqueLsaSupport": false,
-                                        "linkLocalSignaling": false,
-                                        "multicastCapability": false
-                                    }
-                                },
-                                "Ethernet5": {
-                                    "interfaceMask": 32,
-                                    "bfdState": "default",
-                                    "helloInterval": 10,
-                                    "area": "0.0.0.0",
-                                    "transmitDelay": 1,
-                                    "teEnabled": false,
-                                    "retransmitInterval": 5,
-                                    "passive": false,
-                                    "state": "p2p",
-                                    "cost": 10,
-                                    "interfaceType": "p2p",
-                                    "deadInterval": 40,
-                                    "neighborCount": 1,
-                                    "interfaceAddress": "10.0.0.22",
-                                    "options": {
-                                        "multitopologyCapability": false,
-                                        "doNotUseInRouteCalc": false,
-                                        "demandCircuitsSupport": false,
-                                        "nssaCapability": false,
-                                        "externalRoutingCapability": false,
-                                        "opaqueLsaSupport": false,
-                                        "linkLocalSignaling": false,
-                                        "multicastCapability": false
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-][
-    {
-        "status": 200,
-        "timestamp": 1620879036151,
-        "cmd": "show ip ospf interface vrf all",
-        "devtype": "eos",
-        "namespace": "eos",
-        "hostname": "exit01",
-        "address": "10.255.2.251",
-        "data": {
-            "vrfs": {
-                "default": {
-                    "instList": {
-                        "1": {
-                            "interfaces": {
-                                "Loopback0": {
-                                    "interfaceMask": 32,
-                                    "passive": true,
-                                    "bfdState": "default",
-                                    "helloInterval": 10,
-                                    "area": "0.0.0.0",
-                                    "transmitDelay": 1,
-                                    "teEnabled": false,
-                                    "retransmitInterval": 5,
-                                    "priority": 1,
-                                    "designatedRouter": "10.0.0.31",
-                                    "state": "dr",
-                                    "cost": 10,
-                                    "interfaceType": "broadcast",
-                                    "deadInterval": 40,
-                                    "neighborCount": 0,
-                                    "interfaceAddress": "10.0.0.31",
-                                    "options": {
-                                        "multitopologyCapability": false,
-                                        "doNotUseInRouteCalc": false,
-                                        "demandCircuitsSupport": false,
-                                        "nssaCapability": false,
-                                        "externalRoutingCapability": false,
-                                        "opaqueLsaSupport": false,
-                                        "linkLocalSignaling": false,
-                                        "multicastCapability": false
-                                    }
-                                },
-                                "Ethernet2": {
-                                    "interfaceMask": 32,
-                                    "bfdState": "default",
-                                    "helloInterval": 10,
-                                    "area": "0.0.0.0",
-                                    "transmitDelay": 1,
-                                    "teEnabled": false,
-                                    "retransmitInterval": 5,
-                                    "passive": false,
-                                    "state": "p2p",
-                                    "cost": 10,
-                                    "interfaceType": "p2p",
-                                    "deadInterval": 40,
-                                    "neighborCount": 1,
-                                    "interfaceAddress": "10.0.0.31",
-                                    "options": {
-                                        "multitopologyCapability": false,
-                                        "doNotUseInRouteCalc": false,
-                                        "demandCircuitsSupport": false,
-                                        "nssaCapability": false,
-                                        "externalRoutingCapability": false,
-                                        "opaqueLsaSupport": false,
-                                        "linkLocalSignaling": false,
-                                        "multicastCapability": false
-                                    }
-                                },
-                                "Ethernet1": {
-                                    "interfaceMask": 32,
-                                    "bfdState": "default",
-                                    "helloInterval": 10,
-                                    "area": "0.0.0.0",
-                                    "transmitDelay": 1,
-                                    "teEnabled": false,
-                                    "retransmitInterval": 5,
-                                    "passive": false,
-                                    "state": "p2p",
-                                    "cost": 10,
-                                    "interfaceType": "p2p",
-                                    "deadInterval": 40,
-                                    "neighborCount": 1,
-                                    "interfaceAddress": "10.0.0.31",
-                                    "options": {
-                                        "multitopologyCapability": false,
-                                        "doNotUseInRouteCalc": false,
-                                        "demandCircuitsSupport": false,
-                                        "nssaCapability": false,
-                                        "externalRoutingCapability": false,
-                                        "opaqueLsaSupport": false,
-                                        "linkLocalSignaling": false,
-                                        "multicastCapability": false
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-][
-    {
-        "status": 200,
-        "timestamp": 1620879036120,
+        "timestamp": 1623025177152,
         "cmd": "show ip ospf interface vrf all",
         "devtype": "eos",
         "namespace": "eos",
@@ -759,137 +565,115 @@
 ][
     {
         "status": 200,
-        "timestamp": 1620879036185,
-        "cmd": "show ip ospf interface vrf all",
+        "timestamp": 1623025177253,
+        "cmd": "show ip ospf vrf all",
         "devtype": "eos",
         "namespace": "eos",
-        "hostname": "leaf01",
-        "address": "10.255.2.184",
+        "hostname": "leaf03",
+        "address": "10.255.2.186",
         "data": {
             "vrfs": {
                 "default": {
                     "instList": {
                         "1": {
-                            "interfaces": {
-                                "Loopback0": {
-                                    "interfaceMask": 32,
-                                    "passive": true,
-                                    "bfdState": "default",
-                                    "helloInterval": 10,
-                                    "area": "0.0.0.0",
-                                    "transmitDelay": 1,
+                            "asbr": false,
+                            "lsaInformation": {
+                                "numLsa": 8,
+                                "lsaStartInterval": 1000,
+                                "lsaMaxWaitInterval": 5000,
+                                "lsaHoldInterval": 5000,
+                                "lsaArrivalInterval": 1000
+                            },
+                            "gracefulRestartInfo": {
+                                "gracefulRestart": false,
+                                "plannedOnly": false,
+                                "helperLooseLsaCheck": true,
+                                "gracePeriod": 120.0,
+                                "lastExitReason": "lastExitNone",
+                                "lastExitTime": null,
+                                "state": "none",
+                                "restartExpirationTime": null,
+                                "lastRestartReason": "Unknown",
+                                "restartDuration": null,
+                                "helperMode": true
+                            },
+                            "externalLsaInformation": {
+                                "asExternalCksum": 0,
+                                "treeSize": 0
+                            },
+                            "instanceId": 1,
+                            "spfInformation": {
+                                "spfStartInterval": 0,
+                                "spfMaxWaitInterval": 5000,
+                                "spfCurrHoldInterval": 5000,
+                                "spfHoldInterval": 5000,
+                                "spfInterval": 5,
+                                "lastSpf": 812,
+                                "nextSpf": 0
+                            },
+                            "referenceBandwidth": 0,
+                            "opaqueLsaInformation": {
+                                "opaqueTreeSize": 0,
+                                "opaqueCksum": 0,
+                                "opaque": true
+                            },
+                            "tunnelRoutesEnabled": false,
+                            "numNormalAreas": 1,
+                            "maxLsaInformation": {
+                                "maxLsaCurrentIgnoreCount": 0,
+                                "maxLsaThreshold": 75,
+                                "maxLsaIgnoring": false,
+                                "maxLsaAllowedIgnoreCount": 5,
+                                "maxLsaWarningOnly": false,
+                                "maxLsa": 12000,
+                                "maxLsaResetTime": 5,
+                                "maxLsaIgnoreTime": 5
+                            },
+                            "ecmpMaximumNexthops": 128,
+                            "numBackboneNeighbors": 2,
+                            "adjacencyExchangeStartThreshold": 20,
+                            "areaList": {
+                                "0.0.0.0": {
+                                    "normalArea": true,
+                                    "lsaInformation": {
+                                        "asExternalCksum": 267145,
+                                        "treeSize": 8
+                                    },
+                                    "areaId": "0.0.0.0",
                                     "teEnabled": false,
-                                    "retransmitInterval": 5,
-                                    "priority": 1,
-                                    "designatedRouter": "10.0.0.11",
-                                    "state": "dr",
-                                    "cost": 10,
-                                    "interfaceType": "broadcast",
-                                    "deadInterval": 40,
-                                    "neighborCount": 0,
-                                    "interfaceAddress": "10.0.0.11",
-                                    "options": {
-                                        "multitopologyCapability": false,
-                                        "doNotUseInRouteCalc": false,
-                                        "demandCircuitsSupport": false,
-                                        "nssaCapability": false,
-                                        "externalRoutingCapability": false,
-                                        "opaqueLsaSupport": false,
-                                        "linkLocalSignaling": false,
-                                        "multicastCapability": false
-                                    }
-                                },
-                                "Loopback1": {
-                                    "interfaceMask": 32,
-                                    "passive": true,
-                                    "bfdState": "default",
-                                    "helloInterval": 10,
-                                    "area": "0.0.0.0",
-                                    "transmitDelay": 1,
-                                    "teEnabled": false,
-                                    "retransmitInterval": 5,
-                                    "priority": 1,
-                                    "designatedRouter": "10.0.0.11",
-                                    "state": "dr",
-                                    "cost": 10,
-                                    "interfaceType": "broadcast",
-                                    "deadInterval": 40,
-                                    "neighborCount": 0,
-                                    "interfaceAddress": "10.0.0.112",
-                                    "options": {
-                                        "multitopologyCapability": false,
-                                        "doNotUseInRouteCalc": false,
-                                        "demandCircuitsSupport": false,
-                                        "nssaCapability": false,
-                                        "externalRoutingCapability": false,
-                                        "opaqueLsaSupport": false,
-                                        "linkLocalSignaling": false,
-                                        "multicastCapability": false
-                                    }
-                                },
-                                "Ethernet2": {
-                                    "interfaceMask": 32,
-                                    "bfdState": "default",
-                                    "helloInterval": 10,
-                                    "area": "0.0.0.0",
-                                    "transmitDelay": 1,
-                                    "teEnabled": false,
-                                    "retransmitInterval": 5,
-                                    "passive": false,
-                                    "state": "p2p",
-                                    "cost": 10,
-                                    "interfaceType": "p2p",
-                                    "deadInterval": 40,
-                                    "neighborCount": 1,
-                                    "interfaceAddress": "10.0.0.11",
-                                    "options": {
-                                        "multitopologyCapability": false,
-                                        "doNotUseInRouteCalc": false,
-                                        "demandCircuitsSupport": false,
-                                        "nssaCapability": false,
-                                        "externalRoutingCapability": false,
-                                        "opaqueLsaSupport": false,
-                                        "linkLocalSignaling": false,
-                                        "multicastCapability": false
-                                    }
-                                },
-                                "Ethernet1": {
-                                    "interfaceMask": 32,
-                                    "bfdState": "default",
-                                    "helloInterval": 10,
-                                    "area": "0.0.0.0",
-                                    "transmitDelay": 1,
-                                    "teEnabled": false,
-                                    "retransmitInterval": 5,
-                                    "passive": false,
-                                    "state": "p2p",
-                                    "cost": 10,
-                                    "interfaceType": "p2p",
-                                    "deadInterval": 40,
-                                    "neighborCount": 1,
-                                    "interfaceAddress": "10.0.0.11",
-                                    "options": {
-                                        "multitopologyCapability": false,
-                                        "doNotUseInRouteCalc": false,
-                                        "demandCircuitsSupport": false,
-                                        "nssaCapability": false,
-                                        "externalRoutingCapability": false,
-                                        "opaqueLsaSupport": false,
-                                        "linkLocalSignaling": false,
-                                        "multicastCapability": false
-                                    }
+                                    "spfCount": 10,
+                                    "opaqueLsaInformation": {
+                                        "opaqueTreeSize": 0,
+                                        "opaqueCksum": 0
+                                    },
+                                    "numIntf": 4,
+                                    "rangeList": {},
+                                    "stubArea": false,
+                                    "opaqueAreaLsaInformation": {
+                                        "opaqueTreeSize": 0,
+                                        "opaqueCksumSum": 0
+                                    },
+                                    "areaFiltersConfigured": false
                                 }
-                            }
+                            },
+                            "numAreas": 1,
+                            "abr": false,
+                            "routerId": "10.0.0.13",
+                            "numStubAreas": 0,
+                            "shutDown": false,
+                            "numNssaAreas": 0,
+                            "lsaRetransmissionThreshold": 10,
+                            "floodPacing": 0,
+                            "vrf": "default"
                         }
                     }
                 }
             }
         }
-    }
-][
+    },
     {
         "status": 200,
-        "timestamp": 1620879036167,
+        "timestamp": 1623025177253,
         "cmd": "show ip ospf interface vrf all",
         "devtype": "eos",
         "namespace": "eos",
@@ -1019,7 +803,1087 @@
 ][
     {
         "status": 200,
-        "timestamp": 1620879036158,
+        "timestamp": 1623025177290,
+        "cmd": "show ip ospf vrf all",
+        "devtype": "eos",
+        "namespace": "eos",
+        "hostname": "spine02",
+        "address": "10.255.2.118",
+        "data": {
+            "vrfs": {
+                "default": {
+                    "instList": {
+                        "1": {
+                            "asbr": false,
+                            "lsaInformation": {
+                                "numLsa": 8,
+                                "lsaStartInterval": 1000,
+                                "lsaMaxWaitInterval": 5000,
+                                "lsaHoldInterval": 5000,
+                                "lsaArrivalInterval": 1000
+                            },
+                            "gracefulRestartInfo": {
+                                "gracefulRestart": false,
+                                "plannedOnly": false,
+                                "helperLooseLsaCheck": true,
+                                "gracePeriod": 120.0,
+                                "lastExitReason": "lastExitNone",
+                                "lastExitTime": null,
+                                "state": "none",
+                                "restartExpirationTime": null,
+                                "lastRestartReason": "Unknown",
+                                "restartDuration": null,
+                                "helperMode": true
+                            },
+                            "externalLsaInformation": {
+                                "asExternalCksum": 0,
+                                "treeSize": 0
+                            },
+                            "instanceId": 1,
+                            "spfInformation": {
+                                "spfStartInterval": 0,
+                                "spfMaxWaitInterval": 5000,
+                                "spfCurrHoldInterval": 5000,
+                                "spfHoldInterval": 5000,
+                                "spfInterval": 5,
+                                "lastSpf": 1013,
+                                "nextSpf": 0
+                            },
+                            "referenceBandwidth": 0,
+                            "opaqueLsaInformation": {
+                                "opaqueTreeSize": 0,
+                                "opaqueCksum": 0,
+                                "opaque": true
+                            },
+                            "tunnelRoutesEnabled": false,
+                            "numNormalAreas": 1,
+                            "maxLsaInformation": {
+                                "maxLsaCurrentIgnoreCount": 0,
+                                "maxLsaThreshold": 75,
+                                "maxLsaIgnoring": false,
+                                "maxLsaAllowedIgnoreCount": 5,
+                                "maxLsaWarningOnly": false,
+                                "maxLsa": 12000,
+                                "maxLsaResetTime": 5,
+                                "maxLsaIgnoreTime": 5
+                            },
+                            "ecmpMaximumNexthops": 128,
+                            "numBackboneNeighbors": 6,
+                            "adjacencyExchangeStartThreshold": 20,
+                            "areaList": {
+                                "0.0.0.0": {
+                                    "normalArea": true,
+                                    "lsaInformation": {
+                                        "asExternalCksum": 267145,
+                                        "treeSize": 8
+                                    },
+                                    "areaId": "0.0.0.0",
+                                    "teEnabled": false,
+                                    "spfCount": 20,
+                                    "opaqueLsaInformation": {
+                                        "opaqueTreeSize": 0,
+                                        "opaqueCksum": 0
+                                    },
+                                    "numIntf": 7,
+                                    "rangeList": {},
+                                    "stubArea": false,
+                                    "opaqueAreaLsaInformation": {
+                                        "opaqueTreeSize": 0,
+                                        "opaqueCksumSum": 0
+                                    },
+                                    "areaFiltersConfigured": false
+                                }
+                            },
+                            "numAreas": 1,
+                            "abr": false,
+                            "routerId": "10.0.0.22",
+                            "numStubAreas": 0,
+                            "shutDown": false,
+                            "numNssaAreas": 0,
+                            "lsaRetransmissionThreshold": 10,
+                            "floodPacing": 0,
+                            "vrf": "default"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    {
+        "status": 200,
+        "timestamp": 1623025177290,
+        "cmd": "show ip ospf interface vrf all",
+        "devtype": "eos",
+        "namespace": "eos",
+        "hostname": "spine02",
+        "address": "10.255.2.118",
+        "data": {
+            "vrfs": {
+                "default": {
+                    "instList": {
+                        "1": {
+                            "interfaces": {
+                                "Loopback0": {
+                                    "interfaceMask": 32,
+                                    "passive": true,
+                                    "bfdState": "default",
+                                    "helloInterval": 10,
+                                    "area": "0.0.0.0",
+                                    "transmitDelay": 1,
+                                    "teEnabled": false,
+                                    "retransmitInterval": 5,
+                                    "priority": 1,
+                                    "designatedRouter": "10.0.0.22",
+                                    "state": "dr",
+                                    "cost": 10,
+                                    "interfaceType": "broadcast",
+                                    "deadInterval": 40,
+                                    "neighborCount": 0,
+                                    "interfaceAddress": "10.0.0.22",
+                                    "options": {
+                                        "multitopologyCapability": false,
+                                        "doNotUseInRouteCalc": false,
+                                        "demandCircuitsSupport": false,
+                                        "nssaCapability": false,
+                                        "externalRoutingCapability": false,
+                                        "opaqueLsaSupport": false,
+                                        "linkLocalSignaling": false,
+                                        "multicastCapability": false
+                                    }
+                                },
+                                "Ethernet2": {
+                                    "interfaceMask": 32,
+                                    "bfdState": "default",
+                                    "helloInterval": 10,
+                                    "area": "0.0.0.0",
+                                    "transmitDelay": 1,
+                                    "teEnabled": false,
+                                    "retransmitInterval": 5,
+                                    "passive": false,
+                                    "state": "p2p",
+                                    "cost": 10,
+                                    "interfaceType": "p2p",
+                                    "deadInterval": 40,
+                                    "neighborCount": 1,
+                                    "interfaceAddress": "10.0.0.22",
+                                    "options": {
+                                        "multitopologyCapability": false,
+                                        "doNotUseInRouteCalc": false,
+                                        "demandCircuitsSupport": false,
+                                        "nssaCapability": false,
+                                        "externalRoutingCapability": false,
+                                        "opaqueLsaSupport": false,
+                                        "linkLocalSignaling": false,
+                                        "multicastCapability": false
+                                    }
+                                },
+                                "Ethernet3": {
+                                    "interfaceMask": 32,
+                                    "bfdState": "default",
+                                    "helloInterval": 10,
+                                    "area": "0.0.0.0",
+                                    "transmitDelay": 1,
+                                    "teEnabled": false,
+                                    "retransmitInterval": 5,
+                                    "passive": false,
+                                    "state": "p2p",
+                                    "cost": 10,
+                                    "interfaceType": "p2p",
+                                    "deadInterval": 40,
+                                    "neighborCount": 1,
+                                    "interfaceAddress": "10.0.0.22",
+                                    "options": {
+                                        "multitopologyCapability": false,
+                                        "doNotUseInRouteCalc": false,
+                                        "demandCircuitsSupport": false,
+                                        "nssaCapability": false,
+                                        "externalRoutingCapability": false,
+                                        "opaqueLsaSupport": false,
+                                        "linkLocalSignaling": false,
+                                        "multicastCapability": false
+                                    }
+                                },
+                                "Ethernet1": {
+                                    "interfaceMask": 32,
+                                    "bfdState": "default",
+                                    "helloInterval": 10,
+                                    "area": "0.0.0.0",
+                                    "transmitDelay": 1,
+                                    "teEnabled": false,
+                                    "retransmitInterval": 5,
+                                    "passive": false,
+                                    "state": "p2p",
+                                    "cost": 10,
+                                    "interfaceType": "p2p",
+                                    "deadInterval": 40,
+                                    "neighborCount": 1,
+                                    "interfaceAddress": "10.0.0.22",
+                                    "options": {
+                                        "multitopologyCapability": false,
+                                        "doNotUseInRouteCalc": false,
+                                        "demandCircuitsSupport": false,
+                                        "nssaCapability": false,
+                                        "externalRoutingCapability": false,
+                                        "opaqueLsaSupport": false,
+                                        "linkLocalSignaling": false,
+                                        "multicastCapability": false
+                                    }
+                                },
+                                "Ethernet6": {
+                                    "interfaceMask": 32,
+                                    "bfdState": "enabled",
+                                    "helloInterval": 10,
+                                    "area": "0.0.0.0",
+                                    "transmitDelay": 1,
+                                    "teEnabled": false,
+                                    "retransmitInterval": 5,
+                                    "passive": false,
+                                    "state": "p2p",
+                                    "cost": 10,
+                                    "interfaceType": "p2p",
+                                    "deadInterval": 40,
+                                    "neighborCount": 1,
+                                    "interfaceAddress": "10.0.0.22",
+                                    "options": {
+                                        "multitopologyCapability": false,
+                                        "doNotUseInRouteCalc": false,
+                                        "demandCircuitsSupport": false,
+                                        "nssaCapability": false,
+                                        "externalRoutingCapability": false,
+                                        "opaqueLsaSupport": false,
+                                        "linkLocalSignaling": false,
+                                        "multicastCapability": false
+                                    }
+                                },
+                                "Ethernet4": {
+                                    "interfaceMask": 32,
+                                    "bfdState": "default",
+                                    "helloInterval": 10,
+                                    "area": "0.0.0.0",
+                                    "transmitDelay": 1,
+                                    "teEnabled": false,
+                                    "retransmitInterval": 5,
+                                    "passive": false,
+                                    "state": "p2p",
+                                    "cost": 10,
+                                    "interfaceType": "p2p",
+                                    "deadInterval": 40,
+                                    "neighborCount": 1,
+                                    "interfaceAddress": "10.0.0.22",
+                                    "options": {
+                                        "multitopologyCapability": false,
+                                        "doNotUseInRouteCalc": false,
+                                        "demandCircuitsSupport": false,
+                                        "nssaCapability": false,
+                                        "externalRoutingCapability": false,
+                                        "opaqueLsaSupport": false,
+                                        "linkLocalSignaling": false,
+                                        "multicastCapability": false
+                                    }
+                                },
+                                "Ethernet5": {
+                                    "interfaceMask": 32,
+                                    "bfdState": "enabled",
+                                    "helloInterval": 10,
+                                    "area": "0.0.0.0",
+                                    "transmitDelay": 1,
+                                    "teEnabled": false,
+                                    "retransmitInterval": 5,
+                                    "passive": false,
+                                    "state": "p2p",
+                                    "cost": 10,
+                                    "interfaceType": "p2p",
+                                    "deadInterval": 40,
+                                    "neighborCount": 1,
+                                    "interfaceAddress": "10.0.0.22",
+                                    "options": {
+                                        "multitopologyCapability": false,
+                                        "doNotUseInRouteCalc": false,
+                                        "demandCircuitsSupport": false,
+                                        "nssaCapability": false,
+                                        "externalRoutingCapability": false,
+                                        "opaqueLsaSupport": false,
+                                        "linkLocalSignaling": false,
+                                        "multicastCapability": false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+][
+    {
+        "status": 200,
+        "timestamp": 1623025177308,
+        "cmd": "show ip ospf vrf all",
+        "devtype": "eos",
+        "namespace": "eos",
+        "hostname": "exit02",
+        "address": "10.255.2.253",
+        "data": {
+            "vrfs": {
+                "default": {
+                    "instList": {
+                        "1": {
+                            "asbr": false,
+                            "lsaInformation": {
+                                "numLsa": 8,
+                                "lsaStartInterval": 1000,
+                                "lsaMaxWaitInterval": 5000,
+                                "lsaHoldInterval": 5000,
+                                "lsaArrivalInterval": 1000
+                            },
+                            "gracefulRestartInfo": {
+                                "gracefulRestart": false,
+                                "plannedOnly": false,
+                                "helperLooseLsaCheck": true,
+                                "gracePeriod": 120.0,
+                                "lastExitReason": "lastExitNone",
+                                "lastExitTime": null,
+                                "state": "none",
+                                "restartExpirationTime": null,
+                                "lastRestartReason": "Unknown",
+                                "restartDuration": null,
+                                "helperMode": true
+                            },
+                            "externalLsaInformation": {
+                                "asExternalCksum": 0,
+                                "treeSize": 0
+                            },
+                            "instanceId": 1,
+                            "spfInformation": {
+                                "spfStartInterval": 0,
+                                "spfMaxWaitInterval": 5000,
+                                "spfCurrHoldInterval": 5000,
+                                "spfHoldInterval": 5000,
+                                "spfInterval": 5,
+                                "lastSpf": 874,
+                                "nextSpf": 0
+                            },
+                            "referenceBandwidth": 0,
+                            "opaqueLsaInformation": {
+                                "opaqueTreeSize": 0,
+                                "opaqueCksum": 0,
+                                "opaque": true
+                            },
+                            "tunnelRoutesEnabled": false,
+                            "numNormalAreas": 1,
+                            "maxLsaInformation": {
+                                "maxLsaCurrentIgnoreCount": 0,
+                                "maxLsaThreshold": 75,
+                                "maxLsaIgnoring": false,
+                                "maxLsaAllowedIgnoreCount": 5,
+                                "maxLsaWarningOnly": false,
+                                "maxLsa": 12000,
+                                "maxLsaResetTime": 5,
+                                "maxLsaIgnoreTime": 5
+                            },
+                            "ecmpMaximumNexthops": 128,
+                            "numBackboneNeighbors": 2,
+                            "adjacencyExchangeStartThreshold": 20,
+                            "areaList": {
+                                "0.0.0.0": {
+                                    "normalArea": true,
+                                    "lsaInformation": {
+                                        "asExternalCksum": 267145,
+                                        "treeSize": 8
+                                    },
+                                    "areaId": "0.0.0.0",
+                                    "teEnabled": false,
+                                    "spfCount": 12,
+                                    "opaqueLsaInformation": {
+                                        "opaqueTreeSize": 0,
+                                        "opaqueCksum": 0
+                                    },
+                                    "numIntf": 3,
+                                    "rangeList": {},
+                                    "stubArea": false,
+                                    "opaqueAreaLsaInformation": {
+                                        "opaqueTreeSize": 0,
+                                        "opaqueCksumSum": 0
+                                    },
+                                    "areaFiltersConfigured": false
+                                }
+                            },
+                            "numAreas": 1,
+                            "abr": false,
+                            "routerId": "10.0.0.32",
+                            "numStubAreas": 0,
+                            "shutDown": false,
+                            "numNssaAreas": 0,
+                            "lsaRetransmissionThreshold": 10,
+                            "floodPacing": 0,
+                            "vrf": "default"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    {
+        "status": 200,
+        "timestamp": 1623025177308,
+        "cmd": "show ip ospf interface vrf all",
+        "devtype": "eos",
+        "namespace": "eos",
+        "hostname": "exit02",
+        "address": "10.255.2.253",
+        "data": {
+            "vrfs": {
+                "default": {
+                    "instList": {
+                        "1": {
+                            "interfaces": {
+                                "Loopback0": {
+                                    "interfaceMask": 32,
+                                    "passive": true,
+                                    "bfdState": "default",
+                                    "helloInterval": 10,
+                                    "area": "0.0.0.0",
+                                    "transmitDelay": 1,
+                                    "teEnabled": false,
+                                    "retransmitInterval": 5,
+                                    "priority": 1,
+                                    "designatedRouter": "10.0.0.32",
+                                    "state": "dr",
+                                    "cost": 10,
+                                    "interfaceType": "broadcast",
+                                    "deadInterval": 40,
+                                    "neighborCount": 0,
+                                    "interfaceAddress": "10.0.0.32",
+                                    "options": {
+                                        "multitopologyCapability": false,
+                                        "doNotUseInRouteCalc": false,
+                                        "demandCircuitsSupport": false,
+                                        "nssaCapability": false,
+                                        "externalRoutingCapability": false,
+                                        "opaqueLsaSupport": false,
+                                        "linkLocalSignaling": false,
+                                        "multicastCapability": false
+                                    }
+                                },
+                                "Ethernet2": {
+                                    "interfaceMask": 32,
+                                    "bfdState": "default",
+                                    "helloInterval": 10,
+                                    "area": "0.0.0.0",
+                                    "transmitDelay": 1,
+                                    "teEnabled": false,
+                                    "retransmitInterval": 5,
+                                    "passive": false,
+                                    "state": "p2p",
+                                    "cost": 10,
+                                    "interfaceType": "p2p",
+                                    "deadInterval": 40,
+                                    "neighborCount": 1,
+                                    "interfaceAddress": "10.0.0.32",
+                                    "options": {
+                                        "multitopologyCapability": false,
+                                        "doNotUseInRouteCalc": false,
+                                        "demandCircuitsSupport": false,
+                                        "nssaCapability": false,
+                                        "externalRoutingCapability": false,
+                                        "opaqueLsaSupport": false,
+                                        "linkLocalSignaling": false,
+                                        "multicastCapability": false
+                                    }
+                                },
+                                "Ethernet1": {
+                                    "interfaceMask": 32,
+                                    "bfdState": "default",
+                                    "helloInterval": 10,
+                                    "area": "0.0.0.0",
+                                    "transmitDelay": 1,
+                                    "teEnabled": false,
+                                    "retransmitInterval": 5,
+                                    "passive": false,
+                                    "state": "p2p",
+                                    "cost": 10,
+                                    "interfaceType": "p2p",
+                                    "deadInterval": 40,
+                                    "neighborCount": 1,
+                                    "interfaceAddress": "10.0.0.32",
+                                    "options": {
+                                        "multitopologyCapability": false,
+                                        "doNotUseInRouteCalc": false,
+                                        "demandCircuitsSupport": false,
+                                        "nssaCapability": false,
+                                        "externalRoutingCapability": false,
+                                        "opaqueLsaSupport": false,
+                                        "linkLocalSignaling": false,
+                                        "multicastCapability": false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+][
+    {
+        "status": 200,
+        "timestamp": 1623025177431,
+        "cmd": "show ip ospf vrf all",
+        "devtype": "eos",
+        "namespace": "eos",
+        "hostname": "exit01",
+        "address": "10.255.2.251",
+        "data": {
+            "vrfs": {
+                "default": {
+                    "instList": {
+                        "1": {
+                            "asbr": false,
+                            "lsaInformation": {
+                                "numLsa": 8,
+                                "lsaStartInterval": 1000,
+                                "lsaMaxWaitInterval": 5000,
+                                "lsaHoldInterval": 5000,
+                                "lsaArrivalInterval": 1000
+                            },
+                            "gracefulRestartInfo": {
+                                "gracefulRestart": false,
+                                "plannedOnly": false,
+                                "helperLooseLsaCheck": true,
+                                "gracePeriod": 120.0,
+                                "lastExitReason": "lastExitNone",
+                                "lastExitTime": null,
+                                "state": "none",
+                                "restartExpirationTime": null,
+                                "lastRestartReason": "Unknown",
+                                "restartDuration": null,
+                                "helperMode": true
+                            },
+                            "externalLsaInformation": {
+                                "asExternalCksum": 0,
+                                "treeSize": 0
+                            },
+                            "instanceId": 1,
+                            "spfInformation": {
+                                "spfStartInterval": 0,
+                                "spfMaxWaitInterval": 5000,
+                                "spfCurrHoldInterval": 5000,
+                                "spfHoldInterval": 5000,
+                                "spfInterval": 5,
+                                "lastSpf": 710,
+                                "nextSpf": 0
+                            },
+                            "referenceBandwidth": 0,
+                            "opaqueLsaInformation": {
+                                "opaqueTreeSize": 0,
+                                "opaqueCksum": 0,
+                                "opaque": true
+                            },
+                            "tunnelRoutesEnabled": false,
+                            "numNormalAreas": 1,
+                            "maxLsaInformation": {
+                                "maxLsaCurrentIgnoreCount": 0,
+                                "maxLsaThreshold": 75,
+                                "maxLsaIgnoring": false,
+                                "maxLsaAllowedIgnoreCount": 5,
+                                "maxLsaWarningOnly": false,
+                                "maxLsa": 12000,
+                                "maxLsaResetTime": 5,
+                                "maxLsaIgnoreTime": 5
+                            },
+                            "ecmpMaximumNexthops": 128,
+                            "numBackboneNeighbors": 2,
+                            "adjacencyExchangeStartThreshold": 20,
+                            "areaList": {
+                                "0.0.0.0": {
+                                    "normalArea": true,
+                                    "lsaInformation": {
+                                        "asExternalCksum": 267145,
+                                        "treeSize": 8
+                                    },
+                                    "areaId": "0.0.0.0",
+                                    "teEnabled": false,
+                                    "spfCount": 66,
+                                    "opaqueLsaInformation": {
+                                        "opaqueTreeSize": 0,
+                                        "opaqueCksum": 0
+                                    },
+                                    "numIntf": 3,
+                                    "rangeList": {},
+                                    "stubArea": false,
+                                    "opaqueAreaLsaInformation": {
+                                        "opaqueTreeSize": 0,
+                                        "opaqueCksumSum": 0
+                                    },
+                                    "areaFiltersConfigured": false
+                                }
+                            },
+                            "numAreas": 1,
+                            "abr": false,
+                            "routerId": "10.0.0.31",
+                            "numStubAreas": 0,
+                            "shutDown": false,
+                            "numNssaAreas": 0,
+                            "lsaRetransmissionThreshold": 10,
+                            "floodPacing": 0,
+                            "vrf": "default"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    {
+        "status": 200,
+        "timestamp": 1623025177431,
+        "cmd": "show ip ospf interface vrf all",
+        "devtype": "eos",
+        "namespace": "eos",
+        "hostname": "exit01",
+        "address": "10.255.2.251",
+        "data": {
+            "vrfs": {
+                "default": {
+                    "instList": {
+                        "1": {
+                            "interfaces": {
+                                "Loopback0": {
+                                    "interfaceMask": 32,
+                                    "passive": true,
+                                    "bfdState": "default",
+                                    "helloInterval": 10,
+                                    "area": "0.0.0.0",
+                                    "transmitDelay": 1,
+                                    "teEnabled": false,
+                                    "retransmitInterval": 5,
+                                    "priority": 1,
+                                    "designatedRouter": "10.0.0.31",
+                                    "state": "dr",
+                                    "cost": 10,
+                                    "interfaceType": "broadcast",
+                                    "deadInterval": 40,
+                                    "neighborCount": 0,
+                                    "interfaceAddress": "10.0.0.31",
+                                    "options": {
+                                        "multitopologyCapability": false,
+                                        "doNotUseInRouteCalc": false,
+                                        "demandCircuitsSupport": false,
+                                        "nssaCapability": false,
+                                        "externalRoutingCapability": false,
+                                        "opaqueLsaSupport": false,
+                                        "linkLocalSignaling": false,
+                                        "multicastCapability": false
+                                    }
+                                },
+                                "Ethernet2": {
+                                    "interfaceMask": 32,
+                                    "bfdState": "default",
+                                    "helloInterval": 10,
+                                    "area": "0.0.0.0",
+                                    "transmitDelay": 1,
+                                    "teEnabled": false,
+                                    "retransmitInterval": 5,
+                                    "passive": false,
+                                    "state": "p2p",
+                                    "cost": 10,
+                                    "interfaceType": "p2p",
+                                    "deadInterval": 40,
+                                    "neighborCount": 1,
+                                    "interfaceAddress": "10.0.0.31",
+                                    "options": {
+                                        "multitopologyCapability": false,
+                                        "doNotUseInRouteCalc": false,
+                                        "demandCircuitsSupport": false,
+                                        "nssaCapability": false,
+                                        "externalRoutingCapability": false,
+                                        "opaqueLsaSupport": false,
+                                        "linkLocalSignaling": false,
+                                        "multicastCapability": false
+                                    }
+                                },
+                                "Ethernet1": {
+                                    "interfaceMask": 32,
+                                    "bfdState": "enabled",
+                                    "helloInterval": 10,
+                                    "area": "0.0.0.0",
+                                    "transmitDelay": 1,
+                                    "teEnabled": false,
+                                    "retransmitInterval": 5,
+                                    "passive": false,
+                                    "state": "p2p",
+                                    "cost": 10,
+                                    "interfaceType": "p2p",
+                                    "deadInterval": 40,
+                                    "neighborCount": 1,
+                                    "interfaceAddress": "10.0.0.31",
+                                    "options": {
+                                        "multitopologyCapability": false,
+                                        "doNotUseInRouteCalc": false,
+                                        "demandCircuitsSupport": false,
+                                        "nssaCapability": false,
+                                        "externalRoutingCapability": false,
+                                        "opaqueLsaSupport": false,
+                                        "linkLocalSignaling": false,
+                                        "multicastCapability": false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+][
+    {
+        "status": 200,
+        "timestamp": 1623025177614,
+        "cmd": "show ip ospf vrf all",
+        "devtype": "eos",
+        "namespace": "eos",
+        "hostname": "leaf01",
+        "address": "10.255.2.184",
+        "data": {
+            "vrfs": {
+                "default": {
+                    "instList": {
+                        "1": {
+                            "asbr": false,
+                            "lsaInformation": {
+                                "numLsa": 8,
+                                "lsaStartInterval": 1000,
+                                "lsaMaxWaitInterval": 5000,
+                                "lsaHoldInterval": 5000,
+                                "lsaArrivalInterval": 1000
+                            },
+                            "gracefulRestartInfo": {
+                                "gracefulRestart": false,
+                                "plannedOnly": false,
+                                "helperLooseLsaCheck": true,
+                                "gracePeriod": 120.0,
+                                "lastExitReason": "lastExitNone",
+                                "lastExitTime": null,
+                                "state": "none",
+                                "restartExpirationTime": null,
+                                "lastRestartReason": "Unknown",
+                                "restartDuration": null,
+                                "helperMode": true
+                            },
+                            "externalLsaInformation": {
+                                "asExternalCksum": 0,
+                                "treeSize": 0
+                            },
+                            "instanceId": 1,
+                            "spfInformation": {
+                                "spfStartInterval": 0,
+                                "spfMaxWaitInterval": 5000,
+                                "spfCurrHoldInterval": 5000,
+                                "spfHoldInterval": 5000,
+                                "spfInterval": 5,
+                                "lastSpf": 813,
+                                "nextSpf": 0
+                            },
+                            "referenceBandwidth": 0,
+                            "opaqueLsaInformation": {
+                                "opaqueTreeSize": 0,
+                                "opaqueCksum": 0,
+                                "opaque": true
+                            },
+                            "tunnelRoutesEnabled": false,
+                            "numNormalAreas": 1,
+                            "maxLsaInformation": {
+                                "maxLsaCurrentIgnoreCount": 0,
+                                "maxLsaThreshold": 75,
+                                "maxLsaIgnoring": false,
+                                "maxLsaAllowedIgnoreCount": 5,
+                                "maxLsaWarningOnly": false,
+                                "maxLsa": 12000,
+                                "maxLsaResetTime": 5,
+                                "maxLsaIgnoreTime": 5
+                            },
+                            "ecmpMaximumNexthops": 128,
+                            "numBackboneNeighbors": 2,
+                            "adjacencyExchangeStartThreshold": 20,
+                            "areaList": {
+                                "0.0.0.0": {
+                                    "normalArea": true,
+                                    "lsaInformation": {
+                                        "asExternalCksum": 267145,
+                                        "treeSize": 8
+                                    },
+                                    "areaId": "0.0.0.0",
+                                    "teEnabled": false,
+                                    "spfCount": 10,
+                                    "opaqueLsaInformation": {
+                                        "opaqueTreeSize": 0,
+                                        "opaqueCksum": 0
+                                    },
+                                    "numIntf": 4,
+                                    "rangeList": {},
+                                    "stubArea": false,
+                                    "opaqueAreaLsaInformation": {
+                                        "opaqueTreeSize": 0,
+                                        "opaqueCksumSum": 0
+                                    },
+                                    "areaFiltersConfigured": false
+                                }
+                            },
+                            "numAreas": 1,
+                            "abr": false,
+                            "routerId": "10.0.0.11",
+                            "numStubAreas": 0,
+                            "shutDown": false,
+                            "numNssaAreas": 0,
+                            "lsaRetransmissionThreshold": 10,
+                            "floodPacing": 0,
+                            "vrf": "default"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    {
+        "status": 200,
+        "timestamp": 1623025177614,
+        "cmd": "show ip ospf interface vrf all",
+        "devtype": "eos",
+        "namespace": "eos",
+        "hostname": "leaf01",
+        "address": "10.255.2.184",
+        "data": {
+            "vrfs": {
+                "default": {
+                    "instList": {
+                        "1": {
+                            "interfaces": {
+                                "Loopback0": {
+                                    "interfaceMask": 32,
+                                    "passive": true,
+                                    "bfdState": "default",
+                                    "helloInterval": 10,
+                                    "area": "0.0.0.0",
+                                    "transmitDelay": 1,
+                                    "teEnabled": false,
+                                    "retransmitInterval": 5,
+                                    "priority": 1,
+                                    "designatedRouter": "10.0.0.11",
+                                    "state": "dr",
+                                    "cost": 10,
+                                    "interfaceType": "broadcast",
+                                    "deadInterval": 40,
+                                    "neighborCount": 0,
+                                    "interfaceAddress": "10.0.0.11",
+                                    "options": {
+                                        "multitopologyCapability": false,
+                                        "doNotUseInRouteCalc": false,
+                                        "demandCircuitsSupport": false,
+                                        "nssaCapability": false,
+                                        "externalRoutingCapability": false,
+                                        "opaqueLsaSupport": false,
+                                        "linkLocalSignaling": false,
+                                        "multicastCapability": false
+                                    }
+                                },
+                                "Loopback1": {
+                                    "interfaceMask": 32,
+                                    "passive": true,
+                                    "bfdState": "default",
+                                    "helloInterval": 10,
+                                    "area": "0.0.0.0",
+                                    "transmitDelay": 1,
+                                    "teEnabled": false,
+                                    "retransmitInterval": 5,
+                                    "priority": 1,
+                                    "designatedRouter": "10.0.0.11",
+                                    "state": "dr",
+                                    "cost": 10,
+                                    "interfaceType": "broadcast",
+                                    "deadInterval": 40,
+                                    "neighborCount": 0,
+                                    "interfaceAddress": "10.0.0.112",
+                                    "options": {
+                                        "multitopologyCapability": false,
+                                        "doNotUseInRouteCalc": false,
+                                        "demandCircuitsSupport": false,
+                                        "nssaCapability": false,
+                                        "externalRoutingCapability": false,
+                                        "opaqueLsaSupport": false,
+                                        "linkLocalSignaling": false,
+                                        "multicastCapability": false
+                                    }
+                                },
+                                "Ethernet2": {
+                                    "interfaceMask": 32,
+                                    "bfdState": "default",
+                                    "helloInterval": 10,
+                                    "area": "0.0.0.0",
+                                    "transmitDelay": 1,
+                                    "teEnabled": false,
+                                    "retransmitInterval": 5,
+                                    "passive": false,
+                                    "state": "p2p",
+                                    "cost": 10,
+                                    "interfaceType": "p2p",
+                                    "deadInterval": 40,
+                                    "neighborCount": 1,
+                                    "interfaceAddress": "10.0.0.11",
+                                    "options": {
+                                        "multitopologyCapability": false,
+                                        "doNotUseInRouteCalc": false,
+                                        "demandCircuitsSupport": false,
+                                        "nssaCapability": false,
+                                        "externalRoutingCapability": false,
+                                        "opaqueLsaSupport": false,
+                                        "linkLocalSignaling": false,
+                                        "multicastCapability": false
+                                    }
+                                },
+                                "Ethernet1": {
+                                    "interfaceMask": 32,
+                                    "bfdState": "default",
+                                    "helloInterval": 10,
+                                    "area": "0.0.0.0",
+                                    "transmitDelay": 1,
+                                    "teEnabled": false,
+                                    "retransmitInterval": 5,
+                                    "passive": false,
+                                    "state": "p2p",
+                                    "cost": 10,
+                                    "interfaceType": "p2p",
+                                    "deadInterval": 40,
+                                    "neighborCount": 1,
+                                    "interfaceAddress": "10.0.0.11",
+                                    "options": {
+                                        "multitopologyCapability": false,
+                                        "doNotUseInRouteCalc": false,
+                                        "demandCircuitsSupport": false,
+                                        "nssaCapability": false,
+                                        "externalRoutingCapability": false,
+                                        "opaqueLsaSupport": false,
+                                        "linkLocalSignaling": false,
+                                        "multicastCapability": false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+][
+    {
+        "status": 200,
+        "timestamp": 1623025177660,
+        "cmd": "show ip ospf vrf all",
+        "devtype": "eos",
+        "namespace": "eos",
+        "hostname": "leaf04",
+        "address": "10.255.2.187",
+        "data": {
+            "vrfs": {
+                "default": {
+                    "instList": {
+                        "1": {
+                            "asbr": false,
+                            "lsaInformation": {
+                                "numLsa": 8,
+                                "lsaStartInterval": 1000,
+                                "lsaMaxWaitInterval": 5000,
+                                "lsaHoldInterval": 5000,
+                                "lsaArrivalInterval": 1000
+                            },
+                            "gracefulRestartInfo": {
+                                "gracefulRestart": false,
+                                "plannedOnly": false,
+                                "helperLooseLsaCheck": true,
+                                "gracePeriod": 120.0,
+                                "lastExitReason": "lastExitNone",
+                                "lastExitTime": null,
+                                "state": "none",
+                                "restartExpirationTime": null,
+                                "lastRestartReason": "Unknown",
+                                "restartDuration": null,
+                                "helperMode": true
+                            },
+                            "externalLsaInformation": {
+                                "asExternalCksum": 0,
+                                "treeSize": 0
+                            },
+                            "instanceId": 1,
+                            "spfInformation": {
+                                "spfStartInterval": 0,
+                                "spfMaxWaitInterval": 5000,
+                                "spfCurrHoldInterval": 5000,
+                                "spfHoldInterval": 5000,
+                                "spfInterval": 5,
+                                "lastSpf": 808,
+                                "nextSpf": 0
+                            },
+                            "referenceBandwidth": 0,
+                            "opaqueLsaInformation": {
+                                "opaqueTreeSize": 0,
+                                "opaqueCksum": 0,
+                                "opaque": true
+                            },
+                            "tunnelRoutesEnabled": false,
+                            "numNormalAreas": 1,
+                            "maxLsaInformation": {
+                                "maxLsaCurrentIgnoreCount": 0,
+                                "maxLsaThreshold": 75,
+                                "maxLsaIgnoring": false,
+                                "maxLsaAllowedIgnoreCount": 5,
+                                "maxLsaWarningOnly": false,
+                                "maxLsa": 12000,
+                                "maxLsaResetTime": 5,
+                                "maxLsaIgnoreTime": 5
+                            },
+                            "ecmpMaximumNexthops": 128,
+                            "numBackboneNeighbors": 2,
+                            "adjacencyExchangeStartThreshold": 20,
+                            "areaList": {
+                                "0.0.0.0": {
+                                    "normalArea": true,
+                                    "lsaInformation": {
+                                        "asExternalCksum": 267145,
+                                        "treeSize": 8
+                                    },
+                                    "areaId": "0.0.0.0",
+                                    "teEnabled": false,
+                                    "spfCount": 9,
+                                    "opaqueLsaInformation": {
+                                        "opaqueTreeSize": 0,
+                                        "opaqueCksum": 0
+                                    },
+                                    "numIntf": 4,
+                                    "rangeList": {},
+                                    "stubArea": false,
+                                    "opaqueAreaLsaInformation": {
+                                        "opaqueTreeSize": 0,
+                                        "opaqueCksumSum": 0
+                                    },
+                                    "areaFiltersConfigured": false
+                                }
+                            },
+                            "numAreas": 1,
+                            "abr": false,
+                            "routerId": "10.0.0.14",
+                            "numStubAreas": 0,
+                            "shutDown": false,
+                            "numNssaAreas": 0,
+                            "lsaRetransmissionThreshold": 10,
+                            "floodPacing": 0,
+                            "vrf": "default"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    {
+        "status": 200,
+        "timestamp": 1623025177660,
         "cmd": "show ip ospf interface vrf all",
         "devtype": "eos",
         "namespace": "eos",
@@ -1149,7 +2013,7 @@
 ][
     {
         "status": 0,
-        "timestamp": 1620879040570,
+        "timestamp": 1623025181033,
         "cmd": "show ospf overview | display json | no-more",
         "devtype": "junos-qfx",
         "namespace": "eos",
@@ -1160,7 +2024,7 @@
     },
     {
         "status": 0,
-        "timestamp": 1620879041365,
+        "timestamp": 1623025181484,
         "cmd": "show ospf interface detail | display json | no-more",
         "devtype": "junos-qfx",
         "namespace": "eos",

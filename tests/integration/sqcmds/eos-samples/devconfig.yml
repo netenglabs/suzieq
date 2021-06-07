@@ -4,103 +4,8 @@ tests:
   data-directory: tests/data/eos/parquet-out/
   marks: devconfig show eos
   output: '[{"namespace": "eos", "config": "! Command: show running-config\n! device:
-    exit02 (vEOS, EOS-4.23.5M)\n!\n! boot system flash:/vEOS-lab.swi\n!\ntransceiver
+    leaf02 (vEOS, EOS-4.23.5M)\n!\n! boot system flash:/vEOS-lab.swi\n!\ntransceiver
     qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname
-    exit02\n!\nspanning-tree mode mstp\n!\naaa authorization exec default local\n!\nno
-    aaa root\n!\nusername vagrant privilege 15 secret sha512 <removed>\nusername vagrant
-    ssh-key ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ==
-    vagrant insecure public key\n!\nvrf instance evpn-vrf\n!\nvrf instance internet-vrf\n!\ninterface
-    Ethernet1\n   no switchport\n   ip address unnumbered Loopback0\n   ip ospf network
-    point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface Ethernet2\n   no switchport\n   ip
-    address unnumbered Loopback0\n   ip ospf network point-to-point\n   ip ospf area
-    0.0.0.0\n!\ninterface Ethernet3\n   no switchport\n!\ninterface Ethernet3.2\n   encapsulation
-    dot1q vlan 2\n   ip address 169.254.253.1/30\n!\ninterface Ethernet3.3\n   encapsulation
-    dot1q vlan 3\n   vrf evpn-vrf\n   ip address 169.254.253.5/30\n!\ninterface Ethernet3.4\n   encapsulation
-    dot1q vlan 4\n   vrf internet-vrf\n   ip address 169.254.253.9/30\n!\ninterface
-    Ethernet4\n   no switchport\n   vrf internet-vrf\n   ip address 169.254.127.3/31\n!\ninterface
-    Loopback0\n   ip address 10.0.0.32/32\n   ip ospf area 0.0.0.0\n!\ninterface Management1\n   ip
-    address dhcp\n!\ninterface Vxlan1\n   vxlan source-interface Loopback0\n   vxlan
-    udp-port 4789\n   vxlan vrf evpn-vrf vni 999\n   vxlan learn-restrict any\n!\nevent-handler
-    ALTER-VAGRANT-SHELL\n   trigger on-intf Management1 ip\n   action bash sudo sed
-    -i ''s:^username vagrant privilege 15 shell /bin/bash :username vagrant privilege
-    15 :g'' /mnt/flash/startup-config\n   delay 60\n!\nevent-handler COPY-STARTUP-TO-RUNNING\n   trigger
-    on-intf Management1 ip\n   action bash FastCli -p 15 -c ''configure replace startup-config''\n   delay
-    70\n!\nip virtual-router mac-address 00:00:00:11:12:10\n!\nip routing\nip routing
-    vrf evpn-vrf\nip routing vrf internet-vrf\n!\nip prefix-list ATTACHED_SVIS seq
-    10 permit 172.16.0.0/16 ge 24\n!\nip route 192.168.0.179/32 10.255.2.1\n!\nroute-map
-    ADV_SVIS permit 10\n   match ip address prefix-list ATTACHED_SVIS\n!\nroute-map
-    LOWER_AGGRT_PREF permit 10\n   set local-preference 10\n!\nrouter bgp 64520\n   router-id
-    10.0.0.32\n   no bgp default ipv4-unicast\n   neighbor FW peer group\n   neighbor
-    FW maximum-routes 12000\n   neighbor RR peer group\n   neighbor RR remote-as 64520\n   neighbor
-    RR send-community extended\n   neighbor RR maximum-routes 12000\n   neighbor 10.0.0.21
-    peer group RR\n   neighbor 10.0.0.22 peer group RR\n   neighbor 169.254.253.2
-    peer group FW\n   neighbor 169.254.253.2 remote-as 65533\n   neighbor 169.254.253.2
-    local-as 65520 no-prepend replace-as\n   !\n   address-family evpn\n      neighbor
-    10.0.0.21 activate\n      neighbor 10.0.0.22 activate\n   !\n   address-family
-    ipv4\n      neighbor FW activate\n   !\n   vrf evpn-vrf\n      rd 10.0.0.32:999\n      route-target
-    import evpn 64520:999\n      route-target export evpn 64520:999\n      neighbor
-    169.254.253.6 peer group FW\n      neighbor 169.254.253.6 remote-as 65533\n      neighbor
-    169.254.253.6 local-as 65521 no-prepend replace-as\n      aggregate-address 172.16.1.0/24
-    summary-only attribute-map LOWER_AGGRT_PREF\n      aggregate-address 172.16.2.0/24
-    summary-only attribute-map LOWER_AGGRT_PREF\n      aggregate-address 172.16.3.0/24
-    summary-only attribute-map LOWER_AGGRT_PREF\n   !\n   vrf internet-vrf\n      neighbor
-    169.254.127.2 peer group FW\n      neighbor 169.254.127.2 remote-as 65534\n      neighbor
-    169.254.127.2 local-as 65522 no-prepend replace-as\n      neighbor 169.254.253.10
-    peer group FW\n      neighbor 169.254.253.10 remote-as 65533\n      neighbor 169.254.253.10
-    local-as 65522 no-prepend replace-as\n!\nrouter ospf 1\n   router-id 10.0.0.32\n   passive-interface
-    Loopback0\n   max-lsa 12000\n   log-adjacency-changes detail\n!\nmanagement api
-    http-commands\n   no shutdown\n!\nend\n", "hostname": "exit02", "timestamp": 1621978830337},
-    {"namespace": "eos", "config": "! Command: show running-config\n! device: exit01
-    (vEOS, EOS-4.23.5M)\n!\n! boot system flash:/vEOS-lab.swi\n!\ntransceiver qsfp
-    default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname
-    exit01\n!\nspanning-tree mode mstp\n!\naaa authorization exec default local\n!\nno
-    aaa root\n!\nusername vagrant privilege 15 secret sha512 <removed>\nusername vagrant
-    ssh-key ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ==
-    vagrant insecure public key\n!\nvrf instance evpn-vrf\n!\nvrf instance internet-vrf\n!\ninterface
-    Ethernet1\n   no switchport\n   ip address unnumbered Loopback0\n   ip ospf network
-    point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface Ethernet2\n   no switchport\n   ip
-    address unnumbered Loopback0\n   ip ospf network point-to-point\n   ip ospf area
-    0.0.0.0\n!\ninterface Ethernet3\n   no switchport\n!\ninterface Ethernet3.2\n   encapsulation
-    dot1q vlan 2\n   ip address 169.254.254.1/30\n!\ninterface Ethernet3.3\n   encapsulation
-    dot1q vlan 3\n   vrf evpn-vrf\n   ip address 169.254.254.5/30\n!\ninterface Ethernet3.4\n   encapsulation
-    dot1q vlan 4\n   vrf internet-vrf\n   ip address 169.254.254.9/30\n!\ninterface
-    Ethernet4\n   no switchport\n   vrf internet-vrf\n   ip address 169.254.127.1/31\n!\ninterface
-    Loopback0\n   ip address 10.0.0.31/32\n   ip ospf area 0.0.0.0\n!\ninterface Management1\n   ip
-    address dhcp\n!\ninterface Vxlan1\n   vxlan source-interface Loopback0\n   vxlan
-    udp-port 4789\n   vxlan vrf evpn-vrf vni 999\n   vxlan learn-restrict any\n!\nevent-handler
-    ALTER-VAGRANT-SHELL\n   trigger on-intf Management1 ip\n   action bash sudo sed
-    -i ''s:^username vagrant privilege 15 shell /bin/bash :username vagrant privilege
-    15 :g'' /mnt/flash/startup-config\n   delay 60\n!\nevent-handler COPY-STARTUP-TO-RUNNING\n   trigger
-    on-intf Management1 ip\n   action bash FastCli -p 15 -c ''configure replace startup-config''\n   delay
-    70\n!\nip virtual-router mac-address 00:00:00:11:12:10\n!\nip routing\nip routing
-    vrf evpn-vrf\nip routing vrf internet-vrf\n!\nip prefix-list ATTACHED_SVIS seq
-    10 permit 172.16.0.0/16 ge 24\n!\nip route 192.168.0.179/32 10.255.2.1\n!\nroute-map
-    ADV_SVIS permit 10\n   match ip address prefix-list ATTACHED_SVIS\n!\nroute-map
-    LOWER_AGGRT_PREF permit 10\n   set local-preference 10\n!\nroute-map LOWER_AGG_PRIO
-    permit 10\n   set local-preference 10\n!\nrouter bgp 64520\n   router-id 10.0.0.31\n   no
-    bgp default ipv4-unicast\n   neighbor FW peer group\n   neighbor FW maximum-routes
-    12000\n   neighbor RR peer group\n   neighbor RR remote-as 64520\n   neighbor
-    RR send-community extended\n   neighbor RR maximum-routes 12000\n   neighbor 10.0.0.21
-    peer group RR\n   neighbor 10.0.0.22 peer group RR\n   neighbor 169.254.254.2
-    peer group FW\n   neighbor 169.254.254.2 remote-as 65533\n   neighbor 169.254.254.2
-    local-as 65520 no-prepend replace-as\n   !\n   address-family evpn\n      neighbor
-    10.0.0.21 activate\n      neighbor 10.0.0.22 activate\n   !\n   address-family
-    ipv4\n      neighbor FW activate\n   !\n   vrf evpn-vrf\n      rd 10.0.0.31:999\n      route-target
-    import evpn 64520:999\n      route-target export evpn 64520:999\n      neighbor
-    169.254.254.6 peer group FW\n      neighbor 169.254.254.6 remote-as 65533\n      neighbor
-    169.254.254.6 local-as 65521 no-prepend replace-as\n      aggregate-address 172.16.1.0/24
-    summary-only attribute-map LOWER_AGGRT_PREF\n      aggregate-address 172.16.2.0/24
-    summary-only attribute-map LOWER_AGGRT_PREF\n      aggregate-address 172.16.3.0/24
-    summary-only attribute-map LOWER_AGGRT_PREF\n   !\n   vrf internet-vrf\n      neighbor
-    169.254.127.0 peer group FW\n      neighbor 169.254.127.0 remote-as 65534\n      neighbor
-    169.254.127.0 local-as 65522 no-prepend replace-as\n      neighbor 169.254.254.10
-    peer group FW\n      neighbor 169.254.254.10 remote-as 65533\n      neighbor 169.254.254.10
-    local-as 65522 no-prepend replace-as\n!\nrouter ospf 1\n   router-id 10.0.0.31\n   passive-interface
-    Loopback0\n   max-lsa 12000\n   log-adjacency-changes detail\n!\nmanagement api
-    http-commands\n   no shutdown\n!\nend\n", "hostname": "exit01", "timestamp": 1621978830339},
-    {"namespace": "eos", "config": "! Command: show running-config\n! device: leaf02
-    (vEOS, EOS-4.23.5M)\n!\n! boot system flash:/vEOS-lab.swi\n!\ntransceiver qsfp
-    default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname
     leaf02\n!\nspanning-tree mode mstp\nno spanning-tree vlan-id 4094\n!\naaa authorization
     exec default local\n!\nno aaa root\n!\nusername vagrant privilege 15 secret sha512
     <removed>\nusername vagrant ssh-key ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ==
@@ -144,79 +49,56 @@ tests:
     evpn 64520:999\n      maximum-paths 4\n      redistribute connected route-map
     ADV_SVIS\n!\nrouter ospf 1\n   router-id 10.0.0.12\n   passive-interface Loopback0\n   passive-interface
     Loopback1\n   max-lsa 12000\n   log-adjacency-changes detail\n!\nmanagement api
-    http-commands\n   no shutdown\n!\nend\n", "hostname": "leaf02", "timestamp": 1621978830340},
-    {"namespace": "eos", "config": "! Command: show running-config\n! device: spine01
+    http-commands\n   no shutdown\n!\nend\n", "hostname": "leaf02", "timestamp": 1623025174534},
+    {"namespace": "eos", "config": "! Command: show running-config\n! device: exit02
     (vEOS, EOS-4.23.5M)\n!\n! boot system flash:/vEOS-lab.swi\n!\ntransceiver qsfp
     default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname
-    spine01\n!\nspanning-tree mode mstp\n!\naaa authorization exec default local\n!\nno
+    exit02\n!\nspanning-tree mode mstp\n!\naaa authorization exec default local\n!\nno
     aaa root\n!\nusername vagrant privilege 15 secret sha512 <removed>\nusername vagrant
     ssh-key ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ==
-    vagrant insecure public key\n!\ninterface Ethernet1\n   no switchport\n   ip address
-    unnumbered Loopback0\n   ip ospf network point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface
-    Ethernet2\n   no switchport\n   ip address unnumbered Loopback0\n   ip ospf network
-    point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface Ethernet3\n   no switchport\n   ip
+    vagrant insecure public key\n!\nvrf instance evpn-vrf\n!\nvrf instance internet-vrf\n!\ninterface
+    Ethernet1\n   no switchport\n   ip address unnumbered Loopback0\n   ip ospf network
+    point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface Ethernet2\n   no switchport\n   ip
     address unnumbered Loopback0\n   ip ospf network point-to-point\n   ip ospf area
-    0.0.0.0\n!\ninterface Ethernet4\n   no switchport\n   ip address unnumbered Loopback0\n   ip
-    ospf network point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface Ethernet5\n   no
-    switchport\n   ip address unnumbered Loopback0\n   ip ospf network point-to-point\n   ip
-    ospf area 0.0.0.0\n!\ninterface Ethernet6\n   no switchport\n   ip address unnumbered
-    Loopback0\n   ip ospf network point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface
-    Loopback0\n   ip address 10.0.0.21/32\n   ip ospf area 0.0.0.0\n!\ninterface Management1\n   ip
-    address dhcp\n!\nevent-handler ALTER-VAGRANT-SHELL\n   trigger on-intf Management1
-    ip\n   action bash sudo sed -i ''s:^username vagrant privilege 15 shell /bin/bash
-    :username vagrant privilege 15 :g'' /mnt/flash/startup-config\n   delay 60\n!\nevent-handler
-    COPY-STARTUP-TO-RUNNING\n   trigger on-intf Management1 ip\n   action bash FastCli
-    -p 15 -c ''configure replace startup-config''\n   delay 70\n!\nip routing\n!\nip
-    prefix-list ATTACHED_SVIS seq 10 permit 172.16.0.0/16 ge 24\n!\nip route 192.168.0.179/32
-    10.255.2.1\n!\nroute-map ADV_SVIS permit 10\n   match ip address prefix-list ATTACHED_SVIS\n!\nrouter
-    bgp 64520\n   router-id 10.0.0.21\n   no bgp default ipv4-unicast\n   neighbor
-    RR peer group\n   neighbor RR remote-as 64520\n   neighbor RR route-reflector-client\n   neighbor
-    RR send-community extended\n   neighbor RR maximum-routes 12000\n   neighbor 10.0.0.11
-    peer group RR\n   neighbor 10.0.0.12 peer group RR\n   neighbor 10.0.0.13 peer
-    group RR\n   neighbor 10.0.0.14 peer group RR\n   neighbor 10.0.0.31 peer group
-    RR\n   neighbor 10.0.0.32 peer group RR\n   !\n   address-family evpn\n      neighbor
-    10.0.0.11 activate\n      neighbor 10.0.0.12 activate\n      neighbor 10.0.0.13
-    activate\n      neighbor 10.0.0.14 activate\n      neighbor 10.0.0.31 activate\n      neighbor
-    10.0.0.32 activate\n!\nrouter ospf 1\n   router-id 10.0.0.21\n   passive-interface
-    Loopback0\n   max-lsa 12000\n   log-adjacency-changes detail\n!\nmanagement api
-    http-commands\n   no shutdown\n!\nend\n", "hostname": "spine01", "timestamp":
-    1621978830341}, {"namespace": "eos", "config": "! Command: show running-config\n!
-    device: spine02 (vEOS, EOS-4.23.5M)\n!\n! boot system flash:/vEOS-lab.swi\n!\ntransceiver
-    qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname
-    spine02\n!\nspanning-tree mode mstp\n!\naaa authorization exec default local\n!\nno
-    aaa root\n!\nusername vagrant privilege 15 secret sha512 <removed>\nusername vagrant
-    ssh-key ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ==
-    vagrant insecure public key\n!\ninterface Ethernet1\n   no switchport\n   ip address
-    unnumbered Loopback0\n   ip ospf network point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface
-    Ethernet2\n   no switchport\n   ip address unnumbered Loopback0\n   ip ospf network
-    point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface Ethernet3\n   no switchport\n   ip
-    address unnumbered Loopback0\n   ip ospf network point-to-point\n   ip ospf area
-    0.0.0.0\n!\ninterface Ethernet4\n   no switchport\n   ip address unnumbered Loopback0\n   ip
-    ospf network point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface Ethernet5\n   no
-    switchport\n   ip address unnumbered Loopback0\n   ip ospf network point-to-point\n   ip
-    ospf area 0.0.0.0\n!\ninterface Ethernet6\n   no switchport\n   ip address unnumbered
-    Loopback0\n   ip ospf network point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface
-    Loopback0\n   ip address 10.0.0.22/32\n   ip ospf area 0.0.0.0\n!\ninterface Management1\n   ip
-    address dhcp\n!\nevent-handler ALTER-VAGRANT-SHELL\n   trigger on-intf Management1
-    ip\n   action bash sudo sed -i ''s:^username vagrant privilege 15 shell /bin/bash
-    :username vagrant privilege 15 :g'' /mnt/flash/startup-config\n   delay 60\n!\nevent-handler
-    COPY-STARTUP-TO-RUNNING\n   trigger on-intf Management1 ip\n   action bash FastCli
-    -p 15 -c ''configure replace startup-config''\n   delay 70\n!\nip routing\n!\nip
-    prefix-list ATTACHED_SVIS seq 10 permit 172.16.0.0/16 ge 24\n!\nip route 192.168.0.179/32
-    10.255.2.1\n!\nroute-map ADV_SVIS permit 10\n   match ip address prefix-list ATTACHED_SVIS\n!\nrouter
-    bgp 64520\n   router-id 10.0.0.22\n   no bgp default ipv4-unicast\n   neighbor
-    RR peer group\n   neighbor RR remote-as 64520\n   neighbor RR route-reflector-client\n   neighbor
-    RR send-community extended\n   neighbor RR maximum-routes 12000\n   neighbor 10.0.0.11
-    peer group RR\n   neighbor 10.0.0.12 peer group RR\n   neighbor 10.0.0.13 peer
-    group RR\n   neighbor 10.0.0.14 peer group RR\n   neighbor 10.0.0.31 peer group
-    RR\n   neighbor 10.0.0.32 peer group RR\n   !\n   address-family evpn\n      neighbor
-    10.0.0.11 activate\n      neighbor 10.0.0.12 activate\n      neighbor 10.0.0.13
-    activate\n      neighbor 10.0.0.14 activate\n      neighbor 10.0.0.31 activate\n      neighbor
-    10.0.0.32 activate\n!\nrouter ospf 1\n   router-id 10.0.0.22\n   passive-interface
-    Loopback0\n   max-lsa 12000\n   log-adjacency-changes detail\n!\nmanagement api
-    http-commands\n   no shutdown\n!\nend\n", "hostname": "spine02", "timestamp":
-    1621978830342}, {"namespace": "eos", "config": "! Command: show running-config\n!
-    device: leaf03 (vEOS, EOS-4.23.5M)\n!\n! boot system flash:/vEOS-lab.swi\n!\ntransceiver
+    0.0.0.0\n!\ninterface Ethernet3\n   no switchport\n!\ninterface Ethernet3.2\n   encapsulation
+    dot1q vlan 2\n   ip address 169.254.253.1/30\n!\ninterface Ethernet3.3\n   encapsulation
+    dot1q vlan 3\n   vrf evpn-vrf\n   ip address 169.254.253.5/30\n!\ninterface Ethernet3.4\n   encapsulation
+    dot1q vlan 4\n   vrf internet-vrf\n   ip address 169.254.253.9/30\n!\ninterface
+    Ethernet4\n   no switchport\n   vrf internet-vrf\n   ip address 169.254.127.3/31\n!\ninterface
+    Loopback0\n   ip address 10.0.0.32/32\n   ip ospf area 0.0.0.0\n!\ninterface Management1\n   ip
+    address dhcp\n!\ninterface Vxlan1\n   vxlan source-interface Loopback0\n   vxlan
+    udp-port 4789\n   vxlan vrf evpn-vrf vni 999\n   vxlan learn-restrict any\n!\nevent-handler
+    ALTER-VAGRANT-SHELL\n   trigger on-intf Management1 ip\n   action bash sudo sed
+    -i ''s:^username vagrant privilege 15 shell /bin/bash :username vagrant privilege
+    15 :g'' /mnt/flash/startup-config\n   delay 60\n!\nevent-handler COPY-STARTUP-TO-RUNNING\n   trigger
+    on-intf Management1 ip\n   action bash FastCli -p 15 -c ''configure replace startup-config''\n   delay
+    70\n!\nip virtual-router mac-address 00:00:00:11:12:10\n!\nip routing\nip routing
+    vrf evpn-vrf\nip routing vrf internet-vrf\n!\nip prefix-list ATTACHED_SVIS seq
+    10 permit 172.16.0.0/16 ge 24\n!\nip route 192.168.0.179/32 10.255.2.1\n!\nroute-map
+    ADV_SVIS permit 10\n   match ip address prefix-list ATTACHED_SVIS\n!\nroute-map
+    LOWER_AGGRT_PREF permit 10\n   set local-preference 10\n!\nrouter bgp 64520\n   router-id
+    10.0.0.32\n   no bgp default ipv4-unicast\n   neighbor FW peer group\n   neighbor
+    FW maximum-routes 12000\n   neighbor RR peer group\n   neighbor RR remote-as 64520\n   neighbor
+    RR send-community extended\n   neighbor RR maximum-routes 12000\n   neighbor 10.0.0.21
+    peer group RR\n   neighbor 10.0.0.22 peer group RR\n   neighbor 169.254.253.2
+    peer group FW\n   neighbor 169.254.253.2 remote-as 65533\n   neighbor 169.254.253.2
+    local-as 65520 no-prepend replace-as\n   !\n   address-family evpn\n      neighbor
+    10.0.0.21 activate\n      neighbor 10.0.0.22 activate\n   !\n   address-family
+    ipv4\n      neighbor FW activate\n   !\n   vrf evpn-vrf\n      rd 10.0.0.32:999\n      route-target
+    import evpn 64520:999\n      route-target export evpn 64520:999\n      neighbor
+    169.254.253.6 peer group FW\n      neighbor 169.254.253.6 remote-as 65533\n      neighbor
+    169.254.253.6 local-as 65521 no-prepend replace-as\n      aggregate-address 172.16.1.0/24
+    summary-only attribute-map LOWER_AGGRT_PREF\n      aggregate-address 172.16.2.0/24
+    summary-only attribute-map LOWER_AGGRT_PREF\n      aggregate-address 172.16.3.0/24
+    summary-only attribute-map LOWER_AGGRT_PREF\n   !\n   vrf internet-vrf\n      neighbor
+    169.254.127.2 peer group FW\n      neighbor 169.254.127.2 remote-as 65534\n      neighbor
+    169.254.127.2 local-as 65522 no-prepend replace-as\n      neighbor 169.254.127.2
+    bfd\n      neighbor 169.254.253.10 peer group FW\n      neighbor 169.254.253.10
+    remote-as 65533\n      neighbor 169.254.253.10 local-as 65522 no-prepend replace-as\n!\nrouter
+    ospf 1\n   router-id 10.0.0.32\n   passive-interface Loopback0\n   max-lsa 12000\n   log-adjacency-changes
+    detail\n!\nmanagement api http-commands\n   no shutdown\n!\nend\n", "hostname":
+    "exit02", "timestamp": 1623025174536}, {"namespace": "eos", "config": "! Command:
+    show running-config\n! device: leaf03 (vEOS, EOS-4.23.5M)\n!\n! boot system flash:/vEOS-lab.swi\n!\ntransceiver
     qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname
     leaf03\n!\nspanning-tree mode mstp\nno spanning-tree vlan-id 4094\n!\naaa authorization
     exec default local\n!\nno aaa root\n!\nusername vagrant privilege 15 secret sha512
@@ -261,7 +143,7 @@ tests:
     evpn 64520:999\n      maximum-paths 4\n      redistribute connected route-map
     ADV_SVIS\n!\nrouter ospf 1\n   router-id 10.0.0.13\n   passive-interface Loopback0\n   passive-interface
     Loopback1\n   max-lsa 12000\n   log-adjacency-changes detail\n!\nmanagement api
-    http-commands\n   no shutdown\n!\nend\n", "hostname": "leaf03", "timestamp": 1621978830344},
+    http-commands\n   no shutdown\n!\nend\n", "hostname": "leaf03", "timestamp": 1623025174538},
     {"namespace": "eos", "config": "! Command: show running-config\n! device: leaf01
     (vEOS, EOS-4.23.5M)\n!\n! boot system flash:/vEOS-lab.swi\n!\ntransceiver qsfp
     default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname
@@ -308,7 +190,7 @@ tests:
     evpn 64520:999\n      maximum-paths 4\n      redistribute connected route-map
     ADV_SVIS\n!\nrouter ospf 1\n   router-id 10.0.0.11\n   passive-interface Loopback0\n   passive-interface
     Loopback1\n   max-lsa 12000\n   log-adjacency-changes detail\n!\nmanagement api
-    http-commands\n   no shutdown\n!\nend\n", "hostname": "leaf01", "timestamp": 1621978830345},
+    http-commands\n   no shutdown\n!\nend\n", "hostname": "leaf01", "timestamp": 1623025174541},
     {"namespace": "eos", "config": "! Command: show running-config\n! device: leaf04
     (vEOS, EOS-4.23.5M)\n!\n! boot system flash:/vEOS-lab.swi\n!\ntransceiver qsfp
     default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname
@@ -355,12 +237,131 @@ tests:
     evpn 64520:999\n      maximum-paths 4\n      redistribute connected route-map
     ADV_SVIS\n!\nrouter ospf 1\n   router-id 10.0.0.14\n   passive-interface Loopback0\n   passive-interface
     Loopback1\n   max-lsa 12000\n   log-adjacency-changes detail\n!\nmanagement api
-    http-commands\n   no shutdown\n!\nend\n", "hostname": "leaf04", "timestamp": 1621978830347},
-    {"namespace": "eos", "config": "## Last commit: 2021-05-10 19:58:34 UTC by vagrant\nversion
-    20191212.201431_builder.r1074901;\nsystem {\n    host-name dcedge01;\n    root-authentication
-    {\n    }\n    login {\n        user vagrant {\n            uid 2000;\n            class
-    super-user;\n            authentication {\n            }\n        }\n    }\n    services
-    {\n        ssh {\n            root-login allow;\n        }\n        netconf {\n            ssh;\n        }\n        rest
+    http-commands\n   no shutdown\n!\nend\n", "hostname": "leaf04", "timestamp": 1623025174543},
+    {"namespace": "eos", "config": "! Command: show running-config\n! device: exit01
+    (vEOS, EOS-4.23.5M)\n!\n! boot system flash:/vEOS-lab.swi\n!\ntransceiver qsfp
+    default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname
+    exit01\n!\nspanning-tree mode mstp\n!\naaa authorization exec default local\n!\nno
+    aaa root\n!\nusername vagrant privilege 15 secret sha512 <removed>\nusername vagrant
+    ssh-key ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ==
+    vagrant insecure public key\n!\nvrf instance evpn-vrf\n!\nvrf instance internet-vrf\n!\ninterface
+    Ethernet1\n   no switchport\n   ip address unnumbered Loopback0\n   ip ospf neighbor
+    bfd\n   ip ospf network point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface
+    Ethernet2\n   no switchport\n   ip address unnumbered Loopback0\n   ip ospf network
+    point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface Ethernet3\n   no switchport\n!\ninterface
+    Ethernet3.2\n   encapsulation dot1q vlan 2\n   ip address 169.254.254.1/30\n!\ninterface
+    Ethernet3.3\n   encapsulation dot1q vlan 3\n   vrf evpn-vrf\n   ip address 169.254.254.5/30\n!\ninterface
+    Ethernet3.4\n   encapsulation dot1q vlan 4\n   vrf internet-vrf\n   ip address
+    169.254.254.9/30\n!\ninterface Ethernet4\n   no switchport\n   vrf internet-vrf\n   ip
+    address 169.254.127.1/31\n!\ninterface Loopback0\n   ip address 10.0.0.31/32\n   ip
+    ospf area 0.0.0.0\n!\ninterface Management1\n   ip address dhcp\n!\ninterface
+    Vxlan1\n   vxlan source-interface Loopback0\n   vxlan udp-port 4789\n   vxlan
+    vrf evpn-vrf vni 999\n   vxlan learn-restrict any\n!\nevent-handler ALTER-VAGRANT-SHELL\n   trigger
+    on-intf Management1 ip\n   action bash sudo sed -i ''s:^username vagrant privilege
+    15 shell /bin/bash :username vagrant privilege 15 :g'' /mnt/flash/startup-config\n   delay
+    60\n!\nevent-handler COPY-STARTUP-TO-RUNNING\n   trigger on-intf Management1 ip\n   action
+    bash FastCli -p 15 -c ''configure replace startup-config''\n   delay 70\n!\nip
+    virtual-router mac-address 00:00:00:11:12:10\n!\nip routing\nip routing vrf evpn-vrf\nip
+    routing vrf internet-vrf\n!\nip prefix-list ATTACHED_SVIS seq 10 permit 172.16.0.0/16
+    ge 24\n!\nip route 192.168.0.179/32 10.255.2.1\n!\nroute-map ADV_SVIS permit 10\n   match
+    ip address prefix-list ATTACHED_SVIS\n!\nrouter bgp 64520\n   router-id 10.0.0.31\n   no
+    bgp default ipv4-unicast\n   neighbor FW peer group\n   neighbor FW maximum-routes
+    12000\n   neighbor RR peer group\n   neighbor RR remote-as 64520\n   neighbor
+    RR send-community extended\n   neighbor RR maximum-routes 12000\n   neighbor 10.0.0.21
+    peer group RR\n   neighbor 10.0.0.22 peer group RR\n   neighbor 169.254.254.2
+    peer group FW\n   neighbor 169.254.254.2 remote-as 65533\n   neighbor 169.254.254.2
+    local-as 65520 no-prepend replace-as\n   !\n   address-family evpn\n      neighbor
+    10.0.0.21 activate\n      neighbor 10.0.0.22 activate\n   !\n   address-family
+    ipv4\n      neighbor FW activate\n   !\n   vrf evpn-vrf\n      rd 10.0.0.31:999\n      route-target
+    import evpn 64520:999\n      route-target export evpn 64520:999\n      neighbor
+    169.254.254.6 peer group FW\n      neighbor 169.254.254.6 remote-as 65533\n      neighbor
+    169.254.254.6 local-as 65521 no-prepend replace-as\n      aggregate-address 172.16.1.0/24
+    summary-only\n      aggregate-address 172.16.2.0/24 summary-only\n      aggregate-address
+    172.16.3.0/24 summary-only\n   !\n   vrf internet-vrf\n      neighbor 169.254.127.0
+    peer group FW\n      neighbor 169.254.127.0 remote-as 65534\n      neighbor 169.254.127.0
+    local-as 65522 no-prepend replace-as\n      neighbor 169.254.127.0 bfd\n      neighbor
+    169.254.254.10 peer group FW\n      neighbor 169.254.254.10 remote-as 65533\n      neighbor
+    169.254.254.10 local-as 65522 no-prepend replace-as\n!\nrouter ospf 1\n   router-id
+    10.0.0.31\n   passive-interface Loopback0\n   max-lsa 12000\n   log-adjacency-changes
+    detail\n!\nmanagement api http-commands\n   no shutdown\n!\nend\n", "hostname":
+    "exit01", "timestamp": 1623025174545}, {"namespace": "eos", "config": "! Command:
+    show running-config\n! device: spine01 (vEOS, EOS-4.23.5M)\n!\n! boot system flash:/vEOS-lab.swi\n!\ntransceiver
+    qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname
+    spine01\n!\nspanning-tree mode mstp\n!\naaa authorization exec default local\n!\nno
+    aaa root\n!\nusername vagrant privilege 15 secret sha512 <removed>\nusername vagrant
+    ssh-key ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ==
+    vagrant insecure public key\n!\ninterface Ethernet1\n   no switchport\n   ip address
+    unnumbered Loopback0\n   ip ospf network point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface
+    Ethernet2\n   no switchport\n   ip address unnumbered Loopback0\n   ip ospf network
+    point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface Ethernet3\n   no switchport\n   ip
+    address unnumbered Loopback0\n   ip ospf network point-to-point\n   ip ospf area
+    0.0.0.0\n!\ninterface Ethernet4\n   no switchport\n   ip address unnumbered Loopback0\n   ip
+    ospf network point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface Ethernet5\n   no
+    switchport\n   ip address unnumbered Loopback0\n   ip ospf neighbor bfd\n   ip
+    ospf network point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface Ethernet6\n   no
+    switchport\n   ip address unnumbered Loopback0\n   ip ospf neighbor bfd\n   ip
+    ospf network point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface Loopback0\n   ip
+    address 10.0.0.21/32\n   ip ospf area 0.0.0.0\n!\ninterface Management1\n   ip
+    address dhcp\n!\nevent-handler ALTER-VAGRANT-SHELL\n   trigger on-intf Management1
+    ip\n   action bash sudo sed -i ''s:^username vagrant privilege 15 shell /bin/bash
+    :username vagrant privilege 15 :g'' /mnt/flash/startup-config\n   delay 60\n!\nevent-handler
+    COPY-STARTUP-TO-RUNNING\n   trigger on-intf Management1 ip\n   action bash FastCli
+    -p 15 -c ''configure replace startup-config''\n   delay 70\n!\nip routing\n!\nip
+    prefix-list ATTACHED_SVIS seq 10 permit 172.16.0.0/16 ge 24\n!\nip route 192.168.0.179/32
+    10.255.2.1\n!\nroute-map ADV_SVIS permit 10\n   match ip address prefix-list ATTACHED_SVIS\n!\nrouter
+    bgp 64520\n   router-id 10.0.0.21\n   no bgp default ipv4-unicast\n   neighbor
+    RR peer group\n   neighbor RR remote-as 64520\n   neighbor RR route-reflector-client\n   neighbor
+    RR send-community extended\n   neighbor RR maximum-routes 12000\n   neighbor 10.0.0.11
+    peer group RR\n   neighbor 10.0.0.12 peer group RR\n   neighbor 10.0.0.13 peer
+    group RR\n   neighbor 10.0.0.14 peer group RR\n   neighbor 10.0.0.31 peer group
+    RR\n   neighbor 10.0.0.32 peer group RR\n   !\n   address-family evpn\n      neighbor
+    10.0.0.11 activate\n      neighbor 10.0.0.12 activate\n      neighbor 10.0.0.13
+    activate\n      neighbor 10.0.0.14 activate\n      neighbor 10.0.0.31 activate\n      neighbor
+    10.0.0.32 activate\n!\nrouter ospf 1\n   router-id 10.0.0.21\n   passive-interface
+    Loopback0\n   max-lsa 12000\n   log-adjacency-changes detail\n!\nmanagement api
+    http-commands\n   no shutdown\n!\nend\n", "hostname": "spine01", "timestamp":
+    1623025174548}, {"namespace": "eos", "config": "! Command: show running-config\n!
+    device: spine02 (vEOS, EOS-4.23.5M)\n!\n! boot system flash:/vEOS-lab.swi\n!\ntransceiver
+    qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname
+    spine02\n!\nspanning-tree mode mstp\n!\naaa authorization exec default local\n!\nno
+    aaa root\n!\nusername vagrant privilege 15 secret sha512 <removed>\nusername vagrant
+    ssh-key ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ==
+    vagrant insecure public key\n!\ninterface Ethernet1\n   no switchport\n   ip address
+    unnumbered Loopback0\n   ip ospf network point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface
+    Ethernet2\n   no switchport\n   ip address unnumbered Loopback0\n   ip ospf network
+    point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface Ethernet3\n   no switchport\n   ip
+    address unnumbered Loopback0\n   ip ospf network point-to-point\n   ip ospf area
+    0.0.0.0\n!\ninterface Ethernet4\n   no switchport\n   ip address unnumbered Loopback0\n   ip
+    ospf network point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface Ethernet5\n   no
+    switchport\n   ip address unnumbered Loopback0\n   ip ospf neighbor bfd\n   ip
+    ospf network point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface Ethernet6\n   no
+    switchport\n   ip address unnumbered Loopback0\n   ip ospf neighbor bfd\n   ip
+    ospf network point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface Loopback0\n   ip
+    address 10.0.0.22/32\n   ip ospf area 0.0.0.0\n!\ninterface Management1\n   ip
+    address dhcp\n!\nevent-handler ALTER-VAGRANT-SHELL\n   trigger on-intf Management1
+    ip\n   action bash sudo sed -i ''s:^username vagrant privilege 15 shell /bin/bash
+    :username vagrant privilege 15 :g'' /mnt/flash/startup-config\n   delay 60\n!\nevent-handler
+    COPY-STARTUP-TO-RUNNING\n   trigger on-intf Management1 ip\n   action bash FastCli
+    -p 15 -c ''configure replace startup-config''\n   delay 70\n!\nip routing\n!\nip
+    prefix-list ATTACHED_SVIS seq 10 permit 172.16.0.0/16 ge 24\n!\nip route 192.168.0.179/32
+    10.255.2.1\n!\nroute-map ADV_SVIS permit 10\n   match ip address prefix-list ATTACHED_SVIS\n!\nrouter
+    bgp 64520\n   router-id 10.0.0.22\n   no bgp default ipv4-unicast\n   neighbor
+    RR peer group\n   neighbor RR remote-as 64520\n   neighbor RR route-reflector-client\n   neighbor
+    RR send-community extended\n   neighbor RR maximum-routes 12000\n   neighbor 10.0.0.11
+    peer group RR\n   neighbor 10.0.0.12 peer group RR\n   neighbor 10.0.0.13 peer
+    group RR\n   neighbor 10.0.0.14 peer group RR\n   neighbor 10.0.0.31 peer group
+    RR\n   neighbor 10.0.0.32 peer group RR\n   !\n   address-family evpn\n      neighbor
+    10.0.0.11 activate\n      neighbor 10.0.0.12 activate\n      neighbor 10.0.0.13
+    activate\n      neighbor 10.0.0.14 activate\n      neighbor 10.0.0.31 activate\n      neighbor
+    10.0.0.32 activate\n!\nrouter ospf 1\n   router-id 10.0.0.22\n   passive-interface
+    Loopback0\n   max-lsa 12000\n   log-adjacency-changes detail\n!\nmanagement api
+    http-commands\n   no shutdown\n!\nend\n", "hostname": "spine02", "timestamp":
+    1623025174550}, {"namespace": "eos", "config": "## Last commit: 2021-06-05 22:12:07
+    UTC by vagrant\nversion 20191212.201431_builder.r1074901;\nsystem {\n    host-name
+    dcedge01;\n    root-authentication {\n    }\n    login {\n        user vagrant
+    {\n            uid 2000;\n            class super-user;\n            authentication
+    {\n            }\n        }\n    }\n    services {\n        ssh {\n            root-login
+    allow;\n        }\n        netconf {\n            ssh;\n        }\n        rest
     {\n            http {\n                port 8080;\n            }\n            enable-explorer;\n        }\n    }\n    syslog
     {\n        user * {\n            any emergency;\n        }\n        file messages
     {\n            any notice;\n            authorization info;\n        }\n        file
@@ -1190,12 +1191,14 @@ tests:
     direct;\n            then accept;\n        }\n        term 2 {\n            from
     protocol access-internal;\n            then accept;\n        }\n    }\n}\nrouting-options
     {\n    router-id 10.0.0.41;\n    autonomous-system 65534;\n}\nprotocols {\n    bgp
-    {\n        group ISL {\n            type external;\n            export DEF-ADV;\n            neighbor
-    169.254.127.1 {\n                peer-as 65522;\n            }\n            neighbor
-    169.254.127.3 {\n                peer-as 65522;\n            }\n        }\n    }\n    lldp
-    {\n        interface all;\n    }\n    igmp-snooping {\n        vlan default;\n    }\n}\nvlans
-    {\n    default {\n        vlan-id 1;\n    }\n}\n", "hostname": "dcedge01", "timestamp":
-    1621978831397}]'
+    {\n        group ISL {\n            type external;\n            export DEF-ADV;\n            bfd-liveness-detection
+    {\n                minimum-interval 700;\n                multiplier 3;\n                detection-time
+    {\n                    threshold 2500;\n                }\n                session-mode
+    automatic;\n            }\n            neighbor 169.254.127.1 {\n                peer-as
+    65522;\n            }\n            neighbor 169.254.127.3 {\n                peer-as
+    65522;\n            }\n        }\n    }\n    lldp {\n        interface all;\n    }\n    igmp-snooping
+    {\n        vlan default;\n    }\n}\nvlans {\n    default {\n        vlan-id 1;\n    }\n}\n",
+    "hostname": "dcedge01", "timestamp": 1623025176891}]'
 - command: devconfig show --hostname=leaf01 --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: devconfig show eos
@@ -1245,47 +1248,12 @@ tests:
     evpn 64520:999\n      maximum-paths 4\n      redistribute connected route-map
     ADV_SVIS\n!\nrouter ospf 1\n   router-id 10.0.0.11\n   passive-interface Loopback0\n   passive-interface
     Loopback1\n   max-lsa 12000\n   log-adjacency-changes detail\n!\nmanagement api
-    http-commands\n   no shutdown\n!\nend\n", "hostname": "leaf01", "timestamp": 1621978830345}]'
+    http-commands\n   no shutdown\n!\nend\n", "hostname": "leaf01", "timestamp": 1623025174541}]'
 - command: devconfig show --hostname='leaf01 spine01' --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: devconfig show eos
   output: '[{"namespace": "eos", "config": "! Command: show running-config\n! device:
-    spine01 (vEOS, EOS-4.23.5M)\n!\n! boot system flash:/vEOS-lab.swi\n!\ntransceiver
-    qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname
-    spine01\n!\nspanning-tree mode mstp\n!\naaa authorization exec default local\n!\nno
-    aaa root\n!\nusername vagrant privilege 15 secret sha512 <removed>\nusername vagrant
-    ssh-key ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ==
-    vagrant insecure public key\n!\ninterface Ethernet1\n   no switchport\n   ip address
-    unnumbered Loopback0\n   ip ospf network point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface
-    Ethernet2\n   no switchport\n   ip address unnumbered Loopback0\n   ip ospf network
-    point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface Ethernet3\n   no switchport\n   ip
-    address unnumbered Loopback0\n   ip ospf network point-to-point\n   ip ospf area
-    0.0.0.0\n!\ninterface Ethernet4\n   no switchport\n   ip address unnumbered Loopback0\n   ip
-    ospf network point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface Ethernet5\n   no
-    switchport\n   ip address unnumbered Loopback0\n   ip ospf network point-to-point\n   ip
-    ospf area 0.0.0.0\n!\ninterface Ethernet6\n   no switchport\n   ip address unnumbered
-    Loopback0\n   ip ospf network point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface
-    Loopback0\n   ip address 10.0.0.21/32\n   ip ospf area 0.0.0.0\n!\ninterface Management1\n   ip
-    address dhcp\n!\nevent-handler ALTER-VAGRANT-SHELL\n   trigger on-intf Management1
-    ip\n   action bash sudo sed -i ''s:^username vagrant privilege 15 shell /bin/bash
-    :username vagrant privilege 15 :g'' /mnt/flash/startup-config\n   delay 60\n!\nevent-handler
-    COPY-STARTUP-TO-RUNNING\n   trigger on-intf Management1 ip\n   action bash FastCli
-    -p 15 -c ''configure replace startup-config''\n   delay 70\n!\nip routing\n!\nip
-    prefix-list ATTACHED_SVIS seq 10 permit 172.16.0.0/16 ge 24\n!\nip route 192.168.0.179/32
-    10.255.2.1\n!\nroute-map ADV_SVIS permit 10\n   match ip address prefix-list ATTACHED_SVIS\n!\nrouter
-    bgp 64520\n   router-id 10.0.0.21\n   no bgp default ipv4-unicast\n   neighbor
-    RR peer group\n   neighbor RR remote-as 64520\n   neighbor RR route-reflector-client\n   neighbor
-    RR send-community extended\n   neighbor RR maximum-routes 12000\n   neighbor 10.0.0.11
-    peer group RR\n   neighbor 10.0.0.12 peer group RR\n   neighbor 10.0.0.13 peer
-    group RR\n   neighbor 10.0.0.14 peer group RR\n   neighbor 10.0.0.31 peer group
-    RR\n   neighbor 10.0.0.32 peer group RR\n   !\n   address-family evpn\n      neighbor
-    10.0.0.11 activate\n      neighbor 10.0.0.12 activate\n      neighbor 10.0.0.13
-    activate\n      neighbor 10.0.0.14 activate\n      neighbor 10.0.0.31 activate\n      neighbor
-    10.0.0.32 activate\n!\nrouter ospf 1\n   router-id 10.0.0.21\n   passive-interface
-    Loopback0\n   max-lsa 12000\n   log-adjacency-changes detail\n!\nmanagement api
-    http-commands\n   no shutdown\n!\nend\n", "hostname": "spine01", "timestamp":
-    1621978830341}, {"namespace": "eos", "config": "! Command: show running-config\n!
-    device: leaf01 (vEOS, EOS-4.23.5M)\n!\n! boot system flash:/vEOS-lab.swi\n!\ntransceiver
+    leaf01 (vEOS, EOS-4.23.5M)\n!\n! boot system flash:/vEOS-lab.swi\n!\ntransceiver
     qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname
     leaf01\n!\nspanning-tree mode mstp\nno spanning-tree vlan-id 4094\n!\naaa authorization
     exec default local\n!\nno aaa root\n!\nusername vagrant privilege 15 secret sha512
@@ -1330,48 +1298,50 @@ tests:
     evpn 64520:999\n      maximum-paths 4\n      redistribute connected route-map
     ADV_SVIS\n!\nrouter ospf 1\n   router-id 10.0.0.11\n   passive-interface Loopback0\n   passive-interface
     Loopback1\n   max-lsa 12000\n   log-adjacency-changes detail\n!\nmanagement api
-    http-commands\n   no shutdown\n!\nend\n", "hostname": "leaf01", "timestamp": 1621978830345}]'
+    http-commands\n   no shutdown\n!\nend\n", "hostname": "leaf01", "timestamp": 1623025174541},
+    {"namespace": "eos", "config": "! Command: show running-config\n! device: spine01
+    (vEOS, EOS-4.23.5M)\n!\n! boot system flash:/vEOS-lab.swi\n!\ntransceiver qsfp
+    default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname
+    spine01\n!\nspanning-tree mode mstp\n!\naaa authorization exec default local\n!\nno
+    aaa root\n!\nusername vagrant privilege 15 secret sha512 <removed>\nusername vagrant
+    ssh-key ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ==
+    vagrant insecure public key\n!\ninterface Ethernet1\n   no switchport\n   ip address
+    unnumbered Loopback0\n   ip ospf network point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface
+    Ethernet2\n   no switchport\n   ip address unnumbered Loopback0\n   ip ospf network
+    point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface Ethernet3\n   no switchport\n   ip
+    address unnumbered Loopback0\n   ip ospf network point-to-point\n   ip ospf area
+    0.0.0.0\n!\ninterface Ethernet4\n   no switchport\n   ip address unnumbered Loopback0\n   ip
+    ospf network point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface Ethernet5\n   no
+    switchport\n   ip address unnumbered Loopback0\n   ip ospf neighbor bfd\n   ip
+    ospf network point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface Ethernet6\n   no
+    switchport\n   ip address unnumbered Loopback0\n   ip ospf neighbor bfd\n   ip
+    ospf network point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface Loopback0\n   ip
+    address 10.0.0.21/32\n   ip ospf area 0.0.0.0\n!\ninterface Management1\n   ip
+    address dhcp\n!\nevent-handler ALTER-VAGRANT-SHELL\n   trigger on-intf Management1
+    ip\n   action bash sudo sed -i ''s:^username vagrant privilege 15 shell /bin/bash
+    :username vagrant privilege 15 :g'' /mnt/flash/startup-config\n   delay 60\n!\nevent-handler
+    COPY-STARTUP-TO-RUNNING\n   trigger on-intf Management1 ip\n   action bash FastCli
+    -p 15 -c ''configure replace startup-config''\n   delay 70\n!\nip routing\n!\nip
+    prefix-list ATTACHED_SVIS seq 10 permit 172.16.0.0/16 ge 24\n!\nip route 192.168.0.179/32
+    10.255.2.1\n!\nroute-map ADV_SVIS permit 10\n   match ip address prefix-list ATTACHED_SVIS\n!\nrouter
+    bgp 64520\n   router-id 10.0.0.21\n   no bgp default ipv4-unicast\n   neighbor
+    RR peer group\n   neighbor RR remote-as 64520\n   neighbor RR route-reflector-client\n   neighbor
+    RR send-community extended\n   neighbor RR maximum-routes 12000\n   neighbor 10.0.0.11
+    peer group RR\n   neighbor 10.0.0.12 peer group RR\n   neighbor 10.0.0.13 peer
+    group RR\n   neighbor 10.0.0.14 peer group RR\n   neighbor 10.0.0.31 peer group
+    RR\n   neighbor 10.0.0.32 peer group RR\n   !\n   address-family evpn\n      neighbor
+    10.0.0.11 activate\n      neighbor 10.0.0.12 activate\n      neighbor 10.0.0.13
+    activate\n      neighbor 10.0.0.14 activate\n      neighbor 10.0.0.31 activate\n      neighbor
+    10.0.0.32 activate\n!\nrouter ospf 1\n   router-id 10.0.0.21\n   passive-interface
+    Loopback0\n   max-lsa 12000\n   log-adjacency-changes detail\n!\nmanagement api
+    http-commands\n   no shutdown\n!\nend\n", "hostname": "spine01", "timestamp":
+    1623025174548}]'
 - command: devconfig show --hostname='leaf01 spine01' --query-str='config.str.contains("10.0.0.21")'
     --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: devconfig show eos
   output: '[{"namespace": "eos", "config": "! Command: show running-config\n! device:
-    spine01 (vEOS, EOS-4.23.5M)\n!\n! boot system flash:/vEOS-lab.swi\n!\ntransceiver
-    qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname
-    spine01\n!\nspanning-tree mode mstp\n!\naaa authorization exec default local\n!\nno
-    aaa root\n!\nusername vagrant privilege 15 secret sha512 <removed>\nusername vagrant
-    ssh-key ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ==
-    vagrant insecure public key\n!\ninterface Ethernet1\n   no switchport\n   ip address
-    unnumbered Loopback0\n   ip ospf network point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface
-    Ethernet2\n   no switchport\n   ip address unnumbered Loopback0\n   ip ospf network
-    point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface Ethernet3\n   no switchport\n   ip
-    address unnumbered Loopback0\n   ip ospf network point-to-point\n   ip ospf area
-    0.0.0.0\n!\ninterface Ethernet4\n   no switchport\n   ip address unnumbered Loopback0\n   ip
-    ospf network point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface Ethernet5\n   no
-    switchport\n   ip address unnumbered Loopback0\n   ip ospf network point-to-point\n   ip
-    ospf area 0.0.0.0\n!\ninterface Ethernet6\n   no switchport\n   ip address unnumbered
-    Loopback0\n   ip ospf network point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface
-    Loopback0\n   ip address 10.0.0.21/32\n   ip ospf area 0.0.0.0\n!\ninterface Management1\n   ip
-    address dhcp\n!\nevent-handler ALTER-VAGRANT-SHELL\n   trigger on-intf Management1
-    ip\n   action bash sudo sed -i ''s:^username vagrant privilege 15 shell /bin/bash
-    :username vagrant privilege 15 :g'' /mnt/flash/startup-config\n   delay 60\n!\nevent-handler
-    COPY-STARTUP-TO-RUNNING\n   trigger on-intf Management1 ip\n   action bash FastCli
-    -p 15 -c ''configure replace startup-config''\n   delay 70\n!\nip routing\n!\nip
-    prefix-list ATTACHED_SVIS seq 10 permit 172.16.0.0/16 ge 24\n!\nip route 192.168.0.179/32
-    10.255.2.1\n!\nroute-map ADV_SVIS permit 10\n   match ip address prefix-list ATTACHED_SVIS\n!\nrouter
-    bgp 64520\n   router-id 10.0.0.21\n   no bgp default ipv4-unicast\n   neighbor
-    RR peer group\n   neighbor RR remote-as 64520\n   neighbor RR route-reflector-client\n   neighbor
-    RR send-community extended\n   neighbor RR maximum-routes 12000\n   neighbor 10.0.0.11
-    peer group RR\n   neighbor 10.0.0.12 peer group RR\n   neighbor 10.0.0.13 peer
-    group RR\n   neighbor 10.0.0.14 peer group RR\n   neighbor 10.0.0.31 peer group
-    RR\n   neighbor 10.0.0.32 peer group RR\n   !\n   address-family evpn\n      neighbor
-    10.0.0.11 activate\n      neighbor 10.0.0.12 activate\n      neighbor 10.0.0.13
-    activate\n      neighbor 10.0.0.14 activate\n      neighbor 10.0.0.31 activate\n      neighbor
-    10.0.0.32 activate\n!\nrouter ospf 1\n   router-id 10.0.0.21\n   passive-interface
-    Loopback0\n   max-lsa 12000\n   log-adjacency-changes detail\n!\nmanagement api
-    http-commands\n   no shutdown\n!\nend\n", "hostname": "spine01", "timestamp":
-    1621978830341}, {"namespace": "eos", "config": "! Command: show running-config\n!
-    device: leaf01 (vEOS, EOS-4.23.5M)\n!\n! boot system flash:/vEOS-lab.swi\n!\ntransceiver
+    leaf01 (vEOS, EOS-4.23.5M)\n!\n! boot system flash:/vEOS-lab.swi\n!\ntransceiver
     qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname
     leaf01\n!\nspanning-tree mode mstp\nno spanning-tree vlan-id 4094\n!\naaa authorization
     exec default local\n!\nno aaa root\n!\nusername vagrant privilege 15 secret sha512
@@ -1416,7 +1386,44 @@ tests:
     evpn 64520:999\n      maximum-paths 4\n      redistribute connected route-map
     ADV_SVIS\n!\nrouter ospf 1\n   router-id 10.0.0.11\n   passive-interface Loopback0\n   passive-interface
     Loopback1\n   max-lsa 12000\n   log-adjacency-changes detail\n!\nmanagement api
-    http-commands\n   no shutdown\n!\nend\n", "hostname": "leaf01", "timestamp": 1621978830345}]'
+    http-commands\n   no shutdown\n!\nend\n", "hostname": "leaf01", "timestamp": 1623025174541},
+    {"namespace": "eos", "config": "! Command: show running-config\n! device: spine01
+    (vEOS, EOS-4.23.5M)\n!\n! boot system flash:/vEOS-lab.swi\n!\ntransceiver qsfp
+    default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname
+    spine01\n!\nspanning-tree mode mstp\n!\naaa authorization exec default local\n!\nno
+    aaa root\n!\nusername vagrant privilege 15 secret sha512 <removed>\nusername vagrant
+    ssh-key ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ==
+    vagrant insecure public key\n!\ninterface Ethernet1\n   no switchport\n   ip address
+    unnumbered Loopback0\n   ip ospf network point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface
+    Ethernet2\n   no switchport\n   ip address unnumbered Loopback0\n   ip ospf network
+    point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface Ethernet3\n   no switchport\n   ip
+    address unnumbered Loopback0\n   ip ospf network point-to-point\n   ip ospf area
+    0.0.0.0\n!\ninterface Ethernet4\n   no switchport\n   ip address unnumbered Loopback0\n   ip
+    ospf network point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface Ethernet5\n   no
+    switchport\n   ip address unnumbered Loopback0\n   ip ospf neighbor bfd\n   ip
+    ospf network point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface Ethernet6\n   no
+    switchport\n   ip address unnumbered Loopback0\n   ip ospf neighbor bfd\n   ip
+    ospf network point-to-point\n   ip ospf area 0.0.0.0\n!\ninterface Loopback0\n   ip
+    address 10.0.0.21/32\n   ip ospf area 0.0.0.0\n!\ninterface Management1\n   ip
+    address dhcp\n!\nevent-handler ALTER-VAGRANT-SHELL\n   trigger on-intf Management1
+    ip\n   action bash sudo sed -i ''s:^username vagrant privilege 15 shell /bin/bash
+    :username vagrant privilege 15 :g'' /mnt/flash/startup-config\n   delay 60\n!\nevent-handler
+    COPY-STARTUP-TO-RUNNING\n   trigger on-intf Management1 ip\n   action bash FastCli
+    -p 15 -c ''configure replace startup-config''\n   delay 70\n!\nip routing\n!\nip
+    prefix-list ATTACHED_SVIS seq 10 permit 172.16.0.0/16 ge 24\n!\nip route 192.168.0.179/32
+    10.255.2.1\n!\nroute-map ADV_SVIS permit 10\n   match ip address prefix-list ATTACHED_SVIS\n!\nrouter
+    bgp 64520\n   router-id 10.0.0.21\n   no bgp default ipv4-unicast\n   neighbor
+    RR peer group\n   neighbor RR remote-as 64520\n   neighbor RR route-reflector-client\n   neighbor
+    RR send-community extended\n   neighbor RR maximum-routes 12000\n   neighbor 10.0.0.11
+    peer group RR\n   neighbor 10.0.0.12 peer group RR\n   neighbor 10.0.0.13 peer
+    group RR\n   neighbor 10.0.0.14 peer group RR\n   neighbor 10.0.0.31 peer group
+    RR\n   neighbor 10.0.0.32 peer group RR\n   !\n   address-family evpn\n      neighbor
+    10.0.0.11 activate\n      neighbor 10.0.0.12 activate\n      neighbor 10.0.0.13
+    activate\n      neighbor 10.0.0.14 activate\n      neighbor 10.0.0.31 activate\n      neighbor
+    10.0.0.32 activate\n!\nrouter ospf 1\n   router-id 10.0.0.21\n   passive-interface
+    Loopback0\n   max-lsa 12000\n   log-adjacency-changes detail\n!\nmanagement api
+    http-commands\n   no shutdown\n!\nend\n", "hostname": "spine01", "timestamp":
+    1623025174548}]'
 - command: devconfig summarize --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: devconfig summarize eos
