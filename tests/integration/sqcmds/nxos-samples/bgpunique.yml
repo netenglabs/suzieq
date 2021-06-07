@@ -1,0 +1,98 @@
+description: Testing unique values for BGP
+tests:
+- command: bgp unique --count=True --format=json --columns=hostname
+  data-directory: tests/data/nxos/parquet-out/
+  marks: bgp unique nxos
+  output: '[{"hostname": "dcedge01", "numRows": 2}, {"hostname": "leaf01", "numRows":
+    4}, {"hostname": "leaf02", "numRows": 4}, {"hostname": "leaf03", "numRows": 4},
+    {"hostname": "leaf04", "numRows": 4}, {"hostname": "firewall01", "numRows": 6},
+    {"hostname": "exit01", "numRows": 8}, {"hostname": "exit02", "numRows": 8}, {"hostname":
+    "spine01", "numRows": 12}, {"hostname": "spine02", "numRows": 12}]'
+- command: bgp unique --count=True --format=json --columns=afiSafi
+  data-directory: tests/data/nxos/parquet-out/
+  marks: bgp unique nxos
+  output: '[{"afiSafi": "l2vpn evpn", "numRows": 24}, {"afiSafi": "ipv4 unicast",
+    "numRows": 40}]'
+- command: bgp unique --count=True --format=json --columns=state
+  data-directory: tests/data/nxos/parquet-out/
+  marks: bgp unique nxos
+  output: '[{"state": "Established", "numRows": 64}]'
+- command: bgp unique --count=True --format=json --columns=peer
+  data-directory: tests/data/nxos/parquet-out/
+  marks: bgp unique nxos
+  output: '[{"peer": "169.254.127.0", "numRows": 1}, {"peer": "169.254.127.1", "numRows":
+    1}, {"peer": "169.254.127.2", "numRows": 1}, {"peer": "169.254.127.3", "numRows":
+    1}, {"peer": "169.254.253.10", "numRows": 1}, {"peer": "169.254.253.2", "numRows":
+    1}, {"peer": "169.254.253.6", "numRows": 1}, {"peer": "169.254.254.10", "numRows":
+    1}, {"peer": "169.254.254.2", "numRows": 1}, {"peer": "169.254.254.6", "numRows":
+    1}, {"peer": "eth1.2", "numRows": 1}, {"peer": "eth1.3", "numRows": 1}, {"peer":
+    "eth1.4", "numRows": 1}, {"peer": "eth2.2", "numRows": 1}, {"peer": "eth2.3",
+    "numRows": 1}, {"peer": "eth2.4", "numRows": 1}, {"peer": "10.0.0.11", "numRows":
+    4}, {"peer": "10.0.0.12", "numRows": 4}, {"peer": "10.0.0.13", "numRows": 4},
+    {"peer": "10.0.0.14", "numRows": 4}, {"peer": "10.0.0.31", "numRows": 4}, {"peer":
+    "10.0.0.32", "numRows": 4}, {"peer": "10.0.0.21", "numRows": 12}, {"peer": "10.0.0.22",
+    "numRows": 12}]'
+- command: bgp unique --count=True --format=json --columns=softReconfig
+  data-directory: tests/data/nxos/parquet-out/
+  marks: bgp unique nxos
+  output: '[{"softReconfig": false, "numRows": 8}, {"softReconfig": true, "numRows":
+    56}]'
+- command: bgp unique --count=True --format=json --columns=communityTypes
+  data-directory: tests/data/nxos/parquet-out/
+  marks: bgp unique nxos
+  output: '[{"communityTypes": "extended", "numRows": 56}, {"communityTypes": "standard",
+    "numRows": 56}]'
+- command: bgp unique --count=True --format=json --columns=defOriginate
+  data-directory: tests/data/nxos/parquet-out/
+  marks: bgp unique nxos
+  output: '[{"defOriginate": false, "numRows": 8}, {"defOriginate": true, "numRows":
+    56}]'
+- command: bgp unique --count=True --format=json --columns=keepaliveTime
+  data-directory: tests/data/nxos/parquet-out/
+  marks: bgp unique nxos
+  output: '[{"keepaliveTime": 30, "numRows": 4}, {"keepaliveTime": 3, "numRows": 12},
+    {"keepaliveTime": 60, "numRows": 48}]'
+- command: bgp unique --count=True --format=json --columns=holdTime
+  data-directory: tests/data/nxos/parquet-out/
+  marks: bgp unique nxos
+  output: '[{"holdTime": 90, "numRows": 4}, {"holdTime": 9, "numRows": 12}, {"holdTime":
+    180, "numRows": 48}]'
+- command: bgp unique --count=True --format=json --columns=vrf
+  data-directory: tests/data/nxos/parquet-out/
+  marks: bgp unique nxos
+  output: '[{"vrf": "evpn-vrf", "numRows": 2}, {"vrf": "internet-vrf", "numRows":
+    4}, {"vrf": "default", "numRows": 58}]'
+- command: bgp unique --count=True --format=json --columns=nhUnchanged
+  data-directory: tests/data/nxos/parquet-out/
+  marks: bgp unique nxos
+  output: '[{"nhUnchanged": false, "numRows": 64}]'
+- command: bgp unique --count=True --format=json --columns=nhSelf
+  data-directory: tests/data/nxos/parquet-out/
+  marks: bgp unique nxos
+  output: '[{"nhSelf": false, "numRows": 64}]'
+- command: bgp unique --count=True --format=json --columns=rrclient
+  data-directory: tests/data/nxos/parquet-out/
+  marks: bgp unique nxos
+  output: '[{"rrclient": "False", "numRows": 8}, {"rrclient": "True", "numRows": 56}]'
+- command: bgp unique --count=True --format=json --columns=asn
+  data-directory: tests/data/nxos/parquet-out/
+  marks: bgp unique nxos
+  output: '[{"asn": 65534, "numRows": 2}, {"asn": 65533, "numRows": 6}, {"asn": 64520,
+    "numRows": 56}]'
+- command: bgp unique --count=True --format=json --columns=peerAsn
+  data-directory: tests/data/nxos/parquet-out/
+  marks: bgp unique nxos
+  output: '[{"peerAsn": 65520, "numRows": 2}, {"peerAsn": 65521, "numRows": 2}, {"peerAsn":
+    65534, "numRows": 2}, {"peerAsn": 65522, "numRows": 4}, {"peerAsn": 65533, "numRows":
+    6}, {"peerAsn": 64520, "numRows": 48}]'
+- command: bgp unique --count=True --format=json --columns=routerId
+  data-directory: tests/data/nxos/parquet-out/
+  marks: bgp unique nxos
+  output: '[{"routerId": "169.254.253.5", "numRows": 1}, {"routerId": "169.254.254.5",
+    "numRows": 1}, {"routerId": "10.0.0.41", "numRows": 2}, {"routerId": "169.254.253.9",
+    "numRows": 2}, {"routerId": "169.254.254.9", "numRows": 2}, {"routerId": "10.0.0.11",
+    "numRows": 4}, {"routerId": "10.0.0.12", "numRows": 4}, {"routerId": "10.0.0.13",
+    "numRows": 4}, {"routerId": "10.0.0.14", "numRows": 4}, {"routerId": "10.0.0.31",
+    "numRows": 5}, {"routerId": "10.0.0.32", "numRows": 5}, {"routerId": "10.0.0.200",
+    "numRows": 6}, {"routerId": "10.0.0.21", "numRows": 12}, {"routerId": "10.0.0.22",
+    "numRows": 12}]'

@@ -1,0 +1,90 @@
+description: Testing unique values for BGP
+tests:
+- command: bgp unique --count=True --format=json --columns=hostname
+  data-directory: tests/data/junos/parquet-out/
+  marks: bgp unique junos
+  output: '[{"hostname": "dcedge01", "numRows": 2}, {"hostname": "leaf01", "numRows":
+    2}, {"hostname": "leaf02", "numRows": 2}, {"hostname": "spine01", "numRows": 4},
+    {"hostname": "spine02", "numRows": 4}, {"hostname": "exit01", "numRows": 6}, {"hostname":
+    "exit02", "numRows": 6}, {"hostname": "firewall01", "numRows": 6}]'
+- command: bgp unique --count=True --format=json --columns=afiSafi
+  data-directory: tests/data/junos/parquet-out/
+  marks: bgp unique junos
+  output: '[{"afiSafi": "ipv4 unicast", "numRows": 16}, {"afiSafi": "l2vpn evpn",
+    "numRows": 16}]'
+- command: bgp unique --count=True --format=json --columns=state
+  data-directory: tests/data/junos/parquet-out/
+  marks: bgp unique junos
+  output: '[{"state": "Established", "numRows": 32}]'
+- command: bgp unique --count=True --format=json --columns=peer
+  data-directory: tests/data/junos/parquet-out/
+  marks: bgp unique junos
+  output: '[{"peer": "169.254.127.0", "numRows": 1}, {"peer": "169.254.127.1", "numRows":
+    1}, {"peer": "169.254.127.2", "numRows": 1}, {"peer": "169.254.127.3", "numRows":
+    1}, {"peer": "169.254.253.10", "numRows": 1}, {"peer": "169.254.253.2", "numRows":
+    1}, {"peer": "169.254.253.6", "numRows": 1}, {"peer": "169.254.254.10", "numRows":
+    1}, {"peer": "169.254.254.2", "numRows": 1}, {"peer": "169.254.254.6", "numRows":
+    1}, {"peer": "eth1.2", "numRows": 1}, {"peer": "eth1.3", "numRows": 1}, {"peer":
+    "eth1.4", "numRows": 1}, {"peer": "eth2.2", "numRows": 1}, {"peer": "eth2.3",
+    "numRows": 1}, {"peer": "eth2.4", "numRows": 1}, {"peer": "10.0.0.11", "numRows":
+    2}, {"peer": "10.0.0.12", "numRows": 2}, {"peer": "10.0.0.31", "numRows": 2},
+    {"peer": "10.0.0.32", "numRows": 2}, {"peer": "10.0.0.21", "numRows": 4}, {"peer":
+    "10.0.0.22", "numRows": 4}]'
+- command: bgp unique --count=True --format=json --columns=softReconfig
+  data-directory: tests/data/junos/parquet-out/
+  marks: bgp unique junos
+  output: '[{"softReconfig": false, "numRows": 32}]'
+- command: bgp unique --count=True --format=json --columns=communityTypes
+  data-directory: tests/data/junos/parquet-out/
+  marks: bgp unique junos
+  output: '[{"communityTypes": "extended", "numRows": 32}, {"communityTypes": "standard",
+    "numRows": 32}]'
+- command: bgp unique --count=True --format=json --columns=defOriginate
+  data-directory: tests/data/junos/parquet-out/
+  marks: bgp unique junos
+  output: '[{"defOriginate": false, "numRows": 32}]'
+- command: bgp unique --count=True --format=json --columns=keepaliveTime
+  data-directory: tests/data/junos/parquet-out/
+  marks: bgp unique junos
+  output: '[{"keepaliveTime": 3, "numRows": 12}, {"keepaliveTime": 30, "numRows":
+    20}]'
+- command: bgp unique --count=True --format=json --columns=holdTime
+  data-directory: tests/data/junos/parquet-out/
+  marks: bgp unique junos
+  output: '[{"holdTime": 9, "numRows": 6}, {"holdTime": 90, "numRows": 26}]'
+- command: bgp unique --count=True --format=json --columns=vrf
+  data-directory: tests/data/junos/parquet-out/
+  marks: bgp unique junos
+  output: '[{"vrf": "default", "numRows": 32}]'
+- command: bgp unique --count=True --format=json --columns=nhUnchanged
+  data-directory: tests/data/junos/parquet-out/
+  marks: bgp unique junos
+  output: '[{"nhUnchanged": false, "numRows": 32}]'
+- command: bgp unique --count=True --format=json --columns=nhSelf
+  data-directory: tests/data/junos/parquet-out/
+  marks: bgp unique junos
+  output: '[{"nhSelf": false, "numRows": 32}]'
+- command: bgp unique --count=True --format=json --columns=rrclient
+  data-directory: tests/data/junos/parquet-out/
+  marks: bgp unique junos
+  output: '[{"rrclient": "True", "numRows": 8}, {"rrclient": "False", "numRows": 24}]'
+- command: bgp unique --count=True --format=json --columns=asn
+  data-directory: tests/data/junos/parquet-out/
+  marks: bgp unique junos
+  output: '[{"asn": 65534, "numRows": 2}, {"asn": 65533, "numRows": 6}, {"asn": 64520,
+    "numRows": 24}]'
+- command: bgp unique --count=True --format=json --columns=peerAsn
+  data-directory: tests/data/junos/parquet-out/
+  marks: bgp unique junos
+  output: '[{"peerAsn": 65534, "numRows": 2}, {"peerAsn": 65533, "numRows": 6}, {"peerAsn":
+    64520, "numRows": 24}]'
+- command: bgp unique --count=True --format=json --columns=routerId
+  data-directory: tests/data/junos/parquet-out/
+  marks: bgp unique junos
+  output: '[{"routerId": "10.0.0.121", "numRows": 1}, {"routerId": "10.0.0.122", "numRows":
+    1}, {"routerId": "10.0.0.11", "numRows": 2}, {"routerId": "10.0.0.12", "numRows":
+    2}, {"routerId": "10.0.0.41", "numRows": 2}, {"routerId": "169.254.253.9", "numRows":
+    2}, {"routerId": "169.254.254.9", "numRows": 2}, {"routerId": "10.0.0.31", "numRows":
+    3}, {"routerId": "10.0.0.32", "numRows": 3}, {"routerId": "10.0.0.21", "numRows":
+    4}, {"routerId": "10.0.0.22", "numRows": 4}, {"routerId": "10.0.0.200", "numRows":
+    6}]'

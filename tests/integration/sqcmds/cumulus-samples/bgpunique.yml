@@ -1,0 +1,95 @@
+description: Testing unique values for BGP
+tests:
+- command: bgp unique --count=True --format=json --columns=hostname
+  data-directory: tests/data/multidc/parquet-out/
+  marks: bgp unique cumulus
+  output: '[{"hostname": "internet", "numRows": 4}, {"hostname": "leaf01", "numRows":
+    6}, {"hostname": "leaf02", "numRows": 6}, {"hostname": "leaf03", "numRows": 6},
+    {"hostname": "leaf04", "numRows": 6}, {"hostname": "edge01", "numRows": 12}, {"hostname":
+    "exit02", "numRows": 15}, {"hostname": "exit01", "numRows": 16}, {"hostname":
+    "spine02", "numRows": 18}, {"hostname": "spine01", "numRows": 20}]'
+- command: bgp unique --count=True --format=json --columns=afiSafi
+  data-directory: tests/data/multidc/parquet-out/
+  marks: bgp unique cumulus
+  output: '[{"afiSafi": " ", "numRows": 1}, {"afiSafi": "l2vpn evpn", "numRows": 46},
+    {"afiSafi": "ipv4 unicast", "numRows": 62}]'
+- command: bgp unique --count=True --format=json --columns=state
+  data-directory: tests/data/multidc/parquet-out/
+  marks: bgp unique cumulus
+  output: '[{"state": "NotEstd", "numRows": 1}, {"state": "Established", "numRows":
+    108}]'
+- command: bgp unique --count=True --format=json --columns=peer
+  data-directory: tests/data/multidc/parquet-out/
+  marks: bgp unique cumulus
+  output: '[{"peer": "eth1.2", "numRows": 2}, {"peer": "eth1.3", "numRows": 2}, {"peer":
+    "eth1.4", "numRows": 2}, {"peer": "eth2.2", "numRows": 2}, {"peer": "eth2.3",
+    "numRows": 2}, {"peer": "eth2.4", "numRows": 2}, {"peer": "swp5.2", "numRows":
+    4}, {"peer": "swp5.3", "numRows": 4}, {"peer": "swp5.4", "numRows": 4}, {"peer":
+    "swp3", "numRows": 6}, {"peer": "swp4", "numRows": 6}, {"peer": "swp5", "numRows":
+    6}, {"peer": "swp6", "numRows": 12}, {"peer": "swp2", "numRows": 27}, {"peer":
+    "swp1", "numRows": 28}]'
+- command: bgp unique --count=True --format=json --columns=softReconfig
+  data-directory: tests/data/multidc/parquet-out/
+  marks: bgp unique cumulus
+  output: '[{"softReconfig": false, "numRows": 109}]'
+- command: bgp unique --count=True --format=json --columns=communityTypes
+  data-directory: tests/data/multidc/parquet-out/
+  marks: bgp unique cumulus
+  output: '[{"communityTypes": "extended", "numRows": 108}, {"communityTypes": "standard",
+    "numRows": 108}]'
+- command: bgp unique --count=True --format=json --columns=defOriginate
+  data-directory: tests/data/multidc/parquet-out/
+  marks: bgp unique cumulus
+  output: '[{"defOriginate": true, "numRows": 4}, {"defOriginate": false, "numRows":
+    105}]'
+- command: bgp unique --count=True --format=json --columns=keepaliveTime
+  data-directory: tests/data/multidc/parquet-out/
+  marks: bgp unique cumulus
+  output: '[{"keepaliveTime": 3, "numRows": 109}]'
+- command: bgp unique --count=True --format=json --columns=holdTime
+  data-directory: tests/data/multidc/parquet-out/
+  marks: bgp unique cumulus
+  output: '[{"holdTime": 10, "numRows": 21}, {"holdTime": 9, "numRows": 88}]'
+- command: bgp unique --count=True --format=json --columns=vrf
+  data-directory: tests/data/multidc/parquet-out/
+  marks: bgp unique cumulus
+  output: '[{"vrf": "evpn-vrf", "numRows": 4}, {"vrf": "internet-vrf", "numRows":
+    8}, {"vrf": "default", "numRows": 97}]'
+- command: bgp unique --count=True --format=json --columns=nhUnchanged
+  data-directory: tests/data/multidc/parquet-out/
+  marks: bgp unique cumulus
+  output: '[{"nhUnchanged": true, "numRows": 46}, {"nhUnchanged": false, "numRows":
+    63}]'
+- command: bgp unique --count=True --format=json --columns=nhSelf
+  data-directory: tests/data/multidc/parquet-out/
+  marks: bgp unique cumulus
+  output: '[{"nhSelf": false, "numRows": 109}]'
+- command: bgp unique --count=True --format=json --columns=rrclient
+  data-directory: tests/data/multidc/parquet-out/
+  marks: bgp unique cumulus
+  output: '[{"rrclient": "", "numRows": 1}, {"rrclient": "True", "numRows": 14}, {"rrclient":
+    "False", "numRows": 94}]'
+- command: bgp unique --count=True --format=json --columns=asn
+  data-directory: tests/data/multidc/parquet-out/
+  marks: bgp unique cumulus
+  output: '[{"asn": 25253, "numRows": 4}, {"asn": 65001, "numRows": 4}, {"asn": 65101,
+    "numRows": 4}, {"asn": 65102, "numRows": 4}, {"asn": 65103, "numRows": 4}, {"asn":
+    65104, "numRows": 4}, {"asn": 65201, "numRows": 8}, {"asn": 65202, "numRows":
+    8}, {"asn": 65530, "numRows": 12}, {"asn": 65000, "numRows": 57}]'
+- command: bgp unique --count=True --format=json --columns=peerAsn
+  data-directory: tests/data/multidc/parquet-out/
+  marks: bgp unique cumulus
+  output: '[{"peerAsn": 0, "numRows": 1}, {"peerAsn": 25253, "numRows": 4}, {"peerAsn":
+    65001, "numRows": 4}, {"peerAsn": 65101, "numRows": 4}, {"peerAsn": 65102, "numRows":
+    4}, {"peerAsn": 65103, "numRows": 4}, {"peerAsn": 65104, "numRows": 4}, {"peerAsn":
+    65201, "numRows": 8}, {"peerAsn": 65202, "numRows": 8}, {"peerAsn": 65530, "numRows":
+    12}, {"peerAsn": 65000, "numRows": 56}]'
+- command: bgp unique --count=True --format=json --columns=routerId
+  data-directory: tests/data/multidc/parquet-out/
+  marks: bgp unique cumulus
+  output: '[{"routerId": "10.0.0.11", "numRows": 2}, {"routerId": "10.0.0.12", "numRows":
+    2}, {"routerId": "10.0.0.13", "numRows": 2}, {"routerId": "10.0.0.14", "numRows":
+    2}, {"routerId": "10.0.0.253", "numRows": 2}, {"routerId": "10.0.0.21", "numRows":
+    6}, {"routerId": "10.0.0.102", "numRows": 7}, {"routerId": "10.0.0.101", "numRows":
+    8}, {"routerId": "10.0.0.22", "numRows": 8}, {"routerId": "10.0.0.100", "numRows":
+    12}, {"routerId": "None", "numRows": 58}]'

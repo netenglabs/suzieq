@@ -1,0 +1,98 @@
+description: Testing unique values for BGP
+tests:
+- command: bgp unique --count=True --format=json --columns=hostname
+  data-directory: tests/data/eos/parquet-out/
+  marks: bgp unique eos
+  output: '[{"hostname": "dcedge01", "numRows": 2}, {"hostname": "firewall01", "numRows":
+    6}, {"hostname": "leaf01", "numRows": 6}, {"hostname": "leaf02", "numRows": 6},
+    {"hostname": "leaf03", "numRows": 6}, {"hostname": "leaf04", "numRows": 6}, {"hostname":
+    "exit01", "numRows": 14}, {"hostname": "exit02", "numRows": 14}, {"hostname":
+    "spine01", "numRows": 18}, {"hostname": "spine02", "numRows": 18}]'
+- command: bgp unique --count=True --format=json --columns=afiSafi
+  data-directory: tests/data/eos/parquet-out/
+  marks: bgp unique eos
+  output: '[{"afiSafi": "l2vpn evpn", "numRows": 24}, {"afiSafi": "ipv6 unicast",
+    "numRows": 32}, {"afiSafi": "ipv4 unicast", "numRows": 40}]'
+- command: bgp unique --count=True --format=json --columns=state
+  data-directory: tests/data/eos/parquet-out/
+  marks: bgp unique eos
+  output: '[{"state": "Established", "numRows": 96}]'
+- command: bgp unique --count=True --format=json --columns=peer
+  data-directory: tests/data/eos/parquet-out/
+  marks: bgp unique eos
+  output: '[{"peer": "169.254.127.1", "numRows": 1}, {"peer": "169.254.127.3", "numRows":
+    1}, {"peer": "eth1.2", "numRows": 1}, {"peer": "eth1.3", "numRows": 1}, {"peer":
+    "eth1.4", "numRows": 1}, {"peer": "eth2.2", "numRows": 1}, {"peer": "eth2.3",
+    "numRows": 1}, {"peer": "eth2.4", "numRows": 1}, {"peer": "169.254.127.0", "numRows":
+    2}, {"peer": "169.254.127.2", "numRows": 2}, {"peer": "169.254.253.10", "numRows":
+    2}, {"peer": "169.254.253.2", "numRows": 2}, {"peer": "169.254.253.6", "numRows":
+    2}, {"peer": "169.254.254.10", "numRows": 2}, {"peer": "169.254.254.2", "numRows":
+    2}, {"peer": "169.254.254.6", "numRows": 2}, {"peer": "10.0.0.11", "numRows":
+    6}, {"peer": "10.0.0.12", "numRows": 6}, {"peer": "10.0.0.13", "numRows": 6},
+    {"peer": "10.0.0.14", "numRows": 6}, {"peer": "10.0.0.31", "numRows": 6}, {"peer":
+    "10.0.0.32", "numRows": 6}, {"peer": "10.0.0.21", "numRows": 18}, {"peer": "10.0.0.22",
+    "numRows": 18}]'
+- command: bgp unique --count=True --format=json --columns=softReconfig
+  data-directory: tests/data/eos/parquet-out/
+  marks: bgp unique eos
+  output: '[{"softReconfig": false, "numRows": 96}]'
+- command: bgp unique --count=True --format=json --columns=communityTypes
+  data-directory: tests/data/eos/parquet-out/
+  marks: bgp unique eos
+  output: '[{"communityTypes": "extended", "numRows": 8}, {"communityTypes": "standard",
+    "numRows": 96}]'
+- command: bgp unique --count=True --format=json --columns=defOriginate
+  data-directory: tests/data/eos/parquet-out/
+  marks: bgp unique eos
+  output: '[{"defOriginate": false, "numRows": 96}]'
+- command: bgp unique --count=True --format=json --columns=keepaliveTime
+  data-directory: tests/data/eos/parquet-out/
+  marks: bgp unique eos
+  output: '[{"keepaliveTime": 30, "numRows": 6}, {"keepaliveTime": 3, "numRows": 18},
+    {"keepaliveTime": 60, "numRows": 72}]'
+- command: bgp unique --count=True --format=json --columns=holdTime
+  data-directory: tests/data/eos/parquet-out/
+  marks: bgp unique eos
+  output: '[{"holdTime": 90, "numRows": 6}, {"holdTime": 9, "numRows": 18}, {"holdTime":
+    180, "numRows": 72}]'
+- command: bgp unique --count=True --format=json --columns=vrf
+  data-directory: tests/data/eos/parquet-out/
+  marks: bgp unique eos
+  output: '[{"vrf": "evpn-vrf", "numRows": 4}, {"vrf": "internet-vrf", "numRows":
+    8}, {"vrf": "default", "numRows": 84}]'
+- command: bgp unique --count=True --format=json --columns=nhUnchanged
+  data-directory: tests/data/eos/parquet-out/
+  marks: bgp unique eos
+  output: '[{"nhUnchanged": false, "numRows": 96}]'
+- command: bgp unique --count=True --format=json --columns=nhSelf
+  data-directory: tests/data/eos/parquet-out/
+  marks: bgp unique eos
+  output: '[{"nhSelf": false, "numRows": 96}]'
+- command: bgp unique --count=True --format=json --columns=rrclient
+  data-directory: tests/data/eos/parquet-out/
+  marks: bgp unique eos
+  output: '[{"rrclient": "True", "numRows": 36}, {"rrclient": "False", "numRows":
+    60}]'
+- command: bgp unique --count=True --format=json --columns=asn
+  data-directory: tests/data/eos/parquet-out/
+  marks: bgp unique eos
+  output: '[{"asn": 65534, "numRows": 2}, {"asn": 65520, "numRows": 4}, {"asn": 65521,
+    "numRows": 4}, {"asn": 65533, "numRows": 6}, {"asn": 65522, "numRows": 8}, {"asn":
+    64520, "numRows": 72}]'
+- command: bgp unique --count=True --format=json --columns=peerAsn
+  data-directory: tests/data/eos/parquet-out/
+  marks: bgp unique eos
+  output: '[{"peerAsn": 65520, "numRows": 2}, {"peerAsn": 65521, "numRows": 2}, {"peerAsn":
+    65522, "numRows": 4}, {"peerAsn": 65534, "numRows": 4}, {"peerAsn": 65533, "numRows":
+    12}, {"peerAsn": 64520, "numRows": 72}]'
+- command: bgp unique --count=True --format=json --columns=routerId
+  data-directory: tests/data/eos/parquet-out/
+  marks: bgp unique eos
+  output: '[{"routerId": "10.0.0.41", "numRows": 2}, {"routerId": "169.254.253.5",
+    "numRows": 2}, {"routerId": "169.254.254.5", "numRows": 2}, {"routerId": "169.254.253.9",
+    "numRows": 4}, {"routerId": "169.254.254.9", "numRows": 4}, {"routerId": "10.0.0.11",
+    "numRows": 6}, {"routerId": "10.0.0.12", "numRows": 6}, {"routerId": "10.0.0.13",
+    "numRows": 6}, {"routerId": "10.0.0.14", "numRows": 6}, {"routerId": "10.0.0.200",
+    "numRows": 6}, {"routerId": "10.0.0.31", "numRows": 8}, {"routerId": "10.0.0.32",
+    "numRows": 8}, {"routerId": "10.0.0.21", "numRows": 18}, {"routerId": "10.0.0.22",
+    "numRows": 18}]'
