@@ -232,10 +232,11 @@ class BgpService(Service):
                 drop_indices.append(j)
                 continue
 
-            bfd_status = entry.get('bfdStatus', 'disabled').lower()
-            if not bfd_status or (bfd_status == "unknown"):
-                bfd_status = "disabled"
-            entry['bfdStatus'] = bfd_status
+            bfd_status = entry.get('bfdStatus', '').lower()
+            if bfd_status == "true":
+                entry['bfdStatus'] = 'up'
+            elif bfd_status != "disabled":
+                entry['bfdStatus'] = 'down'
 
             if (entry.get('extnhAdvertised', False) == "true" and
                     entry.get('extnhReceived', False) == "true"):
