@@ -12,7 +12,7 @@ class IfObj(SqObject):
         self._valid_assert_args = ['namespace', 'hostname', 'ifname',
                                    'what', 'matchval', 'status']
         self._valid_arg_vals = {
-            'state': ['up', 'down', ''],
+            'state': ['up', 'down', 'notConnected', ''],
             'status': ['all', 'pass', 'fail'],
         }
 
