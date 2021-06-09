@@ -16,6 +16,23 @@ ENDPOINT = "http://localhost:8000/api/v1"
 
 VERBS = ['show', 'summarize', 'assert', 'lpm',
          'unique']  # add 'top' when it's supported
+
+#
+# The code logic is that you define all the filters you want to test in
+# FILTERS. If a filter isn't in FILTERS, it isn't tested.
+# Next:
+#    * for every filter that has a good result against an object,
+#      add it to the GOOD_FILTERS_FOR_SERVICE_VERB list
+#    * for every filter that has a bad result against an object, such
+#      as state=up in case of BGP, add it to the BAD_FILTERS list with
+#      the appropriate error code.
+#    * Any verb that doesn't work for an object such as assert for device,
+#      add it to the BAD_VERBS list
+#    * If a result is empty such as state=notConnected, add that object/verb
+#      filter result to the GOOD_FILTER_EMPTY_RESULT_FILTER list. You can catch
+#      an empty, but good result, because of the assertion error:
+#      AssertionError: assert 2 > 10
+#
 FILTERS = ['', 'hostname=leaf01', 'namespace=ospf-ibgp',
            'hostname=leaf01%20spine01',
            'namespace=ospf-ibgp%20ospf-single',
@@ -53,7 +70,11 @@ FILTERS = ['', 'hostname=leaf01', 'namespace=ospf-ibgp',
            'status=all',
            'status=whatever',
            'vlanName=vlan13',
+           'state=up',
+           'state=down',
+           'state=notConnected',
            'state=active',
+           'priVtepIp=10.0.0.112',
            'query_str=hostname%20==%20"leaf01"',
            'query_str=hostname=="leaf01"%20and%201000<mtu<2000'
            ]
@@ -77,10 +98,13 @@ GOOD_FILTERS_FOR_SERVICE_VERB = {
     'polled=True': ['topology/show'],
     'prefix=10.0.0.101/32': ['route/show'],
     'prefixlen=24': ['route/show'],
+    'priVtepIp=10.0.0.112': ['evpnVni/show'],
     'protocol=bgp%20ospf': ['route/show'],
     'service=device': ['sqPoller'],
     'remoteVtepIp=10.0.0.101': ['mac/show'],
     'state=up': ['interface/show'],
+    'state=down': ['interface/show'],
+    'state=notConnected': ['interface/show'],
     'state=Established': ['bgp/show'],
     'state=NotEstd': ['bgp/show'],
     'state=all': ['ospf/show'],
@@ -121,7 +145,8 @@ GOOD_SERVICE_VERB_FILTER = {
 GOOD_FILTER_EMPTY_RESULT_FILTER = [
     'sqpoller/show?status=fail',
     'ospf/assert?status=fail',
-    'evpnVni/assert?status=fail'
+    'evpnVni/assert?status=fail',
+    'interface/show?state=notConnected',
 ]
 
 # these service/verb pairs should return errors
@@ -178,11 +203,17 @@ BAD_FILTERS = {
     'bgp/show?status=all': 405,
     'bgp/show?status=whatever': 405,
     'bgp/show?state=active': 405,
+    'bgp/show?state=up': 405,
+    'bgp/show?state=down': 405,
+    'bgp/show?state=notConnected': 405,
     'bgp/show?query_str=hostname=="leaf01"%20and%201000<mtu<2000': 500,
     'bgp/assert?peer=eth1.2': 405,
     'bgp/assert?state=pass': 405,
     'bgp/assert?state=whatever': 405,
     'bgp/assert?state=active': 405,
+    'bgp/assert?state=up': 405,
+    'bgp/assert?state=down': 405,
+    'bgp/assert?state=notConnected': 405,
     'bgp/summarize?query_str=hostname=="leaf01"%20and%201000<mtu<2000': 500,
     'bgp/summarize?peer=eth1.2': 405,
     'bgp/summarize?state=pass': 405,
@@ -194,6 +225,9 @@ BAD_FILTERS = {
     'bgp/summarize?status=fail': 405,
     'bgp/summarize?status=all': 405,
     'bgp/summarize?status=whatever': 405,
+    'bgp/summarize?state=up': 405,
+    'bgp/summarize?state=down': 405,
+    'bgp/summarize?state=notConnected': 405,
     'device/summarize?query_str=hostname=="leaf01"%20and%201000<mtu<2000': 500,
     'device/show?query_str=hostname=="leaf01"%20and%201000<mtu<2000': 500,
     'devconfig/summarize?query_str=hostname=="leaf01"%20and%201000<mtu<2000': 500,
@@ -205,18 +239,23 @@ BAD_FILTERS = {
     'evpnVni/show?query_str=hostname=="leaf01"%20and%201000<mtu<2000': 500,
     'evpnVni/assert?vni=13': 405,
     'evpnVni/assert?vni=13%2024': 405,
+    'evpnVni/assert?priVtepIp=10.0.0.112': 405,
     'evpnVni/summarize?vni=13': 405,
     'evpnVni/summarize?vni=13%2024': 405,
     'evpnVni/summarize?status=pass': 405,
     'evpnVni/summarize?status=fail': 405,
     'evpnVni/summarize?status=all': 405,
     'evpnVni/summarize?status=whatever': 405,
+    'evpnVni/summarize?priVtepIp=10.0.0.112': 405,
     'evpnVni/summarize?query_str=hostname=="leaf01"%20and%201000<mtu<2000': 500,
     'fs/show?query_str=hostname=="leaf01"%20and%201000<mtu<2000': 500,
     'fs/summarize?usedPercent=8': 405,
     'fs/summarize?mountPoint=/': 405,
     'fs/summarize?query_str=hostname=="leaf01"%20and%201000<mtu<2000': 500,
     'interface/assert?state=active': 405,
+    'interface/assert?state=up': 405,
+    'interface/assert?state=down': 405,
+    'interface/assert?state=notConnected': 405,
     'interface/show?state=pass': 405,
     'interface/show?status=pass': 405,
     'interface/show?status=fail': 405,
@@ -233,6 +272,9 @@ BAD_FILTERS = {
     'interface/summarize?status=all': 405,
     'interface/summarize?status=whatever': 405,
     'interface/summarize?state=active': 405,
+    'interface/summarize?state=up': 405,
+    'interface/summarize?state=down': 405,
+    'interface/summarize?state=notConnected': 405,
     'lldp/summarize?ifname=swp1': 405,
     'lldp/show?query_str=hostname=="leaf01"%20and%201000<mtu<2000': 500,
     'lldp/summarize?query_str=hostname=="leaf01"%20and%201000<mtu<2000': 500,
@@ -247,6 +289,9 @@ BAD_FILTERS = {
     'mlag/show?query_str=hostname=="leaf01"%20and%201000<mtu<2000': 500,
     'mlag/summarize?query_str=hostname=="leaf01"%20and%201000<mtu<2000': 500,
     'ospf/show?state=pass': 405,
+    'ospf/show?state=up': 405,
+    'ospf/show?state=down': 405,
+    'ospf/show?state=notConnected': 405,
     'ospf/show?status=pass': 405,
     'ospf/show?status=fail': 405,
     'ospf/show?status=all': 405,
@@ -258,11 +303,16 @@ BAD_FILTERS = {
     'ospf/assert?state=pass': 405,
     'ospf/assert?state=active': 405,
     'ospf/assert?ifname=swp1': 405,
+    'ospf/assert?state=notConnected': 405,
+    'ospf/assert?state=up': 405,
+    'ospf/assert?state=down': 405,
     'ospf/summarize?query_str=hostname=="leaf01"%20and%201000<mtu<2000': 500,
     'ospf/summarize?ifname=swp1': 405,
     'ospf/summarize?state=pass': 405,
     'ospf/summarize?vrf=default': 405,
-    'ospf/summarize?state=pass': 405,
+    'ospf/summarize?state=up': 405,
+    'ospf/summarize?state=down': 405,
+    'ospf/summarize?state=notConnected': 405,
     'ospf/summarize?status=pass': 405,
     'ospf/summarize?status=fail': 405,
     'ospf/summarize?status=all': 405,
@@ -299,12 +349,18 @@ BAD_FILTERS = {
     'topology/summarize?query_str=hostname=="leaf01"%20and%201000<mtu<2000': 500,
     'topology/summarize?polled=True': 405,
     'vlan/show?state=pass': 405,
+    'vlan/show?state=up': 405,
+    'vlan/show?state=down': 405,
+    'vlan/show?state=notConnected': 405,
     'vlan/show?query_str=hostname=="leaf01"%20and%201000<mtu<2000': 500,
     'vlan/summarize?query_str=hostname=="leaf01"%20and%201000<mtu<2000': 500,
     'vlan/summarize?vlan=13': 405,
     'vlan/summarize?state=pass': 405,
     'vlan/summarize?state=active': 405,
     'vlan/summarize?vlanName=vlan13': 405,
+    'vlan/summarize?state=up': 405,
+    'vlan/summarize?state=down': 405,
+    'vlan/summarize?state=notConnected': 405,
 }
 
 

@@ -187,3 +187,7 @@ tests:
     "", "routerMac": "4401.0301.1b08", "vrf": "evpn-vrf", "advGateway": false, "replicationType":
     "", "numArpNd": 0, "vniFilter": "", "l2VniList": [], "numMacs": 4, "timestamp":
     1619275260620, "active": true}]'
+- command: evpnVni show --priVtepIp='10.0.0.112' --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: evpnVni show junos filter
+  output: '[]'

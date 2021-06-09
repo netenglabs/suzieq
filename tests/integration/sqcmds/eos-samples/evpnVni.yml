@@ -88,3 +88,22 @@ tests:
     "leaf04", "vni": 999, "type": "L3", "assertReason": "-", "assert": "pass", "timestamp":
     1623025177461}, {"namespace": "eos", "hostname": "leaf04", "vni": 30, "type":
     "L2", "assertReason": "-", "assert": "pass", "timestamp": 1623025177461}]'
+- command: evpnVni show --priVtepIp='10.0.0.112' --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: evpnVni show eos filter
+  output: '[{"namespace": "eos", "hostname": "leaf02", "vni": 10, "type": "L2", "vlan":
+    10, "state": "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 0, "priVtepIp": "10.0.0.112",
+    "secVtepIp": "", "timestamp": 1623025177153}, {"namespace": "eos", "hostname":
+    "leaf02", "vni": 999, "type": "L3", "vlan": 1006, "state": "up", "mcastGroup":
+    "0.0.0.0", "remoteVtepCnt": 0, "priVtepIp": "10.0.0.112", "secVtepIp": "", "timestamp":
+    1623025177153}, {"namespace": "eos", "hostname": "leaf02", "vni": 30, "type":
+    "L2", "vlan": 30, "state": "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 1,
+    "priVtepIp": "10.0.0.112", "secVtepIp": "", "timestamp": 1623025177153}, {"namespace":
+    "eos", "hostname": "leaf01", "vni": 10, "type": "L2", "vlan": 10, "state": "up",
+    "mcastGroup": "0.0.0.0", "remoteVtepCnt": 0, "priVtepIp": "10.0.0.112", "secVtepIp":
+    "", "timestamp": 1623025177459}, {"namespace": "eos", "hostname": "leaf01", "vni":
+    999, "type": "L3", "vlan": 1006, "state": "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt":
+    0, "priVtepIp": "10.0.0.112", "secVtepIp": "", "timestamp": 1623025177459}, {"namespace":
+    "eos", "hostname": "leaf01", "vni": 30, "type": "L2", "vlan": 30, "state": "up",
+    "mcastGroup": "0.0.0.0", "remoteVtepCnt": 1, "priVtepIp": "10.0.0.112", "secVtepIp":
+    "", "timestamp": 1623025177459}]'

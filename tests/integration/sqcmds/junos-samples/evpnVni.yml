@@ -40,3 +40,7 @@ tests:
   marks: evpnVni unique junos
   output: '[{"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname": "leaf01"},
     {"hostname": "leaf02"}]'
+- command: evpnVni show --priVtepIp='10.0.0.112' --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: evpnVni show junos filter
+  output: '[]'

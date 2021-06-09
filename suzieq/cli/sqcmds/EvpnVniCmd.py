@@ -34,7 +34,8 @@ class EvpnVniCmd(SqCommand):
 
     @command("show")
     @argument("vni", description="VNI ID to qualify")
-    def show(self, vni: str = ""):
+    @argument("priVtepIp", description="Primary VTEP IP to qualify")
+    def show(self, vni: str = "", priVtepIp: str = ''):
         """
         Show EVPN VNI info
         """
@@ -51,6 +52,7 @@ class EvpnVniCmd(SqCommand):
         df = self._invoke_sqobj(self.sqobj.get,
                                 hostname=self.hostname,
                                 vni=vni.split(),
+                                priVtepIp=priVtepIp.split(),
                                 columns=self.columns,
                                 query_str=self.query_str,
                                 namespace=self.namespace,

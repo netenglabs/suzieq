@@ -183,6 +183,7 @@ async def query_evpnVni(verb: MoreVerbs,
                         start_time: str = "", end_time: str = "",
                         view: str = "latest", namespace: str = None,
                         columns: str = None, vni: str = None,
+                        priVtepIp: str = None,
                         status: str = None, query_str: str = None,
                         ):
     function_name = inspect.currentframe().f_code.co_name
