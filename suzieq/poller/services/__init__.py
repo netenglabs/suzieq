@@ -50,8 +50,6 @@ async def init_services(svc_dir: str, schema_dir: str, queue, svclist: list,
         with open(filename, "r") as f:
             svc_def = yaml.safe_load(f.read())
         if svc_def.get('service') not in svclist:
-            if svc_def.get('service') is None:
-                breakpoint()
             logger.warning(
                 f'Ignoring unspecified service {svc_def.get("service")}'
             )
