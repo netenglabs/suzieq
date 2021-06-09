@@ -10,7 +10,7 @@ tests:
     13}, {"hostname": "exit02", "numRows": 13}, {"hostname": "leaf01", "numRows":
     18}, {"hostname": "leaf02", "numRows": 18}, {"hostname": "leaf03", "numRows":
     18}, {"hostname": "leaf04", "numRows": 18}, {"hostname": "dcedge01", "numRows":
-    48}]'
+    32}]'
 - command: interface unique --count=True --format=json --columns=type
   data-directory: tests/data/eos/parquet-out/
   marks: interface unique eos
@@ -23,43 +23,40 @@ tests:
 - command: interface unique --count=True --format=json --columns=mtu
   data-directory: tests/data/eos/parquet-out/
   marks: interface unique eos
-  output: '[{"mtu": 1986, "numRows": 1}, {"mtu": 2000, "numRows": 1}, {"mtu": 9192,
-    "numRows": 2}, {"mtu": -1, "numRows": 6}, {"mtu": 9216, "numRows": 12}, {"mtu":
-    65535, "numRows": 12}, {"mtu": 9164, "numRows": 14}, {"mtu": 1514, "numRows":
-    21}, {"mtu": 65536, "numRows": 22}, {"mtu": 9214, "numRows": 28}, {"mtu": 1500,
-    "numRows": 73}]'
+  output: '[{"mtu": -1, "numRows": 6}, {"mtu": 9216, "numRows": 12}, {"mtu": 65535,
+    "numRows": 12}, {"mtu": 65536, "numRows": 13}, {"mtu": 9164, "numRows": 14}, {"mtu":
+    1514, "numRows": 18}, {"mtu": 9214, "numRows": 28}, {"mtu": 1500, "numRows": 73}]'
 - command: interface unique --count=True --format=json --columns=state
   data-directory: tests/data/eos/parquet-out/
   marks: interface unique eos
-  output: '[{"state": "down", "numRows": 1}, {"state": "up", "numRows": 191}]'
+  output: '[{"state": "down", "numRows": 1}, {"state": "up", "numRows": 175}]'
 - command: interface unique --count=True --format=json --columns=adminState
   data-directory: tests/data/eos/parquet-out/
   marks: interface unique eos
-  output: '[{"adminState": "up", "numRows": 192}]'
+  output: '[{"adminState": "up", "numRows": 176}]'
 - command: interface unique --count=True --format=json --columns=vlan
   data-directory: tests/data/eos/parquet-out/
   marks: interface unique eos
   output: '[{"vlan": 2, "numRows": 2}, {"vlan": 3, "numRows": 2}, {"vlan": 4, "numRows":
     2}, {"vlan": 10, "numRows": 2}, {"vlan": 20, "numRows": 2}, {"vlan": 30, "numRows":
     4}, {"vlan": 1006, "numRows": 4}, {"vlan": 4094, "numRows": 6}, {"vlan": 0, "numRows":
-    168}]'
+    152}]'
 - command: interface unique --count=True --format=json --columns=speed
   data-directory: tests/data/eos/parquet-out/
   marks: interface unique eos
   output: '[{"speed": 800, "numRows": 1}, {"speed": 10000, "numRows": 14}, {"speed":
-    1000, "numRows": 17}, {"speed": 0, "numRows": 160}]'
+    1000, "numRows": 17}, {"speed": 0, "numRows": 144}]'
 - command: interface unique --count=True --format=json --columns=master
   data-directory: tests/data/eos/parquet-out/
   marks: interface unique eos
-  output: '[{"master": "ENET2", "numRows": 2}, {"master": "Port-Channel3", "numRows":
-    4}, {"master": "Port-Channel4", "numRows": 4}, {"master": "internet-vrf", "numRows":
-    4}, {"master": "Port-Channel1", "numRows": 8}, {"master": "bond0", "numRows":
-    8}, {"master": "evpn-vrf", "numRows": 16}, {"master": "bridge", "numRows": 18},
-    {"master": "", "numRows": 128}]'
+  output: '[{"master": "Port-Channel3", "numRows": 4}, {"master": "Port-Channel4",
+    "numRows": 4}, {"master": "internet-vrf", "numRows": 4}, {"master": "Port-Channel1",
+    "numRows": 8}, {"master": "bond0", "numRows": 8}, {"master": "evpn-vrf", "numRows":
+    16}, {"master": "bridge", "numRows": 18}, {"master": "", "numRows": 114}]'
 - command: interface unique --count=True --format=json --columns=reason
   data-directory: tests/data/eos/parquet-out/
   marks: interface unique eos
-  output: '[{"reason": "", "numRows": 192}]'
+  output: '[{"reason": "", "numRows": 176}]'
 - command: interface unique --count=True --format=json --query-str='macaddr == ""
     ' --columns=macaddr
   data-directory: tests/data/eos/parquet-out/

@@ -38,7 +38,7 @@ class InterfaceCmd(SqCommand):
     @argument("ifname", description="interface name to qualify")
     @argument("type", description="interface type to qualify")
     @argument("state", description="interface state to qualify show",
-              choices=["up", "down"])
+              choices=["up", "down", "notConnected"])
     @argument("mtu", description="filter interfaces with MTU")
     def show(self, ifname: str = "", state: str = "", type: str = "",
              mtu: str = ""):
@@ -72,6 +72,34 @@ class InterfaceCmd(SqCommand):
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
+
+    @command("unique", help="find the list of unique items in a column")
+    @argument("count", description="include count of times a value is seen",
+              choices=['True'])
+    @argument("type", description="include type of ports to include")
+    def unique(self, count: str = '', type: str = '', **kwargs):
+        now = time.time()
+
+        df = self._invoke_sqobj(self.sqobj.unique,
+                                hostname=self.hostname,
+                                namespace=self.namespace,
+                                query_str=self.query_str,
+                                type=type.split(),
+                                addnl_fields=['type'],
+                                count=count,
+                                )
+
+        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
+        if 'error' in df.columns:
+            return self._gen_output(df)
+
+        if not count or df.empty:
+            return self._gen_output(df.sort_values(by=[self.columns[0]]),
+                                    dont_strip_cols=True)
+        else:
+            return self._gen_output(
+                df.sort_values(by=['numRows', self.columns[0]]),
+                dont_strip_cols=True)
 
     @command("assert")
     @argument("ifname", description="interface name to qualify")
