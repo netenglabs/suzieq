@@ -12,6 +12,7 @@ from nubia import command, argument, context
 @argument("end_time", description="End of time window in YYYY-MM-dd HH:mm:SS format")
 @argument("pager", description="Enable pagination prompt on longer outputs",
           choices=['on', 'off'])
+@argument('col_width', description='Max Width of each column in table display')
 @argument(
     "engine",
     choices=["pandas"],
@@ -29,6 +30,7 @@ def set_ctxt(
         namespace: typing.List[str] = [],
         engine: str = "",
         datadir: str = "",
+        col_width: int = 50,
 ):
     """set certain contexts for subsequent commands. Cmd is additive"""
     plugin_ctx = context.get_context()
@@ -53,6 +55,9 @@ def set_ctxt(
             plugin_ctx.cfg['data-directory'] = datadir
         else:
             print(f'{datadir} is not a valid directory')
+
+    if col_width:
+        plugin_ctx.col_width = int(col_width)
 
     if pager == 'on':
         plugin_ctx.pager = True

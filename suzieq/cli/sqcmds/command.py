@@ -156,7 +156,7 @@ class SqCommand:
             cols = df.columns
             is_error = True
         else:
-            max_colwidth = 50
+            max_colwidth = self.ctxt.col_width
             retcode = 0
             if self.columns != ['default'] and self.columns != ['*']:
                 cols = self.columns

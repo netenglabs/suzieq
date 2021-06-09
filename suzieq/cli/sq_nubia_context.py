@@ -19,6 +19,7 @@ class NubiaSuzieqContext(context.Context):
         self.end_time = ""
         self.exec_time = ""
         self.engine = engine
+        self.col_width = 50
         self.sort_fields = []
         super().__init__()
 
