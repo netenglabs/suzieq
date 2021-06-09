@@ -88,7 +88,7 @@ class EvpnvniObj(SqPandasEngine):
             return self.summary_df
 
         self._summarize_on_add_field = [
-            ('uniqueVtepCnt', 'hostname', 'nunique'),
+            ('uniqueVtepCnt', 'priVtepIp', 'nunique'),
             ('uniqueVniCnt', 'vni', 'nunique'),
         ]
 

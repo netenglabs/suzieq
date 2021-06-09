@@ -32,7 +32,7 @@ tests:
 - command: evpnVni summarize --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: evpnVni summarize junos
-  output: '{"junos": {"mode": "symmetric", "uniqueVtepCnt": 4, "uniqueVniCnt": 4,
+  output: '{"junos": {"mode": "symmetric", "uniqueVtepCnt": 5, "uniqueVniCnt": 4,
     "uniqueL3VniCnt": 1, "uniqueL2VniCnt": 3, "uniqueMulticastGroups": 1, "vnisUsingMulticast":
     0, "vnisUsingIngressRepl": 1, "remoteVtepsPerVtepStat": [1, 1, 1.0]}}'
 - command: evpnVni unique --columns=hostname --format=json

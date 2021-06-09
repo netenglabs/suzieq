@@ -109,16 +109,16 @@ tests:
 - command: evpnVni summarize --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: evpnVni summarize
-  output: '{"dual-evpn": {"mode": "symmetric", "uniqueVtepCnt": 6, "uniqueVniCnt":
+  output: '{"dual-evpn": {"mode": "symmetric", "uniqueVtepCnt": 5, "uniqueVniCnt":
     3, "uniqueL3VniCnt": 2, "uniqueL2VniCnt": 2, "uniqueMulticastGroups": 0, "vnisUsingMulticast":
     0, "vnisUsingIngressRepl": 2, "remoteVtepsPerVtepStat": [3, 3, 3.0]}, "ospf-ibgp":
-    {"mode": "symmetric", "uniqueVtepCnt": 6, "uniqueVniCnt": 3, "uniqueL3VniCnt":
+    {"mode": "symmetric", "uniqueVtepCnt": 4, "uniqueVniCnt": 3, "uniqueL3VniCnt":
     1, "uniqueL2VniCnt": 2, "uniqueMulticastGroups": 0, "vnisUsingMulticast": 0, "vnisUsingIngressRepl":
     2, "remoteVtepsPerVtepStat": [1, 1, 1.0]}}'
 - command: evpnVni summarize --namespace=dual-evpn --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: evpnVni summarize
-  output: '{"dual-evpn": {"mode": "symmetric", "uniqueVtepCnt": 6, "uniqueVniCnt":
+  output: '{"dual-evpn": {"mode": "symmetric", "uniqueVtepCnt": 5, "uniqueVniCnt":
     3, "uniqueL3VniCnt": 2, "uniqueL2VniCnt": 2, "uniqueMulticastGroups": 0, "vnisUsingMulticast":
     0, "vnisUsingIngressRepl": 2, "remoteVtepsPerVtepStat": [3, 3, 3.0]}}'
 - command: evpnVni unique --columns=hostname --format=json
