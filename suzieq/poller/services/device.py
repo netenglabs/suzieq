@@ -71,8 +71,9 @@ class DeviceService(Service):
                 uptime_delta = timedelta(days=days, hours=int(hr),
                                          minutes=int(mins),
                                          seconds=int(secs.split('.')[0]))
-                entry['bootupTimestamp'] = int((datetime.now(tz=timezone.utc) -
-                                                uptime_delta).timestamp())
+                entry['bootupTimestamp'] = int(
+                    (int(raw_data[0]["timestamp"])/1000) -
+                    uptime_delta.total_seconds())
 
         return self._common_data_cleaner(processed_data, raw_data)
 
