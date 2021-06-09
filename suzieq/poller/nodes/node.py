@@ -463,11 +463,12 @@ class Node(object):
                                            .strip().replace('"', '')
                         break
 
-        if not devtype and not self.last_exception:
-            self.logger.warning(
-                f'Unable to determine devtype for {self.address}:{self.port}')
+        if not devtype:
+            if not self.last_exception:
+                self.logger.warning(
+                    f'Unable to determine devtype for {self.address}:{self.port}')
+                self.last_exception = 'No devtype'
             self._status = 'init'
-            self.last_exception = 'No devtype'
         else:
             self.logger.info(
                 f'Detected {devtype} for {self.address}:{self.port}, {hostname}')
@@ -948,7 +949,7 @@ class EosNode(Node):
                     if "result" in json_out:
                         output.extend(json_out["result"])
                     else:
-                        output.extend(json_out["error"])
+                        output.extend(json_out["error"].get('data', []))
 
             for i, cmd in enumerate(cmd_list):
                 result.append(
