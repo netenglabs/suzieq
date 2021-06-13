@@ -64,7 +64,10 @@ class TopologyObj(SqPandasEngine):
         self._namespaces = kwargs.get("namespace", self.ctxt.namespace)
         hostname = kwargs.pop('hostname', [])
         user_query = kwargs.pop('query_str', '')
-        polled = kwargs.pop('polled', None)
+        polled = kwargs.pop('polled', '')
+        via = kwargs.pop('via', [])
+        ifname = kwargs.pop('ifname', '')
+        peerHostname = kwargs.pop('peerHostname', [])
 
         self._init_dfs(self._namespaces)
         self.lsdb = pd.DataFrame()
@@ -75,7 +78,7 @@ class TopologyObj(SqPandasEngine):
             Services('lldp', lldp.LldpObj, {}, ['ifname', 'vrf'],
                      self._augment_lldp_show),
             Services('arpnd', arpnd.ArpndObj, {},
-                     ['ifname', 'vrf', 'arpndBidir'],
+                     ['ipAddress', 'macaddr', 'ifname', 'vrf', 'arpndBidir'],
                      self._augment_arpnd_show),
             Services('bgp', bgp.BgpObj, {'state': 'Established',
                                          'columns': ['*']},
@@ -87,6 +90,8 @@ class TopologyObj(SqPandasEngine):
                      ['ifname', 'vrf'], self._augment_ospf_show),
         ]
 
+        if via:
+            self.services = [x for x in self.services if x.name in via]
         key = 'peerHostname'
         for srv in self.services:
             df = srv.data(context=self.ctxt).get(
@@ -111,38 +116,54 @@ class TopologyObj(SqPandasEngine):
         if self.lsdb.empty:
             return self.lsdb
 
+        if 'ipAddress' not in self.lsdb.columns:
+            self.lsdb['ipAddress'] = ''
+
         self.lsdb = self.lsdb[~self.lsdb.hostname.isna()] \
                         .drop_duplicates() \
+                        .rename({'ipAddress': 'peerIP', 'macaddr': 'peerMac'},
+                                axis=1, errors='ignore') \
+                        .dropna(subset=['peerHostname', 'peerIP'], how='all') \
                         .fillna({'peerHostname': 'unknown',
                                  'ifname': 'unknown', 'arpnd': False,
+                                 'peerIP': '', 'peerMac': '',
                                  'arpndBidir': False,
                                  'bgp': False, 'ospf': False,
                                  'lldp': False, 'vrf': 'N/A'})
 
         self.lsdb['vrf'] = np.where(self.lsdb.vrf == "bridge", "-",
                                     self.lsdb.vrf)
+        self.lsdb['peerHostname'] = np.where(
+            self.lsdb.peerHostname == "unknown", self.lsdb.peerIP,
+            self.lsdb.peerHostname)
+        self.lsdb = self.lsdb.drop(columns=['peerIP', 'peerMac'],
+                                   errors='ignore')
+        self.lsdb = self.lsdb.query('peerHostname != ""')
 
         # Apply the appropriate filters
         if not self.lsdb.empty:
             if hostname:
-                self.lsdb = self.lsdb.query(f'hostname.isin({hostname})') \
-                                     .reset_index()
+                self.lsdb = self.lsdb.query(f'hostname.isin({hostname})')
+            if peerHostname:
+                self.lsdb = self.lsdb.query(
+                    f'peerHostname.isin({peerHostname})')
+            if ifname:
+                self.lsdb = self.lsdb.query(f'ifname.isin({ifname})')
 
         if user_query and not self.lsdb.empty:
-            self.lsdb = self.lsdb.query(user_query).reset_index(drop=True)
-
-        if not self.lsdb.empty:
-            self.lsdb = self.lsdb.query('peerHostname != "unknown"') \
-                                 .reset_index(drop=True)
+            self.lsdb = self.lsdb.query(user_query)
 
         cols = self.lsdb.columns.tolist()
         if 'timestamp' in self.lsdb.columns:
             cols.remove('timestamp')
             cols.append('timestamp')
 
-        return self.lsdb[cols]
+        return self.lsdb[cols].reset_index(drop=True)
 
     def _find_polled_neighbors(self, polled):
+        if self.lsdb.empty:
+            return
+
         devices = device.DeviceObj(context=self.ctxt).get(namespace=self._namespaces,
                                                           columns=['namespace', 'hostname'])
         self.lsdb = devices.merge(self.lsdb, how='outer',
@@ -150,10 +171,12 @@ class TopologyObj(SqPandasEngine):
         self.lsdb = self.lsdb.rename(columns={'_merge': 'polled'})
         self.lsdb.polled = self.lsdb.polled == 'both'
 
-        if polled != '' and polled is not None:
-            self.lsdb = self.lsdb[self.lsdb.polled == polled]
-            if self.lsdb.empty:
-                self.lsdb = pd.DataFrame()
+        if polled and polled.lower() == 'true':
+            self.lsdb = self.lsdb.query('polled == True')
+        elif polled.lower() == 'false':
+            self.lsdb = self.lsdb.query('polled == False')
+        if self.lsdb.empty:
+            self.lsdb = pd.DataFrame()
 
     def _create_graphs_from_lsdb(self):
         self.graphs = {}
@@ -212,7 +235,7 @@ class TopologyObj(SqPandasEngine):
                 .drop_duplicates() \
                 .rename(columns={'hostname': 'peerHostname'})
             df = df.merge(addr, on=['namespace', 'macaddr'], how='left') \
-                   .dropna(how='any') \
+                   .dropna(subset=['hostname', 'ipAddress']) \
                    .rename(columns={'oif': 'ifname'}) \
                    .drop_duplicates()
 
@@ -224,7 +247,7 @@ class TopologyObj(SqPandasEngine):
             df = df.merge(mac_df,
                           on=['namespace', 'hostname', 'macaddr'],
                           how='outer') \
-                .dropna(subset=['ipAddress'])
+                .dropna(subset=['hostname'])
             df['ifname'] = np.where(
                 df['oif'].isnull(), df['ifname'], df['oif'])
 

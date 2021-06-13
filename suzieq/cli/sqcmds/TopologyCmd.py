@@ -2,6 +2,7 @@ import time
 import pandas as pd
 from nubia import command, argument
 
+from suzieq.utils import SchemaForTable
 from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.topology import TopologyObj
 
@@ -17,6 +18,7 @@ class TopologyCmd(SqCommand):
         view: str = "latest",
         namespace: str = "",
         format: str = "",
+        query_str: str = ' ',
         columns: str = "default",
     ) -> None:
         super().__init__(
@@ -28,12 +30,20 @@ class TopologyCmd(SqCommand):
             namespace=namespace,
             columns=columns,
             format=format,
+            query_str=query_str,
             sqobj=TopologyObj
         )
 
     @command("show")
-    @argument("polled", description="Is the device polled by Suzieq")
-    def show(self, polled: bool = ''):
+    @argument("polled", description="Is the device polled by Suzieq",
+              choices=['True', 'False'])
+    @argument("ifname", description="interface name to qualify")
+    @argument("via", description="filter the method by which topology is seen",
+              choices=['arpnd', 'bgp', 'lldp', 'ospf'])
+    @argument("peerHostname",
+              description="filter the result by specified peerHostname")
+    def show(self, polled: str = '', ifname: str = '', via: str = '',
+             peerHostname: str = ''):
         """show table of topology information"""
         # Get the default display field names
         if self.columns is None:
@@ -48,18 +58,26 @@ class TopologyCmd(SqCommand):
         try:
             df = self.sqobj.get(
                 namespace=self.namespace,
+                ifname=ifname.split(),
+                via=via.split(),
                 polled=polled,
+                peerHostname=peerHostname.split(),
                 hostname=self.hostname,
+                query_str=self.query_str,
             )
         except Exception as e:
             df = pd.DataFrame({'error': ['ERROR: {}'.format(str(e))]})
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        return self._gen_output(df)
+        cols = SchemaForTable('topology', self.schemas).sorted_display_fields()
+        cols = [x for x in cols if x in df.columns]
+        return self._gen_output(df[cols])
 
     @command("summarize")
-    def summarize(self, src: str = "", dest: str = ""):
-        """Summarize topologys topology information"""
+    @argument("via", description="filter the method by which topology is seen",
+              choices=['arpnd', 'bgp', 'lldp', 'ospf'])
+    def summarize(self, via: str = ""):
+        """Summarize topology information"""
         # Get the default display field names
         if self.columns is None:
             return
@@ -72,7 +90,9 @@ class TopologyCmd(SqCommand):
 
         try:
             df = self.sqobj.summarize(
+                hostname=self.hostname,
                 namespace=self.namespace,
+                via=via.split(),
             )
         except Exception as e:
             df = pd.DataFrame({'error': ['ERROR: {}'.format(str(e))]})
