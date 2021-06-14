@@ -126,7 +126,8 @@ class RoutesObj(SqPandasEngine):
         ]
 
         self._summarize_on_add_list_or_count = [
-            ('routingProtocolCnt', 'protocol')
+            ('routingProtocolCnt', 'protocol'),
+            ('nexthopCnt', 'numNexthops'),
         ]
 
         self._gen_summarize_data()
