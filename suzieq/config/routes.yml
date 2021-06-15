@@ -2,7 +2,8 @@ service: routes
 keys:
   - vrf
   - prefix
-
+ignore-fields:
+  - statusChangeTimestamp
 show-fields:
   - vrf
   - prefix
@@ -32,8 +33,9 @@ apply:
     normalize: 'vrfs/*:vrf/routes/*:prefix/[
         "routeType: protocol",
         "metric: metric?|0",
+        "preference: preference?|0",
         "routeAction": "action?|forward",
-        "hardwareProgrammed: inHardware?|False",
+        "hardwareProgrammed: hardwareProgrammed?|unknown",
         "vias/*/nexthopAddr: nexthopIps?|[]",
         "vias/*/interface: oifs?|[]",
         "vias/*/vtepAddr: _vtepAddr?|[]",
@@ -56,7 +58,9 @@ apply:
         "rt-destination/[0]/data: prefix",
         "rt-prefix-length/[0]/data: _rtlen?|0",
         "rt-entry/[0]/protocol-name/[0]/data: protocol",
-        "rt-entry/[0]/preference/[0]/data: metric?|0",
+        "rt-entry/[0]/preference/[0]/data: preference?|0",
+        "rt-entry/[0]/age/[0]/attributes: statusChangeTimestamp?|",
+        "rt-entry/[0]/metric/[0]/data: metric?|0",
         "rt-entry/[0]/active-tag/[0]/data: _activeTag",
         "rt-entry/[0]/as-path/[0]/data: asPathList?|[]",
         "rt-entry/[0]/validation-state/[0]/data: validState?|",
@@ -64,6 +68,8 @@ apply:
         "rt-entry/[0]/nh/[*]/via/[0]/data: oifs",
         "rt-entry/[0]/nh/[0]/nh-local-interface/[0]/data: _localif?|",
         "rt-entry/[0]/nh-type/[0]/data: action?|forward",
+        "rt-entry/[0]/rt-tag/[0]/data: routeTag?|",
+        "hardwareProgrammed: hardwareProgrammed?|unknown",
         ]'
 
       - command: show evpn ip-prefix-database | display json | no-more
@@ -87,11 +93,13 @@ apply:
     normalize: 'TABLE_vrf/ROW_vrf/*:vrf-name-out:vrf|TABLE_addrf/ROW_addrf/TABLE_prefix/ROW_prefix/*?/[
     "ipprefix: prefix",
     "TABLE_path/ROW_path/[0]?/clientname: protocol?|",
-    "TABLE_path/ROW_path/[*]?/metric: weights?|0",
+    "TABLE_path/ROW_path/[*]?/pref: preference?|0",
+    "TABLE_path/ROW_path/[*]?/metric: metric?|0",
     "TABLE_path/ROW_path/[*]?/ifname: oifs?|",
+    "TABLE_path/ROW_path/[*]?/uptime: statusChangeTimestamp?|",
     "TABLE_path/ROW_path/[*]?/ipnexthop: nexthopIps?|",
     "TABLE_path/ROW_path/[*]?/nexthop-vrf-name: _nexthopVrf?|",
-    "hardwareProgrammed: hardwareProgrammed?|True",
-    "TABLE_path/ROW_path/[*]?/type: routeAction?|forward",
-    "TABLE_path/ROW_path/[*]?/tag: asPathList?|[]",
+    "hardwareProgrammed: inHardware?|unknown",
+    "TABLE_path/ROW_path/[*]?/type: _routeAction?|forward",
+    "TABLE_path/ROW_path/[*]?/tag: routeTag?|",
     ]'

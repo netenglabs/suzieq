@@ -1,5 +1,11 @@
+from dateparser import parse
+from datetime import datetime
+
 from suzieq.poller.services.service import Service
-from suzieq.utils import expand_nxos_ifname
+from suzieq.utils import (expand_nxos_ifname, get_timestamp_from_cisco_time,
+                          get_timestamp_from_junos_time)
+
+
 import numpy as np
 
 
@@ -27,22 +33,27 @@ class RoutesService(Service):
                     nexthop = entry['nexthopIps'][0]
                     entry['nexthopIps'] = [nexthop['vtepAddr']]
                     entry['oifs'] = ['_nexthopVrf:default']
-            elif '_vtepAddr' in entry:
+            elif entry.get('_vtepAddr', []):
                 entry['nexthopIps'] = entry['_vtepAddr']
                 entry['oifs'] = len(entry['nexthopIps']) * \
                     ['_nexthopVrf:default']
             entry['protocol'] = entry['protocol'].lower()
+            entry['preference'] = int(entry.get('preference', 0))
+            entry['metric'] = int(entry.get('metric', 0))
             self._fix_ipvers(entry)
 
         return processed_data
 
     def _clean_linux_data(self, processed_data, raw_data):
         """Clean Linux ip route data"""
+
         for entry in processed_data:
             entry["vrf"] = entry["vrf"] or "default"
             entry["metric"] = entry["metric"] or 20
+            entry['preference'] = entry['metric']
             for ele in ["nexthopIps", "oifs"]:
                 entry[ele] = entry[ele] or [""]
+            entry['hardwareProgrammed'] = 'unknown'
             entry["weights"] = entry["weights"] or [1]
             if entry['prefix'] == 'default':
                 if any(':' in x for x in entry['nexthopIps']):
@@ -118,11 +129,23 @@ class RoutesService(Service):
 
             prefix_entries[entry['prefix']] = entry
 
+            lastChange = entry.get('statusChangeTimestamp', [''])
+            if lastChange:
+                entry['statusChangeTimestamp'] = get_timestamp_from_junos_time(
+                    lastChange, raw_data[0]['timestamp']/1000)
+            else:
+                entry['statusChangeTimestamp'] = 0
+
             entry['active'] = entry['_activeTag'] in ['*', '@', '#']
 
-            entry['metric'] = int(entry['metric'])
+            entry['preference'] = int(entry.get('preference', 0))
+            entry['metric'] = int(entry.get('metric', 0))
             if entry.get('nexthopIps', '') == [None]:
                 entry['nexthopIps'] = ['']
+
+            entry['action'] = entry.get('action', '').lower()
+            if entry['action'] == "discard":
+                entry['action'] = 'drop'
             entry.pop('_localif')
             entry.pop('_activeTag')
 
@@ -142,8 +165,14 @@ class RoutesService(Service):
 
             entry['protocol'] = entry.get('protocol', '').split('-')[0]
 
-            entry['weights'] = [int(x) if x is not None else 0
-                                for x in entry['weights']]
+            entry['metric'] = [int(x) if x is not None else 0
+                               for x in entry.get('metric', [])]
+            entry['metric'] = entry['metric'][0]
+            try:
+                entry['preference'] = int(entry.get('preference', [0])[0])
+            except ValueError:
+                entry['preference'] = 0
+
             oiflist = []
             for oif in entry['oifs']:
                 if oif:
@@ -158,9 +187,19 @@ class RoutesService(Service):
                         oiflist.append(f'_nexthopVrf:{nhv}')
                 entry['oifs'] = oiflist
 
-            self._fix_ipvers(entry)
-            if 'action' not in entry:
+            if 'discard' in entry.get('_routeAction', []):
+                entry['action'] = 'drop'
+            else:
                 entry['action'] = 'forward'
+
+            lastChange = entry.get('statusChangeTimestamp', [''])[0]
+            if lastChange:
+                entry['statusChangeTimestamp'] = get_timestamp_from_cisco_time(
+                    lastChange, raw_data[0]['timestamp']/1000)
+            else:
+                entry['statusChangeTimestamp'] = 0
+
+            self._fix_ipvers(entry)
 
         processed_data = np.delete(processed_data, drop_indices).tolist()
         return processed_data
@@ -186,11 +225,32 @@ class RoutesService(Service):
                      'A': ['access', ''], '!': ['backup', '']}
 
         for entry in processed_data:
-            entry['protocol'] = proto_map.get(entry['protocol'], [''])[0]
+            entry['protocol'] = proto_map.get(entry.get('protocol', '')[0],
+                                              entry.get('protocol', ''))[0]
             if not entry['vrf']:
                 entry['vrf'] = 'default'
             if entry.get('nexthopvrf', ''):
                 entry['oifs'] = [f'_nexthopVrf:{entry["nexthopvrf"]}']
+            if entry.get('metric', '') == '':
+                entry['metric'] = 0
+            if entry.get('preference', '') == '':
+                entry['preference'] = 0
             self._fix_ipvers(entry)
+            entry['hardwareProgrammed'] = 'unknown'
+            if not entry.get('action', ''):
+                entry['action'] = 'forward'
+            else:
+                entry['action'] = entry.get('action', '').lower()
+            lastchange = entry.get('statusChangeTimestamp', '')
+            if lastchange:
+                entry['statusChangeTimestamp'] = parse(
+                    lastchange,
+                    settings={'RELATIVE_BASE':
+                              datetime.fromtimestamp(
+                                  (raw_data[0]['timestamp'])/1000), })
+            else:
+                lastchange = 0
+
+            entry['statusChangeTimestamp'] = lastchange
 
         return processed_data

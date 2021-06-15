@@ -7,7 +7,7 @@
 	    "name": "sqvers",
 	    "type": "string",
 	    "partition": 0,
-	    "default": "1.0"
+	    "default": "2.0"
 	},
         {
             "name": "weights",
@@ -18,10 +18,6 @@
                     "type": "long"
                 }
             }
-        },
-        {
-            "name": "routeAction",
-            "type": "string"
         },
         {
             "name": "prefix",
@@ -48,6 +44,10 @@
             "name": "action",
             "type": "string",
             "display": 10
+        },
+        {
+            "name": "routeTag",
+            "type": "string"
         },
         {
             "name": "nexthopIps",
@@ -94,7 +94,7 @@
         {
             "name": "ipvers",
             "type": "long",
-            "display": 9	    
+            "display": 9
         },
         {
             "name": "protocol",
@@ -107,6 +107,15 @@
         },
         {
             "name": "metric",
+            "type": "long"
+        },
+	{
+            "name": "statusChangeTimestamp",
+            "type": "timestamp",
+	    "description": "The last time this route changed"
+	},
+        {
+            "name": "preference",
             "type": "long",
             "display": 8
         },

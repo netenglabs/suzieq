@@ -1,11 +1,11 @@
 Value Filldown vrf (\S+)
 Value protocol ([A-Zi]\*?|[A-Zio]\s+[A-Z][1-2]|i ia|i su)
 Value Required prefix ([0-9./]+|[0-9a-f:./]+)
-Value distance (\d+|is)
+Value preference (\d+|is)
 Value metric (\d+)
-Value List nexthopIps ([0-9.]+|[0-9a-f:]+)
+Value List nexthopIps ([0-9.]+|[0-9a-f:.]+)
 Value List oifs (\S+)
-Value uptime (\S+)
+Value statusChangeTimestamp (\S+)
 Value nexthopvrf (\S+)
 
 
@@ -18,15 +18,17 @@ Start
   ^IPv6 Unicast:
   ^Codes:.*$$
   ^-*$$
-  ^${protocol}\s+${prefix} is directly connected, ${uptime}, ${oifs}.*$$
+  ^${protocol}\s+${prefix} is directly connected, ${statusChangeTimestamp}, ${oifs}$$
+  ^${protocol}\s+${prefix} is directly connected, ${statusChangeTimestamp}, ${oifs}\s+\(nexthop in vrf ${nexthopvrf}\)\s*$$  
   ^${protocol}\s+${prefix} is directly connected,\s*$$
-  ^${protocol}\*?\s+${prefix}\s+\[${distance}/${metric}\]\s+via\s+${nexthopIps}, ${uptime}, ${oifs}.*$$
-  ^${protocol}\s+${prefix}\s+\[${distance}/${metric}\]\s+via\s+${nexthopIps}, ${uptime}.*$$
-  ^${protocol}\s+${prefix}\s+\[${distance}/${metric}\]\s+via\s+${nexthopIps}\s+\(nexthop in vrf ${nexthopvrf}\), ${uptime}.*$$
+  ^${protocol}\*?\s+${prefix}\s+\[${preference}/${metric}\]\s+via\s+${nexthopIps},\s+${statusChangeTimestamp},\s+${oifs}.*$$
+  ^${protocol}\s+${prefix}\s+\[${preference}/${metric}\]\s+via\s+${nexthopIps},\s+${statusChangeTimestamp}.*$$
+  ^${protocol}\s+${prefix}\s+\[${preference}/${metric}\]\s+via\s+${nexthopIps}\s+\(nexthop in vrf ${nexthopvrf}\), ${statusChangeTimestamp}.*$$
   ^${protocol}\s+${prefix}\s*$$
-  ^\s+\[${distance}/${metric}\]\s+via\s+${nexthopIps}, ${uptime}, ${oifs}.*$$
-  ^\s+\[${distance}/${metric}\]\s+via\s+${nexthopIps}, ${uptime}\s*$$  
-  ^\s+${uptime},\s+${oifs}.*$$
+  ^\s+\[${preference}/${metric}\]\s+via\s+${nexthopIps}\s+\(nexthop in vrf ${nexthopvrf}\), ${statusChangeTimestamp}.*$$
+  ^\s+\[${preference}/${metric}\]\s+via\s+${nexthopIps}, ${statusChangeTimestamp}, ${oifs}.*$$
+  ^\s+\[${preference}/${metric}\]\s+via\s+${nexthopIps}, ${statusChangeTimestamp}\s*$$  
+  ^\s+${statusChangeTimestamp},\s+${oifs}.*$$
 
 #
 #IPv4 Unicast:
@@ -45,6 +47,7 @@ Start
 #
 #S*   0.0.0.0/0 [1/0] via 1.0.0.1, 13:14:59
 #C    172.16.0.2/31 is directly connected, 1w6d, FourHundredGigE0/0/0/2.11
+#B    192.253.21.4/31 [200/0] via 192.169.39.8, 19:59:07
 #C    1.0.0.0/16 is directly connected, 13:14:59, MgmtEth0/5/CPU0/0
 #L    1.0.14.15/32 is directly connected, 13:14:59, MgmtEth0/5/CPU0/0
 #C    3.2.3.0/24 is directly connected, 00:04:39, GigabitEthernet0/3/0/0
@@ -84,6 +87,8 @@ Start
 #      9w6d, GigabitEthernet0/0/0/4.4079
 #L    2001:db8:26c9:8404::26:1/128 is directly connected,
 #      9w6d, GigabitEthernet0/0/0/4.4079
+#B    1984:123:27::4/126 
+#      [200/0] via 2001:468:26e0:8003::1:54 (nexthop in vrf default), 10:43:02
 #
 #VRF: myvrf
 #
@@ -99,9 +104,11 @@ Start
 #       U - per-user static route, o - ODR, L - local, G  - DAGR
 #       A - access/subscriber, (!) - FRR Backup path
 #  
-#Gateway of last resort is not set
+#Gateway of last resort is 10.39.8.77 to network 0.0.0.0
 #
+#B*   0.0.0.0/0 [200/0] via 10.39.8.77 (nexthop in vrf default), 21:55:02
 #B    12.40.19.8/30 [200/0] via 3.2.3.254 (nexthop in vrf default), 6w0d
+#B    192.169.71.0/24 is directly connected, 19:59:08, Null0 (nexthop in vrf blended)
 #
 #VRF: myvrf
 #
