@@ -122,12 +122,13 @@ class BgpService(Service):
                 drop_indices.append(i)
                 continue
 
-            bfd_status = entry.get('bfdStatus', 'disabled').lower()
+            bfd_status = entry.get('bfdStatus', '')
             if not bfd_status or (bfd_status == "unknown"):
                 bfd_status = "disabled"
             elif entry.get('_bfdAdmin', '') != 'enabled':
-                bfd_status = 'disabled'
                 bfd_status = "disabled"
+            else:
+                bfd_status = bfd_status.lower()
             entry['bfdStatus'] = bfd_status
 
             # JunOS adds entries which includes the port as IP+Port
