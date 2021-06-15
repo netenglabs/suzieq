@@ -1,0 +1,805 @@
+description: 'Testing verbs for topology: show summarize unique'
+tests:
+- command: topology show --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: topology show nxos
+  output: '[{"namespace": "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/0", "peerHostname":
+    "exit01", "vrf": "default", "arpnd": false, "arpndBidir": false, "bgp": true,
+    "lldp": true, "ospf": false, "polled": true}, {"namespace": "nxos", "hostname":
+    "dcedge01", "ifname": "xe-0/0/0.0", "peerHostname": "exit01", "vrf": "default",
+    "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": false, "ospf": false,
+    "polled": true}, {"namespace": "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/1",
+    "peerHostname": "exit02", "vrf": "default", "arpnd": false, "arpndBidir": false,
+    "bgp": true, "lldp": true, "ospf": false, "polled": true}, {"namespace": "nxos",
+    "hostname": "dcedge01", "ifname": "xe-0/0/1.0", "peerHostname": "exit02", "vrf":
+    "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": false, "ospf":
+    false, "polled": true}, {"namespace": "nxos", "hostname": "dcedge01", "ifname":
+    "em0.0", "peerHostname": "10.255.2.1", "vrf": "default", "arpnd": true, "arpndBidir":
+    false, "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace":
+    "nxos", "hostname": "dcedge01", "ifname": "em1.0", "peerHostname": "169.254.0.1",
+    "vrf": "default", "arpnd": true, "arpndBidir": false, "bgp": false, "lldp": false,
+    "ospf": false, "polled": true}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
+    "mgmt0", "peerHostname": "spine01", "vrf": "management", "arpnd": false, "arpndBidir":
+    false, "bgp": false, "lldp": true, "ospf": false, "polled": true}, {"namespace":
+    "nxos", "hostname": "leaf02", "ifname": "Ethernet1/6", "peerHostname": "leaf01",
+    "vrf": "default", "arpnd": false, "arpndBidir": false, "bgp": false, "lldp": true,
+    "ospf": false, "polled": true}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
+    "Ethernet1/5", "peerHostname": "leaf01", "vrf": "default", "arpnd": false, "arpndBidir":
+    false, "bgp": false, "lldp": true, "ospf": false, "polled": true}, {"namespace":
+    "nxos", "hostname": "leaf02", "ifname": "Ethernet1/2", "peerHostname": "spine02",
+    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true,
+    "ospf": true, "polled": true}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
+    "Ethernet1/1", "peerHostname": "spine01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
+    "nxos", "hostname": "leaf02", "ifname": "port-channel3", "peerHostname": "server101",
+    "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false,
+    "ospf": false, "polled": true}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
+    "mgmt0", "peerHostname": "10.255.2.1", "vrf": "management", "arpnd": true, "arpndBidir":
+    false, "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace":
+    "nxos", "hostname": "leaf02", "ifname": "mgmt0", "peerHostname": "leaf01", "vrf":
+    "management", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false,
+    "ospf": false, "polled": true}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
+    "port-channel4", "peerHostname": "server102", "vrf": "evpn-vrf", "arpnd": true,
+    "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false, "polled": true},
+    {"namespace": "nxos", "hostname": "leaf01", "ifname": "mgmt0", "peerHostname":
+    "spine01", "vrf": "management", "arpnd": false, "arpndBidir": false, "bgp": false,
+    "lldp": true, "ospf": false, "polled": true}, {"namespace": "nxos", "hostname":
+    "leaf01", "ifname": "Ethernet1/1", "peerHostname": "spine01", "vrf": "default",
+    "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true, "ospf": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "leaf01", "ifname": "Ethernet1/2", "peerHostname":
+    "spine02", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
+    true, "ospf": true, "polled": true}, {"namespace": "nxos", "hostname": "leaf01",
+    "ifname": "Ethernet1/5", "peerHostname": "leaf02", "vrf": "default", "arpnd":
+    false, "arpndBidir": false, "bgp": false, "lldp": true, "ospf": false, "polled":
+    true}, {"namespace": "nxos", "hostname": "leaf01", "ifname": "Ethernet1/6", "peerHostname":
+    "leaf02", "vrf": "default", "arpnd": false, "arpndBidir": false, "bgp": false,
+    "lldp": true, "ospf": false, "polled": true}, {"namespace": "nxos", "hostname":
+    "leaf01", "ifname": "mgmt0", "peerHostname": "10.255.2.1", "vrf": "management",
+    "arpnd": true, "arpndBidir": false, "bgp": false, "lldp": false, "ospf": false,
+    "polled": true}, {"namespace": "nxos", "hostname": "leaf01", "ifname": "mgmt0",
+    "peerHostname": "leaf02", "vrf": "management", "arpnd": true, "arpndBidir": true,
+    "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "nxos",
+    "hostname": "leaf01", "ifname": "port-channel3", "peerHostname": "server101",
+    "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false,
+    "ospf": false, "polled": true}, {"namespace": "nxos", "hostname": "leaf01", "ifname":
+    "port-channel4", "peerHostname": "server102", "vrf": "evpn-vrf", "arpnd": true,
+    "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false, "polled": true},
+    {"namespace": "nxos", "hostname": "exit02", "ifname": "Ethernet1/2", "peerHostname":
+    "spine02", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
+    true, "ospf": true, "polled": true}, {"namespace": "nxos", "hostname": "exit02",
+    "ifname": "Ethernet1/4", "peerHostname": "dcedge01", "vrf": "internet-vrf", "arpnd":
+    true, "arpndBidir": true, "bgp": true, "lldp": true, "ospf": false, "polled":
+    true}, {"namespace": "nxos", "hostname": "exit02", "ifname": "Ethernet1/1", "peerHostname":
+    "spine01", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
+    true, "ospf": true, "polled": true}, {"namespace": "nxos", "hostname": "exit02",
+    "ifname": "mgmt0", "peerHostname": "spine01", "vrf": "management", "arpnd": false,
+    "arpndBidir": false, "bgp": false, "lldp": true, "ospf": false, "polled": true},
+    {"namespace": "nxos", "hostname": "exit02", "ifname": "mgmt0", "peerHostname":
+    "10.255.2.1", "vrf": "management", "arpnd": true, "arpndBidir": false, "bgp":
+    false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "nxos", "hostname":
+    "exit02", "ifname": "Ethernet1/3.3", "peerHostname": "firewall01", "vrf": "evpn-vrf",
+    "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": false, "ospf": false,
+    "polled": true}, {"namespace": "nxos", "hostname": "exit02", "ifname": "Ethernet1/3.2",
+    "peerHostname": "firewall01", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "bgp": true, "lldp": false, "ospf": false, "polled": true}, {"namespace": "nxos",
+    "hostname": "exit02", "ifname": "Ethernet1/3.4", "peerHostname": "firewall01",
+    "vrf": "internet-vrf", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
+    false, "ospf": false, "polled": true}, {"namespace": "nxos", "hostname": "exit01",
+    "ifname": "mgmt0", "peerHostname": "spine01", "vrf": "management", "arpnd": false,
+    "arpndBidir": false, "bgp": false, "lldp": true, "ospf": false, "polled": true},
+    {"namespace": "nxos", "hostname": "exit01", "ifname": "Ethernet1/1", "peerHostname":
+    "spine01", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
+    true, "ospf": true, "polled": true}, {"namespace": "nxos", "hostname": "exit01",
+    "ifname": "Ethernet1/2", "peerHostname": "spine02", "vrf": "default", "arpnd":
+    true, "arpndBidir": true, "bgp": true, "lldp": true, "ospf": true, "polled": true},
+    {"namespace": "nxos", "hostname": "exit01", "ifname": "Ethernet1/4", "peerHostname":
+    "dcedge01", "vrf": "internet-vrf", "arpnd": true, "arpndBidir": true, "bgp": true,
+    "lldp": true, "ospf": false, "polled": true}, {"namespace": "nxos", "hostname":
+    "exit01", "ifname": "Ethernet1/3.2", "peerHostname": "firewall01", "vrf": "default",
+    "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": false, "ospf": false,
+    "polled": true}, {"namespace": "nxos", "hostname": "exit01", "ifname": "Ethernet1/3.3",
+    "peerHostname": "firewall01", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "bgp": true, "lldp": false, "ospf": false, "polled": true}, {"namespace":
+    "nxos", "hostname": "exit01", "ifname": "Ethernet1/3.4", "peerHostname": "firewall01",
+    "vrf": "internet-vrf", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
+    false, "ospf": false, "polled": true}, {"namespace": "nxos", "hostname": "exit01",
+    "ifname": "mgmt0", "peerHostname": "10.255.2.1", "vrf": "management", "arpnd":
+    true, "arpndBidir": false, "bgp": false, "lldp": false, "ospf": false, "polled":
+    true}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/6", "peerHostname":
+    "leaf03", "vrf": "default", "arpnd": false, "arpndBidir": false, "bgp": false,
+    "lldp": true, "ospf": false, "polled": true}, {"namespace": "nxos", "hostname":
+    "leaf04", "ifname": "Ethernet1/5", "peerHostname": "leaf03", "vrf": "default",
+    "arpnd": false, "arpndBidir": false, "bgp": false, "lldp": true, "ospf": false,
+    "polled": true}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/2",
+    "peerHostname": "spine02", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace": "nxos",
+    "hostname": "leaf04", "ifname": "Ethernet1/1", "peerHostname": "spine01", "vrf":
+    "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true, "ospf":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "mgmt0",
+    "peerHostname": "spine01", "vrf": "management", "arpnd": false, "arpndBidir":
+    false, "bgp": false, "lldp": true, "ospf": false, "polled": true}, {"namespace":
+    "nxos", "hostname": "leaf04", "ifname": "mgmt0", "peerHostname": "10.255.2.1",
+    "vrf": "management", "arpnd": true, "arpndBidir": false, "bgp": false, "lldp":
+    false, "ospf": false, "polled": true}, {"namespace": "nxos", "hostname": "leaf04",
+    "ifname": "mgmt0", "peerHostname": "leaf03", "vrf": "management", "arpnd": true,
+    "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false, "polled": true},
+    {"namespace": "nxos", "hostname": "leaf04", "ifname": "port-channel3", "peerHostname":
+    "server301", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "bgp": false,
+    "lldp": false, "ospf": false, "polled": true}, {"namespace": "nxos", "hostname":
+    "leaf04", "ifname": "port-channel4", "peerHostname": "server302", "vrf": "evpn-vrf",
+    "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false,
+    "polled": true}, {"namespace": "nxos", "hostname": "leaf03", "ifname": "Ethernet1/5",
+    "peerHostname": "leaf04", "vrf": "default", "arpnd": false, "arpndBidir": false,
+    "bgp": false, "lldp": true, "ospf": false, "polled": true}, {"namespace": "nxos",
+    "hostname": "leaf03", "ifname": "Ethernet1/6", "peerHostname": "leaf04", "vrf":
+    "default", "arpnd": false, "arpndBidir": false, "bgp": false, "lldp": true, "ospf":
+    false, "polled": true}, {"namespace": "nxos", "hostname": "leaf03", "ifname":
+    "Ethernet1/1", "peerHostname": "spine01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
+    "nxos", "hostname": "leaf03", "ifname": "mgmt0", "peerHostname": "spine01", "vrf":
+    "management", "arpnd": false, "arpndBidir": false, "bgp": false, "lldp": true,
+    "ospf": false, "polled": true}, {"namespace": "nxos", "hostname": "leaf03", "ifname":
+    "Ethernet1/2", "peerHostname": "spine02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
+    "nxos", "hostname": "leaf03", "ifname": "port-channel3", "peerHostname": "server301",
+    "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false,
+    "ospf": false, "polled": true}, {"namespace": "nxos", "hostname": "leaf03", "ifname":
+    "port-channel4", "peerHostname": "server302", "vrf": "evpn-vrf", "arpnd": true,
+    "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false, "polled": true},
+    {"namespace": "nxos", "hostname": "leaf03", "ifname": "mgmt0", "peerHostname":
+    "leaf04", "vrf": "management", "arpnd": true, "arpndBidir": true, "bgp": false,
+    "lldp": false, "ospf": false, "polled": true}, {"namespace": "nxos", "hostname":
+    "leaf03", "ifname": "mgmt0", "peerHostname": "10.255.2.1", "vrf": "management",
+    "arpnd": true, "arpndBidir": false, "bgp": false, "lldp": false, "ospf": false,
+    "polled": true}, {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/4",
+    "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace": "nxos",
+    "hostname": "spine01", "ifname": "Ethernet1/5", "peerHostname": "exit01", "vrf":
+    "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true, "ospf":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "spine01", "ifname":
+    "Ethernet1/6", "peerHostname": "exit02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
+    "nxos", "hostname": "spine01", "ifname": "Ethernet1/2", "peerHostname": "leaf02",
+    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true,
+    "ospf": true, "polled": true}, {"namespace": "nxos", "hostname": "spine01", "ifname":
+    "Ethernet1/1", "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
+    "nxos", "hostname": "spine01", "ifname": "mgmt0", "peerHostname": "leaf03", "vrf":
+    "management", "arpnd": false, "arpndBidir": false, "bgp": false, "lldp": true,
+    "ospf": false, "polled": true}, {"namespace": "nxos", "hostname": "spine01", "ifname":
+    "Ethernet1/3", "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
+    "nxos", "hostname": "spine01", "ifname": "mgmt0", "peerHostname": "10.255.2.1",
+    "vrf": "management", "arpnd": true, "arpndBidir": false, "bgp": false, "lldp":
+    false, "ospf": false, "polled": true}, {"namespace": "nxos", "hostname": "spine02",
+    "ifname": "Ethernet1/6", "peerHostname": "exit02", "vrf": "default", "arpnd":
+    true, "arpndBidir": true, "bgp": true, "lldp": true, "ospf": true, "polled": true},
+    {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/4", "peerHostname":
+    "leaf04", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
+    true, "ospf": true, "polled": true}, {"namespace": "nxos", "hostname": "spine02",
+    "ifname": "Ethernet1/3", "peerHostname": "leaf03", "vrf": "default", "arpnd":
+    true, "arpndBidir": true, "bgp": true, "lldp": true, "ospf": true, "polled": true},
+    {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/2", "peerHostname":
+    "leaf02", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
+    true, "ospf": true, "polled": true}, {"namespace": "nxos", "hostname": "spine02",
+    "ifname": "Ethernet1/1", "peerHostname": "leaf01", "vrf": "default", "arpnd":
+    true, "arpndBidir": true, "bgp": true, "lldp": true, "ospf": true, "polled": true},
+    {"namespace": "nxos", "hostname": "spine02", "ifname": "mgmt0", "peerHostname":
+    "spine01", "vrf": "management", "arpnd": false, "arpndBidir": false, "bgp": false,
+    "lldp": true, "ospf": false, "polled": true}, {"namespace": "nxos", "hostname":
+    "spine02", "ifname": "Ethernet1/5", "peerHostname": "exit01", "vrf": "default",
+    "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true, "ospf": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "spine02", "ifname": "mgmt0", "peerHostname":
+    "10.255.2.1", "vrf": "management", "arpnd": true, "arpndBidir": false, "bgp":
+    false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "nxos", "hostname":
+    "firewall01", "ifname": "eth2.3", "peerHostname": "exit02", "vrf": "default",
+    "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": false, "ospf": false,
+    "polled": true}, {"namespace": "nxos", "hostname": "firewall01", "ifname": "eth2.4",
+    "peerHostname": "exit02", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "bgp": true, "lldp": false, "ospf": false, "polled": true}, {"namespace": "nxos",
+    "hostname": "firewall01", "ifname": "eth2.2", "peerHostname": "exit02", "vrf":
+    "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": false, "ospf":
+    false, "polled": true}, {"namespace": "nxos", "hostname": "firewall01", "ifname":
+    "eth1.2", "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "bgp": true, "lldp": false, "ospf": false, "polled": true}, {"namespace":
+    "nxos", "hostname": "firewall01", "ifname": "eth1.3", "peerHostname": "exit01",
+    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": false,
+    "ospf": false, "polled": true}, {"namespace": "nxos", "hostname": "firewall01",
+    "ifname": "eth1.4", "peerHostname": "exit01", "vrf": "default", "arpnd": true,
+    "arpndBidir": true, "bgp": true, "lldp": false, "ospf": false, "polled": true},
+    {"namespace": "nxos", "hostname": "firewall01", "ifname": "eth0", "peerHostname":
+    "10.255.2.1", "vrf": "default", "arpnd": true, "arpndBidir": false, "bgp": false,
+    "lldp": false, "ospf": false, "polled": true}, {"namespace": "nxos", "hostname":
+    "firewall01", "ifname": "eth0", "peerHostname": "server301", "vrf": "default",
+    "arpnd": true, "arpndBidir": false, "bgp": false, "lldp": false, "ospf": false,
+    "polled": true}, {"namespace": "nxos", "hostname": "server301", "ifname": "bond0",
+    "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "nxos",
+    "hostname": "server301", "ifname": "bond0", "peerHostname": "leaf01", "vrf": "default",
+    "arpnd": true, "arpndBidir": false, "bgp": false, "lldp": false, "ospf": false,
+    "polled": true}, {"namespace": "nxos", "hostname": "server301", "ifname": "bond0",
+    "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "nxos",
+    "hostname": "server301", "ifname": "bond0", "peerHostname": "leaf02", "vrf": "default",
+    "arpnd": true, "arpndBidir": false, "bgp": false, "lldp": false, "ospf": false,
+    "polled": true}, {"namespace": "nxos", "hostname": "server301", "ifname": "bond0",
+    "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir": false,
+    "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "nxos",
+    "hostname": "server301", "ifname": "bond0", "peerHostname": "exit02", "vrf": "default",
+    "arpnd": true, "arpndBidir": false, "bgp": false, "lldp": false, "ospf": false,
+    "polled": true}, {"namespace": "nxos", "hostname": "server301", "ifname": "eth0",
+    "peerHostname": "10.255.2.1", "vrf": "default", "arpnd": true, "arpndBidir": false,
+    "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "nxos",
+    "hostname": "server302", "ifname": "bond0", "peerHostname": "server102", "vrf":
+    "default", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf":
+    false, "polled": true}, {"namespace": "nxos", "hostname": "server302", "ifname":
+    "bond0", "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace":
+    "nxos", "hostname": "server302", "ifname": "bond0", "peerHostname": "leaf01",
+    "vrf": "default", "arpnd": true, "arpndBidir": false, "bgp": false, "lldp": false,
+    "ospf": false, "polled": true}, {"namespace": "nxos", "hostname": "server302",
+    "ifname": "bond0", "peerHostname": "leaf04", "vrf": "default", "arpnd": true,
+    "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false, "polled": true},
+    {"namespace": "nxos", "hostname": "server302", "ifname": "bond0", "peerHostname":
+    "leaf02", "vrf": "default", "arpnd": true, "arpndBidir": false, "bgp": false,
+    "lldp": false, "ospf": false, "polled": true}, {"namespace": "nxos", "hostname":
+    "server302", "ifname": "bond0", "peerHostname": "exit01", "vrf": "default", "arpnd":
+    true, "arpndBidir": false, "bgp": false, "lldp": false, "ospf": false, "polled":
+    true}, {"namespace": "nxos", "hostname": "server302", "ifname": "bond0", "peerHostname":
+    "exit02", "vrf": "default", "arpnd": true, "arpndBidir": false, "bgp": false,
+    "lldp": false, "ospf": false, "polled": true}, {"namespace": "nxos", "hostname":
+    "server302", "ifname": "eth0", "peerHostname": "10.255.2.1", "vrf": "default",
+    "arpnd": true, "arpndBidir": false, "bgp": false, "lldp": false, "ospf": false,
+    "polled": true}, {"namespace": "nxos", "hostname": "server101", "ifname": "eth0",
+    "peerHostname": "10.255.2.1", "vrf": "default", "arpnd": true, "arpndBidir": false,
+    "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "nxos",
+    "hostname": "server101", "ifname": "bond0", "peerHostname": "leaf03", "vrf": "default",
+    "arpnd": true, "arpndBidir": false, "bgp": false, "lldp": false, "ospf": false,
+    "polled": true}, {"namespace": "nxos", "hostname": "server101", "ifname": "bond0",
+    "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "nxos",
+    "hostname": "server101", "ifname": "bond0", "peerHostname": "leaf04", "vrf": "default",
+    "arpnd": true, "arpndBidir": false, "bgp": false, "lldp": false, "ospf": false,
+    "polled": true}, {"namespace": "nxos", "hostname": "server101", "ifname": "bond0",
+    "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "nxos",
+    "hostname": "server101", "ifname": "bond0", "peerHostname": "exit01", "vrf": "default",
+    "arpnd": true, "arpndBidir": false, "bgp": false, "lldp": false, "ospf": false,
+    "polled": true}, {"namespace": "nxos", "hostname": "server101", "ifname": "bond0",
+    "peerHostname": "exit02", "vrf": "default", "arpnd": true, "arpndBidir": false,
+    "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "nxos",
+    "hostname": "server102", "ifname": "bond0", "peerHostname": "server302", "vrf":
+    "default", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf":
+    false, "polled": true}, {"namespace": "nxos", "hostname": "server102", "ifname":
+    "bond0", "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir":
+    false, "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace":
+    "nxos", "hostname": "server102", "ifname": "bond0", "peerHostname": "leaf01",
+    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false,
+    "ospf": false, "polled": true}, {"namespace": "nxos", "hostname": "server102",
+    "ifname": "bond0", "peerHostname": "leaf04", "vrf": "default", "arpnd": true,
+    "arpndBidir": false, "bgp": false, "lldp": false, "ospf": false, "polled": true},
+    {"namespace": "nxos", "hostname": "server102", "ifname": "bond0", "peerHostname":
+    "leaf02", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp":
+    false, "ospf": false, "polled": true}, {"namespace": "nxos", "hostname": "server102",
+    "ifname": "bond0", "peerHostname": "exit01", "vrf": "default", "arpnd": true,
+    "arpndBidir": false, "bgp": false, "lldp": false, "ospf": false, "polled": true},
+    {"namespace": "nxos", "hostname": "server102", "ifname": "bond0", "peerHostname":
+    "exit02", "vrf": "default", "arpnd": true, "arpndBidir": false, "bgp": false,
+    "lldp": false, "ospf": false, "polled": true}, {"namespace": "nxos", "hostname":
+    "server102", "ifname": "eth0", "peerHostname": "10.255.2.1", "vrf": "default",
+    "arpnd": true, "arpndBidir": false, "bgp": false, "lldp": false, "ospf": false,
+    "polled": true}]'
+- command: topology show --via=lldp --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: topology show nxos
+  output: '[{"namespace": "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/0", "peerHostname":
+    "exit01", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "nxos",
+    "hostname": "dcedge01", "ifname": "xe-0/0/1", "peerHostname": "exit02", "vrf":
+    "default", "lldp": true, "polled": true}, {"namespace": "nxos", "hostname": "leaf02",
+    "ifname": "mgmt0", "peerHostname": "spine01", "vrf": "management", "lldp": true,
+    "polled": true}, {"namespace": "nxos", "hostname": "leaf02", "ifname": "Ethernet1/6",
+    "peerHostname": "leaf01", "vrf": "default", "lldp": true, "polled": true}, {"namespace":
+    "nxos", "hostname": "leaf02", "ifname": "Ethernet1/5", "peerHostname": "leaf01",
+    "vrf": "default", "lldp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "leaf02", "ifname": "Ethernet1/2", "peerHostname": "spine02", "vrf": "default",
+    "lldp": true, "polled": true}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
+    "Ethernet1/1", "peerHostname": "spine01", "vrf": "default", "lldp": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "leaf01", "ifname": "mgmt0", "peerHostname":
+    "spine01", "vrf": "management", "lldp": true, "polled": true}, {"namespace": "nxos",
+    "hostname": "leaf01", "ifname": "Ethernet1/1", "peerHostname": "spine01", "vrf":
+    "default", "lldp": true, "polled": true}, {"namespace": "nxos", "hostname": "leaf01",
+    "ifname": "Ethernet1/2", "peerHostname": "spine02", "vrf": "default", "lldp":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "leaf01", "ifname": "Ethernet1/5",
+    "peerHostname": "leaf02", "vrf": "default", "lldp": true, "polled": true}, {"namespace":
+    "nxos", "hostname": "leaf01", "ifname": "Ethernet1/6", "peerHostname": "leaf02",
+    "vrf": "default", "lldp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "exit02", "ifname": "Ethernet1/2", "peerHostname": "spine02", "vrf": "default",
+    "lldp": true, "polled": true}, {"namespace": "nxos", "hostname": "exit02", "ifname":
+    "Ethernet1/4", "peerHostname": "dcedge01", "vrf": "internet-vrf", "lldp": true,
+    "polled": true}, {"namespace": "nxos", "hostname": "exit02", "ifname": "Ethernet1/1",
+    "peerHostname": "spine01", "vrf": "default", "lldp": true, "polled": true}, {"namespace":
+    "nxos", "hostname": "exit02", "ifname": "mgmt0", "peerHostname": "spine01", "vrf":
+    "management", "lldp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "exit01", "ifname": "mgmt0", "peerHostname": "spine01", "vrf": "management", "lldp":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "exit01", "ifname": "Ethernet1/1",
+    "peerHostname": "spine01", "vrf": "default", "lldp": true, "polled": true}, {"namespace":
+    "nxos", "hostname": "exit01", "ifname": "Ethernet1/2", "peerHostname": "spine02",
+    "vrf": "default", "lldp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "exit01", "ifname": "Ethernet1/4", "peerHostname": "dcedge01", "vrf": "internet-vrf",
+    "lldp": true, "polled": true}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
+    "Ethernet1/6", "peerHostname": "leaf03", "vrf": "default", "lldp": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/5", "peerHostname":
+    "leaf03", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "nxos",
+    "hostname": "leaf04", "ifname": "Ethernet1/2", "peerHostname": "spine02", "vrf":
+    "default", "lldp": true, "polled": true}, {"namespace": "nxos", "hostname": "leaf04",
+    "ifname": "Ethernet1/1", "peerHostname": "spine01", "vrf": "default", "lldp":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "mgmt0",
+    "peerHostname": "spine01", "vrf": "management", "lldp": true, "polled": true},
+    {"namespace": "nxos", "hostname": "leaf03", "ifname": "Ethernet1/5", "peerHostname":
+    "leaf04", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "nxos",
+    "hostname": "leaf03", "ifname": "Ethernet1/1", "peerHostname": "spine01", "vrf":
+    "default", "lldp": true, "polled": true}, {"namespace": "nxos", "hostname": "leaf03",
+    "ifname": "mgmt0", "peerHostname": "spine01", "vrf": "management", "lldp": true,
+    "polled": true}, {"namespace": "nxos", "hostname": "leaf03", "ifname": "Ethernet1/6",
+    "peerHostname": "leaf04", "vrf": "default", "lldp": true, "polled": true}, {"namespace":
+    "nxos", "hostname": "leaf03", "ifname": "Ethernet1/2", "peerHostname": "spine02",
+    "vrf": "default", "lldp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "spine01", "ifname": "Ethernet1/4", "peerHostname": "leaf04", "vrf": "default",
+    "lldp": true, "polled": true}, {"namespace": "nxos", "hostname": "spine01", "ifname":
+    "Ethernet1/5", "peerHostname": "exit01", "vrf": "default", "lldp": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/6", "peerHostname":
+    "exit02", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "nxos",
+    "hostname": "spine01", "ifname": "Ethernet1/2", "peerHostname": "leaf02", "vrf":
+    "default", "lldp": true, "polled": true}, {"namespace": "nxos", "hostname": "spine01",
+    "ifname": "Ethernet1/1", "peerHostname": "leaf01", "vrf": "default", "lldp": true,
+    "polled": true}, {"namespace": "nxos", "hostname": "spine01", "ifname": "mgmt0",
+    "peerHostname": "leaf03", "vrf": "management", "lldp": true, "polled": true},
+    {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/3", "peerHostname":
+    "leaf03", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "nxos",
+    "hostname": "spine02", "ifname": "Ethernet1/6", "peerHostname": "exit02", "vrf":
+    "default", "lldp": true, "polled": true}, {"namespace": "nxos", "hostname": "spine02",
+    "ifname": "Ethernet1/4", "peerHostname": "leaf04", "vrf": "default", "lldp": true,
+    "polled": true}, {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/3",
+    "peerHostname": "leaf03", "vrf": "default", "lldp": true, "polled": true}, {"namespace":
+    "nxos", "hostname": "spine02", "ifname": "Ethernet1/2", "peerHostname": "leaf02",
+    "vrf": "default", "lldp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "spine02", "ifname": "Ethernet1/1", "peerHostname": "leaf01", "vrf": "default",
+    "lldp": true, "polled": true}, {"namespace": "nxos", "hostname": "spine02", "ifname":
+    "mgmt0", "peerHostname": "spine01", "vrf": "management", "lldp": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/5", "peerHostname":
+    "exit01", "vrf": "default", "lldp": true, "polled": true}]'
+- command: topology show --via=lldp --via=bgp --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: topology show nxos
+  output: '[{"namespace": "nxos", "hostname": "dcedge01", "peerHostname": "exit01",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "dcedge01", "peerHostname": "exit02", "vrf": "default", "bgp": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "leaf02", "peerHostname": "spine02",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "leaf02", "peerHostname": "spine01", "vrf": "default", "bgp": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "leaf01", "peerHostname": "spine02",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "leaf01", "peerHostname": "spine01", "vrf": "default", "bgp": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "exit02", "peerHostname": "dcedge01",
+    "vrf": "internet-vrf", "bgp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "exit02", "peerHostname": "firewall01", "vrf": "evpn-vrf", "bgp": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "exit02", "peerHostname": "firewall01",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "exit02", "peerHostname": "spine02", "vrf": "default", "bgp": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "exit02", "peerHostname": "spine01",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "exit02", "peerHostname": "firewall01", "vrf": "internet-vrf", "bgp": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "exit01", "peerHostname": "spine01",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "exit01", "peerHostname": "spine02", "vrf": "default", "bgp": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "exit01", "peerHostname": "firewall01",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "exit01", "peerHostname": "firewall01", "vrf": "evpn-vrf", "bgp": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "exit01", "peerHostname": "dcedge01",
+    "vrf": "internet-vrf", "bgp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "exit01", "peerHostname": "firewall01", "vrf": "internet-vrf", "bgp": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "leaf04", "peerHostname": "spine02",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "leaf04", "peerHostname": "spine01", "vrf": "default", "bgp": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "leaf03", "peerHostname": "spine02",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "leaf03", "peerHostname": "spine01", "vrf": "default", "bgp": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "spine01", "peerHostname": "leaf03",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "spine01", "peerHostname": "exit02", "vrf": "default", "bgp": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "spine01", "peerHostname": "exit01",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "spine01", "peerHostname": "leaf04", "vrf": "default", "bgp": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "spine01", "peerHostname": "leaf02",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "spine01", "peerHostname": "leaf01", "vrf": "default", "bgp": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "spine02", "peerHostname": "exit02",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "spine02", "peerHostname": "leaf01", "vrf": "default", "bgp": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "spine02", "peerHostname": "leaf02",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "spine02", "peerHostname": "leaf03", "vrf": "default", "bgp": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "spine02", "peerHostname": "leaf04",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "spine02", "peerHostname": "exit01", "vrf": "default", "bgp": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "firewall01", "peerHostname": "exit02",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "firewall01", "peerHostname": "exit01", "vrf": "default", "bgp": true, "polled":
+    true}]'
+- command: topology show --via=bgp --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: topology show nxos
+  output: '[{"namespace": "nxos", "hostname": "dcedge01", "peerHostname": "exit01",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "dcedge01", "peerHostname": "exit02", "vrf": "default", "bgp": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "leaf02", "peerHostname": "spine02",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "leaf02", "peerHostname": "spine01", "vrf": "default", "bgp": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "leaf01", "peerHostname": "spine02",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "leaf01", "peerHostname": "spine01", "vrf": "default", "bgp": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "exit02", "peerHostname": "dcedge01",
+    "vrf": "internet-vrf", "bgp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "exit02", "peerHostname": "firewall01", "vrf": "evpn-vrf", "bgp": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "exit02", "peerHostname": "firewall01",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "exit02", "peerHostname": "spine02", "vrf": "default", "bgp": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "exit02", "peerHostname": "spine01",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "exit02", "peerHostname": "firewall01", "vrf": "internet-vrf", "bgp": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "exit01", "peerHostname": "spine01",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "exit01", "peerHostname": "spine02", "vrf": "default", "bgp": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "exit01", "peerHostname": "firewall01",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "exit01", "peerHostname": "firewall01", "vrf": "evpn-vrf", "bgp": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "exit01", "peerHostname": "dcedge01",
+    "vrf": "internet-vrf", "bgp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "exit01", "peerHostname": "firewall01", "vrf": "internet-vrf", "bgp": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "leaf04", "peerHostname": "spine02",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "leaf04", "peerHostname": "spine01", "vrf": "default", "bgp": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "leaf03", "peerHostname": "spine02",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "leaf03", "peerHostname": "spine01", "vrf": "default", "bgp": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "spine01", "peerHostname": "leaf03",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "spine01", "peerHostname": "exit02", "vrf": "default", "bgp": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "spine01", "peerHostname": "exit01",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "spine01", "peerHostname": "leaf04", "vrf": "default", "bgp": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "spine01", "peerHostname": "leaf02",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "spine01", "peerHostname": "leaf01", "vrf": "default", "bgp": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "spine02", "peerHostname": "exit02",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "spine02", "peerHostname": "leaf01", "vrf": "default", "bgp": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "spine02", "peerHostname": "leaf02",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "spine02", "peerHostname": "leaf03", "vrf": "default", "bgp": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "spine02", "peerHostname": "leaf04",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "spine02", "peerHostname": "exit01", "vrf": "default", "bgp": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "firewall01", "peerHostname": "exit02",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "firewall01", "peerHostname": "exit01", "vrf": "default", "bgp": true, "polled":
+    true}]'
+- command: topology show --via=ospf --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: topology show nxos
+  output: '[{"namespace": "nxos", "hostname": "leaf02", "ifname": "Ethernet1/2", "peerHostname":
+    "spine02", "vrf": "default", "ospf": true, "polled": true}, {"namespace": "nxos",
+    "hostname": "leaf02", "ifname": "Ethernet1/1", "peerHostname": "spine01", "vrf":
+    "default", "ospf": true, "polled": true}, {"namespace": "nxos", "hostname": "leaf01",
+    "ifname": "Ethernet1/2", "peerHostname": "spine02", "vrf": "default", "ospf":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "leaf01", "ifname": "Ethernet1/1",
+    "peerHostname": "spine01", "vrf": "default", "ospf": true, "polled": true}, {"namespace":
+    "nxos", "hostname": "exit02", "ifname": "Ethernet1/2", "peerHostname": "spine02",
+    "vrf": "default", "ospf": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "exit02", "ifname": "Ethernet1/1", "peerHostname": "spine01", "vrf": "default",
+    "ospf": true, "polled": true}, {"namespace": "nxos", "hostname": "exit01", "ifname":
+    "Ethernet1/2", "peerHostname": "spine02", "vrf": "default", "ospf": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "exit01", "ifname": "Ethernet1/1", "peerHostname":
+    "spine01", "vrf": "default", "ospf": true, "polled": true}, {"namespace": "nxos",
+    "hostname": "leaf04", "ifname": "Ethernet1/2", "peerHostname": "spine02", "vrf":
+    "default", "ospf": true, "polled": true}, {"namespace": "nxos", "hostname": "leaf04",
+    "ifname": "Ethernet1/1", "peerHostname": "spine01", "vrf": "default", "ospf":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "leaf03", "ifname": "Ethernet1/2",
+    "peerHostname": "spine02", "vrf": "default", "ospf": true, "polled": true}, {"namespace":
+    "nxos", "hostname": "leaf03", "ifname": "Ethernet1/1", "peerHostname": "spine01",
+    "vrf": "default", "ospf": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "spine01", "ifname": "Ethernet1/6", "peerHostname": "exit02", "vrf": "default",
+    "ospf": true, "polled": true}, {"namespace": "nxos", "hostname": "spine01", "ifname":
+    "Ethernet1/5", "peerHostname": "exit01", "vrf": "default", "ospf": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/4", "peerHostname":
+    "leaf04", "vrf": "default", "ospf": true, "polled": true}, {"namespace": "nxos",
+    "hostname": "spine01", "ifname": "Ethernet1/3", "peerHostname": "leaf03", "vrf":
+    "default", "ospf": true, "polled": true}, {"namespace": "nxos", "hostname": "spine01",
+    "ifname": "Ethernet1/2", "peerHostname": "leaf02", "vrf": "default", "ospf": true,
+    "polled": true}, {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/1",
+    "peerHostname": "leaf01", "vrf": "default", "ospf": true, "polled": true}, {"namespace":
+    "nxos", "hostname": "spine02", "ifname": "Ethernet1/6", "peerHostname": "exit02",
+    "vrf": "default", "ospf": true, "polled": true}, {"namespace": "nxos", "hostname":
+    "spine02", "ifname": "Ethernet1/5", "peerHostname": "exit01", "vrf": "default",
+    "ospf": true, "polled": true}, {"namespace": "nxos", "hostname": "spine02", "ifname":
+    "Ethernet1/4", "peerHostname": "leaf04", "vrf": "default", "ospf": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/3", "peerHostname":
+    "leaf03", "vrf": "default", "ospf": true, "polled": true}, {"namespace": "nxos",
+    "hostname": "spine02", "ifname": "Ethernet1/2", "peerHostname": "leaf02", "vrf":
+    "default", "ospf": true, "polled": true}, {"namespace": "nxos", "hostname": "spine02",
+    "ifname": "Ethernet1/1", "peerHostname": "leaf01", "vrf": "default", "ospf": true,
+    "polled": true}]'
+- command: topology show --via=arpnd --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: topology show nxos
+  output: '[{"namespace": "nxos", "hostname": "dcedge01", "ifname": "em0.0", "peerHostname":
+    "10.255.2.1", "vrf": "default", "arpnd": true, "arpndBidir": false, "polled":
+    true}, {"namespace": "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/1.0", "peerHostname":
+    "exit02", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
+    {"namespace": "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/0.0", "peerHostname":
+    "exit01", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
+    {"namespace": "nxos", "hostname": "dcedge01", "ifname": "em1.0", "peerHostname":
+    "169.254.0.1", "vrf": "default", "arpnd": true, "arpndBidir": false, "polled":
+    true}, {"namespace": "nxos", "hostname": "leaf02", "ifname": "port-channel3",
+    "peerHostname": "server101", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "nxos", "hostname": "leaf02", "ifname": "mgmt0",
+    "peerHostname": "10.255.2.1", "vrf": "management", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
+    "mgmt0", "peerHostname": "leaf01", "vrf": "management", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "leaf02", "ifname": "Ethernet1/1",
+    "peerHostname": "spine01", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "nxos", "hostname": "leaf02", "ifname": "Ethernet1/2",
+    "peerHostname": "spine02", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "nxos", "hostname": "leaf02", "ifname": "port-channel4",
+    "peerHostname": "server102", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "nxos", "hostname": "leaf01", "ifname": "mgmt0",
+    "peerHostname": "10.255.2.1", "vrf": "management", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "nxos", "hostname": "leaf01", "ifname":
+    "mgmt0", "peerHostname": "leaf02", "vrf": "management", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "leaf01", "ifname": "port-channel3",
+    "peerHostname": "server101", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "nxos", "hostname": "leaf01", "ifname": "port-channel4",
+    "peerHostname": "server102", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "nxos", "hostname": "leaf01", "ifname": "Ethernet1/1",
+    "peerHostname": "spine01", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "nxos", "hostname": "leaf01", "ifname": "Ethernet1/2",
+    "peerHostname": "spine02", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "nxos", "hostname": "exit02", "ifname": "mgmt0",
+    "peerHostname": "10.255.2.1", "vrf": "management", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "nxos", "hostname": "exit02", "ifname":
+    "Ethernet1/1", "peerHostname": "spine01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "exit02", "ifname": "Ethernet1/3.3",
+    "peerHostname": "firewall01", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "exit02", "ifname": "Ethernet1/3.2",
+    "peerHostname": "firewall01", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "nxos", "hostname": "exit02", "ifname": "Ethernet1/3.4",
+    "peerHostname": "firewall01", "vrf": "internet-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "exit02", "ifname": "Ethernet1/4",
+    "peerHostname": "dcedge01", "vrf": "internet-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "exit02", "ifname": "Ethernet1/2",
+    "peerHostname": "spine02", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "nxos", "hostname": "exit01", "ifname": "Ethernet1/3.2",
+    "peerHostname": "firewall01", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "nxos", "hostname": "exit01", "ifname": "Ethernet1/3.3",
+    "peerHostname": "firewall01", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "exit01", "ifname": "Ethernet1/3.4",
+    "peerHostname": "firewall01", "vrf": "internet-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "exit01", "ifname": "Ethernet1/4",
+    "peerHostname": "dcedge01", "vrf": "internet-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "exit01", "ifname": "Ethernet1/2",
+    "peerHostname": "spine02", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "nxos", "hostname": "exit01", "ifname": "Ethernet1/1",
+    "peerHostname": "spine01", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "nxos", "hostname": "exit01", "ifname": "mgmt0",
+    "peerHostname": "10.255.2.1", "vrf": "management", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
+    "mgmt0", "peerHostname": "10.255.2.1", "vrf": "management", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
+    "mgmt0", "peerHostname": "leaf03", "vrf": "management", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/1",
+    "peerHostname": "spine01", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/2",
+    "peerHostname": "spine02", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "port-channel3",
+    "peerHostname": "server301", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "port-channel4",
+    "peerHostname": "server302", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "nxos", "hostname": "leaf03", "ifname": "port-channel3",
+    "peerHostname": "server301", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "nxos", "hostname": "leaf03", "ifname": "port-channel4",
+    "peerHostname": "server302", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "nxos", "hostname": "leaf03", "ifname": "Ethernet1/2",
+    "peerHostname": "spine02", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "nxos", "hostname": "leaf03", "ifname": "Ethernet1/1",
+    "peerHostname": "spine01", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "nxos", "hostname": "leaf03", "ifname": "mgmt0",
+    "peerHostname": "leaf04", "vrf": "management", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "nxos", "hostname": "leaf03", "ifname": "mgmt0",
+    "peerHostname": "10.255.2.1", "vrf": "management", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "nxos", "hostname": "spine01", "ifname":
+    "Ethernet1/1", "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "spine01", "ifname":
+    "Ethernet1/3", "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "spine01", "ifname":
+    "Ethernet1/4", "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "spine01", "ifname":
+    "Ethernet1/6", "peerHostname": "exit02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "spine01", "ifname":
+    "mgmt0", "peerHostname": "10.255.2.1", "vrf": "management", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "nxos", "hostname": "spine01", "ifname":
+    "Ethernet1/5", "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "spine01", "ifname":
+    "Ethernet1/2", "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "spine02", "ifname":
+    "Ethernet1/1", "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "spine02", "ifname":
+    "Ethernet1/2", "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "spine02", "ifname":
+    "Ethernet1/3", "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "spine02", "ifname":
+    "Ethernet1/4", "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "spine02", "ifname":
+    "mgmt0", "peerHostname": "10.255.2.1", "vrf": "management", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "nxos", "hostname": "spine02", "ifname":
+    "Ethernet1/5", "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "spine02", "ifname":
+    "Ethernet1/6", "peerHostname": "exit02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "firewall01", "ifname":
+    "eth2.3", "peerHostname": "exit02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "firewall01", "ifname":
+    "eth2.4", "peerHostname": "exit02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "firewall01", "ifname":
+    "eth2.2", "peerHostname": "exit02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "firewall01", "ifname":
+    "eth1.2", "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "firewall01", "ifname":
+    "eth1.3", "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "firewall01", "ifname":
+    "eth1.4", "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "firewall01", "ifname":
+    "eth0", "peerHostname": "10.255.2.1", "vrf": "default", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "nxos", "hostname": "firewall01", "ifname":
+    "eth0", "peerHostname": "server301", "vrf": "default", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "nxos", "hostname": "server301", "ifname":
+    "bond0", "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "server301", "ifname":
+    "bond0", "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "nxos", "hostname": "server301", "ifname":
+    "bond0", "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "server301", "ifname":
+    "bond0", "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "nxos", "hostname": "server301", "ifname":
+    "bond0", "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "nxos", "hostname": "server301", "ifname":
+    "bond0", "peerHostname": "exit02", "vrf": "default", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "nxos", "hostname": "server301", "ifname":
+    "eth0", "peerHostname": "10.255.2.1", "vrf": "default", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "nxos", "hostname": "server302", "ifname":
+    "bond0", "peerHostname": "server102", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "server302", "ifname":
+    "bond0", "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "server302", "ifname":
+    "bond0", "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "nxos", "hostname": "server302", "ifname":
+    "bond0", "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "server302", "ifname":
+    "bond0", "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "nxos", "hostname": "server302", "ifname":
+    "bond0", "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "nxos", "hostname": "server302", "ifname":
+    "bond0", "peerHostname": "exit02", "vrf": "default", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "nxos", "hostname": "server302", "ifname":
+    "eth0", "peerHostname": "10.255.2.1", "vrf": "default", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "nxos", "hostname": "server101", "ifname":
+    "eth0", "peerHostname": "10.255.2.1", "vrf": "default", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "nxos", "hostname": "server101", "ifname":
+    "bond0", "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "nxos", "hostname": "server101", "ifname":
+    "bond0", "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "server101", "ifname":
+    "bond0", "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "nxos", "hostname": "server101", "ifname":
+    "bond0", "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "server101", "ifname":
+    "bond0", "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "nxos", "hostname": "server101", "ifname":
+    "bond0", "peerHostname": "exit02", "vrf": "default", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "nxos", "hostname": "server102", "ifname":
+    "bond0", "peerHostname": "server302", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "server102", "ifname":
+    "bond0", "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "nxos", "hostname": "server102", "ifname":
+    "bond0", "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "server102", "ifname":
+    "bond0", "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "nxos", "hostname": "server102", "ifname":
+    "bond0", "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "server102", "ifname":
+    "bond0", "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "nxos", "hostname": "server102", "ifname":
+    "bond0", "peerHostname": "exit02", "vrf": "default", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "nxos", "hostname": "server102", "ifname":
+    "eth0", "peerHostname": "10.255.2.1", "vrf": "default", "arpnd": true, "arpndBidir":
+    false, "polled": true}]'
+- command: topology show --hostname=leaf01 --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: topology show nxos
+  output: '[{"namespace": "nxos", "hostname": "leaf01", "ifname": "mgmt0", "peerHostname":
+    "spine01", "vrf": "management", "arpnd": false, "arpndBidir": false, "bgp": false,
+    "lldp": true, "ospf": false, "polled": true}, {"namespace": "nxos", "hostname":
+    "leaf01", "ifname": "Ethernet1/1", "peerHostname": "spine01", "vrf": "default",
+    "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true, "ospf": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "leaf01", "ifname": "Ethernet1/2", "peerHostname":
+    "spine02", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
+    true, "ospf": true, "polled": true}, {"namespace": "nxos", "hostname": "leaf01",
+    "ifname": "Ethernet1/5", "peerHostname": "leaf02", "vrf": "default", "arpnd":
+    false, "arpndBidir": false, "bgp": false, "lldp": true, "ospf": false, "polled":
+    true}, {"namespace": "nxos", "hostname": "leaf01", "ifname": "Ethernet1/6", "peerHostname":
+    "leaf02", "vrf": "default", "arpnd": false, "arpndBidir": false, "bgp": false,
+    "lldp": true, "ospf": false, "polled": true}, {"namespace": "nxos", "hostname":
+    "leaf01", "ifname": "mgmt0", "peerHostname": "10.255.2.1", "vrf": "management",
+    "arpnd": true, "arpndBidir": false, "bgp": false, "lldp": false, "ospf": false,
+    "polled": true}, {"namespace": "nxos", "hostname": "leaf01", "ifname": "mgmt0",
+    "peerHostname": "leaf02", "vrf": "management", "arpnd": true, "arpndBidir": true,
+    "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "nxos",
+    "hostname": "leaf01", "ifname": "port-channel3", "peerHostname": "server101",
+    "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false,
+    "ospf": false, "polled": true}, {"namespace": "nxos", "hostname": "leaf01", "ifname":
+    "port-channel4", "peerHostname": "server102", "vrf": "evpn-vrf", "arpnd": true,
+    "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false, "polled": true}]'
+- command: topology show --hostname=leaf01 --via=lldp --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: topology show nxos
+  output: '[{"namespace": "nxos", "hostname": "leaf01", "ifname": "mgmt0", "peerHostname":
+    "spine01", "vrf": "management", "lldp": true, "polled": true}, {"namespace": "nxos",
+    "hostname": "leaf01", "ifname": "Ethernet1/1", "peerHostname": "spine01", "vrf":
+    "default", "lldp": true, "polled": true}, {"namespace": "nxos", "hostname": "leaf01",
+    "ifname": "Ethernet1/2", "peerHostname": "spine02", "vrf": "default", "lldp":
+    true, "polled": true}, {"namespace": "nxos", "hostname": "leaf01", "ifname": "Ethernet1/5",
+    "peerHostname": "leaf02", "vrf": "default", "lldp": true, "polled": true}, {"namespace":
+    "nxos", "hostname": "leaf01", "ifname": "Ethernet1/6", "peerHostname": "leaf02",
+    "vrf": "default", "lldp": true, "polled": true}]'
+- command: topology show --hostname=leaf01 --ifname=Ethernet1/1 --via=lldp --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: topology show nxos
+  output: '[{"namespace": "nxos", "hostname": "leaf01", "ifname": "Ethernet1/1", "peerHostname":
+    "spine01", "vrf": "default", "lldp": true, "polled": true}]'
+- command: topology show --hostname=leaf01 --polled=True --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: topology show nxos
+  output: '[{"namespace": "nxos", "hostname": "leaf01", "ifname": "mgmt0", "peerHostname":
+    "spine01", "vrf": "management", "arpnd": false, "arpndBidir": false, "bgp": false,
+    "lldp": true, "ospf": false, "polled": true}, {"namespace": "nxos", "hostname":
+    "leaf01", "ifname": "Ethernet1/1", "peerHostname": "spine01", "vrf": "default",
+    "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true, "ospf": true, "polled":
+    true}, {"namespace": "nxos", "hostname": "leaf01", "ifname": "Ethernet1/2", "peerHostname":
+    "spine02", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
+    true, "ospf": true, "polled": true}, {"namespace": "nxos", "hostname": "leaf01",
+    "ifname": "Ethernet1/5", "peerHostname": "leaf02", "vrf": "default", "arpnd":
+    false, "arpndBidir": false, "bgp": false, "lldp": true, "ospf": false, "polled":
+    true}, {"namespace": "nxos", "hostname": "leaf01", "ifname": "Ethernet1/6", "peerHostname":
+    "leaf02", "vrf": "default", "arpnd": false, "arpndBidir": false, "bgp": false,
+    "lldp": true, "ospf": false, "polled": true}, {"namespace": "nxos", "hostname":
+    "leaf01", "ifname": "mgmt0", "peerHostname": "10.255.2.1", "vrf": "management",
+    "arpnd": true, "arpndBidir": false, "bgp": false, "lldp": false, "ospf": false,
+    "polled": true}, {"namespace": "nxos", "hostname": "leaf01", "ifname": "mgmt0",
+    "peerHostname": "leaf02", "vrf": "management", "arpnd": true, "arpndBidir": true,
+    "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "nxos",
+    "hostname": "leaf01", "ifname": "port-channel3", "peerHostname": "server101",
+    "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false,
+    "ospf": false, "polled": true}, {"namespace": "nxos", "hostname": "leaf01", "ifname":
+    "port-channel4", "peerHostname": "server102", "vrf": "evpn-vrf", "arpnd": true,
+    "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false, "polled": true}]'
+- command: topology show --hostname=leaf01 --polled=False --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: topology show nxos
+  output: '[]'
+- command: topology summarize --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: topology summarize nxos
+  output: '[{"nxos": ["10.255.2.1"]}, {"nxos": "..."}, {"nxos": true}, {"nxos": 1},
+    {"nxos": 59}, {"nxos": 16}, {"nxos": []}, {"nxos": ["spine01", "spine02"]}, {"nxos":
+    "..."}, {"nxos": true}, {"nxos": 1}, {"nxos": 16}, {"nxos": 10}, {"nxos": []},
+    {"nxos": ["spine01", "spine02"]}, {"nxos": "..."}, {"nxos": true}, {"nxos": 1},
+    {"nxos": 17}, {"nxos": 9}, {"nxos": []}, {"nxos": ["spine01", "spine02"]}, {"nxos":
+    "..."}, {"nxos": true}, {"nxos": 1}, {"nxos": 12}, {"nxos": 8}, {"nxos": []}]'

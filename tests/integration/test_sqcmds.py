@@ -176,11 +176,7 @@ bad_namespace_commands = bad_hostname_commands[:]
 @pytest.mark.parametrize("cmd", bad_namespace_commands)
 def test_bad_show_namespace_filter(setup_nubia, cmd):
     filter = {'namespace': 'unknown'}
-    if cmd == 'TopologyCmd':
-        # TopologyCmd returns an error with error column
-        _ = _test_bad_show_filter(cmd, filter, True)
-    else:
-        _ = _test_bad_show_filter(cmd, filter)
+    _ = _test_bad_show_filter(cmd, filter)
 
 
 def _test_bad_show_filter(cmd, filter, assert_error=False):
@@ -204,10 +200,7 @@ good_filters = [{'hostname': 'leaf01'}]
 def test_context_filtering(setup_nubia, cmd):
     for filter in good_filters:
         s = _test_context_filtering(cmd, filter)
-        if cmd == 'TopologyCmd':
-            assert s == 1
-        else:
-            assert s == 0
+        assert s == 0
 
 
 context_namespace_commands = commands[:]
