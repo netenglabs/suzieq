@@ -3,142 +3,140 @@ tests:
 - command: lldp show --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: lldp show
-  output: '[{"namespace": "ospf-single", "hostname": "internet", "ifname": "None",
-    "peerHostname": "", "peerIfname": "", "description": "", "mgmtIP": "", "timestamp":
-    1616352403844}, {"namespace": "ospf-single", "hostname": "leaf02", "ifname": "swp1",
-    "peerHostname": "spine01", "peerIfname": "swp2", "description": "Cumulus Linux
-    version 4.3.0 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.21",
-    "timestamp": 1616352403891}, {"namespace": "ospf-single", "hostname": "leaf02",
-    "ifname": "swp2", "peerHostname": "spine02", "peerIfname": "swp2", "description":
-    "Cumulus Linux version 4.3.0 running on QEMU Standard PC (i440FX + PIIX, 1996)",
-    "mgmtIP": "10.0.0.22", "timestamp": 1616352403891}, {"namespace": "ospf-single",
-    "hostname": "leaf04", "ifname": "swp1", "peerHostname": "spine01", "peerIfname":
-    "swp4", "description": "Cumulus Linux version 4.3.0 running on QEMU Standard PC
-    (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.21", "timestamp": 1616352403950}, {"namespace":
-    "ospf-single", "hostname": "leaf04", "ifname": "swp2", "peerHostname": "spine02",
-    "peerIfname": "swp4", "description": "Cumulus Linux version 4.3.0 running on QEMU
-    Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.22", "timestamp": 1616352403950},
-    {"namespace": "ospf-single", "hostname": "exit02", "ifname": "swp1", "peerHostname":
-    "spine01", "peerIfname": "swp5", "description": "Cumulus Linux version 4.3.0 running
+  output: '[{"namespace": "ospf-single", "hostname": "leaf02", "ifname": "swp1", "peerHostname":
+    "spine01", "peerIfname": "swp2", "description": "Cumulus Linux version 4.3.0 running
     on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.21", "timestamp":
-    1616352404234}, {"namespace": "ospf-single", "hostname": "exit02", "ifname": "swp2",
-    "peerHostname": "spine02", "peerIfname": "swp5", "description": "Cumulus Linux
+    1616352403891}, {"namespace": "ospf-single", "hostname": "leaf02", "ifname": "swp2",
+    "peerHostname": "spine02", "peerIfname": "swp2", "description": "Cumulus Linux
     version 4.3.0 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.22",
+    "timestamp": 1616352403891}, {"namespace": "ospf-single", "hostname": "leaf04",
+    "ifname": "swp1", "peerHostname": "spine01", "peerIfname": "swp4", "description":
+    "Cumulus Linux version 4.3.0 running on QEMU Standard PC (i440FX + PIIX, 1996)",
+    "mgmtIP": "10.0.0.21", "timestamp": 1616352403950}, {"namespace": "ospf-single",
+    "hostname": "leaf04", "ifname": "swp2", "peerHostname": "spine02", "peerIfname":
+    "swp4", "description": "Cumulus Linux version 4.3.0 running on QEMU Standard PC
+    (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.22", "timestamp": 1616352403950}, {"namespace":
+    "ospf-single", "hostname": "exit02", "ifname": "swp1", "peerHostname": "spine01",
+    "peerIfname": "swp5", "description": "Cumulus Linux version 4.3.0 running on QEMU
+    Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.21", "timestamp": 1616352404234},
+    {"namespace": "ospf-single", "hostname": "exit02", "ifname": "swp2", "peerHostname":
+    "spine02", "peerIfname": "swp5", "description": "Cumulus Linux version 4.3.0 running
+    on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.22", "timestamp":
+    1616352404234}, {"namespace": "ospf-single", "hostname": "exit02", "ifname": "swp3",
+    "peerHostname": "exit02", "peerIfname": "swp4", "description": "Cumulus Linux
+    version 4.3.0 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.102",
     "timestamp": 1616352404234}, {"namespace": "ospf-single", "hostname": "exit02",
-    "ifname": "swp3", "peerHostname": "exit02", "peerIfname": "swp4", "description":
+    "ifname": "swp4", "peerHostname": "exit02", "peerIfname": "swp3", "description":
     "Cumulus Linux version 4.3.0 running on QEMU Standard PC (i440FX + PIIX, 1996)",
     "mgmtIP": "10.0.0.102", "timestamp": 1616352404234}, {"namespace": "ospf-single",
-    "hostname": "exit02", "ifname": "swp4", "peerHostname": "exit02", "peerIfname":
-    "swp3", "description": "Cumulus Linux version 4.3.0 running on QEMU Standard PC
-    (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.102", "timestamp": 1616352404234}, {"namespace":
-    "ospf-single", "hostname": "leaf01", "ifname": "swp1", "peerHostname": "spine01",
-    "peerIfname": "swp1", "description": "Cumulus Linux version 4.3.0 running on QEMU
-    Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.21", "timestamp": 1616352404234},
-    {"namespace": "ospf-single", "hostname": "leaf01", "ifname": "swp2", "peerHostname":
-    "spine02", "peerIfname": "swp1", "description": "Cumulus Linux version 4.3.0 running
-    on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.22", "timestamp":
-    1616352404234}, {"namespace": "ospf-single", "hostname": "spine02", "ifname":
-    "swp6", "peerHostname": "exit01", "peerIfname": "swp2", "description": "Cumulus
-    Linux version 4.3.0 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP":
-    "10.0.0.101", "timestamp": 1616352404297}, {"namespace": "ospf-single", "hostname":
-    "spine02", "ifname": "swp5", "peerHostname": "exit02", "peerIfname": "swp2", "description":
-    "Cumulus Linux version 4.3.0 running on QEMU Standard PC (i440FX + PIIX, 1996)",
-    "mgmtIP": "10.0.0.102", "timestamp": 1616352404297}, {"namespace": "ospf-single",
-    "hostname": "spine02", "ifname": "swp1", "peerHostname": "leaf01", "peerIfname":
-    "swp2", "description": "Cumulus Linux version 4.3.0 running on QEMU Standard PC
-    (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.11", "timestamp": 1616352404297}, {"namespace":
-    "ospf-single", "hostname": "spine02", "ifname": "swp2", "peerHostname": "leaf02",
-    "peerIfname": "swp2", "description": "Cumulus Linux version 4.3.0 running on QEMU
-    Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.12", "timestamp": 1616352404297},
-    {"namespace": "ospf-single", "hostname": "spine02", "ifname": "swp3", "peerHostname":
-    "leaf03", "peerIfname": "swp2", "description": "Cumulus Linux version 4.3.0 running
-    on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.13", "timestamp":
-    1616352404297}, {"namespace": "ospf-single", "hostname": "spine02", "ifname":
-    "swp4", "peerHostname": "leaf04", "peerIfname": "swp2", "description": "Cumulus
-    Linux version 4.3.0 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP":
-    "10.0.0.14", "timestamp": 1616352404297}, {"namespace": "ospf-single", "hostname":
-    "exit01", "ifname": "swp1", "peerHostname": "spine01", "peerIfname": "swp6", "description":
-    "Cumulus Linux version 4.3.0 running on QEMU Standard PC (i440FX + PIIX, 1996)",
-    "mgmtIP": "10.0.0.21", "timestamp": 1616352404431}, {"namespace": "ospf-single",
-    "hostname": "exit01", "ifname": "swp4", "peerHostname": "exit01", "peerIfname":
-    "swp3", "description": "Cumulus Linux version 4.3.0 running on QEMU Standard PC
-    (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.101", "timestamp": 1616352404431}, {"namespace":
-    "ospf-single", "hostname": "exit01", "ifname": "swp3", "peerHostname": "exit01",
-    "peerIfname": "swp4", "description": "Cumulus Linux version 4.3.0 running on QEMU
-    Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.101", "timestamp": 1616352404431},
-    {"namespace": "ospf-single", "hostname": "exit01", "ifname": "swp2", "peerHostname":
-    "spine02", "peerIfname": "swp6", "description": "Cumulus Linux version 4.3.0 running
-    on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.22", "timestamp":
-    1616352404431}, {"namespace": "ospf-single", "hostname": "leaf03", "ifname": "swp2",
-    "peerHostname": "spine02", "peerIfname": "swp3", "description": "Cumulus Linux
-    version 4.3.0 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.22",
-    "timestamp": 1616352404640}, {"namespace": "ospf-single", "hostname": "spine01",
-    "ifname": "swp2", "peerHostname": "leaf02", "peerIfname": "swp1", "description":
-    "Cumulus Linux version 4.3.0 running on QEMU Standard PC (i440FX + PIIX, 1996)",
-    "mgmtIP": "10.0.0.12", "timestamp": 1616352404640}, {"namespace": "ospf-single",
-    "hostname": "spine01", "ifname": "swp3", "peerHostname": "leaf03", "peerIfname":
+    "hostname": "leaf01", "ifname": "swp1", "peerHostname": "spine01", "peerIfname":
     "swp1", "description": "Cumulus Linux version 4.3.0 running on QEMU Standard PC
-    (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.13", "timestamp": 1616352404640}, {"namespace":
-    "ospf-single", "hostname": "spine01", "ifname": "swp4", "peerHostname": "leaf04",
+    (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.21", "timestamp": 1616352404234}, {"namespace":
+    "ospf-single", "hostname": "leaf01", "ifname": "swp2", "peerHostname": "spine02",
     "peerIfname": "swp1", "description": "Cumulus Linux version 4.3.0 running on QEMU
-    Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.14", "timestamp": 1616352404640},
-    {"namespace": "ospf-single", "hostname": "spine01", "ifname": "swp5", "peerHostname":
-    "exit02", "peerIfname": "swp1", "description": "Cumulus Linux version 4.3.0 running
-    on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.102", "timestamp":
-    1616352404640}, {"namespace": "ospf-single", "hostname": "spine01", "ifname":
-    "swp6", "peerHostname": "exit01", "peerIfname": "swp1", "description": "Cumulus
+    Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.22", "timestamp": 1616352404234},
+    {"namespace": "ospf-single", "hostname": "spine02", "ifname": "swp6", "peerHostname":
+    "exit01", "peerIfname": "swp2", "description": "Cumulus Linux version 4.3.0 running
+    on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.101", "timestamp":
+    1616352404297}, {"namespace": "ospf-single", "hostname": "spine02", "ifname":
+    "swp5", "peerHostname": "exit02", "peerIfname": "swp2", "description": "Cumulus
     Linux version 4.3.0 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP":
-    "10.0.0.101", "timestamp": 1616352404640}, {"namespace": "ospf-single", "hostname":
-    "spine01", "ifname": "swp1", "peerHostname": "leaf01", "peerIfname": "swp1", "description":
+    "10.0.0.102", "timestamp": 1616352404297}, {"namespace": "ospf-single", "hostname":
+    "spine02", "ifname": "swp1", "peerHostname": "leaf01", "peerIfname": "swp2", "description":
     "Cumulus Linux version 4.3.0 running on QEMU Standard PC (i440FX + PIIX, 1996)",
-    "mgmtIP": "10.0.0.11", "timestamp": 1616352404640}, {"namespace": "ospf-single",
-    "hostname": "leaf03", "ifname": "swp1", "peerHostname": "spine01", "peerIfname":
-    "swp3", "description": "Cumulus Linux version 4.3.0 running on QEMU Standard PC
-    (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.21", "timestamp": 1616352404640}, {"namespace":
-    "dual-evpn", "hostname": "edge01", "ifname": "eth1", "peerHostname": "exit01",
+    "mgmtIP": "10.0.0.11", "timestamp": 1616352404297}, {"namespace": "ospf-single",
+    "hostname": "spine02", "ifname": "swp2", "peerHostname": "leaf02", "peerIfname":
+    "swp2", "description": "Cumulus Linux version 4.3.0 running on QEMU Standard PC
+    (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.12", "timestamp": 1616352404297}, {"namespace":
+    "ospf-single", "hostname": "spine02", "ifname": "swp3", "peerHostname": "leaf03",
+    "peerIfname": "swp2", "description": "Cumulus Linux version 4.3.0 running on QEMU
+    Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.13", "timestamp": 1616352404297},
+    {"namespace": "ospf-single", "hostname": "spine02", "ifname": "swp4", "peerHostname":
+    "leaf04", "peerIfname": "swp2", "description": "Cumulus Linux version 4.3.0 running
+    on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.14", "timestamp":
+    1616352404297}, {"namespace": "ospf-single", "hostname": "exit01", "ifname": "swp1",
+    "peerHostname": "spine01", "peerIfname": "swp6", "description": "Cumulus Linux
+    version 4.3.0 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.21",
+    "timestamp": 1616352404431}, {"namespace": "ospf-single", "hostname": "exit01",
+    "ifname": "swp4", "peerHostname": "exit01", "peerIfname": "swp3", "description":
+    "Cumulus Linux version 4.3.0 running on QEMU Standard PC (i440FX + PIIX, 1996)",
+    "mgmtIP": "10.0.0.101", "timestamp": 1616352404431}, {"namespace": "ospf-single",
+    "hostname": "exit01", "ifname": "swp3", "peerHostname": "exit01", "peerIfname":
+    "swp4", "description": "Cumulus Linux version 4.3.0 running on QEMU Standard PC
+    (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.101", "timestamp": 1616352404431}, {"namespace":
+    "ospf-single", "hostname": "exit01", "ifname": "swp2", "peerHostname": "spine02",
+    "peerIfname": "swp6", "description": "Cumulus Linux version 4.3.0 running on QEMU
+    Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.22", "timestamp": 1616352404431},
+    {"namespace": "ospf-single", "hostname": "spine01", "ifname": "swp2", "peerHostname":
+    "leaf02", "peerIfname": "swp1", "description": "Cumulus Linux version 4.3.0 running
+    on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.12", "timestamp":
+    1616352404640}, {"namespace": "ospf-single", "hostname": "leaf03", "ifname": "swp1",
+    "peerHostname": "spine01", "peerIfname": "swp3", "description": "Cumulus Linux
+    version 4.3.0 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.21",
+    "timestamp": 1616352404640}, {"namespace": "ospf-single", "hostname": "spine01",
+    "ifname": "swp3", "peerHostname": "leaf03", "peerIfname": "swp1", "description":
+    "Cumulus Linux version 4.3.0 running on QEMU Standard PC (i440FX + PIIX, 1996)",
+    "mgmtIP": "10.0.0.13", "timestamp": 1616352404640}, {"namespace": "ospf-single",
+    "hostname": "spine01", "ifname": "swp4", "peerHostname": "leaf04", "peerIfname":
+    "swp1", "description": "Cumulus Linux version 4.3.0 running on QEMU Standard PC
+    (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.14", "timestamp": 1616352404640}, {"namespace":
+    "ospf-single", "hostname": "spine01", "ifname": "swp5", "peerHostname": "exit02",
+    "peerIfname": "swp1", "description": "Cumulus Linux version 4.3.0 running on QEMU
+    Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.102", "timestamp": 1616352404640},
+    {"namespace": "ospf-single", "hostname": "spine01", "ifname": "swp6", "peerHostname":
+    "exit01", "peerIfname": "swp1", "description": "Cumulus Linux version 4.3.0 running
+    on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.101", "timestamp":
+    1616352404640}, {"namespace": "ospf-single", "hostname": "spine01", "ifname":
+    "swp1", "peerHostname": "leaf01", "peerIfname": "swp1", "description": "Cumulus
+    Linux version 4.3.0 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP":
+    "10.0.0.11", "timestamp": 1616352404640}, {"namespace": "ospf-single", "hostname":
+    "leaf03", "ifname": "swp2", "peerHostname": "spine02", "peerIfname": "swp3", "description":
+    "Cumulus Linux version 4.3.0 running on QEMU Standard PC (i440FX + PIIX, 1996)",
+    "mgmtIP": "10.0.0.22", "timestamp": 1616352404640}, {"namespace": "dual-evpn",
+    "hostname": "edge01", "ifname": "eth1", "peerHostname": "exit01", "peerIfname":
+    "swp5", "description": "Cumulus Linux version 3.7.9 running on QEMU Standard PC
+    (i440FX + PIIX, 1996)", "mgmtIP": "", "timestamp": 1616644822254}, {"namespace":
+    "dual-evpn", "hostname": "edge01", "ifname": "eth2", "peerHostname": "exit02",
     "peerIfname": "swp5", "description": "Cumulus Linux version 3.7.9 running on QEMU
     Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "", "timestamp": 1616644822254},
-    {"namespace": "dual-evpn", "hostname": "edge01", "ifname": "eth2", "peerHostname":
-    "exit02", "peerIfname": "swp5", "description": "Cumulus Linux version 3.7.9 running
-    on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "", "timestamp": 1616644822254},
-    {"namespace": "dual-evpn", "hostname": "spine02", "ifname": "swp6", "peerHostname":
-    "exit01", "peerIfname": "swp2", "description": "Cumulus Linux version 3.7.9 running
-    on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.101", "timestamp":
-    1616644822426}, {"namespace": "dual-evpn", "hostname": "spine02", "ifname": "swp4",
-    "peerHostname": "leaf04", "peerIfname": "swp2", "description": "Cumulus Linux
-    version 3.7.9 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.14",
+    {"namespace": "dual-evpn", "hostname": "spine02", "ifname": "swp1", "peerHostname":
+    "leaf01", "peerIfname": "swp2", "description": "Cumulus Linux version 3.7.9 running
+    on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.11", "timestamp":
+    1616644822426}, {"namespace": "dual-evpn", "hostname": "spine02", "ifname": "swp2",
+    "peerHostname": "leaf02", "peerIfname": "swp2", "description": "Cumulus Linux
+    version 3.7.9 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.12",
     "timestamp": 1616644822426}, {"namespace": "dual-evpn", "hostname": "spine02",
     "ifname": "swp3", "peerHostname": "leaf03", "peerIfname": "swp2", "description":
     "Cumulus Linux version 3.7.9 running on QEMU Standard PC (i440FX + PIIX, 1996)",
     "mgmtIP": "10.0.0.13", "timestamp": 1616644822426}, {"namespace": "dual-evpn",
-    "hostname": "spine02", "ifname": "swp2", "peerHostname": "leaf02", "peerIfname":
+    "hostname": "spine02", "ifname": "swp4", "peerHostname": "leaf04", "peerIfname":
     "swp2", "description": "Cumulus Linux version 3.7.9 running on QEMU Standard PC
-    (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.12", "timestamp": 1616644822426}, {"namespace":
+    (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.14", "timestamp": 1616644822426}, {"namespace":
     "dual-evpn", "hostname": "spine02", "ifname": "swp5", "peerHostname": "exit02",
     "peerIfname": "swp2", "description": "Cumulus Linux version 3.7.9 running on QEMU
     Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.102", "timestamp": 1616644822426},
-    {"namespace": "dual-evpn", "hostname": "spine02", "ifname": "swp1", "peerHostname":
-    "leaf01", "peerIfname": "swp2", "description": "Cumulus Linux version 3.7.9 running
-    on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.11", "timestamp":
-    1616644822426}, {"namespace": "dual-evpn", "hostname": "leaf03", "ifname": "swp4",
-    "peerHostname": "leaf04", "peerIfname": "swp4", "description": "Cumulus Linux
-    version 3.7.9 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.14",
+    {"namespace": "dual-evpn", "hostname": "spine02", "ifname": "swp6", "peerHostname":
+    "exit01", "peerIfname": "swp2", "description": "Cumulus Linux version 3.7.9 running
+    on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.101", "timestamp":
+    1616644822426}, {"namespace": "dual-evpn", "hostname": "leaf03", "ifname": "swp2",
+    "peerHostname": "spine02", "peerIfname": "swp3", "description": "Cumulus Linux
+    version 3.7.9 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.22",
     "timestamp": 1616644822465}, {"namespace": "dual-evpn", "hostname": "leaf03",
-    "ifname": "swp1", "peerHostname": "spine01", "peerIfname": "swp3", "description":
+    "ifname": "swp4", "peerHostname": "leaf04", "peerIfname": "swp4", "description":
     "Cumulus Linux version 3.7.9 running on QEMU Standard PC (i440FX + PIIX, 1996)",
-    "mgmtIP": "10.0.0.21", "timestamp": 1616644822465}, {"namespace": "dual-evpn",
-    "hostname": "leaf03", "ifname": "swp3", "peerHostname": "leaf04", "peerIfname":
+    "mgmtIP": "10.0.0.14", "timestamp": 1616644822465}, {"namespace": "dual-evpn",
+    "hostname": "leaf03", "ifname": "swp1", "peerHostname": "spine01", "peerIfname":
     "swp3", "description": "Cumulus Linux version 3.7.9 running on QEMU Standard PC
-    (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.14", "timestamp": 1616644822465}, {"namespace":
-    "dual-evpn", "hostname": "leaf03", "ifname": "swp2", "peerHostname": "spine02",
+    (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.21", "timestamp": 1616644822465}, {"namespace":
+    "dual-evpn", "hostname": "leaf03", "ifname": "swp3", "peerHostname": "leaf04",
     "peerIfname": "swp3", "description": "Cumulus Linux version 3.7.9 running on QEMU
-    Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.22", "timestamp": 1616644822465},
-    {"namespace": "dual-evpn", "hostname": "leaf04", "ifname": "swp2", "peerHostname":
-    "spine02", "peerIfname": "swp4", "description": "Cumulus Linux version 3.7.9 running
-    on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.22", "timestamp":
-    1616644822499}, {"namespace": "dual-evpn", "hostname": "leaf04", "ifname": "swp1",
-    "peerHostname": "spine01", "peerIfname": "swp4", "description": "Cumulus Linux
-    version 3.7.9 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.21",
+    Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.14", "timestamp": 1616644822465},
+    {"namespace": "dual-evpn", "hostname": "leaf04", "ifname": "swp1", "peerHostname":
+    "spine01", "peerIfname": "swp4", "description": "Cumulus Linux version 3.7.9 running
+    on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.21", "timestamp":
+    1616644822499}, {"namespace": "dual-evpn", "hostname": "leaf04", "ifname": "swp2",
+    "peerHostname": "spine02", "peerIfname": "swp4", "description": "Cumulus Linux
+    version 3.7.9 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.22",
     "timestamp": 1616644822499}, {"namespace": "dual-evpn", "hostname": "leaf04",
     "ifname": "swp3", "peerHostname": "leaf03", "peerIfname": "swp3", "description":
     "Cumulus Linux version 3.7.9 running on QEMU Standard PC (i440FX + PIIX, 1996)",
@@ -178,9 +176,9 @@ tests:
     "dual-evpn", "hostname": "exit01", "ifname": "swp6", "peerHostname": "internet",
     "peerIfname": "swp1", "description": "Cumulus Linux version 3.7.9 running on QEMU
     Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.253", "timestamp": 1616644822559},
-    {"namespace": "dual-evpn", "hostname": "exit02", "ifname": "swp6", "peerHostname":
-    "internet", "peerIfname": "swp2", "description": "Cumulus Linux version 3.7.9
-    running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.253", "timestamp":
+    {"namespace": "dual-evpn", "hostname": "exit02", "ifname": "swp2", "peerHostname":
+    "spine02", "peerIfname": "swp5", "description": "Cumulus Linux version 3.7.9 running
+    on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.22", "timestamp":
     1616644822578}, {"namespace": "dual-evpn", "hostname": "internet", "ifname": "swp2",
     "peerHostname": "exit02", "peerIfname": "swp6", "description": "Cumulus Linux
     version 3.7.9 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.102",
@@ -188,210 +186,209 @@ tests:
     "ifname": "swp1", "peerHostname": "exit01", "peerIfname": "swp6", "description":
     "Cumulus Linux version 3.7.9 running on QEMU Standard PC (i440FX + PIIX, 1996)",
     "mgmtIP": "10.0.0.101", "timestamp": 1616644822578}, {"namespace": "dual-evpn",
-    "hostname": "exit02", "ifname": "swp5", "peerHostname": "edge01", "peerIfname":
-    "eth2", "description": "Ubuntu 16.04.6 LTS Linux 4.4.0-169-generic #198-Ubuntu
-    SMP Tue Nov 12 10:38:00 UTC 2019 x86_64", "mgmtIP": "10.0.0.100", "timestamp":
-    1616644822578}, {"namespace": "dual-evpn", "hostname": "exit02", "ifname": "swp2",
-    "peerHostname": "spine02", "peerIfname": "swp5", "description": "Cumulus Linux
-    version 3.7.9 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.22",
+    "hostname": "exit02", "ifname": "swp6", "peerHostname": "internet", "peerIfname":
+    "swp2", "description": "Cumulus Linux version 3.7.9 running on QEMU Standard PC
+    (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.253", "timestamp": 1616644822578}, {"namespace":
+    "dual-evpn", "hostname": "exit02", "ifname": "swp5", "peerHostname": "edge01",
+    "peerIfname": "eth2", "description": "Ubuntu 16.04.6 LTS Linux 4.4.0-169-generic
+    #198-Ubuntu SMP Tue Nov 12 10:38:00 UTC 2019 x86_64", "mgmtIP": "10.0.0.100",
     "timestamp": 1616644822578}, {"namespace": "dual-evpn", "hostname": "exit02",
     "ifname": "swp1", "peerHostname": "spine01", "peerIfname": "swp5", "description":
     "Cumulus Linux version 3.7.9 running on QEMU Standard PC (i440FX + PIIX, 1996)",
     "mgmtIP": "10.0.0.21", "timestamp": 1616644822578}, {"namespace": "dual-evpn",
-    "hostname": "leaf01", "ifname": "swp2", "peerHostname": "spine02", "peerIfname":
+    "hostname": "leaf01", "ifname": "swp1", "peerHostname": "spine01", "peerIfname":
     "swp1", "description": "Cumulus Linux version 3.7.9 running on QEMU Standard PC
-    (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.22", "timestamp": 1616644822694}, {"namespace":
-    "dual-evpn", "hostname": "leaf01", "ifname": "swp1", "peerHostname": "spine01",
-    "peerIfname": "swp1", "description": "Cumulus Linux version 3.7.9 running on QEMU
-    Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.21", "timestamp": 1616644822694},
-    {"namespace": "dual-evpn", "hostname": "leaf01", "ifname": "swp4", "peerHostname":
-    "leaf02", "peerIfname": "swp4", "description": "Cumulus Linux version 3.7.9 running
+    (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.21", "timestamp": 1616644822694}, {"namespace":
+    "dual-evpn", "hostname": "leaf01", "ifname": "swp4", "peerHostname": "leaf02",
+    "peerIfname": "swp4", "description": "Cumulus Linux version 3.7.9 running on QEMU
+    Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.12", "timestamp": 1616644822694},
+    {"namespace": "dual-evpn", "hostname": "leaf01", "ifname": "swp3", "peerHostname":
+    "leaf02", "peerIfname": "swp3", "description": "Cumulus Linux version 3.7.9 running
     on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.12", "timestamp":
-    1616644822694}, {"namespace": "dual-evpn", "hostname": "leaf01", "ifname": "swp3",
-    "peerHostname": "leaf02", "peerIfname": "swp3", "description": "Cumulus Linux
-    version 3.7.9 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.12",
+    1616644822694}, {"namespace": "dual-evpn", "hostname": "leaf01", "ifname": "swp2",
+    "peerHostname": "spine02", "peerIfname": "swp1", "description": "Cumulus Linux
+    version 3.7.9 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.22",
     "timestamp": 1616644822694}, {"namespace": "dual-evpn", "hostname": "leaf02",
-    "ifname": "swp3", "peerHostname": "leaf01", "peerIfname": "swp3", "description":
+    "ifname": "swp2", "peerHostname": "spine02", "peerIfname": "swp2", "description":
     "Cumulus Linux version 3.7.9 running on QEMU Standard PC (i440FX + PIIX, 1996)",
-    "mgmtIP": "10.0.0.11", "timestamp": 1616644822769}, {"namespace": "dual-evpn",
-    "hostname": "leaf02", "ifname": "swp1", "peerHostname": "spine01", "peerIfname":
-    "swp2", "description": "Cumulus Linux version 3.7.9 running on QEMU Standard PC
-    (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.21", "timestamp": 1616644822769}, {"namespace":
-    "dual-evpn", "hostname": "leaf02", "ifname": "swp2", "peerHostname": "spine02",
+    "mgmtIP": "10.0.0.22", "timestamp": 1616644822769}, {"namespace": "dual-evpn",
+    "hostname": "leaf02", "ifname": "swp3", "peerHostname": "leaf01", "peerIfname":
+    "swp3", "description": "Cumulus Linux version 3.7.9 running on QEMU Standard PC
+    (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.11", "timestamp": 1616644822769}, {"namespace":
+    "dual-evpn", "hostname": "leaf02", "ifname": "swp1", "peerHostname": "spine01",
     "peerIfname": "swp2", "description": "Cumulus Linux version 3.7.9 running on QEMU
-    Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.22", "timestamp": 1616644822769},
+    Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.21", "timestamp": 1616644822769},
     {"namespace": "dual-evpn", "hostname": "leaf02", "ifname": "swp4", "peerHostname":
     "leaf01", "peerIfname": "swp4", "description": "Cumulus Linux version 3.7.9 running
     on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.11", "timestamp":
-    1616644822769}, {"namespace": "ospf-ibgp", "hostname": "edge01", "ifname": "eth2",
-    "peerHostname": "exit02", "peerIfname": "swp5", "description": "Cumulus Linux
+    1616644822769}, {"namespace": "ospf-ibgp", "hostname": "edge01", "ifname": "eth1",
+    "peerHostname": "exit01", "peerIfname": "swp5", "description": "Cumulus Linux
     version 4.2.1 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "",
     "timestamp": 1616681582294}, {"namespace": "ospf-ibgp", "hostname": "edge01",
-    "ifname": "eth1", "peerHostname": "exit01", "peerIfname": "swp5", "description":
+    "ifname": "eth2", "peerHostname": "exit02", "peerIfname": "swp5", "description":
     "Cumulus Linux version 4.2.1 running on QEMU Standard PC (i440FX + PIIX, 1996)",
     "mgmtIP": "", "timestamp": 1616681582294}, {"namespace": "ospf-ibgp", "hostname":
-    "exit01", "ifname": "swp1", "peerHostname": "spine01", "peerIfname": "swp6", "description":
-    "Cumulus Linux version 4.2.1 running on QEMU Standard PC (i440FX + PIIX, 1996)",
-    "mgmtIP": "10.0.0.22", "timestamp": 1616681582727}, {"namespace": "ospf-ibgp",
-    "hostname": "exit01", "ifname": "swp2", "peerHostname": "spine02", "peerIfname":
-    "swp6", "description": "Cumulus Linux version 4.2.1 running on QEMU Standard PC
-    (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.21", "timestamp": 1616681582727}, {"namespace":
-    "ospf-ibgp", "hostname": "exit01", "ifname": "swp5", "peerHostname": "edge01",
-    "peerIfname": "eth1", "description": "Ubuntu 16.04.7 LTS Linux 4.4.0-190-generic
-    #220-Ubuntu SMP Fri Aug 28 23:02:15 UTC 2020 x86_64", "mgmtIP": "10.0.0.100",
-    "timestamp": 1616681582727}, {"namespace": "ospf-ibgp", "hostname": "exit01",
-    "ifname": "swp6", "peerHostname": "internet", "peerIfname": "swp1", "description":
-    "Cumulus Linux version 4.2.1 running on QEMU Standard PC (i440FX + PIIX, 1996)",
-    "mgmtIP": "10.0.0.253", "timestamp": 1616681582727}, {"namespace": "ospf-ibgp",
-    "hostname": "leaf02", "ifname": "swp3", "peerHostname": "leaf01", "peerIfname":
-    "swp3", "description": "Cumulus Linux version 4.2.1 running on QEMU Standard PC
-    (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.11", "timestamp": 1616681583204}, {"namespace":
+    "exit01", "ifname": "swp6", "peerHostname": "internet", "peerIfname": "swp1",
+    "description": "Cumulus Linux version 4.2.1 running on QEMU Standard PC (i440FX
+    + PIIX, 1996)", "mgmtIP": "10.0.0.253", "timestamp": 1616681582727}, {"namespace":
+    "ospf-ibgp", "hostname": "exit01", "ifname": "swp1", "peerHostname": "spine01",
+    "peerIfname": "swp6", "description": "Cumulus Linux version 4.2.1 running on QEMU
+    Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.22", "timestamp": 1616681582727},
+    {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname": "swp2", "peerHostname":
+    "spine02", "peerIfname": "swp6", "description": "Cumulus Linux version 4.2.1 running
+    on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.21", "timestamp":
+    1616681582727}, {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname": "swp5",
+    "peerHostname": "edge01", "peerIfname": "eth1", "description": "Ubuntu 16.04.7
+    LTS Linux 4.4.0-190-generic #220-Ubuntu SMP Fri Aug 28 23:02:15 UTC 2020 x86_64",
+    "mgmtIP": "10.0.0.100", "timestamp": 1616681582727}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf02", "ifname": "swp2", "peerHostname": "spine02", "peerIfname":
+    "swp2", "description": "Cumulus Linux version 4.2.1 running on QEMU Standard PC
+    (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.21", "timestamp": 1616681583204}, {"namespace":
     "ospf-ibgp", "hostname": "leaf02", "ifname": "swp4", "peerHostname": "leaf01",
     "peerIfname": "swp4", "description": "Cumulus Linux version 4.2.1 running on QEMU
     Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.11", "timestamp": 1616681583204},
-    {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "swp2", "peerHostname":
-    "spine02", "peerIfname": "swp2", "description": "Cumulus Linux version 4.2.1 running
-    on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.21", "timestamp":
+    {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "swp3", "peerHostname":
+    "leaf01", "peerIfname": "swp3", "description": "Cumulus Linux version 4.2.1 running
+    on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.11", "timestamp":
     1616681583204}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "swp1",
     "peerHostname": "spine01", "peerIfname": "swp2", "description": "Cumulus Linux
     version 4.2.1 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.22",
     "timestamp": 1616681583204}, {"namespace": "ospf-ibgp", "hostname": "leaf03",
-    "ifname": "swp4", "peerHostname": "leaf04", "peerIfname": "swp4", "description":
+    "ifname": "swp3", "peerHostname": "leaf04", "peerIfname": "swp3", "description":
     "Cumulus Linux version 4.2.1 running on QEMU Standard PC (i440FX + PIIX, 1996)",
     "mgmtIP": "10.0.0.14", "timestamp": 1616681583222}, {"namespace": "ospf-ibgp",
-    "hostname": "leaf03", "ifname": "swp3", "peerHostname": "leaf04", "peerIfname":
+    "hostname": "leaf03", "ifname": "swp2", "peerHostname": "spine02", "peerIfname":
     "swp3", "description": "Cumulus Linux version 4.2.1 running on QEMU Standard PC
-    (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.14", "timestamp": 1616681583222}, {"namespace":
-    "ospf-ibgp", "hostname": "leaf03", "ifname": "swp2", "peerHostname": "spine02",
+    (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.21", "timestamp": 1616681583222}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf03", "ifname": "swp1", "peerHostname": "spine01",
     "peerIfname": "swp3", "description": "Cumulus Linux version 4.2.1 running on QEMU
-    Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.21", "timestamp": 1616681583222},
-    {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "swp1", "peerHostname":
-    "spine01", "peerIfname": "swp3", "description": "Cumulus Linux version 4.2.1 running
-    on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.22", "timestamp":
-    1616681583222}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "swp1",
-    "peerHostname": "spine01", "peerIfname": "swp5", "description": "Cumulus Linux
-    version 4.2.1 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.22",
-    "timestamp": 1616681583222}, {"namespace": "ospf-ibgp", "hostname": "exit02",
-    "ifname": "swp6", "peerHostname": "internet", "peerIfname": "swp2", "description":
-    "Cumulus Linux version 4.2.1 running on QEMU Standard PC (i440FX + PIIX, 1996)",
-    "mgmtIP": "10.0.0.253", "timestamp": 1616681583222}, {"namespace": "ospf-ibgp",
+    Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.22", "timestamp": 1616681583222},
+    {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "swp6", "peerHostname":
+    "internet", "peerIfname": "swp2", "description": "Cumulus Linux version 4.2.1
+    running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.253", "timestamp":
+    1616681583222}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "swp5",
+    "peerHostname": "edge01", "peerIfname": "eth2", "description": "Ubuntu 16.04.7
+    LTS Linux 4.4.0-190-generic #220-Ubuntu SMP Fri Aug 28 23:02:15 UTC 2020 x86_64",
+    "mgmtIP": "10.0.0.100", "timestamp": 1616681583222}, {"namespace": "ospf-ibgp",
     "hostname": "exit02", "ifname": "swp2", "peerHostname": "spine02", "peerIfname":
     "swp5", "description": "Cumulus Linux version 4.2.1 running on QEMU Standard PC
     (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.21", "timestamp": 1616681583222}, {"namespace":
-    "ospf-ibgp", "hostname": "exit02", "ifname": "swp5", "peerHostname": "edge01",
-    "peerIfname": "eth2", "description": "Ubuntu 16.04.7 LTS Linux 4.4.0-190-generic
-    #220-Ubuntu SMP Fri Aug 28 23:02:15 UTC 2020 x86_64", "mgmtIP": "10.0.0.100",
-    "timestamp": 1616681583222}, {"namespace": "ospf-ibgp", "hostname": "spine01",
-    "ifname": "swp2", "peerHostname": "leaf02", "peerIfname": "swp1", "description":
-    "Cumulus Linux version 4.2.1 running on QEMU Standard PC (i440FX + PIIX, 1996)",
-    "mgmtIP": "10.0.0.12", "timestamp": 1616681583330}, {"namespace": "ospf-ibgp",
-    "hostname": "internet", "ifname": "swp1", "peerHostname": "exit01", "peerIfname":
-    "swp6", "description": "Cumulus Linux version 4.2.1 running on QEMU Standard PC
-    (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.101", "timestamp": 1616681583330}, {"namespace":
-    "ospf-ibgp", "hostname": "internet", "ifname": "swp2", "peerHostname": "exit02",
-    "peerIfname": "swp6", "description": "Cumulus Linux version 4.2.1 running on QEMU
-    Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.102", "timestamp": 1616681583330},
-    {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp6", "peerHostname":
-    "exit01", "peerIfname": "swp1", "description": "Cumulus Linux version 4.2.1 running
-    on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.101", "timestamp":
-    1616681583330}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp5",
-    "peerHostname": "exit02", "peerIfname": "swp1", "description": "Cumulus Linux
-    version 4.2.1 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.102",
-    "timestamp": 1616681583330}, {"namespace": "ospf-ibgp", "hostname": "spine01",
-    "ifname": "swp4", "peerHostname": "leaf04", "peerIfname": "swp1", "description":
-    "Cumulus Linux version 4.2.1 running on QEMU Standard PC (i440FX + PIIX, 1996)",
-    "mgmtIP": "10.0.0.14", "timestamp": 1616681583330}, {"namespace": "ospf-ibgp",
-    "hostname": "spine01", "ifname": "swp3", "peerHostname": "leaf03", "peerIfname":
-    "swp1", "description": "Cumulus Linux version 4.2.1 running on QEMU Standard PC
-    (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.13", "timestamp": 1616681583330}, {"namespace":
-    "ospf-ibgp", "hostname": "spine01", "ifname": "swp1", "peerHostname": "leaf01",
-    "peerIfname": "swp1", "description": "Cumulus Linux version 4.2.1 running on QEMU
-    Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.11", "timestamp": 1616681583330},
-    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "swp3", "peerHostname":
-    "leaf02", "peerIfname": "swp3", "description": "Cumulus Linux version 4.2.1 running
-    on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.12", "timestamp":
-    1616681583395}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "swp1",
-    "peerHostname": "spine01", "peerIfname": "swp1", "description": "Cumulus Linux
-    version 4.2.1 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.22",
-    "timestamp": 1616681583395}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
-    "ifname": "swp2", "peerHostname": "spine02", "peerIfname": "swp1", "description":
-    "Cumulus Linux version 4.2.1 running on QEMU Standard PC (i440FX + PIIX, 1996)",
-    "mgmtIP": "10.0.0.21", "timestamp": 1616681583395}, {"namespace": "ospf-ibgp",
-    "hostname": "leaf01", "ifname": "swp4", "peerHostname": "leaf02", "peerIfname":
-    "swp4", "description": "Cumulus Linux version 4.2.1 running on QEMU Standard PC
-    (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.12", "timestamp": 1616681583395}, {"namespace":
-    "ospf-ibgp", "hostname": "leaf04", "ifname": "swp1", "peerHostname": "spine01",
+    "ospf-ibgp", "hostname": "leaf03", "ifname": "swp4", "peerHostname": "leaf04",
     "peerIfname": "swp4", "description": "Cumulus Linux version 4.2.1 running on QEMU
-    Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.22", "timestamp": 1616681583503},
-    {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "swp4", "peerHostname":
-    "leaf03", "peerIfname": "swp4", "description": "Cumulus Linux version 4.2.1 running
+    Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.14", "timestamp": 1616681583222},
+    {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "swp1", "peerHostname":
+    "spine01", "peerIfname": "swp5", "description": "Cumulus Linux version 4.2.1 running
+    on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.22", "timestamp":
+    1616681583222}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp1",
+    "peerHostname": "leaf01", "peerIfname": "swp1", "description": "Cumulus Linux
+    version 4.2.1 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.11",
+    "timestamp": 1616681583330}, {"namespace": "ospf-ibgp", "hostname": "internet",
+    "ifname": "swp1", "peerHostname": "exit01", "peerIfname": "swp6", "description":
+    "Cumulus Linux version 4.2.1 running on QEMU Standard PC (i440FX + PIIX, 1996)",
+    "mgmtIP": "10.0.0.101", "timestamp": 1616681583330}, {"namespace": "ospf-ibgp",
+    "hostname": "internet", "ifname": "swp2", "peerHostname": "exit02", "peerIfname":
+    "swp6", "description": "Cumulus Linux version 4.2.1 running on QEMU Standard PC
+    (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.102", "timestamp": 1616681583330}, {"namespace":
+    "ospf-ibgp", "hostname": "spine01", "ifname": "swp6", "peerHostname": "exit01",
+    "peerIfname": "swp1", "description": "Cumulus Linux version 4.2.1 running on QEMU
+    Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.101", "timestamp": 1616681583330},
+    {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp5", "peerHostname":
+    "exit02", "peerIfname": "swp1", "description": "Cumulus Linux version 4.2.1 running
+    on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.102", "timestamp":
+    1616681583330}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp4",
+    "peerHostname": "leaf04", "peerIfname": "swp1", "description": "Cumulus Linux
+    version 4.2.1 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.14",
+    "timestamp": 1616681583330}, {"namespace": "ospf-ibgp", "hostname": "spine01",
+    "ifname": "swp3", "peerHostname": "leaf03", "peerIfname": "swp1", "description":
+    "Cumulus Linux version 4.2.1 running on QEMU Standard PC (i440FX + PIIX, 1996)",
+    "mgmtIP": "10.0.0.13", "timestamp": 1616681583330}, {"namespace": "ospf-ibgp",
+    "hostname": "spine01", "ifname": "swp2", "peerHostname": "leaf02", "peerIfname":
+    "swp1", "description": "Cumulus Linux version 4.2.1 running on QEMU Standard PC
+    (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.12", "timestamp": 1616681583330}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf01", "ifname": "swp2", "peerHostname": "spine02",
+    "peerIfname": "swp1", "description": "Cumulus Linux version 4.2.1 running on QEMU
+    Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.21", "timestamp": 1616681583395},
+    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "swp1", "peerHostname":
+    "spine01", "peerIfname": "swp1", "description": "Cumulus Linux version 4.2.1 running
+    on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.22", "timestamp":
+    1616681583395}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "swp3",
+    "peerHostname": "leaf02", "peerIfname": "swp3", "description": "Cumulus Linux
+    version 4.2.1 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.12",
+    "timestamp": 1616681583395}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
+    "ifname": "swp4", "peerHostname": "leaf02", "peerIfname": "swp4", "description":
+    "Cumulus Linux version 4.2.1 running on QEMU Standard PC (i440FX + PIIX, 1996)",
+    "mgmtIP": "10.0.0.12", "timestamp": 1616681583395}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf04", "ifname": "swp1", "peerHostname": "spine01", "peerIfname":
+    "swp4", "description": "Cumulus Linux version 4.2.1 running on QEMU Standard PC
+    (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.22", "timestamp": 1616681583503}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf04", "ifname": "swp4", "peerHostname": "leaf03",
+    "peerIfname": "swp4", "description": "Cumulus Linux version 4.2.1 running on QEMU
+    Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.13", "timestamp": 1616681583503},
+    {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "swp3", "peerHostname":
+    "leaf03", "peerIfname": "swp3", "description": "Cumulus Linux version 4.2.1 running
     on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.13", "timestamp":
-    1616681583503}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "swp3",
-    "peerHostname": "leaf03", "peerIfname": "swp3", "description": "Cumulus Linux
-    version 4.2.1 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.13",
-    "timestamp": 1616681583503}, {"namespace": "ospf-ibgp", "hostname": "leaf04",
-    "ifname": "swp2", "peerHostname": "spine02", "peerIfname": "swp4", "description":
+    1616681583503}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "swp2",
+    "peerHostname": "spine02", "peerIfname": "swp4", "description": "Cumulus Linux
+    version 4.2.1 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.21",
+    "timestamp": 1616681583503}, {"namespace": "ospf-ibgp", "hostname": "spine02",
+    "ifname": "swp6", "peerHostname": "exit01", "peerIfname": "swp2", "description":
     "Cumulus Linux version 4.2.1 running on QEMU Standard PC (i440FX + PIIX, 1996)",
-    "mgmtIP": "10.0.0.21", "timestamp": 1616681583503}, {"namespace": "ospf-ibgp",
-    "hostname": "spine02", "ifname": "swp6", "peerHostname": "exit01", "peerIfname":
+    "mgmtIP": "10.0.0.101", "timestamp": 1616681583504}, {"namespace": "ospf-ibgp",
+    "hostname": "spine02", "ifname": "swp1", "peerHostname": "leaf01", "peerIfname":
     "swp2", "description": "Cumulus Linux version 4.2.1 running on QEMU Standard PC
-    (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.101", "timestamp": 1616681583504}, {"namespace":
-    "ospf-ibgp", "hostname": "spine02", "ifname": "swp1", "peerHostname": "leaf01",
+    (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.11", "timestamp": 1616681583504}, {"namespace":
+    "ospf-ibgp", "hostname": "spine02", "ifname": "swp2", "peerHostname": "leaf02",
     "peerIfname": "swp2", "description": "Cumulus Linux version 4.2.1 running on QEMU
-    Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.11", "timestamp": 1616681583504},
-    {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp2", "peerHostname":
-    "leaf02", "peerIfname": "swp2", "description": "Cumulus Linux version 4.2.1 running
-    on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.12", "timestamp":
-    1616681583504}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp3",
-    "peerHostname": "leaf03", "peerIfname": "swp2", "description": "Cumulus Linux
-    version 4.2.1 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.13",
+    Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.12", "timestamp": 1616681583504},
+    {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp3", "peerHostname":
+    "leaf03", "peerIfname": "swp2", "description": "Cumulus Linux version 4.2.1 running
+    on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.13", "timestamp":
+    1616681583504}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp4",
+    "peerHostname": "leaf04", "peerIfname": "swp2", "description": "Cumulus Linux
+    version 4.2.1 running on QEMU Standard PC (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.14",
     "timestamp": 1616681583504}, {"namespace": "ospf-ibgp", "hostname": "spine02",
-    "ifname": "swp4", "peerHostname": "leaf04", "peerIfname": "swp2", "description":
+    "ifname": "swp5", "peerHostname": "exit02", "peerIfname": "swp2", "description":
     "Cumulus Linux version 4.2.1 running on QEMU Standard PC (i440FX + PIIX, 1996)",
-    "mgmtIP": "10.0.0.14", "timestamp": 1616681583504}, {"namespace": "ospf-ibgp",
-    "hostname": "spine02", "ifname": "swp5", "peerHostname": "exit02", "peerIfname":
-    "swp2", "description": "Cumulus Linux version 4.2.1 running on QEMU Standard PC
-    (i440FX + PIIX, 1996)", "mgmtIP": "10.0.0.102", "timestamp": 1616681583504}]'
+    "mgmtIP": "10.0.0.102", "timestamp": 1616681583504}]'
 - command: lldp show --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: lldp show
-  output: '[{"hostname": "internet"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
-    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "exit02"}, {"hostname":
-    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "leaf01"},
-    {"hostname": "leaf01"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
-    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
-    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
-    "exit01"}, {"hostname": "leaf03"}, {"hostname": "spine01"}, {"hostname": "spine01"},
-    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
-    "spine01"}, {"hostname": "leaf03"}, {"hostname": "edge01"}, {"hostname": "edge01"},
+  output: '[{"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
     {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
-    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "leaf03"},
-    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
-    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
-    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
-    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "exit01"},
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "exit01"},
     {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
-    "exit02"}, {"hostname": "internet"}, {"hostname": "internet"}, {"hostname": "exit02"},
-    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "leaf01"}, {"hostname":
-    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"},
-    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
-    "edge01"}, {"hostname": "edge01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
-    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "leaf02"}, {"hostname":
-    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf03"},
-    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
-    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
-    {"hostname": "spine01"}, {"hostname": "internet"}, {"hostname": "internet"}, {"hostname":
+    "spine01"}, {"hostname": "leaf03"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "leaf03"}, {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname":
+    "internet"}, {"hostname": "internet"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "edge01"}, {"hostname":
+    "edge01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "leaf03"}, {"hostname": "exit02"}, {"hostname": "spine01"},
+    {"hostname": "internet"}, {"hostname": "internet"}, {"hostname": "spine01"}, {"hostname":
     "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
-    {"hostname": "spine01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
-    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
-    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "spine02"}, {"hostname":
-    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
-    {"hostname": "spine02"}]'
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}]'
 - command: lldp summarize --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: lldp summarize
-  output: '{"ospf-single": {"deviceCnt": 9, "nbrCnt": 29, "peerHostnameCnt": 29, "uniquePeerMgmtIPCnt":
-    9, "missingPeerInfoCnt": 1}, "dual-evpn": {"deviceCnt": 10, "nbrCnt": 40, "peerHostnameCnt":
+  output: '{"ospf-single": {"deviceCnt": 8, "nbrCnt": 28, "peerHostnameCnt": 28, "uniquePeerMgmtIPCnt":
+    8, "missingPeerInfoCnt": 0}, "dual-evpn": {"deviceCnt": 10, "nbrCnt": 40, "peerHostnameCnt":
     40, "uniquePeerMgmtIPCnt": 11, "missingPeerInfoCnt": 2}, "ospf-ibgp": {"deviceCnt":
     10, "nbrCnt": 40, "peerHostnameCnt": 40, "uniquePeerMgmtIPCnt": 11, "missingPeerInfoCnt":
     2}}'
@@ -410,7 +407,7 @@ tests:
   data-directory: tests/data/multidc/parquet-out/
   marks: lldp unique
   output: '[{"hostname": "edge01", "numRows": 4}, {"hostname": "internet", "numRows":
-    5}, {"hostname": "leaf01", "numRows": 10}, {"hostname": "leaf02", "numRows": 10},
+    4}, {"hostname": "leaf01", "numRows": 10}, {"hostname": "leaf02", "numRows": 10},
     {"hostname": "leaf03", "numRows": 10}, {"hostname": "leaf04", "numRows": 10},
     {"hostname": "exit01", "numRows": 12}, {"hostname": "exit02", "numRows": 12},
     {"hostname": "spine01", "numRows": 18}, {"hostname": "spine02", "numRows": 18}]'

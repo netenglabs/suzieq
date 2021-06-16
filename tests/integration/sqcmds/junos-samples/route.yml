@@ -5,681 +5,730 @@ tests:
   marks: route show junos
   output: '[{"namespace": "junos", "hostname": "server101", "vrf": "default", "prefix":
     "10.255.5.1/32", "nexthopIps": [""], "oifs": ["eth0"], "protocol": "dhcp", "source":
-    "10.255.5.72", "ipvers": 4, "action": "forward", "timestamp": 1623025795928},
-    {"namespace": "junos", "hostname": "server101", "vrf": "default", "prefix": "0.0.0.0/0",
-    "nexthopIps": ["10.255.5.1"], "oifs": ["eth0"], "protocol": "", "source": "",
-    "ipvers": 4, "action": "forward", "timestamp": 1623025795928}, {"namespace": "junos",
-    "hostname": "server101", "vrf": "default", "prefix": "10.255.5.0/24", "nexthopIps":
-    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.5.72", "ipvers":
-    4, "action": "forward", "timestamp": 1623025795928}, {"namespace": "junos", "hostname":
-    "server101", "vrf": "default", "prefix": "172.16.0.0/16", "nexthopIps": ["172.16.1.254"],
-    "oifs": ["eth1"], "protocol": "", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1623025795928}, {"namespace": "junos", "hostname": "server101", "vrf":
-    "default", "prefix": "172.16.1.0/24", "nexthopIps": [""], "oifs": ["eth1"], "protocol":
-    "kernel", "source": "172.16.1.101", "ipvers": 4, "action": "forward", "timestamp":
-    1623025795928}, {"namespace": "junos", "hostname": "server201", "vrf": "default",
-    "prefix": "172.16.2.0/24", "nexthopIps": [""], "oifs": ["eth1"], "protocol": "kernel",
-    "source": "172.16.2.201", "ipvers": 4, "action": "forward", "timestamp": 1623025796137},
-    {"namespace": "junos", "hostname": "server201", "vrf": "default", "prefix": "172.16.0.0/16",
-    "nexthopIps": ["172.16.2.254"], "oifs": ["eth1"], "protocol": "", "source": "",
-    "ipvers": 4, "action": "forward", "timestamp": 1623025796137}, {"namespace": "junos",
-    "hostname": "server201", "vrf": "default", "prefix": "10.255.5.1/32", "nexthopIps":
-    [""], "oifs": ["eth0"], "protocol": "dhcp", "source": "10.255.5.49", "ipvers":
-    4, "action": "forward", "timestamp": 1623025796137}, {"namespace": "junos", "hostname":
-    "server201", "vrf": "default", "prefix": "10.255.5.0/24", "nexthopIps": [""],
-    "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.5.49", "ipvers": 4,
+    "10.255.5.72", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1623025795928}, {"namespace": "junos", "hostname": "server101", "vrf": "default",
+    "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"], "oifs": ["eth0"], "protocol":
+    "", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1623025795928}, {"namespace": "junos", "hostname": "server101", "vrf": "default",
+    "prefix": "10.255.5.0/24", "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel",
+    "source": "10.255.5.72", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1623025795928}, {"namespace": "junos", "hostname": "server101", "vrf": "default",
+    "prefix": "172.16.0.0/16", "nexthopIps": ["172.16.1.254"], "oifs": ["eth1"], "protocol":
+    "", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1623025795928}, {"namespace": "junos", "hostname": "server101", "vrf": "default",
+    "prefix": "172.16.1.0/24", "nexthopIps": [""], "oifs": ["eth1"], "protocol": "kernel",
+    "source": "172.16.1.101", "preference": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1623025795928}, {"namespace": "junos", "hostname": "server201", "vrf":
+    "default", "prefix": "172.16.2.0/24", "nexthopIps": [""], "oifs": ["eth1"], "protocol":
+    "kernel", "source": "172.16.2.201", "preference": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1623025796137}, {"namespace": "junos", "hostname": "server201", "vrf":
+    "default", "prefix": "172.16.0.0/16", "nexthopIps": ["172.16.2.254"], "oifs":
+    ["eth1"], "protocol": "", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1623025796137}, {"namespace": "junos", "hostname": "server201",
+    "vrf": "default", "prefix": "10.255.5.1/32", "nexthopIps": [""], "oifs": ["eth0"],
+    "protocol": "dhcp", "source": "10.255.5.49", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1623025796137}, {"namespace": "junos", "hostname": "server201",
+    "vrf": "default", "prefix": "10.255.5.0/24", "nexthopIps": [""], "oifs": ["eth0"],
+    "protocol": "kernel", "source": "10.255.5.49", "preference": 20, "ipvers": 4,
     "action": "forward", "timestamp": 1623025796137}, {"namespace": "junos", "hostname":
     "server201", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"],
-    "oifs": ["eth0"], "protocol": "", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1623025796137}, {"namespace": "junos", "hostname": "server102", "vrf":
-    "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"], "oifs": ["eth0"],
-    "protocol": "", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025796138},
-    {"namespace": "junos", "hostname": "server102", "vrf": "default", "prefix": "10.255.5.0/24",
-    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.5.169",
-    "ipvers": 4, "action": "forward", "timestamp": 1623025796138}, {"namespace": "junos",
-    "hostname": "server102", "vrf": "default", "prefix": "10.255.5.1/32", "nexthopIps":
-    [""], "oifs": ["eth0"], "protocol": "dhcp", "source": "10.255.5.169", "ipvers":
-    4, "action": "forward", "timestamp": 1623025796138}, {"namespace": "junos", "hostname":
-    "server102", "vrf": "default", "prefix": "172.16.0.0/16", "nexthopIps": ["172.16.3.254"],
-    "oifs": ["eth1"], "protocol": "", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1623025796138}, {"namespace": "junos", "hostname": "server102", "vrf":
-    "default", "prefix": "172.16.3.0/24", "nexthopIps": [""], "oifs": ["eth1"], "protocol":
-    "kernel", "source": "172.16.3.102", "ipvers": 4, "action": "forward", "timestamp":
-    1623025796138}, {"namespace": "junos", "hostname": "server202", "vrf": "default",
-    "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"], "oifs": ["eth0"], "protocol":
-    "", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025796342},
+    "oifs": ["eth0"], "protocol": "", "source": "", "preference": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1623025796137}, {"namespace": "junos", "hostname":
+    "server102", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"],
+    "oifs": ["eth0"], "protocol": "", "source": "", "preference": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1623025796138}, {"namespace": "junos", "hostname":
+    "server102", "vrf": "default", "prefix": "10.255.5.0/24", "nexthopIps": [""],
+    "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.5.169", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1623025796138}, {"namespace":
+    "junos", "hostname": "server102", "vrf": "default", "prefix": "10.255.5.1/32",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "dhcp", "source": "10.255.5.169",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1623025796138},
+    {"namespace": "junos", "hostname": "server102", "vrf": "default", "prefix": "172.16.0.0/16",
+    "nexthopIps": ["172.16.3.254"], "oifs": ["eth1"], "protocol": "", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1623025796138},
+    {"namespace": "junos", "hostname": "server102", "vrf": "default", "prefix": "172.16.3.0/24",
+    "nexthopIps": [""], "oifs": ["eth1"], "protocol": "kernel", "source": "172.16.3.102",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1623025796138},
+    {"namespace": "junos", "hostname": "server202", "vrf": "default", "prefix": "0.0.0.0/0",
+    "nexthopIps": ["10.255.5.1"], "oifs": ["eth0"], "protocol": "", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1623025796342},
     {"namespace": "junos", "hostname": "server202", "vrf": "default", "prefix": "10.255.5.0/24",
     "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.5.71",
-    "ipvers": 4, "action": "forward", "timestamp": 1623025796342}, {"namespace": "junos",
-    "hostname": "server202", "vrf": "default", "prefix": "10.255.5.1/32", "nexthopIps":
-    [""], "oifs": ["eth0"], "protocol": "dhcp", "source": "10.255.5.71", "ipvers":
-    4, "action": "forward", "timestamp": 1623025796342}, {"namespace": "junos", "hostname":
-    "server202", "vrf": "default", "prefix": "172.16.0.0/16", "nexthopIps": ["172.16.3.254"],
-    "oifs": ["eth1"], "protocol": "", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1623025796342}, {"namespace": "junos", "hostname": "server202", "vrf":
-    "default", "prefix": "172.16.3.0/24", "nexthopIps": [""], "oifs": ["eth1"], "protocol":
-    "kernel", "source": "172.16.3.202", "ipvers": 4, "action": "forward", "timestamp":
-    1623025796342}, {"namespace": "junos", "hostname": "firewall01", "vrf": "default",
-    "prefix": "169.254.254.8/30", "nexthopIps": [""], "oifs": ["eth1.4"], "protocol":
-    "kernel", "source": "169.254.254.10", "ipvers": 4, "action": "forward", "timestamp":
-    1623025796549}, {"namespace": "junos", "hostname": "firewall01", "vrf": "default",
-    "prefix": "169.254.254.4/30", "nexthopIps": [""], "oifs": ["eth1.3"], "protocol":
-    "kernel", "source": "169.254.254.6", "ipvers": 4, "action": "forward", "timestamp":
-    1623025796549}, {"namespace": "junos", "hostname": "firewall01", "vrf": "default",
-    "prefix": "169.254.254.0/30", "nexthopIps": [""], "oifs": ["eth1.2"], "protocol":
-    "kernel", "source": "169.254.254.2", "ipvers": 4, "action": "forward", "timestamp":
-    1623025796549}, {"namespace": "junos", "hostname": "firewall01", "vrf": "default",
-    "prefix": "169.254.253.8/30", "nexthopIps": [""], "oifs": ["eth2.4"], "protocol":
-    "kernel", "source": "169.254.253.10", "ipvers": 4, "action": "forward", "timestamp":
-    1623025796549}, {"namespace": "junos", "hostname": "firewall01", "vrf": "default",
-    "prefix": "169.254.253.4/30", "nexthopIps": [""], "oifs": ["eth2.3"], "protocol":
-    "kernel", "source": "169.254.253.6", "ipvers": 4, "action": "forward", "timestamp":
-    1623025796549}, {"namespace": "junos", "hostname": "firewall01", "vrf": "default",
-    "prefix": "10.255.5.1/32", "nexthopIps": [""], "oifs": ["eth0"], "protocol": "dhcp",
-    "source": "10.255.5.40", "ipvers": 4, "action": "forward", "timestamp": 1623025796549},
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1623025796342},
+    {"namespace": "junos", "hostname": "server202", "vrf": "default", "prefix": "10.255.5.1/32",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "dhcp", "source": "10.255.5.71",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1623025796342},
+    {"namespace": "junos", "hostname": "server202", "vrf": "default", "prefix": "172.16.0.0/16",
+    "nexthopIps": ["172.16.3.254"], "oifs": ["eth1"], "protocol": "", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1623025796342},
+    {"namespace": "junos", "hostname": "server202", "vrf": "default", "prefix": "172.16.3.0/24",
+    "nexthopIps": [""], "oifs": ["eth1"], "protocol": "kernel", "source": "172.16.3.202",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1623025796342},
+    {"namespace": "junos", "hostname": "firewall01", "vrf": "default", "prefix": "169.254.254.8/30",
+    "nexthopIps": [""], "oifs": ["eth1.4"], "protocol": "kernel", "source": "169.254.254.10",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1623025796549},
+    {"namespace": "junos", "hostname": "firewall01", "vrf": "default", "prefix": "169.254.254.4/30",
+    "nexthopIps": [""], "oifs": ["eth1.3"], "protocol": "kernel", "source": "169.254.254.6",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1623025796549},
+    {"namespace": "junos", "hostname": "firewall01", "vrf": "default", "prefix": "169.254.254.0/30",
+    "nexthopIps": [""], "oifs": ["eth1.2"], "protocol": "kernel", "source": "169.254.254.2",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1623025796549},
+    {"namespace": "junos", "hostname": "firewall01", "vrf": "default", "prefix": "169.254.253.8/30",
+    "nexthopIps": [""], "oifs": ["eth2.4"], "protocol": "kernel", "source": "169.254.253.10",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1623025796549},
+    {"namespace": "junos", "hostname": "firewall01", "vrf": "default", "prefix": "169.254.253.4/30",
+    "nexthopIps": [""], "oifs": ["eth2.3"], "protocol": "kernel", "source": "169.254.253.6",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1623025796549},
+    {"namespace": "junos", "hostname": "firewall01", "vrf": "default", "prefix": "10.255.5.1/32",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "dhcp", "source": "10.255.5.40",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1623025796549},
     {"namespace": "junos", "hostname": "firewall01", "vrf": "default", "prefix": "10.255.5.0/24",
     "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.5.40",
-    "ipvers": 4, "action": "forward", "timestamp": 1623025796549}, {"namespace": "junos",
-    "hostname": "firewall01", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
-    ["10.255.5.1"], "oifs": ["eth0"], "protocol": "", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1623025796549}, {"namespace": "junos", "hostname": "firewall01",
-    "vrf": "default", "prefix": "169.254.253.0/30", "nexthopIps": [""], "oifs": ["eth2.2"],
-    "protocol": "kernel", "source": "169.254.253.2", "ipvers": 4, "action": "forward",
-    "timestamp": 1623025796549}, {"namespace": "junos", "hostname": "leaf01", "vrf":
-    "evpn-vrf", "prefix": "10.0.0.121/32", "nexthopIps": ["10.0.0.31"], "oifs": ["_nexthopVrf:default"],
-    "protocol": "evpn", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1623025796549},
+    {"namespace": "junos", "hostname": "firewall01", "vrf": "default", "prefix": "0.0.0.0/0",
+    "nexthopIps": ["10.255.5.1"], "oifs": ["eth0"], "protocol": "", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1623025796549},
+    {"namespace": "junos", "hostname": "firewall01", "vrf": "default", "prefix": "169.254.253.0/30",
+    "nexthopIps": [""], "oifs": ["eth2.2"], "protocol": "kernel", "source": "169.254.253.2",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1623025796549},
+    {"namespace": "junos", "hostname": "leaf01", "vrf": "evpn-vrf", "prefix": "10.0.0.121/32",
+    "nexthopIps": ["10.0.0.31"], "oifs": ["_nexthopVrf:default"], "protocol": "evpn",
+    "source": "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp":
     1623025801173}, {"namespace": "junos", "hostname": "leaf01", "vrf": "evpn-vrf",
     "prefix": "172.16.1.254/32", "nexthopIps": [], "oifs": ["irb.10"], "protocol":
-    "local", "source": "", "ipvers": 4, "action": "Local", "timestamp": 1623025801173},
-    {"namespace": "junos", "hostname": "leaf01", "vrf": "evpn-vrf", "prefix": "10.0.0.122/32",
-    "nexthopIps": ["10.0.0.32"], "oifs": ["_nexthopVrf:default"], "protocol": "evpn",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025801173}, {"namespace":
-    "junos", "hostname": "leaf01", "vrf": "evpn-vrf", "prefix": "169.254.253.4/30",
-    "nexthopIps": ["10.0.0.32"], "oifs": ["_nexthopVrf:default"], "protocol": "evpn",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025801173}, {"namespace":
-    "junos", "hostname": "leaf01", "vrf": "evpn-vrf", "prefix": "169.254.254.4/30",
-    "nexthopIps": ["10.0.0.31"], "oifs": ["_nexthopVrf:default"], "protocol": "evpn",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025801173}, {"namespace":
-    "junos", "hostname": "leaf01", "vrf": "evpn-vrf", "prefix": "172.16.1.0/24", "nexthopIps":
-    [], "oifs": ["irb.10"], "protocol": "direct", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1623025801173}, {"namespace": "junos", "hostname": "leaf01",
-    "vrf": "evpn-vrf", "prefix": "172.16.1.101/32", "nexthopIps": [], "oifs": ["irb.10"],
-    "protocol": "evpn", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    "local", "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp":
     1623025801173}, {"namespace": "junos", "hostname": "leaf01", "vrf": "evpn-vrf",
-    "prefix": "172.16.2.0/24", "nexthopIps": ["10.0.0.12"], "oifs": ["_nexthopVrf:default"],
-    "protocol": "evpn", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1623025801173}, {"namespace": "junos", "hostname": "leaf01", "vrf": "default",
-    "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["xe-0/0/0.0",
-    "xe-0/0/1.0"], "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward",
+    "prefix": "10.0.0.122/32", "nexthopIps": ["10.0.0.32"], "oifs": ["_nexthopVrf:default"],
+    "protocol": "evpn", "source": "", "preference": 170, "ipvers": 4, "action": "forward",
+    "timestamp": 1623025801173}, {"namespace": "junos", "hostname": "leaf01", "vrf":
+    "evpn-vrf", "prefix": "169.254.253.4/30", "nexthopIps": ["10.0.0.32"], "oifs":
+    ["_nexthopVrf:default"], "protocol": "evpn", "source": "", "preference": 170,
+    "ipvers": 4, "action": "forward", "timestamp": 1623025801173}, {"namespace": "junos",
+    "hostname": "leaf01", "vrf": "evpn-vrf", "prefix": "169.254.254.4/30", "nexthopIps":
+    ["10.0.0.31"], "oifs": ["_nexthopVrf:default"], "protocol": "evpn", "source":
+    "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp": 1623025801173},
+    {"namespace": "junos", "hostname": "leaf01", "vrf": "evpn-vrf", "prefix": "172.16.1.0/24",
+    "nexthopIps": [], "oifs": ["irb.10"], "protocol": "direct", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1623025801173}, {"namespace":
+    "junos", "hostname": "leaf01", "vrf": "evpn-vrf", "prefix": "172.16.1.101/32",
+    "nexthopIps": [], "oifs": ["irb.10"], "protocol": "evpn", "source": "", "preference":
+    7, "ipvers": 4, "action": "forward", "timestamp": 1623025801173}, {"namespace":
+    "junos", "hostname": "leaf01", "vrf": "evpn-vrf", "prefix": "172.16.2.0/24", "nexthopIps":
+    ["10.0.0.12"], "oifs": ["_nexthopVrf:default"], "protocol": "evpn", "source":
+    "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp": 1623025801173},
+    {"namespace": "junos", "hostname": "leaf01", "vrf": "default", "prefix": "10.0.0.12/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"],
+    "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward",
     "timestamp": 1623025801173}, {"namespace": "junos", "hostname": "leaf01", "vrf":
     "evpn-vrf", "prefix": "ff02::2/128", "nexthopIps": [], "oifs": [], "protocol":
-    "inet6", "source": "", "ipvers": 6, "action": "MultiRecv", "timestamp": 1623025801173},
-    {"namespace": "junos", "hostname": "leaf01", "vrf": "default", "prefix": "ff02::2/128",
-    "nexthopIps": [], "oifs": [], "protocol": "inet6", "source": "", "ipvers": 6,
-    "action": "MultiRecv", "timestamp": 1623025801173}, {"namespace": "junos", "hostname":
-    "leaf01", "vrf": "default", "prefix": "fe80::205:860f:fc71:ad00/128", "nexthopIps":
-    [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "ipvers": 6, "action":
-    "forward", "timestamp": 1623025801173}, {"namespace": "junos", "hostname": "leaf01",
-    "vrf": "mpls", "prefix": "18", "nexthopIps": [], "oifs": ["lsi.0 (evpn-vrf)"],
-    "protocol": "vpn", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1623025801173}, {"namespace": "junos", "hostname": "leaf01", "vrf": "evpn-vrf",
-    "prefix": "172.16.3.254/32", "nexthopIps": [], "oifs": ["irb.30"], "protocol":
-    "local", "source": "", "ipvers": 4, "action": "Local", "timestamp": 1623025801173},
-    {"namespace": "junos", "hostname": "leaf01", "vrf": "evpn-vrf", "prefix": "172.16.3.202/32",
-    "nexthopIps": ["10.0.0.12"], "oifs": ["_nexthopVrf:default"], "protocol": "evpn",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025801173}, {"namespace":
+    "inet6", "source": "", "preference": 0, "ipvers": 6, "action": "multirecv", "timestamp":
+    1623025801173}, {"namespace": "junos", "hostname": "leaf01", "vrf": "default",
+    "prefix": "ff02::2/128", "nexthopIps": [], "oifs": [], "protocol": "inet6", "source":
+    "", "preference": 0, "ipvers": 6, "action": "multirecv", "timestamp": 1623025801173},
+    {"namespace": "junos", "hostname": "leaf01", "vrf": "default", "prefix": "fe80::205:860f:fc71:ad00/128",
+    "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "preference":
+    0, "ipvers": 6, "action": "forward", "timestamp": 1623025801173}, {"namespace":
+    "junos", "hostname": "leaf01", "vrf": "mpls", "prefix": "18", "nexthopIps": [],
+    "oifs": ["lsi.0 (evpn-vrf)"], "protocol": "vpn", "source": "", "preference": 0,
+    "ipvers": 4, "action": "forward", "timestamp": 1623025801173}, {"namespace": "junos",
+    "hostname": "leaf01", "vrf": "evpn-vrf", "prefix": "172.16.3.254/32", "nexthopIps":
+    [], "oifs": ["irb.30"], "protocol": "local", "source": "", "preference": 0, "ipvers":
+    4, "action": "local", "timestamp": 1623025801173}, {"namespace": "junos", "hostname":
+    "leaf01", "vrf": "evpn-vrf", "prefix": "172.16.3.202/32", "nexthopIps": ["10.0.0.12"],
+    "oifs": ["_nexthopVrf:default"], "protocol": "evpn", "source": "", "preference":
+    170, "ipvers": 4, "action": "forward", "timestamp": 1623025801173}, {"namespace":
     "junos", "hostname": "leaf01", "vrf": "evpn-vrf", "prefix": "10.0.0.102/32", "nexthopIps":
     ["10.0.0.12"], "oifs": ["_nexthopVrf:default"], "protocol": "evpn", "source":
-    "", "ipvers": 4, "action": "forward", "timestamp": 1623025801173}, {"namespace":
-    "junos", "hostname": "leaf01", "vrf": "evpn-vrf", "prefix": "172.16.2.201/32",
+    "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp": 1623025801173},
+    {"namespace": "junos", "hostname": "leaf01", "vrf": "evpn-vrf", "prefix": "172.16.2.201/32",
     "nexthopIps": ["10.0.0.12"], "oifs": ["_nexthopVrf:default"], "protocol": "evpn",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025801173}, {"namespace":
-    "junos", "hostname": "leaf01", "vrf": "evpn-vrf", "prefix": "10.0.0.101/32", "nexthopIps":
-    [], "oifs": ["lo0.999"], "protocol": "direct", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1623025801173}, {"namespace": "junos", "hostname": "leaf01",
-    "vrf": "default", "prefix": "10.0.0.21/32", "nexthopIps": ["10.0.0.21"], "oifs":
-    ["xe-0/0/0.0"], "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward",
+    "source": "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp":
+    1623025801173}, {"namespace": "junos", "hostname": "leaf01", "vrf": "evpn-vrf",
+    "prefix": "10.0.0.101/32", "nexthopIps": [], "oifs": ["lo0.999"], "protocol":
+    "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1623025801173}, {"namespace": "junos", "hostname": "leaf01", "vrf": "default",
+    "prefix": "10.0.0.21/32", "nexthopIps": ["10.0.0.21"], "oifs": ["xe-0/0/0.0"],
+    "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward",
     "timestamp": 1623025801173}, {"namespace": "junos", "hostname": "leaf01", "vrf":
     ":vxlan", "prefix": "169.254.0.0/24", "nexthopIps": [], "oifs": ["em1.0"], "protocol":
-    "direct", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025801173},
-    {"namespace": "junos", "hostname": "leaf01", "vrf": "default", "prefix": "0.0.0.0/0",
-    "nexthopIps": ["10.255.5.1"], "oifs": ["em0.0"], "protocol": "access-internal",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025801173}, {"namespace":
-    "junos", "hostname": "leaf01", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps":
-    [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1623025801173}, {"namespace": "junos", "hostname": "leaf01",
-    "vrf": "evpn-vrf", "prefix": "172.16.3.102/32", "nexthopIps": [], "oifs": ["irb.30"],
-    "protocol": "evpn", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1623025801173}, {"namespace": "junos", "hostname": "leaf01", "vrf": "default",
+    "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"], "oifs": ["em0.0"], "protocol":
+    "access-internal", "source": "", "preference": 12, "ipvers": 4, "action": "forward",
+    "timestamp": 1623025801173}, {"namespace": "junos", "hostname": "leaf01", "vrf":
+    "default", "prefix": "10.0.0.11/32", "nexthopIps": [], "oifs": ["lo0.0"], "protocol":
+    "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1623025801173}, {"namespace": "junos", "hostname": "leaf01", "vrf": "evpn-vrf",
+    "prefix": "172.16.3.102/32", "nexthopIps": [], "oifs": ["irb.30"], "protocol":
+    "evpn", "source": "", "preference": 7, "ipvers": 4, "action": "forward", "timestamp":
     1623025801173}, {"namespace": "junos", "hostname": "leaf01", "vrf": "default",
     "prefix": "10.0.0.22/32", "nexthopIps": ["10.0.0.22"], "oifs": ["xe-0/0/1.0"],
-    "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward",
+    "timestamp": 1623025801173}, {"namespace": "junos", "hostname": "leaf01", "vrf":
+    "default", "prefix": "10.0.0.31/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference":
+    10, "ipvers": 4, "action": "forward", "timestamp": 1623025801173}, {"namespace":
+    "junos", "hostname": "leaf01", "vrf": "default", "prefix": "10.0.0.32/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol":
+    "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward", "timestamp":
     1623025801173}, {"namespace": "junos", "hostname": "leaf01", "vrf": "default",
-    "prefix": "10.0.0.31/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["xe-0/0/0.0",
-    "xe-0/0/1.0"], "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1623025801173}, {"namespace": "junos", "hostname": "leaf01", "vrf":
-    "default", "prefix": "10.0.0.32/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
-    "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol": "ospf", "source": "", "ipvers":
-    4, "action": "forward", "timestamp": 1623025801173}, {"namespace": "junos", "hostname":
-    "leaf01", "vrf": "default", "prefix": "10.255.5.0/24", "nexthopIps": [], "oifs":
-    ["em0.0"], "protocol": "direct", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1623025801173}, {"namespace": "junos", "hostname": "leaf01", "vrf":
-    "default", "prefix": "10.255.5.184/32", "nexthopIps": [], "oifs": ["em0.0"], "protocol":
-    "local", "source": "", "ipvers": 4, "action": "Local", "timestamp": 1623025801173},
-    {"namespace": "junos", "hostname": "leaf01", "vrf": "default", "prefix": "169.254.0.0/24",
-    "nexthopIps": [], "oifs": ["em1.0"], "protocol": "direct", "source": "", "ipvers":
-    4, "action": "forward", "timestamp": 1623025801173}, {"namespace": "junos", "hostname":
-    "leaf01", "vrf": "default", "prefix": "169.254.0.2/32", "nexthopIps": [], "oifs":
-    ["em1.0"], "protocol": "local", "source": "", "ipvers": 4, "action": "Local",
-    "timestamp": 1623025801173}, {"namespace": "junos", "hostname": "leaf01", "vrf":
-    "default", "prefix": "224.0.0.5/32", "nexthopIps": [], "oifs": [], "protocol":
-    "ospf", "source": "", "ipvers": 4, "action": "MultiRecv", "timestamp": 1623025801173},
-    {"namespace": "junos", "hostname": "leaf01", "vrf": ":vxlan", "prefix": "10.0.0.11/32",
-    "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "ipvers":
+    "prefix": "10.255.5.0/24", "nexthopIps": [], "oifs": ["em0.0"], "protocol": "direct",
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1623025801173}, {"namespace": "junos", "hostname": "leaf01", "vrf": "default",
+    "prefix": "10.255.5.184/32", "nexthopIps": [], "oifs": ["em0.0"], "protocol":
+    "local", "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp":
+    1623025801173}, {"namespace": "junos", "hostname": "leaf01", "vrf": "default",
+    "prefix": "169.254.0.0/24", "nexthopIps": [], "oifs": ["em1.0"], "protocol": "direct",
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1623025801173}, {"namespace": "junos", "hostname": "leaf01", "vrf": "default",
+    "prefix": "169.254.0.2/32", "nexthopIps": [], "oifs": ["em1.0"], "protocol": "local",
+    "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp": 1623025801173},
+    {"namespace": "junos", "hostname": "leaf01", "vrf": "default", "prefix": "224.0.0.5/32",
+    "nexthopIps": [], "oifs": [], "protocol": "ospf", "source": "", "preference":
+    10, "ipvers": 4, "action": "multirecv", "timestamp": 1623025801173}, {"namespace":
+    "junos", "hostname": "leaf01", "vrf": ":vxlan", "prefix": "10.0.0.11/32", "nexthopIps":
+    [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
     4, "action": "forward", "timestamp": 1623025801173}, {"namespace": "junos", "hostname":
     "leaf01", "vrf": ":vxlan", "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.21",
     "10.0.0.22"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol": "static", "source":
-    "", "ipvers": 4, "action": "forward", "timestamp": 1623025801173}, {"namespace":
-    "junos", "hostname": "leaf01", "vrf": ":vxlan", "prefix": "10.255.5.0/24", "nexthopIps":
-    [], "oifs": ["em0.0"], "protocol": "direct", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1623025801173}, {"namespace": "junos", "hostname": "leaf01",
-    "vrf": ":vxlan", "prefix": "10.255.5.184/32", "nexthopIps": [], "oifs": ["em0.0"],
-    "protocol": "local", "source": "", "ipvers": 4, "action": "Local", "timestamp":
-    1623025801173}, {"namespace": "junos", "hostname": "leaf01", "vrf": ":vxlan",
-    "prefix": "169.254.0.2/32", "nexthopIps": [], "oifs": ["em1.0"], "protocol": "local",
-    "source": "", "ipvers": 4, "action": "Local", "timestamp": 1623025801173}, {"namespace":
-    "junos", "hostname": "leaf01", "vrf": "evpn-vrf", "prefix": "172.16.3.0/24", "nexthopIps":
-    ["10.0.0.12"], "oifs": ["_nexthopVrf:default"], "protocol": "direct", "source":
-    "", "ipvers": 4, "action": "forward", "timestamp": 1623025801173}, {"namespace":
-    "junos", "hostname": "leaf02", "vrf": "default", "prefix": "10.0.0.31/32", "nexthopIps":
+    "", "preference": 1, "ipvers": 4, "action": "forward", "timestamp": 1623025801173},
+    {"namespace": "junos", "hostname": "leaf01", "vrf": ":vxlan", "prefix": "10.255.5.0/24",
+    "nexthopIps": [], "oifs": ["em0.0"], "protocol": "direct", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1623025801173}, {"namespace":
+    "junos", "hostname": "leaf01", "vrf": ":vxlan", "prefix": "10.255.5.184/32", "nexthopIps":
+    [], "oifs": ["em0.0"], "protocol": "local", "source": "", "preference": 0, "ipvers":
+    4, "action": "local", "timestamp": 1623025801173}, {"namespace": "junos", "hostname":
+    "leaf01", "vrf": ":vxlan", "prefix": "169.254.0.2/32", "nexthopIps": [], "oifs":
+    ["em1.0"], "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action":
+    "local", "timestamp": 1623025801173}, {"namespace": "junos", "hostname": "leaf01",
+    "vrf": "evpn-vrf", "prefix": "172.16.3.0/24", "nexthopIps": ["10.0.0.12"], "oifs":
+    ["_nexthopVrf:default"], "protocol": "direct", "source": "", "preference": 0,
+    "ipvers": 4, "action": "forward", "timestamp": 1623025801173}, {"namespace": "junos",
+    "hostname": "leaf02", "vrf": "default", "prefix": "10.0.0.31/32", "nexthopIps":
     ["10.0.0.21", "10.0.0.22"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol":
-    "ospf", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025802263},
-    {"namespace": "junos", "hostname": "leaf02", "vrf": "default", "prefix": "10.0.0.11/32",
-    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"],
-    "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1623025802263}, {"namespace": "junos", "hostname": "leaf02", "vrf": "evpn-vrf",
-    "prefix": "169.254.253.4/30", "nexthopIps": ["10.0.0.32"], "oifs": ["_nexthopVrf:default"],
-    "protocol": "evpn", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1623025802263}, {"namespace": "junos", "hostname": "leaf02", "vrf": "evpn-vrf",
-    "prefix": "169.254.254.4/30", "nexthopIps": ["10.0.0.31"], "oifs": ["_nexthopVrf:default"],
-    "protocol": "evpn", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward", "timestamp":
+    1623025802263}, {"namespace": "junos", "hostname": "leaf02", "vrf": "default",
+    "prefix": "10.0.0.11/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["xe-0/0/0.0",
+    "xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4,
+    "action": "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname":
+    "leaf02", "vrf": "evpn-vrf", "prefix": "169.254.253.4/30", "nexthopIps": ["10.0.0.32"],
+    "oifs": ["_nexthopVrf:default"], "protocol": "evpn", "source": "", "preference":
+    170, "ipvers": 4, "action": "forward", "timestamp": 1623025802263}, {"namespace":
+    "junos", "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "169.254.254.4/30",
+    "nexthopIps": ["10.0.0.31"], "oifs": ["_nexthopVrf:default"], "protocol": "evpn",
+    "source": "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp":
     1623025802263}, {"namespace": "junos", "hostname": "leaf02", "vrf": "evpn-vrf",
     "prefix": "172.16.1.0/24", "nexthopIps": ["10.0.0.11"], "oifs": ["_nexthopVrf:default"],
-    "protocol": "evpn", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1623025802263}, {"namespace": "junos", "hostname": "leaf02", "vrf": "evpn-vrf",
-    "prefix": "172.16.1.101/32", "nexthopIps": ["10.0.0.11"], "oifs": ["_nexthopVrf:default"],
-    "protocol": "evpn", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1623025802263}, {"namespace": "junos", "hostname": "leaf02", "vrf": "evpn-vrf",
-    "prefix": "172.16.2.0/24", "nexthopIps": [], "oifs": ["irb.20"], "protocol": "direct",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025802263}, {"namespace":
-    "junos", "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "172.16.2.201/32",
-    "nexthopIps": [], "oifs": ["irb.20"], "protocol": "evpn", "source": "", "ipvers":
+    "protocol": "evpn", "source": "", "preference": 170, "ipvers": 4, "action": "forward",
+    "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "leaf02", "vrf":
+    "evpn-vrf", "prefix": "172.16.1.101/32", "nexthopIps": ["10.0.0.11"], "oifs":
+    ["_nexthopVrf:default"], "protocol": "evpn", "source": "", "preference": 170,
+    "ipvers": 4, "action": "forward", "timestamp": 1623025802263}, {"namespace": "junos",
+    "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "172.16.2.0/24", "nexthopIps":
+    [], "oifs": ["irb.20"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
     4, "action": "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname":
-    "leaf02", "vrf": "evpn-vrf", "prefix": "172.16.2.254/32", "nexthopIps": [], "oifs":
-    ["irb.20"], "protocol": "local", "source": "", "ipvers": 4, "action": "Local",
+    "leaf02", "vrf": "evpn-vrf", "prefix": "172.16.2.201/32", "nexthopIps": [], "oifs":
+    ["irb.20"], "protocol": "evpn", "source": "", "preference": 7, "ipvers": 4, "action":
+    "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "leaf02",
+    "vrf": "evpn-vrf", "prefix": "172.16.2.254/32", "nexthopIps": [], "oifs": ["irb.20"],
+    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "local",
     "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "leaf02", "vrf":
     "evpn-vrf", "prefix": "172.16.3.0/24", "nexthopIps": ["10.0.0.11"], "oifs": ["_nexthopVrf:default"],
-    "protocol": "direct", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1623025802263}, {"namespace": "junos", "hostname": "leaf02", "vrf": "evpn-vrf",
-    "prefix": "172.16.3.102/32", "nexthopIps": ["10.0.0.11"], "oifs": ["_nexthopVrf:default"],
-    "protocol": "evpn", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1623025802263}, {"namespace": "junos", "hostname": "leaf02", "vrf": "evpn-vrf",
-    "prefix": "172.16.3.202/32", "nexthopIps": [], "oifs": ["irb.30"], "protocol":
-    "evpn", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025802263},
-    {"namespace": "junos", "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "172.16.3.254/32",
-    "nexthopIps": [], "oifs": ["irb.30"], "protocol": "local", "source": "", "ipvers":
-    4, "action": "Local", "timestamp": 1623025802263}, {"namespace": "junos", "hostname":
-    "leaf02", "vrf": "mpls", "prefix": "18", "nexthopIps": [], "oifs": ["lsi.0 (evpn-vrf)"],
-    "protocol": "vpn", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1623025802263}, {"namespace": "junos", "hostname": "leaf02", "vrf": "default",
-    "prefix": "fe80::205:860f:fc71:5500/128", "nexthopIps": [], "oifs": ["lo0.0"],
-    "protocol": "direct", "source": "", "ipvers": 6, "action": "forward", "timestamp":
-    1623025802263}, {"namespace": "junos", "hostname": "leaf02", "vrf": "default",
-    "prefix": "ff02::2/128", "nexthopIps": [], "oifs": [], "protocol": "inet6", "source":
-    "", "ipvers": 6, "action": "MultiRecv", "timestamp": 1623025802263}, {"namespace":
-    "junos", "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "ff02::2/128", "nexthopIps":
-    [], "oifs": [], "protocol": "inet6", "source": "", "ipvers": 6, "action": "MultiRecv",
+    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
     "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "leaf02", "vrf":
-    "evpn-vrf", "prefix": "10.0.0.122/32", "nexthopIps": ["10.0.0.32"], "oifs": ["_nexthopVrf:default"],
-    "protocol": "evpn", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    "evpn-vrf", "prefix": "172.16.3.102/32", "nexthopIps": ["10.0.0.11"], "oifs":
+    ["_nexthopVrf:default"], "protocol": "evpn", "source": "", "preference": 170,
+    "ipvers": 4, "action": "forward", "timestamp": 1623025802263}, {"namespace": "junos",
+    "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "172.16.3.202/32", "nexthopIps":
+    [], "oifs": ["irb.30"], "protocol": "evpn", "source": "", "preference": 7, "ipvers":
+    4, "action": "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname":
+    "leaf02", "vrf": "evpn-vrf", "prefix": "172.16.3.254/32", "nexthopIps": [], "oifs":
+    ["irb.30"], "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action":
+    "local", "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "leaf02",
+    "vrf": "mpls", "prefix": "18", "nexthopIps": [], "oifs": ["lsi.0 (evpn-vrf)"],
+    "protocol": "vpn", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "leaf02", "vrf":
+    "default", "prefix": "fe80::205:860f:fc71:5500/128", "nexthopIps": [], "oifs":
+    ["lo0.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers": 6, "action":
+    "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "leaf02",
+    "vrf": "default", "prefix": "ff02::2/128", "nexthopIps": [], "oifs": [], "protocol":
+    "inet6", "source": "", "preference": 0, "ipvers": 6, "action": "multirecv", "timestamp":
+    1623025802263}, {"namespace": "junos", "hostname": "leaf02", "vrf": "evpn-vrf",
+    "prefix": "ff02::2/128", "nexthopIps": [], "oifs": [], "protocol": "inet6", "source":
+    "", "preference": 0, "ipvers": 6, "action": "multirecv", "timestamp": 1623025802263},
+    {"namespace": "junos", "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "10.0.0.122/32",
+    "nexthopIps": ["10.0.0.32"], "oifs": ["_nexthopVrf:default"], "protocol": "evpn",
+    "source": "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp":
     1623025802263}, {"namespace": "junos", "hostname": "leaf02", "vrf": "evpn-vrf",
     "prefix": "10.0.0.121/32", "nexthopIps": ["10.0.0.31"], "oifs": ["_nexthopVrf:default"],
-    "protocol": "evpn", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1623025802263}, {"namespace": "junos", "hostname": "leaf02", "vrf": "evpn-vrf",
-    "prefix": "10.0.0.102/32", "nexthopIps": [], "oifs": ["lo0.999"], "protocol":
-    "direct", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025802263},
-    {"namespace": "junos", "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "10.0.0.101/32",
-    "nexthopIps": ["10.0.0.11"], "oifs": ["_nexthopVrf:default"], "protocol": "evpn",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025802263}, {"namespace":
-    "junos", "hostname": "leaf02", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps":
-    [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "leaf02",
-    "vrf": "default", "prefix": "10.0.0.21/32", "nexthopIps": ["10.0.0.21"], "oifs":
-    ["xe-0/0/0.0"], "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward",
+    "protocol": "evpn", "source": "", "preference": 170, "ipvers": 4, "action": "forward",
+    "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "leaf02", "vrf":
+    "evpn-vrf", "prefix": "10.0.0.102/32", "nexthopIps": [], "oifs": ["lo0.999"],
+    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "leaf02", "vrf":
+    "evpn-vrf", "prefix": "10.0.0.101/32", "nexthopIps": ["10.0.0.11"], "oifs": ["_nexthopVrf:default"],
+    "protocol": "evpn", "source": "", "preference": 170, "ipvers": 4, "action": "forward",
+    "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "leaf02", "vrf":
+    "default", "prefix": "10.0.0.12/32", "nexthopIps": [], "oifs": ["lo0.0"], "protocol":
+    "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1623025802263}, {"namespace": "junos", "hostname": "leaf02", "vrf": "default",
+    "prefix": "10.0.0.21/32", "nexthopIps": ["10.0.0.21"], "oifs": ["xe-0/0/0.0"],
+    "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward",
     "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "leaf02", "vrf":
     "default", "prefix": "10.0.0.22/32", "nexthopIps": ["10.0.0.22"], "oifs": ["xe-0/0/1.0"],
-    "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1623025802263}, {"namespace": "junos", "hostname": "exit02", "vrf": "internet-vrf",
-    "prefix": "ff02::2/128", "nexthopIps": [], "oifs": [], "protocol": "inet6", "source":
-    "", "ipvers": 6, "action": "MultiRecv", "timestamp": 1623025802263}, {"namespace":
-    "junos", "hostname": "leaf02", "vrf": "default", "prefix": "10.0.0.32/32", "nexthopIps":
-    ["10.0.0.21", "10.0.0.22"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol":
-    "ospf", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025802263},
-    {"namespace": "junos", "hostname": "leaf02", "vrf": "default", "prefix": "10.255.5.0/24",
-    "nexthopIps": [], "oifs": ["em0.0"], "protocol": "direct", "source": "", "ipvers":
-    4, "action": "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname":
-    "leaf02", "vrf": "default", "prefix": "10.255.5.185/32", "nexthopIps": [], "oifs":
-    ["em0.0"], "protocol": "local", "source": "", "ipvers": 4, "action": "Local",
+    "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward",
+    "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "exit02", "vrf":
+    "internet-vrf", "prefix": "ff02::2/128", "nexthopIps": [], "oifs": [], "protocol":
+    "inet6", "source": "", "preference": 0, "ipvers": 6, "action": "multirecv", "timestamp":
+    1623025802263}, {"namespace": "junos", "hostname": "leaf02", "vrf": "default",
+    "prefix": "10.0.0.32/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["xe-0/0/0.0",
+    "xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4,
+    "action": "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname":
+    "leaf02", "vrf": "default", "prefix": "10.255.5.0/24", "nexthopIps": [], "oifs":
+    ["em0.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "leaf02",
+    "vrf": "default", "prefix": "10.255.5.185/32", "nexthopIps": [], "oifs": ["em0.0"],
+    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "local",
     "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "leaf02", "vrf":
     "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"], "oifs": ["em0.0"],
-    "protocol": "access-internal", "source": "", "ipvers": 4, "action": "forward",
+    "protocol": "access-internal", "source": "", "preference": 12, "ipvers": 4, "action":
+    "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "leaf02",
+    "vrf": "default", "prefix": "169.254.0.0/24", "nexthopIps": [], "oifs": ["em1.0"],
+    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
     "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "leaf02", "vrf":
-    "default", "prefix": "169.254.0.0/24", "nexthopIps": [], "oifs": ["em1.0"], "protocol":
-    "direct", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025802263},
-    {"namespace": "junos", "hostname": "leaf02", "vrf": "default", "prefix": "224.0.0.5/32",
-    "nexthopIps": [], "oifs": [], "protocol": "ospf", "source": "", "ipvers": 4, "action":
-    "MultiRecv", "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "leaf02",
-    "vrf": ":vxlan", "prefix": "10.0.0.11/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
-    "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol": "static", "source": "", "ipvers":
+    "default", "prefix": "224.0.0.5/32", "nexthopIps": [], "oifs": [], "protocol":
+    "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "multirecv", "timestamp":
+    1623025802263}, {"namespace": "junos", "hostname": "leaf02", "vrf": ":vxlan",
+    "prefix": "10.0.0.11/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["xe-0/0/0.0",
+    "xe-0/0/1.0"], "protocol": "static", "source": "", "preference": 1, "ipvers":
     4, "action": "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname":
     "leaf02", "vrf": ":vxlan", "prefix": "10.0.0.12/32", "nexthopIps": [], "oifs":
-    ["lo0.0"], "protocol": "direct", "source": "", "ipvers": 4, "action": "forward",
+    ["lo0.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "leaf02",
+    "vrf": ":vxlan", "prefix": "10.255.5.0/24", "nexthopIps": [], "oifs": ["em0.0"],
+    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
     "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "leaf02", "vrf":
-    ":vxlan", "prefix": "10.255.5.0/24", "nexthopIps": [], "oifs": ["em0.0"], "protocol":
-    "direct", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025802263},
-    {"namespace": "junos", "hostname": "leaf02", "vrf": ":vxlan", "prefix": "10.255.5.185/32",
-    "nexthopIps": [], "oifs": ["em0.0"], "protocol": "local", "source": "", "ipvers":
-    4, "action": "Local", "timestamp": 1623025802263}, {"namespace": "junos", "hostname":
-    "leaf02", "vrf": ":vxlan", "prefix": "169.254.0.0/24", "nexthopIps": [], "oifs":
-    ["em1.0"], "protocol": "direct", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "leaf02", "vrf":
-    ":vxlan", "prefix": "169.254.0.2/32", "nexthopIps": [], "oifs": ["em1.0"], "protocol":
-    "local", "source": "", "ipvers": 4, "action": "Local", "timestamp": 1623025802263},
-    {"namespace": "junos", "hostname": "leaf02", "vrf": "default", "prefix": "169.254.0.2/32",
-    "nexthopIps": [], "oifs": ["em1.0"], "protocol": "local", "source": "", "ipvers":
-    4, "action": "Local", "timestamp": 1623025802263}, {"namespace": "junos", "hostname":
-    "exit02", "vrf": "evpn-vrf", "prefix": "ff02::2/128", "nexthopIps": [], "oifs":
-    [], "protocol": "inet6", "source": "", "ipvers": 6, "action": "MultiRecv", "timestamp":
-    1623025802263}, {"namespace": "junos", "hostname": "dcedge01", "vrf": "default",
-    "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"], "oifs": ["em0.0"], "protocol":
-    "access-internal", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1623025802263}, {"namespace": "junos", "hostname": "exit02", "vrf": "default",
-    "prefix": "fe80::205:860f:fc71:2700/128", "nexthopIps": [], "oifs": ["lo0.0"],
-    "protocol": "direct", "source": "", "ipvers": 6, "action": "forward", "timestamp":
-    1623025802263}, {"namespace": "junos", "hostname": "exit02", "vrf": "default",
+    ":vxlan", "prefix": "10.255.5.185/32", "nexthopIps": [], "oifs": ["em0.0"], "protocol":
+    "local", "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp":
+    1623025802263}, {"namespace": "junos", "hostname": "leaf02", "vrf": ":vxlan",
     "prefix": "169.254.0.0/24", "nexthopIps": [], "oifs": ["em1.0"], "protocol": "direct",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025802263}, {"namespace":
-    "junos", "hostname": "exit02", "vrf": "default", "prefix": "10.255.5.252/32",
-    "nexthopIps": [], "oifs": ["em0.0"], "protocol": "local", "source": "", "ipvers":
-    4, "action": "Local", "timestamp": 1623025802263}, {"namespace": "junos", "hostname":
-    "exit02", "vrf": "default", "prefix": "10.255.5.0/24", "nexthopIps": [], "oifs":
-    ["em0.0"], "protocol": "direct", "source": "", "ipvers": 4, "action": "forward",
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1623025802263}, {"namespace": "junos", "hostname": "leaf02", "vrf": ":vxlan",
+    "prefix": "169.254.0.2/32", "nexthopIps": [], "oifs": ["em1.0"], "protocol": "local",
+    "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp": 1623025802263},
+    {"namespace": "junos", "hostname": "leaf02", "vrf": "default", "prefix": "169.254.0.2/32",
+    "nexthopIps": [], "oifs": ["em1.0"], "protocol": "local", "source": "", "preference":
+    0, "ipvers": 4, "action": "local", "timestamp": 1623025802263}, {"namespace":
+    "junos", "hostname": "exit02", "vrf": "evpn-vrf", "prefix": "ff02::2/128", "nexthopIps":
+    [], "oifs": [], "protocol": "inet6", "source": "", "preference": 0, "ipvers":
+    6, "action": "multirecv", "timestamp": 1623025802263}, {"namespace": "junos",
+    "hostname": "dcedge01", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["10.255.5.1"], "oifs": ["em0.0"], "protocol": "access-internal", "source": "",
+    "preference": 12, "ipvers": 4, "action": "forward", "timestamp": 1623025802263},
+    {"namespace": "junos", "hostname": "exit02", "vrf": "default", "prefix": "fe80::205:860f:fc71:2700/128",
+    "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "preference":
+    0, "ipvers": 6, "action": "forward", "timestamp": 1623025802263}, {"namespace":
+    "junos", "hostname": "exit02", "vrf": "default", "prefix": "169.254.0.0/24", "nexthopIps":
+    [], "oifs": ["em1.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
+    4, "action": "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname":
+    "exit02", "vrf": "default", "prefix": "10.255.5.252/32", "nexthopIps": [], "oifs":
+    ["em0.0"], "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action":
+    "local", "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "exit02",
+    "vrf": "default", "prefix": "10.255.5.0/24", "nexthopIps": [], "oifs": ["em0.0"],
+    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
     "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "dcedge01", "vrf":
     "default", "prefix": "ff02::2/128", "nexthopIps": [], "oifs": [], "protocol":
-    "inet6", "source": "", "ipvers": 6, "action": "MultiRecv", "timestamp": 1623025802263},
-    {"namespace": "junos", "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.31/32",
-    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"],
-    "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    "inet6", "source": "", "preference": 0, "ipvers": 6, "action": "multirecv", "timestamp":
     1623025802263}, {"namespace": "junos", "hostname": "exit02", "vrf": "default",
-    "prefix": "10.0.0.22/32", "nexthopIps": ["10.0.0.22"], "oifs": ["xe-0/0/1.0"],
-    "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1623025802263}, {"namespace": "junos", "hostname": "exit02", "vrf": "default",
-    "prefix": "10.0.0.21/32", "nexthopIps": ["10.0.0.21"], "oifs": ["xe-0/0/0.0"],
-    "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1623025802263}, {"namespace": "junos", "hostname": "exit02", "vrf": "default",
-    "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["xe-0/0/0.0",
-    "xe-0/0/1.0"], "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "exit02", "vrf":
-    "default", "prefix": "10.0.0.11/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
-    "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol": "ospf", "source": "", "ipvers":
+    "prefix": "10.0.0.31/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["xe-0/0/0.0",
+    "xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4,
+    "action": "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname":
+    "exit02", "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps": ["10.0.0.22"],
+    "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
     4, "action": "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname":
-    "exit02", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"],
-    "oifs": ["em0.0"], "protocol": "access-internal", "source": "", "ipvers": 4, "action":
+    "exit02", "vrf": "default", "prefix": "10.0.0.21/32", "nexthopIps": ["10.0.0.21"],
+    "oifs": ["xe-0/0/0.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
+    4, "action": "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname":
+    "exit02", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.21",
+    "10.0.0.22"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol": "ospf", "source":
+    "", "preference": 10, "ipvers": 4, "action": "forward", "timestamp": 1623025802263},
+    {"namespace": "junos", "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.11/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"],
+    "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward",
+    "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "exit02", "vrf":
+    "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"], "oifs": ["em0.0"],
+    "protocol": "access-internal", "source": "", "preference": 12, "ipvers": 4, "action":
     "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "dcedge01",
     "vrf": "default", "prefix": "10.0.0.41/32", "nexthopIps": [], "oifs": ["lo0.0"],
-    "protocol": "direct", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1623025802263}, {"namespace": "junos", "hostname": "dcedge01", "vrf": "default",
-    "prefix": "10.255.5.0/24", "nexthopIps": [], "oifs": ["em0.0"], "protocol": "direct",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025802263}, {"namespace":
-    "junos", "hostname": "dcedge01", "vrf": "default", "prefix": "10.255.5.250/32",
-    "nexthopIps": [], "oifs": ["em0.0"], "protocol": "local", "source": "", "ipvers":
-    4, "action": "Local", "timestamp": 1623025802263}, {"namespace": "junos", "hostname":
-    "dcedge01", "vrf": "default", "prefix": "169.254.0.0/24", "nexthopIps": [], "oifs":
-    ["em1.0"], "protocol": "direct", "source": "", "ipvers": 4, "action": "forward",
+    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
     "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "dcedge01", "vrf":
-    "default", "prefix": "169.254.0.2/32", "nexthopIps": [], "oifs": ["em1.0"], "protocol":
-    "local", "source": "", "ipvers": 4, "action": "Local", "timestamp": 1623025802263},
+    "default", "prefix": "10.255.5.0/24", "nexthopIps": [], "oifs": ["em0.0"], "protocol":
+    "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1623025802263}, {"namespace": "junos", "hostname": "dcedge01", "vrf": "default",
+    "prefix": "10.255.5.250/32", "nexthopIps": [], "oifs": ["em0.0"], "protocol":
+    "local", "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp":
+    1623025802263}, {"namespace": "junos", "hostname": "dcedge01", "vrf": "default",
+    "prefix": "169.254.0.0/24", "nexthopIps": [], "oifs": ["em1.0"], "protocol": "direct",
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1623025802263}, {"namespace": "junos", "hostname": "dcedge01", "vrf": "default",
+    "prefix": "169.254.0.2/32", "nexthopIps": [], "oifs": ["em1.0"], "protocol": "local",
+    "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp": 1623025802263},
     {"namespace": "junos", "hostname": "dcedge01", "vrf": "default", "prefix": "169.254.127.0/31",
     "nexthopIps": [], "oifs": ["xe-0/0/0.0"], "protocol": "direct", "source": "",
-    "ipvers": 4, "action": "forward", "timestamp": 1623025802263}, {"namespace": "junos",
-    "hostname": "dcedge01", "vrf": "default", "prefix": "169.254.127.0/32", "nexthopIps":
-    [], "oifs": ["xe-0/0/0.0"], "protocol": "local", "source": "", "ipvers": 4, "action":
-    "Local", "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "dcedge01",
-    "vrf": "default", "prefix": "169.254.127.2/31", "nexthopIps": [], "oifs": ["xe-0/0/1.0"],
-    "protocol": "direct", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1623025802263}, {"namespace": "junos", "hostname": "dcedge01", "vrf": "default",
-    "prefix": "169.254.127.2/32", "nexthopIps": [], "oifs": ["xe-0/0/1.0"], "protocol":
-    "local", "source": "", "ipvers": 4, "action": "Local", "timestamp": 1623025802263},
-    {"namespace": "junos", "hostname": "dcedge01", "vrf": "default", "prefix": "172.16.1.0/24",
+    "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1623025802263},
+    {"namespace": "junos", "hostname": "dcedge01", "vrf": "default", "prefix": "169.254.127.0/32",
+    "nexthopIps": [], "oifs": ["xe-0/0/0.0"], "protocol": "local", "source": "", "preference":
+    0, "ipvers": 4, "action": "local", "timestamp": 1623025802263}, {"namespace":
+    "junos", "hostname": "dcedge01", "vrf": "default", "prefix": "169.254.127.2/31",
+    "nexthopIps": [], "oifs": ["xe-0/0/1.0"], "protocol": "direct", "source": "",
+    "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1623025802263},
+    {"namespace": "junos", "hostname": "dcedge01", "vrf": "default", "prefix": "169.254.127.2/32",
+    "nexthopIps": [], "oifs": ["xe-0/0/1.0"], "protocol": "local", "source": "", "preference":
+    0, "ipvers": 4, "action": "local", "timestamp": 1623025802263}, {"namespace":
+    "junos", "hostname": "dcedge01", "vrf": "default", "prefix": "172.16.1.0/24",
     "nexthopIps": ["169.254.127.1"], "oifs": ["xe-0/0/0.0"], "protocol": "bgp", "source":
-    "", "ipvers": 4, "action": "forward", "timestamp": 1623025802263}, {"namespace":
-    "junos", "hostname": "dcedge01", "vrf": "default", "prefix": "172.16.2.0/24",
+    "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp": 1623025802263},
+    {"namespace": "junos", "hostname": "dcedge01", "vrf": "default", "prefix": "172.16.2.0/24",
     "nexthopIps": ["169.254.127.1"], "oifs": ["xe-0/0/0.0"], "protocol": "bgp", "source":
-    "", "ipvers": 4, "action": "forward", "timestamp": 1623025802263}, {"namespace":
-    "junos", "hostname": "dcedge01", "vrf": "default", "prefix": "172.16.3.0/24",
+    "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp": 1623025802263},
+    {"namespace": "junos", "hostname": "dcedge01", "vrf": "default", "prefix": "172.16.3.0/24",
     "nexthopIps": ["169.254.127.1"], "oifs": ["xe-0/0/0.0"], "protocol": "bgp", "source":
-    "", "ipvers": 4, "action": "forward", "timestamp": 1623025802263}, {"namespace":
-    "junos", "hostname": "dcedge01", "vrf": "default", "prefix": "fe80::205:860f:fc71:c200/128",
-    "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "ipvers":
-    6, "action": "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname":
-    "exit02", "vrf": "default", "prefix": "169.254.0.2/32", "nexthopIps": [], "oifs":
-    ["em1.0"], "protocol": "local", "source": "", "ipvers": 4, "action": "Local",
-    "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "exit02", "vrf":
-    "default", "prefix": "169.254.253.0/30", "nexthopIps": [], "oifs": ["xe-0/0/2.2"],
-    "protocol": "direct", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1623025802263}, {"namespace": "junos", "hostname": "exit02", "vrf": "default",
-    "prefix": "10.0.0.32/32", "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "direct",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025802263}, {"namespace":
-    "junos", "hostname": "exit02", "vrf": "default", "prefix": "224.0.0.5/32", "nexthopIps":
-    [], "oifs": [], "protocol": "ospf", "source": "", "ipvers": 4, "action": "MultiRecv",
-    "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "exit02", "vrf":
-    "mpls", "prefix": "18", "nexthopIps": [], "oifs": ["lsi.0 (evpn-vrf)"], "protocol":
-    "vpn", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025802263},
+    "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp": 1623025802263},
+    {"namespace": "junos", "hostname": "dcedge01", "vrf": "default", "prefix": "fe80::205:860f:fc71:c200/128",
+    "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "preference":
+    0, "ipvers": 6, "action": "forward", "timestamp": 1623025802263}, {"namespace":
+    "junos", "hostname": "exit02", "vrf": "default", "prefix": "169.254.0.2/32", "nexthopIps":
+    [], "oifs": ["em1.0"], "protocol": "local", "source": "", "preference": 0, "ipvers":
+    4, "action": "local", "timestamp": 1623025802263}, {"namespace": "junos", "hostname":
+    "exit02", "vrf": "default", "prefix": "169.254.253.0/30", "nexthopIps": [], "oifs":
+    ["xe-0/0/2.2"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
+    4, "action": "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname":
+    "exit02", "vrf": "default", "prefix": "10.0.0.32/32", "nexthopIps": [], "oifs":
+    ["lo0.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "exit02",
+    "vrf": "default", "prefix": "224.0.0.5/32", "nexthopIps": [], "oifs": [], "protocol":
+    "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "multirecv", "timestamp":
+    1623025802263}, {"namespace": "junos", "hostname": "exit02", "vrf": "mpls", "prefix":
+    "18", "nexthopIps": [], "oifs": ["lsi.0 (evpn-vrf)"], "protocol": "vpn", "source":
+    "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1623025802263},
     {"namespace": "junos", "hostname": "exit02", "vrf": "internet-vrf", "prefix":
     "172.16.3.0/24", "nexthopIps": ["169.254.253.10"], "oifs": ["xe-0/0/2.4"], "protocol":
-    "bgp", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025802263},
-    {"namespace": "junos", "hostname": "exit02", "vrf": "internet-vrf", "prefix":
-    "172.16.2.0/24", "nexthopIps": ["169.254.253.10"], "oifs": ["xe-0/0/2.4"], "protocol":
-    "bgp", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025802263},
-    {"namespace": "junos", "hostname": "exit02", "vrf": "internet-vrf", "prefix":
-    "172.16.1.0/24", "nexthopIps": ["169.254.253.10"], "oifs": ["xe-0/0/2.4"], "protocol":
-    "bgp", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025802263},
-    {"namespace": "junos", "hostname": "exit02", "vrf": "internet-vrf", "prefix":
-    "169.254.253.9/32", "nexthopIps": [], "oifs": ["xe-0/0/2.4"], "protocol": "local",
-    "source": "", "ipvers": 4, "action": "Local", "timestamp": 1623025802263}, {"namespace":
-    "junos", "hostname": "exit02", "vrf": "internet-vrf", "prefix": "169.254.253.8/30",
-    "nexthopIps": [], "oifs": ["xe-0/0/2.4"], "protocol": "direct", "source": "",
-    "ipvers": 4, "action": "forward", "timestamp": 1623025802263}, {"namespace": "junos",
-    "hostname": "exit02", "vrf": "internet-vrf", "prefix": "169.254.127.3/32", "nexthopIps":
-    [], "oifs": ["xe-0/0/3.0"], "protocol": "local", "source": "", "ipvers": 4, "action":
-    "Local", "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "exit02",
-    "vrf": "internet-vrf", "prefix": "169.254.127.2/31", "nexthopIps": [], "oifs":
-    ["xe-0/0/3.0"], "protocol": "direct", "source": "", "ipvers": 4, "action": "forward",
+    "bgp", "source": "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp":
+    1623025802263}, {"namespace": "junos", "hostname": "exit02", "vrf": "internet-vrf",
+    "prefix": "172.16.2.0/24", "nexthopIps": ["169.254.253.10"], "oifs": ["xe-0/0/2.4"],
+    "protocol": "bgp", "source": "", "preference": 170, "ipvers": 4, "action": "forward",
     "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "exit02", "vrf":
-    "internet-vrf", "prefix": "169.254.127.0/31", "nexthopIps": ["169.254.127.2"],
-    "oifs": ["xe-0/0/3.0"], "protocol": "bgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "exit02",
-    "vrf": "internet-vrf", "prefix": "169.254.0.0/24", "nexthopIps": ["169.254.127.2"],
-    "oifs": ["xe-0/0/3.0"], "protocol": "bgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "exit02",
-    "vrf": "internet-vrf", "prefix": "10.255.5.0/24", "nexthopIps": ["169.254.127.2"],
-    "oifs": ["xe-0/0/3.0"], "protocol": "bgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "exit02",
-    "vrf": "internet-vrf", "prefix": "10.0.0.41/32", "nexthopIps": ["169.254.127.2"],
-    "oifs": ["xe-0/0/3.0"], "protocol": "bgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "exit02",
-    "vrf": "default", "prefix": "169.254.253.1/32", "nexthopIps": [], "oifs": ["xe-0/0/2.2"],
-    "protocol": "local", "source": "", "ipvers": 4, "action": "Local", "timestamp":
-    1623025802263}, {"namespace": "junos", "hostname": "exit02", "vrf": "default",
-    "prefix": "ff02::2/128", "nexthopIps": [], "oifs": [], "protocol": "inet6", "source":
-    "", "ipvers": 6, "action": "MultiRecv", "timestamp": 1623025802263}, {"namespace":
-    "junos", "hostname": "exit02", "vrf": "evpn-vrf", "prefix": "169.254.253.5/32",
-    "nexthopIps": [], "oifs": ["xe-0/0/2.3"], "protocol": "local", "source": "", "ipvers":
-    4, "action": "Local", "timestamp": 1623025802263}, {"namespace": "junos", "hostname":
-    "exit02", "vrf": ":vxlan", "prefix": "10.0.0.32/32", "nexthopIps": [], "oifs":
-    ["lo0.0"], "protocol": "direct", "source": "", "ipvers": 4, "action": "forward",
+    "internet-vrf", "prefix": "172.16.1.0/24", "nexthopIps": ["169.254.253.10"], "oifs":
+    ["xe-0/0/2.4"], "protocol": "bgp", "source": "", "preference": 170, "ipvers":
+    4, "action": "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname":
+    "exit02", "vrf": "internet-vrf", "prefix": "169.254.253.9/32", "nexthopIps": [],
+    "oifs": ["xe-0/0/2.4"], "protocol": "local", "source": "", "preference": 0, "ipvers":
+    4, "action": "local", "timestamp": 1623025802263}, {"namespace": "junos", "hostname":
+    "exit02", "vrf": "internet-vrf", "prefix": "169.254.253.8/30", "nexthopIps": [],
+    "oifs": ["xe-0/0/2.4"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
+    4, "action": "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname":
+    "exit02", "vrf": "internet-vrf", "prefix": "169.254.127.3/32", "nexthopIps": [],
+    "oifs": ["xe-0/0/3.0"], "protocol": "local", "source": "", "preference": 0, "ipvers":
+    4, "action": "local", "timestamp": 1623025802263}, {"namespace": "junos", "hostname":
+    "exit02", "vrf": "internet-vrf", "prefix": "169.254.127.2/31", "nexthopIps": [],
+    "oifs": ["xe-0/0/3.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
+    4, "action": "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname":
+    "exit02", "vrf": "internet-vrf", "prefix": "169.254.127.0/31", "nexthopIps": ["169.254.127.2"],
+    "oifs": ["xe-0/0/3.0"], "protocol": "bgp", "source": "", "preference": 170, "ipvers":
+    4, "action": "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname":
+    "exit02", "vrf": "internet-vrf", "prefix": "169.254.0.0/24", "nexthopIps": ["169.254.127.2"],
+    "oifs": ["xe-0/0/3.0"], "protocol": "bgp", "source": "", "preference": 170, "ipvers":
+    4, "action": "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname":
+    "exit02", "vrf": "internet-vrf", "prefix": "10.255.5.0/24", "nexthopIps": ["169.254.127.2"],
+    "oifs": ["xe-0/0/3.0"], "protocol": "bgp", "source": "", "preference": 170, "ipvers":
+    4, "action": "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname":
+    "exit02", "vrf": "internet-vrf", "prefix": "10.0.0.41/32", "nexthopIps": ["169.254.127.2"],
+    "oifs": ["xe-0/0/3.0"], "protocol": "bgp", "source": "", "preference": 170, "ipvers":
+    4, "action": "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname":
+    "exit02", "vrf": "default", "prefix": "169.254.253.1/32", "nexthopIps": [], "oifs":
+    ["xe-0/0/2.2"], "protocol": "local", "source": "", "preference": 0, "ipvers":
+    4, "action": "local", "timestamp": 1623025802263}, {"namespace": "junos", "hostname":
+    "exit02", "vrf": "default", "prefix": "ff02::2/128", "nexthopIps": [], "oifs":
+    [], "protocol": "inet6", "source": "", "preference": 0, "ipvers": 6, "action":
+    "multirecv", "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "exit02",
+    "vrf": "evpn-vrf", "prefix": "169.254.253.5/32", "nexthopIps": [], "oifs": ["xe-0/0/2.3"],
+    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "local",
     "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "exit02", "vrf":
-    ":vxlan", "prefix": "10.255.5.0/24", "nexthopIps": [], "oifs": ["em0.0"], "protocol":
-    "direct", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025802263},
-    {"namespace": "junos", "hostname": "exit02", "vrf": ":vxlan", "prefix": "10.255.5.252/32",
-    "nexthopIps": [], "oifs": ["em0.0"], "protocol": "local", "source": "", "ipvers":
-    4, "action": "Local", "timestamp": 1623025802263}, {"namespace": "junos", "hostname":
-    "exit02", "vrf": ":vxlan", "prefix": "169.254.0.0/24", "nexthopIps": [], "oifs":
-    ["em1.0"], "protocol": "direct", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "exit02", "vrf":
-    ":vxlan", "prefix": "169.254.0.2/32", "nexthopIps": [], "oifs": ["em1.0"], "protocol":
-    "local", "source": "", "ipvers": 4, "action": "Local", "timestamp": 1623025802263},
+    ":vxlan", "prefix": "10.0.0.32/32", "nexthopIps": [], "oifs": ["lo0.0"], "protocol":
+    "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1623025802263}, {"namespace": "junos", "hostname": "exit02", "vrf": ":vxlan",
+    "prefix": "10.255.5.0/24", "nexthopIps": [], "oifs": ["em0.0"], "protocol": "direct",
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1623025802263}, {"namespace": "junos", "hostname": "exit02", "vrf": ":vxlan",
+    "prefix": "10.255.5.252/32", "nexthopIps": [], "oifs": ["em0.0"], "protocol":
+    "local", "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp":
+    1623025802263}, {"namespace": "junos", "hostname": "exit02", "vrf": ":vxlan",
+    "prefix": "169.254.0.0/24", "nexthopIps": [], "oifs": ["em1.0"], "protocol": "direct",
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1623025802263}, {"namespace": "junos", "hostname": "exit02", "vrf": ":vxlan",
+    "prefix": "169.254.0.2/32", "nexthopIps": [], "oifs": ["em1.0"], "protocol": "local",
+    "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp": 1623025802263},
     {"namespace": "junos", "hostname": "exit02", "vrf": ":vxlan", "prefix": "169.254.253.0/30",
     "nexthopIps": [], "oifs": ["xe-0/0/2.2"], "protocol": "direct", "source": "",
+    "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1623025802263},
+    {"namespace": "junos", "hostname": "exit02", "vrf": ":vxlan", "prefix": "169.254.253.1/32",
+    "nexthopIps": [], "oifs": ["xe-0/0/2.2"], "protocol": "local", "source": "", "preference":
+    0, "ipvers": 4, "action": "local", "timestamp": 1623025802263}, {"namespace":
+    "junos", "hostname": "exit02", "vrf": "evpn-vrf", "prefix": "10.0.0.122/32", "nexthopIps":
+    [], "oifs": ["lo0.999"], "protocol": "direct", "source": "", "preference": 0,
     "ipvers": 4, "action": "forward", "timestamp": 1623025802263}, {"namespace": "junos",
-    "hostname": "exit02", "vrf": ":vxlan", "prefix": "169.254.253.1/32", "nexthopIps":
-    [], "oifs": ["xe-0/0/2.2"], "protocol": "local", "source": "", "ipvers": 4, "action":
-    "Local", "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "exit02",
-    "vrf": "evpn-vrf", "prefix": "10.0.0.122/32", "nexthopIps": [], "oifs": ["lo0.999"],
-    "protocol": "direct", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1623025802263}, {"namespace": "junos", "hostname": "exit02", "vrf": "evpn-vrf",
-    "prefix": "169.254.253.4/30", "nexthopIps": [], "oifs": ["xe-0/0/2.3"], "protocol":
-    "direct", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025802263},
-    {"namespace": "junos", "hostname": "exit02", "vrf": "internet-vrf", "prefix":
-    "0.0.0.0/0", "nexthopIps": ["169.254.127.2"], "oifs": ["xe-0/0/3.0"], "protocol":
-    "bgp", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025802263},
-    {"namespace": "junos", "hostname": "spine02", "vrf": "default", "prefix": "10.255.5.0/24",
-    "nexthopIps": [], "oifs": ["em0.0"], "protocol": "direct", "source": "", "ipvers":
+    "hostname": "exit02", "vrf": "evpn-vrf", "prefix": "169.254.253.4/30", "nexthopIps":
+    [], "oifs": ["xe-0/0/2.3"], "protocol": "direct", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1623025802263}, {"namespace":
+    "junos", "hostname": "exit02", "vrf": "internet-vrf", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["169.254.127.2"], "oifs": ["xe-0/0/3.0"], "protocol": "bgp", "source": "", "preference":
+    170, "ipvers": 4, "action": "forward", "timestamp": 1623025802263}, {"namespace":
+    "junos", "hostname": "spine02", "vrf": "default", "prefix": "10.255.5.0/24", "nexthopIps":
+    [], "oifs": ["em0.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
     4, "action": "forward", "timestamp": 1623025802688}, {"namespace": "junos", "hostname":
     "spine02", "vrf": "default", "prefix": "169.254.0.2/32", "nexthopIps": [], "oifs":
-    ["em1.0"], "protocol": "local", "source": "", "ipvers": 4, "action": "Local",
+    ["em1.0"], "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action":
+    "local", "timestamp": 1623025802688}, {"namespace": "junos", "hostname": "spine02",
+    "vrf": "default", "prefix": "224.0.0.5/32", "nexthopIps": [], "oifs": [], "protocol":
+    "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "multirecv", "timestamp":
+    1623025802688}, {"namespace": "junos", "hostname": "spine02", "vrf": "default",
+    "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"], "oifs": ["em0.0"], "protocol":
+    "access-internal", "source": "", "preference": 12, "ipvers": 4, "action": "forward",
     "timestamp": 1623025802688}, {"namespace": "junos", "hostname": "spine02", "vrf":
-    "default", "prefix": "224.0.0.5/32", "nexthopIps": [], "oifs": [], "protocol":
-    "ospf", "source": "", "ipvers": 4, "action": "MultiRecv", "timestamp": 1623025802688},
-    {"namespace": "junos", "hostname": "spine02", "vrf": "default", "prefix": "0.0.0.0/0",
-    "nexthopIps": ["10.255.5.1"], "oifs": ["em0.0"], "protocol": "access-internal",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025802688}, {"namespace":
-    "junos", "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps":
-    ["10.0.0.11"], "oifs": ["xe-0/0/0.0"], "protocol": "ospf", "source": "", "ipvers":
-    4, "action": "forward", "timestamp": 1623025802688}, {"namespace": "junos", "hostname":
-    "spine02", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.12"],
-    "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1623025802688}, {"namespace": "junos", "hostname": "spine02",
-    "vrf": "default", "prefix": "10.0.0.21/32", "nexthopIps": ["10.0.0.11", "10.0.0.12",
+    "default", "prefix": "10.0.0.11/32", "nexthopIps": ["10.0.0.11"], "oifs": ["xe-0/0/0.0"],
+    "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward",
+    "timestamp": 1623025802688}, {"namespace": "junos", "hostname": "spine02", "vrf":
+    "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.12"], "oifs": ["xe-0/0/1.0"],
+    "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward",
+    "timestamp": 1623025802688}, {"namespace": "junos", "hostname": "spine02", "vrf":
+    "default", "prefix": "10.0.0.21/32", "nexthopIps": ["10.0.0.11", "10.0.0.12",
     "10.0.0.31", "10.0.0.32"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0", "xe-0/0/2.0",
-    "xe-0/0/3.0"], "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1623025802688}, {"namespace": "junos", "hostname": "spine02", "vrf":
-    "default", "prefix": "169.254.0.0/24", "nexthopIps": [], "oifs": ["em1.0"], "protocol":
-    "direct", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025802688},
-    {"namespace": "junos", "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.31/32",
-    "nexthopIps": ["10.0.0.31"], "oifs": ["xe-0/0/2.0"], "protocol": "ospf", "source":
-    "", "ipvers": 4, "action": "forward", "timestamp": 1623025802688}, {"namespace":
-    "junos", "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.32/32", "nexthopIps":
-    ["10.0.0.32"], "oifs": ["xe-0/0/3.0"], "protocol": "ospf", "source": "", "ipvers":
+    "xe-0/0/3.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4,
+    "action": "forward", "timestamp": 1623025802688}, {"namespace": "junos", "hostname":
+    "spine02", "vrf": "default", "prefix": "169.254.0.0/24", "nexthopIps": [], "oifs":
+    ["em1.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1623025802688}, {"namespace": "junos", "hostname": "spine02",
+    "vrf": "default", "prefix": "10.0.0.31/32", "nexthopIps": ["10.0.0.31"], "oifs":
+    ["xe-0/0/2.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
+    4, "action": "forward", "timestamp": 1623025802688}, {"namespace": "junos", "hostname":
+    "spine02", "vrf": "default", "prefix": "10.0.0.32/32", "nexthopIps": ["10.0.0.32"],
+    "oifs": ["xe-0/0/3.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
     4, "action": "forward", "timestamp": 1623025802688}, {"namespace": "junos", "hostname":
     "spine02", "vrf": "default", "prefix": "10.255.5.118/32", "nexthopIps": [], "oifs":
-    ["em0.0"], "protocol": "local", "source": "", "ipvers": 4, "action": "Local",
+    ["em0.0"], "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action":
+    "local", "timestamp": 1623025802688}, {"namespace": "junos", "hostname": "spine02",
+    "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps": [], "oifs": ["lo0.0"],
+    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
     "timestamp": 1623025802688}, {"namespace": "junos", "hostname": "spine02", "vrf":
-    "default", "prefix": "10.0.0.22/32", "nexthopIps": [], "oifs": ["lo0.0"], "protocol":
-    "direct", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025802688},
-    {"namespace": "junos", "hostname": "spine02", "vrf": "default", "prefix": "ff02::2/128",
-    "nexthopIps": [], "oifs": [], "protocol": "inet6", "source": "", "ipvers": 6,
-    "action": "MultiRecv", "timestamp": 1623025802688}, {"namespace": "junos", "hostname":
-    "spine02", "vrf": "default", "prefix": "fe80::205:860f:fc71:c600/128", "nexthopIps":
-    [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "ipvers": 6, "action":
-    "forward", "timestamp": 1623025802688}, {"namespace": "junos", "hostname": "spine01",
-    "vrf": "default", "prefix": "169.254.0.2/32", "nexthopIps": [], "oifs": ["em1.0"],
-    "protocol": "local", "source": "", "ipvers": 4, "action": "Local", "timestamp":
+    "default", "prefix": "ff02::2/128", "nexthopIps": [], "oifs": [], "protocol":
+    "inet6", "source": "", "preference": 0, "ipvers": 6, "action": "multirecv", "timestamp":
+    1623025802688}, {"namespace": "junos", "hostname": "spine02", "vrf": "default",
+    "prefix": "fe80::205:860f:fc71:c600/128", "nexthopIps": [], "oifs": ["lo0.0"],
+    "protocol": "direct", "source": "", "preference": 0, "ipvers": 6, "action": "forward",
+    "timestamp": 1623025802688}, {"namespace": "junos", "hostname": "spine01", "vrf":
+    "default", "prefix": "169.254.0.2/32", "nexthopIps": [], "oifs": ["em1.0"], "protocol":
+    "local", "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp":
     1623025802890}, {"namespace": "junos", "hostname": "spine01", "vrf": "default",
     "prefix": "10.255.5.0/24", "nexthopIps": [], "oifs": ["em0.0"], "protocol": "direct",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025802890}, {"namespace":
-    "junos", "hostname": "spine01", "vrf": "default", "prefix": "224.0.0.5/32", "nexthopIps":
-    [], "oifs": [], "protocol": "ospf", "source": "", "ipvers": 4, "action": "MultiRecv",
-    "timestamp": 1623025802890}, {"namespace": "junos", "hostname": "spine01", "vrf":
-    "default", "prefix": "fe80::205:860f:fc71:2e00/128", "nexthopIps": [], "oifs":
-    ["lo0.0"], "protocol": "direct", "source": "", "ipvers": 6, "action": "forward",
-    "timestamp": 1623025802890}, {"namespace": "junos", "hostname": "spine01", "vrf":
-    "default", "prefix": "ff02::2/128", "nexthopIps": [], "oifs": [], "protocol":
-    "inet6", "source": "", "ipvers": 6, "action": "MultiRecv", "timestamp": 1623025802890},
-    {"namespace": "junos", "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.32/32",
-    "nexthopIps": ["10.0.0.32"], "oifs": ["xe-0/0/3.0"], "protocol": "ospf", "source":
-    "", "ipvers": 4, "action": "forward", "timestamp": 1623025802890}, {"namespace":
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1623025802890}, {"namespace": "junos", "hostname": "spine01", "vrf": "default",
+    "prefix": "224.0.0.5/32", "nexthopIps": [], "oifs": [], "protocol": "ospf", "source":
+    "", "preference": 10, "ipvers": 4, "action": "multirecv", "timestamp": 1623025802890},
+    {"namespace": "junos", "hostname": "spine01", "vrf": "default", "prefix": "fe80::205:860f:fc71:2e00/128",
+    "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "preference":
+    0, "ipvers": 6, "action": "forward", "timestamp": 1623025802890}, {"namespace":
+    "junos", "hostname": "spine01", "vrf": "default", "prefix": "ff02::2/128", "nexthopIps":
+    [], "oifs": [], "protocol": "inet6", "source": "", "preference": 0, "ipvers":
+    6, "action": "multirecv", "timestamp": 1623025802890}, {"namespace": "junos",
+    "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.32/32", "nexthopIps":
+    ["10.0.0.32"], "oifs": ["xe-0/0/3.0"], "protocol": "ospf", "source": "", "preference":
+    10, "ipvers": 4, "action": "forward", "timestamp": 1623025802890}, {"namespace":
     "junos", "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.31/32", "nexthopIps":
-    ["10.0.0.31"], "oifs": ["xe-0/0/2.0"], "protocol": "ospf", "source": "", "ipvers":
+    ["10.0.0.31"], "oifs": ["xe-0/0/2.0"], "protocol": "ospf", "source": "", "preference":
+    10, "ipvers": 4, "action": "forward", "timestamp": 1623025802890}, {"namespace":
+    "junos", "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps":
+    ["10.0.0.11", "10.0.0.12", "10.0.0.31", "10.0.0.32"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0",
+    "xe-0/0/2.0", "xe-0/0/3.0"], "protocol": "ospf", "source": "", "preference": 10,
+    "ipvers": 4, "action": "forward", "timestamp": 1623025802890}, {"namespace": "junos",
+    "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.21/32", "nexthopIps":
+    [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
     4, "action": "forward", "timestamp": 1623025802890}, {"namespace": "junos", "hostname":
-    "spine01", "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps": ["10.0.0.11",
-    "10.0.0.12", "10.0.0.31", "10.0.0.32"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0", "xe-0/0/2.0",
-    "xe-0/0/3.0"], "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1623025802890}, {"namespace": "junos", "hostname": "spine01", "vrf":
-    "default", "prefix": "10.0.0.21/32", "nexthopIps": [], "oifs": ["lo0.0"], "protocol":
-    "direct", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025802890},
-    {"namespace": "junos", "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.12/32",
-    "nexthopIps": ["10.0.0.12"], "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source":
-    "", "ipvers": 4, "action": "forward", "timestamp": 1623025802890}, {"namespace":
-    "junos", "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps":
-    ["10.0.0.11"], "oifs": ["xe-0/0/0.0"], "protocol": "ospf", "source": "", "ipvers":
+    "spine01", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.12"],
+    "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
+    4, "action": "forward", "timestamp": 1623025802890}, {"namespace": "junos", "hostname":
+    "spine01", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps": ["10.0.0.11"],
+    "oifs": ["xe-0/0/0.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
     4, "action": "forward", "timestamp": 1623025802890}, {"namespace": "junos", "hostname":
     "spine01", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"],
-    "oifs": ["em0.0"], "protocol": "access-internal", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1623025802890}, {"namespace": "junos", "hostname": "spine01",
-    "vrf": "default", "prefix": "169.254.0.0/24", "nexthopIps": [], "oifs": ["em1.0"],
-    "protocol": "direct", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1623025802890}, {"namespace": "junos", "hostname": "spine01", "vrf": "default",
-    "prefix": "10.255.5.117/32", "nexthopIps": [], "oifs": ["em0.0"], "protocol":
-    "local", "source": "", "ipvers": 4, "action": "Local", "timestamp": 1623025802890},
-    {"namespace": "junos", "hostname": "exit01", "vrf": "internet-vrf", "prefix":
-    "169.254.127.1/32", "nexthopIps": [], "oifs": ["xe-0/0/3.0"], "protocol": "local",
-    "source": "", "ipvers": 4, "action": "Local", "timestamp": 1623025803098}, {"namespace":
+    "oifs": ["em0.0"], "protocol": "access-internal", "source": "", "preference":
+    12, "ipvers": 4, "action": "forward", "timestamp": 1623025802890}, {"namespace":
+    "junos", "hostname": "spine01", "vrf": "default", "prefix": "169.254.0.0/24",
+    "nexthopIps": [], "oifs": ["em1.0"], "protocol": "direct", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1623025802890}, {"namespace":
+    "junos", "hostname": "spine01", "vrf": "default", "prefix": "10.255.5.117/32",
+    "nexthopIps": [], "oifs": ["em0.0"], "protocol": "local", "source": "", "preference":
+    0, "ipvers": 4, "action": "local", "timestamp": 1623025802890}, {"namespace":
+    "junos", "hostname": "exit01", "vrf": "internet-vrf", "prefix": "169.254.127.1/32",
+    "nexthopIps": [], "oifs": ["xe-0/0/3.0"], "protocol": "local", "source": "", "preference":
+    0, "ipvers": 4, "action": "local", "timestamp": 1623025803098}, {"namespace":
     "junos", "hostname": "exit01", "vrf": "internet-vrf", "prefix": "169.254.127.0/31",
     "nexthopIps": [], "oifs": ["xe-0/0/3.0"], "protocol": "direct", "source": "",
-    "ipvers": 4, "action": "forward", "timestamp": 1623025803098}, {"namespace": "junos",
-    "hostname": "exit01", "vrf": "internet-vrf", "prefix": "169.254.0.0/24", "nexthopIps":
-    ["169.254.127.0"], "oifs": ["xe-0/0/3.0"], "protocol": "bgp", "source": "", "ipvers":
-    4, "action": "forward", "timestamp": 1623025803098}, {"namespace": "junos", "hostname":
-    "exit01", "vrf": "internet-vrf", "prefix": "10.255.5.0/24", "nexthopIps": ["169.254.127.0"],
-    "oifs": ["xe-0/0/3.0"], "protocol": "bgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1623025803098}, {"namespace": "junos", "hostname": "exit01",
-    "vrf": "evpn-vrf", "prefix": "169.254.254.4/30", "nexthopIps": [], "oifs": ["xe-0/0/2.3"],
-    "protocol": "direct", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1623025803098}, {"namespace": "junos", "hostname": "exit01", "vrf": "internet-vrf",
-    "prefix": "169.254.127.2/31", "nexthopIps": ["169.254.127.0"], "oifs": ["xe-0/0/3.0"],
-    "protocol": "bgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1623025803098}, {"namespace": "junos", "hostname": "exit01", "vrf": "internet-vrf",
-    "prefix": "169.254.254.8/30", "nexthopIps": [], "oifs": ["xe-0/0/2.4"], "protocol":
-    "direct", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025803098},
+    "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1623025803098},
     {"namespace": "junos", "hostname": "exit01", "vrf": "internet-vrf", "prefix":
-    "169.254.254.9/32", "nexthopIps": [], "oifs": ["xe-0/0/2.4"], "protocol": "local",
-    "source": "", "ipvers": 4, "action": "Local", "timestamp": 1623025803098}, {"namespace":
-    "junos", "hostname": "exit01", "vrf": "internet-vrf", "prefix": "172.16.1.0/24",
-    "nexthopIps": ["10.0.0.11"], "oifs": ["_nexthopVrf:default"], "protocol": "bgp",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025803098}, {"namespace":
+    "169.254.0.0/24", "nexthopIps": ["169.254.127.0"], "oifs": ["xe-0/0/3.0"], "protocol":
+    "bgp", "source": "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp":
+    1623025803098}, {"namespace": "junos", "hostname": "exit01", "vrf": "internet-vrf",
+    "prefix": "10.255.5.0/24", "nexthopIps": ["169.254.127.0"], "oifs": ["xe-0/0/3.0"],
+    "protocol": "bgp", "source": "", "preference": 170, "ipvers": 4, "action": "forward",
+    "timestamp": 1623025803098}, {"namespace": "junos", "hostname": "exit01", "vrf":
+    "evpn-vrf", "prefix": "169.254.254.4/30", "nexthopIps": [], "oifs": ["xe-0/0/2.3"],
+    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1623025803098}, {"namespace": "junos", "hostname": "exit01", "vrf":
+    "internet-vrf", "prefix": "169.254.127.2/31", "nexthopIps": ["169.254.127.0"],
+    "oifs": ["xe-0/0/3.0"], "protocol": "bgp", "source": "", "preference": 170, "ipvers":
+    4, "action": "forward", "timestamp": 1623025803098}, {"namespace": "junos", "hostname":
+    "exit01", "vrf": "internet-vrf", "prefix": "169.254.254.8/30", "nexthopIps": [],
+    "oifs": ["xe-0/0/2.4"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
+    4, "action": "forward", "timestamp": 1623025803098}, {"namespace": "junos", "hostname":
+    "exit01", "vrf": "internet-vrf", "prefix": "169.254.254.9/32", "nexthopIps": [],
+    "oifs": ["xe-0/0/2.4"], "protocol": "local", "source": "", "preference": 0, "ipvers":
+    4, "action": "local", "timestamp": 1623025803098}, {"namespace": "junos", "hostname":
+    "exit01", "vrf": "internet-vrf", "prefix": "172.16.1.0/24", "nexthopIps": ["10.0.0.11"],
+    "oifs": ["_nexthopVrf:default"], "protocol": "bgp", "source": "", "preference":
+    170, "ipvers": 4, "action": "forward", "timestamp": 1623025803098}, {"namespace":
     "junos", "hostname": "exit01", "vrf": "internet-vrf", "prefix": "172.16.2.0/24",
     "nexthopIps": ["10.0.0.12"], "oifs": ["_nexthopVrf:default"], "protocol": "bgp",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025803098}, {"namespace":
-    "junos", "hostname": "exit01", "vrf": "internet-vrf", "prefix": "172.16.3.0/24",
-    "nexthopIps": ["10.0.0.11"], "oifs": ["_nexthopVrf:default"], "protocol": "bgp",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025803098}, {"namespace":
-    "junos", "hostname": "exit01", "vrf": "mpls", "prefix": "18", "nexthopIps": [],
-    "oifs": ["lsi.0 (evpn-vrf)"], "protocol": "vpn", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1623025803098}, {"namespace": "junos", "hostname": "exit01",
-    "vrf": "default", "prefix": "fe80::205:860f:fc71:7400/128", "nexthopIps": [],
-    "oifs": ["lo0.0"], "protocol": "direct", "source": "", "ipvers": 6, "action":
-    "forward", "timestamp": 1623025803098}, {"namespace": "junos", "hostname": "exit01",
-    "vrf": "default", "prefix": "ff02::2/128", "nexthopIps": [], "oifs": [], "protocol":
-    "inet6", "source": "", "ipvers": 6, "action": "MultiRecv", "timestamp": 1623025803098},
-    {"namespace": "junos", "hostname": "exit01", "vrf": "evpn-vrf", "prefix": "ff02::2/128",
-    "nexthopIps": [], "oifs": [], "protocol": "inet6", "source": "", "ipvers": 6,
-    "action": "MultiRecv", "timestamp": 1623025803098}, {"namespace": "junos", "hostname":
-    "exit01", "vrf": "internet-vrf", "prefix": "ff02::2/128", "nexthopIps": [], "oifs":
-    [], "protocol": "inet6", "source": "", "ipvers": 6, "action": "MultiRecv", "timestamp":
+    "source": "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp":
     1623025803098}, {"namespace": "junos", "hostname": "exit01", "vrf": "internet-vrf",
-    "prefix": "10.0.0.41/32", "nexthopIps": ["169.254.127.0"], "oifs": ["xe-0/0/3.0"],
-    "protocol": "bgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    "prefix": "172.16.3.0/24", "nexthopIps": ["10.0.0.11"], "oifs": ["_nexthopVrf:default"],
+    "protocol": "bgp", "source": "", "preference": 170, "ipvers": 4, "action": "forward",
+    "timestamp": 1623025803098}, {"namespace": "junos", "hostname": "exit01", "vrf":
+    "mpls", "prefix": "18", "nexthopIps": [], "oifs": ["lsi.0 (evpn-vrf)"], "protocol":
+    "vpn", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1623025803098}, {"namespace": "junos", "hostname": "exit01", "vrf": "default",
+    "prefix": "fe80::205:860f:fc71:7400/128", "nexthopIps": [], "oifs": ["lo0.0"],
+    "protocol": "direct", "source": "", "preference": 0, "ipvers": 6, "action": "forward",
+    "timestamp": 1623025803098}, {"namespace": "junos", "hostname": "exit01", "vrf":
+    "default", "prefix": "ff02::2/128", "nexthopIps": [], "oifs": [], "protocol":
+    "inet6", "source": "", "preference": 0, "ipvers": 6, "action": "multirecv", "timestamp":
+    1623025803098}, {"namespace": "junos", "hostname": "exit01", "vrf": "evpn-vrf",
+    "prefix": "ff02::2/128", "nexthopIps": [], "oifs": [], "protocol": "inet6", "source":
+    "", "preference": 0, "ipvers": 6, "action": "multirecv", "timestamp": 1623025803098},
+    {"namespace": "junos", "hostname": "exit01", "vrf": "internet-vrf", "prefix":
+    "ff02::2/128", "nexthopIps": [], "oifs": [], "protocol": "inet6", "source": "",
+    "preference": 0, "ipvers": 6, "action": "multirecv", "timestamp": 1623025803098},
+    {"namespace": "junos", "hostname": "exit01", "vrf": "internet-vrf", "prefix":
+    "10.0.0.41/32", "nexthopIps": ["169.254.127.0"], "oifs": ["xe-0/0/3.0"], "protocol":
+    "bgp", "source": "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp":
     1623025803098}, {"namespace": "junos", "hostname": "exit01", "vrf": "evpn-vrf",
     "prefix": "169.254.253.4/30", "nexthopIps": ["10.0.0.32"], "oifs": ["_nexthopVrf:default"],
-    "protocol": "evpn", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1623025803098}, {"namespace": "junos", "hostname": "exit01", "vrf": "internet-vrf",
-    "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.127.0"], "oifs": ["xe-0/0/3.0"],
-    "protocol": "bgp", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1623025803098}, {"namespace": "junos", "hostname": "exit01", "vrf": "evpn-vrf",
-    "prefix": "172.16.3.102/32", "nexthopIps": ["10.0.0.11"], "oifs": ["_nexthopVrf:default"],
-    "protocol": "evpn", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1623025803098}, {"namespace": "junos", "hostname": "exit01", "vrf": "evpn-vrf",
-    "prefix": "10.0.0.121/32", "nexthopIps": [], "oifs": ["lo0.999"], "protocol":
-    "direct", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025803098},
-    {"namespace": "junos", "hostname": "exit01", "vrf": "evpn-vrf", "prefix": "10.0.0.102/32",
-    "nexthopIps": ["10.0.0.12"], "oifs": ["_nexthopVrf:default"], "protocol": "evpn",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025803098}, {"namespace":
-    "junos", "hostname": "exit01", "vrf": "evpn-vrf", "prefix": "10.0.0.101/32", "nexthopIps":
-    ["10.0.0.11"], "oifs": ["_nexthopVrf:default"], "protocol": "evpn", "source":
-    "", "ipvers": 4, "action": "forward", "timestamp": 1623025803098}, {"namespace":
-    "junos", "hostname": "exit01", "vrf": ":vxlan", "prefix": "169.254.254.1/32",
-    "nexthopIps": [], "oifs": ["xe-0/0/2.2"], "protocol": "local", "source": "", "ipvers":
-    4, "action": "Local", "timestamp": 1623025803098}, {"namespace": "junos", "hostname":
-    "exit01", "vrf": ":vxlan", "prefix": "169.254.254.0/30", "nexthopIps": [], "oifs":
-    ["xe-0/0/2.2"], "protocol": "direct", "source": "", "ipvers": 4, "action": "forward",
+    "protocol": "evpn", "source": "", "preference": 170, "ipvers": 4, "action": "forward",
     "timestamp": 1623025803098}, {"namespace": "junos", "hostname": "exit01", "vrf":
-    ":vxlan", "prefix": "169.254.0.2/32", "nexthopIps": [], "oifs": ["em1.0"], "protocol":
-    "local", "source": "", "ipvers": 4, "action": "Local", "timestamp": 1623025803098},
+    "internet-vrf", "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.127.0"], "oifs":
+    ["xe-0/0/3.0"], "protocol": "bgp", "source": "", "preference": 170, "ipvers":
+    4, "action": "forward", "timestamp": 1623025803098}, {"namespace": "junos", "hostname":
+    "exit01", "vrf": "evpn-vrf", "prefix": "172.16.3.102/32", "nexthopIps": ["10.0.0.11"],
+    "oifs": ["_nexthopVrf:default"], "protocol": "evpn", "source": "", "preference":
+    170, "ipvers": 4, "action": "forward", "timestamp": 1623025803098}, {"namespace":
+    "junos", "hostname": "exit01", "vrf": "evpn-vrf", "prefix": "10.0.0.121/32", "nexthopIps":
+    [], "oifs": ["lo0.999"], "protocol": "direct", "source": "", "preference": 0,
+    "ipvers": 4, "action": "forward", "timestamp": 1623025803098}, {"namespace": "junos",
+    "hostname": "exit01", "vrf": "evpn-vrf", "prefix": "10.0.0.102/32", "nexthopIps":
+    ["10.0.0.12"], "oifs": ["_nexthopVrf:default"], "protocol": "evpn", "source":
+    "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp": 1623025803098},
+    {"namespace": "junos", "hostname": "exit01", "vrf": "evpn-vrf", "prefix": "10.0.0.101/32",
+    "nexthopIps": ["10.0.0.11"], "oifs": ["_nexthopVrf:default"], "protocol": "evpn",
+    "source": "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp":
+    1623025803098}, {"namespace": "junos", "hostname": "exit01", "vrf": ":vxlan",
+    "prefix": "169.254.254.1/32", "nexthopIps": [], "oifs": ["xe-0/0/2.2"], "protocol":
+    "local", "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp":
+    1623025803098}, {"namespace": "junos", "hostname": "exit01", "vrf": ":vxlan",
+    "prefix": "169.254.254.0/30", "nexthopIps": [], "oifs": ["xe-0/0/2.2"], "protocol":
+    "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1623025803098}, {"namespace": "junos", "hostname": "exit01", "vrf": ":vxlan",
+    "prefix": "169.254.0.2/32", "nexthopIps": [], "oifs": ["em1.0"], "protocol": "local",
+    "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp": 1623025803098},
     {"namespace": "junos", "hostname": "exit01", "vrf": ":vxlan", "prefix": "169.254.0.0/24",
-    "nexthopIps": [], "oifs": ["em1.0"], "protocol": "direct", "source": "", "ipvers":
-    4, "action": "forward", "timestamp": 1623025803098}, {"namespace": "junos", "hostname":
-    "exit01", "vrf": ":vxlan", "prefix": "10.255.5.251/32", "nexthopIps": [], "oifs":
-    ["em0.0"], "protocol": "local", "source": "", "ipvers": 4, "action": "Local",
+    "nexthopIps": [], "oifs": ["em1.0"], "protocol": "direct", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1623025803098}, {"namespace":
+    "junos", "hostname": "exit01", "vrf": ":vxlan", "prefix": "10.255.5.251/32", "nexthopIps":
+    [], "oifs": ["em0.0"], "protocol": "local", "source": "", "preference": 0, "ipvers":
+    4, "action": "local", "timestamp": 1623025803098}, {"namespace": "junos", "hostname":
+    "exit01", "vrf": ":vxlan", "prefix": "10.255.5.0/24", "nexthopIps": [], "oifs":
+    ["em0.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1623025803098}, {"namespace": "junos", "hostname": "exit01",
+    "vrf": ":vxlan", "prefix": "10.0.0.31/32", "nexthopIps": [], "oifs": ["lo0.0"],
+    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
     "timestamp": 1623025803098}, {"namespace": "junos", "hostname": "exit01", "vrf":
-    ":vxlan", "prefix": "10.255.5.0/24", "nexthopIps": [], "oifs": ["em0.0"], "protocol":
-    "direct", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025803098},
-    {"namespace": "junos", "hostname": "exit01", "vrf": ":vxlan", "prefix": "10.0.0.31/32",
-    "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "ipvers":
-    4, "action": "forward", "timestamp": 1623025803098}, {"namespace": "junos", "hostname":
-    "exit01", "vrf": "default", "prefix": "224.0.0.5/32", "nexthopIps": [], "oifs":
-    [], "protocol": "ospf", "source": "", "ipvers": 4, "action": "MultiRecv", "timestamp":
+    "default", "prefix": "224.0.0.5/32", "nexthopIps": [], "oifs": [], "protocol":
+    "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "multirecv", "timestamp":
     1623025803098}, {"namespace": "junos", "hostname": "exit01", "vrf": "default",
     "prefix": "169.254.254.1/32", "nexthopIps": [], "oifs": ["xe-0/0/2.2"], "protocol":
-    "local", "source": "", "ipvers": 4, "action": "Local", "timestamp": 1623025803098},
-    {"namespace": "junos", "hostname": "exit01", "vrf": "default", "prefix": "169.254.254.0/30",
-    "nexthopIps": [], "oifs": ["xe-0/0/2.2"], "protocol": "direct", "source": "",
-    "ipvers": 4, "action": "forward", "timestamp": 1623025803098}, {"namespace": "junos",
-    "hostname": "exit01", "vrf": "default", "prefix": "169.254.0.2/32", "nexthopIps":
-    [], "oifs": ["em1.0"], "protocol": "local", "source": "", "ipvers": 4, "action":
-    "Local", "timestamp": 1623025803098}, {"namespace": "junos", "hostname": "exit01",
-    "vrf": "evpn-vrf", "prefix": "172.16.3.202/32", "nexthopIps": ["10.0.0.12"], "oifs":
-    ["_nexthopVrf:default"], "protocol": "evpn", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1623025803098}, {"namespace": "junos", "hostname": "exit01",
-    "vrf": "default", "prefix": "169.254.0.0/24", "nexthopIps": [], "oifs": ["em1.0"],
-    "protocol": "direct", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    "local", "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp":
+    1623025803098}, {"namespace": "junos", "hostname": "exit01", "vrf": "default",
+    "prefix": "169.254.254.0/30", "nexthopIps": [], "oifs": ["xe-0/0/2.2"], "protocol":
+    "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1623025803098}, {"namespace": "junos", "hostname": "exit01", "vrf": "default",
+    "prefix": "169.254.0.2/32", "nexthopIps": [], "oifs": ["em1.0"], "protocol": "local",
+    "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp": 1623025803098},
+    {"namespace": "junos", "hostname": "exit01", "vrf": "evpn-vrf", "prefix": "172.16.3.202/32",
+    "nexthopIps": ["10.0.0.12"], "oifs": ["_nexthopVrf:default"], "protocol": "evpn",
+    "source": "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp":
+    1623025803098}, {"namespace": "junos", "hostname": "exit01", "vrf": "default",
+    "prefix": "169.254.0.0/24", "nexthopIps": [], "oifs": ["em1.0"], "protocol": "direct",
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
     1623025803098}, {"namespace": "junos", "hostname": "exit01", "vrf": "default",
     "prefix": "10.255.5.0/24", "nexthopIps": [], "oifs": ["em0.0"], "protocol": "direct",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025803098}, {"namespace":
-    "junos", "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.32/32", "nexthopIps":
-    ["10.0.0.21", "10.0.0.22"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol":
-    "ospf", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025803098},
-    {"namespace": "junos", "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.31/32",
-    "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "ipvers":
-    4, "action": "forward", "timestamp": 1623025803098}, {"namespace": "junos", "hostname":
-    "exit01", "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps": ["10.0.0.22"],
-    "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1623025803098}, {"namespace": "junos", "hostname": "exit01",
-    "vrf": "default", "prefix": "10.0.0.21/32", "nexthopIps": ["10.0.0.21"], "oifs":
-    ["xe-0/0/0.0"], "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1623025803098}, {"namespace": "junos", "hostname": "exit01", "vrf":
-    "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
-    "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol": "ospf", "source": "", "ipvers":
-    4, "action": "forward", "timestamp": 1623025803098}, {"namespace": "junos", "hostname":
-    "exit01", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps": ["10.0.0.21",
-    "10.0.0.22"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol": "ospf", "source":
-    "", "ipvers": 4, "action": "forward", "timestamp": 1623025803098}, {"namespace":
-    "junos", "hostname": "exit01", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
-    ["10.255.5.1"], "oifs": ["em0.0"], "protocol": "access-internal", "source": "",
-    "ipvers": 4, "action": "forward", "timestamp": 1623025803098}, {"namespace": "junos",
-    "hostname": "exit01", "vrf": "evpn-vrf", "prefix": "169.254.254.5/32", "nexthopIps":
-    [], "oifs": ["xe-0/0/2.3"], "protocol": "local", "source": "", "ipvers": 4, "action":
-    "Local", "timestamp": 1623025803098}, {"namespace": "junos", "hostname": "exit01",
-    "vrf": "evpn-vrf", "prefix": "172.16.1.0/24", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
-    "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol": "evpn", "source": "", "ipvers":
-    4, "action": "forward", "timestamp": 1623025803098}, {"namespace": "junos", "hostname":
-    "exit01", "vrf": "evpn-vrf", "prefix": "172.16.1.101/32", "nexthopIps": ["10.0.0.11"],
-    "oifs": ["_nexthopVrf:default"], "protocol": "evpn", "source": "", "ipvers": 4,
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1623025803098}, {"namespace": "junos", "hostname": "exit01", "vrf": "default",
+    "prefix": "10.0.0.32/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["xe-0/0/0.0",
+    "xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4,
     "action": "forward", "timestamp": 1623025803098}, {"namespace": "junos", "hostname":
-    "exit01", "vrf": "evpn-vrf", "prefix": "172.16.2.0/24", "nexthopIps": ["10.0.0.21",
-    "10.0.0.22"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol": "evpn", "source":
-    "", "ipvers": 4, "action": "forward", "timestamp": 1623025803098}, {"namespace":
-    "junos", "hostname": "exit01", "vrf": "evpn-vrf", "prefix": "172.16.2.201/32",
-    "nexthopIps": ["10.0.0.12"], "oifs": ["_nexthopVrf:default"], "protocol": "evpn",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025803098}, {"namespace":
+    "exit01", "vrf": "default", "prefix": "10.0.0.31/32", "nexthopIps": [], "oifs":
+    ["lo0.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1623025803098}, {"namespace": "junos", "hostname": "exit01",
+    "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps": ["10.0.0.22"], "oifs":
+    ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
+    4, "action": "forward", "timestamp": 1623025803098}, {"namespace": "junos", "hostname":
+    "exit01", "vrf": "default", "prefix": "10.0.0.21/32", "nexthopIps": ["10.0.0.21"],
+    "oifs": ["xe-0/0/0.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
+    4, "action": "forward", "timestamp": 1623025803098}, {"namespace": "junos", "hostname":
+    "exit01", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.21",
+    "10.0.0.22"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol": "ospf", "source":
+    "", "preference": 10, "ipvers": 4, "action": "forward", "timestamp": 1623025803098},
+    {"namespace": "junos", "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.11/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"],
+    "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward",
+    "timestamp": 1623025803098}, {"namespace": "junos", "hostname": "exit01", "vrf":
+    "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"], "oifs": ["em0.0"],
+    "protocol": "access-internal", "source": "", "preference": 12, "ipvers": 4, "action":
+    "forward", "timestamp": 1623025803098}, {"namespace": "junos", "hostname": "exit01",
+    "vrf": "evpn-vrf", "prefix": "169.254.254.5/32", "nexthopIps": [], "oifs": ["xe-0/0/2.3"],
+    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "local",
+    "timestamp": 1623025803098}, {"namespace": "junos", "hostname": "exit01", "vrf":
+    "evpn-vrf", "prefix": "172.16.1.0/24", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol": "evpn", "source": "", "preference":
+    170, "ipvers": 4, "action": "forward", "timestamp": 1623025803098}, {"namespace":
+    "junos", "hostname": "exit01", "vrf": "evpn-vrf", "prefix": "172.16.1.101/32",
+    "nexthopIps": ["10.0.0.11"], "oifs": ["_nexthopVrf:default"], "protocol": "evpn",
+    "source": "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp":
+    1623025803098}, {"namespace": "junos", "hostname": "exit01", "vrf": "evpn-vrf",
+    "prefix": "172.16.2.0/24", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["xe-0/0/0.0",
+    "xe-0/0/1.0"], "protocol": "evpn", "source": "", "preference": 170, "ipvers":
+    4, "action": "forward", "timestamp": 1623025803098}, {"namespace": "junos", "hostname":
+    "exit01", "vrf": "evpn-vrf", "prefix": "172.16.2.201/32", "nexthopIps": ["10.0.0.12"],
+    "oifs": ["_nexthopVrf:default"], "protocol": "evpn", "source": "", "preference":
+    170, "ipvers": 4, "action": "forward", "timestamp": 1623025803098}, {"namespace":
     "junos", "hostname": "exit01", "vrf": "evpn-vrf", "prefix": "172.16.3.0/24", "nexthopIps":
     ["10.0.0.21", "10.0.0.22"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol":
-    "evpn", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025803098},
-    {"namespace": "junos", "hostname": "exit01", "vrf": "default", "prefix": "10.255.5.251/32",
-    "nexthopIps": [], "oifs": ["em0.0"], "protocol": "local", "source": "", "ipvers":
-    4, "action": "Local", "timestamp": 1623025803098}, {"namespace": "junos", "hostname":
-    "exit01", "vrf": "evpn-vrf", "prefix": "10.0.0.122/32", "nexthopIps": ["10.0.0.32"],
-    "oifs": ["_nexthopVrf:default"], "protocol": "evpn", "source": "", "ipvers": 4,
-    "action": "forward", "timestamp": 1623025803098}]'
+    "evpn", "source": "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp":
+    1623025803098}, {"namespace": "junos", "hostname": "exit01", "vrf": "default",
+    "prefix": "10.255.5.251/32", "nexthopIps": [], "oifs": ["em0.0"], "protocol":
+    "local", "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp":
+    1623025803098}, {"namespace": "junos", "hostname": "exit01", "vrf": "evpn-vrf",
+    "prefix": "10.0.0.122/32", "nexthopIps": ["10.0.0.32"], "oifs": ["_nexthopVrf:default"],
+    "protocol": "evpn", "source": "", "preference": 170, "ipvers": 4, "action": "forward",
+    "timestamp": 1623025803098}]'
 - command: route show --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: route show junos
@@ -759,8 +808,8 @@ tests:
   marks: route summarize junos
   output: '{"junos": {"deviceCnt": 12, "uniquePrefixCnt": 61, "uniqueVrfsCnt": 4,
     "ifRoutesCnt": 25, "hostRoutesCnt": 119, "totalV4RoutesinNs": 215, "totalV6RoutesinNs":
-    20, "routingProtocolCnt": 11, "routesPerHostStat": [5, 51, 14.0], "routesperVrfStat":
-    [26, 132, 38.5], "deviceWithNoDefRoute": true}}'
+    20, "routingProtocolCnt": 11, "nexthopCnt": 4, "routesPerHostStat": [5, 51, 14.0],
+    "routesperVrfStat": [26, 132, 38.5], "deviceWithNoDefRoute": true}}'
 - command: route unique --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: route unique junos
@@ -773,192 +822,205 @@ tests:
   marks: route lpm junos
   output: '[{"namespace": "junos", "hostname": "exit01", "vrf": "default", "prefix":
     "10.0.0.11/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["xe-0/0/0.0",
-    "xe-0/0/1.0"], "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1623025803098}, {"namespace": "junos", "hostname": "spine01", "vrf":
+    "xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4,
+    "action": "forward", "timestamp": 1623025803098}, {"namespace": "junos", "hostname":
+    "spine01", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps": ["10.0.0.11"],
+    "oifs": ["xe-0/0/0.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
+    4, "action": "forward", "timestamp": 1623025802890}, {"namespace": "junos", "hostname":
+    "leaf01", "vrf": ":vxlan", "prefix": "10.0.0.11/32", "nexthopIps": [], "oifs":
+    ["lo0.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1623025801173}, {"namespace": "junos", "hostname": "leaf01",
+    "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps": [], "oifs": ["lo0.0"],
+    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1623025801173}, {"namespace": "junos", "hostname": "spine02", "vrf":
     "default", "prefix": "10.0.0.11/32", "nexthopIps": ["10.0.0.11"], "oifs": ["xe-0/0/0.0"],
-    "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1623025802890}, {"namespace": "junos", "hostname": "leaf01", "vrf": ":vxlan",
-    "prefix": "10.0.0.11/32", "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "direct",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025801173}, {"namespace":
-    "junos", "hostname": "leaf01", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps":
-    [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1623025801173}, {"namespace": "junos", "hostname": "spine02",
-    "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps": ["10.0.0.11"], "oifs":
-    ["xe-0/0/0.0"], "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward",
+    "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward",
     "timestamp": 1623025802688}, {"namespace": "junos", "hostname": "leaf02", "vrf":
     "default", "prefix": "10.0.0.11/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
-    "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol": "ospf", "source": "", "ipvers":
-    4, "action": "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname":
-    "leaf02", "vrf": ":vxlan", "prefix": "10.0.0.11/32", "nexthopIps": ["10.0.0.21",
-    "10.0.0.22"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol": "static", "source":
-    "", "ipvers": 4, "action": "forward", "timestamp": 1623025802263}, {"namespace":
-    "junos", "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps":
+    "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference":
+    10, "ipvers": 4, "action": "forward", "timestamp": 1623025802263}, {"namespace":
+    "junos", "hostname": "leaf02", "vrf": ":vxlan", "prefix": "10.0.0.11/32", "nexthopIps":
     ["10.0.0.21", "10.0.0.22"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol":
-    "ospf", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025802263},
-    {"namespace": "junos", "hostname": "server101", "vrf": "default", "prefix": "0.0.0.0/0",
-    "nexthopIps": ["10.255.5.1"], "oifs": ["eth0"], "protocol": "", "source": "",
-    "ipvers": 4, "action": "forward", "timestamp": 1623025795928}, {"namespace": "junos",
-    "hostname": "exit02", "vrf": "internet-vrf", "prefix": "0.0.0.0/0", "nexthopIps":
-    ["169.254.127.2"], "oifs": ["xe-0/0/3.0"], "protocol": "bgp", "source": "", "ipvers":
+    "static", "source": "", "preference": 1, "ipvers": 4, "action": "forward", "timestamp":
+    1623025802263}, {"namespace": "junos", "hostname": "exit02", "vrf": "default",
+    "prefix": "10.0.0.11/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["xe-0/0/0.0",
+    "xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4,
+    "action": "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname":
+    "server101", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"],
+    "oifs": ["eth0"], "protocol": "", "source": "", "preference": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1623025795928}, {"namespace": "junos", "hostname":
+    "exit02", "vrf": "internet-vrf", "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.127.2"],
+    "oifs": ["xe-0/0/3.0"], "protocol": "bgp", "source": "", "preference": 170, "ipvers":
     4, "action": "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname":
     "exit01", "vrf": "internet-vrf", "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.127.0"],
-    "oifs": ["xe-0/0/3.0"], "protocol": "bgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1623025803098}, {"namespace": "junos", "hostname": "dcedge01",
-    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"], "oifs":
-    ["em0.0"], "protocol": "access-internal", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "server201",
-    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"], "oifs":
-    ["eth0"], "protocol": "", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1623025796137}, {"namespace": "junos", "hostname": "firewall01", "vrf": "default",
-    "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"], "oifs": ["eth0"], "protocol":
-    "", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025796549},
-    {"namespace": "junos", "hostname": "server202", "vrf": "default", "prefix": "0.0.0.0/0",
-    "nexthopIps": ["10.255.5.1"], "oifs": ["eth0"], "protocol": "", "source": "",
-    "ipvers": 4, "action": "forward", "timestamp": 1623025796342}, {"namespace": "junos",
-    "hostname": "server102", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
-    ["10.255.5.1"], "oifs": ["eth0"], "protocol": "", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1623025796138}]'
+    "oifs": ["xe-0/0/3.0"], "protocol": "bgp", "source": "", "preference": 170, "ipvers":
+    4, "action": "forward", "timestamp": 1623025803098}, {"namespace": "junos", "hostname":
+    "dcedge01", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"],
+    "oifs": ["em0.0"], "protocol": "access-internal", "source": "", "preference":
+    12, "ipvers": 4, "action": "forward", "timestamp": 1623025802263}, {"namespace":
+    "junos", "hostname": "server201", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["10.255.5.1"], "oifs": ["eth0"], "protocol": "", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1623025796137}, {"namespace":
+    "junos", "hostname": "firewall01", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["10.255.5.1"], "oifs": ["eth0"], "protocol": "", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1623025796549}, {"namespace":
+    "junos", "hostname": "server202", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["10.255.5.1"], "oifs": ["eth0"], "protocol": "", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1623025796342}, {"namespace":
+    "junos", "hostname": "server102", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["10.255.5.1"], "oifs": ["eth0"], "protocol": "", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1623025796138}]'
 - command: route lpm --address="10.0.0.12" --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: route lpm junos
   output: '[{"namespace": "junos", "hostname": "exit01", "vrf": "default", "prefix":
     "10.0.0.12/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["xe-0/0/0.0",
-    "xe-0/0/1.0"], "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1623025803098}, {"namespace": "junos", "hostname": "spine01", "vrf":
+    "xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4,
+    "action": "forward", "timestamp": 1623025803098}, {"namespace": "junos", "hostname":
+    "spine01", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.12"],
+    "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
+    4, "action": "forward", "timestamp": 1623025802890}, {"namespace": "junos", "hostname":
+    "leaf01", "vrf": ":vxlan", "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.21",
+    "10.0.0.22"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol": "static", "source":
+    "", "preference": 1, "ipvers": 4, "action": "forward", "timestamp": 1623025801173},
+    {"namespace": "junos", "hostname": "leaf01", "vrf": "default", "prefix": "10.0.0.12/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"],
+    "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward",
+    "timestamp": 1623025801173}, {"namespace": "junos", "hostname": "spine02", "vrf":
     "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.12"], "oifs": ["xe-0/0/1.0"],
-    "protocol": "ospf", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1623025802890}, {"namespace": "junos", "hostname": "leaf01", "vrf": ":vxlan",
-    "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["xe-0/0/0.0",
-    "xe-0/0/1.0"], "protocol": "static", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1623025801173}, {"namespace": "junos", "hostname": "leaf01", "vrf":
-    "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
-    "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol": "ospf", "source": "", "ipvers":
-    4, "action": "forward", "timestamp": 1623025801173}, {"namespace": "junos", "hostname":
-    "spine02", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.12"],
-    "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1623025802688}, {"namespace": "junos", "hostname": "leaf02",
-    "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": [], "oifs": ["lo0.0"],
-    "protocol": "direct", "source": "", "ipvers": 4, "action": "forward", "timestamp":
+    "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward",
+    "timestamp": 1623025802688}, {"namespace": "junos", "hostname": "leaf02", "vrf":
+    "default", "prefix": "10.0.0.12/32", "nexthopIps": [], "oifs": ["lo0.0"], "protocol":
+    "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
     1623025802263}, {"namespace": "junos", "hostname": "leaf02", "vrf": ":vxlan",
     "prefix": "10.0.0.12/32", "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "direct",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025802263}, {"namespace":
-    "junos", "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps":
-    ["10.0.0.21", "10.0.0.22"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol":
-    "ospf", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025802263},
-    {"namespace": "junos", "hostname": "server101", "vrf": "default", "prefix": "0.0.0.0/0",
-    "nexthopIps": ["10.255.5.1"], "oifs": ["eth0"], "protocol": "", "source": "",
-    "ipvers": 4, "action": "forward", "timestamp": 1623025795928}, {"namespace": "junos",
-    "hostname": "exit02", "vrf": "internet-vrf", "prefix": "0.0.0.0/0", "nexthopIps":
-    ["169.254.127.2"], "oifs": ["xe-0/0/3.0"], "protocol": "bgp", "source": "", "ipvers":
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1623025802263}, {"namespace": "junos", "hostname": "exit02", "vrf": "default",
+    "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["xe-0/0/0.0",
+    "xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4,
+    "action": "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname":
+    "server101", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"],
+    "oifs": ["eth0"], "protocol": "", "source": "", "preference": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1623025795928}, {"namespace": "junos", "hostname":
+    "exit02", "vrf": "internet-vrf", "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.127.2"],
+    "oifs": ["xe-0/0/3.0"], "protocol": "bgp", "source": "", "preference": 170, "ipvers":
     4, "action": "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname":
     "exit01", "vrf": "internet-vrf", "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.127.0"],
-    "oifs": ["xe-0/0/3.0"], "protocol": "bgp", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1623025803098}, {"namespace": "junos", "hostname": "dcedge01",
-    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"], "oifs":
-    ["em0.0"], "protocol": "access-internal", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "server201",
-    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"], "oifs":
-    ["eth0"], "protocol": "", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1623025796137}, {"namespace": "junos", "hostname": "firewall01", "vrf": "default",
-    "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"], "oifs": ["eth0"], "protocol":
-    "", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025796549},
-    {"namespace": "junos", "hostname": "server202", "vrf": "default", "prefix": "0.0.0.0/0",
-    "nexthopIps": ["10.255.5.1"], "oifs": ["eth0"], "protocol": "", "source": "",
-    "ipvers": 4, "action": "forward", "timestamp": 1623025796342}, {"namespace": "junos",
-    "hostname": "server102", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
-    ["10.255.5.1"], "oifs": ["eth0"], "protocol": "", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1623025796138}]'
+    "oifs": ["xe-0/0/3.0"], "protocol": "bgp", "source": "", "preference": 170, "ipvers":
+    4, "action": "forward", "timestamp": 1623025803098}, {"namespace": "junos", "hostname":
+    "dcedge01", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"],
+    "oifs": ["em0.0"], "protocol": "access-internal", "source": "", "preference":
+    12, "ipvers": 4, "action": "forward", "timestamp": 1623025802263}, {"namespace":
+    "junos", "hostname": "server201", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["10.255.5.1"], "oifs": ["eth0"], "protocol": "", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1623025796137}, {"namespace":
+    "junos", "hostname": "firewall01", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["10.255.5.1"], "oifs": ["eth0"], "protocol": "", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1623025796549}, {"namespace":
+    "junos", "hostname": "server202", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["10.255.5.1"], "oifs": ["eth0"], "protocol": "", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1623025796342}, {"namespace":
+    "junos", "hostname": "server102", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["10.255.5.1"], "oifs": ["eth0"], "protocol": "", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1623025796138}]'
 - command: route lpm --address="172.16.1.101" --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: route lpm junos
   output: '[{"namespace": "junos", "hostname": "leaf02", "vrf": "evpn-vrf", "prefix":
     "172.16.1.101/32", "nexthopIps": ["10.0.0.11"], "oifs": ["_nexthopVrf:default"],
-    "protocol": "evpn", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1623025802263}, {"namespace": "junos", "hostname": "leaf01", "vrf": "evpn-vrf",
-    "prefix": "172.16.1.101/32", "nexthopIps": [], "oifs": ["irb.10"], "protocol":
-    "evpn", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025801173},
-    {"namespace": "junos", "hostname": "exit01", "vrf": "evpn-vrf", "prefix": "172.16.1.101/32",
-    "nexthopIps": ["10.0.0.11"], "oifs": ["_nexthopVrf:default"], "protocol": "evpn",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025803098}, {"namespace":
-    "junos", "hostname": "exit02", "vrf": "internet-vrf", "prefix": "172.16.1.0/24",
-    "nexthopIps": ["169.254.253.10"], "oifs": ["xe-0/0/2.4"], "protocol": "bgp", "source":
-    "", "ipvers": 4, "action": "forward", "timestamp": 1623025802263}, {"namespace":
+    "protocol": "evpn", "source": "", "preference": 170, "ipvers": 4, "action": "forward",
+    "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "leaf01", "vrf":
+    "evpn-vrf", "prefix": "172.16.1.101/32", "nexthopIps": [], "oifs": ["irb.10"],
+    "protocol": "evpn", "source": "", "preference": 7, "ipvers": 4, "action": "forward",
+    "timestamp": 1623025801173}, {"namespace": "junos", "hostname": "exit01", "vrf":
+    "evpn-vrf", "prefix": "172.16.1.101/32", "nexthopIps": ["10.0.0.11"], "oifs":
+    ["_nexthopVrf:default"], "protocol": "evpn", "source": "", "preference": 170,
+    "ipvers": 4, "action": "forward", "timestamp": 1623025803098}, {"namespace": "junos",
+    "hostname": "exit02", "vrf": "internet-vrf", "prefix": "172.16.1.0/24", "nexthopIps":
+    ["169.254.253.10"], "oifs": ["xe-0/0/2.4"], "protocol": "bgp", "source": "", "preference":
+    170, "ipvers": 4, "action": "forward", "timestamp": 1623025802263}, {"namespace":
     "junos", "hostname": "exit01", "vrf": "internet-vrf", "prefix": "172.16.1.0/24",
     "nexthopIps": ["10.0.0.11"], "oifs": ["_nexthopVrf:default"], "protocol": "bgp",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025803098}, {"namespace":
-    "junos", "hostname": "server101", "vrf": "default", "prefix": "172.16.1.0/24",
-    "nexthopIps": [""], "oifs": ["eth1"], "protocol": "kernel", "source": "172.16.1.101",
-    "ipvers": 4, "action": "forward", "timestamp": 1623025795928}, {"namespace": "junos",
-    "hostname": "dcedge01", "vrf": "default", "prefix": "172.16.1.0/24", "nexthopIps":
-    ["169.254.127.1"], "oifs": ["xe-0/0/0.0"], "protocol": "bgp", "source": "", "ipvers":
+    "source": "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp":
+    1623025803098}, {"namespace": "junos", "hostname": "server101", "vrf": "default",
+    "prefix": "172.16.1.0/24", "nexthopIps": [""], "oifs": ["eth1"], "protocol": "kernel",
+    "source": "172.16.1.101", "preference": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1623025795928}, {"namespace": "junos", "hostname": "dcedge01", "vrf":
+    "default", "prefix": "172.16.1.0/24", "nexthopIps": ["169.254.127.1"], "oifs":
+    ["xe-0/0/0.0"], "protocol": "bgp", "source": "", "preference": 170, "ipvers":
     4, "action": "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname":
     "server201", "vrf": "default", "prefix": "172.16.0.0/16", "nexthopIps": ["172.16.2.254"],
-    "oifs": ["eth1"], "protocol": "", "source": "", "ipvers": 4, "action": "forward",
-    "timestamp": 1623025796137}, {"namespace": "junos", "hostname": "server102", "vrf":
-    "default", "prefix": "172.16.0.0/16", "nexthopIps": ["172.16.3.254"], "oifs":
-    ["eth1"], "protocol": "", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1623025796138}, {"namespace": "junos", "hostname": "server202", "vrf": "default",
-    "prefix": "172.16.0.0/16", "nexthopIps": ["172.16.3.254"], "oifs": ["eth1"], "protocol":
-    "", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025796342},
-    {"namespace": "junos", "hostname": "exit01", "vrf": "default", "prefix": "0.0.0.0/0",
-    "nexthopIps": ["10.255.5.1"], "oifs": ["em0.0"], "protocol": "access-internal",
-    "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025803098}, {"namespace":
+    "oifs": ["eth1"], "protocol": "", "source": "", "preference": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1623025796137}, {"namespace": "junos", "hostname":
+    "server102", "vrf": "default", "prefix": "172.16.0.0/16", "nexthopIps": ["172.16.3.254"],
+    "oifs": ["eth1"], "protocol": "", "source": "", "preference": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1623025796138}, {"namespace": "junos", "hostname":
+    "server202", "vrf": "default", "prefix": "172.16.0.0/16", "nexthopIps": ["172.16.3.254"],
+    "oifs": ["eth1"], "protocol": "", "source": "", "preference": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1623025796342}, {"namespace": "junos", "hostname":
+    "exit01", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"],
+    "oifs": ["em0.0"], "protocol": "access-internal", "source": "", "preference":
+    12, "ipvers": 4, "action": "forward", "timestamp": 1623025803098}, {"namespace":
     "junos", "hostname": "spine01", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
     ["10.255.5.1"], "oifs": ["em0.0"], "protocol": "access-internal", "source": "",
-    "ipvers": 4, "action": "forward", "timestamp": 1623025802890}, {"namespace": "junos",
-    "hostname": "spine02", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
-    ["10.255.5.1"], "oifs": ["em0.0"], "protocol": "access-internal", "source": "",
-    "ipvers": 4, "action": "forward", "timestamp": 1623025802688}, {"namespace": "junos",
-    "hostname": "leaf02", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"],
-    "oifs": ["em0.0"], "protocol": "access-internal", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "exit02",
-    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"], "oifs":
-    ["em0.0"], "protocol": "access-internal", "source": "", "ipvers": 4, "action":
+    "preference": 12, "ipvers": 4, "action": "forward", "timestamp": 1623025802890},
+    {"namespace": "junos", "hostname": "spine02", "vrf": "default", "prefix": "0.0.0.0/0",
+    "nexthopIps": ["10.255.5.1"], "oifs": ["em0.0"], "protocol": "access-internal",
+    "source": "", "preference": 12, "ipvers": 4, "action": "forward", "timestamp":
+    1623025802688}, {"namespace": "junos", "hostname": "leaf02", "vrf": "default",
+    "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"], "oifs": ["em0.0"], "protocol":
+    "access-internal", "source": "", "preference": 12, "ipvers": 4, "action": "forward",
+    "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "exit02", "vrf":
+    "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"], "oifs": ["em0.0"],
+    "protocol": "access-internal", "source": "", "preference": 12, "ipvers": 4, "action":
     "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "leaf01",
     "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"], "oifs":
-    ["em0.0"], "protocol": "access-internal", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1623025801173}, {"namespace": "junos", "hostname": "firewall01",
-    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"], "oifs":
-    ["eth0"], "protocol": "", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1623025796549}]'
+    ["em0.0"], "protocol": "access-internal", "source": "", "preference": 12, "ipvers":
+    4, "action": "forward", "timestamp": 1623025801173}, {"namespace": "junos", "hostname":
+    "firewall01", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"],
+    "oifs": ["eth0"], "protocol": "", "source": "", "preference": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1623025796549}]'
 - command: route lpm --address="10.0.0.100" --vrf=default --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: route lpm junos
   output: '[{"namespace": "junos", "hostname": "server101", "vrf": "default", "prefix":
     "0.0.0.0/0", "nexthopIps": ["10.255.5.1"], "oifs": ["eth0"], "protocol": "", "source":
-    "", "ipvers": 4, "action": "forward", "timestamp": 1623025795928}, {"namespace":
-    "junos", "hostname": "server201", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
-    ["10.255.5.1"], "oifs": ["eth0"], "protocol": "", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1623025796137}, {"namespace": "junos", "hostname": "server102",
-    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"], "oifs":
-    ["eth0"], "protocol": "", "source": "", "ipvers": 4, "action": "forward", "timestamp":
-    1623025796138}, {"namespace": "junos", "hostname": "server202", "vrf": "default",
-    "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"], "oifs": ["eth0"], "protocol":
-    "", "source": "", "ipvers": 4, "action": "forward", "timestamp": 1623025796342},
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1623025795928},
+    {"namespace": "junos", "hostname": "server201", "vrf": "default", "prefix": "0.0.0.0/0",
+    "nexthopIps": ["10.255.5.1"], "oifs": ["eth0"], "protocol": "", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1623025796137},
+    {"namespace": "junos", "hostname": "server102", "vrf": "default", "prefix": "0.0.0.0/0",
+    "nexthopIps": ["10.255.5.1"], "oifs": ["eth0"], "protocol": "", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1623025796138},
+    {"namespace": "junos", "hostname": "server202", "vrf": "default", "prefix": "0.0.0.0/0",
+    "nexthopIps": ["10.255.5.1"], "oifs": ["eth0"], "protocol": "", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1623025796342},
     {"namespace": "junos", "hostname": "firewall01", "vrf": "default", "prefix": "0.0.0.0/0",
     "nexthopIps": ["10.255.5.1"], "oifs": ["eth0"], "protocol": "", "source": "",
-    "ipvers": 4, "action": "forward", "timestamp": 1623025796549}, {"namespace": "junos",
-    "hostname": "leaf01", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"],
-    "oifs": ["em0.0"], "protocol": "access-internal", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1623025801173}, {"namespace": "junos", "hostname": "leaf02",
-    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"], "oifs":
-    ["em0.0"], "protocol": "access-internal", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "dcedge01",
-    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"], "oifs":
-    ["em0.0"], "protocol": "access-internal", "source": "", "ipvers": 4, "action":
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1623025796549},
+    {"namespace": "junos", "hostname": "leaf01", "vrf": "default", "prefix": "0.0.0.0/0",
+    "nexthopIps": ["10.255.5.1"], "oifs": ["em0.0"], "protocol": "access-internal",
+    "source": "", "preference": 12, "ipvers": 4, "action": "forward", "timestamp":
+    1623025801173}, {"namespace": "junos", "hostname": "leaf02", "vrf": "default",
+    "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"], "oifs": ["em0.0"], "protocol":
+    "access-internal", "source": "", "preference": 12, "ipvers": 4, "action": "forward",
+    "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "dcedge01", "vrf":
+    "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"], "oifs": ["em0.0"],
+    "protocol": "access-internal", "source": "", "preference": 12, "ipvers": 4, "action":
     "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "exit02",
     "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"], "oifs":
-    ["em0.0"], "protocol": "access-internal", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname": "spine02",
-    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"], "oifs":
-    ["em0.0"], "protocol": "access-internal", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1623025802688}, {"namespace": "junos", "hostname": "spine01",
-    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"], "oifs":
-    ["em0.0"], "protocol": "access-internal", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1623025802890}, {"namespace": "junos", "hostname": "exit01",
-    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"], "oifs":
-    ["em0.0"], "protocol": "access-internal", "source": "", "ipvers": 4, "action":
-    "forward", "timestamp": 1623025803098}]'
+    ["em0.0"], "protocol": "access-internal", "source": "", "preference": 12, "ipvers":
+    4, "action": "forward", "timestamp": 1623025802263}, {"namespace": "junos", "hostname":
+    "spine02", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"],
+    "oifs": ["em0.0"], "protocol": "access-internal", "source": "", "preference":
+    12, "ipvers": 4, "action": "forward", "timestamp": 1623025802688}, {"namespace":
+    "junos", "hostname": "spine01", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["10.255.5.1"], "oifs": ["em0.0"], "protocol": "access-internal", "source": "",
+    "preference": 12, "ipvers": 4, "action": "forward", "timestamp": 1623025802890},
+    {"namespace": "junos", "hostname": "exit01", "vrf": "default", "prefix": "0.0.0.0/0",
+    "nexthopIps": ["10.255.5.1"], "oifs": ["em0.0"], "protocol": "access-internal",
+    "source": "", "preference": 12, "ipvers": 4, "action": "forward", "timestamp":
+    1623025803098}]'
 - command: route unique --columns=prefixlen --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: route unique junos

@@ -3,111 +3,117 @@ tests:
 - command: lldp show --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: lldp show nxos
-  output: '[{"namespace": "nxos", "hostname": "spine02", "ifname": "mgmt0", "peerHostname":
-    "spine01", "peerIfname": "mgmt0", "description": "N9K-C9300v", "mgmtIP": "", "timestamp":
-    1619275257130}, {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/6",
+  output: '[{"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/6",
     "peerHostname": "exit02", "peerIfname": "Ethernet1/2", "description": "N9K-C9300v",
-    "mgmtIP": "", "timestamp": 1619275257130}, {"namespace": "nxos", "hostname": "spine02",
-    "ifname": "Ethernet1/1", "peerHostname": "leaf01", "peerIfname": "Ethernet1/2",
-    "description": "", "mgmtIP": "10.255.2.189", "timestamp": 1619275257130}, {"namespace":
-    "nxos", "hostname": "spine02", "ifname": "Ethernet1/2", "peerHostname": "leaf02",
-    "peerIfname": "Ethernet1/2", "description": "", "mgmtIP": "10.255.2.188", "timestamp":
-    1619275257130}, {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/4",
-    "peerHostname": "leaf04", "peerIfname": "Ethernet1/2", "description": "", "mgmtIP":
-    "10.255.2.191", "timestamp": 1619275257130}, {"namespace": "nxos", "hostname":
-    "spine02", "ifname": "Ethernet1/3", "peerHostname": "leaf03", "peerIfname": "Ethernet1/2",
+    "mgmtIP": "10.255.2.254", "timestamp": 1619275257130}, {"namespace": "nxos", "hostname":
+    "spine02", "ifname": "Ethernet1/4", "peerHostname": "leaf04", "peerIfname": "Ethernet1/2",
+    "description": "N9K-C9300v", "mgmtIP": "10.255.2.191", "timestamp": 1619275257130},
+    {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/3", "peerHostname":
+    "leaf03", "peerIfname": "Ethernet1/2", "description": "N9K-C9300v", "mgmtIP":
+    "10.255.2.190", "timestamp": 1619275257130}, {"namespace": "nxos", "hostname":
+    "spine02", "ifname": "Ethernet1/2", "peerHostname": "leaf02", "peerIfname": "Ethernet1/2",
+    "description": "N9K-C9300v", "mgmtIP": "10.255.2.188", "timestamp": 1619275257130},
+    {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/1", "peerHostname":
+    "leaf01", "peerIfname": "Ethernet1/2", "description": "N9K-C9300v", "mgmtIP":
+    "10.255.2.189", "timestamp": 1619275257130}, {"namespace": "nxos", "hostname":
+    "spine02", "ifname": "mgmt0", "peerHostname": "spine01", "peerIfname": "mgmt0",
     "description": "N9K-C9300v", "mgmtIP": "", "timestamp": 1619275257130}, {"namespace":
     "nxos", "hostname": "spine02", "ifname": "Ethernet1/5", "peerHostname": "exit01",
-    "peerIfname": "Ethernet1/2", "description": "", "mgmtIP": "10.255.2.253", "timestamp":
-    1619275257130}, {"namespace": "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/0",
-    "peerHostname": "exit01", "peerIfname": "", "description": "Cisco Nexus Operating
-    System (NX-OS) Software 9.3(4)\nTAC support: http://www.cisco.com/tac\nCopyright
-    (c) 2002-2020, Cisco Systems, Inc. All rights reserved.", "mgmtIP": "", "timestamp":
-    1619275257133}, {"namespace": "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/1",
-    "peerHostname": "exit02", "peerIfname": "", "description": "Cisco Nexus Operating
-    System (NX-OS) Software 9.3(4)\nTAC support: http://www.cisco.com/tac\nCopyright
-    (c) 2002-2020, Cisco Systems, Inc. All rights reserved.", "mgmtIP": "", "timestamp":
-    1619275257133}, {"namespace": "nxos", "hostname": "exit02", "ifname": "mgmt0",
-    "peerHostname": "leaf01", "peerIfname": "mgmt0", "description": "N9K-C9300v",
-    "mgmtIP": "", "timestamp": 1619275257142}, {"namespace": "nxos", "hostname": "exit02",
-    "ifname": "Ethernet1/1", "peerHostname": "spine01", "peerIfname": "Ethernet1/6",
-    "description": "", "mgmtIP": "10.255.2.119", "timestamp": 1619275257142}, {"namespace":
-    "nxos", "hostname": "exit02", "ifname": "Ethernet1/2", "peerHostname": "spine02",
-    "peerIfname": "Ethernet1/6", "description": "", "mgmtIP": "10.255.2.120", "timestamp":
-    1619275257142}, {"namespace": "nxos", "hostname": "exit02", "ifname": "Ethernet1/4",
-    "peerHostname": "dcedge01", "peerIfname": "517", "description": "", "mgmtIP":
-    "not advertised", "timestamp": 1619275257142}, {"namespace": "nxos", "hostname":
-    "leaf01", "ifname": "Ethernet1/6", "peerHostname": "leaf02", "peerIfname": "Ethernet1/6",
-    "description": "", "mgmtIP": "10.255.2.188", "timestamp": 1619275257228}, {"namespace":
-    "nxos", "hostname": "leaf01", "ifname": "Ethernet1/1", "peerHostname": "spine01",
-    "peerIfname": "Ethernet1/1", "description": "N9K-C9300v", "mgmtIP": "", "timestamp":
-    1619275257228}, {"namespace": "nxos", "hostname": "leaf01", "ifname": "Ethernet1/2",
-    "peerHostname": "spine02", "peerIfname": "Ethernet1/1", "description": "N9K-C9300v",
-    "mgmtIP": "", "timestamp": 1619275257228}, {"namespace": "nxos", "hostname": "leaf01",
-    "ifname": "Ethernet1/5", "peerHostname": "leaf02", "peerIfname": "Ethernet1/5",
-    "description": "N9K-C9300v", "mgmtIP": "", "timestamp": 1619275257228}, {"namespace":
-    "nxos", "hostname": "leaf01", "ifname": "mgmt0", "peerHostname": "leaf04", "peerIfname":
+    "peerIfname": "Ethernet1/2", "description": "N9K-C9300v", "mgmtIP": "10.255.2.253",
+    "timestamp": 1619275257130}, {"namespace": "nxos", "hostname": "dcedge01", "ifname":
+    "xe-0/0/0", "peerHostname": "exit01", "peerIfname": "Ethernet1/4", "description":
+    "Cisco Nexus Operating System (NX-OS) Software 9.3(4)\nTAC support: http://www.cisco.com/tac\nCopyright
+    (c) 2002-2020, Cisco Systems, Inc. All rights reserved.", "mgmtIP": "10.255.2.253",
+    "timestamp": 1619275257133}, {"namespace": "nxos", "hostname": "dcedge01", "ifname":
+    "xe-0/0/1", "peerHostname": "exit02", "peerIfname": "Ethernet1/4", "description":
+    "Cisco Nexus Operating System (NX-OS) Software 9.3(4)\nTAC support: http://www.cisco.com/tac\nCopyright
+    (c) 2002-2020, Cisco Systems, Inc. All rights reserved.", "mgmtIP": "10.255.2.254",
+    "timestamp": 1619275257133}, {"namespace": "nxos", "hostname": "exit02", "ifname":
+    "Ethernet1/2", "peerHostname": "spine02", "peerIfname": "Ethernet1/6", "description":
+    "N9K-C9300v", "mgmtIP": "10.255.2.120", "timestamp": 1619275257142}, {"namespace":
+    "nxos", "hostname": "exit02", "ifname": "Ethernet1/4", "peerHostname": "dcedge01",
+    "peerIfname": "-", "description": "", "mgmtIP": "not advertised", "timestamp":
+    1619275257142}, {"namespace": "nxos", "hostname": "exit02", "ifname": "Ethernet1/1",
+    "peerHostname": "spine01", "peerIfname": "Ethernet1/6", "description": "N9K-C9300v",
+    "mgmtIP": "10.255.2.119", "timestamp": 1619275257142}, {"namespace": "nxos", "hostname":
+    "exit02", "ifname": "mgmt0", "peerHostname": "spine01", "peerIfname": "mgmt0",
+    "description": "N9K-C9300v", "mgmtIP": "", "timestamp": 1619275257142}, {"namespace":
+    "nxos", "hostname": "leaf01", "ifname": "mgmt0", "peerHostname": "spine01", "peerIfname":
     "mgmt0", "description": "N9K-C9300v", "mgmtIP": "", "timestamp": 1619275257228},
+    {"namespace": "nxos", "hostname": "leaf01", "ifname": "Ethernet1/1", "peerHostname":
+    "spine01", "peerIfname": "Ethernet1/1", "description": "N9K-C9300v", "mgmtIP":
+    "10.255.2.119", "timestamp": 1619275257228}, {"namespace": "nxos", "hostname":
+    "leaf01", "ifname": "Ethernet1/2", "peerHostname": "spine02", "peerIfname": "Ethernet1/1",
+    "description": "N9K-C9300v", "mgmtIP": "10.255.2.120", "timestamp": 1619275257228},
+    {"namespace": "nxos", "hostname": "leaf01", "ifname": "Ethernet1/5", "peerHostname":
+    "leaf02", "peerIfname": "Ethernet1/5", "description": "N9K-C9300v", "mgmtIP":
+    "10.255.2.188", "timestamp": 1619275257228}, {"namespace": "nxos", "hostname":
+    "leaf01", "ifname": "Ethernet1/6", "peerHostname": "leaf02", "peerIfname": "Ethernet1/6",
+    "description": "N9K-C9300v", "mgmtIP": "10.255.2.188", "timestamp": 1619275257228},
+    {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/6", "peerHostname":
+    "leaf03", "peerIfname": "Ethernet1/6", "description": "N9K-C9300v", "mgmtIP":
+    "10.255.2.190", "timestamp": 1619275257253}, {"namespace": "nxos", "hostname":
+    "leaf04", "ifname": "Ethernet1/5", "peerHostname": "leaf03", "peerIfname": "Ethernet1/5",
+    "description": "N9K-C9300v", "mgmtIP": "10.255.2.190", "timestamp": 1619275257253},
     {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/2", "peerHostname":
-    "spine02", "peerIfname": "Ethernet1/4", "description": "", "mgmtIP": "10.255.2.120",
-    "timestamp": 1619275257253}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
-    "Ethernet1/5", "peerHostname": "leaf03", "peerIfname": "Ethernet1/5", "description":
-    "", "mgmtIP": "10.255.2.190", "timestamp": 1619275257253}, {"namespace": "nxos",
-    "hostname": "leaf04", "ifname": "Ethernet1/6", "peerHostname": "leaf03", "peerIfname":
-    "Ethernet1/6", "description": "", "mgmtIP": "10.255.2.190", "timestamp": 1619275257253},
-    {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/1", "peerHostname":
-    "spine01", "peerIfname": "Ethernet1/4", "description": "", "mgmtIP": "10.255.2.119",
-    "timestamp": 1619275257253}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
-    "mgmt0", "peerHostname": "spine01", "peerIfname": "mgmt0", "description": "N9K-C9300v",
-    "mgmtIP": "", "timestamp": 1619275257253}, {"namespace": "nxos", "hostname": "exit01",
-    "ifname": "mgmt0", "peerHostname": "leaf02", "peerIfname": "mgmt0", "description":
-    "N9K-C9300v", "mgmtIP": "", "timestamp": 1619275257671}, {"namespace": "nxos",
-    "hostname": "exit01", "ifname": "Ethernet1/1", "peerHostname": "spine01", "peerIfname":
-    "Ethernet1/5", "description": "", "mgmtIP": "10.255.2.119", "timestamp": 1619275257671},
+    "spine02", "peerIfname": "Ethernet1/4", "description": "N9K-C9300v", "mgmtIP":
+    "10.255.2.120", "timestamp": 1619275257253}, {"namespace": "nxos", "hostname":
+    "leaf04", "ifname": "Ethernet1/1", "peerHostname": "spine01", "peerIfname": "Ethernet1/4",
+    "description": "N9K-C9300v", "mgmtIP": "10.255.2.119", "timestamp": 1619275257253},
+    {"namespace": "nxos", "hostname": "leaf04", "ifname": "mgmt0", "peerHostname":
+    "spine01", "peerIfname": "mgmt0", "description": "N9K-C9300v", "mgmtIP": "", "timestamp":
+    1619275257253}, {"namespace": "nxos", "hostname": "exit01", "ifname": "mgmt0",
+    "peerHostname": "spine01", "peerIfname": "mgmt0", "description": "N9K-C9300v",
+    "mgmtIP": "", "timestamp": 1619275257671}, {"namespace": "nxos", "hostname": "exit01",
+    "ifname": "Ethernet1/1", "peerHostname": "spine01", "peerIfname": "Ethernet1/5",
+    "description": "N9K-C9300v", "mgmtIP": "10.255.2.119", "timestamp": 1619275257671},
     {"namespace": "nxos", "hostname": "exit01", "ifname": "Ethernet1/2", "peerHostname":
-    "spine02", "peerIfname": "Ethernet1/5", "description": "", "mgmtIP": "10.255.2.120",
-    "timestamp": 1619275257671}, {"namespace": "nxos", "hostname": "exit01", "ifname":
-    "Ethernet1/4", "peerHostname": "dcedge01", "peerIfname": "516", "description":
-    "", "mgmtIP": "not advertised", "timestamp": 1619275257671}, {"namespace": "nxos",
-    "hostname": "leaf02", "ifname": "Ethernet1/6", "peerHostname": "leaf01", "peerIfname":
-    "Ethernet1/6", "description": "N9K-C9300v", "mgmtIP": "", "timestamp": 1619275257674},
-    {"namespace": "nxos", "hostname": "leaf02", "ifname": "Ethernet1/1", "peerHostname":
-    "spine01", "peerIfname": "Ethernet1/2", "description": "", "mgmtIP": "10.255.2.119",
-    "timestamp": 1619275257674}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
-    "Ethernet1/2", "peerHostname": "spine02", "peerIfname": "Ethernet1/2", "description":
-    "", "mgmtIP": "10.255.2.120", "timestamp": 1619275257674}, {"namespace": "nxos",
-    "hostname": "leaf02", "ifname": "Ethernet1/5", "peerHostname": "leaf01", "peerIfname":
-    "Ethernet1/5", "description": "N9K-C9300v", "mgmtIP": "", "timestamp": 1619275257674},
-    {"namespace": "nxos", "hostname": "leaf02", "ifname": "mgmt0", "peerHostname":
-    "exit01", "peerIfname": "mgmt0", "description": "N9K-C9300v", "mgmtIP": "", "timestamp":
-    1619275257674}, {"namespace": "nxos", "hostname": "leaf03", "ifname": "Ethernet1/1",
-    "peerHostname": "spine01", "peerIfname": "Ethernet1/3", "description": "", "mgmtIP":
-    "10.255.2.119", "timestamp": 1619275257705}, {"namespace": "nxos", "hostname":
-    "leaf03", "ifname": "Ethernet1/2", "peerHostname": "spine02", "peerIfname": "Ethernet1/3",
-    "description": "", "mgmtIP": "10.255.2.120", "timestamp": 1619275257705}, {"namespace":
-    "nxos", "hostname": "leaf03", "ifname": "Ethernet1/5", "peerHostname": "leaf04",
-    "peerIfname": "Ethernet1/5", "description": "", "mgmtIP": "10.255.2.191", "timestamp":
-    1619275257705}, {"namespace": "nxos", "hostname": "leaf03", "ifname": "Ethernet1/6",
-    "peerHostname": "leaf04", "peerIfname": "Ethernet1/6", "description": "", "mgmtIP":
+    "spine02", "peerIfname": "Ethernet1/5", "description": "N9K-C9300v", "mgmtIP":
+    "10.255.2.120", "timestamp": 1619275257671}, {"namespace": "nxos", "hostname":
+    "exit01", "ifname": "Ethernet1/4", "peerHostname": "dcedge01", "peerIfname": "-",
+    "description": "", "mgmtIP": "not advertised", "timestamp": 1619275257671}, {"namespace":
+    "nxos", "hostname": "leaf02", "ifname": "mgmt0", "peerHostname": "spine01", "peerIfname":
+    "mgmt0", "description": "N9K-C9300v", "mgmtIP": "", "timestamp": 1619275257674},
+    {"namespace": "nxos", "hostname": "leaf02", "ifname": "Ethernet1/6", "peerHostname":
+    "leaf01", "peerIfname": "Ethernet1/6", "description": "N9K-C9300v", "mgmtIP":
+    "10.255.2.189", "timestamp": 1619275257674}, {"namespace": "nxos", "hostname":
+    "leaf02", "ifname": "Ethernet1/5", "peerHostname": "leaf01", "peerIfname": "Ethernet1/5",
+    "description": "N9K-C9300v", "mgmtIP": "10.255.2.189", "timestamp": 1619275257674},
+    {"namespace": "nxos", "hostname": "leaf02", "ifname": "Ethernet1/2", "peerHostname":
+    "spine02", "peerIfname": "Ethernet1/2", "description": "N9K-C9300v", "mgmtIP":
+    "10.255.2.120", "timestamp": 1619275257674}, {"namespace": "nxos", "hostname":
+    "leaf02", "ifname": "Ethernet1/1", "peerHostname": "spine01", "peerIfname": "Ethernet1/2",
+    "description": "N9K-C9300v", "mgmtIP": "10.255.2.119", "timestamp": 1619275257674},
+    {"namespace": "nxos", "hostname": "leaf03", "ifname": "Ethernet1/5", "peerHostname":
+    "leaf04", "peerIfname": "Ethernet1/5", "description": "N9K-C9300v", "mgmtIP":
     "10.255.2.191", "timestamp": 1619275257705}, {"namespace": "nxos", "hostname":
-    "leaf03", "ifname": "mgmt0", "peerHostname": "spine01", "peerIfname": "mgmt0",
-    "description": "N9K-C9300v", "mgmtIP": "", "timestamp": 1619275257705}, {"namespace":
-    "nxos", "hostname": "spine01", "ifname": "Ethernet1/6", "peerHostname": "exit02",
-    "peerIfname": "Ethernet1/1", "description": "N9K-C9300v", "mgmtIP": "", "timestamp":
-    1619275257776}, {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/5",
-    "peerHostname": "exit01", "peerIfname": "Ethernet1/1", "description": "N9K-C9300v",
-    "mgmtIP": "", "timestamp": 1619275257776}, {"namespace": "nxos", "hostname": "spine01",
-    "ifname": "Ethernet1/4", "peerHostname": "leaf04", "peerIfname": "Ethernet1/1",
+    "leaf03", "ifname": "Ethernet1/1", "peerHostname": "spine01", "peerIfname": "Ethernet1/3",
+    "description": "N9K-C9300v", "mgmtIP": "10.255.2.119", "timestamp": 1619275257705},
+    {"namespace": "nxos", "hostname": "leaf03", "ifname": "mgmt0", "peerHostname":
+    "spine01", "peerIfname": "mgmt0", "description": "N9K-C9300v", "mgmtIP": "", "timestamp":
+    1619275257705}, {"namespace": "nxos", "hostname": "leaf03", "ifname": "Ethernet1/6",
+    "peerHostname": "leaf04", "peerIfname": "Ethernet1/6", "description": "N9K-C9300v",
+    "mgmtIP": "10.255.2.191", "timestamp": 1619275257705}, {"namespace": "nxos", "hostname":
+    "leaf03", "ifname": "Ethernet1/2", "peerHostname": "spine02", "peerIfname": "Ethernet1/3",
+    "description": "N9K-C9300v", "mgmtIP": "10.255.2.120", "timestamp": 1619275257705},
+    {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/4", "peerHostname":
+    "leaf04", "peerIfname": "Ethernet1/1", "description": "N9K-C9300v", "mgmtIP":
+    "10.255.2.191", "timestamp": 1619275257776}, {"namespace": "nxos", "hostname":
+    "spine01", "ifname": "Ethernet1/5", "peerHostname": "exit01", "peerIfname": "Ethernet1/1",
+    "description": "N9K-C9300v", "mgmtIP": "10.255.2.253", "timestamp": 1619275257776},
+    {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/6", "peerHostname":
+    "exit02", "peerIfname": "Ethernet1/1", "description": "N9K-C9300v", "mgmtIP":
+    "10.255.2.254", "timestamp": 1619275257776}, {"namespace": "nxos", "hostname":
+    "spine01", "ifname": "Ethernet1/2", "peerHostname": "leaf02", "peerIfname": "Ethernet1/1",
+    "description": "N9K-C9300v", "mgmtIP": "10.255.2.188", "timestamp": 1619275257776},
+    {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/1", "peerHostname":
+    "leaf01", "peerIfname": "Ethernet1/1", "description": "N9K-C9300v", "mgmtIP":
+    "10.255.2.189", "timestamp": 1619275257776}, {"namespace": "nxos", "hostname":
+    "spine01", "ifname": "mgmt0", "peerHostname": "leaf03", "peerIfname": "mgmt0",
     "description": "N9K-C9300v", "mgmtIP": "", "timestamp": 1619275257776}, {"namespace":
     "nxos", "hostname": "spine01", "ifname": "Ethernet1/3", "peerHostname": "leaf03",
-    "peerIfname": "Ethernet1/1", "description": "N9K-C9300v", "mgmtIP": "", "timestamp":
-    1619275257776}, {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/2",
-    "peerHostname": "leaf02", "peerIfname": "Ethernet1/1", "description": "N9K-C9300v",
-    "mgmtIP": "", "timestamp": 1619275257776}, {"namespace": "nxos", "hostname": "spine01",
-    "ifname": "mgmt0", "peerHostname": "exit01", "peerIfname": "mgmt0", "description":
-    "N9K-C9300v", "mgmtIP": "", "timestamp": 1619275257776}, {"namespace": "nxos",
-    "hostname": "spine01", "ifname": "Ethernet1/1", "peerHostname": "leaf01", "peerIfname":
-    "Ethernet1/1", "description": "N9K-C9300v", "mgmtIP": "", "timestamp": 1619275257776}]'
+    "peerIfname": "Ethernet1/1", "description": "N9K-C9300v", "mgmtIP": "10.255.2.190",
+    "timestamp": 1619275257776}]'
 - command: lldp show --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: lldp show nxos
@@ -128,7 +134,7 @@ tests:
   data-directory: tests/data/nxos/parquet-out/
   marks: lldp summarize nxos
   output: '{"nxos": {"deviceCnt": 9, "nbrCnt": 44, "peerHostnameCnt": 44, "uniquePeerMgmtIPCnt":
-    9, "missingPeerInfoCnt": 23}}'
+    10, "missingPeerInfoCnt": 8}}'
 - command: lldp unique --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: lldp unique nxos
@@ -139,21 +145,22 @@ tests:
   data-directory: tests/data/nxos/parquet-out/
   marks: lldp show nxos
   output: '[{"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/2",
-    "peerHostname": "leaf02", "peerIfname": "Ethernet1/2", "description": "", "mgmtIP":
-    "10.255.2.188", "timestamp": 1619275257130}, {"namespace": "nxos", "hostname":
+    "peerHostname": "leaf02", "peerIfname": "Ethernet1/2", "description": "N9K-C9300v",
+    "mgmtIP": "10.255.2.188", "timestamp": 1619275257130}, {"namespace": "nxos", "hostname":
     "exit02", "ifname": "Ethernet1/2", "peerHostname": "spine02", "peerIfname": "Ethernet1/6",
-    "description": "", "mgmtIP": "10.255.2.120", "timestamp": 1619275257142}, {"namespace":
-    "nxos", "hostname": "leaf01", "ifname": "Ethernet1/2", "peerHostname": "spine02",
-    "peerIfname": "Ethernet1/1", "description": "", "mgmtIP": "10.255.2.120", "timestamp":
-    1619275257228}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/2",
-    "peerHostname": "spine02", "peerIfname": "Ethernet1/4", "description": "", "mgmtIP":
-    "10.255.2.120", "timestamp": 1619275257253}, {"namespace": "nxos", "hostname":
-    "exit01", "ifname": "Ethernet1/2", "peerHostname": "spine02", "peerIfname": "Ethernet1/5",
-    "description": "", "mgmtIP": "10.255.2.120", "timestamp": 1619275257671}, {"namespace":
-    "nxos", "hostname": "leaf02", "ifname": "Ethernet1/2", "peerHostname": "spine02",
-    "peerIfname": "Ethernet1/2", "description": "", "mgmtIP": "10.255.2.120", "timestamp":
-    1619275257674}, {"namespace": "nxos", "hostname": "leaf03", "ifname": "Ethernet1/2",
-    "peerHostname": "spine02", "peerIfname": "Ethernet1/3", "description": "", "mgmtIP":
+    "description": "N9K-C9300v", "mgmtIP": "10.255.2.120", "timestamp": 1619275257142},
+    {"namespace": "nxos", "hostname": "leaf01", "ifname": "Ethernet1/2", "peerHostname":
+    "spine02", "peerIfname": "Ethernet1/1", "description": "N9K-C9300v", "mgmtIP":
+    "10.255.2.120", "timestamp": 1619275257228}, {"namespace": "nxos", "hostname":
+    "leaf04", "ifname": "Ethernet1/2", "peerHostname": "spine02", "peerIfname": "Ethernet1/4",
+    "description": "N9K-C9300v", "mgmtIP": "10.255.2.120", "timestamp": 1619275257253},
+    {"namespace": "nxos", "hostname": "exit01", "ifname": "Ethernet1/2", "peerHostname":
+    "spine02", "peerIfname": "Ethernet1/5", "description": "N9K-C9300v", "mgmtIP":
+    "10.255.2.120", "timestamp": 1619275257671}, {"namespace": "nxos", "hostname":
+    "leaf02", "ifname": "Ethernet1/2", "peerHostname": "spine02", "peerIfname": "Ethernet1/2",
+    "description": "N9K-C9300v", "mgmtIP": "10.255.2.120", "timestamp": 1619275257674},
+    {"namespace": "nxos", "hostname": "leaf03", "ifname": "Ethernet1/2", "peerHostname":
+    "spine02", "peerIfname": "Ethernet1/3", "description": "N9K-C9300v", "mgmtIP":
     "10.255.2.120", "timestamp": 1619275257705}, {"namespace": "nxos", "hostname":
     "spine01", "ifname": "Ethernet1/2", "peerHostname": "leaf02", "peerIfname": "Ethernet1/1",
-    "description": "", "mgmtIP": "10.255.2.188", "timestamp": 1619275257776}]'
+    "description": "N9K-C9300v", "mgmtIP": "10.255.2.188", "timestamp": 1619275257776}]'

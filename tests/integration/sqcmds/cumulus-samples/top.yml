@@ -185,22 +185,22 @@ tests:
 - command: device top --what="uptime" --reverse=True --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: device top uptime
-  output: '[{"namespace": "ospf-single", "hostname": "exit01", "model": "VX", "version":
-    "4.3.0", "vendor": "Cumulus", "architecture": "x86_64", "status": "alive", "address":
-    "10.255.2.88", "bootupTimestamp": 1623037039000, "uptime": -6684635160, "timestamp":
-    1616352403840}, {"namespace": "ospf-single", "hostname": "exit02", "model": "VX",
-    "version": "4.3.0", "vendor": "Cumulus", "architecture": "x86_64", "status": "alive",
-    "address": "10.255.2.41", "bootupTimestamp": 1623037039000, "uptime": -6684635160,
-    "timestamp": 1616352403840}, {"namespace": "ospf-single", "hostname": "leaf01",
-    "model": "VX", "version": "4.3.0", "vendor": "Cumulus", "architecture": "x86_64",
-    "status": "alive", "address": "10.255.2.23", "bootupTimestamp": 1623037038000,
-    "uptime": -6684634167, "timestamp": 1616352403833}, {"namespace": "ospf-single",
-    "hostname": "spine01", "model": "VX", "version": "4.3.0", "vendor": "Cumulus",
-    "architecture": "x86_64", "status": "alive", "address": "10.255.2.217", "bootupTimestamp":
-    1623037038000, "uptime": -6684634160, "timestamp": 1616352403840}, {"namespace":
-    "ospf-single", "hostname": "spine02", "model": "VX", "version": "4.3.0", "vendor":
-    "Cumulus", "architecture": "x86_64", "status": "alive", "address": "10.255.2.60",
-    "bootupTimestamp": 1623037038000, "uptime": -6684634160, "timestamp": 1616352403840}]'
+  output: '[{"namespace": "dual-evpn", "hostname": "internet", "model": "VX", "version":
+    "3.7.9", "vendor": "Cumulus", "architecture": "x86_64", "status": "alive", "address":
+    "192.168.121.157", "bootupTimestamp": 1616644599000, "uptime": 223518, "timestamp":
+    1616644822518}, {"namespace": "dual-evpn", "hostname": "leaf03", "model": "VX",
+    "version": "3.7.9", "vendor": "Cumulus", "architecture": "x86_64", "status": "alive",
+    "address": "192.168.121.13", "bootupTimestamp": 1616644598000, "uptime": 224331,
+    "timestamp": 1616644822331}, {"namespace": "dual-evpn", "hostname": "spine02",
+    "model": "VX", "version": "3.7.9", "vendor": "Cumulus", "architecture": "x86_64",
+    "status": "alive", "address": "192.168.121.136", "bootupTimestamp": 1616644598000,
+    "uptime": 224357, "timestamp": 1616644822357}, {"namespace": "dual-evpn", "hostname":
+    "spine01", "model": "VX", "version": "3.7.9", "vendor": "Cumulus", "architecture":
+    "x86_64", "status": "alive", "address": "192.168.121.42", "bootupTimestamp": 1616644598000,
+    "uptime": 224465, "timestamp": 1616644822465}, {"namespace": "dual-evpn", "hostname":
+    "leaf01", "model": "VX", "version": "3.7.9", "vendor": "Cumulus", "architecture":
+    "x86_64", "status": "alive", "address": "192.168.121.88", "bootupTimestamp": 1616644598000,
+    "uptime": 224492, "timestamp": 1616644822492}]'
 - command: device top --what="uptime" --namespace=ospf-ibgp --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: device top uptime
@@ -217,17 +217,17 @@ tests:
     "hostname": "server104", "model": "vm", "version": "16.04.7 LTS", "vendor": "Ubuntu",
     "architecture": "x86-64", "status": "alive", "address": "192.168.123.197", "bootupTimestamp":
     1616680858000, "uptime": 723652, "timestamp": 1616681581652}, {"namespace": "ospf-ibgp",
-    "hostname": "edge01", "model": "vm", "version": "16.04.7 LTS", "vendor": "Ubuntu",
-    "architecture": "x86-64", "status": "alive", "address": "192.168.123.180", "bootupTimestamp":
-    1616681014000, "uptime": 567705, "timestamp": 1616681581705}]'
+    "hostname": "leaf01", "model": "VX", "version": "4.2.1", "vendor": "Cumulus",
+    "architecture": "x86_64", "status": "alive", "address": "192.168.123.30", "bootupTimestamp":
+    1616681014000, "uptime": 568903, "timestamp": 1616681582903}]'
 - command: device top --what="uptime" --namespace=ospf-ibgp --reverse=True --columns='hostname
     vendor version' --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: device top uptime
   output: '[{"hostname": "leaf02", "vendor": "Cumulus", "version": "4.2.1"}, {"hostname":
-    "internet", "vendor": "Cumulus", "version": "4.2.1"}, {"hostname": "exit02", "vendor":
-    "Cumulus", "version": "4.2.1"}, {"hostname": "leaf04", "vendor": "Cumulus", "version":
-    "4.2.1"}, {"hostname": "exit01", "vendor": "Cumulus", "version": "4.2.1"}]'
+    "internet", "vendor": "Cumulus", "version": "4.2.1"}, {"hostname": "edge01", "vendor":
+    "Ubuntu", "version": "16.04.7 LTS"}, {"hostname": "exit02", "vendor": "Cumulus",
+    "version": "4.2.1"}, {"hostname": "leaf04", "vendor": "Cumulus", "version": "4.2.1"}]'
 - command: ospf top --what="flaps" --format=json
   data-directory: tests/data/multidc/parquet-out/
   ignore-columns: lastChangeTime timestamp

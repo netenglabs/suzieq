@@ -625,72 +625,79 @@ tests:
     {"hostname": "spine02"}]'
 - command: interface assert --format=json
   data-directory: tests/data/eos/parquet-out/
+  error:
+    error: '[{"namespace": "eos", "hostname": "leaf01", "ifname": "Ethernet6", "state":
+      "up", "peerHostname": "leaf02", "peerIfname": "Ethernet6", "assert": "pass",
+      "assertReason": []}, {"namespace": "eos", "hostname": "leaf01", "ifname": "Ethernet5",
+      "state": "up", "peerHostname": "leaf02", "peerIfname": "Ethernet5", "assert":
+      "pass", "assertReason": []}, {"namespace": "eos", "hostname": "leaf01", "ifname":
+      "Ethernet2", "state": "up", "peerHostname": "spine02", "peerIfname": "Ethernet1",
+      "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname": "leaf01",
+      "ifname": "Ethernet1", "state": "up", "peerHostname": "spine01", "peerIfname":
+      "Ethernet1", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "leaf02", "ifname": "Ethernet5", "state": "up", "peerHostname": "leaf01", "peerIfname":
+      "Ethernet5", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "leaf02", "ifname": "Ethernet6", "state": "up", "peerHostname": "leaf01", "peerIfname":
+      "Ethernet6", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "leaf02", "ifname": "Ethernet1", "state": "up", "peerHostname": "spine01", "peerIfname":
+      "Ethernet2", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "leaf02", "ifname": "Ethernet2", "state": "up", "peerHostname": "spine02", "peerIfname":
+      "Ethernet2", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "spine01", "ifname": "Ethernet1", "state": "up", "peerHostname": "leaf01", "peerIfname":
+      "Ethernet1", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "spine01", "ifname": "Ethernet3", "state": "up", "peerHostname": "leaf03", "peerIfname":
+      "Ethernet1", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "spine01", "ifname": "Ethernet2", "state": "up", "peerHostname": "leaf02", "peerIfname":
+      "Ethernet1", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "spine01", "ifname": "Ethernet4", "state": "up", "peerHostname": "leaf04", "peerIfname":
+      "Ethernet1", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "spine01", "ifname": "Ethernet5", "state": "up", "peerHostname": "exit01", "peerIfname":
+      "Ethernet1", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "spine01", "ifname": "Ethernet6", "state": "up", "peerHostname": "exit02", "peerIfname":
+      "Ethernet1", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "leaf03", "ifname": "Ethernet2", "state": "up", "peerHostname": "spine02", "peerIfname":
+      "Ethernet3", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "leaf03", "ifname": "Ethernet6", "state": "up", "peerHostname": "leaf04", "peerIfname":
+      "Ethernet6", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "leaf03", "ifname": "Ethernet5", "state": "up", "peerHostname": "leaf04", "peerIfname":
+      "Ethernet5", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "leaf03", "ifname": "Ethernet1", "state": "up", "peerHostname": "spine01", "peerIfname":
+      "Ethernet3", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "spine02", "ifname": "Ethernet2", "state": "up", "peerHostname": "leaf02", "peerIfname":
+      "Ethernet2", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "spine02", "ifname": "Ethernet3", "state": "up", "peerHostname": "leaf03", "peerIfname":
+      "Ethernet2", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "spine02", "ifname": "Ethernet1", "state": "up", "peerHostname": "leaf01", "peerIfname":
+      "Ethernet2", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "spine02", "ifname": "Ethernet6", "state": "up", "peerHostname": "exit02", "peerIfname":
+      "Ethernet2", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "spine02", "ifname": "Ethernet5", "state": "up", "peerHostname": "exit01", "peerIfname":
+      "Ethernet2", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "spine02", "ifname": "Ethernet4", "state": "up", "peerHostname": "leaf04", "peerIfname":
+      "Ethernet2", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "exit02", "ifname": "Ethernet1", "state": "up", "peerHostname": "spine01", "peerIfname":
+      "Ethernet6", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "exit02", "ifname": "Ethernet2", "state": "up", "peerHostname": "spine02", "peerIfname":
+      "Ethernet6", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "exit01", "ifname": "Ethernet1", "state": "up", "peerHostname": "spine01", "peerIfname":
+      "Ethernet5", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "exit01", "ifname": "Ethernet2", "state": "up", "peerHostname": "spine02", "peerIfname":
+      "Ethernet5", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "leaf04", "ifname": "Ethernet5", "state": "up", "peerHostname": "leaf03", "peerIfname":
+      "Ethernet5", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "leaf04", "ifname": "Ethernet1", "state": "up", "peerHostname": "spine01", "peerIfname":
+      "Ethernet4", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "leaf04", "ifname": "Ethernet2", "state": "up", "peerHostname": "spine02", "peerIfname":
+      "Ethernet4", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "leaf04", "ifname": "Ethernet6", "state": "up", "peerHostname": "leaf03", "peerIfname":
+      "Ethernet6", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+      "dcedge01", "ifname": "xe-0/0/1", "state": "up", "peerHostname": "exit02", "peerIfname":
+      "Ethernet4", "assert": "fail", "assertReason": ["MTU mismatch", "Speed mismatch",
+      "IP address mismatch"]}, {"namespace": "eos", "hostname": "dcedge01", "ifname":
+      "xe-0/0/0", "state": "up", "peerHostname": "exit01", "peerIfname": "Ethernet4",
+      "assert": "fail", "assertReason": ["MTU mismatch", "Speed mismatch", "IP address
+      mismatch"]}]'
   marks: interface assert eos
-  output: '[{"namespace": "eos", "hostname": "leaf01", "ifname": "Ethernet6", "state":
-    "up", "peerHostname": "leaf02", "peerIfname": "Ethernet6", "assert": "pass", "assertReason":
-    []}, {"namespace": "eos", "hostname": "leaf01", "ifname": "Ethernet5", "state":
-    "up", "peerHostname": "leaf02", "peerIfname": "Ethernet5", "assert": "pass", "assertReason":
-    []}, {"namespace": "eos", "hostname": "leaf01", "ifname": "Ethernet1", "state":
-    "up", "peerHostname": "spine01", "peerIfname": "Ethernet1", "assert": "pass",
-    "assertReason": []}, {"namespace": "eos", "hostname": "leaf01", "ifname": "Ethernet2",
-    "state": "up", "peerHostname": "spine02", "peerIfname": "Ethernet1", "assert":
-    "pass", "assertReason": []}, {"namespace": "eos", "hostname": "leaf02", "ifname":
-    "Ethernet1", "state": "up", "peerHostname": "spine01", "peerIfname": "Ethernet2",
-    "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname": "leaf02",
-    "ifname": "Ethernet2", "state": "up", "peerHostname": "spine02", "peerIfname":
-    "Ethernet2", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
-    "leaf02", "ifname": "Ethernet6", "state": "up", "peerHostname": "leaf01", "peerIfname":
-    "Ethernet6", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
-    "leaf02", "ifname": "Ethernet5", "state": "up", "peerHostname": "leaf01", "peerIfname":
-    "Ethernet5", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
-    "spine01", "ifname": "Ethernet5", "state": "up", "peerHostname": "exit01", "peerIfname":
-    "Ethernet1", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
-    "spine01", "ifname": "Ethernet4", "state": "up", "peerHostname": "leaf04", "peerIfname":
-    "Ethernet1", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
-    "spine01", "ifname": "Ethernet2", "state": "up", "peerHostname": "leaf02", "peerIfname":
-    "Ethernet1", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
-    "spine01", "ifname": "Ethernet3", "state": "up", "peerHostname": "leaf03", "peerIfname":
-    "Ethernet1", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
-    "spine01", "ifname": "Ethernet1", "state": "up", "peerHostname": "leaf01", "peerIfname":
-    "Ethernet1", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
-    "spine01", "ifname": "Ethernet6", "state": "up", "peerHostname": "exit02", "peerIfname":
-    "Ethernet1", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
-    "leaf03", "ifname": "Ethernet1", "state": "up", "peerHostname": "spine01", "peerIfname":
-    "Ethernet3", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
-    "leaf03", "ifname": "Ethernet6", "state": "up", "peerHostname": "leaf04", "peerIfname":
-    "Ethernet6", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
-    "leaf03", "ifname": "Ethernet2", "state": "up", "peerHostname": "spine02", "peerIfname":
-    "Ethernet3", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
-    "leaf03", "ifname": "Ethernet5", "state": "up", "peerHostname": "leaf04", "peerIfname":
-    "Ethernet5", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
-    "spine02", "ifname": "Ethernet2", "state": "up", "peerHostname": "leaf02", "peerIfname":
-    "Ethernet2", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
-    "spine02", "ifname": "Ethernet3", "state": "up", "peerHostname": "leaf03", "peerIfname":
-    "Ethernet2", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
-    "spine02", "ifname": "Ethernet1", "state": "up", "peerHostname": "leaf01", "peerIfname":
-    "Ethernet2", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
-    "spine02", "ifname": "Ethernet6", "state": "up", "peerHostname": "exit02", "peerIfname":
-    "Ethernet2", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
-    "spine02", "ifname": "Ethernet5", "state": "up", "peerHostname": "exit01", "peerIfname":
-    "Ethernet2", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
-    "spine02", "ifname": "Ethernet4", "state": "up", "peerHostname": "leaf04", "peerIfname":
-    "Ethernet2", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
-    "exit01", "ifname": "Ethernet2", "state": "up", "peerHostname": "spine02", "peerIfname":
-    "Ethernet5", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
-    "exit01", "ifname": "Ethernet1", "state": "up", "peerHostname": "spine01", "peerIfname":
-    "Ethernet5", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
-    "exit02", "ifname": "Ethernet1", "state": "up", "peerHostname": "spine01", "peerIfname":
-    "Ethernet6", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
-    "exit02", "ifname": "Ethernet2", "state": "up", "peerHostname": "spine02", "peerIfname":
-    "Ethernet6", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
-    "leaf04", "ifname": "Ethernet2", "state": "up", "peerHostname": "spine02", "peerIfname":
-    "Ethernet4", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
-    "leaf04", "ifname": "Ethernet5", "state": "up", "peerHostname": "leaf03", "peerIfname":
-    "Ethernet5", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
-    "leaf04", "ifname": "Ethernet6", "state": "up", "peerHostname": "leaf03", "peerIfname":
-    "Ethernet6", "assert": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
-    "leaf04", "ifname": "Ethernet1", "state": "up", "peerHostname": "spine01", "peerIfname":
-    "Ethernet4", "assert": "pass", "assertReason": []}]'
 - command: interface top --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: interface top eos
