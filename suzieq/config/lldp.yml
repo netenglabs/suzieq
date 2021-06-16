@@ -27,6 +27,7 @@ apply:
     normalize: 'lldpNeighbors/*:ifname/[
     "lldpNeighborInfo/[0]/systemName: peerHostname?|",
     "lldpNeighborInfo/[0]/neighborInterfaceInfo/interfaceId: peerIfname?|",
+    "lldpNeighborInfo/[0]/neighborInterfaceInfo/interfaceIdType: subtype?|",
     "lldpNeighborInfo/[0]/systemDescription: description?|",
     "lldpNeighborInfo/[0]/managementAddresses/[0]/address: mgmtIP?|",
     ]'
@@ -52,9 +53,11 @@ apply:
     normalize: 'lldp-neighbors-information/[0]/lldp-neighbor-information/*/[
     "lldp-local-interface/[0]/data: ifname",
     "lldp-remote-system-name/[0]/data: peerHostname",
-    "lldp-remote-port-id/[0]/data: peerIfindex?|0",
-    "lldp-remote-port-description/[0]/data: description",
-    "lldp-system-description/[0]/lldp-remote-system-description/[0]/data: description",
+    "lldp-remote-port-id/[0]/data: peerIfname?|",
+    "lldp-remote-port-id-subtype/[0]/data: subtype?|",
+    "lldp-remote-port-description/[0]/data: description?|",
+    "lldp-remote-management-address/[0]/data: mgmtIP?|",
+    "lldp-system-description/[0]/lldp-remote-system-description/[0]/data: description?|description",
     ]'
 
   junos-ex:
@@ -64,9 +67,10 @@ apply:
     version: all
     command: show lldp neighbors | display json | no-more
     normalize: 'lldp-neighbors-information/[0]/lldp-neighbor-information/*/[
-    "lldp-local-port-id/[0]/data: ifname",
+    "lldp-local-port-id/[0]/data: ifname?|",
     "lldp-remote-system-name/[0]/data: peerHostname",
-    "lldp-remote-port-id/[0]/data: peerIfindex?|0",
+    "lldp-remote-port-id/[0]/data: peerIfname?|",
+    "lldp-remote-port-id-subtype/[0]/data: subtype?|",
     ]'
 
   junos-es:
@@ -77,18 +81,19 @@ apply:
     command:
       - command: show cdp neighbors | json native
         normalize: 'TABLE_cdp_neighbor_brief_info/ROW_cdp_neighbor_brief_info/*?/[
-        "intf_id: ifname",
-        "device_id: peerHostname",
-        "platform_id: description",
-        "port_id: peerIfname"
+        "intf_id: ifname?|",
+        "device_id: peerHostname?|",
+        "platform_id: description?|",
+        "port_id: peerIfname",
+        "protocol: protocol?|cdp",
         ]'
 
       - command: show lldp neighbors | json native
         normalize: 'TABLE_nbor/ROW_nbor/*?/[
-        "chassis_id: peerHostname",
+        "chassis_id: peerHostname?|",
         "chassis_type: _chassisType",
-        "l_port_id: ifname",
-        "port_type: subtype",
-        "port_id: peerIfname",
-        "mgmt_addr: mgmtIP"
+        "l_port_id: ifname?|",
+        "port_type: subtype?|",
+        "port_id: peerIfname?|",
+        "mgmt_addr: mgmtIP?|"
         ]'
