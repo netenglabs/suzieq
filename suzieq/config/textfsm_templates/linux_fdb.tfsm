@@ -8,8 +8,8 @@ Start
   ^.*dev bridge self permanent.*$$ -> Next.Record
   ^${macaddr} dev ${oif} vlan ${vlan} master bridge ${flags}.*$$ -> Next.Record
   ^${macaddr} dev ${oif} vlan ${vlan} master bridge.*$$ -> Next.Record
-  ^${macaddr} dev ${oif} vlan ${vlan} extern_learn master bridge.*$$ -> Next.Record
-  ^${macaddr} dev ${oif} vlan ${vlan} extern_learn master bridge ${flags}.*$$ -> Next.Record      
+  ^${macaddr} dev ${oif} vlan ${vlan} (offload|extern_learn) master bridge.*$$ -> Next.Record
+  ^${macaddr} dev ${oif} vlan ${vlan} (offload|extern_learn) master bridge ${flags}.*$$ -> Next.Record      
   ^${macaddr} dev ${oif} vlan ${vlan} sticky master bridge ${flags}.*$$ -> Next.Record
   ^${macaddr} dev ${oif} vlan ${vlan} sticky master bridge.*$$ -> Next.Record      
   ^${macaddr} dev ${oif} dst ${remoteVtepIp} self ${flags}.*$$ -> Next.Record
