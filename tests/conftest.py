@@ -1,19 +1,19 @@
-import pytest
-from _pytest.mark.structures import Mark, MarkDecorator
-
-import os
-import sys
-import asyncio
-from suzieq.cli.sq_nubia_context import NubiaSuzieqContext
-from suzieq.utils import load_sq_config, Schema
-from suzieq.poller.services import init_services
-from unittest.mock import Mock
-import yaml
-from tempfile import mkstemp
-import shlex
-from subprocess import check_output, CalledProcessError
 from filelock import FileLock
-
+from subprocess import check_output, CalledProcessError
+import shlex
+from tempfile import mkstemp
+import yaml
+from unittest.mock import Mock
+from suzieq.poller.services import init_services
+from suzieq.utils import load_sq_config, Schema
+from suzieq.sqobjects import get_sqobject
+from suzieq.cli.sq_nubia_context import NubiaSuzieqContext
+import asyncio
+import sys
+import os
+from _pytest.mark.structures import Mark, MarkDecorator
+import pytest
+import pandas as pd
 
 suzieq_cli_path = './suzieq/cli/sq_cli.py'
 suzieq_rest_server_path = './suzieq/restServer/sq_rest_server.py'
@@ -41,45 +41,26 @@ def setup_nubia():
     _setup_nubia()
 
 
-def _setup_nubia():
-    from suzieq.cli.sq_nubia_plugin import NubiaSuzieqPlugin
-    from nubia import Nubia
-    # monkey patching -- there might be a better way
-    plugin = NubiaSuzieqPlugin()
-    plugin.create_context = create_context
-
-    # this is just so that context can be created
-    shell = Nubia(name='test', plugin=plugin)
-
-
-def create_context():
-    config = load_sq_config(config_file=create_dummy_config_file())
-    context = NubiaSuzieqContext()
-    context.cfg = config
-    context.schemas = Schema(config["schema-directory"])
-    return context
-
-
 @pytest.fixture()
 def create_context_config(datadir: str = './tests/data/basic_dual_bgp/parquet-out'):
     return load_sq_config(config_file=create_dummy_config_file(datadir))
 
 
-def create_dummy_config_file(
-        datadir: str = './tests/data/basic_dual_bgp/parquet-out'):
-    config = {'data-directory': datadir,
-              'temp-directory': '/tmp/suzieq',
-              'logging-level': 'WARNING',
-              'test_set': 'basic_dual_bgp',  # an extra field for testing
-              'rest': {'API_KEY': '68986cfafc9d5a2dc15b20e3e9f289eda2c79f40'},
-              'analyzer': {'timezone': 'GMT'},
-              }
-    fd, tmpfname = mkstemp(suffix='yml')
-    f = os.fdopen(fd, 'w')
-    f.write(yaml.dump(config))
-    f.close()
+@pytest.fixture()
+def get_table_data(table: str, datadir: str):
 
-    return tmpfname
+    cfgfile = create_dummy_config_file(datadir=datadir)
+
+    df = get_sqobject(table)(config_file=cfgfile).get(columns=['*'])
+    if table != 'device':
+        device_df = get_sqobject('device')(config_file=cfgfile) \
+            .get(columns=['namespace', 'hostname', 'os'])
+
+        if not device_df.empty:
+            df = df.merge(device_df, on=['namespace', 'hostname']) \
+                   .fillna({'os': ''})
+
+    return df
 
 
 @pytest.fixture
@@ -100,6 +81,42 @@ def run_sequential(tmpdir):
     """
     with FileLock('test.lock', timeout=15):
         yield()
+
+
+def _setup_nubia():
+    from suzieq.cli.sq_nubia_plugin import NubiaSuzieqPlugin
+    from nubia import Nubia
+    # monkey patching -- there might be a better way
+    plugin = NubiaSuzieqPlugin()
+    plugin.create_context = create_context
+
+    # this is just so that context can be created
+    shell = Nubia(name='test', plugin=plugin)
+
+
+def create_context():
+    config = load_sq_config(config_file=create_dummy_config_file())
+    context = NubiaSuzieqContext()
+    context.cfg = config
+    context.schemas = Schema(config["schema-directory"])
+    return context
+
+
+def create_dummy_config_file(
+        datadir: str = './tests/data/basic_dual_bgp/parquet-out'):
+    config = {'data-directory': datadir,
+              'temp-directory': '/tmp/suzieq',
+              'logging-level': 'WARNING',
+              'test_set': 'basic_dual_bgp',  # an extra field for testing
+              'rest': {'API_KEY': '68986cfafc9d5a2dc15b20e3e9f289eda2c79f40'},
+              'analyzer': {'timezone': 'GMT'},
+              }
+    fd, tmpfname = mkstemp(suffix='yml')
+    f = os.fdopen(fd, 'w')
+    f.write(yaml.dump(config))
+    f.close()
+
+    return tmpfname
 
 
 def load_up_the_tests(dir):
@@ -181,3 +198,11 @@ def setup_sqcmds(testvar, context_config):
         os.remove(tmpfname)
 
     return output, error
+
+
+def validate_host_shape(df: pd.DataFrame, ns_dict: dict):
+    '''For the given DF, validate that the number of hosts is accurate'''
+    for ns in ns_dict:
+        if ns in df.namespace.unique():
+            assert df.query(
+                f'namespace == "{ns}"').hostname.nunique() == ns_dict[ns]
