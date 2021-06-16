@@ -24,18 +24,22 @@ def validate_mlag_tbl(df: pd.DataFrame):
     assert (df.mlagDualPortsCnt == df.mlagDualPortsList.str.len()).all()
     assert (df.mlagSinglePortsCnt == df.mlagSinglePortsList.str.len()).all()
     assert (df.mlagErrorPortsCnt == df.mlagErrorPortsList.str.len()).all()
-    assert (df.peerLinkStatus.isin(['up', 'down'])).all()
 
     noncl_df = df.query('os != "cumulus"')
     assert (noncl_df.configSanity.isin(['consistent', 'inconsistent'])).all()
     assert (noncl_df.domainId != '').all()
     assert (noncl_df.usesLinkLocal == False).all()
+    assert (noncl_df.peerLinkStatus.isin(['up', 'down'])).all()
 
 
 @ pytest.mark.parsing
 @ pytest.mark.mlag
 @ pytest.mark.parametrize('table', ['mlag'])
-@ pytest.mark.parametrize('datadir', ['/tmp/demo'])
+@ pytest.mark.parametrize('datadir',
+                          ['tests/data/multidc/parquet-out/',
+                           'tests/data/eos/parquet-out',
+                           'tests/data/nxos/parquet-out',
+                           ])
 def test_mlag_parsing(table, datadir, get_table_data):
     '''Main workhorse routine to test parsed output for MLAG table'''
 
