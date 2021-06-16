@@ -83,6 +83,10 @@ class MlagService(Service):
                 lambda x: x not in mlagSinglePorts and x not in mlagErrorPorts,
                 mlagDualPorts))
 
+            if entry.get('peerLinkStatus', '') == 1:
+                entry['peerLinkStatus'] = 'up'
+            else:
+                entry['peerLinkStatus'] = 'down'
             entry['peerLink'] = expand_nxos_ifname(entry['peerLink'])
             entry['peerAddress'] = entry.get('peerAddress', [])
             entry['mlagDualPortsList'] = mlagDualPorts
