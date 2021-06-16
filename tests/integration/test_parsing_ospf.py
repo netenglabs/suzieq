@@ -1,10 +1,7 @@
 import pytest
-
 import pandas as pd
-import numpy as np
 
-from tests.conftest import create_dummy_config_file
-from suzieq.sqobjects import get_sqobject
+from tests.conftest import validate_host_shape
 
 
 def _validate_estd_ospf_data(df: pd.DataFrame):
@@ -49,24 +46,25 @@ def _validate_common_ospf_data(df: pd.DataFrame):
 
 @ pytest.mark.parsing
 @ pytest.mark.ospf
+@pytest.mark.parametrize('table', ['ospf'])
 @ pytest.mark.parametrize('datadir',
                           ['tests/data/multidc/parquet-out/',
                            'tests/data/eos/parquet-out',
                            'tests/data/nxos/parquet-out',
                            'tests/data/junos/parquet-out'])
-def test_ospf_parsing(datadir):
+def test_ospf_parsing(table, datadir, get_table_data):
     '''Main workhorse routine to test parsed output for OSPF'''
 
-    cfgfile = create_dummy_config_file(datadir=datadir)
+    df = get_table_data
 
-    df = get_sqobject('ospf')(config_file=cfgfile).get(columns=['*'])
-    device_df = get_sqobject('device')(config_file=cfgfile) \
-        .get(columns=['namespace', 'hostname', 'os'])
+    ns_dict = {
+        'eos': 8,
+        'junos': 6,
+        'nxos': 8,
+        'ospf-ibgp': 8,
+    }
 
-    if not device_df.empty:
-        df = df.merge(device_df, on=['namespace', 'hostname']) \
-               .fillna({'os': ''})
-
+    validate_host_shape(df, ns_dict)
     # These apply to all sessions
     _validate_common_ospf_data(df)
 

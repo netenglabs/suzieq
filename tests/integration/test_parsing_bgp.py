@@ -4,8 +4,7 @@ import pytest
 import pandas as pd
 import numpy as np
 
-from tests.conftest import create_dummy_config_file
-from suzieq.sqobjects import get_sqobject
+from tests.conftest import validate_host_shape
 
 
 def _validate_estd_bgp_data(df: pd.DataFrame):
@@ -57,15 +56,15 @@ def validate_bgp_data(df: pd.DataFrame):
     '''Validate the dataframe for all BGP values'''
 
     # First validate that all entries have a state that's either Established or NotEstd
-    df.state.isin(['Established', 'NotEstd']).all()
+    assert (df.state.isin(['Established', 'NotEstd', 'dynamic'])).all()
     assert (df.peer != '').all() and (df.peer.str.lower() != 'none').all()
     assert (df.query('namespace != "nsdevlab"').routerId != '').all()
     assert (df.asn != 0).all()
 
-    assert (df.holdTime != 0).all()
+    assert (df.query('state != "dynamic"').holdTime != 0).all()
 
     estd_df = df.query('state == "Established"').reset_index(drop=True)
-    notestd_df = df.query('state != "Established"').reset_index(drop=True)
+    notestd_df = df.query('state == "NotEstd"').reset_index(drop=True)
 
     _validate_notestd_bgp_data(notestd_df)
     _validate_estd_bgp_data(estd_df)
@@ -73,23 +72,24 @@ def validate_bgp_data(df: pd.DataFrame):
 
 @ pytest.mark.parsing
 @ pytest.mark.bgp
+@pytest.mark.parametrize('table', ['bgp'])
 @ pytest.mark.parametrize('datadir',
                           ['tests/data/multidc/parquet-out/',
                            'tests/data/eos/parquet-out',
                            'tests/data/nxos/parquet-out',
                            'tests/data/junos/parquet-out'])
-def test_bgp_parsing(datadir):
+def test_bgp_parsing(table, datadir, get_table_data):
     '''Main workhorse routine to test parsed output for BGP'''
 
-    cfgfile = create_dummy_config_file(datadir=datadir)
+    df = get_table_data
 
-    df = get_sqobject('bgp')(config_file=cfgfile).get(columns=['*'])
-    device_df = get_sqobject('device')(config_file=cfgfile) \
-        .get(columns=['namespace', 'hostname', 'os'])
-
-    if not device_df.empty:
-        df = df.merge(device_df, on=['namespace', 'hostname']) \
-               .fillna({'os': ''})
+    ns_dict = {
+        'eos': 10,
+        'junos': 8,
+        'nxos': 10,
+        'ospf-ibgp': 10,
+    }
 
     assert not df.empty
+    validate_host_shape(df, ns_dict)
     validate_bgp_data(df)

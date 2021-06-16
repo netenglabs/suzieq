@@ -1,9 +1,10 @@
 import pytest
-import pandas as pd
-import numpy as np
 
-from tests.conftest import create_dummy_config_file
-from suzieq.sqobjects import get_sqobject
+
+import pandas as pd
+from ipaddress import ip_interface
+
+from tests.conftest import validate_host_shape
 
 
 def _validate_ethernet_if(df: pd.DataFrame):
@@ -56,6 +57,8 @@ def _validate_svi_and_subif(df: pd.DataFrame):
             continue
         assert ((len(row.ipAddressList) != 0) or
                 (len(row.ip6AddressList) != 0))
+        assert all(ip_interface(x) for x in row.ipAddressList)
+        assert all(ip_interface(x) for x in row.ip6AddressList)
 
 
 def _validate_vxlan_if(df: pd.DataFrame):
@@ -106,25 +109,16 @@ def _validate_junos_vtep_if(df: pd.DataFrame):
 
 @pytest.mark.parsing
 @pytest.mark.interface
+@pytest.mark.parametrize('table', ['interfaces'])
 @pytest.mark.parametrize('datadir',
                          ['tests/data/multidc/parquet-out/',
                           'tests/data/eos/parquet-out',
                           'tests/data/nxos/parquet-out',
                           'tests/data/junos/parquet-out'])
-def test_interfaces(datadir):
+def test_interfaces(table, datadir, get_table_data):
     '''Main workhorse routine to test interfaces'''
 
-    print(f'testing with {datadir}')
-
-    cfgfile = create_dummy_config_file(datadir=datadir)
-
-    df = get_sqobject('interfaces')(config_file=cfgfile).get(columns=['*'])
-    device_df = get_sqobject('device')(config_file=cfgfile) \
-        .get(columns=['namespace', 'hostname', 'os'])
-
-    if not device_df.empty:
-        df = df.merge(device_df, on=['namespace', 'hostname']) \
-               .fillna({'os': ''})
+    df = get_table_data
 
     validation_fns = {'bond': _validate_bond_if,
                       'bond_slave': _validate_bond_if,
@@ -157,7 +151,16 @@ def test_interfaces(datadir):
                       'vrf': _validate_vrf_if
                       }
 
+    ns_dict = {
+        'eos': 14,
+        'junos': 12,
+        'nxos': 14,
+        'ospf-ibgp': 14,
+    }
+
     assert not df.empty
+    validate_host_shape(df, ns_dict)
+
     assert df.state.isin(['up', 'down', 'notConnected']).all()
     assert df.adminState.isin(['up', 'down']).all()
 
