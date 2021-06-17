@@ -20,7 +20,7 @@ The REST server has been implemented using the [fastapi](https://fastapi.tiangol
 
 ## API Documentation
 
-In keeping with the modern REST server design model, the rest server comes bundled with automatic documentation. You can point the browser at https://localhost:8000/docs for the classical Swagger-based documentation. This also allows you to try out the API from within the browser itself. You can also use the fastapi's alternative documentation at https://localhost:8000/redoc.
+In keeping with the modern REST server design model, the rest server comes bundled with automatic documentation. You can point the browser at https://localhost:8000/api/docs for the classical Swagger-based documentation. This also allows you to try out the API from within the browser itself. You can also use the fastapi's alternative documentation at https://localhost:8000/api/redoc. The openapi.json URL is https://localhost:8000/api/openapi.json. We changed the default URLs for the Swagger and Redoc API as well as OpenAPI to make it easier for reverse proxies such as Caddy.
 
 If you do decide to try out the API from within the browser, you need to authenticate it first using the Authorize button and adding the API Key.
 

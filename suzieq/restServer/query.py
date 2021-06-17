@@ -26,7 +26,12 @@ def check_config_file():
         sys.exit(1)
 
 
-app = FastAPI(on_startup=[check_config_file])
+# Changing the default URLs to help with reverse proxy stuff as described
+# in issue #381 (https://github.com/netenglabs/suzieq/issues/381)
+app = FastAPI(on_startup=[check_config_file],
+              openapi_url="/api/openapi.json",
+              docs_url="/api/docs",
+              redoc_url="/api/redoc")
 
 
 def app_init(cfg_file):
