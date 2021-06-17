@@ -266,7 +266,7 @@ def page_work(state_container, page_flip: bool):
             st.stop()
         if state.query:
             try:
-                show_df = df.query(state.query)
+                show_df = df.query(state.query).reset_index(drop=True)
                 query_str = state.query
             except Exception:
                 st.warning('Query string throws an exception, ignoring')
