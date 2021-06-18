@@ -3,7 +3,6 @@
 import uvicorn
 import argparse
 import sys
-import yaml
 import os
 from suzieq.utils import load_sq_config, get_sq_install_dir, get_log_file_level
 
@@ -13,10 +12,10 @@ from suzieq.restServer.query import app_init
 def get_cert_files(cfg):
     sqdir = get_sq_install_dir()
     ssl_certfile = cfg.get('rest', {}) \
-                      .get('rest_certfile', f'{sqdir}/config/etc/cert.pem')
+                      .get('rest-certfile', f'{sqdir}/config/etc/cert.pem')
 
     ssl_keyfile = cfg.get('rest', {}) \
-                     .get('rest_keyfile', f'{sqdir}/config/etc/key.pem')
+                     .get('rest-keyfile', f'{sqdir}/config/etc/key.pem')
 
     if not os.path.isfile(ssl_certfile):
         print(f"ERROR: Missing certificate file: {ssl_certfile}")
@@ -59,6 +58,11 @@ def rest_main(args=None):
         type=str, help="alternate config file",
         default=f'{os.getenv("HOME")}/.suzieq/suzieq-cfg.yml'
     )
+    parser.add_argument(
+        "--no-https",
+        help="Turn off HTTPS",
+        default=False, action='store_true',
+    )
     userargs = parser.parse_args()
     app = app_init(userargs.config)
     cfg = load_sq_config(config_file=userargs.config)
@@ -69,16 +73,24 @@ def rest_main(args=None):
         exit(1)
 
     logcfg, loglevel = get_log_config_level(cfg)
-    ssl_keyfile, ssl_certfile = get_cert_files(cfg)
+
+    no_https = cfg.get('rest', {}).get('no-https',
+                                       userargs.no_https)
 
     srvr_addr = cfg.get('rest', {}).get('address', '127.0.0.1')
     srvr_port = cfg.get('rest', {}).get('port', 8000)
 
-    uvicorn.run(app, host=srvr_addr, port=srvr_port,
-                log_level=loglevel.lower(),
-                log_config=logcfg,
-                ssl_keyfile=ssl_keyfile,
-                ssl_certfile=ssl_certfile)
+    if no_https:
+        uvicorn.run(app, host=srvr_addr, port=srvr_port,
+                    log_level=loglevel.lower(),
+                    log_config=logcfg)
+    else:
+        ssl_keyfile, ssl_certfile = get_cert_files(cfg)
+        uvicorn.run(app, host=srvr_addr, port=srvr_port,
+                    log_level=loglevel.lower(),
+                    log_config=logcfg,
+                    ssl_keyfile=ssl_keyfile,
+                    ssl_certfile=ssl_certfile)
 
 
 if __name__ == "__main__":
