@@ -456,7 +456,7 @@ def test_server_exec():
 
     # Try a request from the server
     sleep(5)
-    resp = requests.get(f'https://localhost:8000/docs', verify=False)
+    resp = requests.get(f'https://localhost:8000/api/docs', verify=False)
 
     proc.kill()
     assert(resp.status_code == 200)
