@@ -45,7 +45,7 @@ class EvpnvniObj(SqPandasEngine):
 
         # See if we can retrieve the info to fill out the rest of the data
         # Start with VLAN values
-        if 'vlan' not in df.columns and not 'vrf' in columns:
+        if 'vlan' not in df.columns and 'vrf' not in df.columns:
             return df.drop(columns=drop_cols, errors='ignore')
 
         iflist = list(set([x for x in df[df.vlan == 0]['ifname'].to_list()
@@ -159,7 +159,7 @@ class EvpnvniObj(SqPandasEngine):
     def aver(self, **kwargs) -> pd.DataFrame:
         """Assert for EVPN Data"""
 
-        assert_cols = ["namespace", "hostname", "vni", "remoteVtepList", "vrf",
+        assert_cols = ["namespace", "hostname", "vni", "vlan", "remoteVtepList", "vrf",
                        "mcastGroup", "type", "priVtepIp", "state", "l2VniList",
                        "ifname", "secVtepIp"]
 
