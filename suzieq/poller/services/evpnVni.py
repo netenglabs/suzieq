@@ -2,7 +2,8 @@ import re
 import numpy as np
 
 from suzieq.poller.services.service import Service
-from suzieq.utils import convert_rangestring_to_list
+from suzieq.utils import (convert_rangestring_to_list,
+                          convert_macaddr_format_to_colon)
 
 
 class EvpnVniService(Service):
@@ -29,6 +30,13 @@ class EvpnVniService(Service):
                 vni2vrfmap[entry['_vrf2VniMap'][vrf]] = vrf
 
             vtepMap = entry.get('_vlan2VtepMap', {})
+            replType = entry.get('replicationType')
+            if replType == 'headendVcs':
+                replType = 'ingressBGP'
+            elif entry.get('mcastGroup', '') != "0.0.0.0":
+                replType = "multicast"
+            else:
+                replType = ''
             for vlan in entry['_vlan2VniMap']:
                 new_entry = {}
                 vni = entry['_vlan2VniMap'][vlan].get('vni', 0)
@@ -42,12 +50,13 @@ class EvpnVniService(Service):
                 vteplist = (vteplist.get('remoteVtepAddr', []) +
                             vteplist.get('remoteVtepAddr6', []))
                 new_entry['remoteVtepList'] = vteplist
-                new_entry['replicationType'] = entry['replicationType']
+                new_entry['replicationType'] = replType
                 new_entry['mcastGroup'] = entry['mcastGroup']
                 if new_entry['vrf']:
                     new_entry['type'] = 'L3'
                 else:
                     new_entry['type'] = 'L2'
+                new_entry['ifname'] = entry.get('ifname', '')
 
                 new_entries.append(new_entry)
 
@@ -71,6 +80,8 @@ class EvpnVniService(Service):
                 entry['mcastGroup'] = "0.0.0.0"
                 entry['remoteVtepList'] = None
 
+            entry['state'] = entry.get('state', 'up').lower()
+            entry['l2VniList'] = set(entry['l2VniList'])
         processed_data = np.delete(processed_data, del_indices).tolist()
 
         return processed_data
@@ -130,8 +141,9 @@ class EvpnVniService(Service):
                     if secIP == '0.0.0.0':
                         secIP = ''
                     vni_dict[vni]['secVtepIp'] = secIP
-                    vni_dict[vni]['routerMac'] = entry.get('routerMac',
-                                                           '00:00:00:00:00:00')
+                    vni_dict[vni]['routerMac'] = convert_macaddr_format_to_colon(
+                        entry.get('routerMac', '00:00:00:00:00:00'))
+
                 drop_indices.append(i)
 
         processed_data = np.delete(processed_data, drop_indices).tolist()
@@ -195,6 +207,10 @@ class EvpnVniService(Service):
                     'vrf': entry['vrf'],
                     'os': 'junos'
                 }
+                # Add the primary VTEP IP into the L2 entries as well
+                for l2vni in newntries:
+                    newntries[l2vni]['priVtepIp'] = priVtepIp
+
                 newntries[vni] = vni_entry
                 continue
             elif entry['_entryType'] == 'remote':

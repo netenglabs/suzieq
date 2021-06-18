@@ -20,7 +20,8 @@ class EvpnvniObj(SqPandasEngine):
         drop_cols = []
         addnl_fields = kwargs.pop('addnl_fields', [])
         columns = kwargs.get('columns', [])
-        if 'ifname' not in columns and 'ifname' not in addnl_fields:
+        if (columns != ['*'] and 'ifname' not in columns and
+                'ifname' not in addnl_fields):
             addnl_fields.append('ifname')
             drop_cols.append('ifname')
 
@@ -44,7 +45,7 @@ class EvpnvniObj(SqPandasEngine):
 
         # See if we can retrieve the info to fill out the rest of the data
         # Start with VLAN values
-        if 'vlan' not in df.columns:
+        if 'vlan' not in df.columns and not 'vrf' in columns:
             return df.drop(columns=drop_cols, errors='ignore')
 
         iflist = list(set([x for x in df[df.vlan == 0]['ifname'].to_list()
@@ -60,10 +61,28 @@ class EvpnvniObj(SqPandasEngine):
                               how='left', suffixes=('', '_y')) \
                     .drop(columns=['timestamp_y', 'state_y', 'vni_y'])
 
-                df['vlan'] = np.where(df['vlan_y'], df['vlan_y'], df['vlan'])
+                df['vlan'] = np.where(
+                    df['vlan_y'].notnull(), df['vlan_y'], df['vlan'])
                 df = df.drop(columns=['vlan_y']) \
                        .fillna({'vlan': 0}) \
                        .astype({'vlan': int})
+
+        # Now we try to see if we can get the VRF info for all L2 VNIs as well
+        ifdf = IfObj(context=self.ctxt) \
+            .get(namespace=kwargs.get('namespace', []), type=['vlan'],
+                 columns=['namespace', 'hostname', 'vlan', 'master']) \
+            .query('master != ""') \
+            .reset_index(drop=True)
+        if not ifdf.empty and not df.empty:
+            df = df.merge(ifdf, left_on=['namespace', 'hostname', 'vlan'],
+                          right_on=['namespace', 'hostname', 'vlan'],
+                          how='outer', suffixes=('', '_y'))
+
+            # We fix the VRF from L2 VNIs from the SVI interface's master info
+            # and we drop those entries that are just local VLANs, without VNI
+            df['vrf'] = np.where(df['vrf'] == "", df['master'], df['vrf'])
+            df = df.drop(columns=['master', 'timestamp_y'], errors='ignore') \
+                   .dropna(subset=['vni'])
 
         # Fill out the numMacs and numArps columns if we can
         if 'numMacs' in df.columns:
