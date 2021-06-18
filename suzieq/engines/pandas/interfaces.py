@@ -31,9 +31,9 @@ class InterfacesObj(SqPandasEngine):
             df = df.query(f'state=="{state}"')
 
         if not (iftype or ifname) and 'type' in df.columns:
-            return df.query('type != "internal"').reset_index()
+            return df.query('type != "internal"').reset_index(drop=True)
         else:
-            return df.reset_index()
+            return df.reset_index(drop=True)
 
     def aver(self, what="", **kwargs) -> pd.DataFrame:
         """Assert that interfaces are in good state"""
