@@ -73,7 +73,7 @@ class EvpnvniObj(SqPandasEngine):
                  columns=['namespace', 'hostname', 'vlan', 'master']) \
             .query('master != ""') \
             .reset_index(drop=True)
-        if not ifdf.empty and not df.empty:
+        if not ifdf.empty and not df.empty and 'vrf' in df.columns:
             df = df.merge(ifdf, left_on=['namespace', 'hostname', 'vlan'],
                           right_on=['namespace', 'hostname', 'vlan'],
                           how='outer', suffixes=('', '_y'))
