@@ -448,7 +448,7 @@ def start_server():
 
 @pytest.mark.rest
 def test_server_exec():
-    '''We fire up the rest server and see if we can get a valid response'''
+    '''Can we can get a valid response with https'''
 
     cfgfile = create_dummy_config_file()
     server_cmd_args = f'{suzieq_rest_server_path} -c {cfgfile}'.split()
@@ -456,10 +456,41 @@ def test_server_exec():
 
     # Try a request from the server
     sleep(5)
-    resp = requests.get(f'https://localhost:8000/api/docs', verify=False)
+    resp = requests.get('https://localhost:8000/api/docs', verify=False)
+    assert(resp.status_code == 200)
+    # Try a non-https request from the server
+    sleep(5)
+    try:
+        resp = requests.get('http://localhost:8000/api/docs', verify=False)
+        assert(resp.status_code != 200)
+    except requests.exceptions.ConnectionError:
+        pass
 
     proc.kill()
+
+
+@pytest.mark.rest
+def test_server_exec_no_https():
+    '''Can we can get a valid response without https'''
+
+    cfgfile = create_dummy_config_file()
+    server_cmd_args = f'{suzieq_rest_server_path} -c {cfgfile} --no-https'.split()
+    proc = subprocess.Popen(server_cmd_args)
+
+    # Try a request from the server
+    sleep(5)
+    resp = requests.get('http://localhost:8000/api/docs', verify=False)
     assert(resp.status_code == 200)
+
+    # Try a https request from the server
+    sleep(5)
+    try:
+        resp = requests.get('https://localhost:8000/api/docs', verify=False)
+        assert(resp.status_code != 200)
+    except requests.exceptions.ConnectionError:
+        pass
+
+    proc.kill()
 
 
 def test_bad_rest():
