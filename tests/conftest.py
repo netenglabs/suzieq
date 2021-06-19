@@ -43,7 +43,7 @@ def setup_nubia():
 
 @pytest.fixture()
 def create_context_config(datadir: str = './tests/data/basic_dual_bgp/parquet-out'):
-    return load_sq_config(config_file=create_dummy_config_file(datadir))
+    return
 
 
 @pytest.fixture()
@@ -111,7 +111,7 @@ def create_dummy_config_file(
               'rest': {'API_KEY': '68986cfafc9d5a2dc15b20e3e9f289eda2c79f40'},
               'analyzer': {'timezone': 'GMT'},
               }
-    fd, tmpfname = mkstemp(suffix='yml')
+    fd, tmpfname = mkstemp(suffix='.yml')
     f = os.fdopen(fd, 'w')
     f.write(yaml.dump(config))
     f.close()
@@ -173,17 +173,11 @@ def load_up_the_tests(dir):
 
 def setup_sqcmds(testvar, context_config):
     sqcmd_path = [sys.executable, suzieq_cli_path]
-    tmpfname = None
+
     if 'data-directory' in testvar:
         # We need to create a tempfile to hold the config
-        tmpconfig = context_config
-        tmpconfig['data-directory'] = testvar['data-directory']
-
-        fd, tmpfname = mkstemp(suffix='yml')
-        f = os.fdopen(fd, 'w')
-        f.write(yaml.dump(tmpconfig))
-        f.close()
-        sqcmd_path += ['--config={}'.format(tmpfname)]
+        cfgfile = create_dummy_config_file(datadir=testvar['data-directory'])
+        sqcmd_path += ['--config={}'.format(cfgfile)]
 
     exec_cmd = sqcmd_path + shlex.split(testvar['command'])
 
@@ -194,8 +188,8 @@ def setup_sqcmds(testvar, context_config):
     except CalledProcessError as e:
         error = e.output
 
-    if tmpfname:
-        os.remove(tmpfname)
+    if cfgfile:
+        os.remove(cfgfile)
 
     return output, error
 

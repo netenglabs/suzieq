@@ -1,15 +1,9 @@
+import os
 import pytest
-import random
-import yaml
 from fastapi.testclient import TestClient
-import subprocess
-import requests
-from time import sleep
 
-from tests.conftest import (cli_commands, create_dummy_config_file,
-                            suzieq_rest_server_path)
-from tests import conftest
-from suzieq.utils import load_sq_config
+from tests.conftest import cli_commands, create_dummy_config_file
+
 from suzieq.restServer.query import app, get_configured_api_key, API_KEY_NAME
 
 ENDPOINT = "http://localhost:8000/api/v1"
@@ -434,68 +428,13 @@ def test_rest_services(start_server, service, verb, arg):
     get(ENDPOINT, service, verb, arg)
 
 
-def create_config():
-    # We need to create a tempfile to hold the config
-    tmpconfig = load_sq_config(config_file=conftest.create_dummy_config_file())
-
-    tmpconfig['data-directory'] = './tests/data/multidc/parquet-out'
-    r_int = random.randint(17, 2073)
-    fname = f'/tmp/suzieq-cfg-{r_int}.yml'
-
-    with open(fname, 'w') as f:
-        f.write(yaml.dump(tmpconfig))
-    return fname
-
-
 @pytest.fixture(scope="session")
 def start_server():
 
     from suzieq.restServer.query import app_init
 
-    app_init(create_config())
-
-
-@pytest.mark.rest
-def test_server_exec():
-    '''Can we can get a valid response with & without https'''
-
-    cfgfile = create_dummy_config_file()
-    server_cmd_args = f'{suzieq_rest_server_path} -c {cfgfile}'.split()
-    proc = subprocess.Popen(server_cmd_args)
-
-    # Try a request from the server
-    sleep(5)
-    resp = requests.get('https://localhost:8000/api/docs', verify=False)
-    assert(resp.status_code == 200)
-    # Try a non-https request from the server
-    sleep(5)
-    try:
-        resp = requests.get('http://localhost:8000/api/docs', verify=False)
-        assert(resp.status_code != 200)
-    except requests.exceptions.ConnectionError:
-        pass
-
-    proc.kill()
-
-    # Now test without https
-    server_cmd_args = f'{suzieq_rest_server_path} -c {cfgfile} --no-https'.split()
-    proc = subprocess.Popen(server_cmd_args)
-
-    # Try a request from the server
-    sleep(5)
-    resp = requests.get('http://localhost:8000/api/docs', verify=False)
-    assert(resp.status_code == 200)
-
-    # Try a https request from the server
-    sleep(5)
-    try:
-        resp = requests.get('https://localhost:8000/api/docs', verify=False)
-        assert(resp.status_code != 200)
-    except requests.exceptions.ConnectionError:
-        pass
-
-    proc.kill()
-
-
-def test_bad_rest():
-    pass
+    cfgfile = create_dummy_config_file(
+        datadir='./tests/data/multidc/parquet-out')
+    app_init(cfgfile)
+    yield
+    os.remove(cfgfile)
