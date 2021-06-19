@@ -2,7 +2,7 @@ import pandas as pd
 from ipaddress import ip_interface
 
 from .engineobj import SqPandasEngine
-from suzieq.utils import build_query_str
+from suzieq.utils import build_query_str, convert_macaddr_format_to_colon
 
 
 class AddressObj(SqPandasEngine):
@@ -15,11 +15,11 @@ class AddressObj(SqPandasEngine):
 
         rslt = []
         for a in addr:
-            if ':' in a and '::' not in a:
-                rslt.append(0)
-            else:
+            try:
                 ipa = ip_interface(a)
                 rslt.append(ipa._version)
+            except ValueError:
+                rslt.append(0)
         return rslt
 
     def get(self, **kwargs) -> pd.DataFrame:
@@ -61,7 +61,10 @@ class AddressObj(SqPandasEngine):
 
         for i, a in enumerate(addr):
             if addr_types[i] == 0:
-                macaddr.append(a)
+                # convert the macaddr format to internal format
+                if '.' in a:
+                    a = convert_macaddr_format_to_colon(a)
+                macaddr.append(a.lower())
             elif addr_types[i] == 4:
                 if '/' not in a:
                     a += '/'

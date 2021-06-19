@@ -42,6 +42,7 @@ class SqObject(object):
         self._schema = SchemaForTable(table, self.ctxt.schemas)
         self._table = table
         self._sort_fields = self._schema.key_fields()
+        self._convert_args = {}
 
         if not namespace and self.ctxt.namespace:
             self.namespace = self.ctxt.namespace
@@ -149,6 +150,19 @@ class SqObject(object):
         except Exception as error:
             df = pd.DataFrame({'error': [f'{error}']})
             return df
+
+        for k in self._convert_args:
+            v = kwargs.get(k, None)
+            if v:
+                val = kwargs[k]
+                newval = []
+                if isinstance(val, list):
+                    for ele in val:
+                        ele = self._convert_args[k](ele)
+                        newval.append(ele)
+                    kwargs[k] = newval
+                elif isinstance(val, str):
+                    kwargs[k] = self._convert_args[k](val)
 
         return self.engine.get(**kwargs)
 

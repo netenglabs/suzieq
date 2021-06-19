@@ -1,5 +1,6 @@
 import re
 from suzieq.sqobjects.basicobj import SqObject
+from suzieq.utils import convert_macaddr_format_to_colon
 
 
 class MacsObj(SqObject):
@@ -8,6 +9,9 @@ class MacsObj(SqObject):
         self._valid_get_args = ['namespace', 'hostname', 'columns', 'macaddr',
                                 'remoteVtepIp', 'vlan', 'localOnly', 'bd',
                                 'moveCount', 'query_str']
+        self._convert_args = {
+            'macaddr': convert_macaddr_format_to_colon
+        }
 
     def validate_get_input(self, **kwargs):
         for key in kwargs:
