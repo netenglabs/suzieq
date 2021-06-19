@@ -96,6 +96,7 @@ async def init_hosts(**kwargs):
     jump_host_key_file = kwargs.pop('jump_host_key_file', None)
     ignore_known_hosts = kwargs.pop('ignore_known_hosts', False)
     user_password = kwargs.pop('password', None)
+    connect_timeout = kwargs.pop('connect_timeout', 15)
 
     if kwargs:
         logger.error(f'Received unrecognized keywords {kwargs}, aborting')
@@ -185,6 +186,7 @@ async def init_hosts(**kwargs):
                     jump_host=jump_host,
                     jump_host_key_file=jump_host_key_file,
                     namespace=nsname,
+                    connect_timeout=connect_timeout,
                     ignore_known_hosts=ignore_known_hosts,
                 )]
             else:
@@ -237,7 +239,7 @@ class Node(object):
         self.port = 0
         self.backoff = 15  # secs to backoff
         self.init_again_at = 0  # after this epoch secs, try init again
-        self.connect_timeout = 10  # connect timeout in seconds
+        self.connect_timeout = kwargs.get('connect_timeout', 15)
         self.cmd_timeout = 10  # default command timeout in seconds
         self.batch_size = 4    # Number of commands to issue in parallel
         self.bootupTimestamp = 0
@@ -649,7 +651,7 @@ class Node(object):
             if self.ignore_known_hosts:
                 options = asyncssh.SSHClientConnectionOptions(
                     client_keys=self.pvtkey if self.pvtkey else None,
-                    login_timeout=self.cmd_timeout,
+                    login_timeout=self.connect_timeout,
                     password=self.password if not self.pvtkey else None,
                     known_hosts=None,
                     config=self.ssh_config_file
@@ -657,7 +659,7 @@ class Node(object):
             else:
                 options = asyncssh.SSHClientConnectionOptions(
                     client_keys=self.pvtkey if self.pvtkey else None,
-                    login_timeout=self.cmd_timeout,
+                    login_timeout=self.connect_timeout,
                     password=self.password if not self.pvtkey else None,
                     config=self.ssh_config_file,
                 )
@@ -666,14 +668,14 @@ class Node(object):
                 if self.ignore_known_hosts:
                     jump_host_options = asyncssh.SSHClientConnectionOptions(
                         client_keys=self.jump_host_key_file,
-                        login_timeout=self.cmd_timeout,
+                        login_timeout=self.connect_timeout,
                         known_hosts=None,
                         config=self.ssh_config_file,
                     )
                 else:
                     jump_host_options = asyncssh.SSHClientConnectionOptions(
                         client_keys=self.jump_host_key_file,
-                        login_timeout=self.cmd_timeout,
+                        login_timeout=self.connect_timeout,
                         config=self.ssh_config_file,
                     )
             else:

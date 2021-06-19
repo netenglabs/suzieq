@@ -218,6 +218,7 @@ async def start_poller(userargs, cfg):
             f"No correct services specified. Should have been one of {[svc.name for svc in svcs]}")
         sys.exit(1)
 
+    connect_timeout = cfg.get('poller', {}).get('connect-timeout', 15)
     if userargs.input_dir:
         tasks.append(init_files(userargs.input_dir))
     else:
@@ -228,10 +229,12 @@ async def start_poller(userargs, cfg):
                                 jump_host=userargs.jump_host,
                                 jump_host_key_file=userargs.jump_host_key_file,
                                 password=userargs.ask_pass,
+                                connect_timeout=connect_timeout,
                                 ssh_config_file=userargs.ssh_config_file,
                                 ignore_known_hosts=ignore_known_hosts))
 
-    period = cfg.get('period', 15)
+    period = cfg.get('poller', {}).get('period', 15)
+
     tasks.append(init_services(cfg["service-directory"], schema_dir, queue,
                                svclist, period,
                                userargs.run_once or "forever"))
