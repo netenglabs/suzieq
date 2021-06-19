@@ -2035,3 +2035,39 @@ tests:
     "hostname": "leaf02", "ifname": "Vlan10", "ipAddressList": "172.16.1.254/24",
     "macaddr": "00:00:00:11:12:10", "ip6AddressList": [], "state": "up", "master":
     "evpn-vrf", "timestamp": 1619275259186}]'
+- command: address show --address="44:01:02:03:1b:08" --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: address show filter nxos
+  output: '[{"namespace": "nxos", "hostname": "leaf03", "ifname": "Ethernet1/2", "ipAddressList":
+    ["10.0.0.13/32"], "macaddr": "44:01:02:03:1b:08", "ip6AddressList": [], "state":
+    "up", "master": "default", "timestamp": 1619275258539}, {"namespace": "nxos",
+    "hostname": "leaf03", "ifname": "Ethernet1/1", "ipAddressList": ["10.0.0.13/32"],
+    "macaddr": "44:01:02:03:1b:08", "ip6AddressList": [], "state": "up", "master":
+    "default", "timestamp": 1619275258539}]'
+- command: address show --address="44:01:02:03:1B:08" --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: address show filter nxos
+  output: '[{"namespace": "nxos", "hostname": "leaf03", "ifname": "Ethernet1/2", "ipAddressList":
+    ["10.0.0.13/32"], "macaddr": "44:01:02:03:1b:08", "ip6AddressList": [], "state":
+    "up", "master": "default", "timestamp": 1619275258539}, {"namespace": "nxos",
+    "hostname": "leaf03", "ifname": "Ethernet1/1", "ipAddressList": ["10.0.0.13/32"],
+    "macaddr": "44:01:02:03:1b:08", "ip6AddressList": [], "state": "up", "master":
+    "default", "timestamp": 1619275258539}]'
+- command: address show --address="4401.0203.1b08" --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: address show filter nxos
+  output: '[{"namespace": "nxos", "hostname": "leaf03", "ifname": "Ethernet1/2", "ipAddressList":
+    ["10.0.0.13/32"], "macaddr": "44:01:02:03:1b:08", "ip6AddressList": [], "state":
+    "up", "master": "default", "timestamp": 1619275258539}, {"namespace": "nxos",
+    "hostname": "leaf03", "ifname": "Ethernet1/1", "ipAddressList": ["10.0.0.13/32"],
+    "macaddr": "44:01:02:03:1b:08", "ip6AddressList": [], "state": "up", "master":
+    "default", "timestamp": 1619275258539}]'
+- command: address show --address="4401.0203.1B08" --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: address show filter nxos
+  output: '[{"namespace": "nxos", "hostname": "leaf03", "ifname": "Ethernet1/2", "ipAddressList":
+    ["10.0.0.13/32"], "macaddr": "44:01:02:03:1b:08", "ip6AddressList": [], "state":
+    "up", "master": "default", "timestamp": 1619275258539}, {"namespace": "nxos",
+    "hostname": "leaf03", "ifname": "Ethernet1/1", "ipAddressList": ["10.0.0.13/32"],
+    "macaddr": "44:01:02:03:1b:08", "ip6AddressList": [], "state": "up", "master":
+    "default", "timestamp": 1619275258539}]'

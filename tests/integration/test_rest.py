@@ -45,6 +45,9 @@ FILTERS = ['', 'hostname=leaf01', 'namespace=ospf-ibgp',
            'vrf=default',
            'ipvers=v4',
            'macaddr=44:39:39:ff:40:95',
+           'macaddr=44:39:39:FF:40:95',
+           'macaddr=4439.39FF.4095',
+           'macaddr=4439.39ff.4095',
            'macaddr=44:39:39:ff:00:13%2044:39:39:ff:00:24',
            'peer=eth1.2',
            'vni=13',
@@ -194,6 +197,9 @@ BAD_FILTERS = {
     'address/show?query_str=hostname=="leaf01"%20and%201000<mtu<2000': 500,
     'address/summarize?query_str=hostname=="leaf01"%20and%201000<mtu<2000': 500,
     'arpnd/summarize?macaddr=44:39:39:ff:40:95': 405,
+    'arpnd/summarize?macaddr=44:39:39:FF:40:95': 405,
+    'arpnd/summarize?macaddr=4439.39FF.4095': 405,
+    'arpnd/summarize?macaddr=4439.39ff.4095': 405,
     'arpnd/summarize?macaddr=44:39:39:ff:00:13%2044:39:39:ff:00:24': 405,
     'arpnd/summarize?ipAddress=10.0.0.11': 405,
     'arpnd/summarize?oif=eth1.4': 405,
@@ -284,6 +290,9 @@ BAD_FILTERS = {
     'mac/summarize?query_str=hostname=="leaf01"%20and%201000<mtu<2000': 500,
     'mac/summarize?bd=': 405,
     'mac/summarize?macaddr=44:39:39:ff:40:95': 405,
+    'mac/summarize?macaddr=44:39:39:FF:40:95': 405,
+    'mac/summarize?macaddr=4439.39FF.4095': 405,
+    'mac/summarize?macaddr=4439.39ff.4095': 405,
     'mac/summarize?macaddr=44:39:39:ff:00:13%2044:39:39:ff:00:24': 405,
     'mac/summarize?localOnly=True': 405,
     'mac/summarize?remoteVtepIp=10.0.0.101': 405,
@@ -448,7 +457,7 @@ def start_server():
 
 @pytest.mark.rest
 def test_server_exec():
-    '''Can we can get a valid response with https'''
+    '''Can we can get a valid response with & without https'''
 
     cfgfile = create_dummy_config_file()
     server_cmd_args = f'{suzieq_rest_server_path} -c {cfgfile}'.split()
@@ -468,12 +477,7 @@ def test_server_exec():
 
     proc.kill()
 
-
-@pytest.mark.rest
-def test_server_exec_no_https():
-    '''Can we can get a valid response without https'''
-
-    cfgfile = create_dummy_config_file()
+    # Now test without https
     server_cmd_args = f'{suzieq_rest_server_path} -c {cfgfile} --no-https'.split()
     proc = subprocess.Popen(server_cmd_args)
 

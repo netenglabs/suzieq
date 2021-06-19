@@ -816,3 +816,87 @@ tests:
     "", "bd": "", "flags": "static", "timestamp": 1619275257856}, {"namespace": "nxos",
     "hostname": "spine02", "vlan": 0, "macaddr": "44:01:01:02:1b:08", "oif": "sup-eth1(R)",
     "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp": 1619275258116}]'
+- command: mac show --macaddr="4401.0203.1b08" --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: mac show filter nxos
+  output: '[{"namespace": "nxos", "hostname": "leaf03", "vlan": 0, "macaddr": "44:01:02:03:1b:08",
+    "oif": "sup-eth1(R)", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp":
+    1619275257018}, {"namespace": "nxos", "hostname": "leaf03", "vlan": 20, "macaddr":
+    "44:01:02:03:1b:08", "oif": "sup-eth1(R)", "remoteVtepIp": "", "bd": "", "flags":
+    "static", "timestamp": 1619275257018}, {"namespace": "nxos", "hostname": "leaf03",
+    "vlan": 30, "macaddr": "44:01:02:03:1b:08", "oif": "sup-eth1(R)", "remoteVtepIp":
+    "", "bd": "", "flags": "static", "timestamp": 1619275257018}, {"namespace": "nxos",
+    "hostname": "leaf03", "vlan": 999, "macaddr": "44:01:02:03:1b:08", "oif": "sup-eth1(R)",
+    "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp": 1619275257018},
+    {"namespace": "nxos", "hostname": "leaf01", "vlan": 999, "macaddr": "44:01:02:03:1b:08",
+    "oif": "nve1", "remoteVtepIp": "10.0.0.134", "bd": "", "flags": "remote", "timestamp":
+    1619275257166}, {"namespace": "nxos", "hostname": "leaf02", "vlan": 999, "macaddr":
+    "44:01:02:03:1b:08", "oif": "nve1", "remoteVtepIp": "10.0.0.134", "bd": "", "flags":
+    "remote", "timestamp": 1619275257446}, {"namespace": "nxos", "hostname": "exit01",
+    "vlan": 999, "macaddr": "44:01:02:03:1b:08", "oif": "nve1", "remoteVtepIp": "10.0.0.134",
+    "bd": "", "flags": "remote", "timestamp": 1619275257463}, {"namespace": "nxos",
+    "hostname": "leaf04", "vlan": 20, "macaddr": "44:01:02:03:1b:08", "oif": "vPC
+    Peer-Link(R)", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp": 1619275257479},
+    {"namespace": "nxos", "hostname": "leaf04", "vlan": 30, "macaddr": "44:01:02:03:1b:08",
+    "oif": "vPC Peer-Link(R)", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp":
+    1619275257479}, {"namespace": "nxos", "hostname": "leaf04", "vlan": 999, "macaddr":
+    "44:01:02:03:1b:08", "oif": "vPC Peer-Link(R)", "remoteVtepIp": "", "bd": "",
+    "flags": "static", "timestamp": 1619275257479}, {"namespace": "nxos", "hostname":
+    "exit02", "vlan": 999, "macaddr": "44:01:02:03:1b:08", "oif": "nve1", "remoteVtepIp":
+    "10.0.0.134", "bd": "", "flags": "remote", "timestamp": 1619275257856}]'
+- command: mac show --macaddr="4401.0203.1B08" --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: mac show filter nxos
+  output: '[{"namespace": "nxos", "hostname": "leaf03", "vlan": 0, "macaddr": "44:01:02:03:1b:08",
+    "oif": "sup-eth1(R)", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp":
+    1619275257018}, {"namespace": "nxos", "hostname": "leaf03", "vlan": 20, "macaddr":
+    "44:01:02:03:1b:08", "oif": "sup-eth1(R)", "remoteVtepIp": "", "bd": "", "flags":
+    "static", "timestamp": 1619275257018}, {"namespace": "nxos", "hostname": "leaf03",
+    "vlan": 30, "macaddr": "44:01:02:03:1b:08", "oif": "sup-eth1(R)", "remoteVtepIp":
+    "", "bd": "", "flags": "static", "timestamp": 1619275257018}, {"namespace": "nxos",
+    "hostname": "leaf03", "vlan": 999, "macaddr": "44:01:02:03:1b:08", "oif": "sup-eth1(R)",
+    "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp": 1619275257018},
+    {"namespace": "nxos", "hostname": "leaf01", "vlan": 999, "macaddr": "44:01:02:03:1b:08",
+    "oif": "nve1", "remoteVtepIp": "10.0.0.134", "bd": "", "flags": "remote", "timestamp":
+    1619275257166}, {"namespace": "nxos", "hostname": "leaf02", "vlan": 999, "macaddr":
+    "44:01:02:03:1b:08", "oif": "nve1", "remoteVtepIp": "10.0.0.134", "bd": "", "flags":
+    "remote", "timestamp": 1619275257446}, {"namespace": "nxos", "hostname": "exit01",
+    "vlan": 999, "macaddr": "44:01:02:03:1b:08", "oif": "nve1", "remoteVtepIp": "10.0.0.134",
+    "bd": "", "flags": "remote", "timestamp": 1619275257463}, {"namespace": "nxos",
+    "hostname": "leaf04", "vlan": 20, "macaddr": "44:01:02:03:1b:08", "oif": "vPC
+    Peer-Link(R)", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp": 1619275257479},
+    {"namespace": "nxos", "hostname": "leaf04", "vlan": 30, "macaddr": "44:01:02:03:1b:08",
+    "oif": "vPC Peer-Link(R)", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp":
+    1619275257479}, {"namespace": "nxos", "hostname": "leaf04", "vlan": 999, "macaddr":
+    "44:01:02:03:1b:08", "oif": "vPC Peer-Link(R)", "remoteVtepIp": "", "bd": "",
+    "flags": "static", "timestamp": 1619275257479}, {"namespace": "nxos", "hostname":
+    "exit02", "vlan": 999, "macaddr": "44:01:02:03:1b:08", "oif": "nve1", "remoteVtepIp":
+    "10.0.0.134", "bd": "", "flags": "remote", "timestamp": 1619275257856}]'
+- command: mac show --macaddr="44:01:02:03:1B:08" --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: mac show filter nxos
+  output: '[{"namespace": "nxos", "hostname": "leaf03", "vlan": 0, "macaddr": "44:01:02:03:1b:08",
+    "oif": "sup-eth1(R)", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp":
+    1619275257018}, {"namespace": "nxos", "hostname": "leaf03", "vlan": 20, "macaddr":
+    "44:01:02:03:1b:08", "oif": "sup-eth1(R)", "remoteVtepIp": "", "bd": "", "flags":
+    "static", "timestamp": 1619275257018}, {"namespace": "nxos", "hostname": "leaf03",
+    "vlan": 30, "macaddr": "44:01:02:03:1b:08", "oif": "sup-eth1(R)", "remoteVtepIp":
+    "", "bd": "", "flags": "static", "timestamp": 1619275257018}, {"namespace": "nxos",
+    "hostname": "leaf03", "vlan": 999, "macaddr": "44:01:02:03:1b:08", "oif": "sup-eth1(R)",
+    "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp": 1619275257018},
+    {"namespace": "nxos", "hostname": "leaf01", "vlan": 999, "macaddr": "44:01:02:03:1b:08",
+    "oif": "nve1", "remoteVtepIp": "10.0.0.134", "bd": "", "flags": "remote", "timestamp":
+    1619275257166}, {"namespace": "nxos", "hostname": "leaf02", "vlan": 999, "macaddr":
+    "44:01:02:03:1b:08", "oif": "nve1", "remoteVtepIp": "10.0.0.134", "bd": "", "flags":
+    "remote", "timestamp": 1619275257446}, {"namespace": "nxos", "hostname": "exit01",
+    "vlan": 999, "macaddr": "44:01:02:03:1b:08", "oif": "nve1", "remoteVtepIp": "10.0.0.134",
+    "bd": "", "flags": "remote", "timestamp": 1619275257463}, {"namespace": "nxos",
+    "hostname": "leaf04", "vlan": 20, "macaddr": "44:01:02:03:1b:08", "oif": "vPC
+    Peer-Link(R)", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp": 1619275257479},
+    {"namespace": "nxos", "hostname": "leaf04", "vlan": 30, "macaddr": "44:01:02:03:1b:08",
+    "oif": "vPC Peer-Link(R)", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp":
+    1619275257479}, {"namespace": "nxos", "hostname": "leaf04", "vlan": 999, "macaddr":
+    "44:01:02:03:1b:08", "oif": "vPC Peer-Link(R)", "remoteVtepIp": "", "bd": "",
+    "flags": "static", "timestamp": 1619275257479}, {"namespace": "nxos", "hostname":
+    "exit02", "vlan": 999, "macaddr": "44:01:02:03:1b:08", "oif": "nve1", "remoteVtepIp":
+    "10.0.0.134", "bd": "", "flags": "remote", "timestamp": 1619275257856}]'
