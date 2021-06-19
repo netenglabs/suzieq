@@ -561,7 +561,7 @@ def convert_macaddr_format_to_colon(macaddr: str) -> str:
 
     """
     if isinstance(macaddr, str):
-        if re.match(r'[0-9a-z]{4}.[0-9a-z]{4}.[0-9a-z]{4}', macaddr):
+        if re.match(r'[0-9a-zA-Z]{4}.[0-9a-zA-Z]{4}.[0-9a-zA-Z]{4}', macaddr):
             return (':'.join([f'{x[:2]}:{x[2:]}'
                               for x in macaddr.split('.')])).lower()
         else:
