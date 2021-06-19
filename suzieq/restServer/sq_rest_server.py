@@ -74,8 +74,8 @@ def rest_main(args=None):
 
     logcfg, loglevel = get_log_config_level(cfg)
 
-    no_https = cfg.get('rest', {}).get('no-https',
-                                       userargs.no_https)
+    no_https = cfg.get('rest', {}).get('no-https', False)
+    no_https = no_https or userargs.no_https
 
     srvr_addr = cfg.get('rest', {}).get('address', '127.0.0.1')
     srvr_port = cfg.get('rest', {}).get('port', 8000)
