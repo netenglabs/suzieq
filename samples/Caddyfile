@@ -1,0 +1,10 @@
+suzieq.localhost {
+    
+    reverse_proxy suzieq_gui:8501
+    handle /api* {
+        reverse_proxy suzieq_restserver:8000
+    }
+    log {
+        level error
+    }
+}
