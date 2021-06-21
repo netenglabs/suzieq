@@ -52,6 +52,9 @@ services:
             - suzieq_restserver
         volumes:
             - "./Caddyfile:/etc/caddy/Caddyfile:z,ro"
+            # Uncomment the below if you want to specify your own cert/key.  Be sure to update the Caddyfile also.
+            #- "./secrets/cert.crt:/root/certs/cert.crt:z,ro"
+            #- "./secrets/cert.key:/root/certs/cert.key:z,ro"
         ports:
             - 80:80 # allow Caddy to rederict to HTTPS
             - 443:443

@@ -10,19 +10,19 @@ rest:
 # rest_keyfile: /suzieq/key.pem
 #
   API_KEY: 496157e6e869ef7f3d6ecb24a6f6d847b224ee4f
-  logging-level: WARNING
   address: 0.0.0.0
   port: 8000
+  # logfile: /tmp/sq-rest-server.log
+  logging-level: WARNING
   no-https: True # required for single HTTPS reverse proxy via Caddy
+# This is only for the fastapi/restserver process.  Skip if using Caddy
   # rest-certfile: /secrets/cert.pem
   # rest-keyfile: /secrets/key.pem
-  # logfile: /tmp/sq-rest-server.log
 ​
 poller:
+  # logfile: /tmp/sq-poller.log
   logging-level: WARNING
   period: 60
-  # logfile: /tmp/sq-poller.log
-#
 ​
 coalescer:
   period: 1h
@@ -30,8 +30,8 @@ coalescer:
 # purely to save the uncoalesced data in raw format to avoid data loss in case
 # of a bug in the coalescer.
   archive-directory:
-  logging-level: WARNING
   # logfile: /tmp/sq-coalescer.log
+  logging-level: WARNING
 ​
 analyzer:
   # By default, the timezone is set to the local timezone. Uncomment
