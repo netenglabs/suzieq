@@ -1,5 +1,29 @@
 # Release Notes
 
+## 0.13.0 (June 22, 2021)
+
+This is a mostly technical debt fixup release, but it does include a couple of new features. If we had an LTS release, this release might be considered to be one. The GUI does have theming support now! 
+
+Here is what is new in this release:
+
+* Cleanup all the normalization values across all fields and tables. There were many fields where the values were not normalized (Up vs UP vs up vs linkUp, for example). This is by far the biggest things about this release, and users should rejoice at the simplification that results as a consequence (use of query-str becomes much more simple for example)
+* Fix interface info retrieval (show in CLI/REST, get via Python API) to hide internal interfaces by default. NOS like Junos had a lot of internal interfaces (such as cbp, pimd, pime), which polluted the output. Use type='all' to see all interfaces in output of show/get or type='internal' to see only internal interfaces.
+* Support for optional use of https with REST server. This was to make it easy to use a reverse proxy in fromt of the REST and GUI server to provide a uniform Web front end to both services (GUI/REST).
+* Swagger API, fastAPI redoc, and openAPI URLs under REST have moved to /api/docs, /api/redoc and /api/openapi.json respectively. This is also to make writing a reverse proxy easier. 
+* Improved docker-compose file with sample reverse-proxy configuration with Caddy. This is a contribution from a first time contributor, Ryan Merolle. Thank you, Ryan!
+* Support for saving running config for SoNIC devices (thanks Senthil)
+* Support for providing mac address in filters via multiple formats and capitalization (Issue #363). So, 44:01:02:FF:03:04, 4401.02ff.0304 etc are all supported wherever the keyword macaddr is used or in the address filter of the address table.
+* Support for specifying connect timeout for connecting to devices via the connect-timeout parameter. (Fix #359)
+* Added nexthop distribution info to route summary, so you can get a bird's eye view of nexthop distribution
+* Added additional filters for topology command (Fix #243).
+* Support for specifying column width in CLI (set col-width=100, for example). Fix issue #364.
+* Add interface count with admin down in interface summary (Fix #360).
+* Handling passing ssh config file correctly to lower functions (Fix #375), thanks to first time contributor, Drew Crutchfield.
+* Added 1000+ new tests to catch all sorts of parsing errors. 
+* Bumping up libraries due to security fixes (fastapi, uvicorn, urllib3, pydantic)
+* Updated Streamlit GUI to 0.82.0. Theming support for GUI is now possible.
+
+
 ## 0.12.0 (May 28, 2021)
 
 This list of features and bug fixes for this release include:
