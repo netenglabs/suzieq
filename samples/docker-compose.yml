@@ -1,22 +1,65 @@
 version: '3.2'
 services:
-    sq-poller:
+    suzieq_poller: # Access the cli from this container
         restart: unless-stopped
+        image:  ddutt/suzieq:0.13.0-rc #netenglabs/suzieq:latest
+        container_name: suzieq_poller
         command: -D /suzieq/inventory
-        image:  ddutt/suzieq:latest
-        volumes:
-            - "./parquet-output:/suzieq/parquet"
-            - "./sqpoller-output:/suzieq/sqpoller-output"
-            - "./suzieq-graphs:/tmp/suzieq-graphs"
-            - "./inventory.yml:/suzieq/inventory"
-        entrypoint:
-            - sq-poller
-    suzieq-cli:
-        restart: unless-stopped
-        image:  ddutt/suzieq:latest
         stdin_open: true
         tty: true
         volumes:
-            - "./parquet-out:/suzieq/parquet"
+            - "parquet-output:/suzieq/parquet"
+            - "./inventory.yml:/suzieq/inventory:ro"
+            - "./suzieq-cfg.yml:/root/.suzieq/suzieq-cfg.yml:ro"
         entrypoint:
-            - sh
+            - sq-poller
+    suzieq_restserver:
+        restart: unless-stopped
+        image:  ddutt/suzieq:0.13.0-rc
+        container_name: suzieq_restserver
+        depends_on:
+            - suzieq_poller
+        stdin_open: true
+        tty: true
+        environment:
+            - FORWARDED_ALLOW_IPS=*
+        volumes:
+            - "parquet-output:/suzieq/parquet"
+            - "./suzieq-cfg.yml:/root/.suzieq/suzieq-cfg.yml:ro"
+        expose:
+            - 8000
+        entrypoint: "sq-rest-server"
+    suzieq_gui:
+        restart: unless-stopped
+        image:  ddutt/suzieq:0.13.0-rc
+        container_name: suzieq_gui
+        depends_on:
+            - suzieq_poller
+        stdin_open: true
+        tty: true
+        volumes:
+            - "parquet-output:/suzieq/parquet"
+            - "./suzieq-cfg.yml:/root/.suzieq/suzieq-cfg.yml:ro"
+        expose:
+            - 8501
+        entrypoint:
+            - suzieq-gui
+    caddy: # HTTPS & Reverse Proxy to containers/services
+        image: "caddy:2-alpine"
+        container_name: suzieq_caddy
+        depends_on:
+            - suzieq_gui
+            - suzieq_restserver
+        volumes:
+            - "./Caddyfile:/etc/caddy/Caddyfile:z,ro"
+            # Uncomment the below if you want to specify your own cert/key.  Be sure to update the Caddyfile also.
+            #- "./secrets/cert.crt:/root/certs/cert.crt:z,ro"
+            #- "./secrets/cert.key:/root/certs/cert.key:z,ro"
+        ports:
+            - 80:80 # allow Caddy to rederict to HTTPS
+            - 443:443
+        restart: unless-stopped
+​
+volumes:
+    parquet-output:
+        driver: local

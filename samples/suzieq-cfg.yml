@@ -1,6 +1,41 @@
-data-directory: /home/ddutt/work/suzieq/tests/data/multidc/parquet-out
-service-directory: /home/ddutt/work/suzieq/config
-schema-directory: /home/ddutt/work/suzieq/config/schema
-temp-directory: /tmp/suzieq
-# kafka-servers: localhost:9093
-logging-level: WARNING
+data-directory: ./parquet
+temp-directory: /tmp/
+​
+rest:
+# Uncomment these lines if you're using your own files for the REST server
+# The certificates listed below are provided purely to get started, In any
+# secure deployment, these must be generated specifically for the site and
+# these lines uncommented and containing the location of the site-specific file.
+# rest_certfile: /suzieq/cert.pem
+# rest_keyfile: /suzieq/key.pem
+#
+  API_KEY: 496157e6e869ef7f3d6ecb24a6f6d847b224ee4f
+  address: 0.0.0.0
+  port: 8000
+  # logfile: /tmp/sq-rest-server.log
+  logging-level: WARNING
+  no-https: True # required for single HTTPS reverse proxy via Caddy
+# This is only for the fastapi/restserver process.  Skip if using Caddy
+  # rest-certfile: /secrets/cert.pem
+  # rest-keyfile: /secrets/key.pem
+​
+poller:
+  # logfile: /tmp/sq-poller.log
+  logging-level: WARNING
+  period: 60
+​
+coalescer:
+  period: 1h
+# Comment the next line if you don't want the archive directory. This dir is
+# purely to save the uncoalesced data in raw format to avoid data loss in case
+# of a bug in the coalescer.
+  archive-directory:
+  # logfile: /tmp/sq-coalescer.log
+  logging-level: WARNING
+​
+analyzer:
+  # By default, the timezone is set to the local timezone. Uncomment
+  # this line if you want the analyzer (CLI/GUI/REST) to display the time
+  # in a different timezone than the local time. The timestamp stored in
+  # the database is always in UTC.
+  timezone: America/New_York
