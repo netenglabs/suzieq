@@ -18,7 +18,6 @@ This is the checklist in releasing Suzieq:
 - Push out all the docker containers: netenglabs/suzieq:<release-version>, netenglabs/suzieq:latest and netenglabs/suzieq-demo:latest to dockerhub
 - Push out the updated python package to PyPi via ```poetry publish```
 - Write the release notes (under docs/release-notes.md) and commit it
-- Update the release version in README.md
 - Tag the release: ```git tag -a v<release-version> -m <add a commit message>```
 - Push the tag to the repo: ```git push origin v<release-version>```
 - Goto https://github.com/netenglabs/suzieq/releases and create a new release based on the tag
