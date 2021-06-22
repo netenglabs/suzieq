@@ -1,4 +1,8 @@
-![integration-tests](https://github.com/netenglabs/suzieq/workflows/integration-tests/badge.svg)
+[![integration-tests](https://github.com/netenglabs/suzieq/workflows/integration-tests/badge.svg)](https://github.com/netenglabs/suzieq/actions/workflows/integration-tests.yml)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/netenglabs/suzieq?logo=github)](https://github.com/netenglabs/suzieq/releases/latest)
+[![GitHub](https://img.shields.io/github/license/netenglabs/suzieq?logo=github)](LICENSE)
+[![Docker Image Version (latest by date)](https://img.shields.io/docker/v/netenglabs/suzieq?logo=docker)](https://hub.docker.com/r/netenglabs/suzieq/tags?page=1&ordering=last_updated)
+[![Docker Pulls](https://img.shields.io/docker/pulls/netenglabs/suzieq?logo=docker)](https://hub.docker.com/r/netenglabs/suzieq/tags?page=1&ordering=last_updated)
 
 # Suzieq -- Healthier Networks Through Network Observability
 
