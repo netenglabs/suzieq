@@ -8,7 +8,7 @@ services:
         stdin_open: true
         tty: true
         volumes:
-            - "parquet-output:/suzieq/parquet"
+            - "parquet-db:/suzieq/parquet"
             - "./inventory.yml:/suzieq/inventory.yml:ro"
             - "./suzieq-cfg.yml:/root/.suzieq/suzieq-cfg.yml:ro"
         entrypoint:
@@ -24,7 +24,7 @@ services:
         environment:
             - FORWARDED_ALLOW_IPS=*
         volumes:
-            - "parquet-output:/suzieq/parquet"
+            - "parquet-db:/suzieq/parquet"
             - "./suzieq-cfg.yml:/root/.suzieq/suzieq-cfg.yml:ro"
         expose:
             - 8000
@@ -38,7 +38,7 @@ services:
         stdin_open: true
         tty: true
         volumes:
-            - "parquet-output:/suzieq/parquet"
+            - "parquet-db:/suzieq/parquet"
             - "./suzieq-cfg.yml:/root/.suzieq/suzieq-cfg.yml:ro"
         expose:
             - 8501
@@ -61,5 +61,5 @@ services:
             - "443:443"
 
 volumes:
-    parquet-output:
+    parquet-db:
         driver: local
