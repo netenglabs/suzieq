@@ -474,8 +474,9 @@ class InterfaceService(Service):
                     if lastChange:
                         old_entry['statusChangeTimestamp'] = int(
                             lastChange.timestamp() * 1000)
-                else:
-                    entry['statusChangeTimestamp'] = 0
+                    else:
+                        old_entry['statusChangeTimestamp'] = 0
+                    old_entry['description'] = entry.get('description', '')
 
                 drop_indices.append(entry_idx)
                 continue
