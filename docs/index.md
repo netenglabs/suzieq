@@ -1,6 +1,6 @@
 # Suzieq
 
-**Suzieq** is a network observability tool. It is both a framework and an application using that framework, that is focused on 
+[**Suzieq**](https://github.com/netenglabs/suzieq/) is the first open source, multi-vendor network observability platform application. It is both a framework and an application using that framework, that is focused on 
 **improving your understanding of your network**.  We define observability as the ability of a system to 
 answer either trivial or complex questions that you pose as you go about operating your network. How easily 
 you can answer your questions is a measure of how good the system's observability is. A good observable 
