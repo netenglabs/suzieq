@@ -8,6 +8,7 @@ from itertools import zip_longest
 from datetime import datetime, timedelta, timezone
 from contextlib import suppress
 from shutil import rmtree
+from collections import defaultdict
 
 import pandas as pd
 import numpy as np
@@ -238,10 +239,12 @@ class SqParquetDB(SqDB):
 
         This routine does not run periodically. It runs once and returns.
 
-        :param tables: List[str], List of specific tables to coalesce, empty for all
-        :param period: str, coalescing period, needed for various internal stuff
-        :param ign_sqpoller: True if its OK to ignore the absence of sqpoller to
-                             coalesce
+        :param tables: List[str], List of specific tables to coalesce,
+                       empty for all
+        :param period: str, coalescing period, needed for various internal
+                       stuff
+        :param ign_sqpoller: True if its OK to ignore the absence of sqpoller
+                             to coalesce
         :returns: coalesce statistics list, one per table
         :rtype: SqCoalesceStats
         """
@@ -259,37 +262,43 @@ class SqParquetDB(SqDB):
         state = SqCoalesceState(self.logger, period)
 
         state.logger = self.logger
-        # Trying to be complete here. the ignore prefixes assumes you have coalesceers
-        # across multiple time periods running, and so we need to ignore the files
-        # created by the longer time period coalesceions. In other words, weekly
-        # coalesceer should ignore monthly and yearly coalesced files, monthly
-        # coalesceer should ignore yearly coalesceer and so on.
+        # Trying to be complete here. the ignore prefixes assumes you have
+        # coalesceers across multiple time periods running, and so we need
+        # to ignore the files created by the longer time period coalesceions.
+        # In other words, weekly coalesceer should ignore monthly and yearly
+        # coalesced files, monthly coalesceer should ignore yearly coalesceer
+        # and so on.
         try:
             timeint = int(period[:-1])
             time_unit = period[-1]
+            if time_unit == 'm':
+                run_int = timedelta(minutes=timeint)
+                state.prefix = 'sqc-m-'
+                state.ign_pfx = ['.', '_', 'sqc-']
             if time_unit == 'h':
                 run_int = timedelta(hours=timeint)
                 state.prefix = 'sqc-h-'
-                state.ign_pfx = ['.', '_', 'sqc-']
+                state.ign_pfx = ['.', '_', 'sqc-y-', 'sqc-d-', 'sqc-w-',
+                                 'sqc-M-']
             elif time_unit == 'd':
                 run_int = timedelta(days=timeint)
                 if timeint > 364:
                     state.prefix = 'sqc-y-'
                     state.ign_pfx = ['.', '_', 'sqc-y-']
                 elif timeint > 29:
-                    state.prefix = 'sqc-m-'
-                    state.ign_pfx = ['.', '_', 'sqc-m-', 'sqc-y-']
+                    state.prefix = 'sqc-M-'
+                    state.ign_pfx = ['.', '_', 'sqc-M-', 'sqc-y-']
                 else:
                     state.prefix = 'sqc-d-'
-                    state.ign_pfx = ['.', '_', 'sqc-d-', 'sqc-w-', 'sqc-m-',
-                                     'sqc-y-']
+                    state.ign_pfx = ['.', '_', 'sqc-m-', 'sqc-d-', 'sqc-w-',
+                                     'sqc-M-', 'sqc-y-']
             elif time_unit == 'w':
                 run_int = timedelta(weeks=timeint)
                 state.prefix = 'sqc-w-'
                 state.ign_pfx = ['.', '_', 'sqc-w-', 'sqc-m-', 'sqc-y-']
             else:
                 logging.error(f'Invalid unit for period, {time_unit}, '
-                              'must be one of h/d/w')
+                              'must be one of m/h/d/w')
         except ValueError:
             logging.error(f'Invalid time, {period}')
             return
@@ -505,58 +514,41 @@ class SqParquetDB(SqDB):
                     max_vers = vers
 
             dataset = ds.dataset(elem, format='parquet', partitioning='hive')
-            if not start_time and not end_time:
+            total_files = len(dataset.files)
+
+            # 100 is an arbitrary number, trying to reduce file I/O
+            if all_files:
                 files = dataset.files
             else:
+                lists = defaultdict(list)
+                for f in dataset.files:
+                    nsp = os.path.dirname(f).split('namespace=')[-1]
+                    lists[nsp].append(f)
+
                 files = []
-                latest_filedict = {}
-                prev_time = 0
-                prev_namespace = ''
-                file_in_this_ns = False
-                prev_file = None
-                thistime = []
-                for file in sorted(dataset.files):
-                    namespace = os.path.dirname(file).split('namespace=')[1] \
-                        .split('/')[0]
-                    if (prev_namespace and (namespace != prev_namespace) and
-                            thistime and not file_in_this_ns):
-                        if ((start_time and thistime[1] >= start_time) or
-                                (end_time and thistime[1] >= end_time)):
-                            files.append(prev_file)
-                            prev_namespace = ''
-                    thistime = os.path.basename(file).split('.')[0] \
-                        .split('-')[-2:]
-                    thistime = [int(x)*1000 for x in thistime]  # time in ms
-                    if not start_time or (thistime[0] >= start_time):
-                        if not end_time:
-                            files.append(file)
-                            file_in_this_ns = True
-                        elif thistime[0] < end_time:
-                            files.append(file)
-                            file_in_this_ns = True
-                        elif prev_time < end_time < thistime[0]:
-                            key = file.split('namespace=')[1].split('/')[0]
-                            if key not in latest_filedict:
-                                latest_filedict[key] = file
-                                file_in_this_ns = True
+                for ele in lists:
+                    lists[ele].sort()
+                    if not start_time and not end_time:
+                        files.append(lists[ele][-1])
+                        continue
 
-                    prev_time = thistime[0]
-                    prev_file = file
-                    prev_namespace = namespace
-                if not file_in_this_ns:
-                    if (thistime and
-                        ((start_time and thistime[1] >= start_time) or
-                         (end_time and thistime[1] >= end_time))):
-                        files.append(file)
-
-                if latest_filedict:
-                    filelist.extend(list(latest_filedict.values()))
-            if not all_files and files:
-                latest_filedict = {x.split('namespace=')[1].split('/')[0]: x
-                                   for x in sorted(files)}
-                filelist.extend(list(latest_filedict.values()))
-            elif files:
-                filelist.extend(sorted(files))
+                    start_selected = False
+                    for i, file in enumerate(lists[ele]):
+                        thistime = os.path.basename(file).split('.')[0] \
+                                                         .split('-')[-2:]
+                        thistime = [int(x)*1000 for x in thistime]  # to msec
+                        if (not start_time) or start_selected or (
+                                thistime[0] <= start_time <= thistime[1]):
+                            if not end_time:
+                                files.extend(lists[ele][i:])
+                                break
+                            elif thistime[0] < end_time:
+                                files.append(file)
+                                start_selected = True
+                            else:
+                                break
+            if files:
+                filelist.extend(files)
 
         if filelist:
             return ds.dataset(filelist, format='parquet', partitioning='hive')
