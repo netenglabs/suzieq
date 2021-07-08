@@ -140,45 +140,50 @@ class BgpObj(SqPandasEngine):
     def _get_peer_matched_df(self, df) -> pd.DataFrame:
         """Get a BGP dataframe that also contains a session's matching peer"""
 
+        if 'peerHostname' not in df.columns:
+            return df
+
         # We have to separate out the Established and non Established entries
         # for the merge. Otherwise we end up with a mess
-        estd_df = df[df.state == 'Established']
-        if not estd_df.empty:
-            mestd_df = estd_df.merge(estd_df, left_on=['namespace', 'peerIP'],
-                                     right_on=['namespace', 'updateSource'],
-                                     how='left',
-                                     suffixes=('', '_y')) \
-                .drop_duplicates(subset=['namespace', 'hostname',
-                                         'vrf', 'peer', 'afi', 'safi', 'timestamp']) \
-                .rename(columns={'hostname_y': 'peerHost'})
-            # I've not seen the diff between ignore_index and not and so
-            # deliberately ignoring
-            mdf = mestd_df.append(df[df.state != 'Established'])
-            # Pandas 1.1.1 insists on fill values being in category already
-            for i in mdf.select_dtypes(include='category'):
-                mdf[i].cat.add_categories('', inplace=True)
-            mdf.fillna(value={'peerHostname': '', 'vrf_y': '', 'peer_y': '',
-                              'peerHost': '', 'asn_y': 0, 'peerAsn_y': 0},
-                       inplace=True)
+        df_1 = df[['namespace', 'hostname', 'vrf', 'peer', 'peerIP',
+                   'updateSource']] \
+            .drop_duplicates() \
+            .reset_index(drop=True)
+        df_2 = df[['namespace', 'hostname', 'vrf', 'updateSource']] \
+            .drop_duplicates() \
+            .reset_index(drop=True)
 
-            if 'peerHostname' in df.columns:
-                mdf['peerHostname'] = np.where(mdf['state'] == 'Established',
-                                               mdf['peerHost'],
-                                               mdf['peerHostname'])
-            else:
-                mdf.rename(columns={'peerHost': 'peerHostname'}, inplace=True)
-        else:
-            mdf = df
+        mdf = df_1.merge(df_2,
+                         left_on=['namespace', 'peerIP'],
+                         right_on=['namespace', 'updateSource'],
+                         suffixes=('', '_y')) \
+            .drop_duplicates(subset=['namespace', 'hostname', 'vrf',
+                                     'peerIP']) \
+            .rename(columns={'hostname_y': 'peerHost'}) \
+            .fillna(value={'peerHostname': '', 'peerHost': ''}) \
+            .reset_index(drop=True)
 
-        return mdf
+        df = df.merge(mdf[['namespace', 'hostname', 'vrf', 'peer', 'peerHost']],
+                      on=['namespace', 'hostname', 'vrf', 'peer'], how='left')
+
+        df['peerHostname'] = np.where((df['peerHostname'] == '') &
+                                      (df['state'] == "Established"),
+                                      df['peerHost'],
+                                      df['peerHostname'])
+        df = df.drop(columns=['peerHost'])
+
+        for i in df.select_dtypes(include='category'):
+            df[i].cat.add_categories('', inplace=True)
+
+        return df
 
     def aver(self, **kwargs) -> pd.DataFrame:
         """BGP Assert"""
 
-        assert_cols = ["namespace", "hostname", "vrf", "peer", "afi", "safi",
-                       "asn", "state", "peerAsn", "bfdStatus", "reason",
-                       "notificnReason", "afisAdvOnly", "afisRcvOnly",
-                       "peerIP", "updateSource"]
+        assert_cols = ["namespace", "hostname", "vrf", "peer", "peerHostname",
+                       "afi", "safi", "asn", "state", "peerAsn", "bfdStatus",
+                       "reason", "notificnReason", "afisAdvOnly",
+                       "afisRcvOnly", "peerIP", "updateSource"]
 
         kwargs.pop("columns", None)  # Loose whatever's passed
         status = kwargs.pop("status", 'all')
@@ -194,8 +199,6 @@ class BgpObj(SqPandasEngine):
             return df
 
         df = self._get_peer_matched_df(df)
-        df = df.rename(columns={'vrf_y': 'vrfPeer', 'peerIP_y': 'peerPeerIP'}) \
-               .drop(columns={'state_y', 'reason_y', 'timestamp_y'})
         if df.empty:
             if status != "pass":
                 df['assert'] = 'fail'
@@ -240,15 +243,8 @@ class BgpObj(SqPandasEngine):
                                 axis=1)
 
         result = df[['namespace', 'hostname', 'vrf', 'peer', 'asn',
-                     'peerAsn', 'state', 'peerHostname', 'vrfPeer',
-                     'peer_y', 'asn_y', 'peerAsn_y', 'assert',
+                     'peerAsn', 'state', 'peerHostname', 'assert',
                      'assertReason', 'timestamp']] \
-            .rename(columns={'peer_y': 'peerPeer',
-                             'asn_y': 'asnPeer',
-                             'peerAsn_y': 'peerAsnPeer'}, copy=False) \
-            .astype({'asn': 'Int64', 'peerAsn': 'Int64',
-                     'asnPeer': 'Int64',
-                     'peerAsnPeer': 'Int64'}, copy=False) \
             .explode(column="assertReason") \
             .fillna({'assertReason': '-'})
 
