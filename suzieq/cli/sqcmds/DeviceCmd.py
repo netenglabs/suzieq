@@ -35,7 +35,7 @@ class DeviceCmd(SqCommand):
             sqobj=DeviceObj,
         )
 
-    def _get(self):
+    def _get(self, **kwargs):
         # Get the default display field names
         if self.columns != ["default"]:
             self.ctxt.sort_fields = None
@@ -46,6 +46,7 @@ class DeviceCmd(SqCommand):
                                 hostname=self.hostname, columns=self.columns,
                                 namespace=self.namespace,
                                 query_str=self.query_str,
+                                **kwargs,
                                 )
 
         df = self.sqobj.humanize_fields(df)
@@ -53,7 +54,13 @@ class DeviceCmd(SqCommand):
         return df
 
     @command("show", help="Show device information")
-    def show(self):
+    @argument("os", description="filter by NOS")
+    @argument("vendor", description="filter by vendor")
+    @argument("model", description="filter by model")
+    @argument("status", description="filter by polling status",
+              choices=["dead", "alive",  "neverpoll"])
+    def show(self, os: str = '', model: str = '', status: str = '',
+             vendor: str = ''):
         """
         Show device info
         """
@@ -61,7 +68,8 @@ class DeviceCmd(SqCommand):
             return
 
         now = time.time()
-        df = self._get()
+        df = self._get(os=os.split(), model=model.split(),
+                       vendor=vendor.split(), status=status.split())
 
         if 'uptime' in df.columns:
             df.drop(columns=['uptime'], inplace=True)

@@ -15,6 +15,8 @@ class DeviceObj(SqPandasEngine):
         columns = kwargs.get('columns', ['default'])
         addnl_fields = kwargs.pop('addnl_fields', [])
         user_query = kwargs.pop('query_str', '')
+        status = kwargs.pop('status', '')
+        version = kwargs.pop('version', '')
 
         drop_cols = []
 
@@ -42,8 +44,8 @@ class DeviceObj(SqPandasEngine):
         if not poller_df.empty:
             # Merge with poller_df as left DF so that we always end up with
             # namespace and hostname as the leftmost columns
-            df = poller_df.merge(df, on=['namespace', 'hostname'],
-                                 how='outer', suffixes=['_y', ''])  \
+            df = df.merge(poller_df, on=['namespace', 'hostname'],
+                          how='left', suffixes=['', '_y'])  \
                 .fillna({'bootupTimestamp': 0, 'timestamp': 0,
                          'active': True}) \
                 .fillna('N/A')
@@ -59,6 +61,8 @@ class DeviceObj(SqPandasEngine):
 
             drop_cols.extend(['status_y', 'timestamp_y'])
 
+        if status:
+            df = df.query(f'status.isin({status})')
         df = self._handle_user_query_str(df, user_query)
         return df.drop(columns=drop_cols)
 
