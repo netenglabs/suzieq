@@ -3,25 +3,49 @@
 from typing import List
 import sys
 import os
+import re
 import errno
 import argparse
 import fcntl
 from logging import Logger
-from datetime import datetime
 from time import sleep
 from dataclasses import asdict
-from dateparser import parse
 
 import pandas as pd
 
 from suzieq.utils import (load_sq_config, Schema, init_logger,
                           SchemaForTable, ensure_single_instance,
-                          get_log_file_level)
+                          get_log_file_level, get_sleep_time)
 from suzieq.db import do_coalesce, get_sqdb_engine
 from suzieq.version import SUZIEQ_VERSION
 
 
-def run_coalescer(cfg: dict, tables: List[str], period: str, run_once: bool,
+def validate_periodstr(periodstr: str) -> (bool, str):
+    '''Validate the period string specified by user'''
+
+    status = True
+    errmsg = ''
+    try:
+        tm, unit, _ = re.split(r'(\D)', periodstr)
+
+        if unit not in ['m', 'h', 'd', 'w']:
+            errmsg = ('Aborting. Invalid unit specified in coalescing period '
+                      f'{periodstr}. Allowed values are "m", "h", "d", "w"')
+            status = False
+
+        if int(tm) <= 0:
+            errmsg = (f'Aborting. Invalid value {tm} specified in '
+                      'coalescing period. Value must be > 0')
+            status = False
+    except ValueError:
+        errmsg = ('Aborting. Invalid value specified in coalescing '
+                  f'period {periodstr}. Format is <number><m|h|d|w>')
+        status = False
+
+    return status, errmsg
+
+
+def run_coalescer(cfg: dict, tables: List[str], periodstr: str, run_once: bool,
                   logger: Logger, no_sqpoller: bool = False) -> None:
     """Run the coalescer.
 
@@ -31,8 +55,8 @@ def run_coalescer(cfg: dict, tables: List[str], period: str, run_once: bool,
 
     :param cfg: dict, the Suzieq config file read in
     :param tables: List[str], list of table names to coalesce
-    :param period: str, the string of how periodically the poller runs,
-                   Examples are '1h', '1d' etc.
+    :param periodstr: str, the string of how periodically the poller runs,
+                      Examples are '1h', '1d' etc.
     :param run_once: bool, True if you want the poller to run just once
     :param logger: logging.Logger, the logger to write logs to
     :param no_sqpoller: bool, write records even when there's no sqpoller rec
@@ -50,15 +74,16 @@ def run_coalescer(cfg: dict, tables: List[str], period: str, run_once: bool,
 
     coalescer_schema = SchemaForTable('sqCoalescer', schemas)
     pqdb = get_sqdb_engine(cfg, 'sqCoalescer', None, logger)
-    if not run_once:
-        now = datetime.now()
-        nextrun = parse(period, settings={'PREFER_DATES_FROM': 'future'})
-        sleep_time = (nextrun-now).seconds
-        logger.info(f'Got sleep time of {sleep_time} secs')
+
+    status, errmsg = validate_periodstr(periodstr)
+    if not status:
+        logger.error(errmsg)
+        print(f'ERROR: {errmsg}')
+        sys.exit(1)
 
     while True:
         try:
-            stats = do_coalesce(cfg, tables, period, logger, no_sqpoller)
+            stats = do_coalesce(cfg, tables, periodstr, logger, no_sqpoller)
         except Exception:
             logger.exception('Coalescer aborted. Continuing')
         # Write the selftats
@@ -73,6 +98,7 @@ def run_coalescer(cfg: dict, tables: List[str], period: str, run_once: bool,
 
         if run_once:
             break
+        sleep_time = get_sleep_time(periodstr)
         sleep(sleep_time)
 
 
@@ -109,7 +135,7 @@ def coalescer_main():
         "--period",
         type=str,
         help=('Override the period specified in config file with this. '
-              'Format is <period><h|d|w|y>. 1h is 1 hour, 2w is 2 weeks etc.')
+              'Format is <period><m|h|d|w>. 1h is 1 hour, 2w is 2 weeks etc.')
     )
     parser.add_argument(
         "--no-sqpoller",
@@ -130,22 +156,18 @@ def coalescer_main():
 
     # Ensure we're the only compacter
     coalesce_dir = cfg.get('coalescer', {})\
-                      .get('coalesce-directory',
-                           f'{cfg.get("data-directory")}/coalesced')
+        .get('coalesce-directory',
+             f'{cfg.get("data-directory")}/coalesced')
 
     fd = ensure_single_instance(f'{coalesce_dir}/.sq-coalescer.pid',
                                 False)
     if not fd:
-        print(f'ERROR: Another coalescer process present')
-        logger.error(f'Another coalescer process present')
+        print('ERROR: Another coalescer process present')
+        logger.error('Another coalescer process present')
         sys.exit(errno.EBUSY)
 
-    if userargs.run_once:
-        timestr = ''
-    elif not userargs.period:
-        timestr = cfg.get('coalescer', {'period': '1h'}).get('period', '1h')
-    else:
-        timestr = userargs.period
+    timestr = userargs.period or (
+        cfg.get('coalescer', {'period': '1h'}).get('period', '1h'))
 
     schemas = Schema(cfg.get('schema-directory'))
     if userargs.service_only or userargs.exclude_services:

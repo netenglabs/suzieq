@@ -124,13 +124,14 @@ def write_files(table: str, filelist: List[str], in_basedir: str,
                                   .sort_values(by='timestamp') \
                                   .query('~index.duplicated(keep="last")')
 
+
 def find_broken_files(parent_dir: str) -> List[str]:
     """Find any files in the parent_dir that pyarrow can't read
     :parame parent_dir: str, the parent directory to investigate
     :returns: list of broken files
     :rtype: list of strings
     """
-    
+
     all_files = []
     broken_files = []
     ro, pa = os.path.split(parent_dir)
@@ -145,8 +146,9 @@ def find_broken_files(parent_dir: str) -> List[str]:
             broken_files.append(file)
 
     return broken_files
-    
-def move_broken_files(parent_dir: str, state: SqCoalesceState, out_dir: str='_broken', ) -> None:
+
+
+def move_broken_files(parent_dir: str, state: SqCoalesceState, out_dir: str = '_broken', ) -> None:
     """ based on the parent_directory, move any files that cannot be read by pyarrow
         to a safe directory to be investigated later
     :param parent_dir: str, the parent directory to investigate
@@ -155,18 +157,18 @@ def move_broken_files(parent_dir: str, state: SqCoalesceState, out_dir: str='_br
     :returns: Nothing
     :rtype: None
     """
-    
+
     broken_files = find_broken_files(parent_dir)
     ro, pa = os.path.split(parent_dir)
-    
+
     for file in broken_files:
         src = f"{ro}/{file}"
         dst = f"{ro}/{out_dir}/{file}"
- 
+
         if not os.path.exists(os.path.dirname(dst)):
             os.makedirs(os.path.dirname(dst))
         state.logger.debug(f"moving broken file {src} to {dst}")
-        os.replace(src ,dst)
+        os.replace(src, dst)
 
 
 def get_file_timestamps(filelist: List[str]) -> pd.DataFrame:
@@ -197,7 +199,7 @@ def get_file_timestamps(filelist: List[str]) -> pd.DataFrame:
         except OSError:
             # skip this file because it can't be read, is probably 0 bytes
             logging.debug(f"not reading timestamp for {file}")
-        
+
     # Construct file dataframe as its simpler to deal with
     if fname_list:
         fdf = pd.DataFrame({'file': fname_list, 'timestamp': fts_list})
@@ -231,7 +233,8 @@ def migrate_df(table_name: str, df: pd.DataFrame,
 def get_last_update_df(table_name: str, outfolder: str,
                        state: SqCoalesceState) -> pd.DataFrame:
     """Return a dataframe with the last known values for all keys
-    The dataframe is sorted by timestamp and the index set to the keys.
+    The dataframe is sorted by timestamp and the index set to the keys. Works
+    across namespaces.
 
     This is used when the coalesceer starts up and doesn't have any state
     about a table.
@@ -288,19 +291,8 @@ def coalesce_resource_table(infolder: str, outfolder: str, archive_folder: str,
     """
 
     def compute_block_start(start):
-        if state.period.total_seconds() < 24*3600:
-            block_start = datetime(year=start.year, month=start.month,
-                                   day=start.day, hour=start.hour,
-                                   tzinfo=timezone.utc)
-        elif 24*3600 <= state.period.total_seconds() < 24*3600*30:
-            block_start = datetime(year=start.year, month=start.month,
-                                   day=start.day, tzinfo=timezone.utc)
-        elif 24*3600*30 <= state.period.total_seconds() < 24*3600*365:
-            block_start = datetime(year=start.year, month=start.month,
-                                   tzinfo=timezone.utc)
-        else:
-            block_start = datetime(year=start.year, tzinfo=timezone.utc)
-        return block_start
+        return (start - timedelta(seconds=start.timestamp() %
+                                  state.period.total_seconds()))
 
     partition_cols = ['sqvers', 'namespace']
     dodel = True
@@ -323,11 +315,11 @@ def coalesce_resource_table(infolder: str, outfolder: str, archive_folder: str,
     # Ignore reading the compressed files
     try:
         dataset = ds.dataset(infolder, partitioning='hive', format='parquet',
-                            ignore_prefixes=state.ign_pfx)
+                             ignore_prefixes=state.ign_pfx)
     except OSError as e:
         move_broken_files(infolder, state=state)
         dataset = ds.dataset(infolder, partitioning='hive', format='parquet',
-                    ignore_prefixes=state.ign_pfx)
+                             ignore_prefixes=state.ign_pfx)
 
     state.logger.info(f'Examining {len(dataset.files)} {table} files '
                       f'for coalescing')
@@ -353,9 +345,9 @@ def coalesce_resource_table(infolder: str, outfolder: str, archive_folder: str,
             'ERROR: Something is off, now is earlier than dates on files')
         return
 
-    # We write data in fixed size 1 hour time blocks. Data from 10-11 is
-    # written out as one block, data from 11-12 as another and so on.
-    # Specifically, we write out 11:00:00 to 11:59:59 in the block
+    # We write data in fixed size time blocks. Data from 10 pm to 11 pm with a
+    # period of 1 hour is written out as one block, data from 11-12 as another
+    # and so on. Specifically, we write out 10:00:00 to 10:59:59 in the block
     block_start = compute_block_start(start)
     block_end = block_start + state.period
 

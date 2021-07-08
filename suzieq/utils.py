@@ -13,6 +13,7 @@ from pytz import all_timezones
 import fcntl
 from importlib.util import find_spec
 import errno
+from dateparser import parse
 
 import pandas as pd
 import pyarrow as pa
@@ -815,3 +816,26 @@ def get_sq_install_dir() -> str:
         return(os.path.dirname(spec.loader.path))
     else:
         return(os.path.abspath('./'))
+
+
+def get_sleep_time(period: str) -> int:
+    """Returns the duration in seconds to sleep given a period
+
+    Checking if the period format matches a specified format MUST be
+    done by the caller.
+
+    :param period: str, the period of form <value><unit>, '15m', '1h' etc
+    :returns: duration to sleep in seconds
+    :rtype: int
+    """
+    tm, unit, _ = re.split(r'(\D)', period)
+    now = datetime.now()
+    nextrun = parse(period, settings={'PREFER_DATES_FROM': 'future'})
+    if unit == 'm':
+        nextrun = nextrun.replace(second=0)
+    elif unit == 'h':
+        nextrun = nextrun.replace(minute=0, second=0)
+    else:
+        nextrun = nextrun.replace(hour=0, minute=0, second=0)
+
+    return (nextrun-now).seconds
