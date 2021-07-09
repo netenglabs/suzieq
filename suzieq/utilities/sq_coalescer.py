@@ -87,14 +87,15 @@ def run_coalescer(cfg: dict, tables: List[str], periodstr: str, run_once: bool,
         except Exception:
             logger.exception('Coalescer aborted. Continuing')
         # Write the selftats
-        df = pd.DataFrame([asdict(x) for x in stats])
-        if not df.empty:
-            df['sqvers'] = coalescer_schema.version
-            df['version'] = SUZIEQ_VERSION
-            df['active'] = True
-            df['namespace'] = ''
-            pqdb.write('sqCoalescer', 'pandas', df, True,
-                       coalescer_schema.get_arrow_schema(), None)
+        if stats:
+            df = pd.DataFrame([asdict(x) for x in stats])
+            if not df.empty:
+                df['sqvers'] = coalescer_schema.version
+                df['version'] = SUZIEQ_VERSION
+                df['active'] = True
+                df['namespace'] = ''
+                pqdb.write('sqCoalescer', 'pandas', df, True,
+                           coalescer_schema.get_arrow_schema(), None)
 
         if run_once:
             break
