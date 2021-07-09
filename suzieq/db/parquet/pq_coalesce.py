@@ -120,6 +120,7 @@ def write_files(table: str, filelist: List[str], in_basedir: str,
         # Now replace the old dataframe with this new set for "record" types
         # Non-record types should never have current_df non-empty
         state.current_df = this_df.set_index(state.keys) \
+                                  .drop(columns=['index'], errors='ignore') \
                                   .sort_values(by='timestamp') \
                                   .query('~index.duplicated(keep="last")')
 
