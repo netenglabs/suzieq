@@ -350,8 +350,10 @@ class Service(object):
                         elif "messages" in data["data"]:
                             # This is Arista's bash output format
                             in_info = data["data"]["messages"][0]
+                    else:
+                        in_info = data['data']
                     if not in_info:
-                        in_info = data["data"]
+                        return result  # No data to process
                     # Clean data is invoked inside this due to the way we
                     # munge the data and force the types to adhere to the
                     # specified type
