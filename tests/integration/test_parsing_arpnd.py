@@ -4,7 +4,7 @@ from ipaddress import ip_address
 import re
 
 import pandas as pd
-from tests.conftest import validate_host_shape
+from tests.conftest import validate_host_shape, DATADIR
 
 
 def validate_arpnd_tbl(df: pd.DataFrame):
@@ -24,11 +24,7 @@ def validate_arpnd_tbl(df: pd.DataFrame):
 @ pytest.mark.parsing
 @ pytest.mark.lldp
 @ pytest.mark.parametrize('table', ['arpnd'])
-@ pytest.mark.parametrize('datadir',
-                          ['tests/data/multidc/parquet-out/',
-                           'tests/data/eos/parquet-out',
-                           'tests/data/nxos/parquet-out',
-                           'tests/data/junos/parquet-out'])
+@ pytest.mark.parametrize('datadir', DATADIR)
 def test_arpnd_parsing(table, datadir, get_table_data):
     '''Main workhorse routine to test parsed output for ARPND table'''
 

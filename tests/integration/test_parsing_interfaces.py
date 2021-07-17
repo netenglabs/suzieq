@@ -4,7 +4,7 @@ import pytest
 import pandas as pd
 from ipaddress import ip_interface
 
-from tests.conftest import validate_host_shape
+from tests.conftest import DATADIR, validate_host_shape
 
 
 def _validate_ethernet_if(df: pd.DataFrame):
@@ -13,8 +13,8 @@ def _validate_ethernet_if(df: pd.DataFrame):
     # We don't collect speed for Linux servers, vEOS doesn't provide speed
     # A bunch of internal Junos interface names including SVIs show up as
     # ethernet interfaces
-    assert (df.query('(os != "linux") and (namespace != "eos")')
-            .speed != 0).all()
+    assert (df.query('~os.isin(["linux", "eos"]) '
+                     'and (state == "up")').speed != 0).all()
 
 
 def _validate_bridged_if(df: pd.DataFrame):
@@ -28,7 +28,7 @@ def _validate_bond_if(df: pd.DataFrame):
     '''Validate bond interfaces'''
 
     # We don't collect speed for Linux servers, vEOS doesn't provide speed
-    assert (df.query('(os != "linux") and (namespace != "eos") '
+    assert (df.query('~os.isin(["linux", "eos"]) '
                      'and (state == "up")').speed != 0).all()
 
 
@@ -110,11 +110,7 @@ def _validate_junos_vtep_if(df: pd.DataFrame):
 @pytest.mark.parsing
 @pytest.mark.interface
 @pytest.mark.parametrize('table', ['interfaces'])
-@pytest.mark.parametrize('datadir',
-                         ['tests/data/multidc/parquet-out/',
-                          'tests/data/eos/parquet-out',
-                          'tests/data/nxos/parquet-out',
-                          'tests/data/junos/parquet-out'])
+@pytest.mark.parametrize('datadir', DATADIR)
 def test_interfaces(table, datadir, get_table_data):
     '''Main workhorse routine to test interfaces'''
 

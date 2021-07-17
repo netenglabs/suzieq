@@ -1,7 +1,7 @@
 import pytest
 import pandas as pd
 
-from tests.conftest import validate_host_shape
+from tests.conftest import DATADIR, validate_host_shape
 
 
 def _validate_estd_ospf_data(df: pd.DataFrame):
@@ -47,11 +47,7 @@ def _validate_common_ospf_data(df: pd.DataFrame):
 @ pytest.mark.parsing
 @ pytest.mark.ospf
 @pytest.mark.parametrize('table', ['ospf'])
-@ pytest.mark.parametrize('datadir',
-                          ['tests/data/multidc/parquet-out/',
-                           'tests/data/eos/parquet-out',
-                           'tests/data/nxos/parquet-out',
-                           'tests/data/junos/parquet-out'])
+@ pytest.mark.parametrize('datadir', DATADIR)
 def test_ospf_parsing(table, datadir, get_table_data):
     '''Main workhorse routine to test parsed output for OSPF'''
 

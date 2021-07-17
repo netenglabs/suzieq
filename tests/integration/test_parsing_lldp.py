@@ -2,7 +2,7 @@ import pytest
 
 
 import pandas as pd
-from tests.conftest import validate_host_shape
+from tests.conftest import DATADIR, validate_host_shape
 
 
 def validate_lldp_tbl(df: pd.DataFrame):
@@ -17,11 +17,7 @@ def validate_lldp_tbl(df: pd.DataFrame):
 @ pytest.mark.parsing
 @ pytest.mark.lldp
 @ pytest.mark.parametrize('table', ['lldp'])
-@ pytest.mark.parametrize('datadir',
-                          ['tests/data/multidc/parquet-out/',
-                           'tests/data/eos/parquet-out',
-                           'tests/data/nxos/parquet-out',
-                           'tests/data/junos/parquet-out'])
+@ pytest.mark.parametrize('datadir', DATADIR)
 def test_lldp_parsing(table, datadir, get_table_data):
     '''Main workhorse routine to test parsed output for LLDP table'''
 

@@ -2,7 +2,7 @@ import pytest
 
 import re
 import pandas as pd
-from tests.conftest import validate_host_shape
+from tests.conftest import DATADIR, validate_host_shape
 
 
 def validate_evpnVni(df: pd.DataFrame):
@@ -30,11 +30,7 @@ def validate_evpnVni(df: pd.DataFrame):
 @ pytest.mark.parsing
 @ pytest.mark.evpnVni
 @ pytest.mark.parametrize('table', ['evpnVni'])
-@ pytest.mark.parametrize('datadir',
-                          ['tests/data/multidc/parquet-out/',
-                           'tests/data/eos/parquet-out',
-                           'tests/data/nxos/parquet-out',
-                           'tests/data/junos/parquet-out'])
+@ pytest.mark.parametrize('datadir', DATADIR)
 def test_evpnVni_parsing(table, datadir, get_table_data):
     '''Main workhorse routine to test parsed output for EVPN VNI table'''
 

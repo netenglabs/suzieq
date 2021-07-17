@@ -4,7 +4,7 @@ import pytest
 import pandas as pd
 import numpy as np
 
-from tests.conftest import validate_host_shape
+from tests.conftest import DATADIR, validate_host_shape
 
 
 def _validate_estd_bgp_data(df: pd.DataFrame):
@@ -73,11 +73,7 @@ def validate_bgp_data(df: pd.DataFrame):
 @ pytest.mark.parsing
 @ pytest.mark.bgp
 @pytest.mark.parametrize('table', ['bgp'])
-@ pytest.mark.parametrize('datadir',
-                          ['tests/data/multidc/parquet-out/',
-                           'tests/data/eos/parquet-out',
-                           'tests/data/nxos/parquet-out',
-                           'tests/data/junos/parquet-out'])
+@ pytest.mark.parametrize('datadir', DATADIR)
 def test_bgp_parsing(table, datadir, get_table_data):
     '''Main workhorse routine to test parsed output for BGP'''
 

@@ -1,6 +1,6 @@
 import pytest
 
-from tests.conftest import validate_host_shape
+from tests.conftest import DATADIR, validate_host_shape
 import pandas as pd
 
 
@@ -16,11 +16,7 @@ def validate_vlan_tbl(df: pd.DataFrame):
 @ pytest.mark.parsing
 @ pytest.mark.vlan
 @ pytest.mark.parametrize('table', ['vlan'])
-@ pytest.mark.parametrize('datadir',
-                          ['tests/data/multidc/parquet-out/',
-                           'tests/data/eos/parquet-out',
-                           'tests/data/nxos/parquet-out',
-                           'tests/data/junos/parquet-out'])
+@ pytest.mark.parametrize('datadir', DATADIR)
 def test_lldp_parsing(table, datadir, get_table_data):
     '''Main workhorse routine to test parsed output for VLAN table'''
 
