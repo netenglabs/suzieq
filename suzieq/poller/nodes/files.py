@@ -109,9 +109,11 @@ class FileNode(object):
                     f'Ignoring entry with missing required key fields {jelem}')
                 continue
 
-            key = jelem[0]['cmd']
+            key = jelem[0]['cmd'].split('|')[0].strip()
+
             if key not in self.data:
                 self.data[key] = {'curpos': 0, 'entry': []}
+
             self.data[key]['entry'].append(jelem)
 
     def post_commands(self, service_callback, svc_defn: dict,
@@ -158,9 +160,10 @@ class FileNode(object):
 
             if isinstance(cmd, list):
                 # the first command is what we need
-                cmdset.add(cmd[0]['command'])
+                subcmd = cmd[0]['command'].split('|')[0].strip()
+                cmdset.add(subcmd)
             else:
-                cmdset.add(cmd)
+                cmdset.add(cmd.split('|')[0].strip())
 
         nodata = True
         for cmd in cmdset:
