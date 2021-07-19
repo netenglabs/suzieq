@@ -27,6 +27,10 @@ poller:
 #  
 
 coalescer:
+  # valid suffixes are h for hour, d for day and w for week
+  # 1h is 1 hour, 2w is 2 weeks and so on. y for year and m for month
+  # don't make sense because those are not fixed units. We don't yet support
+  # periods less than an hour.
   period: 1h
 # Comment the next line if you don't want the archive directory. This dir is
 # purely to save the uncoalesced data in raw format to avoid data loss in case
