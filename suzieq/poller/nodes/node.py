@@ -382,6 +382,8 @@ class Node(object):
             self.__class__ = EosNode
         elif self.devtype == "iosxr":
             self.__class__ = IosXRNode
+        elif self.devtype == "iosxe":
+            self.__class__ = IosXENode
         elif self.devtype.startswith("junos"):
             self.__class__ = JunosNode
         elif self.devtype == "nxos":
@@ -427,6 +429,8 @@ class Node(object):
                 devtype = "sonic"
             elif "Cisco IOS XR" in data:
                 devtype = "iosxr"
+            elif "Cisco IOS-XE" in data:
+                devtype = "iosxe"
             elif any(x in data for x in ['vEOS', 'Arista']):
                 devtype = "eos"
 
@@ -441,6 +445,12 @@ class Node(object):
                 data = output[3]['data']
                 lines = data.split('\n')
                 hostname = lines[1].split('FQDN:')[1].strip()
+            elif devtype == "iosxe":
+                matchval = re.search(r'(\S+)\s+uptime', output[0]['data'])
+                if matchval:
+                    hostname = matchval.group(1).strip()
+                else:
+                    hostname = self.address
             elif devtype != "iosxr" and output[3]["status"] == 0:
                 hostname = output[3]["data"].strip()
 
@@ -462,7 +472,7 @@ class Node(object):
                 for line in data.splitlines():
                     if line.startswith("VERSION_ID"):
                         self.version = line.split('=')[1] \
-                                           .strip().replace('"', '')
+                            .strip().replace('"', '')
                         break
 
         if not devtype:
@@ -746,6 +756,11 @@ class Node(object):
         return self._create_result(cmd, status, data)
 
     def _create_result(self, cmd, status, data) -> dict:
+        if self.port == 22 or self.port == 443:
+            # Ignore port if defaults (SSH or HTTPS)
+            addrstr = self.address
+        else:
+            addrstr = f'{self.address}:{self.port}'
         result = {
             "status": status,
             "timestamp": int(datetime.now(tz=timezone.utc).timestamp() * 1000),
@@ -753,7 +768,7 @@ class Node(object):
             "devtype": self.devtype,
             "namespace": self.nsname,
             "hostname": self.hostname,
-            "address": self.address,
+            "address": addrstr,
             "version": self.version,
             "data": data,
         }
@@ -1057,7 +1072,7 @@ class IosXRNode(Node):
     async def _init_ssh(self, init_boot_time=True) -> None:
         '''Need to start a neverending process to keep persistent ssh
 
-        IOS XR's ssh is fragile and archaic. It doesn't support sending 
+        IOS XR's ssh is fragile and archaic. It doesn't support sending
         multiple commands over a single SSH connection as most other devices
         do. I suspect this may not be the only one. The bug is mentioned in
         https://github.com/ronf/asyncssh/issues/241. To overcome this issue,
@@ -1117,6 +1132,10 @@ class IosXRNode(Node):
                 self.logger.error(f'set hostname of {self.address}:{self.port} to '
                                   f'{hostname.group(1)}')
         self.ssh_ready.set()
+
+
+class IosXENode(IosXRNode):
+    pass
 
 
 class JunosNode(Node):
