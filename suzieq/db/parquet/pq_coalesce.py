@@ -106,7 +106,6 @@ def write_files(table: str, filelist: List[str], in_basedir: str,
                 else:
                     this_df = this_df.reset_index()
     elif not state.current_df.empty:
-        assert(state.schema.type == "record")
         this_df = state.current_df.reset_index()
     else:
         return
