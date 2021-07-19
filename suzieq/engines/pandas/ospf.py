@@ -2,7 +2,7 @@ from ipaddress import IPv4Network
 import pandas as pd
 import numpy as np
 
-from suzieq.sqobjects.lldp import LldpObj
+from suzieq.sqobjects import get_sqobject
 from .engineobj import SqPandasEngine
 from suzieq.utils import SchemaForTable, humanize_timestamp
 
@@ -255,14 +255,8 @@ class OspfObj(SqPandasEngine):
                     if x["hostname_y"] is not np.nan and len(x['hostname_y']) != 1 else [], axis=1))
 
         # Now  peering match
-        lldpobj = LldpObj(context=self.ctxt)
-        lldp_df = lldpobj.get(
-            namespace=kwargs.get("namespace", ""),
-            hostname=kwargs.get("hostname", ""),
-            ifname=kwargs.get("ifname", ""),
-            columns=["namespace", "hostname", "ifname", "peerHostname",
-                     "peerIfname", "peerMacaddr"]
-        )
+        lldp_df = get_sqobject('lldp')(context=self.iobj.ctxt).get(
+            namespace=kwargs.get('namespace', []), columns=['default'])
         if lldp_df.empty:
             ospf_df = ospf_df[~(ospf_df.ifname.str.contains('loopback') |
                                 ospf_df.ifname.str.contains('Vlan'))]
@@ -287,11 +281,18 @@ class OspfObj(SqPandasEngine):
             "networkType",
             "area",
             "timestamp",
+            "lldpIfname"
         ]
 
-        int_df = ospf_df[use_cols].merge(lldp_df,
-                                         on=["namespace", "hostname",
-                                             "ifname"]) \
+        # In case of Junos, the OSPF interface name is a subif of
+        # the interface name. So, create a new column with the
+        # orignal interface name.
+        ospf_df['lldpIfname'] = ospf_df['ifname'].str.split('.').str[0]
+        int_df = ospf_df[use_cols].merge(
+            lldp_df,
+            left_on=["namespace", "hostname", "lldpIfname"],
+            right_on=['namespace', 'hostname', "ifname"],
+            suffixes=("", "_y")) \
             .dropna(how="any")
 
         if int_df.empty:
@@ -310,10 +311,10 @@ class OspfObj(SqPandasEngine):
             return ospf_df[['namespace', 'hostname', 'vrf', 'ifname',
                             'assertReason', 'assert']]
 
-        peer_df = ospf_df.merge(int_df,
-                                left_on=["namespace", "hostname", "ifname"],
-                                right_on=["namespace", "peerHostname",
-                                          "peerIfname"]) \
+        peer_df = ospf_df.merge(
+            int_df,
+            left_on=["namespace", "hostname", "lldpIfname"],
+            right_on=["namespace", "peerHostname", "peerIfname"]) \
             .dropna(how="any")
 
         if peer_df.empty:
@@ -385,6 +386,7 @@ class OspfObj(SqPandasEngine):
                     "hostname_x": "hostname",
                     "ifname_x": "ifname",
                     "vrf_x": "vrf",
+                    "timestamp_x": "timestamp",
                 },
             )[["namespace", "hostname", "ifname", "vrf", "assert",
                "assertReason", "timestamp"]].explode(column='assertReason')
@@ -396,4 +398,4 @@ class OspfObj(SqPandasEngine):
         elif status == "fail":
             return result.query('assertReason != "-"')
 
-        return result
+        return result.reset_index(drop=True)
