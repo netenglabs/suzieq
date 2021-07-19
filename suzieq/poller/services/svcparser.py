@@ -80,8 +80,10 @@ def parse_subtree(subflds, tmpval, maybe_list, defval):
                 break
             elif tmpval:
                 tmpval = tmpval[eval_expr(subfld)]
-        else:
+        elif isinstance(tmpval, dict):
             tmpval = tmpval.get(subfld, None)
+        else:
+            tmpval = None
 
         if not tmpval:
             break
@@ -439,7 +441,8 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                     subflds, tmpval, maybe_list, loopdef_val)
                 subflds = []
             else:
-                value = x["rest"].get(lval.strip(), None)
+                if isinstance(x['rest'], dict):
+                    value = x["rest"].get(lval.strip(), None)
 
             if op:
                 if exp_val and value != exp_val:
