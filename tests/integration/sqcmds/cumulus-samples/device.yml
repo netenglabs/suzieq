@@ -148,17 +148,16 @@ tests:
 - command: device summarize --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: device summarize
-  output: '{"ospf-ibgp": {"deviceCnt": 14, "downDeviceCnt": 0, "unpolledDeviceCnt":
+  output: '{"ospf-single": {"deviceCnt": 14, "downDeviceCnt": 0, "unpolledDeviceCnt":
     0, "vendorCnt": {"Cumulus": 9, "Ubuntu": 5}, "modelCnt": {"VX": 9, "vm": 5}, "archCnt":
-    {"x86_64": 9, "x86-64": 5}, "versionCnt": {"4.2.1": 9, "16.04.7 LTS": 5}, "upTimeStat":
-    [566726, 765632, 568844]}, "dual-evpn": {"deviceCnt": 14, "downDeviceCnt": 0,
+    {"x86_64": 9, "x86-64": 5}, "versionCnt": {"4.3.0": 9, "16.04.6 LTS": 5}, "upTimeStat":
+    [414840, 614601, 415841]}, "dual-evpn": {"deviceCnt": 14, "downDeviceCnt": 0,
     "unpolledDeviceCnt": 0, "vendorCnt": {"Cumulus": 9, "Ubuntu": 5}, "modelCnt":
     {"VX": 9, "vm": 5}, "archCnt": {"x86_64": 9, "x86-64": 5}, "versionCnt": {"3.7.9":
-    9, "16.04.6 LTS": 5}, "upTimeStat": [223518, 830893, 224998]}, "ospf-single":
-    {"deviceCnt": 14, "downDeviceCnt": 0, "unpolledDeviceCnt": 0, "vendorCnt": {"Cumulus":
-    9, "Ubuntu": 5}, "modelCnt": {"VX": 9, "vm": 5}, "archCnt": {"x86_64": 9, "x86-64":
-    5}, "versionCnt": {"4.3.0": 9, "16.04.6 LTS": 5}, "upTimeStat": [414840, 614601,
-    415841]}}'
+    9, "16.04.6 LTS": 5}, "upTimeStat": [223518, 830893, 224998]}, "ospf-ibgp": {"deviceCnt":
+    14, "downDeviceCnt": 0, "unpolledDeviceCnt": 0, "vendorCnt": {"Cumulus": 9, "Ubuntu":
+    5}, "modelCnt": {"VX": 9, "vm": 5}, "archCnt": {"x86_64": 9, "x86-64": 5}, "versionCnt":
+    {"4.2.1": 9, "16.04.7 LTS": 5}, "upTimeStat": [566726, 765632, 568844]}}'
 - command: device summarize --namespace=dual-evpn --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: device summarize
