@@ -103,48 +103,37 @@ tests:
     {"hostname": "leaf02"}, {"hostname": "spine01"}, {"hostname": "spine02"}]'
 - command: ospf assert --format=json
   data-directory: tests/data/junos/parquet-out/
-  error:
-    error: '[{"namespace": "junos", "hostname": "leaf02", "vrf": "default", "ifname":
-      "xe-0/0/0.0", "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "leaf02", "vrf": "default", "ifname": "xe-0/0/1.0", "assertReason":
-      "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
-      "leaf02", "vrf": "default", "ifname": "lo0.0", "assertReason": "No LLDP peering
-      info", "assert": "fail"}, {"namespace": "junos", "hostname": "spine01", "vrf":
-      "default", "ifname": "xe-0/0/3.0", "assertReason": "No LLDP peering info", "assert":
-      "fail"}, {"namespace": "junos", "hostname": "spine01", "vrf": "default", "ifname":
-      "xe-0/0/2.0", "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "spine01", "vrf": "default", "ifname": "xe-0/0/1.0", "assertReason":
-      "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
-      "spine01", "vrf": "default", "ifname": "xe-0/0/0.0", "assertReason": "No LLDP
-      peering info", "assert": "fail"}, {"namespace": "junos", "hostname": "spine01",
-      "vrf": "default", "ifname": "lo0.0", "assertReason": "No LLDP peering info",
-      "assert": "fail"}, {"namespace": "junos", "hostname": "exit01", "vrf": "default",
-      "ifname": "lo0.0", "assertReason": "No LLDP peering info", "assert": "fail"},
-      {"namespace": "junos", "hostname": "exit01", "vrf": "default", "ifname": "xe-0/0/1.0",
-      "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
-      "hostname": "exit01", "vrf": "default", "ifname": "xe-0/0/0.0", "assertReason":
-      "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
-      "leaf01", "vrf": "default", "ifname": "xe-0/0/0.0", "assertReason": "No LLDP
-      peering info", "assert": "fail"}, {"namespace": "junos", "hostname": "leaf01",
-      "vrf": "default", "ifname": "lo0.0", "assertReason": "No LLDP peering info",
-      "assert": "fail"}, {"namespace": "junos", "hostname": "leaf01", "vrf": "default",
-      "ifname": "xe-0/0/1.0", "assertReason": "No LLDP peering info", "assert": "fail"},
-      {"namespace": "junos", "hostname": "exit02", "vrf": "default", "ifname": "xe-0/0/1.0",
-      "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace": "junos",
-      "hostname": "exit02", "vrf": "default", "ifname": "xe-0/0/0.0", "assertReason":
-      "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
-      "exit02", "vrf": "default", "ifname": "lo0.0", "assertReason": "No LLDP peering
-      info", "assert": "fail"}, {"namespace": "junos", "hostname": "spine02", "vrf":
-      "default", "ifname": "xe-0/0/2.0", "assertReason": "No LLDP peering info", "assert":
-      "fail"}, {"namespace": "junos", "hostname": "spine02", "vrf": "default", "ifname":
-      "lo0.0", "assertReason": "No LLDP peering info", "assert": "fail"}, {"namespace":
-      "junos", "hostname": "spine02", "vrf": "default", "ifname": "xe-0/0/0.0", "assertReason":
-      "No LLDP peering info", "assert": "fail"}, {"namespace": "junos", "hostname":
-      "spine02", "vrf": "default", "ifname": "xe-0/0/1.0", "assertReason": "No LLDP
-      peering info", "assert": "fail"}, {"namespace": "junos", "hostname": "spine02",
-      "vrf": "default", "ifname": "xe-0/0/3.0", "assertReason": "No LLDP peering info",
-      "assert": "fail"}]'
   marks: ospf assert junos
+  output: '[{"namespace": "junos", "hostname": "leaf02", "ifname": "xe-0/0/0.0", "vrf":
+    "default", "assert": "pass", "assertReason": "-", "timestamp": 1623025798026},
+    {"namespace": "junos", "hostname": "leaf02", "ifname": "xe-0/0/1.0", "vrf": "default",
+    "assert": "pass", "assertReason": "-", "timestamp": 1623025798026}, {"namespace":
+    "junos", "hostname": "spine01", "ifname": "xe-0/0/3.0", "vrf": "default", "assert":
+    "pass", "assertReason": "-", "timestamp": 1623025798027}, {"namespace": "junos",
+    "hostname": "spine01", "ifname": "xe-0/0/2.0", "vrf": "default", "assert": "pass",
+    "assertReason": "-", "timestamp": 1623025798027}, {"namespace": "junos", "hostname":
+    "spine01", "ifname": "xe-0/0/1.0", "vrf": "default", "assert": "pass", "assertReason":
+    "-", "timestamp": 1623025798027}, {"namespace": "junos", "hostname": "spine01",
+    "ifname": "xe-0/0/0.0", "vrf": "default", "assert": "pass", "assertReason": "-",
+    "timestamp": 1623025798027}, {"namespace": "junos", "hostname": "exit01", "ifname":
+    "xe-0/0/1.0", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1623025798361}, {"namespace": "junos", "hostname": "exit01", "ifname": "xe-0/0/0.0",
+    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1623025798361},
+    {"namespace": "junos", "hostname": "leaf01", "ifname": "xe-0/0/0.0", "vrf": "default",
+    "assert": "pass", "assertReason": "-", "timestamp": 1623025798813}, {"namespace":
+    "junos", "hostname": "leaf01", "ifname": "xe-0/0/1.0", "vrf": "default", "assert":
+    "pass", "assertReason": "-", "timestamp": 1623025798813}, {"namespace": "junos",
+    "hostname": "exit02", "ifname": "xe-0/0/1.0", "vrf": "default", "assert": "pass",
+    "assertReason": "-", "timestamp": 1623025799339}, {"namespace": "junos", "hostname":
+    "exit02", "ifname": "xe-0/0/0.0", "vrf": "default", "assert": "pass", "assertReason":
+    "-", "timestamp": 1623025799339}, {"namespace": "junos", "hostname": "spine02",
+    "ifname": "xe-0/0/2.0", "vrf": "default", "assert": "pass", "assertReason": "-",
+    "timestamp": 1623025799761}, {"namespace": "junos", "hostname": "spine02", "ifname":
+    "xe-0/0/0.0", "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp":
+    1623025799761}, {"namespace": "junos", "hostname": "spine02", "ifname": "xe-0/0/1.0",
+    "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1623025799761},
+    {"namespace": "junos", "hostname": "spine02", "ifname": "xe-0/0/3.0", "vrf": "default",
+    "assert": "pass", "assertReason": "-", "timestamp": 1623025799761}]'
 - command: ospf top --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: ospf top junos
