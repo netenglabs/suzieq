@@ -113,3 +113,27 @@ class OspfIfService(Service):
 
         processed_data = np.delete(processed_data, drop_indices).tolist()
         return processed_data
+
+    def _clean_ios_data(self, processed_data, raw_data):
+        for entry in processed_data:
+            entry["networkType"] = entry["networkType"].lower()
+            entry["passive"] = entry["passive"] == "stub"
+            entry["isUnnumbered"] = entry["isUnnumbered"] == "yes"
+            entry['areaStub'] = entry['areaStub'] == "yes"
+            entry['helloTime'] = int(
+                entry['helloTime']) if entry['helloTime'] else 10  # def value
+            entry['deadTime'] = int(
+                entry['deadTime']) if entry['deadTime'] else 40  # def value
+            entry['retxTime'] = int(
+                entry['retxTime']) if entry['retxTime'] else 5  # def value
+            entry['vrf'] = 'default'  # IOS doesn't provide this info
+            entry['authType'] = entry.get('authType', '').lower()
+            entry['nbrCount'] = int(
+                entry['nbrCount']) if entry['nbrCount'] else 0
+            entry['noSummary'] = entry.get('noSummary', False)
+            entry['state'] = entry['state'].lower()
+
+        return processed_data
+
+    def _clean_iosxe_data(self, processed_data, raw_data):
+        return self._clean_ios_data(processed_data, raw_data)

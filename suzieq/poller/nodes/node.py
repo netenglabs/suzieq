@@ -384,6 +384,8 @@ class Node(object):
             self.__class__ = IosXRNode
         elif self.devtype == "iosxe":
             self.__class__ = IosXENode
+        elif self.devtype == "ios":
+            self.__class__ = IOSNode
         elif self.devtype.startswith("junos"):
             self.__class__ = JunosNode
         elif self.devtype == "nxos":
@@ -431,6 +433,8 @@ class Node(object):
                 devtype = "iosxr"
             elif "Cisco IOS-XE" in data:
                 devtype = "iosxe"
+            elif "Cisco IOS Software" in data:
+                devtype = "ios"
             elif any(x in data for x in ['vEOS', 'Arista']):
                 devtype = "eos"
 
@@ -445,7 +449,7 @@ class Node(object):
                 data = output[3]['data']
                 lines = data.split('\n')
                 hostname = lines[1].split('FQDN:')[1].strip()
-            elif devtype == "iosxe":
+            elif devtype in ["iosxe", "ios"]:
                 matchval = re.search(r'(\S+)\s+uptime', output[0]['data'])
                 if matchval:
                     hostname = matchval.group(1).strip()
@@ -482,7 +486,7 @@ class Node(object):
                 self.last_exception = 'No devtype'
             self._status = 'init'
         else:
-            self.logger.info(
+            self.logger.warning(
                 f'Detected {devtype} for {self.address}:{self.port}, {hostname}')
             self.set_devtype(devtype)
             self.set_hostname(hostname)
@@ -614,6 +618,7 @@ class Node(object):
                 result.append(self._create_result(
                     cmd, output.exit_status, output.stdout))
             except Exception as e:
+                self._conn = None
                 if self.sigend:
                     self._terminate()
                     return
@@ -662,6 +667,7 @@ class Node(object):
                 options = asyncssh.SSHClientConnectionOptions(
                     client_keys=self.pvtkey if self.pvtkey else None,
                     login_timeout=self.connect_timeout,
+                    username=self.username,
                     password=self.password if not self.pvtkey else None,
                     known_hosts=None,
                     config=self.ssh_config_file
@@ -670,6 +676,7 @@ class Node(object):
                 options = asyncssh.SSHClientConnectionOptions(
                     client_keys=self.pvtkey if self.pvtkey else None,
                     login_timeout=self.connect_timeout,
+                    username=self.username,
                     password=self.password if not self.pvtkey else None,
                     config=self.ssh_config_file,
                 )
@@ -1134,7 +1141,90 @@ class IosXRNode(Node):
         self.ssh_ready.set()
 
 
-class IosXENode(IosXRNode):
+class IosXENode(Node):
+    async def init_boot_time(self):
+        """Fill in the boot time of the node by running requisite cmd"""
+        await self.exec_cmd(self._parse_boottime_hostname,
+                            ["show version"], None)
+
+    async def _parse_boottime_hostname(self, output, cb_token) -> None:
+        '''Parse the version for uptime and hostname'''
+        if output[0]["status"] == 0:
+            data = output[0]['data']
+            hostupstr = re.search(r'(\S+)\s+uptime is (.*)\n', data)
+            if hostupstr:
+                self.set_hostname(hostupstr.group(1))
+                timestr = hostupstr.group(2)
+                self.bootupTimestamp = int(datetime.utcfromtimestamp(
+                    parse(timestr).timestamp()).timestamp()*1000)
+            else:
+                self.logger.error(
+                    f'Cannot parse uptime from {self.address}:{self.port}')
+                self.bootupTimestamp = -1
+
+    async def ssh_gather(self, service_callback, cmd_list, cb_token, oformat,
+                         timeout):
+        """Run ssh for cmd in cmdlist and place output on service callback
+           This is different from IOSXE to avoid reinit node info each time
+        """
+
+        result = []
+
+        if cmd_list is None:
+            await service_callback({}, cb_token)
+
+        timeout = timeout or self.cmd_timeout
+        if self.ignore_known_hosts:
+            options = asyncssh.SSHClientConnectionOptions(
+                client_keys=self.pvtkey if self.pvtkey else None,
+                login_timeout=self.connect_timeout,
+                username=self.username,
+                password=self.password if not self.pvtkey else None,
+                known_hosts=None,
+                config=self.ssh_config_file
+            )
+        else:
+            options = asyncssh.SSHClientConnectionOptions(
+                client_keys=self.pvtkey if self.pvtkey else None,
+                login_timeout=self.connect_timeout,
+                username=self.username,
+                password=self.password if not self.pvtkey else None,
+                config=self.ssh_config_file,
+            )
+        for cmd in cmd_list:
+            try:
+                async with asyncssh.connect(self.address, port=self.port,
+                                            options=options) as conn:
+                    output = await asyncio.wait_for(conn.run(cmd),
+                                                    timeout=timeout)
+                    if isinstance(cb_token, RsltToken):
+                        cb_token.node_token = self.bootupTimestamp
+
+                    result.append(self._create_result(
+                        cmd, output.exit_status, output.stdout))
+            except Exception as e:
+                if self.sigend:
+                    self._terminate()
+                    return
+                self.last_exception = e
+                result.append(self._create_error(cmd))
+                if not isinstance(e, asyncio.TimeoutError):
+                    self.logger.error(
+                        f"Unable to connect to {self.hostname} for {cmd} "
+                        f"due to {str(e)}")
+                    await self._close_connection()
+                else:
+                    self.logger.error(
+                        f"Unable to connect to {self.hostname} {cmd} "
+                        "due to timeout")
+
+                break
+
+        self._conn = None
+        await service_callback(result, cb_token)
+
+
+class IOSNode(IosXENode):
     pass
 
 

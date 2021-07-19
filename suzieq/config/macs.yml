@@ -25,6 +25,11 @@ apply:
   sonic:
     copy: cumulus
 
+  iosxe:
+    version: all
+    command: show mac-address table
+    textfsm: textfsm_templates/iosxe_show_mac.tfsm
+
   junos-qfx:
     version: all
     command: show ethernet-switching table detail | display json | no-more

@@ -1,0 +1,168 @@
+Value Filldown vrf (\S+)
+Value protocol ([A-Zi]\*?|[A-Zio]\s+[A-Z][1-2]|i ia|i su|LC)
+Value Required prefix ([0-9./]+|[0-9A-F:./]+)
+Value preference (\d+|is)
+Value metric (\d+)
+Value List nexthopIps ([0-9.]+|[0-9A-F:.]+)
+Value List oifs (\S+)
+Value statusChangeTimestamp (\S+)
+Value nexthopvrf (\S+)
+
+Start
+  ^Gateway\s+of\s+last\s+resort.*$$
+  ^[A-Zio]\s -> Continue.Record
+  ^Routing Table: -> Continue.Record
+  ^Routing Table:\s+${vrf}
+  ^IPv4 Unicast:
+  ^Codes:.*$$
+  ^-*$$
+  ^${protocol}\s+${prefix} is directly connected, ${statusChangeTimestamp}, ${oifs}$$
+  ^${protocol}\s+${prefix} is directly connected, ${statusChangeTimestamp}, ${oifs}\s+\(nexthop in vrf ${nexthopvrf}\)\s*$$  
+  ^${protocol}\s+${prefix} is directly connected,\s*$$
+  ^${protocol}\*?\s+${prefix}\s+\[${preference}/${metric}\]\s+via\s+${nexthopIps},\s+${statusChangeTimestamp},\s+${oifs}.*$$
+  ^${protocol}\s+${prefix}\s+\[${preference}/${metric}\]\s+via\s+${nexthopIps},\s+${statusChangeTimestamp}.*$$
+  ^${protocol}\s+${prefix}\s+\[${preference}/${metric}\]\s+via\s+${nexthopIps}\s+\(nexthop in vrf ${nexthopvrf}\), ${statusChangeTimestamp}.*$$
+  ^${protocol}\s+${prefix}\s*$$
+  ^${protocol}\s+${prefix}\s+\[${preference}/${metric}\]\s*$$
+  ^\s+\[${preference}/${metric}\]\s+via\s+${nexthopIps}\s+\(nexthop in vrf ${nexthopvrf}\), ${statusChangeTimestamp}.*$$
+  ^\s+\[${preference}/${metric}\]\s+via\s+${nexthopIps}, ${statusChangeTimestamp}, ${oifs}.*$$
+  ^\s+\[${preference}/${metric}\]\s+via\s+${nexthopIps}, ${statusChangeTimestamp}\s*$$
+  ^\s+via\s+${nexthopIps},\s+${oifs}.*$$
+  ^\s+${statusChangeTimestamp},\s+${oifs}.*$$
+
+#Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+#       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+#       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+#       E1 - OSPF external type 1, E2 - OSPF external type 2, m - OMP
+#       n - NAT, Ni - NAT inside, No - NAT outside, Nd - NAT DIA
+#       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+#       ia - IS-IS inter area, * - candidate default, U - per-user static route
+#       H - NHRP, G - NHRP registered, g - NHRP registration summary
+#       o - ODR, P - periodic downloaded static route, l - LISP
+#       a - application route
+#       + - replicated route, % - next hop override, p - overrides from PfR
+#       & - replicated local route overrides by connected
+#Gateway of last resort is not set
+#      10.0.0.0/32 is subnetted, 1 subnets
+#B        10.10.10.10 [200/0] via 192.168.10.1, 1w3d
+#      19.0.0.0/8 is variably subnetted, 2 subnets, 2 masks
+#C        19.11.2.0/28 is directly connected, Vlan1101
+#L        19.11.2.14/32 is directly connected, Vlan1101
+#      20.0.0.0/32 is subnetted, 1 subnets
+#B        20.20.20.20 [200/0] via 192.168.10.5, 1w3d
+#      30.0.0.0/32 is subnetted, 1 subnets
+#B        30.30.30.30 [200/0] via 192.168.10.10, 1w3d
+#      40.0.0.0/32 is subnetted, 1 subnets
+#C        40.40.40.40 is directly connected, Loopback0
+#      50.0.0.0/32 is subnetted, 1 subnets
+#B        50.50.50.50 [200/0] via 192.168.10.13, 1w3d
+#B     192.85.1.0/24 [200/0] via 192.168.10.10, 1w3d
+#      192.168.10.0/24 is variably subnetted, 5 subnets, 2 masks
+#B        192.168.10.0/30 [200/0] via 192.168.10.10, 1w3d
+#B        192.168.10.4/30 [200/0] via 192.168.10.10, 1w3d
+#C        192.168.10.8/30 is directly connected, GigabitEthernet1/0/4
+#L        192.168.10.9/32 is directly connected, GigabitEthernet1/0/4
+#B        192.168.10.12/30 [200/0] via 192.168.10.10, 1w3d
+#S     192.168.20.0/24 [1/0] via 192.168.33.14
+#S     192.168.30.0/24 [1/0] via 192.168.44.14
+#      192.168.33.0/24 is variably subnetted, 2 subnets, 2 masks
+#C        192.168.33.0/28 is directly connected, Vlan334
+#L        192.168.33.13/32 is directly connected, Vlan334
+#S     192.168.40.0/24 [1/0] via 192.168.44.14
+#      192.168.44.0/24 is variably subnetted, 2 subnets, 2 masks
+#C        192.168.44.0/28 is directly connected, Vlan434
+#L        192.168.44.13/32 is directly connected, Vlan434
+#Routing Table: Mgmt-vrf
+#Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+#       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+#       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+#       E1 - OSPF external type 1, E2 - OSPF external type 2, m - OMP
+#       n - NAT, Ni - NAT inside, No - NAT outside, Nd - NAT DIA
+#       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+#       ia - IS-IS inter area, * - candidate default, U - per-user static route
+#       H - NHRP, G - NHRP registered, g - NHRP registration summary
+#       o - ODR, P - periodic downloaded static route, l - LISP
+#       a - application route
+#       + - replicated route, % - next hop override, p - overrides from PfR
+#       & - replicated local route overrides by connected
+#Gateway of last resort is 172.26.192.1 to network 0.0.0.0
+#S*    0.0.0.0/0 [1/0] via 172.26.192.1, GigabitEthernet0/0
+#      172.26.0.0/16 is variably subnetted, 2 subnets, 2 masks
+#C        172.26.192.0/24 is directly connected, GigabitEthernet0/0
+#L        172.26.192.84/32 is directly connected, GigabitEthernet0/0
+#Routing Table: BLUE
+#Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+#       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+#       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+#       E1 - OSPF external type 1, E2 - OSPF external type 2, m - OMP
+#       n - NAT, Ni - NAT inside, No - NAT outside, Nd - NAT DIA
+#       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+#       ia - IS-IS inter area, * - candidate default, U - per-user static route
+#       H - NHRP, G - NHRP registered, g - NHRP registration summary
+#       o - ODR, P - periodic downloaded static route, l - LISP
+#       a - application route
+#       + - replicated route, % - next hop override, p - overrides from PfR
+#       & - replicated local route overrides by connected
+#Gateway of last resort is 192.168.33.13 to network 0.0.0.0
+#S*    0.0.0.0/0 [1/0] via 192.168.33.13
+#      192.168.20.0/24 is variably subnetted, 4 subnets, 2 masks
+#C        192.168.20.0/24 is directly connected, Vlan3001
+#L        192.168.20.1/32 is directly connected, Vlan3001
+#B        192.168.20.10/32 [200/0] via 10.10.10.10, 1w3d, Vlan101
+#B        192.168.20.20/32 [200/0] via 20.20.20.20, 00:05:07, Vlan101
+#      192.168.33.0/24 is variably subnetted, 2 subnets, 2 masks
+#C        192.168.33.0/28 is directly connected, Vlan333
+#L        192.168.33.14/32 is directly connected, Vlan333
+#Routing Table: GREEN
+#Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+#       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+#       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+#       E1 - OSPF external type 1, E2 - OSPF external type 2, m - OMP
+#       n - NAT, Ni - NAT inside, No - NAT outside, Nd - NAT DIA
+#       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+#       ia - IS-IS inter area, * - candidate default, U - per-user static route
+#       H - NHRP, G - NHRP registered, g - NHRP registration summary
+#       o - ODR, P - periodic downloaded static route, l - LISP
+#       a - application route
+#       + - replicated route, % - next hop override, p - overrides from PfR
+#       & - replicated local route overrides by connected
+#Gateway of last resort is not set
+#      1.0.0.0/32 is subnetted, 1 subnets
+#C        1.1.1.1 is directly connected, Loopback300
+#      19.0.0.0/8 is variably subnetted, 2 subnets, 2 masks
+#C        19.11.1.0/28 is directly connected, Vlan2101
+#L        19.11.1.11/32 is directly connected, Vlan2101
+#      192.168.1.0/24 is variably subnetted, 2 subnets, 2 masks
+#C        192.168.1.0/24 is directly connected, Vlan2101
+#L        192.168.1.1/32 is directly connected, Vlan2101
+#      192.168.2.0/24 is variably subnetted, 2 subnets, 2 masks
+#C        192.168.2.0/24 is directly connected, Vlan2101
+#L        192.168.2.1/32 is directly connected, Vlan2101
+#Routing Table: RED
+#Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+#       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+#       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+#       E1 - OSPF external type 1, E2 - OSPF external type 2, m - OMP
+#       n - NAT, Ni - NAT inside, No - NAT outside, Nd - NAT DIA
+#       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+#       ia - IS-IS inter area, * - candidate default, U - per-user static route
+#       H - NHRP, G - NHRP registered, g - NHRP registration summary
+#       o - ODR, P - periodic downloaded static route, l - LISP
+#       a - application route
+#       + - replicated route, % - next hop override, p - overrides from PfR
+#       & - replicated local route overrides by connected
+#Gateway of last resort is 192.168.44.13 to network 0.0.0.0
+#S*    0.0.0.0/0 [1/0] via 192.168.44.13
+#      192.168.30.0/24 is variably subnetted, 2 subnets, 2 masks
+#C        192.168.30.0/24 is directly connected, Vlan3002
+#L        192.168.30.1/32 is directly connected, Vlan3002
+#      192.168.40.0/24 is variably subnetted, 5 subnets, 2 masks
+#C        192.168.40.0/24 is directly connected, Vlan3002
+#L        192.168.40.1/32 is directly connected, Vlan3002
+#B        192.168.40.10/32 [200/0] via 10.10.10.10, 00:00:40, Vlan102
+#B        192.168.40.15/32 [200/0] via 10.10.10.10, 00:04:33, Vlan102
+#B        192.168.40.20/32 [200/0] via 20.20.20.20, 00:02:55, Vlan102
+#      192.168.44.0/24 is variably subnetted, 2 subnets, 2 masks
+#C        192.168.44.0/28 is directly connected, Vlan433
+#L        192.168.44.14/32 is directly connected, Vlan433
+#

@@ -656,12 +656,14 @@ class InterfaceService(Service):
                         entry_dict[mbr] = {'master': entry['ifname'],
                                            'type': 'bond_slave'}
 
-            if entry['state'] == 'administratively down':
+            if entry['adminState'] == 'administratively down':
                 entry['state'] = 'down'
                 entry['adminState'] = 'down'
 
             entry['macaddr'] = convert_macaddr_format_to_colon(
                 entry.get('macaddr', '0000.0000.0000'))
+            if not entry['macaddr']:
+                entry['macaddr'] = '00:00:00:00:00:00'
             if entry['type'] == 'null':
                 entry['macaddr'] = "00:00:00:00:00:00"
             entry['interfaceMac'] = convert_macaddr_format_to_colon(
@@ -705,6 +707,12 @@ class InterfaceService(Service):
             else:
                 entry_dict[entry['ifname']] = entry
         return processed_data
+
+    def _clean_iosxe_data(self, processed_data, raw_data):
+        return self._clean_iosxr_data(processed_data, raw_data)
+
+    def _clean_ios_data(self, processed_data, raw_data):
+        return self._clean_iosxr_data(processed_data, raw_data)
 
     def _common_data_cleaner(self, processed_data, raw_data):
         for entry in processed_data:

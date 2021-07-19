@@ -49,6 +49,14 @@ apply:
   sonic:
     copy: cumulus
 
+  iosxe:
+    version: all
+    command: show ip ospf interface
+    textfsm: textfsm_templates/iosxe_show_ip_ospfif.tfsm
+      
+  ios:
+    copy: iosxe
+
   junos-qfx:
     version: all
     command:

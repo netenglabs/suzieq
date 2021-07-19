@@ -1,8 +1,7 @@
 from suzieq.poller.services.service import Service
 import re
 import numpy as np
-from suzieq.utils import (convert_macaddr_format_to_colon,
-                          iosxr_get_full_ifname)
+from suzieq.utils import (convert_macaddr_format_to_colon, expand_ios_ifname)
 
 
 class ArpndService(Service):
@@ -70,8 +69,7 @@ class ArpndService(Service):
                                    drop_indices).tolist()
         return processed_data
 
-    def _clean_iosxr_data(self, processed_data, raw_data):
-
+    def _clean_common_ios_data(self, processed_data, raw_data):
         for entry in processed_data:
             if entry['macaddr'] is None:
                 entry['state'] = "failed"
@@ -82,6 +80,15 @@ class ArpndService(Service):
                 entry['state'] = "reachable"
             if ':' in entry['ipAddress']:
                 # We need to fix up the interface name for IPv6 ND entriie
-                entry['oif'] = iosxr_get_full_ifname(entry.get('oif', ''))
+                entry['oif'] = expand_ios_ifname(entry.get('oif', ''))
 
         return processed_data
+
+    def _clean_iosxr_data(self, processed_data, raw_data):
+        return self._clean_common_ios_data(processed_data, raw_data)
+
+    def _clean_iosxe_data(self, processed_data, raw_data):
+        return self._clean_common_ios_data(processed_data, raw_data)
+
+    def _clean_ios_data(self, processed_data, raw_data):
+        return self._clean_common_ios_data(processed_data, raw_data)

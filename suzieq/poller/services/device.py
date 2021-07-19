@@ -80,15 +80,31 @@ class DeviceService(Service):
     def _clean_sonic_data(self, processed_data, raw_data):
         return self._clean_linux_data(processed_data, raw_data)
 
+    def _clean_common_ios(self, entry, os):
+        '''Common IOS-like NOS cleaning'''
+        entry['os'] = os
+        entry['vendor'] = 'Cisco'
+        if entry.get('bootupTimestamp', ''):
+            entry['bootupTimestamp'] = int(datetime.utcfromtimestamp(
+                parse(entry['bootupTimestamp']).timestamp()).timestamp())
+
     def _clean_iosxr_data(self, processed_data, raw_data):
         for entry in processed_data:
-            if entry.get('bootupTimestamp', ''):
-                entry['bootupTimestamp'] = int(datetime.utcfromtimestamp(
-                    parse(entry['bootupTimestamp']).timestamp()).timestamp())
-            entry['vendor'] = 'Cisco'
-            entry['os'] = 'iosxr'
+            self._clean_common_ios(entry, 'iosxr')
             if 'IOS-XRv' in entry.get('model', ''):
                 entry['architecture'] = "x86-64"
+
+        return self._common_data_cleaner(processed_data, raw_data)
+
+    def _clean_iosxe_data(self, processed_data, raw_data):
+        for entry in processed_data:
+            self._clean_common_ios(entry, 'iosxe')
+
+        return self._common_data_cleaner(processed_data, raw_data)
+
+    def _clean_ios_data(self, processed_data, raw_data):
+        for entry in processed_data:
+            self._clean_common_ios(entry, 'ios')
 
         return self._common_data_cleaner(processed_data, raw_data)
 

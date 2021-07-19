@@ -46,6 +46,14 @@ apply:
   sonic:
     copy: cumulus
 
+  iosxe:
+    version: all
+    command: show ip ospf neighbor detail
+    textfsm: textfsm_templates/iosxe_show_ip_ospfnbr.tfsm
+      
+  ios:
+    copy: iosxe
+
   junos-qfx:
     version: all
     command:

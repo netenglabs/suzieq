@@ -1,6 +1,7 @@
 import os
 import re
 import sys
+from typing import Tuple
 from pathlib import Path
 import logging
 from logging.handlers import RotatingFileHandler
@@ -639,7 +640,7 @@ def build_query_str(skip_fields: list, schema, **kwargs) -> str:
     return query_str
 
 
-def get_log_file_level(prog: str, cfg: dict, def_logfile: str) -> (str, str):
+def get_log_file_level(prog: str, cfg: dict, def_logfile: str) -> tuple:
     """Get the log file and level for the given program in the config dict
 
     The logfile is supposed to be defined by a variable called logfile
@@ -697,8 +698,8 @@ def init_logger(logname: str, logfile: str, loglevel: str = 'WARNING',
 
 def known_devtypes() -> list:
     """Returns the list of known dev types"""
-    return(['cumulus', 'eos', 'iosxr', 'junos-mx', 'junos-qfx', 'junos-ex',
-            'junos-es', 'linux', 'nxos', 'sonic'])
+    return(['cumulus', 'eos', 'iosxe', 'iosxr', 'ios', 'junos-mx', 'junos-qfx',
+            'junos-ex', 'junos-es', 'linux', 'nxos', 'sonic'])
 
 
 def humanize_timestamp(field: pd.Series, tz=None) -> pd.Series:
@@ -776,8 +777,8 @@ def ensure_single_instance(filename: str, block: bool = False) -> int:
     return fd
 
 
-def iosxr_get_full_ifname(ifname: str) -> str:
-    """Get expanded interface name for IOSXR given its short form
+def expand_ios_ifname(ifname: str) -> str:
+    """Get expanded interface name for IOSXR/XE given its short form
 
     :param ifname: str, short form of IOSXR interface name
     :returns: Expanded version of short form interface name
@@ -800,13 +801,16 @@ def iosxr_get_full_ifname(ifname: str) -> str:
              'tsec': 'tunnel-ipsec',
              'tmte': 'tunnel-mte',
              'tt': 'tunnel-te',
-             'tp': 'tunnel-tp'
+             'tp': 'tunnel-tp',
+             'CPU': 'cpu',
              }
     pfx = re.match(r'[a-zA-Z]+', ifname)
     if pfx:
         pfxstr = pfx.group(0)
         if pfxstr in ifmap:
             return ifname.replace(pfxstr, ifmap[pfxstr])
+
+    return ifname
 
 
 def get_sq_install_dir() -> str:

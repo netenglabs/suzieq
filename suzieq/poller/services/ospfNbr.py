@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta, timezone
+from dateparser import parse
 
 import numpy as np
 
@@ -124,3 +125,23 @@ class OspfNbrService(Service):
             else:
                 entry["bfdStatus"] = entry['bfdStatus'].lower()
         return processed_data
+
+    def _clean_ios_data(self, processed_data, raw_data):
+        for entry in processed_data:
+            entry['state'] = entry['state'].lower()
+            entry['lastUpTime'] = parse(entry['lastUpTime']).timestamp()
+            entry['lastChangeTime'] = int(entry['lastUpTime'])*1000
+            entry['lastDownTime'] = 0
+            entry['lsaRtxCnt'] = int(entry['lsaRetxCnt'])
+            entry['areaStub'] = entry['areaStub'] == 'Stub'
+            entry['vrf'] = "default"
+            entry['nbrPrio'] = int(entry['nbrPrio']) if entry['nbrPrio'] else 0
+            if not entry.get("bfdStatus", ''):
+                entry["bfdStatus"] = "unknown"
+            else:
+                entry["bfdStatus"] = entry['bfdStatus'].lower()
+
+        return processed_data
+
+    def _clean_iosxe_data(self, processed_data, raw_data):
+        return self._clean_ios_data(processed_data, raw_data)

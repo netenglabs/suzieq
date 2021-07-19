@@ -1,0 +1,228 @@
+Value Required ifname (\S+)
+Value state (.+?)
+Value adminState (.+?)
+Value type (\S+?(?:\s+Ethernet|))
+Value macaddr ((?:\w{4}\.){2}\w{4})
+Value interfaceMac ((?:\w{4}\.){2}\w{4})
+Value description (.*?)
+Value List ipAddressList (.*)
+Value mtu (\d+)
+Value duplex (.+?)
+Value speed (\d+)
+Value bandwidth (\d+\s+\w+)
+Value ENCAPSULATION ([^,]+)
+Value statusChangeTimestamp (\S+)
+Value numChanges (\d+)
+Value List _bondMbrs (\S+)
+Value vlan (\d+)
+Value innerVlan (\d+)
+Value _bondMbrCnt (\d+)
+Value _switchport (Layer 2)
+
+Start
+  ^\S+\s+is -> Continue.Record
+  ^${ifname}\s+is\s+${adminState},\s+line\sprotocol\sis\s+${state}\s*$$
+  ^\s+Interface\s+state\s+transitions:\s+${numChanges}
+  ^\s+Hardware is ${type}\s+sub-interface\(s\),\s+address\s+is\s+${macaddr}
+  ^\s+Hardware\s+is\s+${type}(?:\s+interface\(s\)|)(?:,\s+address\s+is\s+${macaddr}(?:\s+\(bia\s+${interfaceMac}\)\s*)*$$|\s.+|\s*$$)
+  ^\s+Description:\s+${description}\s*$$
+  ^\s+[Ii]nternet\s+[Aa]ddress\s+is\s+${ipAddressList}\s*$$
+  ^\s+${_switchport} Transport Mode
+  ^\s+MTU\s+${mtu}.*BW\s+${speed}.*$$
+  ^\s+Encapsulation\s+${ENCAPSULATION},\s+VLAN\s+Id\s+${vlan},\s+2nd\s+VLAN\s+Id\s+${innerVlan}
+  ^\s+Encapsulation\s+${ENCAPSULATION},\s+VLAN\s+Id\s+${vlan},\s+loopback
+  ^\s+Encapsulation\s+${ENCAPSULATION},
+  ^\s+Outer Match:\s+Dot1Q VLAN\s+${vlan}.*$$
+  ^\s+loopback\s+not\s+set,
+  ^\s+(?:[Dd]uplex\s+|)${duplex}(?:-[Dd]uplex|),.*$$
+  ^\s+Last\s+link\s+flapped\s+${statusChangeTimestamp}
+  ^\s+No.\s+of\s+members\s+in\s+this\s+bundle: ${_bondMbrCnt}
+  ^\s+${_bondMbrs}\s+Full-duplex\s+
+
+#Fri Jan 22 15:22:20.211 UTC
+#Loopback0 is up, line protocol is up 
+#  Interface state transitions: 1
+#  Hardware is Loopback interface(s)
+#  Internet address is 10.35.1.141/32
+#  MTU 1500 bytes, BW 0 Kbit
+#     reliability Unknown, txload Unknown, rxload Unknown
+#  Encapsulation Loopback,  loopback not set,
+#  Last link flapped 9w3d
+#  Last input Unknown, output Unknown
+#  Last clearing of "show interface" counters Unknown
+#  Input/output data rate is disabled.
+#
+#Null0 is up, line protocol is up 
+#  Interface state transitions: 1
+#  Hardware is Null interface
+#  Internet address is Unknown
+#  MTU 1500 bytes, BW 0 Kbit
+#     reliability 255/255, txload Unknown, rxload Unknown
+#  Encapsulation Null,  loopback not set,
+#  Last link flapped 9w5d
+#  Last input never, output never
+#  Last clearing of "show interface" counters never
+#  5 minute input rate 0 bits/sec, 0 packets/sec
+#  5 minute output rate 0 bits/sec, 0 packets/sec
+#     0 packets input, 0 bytes, 0 total input drops
+#     0 drops for unrecognized upper-level protocol
+#     Received 0 broadcast packets, 0 multicast packets
+#     0 packets output, 0 bytes, 0 total output drops
+#     Output 0 broadcast packets, 0 multicast packets
+#
+#MgmtEth0/RP0/CPU0/0 is up, line protocol is up 
+#  Interface state transitions: 1
+#  Hardware is Management Ethernet, address is 0063.56b3.92d6 (bia 0063.56b3.92d6)
+#  Internet address is 10.35.100.92/21
+#  MTU 1514 bytes, BW 1000000 Kbit (Max: 1000000 Kbit)
+#     reliability 255/255, txload 0/255, rxload 0/255
+#  Encapsulation ARPA,
+#  Full-duplex, 1000Mb/s, CX, link type is autonegotiation
+#  loopback not set,
+#  Last link flapped 9w5d
+#  ARP type ARPA, ARP timeout 04:00:00
+#  Last input 00:00:00, output 00:00:00
+#  Last clearing of "show interface" counters never
+#  5 minute input rate 1000 bits/sec, 3 packets/sec
+#  5 minute output rate 3000 bits/sec, 1 packets/sec
+#     25490965 packets input, 1573491538 bytes, 0 total input drops
+#     0 drops for unrecognized upper-level protocol
+#     Received 25245319 broadcast packets, 0 multicast packets
+#              0 runts, 0 giants, 0 throttles, 0 parity
+#     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored, 0 abort
+#     1020028 packets output, 78298166 bytes, 0 total output drops
+#     Output 0 broadcast packets, 0 multicast packets
+#     0 output errors, 0 underruns, 0 applique, 0 resets
+#     0 output buffer failures, 0 output buffers swapped out
+#     1 carrier transitions
+#
+#GigabitEthernet0/0/0/0.3078 is up, line protocol is up 
+#  Interface state transitions: 1
+#  Hardware is VLAN sub-interface(s), address is 0063.56b3.bcbc
+#  Internet address is 10.35.11.151/31
+#  MTU 9188 bytes, BW 10000000 Kbit (Max: 10000000 Kbit)
+#     reliability 255/255, txload 0/255, rxload 0/255
+#  Encapsulation 802.1Q Virtual LAN, VLAN Id 4079,  loopback not set,
+#  Last link flapped 9w3d
+#  ARP type ARPA, ARP timeout 04:00:00
+#  Last input 00:00:04, output 00:00:04
+#  Last clearing of "show interface" counters never
+#  5 minute input rate 20000 bits/sec, 23 packets/sec
+#  5 minute output rate 17000 bits/sec, 18 packets/sec
+#     129861203 packets input, 15909885347 bytes, 1478 total input drops
+#     0 drops for unrecognized upper-level protocol
+#     Received 0 broadcast packets, 1155914 multicast packets
+#     110209867 packets output, 13530709820 bytes, 0 total output drops
+#     Output 2 broadcast packets, 1125777 multicast packets
+#
+#GigabitEthernet0/0/0/1 is up, line protocol is up 
+#  Interface state transitions: 3
+#  Hardware is GigabitEthernet, address is 0063.56b3.2762 (bia 0063.56b3.2762)
+#  Description: leaf01:GigabitEthernet0/0/0/2
+#  Internet address is Unknown
+#  MTU 9184 bytes, BW 10000000 Kbit (Max: 10000000 Kbit)
+#     reliability 255/255, txload 0/255, rxload 0/255
+#  Encapsulation ARPA,
+#  Duplex unknown, 10000Mb/s, link type is force-up
+#  output flow control is off, input flow control is off
+#  loopback not set,
+#  Last link flapped 9w5d
+#  Last input 00:00:00, output 00:00:00
+#  Last clearing of "show interface" counters never
+#  5 minute input rate 17000 bits/sec, 18 packets/sec
+#  5 minute output rate 19000 bits/sec, 23 packets/sec
+#     111412514 packets input, 14001289784 bytes, 4 total input drops
+#     0 drops for unrecognized upper-level protocol
+#     Received 6 broadcast packets, 0 multicast packets
+#              0 runts, 0 giants, 0 throttles, 0 parity
+#     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored, 0 abort
+#     131250891 packets output, 15170816037 bytes, 0 total output drops
+#     Output 0 broadcast packets, 0 multicast packets
+#     0 output errors, 0 underruns, 0 applique, 0 resets
+#     0 output buffer failures, 0 output buffers swapped out
+#     0 carrier transitions
+#
+#GigabitEthernet0/0/0/4.10000 is up, line protocol is up 
+#  Interface state transitions: 1
+#  Hardware is VLAN sub-interface(s), address is 0063.56b3.bcbc
+#  Internet address is 10.35.11.151/31
+#  MTU 9188 bytes, BW 10000000 Kbit (Max: 10000000 Kbit)
+#     reliability 255/255, txload 0/255, rxload 0/255
+#  Encapsulation 802.1Q Virtual LAN, VLAN Id 4079, 2nd VLAN Id 3000
+#  loopback not set,
+#  Last link flapped 9w3d
+#  ARP type ARPA, ARP timeout 04:00:00
+#  Last input 00:00:04, output 00:00:04
+#  Last clearing of "show interface" counters never
+#  5 minute input rate 20000 bits/sec, 23 packets/sec
+#  5 minute output rate 17000 bits/sec, 18 packets/sec
+#     129861203 packets input, 15909885347 bytes, 1478 total input drops
+#     0 drops for unrecognized upper-level protocol
+#     Received 0 broadcast packets, 1155914 multicast packets
+#     110209867 packets output, 13530709820 bytes, 0 total output drops
+#     Output 2 broadcast packets, 1125777 multicast packets
+#
+#te-tunnel1 is down, line protocol is down 
+#  Interface state transitions: 0
+#  Hardware is Tunnel-TE
+#  Description: test TE tunnel
+#  Internet address is 10.35.8.191/32
+#  MTU 1500 bytes, BW 0 Kbit
+#     reliability 255/255, txload Unknown, rxload Unknown
+#  Encapsulation TUNNEL,  loopback not set,
+#  Last input never, output never
+#  Last clearing of "show interface" counters never
+#  5 minute input rate 0 bits/sec, 0 packets/sec
+#  5 minute output rate 0 bits/sec, 0 packets/sec
+#     0 packets input, 0 bytes, 0 total input drops
+#     Unknown drops for unrecognized upper-level protocol
+#     Received Unknown broadcast packets, Unknown multicast packets
+#     0 packets output, 0 bytes, 0 total output drops
+#     Output Unknown broadcast packets, Unknown multicast packets
+#
+#Bundle-Ether1 is up, line protocol is up 
+#  Interface state transitions: 1
+#  Hardware is Aggregated Ethernet interface(s), address is 001e.f721.5d01
+#  Description: 1x1G LACP to rtsw.tuls:ae0
+#  Internet address is Unknown
+#  MTU 9184 bytes, BW 10000000 Kbit (Max: 10000000 Kbit)
+#     reliability 255/255, txload 0/255, rxload 0/255
+#  Encapsulation ARPA,
+#  Full-duplex, 10000Mb/s
+#  loopback not set,
+#  Last link flapped 1d21h
+#    No. of members in this bundle: 1
+#      GigabitEthernet0/0/0/3       Full-duplex  10000Mb/s    Active          
+#  Last input 00:00:00, output 00:00:00
+#  Last clearing of "show interface" counters never
+#  5 minute input rate 1000 bits/sec, 0 packets/sec
+#  5 minute output rate 9000 bits/sec, 1 packets/sec
+#     124688 packets input, 39568225 bytes, 1 total input drops
+#     0 drops for unrecognized upper-level protocol
+#     Received 0 broadcast packets, 0 multicast packets
+#              0 runts, 0 giants, 0 throttles, 0 parity
+#     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored, 0 abort
+#     284126 packets output, 198425641 bytes, 0 total output drops
+#     Output 0 broadcast packets, 0 multicast packets
+#     0 output errors, 0 underruns, 0 applique, 0 resets
+#     0 output buffer failures, 0 output buffers swapped out
+#     0 carrier transitions
+#TenGigE0/0/0/30/0.410 is up, line protocol is up 
+#  Interface state transitions: 1
+#  Hardware is VLAN sub-interface(s), address is 4c71.0ddd.18d8
+#  Description: TenGigE-subinterface -- 0/0/0/30/0.410
+#  Layer 2 Transport Mode
+#  MTU 9148 bytes, BW 10000000 Kbit (Max: 10000000 Kbit)
+#     reliability Unknown, txload Unknown, rxload Unknown
+#  Encapsulation 802.1Q Virtual LAN,
+#    Outer Match: Dot1Q VLAN 410
+#    Ethertype Any, MAC Match src any, dest any
+#  loopback not set,
+#  Last link flapped 1d22h
+#  Last input never, output never
+#  Last clearing of "show interface" counters never
+#     0 packets input, 0 bytes
+#     0 input drops, 0 queue drops, 0 input errors
+#     0 packets output, 0 bytes
+#     0 output drops, 0 queue drops, 0 output errors
+#

@@ -12,29 +12,37 @@ apply:
     version: all
     command: show running-config sanitized
     format: text
-    textfsm: 
+    textfsm:
+
+  iosxe:
+    version: all
+    command: show running-config
+    textfsm:
 
   iosxr:
     version: all
     command: show running-config
-    textfsm: 
+    textfsm:
+
+  ios:
+    copy: iosxe
 
   nxos:
     version: all
     command: show running-config exclude security
-    textfsm: 
-      
+    textfsm:
+
   junos-qfx:
     version: all
     command: show configuration | except SECRET-DATA
-    textfsm: 
+    textfsm:
 
   junos-ex:
     copy: junos-qfx
 
   junos-mx:
     copy: junos-qfx
-        
+
   junos-es:
     copy: junos-qfx
 
@@ -42,6 +50,3 @@ apply:
     version: all
     command: show runningconfiguration all
     textfsm:
-
-
-

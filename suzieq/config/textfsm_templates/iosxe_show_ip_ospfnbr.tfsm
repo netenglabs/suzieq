@@ -1,0 +1,50 @@
+Value Required peerRouterId ([0-9./]*)
+Value Required peerIP ([0-9./]*)
+Value Filldown vrf (\S+)
+Value area ([0-9.]*)
+Value areaStub ((\[Stub\])?)
+Value ifname (\S+)
+Value nbrPrio (\d+)
+Value state (\w+)
+Value numChanges (\d+)
+Value lastUpTime (\w+)
+Value lastDownTime (\w+)
+Value lsaRetxCnt (\d+)
+Value bfdStatus (\S+)
+Value reason (\S+)
+
+Start
+  ^ Neighbor.*$$ -> Continue.Record
+  ^ Neighbor ${peerRouterId}, interface address ${peerIP}.*$$
+  ^\s+In the area ${area}\s?${areaStub}\s?via interface ${ifname}.*$$
+  ^\s+Neighbor priority is ${nbrPrio},\s+State is ${state}, ${numChanges} state changes.*$$
+  ^\s+Neighbor is up for ${lastUpTime}.*$$
+  ^\s+Last\s+retransmission\s+scan\s+length\s+is\s+${lsaRetxCnt}.*$$
+  ^\s+BFD: .*$$
+  ^\s+Status: ${bfdStatus},.*$$
+
+# Neighbor 22.22.22.22, interface address 10.2.1.1
+#    In the area 0 via interface GigabitEthernet0/1
+#    Neighbor priority is 1, State is FULL, 6 state changes
+#    DR is 10.2.1.2 BDR is 10.2.1.1
+#    Options is 0x2 in Hello (E-bit)
+#    Options is 0x42 in DBD (E-bit, O-bit)
+#    Dead timer due in 00:00:37
+#    Neighbor is up for 1w5d    
+#    Index 1/1/1, retransmission queue length 0, number of retransmission 2
+#    First 0x0(0)/0x0(0)/0x0(0) Next 0x0(0)/0x0(0)/0x0(0)
+#    Last retransmission scan length is 1, maximum is 1
+#    Last retransmission scan time is 0 msec, maximum is 0 msec
+# Neighbor 11.11.11.11, interface address 10.1.1.1
+#    In the area 0 via interface GigabitEthernet0/0
+#    Neighbor priority is 1, State is FULL, 6 state changes
+#    DR is 10.1.1.2 BDR is 10.1.1.1
+#    Options is 0x2 in Hello (E-bit)
+#    Options is 0x42 in DBD (E-bit, O-bit)
+#    Dead timer due in 00:00:36
+#    Neighbor is up for 1w5d    
+#    Index 1/2/2, retransmission queue length 0, number of retransmission 0
+#    First 0x0(0)/0x0(0)/0x0(0) Next 0x0(0)/0x0(0)/0x0(0)
+#    Last retransmission scan length is 0, maximum is 0
+#    Last retransmission scan time is 0 msec, maximum is 0 msec
+#

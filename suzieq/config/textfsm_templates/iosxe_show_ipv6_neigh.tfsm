@@ -1,0 +1,15 @@
+Value Required ipAddress (\S+)
+Value Required age (\S+)
+Value macaddr ([a-f0-9.]+)
+Value state (\S+)
+Value oif (\S+)
+
+Start
+  ^${ipAddress}\s+${age}\s+${macaddr}\s+${state}\s+${oif}.*$$ -> Record
+  ^IPv6
+
+#IPv6 Address                              Age Link-layer Addr State Interface
+#2000:0:0:4::2                               0 0003.a0d6.141e  REACH Ethernet2
+#FE80::203:A0FF:FED6:141E                    0 0003.a0d6.141e  REACH Ethernet2
+#3001:1::45a                                 - 0002.7d1a.9472  REACH Ethernet2
+#

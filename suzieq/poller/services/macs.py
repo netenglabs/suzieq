@@ -1,7 +1,7 @@
 from suzieq.poller.services.service import Service
 import re
 from suzieq.utils import convert_macaddr_format_to_colon
-from suzieq.utils import expand_nxos_ifname, expand_eos_ifname
+from suzieq.utils import expand_nxos_ifname, expand_eos_ifname, expand_ios_ifname
 import numpy as np
 
 
@@ -80,7 +80,11 @@ class MacsService(Service):
         return self._clean_linux_data(processed_data, raw_data)
 
     def _clean_junos_data(self, processed_data, raw_data):
-        for entry in processed_data:
+        drop_indices = []
+
+        for i, entry in enumerate(processed_data):
+            if not entry.get('macaddr', ''):
+                drop_indices.append(i)
             inflags = entry.pop('flags', '')
             flags = ''
             if inflags:
@@ -93,6 +97,7 @@ class MacsService(Service):
             entry['flags'] = flags.strip()
             self._add_mackey_protocol(entry)
 
+        processed_data = np.delete(processed_data, drop_indices).tolist()
         return processed_data
 
     def _clean_nxos_data(self, processed_data, raw_data):
@@ -113,6 +118,24 @@ class MacsService(Service):
             self._add_mackey_protocol(entry)
 
         return processed_data
+
+    def _clean_iosxe_data(self, processed_data, raw_data):
+
+        for entry in processed_data:
+            entry['macaddr'] = convert_macaddr_format_to_colon(
+                entry.get('macaddr', '0000.0000.0000'))
+            entry['oif'] = expand_ios_ifname(entry['oif'])
+            entry['remoteVtepIp'] = ''
+            if entry.get('vlan', ' ').strip() == "All":
+                entry['vlan'] = 0
+            entry['flags'] = entry.get('flags', '').lower()
+
+            self._add_mackey_protocol(entry)
+
+        return processed_data
+
+    def _clean_ios_data(self, processed_data, raw_data):
+        return self._clean_iosxe_data(processed_data, raw_data)
 
     def _clean_eos_data(self, processed_data, raw_data):
 

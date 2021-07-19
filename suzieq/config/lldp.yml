@@ -49,7 +49,7 @@ apply:
 
   junos-qfx:
     version: all
-    command: show lldp neighbors detail | display json | no-more
+    command: show lldp neighbors | display json | no-more
     normalize: 'lldp-neighbors-information/[0]/lldp-neighbor-information/*/[
     "lldp-local-interface/[0]/data: ifname",
     "lldp-remote-system-name/[0]/data: peerHostname",

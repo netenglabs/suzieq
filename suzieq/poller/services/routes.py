@@ -247,10 +247,35 @@ class RoutesService(Service):
                     lastchange,
                     settings={'RELATIVE_BASE':
                               datetime.fromtimestamp(
-                                  (raw_data[0]['timestamp'])/1000), })
+                                  (raw_data[0]['timestamp'])/1000), }) \
+                    .timestamp()*1000
             else:
-                lastchange = 0
-
-            entry['statusChangeTimestamp'] = lastchange
+                entry['statusChangeTimestamp'] = 0
 
         return processed_data
+
+    def _clean_iosxe_data(self, processed_data, raw_data):
+        processed_data = self._clean_iosxr_data(processed_data, raw_data)
+
+        # Some more IOSXE fixes including:
+        #  * lowercasing IPv6 addresses
+        #  * adding / to host prefixes
+        for entry in processed_data:
+            if ':' in entry['prefix']:
+                entry['prefix'] = entry['prefix'].lower()
+                if '/' not in entry['prefix']:
+                    entry['prefix'] += '/128'
+            elif '/' not in entry['prefix']:
+                entry['prefix'] += '/32'
+            newnexthops = []
+            for ele in entry['nexthopIps']:
+                if ':' in ele:
+                    newnexthops.append(ele.lower())
+                else:
+                    newnexthops.append(ele)
+            entry['nexthopIps'] = newnexthops
+
+        return processed_data
+
+    def _clean_ios_data(self, processed_data, raw_data):
+        return self._clean_iosxe_data(processed_data, raw_data)
