@@ -44,9 +44,9 @@ def _validate_vrf_if(df: pd.DataFrame):
     if not nxosdf.empty:
         assert not nxosdf.query('ifname != "management" and '
                                 'routeDistinguisher != ""').empty
+        assert (nxosdf.macaddr == "00:00:00:00:00:00").all()
         assert not nxosdf.query('routeDistinguisher != "0:0" and '
                                 'vni != 0').empty
-        assert (nxosdf.macaddr == "00:00:00:00:00:00").all()
 
 
 def _validate_svi_and_subif(df: pd.DataFrame):
@@ -123,6 +123,7 @@ def test_interfaces(table, datadir, get_table_data):
                       'flexible-ethernet': None,
                       'flexible-tunnel-interface': None,
                       'gre': _validate_gre_if,
+                      'igbe': None,
                       'internal': None,
                       'ip-over-ip': None,
                       'logical': None,

@@ -19,7 +19,8 @@ def _validate_estd_ospf_data(df: pd.DataFrame):
         assert (npsv_df.peerHostname != '').all()
         assert (npsv_df.peerRouterId != '').all()
         assert (npsv_df.nbrCount != 0).all()
-        assert (npsv_df.bfdStatus.isin(['disabled', 'up', 'down'])).all()
+        assert (npsv_df.bfdStatus.isin(['unknown', 'disabled',
+                                        'up', 'down'])).all()
 
 
 def _validate_notestd_ospf_data(df: pd.DataFrame):
