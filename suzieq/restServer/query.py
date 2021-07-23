@@ -162,6 +162,8 @@ async def query_device(verb: CommonVerbs,
                        start_time: str = "", end_time: str = "",
                        view: str = "latest", namespace: str = None,
                        columns: str = None, query_str: str = None,
+                       os: str = None, vendor: str = None, model: str = None,
+                       status: str = None,
                        ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, locals())
@@ -219,7 +221,7 @@ async def query_interface(verb: MoreVerbs,
                           columns: str = None,
                           ifname: str = None, state: str = None,
                           type: str = None, what: str = None,
-                          mtu: str = None,
+                          mtu: str = None, ifindex: str = None,
                           matchval: int = Query(None, alias="value"),
                           status: str = None, query_str: str = None,
                           ):
