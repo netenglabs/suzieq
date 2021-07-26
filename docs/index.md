@@ -17,10 +17,10 @@ Suzieq does multiple things:
 With the applications that we build on top of the framework we want to demonstrate a different and more 
 systematic approach to thinking about networks. We want to show how useful it is to think of your network holistically.
 
-You can join the conversation via [slack](https://netenglabs.slack.com). Send email to Dinesh or Justin with the email address to send the Slack invitation to. 
+You can join the conversation via [slack](https://netenglabs.slack.com). Send email to Dinesh with the email address to send the Slack invitation to. 
 
 We're also looking for collaborators to help us make Suzieq a truly useful multi-vendor, open source platform 
-for observing all aspects of networking. Please read the [collaboration document](./CONTRIBUTING.md) for 
+for observing all aspects of networking. Please read the [collaboration document](https://github.com/netenglabs/suzieq/CONTRIBUTING.md) for 
 ideas on how you can help. 
 
 
