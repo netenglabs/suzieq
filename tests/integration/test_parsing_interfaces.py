@@ -40,7 +40,8 @@ def _validate_vrf_if(df: pd.DataFrame):
     if not cldf.empty:
         assert (cldf.macaddr != "00:00:00:00:00:00").all()
 
-    nxosdf = df.query('os == "nxos"').reset_index(drop=True)
+    nxosdf = df.query('os == "nxos" and namespace != "mixed"') \
+        .reset_index(drop=True)
     if not nxosdf.empty:
         assert not nxosdf.query('ifname != "management" and '
                                 'routeDistinguisher != ""').empty

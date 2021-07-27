@@ -43,6 +43,10 @@ def test_evpnVni_parsing(table, datadir, get_table_data):
         'ospf-ibgp': 6,
     }
 
+    if datadir.endswith('mixed/parquet-out'):
+        # mixed dataset has no evpn
+        assert (True)
+        return
     assert not df.empty
     validate_host_shape(df, ns_dict)
     validate_evpnVni(df)

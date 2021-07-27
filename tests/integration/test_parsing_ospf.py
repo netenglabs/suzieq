@@ -25,7 +25,13 @@ def _validate_estd_ospf_data(df: pd.DataFrame):
 
 def _validate_notestd_ospf_data(df: pd.DataFrame):
     '''Validate data for those sessions not in neighbor output'''
-    assert (df.nbrCount == 0).all()
+    # Commenting out this check because in some cases, this can happen as in
+    # when we captured the ospf output for mixed namespace. Due to the way
+    # the commands are captured, its possible to get ospfIf with one adjacent
+    # neighbor while the ospfnbr output for that interface is still blank. So
+    # commenting out this check.
+    # assert (df.nbrCount == 0).all()
+    pass
 
 
 def _validate_common_ospf_data(df: pd.DataFrame):

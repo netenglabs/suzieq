@@ -84,7 +84,13 @@ def test_bgp_parsing(table, datadir, get_table_data):
         'junos': 8,
         'nxos': 10,
         'ospf-ibgp': 10,
+        'mixed': 0
     }
+
+    if datadir.endswith('mixed/parquet-out'):
+        # mixed dataset has no BGP
+        assert (True)
+        return
 
     assert not df.empty
     validate_host_shape(df, ns_dict)

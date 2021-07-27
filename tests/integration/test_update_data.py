@@ -319,6 +319,28 @@ class TestUpdate:
         if os.environ.get('SUZIEQ_POLLER', None) != 'data':
             update_sqcmds(glob.glob(f'{sqcmds_dir}/{nos}-samples/*.yml'))
 
+    @pytest.mark.test_update
+    @pytest.mark.update_data
+    @pytest.mark.mixed
+    @pytest.mark.skipif(not os.environ.get('SUZIEQ_POLLER', None),
+                        reason='Not updating data')
+    def test_update_mixed_data(self, tmp_path):
+        orig_dir = os.getcwd()
+        nos = 'mixed'
+
+        update_data(nos, f'{orig_dir}/tests/integration/sqcmds/{nos}-input/',
+                    orig_dir, tmp_path, number_of_devices='8')
+
+        dst_dir = f'{orig_dir}/tests/data/{nos}/parquet-out'
+        git_del_dir(dst_dir)
+        copytree(f'{tmp_path}/parquet-out', dst_dir)
+        shutil.rmtree(f'{tmp_path}/parquet-out')
+
+        # update the samples data with updates from the newly collected data
+
+        if os.environ.get('SUZIEQ_POLLER', None) != 'data':
+            update_sqcmds(glob.glob(f'{sqcmds_dir}/{nos}-samples/*.yml'))
+
 
 tests = [
     ['bgp', 'numbered'],
