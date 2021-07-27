@@ -21,7 +21,8 @@ suzieq_rest_server_path = './suzieq/restServer/sq_rest_server.py'
 DATADIR = ['tests/data/multidc/parquet-out/',
            'tests/data/eos/parquet-out',
            'tests/data/nxos/parquet-out',
-           'tests/data/junos/parquet-out']
+           'tests/data/junos/parquet-out',
+           'tests/data/mixed/parquet-out']
 
 commands = [('AddressCmd'), ('ArpndCmd'), ('BgpCmd'), ('DeviceCmd'),
             ('DevconfigCmd'), ('EvpnVniCmd'), ('InterfaceCmd'), ('LldpCmd'),
