@@ -131,7 +131,10 @@ class OspfIfService(Service):
             entry['nbrCount'] = int(
                 entry['nbrCount']) if entry['nbrCount'] else 0
             entry['noSummary'] = entry.get('noSummary', False)
-            entry['state'] = entry['state'].lower()
+            if entry['state'] == "administratively down":
+                entry['state'] = "down"
+            else:
+                entry['state'] = entry['state'].lower()
 
         return processed_data
 
