@@ -1,7 +1,7 @@
 import numpy as np
 
 from suzieq.poller.services.service import Service
-import ipaddress
+from ipaddress import ip_address, IPv4Interface
 
 
 class OspfIfService(Service):
@@ -70,7 +70,7 @@ class OspfIfService(Service):
             if entry['networkType'] == "LAN":
                 entry['networkType'] = "broadcast"
             entry['stub'] = not entry['stub'] == 'Not Stub'
-            entry['ipAddress'] = ipaddress.IPv4Interface(
+            entry['ipAddress'] = IPv4Interface(
                 f'{entry["ipAddress"]}/{entry["maskLen"]}').with_prefixlen
             entry['maskLen'] = int(entry['ipAddress'].split('/')[1])
             entry['vrf'] = 'default'  # Juniper doesn't provide this info
@@ -116,6 +116,9 @@ class OspfIfService(Service):
 
     def _clean_ios_data(self, processed_data, raw_data):
         for entry in processed_data:
+            area = entry.get('area', '')
+            if area and area.isdecimal():
+                entry['area'] = str(ip_address(int(area)))
             entry["networkType"] = entry["networkType"].lower()
             entry["passive"] = entry["passive"] == "stub"
             entry["isUnnumbered"] = entry["isUnnumbered"] == "yes"

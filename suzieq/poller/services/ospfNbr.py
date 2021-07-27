@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta, timezone
+from ipaddress import ip_address
 from dateparser import parse
 
 import numpy as np
@@ -128,6 +129,10 @@ class OspfNbrService(Service):
 
     def _clean_ios_data(self, processed_data, raw_data):
         for entry in processed_data:
+            # make area the dotted model
+            area = entry.get('area', '')
+            if area.isdecimal():
+                entry['area'] = str(ip_address(int(area)))
             entry['state'] = entry['state'].lower()
             entry['lastUpTime'] = parse(entry['lastUpTime']).timestamp()
             entry['lastChangeTime'] = int(entry['lastUpTime'])*1000
