@@ -18,11 +18,9 @@ VERBS = ['show', 'summarize', 'assert', 'lpm',
 # Next:
 #    * for every filter that has a good result against an object,
 #      add it to the GOOD_FILTERS_FOR_SERVICE_VERB list
-#    * for every filter that has a bad result against an object, such
-#      as state=up in case of BGP, add it to the BAD_FILTERS list with
-#      the appropriate error code.
-#    * Any verb that doesn't work for an object such as assert for device,
-#      add it to the BAD_VERBS list
+#    * for every filter that has a multiple values for the same key, add
+#      a routine to test that the output contains all the requested values, &
+#      add that routine to match against the filter to VALIDATE_OUTPUT_FILTER
 #    * If a result is empty such as state=notConnected, add that object/verb
 #      filter result to the GOOD_FILTER_EMPTY_RESULT_FILTER list. You can catch
 #      an empty, but good result, because of the assertion error:
@@ -219,7 +217,8 @@ VALIDATE_OUTPUT_FILTER = {
     'namespace=ospf-ibgp&namespace=ospf-single': _validate_namespace_output,
     'hostname=leaf01&hostname=spine01': _validate_hostname_output,
     'protocol=bgp&protocol=ospf': _validate_route_protocol,
-    'macaddr=44:39:39:ff:00:13&macaddr=44:39:39:ff:00:24': _validate_macaddr_output,
+    'macaddr=44:39:39:ff:00:13&macaddr=44:39:39:ff:00:24':
+    _validate_macaddr_output,
 }
 
 ####
