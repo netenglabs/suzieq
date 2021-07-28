@@ -3,7 +3,7 @@ Value Required ifname (\S+)
 Value Required peerIfname (\S+)
 
 Start
-  ^Device.*ID -> LLDP
+  ^Device\s+ID\s+.*Port\s+ID\s*$$ -> LLDP
 
 LLDP
   ^${peerHostname}\s+${ifname}\s+\d+\s+(.+?)\s+${peerIfname}$$ -> Record

@@ -1,5 +1,5 @@
 from suzieq.poller.services.service import Service
-from suzieq.utils import convert_macaddr_format_to_colon
+from suzieq.utils import convert_macaddr_format_to_colon, expand_ios_ifname
 import re
 import numpy as np
 
@@ -23,9 +23,10 @@ class LldpService(Service):
 
         entry['subtype'] = entry.get('subtype', '').lower()
         subtype = entry.get('subtype', '')
-        if subtype == "interface name":
+        if subtype in ["interface name", '']:
             entry['peerMacaddr'] = '00:00:00:00:00:00'
             entry['peerIfindex'] = 0
+            entry['subtype'] = 'interface name'  # IOS* don't provide subtype
         if subtype == 'mac address':
             entry['peerMacaddr'] = convert_macaddr_format_to_colon(
                 entry.get('peerIfname', '0000.0000.0000'))
@@ -59,6 +60,11 @@ class LldpService(Service):
             if entry.get('protocol', '') == 'cdp':
                 entry['subtype'] = 'interface name'
 
+            entry['peerIfname'] = expand_ios_ifname(
+                entry.get('peerIfname', ''))
+
+            if entry.get('mgmtIP', '') == "not advertised":
+                entry['mgmtIP'] = ''  # make it consistent with other NOS
             self._common_cleaner(entry)
             if not entry['peerHostname']:
                 drop_indices.append(i)
@@ -119,8 +125,17 @@ class LldpService(Service):
     def _clean_iosxr_data(self, processed_data, raw_data):
         for entry in processed_data:
             self._common_cleaner(entry)
+        return processed_data
+
+    def _clean_ios_data(self, processed_data, raw_data):
+        for entry in processed_data:
+            self._common_cleaner(entry)
+            entry['ifname'] = expand_ios_ifname(entry['ifname'])
 
         return processed_data
+
+    def _clean_iosxe_data(self, processed_data, raw_data):
+        return self._clean_ios_data(processed_data, raw_data)
 
     def _clean_sonic_data(self, processed_data, raw_data):
         return self._clean_linux_data(processed_data, raw_data)
