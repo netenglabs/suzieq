@@ -791,6 +791,7 @@ def expand_ios_ifname(ifname: str) -> str:
              'Fo': 'FortyGigE',
              'FH': 'FourHundredGigE',
              'Gi': 'GigabitEthernet',
+             'Gig': 'GigabitEthernet',
              'Hu': 'HundredGigE',
              'Lo': 'Loopback',
              'Mg': 'MgmtEth',
