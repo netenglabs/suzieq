@@ -127,15 +127,18 @@ class LldpService(Service):
             self._common_cleaner(entry)
         return processed_data
 
-    def _clean_ios_data(self, processed_data, raw_data):
+    def _clean_iosxe_data(self, processed_data, raw_data):
         for entry in processed_data:
+            for field in ['ifname', 'peerIfname']:
+                entry[field] = expand_ios_ifname(entry[field])
+                if ' ' in entry.get(field, ''):
+                    entry[field] = entry[field].replace(' ', '')
             self._common_cleaner(entry)
-            entry['ifname'] = expand_ios_ifname(entry['ifname'])
 
         return processed_data
 
-    def _clean_iosxe_data(self, processed_data, raw_data):
-        return self._clean_ios_data(processed_data, raw_data)
+    def _clean_ios_data(self, processed_data, raw_data):
+        return self._clean_iosxe_data(processed_data, raw_data)
 
     def _clean_sonic_data(self, processed_data, raw_data):
         return self._clean_linux_data(processed_data, raw_data)

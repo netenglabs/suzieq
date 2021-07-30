@@ -1,0 +1,39 @@
+Value Required peerHostname (\S+)
+Value Required ifname (\S+\s+\S+|\S+)
+Value Required peerIfname (\S+\s+\S+|\S+)
+
+Start
+  ^Device\s+ID\s+.*Port\s+ID\s*$$ -> LLDP
+
+LLDP
+  ^${peerHostname}\s+${ifname}\s+\d+\s+(.+?)\s+${peerIfname}\s*$$ -> Record
+  
+
+#Capability Codes: R - Router, T - Trans Bridge, B - Source Route Bridge
+#                  S - Switch, H - Host, I - IGMP, r - Repeater, P - Phone, 
+#                  D - Remote, C - CVTA, M - Two-port Mac Relay 
+#
+#Device ID        Local Intrfce     Holdtme    Capability  Platform  Port ID
+#leaf1            Gig 2             142             R S I            Gig 0/1
+#leaf1            Gig 3             126             R S I            Gig 0/2
+#
+#Total cdp entries displayed : 2
+#Capability codes:
+#    (R) Router, (B) Bridge, (T) Telephone, (C) DOCSIS Cable Device
+#    (W) WLAN Access Point, (P) Repeater, (S) Station, (O) Other
+#
+#Device ID           Local Intf     Hold-time  Capability      Port ID
+#leaf1               Gi2            120        R               Gi0/1
+#leaf1               Gi3            120        R               Gi0/2
+#
+#Total entries displayed: 2
+#Capability Codes: R - Router, T - Trans Bridge, B - Source Route Bridge
+#                  S - Switch, H - Host, I - IGMP, r - Repeater, P - Phone, 
+#                  D - Remote, C - CVTA, M - Two-port Mac Relay 
+#
+#Device ID        Local Intrfce     Holdtme    Capability  Platform  Port ID
+#leaf2            Gig 0/1           152              R I   CSR1000V  Gig 2
+#leaf2            Gig 0/2           169              R I   CSR1000V  Gig 3
+
+#Total cdp entries displayed : 2
+

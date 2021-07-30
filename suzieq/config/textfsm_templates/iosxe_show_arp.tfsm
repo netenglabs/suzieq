@@ -5,10 +5,15 @@ Value oif (\S+)
 Value protocol (\S+)
 
 Start
-  ^${protocol}\s+${ipAddress}\s+.*\s+${macaddr}\s+${type}\s+${oif}.*$$ -> Record
+  ^${protocol}\s+${ipAddress}\s+\d+\s+${macaddr}\s+${type}\s+${oif}.*$$ -> Record
   ^Protocol
 
 #Protocol  Address          Age (min)  Hardware Addr   Type   Interface
-#Internet  10.10.20.28             7   0050.56bf.490f  ARPA   GigabitEthernet1
-#Internet  10.10.20.48             -   0050.56bf.78ac  ARPA   GigabitEthernet1
-#Internet  10.10.20.254           26   0050.56bf.d636  ARPA   GigabitEthernet1
+#Internet  10.127.0.0              -   4438.3900.0001  ARPA   GigabitEthernet0/1
+#Internet  10.127.0.1              4   4438.3900.0002  ARPA   GigabitEthernet0/1
+#Internet  10.127.0.2              -   4438.3900.0003  ARPA   GigabitEthernet0/2
+#Internet  10.127.0.3              4   4438.3900.0004  ARPA   GigabitEthernet0/2
+#Internet  10.127.0.0            196   4438.3900.0001  ARPA   GigabitEthernet2
+#Internet  10.127.0.1              -   4438.3900.0002  ARPA   GigabitEthernet2
+#Internet  10.127.0.2            173   4438.3900.0003  ARPA   GigabitEthernet3
+#Internet  10.127.0.3              -   4438.3900.0004  ARPA   GigabitEthernet3

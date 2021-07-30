@@ -243,12 +243,13 @@ class RoutesService(Service):
                 entry['action'] = entry.get('action', '').lower()
             lastchange = entry.get('statusChangeTimestamp', '')
             if lastchange:
-                entry['statusChangeTimestamp'] = parse(
+                lastchange = parse(
                     lastchange,
                     settings={'RELATIVE_BASE':
                               datetime.fromtimestamp(
-                                  (raw_data[0]['timestamp'])/1000), }) \
-                    .timestamp()*1000
+                                  (raw_data[0]['timestamp'])/1000), })
+            if lastchange:
+                entry['statusChangeTimestamp'] = lastchange.timestamp()*1000
             else:
                 entry['statusChangeTimestamp'] = 0
 

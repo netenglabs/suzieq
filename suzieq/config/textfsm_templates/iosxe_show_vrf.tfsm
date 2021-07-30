@@ -1,41 +1,22 @@
-Value Required vrf (\w+)
+Value Required vrf (\S+)
 Value routeDistinguisher ([0-9.:]+)
 
 Start
- ^VRF mode:
- ^VRF\s+ -> Continue.Record
- ^VRF\s+${vrf};\s+RD\s+${routeDistinguisher};.*$$
- ^VRF\s+${vrf};\s+RD\s+not\s+set;.*$$ 
+ ^VRF\s+${vrf}\s+\(VRF Id = \d+\);\s+default\s+RD\s+${routeDistinguisher};.*$$ -> Record
+ ^VRF\s+${vrf}\s+\(VRF Id = \d+\);\s+default\s+RD\s+<not set>;.*$$ -> Record
  
-#VRF vrf_test; RD not set; VPN ID not set
-#VRF mode: Regular
-#Description not set
-#Address family IPV4 Unicast
-#  Import VPN route-target communities:
-#    RT:64000:63
-#  Export VPN route-target communities:
-#    RT:64000:63
-#  No import route policy
-#  No export route policy
-#Address family IPV6 Unicast
-#  Import VPN route-target communities:
-#    RT:64000:63
-#  Export VPN route-target communities:
-#    RT:64000:63
-#  No import route policy
-#  No export route policy
-#
-#VRF cloudVrf; RD 12000:2200; VPN ID not set
-#VRF mode: Regular
-#Description not set
-#Address family IPV4 Unicast
-#  No import VPN route-target communities
-#  No export VPN route-target communities
-#  No import route policy
-#  No export route policy
-#Address family IPV6 Unicast
-#  No import VPN route-target communities
-#  No export VPN route-target communities
-#  No import route policy
-#  No export route policy
-#
+#VRF Mgmt-intf (VRF Id = 1); default RD <not set>; default VPNID <not set>
+#  New CLI format, supports multiple address-families
+#  Flags: 0x1808
+#  Interfaces:
+#    Gi0/0                   
+#Address family ipv4 unicast (Table ID = 0x1):
+#  Flags: 0x0
+#  No Export VPN route-target communities
+#  No Import VPN route-target communities
+#  No import route-map
+#  No global export route-map
+#  No export route-map
+#  VRF label distribution protocol: not configured
+#  VRF label allocation mode: per-prefix
+#Address family ipv6 unicast not active

@@ -636,6 +636,11 @@ class InterfaceService(Service):
                 speed = 0
             entry['speed'] = int(speed)/1000  # is in Kbps
 
+            state = entry.get('state', '')
+            if 'up' in state:
+                # IOSVL2 images show up as up (connected)
+                entry['state'] = 'up'
+
             iftype = entry.get('type', 'ethernet').lower()
             if 'aggregated ethernet' in iftype:
                 iftype = 'bond'

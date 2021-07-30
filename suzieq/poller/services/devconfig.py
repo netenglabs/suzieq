@@ -1,3 +1,5 @@
+import re
+
 from suzieq.poller.services.service import Service
 
 
@@ -14,19 +16,14 @@ class ConfigService(Service):
         else:
             data = raw_data[0].get('data', '')
 
-        nomatch = True
-        if data:
-            lines = data.splitlines()
-            for lindx, line in enumerate(lines):
-                if line.startswith('!Time'):
-                    nomatch = False
-                    break
+    #   if data:
+        lines = data.splitlines()
+        lines = list(filter(
+            lambda x: not re.search(
+                'Time|username|crypto|key-hash|encryption', x),
+            lines))
 
-        if nomatch:
-            processed_data = [{'config': data}]
-        else:
-            processed_data = [
-                {'config': '\n'.join(lines[:lindx] + lines[lindx+1:])}]
+        processed_data = [{'config': '\n'.join(lines)}]
 
         return processed_data
 
