@@ -27,8 +27,11 @@ apply:
 
   iosxe:
     version: all
-    command: show mac-address table
+    command: show mac address-table
     textfsm: textfsm_templates/iosxe_show_mac.tfsm
+
+  ios:
+    copy: iosxe
 
   junos-qfx:
     version: all

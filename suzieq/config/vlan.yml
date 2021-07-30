@@ -28,6 +28,14 @@ apply:
     "status: state",
     ]'
 
+  ios:
+    version: all
+    command: show vlan
+    textfsm: textfsm_templates/iosxe_show_vlan.tfsm
+
+  iosxe:
+    copy: ios
+  
   nxos:
     version: all
     command: show vlan brief | json native

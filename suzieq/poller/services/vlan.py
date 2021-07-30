@@ -1,3 +1,4 @@
+from suzieq.utils import expand_ios_ifname
 from suzieq.poller.services.service import Service
 
 
@@ -77,3 +78,21 @@ class VlanService(Service):
             entry['vlanName'] = entry['vlanName'].lower()
 
         return processed_data
+
+    def _clean_ios_data(self, processed_data, raw_data):
+        '''Massage the interface list'''
+
+        for entry in processed_data:
+            if entry['vlanName'] == 'default':
+                entry['vlanName'] = f'vlan{entry["vlan"]}'
+            if entry['interfaces']:
+                newiflist = []
+                for ifname in entry['interfaces'].split():
+                    newiflist.append(expand_ios_ifname(ifname))
+                entry['interfaces'] = newiflist
+            entry['state'] = entry['state'].lower()
+
+        return processed_data
+
+    def _clean_iosxe_data(self, processed_data, raw_data):
+        return self._clean_ios_data(processed_data, raw_data)

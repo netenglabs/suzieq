@@ -16,7 +16,6 @@ class ConfigService(Service):
         else:
             data = raw_data[0].get('data', '')
 
-    #   if data:
         lines = data.splitlines()
         lines = list(filter(
             lambda x: not re.search(
