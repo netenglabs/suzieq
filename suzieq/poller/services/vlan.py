@@ -87,8 +87,8 @@ class VlanService(Service):
                 entry['vlanName'] = f'vlan{entry["vlan"]}'
             if entry['interfaces']:
                 newiflist = []
-                for ifname in entry['interfaces'].split():
-                    newiflist.append(expand_ios_ifname(ifname))
+                for ifname in entry['interfaces'].split(','):
+                    newiflist.append(expand_ios_ifname(ifname.strip()))
                 entry['interfaces'] = newiflist
             entry['state'] = entry['state'].lower()
 
