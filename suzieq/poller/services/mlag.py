@@ -74,11 +74,13 @@ class MlagService(Service):
                 processed_data = []
                 return processed_data
 
-            mlagSinglePorts = list(filter(lambda x: x == '1',
-                                          entry['_forwardViaPeerLinkList']))
-            mlagErrorPorts = list(filter(lambda x: x != 'consistent',
-                                         entry['_portConfigSanityList']))
-            mlagDualPorts = entry['_portList']
+            mlagSinglePorts = list(filter(
+                lambda x: x == '1',
+                entry.get('_forwardViaPeerLinkList', [])))
+            mlagErrorPorts = list(filter(
+                lambda x: x != 'consistent',
+                entry.get('_portConfigSanityList', [])))
+            mlagDualPorts = entry.get('_portList', [])
             mlagDualPorts = list(filter(
                 lambda x: x not in mlagSinglePorts and x not in mlagErrorPorts,
                 mlagDualPorts))
