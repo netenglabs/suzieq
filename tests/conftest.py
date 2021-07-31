@@ -24,6 +24,8 @@ DATADIR = ['tests/data/multidc/parquet-out/',
            'tests/data/junos/parquet-out',
            'tests/data/mixed/parquet-out']
 
+DATADIR = ['/tmp/demo']
+
 commands = [('AddressCmd'), ('ArpndCmd'), ('BgpCmd'), ('DeviceCmd'),
             ('DevconfigCmd'), ('EvpnVniCmd'), ('InterfaceCmd'), ('LldpCmd'),
             ('MacCmd'), ('MlagCmd'), ('OspfCmd'), ('RouteCmd'),
@@ -61,9 +63,12 @@ def get_table_data(table: str, datadir: str):
         device_df = get_sqobject('device')(config_file=cfgfile) \
             .get(columns=['namespace', 'hostname', 'os'])
 
-        if not device_df.empty:
-            df = df.merge(device_df, on=['namespace', 'hostname']) \
-                   .fillna({'os': ''})
+        assert (not device_df.empty, 'empty device table')
+        df = df.merge(device_df, on=['namespace', 'hostname']) \
+            .fillna({'os': ''})
+
+        if df.empty:
+            pytest.fail('empty device table')
 
     return df
 
