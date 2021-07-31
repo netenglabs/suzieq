@@ -803,6 +803,7 @@ def expand_ios_ifname(ifname: str) -> str:
              'tmte': 'tunnel-mte',
              'tt': 'tunnel-te',
              'tp': 'tunnel-tp',
+             'Vl': 'Vlan',
              'CPU': 'cpu',
              }
     pfx = re.match(r'[a-zA-Z]+', ifname)
