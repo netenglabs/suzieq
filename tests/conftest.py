@@ -24,8 +24,6 @@ DATADIR = ['tests/data/multidc/parquet-out/',
            'tests/data/junos/parquet-out',
            'tests/data/mixed/parquet-out']
 
-DATADIR = ['/tmp/demo']
-
 commands = [('AddressCmd'), ('ArpndCmd'), ('BgpCmd'), ('DeviceCmd'),
             ('DevconfigCmd'), ('EvpnVniCmd'), ('InterfaceCmd'), ('LldpCmd'),
             ('MacCmd'), ('MlagCmd'), ('OspfCmd'), ('RouteCmd'),
