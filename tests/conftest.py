@@ -57,7 +57,7 @@ def get_table_data(table: str, datadir: str):
     cfgfile = create_dummy_config_file(datadir=datadir)
 
     df = get_sqobject(table)(config_file=cfgfile).get(columns=['*'])
-    if table != 'device':
+    if not df.empty and (table != 'device'):
         device_df = get_sqobject('device')(config_file=cfgfile) \
             .get(columns=['namespace', 'hostname', 'os'])
 
