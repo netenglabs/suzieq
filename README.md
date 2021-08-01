@@ -114,7 +114,7 @@ The official release notes are [here](https://suzieq.readthedocs.io/en/latest/re
 
 # Engage
 
-You can join the conversation via [slack](https://join.slack.com/t/netenglabs/shared_invite/zt-g64xa6lc-SeP2OAj~3uLbgOWJniLslA). Send email to Dinesh with the email address to send the Slack invitation to.
+You can join the conversation via [slack](https://join.slack.com/t/netenglabs/shared_invite/zt-g64xa6lc-SeP2OAj~3uLbgOWJniLslA). Send email to suzieq AT stardustsystems.net with the email address to send the Slack invitation to.
 
 # Additional Documentation & Screencasts
 
