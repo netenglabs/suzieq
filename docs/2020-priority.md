@@ -1,6 +1,6 @@
 # Suzieq Priorities
 
-(last updated July 2020)
+(last updated August 2021)
 
 This roadmap represents our best guess at broad priorities. 
 The point is to demonstrate what we think we should work on and the general
@@ -52,10 +52,10 @@ Given the categories, here is a rough list of tasks we will be tackling. We welc
 * ~~Anonymizing data -- almost done, needs tests, docs, and moved to master~~
 * ~~Junos support for qfx/mx~~
 * Building a reference topology to test all NOS (75% done)
-* Topology as a first class property
+* --Topology as a first class property--
   * draw a map for physical and logical layers, including routing protocols
   * neighbor discovery
-    * show neighbors that we know about but aren't polling
+    * --show neighbors that we know about but aren't polling--
     * maybe be able to just start with one IP address and then discover 
       everything that must be polled by suzieq
 * ~~support augmenting columns (like adding peerHostname in OSPF when all we have is peerIP)~~
@@ -83,14 +83,13 @@ Given the categories, here is a rough list of tasks we will be tackling. We welc
 * ~~Arista EVPN~~
 * Integration with systems for notification of events
   * slack   * ???
-* Be sure that we can scale to at least 500 nodes per poller instance
 * ~~Users can do their own queries~~
   * ~~pandas or pandas sql query~~
-* Great expectations or some other way of better verifying data output <https://docs.greatexpectations.io/en/latest/>
-* Better database abstractions so that we can more easily add new databases
+* --Great expectations or some other way of better verifying data output <https://docs.greatexpectations.io/en/latest/>--
+* --Better database abstractions so that we can more easily add new databases--
 * ~~Support for SONIC~~
   * This includes SONIC-specific stuff only. Linux-specific and FRR are already supported.
-* Support for Cisco's CSR1000
+* --Support for Cisco's CSR1000--
 * ~~Support for Cisco's IOS-XR~~
 * Temperature and power collection 
 * Cloud integration such as VPC from cloud providers
@@ -100,9 +99,6 @@ Given the categories, here is a rough list of tasks we will be tackling. We welc
 * Understand BGP routing policy and route maps / etc
 * ISIS
 * ~~Supporting 1M+ routes per device~~
-* Make asserts more modular and customizable
-  * Asserts are ways to build health checks to assure your network is behaving as expected. We think asserts are a powerful tool in Suzieq's arsenal. 
-  * If you have ideas on what asserts you'd like or what problems you'd like asserts to solve, please file an issue so that we can gather more ideas on how to make asserts great.
 * Integration with other systems as both source of data and as a client.
 
 ## How You Can Help

@@ -20,6 +20,7 @@ Suzieq does multiple things. It [collects](https://suzieq.readthedocs.io/en/late
 ## Quick Start
 
 ### Using Docker Container
+
 We want to make it as easy as possible for you to start engaging with Suzieq, so we have a demo that has data in including the the iamge.
 
 * `docker run -it -p 8501:8501 --name suzieq netenglabs/suzieq-demo`
@@ -41,15 +42,20 @@ To start collecting data for your network, create an inventory file to gather th
 If you don't want to use docker container or cannot use a docker container, an alternative approach is to install Suzieq as a python package. It is **strongly** recommended to install suzieq inside a virtual environment. If you already use a tool to create and manage virtual environments, you can skip the step of creating a virtual envirobment below.
 
 Suzieq requires python version 3.7.1 at least, and has been tested with python versions 3.7 and 3.8. It has not been tested to work on Windows. Use Linux (recommended) or macOS. To create a virtual environment, in case you haven't got a tool to create one, type:
-```
+
+```bash
 python -m venv suzieq
 ```
+
 This creates a directory called suzieq and all suzieq related info is stored there. Switch to that directory and activate the virtual environment with:
-```
+
+```bash
 source activate
 ```
+
 Now the virtual environment is alive and you can install suzieq. To install suzieq, execute:
-```
+
+```bash
 pip install suzieq
 ```
 
@@ -81,11 +87,11 @@ Suzieq has the ability to show the path between two IP addresses, including the 
 
 ## Asserts
 
-One of Suzieqs powerful capabilities are asserts, which are statements that should be true in the network. We've only just started on asserts; what Suzieq has now only demonstrates it's power, there's a lot more to be added in this space. ![interfaces assert](images/interfaces-assert.png)
+One of Suzieq's powerful capabilities are asserts, which are statements that should be true in the network. We've only just started on asserts; what Suzieq has now only demonstrates it's power, there's a lot more to be added in this space. ![interfaces assert](images/interfaces-assert.png)
 
 # Suzieq Data
 
-**Suzieq supports gathering data from Cumulus, EOS, IOSXR, JunOS(QFX, MX, EX, SRX supported), NXOS and SONIC routers, and Linux servers.** Suzieq gathers:
+**Suzieq supports gathering data from Cumulus, EOS, IOS, IOSXE, IOSXR, JunOS(QFX, MX, EX, SRX supported), NXOS and SONIC routers, and Linux servers.** Suzieq gathers:
 
 * Basic device info including serial number, model, version, platform etc.
 * Interfaces
@@ -98,7 +104,7 @@ One of Suzieqs powerful capabilities are asserts, which are statements that shou
 * BGP
 * EVPN VNI info
 
-We're addding support for more platforms and features with every release. 
+We're addding support for more platforms and features with every release. See [the documentation](https://suzieq.readthedocs.io/en/latest/tables/) on details of specific tables and its NOS support.
 
 We're also looking for collaborators to help us make Suzieq a truly useful multi-vendor, open source platform for observing all aspects of networking. Please read the [collaboration document](./CONTRIBUTING.md) for ideas on how you can help.
 
@@ -108,7 +114,7 @@ The official release notes are [here](https://suzieq.readthedocs.io/en/latest/re
 
 # Engage
 
-You can join the conversation via [slack](https://join.slack.com/t/netenglabs/shared_invite/zt-g64xa6lc-SeP2OAj~3uLbgOWJniLslA). Send email to Dinesh or Justin with the email address to send the Slack invitation to.
+You can join the conversation via [slack](https://join.slack.com/t/netenglabs/shared_invite/zt-g64xa6lc-SeP2OAj~3uLbgOWJniLslA). Send email to Dinesh with the email address to send the Slack invitation to.
 
 # Additional Documentation & Screencasts
 
