@@ -1,5 +1,19 @@
 # Release Notes
 
+## 0.14.0 (Aug 1, 2021)
+
+The major features in this release are the support for IOS/IOSXE network operating systems and a revamped REST API. This version also fixes a subtle but critical coaleescer issue.
+
+* __Support for IOS/IOSXE__: This release introduces support for IOS and IOSXE. All testing has been done using IOSvL2 (2019 version) and CSR1000v (16.11) images. Thanks to Rick Donato for his generous support for additional IOS testing. IOS and XE are mature operating systems with features and knobs galore.I obviously don't have the ability to test everything, but am happy to take fix bugs reported, take patch contributions and such. The support includes all the tables that Suzieq currently supports except for VXLAN and BFD support. 
+* (_Breaking Change_)__Revamped REST API__: The v1 version of the REST API has been replaced by a newer v2 version. The fundamental difference is better support for the API tooling ecosystem. The v1 API accepted multiple values for a parameter as space separated strings. But it wasn't clear which query parameter accepted multiple values and which didn't by looking at the API. Some invalid parameters were silently ignored. Fixing all this is what led
+to v2. A discussion on the Slack channel about the breaking change led to the conclusion that it was worth making this change now.
+* Support for improved coalescing times: Instead of just 1 hour, 1 day etc., the coalescer now accepts much finer grained periods such as 10m, 2h etc. The coalescer also fires close to the top of the period. Originally, if you had a coalescing period of 1 hour and you started the coalescer at 7:59, the coalescer would coalesce the existing data and fire up at 8:59. But since it only coalesces whatever's in the 8:00-9:00 window when it wakes up, and since the clock is still at 8:59, it skips coalescing the entire hour's worth of data and only coalesces the data from 8-9 when it wakes up at 9:59. Thus, an additional hour's worth of data is always uncoalesced which can lead to bad query performance in the presence of a lot of data. The new version instead fires at 8, at 8, at 10 etc. to ensure all the data that can be coalesced is indeed coalesced.
+* Support for additional filters for device: With device show, you couldn't filter by status, vendor, os etc. We now have support for all those filters.
+* Improved LLDP support: LLDP show now tackles other interface subtypes such as mac address and ifindex (used by Junos as default), to fixup and display the more usable ifnames. OSPF assert is also more imrpvoed as a consequence.
+* Improved algorithm for determining peer hosname in BGP: bgp show displays the peer hostname along with the peer IP. The algorithm used had very poor performance when the number of rows grew large (say with view=all). The new improved algorithm is orders of magnitude more efficient and uses less memory than the previous one.
+* Updated dependent libraries such as asyncssh, fastapi and so on.
+* Lots more new tests added and an improved and faster REST API test suite. We have 6K automated tests now.
+
 ## 0.13.0 (June 22, 2021)
 
 This is a mostly technical debt fixup release, but it does include a couple of new features. If we had an LTS release, this release might be considered to be one. The GUI does have theming support now! 
