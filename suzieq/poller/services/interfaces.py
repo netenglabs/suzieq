@@ -620,10 +620,10 @@ class InterfaceService(Service):
     def _clean_iosxr_data(self, processed_data, raw_data):
 
         entry_dict = {}
+        devtype = raw_data[0].get('devtype', 'iosxr')
 
         for i, entry in enumerate(processed_data):
             if entry.get('_entryType', '') == 'vrf':
-                entry['ifname'] = entry['vrf']
                 entry['master'] = ''
                 entry['type'] = 'vrf'
                 entry['mtu'] = -1
@@ -644,7 +644,7 @@ class InterfaceService(Service):
             iftype = entry.get('type', 'ethernet').lower()
             if 'aggregated ethernet' in iftype:
                 iftype = 'bond'
-            elif 'ethernet' in iftype:
+            elif iftype in ['ethernet', 'igbe', 'csr']:
                 iftype = 'ethernet'
             elif iftype.endswith('gige'):
                 iftype = 'ethernet'
@@ -693,8 +693,15 @@ class InterfaceService(Service):
             elif ':' in entry['ipAddressList']:
                 entry['ip6AddressList'] = entry['ipAddressList']
                 entry['ipAddressList'] = []
-            else:
+            elif devtype == 'iosxr':
                 entry['ip6AddressList'] = []
+
+            # This is specifically for IOSXE/IOS devices where
+            # the IPv6 address uses capital letters
+            if devtype != 'iosxr':
+                entry['ip6AddressList'] = [x.lower()
+                                           for x in entry.get('ip6AddressList',
+                                                              [])]
 
             if entry['ipAddressList'] == 'Unknown':
                 entry['ipAddressList'] = []

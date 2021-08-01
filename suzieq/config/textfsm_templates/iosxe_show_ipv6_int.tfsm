@@ -1,0 +1,36 @@
+Value Required ifname (\S+)
+Value state (.+?)
+Value adminState (.+?)
+Value vrf (\w+)
+Value List ip6AddressList ([0-9A-F:/]+)
+Value mtu (\d+)
+
+Start
+  ^\S+\s+is -> Continue.Record
+  ^${ifname}\sis\s+${adminState},\s+line\sprotocol\sis\s+${state}\s*$$
+  ^\s+IPv6\s+is\s+enabled,\s+link-local\s+address\s+is\s+${ip6AddressList}.*$$
+  ^\s+.*,\s+subnet\s+is\s+${ip6AddressList}\s*$$
+  ^\s+MTU\s+is\s+\d+\s+ \(${mtu} is available to IPv6\)
+
+#Loopback0 is up, line protocol is up
+#  IPv6 is enabled, link-local address is FE80::5054:FF:FE9A:8BC6 
+#  No Virtual link-local address(es):
+#  Global unicast address(es):
+#    2001:DB8::1, subnet is 2001:DB8::1/128 
+#  Joined group address(es):
+#    FF02::1
+#    FF02::2
+#    FF02::1:FF00:1
+#    FF02::1:FF9A:8BC6
+#  MTU is 1514 bytes
+#  ICMP error messages limited to one every 100 milliseconds
+#  ICMP redirects are enabled
+#  ICMP unreachables are sent
+#  ND DAD is not supported
+#  ND reachable time is 30000 milliseconds (using 30000)
+#  ND advertised reachable time is 0 (unspecified)
+#  ND advertised retransmit interval is 0 (unspecified)
+#  ND router advertisements live for 1800 seconds
+#  ND advertised default router preference is Medium
+#  ND RAs are suppressed (periodic)
+#  Hosts use stateless autoconfig for addresses.

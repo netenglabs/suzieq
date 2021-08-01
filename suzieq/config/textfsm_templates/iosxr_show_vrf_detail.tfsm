@@ -1,11 +1,11 @@
-Value Required vrf (\w+)
+Value Required ifname (\w+)
 Value routeDistinguisher ([0-9.:]+)
 
 Start
  ^VRF mode:
  ^VRF\s+ -> Continue.Record
- ^VRF\s+${vrf};\s+RD\s+${routeDistinguisher};.*$$
- ^VRF\s+${vrf};\s+RD\s+not\s+set;.*$$ 
+ ^VRF\s+${ifname};\s+RD\s+${routeDistinguisher};.*$$
+ ^VRF\s+${ifname};\s+RD\s+not\s+set;.*$$ 
  
 #VRF vrf_test; RD not set; VPN ID not set
 #VRF mode: Regular

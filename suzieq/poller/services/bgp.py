@@ -74,7 +74,11 @@ class BgpService(Service):
                         new_entry['communityTypes'] = ['standard', 'extended']
                 else:
                     new_entry['communityTypes'] = ['standard']
-                new_entry['hopsMax'] = int(entry.get('hopsMax', 255))-255
+                if entry.get('hopsMax', '').isnumeric():
+                    # Older versions of EOS don't provide this field
+                    new_entry['hopsMax'] = int(entry.get('hopsMax', 255))-255
+                else:
+                    new_entry['hopsMax'] = -1
                 try:
                     afidx = entry.get('iMapafisafi', []).index(afi)
                     new_entry['ingressRmap'] = entry.get('ingressRmap')[afidx]
@@ -469,3 +473,70 @@ class BgpService(Service):
     def _clean_linux_data(self, processed_data, raw_data):
 
         return self._clean_cumulus_data(processed_data, raw_data)
+
+    def _clean_ios_data(self, processed_data, raw_data):
+
+        drop_indices = []
+        vrf_peer_dict = {}
+
+        for i, entry in enumerate(processed_data):
+            check_peer_key = f"{entry['peer']}-{entry['peerAsn']}"
+            if entry.get('_entryType', ''):
+                drop_indices.append(i)
+                # Find the matching entry in the already processed data
+                if check_peer_key in vrf_peer_dict:
+                    old_entry = vrf_peer_dict[check_peer_key]
+                    if entry['statePfx'].isdecimal():
+                        old_entry['pfxRx'] = int(entry['statePfx'])
+                    old_entry['routerId'] = entry['routerId']
+                    old_entry['asn'] = entry['asn']
+                continue
+            else:
+                vrf_peer_dict[check_peer_key] = entry
+
+            bfd_status = entry.get('bfdStatus', 'disabled').lower()
+            if not bfd_status or (bfd_status == "unknown"):
+                bfd_status = "disabled"
+            entry['bfdStatus'] = bfd_status
+
+            entry['peerIP'] = entry['peer']
+            if entry.get('state', '') != 'Established':
+                entry['state'] = 'NotEstd'
+
+            entry['communityTypes'] = []  # We don't parse this yet
+            entry['numChanges'] = (int(entry.get('_numConnEstd', 0) or 0) +
+                                   int(entry.get('_numConnDropped', 0) or 0))
+            if not entry.get('vrf', ''):
+                entry['vrf'] = 'default'
+            if entry.get('afi', ''):
+                entry['afi'] = entry['afi'].lower()
+            if entry.get('safi', ''):
+                entry['safi'] = entry['safi'].lower()
+            # IOS gives uptime/downtime as hh:mm:ss string always
+            # dateparser interprets this as a specific time, and so
+            # we need to fix that
+            estdTime = entry.get('estdTime', '').split(':')
+            if estdTime != ['']:
+                estdTime = f'{estdTime[0]} hour {estdTime[1]}:{estdTime[2]} mins ago'
+                estdTime = parse(
+                    estdTime,
+                    settings={'RELATIVE_BASE':
+                              datetime.fromtimestamp(
+                                  (raw_data[0]['timestamp'])/1000), })
+            if estdTime and estdTime != ['']:
+                entry['estdTime'] = int(estdTime.timestamp()*1000)
+            if entry.get('rrclient', '') == '':
+                entry['rrclient'] = 'False'
+            else:
+                entry['rrclient'] = 'True'
+
+            entry['afisAdvOnly'] = [x.lower()
+                                    for x in entry.get('afisAdvOnly', [])]
+            entry['afisRcvOnly'] = [x.replace('E-VPN', 'EVPN').lower()
+                                    for x in entry.get('afisRcvOnly', [])]
+
+        processed_data = np.delete(processed_data, drop_indices).tolist()
+        return processed_data
+
+    def _clean_iosxe_data(self, processed_data, raw_data):
+        return self._clean_ios_data(processed_data, raw_data)
