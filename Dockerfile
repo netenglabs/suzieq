@@ -1,15 +1,9 @@
-FROM python:3.7.10-slim-buster AS compiler
+FROM ddutt/suzieq-base:latest AS compiler
 
-ENV PATH=/root/.local/bin:$PATH
-ENV PYTHONPATH=/root/.local/lib
-
-RUN apt-get update && \
-    pip install --upgrade pip
+ARG version
 
 RUN mkdir -p /suzieq/
 WORKDIR /suzieq
-
-ARG version
 
 COPY dist/suzieq-$version-py3-none-any.whl  /tmp/
 RUN pip install /tmp//suzieq-$version-py3-none-any.whl
