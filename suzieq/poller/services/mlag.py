@@ -115,8 +115,8 @@ class MlagService(Service):
             entry['mlagSinglePortsList'] = []
             entry['mlagErrorPortsList'] = []
 
-            for port_info in zip(entry['_localInterfaceList'],
-                                 entry['_linkStateList']):
+            for port_info in zip(entry.get('_localInterfaceList', []),
+                                 entry.get('_linkStateList', [])):
                 if port_info[1] == 'active-full':
                     entry['mlagDualPortsList'].append(port_info[0])
                 elif port_info[1] == 'active-partial':
