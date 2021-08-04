@@ -132,12 +132,12 @@ class InterfaceService(Service):
                 )
                 new_list.append(primary_ip)
                 for elem in munge_entry["secondaryIpsOrderedList"]:
-                    ip = elem["address"] + "/" + elem["maskLen"]
+                    ip = elem["address"] + "/" + str(elem["maskLen"])
                     new_list.append(ip)
                 if 'virtualIp' in munge_entry:
                     elem = munge_entry['virtualIp']
                     if elem["address"] != "0.0.0.0":
-                        ip = f'{elem["address"]}/{elem["maskLen"]}'
+                        ip = f'{elem["address"]}/{str(elem["maskLen"])}'
                         new_list.append(ip)
                 entry["ipAddressList"] = new_list
 
