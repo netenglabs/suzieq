@@ -1,0 +1,25 @@
+service: inventory
+show-fields:
+  - ifname
+  - partNumber
+  - serialNumber
+  - description
+
+apply:
+  eos:
+    version: all
+    commands: show inventory
+    normalize: 'xcvrSlots/*:portNumber/
+    "modelName: model",
+    "serialNum: serialNum",
+    "hardware: hardware",
+    "mfgName: mfgName"
+    ]'
+
+  junos:
+    version: all
+    commands: show chassis hardware
+    textfsm: textfsm_templates/junos_show_chassis_hardware.tfsm
+
+
+    
