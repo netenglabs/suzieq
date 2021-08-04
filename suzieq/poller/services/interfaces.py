@@ -631,7 +631,7 @@ class InterfaceService(Service):
                 entry['macaddr'] = "00:00:00:00:00:00"
                 continue
 
-            speed = entry['speed']
+            speed = entry.get('speed', '')
             if speed == '':
                 speed = 0
             entry['speed'] = int(speed)/1000  # is in Kbps
