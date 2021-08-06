@@ -410,7 +410,7 @@ class Node(object):
 
         if output[0]["status"] == 0:
             data = output[0]["data"]
-            if "Arista " in data:
+            if 'Arista' in data or 'vEOS' in data:
                 devtype = "eos"
             elif "JUNOS " in data:
                 model = re.search(r'Model:\s+(\S+)', data)
@@ -435,8 +435,6 @@ class Node(object):
                 devtype = "iosxe"
             elif "Cisco IOS Software" in data:
                 devtype = "ios"
-            elif any(x in data for x in ['vEOS', 'Arista']):
-                devtype = "eos"
 
             if devtype.startswith("junos"):
                 hmatch = re.search(r'Hostname:\s+(\S+)\n', data)
