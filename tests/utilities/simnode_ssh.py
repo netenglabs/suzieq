@@ -15,6 +15,7 @@ class MySSHServerSession(asyncssh.SSHServerSession):
         self.prompt = '# '
         self.vendor = 'cisco'
         self.sample_data_dir = './tests/integration/nossim/'
+        self._status = 0
 
     def get_testinput_dir(self):
         '''Get the dir where the test input data is stored'''
@@ -38,6 +39,8 @@ class MySSHServerSession(asyncssh.SSHServerSession):
             f'{self.sample_data_dir}/{self.device}/show_version{fmt}',
             'show run hostname':
             f'{self.sample_data_dir}/{self.device}/show_run_hostname{fmt}',
+            'show hostname':
+            f'{self.sample_data_dir}/{self.device}/show_hostname{fmt}',
             'show interfaces':
             f'{self.sample_data_dir}/{self.device}/show_interfaces{fmt}',
             'show ethernet-switching table detail':
@@ -58,6 +61,18 @@ class MySSHServerSession(asyncssh.SSHServerSession):
             f'{self.sample_data_dir}/{self.device}/show_bgp_all_neighbors{fmt}',
             'show bgp all summary':
             f'{self.sample_data_dir}/{self.device}/show_bgp_all_summary{fmt}',
+            'show inventory':
+            f'{self.sample_data_dir}/{self.device}/show_inventory{fmt}',
+            'show ip interfaces':
+            f'{self.sample_data_dir}/{self.device}/show_ip_interfaces{fmt}',
+            'show ipv6 interfaces':
+            f'{self.sample_data_dir}/{self.device}/show_ipv6_interfaces{fmt}',
+            'show vrf detail':
+            f'{self.sample_data_dir}/{self.device}/show_vrf_detail{fmt}',
+            'show chassis hardware':
+            f'{self.sample_data_dir}/{self.device}/show_chassis_hardware{fmt}',
+            'show interface trasnsceiver':
+            f'{self.sample_data_dir}/{self.device}/show_interface_transceiver{fmt}',
         }
 
         return self.cmd_data.get(command, '')
@@ -77,6 +92,9 @@ class MySSHServerSession(asyncssh.SSHServerSession):
         if cmdfile:
             with open(cmdfile, 'r') as f:
                 data = f.read()
+            self._status = 0
+        else:
+            self._status = -1
 
         return data
 
@@ -97,12 +115,13 @@ class MySSHServerSession(asyncssh.SSHServerSession):
         self._chan.write(self.prompt)
 
     def session_started(self):
-        if self._data:
+        if self._status == 0:
             self._chan.write(self._data)
             self._chan.exit(0)
         elif not self.run_as_shell:
             self._chan.exit(1)
         elif self.run_as_shell:
+            self._chan.write('Command not found\n')
             self._chan.write(f'{self.prompt}')
 
 
