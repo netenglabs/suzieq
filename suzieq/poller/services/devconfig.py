@@ -11,7 +11,7 @@ class ConfigService(Service):
         # No processing has been performed on the raw data. So processed_data
         # is empty
 
-        if 'output' in raw_data[0].get('data', {}):
+        if 'output' in raw_data[0].get('data', {}).keys():
             data = raw_data[0].get('data', {'output': {}}).get('output', "")
         else:
             data = raw_data[0].get('data', '')
