@@ -1,4 +1,8 @@
 service: inventory
+keys:
+  - model
+  - partNum
+  - serialNum
 show-fields:
   - ifname
   - partNumber
@@ -8,18 +12,40 @@ show-fields:
 apply:
   eos:
     version: all
-    commands: show inventory
-    normalize: 'xcvrSlots/*:portNumber/
-    "modelName: model",
-    "serialNum: serialNum",
-    "hardware: hardware",
-    "mfgName: mfgName"
+    command: show inventory
+    normalize: '[
+    "xcvrSlots: _xcvrSlots",
+    "powerSupplySlots: _powerSupplySlots",
+    "fanTraySlots: _fanTraySlots",
+    "systemInformation: _systemInfo"
     ]'
 
   junos:
     version: all
-    commands: show chassis hardware
-    textfsm: textfsm_templates/junos_show_chassis_hardware.tfsm
+    command: show chassis hardware | display json
+    normalize: 'chassis-inventory/chassis/chassis-module/*/[
+    "name/data[0]: unit?|",
+    ]'
 
+  nxos:
+   version: all
+   command: 
+    - command: show inventory | json native
+      normalize: 'TABLE_inv/ROW_inv/*/[
+      "name: unit?|",
+      "desc: description?|",
+      "serialnum: serialNum?|",
+      "produtid: productId?|",
+      "type: type?|",
+      ]'
 
-    
+    - command: show interface trasnsceiver | json native
+      normalize: 'TABLE_interface/ROW_interface/*/[
+      "interface: unit?|",
+      "sfp: _sfp?|",
+      "name: mfgName",
+      "type: type",
+      "partnum: partNum?|",
+      "serialnum: serialNum?|",
+      "cisco_product_id: productId?|",
+      ]'
