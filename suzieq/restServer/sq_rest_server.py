@@ -4,7 +4,7 @@ import uvicorn
 import argparse
 import sys
 import os
-from suzieq.utils import load_sq_config, get_sq_install_dir, get_log_file_level
+from suzieq.utils import load_sq_config, get_sq_install_dir, get_log_params
 
 from suzieq.restServer.query import app_init
 
@@ -37,14 +37,14 @@ def get_log_config_level(cfg):
     log_config['handlers']['default']['maxBytes'] = 10_000_000
     log_config['handlers']['default']['backupCount'] = 2
 
-    logfile, loglevel = get_log_file_level(
+    logfile, loglevel, logsize = get_log_params(
         'rest', cfg, '/tmp/sq-rest-server.log')
     log_config['handlers']['access']['filename'] = logfile
     del(log_config['handlers']['access']['stream'])
     log_config['handlers']['default']['filename'] = logfile
     del(log_config['handlers']['default']['stream'])
 
-    return log_config, loglevel
+    return log_config, loglevel, logsize
 
 
 def rest_main(args=None):
@@ -83,12 +83,13 @@ def rest_main(args=None):
     if no_https:
         uvicorn.run(app, host=srvr_addr, port=srvr_port,
                     log_level=loglevel.lower(),
-                    log_config=logcfg)
+                    log_config=logcfg, log_size=logsize)
     else:
         ssl_keyfile, ssl_certfile = get_cert_files(cfg)
         uvicorn.run(app, host=srvr_addr, port=srvr_port,
                     log_level=loglevel.lower(),
                     log_config=logcfg,
+                    log_size=logsize,
                     ssl_keyfile=ssl_keyfile,
                     ssl_certfile=ssl_certfile)
 

@@ -640,8 +640,8 @@ def build_query_str(skip_fields: list, schema, **kwargs) -> str:
     return query_str
 
 
-def get_log_file_level(prog: str, cfg: dict, def_logfile: str) -> tuple:
-    """Get the log file and level for the given program in the config dict
+def get_log_params(prog: str, cfg: dict, def_logfile: str) -> tuple:
+    """Get the log file, level and size for the given program from config
 
     The logfile is supposed to be defined by a variable called logfile
     within the hierarchy of the config dictionary. Thus, the poller log file
@@ -651,21 +651,26 @@ def get_log_file_level(prog: str, cfg: dict, def_logfile: str) -> tuple:
                       coaelscer, and rest.
     :param cfg: dict, The config dictionary
     :param def_logfile: str, The default log file to return
-    :returns: log file name and log level
-    :rtype: str and str
+    :returns: log file name, log level, log size
+    :rtype: str, str and int
 
     """
     if cfg:
         logfile = cfg.get(prog, {}).get('logfile', def_logfile)
         loglevel = cfg.get(prog, {}).get('logging-level', 'WARNING')
+        logsize = cfg.get(prog, {}).get('logsize', 10000000)
     else:
         logfile = def_logfile
         loglevel = 'WARNING'
+        logsize = 10000000
 
-    return logfile, loglevel
+    return logfile, loglevel, logsize
 
 
-def init_logger(logname: str, logfile: str, loglevel: str = 'WARNING',
+def init_logger(logname: str,
+                logfile: str,
+                loglevel: str = 'WARNING',
+                logsize: int = 10000000,
                 use_stdout: bool = False) -> logging.Logger:
     """Initialize the logger
 
@@ -679,7 +684,7 @@ def init_logger(logname: str, logfile: str, loglevel: str = 'WARNING',
     # this needs to be suzieq.poller, so that it is the root of all the other pollers
     logger = logging.getLogger(logname)
     logger.setLevel(loglevel.upper())
-    fh = RotatingFileHandler(logfile, maxBytes=10000000, backupCount=2)
+    fh = RotatingFileHandler(logfile, maxBytes=logsize, backupCount=2)
     formatter = logging.Formatter(
         "%(asctime)s - %(name)s - %(levelname)s " "- %(message)s"
     )
