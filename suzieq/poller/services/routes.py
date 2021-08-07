@@ -1,3 +1,4 @@
+import re
 from dateparser import parse
 from datetime import datetime
 
@@ -192,6 +193,9 @@ class RoutesService(Service):
             else:
                 entry['action'] = 'forward'
 
+            # Right now we only store the timestamp of the first NH change
+            # The correct thing to do is to take all NH timestamps, and take
+            # the latest one: TODO
             lastChange = entry.get('statusChangeTimestamp', [''])[0]
             if lastChange:
                 entry['statusChangeTimestamp'] = get_timestamp_from_cisco_time(
@@ -241,8 +245,13 @@ class RoutesService(Service):
                 entry['action'] = 'forward'
             else:
                 entry['action'] = entry.get('action', '').lower()
+
             lastchange = entry.get('statusChangeTimestamp', '')
             if lastchange:
+                if re.match(r'^\d{2}:\d{2}:\d{2}$', lastchange):
+                    lastchange = lastchange.split(':')
+                    lastchange = (f'{lastchange[0]} hour '
+                                  f'{lastchange[1]}:{lastchange[2]} mins ago')
                 lastchange = parse(
                     lastchange,
                     settings={'RELATIVE_BASE':
