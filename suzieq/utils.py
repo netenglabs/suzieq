@@ -501,7 +501,11 @@ def get_timestamp_from_cisco_time(input, timestamp):
         return 0
     months = days = hours = mins = secs = 0
 
-    day, timestr = input[1:].split('T')
+    if 'T' in input:
+        day, timestr = input[1:].split('T')
+    else:
+        day = input[1:]
+        timestr = ''
 
     if 'Y' in day:
         years, day = day.split('Y')
