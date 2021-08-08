@@ -634,15 +634,6 @@ class Service(object):
                 # and we're reading inputs from a file
                 if nodename == '_filedata' and status == HTTPStatus.NO_CONTENT:
                     return
-                # Don't write the error every time the failure happens
-                if write_poller_stat:
-                    if nodename in self._failed_node_set:
-                        write_poller_stat = False
-                    else:
-                        self._failed_node_set.add(nodename)
-                elif nodename in self._failed_node_set:
-                    # So there was no error in this command that had failed b4
-                    self._failed_node_set.remove(nodename)
 
                 # Process data independent of status to return an empty list
                 # so that the output can be updated. For example, if a service
@@ -660,10 +651,23 @@ class Service(object):
                 try:
                     result = self.process_data(output)
                 except Exception:
+                    result = []
+                    status = HTTPStatus.BAD_GATEWAY
+                    write_poller_stat = True
                     self.logger.exception(
                         f'Processing data failed for service '
                         f'{self.name} on node {nodename}')
-                    result = []
+
+                # Don't write the error every time the failure happens
+                if write_poller_stat:
+                    if nodename in self._failed_node_set:
+                        write_poller_stat = False
+                    else:
+                        self._failed_node_set.add(nodename)
+                elif nodename in self._failed_node_set:
+                    # So there was no error in this command that had failed b4
+                    self._failed_node_set.remove(nodename)
+
                 # If a node from init state to good state, hostname will change
                 # So fix that in the node list
                 hostname = output[0]["hostname"]
@@ -675,6 +679,7 @@ class Service(object):
                         return
                     continue
 
+                # Check if a node has rebooted
                 if token.bootupTimestamp != self.node_boot_times[hostname]:
                     self.node_boot_times[hostname] = token.bootupTimestamp
                     # Flush the prev results data for this node
