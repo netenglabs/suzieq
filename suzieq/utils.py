@@ -116,12 +116,7 @@ def load_sq_config(validate=True, config_file=None):
     cfgfile = None
     cfg = None
 
-    if config_file:
-        cfgfile = config_file
-    elif os.path.exists("./suzieq-cfg.yml"):
-        cfgfile = "./suzieq-cfg.yml"
-    elif os.path.exists(os.getenv("HOME") + "/.suzieq/suzieq-cfg.yml"):
-        cfgfile = os.getenv("HOME") + "/.suzieq/suzieq-cfg.yml"
+    cfgfile = sq_get_config_file(config_file)
 
     if cfgfile:
         try:
@@ -148,6 +143,18 @@ def load_sq_config(validate=True, config_file=None):
         sys.exit(1)
 
     return cfg
+
+
+def sq_get_config_file(config_file):
+    """Get the path to the suzieq config file"""
+
+    if config_file:
+        cfgfile = config_file
+    elif os.path.exists("./suzieq-cfg.yml"):
+        cfgfile = "./suzieq-cfg.yml"
+    elif os.path.exists(os.getenv("HOME") + "/.suzieq/suzieq-cfg.yml"):
+        cfgfile = os.getenv("HOME") + "/.suzieq/suzieq-cfg.yml"
+    return cfgfile
 
 
 class Schema(object):
