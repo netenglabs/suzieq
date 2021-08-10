@@ -4,9 +4,9 @@
 
 This release fixes a bunch of critical issues associated with release 0.14.0.
 
-* #399: IOSXE devices were not being recognnized correctly
-* #400: Mlag parser fails when there are no configured server ports on EOS
-* #401: Secondary IP addresses on Arista interfaces causes interface parser to crash
+* Issue 399: IOSXE devices were not being recognnized correctly
+* Issue 400: Mlag parser fails when there are no configured server ports on EOS
+* Issue 401: Secondary IP addresses on Arista interfaces causes interface parser to crash
 * Fix Cisco's JSON time parser when only days were specified
 * Fix Cisco's non-JSON time parser to handle various time formats provide by IOS platforms
 * Fix NXOS VPC parser to not fail when orphan ports are not configured
