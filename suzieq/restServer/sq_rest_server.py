@@ -74,7 +74,7 @@ def rest_main(args=None):
         print('missing API_KEY in config file')
         exit(1)
 
-    logfile, loglevel = get_log_config_level(cfg)
+    logcfg, loglevel = get_log_config_level(cfg)
 
     no_https = cfg.get('rest', {}).get('no-https', False)
     no_https = no_https or userargs.no_https
@@ -85,12 +85,12 @@ def rest_main(args=None):
     if no_https:
         uvicorn.run(app, host=srvr_addr, port=srvr_port,
                     log_level=loglevel.lower(),
-                    log_config=logfile)
+                    log_config=logcfg)
     else:
         ssl_keyfile, ssl_certfile = get_cert_files(cfg)
         uvicorn.run(app, host=srvr_addr, port=srvr_port,
                     log_level=loglevel.lower(),
-                    log_config=logfile,
+                    log_config=logcfg,
                     ssl_keyfile=ssl_keyfile,
                     ssl_certfile=ssl_certfile)
 
