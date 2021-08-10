@@ -10,7 +10,7 @@ This release fixes a bunch of critical issues associated with release 0.14.0.
 * Fix Cisco's JSON time parser when only days were specified
 * Fix Cisco's non-JSON time parser to handle various time formats provide by IOS platforms
 * Fix NXOS VPC parser to not fail when orphan ports are not configured
-^ When specifying time as in "1 min ago" or "2 hours ago", the data returned was not consistent with
+* When specifying time as in "1 min ago" or "2 hours ago", the data returned was not consistent with
   what was returned when specifying precise times.
 * Provide user-specifable option to specify the logsize of the various suzieq loggers (REST, Poller etc.). 
   See the suzieq/config/etc/suzieq-cfg.yml file for logsize specification.
