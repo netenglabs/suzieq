@@ -1,5 +1,22 @@
 # Release Notes
 
+## 0.14.1 (Aug 10, 2021)
+
+This release fixes a bunch of critical issues associated with release 0.14.0.
+
+* #399: IOSXE devices were not being recognnized correctly
+* #400: Mlag parser fails when there are no configured server ports on EOS
+* #401: Secondary IP addresses on Arista interfaces causes interface parser to crash
+* Fix Cisco's JSON time parser when only days were specified
+* Fix Cisco's non-JSON time parser to handle various time formats provide by IOS platforms
+* Fix NXOS VPC parser to not fail when orphan ports are not configured
+^ When specifying time as in "1 min ago" or "2 hours ago", the data returned was not consistent with
+  what was returned when specifying precise times.
+* Provide user-specifable option to specify the logsize of the various suzieq loggers (REST, Poller etc.). 
+  See the suzieq/config/etc/suzieq-cfg.yml file for logsize specification.
+* Add tests to validate REST server startup with and without HTTPS support.
+* Improved the container build process to ensure we don't rebuild everything when dependent libraries 
+   have not changed. This results in smaller uploads and therefore faster pulls.
 ## 0.14.0 (Aug 1, 2021)
 
 The major features in this release are the support for IOS/IOSXE network operating systems and a revamped REST API. This version also fixes a subtle but critical coaleescer issue.
