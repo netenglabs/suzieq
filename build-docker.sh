@@ -21,4 +21,8 @@ if [ -z "$BASE_EXISTS" ]; then
     docker build -t suzieq-base:$VERSION -f Dockerfile-sqbase .
 fi
 echo "Building image ddutt/suzieq:$BUILD_TAG"
-docker build --build-arg version=$VERSION -t ddutt/suzieq:$BUILD_TAG -t netenglabs/suzieq:$BUILD_TAG .
+if [ $# -eq 0 ]; then
+    docker build --build-arg version=$VERSION -t ddutt/suzieq:$BUILD_TAG -t netenglabs/suzieq:$BUILD_TAG .
+else
+    docker build --build-arg version=$VERSION -t ddutt/suzieq:$BUILD_TAG -ddutt/suzieq:latest -t netenglabs/suzieq:$BUILD_TAG -t netenglabs/suzieq:latest .
+fi
