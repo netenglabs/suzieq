@@ -18,12 +18,16 @@ rest:
   # rest-certfile: /secrets/cert.pem
   # rest-keyfile: /secrets/key.pem
   # logfile: /tmp/sq-rest-server.log
+  # logsize is in bytes
+  # logsize: 10000000
 
 poller:
   logging-level: WARNING
   period: 60
   connect-timeout: 15
   # logfile: /tmp/sq-poller.log
+  # logsize is in bytes
+  # logsize: 10000000
 #  
 
 coalescer:
@@ -38,6 +42,8 @@ coalescer:
   archive-directory:
   logging-level: WARNING
   # logfile: /tmp/sq-coalescer.log
+  # logsize is specified in bytes
+  # logsize: 10000000
 
 analyzer:
   # By default, the timezone is set to the local timezone. Uncomment

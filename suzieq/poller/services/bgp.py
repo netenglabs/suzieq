@@ -1,3 +1,4 @@
+import re
 import numpy as np
 from dateparser import parse
 from datetime import datetime
@@ -515,9 +516,11 @@ class BgpService(Service):
             # IOS gives uptime/downtime as hh:mm:ss string always
             # dateparser interprets this as a specific time, and so
             # we need to fix that
-            estdTime = entry.get('estdTime', '').split(':')
-            if estdTime != ['']:
-                estdTime = f'{estdTime[0]} hour {estdTime[1]}:{estdTime[2]} mins ago'
+            estdTime = entry.get('estdTime', '')
+            if estdTime:
+                if re.match(r'^\d{2}:\d{2}:\d{2}$', estdTime):
+                    estdTime = estdTime.split(':')
+                    estdTime = f'{estdTime[0]} hour {estdTime[1]}:{estdTime[2]} mins ago'
                 estdTime = parse(
                     estdTime,
                     settings={'RELATIVE_BASE':

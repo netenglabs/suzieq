@@ -2,10 +2,11 @@ import os
 import json
 import pytest
 from fastapi.testclient import TestClient
+from filelock import FileLock
 
 from tests.conftest import cli_commands, create_dummy_config_file
 
-from suzieq.restServer.query import app, get_configured_api_key, API_KEY_NAME
+from suzieq.restServer.query import app, get_configured_api_key, API_KEY_NAME, rest_main
 
 ENDPOINT = "http://localhost:8000/api/v2"
 
@@ -270,17 +271,50 @@ def get(endpoint, service, verb, args):
     (cmd, verb, filter) for cmd in cli_commands
     for verb in VERBS for filter in FILTERS
 ])
-def test_rest_services(start_server, service, verb, arg):
+def test_rest_services(app_initialize, service, verb, arg):
     get(ENDPOINT, service, verb, arg)
 
 
-@ pytest.fixture(scope="session")
-def start_server():
-
+@pytest.fixture()
+def app_initialize():
     from suzieq.restServer.query import app_init
 
     cfgfile = create_dummy_config_file(
         datadir='./tests/data/multidc/parquet-out')
     app_init(cfgfile)
     yield
+    os.remove(cfgfile)
+
+
+# The basic test harness for fastapi doesn't really start a server
+# so we need to test this separately. xdist tries to run tests in parallel
+# which screws things up. So, we run server with & without https sequentially
+# For some reason, putting the no_https in a for loop didn't work either
+@pytest.mark.rest
+def test_rest_server():
+    from multiprocessing import Process
+    from time import sleep
+    import requests
+
+    cfgfile = create_dummy_config_file(
+        datadir='./tests/data/multidc/parquet-out')
+
+    server = Process(target=rest_main, args=(cfgfile, True))
+    server.start()
+    assert (server.is_alive())
+    sleep(1)
+    assert (server.is_alive())
+    assert(requests.get('http://localhost:8000/api/docs'))
+    server.terminate()
+    server.join()
+
+    server = Process(target=rest_main, args=(cfgfile, False))
+    server.start()
+    assert (server.is_alive())
+    sleep(1)
+    assert (server.is_alive())
+    assert (requests.get("https://localhost:8000/api/docs", verify=False))
+    server.terminate()
+    server.join()
+
     os.remove(cfgfile)

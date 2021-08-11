@@ -132,12 +132,12 @@ class InterfaceService(Service):
                 )
                 new_list.append(primary_ip)
                 for elem in munge_entry["secondaryIpsOrderedList"]:
-                    ip = elem["address"] + "/" + elem["maskLen"]
+                    ip = elem["address"] + "/" + str(elem["maskLen"])
                     new_list.append(ip)
                 if 'virtualIp' in munge_entry:
                     elem = munge_entry['virtualIp']
                     if elem["address"] != "0.0.0.0":
-                        ip = f'{elem["address"]}/{elem["maskLen"]}'
+                        ip = f'{elem["address"]}/{str(elem["maskLen"])}'
                         new_list.append(ip)
                 entry["ipAddressList"] = new_list
 
@@ -631,7 +631,7 @@ class InterfaceService(Service):
                 entry['macaddr'] = "00:00:00:00:00:00"
                 continue
 
-            speed = entry['speed']
+            speed = entry.get('speed', '')
             if speed == '':
                 speed = 0
             entry['speed'] = int(speed)/1000  # is in Kbps
@@ -642,17 +642,21 @@ class InterfaceService(Service):
                 entry['state'] = 'up'
 
             iftype = entry.get('type', 'ethernet').lower()
-            if 'aggregated ethernet' in iftype:
+            if iftype in ['aggregated ethernet', 'gechannel']:
                 iftype = 'bond'
             elif iftype in ['ethernet', 'igbe', 'csr']:
                 iftype = 'ethernet'
             elif iftype.endswith('gige'):
                 iftype = 'ethernet'
+            elif iftype.endswith('ge'):
+                # Is this safe, assuming just ge ending means GigE?
+                iftype = 'ethernet'
             entry['type'] = iftype
 
             bondMbrs = entry.get('_bondMbrs', []) or []
-            if type == 'bond' and bondMbrs:
+            if iftype == 'bond' and bondMbrs:
                 for mbr in bondMbrs:
+                    mbr = mbr.strip()
                     if mbr in entry_dict:
                         mbr_entry = entry_dict[mbr]
                         mbr_entry['type'] = 'bond_slave'

@@ -76,11 +76,11 @@ class MlagService(Service):
 
             mlagSinglePorts = list(filter(
                 lambda x: x == '1',
-                entry.get('_forwardViaPeerLinkList', [])))
+                entry.get('_forwardViaPeerLinkList', []) or []))
             mlagErrorPorts = list(filter(
                 lambda x: x != 'consistent',
-                entry.get('_portConfigSanityList', [])))
-            mlagDualPorts = entry.get('_portList', [])
+                entry.get('_portConfigSanityList', []) or []))
+            mlagDualPorts = entry.get('_portList', []) or []
             mlagDualPorts = list(filter(
                 lambda x: x not in mlagSinglePorts and x not in mlagErrorPorts,
                 mlagDualPorts))
@@ -115,8 +115,8 @@ class MlagService(Service):
             entry['mlagSinglePortsList'] = []
             entry['mlagErrorPortsList'] = []
 
-            for port_info in zip(entry['_localInterfaceList'],
-                                 entry['_linkStateList']):
+            for port_info in zip(entry.get('_localInterfaceList', []),
+                                 entry.get('_linkStateList', [])):
                 if port_info[1] == 'active-full':
                     entry['mlagDualPortsList'].append(port_info[0])
                 elif port_info[1] == 'active-partial':

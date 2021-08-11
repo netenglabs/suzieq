@@ -57,6 +57,10 @@ class MySSHServerSession(asyncssh.SSHServerSession):
             f'{self.sample_data_dir}/{self.device}/show_ip_route{fmt}',
             'show ipv6 route vrf *':
             f'{self.sample_data_dir}/{self.device}/show_ipv6_route{fmt}',
+            'show bgp all neighbors':
+            f'{self.sample_data_dir}/{self.device}/show_bgp_all_neighbors{fmt}',
+            'show bgp all summary':
+            f'{self.sample_data_dir}/{self.device}/show_bgp_all_summary{fmt}',
             'show inventory':
             f'{self.sample_data_dir}/{self.device}/show_inventory{fmt}',
             'show ip interfaces':

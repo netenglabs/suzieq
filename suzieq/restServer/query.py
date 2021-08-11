@@ -1,4 +1,6 @@
 from typing import Optional, Sequence, List
+import os
+import argparse
 import json
 import sys
 from enum import Enum
@@ -12,7 +14,8 @@ import logging
 import uvicorn
 
 from suzieq.sqobjects import *
-from suzieq.utils import load_sq_config
+from suzieq.utils import (load_sq_config, get_sq_install_dir, get_log_params,
+                          sq_get_config_file)
 
 API_KEY_NAME = 'access_token'
 
@@ -68,6 +71,86 @@ async def get_api_key(api_key_query: str = Security(api_key_query),
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid API Key",
         )
+
+
+def get_cert_files(cfg):
+    sqdir = get_sq_install_dir()
+    ssl_certfile = cfg.get('rest', {}) \
+                      .get('rest-certfile', f'{sqdir}/config/etc/cert.pem')
+
+    ssl_keyfile = cfg.get('rest', {}) \
+                     .get('rest-keyfile', f'{sqdir}/config/etc/key.pem')
+
+    if not os.path.isfile(ssl_certfile):
+        print(f"ERROR: Missing certificate file: {ssl_certfile}")
+        sys.exit(1)
+
+    if not os.path.isfile(ssl_keyfile):
+        print(f"ERROR: Missing certificate file: {ssl_keyfile}")
+        sys.exit(1)
+
+    return ssl_keyfile,  ssl_certfile
+
+
+def get_log_config_level(cfg):
+
+    logfile, loglevel, logsize = get_log_params(
+        'sq-rest-server', cfg, '/tmp/sq-rest-server.log')
+
+    log_config = uvicorn.config.LOGGING_CONFIG
+    log_config['handlers']['access']['class'] = 'logging.handlers.RotatingFileHandler'
+    log_config['handlers']['access']['maxBytes'] = logsize
+    log_config['handlers']['access']['backupCount'] = 2
+    log_config['handlers']['default']['class'] = 'logging.handlers.RotatingFileHandler'
+    log_config['handlers']['default']['maxBytes'] = logsize
+    log_config['handlers']['default']['backupCount'] = 2
+
+    log_config['handlers']['access']['filename'] = logfile
+    if 'stream' in log_config['handlers']['access']:
+        del log_config['handlers']['access']['stream']
+
+    log_config['handlers']['default']['filename'] = logfile
+    if 'stream' in log_config['handlers']['default']:
+        del log_config['handlers']['default']['stream']
+
+    return log_config, loglevel
+
+
+def rest_main(config_file: str, no_https: bool) -> None:
+    """The main function for the REST server
+
+    Args:
+        config_file (str): The suzieq config file
+        no_https (bool): If true, disable https
+    """
+
+    config_file = sq_get_config_file(config_file)
+    app = app_init(config_file)
+    cfg = load_sq_config(config_file=config_file)
+    try:
+        api_key = cfg['rest']['API_KEY']
+    except KeyError:
+        print('missing API_KEY in config file')
+        exit(1)
+
+    logcfg, loglevel = get_log_config_level(cfg)
+
+    no_https = cfg.get('rest', {}).get('no-https', False) or no_https
+
+    srvr_addr = cfg.get('rest', {}).get('address', '127.0.0.1')
+    srvr_port = cfg.get('rest', {}).get('port', 8000)
+
+    if no_https:
+        uvicorn.run(app, host=srvr_addr, port=srvr_port,
+                    log_level=loglevel.lower(),
+                    log_config=logcfg)
+    else:
+        ssl_keyfile, ssl_certfile = get_cert_files(cfg)
+        uvicorn.run(app, host=srvr_addr, port=srvr_port,
+                    log_level=loglevel.lower(),
+                    log_config=logcfg,
+                    ssl_keyfile=ssl_keyfile,
+                    ssl_certfile=ssl_certfile)
 
 
 """

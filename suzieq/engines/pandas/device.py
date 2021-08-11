@@ -51,7 +51,8 @@ class DeviceObj(SqPandasEngine):
                 .fillna('N/A')
 
             df.status = np.where(
-                (df['status_y'] != 0) & (df['status_y'] != 200),
+                (df['status_y'] != 0) & (df['status_y'] != 200) &
+                (df['status'] != "dead"),
                 'neverpoll', df['status'])
             df.timestamp = np.where(df['timestamp'] == 0,
                                     df['timestamp_y'], df['timestamp'])

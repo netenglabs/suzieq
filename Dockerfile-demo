@@ -1,14 +1,17 @@
-ARG version
+FROM python:3.7.10-slim-buster AS compiler
 
-FROM suzieq-base:$version AS compiler
+ENV PATH=/root/.local/bin:$PATH
+ENV PYTHONPATH=/root/.local/lib
 
-ARG version
+RUN apt-get update && \
+    pip install --upgrade pip
 
 RUN mkdir -p /suzieq/
 WORKDIR /suzieq
 
+ARG version
 
-COPY ./dist/suzieq-$version-py3-none-any.whl  /tmp/
+COPY dist/suzieq-$version-py3-none-any.whl  /tmp/
 RUN pip install /tmp//suzieq-$version-py3-none-any.whl
 COPY suzieq/config/etc/suzieq-cfg.yml /root/.suzieq/suzieq-cfg.yml
 
@@ -16,7 +19,7 @@ COPY suzieq/config/etc/suzieq-cfg.yml /root/.suzieq/suzieq-cfg.yml
 #COPY logo-small.jpg /suzieq
 
 # Copy parquet files for demo
-# COPY ./parquet /suzieq/parquet
+COPY ./parquet /suzieq/parquet
 
 WORKDIR /suzieq
 

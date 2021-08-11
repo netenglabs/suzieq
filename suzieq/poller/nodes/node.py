@@ -431,7 +431,7 @@ class Node(object):
                 devtype = "sonic"
             elif "Cisco IOS XR" in data:
                 devtype = "iosxr"
-            elif "Cisco IOS-XE" in data:
+            elif "Cisco IOS XE" in data:
                 devtype = "iosxe"
             elif "Cisco IOS Software" in data:
                 devtype = "ios"
