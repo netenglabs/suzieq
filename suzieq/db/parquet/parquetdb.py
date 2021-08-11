@@ -633,7 +633,7 @@ class SqParquetDB(SqDB):
                             notinfld.append(e[1:])
                     else:
                         if ftype == 'int64':
-                            if or_filters:
+                            if or_filters is not None:
                                 or_filters = or_filters | \
                                     self._cons_int_filter(k, e)
                             else:
@@ -648,7 +648,7 @@ class SqParquetDB(SqDB):
                 elif notinfld:
                     filters = filters & (~ds.field(k).isin(notinfld))
 
-                if or_filters:
+                if or_filters is not None:
                     filters = filters & (or_filters)
             else:
                 if isinstance(v, str) and v.startswith("!"):
