@@ -1,5 +1,12 @@
 # Release Notes
 
+## 0.14.2 (Aug 12, 2021)
+
+This is a hotfix release if you use the REST API server. 
+
+* Issue 403: REST API server fails to start in the docker container.
+* This also contains a security update for the pywin32 library, which is an unused dependency within the GUI framework, streamlit. Nevertheless, the security update has been applied.
+* We moved to python version 3.7.11. This happened in 0.14.1 itself, but we didn't note it in that release.
 ## 0.14.1 (Aug 10, 2021)
 
 This release fixes a bunch of critical issues associated with release 0.14.0.
