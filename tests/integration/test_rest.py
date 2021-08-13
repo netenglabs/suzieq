@@ -292,29 +292,27 @@ def app_initialize():
 # For some reason, putting the no_https in a for loop didn't work either
 @pytest.mark.rest
 def test_rest_server():
-    from multiprocessing import Process
+    import subprocess
     from time import sleep
     import requests
 
     cfgfile = create_dummy_config_file(
         datadir='./tests/data/multidc/parquet-out')
 
-    server = Process(target=rest_main, args=(cfgfile, True))
-    server.start()
-    assert (server.is_alive())
-    sleep(1)
-    assert (server.is_alive())
+    server = subprocess.Popen(
+        f'./suzieq/restServer/sq_rest_server.py -c {cfgfile} --no-https'.split())
+    sleep(5)
+    assert(server.pid)
     assert(requests.get('http://localhost:8000/api/docs'))
-    server.terminate()
-    server.join()
+    server.kill()
+    sleep(5)
 
-    server = Process(target=rest_main, args=(cfgfile, False))
-    server.start()
-    assert (server.is_alive())
-    sleep(1)
-    assert (server.is_alive())
-    assert (requests.get("https://localhost:8000/api/docs", verify=False))
-    server.terminate()
-    server.join()
+    server = subprocess.Popen(
+        f'./suzieq/restServer/sq_rest_server.py -c {cfgfile} '.split())
+    sleep(5)
+    assert(server.pid)
+    assert(requests.get('https://localhost:8000/api/docs', verify=False))
+    server.kill()
+    sleep(5)
 
     os.remove(cfgfile)

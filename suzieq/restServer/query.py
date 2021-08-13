@@ -116,7 +116,7 @@ def get_log_config_level(cfg):
     return log_config, loglevel
 
 
-def rest_main(config_file: str, no_https: bool) -> None:
+def rest_main(*args) -> None:
     """The main function for the REST server
 
     Args:
@@ -124,7 +124,24 @@ def rest_main(config_file: str, no_https: bool) -> None:
         no_https (bool): If true, disable https
     """
 
-    config_file = sq_get_config_file(config_file)
+    if not args:
+        args = sys.argv
+
+    parser = argparse.ArgumentParser(args)
+    parser.add_argument(
+        "-c",
+        "--config",
+        type=str, help="alternate config file",
+        default=None
+    )
+    parser.add_argument(
+        "--no-https",
+        help="Turn off HTTPS",
+        default=False, action='store_true',
+    )
+    userargs = parser.parse_args()
+
+    config_file = sq_get_config_file(userargs.config)
     app = app_init(config_file)
     cfg = load_sq_config(config_file=config_file)
     try:
@@ -135,7 +152,7 @@ def rest_main(config_file: str, no_https: bool) -> None:
 
     logcfg, loglevel = get_log_config_level(cfg)
 
-    no_https = cfg.get('rest', {}).get('no-https', False) or no_https
+    no_https = cfg.get('rest', {}).get('no-https', False) or userargs.no_https
 
     srvr_addr = cfg.get('rest', {}).get('address', '127.0.0.1')
     srvr_port = cfg.get('rest', {}).get('port', 8000)
