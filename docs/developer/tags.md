@@ -1,5 +1,7 @@
 # Tags for Suzieq and Mfn
 
+__NOTE WELL: THESE ARE IDEAS OF WHAT WE WANT TO DO WITH SUZIEQ, NOTHING OUTSIDE OF NAMESPACE is SUPPORTED YET__
+
 Both Suzieq and Mfn need to be able to have these tags to group things together and they should be the same groups.
 
 When we first think of tags, we think of device tags, but really lots of things need tags. We will want to be able to group interfaces as well. Maybe there are other attributes that need tags.
