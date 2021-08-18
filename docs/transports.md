@@ -3,5 +3,5 @@ This table defines what transports are used with each platform to pull the data.
 
 |         | Cumulus Linux | Arista EOS | Linux | Cisco NXOS | Juniper JunOS |
 | :---------: | :---------------: | :------------: | :-------: | :------: | :-------: |
-| SSH | Yes | No | Yes | Yes | Yes |
+| SSH  | Yes | Yes | Yes | Yes | Yes |
 | REST | No | Yes | No | No | No |
