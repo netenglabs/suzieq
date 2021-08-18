@@ -180,6 +180,11 @@ class QFXServer(MySSHServer):
         super().__init__(device='qfx')
 
 
+class MXServer(MySSHServer):
+    def __init__(self):
+        super().__init__(device='mx')
+
+
 async def start_server(device='iosxr'):
     factory = {
         'iosxr': IOSXRServer,
@@ -187,6 +192,7 @@ async def start_server(device='iosxr'):
         'eos': EOSServer,
         'iosxe': IOSXEServer,
         'qfx': QFXServer,
+        'mx': MXServer,
     }
     await asyncssh.listen('', 10000, server_factory=factory[device],
                           server_host_keys=['/home/ddutt/work/suzieq/play/ssh_host_key'])
