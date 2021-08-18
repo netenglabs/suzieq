@@ -240,12 +240,13 @@ class InterfaceService(Service):
             if not entry.get('macaddr', ''):
                 entry['macaddr'] = '00:00:00:00:00:00'
 
-            if entry['type'] == 'vrf':
+            if entry['type'] in ['vrf', 'virtual-router']:
                 self._assign_vrf(entry, entry_dict)
                 entry['state'] = entry['adminState'] = 'up'
                 entry['mtu'] = 1500
                 if ifname == 'default':
                     drop_indices.append(i)
+                entry['type'] = 'vrf'  # VMX uses virtual-router for VRF
                 continue
 
             if entry['type']:
