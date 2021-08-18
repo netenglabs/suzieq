@@ -182,7 +182,7 @@ apply:
         normalize: 'bgp-information/bgp-peer/*/[
         "peer-address/[0]/data: peer",
         "elapsed-time/[0]/attributes: estdTime?|",
-        "vrf: vrf?|default",
+        "bgp-rib/[*]/name/[0]/data: vrf?|default",
         "entry_type: _entryType?|summary",
         ]'
 
@@ -220,7 +220,7 @@ apply:
         "output-updates/[0]/data: updatesTx?|0",
         "bgp-output-queue/[*]/table-name/[0]/data: _tableNameList",
         "bgp-output-queue/[*]/rib-adv-nlri/[0]/data: _tableAfiList",
-        "vrf: vrf?|default",
+        "bgp-rib/[*]/name/[0]/data: vrf?|default",
         "entry_type: _entryType?|neighbors",
         ]'
 

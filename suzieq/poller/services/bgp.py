@@ -171,8 +171,10 @@ class BgpService(Service):
             entry['estdTime'] = get_timestamp_from_junos_time(
                 entry['estdTime'], raw_data[0]['timestamp']/1000)
 
-            if not entry.get('vrf', None):
-                entry['vrf'] = 'default'
+            # Junos names its VRFs thus: VRFA.inet.0
+            # and we want to strip off the .inet.0 part (Bug #404)
+            if entry.get('vrf') != None:
+                entry['vrf'] = entry.get('vrf', ['default'])[0].split('.')[0]
 
             if entry['state'] != 'Established':
                 entry['afi'] = entry['safi'] = ''
