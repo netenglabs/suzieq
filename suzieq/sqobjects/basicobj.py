@@ -84,6 +84,7 @@ class SqObject(object):
         self._valid_get_args = None
         self._valid_assert_args = None
         self._valid_arg_vals = None
+        self._valid_find_args = None
 
     @property
     def all_schemas(self):

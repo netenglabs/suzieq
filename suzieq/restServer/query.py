@@ -203,6 +203,12 @@ class PathVerbs(str, Enum):
     summarize = "summarize"
 
 
+class NetworkVerbs(str, Enum):
+    show = "show"
+    summarize = "summarize"
+    unique = "unique"
+
+
 class TableVerbs(str, Enum):
     show = "show"
     summarize = "summarize"
@@ -448,6 +454,35 @@ async def query_mlag(verb: CommonVerbs, request: Request,
                      columns: List[str] = Query(default=["default"]),
                      query_str: str = None,
                      ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, request, locals())
+
+
+@app.get("/api/v2/network/find")
+async def query_network_find(request: Request,
+                             token: str = Depends(get_api_key),
+                             format: str = None,
+                             columns: List[str] = Query(default=["default"]),
+                             namespace: List[str] = Query(None),
+                             start_time: str = "", end_time: str = "",
+                             address: str = "", vlan: str = '', vrf: str = '',
+                             resolve_bond: bool = False,
+                             query_str: str = None,
+                             ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, "find", request, locals())
+
+
+@app.get("/api/v2/network/{verb}")
+async def query_network(verb: NetworkVerbs, request: Request,
+                        token: str = Depends(get_api_key),
+                        format: str = None,
+                        columns: List[str] = Query(default=["default"]),
+                        namespace: List[str] = Query(None),
+                        hostname: List[str] = Query(None),
+                        start_time: str = "", end_time: str = "",
+                        query_str: str = None,
+                        ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
 
@@ -723,13 +758,14 @@ def return_error(code: int, msg: str):
     raise HTTPException(status_code=code, detail=msg)
 
 
-@ app.get("/api/v1/{command}", include_in_schema=False)
+@ app.get("/api/v2/{command}", include_in_schema=False)
 def missing_verb(command):
     return_error(
         404, f'{command} command missing a verb. for example '
-        f'/api/v1/{command}/show')
+        f'/api/v2/{command}/show')
 
 
 @ app.get("/", include_in_schema=False)
 def bad_path():
-    return_error(404, "bad path. Try something like '/api/v1/device/show'")
+    return_error(
+        404, "bad path. Try something like '/api/v2/device/show' or '/api/docs'")

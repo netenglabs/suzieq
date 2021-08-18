@@ -1,0 +1,81 @@
+{
+    "namespace": "suzieq",
+    "name": "network",
+    "type": "derivedRecord",
+    "depends": [
+        "device",
+        "interfaces",
+        "routes",
+        "macs",
+        "bgp",
+        "ospf",
+        "evpnVni",
+        "vlan"
+    ],
+    "fields": [
+        {
+            "name": "sqvers",
+            "type": "string",
+            "partition": 0,
+            "default": "2.0"
+        },
+        {
+            "name": "deviceCnt",
+            "type": "long",
+            "display": 1,
+            "description": "Number of devices in inventory in this namespace"
+        },
+        {
+            "name": "serviceCnt",
+            "type": "long",
+            "display": 2,
+            "description": "Number of services polled in this namespace"
+        },
+        {
+            "name": "errSvcCnt",
+            "type": "long",
+            "display": 3,
+            "description": "Number of services with errors in this namespace"
+        },
+        {
+            "name": "hasOspf",
+            "type": "boolean",
+            "display": 4,
+            "description": "Is OSPF used in this namespace"
+        },
+        {
+            "name": "hasBgp",
+            "type": "boolean",
+            "display": 5,
+            "description": "Is BGP used in this namespace"
+        },
+        {
+            "name": "hasVxlan",
+            "type": "boolean",
+            "display": 6,
+            "description": "Is VXLAN used in this namespace"
+        },
+        {
+            "name": "hasMlag",
+            "type": "boolean",
+            "display": 7,
+            "description": "Is MLAG used in this namespace"
+        },
+        {
+            "name": "namespace",
+            "type": "string",
+            "key": 0,
+            "display": 0
+        },
+        {
+            "name": "lastUpdate",
+            "type": "timestamp",
+            "display": 8,
+            "description": "Time when any service was last polled"
+        },
+        {
+            "name": "active",
+            "type": "boolean"
+        }
+    ]
+}
