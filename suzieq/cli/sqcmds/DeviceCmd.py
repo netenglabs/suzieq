@@ -1,4 +1,5 @@
 import time
+import re
 from nubia import command, argument
 import pandas as pd
 
@@ -68,7 +69,14 @@ class DeviceCmd(SqCommand):
             return
 
         now = time.time()
-        df = self._get(os=os.split(), model=model.split(),
+
+        # Model has to be special cased because model names can have
+        # spaces in them such as "Nexus9000 C9300v Chassis"
+        if model:
+            model = re.split(r"\s+(?=[^']*(?:'))", model)
+        else:
+            model = []
+        df = self._get(os=os.split(), model=model,
                        vendor=vendor.split(), status=status.split())
 
         if 'uptime' in df.columns:
