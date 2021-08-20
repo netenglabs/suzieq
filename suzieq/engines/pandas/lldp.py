@@ -54,7 +54,7 @@ class LldpObj(SqPandasEngine):
                     df['peerIfname'] = np.where(df['peerIfname'] == '-',
                                                 df['ifname_y'], df['peerIfname'])
                     df = df.drop(columns=['hostname_y', 'ifname_y',
-                                          'timestamp_y', 'master', 'macaddr'])
+                                          'timestamp_y', 'vrf', 'macaddr'])
 
         ifidx_df = df.query('subtype.str.startswith("locally")')
         ifindices = ifidx_df.query('peerIfindex != 0').peerIfindex \
