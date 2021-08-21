@@ -3,15 +3,19 @@ import json
 import pytest
 from fastapi.testclient import TestClient
 from filelock import FileLock
+import inspect
 
 from tests.conftest import cli_commands, create_dummy_config_file
 
-from suzieq.restServer.query import app, get_configured_api_key, API_KEY_NAME, rest_main
+from suzieq.restServer.query import (app, get_configured_api_key,
+                                     API_KEY_NAME, rest_main)
+from suzieq.sqobjects import _get_tables, get_sqobject
+from suzieq.restServer import query
 
 ENDPOINT = "http://localhost:8000/api/v2"
 
 VERBS = ['show', 'summarize', 'assert', 'lpm',
-         'unique']  # add 'top' when it's supported
+         'unique', 'find']  # add 'top' when it's supported
 
 #
 # The code logic is that you define all the filters you want to test in
@@ -38,6 +42,7 @@ FILTERS = ['',  # for vanilla commands without any filter
            'view=latest',
            'address=10.0.0.11&view=all',
            'ipAddress=10.0.0.11',
+           'address=172.16.1.101',
            'vrf=default',
            'ipvers=v4',
            'macaddr=44:39:39:ff:40:95',
@@ -93,6 +98,7 @@ GOOD_FILTERS_FOR_SERVICE_VERB = {
     '': ['all'],  # this is for all non-filtered requests
     'address=10.0.0.11': ['route/lpm'],
     'address=10.0.0.11&view=all': ['route/lpm'],
+    'address=172.16.1.101': ['network/find'],
     'bd=': ['mac/show'],
     'hostname=leaf01&hostname=spine01': ['all'],
     'namespace=ospf-ibgp&namespace=ospf-single': ['all'],
@@ -181,7 +187,10 @@ GOOD_FILTER_EMPTY_RESULT_FILTER = [
 def _validate_hostname_output(json_out, service, verb):
     if verb == "summarize":
         return True
-    if service in ["mac", "vlan", "mlag", "evpnVni"]:
+    if service in ['network']:
+        # nework has no hostname column
+        return True
+    elif service in ["mac", "vlan", "mlag", "evpnVni"]:
         # MAC addr is not present on spines
         assert (set([x['hostname'] for x in json_out]) == set(['leaf01']))
     else:
@@ -275,7 +284,36 @@ def test_rest_services(app_initialize, service, verb, arg):
     get(ENDPOINT, service, verb, arg)
 
 
-@pytest.fixture()
+# Resuscitate this when you fix the REST code
+# @pytest.mark.rest
+# @pytest.mark.parametrize("service, verb", [
+#     (cmd, verb) for cmd in _get_tables() for verb in VERBS])
+# def test_rest_arg_consistency(service, verb):
+#     '''check that the arguments used in REST match whats in sqobjects'''
+
+#     # import all relevant functions from the rest code first
+
+#     fnlist = list(filter(lambda x: x[0] == f'query_{service}_{verb}',
+#                          inspect.getmembers(query, inspect.isfunction)))
+#     if not fnlist:
+#         fnlist = list(filter(lambda x: x[0] == f'query_{service}',
+#                              inspect.getmembers(query, inspect.isfunction)))
+#     for fn in fnlist:
+#         rest_args = [i for i in inspect.getfullargspec(fn[1]).args
+#                      if i not in
+#                      ['verb', 'token', 'request', 'format', 'start_time', 'end_time', 'view']]
+#         sqobj = get_sqobject(service)()
+
+#         valid_args = set(sqobj._valid_get_args)
+
+#         for arg in valid_args:
+#             assert arg in rest_args, f"{arg} missing from {fn} arguments"
+
+#         for arg in rest_args:
+#             assert arg in valid_args, f"extra argument {arg} in {fn}"
+
+
+@ pytest.fixture()
 def app_initialize():
     from suzieq.restServer.query import app_init
 
@@ -290,7 +328,7 @@ def app_initialize():
 # so we need to test this separately. xdist tries to run tests in parallel
 # which screws things up. So, we run server with & without https sequentially
 # For some reason, putting the no_https in a for loop didn't work either
-@pytest.mark.rest
+@ pytest.mark.rest
 def test_rest_server():
     import subprocess
     from time import sleep
