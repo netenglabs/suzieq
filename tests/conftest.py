@@ -26,19 +26,20 @@ DATADIR = ['tests/data/multidc/parquet-out/',
 
 commands = [('AddressCmd'), ('ArpndCmd'), ('BgpCmd'), ('DeviceCmd'),
             ('DevconfigCmd'), ('EvpnVniCmd'), ('InterfaceCmd'), ('LldpCmd'),
-            ('MacCmd'), ('MlagCmd'), ('OspfCmd'), ('RouteCmd'),
-            ('TopologyCmd'), ('VlanCmd')]
+            ('MacCmd'), ('MlagCmd'), ('NetworkCmd'), ('OspfCmd'),
+            ('SqPollerCmd'), ('RouteCmd'), ('TopologyCmd'), ('VlanCmd')]
 
 cli_commands = [('arpnd'), ('address'), ('bgp'), ('device'), ('devconfig'),
                 ('evpnVni'), ('fs'), ('interface'), ('lldp'), ('mac'),
-                ('mlag'), ('ospf'), ('path'), ('route'), ('sqpoller'),
-                ('topology'), ('vlan')]
+                ('mlag'), ('network'), ('ospf'), ('path'), ('route'),
+                ('sqPoller'), ('topology'), ('vlan')]
 
 
 tables = [('arpnd'), ('bgp'), ('evpnVni'), ('device'), ('devconfig'), ('fs'),
           ('ifCounters'), ('interfaces'), ('lldp'), ('macs'), ('mlag'),
-          ('ospfIf'), ('ospfNbr'), ('path'), ('routes'), ('time'),
-          ('topcpu'), ('topmem'), ('topology'), ('vlan')]
+          ('network'), ('ospfIf'), ('ospfNbr'), ('path'), ('routes'),
+          ('sqPoller'), ('time'), ('topcpu'), ('topmem'), ('topology'),
+          ('vlan')]
 
 
 @pytest.fixture(scope='function')
