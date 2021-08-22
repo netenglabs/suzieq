@@ -6,6 +6,7 @@ from suzieq.db import get_sqdb_engine
 from suzieq.exceptions import DBReadError, UserQueryError
 import dateparser
 from datetime import datetime
+from pandas.core.groupby import DataFrameGroupBy
 
 
 class SqPandasEngine(SqEngineObj):
@@ -47,7 +48,18 @@ class SqPandasEngine(SqEngineObj):
 
     def _handle_user_query_str(self, df: pd.DataFrame,
                                query_str: str) -> pd.DataFrame:
+        """Handle user query, trapping errors and returning exception
 
+        Args:
+            df (pd.DataFrame): The dataframe to run the query on
+            query_str (str): pandas query string
+
+        Raises:
+            UserQueryError: Exception if pandas query aborts with errmsg
+
+        Returns:
+            pd.DataFrame: dataframe post query
+        """
         if query_str:
             if query_str.startswith('"') and query_str.endswith('"'):
                 query_str = query_str[1:-1]
@@ -59,7 +71,15 @@ class SqPandasEngine(SqEngineObj):
 
         return df
 
-    def get_valid_df(self, table, **kwargs) -> pd.DataFrame:
+    def get_valid_df(self, table: str, **kwargs) -> pd.DataFrame:
+        """The heart of the engine: retrieving the data from the backing store
+
+        Args:
+            table (str): Name of the table to retrieve the data for
+
+        Returns:
+            pd.DataFrame: The data as a pandas dataframe
+        """
         if not self.ctxt.engine:
             print("Specify an analysis engine using set engine command")
             return pd.DataFrame(columns=["namespace", "hostname"])
@@ -159,7 +179,18 @@ class SqPandasEngine(SqEngineObj):
 
         return table_df
 
-    def get(self, **kwargs):
+    def get(self, **kwargs) -> pd.DataFrame:
+        """The default get method for all tables
+
+        Use this for a table if nothing special is desired. No table uses
+        this routine today.
+
+        Raises:
+            NotImplementedError: If no table has been defined
+
+        Returns:
+            pd.DataFrame: pandas dataframe of the object
+        """
         if not self.iobj.table:
             raise NotImplementedError
 
@@ -171,7 +202,16 @@ class SqPandasEngine(SqEngineObj):
 
         return df
 
-    def get_table_info(self, table, **kwargs):
+    def get_table_info(self, table: str, **kwargs) -> dict:
+        """Returns information about the data available for a table
+
+        Used by table show command exclusively.
+        Args:
+            table (str): Name of the table about which info is desired
+
+        Returns:
+            dict: The desired data as a dictionary
+        """
         # You can't use view from user because we need to see all the data
         # to compute data required.
         kwargs.pop('view', None)
@@ -187,9 +227,18 @@ class SqPandasEngine(SqEngineObj):
 
         return ret
 
-    def _unique_or_zero(self, df, col):
+    def _unique_or_zero(self, df: pd.DataFrame, col: str) -> int:
+        """Returns the unique count of a column in a dataframe or 0
+
+        Args:
+            df (pd.DataFrame): The dataframe to use
+            col (str): The column name to use
+
+        Returns:
+            int: Count of unique values
+        """
         if col in df.columns:
-            return len(df[col].unique())
+            return df[col].nunique()
         else:
             return 0
 
@@ -220,73 +269,15 @@ class SqPandasEngine(SqEngineObj):
         self._post_summarize()
         return self.ns_df.convert_dtypes()
 
-    def _gen_summarize_data(self):
-        """Generate the data required for summary"""
-
-        if not self._summarize_on_add_field:
-            # Add the only field we truly know to add
-            self._summarize_on_add_field = [
-                ('deviceCnt', 'hostname', 'nunique'),
-            ]
-        for field_name, col, function in self._summarize_on_add_field:
-            if col != 'namespace' and col != 'timestamp':
-                self._add_field_to_summary(col, function, field_name)
-                self.summary_row_order.append(field_name)
-
-        for flds in self._summarize_on_add_with_query:
-            field_name = flds[0]
-            query_str = flds[1]
-            field = flds[2]
-            if len(flds) == 4:
-                func = flds[3]
-            else:
-                func = 'count'
-            fld_df = self.summary_df.query(query_str)
-            if not fld_df.empty:
-                fld_per_ns = fld_df.groupby(by=['namespace'],
-                                            observed=True)[field] \
-                    .agg(func)
-                for i in self.ns.keys():
-                    self.ns[i].update({field_name: fld_per_ns.get(i, 0)})
-            else:
-                for i in self.ns.keys():
-                    self.ns[i].update({field_name: 0})
-
-            self.summary_row_order.append(field_name)
-
-        for field_name, field in self._summarize_on_add_list_or_count:
-            self._add_list_or_count_to_summary(field, field_name)
-            self.summary_row_order.append(field_name)
-
-        for field_name, query_str, field in self._summarize_on_add_stat:
-            if query_str:
-                statfld = self.summary_df.query(query_str) \
-                                         .groupby(by=['namespace'],
-                                                  observed=True)[field]
-            else:
-                statfld = self.summary_df.groupby(
-                    by=['namespace'], observed=True)[field]
-
-            self._add_stats_to_summary(statfld, field_name)
-            self.summary_row_order.append(field_name)
-
-        for field_name, query_str, field, func in \
-                self._summarize_on_perdevice_stat:
-            if query_str:
-                statfld = self.summary_df \
-                    .query(query_str) \
-                    .groupby(by=['namespace', 'hostname'],
-                             observed=True)[field].agg(func)
-            else:
-                statfld = self.summary_df \
-                    .groupby(by=['namespace', 'hostname'],
-                             observed=True)[field].agg(func)
-
-            self._add_stats_to_summary(statfld, field_name, filter_by_ns=True)
-            self.summary_row_order.append(field_name)
-
     def unique(self, **kwargs) -> pd.DataFrame:
-        """Return the unique elements as per user specification"""
+        """Return the unique elements as per user specification
+
+        Raises:
+            ValueError: If len(columns) != 1
+
+        Returns:
+            pd.DataFrame: Pandas dataframe of unique values for given column
+        """
         count = kwargs.pop("count", 0)
         query_str = kwargs.get('query_str', '')
 
@@ -356,23 +347,100 @@ class SqPandasEngine(SqEngineObj):
             return df.nlargest(sqTopCount, columns=what, keep="all") \
                      .head(sqTopCount)
 
-    def _init_summarize(self, table, **kwargs):
+    def _init_summarize(self, table: str, **kwargs) -> None:
+        """Initialize the data structures for use with generating summary
+
+        Args:
+            table (str): Name of table to generate summary for
+        """
         kwargs.pop('columns', None)
         columns = ['*']
 
         df = self.get(columns=columns, **kwargs)
         if 'error' in df.columns:
             self.summary_df = df
-            return df
+            return
 
         self.summary_df = df
         if df.empty:
-            return df
+            return
 
         self.ns = {i: {} for i in df['namespace'].unique()}
         self.nsgrp = df.groupby(by=["namespace"], observed=True)
 
-    def _post_summarize(self, check_empty_col='deviceCnt'):
+    def _gen_summarize_data(self):
+        """Generate the data required for summary"""
+
+        if not self._summarize_on_add_field:
+            # Add the only field we truly know to add
+            self._summarize_on_add_field = [
+                ('deviceCnt', 'hostname', 'nunique'),
+            ]
+        for field_name, col, function in self._summarize_on_add_field:
+            if col != 'namespace' and col != 'timestamp':
+                self._add_field_to_summary(col, function, field_name)
+                self.summary_row_order.append(field_name)
+
+        for flds in self._summarize_on_add_with_query:
+            field_name = flds[0]
+            query_str = flds[1]
+            field = flds[2]
+            if len(flds) == 4:
+                func = flds[3]
+            else:
+                func = 'count'
+            fld_df = self.summary_df.query(query_str)
+            if not fld_df.empty:
+                fld_per_ns = fld_df.groupby(by=['namespace'],
+                                            observed=True)[field] \
+                    .agg(func)
+                for i in self.ns.keys():
+                    self.ns[i].update({field_name: fld_per_ns.get(i, 0)})
+            else:
+                for i in self.ns.keys():
+                    self.ns[i].update({field_name: 0})
+
+            self.summary_row_order.append(field_name)
+
+        for field_name, field in self._summarize_on_add_list_or_count:
+            self._add_list_or_count_to_summary(field, field_name)
+            self.summary_row_order.append(field_name)
+
+        for field_name, query_str, field in self._summarize_on_add_stat:
+            if query_str:
+                statfld = self.summary_df.query(query_str) \
+                                         .groupby(by=['namespace'],
+                                                  observed=True)[field]
+            else:
+                statfld = self.summary_df.groupby(
+                    by=['namespace'], observed=True)[field]
+
+            self._add_stats_to_summary(statfld, field_name)
+            self.summary_row_order.append(field_name)
+
+        for field_name, query_str, field, func in \
+                self._summarize_on_perdevice_stat:
+            if query_str:
+                statfld = self.summary_df \
+                    .query(query_str) \
+                    .groupby(by=['namespace', 'hostname'],
+                             observed=True)[field].agg(func)
+            else:
+                statfld = self.summary_df \
+                    .groupby(by=['namespace', 'hostname'],
+                             observed=True)[field].agg(func)
+
+            self._add_stats_to_summary(statfld, field_name, filter_by_ns=True)
+            self.summary_row_order.append(field_name)
+
+    def _post_summarize(self, check_empty_col: str = 'deviceCnt') -> None:
+        """Once summary data has been generated, finalize summary dataframe
+
+        Args:
+            check_empty_col (str, optional): column name to check to remove
+                                             namespace that's empty. 
+                                             Defaults to 'deviceCnt'.
+        """
         # this is needed in the case that there is a namespace that has no
         # data for this command
 
@@ -391,19 +459,29 @@ class SqPandasEngine(SqEngineObj):
             ns_df = ns_df.reindex(self.summary_row_order, axis=0)
         self.ns_df = ns_df
 
-    def _add_constant_to_summary(self, field, value):
+    def _add_constant_to_summary(self, field: str, value):
         """And a constant value to specified field name in summary"""
         if field:
             {self.ns[i].update({field: value}) for i in self.ns.keys()}
 
-    def _add_field_to_summary(self, field, method='nunique', field_name=None):
+    def _add_field_to_summary(self, field: str, method: str = 'nunique',
+                              field_name: str = None):
+        """Add a summary field to summary dataframe based on method on field
+
+        This assumes that self.summary_df has been populated.
+        Args:
+            field (str): Column name to add in the summary dataframe
+            method (str, optional): pandas method name. Defaults to 'nunique'.
+            field_name (str, optional): column name to compute on. Defaults to None.
+        """
         if not field_name:
             field_name = field
         field_per_ns = getattr(self.nsgrp[field], method)()
         {self.ns[i].update({field_name: field_per_ns.get(i, 0)})
          for i in self.ns.keys()}
 
-    def _add_list_or_count_to_summary(self, field, field_name=None):
+    def _add_list_or_count_to_summary(self, field: str,
+                                      field_name: str = None) -> None:
         """if there are less than 3 unique things, add as a list, otherwise return the count"""
         if not field_name:
             field_name = field
@@ -424,7 +502,9 @@ class SqPandasEngine(SqEngineObj):
 
             self.ns[n].update({field_name: value})
 
-    def _add_stats_to_summary(self, groupedby, fieldname, filter_by_ns=False):
+    def _add_stats_to_summary(self, groupedby: DataFrameGroupBy,
+                              fieldname: str,
+                              filter_by_ns: bool = False) -> None:
         """Takes grouped stats and adds min, max, and median to stats"""
 
         {self.ns[i].update({fieldname: []}) for i in self.ns.keys()}
