@@ -43,7 +43,7 @@ def test_evpnVni_parsing(table, datadir, get_table_data):
         'ospf-ibgp': 6,
     }
 
-    if datadir.endswith('mixed/parquet-out'):
+    if datadir.endswith(('mixed/parquet-out', 'vmx/parquet-out')):
         # mixed dataset has no evpn
         assert (True)
         return

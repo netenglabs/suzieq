@@ -306,6 +306,21 @@ class InterfaceService(Service):
             else:
                 entry['master'] = ''
 
+            if entry.get('type', '') == 'ethernet-bridge':
+                # This is an MX device
+                entry['type'] = 'ethernet'
+                entry['master'] = 'bridge'
+
+                # extract VLAN
+                vlan_tag = entry.get('_vlanTag', [])
+                if vlan_tag:
+                    words = vlan_tag[0].split('0x8100.')
+                    vlan = words[1].split(')')[0]
+                else:
+                    vlan = 0
+
+                entry['vlan'] = int(vlan)
+
             # Process the logical interfaces which are too deep to be parsed
             # efficiently by the parser right now
             if ((entry.get('logicalIfname', []) == []) or

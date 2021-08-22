@@ -52,7 +52,7 @@ def test_mlag_parsing(table, datadir, get_table_data):
         'ospf-ibgp': 4,
     }
 
-    if datadir.endswith('mixed/parquet-out'):
+    if datadir.endswith(('mixed/parquet-out', 'vmx/parquet-out')):
         assert(True)
         return
     assert not df.empty

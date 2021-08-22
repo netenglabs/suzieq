@@ -22,7 +22,8 @@ DATADIR = ['tests/data/multidc/parquet-out/',
            'tests/data/eos/parquet-out',
            'tests/data/nxos/parquet-out',
            'tests/data/junos/parquet-out',
-           'tests/data/mixed/parquet-out']
+           'tests/data/mixed/parquet-out',
+           'tests/data/vmx/parquet-out']
 
 commands = [('AddressCmd'), ('ArpndCmd'), ('BgpCmd'), ('DeviceCmd'),
             ('DevconfigCmd'), ('EvpnVniCmd'), ('InterfaceCmd'), ('LldpCmd'),

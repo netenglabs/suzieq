@@ -28,6 +28,7 @@ def test_lldp_parsing(table, datadir, get_table_data):
         'junos': 7,
         'nxos': 9,
         'ospf-ibgp': 10,
+        'vmx': 4,
     }
 
     assert not df.empty

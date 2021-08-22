@@ -35,6 +35,7 @@ def test_arpnd_parsing(table, datadir, get_table_data):
         'junos': 12,
         'nxos': 14,
         'ospf-ibgp': 14,
+        'vmx': 5,
     }
 
     assert not df.empty
