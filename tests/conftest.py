@@ -63,7 +63,7 @@ def get_table_data(table: str, datadir: str):
         device_df = get_sqobject('device')(config_file=cfgfile) \
             .get(columns=['namespace', 'hostname', 'os'])
 
-        assert (not device_df.empty, 'empty device table')
+        assert not device_df.empty, 'empty device table'
         df = df.merge(device_df, on=['namespace', 'hostname']) \
             .fillna({'os': ''})
 
