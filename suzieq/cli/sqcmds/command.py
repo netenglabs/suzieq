@@ -6,6 +6,7 @@ from io import StringIO
 import shutil
 from prompt_toolkit import prompt
 from suzieq.exceptions import UserQueryError
+from natsort import natsort_keygen
 
 
 @argument(
@@ -195,7 +196,8 @@ class SqCommand:
                                        if x in df.columns and x in cols]
                         if sort_fields:
                             self._pager_print(
-                                df[cols].sort_values(by=sort_fields))
+                                df[cols].sort_values(by=sort_fields,
+                                                     key=natsort_keygen()))
                         else:
                             self._pager_print(df[cols])
                 else:
