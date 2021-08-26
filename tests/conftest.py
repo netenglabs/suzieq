@@ -6,7 +6,7 @@ import yaml
 from unittest.mock import Mock
 from suzieq.poller.services import init_services
 from suzieq.utils import load_sq_config, Schema
-from suzieq.sqobjects import get_sqobject
+from suzieq.sqobjects import get_sqobject, _get_tables
 from suzieq.cli.sq_nubia_context import NubiaSuzieqContext
 import asyncio
 import sys
@@ -26,21 +26,18 @@ DATADIR = ['tests/data/multidc/parquet-out/',
            'tests/data/vmx/parquet-out']
 
 commands = [('AddressCmd'), ('ArpndCmd'), ('BgpCmd'), ('DeviceCmd'),
-            ('DevconfigCmd'), ('EvpnVniCmd'), ('InterfaceCmd'), ('LldpCmd'),
+            ('DevconfigCmd'), ('EvpnVniCmd'), ('InterfaceCmd'),
+            ('InventoryCmd'), ('LldpCmd'),
             ('MacCmd'), ('MlagCmd'), ('NetworkCmd'), ('OspfCmd'),
             ('SqPollerCmd'), ('RouteCmd'), ('TopologyCmd'), ('VlanCmd')]
 
 cli_commands = [('arpnd'), ('address'), ('bgp'), ('device'), ('devconfig'),
-                ('evpnVni'), ('fs'), ('interface'), ('lldp'), ('mac'),
-                ('mlag'), ('network'), ('ospf'), ('path'), ('route'),
+                ('evpnVni'), ('fs'), ('interface'), ('inventory'), ('lldp'),
+                ('mac'), ('mlag'), ('network'), ('ospf'), ('path'), ('route'),
                 ('sqPoller'), ('topology'), ('vlan')]
 
 
-tables = [('arpnd'), ('bgp'), ('evpnVni'), ('device'), ('devconfig'), ('fs'),
-          ('ifCounters'), ('interfaces'), ('lldp'), ('macs'), ('mlag'),
-          ('network'), ('ospfIf'), ('ospfNbr'), ('path'), ('routes'),
-          ('sqPoller'), ('time'), ('topcpu'), ('topmem'), ('topology'),
-          ('vlan')]
+tables = _get_tables()
 
 
 @pytest.fixture(scope='function')

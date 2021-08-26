@@ -251,6 +251,11 @@ class AssertStatusValues(str, Enum):
     ALL = "all"
 
 
+class InventoryStatusValues(str, Enum):
+    PRESENT = "present"
+    ABSENT = "absent"
+
+
 # The logic in the code below is that you have a common function to
 # split the common arguments across all the functions, and split the
 # object-specific arguments in the object function itself.
@@ -401,6 +406,26 @@ async def query_interface(verb: MoreVerbs, request: Request,
                           matchval: int = Query(None, alias="value"),
                           status: AssertStatusValues = Query(None),
                           query_str: str = None,
+                          ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, request, locals())
+
+
+@app.get("/api/v2/inventory/{verb}")
+async def query_inventory(verb: CommonVerbs, request: Request,
+                          token: str = Depends(get_api_key),
+                          format: str = None,
+                          hostname: List[str] = Query(None),
+                          start_time: str = "", end_time: str = "",
+                          view: ViewValues = "latest",
+                          namespace: List[str] = Query(None),
+                          columns: List[str] = Query(default=["default"]),
+                          query_str: str = None,
+                          type: List[str] = Query(None),
+                          serial: List[str] = Query(None),
+                          model: List[str] = Query(None),
+                          vendor: List[str] = Query(None),
+                          status: InventoryStatusValues = Query(None),
                           ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())

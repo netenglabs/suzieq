@@ -1,5 +1,6 @@
 service: inventory
 keys:
+  - name
   - model
   - partNum
   - serialNum
@@ -17,15 +18,30 @@ apply:
     "xcvrSlots: _xcvrSlots",
     "powerSupplySlots: _powerSupplySlots",
     "fanTraySlots: _fanTraySlots",
+    "cardSlots: _cardSlots",
     "systemInformation: _systemInfo"
     ]'
 
-  junos:
+  junos-qfx:
     version: all
-    command: show chassis hardware | display json
-    normalize: 'chassis-inventory/chassis/chassis-module/*/[
-    "name/data[0]: unit?|",
+    command: show chassis hardware | display json| no-more 
+    normalize: 'chassis-inventory/[0]/chassis/[0]/chassis-module/*/[
+    "name/[0]/data: name?|",
+    "version/[0]/data: version?|",
+    "part-number/[0]/data: partNum?|",
+    "serial-number/[0]/data: serial?|",
+    "model-number/[0]/data: model?|",
+    "chassis-sub-module: _chassisSubMod"
     ]'
+
+  junos-mx:
+    copy: junos-qfx
+
+  junos-ex:
+    copy: junos-qfx
+
+  junos-es:
+    copy: junos-qfx
 
   nxos:
    version: all
@@ -34,18 +50,18 @@ apply:
       normalize: 'TABLE_inv/ROW_inv/*/[
       "name: unit?|",
       "desc: description?|",
-      "serialnum: serialNum?|",
-      "produtid: productId?|",
+      "serialnum: serial?|",
+      "productid: productId?|",
       "type: type?|",
       ]'
 
-    - command: show interface trasnsceiver | json native
+    - command: show interface transceiver | json native
       normalize: 'TABLE_interface/ROW_interface/*/[
       "interface: unit?|",
       "sfp: _sfp?|",
       "name: mfgName",
       "type: type",
       "partnum: partNum?|",
-      "serialnum: serialNum?|",
+      "serialnum: serial?|",
       "cisco_product_id: productId?|",
       ]'
