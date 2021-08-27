@@ -16,7 +16,7 @@ To monitor the status of the poller, you can look at /tmp/sq-poller.log file.
 The inventory file that the poller uses can be supplied either:
 
 * via a Suzieq native YAML format file (use the -D option as above) or 
-* via or an Ansible inventory file (instead of -D, use -a option along with -n). This file has to be the output of ```ansible-inventory --list``` command
+* via or an Ansible inventory file (instead of -D, use -a option along with -n some_namespace). This file has to be the output of ```ansible-inventory --list``` command
 
 The Suzieq native inventory file format that contains the IP address, the access method (SSH or REST), the IP address of the node, the user name, the type of OS if using REST and the access token such as a private key file. The format looks as follows, for example (all possible combinations are shown for illustration):
 ```
@@ -38,7 +38,7 @@ If you're using Ansible to configure the devices, an alternate to the native Suz
 Once you have either generated the hosts file or are using the Ansible inventory file, you can launch the poller inside the docker container using **one** of the following two options: 
 
 * If you're using the native YAML hosts file, use the -D option like this: `sq-poller -D eos`  or
-* if you're using the Ansible inventory format, use the -a and -n options like this: via `sq-poller -a /suzieq/inventory -n eos`. 
+* if you're using the Ansible inventory format, use the -a and -n options like this: via `sq-poller -a /suzieq/inventory -n some_namespace`. 
 
 The poller creates a log file called /tmp/sq-poller.log. You can look at the file for errors. The output is stored in the parquet directory specified under /suzieq/parquet and visible in the host, outside the container, via the path specified during docker run above. 
 
