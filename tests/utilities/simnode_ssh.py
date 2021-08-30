@@ -43,6 +43,8 @@ class MySSHServerSession(asyncssh.SSHServerSession):
             f'{self.sample_data_dir}/{self.device}/show_hostname{fmt}',
             'show interfaces':
             f'{self.sample_data_dir}/{self.device}/show_interfaces{fmt}',
+            'show interface':
+            f'{self.sample_data_dir}/{self.device}/show_interfaces{fmt}',
             'show ethernet-switching table detail':
             f'{self.sample_data_dir}/{self.device}/show_ethernet_switching_table{fmt}',
             'show system uptime':
@@ -73,6 +75,8 @@ class MySSHServerSession(asyncssh.SSHServerSession):
             f'{self.sample_data_dir}/{self.device}/show_chassis_hardware{fmt}',
             'show interface trasnsceiver':
             f'{self.sample_data_dir}/{self.device}/show_interface_transceiver{fmt}',
+            'show configuration routing-instances':
+            f'{self.sample_data_dir}/{self.device}/show_configuration_routing_instances{fmt}',
         }
 
         return self.cmd_data.get(command, '')
