@@ -252,7 +252,7 @@ class InterfaceService(Service):
             if entry['type']:
                 entry['type'] = entry['type'].lower()
 
-            if entry['description'] == 'None':
+            if entry.get('description', '') == 'None':
                 entry['description'] = ''
 
             if ifname.startswith(('gre', 'ipip', 'lc-', 'lsi', 'pc-', 'bme',
@@ -279,6 +279,9 @@ class InterfaceService(Service):
 
             if entry['type'] == 'vxlan-tunnel-endpoint':
                 entry['type'] = 'vtep'
+
+            if entry.get('_minLinksBond', None) is not None:
+                entry['type'] = 'bond'
 
             if not entry_dict[ifname]:
                 entry_dict[ifname] = entry
@@ -353,15 +356,23 @@ class InterfaceService(Service):
                 if (i+1 > len(entry['afi'])) or (entry['afi'][i] is None):
                     continue
                 thisafi = entry['afi'][i]
+                v_afi = thisafi.get('address-family-name', [{}])[0] \
+                    .get('data', '')
                 for x in thisafi:
                     if isinstance(x, list):
                         addrlist = x[0].get('interface-address', None)
                     else:
                         addrlist = thisafi.get('interface-address', None)
+
+                    if v_afi == "aenet" and x == "ae-bundle-name":
+                        master = thisafi[x][0]['data']
+                        entry['master'] = master.split('.')[0]
+                        entry['type'] = 'bond-slave'
+
                     if addrlist and addrlist is not None:
                         break
-                    v_afi = thisafi.get('address-family-name', None)
-                    if v_afi and (v_afi[0].get('data', None) == "eth-switch"):
+
+                    if v_afi == "eth-switch":
                         addrlist = []
                         break
                 else:
