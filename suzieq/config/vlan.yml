@@ -63,3 +63,13 @@ apply:
   junos-es:
     copy: junos-qfx
 
+  junos-mx:
+    version: all
+    command: show bridge domain detail | display json | no-more
+    normalize: 'l2ald-bridge-instance-information/l2ald-bridge-instance-group/*/[
+    "l2rtb-bridge-vlan/[0]/data: vlan",
+    "l2rtb-interface-name/*/data: interfaces?|",
+    "l2rtb-bridging-domain/[0]/data: vlanName",
+    "l2rtb-instance-state/[0]/data: state",
+    ]'
+

@@ -74,6 +74,8 @@ class VlanService(Service):
                 entry['vlanName'] = f'vlan{entry["vlan"]}'
             if entry['interfaces'] == [[None]]:
                 entry['interfaces'] = []
+            entry['interfaces'] = [x.split('.')[0]
+                                   for x in entry['interfaces']]
             entry['state'] = entry['state'].lower()
             entry['vlanName'] = entry['vlanName'].lower()
 
