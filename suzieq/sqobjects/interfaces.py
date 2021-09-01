@@ -9,7 +9,7 @@ class IfObj(SqObject):
         super().__init__(table='interfaces', **kwargs)
         self._valid_get_args = ['namespace', 'hostname', 'ifname', 'columns',
                                 'state', 'type', 'mtu', 'master', 'ifindex',
-                                'query_str']
+                                'vrf', 'query_str']
         self._valid_assert_args = ['namespace', 'hostname', 'ifname',
                                    'what', 'matchval', 'status']
         self._valid_arg_vals = {

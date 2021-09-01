@@ -40,8 +40,9 @@ class InterfaceCmd(SqCommand):
     @argument("state", description="interface state to qualify show",
               choices=["up", "down", "notConnected"])
     @argument("mtu", description="filter interfaces with MTU")
+    @argument("vrf", description="filter interfaces matching VRFs")
     def show(self, ifname: str = "", state: str = "", type: str = "",
-             mtu: str = ""):
+             mtu: str = "", vrf: str = "") -> None:
         """
         Show interface info
         """
@@ -62,6 +63,7 @@ class InterfaceCmd(SqCommand):
                                 namespace=self.namespace,
                                 state=state,
                                 mtu=mtu.split(),
+                                vrf=vrf.split(),
                                 query_str=self.query_str,
                                 type=type.split(),
                                 )
