@@ -65,7 +65,7 @@ class DeviceObj(SqPandasEngine):
 
             df.status = np.where(
                 (df['status_y'] != 0) & (df['status_y'] != 200) &
-                (df['status'] != "dead"),
+                (df['status'] == "N/A"),
                 'neverpoll', df['status'])
             df.timestamp = np.where(df['timestamp'] == 0,
                                     df['timestamp_y'], df['timestamp'])
@@ -78,7 +78,12 @@ class DeviceObj(SqPandasEngine):
         if status:
             df = df.query(f'status.isin({status})')
         df = self._handle_user_query_str(df, user_query)
-        return df.drop(columns=drop_cols)
+
+        # if poller has failed completely, Can mess up the order of columns
+        cols = self.iobj.schema.get_display_fields(columns)
+        if columns == ['default'] and 'timestamp' not in cols:
+            cols.append('timestamp')
+        return df.drop(columns=drop_cols)[cols]
 
     def summarize(self, **kwargs):
         """Summarize device information across namespace"""
