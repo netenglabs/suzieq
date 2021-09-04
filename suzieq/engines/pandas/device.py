@@ -42,10 +42,23 @@ class DeviceObj(SqPandasEngine):
             columns='namespace hostname status'.split())
 
         if not poller_df.empty:
-            # Merge with poller_df as left DF so that we always end up with
-            # namespace and hostname as the leftmost columns
+            # Identify the address to namespace/hostname mapping
+            addr_dict = {f"{x['namespace']}-{x['address']}": x['hostname']
+                         for x in df[['namespace', 'address', 'hostname']]
+                         .to_dict(orient='records')}
+
+            poller_df['hostname'] = poller_df.apply(
+                lambda x, y: y.get(f"{x['namespace']}-{x['hostname']}",
+                                   x['hostname']),
+                args=(addr_dict,), axis=1)
+
+            poller_df = poller_df\
+                .drop_duplicates(subset=['namespace', 'hostname'],
+                                 keep='last') \
+                .reset_index(drop=True)
+
             df = df.merge(poller_df, on=['namespace', 'hostname'],
-                          how='left', suffixes=['', '_y'])  \
+                          how='outer', suffixes=['', '_y'])  \
                 .fillna({'bootupTimestamp': 0, 'timestamp': 0,
                          'active': True}) \
                 .fillna('N/A')
