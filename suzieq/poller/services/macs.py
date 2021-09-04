@@ -27,7 +27,6 @@ class MacsService(Service):
             entry['vlan'] = int(entry['vlan'])
 
         if entry.get('bd', ""):
-            # VPLS Entry
             if not entry.get('vlan', 0):
                 entry['mackey'] = entry['bd']
             else:
@@ -91,9 +90,19 @@ class MacsService(Service):
                 if 'rcvd_from_remote' in inflags:
                     flags += ' remote'
 
-            if entry.get('bd', None):
-                entry['protocol'] = 'vpls'
-                flags = inflags + ' remote'
+            bd = entry.get('bd', None)
+            if bd:
+                if isinstance(bd, list):
+                    bd = bd[0].get('data', 'default-switch')
+                    entry['bd'] = bd
+                    # We need to extract the VLAN from the interface
+                    words = entry.get('oif', '').split('.')
+                    if len(words) > 1:
+                        entry['vlan'] = words[1]
+                        entry['oif'] = words[0]
+                else:
+                    entry['protocol'] = 'vpls'
+                    flags = inflags + ' remote'
             entry['flags'] = flags.strip()
             self._add_mackey_protocol(entry)
 
