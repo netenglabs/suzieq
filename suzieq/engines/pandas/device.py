@@ -24,7 +24,7 @@ class DeviceObj(SqPandasEngine):
             addnl_fields.append('active')
             drop_cols.append('active')
 
-        for col in ['namespace', 'hostname', 'status']:
+        for col in ['namespace', 'hostname', 'status', 'address']:
             if (not ((columns == ['default']) or (columns == ['*'])) and
                     col not in columns):
                 addnl_fields.append(col)
