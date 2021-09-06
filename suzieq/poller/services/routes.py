@@ -13,6 +13,14 @@ import numpy as np
 class RoutesService(Service):
     """routes service. Different class because vrf default needs to be added"""
 
+    def clean_json_input(self, data):
+        """Junos JSON data for some older ver needs some work"""
+
+        devtype = data.get("devtype", None)
+        if devtype.startswith('junos'):
+            data['data'] = data['data'].replace('}, \n    }\n', '} \n    }\n')
+            return data['data']
+
     def _fix_ipvers(self, entry):
         if ':' in entry['prefix']:
             entry['ipvers'] = 6
