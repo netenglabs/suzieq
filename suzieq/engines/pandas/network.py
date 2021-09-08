@@ -144,11 +144,12 @@ class NetworkObj(SqPandasEngine):
 
         if addr_df.empty:
             addr_df = self._find_addr_arp(addr, **kwargs)
-            addr_df['how'] = 'arpnd'
+            addr_df['how'] = 'derived'
         else:
             addr_df['how'] = 'polled'
 
         if not addr_df.empty:
+            addr_df = self._find_l2_attach(addr_df, **kwargs)
             if vlan:
                 addr_df = addr_df.query(f'vlan == {vlan}')
             if vrf:
@@ -251,3 +252,64 @@ class NetworkObj(SqPandasEngine):
                          'vlan ifname timestamp'.split()]
 
         return arpdf
+
+    def _find_l2_attach(self, addr_df: pd.DataFrame, **kwargs) -> pd.DataFrame:
+        """Find the L2 attachment point for this address
+
+        Args:
+            addr_df (pd.DataFrame): Dataframe with the address information
+            **kwargs: Additional arguments to pass to the sqobject
+
+        Returns:
+            pd.DataFrame: Dataframe with the L2 attachment point information
+        """
+
+        # We'll need to resolve bond interfaces first
+        l2_addr_df = addr_df
+
+        lldp_df = get_sqobject('lldp')(context=self.ctxt).get(
+            namespace=l2_addr_df.namespace.unique().tolist(),
+            columns=['namespace', 'hostname', 'ifname', 'peerHostname',
+                     'peerIfname'])
+
+        if lldp_df.empty:
+            return addr_df
+
+        while not l2_addr_df.empty:
+            l2_addr_df = self._find_bond_slaves(l2_addr_df)
+            l2_addr_df['ifname'] = l2_addr_df.ifname.str.split(', ')
+            l2_addr_df = l2_addr_df.explode('ifname')
+
+            new_l2_addr_df = l2_addr_df.merge(lldp_df,
+                                              on=['namespace',
+                                                  'hostname', 'ifname'],
+                                              suffixes=['', '_y'])
+            if not new_l2_addr_df.empty:
+                new_l2_addr_df = new_l2_addr_df.drop(
+                    columns=['timestamp_y', 'hostname', 'ifname'],
+                    errors='ignore') \
+                    .rename(columns={'peerHostname': 'hostname',
+                                     'peerIfname': 'ifname'})
+                macdf = get_sqobject('macs')(context=self.ctxt) \
+                    .get(namespace=new_l2_addr_df.namespace.unique().tolist(),
+                         macaddr=new_l2_addr_df.macaddr.unique().tolist(),
+                         vlan=new_l2_addr_df.vlan.astype(
+                             str).unique().tolist(),
+                         columns=['namespace', 'hostname', 'vlan', 'macaddr', 'oif'])
+                if not macdf.empty:
+                    new_l2_addr_df = new_l2_addr_df.merge(
+                        macdf,
+                        on=['namespace', 'hostname', 'vlan', 'macaddr'],
+                        suffixes=['', '_y'])
+                    if not new_l2_addr_df.empty:
+                        new_l2_addr_df = new_l2_addr_df \
+                            .drop(columns=['ifname', 'mackey', 'timestamp_y',
+                                           'flags', 'remoteVtepIp'],
+                                  errors='ignore') \
+                            .rename(columns={'oif': 'ifname'})
+                        l2_addr_df = new_l2_addr_df
+            else:
+                break
+
+        return l2_addr_df.drop_duplicates(
+            subset=['namespace', 'hostname', 'ifname', 'macaddr', 'vlan'])
