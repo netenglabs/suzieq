@@ -1,3 +1,4 @@
+import numpy as np
 from suzieq.utils import expand_ios_ifname
 from suzieq.poller.services.service import Service
 
@@ -69,7 +70,13 @@ class VlanService(Service):
     def _clean_junos_data(self, processed_data, raw_data):
         '''Massage the default name and interface list'''
 
-        for entry in processed_data:
+        drop_indices = []
+
+        for i, entry in enumerate(processed_data):
+            if entry['vlan'] is None:
+                drop_indices.append(i)
+                continue
+
             if entry['vlanName'] == 'default':
                 entry['vlanName'] = f'vlan{entry["vlan"]}'
             if entry['interfaces'] == [[None]]:
@@ -79,6 +86,7 @@ class VlanService(Service):
             entry['state'] = entry['state'].lower()
             entry['vlanName'] = entry['vlanName'].lower()
 
+        processed_data = np.delete(processed_data, drop_indices).tolist()
         return processed_data
 
     def _clean_ios_data(self, processed_data, raw_data):
