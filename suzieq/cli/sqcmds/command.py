@@ -279,6 +279,24 @@ class SqCommand:
                 df.sort_values(by=['numRows', self.columns[0]]),
                 dont_strip_cols=True)
 
+    @command("describe", help="describe the table and its fields")
+    def describe(self):
+        """Describe a table and its fields
+
+        Returns:
+            [type]: 0 or error
+        """
+        now = time.time()
+
+        df = self._invoke_sqobj(self.sqobj.describe,
+                                hostname=self.hostname,
+                                namespace=self.namespace,
+                                query_str=self.query_str,
+                                )
+
+        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
+        return self._gen_output(df)
+
     def _init_summarize(self):
         self.now = time.time()
 

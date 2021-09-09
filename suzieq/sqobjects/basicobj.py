@@ -225,6 +225,29 @@ class SqObject(object):
 
         return self.engine.top(what=what, n=n, reverse=reverse, **kwargs)
 
+    def describe(self, **kwargs):
+        """Describes the fields for a given table"""
+
+        table = kwargs.get('table', self.table)
+
+        try:
+            sch = SchemaForTable(table, self.all_schemas)
+        except ValueError:
+            sch = None
+        if not sch:
+            df = pd.DataFrame(
+                {'error': [f'ERROR: incorrect table name {table}']})
+            return df
+
+        entries = [{'name': x['name'], 'type': x['type'],
+                    'key': x.get('key', ''),
+                    'display': x.get('display', ''),
+                    'description': x.get('description', '')}
+                   for x in sch.get_raw_schema()]
+        df = pd.DataFrame.from_dict(entries).sort_values('name')
+
+        return df
+
     def humanize_fields(self, df: pd.DataFrame, subset=None) -> pd.DataFrame:
         '''Humanize the fields for human consumption.
 

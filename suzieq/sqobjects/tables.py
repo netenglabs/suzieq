@@ -62,28 +62,5 @@ class TablesObj(SqObject):
             df = df.append(total, ignore_index=True).dropna()
         return df
 
-    def describe(self, **kwargs):
-        """Describes the fields for a given table"""
-
-        table = kwargs.get('table', '')
-
-        try:
-            sch = SchemaForTable(table, self.all_schemas)
-        except ValueError:
-            sch = None
-        if not sch:
-            df = pd.DataFrame(
-                {'error': [f'ERROR: incorrect table name {table}']})
-            return df
-
-        entries = [{'name': x['name'], 'type': x['type'],
-                    'key': x.get('key', ''),
-                    'display': x.get('display', ''),
-                    'description': x.get('description', '')}
-                   for x in sch.get_raw_schema()]
-        df = pd.DataFrame.from_dict(entries).sort_values('name')
-
-        return df
-
     def summarize(self, **kwargs):
         raise NotImplementedError
