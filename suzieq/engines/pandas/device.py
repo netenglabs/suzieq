@@ -1,4 +1,6 @@
 import numpy as np
+import operator
+from packaging import version
 from .engineobj import SqPandasEngine
 from suzieq.sqobjects.sqPoller import SqPollerObj
 
@@ -16,13 +18,21 @@ class DeviceObj(SqPandasEngine):
         addnl_fields = kwargs.pop('addnl_fields', [])
         user_query = kwargs.pop('query_str', '')
         status = kwargs.pop('status', '')
-        version = kwargs.pop('version', '')
+        os_version = kwargs.pop('version', '')
+        vendor = kwargs.get('vendor', '')
+        model = kwargs.get('model', '')
+        os = kwargs.get('os', '')
 
         drop_cols = []
 
         if 'active' not in addnl_fields+columns and columns != ['*']:
             addnl_fields.append('active')
             drop_cols.append('active')
+
+        # os is not included in the default column list. Why? I was dumb
+        if (columns == ['default'] and os) or (os and 'os' not in columns):
+            addnl_fields.append('os')
+            drop_cols.append('os')
 
         for col in ['namespace', 'hostname', 'status', 'address']:
             if (not ((columns == ['default']) or (columns == ['*'])) and
@@ -75,15 +85,37 @@ class DeviceObj(SqPandasEngine):
 
             drop_cols.extend(['status_y', 'timestamp_y'])
 
+        # The poller merge kills the filtering we did earlier, so redo:
         if status:
-            df = df.query(f'status.isin({status})')
+            df = df.loc[df.status.isin(status)]
+        if vendor:
+            df = df.loc[df.vendor.isin(vendor)]
+        if model:
+            df = df.loc[df.model.isin(model)]
+        if os:
+            df = df.loc[df.os.isin(os)]
+        if os_version:
+            opdict = {'>': operator.gt, '<': operator.lt, '>=': operator.ge,
+                      '<=': operator.le, '=': operator.eq, '!=': operator.ne}
+            op = operator.eq
+            for elem in opdict:
+                if os_version.startswith(elem):
+                    os_version = os_version.replace(elem, '')
+                    op = opdict[elem]
+                    break
+
+            df = df.loc[df.version.apply(
+                lambda x: op(version.parse(x), version.parse(os_version)))]
+
         df = self._handle_user_query_str(df, user_query)
 
         # if poller has failed completely, Can mess up the order of columns
         cols = self.iobj.schema.get_display_fields(columns)
         if columns == ['default'] and 'timestamp' not in cols:
             cols.append('timestamp')
-        return df.drop(columns=drop_cols)[cols]
+        if 'sqvers' in cols:
+            cols.remove('sqvers')
+        return df.drop(columns=drop_cols, errors='ignore')[cols]
 
     def summarize(self, **kwargs):
         """Summarize device information across namespace"""

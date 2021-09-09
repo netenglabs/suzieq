@@ -331,6 +331,7 @@ async def query_device(verb: CommonVerbs, request: Request,
                        os: List[str] = Query(None),
                        vendor: List[str] = Query(None),
                        model: List[str] = Query(None),
+                       version: str = "",
                        status: List[DeviceStatus] = Query(None),
                        ):
     function_name = inspect.currentframe().f_code.co_name

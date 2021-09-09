@@ -58,10 +58,11 @@ class DeviceCmd(SqCommand):
     @argument("os", description="filter by NOS")
     @argument("vendor", description="filter by vendor")
     @argument("model", description="filter by model")
+    @argument("version", description="filter by version")
     @argument("status", description="filter by polling status",
               choices=["dead", "alive",  "neverpoll"])
     def show(self, os: str = '', model: str = '', status: str = '',
-             vendor: str = ''):
+             vendor: str = '', version: str = ''):
         """
         Show device info
         """
@@ -76,7 +77,7 @@ class DeviceCmd(SqCommand):
             model = re.split(r"\s+(?=[^']*(?:'))", model)
         else:
             model = []
-        df = self._get(os=os.split(), model=model,
+        df = self._get(os=os.split(), model=model, version=version,
                        vendor=vendor.split(), status=status.split())
 
         if 'uptime' in df.columns:
