@@ -271,7 +271,10 @@ class SqCommand:
         if 'error' in df.columns:
             return self._gen_output(df)
 
-        if not count or df.empty:
+        if df.empty:
+            return df
+
+        if not count:
             return self._gen_output(df.sort_values(by=[self.columns[0]]),
                                     dont_strip_cols=True)
         else:
