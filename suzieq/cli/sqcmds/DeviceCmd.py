@@ -85,38 +85,3 @@ class DeviceCmd(SqCommand):
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
 
         return self._gen_output(df)
-
-    @command("top")
-    @argument("what", description="Field you want to see top for",
-              choices=["uptime"])
-    @argument("count", description="How many top entries")
-    @argument("reverse", description="True see Bottom n",
-              choices=["True", "False"])
-    def top(self, what: str = "flaps", count: int = 5, reverse: str = "False"):
-        """
-        Show top n entries based on specific field
-        """
-
-        # Device uptime is a field whose value is derived and calculated at
-        # this level. So call get and then perform top on the data obtained
-
-        now = time.time()
-        if (self.columns != ['default'] and self.columns != ['*']
-                and 'uptime' not in self.columns):
-            self.columns.append('bootupTimestamp')
-        df = self._get()
-        if 'bootupTimestamp' in self.columns:
-            self.columns.remove('bootupTimestamp')
-
-        if not df.empty:
-            if reverse == "True":
-                topdf = df.nsmallest(count, columns='uptime', keep="all") \
-                          .head(count)
-            else:
-                topdf = df.nlargest(count, columns='uptime', keep="all") \
-                          .head(count)
-        else:
-            topdf = df
-
-        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        self._gen_output(topdf, sort=False)

@@ -190,6 +190,19 @@ class SqObject(object):
             raise AttributeError('No analysis engine specified')
 
         columns = kwargs.pop('columns', self.columns)
+        column = columns[0]
+
+        if columns is None or columns == ['default']:
+            raise ValueError('Must specify columns with unique')
+
+        if len(columns) > 1:
+            raise ValueError('Specify a single column with unique')
+
+        table_schema = SchemaForTable(self._table, self.all_schemas)
+        if not self._field_exists(table_schema, column):
+            raise ValueError(
+                f"Field {column} does not exist in table {self.table}")
+
         return self.engine.unique(**kwargs, columns=columns)
 
     def analyze(self, **kwargs):
@@ -198,16 +211,11 @@ class SqObject(object):
     def aver(self, **kwargs):
         raise NotImplementedError
 
-    def top(self, what='', n=5, reverse=False,
+    def top(self, what: str = '', n: int = 5, reverse: bool = False,
             **kwargs) -> pd.DataFrame:
         """Get the list of top/bottom entries of "what" field"""
 
-        if "columns" in kwargs:
-            columns = kwargs["columns"]
-            del kwargs["columns"]
-        else:
-            columns = ["default"]
-
+        columns = kwargs.get('columns', ['default'])
         # if self._valid_get_args:
         #     self._valid_get_args += ['what', 'n', 'reverse']
         # This raises exceptions if it fails
@@ -218,7 +226,16 @@ class SqObject(object):
             return df
 
         table_schema = SchemaForTable(self._table, self.all_schemas)
+        if not self._field_exists(table_schema, what):
+            raise ValueError(
+                f"Field {what} does not exist in table {self.table}")
+
         columns = table_schema.get_display_fields(columns)
+
+        ftype = table_schema.field(what).get('type', 'str')
+        if ftype not in ['long', 'double', 'float', 'int', 'timestamp',
+                         'timedelta64[s]']:
+            return pd.DataFrame({'error': [f'{what} not numeric']})
 
         if what not in columns:
             self._addnl_fields.append(what)
@@ -255,3 +272,15 @@ class SqObject(object):
         routine is just a placeholder for all those with nothing to modify.
         '''
         return df
+
+    def _field_exists(self, table_schema: SchemaForTable, field: str) -> bool:
+        """Check if a field exists in the schema
+
+        Args:
+            table_schema (SchemaForTable): The schema for the table
+            field (str): the field name we're checking for
+
+        Returns:
+            bool: True if the field exists, False otherwise
+        """
+        return table_schema.field(field)

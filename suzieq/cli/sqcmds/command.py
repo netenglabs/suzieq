@@ -300,6 +300,43 @@ class SqCommand:
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
 
+    @command("top", help="find the top n values for a field")
+    @argument("n", description="number of rows to return")
+    @argument("what", description="integer field to get top values for")
+    @argument("reverse", description="return bottom n values",
+              choices=['True', 'False'])
+    def top(self, n: int = 5, what: str = '', reverse: str = 'False',
+            **kwargs) -> int:
+        """Return the top n values for a field in a table
+
+        Args:
+            n (int, optional): The number of entries to return. Defaults to 5
+            what (str, optional): Field name to use for largest/smallest val
+            reverse (bool, optional): Reverse and return n smallest
+
+        Returns:
+            int: 0 or error code
+        """
+        now = time.time()
+
+        df = self._invoke_sqobj(self.sqobj.top,
+                                hostname=self.hostname,
+                                namespace=self.namespace,
+                                query_str=self.query_str,
+                                what=what, n=n,
+                                reverse=eval(reverse),
+                                )
+
+        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
+        if 'error' in df.columns:
+            return self._gen_output(df)
+
+        if not df.empty:
+            df = self.sqobj.humanize_fields(df)
+
+        return self._gen_output(df.sort_values(by=[what], ascending=False),
+                                dont_strip_cols=True, sort=False)
+
     def _init_summarize(self):
         self.now = time.time()
 

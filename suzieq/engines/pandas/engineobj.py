@@ -282,11 +282,6 @@ class SqPandasEngine(SqEngineObj):
         query_str = kwargs.get('query_str', '')
 
         columns = kwargs.pop("columns", None)
-        if columns is None or columns == ['default']:
-            raise ValueError('Must specify columns with unique')
-
-        if len(columns) > 1:
-            raise ValueError('Specify a single column with unique')
 
         if query_str:
             getcols = ['*']
