@@ -34,7 +34,7 @@ def display_title(page, search_text, pagelist):
         unsafe_allow_html=True
     )
 
-    title_col, mid, page_col, srch_col = st.beta_columns([2, 1, 2, 2])
+    title_col, mid, page_col, srch_col = st.columns([2, 1, 2, 2])
     with title_col:
         st.markdown(
             f"""

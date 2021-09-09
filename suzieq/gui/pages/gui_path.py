@@ -354,12 +354,12 @@ def page_work(state_container, page_flip: bool):
     state_container.pathSessionState = state
 
     pgbar = st.empty()
-    summary = st.beta_container()
-    summcol, mid, pathcol = summary.beta_columns([3, 1, 10])
+    summary = st.container()
+    summcol, mid, pathcol = summary.columns([3, 1, 10])
     with summary:
         with summcol:
             summ_ph = st.empty()
-            legend_ph = st.beta_container()
+            legend_ph = st.container()
         with pathcol:
             fw_ph = st.empty()
 
@@ -414,12 +414,12 @@ def page_work(state_container, page_flip: bool):
 
         for entry in faileddfs.dfs:
             mdf = entry['df']
-            table_expander = st.beta_expander(
+            table_expander = st.expander(
                 f'Failed {entry["name"]} Table', expanded=not mdf.empty)
             with table_expander:
                 st.dataframe(mdf)
 
-        table_expander = st.beta_expander('Path Table', expanded=True)
+        table_expander = st.expander('Path Table', expanded=True)
         with table_expander:
             st.dataframe(data=df.style.apply(highlight_erroneous_rows, axis=1),
                          height=600)

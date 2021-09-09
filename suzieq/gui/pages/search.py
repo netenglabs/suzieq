@@ -170,7 +170,7 @@ def page_work(state_container, page_flip: bool):
             if not df.empty:
                 df = df.query(query_str).reset_index(drop=True)
 
-        expander = st.beta_expander(f'Search for {state_container.search_text}',
+        expander = st.expander(f'Search for {state_container.search_text}',
                                     expanded=True)
         with expander:
             if not df.empty:
@@ -184,7 +184,7 @@ def page_work(state_container, page_flip: bool):
         if not df.empty:
             df = df.groupby(by=columns).first().reset_index()
 
-        expander = st.beta_expander(f'Search for {state_container.search_text}',
+        expander = st.expander(f'Search for {state_container.search_text}',
                                     expanded=True)
         with expander:
             if not df.empty:
@@ -196,7 +196,7 @@ def page_work(state_container, page_flip: bool):
         psrch, prev_df = prev_res
         if psrch == state_container.search_text:
             continue
-        expander = st.beta_expander(f'Search for {psrch}', expanded=True)
+        expander = st.expander(f'Search for {psrch}', expanded=True)
         with expander:
             if not prev_df.empty:
                 st.dataframe(prev_df)

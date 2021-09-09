@@ -202,7 +202,7 @@ def xplore_sidebar(state, sqobjs: dict):
     if columns == ['all']:
         columns = ['*']
     if state.table != "tables":
-        col_expander = st.sidebar.beta_expander('Column Names', expanded=False)
+        col_expander = st.sidebar.expander('Column Names', expanded=False)
         with col_expander:
             st.subheader(f'{state.table} column names')
             st.table(TablesObj().describe(table=state.table)
@@ -296,8 +296,8 @@ def page_work(state_container, page_flip: bool):
         dfcols = sorted((filter(lambda x: x not in ['index', 'sqvers'],
                                 dfcols)))
 
-        grid1 = st.beta_container()
-        headercol, uniq_col = st.beta_columns(2)
+        grid1 = st.container()
+        headercol, uniq_col = st.columns(2)
         with grid1:
             with headercol:
                 st.write(
@@ -321,7 +321,7 @@ def page_work(state_container, page_flip: bool):
                         'Distribution Count of', options=['-'] + dfcols,
                         index=selindex, key='distcount')
 
-        scol1, scol2 = st.beta_columns(2)
+        scol1, scol2 = st.columns(2)
 
         if state.table != "tables" and state.uniq_clicked != '-':
             uniq_df = xplore_run_unique(show_df,
@@ -368,7 +368,7 @@ def page_work(state_container, page_flip: bool):
                 expand_assert = False
             else:
                 expand_assert = True
-            validate_expander = st.beta_expander('Assert',
+            validate_expander = st.expander('Assert',
                                                  expanded=expand_assert)
             with validate_expander:
                 if not assert_df.empty:
@@ -378,7 +378,7 @@ def page_work(state_container, page_flip: bool):
                 else:
                     st.write('Assert not run')
 
-    expander = st.beta_expander('Table', expanded=True)
+    expander = st.expander('Table', expanded=True)
     with expander:
         if not show_df.empty:
             convert_dict = {
