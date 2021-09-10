@@ -1,25 +1,28 @@
 Value Filldown vrf (\S+)
-Value protocol ([A-Zi]\*?|[A-Zio]\s+[A-Z][1-2]|i ia|i su|LC)
+Value protocol ([A-Zi]\*?|[A-Zio][\*\s][A-Z][1-2]|[A-Z][\*\s][A-Z][A-Z]|i ia|i su|LC)
 Value Required prefix ([0-9./]+|[0-9A-F:./]+)
+Value Filldown netmask (\d{1,2})
 Value preference (\d+|is)
 Value metric (\d+)
 Value List nexthopIps ([0-9.]+|[0-9A-F:.]+)
 Value List oifs (\S+)
-Value statusChangeTimestamp (\S+)
+Value List statusChangeTimestamp (\S+)
 Value nexthopvrf (\S+)
 
 Start
   ^Gateway\s+of\s+last\s+resort.*$$
-  ^[A-Zio]\s -> Continue.Record
+  ^(\s*\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}|[A-Zi]\*?|[A-Zio][\*\s][A-Z][1-2]|[A-Z][\*\s][A-Z][A-Z]|i ia|i su|LC) -> Continue.Record
   ^Routing Table: -> Continue.Record
   ^Routing Table:\s+${vrf}
   ^IPv4 Unicast:
   ^Codes:.*$$
   ^-*$$
+  ^.*\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}/${netmask}.*$$ -> Continue
   ^${protocol}\s+${prefix} is directly connected, ${statusChangeTimestamp}, ${oifs}$$
-  ^${protocol}\s+${prefix} is directly connected, ${statusChangeTimestamp}, ${oifs}\s+\(nexthop in vrf ${nexthopvrf}\)\s*$$  
+  ^${protocol}\s+${prefix} is directly connected, ${statusChangeTimestamp}, ${oifs}\s+\(nexthop in vrf ${nexthopvrf}\)\s*$$
   ^${protocol}\s+${prefix} is directly connected,\s+${oifs}\s*$$
   ^${protocol}\*?\s+${prefix}\s+\[${preference}/${metric}\]\s+via\s+${nexthopIps},\s+${statusChangeTimestamp},\s+${oifs}.*$$
+  ^${protocol}\s+${prefix}\s+\[${preference}/${metric}\]\s+via\s+${nexthopIps}
   ^${protocol}\s+${prefix}\s+\[${preference}/${metric}\]\s+via\s+${nexthopIps}\s+\(nexthop in vrf ${nexthopvrf}\), ${statusChangeTimestamp}.*$$
   ^${protocol}\s+${prefix}\s+\[${preference}/${metric}\]\s+via\s+${nexthopIps},\s+${oifs}\s*$$
   ^${protocol}\s+${prefix}\s*$$
@@ -31,7 +34,7 @@ Start
   ^\s+${statusChangeTimestamp},\s+${oifs}.*$$
 
 #Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
-#       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area 
+#       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
 #       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
 #       E1 - OSPF external type 1, E2 - OSPF external type 2, m - OMP
 #       n - NAT, Ni - NAT inside, No - NAT outside, Nd - NAT DIA
@@ -55,7 +58,7 @@ Start
 #
 #Routing Table: Mgmt-Intf
 #Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
-#       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area 
+#       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
 #       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
 #       E1 - OSPF external type 1, E2 - OSPF external type 2, m - OMP
 #       n - NAT, Ni - NAT inside, No - NAT outside, Nd - NAT DIA
@@ -73,3 +76,26 @@ Start
 #C        10.255.1.0/24 is directly connected, GigabitEthernet1
 #S        10.255.1.1/32 [254/0] via 10.255.1.1, GigabitEthernet1
 #L        10.255.1.27/32 is directly connected, GigabitEthernet1
+#
+#
+#Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
+#       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+#       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+#       E1 - OSPF external type 1, E2 - OSPF external type 2
+#       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+#       ia - IS-IS inter area, * - candidate default, U - per-user static route
+#       o - ODR, P - periodic downloaded static route
+#
+#Gateway of last resort is 3.3.0.2 to network 0.0.0.0
+#
+#     1.0.0.0/24 is subnetted, 1 subnets
+#O       1.0.1.0 [110/41] via 3.3.0.2, 00:32:47, FastEthernet0/0
+#                [110/41] via 3.3.0.1, 00:30:00, FastEthernet0/1
+#     3.0.0.0/8 is variably subnetted, 8 subnets, 2 masks
+#C       3.3.0.0/24 is directly connected, FastEthernet0/0
+#O IA    3.2.0.0/24 [110/20] via 3.3.0.2, 00:33:15, FastEthernet0/0
+#O IA    3.4.2.0/25 [110/30] via 3.4.0.2, 00:00:08, FastEthernet0/1
+#     10.0.0.0/32 is subnetted, 1 subnets
+#O       10.0.0.1 [110/41] via 3.3.0.2, 00:32:50, FastEthernet0/0
+#O*E2   0.0.0.0/0 [110/1] via 3.3.0.2, 00:32:50, FastEthernet0/0
+#
