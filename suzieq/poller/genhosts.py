@@ -71,7 +71,7 @@ def convert_ansible_inventory(filename: str, namespace: str = 'default'):
 
     Ansible pulls together the inventory information from multiple files. The
     information relevant to sq-poller maybe present in different files as
-    different vars. ansible-invenoty command luckily handles this for us. This
+    different vars. ansible-inventory command luckily handles this for us. This
     function takes the JSON output of that command and gathers the data needed
     to start polling.
 
