@@ -19,16 +19,20 @@ def get_sqobject(table_name: str):
     :param table_name: str, name of table for which object is requested
     :returns:
     :rtype: The child class of SqObject that corresponds to the table
+            or raises ModuleNotFoundError if the table is not found
 
     '''
 
     try:
         mod = import_module(f'suzieq.sqobjects.{table_name}')
         for mbr in inspect.getmembers(mod):
-            if inspect.isclass(mbr[1]) and mbr[0] != 'SqObject':
-                return mbr[1]
+            if inspect.isclass(mbr[1]):
+                if getattr(mbr[1], '__bases__')[0].__name__ == 'SqObject':
+                    return mbr[1]
     except ModuleNotFoundError:
         return None
+
+    raise ModuleNotFoundError(f'{table_name} not found')
 
 
 __all__ = _get_tables() + ['get_sqobject']
