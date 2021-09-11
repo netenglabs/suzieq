@@ -508,6 +508,10 @@ async def query_network(verb: NetworkVerbs, request: Request,
                         namespace: List[str] = Query(None),
                         hostname: List[str] = Query(None),
                         start_time: str = "", end_time: str = "",
+                        version: str = "",
+                        model: List[str] = Query(None),
+                        vendor: List[str] = Query(None),
+                        os: List[str] = Query(None),
                         query_str: str = None,
                         ):
     function_name = inspect.currentframe().f_code.co_name

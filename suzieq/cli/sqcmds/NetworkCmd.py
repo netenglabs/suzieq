@@ -38,14 +38,21 @@ class NetworkCmd(SqCommand):
         )
 
     @command("show", help="Show device information")
-    def show(self):
+    @argument("model", description="models to filter with")
+    @argument("os", description='NOS to filter with')
+    @argument('vendor', description='vendor to filter with')
+    @argument('version', description='NOS version to filter with')
+    def show(self, os: str = "", vendor: str = "", model: str = "",
+             version: str = "") -> int:
         """
         Show network info
         """
 
         now = time.time()
 
-        df = self.sqobj.get(namespace=self.namespace,
+        df = self.sqobj.get(namespace=self.namespace, os=os.split(),
+                            vendor=vendor.split(), model=model.split(),
+                            version=version,
                             hostname=self.hostname)
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
