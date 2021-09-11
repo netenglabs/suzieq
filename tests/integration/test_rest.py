@@ -285,32 +285,33 @@ def test_rest_services(app_initialize, service, verb, arg):
 
 
 # Resuscitate this when you fix the REST code
-# @pytest.mark.rest
-# @pytest.mark.parametrize("service, verb", [
-#     (cmd, verb) for cmd in _get_tables() for verb in VERBS])
-# def test_rest_arg_consistency(service, verb):
-#     '''check that the arguments used in REST match whats in sqobjects'''
 
-#     # import all relevant functions from the rest code first
 
-#     fnlist = list(filter(lambda x: x[0] == f'query_{service}_{verb}',
-#                          inspect.getmembers(query, inspect.isfunction)))
-#     if not fnlist:
-#         fnlist = list(filter(lambda x: x[0] == f'query_{service}',
-#                              inspect.getmembers(query, inspect.isfunction)))
-#     for fn in fnlist:
-#         rest_args = [i for i in inspect.getfullargspec(fn[1]).args
-#                      if i not in
-#                      ['verb', 'token', 'request', 'format', 'start_time', 'end_time', 'view']]
-#         sqobj = get_sqobject(service)()
+@pytest.mark.rest
+@pytest.mark.parametrize("service", [
+    (cmd) for cmd in _get_tables()])
+def test_rest_arg_consistency(service):
+    '''check that the arguments used in REST match whats in sqobjects'''
 
-#         valid_args = set(sqobj._valid_get_args)
+    # import all relevant functions from the rest code first
 
-#         for arg in valid_args:
-#             assert arg in rest_args, f"{arg} missing from {fn} arguments"
+    fnlist = list(filter(lambda x: x[0] == f'query_{service}',
+                         inspect.getmembers(query, inspect.isfunction)))
+    for fn in fnlist:
+        rest_args = [i for i in inspect.getfullargspec(fn[1]).args
+                     if i not in
+                     ['verb', 'token', 'request', 'format', 'start_time', 'end_time', 'view']]
+        sqobj = get_sqobject(service)()
 
-#         for arg in rest_args:
-#             assert arg in valid_args, f"extra argument {arg} in {fn}"
+        valid_args = set(sqobj._valid_get_args)
+
+        for arg in valid_args:
+            assert arg in rest_args, f"{arg} missing from {fn} arguments"
+
+        for arg in rest_args:
+            if arg not in valid_args and arg != "status":
+                # status is usually part of assert keyword and so ignore
+                assert False, f"{arg} not in {fn} arguments"
 
 
 @ pytest.fixture()
