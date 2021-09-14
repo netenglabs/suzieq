@@ -1,6 +1,7 @@
 import os
 import json
 import pytest
+import pandas as pd
 from fastapi.testclient import TestClient
 from filelock import FileLock
 import inspect
@@ -15,7 +16,7 @@ from suzieq.restServer import query
 ENDPOINT = "http://localhost:8000/api/v2"
 
 VERBS = ['show', 'summarize', 'assert', 'lpm',
-         'unique', 'find']  # add 'top' when it's supported
+         'unique', 'find', 'top']  # add 'top' when it's supported
 
 #
 # The code logic is that you define all the filters you want to test in
@@ -174,8 +175,10 @@ GOOD_FILTER_EMPTY_RESULT_FILTER = [
     'ospf/assert?status=fail',
     'evpnVni/assert?status=fail',
     'interface/show?state=notConnected',
+    'interface/show?vrf=default',
     'device/show?status=neverpoll',
     'device/show?status=dead',
+    'inventory/all',
 ]
 
 ####
@@ -246,6 +249,7 @@ def get(endpoint, service, verb, args):
     c_v = f"{service}/{verb}"
     c_v_f = f"{c_v}?{args}"
     v_f = f"{verb}?{args}"
+    c_all = f"{service}/all"
 
     argval = GOOD_FILTERS_FOR_SERVICE_VERB.get(args, [])
 
@@ -255,22 +259,28 @@ def get(endpoint, service, verb, args):
                    f"{c_v_f} should not be in good responses list")
     else:
         if c_v in argval or argval == ['all']:
-            if c_v_f not in GOOD_FILTER_EMPTY_RESULT_FILTER:
-                assert len(response.content.decode('utf8')) > 10
+            df = pd.DataFrame(json.loads(
+                response.content.decode('utf-8')))
+            if ((c_v_f not in GOOD_FILTER_EMPTY_RESULT_FILTER) and
+                    (c_all not in GOOD_FILTER_EMPTY_RESULT_FILTER)):
+                assert(not df.empty)
             else:
-                assert len(response.content.decode('utf8')) == 2
+                assert df.empty
         elif argval[0].split('/')[0] == "all":
             match_verb = argval[0].split('/')[1]
             assert (match_verb == verb,
                     f"Unable to match good result for {c_v_f}")
 
-        if c_v_f not in GOOD_FILTER_EMPTY_RESULT_FILTER:
+        if ((c_v_f not in GOOD_FILTER_EMPTY_RESULT_FILTER) and
+                (c_all not in GOOD_FILTER_EMPTY_RESULT_FILTER)):
             if args in VALIDATE_OUTPUT_FILTER:
                 VALIDATE_OUTPUT_FILTER[args](response.json(), service, verb)
             else:
-                assert len(response.content.decode('utf8')) > 10
+                df = pd.DataFrame(json.loads(response.content.decode('utf-8')))
+                assert(not df.empty)
         else:
-            assert len(response.content.decode('utf8')) == 2
+            df = pd.DataFrame(json.loads(response.content.decode('utf-8')))
+            assert df.empty
 
     return response.status_code
 
@@ -284,11 +294,8 @@ def test_rest_services(app_initialize, service, verb, arg):
     get(ENDPOINT, service, verb, arg)
 
 
-# Resuscitate this when you fix the REST code
-
-
-@pytest.mark.rest
-@pytest.mark.parametrize("service", [
+@ pytest.mark.rest
+@ pytest.mark.parametrize("service", [
     (cmd) for cmd in _get_tables()])
 def test_rest_arg_consistency(service):
     '''check that the arguments used in REST match whats in sqobjects'''
