@@ -1,4 +1,5 @@
 import os
+import re
 from time import time
 from typing import List
 import logging
@@ -69,6 +70,8 @@ class SqParquetDB(SqDB):
         key_fields = kwargs.pop("key_fields")
         addnl_filter = kwargs.pop("add_filter", None)
         merge_fields = kwargs.pop('merge_fields', {})
+        hostname = kwargs.pop('hostname', [])
+        namespace = kwargs.pop('namespace', [])
 
         folder = self._get_table_directory(table_name, False)
 
@@ -133,7 +136,10 @@ class SqParquetDB(SqDB):
             filters = self.build_ds_filters(
                 start, end, master_schema, merge_fields=merge_fields, **kwargs)
 
-            final_df = ds.dataset(datasets) \
+            filtered_datasets = self._get_filtered_fileset(
+                datasets, namespace, hostname)
+
+            final_df = filtered_datasets \
                 .to_table(filter=filters, columns=avail_fields) \
                 .to_pandas(self_destruct=True) \
                 .query(query_str) \
@@ -574,6 +580,48 @@ class SqParquetDB(SqDB):
                     msch.append(fld)
 
         return msch
+
+    def _get_filtered_fileset(self, datasets: list, namespace: list,
+                              hostname: list) -> ds:
+        """Filter the dataset based on the namespace and hostname
+
+        We can use this method to filter out namespaces and hostnames based
+        on regexes as well just regular strings.
+        Args:
+            datasets (list)): The datasets list incl coalesced and not files
+            namespace (list): list of namespace strings
+            hostname (list): list of hostname strings
+
+        Returns:
+            ds: pyarrow dataset of only the files that match filter
+        """
+        filelist = []
+        for dataset in datasets:
+            if not namespace:
+                filelist.extend(dataset.files)
+            else:
+                for ns in namespace:
+                    if ns.startswith('!'):
+                        ns = ns[1:]
+                        filelist.extend([x for x in dataset.files
+                                         if not re.search(f'namespace={ns}/',
+                                                          x)])
+                    else:
+                        filelist.extend([x for x in dataset.files
+                                         if re.search(f'namespace={ns}/', x)])
+
+            for hn in hostname:
+                if hn.startswith('!'):
+                    hn = hn[1:]
+                    filelist.extend([x for x in filelist
+                                     if 'coalesced' in x or
+                                     (not re.search(f'hostname={hn}/', x))])
+                else:
+                    filelist.extend([x for x in filelist
+                                     if 'coalesced' in x or
+                                     re.search(f'hostname={hn}/', x)])
+
+        return ds.dataset(filelist, format='parquet', partitioning='hive')
 
     def _cons_int_filter(self, keyfld: str, filter_str: str) -> ds.Expression:
         '''Construct Integer filters with arithmetic operations'''

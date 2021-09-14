@@ -91,6 +91,7 @@ class SqPandasEngine(SqEngineObj):
         addnl_fields = kwargs.pop('addnl_fields', [])
         view = kwargs.pop('view', self.iobj.view)
         active_only = kwargs.pop('active_only', True)
+        hostname = kwargs.get('hostname', [])
 
         fields = sch.get_display_fields(columns)
         key_fields = sch.key_fields()
@@ -167,6 +168,17 @@ class SqPandasEngine(SqEngineObj):
         )
 
         if not table_df.empty:
+            # hostname may not have been filtered if using regex
+            if hostname:
+                hdf_list = []
+                for hn in hostname:
+                    df1 = table_df.query(f"hostname.str.match('{hn}')")
+                    if not df1.empty:
+                        hdf_list.append(df1)
+
+                if hdf_list:
+                    table_df = pd.concat(hdf_list)
+
             if view == "all" or not active_only:
                 table_df.drop(columns=drop_cols, inplace=True)
             else:
