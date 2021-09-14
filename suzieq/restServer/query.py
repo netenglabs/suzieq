@@ -182,6 +182,7 @@ class CommonVerbs(str, Enum):
     show = "show"
     summarize = "summarize"
     unique = "unique"
+    top = "top"
 
 
 class MoreVerbs(str, Enum):
@@ -207,6 +208,7 @@ class NetworkVerbs(str, Enum):
     show = "show"
     summarize = "summarize"
     unique = "unique"
+    top = "top"
 
 
 class TableVerbs(str, Enum):
