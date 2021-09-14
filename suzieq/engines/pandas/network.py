@@ -22,7 +22,7 @@ class NetworkObj(SqPandasEngine):
         model = kwargs.pop('model', [])
         vendor = kwargs.pop('vendor', [])
         os_version = kwargs.pop('version', [])
-        namespace = kwargs.get('namespace', [])
+        namespace = kwargs.pop('namespace', [])
 
         drop_cols = []
 
@@ -34,10 +34,12 @@ class NetworkObj(SqPandasEngine):
                 model=model,
                 vendor=vendor,
                 version=os_version,
+                namespace=namespace,
                 **kwargs)
         else:
             df = get_sqobject('device')(context=self.ctxt).get(
-                columns=['namespace', 'hostname'], **kwargs)
+                columns=['namespace', 'hostname'], namespace=namespace,
+                **kwargs)
 
         if df.empty:
             return pd.DataFrame()
@@ -119,6 +121,9 @@ class NetworkObj(SqPandasEngine):
         '''
 
         df = self.get(**kwargs)
+
+        if df.empty:
+            return df
 
         self.ns = pd.DataFrame({
             'namespacesCnt': [df.namespace.count()],
