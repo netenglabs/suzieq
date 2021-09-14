@@ -9,7 +9,7 @@ class BgpObj(SqObject):
         self._valid_get_args = ['namespace', 'hostname', 'columns', 'state',
                                 'vrf', 'peer', 'query_str']
         self._valid_arg_vals = {
-            'state': ['Established', 'NotEstd', ''],
+            'state': ['Established', 'NotEstd', 'dynamic', ''],
             'status': ['all', 'pass', 'fail'],
         }
         self._valid_assert_args = ['namespace', 'hostname', 'vrf', 'status']

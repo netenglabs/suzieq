@@ -54,7 +54,7 @@ class BgpCmd(SqCommand):
     @argument("vrf", description="vrf name to qualify")
     @argument("peer", description="IP address, in quotes, or the interface name, of peer to qualify output")
     @argument("state", description="status of the session to match",
-              choices=["Established", "NotEstd"])
+              choices=["Established", "NotEstd", "dynamic"])
     def show(self, state: str = "", vrf: str = '', peer: str = ''):
         """
         Show bgp info
