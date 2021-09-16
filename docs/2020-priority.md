@@ -55,7 +55,7 @@ Given the categories, here is a rough list of tasks we will be tackling. We welc
 * --Topology as a first class property--
   * draw a map for physical and logical layers, including routing protocols
   * neighbor discovery
-    * --show neighbors that we know about but aren't polling--
+    * --show neighbors that we know about but aren't polling--s
     * maybe be able to just start with one IP address and then discover 
       everything that must be polled by suzieq
 * ~~support augmenting columns (like adding peerHostname in OSPF when all we have is peerIP)~~
@@ -78,7 +78,7 @@ Given the categories, here is a rough list of tasks we will be tackling. We welc
   * asserts
 * Better unit tests with mocking instead of just end-to-end with real data.
 * Integration with performance analysis
-  * integration with promethius and influxdb
+  * integration with prometheus and influxdb
   * what do we want to be able to do with this?
 * ~~Arista EVPN~~
 * Integration with systems for notification of events
@@ -93,7 +93,7 @@ Given the categories, here is a rough list of tasks we will be tackling. We welc
 * ~~Support for Cisco's IOS-XR~~
 * Temperature and power collection 
 * Cloud integration such as VPC from cloud providers
-* Kafka integraion for streaming telemetry
+* Kafka integration for streaming telemetry
 * Redundancy -- some way of making sure that one poller is always running
 * BMP to collect BGP data for realtime BGP analysis
 * Understand BGP routing policy and route maps / etc

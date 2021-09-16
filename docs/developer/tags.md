@@ -23,7 +23,7 @@ Use cases:
 * namespaces can be grouped together
 * the easiest way is by regex, but could also list them out
 * namespaces can be in many groups
-* build a hierarcy of namespaces: groups of groups
+* build a hierarchy of namespaces: groups of groups
 
 ### Device Role
 
@@ -78,7 +78,7 @@ for MfN it needs tags at the time of recording the data
 * what If I don't have ansible
 ** create a hosts file, and then have a script that reads that hostfile and updates the groups? 
 
-### Dynamic desription for Suzieq
+### Dynamic description for Suzieq
 
 For Suzieq, we want to get the tags at analysis time, rather than at write time, so suzieq-cli will need to use the above library to read the database. (why did I say this, doesn't it need to be recorded over time just like MfN?)
 
@@ -86,7 +86,7 @@ For Suzieq, we want to get the tags at analysis time, rather than at write time,
 
 * do we need to store how roles are related to each other?
 * how do we get different tags related to different hosts for telegraf/MfN?
-* do we want to have role_group, or be more like ansible and just decribe children.
+* do we want to have role_group, or be more like ansible and just describe children.
 * we need to represent operational state like: inservice, OOS, provisioning, decommission. Are these just role tags?
 * even for suzieq, we'll probably want to know what groups something was when it was recorded won't we
 

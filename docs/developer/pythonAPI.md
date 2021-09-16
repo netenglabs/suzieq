@@ -24,7 +24,7 @@ ospf_tbl = get_sqobject('ospf')
 
 ## Table Operations
 
-Each table suppoets a set of verbs as functions to operate on the table. All tables support the get, summart and unique methods. Some of the objects support the aver method (for checking the correctness of a bunch of parameters. If you invoke an unsupported function on a table, you get back a DataFrame with an error that indicates that the operation is not supported on the table. 
+Each table supports a set of verbs as functions to operate on the table. All tables support the get, summary and unique methods. Some of the objects support the aver method (for checking the correctness of a bunch of parameters. If you invoke an unsupported function on a table, you get back a DataFrame with an error that indicates that the operation is not supported on the table. 
 
 The invocation of the method follows the format of ```<table>(table_params).<verb>(verb params)```. For example, invoking the get method on the OSPF table in its simplest form looks like this:
 ```
@@ -45,7 +45,7 @@ The common verb parameters are:
 
 Besides these, the get and unique methods take an additional parameter:
 
-* query_str: Which is the Panndas query string to filter out the data returned
+* query_str: Which is the Pandas query string to filter out the data returned
 
 Besides these, every table takes an additional set of keywords specific to the table. For example, you can use ifname keyword to the interfaces table or LLDP table to request the operation only on the list of interfaces specified; you can use protocol as a keyword to the routing table to select only those routing table entries populated by the specified protocol, and so on.
 * 
