@@ -2,21 +2,25 @@
 
 To gather data from your network, you need to run the poller. Launch the docker container, netenglabs/suzieq:latest and attach to it via the following steps:
 
-- ```docker run -itd -v /home/${USER}/parquet-out:/suzieq/parquet -v /home/${USER}/<inventory-file>:/suzieq/inventory --name sq-poller netenglabs/suzieq:latest```
-- ```docker attach sq-poller```
+```
+  docker run -itd -v /home/${USER}/parquet-out:/suzieq/parquet -v /home/${USER}/<inventory-file>:/suzieq/inventory --name sq-poller netenglabs/suzieq:latest
+  docker attach sq-poller
+```
 
-In the docker run command above, the two -v options provide host file/directory access to (i) store the parquet output files (the first -v option), and (ii) the inventory file (the second -v option). We describe the inventory file below. The inventory file is the list of devices and their IP address that you wish to gather data from. 
+In the docker run command above, the two `-v` options provide host file/directory access to (i) store the parquet output files (the first `-v` option), and (ii) the inventory file (the second `-v` option). We describe the inventory file below. The inventory file is the list of devices and their IP address that you wish to gather data from. 
 
 You then launch the poller via the command line:
 
-- ```sq-poller -D inventory```
+```
+  sq-poller -D inventory
+```
 
 To monitor the status of the poller, you can look at /tmp/sq-poller.log file.
 
 The inventory file that the poller uses can be supplied either:
 
-* via a Suzieq native YAML format file (use the -D option as above) or 
-* via or an Ansible inventory file (instead of -D, use -a option along with -n). This file has to be the output of ```ansible-inventory --list``` command
+* via a Suzieq native YAML format file (use the `-D` option as above) or 
+* via or an Ansible inventory file (instead of `-D`, use `-a` option along with `-n`). This file has to be the output of ```ansible-inventory --list``` command
 
 The Suzieq native inventory file format that contains the IP address, the access method (SSH or REST), the IP address of the node, the user name, the type of OS if using REST and the access token such as a private key file. The format looks as follows, for example (all possible combinations are shown for illustration):
 ```
@@ -31,13 +35,13 @@ The Suzieq native inventory file format that contains the IP address, the access
     - url: https://vagrant@192.168.123.123 password=vagrant
 ```
 
-There's a template in the docs directory called hosts-template.yml. You can copy that file as the template and fill out the values for namespace and url (remember to delete the empty URLs and to not use TABS, some editors add them automatically if the filename extension isn't right). The URL is the standard URL format: <transport>://[username:password]@<hostname or IP>:<port>. For example, ssh://dinesh:dinesh@myvx or ssh://dinesh:dinesh@172.1.1.23. 
+There's a template in the docs directory called hosts-template.yml. You can copy that file as the template and fill out the values for namespace and url (remember to delete the empty URLs and to not use TABS, some editors add them automatically if the filename extension isn't right). The URL is the standard URL format: `<transport>://[username:password]@<hostname or IP>:<port>`. For example, `ssh://dinesh:dinesh@myvx` or `ssh://dinesh:dinesh@172.1.1.23`. 
 
 If you're using Ansible to configure the devices, an alternate to the native Suzieq inventory format is to use an Ansible inventory format. The file to be used is the output of the ```ansible-inventory --list``` command. 
 
 Once you have either generated the hosts file or are using the Ansible inventory file, you can launch the poller inside the docker container using **one** of the following two options: 
 
-* If you're using the native YAML hosts file, use the -D option like this: `sq-poller -D eos`  or
+* If you're using the native YAML hosts file, use the -D option like this: `sq-poller -D eos`
 * if you're using the Ansible inventory format, use the -a and -n options like this: via `sq-poller -a /suzieq/inventory -n eos`. 
 
 The poller creates a log file called /tmp/sq-poller.log. You can look at the file for errors. The output is stored in the parquet directory specified under /suzieq/parquet and visible in the host, outside the container, via the path specified during docker run above. 
@@ -47,22 +51,22 @@ The poller creates a log file called /tmp/sq-poller.log. You can look at the fil
 If you're using SSH to connect to the devices (only Arista EOS uses the REST API), the supported models for specifying login credentials are:
 
 * Put the password in the inventory file and ensure no one can read it
-* Use --ask-pass to then be prompted for a password
-* Use an environment var to store the password and pass the name of the env var via --envpass
+* Use `--ask-pass` to then be prompted for a password
+* Use an environment var to store the password and pass the name of the env var via `--envpass`
 * Use keyfile
-* Use passphrase protected keyfile  (use --passphrase)
+* Use passphrase protected keyfile  (use `--passphrase`)
 * Use ssh-config (not well-tested)
 
 In addition, there maybe various additional options you may want to specify to connect to the device:
 
 * Jumphost use
-  : You can use the -j option to specify connection via a jumphost. The parameter specified with -j has the format: ```//<username>@<jumphost>:<port>```. Jumphost support is via a private key file, with the same characteristics as the private key file to connect to the remote devices. For example, if you need to use a passphrase for the private key file to the device, you'll have to use the same passphrase to connect to the device as well.
+  : You can use the `-j` option to specify connection via a jumphost. The parameter specified with `-j` has the format: ```//<username>@<jumphost>:<port>```. Jumphost support is via a private key file, with the same characteristics as the private key file to connect to the remote devices. For example, if you need to use a passphrase for the private key file to the device, you'll have to use the same passphrase to connect to the device as well.
 * Ignore host key authentication
   : This is the equivalent of "StrictHostKeyChecking=no UserKnownHostsFile=/dev/null" ssh options. You can enable this via the -k command line option when starting sq-poller
 * Passphrase with Private Key File
-  : Some operators have a passphrase associated with the private key file, a more secure model. To enable sq-poller to prompt for this passphrase, use the "--passphrase" option. You'll be prompted for the password.
+  : Some operators have a passphrase associated with the private key file, a more secure model. To enable sq-poller to prompt for this passphrase, use the `--passphrase` option. You'll be prompted for the password.
 * SSH Config file
-  : Some operators choose to put everything in the ssh config file and expect the SSH client to honor this configuration. You can specify the ssh config file via the  "--ssh-config-file" option. 
+  : Some operators choose to put everything in the ssh config file and expect the SSH client to honor this configuration. You can specify the ssh config file via the  `--ssh-config-file` option. 
 
 ## <a name='rest-security'></a>REST Security
 
