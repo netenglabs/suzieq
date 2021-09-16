@@ -22,13 +22,14 @@ class PathObj(SqPandasEngine):
     def table_name():
         return 'path'
 
-    def _init_dfs(self, namespace, source, dest):
+    def _init_dfs(self, ns, source, dest):
         """Initialize the dataframes used in this path hunt"""
 
         self.source = source
         self.dest = dest
         self._underlay_dfs = {}  # lpm entries for each vtep IP
 
+        namespace = [ns]
         try:
             self._if_df = interfaces.IfObj(context=self.ctxt) \
                                     .get(namespace=namespace, state='up',
@@ -235,8 +236,8 @@ class PathObj(SqPandasEngine):
         if len(uniq_mac) != 1:
             return fhr_df
 
-        macdf = self._macsobj.get(namespace=rslt_df.iloc[0].namespace,
-                                  macaddr=uniq_mac[0], localOnly=True)
+        macdf = self._macsobj.get(namespace=[rslt_df.iloc[0].namespace],
+                                  macaddr=[uniq_mac[0]], localOnly=True)
         if not macdf.empty:
             ign_ifs = ["bridge", "Vxlan1"]
             if device:
@@ -327,8 +328,8 @@ class PathObj(SqPandasEngine):
         vlan = self._get_if_vlan(device, oif)
 
         if macaddr:
-            mac_df = self._macsobj.get(namespace=rslt.iloc[0]['namespace'],
-                                       hostname=device, macaddr=macaddr,
+            mac_df = self._macsobj.get(namespace=[rslt.iloc[0]['namespace']],
+                                       hostname=[device], macaddr=[macaddr],
                                        vlan=[str(vlan)])
 
             if mac_df.empty:
@@ -365,8 +366,8 @@ class PathObj(SqPandasEngine):
                     raise AttributeError(
                         f'false vtep {vtep_list}: vrf {vrf_list}')
                 self._underlay_dfs[vtep] = routes.RoutesObj(
-                    context=self.ctxt).lpm(namespace=self.namespace,
-                                           address=vtep, vrf=vrf)
+                    context=self.ctxt).lpm(namespace=[self.namespace],
+                                           address=[vtep], vrf=[vrf])
             vtep_df = self._underlay_dfs[vtep]
             rslt = vtep_df.query(
                 f'hostname == "{hostname}" and vrf == "{vrf}"')
@@ -504,9 +505,9 @@ class PathObj(SqPandasEngine):
                                          f'ipAddress=="{addr}" and '
                                          f'oif=="{iface}"')
             if not arpdf.empty and arpdf.remote.all():
-                macdf = self._macsobj.get(namespace=self.namespace,
-                                          hostname=device,
-                                          macaddr=arpdf.iloc[0].macaddr)
+                macdf = self._macsobj.get(namespace=[self.namespace],
+                                          hostname=[device],
+                                          macaddr=[arpdf.iloc[0].macaddr])
                 if not macdf.empty and macdf.remoteVtepIp.all():
                     overlay = macdf.iloc[0].remoteVtepIp
 
