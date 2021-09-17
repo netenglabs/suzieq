@@ -1,6 +1,6 @@
 # Gathering Data: Poller
 
-To gather data from your network, you need to run the poller. Launch the docker container, netenglabs/suzieq:latest and attach to it via the following steps:
+To gather data from your network, you need to run the poller. Launch the docker container, **netenglabs/suzieq:latest** and attach to it via the following steps:
 
 - ```docker run -itd -v /home/${USER}/parquet-out:/suzieq/parquet -v /home/${USER}/<inventory-file>:/suzieq/inventory --name sq-poller netenglabs/suzieq:latest```
 - ```docker attach sq-poller```
@@ -16,7 +16,7 @@ To monitor the status of the poller, you can look at /tmp/sq-poller.log file.
 The inventory file that the poller uses can be supplied either:
 
 * via a Suzieq native YAML format file (use the -D option as above) or 
-* via or an Ansible inventory file (instead of -D, use -a option along with -n). This file has to be the output of ```ansible-inventory --list``` command
+* via or an Ansible inventory file (instead of -D, use -a option along with -n some_namespace). This file has to be the output of ```ansible-inventory --list``` command
 
 The Suzieq native inventory file format that contains the IP address, the access method (SSH or REST), the IP address of the node, the user name, the type of OS if using REST and the access token such as a private key file. The format looks as follows, for example (all possible combinations are shown for illustration):
 ```
@@ -31,14 +31,14 @@ The Suzieq native inventory file format that contains the IP address, the access
     - url: https://vagrant@192.168.123.123 password=vagrant
 ```
 
-There's a template in the docs directory called hosts-template.yml. You can copy that file as the template and fill out the values for namespace and url (remember to delete the empty URLs and to not use TABS, some editors add them automatically if the filename extension isn't right). The URL is the standard URL format: <transport>://[username:password]@<hostname or IP>:<port>. For example, ssh://dinesh:dinesh@myvx or ssh://dinesh:dinesh@172.1.1.23. 
+There's a template in the docs directory called hosts-template.yml. You can copy that file as the template and fill out the values for namespace and url (remember to delete the empty URLs and to not use TABS, some editors add them automatically if the filename extension isn't right). The URL is the standard URL format: `transport://username:password@hostname` or IP:port. For example, `ssh://dinesh:dinesh@myvx` or `ssh://dinesh:dinesh@172.1.1.23`. 
 
 If you're using Ansible to configure the devices, an alternate to the native Suzieq inventory format is to use an Ansible inventory format. The file to be used is the output of the ```ansible-inventory --list``` command. 
 
 Once you have either generated the hosts file or are using the Ansible inventory file, you can launch the poller inside the docker container using **one** of the following two options: 
 
 * If you're using the native YAML hosts file, use the -D option like this: `sq-poller -D eos`  or
-* if you're using the Ansible inventory format, use the -a and -n options like this: via `sq-poller -a /suzieq/inventory -n eos`. 
+* if you're using the Ansible inventory format, use the -a and -n options like this: via `sq-poller -a /suzieq/inventory -n some_namespace`. 
 
 The poller creates a log file called /tmp/sq-poller.log. You can look at the file for errors. The output is stored in the parquet directory specified under /suzieq/parquet and visible in the host, outside the container, via the path specified during docker run above. 
 
@@ -76,17 +76,19 @@ Service definitions describe how to get output from devices and then how to turn
 Currently Suzieq supports polling [Cumulus Linux](https://cumulusnetworks.com/),
 [Arista](https://www.arista.com/en/),
 [Nexus](https://www.cisco.com/c/en/us/products/switches/data-center-switches/index.html),
-and [Juniper](https://www.juniper.net) and SONIC devices, as well as native Linux devices such as servers. Suzieq can easily support other device types, and we have third-party contributors working on other NOSes. Please let us know if you're interested in Suzieq supporting other NOSes.
+[IOS](https://www.cisco.com/c/en/us/products/ios-nx-os-software/ios-technologies/index.html),
+[Juniper](https://www.juniper.net)
+and [SONIC](https://azure.github.io/SONiC/) devices, as well as native Linux devices such as servers. Suzieq can easily support other device types, and we have third-party contributors working on other NOSes. Please let us know if you're interested in Suzieq supporting other NOSes.
 
 Suzieq started out with least common denominator SSH and REST access to devices.
-It doesn't much care about transport, we will use whatever gets the best data.
+It doesn't care much about transport, we will use whatever gets the best data.
 Suzieq does have support for agents, such as Kafka and SNMP, to push data and we've done some experiments with them, but don't
 have production versions of that code. 
 
 ## Debugging poller issues
 There are two places to look if you want to know what the poller is up to. The first is the poller
-log file in /tmp/sq-poller.log. The second is in Suzieq in the sq-poller table. We keep data about how
-polling is going in that table. If you do  suzieq-cli sqpoller show --status=fail you should see any failures.
+log file in */tmp/sq-poller.log*. The second is in Suzieq in the sq-poller table. We keep data about how
+polling is going in that table. If you do `suzieq-cli sqpoller show --status=fail` you should see any failures.
 
 ```
 jpietsch> sqpoller show status=fail namespace=dual-evpn
