@@ -11,7 +11,7 @@ In Suzieq, the schema has changed when:
 
 ## Goals of Schema Evolution
 
-The primary goal of schema evolution is to preserve the existing user data with the schema change. An equally important goal is to ensure that the analysis code doesn't get too complex and thereby buggy, as a result of handling schema changes. This second goal is also a user-facing goal, as the ability for developers to add code easily, write tests etc. all decrese if the schema evolution solution doesn't handle the issue in a simple way, and as a consequence the quality of the software goes down.
+The primary goal of schema evolution is to preserve the existing user data with the schema change. An equally important goal is to ensure that the analysis code doesn't get too complex and thereby buggy, as a result of handling schema changes. This second goal is also a user-facing goal, as the ability for developers to add code easily, write tests etc. all decrease if the schema evolution solution doesn't handle the issue in a simple way, and as a consequence the quality of the software goes down.
 
 ## Schema Evolution Principles
 

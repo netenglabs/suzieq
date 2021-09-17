@@ -78,7 +78,7 @@ then add it to git
 
 ```bash
 git add tests/data/nxos/parquet-out
-git commmit -m 'latest nxos test data'
+git commit -m 'latest nxos test data'
 git push
 ```
 
@@ -108,7 +108,7 @@ You will always want to update the data following the instructions above after y
 
 ``` bash
 git add tests/data/multidc/parquet-out tests/data/basic_dual_bgp/parquet-out
-git commit -m 'udpated cumulus test data'
+git commit -m 'updated cumulus test data'
 git push
 ```
 

@@ -11,7 +11,7 @@ This is a hotfix release if you use the REST API server.
 
 This release fixes a bunch of critical issues associated with release 0.14.0.
 
-* Issue 399: IOSXE devices were not being recognnized correctly
+* Issue 399: IOSXE devices were not being recognized correctly
 * Issue 400: Mlag parser fails when there are no configured server ports on EOS
 * Issue 401: Secondary IP addresses on Arista interfaces causes interface parser to crash
 * Fix Cisco's JSON time parser when only days were specified
@@ -19,22 +19,22 @@ This release fixes a bunch of critical issues associated with release 0.14.0.
 * Fix NXOS VPC parser to not fail when orphan ports are not configured
 * When specifying time as in "1 min ago" or "2 hours ago", the data returned was not consistent with
   what was returned when specifying precise times.
-* Provide user-specifable option to specify the logsize of the various suzieq loggers (REST, Poller etc.). 
+* Provide user-specifiable option to specify the logsize of the various suzieq loggers (REST, Poller etc.). 
   See the suzieq/config/etc/suzieq-cfg.yml file for logsize specification.
 * Add tests to validate REST server startup with and without HTTPS support.
 * Improved the container build process to ensure we don't rebuild everything when dependent libraries 
    have not changed. This results in smaller uploads and therefore faster pulls.
 ## 0.14.0 (Aug 1, 2021)
 
-The major features in this release are the support for IOS/IOSXE network operating systems and a revamped REST API. This version also fixes a subtle but critical coaleescer issue.
+The major features in this release are the support for IOS/IOSXE network operating systems and a revamped REST API. This version also fixes a subtle but critical coalescer issue.
 
 * __Support for IOS/IOSXE__: This release introduces support for IOS and IOSXE. All testing has been done using IOSvL2 (2019 version) and CSR1000v (16.11) images. Thanks to Rick Donato for his generous support for additional IOS testing. IOS and XE are mature operating systems with features and knobs galore.I obviously don't have the ability to test everything, but am happy to take fix bugs reported, take patch contributions and such. The support includes all the tables that Suzieq currently supports except for VXLAN and BFD support. 
 * (_Breaking Change_)__Revamped REST API__: The v1 version of the REST API has been replaced by a newer v2 version. The fundamental difference is better support for the API tooling ecosystem. The v1 API accepted multiple values for a parameter as space separated strings. But it wasn't clear which query parameter accepted multiple values and which didn't by looking at the API. Some invalid parameters were silently ignored. Fixing all this is what led
 to v2. A discussion on the Slack channel about the breaking change led to the conclusion that it was worth making this change now.
 * Support for improved coalescing times: Instead of just 1 hour, 1 day etc., the coalescer now accepts much finer grained periods such as 10m, 2h etc. The coalescer also fires close to the top of the period. Originally, if you had a coalescing period of 1 hour and you started the coalescer at 7:59, the coalescer would coalesce the existing data and fire up at 8:59. But since it only coalesces whatever's in the 8:00-9:00 window when it wakes up, and since the clock is still at 8:59, it skips coalescing the entire hour's worth of data and only coalesces the data from 8-9 when it wakes up at 9:59. Thus, an additional hour's worth of data is always uncoalesced which can lead to bad query performance in the presence of a lot of data. The new version instead fires at 8, at 8, at 10 etc. to ensure all the data that can be coalesced is indeed coalesced.
 * Support for additional filters for device: With device show, you couldn't filter by status, vendor, os etc. We now have support for all those filters.
-* Improved LLDP support: LLDP show now tackles other interface subtypes such as mac address and ifindex (used by Junos as default), to fixup and display the more usable ifnames. OSPF assert is also more imrpvoed as a consequence.
-* Improved algorithm for determining peer hosname in BGP: bgp show displays the peer hostname along with the peer IP. The algorithm used had very poor performance when the number of rows grew large (say with view=all). The new improved algorithm is orders of magnitude more efficient and uses less memory than the previous one.
+* Improved LLDP support: LLDP show now tackles other interface subtypes such as mac address and ifindex (used by Junos as default), to fixup and display the more usable ifnames. OSPF assert is also more improved as a consequence.
+* Improved algorithm for determining peer hostname in BGP: bgp show displays the peer hostname along with the peer IP. The algorithm used had very poor performance when the number of rows grew large (say with view=all). The new improved algorithm is orders of magnitude more efficient and uses less memory than the previous one.
 * Updated dependent libraries such as asyncssh, fastapi and so on.
 * Lots more new tests added and an improved and faster REST API test suite. We have 6K automated tests now.
 
@@ -68,7 +68,7 @@ This list of features and bug fixes for this release include:
 
 
 * Support for saving the running config of a device. We poll a device every hour for this, and save the existing running config if it has changed. The config is sanitized to exclude sensitive information like password (show running-config sanitized and equivalent commands). SoNIC is not supported for this in this release, will be adding it shortly.
-* Support for topology. Topology is a virtaul table, like path, that is used to construct the topology of the network, as seen from different perspectives. For example, you can see the BGP topology of the network, or the LLDP topology of the network etc. In other words, topology is the graph of the network where the edges (peers) are based on different fields such as routing protocol, LLDP and ARPND. We don't support topologies for virtual networks such as VRFs or VXLAN VNIs in this release.
+* Support for topology. Topology is a virtual table, like path, that is used to construct the topology of the network, as seen from different perspectives. For example, you can see the BGP topology of the network, or the LLDP topology of the network etc. In other words, topology is the graph of the network where the edges (peers) are based on different fields such as routing protocol, LLDP and ARPND. We don't support topologies for virtual networks such as VRFs or VXLAN VNIs in this release.
 * Support for numNexthops as an augmented column in routes. With this new column, you can look for routes with various ways to filter via query_str. 'numNexthops == 4' or 'numNexthops > 2' etc. (full command example: route show namespace=nxos columns = 'hostname vrf prefix nexthopIps numNexthops' query-str='numNexthops > 2' )
 * Ports that are free i.e.have nothing connected to them are marked as notConnected for EOS, NXOS. Cumulus and JunOS to follow soon. This enables users to check for that specific state.* Support for getting NXOS L2 interface speed and MTU independent of the number of interfaces on the device. The command used thus far had a bug that caused the command the fail if there were more than 64 interfaces on the device (NXOS bug). The new version addresses that issue.
 * device summary now lists the count of devices that are down.
@@ -88,7 +88,7 @@ No, it isn't an April Fools release. There are several major features in this re
 
 * **Platforms**: __Added support for IOSXR and Juniper SRX platforms__. EOS now supports VXLAN info (evpnVni table) and has support for SSH and REST. NXOS performance improved to use [json native instead of json]( https://www.cisco.com/c/en/us/td/docs/dcn/nx-os/nexus9000/101x/programmability/cisco-nexus-9000-series-nx-os-programmability-guide-release-101x/m-n9k-nx-api-cli-101x.html). You can see the supported platforms and tables [here](https://suzieq.readthedocs.io/en/latest/tables/).
 * **Support for augmented columns**: Augmented columns are columns that are computed based on other columns, typically from the same table, but possibly from other tables as well. Examples of augmented columns includes peerHostname in case of OSPF, moveCount in MAC tables and so on. Details about augmented columns and their implementation can be found in this [doc](https://github.com/netenglabs/suzieq/blob/master/docs/developer/augmented-columns.md). From the user's perspective, an augmented column is indistinguishable from any other column. The benefit of augmented columns is that with the introduction as a column, different queries such as unique, finding frequency distribution etc. become natural.
-* __Support for generalized query__. We store many key fields for each table. BGP stores 50+ different fields per session. Providing an individual filter per field is too cumbersome. In addition, there are fairly more combining of fields to create a more powerful filter that is hard to do with individual key/value filter fields. So, we added support for a generalized filter field where you can express complex filter fields via a generaliized pandas query format. This [link](https://suzieq.readthedocs.io/en/latest/pandas-query-examples/) provides samples for some of the more common queries. Ask for help on the Slack channel if you're stumped.
+* __Support for generalized query__. We store many key fields for each table. BGP stores 50+ different fields per session. Providing an individual filter per field is too cumbersome. In addition, there are fairly more combining of fields to create a more powerful filter that is hard to do with individual key/value filter fields. So, we added support for a generalized filter field where you can express complex filter fields via a generalized pandas query format. This [link](https://suzieq.readthedocs.io/en/latest/pandas-query-examples/) provides samples for some of the more common queries. Ask for help on the Slack channel if you're stumped.
 * **Support for providing a password via an ENVIRONMENT variable**. Today, we support providing password via either a prompt on launching the poller or in the inventory file. This release adds support for reading the password from a user specified environment variable. Using the --envpass=<ENVVAR> when starting the sq-poller allows you to use this feature. 
 * **Support for mac move**. You can now get a field called moveCount in the MAC table that allows you to see how many times a MAC has moved. You can filter MAC entries that have moved more than X times in a period, see all the different moves of a MAC (outgoing interface or remote VTEP change) in a given period, see frequency distribution of how the moves are (100 MACs moved 20 times, 5 MACs moved 10 times etc.)
 * **Support for multiple address families in BGP**. In the initial releases, BGP table only supported looking up IPv4/IPv6 unicast and EVPN AFI/SAFI info. This version adds support for pretty much all the BGP AFI/SAFI. We normalize the AFI/SAFI names across all the NOS so you don't have to know every NOS' version of it. We've hopefully picked names that are sensible to all users. Please provide us feedback about this if the names are an issue for you. 
@@ -115,11 +115,11 @@ A hotfix release to ensure REST server works. 0.8.6. broke the REST interface.
 
 This is another quick release to make path work well in more conditions including support for VXLAN L2 trace with EOS, reverse path check, handling NXOS vagaries like having interface names such as "vPC Peer Link" instead of the real peerlink interface name. We also added both in and out MTU to the output so that users can spot the issue in the path output itself.
 
-The one additional feature we added was to allow users to specify the location and name of the SSL ceriticate and key files needed for the REST server. This feature was added thanks to Dennis Fanshaw working at a hyposcaler hyperbolic.
+The one additional feature we added was to allow users to specify the location and name of the SSL certificate and key files needed for the REST server. This feature was added thanks to Dennis Fanshaw working at a hyposcaler hyperbolic.
 
 ## 0.8.5 (Jan 4, 2020)
 
-This is mainly improvements to path tracing, focused on debuging any issues with forwarding along the path. Visually, the way you can use path trace is far more interactive to troubleshoot than the first version. In the process of doing this, the release also found a bunch of data gathering issues with different NOS and fixed them, including capturing MTU on NXOS switched ports, fixing the mac table entries for Linux bridge so that the VLAN was properly derived for remote macs, getting the MAC address for Junos IRB interfaces and so on.
+This is mainly improvements to path tracing, focused on debugging any issues with forwarding along the path. Visually, the way you can use path trace is far more interactive to troubleshoot than the first version. In the process of doing this, the release also found a bunch of data gathering issues with different NOS and fixed them, including capturing MTU on NXOS switched ports, fixing the mac table entries for Linux bridge so that the VLAN was properly derived for remote macs, getting the MAC address for Junos IRB interfaces and so on.
 
 ## 0.8 (Dec 14, 2020)
 
@@ -155,7 +155,7 @@ There have a been a bunch of improvements in data gathering and making them cons
 - Make summarize work with hostname qualifier
 - JunOS route data normalization in the presence of OSPF unnumbered and EVPN routes
 - Improved EVPN VNI info for JunOS
-- SSH authentication improvementss: Support for username/password keywords in inventory to handle values that may use URL reserved chars such as '.'. Eg, usename dinesh.dutt is now supported via this method
+- SSH authentication improvements: Support for username/password keywords in inventory to handle values that may use URL reserved chars such as '.'. Eg, username dinesh.dutt is now supported via this method
 - Anycast gateway MAC fix for SVIs with NXOS and EOS
 - Improved filtering support for numerical fields
 - ARP/ND entry fixes for Cumulus versions greater than 4.0
