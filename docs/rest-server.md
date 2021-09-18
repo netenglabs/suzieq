@@ -20,7 +20,7 @@ The server is now accessible via [https://localhost:8000/docs](https://localhost
     curl --insecure 'https://localhost:8000/api/v2/device/show?&access_token=496157e6e869ef7f3d6ecb24a6f6d847b224ee4f'
 ```
 
-The Suzieq docker container of course serves the data available under /suzieq/parquet inside the container. You can mount the parquet data you've already gathered via the -v option. So an example of mounting the parquet directory with data would be to launch the container as follows:
+The Suzieq docker container of course serves the data available under /suzieq/parquet inside the container. You can mount the parquet data you've already gathered via the `-v` option. So an example of mounting the parquet directory with data would be to launch the container as follows:
 ```
     docker run -itd -p 8000:8000 -v/home/netenglabs/work/suzieq/tests/data/multidc/parquet-out:/suzieq/parquet --name suzieq netenglabs/suzieq:latest
 ```
