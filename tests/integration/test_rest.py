@@ -203,6 +203,9 @@ def _validate_hostname_output(json_out, service, verb):
 
 def _validate_namespace_output(json_out, service, verb):
     if verb == "summarize":
+        if service == "network":
+            # network summarize has no namespace column
+            return
         # summarize output has namespace as a key
         if service in ["bgp", "evpnVni", "devconfig", "mlag"]:
             assert(set(json_out.keys()) == set(['ospf-ibgp']))
