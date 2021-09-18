@@ -2,6 +2,7 @@ from collections import defaultdict
 from .engineobj import SqPandasEngine
 import pandas as pd
 import numpy as np
+from typing import Tuple
 from ipaddress import ip_address, ip_network
 
 
@@ -11,7 +12,8 @@ class RoutesObj(SqPandasEngine):
     def table_name():
         return 'routes'
 
-    def _cons_addnl_fields(self, columns: list, addnl_fields: list) -> (list, list):
+    def _cons_addnl_fields(self, columns: list,
+                           addnl_fields: list) -> Tuple[list, list]:
         '''get all the additional columns we need'''
 
         drop_cols = []
