@@ -35,14 +35,14 @@ The Suzieq native inventory file format that contains the IP address, the access
     - url: https://vagrant@192.168.123.123 password=vagrant
 ```
 
-There's a template in the docs directory called hosts-template.yml. You can copy that file as the template and fill out the values for namespace and url (remember to delete the empty URLs and to not use TABS, some editors add them automatically if the filename extension isn't right). The URL is the standard URL format: `<transport>://[username:password]@<hostname or IP>:<port>`. For example, `ssh://dinesh:dinesh@myvx` or `ssh://dinesh:dinesh@172.1.1.23`. 
+There's a template in the docs directory called `hosts-template.yml`. You can copy that file as the template and fill out the values for namespace and url (remember to delete the empty URLs and to not use TABS, some editors add them automatically if the filename extension isn't right). The URL is the standard URL format: `<transport>://[username:password]@<hostname or IP>:<port>`. For example, `ssh://dinesh:dinesh@myvx` or `ssh://dinesh:dinesh@172.1.1.23`. 
 
 If you're using Ansible to configure the devices, an alternate to the native Suzieq inventory format is to use an Ansible inventory format. The file to be used is the output of the ```ansible-inventory --list``` command. 
 
 Once you have either generated the hosts file or are using the Ansible inventory file, you can launch the poller inside the docker container using **one** of the following two options: 
 
 * If you're using the native YAML hosts file, use the -D option like this: `sq-poller -D eos`
-* if you're using the Ansible inventory format, use the -a and -n options like this: via `sq-poller -a /suzieq/inventory -n eos`. 
+* if you're using the Ansible inventory format, use the `-a` and `-n` options like this: via `sq-poller -a /suzieq/inventory -n eos`. 
 
 The poller creates a log file called /tmp/sq-poller.log. You can look at the file for errors. The output is stored in the parquet directory specified under /suzieq/parquet and visible in the host, outside the container, via the path specified during docker run above. 
 
@@ -55,7 +55,7 @@ If you're using SSH to connect to the devices (only Arista EOS uses the REST API
 * Use an environment var to store the password and pass the name of the env var via `--envpass`
 * Use keyfile
 * Use passphrase protected keyfile  (use `--passphrase`)
-* Use ssh-config (not well-tested)
+* Use ssh-config
 
 In addition, there maybe various additional options you may want to specify to connect to the device:
 
