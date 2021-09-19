@@ -301,11 +301,11 @@ class SqCommand:
         return self._gen_output(df)
 
     @command("top", help="find the top n values for a field")
-    @argument("n", description="number of rows to return")
+    @argument("count", description="number of rows to return")
     @argument("what", description="integer field to get top values for")
     @argument("reverse", description="return bottom n values",
               choices=['True', 'False'])
-    def top(self, n: int = 5, what: str = '', reverse: str = 'False',
+    def top(self, count: int = 5, what: str = '', reverse: str = 'False',
             **kwargs) -> int:
         """Return the top n values for a field in a table
 
@@ -323,7 +323,7 @@ class SqCommand:
                                 hostname=self.hostname,
                                 namespace=self.namespace,
                                 query_str=self.query_str,
-                                what=what, n=n,
+                                what=what, count=count,
                                 reverse=eval(reverse),
                                 )
 
@@ -333,9 +333,10 @@ class SqCommand:
 
         if not df.empty:
             df = self.sqobj.humanize_fields(df)
-
-        return self._gen_output(df.sort_values(by=[what], ascending=False),
-                                dont_strip_cols=True, sort=False)
+            return self._gen_output(df.sort_values(by=[what], ascending=False),
+                                    dont_strip_cols=True, sort=False)
+        else:
+            return self._gen_output(df)
 
     def _init_summarize(self):
         self.now = time.time()

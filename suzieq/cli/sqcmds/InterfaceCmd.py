@@ -144,13 +144,15 @@ class InterfaceCmd(SqCommand):
 
         return self._assert_gen_output(df)
 
-    @command("top")
-    @argument("what", description="Field you want to see top for",
-              choices=["flaps"])
+    @command("top", help="Top for any given field")
+    @argument("what", description="Field you want to see top for")
     @argument("count", description="How many top entries")
     @argument("reverse", description="True see Bottom n",
               choices=["True", "False"])
-    def top(self, what: str = "flaps", count: int = 5, reverse: str = "False"):
+    @argument("type", description="interface type to qualify")
+    @argument('ifname', description="Interface name to qualify")
+    def top(self, what: str = "", count: int = 5, reverse: str = "False",
+            ifname: str = '', type: str = 'ethernet'):
         """
         Show top n entries based on specific field
         """
@@ -159,19 +161,22 @@ class InterfaceCmd(SqCommand):
 
         now = time.time()
 
-        if what == "flaps":
-            whatfld = "numChanges"
-
         df = self._invoke_sqobj(self.sqobj.top,
                                 hostname=self.hostname,
-                                what=whatfld,
-                                n=count,
-                                reverse=reverse == "True" or False,
-                                type="ethernet",        # phy interfaces only
+                                what=what,
+                                count=count,
+                                ifname=ifname.split(),
+                                reverse=(reverse == "True") or False,
+                                type=type.split(),        # phy interfaces only
                                 columns=self.columns,
                                 query_str=self.query_str,
                                 namespace=self.namespace,
                                 )
+
+        if 'statusChangeTimestamp' in df.columns:
+            df['statusChangeTimestamp'] = humanize_timestamp(
+                df.statusChangeTimestamp,
+                self.cfg.get('analyzer', {}).get('timezone', None))
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df, sort=False)

@@ -338,7 +338,7 @@ class SqPandasEngine(SqEngineObj):
         """
         what = kwargs.pop("what", None)
         reverse = kwargs.pop("reverse", False)
-        sqTopCount = kwargs.pop("n", 5)
+        sqTopCount = kwargs.pop("count", 5)
 
         if not what:
             return pd.DataFrame()

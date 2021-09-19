@@ -211,11 +211,14 @@ class SqObject(object):
     def aver(self, **kwargs):
         raise NotImplementedError
 
-    def top(self, what: str = '', n: int = 5, reverse: bool = False,
+    def top(self, what: str = '', count: int = 5, reverse: bool = False,
             **kwargs) -> pd.DataFrame:
         """Get the list of top/bottom entries of "what" field"""
 
         columns = kwargs.get('columns', ['default'])
+
+        if not what:
+            raise ValueError('Must specify what field to get top for')
         # if self._valid_get_args:
         #     self._valid_get_args += ['what', 'n', 'reverse']
         # This raises exceptions if it fails
@@ -235,12 +238,12 @@ class SqObject(object):
         ftype = table_schema.field(what).get('type', 'str')
         if ftype not in ['long', 'double', 'float', 'int', 'timestamp',
                          'timedelta64[s]']:
-            return pd.DataFrame({'error': [f'{what} not numeric']})
+            return pd.DataFrame({'error': [f'{what} not numeric; top can be used with numeric fields only']})
 
         if what not in columns:
             self._addnl_fields.append(what)
 
-        return self.engine.top(what=what, n=n, reverse=reverse, **kwargs)
+        return self.engine.top(what=what, count=count, reverse=reverse, **kwargs)
 
     def describe(self, **kwargs):
         """Describes the fields for a given table"""
