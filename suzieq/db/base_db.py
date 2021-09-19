@@ -20,6 +20,15 @@ class SqDB(ABC):
         self.logger = logger or logging.getLogger()
 
     @abstractmethod
+    def get_tables(self):
+        """Get a list of tables in the database
+
+        Raises:
+            NotImplementedError: This method is not implemented
+        """
+        raise NotImplementedError
+
+    @abstractmethod
     def read(self, table_name: str, data_format: str,
              **kwargs) -> pd.DataFrame:
         """This is the routine that reads the DB and returns a pandas DF
