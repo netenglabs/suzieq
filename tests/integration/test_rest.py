@@ -10,7 +10,7 @@ from tests.conftest import cli_commands, create_dummy_config_file
 
 from suzieq.restServer.query import (app, get_configured_api_key,
                                      API_KEY_NAME, rest_main)
-from suzieq.sqobjects import _get_tables, get_sqobject
+from suzieq.sqobjects import get_tables, get_sqobject
 from suzieq.restServer import query
 
 ENDPOINT = "http://localhost:8000/api/v2"
@@ -299,7 +299,7 @@ def test_rest_services(app_initialize, service, verb, arg):
 
 @ pytest.mark.rest
 @ pytest.mark.parametrize("service", [
-    (cmd) for cmd in _get_tables()])
+    (cmd) for cmd in get_tables()])
 def test_rest_arg_consistency(service):
     '''check that the arguments used in REST match whats in sqobjects'''
 
