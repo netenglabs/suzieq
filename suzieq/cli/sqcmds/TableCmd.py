@@ -38,42 +38,43 @@ class TableCmd(SqCommand):
         Show Tables
         """
         now = time.time()
-        df = self.sqobj.get(hostname=self.hostname, namespace=self.namespace)
-        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
+        df = self.sqobj.get(hostname=self.hostname, namespace=self.namespace,
+                            columns=self.columns)
+        self.ctxt.exec_time="{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
 
-    @command("describe")
-    @argument("table", description="interface name to qualify")
+    @ command("describe")
+    @ argument("table", description = "interface name to qualify")
     def describe(self, table: str = "", **kwargs):
         """
         Describe fields in table
         """
 
         if not table:
-            df = pd.DataFrame({'error': ['ERROR: Must specify a table']})
+            df=pd.DataFrame({'error': ['ERROR: Must specify a table']})
             return self._gen_output(df)
 
         if self.columns != ['default']:
-            df = pd.DataFrame(
+            df=pd.DataFrame(
                 {'error': ['ERROR: Cannot specify columns for command']})
             return self._gen_output(df)
 
-        now = time.time()
-        df = self.sqobj.describe(table=table)
-        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
+        now=time.time()
+        df=self.sqobj.describe(table = table)
+        self.ctxt.exec_time="{:5.4f}s".format(time.time() - now)
 
-        return self._gen_output(df, dont_strip_cols=True)
+        return self._gen_output(df, dont_strip_cols = True)
 
-    @command("summarize", help="Summarize info about this resource")
+    @ command("summarize", help = "Summarize info about this resource")
     def summarize(self, **kwargs):
 
-        msg = 'ERROR: Summarize not supported for this object'
-        df = pd.DataFrame({'error': [msg]})
-        return self._gen_output(df, dont_strip_cols=True)
+        msg='ERROR: Summarize not supported for this object'
+        df=pd.DataFrame({'error': [msg]})
+        return self._gen_output(df, dont_strip_cols = True)
 
-    @command("unique", help="find the list of unique items in a column")
+    @ command("unique", help = "find the list of unique items in a column")
     def unique(self, **kwargs):
 
-        msg = 'ERROR: Unique not supported for this object'
-        df = pd.DataFrame({'error': [msg]})
-        return self._gen_output(df, dont_strip_cols=True)
+        msg='ERROR: Unique not supported for this object'
+        df=pd.DataFrame({'error': [msg]})
+        return self._gen_output(df, dont_strip_cols = True)

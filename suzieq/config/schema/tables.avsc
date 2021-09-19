@@ -1,0 +1,69 @@
+{
+    "namespace": "suzieq",
+    "name": "tables",
+    "type": "derivedRecord",
+    "depends": [
+        "device",
+        "interfaces",
+        "routes",
+        "macs",
+        "bgp",
+        "ospf",
+        "evpnVni",
+        "vlan"
+    ],
+    "fields": [
+        {
+            "name": "sqvers",
+            "type": "string",
+            "partition": 0,
+            "default": "2.0"
+        },
+        {
+            "name": "table",
+            "type": "string",
+            "display": 1,
+            "description": "Table name"
+        },
+        {
+            "name": "firstTime",
+            "type": "float",
+            "display": 2,
+            "description": "Timestamp of first entry in database"
+        },
+        {
+            "name": "lastTime",
+            "type": "float",
+            "display": 3,
+            "description": "Timestamp of last entry in database"
+        },
+        {
+            "name": "intervals",
+            "type": "long",
+            "display": 4,
+            "description": "Number of records in latest entry"
+        },
+        {
+            "name": "allRows",
+            "type": "long",
+            "display": 5,
+            "description": "Total number of records across all time"
+        },
+        {
+            "name": "namespaceCnt",
+            "type": "long",
+            "display": 6,
+            "description": "Total number of namespaces in database"
+        },
+        {
+            "name": "deviceCnt",
+            "type": "long",
+            "display": 7,
+            "description": "Total number of devices in database"
+        },
+        {
+            "name": "active",
+            "type": "boolean"
+        }
+    ]
+}

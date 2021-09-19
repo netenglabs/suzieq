@@ -230,12 +230,12 @@ class SqPandasEngine(SqEngineObj):
 
         all_time_df = self.get_valid_df(table, view='all', **kwargs)
         times = all_time_df['timestamp'].unique()
-        ret = {'first_time': all_time_df.timestamp.min(),
-               'latest_time': all_time_df.timestamp.max(),
+        ret = {'firstTime': all_time_df.timestamp.min(),
+               'latestTime': all_time_df.timestamp.max(),
                'intervals': len(times),
-               'all rows': len(all_time_df),
+               'allRows': len(all_time_df),
                'namespaces': self._unique_or_zero(all_time_df, 'namespace'),
-               'devices': self._unique_or_zero(all_time_df, 'hostname')}
+               'deviceCnt': self._unique_or_zero(all_time_df, 'hostname')}
 
         return ret
 
