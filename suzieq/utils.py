@@ -669,7 +669,8 @@ def get_log_params(prog: str, cfg: dict, def_logfile: str) -> tuple:
                       coaelscer, and rest.
     :param cfg: dict, The config dictionary
     :param def_logfile: str, The default log file to return
-    :returns: log file name, log level, log size
+    :returns: log file name, log level, log size, and 
+              True/False for logging to stdout
     :rtype: str, str and int
 
     """
@@ -677,12 +678,14 @@ def get_log_params(prog: str, cfg: dict, def_logfile: str) -> tuple:
         logfile = cfg.get(prog, {}).get('logfile', def_logfile)
         loglevel = cfg.get(prog, {}).get('logging-level', 'WARNING')
         logsize = cfg.get(prog, {}).get('logsize', 10000000)
+        log_stdout = cfg.get(prog, {}).get('log-stdout', False)
     else:
         logfile = def_logfile
         loglevel = 'WARNING'
         logsize = 10000000
+        log_stdout = False
 
-    return logfile, loglevel, logsize
+    return logfile, loglevel, logsize, log_stdout
 
 
 def init_logger(logname: str,
@@ -699,20 +702,31 @@ def init_logger(logname: str,
 
     """
 
+    fh = sh = None
     # this needs to be suzieq.poller, so that it is the root of all the other pollers
     logger = logging.getLogger(logname)
     logger.setLevel(loglevel.upper())
-    fh = RotatingFileHandler(logfile, maxBytes=logsize, backupCount=2)
+    if logfile:
+        fh = RotatingFileHandler(logfile, maxBytes=logsize, backupCount=2)
+    if use_stdout:
+        sh = logging.StreamHandler(sys.stdout)
+
     formatter = logging.Formatter(
         "%(asctime)s - %(name)s - %(levelname)s " "- %(message)s"
     )
-    fh.setFormatter(formatter)
+    if fh:
+        fh.setFormatter(formatter)
+    if sh:
+        sh.setFormatter(formatter)
 
     # set root logger level, so that we set asyncssh log level
     #  asynchssh sets it's level to the root level
     root = logging.getLogger()
     root.setLevel(loglevel.upper())
-    root.addHandler(fh)
+    if fh:
+        root.addHandler(fh)
+    if sh:
+        root.addHandler(sh)
 
     logger.warning(f"log level {logging.getLevelName(logger.level)}")
 

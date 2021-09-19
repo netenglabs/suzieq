@@ -94,24 +94,24 @@ def get_cert_files(cfg):
 
 def get_log_config_level(cfg):
 
-    logfile, loglevel, logsize = get_log_params(
-        'sq-rest-server', cfg, '/tmp/sq-rest-server.log')
+    logfile, loglevel, logsize, log_stdout = get_log_params(
+        'rest', cfg, '/tmp/sq-rest-server.log')
 
     log_config = uvicorn.config.LOGGING_CONFIG
-    log_config['handlers']['access']['class'] = 'logging.handlers.RotatingFileHandler'
-    log_config['handlers']['access']['maxBytes'] = logsize
-    log_config['handlers']['access']['backupCount'] = 2
-    log_config['handlers']['default']['class'] = 'logging.handlers.RotatingFileHandler'
-    log_config['handlers']['default']['maxBytes'] = logsize
-    log_config['handlers']['default']['backupCount'] = 2
+    if logfile and not log_stdout:
+        log_config['handlers']['access']['filename'] = logfile
+        log_config['handlers']['access']['class'] = 'logging.handlers.RotatingFileHandler'
+        log_config['handlers']['access']['maxBytes'] = logsize
+        log_config['handlers']['access']['backupCount'] = 2
 
-    log_config['handlers']['access']['filename'] = logfile
-    if 'stream' in log_config['handlers']['access']:
-        del log_config['handlers']['access']['stream']
+        log_config['handlers']['default']['class'] = 'logging.handlers.RotatingFileHandler'
+        log_config['handlers']['default']['maxBytes'] = logsize
+        log_config['handlers']['default']['backupCount'] = 2
+        log_config['handlers']['default']['filename'] = logfile
 
-    log_config['handlers']['default']['filename'] = logfile
-    if 'stream' in log_config['handlers']['default']:
-        del log_config['handlers']['default']['stream']
+        if 'stream' in log_config['handlers']['default']:
+            del log_config['handlers']['default']['stream']
+            del log_config['handlers']['access']['stream']
 
     return log_config, loglevel
 
@@ -159,13 +159,10 @@ def rest_main(*args) -> None:
 
     if no_https:
         uvicorn.run(app, host=srvr_addr, port=srvr_port,
-                    log_level=loglevel.lower(),
-                    log_config=logcfg)
+                    )
     else:
         ssl_keyfile, ssl_certfile = get_cert_files(cfg)
         uvicorn.run(app, host=srvr_addr, port=srvr_port,
-                    log_level=loglevel.lower(),
-                    log_config=logcfg,
                     ssl_keyfile=ssl_keyfile,
                     ssl_certfile=ssl_certfile)
 
