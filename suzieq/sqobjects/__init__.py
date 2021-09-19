@@ -6,10 +6,11 @@ import inspect
 name = "sqobjects"
 
 
-def _get_tables():
+def get_tables():
     fspec = find_spec('suzieq.sqobjects')
     tables = [x.split('.')[0] for x in fspec.loader.contents()
-              if not x.startswith('_')]
+              if not x.startswith('_') and x != "basicobj.py"]
+    tables.extend(['tables'])
     return tables
 
 
@@ -35,6 +36,6 @@ def get_sqobject(table_name: str):
     raise ModuleNotFoundError(f'{table_name} not found')
 
 
-__all__ = _get_tables() + ['get_sqobject']
+__all__ = get_tables() + ['get_sqobject']
 
 sqobjs_all = __all__
