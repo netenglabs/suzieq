@@ -113,7 +113,7 @@ show_columns_commands = good_commands[:]
 @pytest.mark.fast
 @pytest.mark.parametrize("cmd", show_columns_commands)
 def test_columns_show_filter(setup_nubia, cmd):
-    s = _test_command(cmd, 'show', None, {'columns': 'hostname'})
+    s = _test_command(cmd, 'show', None, {'columns': 'namespace'})
     assert s == 0
 
 
