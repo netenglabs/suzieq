@@ -43,13 +43,11 @@ def validate_sq_config(cfg):
         return "FATAL: No data directory for output files specified"
 
     if not os.path.isdir(ddir):
-        if not ddir.startswith('s3'):
-            os.makedirs(ddir, exist_ok=True)
-        else:
-            return f'FATAL: Data directory {ddir} is not a directory'
+        os.makedirs(ddir, exist_ok=True)
 
-    if not (os.access(ddir, os.R_OK | os.W_OK | os.EX_OK)):
-        return f'FATAL: Data directory {ddir} has wrong permissions'
+    if (not os.path.isdir(ddir) or not (os.access(ddir, os.R_OK | os.W_OK |
+                                                  os.EX_OK))):
+        return f'FATAL: Data directory {ddir} is not an acceesible dir'
 
     # Locate the service and schema directories
     svcdir = cfg.get('service-directory', None)
@@ -606,29 +604,33 @@ def convert_rangestring_to_list(rangestr: str) -> list:
     return tmplst
 
 
-def build_query_str(skip_fields: list, schema, **kwargs) -> str:
+def build_query_str(skip_fields: list, schema, ignore_regex=True,
+                    **kwargs) -> str:
     """Build a pandas query string given key/val pairs
     """
     query_str = ''
     prefix = ''
 
-    def build_query_str(fld, fldtype) -> str:
+    def _build_query_str(fld, val, fldtype) -> str:
         """Builds the string from the provided user input"""
 
         if ((fldtype == "long" or fldtype == "float") and not
-                isinstance(fld, str)):
-            result = f'=={fld}'
+                isinstance(val, str)):
+            result = f'{fld} == {val}'
 
-        elif fld.startswith('!'):
-            fld = fld[1:]
+        elif val.startswith('!'):
+            val = val[1:]
             if fldtype == "long" or fldtype == "float":
-                result = f'!= {fld}'
+                result = f'{fld} != {val}'
             else:
-                result = f'!= "{fld}"'
-        elif fld.startswith('<') or fld.startswith('>'):
-            result = fld
+                result = f'{fld} != "{val}"'
+        elif val.startswith('<') or val.startswith('>'):
+            result = val
+        elif val.startswith('~'):
+            val = val[1:]
+            result = f'{fld}.str.match("{val}")'
         else:
-            result = f'=="{fld}"'
+            result = f'{fld} == "{val}"'
 
         return result
 
@@ -639,13 +641,18 @@ def build_query_str(skip_fields: list, schema, **kwargs) -> str:
         if isinstance(v, list) and len(v):
             subq = ''
             subcond = ''
+            if ignore_regex and [x for x in v
+                                 if isinstance(x, str) and
+                                 x.startswith('~')]:
+                continue
+
             for elem in v:
-                subq += f'{subcond} {f}{build_query_str(elem, type)} '
+                subq += f'{subcond} {_build_query_str(f, elem, type)} '
                 subcond = 'or'
             query_str += '{} ({})'.format(prefix, subq)
             prefix = "and"
         else:
-            query_str += f'{prefix} {f}{build_query_str(v, type)} '
+            query_str += f'{prefix} {_build_query_str(f, v, type)} '
             prefix = "and"
 
     return query_str
