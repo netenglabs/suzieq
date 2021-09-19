@@ -68,6 +68,7 @@ class TopologyObj(SqPandasEngine):
         via = kwargs.pop('via', [])
         ifname = kwargs.pop('ifname', '')
         peerHostname = kwargs.pop('peerHostname', [])
+        columns = kwargs.pop('columns', ['default'])
 
         self._init_dfs(self._namespaces)
         self.lsdb = pd.DataFrame()
@@ -94,6 +95,8 @@ class TopologyObj(SqPandasEngine):
             self.services = [x for x in self.services if x.name in via]
         key = 'peerHostname'
         for srv in self.services:
+            if 'columns' not in srv.extra_args:
+                srv.extra_args['columns'] = columns
             df = srv.data(context=self.ctxt).get(
                 **kwargs,
                 **srv.extra_args
