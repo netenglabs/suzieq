@@ -4,11 +4,11 @@
     "type": "record",
     "fields": [
         {
-	    "name": "sqvers",
-	    "type": "string",
-	    "partition": 0,
-	    "default": "1.0"
-	},
+            "name": "sqvers",
+            "type": "string",
+            "partition": 0,
+            "default": "1.0"
+        },
         {
             "name": "routerMac",
             "type": "string"
@@ -16,7 +16,12 @@
         {
             "name": "secVtepIp",
             "type": "string",
-	    "display": 8
+            "display": 8
+        },
+        {
+            "name": "remoteVtepCnt",
+            "type": "int",
+            "depends": "namespace hostname remoteVtepList"
         },
         {
             "name": "vrf",
@@ -29,12 +34,12 @@
         {
             "name": "state",
             "type": "string",
-	    "display": 5
+            "display": 5
         },
         {
             "name": "mcastGroup",
             "type": "string",
-	    "display": 6
+            "display": 6
         },
         {
             "name": "ifname",
@@ -96,21 +101,21 @@
         {
             "name": "priVtepIp",
             "type": "string",
-	    "display": 7
+            "display": 7
         },
         {
             "name": "hostname",
             "type": "string",
             "key": 1,
             "display": 1,
-	    "partition": 2
+            "partition": 2
         },
         {
             "name": "namespace",
             "type": "string",
             "key": 0,
-	    "display": 0,
-	    "partition": 1
+            "display": 0,
+            "partition": 1
         },
         {
             "name": "timestamp",
