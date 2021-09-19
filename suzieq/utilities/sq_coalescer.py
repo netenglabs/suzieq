@@ -9,6 +9,7 @@ import argparse
 import fcntl
 from logging import Logger
 from time import sleep
+from typing import Tuple
 from dataclasses import asdict
 
 import pandas as pd
@@ -20,7 +21,7 @@ from suzieq.db import do_coalesce, get_sqdb_engine
 from suzieq.version import SUZIEQ_VERSION
 
 
-def validate_periodstr(periodstr: str) -> (bool, str):
+def validate_periodstr(periodstr: str) -> Tuple[bool, str]:
     '''Validate the period string specified by user'''
 
     status = True
