@@ -33,6 +33,15 @@ class SqParquetDB(SqDB):
     def supported_data_formats(self):
         return ['pandas']
 
+    def get_tables(self):
+        """Return list of tables known to parquet
+        """
+        folder = self._get_table_directory(None, False)
+        dirs = Path(folder)
+        tables = [str(x) for x in dirs if not str(x).startswith('_')]
+
+        return tables
+
     def read(self, table_name: str, data_format: str,
              **kwargs) -> pd.DataFrame:
         """Read the data specified from parquet files and return
@@ -163,12 +172,12 @@ class SqParquetDB(SqDB):
             # entries with same timestamp. Remove them
             dupts_keys = key_fields + ['timestamp']
             final_df = final_df.set_index(dupts_keys) \
-                               .query('~index.duplicated(keep="last")') \
-                               .reset_index()
+                .query('~index.duplicated(keep="last")') \
+                .reset_index()
             if (not final_df.empty and (view == 'latest') and
                     all(x in final_df.columns for x in key_fields)):
                 final_df = final_df.set_index(key_fields) \
-                                   .query('~index.duplicated(keep="last")')
+                    .query('~index.duplicated(keep="last")')
         except (pa.lib.ArrowInvalid, OSError):
             return pd.DataFrame(columns=fields)
 
@@ -258,8 +267,8 @@ class SqParquetDB(SqDB):
         infolder = self.cfg['data-directory']
         outfolder = self._get_table_directory('', True)  # root folder
         archive_folder = self.cfg.get('coalescer', {}) \
-                                 .get('archive-directory',
-                                      f'{infolder}/_archived')
+            .get('archive-directory',
+                 f'{infolder}/_archived')
 
         if not period:
             period = self.cfg.get(
@@ -403,7 +412,7 @@ class SqParquetDB(SqDB):
                     for item in dataset.files:
                         try:
                             namespace = item.split('namespace=')[1] \
-                                            .split('/')[0]
+                                .split('/')[0]
                         except IndexError:
                             # Don't convert data not in our template
                             continue
@@ -541,7 +550,7 @@ class SqParquetDB(SqDB):
                     start_selected = False
                     for i, file in enumerate(lists[ele]):
                         thistime = os.path.basename(file).split('.')[0] \
-                                                         .split('-')[-2:]
+                            .split('-')[-2:]
                         thistime = [int(x)*1000 for x in thistime]  # to msec
                         if (not start_time) or start_selected or (
                                 thistime[0] <= start_time <= thistime[1]):
@@ -600,26 +609,31 @@ class SqParquetDB(SqDB):
             if not namespace:
                 filelist.extend(dataset.files)
             else:
+                ns_filelist = []
                 for ns in namespace:
                     if ns.startswith('!'):
                         ns = ns[1:]
-                        filelist.extend([x for x in dataset.files
-                                         if not re.search(f'namespace={ns}/',
-                                                          x)])
+                        ns_filelist.extend([x for x in dataset.files
+                                            if not re.search(f'namespace={ns}/',
+                                                             x)])
                     else:
-                        filelist.extend([x for x in dataset.files
-                                         if re.search(f'namespace={ns}/', x)])
+                        ns_filelist.extend([x for x in dataset.files
+                                            if re.search(f'namespace={ns}/', x)])
+                filelist.extend(ns_filelist)
 
+            host_filelist = []
             for hn in hostname:
                 if hn.startswith('!'):
                     hn = hn[1:]
-                    filelist.extend([x for x in filelist
-                                     if 'coalesced' in x or
-                                     (not re.search(f'hostname={hn}/', x))])
+                    host_filelist.extend([x for x in filelist
+                                         if 'coalesced' in x or
+                                         (not re.search(f'hostname={hn}/', x))])
                 else:
-                    filelist.extend([x for x in filelist
-                                     if 'coalesced' in x or
-                                     re.search(f'hostname={hn}/', x)])
+                    host_filelist.extend([x for x in filelist
+                                          if 'coalesced' in x or
+                                          re.search(f'hostname={hn}/', x)])
+            if hostname:
+                filelist = host_filelist
 
         return ds.dataset(filelist, format='parquet', partitioning='hive')
 
