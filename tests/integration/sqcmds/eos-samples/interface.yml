@@ -668,25 +668,25 @@ tests:
       "assert": "fail", "assertReason": ["MTU mismatch", "Speed mismatch", "IP address
       mismatch"]}]'
   marks: interface assert eos
-- command: interface top --format=json
+- command: interface top --what=statusChangeTimestamp --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: interface top eos
-  output: '[{"namespace": "eos", "hostname": "server301", "ifname": "eth0", "state":
-    "up", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master":
-    "", "ipAddressList": ["10.255.2.151/24"], "ip6AddressList": [], "numChanges":
-    0, "timestamp": 1623025175379}, {"namespace": "eos", "hostname": "server302",
-    "ifname": "eth0", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
-    1500, "vlan": 0, "master": "", "ipAddressList": ["10.255.2.137/24"], "ip6AddressList":
-    [], "numChanges": 0, "timestamp": 1623025175379}, {"namespace": "eos", "hostname":
-    "server101", "ifname": "eth0", "state": "up", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.255.2.57/24"], "ip6AddressList":
-    [], "numChanges": 0, "timestamp": 1623025175566}, {"namespace": "eos", "hostname":
-    "server102", "ifname": "eth0", "state": "up", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.255.2.230/24"], "ip6AddressList":
-    [], "numChanges": 0, "timestamp": 1623025175575}, {"namespace": "eos", "hostname":
-    "firewall01", "ifname": "eth2", "state": "up", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
-    "numChanges": 0, "timestamp": 1623025175583}]'
+  output: '[{"namespace": "eos", "hostname": "dcedge01", "ifname": "xe-0/0/1", "state":
+    "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "statusChangeTimestamp": 1620676136345,
+    "timestamp": 1623025179345}, {"namespace": "eos", "hostname": "dcedge01", "ifname":
+    "xe-0/0/2", "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "statusChangeTimestamp":
+    1620676136345, "timestamp": 1623025179345}, {"namespace": "eos", "hostname": "dcedge01",
+    "ifname": "xe-0/0/4", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
+    1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "statusChangeTimestamp":
+    1620676136345, "timestamp": 1623025179345}, {"namespace": "eos", "hostname": "dcedge01",
+    "ifname": "xe-0/0/5", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
+    1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "statusChangeTimestamp":
+    1620676136345, "timestamp": 1623025179345}, {"namespace": "eos", "hostname": "dcedge01",
+    "ifname": "xe-0/0/6", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
+    1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "statusChangeTimestamp":
+    1620676136345, "timestamp": 1623025179345}]'
 - command: interface show --type=vxlan --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: interface show eos filter

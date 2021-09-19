@@ -134,22 +134,22 @@ tests:
     "vrf": "default", "assert": "pass", "assertReason": "-", "timestamp": 1623025799761},
     {"namespace": "junos", "hostname": "spine02", "ifname": "xe-0/0/3.0", "vrf": "default",
     "assert": "pass", "assertReason": "-", "timestamp": 1623025799761}]'
-- command: ospf top --format=json
+- command: ospf top --what=numChanges --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: ospf top junos
   output: '[{"namespace": "junos", "hostname": "leaf02", "vrf": "default", "ifname":
     "lo0.0", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0,
-    "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0,
+    "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime": "-",
     "timestamp": 1623025798026}, {"namespace": "junos", "hostname": "spine01", "vrf":
     "default", "ifname": "lo0.0", "peerHostname": "", "area": "0.0.0.0", "ifState":
     "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
-    0.0, "timestamp": 1623025798027}, {"namespace": "junos", "hostname": "exit01",
+    "-", "timestamp": 1623025798027}, {"namespace": "junos", "hostname": "exit01",
     "vrf": "default", "ifname": "lo0.0", "peerHostname": "", "area": "0.0.0.0", "ifState":
     "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
-    0.0, "timestamp": 1623025798361}, {"namespace": "junos", "hostname": "leaf01",
+    "-", "timestamp": 1623025798361}, {"namespace": "junos", "hostname": "leaf01",
     "vrf": "default", "ifname": "lo0.0", "peerHostname": "", "area": "0.0.0.0", "ifState":
     "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
-    0.0, "timestamp": 1623025798813}, {"namespace": "junos", "hostname": "exit02",
+    "-", "timestamp": 1623025798813}, {"namespace": "junos", "hostname": "exit02",
     "vrf": "default", "ifname": "lo0.0", "peerHostname": "", "area": "0.0.0.0", "ifState":
     "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
-    0.0, "timestamp": 1623025799339}]'
+    "-", "timestamp": 1623025799339}]'

@@ -2180,25 +2180,26 @@ tests:
       null, "master": null, "timestamp": null, "vlanList": [30], "assertReason": "No
       LLDP peering info", "assert": "fail"}]'
   marks: interface assert junos
-- command: interface top --format=json
+- command: interface top --what=statusChangeTimestamp --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: interface top junos
-  output: '[{"namespace": "junos", "hostname": "server101", "ifname": "eth0", "state":
-    "up", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master":
-    "", "ipAddressList": ["10.255.5.72/24"], "ip6AddressList": [], "numChanges": 0,
-    "timestamp": 1623025795928}, {"namespace": "junos", "hostname": "server101", "ifname":
-    "eth1", "state": "up", "adminState": "up", "type": "ethernet", "mtu": 9216, "vlan":
-    0, "master": "", "ipAddressList": ["172.16.1.101/24"], "ip6AddressList": [], "numChanges":
-    0, "timestamp": 1623025795928}, {"namespace": "junos", "hostname": "server102",
-    "ifname": "eth0", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
-    1500, "vlan": 0, "master": "", "ipAddressList": ["10.255.5.169/24"], "ip6AddressList":
-    [], "numChanges": 0, "timestamp": 1623025795928}, {"namespace": "junos", "hostname":
-    "server102", "ifname": "eth1", "state": "up", "adminState": "up", "type": "ethernet",
-    "mtu": 9216, "vlan": 0, "master": "", "ipAddressList": ["172.16.3.102/24"], "ip6AddressList":
-    [], "numChanges": 0, "timestamp": 1623025795928}, {"namespace": "junos", "hostname":
-    "server201", "ifname": "eth1", "state": "up", "adminState": "up", "type": "ethernet",
-    "mtu": 9216, "vlan": 0, "master": "", "ipAddressList": ["172.16.2.201/24"], "ip6AddressList":
-    [], "numChanges": 0, "timestamp": 1623025795928}]'
+  output: '[{"namespace": "junos", "hostname": "leaf02", "ifname": "xe-0/0/10", "state":
+    "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "statusChangeTimestamp": 1622998744371,
+    "timestamp": 1623025801371}, {"namespace": "junos", "hostname": "leaf02", "ifname":
+    "xe-0/0/11", "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "statusChangeTimestamp":
+    1622998744371, "timestamp": 1623025801371}, {"namespace": "junos", "hostname":
+    "leaf02", "ifname": "xe-0/0/9", "state": "up", "adminState": "up", "type": "ethernet",
+    "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "statusChangeTimestamp": 1622998743371, "timestamp": 1623025801371}, {"namespace":
+    "junos", "hostname": "leaf02", "ifname": "xe-0/0/8", "state": "up", "adminState":
+    "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "statusChangeTimestamp": 1622998743371, "timestamp":
+    1623025801371}, {"namespace": "junos", "hostname": "leaf02", "ifname": "xe-0/0/7",
+    "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0,
+    "master": "", "ipAddressList": [], "ip6AddressList": [], "statusChangeTimestamp":
+    1622998743371, "timestamp": 1623025801371}]'
 - command: interface show --ifname="xe-0/0/1" --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: interface show junos
