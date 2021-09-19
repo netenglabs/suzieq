@@ -2354,6 +2354,9 @@ tests:
       mismatch", "Speed mismatch", "IP address mismatch"]}, {"namespace": "nxos",
       "hostname": "exit02", "ifname": "Ethernet1/2", "state": "up", "peerHostname":
       "spine02", "peerIfname": "Ethernet1/6", "assert": "pass", "assertReason": []},
+      {"namespace": "nxos", "hostname": "exit02", "ifname": "Ethernet1/4", "state":
+      "up", "peerHostname": "dcedge01", "peerIfname": "xe-0/0/1", "assert": "fail",
+      "assertReason": ["MTU mismatch", "Speed mismatch", "IP address mismatch"]},
       {"namespace": "nxos", "hostname": "exit02", "ifname": "Ethernet1/1", "state":
       "up", "peerHostname": "spine01", "peerIfname": "Ethernet1/6", "assert": "pass",
       "assertReason": []}, {"namespace": "nxos", "hostname": "leaf01", "ifname": "Ethernet1/1",
@@ -2378,40 +2381,42 @@ tests:
       "spine01", "peerIfname": "Ethernet1/5", "assert": "pass", "assertReason": []},
       {"namespace": "nxos", "hostname": "exit01", "ifname": "Ethernet1/2", "state":
       "up", "peerHostname": "spine02", "peerIfname": "Ethernet1/5", "assert": "pass",
-      "assertReason": []}, {"namespace": "nxos", "hostname": "leaf02", "ifname": "Ethernet1/6",
-      "state": "up", "peerHostname": "leaf01", "peerIfname": "Ethernet1/6", "assert":
+      "assertReason": []}, {"namespace": "nxos", "hostname": "exit01", "ifname": "Ethernet1/4",
+      "state": "up", "peerHostname": "dcedge01", "peerIfname": "xe-0/0/0", "assert":
+      "fail", "assertReason": ["MTU mismatch", "Speed mismatch", "IP address mismatch"]},
+      {"namespace": "nxos", "hostname": "leaf02", "ifname": "Ethernet1/6", "state":
+      "up", "peerHostname": "leaf01", "peerIfname": "Ethernet1/6", "assert": "pass",
+      "assertReason": []}, {"namespace": "nxos", "hostname": "leaf02", "ifname": "Ethernet1/5",
+      "state": "up", "peerHostname": "leaf01", "peerIfname": "Ethernet1/5", "assert":
       "pass", "assertReason": []}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
-      "Ethernet1/5", "state": "up", "peerHostname": "leaf01", "peerIfname": "Ethernet1/5",
+      "Ethernet1/2", "state": "up", "peerHostname": "spine02", "peerIfname": "Ethernet1/2",
       "assert": "pass", "assertReason": []}, {"namespace": "nxos", "hostname": "leaf02",
-      "ifname": "Ethernet1/2", "state": "up", "peerHostname": "spine02", "peerIfname":
+      "ifname": "Ethernet1/1", "state": "up", "peerHostname": "spine01", "peerIfname":
       "Ethernet1/2", "assert": "pass", "assertReason": []}, {"namespace": "nxos",
-      "hostname": "leaf02", "ifname": "Ethernet1/1", "state": "up", "peerHostname":
-      "spine01", "peerIfname": "Ethernet1/2", "assert": "pass", "assertReason": []},
-      {"namespace": "nxos", "hostname": "leaf03", "ifname": "Ethernet1/5", "state":
-      "up", "peerHostname": "leaf04", "peerIfname": "Ethernet1/5", "assert": "pass",
-      "assertReason": []}, {"namespace": "nxos", "hostname": "leaf03", "ifname": "Ethernet1/1",
-      "state": "up", "peerHostname": "spine01", "peerIfname": "Ethernet1/3", "assert":
+      "hostname": "leaf03", "ifname": "Ethernet1/5", "state": "up", "peerHostname":
+      "leaf04", "peerIfname": "Ethernet1/5", "assert": "pass", "assertReason": []},
+      {"namespace": "nxos", "hostname": "leaf03", "ifname": "Ethernet1/1", "state":
+      "up", "peerHostname": "spine01", "peerIfname": "Ethernet1/3", "assert": "pass",
+      "assertReason": []}, {"namespace": "nxos", "hostname": "leaf03", "ifname": "Ethernet1/6",
+      "state": "up", "peerHostname": "leaf04", "peerIfname": "Ethernet1/6", "assert":
       "pass", "assertReason": []}, {"namespace": "nxos", "hostname": "leaf03", "ifname":
-      "Ethernet1/6", "state": "up", "peerHostname": "leaf04", "peerIfname": "Ethernet1/6",
-      "assert": "pass", "assertReason": []}, {"namespace": "nxos", "hostname": "leaf03",
-      "ifname": "Ethernet1/2", "state": "up", "peerHostname": "spine02", "peerIfname":
-      "Ethernet1/3", "assert": "pass", "assertReason": []}, {"namespace": "nxos",
-      "hostname": "spine01", "ifname": "Ethernet1/4", "state": "up", "peerHostname":
-      "leaf04", "peerIfname": "Ethernet1/1", "assert": "pass", "assertReason": []},
-      {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/5", "state":
-      "up", "peerHostname": "exit01", "peerIfname": "Ethernet1/1", "assert": "pass",
-      "assertReason": []}, {"namespace": "nxos", "hostname": "spine01", "ifname":
-      "Ethernet1/6", "state": "up", "peerHostname": "exit02", "peerIfname": "Ethernet1/1",
+      "Ethernet1/2", "state": "up", "peerHostname": "spine02", "peerIfname": "Ethernet1/3",
       "assert": "pass", "assertReason": []}, {"namespace": "nxos", "hostname": "spine01",
-      "ifname": "Ethernet1/2", "state": "up", "peerHostname": "leaf02", "peerIfname":
+      "ifname": "Ethernet1/4", "state": "up", "peerHostname": "leaf04", "peerIfname":
       "Ethernet1/1", "assert": "pass", "assertReason": []}, {"namespace": "nxos",
-      "hostname": "spine01", "ifname": "Ethernet1/1", "state": "up", "peerHostname":
-      "leaf01", "peerIfname": "Ethernet1/1", "assert": "pass", "assertReason": []},
-      {"namespace": "nxos", "hostname": "spine01", "ifname": "mgmt0", "state": "up",
-      "peerHostname": "leaf03", "peerIfname": "mgmt0", "assert": "pass", "assertReason":
-      []}, {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/3", "state":
-      "up", "peerHostname": "leaf03", "peerIfname": "Ethernet1/1", "assert": "pass",
-      "assertReason": []}]'
+      "hostname": "spine01", "ifname": "Ethernet1/5", "state": "up", "peerHostname":
+      "exit01", "peerIfname": "Ethernet1/1", "assert": "pass", "assertReason": []},
+      {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/6", "state":
+      "up", "peerHostname": "exit02", "peerIfname": "Ethernet1/1", "assert": "pass",
+      "assertReason": []}, {"namespace": "nxos", "hostname": "spine01", "ifname":
+      "Ethernet1/2", "state": "up", "peerHostname": "leaf02", "peerIfname": "Ethernet1/1",
+      "assert": "pass", "assertReason": []}, {"namespace": "nxos", "hostname": "spine01",
+      "ifname": "Ethernet1/1", "state": "up", "peerHostname": "leaf01", "peerIfname":
+      "Ethernet1/1", "assert": "pass", "assertReason": []}, {"namespace": "nxos",
+      "hostname": "spine01", "ifname": "mgmt0", "state": "up", "peerHostname": "leaf03",
+      "peerIfname": "mgmt0", "assert": "pass", "assertReason": []}, {"namespace":
+      "nxos", "hostname": "spine01", "ifname": "Ethernet1/3", "state": "up", "peerHostname":
+      "leaf03", "peerIfname": "Ethernet1/1", "assert": "pass", "assertReason": []}]'
   marks: interface assert nxos
 - command: interface show --query-str='adminState == "down" and state == "up" ' --format=json
   data-directory: tests/data/nxos/parquet-out/

@@ -273,12 +273,12 @@ tests:
   data-directory: tests/data/nxos/parquet-out/
   marks: ospf show nxos filter
   output: '[{"namespace": "nxos", "hostname": "leaf01", "vrf": "default", "ifname":
-    "Ethernet1/1", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
-    1, "adjState": "full", "peerIP": "10.0.0.21", "numChanges": 4, "lastChangeTime":
+    "Ethernet1/1", "peerHostname": "spine01", "area": "0.0.0.0", "ifState": "up",
+    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21", "numChanges": 4, "lastChangeTime":
     1619045027136, "timestamp": 1619275261428}, {"namespace": "nxos", "hostname":
-    "leaf02", "vrf": "default", "ifname": "Ethernet1/1", "peerHostname": "", "area":
-    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21",
-    "numChanges": 4, "lastChangeTime": 1619045039142, "timestamp": 1619275262652}]'
+    "leaf02", "vrf": "default", "ifname": "Ethernet1/1", "peerHostname": "spine01",
+    "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP":
+    "10.0.0.21", "numChanges": 4, "lastChangeTime": 1619045039142, "timestamp": 1619275262652}]'
 - command: ospf show --state='passive' --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: ospf show nxos filter
