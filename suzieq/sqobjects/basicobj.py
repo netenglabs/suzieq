@@ -134,6 +134,26 @@ class SqObject(object):
     def validate_assert_input(self, **kwargs):
         self._check_input_for_valid_args(self._valid_assert_args, **kwargs)
 
+    def validate_columns(self, columns: typing.List[str]) -> bool:
+        """Validate that the provided columns are valid for the table
+
+        Args:
+            columns (List[str]): list of columns
+
+        Returns:
+            bool: True if columns are valid
+        Raises:
+            ValueError: if columns are invalid
+        """
+
+        if columns == ['default'] or columns == ['*']:
+            return True
+
+        table_schema = SchemaForTable(self._table, self.all_schemas)
+        invalid_columns = [x for x in columns if x not in table_schema.fields]
+        if invalid_columns:
+            raise ValueError(f"Invalid columns specified: {invalid_columns}")
+
     def get(self, **kwargs) -> pd.DataFrame:
 
         if not self._table:
@@ -151,6 +171,12 @@ class SqObject(object):
         except Exception as error:
             df = pd.DataFrame({'error': [f'{error}']})
             return df
+
+        if 'columns' not in kwargs:
+            kwargs['columns'] = self.columns or ['default']
+
+        # This raises ValueError if it fails
+        self.validate_columns(kwargs.get('columns', []))
 
         for k in self._convert_args:
             v = kwargs.get(k, None)
@@ -198,11 +224,8 @@ class SqObject(object):
         if len(columns) > 1:
             raise ValueError('Specify a single column with unique')
 
-        table_schema = SchemaForTable(self._table, self.all_schemas)
-        if not self._field_exists(table_schema, column):
-            raise ValueError(
-                f"Field {column} does not exist in table {self.table}")
-
+        # This raises ValueError if it fails
+        self.validate_columns(columns)
         return self.engine.unique(**kwargs, columns=columns)
 
     def analyze(self, **kwargs):
@@ -216,6 +239,8 @@ class SqObject(object):
         """Get the list of top/bottom entries of "what" field"""
 
         columns = kwargs.get('columns', ['default'])
+        # This raises ValueError if it fails
+        self.validate_columns(columns)
 
         if not what:
             raise ValueError('Must specify what field to get top for')
@@ -228,6 +253,7 @@ class SqObject(object):
             df = pd.DataFrame({'error': [f'{error}']})
             return df
 
+        # This raises ValueError if it fails
         table_schema = SchemaForTable(self._table, self.all_schemas)
         if not self._field_exists(table_schema, what):
             raise ValueError(
@@ -267,6 +293,20 @@ class SqObject(object):
         df = pd.DataFrame.from_dict(entries).sort_values('name')
 
         return df
+
+    def get_table_info(self, table: str, **kwargs) -> pd.DataFrame:
+        """Get some basic stats about the table from the database
+
+        Args:
+            table (str): The table to get stats for
+
+        Returns:
+            pd.DataFrame: A dataframe with the stats
+        """
+        # This raises ValueError if it fails
+        self.validate_columns(kwargs.get('columns', ['default']))
+
+        return self.engine.get_table_info(table, **kwargs)
 
     def humanize_fields(self, df: pd.DataFrame, subset=None) -> pd.DataFrame:
         '''Humanize the fields for human consumption.
