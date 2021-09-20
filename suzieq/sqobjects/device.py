@@ -20,9 +20,4 @@ class DeviceObj(SqObject):
             df['bootupTimestamp'] = humanize_timestamp(
                 df['bootupTimestamp']*1000,
                 self.cfg.get('analyzer', {}).get('timezone', None))
-
-            uptime_cols = (df['timestamp'] - df['bootupTimestamp'])
-            uptime_cols = pd.to_timedelta(uptime_cols, unit='s')
-            df.insert(len(df.columns)-1, 'uptime', uptime_cols)
-
         return df

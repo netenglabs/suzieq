@@ -80,9 +80,6 @@ class DeviceCmd(SqCommand):
         df = self._get(os=os.split(), model=model, version=version,
                        vendor=vendor.split(), status=status.split())
 
-        if 'uptime' in df.columns:
-            df.drop(columns=['uptime'], inplace=True)
-
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
 
         return self._gen_output(df)

@@ -1,8 +1,10 @@
+import pandas as pd
 import numpy as np
 import operator
 from packaging import version
 from .engineobj import SqPandasEngine
 from suzieq.sqobjects.sqPoller import SqPollerObj
+from suzieq.utils import humanize_timestamp
 
 
 class DeviceObj(SqPandasEngine):
@@ -39,6 +41,11 @@ class DeviceObj(SqPandasEngine):
                     col not in columns):
                 addnl_fields.append(col)
                 drop_cols.append(col)
+
+        if columns == ['*'] or 'uptime' in columns:
+            if columns != ['*'] and 'bootupTimestamp' not in columns:
+                addnl_fields.append('bootupTimestamp')
+                drop_cols.append('bootupTimestamp')
 
         df = super().get(active_only=False, addnl_fields=addnl_fields,
                          **kwargs)
@@ -84,6 +91,13 @@ class DeviceObj(SqPandasEngine):
                                       df['address'])
 
             drop_cols.extend(['status_y', 'timestamp_y'])
+
+            if 'uptime' in columns or columns == ['*']:
+                uptime_cols = (df['timestamp'] -
+                               humanize_timestamp(df['bootupTimestamp']*1000,
+                               self.cfg.get('analyzer', {}).get('timezone', None)))
+                uptime_cols = pd.to_timedelta(uptime_cols, unit='s')
+                df.insert(len(df.columns)-1, 'uptime', uptime_cols)
 
         # The poller merge kills the filtering we did earlier, so redo:
         if status:
