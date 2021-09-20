@@ -360,3 +360,11 @@ def test_eos_sqcmds(testvar, create_context_config):
                                                                   '/tests/integration/sqcmds/mixed-samples')))
 def test_mixed_sqcmds(testvar, create_context_config):
     _test_sqcmds(testvar, create_context_config)
+
+
+@ pytest.mark.smoke
+@ pytest.mark.sqcmds
+@ pytest.mark.parametrize("testvar", load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
+                                                                  '/tests/integration/sqcmds/vmx-samples')))
+def test_mixed_sqcmds(testvar, create_context_config):
+    _test_sqcmds(testvar, create_context_config)
