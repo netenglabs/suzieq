@@ -22,7 +22,7 @@ class InventoryService(Service):
                 else:
                     status = 'absent'
                 newnentry = {
-                    "name": f"port-{portnum}/1",  # Arista adds a /1 to ifname
+                    "name": f"port-{portnum}",  # Arista adds a /1 to ifname
                     "model": model,
                     "type": "xcvr",
                     "status": status,
@@ -93,7 +93,31 @@ class InventoryService(Service):
         pass
 
     def _clean_nxos_data(self, processed_data, raw_data):
-        pass
+
+        for entry in processed_data:
+            name = entry.get('name', '')
+            entry['status'] = 'present'
+            if name.find('Ethernet') != -1:
+                entry['type'] = 'xcvr'
+                if entry['_sfp'].startswith("not "):
+                    entry['status'] = 'absent'
+            elif name.find('Chassis') != -1:
+                entry['type'] = 'chassis'
+                entry['name'] = name.lower()
+                entry['model'] = ' '.join(entry['model'].split()[0:2])
+            elif name.find('Slot') != -1:
+                entry['type'] = 'linecard'
+                entry['name'] = f'linecard-{name.split()[-1]}'
+            elif name.find('Power Supply') != -1:
+                entry['type'] = 'power'
+                entry['name'] = f'power-{name.split()[-1]}'
+                entry['model'] = ' '.join(entry['model'].split()[0:2])
+            elif name.find('Fan') != -1:
+                entry['type'] = 'fan'
+                entry['name'] = f'fan-{name.split()[-1]}'
+                entry['model'] = ' '.join(entry['model'].split()[0:2])
+
+        return processed_data
 
     def _clean_junos_data(self, processed_data, raw_data):
         new_data = []

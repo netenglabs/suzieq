@@ -53,7 +53,7 @@ class InventoryObj(SqPandasEngine):
             if ifdf.empty:
                 return self._common_get_exit_fn(df, query_str=user_query,
                                                 **kwargs)
-            df1['portNum'] = df1.name.str.split('port-').str[1]
+            df1['portNum'] = df1.name.str.split('port-').str[1].fillna('')
             ifdf['portNum'] = ifdf.ifname.str.split(r'Ethernet|-').str[1]
             df1 = df1.merge(ifdf, on=['namespace', 'hostname', 'portNum'], how='left') \
                 .dropna()

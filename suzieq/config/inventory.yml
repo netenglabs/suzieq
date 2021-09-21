@@ -48,19 +48,21 @@ apply:
    command: 
     - command: show inventory | json native
       normalize: 'TABLE_inv/ROW_inv/*/[
-      "name: unit?|",
-      "desc: description?|",
+      "name: name?|",
+      "desc: model?|",
       "serialnum: serial?|",
+      "vendorid: version?|",
       "productid: productId?|",
       "type: type?|",
       ]'
 
     - command: show interface transceiver | json native
       normalize: 'TABLE_interface/ROW_interface/*/[
-      "interface: unit?|",
+      "interface: name?|",
       "sfp: _sfp?|",
-      "name: mfgName",
-      "type: type",
+      "name: model?|",
+      "type: type?|",
+      "rev: version?|",
       "partnum: partNum?|",
       "serialnum: serial?|",
       "cisco_product_id: productId?|",
