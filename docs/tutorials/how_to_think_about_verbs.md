@@ -32,7 +32,7 @@ path show src='172.16.1.101' dest='172.16.4.104' namespace=dual-bgp
 ```
 table show
 ```
-Table show looks a bit differnt than the other commands, because table show is showing 
+Table show looks a bit different than the other commands, because table show is showing 
 the tables in the database, not directly looking at data inside tables.
 ![table show](../images/suzieq-table-show.png) 
 
@@ -40,7 +40,7 @@ Some of the tables have a lot of columns. We have a standard set of default colu
 each table. However, you can add a columns= filter to add more columns or see less. columns=*
 shows all the columns. This examples show looking at specific data by using columns= filter.
 ```
-bgp show namespace=ospf-ibgp columns='hostname vrf peer peerHostname state asn bfdStatus updateSrource'
+bgp show namespace=ospf-ibgp columns='hostname vrf peer peerHostname state asn bfdStatus updateSource'
 ```
 ![bgp show with filters](images/suzieq-show-bgp-columns.png)
 
@@ -112,7 +112,7 @@ device top what=uptime
 ### lpm
 lpm only works on the route command
 ```
-route lpm addres='10.0.0.112' namespace=ospf-ibgp
+route lpm address='10.0.0.112' namespace=ospf-ibgp
 ```
 ![route lpm](images/suzieq-route-lpm.png)
 

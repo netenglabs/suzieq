@@ -65,7 +65,7 @@ And the final picture is to increase the time window and see all the transitions
 
 |![](images/time-Fig7.png)
 |:--:|
-| Figure 7: Interface Listing, View Chages in Longer Time Window |
+| Figure 7: Interface Listing, View Changes in Longer Time Window |
 
 Today, only the show option supports the use of time. We'll be adding support for the other commands in the next release.
 

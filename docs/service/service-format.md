@@ -57,7 +57,7 @@ This is a mandatory field that identifies which set of fields define a record un
 
 ## Apply ##
 
-This is the workshorse section on the file. It identifies the command to run to obtain the relevant information for this service and how to extract and transform the fields. It contains several subfields. 
+This is the workhorse section on the file. It identifies the command to run to obtain the relevant information for this service and how to extract and transform the fields. It contains several subfields. 
 
 ## Device Type or Hostname ##
 
@@ -79,7 +79,7 @@ This specifies the command to be run to extract state for this service.
 
 If the command to extract state produces structured output such as JSON (the only structured output supported for now), the extraction and normalization of the field name is specified via as a list of xpath-like fields. For commands that do not produce structured output, we rely on the textfsm module to convert the unstructured command output to a structured format.
 
-**normalize** is used to define the mapping and transformation of the fields when the output is structuured. ***textfsm** is used when the output is unstructured. The textfsm field contains the name of the textfsm file to be used for this extraction. The path of the file must be fully specified or its assumed to be in the "config/textfsm" directory.
+**normalize** is used to define the mapping and transformation of the fields when the output is structured. ***textfsm** is used when the output is unstructured. The textfsm field contains the name of the textfsm file to be used for this extraction. The path of the file must be fully specified or its assumed to be in the "config/textfsm" directory.
 
 ## Normalizing the Data ##
 
@@ -87,7 +87,7 @@ The normalized field name is to create a single name for a field that is named d
 
 Simple arithmetic operations are used to:
     * normalize the value across different devices. For example, a time field defined in seconds in one device output and as milliseconds in another, can be converted to either seconds or milliseconds. 
-	* unify a field that maybe specified as a single field on one device and as multiple fields in aother. For example, if one device provides a single totalLinkTransitions field while another provides totalLinkUps and totalLinkDowns fields, the observer can unify the second output by summing the two fields
+	* unify a field that maybe specified as a single field on one device and as multiple fields in another. For example, if one device provides a single totalLinkTransitions field while another provides totalLinkUps and totalLinkDowns fields, the observer can unify the second output by summing the two fields
 
 To keep the data consistent across outputs, especially if missing, and the value is not a string, the user must specify a default value for the field.
 

@@ -310,7 +310,7 @@ The checks in Interface Assert are:
 ###  2.4. <a name='ospf-assert'></a>OSPF Assert
 ![Suzieq_ospf_assert](images/suzieq-ospf-assert.png)
 
-The cheks in OSPF Assert are:
+The checks in OSPF Assert are:
  * duplicate routerId 
  * subnet mismatch
  * area mismatch
