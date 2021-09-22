@@ -33,6 +33,19 @@ class InventoryObj(SqPandasEngine):
         '''Specific get to replace interface names'''
         user_query = kwargs.pop('query_str', '')
 
+        def _get_inv_ifnum(x: str) -> str:
+            """Matching show interface ifnames with show inventory ifname"""
+            if '-' in x:
+                # Handle Juniper
+                x = x.split('-')[1]
+
+            elif 'Ethernet' in x:
+                if '/' in x:
+                    x = '/'.join(x.split('Ethernet')[1].split('/')[:-1])
+                else:
+                    x = x.split('Ethernet')[1]
+            return x
+
         df = super().get(**kwargs)
 
         if df.empty:
@@ -49,13 +62,26 @@ class InventoryObj(SqPandasEngine):
             hostnames = kwargs.get('hostname', [])
             ifdf = get_sqobject('interfaces')(context=self.ctxt) \
                 .get(namespace=namespaces, hostname=hostnames,
-                     columns=['namespace', 'hostname', 'ifname'], type=['ethernet', 'flexible-ethernet'])
+                     columns=['namespace', 'hostname', 'ifname'],
+                     type=['ethernet', 'flexible-ethernet', 'bond_slave'])
             if ifdf.empty:
                 return self._common_get_exit_fn(df, query_str=user_query,
                                                 **kwargs)
             df1['portNum'] = df1.name.str.split('port-').str[1].fillna('')
-            ifdf['portNum'] = ifdf.ifname.str.split(r'Ethernet|-').str[1]
-            df1 = df1.merge(ifdf, on=['namespace', 'hostname', 'portNum'], how='left') \
+            ifdf['portNum'] = ifdf.ifname.apply(_get_inv_ifnum)
+            # The idea is to provide sensible interface names. Most platforms
+            # provide inventory info on interfaces badly, due to various
+            # reasons. When we create the inventory data, we create them with
+            # the generic name port-<whateveridx provided by show inv>. Here
+            # we attempt to match up the idx with the idx in the interface name
+            # So, port-1/2/2 is matched with xe-1/1/2 or ge-1/1/2 or
+            # Ethernet1/1/2. Junos seems to have a more consistent naming
+            # scheme. Arista is a bit confusing because it can be Ethernet1 or
+            # Ethernet1/1 if a breakout cable is used. NXOS provide the ifname
+            # properly in the inventory output itself. This code has to deal
+            # with all these variations correctly.
+            df1 = df1.merge(
+                ifdf, on=['namespace', 'hostname', 'portNum'], how='left') \
                 .dropna()
 
             df = df.merge(df1[['namespace', 'hostname', 'name', 'ifname']],
