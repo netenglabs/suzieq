@@ -19,6 +19,7 @@ class SqContext(object):
         self.end_time = ''
         self.exec_time = ''
         self.engine = engine
+        self.view = ''
         self.sort_fields = []
 
 
@@ -27,7 +28,7 @@ class SqObject(object):
     def __init__(self, engine_name: str = 'pandas',
                  hostname: typing.List[str] = [],
                  start_time: str = '', end_time: str = '',
-                 view: str = 'latest', namespace: typing.List[str] = [],
+                 view: str = '', namespace: typing.List[str] = [],
                  columns: typing.List[str] = ['default'],
                  context=None, table: str = '', config_file=None) -> None:
 
@@ -64,9 +65,13 @@ class SqObject(object):
             self.end_time = end_time
 
         if not view and self.ctxt.view:
-            self.view = self.ctxt.view
+            view = self.ctxt.view
+
+        if self.start_time and self.end_time and not view:
+            self.view = 'all'
         else:
-            self.view = view
+            self.view = view or 'latest'
+
         self.columns = columns
 
         if engine_name and engine_name != '':

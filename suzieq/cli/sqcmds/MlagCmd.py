@@ -11,7 +11,7 @@ class MlagCmd(SqCommand):
 
     def __init__(self, engine: str = '', hostname: str = '',
                  start_time: str = '', end_time: str = '',
-                 view: str = 'latest', namespace: str = '',
+                 view: str = '', namespace: str = '',
                  query_str: str = ' ',
                  format: str = "", columns: str = 'default') -> None:
         super().__init__(engine=engine, hostname=hostname,

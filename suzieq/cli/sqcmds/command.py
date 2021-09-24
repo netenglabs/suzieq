@@ -48,7 +48,7 @@ class SqCommand:
             hostname: str = "",
             start_time: str = "",
             end_time: str = "",
-            view: str = "latest",
+            view: str = "",
             namespace: str = "",
             format: str = "",
             columns: str = "default",
@@ -97,10 +97,7 @@ class SqCommand:
         else:
             self.end_time = end_time
 
-        if self.start_time and self.end_time:
-            self.view = "all"
-        else:
-            self.view = view
+        self.view = view
 
         if not sqobj:
             raise AttributeError('mandatory parameter sqobj missing')

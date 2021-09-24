@@ -13,7 +13,7 @@ class TopmemCmd(SqCommand):
         hostname: str = "",
         start_time: str = "",
         end_time: str = "",
-        view: str = "latest",
+        view: str = "",
         namespace: str = "",
         format: str = "",
         columns: str = "default",
@@ -51,4 +51,3 @@ class TopmemCmd(SqCommand):
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
-
