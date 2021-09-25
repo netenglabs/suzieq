@@ -81,7 +81,7 @@ def handle_edge_url(url_params: dict, pathSession):
                                          .drop(columns=dropcol)
             else:
                 if_df = engobj._if_df.query(f'hostname=="{ifhost}"')\
-                                          .drop(columns=dropcol)
+                    .drop(columns=dropcol)
                 label = f'matching host {ifhost}'
             if nhip != '169.254.0.1':
                 st.info(f'Interfaces {label}')
@@ -95,7 +95,7 @@ def handle_edge_url(url_params: dict, pathSession):
                 st.dataframe(data=if_df)
     if macaddr:
         with st.expander(f'MAC Table for {hostname}, MAC addr {macaddr}',
-                              expanded=True):
+                         expanded=True):
             st.dataframe(data=pathobj.engine._macsobj.get(
                 namespace=namespace, hostname=hostname, macaddr=macaddr))
 
@@ -137,7 +137,7 @@ def handle_hop_url(url_params, pathSession):
 
     for row in df2.itertuples():
         with st.expander(f'Lookups on {hostname}, for hopcount: '
-                              f'{row.hopCount}', expanded=True):
+                         f'{row.hopCount}', expanded=True):
             if row.macaddr:
                 st.info(f'MAC Table on {hostname}, MAC addr {row.macaddr}')
                 st.dataframe(data=engobj._macsobj.get(namespace=namespace,
@@ -211,7 +211,7 @@ def handle_hop_url(url_params, pathSession):
         st.markdown("<hr>", unsafe_allow_html=True)
 
 
-def page_work(state_container, page_flip: bool):
+def page_work(state_container):
     '''Main page workhorse'''
 
     pathSession = state_container.pathSessionState

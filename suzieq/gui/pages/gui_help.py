@@ -26,10 +26,10 @@ def help_sidebar(state: HelpSessionState, helpdir: str):
     return help_on
 
 
-def page_work(state_container, page_flip: bool):
+def page_work(state_container):
     '''Main page workhorse'''
 
-    if not state_container.helpSessionState:
+    if not 'helpSessionState' not in state_container:
         state_container.helpSessionState = HelpSessionState()
 
     state = state_container.helpSessionState

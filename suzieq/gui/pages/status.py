@@ -51,11 +51,11 @@ __Caching is enabled by default for 90 secs on all pages__. You can clear the ca
         state.namespace = namespace
 
 
-def page_work(state_container, page_flip: bool):
+def page_work(state_container):
     '''The main workhorse routine for the XNA page'''
 
-    if not state_container.statusSessionState:
-        state_container.statusSessionState = StatusSessionState()
+    if 'statusSessionState' not in state_container:
+        state_container['statusSessionState'] = StatusSessionState()
 
     state = state_container.statusSessionState
     draw_sidebar_status(state, state_container.sqobjs)

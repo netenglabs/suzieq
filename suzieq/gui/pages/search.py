@@ -4,7 +4,7 @@ from typing import List
 
 import pandas as pd
 import streamlit as st
-from suzieq.gui.guiutils import gui_get_df
+from suzieq.gui.guiutils import gui_get_df, SuzieqMainPages
 
 
 def get_title():
@@ -14,10 +14,11 @@ def get_title():
 
 @dataclass
 class SearchSessionState:
+    page: str = SuzieqMainPages.SEARCH
     search_text: str = ''
     past_df = None
     table: str = ''
-    nsidx: int = -1
+    namespace: str = ''
     query_str: str = ''
     unique_query: dict = field(default_factory=dict)
     prev_results = deque(maxlen=5)
@@ -27,13 +28,16 @@ def build_query(state, search_text: str) -> str:
     '''Build the appropriate query for the search'''
 
     if not search_text:
-        return '', ''
+        return '', '', []
 
     unique_query = {}
 
     addrs = search_text.split()
     if not addrs:
-        return '', ''
+        return '', '', []
+
+    query_str = disjunction = ''
+    columns = ['default']
 
     if addrs[0].startswith('mac'):
         state.table = 'macs'
@@ -49,21 +53,52 @@ def build_query(state, search_text: str) -> str:
         search_text = ' '.join(addrs[1:])
     elif addrs[0].startswith('vtep'):
         state.table = 'evpnVni'
+        if addrs[0] != 'vteps':
+            query_str = (f'priVtepIp.isin({addrs[1:]}) or '
+                         f'secVtepIp.isin({addrs[1:]})')
+            columns = ['namespace', 'hostname', 'priVtepIp',
+                       'secVtepIp']
     elif addrs[0].startswith('vni'):
         state.table = 'evpnVni'
+        if addrs[0] == 'vnis':
+            try:
+                vnis = [int(x) for x in addrs[1:]]
+            except ValueError:
+                vnis = []
+            query_str = f'vni.isin({vnis})'
+            columns = ['namespace', 'hostname', 'vni']
     elif addrs[0].startswith('asn'):
         state.table = 'bgp'
+        if addrs[0] != "asns":
+            try:
+                asns = [int(x) for x in addrs[1:]]
+            except ValueError:
+                asns = []
+            query_str = f'asn.isin({asns})'
+            columns = ['namespace', 'hostname', 'asn']
     elif addrs[0].startswith('vlan'):
         state.table = 'vlan'
+        if addrs[0] != "vlans":
+            try:
+                vlans = [int(x) for x in addrs[1:]]
+            except ValueError:
+                vlans = []
+            query_str = f'vlan.isin({vlans})'
+            columns = ['namespace', 'hostname', 'vlan']
     elif addrs[0].startswith('mtus'):
         state.table = 'interface'
+        if addrs[0] != "mtus":
+            try:
+                mtus = [int(x) for x in addrs[1:]]
+            except ValueError:
+                mtus = []
+            query_str = f'mtu.isin({mtus})'
+            columns = ['namespace', 'hostname', 'mtu']
     else:
-        state.table = 'address'
+        state.table = 'network'
 
-    if state.table == 'address':
-        return search_text, unique_query
-
-    query_str = disjunction = ''
+    if state.table == 'network':
+        return search_text, unique_query, columns
 
     for addr in addrs:
         if addr.lower() == 'vteps':
@@ -107,7 +142,7 @@ def build_query(state, search_text: str) -> str:
 
     state.query_str = query_str
     state.unique_query = unique_query
-    return query_str, unique_query
+    return query_str, unique_query, columns
 
 
 def search_sidebar(state, sqobjs):
@@ -119,59 +154,68 @@ def search_sidebar(state, sqobjs):
         st.stop()
 
     namespaces = [''] + sorted(devdf.namespace.unique().tolist())
-    if state.nsidx == -1:
+    if not state.namespace:
         nsidx = 0
     else:
-        nsidx = state.nsidx
+        nsidx = namespaces.index(state.namespace)
     namespace = st.sidebar.selectbox('Namespace',
-                                     namespaces, index=nsidx)
+                                     namespaces, key='search_ns',
+                                     index=nsidx, on_change=search_sync_state)
 
     st.sidebar.markdown(
         """Displays last 5 search results.
 
-The search string can start with one of the following keywords: __address, route, mac, arpnd__, to specify which table you want the search to be performed in . If you don't specify a table name, address is assumed. For example, ```arpnd 172.16.1.101``` searches for entries with 172.16.1.101 in the IP address column of the arpnd table. Similarly, ```10.0.0.21``` searches for that IP address in the address table.
+You can use search to find specific objects. You can qualify what you're searching for by qualifying the search term with the type. We support:
+- __addresses__: You can qualify a specific table to look for the address. The search string can start with one of the following keywords: __address, route, mac, arpnd__, to specify which table you want the search to be performed in . If you don't specify a table name, we assume ```network find``` to search for the network attach point for the address. For example, ```arpnd 172.16.1.101``` searches for entries with 172.16.1.101 in the IP address column of the arpnd table. Similarly, ```10.0.0.21``` searches for where in the network that IP address is attached to.
+- __ASN__: Start the search with the string ```asn``` followed by the ASN number. Typing ```asns``` will show you the list of unique ASNs across the specified namespaces.
+- __VTEP__: Start the search with the string ```vtep``` followed by the VTEP IP address. Typing ```vteps``` will show you the list of unique VTEPs across the specified namespaces.
+- __VNI__: Start the search with the string ```vni``` followed by the VNI number. Typing ```vnis``` will show you the list of unique VNIs across the specified namespaces.
+- __VLAN__: Start the search with the string ```vlan``` followed by the VLAN number. Typing ```vlans``` will show you the list of unique VLANs across the specified namespaces.
+- __MTU__: Start the search with the string ```mtus``` followed by the MTU number. Typing ```mtus``` will show you the list of unique MTUs across the specified namespaces.
 
-__In this initial release, you can only search for an IP address or MAC address__ in one of those tables. You can specify multiple addresses to look for by providing the addresses as a space separated values such as ```172.16.1.101 10.0.0.11``` or ```mac 00:01:02:03:04:05 00:21:22:23:24:25``` and so on. A combination of mac and IP address can also be specified. Obviously the combination doesn't apply to tables such as routes and macs. Support for more sophisticated search will be added in the next few releases.
+When specifying a table, you can specify multiple addresses to look for by providing the addresses as a space separated values such as ```172.16.1.101 10.0.0.11``` or ```mac 00:01:02:03:04:05 00:21:22:23:24:25``` and so on. A combination of mac and IP address can also be specified with the address table. Support for more sophisticated search will be added in the next few releases.
 """)
 
-    nsidx = namespaces.index(namespace)
-    if nsidx != state.nsidx:
-        state.nsidx = nsidx
+    if namespace != state.namespace:
+        state.namespace = namespace
 
     return namespace
 
 
-def page_work(state_container, page_flip: bool):
+def page_work(state_container):
     '''Main page workhorse'''
 
-    if not state_container.searchSessionState:
-        state_container.searchSessionState = SearchSessionState()
+    if 'searchSessionState' not in state_container:
+        state_container['searchSessionState'] = SearchSessionState()
 
     state = state_container.searchSessionState
 
     namespace = search_sidebar(state, state_container.sqobjs)
 
-    query_str, uniq_dict = build_query(state,
-                                       state_container.search_text)
+    query_str, uniq_dict, columns = build_query(state,
+                                                state_container.search_text)
     if namespace:
         query_ns = [namespace]
     else:
         query_ns = []
     if query_str:
-        if state.table == "address":
+        if state.table == "network":
             df = gui_get_df(state_container.sqobjs[state.table],
+                            verb='find',
                             namespace=query_ns,
-                            view="latest", columns=['default'],
-                            address=query_str.split())
+                            view="latest", columns=columns,
+                            address=query_str)
         else:
             df = gui_get_df(state_container.sqobjs[state.table],
-                            namespace=query_ns,
-                            view="latest", columns=['default'])
+                            namespace=query_ns, query_str=query_str,
+                            view="latest", columns=columns)
             if not df.empty:
-                df = df.query(query_str).reset_index(drop=True)
+                df = df.query(query_str) \
+                    .drop_duplicates() \
+                    .reset_index(drop=True)
 
         expander = st.expander(f'Search for {state_container.search_text}',
-                                    expanded=True)
+                               expanded=True)
         with expander:
             if not df.empty:
                 st.dataframe(df)
@@ -185,7 +229,7 @@ def page_work(state_container, page_flip: bool):
             df = df.groupby(by=columns).first().reset_index()
 
         expander = st.expander(f'Search for {state_container.search_text}',
-                                    expanded=True)
+                               expanded=True)
         with expander:
             if not df.empty:
                 st.dataframe(df)
@@ -209,3 +253,11 @@ def page_work(state_container, page_flip: bool):
         state.search_text = state_container.search_text
 
     st.experimental_set_query_params(**asdict(state))
+
+
+def search_sync_state():
+    wsstate = st.session_state
+    state = wsstate.searchSessionState
+
+    if state.namespace != wsstate.search_ns:
+        state.namespace = wsstate.search_ns
