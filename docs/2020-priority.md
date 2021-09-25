@@ -78,14 +78,14 @@ Given the categories, here is a rough list of tasks we will be tackling. We welc
   * asserts
 * Better unit tests with mocking instead of just end-to-end with real data.
 * Integration with performance analysis
-  * integration with promethius and influxdb
+  * integration with [Prometheus](https://prometheus.io/) and [InfluxDB](https://www.influxdata.com/products/influxdb-overview/)
   * what do we want to be able to do with this?
 * ~~Arista EVPN~~
 * Integration with systems for notification of events
   * slack   * ???
 * ~~Users can do their own queries~~
   * ~~pandas or pandas sql query~~
-* --Great expectations or some other way of better verifying data output <https://docs.greatexpectations.io/en/latest/>--
+* --[Great expectations](https://docs.greatexpectations.io/docs/) or some other way of better verifying data output
 * --Better database abstractions so that we can more easily add new databases--
 * ~~Support for SONIC~~
   * This includes SONIC-specific stuff only. Linux-specific and FRR are already supported.
@@ -105,7 +105,7 @@ Given the categories, here is a rough list of tasks we will be tackling. We welc
 
 * By telling us which of these tasks you care to see sooner than later
 * Signing up to help with some of the tasks
-* Suggesting items that you care about but are missing from this list. The best way to do this is to open an issue. Please do add some color about how you intend to use Suzieq with that feature.
+* Suggesting items that you care about but are missing from this list. The best way to do this is to [open an issue](https://github.com/netenglabs/suzieq/issues/new/choose). Please do add some color about how you intend to use Suzieq with that feature.
 * Writing some tests and/or documentation
 * Funding us to do the work :)
 
