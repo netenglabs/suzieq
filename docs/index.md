@@ -20,7 +20,7 @@ systematic approach to thinking about networks. We want to show how useful it is
 You can join the conversation via [slack](https://netenglabs.slack.com). Send email to Dinesh with the email address to send the Slack invitation to. 
 
 We're also looking for collaborators to help us make Suzieq a truly useful multi-vendor, open source platform 
-for observing all aspects of networking. Please read the [collaboration document](https://github.com/netenglabs/suzieq/CONTRIBUTING.md) for 
+for observing all aspects of networking. Please read the [collaboration document](https://github.com/netenglabs/suzieq/blob/master/CONTRIBUTING.md) for 
 ideas on how you can help. 
 
 
