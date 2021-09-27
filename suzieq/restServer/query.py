@@ -194,6 +194,7 @@ class RouteVerbs(str, Enum):
     summarize = "summarize"
     unique = "unique"
     lpm = "lpm"
+    top = "top"
 
 
 class PathVerbs(str, Enum):
@@ -211,6 +212,8 @@ class NetworkVerbs(str, Enum):
 class TableVerbs(str, Enum):
     show = "show"
     summarize = "summarize"
+    unique = "unique"
+    top = "top"
     describe = "describe"
 
 

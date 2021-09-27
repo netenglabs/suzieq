@@ -54,3 +54,45 @@ class TableObj(SqPandasEngine):
                              columns=cols)
         df = df.append(total, ignore_index=True).dropna()
         return df
+
+    def summarize(self, **kwargs):
+        df = self.get(**kwargs)
+
+        if df.empty or ('error' in df.columns):
+            return df
+
+        df = df.set_index(['table'])
+
+        sdf = pd.DataFrame({
+            'serviceCnt': [df.index.nunique()-1],
+            'namespaceCnt': [df.at['TOTAL', 'namespaces']],
+            'deviceCnt': [df.at['device', 'deviceCnt']],
+            'earliestTimestamp': [df.firstTime.min()],
+            'lastTimestamp': [df.latestTime.max()],
+            'firstTime99': [df.firstTime.quantile(0.99)],
+            'latestTime99': [df.latestTime.quantile(0.99)],
+        })
+        return sdf.T.rename(columns={0: 'summary'})
+
+    def top(self, **kwargs):
+        "Tables implementation of top has to eliminate the TOTAL row"
+
+        what = kwargs.pop("what", None)
+        reverse = kwargs.pop("reverse", False)
+        sqTopCount = kwargs.pop("count", 5)
+
+        if not what:
+            return pd.DataFrame()
+
+        df = self.get(addnl_fields=self.iobj._addnl_fields, **kwargs)
+        if df.empty or ('error' in df.columns):
+            return df
+
+        if reverse:
+            return df.query('table != "TOTAL"') \
+                .nsmallest(sqTopCount, columns=what, keep="all") \
+                .head(sqTopCount)
+        else:
+            return df.query('table != "TOTAL"') \
+                .nlargest(sqTopCount, columns=what, keep="all") \
+                .head(sqTopCount)

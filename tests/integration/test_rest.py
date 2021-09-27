@@ -16,7 +16,7 @@ from suzieq.restServer import query
 ENDPOINT = "http://localhost:8000/api/v2"
 
 VERBS = ['show', 'summarize', 'assert', 'lpm',
-         'unique', 'find', 'top']  # add 'top' when it's supported
+         'unique', 'find', 'top', 'describe']
 
 #
 # The code logic is that you define all the filters you want to test in
