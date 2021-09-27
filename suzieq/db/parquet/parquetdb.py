@@ -37,8 +37,9 @@ class SqParquetDB(SqDB):
         """Return list of tables known to parquet
         """
         folder = self._get_table_directory(None, False)
-        dirs = Path(folder)
-        tables = [str(x) for x in dirs if not str(x).startswith('_')]
+        dirs = Path(folder).glob('*')
+        tables = [str(x.stem) for x in dirs
+                  if not str(x.stem).startswith(('_', 'coalesced'))]
 
         return tables
 
@@ -760,31 +761,3 @@ class SqParquetDB(SqDB):
             pa.list_(pa.string()): [],
             pa.list_(pa.int64()): [],
         })
-
-    def get_tables(self, **kwargs):
-        """finds the tables that are available"""
-
-        cfg = self.cfg
-        if not getattr(self, 'cfg', None):
-            self.cfg = cfg
-        dfolder = self.cfg['data-directory']
-        tables = set()
-        if dfolder:
-            dfolder = os.path.abspath(dfolder) + '/'
-            p = Path(dfolder)
-            namespaces = kwargs.get('namespace', [])
-            if not namespaces:
-                ns = set([x.parts[-1].split('=')[1]
-                          for x in p.glob('**/namespace=*')])
-            else:
-                ns = set(namespaces)
-            for dc in ns:
-                dirlist = p.glob(f'**/namespace={dc}')
-                tlist = [str(x).split(z)[1].split('/')[0]
-                         for x, z in list(zip_longest(dirlist, [dfolder],
-                                                      fillvalue=dfolder))]
-                if not tables:
-                    tables = set(tlist)
-                else:
-                    tables.update(tlist)
-        return list(tables)
