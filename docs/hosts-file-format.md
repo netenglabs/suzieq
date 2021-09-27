@@ -24,14 +24,24 @@ A sample hosts file looks as follows:
 ```
 The hostname specified must either be an IP address or a hostname resolvable via DNS.  **Do not use TABS in the file**.
 
-It is required to specify the device type when using REST API to query the information from the device because the REST API of each device is different and it is not possible to automatically identify that. In case of using ssh to query the device state, suzeiq runs the commands 'show version and hostnamectl' to try and identify the device. Most networking gear support the 'show version' model and all open networking products I'm aware of and servers support hostnamectl. Using these two commands, we can identify the type of device. If you're running a device that does not support either of these commands, specify it using the **device** parameter.
-
 The device type is important to identify the command selection for a given service. 
+
+It is required to specify the device type when using REST API to query the information from the device because the REST 
+API of each device is different, and it is not possible to automatically identify that. 
+
+In case of using SSH to query
+the device state, suzeiq runs the commands 'show version and hostnamectl' to try, and identify the device. Most 
+networking gear support the 'show version' model and all open networking products I'm aware of and servers support 
+hostnamectl. Using these two commands, we can identify the type of device. If you're running a device that does not 
+support either of these commands, specify it using the **device** parameter.
+
 
 ## Local Agent ##
 
-It is possible to run suzieq in a push model where the code runs as a local agent pushing information via a mechanism such as kafka. In such a situation, the **local** URL specification is used to launch the command as a local command instead of ssh. The device type identification is also done using the same model as that for ssh.
+It is possible to run Suzieq in a push model where the code runs as a local agent pushing information via a mechanism such as [Kafka](https://kafka.apache.org/). 
+
+In such a situation, the **local** URL specification is used to launch the command as a local command instead of SSH. The device type identification is also done using the same model as for SSH.
 
 ## Password Specification ##
 
-The recommended model for passwords is to use a public key for the user suzieq is running as to allow for passwordless access to the device. If this is not done, then a separate read-only file containing the password for each user can be provided. This latter method is not as secure and is discouraged. For users testing with vagrant, if the user name is vagrant, a default password of vagrant is assumed.
+The recommended model for passwords is to use a public key for the running user 'suzieq' to allow passwordless access to the device. If this is not done, then a separate read-only file containing the password for each user can be provided. This latter method is not as secure and is discouraged. For users testing with vagrant, if the user name is vagrant, a default password of vagrant is assumed.
