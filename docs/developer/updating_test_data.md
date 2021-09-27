@@ -4,9 +4,9 @@
 
 ## updating sqcmds when just the output changed, and no data changed
 
-The data that needs to get updated is in tests/integration/sqcmds/*-samples/
+The data that needs to get updated is in `tests/integration/sqcmds/*-samples/`
 
-The way to update these files is use tests/utilities/update_data.py
+The way to update these files is use `tests/utilities/update_data.py`
 
 ## update test data for sqcmds
 
@@ -33,7 +33,7 @@ recorded was good output, and this time it returns
 and error, exception, or empty ([]) data, than the script will fail.
 
 If the test fails, it might also be because there is a change in the data type trying to be recorded to sqcmds/samples. It's probably best
-to run the utilities/update_sqcmds.py by hand and see which entry it failed on and why
+to run the `utilities/update_sqcmds.py` by hand and see which entry it failed on and why
 and then discover if you have found a new bug.
 
 if the test passes, then check to make sure that the updated tests work.
@@ -42,13 +42,13 @@ if the test passes, then check to make sure that the updated tests work.
 pytest
 ```
 
-This test will delete the test data from your directory in tests/integration/sqcmds/cumulus-input and cumulus-samples.
+This test will delete the test data from your directory in `tests/integration/sqcmds/cumulus-input` and `cumulus-samples`.
 so you don't have to do anything.
 If this is a git
 directory it will git rm the data. It will also update the files in 
-tests/integration/samples/sqcmds.
+`tests/integration/samples/sqcmds`.
 
-Then you should check in the tests/data directories and the tests/integration/sqcmds
+Then you should check in the `tests/data` directories, and the `tests/integration/sqcmds`
 
 ```bash
 git add tests/data/sqcmds/cumulus-samples/ tests/data/sqcmds/cumulus-input/
@@ -72,7 +72,7 @@ git rm -rf tests/data/nxos/parquet-out
 mkdir tests/data/nxos
 ```
 
-copy the generated data to tests/data/nxos/parquet-out, or whatever os you are changing
+copy the generated data to `tests/data/nxos/parquet-out`, or whatever os you are changing
 
 then add it to git
 
@@ -116,11 +116,8 @@ git push
 
 We don't have a way to automatically spin up VMs for these and gather the inital data,
 so if that needs to be replaced, for instance if a new command is added
-then you need to capture gather the data and put it into
-
-tests/integration/sqcmds/nxos-input
-
-and then do the updating as documented above.
+then you need to capture gather the data and put it into `tests/integration/sqcmds/nxos-input` and
+then do the updating as documented above.
 
 ## CNDCN tests
 
@@ -144,9 +141,9 @@ To update the samples data if any of the data parquet schema has changed:
 UPDATE_SQCMDS=true SUZIEQ_POLLER=true pytest -m "single_attach or dual_attach"
 ```
 
-you'll need to check in the changes that are made to tests/integration/all_cndcn/*
+you'll need to check in the changes that are made to `tests/integration/all_cndcn/*`
 
-### Gathering the  data
+### Gathering the data
 
 This runs each of the 18 CNDCN scenarios in vagrant and gathers the data. It should only be necessary if the commands run are diferent.
 

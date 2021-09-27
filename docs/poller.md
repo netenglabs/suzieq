@@ -121,7 +121,9 @@ In this case the errors are because we aren't running any of those services on t
 ## Database and Data Persistence
 
 Because everything in Suzieq revolves around [Pandas](https://pandas.pydata.org/) dataframes, it can support different persistence engines underneath. For right now, we only support our own, which is built on [Parquet](https://parquet.apache.org/) files. 
-This is setup should be fast enough to get things going and for most people. It is also self contained and fairly simple. 
-We have tried other storage systems, so we know it can work, but none of that code is production worthy. As we all gain experience we can figure out what the right persistence engines are One of the advantages is that the data are just files that can easily be passed around. There is no database code that must be running before you query the data. 
+
+This setup should be fast enough to get things going and for most people. It is also self contained and fairly simple. 
+
+We have tried other storage systems, so we know it can work, but none of that code is production worthy. As we all gain experience we can figure out what the right persistence engines are. One of the advantages is that the data are just files that can easily be passed around. There is no database code that must be running before you query the data. 
 
 

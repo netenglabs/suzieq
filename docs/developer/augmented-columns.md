@@ -59,9 +59,9 @@ Allowing the function to derive the augmented column reside in the schema itself
 
 The minimal amount of changes to code involves:
 
-* Defining the augmented column identification to be in the Schema/SchemaForTable classes
-* Adding the dependent fields to the augmented column as additional fields to be extracted in engineobj.py
-* Not including augmented columns in the get_arrow_schema() output
+* Defining the augmented column identification to be in the `Schema/SchemaForTable` classes
+* Adding the dependent fields to the augmented column as additional fields to be extracted in `engineobj.py`
+* Not including augmented columns in the `get_arrow_schema()` output
 * Adding code for each table that an augmented column is defined in to handle the specifics of constructing the augmented column.
 
-We must return augmented columns as a normal column from the schema in the get_fields.
+We must return augmented columns as a normal column from the schema in the `get_fields`.

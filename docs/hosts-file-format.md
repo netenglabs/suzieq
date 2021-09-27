@@ -5,8 +5,8 @@ The list of hosts for suzieq to pull information from is specified via the hosts
 ``` json
 - namespace: <name of the namespace this list of hosts correspinds to>
   hosts:
-	  - url: <url-of-host-1> [device=eos|nxos|linux|cumulus|jnpr]
-	  - url: <url-of-host-2> [device=eos|nxos|linux|cumulus|jnpr]
+	  - url: <url-of-host-1> [device=eos|nxos|linux|cumulus|jnpr|ios]
+	  - url: <url-of-host-2> [device=eos|nxos|linux|cumulus|jnpr|ios]
 	  ...
 ```
 
