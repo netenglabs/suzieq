@@ -127,8 +127,8 @@ class NetworkObj(SqPandasEngine):
 
         self.ns = pd.DataFrame({
             'namespacesCnt': [df.namespace.count()],
-            'servicePerNsStat': [(df.serviceCnt.min(), df.serviceCnt.max(),
-                                  df.serviceCnt.median())],
+            'servicePerNsStat': [[df.serviceCnt.min(), df.serviceCnt.max(),
+                                  df.serviceCnt.median()]],
             'nsWithMlagCnt': [df.loc[df.hasMlag].shape[0]],
             'nsWithBgpCnt': [df.loc[df.hasBgp].shape[0]],
             'nsWithOspfCnt': [df.loc[df.hasOspf].shape[0]],
