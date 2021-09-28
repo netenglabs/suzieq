@@ -43,7 +43,8 @@ class OspfObj(SqObject):
                 self.cfg.get('analyzer', {}).get('timezone', None))
 
             if 'adjState' in df.columns:
-                df['lastChangeTime'] = np.where(df.adjState == "passive", "-",
+                df['lastChangeTime'] = np.where(df.adjState == "passive",
+                                                pd.Timestamp(0),
                                                 df.lastChangeTime)
 
         return df
