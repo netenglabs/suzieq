@@ -8,6 +8,7 @@ import random
 from http import HTTPStatus
 import json
 import re
+from asyncssh import known_hosts
 
 import yaml
 from urllib.parse import urlparse
@@ -22,6 +23,7 @@ from concurrent.futures._base import TimeoutError
 from suzieq.poller.services.service import RsltToken
 from suzieq.poller.genhosts import convert_ansible_inventory
 from suzieq.utils import get_timestamp_from_junos_time, known_devtypes
+from suzieq.exceptions import UnknownDevtypeError
 
 logger = logging.getLogger(__name__)
 
@@ -212,19 +214,6 @@ async def init_hosts(**kwargs):
 
 
 class Node(object):
-    @property
-    def status(self):
-        return self._status
-
-    @property
-    def last_exception(self) -> Exception:
-        return self._last_exception
-
-    @last_exception.setter
-    def last_exception(self, val: Exception):
-        self._last_exception = val
-        self._last_exception_timestamp = int(time.time()*1000)
-
     async def _init(self, **kwargs):
         if not kwargs:
             raise ValueError
@@ -247,12 +236,14 @@ class Node(object):
         self._service_queue = None
         self._conn = None
         self._tunnel = None
+        self._session = None  # for REST transport
         self._status = "init"
         self.svcs_proc = set()
         self.error_svcs_proc = set()
         self.ssh_ready = asyncio.Event()
         self._last_exception = None
-        self._last_exception_timestamp = None
+        self._exception_timestamp = None
+        self._current_exception = None
         self.sigend = False
 
         self.address = kwargs["address"]
@@ -277,15 +268,15 @@ class Node(object):
                 self.jump_port = 22
             pvtkey_file = kwargs.pop('jump_host_key_file')
             if pvtkey_file:
-                self.jump_host_key_file = self._decrypt_pvtkey(pvtkey_file,
-                                                               passphrase)
-                if not self.jump_host_key_file:
+                self.jump_host_key = self._decrypt_pvtkey(pvtkey_file,
+                                                          passphrase)
+                if not self.jump_host_key:
                     self.logger.error("ERROR: terminating poller")
-                    self.jump_host_key_file = None
+                    self.jump_host_key = None
                     sys.exit(1)
         else:
             self.jump_host = None
-            self.jump_host_key_file = None
+            self.jump_host_key = None
 
         self.ignore_known_hosts = kwargs.get('ignore_known_hosts', False)
         pvtkey_file = kwargs.get("ssh_keyfile", None)
@@ -324,6 +315,25 @@ class Node(object):
             self.init_again_at = time.time() + self.backoff
         return self
 
+    @property
+    def status(self):
+        return self._status
+
+    @property
+    def last_exception(self) -> Exception:
+        return self._last_exception
+
+    @property
+    def current_exception(self) -> Exception:
+        return self._current_exception
+
+    @current_exception.setter
+    def current_exception(self, val: Exception):
+        self._last_exception = self._current_exception
+        self._current_exception = val
+        if val:
+            self._exception_timestamp = int(time.time()*1000)
+
     def _decrypt_pvtkey(self, pvtkey_file: str, passphrase: str) -> str:
         """Decrypt private key file"""
 
@@ -339,70 +349,187 @@ class Node(object):
 
         return keydata
 
-    async def init_node(self):
-        devtype = None
-        hostname = None
+    def _init_service_queue(self):
+        if not self._service_queue:
+            self._service_queue = asyncio.Queue()
 
-        if self.transport == "ssh" or self.transport == "local":
-            try:
-                await self.get_device_type_hostname()
-                devtype = self.devtype
-            except Exception as e:
-                self.last_exception = e
-                devtype = None
+    async def _close_connection(self):
+        if self._conn:
+            self._conn.close()
+            await self._conn.wait_closed()
+        if self._tunnel:
+            self._tunnel.close()
+            await self._tunnel.wait_closed()
+        if self._session:
+            await self._session.close()
 
-            if not devtype:
-                self.logger.debug(
-                    f"no devtype for {self.hostname} {self.last_exception}")
-                self._status = "init"
-                return
-            else:
-                self.set_devtype(devtype)
-                self._status = "good"
+        self._conn = None
+        self._tunnel = None
+        self._session = None
 
-                self.set_hostname(hostname)
+    async def _terminate(self):
+        self.logger.warning(
+            f'Node: {self.hostname} received signal to terminate')
+        await self._close_connection()
+        return
 
-            await self.init_boot_time()
+    async def _init_jump_host_connection(
+            self,
+            options: asyncssh.SSHClientConnectionOptions) -> None:
+        """Initialize jump host connection if necessary
 
-    def set_devtype(self, devtype):
-        """Change the class based on the device type"""
+        Args:
+            options (asyncssh.SSHClientConnectionOptions): non-jump host opt
+        """
 
-        self.devtype = devtype
-        if not devtype:
+        if self._tunnel:
             return
-        if devtype not in known_devtypes():
-            self.logger.error(f'An unknown devtype {devtype} is being added.'
-                              f' This will cause problems. '
-                              f'Node {self.address}:{self.port}')
-            raise ValueError
 
-        if self.devtype == "cumulus":
-            self.__class__ = CumulusNode
-        elif self.devtype == "eos":
-            self.__class__ = EosNode
-        elif self.devtype == "iosxr":
-            self.__class__ = IosXRNode
-        elif self.devtype == "iosxe":
-            self.__class__ = IosXENode
-        elif self.devtype == "ios":
-            self.__class__ = IOSNode
-        elif self.devtype.startswith("junos"):
-            self.__class__ = JunosNode
-        elif self.devtype == "nxos":
-            self.__class__ = NxosNode
-        elif self.devtype.startswith("sonic"):
-            self.__class__ == SonicNode
+        if self.jump_host_key:
+            jump_host_options = asyncssh.SSHClientConnectionOptions(
+                client_keys=self.jump_host_key,
+                login_timeout=self.connect_timeout,
+            )
 
-    async def get_device_type_hostname(self):
-        """Determine the type of device we are talking to if using ssh/local"""
-        # There isn't that much of a difference in running two commands versus
-        # running them one after the other as this involves an additional ssh
-        # setup time. show version works on most networking boxes and
-        # hostnamectl on Linux systems. That's all we support today.
-        await self.exec_cmd(self._parse_device_type_hostname,
-                            ["show version", "hostnamectl",
-                             "cat /etc/os-release", "show hostname"], None,
-                            'text')
+            if self.ignore_known_hosts:
+                jump_host_options = asyncssh.SSHClientConnectionOptions(
+                    options=jump_host_options,
+                    known_hosts=None
+                )
+            if self.ssh_config_file:
+                jump_host_options = asyncssh.SSHClientConnectionOptions(
+                    options=jump_host_options,
+                    config_file=[self.ssh_config_file]
+                )
+        else:
+            jump_host_options = options
+
+        try:
+            if self.jump_host:
+                self.logger.info(
+                    'Using jump host: {}, with username: {}, and port: {}'
+                    .format(self.jump_host, self.jump_user, self.jump_port)
+                )
+                self._tunnel = await asyncssh.connect(
+                    self.jump_host, port=self.jump_port,
+                    options=jump_host_options, username=self.jump_user)
+                self.logger.info(
+                    f'Connection to jump host {self.jump_host} succeeded')
+
+        except Exception as e:
+            if self.sigend:
+                await self._terminate()
+                return
+            self.logger.error(
+                f"ERROR: Cannot connect to jump host: {self.jump_host}, "
+                f" {str(e)}")
+            self.current_exception = e
+            self._conn = None
+            self._tunnel = None
+
+        return
+
+    def _init_ssh_options(self) -> asyncssh.SSHClientConnectionOptions:
+        """Build out the asycnssh options as specified by user config
+
+        This is a routine because its used in multiple places.
+        Returns:
+            asyncssh.SSHClientConnectionOptions: [description]
+        """
+        options = asyncssh.SSHClientConnectionOptions(
+            login_timeout=self.connect_timeout,
+            username=self.username,
+            agent_identities=self.pvtkey if self.pvtkey else None,
+            client_keys=self.pvtkey if self.pvtkey else None,
+            password=self.password if not self.pvtkey else None
+        )
+        if self.ignore_known_hosts:
+            options = asyncssh.SSHClientConnectionOptions(
+                options=options,
+                known_hosts=None,
+            )
+        if self.ssh_config_file:
+            options = asyncssh.SSHClientConnectionOptions(
+                options=options,
+                config=[self.ssh_config_file],
+            )
+
+        return options
+
+    async def _init_ssh(self, init_boot_time=True, rel_lock=True) -> None:
+        await self.ssh_ready.wait()
+        if not self._conn:
+            self.ssh_ready.clear()
+
+            options = self._init_ssh_options()
+            if self.jump_host and not self._tunnel:
+                await self._init_jump_host_connection(options)
+                if not self._tunnel:
+                    if rel_lock:
+                        self.ssh_ready.set()
+                    return
+
+            try:
+                if self._tunnel:
+                    self._conn = await self._tunnel.connect_ssh(
+                        self.address, port=self.port,
+                        username=self.username,
+                        options=options)
+                else:
+                    self._conn = await asyncssh.connect(
+                        self.address,
+                        username=self.username,
+                        port=self.port,
+                        options=options)
+
+                self.logger.info(
+                    f"Connected to {self.address}:{self.port} at {time.time()}")
+                if init_boot_time:
+                    await self.init_boot_time()
+                elif rel_lock:
+                    self.ssh_ready.set()
+            except Exception as e:
+                if self.sigend:
+                    await self._terminate()
+                    return
+                self.logger.error("ERROR: Unable to connect to "
+                                  f"{self.address}:{self.port}, {str(e)}")
+                self.current_exception = e
+                await self._close_connection()
+                if rel_lock:
+                    self.ssh_ready.set()
+        return
+
+    def _create_error(self, cmd) -> dict:
+        data = {'error': str(self.current_exception)}
+        if isinstance(self.current_exception, TimeoutError):
+            status = HTTPStatus.REQUEST_TIMEOUT
+        elif isinstance(self.current_exception, asyncssh.misc.ProtocolError):
+            status = HTTPStatus.FORBIDDEN
+        elif hasattr(self.current_exception, 'code'):
+            status = self.current_exception.code
+        else:
+            status = -1
+        return self._create_result(cmd, status, data)
+
+    def _create_result(self, cmd, status, data) -> dict:
+        if self.port == 22 or self.port == 443:
+            # Ignore port if defaults (SSH or HTTPS)
+            addrstr = self.address
+        else:
+            addrstr = f'{self.address}:{self.port}'
+        result = {
+            "status": status,
+            "timestamp": int(datetime.now(tz=timezone.utc).timestamp() * 1000),
+            "cmd": cmd,
+            "devtype": self.devtype,
+            "namespace": self.nsname,
+            "hostname": self.hostname,
+            "address": addrstr,
+            "version": self.version,
+            "data": data,
+        }
+        return result
 
     async def _parse_device_type_hostname(self, output, cb_token) -> None:
         devtype = ""
@@ -410,18 +537,18 @@ class Node(object):
 
         if output[0]["status"] == 0:
             data = output[0]["data"]
-            if "Arista " in data:
+            if 'Arista' in data or 'vEOS' in data:
                 devtype = "eos"
             elif "JUNOS " in data:
                 model = re.search(r'Model:\s+(\S+)', data)
                 if model:
-                    if 'mx' in model.group(1):
+                    if model.group(1).startswith(('mx', 'vmx')):
                         devtype = 'junos-mx'
                     elif 'qfx' in model.group(1):
                         devtype = 'junos-qfx'
                     elif 'ex' in model.group(1):
                         devtype = 'junos-ex'
-                    elif model.group(1) in ['srx', 'vSRX']:
+                    elif model.group(1).startswith(('srx', 'vSRX')):
                         devtype = 'junos-es'
                 if not devtype:
                     devtype = "junos"
@@ -435,8 +562,6 @@ class Node(object):
                 devtype = "iosxe"
             elif "Cisco IOS Software" in data:
                 devtype = "ios"
-            elif any(x in data for x in ['vEOS', 'Arista']):
-                devtype = "eos"
 
             if devtype.startswith("junos"):
                 hmatch = re.search(r'Hostname:\s+(\S+)\n', data)
@@ -480,17 +605,17 @@ class Node(object):
                         break
 
         if not devtype:
-            if not self.last_exception:
-                self.logger.warning(
+            if not self.current_exception:
+                self.logger.info(
                     f'Unable to determine devtype for {self.address}:{self.port}')
-                self.last_exception = 'No devtype'
+                self.current_exception = UnknownDevtypeError()
             self._status = 'init'
         else:
             self.logger.warning(
                 f'Detected {devtype} for {self.address}:{self.port}, {hostname}')
             self.set_devtype(devtype)
             self.set_hostname(hostname)
-            self.last_exception = ''
+            self.current_exception = None
 
     async def _parse_boottime_hostname(self, output, cb_token) -> None:
         """Parse the uptime command output"""
@@ -505,6 +630,70 @@ class Node(object):
         if output[1]["status"] == 0:
             self.hostname = output[1]["data"].strip()
 
+    async def init_node(self):
+        devtype = None
+        hostname = None
+
+        if self.transport == "ssh" or self.transport == "local":
+            try:
+                await self.get_device_type_hostname()
+                devtype = self.devtype
+            except Exception as e:
+                devtype = None
+
+            if not devtype:
+                self.logger.debug(
+                    f"no devtype for {self.hostname} {self.current_exception}")
+                self._status = "init"
+                return
+            else:
+                self.set_devtype(devtype)
+                self._status = "good"
+
+                self.set_hostname(hostname)
+
+            await self.init_boot_time()
+
+    async def get_device_type_hostname(self):
+        """Determine the type of device we are talking to if using ssh/local"""
+        # There isn't that much of a difference in running two commands versus
+        # running them one after the other as this involves an additional ssh
+        # setup time. show version works on most networking boxes and
+        # hostnamectl on Linux systems. That's all we support today.
+        await self.exec_cmd(self._parse_device_type_hostname,
+                            ["show version", "hostnamectl",
+                             "cat /etc/os-release", "show hostname"], None,
+                            'text')
+
+    def set_devtype(self, devtype):
+        """Change the class based on the device type"""
+
+        self.devtype = devtype
+        if not devtype:
+            return
+        if devtype not in known_devtypes():
+            self.logger.error(f'An unknown devtype {devtype} is being added.'
+                              f' This will cause problems. '
+                              f'Node {self.address}:{self.port}')
+            raise ValueError
+
+        if self.devtype == "cumulus":
+            self.__class__ = CumulusNode
+        elif self.devtype == "eos":
+            self.__class__ = EosNode
+        elif self.devtype == "iosxr":
+            self.__class__ = IosXRNode
+        elif self.devtype == "iosxe":
+            self.__class__ = IosXENode
+        elif self.devtype == "ios":
+            self.__class__ = IOSNode
+        elif self.devtype.startswith("junos"):
+            self.__class__ = JunosNode
+        elif self.devtype == "nxos":
+            self.__class__ = NxosNode
+        elif self.devtype.startswith("sonic"):
+            self.__class__ == SonicNode
+
     def set_unreach_status(self):
         self._status = "unreachable"
 
@@ -517,6 +706,45 @@ class Node(object):
     def set_hostname(self, hostname=None):
         if hostname:
             self.hostname = hostname
+
+    async def init_boot_time(self):
+        """Fill in the boot time of the node by running the appropriate command"""
+        await self.exec_cmd(self._parse_boottime_hostname,
+                            ["cat /proc/uptime", "hostname"], None, 'text')
+
+    def post_commands(self, service_callback, svc_defn: dict,
+                      cb_token: RsltToken):
+        if cb_token:
+            cb_token.nodeQsize = self._service_queue.qsize()
+        self._service_queue.put_nowait([service_callback, svc_defn, cb_token])
+
+    async def run(self):
+        tasks = []
+        while True:
+            if self.sigend:
+                await self._terminate()
+                return
+
+            while (len(tasks) < self.batch_size):
+                try:
+                    request = await self._service_queue.get()
+                except asyncio.CancelledError:
+                    await self._terminate()
+                    return
+
+                if request:
+                    tasks.append(self.exec_service(
+                        request[0], request[1], request[2]))
+                    self.logger.debug(
+                        f"Scheduling {request[2].service} for execution")
+                if self._service_queue.empty():
+                    break
+
+            if tasks:
+                done, pending = await asyncio.wait(
+                    tasks, return_when=asyncio.FIRST_COMPLETED)
+
+                tasks = list(pending)
 
     async def local_gather(self, service_callback, cmd_list, oformat,
                            cb_token) -> None:
@@ -540,52 +768,13 @@ class Node(object):
 
             except asyncio.TimeoutError as e:
                 if self.sigend:
-                    self._terminate()
-                    return
-
-                self.last_exception = e
-                result.append(self._create_error(cmd))
-
-        await service_callback(result, cb_token)
-
-    async def init_boot_time(self):
-        """Fill in the boot time of the node by running the appropriate command"""
-        await self.exec_cmd(self._parse_boottime_hostname,
-                            ["cat /proc/uptime", "hostname"], None, 'text')
-
-    def post_commands(self, service_callback, svc_defn: dict,
-                      cb_token: RsltToken):
-        if cb_token:
-            cb_token.nodeQsize = self._service_queue.qsize()
-        self._service_queue.put_nowait([service_callback, svc_defn, cb_token])
-
-    async def run(self):
-        tasks = []
-        while True:
-            if self.sigend:
-                self._terminate()
-                return
-
-            while (len(tasks) < self.batch_size):
-                try:
-                    request = await self._service_queue.get()
-                except asyncio.CancelledError:
                     await self._terminate()
                     return
 
-                if request:
-                    tasks.append(self.exec_service(
-                        request[0], request[1], request[2]))
-                    self.logger.debug(
-                        f"Scheduling {request[2].service} for execution")
-                if self._service_queue.empty():
-                    break
+                self.current_exception = e
+                result.append(self._create_error(cmd))
 
-            if tasks:
-                done, pending = await asyncio.wait(
-                    tasks, return_when=asyncio.FIRST_COMPLETED)
-
-                tasks = list(pending)
+        await service_callback(result, cb_token)
 
     async def ssh_gather(self, service_callback, cmd_list, cb_token, oformat,
                          timeout):
@@ -615,171 +804,31 @@ class Node(object):
             try:
                 output = await asyncio.wait_for(self._conn.run(cmd),
                                                 timeout=timeout)
+                if self.current_exception:
+                    self.logger.info(
+                        f'{self.hostname} recovered from previous exception')
+                    self.current_exception = None
                 result.append(self._create_result(
                     cmd, output.exit_status, output.stdout))
             except Exception as e:
-                self._conn = None
                 if self.sigend:
-                    self._terminate()
+                    await self._terminte()
                     return
-                self.last_exception = e
                 result.append(self._create_error(cmd))
+                self.current_exception = e
                 if not isinstance(e, asyncio.TimeoutError):
                     self.logger.error(
-                        f"Unable to connect to {self.hostname} for {cmd} "
+                        f"{cmd} output for {self.hostname} failed "
                         f"due to {str(e)}")
                     await self._close_connection()
                 else:
                     self.logger.error(
-                        f"Unable to connect to {self.hostname} {cmd} "
+                        f"{cmd} output for {self.hostname} failed "
                         "due to timeout")
 
                 break
 
         await service_callback(result, cb_token)
-
-    async def _close_connection(self):
-        if self._conn:
-            self._conn.close()
-            await self._conn.wait_closed()
-        if self._tunnel:
-            self._tunnel.close()
-            await self._tunnel.wait_closed()
-
-        self._conn = None
-        self._tunnel = None
-
-    async def _terminate(self):
-        self.logger.warning(
-            f'Node: {self.hostname} received signal to terminate')
-        await self._close_connection()
-        return
-
-    def _init_service_queue(self):
-        if not self._service_queue:
-            self._service_queue = asyncio.Queue()
-
-    async def _init_ssh(self, init_boot_time=True, rel_lock=True) -> None:
-        await self.ssh_ready.wait()
-        if not self._conn:
-            self.ssh_ready.clear()
-            if self.ignore_known_hosts:
-                options = asyncssh.SSHClientConnectionOptions(
-                    client_keys=self.pvtkey if self.pvtkey else None,
-                    login_timeout=self.connect_timeout,
-                    username=self.username,
-                    password=self.password if not self.pvtkey else None,
-                    known_hosts=None,
-                    config=self.ssh_config_file
-                )
-            else:
-                options = asyncssh.SSHClientConnectionOptions(
-                    client_keys=self.pvtkey if self.pvtkey else None,
-                    login_timeout=self.connect_timeout,
-                    username=self.username,
-                    password=self.password if not self.pvtkey else None,
-                    config=self.ssh_config_file,
-                )
-
-            if self.jump_host_key_file:
-                if self.ignore_known_hosts:
-                    jump_host_options = asyncssh.SSHClientConnectionOptions(
-                        client_keys=self.jump_host_key_file,
-                        login_timeout=self.connect_timeout,
-                        known_hosts=None,
-                        config=self.ssh_config_file,
-                    )
-                else:
-                    jump_host_options = asyncssh.SSHClientConnectionOptions(
-                        client_keys=self.jump_host_key_file,
-                        login_timeout=self.connect_timeout,
-                        config=self.ssh_config_file,
-                    )
-            else:
-                jump_host_options = options
-
-            try:
-                if self.jump_host:
-                    self.logger.info(
-                        'Using jump host: {}, with username: {}, and port: {}'
-                        .format(self.jump_host, self.jump_user, self.jump_port)
-                    )
-                    self._tunnel = await asyncssh.connect(
-                        self.jump_host, port=self.jump_port,
-                        options=jump_host_options, username=self.jump_user)
-                    self.logger.info(
-                        f'Connection to jump host {self.jump_host} succeeded')
-
-            except Exception as e:
-                if self.sigend:
-                    self._terminate()
-                    return
-                self.logger.error(
-                    f"ERROR: Cannot connect to jump host: {self.jump_host}, "
-                    f" {str(e)}")
-                self.last_exception = e
-                self._conn = None
-                self._tunnel = None
-                if rel_lock:
-                    self.ssh_ready.set()
-                return
-
-            try:
-                self._conn = await asyncssh.connect(
-                    self.address,
-                    username=self.username,
-                    port=self.port,
-                    options=options)
-
-                self.logger.info(
-                    f"Connected to {self.address}:{self.port} at {time.time()}")
-                if init_boot_time:
-                    await self.init_boot_time()
-                elif rel_lock:
-                    self.ssh_ready.set()
-            except Exception as e:
-                if self.sigend:
-                    self._terminate()
-                    return
-                self.logger.error("ERROR: Unable to connect to "
-                                  f"{self.address}:{self.port}, {str(e)}")
-                self.last_exception = e
-                self._conn = None
-                self._tunnel = None
-                if rel_lock:
-                    self.ssh_ready.set()
-        return
-
-    def _create_error(self, cmd) -> dict:
-        data = {'error': str(self.last_exception)}
-        if isinstance(self.last_exception, TimeoutError):
-            status = HTTPStatus.REQUEST_TIMEOUT
-        elif isinstance(self.last_exception, asyncssh.misc.ProtocolError):
-            status = HTTPStatus.FORBIDDEN
-        elif hasattr(self.last_exception, 'code'):
-            status = self.last_exception.code
-        else:
-            status = -1
-        return self._create_result(cmd, status, data)
-
-    def _create_result(self, cmd, status, data) -> dict:
-        if self.port == 22 or self.port == 443:
-            # Ignore port if defaults (SSH or HTTPS)
-            addrstr = self.address
-        else:
-            addrstr = f'{self.address}:{self.port}'
-        result = {
-            "status": status,
-            "timestamp": int(datetime.now(tz=timezone.utc).timestamp() * 1000),
-            "cmd": cmd,
-            "devtype": self.devtype,
-            "namespace": self.nsname,
-            "hostname": self.hostname,
-            "address": addrstr,
-            "version": self.version,
-            "data": data,
-        }
-        return result
 
     async def rest_gather(self, svc_dict, oformat="json"):
         raise NotImplementedError
@@ -874,12 +923,17 @@ class EosNode(Node):
 
     async def init_node(self):
         try:
+            auth = aiohttp.BasicAuth(self.username, password=self.password)
+            self._session = aiohttp.ClientSession(
+                auth=auth,
+                conn_timeout=self.connect_timeout,
+                connector=aiohttp.TCPConnector(ssl=False),
+            )
             await self.get_device_boottime_hostname()
         except Exception as e:
             if self.sigend:
-                self._terminate()
+                await self._terminate()
                 return
-            self.last_exception = e
 
     async def get_device_boottime_hostname(self):
         """Determine the type of device we are talking to"""
@@ -945,7 +999,6 @@ class EosNode(Node):
         timeout = timeout or self.cmd_timeout
 
         now = int(datetime.now(tz=timezone.utc).timestamp() * 1000)
-        auth = aiohttp.BasicAuth(self.username, password=self.password)
         data = {
             "jsonrpc": "2.0",
             "method": "runCmds",
@@ -961,19 +1014,23 @@ class EosNode(Node):
         output = []
         status = 200  # status OK
 
+        if not self._session:
+            await self.init_node()
+        if not self._session:
+            for cmd in cmd_list:
+                result.append(self._create_error(cmd))
+            await service_callback(result, cb_token)
+            return
+
         try:
-            async with aiohttp.ClientSession(
-                    auth=auth,
-                    conn_timeout=self.connect_timeout,
-                    read_timeout=timeout,
-                    connector=aiohttp.TCPConnector(ssl=False),
-            ) as session:
-                async with session.post(url, json=data, headers=headers) as response:
-                    status, json_out = response.status, await response.json()
-                    if "result" in json_out:
-                        output.extend(json_out["result"])
-                    else:
-                        output.extend(json_out["error"].get('data', []))
+            async with self._session.post(url, json=data,
+                                          timeout=timeout,
+                                          headers=headers) as response:
+                status, json_out = response.status, await response.json()
+                if "result" in json_out:
+                    output.extend(json_out["result"])
+                else:
+                    output.extend(json_out["error"].get('data', []))
 
             for i, cmd in enumerate(cmd_list):
                 result.append(
@@ -990,9 +1047,9 @@ class EosNode(Node):
                 )
         except Exception as e:
             if self.sigend:
-                self._terminate()
+                await self._terminate()
                 return
-            self.last_exception = e
+            self.current_exception = e
             for cmd in cmd_list:
                 result.append(self._create_error(cmd))
             self._status = "init"  # Recheck everything
@@ -1063,10 +1120,10 @@ class CumulusNode(Node):
                         )
         except Exception as e:
             if self.sigend:
-                self._terminate()
+                await self._terminate()
                 return
-            self.last_exception = e
-            result.append(self._create_error(cmd))
+            self.current_exception = e
+            result.append(self._create_error(cmd_list))
             self.logger.error("ERROR: (REST) Unable to communicate with node "
                               "{}:{} due to {}".format(
                                   self.address, self.port, str(e)))
@@ -1170,31 +1227,26 @@ class IosXENode(Node):
 
         result = []
 
+        options = self._init_ssh_options()
+        if self.jump_host and not self._tunnel:
+            await self._init_jump_host_connection(options)
+            if not self._tunnel:
+                result.append(self._create_error(cmd_list))
+                await service_callback(result, cb_token)
+
         if cmd_list is None:
             await service_callback({}, cb_token)
 
         timeout = timeout or self.cmd_timeout
-        if self.ignore_known_hosts:
-            options = asyncssh.SSHClientConnectionOptions(
-                client_keys=self.pvtkey if self.pvtkey else None,
-                login_timeout=self.connect_timeout,
-                username=self.username,
-                password=self.password if not self.pvtkey else None,
-                known_hosts=None,
-                config=self.ssh_config_file
-            )
-        else:
-            options = asyncssh.SSHClientConnectionOptions(
-                client_keys=self.pvtkey if self.pvtkey else None,
-                login_timeout=self.connect_timeout,
-                username=self.username,
-                password=self.password if not self.pvtkey else None,
-                config=self.ssh_config_file,
-            )
+
         for cmd in cmd_list:
             try:
-                async with asyncssh.connect(self.address, port=self.port,
-                                            options=options) as conn:
+                if self._tunnel:
+                    connect_with = self._tunnel.connect_ssh
+                else:
+                    connect_with = asyncssh.connect
+                async with connect_with(self.address, port=self.port,
+                                        options=options) as conn:
                     output = await asyncio.wait_for(conn.run(cmd),
                                                     timeout=timeout)
                     if isinstance(cb_token, RsltToken):
@@ -1204,9 +1256,9 @@ class IosXENode(Node):
                         cmd, output.exit_status, output.stdout))
             except Exception as e:
                 if self.sigend:
-                    self._terminate()
+                    await self._terminate()
                     return
-                self.last_exception = e
+                self.current_exception = e
                 result.append(self._create_error(cmd))
                 if not isinstance(e, asyncio.TimeoutError):
                     self.logger.error(

@@ -1,4 +1,5 @@
 import time
+import re
 from nubia import command, argument
 import pandas as pd
 
@@ -16,7 +17,7 @@ class DeviceCmd(SqCommand):
             hostname: str = "",
             start_time: str = "",
             end_time: str = "",
-            view: str = "latest",
+            view: str = "",
             namespace: str = "",
             format: str = "",
             query_str: str = " ",
@@ -57,10 +58,11 @@ class DeviceCmd(SqCommand):
     @argument("os", description="filter by NOS")
     @argument("vendor", description="filter by vendor")
     @argument("model", description="filter by model")
+    @argument("version", description="filter by version")
     @argument("status", description="filter by polling status",
               choices=["dead", "alive",  "neverpoll"])
     def show(self, os: str = '', model: str = '', status: str = '',
-             vendor: str = ''):
+             vendor: str = '', version: str = ''):
         """
         Show device info
         """
@@ -68,47 +70,16 @@ class DeviceCmd(SqCommand):
             return
 
         now = time.time()
-        df = self._get(os=os.split(), model=model.split(),
-                       vendor=vendor.split(), status=status.split())
 
-        if 'uptime' in df.columns:
-            df.drop(columns=['uptime'], inplace=True)
+        # Model has to be special cased because model names can have
+        # spaces in them such as "Nexus9000 C9300v Chassis"
+        if model:
+            model = re.split(r"\s+(?=[^']*(?:'))", model)
+        else:
+            model = []
+        df = self._get(os=os.split(), model=model, version=version,
+                       vendor=vendor.split(), status=status.split())
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
 
         return self._gen_output(df)
-
-    @command("top")
-    @argument("what", description="Field you want to see top for",
-              choices=["uptime"])
-    @argument("count", description="How many top entries")
-    @argument("reverse", description="True see Bottom n",
-              choices=["True", "False"])
-    def top(self, what: str = "flaps", count: int = 5, reverse: str = "False"):
-        """
-        Show top n entries based on specific field
-        """
-
-        # Device uptime is a field whose value is derived and calculated at
-        # this level. So call get and then perform top on the data obtained
-
-        now = time.time()
-        if (self.columns != ['default'] and self.columns != ['*']
-                and 'uptime' not in self.columns):
-            self.columns.append('bootupTimestamp')
-        df = self._get()
-        if 'bootupTimestamp' in self.columns:
-            self.columns.remove('bootupTimestamp')
-
-        if not df.empty:
-            if reverse == "True":
-                topdf = df.nsmallest(count, columns='uptime', keep="all") \
-                          .head(count)
-            else:
-                topdf = df.nlargest(count, columns='uptime', keep="all") \
-                          .head(count)
-        else:
-            topdf = df
-
-        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        self._gen_output(topdf, sort=False)

@@ -113,7 +113,7 @@ show_columns_commands = good_commands[:]
 @pytest.mark.fast
 @pytest.mark.parametrize("cmd", show_columns_commands)
 def test_columns_show_filter(setup_nubia, cmd):
-    s = _test_command(cmd, 'show', None, {'columns': 'hostname'})
+    s = _test_command(cmd, 'show', None, {'columns': 'namespace'})
     assert s == 0
 
 
@@ -358,5 +358,13 @@ def test_eos_sqcmds(testvar, create_context_config):
 @ pytest.mark.sqcmds
 @ pytest.mark.parametrize("testvar", load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
                                                                   '/tests/integration/sqcmds/mixed-samples')))
+def test_mixed_sqcmds(testvar, create_context_config):
+    _test_sqcmds(testvar, create_context_config)
+
+
+@ pytest.mark.smoke
+@ pytest.mark.sqcmds
+@ pytest.mark.parametrize("testvar", load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
+                                                                  '/tests/integration/sqcmds/vmx-samples')))
 def test_mixed_sqcmds(testvar, create_context_config):
     _test_sqcmds(testvar, create_context_config)

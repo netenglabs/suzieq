@@ -1,29 +1,56 @@
 from importlib.util import find_spec
 import os
 import base64
+from enum import Enum
 
 import streamlit as st
 import pandas as pd
+from streamlit.elements.select_slider import SelectSliderMixin
 from streamlit.server.server import Server
 from streamlit.report_thread import get_report_ctx
 
 
+class SuzieqMainPages(str, Enum):
+    STATUS = "Status"
+    XPLORE = "Xplore"
+    PATH = "Path"
+    SEARCH = "Search"
+
+
 @st.cache(ttl=90, allow_output_mutation=True, show_spinner=False,
           max_entries=20)
-def gui_get_df(sqobject, **kwargs):
+def gui_get_df(sqobject, verb: str = 'get', **kwargs) -> pd.DataFrame:
+    """Get the cached value of the table provided
+
+    The only verbs supported are get and find.
+
+    Args:
+        sqobject ([type]): The sqobject for which to get the data
+        verb (str, optional): . Defaults to 'get'.
+
+    Returns:
+        [pandas.DataFrame]: The dataframe
+
+    Raises:
+        ValueError: If the verb is not supported
+    """
     table = kwargs.pop('_table', '')
     view = kwargs.pop('view', 'latest')
     columns = kwargs.pop('columns', ['default'])
     stime = kwargs.pop('start_time', '')
     etime = kwargs.pop('end_time', '')
+
     if columns == ['all']:
         columns = ['*']
-    if table != "tables":
+    if verb == 'get':
         df = sqobject(view=view, start_time=stime, end_time=etime) \
             .get(columns=columns, **kwargs)
-    else:
+    elif verb == 'find':
         df = sqobject(view=view, start_time=stime, end_time=etime) \
-            .get(**kwargs)
+            .find(**kwargs)
+    else:
+        raise ValueError(f'Unsupported verb {verb}')
+
     if not df.empty:
         df = sqobject().humanize_fields(df)
         if table == 'address':
@@ -54,6 +81,24 @@ def get_base_url():
 def get_session_id():
     '''Return Streamlit's session ID'''
     return get_report_ctx().session_id
+
+
+def get_main_session_by_id(session_id):
+    """This returns the session state based on the ID provided
+
+    This is relying on Streamlit internals and is not a public API.
+
+    Args:
+        session_id ([type]): The session id string
+
+    Returns:
+        [type]: session state associated with session or None
+    """
+    session = Server.get_current()._session_info_by_id.get(session_id, None)
+    if session:
+        return session.session.session_state
+
+    return None
 
 
 def get_image_dir():
@@ -184,3 +229,77 @@ def get_color_styles(color: str) -> str:
         "{ border-color: %s !important }" % color
     other = ".decoration { background: %s !important }" % color
     return f"<style>{css_root}{css_color}{css_bg}{css_border}{other}</style>"
+
+
+def display_title(page: str):
+    '''Render the logo and the app name'''
+
+    state = st.session_state
+    pagelist = state.pagelist
+    search_text = state.search_text
+
+    LOGO_IMAGE = f'{get_image_dir()}/logo-small.jpg'
+    st.markdown(
+        """
+        <style>
+        .container {
+            display: flex;
+        }
+        .logo-text {
+            font-weight:700 !important;
+            font-size:24px !important;
+            color: purple !important;
+            padding-top: 40px !important;
+        }
+        .logo-img {
+            width: 20%;
+            height: auto;
+            float:right;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+    title_col, mid, page_col, srch_col = st.columns([2, 1, 2, 2])
+    with title_col:
+        st.markdown(
+            f"""
+            <div class="container">
+                <img class="logo-img" src="data:image/png;base64,{base64.b64encode(open(LOGO_IMAGE, "rb").read()).decode()}">
+                <h1 style='color:purple;'>Suzieq</h1>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    sel_pagelist = list(filter(lambda x: not x.startswith('_'), pagelist))
+
+    with srch_col:
+        st.text(' ')
+        search_str = st.text_input(
+            "Search", "", key='search', on_change=main_sync_state)
+    if search_text is not None and (search_str != search_text):
+        # We're assuming here that the page is titled Search
+        page = 'Search'
+
+    with page_col:
+        # The empty writes are for aligning the pages link with the logo
+        st.text(' ')
+        srch_holder = st.empty()
+        pageidx = sel_pagelist.index(page or 'Status')
+        page = srch_holder.selectbox('Page', sel_pagelist, index=pageidx,
+                                     key='sq_page', on_change=main_sync_state)
+
+    return page, search_str
+
+
+def main_sync_state():
+
+    wsstate = st.session_state
+    if wsstate.page != wsstate.sq_page:
+        wsstate.page = wsstate.sq_page
+        st.experimental_set_query_params(**dict())
+    if wsstate.search_text != wsstate.search:
+        wsstate.search_text = wsstate.search
+        wsstate.page = wsstate.sq_page = 'Search'

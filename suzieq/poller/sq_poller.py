@@ -146,9 +146,10 @@ async def start_and_monitor_coalescer(config_file: str, cfg: dict,
 
 async def start_poller(userargs, cfg):
 
-    logfile, loglevel, logsize = get_log_params(
+    logfile, loglevel, logsize, log_stdout = get_log_params(
         'poller', cfg, '/tmp/sq-poller.log')
-    logger = init_logger('suzieq.poller', logfile, loglevel, logsize, False)
+    logger = init_logger('suzieq.poller', logfile,
+                         loglevel, logsize, log_stdout)
 
     if userargs.devices_file and userargs.namespace:
         logger.error("Cannot specify both -D and -n options")

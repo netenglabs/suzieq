@@ -19,6 +19,7 @@ class SqContext(object):
         self.end_time = ''
         self.exec_time = ''
         self.engine = engine
+        self.view = ''
         self.sort_fields = []
 
 
@@ -27,7 +28,7 @@ class SqObject(object):
     def __init__(self, engine_name: str = 'pandas',
                  hostname: typing.List[str] = [],
                  start_time: str = '', end_time: str = '',
-                 view: str = 'latest', namespace: typing.List[str] = [],
+                 view: str = '', namespace: typing.List[str] = [],
                  columns: typing.List[str] = ['default'],
                  context=None, table: str = '', config_file=None) -> None:
 
@@ -64,9 +65,13 @@ class SqObject(object):
             self.end_time = end_time
 
         if not view and self.ctxt.view:
-            self.view = self.ctxt.view
+            view = self.ctxt.view
+
+        if self.start_time and self.end_time and not view:
+            self.view = 'all'
         else:
-            self.view = view
+            self.view = view or 'latest'
+
         self.columns = columns
 
         if engine_name and engine_name != '':
@@ -84,6 +89,7 @@ class SqObject(object):
         self._valid_get_args = None
         self._valid_assert_args = None
         self._valid_arg_vals = None
+        self._valid_find_args = None
 
     @property
     def all_schemas(self):
@@ -133,6 +139,26 @@ class SqObject(object):
     def validate_assert_input(self, **kwargs):
         self._check_input_for_valid_args(self._valid_assert_args, **kwargs)
 
+    def validate_columns(self, columns: typing.List[str]) -> bool:
+        """Validate that the provided columns are valid for the table
+
+        Args:
+            columns (List[str]): list of columns
+
+        Returns:
+            bool: True if columns are valid
+        Raises:
+            ValueError: if columns are invalid
+        """
+
+        if columns == ['default'] or columns == ['*']:
+            return True
+
+        table_schema = SchemaForTable(self._table, self.all_schemas)
+        invalid_columns = [x for x in columns if x not in table_schema.fields]
+        if invalid_columns:
+            raise ValueError(f"Invalid columns specified: {invalid_columns}")
+
     def get(self, **kwargs) -> pd.DataFrame:
 
         if not self._table:
@@ -150,6 +176,12 @@ class SqObject(object):
         except Exception as error:
             df = pd.DataFrame({'error': [f'{error}']})
             return df
+
+        if 'columns' not in kwargs:
+            kwargs['columns'] = self.columns or ['default']
+
+        # This raises ValueError if it fails
+        self.validate_columns(kwargs.get('columns', []))
 
         for k in self._convert_args:
             v = kwargs.get(k, None)
@@ -189,6 +221,16 @@ class SqObject(object):
             raise AttributeError('No analysis engine specified')
 
         columns = kwargs.pop('columns', self.columns)
+        column = columns[0]
+
+        if columns is None or columns == ['default']:
+            raise ValueError('Must specify columns with unique')
+
+        if len(columns) > 1:
+            raise ValueError('Specify a single column with unique')
+
+        # This raises ValueError if it fails
+        self.validate_columns(columns)
         return self.engine.unique(**kwargs, columns=columns)
 
     def analyze(self, **kwargs):
@@ -197,16 +239,16 @@ class SqObject(object):
     def aver(self, **kwargs):
         raise NotImplementedError
 
-    def top(self, what='', n=5, reverse=False,
+    def top(self, what: str = '', count: int = 5, reverse: bool = False,
             **kwargs) -> pd.DataFrame:
         """Get the list of top/bottom entries of "what" field"""
 
-        if "columns" in kwargs:
-            columns = kwargs["columns"]
-            del kwargs["columns"]
-        else:
-            columns = ["default"]
+        columns = kwargs.get('columns', ['default'])
+        # This raises ValueError if it fails
+        self.validate_columns(columns)
 
+        if not what:
+            raise ValueError('Must specify what field to get top for')
         # if self._valid_get_args:
         #     self._valid_get_args += ['what', 'n', 'reverse']
         # This raises exceptions if it fails
@@ -216,13 +258,60 @@ class SqObject(object):
             df = pd.DataFrame({'error': [f'{error}']})
             return df
 
+        # This raises ValueError if it fails
         table_schema = SchemaForTable(self._table, self.all_schemas)
+        if not self._field_exists(table_schema, what):
+            raise ValueError(
+                f"Field {what} does not exist in table {self.table}")
+
         columns = table_schema.get_display_fields(columns)
+
+        ftype = table_schema.field(what).get('type', 'str')
+        if ftype not in ['long', 'double', 'float', 'int', 'timestamp',
+                         'timedelta64[s]']:
+            return pd.DataFrame({'error': [f'{what} not numeric; top can be used with numeric fields only']})
 
         if what not in columns:
             self._addnl_fields.append(what)
 
-        return self.engine.top(what=what, n=n, reverse=reverse, **kwargs)
+        return self.engine.top(what=what, count=count, reverse=reverse, **kwargs)
+
+    def describe(self, **kwargs):
+        """Describes the fields for a given table"""
+
+        table = kwargs.get('table', self.table)
+
+        try:
+            sch = SchemaForTable(table, self.all_schemas)
+        except ValueError:
+            sch = None
+        if not sch:
+            df = pd.DataFrame(
+                {'error': [f'ERROR: incorrect table name {table}']})
+            return df
+
+        entries = [{'name': x['name'], 'type': x['type'],
+                    'key': x.get('key', ''),
+                    'display': x.get('display', ''),
+                    'description': x.get('description', '')}
+                   for x in sch.get_raw_schema()]
+        df = pd.DataFrame.from_dict(entries).sort_values('name')
+
+        return df
+
+    def get_table_info(self, table: str, **kwargs) -> pd.DataFrame:
+        """Get some basic stats about the table from the database
+
+        Args:
+            table (str): The table to get stats for
+
+        Returns:
+            pd.DataFrame: A dataframe with the stats
+        """
+        # This raises ValueError if it fails
+        self.validate_columns(kwargs.get('columns', ['default']))
+
+        return self.engine.get_table_info(table, **kwargs)
 
     def humanize_fields(self, df: pd.DataFrame, subset=None) -> pd.DataFrame:
         '''Humanize the fields for human consumption.
@@ -231,3 +320,15 @@ class SqObject(object):
         routine is just a placeholder for all those with nothing to modify.
         '''
         return df
+
+    def _field_exists(self, table_schema: SchemaForTable, field: str) -> bool:
+        """Check if a field exists in the schema
+
+        Args:
+            table_schema (SchemaForTable): The schema for the table
+            field (str): the field name we're checking for
+
+        Returns:
+            bool: True if the field exists, False otherwise
+        """
+        return table_schema.field(field)

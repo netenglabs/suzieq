@@ -16,7 +16,7 @@ class BgpCmd(SqCommand):
         hostname: str = "",
         start_time: str = "",
         end_time: str = "",
-        view: str = "latest",
+        view: str = "",
         namespace: str = "",
         format: str = "",
         columns: str = "default",
@@ -54,7 +54,7 @@ class BgpCmd(SqCommand):
     @argument("vrf", description="vrf name to qualify")
     @argument("peer", description="IP address, in quotes, or the interface name, of peer to qualify output")
     @argument("state", description="status of the session to match",
-              choices=["Established", "NotEstd"])
+              choices=["Established", "NotEstd", "dynamic"])
     def show(self, state: str = "", vrf: str = '', peer: str = ''):
         """
         Show bgp info
@@ -115,44 +115,3 @@ class BgpCmd(SqCommand):
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
 
         return self._assert_gen_output(df)
-
-    @command("top")
-    @argument(
-        "what", description="Field you want to see top for",
-        choices=["flaps", "updatesRx", "updatesTx", "uptime"]
-    )
-    @argument("count", description="How many top entries")
-    @argument("reverse", description="True see Bottom n",
-              choices=["True", "False"])
-    def top(self, what: str = "flaps", count: int = 5, reverse: str = "False"):
-        """
-        Show top n entries based on specific field
-        """
-        if self.columns is None:
-            return
-
-        now = time.time()
-
-        what_map = {
-            "flaps": "numChanges",
-            "updatesTx": "updatesTx",
-            "updatesRx": "updatesRx",
-            "uptime": "estdTime",
-        }
-
-        df = self._invoke_sqobj(self.sqobj.top,
-                                hostname=self.hostname,
-                                what=what_map[what],
-                                n=count,
-                                reverse=reverse == "True" or False,
-                                columns=self.columns,
-                                query_str=self.query_str,
-                                namespace=self.namespace,
-                                )
-        if not df.empty and ('estdTime' in df.columns):
-            df['estdTime'] = humanize_timestamp(df.estdTime,
-                                                self.cfg.get('analyzer', {})
-                                                .get('timezone', None))
-
-        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        return self._gen_output(df, sort=False)

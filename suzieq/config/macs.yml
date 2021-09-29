@@ -50,8 +50,13 @@ apply:
 
   junos-mx:
     version: all
-    command: show vpls mac-table | no-more
-    textfsm: textfsm_templates/junos_vpls_mac.tfsm
+    command: show bridge mac-table | display json | no-more
+    normalize: 'l2ald-rtb-macdb/[0]/l2ald-mac-entry/*/[
+    "l2-mac-routing-instance/[0]/data: bd?|",
+    "l2-bridge-vlan/[0]/data: vlan",
+    "l2-mac-entry/[*]/l2-mac-address/[0]/data: macaddr",
+    "l2-mac-entry/[*]/l2-mac-logical-interface/[0]/data: oif",
+    ]'
 
   junos-es:
     copy: junos-qfx

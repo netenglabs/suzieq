@@ -82,5 +82,5 @@ tests:
 - command: device unique --columns=badcolumn --format=json
   data-directory: tests/data/eos/parquet-out/
   error:
-    error: '[{"error": "ERROR: ''badcolumn''"}]'
+    error: '[{"error": "ERROR: Invalid columns specified: [''badcolumn'']"}]'
   marks: device unique eos

@@ -94,24 +94,24 @@ def get_cert_files(cfg):
 
 def get_log_config_level(cfg):
 
-    logfile, loglevel, logsize = get_log_params(
-        'sq-rest-server', cfg, '/tmp/sq-rest-server.log')
+    logfile, loglevel, logsize, log_stdout = get_log_params(
+        'rest', cfg, '/tmp/sq-rest-server.log')
 
     log_config = uvicorn.config.LOGGING_CONFIG
-    log_config['handlers']['access']['class'] = 'logging.handlers.RotatingFileHandler'
-    log_config['handlers']['access']['maxBytes'] = logsize
-    log_config['handlers']['access']['backupCount'] = 2
-    log_config['handlers']['default']['class'] = 'logging.handlers.RotatingFileHandler'
-    log_config['handlers']['default']['maxBytes'] = logsize
-    log_config['handlers']['default']['backupCount'] = 2
+    if logfile and not log_stdout:
+        log_config['handlers']['access']['filename'] = logfile
+        log_config['handlers']['access']['class'] = 'logging.handlers.RotatingFileHandler'
+        log_config['handlers']['access']['maxBytes'] = logsize
+        log_config['handlers']['access']['backupCount'] = 2
 
-    log_config['handlers']['access']['filename'] = logfile
-    if 'stream' in log_config['handlers']['access']:
-        del log_config['handlers']['access']['stream']
+        log_config['handlers']['default']['class'] = 'logging.handlers.RotatingFileHandler'
+        log_config['handlers']['default']['maxBytes'] = logsize
+        log_config['handlers']['default']['backupCount'] = 2
+        log_config['handlers']['default']['filename'] = logfile
 
-    log_config['handlers']['default']['filename'] = logfile
-    if 'stream' in log_config['handlers']['default']:
-        del log_config['handlers']['default']['stream']
+        if 'stream' in log_config['handlers']['default']:
+            del log_config['handlers']['default']['stream']
+            del log_config['handlers']['access']['stream']
 
     return log_config, loglevel
 
@@ -159,13 +159,10 @@ def rest_main(*args) -> None:
 
     if no_https:
         uvicorn.run(app, host=srvr_addr, port=srvr_port,
-                    log_level=loglevel.lower(),
-                    log_config=logcfg)
+                    )
     else:
         ssl_keyfile, ssl_certfile = get_cert_files(cfg)
         uvicorn.run(app, host=srvr_addr, port=srvr_port,
-                    log_level=loglevel.lower(),
-                    log_config=logcfg,
                     ssl_keyfile=ssl_keyfile,
                     ssl_certfile=ssl_certfile)
 
@@ -182,6 +179,7 @@ class CommonVerbs(str, Enum):
     show = "show"
     summarize = "summarize"
     unique = "unique"
+    top = "top"
 
 
 class MoreVerbs(str, Enum):
@@ -196,6 +194,7 @@ class RouteVerbs(str, Enum):
     summarize = "summarize"
     unique = "unique"
     lpm = "lpm"
+    top = "top"
 
 
 class PathVerbs(str, Enum):
@@ -203,9 +202,18 @@ class PathVerbs(str, Enum):
     summarize = "summarize"
 
 
+class NetworkVerbs(str, Enum):
+    show = "show"
+    summarize = "summarize"
+    unique = "unique"
+    top = "top"
+
+
 class TableVerbs(str, Enum):
     show = "show"
     summarize = "summarize"
+    unique = "unique"
+    top = "top"
     describe = "describe"
 
 
@@ -243,6 +251,11 @@ class AssertStatusValues(str, Enum):
     PASS = "pass"
     FAIL = "fail"
     ALL = "all"
+
+
+class InventoryStatusValues(str, Enum):
+    PRESENT = "present"
+    ABSENT = "absent"
 
 
 # The logic in the code below is that you have a common function to
@@ -320,6 +333,7 @@ async def query_device(verb: CommonVerbs, request: Request,
                        os: List[str] = Query(None),
                        vendor: List[str] = Query(None),
                        model: List[str] = Query(None),
+                       version: str = "",
                        status: List[DeviceStatus] = Query(None),
                        ):
     function_name = inspect.currentframe().f_code.co_name
@@ -389,12 +403,33 @@ async def query_interface(verb: MoreVerbs, request: Request,
                           ifname: List[str] = Query(None),
                           state: IfStateValues = Query(None),
                           type: List[str] = Query(None),
-                          what: str = None,
+                          what: str = None, vrf: List[str] = Query(None),
+                          master: List[str] = Query(None),
                           mtu: List[str] = Query(None),
                           ifindex: List[str] = Query(None),
                           matchval: int = Query(None, alias="value"),
                           status: AssertStatusValues = Query(None),
                           query_str: str = None,
+                          ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, request, locals())
+
+
+@app.get("/api/v2/inventory/{verb}")
+async def query_inventory(verb: CommonVerbs, request: Request,
+                          token: str = Depends(get_api_key),
+                          format: str = None,
+                          hostname: List[str] = Query(None),
+                          start_time: str = "", end_time: str = "",
+                          view: ViewValues = "latest",
+                          namespace: List[str] = Query(None),
+                          columns: List[str] = Query(default=["default"]),
+                          query_str: str = None,
+                          type: List[str] = Query(None),
+                          serial: List[str] = Query(None),
+                          model: List[str] = Query(None),
+                          vendor: List[str] = Query(None),
+                          status: InventoryStatusValues = Query(None),
                           ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
@@ -448,6 +483,39 @@ async def query_mlag(verb: CommonVerbs, request: Request,
                      columns: List[str] = Query(default=["default"]),
                      query_str: str = None,
                      ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, request, locals())
+
+
+@app.get("/api/v2/network/find")
+async def query_network_find(request: Request,
+                             token: str = Depends(get_api_key),
+                             format: str = None,
+                             columns: List[str] = Query(default=["default"]),
+                             namespace: List[str] = Query(None),
+                             start_time: str = "", end_time: str = "",
+                             address: str = "", vlan: str = '', vrf: str = '',
+                             resolve_bond: bool = False,
+                             query_str: str = None,
+                             ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, "find", request, locals())
+
+
+@app.get("/api/v2/network/{verb}")
+async def query_network(verb: NetworkVerbs, request: Request,
+                        token: str = Depends(get_api_key),
+                        format: str = None,
+                        columns: List[str] = Query(default=["default"]),
+                        namespace: List[str] = Query(None),
+                        hostname: List[str] = Query(None),
+                        start_time: str = "", end_time: str = "",
+                        version: str = "",
+                        model: List[str] = Query(None),
+                        vendor: List[str] = Query(None),
+                        os: List[str] = Query(None),
+                        query_str: str = None,
+                        ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
 
@@ -723,13 +791,14 @@ def return_error(code: int, msg: str):
     raise HTTPException(status_code=code, detail=msg)
 
 
-@ app.get("/api/v1/{command}", include_in_schema=False)
+@ app.get("/api/v2/{command}", include_in_schema=False)
 def missing_verb(command):
     return_error(
         404, f'{command} command missing a verb. for example '
-        f'/api/v1/{command}/show')
+        f'/api/v2/{command}/show')
 
 
 @ app.get("/", include_in_schema=False)
 def bad_path():
-    return_error(404, "bad path. Try something like '/api/v1/device/show'")
+    return_error(
+        404, "bad path. Try something like '/api/v2/device/show' or '/api/docs'")

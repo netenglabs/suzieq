@@ -13,6 +13,14 @@ import numpy as np
 class RoutesService(Service):
     """routes service. Different class because vrf default needs to be added"""
 
+    def clean_json_input(self, data):
+        """Junos JSON data for some older ver needs some work"""
+
+        devtype = data.get("devtype", None)
+        if devtype.startswith('junos'):
+            data['data'] = data['data'].replace('}, \n    }\n', '} \n    }\n')
+            return data['data']
+
     def _fix_ipvers(self, entry):
         if ':' in entry['prefix']:
             entry['ipvers'] = 6
@@ -270,13 +278,18 @@ class RoutesService(Service):
         # Some more IOSXE fixes including:
         #  * lowercasing IPv6 addresses
         #  * adding / to host prefixes
+        #  * adding IPv4 netmask if not included in the prefix
         for entry in processed_data:
             if ':' in entry['prefix']:
                 entry['prefix'] = entry['prefix'].lower()
                 if '/' not in entry['prefix']:
                     entry['prefix'] += '/128'
             elif '/' not in entry['prefix']:
-                entry['prefix'] += '/32'
+                if 'netmask' in entry:
+                    entry['prefix'] += '/' + entry['netmask']
+                    del entry['netmask']
+                else:
+                    entry['prefix'] += '/32'
             newnexthops = []
             for ele in entry['nexthopIps']:
                 if ':' in ele:

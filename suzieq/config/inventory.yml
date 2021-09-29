@@ -1,0 +1,69 @@
+service: inventory
+keys:
+  - name
+  - model
+  - partNum
+  - serialNum
+show-fields:
+  - ifname
+  - partNumber
+  - serialNumber
+  - description
+
+apply:
+  eos:
+    version: all
+    command: show inventory
+    normalize: '[
+    "xcvrSlots: _xcvrSlots",
+    "powerSupplySlots: _powerSupplySlots",
+    "fanTraySlots: _fanTraySlots",
+    "cardSlots: _cardSlots",
+    "systemInformation: _systemInfo"
+    ]'
+
+  junos-qfx:
+    version: all
+    command: show chassis hardware | display json| no-more 
+    normalize: 'chassis-inventory/[0]/chassis/[0]/chassis-module/*/[
+    "name/[0]/data: name?|",
+    "version/[0]/data: version?|",
+    "part-number/[0]/data: partNum?|",
+    "serial-number/[0]/data: serial?|",
+    "model-number/[0]/data: model?|",
+    "chassis-sub-module: _chassisSubMod"
+    ]'
+
+  junos-mx:
+    copy: junos-qfx
+
+  junos-ex:
+    copy: junos-qfx
+
+  junos-es:
+    copy: junos-qfx
+
+  nxos:
+   version: all
+   command: 
+    - command: show inventory | json native
+      normalize: 'TABLE_inv/ROW_inv/*/[
+      "name: name?|",
+      "desc: model?|",
+      "serialnum: serial?|",
+      "vendorid: version?|",
+      "productid: productId?|",
+      "type: type?|",
+      ]'
+
+    - command: show interface transceiver | json native
+      normalize: 'TABLE_interface/ROW_interface/*/[
+      "interface: name?|",
+      "sfp: _sfp?|",
+      "name: model?|",
+      "type: type?|",
+      "rev: version?|",
+      "partnum: partNum?|",
+      "serialnum: serial?|",
+      "cisco_product_id: productId?|",
+      ]'

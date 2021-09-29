@@ -240,18 +240,19 @@ class InterfaceService(Service):
             if not entry.get('macaddr', ''):
                 entry['macaddr'] = '00:00:00:00:00:00'
 
-            if entry['type'] == 'vrf':
+            if entry['type'] in ['vrf', 'virtual-router']:
                 self._assign_vrf(entry, entry_dict)
                 entry['state'] = entry['adminState'] = 'up'
                 entry['mtu'] = 1500
                 if ifname == 'default':
                     drop_indices.append(i)
+                entry['type'] = 'vrf'  # VMX uses virtual-router for VRF
                 continue
 
             if entry['type']:
                 entry['type'] = entry['type'].lower()
 
-            if entry['description'] == 'None':
+            if entry.get('description', '') == 'None':
                 entry['description'] = ''
 
             if ifname.startswith(('gre', 'ipip', 'lc-', 'lsi', 'pc-', 'bme',
@@ -279,6 +280,9 @@ class InterfaceService(Service):
             if entry['type'] == 'vxlan-tunnel-endpoint':
                 entry['type'] = 'vtep'
 
+            if entry.get('_minLinksBond', None) is not None:
+                entry['type'] = 'bond'
+
             if not entry_dict[ifname]:
                 entry_dict[ifname] = entry
 
@@ -305,59 +309,75 @@ class InterfaceService(Service):
             else:
                 entry['master'] = ''
 
+            if entry.get('type', '') == 'ethernet-bridge':
+                # This is an MX device
+                entry['type'] = 'ethernet'
+                entry['master'] = 'bridge'
+
+                # extract VLAN
+                vlan_tag = entry.get('_vlanTag', [])
+                if vlan_tag:
+                    words = vlan_tag[0].split('0x8100.')
+                    vlan = words[1].split(')')[0]
+                else:
+                    vlan = 0
+
+                entry['vlan'] = int(vlan)
+
             # Process the logical interfaces which are too deep to be parsed
             # efficiently by the parser right now
-            if ((entry.get('logicalIfname', []) == []) or
-                    (entry.get('afi', [None]) == [None])):
-                continue
-
-            # Uninteresting logical interface
-            gwmacs = entry.get('_gwMacaddr', [])
-            pifname = ifname
-            for i, ifname in enumerate(entry.get('logicalIfname', [])):
-                if entry['afi'] is None:
+            for lentry in entry.get('_logIf', []) or []:
+                lifname = lentry.get('name', [{}])[0].get('data', '')
+                if not lifname:
                     continue
 
-                if pifname == 'irb' and '.' in ifname:
-                    _, vlan = ifname.split('.')
-                    iftype = 'vlan'
+                if '.' in lifname:
+                    _, vlan = lifname.split('.')
+                    if ifname == "irb":
+                        iftype = 'vlan'
+                    else:
+                        iftype = 'subif'
                     vlan = int(vlan)
                 else:
                     vlan = 0
                     iftype = entry['type']
 
+                afis = lentry.get('address-family', []) or []
+                no_inet = True
                 v4addresses = []
                 v6addresses = []
-                macaddr = None
-                if len(gwmacs) > i:
-                    macaddr = gwmacs[i]
+                macaddr = lentry.get('logical-interface-vgw-v4-mac', [{}])[0] \
+                    .get('data', '')
                 if not macaddr:
-                    macaddr = entry.get('macaddr', '')
+                    macaddr = lentry.get('logical-interface-mac', [{}])[0] \
+                        .get('data', '')
+                if not macaddr:
+                    macaddr = entry.get('macaddr', '00:00:00:00:00:00')
+                afi_mtu = lentry.get('mtu', [{}][0].get('data', entry['mtu']))
 
-                if (i+1 > len(entry['afi'])) or (entry['afi'][i] is None):
-                    continue
-                thisafi = entry['afi'][i]
-                for x in thisafi:
-                    if isinstance(x, list):
-                        addrlist = x[0].get('interface-address', None)
-                    else:
-                        addrlist = thisafi.get('interface-address', None)
-                    if addrlist and addrlist is not None:
-                        break
-                    v_afi = thisafi.get('address-family-name', None)
-                    if v_afi and (v_afi[0].get('data', None) == "eth-switch"):
+                for elem in afis:
+                    afi = elem.get('address-family-name', [{}])[0] \
+                        .get('data', '')
+                    if afi == 'inet':
+                        no_inet = False
+                        addrlist = elem.get('interface-address', [])
+                    if afi == "aenet":
+                        master = elem.get("ae-bundle-name", [{}])[0] \
+                            .get("data", "")
+                        entry['master'] = master.split('.')[0]
+                        entry['type'] = 'bond-slave'
+                    if afi in ["eth-switch", "bridge"]:
                         addrlist = []
-                        break
-                else:
+                        entry['master'] = 'bridge'
+                        continue
+
+                if no_inet:
                     continue
 
-                if entry_dict[ifname]:
-                    vrf = entry_dict[ifname]['vrf']
-                else:
-                    vrf = ''
-                new_entry = {'ifname': ifname,
-                             'mtu': thisafi.get(
-                                 'mtu', [{'data': -1}])[0]['data'],
+                vrf = entry_dict.get(ifname, {}).get('vrf', '')
+
+                new_entry = {'ifname': lifname,
+                             'mtu': afi_mtu,
                              'type': iftype,
                              'speed': entry['speed'],
                              'vlan': vlan,
@@ -373,8 +393,9 @@ class InterfaceService(Service):
                 new_entries.append(new_entry)
                 entry_dict[new_entry['ifname']] = new_entry
 
-                if (entry.get('logicalIfflags', ['']*(i+1))[i].get('iff-up') or
-                        entry.get('type') == 'loopback'):
+                flags = lentry.get('if-config-flags',
+                                   [{}])[0].get('iff-up', None)
+                if flags is not None or (entry.get('type') == 'loopback'):
                     new_entry['state'] = 'up'
                 else:
                     new_entry['state'] = 'down'
@@ -384,7 +405,7 @@ class InterfaceService(Service):
                 else:
                     new_entry['mtu'] = int(new_entry['mtu'])
 
-                for x in addrlist:
+                for x in addrlist or []:
                     address = (x.get("ifa-local")[0]["data"] + '/' +
                                x.get("ifa-destination", [{"data": "0/32"}])[0]
                                ["data"].split("/")[1])
@@ -392,18 +413,17 @@ class InterfaceService(Service):
                         v6addresses.append(address)
                     else:
                         v4addresses.append(address)
-                if entry.get('vlanName', ''):
-                    vlanName = entry['vlanName'][i]
-                else:
-                    vlanName = None
-                if vlanName is not None:
+                vlanName = lentry.get('irb-domain', [{}])[0] \
+                    .get('irb-bridge', [{}])[0] \
+                    .get('data', '')
+                if not vlanName:
                     new_entry['vlanName'] = vlanName
                 else:
                     new_entry['vlanName'] = '-'
                 new_entry['ip6AddressList'] = v6addresses
                 new_entry['ipAddressList'] = v4addresses
 
-            entry.pop('vlanName')
+            entry.pop('_logIf')
 
         if drop_indices:
             processed_data = np.delete(processed_data, drop_indices).tolist()

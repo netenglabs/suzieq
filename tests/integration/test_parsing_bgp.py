@@ -84,7 +84,8 @@ def test_bgp_parsing(table, datadir, get_table_data):
         'junos': 8,
         'nxos': 10,
         'ospf-ibgp': 10,
-        'mixed': 0
+        'mixed': 0,
+        'vmx': 3,
     }
 
     if datadir.endswith('mixed/parquet-out'):

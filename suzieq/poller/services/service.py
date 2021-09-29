@@ -468,7 +468,7 @@ class Service(object):
             read_from = raw_data[0]
         else:
             read_from = raw_data
-        for entry in processed_data:
+        for entry in processed_data or []:
             entry.update({"hostname": read_from["hostname"]})
             entry.update({"namespace": read_from["namespace"]})
             entry.update({"timestamp": read_from["timestamp"]})

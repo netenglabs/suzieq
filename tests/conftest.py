@@ -6,7 +6,7 @@ import yaml
 from unittest.mock import Mock
 from suzieq.poller.services import init_services
 from suzieq.utils import load_sq_config, Schema
-from suzieq.sqobjects import get_sqobject
+from suzieq.sqobjects import get_sqobject, get_tables
 from suzieq.cli.sq_nubia_context import NubiaSuzieqContext
 import asyncio
 import sys
@@ -22,23 +22,22 @@ DATADIR = ['tests/data/multidc/parquet-out/',
            'tests/data/eos/parquet-out',
            'tests/data/nxos/parquet-out',
            'tests/data/junos/parquet-out',
-           'tests/data/mixed/parquet-out']
+           'tests/data/mixed/parquet-out',
+           'tests/data/vmx/parquet-out']
 
 commands = [('AddressCmd'), ('ArpndCmd'), ('BgpCmd'), ('DeviceCmd'),
-            ('DevconfigCmd'), ('EvpnVniCmd'), ('InterfaceCmd'), ('LldpCmd'),
-            ('MacCmd'), ('MlagCmd'), ('OspfCmd'), ('RouteCmd'),
-            ('TopologyCmd'), ('VlanCmd')]
+            ('DevconfigCmd'), ('EvpnVniCmd'), ('InterfaceCmd'),
+            ('InventoryCmd'), ('LldpCmd'),
+            ('MacCmd'), ('MlagCmd'), ('NetworkCmd'), ('OspfCmd'),
+            ('SqPollerCmd'), ('RouteCmd'), ('TopologyCmd'), ('VlanCmd')]
 
 cli_commands = [('arpnd'), ('address'), ('bgp'), ('device'), ('devconfig'),
-                ('evpnVni'), ('fs'), ('interface'), ('lldp'), ('mac'),
-                ('mlag'), ('ospf'), ('path'), ('route'), ('sqpoller'),
-                ('topology'), ('vlan')]
+                ('evpnVni'), ('fs'), ('interface'), ('inventory'), ('lldp'),
+                ('mac'), ('mlag'), ('network'), ('ospf'), ('path'), ('route'),
+                ('sqPoller'), ('topology'), ('vlan')]
 
 
-tables = [('arpnd'), ('bgp'), ('evpnVni'), ('device'), ('devconfig'), ('fs'),
-          ('ifCounters'), ('interfaces'), ('lldp'), ('macs'), ('mlag'),
-          ('ospfIf'), ('ospfNbr'), ('path'), ('routes'), ('time'),
-          ('topcpu'), ('topmem'), ('topology'), ('vlan')]
+tables = get_tables()
 
 
 @pytest.fixture(scope='function')
@@ -61,7 +60,7 @@ def get_table_data(table: str, datadir: str):
         device_df = get_sqobject('device')(config_file=cfgfile) \
             .get(columns=['namespace', 'hostname', 'os'])
 
-        assert (not device_df.empty, 'empty device table')
+        assert not device_df.empty, 'empty device table'
         df = df.merge(device_df, on=['namespace', 'hostname']) \
             .fillna({'os': ''})
 

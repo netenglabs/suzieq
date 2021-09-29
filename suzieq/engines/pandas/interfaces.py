@@ -18,11 +18,16 @@ class InterfacesObj(SqPandasEngine):
         state = kwargs.pop('state', '')
         iftype = kwargs.pop('type', '')
         ifname = kwargs.get('ifname', '')
+        vrf = kwargs.pop('vrf', '')
+        master = kwargs.pop('master', [])
+
+        if vrf:
+            master.extend(vrf)
 
         if iftype and iftype != ["all"]:
-            df = super().get(type=iftype, **kwargs)
+            df = super().get(type=iftype, master=master, **kwargs)
         else:
-            df = super().get(**kwargs)
+            df = super().get(master=master, **kwargs)
 
         if df.empty:
             return df

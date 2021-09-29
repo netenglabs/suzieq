@@ -4,7 +4,7 @@ import numpy as np
 
 from suzieq.sqobjects import get_sqobject
 from .engineobj import SqPandasEngine
-from suzieq.utils import SchemaForTable, humanize_timestamp
+from suzieq.utils import SchemaForTable, build_query_str, humanize_timestamp
 
 
 class OspfObj(SqPandasEngine):
@@ -21,6 +21,7 @@ class OspfObj(SqPandasEngine):
         addnl_fields = kwargs.pop('addnl_fields', self.iobj._addnl_fields)
         addnl_nbr_fields = self.iobj._addnl_nbr_fields
         user_query = kwargs.pop('query_str', '')
+        hostname = kwargs.pop('hostname', [])
 
         cols = SchemaForTable('ospf', schema=self.schemas) \
             .get_display_fields(columns)
@@ -47,14 +48,25 @@ class OspfObj(SqPandasEngine):
             ifcols = ifschema.get_display_fields(columns)
             nbrcols = nbrschema.get_display_fields(columns)
 
-        if state == "full":
-            query_str = 'adjState == "full" or adjState == "passive"'
-        elif state == "other":
-            query_str = 'adjState != "full" and adjState != "passive"'
-        elif state == "passive":
-            query_str = 'adjState == "passive"'
+        state_query_dict = {
+            'full': '(adjState == "full" or adjState == "passive")',
+            'passive': '(adjState == "passive")',
+            'other': '(adjState != "full" and adjState != "passive")',
+            '!full': '(adjState != "full")',
+            '!passive': '(adjState != "passive")',
+            '!other': '(adjState == "full" or adjState == "passive")',
+        }
+
+        if state:
+            query_str = state_query_dict.get(state, '')
+            cond_prefix = ' and '
         else:
             query_str = ''
+            cond_prefix = ''
+
+        host_query_str = build_query_str([], ifschema, hostname=hostname)
+        if host_query_str:
+            query_str += f'{cond_prefix}{host_query_str}'
 
         df = self.get_valid_df('ospfIf', addnl_fields=addnl_fields,
                                columns=ifcols, **kwargs)
@@ -97,6 +109,9 @@ class OspfObj(SqPandasEngine):
                    .fillna({'peerIP': '-', 'numChanges': 0,
                             'lastChangeTime': 0})
 
+        if 'lastChangeTime' in df.columns:
+            df['lastChangeTime'] = np.where(df.lastChangeTime == '-',
+                                            0, df.lastChangeTime)
         # Fill the adjState column with passive if passive
         if 'passive' in df.columns:
             df.loc[df['adjState'].isnull(), 'adjState'] = df['passive']

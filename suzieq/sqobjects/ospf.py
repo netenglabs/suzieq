@@ -32,23 +32,6 @@ class OspfObj(SqObject):
 
         return self.engine.aver(**kwargs)
 
-    def top(self, what='', n=5, reverse=False, **kwargs) -> pd.DataFrame:
-        """Get the list of top/bottom entries of "what" field"""
-
-        if "columns" in kwargs:
-            columns = kwargs["columns"]
-            del kwargs["columns"]
-        else:
-            columns = ["default"]
-
-        table_schema = SchemaForTable(self._table, self.all_schemas)
-        columns = table_schema.get_display_fields(columns)
-
-        if what == "numChanges" and what not in columns:
-            self._addnl_nbr_fields.append(what)
-
-        return self.engine.top(what=what, n=n, reverse=reverse, **kwargs)
-
     def humanize_fields(self, df: pd.DataFrame, subset=None) -> pd.DataFrame:
         '''Humanize the timestamp and boot time fields'''
         if df.empty:
@@ -60,7 +43,8 @@ class OspfObj(SqObject):
                 self.cfg.get('analyzer', {}).get('timezone', None))
 
             if 'adjState' in df.columns:
-                df['lastChangeTime'] = np.where(df.adjState == "passive", "-",
+                df['lastChangeTime'] = np.where(df.adjState == "passive",
+                                                pd.Timestamp(0),
                                                 df.lastChangeTime)
 
         return df

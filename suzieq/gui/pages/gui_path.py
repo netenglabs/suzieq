@@ -1,8 +1,10 @@
-from suzieq.gui.guiutils import display_help_icon
-from suzieq.gui.guiutils import gui_get_df, get_base_url, get_session_id
+from suzieq.gui.guiutils import display_help_icon, display_title
+from suzieq.gui.guiutils import (gui_get_df, get_base_url, get_session_id,
+                                 SuzieqMainPages)
 from suzieq.sqobjects.path import PathObj
 from copy import copy
 from urllib.parse import quote
+from typing import Tuple
 import graphviz as graphviz
 import pandas as pd
 import streamlit as st
@@ -28,7 +30,7 @@ def make_fields_failed_df():
 
 @dataclass
 class PathSessionState:
-    run: bool = False
+    page: str = SuzieqMainPages.PATH
     namespace: str = ''
     source: str = ''
     dest: str = ''
@@ -96,7 +98,7 @@ def highlight_erroneous_rows(row):
 @st.cache(ttl=120, allow_output_mutation=True, show_spinner=False,
           max_entries=10)
 def path_get(state: PathSessionState, pathobj: PathObj,
-             forward_dir: bool) -> (pd.DataFrame, pd.DataFrame):
+             forward_dir: bool) -> Tuple[pd.DataFrame, pd.DataFrame]:
     '''Run the path and return the dataframes'''
     if forward_dir:
         df = pathobj.get(namespace=[state.namespace], source=state.source,
@@ -146,44 +148,40 @@ def path_sidebar(state, sqobjs):
         'help_on=Path',
     ])
     display_help_icon(url)
-    ok_button = st.sidebar.button('Trace')
-    namespace = st.sidebar.selectbox('Namespace',
-                                     namespaces, index=nsidx)
-    src_ph = st.sidebar.empty()
-    dst_ph = st.sidebar.empty()
-    state.source = src_ph.text_input('Source IP',
-                                     value=state.source)
-    state.dest = dst_ph.text_input('Dest IP', value=state.dest,
-                                   key='dest')
-    swap_src_dest = st.sidebar.button('Source <-> Dest')
-    if swap_src_dest:
-        source = src_ph.text_input('Source IP',
-                                   value=state.dest)
-        dest = dst_ph.text_input('Dest IP', value=state.source)
-        state.source = source
-        state.dest = dest
+    with st.sidebar:
+        with st.form(key='trace'):
 
-    state.vrf = st.sidebar.text_input('VRF', value=state.vrf,
-                                      key='vrf')
-    state.start_time = st.sidebar.text_input('Start Time',
+            state.namespace = st.selectbox('Namespace',
+                                           namespaces, key='path_namespace', index=nsidx)
+            src_ph = st.empty()
+            dst_ph = st.empty()
+            state.source = src_ph.text_input('Source IP', key='path_source',
+                                             value=state.source)
+            state.dest = dst_ph.text_input(
+                'Dest IP', key='path_dest', value=state.dest)
+
+            state.vrf = st.text_input('VRF', value=state.vrf,
+                                      key='path_vrf')
+            state.start_time = st.text_input('Start Time',
                                              value=state.start_time,
-                                             key='start-time')
-    state.end_time = st.sidebar.text_input('End Time',
+                                             key='path_start_time')
+            state.end_time = st.text_input('End Time',
                                            value=state.end_time,
-                                           key='end-time')
+                                           key='path_end_time')
 
-    state.show_ifnames = st.sidebar.checkbox('Show in/out interface names',
-                                             value=state.show_ifnames)
-    if all(not x for x in [state.namespace,
-                           state.source,
-                           state.dest]):
-        state.run = False
-    elif ok_button:
-        state.run = True
-    elif namespace != state.namespace:
-        state.run = False
-        state.namespace = namespace
+            submit = st.form_submit_button('Trace', on_click=path_sync_state)
 
+        state.show_ifnames = st.checkbox('Show in/out interface names',
+                                         value=state.show_ifnames,
+                                         key='path_show_ifnames',
+                                         on_change=path_sync_state)
+        swap_src_dest = st.button(
+            'Source <-> Dest', key='path_swap', on_click=path_sync_state)
+        if swap_src_dest:
+            source, dest = state.dest, state.source
+            source = src_ph.text_input('Source IP', value=source)
+            dest = dst_ph.text_input('Dest IP', value=dest)
+            state.source, state.dest = state.dest, state.source
     return
 
 
@@ -325,65 +323,55 @@ def build_graphviz_obj(show_ifnames: bool, df: pd.DataFrame,
     return g
 
 
-def page_work(state_container, page_flip: bool):
-    '''Main workhorse routine for path'''
+def path_sync_state():
+    wsstate = st.session_state
+    state = wsstate.pathSessionState
 
-    if not state_container.pathSessionState:
-        state_container.pathSessionState = PathSessionState()
+    state.namespace = wsstate.path_namespace
+    state.source = wsstate.path_source
+    state.dest = wsstate.path_dest
+    state.vrf = wsstate.path_vrf
+    state.start_time = wsstate.path_start_time
+    state.end_time = wsstate.path_end_time
+    state.show_ifnames = wsstate.path_show_ifnames
+    if wsstate.path_swap:
+        state.source, state.dest = state.dest, state.source
+        wsstate.source = state.source
+        wsstate.dest = state.dest
 
-    state = state_container.pathSessionState
 
-    url_params = st.experimental_get_query_params()
-    page = url_params.pop('page', '')
+def path_run():
 
-    if not state and get_title() in page:
-        if url_params and not all(not x for x in url_params.values()):
-            url_params.pop('search_text', '')
-            for key in url_params:
-                val = url_params.get(key, '')
-                if isinstance(val, list):
-                    val = val[0]
-                    url_params[key] = val
-                if key == 'run':
-                    if val == 'True':
-                        url_params[key] = True
-                    else:
-                        url_params[key] = False
+    state = st.session_state.pathSessionState
+    sqobjs = st.session_state.sqobjs
 
-            state.__init__(**url_params)
-    state_container.pathSessionState = state
+    if not all(x for x in [state.source, state.dest, state.namespace]):
+        return
 
     pgbar = st.empty()
-    summary = st.beta_container()
-    summcol, mid, pathcol = summary.beta_columns([3, 1, 10])
+    summary = st.container()
+    summcol, mid, pathcol = summary.columns([3, 1, 10])
     with summary:
         with summcol:
             summ_ph = st.empty()
-            legend_ph = st.beta_container()
+            legend_ph = st.container()
         with pathcol:
             fw_ph = st.empty()
 
-    path_sidebar(state, state_container.sqobjs)
-
-    if state.run:
-        pgbar.progress(0)
-        pathobj = PathObj(start_time=state.start_time,
-                          end_time=state.end_time)
-        try:
-            df, summ_df = path_get(state, pathobj, forward_dir=True)
-            rdf = getattr(pathobj.engine, '_rdf', pd.DataFrame())
-            if not rdf.empty:
-                state.pathobj = pathobj
-                state.path_df = df
-        except Exception as e:
-            st.error(f'Invalid Input: {str(e)}')
-            st.stop()
-        pgbar.progress(40)
-        # rev_df, _ = path_get(state, forward_dir=False)
-
-    else:
-        st.experimental_set_query_params(**get_path_url_params(state))
+    pgbar.progress(0)
+    pathobj = PathObj(start_time=state.start_time,
+                      end_time=state.end_time)
+    try:
+        df, summ_df = path_get(state, pathobj, forward_dir=True)
+        rdf = getattr(pathobj.engine, '_rdf', pd.DataFrame())
+        if not rdf.empty:
+            state.pathobj = pathobj
+            state.path_df = df
+    except Exception as e:
+        st.error(f'Invalid Input: {str(e)}')
         st.stop()
+    pgbar.progress(40)
+    # rev_df, _ = path_get(state, forward_dir=False)
 
     if df.empty:
         pgbar.progress(100)
@@ -393,13 +381,13 @@ def page_work(state_container, page_flip: bool):
 
     if not df.empty:
         faileddfs = get_failed_data(state.namespace, pgbar,
-                                    state_container.sqobjs)
+                                    st.session_state.sqobjs)
         g = build_graphviz_obj(state.show_ifnames, df, faileddfs)
         pgbar.progress(100)
         # if not rev_df.empty:
         #     rev_g = build_graphviz_obj(state, rev_df)
 
-        summ_ph.dataframe(data=summ_df)
+        summ_ph.dataframe(data=summ_df.astype(str))
         with legend_ph:
             st.info('''Color Legend''')
             st.markdown('''
@@ -414,14 +402,52 @@ def page_work(state_container, page_flip: bool):
 
         for entry in faileddfs.dfs:
             mdf = entry['df']
-            table_expander = st.beta_expander(
+            table_expander = st.expander(
                 f'Failed {entry["name"]} Table', expanded=not mdf.empty)
             with table_expander:
                 st.dataframe(mdf)
 
-        table_expander = st.beta_expander('Path Table', expanded=True)
+        table_expander = st.expander('Path Table', expanded=True)
         with table_expander:
             st.dataframe(data=df.style.apply(highlight_erroneous_rows, axis=1),
                          height=600)
 
     st.experimental_set_query_params(**get_path_url_params(state))
+
+
+def page_work(state_container):
+    '''Main workhorse routine for path'''
+
+    if 'pathSessionState' not in state_container:
+        state_container['pathSessionState'] = None
+
+    state = state_container.pathSessionState
+
+    url_params = st.experimental_get_query_params()
+    page = url_params.pop('page', '')
+
+    if not state and get_title() in page:
+        if url_params and not all(not x for x in url_params.values()):
+            url_params.pop('search_text', '')
+            for key in url_params:
+                val = url_params.get(key, '')
+                if isinstance(val, list):
+                    val = val[0]
+                    url_params[key] = val
+                if key in ['show_ifnames']:
+                    if val == 'True':
+                        url_params[key] = True
+                    else:
+                        url_params[key] = False
+
+            state = PathSessionState(**url_params)
+            state_container.pathSessionState = state
+        else:
+            state = PathSessionState()
+            state_container.pathSessionState = state
+    elif not state:
+        state = PathSessionState()
+        state_container.pathSessionState = state
+
+    path_sidebar(state, state_container.sqobjs)
+    path_run()

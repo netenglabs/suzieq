@@ -7,6 +7,7 @@ ARG version
 RUN mkdir -p /suzieq/
 WORKDIR /suzieq
 
+
 COPY ./dist/suzieq-$version-py3-none-any.whl  /tmp/
 RUN pip install /tmp//suzieq-$version-py3-none-any.whl
 COPY suzieq/config/etc/suzieq-cfg.yml /root/.suzieq/suzieq-cfg.yml

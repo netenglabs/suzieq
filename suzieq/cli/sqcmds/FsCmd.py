@@ -14,7 +14,7 @@ class FsCmd(SqCommand):
         hostname: str = "",
         start_time: str = "",
         end_time: str = "",
-        view: str = "latest",
+        view: str = "",
         namespace: str = "",
         format: str = "",
         query_str: str = " ",

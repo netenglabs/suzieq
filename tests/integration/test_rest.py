@@ -1,17 +1,22 @@
 import os
 import json
 import pytest
+import pandas as pd
 from fastapi.testclient import TestClient
 from filelock import FileLock
+import inspect
 
 from tests.conftest import cli_commands, create_dummy_config_file
 
-from suzieq.restServer.query import app, get_configured_api_key, API_KEY_NAME, rest_main
+from suzieq.restServer.query import (app, get_configured_api_key,
+                                     API_KEY_NAME, rest_main)
+from suzieq.sqobjects import get_tables, get_sqobject
+from suzieq.restServer import query
 
 ENDPOINT = "http://localhost:8000/api/v2"
 
 VERBS = ['show', 'summarize', 'assert', 'lpm',
-         'unique']  # add 'top' when it's supported
+         'unique', 'find', 'top', 'describe']
 
 #
 # The code logic is that you define all the filters you want to test in
@@ -38,6 +43,7 @@ FILTERS = ['',  # for vanilla commands without any filter
            'view=latest',
            'address=10.0.0.11&view=all',
            'ipAddress=10.0.0.11',
+           'address=172.16.1.101',
            'vrf=default',
            'ipvers=v4',
            'macaddr=44:39:39:ff:40:95',
@@ -93,6 +99,7 @@ GOOD_FILTERS_FOR_SERVICE_VERB = {
     '': ['all'],  # this is for all non-filtered requests
     'address=10.0.0.11': ['route/lpm'],
     'address=10.0.0.11&view=all': ['route/lpm'],
+    'address=172.16.1.101': ['network/find'],
     'bd=': ['mac/show'],
     'hostname=leaf01&hostname=spine01': ['all'],
     'namespace=ospf-ibgp&namespace=ospf-single': ['all'],
@@ -168,8 +175,10 @@ GOOD_FILTER_EMPTY_RESULT_FILTER = [
     'ospf/assert?status=fail',
     'evpnVni/assert?status=fail',
     'interface/show?state=notConnected',
+    'interface/show?vrf=default',
     'device/show?status=neverpoll',
     'device/show?status=dead',
+    'inventory/all',
 ]
 
 ####
@@ -181,7 +190,10 @@ GOOD_FILTER_EMPTY_RESULT_FILTER = [
 def _validate_hostname_output(json_out, service, verb):
     if verb == "summarize":
         return True
-    if service in ["mac", "vlan", "mlag", "evpnVni"]:
+    if service in ['network']:
+        # nework has no hostname column
+        return True
+    elif service in ["mac", "vlan", "mlag", "evpnVni"]:
         # MAC addr is not present on spines
         assert (set([x['hostname'] for x in json_out]) == set(['leaf01']))
     else:
@@ -191,6 +203,9 @@ def _validate_hostname_output(json_out, service, verb):
 
 def _validate_namespace_output(json_out, service, verb):
     if verb == "summarize":
+        if service == "network":
+            # network summarize has no namespace column
+            return
         # summarize output has namespace as a key
         if service in ["bgp", "evpnVni", "devconfig", "mlag"]:
             assert(set(json_out.keys()) == set(['ospf-ibgp']))
@@ -237,6 +252,7 @@ def get(endpoint, service, verb, args):
     c_v = f"{service}/{verb}"
     c_v_f = f"{c_v}?{args}"
     v_f = f"{verb}?{args}"
+    c_all = f"{service}/all"
 
     argval = GOOD_FILTERS_FOR_SERVICE_VERB.get(args, [])
 
@@ -246,22 +262,28 @@ def get(endpoint, service, verb, args):
                    f"{c_v_f} should not be in good responses list")
     else:
         if c_v in argval or argval == ['all']:
-            if c_v_f not in GOOD_FILTER_EMPTY_RESULT_FILTER:
-                assert len(response.content.decode('utf8')) > 10
+            df = pd.DataFrame(json.loads(
+                response.content.decode('utf-8')))
+            if ((c_v_f not in GOOD_FILTER_EMPTY_RESULT_FILTER) and
+                    (c_all not in GOOD_FILTER_EMPTY_RESULT_FILTER)):
+                assert(not df.empty)
             else:
-                assert len(response.content.decode('utf8')) == 2
+                assert df.empty
         elif argval[0].split('/')[0] == "all":
             match_verb = argval[0].split('/')[1]
             assert (match_verb == verb,
                     f"Unable to match good result for {c_v_f}")
 
-        if c_v_f not in GOOD_FILTER_EMPTY_RESULT_FILTER:
+        if ((c_v_f not in GOOD_FILTER_EMPTY_RESULT_FILTER) and
+                (c_all not in GOOD_FILTER_EMPTY_RESULT_FILTER)):
             if args in VALIDATE_OUTPUT_FILTER:
                 VALIDATE_OUTPUT_FILTER[args](response.json(), service, verb)
             else:
-                assert len(response.content.decode('utf8')) > 10
+                df = pd.DataFrame(json.loads(response.content.decode('utf-8')))
+                assert(not df.empty)
         else:
-            assert len(response.content.decode('utf8')) == 2
+            df = pd.DataFrame(json.loads(response.content.decode('utf-8')))
+            assert df.empty
 
     return response.status_code
 
@@ -275,7 +297,34 @@ def test_rest_services(app_initialize, service, verb, arg):
     get(ENDPOINT, service, verb, arg)
 
 
-@pytest.fixture()
+@ pytest.mark.rest
+@ pytest.mark.parametrize("service", [
+    (cmd) for cmd in get_tables()])
+def test_rest_arg_consistency(service):
+    '''check that the arguments used in REST match whats in sqobjects'''
+
+    # import all relevant functions from the rest code first
+
+    fnlist = list(filter(lambda x: x[0] == f'query_{service}',
+                         inspect.getmembers(query, inspect.isfunction)))
+    for fn in fnlist:
+        rest_args = [i for i in inspect.getfullargspec(fn[1]).args
+                     if i not in
+                     ['verb', 'token', 'request', 'format', 'start_time', 'end_time', 'view']]
+        sqobj = get_sqobject(service)()
+
+        valid_args = set(sqobj._valid_get_args)
+
+        for arg in valid_args:
+            assert arg in rest_args, f"{arg} missing from {fn} arguments"
+
+        for arg in rest_args:
+            if arg not in valid_args and arg != "status":
+                # status is usually part of assert keyword and so ignore
+                assert False, f"{arg} not in {fn} arguments"
+
+
+@ pytest.fixture()
 def app_initialize():
     from suzieq.restServer.query import app_init
 
@@ -290,7 +339,7 @@ def app_initialize():
 # so we need to test this separately. xdist tries to run tests in parallel
 # which screws things up. So, we run server with & without https sequentially
 # For some reason, putting the no_https in a for loop didn't work either
-@pytest.mark.rest
+@ pytest.mark.rest
 def test_rest_server():
     import subprocess
     from time import sleep

@@ -27,7 +27,6 @@ class MacsService(Service):
             entry['vlan'] = int(entry['vlan'])
 
         if entry.get('bd', ""):
-            # VPLS Entry
             if not entry.get('vlan', 0):
                 entry['mackey'] = entry['bd']
             else:
@@ -81,6 +80,7 @@ class MacsService(Service):
 
     def _clean_junos_data(self, processed_data, raw_data):
         drop_indices = []
+        new_entries = []
 
         for i, entry in enumerate(processed_data):
             if not entry.get('macaddr', ''):
@@ -91,13 +91,24 @@ class MacsService(Service):
                 if 'rcvd_from_remote' in inflags:
                     flags += ' remote'
 
-            if entry.get('bd', None):
-                entry['protocol'] = 'vpls'
-                flags = inflags + ' remote'
-            entry['flags'] = flags.strip()
-            self._add_mackey_protocol(entry)
+            maclist = entry.get('macaddr', '')
+            if isinstance(maclist, list):
+                # MX format
+                oifs = entry.get('oif', [])
+                for j, mac in enumerate(maclist):
+                    new_entry = entry.copy()
+                    new_entry['macaddr'] = mac
+                    new_entry['oif'] = oifs[j].split('.')[0]
+                    new_entry['flags'] = ''
+                    self._add_mackey_protocol(new_entry)
+                    new_entries.append(new_entry)
+                drop_indices.append(i)
+            else:
+                entry['flags'] = flags.strip()
+                self._add_mackey_protocol(entry)
 
         processed_data = np.delete(processed_data, drop_indices).tolist()
+        processed_data.extend(new_entries)
         return processed_data
 
     def _clean_nxos_data(self, processed_data, raw_data):

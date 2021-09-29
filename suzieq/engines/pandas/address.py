@@ -87,8 +87,12 @@ class AddressObj(SqPandasEngine):
         if vrf == "default":
             df = df.query('master==""')
 
+        df = df.rename({'master': 'vrf'}, axis=1) \
+            .replace({'vrf': {'': 'default'}})
+
         if 4 in addr_types:
             df = df.explode('ipAddressList').fillna({'ipAddressList': ''})
+
         if 6 in addr_types:
             df = df.explode('ip6AddressList').fillna({'ip6AddressList': ''})
 

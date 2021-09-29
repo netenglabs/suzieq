@@ -1,6 +1,6 @@
 # Gathering Data: Poller
 
-To gather data from your network, you need to run the poller. Launch the docker container, netenglabs/suzieq:latest and attach to it via the following steps:
+To gather data from your network, you need to run the poller. Launch the docker container, **netenglabs/suzieq:latest** and attach to it via the following steps:
 
 ```
   docker run -itd -v /home/${USER}/parquet-out:/suzieq/parquet -v /home/${USER}/<inventory-file>:/suzieq/inventory --name sq-poller netenglabs/suzieq:latest
@@ -80,17 +80,19 @@ Service definitions describe how to get output from devices and then how to turn
 Currently Suzieq supports polling [Cumulus Linux](https://cumulusnetworks.com/),
 [Arista](https://www.arista.com/en/),
 [Nexus](https://www.cisco.com/c/en/us/products/switches/data-center-switches/index.html),
-and [Juniper](https://www.juniper.net) and SONIC devices, as well as native Linux devices such as servers. Suzieq can easily support other device types, and we have third-party contributors working on other NOSes. Please let us know if you're interested in Suzieq supporting other NOSes.
+[IOS](https://www.cisco.com/c/en/us/products/ios-nx-os-software/ios-technologies/index.html),
+[Juniper](https://www.juniper.net)
+and [SONIC](https://azure.github.io/SONiC/) devices, as well as native Linux devices such as servers. Suzieq can easily support other device types, and we have third-party contributors working on other NOSes. Please let us know if you're interested in Suzieq supporting other NOSes.
 
 Suzieq started out with least common denominator SSH and REST access to devices.
-It doesn't much care about transport, we will use whatever gets the best data.
+It doesn't care much about transport, we will use whatever gets the best data.
 Suzieq does have support for agents, such as Kafka and SNMP, to push data and we've done some experiments with them, but don't
 have production versions of that code. 
 
 ## Debugging poller issues
 There are two places to look if you want to know what the poller is up to. The first is the poller
-log file in /tmp/sq-poller.log. The second is in Suzieq in the sq-poller table. We keep data about how
-polling is going in that table. If you do  suzieq-cli sqpoller show --status=fail you should see any failures.
+log file in */tmp/sq-poller.log*. The second is in Suzieq in the sq-poller table. We keep data about how
+polling is going in that table. If you do `suzieq-cli sqpoller show --status=fail` you should see any failures.
 
 ```
 jpietsch> sqpoller show status=fail namespace=dual-evpn

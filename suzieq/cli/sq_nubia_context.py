@@ -21,6 +21,7 @@ class NubiaSuzieqContext(context.Context):
         self.engine = engine
         self.col_width = 50
         self.sort_fields = []
+        self.view = ""
         super().__init__()
 
     def on_connected(self, *args, **kwargs):

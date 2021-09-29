@@ -9,6 +9,7 @@ import argparse
 import fcntl
 from logging import Logger
 from time import sleep
+from typing import Tuple
 from dataclasses import asdict
 
 import pandas as pd
@@ -20,7 +21,7 @@ from suzieq.db import do_coalesce, get_sqdb_engine
 from suzieq.version import SUZIEQ_VERSION
 
 
-def validate_periodstr(periodstr: str) -> (bool, str):
+def validate_periodstr(periodstr: str) -> Tuple[bool, str]:
     '''Validate the period string specified by user'''
 
     status = True
@@ -151,9 +152,10 @@ def coalescer_main():
         print(f'Invalid Suzieq config file {userargs.config}')
         sys.exit(1)
 
-    logfile, loglevel, logsize = get_log_params('coalescer', cfg,
-                                                '/tmp/sq-coalescer.log')
-    logger = init_logger('suzieq.coalescer', logfile, loglevel, logsize, False)
+    logfile, loglevel, logsize, log_stdout = get_log_params('coalescer', cfg,
+                                                            '/tmp/sq-coalescer.log')
+    logger = init_logger('suzieq.coalescer', logfile,
+                         loglevel, logsize, log_stdout)
 
     # Ensure we're the only compacter
     coalesce_dir = cfg.get('coalescer', {})\

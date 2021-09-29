@@ -23,3 +23,7 @@ class DBNotFoundError(Exception):
 
 class UserQueryError(Exception):
     pass
+
+
+class UnknownDevtypeError(Exception):
+    pass

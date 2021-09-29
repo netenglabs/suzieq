@@ -81,7 +81,7 @@ def handle_edge_url(url_params: dict, pathSession):
                                          .drop(columns=dropcol)
             else:
                 if_df = engobj._if_df.query(f'hostname=="{ifhost}"')\
-                                          .drop(columns=dropcol)
+                    .drop(columns=dropcol)
                 label = f'matching host {ifhost}'
             if nhip != '169.254.0.1':
                 st.info(f'Interfaces {label}')
@@ -94,8 +94,8 @@ def handle_edge_url(url_params: dict, pathSession):
                 st.info(f'Interfaces {label}')
                 st.dataframe(data=if_df)
     if macaddr:
-        with st.beta_expander(f'MAC Table for {hostname}, MAC addr {macaddr}',
-                              expanded=True):
+        with st.expander(f'MAC Table for {hostname}, MAC addr {macaddr}',
+                         expanded=True):
             st.dataframe(data=pathobj.engine._macsobj.get(
                 namespace=namespace, hostname=hostname, macaddr=macaddr))
 
@@ -136,8 +136,8 @@ def handle_hop_url(url_params, pathSession):
     df2.drop_duplicates(subset=['vrf', 'ipLookup'], inplace=True)
 
     for row in df2.itertuples():
-        with st.beta_expander(f'Lookups on {hostname}, for hopcount: '
-                              f'{row.hopCount}', expanded=True):
+        with st.expander(f'Lookups on {hostname}, for hopcount: '
+                         f'{row.hopCount}', expanded=True):
             if row.macaddr:
                 st.info(f'MAC Table on {hostname}, MAC addr {row.macaddr}')
                 st.dataframe(data=engobj._macsobj.get(namespace=namespace,
@@ -162,8 +162,8 @@ def handle_hop_url(url_params, pathSession):
             nhops = row.nexthopIp.tolist()
             prev_nhop = ''
             for oif, nhop in zip_longest(oifs, nhops):
-                blank1, arpcol = st.beta_columns([1, 40])
-                blank2, ifcol = st.beta_columns([2, 40])
+                blank1, arpcol = st.columns([1, 40])
+                blank2, ifcol = st.columns([2, 40])
                 # this logic because I don't know what fn to use with agg above
                 # to not remove non-unique nhop.
                 if not nhop and prev_nhop:
@@ -211,7 +211,7 @@ def handle_hop_url(url_params, pathSession):
         st.markdown("<hr>", unsafe_allow_html=True)
 
 
-def page_work(state_container, page_flip: bool):
+def page_work(state_container):
     '''Main page workhorse'''
 
     pathSession = state_container.pathSessionState

@@ -4,21 +4,21 @@
     "physicalTable": "interfaces",
     "type": "derivedRecord",
     "depends": [
-    	"interfaces"
+        "interfaces"
     ],
     "fields": [
         {
-	    "name": "sqvers",
-	    "type": "string",
-	    "partition": 0,
-	    "default": "1.0",
-	    "description": "Schema version, not selectable"
-	},
+            "name": "sqvers",
+            "type": "string",
+            "partition": 0,
+            "default": "1.0",
+            "description": "Schema version, not selectable"
+        },
         {
             "name": "macaddr",
             "type": "string",
             "display": 4,
-	    "description": "MAC address"
+            "description": "MAC address"
         },
         {
             "name": "ipAddressList",
@@ -30,20 +30,20 @@
                 }
             },
             "display": 3,
-	    "description": "List of interface IPv4 addresses"
+            "description": "List of interface IPv4 addresses"
         },
         {
             "name": "state",
             "type": "string",
             "display": 6,
-	    "description": "Operational state of interface"
+            "description": "Operational state of interface"
         },
         {
             "name": "ifname",
             "type": "string",
             "key": 2,
             "display": 2,
-	    "description": "Interface name"
+            "description": "Interface name"
         },
         {
             "name": "ip6AddressList",
@@ -55,33 +55,45 @@
                 }
             },
             "display": 5,
-	    "description": "List of interface IPv6 addresses"
+            "description": "List of interface IPv6 addresses"
+        },
+        {
+            "name": "vlan",
+            "type": "long"
+        },
+        {
+            "name": "vrf",
+            "type": "long"
+        },
+        {
+            "name": "type",
+            "type": "string"
         },
         {
             "name": "hostname",
             "type": "string",
             "key": 1,
             "display": 1,
-	    "partition": 2,
-	    "description": "hostname associated with this hop"
+            "partition": 2,
+            "description": "hostname associated with this hop"
         },
         {
             "name": "namespace",
             "type": "string",
             "key": 0,
             "display": 0,
-	    "partition": 1,
-	    "description": "namespace within which path analysis is run"
+            "partition": 1,
+            "description": "namespace within which path analysis is run"
         },
         {
             "name": "timestamp",
             "type": "timestamp",
-	    "description": "Unix epach When this record was created, in ms"
+            "description": "Unix epach When this record was created, in ms"
         },
         {
             "name": "active",
             "type": "boolean",
-	    "description": "If this entry is active or deleted"
+            "description": "If this entry is active or deleted"
         }
     ]
 }

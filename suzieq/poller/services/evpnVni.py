@@ -10,13 +10,21 @@ class EvpnVniService(Service):
     """evpnVni service. Different class because output needs to be munged"""
 
     def clean_json_input(self, data):
-        """FRR JSON data needs some work"""
+        """evpnVni JSON output is busted across many NOS. Fix it"""
 
         devtype = data.get("devtype", None)
         if any(x == devtype for x in ["cumulus", "sonic", "linux"]):
             data['data'] = '[' + re.sub(r'}\n\n{\n', r'},\n\n{\n',
                                         data['data']) + ']'
             return data['data']
+        elif devtype.startswith('junos'):
+            data['data'] = data['data'].replace('}, \n    }\n', '} \n    }\n')
+            return data['data']
+        elif devtype == "eos":
+            if data.get('cmd', '').startswith('show interfaces Vxlan $'):
+                if data['data'].startswith('%'):
+                    data['data'] = '{}'
+                    return data['data']
 
     def _clean_eos_data(self, processed_data, raw_data):
         new_entries = []

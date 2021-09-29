@@ -1759,26 +1759,26 @@ tests:
       "up", "peerHostname": "exit02", "peerIfname": "swp2", "assert": "pass", "assertReason":
       []}]'
   marks: interface assert
-- command: interface top --format=json
+- command: interface top --what='statusChangeTimestamp' --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: interface top
   output: '[{"namespace": "ospf-single", "hostname": "server102", "ifname": "eth0",
     "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 0,
-    "master": "", "ipAddressList": ["10.255.2.68/24"], "ip6AddressList": [], "numChanges":
+    "master": "", "ipAddressList": ["10.255.2.68/24"], "ip6AddressList": [], "statusChangeTimestamp":
     0, "timestamp": 1616352402674}, {"namespace": "ospf-single", "hostname": "server102",
     "ifname": "eth1", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
     1500, "vlan": 0, "master": "", "ipAddressList": ["172.16.2.102/24"], "ip6AddressList":
-    [], "numChanges": 0, "timestamp": 1616352402674}, {"namespace": "ospf-single",
+    [], "statusChangeTimestamp": 0, "timestamp": 1616352402674}, {"namespace": "ospf-single",
     "hostname": "server101", "ifname": "eth1", "state": "up", "adminState": "up",
     "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["172.16.1.101/24"],
-    "ip6AddressList": [], "numChanges": 0, "timestamp": 1616352402700}, {"namespace":
-    "ospf-single", "hostname": "server101", "ifname": "eth0", "state": "up", "adminState":
-    "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
-    ["10.255.2.78/24"], "ip6AddressList": [], "numChanges": 0, "timestamp": 1616352402700},
-    {"namespace": "ospf-single", "hostname": "server103", "ifname": "eth0", "state":
+    "ip6AddressList": [], "statusChangeTimestamp": 0, "timestamp": 1616352402700},
+    {"namespace": "ospf-single", "hostname": "server101", "ifname": "eth0", "state":
     "up", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master":
-    "", "ipAddressList": ["10.255.2.182/24"], "ip6AddressList": [], "numChanges":
-    0, "timestamp": 1616352402700}]'
+    "", "ipAddressList": ["10.255.2.78/24"], "ip6AddressList": [], "statusChangeTimestamp":
+    0, "timestamp": 1616352402700}, {"namespace": "ospf-single", "hostname": "server103",
+    "ifname": "eth0", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": ["10.255.2.182/24"], "ip6AddressList":
+    [], "statusChangeTimestamp": 0, "timestamp": 1616352402700}]'
 - command: interface assert --status=pass --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: interface assert cumulus

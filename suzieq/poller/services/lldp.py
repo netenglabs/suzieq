@@ -1,3 +1,4 @@
+from numpy.lib.shape_base import take_along_axis
 from suzieq.poller.services.service import Service
 from suzieq.utils import convert_macaddr_format_to_colon, expand_ios_ifname
 import re
@@ -9,11 +10,20 @@ class LldpService(Service):
 
     def _common_data_cleaner(self, processed_data, raw_data):
 
+        drop_indices = []
+
         for i, entry in enumerate(processed_data):
+
             if not entry:
                 continue
+
+            if not entry.get('ifname', ''):
+                drop_indices.append(i)
+                continue
+
             self._common_cleaner(entry)
 
+        processed_data = np.delete(processed_data, drop_indices).tolist()
         return processed_data
 
     def _common_cleaner(self, entry):
@@ -73,8 +83,16 @@ class LldpService(Service):
         return processed_data
 
     def _clean_junos_data(self, processed_data, raw_data):
-        for entry in processed_data:
+
+        drop_indices = []
+        for i, entry in enumerate(processed_data):
+            if not entry.get('ifname', ''):
+                drop_indices.append(i)
+                continue
+
             self._common_cleaner(entry)
+
+        processed_data = np.delete(processed_data, drop_indices).tolist()
         return processed_data
 
     def _clean_eos_data(self, processed_data, raw_data):

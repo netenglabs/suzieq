@@ -15,7 +15,7 @@ class OspfCmd(SqCommand):
         hostname: str = "",
         start_time: str = "",
         end_time: str = "",
-        view: str = "latest",
+        view: str = "",
         namespace: str = "",
         format: str = "",
         query_str: str = ' ',
@@ -117,35 +117,3 @@ class OspfCmd(SqCommand):
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
 
         return self._assert_gen_output(df)
-
-    @command("top")
-    @argument("what", description="Field you want to see top for",
-              choices=["flaps"])
-    @argument("count", description="How many top entries")
-    @argument("reverse", description="True see Bottom n",
-              choices=["True", "False"])
-    def top(self, what: str = "flaps", count: int = 5, reverse: str = "False"):
-        """
-        Show top n entries based on specific field
-        """
-        if self.columns is None:
-            return
-
-        now = time.time()
-
-        what_map = {
-            "flaps": "numChanges",
-        }
-
-        df = self._invoke_sqobj(self.sqobj.top,
-                                hostname=self.hostname,
-                                what=what_map[what],
-                                n=count,
-                                reverse=reverse == "True" or False,
-                                columns=self.columns,
-                                query_str=self.query_str,
-                                namespace=self.namespace,
-                                )
-
-        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        return self._gen_output(df, sort=False)

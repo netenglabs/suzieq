@@ -1,4 +1,5 @@
 import os
+import re
 from time import time
 from typing import List
 import logging
@@ -31,6 +32,16 @@ class SqParquetDB(SqDB):
 
     def supported_data_formats(self):
         return ['pandas']
+
+    def get_tables(self):
+        """Return list of tables known to parquet
+        """
+        folder = self._get_table_directory(None, False)
+        dirs = Path(folder).glob('*')
+        tables = [str(x.stem) for x in dirs
+                  if not str(x.stem).startswith(('_', 'coalesced'))]
+
+        return tables
 
     def read(self, table_name: str, data_format: str,
              **kwargs) -> pd.DataFrame:
@@ -69,6 +80,8 @@ class SqParquetDB(SqDB):
         key_fields = kwargs.pop("key_fields")
         addnl_filter = kwargs.pop("add_filter", None)
         merge_fields = kwargs.pop('merge_fields', {})
+        hostname = kwargs.pop('hostname', [])
+        namespace = kwargs.pop('namespace', [])
 
         folder = self._get_table_directory(table_name, False)
 
@@ -133,7 +146,10 @@ class SqParquetDB(SqDB):
             filters = self.build_ds_filters(
                 start, end, master_schema, merge_fields=merge_fields, **kwargs)
 
-            final_df = ds.dataset(datasets) \
+            filtered_datasets = self._get_filtered_fileset(
+                datasets, namespace, hostname)
+
+            final_df = filtered_datasets \
                 .to_table(filter=filters, columns=avail_fields) \
                 .to_pandas(self_destruct=True) \
                 .query(query_str) \
@@ -157,12 +173,12 @@ class SqParquetDB(SqDB):
             # entries with same timestamp. Remove them
             dupts_keys = key_fields + ['timestamp']
             final_df = final_df.set_index(dupts_keys) \
-                               .query('~index.duplicated(keep="last")') \
-                               .reset_index()
+                .query('~index.duplicated(keep="last")') \
+                .reset_index()
             if (not final_df.empty and (view == 'latest') and
                     all(x in final_df.columns for x in key_fields)):
                 final_df = final_df.set_index(key_fields) \
-                                   .query('~index.duplicated(keep="last")')
+                    .query('~index.duplicated(keep="last")')
         except (pa.lib.ArrowInvalid, OSError):
             return pd.DataFrame(columns=fields)
 
@@ -252,8 +268,8 @@ class SqParquetDB(SqDB):
         infolder = self.cfg['data-directory']
         outfolder = self._get_table_directory('', True)  # root folder
         archive_folder = self.cfg.get('coalescer', {}) \
-                                 .get('archive-directory',
-                                      f'{infolder}/_archived')
+            .get('archive-directory',
+                 f'{infolder}/_archived')
 
         if not period:
             period = self.cfg.get(
@@ -397,7 +413,7 @@ class SqParquetDB(SqDB):
                     for item in dataset.files:
                         try:
                             namespace = item.split('namespace=')[1] \
-                                            .split('/')[0]
+                                .split('/')[0]
                         except IndexError:
                             # Don't convert data not in our template
                             continue
@@ -535,7 +551,7 @@ class SqParquetDB(SqDB):
                     start_selected = False
                     for i, file in enumerate(lists[ele]):
                         thistime = os.path.basename(file).split('.')[0] \
-                                                         .split('-')[-2:]
+                            .split('-')[-2:]
                         thistime = [int(x)*1000 for x in thistime]  # to msec
                         if (not start_time) or start_selected or (
                                 thistime[0] <= start_time <= thistime[1]):
@@ -574,6 +590,53 @@ class SqParquetDB(SqDB):
                     msch.append(fld)
 
         return msch
+
+    def _get_filtered_fileset(self, datasets: list, namespace: list,
+                              hostname: list) -> ds:
+        """Filter the dataset based on the namespace and hostname
+
+        We can use this method to filter out namespaces and hostnames based
+        on regexes as well just regular strings.
+        Args:
+            datasets (list)): The datasets list incl coalesced and not files
+            namespace (list): list of namespace strings
+            hostname (list): list of hostname strings
+
+        Returns:
+            ds: pyarrow dataset of only the files that match filter
+        """
+        filelist = []
+        for dataset in datasets:
+            if not namespace:
+                filelist.extend(dataset.files)
+            else:
+                ns_filelist = []
+                for ns in namespace:
+                    if ns.startswith('!'):
+                        ns = ns[1:]
+                        ns_filelist.extend([x for x in dataset.files
+                                            if not re.search(f'namespace={ns}/',
+                                                             x)])
+                    else:
+                        ns_filelist.extend([x for x in dataset.files
+                                            if re.search(f'namespace={ns}/', x)])
+                filelist.extend(ns_filelist)
+
+            host_filelist = []
+            for hn in hostname:
+                if hn.startswith('!'):
+                    hn = hn[1:]
+                    host_filelist.extend([x for x in filelist
+                                         if 'coalesced' in x or
+                                         (not re.search(f'hostname={hn}/', x))])
+                else:
+                    host_filelist.extend([x for x in filelist
+                                          if 'coalesced' in x or
+                                          re.search(f'hostname={hn}/', x)])
+            if hostname:
+                filelist = host_filelist
+
+        return ds.dataset(filelist, format='parquet', partitioning='hive')
 
     def _cons_int_filter(self, keyfld: str, filter_str: str) -> ds.Expression:
         '''Construct Integer filters with arithmetic operations'''
@@ -633,7 +696,7 @@ class SqParquetDB(SqDB):
                             notinfld.append(e[1:])
                     else:
                         if ftype == 'int64':
-                            if or_filters:
+                            if or_filters is not None:
                                 or_filters = or_filters | \
                                     self._cons_int_filter(k, e)
                             else:
@@ -648,7 +711,7 @@ class SqParquetDB(SqDB):
                 elif notinfld:
                     filters = filters & (~ds.field(k).isin(notinfld))
 
-                if or_filters:
+                if or_filters is not None:
                     filters = filters & (or_filters)
             else:
                 if isinstance(v, str) and v.startswith("!"):
@@ -698,31 +761,3 @@ class SqParquetDB(SqDB):
             pa.list_(pa.string()): [],
             pa.list_(pa.int64()): [],
         })
-
-    def get_tables(self, **kwargs):
-        """finds the tables that are available"""
-
-        cfg = self.cfg
-        if not getattr(self, 'cfg', None):
-            self.cfg = cfg
-        dfolder = self.cfg['data-directory']
-        tables = set()
-        if dfolder:
-            dfolder = os.path.abspath(dfolder) + '/'
-            p = Path(dfolder)
-            namespaces = kwargs.get('namespace', [])
-            if not namespaces:
-                ns = set([x.parts[-1].split('=')[1]
-                          for x in p.glob('**/namespace=*')])
-            else:
-                ns = set(namespaces)
-            for dc in ns:
-                dirlist = p.glob(f'**/namespace={dc}')
-                tlist = [str(x).split(z)[1].split('/')[0]
-                         for x, z in list(zip_longest(dirlist, [dfolder],
-                                                      fillvalue=dfolder))]
-                if not tables:
-                    tables = set(tlist)
-                else:
-                    tables.update(tlist)
-        return list(tables)

@@ -76,8 +76,6 @@ class NubiaSuzieqPlugin(PluginInterface):
         return opts_parser
 
     def get_completion_datasource_for_global_argument(self, argument):
-        if argument == "--config":
-            return ConfigFileCompletionDataSource()
         if argument == "--use-engine":
             return ConfigEngineCompletionDataSource()
         return None
@@ -101,11 +99,6 @@ class NubiaSuzieqPlugin(PluginInterface):
         blacklister.add_blocked_command("topcpu")
         blacklister.add_blocked_command("topmem")
         return blacklister
-
-
-class ConfigFileCompletionDataSource(CompletionDataSource):
-    def get_all(self):
-        return ["/tmp/c1", "/tmp/c2"]
 
 
 class ConfigEngineCompletionDataSource(CompletionDataSource):

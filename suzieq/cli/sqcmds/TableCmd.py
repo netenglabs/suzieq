@@ -15,7 +15,7 @@ class TableCmd(SqCommand):
         hostname: str = "",
         start_time: str = "",
         end_time: str = "",
-        view: str = "latest",
+        view: str = "",
         namespace: str = "",
         format: str = "",
         columns: str = "default",
@@ -38,13 +38,14 @@ class TableCmd(SqCommand):
         Show Tables
         """
         now = time.time()
-        df = self.sqobj.get(hostname=self.hostname, namespace=self.namespace)
+        df = self.sqobj.get(hostname=self.hostname, namespace=self.namespace,
+                            columns=self.columns)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
 
-    @command("describe")
-    @argument("table", description="interface name to qualify")
-    def describe(self, table: str = "", **kwargs):
+    @ command("describe")
+    @ argument("table", description="interface name to qualify")
+    def describe(self, table: str = "tables", **kwargs):
         """
         Describe fields in table
         """
@@ -62,18 +63,4 @@ class TableCmd(SqCommand):
         df = self.sqobj.describe(table=table)
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
 
-        return self._gen_output(df, dont_strip_cols=True)
-
-    @command("summarize", help="Summarize info about this resource")
-    def summarize(self, **kwargs):
-
-        msg = 'ERROR: Summarize not supported for this object'
-        df = pd.DataFrame({'error': [msg]})
-        return self._gen_output(df, dont_strip_cols=True)
-
-    @command("unique", help="find the list of unique items in a column")
-    def unique(self, **kwargs):
-
-        msg = 'ERROR: Unique not supported for this object'
-        df = pd.DataFrame({'error': [msg]})
         return self._gen_output(df, dont_strip_cols=True)

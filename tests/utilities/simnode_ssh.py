@@ -43,6 +43,8 @@ class MySSHServerSession(asyncssh.SSHServerSession):
             f'{self.sample_data_dir}/{self.device}/show_hostname{fmt}',
             'show interfaces':
             f'{self.sample_data_dir}/{self.device}/show_interfaces{fmt}',
+            'show interface':
+            f'{self.sample_data_dir}/{self.device}/show_interfaces{fmt}',
             'show ethernet-switching table detail':
             f'{self.sample_data_dir}/{self.device}/show_ethernet_switching_table{fmt}',
             'show system uptime':
@@ -73,6 +75,10 @@ class MySSHServerSession(asyncssh.SSHServerSession):
             f'{self.sample_data_dir}/{self.device}/show_chassis_hardware{fmt}',
             'show interface trasnsceiver':
             f'{self.sample_data_dir}/{self.device}/show_interface_transceiver{fmt}',
+            'show configuration routing-instances':
+            f'{self.sample_data_dir}/{self.device}/show_configuration_routing_instances{fmt}',
+            'show bridge mac-table':
+            f'{self.sample_data_dir}/{self.device}/show_bridge_mac_table{fmt}',
         }
 
         return self.cmd_data.get(command, '')
@@ -180,6 +186,15 @@ class QFXServer(MySSHServer):
         super().__init__(device='qfx')
 
 
+class MXServer(MySSHServer):
+    def __init__(self):
+        super().__init__(device='mx')
+
+
+class SRXServer(MySSHServer):
+    def __init__(self):
+        super().__init__(device='srx')
+
 async def start_server(device='iosxr'):
     factory = {
         'iosxr': IOSXRServer,
@@ -187,6 +202,8 @@ async def start_server(device='iosxr'):
         'eos': EOSServer,
         'iosxe': IOSXEServer,
         'qfx': QFXServer,
+        'mx': MXServer,
+        'srx': SRXServer,
     }
     await asyncssh.listen('', 10000, server_factory=factory[device],
                           server_host_keys=['/home/ddutt/work/suzieq/play/ssh_host_key'])

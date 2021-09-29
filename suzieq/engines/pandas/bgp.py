@@ -170,7 +170,8 @@ class BgpObj(SqPandasEngine):
                                       (df['state'] == "Established"),
                                       df['peerHost'],
                                       df['peerHostname'])
-        df = df.drop(columns=['peerHost'])
+        df = df.fillna(value={'peerHostname': ''}) \
+            .drop(columns=['peerHost'])
 
         for i in df.select_dtypes(include='category'):
             df[i].cat.add_categories('', inplace=True)
