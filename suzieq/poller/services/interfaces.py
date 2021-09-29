@@ -336,7 +336,7 @@ class InterfaceService(Service):
                     if ifname == "irb":
                         iftype = 'vlan'
                     else:
-                        iftype = 'subif'
+                        iftype = 'subinterface'
                     vlan = int(vlan)
                 else:
                     vlan = 0
@@ -365,7 +365,7 @@ class InterfaceService(Service):
                         master = elem.get("ae-bundle-name", [{}])[0] \
                             .get("data", "")
                         entry['master'] = master.split('.')[0]
-                        entry['type'] = 'bond-slave'
+                        entry['type'] = 'bond_slave'
                     if afi in ["eth-switch", "bridge"]:
                         addrlist = []
                         entry['master'] = 'bridge'
