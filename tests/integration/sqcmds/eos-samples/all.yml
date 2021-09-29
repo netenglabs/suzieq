@@ -2058,56 +2058,59 @@ tests:
 - command: device show --columns='*' --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: device show eos all
-  output: '[{"namespace": "eos", "hostname": "exit01", "model": "vEOS", "version":
-    "4.23.5M", "vendor": "Arista", "architecture": "x86_64", "status": "alive", "address":
-    "10.255.2.251", "bootupTimestamp": 1622917982000, "os": "eos", "serialNumber":
-    "", "timestamp": 1623025177156, "active": true}, {"namespace": "eos", "hostname":
-    "leaf01", "model": "vEOS", "version": "4.23.5M", "vendor": "Arista", "architecture":
-    "x86_64", "status": "alive", "address": "10.255.2.184", "bootupTimestamp": 1620676827000,
-    "os": "eos", "serialNumber": "", "timestamp": 1623025177093, "active": true},
-    {"namespace": "eos", "hostname": "leaf04", "model": "vEOS", "version": "4.23.5M",
-    "vendor": "Arista", "architecture": "x86_64", "status": "alive", "address": "10.255.2.187",
-    "bootupTimestamp": 1620676832000, "os": "eos", "serialNumber": "", "timestamp":
-    1623025177156, "active": true}, {"namespace": "eos", "hostname": "exit02", "model":
-    "vEOS", "version": "4.23.5M", "vendor": "Arista", "architecture": "x86_64", "status":
-    "alive", "address": "10.255.2.253", "bootupTimestamp": 1620676831000, "os": "eos",
-    "serialNumber": "", "timestamp": 1623025177051, "active": true}, {"namespace":
-    "eos", "hostname": "leaf02", "model": "vEOS", "version": "4.23.5M", "vendor":
-    "Arista", "architecture": "x86_64", "status": "alive", "address": "10.255.2.185",
-    "bootupTimestamp": 1620676826000, "os": "eos", "serialNumber": "", "timestamp":
-    1623025176903, "active": true}, {"namespace": "eos", "hostname": "leaf03", "model":
-    "vEOS", "version": "4.23.5M", "vendor": "Arista", "architecture": "x86_64", "status":
-    "alive", "address": "10.255.2.186", "bootupTimestamp": 1620676827000, "os": "eos",
-    "serialNumber": "", "timestamp": 1623025177028, "active": true}, {"namespace":
-    "eos", "hostname": "spine02", "model": "vEOS", "version": "4.23.5M", "vendor":
-    "Arista", "architecture": "x86_64", "status": "alive", "address": "10.255.2.118",
-    "bootupTimestamp": 1620676826000, "os": "eos", "serialNumber": "", "timestamp":
-    1623025177075, "active": true}, {"namespace": "eos", "hostname": "dcedge01", "model":
-    "vqfx-10000", "version": "19.4R1.10", "vendor": "Juniper", "architecture": "",
-    "status": "alive", "address": "10.255.2.250", "bootupTimestamp": 1620675742016,
-    "os": "junos-qfx", "serialNumber": "65873387107", "timestamp": 1623025180016,
-    "active": true}, {"namespace": "eos", "hostname": "spine01", "model": "vEOS",
-    "version": "4.23.5M", "vendor": "Arista", "architecture": "x86_64", "status":
-    "alive", "address": "10.255.2.117", "bootupTimestamp": 1620676825000, "os": "eos",
-    "serialNumber": "", "timestamp": 1623025176945, "active": true}, {"namespace":
-    "eos", "hostname": "firewall01", "model": "vm", "version": "18.04.3 LTS", "vendor":
-    "Ubuntu", "architecture": "x86-64", "status": "alive", "address": "10.255.2.189",
-    "bootupTimestamp": 1620675718000, "os": "linux", "serialNumber": "", "timestamp":
-    1623025176026, "active": true}, {"namespace": "eos", "hostname": "server101",
-    "model": "vm", "version": "18.04.3 LTS", "vendor": "Ubuntu", "architecture": "x86-64",
-    "status": "alive", "address": "10.255.2.57", "bootupTimestamp": 1620676730000,
-    "os": "linux", "serialNumber": "", "timestamp": 1623025176026, "active": true},
-    {"namespace": "eos", "hostname": "server102", "model": "vm", "version": "18.04.3
-    LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive", "address":
-    "10.255.2.230", "bootupTimestamp": 1620676730000, "os": "linux", "serialNumber":
-    "", "timestamp": 1623025176212, "active": true}, {"namespace": "eos", "hostname":
-    "server301", "model": "vm", "version": "18.04.3 LTS", "vendor": "Ubuntu", "architecture":
-    "x86-64", "status": "alive", "address": "10.255.2.151", "bootupTimestamp": 1620676730000,
+  output: '[{"namespace": "eos", "hostname": "server301", "model": "vm", "version":
+    "18.04.3 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
+    "address": "10.255.2.151", "bootupTimestamp": 1620676730000, "uptime": 2348445797,
     "os": "linux", "serialNumber": "", "timestamp": 1623025175797, "active": true},
     {"namespace": "eos", "hostname": "server302", "model": "vm", "version": "18.04.3
     LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive", "address":
-    "10.255.2.137", "bootupTimestamp": 1620676730000, "os": "linux", "serialNumber":
-    "", "timestamp": 1623025175800, "active": true}]'
+    "10.255.2.137", "bootupTimestamp": 1620676730000, "uptime": 2348445800, "os":
+    "linux", "serialNumber": "", "timestamp": 1623025175800, "active": true}, {"namespace":
+    "eos", "hostname": "firewall01", "model": "vm", "version": "18.04.3 LTS", "vendor":
+    "Ubuntu", "architecture": "x86-64", "status": "alive", "address": "10.255.2.189",
+    "bootupTimestamp": 1620675718000, "uptime": 2349458026, "os": "linux", "serialNumber":
+    "", "timestamp": 1623025176026, "active": true}, {"namespace": "eos", "hostname":
+    "server101", "model": "vm", "version": "18.04.3 LTS", "vendor": "Ubuntu", "architecture":
+    "x86-64", "status": "alive", "address": "10.255.2.57", "bootupTimestamp": 1620676730000,
+    "uptime": 2348446026, "os": "linux", "serialNumber": "", "timestamp": 1623025176026,
+    "active": true}, {"namespace": "eos", "hostname": "server102", "model": "vm",
+    "version": "18.04.3 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status":
+    "alive", "address": "10.255.2.230", "bootupTimestamp": 1620676730000, "uptime":
+    2348446212, "os": "linux", "serialNumber": "", "timestamp": 1623025176212, "active":
+    true}, {"namespace": "eos", "hostname": "leaf02", "model": "vEOS", "version":
+    "4.23.5M", "vendor": "Arista", "architecture": "x86_64", "status": "alive", "address":
+    "10.255.2.185", "bootupTimestamp": 1620676826000, "uptime": 2348350903, "os":
+    "eos", "serialNumber": "", "timestamp": 1623025176903, "active": true}, {"namespace":
+    "eos", "hostname": "spine01", "model": "vEOS", "version": "4.23.5M", "vendor":
+    "Arista", "architecture": "x86_64", "status": "alive", "address": "10.255.2.117",
+    "bootupTimestamp": 1620676825000, "uptime": 2348351945, "os": "eos", "serialNumber":
+    "", "timestamp": 1623025176945, "active": true}, {"namespace": "eos", "hostname":
+    "leaf03", "model": "vEOS", "version": "4.23.5M", "vendor": "Arista", "architecture":
+    "x86_64", "status": "alive", "address": "10.255.2.186", "bootupTimestamp": 1620676827000,
+    "uptime": 2348350028, "os": "eos", "serialNumber": "", "timestamp": 1623025177028,
+    "active": true}, {"namespace": "eos", "hostname": "exit02", "model": "vEOS", "version":
+    "4.23.5M", "vendor": "Arista", "architecture": "x86_64", "status": "alive", "address":
+    "10.255.2.253", "bootupTimestamp": 1620676831000, "uptime": 2348346051, "os":
+    "eos", "serialNumber": "", "timestamp": 1623025177051, "active": true}, {"namespace":
+    "eos", "hostname": "spine02", "model": "vEOS", "version": "4.23.5M", "vendor":
+    "Arista", "architecture": "x86_64", "status": "alive", "address": "10.255.2.118",
+    "bootupTimestamp": 1620676826000, "uptime": 2348351075, "os": "eos", "serialNumber":
+    "", "timestamp": 1623025177075, "active": true}, {"namespace": "eos", "hostname":
+    "leaf01", "model": "vEOS", "version": "4.23.5M", "vendor": "Arista", "architecture":
+    "x86_64", "status": "alive", "address": "10.255.2.184", "bootupTimestamp": 1620676827000,
+    "uptime": 2348350093, "os": "eos", "serialNumber": "", "timestamp": 1623025177093,
+    "active": true}, {"namespace": "eos", "hostname": "exit01", "model": "vEOS", "version":
+    "4.23.5M", "vendor": "Arista", "architecture": "x86_64", "status": "alive", "address":
+    "10.255.2.251", "bootupTimestamp": 1622917982000, "uptime": 107195156, "os": "eos",
+    "serialNumber": "", "timestamp": 1623025177156, "active": true}, {"namespace":
+    "eos", "hostname": "leaf04", "model": "vEOS", "version": "4.23.5M", "vendor":
+    "Arista", "architecture": "x86_64", "status": "alive", "address": "10.255.2.187",
+    "bootupTimestamp": 1620676832000, "uptime": 2348345156, "os": "eos", "serialNumber":
+    "", "timestamp": 1623025177156, "active": true}, {"namespace": "eos", "hostname":
+    "dcedge01", "model": "vqfx-10000", "version": "19.4R1.10", "vendor": "Juniper",
+    "architecture": "", "status": "alive", "address": "10.255.2.250", "bootupTimestamp":
+    1620675742016, "uptime": 2349438000, "os": "junos-qfx", "serialNumber": "65873387107",
+    "timestamp": 1623025180016, "active": true}]'
 - command: evpnVni show --columns='*' --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: evpnVni show eos all
@@ -4010,7 +4013,7 @@ tests:
   marks: ospf show eos all
   output: '[{"namespace": "eos", "hostname": "spine01", "vrf": "default", "ifname":
     "Loopback0", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
-    0, "adjState": "passive", "peerIP": "", "numChanges": 6.0, "lastChangeTime": "-",
+    0, "adjState": "passive", "peerIP": "", "numChanges": 6.0, "lastChangeTime": 0,
     "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio": 0.0, "lastUpTime": 0.0, "instance":
     "1", "reason": "", "areaStub": false, "bfdStatus": "disabled", "lsaRetxCnt": 0.0,
     "peerRouterId": "", "cost": 10, "retxTime": 5, "deadTime": 40, "helloTime": 10,
@@ -4018,7 +4021,7 @@ tests:
     "10.0.0.12", "routerId": "10.0.0.21", "timestamp": 1623025177058, "active": true},
     {"namespace": "eos", "hostname": "leaf02", "vrf": "default", "ifname": "Loopback0",
     "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState":
-    "passive", "peerIP": "", "numChanges": 6.0, "lastChangeTime": "-", "sqvers": 1.0,
+    "passive", "peerIP": "", "numChanges": 6.0, "lastChangeTime": 0, "sqvers": 1.0,
     "lastDownTime": 0.0, "nbrPrio": 0.0, "lastUpTime": 0.0, "instance": "1", "reason":
     "", "areaStub": false, "bfdStatus": "disabled", "lsaRetxCnt": 0.0, "peerRouterId":
     "", "cost": 10, "retxTime": 5, "deadTime": 40, "helloTime": 10, "networkType":
@@ -4026,7 +4029,7 @@ tests:
     "10.0.0.12", "timestamp": 1623025177152, "active": true}, {"namespace": "eos",
     "hostname": "leaf02", "vrf": "default", "ifname": "Loopback1", "peerHostname":
     "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive",
-    "peerIP": "", "numChanges": 6.0, "lastChangeTime": "-", "sqvers": 1.0, "lastDownTime":
+    "peerIP": "", "numChanges": 6.0, "lastChangeTime": 0, "sqvers": 1.0, "lastDownTime":
     0.0, "nbrPrio": 0.0, "lastUpTime": 0.0, "instance": "1", "reason": "", "areaStub":
     false, "bfdStatus": "disabled", "lsaRetxCnt": 0.0, "peerRouterId": "", "cost":
     10, "retxTime": 5, "deadTime": 40, "helloTime": 10, "networkType": "broadcast",
@@ -4034,84 +4037,82 @@ tests:
     "timestamp": 1623025177152, "active": true}, {"namespace": "eos", "hostname":
     "leaf03", "vrf": "default", "ifname": "Loopback0", "peerHostname": "", "area":
     "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP": "",
-    "numChanges": 7.0, "lastChangeTime": "-", "sqvers": 1.0, "lastDownTime": 0.0,
-    "nbrPrio": 0.0, "lastUpTime": 0.0, "instance": "1", "reason": "", "areaStub":
-    false, "bfdStatus": "disabled", "lsaRetxCnt": 0.0, "peerRouterId": "", "cost":
-    10, "retxTime": 5, "deadTime": 40, "helloTime": 10, "networkType": "broadcast",
-    "maskLen": 32, "isUnnumbered": true, "ipAddress": "10.0.0.13", "routerId": "10.0.0.13",
-    "timestamp": 1623025177253, "active": true}, {"namespace": "eos", "hostname":
-    "leaf03", "vrf": "default", "ifname": "Loopback1", "peerHostname": "", "area":
-    "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP": "",
-    "numChanges": 7.0, "lastChangeTime": "-", "sqvers": 1.0, "lastDownTime": 0.0,
-    "nbrPrio": 0.0, "lastUpTime": 0.0, "instance": "1", "reason": "", "areaStub":
-    false, "bfdStatus": "disabled", "lsaRetxCnt": 0.0, "peerRouterId": "", "cost":
-    10, "retxTime": 5, "deadTime": 40, "helloTime": 10, "networkType": "broadcast",
-    "maskLen": 32, "isUnnumbered": false, "ipAddress": "10.0.0.13", "routerId": "10.0.0.13",
-    "timestamp": 1623025177253, "active": true}, {"namespace": "eos", "hostname":
-    "spine02", "vrf": "default", "ifname": "Loopback0", "peerHostname": "", "area":
-    "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP": "",
-    "numChanges": 7.0, "lastChangeTime": "-", "sqvers": 1.0, "lastDownTime": 0.0,
-    "nbrPrio": 0.0, "lastUpTime": 0.0, "instance": "1", "reason": "", "areaStub":
-    false, "bfdStatus": "down", "lsaRetxCnt": 1.0, "peerRouterId": "", "cost": 10,
-    "retxTime": 5, "deadTime": 40, "helloTime": 10, "networkType": "broadcast", "maskLen":
-    32, "isUnnumbered": true, "ipAddress": "10.0.0.22", "routerId": "10.0.0.22", "timestamp":
-    1623025177290, "active": true}, {"namespace": "eos", "hostname": "exit02", "vrf":
-    "default", "ifname": "Loopback0", "peerHostname": "", "area": "0.0.0.0", "ifState":
-    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 6.0, "lastChangeTime":
-    "-", "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio": 0.0, "lastUpTime": 0.0, "instance":
-    "1", "reason": "", "areaStub": false, "bfdStatus": "up", "lsaRetxCnt": 0.0, "peerRouterId":
+    "numChanges": 7.0, "lastChangeTime": 0, "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio":
+    0.0, "lastUpTime": 0.0, "instance": "1", "reason": "", "areaStub": false, "bfdStatus":
+    "disabled", "lsaRetxCnt": 0.0, "peerRouterId": "", "cost": 10, "retxTime": 5,
+    "deadTime": 40, "helloTime": 10, "networkType": "broadcast", "maskLen": 32, "isUnnumbered":
+    true, "ipAddress": "10.0.0.13", "routerId": "10.0.0.13", "timestamp": 1623025177253,
+    "active": true}, {"namespace": "eos", "hostname": "leaf03", "vrf": "default",
+    "ifname": "Loopback1", "peerHostname": "", "area": "0.0.0.0", "ifState": "up",
+    "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 7.0, "lastChangeTime":
+    0, "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio": 0.0, "lastUpTime": 0.0, "instance":
+    "1", "reason": "", "areaStub": false, "bfdStatus": "disabled", "lsaRetxCnt": 0.0,
+    "peerRouterId": "", "cost": 10, "retxTime": 5, "deadTime": 40, "helloTime": 10,
+    "networkType": "broadcast", "maskLen": 32, "isUnnumbered": false, "ipAddress":
+    "10.0.0.13", "routerId": "10.0.0.13", "timestamp": 1623025177253, "active": true},
+    {"namespace": "eos", "hostname": "spine02", "vrf": "default", "ifname": "Loopback0",
+    "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "", "numChanges": 7.0, "lastChangeTime": 0, "sqvers": 1.0,
+    "lastDownTime": 0.0, "nbrPrio": 0.0, "lastUpTime": 0.0, "instance": "1", "reason":
+    "", "areaStub": false, "bfdStatus": "down", "lsaRetxCnt": 1.0, "peerRouterId":
     "", "cost": 10, "retxTime": 5, "deadTime": 40, "helloTime": 10, "networkType":
-    "broadcast", "maskLen": 32, "isUnnumbered": true, "ipAddress": "10.0.0.31", "routerId":
-    "10.0.0.32", "timestamp": 1623025177308, "active": true}, {"namespace": "eos",
-    "hostname": "exit01", "vrf": "default", "ifname": "Loopback0", "peerHostname":
+    "broadcast", "maskLen": 32, "isUnnumbered": true, "ipAddress": "10.0.0.22", "routerId":
+    "10.0.0.22", "timestamp": 1623025177290, "active": true}, {"namespace": "eos",
+    "hostname": "exit02", "vrf": "default", "ifname": "Loopback0", "peerHostname":
     "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive",
-    "peerIP": "", "numChanges": 7.0, "lastChangeTime": "-", "sqvers": 1.0, "lastDownTime":
+    "peerIP": "", "numChanges": 6.0, "lastChangeTime": 0, "sqvers": 1.0, "lastDownTime":
     0.0, "nbrPrio": 0.0, "lastUpTime": 0.0, "instance": "1", "reason": "", "areaStub":
-    false, "bfdStatus": "disabled", "lsaRetxCnt": 0.0, "peerRouterId": "", "cost":
-    10, "retxTime": 5, "deadTime": 40, "helloTime": 10, "networkType": "broadcast",
-    "maskLen": 32, "isUnnumbered": true, "ipAddress": "10.0.0.11", "routerId": "10.0.0.31",
-    "timestamp": 1623025177431, "active": true}, {"namespace": "eos", "hostname":
-    "leaf01", "vrf": "default", "ifname": "Loopback1", "peerHostname": "", "area":
-    "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP": "",
-    "numChanges": 7.0, "lastChangeTime": "-", "sqvers": 1.0, "lastDownTime": 0.0,
-    "nbrPrio": 0.0, "lastUpTime": 0.0, "instance": "1", "reason": "", "areaStub":
-    false, "bfdStatus": "disabled", "lsaRetxCnt": 1.0, "peerRouterId": "", "cost":
-    10, "retxTime": 5, "deadTime": 40, "helloTime": 10, "networkType": "broadcast",
-    "maskLen": 32, "isUnnumbered": false, "ipAddress": "10.0.0.14", "routerId": "10.0.0.11",
-    "timestamp": 1623025177614, "active": true}, {"namespace": "eos", "hostname":
-    "leaf01", "vrf": "default", "ifname": "Loopback0", "peerHostname": "", "area":
-    "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP": "",
-    "numChanges": 7.0, "lastChangeTime": "-", "sqvers": 1.0, "lastDownTime": 0.0,
-    "nbrPrio": 0.0, "lastUpTime": 0.0, "instance": "1", "reason": "", "areaStub":
+    false, "bfdStatus": "up", "lsaRetxCnt": 0.0, "peerRouterId": "", "cost": 10, "retxTime":
+    5, "deadTime": 40, "helloTime": 10, "networkType": "broadcast", "maskLen": 32,
+    "isUnnumbered": true, "ipAddress": "10.0.0.31", "routerId": "10.0.0.32", "timestamp":
+    1623025177308, "active": true}, {"namespace": "eos", "hostname": "exit01", "vrf":
+    "default", "ifname": "Loopback0", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 7.0, "lastChangeTime":
+    0, "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio": 0.0, "lastUpTime": 0.0, "instance":
+    "1", "reason": "", "areaStub": false, "bfdStatus": "disabled", "lsaRetxCnt": 0.0,
+    "peerRouterId": "", "cost": 10, "retxTime": 5, "deadTime": 40, "helloTime": 10,
+    "networkType": "broadcast", "maskLen": 32, "isUnnumbered": true, "ipAddress":
+    "10.0.0.11", "routerId": "10.0.0.31", "timestamp": 1623025177431, "active": true},
+    {"namespace": "eos", "hostname": "leaf01", "vrf": "default", "ifname": "Loopback1",
+    "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "", "numChanges": 7.0, "lastChangeTime": 0, "sqvers": 1.0,
+    "lastDownTime": 0.0, "nbrPrio": 0.0, "lastUpTime": 0.0, "instance": "1", "reason":
+    "", "areaStub": false, "bfdStatus": "disabled", "lsaRetxCnt": 1.0, "peerRouterId":
+    "", "cost": 10, "retxTime": 5, "deadTime": 40, "helloTime": 10, "networkType":
+    "broadcast", "maskLen": 32, "isUnnumbered": false, "ipAddress": "10.0.0.14", "routerId":
+    "10.0.0.11", "timestamp": 1623025177614, "active": true}, {"namespace": "eos",
+    "hostname": "leaf01", "vrf": "default", "ifname": "Loopback0", "peerHostname":
+    "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "", "numChanges": 7.0, "lastChangeTime": 0, "sqvers": 1.0, "lastDownTime":
+    0.0, "nbrPrio": 0.0, "lastUpTime": 0.0, "instance": "1", "reason": "", "areaStub":
     false, "bfdStatus": "disabled", "lsaRetxCnt": 1.0, "peerRouterId": "", "cost":
     10, "retxTime": 5, "deadTime": 40, "helloTime": 10, "networkType": "broadcast",
     "maskLen": 32, "isUnnumbered": true, "ipAddress": "10.0.0.14", "routerId": "10.0.0.11",
     "timestamp": 1623025177614, "active": true}, {"namespace": "eos", "hostname":
     "leaf04", "vrf": "default", "ifname": "Loopback1", "peerHostname": "", "area":
     "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP": "",
-    "numChanges": 7.0, "lastChangeTime": "-", "sqvers": 1.0, "lastDownTime": 0.0,
-    "nbrPrio": 0.0, "lastUpTime": 0.0, "instance": "1", "reason": "", "areaStub":
-    false, "bfdStatus": "disabled", "lsaRetxCnt": 0.0, "peerRouterId": "", "cost":
-    10, "retxTime": 5, "deadTime": 40, "helloTime": 10, "networkType": "broadcast",
-    "maskLen": 32, "isUnnumbered": false, "ipAddress": "10.0.0.14", "routerId": "10.0.0.14",
-    "timestamp": 1623025177660, "active": true}, {"namespace": "eos", "hostname":
-    "leaf04", "vrf": "default", "ifname": "Loopback0", "peerHostname": "", "area":
-    "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP": "",
-    "numChanges": 7.0, "lastChangeTime": "-", "sqvers": 1.0, "lastDownTime": 0.0,
-    "nbrPrio": 0.0, "lastUpTime": 0.0, "instance": "1", "reason": "", "areaStub":
-    false, "bfdStatus": "disabled", "lsaRetxCnt": 0.0, "peerRouterId": "", "cost":
-    10, "retxTime": 5, "deadTime": 40, "helloTime": 10, "networkType": "broadcast",
-    "maskLen": 32, "isUnnumbered": true, "ipAddress": "10.0.0.14", "routerId": "10.0.0.14",
-    "timestamp": 1623025177660, "active": true}, {"namespace": "eos", "hostname":
-    "spine01", "vrf": "default", "ifname": "Ethernet1", "peerHostname": "leaf01",
-    "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP":
-    "10.0.0.11", "numChanges": 6.0, "lastChangeTime": 1620677090556, "sqvers": 1.0,
-    "lastDownTime": 0.0, "nbrPrio": 0.0, "lastUpTime": 0.0, "instance": "1", "reason":
-    "", "areaStub": false, "bfdStatus": "disabled", "lsaRetxCnt": 1.0, "peerRouterId":
-    "10.0.0.11", "cost": 10, "retxTime": 5, "deadTime": 40, "helloTime": 10, "networkType":
-    "p2p", "maskLen": 32, "isUnnumbered": true, "ipAddress": "10.0.0.21", "routerId":
-    "10.0.0.21", "timestamp": 1623025177058, "active": true}, {"namespace": "eos",
-    "hostname": "spine02", "vrf": "default", "ifname": "Ethernet1", "peerHostname":
+    "numChanges": 7.0, "lastChangeTime": 0, "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio":
+    0.0, "lastUpTime": 0.0, "instance": "1", "reason": "", "areaStub": false, "bfdStatus":
+    "disabled", "lsaRetxCnt": 0.0, "peerRouterId": "", "cost": 10, "retxTime": 5,
+    "deadTime": 40, "helloTime": 10, "networkType": "broadcast", "maskLen": 32, "isUnnumbered":
+    false, "ipAddress": "10.0.0.14", "routerId": "10.0.0.14", "timestamp": 1623025177660,
+    "active": true}, {"namespace": "eos", "hostname": "leaf04", "vrf": "default",
+    "ifname": "Loopback0", "peerHostname": "", "area": "0.0.0.0", "ifState": "up",
+    "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 7.0, "lastChangeTime":
+    0, "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio": 0.0, "lastUpTime": 0.0, "instance":
+    "1", "reason": "", "areaStub": false, "bfdStatus": "disabled", "lsaRetxCnt": 0.0,
+    "peerRouterId": "", "cost": 10, "retxTime": 5, "deadTime": 40, "helloTime": 10,
+    "networkType": "broadcast", "maskLen": 32, "isUnnumbered": true, "ipAddress":
+    "10.0.0.14", "routerId": "10.0.0.14", "timestamp": 1623025177660, "active": true},
+    {"namespace": "eos", "hostname": "spine01", "vrf": "default", "ifname": "Ethernet1",
+    "peerHostname": "leaf01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState":
+    "full", "peerIP": "10.0.0.11", "numChanges": 6.0, "lastChangeTime": 1620677090556,
+    "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio": 0.0, "lastUpTime": 0.0, "instance":
+    "1", "reason": "", "areaStub": false, "bfdStatus": "disabled", "lsaRetxCnt": 1.0,
+    "peerRouterId": "10.0.0.11", "cost": 10, "retxTime": 5, "deadTime": 40, "helloTime":
+    10, "networkType": "p2p", "maskLen": 32, "isUnnumbered": true, "ipAddress": "10.0.0.21",
+    "routerId": "10.0.0.21", "timestamp": 1623025177058, "active": true}, {"namespace":
+    "eos", "hostname": "spine02", "vrf": "default", "ifname": "Ethernet1", "peerHostname":
     "leaf01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
     "peerIP": "10.0.0.11", "numChanges": 6.0, "lastChangeTime": 1620677088486, "sqvers":
     1.0, "lastDownTime": 0.0, "nbrPrio": 0.0, "lastUpTime": 0.0, "instance": "1",

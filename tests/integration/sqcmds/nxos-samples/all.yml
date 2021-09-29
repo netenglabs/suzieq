@@ -3130,61 +3130,65 @@ tests:
 - command: device show --columns='*' --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: device show nxos all
-  output: '[{"namespace": "nxos", "hostname": "dcedge01", "model": "vqfx-10000", "version":
+  output: '[{"namespace": "nxos", "hostname": "server101", "model": "vm", "version":
+    "18.04.3 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
+    "address": "10.255.2.204", "bootupTimestamp": 1619182381000, "uptime": 92875203,
+    "os": "linux", "serialNumber": "", "timestamp": 1619275256203, "active": true},
+    {"namespace": "nxos", "hostname": "server102", "model": "vm", "version": "18.04.3
+    LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive", "address":
+    "10.255.2.39", "bootupTimestamp": 1619182381000, "uptime": 92875290, "os": "linux",
+    "serialNumber": "", "timestamp": 1619275256290, "active": true}, {"namespace":
+    "nxos", "hostname": "server301", "model": "vm", "version": "18.04.3 LTS", "vendor":
+    "Ubuntu", "architecture": "x86-64", "status": "alive", "address": "10.255.2.140",
+    "bootupTimestamp": 1619182381000, "uptime": 92875319, "os": "linux", "serialNumber":
+    "", "timestamp": 1619275256319, "active": true}, {"namespace": "nxos", "hostname":
+    "server302", "model": "vm", "version": "18.04.3 LTS", "vendor": "Ubuntu", "architecture":
+    "x86-64", "status": "alive", "address": "10.255.2.114", "bootupTimestamp": 1619182381000,
+    "uptime": 92875394, "os": "linux", "serialNumber": "", "timestamp": 1619275256394,
+    "active": true}, {"namespace": "nxos", "hostname": "firewall01", "model": "vm",
+    "version": "18.04.3 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status":
+    "alive", "address": "10.255.2.249", "bootupTimestamp": 1619013132000, "uptime":
+    262124497, "os": "linux", "serialNumber": "", "timestamp": 1619275256497, "active":
+    true}, {"namespace": "nxos", "hostname": "dcedge01", "model": "vqfx-10000", "version":
     "19.4R1.10", "vendor": "Juniper", "architecture": "", "status": "alive", "address":
-    "10.255.2.250", "bootupTimestamp": 1619013129329, "os": "junos-qfx", "serialNumber":
-    "27840100856", "timestamp": 1619275258329, "active": true}, {"namespace": "nxos",
-    "hostname": "leaf02", "model": "Nexus9000 C9300v Chassis", "version": "9.3(4)",
-    "vendor": "Cisco", "architecture": "Intel Core Processor (Skylake, IBRS)", "status":
-    "alive", "address": "10.255.2.188", "bootupTimestamp": 1619043783000, "os": "nxos",
-    "serialNumber": "9AC2MF0S5QO", "timestamp": 1619275265679, "active": true}, {"namespace":
-    "nxos", "hostname": "leaf01", "model": "Nexus9000 C9300v Chassis", "version":
+    "10.255.2.250", "bootupTimestamp": 1619013129329, "uptime": 262129000, "os": "junos-qfx",
+    "serialNumber": "27840100856", "timestamp": 1619275258329, "active": true}, {"namespace":
+    "nxos", "hostname": "spine02", "model": "Nexus9000 C9300v Chassis", "version":
     "9.3(4)", "vendor": "Cisco", "architecture": "Intel Core Processor (Skylake, IBRS)",
-    "status": "alive", "address": "10.255.2.189", "bootupTimestamp": 1619043771000,
-    "os": "nxos", "serialNumber": "9DOTFRO0QMW", "timestamp": 1619275265510, "active":
-    true}, {"namespace": "nxos", "hostname": "exit02", "model": "Nexus9000 C9300v
-    Chassis", "version": "9.3(4)", "vendor": "Cisco", "architecture": "Intel Core
-    Processor (Skylake, IBRS)", "status": "alive", "address": "10.255.2.254", "bootupTimestamp":
-    1619013188000, "os": "nxos", "serialNumber": "90ZY6UG6ELL", "timestamp": 1619275265196,
+    "status": "alive", "address": "10.255.2.120", "bootupTimestamp": 1619013194000,
+    "uptime": 262069055, "os": "nxos", "serialNumber": "9SM7CHR8WEF", "timestamp":
+    1619275263055, "active": true}, {"namespace": "nxos", "hostname": "spine01", "model":
+    "Nexus9000 C9300v Chassis", "version": "9.3(4)", "vendor": "Cisco", "architecture":
+    "Intel Core Processor (Skylake, IBRS)", "status": "alive", "address": "10.255.2.119",
+    "bootupTimestamp": 1619013190000, "uptime": 262073589, "os": "nxos", "serialNumber":
+    "9U1GLRQOXD7", "timestamp": 1619275263589, "active": true}, {"namespace": "nxos",
+    "hostname": "leaf03", "model": "Nexus9000 C9300v Chassis", "version": "9.3(4)",
+    "vendor": "Cisco", "architecture": "Intel Core Processor (Skylake, IBRS)", "status":
+    "alive", "address": "10.255.2.190", "bootupTimestamp": 1619043796000, "uptime":
+    231467596, "os": "nxos", "serialNumber": "901I7PY72LO", "timestamp": 1619275263596,
     "active": true}, {"namespace": "nxos", "hostname": "exit01", "model": "Nexus9000
     C9300v Chassis", "version": "9.3(4)", "vendor": "Cisco", "architecture": "Intel
     Core Processor (Skylake, IBRS)", "status": "alive", "address": "10.255.2.253",
-    "bootupTimestamp": 1619013183000, "os": "nxos", "serialNumber": "90QIMGF49OS",
-    "timestamp": 1619275265064, "active": true}, {"namespace": "nxos", "hostname":
-    "leaf04", "model": "Nexus9000 C9300v Chassis", "version": "9.3(4)", "vendor":
-    "Cisco", "architecture": "Intel Core Processor (Skylake, IBRS)", "status": "alive",
-    "address": "10.255.2.191", "bootupTimestamp": 1619043813000, "os": "nxos", "serialNumber":
-    "9Q04O8RGPL8", "timestamp": 1619275265167, "active": true}, {"namespace": "nxos",
-    "hostname": "leaf03", "model": "Nexus9000 C9300v Chassis", "version": "9.3(4)",
+    "bootupTimestamp": 1619013183000, "uptime": 262082064, "os": "nxos", "serialNumber":
+    "90QIMGF49OS", "timestamp": 1619275265064, "active": true}, {"namespace": "nxos",
+    "hostname": "leaf04", "model": "Nexus9000 C9300v Chassis", "version": "9.3(4)",
     "vendor": "Cisco", "architecture": "Intel Core Processor (Skylake, IBRS)", "status":
-    "alive", "address": "10.255.2.190", "bootupTimestamp": 1619043796000, "os": "nxos",
-    "serialNumber": "901I7PY72LO", "timestamp": 1619275263596, "active": true}, {"namespace":
-    "nxos", "hostname": "spine01", "model": "Nexus9000 C9300v Chassis", "version":
-    "9.3(4)", "vendor": "Cisco", "architecture": "Intel Core Processor (Skylake, IBRS)",
-    "status": "alive", "address": "10.255.2.119", "bootupTimestamp": 1619013190000,
-    "os": "nxos", "serialNumber": "9U1GLRQOXD7", "timestamp": 1619275263589, "active":
-    true}, {"namespace": "nxos", "hostname": "spine02", "model": "Nexus9000 C9300v
-    Chassis", "version": "9.3(4)", "vendor": "Cisco", "architecture": "Intel Core
-    Processor (Skylake, IBRS)", "status": "alive", "address": "10.255.2.120", "bootupTimestamp":
-    1619013194000, "os": "nxos", "serialNumber": "9SM7CHR8WEF", "timestamp": 1619275263055,
-    "active": true}, {"namespace": "nxos", "hostname": "firewall01", "model": "vm",
-    "version": "18.04.3 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status":
-    "alive", "address": "10.255.2.249", "bootupTimestamp": 1619013132000, "os": "linux",
-    "serialNumber": "", "timestamp": 1619275256497, "active": true}, {"namespace":
-    "nxos", "hostname": "server301", "model": "vm", "version": "18.04.3 LTS", "vendor":
-    "Ubuntu", "architecture": "x86-64", "status": "alive", "address": "10.255.2.140",
-    "bootupTimestamp": 1619182381000, "os": "linux", "serialNumber": "", "timestamp":
-    1619275256319, "active": true}, {"namespace": "nxos", "hostname": "server302",
-    "model": "vm", "version": "18.04.3 LTS", "vendor": "Ubuntu", "architecture": "x86-64",
-    "status": "alive", "address": "10.255.2.114", "bootupTimestamp": 1619182381000,
-    "os": "linux", "serialNumber": "", "timestamp": 1619275256394, "active": true},
-    {"namespace": "nxos", "hostname": "server101", "model": "vm", "version": "18.04.3
-    LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive", "address":
-    "10.255.2.204", "bootupTimestamp": 1619182381000, "os": "linux", "serialNumber":
-    "", "timestamp": 1619275256203, "active": true}, {"namespace": "nxos", "hostname":
-    "server102", "model": "vm", "version": "18.04.3 LTS", "vendor": "Ubuntu", "architecture":
-    "x86-64", "status": "alive", "address": "10.255.2.39", "bootupTimestamp": 1619182381000,
-    "os": "linux", "serialNumber": "", "timestamp": 1619275256290, "active": true}]'
+    "alive", "address": "10.255.2.191", "bootupTimestamp": 1619043813000, "uptime":
+    231452167, "os": "nxos", "serialNumber": "9Q04O8RGPL8", "timestamp": 1619275265167,
+    "active": true}, {"namespace": "nxos", "hostname": "exit02", "model": "Nexus9000
+    C9300v Chassis", "version": "9.3(4)", "vendor": "Cisco", "architecture": "Intel
+    Core Processor (Skylake, IBRS)", "status": "alive", "address": "10.255.2.254",
+    "bootupTimestamp": 1619013188000, "uptime": 262077196, "os": "nxos", "serialNumber":
+    "90ZY6UG6ELL", "timestamp": 1619275265196, "active": true}, {"namespace": "nxos",
+    "hostname": "leaf01", "model": "Nexus9000 C9300v Chassis", "version": "9.3(4)",
+    "vendor": "Cisco", "architecture": "Intel Core Processor (Skylake, IBRS)", "status":
+    "alive", "address": "10.255.2.189", "bootupTimestamp": 1619043771000, "uptime":
+    231494510, "os": "nxos", "serialNumber": "9DOTFRO0QMW", "timestamp": 1619275265510,
+    "active": true}, {"namespace": "nxos", "hostname": "leaf02", "model": "Nexus9000
+    C9300v Chassis", "version": "9.3(4)", "vendor": "Cisco", "architecture": "Intel
+    Core Processor (Skylake, IBRS)", "status": "alive", "address": "10.255.2.188",
+    "bootupTimestamp": 1619043783000, "uptime": 231482679, "os": "nxos", "serialNumber":
+    "9AC2MF0S5QO", "timestamp": 1619275265679, "active": true}]'
 - command: evpnVni show --columns='*' --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: evpnVni show nxos all
@@ -8357,7 +8361,7 @@ tests:
   marks: ospf show nxos all
   output: '[{"namespace": "nxos", "hostname": "leaf03", "vrf": "default", "ifname":
     "loopback1", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
-    0, "adjState": "passive", "peerIP": "", "numChanges": 7.0, "lastChangeTime": "-",
+    0, "adjState": "passive", "peerIP": "", "numChanges": 7.0, "lastChangeTime": 0,
     "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio": 0.0, "lastUpTime": 0.0, "instance":
     "", "reason": "", "areaStub": false, "bfdStatus": "disabled", "lsaRetxCnt": 0.0,
     "peerRouterId": "", "cost": 1, "retxTime": 5, "deadTime": 40, "helloTime": 10,
@@ -8365,7 +8369,7 @@ tests:
     "10.0.0.13/32", "routerId": "10.0.0.13", "timestamp": 1619275260398, "active":
     true}, {"namespace": "nxos", "hostname": "leaf03", "vrf": "default", "ifname":
     "loopback0", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
-    0, "adjState": "passive", "peerIP": "", "numChanges": 7.0, "lastChangeTime": "-",
+    0, "adjState": "passive", "peerIP": "", "numChanges": 7.0, "lastChangeTime": 0,
     "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio": 0.0, "lastUpTime": 0.0, "instance":
     "", "reason": "", "areaStub": false, "bfdStatus": "disabled", "lsaRetxCnt": 0.0,
     "peerRouterId": "", "cost": 1, "retxTime": 5, "deadTime": 40, "helloTime": 10,
@@ -8373,7 +8377,7 @@ tests:
     "10.0.0.13/32", "routerId": "10.0.0.13", "timestamp": 1619275260398, "active":
     true}, {"namespace": "nxos", "hostname": "spine02", "vrf": "default", "ifname":
     "loopback0", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
-    0, "adjState": "passive", "peerIP": "", "numChanges": 4.0, "lastChangeTime": "-",
+    0, "adjState": "passive", "peerIP": "", "numChanges": 4.0, "lastChangeTime": 0,
     "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio": 0.0, "lastUpTime": 0.0, "instance":
     "", "reason": "", "areaStub": false, "bfdStatus": "disabled", "lsaRetxCnt": 0.0,
     "peerRouterId": "", "cost": 1, "retxTime": 5, "deadTime": 40, "helloTime": 10,
@@ -8381,7 +8385,7 @@ tests:
     "10.0.0.31/32", "routerId": "10.0.0.22", "timestamp": 1619275260613, "active":
     true}, {"namespace": "nxos", "hostname": "spine02", "vrf": "default", "ifname":
     "loopback1", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
-    0, "adjState": "passive", "peerIP": "", "numChanges": 4.0, "lastChangeTime": "-",
+    0, "adjState": "passive", "peerIP": "", "numChanges": 4.0, "lastChangeTime": 0,
     "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio": 0.0, "lastUpTime": 0.0, "instance":
     "", "reason": "", "areaStub": false, "bfdStatus": "disabled", "lsaRetxCnt": 0.0,
     "peerRouterId": "", "cost": 1, "retxTime": 5, "deadTime": 40, "helloTime": 10,
@@ -8389,7 +8393,7 @@ tests:
     "10.0.0.31/32", "routerId": "10.0.0.22", "timestamp": 1619275260613, "active":
     true}, {"namespace": "nxos", "hostname": "exit01", "vrf": "default", "ifname":
     "loopback0", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
-    0, "adjState": "passive", "peerIP": "", "numChanges": 7.0, "lastChangeTime": "-",
+    0, "adjState": "passive", "peerIP": "", "numChanges": 7.0, "lastChangeTime": 0,
     "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio": 0.0, "lastUpTime": 0.0, "instance":
     "", "reason": "", "areaStub": false, "bfdStatus": "disabled", "lsaRetxCnt": 0.0,
     "peerRouterId": "", "cost": 1, "retxTime": 5, "deadTime": 40, "helloTime": 10,
@@ -8397,7 +8401,7 @@ tests:
     "10.0.0.11/32", "routerId": "10.0.0.31", "timestamp": 1619275261428, "active":
     true}, {"namespace": "nxos", "hostname": "exit01", "vrf": "default", "ifname":
     "loopback1", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
-    0, "adjState": "passive", "peerIP": "", "numChanges": 7.0, "lastChangeTime": "-",
+    0, "adjState": "passive", "peerIP": "", "numChanges": 7.0, "lastChangeTime": 0,
     "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio": 0.0, "lastUpTime": 0.0, "instance":
     "", "reason": "", "areaStub": false, "bfdStatus": "disabled", "lsaRetxCnt": 0.0,
     "peerRouterId": "", "cost": 1, "retxTime": 5, "deadTime": 40, "helloTime": 10,
@@ -8405,7 +8409,7 @@ tests:
     "10.0.0.11/32", "routerId": "10.0.0.31", "timestamp": 1619275261428, "active":
     true}, {"namespace": "nxos", "hostname": "leaf01", "vrf": "default", "ifname":
     "loopback0", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
-    0, "adjState": "passive", "peerIP": "", "numChanges": 7.0, "lastChangeTime": "-",
+    0, "adjState": "passive", "peerIP": "", "numChanges": 7.0, "lastChangeTime": 0,
     "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio": 0.0, "lastUpTime": 0.0, "instance":
     "", "reason": "", "areaStub": false, "bfdStatus": "disabled", "lsaRetxCnt": 0.0,
     "peerRouterId": "", "cost": 1, "retxTime": 5, "deadTime": 40, "helloTime": 10,
@@ -8413,7 +8417,7 @@ tests:
     "10.0.0.11/32", "routerId": "10.0.0.11", "timestamp": 1619275261428, "active":
     true}, {"namespace": "nxos", "hostname": "leaf01", "vrf": "default", "ifname":
     "loopback1", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
-    0, "adjState": "passive", "peerIP": "", "numChanges": 4.0, "lastChangeTime": "-",
+    0, "adjState": "passive", "peerIP": "", "numChanges": 4.0, "lastChangeTime": 0,
     "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio": 0.0, "lastUpTime": 0.0, "instance":
     "", "reason": "", "areaStub": false, "bfdStatus": "disabled", "lsaRetxCnt": 0.0,
     "peerRouterId": "", "cost": 1, "retxTime": 5, "deadTime": 40, "helloTime": 10,
@@ -8421,7 +8425,7 @@ tests:
     "10.0.0.32/32", "routerId": "10.0.0.11", "timestamp": 1619275261428, "active":
     true}, {"namespace": "nxos", "hostname": "exit02", "vrf": "default", "ifname":
     "loopback1", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
-    0, "adjState": "passive", "peerIP": "", "numChanges": 4.0, "lastChangeTime": "-",
+    0, "adjState": "passive", "peerIP": "", "numChanges": 4.0, "lastChangeTime": 0,
     "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio": 0.0, "lastUpTime": 0.0, "instance":
     "", "reason": "", "areaStub": false, "bfdStatus": "disabled", "lsaRetxCnt": 0.0,
     "peerRouterId": "", "cost": 1, "retxTime": 5, "deadTime": 40, "helloTime": 10,
@@ -8429,7 +8433,7 @@ tests:
     "10.0.0.32/32", "routerId": "10.0.0.32", "timestamp": 1619275261836, "active":
     true}, {"namespace": "nxos", "hostname": "exit02", "vrf": "default", "ifname":
     "loopback0", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
-    0, "adjState": "passive", "peerIP": "", "numChanges": 4.0, "lastChangeTime": "-",
+    0, "adjState": "passive", "peerIP": "", "numChanges": 4.0, "lastChangeTime": 0,
     "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio": 0.0, "lastUpTime": 0.0, "instance":
     "", "reason": "", "areaStub": false, "bfdStatus": "disabled", "lsaRetxCnt": 0.0,
     "peerRouterId": "", "cost": 1, "retxTime": 5, "deadTime": 40, "helloTime": 10,
@@ -8437,7 +8441,7 @@ tests:
     "10.0.0.32/32", "routerId": "10.0.0.32", "timestamp": 1619275261836, "active":
     true}, {"namespace": "nxos", "hostname": "leaf04", "vrf": "default", "ifname":
     "loopback0", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
-    0, "adjState": "passive", "peerIP": "", "numChanges": 4.0, "lastChangeTime": "-",
+    0, "adjState": "passive", "peerIP": "", "numChanges": 4.0, "lastChangeTime": 0,
     "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio": 0.0, "lastUpTime": 0.0, "instance":
     "", "reason": "", "areaStub": false, "bfdStatus": "disabled", "lsaRetxCnt": 0.0,
     "peerRouterId": "", "cost": 1, "retxTime": 5, "deadTime": 40, "helloTime": 10,
@@ -8445,7 +8449,7 @@ tests:
     "10.0.0.14/32", "routerId": "10.0.0.14", "timestamp": 1619275262039, "active":
     true}, {"namespace": "nxos", "hostname": "leaf04", "vrf": "default", "ifname":
     "loopback1", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
-    0, "adjState": "passive", "peerIP": "", "numChanges": 4.0, "lastChangeTime": "-",
+    0, "adjState": "passive", "peerIP": "", "numChanges": 4.0, "lastChangeTime": 0,
     "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio": 0.0, "lastUpTime": 0.0, "instance":
     "", "reason": "", "areaStub": false, "bfdStatus": "disabled", "lsaRetxCnt": 0.0,
     "peerRouterId": "", "cost": 1, "retxTime": 5, "deadTime": 40, "helloTime": 10,
@@ -8453,7 +8457,7 @@ tests:
     "10.0.0.21/32", "routerId": "10.0.0.14", "timestamp": 1619275262039, "active":
     true}, {"namespace": "nxos", "hostname": "spine01", "vrf": "default", "ifname":
     "loopback1", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
-    0, "adjState": "passive", "peerIP": "", "numChanges": 4.0, "lastChangeTime": "-",
+    0, "adjState": "passive", "peerIP": "", "numChanges": 4.0, "lastChangeTime": 0,
     "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio": 0.0, "lastUpTime": 0.0, "instance":
     "", "reason": "", "areaStub": false, "bfdStatus": "disabled", "lsaRetxCnt": 0.0,
     "peerRouterId": "", "cost": 1, "retxTime": 5, "deadTime": 40, "helloTime": 10,
@@ -8461,7 +8465,7 @@ tests:
     "10.0.0.21/32", "routerId": "10.0.0.21", "timestamp": 1619275262040, "active":
     true}, {"namespace": "nxos", "hostname": "spine01", "vrf": "default", "ifname":
     "loopback0", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
-    0, "adjState": "passive", "peerIP": "", "numChanges": 4.0, "lastChangeTime": "-",
+    0, "adjState": "passive", "peerIP": "", "numChanges": 4.0, "lastChangeTime": 0,
     "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio": 0.0, "lastUpTime": 0.0, "instance":
     "", "reason": "", "areaStub": false, "bfdStatus": "disabled", "lsaRetxCnt": 0.0,
     "peerRouterId": "", "cost": 1, "retxTime": 5, "deadTime": 40, "helloTime": 10,
@@ -8469,7 +8473,7 @@ tests:
     "10.0.0.21/32", "routerId": "10.0.0.21", "timestamp": 1619275262040, "active":
     true}, {"namespace": "nxos", "hostname": "leaf02", "vrf": "default", "ifname":
     "loopback1", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
-    0, "adjState": "passive", "peerIP": "", "numChanges": 7.0, "lastChangeTime": "-",
+    0, "adjState": "passive", "peerIP": "", "numChanges": 7.0, "lastChangeTime": 0,
     "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio": 0.0, "lastUpTime": 0.0, "instance":
     "", "reason": "", "areaStub": false, "bfdStatus": "disabled", "lsaRetxCnt": 0.0,
     "peerRouterId": "", "cost": 1, "retxTime": 5, "deadTime": 40, "helloTime": 10,
@@ -8477,7 +8481,7 @@ tests:
     "10.0.0.12/32", "routerId": "10.0.0.12", "timestamp": 1619275262652, "active":
     true}, {"namespace": "nxos", "hostname": "leaf02", "vrf": "default", "ifname":
     "loopback0", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
-    0, "adjState": "passive", "peerIP": "", "numChanges": 7.0, "lastChangeTime": "-",
+    0, "adjState": "passive", "peerIP": "", "numChanges": 7.0, "lastChangeTime": 0,
     "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio": 0.0, "lastUpTime": 0.0, "instance":
     "", "reason": "", "areaStub": false, "bfdStatus": "disabled", "lsaRetxCnt": 0.0,
     "peerRouterId": "", "cost": 1, "retxTime": 5, "deadTime": 40, "helloTime": 10,

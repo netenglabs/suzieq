@@ -1827,50 +1827,53 @@ tests:
 - command: device show --columns='*' --format=json
   data-directory: tests/data/junos/parquet-out
   marks: device show junos all
-  output: '[{"namespace": "junos", "hostname": "firewall01", "model": "vm", "version":
+  output: '[{"namespace": "junos", "hostname": "server101", "model": "vm", "version":
     "18.04.3 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
-    "address": "10.255.5.40", "bootupTimestamp": 1622997934000, "os": "linux", "serialNumber":
-    "", "timestamp": 1623025796138, "active": true}, {"namespace": "junos", "hostname":
-    "server101", "model": "vm", "version": "18.04.3 LTS", "vendor": "Ubuntu", "architecture":
-    "x86-64", "status": "alive", "address": "10.255.5.72", "bootupTimestamp": 1622997922000,
+    "address": "10.255.5.72", "bootupTimestamp": 1622997922000, "uptime": 27873928,
     "os": "linux", "serialNumber": "", "timestamp": 1623025795928, "active": true},
-    {"namespace": "junos", "hostname": "server202", "model": "vm", "version": "18.04.3
+    {"namespace": "junos", "hostname": "server102", "model": "vm", "version": "18.04.3
     LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive", "address":
-    "10.255.5.71", "bootupTimestamp": 1622997902000, "os": "linux", "serialNumber":
+    "10.255.5.169", "bootupTimestamp": 1622997951000, "uptime": 27844928, "os": "linux",
+    "serialNumber": "", "timestamp": 1623025795928, "active": true}, {"namespace":
+    "junos", "hostname": "server201", "model": "vm", "version": "18.04.3 LTS", "vendor":
+    "Ubuntu", "architecture": "x86-64", "status": "alive", "address": "10.255.5.49",
+    "bootupTimestamp": 1622997945000, "uptime": 27850928, "os": "linux", "serialNumber":
     "", "timestamp": 1623025795928, "active": true}, {"namespace": "junos", "hostname":
-    "server102", "model": "vm", "version": "18.04.3 LTS", "vendor": "Ubuntu", "architecture":
-    "x86-64", "status": "alive", "address": "10.255.5.169", "bootupTimestamp": 1622997951000,
-    "os": "linux", "serialNumber": "", "timestamp": 1623025795928, "active": true},
-    {"namespace": "junos", "hostname": "server201", "model": "vm", "version": "18.04.3
-    LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive", "address":
-    "10.255.5.49", "bootupTimestamp": 1622997945000, "os": "linux", "serialNumber":
-    "", "timestamp": 1623025795928, "active": true}, {"namespace": "junos", "hostname":
-    "exit02", "model": "vqfx-10000", "version": "19.4R1.10", "vendor": "Juniper",
-    "architecture": "", "status": "alive", "address": "10.255.5.252", "bootupTimestamp":
-    1622998009947, "os": "junos-qfx", "serialNumber": "87673382385", "timestamp":
-    1623025800947, "active": true}, {"namespace": "junos", "hostname": "dcedge01",
-    "model": "vqfx-10000", "version": "19.4R1.10", "vendor": "Juniper", "architecture":
-    "", "status": "alive", "address": "10.255.5.250", "bootupTimestamp": 1622998015405,
-    "os": "junos-qfx", "serialNumber": "52105701727", "timestamp": 1623025800405,
-    "active": true}, {"namespace": "junos", "hostname": "exit01", "model": "vqfx-10000",
-    "version": "19.4R1.10", "vendor": "Juniper", "architecture": "", "status": "alive",
-    "address": "10.255.5.251", "bootupTimestamp": 1622998009512, "os": "junos-qfx",
-    "serialNumber": "47187512782", "timestamp": 1623025799512, "active": true}, {"namespace":
+    "server202", "model": "vm", "version": "18.04.3 LTS", "vendor": "Ubuntu", "architecture":
+    "x86-64", "status": "alive", "address": "10.255.5.71", "bootupTimestamp": 1622997902000,
+    "uptime": 27893928, "os": "linux", "serialNumber": "", "timestamp": 1623025795928,
+    "active": true}, {"namespace": "junos", "hostname": "firewall01", "model": "vm",
+    "version": "18.04.3 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status":
+    "alive", "address": "10.255.5.40", "bootupTimestamp": 1622997934000, "uptime":
+    27862138, "os": "linux", "serialNumber": "", "timestamp": 1623025796138, "active":
+    true}, {"namespace": "junos", "hostname": "spine01", "model": "vqfx-10000", "version":
+    "19.4R1.10", "vendor": "Juniper", "architecture": "", "status": "alive", "address":
+    "10.255.5.117", "bootupTimestamp": 1622997977081, "uptime": 27822000, "os": "junos-qfx",
+    "serialNumber": "38645725387", "timestamp": 1623025799081, "active": true}, {"namespace":
     "junos", "hostname": "spine02", "model": "vqfx-10000", "version": "19.4R1.10",
     "vendor": "Juniper", "architecture": "", "status": "alive", "address": "10.255.5.118",
-    "bootupTimestamp": 1622998003357, "os": "junos-qfx", "serialNumber": "05518142768",
-    "timestamp": 1623025799357, "active": true}, {"namespace": "junos", "hostname":
+    "bootupTimestamp": 1622998003357, "uptime": 27796000, "os": "junos-qfx", "serialNumber":
+    "05518142768", "timestamp": 1623025799357, "active": true}, {"namespace": "junos",
+    "hostname": "leaf02", "model": "vqfx-10000", "version": "19.4R1.10", "vendor":
+    "Juniper", "architecture": "", "status": "alive", "address": "10.255.5.185", "bootupTimestamp":
+    1622998018407, "uptime": 27781000, "os": "junos-qfx", "serialNumber": "01333004301",
+    "timestamp": 1623025799407, "active": true}, {"namespace": "junos", "hostname":
+    "exit01", "model": "vqfx-10000", "version": "19.4R1.10", "vendor": "Juniper",
+    "architecture": "", "status": "alive", "address": "10.255.5.251", "bootupTimestamp":
+    1622998009512, "uptime": 27790000, "os": "junos-qfx", "serialNumber": "47187512782",
+    "timestamp": 1623025799512, "active": true}, {"namespace": "junos", "hostname":
     "leaf01", "model": "vqfx-10000", "version": "19.4R1.10", "vendor": "Juniper",
     "architecture": "", "status": "alive", "address": "10.255.5.184", "bootupTimestamp":
-    1622998000875, "os": "junos-qfx", "serialNumber": "66124662877", "timestamp":
-    1623025799875, "active": true}, {"namespace": "junos", "hostname": "leaf02", "model":
-    "vqfx-10000", "version": "19.4R1.10", "vendor": "Juniper", "architecture": "",
-    "status": "alive", "address": "10.255.5.185", "bootupTimestamp": 1622998018407,
-    "os": "junos-qfx", "serialNumber": "01333004301", "timestamp": 1623025799407,
-    "active": true}, {"namespace": "junos", "hostname": "spine01", "model": "vqfx-10000",
-    "version": "19.4R1.10", "vendor": "Juniper", "architecture": "", "status": "alive",
-    "address": "10.255.5.117", "bootupTimestamp": 1622997977081, "os": "junos-qfx",
-    "serialNumber": "38645725387", "timestamp": 1623025799081, "active": true}]'
+    1622998000875, "uptime": 27799000, "os": "junos-qfx", "serialNumber": "66124662877",
+    "timestamp": 1623025799875, "active": true}, {"namespace": "junos", "hostname":
+    "dcedge01", "model": "vqfx-10000", "version": "19.4R1.10", "vendor": "Juniper",
+    "architecture": "", "status": "alive", "address": "10.255.5.250", "bootupTimestamp":
+    1622998015405, "uptime": 27785000, "os": "junos-qfx", "serialNumber": "52105701727",
+    "timestamp": 1623025800405, "active": true}, {"namespace": "junos", "hostname":
+    "exit02", "model": "vqfx-10000", "version": "19.4R1.10", "vendor": "Juniper",
+    "architecture": "", "status": "alive", "address": "10.255.5.252", "bootupTimestamp":
+    1622998009947, "uptime": 27791000, "os": "junos-qfx", "serialNumber": "87673382385",
+    "timestamp": 1623025800947, "active": true}]'
 - command: evpnVni show --columns='*' --format=json
   data-directory: tests/data/junos/parquet-out
   marks: evpnVni show junos all
@@ -4086,15 +4089,15 @@ tests:
   marks: ospf show junos all
   output: '[{"namespace": "junos", "hostname": "leaf02", "vrf": "default", "ifname":
     "lo0.0", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0,
-    "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime": "-",
-    "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio": 128.0, "lastUpTime": 0.0, "instance":
-    "", "reason": "", "areaStub": false, "bfdStatus": "up", "lsaRetxCnt": 0.0, "peerRouterId":
+    "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0, "sqvers":
+    1.0, "lastDownTime": 0.0, "nbrPrio": 128.0, "lastUpTime": 0.0, "instance": "",
+    "reason": "", "areaStub": false, "bfdStatus": "up", "lsaRetxCnt": 0.0, "peerRouterId":
     "", "cost": 0, "retxTime": 5, "deadTime": 40, "helloTime": 10, "networkType":
     "broadcast", "maskLen": 32, "isUnnumbered": false, "ipAddress": "10.0.0.21/32",
     "routerId": "10.0.0.12", "timestamp": 1623025798026, "active": true}, {"namespace":
     "junos", "hostname": "spine01", "vrf": "default", "ifname": "lo0.0", "peerHostname":
     "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive",
-    "peerIP": "", "numChanges": 0.0, "lastChangeTime": "-", "sqvers": 1.0, "lastDownTime":
+    "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0, "sqvers": 1.0, "lastDownTime":
     0.0, "nbrPrio": 128.0, "lastUpTime": 0.0, "instance": "", "reason": "", "areaStub":
     false, "bfdStatus": "up", "lsaRetxCnt": 0.0, "peerRouterId": "", "cost": 0, "retxTime":
     5, "deadTime": 40, "helloTime": 10, "networkType": "broadcast", "maskLen": 32,
@@ -4102,162 +4105,162 @@ tests:
     1623025798027, "active": true}, {"namespace": "junos", "hostname": "exit01", "vrf":
     "default", "ifname": "lo0.0", "peerHostname": "", "area": "0.0.0.0", "ifState":
     "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
-    "-", "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio": 128.0, "lastUpTime": 0.0,
-    "instance": "", "reason": "", "areaStub": false, "bfdStatus": "up", "lsaRetxCnt":
-    0.0, "peerRouterId": "", "cost": 0, "retxTime": 5, "deadTime": 40, "helloTime":
-    10, "networkType": "broadcast", "maskLen": 32, "isUnnumbered": false, "ipAddress":
-    "10.0.0.31/32", "routerId": "10.0.0.31", "timestamp": 1623025798361, "active":
-    true}, {"namespace": "junos", "hostname": "leaf01", "vrf": "default", "ifname":
-    "lo0.0", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0,
-    "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime": "-",
-    "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio": 128.0, "lastUpTime": 0.0, "instance":
+    0, "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio": 128.0, "lastUpTime": 0.0, "instance":
     "", "reason": "", "areaStub": false, "bfdStatus": "up", "lsaRetxCnt": 0.0, "peerRouterId":
     "", "cost": 0, "retxTime": 5, "deadTime": 40, "helloTime": 10, "networkType":
-    "broadcast", "maskLen": 32, "isUnnumbered": false, "ipAddress": "10.0.0.11/32",
-    "routerId": "10.0.0.11", "timestamp": 1623025798813, "active": true}, {"namespace":
-    "junos", "hostname": "exit02", "vrf": "default", "ifname": "lo0.0", "peerHostname":
+    "broadcast", "maskLen": 32, "isUnnumbered": false, "ipAddress": "10.0.0.31/32",
+    "routerId": "10.0.0.31", "timestamp": 1623025798361, "active": true}, {"namespace":
+    "junos", "hostname": "leaf01", "vrf": "default", "ifname": "lo0.0", "peerHostname":
     "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive",
-    "peerIP": "", "numChanges": 0.0, "lastChangeTime": "-", "sqvers": 1.0, "lastDownTime":
+    "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0, "sqvers": 1.0, "lastDownTime":
     0.0, "nbrPrio": 128.0, "lastUpTime": 0.0, "instance": "", "reason": "", "areaStub":
     false, "bfdStatus": "up", "lsaRetxCnt": 0.0, "peerRouterId": "", "cost": 0, "retxTime":
     5, "deadTime": 40, "helloTime": 10, "networkType": "broadcast", "maskLen": 32,
-    "isUnnumbered": false, "ipAddress": "10.0.0.22/32", "routerId": "10.0.0.32", "timestamp":
-    1623025799339, "active": true}, {"namespace": "junos", "hostname": "spine02",
-    "vrf": "default", "ifname": "lo0.0", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "isUnnumbered": false, "ipAddress": "10.0.0.11/32", "routerId": "10.0.0.11", "timestamp":
+    1623025798813, "active": true}, {"namespace": "junos", "hostname": "exit02", "vrf":
+    "default", "ifname": "lo0.0", "peerHostname": "", "area": "0.0.0.0", "ifState":
     "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
-    "-", "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio": 128.0, "lastUpTime": 0.0,
-    "instance": "", "reason": "", "areaStub": false, "bfdStatus": "up", "lsaRetxCnt":
-    0.0, "peerRouterId": "", "cost": 0, "retxTime": 5, "deadTime": 40, "helloTime":
-    10, "networkType": "broadcast", "maskLen": 32, "isUnnumbered": false, "ipAddress":
-    "10.0.0.22/32", "routerId": "10.0.0.22", "timestamp": 1623025799761, "active":
-    true}, {"namespace": "junos", "hostname": "leaf02", "vrf": "default", "ifname":
-    "xe-0/0/0.0", "peerHostname": "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount":
-    1, "adjState": "full", "peerIP": "10.0.0.21", "numChanges": 0.0, "lastChangeTime":
-    1622998742098, "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio": 128.0, "lastUpTime":
-    0.0, "instance": "", "reason": "", "areaStub": false, "bfdStatus": "up", "lsaRetxCnt":
-    0.0, "peerRouterId": "10.0.0.21", "cost": 1, "retxTime": 5, "deadTime": 40, "helloTime":
-    10, "networkType": "p2p", "maskLen": 32, "isUnnumbered": false, "ipAddress": "10.0.0.12/32",
-    "routerId": "10.0.0.12", "timestamp": 1623025798026, "active": true}, {"namespace":
-    "junos", "hostname": "exit01", "vrf": "default", "ifname": "xe-0/0/0.0", "peerHostname":
-    "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
-    "peerIP": "10.0.0.21", "numChanges": 0.0, "lastChangeTime": 1622998711894, "sqvers":
-    1.0, "lastDownTime": 0.0, "nbrPrio": 128.0, "lastUpTime": 0.0, "instance": "",
-    "reason": "", "areaStub": false, "bfdStatus": "up", "lsaRetxCnt": 0.0, "peerRouterId":
-    "10.0.0.21", "cost": 1, "retxTime": 5, "deadTime": 40, "helloTime": 10, "networkType":
-    "p2p", "maskLen": 32, "isUnnumbered": false, "ipAddress": "10.0.0.31/32", "routerId":
-    "10.0.0.31", "timestamp": 1623025798361, "active": true}, {"namespace": "junos",
-    "hostname": "leaf01", "vrf": "default", "ifname": "xe-0/0/0.0", "peerHostname":
-    "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
-    "peerIP": "10.0.0.21", "numChanges": 0.0, "lastChangeTime": 1622998720890, "sqvers":
-    1.0, "lastDownTime": 0.0, "nbrPrio": 128.0, "lastUpTime": 0.0, "instance": "",
-    "reason": "", "areaStub": false, "bfdStatus": "up", "lsaRetxCnt": 0.0, "peerRouterId":
-    "10.0.0.21", "cost": 1, "retxTime": 5, "deadTime": 40, "helloTime": 10, "networkType":
-    "p2p", "maskLen": 32, "isUnnumbered": false, "ipAddress": "10.0.0.11/32", "routerId":
-    "10.0.0.11", "timestamp": 1623025798813, "active": true}, {"namespace": "junos",
-    "hostname": "exit02", "vrf": "default", "ifname": "xe-0/0/0.0", "peerHostname":
-    "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
-    "peerIP": "10.0.0.21", "numChanges": 0.0, "lastChangeTime": 1622998703476, "sqvers":
-    1.0, "lastDownTime": 0.0, "nbrPrio": 128.0, "lastUpTime": 0.0, "instance": "",
-    "reason": "", "areaStub": false, "bfdStatus": "up", "lsaRetxCnt": 0.0, "peerRouterId":
-    "10.0.0.21", "cost": 1, "retxTime": 5, "deadTime": 40, "helloTime": 10, "networkType":
-    "p2p", "maskLen": 32, "isUnnumbered": false, "ipAddress": "10.0.0.32/32", "routerId":
-    "10.0.0.32", "timestamp": 1623025799339, "active": true}, {"namespace": "junos",
-    "hostname": "leaf02", "vrf": "default", "ifname": "xe-0/0/1.0", "peerHostname":
-    "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
-    "peerIP": "10.0.0.22", "numChanges": 0.0, "lastChangeTime": 1622998742098, "sqvers":
-    1.0, "lastDownTime": 0.0, "nbrPrio": 128.0, "lastUpTime": 0.0, "instance": "",
-    "reason": "", "areaStub": false, "bfdStatus": "up", "lsaRetxCnt": 0.0, "peerRouterId":
-    "10.0.0.22", "cost": 1, "retxTime": 5, "deadTime": 40, "helloTime": 10, "networkType":
-    "p2p", "maskLen": 32, "isUnnumbered": false, "ipAddress": "10.0.0.12/32", "routerId":
-    "10.0.0.12", "timestamp": 1623025798026, "active": true}, {"namespace": "junos",
-    "hostname": "exit01", "vrf": "default", "ifname": "xe-0/0/1.0", "peerHostname":
-    "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
-    "peerIP": "10.0.0.22", "numChanges": 0.0, "lastChangeTime": 1622998711894, "sqvers":
-    1.0, "lastDownTime": 0.0, "nbrPrio": 128.0, "lastUpTime": 0.0, "instance": "",
-    "reason": "", "areaStub": false, "bfdStatus": "up", "lsaRetxCnt": 0.0, "peerRouterId":
-    "10.0.0.22", "cost": 1, "retxTime": 5, "deadTime": 40, "helloTime": 10, "networkType":
-    "p2p", "maskLen": 32, "isUnnumbered": false, "ipAddress": "10.0.0.31/32", "routerId":
-    "10.0.0.31", "timestamp": 1623025798361, "active": true}, {"namespace": "junos",
-    "hostname": "leaf01", "vrf": "default", "ifname": "xe-0/0/1.0", "peerHostname":
-    "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
-    "peerIP": "10.0.0.22", "numChanges": 0.0, "lastChangeTime": 1622998719890, "sqvers":
-    1.0, "lastDownTime": 0.0, "nbrPrio": 128.0, "lastUpTime": 0.0, "instance": "",
-    "reason": "", "areaStub": false, "bfdStatus": "up", "lsaRetxCnt": 0.0, "peerRouterId":
-    "10.0.0.22", "cost": 1, "retxTime": 5, "deadTime": 40, "helloTime": 10, "networkType":
-    "p2p", "maskLen": 32, "isUnnumbered": false, "ipAddress": "10.0.0.11/32", "routerId":
-    "10.0.0.11", "timestamp": 1623025798813, "active": true}, {"namespace": "junos",
-    "hostname": "exit02", "vrf": "default", "ifname": "xe-0/0/1.0", "peerHostname":
-    "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
-    "peerIP": "10.0.0.22", "numChanges": 0.0, "lastChangeTime": 1622998701476, "sqvers":
-    1.0, "lastDownTime": 0.0, "nbrPrio": 128.0, "lastUpTime": 0.0, "instance": "",
-    "reason": "", "areaStub": false, "bfdStatus": "up", "lsaRetxCnt": 0.0, "peerRouterId":
-    "10.0.0.22", "cost": 1, "retxTime": 5, "deadTime": 40, "helloTime": 10, "networkType":
-    "p2p", "maskLen": 32, "isUnnumbered": false, "ipAddress": "10.0.0.32/32", "routerId":
-    "10.0.0.32", "timestamp": 1623025799339, "active": true}, {"namespace": "junos",
-    "hostname": "spine01", "vrf": "default", "ifname": "xe-0/0/3.0", "peerHostname":
-    "exit02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
-    "peerIP": "10.0.0.32", "numChanges": 0.0, "lastChangeTime": 1622998703428, "sqvers":
-    1.0, "lastDownTime": 0.0, "nbrPrio": 128.0, "lastUpTime": 0.0, "instance": "",
-    "reason": "", "areaStub": false, "bfdStatus": "up", "lsaRetxCnt": 0.0, "peerRouterId":
-    "10.0.0.32", "cost": 1, "retxTime": 5, "deadTime": 40, "helloTime": 10, "networkType":
-    "p2p", "maskLen": 32, "isUnnumbered": false, "ipAddress": "10.0.0.21/32", "routerId":
-    "10.0.0.21", "timestamp": 1623025798027, "active": true}, {"namespace": "junos",
-    "hostname": "spine02", "vrf": "default", "ifname": "xe-0/0/3.0", "peerHostname":
-    "exit02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
-    "peerIP": "10.0.0.32", "numChanges": 0.0, "lastChangeTime": 1622998701688, "sqvers":
-    1.0, "lastDownTime": 0.0, "nbrPrio": 128.0, "lastUpTime": 0.0, "instance": "",
-    "reason": "", "areaStub": false, "bfdStatus": "up", "lsaRetxCnt": 0.0, "peerRouterId":
-    "10.0.0.32", "cost": 1, "retxTime": 5, "deadTime": 40, "helloTime": 10, "networkType":
-    "p2p", "maskLen": 32, "isUnnumbered": false, "ipAddress": "10.0.0.22/32", "routerId":
-    "10.0.0.22", "timestamp": 1623025799761, "active": true}, {"namespace": "junos",
-    "hostname": "spine01", "vrf": "default", "ifname": "xe-0/0/2.0", "peerHostname":
-    "exit01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
-    "peerIP": "10.0.0.31", "numChanges": 0.0, "lastChangeTime": 1622998711428, "sqvers":
-    1.0, "lastDownTime": 0.0, "nbrPrio": 128.0, "lastUpTime": 0.0, "instance": "",
-    "reason": "", "areaStub": false, "bfdStatus": "up", "lsaRetxCnt": 0.0, "peerRouterId":
-    "10.0.0.31", "cost": 1, "retxTime": 5, "deadTime": 40, "helloTime": 10, "networkType":
-    "p2p", "maskLen": 32, "isUnnumbered": false, "ipAddress": "10.0.0.21/32", "routerId":
-    "10.0.0.21", "timestamp": 1623025798027, "active": true}, {"namespace": "junos",
-    "hostname": "spine02", "vrf": "default", "ifname": "xe-0/0/2.0", "peerHostname":
-    "exit01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
-    "peerIP": "10.0.0.31", "numChanges": 0.0, "lastChangeTime": 1622998711688, "sqvers":
-    1.0, "lastDownTime": 0.0, "nbrPrio": 128.0, "lastUpTime": 0.0, "instance": "",
-    "reason": "", "areaStub": false, "bfdStatus": "up", "lsaRetxCnt": 0.0, "peerRouterId":
-    "10.0.0.31", "cost": 1, "retxTime": 5, "deadTime": 40, "helloTime": 10, "networkType":
-    "p2p", "maskLen": 32, "isUnnumbered": false, "ipAddress": "10.0.0.22/32", "routerId":
-    "10.0.0.22", "timestamp": 1623025799761, "active": true}, {"namespace": "junos",
-    "hostname": "spine01", "vrf": "default", "ifname": "xe-0/0/1.0", "peerHostname":
-    "leaf02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
-    "peerIP": "10.0.0.12", "numChanges": 0.0, "lastChangeTime": 1622998742428, "sqvers":
-    1.0, "lastDownTime": 0.0, "nbrPrio": 128.0, "lastUpTime": 0.0, "instance": "",
-    "reason": "", "areaStub": false, "bfdStatus": "up", "lsaRetxCnt": 0.0, "peerRouterId":
-    "10.0.0.12", "cost": 1, "retxTime": 5, "deadTime": 40, "helloTime": 10, "networkType":
-    "p2p", "maskLen": 32, "isUnnumbered": false, "ipAddress": "10.0.0.21/32", "routerId":
-    "10.0.0.21", "timestamp": 1623025798027, "active": true}, {"namespace": "junos",
-    "hostname": "spine02", "vrf": "default", "ifname": "xe-0/0/1.0", "peerHostname":
-    "leaf02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
-    "peerIP": "10.0.0.12", "numChanges": 0.0, "lastChangeTime": 1622998742688, "sqvers":
-    1.0, "lastDownTime": 0.0, "nbrPrio": 128.0, "lastUpTime": 0.0, "instance": "",
-    "reason": "", "areaStub": false, "bfdStatus": "up", "lsaRetxCnt": 0.0, "peerRouterId":
-    "10.0.0.12", "cost": 1, "retxTime": 5, "deadTime": 40, "helloTime": 10, "networkType":
-    "p2p", "maskLen": 32, "isUnnumbered": false, "ipAddress": "10.0.0.22/32", "routerId":
-    "10.0.0.22", "timestamp": 1623025799761, "active": true}, {"namespace": "junos",
-    "hostname": "spine01", "vrf": "default", "ifname": "xe-0/0/0.0", "peerHostname":
-    "leaf01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
-    "peerIP": "10.0.0.11", "numChanges": 0.0, "lastChangeTime": 1622998720428, "sqvers":
-    1.0, "lastDownTime": 0.0, "nbrPrio": 128.0, "lastUpTime": 0.0, "instance": "",
-    "reason": "", "areaStub": false, "bfdStatus": "up", "lsaRetxCnt": 0.0, "peerRouterId":
-    "10.0.0.11", "cost": 1, "retxTime": 5, "deadTime": 40, "helloTime": 10, "networkType":
-    "p2p", "maskLen": 32, "isUnnumbered": false, "ipAddress": "10.0.0.21/32", "routerId":
-    "10.0.0.21", "timestamp": 1623025798027, "active": true}, {"namespace": "junos",
-    "hostname": "spine02", "vrf": "default", "ifname": "xe-0/0/0.0", "peerHostname":
-    "leaf01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
-    "peerIP": "10.0.0.11", "numChanges": 0.0, "lastChangeTime": 1622998720688, "sqvers":
-    1.0, "lastDownTime": 0.0, "nbrPrio": 128.0, "lastUpTime": 0.0, "instance": "",
-    "reason": "", "areaStub": false, "bfdStatus": "up", "lsaRetxCnt": 0.0, "peerRouterId":
-    "10.0.0.11", "cost": 1, "retxTime": 5, "deadTime": 40, "helloTime": 10, "networkType":
-    "p2p", "maskLen": 32, "isUnnumbered": false, "ipAddress": "10.0.0.22/32", "routerId":
-    "10.0.0.22", "timestamp": 1623025799761, "active": true}]'
+    0, "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio": 128.0, "lastUpTime": 0.0, "instance":
+    "", "reason": "", "areaStub": false, "bfdStatus": "up", "lsaRetxCnt": 0.0, "peerRouterId":
+    "", "cost": 0, "retxTime": 5, "deadTime": 40, "helloTime": 10, "networkType":
+    "broadcast", "maskLen": 32, "isUnnumbered": false, "ipAddress": "10.0.0.22/32",
+    "routerId": "10.0.0.32", "timestamp": 1623025799339, "active": true}, {"namespace":
+    "junos", "hostname": "spine02", "vrf": "default", "ifname": "lo0.0", "peerHostname":
+    "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0, "sqvers": 1.0, "lastDownTime":
+    0.0, "nbrPrio": 128.0, "lastUpTime": 0.0, "instance": "", "reason": "", "areaStub":
+    false, "bfdStatus": "up", "lsaRetxCnt": 0.0, "peerRouterId": "", "cost": 0, "retxTime":
+    5, "deadTime": 40, "helloTime": 10, "networkType": "broadcast", "maskLen": 32,
+    "isUnnumbered": false, "ipAddress": "10.0.0.22/32", "routerId": "10.0.0.22", "timestamp":
+    1623025799761, "active": true}, {"namespace": "junos", "hostname": "leaf02", "vrf":
+    "default", "ifname": "xe-0/0/0.0", "peerHostname": "spine01", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21", "numChanges":
+    0.0, "lastChangeTime": 1622998742098, "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio":
+    128.0, "lastUpTime": 0.0, "instance": "", "reason": "", "areaStub": false, "bfdStatus":
+    "up", "lsaRetxCnt": 0.0, "peerRouterId": "10.0.0.21", "cost": 1, "retxTime": 5,
+    "deadTime": 40, "helloTime": 10, "networkType": "p2p", "maskLen": 32, "isUnnumbered":
+    false, "ipAddress": "10.0.0.12/32", "routerId": "10.0.0.12", "timestamp": 1623025798026,
+    "active": true}, {"namespace": "junos", "hostname": "exit01", "vrf": "default",
+    "ifname": "xe-0/0/0.0", "peerHostname": "spine01", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21", "numChanges":
+    0.0, "lastChangeTime": 1622998711894, "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio":
+    128.0, "lastUpTime": 0.0, "instance": "", "reason": "", "areaStub": false, "bfdStatus":
+    "up", "lsaRetxCnt": 0.0, "peerRouterId": "10.0.0.21", "cost": 1, "retxTime": 5,
+    "deadTime": 40, "helloTime": 10, "networkType": "p2p", "maskLen": 32, "isUnnumbered":
+    false, "ipAddress": "10.0.0.31/32", "routerId": "10.0.0.31", "timestamp": 1623025798361,
+    "active": true}, {"namespace": "junos", "hostname": "leaf01", "vrf": "default",
+    "ifname": "xe-0/0/0.0", "peerHostname": "spine01", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21", "numChanges":
+    0.0, "lastChangeTime": 1622998720890, "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio":
+    128.0, "lastUpTime": 0.0, "instance": "", "reason": "", "areaStub": false, "bfdStatus":
+    "up", "lsaRetxCnt": 0.0, "peerRouterId": "10.0.0.21", "cost": 1, "retxTime": 5,
+    "deadTime": 40, "helloTime": 10, "networkType": "p2p", "maskLen": 32, "isUnnumbered":
+    false, "ipAddress": "10.0.0.11/32", "routerId": "10.0.0.11", "timestamp": 1623025798813,
+    "active": true}, {"namespace": "junos", "hostname": "exit02", "vrf": "default",
+    "ifname": "xe-0/0/0.0", "peerHostname": "spine01", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21", "numChanges":
+    0.0, "lastChangeTime": 1622998703476, "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio":
+    128.0, "lastUpTime": 0.0, "instance": "", "reason": "", "areaStub": false, "bfdStatus":
+    "up", "lsaRetxCnt": 0.0, "peerRouterId": "10.0.0.21", "cost": 1, "retxTime": 5,
+    "deadTime": 40, "helloTime": 10, "networkType": "p2p", "maskLen": 32, "isUnnumbered":
+    false, "ipAddress": "10.0.0.32/32", "routerId": "10.0.0.32", "timestamp": 1623025799339,
+    "active": true}, {"namespace": "junos", "hostname": "leaf02", "vrf": "default",
+    "ifname": "xe-0/0/1.0", "peerHostname": "spine02", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "numChanges":
+    0.0, "lastChangeTime": 1622998742098, "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio":
+    128.0, "lastUpTime": 0.0, "instance": "", "reason": "", "areaStub": false, "bfdStatus":
+    "up", "lsaRetxCnt": 0.0, "peerRouterId": "10.0.0.22", "cost": 1, "retxTime": 5,
+    "deadTime": 40, "helloTime": 10, "networkType": "p2p", "maskLen": 32, "isUnnumbered":
+    false, "ipAddress": "10.0.0.12/32", "routerId": "10.0.0.12", "timestamp": 1623025798026,
+    "active": true}, {"namespace": "junos", "hostname": "exit01", "vrf": "default",
+    "ifname": "xe-0/0/1.0", "peerHostname": "spine02", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "numChanges":
+    0.0, "lastChangeTime": 1622998711894, "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio":
+    128.0, "lastUpTime": 0.0, "instance": "", "reason": "", "areaStub": false, "bfdStatus":
+    "up", "lsaRetxCnt": 0.0, "peerRouterId": "10.0.0.22", "cost": 1, "retxTime": 5,
+    "deadTime": 40, "helloTime": 10, "networkType": "p2p", "maskLen": 32, "isUnnumbered":
+    false, "ipAddress": "10.0.0.31/32", "routerId": "10.0.0.31", "timestamp": 1623025798361,
+    "active": true}, {"namespace": "junos", "hostname": "leaf01", "vrf": "default",
+    "ifname": "xe-0/0/1.0", "peerHostname": "spine02", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "numChanges":
+    0.0, "lastChangeTime": 1622998719890, "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio":
+    128.0, "lastUpTime": 0.0, "instance": "", "reason": "", "areaStub": false, "bfdStatus":
+    "up", "lsaRetxCnt": 0.0, "peerRouterId": "10.0.0.22", "cost": 1, "retxTime": 5,
+    "deadTime": 40, "helloTime": 10, "networkType": "p2p", "maskLen": 32, "isUnnumbered":
+    false, "ipAddress": "10.0.0.11/32", "routerId": "10.0.0.11", "timestamp": 1623025798813,
+    "active": true}, {"namespace": "junos", "hostname": "exit02", "vrf": "default",
+    "ifname": "xe-0/0/1.0", "peerHostname": "spine02", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "numChanges":
+    0.0, "lastChangeTime": 1622998701476, "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio":
+    128.0, "lastUpTime": 0.0, "instance": "", "reason": "", "areaStub": false, "bfdStatus":
+    "up", "lsaRetxCnt": 0.0, "peerRouterId": "10.0.0.22", "cost": 1, "retxTime": 5,
+    "deadTime": 40, "helloTime": 10, "networkType": "p2p", "maskLen": 32, "isUnnumbered":
+    false, "ipAddress": "10.0.0.32/32", "routerId": "10.0.0.32", "timestamp": 1623025799339,
+    "active": true}, {"namespace": "junos", "hostname": "spine01", "vrf": "default",
+    "ifname": "xe-0/0/3.0", "peerHostname": "exit02", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.32", "numChanges":
+    0.0, "lastChangeTime": 1622998703428, "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio":
+    128.0, "lastUpTime": 0.0, "instance": "", "reason": "", "areaStub": false, "bfdStatus":
+    "up", "lsaRetxCnt": 0.0, "peerRouterId": "10.0.0.32", "cost": 1, "retxTime": 5,
+    "deadTime": 40, "helloTime": 10, "networkType": "p2p", "maskLen": 32, "isUnnumbered":
+    false, "ipAddress": "10.0.0.21/32", "routerId": "10.0.0.21", "timestamp": 1623025798027,
+    "active": true}, {"namespace": "junos", "hostname": "spine02", "vrf": "default",
+    "ifname": "xe-0/0/3.0", "peerHostname": "exit02", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.32", "numChanges":
+    0.0, "lastChangeTime": 1622998701688, "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio":
+    128.0, "lastUpTime": 0.0, "instance": "", "reason": "", "areaStub": false, "bfdStatus":
+    "up", "lsaRetxCnt": 0.0, "peerRouterId": "10.0.0.32", "cost": 1, "retxTime": 5,
+    "deadTime": 40, "helloTime": 10, "networkType": "p2p", "maskLen": 32, "isUnnumbered":
+    false, "ipAddress": "10.0.0.22/32", "routerId": "10.0.0.22", "timestamp": 1623025799761,
+    "active": true}, {"namespace": "junos", "hostname": "spine01", "vrf": "default",
+    "ifname": "xe-0/0/2.0", "peerHostname": "exit01", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.31", "numChanges":
+    0.0, "lastChangeTime": 1622998711428, "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio":
+    128.0, "lastUpTime": 0.0, "instance": "", "reason": "", "areaStub": false, "bfdStatus":
+    "up", "lsaRetxCnt": 0.0, "peerRouterId": "10.0.0.31", "cost": 1, "retxTime": 5,
+    "deadTime": 40, "helloTime": 10, "networkType": "p2p", "maskLen": 32, "isUnnumbered":
+    false, "ipAddress": "10.0.0.21/32", "routerId": "10.0.0.21", "timestamp": 1623025798027,
+    "active": true}, {"namespace": "junos", "hostname": "spine02", "vrf": "default",
+    "ifname": "xe-0/0/2.0", "peerHostname": "exit01", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.31", "numChanges":
+    0.0, "lastChangeTime": 1622998711688, "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio":
+    128.0, "lastUpTime": 0.0, "instance": "", "reason": "", "areaStub": false, "bfdStatus":
+    "up", "lsaRetxCnt": 0.0, "peerRouterId": "10.0.0.31", "cost": 1, "retxTime": 5,
+    "deadTime": 40, "helloTime": 10, "networkType": "p2p", "maskLen": 32, "isUnnumbered":
+    false, "ipAddress": "10.0.0.22/32", "routerId": "10.0.0.22", "timestamp": 1623025799761,
+    "active": true}, {"namespace": "junos", "hostname": "spine01", "vrf": "default",
+    "ifname": "xe-0/0/1.0", "peerHostname": "leaf02", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.12", "numChanges":
+    0.0, "lastChangeTime": 1622998742428, "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio":
+    128.0, "lastUpTime": 0.0, "instance": "", "reason": "", "areaStub": false, "bfdStatus":
+    "up", "lsaRetxCnt": 0.0, "peerRouterId": "10.0.0.12", "cost": 1, "retxTime": 5,
+    "deadTime": 40, "helloTime": 10, "networkType": "p2p", "maskLen": 32, "isUnnumbered":
+    false, "ipAddress": "10.0.0.21/32", "routerId": "10.0.0.21", "timestamp": 1623025798027,
+    "active": true}, {"namespace": "junos", "hostname": "spine02", "vrf": "default",
+    "ifname": "xe-0/0/1.0", "peerHostname": "leaf02", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.12", "numChanges":
+    0.0, "lastChangeTime": 1622998742688, "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio":
+    128.0, "lastUpTime": 0.0, "instance": "", "reason": "", "areaStub": false, "bfdStatus":
+    "up", "lsaRetxCnt": 0.0, "peerRouterId": "10.0.0.12", "cost": 1, "retxTime": 5,
+    "deadTime": 40, "helloTime": 10, "networkType": "p2p", "maskLen": 32, "isUnnumbered":
+    false, "ipAddress": "10.0.0.22/32", "routerId": "10.0.0.22", "timestamp": 1623025799761,
+    "active": true}, {"namespace": "junos", "hostname": "spine01", "vrf": "default",
+    "ifname": "xe-0/0/0.0", "peerHostname": "leaf01", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.11", "numChanges":
+    0.0, "lastChangeTime": 1622998720428, "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio":
+    128.0, "lastUpTime": 0.0, "instance": "", "reason": "", "areaStub": false, "bfdStatus":
+    "up", "lsaRetxCnt": 0.0, "peerRouterId": "10.0.0.11", "cost": 1, "retxTime": 5,
+    "deadTime": 40, "helloTime": 10, "networkType": "p2p", "maskLen": 32, "isUnnumbered":
+    false, "ipAddress": "10.0.0.21/32", "routerId": "10.0.0.21", "timestamp": 1623025798027,
+    "active": true}, {"namespace": "junos", "hostname": "spine02", "vrf": "default",
+    "ifname": "xe-0/0/0.0", "peerHostname": "leaf01", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.11", "numChanges":
+    0.0, "lastChangeTime": 1622998720688, "sqvers": 1.0, "lastDownTime": 0.0, "nbrPrio":
+    128.0, "lastUpTime": 0.0, "instance": "", "reason": "", "areaStub": false, "bfdStatus":
+    "up", "lsaRetxCnt": 0.0, "peerRouterId": "10.0.0.11", "cost": 1, "retxTime": 5,
+    "deadTime": 40, "helloTime": 10, "networkType": "p2p", "maskLen": 32, "isUnnumbered":
+    false, "ipAddress": "10.0.0.22/32", "routerId": "10.0.0.22", "timestamp": 1623025799761,
+    "active": true}]'
 - command: route show --columns='*' --format=json
   data-directory: tests/data/junos/parquet-out
   marks: route show junos all
