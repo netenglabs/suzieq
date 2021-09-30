@@ -3,7 +3,9 @@ from dataclasses import dataclass, asdict, field
 from typing import List
 
 import pandas as pd
+from ipaddress import ip_address
 import streamlit as st
+from suzieq.utils import convert_macaddr_format_to_colon
 from suzieq.gui.guiutils import gui_get_df, SuzieqMainPages
 
 
@@ -129,13 +131,29 @@ def build_query(state, search_text: str) -> str:
         elif ':' in addr and state.table in ['macs', 'arpnd', 'address']:
             query_str += f' {disjunction} macaddr == "{addr}" '
         else:
-            if state.table == 'arpnd':
-                query_str += f' {disjunction} ipAddress == "{addr}" '
+            try:
+                addr = ip_address(addr)
+                macaddr = None
+            except ValueError:
+                macaddr = convert_macaddr_format_to_colon(addr)
+                addr = None
+
+            if state.table == "macs":
+                query_str = f'{disjunction} macaddr == "{macaddr}" '
+            elif state.table == 'arpnd':
+                if addr:
+                    query_str += f' {disjunction} ipAddress == "{addr}" '
+                elif macaddr:
+                    query_str += f' {disjunction} macaddr == "{macaddr}" '
             elif state.table == 'routes':
                 query_str += f'{disjunction} prefix == "{addr}" '
             elif state.table == 'address':
-                query_str += \
-                    f' {disjunction} ipAddressList.str.startswith("{addr}/") '
+                if addr:
+                    query_str += \
+                        f' {disjunction} ipAddressList.str.startswith("{addr}/") '
+                elif macaddr:
+                    query_str += \
+                        f' {disjunction} macaddr == "{macaddr}") '
 
         if not disjunction:
             disjunction = 'or'
