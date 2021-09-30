@@ -59,7 +59,7 @@ class NetworkCmd(SqCommand):
 
         return self._gen_output(df)
 
-    @command("find", help="find an address, asn, vlan etc")
+    @command("find", help="find an address, bgp session by asn, etc")
     @argument("address", type=str, description="IP/MAC address to find")
     @argument("vrf", type=str,
               description="Find within this VRF, used for IP addr")
@@ -77,8 +77,8 @@ class NetworkCmd(SqCommand):
         df = self.sqobj.find(
             namespace=self.namespace,
             hostname=self.hostname,
-            address=address,
-            asn=asn,
+            address=address.split(),
+            asn=asn.split(),
             vlan=vlan,
             vrf=vrf,
             resolve_bond=resolve_bond,

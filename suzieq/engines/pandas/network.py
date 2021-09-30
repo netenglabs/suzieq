@@ -1,5 +1,6 @@
-import numpy as np
+from typing import List
 import pandas as pd
+import numpy as np
 from .engineobj import SqPandasEngine
 from suzieq.sqobjects import get_sqobject
 from suzieq.utils import convert_macaddr_format_to_colon
@@ -98,25 +99,32 @@ class NetworkObj(SqPandasEngine):
 
         address: given a MAC or IP address, find its owner OR the first hop
                  device its connected to
-        asn: given an ASN, find the host that owns it
+        asn: given an ASN, find the list of BGP sessions associated with this ASN
         '''
 
-        addr = kwargs.pop('address', '')
+        addrlist = kwargs.pop('address', [])
         asn = kwargs.pop('asn', '')
         columns = kwargs.pop('columns', ['default'])
         resolve_bond = kwargs.pop('resolve_bond', False)
 
-        if addr:
+        dflist = []
+        if isinstance(addrlist, str):
+            addrlist = [addrlist]
+        for addr in addrlist:
             df = self._find_address(addr, resolve_bond, **kwargs)
+            if not df.empty:
+                dflist.append(df)
+        if dflist:
+            df = pd.concat(dflist)
         else:
-            df = self._find_asn(asn, resolve_bond, **kwargs)
+            df = self._find_asn(asn, **kwargs)
 
         return df
 
     def summarize(self, **kwargs):
         '''Summarize for network
 
-        Summarize for network is a bit different from the rest of the 
+        Summarize for network is a bit different from the rest of the
         summaries because its not grouped by namespace.
         '''
 
@@ -138,6 +146,29 @@ class NetworkObj(SqPandasEngine):
 
         # At this point we have a single row with index 0, so rename
         return self.ns.T.rename(columns={0: 'summary'})
+
+    def _find_asn(self, asn: List[str], **kwargs) -> pd.DataFrame:
+        """Find the hosts with the ASN listed
+
+        Args:
+            asn (List[str]): List of ASNs, space separated
+
+        Returns:
+            pd.DataFrame: The dataframe with the info. The columns are-
+                          namespace, hostname, asn
+        """
+
+        if not asn:
+            return pd.DataFrame()
+
+        _ = kwargs.pop('vlan', [])
+        try:
+            asn = [int(x) for x in asn]
+        except ValueError:
+            return pd.DataFrame({'error': ['ASNs must be an integers']})
+
+        return get_sqobject('bgp')(context=self.ctxt).get(asn=asn, columns=['default'],
+                                                          **kwargs)
 
     def _find_address(self, addr: str, resolve_bond: bool,
                       **kwargs) -> pd.DataFrame:
