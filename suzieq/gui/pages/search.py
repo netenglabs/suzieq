@@ -51,7 +51,7 @@ def build_query(state, search_text: str) -> str:
         state.table = 'arpnd'
         addrs = addrs[1:]
     elif addrs[0].startswith('address'):
-        state.table = 'address'
+        state.table = 'network'
         search_text = ' '.join(addrs[1:])
     elif addrs[0].startswith('vtep'):
         state.table = 'evpnVni'
@@ -128,7 +128,7 @@ def build_query(state, search_text: str) -> str:
             else:
                 query_str += \
                     f' {disjunction} ip6AddressList.str.startswith("{addr}/") '
-        elif ':' in addr and state.table in ['macs', 'arpnd', 'address']:
+        elif ':' in addr and state.table in ['macs', 'arpnd']:
             query_str += f' {disjunction} macaddr == "{addr}" '
         else:
             try:
@@ -147,13 +147,8 @@ def build_query(state, search_text: str) -> str:
                     query_str += f' {disjunction} macaddr == "{macaddr}" '
             elif state.table == 'routes':
                 query_str += f'{disjunction} prefix == "{addr}" '
-            elif state.table == 'address':
-                if addr:
-                    query_str += \
-                        f' {disjunction} ipAddressList.str.startswith("{addr}/") '
-                elif macaddr:
-                    query_str += \
-                        f' {disjunction} macaddr == "{macaddr}") '
+            else:
+                query_str = ''
 
         if not disjunction:
             disjunction = 'or'
@@ -184,7 +179,7 @@ def search_sidebar(state, sqobjs):
         """Displays last 5 search results.
 
 You can use search to find specific objects. You can qualify what you're searching for by qualifying the search term with the type. We support:
-- __addresses__: You can qualify a specific table to look for the address. The search string can start with one of the following keywords: __address, route, mac, arpnd__, to specify which table you want the search to be performed in . If you don't specify a table name, we assume ```network find``` to search for the network attach point for the address. For example, ```arpnd 172.16.1.101``` searches for entries with 172.16.1.101 in the IP address column of the arpnd table. Similarly, ```10.0.0.21``` searches for where in the network that IP address is attached to.
+- __addresses__: You can qualify a specific table to look for the address. The search string can start with one of the following keywords: __route, mac, arpnd__, to specify which table you want the search to be performed in . If you don't specify a table name, we assume ```network find``` to search for the network attach point for the address. For example, ```arpnd 172.16.1.101``` searches for entries with 172.16.1.101 in the IP address column of the arpnd table. Similarly, ```10.0.0.21``` searches for where in the network that IP address is attached to.
 - __ASN__: Start the search with the string ```asn``` followed by the ASN number. Typing ```asns``` will show you the list of unique ASNs across the specified namespaces.
 - __VTEP__: Start the search with the string ```vtep``` followed by the VTEP IP address. Typing ```vteps``` will show you the list of unique VTEPs across the specified namespaces.
 - __VNI__: Start the search with the string ```vni``` followed by the VNI number. Typing ```vnis``` will show you the list of unique VNIs across the specified namespaces.
