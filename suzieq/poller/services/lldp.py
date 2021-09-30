@@ -27,12 +27,24 @@ class LldpService(Service):
         return processed_data
 
     def _common_cleaner(self, entry):
-        if entry.get('_chassisType', '') == 'Mac address':
+        chassis_type = entry.get('_chassisType', '')
+        if not isinstance(chassis_type, str):
+            if chassis_type == 7:
+                chassis_type = 'peerHostname'
+            else:
+                chassis_type = 'unknown'
+        chassis_type = chassis_type.lower()
+        if chassis_type == 'mac address':
             entry['peerHostname'] = convert_macaddr_format_to_colon(
                 entry.get('peerHostname', '0000.0000.0000'))
 
-        entry['subtype'] = entry.get('subtype', '').lower()
         subtype = entry.get('subtype', '')
+        if not isinstance(subtype, str):
+            if subtype == 7:
+                subtype = 'interface name'
+            else:
+                subtype = 'unknown'
+        subtype = subtype.lower()
         if subtype in ["interface name", '']:
             entry['peerMacaddr'] = '00:00:00:00:00:00'
             entry['peerIfindex'] = 0
@@ -42,10 +54,12 @@ class LldpService(Service):
                 entry.get('peerIfname', '0000.0000.0000'))
             entry['peerIfname'] = '-'
             entry['peerIfindex'] = 0
+            entry['subtype'] = 'mac address'
         elif subtype.startswith('locally'):
             entry['peerIfindex'] = entry['peerIfname']
             entry['peerIfname'] = '-'
             entry['peerMacaddr'] = '00:00:00:00:00:00'
+            entry['subtype'] = 'locally assigned'
 
     def _clean_nxos_data(self, processed_data, raw_data):
 
