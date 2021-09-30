@@ -38,6 +38,9 @@ def validate_sq_config(cfg):
     status: None if all is good or error string
     """
 
+    if not isinstance(cfg, dict):
+        return "FATAL: Invalid config file format"
+        
     ddir = cfg.get("data-directory", None)
     if not ddir:
         return "FATAL: No data directory for output files specified"
