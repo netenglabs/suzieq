@@ -109,6 +109,9 @@ class OspfObj(SqPandasEngine):
                    .fillna({'peerIP': '-', 'numChanges': 0,
                             'lastChangeTime': 0})
 
+        if df.empty:
+            return df
+
         if 'lastChangeTime' in df.columns:
             df['lastChangeTime'] = np.where(df.lastChangeTime == '-',
                                             0, df.lastChangeTime)
