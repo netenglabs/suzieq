@@ -7,7 +7,7 @@ class BgpObj(SqObject):
     def __init__(self, **kwargs):
         super().__init__(table='bgp', **kwargs)
         self._valid_get_args = ['namespace', 'hostname', 'columns', 'state',
-                                'vrf', 'peer', 'query_str']
+                                'vrf', 'peer', 'asn', 'query_str']
         self._valid_arg_vals = {
             'state': ['Established', 'NotEstd', 'dynamic', ''],
             'status': ['all', 'pass', 'fail'],

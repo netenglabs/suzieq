@@ -313,6 +313,7 @@ async def query_bgp(verb: MoreVerbs, request: Request,
                     peer: List[str] = Query(None),
                     state: BgpStateValues = Query(None),
                     vrf: List[str] = Query(None),
+                    asn: List[str] = Query(None),
                     status: AssertStatusValues = Query(None),
                     query_str: str = None,
                     ):
