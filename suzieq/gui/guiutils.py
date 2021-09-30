@@ -277,8 +277,8 @@ def display_title(page: str):
 
     with srch_col:
         st.text(' ')
-        search_str = st.text_input(
-            "Search", "", key='search', on_change=main_sync_state)
+        search_str = st.text_input("Search", value=state.search_text,
+                                   key='search', on_change=main_sync_state)
     if search_text is not None and (search_str != search_text):
         # We're assuming here that the page is titled Search
         page = 'Search'
@@ -288,8 +288,14 @@ def display_title(page: str):
         st.text(' ')
         srch_holder = st.empty()
         pageidx = sel_pagelist.index(page or 'Status')
-        page = srch_holder.selectbox('Page', sel_pagelist, index=pageidx,
-                                     key='sq_page', on_change=main_sync_state)
+        if 'sq_page' not in state:
+            page = srch_holder.selectbox('Page', sel_pagelist, index=pageidx,
+                                         key='sq_page',
+                                         on_change=main_sync_state)
+        else:
+            page = srch_holder.selectbox('Page', sel_pagelist, key='sq_page',
+                                         on_change=main_sync_state)
+            page = state.sq_page
 
     return page, search_str
 
@@ -297,9 +303,13 @@ def display_title(page: str):
 def main_sync_state():
 
     wsstate = st.session_state
-    if wsstate.page != wsstate.sq_page:
-        wsstate.page = wsstate.sq_page
-        st.experimental_set_query_params(**dict())
+
     if wsstate.search_text != wsstate.search:
         wsstate.search_text = wsstate.search
         wsstate.page = wsstate.sq_page = 'Search'
+
+    if wsstate.page != wsstate.sq_page:
+        wsstate.page = wsstate.sq_page
+        st.experimental_set_query_params(**dict())
+        if wsstate.page != 'Search':
+            wsstate.search_text = ''
