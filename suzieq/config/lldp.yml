@@ -96,7 +96,8 @@ apply:
     command:
       - command: show cdp neighbors | json native
         normalize: 'TABLE_cdp_neighbor_brief_info/ROW_cdp_neighbor_brief_info/*?/[
-        "intf_id: ifname?|",
+        "interface: ifname?|",
+        "intf_id: ifname?|ifname",
         "device_id: peerHostname?|",
         "platform_id: description?|",
         "port_id: peerIfname",
