@@ -4,84 +4,120 @@
     "type": "derivedRecord",
     "depends": [
         "routes",
-	"arpnd",
-	"macs",
-	"interfaces"
+        "arpnd",
+        "macs",
+        "interfaces"
     ],
     "fields": [
         {
-	    "name": "sqvers",
-	    "type": "string",
-	    "partition": 0,
-	    "default": "1.0"
-	},
+            "name": "sqvers",
+            "type": "string",
+            "partition": 0,
+            "default": "1.0"
+        },
         {
             "name": "pathid",
             "type": "long",
-	    "display": 1,
-	    "description": "identifies each unique path"
+            "display": 1,
+            "description": "identifies each unique path"
         },
         {
             "name": "hopcout",
             "type": "long",
             "display": 2,
-	    "description": "unique hop within a path, can be L2 or L3 path"
+            "description": "unique hop within a path, can be L2 or L3 path"
         },
         {
             "name": "namespace",
             "type": "string",
-	    "display": 3,
-	    "description": "namespace within which path analysis is run",
-	    "partition": 1
+            "display": 3,
+            "description": "namespace within which path analysis is run",
+            "partition": 1
         },
         {
             "name": "hostname",
             "type": "string",
-	    "display": 4,
-	    "description": "hostname associated with this hop",
-	    "partition": 2
+            "display": 4,
+            "description": "hostname associated with this hop",
+            "partition": 2
         },
         {
             "name": "iif",
             "type": "string",
-	    "display": 5,
-	    "description": "incoming interface on the host"
+            "display": 5,
+            "description": "incoming interface on the host"
         },
         {
             "name": "oif",
             "type": "string",
-	    "display": 6,
-	    "description": "incoming interface on the host"
+            "display": 6,
+            "description": "incoming interface on the host"
         },
         {
             "name": "vrf",
             "type": "string",
-	    "display": 7,
-	    "description": "VRF used to do lookup, ignored on L2 hop"
+            "display": 7,
+            "description": "VRF used to do lookup, ignored on L2 hop"
         },
         {
             "name": "isL2",
             "type": "boolean",
             "display": 8,
-	    "description": "True if this is an L2 hop"
+            "description": "True if this is an L2 hop"
         },
         {
             "name": "overlay",
             "type": "boolean",
-	    "display": 9,
-	    "description": "True if packet is tunneled"
+            "display": 9,
+            "description": "True if packet is tunneled"
         },
         {
             "name": "mtuMatch",
             "type": "boolean",
             "display": 10,
-	    "description": "True if the MTU of peering interfaces match"
+            "description": "True if the MTU of peering interfaces match"
         },
         {
-            "name": "mtu",
+            "name": "inMtu",
             "type": "long",
             "display": 11,
-	    "description": "MTU of the incoming interface"
+            "description": "MTU of the incoming interface"
+        },
+        {
+            "name": "outMtu",
+            "type": "long",
+            "display": 12,
+            "description": "MTU of the outgoing interface"
+        },
+        {
+            "name": "protocol",
+            "type": "string",
+            "display": 13,
+            "description": "protocol used to populate used route"
+        },
+        {
+            "name": "ipLookup",
+            "type": "string",
+            "display": 14,
+            "description": "address used to lookup routing table for nexthop"
+        },
+        {
+            "name": "vtepLookup",
+            "type": "string",
+            "display": 15,
+            "description": "vtep IP address used to lookup underlay route"
+        },
+        {
+            "name": "macLookup",
+            "type": "string",
+            "display": 16,
+            "description": "MAC address used to lookup for L2 nexthop"
+        },
+        {
+            "name": "nexthopIp",
+            "type": "string",
+            "display": 14,
+            "description": "IP address of routing nexthop"
         },
         {
             "name": "timestamp",
