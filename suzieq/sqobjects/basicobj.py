@@ -233,9 +233,6 @@ class SqObject(object):
         self.validate_columns(columns)
         return self.engine.unique(**kwargs, columns=columns)
 
-    def analyze(self, **kwargs):
-        raise NotImplementedError
-
     def aver(self, **kwargs):
         raise NotImplementedError
 
