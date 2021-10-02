@@ -8,6 +8,7 @@ from suzieq.sqobjects.mlag import MlagObj
 
 @command('mlag', help="Act on mlag data")
 class MlagCmd(SqCommand):
+    """Multichassis LAG information (includes variants such as NXOX vPC)"""
 
     def __init__(self, engine: str = '', hostname: str = '',
                  start_time: str = '', end_time: str = '',
@@ -22,8 +23,7 @@ class MlagCmd(SqCommand):
 
     @command('show')
     def show(self):
-        """
-        Show mlag info
+        """Show MLAG info
         """
         if self.columns is None:
             return

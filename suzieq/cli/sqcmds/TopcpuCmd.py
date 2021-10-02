@@ -7,6 +7,8 @@ from suzieq.sqobjects.topcpu import TopcpuObj
 
 @command("topcpu", help="Act on topcpu data")
 class TopcpuCmd(SqCommand):
+    """Information about Top CPU users"""
+
     def __init__(
         self,
         engine: str = "",
@@ -32,8 +34,7 @@ class TopcpuCmd(SqCommand):
 
     @command("show")
     def show(self):
-        """
-        Show topcpu info
+        """Show topcpu info
         """
         if self.columns is None:
             return

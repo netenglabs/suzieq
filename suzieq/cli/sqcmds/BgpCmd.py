@@ -10,6 +10,8 @@ from suzieq.sqobjects.bgp import BgpObj
 
 @command("bgp", help="Act on BGP data")
 class BgpCmd(SqCommand):
+    """BGP protocol information"""
+
     def __init__(
         self,
         engine: str = "",
@@ -56,8 +58,7 @@ class BgpCmd(SqCommand):
     @argument("state", description="status of the session to match",
               choices=["Established", "NotEstd", "dynamic"])
     def show(self, state: str = "", vrf: str = '', peer: str = ''):
-        """
-        Show bgp info
+        """Show BGP info
         """
         if self.columns is None:
             return

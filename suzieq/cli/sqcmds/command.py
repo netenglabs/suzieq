@@ -7,6 +7,8 @@ import shutil
 from prompt_toolkit import prompt
 from suzieq.exceptions import UserQueryError
 from natsort import natsort_keygen
+import inspect
+from colorama import Fore, Style
 
 
 @argument(
@@ -117,6 +119,174 @@ class SqCommand:
     @property
     def schemas(self):
         return self._schemas
+
+    @command("summarize", help='produce a summarize of the data')
+    def summarize(self):
+        """Summarize relevant information about the table"""
+        if not self._init_summarize():
+            return self._gen_output(self.summarize_df)
+
+        return self._post_summarize()
+
+    @command("unique", help="find the list of unique items in a column")
+    @argument("count", description="include count of times a value is seen",
+              choices=['True'])
+    def unique(self, count='', **kwargs):
+        """Get all unique values associated with requested field"""
+        now = time.time()
+
+        df = self._invoke_sqobj(self.sqobj.unique,
+                                hostname=self.hostname,
+                                namespace=self.namespace,
+                                query_str=self.query_str,
+                                count=count,
+                                )
+
+        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
+        if 'error' in df.columns:
+            return self._gen_output(df)
+
+        if df.empty:
+            return df
+
+        if not count:
+            return self._gen_output(df.sort_values(by=[self.columns[0]]),
+                                    dont_strip_cols=True)
+        else:
+            return self._gen_output(
+                df.sort_values(by=['numRows', self.columns[0]]),
+                dont_strip_cols=True)
+
+    @command("describe", help="describe the table and its fields")
+    def describe(self):
+        """Display the schema of the table
+
+        Returns:
+            [type]: 0 or error
+        """
+        now = time.time()
+
+        df = self._invoke_sqobj(self.sqobj.describe,
+                                hostname=self.hostname,
+                                namespace=self.namespace,
+                                query_str=self.query_str,
+                                )
+
+        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
+        return self._gen_output(df)
+
+    @command("top", help="find the top n values for a field")
+    @argument("count", description="number of rows to return")
+    @argument("what", description="integer field to get top values for")
+    @argument("reverse", description="return bottom n values",
+              choices=['True', 'False'])
+    def top(self, count: int = 5, what: str = '', reverse: str = 'False',
+            **kwargs) -> int:
+        """Return the top n values for a field in a table
+
+        Args:
+            count (int, optional): The number of entries to return. Defaults to 5
+            what (str, optional): Field name to use for largest/smallest val
+            reverse (bool, optional): Reverse and return n smallest
+
+        Returns:
+            int: 0 or error code
+        """
+        now = time.time()
+
+        df = self._invoke_sqobj(self.sqobj.top,
+                                hostname=self.hostname,
+                                namespace=self.namespace,
+                                query_str=self.query_str,
+                                what=what, count=count,
+                                reverse=eval(reverse),
+                                )
+
+        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
+        if 'error' in df.columns:
+            return self._gen_output(df)
+
+        if not df.empty:
+            df = self.sqobj.humanize_fields(df)
+            return self._gen_output(df.sort_values(by=[what], ascending=False),
+                                    dont_strip_cols=True, sort=False)
+        else:
+            return self._gen_output(df)
+
+    @command("help", help="show help for a command")
+    @argument("command", description="command to show help for",
+              choices=['show', 'unique', 'summarize', 'assert', 'describe',
+                       'top', "find", "lpm"])
+    def help(self, command: str = ''):
+        """Show help for a command
+
+        Args:
+            command (str, optional): the name of the command. Defaults to 'show'.
+        """
+        if any(x for x in [self.namespace, self.hostname, self.view,
+                           self.start_time, self.end_time, self.query_str]):
+            print(Fore.RED + "Error: Only accepeted options is command")
+            return
+        if (self.columns != ["default"]) or (self.format != "text"):
+            print(Fore.RED + "Error: Only accepeted options is command")
+            return
+
+        if not command:
+            mbrs = inspect.getmembers(self)
+            verbs = {x[0]: x[1] for x in mbrs
+                     if inspect.ismethod(x[1]) and not x[0].startswith('_')}
+            print(f"{self.sqobj.table}: " + Fore.CYAN + f"{self.__doc__}" +
+                  Style.RESET_ALL)
+            print("\nSupported verbs are: ")
+            for verb in verbs:
+                docstr = verbs[verb].__doc__.splitlines()[0]
+                verb = verb.replace('aver', 'assert')
+                print(f" - {verb}: " + Fore.CYAN + f"{docstr}" +
+                      Style.RESET_ALL)
+        else:
+            self._do_help(self.sqobj.table, command)
+
+    def _do_help(self, table: str, verb: str = 'show'):
+        """Show help for a command
+
+        Args:
+            table (str): the table name
+            verb (str, optional): the name of the command. Defaults to 'show'.
+        """
+
+        mbrs = inspect.getmembers(self)
+        classargspec = [x[1] for x in mbrs
+                        if x[0] == '__arguments_decorator_specs']
+        if classargspec:
+            classargspec = classargspec[0]
+        verbs = [x[0] for x in mbrs
+                 if inspect.ismethod(x[1]) and not x[0].startswith('_')]
+        fnlist = {x[0]: x[1] for x in mbrs
+                  if x[0] in verbs}
+        newverb = verb.replace('assert', 'aver')
+        if newverb in fnlist:
+            fnargs = []
+
+            fnmbrs = inspect.getmembers(fnlist[newverb])
+            for elem in fnmbrs:
+                if elem[0] == "__arguments_decorator_specs":
+                    fnargs = elem[1]
+                    break
+
+            docstr = [x[1] for x in fnmbrs if x[0] == '__doc__']
+            docstr = docstr[0] if docstr else '\n'
+            docstr = docstr.splitlines()[0]
+            print(f"{table} {verb}: " + Fore.CYAN +
+                  f"{docstr}" + Style.RESET_ALL)
+            print(Fore.YELLOW + '\nArguments:' + Style.RESET_ALL)
+            if fnargs:
+                classargspec.update(fnargs)
+
+            for arg in sorted(classargspec):
+                print(f" - {arg}: " + Fore.CYAN +
+                      f"{classargspec[arg].description}" + Style.RESET_ALL)
+        else:
+            print(f"No information about {table} {verb}")
 
     def _pager_print(self, df: pd.DataFrame) -> None:
         '''To support paging'''
@@ -231,109 +401,6 @@ class SqCommand:
                 df = pd.DataFrame({'error': [f'ERROR: {ex}']})
 
         return df
-
-    def show(self, **kwargs):
-        raise NotImplementedError
-
-    def analyze(self, **kwargs):
-        raise NotImplementedError
-
-    def aver(self, **kwargs):
-        raise NotImplementedError
-
-    @command("summarize", help='produce a summarize of the data')
-    def summarize(self):
-        if not self._init_summarize():
-            return self._gen_output(self.summarize_df)
-
-        return self._post_summarize()
-
-    def top(self, **kwargs):
-        raise NotImplementedError
-
-    @command("unique", help="find the list of unique items in a column")
-    @argument("count", description="include count of times a value is seen",
-              choices=['True'])
-    def unique(self, count='', **kwargs):
-        now = time.time()
-
-        df = self._invoke_sqobj(self.sqobj.unique,
-                                hostname=self.hostname,
-                                namespace=self.namespace,
-                                query_str=self.query_str,
-                                count=count,
-                                )
-
-        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        if 'error' in df.columns:
-            return self._gen_output(df)
-
-        if df.empty:
-            return df
-
-        if not count:
-            return self._gen_output(df.sort_values(by=[self.columns[0]]),
-                                    dont_strip_cols=True)
-        else:
-            return self._gen_output(
-                df.sort_values(by=['numRows', self.columns[0]]),
-                dont_strip_cols=True)
-
-    @command("describe", help="describe the table and its fields")
-    def describe(self):
-        """Describe a table and its fields
-
-        Returns:
-            [type]: 0 or error
-        """
-        now = time.time()
-
-        df = self._invoke_sqobj(self.sqobj.describe,
-                                hostname=self.hostname,
-                                namespace=self.namespace,
-                                query_str=self.query_str,
-                                )
-
-        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        return self._gen_output(df)
-
-    @command("top", help="find the top n values for a field")
-    @argument("count", description="number of rows to return")
-    @argument("what", description="integer field to get top values for")
-    @argument("reverse", description="return bottom n values",
-              choices=['True', 'False'])
-    def top(self, count: int = 5, what: str = '', reverse: str = 'False',
-            **kwargs) -> int:
-        """Return the top n values for a field in a table
-
-        Args:
-            n (int, optional): The number of entries to return. Defaults to 5
-            what (str, optional): Field name to use for largest/smallest val
-            reverse (bool, optional): Reverse and return n smallest
-
-        Returns:
-            int: 0 or error code
-        """
-        now = time.time()
-
-        df = self._invoke_sqobj(self.sqobj.top,
-                                hostname=self.hostname,
-                                namespace=self.namespace,
-                                query_str=self.query_str,
-                                what=what, count=count,
-                                reverse=eval(reverse),
-                                )
-
-        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        if 'error' in df.columns:
-            return self._gen_output(df)
-
-        if not df.empty:
-            df = self.sqobj.humanize_fields(df)
-            return self._gen_output(df.sort_values(by=[what], ascending=False),
-                                    dont_strip_cols=True, sort=False)
-        else:
-            return self._gen_output(df)
 
     def _init_summarize(self):
         self.now = time.time()

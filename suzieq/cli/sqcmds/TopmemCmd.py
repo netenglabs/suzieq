@@ -32,8 +32,7 @@ class TopmemCmd(SqCommand):
 
     @command("show")
     def show(self):
-        """
-        Show topmem info
+        """Show topmem info
         """
         if self.columns is None:
             return

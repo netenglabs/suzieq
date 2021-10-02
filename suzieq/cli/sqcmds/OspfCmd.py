@@ -9,6 +9,8 @@ from suzieq.sqobjects.ospf import OspfObj
 
 @command("ospf", help="Act on OSPF data")
 class OspfCmd(SqCommand):
+    """OSPFv2 protocol information"""
+
     def __init__(
         self,
         engine: str = "",
@@ -42,8 +44,7 @@ class OspfCmd(SqCommand):
               choices=["full", "other", "passive"])
     @argument("vrf", description="Space separated list of VRFs to qualify")
     def show(self, ifname: str = "", state: str = "", vrf: str = ""):
-        """
-        Show OSPF interface and neighbor info
+        """Show OSPF interface and neighbor info
         """
         if self.columns is None:
             return

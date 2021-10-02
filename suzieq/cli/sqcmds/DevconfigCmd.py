@@ -8,7 +8,7 @@ from suzieq.sqobjects.devconfig import DevconfigObj
 
 @command("devconfig", help="Act on device data")
 class DevconfigCmd(SqCommand):
-    """device command"""
+    """Device configurations"""
 
     def __init__(
             self,
@@ -37,8 +37,7 @@ class DevconfigCmd(SqCommand):
 
     @command("show", help="Show device information")
     def show(self):
-        """
-        Show device config info
+        """Show device config info
         """
         if self.columns is None:
             return

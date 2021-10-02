@@ -8,6 +8,8 @@ from suzieq.sqobjects.fs import FsObj
 
 @command("fs", help="Act on File System data")
 class FsCmd(SqCommand):
+    """Filesystem information such as total disk space, filesystems etc"""
+
     def __init__(
         self,
         engine: str = "",
@@ -38,8 +40,7 @@ class FsCmd(SqCommand):
     @argument("used_percent", description="must be of the form "
               "[<|<=|>=|>|!]value. Eg: '<=20'")
     def show(self, mountPoint: str = '', used_percent: str = ''):
-        """
-        Show File System info
+        """Show File System info
         """
         if self.columns is None:
             return

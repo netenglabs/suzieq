@@ -9,6 +9,8 @@ from suzieq.sqobjects.tables import TablesObj
 
 @command("table", help="Information about the various tables")
 class TableCmd(SqCommand):
+    """Meta information about the various data gathered"""
+
     def __init__(
         self,
         engine: str = "",
@@ -34,8 +36,7 @@ class TableCmd(SqCommand):
 
     @command("show")
     def show(self, **kwargs):
-        """
-        Show Tables
+        """Show meta-information about various tables gathered by Suzieq
         """
         now = time.time()
         df = self.sqobj.get(hostname=self.hostname, namespace=self.namespace,

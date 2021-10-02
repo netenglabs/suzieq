@@ -7,6 +7,8 @@ from suzieq.sqobjects.sqPoller import SqPollerObj
 
 @command("sqpoller", help="Act on SqPoller data")
 class SqPollerCmd(SqCommand):
+    """Information about the poller"""
+
     def __init__(
         self,
         engine: str = "",
@@ -35,8 +37,7 @@ class SqPollerCmd(SqCommand):
     @argument("status", description="status of service to match",
               choices=["all", "pass", "fail"])
     def show(self, service: str = "", status: str = "all"):
-        """
-        Show SqPoller info
+        """Show Suzieq poller info such as status of polled commands etc.
         """
         if self.columns is None:
             return

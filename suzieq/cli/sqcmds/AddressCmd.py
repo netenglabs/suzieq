@@ -7,8 +7,10 @@ from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.address import AddressObj
 
 
-@command("address", help="Act on address data")
+@command("address", help="Act on interface addresses")
 class AddressCmd(SqCommand):
+    """IP and MAC addresses associated with interfaces"""
+
     def __init__(
         self,
         engine: str = "",
@@ -40,8 +42,7 @@ class AddressCmd(SqCommand):
     @argument("ipvers", description="type of address, v4, v6 or l2",
               choices=["v4", "v6", "l2"])
     def show(self, address: str = "", ipvers: str = "", vrf: str = ""):
-        """
-        Show address info
+        """Show address info
         """
         # Get the default display field names
         now = time.time()

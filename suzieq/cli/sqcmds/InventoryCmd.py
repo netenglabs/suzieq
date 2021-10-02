@@ -8,6 +8,8 @@ from suzieq.sqobjects.inventory import InventoryObj
 
 @command("inventory", help="Act on LLDP data")
 class InventoryCmd(SqCommand):
+    """Device inventory information such as serial number, cable info etc"""
+
     def __init__(
         self,
         engine: str = "",
@@ -43,8 +45,7 @@ class InventoryCmd(SqCommand):
     @argument("vendor", description="Filter by vendor name")
     def show(self, type: str = "", status: str = "", model: str = "",
              serial: str = "", vendor: str = "") -> None:
-        """
-        Show Inventory info
+        """Show Device inventory info
         """
         if self.columns is None:
             return

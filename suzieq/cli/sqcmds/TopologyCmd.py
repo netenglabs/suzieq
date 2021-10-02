@@ -9,6 +9,8 @@ from suzieq.sqobjects.topology import TopologyObj
 
 @command("topology", help="build and act on topology data")
 class TopologyCmd(SqCommand):
+    """Information about the topology constructed from various protocols"""
+
     def __init__(
         self,
         engine: str = "",

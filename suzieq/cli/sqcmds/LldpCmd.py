@@ -7,6 +7,8 @@ from suzieq.sqobjects.lldp import LldpObj
 
 @command("lldp", help="Act on LLDP data")
 class LldpCmd(SqCommand):
+    """LLDP protocol information"""
+
     def __init__(
         self,
         engine: str = "",
@@ -35,8 +37,7 @@ class LldpCmd(SqCommand):
     @command("show")
     @argument("ifname", description="interface name to qualify")
     def show(self, ifname: str = ""):
-        """
-        Show LLDP info
+        """Show LLDP info
         """
         if self.columns is None:
             return

@@ -7,6 +7,8 @@ from suzieq.sqobjects.arpnd import ArpndObj
 
 @command("arpnd", help="Act on ARP/ND data")
 class ArpndCmd(SqCommand):
+    """ARP/Neighbor Discovery information"""
+
     def __init__(
         self,
         engine: str = "",
@@ -37,8 +39,7 @@ class ArpndCmd(SqCommand):
     @argument("macaddr", description="MAC address, in quotes, to qualify output")
     @argument("oif", description="outgoing interface to qualify")
     def show(self, address: str = "", macaddr: str = '', oif: str = ''):
-        """
-        Show ARP/ND info
+        """Show ARP/ND info
         """
         if self.columns is None:
             return

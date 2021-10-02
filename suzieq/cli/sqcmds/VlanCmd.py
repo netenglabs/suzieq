@@ -8,6 +8,7 @@ from suzieq.sqobjects.vlan import VlanObj
 
 @command('vlan', help="Act on vlan data")
 class VlanCmd(SqCommand):
+    """Information about VLANs including interfaces belonging to a VLAN"""
 
     def __init__(self, engine: str = '', hostname: str = '',
                  start_time: str = '', end_time: str = '',
@@ -26,8 +27,7 @@ class VlanCmd(SqCommand):
     @argument("state", description="State of VLAN to query",
               choices=['active', 'suspended'])
     def show(self, vlan: str = '', vlanName: str = '', state: str = ''):
-        """
-        Show vlan info
+        """Show VLAN info
         """
         if self.columns is None:
             return

@@ -7,6 +7,8 @@ from suzieq.sqobjects.evpnVni import EvpnvniObj
 
 @command("evpnVni", help="Act on EVPN VNI data")
 class EvpnVniCmd(SqCommand):
+    """EVPN information such as VNI/VLAN mapping, VTEP IPs etc."""
+
     def __init__(
         self,
         engine: str = "",
@@ -36,8 +38,7 @@ class EvpnVniCmd(SqCommand):
     @argument("vni", description="VNI ID to qualify")
     @argument("priVtepIp", description="Primary VTEP IP to qualify")
     def show(self, vni: str = "", priVtepIp: str = ''):
-        """
-        Show EVPN VNI info
+        """Show EVPN VNI info
         """
         if self.columns is None:
             return

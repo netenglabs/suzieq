@@ -9,6 +9,8 @@ from suzieq.utils import humanize_timestamp
 
 @command("interface", help="Act on Interface data")
 class InterfaceCmd(SqCommand):
+    """Device interface information including MTU, Speed, IP address etc"""
+
     def __init__(
         self,
         engine: str = "",
@@ -43,8 +45,7 @@ class InterfaceCmd(SqCommand):
     @argument("vrf", description="filter interfaces matching VRFs")
     def show(self, ifname: str = "", state: str = "", type: str = "",
              mtu: str = "", vrf: str = "") -> None:
-        """
-        Show interface info
+        """Show interface info
         """
         if self.columns is None:
             return
@@ -80,6 +81,7 @@ class InterfaceCmd(SqCommand):
               choices=['True'])
     @argument("type", description="include type of ports to include")
     def unique(self, count: str = '', type: str = '', **kwargs):
+        """Get all unique values associated with requested field"""
         now = time.time()
 
         df = self._invoke_sqobj(self.sqobj.unique,
@@ -115,8 +117,7 @@ class InterfaceCmd(SqCommand):
               choices=["all", "fail", "pass"])
     def aver(self, ifname: str = "", state: str = "", what: str = "",
              value: str = '', status: str = 'all'):
-        """
-        Assert aspects about the interface
+        """Assert aspects about the interface
         """
         if self.columns != ["default"]:
             df = pd.DataFrame(
@@ -153,8 +154,7 @@ class InterfaceCmd(SqCommand):
     @argument('ifname', description="Interface name to qualify")
     def top(self, what: str = "", count: int = 5, reverse: str = "False",
             ifname: str = '', type: str = 'ethernet'):
-        """
-        Show top n entries based on specific field
+        """Show top n entries based on specific field
         """
         if self.columns is None:
             return

@@ -9,7 +9,7 @@ from suzieq.sqobjects.device import DeviceObj
 
 @command("device", help="Act on device data")
 class DeviceCmd(SqCommand):
-    """device command"""
+    """Basic device information such as OS, version, model etc."""
 
     def __init__(
             self,
@@ -63,8 +63,7 @@ class DeviceCmd(SqCommand):
               choices=["dead", "alive",  "neverpoll"])
     def show(self, os: str = '', model: str = '', status: str = '',
              vendor: str = '', version: str = ''):
-        """
-        Show device info
+        """Show device info
         """
         if self.columns is None:
             return

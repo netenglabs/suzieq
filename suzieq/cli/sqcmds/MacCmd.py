@@ -7,6 +7,8 @@ from suzieq.sqobjects.macs import MacsObj
 
 @command("mac", help="Act on MAC Table data")
 class MacCmd(SqCommand):
+    """MAC address table information"""
+
     def __init__(
         self,
         engine: str = "",

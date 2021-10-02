@@ -10,7 +10,7 @@ from suzieq.sqobjects.network import NetworkObj
 
 @command("network", help="Act on network-wide data")
 class NetworkCmd(SqCommand):
-    """network command"""
+    """Overall network information such as namespaces present etc."""
 
     def __init__(
             self,
@@ -69,8 +69,7 @@ class NetworkCmd(SqCommand):
     @argument("resolve_bond", type=bool, description="Resolve the bond")
     def find(self, address: str = '', asn: str = '', vrf: str = '',
              vlan: str = '', resolve_bond: bool = False):
-        """
-        Find a network object
+        """Find a network object such as an IP address, BGP session, etc.
         """
         now = time.time()
 

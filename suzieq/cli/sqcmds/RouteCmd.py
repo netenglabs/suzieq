@@ -9,6 +9,8 @@ from suzieq.sqobjects.routes import RoutesObj
 
 @command("route", help="Act on Routes")
 class RouteCmd(SqCommand):
+    """Routing table information"""
+
     def __init__(
         self,
         engine: str = "",
@@ -63,8 +65,7 @@ class RouteCmd(SqCommand):
               "[<|<=|>=|>|!] length")
     def show(self, prefix: str = "", vrf: str = '', protocol: str = "",
              prefixlen: str = ""):
-        """
-        Show Routes info
+        """Show Routing table info
         """
         if self.columns is None:
             return
@@ -94,8 +95,7 @@ class RouteCmd(SqCommand):
     @command("summarize")
     @argument("vrf", description="VRF to qualify")
     def summarize(self, vrf: str = ''):
-        """
-        Show Routes info
+        """Summarize key routing table info
         """
         # Get the default display field names
         now = time.time()
@@ -114,8 +114,7 @@ class RouteCmd(SqCommand):
     @argument("address", description="IP Address, in quotes, for lpm query")
     @argument("vrf", description="specific VRF to qualify")
     def lpm(self, address: str = '', vrf: str = ''):
-        """
-        Show the Longest Prefix Match on a given prefix, vrf
+        """Show the Longest Prefix Match(LPM) on a given prefix, vrf
         """
         if self.columns is None:
             return
