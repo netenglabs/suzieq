@@ -2,7 +2,7 @@ import time
 import pandas as pd
 from nubia import command, argument
 
-from suzieq.cli.sqcmds.command import SqCommand
+from suzieq.cli.sqcmds.command import SqCommand, ArgHelpClass
 from suzieq.sqobjects.path import PathObj
 
 
@@ -41,6 +41,12 @@ class PathCmd(SqCommand):
         self.src = src
         self.dest = dest
         self.vrf = vrf
+        self._additional_help_vars = {
+            # These are only required for args defined only in this class def
+            'src': ArgHelpClass('Source IP address, in quotes'),
+            'dest': ArgHelpClass('Destination IP address, in quotes'),
+            'vrf': ArgHelpClass('VRF to trace path in')
+        }
 
     @command("show")
     def show(self):
