@@ -206,6 +206,7 @@ class NetworkObj(SqPandasEngine):
         else:
             do_continue = False
             addr_df['how'] = 'polled'
+            addr_df = addr_df.explode('ipAddressList').fillna('')
 
         if not addr_df.empty:
             if do_continue:
