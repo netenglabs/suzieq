@@ -361,6 +361,25 @@ class TopologyObj(SqPandasEngine):
                     print(f"created {graph_output_dir}/{ns}_{name}.png")
                     plt.close()
 
+    def unique(self, **kwargs):
+        '''Unique values for topology'''
+        columns = kwargs.pop('columns', ['default'])
+        count = kwargs.pop("count", 0)
+        query_str = kwargs.get('query_str', '')
+
+        df = self.get(columns=['*'], **kwargs)
+        column = columns[0]
+
+        if not count:
+            return (pd.DataFrame({f'{column}': df[column].unique()}))
+        else:
+            r = df[column].value_counts()
+            return (pd.DataFrame({column: r})
+                    .reset_index()
+                    .rename(columns={column: 'numRows',
+                                     'index': column})
+                    .sort_values(column))
+
 
 @dataclass(frozen=True)
 class Services:

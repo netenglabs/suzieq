@@ -100,10 +100,3 @@ class TopologyCmd(SqCommand):
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         if not df.empty:
             return self._gen_output(df)
-
-    @command("unique", help="find the list of unique items in a column")
-    def unique(self, **kwargs):
-
-        msg = 'ERROR: Unique not supported for this object'
-        df = pd.DataFrame({'error': [msg]})
-        return self._gen_output(df, dont_strip_cols=True)
