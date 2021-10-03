@@ -280,6 +280,10 @@ def _test_sqcmds(testvar, context_config):
         ignore_cols = []
 
     if 'output' in testvar:
+        if testvar.get('format', '') == "text":
+            assert output.decode('utf8') == testvar['output']
+            return
+
         # pandas uses ujson and needs to escape "/" in any string its trying
         # to decode. This is true in the case of NXOS' LLDP description which
         # contains a URL causing read_json to abort with weird error messages.
@@ -366,5 +370,13 @@ def test_mixed_sqcmds(testvar, create_context_config):
 @ pytest.mark.sqcmds
 @ pytest.mark.parametrize("testvar", load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
                                                                   '/tests/integration/sqcmds/vmx-samples')))
+def test_mixed_sqcmds(testvar, create_context_config):
+    _test_sqcmds(testvar, create_context_config)
+
+
+@ pytest.mark.smoke
+@ pytest.mark.sqcmds
+@ pytest.mark.parametrize("testvar", load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
+                                                                  '/tests/integration/sqcmds/common-samples')))
 def test_mixed_sqcmds(testvar, create_context_config):
     _test_sqcmds(testvar, create_context_config)

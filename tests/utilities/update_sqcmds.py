@@ -43,6 +43,8 @@ def run_cmd(cmd_path, testvar, logger):
     jerror = []
     xfail = False
     if output:
+        if testvar.get('format', '') == 'text':
+            return output.decode('utf-8'), jerror, xfail
         try:
             jout = json.loads(output.decode('utf-8').strip())
         except json.JSONDecodeError:
@@ -133,7 +135,10 @@ if __name__ == '__main__':
                     if result in test:
                         del test[result]
                     result = 'output'
-                    test[result] = json.dumps(output)
+                    if test.get('format', '') == 'text':
+                        test[result] = output
+                    else:
+                        test[result] = json.dumps(output)
                 elif result == 'xfail':
                     test[result]['error'] = json.dumps(output)
                 else:
