@@ -1,0 +1,119 @@
+description: Testing network table
+tests:
+- command: network show --format=json
+  data-directory: tests/data/vmx/parquet-out
+  marks: network show all junos vmx
+  output: '[{"namespace": "vmx", "deviceCnt": 5, "serviceCnt": 13, "errSvcCnt": 0,
+    "hasOspf": false, "hasBgp": true, "hasVxlan": false, "hasMlag": false, "lastUpdate":
+    1632943992076}]'
+- command: network show --format=json --model=vmx
+  data-directory: tests/data/vmx/parquet-out
+  marks: network show all junos vmx
+  output: '[{"namespace": "vmx", "deviceCnt": 5, "serviceCnt": 13, "errSvcCnt": 0,
+    "hasOspf": false, "hasBgp": true, "hasVxlan": false, "hasMlag": false, "lastUpdate":
+    1632943992076}]'
+- command: network find --address="172.16.11.11" --format=json
+  data-directory: tests/data/vmx/parquet-out
+  marks: network find all junos vmx
+  output: '[{"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ifname": "ge-0/0/8",
+    "vrf": "", "ipAddress": "172.16.11.11", "vlan": 101, "macaddr": "00:50:79:66:68:08",
+    "how": "derived", "timestamp": 1631009089424}]'
+- command: network find --address="00:50:79:66:68:08" --format=json
+  data-directory: tests/data/vmx/parquet-out
+  marks: network find all junos vmx
+  output: '[{"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ifname": "ge-0/0/8",
+    "vrf": "", "ipAddress": "172.16.11.11", "vlan": 101, "macaddr": "00:50:79:66:68:08",
+    "how": "derived", "timestamp": 1631009089424}]'
+- command: network find --address="10.0.20.2" --format=json
+  data-directory: tests/data/vmx/parquet-out
+  marks: network find all junos vmx
+  output: '[{"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "ae1.20",
+    "vrf": "default", "ipAddress": "10.0.20.2/29", "vlan": 20, "macaddr": "2c:6b:f5:b6:ce:c1",
+    "how": "polled", "timestamp": 1631009089864}]'
+- command: network find --address="2c:6b:f5:b6:ce:c1" --format=json
+  data-directory: tests/data/vmx/parquet-out
+  marks: network find all junos vmx
+  output: '[{"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "ae1",
+    "vrf": "default", "ipAddress": [], "vlan": 0, "macaddr": "2c:6b:f5:b6:ce:c1",
+    "how": "polled", "timestamp": 1631009089864}, {"namespace": "vmx", "hostname":
+    "TOR1CRP-DGW-RT01", "ifname": "ge-0/0/0", "vrf": "ae1", "ipAddress": [], "vlan":
+    0, "macaddr": "2c:6b:f5:b6:ce:c1", "how": "polled", "timestamp": 1631009089864},
+    {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "ge-0/0/1", "vrf":
+    "ae1", "ipAddress": [], "vlan": 0, "macaddr": "2c:6b:f5:b6:ce:c1", "how": "polled",
+    "timestamp": 1631009089864}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
+    "ifname": "ae1.20", "vrf": "default", "ipAddress": ["10.0.20.2/29"], "vlan": 20,
+    "macaddr": "2c:6b:f5:b6:ce:c1", "how": "polled", "timestamp": 1631009089864},
+    {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "ae1.10", "vrf":
+    "default", "ipAddress": ["10.0.10.2/29"], "vlan": 10, "macaddr": "2c:6b:f5:b6:ce:c1",
+    "how": "polled", "timestamp": 1631009089864}]'
+- command: network find --address="2c6b.f5b6.cec1" --format=json
+  data-directory: tests/data/vmx/parquet-out
+  marks: network find all junos vmx
+  output: '[{"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "ae1",
+    "vrf": "default", "ipAddress": [], "vlan": 0, "macaddr": "2c:6b:f5:b6:ce:c1",
+    "how": "polled", "timestamp": 1631009089864}, {"namespace": "vmx", "hostname":
+    "TOR1CRP-DGW-RT01", "ifname": "ge-0/0/0", "vrf": "ae1", "ipAddress": [], "vlan":
+    0, "macaddr": "2c:6b:f5:b6:ce:c1", "how": "polled", "timestamp": 1631009089864},
+    {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "ge-0/0/1", "vrf":
+    "ae1", "ipAddress": [], "vlan": 0, "macaddr": "2c:6b:f5:b6:ce:c1", "how": "polled",
+    "timestamp": 1631009089864}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
+    "ifname": "ae1.20", "vrf": "default", "ipAddress": ["10.0.20.2/29"], "vlan": 20,
+    "macaddr": "2c:6b:f5:b6:ce:c1", "how": "polled", "timestamp": 1631009089864},
+    {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "ae1.10", "vrf":
+    "default", "ipAddress": ["10.0.10.2/29"], "vlan": 10, "macaddr": "2c:6b:f5:b6:ce:c1",
+    "how": "polled", "timestamp": 1631009089864}]'
+- command: network find --address="2C6b.F5B6.CEC1" --format=json
+  data-directory: tests/data/vmx/parquet-out
+  marks: network find all junos vmx
+  output: '[{"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "ae1",
+    "vrf": "default", "ipAddress": [], "vlan": 0, "macaddr": "2c:6b:f5:b6:ce:c1",
+    "how": "polled", "timestamp": 1631009089864}, {"namespace": "vmx", "hostname":
+    "TOR1CRP-DGW-RT01", "ifname": "ge-0/0/0", "vrf": "ae1", "ipAddress": [], "vlan":
+    0, "macaddr": "2c:6b:f5:b6:ce:c1", "how": "polled", "timestamp": 1631009089864},
+    {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "ge-0/0/1", "vrf":
+    "ae1", "ipAddress": [], "vlan": 0, "macaddr": "2c:6b:f5:b6:ce:c1", "how": "polled",
+    "timestamp": 1631009089864}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
+    "ifname": "ae1.20", "vrf": "default", "ipAddress": ["10.0.20.2/29"], "vlan": 20,
+    "macaddr": "2c:6b:f5:b6:ce:c1", "how": "polled", "timestamp": 1631009089864},
+    {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "ae1.10", "vrf":
+    "default", "ipAddress": ["10.0.10.2/29"], "vlan": 10, "macaddr": "2c:6b:f5:b6:ce:c1",
+    "how": "polled", "timestamp": 1631009089864}]'
+- command: network find --asn=65000 --format=json
+  data-directory: tests/data/vmx/parquet-out
+  marks: network find all junos vmx
+  output: '[{"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "vrf": "VRF-A", "peer":
+    "10.0.10.1", "peerHostname": "", "state": "Established", "afi": "ipv4", "safi":
+    "unicast", "asn": 65000, "peerAsn": 65000, "pfxRx": 1, "pfxTx": 2, "numChanges":
+    2, "estdTime": 1630658722674.0, "timestamp": 1631009088674}, {"namespace": "vmx",
+    "hostname": "TOR1CRP-DGW-RT01", "vrf": "VRF-A", "peer": "10.0.10.3", "peerHostname":
+    "TOR4CRP-DGW-RT01", "state": "Established", "afi": "ipv4", "safi": "unicast",
+    "asn": 65000, "peerAsn": 65000, "pfxRx": 2, "pfxTx": 2, "numChanges": 3, "estdTime":
+    1630916580674.0, "timestamp": 1631009088674}, {"namespace": "vmx", "hostname":
+    "TOR1CRP-DGW-RT01", "vrf": "VRF-B", "peer": "10.0.20.1", "peerHostname": "", "state":
+    "Established", "afi": "ipv4", "safi": "unicast", "asn": 65000, "peerAsn": 65000,
+    "pfxRx": 1, "pfxTx": 2, "numChanges": 1, "estdTime": 1630658722674.0, "timestamp":
+    1631009088674}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "vrf": "VRF-B",
+    "peer": "10.0.20.3", "peerHostname": "TOR4CRP-DGW-RT01", "state": "Established",
+    "afi": "ipv4", "safi": "unicast", "asn": 65000, "peerAsn": 65000, "pfxRx": 2,
+    "pfxTx": 2, "numChanges": 3, "estdTime": 1630916572674.0, "timestamp": 1631009088674},
+    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "vrf": "VRF-A", "peer": "10.0.10.1",
+    "peerHostname": "", "state": "Established", "afi": "ipv4", "safi": "unicast",
+    "asn": 65000, "peerAsn": 65000, "pfxRx": 1, "pfxTx": 2, "numChanges": 0, "estdTime":
+    1630916569873.0, "timestamp": 1631009088873}, {"namespace": "vmx", "hostname":
+    "TOR4CRP-DGW-RT01", "vrf": "VRF-A", "peer": "10.0.10.2", "peerHostname": "TOR1CRP-DGW-RT01",
+    "state": "Established", "afi": "ipv4", "safi": "unicast", "asn": 65000, "peerAsn":
+    65000, "pfxRx": 2, "pfxTx": 2, "numChanges": 0, "estdTime": 1630916579873.0, "timestamp":
+    1631009088873}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "vrf": "VRF-B",
+    "peer": "10.0.20.1", "peerHostname": "", "state": "Established", "afi": "ipv4",
+    "safi": "unicast", "asn": 65000, "peerAsn": 65000, "pfxRx": 1, "pfxTx": 2, "numChanges":
+    0, "estdTime": 1630916569873.0, "timestamp": 1631009088873}, {"namespace": "vmx",
+    "hostname": "TOR4CRP-DGW-RT01", "vrf": "VRF-B", "peer": "10.0.20.2", "peerHostname":
+    "TOR1CRP-DGW-RT01", "state": "Established", "afi": "ipv4", "safi": "unicast",
+    "asn": 65000, "peerAsn": 65000, "pfxRx": 2, "pfxTx": 2, "numChanges": 0, "estdTime":
+    1630916571873.0, "timestamp": 1631009088873}]'
+- command: network summarize --namespace=vmx --format=json
+  data-directory: tests/data/vmx/parquet-out
+  marks: network summarize all junos vmx
+  output: '{"summary": {"namespacesCnt": 1, "servicePerNsStat": [13, 13, 13.0], "nsWithMlagCnt":
+    0, "nsWithBgpCnt": 1, "nsWithOspfCnt": 0, "nsWithVxlanCnt": 0, "nsWithErrsvcCnt":
+    0}}'
