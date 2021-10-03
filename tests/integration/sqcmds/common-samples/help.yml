@@ -854,58 +854,65 @@ tests:
   format: text
   marks: path help command
   output: "path describe: \e[36mDisplay the schema of the table\e[0m\n\e[33m\nArguments:\e\
-    [0m\n - columns: \e[36mSpace separated list of columns, * for all\e[0m\n - end_time:\
-    \ \e[36mEnd of time window, try natural language spec \e[0m\n - engine: \e[36mwhich\
-    \ analytical engine to use\e[0m\n - format: \e[36mselect the pformat of the output\e\
-    [0m\n - hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n -\
-    \ namespace: \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str:\
-    \ \e[36mTrailing blank terminated pandas query format to further filter the output.\e\
-    [0m\n - start_time: \e[36mStart of time window, try natural language spec\e[0m\n\
-    \ - view: \e[36mview all records or just the latest\e[0m\n"
+    [0m\n - columns: \e[36mSpace separated list of columns, * for all\e[0m\n - dest:\
+    \ \e[36mDestination IP address, in quotes\e[0m\n - end_time: \e[36mEnd of time\
+    \ window, try natural language spec \e[0m\n - engine: \e[36mwhich analytical engine\
+    \ to use\e[0m\n - format: \e[36mselect the pformat of the output\e[0m\n - hostname:\
+    \ \e[36mSpace separated list of hostnames to qualify\e[0m\n - namespace: \e[36mSpace\
+    \ separated list of namespaces to qualify\e[0m\n - query_str: \e[36mTrailing blank\
+    \ terminated pandas query format to further filter the output.\e[0m\n - src: \e\
+    [36mSource IP address, in quotes\e[0m\n - start_time: \e[36mStart of time window,\
+    \ try natural language spec\e[0m\n - view: \e[36mview all records or just the\
+    \ latest\e[0m\n - vrf: \e[36mVRF to trace path in\e[0m\n"
 - command: path help --command=show
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: path help command
   output: "path show: \e[36mshow paths between specified from source to target ip\
     \ addresses\e[0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36mSpace separated list\
-    \ of columns, * for all\e[0m\n - end_time: \e[36mEnd of time window, try natural\
-    \ language spec \e[0m\n - engine: \e[36mwhich analytical engine to use\e[0m\n\
-    \ - format: \e[36mselect the pformat of the output\e[0m\n - hostname: \e[36mSpace\
-    \ separated list of hostnames to qualify\e[0m\n - namespace: \e[36mSpace separated\
-    \ list of namespaces to qualify\e[0m\n - query_str: \e[36mTrailing blank terminated\
-    \ pandas query format to further filter the output.\e[0m\n - start_time: \e[36mStart\
-    \ of time window, try natural language spec\e[0m\n - view: \e[36mview all records\
-    \ or just the latest\e[0m\n"
+    \ of columns, * for all\e[0m\n - dest: \e[36mDestination IP address, in quotes\e\
+    [0m\n - end_time: \e[36mEnd of time window, try natural language spec \e[0m\n\
+    \ - engine: \e[36mwhich analytical engine to use\e[0m\n - format: \e[36mselect\
+    \ the pformat of the output\e[0m\n - hostname: \e[36mSpace separated list of hostnames\
+    \ to qualify\e[0m\n - namespace: \e[36mSpace separated list of namespaces to qualify\e\
+    [0m\n - query_str: \e[36mTrailing blank terminated pandas query format to further\
+    \ filter the output.\e[0m\n - src: \e[36mSource IP address, in quotes\e[0m\n -\
+    \ start_time: \e[36mStart of time window, try natural language spec\e[0m\n - view:\
+    \ \e[36mview all records or just the latest\e[0m\n - vrf: \e[36mVRF to trace path\
+    \ in\e[0m\n"
 - command: path help --command=summarize
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: path help command
   output: "path summarize: \e[36mSummarize paths between specified from source to\
     \ target ip addresses\e[0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36mSpace separated\
-    \ list of columns, * for all\e[0m\n - end_time: \e[36mEnd of time window, try\
-    \ natural language spec \e[0m\n - engine: \e[36mwhich analytical engine to use\e\
-    [0m\n - format: \e[36mselect the pformat of the output\e[0m\n - hostname: \e[36mSpace\
-    \ separated list of hostnames to qualify\e[0m\n - namespace: \e[36mSpace separated\
-    \ list of namespaces to qualify\e[0m\n - query_str: \e[36mTrailing blank terminated\
-    \ pandas query format to further filter the output.\e[0m\n - start_time: \e[36mStart\
-    \ of time window, try natural language spec\e[0m\n - view: \e[36mview all records\
-    \ or just the latest\e[0m\n"
+    \ list of columns, * for all\e[0m\n - dest: \e[36mDestination IP address, in quotes\e\
+    [0m\n - end_time: \e[36mEnd of time window, try natural language spec \e[0m\n\
+    \ - engine: \e[36mwhich analytical engine to use\e[0m\n - format: \e[36mselect\
+    \ the pformat of the output\e[0m\n - hostname: \e[36mSpace separated list of hostnames\
+    \ to qualify\e[0m\n - namespace: \e[36mSpace separated list of namespaces to qualify\e\
+    [0m\n - query_str: \e[36mTrailing blank terminated pandas query format to further\
+    \ filter the output.\e[0m\n - src: \e[36mSource IP address, in quotes\e[0m\n -\
+    \ start_time: \e[36mStart of time window, try natural language spec\e[0m\n - view:\
+    \ \e[36mview all records or just the latest\e[0m\n - vrf: \e[36mVRF to trace path\
+    \ in\e[0m\n"
 - command: path help --command=top
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: path help command
   output: "path top: \e[36mReturn the top n values for a field in path trace output\e\
     [0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36mSpace separated list of columns,\
-    \ * for all\e[0m\n - count: \e[36mnumber of rows to return\e[0m\n - end_time:\
-    \ \e[36mEnd of time window, try natural language spec \e[0m\n - engine: \e[36mwhich\
-    \ analytical engine to use\e[0m\n - format: \e[36mselect the pformat of the output\e\
-    [0m\n - hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n -\
-    \ namespace: \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str:\
-    \ \e[36mTrailing blank terminated pandas query format to further filter the output.\e\
-    [0m\n - reverse: \e[36mreturn bottom n values\e[0m\n - start_time: \e[36mStart\
-    \ of time window, try natural language spec\e[0m\n - view: \e[36mview all records\
-    \ or just the latest\e[0m\n - what: \e[36minteger field to get top values for\e\
-    [0m\n"
+    \ * for all\e[0m\n - count: \e[36mnumber of rows to return\e[0m\n - dest: \e[36mDestination\
+    \ IP address, in quotes\e[0m\n - end_time: \e[36mEnd of time window, try natural\
+    \ language spec \e[0m\n - engine: \e[36mwhich analytical engine to use\e[0m\n\
+    \ - format: \e[36mselect the pformat of the output\e[0m\n - hostname: \e[36mSpace\
+    \ separated list of hostnames to qualify\e[0m\n - namespace: \e[36mSpace separated\
+    \ list of namespaces to qualify\e[0m\n - query_str: \e[36mTrailing blank terminated\
+    \ pandas query format to further filter the output.\e[0m\n - reverse: \e[36mreturn\
+    \ bottom n values\e[0m\n - src: \e[36mSource IP address, in quotes\e[0m\n - start_time:\
+    \ \e[36mStart of time window, try natural language spec\e[0m\n - view: \e[36mview\
+    \ all records or just the latest\e[0m\n - vrf: \e[36mVRF to trace path in\e[0m\n\
+    \ - what: \e[36minteger field to get top values for\e[0m\n"
 - command: path help --command=unique
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -913,13 +920,15 @@ tests:
   output: "path unique: \e[36mDisplay unique values for specified field of a path\e\
     [0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36mSpace separated list of columns,\
     \ * for all\e[0m\n - count: \e[36minclude count of times a value is seen\e[0m\n\
-    \ - end_time: \e[36mEnd of time window, try natural language spec \e[0m\n - engine:\
-    \ \e[36mwhich analytical engine to use\e[0m\n - format: \e[36mselect the pformat\
-    \ of the output\e[0m\n - hostname: \e[36mSpace separated list of hostnames to\
-    \ qualify\e[0m\n - namespace: \e[36mSpace separated list of namespaces to qualify\e\
-    [0m\n - query_str: \e[36mTrailing blank terminated pandas query format to further\
-    \ filter the output.\e[0m\n - start_time: \e[36mStart of time window, try natural\
-    \ language spec\e[0m\n - view: \e[36mview all records or just the latest\e[0m\n"
+    \ - dest: \e[36mDestination IP address, in quotes\e[0m\n - end_time: \e[36mEnd\
+    \ of time window, try natural language spec \e[0m\n - engine: \e[36mwhich analytical\
+    \ engine to use\e[0m\n - format: \e[36mselect the pformat of the output\e[0m\n\
+    \ - hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n - namespace:\
+    \ \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str: \e[36mTrailing\
+    \ blank terminated pandas query format to further filter the output.\e[0m\n -\
+    \ src: \e[36mSource IP address, in quotes\e[0m\n - start_time: \e[36mStart of\
+    \ time window, try natural language spec\e[0m\n - view: \e[36mview all records\
+    \ or just the latest\e[0m\n - vrf: \e[36mVRF to trace path in\e[0m\n"
 - command: ospf help
   data-directory: tests/data/eos/parquet-out/
   format: text
