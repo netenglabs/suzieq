@@ -1,6 +1,7 @@
 
 import time
 import pandas as pd
+from dataclasses import dataclass
 from nubia import command, argument, context
 from io import StringIO
 import shutil
@@ -9,6 +10,15 @@ from suzieq.exceptions import UserQueryError
 from natsort import natsort_keygen
 import inspect
 from colorama import Fore, Style
+
+
+@dataclass
+class ArgHelpClass(object):
+    '''Class holding description and other params to display help
+    This class exists to simplify displaying help for vars that we
+    cannot access via the classargspec var
+    '''
+    description: str = ''
 
 
 @argument(
@@ -63,6 +73,7 @@ class SqCommand:
         self.format = format or "text"
         self.columns = columns.split()
         self.json_print_handler = None
+        self._additional_help_vars = {}
 
         if query_str.count('"') % 2 != 0:
             # This happens because nubia strips off the trailing quote
@@ -239,7 +250,10 @@ class SqCommand:
                   Style.RESET_ALL)
             print("\nSupported verbs are: ")
             for verb in verbs:
-                docstr = verbs[verb].__doc__.splitlines()[0]
+                if verbs[verb].__doc__:
+                    docstr = verbs[verb].__doc__.splitlines()[0]
+                else:
+                    docstr = ''
                 verb = verb.replace('aver', 'assert')
                 print(f" - {verb}: " + Fore.CYAN + f"{docstr}" +
                       Style.RESET_ALL)
@@ -274,14 +288,16 @@ class SqCommand:
                     break
 
             docstr = [x[1] for x in fnmbrs if x[0] == '__doc__']
-            docstr = docstr[0] if docstr else '\n'
-            docstr = docstr.splitlines()[0]
+            if docstr:
+                docstr = docstr[0].splitlines()[0]
+            else:
+                docstr = ''
             print(f"{table} {verb}: " + Fore.CYAN +
                   f"{docstr}" + Style.RESET_ALL)
             print(Fore.YELLOW + '\nArguments:' + Style.RESET_ALL)
             if fnargs:
                 classargspec.update(fnargs)
-
+            classargspec.update(self._additional_help_vars)
             for arg in sorted(classargspec):
                 print(f" - {arg}: " + Fore.CYAN +
                       f"{classargspec[arg].description}" + Style.RESET_ALL)
