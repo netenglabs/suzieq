@@ -250,13 +250,16 @@ class SqCommand:
                   Style.RESET_ALL)
             print("\nSupported verbs are: ")
             for verb in verbs:
-                if verbs[verb].__doc__:
-                    docstr = verbs[verb].__doc__.splitlines()[0]
+                docstr = inspect.getdoc(verbs[verb])
+                if docstr:
+                    docstr = docstr.splitlines()[0]
                 else:
                     docstr = ''
                 verb = verb.replace('aver', 'assert')
                 print(f" - {verb}: " + Fore.CYAN + f"{docstr}" +
                       Style.RESET_ALL)
+            print(f"\nUse " + Fore.CYAN + f"{self.sqobj.table} help command=<verb>" +
+                  Style.RESET_ALL + " for more details on that verb")
         else:
             self._do_help(self.sqobj.table, command)
 
@@ -287,9 +290,9 @@ class SqCommand:
                     fnargs = elem[1]
                     break
 
-            docstr = [x[1] for x in fnmbrs if x[0] == '__doc__']
+            docstr = inspect.getdoc(fnlist[newverb])
             if docstr:
-                docstr = docstr[0].splitlines()[0]
+                docstr = docstr.splitlines()[0]
             else:
                 docstr = ''
             print(f"{table} {verb}: " + Fore.CYAN +
