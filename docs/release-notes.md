@@ -1,5 +1,37 @@
 # Release Notes
 
+## 0.15.0 (Oct 3, 2022)
+
+This is a major release with tons of new features and important bug fixes.
+
+* Added support for device inventory (see the new inventory verb). In this release, Arista EOS, Cisco's NXOS and Juniper Junos are the only supported NOS for this feature. See the __inventory__ command (or API)
+* Added support for a virtual table called __network__. This is the first command you use to understand your entire network. It provides information about what namespaces data has been gathered for. In addition, it supports a new verb find that can be used to find to what router or switch a specified IP or MAC address is attached to; this traverses an L2 path as long as CDP/LLDP is used by the bridges in the L2 network. It can also be used to lookup BGP sessions by ASN. Moving forward, network find or maybe network search will become a central, and simple way to find all sorts of information about the network.
+* __BREAKING CHANGE__. __top__ verb has been rewritten to work on any field (column) that is numeric.
+* Fixes to ensure that timeouts don't end up declaring a device as dead forever, even if polling fails just once. This involved fixing the poller and the reader (see commits 854f02a0 and 1db819bf).
+* Improved support for help. Every object now takes a help command to display help about all the verbs it supports. With the command= option, help displays additional information about the specified verb. Try out _network help_
+* Updated GUI framework to streamlit version 0.87. Things should work better, and a little faster now. 
+* GUI search now uses network find for an IP or MAC address. In addition, you can lookup unique values of MTUs, ASNs, VTEPs, VLANs, VNIs, as well as a listing of what set of hosts have a specific value of one of these tables. You can look at the help on the Search page for more details.
+* __describe__ now works across all tables as a verb to display the schema of the saved data. Thus bgp describe lists the schema of the BGP table. tables describe table=bgp still works, but will be deprecated over time.
+* Added ability to log to stdout. This feature is particularly useful for those running Suzieq on top of Kubernetes.
+* Added __support for regex__ in specifying hostnames and namespaces. Start with "~" to indicate regex. "~spine.*" matches all hosts whose name starts with "spine", for example.
+* Support for "!" operator is more consistent
+* Searching by NOS version now works with "<, >..." and such operators. 
+* Natural sorting of interface names is the default now. Thus Ethernet1, Ethernet2,..Ethernet10, Ethernet11 is displayed rather than the older Ethernet1, Ethernet10, Ethernet11.., Ethernet2, ...
+* path, topology, and tables all now support all the common verbs supported by other tables. These include unique, summarize and top.
+* The tables table has been rewritten to work like the other tables.
+* The REST API has been updated to support all the new changes, and to support the verb top, which was not supported before.
+* Improved support for Junos MX platform, thanks to Giovanni Pipito. This also includes support for etherchannel (bond) interfaces on any Junos platform.
+* MAC Table support for Junos SRX devices.
+* Handle CDP from older NXOS version such as 8.4.4.
+* Updated parsers for OSPF and LLDP on older NXOS versions, like 8.4.4, thanks to Remco.
+* Support viewing only the latest entry in a time window when providing start and end times instead of listing all the entries in that time range. The default behavior is unchanged. Use view=latest when both start and end times are provided to see the last valid values for a key in that time period. 
+* Improved route and OSPF on IOS devices, thanks to Adrian Giacometti.
+* A number of updates to the documentation from Adrian Giacometti and Eddie Lumpkin. Some additional developer doc updates by Luca Nicosia.
+* uptime is now a proper augmented column of device table.
+* Dependencies with security fixes have been updated.
+* Several other bug fixes and code refactoring including discarding obsolete code.
+* Over 500 additional tests have been added. 
+
 ## 0.14.2 (Aug 12, 2021)
 
 This is a hotfix release if you use the REST API server. 
@@ -7,6 +39,7 @@ This is a hotfix release if you use the REST API server.
 * Issue 403: REST API server fails to start in the docker container.
 * This also contains a security update for the pywin32 library, which is an unused dependency within the GUI framework, streamlit. Nevertheless, the security update has been applied.
 * We moved to python version 3.7.11. This happened in 0.14.1 itself, but we didn't note it in that release.
+
 ## 0.14.1 (Aug 10, 2021)
 
 This release fixes a bunch of critical issues associated with release 0.14.0.
@@ -24,6 +57,7 @@ This release fixes a bunch of critical issues associated with release 0.14.0.
 * Add tests to validate REST server startup with and without HTTPS support.
 * Improved the container build process to ensure we don't rebuild everything when dependent libraries 
    have not changed. This results in smaller uploads and therefore faster pulls.
+   
 ## 0.14.0 (Aug 1, 2021)
 
 The major features in this release are the support for IOS/IOSXE network operating systems and a revamped REST API. This version also fixes a subtle but critical coalescer issue.
