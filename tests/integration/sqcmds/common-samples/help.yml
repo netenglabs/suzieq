@@ -9,7 +9,8 @@ tests:
     \ - help: \e[36mShow help for a command\e[0m\n - show: \e[36mShow address info\e\
     [0m\n - summarize: \e[36mSummarize relevant information about the table\e[0m\n\
     \ - top: \e[36mReturn the top n values for a field in a table\e[0m\n - unique:\
-    \ \e[36mGet all unique values associated with requested field\e[0m\n"
+    \ \e[36mGet all unique values associated with requested field\e[0m\n\nUse \e[36maddress\
+    \ help command=<verb>\e[0m for more details on that verb\n"
 - command: address help --command=show
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -78,7 +79,8 @@ tests:
     [36mShow help for a command\e[0m\n - show: \e[36mShow ARP/ND info\e[0m\n - summarize:\
     \ \e[36mSummarize relevant information about the table\e[0m\n - top: \e[36mReturn\
     \ the top n values for a field in a table\e[0m\n - unique: \e[36mGet all unique\
-    \ values associated with requested field\e[0m\n"
+    \ values associated with requested field\e[0m\n\nUse \e[36marpnd help command=<verb>\e\
+    [0m for more details on that verb\n"
 - command: arpnd help --command=show
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -172,15 +174,15 @@ tests:
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: bgp help command
-  output: "bgp summarize: \e[36m\e[0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36mSpace\
-    \ separated list of columns, * for all\e[0m\n - end_time: \e[36mEnd of time window,\
-    \ try natural language spec \e[0m\n - engine: \e[36mwhich analytical engine to\
-    \ use\e[0m\n - format: \e[36mselect the pformat of the output\e[0m\n - hostname:\
-    \ \e[36mSpace separated list of hostnames to qualify\e[0m\n - namespace: \e[36mSpace\
-    \ separated list of namespaces to qualify\e[0m\n - query_str: \e[36mTrailing blank\
-    \ terminated pandas query format to further filter the output.\e[0m\n - start_time:\
-    \ \e[36mStart of time window, try natural language spec\e[0m\n - view: \e[36mview\
-    \ all records or just the latest\e[0m\n"
+  output: "bgp summarize: \e[36mSummarize bgp info\e[0m\n\e[33m\nArguments:\e[0m\n\
+    \ - columns: \e[36mSpace separated list of columns, * for all\e[0m\n - end_time:\
+    \ \e[36mEnd of time window, try natural language spec \e[0m\n - engine: \e[36mwhich\
+    \ analytical engine to use\e[0m\n - format: \e[36mselect the pformat of the output\e\
+    [0m\n - hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n -\
+    \ namespace: \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str:\
+    \ \e[36mTrailing blank terminated pandas query format to further filter the output.\e\
+    [0m\n - start_time: \e[36mStart of time window, try natural language spec\e[0m\n\
+    \ - view: \e[36mview all records or just the latest\e[0m\n"
 - command: bgp help --command=unique
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -218,7 +220,9 @@ tests:
     \ - describe: \e[36mDisplay the schema of the table\e[0m\n - help: \e[36mShow\
     \ help for a command\e[0m\n - show: \e[36mShow device config info\e[0m\n - summarize:\
     \ \e[36mSummarize relevant information about the table\e[0m\n - top: \e[36mReturn\
-    \ the top n values for a field in a table\e[0m\n - unique: \e[36m\e[0m\n"
+    \ the top n values for a field in a table\e[0m\n - unique: \e[36mUnique device\
+    \ config info\e[0m\n\nUse \e[36mdevconfig help command=<verb>\e[0m for more details\
+    \ on that verb\n"
 - command: device help
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -228,7 +232,8 @@ tests:
     [0m\n - help: \e[36mShow help for a command\e[0m\n - show: \e[36mShow device info\e\
     [0m\n - summarize: \e[36mSummarize relevant information about the table\e[0m\n\
     \ - top: \e[36mReturn the top n values for a field in a table\e[0m\n - unique:\
-    \ \e[36mGet all unique values associated with requested field\e[0m\n"
+    \ \e[36mGet all unique values associated with requested field\e[0m\n\nUse \e[36mdevice\
+    \ help command=<verb>\e[0m for more details on that verb\n"
 - command: device help --command=show
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -299,7 +304,8 @@ tests:
     \ help for a command\e[0m\n - show: \e[36mShow EVPN VNI info\e[0m\n - summarize:\
     \ \e[36mSummarize relevant information about the table\e[0m\n - top: \e[36mReturn\
     \ the top n values for a field in a table\e[0m\n - unique: \e[36mGet all unique\
-    \ values associated with requested field\e[0m\n"
+    \ values associated with requested field\e[0m\n\nUse \e[36mevpnVni help command=<verb>\e\
+    [0m for more details on that verb\n"
 - command: evpnVni help --command=show
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -379,9 +385,10 @@ tests:
   output: "fs: \e[36mFilesystem information such as total disk space, filesystems\
     \ etc\e[0m\n\nSupported verbs are: \n - describe: \e[36mDisplay the schema of\
     \ the table\e[0m\n - help: \e[36mShow help for a command\e[0m\n - show: \e[36mShow\
-    \ File System info\e[0m\n - summarize: \e[36m\e[0m\n - top: \e[36mReturn the top\
-    \ n values for a field in a table\e[0m\n - unique: \e[36mGet all unique values\
-    \ associated with requested field\e[0m\n"
+    \ File System info\e[0m\n - summarize: \e[36mSummarize the filesystem/storage\
+    \ info\e[0m\n - top: \e[36mReturn the top n values for a field in a table\e[0m\n\
+    \ - unique: \e[36mGet all unique values associated with requested field\e[0m\n\
+    \nUse \e[36mfs help command=<verb>\e[0m for more details on that verb\n"
 - command: interface help
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -392,7 +399,8 @@ tests:
     \ - help: \e[36mShow help for a command\e[0m\n - show: \e[36mShow interface info\e\
     [0m\n - summarize: \e[36mSummarize relevant information about the table\e[0m\n\
     \ - top: \e[36mShow top n entries based on specific field\e[0m\n - unique: \e\
-    [36mGet all unique values associated with requested field\e[0m\n"
+    [36mGet all unique values associated with requested field\e[0m\n\nUse \e[36minterfaces\
+    \ help command=<verb>\e[0m for more details on that verb\n"
 - command: interface help --command=assert
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -494,7 +502,8 @@ tests:
     [36mShow Device inventory info\e[0m\n - summarize: \e[36mSummarize relevant information\
     \ about the table\e[0m\n - top: \e[36mReturn the top n values for a field in a\
     \ table\e[0m\n - unique: \e[36mGet all unique values associated with requested\
-    \ field\e[0m\n"
+    \ field\e[0m\n\nUse \e[36minventory help command=<verb>\e[0m for more details\
+    \ on that verb\n"
 - command: lldp help
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -504,7 +513,8 @@ tests:
     \ for a command\e[0m\n - show: \e[36mShow LLDP info\e[0m\n - summarize: \e[36mSummarize\
     \ relevant information about the table\e[0m\n - top: \e[36mReturn the top n values\
     \ for a field in a table\e[0m\n - unique: \e[36mGet all unique values associated\
-    \ with requested field\e[0m\n"
+    \ with requested field\e[0m\n\nUse \e[36mlldp help command=<verb>\e[0m for more\
+    \ details on that verb\n"
 - command: lldp help --command=describe
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -584,7 +594,8 @@ tests:
     \ help for a command\e[0m\n - show: \e[36mShow MAC table info\e[0m\n - summarize:\
     \ \e[36mSummarize relevant information about the table\e[0m\n - top: \e[36mReturn\
     \ the top n values for a field in a table\e[0m\n - unique: \e[36mGet all unique\
-    \ values associated with requested field\e[0m\n"
+    \ values associated with requested field\e[0m\n\nUse \e[36mmacs help command=<verb>\e\
+    [0m for more details on that verb\n"
 - command: mac help --command=describe
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -668,7 +679,8 @@ tests:
     \ the table\e[0m\n - help: \e[36mShow help for a command\e[0m\n - show: \e[36mShow\
     \ MLAG info\e[0m\n - summarize: \e[36mSummarize relevant information about the\
     \ table\e[0m\n - top: \e[36mReturn the top n values for a field in a table\e[0m\n\
-    \ - unique: \e[36mGet all unique values associated with requested field\e[0m\n"
+    \ - unique: \e[36mGet all unique values associated with requested field\e[0m\n\
+    \nUse \e[36mmlag help command=<verb>\e[0m for more details on that verb\n"
 - command: mlag help --command=show
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -745,10 +757,11 @@ tests:
   output: "network: \e[36mOverall network information such as namespaces present etc.\e\
     [0m\n\nSupported verbs are: \n - describe: \e[36mDisplay the schema of the table\e\
     [0m\n - find: \e[36mFind a network object such as an IP address, BGP session,\
-    \ etc.\e[0m\n - help: \e[36mShow help for a command\e[0m\n - show: \e[36m\e[0m\n\
-    \ - summarize: \e[36mSummarize relevant information about the table\e[0m\n - top:\
-    \ \e[36mReturn the top n values for a field in a table\e[0m\n - unique: \e[36mGet\
-    \ all unique values associated with requested field\e[0m\n"
+    \ etc.\e[0m\n - help: \e[36mShow help for a command\e[0m\n - show: \e[36mShow\
+    \ network info\e[0m\n - summarize: \e[36mSummarize relevant information about\
+    \ the table\e[0m\n - top: \e[36mReturn the top n values for a field in a table\e\
+    [0m\n - unique: \e[36mGet all unique values associated with requested field\e\
+    [0m\n\nUse \e[36mnetwork help command=<verb>\e[0m for more details on that verb\n"
 - command: network help --command=describe
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -766,17 +779,18 @@ tests:
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: network help command
-  output: "network show: \e[36m\e[0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36mSpace\
-    \ separated list of columns, * for all\e[0m\n - end_time: \e[36mEnd of time window,\
-    \ try natural language spec \e[0m\n - engine: \e[36mwhich analytical engine to\
-    \ use\e[0m\n - format: \e[36mselect the pformat of the output\e[0m\n - hostname:\
-    \ \e[36mSpace separated list of hostnames to qualify\e[0m\n - model: \e[36mmodels\
-    \ to filter with\e[0m\n - namespace: \e[36mSpace separated list of namespaces\
-    \ to qualify\e[0m\n - os: \e[36mNOS to filter with\e[0m\n - query_str: \e[36mTrailing\
-    \ blank terminated pandas query format to further filter the output.\e[0m\n -\
-    \ start_time: \e[36mStart of time window, try natural language spec\e[0m\n - vendor:\
-    \ \e[36mvendor to filter with\e[0m\n - version: \e[36mNOS version to filter with\e\
-    [0m\n - view: \e[36mview all records or just the latest\e[0m\n"
+  output: "network show: \e[36mShow network info\e[0m\n\e[33m\nArguments:\e[0m\n -\
+    \ columns: \e[36mSpace separated list of columns, * for all\e[0m\n - end_time:\
+    \ \e[36mEnd of time window, try natural language spec \e[0m\n - engine: \e[36mwhich\
+    \ analytical engine to use\e[0m\n - format: \e[36mselect the pformat of the output\e\
+    [0m\n - hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n -\
+    \ model: \e[36mmodels to filter with\e[0m\n - namespace: \e[36mSpace separated\
+    \ list of namespaces to qualify\e[0m\n - os: \e[36mNOS to filter with\e[0m\n -\
+    \ query_str: \e[36mTrailing blank terminated pandas query format to further filter\
+    \ the output.\e[0m\n - start_time: \e[36mStart of time window, try natural language\
+    \ spec\e[0m\n - vendor: \e[36mvendor to filter with\e[0m\n - version: \e[36mNOS\
+    \ version to filter with\e[0m\n - view: \e[36mview all records or just the latest\e\
+    [0m\n"
 - command: network help --command=find
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -848,7 +862,8 @@ tests:
     \ specified from source to target ip addresses\e[0m\n - summarize: \e[36mSummarize\
     \ paths between specified from source to target ip addresses\e[0m\n - top: \e\
     [36mReturn the top n values for a field in path trace output\e[0m\n - unique:\
-    \ \e[36mDisplay unique values for specified field of a path\e[0m\n"
+    \ \e[36mDisplay unique values for specified field of a path\e[0m\n\nUse \e[36mpath\
+    \ help command=<verb>\e[0m for more details on that verb\n"
 - command: path help --command=describe
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -934,11 +949,12 @@ tests:
   format: text
   marks: ospf help
   output: "ospf: \e[36mOSPFv2 protocol information\e[0m\n\nSupported verbs are: \n\
-    \ - assert: \e[36m\e[0m\n - describe: \e[36mDisplay the schema of the table\e\
-    [0m\n - help: \e[36mShow help for a command\e[0m\n - show: \e[36mShow OSPF interface\
-    \ and neighbor info\e[0m\n - summarize: \e[36m\e[0m\n - top: \e[36mReturn the\
-    \ top n values for a field in a table\e[0m\n - unique: \e[36mGet all unique values\
-    \ associated with requested field\e[0m\n"
+    \ - assert: \e[36mTest OSPF runtime state is good\e[0m\n - describe: \e[36mDisplay\
+    \ the schema of the table\e[0m\n - help: \e[36mShow help for a command\e[0m\n\
+    \ - show: \e[36mShow OSPF interface and neighbor info\e[0m\n - summarize: \e[36mSummarize\
+    \ OSPF data\e[0m\n - top: \e[36mReturn the top n values for a field in a table\e\
+    [0m\n - unique: \e[36mGet all unique values associated with requested field\e\
+    [0m\n\nUse \e[36mospf help command=<verb>\e[0m for more details on that verb\n"
 - command: ospf help --command=describe
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -956,16 +972,17 @@ tests:
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: ospf help command
-  output: "ospf assert: \e[36m\e[0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36mSpace\
-    \ separated list of columns, * for all\e[0m\n - end_time: \e[36mEnd of time window,\
-    \ try natural language spec \e[0m\n - engine: \e[36mwhich analytical engine to\
-    \ use\e[0m\n - format: \e[36mselect the pformat of the output\e[0m\n - hostname:\
-    \ \e[36mSpace separated list of hostnames to qualify\e[0m\n - namespace: \e[36mSpace\
-    \ separated list of namespaces to qualify\e[0m\n - query_str: \e[36mTrailing blank\
-    \ terminated pandas query format to further filter the output.\e[0m\n - start_time:\
-    \ \e[36mStart of time window, try natural language spec\e[0m\n - status: \e[36mShow\
-    \ only assert that matches this value\e[0m\n - view: \e[36mview all records or\
-    \ just the latest\e[0m\n - vrf: \e[36mVRF to assert OSPF state in\e[0m\n"
+  output: "ospf assert: \e[36mTest OSPF runtime state is good\e[0m\n\e[33m\nArguments:\e\
+    [0m\n - columns: \e[36mSpace separated list of columns, * for all\e[0m\n - end_time:\
+    \ \e[36mEnd of time window, try natural language spec \e[0m\n - engine: \e[36mwhich\
+    \ analytical engine to use\e[0m\n - format: \e[36mselect the pformat of the output\e\
+    [0m\n - hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n -\
+    \ namespace: \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str:\
+    \ \e[36mTrailing blank terminated pandas query format to further filter the output.\e\
+    [0m\n - start_time: \e[36mStart of time window, try natural language spec\e[0m\n\
+    \ - status: \e[36mShow only assert that matches this value\e[0m\n - view: \e[36mview\
+    \ all records or just the latest\e[0m\n - vrf: \e[36mVRF to assert OSPF state\
+    \ in\e[0m\n"
 - command: ospf help --command=show
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -985,19 +1002,19 @@ tests:
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: ospf help command
-  output: "ospf summarize: \e[36m\e[0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36mSpace\
-    \ separated list of columns, * for all\e[0m\n - end_time: \e[36mEnd of time window,\
-    \ try natural language spec \e[0m\n - engine: \e[36mwhich analytical engine to\
-    \ use\e[0m\n - format: \e[36mselect the pformat of the output\e[0m\n - groupby:\
-    \ \e[36mSpace separated list of fields to summarize on\e[0m\n - hostname: \e[36mSpace\
-    \ separated list of hostnames to qualify\e[0m\n - ifname: \e[36mSpace separated\
-    \ list of interface names to qualify\e[0m\n - namespace: \e[36mSpace separated\
-    \ list of namespaces to qualify\e[0m\n - query_str: \e[36mTrailing blank terminated\
-    \ pandas query format to further filter the output.\e[0m\n - start_time: \e[36mStart\
-    \ of time window, try natural language spec\e[0m\n - state: \e[36mBGP neighbor\
-    \ state to qualify\e[0m\n - type: \e[36mType of OSPF information to show\e[0m\n\
-    \ - view: \e[36mview all records or just the latest\e[0m\n - vrf: \e[36mSpace\
-    \ separated list of VRFs to qualify\e[0m\n"
+  output: "ospf summarize: \e[36mSummarize OSPF data\e[0m\n\e[33m\nArguments:\e[0m\n\
+    \ - columns: \e[36mSpace separated list of columns, * for all\e[0m\n - end_time:\
+    \ \e[36mEnd of time window, try natural language spec \e[0m\n - engine: \e[36mwhich\
+    \ analytical engine to use\e[0m\n - format: \e[36mselect the pformat of the output\e\
+    [0m\n - groupby: \e[36mSpace separated list of fields to summarize on\e[0m\n -\
+    \ hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n - ifname:\
+    \ \e[36mSpace separated list of interface names to qualify\e[0m\n - namespace:\
+    \ \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str: \e[36mTrailing\
+    \ blank terminated pandas query format to further filter the output.\e[0m\n -\
+    \ start_time: \e[36mStart of time window, try natural language spec\e[0m\n - state:\
+    \ \e[36mBGP neighbor state to qualify\e[0m\n - type: \e[36mType of OSPF information\
+    \ to show\e[0m\n - view: \e[36mview all records or just the latest\e[0m\n - vrf:\
+    \ \e[36mSpace separated list of VRFs to qualify\e[0m\n"
 - command: ospf help --command=top
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -1038,7 +1055,8 @@ tests:
     \ Prefix Match(LPM) on a given prefix, vrf\e[0m\n - show: \e[36mShow Routing table\
     \ info\e[0m\n - summarize: \e[36mSummarize key routing table info\e[0m\n - top:\
     \ \e[36mReturn the top n values for a field in a table\e[0m\n - unique: \e[36mGet\
-    \ all unique values associated with requested field\e[0m\n"
+    \ all unique values associated with requested field\e[0m\n\nUse \e[36mroutes help\
+    \ command=<verb>\e[0m for more details on that verb\n"
 - command: route help --command=describe
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -1137,7 +1155,7 @@ tests:
     [36mshow table of topology information\e[0m\n - summarize: \e[36mSummarize topology\
     \ information\e[0m\n - top: \e[36mReturn the top n values for a field in a table\e\
     [0m\n - unique: \e[36mGet all unique values associated with requested field\e\
-    [0m\n"
+    [0m\n\nUse \e[36mtopology help command=<verb>\e[0m for more details on that verb\n"
 - command: topology help --command=describe
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -1221,7 +1239,8 @@ tests:
     \ the table\e[0m\n - help: \e[36mShow help for a command\e[0m\n - show: \e[36mShow\
     \ VLAN info\e[0m\n - summarize: \e[36mSummarize relevant information about the\
     \ table\e[0m\n - top: \e[36mReturn the top n values for a field in a table\e[0m\n\
-    \ - unique: \e[36mGet all unique values associated with requested field\e[0m\n"
+    \ - unique: \e[36mGet all unique values associated with requested field\e[0m\n\
+    \nUse \e[36mvlan help command=<verb>\e[0m for more details on that verb\n"
 - command: vlan help --command=describe
   data-directory: tests/data/eos/parquet-out/
   format: text
