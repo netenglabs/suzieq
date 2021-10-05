@@ -1,5 +1,9 @@
 # Release Notes
 
+## 0.15.1 (Oct 4, 2021)
+
+This is a hotfix release for those who tried to install Suzieq via PyPi. There were multiple failures in the PyPi package that had been uploaded including some missing specifications for certain dependencies. (Issue #430).
+
 ## 0.15.0 (Oct 3, 2022)
 
 This is a major release with tons of new features and important bug fixes.
