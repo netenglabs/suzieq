@@ -15,6 +15,7 @@ that the bgp service collects from routers. To see what information is collected
 | Filesystem (fs) | yes | yes | yes | yes | no | yes | no | no | no |
 | IfCounters      | yes | yes | yes | no | no | yes | no | no | no |
 | Interfaces  | yes | yes | yes| yes | yes | yes | yes | yes | yes |
+| Inventory   | no | yes | no | yes | yes | no | no | no | no |
 | LLDP | yes | yes | yes | yes | yes | yes | yes | yes | yes |
 | CDP  | no | no | no | yes | no | no | no | yes | yes |
 | Macs |yes | yes | yes | yes | yes | yes | no | yes | yes |
