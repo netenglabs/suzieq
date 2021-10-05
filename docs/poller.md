@@ -1,6 +1,8 @@
 # Gathering Data: Poller
 
-To gather data from your network, you need to run the poller. Launch the docker container, **netenglabs/suzieq:latest** and attach to it via the following steps:
+To gather data from your network, you need to run the poller. We support gathering data from Arista EOS, Cisco's IOS, IOS-XE, and IOS-XR platforms, Cisco's NXOS (N7K with versions 8.4.4 or higher, and N9K with versions 9.3.1 or higher), Cumulus Linux, Juniper's Junos(QFX, EX, MX and SRX platforms), and SoNIC devices, besides Linux servers
+
+To start, launch the docker container, **netenglabs/suzieq:latest** and attach to it via the following steps:
 
 ```
   docker run -itd -v /home/${USER}/parquet-out:/suzieq/parquet -v /home/${USER}/<inventory-file>:/suzieq/inventory --name sq-poller netenglabs/suzieq:latest
@@ -77,11 +79,11 @@ Two important concepts in the poller are Nodes and Services. Nodes are devices o
 they are the object being monitored. Services are the data that is collected and consumed by Suzieq. 
 Service definitions describe how to get output from devices and then how to turn that into useful data.
 
-Currently Suzieq supports polling [Cumulus Linux](https://cumulusnetworks.com/),
-[Arista](https://www.arista.com/en/),
-[Nexus](https://www.cisco.com/c/en/us/products/switches/data-center-switches/index.html),
-[IOS](https://www.cisco.com/c/en/us/products/ios-nx-os-software/ios-technologies/index.html),
-[Juniper](https://www.juniper.net)
+Currently Suzieq supports polling [Arista](https://www.arista.com/en/),
+[Cisco's IOS](https://www.cisco.com/c/en/us/products/ios-nx-os-software/ios-technologies/index.html) including IOS Classic, IOS-XE and IOS-XR,
+[Cisco's NXOS](https://www.cisco.com/c/en/us/products/switches/data-center-switches/index.html),
+[Cumulus Linux](https://cumulusnetworks.com/),
+[Juniper](https://www.juniper.net),
 and [SONIC](https://azure.github.io/SONiC/) devices, as well as native Linux devices such as servers. Suzieq can easily support other device types, and we have third-party contributors working on other NOSes. Please let us know if you're interested in Suzieq supporting other NOSes.
 
 Suzieq started out with least common denominator SSH and REST access to devices.
