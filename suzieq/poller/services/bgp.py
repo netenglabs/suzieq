@@ -488,23 +488,21 @@ class BgpService(Service):
                 drop_indices.append(i)
                 # Find the matching entry in the already processed data
                 if check_peer_key in vrf_peer_dict:
-                    for afi_type in vrf_peer_dict[check_peer_key].keys():
-                        # Add routerID and ASN in all AFI types
-                        old_entry = vrf_peer_dict[check_peer_key][afi_type]
-                        old_entry['routerId'] = entry['routerId']
-                        old_entry['asn'] = entry['asn']
-                        # Add prefixes only in corresponding AFI type
-                        if afi_type == entry['afi']:
-                            if entry['statePfx'].isdecimal():
-                                old_entry['pfxRx'] = int(entry['statePfx'])
-                    else:
-                        pass
+                    # loop to add Router ID and ASN in all the registries
+                    for index, item in enumerate(vrf_peer_dict[check_peer_key]):
+                        old_entry = vrf_peer_dict[check_peer_key]
+                        old_entry[index]['routerId'] = entry['routerId']
+                        old_entry[index]['asn'] = entry['asn']
+                        # add the prefix only in matching AFI-SAFI
+                        if entry['afi'].lower() == old_entry[index]['afi'] and \
+                                entry['safi'].lower() == old_entry[index]['safi']:
+                            old_entry[index]['pfxRx'] = entry['statePfx']
                 continue
             else:
                 if check_peer_key not in vrf_peer_dict:
-                    vrf_peer_dict[check_peer_key] = {}
-                # Add AFI type sub-key
-                vrf_peer_dict[check_peer_key][entry['afi']] = entry
+                    vrf_peer_dict[check_peer_key] = [entry]
+                else:
+                    vrf_peer_dict[check_peer_key].append(entry)
 
             bfd_status = entry.get('bfdStatus', 'disabled').lower()
             if not bfd_status or (bfd_status == "unknown"):
