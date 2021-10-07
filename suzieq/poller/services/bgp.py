@@ -488,14 +488,23 @@ class BgpService(Service):
                 drop_indices.append(i)
                 # Find the matching entry in the already processed data
                 if check_peer_key in vrf_peer_dict:
-                    old_entry = vrf_peer_dict[check_peer_key]
-                    if entry['statePfx'].isdecimal():
-                        old_entry['pfxRx'] = int(entry['statePfx'])
-                    old_entry['routerId'] = entry['routerId']
-                    old_entry['asn'] = entry['asn']
+                    for afi_type in vrf_peer_dict[check_peer_key].keys():
+                        # Add routerID and ASN in all AFI types
+                        old_entry = vrf_peer_dict[check_peer_key][afi_type]
+                        old_entry['routerId'] = entry['routerId']
+                        old_entry['asn'] = entry['asn']
+                        # Add prefixes only in corresponding AFI type
+                        if afi_type == entry['afi']:
+                            if entry['statePfx'].isdecimal():
+                                old_entry['pfxRx'] = int(entry['statePfx'])
+                    else:
+                        pass
                 continue
             else:
-                vrf_peer_dict[check_peer_key] = entry
+                if check_peer_key not in vrf_peer_dict:
+                    vrf_peer_dict[check_peer_key] = {}
+                # Add AFI type sub-key
+                vrf_peer_dict[check_peer_key][entry['afi']] = entry
 
             bfd_status = entry.get('bfdStatus', 'disabled').lower()
             if not bfd_status or (bfd_status == "unknown"):
