@@ -6,7 +6,7 @@ from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.inventory import InventoryObj
 
 
-@command("inventory", help="Act on LLDP data")
+@command("inventory", help="Act on inventory data")
 class InventoryCmd(SqCommand):
     """Device inventory information such as serial number, cable info etc"""
 
