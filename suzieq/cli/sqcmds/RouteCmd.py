@@ -7,7 +7,7 @@ from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.routes import RoutesObj
 
 
-@command("route", help="Act on Routes")
+@command("route", help="Act on Routes", aliases=['routes'])
 class RouteCmd(SqCommand):
     """Routing table information"""
 

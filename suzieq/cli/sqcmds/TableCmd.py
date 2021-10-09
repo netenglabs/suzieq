@@ -7,7 +7,8 @@ from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.tables import TablesObj
 
 
-@command("table", help="Information about the various tables")
+@command("table", help="Information about the various tables",
+         aliases=['tables'])
 class TableCmd(SqCommand):
     """Meta information about the various data gathered"""
 

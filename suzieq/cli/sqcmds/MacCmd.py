@@ -5,7 +5,7 @@ from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.macs import MacsObj
 
 
-@command("mac", help="Act on MAC Table data")
+@command("mac", help="Act on MAC Table data", aliases=['macs'])
 class MacCmd(SqCommand):
     """MAC address table information"""
 

@@ -7,7 +7,7 @@ from suzieq.sqobjects.interfaces import IfObj
 from suzieq.utils import humanize_timestamp
 
 
-@command("interface", help="Act on Interface data")
+@command("interface", help="Act on Interface data", aliases=['interfaces'])
 class InterfaceCmd(SqCommand):
     """Device interface information including MTU, Speed, IP address etc"""
 
