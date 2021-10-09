@@ -79,6 +79,10 @@ class MySSHServerSession(asyncssh.SSHServerSession):
             f'{self.sample_data_dir}/{self.device}/show_configuration_routing_instances{fmt}',
             'show bridge mac-table':
             f'{self.sample_data_dir}/{self.device}/show_bridge_mac_table{fmt}',
+            'cat /proc/uptime; hostnamectl; show version':
+            f'{self.sample_data_dir}/{self.device}/device.txt',
+            'ip route show table all':
+            f'{self.sample_data_dir}/{self.device}/ip_route_show_table_all.txt',
         }
 
         return self.cmd_data.get(command, '')
@@ -195,6 +199,12 @@ class SRXServer(MySSHServer):
     def __init__(self):
         super().__init__(device='srx')
 
+
+class SoNICServer(MySSHServer):
+    def __init__(self):
+        super().__init__(device='sonic')
+
+
 async def start_server(device='iosxr'):
     factory = {
         'iosxr': IOSXRServer,
@@ -204,6 +214,7 @@ async def start_server(device='iosxr'):
         'qfx': QFXServer,
         'mx': MXServer,
         'srx': SRXServer,
+        'sonic': SoNICServer,
     }
     await asyncssh.listen('', 10000, server_factory=factory[device],
                           server_host_keys=['/home/ddutt/work/suzieq/play/ssh_host_key'])
