@@ -170,7 +170,11 @@ async def init_hosts(**kwargs):
                         elif words[i].startswith('password'):
                             password = words[i].split("=")[1]
                 except IndexError:
-                    logger.error(f'Invalid key/value {words}, missing "="')
+                    if 'password' not in words[i]:
+                        logger.error(f'Invalid key {words[i]}, missing "="')
+                    else:
+                        logger.error(
+                            'Invalid password specification, missing=')
                     logger.error(f'Ignoring node {host}')
                     continue
 
