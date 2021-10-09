@@ -72,7 +72,7 @@ class SqCommand:
         self._schemas = self.ctxt.schemas
         self.format = format or "text"
         self.columns = columns.split()
-        self.json_print_handler = None
+        self._json_print_handler = None
         self._additional_help_vars = {}
 
         if query_str.count('"') % 2 != 0:
@@ -355,9 +355,9 @@ class SqCommand:
             cols = df.columns
 
         if self.format == 'json':
-            if self.json_print_handler:
+            if self._json_print_handler:
                 print(df[cols].to_json(
-                    default_handler=self.json_print_handler,
+                    default_handler=self._json_print_handler,
                     orient=json_orient))
             else:
                 print(df[cols].to_json(orient=json_orient))

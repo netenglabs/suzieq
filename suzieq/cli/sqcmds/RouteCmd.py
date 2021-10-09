@@ -35,7 +35,6 @@ class RouteCmd(SqCommand):
             query_str=query_str,
             sqobj=RoutesObj,
         )
-        self.json_print_handler = self._json_print_handler
 
     def _json_print_handler(self, input):
         """This handler calls the code to print the IPNetwork as a string"""
