@@ -298,22 +298,32 @@ def test_rest_services(app_initialize, service, verb, arg):
 
 
 @ pytest.mark.rest
-@ pytest.mark.parametrize("service", [
-    (cmd) for cmd in get_tables()])
-def test_rest_arg_consistency(service):
+@ pytest.mark.parametrize("service, verb", [
+    (cmd, verb) for cmd in get_tables() for verb in VERBS])
+def test_rest_arg_consistency(service, verb):
     '''check that the arguments used in REST match whats in sqobjects'''
 
     # import all relevant functions from the rest code first
-
-    fnlist = list(filter(lambda x: x[0] == f'query_{service}',
+    fnlist = list(filter(lambda x: x[0] == f'query_{service}_{verb}',
                          inspect.getmembers(query, inspect.isfunction)))
+    if not fnlist:
+        fnlist = list(filter(lambda x: x[0] == f'query_{service}',
+                             inspect.getmembers(query, inspect.isfunction)))
     for fn in fnlist:
         rest_args = [i for i in inspect.getfullargspec(fn[1]).args
                      if i not in
-                     ['verb', 'token', 'request', 'format', 'start_time', 'end_time', 'view']]
+                     ['verb', 'token', 'request']]
         sqobj = get_sqobject(service)()
 
-        valid_args = set(sqobj._valid_get_args)
+        arglist = getattr(sqobj, f'_valid_{verb}_args', None)
+        if not arglist:
+            arglist = getattr(sqobj, '_valid_get_args')
+        if not arglist:
+            pytest.set_trace()
+        arglist.extend(['namespace', 'hostname', 'start_time', 'end_time',
+                        'format', 'view', 'columns', 'query_str'])
+
+        valid_args = set(arglist)
 
         for arg in valid_args:
             assert arg in rest_args, f"{arg} missing from {fn} arguments"
@@ -321,7 +331,7 @@ def test_rest_arg_consistency(service):
         for arg in rest_args:
             if arg not in valid_args and arg != "status":
                 # status is usually part of assert keyword and so ignore
-                assert False, f"{arg} not in {fn} arguments"
+                assert False, f"{arg} not in {service} sqobj {verb} arguments"
 
 
 @ pytest.fixture()
