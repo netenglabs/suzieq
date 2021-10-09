@@ -12,13 +12,14 @@ class ConfigService(Service):
         # is empty
 
         output = raw_data[0].get('data', {})
-        if isinstance(output, str):
-            return []
+        if isinstance(output, list):
+            output = output[0]
 
-        if 'output' in output.keys():
-            data = output.get('output', "")
+        if isinstance(output, dict):
+            if 'output' in output.keys():
+                data = output.get('output', "")
         else:
-            data = raw_data[0].get('data', '')
+            data = output
 
         lines = data.splitlines()
         lines = list(filter(
