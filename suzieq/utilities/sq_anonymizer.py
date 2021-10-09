@@ -151,16 +151,19 @@ class SqAnonymizer(object):
 
         for i, elem in enumerate(entries):
             newelem = elem.replace('\n', '').strip()
-            if i == 0:
-                newelem = newelem + ']'
-            elif i == entlen - 1:
-                newelem = '[' + newelem
-            else:
-                newelem = '[' + newelem + ']'
-
             try:
                 jelem = json.loads(newelem)
                 new_entries.append(jelem)
+            except Exception as e:
+                if i == 0:
+                    newelem = newelem + ']'
+                elif i == entlen - 1:
+                    newelem = '[' + newelem
+                else:
+                    newelem = '[' + newelem + ']'
+
+            try:
+                jelem = json.loads(newelem)
             except Exception as e:
                 print(f"JSON load of {i} item failed with error {str(e)}")
                 jelem = []
