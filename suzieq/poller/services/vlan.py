@@ -54,6 +54,9 @@ class VlanService(Service):
 
         return new_entries
 
+    def _clean_sonic_data(self, processed_data, raw_data):
+        return self._clean_cumulus_data(processed_data, raw_data)
+
     def _clean_nxos_data(self, processed_data, raw_data):
         '''Massage the interface output'''
 

@@ -21,6 +21,9 @@ class OspfIfService(Service):
     def _clean_cumulus_data(self, processed_data, raw_data):
         return self._clean_linux_data(processed_data, raw_data)
 
+    def _clean_sonic_data(self, processed_data, raw_data):
+        return self._clean_linux_data(processed_data, raw_data)
+
     def _clean_eos_data(self, processed_data, raw_data):
 
         vrf_loip = {}

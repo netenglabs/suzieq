@@ -552,3 +552,6 @@ class BgpService(Service):
 
     def _clean_iosxe_data(self, processed_data, raw_data):
         return self._clean_ios_data(processed_data, raw_data)
+
+    def _clean_sonic_data(self, processed_data, raw_data):
+        return self._clean_linux_data(processed_data, raw_data)

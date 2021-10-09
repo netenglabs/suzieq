@@ -750,6 +750,9 @@ class InterfaceService(Service):
     def _clean_ios_data(self, processed_data, raw_data):
         return self._clean_iosxr_data(processed_data, raw_data)
 
+    def _clean_sonic_data(self, processed_data, raw_data):
+        return self._clean_cumulus_data(processed_data, raw_data)
+
     def _common_data_cleaner(self, processed_data, raw_data):
         for entry in processed_data:
             entry['state'] = entry['state'].lower()
