@@ -25,8 +25,8 @@ unit testing as we'd like. Any thoughts or contributions here would help a lot.
 When making a change to Suzieq, first start by adding an issue to discuss the work.
 
 After discussion, [fork Suzieq](https://help.github.com/articles/fork-a-repo), make a branch,
-run tests to make sure everything is in place and working correctly. T
-he tests are run in the main suzieq directory.
+run tests to make sure everything is in place and working correctly. The tests
+are run in the main *suzieq* directory.
 
 ``` bash
 pytest
