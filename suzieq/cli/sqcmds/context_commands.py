@@ -1,6 +1,12 @@
 import typing
 import os
-from nubia import command, argument, context
+from nubia import command, argument, context, CompletionDataSource
+from nubia.internal.commands.help import HelpCommand
+from nubia.internal.cmdbase import Command, AutoCommand
+from prompt_toolkit.completion import Completion
+from nubia.internal import parser
+from termcolor import cprint, colored
+from suzieq.sqobjects import get_tables
 
 
 @command("set")
@@ -95,3 +101,83 @@ def clear_ctxt(
 
     if pager:
         plugin_ctx.pager = False
+
+
+class SqHelpCommand (Command):
+    HELP = 'Get help on a command'
+    thiscmd = ["help", "?"]
+
+    def __init__(self):
+        super().__init__()
+        self._allcmds = self._sqcmds = None
+
+    def run_interactive(self, cmd, args, raw):
+        arglist = args.split()
+        return self._help_cmd(*arglist)
+
+    def get_command_names(self):
+        return self.thiscmd
+
+    def add_arguments(self, parser):
+        parser.add_parser("help")
+
+    def get_help(self, cmd, *args):
+        return self.thiscmd[0]
+
+    def get_completions(self, cmd, document, complete_event):
+        exploded = document.text.lstrip().split(" ", 1)
+        self._build_cmd_verb_list()
+        if len(exploded) <= 1:
+            if not document.text:
+                return [Completion(x)
+                        for x in self._sqcmds]
+            completions = [Completion(text=x, start_position=-len(document.text))
+                           for x in self._sqcmds
+                           if x.startswith(document.text)]
+            return completions
+
+        service = exploded[0].lower()
+        verb = exploded[1]
+
+        verbs = [x[0].replace('aver', 'assert')
+                 for x in self._allcmds[service].metadata.subcommands
+                 if service in self._sqcmds]
+        if not verb:
+            return [Completion(x) for x in verbs]
+        completions = [Completion(text=x, start_position=-len(verb))
+                       for x in sorted(verbs)
+                       if x.startswith(verb)]
+        return completions
+
+    def _help_cmd(self, *args):
+        """Show help for a service"""
+        if len(args) == 0:
+            helpcmd = HelpCommand()
+            helpcmd.run_interactive('', '', '')
+            cprint("Use "
+                   f"{colored('help <name of command/service> [<verb>]', 'cyan')} "
+                   "to get more help")
+            cprint(f"For example: {colored('help route', 'cyan')}"
+                   f" or {colored('help route show', 'cyan')}")
+            return
+        if len(args) == 1:
+            service = args[0]
+            verb = ''
+        else:
+            service = args[0]
+            verb = args[1]
+
+        self._build_cmd_verb_list()
+        if service in self._sqcmds:
+            if verb:
+                self._allcmds[service].run_interactive(
+                    service, f'help command={verb}', '')
+            else:
+                self._allcmds[service].run_interactive(service, f'help', '')
+
+    def _build_cmd_verb_list(self):
+        if not self._allcmds:
+            ctx = context.get_context()
+            self._allcmds = ctx.registry.get_all_commands_map()
+            self._sqcmds = [x for x in self._allcmds
+                            if not self._allcmds[x].built_in]

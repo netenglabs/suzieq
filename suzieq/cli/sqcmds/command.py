@@ -258,8 +258,6 @@ class SqCommand:
                 verb = verb.replace('aver', 'assert')
                 print(f" - {verb}: " + Fore.CYAN + f"{docstr}" +
                       Style.RESET_ALL)
-            print(f"\nUse " + Fore.CYAN + f"{self.sqobj.table} help command=<verb>" +
-                  Style.RESET_ALL + " for more details on that verb")
         else:
             self._do_help(self.sqobj.table, command)
 

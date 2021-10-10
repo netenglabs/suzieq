@@ -39,6 +39,7 @@ class NubiaSuzieqPlugin(PluginInterface):
                 for x in sqcmds_all if not x.startswith(('_', 'ArgHelpClass'))]
         cmds.append(AutoCommand(context_commands.set_ctxt))
         cmds.append(AutoCommand(context_commands.clear_ctxt))
+        cmds.append(context_commands.SqHelpCommand())
         return cmds
 
     def get_opts_parser(self, add_help=True):
