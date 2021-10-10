@@ -8,3 +8,23 @@ repos:
     hooks:
       - id: end-of-file-fixer
       - id: mixed-line-ending
+
+  - repo: https://github.com/PyCQA/pylint
+    rev: v2.11.1
+    hooks:
+      - id: pylint
+        exclude: >
+          (?x)^(
+              suzieq/cli/.*|
+              suzieq/db/.*|
+              suzieq/engines/.*|
+              suzieq/gui/.*|
+              suzieq/poller/.*|
+              suzieq/restServer/.*|
+              suzieq/sqobjects/.*|
+              suzieq/utilities/.*|
+              suzieq/gen_schema.py|
+              suzieq/genhosts.py|
+              suzieq/utils.py|
+              tests/.*
+          )$
