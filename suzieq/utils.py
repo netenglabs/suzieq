@@ -155,6 +155,8 @@ def sq_get_config_file(config_file):
         cfgfile = "./suzieq-cfg.yml"
     elif os.path.exists(os.getenv("HOME") + "/.suzieq/suzieq-cfg.yml"):
         cfgfile = os.getenv("HOME") + "/.suzieq/suzieq-cfg.yml"
+    else:
+        cfgfile = None
     return cfgfile
 
 
