@@ -21,7 +21,8 @@ Suzieq does multiple things. It [collects](https://suzieq.readthedocs.io/en/late
 
 ### Using Docker Container
 
-We want to make it as easy as possible for you to start engaging with Suzieq, so we have a demo that has data in including the the iamge.
+We want to make it as easy as possible for you to start engaging with Suzieq so
+we have a demo that has data included in the image. To get started:
 
 * `docker run -it -p 8501:8501 --name suzieq netenglabs/suzieq-demo`
 * `suzieq-cli` for the CLI OR
@@ -29,7 +30,8 @@ We want to make it as easy as possible for you to start engaging with Suzieq, so
 
 When you're within the suzieq-cli, you can run ```device unique columns=namespace``` to see the list of different scenarios, we've gathered data for.
 
-Additional information about running the analyzer (suzieq-cli) is available via the official documentation page.
+Additional information about running the analyzer (suzieq-cli) is available via
+the official [documentation page](https://suzieq.readthedocs.io/en/latest/).
 
 To start collecting data for your network, create an inventory file to gather the data from following the instructions [here](https://suzieq.readthedocs.io/en/latest/poller/). Decide the directory where the data will be stored (ensure you have sufficient available space if you're going to be running the poller, say 100 MB at least). Lets call this dbdir. Now launch the suzieq docker container as follows:
 
@@ -72,7 +74,7 @@ Once the command completes, you have the main programs of suzieq available for u
 
 Suzieq supports Analysis using CLI, GUI, REST API, and python objects. For the most part they are equivalent, though with the GUI we have combined the output of multiple commands of the CLI into one page.
 
-The GUI has a  status page to let you know what the status of entitites in your network.
+The GUI has a status page to let you know what the status of entities in your network.
 ![Suzieq GUI status](images/status.png)
 
 The Xplore page lets you dive into what is in your network. ![Explore device](images/devices-gui.png)
@@ -104,7 +106,7 @@ One of Suzieq's powerful capabilities are asserts, which are statements that sho
 * BGP
 * EVPN VNI info
 
-We're addding support for more platforms and features with every release. See [the documentation](https://suzieq.readthedocs.io/en/latest/tables/) on details of specific tables and its NOS support.
+We're adding support for more platforms and features with every release. See [the documentation](https://suzieq.readthedocs.io/en/latest/tables/) on details of specific tables and its NOS support.
 
 We're also looking for collaborators to help us make Suzieq a truly useful multi-vendor, open source platform for observing all aspects of networking. Please read the [collaboration document](./CONTRIBUTING.md) for ideas on how you can help.
 
