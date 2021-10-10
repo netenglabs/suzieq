@@ -26,7 +26,7 @@ The hostname specified must either be an IP address or a hostname resolvable via
 
 It is required to specify the device type when using REST API to query the information from the device because the REST API of each device is different and it is not possible to automatically identify that. In case of using ssh to query the device state, suzieq runs the commands 'show version and hostnamectl' to try and identify the device. Most networking gear support the 'show version' model and all open networking products I'm aware of and servers support hostnamectl. Using these two commands, we can identify the type of device. If you're running a device that does not support either of these commands, specify it using the **device** parameter.
 
-The device type is important to identify the command selection for a given service. 
+The device type is important to identify the command selection for a given service.
 
 ## Local Agent ##
 

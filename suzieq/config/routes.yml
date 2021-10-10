@@ -49,7 +49,7 @@ apply:
         textfsm: textfsm_templates/iosxe_show_route.tfsm
       - command: show ipv6 route vrf *
         textfsm: textfsm_templates/iosxe_show_route.tfsm
-  
+
   iosxr:
     version: all
     command:
@@ -60,7 +60,7 @@ apply:
 
   ios:
     copy: iosxe
-  
+
   junos-qfx:
     version: all
     command:
@@ -98,7 +98,7 @@ apply:
   junos-es:
     copy: junos-qfx
 
-  nxos: 
+  nxos:
     version: all
     command: show ip route vrf all | json native
     normalize: 'TABLE_vrf/ROW_vrf/*:vrf-name-out:vrf|TABLE_addrf/ROW_addrf/TABLE_prefix/ROW_prefix/*?/[

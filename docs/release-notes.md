@@ -8,7 +8,7 @@ This is a largely a bug fix release of the 0.15.0 release. However, it does add 
 * Bug fix for proper use of start and end times: Many commands didn't properly apply the user-specified start and end times to the additional tables they called upon. For example, ```network find``` didn't use the start and end times when invoking arpnd or mac address tables, leading to the wrong output. This is fixed now across all commands.
 * Bug fix for GUI Path: The swap source and dest button the GUI was not working correctly.
 * Bug fix for interface assert: Interface assert was broken in certain cases such as a network without VLANs. Fixing that led to a far more improved interface assert than before. We now check subinterfaces also for consistency, Junos interfaces are supported and more. We added a new flag "ignore-missing-peer" to have the interface assert pass if no peer was found for an interface. For example, if you're peering with a device in a different administrative domain. By default, missing peers will be treated as assert failure. Using the ignore-missing-peer flag, the missing peer is reported, but the assert does not fail.
-* More REST API fixes (interface assert was broken, for example). 
+* More REST API fixes (interface assert was broken, for example).
 * Additional parsing fixes and tests: For example, we make the mac address table output consistent across MX/QFX now.
 * Minor cleanups and typo fixes to help output.
 
@@ -37,13 +37,13 @@ This is a major release with tons of new features and important bug fixes.
 * __BREAKING CHANGE__. __top__ verb has been rewritten to work on any field (column) that is numeric.
 * Fixes to ensure that timeouts don't end up declaring a device as dead forever, even if polling fails just once. This involved fixing the poller and the reader (see commits 854f02a0 and 1db819bf).
 * Improved support for help. Every object now takes a help command to display help about all the verbs it supports. With the command= option, help displays additional information about the specified verb. Try out _network help_
-* Updated GUI framework to streamlit version 0.87. Things should work better, and a little faster now. 
+* Updated GUI framework to streamlit version 0.87. Things should work better, and a little faster now.
 * GUI search now uses network find for an IP or MAC address. In addition, you can lookup unique values of MTUs, ASNs, VTEPs, VLANs, VNIs, as well as a listing of what set of hosts have a specific value of one of these tables. You can look at the help on the Search page for more details.
 * __describe__ now works across all tables as a verb to display the schema of the saved data. Thus bgp describe lists the schema of the BGP table. tables describe table=bgp still works, but will be deprecated over time.
 * Added ability to log to stdout. This feature is particularly useful for those running Suzieq on top of Kubernetes.
 * Added __support for regex__ in specifying hostnames and namespaces. Start with "~" to indicate regex. "~spine.*" matches all hosts whose name starts with "spine", for example.
 * Support for "!" operator is more consistent
-* Searching by NOS version now works with "<, >..." and such operators. 
+* Searching by NOS version now works with "<, >..." and such operators.
 * Natural sorting of interface names is the default now. Thus Ethernet1, Ethernet2,..Ethernet10, Ethernet11 is displayed rather than the older Ethernet1, Ethernet10, Ethernet11.., Ethernet2, ...
 * path, topology, and tables all now support all the common verbs supported by other tables. These include unique, summarize and top.
 * The tables table has been rewritten to work like the other tables.
@@ -52,17 +52,17 @@ This is a major release with tons of new features and important bug fixes.
 * MAC Table support for Junos SRX devices.
 * Handle CDP from older NXOS version such as 8.4.4.
 * Updated parsers for OSPF and LLDP on older NXOS versions, like 8.4.4, thanks to Remco.
-* Support viewing only the latest entry in a time window when providing start and end times instead of listing all the entries in that time range. The default behavior is unchanged. Use view=latest when both start and end times are provided to see the last valid values for a key in that time period. 
+* Support viewing only the latest entry in a time window when providing start and end times instead of listing all the entries in that time range. The default behavior is unchanged. Use view=latest when both start and end times are provided to see the last valid values for a key in that time period.
 * Improved route and OSPF on IOS devices, thanks to Adrian Giacometti.
 * A number of updates to the documentation from Adrian Giacometti and Eddie Lumpkin. Some additional developer doc updates by Luca Nicosia.
 * uptime is now a proper augmented column of device table.
 * Dependencies with security fixes have been updated.
 * Several other bug fixes and code refactoring including discarding obsolete code.
-* Over 500 additional tests have been added. 
+* Over 500 additional tests have been added.
 
 ## 0.14.2 (Aug 12, 2021)
 
-This is a hotfix release if you use the REST API server. 
+This is a hotfix release if you use the REST API server.
 
 * Issue 403: REST API server fails to start in the docker container.
 * This also contains a security update for the pywin32 library, which is an unused dependency within the GUI framework, streamlit. Nevertheless, the security update has been applied.
@@ -80,17 +80,17 @@ This release fixes a bunch of critical issues associated with release 0.14.0.
 * Fix NXOS VPC parser to not fail when orphan ports are not configured
 * When specifying time as in "1 min ago" or "2 hours ago", the data returned was not consistent with
   what was returned when specifying precise times.
-* Provide user-specifiable option to specify the logsize of the various suzieq loggers (REST, Poller etc.). 
+* Provide user-specifiable option to specify the logsize of the various suzieq loggers (REST, Poller etc.).
   See the suzieq/config/etc/suzieq-cfg.yml file for logsize specification.
 * Add tests to validate REST server startup with and without HTTPS support.
-* Improved the container build process to ensure we don't rebuild everything when dependent libraries 
+* Improved the container build process to ensure we don't rebuild everything when dependent libraries
    have not changed. This results in smaller uploads and therefore faster pulls.
-   
+
 ## 0.14.0 (Aug 1, 2021)
 
 The major features in this release are the support for IOS/IOSXE network operating systems and a revamped REST API. This version also fixes a subtle but critical coalescer issue.
 
-* __Support for IOS/IOSXE__: This release introduces support for IOS and IOSXE. All testing has been done using IOSvL2 (2019 version) and CSR1000v (16.11) images. Thanks to Rick Donato for his generous support for additional IOS testing. IOS and XE are mature operating systems with features and knobs galore.I obviously don't have the ability to test everything, but am happy to take fix bugs reported, take patch contributions and such. The support includes all the tables that Suzieq currently supports except for VXLAN and BFD support. 
+* __Support for IOS/IOSXE__: This release introduces support for IOS and IOSXE. All testing has been done using IOSvL2 (2019 version) and CSR1000v (16.11) images. Thanks to Rick Donato for his generous support for additional IOS testing. IOS and XE are mature operating systems with features and knobs galore.I obviously don't have the ability to test everything, but am happy to take fix bugs reported, take patch contributions and such. The support includes all the tables that Suzieq currently supports except for VXLAN and BFD support.
 * (_Breaking Change_)__Revamped REST API__: The v1 version of the REST API has been replaced by a newer v2 version. The fundamental difference is better support for the API tooling ecosystem. The v1 API accepted multiple values for a parameter as space separated strings. But it wasn't clear which query parameter accepted multiple values and which didn't by looking at the API. Some invalid parameters were silently ignored. Fixing all this is what led
 to v2. A discussion on the Slack channel about the breaking change led to the conclusion that it was worth making this change now.
 * Support for improved coalescing times: Instead of just 1 hour, 1 day etc., the coalescer now accepts much finer grained periods such as 10m, 2h etc. The coalescer also fires close to the top of the period. Originally, if you had a coalescing period of 1 hour and you started the coalescer at 7:59, the coalescer would coalesce the existing data and fire up at 8:59. But since it only coalesces whatever's in the 8:00-9:00 window when it wakes up, and since the clock is still at 8:59, it skips coalescing the entire hour's worth of data and only coalesces the data from 8-9 when it wakes up at 9:59. Thus, an additional hour's worth of data is always uncoalesced which can lead to bad query performance in the presence of a lot of data. The new version instead fires at 8, at 8, at 10 etc. to ensure all the data that can be coalesced is indeed coalesced.
@@ -102,14 +102,14 @@ to v2. A discussion on the Slack channel about the breaking change led to the co
 
 ## 0.13.0 (June 22, 2021)
 
-This is a mostly technical debt fixup release, but it does include a couple of new features. If we had an LTS release, this release might be considered to be one. The GUI does have theming support now! 
+This is a mostly technical debt fixup release, but it does include a couple of new features. If we had an LTS release, this release might be considered to be one. The GUI does have theming support now!
 
 Here is what is new in this release:
 
 * Cleanup all the normalization values across all fields and tables. There were many fields where the values were not normalized (Up vs UP vs up vs linkUp, for example). This is by far the biggest things about this release, and users should rejoice at the simplification that results as a consequence (use of query-str becomes much more simple for example)
 * Fix interface info retrieval (show in CLI/REST, get via Python API) to hide internal interfaces by default. NOS like Junos had a lot of internal interfaces (such as cbp, pimd, pime), which polluted the output. Use type='all' to see all interfaces in output of show/get or type='internal' to see only internal interfaces.
 * Support for optional use of https with REST server. This was to make it easy to use a reverse proxy in fromt of the REST and GUI server to provide a uniform Web front end to both services (GUI/REST).
-* Swagger API, fastAPI redoc, and openAPI URLs under REST have moved to /api/docs, /api/redoc and /api/openapi.json respectively. This is also to make writing a reverse proxy easier. 
+* Swagger API, fastAPI redoc, and openAPI URLs under REST have moved to /api/docs, /api/redoc and /api/openapi.json respectively. This is also to make writing a reverse proxy easier.
 * Improved docker-compose file with sample reverse-proxy configuration with Caddy. This is a contribution from a first time contributor, Ryan Merolle. Thank you, Ryan!
 * Support for saving running config for SoNIC devices (thanks Senthil)
 * Support for providing mac address in filters via multiple formats and capitalization (Issue #363). So, 44:01:02:FF:03:04, 4401.02ff.0304 etc are all supported wherever the keyword macaddr is used or in the address filter of the address table.
@@ -119,7 +119,7 @@ Here is what is new in this release:
 * Support for specifying column width in CLI (set col-width=100, for example). Fix issue #364.
 * Add interface count with admin down in interface summary (Fix #360).
 * Handling passing ssh config file correctly to lower functions (Fix #375), thanks to first time contributor, Drew Crutchfield.
-* Added 1000+ new tests to catch all sorts of parsing errors. 
+* Added 1000+ new tests to catch all sorts of parsing errors.
 * Bumping up libraries due to security fixes (fastapi, uvicorn, urllib3, pydantic)
 * Updated Streamlit GUI to 0.82.0. Theming support for GUI is now possible.
 
@@ -146,14 +146,14 @@ This is a mostly a repackaged 0.10 release, but now shippable as a python packag
 
 ## 0.10 (Apr 1, 2021)
 
-No, it isn't an April Fools release. There are several major features in this release. 
+No, it isn't an April Fools release. There are several major features in this release.
 
 * **Platforms**: __Added support for IOSXR and Juniper SRX platforms__. EOS now supports VXLAN info (evpnVni table) and has support for SSH and REST. NXOS performance improved to use [json native instead of json]( https://www.cisco.com/c/en/us/td/docs/dcn/nx-os/nexus9000/101x/programmability/cisco-nexus-9000-series-nx-os-programmability-guide-release-101x/m-n9k-nx-api-cli-101x.html). You can see the supported platforms and tables [here](https://suzieq.readthedocs.io/en/latest/tables/).
 * **Support for augmented columns**: Augmented columns are columns that are computed based on other columns, typically from the same table, but possibly from other tables as well. Examples of augmented columns includes peerHostname in case of OSPF, moveCount in MAC tables and so on. Details about augmented columns and their implementation can be found in this [doc](https://github.com/netenglabs/suzieq/blob/master/docs/developer/augmented-columns.md). From the user's perspective, an augmented column is indistinguishable from any other column. The benefit of augmented columns is that with the introduction as a column, different queries such as unique, finding frequency distribution etc. become natural.
 * __Support for generalized query__. We store many key fields for each table. BGP stores 50+ different fields per session. Providing an individual filter per field is too cumbersome. In addition, there are fairly more combining of fields to create a more powerful filter that is hard to do with individual key/value filter fields. So, we added support for a generalized filter field where you can express complex filter fields via a generalized pandas query format. This [link](https://suzieq.readthedocs.io/en/latest/pandas-query-examples/) provides samples for some of the more common queries. Ask for help on the Slack channel if you're stumped.
-* **Support for providing a password via an ENVIRONMENT variable**. Today, we support providing password via either a prompt on launching the poller or in the inventory file. This release adds support for reading the password from a user specified environment variable. Using the --envpass=<ENVVAR> when starting the sq-poller allows you to use this feature. 
+* **Support for providing a password via an ENVIRONMENT variable**. Today, we support providing password via either a prompt on launching the poller or in the inventory file. This release adds support for reading the password from a user specified environment variable. Using the --envpass=<ENVVAR> when starting the sq-poller allows you to use this feature.
 * **Support for mac move**. You can now get a field called moveCount in the MAC table that allows you to see how many times a MAC has moved. You can filter MAC entries that have moved more than X times in a period, see all the different moves of a MAC (outgoing interface or remote VTEP change) in a given period, see frequency distribution of how the moves are (100 MACs moved 20 times, 5 MACs moved 10 times etc.)
-* **Support for multiple address families in BGP**. In the initial releases, BGP table only supported looking up IPv4/IPv6 unicast and EVPN AFI/SAFI info. This version adds support for pretty much all the BGP AFI/SAFI. We normalize the AFI/SAFI names across all the NOS so you don't have to know every NOS' version of it. We've hopefully picked names that are sensible to all users. Please provide us feedback about this if the names are an issue for you. 
+* **Support for multiple address families in BGP**. In the initial releases, BGP table only supported looking up IPv4/IPv6 unicast and EVPN AFI/SAFI info. This version adds support for pretty much all the BGP AFI/SAFI. We normalize the AFI/SAFI names across all the NOS so you don't have to know every NOS' version of it. We've hopefully picked names that are sensible to all users. Please provide us feedback about this if the names are an issue for you.
 * Improved summarizations for BGP and a few other tables.
 * Improved syntax checking of inventory file.
 * Qualify search results in GUI with namespace.
@@ -162,7 +162,7 @@ No, it isn't an April Fools release. There are several major features in this re
 
 ## 0.9 (Feb 17, 2021)
 
-The main feature of this release is the support for more efficient storage and providing fast, almost constant query times independent of the time window you're searching for (5 mins ago OR 5 mins a year back). There are a few other minor bug fixes. There's a new process called sq-coalescer that's running in the background. Its launched automatically by sq-poller. 
+The main feature of this release is the support for more efficient storage and providing fast, almost constant query times independent of the time window you're searching for (5 mins ago OR 5 mins a year back). There are a few other minor bug fixes. There's a new process called sq-coalescer that's running in the background. Its launched automatically by sq-poller.
 
 * Juniper commands now have "no-more" added to the end to prevent some older machines from blocking (Issue #314)
 * device now has serial number and OS name (nxos, eos, cumulus etc.). This is in preparation for support of IOS-XR and IOS-XE.
@@ -171,7 +171,7 @@ The main feature of this release is the support for more efficient storage and p
 
 ## 0.8.7 (Jan 11, 2020)
 
-A hotfix release to ensure REST server works. 0.8.6. broke the REST interface. 
+A hotfix release to ensure REST server works. 0.8.6. broke the REST interface.
 
 ## 0.8.6 (Jan 11, 2020)
 
@@ -227,7 +227,7 @@ There have a been a bunch of improvements in data gathering and making them cons
 
 ## 0.6 (Nov 5, 2020)
 
-The most critical feature in this release is the support for a RESTful API. 
+The most critical feature in this release is the support for a RESTful API.
 
 * Support for NXOS VPC and Arista's MLAG features
 * Support for VLAN resource across all NOS: Juniper, Arista, Cisco and Cumulus. Unfortunately, this meant we had to throw away the existing Cumulus support and redo it to bring it in line with the other NOS.
@@ -252,7 +252,7 @@ This is a release with some major structural changes, and support for SONIC NOS.
   - Improved predicate pushdown support with new dataset API for improved IO efficiency
   * We use vectorization and itertuples to support full Internet routing table with good performance. Thanks to Donald Sharp for this.
   * Row group size of 100000 and the ZSTD compression for better compression and read/write performance
-* Schema evolution support. Now you won't need to throw away data with newer Suzieq releases. 
+* Schema evolution support. Now you won't need to throw away data with newer Suzieq releases.
 * (Alpha) Migration tool to help with migrating old data to new format
 * Improved SSH security support including support for jumphosts, passphrase with private key, ssh config support. Thanks to Steve Dodd(idahood) for his help with testing and requesting the features.
 * Support for complex Ansible inventory to retrieve username/password etc. via the ansible-inventory command output
@@ -275,8 +275,8 @@ Besides this, there was another bug fixed which ensured that we didn't use the t
 In addition to bug fixes, the new features in this release are:
 
 * Support for vastly improved path command. You can get overlay plus undelay path traced, support for outgoing interface as well as incoming interface, a bunch of bugs fixed.
-* Support for looking at JunOS based on model, junos-mx and junos-qfx. The main support in MX is support for gathering MAC address from VPLS. 
-* Mac show now handles VPLS MAC instance filtering in addition to the existing filters. 
+* Support for looking at JunOS based on model, junos-mx and junos-qfx. The main support in MX is support for gathering MAC address from VPLS.
+* Mac show now handles VPLS MAC instance filtering in addition to the existing filters.
 * Support for new table, FS, for file system. Support for gathering FS data from all supported platforms now: Cisco, Cumulus, Juniper, Arista and Linux servers. You can filter FS output based on mountpoint, used percentages.
 * ``table describe`` now supports displaying any description associated with each field. Only path table has descriptions added in this release. But the code is such that a user can edit the schema file, add the description and have the result show up without writing any code.
 * **ALPHA FEATURE** topology table continues to see improvements and additions. We've added support for displaying ARP neighbors in the topology view.
@@ -289,7 +289,7 @@ First release with third-party contributions! Vastly improved support for realis
 * Improved EVPN assert to handle cases of using routed multicast underlay instead of ingress replication. This includes checking for consistency of multicast groups for a VNI across nodes.
 * NXOS support for EVPN requires version 9.3.3 or later as there's no command to get certain info about all VNI, only by specific VNI values.
 * Improved EVPN show and summarize to include more meaningful outputs.
-* Improved BGP and OSPF assert. BGP assert especially handles a few more cases such as when peering is not over directly connected interfaces. 
+* Improved BGP and OSPF assert. BGP assert especially handles a few more cases such as when peering is not over directly connected interfaces.
 * **ALPHA feature** Support for topology as a first class resource. Try topology show and topology summarize. This is still work in progress.
 * Support for the poller to gather data from nodes and saving them to a directory. You can then run the poller to read this directory to build the output files.
 
@@ -305,11 +305,7 @@ The **main features** of this release are **IPv6 support** and support for **ext
 
 More specific release notes and caveats emptor are:
 
-* Not all asserts work with Junos devices because of the LLDP information provided as a result of the default configuration. 
+* Not all asserts work with Junos devices because of the LLDP information provided as a result of the default configuration.
 * No testing has been done at scale. Please reach out to us if you're running into problems with polling either a large number of devices or pulling a lot of data (routes, macs, arp/nd usually) from a single device. If you don't run into any problems doing so, please reach out to us to let us know about your success.
 
 * [Bug #169](https://github.com/netenglabs/suzieq/issues/169) which shows an incorrect error message in the poller log file
-
-
-
-

@@ -77,7 +77,7 @@ apply:
         "context-router-mac/[0]/data: routerMac",
         "_entryType: _entryType?|l3",
         ]'
-        
+
       - command: show ethernet-switching vxlan-tunnel-end-point remote | display json | no-more
         normalize: 'vxlan-source-vtep-information/[0]/svtep-format/*:source-vtep-address:priVtepIp|vxlan-remote-vtep-information/*/[
         "remote-vtep-address/[0]/data: _floodVtepList",

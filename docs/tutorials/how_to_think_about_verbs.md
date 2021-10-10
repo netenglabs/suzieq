@@ -1,6 +1,6 @@
 ## How to reason about your network with Suzieq verbs
 
-As we've mentioned in our [Introduction](index.html), the Suzieq cli has commands, verbs and 
+As we've mentioned in our [Introduction](index.html), the Suzieq cli has commands, verbs and
 filters. We are going to address verbs.
 
 Almost every command has three common verbs: show, summarize, and unique. Another set of common
@@ -32,9 +32,9 @@ path show src='172.16.1.101' dest='172.16.4.104' namespace=dual-bgp
 ```
 table show
 ```
-Table show looks a bit different than the other commands, because table show is showing 
+Table show looks a bit different than the other commands, because table show is showing
 the tables in the database, not directly looking at data inside tables.
-![table show](../images/suzieq-table-show.png) 
+![table show](../images/suzieq-table-show.png)
 
 Some of the tables have a lot of columns. We have a standard set of default columns for
 each table. However, you can add a columns= filter to add more columns or see less. columns=*
@@ -44,7 +44,7 @@ bgp show namespace=ospf-ibgp columns='hostname vrf peer peerHostname state asn b
 ```
 ![bgp show with filters](images/suzieq-show-bgp-columns.png)
 
-Some commands have specific filters. 
+Some commands have specific filters.
 If you want to look at specific interface types, such as virtual interfaces
 ```bash
 interface show namespace=ospf-ibgp hostname=leaf01 type='vxlan vrf vlan'
@@ -65,12 +65,12 @@ device summarize namespace=ospf-ibgp
 ```
 ![device summarize](images/suzieq-device-summarize.png)
 
-In any of our summaries, statistics that end with Cnt, such as vendorCnt, 
+In any of our summaries, statistics that end with Cnt, such as vendorCnt,
 if there are three or less of them, then we break out the items and provide
-their count. In this example, there are 2 vendorCnts, which are Cumulus 
-and Ubuntu. Statistics that end with Stat, such as upTimesStat, shows 
-lists of three items bracketed in [] show [min, max, median] of the values 
-to give you an overview of the distribution. For any of these values, you 
+their count. In this example, there are 2 vendorCnts, which are Cumulus
+and Ubuntu. Statistics that end with Stat, such as upTimesStat, shows
+lists of three items bracketed in [] show [min, max, median] of the values
+to give you an overview of the distribution. For any of these values, you
 can use the ‘unique’ verb to dive into the column and see the whole list.
 
 ```
@@ -91,15 +91,15 @@ is very useful for diving in to understand the details of your network.
 ![bgp unique](images/suzieq-bgp-unique-peerAsn.png)
 
 ### assert
-assert works on bgp, evpnVni, interface, and ospf. 
+assert works on bgp, evpnVni, interface, and ospf.
 [asserts](https://github.com/netenglabs/suzieq/blob/master/docs/analyzer.md#asserts)
-run checks that must be true for a network to be running correctly. For each 
-service that has an assert you get an output that shows all the data 
-necessary for the checks, a pass/fail column and a reason column for any 
+run checks that must be true for a network to be running correctly. For each
+service that has an assert you get an output that shows all the data
+necessary for the checks, a pass/fail column and a reason column for any
 failed checks.
 
 ### top
-top shows the top items from this command. top works on interface and device. 
+top shows the top items from this command. top works on interface and device.
 ```
 interface top what=flaps count=10
 ```

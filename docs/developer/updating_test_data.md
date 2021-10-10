@@ -45,7 +45,7 @@ pytest
 This test will delete the test data from your directory in tests/integration/sqcmds/cumulus-input and cumulus-samples.
 so you don't have to do anything.
 If this is a git
-directory it will git rm the data. It will also update the files in 
+directory it will git rm the data. It will also update the files in
 tests/integration/samples/sqcmds.
 
 Then you should check in the tests/data directories and the tests/integration/sqcmds
@@ -59,7 +59,7 @@ git push
 ## updating NXOS, Junos, or EOS data
 
 We don't have automatic capture of these platforms yet. So you will have to manually
-generate the data and run tests. After generating the data, first git rm the previous data. 
+generate the data and run tests. After generating the data, first git rm the previous data.
 
 However, usually you will not need to update the gathered data, unless we change the commands
 that we are running to gather data. If you just need to change the data schema, then you don't need

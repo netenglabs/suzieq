@@ -24,7 +24,7 @@ Launch the poller with the appropriate options. For example, `sq-poller -D inven
 
 ### As a Python Package
 
-Suzieq is also available as a standard Python package that you can install via pip. We strongly recommend the use of [Python virtual environment](https://docs.python.org/3.8/tutorial/venv.html). **Suzieq only works with Python versions 3.7.1 and above, and on Linux and MacOS**. The releases are always tested with Python versions 3.7 and 3.8. 
+Suzieq is also available as a standard Python package that you can install via pip. We strongly recommend the use of [Python virtual environment](https://docs.python.org/3.8/tutorial/venv.html). **Suzieq only works with Python versions 3.7.1 and above, and on Linux and MacOS**. The releases are always tested with Python versions 3.7 and 3.8.
 
 To install suzieq via pip run:
 ```
@@ -36,7 +36,7 @@ To setup a virtual environment if you don't know how to, is as simple as:
 * Running ```python -m venv suzieq-env``` (Assuming suzieq-env is a directory in the current folder you want to create the virtual environment in. The directory name can be anything you want it to be).
 * Activating the virtual environment by changing directory to suzieq-env, and running ```source bin/activate```
 
-Now, you can install suzieq via pip install as described above. 
+Now, you can install suzieq via pip install as described above.
 
 Now you can use the main applications of Suzieq:
 

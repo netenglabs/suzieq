@@ -320,7 +320,7 @@ def xplore_sync_state():
 def xplore_create_layout(state):
     '''Create all the layout widgets for Xplore page
 
-    This helps avoid bad screen effects such as screen shifting, 
+    This helps avoid bad screen effects such as screen shifting,
     jerkiness etc. when changing or updating the page
     '''
     grid1 = st.container()

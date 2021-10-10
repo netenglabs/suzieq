@@ -76,7 +76,7 @@ for MfN it needs tags at the time of recording the data
 
 * read ansible inventory, and our tags database, and produce the telegraf file necessary for SNMP (and other metrics) for each host -- something like suzieq genhosts for MfN/telegraf
 * what If I don't have ansible
-** create a hosts file, and then have a script that reads that hostfile and updates the groups? 
+** create a hosts file, and then have a script that reads that hostfile and updates the groups?
 
 ### Dynamic description for Suzieq
 

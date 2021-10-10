@@ -24,7 +24,7 @@ apply:
 
   junos-qfx:
     version: all
-    command: show chassis hardware | display json| no-more 
+    command: show chassis hardware | display json| no-more
     normalize: 'chassis-inventory/[0]/chassis/[0]/chassis-module/*/[
     "name/[0]/data: name?|",
     "version/[0]/data: version?|",
@@ -45,7 +45,7 @@ apply:
 
   nxos:
    version: all
-   command: 
+   command:
     - command: show inventory | json native
       normalize: 'TABLE_inv/ROW_inv/*/[
       "name: name?|",

@@ -1,11 +1,11 @@
 # Python API
 
-Suzieq provides a simple, consistent Python API for those who wish to interact with Suzieq via Python. It hews very much to the REST API which in turn hews close enough to the CLI. If you know how to type in the CLI for an operation, its pretty close to what you can do with the Python API. 
+Suzieq provides a simple, consistent Python API for those who wish to interact with Suzieq via Python. It hews very much to the REST API which in turn hews close enough to the CLI. If you know how to type in the CLI for an operation, its pretty close to what you can do with the Python API.
 
 Suzieq organizes information into tables. The main steps in using the Python API is:
 
 * Get a handle to a table
-* Use this handle to perform one of several operations (expressed as verbs) providing some options to filter the data. 
+* Use this handle to perform one of several operations (expressed as verbs) providing some options to filter the data.
 * Suzieq then returns the result as a Pandas DataFrame
 
 You can choose to do further operations on the Pandas DataFrame.
@@ -24,7 +24,7 @@ ospf_tbl = get_sqobject('ospf')
 
 ## Table Operations
 
-Each table supports a set of verbs as functions to operate on the table. All tables support the get, summary and unique methods. Some of the objects support the aver method (for checking the correctness of a bunch of parameters. If you invoke an unsupported function on a table, you get back a DataFrame with an error that indicates that the operation is not supported on the table. 
+Each table supports a set of verbs as functions to operate on the table. All tables support the get, summary and unique methods. Some of the objects support the aver method (for checking the correctness of a bunch of parameters. If you invoke an unsupported function on a table, you get back a DataFrame with an error that indicates that the operation is not supported on the table.
 
 The invocation of the method follows the format of ```<table>(table_params).<verb>(verb params)```. For example, invoking the get method on the OSPF table in its simplest form looks like this:
 ```
@@ -48,4 +48,4 @@ Besides these, the get and unique methods take an additional parameter:
 * query_str: Which is the Pandas query string to filter out the data returned
 
 Besides these, every table takes an additional set of keywords specific to the table. For example, you can use ifname keyword to the interfaces table or LLDP table to request the operation only on the list of interfaces specified; you can use protocol as a keyword to the routing table to select only those routing table entries populated by the specified protocol, and so on.
-* 
+*

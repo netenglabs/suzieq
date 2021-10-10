@@ -4,12 +4,12 @@ Value routeDistinguisher ([0-9.:]+)
 Start
  ^VRF\s+${ifname}\s+\(VRF Id = \d+\);\s+default\s+RD\s+${routeDistinguisher};.*$$ -> Record
  ^VRF\s+${ifname}\s+\(VRF Id = \d+\);\s+default\s+RD\s+<not set>;.*$$ -> Record
- 
+
 #VRF BLUE (VRF Id = 2); default RD 65000:20; default VPNID <not set>
 #  New CLI format, supports multiple address-families
 #  Flags: 0x180C
 #  Interfaces:
-#    Gi3                      Lo1                     
+#    Gi3                      Lo1
 #Address family ipv4 unicast (Table ID = 0x2):
 #  Flags: 0x0
 #  No Export VPN route-target communities
@@ -27,7 +27,7 @@ Start
 #  New CLI format, supports multiple address-families
 #  Flags: 0x1808
 #  Interfaces:
-#    Gi1                     
+#    Gi1
 #Address family ipv4 unicast (Table ID = 0x1):
 #  Flags: 0x0
 #  No Export VPN route-target communities

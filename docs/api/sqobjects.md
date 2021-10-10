@@ -1,10 +1,10 @@
 ::: suzieq.sqobjects.basicobj.SqObject
     :docstring:
     :members:
-    
+
 ::: suzieq.sqobjects.basicobj.SqContext
     :docstring:
-    
+
 ::: suzieq.sqobjects.address.AddressObj
     :docstring:
 
@@ -69,5 +69,3 @@ Obj
 ::: suzieq.sqobjects.vlan.VlanObj
     :docstring:
     :members:
-
-

@@ -98,7 +98,7 @@ class NetworkObj(SqPandasEngine):
     def find(self, **kwargs):
         '''Find the information requsted:
 
-        address: given a MAC or IP address, find the first hop switch its 
+        address: given a MAC or IP address, find the first hop switch its
                  connected to
         '''
 

@@ -13,7 +13,7 @@ You must launch the Suzieq docker container as follows:
 ```
 This assumes that you're using port 8000 to connect to the REST server. If you wish to use a different port for the REST server, say 7000, you can launch it as ```docker run -itd -p 7000:8000 --name suzieq netenglabs/suzieq:latest```.
 
-You then connect to the container with ```docker attach suzieq```, and launch the server with ```sq-rest-server.py &```. You can then exit the container using the usual Docker container escape sequence CTRL-p CTRL-q to leave the docker container running. 
+You then connect to the container with ```docker attach suzieq```, and launch the server with ```sq-rest-server.py &```. You can then exit the container using the usual Docker container escape sequence CTRL-p CTRL-q to leave the docker container running.
 
 The server is now accessible via [https://localhost:8000/docs](https://localhost:8000/docs) (or whatever port you've mapped the server to on the host). You need to pass the API_KEY in the request to be able to access the server. A simple example using the default API key and certificate is to use curl as follows:
 ```
@@ -35,9 +35,9 @@ If you do decide to try out the API from within the browser, you need to authent
 
 ## Creating Your Specific Key and SSL Certificate
 
-If you wish to create your own self-signed certificate and API key, you can do so using the instructions in this section, in case you don't already know how to do so. 
+If you wish to create your own self-signed certificate and API key, you can do so using the instructions in this section, in case you don't already know how to do so.
 
-### SSL 
+### SSL
 
 ### Create a self signed cert
 

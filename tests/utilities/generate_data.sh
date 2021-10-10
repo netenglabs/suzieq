@@ -61,7 +61,7 @@ run_scenario () {
     name="$4"
     echo "SCENARIO ${topology} ${proto} ${scenario} ${name}"
     pwd
-    date 
+    date
     time sudo ansible-playbook -b -e "scenario=$scenario" deploy.yml
     echo "DEPLOY RESULTS $?"
     sleep 30 #on fast machines, not everything is all the way up without sleep

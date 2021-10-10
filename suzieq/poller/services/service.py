@@ -418,7 +418,7 @@ class Service(object):
         return self.clean_data(result, data)
 
     def get_key_flds(self):
-        """Get the key fields associated with this service. 
+        """Get the key fields associated with this service.
         Its a function because we want to override it.
         """
         return list(filter(lambda x: x not in ['namespace', 'hostname'],

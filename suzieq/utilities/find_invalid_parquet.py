@@ -1,4 +1,4 @@
-""" searches the provided parquet-out directory to find any invalid files 
+""" searches the provided parquet-out directory to find any invalid files
     it just finds all the parquet files and tries to load them as valid files
     if there is an exception, then we know it's a bad file
 """
@@ -28,7 +28,7 @@ if __name__ == '__main__':
             all_files.extend(list(map(lambda x: f"{root}/{x}", files)))
     print(f"{len(all_files)} files")
 
-    
+
     for file in all_files:
         try:
             parquet_file = pa.ParquetFile(file)

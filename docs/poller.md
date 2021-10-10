@@ -9,7 +9,7 @@ To start, launch the docker container, **netenglabs/suzieq:latest** and attach t
   docker attach sq-poller
 ```
 
-In the docker run command above, the two `-v` options provide host file/directory access to (i) store the parquet output files (the first `-v` option), and (ii) the inventory file (the second `-v` option). We describe the inventory file below. The inventory file is the list of devices and their IP address that you wish to gather data from. 
+In the docker run command above, the two `-v` options provide host file/directory access to (i) store the parquet output files (the first `-v` option), and (ii) the inventory file (the second `-v` option). We describe the inventory file below. The inventory file is the list of devices and their IP address that you wish to gather data from.
 
 You then launch the poller via the command line:
 
@@ -21,7 +21,7 @@ To monitor the status of the poller, you can look at /tmp/sq-poller.log file.
 
 The inventory file that the poller uses can be supplied either:
 
-* via a Suzieq native YAML format file (use the `-D` option as above) or 
+* via a Suzieq native YAML format file (use the `-D` option as above) or
 * via or an Ansible inventory file (instead of `-D`, use `-a` option along with `-n`). This file has to be the output of ```ansible-inventory --list``` command
 
 The Suzieq native inventory file format that contains the IP address, the access method (SSH or REST), the IP address of the node, the user name, the type of OS if using REST and the access token such as a private key file. The format looks as follows, for example (all possible combinations are shown for illustration):
@@ -37,16 +37,16 @@ The Suzieq native inventory file format that contains the IP address, the access
     - url: https://vagrant@192.168.123.123 password=vagrant
 ```
 
-There's a template in the docs directory called `hosts-template.yml`. You can copy that file as the template and fill out the values for namespace and url (remember to delete the empty URLs and to not use TABS, some editors add them automatically if the filename extension isn't right). The URL is the standard URL format: `<transport>://[username:password]@<hostname or IP>:<port>`. For example, `ssh://dinesh:dinesh@myvx` or `ssh://dinesh:dinesh@172.1.1.23`. 
+There's a template in the docs directory called `hosts-template.yml`. You can copy that file as the template and fill out the values for namespace and url (remember to delete the empty URLs and to not use TABS, some editors add them automatically if the filename extension isn't right). The URL is the standard URL format: `<transport>://[username:password]@<hostname or IP>:<port>`. For example, `ssh://dinesh:dinesh@myvx` or `ssh://dinesh:dinesh@172.1.1.23`.
 
-If you're using Ansible to configure the devices, an alternate to the native Suzieq inventory format is to use an Ansible inventory format. The file to be used is the output of the ```ansible-inventory --list``` command. 
+If you're using Ansible to configure the devices, an alternate to the native Suzieq inventory format is to use an Ansible inventory format. The file to be used is the output of the ```ansible-inventory --list``` command.
 
-Once you have either generated the hosts file or are using the Ansible inventory file, you can launch the poller inside the docker container using **one** of the following two options: 
+Once you have either generated the hosts file or are using the Ansible inventory file, you can launch the poller inside the docker container using **one** of the following two options:
 
 * If you're using the native YAML hosts file, use the -D option like this: `sq-poller -D eos`
-* if you're using the Ansible inventory format, use the `-a` and `-n` options like this: via `sq-poller -a /suzieq/inventory -n eos`. 
+* if you're using the Ansible inventory format, use the `-a` and `-n` options like this: via `sq-poller -a /suzieq/inventory -n eos`.
 
-The poller creates a log file called /tmp/sq-poller.log. You can look at the file for errors. The output is stored in the parquet directory specified under /suzieq/parquet and visible in the host, outside the container, via the path specified during docker run above. 
+The poller creates a log file called /tmp/sq-poller.log. You can look at the file for errors. The output is stored in the parquet directory specified under /suzieq/parquet and visible in the host, outside the container, via the path specified during docker run above.
 
 ## <a name='ssh-options'></a>SSH Security Options
 
@@ -68,7 +68,7 @@ In addition, there maybe various additional options you may want to specify to c
 * Passphrase with Private Key File
   : Some operators have a passphrase associated with the private key file, a more secure model. To enable sq-poller to prompt for this passphrase, use the `--passphrase` option. You'll be prompted for the password.
 * SSH Config file
-  : Some operators choose to put everything in the ssh config file and expect the SSH client to honor this configuration. You can specify the ssh config file via the  `--ssh-config-file` option. 
+  : Some operators choose to put everything in the ssh config file and expect the SSH client to honor this configuration. You can specify the ssh config file via the  `--ssh-config-file` option.
 
 ## <a name='rest-security'></a>REST Security
 
@@ -76,7 +76,7 @@ With REST API, the only supported authentication at present is username and pass
 
 ## <a name='gathering-data'></a>Gathering Data
 Two important concepts in the poller are Nodes and Services. Nodes are devices of some kind;
-they are the object being monitored. Services are the data that is collected and consumed by Suzieq. 
+they are the object being monitored. Services are the data that is collected and consumed by Suzieq.
 Service definitions describe how to get output from devices and then how to turn that into useful data.
 
 Currently Suzieq supports polling [Arista](https://www.arista.com/en/),
@@ -89,7 +89,7 @@ and [SONIC](https://azure.github.io/SONiC/) devices, as well as native Linux dev
 Suzieq started out with least common denominator SSH and REST access to devices.
 It doesn't care much about transport, we will use whatever gets the best data.
 Suzieq does have support for agents, such as Kafka and SNMP, to push data and we've done some experiments with them, but don't
-have production versions of that code. 
+have production versions of that code.
 
 ## Debugging poller issues
 There are two places to look if you want to know what the poller is up to. The first is the poller
@@ -126,8 +126,6 @@ In this case the errors are because we aren't running any of those services on t
 
 ## Database and Data Persistence
 
-Because everything in Suzieq revolves around [Pandas](https://pandas.pydata.org/) dataframes, it can support different persistence engines underneath. For right now, we only support our own, which is built on [Parquet](https://parquet.apache.org/) files. 
-This is setup should be fast enough to get things going and for most people. It is also self contained and fairly simple. 
-We have tried other storage systems, so we know it can work, but none of that code is production worthy. As we all gain experience we can figure out what the right persistence engines are One of the advantages is that the data are just files that can easily be passed around. There is no database code that must be running before you query the data. 
-
-
+Because everything in Suzieq revolves around [Pandas](https://pandas.pydata.org/) dataframes, it can support different persistence engines underneath. For right now, we only support our own, which is built on [Parquet](https://parquet.apache.org/) files.
+This is setup should be fast enough to get things going and for most people. It is also self contained and fairly simple.
+We have tried other storage systems, so we know it can work, but none of that code is production worthy. As we all gain experience we can figure out what the right persistence engines are One of the advantages is that the data are just files that can easily be passed around. There is no database code that must be running before you query the data.

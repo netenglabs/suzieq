@@ -9,13 +9,13 @@ Start
   ^${macaddr} dev ${oif} vlan ${vlan} master [bB]ridge ${flags}.*$$ -> Next.Record
   ^${macaddr} dev ${oif} vlan ${vlan} master [bB]ridge.*$$ -> Next.Record
   ^${macaddr} dev ${oif} vlan ${vlan} (offload|extern_learn) master [bB]ridge.*$$ -> Next.Record
-  ^${macaddr} dev ${oif} vlan ${vlan} (offload|extern_learn) master [bB]ridge ${flags}.*$$ -> Next.Record      
+  ^${macaddr} dev ${oif} vlan ${vlan} (offload|extern_learn) master [bB]ridge ${flags}.*$$ -> Next.Record
   ^${macaddr} dev ${oif} vlan ${vlan} sticky master [bB]ridge ${flags}.*$$ -> Next.Record
-  ^${macaddr} dev ${oif} vlan ${vlan} sticky master [bB]ridge.*$$ -> Next.Record      
+  ^${macaddr} dev ${oif} vlan ${vlan} sticky master [bB]ridge.*$$ -> Next.Record
   ^${macaddr} dev ${oif} dst ${remoteVtepIp} self ${flags}.*$$ -> Next.Record
   ^${macaddr} dev ${oif} master [bB]ridge ${flags}.*$$ -> Next.Record
   ^${macaddr} dev ${oif} master [bB]ridge.*$$ -> Next.Record
-  ^${macaddr} dev ${oif} self ${flags}.*$$ -> Next.Record  
+  ^${macaddr} dev ${oif} self ${flags}.*$$ -> Next.Record
 
 #00:00:00:00:00:00 dev vni13 dst 10.0.0.134 self permanent
 #00:00:00:00:00:00 dev vni24 dst 10.0.0.134 self permanent
@@ -29,8 +29,8 @@ Start
 #44:39:39:ff:40:94 dev bridge vlan 4001 master bridge permanent
 #52:54:00:08:bf:8d dev peerlink vlan 13 master bridge static
 #52:54:00:08:bf:8d dev peerlink vlan 24 master bridge static
-#52:54:00:1a:cd:49 dev bond01 vlan 13 master bridge 
-#52:54:00:7c:6c:49 dev bond02 vlan 24 master bridge 
+#52:54:00:1a:cd:49 dev bond01 vlan 13 master bridge
+#52:54:00:7c:6c:49 dev bond02 vlan 24 master bridge
 #52:54:00:86:6f:4e dev bond01 master bridge permanent
 #52:54:00:86:6f:4e dev bridge vlan 13 master bridge permanent
 #52:54:00:86:6f:4e dev bridge vlan 24 master bridge permanent
@@ -38,11 +38,11 @@ Start
 #52:54:00:a4:68:3b dev peerlink master bridge permanent
 #52:54:00:b7:46:bf dev bond02 master bridge permanent
 #5e:8f:37:fb:78:6e dev vxlan4001 master bridge permanent
-#8a:74:7d:df:89:70 dev vxlan4001 dst 10.0.0.101 self offload 
-#8a:74:7d:df:89:70 dev vxlan4001 vlan 4001 offload master bridge 
+#8a:74:7d:df:89:70 dev vxlan4001 dst 10.0.0.101 self offload
+#8a:74:7d:df:89:70 dev vxlan4001 vlan 4001 offload master bridge
 #8e:a1:f3:5c:51:88 dev vni24 master bridge permanent
-#b2:54:8b:46:8b:6e dev vxlan4001 dst 10.0.0.102 self offload 
-#b2:54:8b:46:8b:6e dev vxlan4001 vlan 4001 offload master bridge 
+#b2:54:8b:46:8b:6e dev vxlan4001 dst 10.0.0.102 self offload
+#b2:54:8b:46:8b:6e dev vxlan4001 vlan 4001 offload master bridge
 #ba:df:82:44:9a:ef dev vni13 master bridge permanent
 #44:39:39:ff:00:13 dev vni13 vlan 13 sticky master bridge static
 #52:54:00:49:3a:6f dev vni24 vlan 24 extern_learn master bridge

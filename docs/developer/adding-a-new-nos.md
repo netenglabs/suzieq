@@ -39,9 +39,9 @@ http://www.gnu.org/licenses/gpl.html.
 Nexus 9000v is a demo version of the Nexus Operating System
 
 Software
-  BIOS: version 
+  BIOS: version
  NXOS: version 9.3(4)                                 <--- NXOS and version identification
-  BIOS compile time:  
+  BIOS compile time:
   NXOS image file is: bootflash:///nxos.9.3.4.bin
   NXOS compile time:  4/28/2020 21:00:00 [04/29/2020 06:28:31]
 
@@ -51,7 +51,7 @@ Hardware
   Intel Core Processor (Skylake, IBRS) with 6096736 kB of memory.
   Processor Board ID 9R62LBVFU3T
 
-  Device name: leaf1                                 
+  Device name: leaf1
   bootflash:    4287040 kB
 Kernel uptime is 2 day(s), 7 hour(s), 11 minute(s), 10 second(s) <--- Uptime Identification
 
@@ -64,7 +64,7 @@ plugin
   Core Plugin, Ethernet Plugin
 
 Active Package(s):
-        
+
 leaf1#
 ```
 
@@ -78,7 +78,7 @@ Once the output is extracted, you need to handle the parsing and specification o
 
 ### Adding a NOS-Specific Class
 
-Since each NOS has its own command and output for parsing boot up time, retrieving the version of the NOS etc, you'll need to create a new NOS-specific class in the file suzieq/poller/nodes/node.py. Look at either the NxosNode class or JunosNode class to see how to add a new NOS type and what the additional routines to support are. Typically, you'll need to add two routines, `init_boot_time` and `_parse_device_type_hostname` routines to this Node class as the commands and outputs to get this information is specific to each NOS.  
+Since each NOS has its own command and output for parsing boot up time, retrieving the version of the NOS etc, you'll need to create a new NOS-specific class in the file suzieq/poller/nodes/node.py. Look at either the NxosNode class or JunosNode class to see how to add a new NOS type and what the additional routines to support are. Typically, you'll need to add two routines, `init_boot_time` and `_parse_device_type_hostname` routines to this Node class as the commands and outputs to get this information is specific to each NOS.
 
 If you're using the REST API to access the information from this NOS, you will need to add another routine, `rest_gather` to this new NOS Node class. Look at EosNode's `rest_gather` method in the file to get the template for creating this class. In general, there's a little more work to do if you're using the REST API. This maybe a limitation of the current implementation in Suzieq rather than a reflection of REST support.
 
@@ -114,7 +114,7 @@ In the file suzieq/utils.py is a routine called known_devtypes(). Please add the
 
 ## Debugging the Setup
 
-It is recommended that you first check that the NOS can be recognized, if you're using automatic NOS detection method (available with SSH access only). You can point the poller with an inventory file that contains a single device and test the connectivity and command access via the use of a single service, such as lldp or device. Look at the output of /tmp/sq-poller.log for the results of the connection to the device. Any errors will be reported there. 
+It is recommended that you first check that the NOS can be recognized, if you're using automatic NOS detection method (available with SSH access only). You can point the poller with an inventory file that contains a single device and test the connectivity and command access via the use of a single service, such as lldp or device. Look at the output of /tmp/sq-poller.log for the results of the connection to the device. Any errors will be reported there.
 
 You can debug the SSH or HTTP process by setting the log level to DEBUG or INFO in the default suzieq config file, stored at ~/.suzieq/suzieq-cfg.yml. An example of the contents of this file is:
 

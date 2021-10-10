@@ -1,6 +1,6 @@
 ## Augmented Columns
 
-Augmented columns are columns that are computed based on other columns, typically from the same table, but possibly from other tables as well. Examples of augmented columns are peerHostname in case of OSPF to name the peer by hostname, and prefixlen in case of routes. Examples of augmented columns taken from other tables include os type or vendor. 
+Augmented columns are columns that are computed based on other columns, typically from the same table, but possibly from other tables as well. Examples of augmented columns are peerHostname in case of OSPF to name the peer by hostname, and prefixlen in case of routes. Examples of augmented columns taken from other tables include os type or vendor.
 
 Augmented columns MUST be:
 
@@ -11,14 +11,14 @@ Augmented columns MUST be:
 
 Augmented columns MUST NOT be:
 
-* populated in the parquet DB. 
+* populated in the parquet DB.
 
 Augmented columns MAY be:
 
 * Nested (defining an augmented column that is derived from other augmented columns)
 * User-defined
 * key fields
-	
+
 ### Phase 1 Version
 
 In the initial version, we DO NOT allow:

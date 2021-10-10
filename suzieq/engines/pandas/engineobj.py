@@ -252,8 +252,8 @@ class SqPandasEngine(SqEngineObj):
         """Normalize pulling data from other tables into this one function
 
         Typically pulling data involves calling get_sqobject with a bunch of
-        parameters that need to be passed to it, that a caller can forget to 
-        pass. A classic example is passing the view, start-time and end-time 
+        parameters that need to be passed to it, that a caller can forget to
+        pass. A classic example is passing the view, start-time and end-time
         which is often forgotten. This function fixes this issue.
 
         Args:
@@ -473,7 +473,7 @@ class SqPandasEngine(SqEngineObj):
 
         Args:
             check_empty_col (str, optional): column name to check to remove
-                                             namespace that's empty. 
+                                             namespace that's empty.
                                              Defaults to 'deviceCnt'.
         """
         # this is needed in the case that there is a namespace that has no

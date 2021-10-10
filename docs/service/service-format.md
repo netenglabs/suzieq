@@ -8,7 +8,7 @@ A service definition file specifies how to monitor a service and extract state f
       * for each such command, the fields to be extracted
 	  * for each field:
     	  * the normalized name of the field
-		  * the default value if any, and 
+		  * the default value if any, and
 		  * simple arithmetic transformations to be performed to the value of the field to normalize it across devices
 
 The YAML format definition looks as follows, and subsequent sections explain each of these sections :
@@ -160,7 +160,7 @@ apply:
 
 ## Normalizing the Data ##
 
-The normalized field name is to create a single name for a field that is named differently in different device outputs. For example, bytesReceived, rxBytes, bytesRx and inBytes can all be mapped to a common rxBytes field. 
+The normalized field name is to create a single name for a field that is named differently in different device outputs. For example, bytesReceived, rxBytes, bytesRx and inBytes can all be mapped to a common rxBytes field.
 
 Simple arithmetic operations are used to:
 
@@ -184,7 +184,7 @@ Suzieq provides a script, gen_schema.py which can be used to generate the schema
 * if the field name ends in "list" or "List", it must be an array
 * if the field name ends in "time" or "timestamp", it must be a double
 * if the service type is counters, all fields which don't match the above rules are int64
-	
+
 The user is encouraged to go fix the types, and add default values, if necessary, after the schema files have been generated. The schema files are stored as .avsc files under a directory called schema under the directory where the service file definitions are present.
 
 The schema generator also uses the **keys** field from the service definition to add a **"key"** attribute as a boolean to those fields.

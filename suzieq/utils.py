@@ -692,11 +692,11 @@ def get_log_params(prog: str, cfg: dict, def_logfile: str) -> tuple:
     within the hierarchy of the config dictionary. Thus, the poller log file
     will be {'poller': {'logfile': '/tmp/sq-poller.log'}}, for example.
 
-    :param prog: str, The name of the program. Valid values are poller, 
+    :param prog: str, The name of the program. Valid values are poller,
                       coaelscer, and rest.
     :param cfg: dict, The config dictionary
     :param def_logfile: str, The default log file to return
-    :returns: log file name, log level, log size, and 
+    :returns: log file name, log level, log size, and
               True/False for logging to stdout
     :rtype: str, str and int
 

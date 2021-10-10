@@ -2,7 +2,7 @@
 
 (last updated August 2021)
 
-This roadmap represents our best guess at broad priorities. 
+This roadmap represents our best guess at broad priorities.
 The point is to demonstrate what we think we should work on and the general
 order of what we want to deliver.  If we are missing something that would make
 it more useful to you, please let us know. The best way is to
@@ -11,15 +11,15 @@ it more useful to you, please let us know. The best way is to
 We are trying to provide a mix of adding new collection, new analysis, and making Suzieq a better
 platform to build on.
 
-So far Suzieq is focused on datacenter, but we if we hear of 
+So far Suzieq is focused on datacenter, but we if we hear of
 interest in the ISP/WAN space (or any other), then we can pivot
-towards that. There's nothing inherent in Suzieq that makes it just 
-for one part of the network than the others, we just started in the 
-datacenter. The current version will be useful anywhere, it's just 
+towards that. There's nothing inherent in Suzieq that makes it just
+for one part of the network than the others, we just started in the
+datacenter. The current version will be useful anywhere, it's just
 that we aren't collecting everything we'd need to do a great job
 in other places and we don't have asserts tuned towards other use cases.
 
-First release (0.1), was focused on good fundamentals and a good 
+First release (0.1), was focused on good fundamentals and a good
 representation of what Suzieq can be used for. Second release (0.2)
 was focused on NXOS and Junos support.
 
@@ -56,7 +56,7 @@ Given the categories, here is a rough list of tasks we will be tackling. We welc
   * draw a map for physical and logical layers, including routing protocols
   * neighbor discovery
     * --show neighbors that we know about but aren't polling--
-    * maybe be able to just start with one IP address and then discover 
+    * maybe be able to just start with one IP address and then discover
       everything that must be polled by suzieq
 * ~~support augmenting columns (like adding peerHostname in OSPF when all we have is peerIP)~~
 * change gen_schema to ignore _ fields
@@ -64,7 +64,7 @@ Given the categories, here is a rough list of tasks we will be tackling. We welc
 * ~~Schema evolution and versioning to make suzieq less brittle to changes in the schema~~
 * Network wide summarize to take advantage of data across all commands
 ~~* Web-based GUI
-  * Do you have a framework you'd like the GUI to use? 
+  * Do you have a framework you'd like the GUI to use?
   * For what functions would you use a GUI?
   * caching and performance
 ~~* suzieq as a daemon
@@ -91,7 +91,7 @@ Given the categories, here is a rough list of tasks we will be tackling. We welc
   * This includes SONIC-specific stuff only. Linux-specific and FRR are already supported.
 * --Support for Cisco's CSR1000--
 * ~~Support for Cisco's IOS-XR~~
-* Temperature and power collection 
+* Temperature and power collection
 * Cloud integration such as VPC from cloud providers
 * Kafka integration for streaming telemetry
 * Redundancy -- some way of making sure that one poller is always running
@@ -108,4 +108,3 @@ Given the categories, here is a rough list of tasks we will be tackling. We welc
 * Suggesting items that you care about but are missing from this list. The best way to do this is to open an issue. Please do add some color about how you intend to use Suzieq with that feature.
 * Writing some tests and/or documentation
 * Funding us to do the work :)
-

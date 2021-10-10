@@ -57,7 +57,7 @@ Start
   ^-+.*$$
   ^\S+\s+\S+\s+\d+\s+\d+:\d+:\d+\.\d+\s+\S+\s*$$
   ^BGP\s+neighbor -> Continue.Record
-  ^BGP\s+neighbor -> Continue.Clearall  
+  ^BGP\s+neighbor -> Continue.Clearall
   ^BGP\s+neighbor\s+is\s+${peer},\s+vrf\s+${vrf}.*$$
   ^BGP\s+neighbor\s+is\s+${peer}.*$$
   ^\s+Remote\s+AS\s+${peerAsn}\,\s+local\s+AS\s+${asn}\,\s+(?:no\-prepend,\s+)?(?:replace\-as\,\s+)?${TYPE}\s+link
@@ -172,4 +172,3 @@ Connection
 PeerError
   ^\s+Error\s+Code:\s+${notificnReasonRx}\s*$$ -> Connection
   ^. -> Error
-
