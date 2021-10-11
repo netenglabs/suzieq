@@ -78,7 +78,13 @@ class DeviceService(Service):
         return self._common_data_cleaner(processed_data, raw_data)
 
     def _clean_sonic_data(self, processed_data, raw_data):
-        return self._clean_linux_data(processed_data, raw_data)
+        processed_data = self._clean_linux_data(processed_data, raw_data)
+        #Sonic specific updates
+        for entry in processed_data:
+            entry['os'] = 'sonic'
+            entry['vendor'] = entry['model'].split('-')[0]
+
+        return processed_data
 
     def _clean_common_ios(self, entry, os):
         '''Common IOS-like NOS cleaning'''

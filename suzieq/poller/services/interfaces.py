@@ -211,6 +211,8 @@ class InterfaceService(Service):
                     entry['master'] = entry['master'].replace(
                         '(', '').replace(')', '')
 
+                # Lowercase the master value thanks to SoNIC
+                entry['master'] = entry.get('master', '').lower()
                 if entry['ip6AddressList'] and 'ip6AddressList-_2nd' in entry:
                     # This is because textfsm adds peer LLA as well
                     entry['ip6AddressList'] = entry['ip6AddressList-_2nd']

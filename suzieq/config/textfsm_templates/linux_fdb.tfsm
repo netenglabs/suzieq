@@ -6,15 +6,15 @@ Value remoteVtepIp ([0-9.]+)
 
 Start
   ^.*dev bridge self permanent.*$$ -> Next.Record
-  ^${macaddr} dev ${oif} vlan ${vlan} master bridge ${flags}.*$$ -> Next.Record
-  ^${macaddr} dev ${oif} vlan ${vlan} master bridge.*$$ -> Next.Record
-  ^${macaddr} dev ${oif} vlan ${vlan} (offload|extern_learn) master bridge.*$$ -> Next.Record
-  ^${macaddr} dev ${oif} vlan ${vlan} (offload|extern_learn) master bridge ${flags}.*$$ -> Next.Record      
-  ^${macaddr} dev ${oif} vlan ${vlan} sticky master bridge ${flags}.*$$ -> Next.Record
-  ^${macaddr} dev ${oif} vlan ${vlan} sticky master bridge.*$$ -> Next.Record      
+  ^${macaddr} dev ${oif} vlan ${vlan} master [bB]ridge ${flags}.*$$ -> Next.Record
+  ^${macaddr} dev ${oif} vlan ${vlan} master [bB]ridge.*$$ -> Next.Record
+  ^${macaddr} dev ${oif} vlan ${vlan} (offload|extern_learn) master [bB]ridge.*$$ -> Next.Record
+  ^${macaddr} dev ${oif} vlan ${vlan} (offload|extern_learn) master [bB]ridge ${flags}.*$$ -> Next.Record      
+  ^${macaddr} dev ${oif} vlan ${vlan} sticky master [bB]ridge ${flags}.*$$ -> Next.Record
+  ^${macaddr} dev ${oif} vlan ${vlan} sticky master [bB]ridge.*$$ -> Next.Record      
   ^${macaddr} dev ${oif} dst ${remoteVtepIp} self ${flags}.*$$ -> Next.Record
-  ^${macaddr} dev ${oif} master bridge ${flags}.*$$ -> Next.Record
-  ^${macaddr} dev ${oif} master bridge.*$$ -> Next.Record
+  ^${macaddr} dev ${oif} master [bB]ridge ${flags}.*$$ -> Next.Record
+  ^${macaddr} dev ${oif} master [bB]ridge.*$$ -> Next.Record
   ^${macaddr} dev ${oif} self ${flags}.*$$ -> Next.Record  
 
 #00:00:00:00:00:00 dev vni13 dst 10.0.0.134 self permanent

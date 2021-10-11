@@ -13,7 +13,7 @@ def _validate_ethernet_if(df: pd.DataFrame):
     # We don't collect speed for Linux servers, vEOS doesn't provide speed
     # A bunch of internal Junos interface names including SVIs show up as
     # ethernet interfaces
-    assert (df.query('~os.isin(["linux", "eos"]) '
+    assert (df.query('~os.isin(["linux", "sonic", "eos"]) '
                      'and (state == "up")').speed != 0).all()
 
 
@@ -78,7 +78,7 @@ def _validate_vxlan_if(df: pd.DataFrame):
         assert (cldf.srcVtepIp != '').all()
         assert (cldf.macaddr != "00:00:00:00:00:00").all()
 
-    restdf = df.query('os != "cumulus"').reset_index(drop=True)
+    restdf = df.query('~os.isin(["cumulus", "sonic"])').reset_index(drop=True)
     if not restdf.empty:
         assert (restdf.macaddr == "00:00:00:00:00:00").all()
 

@@ -35,8 +35,10 @@ class MacsService(Service):
             if entry.get("remoteVtepIp", ''):
                 if entry['macaddr'] == '00:00:00:00:00:00':
                     entry['mackey'] = f'{entry["oif"]}-{entry["remoteVtepIp"]}'
-                else:
+                elif entry['vlan']:
                     entry['mackey'] = entry['vlan']
+                else:
+                    entry['mackey'] = entry['oif']
             else:
                 if entry.get('vlan', 0):
                     entry['mackey'] = entry['vlan']
@@ -61,13 +63,14 @@ class MacsService(Service):
                     # Ensure we don't munge entries with the diff valid VLANs
                     if not old_entry.get('vlan', ''):
                         old_entry['vlan'] = entry['vlan']
-                    else:
+                    elif entry['remoteVtepIp']:
                         old_entry['remoteVtepIp'] = entry['remoteVtepIp']
-                    old_entry['flags'] = 'remote'
+                    if old_entry['remoteVtepIp']:
+                        old_entry['flags'] = 'remote'
                     self._add_mackey_protocol(old_entry)
                     drop_indices.append(i)
                     continue
-            if entry['flags'] == 'offload' or entry['flags'] == 'extern_learn':
+            if 'offload' in entry['flags'] or 'extern_learn' in entry['flags']:
                 if entry['remoteVtepIp']:
                     entry['flags'] = 'remote'
             self._add_mackey_protocol(entry)
