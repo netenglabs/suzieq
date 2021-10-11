@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "suzieq"
-version = "0.16.0"
+version = "0.0.0"
 description = "A framework and application for network observability"
 readme = 'README.md'
 repository = 'https://github.com/netenglabs/suzieq'
@@ -13,7 +13,6 @@ homepage = 'https://www.stardustsystems.net/suzieq/'
 classifiers = [
    'Topic :: System :: Networking :: Monitoring'
 ]
-
 
 [tool.poetry.dependencies]
 python = ">3.7.1, < 3.9"
@@ -74,6 +73,12 @@ sq-anonymizer = 'suzieq.utilities.sq_anonymizer:anonymizer_main'
 suzieq-cli = 'suzieq.cli.sq_cli:cli_main'
 suzieq-gui = 'suzieq.gui.sq_gui:gui_main'
 
+[tool.poetry-dynamic-versioning]
+enable = true
+vcs = "git"
+style = "semver"
+pattern = "^v(?P<base>\\d+\\.\\d+\\.\\d+)(-?((?P<stage>[a-zA-Z]+)\\.?(?P<revision>\\d+)?))?(\\+(?P<tagged_metadata>.+))?$"
+
 [build-system]
-requires = ["poetry>=0.12"]
+requires = ["poetry>=1.0.2", "poetry-dynamic-versioning"]
 build-backend = "poetry.masonry.api"
